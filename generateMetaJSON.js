@@ -44,19 +44,16 @@ const transformLabel = (name) => {
 };
 
 const generateMetaFiles = (dir) => {
-  console.log(`Processing directory: ${dir}`);
   const enMeta = {};
   const pliMeta = {};
 
   const items = fs.readdirSync(dir).sort(naturalSort);
-  console.log(`Items in directory ${dir}: ${items}`);
 
   items.forEach(item => {
     const itemPath = path.join(dir, item);
     const stat = fs.statSync(itemPath);
 
     if (stat.isDirectory()) {
-      console.log(`Found directory: ${itemPath}`);
       // Recurse into the directory
       generateMetaFiles(itemPath);
 
@@ -65,9 +62,7 @@ const generateMetaFiles = (dir) => {
       const label = specialLabels[folderName] || transformLabel(folderName);
       enMeta[folderName] = label;
       pliMeta[folderName] = label;
-      console.log(`Directory: ${folderName}, Label: ${label}`);
     } else if (stat.isFile()) {
-      console.log(`Found file: ${itemPath}`);
       const fileName = path.basename(item, path.extname(item));
       const pageName = fileName.toLowerCase().replace(/(\.en|\.pli)$/, '');
       const label = specialLabels[pageName] || transformLabel(pageName);
@@ -75,16 +70,13 @@ const generateMetaFiles = (dir) => {
       if (item.endsWith('.en.md') || item.endsWith('.en.mdx')) {
         enMeta[pageName] = label;
         pliMeta[`${pageName}.en`] = { "display": "hidden" };
-        console.log(`File: ${fileName}, Label (EN): ${label}`);
       } else if (item.endsWith('.pli.md') || item.endsWith('.pli.mdx')) {
         pliMeta[pageName] = label;
         enMeta[`${pageName}.pli`] = { "display": "hidden" };
-        console.log(`File: ${fileName}, Label (PLI): ${label}`);
       } else {
         const locale = path.extname(fileName).substring(1);
         enMeta[`${pageName}.${locale}`] = { "display": "hidden" };
         pliMeta[`${pageName}.${locale}`] = { "display": "hidden" };
-        console.log(`File: ${fileName}, Hidden for both EN and PLI`);
       }
     }
   });
