@@ -8,10 +8,10 @@
     },
     "scripts": {
       "dev": "next dev",
-      "build": "echo 'Running prebuild script' && node generateMetaJson.js && echo 'Finished running prebuild script' && next build",
+      "build": "node generateMeta.js && next build",
       "start": "next start",
-      "prebuild": "node generateMetaJson.js",
-      "predev": "node generateMetaJson.js"
+      "prebuild": "node generateMeta.js",
+      "predev": "node generateMeta.js"
     }
   }
   
