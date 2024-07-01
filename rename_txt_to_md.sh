@@ -8,7 +8,7 @@ start_dir="."
 #    mv "$file" "${file%.txt}.md"
 #done
 
-# Find all .en.md files and rename them to .en-US.md
-find "$start_dir" -type f -name "*.en-US.md" | while read -r file; do
-    mv "$file" "${file%.en-US.md}.en.md"
+# Find all .en.md files and rename them to .en.mdx
+find "$start_dir" -type f -name "*.en.md" | while read -r file; do
+    mv "$file" "${file%.en.md}.en.mdx"
 done

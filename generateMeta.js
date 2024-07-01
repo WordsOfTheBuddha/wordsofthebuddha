@@ -75,8 +75,8 @@ const generateMetaFiles = (dir) => {
         enMeta[`${pageName}.pli`] = { "display": "hidden" };
       } else {
         const locale = path.extname(fileName).substring(1);
-        enMeta[`${pageName}.${locale}`] = { "display": "hidden" };
-        pliMeta[`${pageName}.${locale}`] = { "display": "hidden" };
+        enMeta[`${pageName}`] = { "display": "hidden" };
+        pliMeta[`${pageName}`] = { "display": "hidden" };
       }
     }
   });

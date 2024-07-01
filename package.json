@@ -1,17 +1,18 @@
 {
-    "dependencies": {
-      "next": "^14.2.4",
-      "nextra": "^2.13.4",
-      "nextra-theme-docs": "^2.13.4",
-      "react": "^18.3.1",
-      "react-dom": "^18.3.1"
-    },
-    "scripts": {
-      "dev": "next dev",
-      "build": "node generateMeta.js && next build",
-      "start": "next start",
-      "prebuild": "node generateMeta.js",
-      "predev": "node generateMeta.js"
-    }
+  "dependencies": {
+    "next": "^14.2.4",
+    "nextra": "^2.13.4",
+    "nextra-theme-docs": "^2.13.4",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "styled-components": "^6.1.11"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "node generateMeta.js && next build",
+    "start": "next start",
+    "prebuild": "node generateMeta.js",
+    "predev": "node generateMeta.js"
   }
-  
+}

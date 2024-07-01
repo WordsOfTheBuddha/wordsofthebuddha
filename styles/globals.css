@@ -1,0 +1,13 @@
+html.light {
+  --icon-fill-color: #000000;
+  --text-color: #555;
+}
+
+html.dark {
+  --icon-fill-color: #ffffff;
+  --text-color: #ffffff;
+}
+
+.nextra-callout {
+    width: fit-content;
+}
