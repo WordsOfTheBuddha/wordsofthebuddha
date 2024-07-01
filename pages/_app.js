@@ -1,9 +1,9 @@
 // pages/_app.js
 import { ThemeProvider } from 'next-themes';
 import { MDXProvider } from '@mdx-js/react';
-import Verse from '../components/Verse';
-import RedditIcon from '../components/RedditIcon';
-import '../styles/globals.css'; // Import global CSS here
+import Verse from '/components/Verse';
+import RedditIcon from '/components/RedditIcon';
+import './styles/globals.css'; // Import global CSS here
 
 const components = {
   Verse,
