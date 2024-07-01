@@ -4,6 +4,7 @@ const withNextra = require('nextra')({
   });
   
   module.exports = withNextra({
+    flexsearch: true,
     i18n: {
       locales: ['en', 'pli'],
       defaultLocale: 'en',
