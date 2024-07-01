@@ -1,0 +1,8 @@
+# Ignore sidebar file pattern when present in any directory
+**/*_meta*.json
+
+# Ignore the dependency directory
+node_modules/
+
+# Ignore the build directory
+.next/**
