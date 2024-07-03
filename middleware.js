@@ -2,7 +2,7 @@ import { withLocales } from 'nextra/locales';
 import { NextResponse } from 'next/server';
 
 export const config = {
-  matcher: '/:path*',
+  matcher: '/((?!_next|static|favicon.ico|frontMatter.json).*)',
 };
 
 export const middleware = withLocales((request) => {

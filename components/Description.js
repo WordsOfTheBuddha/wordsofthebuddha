@@ -1,14 +1,18 @@
-import { useConfig } from "nextra-theme-docs";
-import { Callout } from "nextra/components";
+// components/Description.js
+import { useConfig } from 'nextra-theme-docs';
+import { Callout } from 'nextra/components';
 
-export function Description() {
+export function Description({ description }) {
   const { frontMatter } = useConfig();
+  const displayDescription = description || frontMatter.description;
 
   return (
-    frontMatter.description && (
-      <Callout type="info" emoji="ⓘ" style={{"width": "fit-content"}}>
-        <p>{frontMatter.description}</p>
+    displayDescription && (
+      <Callout type="info" emoji="ⓘ" style={{ width: 'fit-content' }}>
+        <p>{displayDescription}</p>
       </Callout>
     )
   );
 }
+
+export default Description;

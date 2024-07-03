@@ -43,6 +43,9 @@ const transformLabel = (name) => {
   return name.replace(/([a-zA-Z]+)(\d)/, (match, p1, p2) => `${p1.toUpperCase()} ${p2}`);
 };
 
+let enMetaCount = 0;
+let pliMetaCount = 0;
+
 const generateMetaFiles = (dir) => {
   const enMeta = {};
   const pliMeta = {};
@@ -104,27 +107,27 @@ const generateMetaFiles = (dir) => {
 
     const enMetaPath = path.join(dir, '_meta.en.json');
     fs.writeFileSync(enMetaPath, JSON.stringify(enMetaOrdered, null, 2));
-    console.log(`Written _meta.en.json to ${enMetaPath}`);
+    enMetaCount++;
 
     const pliMetaPath = path.join(dir, '_meta.pli.json');
     fs.writeFileSync(pliMetaPath, JSON.stringify(pliMetaOrdered, null, 2));
-    console.log(`Written _meta.pli.json to ${pliMetaPath}`);
+    pliMetaCount++;
   } else {
     // Write meta files for other directories
     if (Object.keys(enMeta).length > 0) {
       const enMetaPath = path.join(dir, '_meta.en.json');
       fs.writeFileSync(enMetaPath, JSON.stringify(enMeta, null, 2));
-      console.log(`Written _meta.en.json to ${enMetaPath}`);
+      enMetaCount++;
     }
     if (Object.keys(pliMeta).length > 0) {
       const pliMetaPath = path.join(dir, '_meta.pli.json');
       fs.writeFileSync(pliMetaPath, JSON.stringify(pliMeta, null, 2));
-      console.log(`Written _meta.pli.json to ${pliMetaPath}`);
+      pliMetaCount++;
     }
   }
 };
 
-const startDir = path.join(__dirname, 'pages');
+const startDir = path.join(__dirname, '../pages');
 generateMetaFiles(startDir);
 
-console.log('Meta files generated successfully.');
+console.log(`Meta files generated successfully. EN: ${enMetaCount}, PLI: ${pliMetaCount}`);

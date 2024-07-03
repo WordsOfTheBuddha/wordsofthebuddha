@@ -1,6 +1,8 @@
 // Ensure you have the correct import at the top of your file
 import { useConfig } from "nextra-theme-docs";
 import { useRouter } from 'next/router';
+import Title from "/components/Title";
+import Description from "/components/Description";
 import RedditIcon from "/components/RedditIcon";
 
 export default {
@@ -33,6 +35,15 @@ export default {
     { locale: "en", text: "English" },
     { locale: "pli", text: "Pali" },
   ],
+  main: ({ children }) => {
+    return (
+      <div>
+        <Title />
+        <Description />
+        {children}
+      </div>
+    );
+  },
   search: {
     placeholder: "Search the translations",
   },
