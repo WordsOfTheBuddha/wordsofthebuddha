@@ -1,10 +1,14 @@
-// components/RedditIcon.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 
 const RedditIcon = () => {
   const { resolvedTheme } = useTheme();
   const fillColor = `var(--icon-fill-color)`;
+  const [theme, setTheme] = useState(null);
+
+  useEffect(() => {
+    setTheme(resolvedTheme);
+  }, [resolvedTheme]);
 
   return (
     <svg
@@ -14,7 +18,7 @@ const RedditIcon = () => {
       version="1.1"
       id="Icons"
       viewBox="0 0 32 32"
-      className={resolvedTheme}
+      className={theme}
     >
       <path
         d="M32,15.5c0-2.5-2-4.5-4.5-4.5c-1.1,0-2.1,0.4-2.9,1.1C22.1,10.7,19.1,10,16,10s-6.1,0.7-8.6,2.1C6.6,11.4,5.6,11,4.5,11
