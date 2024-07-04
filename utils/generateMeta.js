@@ -3,8 +3,8 @@ const path = require('path');
 
 // Natural sort function to handle numerical sorting
 const naturalSort = (a, b) => {
-  const aParts = a.split(/(\d+)/).map((part) => (isNaN(part) ? part : parseInt(part, 10)));
-  const bParts = b.split(/(\d+)/).map((part) => (isNaN(part) ? part : parseInt(part, 10)));
+  const aParts = a.split(/(\d+)/).map(part => isNaN(part) ? part : parseInt(part, 10));
+  const bParts = b.split(/(\d+)/).map(part => isNaN(part) ? part : parseInt(part, 10));
 
   for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
     if (aParts[i] === undefined) return -1;
@@ -85,23 +85,7 @@ const generateMetaFiles = (dir) => {
   });
 
   // Apply special order and labels for the top-level directory
-  if (dir === path.join(__dirname, 'pages')) {
-    const applySpecialOrder = (meta) => {
-      const orderedMeta = {};
-      specialOrder.forEach(key => {
-        if (meta[key]) {
-          orderedMeta[key] = meta[key];
-        }
-      });
-      // Add any remaining items not in the special order
-      Object.keys(meta).forEach(key => {
-        if (!orderedMeta[key]) {
-          orderedMeta[key] = meta[key];
-        }
-      });
-      return orderedMeta;
-    };
-
+  if (dir === path.join(__dirname, '../pages')) {
     const enMetaOrdered = applySpecialOrder(enMeta);
     const pliMetaOrdered = applySpecialOrder(pliMeta);
 
@@ -125,6 +109,22 @@ const generateMetaFiles = (dir) => {
       pliMetaCount++;
     }
   }
+};
+
+const applySpecialOrder = (meta) => {
+  const orderedMeta = {};
+  specialOrder.forEach(key => {
+    if (meta[key]) {
+      orderedMeta[key] = meta[key];
+    }
+  });
+  // Add any remaining items not in the special order
+  Object.keys(meta).forEach(key => {
+    if (!orderedMeta[key]) {
+      orderedMeta[key] = meta[key];
+    }
+  });
+  return orderedMeta;
 };
 
 const startDir = path.join(__dirname, '../pages');
