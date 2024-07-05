@@ -1,4 +1,10 @@
-4. Samacittavagga
+---
+title: Samacittavagga - Chapter on the Equanimous Mind
+description: Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind.
+fetter: attachment to rites and rituals,sensual desire,personal existence view,conceit
+tags: integrity,parents,good conduct,bad conduct,equanimous mind,immature,wise
+id: an2.32-41
+---
 
 32
 “Asappurisabhūmiñca vo, bhikkhave, desessāmi sappurisabhūmiñca. Taṁ suṇātha, sādhukaṁ manasi karotha. bhāsissāmī”ti.

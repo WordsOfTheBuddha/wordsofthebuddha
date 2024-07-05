@@ -1,4 +1,10 @@
-11. Āsāduppajahavagga
+---
+title: Āsāduppajahavagga - Chapter on The Difficult to Abandon
+description: Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind.
+fetter: sensual desire,ill-will,ignorance
+tags: acquisition,gratitude,content,passion,aversion,wrong view,right view,offense
+id: an2.118-129
+---
 
 118
 “Dvemā, bhikkhave, āsā duppajahā. Katamā dve? Lābhāsā ca jīvitāsā ca. Imā kho, bhikkhave, dve āsā duppajahā”ti.

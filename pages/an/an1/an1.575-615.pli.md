@@ -1,4 +1,10 @@
-Kāyagatāsativagga
+---
+title: Kāyagatāsativagga - The Chapter on Mindfulness of the Body
+description: Short teachings on the benefits of cultivating mindfulness of the body
+fetter: ignorance
+tags: mindfulness,mindfulness of body,awareness
+id: an1.575-615
+---
 
 575
 “Yassa kassaci, bhikkhave, mahāsamuddo cetasā phuṭo antogadhā tassa kunnadiyo yā kāci samuddaṅgamā; evamevaṁ, bhikkhave, yassa kassaci kāyagatā sati bhāvitā bahulīkatā antogadhā tassa kusalā dhammā ye keci vijjābhāgiyā”ti.

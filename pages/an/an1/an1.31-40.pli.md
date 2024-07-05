@@ -1,4 +1,10 @@
-4. Adantavagga
+---
+title: Adantavagga - The Chapter on the Untamed
+description: Short teachings contrasting the tamed and untamed mind
+fetter: ignorance
+tags: mind,harm,benefit
+id: an1.31-40
+---
 
 31
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ adantaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, adantaṁ mahato anatthāya saṁvattatī”ti.
