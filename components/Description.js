@@ -1,7 +1,6 @@
 import React from 'react';
 import { useConfig } from 'nextra-theme-docs';
 import { Callout } from 'nextra/components';
-import styles from '/styles/Description.module.css';
 
 export function Description({ description }) {
   const { frontMatter } = useConfig();
@@ -9,11 +8,9 @@ export function Description({ description }) {
 
   return (
     displayDescription && (
-      <div className={styles.description}>
-        <Callout type="info" emoji="ⓘ">
+        <Callout type="info" emoji="ⓘ" styles={{'width': 'fit-content'}}>
           <p>{displayDescription}</p>
         </Callout>
-      </div>
     )
   );
 }

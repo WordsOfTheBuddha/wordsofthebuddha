@@ -28,21 +28,12 @@ export default {
         <title>{`${pageName} - ${frontMatter.title || 'words of the buddha'}`}</title>
         <meta name="title" content={`${pageName} - ${frontMatter.title || 'words of the buddha'}`} />
         <meta name="description" content={frontMatter.description || `Read the words of the Buddha from ${pageName}`} />
-        <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet" />
       </>
     );
-  },
-  chat: {
-    link: "https://reddit.com/r/WordsOfTheBuddha",
-    icon: <RedditIcon />,
   },
   darkMode: true,
   docsRepositoryBase:
     "https://github.com/siddharthlatest/suttas/tree/main/pages",
-  i18n: [
-    { locale: "en", text: "English" },
-    { locale: "pli", text: "Pali" },
-  ],
   main: ({ children }) => {
     return (
       <div>
