@@ -17,6 +17,8 @@
 .table td {
   padding: 12px 15px;
   text-align: left;
+  font-family: var(--font-family); /* Use the global font family */
+  color: var(--text-color); /* Use the global text color */
 }
 
 .table th {
@@ -37,18 +39,16 @@
   border-bottom: 1px solid #ddd;
 }
 
-/* Light Theme */
 .light-theme {
-  --background-header: #f4f4f4;
-  --background-row-even: #f9f9f9;
-  --background-row-hover: #f1f1f1;
-  color: #000;
+  --background-header: var(--background-header-light);
+  --background-row-even: var(--background-row-even-light);
+  --background-row-hover: var(--background-row-hover-light);
+  --text-color: var(--text-color-light);
 }
 
-/* Dark Theme */
 .dark-theme {
-  --background-header: #333;
-  --background-row-even: #444;
-  --background-row-hover: #555;
-  color: #fff;
+  --background-header: var(--background-header-dark);
+  --background-row-even: var(--background-row-even-dark);
+  --background-row-hover: var(--background-row-hover-dark);
+  --text-color: var(--text-color-dark);
 }

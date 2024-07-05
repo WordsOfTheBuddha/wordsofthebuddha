@@ -1,24 +1,54 @@
-/* Global variables for light and dark themes */
+:root {
+  --icon-fill-color-light: #000000;
+  --text-color-light: #555;
+  --background-color-light: #ffffff;
+  --primary-color-light: #1a73e8;
+  --secondary-color-light: #ff5722;
+  --font-family: "Spectral", serif, system-ui, -apple-system, "system-ui",
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  --link-color-light: #1a73e8;
+  --link-hover-color-light: #0c47a1;
+
+  --icon-fill-color-dark: #ffffff;
+  --text-color-dark: #ffffff;
+  --background-color-dark: #121212;
+  --primary-color-dark: #bb86fc;
+  --secondary-color-dark: #03dac6;
+  --link-color-dark: #bb86fc;
+  --link-hover-color-dark: #ffffff;
+  --background-header-light: #f4f4f4;
+  --background-row-even-light: #f9f9f9;
+  --background-row-hover-light: #f1f1f1;
+  --background-header-dark: #333;
+  --background-row-even-dark: #444;
+  --background-row-hover-dark: #555;
+}
+
 html.light {
-  --icon-fill-color: #000000;
-  --text-color: #555;
-  --background-color: #ffffff;
-  --primary-color: #1a73e8;
-  --secondary-color: #ff5722;
-  --font-family: 'Spectral', serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --link-color: #1a73e8;
-  --link-hover-color: #0c47a1;
+  --icon-fill-color: var(--icon-fill-color-light);
+  --text-color: var(--text-color-light);
+  --background-color: var(--background-color-light);
+  --primary-color: var(--primary-color-light);
+  --secondary-color: var(--secondary-color-light);
+  --link-color: var(--link-color-light);
+  --link-hover-color: var(--link-hover-color-light);
+  --background-header: var(--background-header-light);
+  --background-row-even: var(--background-row-even-light);
+  --background-row-hover: var(--background-row-hover-light);
 }
 
 html.dark {
-  --icon-fill-color: #ffffff;
-  --text-color: #ffffff;
-  --background-color: #121212;
-  --primary-color: #bb86fc;
-  --secondary-color: #03dac6;
-  --font-family: 'Spectral', serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --link-color: #bb86fc;
-  --link-hover-color: #3700b3;
+  --icon-fill-color: var(--icon-fill-color-dark);
+  --text-color: var(--text-color-dark);
+  --background-color: var(--background-color-dark);
+  --primary-color: var(--primary-color-dark);
+  --secondary-color: var(--secondary-color-dark);
+  --link-color: var(--link-color-dark);
+  --link-hover-color: var(--link-hover-color-dark);
+  --background-header: var(--background-header-dark);
+  --background-row-even: var(--background-row-even-dark);
+  --background-row-hover: var(--background-row-hover-dark);
 }
 
 /* Base styles */
@@ -32,7 +62,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-color);
   font-family: var(--font-family);
   margin: 1em 0 0.5em;
@@ -76,8 +111,8 @@ blockquote {
 }
 
 code {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: rgba(27,31,35,0.05);
+  font-family: "Courier New", Courier, monospace;
+  background-color: rgba(27, 31, 35, 0.05);
   padding: 2px 4px;
   border-radius: 3px;
 }

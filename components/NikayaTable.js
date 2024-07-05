@@ -25,7 +25,7 @@ export const NikayaTable = () => {
   }
 
   return (
-    <div className={`${styles.tableContainer} ${theme === 'dark' ? styles['dark-theme'] : styles['light-theme']}`}>
+    <div className={`${styles.tableContainer} ${theme === 'dark' ? 'dark' : 'light'}`}>
       <table className={styles.table}>
         <thead>
           <tr>

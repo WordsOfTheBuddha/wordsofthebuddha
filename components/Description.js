@@ -9,7 +9,7 @@ export function Description({ description }) {
   return (
     displayDescription && (
         <Callout type="info" emoji="ⓘ" styles={{'width': 'fit-content'}}>
-          <p>{displayDescription}</p>
+          {displayDescription}
         </Callout>
     )
   );
