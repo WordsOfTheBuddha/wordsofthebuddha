@@ -1,0 +1,32 @@
+
+import { Card } from '/components/Card';
+
+export default function Index() {
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+    gap: '1rem',
+    padding: '1rem'
+  };
+
+  return (
+    <div style={gridStyle}>
+      
+  <Card 
+    title="Samacittavagga - Chapter on the Equanimous Mind"
+    description="Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind."
+    link="/an/an2/an2.32-41"
+    id="an2.32-41"
+  />
+
+
+  <Card 
+    title="Āsāduppajahavagga - Chapter on The Difficult to Abandon"
+    description="Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind."
+    link="/an/an2/an2.118-129"
+    id="an2.118-129"
+  />
+
+    </div>
+  );
+}

@@ -1,0 +1,32 @@
+
+import { Card } from '/components/Card';
+
+export default function Index() {
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+    gap: '1rem',
+    padding: '1rem'
+  };
+
+  return (
+    <div style={gridStyle}>
+      
+  <Card 
+    title="Adantavagga - The Chapter on the Untamed"
+    description="Short teachings on the untamed and the tamed mind."
+    link="/an/an1/an1.31-40"
+    id="an1.31-40"
+  />
+
+
+  <Card 
+    title="Kāyagatāsativagga - The Chapter on Mindfulness of the Body"
+    description="Short teachings on the benefits of cultivating mindfulness of the body."
+    link="/an/an1/an1.575-615"
+    id="an1.575-615"
+  />
+
+    </div>
+  );
+}

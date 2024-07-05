@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 import frontMatter from "/public/frontMatter.json";
 
 export const config = {
-  matcher: [
-    "/",
-    "/((?!api|_next|static|public|translationCounts.json).*)"
-  ]
+  matcher: ["/", "/((?!api|_next|static|public|translationCounts.json).*)"],
 };
 
 export function middleware(request) {
@@ -45,7 +42,7 @@ export function middleware(request) {
   }
 
   // Check if pathname corresponds to a file
-  const fileId = pathname.split('/').pop();
+  const fileId = pathname.split("/").pop();
   const isFile = frontMatter[`${fileId}.${locale}`] !== undefined;
 
   if (isFile && fileId !== "index") {
@@ -53,10 +50,10 @@ export function middleware(request) {
     let expectedPath = `${prefixPath}${fileId}`;
     // Check if the current pathname matches the expected path
     if (pathname !== expectedPath) {
-      console.log('redirecting to: ', expectedPath);
+      console.log("redirecting to: ", expectedPath);
       return NextResponse.redirect(new URL(expectedPath, request.url));
     } else {
-      console.log('path matches, rewriting to serve file: ', expectedPath);
+      console.log("path matches, rewriting to serve file: ", expectedPath);
       const newUrl = new URL(`${pathname}.en`, request.url);
       return NextResponse.rewrite(newUrl);
     }
@@ -64,8 +61,11 @@ export function middleware(request) {
     // Check if pathname corresponds to a directory
     // check if pathname ends in /
     if (pathname.endsWith("/")) {
-        const newUrl = new URL(`${pathname}index`, request.url);
-        return NextResponse.rewrite(newUrl);
+      const newUrl = new URL(`${pathname}index`, request.url);
+      return NextResponse.rewrite(newUrl);
+    } else if (pathname.indexOf(".") !== -1) {
+      const newUrl = new URL(`${pathname}.en`, request.url);
+      return NextResponse.rewrite(newUrl);
     }
   }
 

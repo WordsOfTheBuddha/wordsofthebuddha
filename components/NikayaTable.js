@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
-import styles from '/styles/NikayaTable.module.css';
+import React, { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import styles from "/styles/NikayaTable.module.css";
 
 export const NikayaTable = () => {
   const { theme } = useTheme();
@@ -9,11 +9,11 @@ export const NikayaTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/translationCounts.json');
+        const response = await fetch("/translationCounts.json");
         const jsonData = await response.json();
         setData(jsonData);
       } catch (error) {
-        console.error('Error fetching translation counts:', error);
+        console.error("Error fetching translation counts:", error);
       }
     };
 
@@ -25,7 +25,11 @@ export const NikayaTable = () => {
   }
 
   return (
-    <div className={`${styles.tableContainer} ${theme === 'dark' ? 'dark' : 'light'}`}>
+    <div
+      className={`${styles.tableContainer} ${
+        theme === "dark" ? styles["dark-theme"] : styles["light-theme"]
+      }`}
+    >
       <table className={styles.table}>
         <thead>
           <tr>
@@ -34,9 +38,11 @@ export const NikayaTable = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(data).map(key => (
+          {Object.keys(data).map((key) => (
             <tr key={key}>
-              <td>{data[key].label}</td>
+              <td>
+                <a href={key}>{data[key].label}</a>
+              </td>
               <td>{data[key].translationCount}</td>
             </tr>
           ))}

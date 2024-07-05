@@ -2,8 +2,15 @@
 import { Card } from '/components/Card';
 
 export default function Index() {
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+    gap: '1rem',
+    padding: '1rem'
+  };
+
   return (
-    <div className="cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div style={gridStyle}>
       
   <Card 
     title="Desires"
@@ -14,18 +21,18 @@ export default function Index() {
 
 
   <Card 
-    title="Fear arises from harm"
-    description="The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being."
-    link="/snp/snp4/snp4.15"
-    id="snp4.15"
-  />
-
-
-  <Card 
     title="Cave"
     description="Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of 'mine'."
     link="/snp/snp4/snp4.2"
     id="snp4.2"
+  />
+
+
+  <Card 
+    title="Fear arises from harm"
+    description="The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being."
+    link="/snp/snp4/snp4.15"
+    id="snp4.15"
   />
 
     </div>
