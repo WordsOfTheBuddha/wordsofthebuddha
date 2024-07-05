@@ -4,146 +4,248 @@
     "description": "Six qualities to abandon to dwell in the first jhāna - 1. thoughts of sensual desire, 2. thoughts of ill-will, 3. thoughts of harm, 4. perception of sensual desire, 5. perception of ill-will, 6. perception of harm.",
     "fetter": "doubt,attachment to rites and rituals",
     "tags": "jhana,an,an6",
-    "id": "an6.74"
+    "id": "an6.74",
+    "path": "/an/an6/"
   },
   "an6.74.pli": {
     "title": "Dutiyatajjhānasutta - Second Discourse on the First Jhāna",
     "description": "Six qualities to abandon to dwell in the first jhāna - 1) thoughts of sensual desire, 2) thoughts of ill-will, 3) thoughts of harm, 4) perception of sensual desire, 5) perception of ill-will, 6) perception of harm.",
     "fetter": "doubt,attachment to rites and rituals",
     "tags": "jhana,an,an6",
-    "id": "an6.74"
+    "id": "an6.74",
+    "path": "/an/an6/"
   },
   "dhp1-20.en": {
     "title": "Chapter 1 - Pairs",
     "description": "DhammaPada Verses 1 - 20",
     "tags": "dhp1-20, mind,",
     "fetter": "ignorance,ill-will,sensual desire,conceit",
-    "id": "dhp1,dhp2,dhp3,dhp4,dhp5,dhp6,dhp7,dhp8,dhp9,dhp10,dhp11,dhp12,dhp13,dhp14,dhp15,dhp16,dhp17,dhp18,dhp19,dhp20"
+    "id": "dhp1,dhp2,dhp3,dhp4,dhp5,dhp6,dhp7,dhp8,dhp9,dhp10,dhp11,dhp12,dhp13,dhp14,dhp15,dhp16,dhp17,dhp18,dhp19,dhp20",
+    "path": "/dhp/"
   },
   "index.en": {
     "title": "Introduction",
     "description": "The words of the Buddha is a translation project to translate the Pali canon teachings into English.",
     "tags": "introduction,buddha,words,wisdom",
     "fetter": "ignorance",
-    "id": "index"
+    "id": "index",
+    "path": "//"
   },
   "index.pli": {
     "title": "Introduction",
     "description": "The words of the Buddha is a translation project to translate the Pali canon teachings into English.",
     "tags": "introduction,buddha,words,wisdom",
     "fetter": "ignorance",
-    "id": "index"
+    "id": "index",
+    "path": "//"
   },
   "mn10.en": {
     "title": "Establishing of Mindfulness",
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities. There are six choices for establishing mindfulness of body. There are five different types of mental qualities to be mindful of.",
     "fetter": "doubt,identity view,sensual desire,conceit,ignorance",
     "tags": "mn,mn1-10,mn1-50,impermanence,meditation,mindfulness,awareness,mindfulness of body,mindfulness of feelings,mindfulness of mind,mindfulness of mental qualities",
-    "id": "mn10"
+    "id": "mn10",
+    "path": "/mn/mn1-50/"
   },
   "mn10.pli": {
     "title": "Satipaṭṭhānasutta - Establishing of Mindfulness",
-    "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities."
+    "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities.",
+    "path": "/mn/mn1-50/"
   },
   "sn1.1.en": {
-    "title": "Crossing the Flood",
+    "title": "Oghataraṇasutta - Crossing the Flood",
     "description": "The Buddha crossed the flood of suffering without any support and without struggling.",
     "tags": "sn,sn1-11,sn1,ignorance,wisdom,Nibbāna",
     "fetter": "ignorance",
-    "id": "sn1.1"
+    "id": "sn1.1",
+    "path": "/sn/sn1-11/sn1/"
   },
   "sn1.1.pli": {
     "title": "Oghataraṇasutta - Crossing the Flood",
     "description": "The Buddha crossed the flood of suffering without any support and without struggling.",
     "tags": "sn,sn1-11,sn1,ignorance,wisdom,Nibbāna",
     "fetter": "ignorance",
-    "id": "sn1.1"
+    "id": "sn1.1",
+    "path": "/sn/sn1-11/sn1/"
+  },
+  "sn1.2.en": {
+    "title": "Nimokkhasutta - Release",
+    "description": "The Buddha describes how he knows of the release, liberation and independence for living beings.",
+    "fetter": "ignorance",
+    "tags": "nibbāna,wisdom,liberation,sn,sn1-11,sn1",
+    "id": "sn1.2",
+    "path": "/sn/sn1-11/sn1/"
+  },
+  "sn1.2.pli": {
+    "title": "Nimokkhasutta - Release",
+    "description": "The Buddha describes how he knows of the release, liberation and independence for living beings.",
+    "fetter": "ignorance",
+    "tags": "nibbāna,wisdom,liberation,sn,sn1-11,sn1",
+    "id": "sn1.2",
+    "path": "/sn/sn1-11/sn1/"
+  },
+  "sn1.3.en": {
+    "title": "Upanīyasutta - The Short Life",
+    "description": "For one brought to old age, there are no shelters",
+    "fetter": "ignorance",
+    "tags": "life,peace,happiness,sn,sn1-11,sn1",
+    "id": "sn1.3",
+    "path": "/sn/sn1-11/sn1/"
+  },
+  "sn1.3.pli": {
+    "title": "Upanīyasutta - The Short Life",
+    "description": "For one brought to old age, there are no shelters",
+    "fetter": "ignorance",
+    "tags": "life,peace,happiness,sn,sn1-11,sn1",
+    "id": "sn1.3",
+    "path": "/sn/sn1-11/sn1/"
+  },
+  "sn3.13.en": {
+    "title": "Doṇapākasutta - A Bucket Of Rice",
+    "description": "The Buddha observes the King Pasenadi as huffing and puffing and advises him on moderation in eating.",
+    "fetter": "attachment to rites and rituals",
+    "tags": "gradual training guideline,mindfulness,eating,moderation,sn,sn1-11,sn3",
+    "id": "sn3.13",
+    "path": "/sn/sn1-11/sn3/"
+  },
+  "sn3.13.pli": {
+    "title": "Doṇapākasutta - A Bucket Of Rice",
+    "description": "The Buddha observes the King Pasenadi as huffing and puffing and advises him on moderation in eating.",
+    "fetter": "attachment to rites and rituals",
+    "tags": "gradual training guideline,mindfulness,eating,moderation,sn,sn1-11,sn3",
+    "id": "sn3.13",
+    "path": "/sn/sn1-11/sn3/"
+  },
+  "sn3.4.en": {
+    "title": "Piyasutta - Dear",
+    "description": "One who engages in good conduct by body, speech, and mind is dear to themselves.",
+    "fetter": "ignorance",
+    "tags": "merit,good conduct,bad conduct,dear,sn,sn1-11,sn3",
+    "id": "sn3.4",
+    "path": "/sn/sn1-11/sn3/"
+  },
+  "sn3.4.pli": {
+    "title": "Piyasutta - Dear",
+    "description": "One who engages in good conduct by body, speech, and mind is dear to themselves.",
+    "fetter": "ignorance",
+    "tags": "merit,good conduct,bad conduct,dear,sn,sn1-11,sn3",
+    "id": "sn3.4",
+    "path": "/sn/sn1-11/sn3/"
+  },
+  "sn7.2.en": {
+    "title": "Akkosasutta - Insult",
+    "description": "A brahmin approaches the Buddha and abuses and insults him. The Buddha doesn't accept it, and explains this to the brahmin through a simile.",
+    "fetter": "ill-will",
+    "tags": "anger,quarrel,ill-will,mindful,insult,harmony,discipline,heal,sn,sn1-11,sn7",
+    "id": "sn7.2",
+    "path": "/sn/sn1-11/sn7/"
+  },
+  "sn7.2.pli": {
+    "title": "Akkosasutta - Insult",
+    "description": "A brahmin approaches the Buddha and abuses and insults him. The Buddha doesn't accept it, and explains this to the brahmin through a simile.",
+    "fetter": "ill-will",
+    "tags": "anger,quarrel,ill-will,mindful,insult,harmony,discipline,heal,sn,sn1-11,sn7",
+    "id": "sn7.2",
+    "path": "/sn/sn1-11/sn7/"
   },
   "sn14.15.en": {
     "title": "Walking Back and Forth",
     "description": "In this teaching, the Buddha is addressing on how beings come together and associate based on dispositions and intent.",
     "tags": "beings,friendship,sn12-21,sn14",
     "fetter": "ignorance",
-    "id": "sn14.15"
+    "id": "sn14.15",
+    "path": "/sn/sn12-21/"
   },
   "sn14.15.pli": {
     "title": "Caṅkamasutta - Walking Back and Forth",
-    "description": "In this teaching, the Buddha is sharing how beings come together and associate based on shared qualities and traits."
+    "description": "In this teaching, the Buddha is sharing how beings come together and associate based on shared qualities and traits.",
+    "path": "/sn/sn12-21/"
   },
   "sn56.38.en": {
     "title": "Second Discourse on the Sun",
     "description": "As long as sun and moon do not arise in the world, there is complete darkness. Similarly, as long as the Buddha has not arisen in the world, there is complete darkness, dense darkness.",
     "fetter": "ignorance,doubt",
     "tags": "sn,sn45-56,sn56,buddha,confidence,doubt,four noble truths",
-    "id": "sn56.38"
+    "id": "sn56.38",
+    "path": "/sn/sn45-56/"
   },
   "sn56.38.pli": {
     "title": "Dutiyasūriyasutta - Second Discourse on the Sun",
     "description": "As long as sun and moon do not arise in the world, there is complete darkness. Similarly, as long as the Buddha has not arisen in the world, there is complete darkness, dense darkness.",
     "fetter": "ignorance,doubt",
     "tags": "sn,sn45-56,sn56,buddha,confidence,doubt,four noble truths",
-    "id": "sn56.38"
+    "id": "sn56.38",
+    "path": "/sn/sn45-56/"
   },
   "snp1.8.en": {
     "title": "Loving-kindness",
     "description": "Verses on the way of practice to peace through the cultivation of loving-kindness for all beings without an exception and at all times whether one is standing, walking, sitting, or lying down.",
     "topics": "loving-kindness,ill-will",
-    "tags": "snp, snp1"
+    "tags": "snp, snp1",
+    "path": "/snp/snp1/"
   },
   "snp4.1.en": {
     "title": "Desires",
     "description": "In this teaching, the Buddha is succintly sharing the allure and the drawbacks of desiring pleasure.",
     "fetter": "sensual desire",
     "tags": "snp,snp4,sensual desire",
-    "id": "snp4.1"
+    "id": "snp4.1",
+    "path": "/snp/snp4/"
   },
   "snp4.15.en": {
     "title": "Fear arises from harm",
     "description": "The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being.",
     "fetter": "doubt,ignorance",
     "tags": "snp,snp4,fear,conflict,wisdom,practice",
-    "id": "snp4.15"
+    "id": "snp4.15",
+    "path": "/snp/snp4/"
   },
   "snp4.15.pli": {
     "title": "Attadaṇḍasutta - Fear arises from harm",
     "description": "The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being.",
     "fetter": "doubt,ignorance",
     "tags": "snp,snp4,fear,conflict,wisdom,practice",
-    "id": "snp4.15"
+    "id": "snp4.15",
+    "path": "/snp/snp4/"
   },
   "snp4.2.en": {
     "title": "Cave",
     "description": "Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of 'mine'.",
     "fetter": "ignorance,sensual desire",
     "tags": "snp, snp4,ignorance,sensual desire,",
-    "id": "snp4.2"
+    "id": "snp4.2",
+    "path": "/snp/snp4/"
   },
   "ud2.3.en": {
     "title": "On stick",
     "description": "Inspired utterance on bodily conduct and one's own happiness",
     "fetter": "ill-will",
     "tags": "ud,ud2,ud2.3,loving-kindness,harm,bodily misconduct,bodily conduct",
-    "id": "ud2.3"
+    "id": "ud2.3",
+    "path": "/ud/ud2/"
   },
   "ud2.3.pli": {
     "title": "Daṇḍasutta - On Stick",
     "description": "Inspired utterance on bodily conduct and one's own happiness",
     "fetter": "ill-will",
     "tags": "ud,ud2,ud2.3,loving-kindness,harm,bodily misconduct,bodily conduct",
-    "id": "ud2.3"
+    "id": "ud2.3",
+    "path": "/ud/ud2/"
   },
   "ud2.4.en": {
     "title": "On Honor",
     "description": "Inspired utterance on dealing with insult and abuse. The",
     "fetter": "ill-will",
     "tags": "ud,ud2,ud2.4,ill-will,loving-kindness,attachment,blame,honor",
-    "id": "ud2.4"
+    "id": "ud2.4",
+    "path": "/ud/ud2/"
   },
   "ud2.4.pli": {
     "title": "Sakkārasutta - On Honor",
     "description": "Inspired utterance on dealing with insult and abuse. The",
     "fetter": "ill-will",
     "tags": "ud,ud2,ud2.4,ill-will,loving-kindness,attachment,blame,honor",
-    "id": "ud2.4"
+    "id": "ud2.4",
+    "path": "/ud/ud2/"
   }
 }

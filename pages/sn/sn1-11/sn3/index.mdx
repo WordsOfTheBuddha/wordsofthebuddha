@@ -1,0 +1,25 @@
+
+import { Card } from '/components/Card';
+
+export default function Index() {
+  return (
+    <div className="cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+      
+  <Card 
+    title="Doṇapākasutta - A Bucket Of Rice"
+    description="The Buddha observes the King Pasenadi as huffing and puffing and advises him on moderation in eating."
+    link="/sn/sn1-11/sn3/sn3.13"
+    id="sn3.13"
+  />
+
+
+  <Card 
+    title="Piyasutta - Dear"
+    description="One who engages in good conduct by body, speech, and mind is dear to themselves."
+    link="/sn/sn1-11/sn3/sn3.4"
+    id="sn3.4"
+  />
+
+    </div>
+  );
+}

@@ -1,68 +1,74 @@
 import { NextResponse } from "next/server";
+import frontMatter from "/public/frontMatter.json";
 
 export const config = {
-    matcher: [
-      "/",
-      "/((?!api|_next|static|public|translationCounts.json).*)"
-    ]
-  };
+  matcher: [
+    "/",
+    "/((?!api|_next|static|public|translationCounts.json).*)"
+  ]
+};
 
 export function middleware(request) {
   const { pathname, searchParams } = request.nextUrl;
   const cookies = request.cookies;
   let locale = cookies.get("NEXT_LOCALE")?.value;
 
-  // If the locale is not set in the cookies, use the Accept-Language header and set the cookie
+  // Determine locale from cookies or 'accept-language' header
   if (!locale) {
     const acceptLanguageHeader = request.headers.get("accept-language") || "en";
     locale = acceptLanguageHeader.split(",")[0].split("-")[0];
     const response = NextResponse.next();
     response.cookies.set("NEXT_LOCALE", locale, { path: "/" });
-    console.log(`Set locale from Accept-Language header: ${locale}`);
     return response;
   }
 
-  console.log(`Middleware triggered for pathname: ${pathname}`);
-  console.log(`Detected Locale from Cookie: ${locale}`);
-
-  // Set the locale in nextUrl
-  request.nextUrl.locale = locale;
-
-  // Normalize the pathname to lowercase
+  // Ensure lowercase URLs
   const lowercasePathname = pathname.toLowerCase();
   if (pathname !== lowercasePathname) {
-    console.log(`Redirecting to lowercase pathname: ${lowercasePathname}`);
     return NextResponse.redirect(
       new URL(lowercasePathname + searchParams.toString(), request.url)
     );
   }
 
-  // Handle root-level locale files
+  // Handle root path based on locale
   if (pathname === "/" && locale === "pli") {
-    console.log(`Rewriting root to /index.pli`);
     return NextResponse.rewrite(new URL("/index.pli", request.url));
   }
 
   if (pathname === "/" && locale === "en") {
-    console.log(`Rewriting root to /index.en`);
     return NextResponse.rewrite(new URL("/index.en", request.url));
   }
 
-  // Skip redirection if the pathname already has the locale suffix
+  // Pass through if URL already ends with locale-specific suffix
   if (pathname.endsWith(".en") || pathname.endsWith(".pli")) {
-    console.log(`Pathname already ends with locale suffix: ${pathname}`);
     return NextResponse.next();
   }
 
-  // Handle locale-based file serving
-  let newUrl;
-  if (locale === "pli") {
-    newUrl = new URL(`${pathname}.pli`, request.url);
-    console.log(`Rewriting to PLI file: ${newUrl}`);
-  } else {
-    newUrl = new URL(`${pathname}.en`, request.url);
-    console.log(`Rewriting to EN file: ${newUrl}`);
+  // Check if pathname corresponds to a file
+  const fileId = pathname.split('/').pop();
+  const isFile = frontMatter[`${fileId}.${locale}`] !== undefined;
+
+  if (isFile && fileId !== "index") {
+    let prefixPath = frontMatter[`${fileId}.${locale}`].path;
+    let expectedPath = `${prefixPath}${fileId}`;
+    // Check if the current pathname matches the expected path
+    if (pathname !== expectedPath) {
+      console.log('redirecting to: ', expectedPath);
+      return NextResponse.redirect(new URL(expectedPath, request.url));
+    } else {
+      console.log('path matches, rewriting to serve file: ', expectedPath);
+      const newUrl = new URL(`${pathname}.en`, request.url);
+      return NextResponse.rewrite(newUrl);
+    }
+  } else if (!isFile) {
+    // Check if pathname corresponds to a directory
+    // check if pathname ends in /
+    if (pathname.endsWith("/")) {
+        const newUrl = new URL(`${pathname}index`, request.url);
+        return NextResponse.rewrite(newUrl);
+    }
   }
 
-  return NextResponse.rewrite(newUrl);
+  // Treat as folder by rewriting to the same pathname
+  return NextResponse.rewrite(new URL(`${pathname}`, request.url));
 }
