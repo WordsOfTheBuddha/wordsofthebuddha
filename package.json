@@ -12,9 +12,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node utils/generateMeta.js && node utils/generateTranslationsCount.js && node utils/generateFrontMatter.js && next build",
+    "build": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js && next build",
     "start": "next start",
-    "prebuild": "node utils/generateMeta.js && node utils/generateTranslationsCount.js && node utils/generateFrontMatter.js",
-    "predev": "node utils/generateMeta.js && node utils/generateTranslationsCount.js && node utils/generateFrontMatter.js"
+    "prebuild": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js",
+    "predev": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js"
   }
 }
