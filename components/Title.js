@@ -1,6 +1,6 @@
 // components/Title.js
-import { useConfig } from 'nextra-theme-docs';
-import { useRouter } from 'next/router';
+import { useConfig } from "nextra-theme-docs";
+import { useRouter } from "next/router";
 
 export function Title({ title }) {
   const { frontMatter } = useConfig();
@@ -8,8 +8,10 @@ export function Title({ title }) {
   const { asPath } = router;
 
   // Split the path and get the last segment
-  const pathSegments = asPath.split('/');
-  const pageName = pathSegments[pathSegments.length - 1];
+  const pathSegments = asPath.split("/");
+  let pageName = pathSegments[pathSegments.length - 1];
+  let localeSuffix = /\.(en|pli)$/;
+  pageName = pageName.replace(localeSuffix, "");
   const displayTitle = title || frontMatter.title || pageName;
 
   return (

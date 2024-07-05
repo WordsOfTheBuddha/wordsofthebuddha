@@ -1,0 +1,20 @@
+.blockquote {
+  font-style: italic;
+  color: var(--text-color);
+  border-left: 4px solid #ccc;
+  padding-left: 16px;
+  margin: 0 0 1em 0;
+  white-space: pre-wrap; /* Preserve line breaks */
+}
+
+.blockquoteLight {
+  --text-color: #555;
+}
+
+.blockquoteDark {
+  --text-color: #fff;
+}
+
+.paragraph {
+  white-space: pre-wrap; /* Preserve line breaks */
+}

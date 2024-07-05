@@ -20,6 +20,20 @@
     "fetter": "ignorance,ill-will,sensual desire,conceit",
     "id": "dhp1,dhp2,dhp3,dhp4,dhp5,dhp6,dhp7,dhp8,dhp9,dhp10,dhp11,dhp12,dhp13,dhp14,dhp15,dhp16,dhp17,dhp18,dhp19,dhp20"
   },
+  "index.en": {
+    "title": "Introduction",
+    "description": "The words of the Buddha is a translation project to translate the Pali canon teachings into English.",
+    "tags": "introduction,buddha,words,wisdom",
+    "fetter": "ignorance",
+    "id": "index"
+  },
+  "index.pli": {
+    "title": "Introduction",
+    "description": "The words of the Buddha is a translation project to translate the Pali canon teachings into English.",
+    "tags": "introduction,buddha,words,wisdom",
+    "fetter": "ignorance",
+    "id": "index"
+  },
   "mn10.en": {
     "title": "Establishing of Mindfulness",
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities. There are six choices for establishing mindfulness of body. There are five different types of mental qualities to be mindful of.",
@@ -30,6 +44,20 @@
   "mn10.pli": {
     "title": "Satipaṭṭhānasutta - Establishing of Mindfulness",
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities."
+  },
+  "sn1.1.en": {
+    "title": "Crossing the Flood",
+    "description": "The Buddha crossed the flood of suffering without any support and without struggling.",
+    "tags": "sn,sn1-11,sn1,ignorance,wisdom,Nibbāna",
+    "fetter": "ignorance",
+    "id": "sn1.1"
+  },
+  "sn1.1.pli": {
+    "title": "Oghataraṇasutta - Crossing the Flood",
+    "description": "The Buddha crossed the flood of suffering without any support and without struggling.",
+    "tags": "sn,sn1-11,sn1,ignorance,wisdom,Nibbāna",
+    "fetter": "ignorance",
+    "id": "sn1.1"
   },
   "sn14.15.en": {
     "title": "Walking Back and Forth",
@@ -76,11 +104,46 @@
     "tags": "snp,snp4,fear,conflict,wisdom,practice",
     "id": "snp4.15"
   },
+  "snp4.15.pli": {
+    "title": "Attadaṇḍasutta - Fear arises from harm",
+    "description": "The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being.",
+    "fetter": "doubt,ignorance",
+    "tags": "snp,snp4,fear,conflict,wisdom,practice",
+    "id": "snp4.15"
+  },
   "snp4.2.en": {
     "title": "Cave",
     "description": "Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of 'mine'.",
     "fetter": "ignorance,sensual desire",
     "tags": "snp, snp4,ignorance,sensual desire,",
     "id": "snp4.2"
+  },
+  "ud2.3.en": {
+    "title": "On stick",
+    "description": "Inspired utterance on bodily conduct and one's own happiness",
+    "fetter": "ill-will",
+    "tags": "ud,ud2,ud2.3,loving-kindness,harm,bodily misconduct,bodily conduct",
+    "id": "ud2.3"
+  },
+  "ud2.3.pli": {
+    "title": "Daṇḍasutta - On Stick",
+    "description": "Inspired utterance on bodily conduct and one's own happiness",
+    "fetter": "ill-will",
+    "tags": "ud,ud2,ud2.3,loving-kindness,harm,bodily misconduct,bodily conduct",
+    "id": "ud2.3"
+  },
+  "ud2.4.en": {
+    "title": "On Honor",
+    "description": "Inspired utterance on dealing with insult and abuse. The",
+    "fetter": "ill-will",
+    "tags": "ud,ud2,ud2.4,ill-will,loving-kindness,attachment,blame,honor",
+    "id": "ud2.4"
+  },
+  "ud2.4.pli": {
+    "title": "Sakkārasutta - On Honor",
+    "description": "Inspired utterance on dealing with insult and abuse. The",
+    "fetter": "ill-will",
+    "tags": "ud,ud2,ud2.4,ill-will,loving-kindness,attachment,blame,honor",
+    "id": "ud2.4"
   }
 }

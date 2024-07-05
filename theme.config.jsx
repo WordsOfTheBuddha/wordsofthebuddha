@@ -3,10 +3,17 @@ import { useConfig } from "nextra-theme-docs";
 import { useRouter } from 'next/router';
 import Title from "/components/Title";
 import Description from "/components/Description";
+import Verse from "/components/Verse";
 import RedditIcon from "/components/RedditIcon";
+
 
 export default {
   logo: <span>Words Of The Buddha</span>,
+  components: {
+    p: (props) => {
+        return <Verse>{props.children}</Verse>;
+      },
+  },
   head() {
     const { frontMatter } = useConfig();
     const router = useRouter();
@@ -40,6 +47,7 @@ export default {
       <div>
         <Title />
         <Description />
+        <br />
         {children}
       </div>
     );

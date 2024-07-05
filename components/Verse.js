@@ -1,78 +1,92 @@
-// components/Verse.js
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import styles from "/styles/Verse.module.css";
 
-// Define a styled blockquote element
-const Blockquote = styled.blockquote`
-  font-style: italic;
-  color: var(--text-color);
-  border-left: 4px solid #ccc;
-  padding-left: 16px;
-  margin: 16px 0;
+const isVerse = (paragraph) => {
+  const lines = paragraph.trim().split("\n");
+  if (lines.length < 2) return false;
 
-  &.light {
-    --text-color: #555;
-  }
+  const lastLine = lines[lines.length - 1].trim();
+  const otherLines = lines.slice(0, -1);
 
-  &.dark {
-    --text-color: #fff;
-  }
-`;
+  const lastLineValid = /[.?"-]$/.test(lastLine);
+  const otherLinesValid = otherLines.every((line) =>
+    /[,;:.?]?$/i.test(line.trim())
+  );
 
-// Utility function to extract text content from children
-const extractText = (children) => {
-  if (typeof children === "string") {
-    return children;
-  } else if (Array.isArray(children)) {
-    return children
-      .map((child) => {
-        if (typeof child === "string") {
-          return child;
-        } else if (child.props && child.props.children) {
-          return extractText(child.props.children);
-        } else {
-          return "";
-        }
-      })
-      .join("");
-  } else if (children.props && children.props.children) {
-    return extractText(children.props.children);
-  } else {
-    return "";
-  }
+  return lastLineValid && otherLinesValid;
 };
 
-export function Verse({ children }) {
-  const { theme } = useTheme();
-  // Extract text from children if it's an array of objects
-  const text = Array.isArray(children)
-    ? children.map((child) => extractText(child.props.children)).join("\n\n")
-    : extractText(children);
+const processContent = (children, theme) => {
+  return React.Children.map(children, (child) => {
+    if (typeof child === "string") {
+      const paragraphs = child.split("\n\n");
+      return paragraphs.map((paragraph, i) => {
+        const trimmedParagraph = paragraph.trim();
+        const verseNumberMatch = trimmedParagraph.match(/^(\d+)\.\n?/);
 
-  // Split the text into paragraphs and lines
-  const paragraphs = text
-    .trim()
-    .split("\n\n")
-    .map((paragraph, index) => (
-      <Blockquote key={index} className={theme}>
-        <p>
-          {paragraph.split("\n").map((line, lineIndex) => (
-            <React.Fragment key={lineIndex}>
-              {line}
-              <br />
+        const blockquoteClass =
+          theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight;
+
+        if (verseNumberMatch) {
+          const verseNumber = verseNumberMatch[1];
+          const verseText = trimmedParagraph.replace(/^(\d+)\.\n?/, "");
+          const isVerseContent = isVerse(verseText);
+
+          if (isVerseContent) {
+            return (
+              <React.Fragment key={i}>
+                <p>{verseNumber}.</p>
+                <blockquote
+                  className={`${styles.blockquote} ${blockquoteClass}`}
+                >
+                  {verseText}
+                </blockquote>
+              </React.Fragment>
+            );
+          }
+        }
+
+        if (isVerse(trimmedParagraph)) {
+          return (
+            <React.Fragment key={i}>
+              <blockquote className={`${styles.blockquote} ${blockquoteClass}`}>
+                {trimmedParagraph}
+              </blockquote>
             </React.Fragment>
-          ))}
-        </p>
-      </Blockquote>
-    ));
+          );
+        } else {
+          return (
+            <React.Fragment key={i}>
+              <p className={styles.paragraph}>{trimmedParagraph}</p>
+              <br /> {/* Ensure double newlines */}
+            </React.Fragment>
+          );
+        }
+      });
+    } else if (React.isValidElement(child)) {
+      return React.cloneElement(child, {
+        children: processContent(child.props.children, theme),
+      });
+    } else {
+      return child;
+    }
+  });
+};
 
-  return <>{paragraphs}</>;
-}
+const Verse = ({ children }) => {
+  const { resolvedTheme } = useTheme();
+  const [theme, setTheme] = useState(null);
 
-Verse.propTypes = {
-  children: PropTypes.node.isRequired,
+  useEffect(() => {
+    setTheme(resolvedTheme);
+  }, [resolvedTheme]);
+
+  if (theme === null) {
+    return null; // Avoid rendering until the theme is resolved
+  }
+
+  return <div>{processContent(children, theme)}</div>;
 };
 
 export default Verse;
