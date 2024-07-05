@@ -1,0 +1,30 @@
+{
+  "sn": {
+    "label": "Linked Discourses (SN)",
+    "translationCount": 69
+  },
+  "an": {
+    "label": "Numbered Discourses (AN)",
+    "translationCount": 56
+  },
+  "mn": {
+    "label": "Middle Length Discourses (MN)",
+    "translationCount": 13
+  },
+  "snp": {
+    "label": "Sutta Nipāta (SnP)",
+    "translationCount": 11
+  },
+  "dhp": {
+    "label": "Dhamma Pada (DhP)",
+    "translationCount": 1
+  },
+  "iti": {
+    "label": "As It Was Said (ITI)",
+    "translationCount": 2
+  },
+  "ud": {
+    "label": "Inspired Utterances (Ud)",
+    "translationCount": 6
+  }
+}
