@@ -28,6 +28,7 @@ export default {
         <title>{`${pageName} - ${frontMatter.title || 'words of the buddha'}`}</title>
         <meta name="title" content={`${pageName} - ${frontMatter.title || 'words of the buddha'}`} />
         <meta name="description" content={frontMatter.description || `Read the words of the Buddha from ${pageName}`} />
+        <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet" />
       </>
     );
   },
@@ -67,5 +68,14 @@ export default {
         system: 'System'
       }
     }
+  },
+  editLink: {
+    component: null,
+  },
+  feedback: {
+    content: null,
+  },
+  sidebar: {
+    toggleButton: true,
   }
 };

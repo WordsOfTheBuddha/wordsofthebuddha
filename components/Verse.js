@@ -59,7 +59,6 @@ const processContent = (children, theme) => {
           return (
             <React.Fragment key={i}>
               <p className={styles.paragraph}>{trimmedParagraph}</p>
-              <br /> {/* Ensure double newlines */}
             </React.Fragment>
           );
         }
