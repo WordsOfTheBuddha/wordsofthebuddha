@@ -33,7 +33,7 @@ const generateFrontMatterJSON = () => {
     if (Object.keys(frontMatter).length > 0) {
       const relativePath = path.relative(CONTENT_DIRECTORY, file);
       const key = relativePath.replace(/\.(md|mdx)$/, '').split('/').pop();
-      frontMatterData[key] = frontMatter;
+      frontMatterData[key] = { ...frontMatter, path: `/${relativePath.split(path.sep).slice(0, -1).join('/')}/` };
       frontMatterCount++;
     }
   });
