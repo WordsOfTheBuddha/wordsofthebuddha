@@ -1,4 +1,10 @@
-Visākhāsutta
+---
+title: Visākhāsutta - Discourse to Visākhā
+description: The Blessed One teaches Visākhā on the nature of attachment and suffering.
+fetter: sensual desire
+tags: ud,ud8,attachment,dear ones,sorrow,suffering,Visākhā
+id: ud8.8
+---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Tena kho pana samayena visākhāya migāramātuyā nattā kālaṅkatā hoti piyā manāpā. Atha kho visākhā migāramātā allavatthā allakesā divā divassa yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho visākhaṁ migāramātaraṁ bhagavā etadavoca:
 

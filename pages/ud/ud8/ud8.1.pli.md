@@ -1,4 +1,10 @@
-Paṭhamanibbānapaṭisaṁyuttasutta
+---
+title: Paṭhamanibbānapaṭisaṁyuttasutta - First Discourse on Nibbāna
+description: The Blessed One instructs the bhikkhus on the base where there is no coming, going, staying, no passing away, and no arising.
+fetter: ignorance
+tags: ud,ud8,Nibbāna,mindful,base,āyatana,wisdom
+id: ud8.1
+---
 
 Evaṁ me sutaṁ — ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tena kho pana samayena bhagavā bhikkhū nibbānapaṭisaṁyuttāya dhammiyā kathāya sandasseti samādapeti samuttejeti sampahaṁseti. Tedha bhikkhū aṭṭhiṁ katvā manasi katvā sabbaṁ cetaso samannāharitvā ohitasotā dhammaṁ suṇanti.
 
