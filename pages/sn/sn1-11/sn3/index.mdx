@@ -1,32 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Piyasutta - Dear"
-    description="One who engages in good conduct by body, speech, and mind is dear to themselves."
-    link="/sn/sn1-11/sn3/sn3.4"
-    id="sn3.4"
-  />
-
-
-  <Card 
-    title="Doṇapākasutta - A Bucket Of Rice"
-    description="The Buddha observes the King Pasenadi as huffing and puffing and advises him on moderation in eating."
-    link="/sn/sn1-11/sn3/sn3.13"
-    id="sn3.13"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Piyasutta - Dear","description":"One who engages in good conduct by body, speech, and mind is dear to themselves.","id":"sn3.4","path":"/sn/sn1-11/sn3/"},{"title":"Doṇapākasutta - A Bucket Of Rice","description":"The Buddha observes the King Pasenadi as huffing and puffing and advises him on moderation in eating.","id":"sn3.13","path":"/sn/sn1-11/sn3/"}]} />
   );
 }

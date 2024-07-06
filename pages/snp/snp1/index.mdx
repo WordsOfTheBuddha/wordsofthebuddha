@@ -1,24 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Loving-kindness"
-    description="Verses on the way of practice to peace through the cultivation of loving-kindness for all beings without an exception and at all times whether one is standing, walking, sitting, or lying down."
-    link="/snp/snp1/undefined"
-    id="undefined"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Loving-kindness","description":"Verses on the way of practice to peace through the cultivation of loving-kindness for all beings without an exception and at all times whether one is standing, walking, sitting, or lying down.","path":"/snp/snp1/"}]} />
   );
 }

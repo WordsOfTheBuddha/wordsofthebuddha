@@ -1,32 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Samacittavagga - Chapter on the Equanimous Mind"
-    description="Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind."
-    link="/an/an2/an2.32-41"
-    id="an2.32-41"
-  />
-
-
-  <Card 
-    title="Āsāduppajahavagga - Chapter on The Difficult to Abandon"
-    description="Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind."
-    link="/an/an2/an2.118-129"
-    id="an2.118-129"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Samacittavagga - Chapter on the Equanimous Mind","description":"Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind.","id":"an2.32-41","path":"/an/an2/"},{"title":"Āsāduppajahavagga - Chapter on The Difficult to Abandon","description":"Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind.","id":"an2.118-129","path":"/an/an2/"}]} />
   );
 }

@@ -1,32 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Nibbānadhātusutta - The Nibbāna Element"
-    description="The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining."
-    link="/iti/iti44"
-    id="iti44"
-  />
-
-
-  <Card 
-    title="Bahujanahitasutta - The Welfare Of The Many"
-    description="The Buddha shares on the three kinds of persons who arise in the world for the welfare of the many - 1.) the Tathāgata, 2.) the Arahant, and 3.) the trainee."
-    link="/iti/iti84"
-    id="iti84"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Nibbānadhātusutta - The Nibbāna Element","description":"The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining.","id":"iti44","path":"/iti/"},{"title":"Bahujanahitasutta - The Welfare Of The Many","description":"The Buddha shares on the three kinds of persons who arise in the world for the welfare of the many - 1.) the Tathāgata, 2.) the Arahant, and 3.) the trainee.","id":"iti84","path":"/iti/"}]} />
   );
 }

@@ -30,20 +30,11 @@ const createDirectoryLink = (dir, subdir) => {
 
 // Function to generate index.mdx content for pages
 const generatePagesIndexContent = (items) => `
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      ${items.map(createCard).join("\n")}
-    </div>
+    <CardGrid items={${JSON.stringify(items)}} />
   );
 }
 `;

@@ -1,24 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Second Discourse on the First Jhāna"
-    description="Six qualities to abandon to dwell in the first jhāna - 1. thoughts of sensual desire, 2. thoughts of ill-will, 3. thoughts of harm, 4. perception of sensual desire, 5. perception of ill-will, 6. perception of harm."
-    link="/an/an6/an6.74"
-    id="an6.74"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Second Discourse on the First Jhāna","description":"Six qualities to abandon to dwell in the first jhāna - 1. thoughts of sensual desire, 2. thoughts of ill-will, 3. thoughts of harm, 4. perception of sensual desire, 5. perception of ill-will, 6. perception of harm.","id":"an6.74","path":"/an/an6/"}]} />
   );
 }

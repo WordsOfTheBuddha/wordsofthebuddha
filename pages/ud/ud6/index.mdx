@@ -1,24 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Upātidhāvantisutta - Moths Rushing to the Flame"
-    description="The Buddha observes moths drawn to the light of oil lamps, and reflects on the nature of attachment."
-    link="/ud/ud6/ud6.9"
-    id="ud6.9"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Upātidhāvantisutta - Moths Rushing to the Flame","description":"The Buddha observes moths drawn to the light of oil lamps, and reflects on the nature of attachment.","id":"ud6.9","path":"/ud/ud6/"}]} />
   );
 }

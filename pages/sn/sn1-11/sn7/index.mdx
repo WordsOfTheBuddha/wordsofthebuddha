@@ -1,24 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Akkosasutta - Insult"
-    description="A brahmin approaches the Buddha and abuses and insults him. The Buddha doesn't accept it, and explains this to the brahmin through a simile."
-    link="/sn/sn1-11/sn7/sn7.2"
-    id="sn7.2"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Akkosasutta - Insult","description":"A brahmin approaches the Buddha and abuses and insults him. The Buddha doesn't accept it, and explains this to the brahmin through a simile.","id":"sn7.2","path":"/sn/sn1-11/sn7/"}]} />
   );
 }

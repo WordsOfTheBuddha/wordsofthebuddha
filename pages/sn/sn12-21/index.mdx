@@ -1,24 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Walking Back and Forth"
-    description="In this teaching, the Buddha is addressing on how beings come together and associate based on dispositions and intent."
-    link="/sn/sn12-21/sn14.15"
-    id="sn14.15"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Walking Back and Forth","description":"In this teaching, the Buddha is addressing on how beings come together and associate based on dispositions and intent.","id":"sn14.15","path":"/sn/sn12-21/"}]} />
   );
 }

@@ -1,40 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Oghataraṇasutta - Crossing the Flood"
-    description="The Buddha crossed the flood of suffering without any support and without struggling."
-    link="/sn/sn1-11/sn1/sn1.1"
-    id="sn1.1"
-  />
-
-
-  <Card 
-    title="Nimokkhasutta - Release"
-    description="The Buddha describes how he knows of the release, liberation and independence for living beings."
-    link="/sn/sn1-11/sn1/sn1.2"
-    id="sn1.2"
-  />
-
-
-  <Card 
-    title="Upanīyasutta - The Short Life"
-    description="For one brought to old age, there are no shelters."
-    link="/sn/sn1-11/sn1/sn1.3"
-    id="sn1.3"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Oghataraṇasutta - Crossing the Flood","description":"The Buddha crossed the flood of suffering without any support and without struggling.","id":"sn1.1","path":"/sn/sn1-11/sn1/"},{"title":"Nimokkhasutta - Release","description":"The Buddha describes how he knows of the release, liberation and independence for living beings.","id":"sn1.2","path":"/sn/sn1-11/sn1/"},{"title":"Upanīyasutta - The Short Life","description":"For one brought to old age, there are no shelters.","id":"sn1.3","path":"/sn/sn1-11/sn1/"}]} />
   );
 }

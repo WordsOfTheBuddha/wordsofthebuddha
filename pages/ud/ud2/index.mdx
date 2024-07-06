@@ -1,40 +1,8 @@
 
-import { Card } from '/components/Card';
+import CardGrid from '/components/CardGrid';
 
 export default function Index() {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    gap: '1rem',
-    padding: '1rem 1rem 1rem 0'
-  };
-
   return (
-    <div style={gridStyle}>
-      
-  <Card 
-    title="Daṇḍasutta - On stick"
-    description="He who, while seeking his own happiness, harms with a stick beings who desire happiness, will not find happiness after passing away."
-    link="/ud/ud2/ud2.3"
-    id="ud2.3"
-  />
-
-
-  <Card 
-    title="Sakkārasutta - On Honor"
-    description="The Buddha explains how to deal with insult and abuse without arising resentment."
-    link="/ud/ud2/ud2.4"
-    id="ud2.4"
-  />
-
-
-  <Card 
-    title="Ekaputtakasutta - Only Young Son"
-    description="Inspired utterance on practicing diligently to leave behind what seems pleasant."
-    link="/ud/ud2/ud2.7"
-    id="ud2.7"
-  />
-
-    </div>
+    <CardGrid items={[{"title":"Daṇḍasutta - On stick","description":"He who, while seeking his own happiness, harms with a stick beings who desire happiness, will not find happiness after passing away.","id":"ud2.3","path":"/ud/ud2/"},{"title":"Sakkārasutta - On Honor","description":"The Buddha explains how to deal with insult and abuse without arising resentment.","id":"ud2.4","path":"/ud/ud2/"},{"title":"Ekaputtakasutta - Only Young Son","description":"Inspired utterance on practicing diligently to leave behind what seems pleasant.","id":"ud2.7","path":"/ud/ud2/"}]} />
   );
 }
