@@ -103,6 +103,38 @@
     "id": "index",
     "path": "//"
   },
+  "iti44.en": {
+    "title": "Nibbānadhātusutta - The Nibbāna Element",
+    "description": "The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining.",
+    "fetter": "sensual desire,ill-will,ignorance",
+    "tags": "iti,nibbāna,wisdom,passion,aversion,delusion",
+    "id": "iti44",
+    "path": "/iti/"
+  },
+  "iti44.pli": {
+    "title": "Nibbānadhātusutta - The Nibbāna Element",
+    "description": "The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining.",
+    "fetter": "sensual desire,ill-will,ignorance",
+    "tags": "iti,nibbāna,wisdom,passion,aversion,delusion",
+    "id": "iti44",
+    "path": "/iti/"
+  },
+  "iti84.en": {
+    "title": "Bahujanahitasutta - The Welfare Of The Many",
+    "description": "The Buddha shares on the three kinds of persons who arise in the world for the welfare of the many - 1.) the Tathāgata, 2.) the Arahant, and 3.) the trainee.",
+    "fetter": "ignorance",
+    "tags": "iti,nibbāna,arahant,welfare,compassion,dhamma",
+    "id": "iti84",
+    "path": "/iti/"
+  },
+  "iti84.pli": {
+    "title": "Bahujanahitasutta - The Welfare Of The Many",
+    "description": "The Buddha shares on the three kinds of persons who arise in the world for the welfare of the many - 1.) the Tathāgata, 2.) the Arahant, and 3.) the trainee.",
+    "fetter": "ignorance",
+    "tags": "iti,nibbāna,arahant,welfare,compassion,dhamma",
+    "id": "iti84",
+    "path": "/iti/"
+  },
   "mn10.en": {
     "title": "Establishing of Mindfulness",
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities. There are six choices for establishing mindfulness of body. There are five different types of mental qualities to be mindful of.",

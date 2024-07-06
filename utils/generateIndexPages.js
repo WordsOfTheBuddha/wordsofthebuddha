@@ -37,7 +37,7 @@ export default function Index() {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
     gap: '1rem',
-    padding: '1rem 0 1rem 1rem'
+    padding: '1rem 1rem 1rem 0'
   };
 
   return (

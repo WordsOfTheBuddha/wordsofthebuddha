@@ -1,4 +1,10 @@
-Nibbānadhātusutta
+---
+title: Nibbānadhātusutta - The Nibbāna Element
+description: The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining.
+fetter: sensual desire,ill-will,ignorance
+tags: iti,nibbāna,wisdom,passion,aversion,delusion
+id: iti44
+---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
 
