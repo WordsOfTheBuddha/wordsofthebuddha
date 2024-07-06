@@ -150,7 +150,7 @@
   },
   "sn1.3.en": {
     "title": "Upanīyasutta - The Short Life",
-    "description": "For one brought to old age, there are no shelters",
+    "description": "For one brought to old age, there are no shelters.",
     "fetter": "ignorance",
     "tags": "life,peace,happiness,sn,sn1-11,sn1",
     "id": "sn1.3",
@@ -281,35 +281,115 @@
     "path": "/snp/snp4/"
   },
   "ud2.3.en": {
-    "title": "On stick",
-    "description": "Inspired utterance on bodily conduct and one's own happiness",
+    "title": "Daṇḍasutta - On stick",
+    "description": "He who, while seeking his own happiness, harms with a stick beings who desire happiness, will not find happiness after passing away.",
     "fetter": "ill-will",
-    "tags": "ud,ud2,ud2.3,loving-kindness,harm,bodily misconduct,bodily conduct",
+    "tags": "ud,ud2,loving-kindness,harm,bodily misconduct,bodily conduct",
     "id": "ud2.3",
     "path": "/ud/ud2/"
   },
   "ud2.3.pli": {
-    "title": "Daṇḍasutta - On Stick",
-    "description": "Inspired utterance on bodily conduct and one's own happiness",
+    "title": "Daṇḍasutta - On stick",
+    "description": "He who, while seeking his own happiness, harms with a stick beings who desire happiness, will not find happiness after passing away.",
     "fetter": "ill-will",
-    "tags": "ud,ud2,ud2.3,loving-kindness,harm,bodily misconduct,bodily conduct",
+    "tags": "ud,ud2,loving-kindness,harm,bodily misconduct,bodily conduct",
     "id": "ud2.3",
     "path": "/ud/ud2/"
   },
   "ud2.4.en": {
-    "title": "On Honor",
-    "description": "Inspired utterance on dealing with insult and abuse. The",
+    "title": "Sakkārasutta - On Honor",
+    "description": "The Buddha explains how to deal with insult and abuse without arising resentment.",
     "fetter": "ill-will",
-    "tags": "ud,ud2,ud2.4,ill-will,loving-kindness,attachment,blame,honor",
+    "tags": "ud,ud2,ill-will,loving-kindness,attachment,blame,honor",
     "id": "ud2.4",
     "path": "/ud/ud2/"
   },
   "ud2.4.pli": {
     "title": "Sakkārasutta - On Honor",
-    "description": "Inspired utterance on dealing with insult and abuse. The",
+    "description": "The Buddha explains how to deal with insult and abuse without arising resentment.",
     "fetter": "ill-will",
-    "tags": "ud,ud2,ud2.4,ill-will,loving-kindness,attachment,blame,honor",
+    "tags": "ud,ud2,ill-will,loving-kindness,attachment,blame,honor",
     "id": "ud2.4",
     "path": "/ud/ud2/"
+  },
+  "ud2.7.en": {
+    "title": "Ekaputtakasutta - Only Young Son",
+    "description": "Inspired utterance on practicing diligently to leave behind what seems pleasant.",
+    "fetter": "sensual desire",
+    "tags": "ud,ud2,attachment,sorrow,misfortune",
+    "id": "ud2.7",
+    "path": "/ud/ud2/"
+  },
+  "ud2.7.pli": {
+    "title": "Ekaputtakasutta - Only Young Son",
+    "description": "Inspired utterance on practicing diligently to leave behind what seems pleasant.",
+    "fetter": "sensual desire",
+    "tags": "ud,ud2,attachment,sorrow",
+    "id": "ud2.7",
+    "path": "/ud/ud2/"
+  },
+  "ud6.9.en": {
+    "title": "Upātidhāvantisutta - Moths Rushing to the Flame",
+    "description": "The Buddha observes moths drawn to the light of oil lamps, and reflects on the nature of attachment.",
+    "fetter": "sensual desire",
+    "tags": "ud,ud6,mind,attachment,misfortune",
+    "id": "ud6.9",
+    "path": "/ud/ud6/"
+  },
+  "ud6.9.pli": {
+    "title": "Upātidhāvantisutta - Moths Rushing to the Flame",
+    "description": "The Buddha observes moths drawn to the light of oil lamps, and reflects on the nature of attachment.",
+    "fetter": "sensual desire",
+    "tags": "ud,ud6,mind,attachment,misfortune",
+    "id": "ud6.9",
+    "path": "/ud/ud6/"
+  },
+  "ud8.1.en": {
+    "title": "Paṭhamanibbānapaṭisaṁyuttasutta - First Discourse on Nibbāna",
+    "description": "The Blessed One instructs the bhikkhus on the base where there is no coming, going, staying, no passing away, and no arising.",
+    "fetter": "ignorance",
+    "tags": "ud,ud8,Nibbāna,mindful,base,āyatana,wisdom",
+    "id": "ud8.1",
+    "path": "/ud/ud8/"
+  },
+  "ud8.1.pli": {
+    "title": "Paṭhamanibbānapaṭisaṁyuttasutta - First Discourse on Nibbāna",
+    "description": "The Blessed One instructs the bhikkhus on the base where there is no coming, going, staying, no passing away, and no arising.",
+    "fetter": "ignorance",
+    "tags": "ud,ud8,Nibbāna,mindful,base,āyatana,wisdom",
+    "id": "ud8.1",
+    "path": "/ud/ud8/"
+  },
+  "ud8.3.en": {
+    "title": "Tatiyanibbānapaṭisaṁyuttasutta - Third Discourse on Nibbāna",
+    "description": "The Blessed One instructs the bhikkhus on the unborn, unbecome, unmade, unconditioned.",
+    "fetter": "ignorance",
+    "tags": "ud,ud8,Nibbāna,mindful,unconditioned,unborn,wisdom",
+    "id": "ud8.3",
+    "path": "/ud/ud8/"
+  },
+  "ud8.3.pli": {
+    "title": "Tatiyanibbānapaṭisaṁyuttasutta - Third Discourse on Nibbāna",
+    "description": "The Blessed One instructs the bhikkhus on the unborn, unbecome, unmade, unconditioned.",
+    "fetter": "ignorance",
+    "tags": "ud,ud8,Nibbāna,mindful,unconditioned,unborn,wisdom",
+    "id": "ud8.3",
+    "path": "/ud/ud8/"
+  },
+  "ud8.8.en": {
+    "title": "Visākhāsutta - Discourse to Visākhā",
+    "description": "The Blessed One teaches Visākhā on the nature of attachment and suffering.",
+    "fetter": "sensual desire",
+    "tags": "ud,ud8,attachment,dear ones,sorrow,suffering,Visākhā",
+    "id": "ud8.8",
+    "path": "/ud/ud8/"
+  },
+  "ud8.8.pli": {
+    "title": "Visākhāsutta - Discourse to Visākhā",
+    "description": "The Blessed One teaches Visākhā on the nature of attachment and suffering.",
+    "fetter": "sensual desire",
+    "tags": "ud,ud8,attachment,dear ones,sorrow,suffering,Visākhā",
+    "id": "ud8.8",
+    "path": "/ud/ud8/"
   }
 }

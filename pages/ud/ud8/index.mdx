@@ -1,0 +1,40 @@
+
+import { Card } from '/components/Card';
+
+export default function Index() {
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+    gap: '1rem',
+    padding: '1rem 0 1rem 1rem'
+  };
+
+  return (
+    <div style={gridStyle}>
+      
+  <Card 
+    title="Paṭhamanibbānapaṭisaṁyuttasutta - First Discourse on Nibbāna"
+    description="The Blessed One instructs the bhikkhus on the base where there is no coming, going, staying, no passing away, and no arising."
+    link="/ud/ud8/ud8.1"
+    id="ud8.1"
+  />
+
+
+  <Card 
+    title="Tatiyanibbānapaṭisaṁyuttasutta - Third Discourse on Nibbāna"
+    description="The Blessed One instructs the bhikkhus on the unborn, unbecome, unmade, unconditioned."
+    link="/ud/ud8/ud8.3"
+    id="ud8.3"
+  />
+
+
+  <Card 
+    title="Visākhāsutta - Discourse to Visākhā"
+    description="The Blessed One teaches Visākhā on the nature of attachment and suffering."
+    link="/ud/ud8/ud8.8"
+    id="ud8.8"
+  />
+
+    </div>
+  );
+}

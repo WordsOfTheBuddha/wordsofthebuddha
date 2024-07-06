@@ -1,42 +1,41 @@
 /* components/Card.module.css */
 .card {
-    width: 100%;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    margin: 1rem;
-    background-color: var(--background-header);
-  }
-  
-  .cardBody {
-    padding: 1.5rem;
-  }
-  
-  .cardTitle {
-    font-weight: bold;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .cardTitle a {
-    color: var(--link-color);
-    text-decoration: underline;
-    margin-right: 1rem;
-  }
-  
-  .cardTitle a:hover {
-    color: var(--link-hover-color);
-  }
-  
-  .cardTitle span {
-    color: var(--text-color);
-  }
-  
-  .cardDescription {
-    color: var(--text-color);
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  background-color: var(--background-header);
+}
+
+.cardBody {
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.cardTitle a {
+  color: var(--link-color);
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.cardTitle a:hover {
+  color: var(--link-hover-color);
+}
+
+.cardTitle span {
+  color: var(--text-color);
+}
+
+.cardDescription {
+  color: var(--text-color);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}

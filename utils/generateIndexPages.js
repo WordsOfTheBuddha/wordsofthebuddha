@@ -37,7 +37,7 @@ export default function Index() {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
     gap: '1rem',
-    padding: '1rem'
+    padding: '1rem 0 1rem 1rem'
   };
 
   return (
@@ -61,7 +61,6 @@ export default function Index() {
 
 // Function to get all directories and generate index pages
 const generateIndexPages = (dir) => {
-  console.log(`Processing directory: ${dir}`);
   const items = fs.readdirSync(dir).filter((item) => item.endsWith(".en.mdx"));
 
   const cards = items
@@ -89,20 +88,28 @@ const generateIndexPages = (dir) => {
     .readdirSync(dir)
     .filter((item) => fs.lstatSync(path.join(dir, item)).isDirectory());
 
+  let contentCount = 0;
   if (cards.length > 0 && subdirs.length === 0) {
     const indexContent = generatePagesIndexContent(cards);
     fs.writeFileSync(path.join(dir, "index.mdx"), indexContent);
-    console.log(`Created index.mdx for pages in ${dir}`);
+    contentCount++;
+    //console.log(`Created index.mdx for pages in ${dir}`);
   } else if (subdirs.length > 0 && cards.length === 0) {
     const indexContent = generateDirectoriesIndexContent(dir, subdirs);
     fs.writeFileSync(path.join(dir, "index.mdx"), indexContent);
-    console.log(`Created index.mdx for directories in ${dir}`);
+    contentCount++;
+    //console.log(`Created index.mdx for directories in ${dir}`);
   } else {
-    console.log(`No content to create index.mdx in ${dir}`);
+    //console.log(`No content to create index.mdx in ${dir}`);
   }
 
-  subdirs.forEach((subdir) => generateIndexPages(path.join(dir, subdir)));
+  let totalCount = contentCount;
+  subdirs.forEach((subdir) => {
+    totalCount += generateIndexPages(path.join(dir, subdir));
+  });
+  return totalCount;
 };
 
 // Start generating index pages from the base pages directory
-generateIndexPages(pagesDir);
+const contentCount = generateIndexPages(pagesDir);
+console.log(`Updated ${contentCount} index.mdx files in pages directory.`);
