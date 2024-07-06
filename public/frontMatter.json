@@ -148,6 +148,38 @@
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities.",
     "path": "/mn/mn1-50/"
   },
+  "mn107.en": {
+    "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
+    "description": "The Buddha shares the gradual training guidelines in the Dhamma and discipline with the Brahmin Moggallāna. It is through a gradual practice and gradual progression per these guidelines that one attains the ultimate goal of Nibbāna.",
+    "fetter": "doubt,attachment to rites and rituals,personal existence view",
+    "tags": "mn,mn101-150,mn101-110,moral conduct,sense restraint,moderation in eating,wakefuleness,mindfulness,seclusion,hindrances,jhāna,gradual training guidelines",
+    "id": "mn107",
+    "path": "/mn/mn101-150/"
+  },
+  "mn107.pli": {
+    "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
+    "description": "The Buddha shares the gradual training guidelines in the Dhamma and discipline with the Brahmin Moggallāna. It is through a gradual practice and gradual progression per these guidelines that one attains the ultimate goal of Nibbāna.",
+    "fetter": "doubt,attachment to rites and rituals,personal existence view",
+    "tags": "mn,mn101-150,mn101-110,moral conduct,sense restraint,moderation in eating,wakefuleness,mindfulness,seclusion,hindrances,jhāna,gradual training guidelines",
+    "id": "mn107",
+    "path": "/mn/mn101-150/"
+  },
+  "mn140.en": {
+    "title": "Dhātuvibhaṅgasutta - Analysis of the Elements",
+    "description": "The Buddha teaches Venerable Pukkusāti the Dhamma of this person which constitutes of the six elements, six bases of contact, the eighteen explorations of mind, and is established in four ways.",
+    "fetter": "ignorance",
+    "tags": "mn,mn101-150,mn131-140,elements,fire,water,earth,air,space,consciousness,feeling,contact,exploration,peace,truth,relinquishment,peace,ignorance",
+    "id": "mn140",
+    "path": "/mn/mn101-150/"
+  },
+  "mn140.pli": {
+    "title": "Dhātuvibhaṅgasutta - Analysis of the Elements",
+    "description": "The Buddha teaches Venerable Pukkusāti the Dhamma of this person which constitutes of the six elements, six bases of contact, the eighteen explorations of mind, and is established in four ways.",
+    "fetter": "ignorance",
+    "tags": "mn,mn101-150,mn131-140,elements,fire,water,earth,air,space,consciousness,feeling,contact,exploration,peace,truth,relinquishment,peace,ignorance",
+    "id": "mn140",
+    "path": "/mn/mn101-150/"
+  },
   "sn1.1.en": {
     "title": "Oghataraṇasutta - Crossing the Flood",
     "description": "The Buddha crossed the flood of suffering without any support and without struggling.",
