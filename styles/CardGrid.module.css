@@ -1,9 +1,9 @@
 /* CardGrid.module.css */
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 1rem;
-  padding: 1rem 1rem 1rem 0;
+  padding: 1rem 1rem 0 0;
   box-sizing: border-box;
 }
 
