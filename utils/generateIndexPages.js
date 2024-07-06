@@ -97,17 +97,6 @@ const generateIndexPages = (dir) => {
     const indexContent = generateDirectoriesIndexContent(dir, subdirs);
     fs.writeFileSync(path.join(dir, "index.mdx"), indexContent);
     console.log(`Created index.mdx for directories in ${dir}`);
-  } else if (subdirs.length > 0 && cards.length > 0) {
-    const pagesIndexContent = generatePagesIndexContent(cards);
-    const directoriesIndexContent = generateDirectoriesIndexContent(
-      dir,
-      subdirs
-    );
-    fs.writeFileSync(
-      path.join(dir, "index.mdx"),
-      pagesIndexContent + directoriesIndexContent
-    );
-    console.log(`Created index.mdx for pages and directories in ${dir}`);
   } else {
     console.log(`No content to create index.mdx in ${dir}`);
   }
