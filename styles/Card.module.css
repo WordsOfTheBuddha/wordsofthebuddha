@@ -14,7 +14,7 @@
 
 .cardTitle {
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -24,6 +24,7 @@
   color: var(--link-color);
   text-decoration: none;
   margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .cardTitle a:hover {

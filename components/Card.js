@@ -1,16 +1,27 @@
 // components/Card.js
-import React from 'react';
-import styles from '/styles/Card.module.css';
-import { useTheme } from 'next-themes';
+import React from "react";
+import styles from "/styles/Card.module.css";
+import { useTheme } from "next-themes";
 
 export const Card = ({ title, description, link, id }) => {
   const { theme } = useTheme();
 
+  // Function to transform the ID based on character and digit boundaries
+  const transformId = (id) => {
+    return id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
+      return `${chars.toUpperCase()} ${digits}`;
+    });
+  };
+
   return (
-    <div className={`${styles.card} ${theme === 'dark' ? styles.dark : styles.light}`}>
+    <div
+      className={`${styles.card} ${
+        theme === "dark" ? styles.dark : styles.light
+      }`}
+    >
       <div className={styles.cardBody}>
         <h2 className={styles.cardTitle}>
-          <a href={link}>{id}</a>
+          <a href={link}>{transformId(id)}</a>
           <span>{title}</span>
         </h2>
         <p className={styles.cardDescription}>{description}</p>
