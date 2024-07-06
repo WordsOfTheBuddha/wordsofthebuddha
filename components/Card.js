@@ -8,6 +8,7 @@ export const Card = ({ title, description, link, id }) => {
 
   // Function to transform the ID based on character and digit boundaries
   const transformId = (id) => {
+    if (typeof id !== "string") return "";
     return id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
       return `${chars.toUpperCase()} ${digits}`;
     });
