@@ -1,4 +1,10 @@
-Pasūrasutta
+---
+title: Pasūrasutta - To Pasūra
+description: The Buddha advises Pasūra on the futility of engaging in debates and the dangers of becoming conceited.
+fetter: conceit,self-identity views
+tags: snp,snp4,debate,conceit,pride,purity
+id: snp4.8
+---
 
 Idheva suddhī iti vādayanti,
 Nāññesu dhammesu visuddhimāhu;

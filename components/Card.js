@@ -3,7 +3,7 @@ import React from "react";
 import styles from "/styles/Card.module.css";
 import { useTheme } from "next-themes";
 
-export const Card = ({ title, description, link, id }) => {
+export const Card = ({ title, description, path, id }) => {
   const { theme } = useTheme();
 
   // Function to transform the ID based on character and digit boundaries
@@ -22,7 +22,7 @@ export const Card = ({ title, description, link, id }) => {
     >
       <div className={styles.cardBody}>
         <h2 className={styles.cardTitle}>
-          <a href={link}>{transformId(id)}</a>
+          <a href={path+id}>{transformId(id)}</a>
           <span>{title}</span>
         </h2>
         <p className={styles.cardDescription}>{description}</p>
