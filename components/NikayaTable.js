@@ -3,8 +3,13 @@ import { useTheme } from "next-themes";
 import styles from "/styles/NikayaTable.module.css";
 
 export const NikayaTable = () => {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,14 +25,14 @@ export const NikayaTable = () => {
     fetchData();
   }, []);
 
-  if (!data) {
+  if (!mounted || !data) {
     return <p>Loading...</p>;
   }
 
   return (
     <div
       className={`${styles.tableContainer} ${
-        theme === "dark" ? styles["dark-theme"] : styles["light-theme"]
+        resolvedTheme === "dark" ? styles["dark-theme"] : styles["light-theme"]
       }`}
     >
       <table className={styles.table}>
