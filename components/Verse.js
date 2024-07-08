@@ -22,10 +22,8 @@ const processContent = (children, theme) => {
 
   React.Children.forEach(children, (child) => {
     if (typeof child === "string") {
-      console.log("Processing string child:", child);
       currentContent.push(child);
     } else if (React.isValidElement(child)) {
-      console.log("Processing React element child:", child);
       currentContent.push(child);
     }
   });

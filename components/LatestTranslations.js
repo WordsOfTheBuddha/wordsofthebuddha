@@ -12,7 +12,7 @@ export const LatestTranslations = ({ count, locale }) => {
     const fetchData = async () => {
       try {
         const sortedData = Object.entries(frontMatter)
-          .filter(([key]) => key.endsWith(`.${locale}`))
+          .filter(([key]) => key.endsWith(`.${locale}`) && !key.startsWith('index'))
           .sort(([, a], [, b]) => new Date(b.updatedTime) - new Date(a.updatedTime))
           .slice(0, count)
           .map(([key, value]) => {

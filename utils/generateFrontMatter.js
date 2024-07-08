@@ -27,6 +27,7 @@ const getAllFiles = (dirPath, arrayOfFiles) => {
 const getLastCommitDate = async (filePath) => {
   try {
     const log = await git.log({ file: filePath });
+    if (!log.latest) console.log(`No git log found for ${filePath}`);
     return log.latest ? new Date(log.latest.date).toISOString() : new Date().toISOString();
   } catch (error) {
     console.error(`Error fetching git log for ${filePath}:`, error);

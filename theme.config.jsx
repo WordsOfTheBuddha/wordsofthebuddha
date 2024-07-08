@@ -23,10 +23,16 @@ export default {
     const pathSegments = asPath.split('/');
     const pageName = pathSegments[pathSegments.length - 1];
 
+    let title = 'Words of the Buddha';
+    console.log('frontMatter title: ', frontMatter.title);
+    if (frontMatter.title !== '' && pageName !== '') {
+      title = `${pageName} - ${frontMatter.title}`;
+    }
+
     return (
       <>
-        <title>{`${pageName} - ${frontMatter.title || 'words of the buddha'}`}</title>
-        <meta name="title" content={`${pageName} - ${frontMatter.title || 'words of the buddha'}`} />
+        <title>{`${title}`}</title>
+        <meta name="title" content={`${title}`} />
         <meta name="description" content={frontMatter.description || `Read the words of the Buddha from ${pageName}`} />
       </>
     );
