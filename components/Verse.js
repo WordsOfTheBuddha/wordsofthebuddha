@@ -18,74 +18,42 @@ const isVerse = (paragraph) => {
 };
 
 const processContent = (children, theme) => {
-  return React.Children.map(children, (child) => {
+  let currentContent = [];
+
+  React.Children.forEach(children, (child) => {
     if (typeof child === "string") {
-      const paragraphs = child.split("\n\n");
-      return paragraphs.map((paragraph, i) => {
-        const trimmedParagraph = paragraph.trim();
-        const verseNumberMatch = trimmedParagraph.match(/^(\d+)\.\n?/);
-
-        const blockquoteClass =
-          theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight;
-
-        if (verseNumberMatch) {
-          const verseNumber = verseNumberMatch[1];
-          const verseText = trimmedParagraph.replace(/^(\d+)\.\n?/, "");
-          const isVerseContent = isVerse(verseText);
-
-          if (isVerseContent) {
-            return (
-              <React.Fragment key={i}>
-                <p>{verseNumber}.</p>
-                <blockquote
-                  className={`${styles.blockquote} ${blockquoteClass}`}
-                >
-                  {verseText}
-                </blockquote>
-              </React.Fragment>
-            );
-          }
-        }
-
-        if (isVerse(trimmedParagraph)) {
-          return (
-            <React.Fragment key={i}>
-              <blockquote className={`${styles.blockquote} ${blockquoteClass}`}>
-                {trimmedParagraph}
-              </blockquote>
-            </React.Fragment>
-          );
-        } else {
-          return (
-            <React.Fragment key={i}>
-              <p className={styles.paragraph}>{trimmedParagraph}</p>
-            </React.Fragment>
-          );
-        }
-      });
+      console.log("Processing string child:", child);
+      currentContent.push(child);
     } else if (React.isValidElement(child)) {
-      return React.cloneElement(child, {
-        children: processContent(child.props.children, theme),
-      });
-    } else {
-      return child;
+      console.log("Processing React element child:", child);
+      currentContent.push(child);
     }
   });
+
+  const paragraphText = currentContent.join("");
+  if (isVerse(paragraphText)) {
+    return (
+      <blockquote
+        className={`${styles.blockquote} ${
+          theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight
+        }`}
+      >
+        {currentContent}
+      </blockquote>
+    );
+  } else {
+    return <p className={styles.paragraph}>{currentContent}</p>;
+  }
 };
 
 const Verse = ({ children }) => {
   const { resolvedTheme } = useTheme();
-  const [theme, setTheme] = useState(null);
 
-  useEffect(() => {
-    setTheme(resolvedTheme);
-  }, [resolvedTheme]);
-
-  if (theme === null) {
+  if (resolvedTheme === null) {
     return null; // Avoid rendering until the theme is resolved
   }
 
-  return <div>{processContent(children, theme)}</div>;
+  return <div>{processContent(children, resolvedTheme)}</div>;
 };
 
 export default Verse;

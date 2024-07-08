@@ -116,3 +116,15 @@ code {
   padding: 2px 4px;
   border-radius: 3px;
 }
+
+.image-container {
+  display: flex;
+  justify-content: left;
+  margin: 20px 0;
+}
+
+.about-image {
+  max-height: 150px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

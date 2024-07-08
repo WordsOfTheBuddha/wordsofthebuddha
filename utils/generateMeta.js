@@ -17,7 +17,12 @@ const naturalSort = (a, b) => {
 
 // Special labels and ordering for the pages directory
 const specialLabels = {
-  index: 'Home',
+  index: {
+    "title": "Home",
+    "theme": {
+      "breadcrumb": false
+    }
+  },
   sn: 'Linked Discourses (SN)',
   an: 'Numbered Discourses (AN)',
   mn: 'Middle Length Discourses (MN)',

@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import styles from "/styles/NikayaTable.module.css";
 
 export const NikayaTable = () => {
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [data, setData] = useState(null);
 
