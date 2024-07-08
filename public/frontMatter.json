@@ -5,7 +5,8 @@
     "fetter": "ignorance",
     "tags": "mind,harm,benefit",
     "id": "an1.31-40",
-    "path": "/an/an1/"
+    "path": "/an/an1/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an1.31-40.pli": {
     "title": "Adantavagga - The Chapter on the Untamed",
@@ -13,7 +14,8 @@
     "fetter": "ignorance",
     "tags": "mind,harm,benefit",
     "id": "an1.31-40",
-    "path": "/an/an1/"
+    "path": "/an/an1/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an1.575-615.en": {
     "title": "Kāyagatāsativagga - The Chapter on Mindfulness of the Body",
@@ -21,7 +23,8 @@
     "fetter": "ignorance",
     "tags": "mindfulness,mindfulness of body,awareness",
     "id": "an1.575-615",
-    "path": "/an/an1/"
+    "path": "/an/an1/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an1.575-615.pli": {
     "title": "Kāyagatāsativagga - The Chapter on Mindfulness of the Body",
@@ -29,7 +32,8 @@
     "fetter": "ignorance",
     "tags": "mindfulness,mindfulness of body,awareness",
     "id": "an1.575-615",
-    "path": "/an/an1/"
+    "path": "/an/an1/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an2.118-129.en": {
     "title": "Āsāduppajahavagga - Chapter on The Difficult to Abandon",
@@ -37,7 +41,8 @@
     "fetter": "sensual desire,ill-will,ignorance",
     "tags": "acquisition,gratitude,content,passion,aversion,wrong view,right view,offense",
     "id": "an2.118-129",
-    "path": "/an/an2/"
+    "path": "/an/an2/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an2.118-129.pli": {
     "title": "Āsāduppajahavagga - Chapter on The Difficult to Abandon",
@@ -45,15 +50,17 @@
     "fetter": "sensual desire,ill-will,ignorance",
     "tags": "acquisition,gratitude,content,passion,aversion,wrong view,right view,offense",
     "id": "an2.118-129",
-    "path": "/an/an2/"
+    "path": "/an/an2/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an2.32-41.en": {
     "title": "Samacittavagga - Chapter on the Equanimous Mind",
     "description": "Short teachings on contrasting qualities and the way of practice conducive to cultivating an equanimous mind.",
-    "fetter": "attachment to rites and rituals,sensual desire,personal existence view,conceit",
+    "fetter": "attachment to rites and rituals,sensual desire,self-identity view,conceit",
     "tags": "integrity,parents,good conduct,bad conduct,equanimous mind,immature,wise",
     "id": "an2.32-41",
-    "path": "/an/an2/"
+    "path": "/an/an2/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
   },
   "an2.32-41.pli": {
     "title": "Samacittavagga - Chapter on the Equanimous Mind",
@@ -61,7 +68,8 @@
     "fetter": "attachment to rites and rituals,sensual desire,personal existence view,conceit",
     "tags": "integrity,parents,good conduct,bad conduct,equanimous mind,immature,wise",
     "id": "an2.32-41",
-    "path": "/an/an2/"
+    "path": "/an/an2/",
+    "updatedTime": "2024-07-05T18:51:15.000Z"
   },
   "an6.74.en": {
     "title": "Second Discourse on the First Jhāna",
@@ -69,7 +77,8 @@
     "fetter": "doubt,attachment to rites and rituals",
     "tags": "jhana,an,an6",
     "id": "an6.74",
-    "path": "/an/an6/"
+    "path": "/an/an6/",
+    "updatedTime": "2024-07-03T14:49:34.000Z"
   },
   "an6.74.pli": {
     "title": "Dutiyatajjhānasutta - Second Discourse on the First Jhāna",
@@ -77,31 +86,44 @@
     "fetter": "doubt,attachment to rites and rituals",
     "tags": "jhana,an,an6",
     "id": "an6.74",
-    "path": "/an/an6/"
+    "path": "/an/an6/",
+    "updatedTime": "2024-07-03T14:49:34.000Z"
   },
   "dhp1-20.en": {
-    "title": "Chapter 1 - Pairs",
+    "title": "Yamakavagga - Chapter 1 - Pairs",
     "description": "DhammaPada Verses 1 - 20",
-    "tags": "dhp1-20, mind,",
+    "tags": "dhp1-20,mind,resentment,hate,death,essential,sensual desire,ill-will,passion,delusion",
     "fetter": "ignorance,ill-will,sensual desire,conceit",
-    "id": "dhp1,dhp2,dhp3,dhp4,dhp5,dhp6,dhp7,dhp8,dhp9,dhp10,dhp11,dhp12,dhp13,dhp14,dhp15,dhp16,dhp17,dhp18,dhp19,dhp20",
-    "path": "/dhp/"
+    "id": "dhp1-20",
+    "path": "/dhp/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "dhp1-20.pli": {
+    "title": "Yamakavagga - Chapter 1 - Pairs",
+    "description": "DhammaPada Verses 1 - 20",
+    "tags": "dhp1-20,mind,resentment,hate,death,essential,sensual desire,ill-will,passion,delusion",
+    "fetter": "ignorance,ill-will,sensual desire,conceit",
+    "id": "dhp1-20",
+    "path": "/dhp/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
   },
   "index.en": {
-    "title": "Introduction",
-    "description": "The words of the Buddha is a translation project to translate the Pali canon teachings into English.",
+    "title": "The Words of the Buddha",
+    "description": "The Words of the Buddha project aims to restore and preserve the Buddha's teachings by faithfully translating the Pāli Canon and making these translations accessible to a global audience, offer learning opportunities and financial support to practitioners dedicated to learning, practicing, and sharing the teachings of the Buddha.",
     "tags": "introduction,buddha,words,wisdom",
     "fetter": "ignorance",
     "id": "index",
-    "path": "//"
+    "path": "//",
+    "updatedTime": "2024-07-08T11:54:32.000Z"
   },
   "index.pli": {
-    "title": "Introduction",
-    "description": "The words of the Buddha is a translation project to translate the Pali canon teachings into English.",
+    "title": "The Words of the Buddha",
+    "description": "The Words of the Buddha project aims to restore and preserve the Buddha's teachings by faithfully translating the Pāli Canon and making these translations accessible to a global audience, offer learning opportunities and financial support to practitioners dedicated to learning, practicing, and sharing the teachings of the Buddha.",
     "tags": "introduction,buddha,words,wisdom",
     "fetter": "ignorance",
     "id": "index",
-    "path": "//"
+    "path": "//",
+    "updatedTime": "2024-07-08T11:54:32.000Z"
   },
   "iti44.en": {
     "title": "Nibbānadhātusutta - The Nibbāna Element",
@@ -109,7 +131,8 @@
     "fetter": "sensual desire,ill-will,ignorance",
     "tags": "iti,nibbāna,wisdom,passion,aversion,delusion",
     "id": "iti44",
-    "path": "/iti/"
+    "path": "/iti/",
+    "updatedTime": "2024-07-06T14:01:06.000Z"
   },
   "iti44.pli": {
     "title": "Nibbānadhātusutta - The Nibbāna Element",
@@ -117,7 +140,8 @@
     "fetter": "sensual desire,ill-will,ignorance",
     "tags": "iti,nibbāna,wisdom,passion,aversion,delusion",
     "id": "iti44",
-    "path": "/iti/"
+    "path": "/iti/",
+    "updatedTime": "2024-07-06T14:01:06.000Z"
   },
   "iti84.en": {
     "title": "Bahujanahitasutta - The Welfare Of The Many",
@@ -125,7 +149,8 @@
     "fetter": "ignorance",
     "tags": "iti,nibbāna,arahant,welfare,compassion,dhamma",
     "id": "iti84",
-    "path": "/iti/"
+    "path": "/iti/",
+    "updatedTime": "2024-07-06T14:01:06.000Z"
   },
   "iti84.pli": {
     "title": "Bahujanahitasutta - The Welfare Of The Many",
@@ -133,7 +158,8 @@
     "fetter": "ignorance",
     "tags": "iti,nibbāna,arahant,welfare,compassion,dhamma",
     "id": "iti84",
-    "path": "/iti/"
+    "path": "/iti/",
+    "updatedTime": "2024-07-06T14:01:06.000Z"
   },
   "mn10.en": {
     "title": "Establishing of Mindfulness",
@@ -141,20 +167,23 @@
     "fetter": "doubt,identity view,sensual desire,conceit,ignorance",
     "tags": "mn,mn1-10,mn1-50,impermanence,meditation,mindfulness,awareness,mindfulness of body,mindfulness of feelings,mindfulness of mind,mindfulness of mental qualities",
     "id": "mn10",
-    "path": "/mn/mn1-50/"
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-03T14:37:47.000Z"
   },
   "mn10.pli": {
     "title": "Satipaṭṭhānasutta - Establishing of Mindfulness",
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities.",
-    "path": "/mn/mn1-50/"
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T16:52:15.000Z"
   },
   "mn107.en": {
     "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
     "description": "The Buddha shares the gradual training guidelines in the Dhamma and discipline with the Brahmin Moggallāna. It is through a gradual practice and gradual progression per these guidelines that one attains the ultimate goal of Nibbāna.",
-    "fetter": "doubt,attachment to rites and rituals,personal existence view",
+    "fetter": "doubt,attachment to rites and rituals,self-identity view",
     "tags": "mn,mn101-150,mn101-110,moral conduct,sense restraint,moderation in eating,wakefuleness,mindfulness,seclusion,hindrances,jhāna,gradual training guidelines",
     "id": "mn107",
-    "path": "/mn/mn101-150/"
+    "path": "/mn/mn101-150/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
   },
   "mn107.pli": {
     "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
@@ -162,7 +191,8 @@
     "fetter": "doubt,attachment to rites and rituals,personal existence view",
     "tags": "mn,mn101-150,mn101-110,moral conduct,sense restraint,moderation in eating,wakefuleness,mindfulness,seclusion,hindrances,jhāna,gradual training guidelines",
     "id": "mn107",
-    "path": "/mn/mn101-150/"
+    "path": "/mn/mn101-150/",
+    "updatedTime": "2024-07-06T15:32:06.000Z"
   },
   "mn140.en": {
     "title": "Dhātuvibhaṅgasutta - Analysis of the Elements",
@@ -170,7 +200,8 @@
     "fetter": "ignorance",
     "tags": "mn,mn101-150,mn131-140,elements,fire,water,earth,air,space,consciousness,feeling,contact,exploration,peace,truth,relinquishment,peace,ignorance",
     "id": "mn140",
-    "path": "/mn/mn101-150/"
+    "path": "/mn/mn101-150/",
+    "updatedTime": "2024-07-06T15:32:06.000Z"
   },
   "mn140.pli": {
     "title": "Dhātuvibhaṅgasutta - Analysis of the Elements",
@@ -178,7 +209,62 @@
     "fetter": "ignorance",
     "tags": "mn,mn101-150,mn131-140,elements,fire,water,earth,air,space,consciousness,feeling,contact,exploration,peace,truth,relinquishment,peace,ignorance",
     "id": "mn140",
-    "path": "/mn/mn101-150/"
+    "path": "/mn/mn101-150/",
+    "updatedTime": "2024-07-06T15:32:06.000Z"
+  },
+  "mn55.en": {
+    "title": "Jīvakasutta - Discourse with Jīvaka",
+    "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
+    "fetter": "ill-will,ignorance",
+    "tags": "mn,mn55,food,meat,compassion,metta,loving-kindness,blameless",
+    "id": "mn55",
+    "path": "/mn/mn51-100/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "mn55.pli": {
+    "title": "Jīvakasutta - Discourse with Jīvaka",
+    "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
+    "fetter": "ill-will,ignorance",
+    "tags": "mn,mn55,food,meat,compassion,metta,loving-kindness,blameless",
+    "id": "mn55",
+    "path": "/mn/mn51-100/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "mn64.en": {
+    "title": "Mahāmālukyasutta - The Great Discourse to Mālukya",
+    "description": "The Buddha explains the five lower fetters and the way of practice for abandoning them.",
+    "fetter": "self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will",
+    "tags": "mn,mn51-100,mn61-70,self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will,jhāna,formless attainments",
+    "id": "mn64",
+    "path": "/mn/mn51-100/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "mn64.pli": {
+    "title": "Mahāmālukyasutta - The Great Discourse to Mālukya",
+    "description": "The Buddha explains the five lower fetters and the way of practice for abandoning them.",
+    "fetter": "self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will",
+    "tags": "mn,mn51-100,mn61-70,self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will,jhāna,formless attainments",
+    "id": "mn64",
+    "path": "/mn/mn51-100/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "mn72.en": {
+    "title": "Aggivacchasutta - Discourse on Fire with Vacchagotta",
+    "description": "The Buddha has gone beyond all speculative views. He states the spiritual goal with the simile of a flame going out.",
+    "tags": "mn,mn51-100,mn71-80,conceit,speculative views,five aggregates,liberation",
+    "fetter": "conceit",
+    "id": "mn72",
+    "path": "/mn/mn51-100/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "mn72.pli": {
+    "title": "Aggivacchasutta - Discourse on Fire with Vacchagotta",
+    "description": "The Buddha has gone beyond all speculative views. He states the spiritual goal with the simile of a flame going out.",
+    "tags": "mn,mn51-100,mn71-80,conceit,speculative views,five aggregates,liberation",
+    "fetter": "conceit",
+    "id": "mn72",
+    "path": "/mn/mn51-100/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
   },
   "sn1.1.en": {
     "title": "Oghataraṇasutta - Crossing the Flood",
@@ -186,7 +272,8 @@
     "tags": "sn,sn1-11,sn1,ignorance,wisdom,Nibbāna",
     "fetter": "ignorance",
     "id": "sn1.1",
-    "path": "/sn/sn1-11/sn1/"
+    "path": "/sn/sn1-11/sn1/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn1.1.pli": {
     "title": "Oghataraṇasutta - Crossing the Flood",
@@ -194,7 +281,8 @@
     "tags": "sn,sn1-11,sn1,ignorance,wisdom,Nibbāna",
     "fetter": "ignorance",
     "id": "sn1.1",
-    "path": "/sn/sn1-11/sn1/"
+    "path": "/sn/sn1-11/sn1/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn1.2.en": {
     "title": "Nimokkhasutta - Release",
@@ -202,7 +290,8 @@
     "fetter": "ignorance",
     "tags": "nibbāna,wisdom,liberation,sn,sn1-11,sn1",
     "id": "sn1.2",
-    "path": "/sn/sn1-11/sn1/"
+    "path": "/sn/sn1-11/sn1/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn1.2.pli": {
     "title": "Nimokkhasutta - Release",
@@ -210,7 +299,8 @@
     "fetter": "ignorance",
     "tags": "nibbāna,wisdom,liberation,sn,sn1-11,sn1",
     "id": "sn1.2",
-    "path": "/sn/sn1-11/sn1/"
+    "path": "/sn/sn1-11/sn1/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn1.3.en": {
     "title": "Upanīyasutta - The Short Life",
@@ -218,7 +308,8 @@
     "fetter": "ignorance",
     "tags": "life,peace,happiness,sn,sn1-11,sn1",
     "id": "sn1.3",
-    "path": "/sn/sn1-11/sn1/"
+    "path": "/sn/sn1-11/sn1/",
+    "updatedTime": "2024-07-06T10:20:25.000Z"
   },
   "sn1.3.pli": {
     "title": "Upanīyasutta - The Short Life",
@@ -226,7 +317,8 @@
     "fetter": "ignorance",
     "tags": "life,peace,happiness,sn,sn1-11,sn1",
     "id": "sn1.3",
-    "path": "/sn/sn1-11/sn1/"
+    "path": "/sn/sn1-11/sn1/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn3.13.en": {
     "title": "Doṇapākasutta - A Bucket Of Rice",
@@ -234,7 +326,8 @@
     "fetter": "attachment to rites and rituals",
     "tags": "gradual training guideline,mindfulness,eating,moderation,sn,sn1-11,sn3",
     "id": "sn3.13",
-    "path": "/sn/sn1-11/sn3/"
+    "path": "/sn/sn1-11/sn3/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn3.13.pli": {
     "title": "Doṇapākasutta - A Bucket Of Rice",
@@ -242,7 +335,8 @@
     "fetter": "attachment to rites and rituals",
     "tags": "gradual training guideline,mindfulness,eating,moderation,sn,sn1-11,sn3",
     "id": "sn3.13",
-    "path": "/sn/sn1-11/sn3/"
+    "path": "/sn/sn1-11/sn3/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn3.4.en": {
     "title": "Piyasutta - Dear",
@@ -250,7 +344,8 @@
     "fetter": "ignorance",
     "tags": "merit,good conduct,bad conduct,dear,sn,sn1-11,sn3",
     "id": "sn3.4",
-    "path": "/sn/sn1-11/sn3/"
+    "path": "/sn/sn1-11/sn3/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn3.4.pli": {
     "title": "Piyasutta - Dear",
@@ -258,7 +353,8 @@
     "fetter": "ignorance",
     "tags": "merit,good conduct,bad conduct,dear,sn,sn1-11,sn3",
     "id": "sn3.4",
-    "path": "/sn/sn1-11/sn3/"
+    "path": "/sn/sn1-11/sn3/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn7.2.en": {
     "title": "Akkosasutta - Insult",
@@ -266,7 +362,8 @@
     "fetter": "ill-will",
     "tags": "anger,quarrel,ill-will,mindful,insult,harmony,discipline,heal,sn,sn1-11,sn7",
     "id": "sn7.2",
-    "path": "/sn/sn1-11/sn7/"
+    "path": "/sn/sn1-11/sn7/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn7.2.pli": {
     "title": "Akkosasutta - Insult",
@@ -274,7 +371,8 @@
     "fetter": "ill-will",
     "tags": "anger,quarrel,ill-will,mindful,insult,harmony,discipline,heal,sn,sn1-11,sn7",
     "id": "sn7.2",
-    "path": "/sn/sn1-11/sn7/"
+    "path": "/sn/sn1-11/sn7/",
+    "updatedTime": "2024-07-05T14:43:00.000Z"
   },
   "sn14.15.en": {
     "title": "Walking Back and Forth",
@@ -282,12 +380,32 @@
     "tags": "beings,friendship,sn12-21,sn14",
     "fetter": "ignorance",
     "id": "sn14.15",
-    "path": "/sn/sn12-21/"
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-03T14:37:47.000Z"
   },
   "sn14.15.pli": {
     "title": "Caṅkamasutta - Walking Back and Forth",
     "description": "In this teaching, the Buddha is sharing how beings come together and associate based on shared qualities and traits.",
-    "path": "/sn/sn12-21/"
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T16:26:07.000Z"
+  },
+  "sn47.13.en": {
+    "title": "Cundasutta - Cunda",
+    "description": "On the passing away of Sāriputta, the Buddha advises Ānanda to be an island unto himself, with no other refuge, with the Dhamma as his island, with the Dhamma as his refuge, not dependent on another as a refuge.",
+    "fetter": "doubt",
+    "tags": "death,safety,sn,sn45-56,sn47,refuge,nibbāna,sāriputta",
+    "id": "sn47.13",
+    "path": "/sn/sn45-56/",
+    "updatedTime": "2024-07-08T11:55:42.277Z"
+  },
+  "sn47.13.pli": {
+    "title": "Cundasutta - Cunda",
+    "description": "On the passing away of Sāriputta, the Buddha advises Ānanda to be an island unto himself, with no other refuge, with the Dhamma as his island, with the Dhamma as his refuge, not dependent on another as a refuge.",
+    "fetter": "doubt",
+    "tags": "death,safety,sn,sn45-56,sn47,refuge,nibbāna,sāriputta",
+    "id": "sn47.13",
+    "path": "/sn/sn45-56/",
+    "updatedTime": "2024-07-08T11:55:42.344Z"
   },
   "sn56.38.en": {
     "title": "Second Discourse on the Sun",
@@ -295,7 +413,8 @@
     "fetter": "ignorance,doubt",
     "tags": "sn,sn45-56,sn56,buddha,confidence,doubt,four noble truths",
     "id": "sn56.38",
-    "path": "/sn/sn45-56/"
+    "path": "/sn/sn45-56/",
+    "updatedTime": "2024-07-03T14:37:47.000Z"
   },
   "sn56.38.pli": {
     "title": "Dutiyasūriyasutta - Second Discourse on the Sun",
@@ -303,14 +422,16 @@
     "fetter": "ignorance,doubt",
     "tags": "sn,sn45-56,sn56,buddha,confidence,doubt,four noble truths",
     "id": "sn56.38",
-    "path": "/sn/sn45-56/"
+    "path": "/sn/sn45-56/",
+    "updatedTime": "2024-07-03T14:37:47.000Z"
   },
   "snp1.8.en": {
     "title": "Loving-kindness",
     "description": "Verses on the way of practice to peace through the cultivation of loving-kindness for all beings without an exception and at all times whether one is standing, walking, sitting, or lying down.",
     "topics": "loving-kindness,ill-will",
     "tags": "snp, snp1",
-    "path": "/snp/snp1/"
+    "path": "/snp/snp1/",
+    "updatedTime": "2024-07-05T03:14:18.000Z"
   },
   "snp4.1.en": {
     "title": "Desires",
@@ -318,7 +439,8 @@
     "fetter": "sensual desire",
     "tags": "snp,snp4,sensual desire",
     "id": "snp4.1",
-    "path": "/snp/snp4/"
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-05T03:14:18.000Z"
   },
   "snp4.15.en": {
     "title": "Fear arises from harm",
@@ -326,7 +448,8 @@
     "fetter": "doubt,ignorance",
     "tags": "snp,snp4,fear,conflict,wisdom,practice",
     "id": "snp4.15",
-    "path": "/snp/snp4/"
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-05T03:14:18.000Z"
   },
   "snp4.15.pli": {
     "title": "Attadaṇḍasutta - Fear arises from harm",
@@ -334,7 +457,8 @@
     "fetter": "doubt,ignorance",
     "tags": "snp,snp4,fear,conflict,wisdom,practice",
     "id": "snp4.15",
-    "path": "/snp/snp4/"
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-03T14:37:47.000Z"
   },
   "snp4.2.en": {
     "title": "Cave",
@@ -342,7 +466,116 @@
     "fetter": "ignorance,sensual desire",
     "tags": "snp, snp4,ignorance,sensual desire,",
     "id": "snp4.2",
-    "path": "/snp/snp4/"
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-05T03:14:18.000Z"
+  },
+  "snp4.3.en": {
+    "title": "Duṭṭhaṭṭhakasutta - Corrupt",
+    "description": "The Buddha explains the nature of a corrupted mind and the consequences of holding onto views in these verses.",
+    "fetter": "self-identity view, conceit",
+    "tags": "snp,snp4,views,corruption,conceit,dispute,attachment,arahant",
+    "id": "snp4.3",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.3.pli": {
+    "title": "Duṭṭhaṭṭhakasutta - Corrupt",
+    "description": "The Buddha explains the nature of a corrupted mind and the consequences of holding onto views in these verses.",
+    "fetter": "self-identity view, conceit",
+    "tags": "snp,snp4,views,corruption,conceit,dispute,attachment,arahant",
+    "id": "snp4.3",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.4.en": {
+    "title": "Suddhaṭṭhakasutta - Pure",
+    "description": "The Buddha describes some of the wrong views on attaining purity as well as the the state of an Arahant in these verses.",
+    "fetter": "attachment to rites and rituals",
+    "tags": "snp,snp4,precepts,purity,arahant",
+    "id": "snp4.4",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.4.pli": {
+    "title": "Suddhaṭṭhakasutta - Pure",
+    "description": "The Buddha describes some of the wrong views on attaining purity as well as the the state of an Arahant in these verses.",
+    "fetter": "attachment to rites and rituals",
+    "tags": "snp,snp4,precepts,purity,arahant",
+    "id": "snp4.4",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.5.en": {
+    "title": "Paramaṭṭhakasutta - Ultimate",
+    "description": "The Buddha advises against engaging in views deemed the ultimate, as it leads to disputes and clinging to views and doesn't lead to the cessation of suffering.",
+    "fetter": "conceit,self-identity view,ignorance",
+    "tags": "snp,snp4,disputes,views,ultimate,conceit,clinging",
+    "id": "snp4.5",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.5.pli": {
+    "title": "Paramaṭṭhakasutta - Ultimate",
+    "description": "The Buddha advises against engaging in views deemed the ultimate, as it leads to disputes and clinging to views and doesn't lead to the cessation of suffering.",
+    "fetter": "conceit,self-identity view,ignorance",
+    "tags": "snp,snp4,disputes,views,ultimate,conceit,clinging",
+    "id": "snp4.5",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.6.en": {
+    "title": "Jarāsutta - Ageing",
+    "description": "The Buddha explains the nature of ageing and the impermanence of life in these verses, as well as the state of an Arahant.",
+    "fetter": "sensual desire,conceit,self-identity view",
+    "tags": "snp,snp4,ageing,impermanence,attachment,death,sensual desire,conceit,self-identity view,arahant",
+    "id": "snp4.6",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.6.pli": {
+    "title": "Jarāsutta - Ageing",
+    "description": "The Buddha explains the nature of ageing and the impermanence of life in these verses, as well as the state of an Arahant.",
+    "fetter": "sensual desire,conceit,self-identity view",
+    "tags": "snp,snp4,ageing,impermanence,attachment,death,sensual desire,conceit,self-identity view,arahant",
+    "id": "snp4.6",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.7.en": {
+    "title": "Tissametteyyasutta - To Tissa Metteyya",
+    "description": "The Buddha advises Tissa Metteyya on the dangers of engaging in sexual activity and the benefits of solitary conduct.",
+    "fetter": "sensual desire,conceit",
+    "tags": "snp,snp4,sensual desire,sexual activity,conceit,seclusion",
+    "id": "snp4.7",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.7.pli": {
+    "title": "Tissametteyyasutta - To Tissa Metteyya",
+    "description": "The Buddha advises Tissa Metteyya on the dangers of engaging in sexual activity and the benefits of solitary conduct.",
+    "fetter": "sensual desire,conceit",
+    "tags": "snp,snp4,sensual desire,sexual activity,conceit,seclusion",
+    "id": "snp4.7",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.8.en": {
+    "title": "Pasūrasutta - To Pasūra",
+    "description": "The Buddha advises Pasūra on the futility of engaging in debates and the dangers of becoming conceited.",
+    "fetter": "conceit,self-identity view",
+    "tags": "snp,snp4,debate,conceit,pride,purity",
+    "id": "snp4.8",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
+  },
+  "snp4.8.pli": {
+    "title": "Pasūrasutta - To Pasūra",
+    "description": "The Buddha advises Pasūra on the futility of engaging in debates and the dangers of becoming conceited.",
+    "fetter": "conceit,self-identity views",
+    "tags": "snp,snp4,debate,conceit,pride,purity",
+    "id": "snp4.8",
+    "path": "/snp/snp4/",
+    "updatedTime": "2024-07-07T17:06:30.000Z"
   },
   "ud2.3.en": {
     "title": "Daṇḍasutta - On stick",
@@ -350,7 +583,8 @@
     "fetter": "ill-will",
     "tags": "ud,ud2,loving-kindness,harm,bodily misconduct,bodily conduct",
     "id": "ud2.3",
-    "path": "/ud/ud2/"
+    "path": "/ud/ud2/",
+    "updatedTime": "2024-07-06T10:16:54.000Z"
   },
   "ud2.3.pli": {
     "title": "Daṇḍasutta - On stick",
@@ -358,7 +592,8 @@
     "fetter": "ill-will",
     "tags": "ud,ud2,loving-kindness,harm,bodily misconduct,bodily conduct",
     "id": "ud2.3",
-    "path": "/ud/ud2/"
+    "path": "/ud/ud2/",
+    "updatedTime": "2024-07-06T10:16:54.000Z"
   },
   "ud2.4.en": {
     "title": "Sakkārasutta - On Honor",
@@ -366,7 +601,8 @@
     "fetter": "ill-will",
     "tags": "ud,ud2,ill-will,loving-kindness,attachment,blame,honor",
     "id": "ud2.4",
-    "path": "/ud/ud2/"
+    "path": "/ud/ud2/",
+    "updatedTime": "2024-07-06T10:16:54.000Z"
   },
   "ud2.4.pli": {
     "title": "Sakkārasutta - On Honor",
@@ -374,7 +610,8 @@
     "fetter": "ill-will",
     "tags": "ud,ud2,ill-will,loving-kindness,attachment,blame,honor",
     "id": "ud2.4",
-    "path": "/ud/ud2/"
+    "path": "/ud/ud2/",
+    "updatedTime": "2024-07-06T10:16:54.000Z"
   },
   "ud2.7.en": {
     "title": "Ekaputtakasutta - Only Young Son",
@@ -382,7 +619,8 @@
     "fetter": "sensual desire",
     "tags": "ud,ud2,attachment,sorrow,misfortune",
     "id": "ud2.7",
-    "path": "/ud/ud2/"
+    "path": "/ud/ud2/",
+    "updatedTime": "2024-07-06T10:16:54.000Z"
   },
   "ud2.7.pli": {
     "title": "Ekaputtakasutta - Only Young Son",
@@ -390,7 +628,8 @@
     "fetter": "sensual desire",
     "tags": "ud,ud2,attachment,sorrow",
     "id": "ud2.7",
-    "path": "/ud/ud2/"
+    "path": "/ud/ud2/",
+    "updatedTime": "2024-07-06T10:16:54.000Z"
   },
   "ud6.9.en": {
     "title": "Upātidhāvantisutta - Moths Rushing to the Flame",
@@ -398,7 +637,8 @@
     "fetter": "sensual desire",
     "tags": "ud,ud6,mind,attachment,misfortune",
     "id": "ud6.9",
-    "path": "/ud/ud6/"
+    "path": "/ud/ud6/",
+    "updatedTime": "2024-07-06T10:08:52.000Z"
   },
   "ud6.9.pli": {
     "title": "Upātidhāvantisutta - Moths Rushing to the Flame",
@@ -406,7 +646,8 @@
     "fetter": "sensual desire",
     "tags": "ud,ud6,mind,attachment,misfortune",
     "id": "ud6.9",
-    "path": "/ud/ud6/"
+    "path": "/ud/ud6/",
+    "updatedTime": "2024-07-06T10:08:52.000Z"
   },
   "ud8.1.en": {
     "title": "Paṭhamanibbānapaṭisaṁyuttasutta - First Discourse on Nibbāna",
@@ -414,7 +655,8 @@
     "fetter": "ignorance",
     "tags": "ud,ud8,Nibbāna,mindful,base,āyatana,wisdom",
     "id": "ud8.1",
-    "path": "/ud/ud8/"
+    "path": "/ud/ud8/",
+    "updatedTime": "2024-07-06T10:08:40.000Z"
   },
   "ud8.1.pli": {
     "title": "Paṭhamanibbānapaṭisaṁyuttasutta - First Discourse on Nibbāna",
@@ -422,7 +664,8 @@
     "fetter": "ignorance",
     "tags": "ud,ud8,Nibbāna,mindful,base,āyatana,wisdom",
     "id": "ud8.1",
-    "path": "/ud/ud8/"
+    "path": "/ud/ud8/",
+    "updatedTime": "2024-07-06T10:08:40.000Z"
   },
   "ud8.3.en": {
     "title": "Tatiyanibbānapaṭisaṁyuttasutta - Third Discourse on Nibbāna",
@@ -430,7 +673,8 @@
     "fetter": "ignorance",
     "tags": "ud,ud8,Nibbāna,mindful,unconditioned,unborn,wisdom",
     "id": "ud8.3",
-    "path": "/ud/ud8/"
+    "path": "/ud/ud8/",
+    "updatedTime": "2024-07-06T10:08:40.000Z"
   },
   "ud8.3.pli": {
     "title": "Tatiyanibbānapaṭisaṁyuttasutta - Third Discourse on Nibbāna",
@@ -438,7 +682,8 @@
     "fetter": "ignorance",
     "tags": "ud,ud8,Nibbāna,mindful,unconditioned,unborn,wisdom",
     "id": "ud8.3",
-    "path": "/ud/ud8/"
+    "path": "/ud/ud8/",
+    "updatedTime": "2024-07-06T10:08:40.000Z"
   },
   "ud8.8.en": {
     "title": "Visākhāsutta - Discourse to Visākhā",
@@ -446,7 +691,8 @@
     "fetter": "sensual desire",
     "tags": "ud,ud8,attachment,dear ones,sorrow,suffering,Visākhā",
     "id": "ud8.8",
-    "path": "/ud/ud8/"
+    "path": "/ud/ud8/",
+    "updatedTime": "2024-07-06T10:08:40.000Z"
   },
   "ud8.8.pli": {
     "title": "Visākhāsutta - Discourse to Visākhā",
@@ -454,6 +700,7 @@
     "fetter": "sensual desire",
     "tags": "ud,ud8,attachment,dear ones,sorrow,suffering,Visākhā",
     "id": "ud8.8",
-    "path": "/ud/ud8/"
+    "path": "/ud/ud8/",
+    "updatedTime": "2024-07-06T10:08:40.000Z"
   }
 }
