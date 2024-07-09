@@ -109,21 +109,21 @@
   },
   "index.en": {
     "title": "The Words of the Buddha",
-    "description": "The Words of the Buddha project aims to restore and preserve the Buddha's teachings by faithfully translating the Pāli Canon and making these translations accessible to a global audience, offer learning opportunities and financial support to practitioners dedicated to learning, practicing, and sharing the teachings of the Buddha.",
-    "tags": "introduction,buddha,words,wisdom",
+    "description": "The Words of the Buddha project aims to restore the Buddha's teachings by faithfully translating the Pāli Canon and preserve them by making these translations accessible to a global audience, and offering learning opportunities and support for practitioners dedicated to learning, practicing and sharing the teachings of the Buddha.",
+    "tags": "introduction,buddha,words,wisdom,translation,roadmap,project",
     "fetter": "ignorance",
     "id": "index",
     "path": "//",
-    "updatedTime": "2024-07-08T11:54:32.000Z"
+    "updatedTime": "2024-07-08T15:50:15.000Z"
   },
   "index.pli": {
     "title": "The Words of the Buddha",
-    "description": "The Words of the Buddha project aims to restore and preserve the Buddha's teachings by faithfully translating the Pāli Canon and making these translations accessible to a global audience, offer learning opportunities and financial support to practitioners dedicated to learning, practicing, and sharing the teachings of the Buddha.",
-    "tags": "introduction,buddha,words,wisdom",
+    "description": "The Words of the Buddha project aims to restore the Buddha's teachings by faithfully translating the Pāli Canon and preserve them by making these translations accessible to a global audience, and offering learning opportunities and support for practitioners dedicated to learning, practicing and sharing the teachings of the Buddha.",
+    "tags": "introduction,buddha,words,wisdom,translation,roadmap,project",
     "fetter": "ignorance",
     "id": "index",
     "path": "//",
-    "updatedTime": "2024-07-08T11:54:32.000Z"
+    "updatedTime": "2024-07-08T15:50:15.000Z"
   },
   "iti44.en": {
     "title": "Nibbānadhātusutta - The Nibbāna Element",
@@ -175,6 +175,60 @@
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities.",
     "path": "/mn/mn1-50/",
     "updatedTime": "2024-07-01T16:52:15.000Z"
+  },
+  "mn12.en": {
+    "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
+    "description": "When a bhikkhu who has left the Dhamma and training is disparaging the Buddha's states as merely human and his teaching as  merely leading to the end of suffering, the Buddha counters that this is in fact praise and goes on to enumerate his various attainments.",
+    "fetter": "doubt",
+    "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
+    "id": "mn12",
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T19:35:17.000Z"
+  },
+  "mn12.pli": {
+    "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
+    "description": "When a bhikkhu who has left the Dhamma and training is disparaging the Buddha's states as merely human and his teaching as  merely leading to the end of suffering, the Buddha counters that this is in fact praise and goes on to enumerate his various attainments.",
+    "fetter": "doubt",
+    "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
+    "id": "mn12",
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T13:50:05.000Z"
+  },
+  "mn19.en": {
+    "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
+    "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensuality, ill-will, and harm; and 2) thoughts of relinquishment, non-ill-will, and non-harm. He explains how he abandoned harmful thoughts and cultivated wholesome thoughts, leading to the attainment of the four jhānas and the three knowledges.",
+    "tags": "thoughts,sensual desire,ill-will,harm,relinquishment,good-will,non-harm,loving-kindness,compassion,wholesome,unwholesome,jhāna,divine eye,recollection,liberation,mn,mn1-50,mn11-20,way of practice,right intention",
+    "fetter": "doubt",
+    "id": "mn19",
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T19:35:17.000Z"
+  },
+  "mn19.pli": {
+    "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
+    "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensuality, ill-will, and harm; and 2) thoughts of relinquishment, non-ill-will, and non-harm. He explains how he abandoned harmful thoughts and cultivated wholesome thoughts, leading to the attainment of the four jhānas and the three knowledges.",
+    "tags": "thoughts,sensual desire,ill-will,harm,relinquishment,good-will,non-harm,loving-kindness,compassion,wholesome,unwholesome,jhāna,divine eye,recollection,liberation,mn,mn1-50,mn11-20,way of practice,right intention",
+    "fetter": "doubt",
+    "id": "mn19",
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T13:50:05.000Z"
+  },
+  "mn9.en": {
+    "title": "Sammādiṭṭhisutta - Right View",
+    "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of perspectives.",
+    "fetter": "ignorance",
+    "tags": "right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints",
+    "id": "mn9",
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T19:35:17.000Z"
+  },
+  "mn9.pli": {
+    "title": "Sammādiṭṭhisutta - Right View",
+    "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of perspectives.",
+    "fetter": "ignorance",
+    "tags": "right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints",
+    "id": "mn9",
+    "path": "/mn/mn1-50/",
+    "updatedTime": "2024-07-01T13:50:05.000Z"
   },
   "mn107.en": {
     "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
@@ -396,7 +450,7 @@
     "tags": "death,safety,sn,sn45-56,sn47,refuge,nibbāna,sāriputta",
     "id": "sn47.13",
     "path": "/sn/sn45-56/",
-    "updatedTime": "2024-07-08T11:56:52.000Z"
+    "updatedTime": "2024-07-08T15:49:57.000Z"
   },
   "sn47.13.pli": {
     "title": "Cundasutta - Cunda",
