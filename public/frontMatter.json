@@ -114,7 +114,7 @@
     "fetter": "ignorance",
     "id": "index",
     "path": "//",
-    "updatedTime": "2024-07-08T15:50:15.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "index.pli": {
     "title": "The Words of the Buddha",
@@ -123,7 +123,7 @@
     "fetter": "ignorance",
     "id": "index",
     "path": "//",
-    "updatedTime": "2024-07-08T15:50:15.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "iti44.en": {
     "title": "Nibbānadhātusutta - The Nibbāna Element",
@@ -183,7 +183,7 @@
     "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
     "id": "mn12",
     "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-01T19:35:17.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "mn12.pli": {
     "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
@@ -192,7 +192,7 @@
     "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
     "id": "mn12",
     "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-01T13:50:05.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "mn19.en": {
     "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
@@ -201,7 +201,7 @@
     "fetter": "doubt",
     "id": "mn19",
     "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-01T19:35:17.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "mn19.pli": {
     "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
@@ -210,7 +210,7 @@
     "fetter": "doubt",
     "id": "mn19",
     "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-01T13:50:05.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "mn9.en": {
     "title": "Sammādiṭṭhisutta - Right View",
@@ -219,7 +219,7 @@
     "tags": "right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints",
     "id": "mn9",
     "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-01T19:35:17.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "mn9.pli": {
     "title": "Sammādiṭṭhisutta - Right View",
@@ -228,7 +228,7 @@
     "tags": "right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints",
     "id": "mn9",
     "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-01T13:50:05.000Z"
+    "updatedTime": "2024-07-09T14:21:25.000Z"
   },
   "mn107.en": {
     "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
@@ -427,6 +427,78 @@
     "id": "sn7.2",
     "path": "/sn/sn1-11/sn7/",
     "updatedTime": "2024-07-05T14:43:00.000Z"
+  },
+  "sn12.1.en": {
+    "title": "Paṭiccasamuppādasutta - Dependent Origination",
+    "description": "The Buddha explains what is dependent origination, the arising and cessation of suffering.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,dependent origination,ignorance,wisdom,suffering",
+    "id": "sn12.1",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:50.000Z"
+  },
+  "sn12.1.pli": {
+    "title": "Paṭiccasamuppādasutta - Dependent Origination",
+    "description": "The Buddha explains what is dependent origination, the arising and cessation of suffering.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,dependent origination,ignorance,wisdom,suffering",
+    "id": "sn12.1",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:50.000Z"
+  },
+  "sn12.15.en": {
+    "title": "Kaccānagottasutta - With Kaccānagotta",
+    "description": "Venerable Kaccānagotta asks the Buddha about right view, and the Buddha explains how",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,right view,ignorance,wisdom",
+    "id": "sn12.15",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:50.000Z"
+  },
+  "sn12.15.pli": {
+    "title": "Kaccānagottasutta - With Kaccānagotta",
+    "description": "Venerable Kaccānagotta asks the Buddha about right view, and the Buddha explains how",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,right view,ignorance,wisdom",
+    "id": "sn12.15",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:50.000Z"
+  },
+  "sn12.44.en": {
+    "title": "Lokasutta - World",
+    "description": "The Buddha explains the arising and dissolution of the world through the six sense bases.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,world,ignorance,wisdom,six sense bases",
+    "id": "sn12.44",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:50.000Z"
+  },
+  "sn12.44.pli": {
+    "title": "Lokasutta - World",
+    "description": "The Buddha explains the arising and dissolution of the world through the six sense bases.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,world,ignorance,wisdom,six sense bases",
+    "id": "sn12.44",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:50.000Z"
+  },
+  "sn12.52.en": {
+    "title": "Upādānasutta - Clinging",
+    "description": "The Buddha uses the simile of a bonfire to explain how perceiving gratification in objects that can be grasped at leads to clinging, to suffering, and how perceiving drawbacks in objects that can be grasped at leads to the cessation of clinging, to the cessation of suffering.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,craving,clinging,ignorance,bonfire,wisdom,dependent origination",
+    "id": "sn12.52",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:04.000Z"
+  },
+  "sn12.52.pli": {
+    "title": "Upādānasutta - Clinging",
+    "description": "The Buddha uses the simile of a bonfire to explain how perceiving gratification in objects that can be grasped at leads to clinging, to suffering, and how perceiving drawbacks in objects that can be grasped at leads to the cessation of clinging, to the cessation of suffering.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,sn12,craving,clinging,ignorance,bonfire,wisdom",
+    "id": "sn12.52",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-10T14:28:04.000Z"
   },
   "sn14.15.en": {
     "title": "Walking Back and Forth",
