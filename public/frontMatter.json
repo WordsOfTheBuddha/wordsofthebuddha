@@ -107,6 +107,24 @@
     "path": "/dhp/",
     "updatedTime": "2024-07-08T11:56:47.000Z"
   },
+  "dhp21-32.en": {
+    "title": "Appamādavagga - Chapter 2 - Heedfulness",
+    "description": "DhammaPada Verses 21 - 32",
+    "tags": "dhp21-32,heedfulness,heedlessness,death,liberation",
+    "fetter": "ignorance,attachment to rites and rituals,doubt",
+    "id": "dhp21-32",
+    "path": "/dhp/",
+    "updatedTime": "2024-07-11T12:57:32.815Z"
+  },
+  "dhp21-32.pli": {
+    "title": "Appamādavagga - Chapter 2 - Heedfulness",
+    "description": "DhammaPada Verses 21 - 32",
+    "tags": "dhp21-32,heedfulness,heedlessness,death,liberation",
+    "fetter": "ignorance,attachment to rites and rituals,doubt",
+    "id": "dhp21-32",
+    "path": "/dhp/",
+    "updatedTime": "2024-07-11T12:57:32.884Z"
+  },
   "index.en": {
     "title": "The Words of the Buddha",
     "description": "The Words of the Buddha project aims to restore the Buddha's teachings by faithfully translating the Pāli Canon and preserve them by making these translations accessible to a global audience, and offering learning opportunities and support for practitioners dedicated to learning, practicing and sharing the teachings of the Buddha.",
@@ -514,6 +532,78 @@
     "description": "In this teaching, the Buddha is sharing how beings come together and associate based on shared qualities and traits.",
     "path": "/sn/sn12-21/",
     "updatedTime": "2024-07-01T16:26:07.000Z"
+  },
+  "sn14.37.en": {
+    "title": "Samaṇabrāhmaṇasutta - Ascetics and Brahmins",
+    "description": "The Buddha explains how understanding the attraction, danger, and escape in the four elements leads to peace in this very life.",
+    "tags": "sn,sn12-21,sn14,elements,air,water,fire,earth,peace,nibbāna",
+    "fetter": "ignorance",
+    "id": "sn14.37",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T19:35:17.000Z"
+  },
+  "sn14.37.pli": {
+    "title": "Samaṇabrāhmaṇasutta - Ascetics and Brahmins",
+    "description": "The Buddha explains how understanding the attraction, danger, and escape in the four elements leads to peace in this very life.",
+    "tags": "sn,sn12-21,sn14,elements,air,water,fire,earth,peace,nibbāna",
+    "fetter": "ignorance",
+    "id": "sn14.37",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T13:50:05.000Z"
+  },
+  "sn14.38.en": {
+    "title": "Dutiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Second)",
+    "description": "The Buddha explains how understanding the arising and dissolution of the four elements, and the attraction, danger, and the escape in the four elements leads to peace in this very life.",
+    "tags": "sn,sn12-21,sn14,elements,air,water,fire,earth,peace",
+    "fetter": "ignorance",
+    "id": "sn14.38",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T19:35:17.000Z"
+  },
+  "sn14.38.pli": {
+    "title": "Dutiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Second)",
+    "description": "The Buddha explains how understanding the arising and dissolution of the four elements, and the attraction, danger, and the escape in the four elements leads to peace in this very life.",
+    "tags": "sn,sn12-21,sn14,elements,air,water,fire,earth,peace",
+    "fetter": "ignorance",
+    "id": "sn14.38",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T13:50:05.000Z"
+  },
+  "sn14.39.en": {
+    "title": "Tatiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Third)",
+    "description": "The Buddha explains how understanding the arising, the cessation, and the path leading to the cessation in regards to the four elements leads to peace in this very life.",
+    "tags": "sn,sn12-21,sn14,elements,air,water,fire,earth,peace,cessation",
+    "fetter": "ignorance",
+    "id": "sn14.39",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T19:35:17.000Z"
+  },
+  "sn14.39.pli": {
+    "title": "Tatiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Third)",
+    "description": "The Buddha explains how understanding the arising, the cessation, and the path leading to the cessation in regards to the four elements leads to peace in this very life.",
+    "tags": "sn,sn12-21,sn14,elements,air,water,fire,earth,peace,cessation",
+    "fetter": "ignorance",
+    "id": "sn14.39",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-01T13:50:05.000Z"
+  },
+  "sn17.2.en": {
+    "title": "Balisasutta - Fishing Hook",
+    "description": "The Buddha explains how possessions, respect, and popularity are painful, severe, and obstructive to the attainment of the unsurpassed safety from the yoke using a simile of a fisherman throwing a baited hook into a deep pool of water.",
+    "tags": "sn,sn12-21,sn17,possessions,respect,popularity,obstruction",
+    "fetter": "sensual desire,conceit,self-identity view,ignorance",
+    "id": "sn17.2",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-11T12:57:34.001Z"
+  },
+  "sn17.2.pli": {
+    "title": "Balisasutta - Fishing Hook",
+    "description": "The Buddha explains how possessions, respect, and popularity are painful, severe, and obstructive to the attainment of the unsurpassed safety from the yoke using a simile of a fisherman throwing a baited hook into a deep pool of water.",
+    "tags": "sn,sn12-21,sn17,possessions,respect,popularity,obstruction",
+    "fetter": "sensual desire,conceit,self-identity view,ignorance",
+    "id": "sn17.2",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-11T12:57:34.069Z"
   },
   "sn47.13.en": {
     "title": "Cundasutta - Cunda",
