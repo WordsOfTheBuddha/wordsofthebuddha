@@ -17,7 +17,7 @@ const isVerse = (paragraph) => {
   return lastLineValid && otherLinesValid;
 };
 
-const processContent = (children, theme) => {
+const processContent = (children, resolvedTheme) => {
   let currentContent = [];
 
   React.Children.forEach(children, (child) => {
@@ -33,7 +33,9 @@ const processContent = (children, theme) => {
     return (
       <blockquote
         className={`${styles.blockquote} ${
-          theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight
+          resolvedTheme === "dark"
+            ? styles.blockquoteDark
+            : styles.blockquoteLight
         }`}
       >
         {currentContent}
@@ -46,8 +48,15 @@ const processContent = (children, theme) => {
 
 const Verse = ({ children }) => {
   const { resolvedTheme } = useTheme();
+  const [themeResolved, setThemeResolved] = useState(false);
 
-  if (resolvedTheme === null) {
+  useEffect(() => {
+    if (resolvedTheme) {
+      setThemeResolved(true);
+    }
+  }, [resolvedTheme]);
+
+  if (!themeResolved) {
     return null; // Avoid rendering until the theme is resolved
   }
 
