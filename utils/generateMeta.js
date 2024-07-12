@@ -20,7 +20,8 @@ const specialLabels = {
   index: {
     "title": "Home",
     "theme": {
-      "breadcrumb": false
+      "breadcrumb": false,
+      "sidebar": false,
     }
   },
   sn: 'Linked Discourses (SN)',

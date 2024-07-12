@@ -96,7 +96,7 @@
     "fetter": "ignorance,ill-will,sensual desire,conceit",
     "id": "dhp1-20",
     "path": "/dhp/",
-    "updatedTime": "2024-07-08T11:56:47.000Z"
+    "updatedTime": "2024-07-12T03:24:09.000Z"
   },
   "dhp1-20.pli": {
     "title": "Yamakavagga - Chapter 1 - Pairs",
@@ -110,20 +110,20 @@
   "dhp21-32.en": {
     "title": "Appamādavagga - Chapter 2 - Heedfulness",
     "description": "DhammaPada Verses 21 - 32",
-    "tags": "dhp21-32,heedfulness,heedlessness,death,liberation",
+    "tags": "heedfulness,heedlessness,death,liberation,diligence,wisdom,nibbāna,meditation",
     "fetter": "ignorance,attachment to rites and rituals,doubt",
     "id": "dhp21-32",
     "path": "/dhp/",
-    "updatedTime": "2024-07-11T12:57:32.815Z"
+    "updatedTime": "2024-07-12T03:24:09.000Z"
   },
   "dhp21-32.pli": {
     "title": "Appamādavagga - Chapter 2 - Heedfulness",
     "description": "DhammaPada Verses 21 - 32",
-    "tags": "dhp21-32,heedfulness,heedlessness,death,liberation",
+    "tags": "heedfulness,heedlessness,death,liberation,diligence,wisdom,nibbāna,meditation",
     "fetter": "ignorance,attachment to rites and rituals,doubt",
     "id": "dhp21-32",
     "path": "/dhp/",
-    "updatedTime": "2024-07-11T12:57:32.884Z"
+    "updatedTime": "2024-07-12T03:24:09.000Z"
   },
   "index.en": {
     "title": "The Words of the Buddha",
@@ -489,7 +489,7 @@
     "tags": "sn,sn12-21,sn12,world,ignorance,wisdom,six sense bases",
     "id": "sn12.44",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-10T14:28:50.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn12.44.pli": {
     "title": "Lokasutta - World",
@@ -540,7 +540,7 @@
     "fetter": "ignorance",
     "id": "sn14.37",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-01T19:35:17.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn14.37.pli": {
     "title": "Samaṇabrāhmaṇasutta - Ascetics and Brahmins",
@@ -549,7 +549,7 @@
     "fetter": "ignorance",
     "id": "sn14.37",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-01T13:50:05.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn14.38.en": {
     "title": "Dutiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Second)",
@@ -558,7 +558,7 @@
     "fetter": "ignorance",
     "id": "sn14.38",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-01T19:35:17.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn14.38.pli": {
     "title": "Dutiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Second)",
@@ -567,7 +567,7 @@
     "fetter": "ignorance",
     "id": "sn14.38",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-01T13:50:05.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn14.39.en": {
     "title": "Tatiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Third)",
@@ -576,7 +576,7 @@
     "fetter": "ignorance",
     "id": "sn14.39",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-01T19:35:17.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn14.39.pli": {
     "title": "Tatiyasamaṇabrāhmaṇasutta - Ascetics and Brahmins (Third)",
@@ -585,7 +585,7 @@
     "fetter": "ignorance",
     "id": "sn14.39",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-01T13:50:05.000Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn17.2.en": {
     "title": "Balisasutta - Fishing Hook",
@@ -594,7 +594,7 @@
     "fetter": "sensual desire,conceit,self-identity view,ignorance",
     "id": "sn17.2",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-11T12:57:34.001Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn17.2.pli": {
     "title": "Balisasutta - Fishing Hook",
@@ -603,7 +603,7 @@
     "fetter": "sensual desire,conceit,self-identity view,ignorance",
     "id": "sn17.2",
     "path": "/sn/sn12-21/",
-    "updatedTime": "2024-07-11T12:57:34.069Z"
+    "updatedTime": "2024-07-11T12:59:19.000Z"
   },
   "sn47.13.en": {
     "title": "Cundasutta - Cunda",
