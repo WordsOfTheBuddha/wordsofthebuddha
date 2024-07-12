@@ -1,4 +1,22 @@
 {
+  "an1.1-10.en": {
+    "title": "Cittapariyādānavagga - The Chapter on the Obsession of the Mind",
+    "description": "The Buddha explains how the mind can be obsessed by the senses.",
+    "fetter": "sensual desire",
+    "tags": "mind,senses,obsession",
+    "id": "an1.1-10",
+    "path": "/an/an1/",
+    "updatedTime": "2024-07-12T14:26:51.000Z"
+  },
+  "an1.1-10.pli": {
+    "title": "Cittapariyādānavagga - The Chapter on the Obsession of the Mind",
+    "description": "The Buddha explains how the mind can be obsessed by the senses.",
+    "fetter": "sensual desire",
+    "tags": "mind,senses,obsession",
+    "id": "an1.1-10",
+    "path": "/an/an1/",
+    "updatedTime": "2024-07-12T14:26:51.000Z"
+  },
   "an1.31-40.en": {
     "title": "Adantavagga - The Chapter on the Untamed",
     "description": "Short teachings on the untamed and the tamed mind.",
@@ -132,7 +150,7 @@
     "fetter": "ignorance",
     "id": "index",
     "path": "//",
-    "updatedTime": "2024-07-09T14:21:25.000Z"
+    "updatedTime": "2024-07-12T03:27:06.000Z"
   },
   "index.pli": {
     "title": "The Words of the Buddha",
@@ -141,7 +159,7 @@
     "fetter": "ignorance",
     "id": "index",
     "path": "//",
-    "updatedTime": "2024-07-09T14:21:25.000Z"
+    "updatedTime": "2024-07-12T03:27:06.000Z"
   },
   "iti44.en": {
     "title": "Nibbānadhātusutta - The Nibbāna Element",
@@ -482,6 +500,24 @@
     "path": "/sn/sn12-21/",
     "updatedTime": "2024-07-10T14:28:50.000Z"
   },
+  "sn12.23.en": {
+    "title": "Upanisasutta - Proximate Causes",
+    "description": "The Buddha explains the proximate causes for the ending of defilements. The twelve factors leading to the ending of defilements are explained along with twelve factors that lead to suffering.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,defilements,dependent origination,suffering,liberation",
+    "id": "sn12.23",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-12T14:26:26.000Z"
+  },
+  "sn12.23.pli": {
+    "title": "Upanisasutta - Proximate Causes",
+    "description": "The Buddha explains the proximate causes for the ending of defilements. The twelve factors leading to the ending of defilements are explained along with twelve factors that lead to suffering.",
+    "fetter": "ignorance",
+    "tags": "sn,sn12-21,defilements,dependent origination,suffering,liberation",
+    "id": "sn12.23",
+    "path": "/sn/sn12-21/",
+    "updatedTime": "2024-07-12T14:26:26.000Z"
+  },
   "sn12.44.en": {
     "title": "Lokasutta - World",
     "description": "The Buddha explains the arising and dissolution of the world through the six sense bases.",
@@ -604,6 +640,42 @@
     "id": "sn17.2",
     "path": "/sn/sn12-21/",
     "updatedTime": "2024-07-11T12:59:19.000Z"
+  },
+  "sn22.15.en": {
+    "title": "Yadaniccasutta - That Which is Impermanent",
+    "description": "The Buddha shares a reflection on the three characteristics of impermanence, suffering (discontentment) and not-self for the five aggregates of form, feeling, perception, formations, and consciousness.",
+    "fetter": "ignorance",
+    "tags": "impermanent,suffering,not-self,form,feeling,perception,formations,consciousness,sn,sn22-34,sn22",
+    "id": "sn22.15",
+    "path": "/sn/sn22-34/",
+    "updatedTime": "2024-07-12T14:26:26.000Z"
+  },
+  "sn22.15.pli": {
+    "title": "Yadaniccasutta - That Which is Impermanent",
+    "description": "The Buddha shares a reflection on the three characteristics of impermanence, suffering (discontentment) and not-self for the five aggregates of form, feeling, perception, formations, and consciousness.",
+    "fetter": "ignorance",
+    "tags": "impermanent,suffering,not-self,form,feeling,perception,formations,consciousness,sn,sn22-34,sn22",
+    "id": "sn22.15",
+    "path": "/sn/sn22-34/",
+    "updatedTime": "2024-07-12T14:26:26.000Z"
+  },
+  "sn22.29.en": {
+    "title": "Abhinandanasutta - Delight",
+    "description": "The Buddha explains that whoever delights in the five aggregates, delights in suffering and is not freed from suffering.",
+    "fetter": "ignorance",
+    "tags": "form,feeling,perception,formations,consciousness,delight,suffering,sn,sn22-34,sn22",
+    "id": "sn22.29",
+    "path": "/sn/sn22-34/",
+    "updatedTime": "2024-07-12T14:26:26.000Z"
+  },
+  "sn22.29.pli": {
+    "title": "Abhinandanasutta - Delight",
+    "description": "The Buddha explains that whoever delights in the five aggregates, delights in suffering and is not freed from suffering.",
+    "fetter": "ignorance",
+    "tags": "form,feeling,perception,formations,consciousness,delight,suffering,sn,sn22-34,sn22",
+    "id": "sn22.29",
+    "path": "/sn/sn22-34/",
+    "updatedTime": "2024-07-12T14:26:26.000Z"
   },
   "sn47.13.en": {
     "title": "Cundasutta - Cunda",
