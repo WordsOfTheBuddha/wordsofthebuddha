@@ -21,7 +21,6 @@ const specialLabels = {
     "title": "Home",
     "theme": {
       "breadcrumb": false,
-      "sidebar": false,
     }
   },
   sn: 'Linked (SN)',
