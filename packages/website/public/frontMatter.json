@@ -89,6 +89,186 @@
     "path": "/an/an2/",
     "updatedTime": "2024-07-13T10:38:00.000Z"
   },
+  "an3.17.en": {
+    "title": "Attabyābādhasutta - Self-Infliction of Harm",
+    "description": "The Buddha explains how bodily, verbal, and mental misconduct lead to self-infliction of harm.",
+    "fetter": "ill-will,conceit",
+    "tags": "an,an3,conduct,ill-will,conceit",
+    "id": "an3.17",
+    "path": "/an/an3/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an3.17.pli": {
+    "title": "Attabyābādhasutta - Self-Infliction of Harm",
+    "description": "The Buddha explains how bodily, verbal, and mental misconduct lead to self-infliction of harm.",
+    "fetter": "ill-will,conceit",
+    "tags": "an,an3,conduct,ill-will,conceit",
+    "id": "an3.17",
+    "path": "/an/an3/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an3.2.en": {
+    "title": "Lakkhaṇasutta - Characteristics",
+    "description": "The Buddha explains the characteristics of an immature and wise person.",
+    "fetter": "ignorance",
+    "tags": "an,an3,ignorance,conduct",
+    "id": "an3.2",
+    "path": "/an/an3/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an3.2.pli": {
+    "title": "Lakkhaṇasutta - Characteristics",
+    "description": "The Buddha explains the characteristics of an immature and wise person.",
+    "fetter": "ignorance",
+    "tags": "an,an3,ignorance,conduct",
+    "id": "an3.2",
+    "path": "/an/an3/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an3.25.en": {
+    "title": "Vajirūpamasutta - Like a Diamond",
+    "description": "The Buddha explains the three types of persons existing in the world based on their mental qualities.",
+    "fetter": "ignorance",
+    "tags": "an,an3,ignorance,mind",
+    "id": "an3.25",
+    "path": "/an/an3/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an3.25.pli": {
+    "title": "Vajirūpamasutta - Like a Diamond",
+    "description": "The Buddha explains the three types of persons existing in the world based on their mental qualities.",
+    "fetter": "ignorance",
+    "tags": "an,an3,ignorance,mind",
+    "id": "an3.25",
+    "path": "/an/an3/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.199.en": {
+    "title": "Taṇhāsutta - Craving",
+    "description": "The eighteen ways of craving pertaining to the internal bases, and the eighteen ways of craving pertaining to the external bases.",
+    "fetter": "conceit",
+    "tags": "craving,an,an4,conceit",
+    "id": "an4.199",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.199.pli": {
+    "title": "Taṇhāsutta - Craving",
+    "description": "The eighteen ways of craving pertaining to the internal bases, and the eighteen ways of craving pertaining to the external bases.",
+    "fetter": "conceit",
+    "tags": "craving,an,an4,conceit",
+    "id": "an4.199",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.21.en": {
+    "title": "Paṭhamauruvelasutta - Uruvelā (First)",
+    "description": "The Buddha reflects on the Dhamma after his enlightenment and is encouraged by Brahmā Sahampati to rely on the Dhamma.",
+    "fetter": "doubt",
+    "tags": "buddha,an,an4,doubt",
+    "id": "an4.21",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.21.pli": {
+    "title": "Paṭhamauruvelasutta - Uruvelā (First)",
+    "description": "The Buddha reflects on the Dhamma after his enlightenment and is encouraged by Brahmā Sahampati to rely on the Dhamma.",
+    "fetter": "doubt",
+    "tags": "buddha,an,an4,doubt",
+    "id": "an4.21",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.221.en": {
+    "title": "Duccaritasutta - Misconducts",
+    "description": "The four verbal misconducts and the four good verbal conducts.",
+    "fetter": "ignorance",
+    "tags": "right speech,an,an4",
+    "id": "an4.221",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:04:48.000Z"
+  },
+  "an4.221.pli": {
+    "title": "Duccaritasutta - Misconducts",
+    "description": "The four verbal misconducts and the four good verbal conducts.",
+    "fetter": "ignorance",
+    "tags": "right speech,an,an4",
+    "id": "an4.221",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:04:48.000Z"
+  },
+  "an4.25.en": {
+    "title": "Brahmacariyasutta - The Spiritual Life",
+    "description": "The Buddha explains the purpose of the spiritual life.",
+    "fetter": "conceit",
+    "tags": "an,an4,spiritual life, conceit",
+    "id": "an4.25",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.25.pli": {
+    "title": "Brahmacariyasutta - The Spiritual Life",
+    "description": "The Buddha explains the purpose of the spiritual life.",
+    "fetter": "conceit",
+    "tags": "an,an4,spiritual life, conceit",
+    "id": "an4.25",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.29.en": {
+    "title": "Dhammapadasutta - The Four Dhamma Principles",
+    "description": "The Buddha explains the four Dhamma principles that are foremost, ancient, rooted in tradition, timeless, and pure.",
+    "fetter": "ignorance",
+    "tags": "dhamma,an,an4,ignorance,contentment,good-will, mindfulness,collectedness",
+    "id": "an4.29",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.29.pli": {
+    "title": "Dhammapadasutta - The Four Dhamma Principles",
+    "description": "The Buddha explains the four Dhamma principles that are foremost, ancient, rooted in tradition, timeless, and pure.",
+    "fetter": "ignorance",
+    "tags": "dhamma,an,an4,ignorance,contentment,good-will, mindfulness,collectedness",
+    "id": "an4.29",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.32.en": {
+    "title": "Saṅgahasutta - Supportive",
+    "description": "The Buddha explains the four bases of a supportive relationship.",
+    "fetter": "ill-will,conceit",
+    "tags": "an,an4,relationships,ill-will,conceit",
+    "id": "an4.32",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.32.pli": {
+    "title": "Saṅgahasutta - Supportive",
+    "description": "The Buddha explains the four bases of a supportive relationship.",
+    "fetter": "ill-will,conceit",
+    "tags": "an,an4,relationships,ill-will,conceit",
+    "id": "an4.32",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.97.en": {
+    "title": "Khippanisantisutta - Quick To Attend To",
+    "description": "The Buddha explains the four types of persons existing in the world.",
+    "fetter": "ignorance",
+    "tags": "an,an4,ignorance,right speech,good-will, mindfulness,collectedness",
+    "id": "an4.97",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
+  "an4.97.pli": {
+    "title": "Khippanisantisutta - Quick To Attend To",
+    "description": "The Buddha explains the four types of persons existing in the world.",
+    "fetter": "ignorance",
+    "tags": "an,an4,ignorance,right speech,good-will, mindfulness,collectedness",
+    "id": "an4.97",
+    "path": "/an/an4/",
+    "updatedTime": "2024-07-13T13:03:47.000Z"
+  },
   "an6.74.en": {
     "title": "Second Discourse on the First Jhāna",
     "description": "Six qualities to abandon to dwell in the first jhāna - 1. thoughts of sensual desire, 2. thoughts of ill-will, 3. thoughts of harm, 4. perception of sensual desire, 5. perception of ill-will, 6. perception of harm.",
