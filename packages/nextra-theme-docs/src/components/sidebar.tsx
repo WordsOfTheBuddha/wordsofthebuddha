@@ -342,7 +342,7 @@ export function Sidebar({
   const { menu, setMenu } = useMenu()
   const router = useRouter()
   const [focused, setFocused] = useState<null | string>(null)
-  const [showSidebar, setSidebar] = useState(true)
+  const [showSidebar, setSidebar] = useState(false)
   const [showToggleAnimation, setToggleAnimation] = useState(false)
 
   const anchors = useMemo(() => headings.filter(v => v.depth === 2), [headings])

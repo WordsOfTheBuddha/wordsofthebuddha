@@ -889,8 +889,7 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       resolution: 9,
       depth: 2,
       bidirectional: true
-    },
-    encode: "balance"
+    }
   });
   const sectionIndex = new FlexSearch.Document({
     cache: 100,
@@ -905,8 +904,7 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       resolution: 9,
       depth: 2,
       bidirectional: true
-    },
-    encode: "balance"
+    }
   });
   let pageId = 0;
   for (const [route, structurizedData] of Object.entries(searchData)) {
@@ -1861,7 +1859,7 @@ function Sidebar({
   const { menu, setMenu } = useMenu();
   const router = useRouter6();
   const [focused, setFocused] = useState6(null);
-  const [showSidebar, setSidebar] = useState6(true);
+  const [showSidebar, setSidebar] = useState6(false);
   const [showToggleAnimation, setToggleAnimation] = useState6(false);
   const anchors = useMemo2(() => headings.filter((v) => v.depth === 2), [headings]);
   const sidebarRef = useRef5(null);
