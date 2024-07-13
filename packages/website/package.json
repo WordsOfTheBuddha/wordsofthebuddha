@@ -1,0 +1,25 @@
+{
+  "name": "wordsofthebuddha.org",
+  "version": "0.0.2",
+  "dependencies": {
+    "@vercel/analytics": "^1.3.1",
+    "@vercel/speed-insights": "^1.0.12",
+    "fs": "^0.0.1-security",
+    "gray-matter": "^4.0.3",
+    "next": "^14.2.4",
+    "nextra": "^2.13.4",
+    "nextra-theme-docs": "file:../nextra-theme-docs",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "simple-git": "^3.25.0",
+    "styled-components": "^6.1.11"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js && node utils/generateIndexPages.js && next build",
+    "start": "next start",
+    "prebuild": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js",
+    "predev": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js && node utils/generateIndexPages.js"
+  }
+}
