@@ -136,3 +136,7 @@ code {
 .excerpt a:hover {
   text-decoration: none;
 }
+
+.directory-link {
+  margin-bottom: 5px;
+}

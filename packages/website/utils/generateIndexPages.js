@@ -21,9 +21,13 @@ const createCard = ({ title, description, id, path }) => `
 // Helper function to create directory link HTML with full path
 const createDirectoryLink = (dir, subdir) => {
   const fullPath = path.relative(pagesDir, path.join(dir, subdir));
+  const transformLabel = (name) => {
+    // Capitalize all initial characters before the first number and add space before the first number
+    return name.replace(/([a-zA-Z]+)(\d)?/, (match, p1, p2) => p2 ? `${p1.toUpperCase()} ${p2}` : p1.toUpperCase());
+  };
   return `
     <div className="directory-link">
-      <a href="/${fullPath}/">Go to ${subdir}</a>
+      <a href="/${fullPath}/">${transformLabel(subdir)}</a>
     </div>
   `;
 };
@@ -76,8 +80,9 @@ const generateIndexPages = (dir) => {
     );
 
   const subdirs = fs
-    .readdirSync(dir)
-    .filter((item) => fs.lstatSync(path.join(dir, item)).isDirectory());
+      .readdirSync(dir)
+      .filter((item) => fs.lstatSync(path.join(dir, item)).isDirectory())
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 
   let contentCount = 0;
   if (cards.length > 0 && subdirs.length === 0) {

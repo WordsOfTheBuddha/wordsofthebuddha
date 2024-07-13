@@ -24,11 +24,11 @@ const specialLabels = {
       "sidebar": false,
     }
   },
-  sn: 'Linked Discourses (SN)',
-  an: 'Numbered Discourses (AN)',
-  mn: 'Middle Length Discourses (MN)',
+  sn: 'Linked (SN)',
+  an: 'Numbered (AN)',
+  mn: 'Middle (MN)',
   snp: 'Sutta Nipāta (SnP)',
-  dhp: 'Dhamma Pada (DhP)',
+  dhp: 'DhammaPada (DhP)',
   iti: 'As It Was Said (ITI)',
   ud: 'Inspired Utterances (Ud)'
 };

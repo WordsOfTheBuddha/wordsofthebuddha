@@ -7,11 +7,16 @@ export function Title({ title }) {
   const router = useRouter();
   const { asPath } = router;
 
+  const transformLabel = (name) => {
+    // Capitalize all initial characters before the first number and add space before the first number
+    return name.replace(/([a-zA-Z]+)(\d)?/, (match, p1, p2) => p2 ? `${p1.toUpperCase()} ${p2}` : p1.toUpperCase());
+  };
+
   let displayTitle = title || frontMatter.title;
   if (!displayTitle) {
     // Split the path and get the last segment
     const pathSegments = asPath.split("/");
-    let pageName = pathSegments[pathSegments.length - 1];
+    let pageName = transformLabel(pathSegments[pathSegments.length - 1]);
     let localeSuffix = /\.(en|pli)$/;
     pageName = pageName.replace(localeSuffix, "");
     displayTitle = pageName;
