@@ -889,7 +889,8 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       resolution: 9,
       depth: 2,
       bidirectional: true
-    }
+    },
+    encode: "balance"
   });
   const sectionIndex = new FlexSearch.Document({
     cache: 100,
@@ -904,7 +905,8 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       resolution: 9,
       depth: 2,
       bidirectional: true
-    }
+    },
+    encode: "balance"
   });
   let pageId = 0;
   for (const [route, structurizedData] of Object.entries(searchData)) {

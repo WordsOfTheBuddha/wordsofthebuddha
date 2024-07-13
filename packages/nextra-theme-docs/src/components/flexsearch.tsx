@@ -77,7 +77,8 @@ const loadIndexesImpl = async (
       resolution: 9,
       depth: 2,
       bidirectional: true
-    }
+    },
+    encode: 'balance'
   })
 
   const sectionIndex: SectionIndex = new FlexSearch.Document({
@@ -93,7 +94,8 @@ const loadIndexesImpl = async (
       resolution: 9,
       depth: 2,
       bidirectional: true
-    }
+    },
+    encode: 'balance'
   })
 
   let pageId = 0
