@@ -15,6 +15,12 @@
     "simple-git": "^3.25.0",
     "styled-components": "^6.1.11"
   },
+  "peerDependencies": {
+    "next": "^14.2.4",
+    "nextra": "workspace:*",
+    "react": ">=16.13.1",
+    "react-dom": ">=16.13.1"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "node utils/generateMeta.js && node utils/generateTranslationCount.js && node utils/generateFrontMatter.js && node utils/generateIndexPages.js && next build",

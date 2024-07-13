@@ -1,4 +1,10 @@
-Lakkhaṇasutta
+---
+title: Lakkhaṇasutta - Characteristics
+description: The Buddha explains the characteristics of an immature and wise person.
+fetter: ignorance
+tags: an,an3,ignorance,conduct
+id: an3.2
+---
 
 “Kammalakkhaṇo, bhikkhave, bālo, kammalakkhaṇo paṇḍito, apadānasobhanī paññāti. Tīhi, bhikkhave, dhammehi samannāgato bālo veditabbo. Katamehi tīhi? Kāyaduccaritena, vacīduccaritena, manoduccaritena.
 

@@ -1,4 +1,10 @@
-Attabyābādhasutta
+---
+title: Attabyābādhasutta - Self-Infliction of Harm
+description: The Buddha explains how bodily, verbal, and mental misconduct lead to self-infliction of harm.
+fetter: ill-will,conceit
+tags: an,an3,conduct,ill-will,conceit
+id: an3.17
+---
 
 “Tayome, bhikkhave, dhammā attabyābādhāyapi saṁvattanti, parabyābādhāyapi saṁvattanti, ubhayabyābādhāyapi saṁvattanti. Katame tayo? Kāyaduccaritaṁ, vacīduccaritaṁ, manoduccaritaṁ.
 

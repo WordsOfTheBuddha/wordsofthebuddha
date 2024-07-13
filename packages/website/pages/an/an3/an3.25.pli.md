@@ -1,4 +1,10 @@
-Vajirūpamasutta
+---
+title: Vajirūpamasutta - Like a Diamond
+description: The Buddha explains the three types of persons existing in the world based on their mental qualities.
+fetter: ignorance
+tags: an,an3,ignorance,mind
+id: an3.25
+---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo? Arukūpamacitto puggalo, vijjūpamacitto puggalo, vajirūpamacitto puggalo.
 

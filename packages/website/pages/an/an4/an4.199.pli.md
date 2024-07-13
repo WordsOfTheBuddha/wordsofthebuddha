@@ -1,4 +1,10 @@
-Taṇhāsutta
+---
+title: Taṇhāsutta - Craving
+description: The eighteen ways of craving pertaining to the internal bases, and the eighteen ways of craving pertaining to the external bases.
+fetter: conceit
+tags: craving,an,an4,conceit
+id: an4.199
+---
 
 Bhagavā etadavoca:
 

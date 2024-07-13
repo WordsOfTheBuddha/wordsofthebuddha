@@ -1,4 +1,10 @@
-Khippanisantisutta
+---
+title: Khippanisantisutta - Quick To Attend To
+description: The Buddha explains the four types of persons existing in the world.
+fetter: ignorance
+tags: an,an4,ignorance,right speech,good-will, mindfulness,collectedness
+id: an4.97
+---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
 

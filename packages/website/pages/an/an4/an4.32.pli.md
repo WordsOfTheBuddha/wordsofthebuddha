@@ -1,4 +1,10 @@
-Saṅgahasutta
+---
+title: Saṅgahasutta - Supportive
+description: The Buddha explains the four bases of a supportive relationship.
+fetter: ill-will,conceit
+tags: an,an4,relationships,ill-will,conceit
+id: an4.32
+---
 
 “Cattārimāni, bhikkhave, saṅgahavatthūni. Katamāni cattāri? Dānaṁ, peyyavajjaṁ, atthacariyā, samānattatā—
 

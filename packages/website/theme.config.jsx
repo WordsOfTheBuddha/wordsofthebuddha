@@ -23,8 +23,11 @@ export default {
     const pageName = pathSegments[pathSegments.length - 1];
 
     let title = "Words of the Buddha";
-    if (frontMatter.title !== "" && pageName !== "") {
-      title = `${pageName} - ${frontMatter.title}`;
+    if (frontMatter.title) {
+      title = frontMatter.title;
+    }
+    if (pageName !== "") {
+      title = `${pageName} - ${title}`;
     }
 
     return (

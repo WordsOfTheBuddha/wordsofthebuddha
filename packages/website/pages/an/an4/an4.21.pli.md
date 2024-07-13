@@ -1,4 +1,10 @@
-Paṭhamauruvelasutta
+---
+title: Paṭhamauruvelasutta - Uruvelā (First)
+description: The Buddha reflects on the Dhamma after his enlightenment and is encouraged by Brahmā Sahampati to rely on the Dhamma.
+fetter: doubt
+tags: buddha,an,an4,doubt
+id: an4.21
+---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
 
