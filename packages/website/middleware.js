@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import frontMatter from "/public/frontMatter.json";
 
 export const config = {
-  matcher: ["/", "/((?!api|_next|static|public|translationCounts.json).*)"],
+  matcher: ["/", "/((?!api|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json).*)"],
 };
 
 export function middleware(request) {
@@ -43,6 +43,7 @@ export function middleware(request) {
 
   // Check if pathname corresponds to a file
   const fileId = pathname.split("/").pop();
+  console.log("fileId: ", fileId); // Debugging
   const isFile = frontMatter[`${fileId}.${locale}`] !== undefined;
 
   if (isFile && fileId !== "index") {

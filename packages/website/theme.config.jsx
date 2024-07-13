@@ -63,7 +63,6 @@ export default {
   footer: {
     component: null,
   },
-  faviconGlyph: "📜",
   themeSwitch: {
     useOptions() {
       return {
