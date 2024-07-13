@@ -383,104 +383,14 @@
     "fetter": "doubt,identity view,sensual desire,conceit,ignorance",
     "tags": "mn,mn1-10,mn1-50,impermanence,meditation,mindfulness,awareness,mindfulness of body,mindfulness of feelings,mindfulness of mind,mindfulness of mental qualities",
     "id": "mn10",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn1-50/mn1-10/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn10.pli": {
     "title": "Satipaṭṭhānasutta - Establishing of Mindfulness",
     "description": "In this teaching, the Buddha shares on establishing the four foundations of mindfulness - body, feelings, mind, and mental qualities.",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn12.en": {
-    "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
-    "description": "When a bhikkhu who has left the Dhamma and training is disparaging the Buddha's states as merely human and his teaching as  merely leading to the end of suffering, the Buddha counters that this is in fact praise and goes on to enumerate his various attainments.",
-    "fetter": "doubt",
-    "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
-    "id": "mn12",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn12.pli": {
-    "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
-    "description": "When a bhikkhu who has left the Dhamma and training is disparaging the Buddha's states as merely human and his teaching as  merely leading to the end of suffering, the Buddha counters that this is in fact praise and goes on to enumerate his various attainments.",
-    "fetter": "doubt",
-    "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
-    "id": "mn12",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn19.en": {
-    "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
-    "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensuality, ill-will, and harm; and 2) thoughts of relinquishment, non-ill-will, and non-harm. He explains how he abandoned harmful thoughts and cultivated wholesome thoughts, leading to the attainment of the four jhānas and the three knowledges.",
-    "tags": "thoughts,sensual desire,ill-will,harm,relinquishment,good-will,non-harm,loving-kindness,compassion,wholesome,unwholesome,jhāna,divine eye,recollection,liberation,mn,mn1-50,mn11-20,way of practice,right intention",
-    "fetter": "doubt",
-    "id": "mn19",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn19.pli": {
-    "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
-    "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensuality, ill-will, and harm; and 2) thoughts of relinquishment, non-ill-will, and non-harm. He explains how he abandoned harmful thoughts and cultivated wholesome thoughts, leading to the attainment of the four jhānas and the three knowledges.",
-    "tags": "thoughts,sensual desire,ill-will,harm,relinquishment,good-will,non-harm,loving-kindness,compassion,wholesome,unwholesome,jhāna,divine eye,recollection,liberation,mn,mn1-50,mn11-20,way of practice,right intention",
-    "fetter": "doubt",
-    "id": "mn19",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn22.en": {
-    "title": "Alagaddūpamasutta - Simile of the Water Snake",
-    "description": "The Buddha teaches about the harmful view of practicing while engaging in obstructions, and the simile of the water snake. The Buddha also teaches about the raft simile, the six views, and the abandoning of what is not yours.",
-    "fetter": "ignorance",
-    "tags": "mn,mn1-50,mn21-30,sensual desire,views,obstructions,raft,water snake,form,feeling,perception,formations,consciousness,not-self,disenchantment,dispassion,liberation",
-    "id": "mn22",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn22.pli": {
-    "title": "Alagaddūpamasutta - Simile of the Water Snake",
-    "description": "The Buddha teaches about the harmful view of practicing while engaging in obstructions, and the simile of the water snake. The Buddha also teaches about the raft simile, the six views, and the abandoning of what is not yours.",
-    "fetter": "ignorance",
-    "tags": "mn,mn1-50,mn21-30,sensual desire,views,obstructions,raft,water snake,form,feeling,perception,formations,consciousness,not-self,disenchantment,dispassion,liberation",
-    "id": "mn22",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn28.en": {
-    "title": "Mahāhatthipadopamasutta - Simile of the Elephant's Footprint",
-    "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and air.",
-    "fetter": "self-identity view,conceit,ignorance",
-    "tags": "mn,mn1-50,mn21-30,four noble truths, aggregates, clinging, dependent origination, suffering, impermanence, not-self, equanimity, mindfulness, concentration, simile, elephant, footprint",
-    "id": "mn28",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn28.pli": {
-    "title": "Mahāhatthipadopamasutta - Simile of the Elephant's Footprint",
-    "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and air.",
-    "fetter": "self-identity view,conceit,ignorance",
-    "tags": "mn,mn1-50,mn21-30,four noble truths, aggregates, clinging, dependent origination, suffering, impermanence, not-self, equanimity, mindfulness, concentration, simile, elephant, footprint",
-    "id": "mn28",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn39.en": {
-    "title": "Mahāassapurasutta - The Greater Discourse at Assapura",
-    "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
-    "fetter": "doubt",
-    "tags": "taints, hindrances, jhāna, recollection, defilements, liberation, ascetic, brahmin, wakefulness, shame, sense-restraint, moderation, eating, livelihood, mindfulness, suffering, three knowledges",
-    "id": "mn39",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
-  },
-  "mn39.pli": {
-    "title": "Mahāassapurasutta - The Greater Discourse at Assapura",
-    "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
-    "fetter": "doubt",
-    "tags": "taints, hindrances, jhāna, recollection, defilements, liberation, ascetic, brahmin, wakefulness, shame, sense-restraint, moderation, eating, livelihood, mindfulness, suffering, three knowledges",
-    "id": "mn39",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn1-50/mn1-10/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn9.en": {
     "title": "Sammādiṭṭhisutta - Right View",
@@ -488,8 +398,8 @@
     "fetter": "ignorance",
     "tags": "right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints",
     "id": "mn9",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn1-50/mn1-10/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn9.pli": {
     "title": "Sammādiṭṭhisutta - Right View",
@@ -497,8 +407,98 @@
     "fetter": "ignorance",
     "tags": "right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints",
     "id": "mn9",
-    "path": "/mn/mn1-50/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn1-50/mn1-10/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn12.en": {
+    "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
+    "description": "When a bhikkhu who has left the Dhamma and training is disparaging the Buddha's states as merely human and his teaching as  merely leading to the end of suffering, the Buddha counters that this is in fact praise and goes on to enumerate his various attainments.",
+    "fetter": "doubt",
+    "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
+    "id": "mn12",
+    "path": "/mn/mn1-50/mn11-20/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn12.pli": {
+    "title": "Mahāsīhanādasutta - The Greater Discourse on The Lion's Roar",
+    "description": "When a bhikkhu who has left the Dhamma and training is disparaging the Buddha's states as merely human and his teaching as  merely leading to the end of suffering, the Buddha counters that this is in fact praise and goes on to enumerate his various attainments.",
+    "fetter": "doubt",
+    "tags": "doubt,superhuman,attainments,tathāgata,mn,mn1-50,mn11-20",
+    "id": "mn12",
+    "path": "/mn/mn1-50/mn11-20/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn19.en": {
+    "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
+    "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensuality, ill-will, and harm; and 2) thoughts of relinquishment, non-ill-will, and non-harm. He explains how he abandoned harmful thoughts and cultivated wholesome thoughts, leading to the attainment of the four jhānas and the three knowledges.",
+    "tags": "thoughts,sensual desire,ill-will,harm,relinquishment,good-will,non-harm,loving-kindness,compassion,wholesome,unwholesome,jhāna,divine eye,recollection,liberation,mn,mn1-50,mn11-20,way of practice,right intention",
+    "fetter": "doubt",
+    "id": "mn19",
+    "path": "/mn/mn1-50/mn11-20/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn19.pli": {
+    "title": "Dvedhāvitakkasutta - The Two Kinds of Thoughts",
+    "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensuality, ill-will, and harm; and 2) thoughts of relinquishment, non-ill-will, and non-harm. He explains how he abandoned harmful thoughts and cultivated wholesome thoughts, leading to the attainment of the four jhānas and the three knowledges.",
+    "tags": "thoughts,sensual desire,ill-will,harm,relinquishment,good-will,non-harm,loving-kindness,compassion,wholesome,unwholesome,jhāna,divine eye,recollection,liberation,mn,mn1-50,mn11-20,way of practice,right intention",
+    "fetter": "doubt",
+    "id": "mn19",
+    "path": "/mn/mn1-50/mn11-20/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn22.en": {
+    "title": "Alagaddūpamasutta - Simile of the Water Snake",
+    "description": "The Buddha teaches about the harmful view of practicing while engaging in obstructions, and the simile of the water snake. The Buddha also teaches about the raft simile, the six views, and the abandoning of what is not yours.",
+    "fetter": "ignorance",
+    "tags": "mn,mn1-50,mn21-30,sensual desire,views,obstructions,raft,water snake,form,feeling,perception,formations,consciousness,not-self,disenchantment,dispassion,liberation",
+    "id": "mn22",
+    "path": "/mn/mn1-50/mn21-30/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn22.pli": {
+    "title": "Alagaddūpamasutta - Simile of the Water Snake",
+    "description": "The Buddha teaches about the harmful view of practicing while engaging in obstructions, and the simile of the water snake. The Buddha also teaches about the raft simile, the six views, and the abandoning of what is not yours.",
+    "fetter": "ignorance",
+    "tags": "mn,mn1-50,mn21-30,sensual desire,views,obstructions,raft,water snake,form,feeling,perception,formations,consciousness,not-self,disenchantment,dispassion,liberation",
+    "id": "mn22",
+    "path": "/mn/mn1-50/mn21-30/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn28.en": {
+    "title": "Mahāhatthipadopamasutta - Simile of the Elephant's Footprint",
+    "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and air.",
+    "fetter": "self-identity view,conceit,ignorance",
+    "tags": "mn,mn1-50,mn21-30,four noble truths, aggregates, clinging, dependent origination, suffering, impermanence, not-self, equanimity, mindfulness, concentration, simile, elephant, footprint",
+    "id": "mn28",
+    "path": "/mn/mn1-50/mn21-30/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn28.pli": {
+    "title": "Mahāhatthipadopamasutta - Simile of the Elephant's Footprint",
+    "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and air.",
+    "fetter": "self-identity view,conceit,ignorance",
+    "tags": "mn,mn1-50,mn21-30,four noble truths, aggregates, clinging, dependent origination, suffering, impermanence, not-self, equanimity, mindfulness, concentration, simile, elephant, footprint",
+    "id": "mn28",
+    "path": "/mn/mn1-50/mn21-30/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn39.en": {
+    "title": "Mahāassapurasutta - The Greater Discourse at Assapura",
+    "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
+    "fetter": "doubt",
+    "tags": "taints, hindrances, jhāna, recollection, defilements, liberation, ascetic, brahmin, wakefulness, shame, sense-restraint, moderation, eating, livelihood, mindfulness, suffering, three knowledges",
+    "id": "mn39",
+    "path": "/mn/mn1-50/mn31-40/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
+  },
+  "mn39.pli": {
+    "title": "Mahāassapurasutta - The Greater Discourse at Assapura",
+    "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
+    "fetter": "doubt",
+    "tags": "taints, hindrances, jhāna, recollection, defilements, liberation, ascetic, brahmin, wakefulness, shame, sense-restraint, moderation, eating, livelihood, mindfulness, suffering, three knowledges",
+    "id": "mn39",
+    "path": "/mn/mn1-50/mn31-40/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn107.en": {
     "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
@@ -506,8 +506,8 @@
     "fetter": "doubt,attachment to rites and rituals,self-identity view",
     "tags": "mn,mn101-150,mn101-110,moral conduct,sense restraint,moderation in eating,wakefuleness,mindfulness,seclusion,hindrances,jhāna,gradual training guidelines",
     "id": "mn107",
-    "path": "/mn/mn101-150/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn101-150/mn101-110/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn107.pli": {
     "title": "Gaṇakamoggallānasutta - with Accountant Moggallāna",
@@ -515,8 +515,8 @@
     "fetter": "doubt,attachment to rites and rituals,personal existence view",
     "tags": "mn,mn101-150,mn101-110,moral conduct,sense restraint,moderation in eating,wakefuleness,mindfulness,seclusion,hindrances,jhāna,gradual training guidelines",
     "id": "mn107",
-    "path": "/mn/mn101-150/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn101-150/mn101-110/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn140.en": {
     "title": "Dhātuvibhaṅgasutta - Analysis of the Elements",
@@ -524,8 +524,8 @@
     "fetter": "ignorance",
     "tags": "mn,mn101-150,mn131-140,elements,fire,water,earth,air,space,consciousness,feeling,contact,exploration,peace,truth,relinquishment,peace,ignorance",
     "id": "mn140",
-    "path": "/mn/mn101-150/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn101-150/mn131-140/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn140.pli": {
     "title": "Dhātuvibhaṅgasutta - Analysis of the Elements",
@@ -533,8 +533,8 @@
     "fetter": "ignorance",
     "tags": "mn,mn101-150,mn131-140,elements,fire,water,earth,air,space,consciousness,feeling,contact,exploration,peace,truth,relinquishment,peace,ignorance",
     "id": "mn140",
-    "path": "/mn/mn101-150/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn101-150/mn131-140/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn55.en": {
     "title": "Jīvakasutta - Discourse with Jīvaka",
@@ -542,8 +542,8 @@
     "fetter": "ill-will,ignorance",
     "tags": "mn,mn55,food,meat,compassion,metta,loving-kindness,blameless",
     "id": "mn55",
-    "path": "/mn/mn51-100/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn51-100/mn51-60/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn55.pli": {
     "title": "Jīvakasutta - Discourse with Jīvaka",
@@ -551,8 +551,8 @@
     "fetter": "ill-will,ignorance",
     "tags": "mn,mn55,food,meat,compassion,metta,loving-kindness,blameless",
     "id": "mn55",
-    "path": "/mn/mn51-100/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn51-100/mn51-60/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn64.en": {
     "title": "Mahāmālukyasutta - The Great Discourse to Mālukya",
@@ -560,8 +560,8 @@
     "fetter": "self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will",
     "tags": "mn,mn51-100,mn61-70,self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will,jhāna,formless attainments",
     "id": "mn64",
-    "path": "/mn/mn51-100/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn51-100/mn61-70/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn64.pli": {
     "title": "Mahāmālukyasutta - The Great Discourse to Mālukya",
@@ -569,8 +569,8 @@
     "fetter": "self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will",
     "tags": "mn,mn51-100,mn61-70,self-identity view,doubt,attachment to rites and rituals,sensual desire,ill-will,jhāna,formless attainments",
     "id": "mn64",
-    "path": "/mn/mn51-100/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn51-100/mn61-70/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn72.en": {
     "title": "Aggivacchasutta - Discourse on Fire with Vacchagotta",
@@ -578,8 +578,8 @@
     "tags": "mn,mn51-100,mn71-80,conceit,speculative views,five aggregates,liberation",
     "fetter": "conceit",
     "id": "mn72",
-    "path": "/mn/mn51-100/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn51-100/mn71-80/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "mn72.pli": {
     "title": "Aggivacchasutta - Discourse on Fire with Vacchagotta",
@@ -587,8 +587,8 @@
     "tags": "mn,mn51-100,mn71-80,conceit,speculative views,five aggregates,liberation",
     "fetter": "conceit",
     "id": "mn72",
-    "path": "/mn/mn51-100/",
-    "updatedTime": "2024-07-13T10:38:00.000Z"
+    "path": "/mn/mn51-100/mn71-80/",
+    "updatedTime": "2024-07-13T16:24:44.000Z"
   },
   "sn1.1.en": {
     "title": "Oghataraṇasutta - Crossing the Flood",
