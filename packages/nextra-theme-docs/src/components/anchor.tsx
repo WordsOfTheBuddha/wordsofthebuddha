@@ -26,6 +26,7 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function (
         target="_blank"
         rel="noreferrer"
         {...props}
+        style={{ textDecoration: 'none' }} // Add this line to remove underline on hover
       >
         {children}
         <span className="nx-sr-only nx-select-none"> (opens in a new tab)</span>
@@ -35,7 +36,7 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function (
 
   if (!href) {
     return (
-      <a ref={forwardedRef} {...props}>
+      <a ref={forwardedRef} {...props} style={{ textDecoration: 'none' }}>
         {children}
       </a>
     )
@@ -43,15 +44,15 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function (
 
   if (nextVersion > 12 || config.newNextLinkBehavior) {
     return (
-      <NextLink ref={forwardedRef} href={href} {...props}>
-        {children}
+      <NextLink ref={forwardedRef} href={href} {...props} style={{ textDecoration: 'none' }} passHref>
+          {children}
       </NextLink>
     )
   }
 
   return (
     <NextLink href={href} passHref>
-      <a ref={forwardedRef} {...props}>
+      <a ref={forwardedRef} {...props} style={{ textDecoration: 'none' }}>
         {children}
       </a>
     </NextLink>

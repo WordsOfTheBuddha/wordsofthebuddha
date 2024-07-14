@@ -261,6 +261,7 @@ var Anchor = forwardRef(function(_a, forwardedRef) {
         target: "_blank",
         rel: "noreferrer"
       }, props), {
+        style: { textDecoration: "none" },
         children: [
           children,
           /* @__PURE__ */ jsx3("span", { className: "nx-sr-only nx-select-none", children: " (opens in a new tab)" })
@@ -269,12 +270,12 @@ var Anchor = forwardRef(function(_a, forwardedRef) {
     );
   }
   if (!href) {
-    return /* @__PURE__ */ jsx3("a", __spreadProps(__spreadValues({ ref: forwardedRef }, props), { children }));
+    return /* @__PURE__ */ jsx3("a", __spreadProps(__spreadValues({ ref: forwardedRef }, props), { style: { textDecoration: "none" }, children }));
   }
   if (nextVersion > 12 || config.newNextLinkBehavior) {
-    return /* @__PURE__ */ jsx3(NextLink, __spreadProps(__spreadValues({ ref: forwardedRef, href }, props), { children }));
+    return /* @__PURE__ */ jsx3(NextLink, __spreadProps(__spreadValues({ ref: forwardedRef, href }, props), { style: { textDecoration: "none" }, passHref: true, children }));
   }
-  return /* @__PURE__ */ jsx3(NextLink, { href, passHref: true, children: /* @__PURE__ */ jsx3("a", __spreadProps(__spreadValues({ ref: forwardedRef }, props), { children })) });
+  return /* @__PURE__ */ jsx3(NextLink, { href, passHref: true, children: /* @__PURE__ */ jsx3("a", __spreadProps(__spreadValues({ ref: forwardedRef }, props), { style: { textDecoration: "none" }, children })) });
 });
 Anchor.displayName = "Anchor";
 
