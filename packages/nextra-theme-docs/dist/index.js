@@ -514,7 +514,11 @@ function Collapse({
     "div",
     {
       ref: containerRef,
-      className: "nx-transform-gpu nx-overflow-hidden nx-transition-all nx-ease-in-out motion-reduce:nx-transition-none",
+      className: cn4(
+        "nx-transform-gpu nx-overflow-hidden nx-transition-all nx-ease-in-out motion-reduce:nx-transition-none",
+        isOpen ? "md:nx-w-64" : "md:nx-w-20",
+        className
+      ),
       style: initialOpen.current || horizontal ? void 0 : { height: 0 },
       children: /* @__PURE__ */ jsx8(
         "div",
@@ -522,7 +526,7 @@ function Collapse({
           ref: innerRef,
           className: cn4(
             "nx-transition-opacity nx-duration-500 nx-ease-in-out motion-reduce:nx-transition-none",
-            isOpen ? "nx-opacity-100" : "nx-opacity-0",
+            isOpen ? "nx-opacity-100 md:nx-w-64" : "nx-opacity-0 md:nx-w-20",
             className
           ),
           children
