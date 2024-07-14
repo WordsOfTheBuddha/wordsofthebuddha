@@ -3,20 +3,24 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "dev": "nodemon"
+  },
   "resolutions": {
     "nextra-theme-docs": "link:packages/nextra-theme-docs"
   },
   "devDependencies": {
-    "tsup": "^8.1.0",
-    "pnpm": "^9.5.0",
-    "typescript": "^5.5.3",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "concurrently": "^8.0.0",
+    "nodemon": "^3.1.4",
+    "pnpm": "^9.5.0",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.1.0",
     "postcss-lightningcss": "^1.0.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3",
     "vitest": "^0.34.0"
   }
 }

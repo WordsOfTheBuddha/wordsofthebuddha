@@ -1,0 +1,6 @@
+{
+  "watch": ["packages/nextra-theme-docs", "packages/website"],
+  "ext": "js,json,ts,tsx,mdx",
+  "ignore": ["node_modules", "packages/nextra-theme-docs/dist", "packages/website/.next", "packages/website/public/"],
+  "exec": "yarn workspace website hot"
+}
