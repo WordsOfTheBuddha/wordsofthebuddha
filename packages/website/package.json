@@ -1,5 +1,5 @@
 {
-  "name": "wordsofthebuddha.org",
+  "name": "website",
   "version": "0.0.3",
   "license": "CC0-1.0",
   "dependencies": {
@@ -9,7 +9,7 @@
     "gray-matter": "^4.0.3",
     "next": "^14.2.4",
     "nextra": "^2.13.4",
-    "nextra-theme-docs": "file:../nextra-theme-docs",
+    "nextra-theme-docs": "link:../nextra-theme-docs",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
