@@ -275,7 +275,7 @@ export function Search({
                 >
                   <Anchor
                     className="nx-block nx-scroll-m-12 nx-px-2.5 nx-py-2"
-                    href={route.replace(/\.\w{2,3}$/, '')}
+                    href={route.replace(/(.*)(\.\w{2,3})(#[\s\S]*)?$/, '$1$3')}
                     data-index={i}
                     onFocus={handleActive}
                     onMouseMove={handleActive}
