@@ -84,7 +84,7 @@ export default {
     content: null,
   },
   sidebar: {
-    toggleButton: true,
-    defaultMenuCollapseLevel: 1,
+    toggleButton: false,
+    defaultMenuCollapseLevel: 0,
   },
 };

@@ -1946,6 +1946,7 @@ function Sidebar({
                     "nx-p-4 nx-grow md:nx-h-[calc(100vh-var(--nextra-navbar-height)-var(--nextra-menu-height))]",
                     showSidebar ? "nextra-scrollbar" : "no-scrollbar"
                   ),
+                  style: { padding: "0.2rem" },
                   ref: sidebarRef,
                   children: [
                     (!asPopover || !showSidebar) && /* @__PURE__ */ jsx21(Collapse, { isOpen: showSidebar, horizontal: true, children: /* @__PURE__ */ jsx21(
