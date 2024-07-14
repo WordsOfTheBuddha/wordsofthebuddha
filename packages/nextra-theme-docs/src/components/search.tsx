@@ -261,6 +261,7 @@ export function Search({
             </span>
           ) : results.length > 0 ? (
             results.map(({ route, prefix, children, id }, i) => (
+
               <Fragment key={id}>
                 {prefix}
                 <li
@@ -274,7 +275,7 @@ export function Search({
                 >
                   <Anchor
                     className="nx-block nx-scroll-m-12 nx-px-2.5 nx-py-2"
-                    href={route}
+                    href={route.replace(/\.\w{2,3}$/, '')}
                     data-index={i}
                     onFocus={handleActive}
                     onMouseMove={handleActive}
