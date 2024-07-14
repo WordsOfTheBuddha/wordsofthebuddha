@@ -43,7 +43,6 @@ export function middleware(request) {
 
   // Check if pathname corresponds to a file
   const fileId = pathname.split("/").pop();
-  console.log("fileId: ", fileId); // Debugging
   const isFile = frontMatter[`${fileId}.${locale}`] !== undefined;
 
   if (isFile && fileId !== "index") {

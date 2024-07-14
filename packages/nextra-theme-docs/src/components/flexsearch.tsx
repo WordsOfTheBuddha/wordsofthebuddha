@@ -44,6 +44,9 @@ const indexes: {
   [locale: string]: [PageIndex, SectionIndex]
 } = {}
 
+// Custom encoder to remove diacritics and normalize text
+const removeDiacritics = (str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\.([^\s]|$)/g, '. $1');
+
 // Caches promises that load the index
 const loadIndexesPromises = new Map<string, Promise<void>>()
 const loadIndexes = (basePath: string, locale: string): Promise<void> => {
@@ -105,8 +108,8 @@ const loadIndexesImpl = async (
     for (const [key, content] of Object.entries(structurizedData.data)) {
       const [headingId, headingValue] = key.split('#')
       const url = route + (headingId ? '#' + headingId : '')
-      const title = headingValue || structurizedData.title
-      const paragraphs = content.split('\n')
+      const title = removeDiacritics(headingValue || structurizedData.title)
+      const paragraphs = content.split('\n').map(removeDiacritics)
 
       sectionIndex.add({
         id: url,
@@ -128,13 +131,13 @@ const loadIndexesImpl = async (
       }
 
       // Add the page itself.
-      pageContent += ` ${title} ${content}`
+      pageContent += ` ${title} ${paragraphs.join(' ')}`
     }
 
     pageIndex.add({
       id: pageId,
-      title: structurizedData.title,
-      content: pageContent
+      title: removeDiacritics(structurizedData.title),
+      content: pageContent // Already normalized
     })
   }
 
@@ -155,32 +158,34 @@ export function Flexsearch({
   const doSearch = (search: string) => {
     if (!search) return
     const [pageIndex, sectionIndex] = indexes[locale]
-
+  
+    const normalizedSearch = removeDiacritics(search);
+  
     // Show the results for the top 5 pages
     const pageResults =
-      pageIndex.search<true>(search, 5, {
+      pageIndex.search<true>(normalizedSearch, 5, {
         enrich: true,
         suggest: true
       })[0]?.result || []
-
+  
     const results: Result[] = []
     const pageTitleMatches: Record<number, number> = {}
-
+  
     for (let i = 0; i < pageResults.length; i++) {
       const result = pageResults[i]
       pageTitleMatches[i] = 0
-
+  
       // Show the top 5 results for each page
       const sectionResults =
-        sectionIndex.search<true>(search, 5, {
+        sectionIndex.search<true>(normalizedSearch, 5, {
           enrich: true,
           suggest: true,
           tag: `page_${result.id}`
         })[0]?.result || []
-
+  
       let isFirstItemOfPage = true
       const occurred: Record<string, boolean> = {}
-
+  
       for (let j = 0; j < sectionResults.length; j++) {
         const { doc } = sectionResults[j]
         const isMatchingTitle = doc.display !== undefined
@@ -221,7 +226,7 @@ export function Flexsearch({
         isFirstItemOfPage = false
       }
     }
-
+  
     setResults(
       results
         .sort((a, b) => {

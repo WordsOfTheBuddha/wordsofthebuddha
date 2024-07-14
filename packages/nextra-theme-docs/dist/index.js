@@ -866,6 +866,7 @@ function Search({
 // src/components/flexsearch.tsx
 import { Fragment as Fragment6, jsx as jsx12, jsxs as jsxs7 } from "react/jsx-runtime";
 var indexes = {};
+var removeDiacritics = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\.([^\s]|$)/g, ". $1");
 var loadIndexesPromises = /* @__PURE__ */ new Map();
 var loadIndexes = (basePath, locale) => {
   const key = basePath + "@" + locale;
@@ -917,8 +918,8 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
     for (const [key, content] of Object.entries(structurizedData.data)) {
       const [headingId, headingValue] = key.split("#");
       const url = route + (headingId ? "#" + headingId : "");
-      const title = headingValue || structurizedData.title;
-      const paragraphs = content.split("\n");
+      const title = removeDiacritics(headingValue || structurizedData.title);
+      const paragraphs = content.split("\n").map(removeDiacritics);
       sectionIndex.add(__spreadValues({
         id: url,
         url,
@@ -935,12 +936,13 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
           content: paragraphs[i]
         });
       }
-      pageContent += ` ${title} ${content}`;
+      pageContent += ` ${title} ${paragraphs.join(" ")}`;
     }
     pageIndex.add({
       id: pageId,
-      title: structurizedData.title,
+      title: removeDiacritics(structurizedData.title),
       content: pageContent
+      // Already normalized
     });
   }
   indexes[locale] = [pageIndex, sectionIndex];
@@ -957,7 +959,8 @@ function Flexsearch({
     var _a, _b;
     if (!search2) return;
     const [pageIndex, sectionIndex] = indexes[locale];
-    const pageResults = ((_a = pageIndex.search(search2, 5, {
+    const normalizedSearch = removeDiacritics(search2);
+    const pageResults = ((_a = pageIndex.search(normalizedSearch, 5, {
       enrich: true,
       suggest: true
     })[0]) == null ? void 0 : _a.result) || [];
@@ -966,7 +969,7 @@ function Flexsearch({
     for (let i = 0; i < pageResults.length; i++) {
       const result = pageResults[i];
       pageTitleMatches[i] = 0;
-      const sectionResults = ((_b = sectionIndex.search(search2, 5, {
+      const sectionResults = ((_b = sectionIndex.search(normalizedSearch, 5, {
         enrich: true,
         suggest: true,
         tag: `page_${result.id}`
