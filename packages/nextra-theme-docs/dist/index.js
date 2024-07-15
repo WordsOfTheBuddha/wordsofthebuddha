@@ -868,6 +868,20 @@ function Search({
 import { Fragment as Fragment6, jsx as jsx12, jsxs as jsxs7 } from "react/jsx-runtime";
 var indexes = {};
 var removeDiacritics = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\.([^\s]|$)/g, ". $1");
+var getDiscourseId = (url) => {
+  const parts = url.split("/");
+  const lastPart = parts[parts.length - 1];
+  return lastPart.replace(/(.*)(\.\w{2,3})(#[\s\S]*)?$/, "$1$3");
+};
+var getFormattedDiscourseId = (url) => {
+  const discourseId = getDiscourseId(url);
+  const match = discourseId.match(/^([a-zA-Z]+)([0-9]+(?:[\.\-][0-9]+)*)$/);
+  if (match) {
+    const [_, text, number] = match;
+    return `${text.toUpperCase()} ${number}`;
+  }
+  return discourseId;
+};
 var loadIndexesPromises = /* @__PURE__ */ new Map();
 var loadIndexes = (basePath, locale) => {
   const key = basePath + "@" + locale;
@@ -889,7 +903,7 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
     document: {
       id: "id",
       index: "content",
-      store: ["title"]
+      store: ["discourseId", "title"]
     },
     context: {
       resolution: 9,
@@ -926,7 +940,7 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
         url,
         title,
         pageId: `page_${pageId}`,
-        content: title
+        content: getDiscourseId(route) + "  " + getFormattedDiscourseId(route) + title
       }, paragraphs[0] && { display: paragraphs[0] }));
       for (let i = 0; i < paragraphs.length; i++) {
         sectionIndex.add({
@@ -939,8 +953,10 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       }
       pageContent += ` ${title} ${paragraphs.join(" ")}`;
     }
+    pageContent += `${getDiscourseId(route)} ${getFormattedDiscourseId(route)} ${removeDiacritics(structurizedData.title)}`;
     pageIndex.add({
       id: pageId,
+      discourseId: getFormattedDiscourseId(route),
       title: removeDiacritics(structurizedData.title),
       content: pageContent
       // Already normalized
@@ -985,20 +1001,25 @@ function Flexsearch({
         }
         const { url, title } = doc;
         const content = doc.display || doc.content;
+        const urlId = result.doc.discourseId;
         if (occurred[url + "@" + content]) continue;
         occurred[url + "@" + content] = true;
         results2.push({
           _page_rk: i,
           _section_rk: j,
           route: url,
-          prefix: isFirstItemOfPage && /* @__PURE__ */ jsx12(
+          prefix: isFirstItemOfPage && /* @__PURE__ */ jsxs7(
             "div",
             {
               className: cn7(
                 "nx-mx-2.5 nx-mb-2 nx-mt-6 nx-select-none nx-border-b nx-border-black/10 nx-px-2.5 nx-pb-1.5 nx-text-xs nx-font-semibold nx-uppercase nx-text-gray-500 first:nx-mt-0 dark:nx-border-white/20 dark:nx-text-gray-300",
                 "contrast-more:nx-border-gray-600 contrast-more:nx-text-gray-900 contrast-more:dark:nx-border-gray-50 contrast-more:dark:nx-text-gray-50"
               ),
-              children: result.doc.title
+              children: [
+                urlId,
+                ": ",
+                result.doc.title
+              ]
             }
           ),
           children: /* @__PURE__ */ jsxs7(Fragment6, { children: [

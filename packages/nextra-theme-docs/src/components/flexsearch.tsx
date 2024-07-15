@@ -25,10 +25,11 @@ type SectionIndex = FlexSearch.Document<
 type PageIndex = FlexSearch.Document<
   {
     id: number
+    discourseId: string
     title: string
     content: string
   },
-  ['title']
+  ['discourseId', 'title']
 >
 
 type Result = {
@@ -46,6 +47,29 @@ const indexes: {
 
 // Custom encoder to remove diacritics and normalize text
 const removeDiacritics = (str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\.([^\s]|$)/g, '. $1');
+
+const getDiscourseId = (url: string): string => {
+  // Split the URL by '/' and get the last part
+  const parts = url.split('/');
+  const lastPart = parts[parts.length - 1];
+
+  // Extract the discourse ID without the extension
+  return lastPart.replace(/(.*)(\.\w{2,3})(#[\s\S]*)?$/, '$1$3');
+}
+
+const getFormattedDiscourseId = (url: string): string => {
+  const discourseId = getDiscourseId(url);
+  // Match the text part and the numeric part, including dots or dashes
+  const match = discourseId.match(/^([a-zA-Z]+)([0-9]+(?:[\.\-][0-9]+)*)$/);
+
+  if (match) {
+    const [_, text, number] = match;
+    // Format the string to "TEXT NUMBER"
+    return `${text.toUpperCase()} ${number}`;
+  }
+
+  return discourseId;
+}
 
 // Caches promises that load the index
 const loadIndexesPromises = new Map<string, Promise<void>>()
@@ -74,7 +98,7 @@ const loadIndexesImpl = async (
     document: {
       id: 'id',
       index: 'content',
-      store: ['title']
+      store: ['discourseId', 'title']
     },
     context: {
       resolution: 9,
@@ -116,7 +140,7 @@ const loadIndexesImpl = async (
         url,
         title,
         pageId: `page_${pageId}`,
-        content: title,
+        content: getDiscourseId(route) + ' ' + ' ' + getFormattedDiscourseId(route) + title,
         ...(paragraphs[0] && { display: paragraphs[0] })
       })
 
@@ -134,8 +158,11 @@ const loadIndexesImpl = async (
       pageContent += ` ${title} ${paragraphs.join(' ')}`
     }
 
+    pageContent += `${getDiscourseId(route)} ${getFormattedDiscourseId(route)} ${removeDiacritics(structurizedData.title)}`;
+
     pageIndex.add({
       id: pageId,
+      discourseId: getFormattedDiscourseId(route),
       title: removeDiacritics(structurizedData.title),
       content: pageContent // Already normalized
     })
@@ -194,6 +221,7 @@ export function Flexsearch({
         }
         const { url, title } = doc
         const content = doc.display || doc.content
+        const urlId = result.doc.discourseId
         if (occurred[url + '@' + content]) continue
         occurred[url + '@' + content] = true
         results.push({
@@ -207,7 +235,7 @@ export function Flexsearch({
                 'contrast-more:nx-border-gray-600 contrast-more:nx-text-gray-900 contrast-more:dark:nx-border-gray-50 contrast-more:dark:nx-text-gray-50'
               )}
             >
-              {result.doc.title}
+              {urlId}: {result.doc.title}
             </div>
           ),
           children: (
