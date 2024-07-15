@@ -27,7 +27,7 @@ const createDirectoryLink = (dir, subdir) => {
   };
   return `
     <div className="directory-link">
-      <a href="/${fullPath}/">${transformLabel(subdir)}</a>
+      <a href="/${fullPath}/" className="directory-link">${transformLabel(subdir)}</a>
     </div>
   `;
 };
