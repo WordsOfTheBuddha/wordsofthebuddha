@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import frontMatter from "/public/frontMatter.json";
 
 export const config = {
-  matcher: ["/", "/((?!api|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json).*)"],
+  matcher: ["/", "/((?!api|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json|searchIndex.json).*)"],
 };
 
 export function middleware(request) {
