@@ -554,29 +554,45 @@ var HighlightMatches = memo(function HighlightMatches2({
   if (!value) {
     return null;
   }
-  const splitText = value.split("");
   const escapedSearch = escapeStringRegexp(match.trim());
   const regexp = new RegExp(escapedSearch.replaceAll(/\s+/g, "|"), "ig");
   let result;
-  let index = 0;
+  let lastIndex = 0;
   const content = [];
   while (result = regexp.exec(value)) {
-    if (result.index === regexp.lastIndex) {
-      regexp.lastIndex++;
-    } else {
-      const before = splitText.splice(0, result.index - index).join("");
-      const after = splitText.splice(0, regexp.lastIndex - result.index).join("");
-      content.push(
-        before,
-        /* @__PURE__ */ jsx9("span", { className: "nx-text-primary-600", children: after }, result.index)
-      );
-      index = regexp.lastIndex;
+    const before = value.slice(lastIndex, result.index);
+    const matchText = value.slice(result.index, regexp.lastIndex);
+    if (before) {
+      content.push(before);
     }
+    content.push(
+      /* @__PURE__ */ jsx9("span", { className: "nx-text-primary-600", children: matchText }, result.index)
+    );
+    lastIndex = regexp.lastIndex;
   }
-  return /* @__PURE__ */ jsxs4(Fragment3, { children: [
-    content,
-    splitText.join("")
-  ] });
+  if (lastIndex < value.length) {
+    content.push(value.slice(lastIndex));
+  }
+  const renderContent = (content2) => {
+    const renderedContent = [];
+    content2.forEach((part, index) => {
+      if (typeof part === "string") {
+        const lines = part.split("\n");
+        lines.forEach((line, idx) => {
+          renderedContent.push(
+            /* @__PURE__ */ jsxs4("span", { style: { "marginBottom": "1rem" }, children: [
+              line,
+              idx < lines.length - 1 && /* @__PURE__ */ jsx9("div", { style: { height: "0.3rem" } })
+            ] }, `${index}-${idx}`)
+          );
+        });
+      } else {
+        renderedContent.push(part);
+      }
+    });
+    return renderedContent;
+  };
+  return /* @__PURE__ */ jsx9(Fragment3, { children: renderContent(content) });
 });
 
 // src/components/search.tsx
@@ -822,8 +838,9 @@ function Search({
             ),
             ref: ulRef,
             style: {
-              transition: "max-height .2s ease"
+              transition: "max-height .2s ease",
               // don't work with tailwindcss
+              maxHeight: "80vh"
             },
             children: error ? /* @__PURE__ */ jsxs6("span", { className: "nx-flex nx-select-none nx-justify-center nx-gap-2 nx-p-8 nx-text-center nx-text-sm nx-text-red-500", children: [
               /* @__PURE__ */ jsx11(InformationCircleIcon, { className: "nx-h-5 nx-w-5" }),
@@ -867,7 +884,75 @@ function Search({
 // src/components/flexsearch.tsx
 import { Fragment as Fragment6, jsx as jsx12, jsxs as jsxs7 } from "react/jsx-runtime";
 var indexes = {};
-var removeDiacritics = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\.([^\s]|$)/g, ". $1").replace(/""/g, '" "').replace(/:"/g, ': "');
+var removeDiacritics = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+var isVerse = (paragraph) => {
+  const lines = paragraph.trim().split("\n");
+  if (lines.length < 2) return false;
+  const lastLine = lines[lines.length - 1].trim();
+  const otherLines = lines.slice(0, -1);
+  const lastLineValid = /[.?"-]$/.test(lastLine);
+  const otherLinesValid = otherLines.every(
+    (line) => /[,;:.?]?$/i.test(line.trim())
+  );
+  return lastLineValid && otherLinesValid;
+};
+function splitByPatterns(text) {
+  const patterns = [
+    { regex: /\.""(?=[A-Z])/g, offset: 2 },
+    { regex: /\?""(?=[A-Z])/g, offset: 2 },
+    { regex: /:"(?=[A-Z])/g, offset: 1 },
+    { regex: /\.'(?=[A-Z])/g, offset: 2 },
+    { regex: /\."(?=[A-Z])/g, offset: 2 },
+    { regex: /\.(?=[A-Z])/g, offset: 1 }
+  ];
+  function splitTextByPatterns(text2, patterns2) {
+    let paragraphs = [text2];
+    patterns2.forEach((pattern) => {
+      let newParagraphs = [];
+      paragraphs.forEach((paragraph) => {
+        let lastIndex = 0;
+        let match;
+        while ((match = pattern.regex.exec(paragraph)) !== null) {
+          const matchIndex = match.index + pattern.offset;
+          newParagraphs.push(paragraph.slice(lastIndex, matchIndex).trim());
+          lastIndex = matchIndex;
+        }
+        if (lastIndex < paragraph.length) {
+          newParagraphs.push(paragraph.slice(lastIndex).trim());
+        }
+      });
+      paragraphs = newParagraphs;
+    });
+    return paragraphs;
+  }
+  return splitTextByPatterns(text, patterns);
+}
+var splitContentIntoParagraphs = (content) => {
+  const rawParagraphs = splitByPatterns(content);
+  const paragraphs = [];
+  rawParagraphs.forEach((rawParagraph) => {
+    const lines = rawParagraph.split("\n").map((line) => line.trim());
+    let currentParagraph = "";
+    lines.forEach((line, index) => {
+      if (currentParagraph) {
+        currentParagraph += "\n" + line;
+      } else {
+        currentParagraph = line;
+      }
+      if (index === lines.length - 1 || lines[index + 1] === "") {
+        if (isVerse(currentParagraph)) {
+          paragraphs.push(currentParagraph);
+        } else {
+          paragraphs.push(
+            ...currentParagraph.split("\n\n").map(removeDiacritics)
+          );
+        }
+        currentParagraph = "";
+      }
+    });
+  });
+  return paragraphs.filter((paragraph) => paragraph.trim().length > 0);
+};
 var getDiscourseId = (url) => {
   const parts = url.split("/");
   const lastPart = parts[parts.length - 1];
@@ -935,16 +1020,15 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       const url = route + (headingId ? "#" + headingId : "");
       const pageTitle = removeDiacritics(structurizedData.title);
       const title = removeDiacritics(headingValue || structurizedData.title);
-      const paragraphs = content.split("\n").map(removeDiacritics);
-      for (let i = 0; i < paragraphs.length; i++) {
-        sectionIndex.add({
-          id: `${url}_${i}`,
-          url,
-          title,
-          pageId: `page_${pageId}`,
-          content: getDiscourseId(route) + " " + getFormattedDiscourseId(route) + " " + pageTitle + " " + paragraphs[i]
-        });
-      }
+      const paragraphs = splitContentIntoParagraphs(content);
+      const revisedContent = removeDiacritics(paragraphs.join("\n\n"));
+      sectionIndex.add({
+        id: url,
+        url,
+        title,
+        pageId: `page_${pageId}`,
+        content: getDiscourseId(route) + " " + getFormattedDiscourseId(route) + " " + pageTitle + " " + title + " " + revisedContent
+      });
       pageContent += ` ${title} ${paragraphs.join(" ")}`;
     }
     pageContent += `${getDiscourseId(route)} ${getFormattedDiscourseId(
@@ -991,7 +1075,6 @@ function Flexsearch({
       const occurred = {};
       for (let j = 0; j < sectionResults.length; j++) {
         const { doc } = sectionResults[j];
-        console.log("i: ", i, "j: ", j, "doc: ", doc);
         const isMatchingTitle = doc.display !== void 0;
         if (isMatchingTitle) {
           pageTitleMatches[i]++;
@@ -1004,6 +1087,10 @@ function Flexsearch({
           /[.*+?^${}()|[\]\\]/g,
           "\\$&"
         );
+        const sectionTitleForRegex = doc.title.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          "\\$&"
+        );
         const pattern = new RegExp(
           `${urlId.replace(
             /[.*+?^${}()|[\]\\]/gi,
@@ -1011,7 +1098,7 @@ function Flexsearch({
           )}|${urlIdNoSpaces.replace(
             /[.*+?^${}()|[\]\\]/g,
             "\\$&"
-          )}|${titleForRegex}`,
+          )}|${titleForRegex}|${sectionTitleForRegex}`,
           "gi"
         );
         let titleString = urlId;

@@ -246,7 +246,8 @@ export function Search({
           )}
           ref={ulRef}
           style={{
-            transition: 'max-height .2s ease' // don't work with tailwindcss
+            transition: 'max-height .2s ease', // don't work with tailwindcss
+            maxHeight: '80vh',
           }}
         >
           {error ? (

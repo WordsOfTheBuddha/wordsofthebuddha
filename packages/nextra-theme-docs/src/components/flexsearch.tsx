@@ -49,10 +49,102 @@ const indexes: {
 const removeDiacritics = (str: string) =>
 	str
 		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "")
-		.replace(/\.([^\s]|$)/g, ". $1")
-    .replace(/""/g, '" "')
-    .replace(/:"/g, ': "');
+		.replace(/[\u0300-\u036f]/g, "");
+
+const isVerse = (paragraph: string): boolean => {
+	const lines = paragraph.trim().split("\n");
+	if (lines.length < 2) return false;
+
+	const lastLine = lines[lines.length - 1].trim();
+	const otherLines = lines.slice(0, -1);
+
+	const lastLineValid = /[.?"-]$/.test(lastLine);
+	const otherLinesValid = otherLines.every((line) =>
+		/[,;:.?]?$/i.test(line.trim())
+	);
+
+	return lastLineValid && otherLinesValid;
+};
+
+type Pattern = {
+  regex: RegExp;
+  offset: number;
+};
+
+function splitByPatterns(text: string): string[] {
+  // Define the regular expression patterns in logical order
+  const patterns: Pattern[] = [
+    { regex: /\.""(?=[A-Z])/g, offset: 2 },
+    { regex: /\?""(?=[A-Z])/g, offset: 2 },
+    { regex: /:"(?=[A-Z])/g, offset: 1 },
+    { regex: /\.'(?=[A-Z])/g, offset: 2 },
+    { regex: /\."(?=[A-Z])/g, offset: 2 },
+    { regex: /\.(?=[A-Z])/g, offset: 1 }
+  ];
+
+  function splitTextByPatterns(text: string, patterns: Pattern[]): string[] {
+    let paragraphs: string[] = [text];
+
+    patterns.forEach(pattern => {
+      let newParagraphs: string[] = [];
+
+      paragraphs.forEach(paragraph => {
+        let lastIndex = 0;
+        let match: RegExpExecArray | null;
+
+        while ((match = pattern.regex.exec(paragraph)) !== null) {
+          const matchIndex = match.index + pattern.offset;
+          newParagraphs.push(paragraph.slice(lastIndex, matchIndex).trim());
+          lastIndex = matchIndex;
+        }
+
+        if (lastIndex < paragraph.length) {
+          newParagraphs.push(paragraph.slice(lastIndex).trim());
+        }
+      });
+
+      paragraphs = newParagraphs;
+    });
+
+    return paragraphs;
+  }
+
+  return splitTextByPatterns(text, patterns);
+}
+
+const splitContentIntoParagraphs = (content: string): string[] => {
+	// First split content by custom patterns
+	const rawParagraphs = splitByPatterns(content);
+	const paragraphs: string[] = [];
+
+	rawParagraphs.forEach((rawParagraph) => {
+		// Split raw paragraph by single newlines to handle verses
+		const lines = rawParagraph.split("\n").map((line) => line.trim());
+
+		let currentParagraph = "";
+		lines.forEach((line, index) => {
+			if (currentParagraph) {
+				currentParagraph += "\n" + line;
+			} else {
+				currentParagraph = line;
+			}
+
+			// If it's the last line or the next line starts a new paragraph, push the current paragraph
+			if (index === lines.length - 1 || lines[index + 1] === "") {
+				if (isVerse(currentParagraph)) {
+					paragraphs.push(currentParagraph);
+				} else {
+					paragraphs.push(
+						...currentParagraph.split("\n\n").map(removeDiacritics)
+					);
+				}
+				currentParagraph = "";
+			}
+		});
+	});
+
+  return paragraphs.filter(paragraph => paragraph.trim().length > 0);
+};
 
 const getDiscourseId = (url: string): string => {
 	// Split the URL by '/' and get the last part
@@ -138,13 +230,14 @@ const loadIndexesImpl = async (
 		for (const [key, content] of Object.entries(structurizedData.data)) {
 			const [headingId, headingValue] = key.split("#");
 			const url = route + (headingId ? "#" + headingId : "");
-      const pageTitle = removeDiacritics(structurizedData.title);
+			const pageTitle = removeDiacritics(structurizedData.title);
 			const title = removeDiacritics(headingValue || structurizedData.title);
-			const paragraphs = content.split("\n").map(removeDiacritics);
+			const paragraphs = splitContentIntoParagraphs(content);
+      const revisedContent = removeDiacritics(paragraphs.join("\n\n"));
 
-			for (let i = 0; i < paragraphs.length; i++) {
+			//for (let i = 0; i < paragraphs.length; i++) {
 				sectionIndex.add({
-					id: `${url}_${i}`,
+					id: url,
 					url,
 					title,
 					pageId: `page_${pageId}`,
@@ -154,10 +247,10 @@ const loadIndexesImpl = async (
 						getFormattedDiscourseId(route) +
 						" " +
 						pageTitle +
-						" " +
-						paragraphs[i],
+						" " + title + " " +
+						revisedContent,
 				});
-			}
+			//}
 
 			// Add the page itself.
 			pageContent += ` ${title} ${paragraphs.join(" ")}`;
@@ -222,7 +315,6 @@ export function Flexsearch({
 
 			for (let j = 0; j < sectionResults.length; j++) {
 				const { doc } = sectionResults[j];
-        console.log('i: ', i, 'j: ', j, 'doc: ', doc);
 				const isMatchingTitle = doc.display !== undefined;
 				if (isMatchingTitle) {
 					pageTitleMatches[i]++;
@@ -239,6 +331,11 @@ export function Flexsearch({
 					"\\$&"
 				);
 
+        const sectionTitleForRegex = doc.title.replace(
+          /[.*+?^${}()|[\]\\]/g,
+					"\\$&"
+				);
+
 				// Create a regex pattern that matches both versions
 				// The pattern escapes special regex characters in urlId to avoid issues
 				const pattern = new RegExp(
@@ -248,7 +345,7 @@ export function Flexsearch({
 					)}|${urlIdNoSpaces.replace(
 						/[.*+?^${}()|[\]\\]/g,
 						"\\$&"
-					)}|${titleForRegex}`,
+					)}|${titleForRegex}|${sectionTitleForRegex}`,
 					"gi"
 				);
 				let titleString = urlId;
