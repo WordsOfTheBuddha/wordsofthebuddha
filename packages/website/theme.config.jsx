@@ -63,7 +63,7 @@ export default {
     );
   },
   search: {
-    placeholder: "Search the translations",
+    placeholder: "Search a discourse",
   },
   toc: {
     extraContent: (
