@@ -50,7 +50,9 @@ const removeDiacritics = (str: string) =>
 	str
 		.normalize("NFD")
 		.replace(/[\u0300-\u036f]/g, "")
-		.replace(/\.([^\s]|$)/g, ". $1");
+		.replace(/\.([^\s]|$)/g, ". $1")
+    .replace(/""/g, '" "')
+    .replace(/:"/g, ': "');
 
 const getDiscourseId = (url: string): string => {
 	// Split the URL by '/' and get the last part
@@ -140,20 +142,6 @@ const loadIndexesImpl = async (
 			const title = removeDiacritics(headingValue || structurizedData.title);
 			const paragraphs = content.split("\n").map(removeDiacritics);
 
-			sectionIndex.add({
-				id: url,
-				url,
-				title,
-				pageId: `page_${pageId}`,
-				content:
-					getDiscourseId(route) +
-					" " +
-					getFormattedDiscourseId(route) +
-					" " +
-					title,
-				...(paragraphs[0] && { display: paragraphs[0] }),
-			});
-
 			for (let i = 0; i < paragraphs.length; i++) {
 				sectionIndex.add({
 					id: `${url}_${i}`,
@@ -234,6 +222,7 @@ export function Flexsearch({
 
 			for (let j = 0; j < sectionResults.length; j++) {
 				const { doc } = sectionResults[j];
+        console.log('i: ', i, 'j: ', j, 'doc: ', doc);
 				const isMatchingTitle = doc.display !== undefined;
 				if (isMatchingTitle) {
 					pageTitleMatches[i]++;

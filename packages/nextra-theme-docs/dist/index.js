@@ -867,7 +867,7 @@ function Search({
 // src/components/flexsearch.tsx
 import { Fragment as Fragment6, jsx as jsx12, jsxs as jsxs7 } from "react/jsx-runtime";
 var indexes = {};
-var removeDiacritics = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\.([^\s]|$)/g, ". $1");
+var removeDiacritics = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\.([^\s]|$)/g, ". $1").replace(/""/g, '" "').replace(/:"/g, ': "');
 var getDiscourseId = (url) => {
   const parts = url.split("/");
   const lastPart = parts[parts.length - 1];
@@ -936,13 +936,6 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
       const pageTitle = removeDiacritics(structurizedData.title);
       const title = removeDiacritics(headingValue || structurizedData.title);
       const paragraphs = content.split("\n").map(removeDiacritics);
-      sectionIndex.add(__spreadValues({
-        id: url,
-        url,
-        title,
-        pageId: `page_${pageId}`,
-        content: getDiscourseId(route) + " " + getFormattedDiscourseId(route) + " " + title
-      }, paragraphs[0] && { display: paragraphs[0] }));
       for (let i = 0; i < paragraphs.length; i++) {
         sectionIndex.add({
           id: `${url}_${i}`,
@@ -998,6 +991,7 @@ function Flexsearch({
       const occurred = {};
       for (let j = 0; j < sectionResults.length; j++) {
         const { doc } = sectionResults[j];
+        console.log("i: ", i, "j: ", j, "doc: ", doc);
         const isMatchingTitle = doc.display !== void 0;
         if (isMatchingTitle) {
           pageTitleMatches[i]++;
