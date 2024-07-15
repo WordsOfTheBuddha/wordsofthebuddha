@@ -933,6 +933,7 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
     for (const [key, content] of Object.entries(structurizedData.data)) {
       const [headingId, headingValue] = key.split("#");
       const url = route + (headingId ? "#" + headingId : "");
+      const pageTitle = removeDiacritics(structurizedData.title);
       const title = removeDiacritics(headingValue || structurizedData.title);
       const paragraphs = content.split("\n").map(removeDiacritics);
       sectionIndex.add(__spreadValues({
@@ -940,7 +941,7 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
         url,
         title,
         pageId: `page_${pageId}`,
-        content: getDiscourseId(route) + "  " + getFormattedDiscourseId(route) + title
+        content: getDiscourseId(route) + " " + getFormattedDiscourseId(route) + " " + title
       }, paragraphs[0] && { display: paragraphs[0] }));
       for (let i = 0; i < paragraphs.length; i++) {
         sectionIndex.add({
@@ -948,12 +949,14 @@ var loadIndexesImpl = (basePath, locale) => __async(void 0, null, function* () {
           url,
           title,
           pageId: `page_${pageId}`,
-          content: paragraphs[i]
+          content: getDiscourseId(route) + " " + getFormattedDiscourseId(route) + " " + pageTitle + " " + paragraphs[i]
         });
       }
       pageContent += ` ${title} ${paragraphs.join(" ")}`;
     }
-    pageContent += `${getDiscourseId(route)} ${getFormattedDiscourseId(route)} ${removeDiacritics(structurizedData.title)}`;
+    pageContent += `${getDiscourseId(route)} ${getFormattedDiscourseId(
+      route
+    )} ${removeDiacritics(structurizedData.title)}`;
     pageIndex.add({
       id: pageId,
       discourseId: getFormattedDiscourseId(route),
@@ -1002,29 +1005,45 @@ function Flexsearch({
         const { url, title } = doc;
         const content = doc.display || doc.content;
         const urlId = result.doc.discourseId;
-        if (occurred[url + "@" + content]) continue;
-        occurred[url + "@" + content] = true;
+        const urlIdNoSpaces = urlId.replace(/\s+/g, "");
+        const titleForRegex = result.doc.title.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          "\\$&"
+        );
+        const pattern = new RegExp(
+          `${urlId.replace(
+            /[.*+?^${}()|[\]\\]/gi,
+            "\\$&"
+          )}|${urlIdNoSpaces.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&"
+          )}|${titleForRegex}`,
+          "gi"
+        );
+        let titleString = urlId;
+        if (urlId !== result.doc.title) {
+          titleString += `: ${result.doc.title}`;
+        }
+        const cleanedContent = content.replace(pattern, "");
+        if (occurred[url + "@" + cleanedContent]) continue;
+        occurred[url + "@" + cleanedContent] = true;
         results2.push({
           _page_rk: i,
           _section_rk: j,
           route: url,
-          prefix: isFirstItemOfPage && /* @__PURE__ */ jsxs7(
+          prefix: isFirstItemOfPage && /* @__PURE__ */ jsx12(
             "div",
             {
               className: cn7(
                 "nx-mx-2.5 nx-mb-2 nx-mt-6 nx-select-none nx-border-b nx-border-black/10 nx-px-2.5 nx-pb-1.5 nx-text-xs nx-font-semibold nx-uppercase nx-text-gray-500 first:nx-mt-0 dark:nx-border-white/20 dark:nx-text-gray-300",
                 "contrast-more:nx-border-gray-600 contrast-more:nx-text-gray-900 contrast-more:dark:nx-border-gray-50 contrast-more:dark:nx-text-gray-50"
               ),
-              children: [
-                urlId,
-                ": ",
-                result.doc.title
-              ]
+              children: titleString
             }
           ),
           children: /* @__PURE__ */ jsxs7(Fragment6, { children: [
             /* @__PURE__ */ jsx12("div", { className: "nx-text-base nx-font-semibold nx-leading-5", children: /* @__PURE__ */ jsx12(HighlightMatches, { match: search2, value: title }) }),
-            content && /* @__PURE__ */ jsx12("div", { className: "excerpt nx-mt-1 nx-text-sm nx-leading-[1.35rem] nx-text-gray-600 dark:nx-text-gray-400 contrast-more:dark:nx-text-gray-50", children: /* @__PURE__ */ jsx12(HighlightMatches, { match: search2, value: content }) })
+            cleanedContent && /* @__PURE__ */ jsx12("div", { className: "excerpt nx-mt-1 nx-text-sm nx-leading-[1.35rem] nx-text-gray-600 dark:nx-text-gray-400 contrast-more:dark:nx-text-gray-50", children: /* @__PURE__ */ jsx12(HighlightMatches, { match: search2, value: cleanedContent }) })
           ] })
         });
         isFirstItemOfPage = false;
