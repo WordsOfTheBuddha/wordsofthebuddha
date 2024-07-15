@@ -137,6 +137,7 @@ code {
   text-decoration: none;
 }
 
-.directory-link {
+a.directory-link {
+  color: var(--link-color);
   margin-bottom: 5px;
 }

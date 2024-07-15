@@ -4,7 +4,7 @@ description: The Buddha shares on the importance of cultivating wise attention f
 fetter: doubt,self-identity view,attachment to rites and rituals
 tags: iti,wise attention,trainee,wholesome,unwholesome
 id: iti16
----
+--- 
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
 
