@@ -65,6 +65,13 @@ export default {
   search: {
     placeholder: "Search the translations",
   },
+  toc: {
+    extraContent: (
+      <div>
+      </div>
+    ),
+    backToTop: true,
+  },
   footer: {
     component: null,
   },
