@@ -1,4 +1,10 @@
-Paññāsutta
+---
+title: Paññāsutta - Wisdom
+description: Nine reflections by which a Bhikkhu can know that their mind is thoroughly cultivated with wisdom.
+fetter: ignorance
+tags: wisdom, ignorance, passion, aversion, delusion, sensual existence, form existence, formless existence, an, an9
+id: an9.25
+---
 
 “Yato kho, bhikkhave, bhikkhuno paññāya cittaṁ suparicitaṁ hoti, tassetaṁ, bhikkhave, bhikkhuno kallaṁ vacanāya: ‘khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyāti pajānāmī’ti.
 
