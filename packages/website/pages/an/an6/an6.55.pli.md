@@ -1,4 +1,10 @@
-Soṇasutta
+---
+title: Soṇasutta - To Soṇa
+description: The Buddha advises Soṇa on the importance of balanced energy and breaking through to a balanced state of the faculties with the example of the lute strings.
+fetter: doubt
+tags: balance,balanced energy,seclusion,renunciation,non-ill will,non-craving,non-clinging,non-delusion,arahant,impermanence
+id: an6.55
+---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.
 
