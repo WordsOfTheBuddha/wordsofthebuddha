@@ -1,4 +1,10 @@
-Sāḷhasutta
+---
+title: Sāḷhasutta - With Sāḷha
+description: The venerable Nandaka teaches Sāḷha and his friend about the unwholesome and wholesome mental qualities.
+fetter: sensual desire,ill-will,ignorance
+tags: greed,aversion,delusion,wholesome,unwholesome,blameless,blameworthy,wise,loving-kindness,good-will,contentment,clear apprehension
+id: an3.66
+---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā nandako sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Atha kho sāḷho ca migāranattā sāṇo ca sekhuniyanattā yenāyasmā nandako tenupasaṅkamiṁsu; upasaṅkamitvā āyasmantaṁ nandakaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinnaṁ kho sāḷhaṁ migāranattāraṁ āyasmā nandako etadavoca:
 
