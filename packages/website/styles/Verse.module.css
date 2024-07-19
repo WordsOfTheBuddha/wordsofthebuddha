@@ -8,7 +8,7 @@
   font-family: "Spectral", serif, system-ui, -apple-system, "system-ui",
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol"; /* Font family */
-  font-size: 18px; /* Adjust font size for readability */
+  font-size: 1.2rem; /* Adjust font size for readability */
   line-height: 1.6; /* Adjust line height for readability */
 }
 
@@ -29,6 +29,6 @@
   font-family: "Spectral", serif, system-ui, -apple-system, "system-ui",
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol"; /* Font family */
-  font-size: 18px; /* Adjust font size for readability */
+  font-size: 1.2rem; /* Adjust font size for readability */
   line-height: 1.6; /* Adjust line height for readability */
 }

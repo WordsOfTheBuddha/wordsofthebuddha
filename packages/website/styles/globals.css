@@ -105,6 +105,10 @@ blockquote {
   line-height: 1.6;
 }
 
+span {
+  font-size: 1.1rem;
+}
+
 .nextra-callout {
   width: fit-content;
   padding: 16px;
