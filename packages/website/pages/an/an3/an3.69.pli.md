@@ -1,3 +1,11 @@
+---
+title: Akusalamūlasutta - Unwholesome Roots
+description: The Buddha explains the three unwholesome roots and the three wholesome roots.
+fetter: ignorance, sensual desire, ill-will
+tags: greed, hatred, delusion, contentment, good-will, wisdom, an, an3, unwholesome, wholesome
+id: an3.69
+---
+
 “Tīṇimāni, bhikkhave, akusalamūlāni. Katamāni tīṇi? Lobho akusalamūlaṁ, doso akusalamūlaṁ, moho akusalamūlaṁ.
 
 Yadapi, bhikkhave, lobho tadapi akusalamūlaṁ; yadapi luddho abhisaṅkharoti kāyena vācāya manasā tadapi akusalaṁ; yadapi luddho lobhena abhibhūto pariyādinnacitto parassa asatā dukkhaṁ uppādayati vadhena vā bandhanena vā jāniyā vā garahāya vā pabbājanāya vā balavamhi balattho itipi tadapi akusalaṁ. Itissame lobhajā lobhanidānā lobhasamudayā lobhapaccayā aneke pāpakā akusalā dhammā sambhavanti.
