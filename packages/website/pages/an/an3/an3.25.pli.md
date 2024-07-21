@@ -1,5 +1,5 @@
 ---
-title: Vajirūpamasutta - Like a Diamond
+title: Vajirūpama sutta - Like a Diamond
 description: The Buddha explains the three types of persons existing in the world based on their mental qualities.
 fetter: ignorance
 tags: an,an3,ignorance,mind

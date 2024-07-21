@@ -1,5 +1,5 @@
 ---
-title: Paṭhamasekhasutta - Trainee (First)
+title: Paṭhamasekha sutta - Trainee (First)
 description: The Buddha shares on the importance of cultivating wise attention for a trainee bhikkhu.
 fetter: doubt,self-identity view,attachment to rites and rituals
 tags: iti,wise attention,trainee,wholesome,unwholesome,careful attending

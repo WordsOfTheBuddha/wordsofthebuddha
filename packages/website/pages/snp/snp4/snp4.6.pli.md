@@ -1,5 +1,5 @@
 ---
-title: Jarāsutta - Ageing
+title: Jarā sutta - Ageing
 description: The Buddha explains the nature of ageing and the impermanence of life in these verses, as well as the state of an Arahant.
 fetter: sensual desire,conceit,self-identity view
 tags: snp,snp4,ageing,impermanence,attachment,death,sensual desire,conceit,self-identity view,arahant

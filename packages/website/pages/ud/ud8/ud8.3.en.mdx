@@ -1,5 +1,5 @@
 ---
-title: Tatiyanibbānapaṭisaṁyuttasutta - Third Discourse on Nibbāna
+title: Tatiyanibbānapaṭisaṁyutta sutta - Third Discourse on Nibbāna
 description: The Blessed One instructs the bhikkhus on the unborn, unbecome, unmade, unconditioned.
 fetter: ignorance
 tags: ud,ud8,Nibbāna,mindful,unconditioned,unborn,wisdom

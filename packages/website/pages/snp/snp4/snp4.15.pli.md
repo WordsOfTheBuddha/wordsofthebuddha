@@ -1,5 +1,5 @@
 ---
-title: Attadaṇḍasutta - Fear arises from harm
+title: Attadaṇḍa sutta - Fear arises from harm
 description: The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being.
 fetter: doubt,ignorance
 tags: snp,snp4,fear,conflict,wisdom,practice

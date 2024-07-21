@@ -1,5 +1,5 @@
 ---
-title: Upātidhāvantisutta - Moths Rushing to the Flame
+title: Upātidhāvanti sutta - Moths Rushing to the Flame
 description: The Buddha observes moths drawn to the light of oil lamps, and reflects on the nature of attachment.
 fetter: sensual desire
 tags: ud,ud6,mind,attachment,misfortune

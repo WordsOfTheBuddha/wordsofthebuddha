@@ -1,5 +1,5 @@
 ---
-title: Akkosasutta - Insult
+title: Akkosa sutta - Insult
 description: A brahmin approaches the Buddha and abuses and insults him. The Buddha doesn't accept it, and explains this to the brahmin through a simile.
 fetter: ill-will
 tags: anger,quarrel,ill-will,mindful,insult,harmony,discipline,heal,sn,sn1-11,sn7

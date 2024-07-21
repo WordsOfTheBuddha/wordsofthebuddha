@@ -1,5 +1,5 @@
 ---
-title: Nibbedhikasutta - Penetrating
+title: Nibbedhika sutta - Penetrating
 description: The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.
 fetter: ignorance,sensual desire
 tags: sensual pleasures,feelings,perceptions,taints,actions,kamma,suffering,ignorance,sensual desire

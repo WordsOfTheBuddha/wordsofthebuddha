@@ -1,5 +1,5 @@
 ---
-title: Duccaritasutta - Misconducts
+title: Duccarita sutta - Misconducts
 description: The four verbal misconducts and the four good verbal conducts.
 fetter: ignorance
 tags: right speech,an,an4

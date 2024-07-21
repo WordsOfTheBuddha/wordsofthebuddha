@@ -1,5 +1,5 @@
 ---
-title: Silāyūpasutta - Stone Pillar
+title: Silāyūpa sutta - Stone Pillar
 description: Venerable Sāriputta clarifies on a teaching on how liberation is to be verified. He shares a simile of the stone pillar.
 fetter: ignorance
 tags: passion, aversion, delusion, sense realm, form realm, formless realm, an, an9

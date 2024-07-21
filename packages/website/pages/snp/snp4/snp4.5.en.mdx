@@ -1,5 +1,5 @@
 ---
-title: Paramaṭṭhakasutta - Ultimate
+title: Paramaṭṭhaka sutta - Ultimate
 description: The Buddha advises against engaging in views deemed the ultimate, as it leads to disputes and clinging to views and doesn't lead to the cessation of suffering.
 fetter: conceit,self-identity view,ignorance
 tags: snp,snp4,disputes,views,ultimate,conceit,clinging

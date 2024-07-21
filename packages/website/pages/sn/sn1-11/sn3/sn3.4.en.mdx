@@ -1,5 +1,5 @@
 ---
-title: Piyasutta - Dear
+title: Piya sutta - Dear
 description: One who engages in good conduct by body, speech, and mind is dear to themselves.
 fetter: ignorance
 tags: merit,good conduct,bad conduct,dear,sn,sn1-11,sn3

@@ -1,5 +1,5 @@
 ---
-title: Sāḷhasutta - With Sāḷha
+title: Sāḷha sutta - With Sāḷha
 description: The venerable Nandaka teaches Sāḷha and his friend about the unwholesome and wholesome mental qualities.
 fetter: sensual desire,ill-will,ignorance
 tags: greed,aversion,delusion,wholesome,unwholesome,blameless,blameworthy,wise,loving-kindness,good-will,contentment,clear apprehension

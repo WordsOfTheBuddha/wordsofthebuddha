@@ -1,5 +1,5 @@
 ---
-title: Brahmacariyasutta - The Spiritual Life
+title: Brahmacariya sutta - The Spiritual Life
 description: The Buddha explains the purpose of the spiritual life.
 fetter: conceit
 tags: an,an4,spiritual life, conceit

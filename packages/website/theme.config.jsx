@@ -32,7 +32,7 @@ export default {
       title = frontMatter.title;
     }
     if (pageName !== "") {
-      title = `${pageName} - ${title}`;
+      title = `${pageName} ${title}`;
     }
 
     return (
@@ -57,7 +57,6 @@ export default {
       <div>
         <Title />
         <Description />
-        <br />
         {children}
       </div>
     );

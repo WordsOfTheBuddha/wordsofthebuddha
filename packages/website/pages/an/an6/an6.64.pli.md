@@ -1,5 +1,5 @@
 ---
-title: Sīhanādasutta - Lion's Roar
+title: Sīhanāda sutta - Lion's Roar
 description: The Buddha explains the six powers of a Tathāgata and the importance of collectedness.
 fetter: ignorance
 tags: tathāgata, collectedness, powers, an, an6

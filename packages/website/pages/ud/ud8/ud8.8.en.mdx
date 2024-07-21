@@ -1,5 +1,5 @@
 ---
-title: Visākhāsutta - Discourse to Visākhā
+title: Visākhā sutta - Discourse to Visākhā
 description: The Blessed One teaches Visākhā on the nature of attachment and suffering.
 fetter: sensual desire
 tags: ud,ud8,attachment,dear ones,sorrow,suffering,Visākhā

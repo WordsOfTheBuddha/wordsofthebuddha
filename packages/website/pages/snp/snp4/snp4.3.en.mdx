@@ -1,5 +1,5 @@
 ---
-title: Duṭṭhaṭṭhakasutta - Corrupt
+title: Duṭṭhaṭṭhaka sutta - Corrupt
 description: The Buddha explains the nature of a corrupted mind and the consequences of holding onto views in these verses.
 fetter: self-identity view, conceit
 tags: snp,snp4,views,corruption,conceit,dispute,attachment,arahant

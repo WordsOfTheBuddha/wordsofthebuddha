@@ -1,5 +1,5 @@
 ---
-title: Saṅkhittasutta - Brief
+title: Saṅkhitta sutta - Brief
 description: The Buddha advises Mahāpajāpatī Gotamī to abandon teachings that lead to passion, being bound, accumulating, wanting more, discontentment, company, laziness, and being burdensome. Instead, embrace teachings that lead to dispassion, being unbound, shedding, wanting less, contentment, solitude, the arousal of energy, and being unburdensome.
 fetter: doubt
 tags: an,an8,passion,dispassion,accumulating,shedding,wanting more,wanting less,discontentment,contentment,company,solitude,laziness,arousal of energy,burdensome,unburdensome

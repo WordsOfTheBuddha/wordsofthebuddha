@@ -1,5 +1,5 @@
 ---
-title: Paññāsutta - Wisdom
+title: Paññā sutta - Wisdom
 description: Nine reflections by which a Bhikkhu can know that their mind is thoroughly cultivated with wisdom.
 fetter: ignorance
 tags: wisdom, ignorance, passion, aversion, delusion, sensual existence, form existence, formless existence, an, an9

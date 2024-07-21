@@ -1,5 +1,5 @@
 ---
-title: Sakkārasutta - On Honor
+title: Sakkāra sutta - On Honor
 description: The Buddha explains how to deal with insult and abuse without arising resentment.
 fetter: ill-will
 tags: ud,ud2,ill-will,loving-kindness,attachment,blame,honor

@@ -1,5 +1,5 @@
 ---
-title: Devadattavipattisutta - Devadatta's Misfortune
+title: Devadattavipatti sutta - Devadatta's Misfortune
 description: The Buddha advises the bhikkhus to review their own failings and the failings of others, and to overcome acquisitions, loss, fame, disrepute, honor, dishonor, evil wishes, and evil friendship.
 fetter: ill-will,sensual desire,doubt
 tags: an,an8,acquisitions,loss,fame,disrepute,honor,dishonor,evil wishes,evil friendship

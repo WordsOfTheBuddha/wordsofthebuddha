@@ -1,5 +1,5 @@
 ---
-title: Sammādiṭṭhisutta - Right View
+title: Sammādiṭṭhi sutta - Right View
 description: Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of perspectives.
 fetter: ignorance
 tags: right view,mn,mn1-50,mn1-10,ignorance,wisdom,wholesome,unwholesome,nutriment,four noble truths,aging,death,birth,continued existence,clinging,craving,feeling,contact,six sense bases,name and form,consciousness,formations,taints

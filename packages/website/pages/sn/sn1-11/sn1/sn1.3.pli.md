@@ -1,5 +1,5 @@
 ---
-title: Upanīyasutta - The Short Life
+title: Upanīya sutta - The Short Life
 description: For one brought to old age, there are no shelters
 fetter: ignorance
 tags: life,peace,happiness,sn,sn1-11,sn1

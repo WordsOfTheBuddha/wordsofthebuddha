@@ -1,5 +1,5 @@
 ---
-title: Mettasutta - Loving-kindness
+title: Metta sutta - Loving-kindness
 description: Verses on the way of practice to peace through the cultivation of loving-kindness for all beings without an exception and at all times whether one is standing, walking, sitting, or lying down.
 fetter: ill-will,sensual desire
 tags: snp, snp1,loving-kindness,ill-will,sensual desire

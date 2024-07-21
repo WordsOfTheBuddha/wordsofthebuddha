@@ -1,5 +1,5 @@
 ---
-title: Lakkhaṇasutta - Characteristics
+title: Lakkhaṇa sutta - Characteristics
 description: The Buddha explains the characteristics of an immature and wise person.
 fetter: ignorance
 tags: an,an3,ignorance,conduct

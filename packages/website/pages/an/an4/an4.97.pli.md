@@ -1,5 +1,5 @@
 ---
-title: Khippanisantisutta - Quick To Attend To
+title: Khippanisanti sutta - Quick To Attend To
 description: The Buddha explains the four types of persons existing in the world.
 fetter: ignorance
 tags: an,an4,ignorance,right speech,good-will, mindfulness,collectedness

@@ -1,5 +1,5 @@
 ---
-title: Tatiyasamādhi sutta - Collectedness (Third)
+title: Tatiyasamādhi  sutta - Collectedness (Third)
 description: To develop tranquility and insight, one should ask experienced practitioners.
 fetter: ignorance
 tags: tranquility, insight, wisdom, an, an4
