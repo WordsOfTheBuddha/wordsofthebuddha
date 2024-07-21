@@ -1,4 +1,10 @@
-Yuganaddhasutta
+---
+title: Yuganaddha sutta - In Tandem
+description: The Venerable Ānanda explains the four paths to arahantship.
+fetter: ignorance
+tags: an,an4,tranquility,insight,arahantship
+id: an4.170
+---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati ghositārāme. Tatra kho āyasmā ānando bhikkhū āmantesi: “āvuso bhikkhave”ti.
 

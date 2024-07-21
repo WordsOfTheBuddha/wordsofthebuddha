@@ -1,4 +1,10 @@
-Ummaggasutta
+---
+title: Ummagga sutta - Fundamental Questions
+description: A bhikkhu asks the Buddha about the nature of the world, the mind, and wisdom.
+fetter: ignorance
+tags: an,an4,ignorance,mind,wisdom
+id: an4.186
+---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca:
 

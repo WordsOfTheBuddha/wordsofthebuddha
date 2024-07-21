@@ -1,4 +1,10 @@
-Abhiññāsutta
+---
+title: Abhiññā sutta - Direct Knowledge
+description: The four mental qualities that should be fully comprehended, abandoned, developed, and personally realized by direct knowledge.
+fetter: ignorance
+tags: an,an4,mental qualities,five aggregates,ignorance,craving,tranquility,insight,wisdom,liberation
+id: an4.254
+---
 
 “Cattārome, bhikkhave, dhammā. Katame cattāro? Atthi, bhikkhave, dhammā abhiññā pariññeyyā; atthi, bhikkhave, dhammā abhiññā pahātabbā; atthi, bhikkhave, dhammā abhiññā bhāvetabbā; atthi, bhikkhave, dhammā abhiññā sacchikātabbā.
 
