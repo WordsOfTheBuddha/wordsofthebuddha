@@ -92,6 +92,6 @@ export default {
   },
   sidebar: {
     toggleButton: false,
-    defaultMenuCollapseLevel: 0,
+    defaultMenuCollapseLevel: 1,
   },
 };
