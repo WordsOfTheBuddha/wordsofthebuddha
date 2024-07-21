@@ -1,4 +1,10 @@
-Sasaṅkhārasutta
+---
+title: Sasaṅkhāra sutta - Residual Formations
+description: The Buddha describes four ways to attain final Nibbāna with or without residual formations.
+fetter: ignorance
+tags: residual formations, tranquility, insight, wisdom, an, an4
+id: an4.169
+---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
 

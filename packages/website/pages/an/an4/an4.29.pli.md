@@ -1,5 +1,5 @@
 ---
-title: Dhammapadasutta - The Four Dhamma Principles
+title: Dhammapada sutta - The Four Dhamma Principles
 description: The Buddha explains the four Dhamma principles that are foremost, ancient, rooted in tradition, timeless, and pure.
 fetter: ignorance
 tags: dhamma,an,an4,ignorance,contentment,good-will, mindfulness,collectedness
