@@ -3,6 +3,7 @@ import { useConfig } from "nextra-theme-docs";
 import { useRouter } from "next/router";
 import Title from "/components/Title";
 import Description from "/components/Description";
+import Commentary from "/components/Commentary";
 import Verse from "/components/Verse";
 import RedditIcon from "/components/RedditIcon";
 
@@ -57,6 +58,7 @@ export default {
       <div>
         <Title />
         <Description />
+        <Commentary />
         {children}
       </div>
     );
