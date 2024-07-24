@@ -141,7 +141,14 @@ code {
   text-decoration: none;
 }
 
+.directories-container {
+  margin-top: 1rem;
+}
+
+.directory-link {
+  margin-bottom: 0.4rem;
+}
+
 a.directory-link {
   color: var(--link-color);
-  margin-bottom: 5px;
 }
