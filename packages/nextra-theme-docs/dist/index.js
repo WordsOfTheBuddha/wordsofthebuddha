@@ -427,13 +427,18 @@ function Bleed({
 import cn3 from "clsx";
 import { ArrowRightIcon } from "nextra/icons";
 import { Fragment as Fragment2, useEffect, useState as useState3 } from "react";
+import Cookies from "js-cookie";
 import { jsx as jsx7, jsxs as jsxs3 } from "react/jsx-runtime";
 function Breadcrumb({
   activePath
 }) {
   const [mounted, setMounted] = useState3(false);
+  const [filePath, setFilePath] = useState3("");
   useEffect(() => {
     setMounted(true);
+    const cookieFilePath = Cookies.get("filePath");
+    console.log("File path from cookie:", cookieFilePath);
+    setFilePath(cookieFilePath || "");
   }, []);
   if (!mounted) {
     return null;
