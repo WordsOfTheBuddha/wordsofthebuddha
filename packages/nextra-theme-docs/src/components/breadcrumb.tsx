@@ -1,10 +1,9 @@
-import cn from 'clsx';
-import { ArrowRightIcon } from 'nextra/icons';
-import type { Item } from 'nextra/normalize-pages';
-import type { ReactElement } from 'react';
-import { Fragment, useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import { Anchor } from './anchor';
+import cn from 'clsx'
+import { ArrowRightIcon } from 'nextra/icons'
+import type { Item } from 'nextra/normalize-pages'
+import type { ReactElement } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import { Anchor } from './anchor'
 
 // Define a type for the Home link with withIndexPage property
 type HomeItem = {
@@ -19,13 +18,9 @@ export function Breadcrumb({
   activePath: Item[]
 }): ReactElement | null {
   const [mounted, setMounted] = useState(false);
-  const [filePath, setFilePath] = useState('');
 
   useEffect(() => {
     setMounted(true);
-    const cookieFilePath = Cookies.get('filePath');
-    console.log('File path from cookie:', cookieFilePath); // Verify the cookie value
-    setFilePath(cookieFilePath || '');
   }, []);
 
   if (!mounted) {

@@ -13,10 +13,10 @@ export const Card = ({ title, description, path, id, updatedTime }) => {
     });
   };
 
-  const formattedDate = new Date(updatedTime).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const formattedDate = new Date(updatedTime).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
@@ -27,12 +27,14 @@ export const Card = ({ title, description, path, id, updatedTime }) => {
     >
       <div className={styles.cardBody}>
         <h2 className={styles.cardTitle}>
-          <a href={path + id}>{transformId(id)}</a>
+          <a href={id}>{transformId(id)}</a>
           <span>{title}</span>
         </h2>
         <p className={styles.cardDescription}>{description}</p>
         {updatedTime && (
-          <div className={`${styles.updatedTime} nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400`}>
+          <div
+            className={`${styles.updatedTime} nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400`}
+          >
             Last updated on <time dateTime={updatedTime}>{formattedDate}</time>
           </div>
         )}

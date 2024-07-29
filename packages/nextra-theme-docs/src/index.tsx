@@ -9,6 +9,7 @@ import { MDXProvider } from 'nextra/mdx'
 import './polyfill'
 import type { PageTheme } from 'nextra/normalize-pages'
 import { normalizePages } from 'nextra/normalize-pages'
+import Cookies from 'js-cookie';
 import {
   Banner,
   Breadcrumb,
@@ -116,7 +117,8 @@ const InnerLayout = ({
 }: PageOpts & { children: ReactNode }): ReactElement => {
   const config = useConfig()
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter()
-  const fsPath = useFSRoute()
+  const fsPath = Cookies.get('filePath') || useFSRoute();
+  console.log('File path:', fsPath); // Verify the file path
 
   const {
     activeType,

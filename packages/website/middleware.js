@@ -38,11 +38,15 @@ export function middleware(request) {
   if (pathname === "/") {
     if (locale === "pli") {
       console.log("Rewriting root path to /index.pli");
-      return NextResponse.rewrite(new URL("/index.pli", request.url));
+      const response = NextResponse.rewrite(new URL("/index.pli", request.url));
+      response.cookies.set("filePath", "/");
+      return response;
     }
     if (locale === "en") {
       console.log("Rewriting root path to /index.en");
-      return NextResponse.rewrite(new URL("/index.en", request.url));
+      const response = NextResponse.rewrite(new URL("/index.en", request.url));
+      response.cookies.set("filePath", "/");
+      return response;
     }
   }
 
@@ -56,9 +60,11 @@ export function middleware(request) {
     // get prefix path
     let prefixPath = frontMatter[`${fileId}.${locale}`].path;
     console.log(`Rewriting to serve file simple URL: ${fileId}`);
-    return NextResponse.rewrite(
+    const response = NextResponse.rewrite(
       new URL(`${prefixPath}${fileId}.${locale}`, request.url)
     );
+    response.cookies.set("filePath", `${prefixPath}${fileId}`);
+    return response;
   }
 
   // valid file id but not exact file path
@@ -66,22 +72,26 @@ export function middleware(request) {
     let prefixPath = frontMatter[`${fileId}.${locale}`].path;
     console.log(`Redirecting to expected file path: ${fileId}`);
     const response = NextResponse.redirect(new URL(`/${fileId}`, request.url));
-    response.cookies.set("filePath", `${prefixPath}${fileId}`);
     return response;
   } else if (!isFile) {
     // Check if pathname corresponds to a directory
     if (pathname.endsWith("/")) {
       const newUrl = new URL(`${pathname}index`, request.url);
       console.log(`Rewriting directory path to: ${newUrl}`);
-      return NextResponse.rewrite(newUrl);
+      const reponse = NextResponse.rewrite(newUrl);
+      response.cookies.set("filePath", `${pathname}`);
+      return response;
     } else if (pathname.indexOf(".") !== -1) {
       const newUrl = new URL(`${pathname}.${locale}`, request.url);
-      return NextResponse.rewrite(newUrl);
+      const response = NextResponse.rewrite(newUrl);
+      response.cookies.set("filePath", `${pathname}`);
+      return response;
     }
   }
 
   // Treat as folder by rewriting to the same pathname
   console.log(`Treating as folder, rewriting to same pathname: ${pathname}`);
   const response = NextResponse.rewrite(new URL(`${pathname}`, request.url));
+  response.cookies.set("filePath", `${pathname}`);
   return response;
 }
