@@ -27,7 +27,7 @@ export const Card = ({ title, description, path, id, updatedTime }) => {
     >
       <div className={styles.cardBody}>
         <h2 className={styles.cardTitle}>
-          <a href={id}>{transformId(id)}</a>
+          <a href={path + id}>{transformId(id)}</a>
           <span>{title}</span>
         </h2>
         <p className={styles.cardDescription}>{description}</p>

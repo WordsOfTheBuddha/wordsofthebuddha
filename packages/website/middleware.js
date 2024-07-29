@@ -72,6 +72,7 @@ export function middleware(request) {
     let prefixPath = frontMatter[`${fileId}.${locale}`].path;
     console.log(`Redirecting to expected file path: ${fileId}`);
     const response = NextResponse.redirect(new URL(`/${fileId}`, request.url));
+    response.cookies.set("filePath", `${prefixPath}${fileId}`);
     return response;
   } else if (!isFile) {
     // Check if pathname corresponds to a directory
