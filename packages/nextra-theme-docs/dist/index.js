@@ -3046,11 +3046,15 @@ var InnerLayout = ({
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter8();
   console.log("fsroute: ", useFSRoute3());
-  const fullPath = Cookies.get("filePath") || FullPath;
-  if (fullPath == null ? void 0 : fullPath.includes(useFSRoute3())) {
-    if (fullPath.length > useFSRoute3().length) {
+  console.log("cookies filepath: ", Cookies.get("filePath"));
+  console.log("FullPath: ", FullPath);
+  const fullPath = FullPath ? FullPath : Cookies.get("filePath");
+  if (fullPath == null ? void 0 : fullPath.endsWith(useFSRoute3())) {
+    if (fullPath.length >= useFSRoute3().length) {
       FullPath = fullPath;
     }
+  } else if (fullPath) {
+    FullPath = Cookies.get("filePath") || useFSRoute3();
   }
   const fsPath = FullPath || useFSRoute3();
   console.log("File path:", fsPath);

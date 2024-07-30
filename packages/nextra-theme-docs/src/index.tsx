@@ -122,11 +122,15 @@ const InnerLayout = ({
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   console.log("fsroute: ", useFSRoute());
-  const fullPath = Cookies.get("filePath") || FullPath;
-  if (fullPath?.includes(useFSRoute())) {
-    if (fullPath.length > useFSRoute().length) {
+  console.log("cookies filepath: ", Cookies.get("filePath"));
+  console.log("FullPath: ", FullPath);
+  const fullPath = FullPath ? FullPath : Cookies.get("filePath");
+  if (fullPath?.endsWith(useFSRoute())) {
+    if (fullPath.length >= useFSRoute().length) {
       FullPath = fullPath;
     }
+  } else if (fullPath) {
+    FullPath = Cookies.get("filePath") || useFSRoute();
   }
   const fsPath = FullPath || useFSRoute();
   console.log("File path:", fsPath); // Verify the file path
