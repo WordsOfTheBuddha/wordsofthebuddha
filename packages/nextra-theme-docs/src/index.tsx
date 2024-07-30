@@ -120,8 +120,15 @@ const InnerLayout = ({
   let fsPath = useFSRoute();
   if (typeof window !== "undefined") {
     const fsRoute = useFSRoute();
-    const cookiePath =
-      typeof window !== "undefined" ? Cookies.get("filePath") : null;
+    console.log("fs route: ", fsRoute);
+    let cookiePath = Cookies.get("filePath");
+    console.log("cookiePath: ", cookiePath);
+    if (cookiePath && !cookiePath?.endsWith(fsRoute)) {
+      const cookiePathPrefix = cookiePath.split("/").slice(0, -1).join("/");
+      const cookiePathSuffix = fsRoute.split("/").slice(-1);
+      cookiePath = cookiePathPrefix + "/" + cookiePathSuffix;
+    }
+    console.log("cookiePath updated: ", cookiePath);
     fsPath = cookiePath || fsRoute;
   }
 
