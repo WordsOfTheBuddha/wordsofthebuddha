@@ -2977,6 +2977,7 @@ import {
 } from "nextra/components";
 import { useTheme as useTheme3 } from "next-themes";
 import { Fragment as Fragment11, jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
+var FullPath = null;
 var classes4 = {
   toc: cn17(
     "nextra-toc nx-order-last nx-hidden nx-w-64 nx-shrink-0 xl:nx-block print:nx-hidden"
@@ -3042,14 +3043,16 @@ var InnerLayout = ({
   timestamp,
   children
 }) => {
-  var _a;
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter8();
   console.log("fsroute: ", useFSRoute3());
-  let fsPath = useFSRoute3();
-  if ((_a = Cookies.get("filePath")) == null ? void 0 : _a.includes(useFSRoute3())) {
-    fsPath = Cookies.get("filePath") || useFSRoute3();
+  const fullPath = Cookies.get("filePath") || FullPath;
+  if (fullPath == null ? void 0 : fullPath.includes(useFSRoute3())) {
+    if (fullPath.length > useFSRoute3().length) {
+      FullPath = fullPath;
+    }
   }
+  const fsPath = FullPath || useFSRoute3();
   console.log("File path:", fsPath);
   const {
     activeType,
