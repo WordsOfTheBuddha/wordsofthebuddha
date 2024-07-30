@@ -3042,9 +3042,14 @@ var InnerLayout = ({
   timestamp,
   children
 }) => {
+  var _a;
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter8();
-  const fsPath = Cookies.get("filePath") || useFSRoute3();
+  console.log("fsroute: ", useFSRoute3());
+  let fsPath = useFSRoute3();
+  if ((_a = Cookies.get("filePath")) == null ? void 0 : _a.includes(useFSRoute3())) {
+    fsPath = Cookies.get("filePath") || useFSRoute3();
+  }
   console.log("File path:", fsPath);
   const {
     activeType,

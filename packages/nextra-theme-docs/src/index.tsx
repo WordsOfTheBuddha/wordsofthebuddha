@@ -117,7 +117,14 @@ const InnerLayout = ({
 }: PageOpts & { children: ReactNode }): ReactElement => {
   const config = useConfig()
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter()
-  const fsPath = Cookies.get('filePath') || useFSRoute();
+  console.log('fsroute: ', useFSRoute());
+  let fsPath = useFSRoute();
+  let toRender = true;
+  if (Cookies.get('filePath')?.includes(useFSRoute())) {
+    fsPath = Cookies.get('filePath') || useFSRoute();
+  } else {
+    toRender = false;
+  }
   console.log('File path:', fsPath); // Verify the file path
 
   const {
@@ -174,7 +181,7 @@ const InnerLayout = ({
 
   const direction = isRTL ? 'rtl' : 'ltr'
 
-  return (
+  return toRender ? (
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
     // before hydration as Tailwind expects the `dir` attribute to exist on the
     // `html` element.
@@ -239,7 +246,7 @@ const InnerLayout = ({
       {themeContext.footer &&
         renderComponent(config.footer.component, { menu: hideSidebar })}
     </div>
-  )
+  ): <div/>;
 }
 
 export default function Layout({
