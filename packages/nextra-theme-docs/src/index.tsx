@@ -23,10 +23,6 @@ import { ActiveAnchorProvider, ConfigProvider, useConfig } from "./contexts";
 import { getComponents } from "./mdx-components";
 import { renderComponent } from "./utils";
 
-type FullPath = string | null;
-// FullPath is a global variable to store the full path of the file
-let FullPath: FullPath = null;
-
 interface BodyProps {
   themeContext: PageTheme;
   breadcrumb: ReactNode;
@@ -121,19 +117,13 @@ const InnerLayout = ({
 }: PageOpts & { children: ReactNode }): ReactElement => {
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
-  console.log("fsroute: ", useFSRoute());
-  console.log("cookies filepath: ", Cookies.get("filePath"));
-  console.log("FullPath: ", FullPath);
-  const fullPath = FullPath ? FullPath : Cookies.get("filePath");
-  if (fullPath?.endsWith(useFSRoute())) {
-    if (fullPath.length >= useFSRoute().length) {
-      FullPath = fullPath;
-    }
-  } else if (fullPath) {
-    FullPath = Cookies.get("filePath") || useFSRoute();
+  let fsPath = useFSRoute();
+  if (typeof window !== "undefined") {
+    const fsRoute = useFSRoute();
+    const cookiePath =
+      typeof window !== "undefined" ? Cookies.get("filePath") : null;
+    fsPath = cookiePath || fsRoute;
   }
-  const fsPath = FullPath || useFSRoute();
-  console.log("File path:", fsPath); // Verify the file path
 
   const {
     activeType,
