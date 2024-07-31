@@ -2732,7 +2732,6 @@ if (IS_BROWSER) {
 
 // src/index.tsx
 import { normalizePages } from "nextra/normalize-pages";
-import Cookies from "js-cookie";
 
 // src/mdx-components.tsx
 import cn16 from "clsx";
@@ -2964,6 +2963,50 @@ var getComponents = ({
   }, components);
 };
 
+// src/contexts/FrontMatterContext.tsx
+import { createContext as createContext6, useContext as useContext6, useState as useState9, useEffect as useEffect8 } from "react";
+
+// src/utils/api.ts
+var fetchFrontMatter = () => __async(void 0, null, function* () {
+  const response = yield fetch("/frontMatter.json");
+  if (!response.ok) {
+    throw new Error("Failed to fetch frontMatter");
+  }
+  return response.json();
+});
+
+// src/contexts/FrontMatterContext.tsx
+import { jsx as jsx29 } from "react/jsx-runtime";
+var FrontMatterContext = createContext6(
+  void 0
+);
+var FrontMatterProvider = ({
+  children
+}) => {
+  const [dfrontMatter, setFrontMatter] = useState9(null);
+  useEffect8(() => {
+    const storedFrontMatter = localStorage.getItem("frontMatter");
+    if (storedFrontMatter) {
+      setFrontMatter(JSON.parse(storedFrontMatter));
+    } else {
+      fetchFrontMatter().then((data) => {
+        setFrontMatter(data);
+        localStorage.setItem("frontMatter", JSON.stringify(data));
+      }).catch(
+        (error) => console.error("Failed to fetch frontMatter:", error)
+      );
+    }
+  }, []);
+  return /* @__PURE__ */ jsx29(FrontMatterContext.Provider, { value: { dfrontMatter, setFrontMatter }, children });
+};
+var useFrontMatter = () => {
+  const context = useContext6(FrontMatterContext);
+  if (!context) {
+    throw new Error("useFrontMatter must be used within a FrontMatterProvider");
+  }
+  return context;
+};
+
 // src/index.tsx
 import { useMDXComponents } from "nextra/mdx";
 import {
@@ -2976,7 +3019,7 @@ import {
   FileTree
 } from "nextra/components";
 import { useTheme as useTheme3 } from "next-themes";
-import { Fragment as Fragment11, jsx as jsx29, jsxs as jsxs20 } from "react/jsx-runtime";
+import { Fragment as Fragment11, jsx as jsx30, jsxs as jsxs20 } from "react/jsx-runtime";
 var classes4 = {
   toc: cn17(
     "nextra-toc nx-order-last nx-hidden nx-w-64 nx-shrink-0 xl:nx-block print:nx-hidden"
@@ -2994,13 +3037,10 @@ var Body = ({
   const config = useConfig();
   const mounted = useMounted8();
   if (themeContext.layout === "raw") {
-    return /* @__PURE__ */ jsx29("div", { className: classes4.main, children });
+    return /* @__PURE__ */ jsx30("div", { className: classes4.main, children });
   }
   const date = themeContext.timestamp && config.gitTimestamp && timestamp ? new Date(timestamp) : null;
-  const gitTimestampEl = (
-    // Because a user's time zone may be different from the server page
-    mounted && date ? /* @__PURE__ */ jsx29("div", { className: "nx-mt-12 nx-mb-8 nx-block nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400", children: renderComponent(config.gitTimestamp, { timestamp: date }) }) : /* @__PURE__ */ jsx29("div", { className: "nx-mt-16" })
-  );
+  const gitTimestampEl = mounted && date ? /* @__PURE__ */ jsx30("div", { className: "nx-mt-12 nx-mb-8 nx-block nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400", children: renderComponent(config.gitTimestamp, { timestamp: date }) }) : /* @__PURE__ */ jsx30("div", { className: "nx-mt-16" });
   const content = /* @__PURE__ */ jsxs20(Fragment11, { children: [
     children,
     gitTimestampEl,
@@ -3008,7 +3048,7 @@ var Body = ({
   ] });
   const body = ((_a = config.main) == null ? void 0 : _a.call(config, { children: content })) || content;
   if (themeContext.layout === "full") {
-    return /* @__PURE__ */ jsx29(
+    return /* @__PURE__ */ jsx30(
       "article",
       {
         className: cn17(
@@ -3019,7 +3059,7 @@ var Body = ({
       }
     );
   }
-  return /* @__PURE__ */ jsx29(
+  return /* @__PURE__ */ jsx30(
     "article",
     {
       className: cn17(
@@ -3044,20 +3084,20 @@ var InnerLayout = ({
 }) => {
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter8();
-  let fsPath = useFSRoute3();
-  if (typeof window !== "undefined") {
-    const fsRoute = useFSRoute3();
-    console.log("fs route: ", fsRoute);
-    let cookiePath = Cookies.get("filePath");
-    console.log("cookiePath: ", cookiePath);
-    if (cookiePath && !(cookiePath == null ? void 0 : cookiePath.endsWith(fsRoute))) {
-      const cookiePathPrefix = cookiePath.split("/").slice(0, -1).join("/");
-      const cookiePathSuffix = fsRoute.split("/").slice(-1);
-      cookiePath = cookiePathPrefix + "/" + cookiePathSuffix;
+  const fsRoute = useFSRoute3();
+  const { dfrontMatter: contextFrontMatter } = useFrontMatter();
+  const fsPath = useMemo5(() => {
+    if (contextFrontMatter) {
+      const key = `${fsRoute.split("/").pop()}.en`;
+      if (contextFrontMatter[key]) {
+        console.log("FrontMatter value: ", contextFrontMatter[key]);
+        return contextFrontMatter[key].path + fsRoute.split("/").pop();
+      }
     }
-    console.log("cookiePath updated: ", cookiePath);
-    fsPath = cookiePath || fsRoute;
-  }
+    return fsRoute;
+  }, [fsRoute, contextFrontMatter]);
+  console.log("fs route: ", fsRoute);
+  console.log("fs path: ", fsPath);
   const {
     activeType,
     activeIndex,
@@ -3079,7 +3119,7 @@ var InnerLayout = ({
   );
   const themeContext = __spreadValues(__spreadValues({}, activeThemeContext), frontMatter);
   const hideSidebar = !themeContext.sidebar || themeContext.layout === "raw" || activeType === "page";
-  const tocEl = activeType === "page" || !themeContext.toc || themeContext.layout !== "default" ? themeContext.layout !== "full" && themeContext.layout !== "raw" && /* @__PURE__ */ jsx29("nav", { className: classes4.toc, "aria-label": "table of contents" }) : /* @__PURE__ */ jsx29(
+  const tocEl = activeType === "page" || !themeContext.toc || themeContext.layout !== "default" ? themeContext.layout !== "full" && themeContext.layout !== "raw" && /* @__PURE__ */ jsx30("nav", { className: classes4.toc, "aria-label": "table of contents" }) : /* @__PURE__ */ jsx30(
     "nav",
     {
       className: cn17(classes4.toc, "nx-px-4"),
@@ -3093,77 +3133,72 @@ var InnerLayout = ({
   const localeConfig = config.i18n.find((l) => l.locale === locale);
   const isRTL = localeConfig ? localeConfig.direction === "rtl" : config.direction === "rtl";
   const direction = isRTL ? "rtl" : "ltr";
-  return (
-    // This makes sure that selectors like `[dir=ltr] .nextra-container` work
-    // before hydration as Tailwind expects the `dir` attribute to exist on the
-    // `html` element.
-    /* @__PURE__ */ jsxs20("div", { dir: direction, children: [
-      /* @__PURE__ */ jsx29(
-        "script",
-        {
-          dangerouslySetInnerHTML: {
-            __html: `document.documentElement.setAttribute('dir','${direction}')`
-          }
+  return /* @__PURE__ */ jsxs20("div", { dir: direction, children: [
+    /* @__PURE__ */ jsx30(
+      "script",
+      {
+        dangerouslySetInnerHTML: {
+          __html: `document.documentElement.setAttribute('dir','${direction}')`
         }
-      ),
-      /* @__PURE__ */ jsx29(Head, {}),
-      /* @__PURE__ */ jsx29(Banner, {}),
-      themeContext.navbar && renderComponent(config.navbar.component, {
-        flatDirectories,
-        items: topLevelNavbarItems
-      }),
-      /* @__PURE__ */ jsx29(
-        "div",
-        {
-          className: cn17(
-            "nx-mx-auto nx-flex",
-            themeContext.layout !== "raw" && "nx-max-w-[90rem]"
+      }
+    ),
+    /* @__PURE__ */ jsx30(Head, {}),
+    /* @__PURE__ */ jsx30(Banner, {}),
+    themeContext.navbar && renderComponent(config.navbar.component, {
+      flatDirectories,
+      items: topLevelNavbarItems
+    }),
+    /* @__PURE__ */ jsx30(
+      "div",
+      {
+        className: cn17(
+          "nx-mx-auto nx-flex",
+          themeContext.layout !== "raw" && "nx-max-w-[90rem]"
+        ),
+        children: /* @__PURE__ */ jsxs20(ActiveAnchorProvider, { children: [
+          /* @__PURE__ */ jsx30(
+            Sidebar,
+            {
+              docsDirectories,
+              flatDirectories,
+              fullDirectories: directories,
+              headings,
+              asPopover: hideSidebar,
+              includePlaceholder: themeContext.layout === "default"
+            }
           ),
-          children: /* @__PURE__ */ jsxs20(ActiveAnchorProvider, { children: [
-            /* @__PURE__ */ jsx29(
-              Sidebar,
-              {
-                docsDirectories,
-                flatDirectories,
-                fullDirectories: directories,
-                headings,
-                asPopover: hideSidebar,
-                includePlaceholder: themeContext.layout === "default"
-              }
-            ),
-            tocEl,
-            /* @__PURE__ */ jsx29(SkipNavContent, {}),
-            /* @__PURE__ */ jsx29(
-              Body,
-              {
-                themeContext,
-                breadcrumb: activeType !== "page" && themeContext.breadcrumb ? /* @__PURE__ */ jsx29(Breadcrumb, { activePath }) : null,
-                timestamp,
-                navigation: activeType !== "page" && themeContext.pagination ? /* @__PURE__ */ jsx29(
-                  NavLinks,
-                  {
-                    flatDirectories: flatDocsDirectories,
-                    currentIndex: activeIndex
-                  }
-                ) : null,
-                children: /* @__PURE__ */ jsx29(
-                  MDXProvider,
-                  {
-                    components: getComponents({
-                      isRawLayout: themeContext.layout === "raw",
-                      components: config.components
-                    }),
-                    children
-                  }
-                )
-              }
-            )
-          ] })
-        }
-      ),
-      themeContext.footer && renderComponent(config.footer.component, { menu: hideSidebar })
-    ] })
-  );
+          tocEl,
+          /* @__PURE__ */ jsx30(SkipNavContent, {}),
+          /* @__PURE__ */ jsx30(
+            Body,
+            {
+              themeContext,
+              breadcrumb: activeType !== "page" && themeContext.breadcrumb ? /* @__PURE__ */ jsx30(Breadcrumb, { activePath }) : null,
+              timestamp,
+              navigation: activeType !== "page" && themeContext.pagination ? /* @__PURE__ */ jsx30(
+                NavLinks,
+                {
+                  flatDirectories: flatDocsDirectories,
+                  currentIndex: activeIndex
+                }
+              ) : null,
+              children: /* @__PURE__ */ jsx30(
+                MDXProvider,
+                {
+                  components: getComponents({
+                    isRawLayout: themeContext.layout === "raw",
+                    components: config.components
+                  }),
+                  children
+                }
+              )
+            }
+          )
+        ] })
+      }
+    ),
+    themeContext.footer && renderComponent(config.footer.component, { menu: hideSidebar })
+  ] });
 };
 function Layout(_a) {
   var _b = _a, {
@@ -3171,7 +3206,7 @@ function Layout(_a) {
   } = _b, context = __objRest(_b, [
     "children"
   ]);
-  return /* @__PURE__ */ jsx29(ConfigProvider, { value: context, children: /* @__PURE__ */ jsx29(InnerLayout, __spreadProps(__spreadValues({}, context.pageOpts), { children })) });
+  return /* @__PURE__ */ jsx30(FrontMatterProvider, { children: /* @__PURE__ */ jsx30(ConfigProvider, { value: context, children: /* @__PURE__ */ jsx30(InnerLayout, __spreadProps(__spreadValues({}, context.pageOpts), { children })) }) });
 }
 export {
   Bleed,

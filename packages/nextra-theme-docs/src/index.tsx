@@ -22,6 +22,10 @@ import { DEFAULT_LOCALE, PartialDocsThemeConfig } from "./constants";
 import { ActiveAnchorProvider, ConfigProvider, useConfig } from "./contexts";
 import { getComponents } from "./mdx-components";
 import { renderComponent } from "./utils";
+import {
+  useFrontMatter,
+  FrontMatterProvider,
+} from "./contexts/FrontMatterContext";
 
 interface BodyProps {
   themeContext: PageTheme;
@@ -58,7 +62,6 @@ const Body = ({
       : null;
 
   const gitTimestampEl =
-    // Because a user's time zone may be different from the server page
     mounted && date ? (
       <div className="nx-mt-12 nx-mb-8 nx-block nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
         {renderComponent(config.gitTimestamp, { timestamp: date })}
@@ -117,20 +120,22 @@ const InnerLayout = ({
 }: PageOpts & { children: ReactNode }): ReactElement => {
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
-  let fsPath = useFSRoute();
-  if (typeof window !== "undefined") {
-    const fsRoute = useFSRoute();
-    console.log("fs route: ", fsRoute);
-    let cookiePath = Cookies.get("filePath");
-    console.log("cookiePath: ", cookiePath);
-    if (cookiePath && !cookiePath?.endsWith(fsRoute)) {
-      const cookiePathPrefix = cookiePath.split("/").slice(0, -1).join("/");
-      const cookiePathSuffix = fsRoute.split("/").slice(-1);
-      cookiePath = cookiePathPrefix + "/" + cookiePathSuffix;
+  const fsRoute = useFSRoute();
+  const { dfrontMatter: contextFrontMatter } = useFrontMatter(); // Use frontMatter from the context
+
+  const fsPath = useMemo(() => {
+    if (contextFrontMatter) {
+      const key = `${fsRoute.split("/").pop()}.en`;
+      if (contextFrontMatter[key]) {
+        console.log("FrontMatter value: ", contextFrontMatter[key]);
+        return contextFrontMatter[key].path + fsRoute.split("/").pop();
+      }
     }
-    console.log("cookiePath updated: ", cookiePath);
-    fsPath = cookiePath || fsRoute;
-  }
+    return fsRoute;
+  }, [fsRoute, contextFrontMatter]);
+
+  console.log("fs route: ", fsRoute);
+  console.log("fs path: ", fsPath);
 
   const {
     activeType,
@@ -187,9 +192,6 @@ const InnerLayout = ({
   const direction = isRTL ? "rtl" : "ltr";
 
   return (
-    // This makes sure that selectors like `[dir=ltr] .nextra-container` work
-    // before hydration as Tailwind expects the `dir` attribute to exist on the
-    // `html` element.
     <div dir={direction}>
       <script
         dangerouslySetInnerHTML={{
@@ -259,9 +261,11 @@ export default function Layout({
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
-    <ConfigProvider value={context}>
-      <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-    </ConfigProvider>
+    <FrontMatterProvider>
+      <ConfigProvider value={context}>
+        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+      </ConfigProvider>
+    </FrontMatterProvider>
   );
 }
 
