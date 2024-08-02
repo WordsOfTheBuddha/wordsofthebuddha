@@ -1,4 +1,10 @@
-Paṭhamabodhisutta
+---
+title: Paṭhamabodhi sutta - Upon Awakening (First)
+description: The Buddha contemplates dependent co-arising in forward order just after his awakening.
+fetter: ignorance
+tags: ud,ud1,awakening,dependent origination, dependent co-arising,wise attention,ignorance
+id: ud1.1
+---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre bodhirukkhamūle paṭhamābhisambuddho. Tena kho pana samayena bhagavā sattāhaṁ ekapallaṅkena nisinno hoti vimuttisukhapaṭisaṁvedī. Atha kho bhagavā tassa sattāhassa accayena tamhā samādhimhā vuṭṭhahitvā rattiyā paṭhamaṁ yāmaṁ paṭiccasamuppādaṁ anulomaṁ sādhukaṁ manasākāsi:
 
