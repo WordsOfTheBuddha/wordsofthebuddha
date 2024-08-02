@@ -2,7 +2,7 @@
 title: Anusota sutta - Along the Current
 description: The Buddha describes the four types of persons found in the world - those who go with the current, those who go against the current, those who are steady, and those who have crossed over, standing on the firm ground, arahants.
 fetter: doubt, ignorance
-tags: current, sensual pleasures, sensual desire, unwholesome actions, arahant
+tags: current, sensual pleasures, sensual desire, unwholesome actions, arahant, an, an4
 id: an4.5
 ---
 

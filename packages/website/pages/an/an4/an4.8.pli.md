@@ -1,4 +1,10 @@
-Vesārajjasutta
+---
+title: Vesārajja sutta - Confidence
+description: The Buddha describes the four confidences possessed by the Tathāgata.
+fetter: ignorance
+tags: confidence, tathāgata, realization, taints, obstruction, cessation of suffering, an, an4
+id: an4.8
+---
 
 “Cattārimāni, bhikkhave, tathāgatassa vesārajjāni, yehi vesārajjehi samannāgato tathāgato āsabhaṁ ṭhānaṁ paṭijānāti, parisāsu sīhanādaṁ nadati, brahmacakkaṁ pavatteti. Katamāni cattāri?
 
@@ -11,6 +17,8 @@ Vesārajjasutta
 ‘“Yassa kho pana te atthāya dhammo desito so na niyyāti takkarassa sammā dukkhakkhayāyā”ti tatra vata maṁ samaṇo vā brāhmaṇo vā devo vā māro vā brahmā vā koci vā lokasmiṁ sahadhammena paṭicodessatī’ti nimittametaṁ, bhikkhave, na samanupassāmi. Etamahaṁ, bhikkhave, nimittaṁ asamanupassanto khemappatto abhayappatto vesārajjappatto viharāmi.
 
 Imāni kho, bhikkhave, cattāri tathāgatassa vesārajjāni, yehi vesārajjehi samannāgato tathāgato āsabhaṁ ṭhānaṁ paṭijānāti, parisāsu sīhanādaṁ nadati, brahmacakkaṁ pavattetīti.
+
+### Verse
 
 Ye kecime vādapathā puthussitā,
 Yaṁnissitā samaṇabrāhmaṇā ca;
