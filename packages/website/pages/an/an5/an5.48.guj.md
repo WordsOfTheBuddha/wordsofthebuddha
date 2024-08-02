@@ -1,4 +1,10 @@
-અપ્રાપ્ય અવસ્થાઓ પર પ્રવચન
+---
+title: Alabbhanīyaṭhāna sutta - અપ્રાપ્ય અવસ્થાઓ
+description: How an uninstructed ordinary person and a learned disciple of the noble ones respond to the five unobtainable states of aging, illness, death, perishing, and loss.
+fetter: ignorance
+tags: aging, illness, death, perishing, loss, sorrow, suffering, ignorance, wisdom, an, an5
+id: an5.48
+---
 
 "ભિક્ષુઓ, આ પાંચ અવસ્થાઓ છે જે સંન્યાસી, બ્રાહ્મણ, દેવતા, માર, બ્રહ્મા, અથવા વિશ્વમાં કોઈ પણ અન્ય દ્વારા પ્રાપ્ત કરી શકાતી નથી. આ પાંચ શું છે? (1) વૃદ્ધાવસ્થાને આધીન હોય ત્યારે 'વૃદ્ધ ન થવું' એ અવસ્થા સંન્યાસી, બ્રાહ્મણ, દેવતા, માર, બ્રહ્મા, અથવા વિશ્વના કોઈપણ દ્વારા પ્રાપ્ત કરી શકાતી નથી (2) બિમારીને આધીન હોય ત્યારે 'બીમાર ન થવું' ... (3) મૃત્યુને આધીન હોય ત્યારે 'મૃત્યું ન થવું' ... (4) નાશને આધીન હોય ત્યારે 'નાશ ન થવો'... (5) નુકસાનને આધીન હોય ત્યારે 'નુકસાન ન પામવું' એ અવસ્થા સંન્યાસી, બ્રાહ્મણ, દેવતા, માર, બ્રહ્મા, અથવા વિશ્વમાં કોઈ પણ અન્ય દ્વારા પ્રાપ્ત કરી શકાતી નથી.
 

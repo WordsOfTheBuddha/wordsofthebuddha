@@ -1,4 +1,10 @@
-Alabbhanīyaṭhānasutta
+---
+title: Alabbhanīyaṭhāna sutta - Unobtainable States
+description: How an uninstructed ordinary person and a learned disciple of the noble ones respond to the five unobtainable states of aging, illness, death, perishing, and loss.
+fetter: ignorance
+tags: aging, illness, death, perishing, loss, sorrow, suffering, ignorance, wisdom, an, an5
+id: an5.48
+---
 
 “Pañcimāni, bhikkhave, alabbhanīyāni ṭhānāni samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasmiṁ. Katamāni pañca? ‘Jarādhammaṁ mā jīrī’ti alabbhanīyaṁ ṭhānaṁ samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasmiṁ. ‘Byādhidhammaṁ mā byādhīyī’ti …pe… ‘maraṇadhammaṁ mā mīyī’ti … ‘khayadhammaṁ mā khīyī’ti … ‘nassanadhammaṁ mā nassī’ti alabbhanīyaṁ ṭhānaṁ samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasmiṁ.
 

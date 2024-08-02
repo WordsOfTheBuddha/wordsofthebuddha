@@ -1,4 +1,10 @@
-Dutiyaiddhipādasutta
+---
+title: Paṭhamaiddhipāda sutta - Bases for Psychic Ability (Second)
+description: Developing the bases of psychic ability can lead to enlightenment in this very life or the state of non-returning.
+fetter: desire for form, desire for formless, conceit, restlessness, ignorance
+tags: spiritual power, psychic ability, success, collectedness, aspiration, persistence, mind, investigation, reflection, close examination, an, an5
+id: an5.68
+---
 
 “Pubbevāhaṁ, bhikkhave, sambodhā anabhisambuddho bodhisattova samāno pañca dhamme bhāvesiṁ, pañca dhamme bahulīkāsiṁ. Katame pañca?
 
