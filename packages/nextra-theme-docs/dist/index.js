@@ -2980,18 +2980,22 @@ import { jsx as jsx29 } from "react/jsx-runtime";
 var FrontMatterContext = createContext6(
   void 0
 );
+var CACHE_DURATION = 1 * 60 * 60 * 1e3;
 var FrontMatterProvider = ({
   children
 }) => {
   const [dfrontMatter, setFrontMatter] = useState9(null);
   useEffect8(() => {
     const storedFrontMatter = localStorage.getItem("frontMatter");
-    if (storedFrontMatter) {
+    const storedTimestamp = localStorage.getItem("frontMatterTimestamp");
+    const isCacheValid = storedFrontMatter && storedTimestamp && Date.now() - parseInt(storedTimestamp, 10) < CACHE_DURATION;
+    if (isCacheValid) {
       setFrontMatter(JSON.parse(storedFrontMatter));
     } else {
       fetchFrontMatter().then((data) => {
         setFrontMatter(data);
         localStorage.setItem("frontMatter", JSON.stringify(data));
+        localStorage.setItem("frontMatterTimestamp", Date.now().toString());
       }).catch(
         (error) => console.error("Failed to fetch frontMatter:", error)
       );

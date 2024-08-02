@@ -24,22 +24,30 @@ const FrontMatterContext = createContext<FrontMatterContextType | undefined>(
   undefined
 );
 
+const CACHE_DURATION = 1 * 60 * 60 * 1000; // 1 hour in milliseconds
+
 export const FrontMatterProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [dfrontMatter, setFrontMatter] = useState<FrontMatter | null>(null);
 
   useEffect(() => {
-    // Check if frontMatter is already stored in localStorage
     const storedFrontMatter = localStorage.getItem("frontMatter");
-    if (storedFrontMatter) {
+    const storedTimestamp = localStorage.getItem("frontMatterTimestamp");
+
+    const isCacheValid =
+      storedFrontMatter &&
+      storedTimestamp &&
+      Date.now() - parseInt(storedTimestamp, 10) < CACHE_DURATION;
+
+    if (isCacheValid) {
       setFrontMatter(JSON.parse(storedFrontMatter));
     } else {
-      // Fetch frontMatter from the API and store it in localStorage
       fetchFrontMatter()
         .then((data: FrontMatter) => {
           setFrontMatter(data);
           localStorage.setItem("frontMatter", JSON.stringify(data));
+          localStorage.setItem("frontMatterTimestamp", Date.now().toString());
         })
         .catch((error: Error) =>
           console.error("Failed to fetch frontMatter:", error)
