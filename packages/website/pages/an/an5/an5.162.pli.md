@@ -1,4 +1,10 @@
-Dutiyaāghātapaṭivinayasutta
+---
+title: Dutiyaāghātapaṭivinaya sutta - Overcoming Resentment (Second)
+description: Five ways to overcome arisen resentment
+fetter: ill-will
+tags: resentment, ill-will, body, speech, mind, mental clarity, an, an5
+id: an5.162
+---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.
 

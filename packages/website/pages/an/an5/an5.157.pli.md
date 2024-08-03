@@ -1,4 +1,10 @@
-Dukkathāsutta
+---
+title: Dukkathā sutta - Difficult Discussions
+description: Five types of persons for whom specific discussions are difficult, and five types of persons for whom specific discussions are pleasant.
+fetter: conceit
+tags: faith, morality, learning, generosity, wisdom, an, an5
+id: an5.157
+---
 
 “Pañcannaṁ, bhikkhave, puggalānaṁ kathā dukkathā puggale puggalaṁ upanidhāya. Katamesaṁ pañcannaṁ?
 

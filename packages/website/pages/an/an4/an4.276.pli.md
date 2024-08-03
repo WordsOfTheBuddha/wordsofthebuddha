@@ -6,4 +6,12 @@ tags: an,an4,spiritual power,psychic ability,passion,desire,attachment,collected
 id: an4.276
 ---
 
-“Rāgassa, bhikkhave, abhiññāya cattāro dhammā bhāvetabbā. Katame cattāro? Idha, bhikkhave, bhikkhu chandasamādhipadhānasaṅkhārasamannāgataṁ iddhipādaṁ bhāveti; vīriyasamādhi …pe… cittasamādhi …pe… vīmaṁsāsamādhipadhānasaṅkhārasamannāgataṁ iddhipādaṁ bhāveti. Rāgassa, bhikkhave, abhiññāya ime cattāro dhammā bhāvetabbā”ti.
+“Rāgassa, bhikkhave, abhiññāya cattāro dhammā bhāvetabbā. Katame cattāro?
+
+Idha, bhikkhave, bhikkhu chandasamādhipadhānasaṅkhārasamannāgataṁ iddhipādaṁ bhāveti;
+
+vīriyasamādhipadhānasaṅkhārasamannāgataṁ iddhipādaṁ bhāveti;
+
+cittasamādhipadhānasaṅkhārasamannāgataṁ iddhipādaṁ bhāveti;
+
+vīmaṁsāsamādhipadhānasaṅkhārasamannāgataṁ iddhipādaṁ bhāveti. Rāgassa, bhikkhave, abhiññāya ime cattāro dhammā bhāvetabbā”ti.
