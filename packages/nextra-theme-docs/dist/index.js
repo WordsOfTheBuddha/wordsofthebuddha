@@ -3095,7 +3095,7 @@ var InnerLayout = ({
       const key = `${fsRoute.split("/").pop()}.en`;
       if (contextFrontMatter[key]) {
         console.log("FrontMatter value: ", contextFrontMatter[key]);
-        return contextFrontMatter[key].path + fsRoute.split("/").pop();
+        return contextFrontMatter[key].fullPath ? contextFrontMatter[key].fullPath : contextFrontMatter[key].path + fsRoute.split("/").pop();
       }
     }
     return fsRoute;

@@ -1,52 +1,61 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Special labels for the Nikaya directories
 const specialLabels = {
-  sn: 'Linked Discourses (SN)',
-  an: 'Numbered Discourses (AN)',
-  mn: 'Middle Length Discourses (MN)',
-  snp: 'Sutta Nipāta (SnP)',
-  dhp: 'Dhamma Pada (DhP)',
-  iti: 'As It Was Said (ITI)',
-  ud: 'Inspired Utterances (Ud)'
+  sn: "Linked Discourses (SN)",
+  an: "Numbered Discourses (AN)",
+  mn: "Middle Length Discourses (MN)",
+  snp: "Sutta Nipāta (SnP)",
+  dhp: "Dhamma Pada (DhP)",
+  iti: "As It Was Said (ITI)",
+  ud: "Inspired Utterances (Ud)",
 };
 
-const countTranslations = (dir) => {
-  let count = 0;
+// Load the frontMatter.json file
+const frontMatterPath = path.join(__dirname, "../public/frontMatter.json");
+const frontMatter = JSON.parse(fs.readFileSync(frontMatterPath, "utf-8"));
 
-  const items = fs.readdirSync(dir);
-  items.forEach(item => {
-    const itemPath = path.join(dir, item);
-    const stat = fs.statSync(itemPath);
+const countTranslations = () => {
+  const counts = {};
 
-    if (stat.isDirectory()) {
-      count += countTranslations(itemPath);
-    } else if (stat.isFile() && (item.endsWith('.en.md') || item.endsWith('.en.mdx'))) {
-      count++;
+  // Iterate over each key in frontMatter
+  Object.keys(frontMatter).forEach((key) => {
+    if (key.endsWith(".en") && !key.includes("-")) {
+      // Extract the prefix from the key to match with specialLabels
+      const prefix = key.match(/^[a-z]+/)[0]; // Match all leading alphabet characters
+
+      if (specialLabels[prefix]) {
+        // Initialize the count for this prefix if not already
+        if (!counts[prefix]) {
+          counts[prefix] = {
+            label: specialLabels[prefix],
+            translationCount: 0,
+          };
+        }
+
+        // Increment the count for this prefix
+        counts[prefix].translationCount++;
+      }
     }
   });
 
-  return count;
+  return counts;
 };
 
 const generateTranslationCounts = () => {
-  const counts = {};
-
-  Object.keys(specialLabels).forEach(folderName => {
-    const dirPath = path.join(__dirname, '../pages', folderName);
-    if (fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory()) {
-      counts[folderName] = {
-        label: specialLabels[folderName],
-        translationCount: countTranslations(dirPath)
-      };
+  const counts = countTranslations();
+  const orderedCounts = {};
+  Object.keys(specialLabels).forEach((key) => {
+    if (counts[key]) {
+      orderedCounts[key] = counts[key];
     }
   });
 
-  const outputPath = path.join(__dirname, '../public/translationCounts.json');
-  fs.writeFileSync(outputPath, JSON.stringify(counts, null, 2));
+  const outputPath = path.join(__dirname, "../public/translationCounts.json");
+  fs.writeFileSync(outputPath, JSON.stringify(orderedCounts, null, 2));
 
-  console.log(`Translation counts generated successfully.`);
+  console.log("Translation counts generated successfully.");
 };
 
 generateTranslationCounts();

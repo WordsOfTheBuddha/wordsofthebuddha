@@ -1,5 +1,6 @@
 // pages/_app.js
 import { ThemeProvider } from "next-themes";
+import { useEffect } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Verse from "/components/Verse";
 import RedditIcon from "/components/RedditIcon";
@@ -13,6 +14,15 @@ const components = {
 };
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    fetch(window.location.href).then((response) => {
+      const fragment = response.headers.get("X-Redirect-Fragment");
+      if (fragment) {
+        window.location.hash = fragment;
+      }
+    });
+  }, []);
+
   return (
     <ThemeProvider attribute="class">
       <MDXProvider components={components}>

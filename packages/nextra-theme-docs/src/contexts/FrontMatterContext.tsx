@@ -8,6 +8,7 @@ interface FrontMatterEntry {
   tags: string;
   id: string;
   path: string;
+  fullPath: string;
   updatedTime: string;
 }
 

@@ -52,27 +52,36 @@ export function middleware(request) {
 
   // Check if pathname corresponds to a file
   const fileId = pathname.split("/").pop();
-  const isFile = frontMatter[`${fileId}.${locale}`] !== undefined;
+  const fileIdWithLocale = `${pathname.split("/").pop()}.${locale}`;
+  const isFile = frontMatter[fileIdWithLocale] !== undefined;
 
   console.log(`pathname: ${pathname}, fileId: ${fileId}, isFile: ${isFile}`);
   // Pass through if URL already ends with locale-specific suffix, but serve without showing the suffix
   if (isFile && fileId !== "index" && `/${fileId}` === pathname) {
     // get prefix path
-    let prefixPath = frontMatter[`${fileId}.${locale}`].path;
-    console.log(`Rewriting to serve file simple URL: ${fileId}`);
-    const response = NextResponse.rewrite(
-      new URL(`${prefixPath}${fileId}.${locale}`, request.url)
+    let filePath = frontMatter[fileIdWithLocale].fullPath
+      ? frontMatter[fileIdWithLocale].fullPath
+      : `${frontMatter[fileIdWithLocale].path}${fileIdWithLocale}`;
+    console.log(
+      `Rewriting to serve file simple URL: ${fileId}, filePath: ${filePath}, request.url: ${request.url}`
     );
-    response.cookies.set("filePath", `${prefixPath}${fileId}`);
+    const response = NextResponse.rewrite(new URL(filePath, request.url));
+    if (filePath.includes("#")) {
+      const fragment = filePath.split("#")[1];
+      response.headers.set("X-Redirect-Fragment", fragment);
+    }
+    response.cookies.set("filePath", filePath);
     return response;
   }
 
   // valid file id but not exact file path
   if (isFile && fileId !== "index") {
-    let prefixPath = frontMatter[`${fileId}.${locale}`].path;
+    let filePath = frontMatter[fileIdWithLocale].fullPath
+      ? frontMatter[fileIdWithLocale].fullPath
+      : `${frontMatter[fileIdWithLocale].path}${fileIdWithLocale}`;
     console.log(`Redirecting to expected file path: ${fileId}`);
     const response = NextResponse.redirect(new URL(`/${fileId}`, request.url));
-    response.cookies.set("filePath", `${prefixPath}${fileId}`);
+    response.cookies.set("filePath", filePath);
     return response;
   } else if (!isFile) {
     // Check if pathname corresponds to a directory
