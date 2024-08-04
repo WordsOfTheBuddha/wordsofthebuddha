@@ -130,13 +130,14 @@ const InnerLayout = ({
         console.log("FrontMatter value: ", contextFrontMatter[key]);
         return contextFrontMatter[key].fullPath
           ? contextFrontMatter[key].fullPath
+              .split("#")[0]
+              .replace(/\.[a-z]{2,3}$/, "")
           : contextFrontMatter[key].path + fsRoute.split("/").pop();
       }
     }
     return fsRoute;
   }, [fsRoute, contextFrontMatter]);
 
-  console.log("fs route: ", fsRoute);
   console.log("fs path: ", fsPath);
 
   const {
@@ -149,16 +150,15 @@ const InnerLayout = ({
     flatDirectories,
     flatDocsDirectories,
     directories,
-  } = useMemo(
-    () =>
-      normalizePages({
-        list: pageMap,
-        locale,
-        defaultLocale,
-        route: fsPath,
-      }),
-    [pageMap, locale, defaultLocale, fsPath]
-  );
+  } = useMemo(() => {
+    const result = normalizePages({
+      list: pageMap,
+      locale,
+      defaultLocale,
+      route: fsPath,
+    });
+    return result;
+  }, [pageMap, locale, defaultLocale, fsPath]);
 
   const themeContext = { ...activeThemeContext, ...frontMatter };
   const hideSidebar =

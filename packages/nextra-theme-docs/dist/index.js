@@ -3095,12 +3095,11 @@ var InnerLayout = ({
       const key = `${fsRoute.split("/").pop()}.en`;
       if (contextFrontMatter[key]) {
         console.log("FrontMatter value: ", contextFrontMatter[key]);
-        return contextFrontMatter[key].fullPath ? contextFrontMatter[key].fullPath : contextFrontMatter[key].path + fsRoute.split("/").pop();
+        return contextFrontMatter[key].fullPath ? contextFrontMatter[key].fullPath.split("#")[0].replace(/\.[a-z]{2,3}$/, "") : contextFrontMatter[key].path + fsRoute.split("/").pop();
       }
     }
     return fsRoute;
   }, [fsRoute, contextFrontMatter]);
-  console.log("fs route: ", fsRoute);
   console.log("fs path: ", fsPath);
   const {
     activeType,
@@ -3112,15 +3111,15 @@ var InnerLayout = ({
     flatDirectories,
     flatDocsDirectories,
     directories
-  } = useMemo5(
-    () => normalizePages({
+  } = useMemo5(() => {
+    const result = normalizePages({
       list: pageMap,
       locale,
       defaultLocale,
       route: fsPath
-    }),
-    [pageMap, locale, defaultLocale, fsPath]
-  );
+    });
+    return result;
+  }, [pageMap, locale, defaultLocale, fsPath]);
   const themeContext = __spreadValues(__spreadValues({}, activeThemeContext), frontMatter);
   const hideSidebar = !themeContext.sidebar || themeContext.layout === "raw" || activeType === "page";
   const tocEl = activeType === "page" || !themeContext.toc || themeContext.layout !== "default" ? themeContext.layout !== "full" && themeContext.layout !== "raw" && /* @__PURE__ */ jsx30("nav", { className: classes4.toc, "aria-label": "table of contents" }) : /* @__PURE__ */ jsx30(
