@@ -4,23 +4,52 @@ const path = require("path");
 // Path to the pages directory and the frontmatter JSON files
 const pagesDir = path.join(__dirname, "../pages");
 const frontMatterFile = path.join(__dirname, "../public/frontMatter.json");
-const directoryFrontMatterFile = path.join(
+const directoryMetaDataFile = path.join(
   __dirname,
-  "../public/directoryFrontMatter.json"
+  "../public/directoryMetaData.json"
 );
 
 // Load frontMatter.json and directoryFrontMatter.json data
 const frontMatterData = JSON.parse(fs.readFileSync(frontMatterFile, "utf8"));
-const directoryFrontMatterData = JSON.parse(
-  fs.readFileSync(directoryFrontMatterFile, "utf8")
+const directoryMetaData = JSON.parse(
+  fs.readFileSync(directoryMetaDataFile, "utf8")
 );
 
+// Function to count the number of files in each directory for each locale
+const countFilesInDirectories = (data) => {
+  const counts = {};
+
+  Object.keys(data)
+    .filter((key) => !key.includes("-"))
+    .forEach((key) => {
+      const entry = data[key];
+      const directoryPath = entry.path.replace(/\/$/, ""); // Remove trailing slash if present
+      const locale = key.split(".").pop(); // Extract the locale suffix (e.g., "en", "pli")
+
+      if (!counts[directoryPath]) {
+        counts[directoryPath] = {};
+      }
+
+      if (!counts[directoryPath][locale]) {
+        counts[directoryPath][locale] = 0;
+      }
+
+      counts[directoryPath][locale]++;
+    });
+
+  return counts;
+};
+
+// Get counts for each directory
+const directoryCounts = countFilesInDirectories(frontMatterData);
+
 // Helper function to create card data
-const createCardData = ({ title, description, id, path }) => ({
+const createCardData = ({ title, description, id, path, counts }) => ({
   title,
   description,
   id,
   path,
+  counts,
 });
 
 // Function to generate index.mdx content for pages and directories
@@ -67,12 +96,19 @@ const generateIndexPages = (dir) => {
     );
 
   const directoryCards = subdirs.map((subdir) => {
-    const dirData = directoryFrontMatterData[subdir] || {};
+    const fullPath = path
+      .join(dir, subdir)
+      .replace(pagesDir, "")
+      .replace(/\\/g, "/");
+    const dirData = directoryMetaData[subdir] || {};
+    const counts = directoryCounts[fullPath] || {};
+
     return createCardData({
       title: dirData.title || subdir,
       description: dirData.description || "",
       id: subdir,
       path: `${dir.replace(pagesDir, "").replace(/\\/g, "/")}/`, // Convert path to URL format
+      counts,
     });
   });
 

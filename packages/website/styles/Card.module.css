@@ -5,7 +5,15 @@
   overflow: hidden;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   margin: 1rem 0 0 0;
-  background-color: var(--background-header);
+  position: relative; /* Required for positioning the count label */
+}
+
+.lightCard {
+  background-color: var(--background-header-light);
+}
+
+.darkCard {
+  background-color: var(--background-header-dark);
 }
 
 .cardBody {
@@ -39,4 +47,21 @@
   color: var(--text-color);
   font-size: 1.1rem;
   margin-bottom: 1rem;
+}
+
+.cardCount {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: var(--secondary-color-light); /* Light mode background */
+  color: var(--background-color-light); /* Light mode text color */
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.darkCard .cardCount {
+  background-color: var(--secondary-color-dark); /* Dark mode background */
+  color: var(--text-color-dark); /* Dark mode text color */
 }
