@@ -80,20 +80,11 @@ const generateIndexPages = (dir) => {
         });
       }
     })
-    .filter((card) => card !== undefined)
-    .sort((a, b) =>
-      a.id.localeCompare(b.id, undefined, {
-        numeric: true,
-        sensitivity: "base",
-      })
-    );
+    .filter((card) => card !== undefined);
 
   const subdirs = fs
     .readdirSync(dir)
-    .filter((item) => fs.lstatSync(path.join(dir, item)).isDirectory())
-    .sort((a, b) =>
-      a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
-    );
+    .filter((item) => fs.lstatSync(path.join(dir, item)).isDirectory());
 
   const directoryCards = subdirs.map((subdir) => {
     const fullPath = path
@@ -113,7 +104,12 @@ const generateIndexPages = (dir) => {
   });
 
   let contentCount = 0;
-  const allCards = [...cards, ...directoryCards];
+  const allCards = [...cards, ...directoryCards].sort((a, b) =>
+    a.id.localeCompare(b.id, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    })
+  );
 
   if (allCards.length > 0) {
     const indexContent = generateIndexContent(allCards);
