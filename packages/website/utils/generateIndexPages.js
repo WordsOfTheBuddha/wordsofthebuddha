@@ -1,59 +1,35 @@
 const fs = require("fs");
 const path = require("path");
 
-// Path to the pages directory and the frontmatter JSON file
+// Path to the pages directory and the frontmatter JSON files
 const pagesDir = path.join(__dirname, "../pages");
 const frontMatterFile = path.join(__dirname, "../public/frontMatter.json");
+const directoryFrontMatterFile = path.join(
+  __dirname,
+  "../public/directoryFrontMatter.json"
+);
 
-// Load frontMatter.json data
+// Load frontMatter.json and directoryFrontMatter.json data
 const frontMatterData = JSON.parse(fs.readFileSync(frontMatterFile, "utf8"));
+const directoryFrontMatterData = JSON.parse(
+  fs.readFileSync(directoryFrontMatterFile, "utf8")
+);
 
-// Helper function to create card HTML
-const createCard = ({ title, description, id, path }) => `
-  <Card 
-    title="${title}"
-    description="${description}"
-    link="/${id}"
-    id="${id}"
-  />
-`;
+// Helper function to create card data
+const createCardData = ({ title, description, id, path }) => ({
+  title,
+  description,
+  id,
+  path,
+});
 
-// Helper function to create directory link HTML with full path
-const createDirectoryLink = (dir, subdir) => {
-  const fullPath = path.relative(pagesDir, path.join(dir, subdir));
-  const transformLabel = (name) => {
-    // Capitalize all initial characters before the first number and add space before the first number
-    return name.replace(/([a-zA-Z]+)(\d)?/, (match, p1, p2) =>
-      p2 ? `${p1.toUpperCase()} ${p2}` : p1.toUpperCase()
-    );
-  };
-  return `
-    <div className="directory-link">
-      <a href="/${fullPath}/" className="directory-link">${transformLabel(
-    subdir
-  )}</a>
-    </div>
-  `;
-};
-
-// Function to generate index.mdx content for pages
-const generatePagesIndexContent = (items) => `
+// Function to generate index.mdx content for pages and directories
+const generateIndexContent = (items) => `
 import CardGrid from '/components/CardGrid';
 
 export default function Index() {
   return (
     <CardGrid items={${JSON.stringify(items)}} />
-  );
-}
-`;
-
-// Function to generate index.mdx content for directories
-const generateDirectoriesIndexContent = (dir, subdirs) => `
-export default function Index() {
-  return (
-    <div className="directories-container">
-      ${subdirs.map((subdir) => createDirectoryLink(dir, subdir)).join("\n")}
-    </div>
   );
 }
 `;
@@ -67,12 +43,12 @@ const generateIndexPages = (dir) => {
       const id = item.replace(".en.mdx", "");
       const frontmatter = frontMatterData[id + ".en"];
       if (frontmatter) {
-        return {
+        return createCardData({
           title: frontmatter.title,
           description: frontmatter.description,
-          id: frontmatter.id,
-          path: frontmatter.path,
-        };
+          id: id,
+          path: `${dir.replace(pagesDir, "").replace(/\\/g, "/")}/`, // Convert path to URL format
+        });
       }
     })
     .filter((card) => card !== undefined)
@@ -90,17 +66,24 @@ const generateIndexPages = (dir) => {
       a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
     );
 
+  const directoryCards = subdirs.map((subdir) => {
+    const dirData = directoryFrontMatterData[subdir] || {};
+    return createCardData({
+      title: dirData.title || subdir,
+      description: dirData.description || "",
+      id: subdir,
+      path: `${dir.replace(pagesDir, "").replace(/\\/g, "/")}/`, // Convert path to URL format
+    });
+  });
+
   let contentCount = 0;
-  if (cards.length > 0 && subdirs.length === 0) {
-    const indexContent = generatePagesIndexContent(cards);
+  const allCards = [...cards, ...directoryCards];
+
+  if (allCards.length > 0) {
+    const indexContent = generateIndexContent(allCards);
     fs.writeFileSync(path.join(dir, "index.mdx"), indexContent);
     contentCount++;
-    //console.log(`Created index.mdx for pages in ${dir}`);
-  } else if (subdirs.length > 0 && cards.length === 0) {
-    const indexContent = generateDirectoriesIndexContent(dir, subdirs);
-    fs.writeFileSync(path.join(dir, "index.mdx"), indexContent);
-    contentCount++;
-    //console.log(`Created index.mdx for directories in ${dir}`);
+    //console.log(`Created index.mdx for content in ${dir}`);
   } else {
     //console.log(`No content to create index.mdx in ${dir}`);
   }
