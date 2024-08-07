@@ -23,18 +23,23 @@ const countFilesInDirectories = (data) => {
     .filter((key) => !key.includes("-"))
     .forEach((key) => {
       const entry = data[key];
-      const directoryPath = entry.path.replace(/\/$/, ""); // Remove trailing slash if present
       const locale = key.split(".").pop(); // Extract the locale suffix (e.g., "en", "pli")
+      const pathParts = entry.path.split("/").filter((part) => part); // Split the path and remove empty parts
 
-      if (!counts[directoryPath]) {
-        counts[directoryPath] = {};
-      }
+      // Iterate through all sub-paths
+      pathParts.forEach((_, index) => {
+        const directoryPath = `/${pathParts.slice(0, index + 1).join("/")}`;
 
-      if (!counts[directoryPath][locale]) {
-        counts[directoryPath][locale] = 0;
-      }
+        if (!counts[directoryPath]) {
+          counts[directoryPath] = {};
+        }
 
-      counts[directoryPath][locale]++;
+        if (!counts[directoryPath][locale]) {
+          counts[directoryPath][locale] = 0;
+        }
+
+        counts[directoryPath][locale]++;
+      });
     });
 
   return counts;
