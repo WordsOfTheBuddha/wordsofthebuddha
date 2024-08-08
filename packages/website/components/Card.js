@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "/styles/Card.module.css";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
@@ -6,6 +6,11 @@ import { useRouter } from "next/router";
 export const Card = ({ title, description, path, id, updatedTime, counts }) => {
   const { resolvedTheme } = useTheme();
   const { locale } = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Function to transform the ID based on character and digit boundaries
   const transformId = (id) => {
@@ -26,6 +31,11 @@ export const Card = ({ title, description, path, id, updatedTime, counts }) => {
   // Default to 'en' if no locale is specified
   const currentLocale = locale || "en";
   const count = counts && counts[currentLocale] ? counts[currentLocale] : 0;
+
+  if (!isMounted) {
+    // You can return null or a placeholder here if you want to avoid showing any content before the theme is resolved
+    return null;
+  }
 
   return (
     <div
