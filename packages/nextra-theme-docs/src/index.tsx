@@ -249,6 +249,22 @@ const InnerLayout = ({
             >
               {children}
             </MDXProvider>
+            {frontMatter.commentary && (
+              <>
+                <hr style={{ marginTop: "2rem" }} />
+                <div
+                  style={{
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                    whiteSpace: "pre-wrap",
+                    fontSize: "0.92rem",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {frontMatter.commentary}
+                </div>
+              </>
+            )}
           </Body>
         </ActiveAnchorProvider>
       </div>

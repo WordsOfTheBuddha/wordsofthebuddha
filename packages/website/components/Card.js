@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import styles from "/styles/Card.module.css";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
@@ -49,7 +50,9 @@ export const Card = ({ title, description, path, id, updatedTime, counts }) => {
           <a href={path + id}>{transformId(id)}</a>
           <span>{title}</span>
         </h2>
-        <p className={styles.cardDescription}>{description}</p>
+        <p className={styles.cardDescription}>
+          <ReactMarkdown>{description}</ReactMarkdown>
+        </p>
         {updatedTime && (
           <div
             className={`${styles.updatedTime} nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400`}

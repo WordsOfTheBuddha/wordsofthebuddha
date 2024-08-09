@@ -3172,7 +3172,7 @@ var InnerLayout = ({
           ),
           tocEl,
           /* @__PURE__ */ jsx30(SkipNavContent, {}),
-          /* @__PURE__ */ jsx30(
+          /* @__PURE__ */ jsxs20(
             Body,
             {
               themeContext,
@@ -3185,16 +3185,34 @@ var InnerLayout = ({
                   currentIndex: activeIndex
                 }
               ) : null,
-              children: /* @__PURE__ */ jsx30(
-                MDXProvider,
-                {
-                  components: getComponents({
-                    isRawLayout: themeContext.layout === "raw",
-                    components: config.components
-                  }),
-                  children
-                }
-              )
+              children: [
+                /* @__PURE__ */ jsx30(
+                  MDXProvider,
+                  {
+                    components: getComponents({
+                      isRawLayout: themeContext.layout === "raw",
+                      components: config.components
+                    }),
+                    children
+                  }
+                ),
+                frontMatter.commentary && /* @__PURE__ */ jsxs20(Fragment11, { children: [
+                  /* @__PURE__ */ jsx30("hr", { style: { marginTop: "2rem" } }),
+                  /* @__PURE__ */ jsx30(
+                    "div",
+                    {
+                      style: {
+                        marginTop: "1rem",
+                        marginBottom: "1rem",
+                        whiteSpace: "pre-wrap",
+                        fontSize: "0.92rem",
+                        fontStyle: "italic"
+                      },
+                      children: frontMatter.commentary
+                    }
+                  )
+                ] })
+              ]
             }
           )
         ] })
