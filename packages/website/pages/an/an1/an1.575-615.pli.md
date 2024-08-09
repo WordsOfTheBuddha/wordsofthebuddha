@@ -1,5 +1,5 @@
 ---
-title: Kāyagatāsativagga - The Chapter on Mindfulness of the Body
+title: Kāyagatāsati vagga - The Chapter on Mindfulness of the Body
 description: Short teachings on the benefits of cultivating mindfulness of the body
 fetter: ignorance
 tags: mindfulness,mindfulness of body,awareness

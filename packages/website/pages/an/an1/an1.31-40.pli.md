@@ -1,5 +1,5 @@
 ---
-title: Adantavagga - The Chapter on the Untamed
+title: Adanta vagga - The Chapter on the Untamed
 description: Short teachings contrasting the tamed and untamed mind
 fetter: ignorance
 tags: mind,harm,benefit
