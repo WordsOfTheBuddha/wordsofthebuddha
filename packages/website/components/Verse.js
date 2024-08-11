@@ -9,7 +9,7 @@ const isVerse = (paragraph) => {
   const lastLine = lines[lines.length - 1].trim();
   const otherLines = lines.slice(0, -1);
 
-  const lastLineValid = /[.?"-]$/.test(lastLine);
+  const lastLineValid = /[.?"-']$/.test(lastLine);
   const otherLinesValid = otherLines.every((line) =>
     /[,;:.?]?$/i.test(line.trim())
   );
