@@ -2,7 +2,7 @@
 title: Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances
 description: The Buddha explains what causes the hindrances to arise and how to abandon them.
 fetter: ignorance
-tags: sensual desire, ill-will, dullness and drowsiness, restlessness and worry, doubt, five hindrances, wise attention, unwise attention
+tags: sensual desire, ill-will, dullness and drowsiness, restlessness and worry, doubt, five hindrances, wise attention, unwise attention, an, an1
 id: an1.11-20
 ---
 

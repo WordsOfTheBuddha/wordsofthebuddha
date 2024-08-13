@@ -2,7 +2,7 @@
 title: Adanta vagga - The Chapter on the Untamed
 description: Short teachings contrasting the tamed and untamed mind
 fetter: ignorance
-tags: mind,harm,benefit
+tags: mind, harm, benefit, an, an1
 id: an1.31-40
 ---
 

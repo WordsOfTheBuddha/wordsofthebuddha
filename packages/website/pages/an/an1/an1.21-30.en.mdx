@@ -2,7 +2,7 @@
 title: Akammaniya vagga - The Chapter On The Ineffective
 description: The Buddha contrasts the undeveloped and developed mind.
 fetter: ignorance
-tags: mind, development, benefit, harm, ease
+tags: mind, development, benefit, harm, ease, an, an1
 id: an1.21-30
 ---
 
