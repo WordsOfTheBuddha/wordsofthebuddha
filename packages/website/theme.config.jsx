@@ -3,14 +3,14 @@ import { useConfig } from "nextra-theme-docs";
 import { useRouter } from "next/router";
 import Title from "/components/Title";
 import Description from "/components/Description";
-import Verse from "/components/Verse";
+import TextEnhancer from "/components/TextEnhancer";
 import RedditIcon from "/components/RedditIcon";
 
 export default {
   logo: <span>Words Of The Buddha</span>,
   components: {
     p: (props) => {
-      return <Verse>{props.children}</Verse>;
+      return <TextEnhancer>{props.children}</TextEnhancer>;
     },
   },
   head() {
