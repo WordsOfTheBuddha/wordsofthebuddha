@@ -123,6 +123,11 @@ const InnerLayout = ({
   const fsRoute = useFSRoute();
   const { dfrontMatter: contextFrontMatter } = useFrontMatter(); // Use frontMatter from the context
 
+  if (typeof window !== "undefined") {
+    // reset session storage for lastparagraph
+    sessionStorage.setItem("lastParagraphText", "");
+  }
+
   const fsPath = useMemo(() => {
     if (contextFrontMatter) {
       const key = `${fsRoute.split("/").pop()}.en`;

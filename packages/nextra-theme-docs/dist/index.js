@@ -3090,6 +3090,9 @@ var InnerLayout = ({
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter8();
   const fsRoute = useFSRoute3();
   const { dfrontMatter: contextFrontMatter } = useFrontMatter();
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem("lastParagraphText", "");
+  }
   const fsPath = useMemo5(() => {
     if (contextFrontMatter) {
       const key = `${fsRoute.split("/").pop()}.en`;

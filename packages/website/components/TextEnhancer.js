@@ -132,26 +132,28 @@ const TextEnhancer = ({ children, minThreshold = 20 }) => {
   const { resolvedTheme } = useTheme();
   const [lastParagraphText, setLastParagraphText] = useState("");
 
+  const currentText = React.Children.toArray(children).join("");
+
   // Retrieve the last paragraph text from sessionStorage when the component is rendered
   useEffect(() => {
     const storedLastParagraph = sessionStorage.getItem("lastParagraphText");
     if (storedLastParagraph) {
       setLastParagraphText(storedLastParagraph);
+      if (currentText) {
+        const updatedText = (storedLastParagraph + " \n " + currentText).trim();
+        sessionStorage.setItem("lastParagraphText", updatedText);
+      }
+    } else if (currentText) {
+      // If there is no stored value, just save the current text
+      sessionStorage.setItem("lastParagraphText", currentText);
     }
-  }, []);
-
-  const currentText = React.Children.toArray(children).join("");
+  }, [currentText]);
   const processedContent = processContent(
     children,
     resolvedTheme,
     lastParagraphText,
     minThreshold
   );
-
-  // Update the last paragraph text in sessionStorage after processing
-  useEffect(() => {
-    sessionStorage.setItem("lastParagraphText", currentText);
-  }, [currentText]);
 
   return <div>{processedContent}</div>;
 };
