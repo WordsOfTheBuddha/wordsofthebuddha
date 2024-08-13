@@ -18,13 +18,22 @@ const isVerse = (paragraph) => {
 };
 
 const detectRepetition = (currentText, lastText, minThreshold = 20) => {
-  if (!lastText) return currentText;
+  if (!lastText) return currentText; // No comparison if no last text exists
 
-  const removePunctuation = (word) =>
+  // Helper function to remove punctuation and normalize casing for comparison purposes
+  const normalize = (word) =>
     word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"]/g, "").toLowerCase();
 
+  // Helper function to remove content within brackets for comparison purposes
+  const removeBrackets = (text) =>
+    text.replace(/\s*\[.*?\]|\s*\(.*?\)/g, "").trim();
+
+  // Preprocess lastText by removing brackets
+  const preprocessedLastText = removeBrackets(lastText).replace(/\s+/g, " ");
+
+  // Split into words and spaces/punctuation
   const currentWords = currentText.match(/\S+|\s+/g);
-  const lastWords = lastText.match(/\S+|\s+/g);
+  const lastWords = preprocessedLastText.match(/\S+|\s+/g);
 
   let result = [];
   let i = 0;
@@ -36,20 +45,21 @@ const detectRepetition = (currentText, lastText, minThreshold = 20) => {
     let bestMatchSegment = [];
     let bestMatchIndex = i;
 
+    // Search for a matching sequence in lastWords
     for (let j = 0; j < lastWords.length; j++) {
       let k = 0;
 
       while (
         i + k < currentWords.length &&
         j + k < lastWords.length &&
-        removePunctuation(currentWords[i + k]) ===
-          removePunctuation(lastWords[j + k])
+        normalize(currentWords[i + k]) === normalize(lastWords[j + k])
       ) {
         k++;
       }
 
       const matchingSegmentLength = currentWords.slice(i, i + k).length;
 
+      // Check if the match length is greater than or equal to the minThreshold
       if (
         matchingSegmentLength >= minThreshold &&
         matchingSegmentLength > bestMatchLength
@@ -68,7 +78,7 @@ const detectRepetition = (currentText, lastText, minThreshold = 20) => {
           {matchingSegment}
         </span>
       );
-      i = bestMatchIndex;
+      i = bestMatchIndex; // Skip over the matched segment
     } else {
       result.push(
         <span key={i} style={{ fontSize: "1.2rem" }}>
@@ -79,8 +89,10 @@ const detectRepetition = (currentText, lastText, minThreshold = 20) => {
     }
   }
 
+  // Join the result to verify the output text matches currentText
   const resultText = result.map((span) => span.props.children).join("");
 
+  // If the result text doesn't match currentText, return currentText without any modifications
   if (resultText !== currentText) {
     return currentText;
   }
