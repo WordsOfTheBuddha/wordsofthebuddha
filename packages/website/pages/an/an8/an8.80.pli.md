@@ -6,6 +6,8 @@ tags: laziness, energy, effort, diligence, an, an8
 id: an8.80
 ---
 
+### Grounds for Laziness
+
 “Aṭṭhimāni, bhikkhave, kusītavatthūni. Katamāni aṭṭha?
 
 Idha, bhikkhave, bhikkhunā kammaṁ kattabbaṁ hoti. Tassa evaṁ hoti: ‘kammaṁ kho me kattabbaṁ bhavissati. Kammaṁ kho pana me karontassa kāyo kilamissati. Handāhaṁ nipajjāmī’ti. So nipajjati, na vīriyaṁ ārabhati appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Idaṁ, bhikkhave, paṭhamaṁ kusītavatthu.
@@ -24,7 +26,11 @@ Puna caparaṁ, bhikkhave, bhikkhuno uppanno hoti appamattako ābādho. Tassa ev
 
 Puna caparaṁ, bhikkhave, bhikkhu gilānā vuṭṭhito hoti aciravuṭṭhito gelaññā. Tassa evaṁ hoti: ‘ahaṁ kho gilānā vuṭṭhito aciravuṭṭhito gelaññā. Tassa me kāyo dubbalo akammañño. Handāhaṁ nipajjāmī’ti. So nipajjati, na vīriyaṁ ārabhati appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Idaṁ, bhikkhave, aṭṭhamaṁ kusītavatthu. Imāni kho, bhikkhave, aṭṭha kusītavatthūni.
 
-Aṭṭhimāni, bhikkhave, ārambhavatthūni. Katamāni aṭṭha? Idha, bhikkhave, bhikkhunā kammaṁ kattabbaṁ hoti. Tassa evaṁ hoti: ‘kammaṁ kho me kattabbaṁ bhavissati. Kammaṁ kho mayā karontena na sukaraṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ paṭikacceva vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Idaṁ, bhikkhave, paṭhamaṁ ārambhavatthu.
+### Grounds for Arousing Energy
+
+Aṭṭhimāni, bhikkhave, ārambhavatthūni. Katamāni aṭṭha?
+
+Idha, bhikkhave, bhikkhunā kammaṁ kattabbaṁ hoti. Tassa evaṁ hoti: ‘kammaṁ kho me kattabbaṁ bhavissati. Kammaṁ kho mayā karontena na sukaraṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ paṭikacceva vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Idaṁ, bhikkhave, paṭhamaṁ ārambhavatthu.
 
 Puna caparaṁ, bhikkhave, bhikkhunā kammaṁ kataṁ hoti. Tassa evaṁ hoti: ‘ahaṁ kho kammaṁ akāsiṁ. Kammaṁ kho panāhaṁ karonto nāsakkhiṁ buddhānaṁ sāsanaṁ manasi kātuṁ. Handāhaṁ vīriyaṁ ārabhāmi appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāyā’ti. So vīriyaṁ ārabhati. Idaṁ, bhikkhave, dutiyaṁ ārambhavatthu.
 

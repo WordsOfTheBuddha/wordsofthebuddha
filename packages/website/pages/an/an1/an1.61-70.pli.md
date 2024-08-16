@@ -1,6 +1,6 @@
 ---
-title: Vīriyārambhādi vagga - Arousing Energy
-description: The Buddha explains the importance of arousing energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise (careful, mindful) attention, lack of clear comprehension, clear comprehension (attentiveness), and having bad friends.
+title: Vīriyārambhādi vagga - The Chapter Beginning With Arousing Energy
+description: The Buddha explains the importance of arousing energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise (careful, mindful) attention, lack of clear comprehension, clear comprehension (attentiveness), and bad friendship.
 fetter: ignorance
 tags: energy, desires, dissatisfaction, contentment, attention, clear comprehension, friends, wholesome, unwholesome, an, an1
 id: an1.61-70
