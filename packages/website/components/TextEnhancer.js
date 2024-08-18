@@ -223,7 +223,6 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
       );
     } else {
       const tooltipMap = handleParenthesesContent(paragraphText);
-      console.log("Tooltip map:", tooltipMap);
 
       let styledText = detectRepetition(
         paragraphText,
