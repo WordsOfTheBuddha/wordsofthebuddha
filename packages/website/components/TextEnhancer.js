@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import styles from "/styles/Verse.module.css";
 
@@ -17,35 +17,37 @@ const isVerse = (paragraph) => {
   return lastLineValid && otherLinesValid;
 };
 
-const detectRepetition = (currentText, lastText, minThreshold = 20) => {
-  if (!lastText) return currentText; // No comparison if no last text exists
-
-  // Helper function to remove punctuation and normalize casing for comparison purposes
+const detectRepetition = (currentText, lastText, minThreshold = 30) => {
   const normalize = (word) =>
     word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"]/g, "").toLowerCase();
 
-  // Helper function to remove content within brackets for comparison purposes
   const removeBrackets = (text) =>
     text.replace(/\s*\[.*?\]|\s*\(.*?\)/g, "").trim();
 
-  // Preprocess lastText by removing brackets
-  const preprocessedLastText = removeBrackets(lastText).replace(/\s+/g, " ");
-
-  // Split into words and spaces/punctuation
+  let result = [];
   const currentWords = currentText.match(/\S+|\s+/g);
+
+  if (!lastText) {
+    // If lastText is not present, wrap each word in a span and return
+    result = currentWords.map((word, i) => (
+      <span key={i} style={{ fontSize: "1.2rem" }}>
+        {word}
+      </span>
+    ));
+    return result;
+  }
+
+  const preprocessedLastText = removeBrackets(lastText).replace(/\s+/g, " ");
   const lastWords = preprocessedLastText.match(/\S+|\s+/g);
 
-  let result = [];
   let i = 0;
 
   while (i < currentWords.length) {
     let matchFound = false;
-    let matchCount = 0;
     let bestMatchLength = 0;
     let bestMatchSegment = [];
     let bestMatchIndex = i;
 
-    // Search for a matching sequence in lastWords
     for (let j = 0; j < lastWords.length; j++) {
       let k = 0;
 
@@ -59,7 +61,6 @@ const detectRepetition = (currentText, lastText, minThreshold = 20) => {
 
       const matchingSegmentLength = currentWords.slice(i, i + k).length;
 
-      // Check if the match length is greater than or equal to the minThreshold
       if (
         matchingSegmentLength >= minThreshold &&
         matchingSegmentLength > bestMatchLength
@@ -78,7 +79,7 @@ const detectRepetition = (currentText, lastText, minThreshold = 20) => {
           {matchingSegment}
         </span>
       );
-      i = bestMatchIndex; // Skip over the matched segment
+      i = bestMatchIndex;
     } else {
       result.push(
         <span key={i} style={{ fontSize: "1.2rem" }}>
@@ -89,64 +90,194 @@ const detectRepetition = (currentText, lastText, minThreshold = 20) => {
     }
   }
 
-  // Join the result to verify the output text matches currentText
-  const resultText = result.map((span) => span.props.children).join("");
-
-  // If the result text doesn't match currentText, return currentText without any modifications
-  if (resultText !== currentText) {
-    return currentText;
-  }
-
-  return result.length > 0 ? result : currentText;
+  return result;
 };
 
-const processContent = (
-  children,
-  resolvedTheme,
-  lastParagraphText,
-  minThreshold
-) => {
-  let currentContent = [];
+const handleParenthesesContent = (text) => {
+  // Update the regex to handle Unicode word characters, including special characters
+  const regex = /(\b[\w\p{L}-]+)\s*\(([^)]+)\)/gu;
+  const tooltipMap = {};
+  let match;
 
-  React.Children.forEach(children, (child) => {
-    if (typeof child === "string") {
-      currentContent.push(child);
-    } else if (React.isValidElement(child)) {
-      currentContent.push(child);
+  while ((match = regex.exec(text)) !== null) {
+    const [fullMatch, word, tooltip] = match;
+    tooltipMap[word] = tooltip;
+  }
+
+  return tooltipMap;
+};
+
+const stripBracketContent = (elements) => {
+  const strippedElements = [];
+  let skip = false;
+
+  elements.forEach((element, index) => {
+    if (React.isValidElement(element)) {
+      let textContent = element.props.children;
+
+      if (typeof textContent === "string") {
+        // Start skipping when encountering "("
+        if (textContent.includes("(")) {
+          skip = true;
+
+          // Check if the previous element is a space, and remove it
+          if (index > 0 && elements[index - 1].props.children === " ") {
+            strippedElements.pop(); // Remove the space before "("
+          }
+        }
+
+        // Add element to strippedElements if not in skip mode
+        if (!skip) {
+          strippedElements.push(element);
+        }
+
+        // Stop skipping after encountering ")"
+        if (textContent.includes(")")) {
+          skip = false;
+
+          // Extract and store any text after the ")" including punctuation
+          const [beforeParen, afterParen] = textContent.split(")");
+          if (afterParen) {
+            strippedElements.push(
+              <span key={`punctuation-${index}`} style={element.props.style}>
+                {afterParen.trim()}
+              </span>
+            );
+          }
+        }
+      } else {
+        strippedElements.push(element);
+      }
+    } else {
+      strippedElements.push(element);
     }
   });
 
-  const paragraphText = currentContent.join("");
-  if (isVerse(paragraphText)) {
-    return (
-      <blockquote
-        className={`${styles.blockquote} ${
-          resolvedTheme === "dark"
-            ? styles.blockquoteDark
-            : styles.blockquoteLight
-        }`}
-      >
-        {currentContent}
-      </blockquote>
-    );
-  } else {
-    const styledText = detectRepetition(
-      paragraphText,
-      lastParagraphText,
-      minThreshold
-    );
-
-    return <p className={styles.paragraph}>{styledText}</p>;
-  }
+  return strippedElements;
 };
 
-const TextEnhancer = ({ children, minThreshold = 20 }) => {
+const TextEnhancer = ({ children, minThreshold = 30 }) => {
   const { resolvedTheme } = useTheme();
+  const [tooltipContent, setTooltipContent] = useState(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const tooltipRef = useRef();
   const [lastParagraphText, setLastParagraphText] = useState("");
+
+  const handleWordClick = (event, content) => {
+    event.stopPropagation(); // Prevent triggering other click events
+    const rect = event.target.getBoundingClientRect();
+    setTooltipPosition({ x: rect.left, y: rect.top + window.scrollY - 40 }); // Positioning above the word
+    setTooltipContent(content);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+      setTooltipContent(null);
+    }
+  };
+
+  useEffect(() => {
+    if (tooltipContent) {
+      document.addEventListener("click", handleOutsideClick);
+      window.addEventListener("scroll", () => {
+        setTooltipContent(null);
+      });
+    } else {
+      document.removeEventListener("click", handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+      window.removeEventListener("scroll", () => setTooltipContent(null));
+    };
+  }, [tooltipContent]);
+
+  const processContent = (
+    children,
+    resolvedTheme,
+    lastParagraphText,
+    minThreshold
+  ) => {
+    let currentContent = [];
+
+    React.Children.forEach(children, (child) => {
+      if (typeof child === "string") {
+        currentContent.push(child);
+      } else if (React.isValidElement(child)) {
+        currentContent.push(child);
+      }
+    });
+
+    const paragraphText = currentContent.join("");
+
+    if (isVerse(paragraphText)) {
+      return (
+        <blockquote
+          className={`${styles.blockquote} ${
+            resolvedTheme === "dark"
+              ? styles.blockquoteDark
+              : styles.blockquoteLight
+          }`}
+        >
+          {paragraphText}
+        </blockquote>
+      );
+    } else {
+      const tooltipMap = handleParenthesesContent(paragraphText);
+      console.log("Tooltip map:", tooltipMap);
+
+      let styledText = detectRepetition(
+        paragraphText,
+        lastParagraphText,
+        minThreshold
+      );
+
+      if (typeof styledText === "string") {
+        styledText = [<span key="0">{styledText}</span>];
+      }
+
+      const usedKeys = new Set(); // To track keys that have been replaced
+      const finalContent = styledText.map((element, index) => {
+        if (React.isValidElement(element)) {
+          const textContent = element.props.children;
+
+          if (typeof textContent === "string") {
+            const trimmedText = textContent.trim();
+
+            // Check if the text is in the tooltipMap and hasn't been replaced yet
+            if (tooltipMap[trimmedText] && !usedKeys.has(trimmedText)) {
+              const tooltip = tooltipMap[trimmedText];
+
+              // Mark this key as used
+              usedKeys.add(trimmedText);
+
+              return (
+                <span
+                  key={`tooltip-${index}`}
+                  style={{
+                    ...element.props.style,
+                    borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
+                    paddingBottom: "1px",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => handleWordClick(e, tooltip)}
+                >
+                  {textContent}
+                </span>
+              );
+            }
+          }
+        }
+
+        return element;
+      });
+
+      const cleanedContent = stripBracketContent(finalContent);
+      return <p className={styles.paragraph}>{cleanedContent}</p>;
+    }
+  };
 
   const currentText = React.Children.toArray(children).join("");
 
-  // Retrieve the last paragraph text from sessionStorage when the component is rendered
   useEffect(() => {
     const storedLastParagraph = sessionStorage.getItem("lastParagraphText");
     if (storedLastParagraph) {
@@ -156,10 +287,10 @@ const TextEnhancer = ({ children, minThreshold = 20 }) => {
         sessionStorage.setItem("lastParagraphText", updatedText);
       }
     } else if (currentText) {
-      // If there is no stored value, just save the current text
       sessionStorage.setItem("lastParagraphText", currentText);
     }
   }, [currentText]);
+
   const processedContent = processContent(
     children,
     resolvedTheme,
@@ -167,7 +298,39 @@ const TextEnhancer = ({ children, minThreshold = 20 }) => {
     minThreshold
   );
 
-  return <div>{processedContent}</div>;
+  return (
+    <div>
+      {processedContent}
+      {tooltipContent && (
+        <div
+          ref={tooltipRef}
+          style={{
+            position: "absolute",
+            padding: "5px 10px",
+            top: tooltipPosition.y,
+            left: tooltipPosition.x,
+            backgroundColor:
+              resolvedTheme === "dark"
+                ? "var(--background-color-dark)"
+                : "var(--background-color-light)",
+            color:
+              resolvedTheme === "dark"
+                ? "var(--text-color-dark)"
+                : "var(--text-color-light)",
+            border: `1px solid ${
+              resolvedTheme === "dark"
+                ? "var(--text-color-dark)"
+                : "var(--text-color-light)"
+            }`,
+            zIndex: 1000,
+            borderRadius: "4px",
+          }}
+        >
+          {tooltipContent}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default TextEnhancer;
