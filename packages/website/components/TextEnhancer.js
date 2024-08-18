@@ -94,14 +94,20 @@ const detectRepetition = (currentText, lastText, minThreshold = 30) => {
 };
 
 const handleParenthesesContent = (text) => {
-  // Update the regex to handle Unicode word characters, including special characters
-  const regex = /(\b[\w\p{L}-]+)\s*\(([^)]+)\)/gu;
+  // Update the regex to handle both single words/phrases and curly bracketed phrases with tooltips
+  const regex = /(\b[\w\p{L}-]+)\s*\(([^)]+)\)|\{([^}]+)\}\s*\(([^)]+)\)/gu;
   const tooltipMap = {};
   let match;
 
   while ((match = regex.exec(text)) !== null) {
-    const [fullMatch, word, tooltip] = match;
-    tooltipMap[word] = tooltip;
+    const [fullMatch, word, tooltip, curlyText, curlyTooltip] = match;
+
+    if (word && tooltip) {
+      tooltipMap[word] = tooltip; // Handles the single word (tooltip) case
+    } else if (curlyText && curlyTooltip) {
+      const cleanedCurlyText = curlyText.trim();
+      tooltipMap[cleanedCurlyText] = curlyTooltip.trim(); // Handles the {multiple words} (tooltip) case
+    }
   }
 
   return tooltipMap;
@@ -165,9 +171,42 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 
   const handleWordClick = (event, content) => {
     event.stopPropagation(); // Prevent triggering other click events
-    const rect = event.target.getBoundingClientRect();
-    setTooltipPosition({ x: rect.left, y: rect.top + window.scrollY - 40 }); // Positioning above the word
+
+    // Temporarily set the content to calculate height
     setTooltipContent(content);
+
+    const rect = event.target.getBoundingClientRect();
+    const lineHeight = parseFloat(
+      window.getComputedStyle(event.target).lineHeight
+    );
+    const padding = 10; // Fixed padding of the tooltip
+
+    // Use a ref to measure the height of the tooltip content after it's set
+    setTimeout(() => {
+      if (tooltipRef.current) {
+        const tooltipHeight = tooltipRef.current.offsetHeight;
+
+        // Calculate how many line heights the tooltip content spans, including padding
+        const numberOfLines = Math.ceil((tooltipHeight - padding) / lineHeight);
+
+        // Set the tooltip offset based on the number of lines the tooltip spans
+        let tooltipOffset;
+        if (numberOfLines >= 4) {
+          tooltipOffset = lineHeight * 4;
+        } else if (numberOfLines === 3) {
+          tooltipOffset = lineHeight * 3;
+        } else if (numberOfLines === 2) {
+          tooltipOffset = lineHeight * 2;
+        } else {
+          tooltipOffset = lineHeight; // Default to one line height
+        }
+
+        setTooltipPosition({
+          x: rect.left,
+          y: rect.top + window.scrollY - tooltipOffset, // Adjust position based on content
+        });
+      }
+    }, 0); // Delay to allow content to render and height to be measured
   };
 
   const handleOutsideClick = (event) => {
@@ -208,71 +247,103 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
     });
 
     const paragraphText = currentContent.join("");
+    const tooltipMap = handleParenthesesContent(paragraphText);
 
-    if (isVerse(paragraphText)) {
-      return (
-        <blockquote
-          className={`${styles.blockquote} ${
-            resolvedTheme === "dark"
-              ? styles.blockquoteDark
-              : styles.blockquoteLight
-          }`}
-        >
-          {paragraphText}
-        </blockquote>
-      );
-    } else {
-      const tooltipMap = handleParenthesesContent(paragraphText);
+    let styledText = detectRepetition(
+      paragraphText,
+      lastParagraphText,
+      minThreshold
+    );
 
-      let styledText = detectRepetition(
-        paragraphText,
-        lastParagraphText,
-        minThreshold
-      );
-
-      if (typeof styledText === "string") {
-        styledText = [<span key="0">{styledText}</span>];
-      }
-
-      const usedKeys = new Set(); // To track keys that have been replaced
-      const finalContent = styledText.map((element, index) => {
-        if (React.isValidElement(element)) {
-          const textContent = element.props.children;
-
-          if (typeof textContent === "string") {
-            const trimmedText = textContent.trim();
-
-            // Check if the text is in the tooltipMap and hasn't been replaced yet
-            if (tooltipMap[trimmedText] && !usedKeys.has(trimmedText)) {
-              const tooltip = tooltipMap[trimmedText];
-
-              // Mark this key as used
-              usedKeys.add(trimmedText);
-
-              return (
-                <span
-                  key={`tooltip-${index}`}
-                  style={{
-                    ...element.props.style,
-                    borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
-                    paddingBottom: "1px",
-                    cursor: "pointer",
-                  }}
-                  onClick={(e) => handleWordClick(e, tooltip)}
-                >
-                  {textContent}
-                </span>
-              );
-            }
-          }
-        }
-
-        return element;
-      });
-
-      const cleanedContent = stripBracketContent(finalContent);
-      return <p className={styles.paragraph}>{cleanedContent}</p>;
+    if (typeof styledText === "string") {
+      styledText = [<span key="0">{styledText}</span>];
     }
+
+    const usedKeys = new Set(); // To track keys that have been replaced
+    const finalContent = [];
+    let underlineActive = false;
+    let underlineText = "";
+
+    for (let i = 0; i < styledText.length; i++) {
+      const element = styledText[i];
+      if (React.isValidElement(element)) {
+        let textContent = element.props.children;
+
+        if (typeof textContent === "string") {
+          const trimmedText = textContent.trim();
+
+          // Handle curly brace content { ... }
+          if (trimmedText.includes("{")) {
+            underlineActive = true;
+            underlineText += trimmedText.replace("{", "").replace(/^['"]/, "");
+          } else if (underlineActive && trimmedText.endsWith("}")) {
+            underlineActive = false;
+            underlineText += " " + trimmedText.replace("}", "");
+
+            const fullText = underlineText.trim().replace(/\s+/g, " ");
+
+            const tooltip = tooltipMap[fullText];
+
+            finalContent.push(
+              <span
+                key={`underline-${i}`}
+                style={{
+                  borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
+                  paddingBottom: "1px",
+                  cursor: tooltip ? "pointer" : "default",
+                }}
+                onClick={(e) => tooltip && handleWordClick(e, tooltip)}
+              >
+                {fullText}
+              </span>
+            );
+
+            underlineText = ""; // Reset the accumulated text
+          } else if (underlineActive) {
+            underlineText += " " + trimmedText;
+          } else if (tooltipMap[trimmedText] && !usedKeys.has(trimmedText)) {
+            const tooltip = tooltipMap[trimmedText];
+            usedKeys.add(trimmedText);
+
+            finalContent.push(
+              <span
+                key={`tooltip-${i}`}
+                style={{
+                  ...element.props.style,
+                  borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
+                  paddingBottom: "1px",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => handleWordClick(e, tooltip)}
+              >
+                {textContent}
+              </span>
+            );
+          } else {
+            finalContent.push(element);
+          }
+        } else {
+          finalContent.push(element);
+        }
+      } else {
+        finalContent.push(element);
+      }
+    }
+
+    const cleanedContent = stripBracketContent(finalContent);
+    return isVerse(paragraphText) ? (
+      <blockquote
+        className={`${styles.blockquote} ${
+          resolvedTheme === "dark"
+            ? styles.blockquoteDark
+            : styles.blockquoteLight
+        }`}
+      >
+        {cleanedContent}
+      </blockquote>
+    ) : (
+      <p className={styles.paragraph}>{cleanedContent}</p>
+    );
   };
 
   const currentText = React.Children.toArray(children).join("");
@@ -305,6 +376,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
           ref={tooltipRef}
           style={{
             position: "absolute",
+            maxWidth: "450px",
             padding: "5px 10px",
             top: tooltipPosition.y,
             left: tooltipPosition.x,
