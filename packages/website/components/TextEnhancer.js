@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
-import styles from "/styles/Verse.module.css";
+import styles from "/styles/TextEnhancer.module.css";
 
 const isVerse = (paragraph) => {
   const lines = paragraph.trim().split("\n");
@@ -164,10 +164,15 @@ const stripBracketContent = (elements) => {
 
 const TextEnhancer = ({ children, minThreshold = 30 }) => {
   const { resolvedTheme } = useTheme();
+  const [theme, setTheme] = useState(null);
   const [tooltipContent, setTooltipContent] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const tooltipRef = useRef();
   const [lastParagraphText, setLastParagraphText] = useState("");
+
+  useEffect(() => {
+    setTheme(resolvedTheme);
+  }, [resolvedTheme]);
 
   const handleWordClick = (event, content) => {
     event.stopPropagation(); // Prevent triggering other click events
@@ -230,12 +235,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
     };
   }, [tooltipContent]);
 
-  const processContent = (
-    children,
-    resolvedTheme,
-    lastParagraphText,
-    minThreshold
-  ) => {
+  const processContent = (children, theme, lastParagraphText, minThreshold) => {
     let currentContent = [];
 
     React.Children.forEach(children, (child) => {
@@ -289,7 +289,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
                 key={`underline-${i}`}
                 style={{
                   fontSize: "1.2rem",
-                  borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
+                  borderBottom: `2px solid var(--secondary-color-${theme})`,
                   paddingBottom: "1px",
                   cursor: tooltip ? "pointer" : "default",
                 }}
@@ -311,7 +311,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
                 key={`tooltip-${i}`}
                 style={{
                   ...element.props.style,
-                  borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
+                  borderBottom: `2px solid var(--secondary-color-${theme})`,
                   paddingBottom: "1px",
                   cursor: "pointer",
                 }}
@@ -332,12 +332,11 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
     }
 
     const cleanedContent = stripBracketContent(finalContent);
+
     return isVerse(paragraphText) ? (
       <blockquote
         className={`${styles.blockquote} ${
-          resolvedTheme === "dark"
-            ? styles.blockquoteDark
-            : styles.blockquoteLight
+          theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight
         }`}
       >
         {cleanedContent}
@@ -364,7 +363,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 
   const processedContent = processContent(
     children,
-    resolvedTheme,
+    theme,
     lastParagraphText,
     minThreshold
   );
@@ -382,15 +381,15 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
             top: tooltipPosition.y,
             left: tooltipPosition.x,
             backgroundColor:
-              resolvedTheme === "dark"
+              theme === "dark"
                 ? "var(--background-color-dark)"
                 : "var(--background-color-light)",
             color:
-              resolvedTheme === "dark"
+              theme === "dark"
                 ? "var(--text-color-dark)"
                 : "var(--text-color-light)",
             border: `1px solid ${
-              resolvedTheme === "dark"
+              theme === "dark"
                 ? "var(--text-color-dark)"
                 : "var(--text-color-light)"
             }`,
