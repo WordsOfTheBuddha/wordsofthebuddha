@@ -288,6 +288,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
               <span
                 key={`underline-${i}`}
                 style={{
+                  fontSize: "1.2rem",
                   borderBottom: `2px solid var(--secondary-color-${resolvedTheme})`,
                   paddingBottom: "1px",
                   cursor: tooltip ? "pointer" : "default",

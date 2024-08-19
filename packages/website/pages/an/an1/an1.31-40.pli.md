@@ -1,30 +1,37 @@
 ---
 title: Adanta vagga - The Chapter on the Untamed
-description: Short teachings contrasting the tamed and untamed mind
+description: Short teachings contrasting the untamed and the tamed mind.
 fetter: ignorance
-tags: mind, harm, benefit, an, an1
+tags: mind, harm, untamed, tamed, benefit, an, an1
 id: an1.31-40
 ---
 
-31
+### 1.31
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ adantaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, adantaṁ mahato anatthāya saṁvattatī”ti.
 
-32
+### 1.32
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ dantaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, dantaṁ mahato atthāya saṁvattatī”ti.
 
-33
+### 1.33
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ aguttaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, aguttaṁ mahato anatthāya saṁvattatī”ti.
 
-34
+### 1.34
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ guttaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, guttaṁ mahato atthāya saṁvattatī”ti.
 
-35
+### 1.35
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ arakkhitaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, arakkhitaṁ mahato anatthāya saṁvattatī”ti.
 
-36
+### 1.36
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ rakkhitaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, rakkhitaṁ mahato atthāya saṁvattatī”ti.
 
-37
+### 1.37
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ asaṁvutaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, asaṁvutaṁ mahato anatthāya saṁvattatī”ti.
 
 38
