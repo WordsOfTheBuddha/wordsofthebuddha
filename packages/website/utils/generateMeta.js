@@ -83,7 +83,7 @@ const generateMetaFiles = (dir) => {
         const locale = path.extname(fileName).substring(1);
         enMeta[`${pageName}`] = {
           display: "hidden",
-          theme: { pagination: false },
+          theme: { pagination: false, breadcrumb: false },
         };
         pliMeta[`${pageName}`] = { display: "hidden" };
       }
