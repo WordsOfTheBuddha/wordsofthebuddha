@@ -180,16 +180,23 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
     // Temporarily set the content to calculate height
     setTooltipContent(content);
 
-    const rect = event.target.getBoundingClientRect();
-    const lineHeight = parseFloat(
-      window.getComputedStyle(event.target).lineHeight
-    );
+    const lineHeight =
+      parseFloat(window.getComputedStyle(event.target).lineHeight) + 1;
     const padding = 10; // Fixed padding of the tooltip
 
-    // Use a ref to measure the height of the tooltip content after it's set
+    // Use a Range to get precise positions of each line the element spans
+    const range = document.createRange();
+    range.selectNodeContents(event.target);
+    const rects = range.getClientRects(); // Get an array of DOMRect objects
+
+    let firstLineRect = rects[0]; // Assume the first rect is the first line's bounding box
+
+    // Now you can use firstLineRect instead of rect for positioning
     setTimeout(() => {
       if (tooltipRef.current) {
         const tooltipHeight = tooltipRef.current.offsetHeight;
+        const tooltipWidth = tooltipRef.current.offsetWidth; // Get the tooltip's width
+        const viewportWidth = window.innerWidth; // Get the viewport width
 
         // Calculate how many line heights the tooltip content spans, including padding
         const numberOfLines = Math.ceil((tooltipHeight - padding) / lineHeight);
@@ -203,12 +210,26 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
         } else if (numberOfLines === 2) {
           tooltipOffset = lineHeight * 2;
         } else {
-          tooltipOffset = lineHeight; // Default to one line height
+          tooltipOffset = lineHeight + 1; // Default to one line height
+        }
+
+        // Calculate the desired x position based on the start of the first line
+        let xPosition = firstLineRect.x;
+
+        // Check if the tooltip overflows the viewport
+        if (xPosition + tooltipWidth > viewportWidth) {
+          // If it does, shift it to the left
+          xPosition = viewportWidth - tooltipWidth - 10; // Add some padding
+
+          // Ensure xPosition is not negative
+          if (xPosition < 0) {
+            xPosition = 10; // Add a minimum padding from the left edge
+          }
         }
 
         setTooltipPosition({
-          x: rect.left,
-          y: rect.top + window.scrollY - tooltipOffset, // Adjust position based on content
+          x: xPosition,
+          y: firstLineRect.top + window.scrollY - tooltipOffset, // Adjust position based on content
         });
       }
     }, 0); // Delay to allow content to render and height to be measured
@@ -242,7 +263,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
       if (typeof child === "string") {
         currentContent.push(child);
       } else if (React.isValidElement(child)) {
-        currentContent.push(child);
+        currentContent.push(child.props.children);
       }
     });
 
@@ -396,9 +417,8 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
             zIndex: 1000,
             borderRadius: "4px",
           }}
-        >
-          {tooltipContent}
-        </div>
+          dangerouslySetInnerHTML={{ __html: tooltipContent }}
+        />
       )}
     </div>
   );
