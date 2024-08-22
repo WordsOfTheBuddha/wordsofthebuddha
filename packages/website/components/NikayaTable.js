@@ -2,6 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import styles from "/styles/NikayaTable.module.css";
 
+const fallbackTranslationsCounts = {
+  "sn": {
+    "label": "Linked Discourses (SN)",
+    "translationCount": 130
+  },
+  "an": {
+    "label": "Numbered Discourses (AN)",
+    "translationCount": 230
+  },
+  "mn": {
+    "label": "Middle Length Discourses (MN)",
+    "translationCount": 18
+  },
+  "snp": {
+    "label": "Sutta Nipāta (SnP)",
+    "translationCount": 10
+  },
+  "dhp": {
+    "label": "Dhamma Pada (DhP)",
+    "translationCount": 59
+  },
+  "iti": {
+    "label": "As It Was Said (ITI)",
+    "translationCount": 11
+  },
+  "ud": {
+    "label": "Inspired Utterances (Ud)",
+    "translationCount": 10
+  }
+};
+
 export const NikayaTable = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -12,17 +43,7 @@ export const NikayaTable = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/translationCounts.json");
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        console.error("Error fetching translation counts:", error);
-      }
-    };
-
-    fetchData();
+      setData(fallbackTranslationsCounts);
   }, []);
 
   if (!mounted || !data) {

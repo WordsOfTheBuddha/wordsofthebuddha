@@ -56,6 +56,22 @@ const generateTranslationCounts = () => {
   fs.writeFileSync(outputPath, JSON.stringify(orderedCounts, null, 2));
 
   console.log("Translation counts generated successfully.");
+
+  // Update fallbackTranslationsCounts in NikayaTable.js
+  const nikayaTablePath = path.join(__dirname, "../components/NikayaTable.js");
+  let nikayaTableContent = fs.readFileSync(nikayaTablePath, "utf-8");
+
+  // Find the start and end of the fallbackTranslationsCounts variable
+  const fallbackStart = nikayaTableContent.indexOf("const fallbackTranslationsCounts = {");
+  const fallbackEnd = nikayaTableContent.indexOf("};", fallbackStart) + 2;
+
+  // Replace the old fallbackTranslationsCounts with the new one
+  const newFallbackTranslationsCounts = `const fallbackTranslationsCounts = ${JSON.stringify(orderedCounts, null, 2)};`;
+  nikayaTableContent = nikayaTableContent.slice(0, fallbackStart) + newFallbackTranslationsCounts + nikayaTableContent.slice(fallbackEnd);
+
+  fs.writeFileSync(nikayaTablePath, nikayaTableContent);
+
+  console.log("NikayaTable.js updated successfully.");
 };
 
 generateTranslationCounts();
