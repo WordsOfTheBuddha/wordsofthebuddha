@@ -2,7 +2,7 @@
 title: Lobhapariññā sutta - Completely Understanding Greed
 description: One is incapable of ending suffering without directly knowing, not completely understanding greed, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by fully understanding greed, with the mind detaching from it, and by abandoning it.
 fetter: sensual desire, greed
-tags: suffering, ignorance, greed, understanding, detachment, abandoning, iti
+tags: suffering, greed, understanding, detachment, abandoning, iti
 id: iti9
 ---
 

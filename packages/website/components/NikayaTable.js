@@ -25,7 +25,7 @@ const fallbackTranslationsCounts = {
   },
   "iti": {
     "label": "As It Was Said (ITI)",
-    "translationCount": 15
+    "translationCount": 19
   },
   "ud": {
     "label": "Inspired Utterances (Ud)",
