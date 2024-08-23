@@ -53,7 +53,7 @@ export default {
   },
   darkMode: true,
   docsRepositoryBase:
-    "https://github.com/siddharthlatest/suttas/tree/main/pages",
+    "https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/packages/website",
   main: ({ children }) => {
     return (
       <div>
@@ -81,9 +81,6 @@ export default {
         system: "System",
       };
     },
-  },
-  editLink: {
-    component: null,
   },
   feedback: {
     content: null,
