@@ -26,7 +26,7 @@
   "scripts": {
     "dev": "next dev",
     "hot": "yarn workspace nextra-theme-docs build && next dev",
-    "build": "node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js && next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=6144 node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js && next build",
     "start": "next start",
     "prebuild": "yarn workspace nextra-theme-docs build && node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateMeta.js",
     "predev": "yarn workspace nextra-theme-docs build && node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js"
