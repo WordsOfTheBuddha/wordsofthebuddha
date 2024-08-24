@@ -15,13 +15,13 @@ const fallbackTranslationsCounts = {
     "label": "Middle Length Discourses (MN)",
     "translationCount": 18
   },
-  "snp": {
-    "label": "Sutta Nipāta (SnP)",
-    "translationCount": 10
-  },
   "dhp": {
     "label": "Dhamma Pada (DhP)",
     "translationCount": 75
+  },
+  "snp": {
+    "label": "Sutta Nipāta (SnP)",
+    "translationCount": 10
   },
   "iti": {
     "label": "As It Was Said (ITI)",

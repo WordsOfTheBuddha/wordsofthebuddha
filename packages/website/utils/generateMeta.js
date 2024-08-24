@@ -27,8 +27,8 @@ const specialLabels = {
   sn: "Linked (SN)",
   an: "Numbered (AN)",
   mn: "Middle (MN)",
-  snp: "Sutta Nipāta (SnP)",
   dhp: "DhammaPada (DhP)",
+  snp: "Sutta Nipāta (SnP)",
   iti: "As It Was Said (ITI)",
   ud: "Inspired Utterances (Ud)",
 };

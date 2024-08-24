@@ -6,8 +6,8 @@ const specialLabels = {
   sn: "Linked Discourses (SN)",
   an: "Numbered Discourses (AN)",
   mn: "Middle Length Discourses (MN)",
-  snp: "Sutta Nipāta (SnP)",
   dhp: "Dhamma Pada (DhP)",
+  snp: "Sutta Nipāta (SnP)",
   iti: "As It Was Said (ITI)",
   ud: "Inspired Utterances (Ud)",
 };
