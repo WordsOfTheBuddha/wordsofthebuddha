@@ -23,9 +23,6 @@ const naturalSort = (a, b) => {
 const specialLabels = {
   index: {
     title: "Home",
-    theme: {
-      breadcrumb: false,
-    },
   },
   sn: "Linked (SN)",
   an: "Numbered (AN)",
@@ -36,7 +33,7 @@ const specialLabels = {
   ud: "Inspired Utterances (Ud)",
 };
 
-const specialOrder = ["index", "sn", "an", "mn", "snp", "dhp", "iti", "ud"];
+const specialOrder = ["index", "sn", "an", "mn", "dhp", "snp", "iti", "ud"];
 
 const transformLabel = (name) => {
   // Capitalize all initial characters before the first number and add space before the first number
@@ -83,8 +80,12 @@ const generateMetaFiles = (dir) => {
         const locale = path.extname(fileName).substring(1);
         enMeta[`${pageName}`] = {
           display: "hidden",
-          theme: { pagination: false, breadcrumb: false },
+          theme: { pagination: false },
         };
+        // if in pages directory, skip breadcrumbs on the index page
+        if (dir === path.join(__dirname, "../pages") && pageName === "index") {
+          enMeta[`${pageName}`].theme['breadcrumb'] = false;
+        }
         pliMeta[`${pageName}`] = { display: "hidden" };
       }
     }

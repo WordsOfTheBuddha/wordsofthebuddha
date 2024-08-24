@@ -5,7 +5,7 @@ import styles from "/styles/NikayaTable.module.css";
 const fallbackTranslationsCounts = {
   "sn": {
     "label": "Linked Discourses (SN)",
-    "translationCount": 130
+    "translationCount": 162
   },
   "an": {
     "label": "Numbered Discourses (AN)",
@@ -21,11 +21,11 @@ const fallbackTranslationsCounts = {
   },
   "dhp": {
     "label": "Dhamma Pada (DhP)",
-    "translationCount": 59
+    "translationCount": 75
   },
   "iti": {
     "label": "As It Was Said (ITI)",
-    "translationCount": 19
+    "translationCount": 20
   },
   "ud": {
     "label": "Inspired Utterances (Ud)",
