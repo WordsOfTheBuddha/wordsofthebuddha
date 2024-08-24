@@ -1,8 +1,8 @@
 ---
-title: Mohapariññā sutta - Completely Understanding Delusion
-description: One is incapable of ending suffering without directly knowing, not completely understanding delusion, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by fully understanding delusion, with the mind detaching from it, and by abandoning it.
+title: Mohapariññā sutta - Completely Comprehending Delusion
+description: One is incapable of ending suffering without directly knowing, not completely comprehending delusion, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by fully comprehending delusion, with the mind detaching from it, and by abandoning it.
 fetter: ignorance, delusion
-tags: suffering, ignorance, delusion, understanding, detachment, abandoning, iti
+tags: suffering, ignorance, delusion, wisdom, detachment, abandoning, iti
 id: iti11
 ---
 

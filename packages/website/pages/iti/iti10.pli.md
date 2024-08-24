@@ -1,8 +1,8 @@
 ---
-title: Dosapariññā sutta - Completely Understanding Aversion
-description: One is incapable of ending suffering without directly knowing, not completely understanding aversion, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by fully understanding aversion, with the mind detaching from it, and by abandoning it.
+title: Dosapariññā sutta - Completely Comprehending Aversion
+description: One is incapable of ending suffering without directly knowing, not completely comprehending aversion, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by fully comprehending aversion, with the mind detaching from it, and by abandoning it.
 fetter: ill-will, hate
-tags: suffering, aversion, ill-will, hate, understanding, detachment, abandoning, iti
+tags: suffering, aversion, ill-will, hate, wisdom, detachment, abandoning, iti
 id: iti10
 ---
 

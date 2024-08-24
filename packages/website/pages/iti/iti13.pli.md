@@ -1,8 +1,8 @@
 ---
-title: Makkhapariññā sutta - Completely Understanding Contempt
-description: One is incapable of ending suffering without directly knowing, not fully understanding contempt, with the mind not detaching from it, and without abandoning it. One is capable of ending suffering by directly knowing, by fully understanding contempt, with the mind detaching from it, and by abandoning it.
+title: Makkhapariññā sutta - Completely Comprehending Contempt
+description: One is incapable of ending suffering without directly knowing, not fully comprehending contempt, with the mind not detaching from it, and without abandoning it. One is capable of ending suffering by directly knowing, by fully comprehending contempt, with the mind detaching from it, and by abandoning it.
 fetter: ill-will
-tags: suffering, contempt, ungratefulness, understanding, detachment, abandoning, iti
+tags: suffering, contempt, ungratefulness, wisdom, detachment, abandoning, iti
 id: iti13
 ---
 
