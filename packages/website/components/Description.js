@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { useConfig } from "nextra-theme-docs";
 import { Callout } from "nextra/components";
 
@@ -9,7 +10,8 @@ export function Description({ description }) {
   return (
     displayDescription && (
       <Callout type="info" emoji="ⓘ" styles={{ width: "fit-content" }}>
-        <span style={{ paddingLeft: "0.5rem" }}>{displayDescription}</span>
+        <span style={{ paddingLeft: "0.5rem", display: "inline-block" }}>
+          <ReactMarkdown>{displayDescription}</ReactMarkdown></span>
       </Callout>
     )
   );
