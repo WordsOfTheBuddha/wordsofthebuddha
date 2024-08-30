@@ -85,6 +85,8 @@ const generateMetaFiles = (dir) => {
         // if in pages directory, skip breadcrumbs on the index page
         if (dir === path.join(__dirname, "../pages") && pageName === "index") {
           enMeta[`${pageName}`].theme['breadcrumb'] = false;
+        } else {
+          enMeta[`${pageName}`].theme['breadcrumb'] = true;
         }
         pliMeta[`${pageName}`] = { display: "hidden" };
       }
