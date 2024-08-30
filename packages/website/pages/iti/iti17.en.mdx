@@ -1,7 +1,7 @@
 ---
 title: Dutiyasekha sutta - Trainee (Second)
 description: The Buddha shares on the importance of good friendship for a trainee bhikkhu.
-fetter: doubt,personal existence,adherance to rites and rituals
+fetter: doubt,personal existence,adherence to rites and rituals
 tags: iti,trainee,wholesome,unwholesome,good friendship,kalyāṇa mittatā
 id: iti17
 ---

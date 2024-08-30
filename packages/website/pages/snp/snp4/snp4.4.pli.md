@@ -1,7 +1,7 @@
 ---
 title: Suddhaṭṭhaka sutta - Pure
 description: The Buddha describes some of the wrong views on attaining purity as well as the the state of an Arahant in these verses.
-fetter: attachment to rites and rituals
+fetter: adherence to rites and rituals
 tags: snp,snp4,precepts,purity,arahant
 id: snp4.4
 ---

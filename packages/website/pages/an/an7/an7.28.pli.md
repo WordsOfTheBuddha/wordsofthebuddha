@@ -1,7 +1,7 @@
 ---
 title: Paṭhamaparihāni sutta - Decline (First)
 description: The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.
-fetter: doubt, attachment to rites and rituals
+fetter: doubt, adherence to rites and rituals
 tags: an,an7
 id: an7.28
 ---

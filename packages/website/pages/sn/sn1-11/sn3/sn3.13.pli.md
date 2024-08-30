@@ -1,7 +1,7 @@
 ---
 title: Doṇapāka sutta - A Bucket Of Rice
 description: The Buddha observes the King Pasenadi as huffing and puffing and advises him on moderation in eating.
-fetter: attachment to rites and rituals
+fetter: adherence to rites and rituals
 tags: gradual training guideline,mindfulness,eating,moderation,sn,sn1-11,sn3
 id: sn3.13
 ---
