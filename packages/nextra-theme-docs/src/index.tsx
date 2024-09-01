@@ -262,7 +262,6 @@ const InnerLayout = ({
                     marginBottom: "1rem",
                     whiteSpace: "pre-wrap",
                     fontSize: "0.92rem",
-                    fontStyle: "italic",
                   }}
                 >
                   {frontMatter.commentary}

@@ -3207,8 +3207,7 @@ var InnerLayout = ({
                         marginTop: "1rem",
                         marginBottom: "1rem",
                         whiteSpace: "pre-wrap",
-                        fontSize: "0.92rem",
-                        fontStyle: "italic"
+                        fontSize: "0.92rem"
                       },
                       children: frontMatter.commentary
                     }
