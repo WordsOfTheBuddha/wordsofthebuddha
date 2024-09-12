@@ -17,3 +17,4 @@ packages/**/.next/
 public/**
 packages/website/public/**
 .vercel
+**.DS_Store
