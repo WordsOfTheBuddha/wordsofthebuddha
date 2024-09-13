@@ -3,425 +3,491 @@ import { useTheme } from "next-themes";
 import styles from "/styles/TextEnhancer.module.css";
 
 const isVerse = (paragraph) => {
-  const lines = paragraph.trim().split("\n");
-  if (lines.length < 2) return false;
+	const lines = paragraph.trim().split("\n");
+	if (lines.length < 2) return false;
 
-  const lastLine = lines[lines.length - 1].trim();
-  const otherLines = lines.slice(0, -1);
+	const lastLine = lines[lines.length - 1].trim();
+	const otherLines = lines.slice(0, -1);
 
-  const lastLineValid = /[.?"-—']$/.test(lastLine);
-  const otherLinesValid = otherLines.every((line) =>
-    /[,;:.?]?$/i.test(line.trim())
-  );
+	const lastLineValid = /[.?"-—']$/.test(lastLine);
+	const otherLinesValid = otherLines.every((line) =>
+		/[,;:.?]?$/i.test(line.trim())
+	);
 
-  return lastLineValid && otherLinesValid;
+	return lastLineValid && otherLinesValid;
 };
 
 const detectRepetition = (currentText, lastText, minThreshold = 30) => {
-  const normalize = (word) =>
-    word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"]/g, "").toLowerCase();
+	const normalize = (word) =>
+		word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"]/g, "").toLowerCase();
 
-  const removeBrackets = (text) =>
-    text.replace(/\s*\[.*?\]|\s*\(.*?\)/g, "").trim();
+	const removeBrackets = (text) =>
+		text.replace(/\s*\[.*?\]|\s*\(.*?\)/g, "").trim();
 
-  let result = [];
-  const currentWords = currentText.match(/\S+|\s+/g);
+	let result = [];
+	const currentWords = currentText.match(/\S+|\s+/g);
 
-  if (!lastText) {
-    // If lastText is not present, wrap each word in a span and return
-    result = currentWords.map((word, i) => (
-      <span key={i} style={{ fontSize: "1.2rem" }}>
-        {word}
-      </span>
-    ));
-    return result;
-  }
+	if (!lastText) {
+		// If lastText is not present, wrap each word in a span and return
+		result = currentWords.map((word, i) => (
+			<span key={i} style={{ fontSize: "1.2rem" }}>
+				{word}
+			</span>
+		));
+		return result;
+	}
 
-  const preprocessedLastText = removeBrackets(lastText).replace(/\s+/g, " ");
-  const lastWords = preprocessedLastText.match(/\S+|\s+/g);
+	const preprocessedLastText = removeBrackets(lastText).replace(/\s+/g, " ");
+	const lastWords = preprocessedLastText.match(/\S+|\s+/g);
 
-  let i = 0;
+	let i = 0;
 
-  while (i < currentWords.length) {
-    let matchFound = false;
-    let bestMatchLength = 0;
-    let bestMatchSegment = [];
-    let bestMatchIndex = i;
+	while (i < currentWords.length) {
+		let matchFound = false;
+		let bestMatchLength = 0;
+		let bestMatchSegment = [];
+		let bestMatchIndex = i;
 
-    for (let j = 0; j < lastWords.length; j++) {
-      let k = 0;
+		for (let j = 0; j < lastWords.length; j++) {
+			let k = 0;
 
-      while (
-        i + k < currentWords.length &&
-        j + k < lastWords.length &&
-        normalize(currentWords[i + k]) === normalize(lastWords[j + k])
-      ) {
-        k++;
-      }
+			while (
+				i + k < currentWords.length &&
+				j + k < lastWords.length &&
+				normalize(currentWords[i + k]) === normalize(lastWords[j + k])
+			) {
+				k++;
+			}
 
-      const matchingSegmentLength = currentWords.slice(i, i + k).length;
+			const matchingSegmentLength = currentWords.slice(i, i + k).length;
 
-      if (
-        matchingSegmentLength >= minThreshold &&
-        matchingSegmentLength > bestMatchLength
-      ) {
-        bestMatchLength = matchingSegmentLength;
-        bestMatchSegment = currentWords.slice(i, i + k);
-        bestMatchIndex = i + k;
-        matchFound = true;
-      }
-    }
+			if (
+				matchingSegmentLength >= minThreshold &&
+				matchingSegmentLength > bestMatchLength
+			) {
+				bestMatchLength = matchingSegmentLength;
+				bestMatchSegment = currentWords.slice(i, i + k);
+				bestMatchIndex = i + k;
+				matchFound = true;
+			}
+		}
 
-    if (matchFound) {
-      const matchingSegment = bestMatchSegment.join("");
-      result.push(
-        <span key={i} style={{ opacity: 0.7, fontSize: "1.2rem" }}>
-          {matchingSegment}
-        </span>
-      );
-      i = bestMatchIndex;
-    } else {
-      result.push(
-        <span key={i} style={{ fontSize: "1.2rem" }}>
-          {currentWords[i]}
-        </span>
-      );
-      i++;
-    }
-  }
+		if (matchFound) {
+			const matchingSegment = bestMatchSegment.join("");
+			result.push(
+				<span key={i} style={{ opacity: 0.7, fontSize: "1.2rem" }}>
+					{matchingSegment}
+				</span>
+			);
+			i = bestMatchIndex;
+		} else {
+			result.push(
+				<span key={i} style={{ fontSize: "1.2rem" }}>
+					{currentWords[i]}
+				</span>
+			);
+			i++;
+		}
+	}
 
-  return result;
+	return result;
 };
 
 const handleParenthesesContent = (text) => {
-  // Update the regex to handle both single words/phrases and curly bracketed phrases with tooltips
-  const regex = /(\b[\w\p{L}-]+)\s*\(([^)]+)\)|\{([^}]+)\}\s*\(([^)]+)\)/gu;
-  const tooltipMap = {};
-  let match;
+	const regex = /(\{[^}]+\}|\b[\w\p{L}-]+\b)\s*\(([^)]+)\)/gu;
+	const tooltipMatches = [];
+	let match;
 
-  while ((match = regex.exec(text)) !== null) {
-    const [fullMatch, word, tooltip, curlyText, curlyTooltip] = match;
+	while ((match = regex.exec(text)) !== null) {
+		const [fullMatch, phraseOrWord, tooltip] = match;
+		let cleanedPhraseOrWord = phraseOrWord;
 
-    if (word && tooltip) {
-      tooltipMap[word] = tooltip; // Handles the single word (tooltip) case
-    } else if (curlyText && curlyTooltip) {
-      const cleanedCurlyText = curlyText.trim();
-      tooltipMap[cleanedCurlyText] = curlyTooltip.trim(); // Handles the {multiple words} (tooltip) case
-    }
-  }
+		// Remove curly braces if present
+		if (
+			cleanedPhraseOrWord.startsWith("{") &&
+			cleanedPhraseOrWord.endsWith("}")
+		) {
+			cleanedPhraseOrWord = cleanedPhraseOrWord.slice(1, -1).trim();
+		}
 
-  return tooltipMap;
+		cleanedPhraseOrWord = cleanedPhraseOrWord.trim();
+
+		if (cleanedPhraseOrWord.length > 0) {
+			tooltipMatches.push({
+				phrase: cleanedPhraseOrWord,
+				tooltip: tooltip.trim(),
+				startIndex: match.index,
+				endIndex: match.index + fullMatch.length,
+			});
+		}
+	}
+
+	return tooltipMatches;
 };
 
 const stripBracketContent = (elements) => {
-  const strippedElements = [];
-  let skip = false;
+	const strippedElements = [];
+	elements.forEach((element, index) => {
+		if (React.isValidElement(element)) {
+			let textContent = element.props.children;
 
-  elements.forEach((element, index) => {
-    if (React.isValidElement(element)) {
-      let textContent = element.props.children;
-
-      if (typeof textContent === "string") {
-        // Start skipping when encountering "("
-        if (textContent.includes("(")) {
-          skip = true;
-
-          // Check if the previous element is a space, and remove it
-          if (index > 0 && elements[index - 1].props.children === " ") {
-            strippedElements.pop(); // Remove the space before "("
-          }
-        }
-
-        // Add element to strippedElements if not in skip mode
-        if (!skip) {
-          strippedElements.push(element);
-        }
-
-        // Stop skipping after encountering ")"
-        if (textContent.includes(")")) {
-          skip = false;
-
-          // Extract and store any text after the ")" including punctuation
-          const [beforeParen, afterParen] = textContent.split(")");
-          if (afterParen) {
-            strippedElements.push(
-              <span key={`punctuation-${index}`} style={element.props.style}>
-                {afterParen.trim()}
-              </span>
-            );
-          }
-        }
-      } else {
-        strippedElements.push(element);
-      }
-    } else {
-      strippedElements.push(element);
-    }
-  });
-
-  return strippedElements;
+			if (typeof textContent === "string") {
+				// Remove any parentheses and their content from the text
+				const cleanedText = textContent.replace(/\s*\([^()]*\)/g, "");
+				if (cleanedText) {
+					strippedElements.push(
+						<span key={`cleaned-${index}`} style={element.props.style}>
+							{cleanedText}
+						</span>
+					);
+				}
+			} else {
+				strippedElements.push(element);
+			}
+		} else {
+			strippedElements.push(element);
+		}
+	});
+	return strippedElements;
 };
 
 const TextEnhancer = ({ children, minThreshold = 30 }) => {
-  const { resolvedTheme } = useTheme();
-  const [theme, setTheme] = useState(null);
-  const [tooltipContent, setTooltipContent] = useState(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const tooltipRef = useRef();
-  const [lastParagraphText, setLastParagraphText] = useState("");
+	const { resolvedTheme } = useTheme();
+	const [theme, setTheme] = useState(null);
+	const [tooltipContent, setTooltipContent] = useState(null);
+	const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+	const tooltipRef = useRef();
+	const [lastParagraphText, setLastParagraphText] = useState("");
 
-  useEffect(() => {
-    setTheme(resolvedTheme);
-  }, [resolvedTheme]);
+	useEffect(() => {
+		setTheme(resolvedTheme);
+	}, [resolvedTheme]);
 
-  const handleWordClick = (event, content) => {
-    event.stopPropagation(); // Prevent triggering other click events
+	const handleWordClick = (event, content) => {
+		event.stopPropagation(); // Prevent triggering other click events
 
-    // Temporarily set the content to calculate height
-    setTooltipContent(content);
+		// Temporarily set the content to calculate height
+		setTooltipContent(content);
 
-    const lineHeight =
-      parseFloat(window.getComputedStyle(event.target).lineHeight) + 1;
-    const padding = 10; // Fixed padding of the tooltip
+		const lineHeight =
+			parseFloat(window.getComputedStyle(event.target).lineHeight) + 1;
+		const padding = 10; // Fixed padding of the tooltip
 
-    // Use a Range to get precise positions of each line the element spans
-    const range = document.createRange();
-    range.selectNodeContents(event.target);
-    const rects = range.getClientRects(); // Get an array of DOMRect objects
+		// Use a Range to get precise positions of each line the element spans
+		const range = document.createRange();
+		range.selectNodeContents(event.target);
+		const rects = range.getClientRects(); // Get an array of DOMRect objects
 
-    let firstLineRect = rects[0]; // Assume the first rect is the first line's bounding box
+		let firstLineRect = rects[0]; // Assume the first rect is the first line's bounding box
 
-    // Now you can use firstLineRect instead of rect for positioning
-    setTimeout(() => {
-      if (tooltipRef.current) {
-        const tooltipHeight = tooltipRef.current.offsetHeight;
-        const tooltipWidth = tooltipRef.current.offsetWidth; // Get the tooltip's width
-        const viewportWidth = window.innerWidth; // Get the viewport width
+		// Now you can use firstLineRect instead of rect for positioning
+		setTimeout(() => {
+			if (tooltipRef.current) {
+				const tooltipHeight = tooltipRef.current.offsetHeight;
+				const tooltipWidth = tooltipRef.current.offsetWidth; // Get the tooltip's width
+				const viewportWidth = window.innerWidth; // Get the viewport width
 
-        // Calculate how many line heights the tooltip content spans, including padding
-        const numberOfLines = Math.ceil((tooltipHeight - padding) / lineHeight);
+				// Calculate how many line heights the tooltip content spans, including padding
+				const numberOfLines = Math.ceil((tooltipHeight - padding) / lineHeight);
 
-        // Set the tooltip offset based on the number of lines the tooltip spans
-        let tooltipOffset;
-        if (numberOfLines >= 4) {
-          tooltipOffset = lineHeight * 4;
-        } else if (numberOfLines === 3) {
-          tooltipOffset = lineHeight * 3;
-        } else if (numberOfLines === 2) {
-          tooltipOffset = lineHeight * 2;
-        } else {
-          tooltipOffset = lineHeight + 1; // Default to one line height
-        }
+				// Set the tooltip offset based on the number of lines the tooltip spans
+				let tooltipOffset;
+				if (numberOfLines >= 4) {
+					tooltipOffset = lineHeight * 4;
+				} else if (numberOfLines === 3) {
+					tooltipOffset = lineHeight * 3;
+				} else if (numberOfLines === 2) {
+					tooltipOffset = lineHeight * 2;
+				} else {
+					tooltipOffset = lineHeight + 1; // Default to one line height
+				}
 
-        // Calculate the desired x position based on the start of the first line
-        let xPosition = firstLineRect.x;
+				// Calculate the desired x position based on the start of the first line
+				let xPosition = firstLineRect.x;
 
-        // Check if the tooltip overflows the viewport
-        if (xPosition + tooltipWidth > viewportWidth) {
-          // If it does, shift it to the left
-          xPosition = viewportWidth - tooltipWidth - 10; // Add some padding
+				// Check if the tooltip overflows the viewport
+				if (xPosition + tooltipWidth > viewportWidth) {
+					// If it does, shift it to the left
+					xPosition = viewportWidth - tooltipWidth - 10; // Add some padding
 
-          // Ensure xPosition is not negative
-          if (xPosition < 0) {
-            xPosition = 10; // Add a minimum padding from the left edge
-          }
-        }
+					// Ensure xPosition is not negative
+					if (xPosition < 0) {
+						xPosition = 10; // Add a minimum padding from the left edge
+					}
+				}
 
-        setTooltipPosition({
-          x: xPosition,
-          y: firstLineRect.top + window.scrollY - tooltipOffset, // Adjust position based on content
-        });
-      }
-    }, 0); // Delay to allow content to render and height to be measured
-  };
+				setTooltipPosition({
+					x: xPosition,
+					y: firstLineRect.top + window.scrollY - tooltipOffset, // Adjust position based on content
+				});
+			}
+		}, 0); // Delay to allow content to render and height to be measured
+	};
 
-  const handleOutsideClick = (event) => {
-    if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
-      setTooltipContent(null);
-    }
-  };
+	const handleOutsideClick = (event) => {
+		if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+			setTooltipContent(null);
+		}
+	};
 
-  useEffect(() => {
-    if (tooltipContent) {
-      document.addEventListener("click", handleOutsideClick);
-      window.addEventListener("scroll", () => {
-        setTooltipContent(null);
-      });
-    } else {
-      document.removeEventListener("click", handleOutsideClick);
-    }
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-      window.removeEventListener("scroll", () => setTooltipContent(null));
-    };
-  }, [tooltipContent]);
+	useEffect(() => {
+		if (tooltipContent) {
+			document.addEventListener("click", handleOutsideClick);
+			window.addEventListener("scroll", () => {
+				setTooltipContent(null);
+			});
+		} else {
+			document.removeEventListener("click", handleOutsideClick);
+		}
+		return () => {
+			document.removeEventListener("click", handleOutsideClick);
+			window.removeEventListener("scroll", () => setTooltipContent(null));
+		};
+	}, [tooltipContent]);
 
-  const processContent = (children, theme, lastParagraphText, minThreshold) => {
-    let currentContent = [];
+	const processContent = (children, theme, lastParagraphText, minThreshold) => {
+		let paragraphText = React.Children.toArray(children).join("");
 
-    React.Children.forEach(children, (child) => {
-      if (typeof child === "string") {
-        currentContent.push(child);
-      } else if (React.isValidElement(child)) {
-        currentContent.push(child.props.children);
-      }
-    });
+		// Use regex to find all phrases or words with tooltips
+		const regex = /(\{[^}]+\}|\b[\w\p{L}-]+\b)\s*\(([^)]+)\)/gu;
+		let tokens = [];
+		let lastIndex = 0;
+		let match;
 
-    const paragraphText = currentContent.join("");
-    const tooltipMap = handleParenthesesContent(paragraphText);
+		while ((match = regex.exec(paragraphText)) !== null) {
+			const [fullMatch, phraseOrWord, tooltip] = match;
+			const startIndex = match.index;
+			const endIndex = regex.lastIndex;
 
-    let styledText = detectRepetition(
-      paragraphText,
-      lastParagraphText,
-      minThreshold
-    );
+			// Add text before the match
+			if (startIndex > lastIndex) {
+				tokens.push({
+					type: "text",
+					content: paragraphText.slice(lastIndex, startIndex),
+				});
+			}
 
-    if (typeof styledText === "string") {
-      styledText = [<span key="0">{styledText}</span>];
-    }
+			// Remove curly braces if present
+			let cleanedPhraseOrWord = phraseOrWord;
+			if (
+				cleanedPhraseOrWord.startsWith("{") &&
+				cleanedPhraseOrWord.endsWith("}")
+			) {
+				cleanedPhraseOrWord = cleanedPhraseOrWord.slice(1, -1).trim();
+			}
 
-    const usedKeys = new Set(); // To track keys that have been replaced
-    const finalContent = [];
-    let underlineActive = false;
-    let underlineText = "";
+			// Add the underlined phrase
+			tokens.push({
+				type: "underline",
+				content: cleanedPhraseOrWord,
+				tooltip: tooltip.trim(),
+			});
 
-    for (let i = 0; i < styledText.length; i++) {
-      const element = styledText[i];
-      if (React.isValidElement(element)) {
-        let textContent = element.props.children;
+			lastIndex = endIndex;
+		}
 
-        if (typeof textContent === "string") {
-          const trimmedText = textContent.trim();
+		// Add any remaining text after the last match
+		if (lastIndex < paragraphText.length) {
+			tokens.push({
+				type: "text",
+				content: paragraphText.slice(lastIndex),
+			});
+		}
 
-          // Handle curly brace content { ... }
-          if (trimmedText.includes("{")) {
-            underlineActive = true;
-            underlineText += trimmedText.replace("{", "").replace(/^['"]/, "");
-          } else if (underlineActive && trimmedText.endsWith("}")) {
-            underlineActive = false;
-            underlineText += " " + trimmedText.replace("}", "");
+		// **Update the regex here to remove parentheses and trailing punctuation**
+		// Remove any parentheses and their content from the text tokens
+		tokens = tokens.map((token) => {
+			if (token.type === "text") {
+				return {
+					...token,
+					content: token.content.replace(/\s*\([^()]*\)\s*[.,;:]?/g, ""),
+				};
+			} else {
+				return token;
+			}
+		});
 
-            const fullText = underlineText.trim().replace(/\s+/g, " ");
+		// Build the cleaned text to pass to detectRepetition
+		let cleanedText = tokens.map((token) => token.content).join("");
 
-            const tooltip = tooltipMap[fullText];
+		// Apply detectRepetition
+		let styledTextArray = detectRepetition(
+			cleanedText,
+			lastParagraphText,
+			minThreshold
+		);
 
-            finalContent.push(
-              <span
-                key={`underline-${i}`}
-                style={{
-                  fontSize: "1.2rem",
-                  borderBottom: `2px solid var(--secondary-color-${theme})`,
-                  paddingBottom: "1px",
-                  cursor: tooltip ? "pointer" : "default",
-                }}
-                onClick={(e) => tooltip && handleWordClick(e, tooltip)}
-              >
-                {fullText}
-              </span>
-            );
+		// Now, reconstruct the final content by mapping tokens to styledTextArray
+		let finalContent = [];
+		let styledTextIndex = 0;
 
-            underlineText = ""; // Reset the accumulated text
-          } else if (underlineActive) {
-            underlineText += " " + trimmedText;
-          } else if (tooltipMap[trimmedText] && !usedKeys.has(trimmedText)) {
-            const tooltip = tooltipMap[trimmedText];
-            usedKeys.add(trimmedText);
+		tokens.forEach((token, i) => {
+			if (token.type === "text") {
+				// For text tokens, extract the corresponding elements from styledTextArray
+				let tokenLength = token.content.length;
+				let accumulatedLength = 0;
+				let elements = [];
 
-            finalContent.push(
-              <span
-                key={`tooltip-${i}`}
-                style={{
-                  ...element.props.style,
-                  borderBottom: `2px solid var(--secondary-color-${theme})`,
-                  paddingBottom: "1px",
-                  cursor: "pointer",
-                }}
-                onClick={(e) => handleWordClick(e, tooltip)}
-              >
-                {textContent}
-              </span>
-            );
-          } else {
-            finalContent.push(element);
-          }
-        } else {
-          finalContent.push(element);
-        }
-      } else {
-        finalContent.push(element);
-      }
-    }
+				while (
+					styledTextIndex < styledTextArray.length &&
+					accumulatedLength < tokenLength
+				) {
+					let element = styledTextArray[styledTextIndex];
+					let textContent =
+						typeof element === "string" ? element : element.props.children;
 
-    const cleanedContent = stripBracketContent(finalContent);
+					let remainingLength = tokenLength - accumulatedLength;
 
-    return isVerse(paragraphText) ? (
-      <blockquote
-        className={`${styles.blockquote} ${
-          theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight
-        }`}
-      >
-        {cleanedContent}
-      </blockquote>
-    ) : (
-      <p className={styles.paragraph}>{cleanedContent}</p>
-    );
-  };
+					if (textContent.length > remainingLength) {
+						// Split the element if it's longer than needed
+						let neededText = textContent.slice(0, remainingLength);
+						let leftoverText = textContent.slice(remainingLength);
 
-  const currentText = React.Children.toArray(children).join("");
+						// Create a new element with the needed text
+						let newElement =
+							typeof element === "string"
+								? neededText
+								: React.cloneElement(element, {}, neededText);
+						elements.push(newElement);
 
-  useEffect(() => {
-    const storedLastParagraph = sessionStorage.getItem("lastParagraphText");
-    if (storedLastParagraph) {
-      setLastParagraphText(storedLastParagraph);
-      if (currentText) {
-        const updatedText = (storedLastParagraph + " \n " + currentText).trim();
-        sessionStorage.setItem("lastParagraphText", updatedText);
-      }
-    } else if (currentText) {
-      sessionStorage.setItem("lastParagraphText", currentText);
-    }
-  }, [currentText]);
+						// Replace the current element in styledTextArray with the leftover text
+						styledTextArray[styledTextIndex] =
+							typeof element === "string"
+								? leftoverText
+								: React.cloneElement(element, {}, leftoverText);
 
-  const processedContent = processContent(
-    children,
-    theme,
-    lastParagraphText,
-    minThreshold
-  );
+						accumulatedLength += neededText.length;
+					} else {
+						elements.push(element);
+						accumulatedLength += textContent.length;
+						styledTextIndex++;
+					}
+				}
 
-  return (
-    <div>
-      {processedContent}
-      {tooltipContent && (
-        <div
-          ref={tooltipRef}
-          style={{
-            position: "absolute",
-            maxWidth: "450px",
-            padding: "5px 10px",
-            top: tooltipPosition.y,
-            left: tooltipPosition.x,
-            backgroundColor:
-              theme === "dark"
-                ? "var(--background-color-dark)"
-                : "var(--background-color-light)",
-            color:
-              theme === "dark"
-                ? "var(--text-color-dark)"
-                : "var(--text-color-light)",
-            border: `1px solid ${
-              theme === "dark"
-                ? "var(--text-color-dark)"
-                : "var(--text-color-light)"
-            }`,
-            zIndex: 1000,
-            borderRadius: "4px",
-          }}
-          dangerouslySetInnerHTML={{ __html: tooltipContent }}
-        />
-      )}
-    </div>
-  );
+				finalContent.push(
+					<span key={`text-${i}`} style={{ fontSize: "1.2rem" }}>
+						{elements}
+					</span>
+				);
+			} else if (token.type === "underline") {
+				// For underlined tokens, create the underlined span
+				finalContent.push(
+					<span
+						key={`underline-${i}`}
+						style={{
+							fontSize: "1.2rem",
+							borderBottom: `2px solid var(--secondary-color-${theme})`,
+							paddingBottom: "1px",
+							cursor: "pointer",
+						}}
+						onClick={(e) => handleWordClick(e, token.tooltip)}
+					>
+						{token.content}
+					</span>
+				);
+
+				// Consume the corresponding length from styledTextArray
+				let tokenLength = token.content.length;
+				let accumulatedLength = 0;
+
+				while (
+					styledTextIndex < styledTextArray.length &&
+					accumulatedLength < tokenLength
+				) {
+					let element = styledTextArray[styledTextIndex];
+					let textContent =
+						typeof element === "string" ? element : element.props.children;
+
+					let remainingLength = tokenLength - accumulatedLength;
+
+					if (textContent.length > remainingLength) {
+						// Split the element if it's longer than needed
+						let neededText = textContent.slice(0, remainingLength);
+						let leftoverText = textContent.slice(remainingLength);
+
+						// Replace the current element in styledTextArray with the leftover text
+						styledTextArray[styledTextIndex] =
+							typeof element === "string"
+								? leftoverText
+								: React.cloneElement(element, {}, leftoverText);
+
+						accumulatedLength += neededText.length;
+					} else {
+						accumulatedLength += textContent.length;
+						styledTextIndex++;
+					}
+				}
+			}
+		});
+
+		return isVerse(paragraphText) ? (
+			<blockquote
+				className={`${styles.blockquote} ${
+					theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight
+				}`}
+			>
+				{finalContent}
+			</blockquote>
+		) : (
+			<p className={styles.paragraph}>{finalContent}</p>
+		);
+	};
+
+	const currentText = React.Children.toArray(children).join("");
+
+	useEffect(() => {
+		const storedLastParagraph = sessionStorage.getItem("lastParagraphText");
+		if (storedLastParagraph) {
+			setLastParagraphText(storedLastParagraph);
+			if (currentText) {
+				const updatedText = (storedLastParagraph + " \n " + currentText).trim();
+				sessionStorage.setItem("lastParagraphText", updatedText);
+			}
+		} else if (currentText) {
+			sessionStorage.setItem("lastParagraphText", currentText);
+		}
+	}, [currentText]);
+
+	const processedContent = processContent(
+		children,
+		theme,
+		lastParagraphText,
+		minThreshold
+	);
+
+	return (
+		<div>
+			{processedContent}
+			{tooltipContent && (
+				<div
+					ref={tooltipRef}
+					style={{
+						position: "absolute",
+						maxWidth: "450px",
+						padding: "5px 10px",
+						top: tooltipPosition.y,
+						left: tooltipPosition.x,
+						backgroundColor:
+							theme === "dark"
+								? "var(--background-color-dark)"
+								: "var(--background-color-light)",
+						color:
+							theme === "dark"
+								? "var(--text-color-dark)"
+								: "var(--text-color-light)",
+						border: `1px solid ${
+							theme === "dark"
+								? "var(--text-color-dark)"
+								: "var(--text-color-light)"
+						}`,
+						zIndex: 1000,
+						borderRadius: "4px",
+					}}
+					dangerouslySetInnerHTML={{ __html: tooltipContent }}
+				/>
+			)}
+		</div>
+	);
 };
 
 export default TextEnhancer;
