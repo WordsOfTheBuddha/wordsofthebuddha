@@ -9,6 +9,7 @@ import { MDXProvider } from "nextra/mdx";
 import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
+import Markdown from 'markdown-to-jsx';
 import Cookies from "js-cookie";
 import {
   Banner,
@@ -264,7 +265,7 @@ const InnerLayout = ({
                     fontSize: "0.92rem",
                   }}
                 >
-                  {frontMatter.commentary}
+                  <Markdown>{frontMatter.commentary}</Markdown>
                 </div>
               </>
             )}

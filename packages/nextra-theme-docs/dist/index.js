@@ -2732,6 +2732,7 @@ if (IS_BROWSER) {
 
 // src/index.tsx
 import { normalizePages } from "nextra/normalize-pages";
+import Markdown from "markdown-to-jsx";
 
 // src/mdx-components.tsx
 import cn16 from "clsx";
@@ -3209,7 +3210,7 @@ var InnerLayout = ({
                         whiteSpace: "pre-wrap",
                         fontSize: "0.92rem"
                       },
-                      children: frontMatter.commentary
+                      children: /* @__PURE__ */ jsx30(Markdown, { children: frontMatter.commentary })
                     }
                   )
                 ] })
