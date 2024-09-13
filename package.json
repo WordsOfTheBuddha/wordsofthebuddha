@@ -24,6 +24,7 @@
     "tsup": "^8.1.0",
     "typescript": "^5.5.3",
     "vitest": "^0.34.0",
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "react-markdown": "^9.0.1"
   }
 }
