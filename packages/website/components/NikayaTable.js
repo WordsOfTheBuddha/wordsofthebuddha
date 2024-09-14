@@ -29,7 +29,7 @@ const fallbackTranslationsCounts = {
   },
   "ud": {
     "label": "Inspired Utterances (Ud)",
-    "translationCount": 10
+    "translationCount": 11
   }
 };
 
