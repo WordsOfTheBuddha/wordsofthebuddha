@@ -17,7 +17,7 @@ const fallbackTranslationsCounts = {
   },
   "dhp": {
     "label": "Dhamma Pada (DhP)",
-    "translationCount": 89
+    "translationCount": 99
   },
   "snp": {
     "label": "Sutta Nipāta (SnP)",

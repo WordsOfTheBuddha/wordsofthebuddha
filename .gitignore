@@ -18,3 +18,4 @@ public/**
 packages/website/public/**
 .vercel
 **.DS_Store
+*anki*
