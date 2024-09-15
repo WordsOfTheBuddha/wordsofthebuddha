@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import styles from "/styles/TextEnhancer.module.css";
+import ReactMarkdown from 'react-markdown';
 
 const isVerse = (paragraph) => {
 	const lines = paragraph.trim().split("\n");
@@ -245,193 +246,210 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 		};
 	}, [tooltipContent]);
 
+  const extractPhrasesAndTooltips = (text) => {
+    const phrasesAndTooltips = [];
+    const regex = /(\{[^}]+\}|[\w\p{L}-]+)\s*\(((?:[^()]*|\([^()]*\))*?)\)/gu;
+    let match;
+  
+    while ((match = regex.exec(text)) !== null) {
+      const [fullMatch, phraseOrWord, tooltip] = match;
+      let cleanedPhrase = phraseOrWord;
+  
+      // Remove curly braces if present
+      if (cleanedPhrase.startsWith('{') && cleanedPhrase.endsWith('}')) {
+        cleanedPhrase = cleanedPhrase.slice(1, -1).trim();
+      }
+  
+      phrasesAndTooltips.push({
+        phrase: cleanedPhrase.trim(),
+        tooltip: tooltip.trim(),
+        startIndex: match.index,
+        endIndex: regex.lastIndex,
+      });
+    }
+  
+    return phrasesAndTooltips;
+  };
+
+  const escapeRegExp = (string) => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
+
 	const processContent = (children, theme, lastParagraphText, minThreshold) => {
-		let paragraphText = React.Children.toArray(children).join("");
-
-		// Use regex to find all phrases or words with tooltips
-		const regex = /(\{[^}]+\}|\b[\w\p{L}-]+\b)\s*\(([^)]+)\)/gu;
-		let tokens = [];
-		let lastIndex = 0;
-		let match;
-
-		while ((match = regex.exec(paragraphText)) !== null) {
-			const [fullMatch, phraseOrWord, tooltip] = match;
-			const startIndex = match.index;
-			const endIndex = regex.lastIndex;
-
-			// Add text before the match
-			if (startIndex > lastIndex) {
-				tokens.push({
-					type: "text",
-					content: paragraphText.slice(lastIndex, startIndex),
-				});
-			}
-
-			// Remove curly braces if present
-			let cleanedPhraseOrWord = phraseOrWord;
-			if (
-				cleanedPhraseOrWord.startsWith("{") &&
-				cleanedPhraseOrWord.endsWith("}")
-			) {
-				cleanedPhraseOrWord = cleanedPhraseOrWord.slice(1, -1).trim();
-			}
-
-			// Add the underlined phrase
-			tokens.push({
-				type: "underline",
-				content: cleanedPhraseOrWord,
-				tooltip: tooltip.trim(),
-			});
-
-			lastIndex = endIndex;
-		}
-
-		// Add any remaining text after the last match
-		if (lastIndex < paragraphText.length) {
-			tokens.push({
-				type: "text",
-				content: paragraphText.slice(lastIndex),
-			});
-		}
-
-		// **Update the regex here to remove parentheses and trailing punctuation**
-		// Remove any parentheses and their content from the text tokens
-		tokens = tokens.map((token) => {
-			if (token.type === "text") {
-				return {
-					...token,
-					content: token.content.replace(/\s*\([^()]*\)\s*[.,;:]?/g, ""),
-				};
-			} else {
-				return token;
-			}
-		});
-
-		// Build the cleaned text to pass to detectRepetition
-		let cleanedText = tokens.map((token) => token.content).join("");
-
-		// Apply detectRepetition
-		let styledTextArray = detectRepetition(
-			cleanedText,
-			lastParagraphText,
-			minThreshold
-		);
-
-		// Now, reconstruct the final content by mapping tokens to styledTextArray
-		let finalContent = [];
-		let styledTextIndex = 0;
-
-		tokens.forEach((token, i) => {
-			if (token.type === "text") {
-				// For text tokens, extract the corresponding elements from styledTextArray
-				let tokenLength = token.content.length;
-				let accumulatedLength = 0;
-				let elements = [];
-
-				while (
-					styledTextIndex < styledTextArray.length &&
-					accumulatedLength < tokenLength
-				) {
-					let element = styledTextArray[styledTextIndex];
-					let textContent =
-						typeof element === "string" ? element : element.props.children;
-
-					let remainingLength = tokenLength - accumulatedLength;
-
-					if (textContent.length > remainingLength) {
-						// Split the element if it's longer than needed
-						let neededText = textContent.slice(0, remainingLength);
-						let leftoverText = textContent.slice(remainingLength);
-
-						// Create a new element with the needed text
-						let newElement =
-							typeof element === "string"
-								? neededText
-								: React.cloneElement(element, {}, neededText);
-						elements.push(newElement);
-
-						// Replace the current element in styledTextArray with the leftover text
-						styledTextArray[styledTextIndex] =
-							typeof element === "string"
-								? leftoverText
-								: React.cloneElement(element, {}, leftoverText);
-
-						accumulatedLength += neededText.length;
-					} else {
-						elements.push(element);
-						accumulatedLength += textContent.length;
-						styledTextIndex++;
-					}
-				}
-
-				finalContent.push(
-					<span key={`text-${i}`} style={{ fontSize: "1.2rem" }}>
-						{elements}
-					</span>
-				);
-			} else if (token.type === "underline") {
-				// For underlined tokens, create the underlined span
-				finalContent.push(
-					<span
-						key={`underline-${i}`}
-						style={{
-							fontSize: "1.2rem",
-							borderBottom: `2px solid var(--secondary-color-${theme})`,
-							paddingBottom: "1px",
-							cursor: "pointer",
-						}}
-						onClick={(e) => handleWordClick(e, token.tooltip)}
-					>
-						{token.content}
-					</span>
-				);
-
-				// Consume the corresponding length from styledTextArray
-				let tokenLength = token.content.length;
-				let accumulatedLength = 0;
-
-				while (
-					styledTextIndex < styledTextArray.length &&
-					accumulatedLength < tokenLength
-				) {
-					let element = styledTextArray[styledTextIndex];
-					let textContent =
-						typeof element === "string" ? element : element.props.children;
-
-					let remainingLength = tokenLength - accumulatedLength;
-
-					if (textContent.length > remainingLength) {
-						// Split the element if it's longer than needed
-						let neededText = textContent.slice(0, remainingLength);
-						let leftoverText = textContent.slice(remainingLength);
-
-						// Replace the current element in styledTextArray with the leftover text
-						styledTextArray[styledTextIndex] =
-							typeof element === "string"
-								? leftoverText
-								: React.cloneElement(element, {}, leftoverText);
-
-						accumulatedLength += neededText.length;
-					} else {
-						accumulatedLength += textContent.length;
-						styledTextIndex++;
-					}
-				}
-			}
-		});
-
-		return isVerse(paragraphText) ? (
-			<blockquote
-				className={`${styles.blockquote} ${
-					theme === "dark" ? styles.blockquoteDark : styles.blockquoteLight
-				}`}
-			>
-				{finalContent}
-			</blockquote>
-		) : (
-			<p className={styles.paragraph}>{finalContent}</p>
-		);
-	};
+    let paragraphText = React.Children.toArray(children).join('');
+    console.log(`paragraphText: ${paragraphText}`);
+  
+    // Extract phrases and tooltips using the new function
+    const phrasesAndTooltips = extractPhrasesAndTooltips(paragraphText);
+  
+    // Build tokens from the paragraphText
+    let tokens = [];
+    let lastIndex = 0;
+  
+    phrasesAndTooltips.forEach(({ phrase, tooltip, startIndex, endIndex }) => {
+      // Add text before the matched phrase
+      if (startIndex > lastIndex) {
+        tokens.push({
+          type: 'text',
+          content: paragraphText.slice(lastIndex, startIndex),
+        });
+      }
+  
+      // Add the underlined phrase
+      tokens.push({
+        type: 'underline',
+        content: phrase,
+        tooltip: tooltip,
+      });
+  
+      lastIndex = endIndex;
+    });
+  
+    // Add any remaining text after the last match
+    if (lastIndex < paragraphText.length) {
+      tokens.push({
+        type: 'text',
+        content: paragraphText.slice(lastIndex),
+      });
+    }
+  
+    // Remove any parentheses and their content from the text tokens
+    tokens = tokens.map((token) => {
+      if (token.type === 'text') {
+        return {
+          ...token,
+          content: token.content.replace(/\s*\([^()]*\)\s*[.,;:]?/g, ''),
+        };
+      } else {
+        return token;
+      }
+    });
+  
+    // Build the cleaned text for detectRepetition
+    const cleanedText = tokens.map((token) => token.content).join('');
+  
+    // Apply detectRepetition to the cleaned text
+    let styledTextArray = detectRepetition(
+      cleanedText,
+      lastParagraphText,
+      minThreshold
+    );
+  
+    // Now, reconstruct the final content by mapping tokens to styledTextArray
+    let finalContent = [];
+    let styledTextIndex = 0;
+  
+    tokens.forEach((token, i) => {
+      if (token.type === 'text') {
+        // For text tokens, extract the corresponding elements from styledTextArray
+        let tokenLength = token.content.length;
+        let accumulatedLength = 0;
+        let elements = [];
+  
+        while (
+          styledTextIndex < styledTextArray.length &&
+          accumulatedLength < tokenLength
+        ) {
+          let element = styledTextArray[styledTextIndex];
+          let textContent =
+            typeof element === 'string' ? element : element.props.children;
+  
+          let remainingLength = tokenLength - accumulatedLength;
+  
+          if (textContent.length > remainingLength) {
+            // Split the element if it's longer than needed
+            let neededText = textContent.slice(0, remainingLength);
+            let leftoverText = textContent.slice(remainingLength);
+  
+            // Create a new element with the needed text
+            let newElement =
+              typeof element === 'string'
+                ? neededText
+                : React.cloneElement(element, {}, neededText);
+            elements.push(newElement);
+  
+            // Replace the current element in styledTextArray with the leftover text
+            styledTextArray[styledTextIndex] =
+              typeof element === 'string'
+                ? leftoverText
+                : React.cloneElement(element, {}, leftoverText);
+  
+            accumulatedLength += neededText.length;
+          } else {
+            elements.push(element);
+            accumulatedLength += textContent.length;
+            styledTextIndex++;
+          }
+        }
+  
+        finalContent.push(
+          <span key={`text-${i}`} style={{ fontSize: '1.2rem' }}>
+            {elements}
+          </span>
+        );
+      } else if (token.type === 'underline') {
+        // For underlined tokens, create the underlined span
+        finalContent.push(
+          <span
+            key={`underline-${i}`}
+            style={{
+              fontSize: '1.2rem',
+              borderBottom: `2px solid var(--secondary-color-${theme})`,
+              paddingBottom: '1px',
+              cursor: 'pointer',
+            }}
+            onClick={(e) => handleWordClick(e, token.tooltip)}
+          >
+            {token.content}
+          </span>
+        );
+  
+        // Consume the corresponding length from styledTextArray
+        let tokenLength = token.content.length;
+        let accumulatedLength = 0;
+  
+        while (
+          styledTextIndex < styledTextArray.length &&
+          accumulatedLength < tokenLength
+        ) {
+          let element = styledTextArray[styledTextIndex];
+          let textContent =
+            typeof element === 'string' ? element : element.props.children;
+  
+          let remainingLength = tokenLength - accumulatedLength;
+  
+          if (textContent.length > remainingLength) {
+            // Split the element if it's longer than needed
+            let neededText = textContent.slice(0, remainingLength);
+            let leftoverText = textContent.slice(remainingLength);
+  
+            // Replace the current element in styledTextArray with the leftover text
+            styledTextArray[styledTextIndex] =
+              typeof element === 'string'
+                ? leftoverText
+                : React.cloneElement(element, {}, leftoverText);
+  
+            accumulatedLength += neededText.length;
+          } else {
+            accumulatedLength += textContent.length;
+            styledTextIndex++;
+          }
+        }
+      }
+    });
+  
+    return isVerse(paragraphText) ? (
+      <blockquote
+        className={`${styles.blockquote} ${
+          theme === 'dark' ? styles.blockquoteDark : styles.blockquoteLight
+        }`}
+      >
+        {finalContent}
+      </blockquote>
+    ) : (
+      <p className={styles.paragraph}>{finalContent}</p>
+    );
+  };
 
 	const currentText = React.Children.toArray(children).join("");
 
@@ -483,8 +501,9 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 						zIndex: 1000,
 						borderRadius: "4px",
 					}}
-					dangerouslySetInnerHTML={{ __html: tooltipContent }}
-				/>
+          >
+					<ReactMarkdown>{tooltipContent}</ReactMarkdown>
+				</div>
 			)}
 		</div>
 	);
