@@ -1,6 +1,6 @@
 ---
 title: Adhamma vagga - The Chapter On Not The Teaching
-description: The Buddha shares the importance of explaining what is not the Dhamma, discipline, spoken or uttered, practiced, and prescribed by the Tathāgata.
+description: The Buddha shares the importance of explaining correctly what is not the Dhamma, discipline, spoken or uttered, practiced, and prescribed by the Tathāgata.
 fetter: ignorance
 tags: teaching, discipline, vinaya, spoken, practiced, prescribed, an, an1
 id: an1.140-149
