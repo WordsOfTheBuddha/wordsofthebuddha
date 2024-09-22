@@ -169,15 +169,19 @@
     "description": "The final chapter of the Udāna addresses the Buddha's passing away and the profound crisis of faith that followed. It opens with a series of solemn declarations on Nibbāna, reflecting the depth of the Buddha's teachings on ultimate liberation. The chapter concludes with the remarkable passing of the bhikkhu Dabba, illustrating the enduring strength of the Dhamma even in the face of loss. This collection offers deep reflections on the end of the Buddha's life and the spiritual legacy he left behind."
   },
   "iti1-27": {
-    "title": "The Book of the Ones"
+    "title": "Ekakanipāta - The Book of the Ones",
+    "description": "The \"The Book of the Ones\" contains 27 discourses, each dealing with a single important concept or teaching. These are concise and focus on the essence of a single point, often discussing the fundamentals of the Dhamma."
   },
   "iti28-49": {
-    "title": "The Book of the Twos"
+    "title": "Dukanipāta - The Book of the Twos",
+    "description": "The \"The Book of the Twos\" contains 22 discourses, each dealing with pairs of concepts or teachings. These discourses explore the relationship between two elements, such as good and evil, wisdom and compassion, or effort and mindfulness."
   },
   "iti50-99": {
-    "title": "The Book of the Threes"
+    "title": "Tikanipāta - The Book of the Threes",
+    "description": "The \"The Book of the Threes\" contains 50 discourses, each dealing with sets of three concepts or teachings. These discourses explore the interconnectedness of these elements and their collective significance in the practice of the Dhamma."
   },
   "iti100-112": {
-    "title": "The Book of the Fours"
+    "title": "Catukkanipāta - The Book of the Fours",
+    "description": "The \"The Book of the Fours\" contains 13 discourses. Here, teachings are presented in groups of fours, covering various sets of four principles or qualities, such as the Four Noble Truths or the four Brahmavihāras (divine abidings: loving-kindness, compassion, sympathetic joy, and equanimity)."
   }
 }
