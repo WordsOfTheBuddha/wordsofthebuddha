@@ -9,7 +9,7 @@ const fallbackTranslationsCounts = {
   },
   "an": {
     "label": "Numbered Discourses (AN)",
-    "translationCount": 309
+    "translationCount": 310
   },
   "mn": {
     "label": "Middle Length Discourses (MN)",
@@ -25,7 +25,7 @@ const fallbackTranslationsCounts = {
   },
   "iti": {
     "label": "As It Was Said (ITI)",
-    "translationCount": 21
+    "translationCount": 22
   },
   "ud": {
     "label": "Inspired Utterances (Ud)",
