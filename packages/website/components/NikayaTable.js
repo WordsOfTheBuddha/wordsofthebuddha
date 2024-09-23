@@ -9,7 +9,7 @@ const fallbackTranslationsCounts = {
   },
   "an": {
     "label": "Numbered Discourses (AN)",
-    "translationCount": 310
+    "translationCount": 322
   },
   "mn": {
     "label": "Middle Length Discourses (MN)",
