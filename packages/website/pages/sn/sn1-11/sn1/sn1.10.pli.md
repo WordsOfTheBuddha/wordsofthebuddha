@@ -1,6 +1,6 @@
 ---
 title: Arañña sutta - Wilderness
-description: A deity asks the Buddha how the complexion of those dwelling in the wilderness and living the holy life becomes serene.
+description: A deity asks the Buddha how the complexion of those dwelling in the wilderness and living the spiritual life becomes serene.
 fetter: ignorance
 tags: wilderness, complexion, serenity, present, future, past, ignorance, sn, sn1-11, sn1
 id: sn1.10

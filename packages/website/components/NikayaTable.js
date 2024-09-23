@@ -5,7 +5,7 @@ import styles from "/styles/NikayaTable.module.css";
 const fallbackTranslationsCounts = {
   "sn": {
     "label": "Linked Discourses (SN)",
-    "translationCount": 167
+    "translationCount": 170
   },
   "an": {
     "label": "Numbered Discourses (AN)",
