@@ -13,7 +13,7 @@ const fallbackTranslationsCounts = {
   },
   "mn": {
     "label": "Middle Length Discourses (MN)",
-    "translationCount": 18
+    "translationCount": 19
   },
   "dhp": {
     "label": "Dhamma Pada (DhP)",
