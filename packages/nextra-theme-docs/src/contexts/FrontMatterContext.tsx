@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { fetchFrontMatter } from "../utils/api";
+import frontMatterData from '../../../website/public/frontMatter.json'
 
 interface FrontMatterEntry {
   title: string;
   description: string;
-  fetter: string;
-  tags: string;
+  fetter?: string;
+  tags?: string;
   id: string;
   path: string;
-  fullPath: string;
+  fullPath?: string;
   updatedTime: string;
 }
 
@@ -27,34 +28,22 @@ const FrontMatterContext = createContext<FrontMatterContextType | undefined>(
 
 const CACHE_DURATION = 1 * 60 * 60 * 1000; // 1 hour in milliseconds
 
-export const FrontMatterProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+export const FrontMatterProvider: React.FC<{ children: React.ReactNode; initialData?: FrontMatter }> = ({
+  children
 }) => {
-  const [dfrontMatter, setFrontMatter] = useState<FrontMatter | null>(null);
-
+  const [dfrontMatter, setFrontMatter] = useState<FrontMatter | null>(frontMatterData);
   useEffect(() => {
-    const storedFrontMatter = localStorage.getItem("frontMatter");
-    const storedTimestamp = localStorage.getItem("frontMatterTimestamp");
-
-    const isCacheValid =
-      storedFrontMatter &&
-      storedTimestamp &&
-      Date.now() - parseInt(storedTimestamp, 10) < CACHE_DURATION;
-
-    if (isCacheValid) {
-      setFrontMatter(JSON.parse(storedFrontMatter));
-    } else {
+    if (!dfrontMatter) {
+      // Fetch only if data is not already available
       fetchFrontMatter()
         .then((data: FrontMatter) => {
           setFrontMatter(data);
           localStorage.setItem("frontMatter", JSON.stringify(data));
           localStorage.setItem("frontMatterTimestamp", Date.now().toString());
         })
-        .catch((error: Error) =>
-          console.error("Failed to fetch frontMatter:", error)
-        );
+        .catch((error: Error) => console.error("Failed to fetch frontMatter:", error));
     }
-  }, []);
+  }, [dfrontMatter]);
 
   return (
     <FrontMatterContext.Provider value={{ dfrontMatter, setFrontMatter }}>
