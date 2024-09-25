@@ -1,6 +1,6 @@
 ---
 title: Appaṭividita sutta - Not Fully Comprehended
-description: Those who do not fully comprehend the teachings are led by others' views and do not awaken from sleep. Those who fully comprehend the teachings are not led by others' views and are awakened, fully comprehending, faring evenly amidst the uneven path.
+description: Those who do not fully comprehend the teachings are led by others' views and do not awaken from sleep.
 fetter: personal existence,adherence to rites and rituals,doubt
 tags: comprehension, awakening, speculative views, teachings, evenness, unevenness, sn, sn1-11, sn1
 id: sn1.7
