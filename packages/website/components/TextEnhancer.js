@@ -277,7 +277,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 
   const processContent = (children, theme, lastParagraphText, minThreshold) => {
 	let paragraphText = React.Children.toArray(children).join('');
-	console.log(`paragraphText: ${paragraphText}`);
+	// console.log(`paragraphText: ${paragraphText}`);
   
 	// Check if the paragraph starts with a number
 	const numberAtStart = paragraphText.match(/^\d+\s/);
