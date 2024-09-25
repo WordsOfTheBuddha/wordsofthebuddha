@@ -12,16 +12,16 @@
 
   --icon-fill-color-dark: #ffffff;
   --text-color-dark: #ffffff;
-  --background-color-dark: #121212;
+  --background-color-dark: #1C1C1C;
   --primary-color-dark: #FFD700; /* Gold */
-  --secondary-color-dark: #FFA07A; /* Light Salmon */
+  --secondary-color-dark: #D47445; /* Light Salmon */
   --link-color-dark: #87CEFA; /* Light Sky Blue */
   --link-hover-color-dark: #ffffff;
   --background-header-light: #f4f4f4;
   --background-row-even-light: #f9f9f9;
   --background-row-hover-light: #f1f1f1;
-  --background-header-dark: #333;
-  --background-row-even-dark: #444;
+  --background-header-dark: #242F36;
+  --background-row-even-dark: #242F36;
   --background-row-hover-dark: #555;
 }
 

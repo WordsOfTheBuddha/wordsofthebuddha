@@ -26,6 +26,10 @@
   border-bottom: 1px solid #ddd;
 }
 
+.table tbody tr:nth-child(odd) {
+  background-color: var(--background-color-dark);
+}
+
 .table tbody tr:nth-child(even) {
   background-color: var(--background-row-even);
 }
@@ -48,6 +52,7 @@
 
 .dark-theme {
   --background-header: var(--background-header-dark);
+  --background-row-odd: #454545;
   --background-row-even: var(--background-row-even-dark);
   --background-row-hover: var(--background-row-hover-dark);
   --text-color: var(--text-color-dark);
