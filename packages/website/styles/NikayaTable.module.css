@@ -27,7 +27,7 @@
 }
 
 .table tbody tr:nth-child(odd) {
-  background-color: var(--background-color-dark);
+  background-color: var(--background-row-odd);
 }
 
 .table tbody tr:nth-child(even) {
@@ -45,6 +45,7 @@
 
 .light-theme {
   --background-header: var(--background-header-light);
+  --background-row-odd: var(--background-color-light);
   --background-row-even: var(--background-row-even-light);
   --background-row-hover: var(--background-row-hover-light);
   --text-color: var(--text-color-light);
@@ -52,7 +53,7 @@
 
 .dark-theme {
   --background-header: var(--background-header-dark);
-  --background-row-odd: #454545;
+  --background-row-odd: var(--background-color-dark);
   --background-row-even: var(--background-row-even-dark);
   --background-row-hover: var(--background-row-hover-dark);
   --text-color: var(--text-color-dark);
