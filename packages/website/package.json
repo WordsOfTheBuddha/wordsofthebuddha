@@ -25,9 +25,9 @@
   "scripts": {
     "dev": "next dev",
     "hot": "node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js && yarn workspace nextra-theme-docs build && next dev",
-    "build": "NODE_ENV=production node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js && NODE_OPTIONS=--max-old-space-size=6144 next build",
+    "build": "NODE_ENV=production node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js && NODE_OPTIONS=--max-old-space-size=8192 next build",
     "start": "next start",
-    "prebuild": "yarn workspace nextra-theme-docs build && node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateMeta.js",
+    "prebuild": "NODE_ENV=production yarn workspace nextra-theme-docs build && node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateMeta.js",
     "predev": "yarn workspace nextra-theme-docs build && node utils/generateFrontMatter.js && node utils/generateTranslationCount.js && node utils/generateIndexPages.js && node utils/generateMeta.js"
   }
 }

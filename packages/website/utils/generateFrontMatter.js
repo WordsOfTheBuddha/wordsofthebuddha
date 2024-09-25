@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const matter = require("gray-matter");
 const simpleGit = require("simple-git");
-const { object } = require("prop-types");
 
 const CONTENT_DIRECTORY = path.join(__dirname, "..", "pages");
 const OUTPUT_FILE = path.join(__dirname, "..", "public", "frontMatter.json");
@@ -56,7 +55,6 @@ const generateFrontMatterJSON = async () => {
       console.error("Error parsing existing front matter data:", error);
       frontMatterData = {};
     }
-    console.log('Existing frontmatter: ', Object.keys(frontMatterData).length);
     if (Object.keys(frontMatterData).length === 0) {
       isDev = false;
     }
