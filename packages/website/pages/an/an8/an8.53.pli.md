@@ -1,8 +1,8 @@
 ---
 title: Saṅkhitta sutta - Brief
-description: The Buddha advises Mahāpajāpatī Gotamī to abandon teachings that lead to passion, being bound, accumulating, wanting more, discontentment, company, laziness, and being burdensome. Instead, embrace teachings that lead to dispassion, being unbound, shedding, wanting less, contentment, solitude, the arousal of energy, and being unburdensome.
-fetter: doubt
-tags: an,an8,passion,dispassion,accumulating,shedding,wanting more,wanting less,discontentment,contentment,company,solitude,laziness,arousal of energy,burdensome,unburdensome
+description: The Buddha advises Mahāpajāpatī Gotamī on how to discern the teachings to be abandoned and the teachings to be embraced by observing for eight qualities.
+fetter: doubt, conceit, ignorance
+tags: an,an8,passion,dispassion,accumulation,reduction,greediness,contentment,company,seclusion,indolence,energy,effort,arousal,enthusiasm,support,abandonment,embracement
 id: an8.53
 ---
 
@@ -14,14 +14,21 @@ Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāya�
 
 “Ye kho tvaṁ, gotami, dhamme jāneyyāsi:
 
-‘ime dhammā sarāgāya saṁvattanti, no virāgāya;
-saṁyogāya saṁvattanti, no visaṁyogāya;
-ācayāya saṁvattanti, no apacayāya;
-mahicchatāya saṁvattanti, no appicchatāya;
-asantuṭṭhiyā saṁvattanti, no santuṭṭhiyā;
-saṅgaṇikāya saṁvattanti, no pavivekāya;
-kosajjāya saṁvattanti, no vīriyārambhāya;
-dubbharatāya saṁvattanti, no subharatāyā’ti.
+1 ‘ime dhammā sarāgāya saṁvattanti, no virāgāya;
+
+2 saṁyogāya saṁvattanti, no visaṁyogāya;
+
+3 ācayāya saṁvattanti, no apacayāya;
+
+4 mahicchatāya saṁvattanti, no appicchatāya;
+
+5 asantuṭṭhiyā saṁvattanti, no santuṭṭhiyā;
+
+6 saṅgaṇikāya saṁvattanti, no pavivekāya;
+
+7 kosajjāya saṁvattanti, no vīriyārambhāya;
+
+8 dubbharatāya saṁvattanti, no subharatāyā’ti.
 
 ekaṁsena, gotami, dhāreyyāsi: ‘neso dhammo, neso vinayo, netaṁ satthusāsanan’ti.
 
@@ -29,13 +36,20 @@ ekaṁsena, gotami, dhāreyyāsi: ‘neso dhammo, neso vinayo, netaṁ satthusā
 
 Ye ca kho tvaṁ, gotami, dhamme jāneyyāsi:
 
-‘ime dhammā virāgāya saṁvattanti, no sarāgāya;
-visaṁyogāya saṁvattanti, no saṁyogāya;
-apacayāya saṁvattanti, no ācayāya;
-appicchatāya saṁvattanti, no mahicchatāya;
-santuṭṭhiyā saṁvattanti, no asantuṭṭhiyā;
-pavivekāya saṁvattanti, no saṅgaṇikāya;
-vīriyārambhāya saṁvattanti, no kosajjāya;
-subharatāya saṁvattanti, no dubbharatāyā’ti.
+1 ‘ime dhammā virāgāya saṁvattanti, no sarāgāya;
+
+2 visaṁyogāya saṁvattanti, no saṁyogāya;
+
+3 apacayāya saṁvattanti, no ācayāya;
+
+4 appicchatāya saṁvattanti, no mahicchatāya;
+
+5 santuṭṭhiyā saṁvattanti, no asantuṭṭhiyā;
+
+6 pavivekāya saṁvattanti, no saṅgaṇikāya;
+
+7 vīriyārambhāya saṁvattanti, no kosajjāya;
+
+8 subharatāya saṁvattanti, no dubbharatāyā’ti.
 
 ekaṁsena, gotami, dhāreyyāsi: ‘eso dhammo, eso vinayo, etaṁ satthusāsanan’”ti.

@@ -6,7 +6,7 @@ tags: stream-enterer, once-returner, non-returner, arahant, merit, an, an8
 id: an8.59
 ---
 
-“Aṭṭhime, bhikkhave, puggalā āhuneyyā pāhuneyyā dakkhiṇeyyā añjalikaraṇīyā anuttaraṁ puññakkhettaṁ lokassa? Katame aṭṭha? Sotāpanno, sotāpattiphalasacchikiriyāya paṭipanno, sakadāgāmī, sakadāgāmiphalasacchikiriyāya paṭipanno, anāgāmī, anāgāmiphalasacchikiriyāya paṭipanno, arahā, arahattāya paṭipanno. Ime kho, bhikkhave, aṭṭha puggalā āhuneyyā …pe… anuttaraṁ puññakkhettaṁ lokassāti.
+“Aṭṭhime, bhikkhave, puggalā āhuneyyā pāhuneyyā dakkhiṇeyyā añjalikaraṇīyā anuttaraṁ puññakkhettaṁ lokassa? Katame aṭṭha? Sotāpanno, sotāpattiphalasacchikiriyāya paṭipanno, sakadāgāmī, sakadāgāmiphalasacchikiriyāya paṭipanno, anāgāmī, anāgāmiphalasacchikiriyāya paṭipanno, arahā, arahattāya paṭipanno. Ime kho, bhikkhave, aṭṭha puggalā āhuneyyā pāhuneyyā dakkhiṇeyyā añjalikaraṇīyā anuttaraṁ puññakkhettaṁ lokassāti.
 
 ### Verse
 
