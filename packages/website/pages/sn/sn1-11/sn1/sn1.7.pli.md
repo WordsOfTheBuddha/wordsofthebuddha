@@ -1,7 +1,7 @@
 ---
-title: Appaṭividita sutta - Not Fully Comprehended
-description: Those who do not fully comprehend the teachings are led by others' views and do not awaken from sleep.
-fetter: personal existence,adherence to rites and rituals,doubt
+title: Appaṭividita sutta - Not Understood
+description: Those who do not understand the teachings are led by others' views and do not awaken from sleep.
+fetter: personal existence, adherence to rites and rituals, doubt, ignorance
 tags: comprehension, awakening, speculative views, teachings, evenness, unevenness, sn, sn1-11, sn1
 id: sn1.7
 ---
