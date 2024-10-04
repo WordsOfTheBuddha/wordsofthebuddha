@@ -118,7 +118,7 @@
   },
   "sn56": {
     "title": "Saccasaṁyutta - Linked Discourses on the Truths",
-    "description": "The \"Linked Discourses on the Truths\" contains discourses centered on the four noble truths: suffering, its origin, its cessation, and the way of practice for its cessation. These fundamental teachings formed the core of the Buddha's first discourse, which is included here as SN 56.11. The Buddha taught that all his teachings are encompassed within these four truths. This chapter offers a comprehensive perspective on the other teachings, linking them to the understanding and realization of the four noble truths, which culminates in enlightenment."
+    "description": "The \"Linked Discourses on the Truths\" contains discourses centered on the four noble truths: suffering, its arising, its ending, and the way of practice for its ending. These fundamental teachings formed the core of the Buddha's first discourse, which is included here as [SN 56.11](/sn56.11). The Buddha taught that all his teachings are encompassed within these four truths. This chapter offers a comprehensive perspective on the other teachings, linking them to the understanding and realization of the four noble truths, which culminates in enlightenment."
   },
   "snp1": {
     "title": "Uragavagga - The Serpent Chapter",
@@ -187,5 +187,12 @@
   "iti100-112": {
     "title": "Catukkanipāta - The Book of the Fours",
     "description": "The \"The Book of the Fours\" contains 13 discourses. Here, teachings are presented in groups of fours, covering various sets of four principles or qualities, such as the Four Noble Truths or the four Brahmavihāras (divine abidings: loving-kindness, compassion, sympathetic joy, and equanimity)."
+  },
+  "noble-truths-noble-path": {
+    "title": "Noble Truths, Noble Path",
+    "subtitle": "The heart essence of the Buddha's original teachings",
+    "image": "/assets/noble-truths-noble-path-book-cover.jpeg",
+    "author": "Bhikkhu Bodhi",
+    "description": "Free public domain translations of the discourses from the book Noble Truths, Noble Path by Bhikkhu Bodhi. The book explores a selection of 86 discourses from the Saṁyutta Nikāya (Linked Discourses) on the themes of - 1) the Four Noble Truths, 2) the Five Aggregates, 3) the Six Sense Bases, 4) Dependent Origination, and 5) the Noble Eightfold Path: the way of practice leading to the end of suffering."
   }
 }

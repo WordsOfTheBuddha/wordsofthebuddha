@@ -4,7 +4,7 @@ import styles from "/styles/Card.module.css";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 
-export const Card = ({ title, description, path, id, updatedTime, counts }) => {
+export const Card = ({ title, description, path, id, updatedTime, counts, subtitle, image, author }) => {
   const { resolvedTheme } = useTheme();
   const { locale } = useRouter();
   const [isMounted, setIsMounted] = useState(false);
@@ -45,11 +45,24 @@ export const Card = ({ title, description, path, id, updatedTime, counts }) => {
       }`}
     >
       {count > 0 && <div className={styles.cardCount}>{count}</div>}
+      {path.startsWith("/books") && image && (
+        <img
+          src={image}
+          alt="Book Cover"
+          className={styles.cardImage}
+        />
+      )}
       <div className={styles.cardBody}>
         <h2 className={styles.cardTitle}>
-          <a href={path + id}>{transformId(id)}</a>
-          <span>{title}</span>
+          {!path.startsWith("/books") && (
+            <>
+              <a href={path + id}>{transformId(id)}</a>
+              <span>{title}</span>
+            </>
+          )}
+          {path.startsWith("/books") && <a href={path + id}>{title}</a>}
         </h2>
+        {path.startsWith("/books") && subtitle && <h3 className={styles.cardSubtitle}>{subtitle}</h3>}
         <p className={styles.cardDescription}>
           <ReactMarkdown>{description}</ReactMarkdown>
         </p>

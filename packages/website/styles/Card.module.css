@@ -1,11 +1,10 @@
-/* components/Card.module.css */
 .card {
   width: 100%;
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   margin: 1rem 0 0 0;
-  position: relative; /* Required for positioning the count label */
+  position: relative;
 }
 
 .lightCard {
@@ -14,6 +13,14 @@
 
 .darkCard {
   background-color: var(--background-header-dark);
+}
+
+.cardImage {
+  max-width: 300px;
+  height: auto;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  float: left;
 }
 
 .cardBody {
@@ -43,6 +50,13 @@
   color: var(--text-color);
 }
 
+.cardSubtitle {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--subtitle-color, var(--text-color));
+}
+
 .cardDescription {
   color: var(--text-color);
   font-size: 1.1rem;
@@ -53,8 +67,8 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: var(--secondary-color-light); /* Light mode background */
-  color: var(--background-color-light); /* Light mode text color */
+  background-color: var(--secondary-color-light);
+  color: var(--background-color-light);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.875rem;
@@ -62,6 +76,22 @@
 }
 
 .darkCard .cardCount {
-  background-color: var(--secondary-color-dark); /* Dark mode background */
-  color: var(--text-color-dark); /* Dark mode text color */
+  background-color: var(--secondary-color-dark);
+  color: var(--text-color-dark);
+}
+
+@media (max-width: 768px) {
+  .cardImage {
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem 0;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cardBody {
+    clear: both;
+  }
+
 }

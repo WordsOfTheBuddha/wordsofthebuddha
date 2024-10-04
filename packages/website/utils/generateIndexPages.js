@@ -49,12 +49,15 @@ const countFilesInDirectories = (data) => {
 const directoryCounts = countFilesInDirectories(frontMatterData);
 
 // Helper function to create card data
-const createCardData = ({ title, description, id, path, counts }) => ({
+const createCardData = ({ title, description, id, path, counts, subtitle, image, author }) => ({
   title,
   description,
   id,
   path,
   counts,
+  subtitle,
+  image,
+  author,
 });
 
 // Function to generate index.mdx content for pages and directories
@@ -105,6 +108,9 @@ const generateIndexPages = (dir) => {
       id: subdir,
       path: `${dir.replace(pagesDir, "").replace(/\\/g, "/")}/`, // Convert path to URL format
       counts,
+      subtitle: dirData.subtitle,
+      image: dirData.image,
+      author: dirData.author,
     });
   });
 

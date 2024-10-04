@@ -4,7 +4,7 @@ import frontMatter from "/public/frontMatter.json";
 export const config = {
   matcher: [
     "/",
-    "/((?!api|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json|searchIndex.json).*)",
+    "/((?!api|assets|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json|searchIndex.json).*)",
   ],
 };
 
