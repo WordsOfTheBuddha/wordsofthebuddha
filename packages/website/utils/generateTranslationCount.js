@@ -16,6 +16,7 @@ const specialLabels = {
 const frontMatterPath = path.join(__dirname, "../public/frontMatter.json");
 const frontMatter = JSON.parse(fs.readFileSync(frontMatterPath, "utf-8"));
 
+// Define the countTranslations function
 const countTranslations = () => {
   const counts = {};
 
@@ -43,6 +44,7 @@ const countTranslations = () => {
   return counts;
 };
 
+// Define the generateTranslationCounts function
 const generateTranslationCounts = () => {
   const counts = countTranslations();
   const orderedCounts = {};
@@ -57,21 +59,89 @@ const generateTranslationCounts = () => {
 
   console.log("Translation counts generated successfully.");
 
-  // Update fallbackTranslationsCounts in NikayaTable.js
+  // Path to NikayaTable.js
   const nikayaTablePath = path.join(__dirname, "../components/NikayaTable.js");
+
+  // If the file doesn't exist, create and initialize it
+  if (!fs.existsSync(nikayaTablePath)) {
+    const initialContent = `
+import React, { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import styles from "/styles/NikayaTable.module.css";
+
+const fallbackTranslationsCounts = ${JSON.stringify(orderedCounts, null, 2)};
+
+export const NikayaTable = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+      setData(fallbackTranslationsCounts);
+  }, []);
+
+  if (!mounted || !data) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <div
+      className={\`\${styles.tableContainer} \${resolvedTheme === "dark" ? styles["dark-theme"] : styles["light-theme"]}\`}
+    >
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>English Translation Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(data).map((key) => (
+            <tr key={key}>
+              <td>
+                <a href={key}>{data[key].label}</a>
+              </td>
+              <td>{data[key].translationCount}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default NikayaTable;
+`;
+    fs.writeFileSync(nikayaTablePath, initialContent.trim());
+    console.log("NikayaTable.js initialized successfully.");
+    return;
+  }
+
+  // Update fallbackTranslationsCounts if file already exists
   let nikayaTableContent = fs.readFileSync(nikayaTablePath, "utf-8");
 
-  // Find the start and end of the fallbackTranslationsCounts variable
-  const fallbackStart = nikayaTableContent.indexOf("const fallbackTranslationsCounts = {");
+  const fallbackStart = nikayaTableContent.indexOf(
+    "const fallbackTranslationsCounts = {"
+  );
   const fallbackEnd = nikayaTableContent.indexOf("};", fallbackStart) + 2;
 
-  // Replace the old fallbackTranslationsCounts with the new one
-  const newFallbackTranslationsCounts = `const fallbackTranslationsCounts = ${JSON.stringify(orderedCounts, null, 2)};`;
-  nikayaTableContent = nikayaTableContent.slice(0, fallbackStart) + newFallbackTranslationsCounts + nikayaTableContent.slice(fallbackEnd);
+  const newFallbackTranslationsCounts = `const fallbackTranslationsCounts = ${JSON.stringify(
+    orderedCounts,
+    null,
+    2
+  )};`;
+  nikayaTableContent =
+    nikayaTableContent.slice(0, fallbackStart) +
+    newFallbackTranslationsCounts +
+    nikayaTableContent.slice(fallbackEnd);
 
   fs.writeFileSync(nikayaTablePath, nikayaTableContent);
-
   console.log("NikayaTable.js updated successfully.");
 };
 
+// Call the function to generate translation counts
 generateTranslationCounts();
