@@ -5,6 +5,7 @@ import Title from "/components/Title";
 import Description from "/components/Description";
 import TextEnhancer from "/components/TextEnhancer";
 import RedditIcon from "/components/RedditIcon";
+import GitHubIcon from "/components/GitHubIcon";
 
 export default {
   logo: <span>Words Of The Buddha</span>,
@@ -81,6 +82,10 @@ export default {
         system: "System",
       };
     },
+  },
+  chat: {
+    link: 'https://github.com/WordsOfTheBuddha/wordsofthebuddha/discussions',
+    icon: <GitHubIcon />,
   },
   feedback: {
     content: null,
