@@ -94,62 +94,25 @@ const detectRepetition = (currentText, lastText, minThreshold = 30) => {
 	return result;
 };
 
-const handleParenthesesContent = (text) => {
-	const regex = /(\{[^}]+\}|\b[\w\p{L}-]+\b)\s*\(([^)]+)\)/gu;
-	const tooltipMatches = [];
-	let match;
+const extractTextFromChildren = (children) => {
+	let text = "";
 
-	while ((match = regex.exec(text)) !== null) {
-		const [fullMatch, phraseOrWord, tooltip] = match;
-		let cleanedPhraseOrWord = phraseOrWord;
-
-		// Remove curly braces if present
-		if (
-			cleanedPhraseOrWord.startsWith("{") &&
-			cleanedPhraseOrWord.endsWith("}")
-		) {
-			cleanedPhraseOrWord = cleanedPhraseOrWord.slice(1, -1).trim();
+	React.Children.forEach(children, (child) => {
+	  if (typeof child === "string") {
+		text += child;
+	  } else if (React.isValidElement(child)) {
+		if (child.props && child.props.children) {
+		  text += extractTextFromChildren(child.props.children);
 		}
+	  }
+	});
 
-		cleanedPhraseOrWord = cleanedPhraseOrWord.trim();
-
-		if (cleanedPhraseOrWord.length > 0) {
-			tooltipMatches.push({
-				phrase: cleanedPhraseOrWord,
-				tooltip: tooltip.trim(),
-				startIndex: match.index,
-				endIndex: match.index + fullMatch.length,
-			});
-		}
-	}
-
-	return tooltipMatches;
+	return text;
 };
 
-const stripBracketContent = (elements) => {
-	const strippedElements = [];
-	elements.forEach((element, index) => {
-		if (React.isValidElement(element)) {
-			let textContent = element.props.children;
-
-			if (typeof textContent === "string") {
-				// Remove any parentheses and their content from the text
-				const cleanedText = textContent.replace(/\s*\([^()]*\)/g, "");
-				if (cleanedText) {
-					strippedElements.push(
-						<span key={`cleaned-${index}`} style={element.props.style}>
-							{cleanedText}
-						</span>
-					);
-				}
-			} else {
-				strippedElements.push(element);
-			}
-		} else {
-			strippedElements.push(element);
-		}
-	});
-	return strippedElements;
+const hasMarkdownSyntax = (text) => {
+	const markdownRegex = /(\*\*[^*\n]+\*\*|\*[^\*\n]+\*|__[^_\n]+__|_[^_\n]+_|`[^`\n]+`|!\[[^\]]*\]\([^\)]+\)|\[[^\]]+\]\([^\)]+\))/;
+	return markdownRegex.test(text);
 };
 
 const TextEnhancer = ({ children, minThreshold = 30 }) => {
@@ -276,9 +239,9 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
   };
 
   const processContent = (children, theme, lastParagraphText, minThreshold) => {
-	let paragraphText = React.Children.toArray(children).join('');
+	let paragraphText = extractTextFromChildren(children);
 	// console.log(`paragraphText: ${paragraphText}`);
-  
+
 	// Check if the paragraph starts with a number
 	const numberAtStart = paragraphText.match(/^\d+\s/);
 
@@ -333,7 +296,7 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 	  if (token.type === 'text') {
 		return {
 		  ...token,
-		  content: token.content.replace(/\s*\([^()]*\)\s*[.,;:]?/g, ''),
+		  content: token.content.replace(/(?<!\])\s*\([^()]*\)\s*/g, " "),
 		};
 	  } else {
 		return token;
@@ -369,57 +332,76 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 		</span>
 	  );
 	}
-  
+
+	let prevTokenHasMarkdown = false;
+	let anyTokenHasMarkdown = false;
 	tokens.forEach((token, i) => {
+	  const tokenHasMarkdown = hasMarkdownSyntax(token.content);
+	  // console.log('token: ', token, ', has markdown: ', tokenHasMarkdown, i);
 	  if (token.type === 'text') {
-		// For text tokens, extract the corresponding elements from styledTextArray
-		let tokenLength = token.content.length;
-		let accumulatedLength = 0;
-		let elements = [];
-  
-		while (
-		  styledTextIndex < styledTextArray.length &&
-		  accumulatedLength < tokenLength
-		) {
-		  let element = styledTextArray[styledTextIndex];
-		  let textContent =
-			typeof element === 'string' ? element : element.props.children;
-  
-		  let remainingLength = tokenLength - accumulatedLength;
-  
-		  if (textContent.length > remainingLength) {
-			// Split the element if it's longer than needed
-			let neededText = textContent.slice(0, remainingLength);
-			let leftoverText = textContent.slice(remainingLength);
-  
-			// Create a new element with the needed text
-			let newElement =
-			  typeof element === 'string'
-				? neededText
-				: React.cloneElement(element, {}, neededText);
-			elements.push(newElement);
-  
-			// Replace the current element in styledTextArray with the leftover text
-			styledTextArray[styledTextIndex] =
-			  typeof element === 'string'
-				? leftoverText
-				: React.cloneElement(element, {}, leftoverText);
-  
-			accumulatedLength += neededText.length;
-		  } else {
-			elements.push(element);
-			accumulatedLength += textContent.length;
-			styledTextIndex++;
-		  }
+		if (tokenHasMarkdown || anyTokenHasMarkdown) {
+			finalContent.push(
+			  <ReactMarkdown key={`text-${i}`} components={{
+				a: ({ node, ...props }) => <a {...props} />,
+				p: ({ node, ...props }) => <span {...props} />,
+				// Add any other components you need to customize
+			  }}>
+				{token.content.replace(/^\s/, '\u00A0')}
+			  </ReactMarkdown>
+			);
+		} else {
+			// For text tokens, extract the corresponding elements from styledTextArray
+			let tokenLength = token.content.length;
+			let accumulatedLength = 0;
+			let elements = [];
+
+			while (
+			styledTextIndex < styledTextArray.length &&
+			accumulatedLength < tokenLength
+			) {
+				let element = styledTextArray[styledTextIndex];
+				let textContent =
+					typeof element === 'string' ? element : element.props.children;
+
+				let remainingLength = tokenLength - accumulatedLength;
+
+				if (textContent.length > remainingLength) {
+					// Split the element if it's longer than needed
+					let neededText = textContent.slice(0, remainingLength);
+					let leftoverText = textContent.slice(remainingLength);
+
+					// Create a new element with the needed text
+					let newElement =
+					typeof element === 'string'
+						? neededText
+						: React.cloneElement(element, {}, neededText);
+					elements.push(newElement);
+
+					// Replace the current element in styledTextArray with the leftover text
+					styledTextArray[styledTextIndex] =
+					typeof element === 'string'
+						? leftoverText
+						: React.cloneElement(element, {}, leftoverText);
+
+					accumulatedLength += neededText.length;
+				} else {
+					elements.push(element);
+					accumulatedLength += textContent.length;
+					styledTextIndex++;
+				}
+			}
+
+			finalContent.push(
+			<span key={`text-${i}`} style={{ fontSize: '1.2rem' }}>
+				{elements}
+			</span>
+			);
 		}
-  
-		finalContent.push(
-		  <span key={`text-${i}`} style={{ fontSize: '1.2rem' }}>
-			{elements}
-		  </span>
-		);
 	  } else if (token.type === 'underline') {
 		// For underlined tokens, create the underlined span
+		if (i > 0 && prevTokenHasMarkdown) {
+			finalContent.push(' ');
+		}
 		finalContent.push(
 		  <span
 			key={`underline-${i}`}
@@ -466,6 +448,10 @@ const TextEnhancer = ({ children, minThreshold = 30 }) => {
 			styledTextIndex++;
 		  }
 		}
+	  }
+	  prevTokenHasMarkdown = tokenHasMarkdown;
+	  if (tokenHasMarkdown) {
+		anyTokenHasMarkdown = true;
 	  }
 	});
   
