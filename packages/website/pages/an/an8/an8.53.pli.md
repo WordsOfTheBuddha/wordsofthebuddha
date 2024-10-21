@@ -2,7 +2,7 @@
 title: Saṅkhitta sutta - Brief
 description: The Buddha advises Mahāpajāpatī Gotamī on how to discern the teachings to be abandoned and the teachings to be embraced by observing for eight qualities.
 fetter: doubt, conceit, ignorance
-tags: an,an8,passion,dispassion,accumulation,reduction,greediness,contentment,company,seclusion,indolence,energy,effort,arousal,enthusiasm,support,abandonment,embracement
+tags: an,an8,passion,dispassion,accumulation,reduction,greediness,contentment,company,seclusion,procrastination,energy,effort,arousal,enthusiasm,support,abandonment,embracement
 id: an8.53
 ---
 

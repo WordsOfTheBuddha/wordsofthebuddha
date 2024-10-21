@@ -20,6 +20,8 @@ Ekamantaṁ nisīdi. Ekamantaṁ nisinno kho rājā pasenadi kosalo bhagavanta�
 
 Idamavoca bhagavā. Idaṁ vatvāna sugato athāparaṁ etadavoca satthā:
 
+### Verse
+
 “Āyuṁ arogiyaṁ vaṇṇaṁ,
 saggaṁ uccākulīnataṁ;
 Ratiyo patthayantena,
