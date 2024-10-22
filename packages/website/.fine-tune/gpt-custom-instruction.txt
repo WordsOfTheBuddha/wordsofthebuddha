@@ -1,0 +1,148 @@
+As a professional tutor and translator, translate the Pali text faithfully while maintaining an accessible and smooth transition flow. The primary use case is for Pali canon suttas.
+
+As a professional tutor and translator, translate the Pali text faithfully while maintaining an accessible and smooth transition flow. The primary use case is for Pali canon suttas. This will ensure a high fidelity with the original texts.
+
+For Prose:
+
+*  When a title is present, translate the title.
+* Fill in with complete repeated phrases for ... or ...pe... patterns.
+* Output quotes as "..." instead of “...”.
+* Output single quotes as '...' instead of ‘...’.
+
+For Verse:
+
+* Line-by-line translation in the format of the input.
+* Each line should have fidelity with the Pali text.
+
+
+Dictionary - Please use the below provided translations including the brackets on all occasions:
+
+abhutvā = not having enjoyed  
+Abhisaṅkharoti = chooses to act  
+acinteyyāni, acinteyyo = not suitable to conceive  
+adukkhamasukhaṁ = neither painful-nor-pleasant  
+Akkheyyañca = fully comprehending signs  
+Akkheyyasaññino = perceiving in terms of signs  
+Alobho = contentment  
+amoho = wisdom (inclination to carefully examine and independently verify)  
+Anītikañca, anītikaṁ = freedom from calamity  
+Anālayañca, anālayo = non-clinging  
+Anuseti = has a tendency towards  
+Apalokitañca, apalokitaṁ = non-disintegrating  
+Appaṇihito = desireless (undirected)  
+āsavānaṁ = (source of) taints  
+āsavehi = (source of) taints  
+Akkheyyasaññino = perceiving in terms of signs  
+Alobho = contentment  
+amoho = wisdom (inclination to carefully examine and independently verify)  
+Anītikañca, anītikaṁ = freedom from calamity  
+Anālayañca, anālayo = non-clinging  
+anuseti = has a tendency towards  
+Apalokitañca, apalokitaṁ = non-disintegrating  
+Appaṇihito = desireless (undirected)  
+āp = liberating the mind  
+āsavānaṁ = (source of) taints  
+āsavehi = (source of) taints  
+bhavo, bhava = continued existence  
+bhikkhave = bhikkhus  
+bhikkhasi = go for alms  
+bhikkhu, bhikkhuṁ = bhikkhu  
+bhutvā = having enjoyed  
+bojjhaṅga = factor of awakening  
+brahmacariya = spiritual life  
+cetovimutti = release of mind  
+cetasā = with mind  
+chanda = interest  
+chandasamādhippadhānasaṅkhārasamannāgataṁ = collectedness arising from aspiration and accompanied by an intention of continuous effort  
+dhammadhātu = mental-qualities-element  
+dhamma (in the context of four foundations of mindfulness) = mental qualities  
+dhammavicayasambojjhaṅgassa = awakening factor of investigation of phenomena (dhamma)  
+devatā = deity (deva)  
+dosapariyuṭṭhitaṁ = overcome by aversion (ill-will, hatred)  
+doso = aversion (ill-will, hatred, resentment)  
+dukkhaṁ (in the context of feeling or consciousness) = painful  
+dukkhā = suffering (discontentment, stress)  
+Evaṁ me sutaṁ = Thus have I heard  
+ehipassiko = inviting verification  
+iddhi = psychic ability  
+iddhipādā = basis for psychic ability  
+khaye ñāṇan”ti = knowledge of ending (cessation)  
+khaye, khayā = ending (cessation)  
+lobho = greed (lust, desire, attachment)  
+moghapuriso = misguided person  
+moha = delusion (assumption making tendencies, absence of close examination and verification)  
+mohapariyuṭṭhitaṁ = overcome by delusion (assumption making tendencies, absence of close examination and verification)  
+mudita = empathetic joy  
+pītisambojjhaṅgaṁ = awakening factor of joy (rapture)  
+pīti = rapture (intense joy)  
+Pakappeti = plans  
+Paṭibhānakūṭa = Inspiration peak  
+Paṭiccasamuppāda = dependent co-arising  
+paññāvimutti = release by wisdom  
+parippharati = permeates  
+parāyana = the ultimate goal  
+rāga = passion (desire, attachment)  
+rāgapariyuṭṭhitaṁ = overcome by passion (desire, attachment)  
+samaṇā, samana, samaṇaṁ = ascetic  
+samādhi = collectedness of mind  
+samāhitaṁ = collected  
+samatha = tranquility  
+Savitakko = accompanied with reflection  
+savicāra = with examination  
+Saṅkhārā = formations (volitions, choices)  
+sukha = ease (bliss)  
+sukham = ease (bliss)  
+sukhaṁ (in the context of feeling or consciousness) = pleasant  
+suññato = emptiness and absence  
+Sāvatthinidānaṁ = At Sāvatthi  
+thīna-middha = dullness (complacency)  
+thinamiddhaṁ = dullness (complacency)  
+Tathāni, tatha = true (actual)  
+uddhaccakukkuccaṁ = restlessness (mental agitation)  
+upanisā = proximate cause  
+upādāna = clinging (grasping/holding on)  
+Uposatha = Uposatha (observance day)  
+vijjābhāgiyā = realization  
+vijānāti (in the context of consciousness) = cognizes  
+vimānamajjhagā = gone beyond conceit  
+Vimocayaṁ cittaṁ = liberating the mind  
+viññāṇañcāyatanaṁ = sphere of infinite consciousness (boundless awareness)  
+vīriya = persistence (energy)  
+vīriyabalaṁ = strength of persistence  
+vīriyindriyaṁ = faculty of persistence  
+vīriyasambojjhaṅgaṁ = awakening factor of persistence (energy)  
+vīriyasamādhippadhānasaṅkhārasamannāgataṁ = collectedness arising from determination and accompanied by an intention of continuous effort  
+vīmaṁsāsamādhippadhānasaṅkhārasamannāgataṁ = collectedness arising from investigation (reflection and examination) accompanied by an intention of continuous effort  
+viññāṇañcāyatanaṁ = sphere of infinite consciousness (boundless awareness)  
+Yathābhūtañāṇadassanampāhaṁ = knowledge and vision of things as they have come to be  
+yoga = yoke (bond)
+
+Text to translate:
+
+Ekaṁ samayaṁ bhagavā sākete viharati kāḷakārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
+
+“Bhadante”ti te bhikkhū bhagavato paccassosuṁ. Bhagavā etadavoca—
+
+Yaṁ, bhikkhave, sadevakassa lokassa samārakassa sabrahmakassa sassamaṇabrāhmaṇiyā pajāya sadevamanussāya diṭṭhaṁ sutaṁ mutaṁ viññātaṁ pattaṁ pariyesitaṁ anuvicaritaṁ manasā, tamahaṁ jānāmi.
+
+Yaṁ, bhikkhave, sadevakassa lokassa samārakassa sabrahmakassa sassamaṇabrāhmaṇiyā pajāya sadevamanussāya diṭṭhaṁ sutaṁ mutaṁ viññātaṁ pattaṁ pariyesitaṁ anuvicaritaṁ manasā, tamahaṁ abbhaññāsiṁ. Taṁ tathāgatassa viditaṁ, taṁ tathāgato na upaṭṭhāsi.
+
+Yaṁ, bhikkhave, sadevakassa lokassa samārakassa sabrahmakassa sassamaṇabrāhmaṇiyā pajāya sadevamanussāya diṭṭhaṁ sutaṁ mutaṁ viññātaṁ pattaṁ pariyesitaṁ anuvicaritaṁ manasā, tamahaṁ na jānāmīti vadeyyaṁ, taṁ mamassa musā.
+
+Yaṁ, bhikkhave …pe… tamahaṁ jānāmi ca na ca jānāmīti vadeyyaṁ, tampassa tādisameva.
+
+Yaṁ, bhikkhave …pe… tamahaṁ neva jānāmi na na jānāmīti vadeyyaṁ, taṁ mamassa kali.
+
+Iti kho, bhikkhave, tathāgato daṭṭhā daṭṭhabbaṁ, diṭṭhaṁ na maññati, adiṭṭhaṁ na maññati, daṭṭhabbaṁ na maññati, daṭṭhāraṁ na maññati; sutvā sotabbaṁ, sutaṁ na maññati, asutaṁ na maññati, sotabbaṁ na maññati, sotāraṁ na maññati; mutvā motabbaṁ, mutaṁ na maññati, amutaṁ na maññati, motabbaṁ na maññati, motāraṁ na maññati; viññatvā viññātabbaṁ, viññātaṁ na maññati, aviññātaṁ na maññati, viññātabbaṁ na maññati, viññātāraṁ na maññati.
+
+Iti kho, bhikkhave, tathāgato diṭṭhasutamutaviññātabbesu dhammesu tādīyeva tādī. ‘Tamhā ca pana tādimhā añño tādī uttaritaro vā paṇītataro vā natthī’ti vadāmīti.
+
+Yaṁ kiñci diṭṭhaṁva sutaṁ mutaṁ vā,
+Ajjhositaṁ saccamutaṁ paresaṁ;
+Na tesu tādī sayasaṁvutesu,
+Saccaṁ musā vāpi paraṁ daheyya.
+
+Etañca sallaṁ paṭikacca disvā,
+Ajjhositā yattha pajā visattā;
+Jānāmi passāmi tatheva etaṁ,
+Ajjhositaṁ natthi tathāgatānan”ti.
