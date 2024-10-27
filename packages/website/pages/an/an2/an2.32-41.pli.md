@@ -5,8 +5,9 @@ fetter: adherence to rites and rituals,sensual desire,personal existence,conceit
 tags: integrity,parents,good conduct,bad conduct,even mind,immature,wise,wrong grasp,well grasp,fetters,personal existence,conceit,an,an2
 id: an2.32-41
 commentary: |
-    [1] In AN 2.36, the fettered internally (bound in oneself) is a reference to the five lower fetters of personal existence view, doubt, adherence to rites and rituals, sensual desire, and ill-will. This refers to a person training to attain stream-entry, a stream-enterer, or a once-returner.
-    [2] In AN 2.36, the fettered externally (bound outwardly) is a reference to the five higher fetters of desire for fine-material existence, desire for immaterial existence, conceit, restlessness, and ignorance. This refers to a non-returner.
+  [1] In AN 2.36, the fettered internally (bound in oneself) is a reference to the five lower fetters of personal existence view, doubt, adherence to rites and rituals, sensual desire, and ill-will. This refers to a person training to attain stream-entry, a stream-enterer, or a once-returner.
+
+  [2] In AN 2.36, the fettered externally (bound outwardly) is a reference to the five higher fetters of desire for fine-material existence, desire for immaterial existence, conceit, restlessness, and ignorance. This refers to a non-returner.
 ---
 
 ### 2.32

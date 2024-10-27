@@ -1,8 +1,8 @@
 ---
 title: Vitakka sutta - Thoughts
-description: The Buddha shares the three unwholesome thoughts - 1) concerning one's reputation, 2) concerning gain, honor, and fame, and 3) associated with inappropriate concern for others.
+description: The Buddha shares the three unwholesome thoughts - 1) concerning one's reputation, 2) concerning acquisitions, respect, and popularity, and 3) associated with inappropriate concern for others.
 fetter: personal existence, ignorance
-tags: iti, thoughts, unwholesome, reputation, gain, honor, fame, compassion, iti50-99
+tags: iti, thoughts, unwholesome, reputation, gain, honor, fame, acquisitions, respect, popularity, compassion, iti50-99
 id: iti80
 ---
 
