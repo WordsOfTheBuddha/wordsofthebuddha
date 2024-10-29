@@ -1,7 +1,7 @@
 ---
 title: Bāhiya sutta - To Bāhiya
 description: Bāhiya of the Bark Cloth realizes the Dhamma and attains final Nibbāna immediately after receiving a concise teaching from the Buddha.
-fetter: desire for form, desire for formless, conceit, restlessness, ignorance
+fetter: desire for fine-material existence, desire for immaterial existence, conceit, restlessness, ignorance
 tags: arahant, path, Dhamma, Bāhiya, Suppāraka, Sāvatthi, Jeta's Grove, Anāthapiṇḍika's park, alms, death, cremation, stupa, final Nibbāna, seen, heard, sensed, cognized, ud, ud1
 character: Bāhiya of the Bark Cloth
 id: ud1.10

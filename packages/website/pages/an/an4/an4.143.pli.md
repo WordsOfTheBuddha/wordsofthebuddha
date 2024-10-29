@@ -1,6 +1,6 @@
 ---
 title: Āloka sutta - Illumination
-description: The Buddha shares in brief the four illuminations - 1. the moon, 2. the sun, 3. fire, and 4. wisdom.
+description: The Buddha shares in brief the four illuminations - 1) the moon, 2) the sun, 3) fire, and 4) wisdom.
 fetter: ignorance
 tags: moon, sun, fire, wisdom, illumination, an, an4
 id: an4.143
