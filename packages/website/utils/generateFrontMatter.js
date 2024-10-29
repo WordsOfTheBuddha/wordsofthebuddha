@@ -96,12 +96,14 @@ const generateFrontMatterJSON = async () => {
         .replace(/\.(md|mdx)$/, "")
         .split("/")
         .pop();
+      if (key.endsWith('.pli')) {
+        continue;
+      }
       const keyWithoutLocale = key.replace(/\.[a-z]{2,3}$/, "");
 
       const updatedTime = isDev
         ? fs.statSync(file).mtime.toISOString()
         : await getLastCommitDate(file);
-
       frontMatterData[key] = {
         ...frontMatter,
         path: `/${relativePath.split(path.sep).slice(0, -1).join("/")}/`,
