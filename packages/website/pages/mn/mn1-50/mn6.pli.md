@@ -1,12 +1,12 @@
 ---
 title: Ākaṅkheyya sutta - Should Aspire For
 description: Should one aspire for the higher spiritual attainments, one should practice fully in virtue, be devoted to tranquility of mind, not neglect meditation, endowed with discernment, and practice in an empty dwelling.
-fetter: doubt, personal existence, adherence to rites and rituals
+fetter: doubt, personal existence, adherence to rules and observances
 tags: mn, mn1-50, mn6, virtue, tranquility, meditation, discernment, empty dwelling, spiritual attainments, jhānas, stream-enterer, non-returner, psychic abilities, divine ear, mind-reading, past lives, divine eye, defilements, liberation
 id: mn6
 commentary: |
-    [1] The three lower fetters are doubt, personal existence, and adherence to rites and rituals. A person who has overcome them is called a stream-enterer.
-    [2] The five lower fetters are view(s) relating to personal existence, doubt, adherence to rites and rituals, sensual desire, and ill-will. A person who has overcome them is called a non-returner.
+    [1] The three lower fetters are doubt, personal existence, and adherence to rules and observances. A person who has overcome them is called a stream-enterer.
+    [2] The five lower fetters are view(s) relating to personal existence, doubt, adherence to rules and observances, sensual desire, and ill-will. A person who has overcome them is called a non-returner.
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

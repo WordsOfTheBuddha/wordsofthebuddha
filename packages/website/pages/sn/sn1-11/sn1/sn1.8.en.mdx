@@ -1,7 +1,7 @@
 ---
 title: Susammuṭṭha sutta - Totally Confused
 description: Those who are totally confused about the teachings are led by others' views and do not awaken from sleep.
-fetter: personal existence, adherence to rites and rituals, doubt, ignorance
+fetter: personal existence, adherence to rules and observances, doubt, ignorance
 tags: confusion, teachings, awakening, evenness, unevenness, sn, sn1-11, sn1
 id: sn1.8
 ---

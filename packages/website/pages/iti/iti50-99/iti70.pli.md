@@ -1,7 +1,7 @@
 ---
 title: Micchādiṭṭhika sutta - Who Has Wrong View
 description: The Buddha shares the consequences of holding on to wrong views and acting upon them based on his direct knowledge.
-fetter: doubt, adherence to rites and rituals, ignorance
+fetter: doubt, adherence to rules and observances, ignorance
 tags: wrong view, misconduct, slander, hell, iti, iti50-99
 id: iti70
 ---
