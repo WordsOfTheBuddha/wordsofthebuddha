@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import frontMatter from "/public/frontMatter.json";
+import directoryMetaData from "/public/directoryMetaData.json";
 
 export const config = {
   matcher: [
     "/",
-    "/((?!api|assets|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json|searchIndex.json).*)",
+    "/((?!api|assets|_next|static|public|translationCounts.json|favicon.ico|frontMatter.json|directoryMetaData.json|searchIndex.json).*)",
   ],
 };
 
@@ -85,7 +86,15 @@ export function middleware(request) {
     return response;
   } else if (!isFile) {
     // Check if pathname corresponds to a directory
-    if (pathname.endsWith("/")) {
+    const directoryId = pathname.split("/")[1];
+    const isDirectory = directoryMetaData[directoryId] !== undefined;
+    if (isDirectory && directoryMetaData[directoryId].fullPath) {
+      const directoryPath = directoryMetaData[directoryId].fullPath;
+      console.log(`Redirecting to expected directory path: ${directoryPath}`);
+      const response = NextResponse.redirect(new URL(directoryPath, request.url));
+      response.cookies.set("filePath", directoryPath);
+      return response;
+    } else if (pathname.endsWith("/")) {
       const newUrl = new URL(`${pathname}index`, request.url);
       console.log(`Rewriting directory path to: ${newUrl}`);
       const reponse = NextResponse.rewrite(newUrl);

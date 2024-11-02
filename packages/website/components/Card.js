@@ -56,7 +56,7 @@ export const Card = ({ title, description, path, id, updatedTime, counts, subtit
         <h2 className={styles.cardTitle}>
           {!path.startsWith("/books") && (
             <>
-              <a href={path + id}>{transformId(id)}</a>
+              <a href={'/' + id}>{transformId(id)}</a>
               <span>{title}</span>
             </>
           )}
