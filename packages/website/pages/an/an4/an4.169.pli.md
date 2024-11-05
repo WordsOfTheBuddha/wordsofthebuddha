@@ -1,8 +1,8 @@
 ---
-title: Sasaṅkhāra  sutta - Residual Formations
-description: The Buddha describes four ways to attain final Nibbāna with or without residual formations.
+title: Sasaṅkhāra  sutta - With Exertion
+description: The Buddha describes four ways to attain final Nibbāna with or without exertion.
 fetter: ignorance
-tags: residual formations, tranquility, insight, wisdom, an, an4
+tags: impermanence, conditions, exertion, tranquility, insight, wisdom, jhāna, an, an4
 id: an4.169
 ---
 
