@@ -1,6 +1,6 @@
 ---
 title: Sattajaṭila sutta - Seven Matted-Hair Ascetics
-description: The Buddha explains to King Pasenadi of Kosala how to recognize the wholesome qualities of another person.
+description: The Buddha explains to King Pasenadi of Kosala how to recognize the character of another person.
 fetter: doubt, ignorance
 tags: doubt, ignorance, integrity, adversity, wisdom, discussion, sandalwood, garlands, fragrances, ointments, gold, money, ethical conduct, dealings, adversity, misfortune discussion, wisdom, ud, ud6
 character: King Pasenadi of Kosala
