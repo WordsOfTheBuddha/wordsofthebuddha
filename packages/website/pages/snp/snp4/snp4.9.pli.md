@@ -1,6 +1,18 @@
-Māgaṇḍiyasutta
+---
+title: Māgaṇḍiya sutta - With Māgaṇḍiya
+description: The Buddha refused Māgaṇḍiya's offer of his daughter, rejecting worldly desires. He taught that true peace arises not from clinging to views, observances, or status, but from letting go of all attachments. Like a lotus unstained by water, the sage remains free, calm, and detached amidst the world.
+fetter: personal existence, sensual desire, conceit, ignorance
+tags: snp, snp4, right view, ethics, observances, peace, attachment, sensual desire, purity, liberation, wisdom, delusion, confusion, debate, discrimination, detachment, perception
+simile: thorny-stemmed lotus
+id: snp4.9
+commentary: |
+    [1] This is a reference to the three daughters of Māra, Taṇhā, Aratī, and Ragā, who came to seduce the Buddha by creating illusions of beauty and pleasure at the foot of the goatherd's banyan tree. The Buddha, however, remained unmoved by their charms and instead taught them the Dhamma. This event is described in SN 4.25.
 
-“Disvāna taṇhaṁ aratiṁ ragañca,
+
+    [2] 'Nor without view, without learning, without knowledge, without ethics and observances, nor even by these;' - The mundane right view 'There is what is given and what is offered and what is sacrificed; there is fruit and result of good and bad actions; there is this world and the other world; there is mother and father; there are beings who are reborn spontaneously; there are in the world good and virtuous recluses and brahmins who have realized for themselves by direct knowledge and declare this world and the other world.' should be accepted. Learning (hearing) should be accepted: the voice of another, discourses, mixed prose and verse, expositions, verses, inspired utterances, quotations, birth stories, marvelous accounts, and answers to questions; knowledge should be accepted: the knowledge of the factors of awakening, the knowledge of the noble truths, the knowledge of the kamma as one's own, knowledge of meditative attainments and the direct knowings. Similarly ethics and observances should be accepted. While these should be accepted, the Buddha is saying that purity is not attained by only these means, that these are not sufficient for the attainment of purity.
+---
+
+“Disvāna taṇhaṁ aratiṁ ragañca [1],
 Nāhosi chando api methunasmiṁ;
 Kimevidaṁ muttakarīsapuṇṇaṁ,
 Pādāpi naṁ samphusituṁ na icche”.
@@ -26,7 +38,7 @@ Kathaṁ nu dhīrehi paveditaṁ taṁ”.
 (māgaṇḍiyāti bhagavā)
 Sīlabbatenāpi na suddhimāha;
 Adiṭṭhiyā assutiyā añāṇā,
-Asīlatā abbatā nopi tena;
+Asīlatā abbatā nopi tena [2];
 Ete ca nissajja anuggahāya,
 Santo anissāya bhavaṁ na jappe”.
 
