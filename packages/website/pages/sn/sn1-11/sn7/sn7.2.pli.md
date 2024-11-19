@@ -1,8 +1,9 @@
 ---
 title: Akkosa sutta - Insult
 description: A brahmin approaches the Buddha and abuses and insults him. The Buddha doesn't accept it, and explains this to the brahmin through a simile.
-fetter: ill-will
-tags: anger,quarrel,ill-will,mindful,insult,harmony,discipline,heal,sn,sn1-11,sn7
+fetter: ill-will, ignorance
+tags: anger, quarrel, ill-will, mindful, insult, harmony, discipline, heal, sn, sn1-11, sn7
+simile: delicacies
 id: sn7.2
 ---
 
@@ -48,7 +49,7 @@ attano ca parassa ca;
 Janā maññanti bāloti,
 ye dhammassa akovidā”ti.
 
-Evaṁ vutte, akkosakabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama …pe… esāhaṁ bhavantaṁ gotamaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca. Labheyyāhaṁ, bhante, bhoto gotamassa santike pabbajjaṁ, labheyyaṁ upasampadan”ti.
+Evaṁ vutte, akkosakabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama, abhikkantaṁ, bho gotama. Seyyathāpi, bho gotama, nikkujjitaṁ vā ukkujjeyya, paṭicchannaṁ vā vivareyya, mūḷhassa vā maggaṁ ācikkheyya, andhakāre vā telapajjotaṁ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṁ bhotā gotamena anekapariyāyena dhammo pakāsito. Esāhaṁ, bhavantaṁ gotamaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca. Labheyyāhaṁ, bhante, bhoto gotamassa santike pabbajjaṁ, labheyyaṁ upasampadan”ti.
 
 Alattha kho akkosakabhāradvājo brāhmaṇo bhagavato santike pabbajjaṁ, alattha upasampadaṁ. Acirūpasampanno kho panāyasmā akkosakabhāradvājo eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto nacirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṁ pabbajanti tadanuttaraṁ—brahmacariyapariyosānaṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja vihāsi.
 
