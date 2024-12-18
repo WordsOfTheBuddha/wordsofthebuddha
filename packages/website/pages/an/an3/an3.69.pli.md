@@ -36,4 +36,6 @@ Evarūpassa, bhikkhave, puggalassa lobhajā pāpakā akusalā dhammā pahīnā u
 
 Dosajā …pe… parinibbāyati. Mohajā …pe… parinibbāyati. Seyyathāpi bhikkhave, sālo vā dhavo vā phandano vā tīhi māluvālatāhi uddhasto pariyonaddho. Atha puriso āgaccheyya kudālapiṭakaṁ ādāya. So taṁ māluvālataṁ mūle chindeyya, mūle chetvā palikhaṇeyya, palikhaṇitvā mūlāni uddhareyya, antamaso usīranāḷimattānipi. So taṁ māluvālataṁ khaṇḍākhaṇḍikaṁ chindeyya, khaṇḍākhaṇḍikaṁ chetvā phāleyya, phāletvā sakalikaṁ sakalikaṁ kareyya, sakalikaṁ sakalikaṁ karitvā vātātape visoseyya, vātātape visosetvā agginā ḍaheyya, agginā ḍahitvā masiṁ kareyya, masiṁ karitvā mahāvāte vā ophuṇeyya nadiyā vā sīghasotāya pavāheyya. Evamassa tā, bhikkhave, māluvālatā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṁ anuppādadhammā. Evamevaṁ kho, bhikkhave, evarūpassa puggalassa lobhajā pāpakā akusalā dhammā pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṁ anuppādadhammā. Diṭṭheva dhamme sukhaṁ viharati avighātaṁ anupāyāsaṁ apariḷāhaṁ. Diṭṭheva dhamme parinibbāyati.
 
-Dosajā …pe… mohajā pāpakā akusalā dhammā pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṁ anuppādadhammā. Diṭṭheva dhamme sukhaṁ viharati avighātaṁ anupāyāsaṁ apariḷāhaṁ. Diṭṭheva dhamme parinibbāyati. Imāni kho, bhikkhave, tīṇi kusalamūlānī”ti.
+Dosajā …pe… mohajā pāpakā akusalā dhammā pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṁ anuppādadhammā. Diṭṭheva dhamme sukhaṁ viharati avighātaṁ anupāyāsaṁ apariḷāhaṁ. Diṭṭheva dhamme parinibbāyati.
+
+Imāni kho, bhikkhave, tīṇi kusalamūlānī”ti.
