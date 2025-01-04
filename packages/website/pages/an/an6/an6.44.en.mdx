@@ -1,6 +1,6 @@
 ---
 title: Migasālā sutta - Migasālā
-description: The Buddha explains the six kinds of persons found in the world based on their mental qualities and understanding of the teachings.
+description: The Buddha explains the six kinds of persons found existing in the world based on their mental qualities and understanding of the teachings.
 fetter: doubt, personal existence, sensual desire, ill-will, conceit, ignorance
 tags: celibate, non-celibate, virtue, wisdom, temporary liberation, once-returner, Tusita heaven, Dhamma, Tathāgata, superior faculties, inferior faculties, harm, suffering, anger, pride, impulsive speech, harmful speech, decline, distinction, path, judgment, measurement, an, an6
 character: Venerable Ānanda, Laywoman Migasālā, Layman Purāṇa, Layman Isidatta
