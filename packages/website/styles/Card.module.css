@@ -66,7 +66,7 @@
 .cardCount {
   position: absolute;
   top: 8px;
-  right: 8px;
+  right: 38px;
   background-color: var(--secondary-color-light);
   color: var(--background-color-light);
   padding: 4px 8px;
@@ -94,4 +94,85 @@
     clear: both;
   }
 
+}
+
+/* Star Icon Default Styles */
+.star-icon {
+  position: absolute;
+  top: 22px;
+  right: 8px; /* Positioned to the right of .cardCount */
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  background-color: var(--bookmark-fill-color); /* Default for inactive */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Star Icon Filled State */
+.star-icon.filled {
+  background-color: var(--secondary-color-light); /* Light theme */
+  animation: star-burst 0.6s ease-in-out;
+}
+
+.darkCard .star-icon.filled {
+  background-color: var(--secondary-color-dark); /* Dark theme */
+}
+
+/* Burst Lines Fixed Position */
+.star-icon::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-color: rgba(255, 215, 0, 0.5); /* Light golden burst color */
+  border-radius: 50%; /* Make it circular */
+  opacity: 0;
+  transform-origin: center; /* Ensure scaling grows symmetrically */
+  transform: translate(-50%, -50%) scale(1); /* Align with the star */
+  animation: burst-lines 0.6s ease-out;
+}
+
+@keyframes burst-lines {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5); /* Start small */
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.5); /* Expand outward */
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2); /* Fully fade and expand */
+  }
+}
+
+/* Burst Animation for the Star Icon */
+@keyframes star-burst {
+  0% {
+    transform: translateY(-50%) scale(1); /* Initial size */
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); /* No glow */
+  }
+  50% {
+    transform: translateY(-50%) scale(1.5); /* Expand slightly */
+    box-shadow: 0 0 8px 4px rgba(255, 215, 0, 0.4); /* Glow effect */
+  }
+  100% {
+    transform: translateY(-50%) scale(1.2); /* Settle back slightly */
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); /* Fade glow */
+  }
 }

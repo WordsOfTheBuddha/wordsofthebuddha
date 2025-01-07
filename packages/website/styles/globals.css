@@ -1,5 +1,6 @@
 :root {
   --icon-fill-color-light: #000000;
+  --bookmark-fill-color-light: #898989;
   --text-color-light: #555;
   --background-color-light: #ffffff;
   --primary-color-light: #1a73e8;
@@ -11,6 +12,7 @@
   --link-hover-color-light: #0c47a1;
 
   --icon-fill-color-dark: #ffffff;
+  --bookmark-fill-color-dark: #a9a9a9;
   --text-color-dark: #ffffff;
   --background-color-dark: #1C1C1C;
   --primary-color-dark: #FFD700; /* Gold */
@@ -27,6 +29,7 @@
 
 html.light {
   --icon-fill-color: var(--icon-fill-color-light);
+  --bookmark-fill-color: var(--bookmark-fill-color-light);
   --text-color: var(--text-color-light);
   --background-color: var(--background-color-light);
   --primary-color: var(--primary-color-light);
@@ -42,6 +45,7 @@ html.light {
 
 html.dark {
   --icon-fill-color: var(--icon-fill-color-dark);
+  --bookmark-fill-color: var(--bookmark-fill-color-dark);
   --text-color: var(--text-color-dark);
   --background-color: var(--background-color-dark);
   --primary-color: var(--primary-color-dark);

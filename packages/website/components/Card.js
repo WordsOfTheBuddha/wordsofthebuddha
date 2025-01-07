@@ -8,10 +8,28 @@ export const Card = ({ title, description, path, id, updatedTime, counts, subtit
   const { resolvedTheme } = useTheme();
   const { locale } = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    // Check if this ID is already bookmarked
+    const storedBookmarks = JSON.parse(localStorage.getItem("bookmarkedSuttas")) || [];
+    setBookmarked(storedBookmarks.includes(id));
+  }, [id]);
+
+  const toggleBookmark = () => {
+    const storedBookmarks = JSON.parse(localStorage.getItem("bookmarkedSuttas")) || [];
+    let updatedBookmarks;
+
+    if (bookmarked) {
+      updatedBookmarks = storedBookmarks.filter((bookmarkId) => bookmarkId !== id);
+    } else {
+      updatedBookmarks = [...storedBookmarks, id];
+    }
+
+    localStorage.setItem("bookmarkedSuttas", JSON.stringify(updatedBookmarks));
+    setBookmarked(!bookmarked);
+  };
 
   // Function to transform the ID based on character and digit boundaries
   const transformId = (id) => {
@@ -61,6 +79,12 @@ export const Card = ({ title, description, path, id, updatedTime, counts, subtit
             </>
           )}
           {path.startsWith("/books") && <a href={path + id}>{title}</a>}
+          {/* Bookmark Icon */}
+          <div
+            className={`${styles['star-icon']} ${bookmarked ? styles.filled : ""}`}
+            onClick={toggleBookmark}
+            aria-label={bookmarked ? "Remove Bookmark" : "Add Bookmark"}
+          ></div>
         </h2>
         {path.startsWith("/books") && subtitle && <h3 className={styles.cardSubtitle}>{subtitle}</h3>}
         <p className={styles.cardDescription}>
