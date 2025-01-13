@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 import { useEffect } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import TextEnhancer from "/components/TextEnhancer";
+import HighlightLayout from "/components/HighlightLayout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "/styles/globals.css"; // Import global CSS here
@@ -22,11 +23,13 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <ThemeProvider attribute="class">
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
       <MDXProvider components={components}>
-        <Component {...pageProps} />
-        <Analytics />
-        <SpeedInsights />
+		<HighlightLayout>
+			<Component {...pageProps} />
+			<Analytics />
+			<SpeedInsights />
+		</HighlightLayout>
       </MDXProvider>
     </ThemeProvider>
   );
