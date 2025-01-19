@@ -1,4 +1,6 @@
 ---
+import { keyMap } from "../utils/keyMap.ts";
+
 const { path } = Astro.props;
 
 // Return null if on home page
@@ -8,15 +10,14 @@ const segments = path.split("/").filter(Boolean);
 // Function to transform the ID based on character and digit boundaries
 const transformId = (id: string) => {
 	if (typeof id !== "string") return "";
-	return id
-		.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
-			return `${chars.toUpperCase()} ${digits}`;
-		})
-		.toUpperCase();
+	id = keyMap[id] || id;
+	return id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
+		return `${chars.toUpperCase()} ${digits}`;
+	});
 };
 ---
 
-<div class="text-gray-600 dark:text-gray-400 mt-4">
+<div class="text-sm text-gray-600 dark:text-gray-400 mt-4">
 	<span>
 		<a href="/" class="hover:underline">Home</a>
 	</span>

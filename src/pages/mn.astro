@@ -4,15 +4,23 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 import PostCard from "../components/PostCard.astro";
 
 const allMnPosts = await getCollection("mn");
-console.log(allMnPosts);
+
+// Natural sort function
+const naturalSort = (a: CollectionEntry<"mn">, b: CollectionEntry<"mn">) => {
+	return a.id.localeCompare(b.id, undefined, {
+		numeric: true,
+		sensitivity: "base",
+	});
+};
+
+const sortedPosts = allMnPosts.sort(naturalSort);
 ---
 
 <Layout title="Middle Length Discourses">
 	<main class="container">
-		<h2>Middle Length Discourses</h2>
 		<div class="posts-grid">
 			{
-				allMnPosts.map((post) => (
+				sortedPosts.map((post) => (
 					<PostCard
 						title={post.data.title}
 						description={post.data.description}

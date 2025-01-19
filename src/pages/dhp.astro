@@ -1,18 +1,27 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import PostCard from "../components/PostCard.astro";
 
 const allDhpPosts = await getCollection("dhp");
+
+// Natural sort function
+const naturalSort = (a: CollectionEntry<"dhp">, b: CollectionEntry<"dhp">) => {
+	return a.id.localeCompare(b.id, undefined, {
+		numeric: true,
+		sensitivity: "base",
+	});
+};
+
 console.log(allDhpPosts);
+const sortedPosts = allDhpPosts.sort(naturalSort);
 ---
 
-<Layout title="Dhammapada Posts">
+<Layout title="Dhammapada Verses">
 	<main class="container">
-		<h2>Dhammapada Verses</h2>
 		<div class="posts-grid">
 			{
-				allDhpPosts.map((post) => (
+				sortedPosts.map((post) => (
 					<PostCard
 						title={post.data.title}
 						description={post.data.description}
