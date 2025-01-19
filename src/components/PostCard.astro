@@ -1,0 +1,74 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	id: string;
+}
+
+const { title, description, id } = Astro.props;
+
+// Function to transform the ID based on character and digit boundaries
+const transformId = (id: string) => {
+	if (typeof id !== "string") return "";
+	return id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
+		return `${chars.toUpperCase()} ${digits}`;
+	});
+};
+---
+
+<div class="flex flex-col p-4 rounded-lg shadow-md bg-background card">
+	<div class="flex items-centre justify-between">
+		<div class="flex items-baseline gap-3">
+			<a href={id} class="text-sm text-gray-500 hover:text-link-color id"
+				>{transformId(id)}</a
+			>
+			<h2 class="text-xl font-semibold text-text">{title}</h2>
+		</div>
+		<div class="flex items-center space-x-4 ml-auto">
+			<button
+				class="text-gray-400 hover:text-gray-600 opacity-0 transition-opacity duration-200"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="w-6 h-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+	<p class="mt-2 text-text line-clamp-3">{description}</p>
+</div>
+
+<style>
+	.card {
+		border: 1px solid var(--gray-500);
+		border-radius: 8px;
+		padding: 0.5rem;
+		margin: 1.5rem 0;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+	.card:hover .bookmark-button {
+		opacity: 1;
+	}
+	.id {
+		font-size: 1.2rem;
+	}
+	.bg-background {
+		background-color: var(--background-color);
+	}
+	.text-text {
+		color: var(--text-color);
+		margin: 0.5rem 0;
+	}
+	.hover\:text-link-color:hover {
+		color: var(--link-color);
+	}
+</style>

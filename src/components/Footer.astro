@@ -1,0 +1,18 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+import CC0Button from "../assets/CC0_button.svg";
+---
+
+<footer class="flex justify-between items-center border-t dark:border-gray-700">
+	<div class="flex-none text-lg font-bold"><ThemeToggle /></div>
+	<div class="flex items-center space-x-4 ml-auto">
+		<div>
+			<img
+				loading="lazy"
+				src={CC0Button.src}
+				alt="CC0 License Button"
+				class="h-10"
+			/>
+		</div>
+	</div>
+</footer>

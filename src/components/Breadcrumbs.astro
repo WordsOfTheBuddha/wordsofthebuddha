@@ -1,0 +1,40 @@
+---
+const { path } = Astro.props;
+
+// Return null if on home page
+if (path === "/") return null;
+
+const segments = path.split("/").filter(Boolean);
+// Function to transform the ID based on character and digit boundaries
+const transformId = (id: string) => {
+	if (typeof id !== "string") return "";
+	return id
+		.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
+			return `${chars.toUpperCase()} ${digits}`;
+		})
+		.toUpperCase();
+};
+---
+
+<div class="text-gray-600 dark:text-gray-400 mt-4">
+	<span>
+		<a href="/" class="hover:underline">Home</a>
+	</span>
+	{
+		segments.map((segment: string, index: number) => (
+			<span>
+				{" > "}
+				{index === segments.length - 1 ? (
+					<span>{transformId(segment)}</span>
+				) : (
+					<a
+						href={`/${segments.slice(0, index + 1).join("/")}`}
+						class="hover:underline"
+					>
+						{transformId(segment)}
+					</a>
+				)}
+			</span>
+		))
+	}
+</div>

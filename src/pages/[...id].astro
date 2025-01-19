@@ -1,0 +1,34 @@
+---
+import { routes } from "../utils/routes";
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+// Extract slug from params
+const { id } = Astro.params;
+// console.log("path id is: ", id);
+
+const allPosts = await getCollection("all");
+/* console.log(
+	"Available posts:",
+	allPosts.map(
+		(post: import("astro:content").CollectionEntry<"all">) => post.id
+	)
+); */
+
+const contentItem = allPosts.find(
+	(item: { id: string }) => item.id.indexOf(id) !== -1
+);
+if (!contentItem) {
+	return Astro.redirect("/404");
+}
+// console.log("contentItem is: ", contentItem.id);
+const { Content } = await render(contentItem);
+
+export function getStaticPaths() {
+	return routes;
+}
+---
+
+<Layout fp={contentItem.id}>
+	<Content />
+</Layout>

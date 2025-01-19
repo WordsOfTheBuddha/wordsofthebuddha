@@ -1,0 +1,24 @@
+---
+import lastUpdatedData from "../data/lastUpdated.json";
+
+const lastUpdatedDataTyped = lastUpdatedData as LastUpdatedData;
+const lastUpdated =
+	lastUpdatedDataTyped[Astro.url.pathname] ||
+	new Date().toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+---
+
+<div class="flex justify-between items-center">
+	<p class="text-gray-500 text-sm">Last updated on {lastUpdated}</p>
+	<div class="flex items-center space-x-4 ml-auto">
+		<a
+			href={`https://github.com/your-repo/edit/main/src/pages${Astro.url.pathname}.astro`}
+			class="ml-2 hover:underline"
+		>
+			Edit
+		</a>
+	</div>
+</div>

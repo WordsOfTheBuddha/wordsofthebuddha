@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import PostCard from "../components/PostCard.astro";
+
+const allDhpPosts = await getCollection("dhp");
+console.log(allDhpPosts);
+---
+
+<Layout title="Dhammapada Posts">
+	<main class="container">
+		<h2>Dhammapada Verses</h2>
+		<div class="posts-grid">
+			{
+				allDhpPosts.map((post) => (
+					<PostCard
+						title={post.data.title}
+						description={post.data.description}
+						id={post.data.id}
+					/>
+				))
+			}
+		</div>
+	</main>
+</Layout>

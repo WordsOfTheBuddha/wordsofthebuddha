@@ -1,0 +1,92 @@
+h1 {
+  color: var(--text-color);
+}
+
+p {
+  line-height: 1.8;
+}
+
+code {
+  background-color: var(--code-bg);
+  color: var(--code-text);
+}
+
+pre {
+  background-color: var(--code-bg);
+  padding: 1rem;
+}
+
+.prose a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+.prose blockquote {
+  quotes: none;
+}
+
+.image-container {
+  display: flex;
+  justify-content: left;
+  margin: 20px 0;
+}
+
+.about-image {
+  max-height: 150px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contains-task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.25rem;
+}
+
+.task-list-item input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--primary-color);
+  width: 1rem;
+  height: 1rem;
+}
+
+.task-list-item input[type="checkbox"]:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.task-list-item input[type="checkbox"]:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+  border-color: var(--gray-400);
+  background-color: var(--gray-200);
+}
+
+.task-list-item input[type="checkbox"]:disabled:checked {
+  background-color: var(--gray-400);
+  border-color: var(--gray-500);
+}
+
+.tooltip-text {
+  cursor: pointer;
+  padding-bottom: 1px;
+  border-bottom: 2px solid var(--secondary-color);
+  cursor: pointer;
+}
+
+.tippy-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--gray-500);
+  user-select: text;
+  font-size: 0.9rem;
+  padding: 4px;
+}
+
+.tippy-tooltip::before {
+  border-color: 2px solid var(--secondary-color);
+}

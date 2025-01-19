@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400&display=swap");
+
+/* global.css */
+:root {
+  --icon-fill-color-light: #000000;
+  --bookmark-fill-color-light: #898989;
+  --text-color-light: #555;
+  --background-color-light: #ffffff;
+  --primary-color-light: #1a73e8;
+  --secondary-color-light: #ff5722;
+  --link-color-light: #1a73e8;
+  --link-hover-color-light: #0c47a1;
+
+  --icon-fill-color-dark: #ffffff;
+  --bookmark-fill-color-dark: #a9a9a9;
+  --text-color-dark: #ffffff;
+  --background-color-dark: #1c1c1c;
+  --primary-color-dark: #ffd700;
+  --secondary-color-dark: #d47445;
+  --link-color-dark: #87cefa;
+  --link-hover-color-dark: #ffffff;
+
+  --background-header-light: #f4f4f4;
+  --background-row-even-light: #f9f9f9;
+  --background-row-hover-light: #f1f1f1;
+  --background-header-dark: #242f36;
+  --background-row-even-dark: #242f36;
+  --background-row-hover-dark: #555;
+  --gray-200: #f3f4f6;
+  --gray-400: #d1d5db;
+  --gray-500: #9ca3af;
+
+  --icon-fill-color: var(--icon-fill-color-light);
+  --bookmark-fill-color: var(--bookmark-fill-color-light);
+  --text-color: var(--text-color-light);
+  --background-color: var(--background-color-light);
+  --primary-color: var(--primary-color-light);
+  --secondary-color: var(--secondary-color-light);
+  --link-color: var(--link-color-light);
+  --link-hover-color: var(--link-hover-color-light);
+  --background-header: var(--background-header-light);
+  --background-row-even: var(--background-row-even-light);
+  --background-row-hover: var(--background-row-hover-light);
+  --callout-background: rgba(219, 234, 254, 1);
+  --border-color: rgba(191, 219, 254, 1);
+}
+
+html.dark {
+  --icon-fill-color: var(--icon-fill-color-dark);
+  --bookmark-fill-color: var(--bookmark-fill-color-dark);
+  --text-color: var(--text-color-dark);
+  --background-color: var(--background-color-dark);
+  --primary-color: var(--primary-color-dark);
+  --secondary-color: var(--secondary-color-dark);
+  --link-color: var(--link-color-dark);
+  --link-hover-color: var(--link-hover-color-dark);
+  --background-header: var(--background-header-dark);
+  --background-row-even: var(--background-row-even-dark);
+  --background-row-hover: var(--background-row-hover-dark);
+  --callout-background: rgba(30, 58, 138, 0.3);
+  --border-color: rgba(191, 219, 254, 0.3);
+}
+
+body {
+  font-family: Spectral, serif, system-ui, -apple-system, "system-ui",
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  font-feature-settings: auto;
+  font-kerning: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

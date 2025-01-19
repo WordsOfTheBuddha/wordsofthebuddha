@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import PostCard from "../components/PostCard.astro";
+
+const allMnPosts = await getCollection("mn");
+console.log(allMnPosts);
+---
+
+<Layout title="Middle Length Discourses">
+	<main class="container">
+		<h2>Middle Length Discourses</h2>
+		<div class="posts-grid">
+			{
+				allMnPosts.map((post) => (
+					<PostCard
+						title={post.data.title}
+						description={post.data.description}
+						id={post.data.id}
+					/>
+				))
+			}
+		</div>
+	</main>
+</Layout>

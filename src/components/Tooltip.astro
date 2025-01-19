@@ -1,0 +1,95 @@
+<!-- this is a client-only script component -->
+<script>
+	function replaceTooltips(element: HTMLElement) {
+		for (let node of element.childNodes) {
+			if (node.nodeType === Node.TEXT_NODE) {
+				let text = node.textContent || "";
+				// Replace {text}(tooltip) pattern
+				text = text.replace(
+					/\{([^}]*)\}\s*\(([^)]*)\)/g,
+					(_, textPart, tooltip) => {
+						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
+					}
+				);
+				// Replace text(tooltip) pattern without braces
+				text = text.replace(
+					/(\p{L}[\p{L}0-9'-]+)\s*\(([^)]*)\)/gu,
+					(match, textPart, tooltip) => {
+						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
+					}
+				);
+				const span = document.createElement("span");
+				span.innerHTML = text;
+				if (node.parentNode) {
+					node.parentNode.replaceChild(span, node);
+				}
+			} else if (
+				node.nodeType === Node.ELEMENT_NODE &&
+				node instanceof HTMLElement
+			) {
+				replaceTooltips(node);
+			}
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		replaceTooltips(document.body);
+
+		// Initialize tippy.js after replacements
+		import("tippy.js").then((tippyModule) => {
+			import("tippy.js/animations/scale-subtle.css");
+
+			const { default: tippy } = tippyModule;
+			let tooltips = tippy("[data-tippy-content]", {
+				maxWidth: 320,
+				interactive: true,
+				trigger: "click", // Change trigger to click
+				hideOnClick: false,
+				placement: "top",
+				animation: "scale-subtle",
+				onShow: (instance) => {
+					instance.popper.style.maxHeight = "180px";
+					instance.popper.style.overflowY = "auto";
+					instance.popper.style.overflowX = "hidden";
+				},
+			});
+
+			// Close tooltips when clicking outside
+			document.addEventListener("click", (event) => {
+				const target = event.target as HTMLElement;
+				const clickedTooltip = target?.closest(".tooltip-text");
+				const clickedTooltipContent = target?.closest(".tippy-content");
+				const clickedTooltipBox = target?.closest(".tippy-box");
+
+				if (!clickedTooltip && !clickedTooltipContent && !clickedTooltipBox) {
+					tooltips.forEach((tooltip) => tooltip.hide());
+				}
+			});
+
+			// Function to update tooltip themes
+			function updateTooltipTheme() {
+				tooltips.forEach((tooltip) => {
+					if (document.documentElement.classList.contains("dark")) {
+						tooltip.popper.classList.add("dark-tooltip");
+					} else {
+						tooltip.popper.classList.remove("dark-tooltip");
+					}
+				});
+			}
+
+			// Initial theme setup
+			updateTooltipTheme();
+
+			// Observe changes to the 'dark' class on the HTML element
+			const observer = new MutationObserver((mutations) => {
+				mutations.forEach((mutation) => {
+					if (mutation.attributeName === "class") {
+						updateTooltipTheme();
+					}
+				});
+			});
+
+			observer.observe(document.documentElement, { attributes: true });
+		});
+	});
+</script>
