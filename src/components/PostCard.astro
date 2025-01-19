@@ -16,13 +16,15 @@ const transformId = (id: string) => {
 };
 ---
 
-<div class="flex flex-col p-4 rounded-lg shadow-md bg-background card">
+<div
+	class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+>
 	<div class="flex items-centre justify-between">
 		<div class="flex items-baseline gap-3">
 			<a href={id} class="text-sm text-gray-500 hover:text-link-color id"
 				>{transformId(id)}</a
 			>
-			<h2 class="text-xl font-semibold text-text">{title}</h2>
+			<h2 class="text-lg font-semibold text-text">{title}</h2>
 		</div>
 		<div class="flex items-center space-x-4 ml-auto">
 			<button
@@ -48,18 +50,9 @@ const transformId = (id: string) => {
 </div>
 
 <style>
-	.card {
-		border: 1px solid var(--gray-500);
-		border-radius: 8px;
-		padding: 0.5rem;
-		margin: 1.5rem 0;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-	.card:hover .bookmark-button {
-		opacity: 1;
-	}
+	/* Remove the old .card border styling, rely on Tailwind classes above */
 	.id {
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 	}
 	.bg-background {
 		background-color: var(--background-color);
