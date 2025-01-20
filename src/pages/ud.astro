@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import PostCard from "../components/PostCard.astro";
+
+const allUdPosts = await getCollection("ud");
+
+// Natural sort function
+const naturalSort = (a: CollectionEntry<"ud">, b: CollectionEntry<"ud">) => {
+	return a.id.localeCompare(b.id, undefined, {
+		numeric: true,
+		sensitivity: "base",
+	});
+};
+
+const sortedPosts = allUdPosts.sort(naturalSort);
+---
+
+<Layout title="Inspired Utterances">
+	<main class="container">
+		<div class="posts-grid">
+			{
+				sortedPosts.map((post) => (
+					<PostCard
+						title={post.data.title}
+						description={post.data.description}
+						id={post.data.slug}
+					/>
+				))
+			}
+		</div>
+	</main>
+</Layout>

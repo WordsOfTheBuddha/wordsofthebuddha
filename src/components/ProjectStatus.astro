@@ -4,10 +4,20 @@ import { keyMap } from "../utils/keyMap";
 
 const allDhpPosts = await getCollection("dhp");
 const allMnPosts = await getCollection("mn");
+const allItiPosts = await getCollection("iti");
+const allSnPosts = await getCollection("sn");
+const allSnpPosts = await getCollection("snp");
+const allAnPosts = await getCollection("an");
+const allUdPosts = await getCollection("ud");
 
 const collections = [
 	{ name: "dhp", count: allDhpPosts.length, suffix: "chapters" },
 	{ name: "mn", count: allMnPosts.length, suffix: "discourses" },
+	{ name: "snp", count: allSnpPosts.length, suffix: "poems" },
+	{ name: "an", count: allAnPosts.length, suffix: "discourses" },
+	{ name: "sn", count: allSnPosts.length, suffix: "discourses" },
+	{ name: "iti", count: allItiPosts.length, suffix: "sayings" },
+	{ name: "ud", count: allUdPosts.length, suffix: "inspired utterances" },
 ];
 ---
 

@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 
 // Extract slug from params
 const { id } = Astro.params;
-// console.log("path id is: ", id);
+console.log("path id is: ", id);
 
 const allPosts = await getCollection("all");
 console.log(
@@ -21,7 +21,13 @@ const contentItem = allPosts.find(
 if (!contentItem) {
 	return Astro.redirect("/404");
 }
-console.log("contentItem is: ", contentItem.id);
+console.log("contentItem is: ", contentItem);
+
+// Extract last two segments of file path and remove extension
+const fpParts = (contentItem.filePath ?? "").split("/");
+let folder = fpParts[fpParts.length - 2] || "";
+const fp = folder ? `${folder}/${id}` : id;
+
 const { Content } = await render(contentItem);
 
 export function getStaticPaths() {
@@ -30,7 +36,7 @@ export function getStaticPaths() {
 ---
 
 <Layout
-	fp={contentItem.id}
+	fp={fp}
 	title={contentItem.data.title}
 	description={contentItem.data.description}
 >

@@ -3,7 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "predev": "node src/utils/generateRoutes.mjs",
     "dev": "node src/utils/getUpdatedTime.cjs && astro dev",
+    "prebuild": "node src/utils/generateRoutes.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

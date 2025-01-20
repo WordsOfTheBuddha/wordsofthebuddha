@@ -1,0 +1,38 @@
+---
+title: Appamāda sutta - Diligence
+description: King Pasenadi asks the Buddha if there is one Dhamma which, having accomplished, secures both kinds of welfare — welfare pertaining to the present life and that pertaining to the next life. The Buddha explains that diligence is that one Dhamma.
+fetter: ignorance
+tags: diligence, welfare, present, future, ignorance, sn, sn1-11, sn3
+slug: sn3.17
+commentary: |
+  Diligence is a quality of the mind that is about carrying out one's duty or obligations well, with continuous effort, while maintaining both an alertness and care (gentleness).
+---
+
+Sāvatthinidānaṁ.
+
+Ekamantaṁ nisīdi. Ekamantaṁ nisinno kho rājā pasenadi kosalo bhagavantaṁ etadavoca: “atthi nu kho, bhante, eko dhammo yo ubho atthe samadhiggayha tiṭṭhati— diṭṭhadhammikañceva atthaṁ samparāyikañcā”ti?
+
+“Atthi kho, mahārāja, eko dhammo yo ubho atthe samadhiggayha tiṭṭhati— diṭṭhadhammikañceva atthaṁ samparāyikañcā”ti.
+
+“Katamo pana, bhante, eko dhammo, yo ubho atthe samadhiggayha tiṭṭhati— diṭṭhadhammikañceva atthaṁ samparāyikañcā”ti?
+
+“Appamādo kho, mahārāja, eko dhammo, yo ubho atthe samadhiggayha tiṭṭhati— diṭṭhadhammikañceva atthaṁ samparāyikañcāti. Seyyathāpi, mahārāja, yāni kānici jaṅgalānaṁ pāṇānaṁ padajātāni, sabbāni tāni hatthipade samodhānaṁ gacchanti, hatthipadaṁ tesaṁ aggamakkhāyati—yadidaṁ mahantattena; evameva kho, mahārāja, appamādo eko dhammo, yo ubho atthe samadhiggayha tiṭṭhati— diṭṭhadhammikañceva atthaṁ samparāyikañcā”ti.
+
+Idamavoca bhagavā. Idaṁ vatvāna sugato athāparaṁ etadavoca satthā:
+
+### Verse
+
+“Āyuṁ arogiyaṁ vaṇṇaṁ,
+saggaṁ uccākulīnataṁ;
+Ratiyo patthayantena,
+uḷārā aparāparā.
+
+Appamādaṁ pasaṁsanti,
+puññakiriyāsu paṇḍitā;
+Appamatto ubho atthe,
+adhiggaṇhāti paṇḍito.
+
+Diṭṭhe dhamme ca yo attho,
+yo cattho samparāyiko;
+Atthābhisamayā dhīro,
+paṇḍitoti pavuccatī”ti.

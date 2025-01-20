@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import PostCard from "../components/PostCard.astro";
+
+const allItiPosts = await getCollection("iti");
+
+// Natural sort function
+const naturalSort = (a: CollectionEntry<"iti">, b: CollectionEntry<"iti">) => {
+	return a.id.localeCompare(b.id, undefined, {
+		numeric: true,
+		sensitivity: "base",
+	});
+};
+
+const sortedPosts = allItiPosts.sort(naturalSort);
+---
+
+<Layout title="As It Was Said">
+	<main class="container">
+		<div class="posts-grid">
+			{
+				sortedPosts.map((post) => (
+					<PostCard
+						title={post.data.title}
+						description={post.data.description}
+						id={post.data.slug}
+					/>
+				))
+			}
+		</div>
+	</main>
+</Layout>
