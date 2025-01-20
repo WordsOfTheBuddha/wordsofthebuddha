@@ -5,15 +5,15 @@ import Layout from "../layouts/Layout.astro";
 
 // Extract slug from params
 const { id } = Astro.params;
-console.log("path id is: ", id);
+// console.log("path id is: ", id);
 
 const allPosts = await getCollection("all");
-console.log(
+/* console.log(
 	"Available posts:",
 	allPosts.map(
 		(post: import("astro:content").CollectionEntry<"all">) => post.id
 	)
-);
+); */
 
 const contentItem = allPosts.find(
 	(item: { id: string }) => item.id.indexOf(id) !== -1
@@ -21,7 +21,7 @@ const contentItem = allPosts.find(
 if (!contentItem) {
 	return Astro.redirect("/404");
 }
-console.log("contentItem is: ", contentItem);
+// console.log("contentItem is: ", contentItem);
 
 // Extract last two segments of file path and remove extension
 const fpParts = (contentItem.filePath ?? "").split("/");
