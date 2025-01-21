@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import fs from "fs";
+import path from "path";
+import PostCard from "./PostCard.astro";
+
+interface Props {
+	n?: number;
+}
+
+const { n = 5 } = Astro.props;
+
+const allDiscourses = await getCollection("all");
+const discourseFiles = allDiscourses
+	.filter((discourse) => discourse.id !== "index") // Add this filter
+	.map((discourse) => ({
+		...discourse,
+		lastModified: fs.statSync(
+			path.join(process.cwd(), discourse.filePath ?? "")
+		).mtime,
+	}));
+
+const latestDiscourses = discourseFiles
+	.sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime())
+	.slice(0, n);
+---
+
+<div class="px-2">
+	{
+		latestDiscourses.map((discourse) => (
+			<PostCard
+				title={discourse.data.title}
+				description={discourse.data.description}
+				id={discourse.data.slug}
+				lastUpdated={discourse.lastModified}
+			/>
+		))
+	}
+</div>

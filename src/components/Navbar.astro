@@ -2,14 +2,14 @@
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<nav class="flex justify-between items-center border-b dark:border-gray-700">
+<nav class="flex items-center border-b dark:border-gray-700">
 	<div class="flex-none text-lg font-bold">
-		<a href="/" class="text-xl" style="color:var(--text-color)"
-			>Words of the Buddha</a
-		>
+		<a href="/" class="text-xl" style="color:var(--text-color)">
+			Words of the Buddha
+		</a>
 	</div>
-	<div class="flex items-center space-x-4 ml-auto">
-		<!--input type="text" placeholder="Search..." class="px-2 py-1 border rounded dark:bg-gray-800 dark:border-gray-700" /-->
+	<div class="ml-auto">
+		<!-- Potential space for future nav items -->
 		<ThemeToggle />
 	</div>
 </nav>

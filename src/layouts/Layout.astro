@@ -9,14 +9,15 @@ import Tooltip from "../components/Tooltip.astro";
 import "../styles/content.css";
 import Title from "../components/Title.astro";
 import Description from "../components/Description.astro";
-import Navigation from "../components/Navigation.astro";
+import FooterNavigation from "../components/FooterNavigation.astro";
 
-let { id, fp, title, description, prev, next, lastUpdated } = Astro.props;
+const { id, fp, title, description, prev, next, lastUpdated } = Astro.props;
+let SEOTitle = title;
 if (title != "Words of the Buddha") {
-	title = title + " - Words of the Buddha";
+	SEOTitle = title + " - Words of the Buddha";
 }
 if (id) {
-	title = id + " " + title;
+	SEOTitle = id + " " + title;
 }
 ---
 
@@ -24,7 +25,7 @@ if (id) {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>{title || "Words of the Buddha"}</title>
+		<title>{SEOTitle || "Words of the Buddha"}</title>
 		<meta name="description" content={description || "Default Description"} />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	</head>
@@ -38,7 +39,7 @@ if (id) {
 				<Title title={title} />
 				<slot />
 				{lastUpdated && <LastUpdated lastUpdated={lastUpdated} />}
-				<Navigation prev={prev} next={next} />
+				<FooterNavigation prev={prev} next={next} />
 				<Footer />
 			</div>
 		</main>

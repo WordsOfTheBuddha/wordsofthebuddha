@@ -8,18 +8,19 @@ import rehypeExternalLinks from "rehype-external-links";
 import { rehypeVerseParagraphs } from "./src/utils/rehype-verse-paragraphs.js";
 import remarkBreaks from "remark-breaks";
 
+const externalLinksOptions = {
+  target: "_blank",
+  rel: ["noopener", "noreferrer"],
+  content: { type: "text", value: " ↗" },
+};
+
 // https://astro.build/config
 export default defineConfig({
   markdown: {
     remarkPlugins: [[remarkBreaks, { soft: false }]],
     rehypePlugins: [
       rehypeVerseParagraphs,
-      [
-        rehypeExternalLinks,
-        {
-          content: { type: "text", value: " ↗" },
-        },
-      ],
+      [rehypeExternalLinks, externalLinksOptions],
     ],
   },
   integrations: [
@@ -27,7 +28,10 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     mdx({
-      rehypePlugins: [rehypeVerseParagraphs],
+      rehypePlugins: [
+        rehypeVerseParagraphs,
+        [rehypeExternalLinks, externalLinksOptions],
+      ],
     }),
   ],
 });
