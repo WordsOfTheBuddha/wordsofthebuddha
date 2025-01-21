@@ -10,6 +10,7 @@ import "../styles/content.css";
 import Title from "../components/Title.astro";
 import Description from "../components/Description.astro";
 import FooterNavigation from "../components/FooterNavigation.astro";
+import HighlightLayout from "../components/HighlightLayout.astro";
 
 const { id, fp, title, description, prev, next, lastUpdated } = Astro.props;
 let SEOTitle = title;
@@ -35,13 +36,32 @@ if (id) {
 			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
 				<Navbar />
 				<Breadcrumbs path={fp || Astro.url.pathname} />
-				<Description description={description} />
-				<Title title={title} />
-				<slot />
+				<HighlightLayout currentPath={fp}>
+					<Description description={description} />
+					<Title title={title} />
+					<slot />
+				</HighlightLayout>
 				{lastUpdated && <LastUpdated lastUpdated={lastUpdated} path={fp} />}
 				<FooterNavigation prev={prev} next={next} />
 				<Footer />
 			</div>
 		</main>
 	</body>
+	<script>
+		import { inject } from "@vercel/analytics";
+		inject();
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			// Remove empty spans with zero-width spaces
+			document.querySelectorAll("span").forEach((span) => {
+				const hasVisibleContent = /\S/.test(span.textContent ?? "");
+				const hasMeaningfulAttributes = span.attributes.length > 0;
+
+				if (!hasVisibleContent && !hasMeaningfulAttributes) {
+					span.remove();
+				}
+			});
+		});
+	</script>
 </html>

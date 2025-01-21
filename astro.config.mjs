@@ -34,4 +34,17 @@ export default defineConfig({
       ],
     }),
   ],
+  vite: {
+    optimizeDeps: {
+      include: ["rangy"],
+    },
+    build: {
+      commonjsOptions: {
+        include: [/rangy/],
+      },
+    },
+    ssr: {
+      noExternal: ["rangy"],
+    },
+  },
 });
