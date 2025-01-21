@@ -9,13 +9,24 @@ import Tooltip from "../components/Tooltip.astro";
 import "../styles/content.css";
 import Title from "../components/Title.astro";
 import Description from "../components/Description.astro";
+import Navigation from "../components/Navigation.astro";
 
-const { fp, title, description } = Astro.props;
+let { id, fp, title, description, prev, next, lastUpdated } = Astro.props;
+if (title != "Words of the Buddha") {
+	title = title + " - Words of the Buddha";
+}
+if (id) {
+	title = id + " " + title;
+}
 ---
 
 <html lang="en" class="dark" dir="ltr">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title || "Words of the Buddha"}</title>
+		<meta name="description" content={description || "Default Description"} />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	</head>
 	<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 		<Tooltip />
@@ -26,7 +37,8 @@ const { fp, title, description } = Astro.props;
 				<Description description={description} />
 				<Title title={title} />
 				<slot />
-				<!--LastUpdated /-->
+				{lastUpdated && <LastUpdated lastUpdated={lastUpdated} />}
+				<Navigation prev={prev} next={next} />
 				<Footer />
 			</div>
 		</main>

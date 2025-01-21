@@ -1,5 +1,5 @@
 ---
-title: Dutiyavedanā sutta - Felt Experiences (Second)
+title: Dutiyavedanā sutta - Felt Experiences <span class="text-sm">(Second)</span>
 description: The Buddha describes how to see the three felt experiences that are experienced on contact through the sense doors - pleasant, painful, and neither-painful-nor-pleasant.
 fetter: sensual desire, ill-will, desire for fine-material existence, desire for immaterial existence, conceit, ignorance
 tags: sensation, feeling, pleasant, painful, neither-painful-nor-pleasant, dissatisfaction, discontentment, impermanence, tranquil, conceit, fetters, direct knowing sage, discernment, yoke, iti, iti50-99

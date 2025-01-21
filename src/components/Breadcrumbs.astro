@@ -1,5 +1,5 @@
 ---
-import { keyMap } from "../utils/keyMap.ts";
+import { transformId } from "../utils/transformId.ts";
 
 const { path } = Astro.props;
 
@@ -7,14 +7,6 @@ const { path } = Astro.props;
 if (path === "/") return null;
 
 const segments = path.split("/").filter(Boolean);
-// Function to transform the ID based on character and digit boundaries
-const transformId = (id: string) => {
-	if (typeof id !== "string") return "";
-	id = keyMap[id] || id;
-	return id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
-		return `${chars.toUpperCase()} ${digits}`;
-	});
-};
 ---
 
 <div class="text-sm text-gray-600 dark:text-gray-400 mt-4">

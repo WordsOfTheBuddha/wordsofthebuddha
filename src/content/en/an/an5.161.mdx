@@ -1,5 +1,5 @@
 ---
-title: Paṭhamaāghātapaṭivinaya sutta - Overcoming Resentment (First)
+title: Paṭhamaāghātapaṭivinaya sutta - Overcoming Resentment <span class="text-sm">(First)</span>
 description: Five ways to overcome arisen resentment - 1) loving-kindness, 2) compassion, 3) equanimity, 4) disregarding and non-attention, 5) reflection on kamma.
 fetter: ill-will
 tags: resentment, ill-will, loving-kindness, compassion, equanimity, kamma, an, an5

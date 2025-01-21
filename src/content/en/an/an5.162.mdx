@@ -1,5 +1,5 @@
 ---
-title: Dutiyaāghātapaṭivinaya sutta - Overcoming Resentment (Second)
+title: Dutiyaāghātapaṭivinaya sutta - Overcoming Resentment <span class="text-sm">(Second)</span>
 description: Five ways to overcome arisen resentment
 fetter: ill-will
 tags: resentment, ill-will, body, speech, mind, mental clarity, an, an5

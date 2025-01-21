@@ -1,5 +1,5 @@
 ---
-title: Paṭhamasamādhi  sutta - Collectedness (First)
+title: Paṭhamasamādhi  sutta - Collectedness <span class="text-sm">(First)</span>
 description: The Buddha describes the four kinds of persons found existing in the world.
 fetter: ignorance
 tags: tranquility, insight, wisdom, an, an4

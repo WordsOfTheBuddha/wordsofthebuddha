@@ -1,5 +1,5 @@
 ---
-title: Paṭhamaesanā sutta - Quest (First)
+title: Paṭhamaesanā sutta - Quest <span class="text-sm">(First)</span>
 description: The Buddha describes the three quests of sensual pleasure, renewed existence, and spiritual life.
 fetter: doubt, sensual desire, desire for fine-material existence, desire for immaterial existence, ignorance
 tags: iti, iti50-99, quest, pursuit, sensual pleasure, renewed existence, spiritual life, cessation, cease, desireless, satisfied, quenched, buddha

@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import { keyMap } from "../utils/keyMap";
+import { keyMap } from "../utils/transformId";
 
 const allDhpPosts = await getCollection("dhp");
 const allMnPosts = await getCollection("mn");

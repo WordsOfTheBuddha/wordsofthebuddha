@@ -1,5 +1,5 @@
 ---
-title: Dutiyabodhi sutta - Upon Awakening (Second)
+title: Dutiyabodhi sutta - Upon Awakening <span class="text-sm">(Second)</span>
 description: The Buddha contemplates dependent co-arising in reverse order just after his awakening.
 fetter: ignorance
 tags: ud,ud1,awakening,dependent origination, dependent co-arising,dependent co-arising,wise attention,ignorance

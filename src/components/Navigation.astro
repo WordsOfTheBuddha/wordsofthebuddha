@@ -1,0 +1,39 @@
+---
+// src/components/Navigation.astro
+import type { CollectionEntry } from "astro:content";
+import { transformId } from "../utils/transformId";
+
+interface Props {
+	prev?: CollectionEntry<"all">;
+	next?: CollectionEntry<"all">;
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav
+	class="relative flex flex-col sm:flex-row gap-4 sm:gap-8 items-center my-6"
+>
+	{
+		prev && (
+			<a
+				href={`/${prev.id}`}
+				class="block w-full sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-left"
+				style="color: var(--link-color)"
+			>
+				← {transformId(prev.id)} {prev.data.title}
+			</a>
+		)
+	}
+	{
+		next && (
+			<a
+				href={`/${next.id}`}
+				class="block w-full sm:w-auto sm:max-w-[45%] ml-auto p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-right"
+				style="color: var(--link-color)"
+			>
+				{transformId(next.id)} {next.data.title} →
+			</a>
+		)
+	}
+</nav>

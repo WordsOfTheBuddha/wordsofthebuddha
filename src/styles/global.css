@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400&display=swap");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* global.css */
 :root {
   --icon-fill-color-light: #000000;
@@ -70,6 +74,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer components {
+  .verse {
+    @apply pl-4 my-6 italic border-l-4 border-gray-300;
+    color: var(--text-color); /* Use theme variable */
+    --verse-accent: theme(colors.gray.300);
+  }
+}

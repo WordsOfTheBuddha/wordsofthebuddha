@@ -1,5 +1,5 @@
 ---
-title: Paṭhamamaraṇassati sutta - Mindfulness Of Death (First)
+title: Paṭhamamaraṇassati sutta - Mindfulness Of Death <span class="text-sm">(First)</span>
 description: The Buddha explains the benefits of developing mindfulness of death, and how to cultivate it with diligence for the wearing away of the taints.
 fetter: sensual desire, ill-will, conceit, ignorance
 tags: mindfulness, death, recollection, deathless, diligence, negligence, taints, mental defilements, an, an6
