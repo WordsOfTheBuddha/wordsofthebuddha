@@ -76,7 +76,7 @@ body {
 
 @layer components {
   .verse {
-    @apply pl-4 my-6 italic border-l-4 border-gray-300;
+    @apply pl-4 my-6 border-l-4 border-gray-300;
     color: var(--text-color); /* Use theme variable */
     --verse-accent: theme(colors.gray.300);
   }
