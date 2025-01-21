@@ -38,7 +38,7 @@ if (id) {
 				<Description description={description} />
 				<Title title={title} />
 				<slot />
-				{lastUpdated && <LastUpdated lastUpdated={lastUpdated} />}
+				{lastUpdated && <LastUpdated lastUpdated={lastUpdated} path={fp} />}
 				<FooterNavigation prev={prev} next={next} />
 				<Footer />
 			</div>

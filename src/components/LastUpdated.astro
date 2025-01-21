@@ -1,5 +1,5 @@
 ---
-const { lastUpdated } = Astro.props;
+const { lastUpdated, path } = Astro.props;
 
 export const formatDate = (date: string) => {
 	return new Date(date).toLocaleDateString("en-US", {
@@ -14,7 +14,7 @@ export const formatDate = (date: string) => {
 	<p class="text-gray-500 text-sm">Last updated on {formatDate(lastUpdated)}</p>
 	<div class="flex items-center space-x-4 ml-auto">
 		<a
-			href={`https://github.com/wordsofthebuddha/wordsofthebuddha/edit/main/src/content/en/${Astro.url.pathname}.astro`}
+			href={`https://github.com/wordsofthebuddha/wordsofthebuddha/edit/main/src/content/en/${path}.mdx`}
 			class="ml-2 hover:underline text-sm text-gray-500"
 			target="_blank"
 			rel="noopener noreferrer"
