@@ -81,24 +81,3 @@ body {
     --verse-accent: theme(colors.gray.300);
   }
 }
-
-span > mark:empty,
-span
-  > mark:not(:empty):not(:focus):matches(
-    [innerHTML^=" "],
-    [innerHTML=" "],
-    [innerHTML="​"],
-    [innerHTML="\n"]
-  ) {
-  display: none !important;
-}
-
-/* Verse paragraph styling */
-p.verse {
-  line-height: 1.8;
-  margin: 1rem 0;
-}
-
-span:empty {
-  display: none !important;
-}
