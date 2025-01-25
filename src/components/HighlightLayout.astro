@@ -1,6 +1,5 @@
 ---
-import { onMount } from "astro/client";
-
+// HighlightLayout.astro
 const { currentPath } = Astro.props;
 
 const COLOR_MAP = {
@@ -53,11 +52,10 @@ type ColorName = keyof typeof COLOR_MAP;
 <style>
 	:global(.highlight-container) {
 		position: relative;
-		min-height: 100vh;
 	}
 
 	:global(.highlight-menu) {
-		position: absolute; /* Changed from fixed to absolute */
+		position: absolute;
 		left: 0;
 		top: 0;
 		background: var(--menu-bg, #fff);
@@ -211,9 +209,8 @@ type ColorName = keyof typeof COLOR_MAP;
 
 	function setupEventListeners(): void {
 		document.addEventListener("mouseup", handleSelection);
-		document.addEventListener("touchend", handleSelection); // Added touchend
+		document.addEventListener("touchend", handleSelection);
 		document.addEventListener("mousedown", handleOutsideClick);
-		document.addEventListener("touchstart", handleOutsideClick); // Added touchstart
 
 		document
 			.querySelectorAll<HTMLButtonElement>(".color-swatch")
@@ -232,8 +229,7 @@ type ColorName = keyof typeof COLOR_MAP;
 		}
 	}
 
-	let outsideClickListener: ((e: MouseEvent | TouchEvent) => void) | null =
-		null;
+	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
 
 	function handleSelection(e: MouseEvent | TouchEvent): void {
 		if (!window.rangy || !highlighter) return;
@@ -244,7 +240,7 @@ type ColorName = keyof typeof COLOR_MAP;
 			return;
 		}
 
-		// Clone the range to prevent it from being modified
+		// Grab the actual DOM range
 		currentRange = selection.getRangeAt(0).nativeRange;
 
 		// Use getClientRects() so we can position near the last line of the selection
@@ -252,11 +248,10 @@ type ColorName = keyof typeof COLOR_MAP;
 		let finalRect: DOMRect | null = null;
 
 		if (rects.length > 0) {
-			// Get the rect with the greatest bottom value (last visually)
-			finalRect = [...rects].reduce((acc, r) =>
-				r.bottom > acc.bottom ? r : acc
-			);
+			// The very last rect in the selection
+			finalRect = rects[rects.length - 1];
 		} else {
+			// Fallback to the overall bounding box if for some reason getClientRects() is empty
 			finalRect = currentRange.getBoundingClientRect();
 		}
 
@@ -266,43 +261,38 @@ type ColorName = keyof typeof COLOR_MAP;
 			return;
 		}
 
-		// Position the menu near the last rect
+		// Position the menu just after the final selected rectangle
 		if (!rootElement) return;
 		const containerRect = rootElement.getBoundingClientRect();
-		menu.style.position = "absolute"; // Changed to absolute
+		finalRect = [...rects].reduce((acc, r) =>
+			r.bottom > acc.bottom ? r : acc
+		);
+		menu.style.position = "absolute";
 		menu.style.top = `${finalRect.bottom - containerRect.top + rootElement.scrollTop}px`;
 		menu.style.left = `${finalRect.right - containerRect.left + rootElement.scrollLeft + 5}px`;
 		menu.style.display = "flex";
 
-		// Remove previous listeners to avoid duplicates
-		if (outsideClickListener) {
-			document.removeEventListener("mousedown", outsideClickListener);
-			document.removeEventListener("touchstart", outsideClickListener);
-		}
-
-		// Add new listener for outside clicks
-		outsideClickListener = (e: MouseEvent | TouchEvent) => {
+		// Add new listener
+		outsideClickListener = (e: MouseEvent) => {
 			const target = e.target as Node;
 			if (!menu.contains(target)) {
 				console.log("[Highlight] Click outside detected");
 				menu.style.display = "none";
 				window.getSelection()?.removeAllRanges();
 				document.removeEventListener("mousedown", outsideClickListener!);
-				document.removeEventListener("touchstart", outsideClickListener!);
 			}
 		};
-		document.addEventListener("mousedown", outsideClickListener);
-		document.addEventListener("touchstart", outsideClickListener);
 
-		// Toggle eraser visibility
+		// Toggle eraser visibility - UPDATED SECTION
 		const eraser = document.getElementById("highlight-eraser");
 		if (eraser && highlighter) {
+			const selection = window.rangy.getSelection();
 			const existing = highlighter.getHighlightsInSelection(selection);
 			eraser.style.display = existing.length > 0 ? "flex" : "none";
 		}
 	}
 
-	function handleOutsideClick(e: MouseEvent | TouchEvent): void {
+	function handleOutsideClick(e: MouseEvent): void {
 		console.log("handle outside click is triggered");
 		const target = e.target as Node;
 
@@ -324,11 +314,6 @@ type ColorName = keyof typeof COLOR_MAP;
 		if (!currentRange || !highlighter || !window.rangy) return;
 
 		const selection = window.rangy.getSelection();
-
-		// Re-apply the stored range
-		selection.removeAllRanges();
-		selection.addRange(currentRange);
-
 		const existing = highlighter.getHighlightsInSelection(selection);
 
 		// Check if any existing highlights in selection are the same color
@@ -356,10 +341,8 @@ type ColorName = keyof typeof COLOR_MAP;
 		window.getSelection()?.removeAllRanges();
 		menu.style.display = "none";
 
-		// Remove outside click listeners
 		if (outsideClickListener) {
 			document.removeEventListener("mousedown", outsideClickListener);
-			document.removeEventListener("touchstart", outsideClickListener);
 		}
 	}
 
@@ -374,13 +357,12 @@ type ColorName = keyof typeof COLOR_MAP;
 		}
 
 		// Unselect any remaining range
-		window.getSelection()?.removeAllRanges();
+		window.rangy.getSelection()?.removeAllRanges();
 		menu.style.display = "none";
 
 		// Cleanup listener
 		if (outsideClickListener) {
 			document.removeEventListener("mousedown", outsideClickListener);
-			document.removeEventListener("touchstart", outsideClickListener);
 		}
 	}
 
