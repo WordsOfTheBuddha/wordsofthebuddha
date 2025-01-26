@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import fs from "fs";
 import path from "path";
 import PostCard from "./PostCard.astro";
@@ -12,8 +12,12 @@ const { n = 5 } = Astro.props;
 
 const allDiscourses = await getCollection("all");
 const discourseFiles = allDiscourses
-	.filter((discourse) => discourse.id !== "index") // Add this filter
-	.map((discourse) => ({
+	.filter(
+		(discourse: CollectionEntry<"all">) =>
+			discourse.id !== "index" &&
+			!discourse.filePath?.includes("src/content/en/books/")
+	)
+	.map((discourse: CollectionEntry<"all">) => ({
 		...discourse,
 		lastModified: fs.statSync(
 			path.join(process.cwd(), discourse.filePath ?? "")
@@ -21,13 +25,16 @@ const discourseFiles = allDiscourses
 	}));
 
 const latestDiscourses = discourseFiles
-	.sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime())
+	.sort(
+		(a: (typeof discourseFiles)[0], b: (typeof discourseFiles)[0]) =>
+			b.lastModified.getTime() - a.lastModified.getTime()
+	)
 	.slice(0, n);
 ---
 
 <div class="px-2">
 	{
-		latestDiscourses.map((discourse) => (
+		latestDiscourses.map((discourse: (typeof discourseFiles)[0]) => (
 			<PostCard
 				title={discourse.data.title}
 				description={discourse.data.description}
