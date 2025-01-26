@@ -1,6 +1,6 @@
 ---
+import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { getCollection, render, type CollectionEntry } from "astro:content";
 import PostCard from "../components/PostCard.astro";
 
 const allAnPosts = await getCollection("an");
@@ -20,7 +20,7 @@ const sortedPosts = allAnPosts.sort(naturalSort);
 	<main class="container">
 		<div class="posts-grid">
 			{
-				sortedPosts.map((post) => (
+				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
 					<PostCard
 						title={post.data.title}
 						description={post.data.description}
