@@ -213,47 +213,24 @@ type ColorName = keyof typeof COLOR_MAP;
 		}
 	}
 
-	function setupEventListeners(): void {
-		document.addEventListener("mousedown", () => {
-			isMouseDown = true;
-		});
-		document.addEventListener("mouseup", handleMouseUp);
-		document.addEventListener("touchend", handleSelection);
-		document.addEventListener("selectionchange", handleSelectionChange);
-
-		document
-			.querySelectorAll<HTMLButtonElement>(".color-swatch")
-			.forEach((swatch) => {
-				// Add touch handler for mobile
-				swatch.addEventListener("touchend", (e) => {
-					e.preventDefault();
-					const colorName = swatch.dataset.color as ColorName;
-					if (colorName) {
-						applyHighlight(colorName);
-					}
-				});
-
-				// Keep existing click handler for desktop
-				swatch.addEventListener("click", () => {
-					const colorName = swatch.dataset.color as ColorName;
-					if (colorName) {
-						applyHighlight(colorName);
-					}
-				});
-			});
-
-		const eraserBtn = document.getElementById("highlight-eraser");
-		if (eraserBtn) {
-			eraserBtn.addEventListener("click", handleClear);
-			eraserBtn.addEventListener("touchend", handleClear);
-		}
+	function isSelectionValid(selection: RangySelection) {
+		const range = selection.getRangeAt(0).nativeRange;
+		if (!range) return false;
+		const textContent = range.toString().trim();
+		return textContent.length > 0;
 	}
 
-	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
-
-	function handleMouseUp(e: MouseEvent) {
-		isMouseDown = false;
-		handleSelection(e);
+	function calculateMenuPosition(
+		menu: HTMLDivElement,
+		finalRect: DOMRect,
+		rootElement: HTMLElement
+	) {
+		const containerRect = rootElement.getBoundingClientRect();
+		const menuLeft =
+			finalRect.right - containerRect.left + rootElement.scrollLeft + 5;
+		const maxLeft = containerRect.width - menu.offsetWidth;
+		menu.style.left = `${Math.min(menuLeft, maxLeft)}px`;
+		menu.style.top = `${finalRect.bottom - containerRect.top + rootElement.scrollTop}px`;
 	}
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
@@ -264,26 +241,7 @@ type ColorName = keyof typeof COLOR_MAP;
 
 		const selection = window.rangy.getSelection();
 
-		// Enhanced validation for mobile
-		const isInvalidSelection = () => {
-			console.log("in isInvalidSelection function");
-			if (selection.isCollapsed || selection.rangeCount === 0) return true;
-
-			// Get native DOM range
-			const range = selection.getRangeAt(0).nativeRange;
-			if (!range) return true;
-
-			// Additional check for empty text selections
-			const textContent = range.toString().trim();
-			const rect = range.getBoundingClientRect();
-
-			console.log("text content: ", textContent);
-			console.log("rect: ", rect);
-
-			return textContent.length === 0 || rect.width === 0 || rect.height === 0;
-		};
-
-		if (isInvalidSelection()) {
+		if (selection.isCollapsed || !isSelectionValid(selection)) {
 			menu.style.display = "none";
 			return;
 		}
@@ -333,35 +291,15 @@ type ColorName = keyof typeof COLOR_MAP;
 			return;
 		}
 
-		// Enhanced validation check
-		const isValidSelection = () => {
-			if (!finalRect) return false;
-
-			// Check for visible rectangle dimensions
-			const hasVisibleSize = finalRect.width > 0 && finalRect.height > 0;
-
-			// Check for actual text content
-			const hasTextContent = currentRange
-				? currentRange.toString().trim().length > 0
-				: false;
-
-			return hasVisibleSize || hasTextContent;
-		};
-
-		if (!isValidSelection()) {
+		if (!isSelectionValid(selection)) {
 			menu.style.display = "none";
 			return;
 		}
 
-		const containerRect = rootElement.getBoundingClientRect();
-		const menuLeft =
-			finalRect.right - containerRect.left + rootElement.scrollLeft + 5;
+		if (finalRect) {
+			calculateMenuPosition(menu, finalRect, rootElement!);
+		}
 
-		// Ensure menu stays within container bounds
-		const maxLeft = containerRect.width - menu.offsetWidth;
-		menu.style.left = `${Math.min(menuLeft, maxLeft)}px`;
-
-		menu.style.top = `${finalRect.bottom - containerRect.top + rootElement.scrollTop}px`;
 		menu.style.display = "flex";
 
 		// Add back the eraser visibility check
@@ -474,6 +412,44 @@ type ColorName = keyof typeof COLOR_MAP;
 	function persist(): void {
 		if (!highlighter) return;
 		localStorage.setItem(storageKey, highlighter.serialize());
+	}
+
+	function setupSwatchListeners() {
+		document
+			.querySelectorAll<HTMLButtonElement>(".color-swatch")
+			.forEach((swatch) => {
+				swatch.addEventListener("touchend", (e) => {
+					e.preventDefault();
+					const colorName = swatch.dataset.color as ColorName;
+					if (colorName) applyHighlight(colorName);
+				});
+				swatch.addEventListener("click", () => {
+					const colorName = swatch.dataset.color as ColorName;
+					if (colorName) applyHighlight(colorName);
+				});
+			});
+	}
+
+	function setupEventListeners(): void {
+		document.addEventListener("mousedown", () => {
+			isMouseDown = true;
+		});
+		document.addEventListener("mouseup", handleMouseUp);
+		document.addEventListener("touchend", handleSelection);
+		document.addEventListener("selectionchange", handleSelectionChange);
+		setupSwatchListeners();
+		const eraserBtn = document.getElementById("highlight-eraser");
+		if (eraserBtn) {
+			eraserBtn.addEventListener("click", handleClear);
+			eraserBtn.addEventListener("touchend", handleClear);
+		}
+	}
+
+	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
+
+	function handleMouseUp(e: MouseEvent) {
+		isMouseDown = false;
+		handleSelection(e);
 	}
 
 	// Initialize on page load
