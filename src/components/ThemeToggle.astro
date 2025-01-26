@@ -10,6 +10,15 @@ const toggleTheme = () => {
 };
 ---
 
+<script is:inline>
+	// Initialize theme based on localStorage
+	if (localStorage.theme === "dark") {
+		document.documentElement.classList.add("dark");
+	} else {
+		document.documentElement.classList.remove("dark");
+	}
+</script>
+
 <button
 	id="themeToggle"
 	class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -27,9 +36,11 @@ const toggleTheme = () => {
 				if (document.documentElement.classList.contains("dark")) {
 					document.documentElement.classList.remove("dark");
 					localStorage.theme = "light";
+					window.dispatchEvent(new Event("themeToggled"));
 				} else {
 					document.documentElement.classList.add("dark");
 					localStorage.theme = "dark";
+					window.dispatchEvent(new Event("themeToggled"));
 				}
 			}
 		});
