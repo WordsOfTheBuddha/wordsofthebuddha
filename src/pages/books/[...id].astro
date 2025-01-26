@@ -1,0 +1,67 @@
+---
+import { render, getEntry } from "astro:content";
+import fs from "fs";
+import path from "path";
+import { routes } from "../../utils/routes";
+import Layout from "../../layouts/Layout.astro";
+
+// TODO: Should be updated for each added book
+export function getStaticPaths() {
+	return [
+		{
+			params: {
+				id: "noble-truths-noble-path",
+			},
+		},
+	];
+}
+
+// Extract slug from params
+const { id } = Astro.params;
+
+// Find current index in sorted routes
+const currentIndex = routes.findIndex((route) => route === id);
+
+if (currentIndex === -1) {
+	return Astro.redirect("/404");
+}
+
+const contentItem = await getEntry("all", id);
+
+if (!contentItem) {
+	return Astro.redirect("/404");
+}
+
+// Extract last two segments of file path and remove extension
+const fpParts = (contentItem.filePath ?? "").split("/");
+let folder = fpParts[fpParts.length - 2] || "";
+const fp = folder ? `${folder}/${id}` : id;
+
+const { Content } = await render(contentItem);
+
+// Find next and previous items
+const nextIndex = currentIndex + 1;
+const prevIndex = currentIndex - 1;
+const next =
+	nextIndex < routes.length ? await getEntry("all", routes[nextIndex]) : null;
+const prev = prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
+
+// Get the file's last modified time
+const filePath = contentItem.filePath
+	? path.join(process.cwd(), contentItem.filePath)
+	: "";
+const stats = fs.statSync(filePath);
+const lastUpdated = stats.mtime;
+---
+
+<Layout
+	fp={fp}
+	title={contentItem.data.title}
+	description={contentItem.data.description}
+	prev={prev}
+	next={next}
+	id={id}
+	lastUpdated={lastUpdated}
+>
+	<Content />
+</Layout>

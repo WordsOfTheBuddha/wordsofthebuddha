@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import BookCard from "../components/BookCard.astro";
+
+const allBooks = await getCollection("books");
+
+// Natural sort function
+const naturalSort = (
+	a: CollectionEntry<"books">,
+	b: CollectionEntry<"books">
+) => {
+	return a.id.localeCompare(b.id, undefined, {
+		numeric: true,
+		sensitivity: "base",
+	});
+};
+
+// console.log(allBooks);
+const sortedPosts = allBooks.sort(naturalSort);
+---
+
+<Layout title="Books">
+	<main class="container">
+		<div class="posts-grid">
+			{
+				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
+					<BookCard
+						title={post.data.title}
+						description={post.data.description}
+						summary={post.data.summary}
+						imagePath={post.data.imagePath}
+						author={post.data.author}
+						slug={post.data.slug}
+					/>
+				))
+			}
+		</div>
+	</main>
+</Layout>
