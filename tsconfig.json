@@ -6,5 +6,8 @@
     "src/**/*.tsx",
     "src/**/*.astro"
   ],
-  "exclude": ["dist"]
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "types": ["astro/client", "astro/content"],
+  }
 }

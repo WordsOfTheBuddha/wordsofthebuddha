@@ -3,18 +3,27 @@ import { glob } from "astro/loaders";
 
 const baseSchema = z.object({
     title: z.string(),
+    slug: z.string(),
     description: z.string().optional(),
     fetter: z.string().optional(),
     tags: z.string().optional(),
     simile: z.string().optional(),
-    slug: z.string(),
-    filePath: z.string().optional(),
 });
 
-function createCollection(base: string, pattern: string = "*.mdx") {
+const bookSchema = baseSchema.extend({
+    title: z.string(),
+    slug: z.string(),
+    description: z.string().optional(),
+    summary: z.string().optional(),
+    author: z.string().optional(),
+    imagePath: z.string().optional(),
+    order: z.number().int().optional(),
+});
+
+function createCollection(base: string, pattern: string = "*.mdx", schema = baseSchema) {
     return defineCollection({
         loader: glob({ pattern, base }),
-        schema: baseSchema,
+        schema,
     });
 }
 
@@ -25,6 +34,7 @@ const sn = createCollection("src/content/en/sn/");
 const an = createCollection("src/content/en/an/");
 const snp = createCollection("src/content/en/snp/");
 const iti = createCollection("src/content/en/iti/");
+const books = createCollection("src/content/en/books/", "*.mdx", bookSchema);
 const all = createCollection("src/content/en/", "**/*.mdx");
 
-export const collections = { dhp, mn, ud, sn, snp, an, iti, all };
+export const collections = { dhp, mn, ud, sn, snp, an, iti, books, all };
