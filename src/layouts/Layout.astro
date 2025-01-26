@@ -1,4 +1,6 @@
 ---
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 // Add content styling with CSS classes
 import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
@@ -29,6 +31,8 @@ if (id) {
 		<title>{SEOTitle || "Words of the Buddha"}</title>
 		<meta name="description" content={description || "Default Description"} />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<Analytics />
+		<SpeedInsights />
 	</head>
 	<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 		<Tooltip />
@@ -46,12 +50,7 @@ if (id) {
 				<Footer />
 			</div>
 		</main>
-	</body>
-	<script>
-		import { inject } from "@vercel/analytics";
-		inject();
-	</script>
-	<script>
+	</body><script>
 		document.addEventListener("DOMContentLoaded", () => {
 			// Remove empty spans with zero-width spaces
 			document.querySelectorAll("span").forEach((span) => {
