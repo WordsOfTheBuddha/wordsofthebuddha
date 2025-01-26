@@ -149,6 +149,12 @@ type ColorName = keyof typeof COLOR_MAP;
 	const menu = document.getElementById("highlight-menu") as HTMLDivElement;
 	let rootElement: HTMLElement | null = null;
 
+	// Mobile detection and range preservation
+	let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+	let savedRange: Range | null = null;
+	let isMouseDown = false;
+	let menuPositionTimeout: number | null = null;
+
 	const COLOR_MAP = {
 		yellow: "#FEF08A",
 		pink: "#FBCFE8",
@@ -208,13 +214,26 @@ type ColorName = keyof typeof COLOR_MAP;
 	}
 
 	function setupEventListeners(): void {
-		document.addEventListener("mouseup", handleSelection);
+		document.addEventListener("mousedown", () => {
+			isMouseDown = true;
+		});
+		document.addEventListener("mouseup", handleMouseUp);
 		document.addEventListener("touchend", handleSelection);
-		document.addEventListener("mousedown", handleOutsideClick);
+		document.addEventListener("selectionchange", handleSelectionChange);
 
 		document
 			.querySelectorAll<HTMLButtonElement>(".color-swatch")
 			.forEach((swatch) => {
+				// Add touch handler for mobile
+				swatch.addEventListener("touchend", (e) => {
+					e.preventDefault();
+					const colorName = swatch.dataset.color as ColorName;
+					if (colorName) {
+						applyHighlight(colorName);
+					}
+				});
+
+				// Keep existing click handler for desktop
 				swatch.addEventListener("click", () => {
 					const colorName = swatch.dataset.color as ColorName;
 					if (colorName) {
@@ -226,123 +245,200 @@ type ColorName = keyof typeof COLOR_MAP;
 		const eraserBtn = document.getElementById("highlight-eraser");
 		if (eraserBtn) {
 			eraserBtn.addEventListener("click", handleClear);
+			eraserBtn.addEventListener("touchend", handleClear);
 		}
 	}
 
 	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
 
-	function handleSelection(e: MouseEvent | TouchEvent): void {
+	function handleMouseUp(e: MouseEvent) {
+		isMouseDown = false;
+		handleSelection(e);
+	}
+
+	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) return;
 
+		// On desktop, only proceed after mouseup
+		if (e instanceof MouseEvent && isMouseDown) return;
+
 		const selection = window.rangy.getSelection();
-		if (selection.isCollapsed || selection.rangeCount === 0) {
+
+		// Enhanced validation for mobile
+		const isInvalidSelection = () => {
+			console.log("in isInvalidSelection function");
+			if (selection.isCollapsed || selection.rangeCount === 0) return true;
+
+			// Get native DOM range
+			const range = selection.getRangeAt(0).nativeRange;
+			if (!range) return true;
+
+			// Additional check for empty text selections
+			const textContent = range.toString().trim();
+			const rect = range.getBoundingClientRect();
+
+			console.log("text content: ", textContent);
+			console.log("rect: ", rect);
+
+			return textContent.length === 0 || rect.width === 0 || rect.height === 0;
+		};
+
+		if (isInvalidSelection()) {
 			menu.style.display = "none";
 			return;
 		}
 
-		// Grab the actual DOM range
-		currentRange = selection.getRangeAt(0).nativeRange;
+		// Clear any pending menu positioning
+		if (menuPositionTimeout) {
+			clearTimeout(menuPositionTimeout);
+			menuPositionTimeout = null;
+		}
 
-		// Use getClientRects() so we can position near the last line of the selection
-		const rects = currentRange.getClientRects();
+		menuPositionTimeout = setTimeout(() => {
+			updateMenuPosition(selection);
+		}, 50) as unknown as number;
+	}
+
+	function updateMenuPosition(selection: RangySelection) {
+		currentRange = selection.getRangeAt(0).nativeRange;
+		savedRange = currentRange.cloneRange();
+
+		// Get the end point of the selection
+		const endRange = document.createRange();
+		endRange.setStart(currentRange.endContainer, currentRange.endOffset);
+		endRange.collapse(true); // Collapse to end point
+
+		// Get the position of the last character in the selection
+		const endRects = endRange.getClientRects();
 		let finalRect: DOMRect | null = null;
 
-		if (rects.length > 0) {
-			// The very last rect in the selection
-			finalRect = rects[rects.length - 1];
+		if (endRects.length > 0) {
+			// Use the last visible cursor position at selection end
+			finalRect = endRects[endRects.length - 1];
 		} else {
-			// Fallback to the overall bounding box if for some reason getClientRects() is empty
-			finalRect = currentRange.getBoundingClientRect();
+			// Fallback to first rect in selection
+			const rects = currentRange.getClientRects();
+			if (rects.length > 0) {
+				finalRect = rects[rects.length - 1];
+			} else {
+				finalRect = currentRange.getBoundingClientRect();
+			}
 		}
 
-		// If we still have nothing, bail out
-		if (!finalRect) {
+		console.log("final rect: ", finalRect);
+
+		// Validate rootElement first
+		if (!rootElement) {
 			menu.style.display = "none";
 			return;
 		}
 
-		// Position the menu just after the final selected rectangle
-		if (!rootElement) return;
+		// Enhanced validation check
+		const isValidSelection = () => {
+			if (!finalRect) return false;
+
+			// Check for visible rectangle dimensions
+			const hasVisibleSize = finalRect.width > 0 && finalRect.height > 0;
+
+			// Check for actual text content
+			const hasTextContent = currentRange
+				? currentRange.toString().trim().length > 0
+				: false;
+
+			return hasVisibleSize || hasTextContent;
+		};
+
+		if (!isValidSelection()) {
+			menu.style.display = "none";
+			return;
+		}
+
 		const containerRect = rootElement.getBoundingClientRect();
-		finalRect = [...rects].reduce((acc, r) =>
-			r.bottom > acc.bottom ? r : acc
-		);
-		menu.style.position = "absolute";
+		const menuLeft =
+			finalRect.right - containerRect.left + rootElement.scrollLeft + 5;
+
+		// Ensure menu stays within container bounds
+		const maxLeft = containerRect.width - menu.offsetWidth;
+		menu.style.left = `${Math.min(menuLeft, maxLeft)}px`;
+
 		menu.style.top = `${finalRect.bottom - containerRect.top + rootElement.scrollTop}px`;
-		menu.style.left = `${finalRect.right - containerRect.left + rootElement.scrollLeft + 5}px`;
 		menu.style.display = "flex";
 
-		// Add new listener
+		// Add back the eraser visibility check
+		const eraser = document.getElementById("highlight-eraser");
+		if (eraser && highlighter) {
+			// Get fresh selection reference after potential range adjustments
+			const currentSelection = window.rangy.getSelection();
+			const existing = highlighter.getHighlightsInSelection(currentSelection);
+			eraser.style.display = existing.length > 0 ? "flex" : "none";
+		}
+
+		// Keep existing outside click listener logic
 		outsideClickListener = (e: MouseEvent) => {
 			const target = e.target as Node;
 			if (!menu.contains(target)) {
-				console.log("[Highlight] Click outside detected");
 				menu.style.display = "none";
 				window.getSelection()?.removeAllRanges();
 				document.removeEventListener("mousedown", outsideClickListener!);
 			}
 		};
-
-		// Toggle eraser visibility - UPDATED SECTION
-		const eraser = document.getElementById("highlight-eraser");
-		if (eraser && highlighter) {
-			const selection = window.rangy.getSelection();
-			const existing = highlighter.getHighlightsInSelection(selection);
-			eraser.style.display = existing.length > 0 ? "flex" : "none";
-		}
+		document.addEventListener("mousedown", outsideClickListener);
 	}
 
-	function handleOutsideClick(e: MouseEvent): void {
-		console.log("handle outside click is triggered");
-		const target = e.target as Node;
+	function handleSelectionChange() {
+		if (!window.rangy || !highlighter) return;
 
-		// Only act if menu is currently visible
-		if (menu.style.display !== "flex") return;
-
-		// Check if click is outside the menu
-		if (!menu.contains(target)) {
-			console.log("[Highlight] Click outside detected, hiding menu");
-			menu.style.display = "none";
-
-			// Clear any existing selection
-			window.getSelection()?.removeAllRanges();
-		}
-	}
-
-	// Update the applyHighlight function
-	function applyHighlight(colorName: ColorName): void {
-		if (!currentRange || !highlighter || !window.rangy) return;
-
-		const selection = window.rangy.getSelection();
-		const existing = highlighter.getHighlightsInSelection(selection);
-
-		// Check if any existing highlights in selection are the same color
-		const hasSameColor = existing.some(
-			(h) => h.classApplier.className === `highlight-${colorName}`
-		);
-
-		if (hasSameColor) {
-			// Remove only same-color highlights within the selection
-			const sameColorHighlights = existing.filter(
-				(h) => h.classApplier.className === `highlight-${colorName}`
-			);
-			highlighter.removeHighlights(sameColorHighlights);
-		} else {
-			// Apply new color while preserving existing different colors
-			highlighter.highlightSelection(`highlight-${colorName}`, {
-				selection: selection,
-				containerElementId: "highlight-root",
-			});
-		}
-
-		persist();
-
-		// Clear selection and hide menu
-		window.getSelection()?.removeAllRanges();
+		// Hide the menu whenever the selection is actively changing
 		menu.style.display = "none";
 
-		if (outsideClickListener) {
-			document.removeEventListener("mousedown", outsideClickListener);
+		const selection = window.rangy.getSelection();
+		// If no selection, nothing else to do
+		if (selection.isCollapsed || selection.rangeCount === 0) {
+			return;
+		}
+
+		// We don't reposition or show the menu here
+		// because we only want it visible after mouseup or touchend
+	}
+
+	function applyHighlight(colorName: ColorName): void {
+		if (!highlighter || !window.rangy) return;
+
+		const selection = window.rangy.getSelection();
+
+		if (isMobile && savedRange) {
+			setTimeout(() => {
+				try {
+					selection.removeAllRanges();
+					selection.addRange(savedRange!);
+					selection.refresh();
+					applyHighlightToSelection(colorName, selection);
+				} catch (e) {
+					console.log("Range restoration error:", e);
+				}
+			}, 100);
+		} else {
+			applyHighlightToSelection(colorName, selection);
+		}
+	}
+
+	function applyHighlightToSelection(
+		colorName: ColorName,
+		selection: RangySelection
+	) {
+		if (!selection.rangeCount) return;
+
+		highlighter!.highlightSelection(`highlight-${colorName}`, {
+			selection: selection,
+			containerElementId: "highlight-root",
+			exclusive: true, // Remove existing highlights in selection
+		});
+
+		persist();
+		menu.style.display = "none";
+
+		if (!isMobile) {
+			window.getSelection()?.removeAllRanges();
 		}
 	}
 
@@ -350,20 +446,29 @@ type ColorName = keyof typeof COLOR_MAP;
 		if (!highlighter || !window.rangy) return;
 
 		const selection = window.rangy.getSelection();
+
+		if (isMobile && savedRange) {
+			try {
+				selection.removeAllRanges();
+				selection.addRange(savedRange);
+				selection.refresh();
+			} catch (e) {
+				console.log("Clear range error:", e);
+				return;
+			}
+		}
+
 		const existing = highlighter.getHighlightsInSelection(selection);
 		if (existing.length > 0) {
 			highlighter.removeHighlights(existing);
 			persist();
 		}
 
-		// Unselect any remaining range
-		window.rangy.getSelection()?.removeAllRanges();
-		menu.style.display = "none";
-
-		// Cleanup listener
-		if (outsideClickListener) {
-			document.removeEventListener("mousedown", outsideClickListener);
+		if (!isMobile) {
+			window.getSelection()?.removeAllRanges();
 		}
+
+		menu.style.display = "none";
 	}
 
 	function persist(): void {
