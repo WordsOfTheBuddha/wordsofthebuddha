@@ -1,5 +1,8 @@
 import { execSync } from 'child_process';
+import fs from 'fs';
 import path from 'path';
+
+const CACHE_FILE = '.timestamp-cache.json';
 
 interface CacheData {
     [filepath: string]: string; // ISO date strings
@@ -21,6 +24,13 @@ function initializeCache(): void {
     if (isInitialized) return;
 
     try {
+        // First load existing cache
+        try {
+            globalCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
+        } catch {
+            globalCache = {};
+        }
+
         // Get all file modifications in a single git command
         const gitLog = execSync(
             'git ls-files --stage | cut -f3- | xargs git log -1 --format="%H %ct %aI %s" --',
@@ -40,6 +50,8 @@ function initializeCache(): void {
             }
         });
 
+        // Save updated cache
+        fs.writeFileSync(CACHE_FILE, JSON.stringify(globalCache, null, 2));
         isInitialized = true;
     } catch (error) {
         console.error('Error initializing git cache:', error);
