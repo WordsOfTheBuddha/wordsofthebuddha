@@ -1,13 +1,11 @@
 ---
+export const prerender = false;
+
 import { render, getEntry } from "astro:content";
 import path from "path";
 import { routes } from "../utils/routes";
 import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
-
-export function getStaticPaths() {
-	return routes.map((id) => ({ params: { id } }));
-}
 
 // Extract slug from params
 const { id } = Astro.params;
