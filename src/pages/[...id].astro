@@ -42,9 +42,7 @@ const next =
 const prev = prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
 
 // Get the file's last modified time
-const filePath = contentItem.filePath
-	? path.join(process.cwd(), contentItem.filePath)
-	: "";
+const filePath = contentItem.filePath || "";
 const lastUpdated = getLastModified(filePath);
 ---
 
@@ -55,6 +53,8 @@ const lastUpdated = getLastModified(filePath);
 	prev={prev}
 	next={next}
 	id={id}
+	showReadLater={true}
+	showBookmark={true}
 	lastUpdated={lastUpdated}
 >
 	<Content />

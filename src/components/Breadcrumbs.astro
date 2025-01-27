@@ -3,8 +3,8 @@ import { transformId } from "../utils/transformId.ts";
 
 const { path } = Astro.props;
 
-// Return null if on home page
-if (path === "/") return null;
+// Pages to exclude breadcrumbs from
+if (["/", "/read-later", "/bookmarks"].indexOf(path) !== -1) return null;
 
 const segments = path.split("/").filter(Boolean);
 ---

@@ -1,0 +1,74 @@
+---
+import ClockOutline from "../assets/clock-outline.svg?raw";
+import ClockSolid from "../assets/clock-solid.svg?raw";
+
+// Get initial state from cookie
+const readLaters = Astro.cookies.get("wotb_readLaters")?.json() || {};
+---
+
+<button
+	id="readLaterButton"
+	class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+	aria-label="Read Later content"
+>
+	<span id="readLaterIcon" class="w-5 h-5" set:html={ClockOutline} />
+	<span id="readLaterSolidIcon" class="w-5 h-5 hidden" set:html={ClockSolid} />
+	<span>Read Later</span>
+</button>
+
+<script>
+	function getCookie(name: string) {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2) return parts.pop()?.split(";").shift();
+		return null;
+	}
+
+	function setCookie(name: string, value: any, days = 365) {
+		const date = new Date();
+		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+		document.cookie = `${name}=${JSON.stringify(value)};expires=${date.toUTCString()};path=/`;
+	}
+
+	const btn = document.getElementById("readLaterButton");
+	const outline = document.getElementById("readLaterIcon");
+	const solid = document.getElementById("readLaterSolidIcon");
+	const slug = window.location.pathname.replace(/^\/+/, "");
+
+	function getSaves() {
+		const data = getCookie("wotb_readLaters");
+		return data ? JSON.parse(data) : {};
+	}
+
+	function updateState(isSaved: boolean) {
+		if (isSaved) {
+			btn?.classList.add("text-primary-color", "dark:text-primary-color");
+			outline?.classList.add("hidden");
+			solid?.classList.remove("hidden");
+		} else {
+			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
+			outline?.classList.remove("hidden");
+			solid?.classList.add("hidden");
+		}
+	}
+
+	if (btn) {
+		const readLaters = getSaves();
+		updateState(readLaters[slug]);
+
+		btn.addEventListener("click", () => {
+			const current = getSaves();
+			const wasSaved = Boolean(current[slug]);
+			current[slug] = !wasSaved;
+			setCookie("wotb_readLaters", current);
+			updateState(!wasSaved);
+
+			if (!wasSaved) {
+				btn?.classList.add("animate-pulse");
+				setTimeout(() => {
+					btn?.classList.remove("animate-pulse");
+				}, 1000);
+			}
+		});
+	}
+</script>

@@ -13,8 +13,21 @@ import Title from "../components/Title.astro";
 import Description from "../components/Description.astro";
 import FooterNavigation from "../components/FooterNavigation.astro";
 import HighlightLayout from "../components/HighlightLayout.astro";
+import ReadLaterButton from "../components/ReadLaterButton.astro";
+import BookmarkButton from "../components/BookmarkButton.astro";
 
-const { id, fp, title, description, prev, next, lastUpdated } = Astro.props;
+const {
+	id,
+	fp,
+	title,
+	description,
+	prev,
+	next,
+	lastUpdated,
+	showReadLater = false,
+	showBookmark = false,
+	titleIcon = null, // Add new prop for title icon
+} = Astro.props;
 let SEOTitle = title;
 if (title != "Words of the Buddha") {
 	SEOTitle = title + " - Words of the Buddha";
@@ -41,8 +54,21 @@ if (id) {
 				<HighlightLayout currentPath={fp}>
 					<Navbar />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
+					<Title title={title}>
+						{titleIcon && (
+							<span class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color" set:html={titleIcon} />
+						)}
+					</Title>
 					<Description description={description} />
-					<Title title={title} />
+					{
+						(showReadLater || showBookmark) && (
+							<div class="flex gap-2 items-center">
+								{showReadLater && <ReadLaterButton />}
+								{showBookmark && <BookmarkButton />}
+							</div>
+							<hr class="mt-2 mb-8"/>
+						)
+					}
 					<slot />
 					{lastUpdated && <LastUpdated lastUpdated={lastUpdated} path={fp} />}
 					<FooterNavigation prev={prev} next={next} />

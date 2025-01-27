@@ -1,0 +1,78 @@
+---
+import BookmarkOutline from "../assets/bookmark-outline.svg?raw";
+import BookmarkSolid from "../assets/bookmark-solid.svg?raw";
+
+// Get initial state from cookie
+const bookmarks = Astro.cookies.get("wotb_bookmarks")?.json() || {};
+---
+
+<button
+	id="bookmarkButton"
+	class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+	aria-label="Bookmark content"
+>
+	<span id="bookmarkIcon" class="w-5 h-5" set:html={BookmarkOutline} />
+	<span
+		id="bookmarkSolidIcon"
+		class="w-5 h-5 hidden"
+		set:html={BookmarkSolid}
+	/>
+	<span>Bookmark</span>
+</button>
+
+<script>
+	function getCookie(name: string) {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2) return parts.pop()?.split(";").shift();
+		return null;
+	}
+
+	function setCookie(name: string, value: any, days = 365) {
+		const date = new Date();
+		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+		document.cookie = `${name}=${JSON.stringify(value)};expires=${date.toUTCString()};path=/`;
+	}
+
+	const btn = document.getElementById("bookmarkButton");
+	const outline = document.getElementById("bookmarkIcon");
+	const solid = document.getElementById("bookmarkSolidIcon");
+	const slug = window.location.pathname.replace(/^\/+/, "");
+
+	function getBookmarks() {
+		const data = getCookie("wotb_bookmarks");
+		return data ? JSON.parse(data) : {};
+	}
+
+	function updateState(isBookmarked: boolean) {
+		if (isBookmarked) {
+			btn?.classList.add("text-primary-color", "dark:text-primary-color");
+			outline?.classList.add("hidden");
+			solid?.classList.remove("hidden");
+		} else {
+			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
+			outline?.classList.remove("hidden");
+			solid?.classList.add("hidden");
+		}
+	}
+
+	if (btn) {
+		const bookmarks = getBookmarks();
+		updateState(bookmarks[slug]);
+
+		btn.addEventListener("click", () => {
+			const current = getBookmarks();
+			const wasBookmarked = Boolean(current[slug]);
+			current[slug] = !wasBookmarked;
+			setCookie("wotb_bookmarks", current);
+			updateState(!wasBookmarked);
+
+			if (!wasBookmarked) {
+				btn?.classList.add("animate-pulse");
+				setTimeout(() => {
+					btn?.classList.remove("animate-pulse");
+				}, 1000);
+			}
+		});
+	}
+</script>
