@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 
 import mdx from "@astrojs/mdx";
+import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
 import { rehypeVerseParagraphs } from "./src/utils/rehype-verse-paragraphs.js";
 import remarkBreaks from "remark-breaks";
@@ -23,6 +24,7 @@ export default defineConfig({
       [rehypeExternalLinks, externalLinksOptions],
     ],
   },
+
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -34,6 +36,7 @@ export default defineConfig({
       ],
     }),
   ],
+
   vite: {
     optimizeDeps: {
       include: ["rangy"],
@@ -47,4 +50,6 @@ export default defineConfig({
       noExternal: ["rangy"],
     },
   },
+
+  adapter: vercel(),
 });
