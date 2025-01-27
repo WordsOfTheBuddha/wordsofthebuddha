@@ -24,3 +24,5 @@ pnpm-debug.log*
 .idea/
 
 src/utils/routes.ts
+
+.timestamp-cache.json

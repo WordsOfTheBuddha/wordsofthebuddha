@@ -1,8 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-import fs from "fs";
 import path from "path";
 import PostCard from "./PostCard.astro";
+import { getLastModified } from "../utils/getLastModified";
 
 interface Props {
 	n?: number;
@@ -19,9 +19,7 @@ const discourseFiles = allDiscourses
 	)
 	.map((discourse: CollectionEntry<"all">) => ({
 		...discourse,
-		lastModified: fs.statSync(
-			path.join(process.cwd(), discourse.filePath ?? "")
-		).mtime,
+		lastModified: getLastModified(discourse.filePath ?? ""),
 	}));
 
 const latestDiscourses = discourseFiles
