@@ -38,16 +38,16 @@ if (id) {
 		<Tooltip />
 		<main class="p-4">
 			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
-				<Navbar />
-				<Breadcrumbs path={fp || Astro.url.pathname} />
 				<HighlightLayout currentPath={fp}>
+					<Navbar />
+					<Breadcrumbs path={fp || Astro.url.pathname} />
 					<Description description={description} />
 					<Title title={title} />
 					<slot />
+					{lastUpdated && <LastUpdated lastUpdated={lastUpdated} path={fp} />}
+					<FooterNavigation prev={prev} next={next} />
+					<Footer />
 				</HighlightLayout>
-				{lastUpdated && <LastUpdated lastUpdated={lastUpdated} path={fp} />}
-				<FooterNavigation prev={prev} next={next} />
-				<Footer />
 			</div>
 		</main>
 	</body><script>

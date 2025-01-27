@@ -169,7 +169,8 @@ type ColorName = keyof typeof COLOR_MAP;
 		if (!rootElement) rootElement = document.getElementById("highlight-root");
 		if (!rootElement) return;
 
-		if (document.documentElement.classList.contains("dark")) {
+		const isDark = document.documentElement.classList.contains("dark");
+		if (isDark) {
 			rootElement.classList.add("dark-mode");
 		} else {
 			rootElement.classList.remove("dark-mode");
@@ -282,8 +283,6 @@ type ColorName = keyof typeof COLOR_MAP;
 				finalRect = currentRange.getBoundingClientRect();
 			}
 		}
-
-		console.log("final rect: ", finalRect);
 
 		// Validate rootElement first
 		if (!rootElement) {
@@ -455,8 +454,8 @@ type ColorName = keyof typeof COLOR_MAP;
 	// Initialize on page load
 	document.addEventListener("DOMContentLoaded", () => {
 		rootElement = document.getElementById("highlight-root");
-		updateDarkMode();
-		document.addEventListener("themeToggled", updateDarkMode);
+		updateDarkMode(); // Initial theme state
+		window.addEventListener("themeToggled", updateDarkMode); // Listen on window instead of document
 		initializeHighlighter();
 	});
 </script>
