@@ -1,5 +1,29 @@
 ---
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
 import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+	showAuth?: boolean;
+}
+
+const { showAuth = false } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Only check auth if showAuth is true
+let user = null;
+if (showAuth) {
+	const auth = getAuth(app);
+	if (Astro.cookies.has("__session")) {
+		const sessionCookie = Astro.cookies.get("__session")?.value;
+		if (sessionCookie) {
+			const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+			if (decodedCookie) {
+				user = await auth.getUser(decodedCookie.uid);
+			}
+		}
+	}
+}
 ---
 
 <nav class="flex items-center border-b dark:border-gray-700">
@@ -8,8 +32,80 @@ import ThemeToggle from "./ThemeToggle.astro";
 			Words of the Buddha
 		</a>
 	</div>
-	<div class="ml-auto">
-		<!-- Potential space for future nav items -->
+	<div class="ml-auto flex items-center">
+		{
+			showAuth &&
+				(user ? (
+					<div class="relative">
+						<button
+							type="button"
+							id="user-menu-button"
+							class="flex items-center gap-2 px-1 py-1 text-sm font-medium text-[var(--text-color)] hover:text-[var(--link-hover-color)] focus:outline-none"
+						>
+							<span>{user.displayName}</span>
+							<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+								<path
+									fill-rule="evenodd"
+									d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+						</button>
+						<div
+							id="user-menu"
+							class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[var(--auth-card-bg)] ring-1 ring-black ring-opacity-5"
+						>
+							<div class="py-1">
+								<a
+									href="/dashboard"
+									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
+								>
+									Dashboard
+								</a>
+								<form action="/api/auth/signout" method="post">
+									<input type="hidden" name="returnTo" value={currentPath} />
+									<button
+										type="submit"
+										class="block w-full text-left px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
+									>
+										Sign out
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				) : (
+					<a
+						href={`/signin?returnTo=${encodeURIComponent(currentPath)}`}
+						class="px-3 py-1 text-sm border border-transparent rounded-md shadow-sm font-medium text-white bg-[var(--auth-button-bg)] hover:bg-[var(--auth-button-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
+					>
+						Sign in
+					</a>
+				))
+		}
 		<ThemeToggle />
 	</div>
 </nav>
+
+<script>
+	const userMenuButton = document.getElementById("user-menu-button");
+	const userMenu = document.getElementById("user-menu");
+	let isMenuOpen = false;
+
+	if (userMenuButton && userMenu) {
+		// Toggle menu on button click
+		userMenuButton.addEventListener("click", (e) => {
+			e.stopPropagation();
+			isMenuOpen = !isMenuOpen;
+			userMenu.classList.toggle("hidden");
+		});
+
+		// Close menu when clicking outside
+		document.addEventListener("click", (e) => {
+			if (isMenuOpen && !userMenu.contains(e.target as Node)) {
+				isMenuOpen = false;
+				userMenu.classList.add("hidden");
+			}
+		});
+	}
+</script>

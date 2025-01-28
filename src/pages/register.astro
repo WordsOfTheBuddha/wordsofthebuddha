@@ -1,0 +1,123 @@
+---
+export const prerender = false;
+import Layout from "../layouts/Layout.astro";
+
+const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
+console.log("return to in register is: ", returnTo);
+---
+
+<Layout>
+	<div class="flex items-baseline justify-center py-8 px-4 sm:px-6 lg:px-8">
+		<div
+			class="max-w-md w-full space-y-8 bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg"
+		>
+			<div>
+				<h1
+					class="mt-6 text-center text-3xl font-bold text-[var(--text-color)]"
+				>
+					Create Account
+				</h1>
+				<p class="mt-2 text-center text-sm text-[var(--text-color)]">
+					Already have an account?
+					<a
+						href="/signin"
+						class="font-medium text-[var(--link-color)] hover:text-[var(--link-hover-color)]"
+					>
+						Sign in
+					</a>
+				</p>
+			</div>
+
+			<form
+				class="mt-8 space-y-6"
+				action="/api/auth/register"
+				method="post"
+				enctype="application/x-www-form-urlencoded"
+			>
+				<div class="rounded-md shadow-sm space-y-4">
+					<div>
+						<label
+							for="name"
+							class="block text-sm font-medium text-[var(--text-color)]"
+							>Name</label
+						>
+						<input
+							type="text"
+							name="name"
+							id="name"
+							required
+							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
+						/>
+					</div>
+					<div>
+						<label
+							for="email"
+							class="block text-sm font-medium text-[var(--text-color)]"
+							>Email</label
+						>
+						<input
+							type="email"
+							name="email"
+							id="email"
+							required
+							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
+						/>
+					</div>
+					<div>
+						<label
+							for="password"
+							class="block text-sm font-medium text-[var(--text-color)]"
+							>Password</label
+						>
+						<input
+							type="password"
+							name="password"
+							id="password"
+							required
+							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
+						/>
+					</div>
+				</div>
+
+				<input type="hidden" name="returnTo" value={returnTo} />
+
+				<div>
+					<button
+						type="submit"
+						class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[var(--auth-button-bg)] hover:bg-[var(--auth-button-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--secondary-color)]"
+					>
+						Register
+					</button>
+				</div>
+
+				<!--div class="relative">
+					<div class="absolute inset-0 flex items-center">
+						<div class="w-full border-t border-[var(--auth-input-border)]">
+						</div>
+					</div>
+					<div class="relative flex justify-center text-sm">
+						<span class="px-2 bg-[var(--auth-card-bg)] text-[var(--text-color)]"
+							>Or continue with</span
+						>
+					</div>
+				</div>
+
+				<div>
+					<button
+						type="button"
+						disabled
+						class="w-full flex justify-center items-center py-2 px-4 border border-[var(--auth-input-border)] rounded-md shadow-sm text-sm font-medium text-[var(--text-color)] bg-[var(--auth-input-bg)] opacity-50 cursor-not-allowed"
+					>
+						<svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"
+							></path>
+						</svg>
+						Google Sign Up (Coming Soon)
+					</button>
+				</div-->
+			</form>
+		</div>
+	</div>
+</Layout>

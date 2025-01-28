@@ -47,6 +47,27 @@
   --background-row-hover: var(--background-row-hover-light);
   --callout-background: rgba(219, 234, 254, 1);
   --border-color: rgba(191, 219, 254, 1);
+
+  --auth-card-bg-light: #ffffff;
+  --auth-card-shadow-light: rgba(0, 0, 0, 0.1);
+  --auth-input-bg-light: #f8f8f8;
+  --auth-input-border-light: #e2e8f0;
+  --auth-button-bg-light: #1a73e8;
+  --auth-button-hover-light: #1557b0;
+
+  --auth-card-bg-dark: #2d3748;
+  --auth-card-shadow-dark: rgba(255, 255, 255, 0.1);
+  --auth-input-bg-dark: #1a202c;
+  --auth-input-border-dark: #4a5568;
+  --auth-button-bg-dark: #d47445;
+  --auth-button-hover-dark: #d47445;
+
+  --auth-card-bg: var(--auth-card-bg-light);
+  --auth-card-shadow: var(--auth-card-shadow-light);
+  --auth-input-bg: var(--auth-input-bg-light);
+  --auth-input-border: var(--auth-input-border-light);
+  --auth-button-bg: var(--auth-button-bg-light);
+  --auth-button-hover: var(--auth-button-hover-light);
 }
 
 html.dark {
@@ -63,6 +84,13 @@ html.dark {
   --background-row-hover: var(--background-row-hover-dark);
   --callout-background: rgba(30, 58, 138, 0.3);
   --border-color: rgba(191, 219, 254, 0.3);
+
+  --auth-card-bg: var(--auth-card-bg-dark);
+  --auth-card-shadow: var(--auth-card-shadow-dark);
+  --auth-input-bg: var(--auth-input-bg-dark);
+  --auth-input-border: var(--auth-input-border-dark);
+  --auth-button-bg: var(--auth-button-bg-dark);
+  --auth-button-hover: var(--auth-button-hover-dark);
 }
 
 body {

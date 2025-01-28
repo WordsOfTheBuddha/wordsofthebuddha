@@ -1,0 +1,36 @@
+---
+export const prerender = false;
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+import Layout from "../layouts/Layout.astro";
+
+const auth = getAuth(app);
+
+/* Check current session */
+if (!Astro.cookies.has("__session")) {
+	return Astro.redirect("/signin");
+}
+const sessionCookie = Astro.cookies.get("__session")?.value;
+if (!sessionCookie) return;
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+	return Astro.redirect("/signin");
+}
+---
+
+<Layout showAuth={true}>
+	<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+		<div
+			class="max-w-3xl mx-auto bg-[var(--auth-card-bg)] rounded-lg shadow-lg p-8"
+		>
+			<div class="flex items-center justify-between mb-8">
+				<h1 class="text-2xl font-bold text-[var(--text-color)]">
+					Welcome {user.displayName}
+				</h1>
+			</div>
+			<p class="text-[var(--text-color)]">We are happy to see you here</p>
+		</div>
+	</div>
+</Layout>

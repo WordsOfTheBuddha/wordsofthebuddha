@@ -21,6 +21,11 @@ pre {
   text-decoration: none;
 }
 
+.prose a.text-white {
+  color: var(--background-color);
+  text-decoration: none;
+}
+
 a:hover {
   color: var(--link-hover-color);
 }

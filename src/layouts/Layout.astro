@@ -27,9 +27,10 @@ const {
 	showReadLater = false,
 	showSave = false,
 	titleIcon = null, // Add new prop for title icon
+	showAuth = false, // Add new prop
 } = Astro.props;
 let SEOTitle = title;
-if (title != "Words of the Buddha") {
+if (title != "Words of the Buddha" && title) {
 	SEOTitle = title + " - Words of the Buddha";
 }
 if (id) {
@@ -52,7 +53,7 @@ if (id) {
 		<main class="p-4">
 			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
 				<HighlightLayout currentPath={fp}>
-					<Navbar />
+					<Navbar showAuth={showAuth} />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					<Title title={title}>
 						{titleIcon && (
