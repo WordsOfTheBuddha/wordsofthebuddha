@@ -14,7 +14,7 @@ import Description from "../components/Description.astro";
 import FooterNavigation from "../components/FooterNavigation.astro";
 import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
-import BookmarkButton from "../components/BookmarkButton.astro";
+import SaveButton from "../components/SaveButton.astro";
 
 const {
 	id,
@@ -25,7 +25,7 @@ const {
 	next,
 	lastUpdated,
 	showReadLater = false,
-	showBookmark = false,
+	showSave = false,
 	titleIcon = null, // Add new prop for title icon
 } = Astro.props;
 let SEOTitle = title;
@@ -61,10 +61,10 @@ if (id) {
 					</Title>
 					<Description description={description} />
 					{
-						(showReadLater || showBookmark) && (
+						(showReadLater || showSave) && (
 							<div class="flex gap-2 items-center">
 								{showReadLater && <ReadLaterButton />}
-								{showBookmark && <BookmarkButton />}
+								{showSave && <SaveButton />}
 							</div>
 							<hr class="mt-2 mb-8"/>
 						)

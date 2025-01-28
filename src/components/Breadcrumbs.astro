@@ -4,7 +4,7 @@ import { transformId } from "../utils/transformId.ts";
 const { path } = Astro.props;
 
 // Pages to exclude breadcrumbs from
-if (["/", "/read-later", "/bookmarks"].indexOf(path) !== -1) return null;
+if (["/", "/read-later", "/saves"].indexOf(path) !== -1) return null;
 
 const segments = path.split("/").filter(Boolean);
 ---

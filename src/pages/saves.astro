@@ -5,14 +5,14 @@ import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import { routes } from "../utils/routes";
 import { getEntry } from "astro:content";
-import BookmarkSolid from "../assets/bookmark-solid.svg?raw";
+import SaveSolid from "../assets/save-solid.svg?raw";
 
 // Get bookmarked items from cookie
-const bookmarks = Astro.cookies.get("wotb_bookmarks")?.json() || {};
-const bookmarkedSlugs = Object.keys(bookmarks).filter((key) => bookmarks[key]);
+const saves = Astro.cookies.get("wotb_saves")?.json() || {};
+const savedSlugs = Object.keys(saves).filter((key) => saves[key]);
 
 // Get entries that exist in routes
-const validSlugs = bookmarkedSlugs.filter((slug) => routes.includes(slug));
+const validSlugs = savedSlugs.filter((slug) => routes.includes(slug));
 
 // Fetch all valid entries
 const entries = await Promise.all(
@@ -32,12 +32,12 @@ const sortedEntries = validEntries.sort((a, b) =>
 );
 ---
 
-<Layout title="Bookmarks" titleIcon={BookmarkSolid}>
+<Layout title="Saves" titleIcon={SaveSolid}>
 	<div class="posts-grid">
 		{
 			sortedEntries.length === 0 ? (
 				<div class="text-center py-8 text-gray-500">
-					<p>No bookmarks yet.</p>
+					<p>No items saved yet.</p>
 				</div>
 			) : (
 				sortedEntries.map((entry) => (

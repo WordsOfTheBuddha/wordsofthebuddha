@@ -1,23 +1,19 @@
 ---
-import BookmarkOutline from "../assets/bookmark-outline.svg?raw";
-import BookmarkSolid from "../assets/bookmark-solid.svg?raw";
+import SaveOutline from "../assets/save-outline.svg?raw";
+import SaveSolid from "../assets/save-solid.svg?raw";
 
 // Get initial state from cookie
-const bookmarks = Astro.cookies.get("wotb_bookmarks")?.json() || {};
+const saves = Astro.cookies.get("wotb_saves")?.json() || {};
 ---
 
 <button
-	id="bookmarkButton"
+	id="saveButton"
 	class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-	aria-label="Bookmark content"
+	aria-label="Save content"
 >
-	<span id="bookmarkIcon" class="w-5 h-5" set:html={BookmarkOutline} />
-	<span
-		id="bookmarkSolidIcon"
-		class="w-5 h-5 hidden"
-		set:html={BookmarkSolid}
-	/>
-	<span>Bookmark</span>
+	<span id="saveIcon" class="w-5 h-5" set:html={SaveOutline} />
+	<span id="saveSolidIcon" class="w-5 h-5 hidden" set:html={SaveSolid} />
+	<span>Save</span>
 </button>
 
 <script>
@@ -34,18 +30,18 @@ const bookmarks = Astro.cookies.get("wotb_bookmarks")?.json() || {};
 		document.cookie = `${name}=${JSON.stringify(value)};expires=${date.toUTCString()};path=/`;
 	}
 
-	const btn = document.getElementById("bookmarkButton");
-	const outline = document.getElementById("bookmarkIcon");
-	const solid = document.getElementById("bookmarkSolidIcon");
+	const btn = document.getElementById("saveButton");
+	const outline = document.getElementById("saveIcon");
+	const solid = document.getElementById("saveSolidIcon");
 	const slug = window.location.pathname.replace(/^\/+/, "");
 
-	function getBookmarks() {
-		const data = getCookie("wotb_bookmarks");
+	function getSaves() {
+		const data = getCookie("wotb_saves");
 		return data ? JSON.parse(data) : {};
 	}
 
-	function updateState(isBookmarked: boolean) {
-		if (isBookmarked) {
+	function updateState(isSaveed: boolean) {
+		if (isSaveed) {
 			btn?.classList.add("text-primary-color", "dark:text-primary-color");
 			outline?.classList.add("hidden");
 			solid?.classList.remove("hidden");
@@ -57,17 +53,17 @@ const bookmarks = Astro.cookies.get("wotb_bookmarks")?.json() || {};
 	}
 
 	if (btn) {
-		const bookmarks = getBookmarks();
-		updateState(bookmarks[slug]);
+		const saves = getSaves();
+		updateState(saves[slug]);
 
 		btn.addEventListener("click", () => {
-			const current = getBookmarks();
-			const wasBookmarked = Boolean(current[slug]);
-			current[slug] = !wasBookmarked;
-			setCookie("wotb_bookmarks", current);
-			updateState(!wasBookmarked);
+			const current = getSaves();
+			const wasSaveed = Boolean(current[slug]);
+			current[slug] = !wasSaveed;
+			setCookie("wotb_saves", current);
+			updateState(!wasSaveed);
 
-			if (!wasBookmarked) {
+			if (!wasSaveed) {
 				btn?.classList.add("animate-pulse");
 				setTimeout(() => {
 					btn?.classList.remove("animate-pulse");
