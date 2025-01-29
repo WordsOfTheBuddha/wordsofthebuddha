@@ -5,9 +5,15 @@ const { path } = Astro.props;
 
 // Pages to exclude breadcrumbs from
 if (
-	["/", "/read-later", "/saves", "/register", "/signin", "/dashboard"].indexOf(
-		path
-	) !== -1
+	[
+		"/",
+		"/read-later",
+		"/saves",
+		"/register",
+		"/signin",
+		"/dashboard",
+		"/profile",
+	].indexOf(path) !== -1
 )
 	return null;
 

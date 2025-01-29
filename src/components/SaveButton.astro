@@ -1,74 +1,125 @@
 ---
 import SaveOutline from "../assets/save-outline.svg?raw";
-import SaveSolid from "../assets/save-solid.svg?raw";
+import Check from "../assets/check.svg?raw";
+import SignInPrompt from "./SignInPrompt.astro";
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 
-// Get initial state from cookie
-const saves = Astro.cookies.get("wotb_saves")?.json() || {};
+let userId = null;
+let isSaved = false;
+const slug = Astro.url.pathname.replace(/^\/+/, "");
+
+const auth = getAuth(app);
+if (Astro.cookies.has("__session")) {
+	const sessionCookie = Astro.cookies.get("__session")?.value;
+	if (sessionCookie) {
+		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+		if (decodedCookie) {
+			userId = decodedCookie.uid;
+			const db = getFirestore(app);
+			const docRef = await db
+				.collection("users")
+				.doc(userId)
+				.collection("saves")
+				.doc(slug)
+				.get();
+			isSaved = docRef.exists;
+		}
+	}
+}
 ---
 
-<button
-	id="saveButton"
-	class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-	aria-label="Save content"
->
-	<span id="saveIcon" class="w-5 h-5" set:html={SaveOutline} />
-	<span id="saveSolidIcon" class="w-5 h-5 hidden" set:html={SaveSolid} />
-	<span>Save</span>
-</button>
+<div class="relative">
+	<button
+		id="saveButton"
+		class:list={[
+			"inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+			{ "text-primary-color dark:text-primary-color": isSaved },
+		]}
+		aria-label="Save content"
+		data-authenticated={Boolean(userId)}
+	>
+		<span
+			id="saveIcon"
+			class:list={["w-5 h-5", { hidden: isSaved }]}
+			set:html={SaveOutline}
+		/>
+		<span
+			id="saveCheckIcon"
+			class:list={["w-5 h-5", { hidden: !isSaved }]}
+			set:html={Check}
+		/>
+		<span>Save</span>
+	</button>
+	{!userId && <SignInPrompt id="saveSignInPrompt" feature="save this page" />}
+</div>
 
 <script>
-	function getCookie(name: string) {
-		const value = `; ${document.cookie}`;
-		const parts = value.split(`; ${name}=`);
-		if (parts.length === 2) return parts.pop()?.split(";").shift();
-		return null;
-	}
-
-	function setCookie(name: string, value: any, days = 365) {
-		const date = new Date();
-		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-		document.cookie = `${name}=${JSON.stringify(value)};expires=${date.toUTCString()};path=/`;
-	}
-
 	const btn = document.getElementById("saveButton");
 	const outline = document.getElementById("saveIcon");
-	const solid = document.getElementById("saveSolidIcon");
+	const check = document.getElementById("saveCheckIcon");
+	const prompt = document.getElementById("saveSignInPrompt");
 	const slug = window.location.pathname.replace(/^\/+/, "");
 
-	function getSaves() {
-		const data = getCookie("wotb_saves");
-		return data ? JSON.parse(data) : {};
-	}
-
-	function updateState(isSaveed: boolean) {
-		if (isSaveed) {
+	function updateState(isSaved: boolean) {
+		if (isSaved) {
 			btn?.classList.add("text-primary-color", "dark:text-primary-color");
 			outline?.classList.add("hidden");
-			solid?.classList.remove("hidden");
+			check?.classList.remove("hidden");
 		} else {
 			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
 			outline?.classList.remove("hidden");
-			solid?.classList.add("hidden");
+			check?.classList.add("hidden");
 		}
 	}
 
 	if (btn) {
-		const saves = getSaves();
-		updateState(saves[slug]);
-
-		btn.addEventListener("click", () => {
-			const current = getSaves();
-			const wasSaveed = Boolean(current[slug]);
-			current[slug] = !wasSaveed;
-			setCookie("wotb_saves", current);
-			updateState(!wasSaveed);
-
-			if (!wasSaveed) {
-				btn?.classList.add("animate-pulse");
-				setTimeout(() => {
-					btn?.classList.remove("animate-pulse");
-				}, 1000);
+		btn.addEventListener("click", async () => {
+			const isAuthenticated = btn.dataset.authenticated === "true";
+			if (!isAuthenticated) {
+				// Close all other prompts first
+				document.querySelectorAll("[data-prompt]").forEach((p) => {
+					if (p.id !== "saveSignInPrompt") {
+						p.classList.add("hidden");
+					}
+				});
+				prompt?.classList.remove("hidden");
+				return;
 			}
+
+			const wasSaved = check?.classList.contains("hidden") === false;
+
+			if (!wasSaved) {
+				btn?.classList.add("animate-pulse");
+			}
+
+			try {
+				const response = await fetch(`/api/save/${slug}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ isActive: !wasSaved }),
+				});
+
+				if (response.ok) {
+					btn?.classList.remove("animate-pulse");
+					updateState(!wasSaved);
+				} else {
+					console.error("Error updating save status");
+					btn?.classList.remove("animate-pulse");
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				btn?.classList.remove("animate-pulse");
+			}
+		});
+
+		// Fix: Target the close button within this specific prompt
+		const closeBtn = prompt?.querySelector(".close-prompt");
+		closeBtn?.addEventListener("click", () => {
+			prompt?.classList.add("hidden");
 		});
 	}
 </script>

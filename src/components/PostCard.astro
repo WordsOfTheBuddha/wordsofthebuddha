@@ -5,6 +5,7 @@ interface Props {
 	description: string;
 	id: string;
 	lastUpdated?: string | Date;
+	dateLabel?: string;
 }
 
 export const formatDate = (date: string | Date) => {
@@ -15,7 +16,13 @@ export const formatDate = (date: string | Date) => {
 	});
 };
 
-const { title, description, id, lastUpdated } = Astro.props;
+const {
+	title,
+	description,
+	id,
+	lastUpdated,
+	dateLabel = "Last updated on",
+} = Astro.props;
 ---
 
 <div
@@ -57,7 +64,7 @@ const { title, description, id, lastUpdated } = Astro.props;
 	{
 		lastUpdated && (
 			<p class="text-gray-500 text-xs my-0 text-right">
-				Last updated on {formatDate(lastUpdated)}
+				{dateLabel} {formatDate(lastUpdated)}
 			</p>
 		)
 	}

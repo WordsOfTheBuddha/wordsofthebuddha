@@ -1,24 +1,3 @@
----
-const toggleTheme = () => {
-	if (document.documentElement.classList.contains("dark")) {
-		document.documentElement.classList.remove("dark");
-		localStorage.theme = "light";
-	} else {
-		document.documentElement.classList.add("dark");
-		localStorage.theme = "dark";
-	}
-};
----
-
-<script is:inline>
-	// Initialize theme based on localStorage
-	if (localStorage.theme === "dark") {
-		document.documentElement.classList.add("dark");
-	} else {
-		document.documentElement.classList.remove("dark");
-	}
-</script>
-
 <button
 	id="themeToggle"
 	class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -27,22 +6,12 @@ const toggleTheme = () => {
 	<span class="hidden dark:inline">☾</span>
 </button>
 
-<script is:inline>
-	if (!window.themeToggleInitialized) {
-		window.themeToggleInitialized = true;
+<script>
+	import { initializeTheme, toggleTheme } from "../utils/theme";
 
-		document.addEventListener("click", (e) => {
-			if (e.target?.closest("#themeToggle")) {
-				if (document.documentElement.classList.contains("dark")) {
-					document.documentElement.classList.remove("dark");
-					localStorage.theme = "light";
-					window.dispatchEvent(new Event("themeToggled"));
-				} else {
-					document.documentElement.classList.add("dark");
-					localStorage.theme = "dark";
-					window.dispatchEvent(new Event("themeToggled"));
-				}
-			}
-		});
-	}
+	initializeTheme();
+
+	document.getElementById("themeToggle")?.addEventListener("click", () => {
+		toggleTheme();
+	});
 </script>

@@ -1,0 +1,233 @@
+---
+export const prerender = false;
+import Layout from "../layouts/Layout.astro";
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+
+const auth = getAuth(app);
+
+if (!Astro.cookies.has("__session")) {
+	return Astro.redirect("/signin?returnTo=/profile");
+}
+
+const sessionCookie = Astro.cookies.get("__session")?.value;
+if (!sessionCookie) {
+	return Astro.redirect("/signin?returnTo=/profile");
+}
+
+const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+const user = await auth.getUser(decodedCookie.uid);
+
+if (!user) {
+	return Astro.redirect("/signin?returnTo=/profile");
+}
+---
+
+<Layout showAuth={true}>
+	<div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+		<div class="space-y-8">
+			<div class="bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg">
+				<div class="flex justify-between items-center mb-6">
+					<h2 class="text-2xl font-semibold text-[var(--text-color)]">
+						Profile
+					</h2>
+					<button
+						id="editToggle"
+						type="button"
+						class="px-4 py-2 text-sm border border-[var(--auth-button-bg)] text-[var(--auth-button-bg)] rounded-md hover:bg-[var(--auth-button-bg)] hover:text-white transition-colors"
+					>
+						Edit Profile
+					</button>
+				</div>
+
+				<form id="profile-form" class="space-y-6">
+					<div>
+						<label
+							for="displayName"
+							class="block text-sm font-medium text-[var(--text-color)]"
+							>Name</label
+						>
+						<input
+							type="text"
+							id="displayName"
+							name="displayName"
+							value={user.displayName}
+							disabled
+							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
+						/>
+					</div>
+					<div>
+						<label
+							for="email"
+							class="block text-sm font-medium text-[var(--text-color)]"
+							>Email</label
+						>
+						<input
+							type="email"
+							id="email"
+							name="email"
+							value={user.email}
+							disabled
+							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
+						/>
+					</div>
+					<button
+						type="submit"
+						disabled
+						class="hidden w-full px-4 py-2 bg-[var(--auth-button-bg)] text-white rounded-md hover:bg-[var(--auth-button-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--secondary-color)]"
+					>
+						Save Changes
+					</button>
+				</form>
+			</div>
+
+			<div class="bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg">
+				<h2 class="text-2xl font-semibold mb-4 text-[var(--text-color)]">
+					Preferences
+				</h2>
+				<div class="flex items-center justify-between">
+					<span class="text-sm font-medium text-[var(--text-color)]">Theme</span
+					>
+					<div class="flex items-center space-x-2">
+						<button
+							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
+							data-theme="light"
+							data-active="false"
+						>
+							Light
+						</button>
+						<button
+							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
+							data-theme="dark"
+							data-active="false"
+						>
+							Dark
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	import { setTheme, loadPreferences } from "../utils/theme";
+
+	const profileForm = document.getElementById(
+		"profile-form"
+	) as HTMLFormElement;
+	const editToggle = document.getElementById("editToggle") as HTMLButtonElement;
+	const submitButton = profileForm.querySelector(
+		'button[type="submit"]'
+	) as HTMLButtonElement;
+	const inputs = profileForm.querySelectorAll("input");
+	let isEditing = false;
+
+	editToggle?.addEventListener("click", () => {
+		isEditing = !isEditing;
+		inputs.forEach((input) => (input.disabled = !isEditing));
+		submitButton.disabled = !isEditing;
+		submitButton.classList.toggle("hidden");
+		editToggle.textContent = isEditing ? "Cancel" : "Edit Profile";
+		editToggle.classList.toggle("border-red-500");
+		editToggle.classList.toggle("text-red-500");
+		editToggle.classList.toggle("hover:bg-red-500");
+		editToggle.classList.toggle("border-[var(--auth-button-bg)]");
+		editToggle.classList.toggle("text-[var(--auth-button-bg)]");
+		editToggle.classList.toggle("hover:bg-[var(--auth-button-bg)]");
+
+		if (!isEditing) {
+			profileForm.reset();
+		}
+	});
+
+	profileForm?.addEventListener("submit", async (e) => {
+		e.preventDefault();
+
+		const formData = new FormData(profileForm);
+		const email = formData.get("email") as string;
+		const displayName = formData.get("displayName") as string;
+
+		// Basic validation
+		if (!email || !email.includes("@") || !displayName) {
+			alert("Please fill in all fields correctly");
+			return;
+		}
+
+		try {
+			const response = await fetch("/api/auth/update", {
+				method: "POST",
+				body: formData,
+			});
+
+			if (!response.ok) {
+				throw new Error(await response.text());
+			}
+
+			const result = await response.json();
+			if (result.success) {
+				// Refresh the page to update navbar and other components
+				window.location.reload();
+			}
+		} catch (error) {
+			console.error("Error updating profile:", error);
+			alert("Failed to update profile: " + error);
+		}
+	});
+
+	// Theme handling
+	const themeButtons = document.querySelectorAll(".theme-btn");
+
+	function updateActiveThemeButton() {
+		const isDark = document.documentElement.classList.contains("dark");
+		themeButtons.forEach((button) => {
+			const isActive =
+				(button.getAttribute("data-theme") === "dark") === isDark;
+			button.setAttribute("data-active", isActive.toString());
+			if (isActive) {
+				button.classList.add("bg-[var(--auth-button-bg)]", "text-white");
+			} else {
+				button.classList.remove("bg-[var(--auth-button-bg)]", "text-white");
+			}
+		});
+	}
+
+	// Initialize theme
+	loadPreferences().then(() => {
+		updateActiveThemeButton();
+	});
+
+	// Handle theme button clicks
+	themeButtons.forEach((button) => {
+		button.addEventListener("click", async () => {
+			const theme = button.getAttribute("data-theme");
+			if (theme === "light" || theme === "dark") {
+				try {
+					// Update preference in Firestore
+					const formData = new FormData();
+					formData.append("theme", theme);
+					const response = await fetch("/api/preferences/update", {
+						method: "POST",
+						body: formData,
+					});
+
+					if (!response.ok) {
+						throw new Error("Failed to update theme preference");
+					}
+
+					// Update UI
+					setTheme(theme);
+					updateActiveThemeButton();
+				} catch (error) {
+					console.error("Failed to update theme:", error);
+				}
+			}
+		});
+	});
+</script>
+
+<style>
+	.theme-btn[data-active="true"] {
+		@apply bg-[var(--auth-button-bg)] text-white;
+	}
+</style>

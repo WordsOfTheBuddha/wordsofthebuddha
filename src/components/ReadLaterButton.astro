@@ -1,74 +1,140 @@
 ---
 import ClockOutline from "../assets/clock-outline.svg?raw";
-import ClockSolid from "../assets/clock-solid.svg?raw";
+import Check from "../assets/check.svg?raw";
+import SignInPrompt from "./SignInPrompt.astro";
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 
-// Get initial state from cookie
-const readLaters = Astro.cookies.get("wotb_readLaters")?.json() || {};
+let userId = null;
+let isInReadLater = false;
+const slug = Astro.url.pathname.replace(/^\/+/, "");
+
+const auth = getAuth(app);
+if (Astro.cookies.has("__session")) {
+	const sessionCookie = Astro.cookies.get("__session")?.value;
+	if (sessionCookie) {
+		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+		if (decodedCookie) {
+			userId = decodedCookie.uid;
+			// Check if article is in read later
+			const db = getFirestore(app);
+			const docRef = await db
+				.collection("users")
+				.doc(userId)
+				.collection("readLater")
+				.doc(slug)
+				.get();
+			isInReadLater = docRef.exists;
+		}
+	}
+}
 ---
 
-<button
-	id="readLaterButton"
-	class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-	aria-label="Read Later content"
->
-	<span id="readLaterIcon" class="w-5 h-5" set:html={ClockOutline} />
-	<span id="readLaterSolidIcon" class="w-5 h-5 hidden" set:html={ClockSolid} />
-	<span>Read Later</span>
-</button>
+<div class="relative">
+	<button
+		id="readLaterButton"
+		class:list={[
+			"inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+			{ "text-primary-color dark:text-primary-color": isInReadLater },
+		]}
+		aria-label="Read Later content"
+		data-authenticated={Boolean(userId)}
+	>
+		<span
+			id="readLaterIcon"
+			class:list={["w-5 h-5", { hidden: isInReadLater }]}
+			set:html={ClockOutline}
+		/>
+		<span
+			id="readLaterCheckIcon"
+			class:list={["w-5 h-5", { hidden: !isInReadLater }]}
+			set:html={Check}
+		/>
+		<span>Read Later</span>
+	</button>
+	{
+		!userId && (
+			<SignInPrompt
+				id="readLaterSignInPrompt"
+				feature="add this page for later"
+			/>
+		)
+	}
+</div>
 
 <script>
-	function getCookie(name: string) {
-		const value = `; ${document.cookie}`;
-		const parts = value.split(`; ${name}=`);
-		if (parts.length === 2) return parts.pop()?.split(";").shift();
-		return null;
-	}
-
-	function setCookie(name: string, value: any, days = 365) {
-		const date = new Date();
-		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-		document.cookie = `${name}=${JSON.stringify(value)};expires=${date.toUTCString()};path=/`;
-	}
-
 	const btn = document.getElementById("readLaterButton");
 	const outline = document.getElementById("readLaterIcon");
-	const solid = document.getElementById("readLaterSolidIcon");
+	const check = document.getElementById("readLaterCheckIcon");
+	const prompt = document.getElementById("readLaterSignInPrompt");
 	const slug = window.location.pathname.replace(/^\/+/, "");
-
-	function getSaves() {
-		const data = getCookie("wotb_readLaters");
-		return data ? JSON.parse(data) : {};
-	}
 
 	function updateState(isSaved: boolean) {
 		if (isSaved) {
 			btn?.classList.add("text-primary-color", "dark:text-primary-color");
 			outline?.classList.add("hidden");
-			solid?.classList.remove("hidden");
+			check?.classList.remove("hidden");
 		} else {
 			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
 			outline?.classList.remove("hidden");
-			solid?.classList.add("hidden");
+			check?.classList.add("hidden");
 		}
 	}
 
 	if (btn) {
-		const readLaters = getSaves();
-		updateState(readLaters[slug]);
+		btn.addEventListener("click", async () => {
+			const isAuthenticated = btn.dataset.authenticated === "true";
+			if (!isAuthenticated) {
+				// Close all other prompts first
+				document.querySelectorAll("[data-prompt]").forEach((p) => {
+					if (p.id !== "readLaterSignInPrompt") {
+						p.classList.add("hidden");
+					}
+				});
+				prompt?.classList.remove("hidden");
+				return;
+			}
 
-		btn.addEventListener("click", () => {
-			const current = getSaves();
-			const wasSaved = Boolean(current[slug]);
-			current[slug] = !wasSaved;
-			setCookie("wotb_readLaters", current);
-			updateState(!wasSaved);
+			const wasSaved = check?.classList.contains("hidden") === false;
 
+			// Start animation before API call
 			if (!wasSaved) {
 				btn?.classList.add("animate-pulse");
-				setTimeout(() => {
+			}
+
+			try {
+				const response = await fetch(`/api/readlater/${slug}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ isActive: !wasSaved }),
+				});
+
+				if (response.ok) {
+					// Remove animation after API call resolves
 					btn?.classList.remove("animate-pulse");
-				}, 1000);
+					if (!wasSaved) {
+						updateState(true);
+					} else {
+						updateState(false);
+					}
+				} else {
+					console.error("Error updating read later status");
+					btn?.classList.remove("animate-pulse");
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				btn?.classList.remove("animate-pulse");
 			}
 		});
+
+		// Handle sign-in prompt close button if prompt exists
+		if (prompt) {
+			document.querySelector(".close-prompt")?.addEventListener("click", () => {
+				prompt.classList.add("hidden");
+			});
+		}
 	}
 </script>

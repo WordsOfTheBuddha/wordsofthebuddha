@@ -1,0 +1,41 @@
+---
+interface Props {
+	id: string;
+	feature: string;
+}
+
+const { id, feature } = Astro.props;
+---
+
+<div
+	id={id}
+	data-prompt
+	class="hidden absolute z-50 mt-2 w-72 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 p-4"
+>
+	<div class="text-sm text-gray-700 dark:text-gray-300">
+		<p class="my-2">Sign in to {feature}</p>
+		<div class="mt-3 flex gap-2">
+			<a
+				href="/signin"
+				data-return-path
+				class="inline-flex items-center px-3 py-1 text-sm border border-transparent rounded-md shadow-sm font-medium text-white leading-5 bg-[var(--auth-button-bg)] hover:bg-[var(--auth-button-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
+			>
+				Sign in
+			</a>
+			<button
+				type="button"
+				class="close-prompt px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+			>
+				Cancel
+			</button>
+		</div>
+
+		<script>
+			const links = document.querySelectorAll("a[data-return-path]");
+			links.forEach((link) => {
+				(link as HTMLAnchorElement).href =
+					`/signin?returnTo=${encodeURIComponent(window.location.pathname)}`;
+			});
+		</script>
+	</div>
+</div>

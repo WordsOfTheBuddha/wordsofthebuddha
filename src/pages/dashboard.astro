@@ -1,8 +1,15 @@
 ---
 export const prerender = false;
+import { getEntry } from "astro:content";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import ClockSolid from "../assets/clock-solid.svg?raw";
+import SaveSolid from "../assets/save-solid.svg?raw";
+import HighlightIcon from "../assets/highlight-icon.svg?raw";
+import ProfileSection from "../components/ProfileSection.astro";
 
 const auth = getAuth(app);
 
@@ -10,27 +17,193 @@ const auth = getAuth(app);
 if (!Astro.cookies.has("__session")) {
 	return Astro.redirect("/signin");
 }
+
 const sessionCookie = Astro.cookies.get("__session")?.value;
-if (!sessionCookie) return;
+if (!sessionCookie) {
+	return Astro.redirect("/signin");
+}
+
 const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 const user = await auth.getUser(decodedCookie.uid);
 
 if (!user) {
 	return Astro.redirect("/signin");
 }
+
+const db = getFirestore(app);
+const readLaterRef = db
+	.collection("users")
+	.doc(user.uid)
+	.collection("readLater");
+
+const readLaterDocs = await readLaterRef.orderBy("addedAt", "desc").get();
+
+const readLaterEntries = await Promise.all(
+	readLaterDocs.docs.map(async (doc) => {
+		try {
+			const entry = await getEntry("all", doc.id); // doc.id is the slug
+			return entry
+				? {
+						...entry,
+						addedAt: doc.data().addedAt.toDate(),
+						timestamp: doc.data().addedAt.toMillis(), // Add timestamp for sorting
+					}
+				: null;
+		} catch {
+			return null;
+		}
+	})
+);
+
+// Filter out null entries and sort by timestamp
+const validReadLaterEntries = readLaterEntries
+	.filter(Boolean)
+	.sort((a, b) => b.timestamp - a.timestamp);
+
+const savedRef = db.collection("users").doc(user.uid).collection("saves");
+
+const savedDocs = await savedRef.orderBy("savedAt", "desc").get();
+
+const savedEntries = await Promise.all(
+	savedDocs.docs.map(async (doc) => {
+		try {
+			const entry = await getEntry("all", doc.id);
+			return entry
+				? {
+						...entry,
+						savedAt: doc.data().savedAt.toDate(),
+						timestamp: doc.data().savedAt.toMillis(),
+					}
+				: null;
+		} catch {
+			return null;
+		}
+	})
+);
+
+const validSavedEntries = savedEntries
+	.filter(Boolean)
+	.sort((a, b) => b.timestamp - a.timestamp);
 ---
 
 <Layout showAuth={true}>
-	<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-		<div
-			class="max-w-3xl mx-auto bg-[var(--auth-card-bg)] rounded-lg shadow-lg p-8"
-		>
-			<div class="flex items-center justify-between mb-8">
-				<h1 class="text-2xl font-bold text-[var(--text-color)]">
-					Welcome {user.displayName}
-				</h1>
+	<div class="py-4 px-4 sm:px-6 lg:px-8">
+		<div class="max-w-5xl mx-auto">
+			<div class="border-b border-gray-200 dark:border-gray-700">
+				<nav class="-mb-px flex space-x-8" aria-label="Tabs">
+					<a href="#readlater" class="tab-link active" data-tab="readlater">
+						<span class="inline-flex text-base sm:text-lg items-center gap-2">
+							<span class="w-5 h-5" set:html={ClockSolid} />
+							Read Later
+						</span>
+					</a>
+					<a href="#saved" class="tab-link" data-tab="saved">
+						<span class="inline-flex text-base sm:text-lg items-center gap-2">
+							<span class="w-5 h-5" set:html={SaveSolid} />
+							Save
+						</span>
+					</a>
+				</nav>
 			</div>
-			<p class="text-[var(--text-color)]">We are happy to see you here</p>
+
+			<div id="readlater" class="tab-content">
+				<div class="mt-8">
+					{
+						validReadLaterEntries.length === 0 ? (
+							<div class="text-center py-8 text-gray-500">
+								<p>No items saved for reading later.</p>
+							</div>
+						) : (
+							<div class="space-y-4">
+								{validReadLaterEntries.map((entry) => (
+									<PostCard
+										id={entry.data.slug}
+										title={entry.data.title}
+										description={entry.data.description}
+										lastUpdated={entry.addedAt}
+										dateLabel="Added on"
+									/>
+								))}
+							</div>
+						)
+					}
+				</div>
+			</div>
+
+			<div id="saved" class="tab-content hidden">
+				<div class="mt-8">
+					{
+						validSavedEntries.length === 0 ? (
+							<div class="text-center py-8 text-gray-500">
+								<p>No saved posts yet.</p>
+							</div>
+						) : (
+							<div class="space-y-4">
+								{validSavedEntries.map((entry) => (
+									<PostCard
+										id={entry.data.slug}
+										title={entry.data.title}
+										description={entry.data.description}
+										lastUpdated={entry.savedAt}
+										dateLabel="Saved on"
+									/>
+								))}
+							</div>
+						)
+					}
+				</div>
+			</div>
 		</div>
 	</div>
 </Layout>
+
+<style>
+	.tab-link {
+		@apply border-b-2 border-transparent px-1 pb-4 text-sm font-medium;
+		color: var(--text-color);
+		&:hover {
+			border-color: var(--gray-400);
+			color: var(--text-color);
+		}
+	}
+	.tab-link.active {
+		border-color: var(--secondary-color);
+		color: var(--secondary-color);
+	}
+</style>
+
+<script>
+	const tabLinks = document.querySelectorAll(".tab-link");
+	const tabContents = document.querySelectorAll(".tab-content");
+
+	function showTab(tabId: string) {
+		tabContents.forEach((content) => content.classList.add("hidden"));
+		tabLinks.forEach((link) => link.classList.remove("active"));
+
+		const targetContent = document.getElementById(tabId);
+		const targetLink = document.querySelector(`[data-tab="${tabId}"]`);
+
+		targetContent?.classList.remove("hidden");
+		targetLink?.classList.add("active");
+	}
+
+	tabLinks.forEach((link) => {
+		link.addEventListener("click", (e) => {
+			e.preventDefault();
+			const tabId = link.getAttribute("data-tab") || "readlater";
+			showTab(tabId);
+			history.pushState(null, "", `#${tabId}`);
+		});
+	});
+
+	// Handle initial load and back/forward navigation
+	window.addEventListener("load", () => {
+		const hash = window.location.hash.slice(1) || "readlater";
+		showTab(hash);
+	});
+
+	window.addEventListener("hashchange", () => {
+		const hash = window.location.hash.slice(1) || "readlater";
+		showTab(hash);
+	});
+</script>

@@ -4,10 +4,14 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.astro"
+    "src/**/*.astro",
+    "src/**/*.client.ts"
   ],
   "exclude": ["dist"],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
     "types": ["astro/client", "astro/content"],
   }
 }
