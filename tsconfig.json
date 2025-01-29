@@ -13,5 +13,13 @@
     "module": "esnext",
     "strict": true,
     "types": ["astro/client", "astro/content"],
+    "baseUrl": ".",
+    "paths": {
+      "@types/*": ["src/types/*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   }
 }

@@ -70,6 +70,7 @@ if (!user) {
 							disabled
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
+						<p id="emailError" class="mt-1 text-sm text-red-500 hidden"></p>
 					</div>
 					<button
 						type="submit"
@@ -141,6 +142,63 @@ if (!user) {
 		}
 	});
 
+	function validateEmail(email: string): { isValid: boolean; message: string } {
+		// Allow: letters, numbers, dots, underscores, hyphens, plus, @ symbol
+		const allowedChars = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		const consecutiveDots = /\.\./;
+		const startsWithDot = /^\./;
+		const endsWithDot = /\.@/;
+
+		if (!email.includes("@")) {
+			return { isValid: false, message: "Email must contain @ symbol" };
+		}
+
+		if (startsWithDot.test(email)) {
+			return { isValid: false, message: "Email cannot start with a dot" };
+		}
+
+		if (endsWithDot.test(email)) {
+			return {
+				isValid: false,
+				message: "Email cannot have a dot just before @",
+			};
+		}
+
+		if (consecutiveDots.test(email)) {
+			return {
+				isValid: false,
+				message: "Email cannot contain consecutive dots",
+			};
+		}
+
+		if (!allowedChars.test(email)) {
+			return {
+				isValid: false,
+				message:
+					"Email can only contain letters, numbers, and these special characters: . _ % + -",
+			};
+		}
+
+		return { isValid: true, message: "" };
+	}
+
+	const emailInput = document.getElementById("email") as HTMLInputElement;
+	const emailError = document.getElementById("emailError");
+
+	emailInput?.addEventListener("input", () => {
+		if (emailError && emailInput.value) {
+			const validation = validateEmail(emailInput.value);
+			if (!validation.isValid) {
+				emailError.textContent = validation.message;
+				emailError.classList.remove("hidden");
+				submitButton.disabled = true;
+			} else {
+				emailError.classList.add("hidden");
+				submitButton.disabled = false;
+			}
+		}
+	});
+
 	profileForm?.addEventListener("submit", async (e) => {
 		e.preventDefault();
 
@@ -148,9 +206,10 @@ if (!user) {
 		const email = formData.get("email") as string;
 		const displayName = formData.get("displayName") as string;
 
-		// Basic validation
-		if (!email || !email.includes("@") || !displayName) {
-			alert("Please fill in all fields correctly");
+		const validation = validateEmail(email);
+		if (!validation.isValid) {
+			emailError?.classList.remove("hidden");
+			emailError!.textContent = validation.message;
 			return;
 		}
 
