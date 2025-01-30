@@ -2,6 +2,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { app } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import { loadPreferences } from "src/utils/theme";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     const auth = getAuth(app);
@@ -38,7 +39,10 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     });
 
     // Only allow redirects to local paths
-    const redirectPath = returnTo ? new URL(returnTo, request.url).pathname : "/dashboard";
+    const baseRedirectPath = returnTo ? new URL(returnTo, request.url).pathname : "/dashboard";
+    const existingUrl = new URL(baseRedirectPath, request.url);
+    existingUrl.searchParams.append('load-preferences', 'true');
+    const redirectPath = existingUrl.toString();
     console.log("Redirecting to:", redirectPath); // Debug log
     return redirect(redirectPath);
 };

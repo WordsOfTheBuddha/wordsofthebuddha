@@ -16,6 +16,10 @@ pre {
   padding: 1rem;
 }
 
+.prose article {
+  max-width: inherit;
+}
+
 .prose a {
   color: var(--link-color);
   text-decoration: none;
@@ -89,7 +93,7 @@ a:hover {
   border: 1px solid var(--gray-500);
   user-select: text;
   font-size: 0.9rem;
-  padding: 4px;
+  padding: 10px;
 }
 
 .tippy-tooltip::before {

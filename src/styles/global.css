@@ -108,4 +108,9 @@ body {
     color: var(--text-color); /* Use theme variable */
     --verse-accent: theme(colors.gray.300);
   }
+  .verse-basic {
+    @apply pl-4;
+    color: var(--text-color); /* Use theme variable */
+    --verse-accent: theme(colors.gray.300);
+  }
 }

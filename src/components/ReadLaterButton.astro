@@ -31,7 +31,7 @@ if (Astro.cookies.has("__session")) {
 }
 ---
 
-<div class="relative">
+<div class="relative shrink-0">
 	<button
 		id="readLaterButton"
 		class:list={[
@@ -51,7 +51,9 @@ if (Astro.cookies.has("__session")) {
 			class:list={["w-5 h-5", { hidden: !isInReadLater }]}
 			set:html={Check}
 		/>
-		<span>Read Later</span>
+		<span id="readLaterLabel"
+			>{isInReadLater ? "Added to Read Later" : "Read Later"}</span
+		>
 	</button>
 	{
 		!userId && (
@@ -67,6 +69,7 @@ if (Astro.cookies.has("__session")) {
 	const btn = document.getElementById("readLaterButton");
 	const outline = document.getElementById("readLaterIcon");
 	const check = document.getElementById("readLaterCheckIcon");
+	const readLaterLabel = document.getElementById("readLaterLabel");
 	const prompt = document.getElementById("readLaterSignInPrompt");
 	const slug = window.location.pathname.replace(/^\/+/, "");
 
@@ -75,10 +78,12 @@ if (Astro.cookies.has("__session")) {
 			btn?.classList.add("text-primary-color", "dark:text-primary-color");
 			outline?.classList.add("hidden");
 			check?.classList.remove("hidden");
+			if (readLaterLabel) readLaterLabel.innerText = "Added to Read Later";
 		} else {
 			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
 			outline?.classList.remove("hidden");
 			check?.classList.add("hidden");
+			if (readLaterLabel) readLaterLabel.innerText = "Read Later";
 		}
 	}
 

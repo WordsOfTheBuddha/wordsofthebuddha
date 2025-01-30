@@ -3,6 +3,7 @@ import type { APIRoute } from "astro";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { app } from "../../../firebase/server";
+import type { UserPreferences } from "../../../utils/theme";
 
 export const GET: APIRoute = async ({ cookies }) => {
     const auth = getAuth(app);
@@ -16,7 +17,13 @@ export const GET: APIRoute = async ({ cookies }) => {
     try {
         const decodedCookie = await auth.verifySessionCookie(sessionCookie);
         const userDoc = await db.collection('users').doc(decodedCookie.uid).get();
-        const preferences = userDoc.data()?.preferences || {};
+        const userData = userDoc.data() || {};
+
+        // Transform flat structure back into nested object
+        const preferences: UserPreferences = {
+            theme: userData['preferences.theme'],
+            showPali: userData['preferences.showPali']
+        };
 
         return new Response(JSON.stringify(preferences), {
             status: 200,

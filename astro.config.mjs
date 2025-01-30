@@ -6,8 +6,6 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
-import { rehypeVerseParagraphs } from "./src/utils/rehype-verse-paragraphs.js";
-import remarkBreaks from "remark-breaks";
 
 const externalLinksOptions = {
   target: "_blank",
@@ -18,11 +16,7 @@ const externalLinksOptions = {
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    remarkPlugins: [[remarkBreaks, { soft: false }]],
-    rehypePlugins: [
-      rehypeVerseParagraphs,
-      [rehypeExternalLinks, externalLinksOptions],
-    ],
+    rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
   },
 
   integrations: [
@@ -30,10 +24,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     mdx({
-      rehypePlugins: [
-        rehypeVerseParagraphs,
-        [rehypeExternalLinks, externalLinksOptions],
-      ],
+      rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
     }),
   ],
 

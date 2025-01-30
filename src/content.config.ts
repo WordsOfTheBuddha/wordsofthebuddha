@@ -36,5 +36,6 @@ const snp = createCollection("src/content/en/snp/");
 const iti = createCollection("src/content/en/iti/");
 const books = createCollection("src/content/en/books/", "*.mdx", bookSchema);
 const all = createCollection("src/content/en/", "**/*.mdx");
+const pliAll = createCollection("src/content/pli/", "**/*.md");
 
-export const collections = { dhp, mn, ud, sn, snp, an, iti, books, all };
+export const collections = { dhp, mn, ud, sn, snp, an, iti, books, all, pliAll };

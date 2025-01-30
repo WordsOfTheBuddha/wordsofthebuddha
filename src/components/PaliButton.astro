@@ -1,0 +1,71 @@
+---
+import ArrowsUpDown from "../assets/arrows-up-down.svg?raw";
+import Check from "../assets/check.svg?raw";
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
+import { setUIState } from "../utils/theme";
+
+const url = new URL(Astro.url);
+let isPaliMode = url.searchParams.get("pli") === "true";
+
+// Check user preference if not set in URL
+if (!url.searchParams.has("pli")) {
+	const auth = getAuth(app);
+	if (Astro.cookies.has("__session")) {
+		const sessionCookie = Astro.cookies.get("__session")?.value;
+		if (sessionCookie) {
+			const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+			const db = getFirestore(app);
+			const userDoc = await db.collection("users").doc(decodedCookie.uid).get();
+			isPaliMode = userDoc.exists
+				? userDoc.data()?.preferences?.showPali === true
+				: false;
+		}
+	}
+}
+---
+
+<button
+	id="paliButton"
+	class:list={[
+		"inline-flex items-center gap-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		{ "text-primary-color dark:text-primary-color": isPaliMode },
+	]}
+	aria-label="Toggle Pali text"
+	aria-pressed={isPaliMode}
+>
+	<span
+		id="paliIcon"
+		class:list={["w-5 h-5", { hidden: isPaliMode }]}
+		set:html={ArrowsUpDown}
+	/>
+	<span
+		id="paliCheckIcon"
+		class:list={["w-5 h-5", { hidden: !isPaliMode }]}
+		set:html={Check}
+	/>
+	<span>Show Pāli</span>
+</button>
+
+<script>
+	import { setPaliState } from "../utils/theme";
+
+	const btn = document.getElementById("paliButton");
+
+	if (btn) {
+		btn.addEventListener("click", () => {
+			const isPaliMode =
+				new URL(window.location.href).searchParams.get("pli") === "true";
+			setPaliState(!isPaliMode);
+			// Reload only if we need to show/hide Pali content
+			window.location.reload();
+		});
+	}
+
+	// Initialize from localStorage if available
+	const storedPaliMode = localStorage.getItem("paliMode") === "true";
+	if (storedPaliMode) {
+		setPaliState(true);
+	}
+</script>

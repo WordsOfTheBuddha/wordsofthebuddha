@@ -3,7 +3,20 @@ import type { APIRoute } from "astro";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { app } from "../../../firebase/server";
-import type { Theme } from "../../../utils/theme";
+
+// Preference validators and their document paths
+const preferenceValidators = {
+    theme: (value: string) => {
+        if (!['light', 'dark'].includes(value)) {
+            throw new Error("Theme must be 'light' or 'dark'");
+        }
+        return value as 'light' | 'dark';
+    },
+    showPali: (value: string) => {
+        const boolValue = value.toLowerCase() === 'true';
+        return boolValue;
+    }
+} as const;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
     const auth = getAuth(app);
@@ -16,18 +29,32 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     try {
         const formData = await request.formData();
-        const theme = formData.get("theme")?.toString() as Theme;
+        const updates: Record<string, any> = {};
+        let hasValidUpdate = false;
 
-        if (!theme || !['light', 'dark'].includes(theme)) {
-            return new Response("Invalid theme value", { status: 400 });
+        // Process each known preference key
+        (Object.keys(preferenceValidators) as Array<keyof typeof preferenceValidators>).forEach(key => {
+            const value = formData.get(key)?.toString();
+            if (value !== undefined && value !== null) {
+                try {
+                    updates[`preferences.${key}`] = preferenceValidators[key](value);
+                    hasValidUpdate = true;
+                } catch (error: any) {
+                    throw new Error(`Invalid ${key}: ${error.message}`);
+                }
+            }
+        });
+
+        if (!hasValidUpdate) {
+            return new Response("No valid preference updates provided", { status: 400 });
         }
 
         const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-        await db.collection('users').doc(decodedCookie.uid).set({
-            preferences: { theme }
-        }, { merge: true });
+        await db.collection('users')
+            .doc(decodedCookie.uid)
+            .set(updates, { merge: true });
 
-        return new Response(JSON.stringify({ theme }), {
+        return new Response(JSON.stringify(updates), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });

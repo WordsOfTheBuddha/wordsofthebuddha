@@ -15,6 +15,10 @@ import FooterNavigation from "../components/FooterNavigation.astro";
 import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
+import PaliButton from "../components/PaliButton.astro";
+
+// Server-side theme is always dark initially
+const serverTheme = "dark";
 
 const {
 	id,
@@ -28,6 +32,7 @@ const {
 	showSave = false,
 	titleIcon = null, // Add new prop for title icon
 	showAuth = false, // Add new prop
+	showPali = false,
 } = Astro.props;
 let SEOTitle = title;
 if (title != "Words of the Buddha" && title) {
@@ -38,7 +43,7 @@ if (id) {
 }
 ---
 
-<html lang="en" class="dark" dir="ltr">
+<html lang="en" class={serverTheme} dir="ltr">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -56,18 +61,28 @@ if (id) {
 					<Navbar showAuth={showAuth} />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					<Title title={title}>
-						{titleIcon && (
-							<span class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color" set:html={titleIcon} />
-						)}
+						{
+							titleIcon && (
+								<span
+									class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color"
+									set:html={titleIcon}
+								/>
+							)
+						}
 					</Title>
 					<Description description={description} />
 					{
-						(showReadLater || showSave) && (
-							<div class="flex gap-2 items-center">
-								{showReadLater && <ReadLaterButton />}
-								{showSave && <SaveButton />}
-							</div>
-							<hr class="mt-2 mb-8"/>
+						(showPali || showReadLater || showSave) && (
+							<>
+								<div class="flex items-center justify-between gap-1">
+									{showPali && <PaliButton />}
+									<div class="flex items-center gap-1">
+										{showReadLater && <ReadLaterButton />}
+										{showSave && <SaveButton />}
+									</div>
+								</div>
+								<hr class="mt-2 mb-8" />
+							</>
 						)
 					}
 					<slot />
@@ -77,9 +92,28 @@ if (id) {
 				</HighlightLayout>
 			</div>
 		</main>
-	</body><script>
-		document.addEventListener("DOMContentLoaded", () => {
-			// Remove empty spans with zero-width spaces
+	</body>
+	<script>
+		import { handleNavigation, loadPreferences } from "../utils/theme";
+
+		// Load preferences once when the page loads
+		document.addEventListener("DOMContentLoaded", async () => {
+			const urlParams = new URLSearchParams(window.location.search);
+			if (urlParams.get("load-preferences") === "true") {
+				await loadPreferences();
+			} else {
+				// Set theme based on localStorage
+				const storedTheme = localStorage.getItem("theme");
+				if (storedTheme) {
+					document.documentElement.classList.remove("dark");
+					document.documentElement.classList.add(storedTheme);
+				}
+			}
+
+			// Add click handler for all navigation
+			document.addEventListener("click", handleNavigation);
+
+			// Remove empty spans after preferences are applied
 			document.querySelectorAll("span").forEach((span) => {
 				const hasVisibleContent = /\S/.test(span.textContent ?? "");
 				const hasMeaningfulAttributes = span.attributes.length > 0;

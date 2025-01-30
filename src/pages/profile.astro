@@ -3,6 +3,7 @@ export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 
 const auth = getAuth(app);
 
@@ -21,6 +22,16 @@ const user = await auth.getUser(decodedCookie.uid);
 if (!user) {
 	return Astro.redirect("/signin?returnTo=/profile");
 }
+
+// Get preferences from Firestore
+const db = getFirestore(app);
+const userDoc = await db.collection("users").doc(user.uid).get();
+const userData = userDoc.data() || {};
+
+// Extract preferences with dot notation
+const paliEnabled = userData["preferences.showPali"] === true;
+const currentTheme =
+	userData["preferences.theme"] || localStorage.getItem("theme") || "dark";
 ---
 
 <Layout showAuth={true}>
@@ -86,23 +97,38 @@ if (!user) {
 				<h2 class="text-2xl font-semibold mb-4 text-[var(--text-color)]">
 					Preferences
 				</h2>
-				<div class="flex items-center justify-between">
-					<span class="text-sm font-medium text-[var(--text-color)]">Theme</span
-					>
-					<div class="flex items-center space-x-2">
-						<button
-							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
-							data-theme="light"
-							data-active="false"
+				<div class="space-y-4">
+					<div class="flex items-center justify-between">
+						<span class="text-sm font-medium text-[var(--text-color)]"
+							>Theme</span
 						>
-							Light
-						</button>
-						<button
-							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
-							data-theme="dark"
-							data-active="false"
+						<div class="flex items-center space-x-2">
+							<button
+								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
+								data-theme="light"
+								data-active={currentTheme === "light" ? "true" : "false"}
+							>
+								Light
+							</button>
+							<button
+								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
+								data-theme="dark"
+								data-active={currentTheme === "dark" ? "true" : "false"}
+							>
+								Dark
+							</button>
+						</div>
+					</div>
+
+					<div class="flex items-center justify-between">
+						<span class="text-sm font-medium text-[var(--text-color)]"
+							>Show Pāli text interleaved with English</span
 						>
-							Dark
+						<button
+							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-btn"
+							data-active={paliEnabled.toString()}
+						>
+							{paliEnabled ? "On" : "Off"}
 						</button>
 					</div>
 				</div>
@@ -237,11 +263,14 @@ if (!user) {
 	// Theme handling
 	const themeButtons = document.querySelectorAll(".theme-btn");
 
+	// Initialize buttons based on current state
 	function updateActiveThemeButton() {
-		const isDark = document.documentElement.classList.contains("dark");
+		const currentTheme = document.documentElement.classList.contains("dark")
+			? "dark"
+			: "light";
 		themeButtons.forEach((button) => {
-			const isActive =
-				(button.getAttribute("data-theme") === "dark") === isDark;
+			const buttonTheme = button.getAttribute("data-theme");
+			const isActive = buttonTheme === currentTheme;
 			button.setAttribute("data-active", isActive.toString());
 			if (isActive) {
 				button.classList.add("bg-[var(--auth-button-bg)]", "text-white");
@@ -251,10 +280,8 @@ if (!user) {
 		});
 	}
 
-	// Initialize theme
-	loadPreferences().then(() => {
-		updateActiveThemeButton();
-	});
+	// Initialize on page load without loading preferences again
+	// updateActiveThemeButton();
 
 	// Handle theme button clicks
 	themeButtons.forEach((button) => {
@@ -262,7 +289,7 @@ if (!user) {
 			const theme = button.getAttribute("data-theme");
 			if (theme === "light" || theme === "dark") {
 				try {
-					// Update preference in Firestore
+					// Update preference in Firestore and UI
 					const formData = new FormData();
 					formData.append("theme", theme);
 					const response = await fetch("/api/preferences/update", {
@@ -277,16 +304,66 @@ if (!user) {
 					// Update UI
 					setTheme(theme);
 					updateActiveThemeButton();
+
+					// Force reload to ensure all components reflect the new preference
+					window.location.reload();
 				} catch (error) {
 					console.error("Failed to update theme:", error);
 				}
 			}
 		});
 	});
+
+	// Handle Pali preference
+	const paliBtn = document.querySelector(".pali-btn");
+
+	paliBtn?.addEventListener("click", async () => {
+		const isCurrentlyActive = paliBtn.getAttribute("data-active") === "true";
+		const newState = !isCurrentlyActive;
+
+		try {
+			// 1. Update Firestore
+			const formData = new FormData();
+			formData.append("showPali", newState.toString());
+			const response = await fetch("/api/preferences/update", {
+				method: "POST",
+				body: formData,
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to update Pali preference");
+			}
+
+			// 2. Update localStorage and URL
+			localStorage.setItem("paliMode", newState.toString());
+			const url = new URL(window.location.href);
+			if (newState) {
+				url.searchParams.set("pli", "true");
+			} else {
+				url.searchParams.delete("pli");
+			}
+			window.history.replaceState({}, "", url.toString());
+
+			// 3. Update button UI
+			paliBtn.setAttribute("data-active", newState.toString());
+			paliBtn.textContent = newState ? "On" : "Off";
+			paliBtn.classList.add("bg-[var(--auth-button-bg)]", "text-white");
+
+			// 4. Reload page
+			setTimeout(() => {
+				window.location.reload();
+			}, 100);
+		} catch (error) {
+			console.error("Failed to update Pali preference:", error);
+		}
+	});
 </script>
 
 <style>
 	.theme-btn[data-active="true"] {
+		@apply bg-[var(--auth-button-bg)] text-white;
+	}
+	.pali-btn[data-active="true"] {
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 </style>

@@ -1,4 +1,10 @@
-Guhaṭṭhakasutta
+---
+title: Guhaṭṭhaka sutta - Cave
+description: Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of 'mine'.
+fetter: ignorance,sensual desire
+tags: snp, snp4,ignorance,sensual desire,
+slug: snp4.2
+---
 
 Satto guhāyaṁ bahunābhichanno,
 Tiṭṭhaṁ naro mohanasmiṁ pagāḷho;

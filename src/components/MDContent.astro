@@ -1,0 +1,36 @@
+---
+import { parseMarkdown } from "../utils/mdParser";
+
+interface Props {
+	content: string;
+}
+
+const { content } = Astro.props;
+const parsedContent = parseMarkdown(content);
+---
+
+<article
+	class="md-content prose prose-lg dark:prose-invert"
+	set:html={parsedContent}
+/>
+
+<style>
+	.md-content :global(.pali-paragraph) {
+		margin-bottom: 0.1rem;
+		opacity: 0.8;
+		color: var(--text-color);
+	}
+	.md-content :global(.english-paragraph) {
+		margin-top: 0.5rem;
+	}
+	.pali-content {
+		margin-bottom: 2rem;
+		opacity: 0.8;
+		font-style: italic;
+	}
+
+	.pali-content + .english-content {
+		padding-top: 1rem;
+		border-top: 1px solid rgba(156, 163, 175, 0.2);
+	}
+</style>

@@ -100,7 +100,7 @@ const validSavedEntries = savedEntries
 					<a href="#saved" class="tab-link" data-tab="saved">
 						<span class="inline-flex text-base sm:text-lg items-center gap-2">
 							<span class="w-5 h-5" set:html={SaveSolid} />
-							Save
+							Saved
 						</span>
 					</a>
 				</nav>
@@ -111,7 +111,7 @@ const validSavedEntries = savedEntries
 					{
 						validReadLaterEntries.length === 0 ? (
 							<div class="text-center py-8 text-gray-500">
-								<p>No items saved for reading later.</p>
+								<p>No discourses added for later reading.</p>
 							</div>
 						) : (
 							<div class="space-y-4">
@@ -135,7 +135,7 @@ const validSavedEntries = savedEntries
 					{
 						validSavedEntries.length === 0 ? (
 							<div class="text-center py-8 text-gray-500">
-								<p>No saved posts yet.</p>
+								<p>No posts saved yet.</p>
 							</div>
 						) : (
 							<div class="space-y-4">
