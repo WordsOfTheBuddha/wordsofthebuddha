@@ -4,6 +4,8 @@ import Layout from "../layouts/Layout.astro";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import FontSizeLarger from "../assets/font-size-larger.svg?raw";
+import FontSizeLarge from "../assets/font-size-large.svg?raw";
 
 const auth = getAuth(app);
 
@@ -32,6 +34,7 @@ const userData = userDoc.data() || {};
 const paliEnabled = userData["preferences.showPali"] === true;
 const currentTheme =
 	userData["preferences.theme"] || localStorage.getItem("theme") || "dark";
+const currentFontSize = userData["preferences.fontSize"] || "normal";
 ---
 
 <Layout showAuth={true}>
@@ -99,7 +102,7 @@ const currentTheme =
 				</h2>
 				<div class="space-y-4">
 					<div class="flex items-center justify-between">
-						<span class="text-sm font-medium text-[var(--text-color)]"
+						<span class="text-base font-medium text-[var(--text-color)]"
 							>Theme</span
 						>
 						<div class="flex items-center space-x-2">
@@ -121,8 +124,30 @@ const currentTheme =
 					</div>
 
 					<div class="flex items-center justify-between">
-						<span class="text-sm font-medium text-[var(--text-color)]"
-							>Show Pāli text interleaved with English</span
+						<span class="text-base font-medium text-[var(--text-color)]">
+							Reading Font Size
+						</span>
+						<div class="flex items-baseline space-x-2">
+							<button
+								class="p-2 rounded-md border border-[var(--auth-input-border)] font-size-btn flex items-center justify-center"
+								data-size="large"
+								data-active={currentFontSize === "large" ? "true" : "false"}
+								title="Large"
+								set:html={FontSizeLarge}
+							/>
+							<button
+								class="p-2 rounded-md border border-[var(--auth-input-border)] font-size-btn flex items-center justify-center"
+								data-size="larger"
+								data-active={currentFontSize === "larger" ? "true" : "false"}
+								title="Larger"
+								set:html={FontSizeLarger}
+							/>
+						</div>
+					</div>
+
+					<div class="flex items-center justify-between">
+						<span class="text-base font-medium text-[var(--text-color)]"
+							>Display Pāli text interleaved with English</span
 						>
 						<button
 							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-btn"
@@ -138,7 +163,7 @@ const currentTheme =
 </Layout>
 
 <script>
-	import { setTheme, loadPreferences } from "../utils/theme";
+	import { setTheme } from "../utils/theme";
 
 	const profileForm = document.getElementById(
 		"profile-form"
@@ -348,14 +373,45 @@ const currentTheme =
 			paliBtn.setAttribute("data-active", newState.toString());
 			paliBtn.textContent = newState ? "On" : "Off";
 			paliBtn.classList.add("bg-[var(--auth-button-bg)]", "text-white");
-
-			// 4. Reload page
-			setTimeout(() => {
-				window.location.reload();
-			}, 100);
 		} catch (error) {
 			console.error("Failed to update Pali preference:", error);
 		}
+	});
+
+	// Font size handling
+	const fontSizeButtons = document.querySelectorAll(".font-size-btn");
+
+	fontSizeButtons.forEach((button) => {
+		button.addEventListener("click", async () => {
+			const size = button.getAttribute("data-size");
+			if (size && ["normal", "large", "larger"].includes(size)) {
+				try {
+					const formData = new FormData();
+					formData.append("fontSize", size);
+					const response = await fetch("/api/preferences/update", {
+						method: "POST",
+						body: formData,
+					});
+
+					if (!response.ok) {
+						throw new Error("Failed to update font size preference");
+					}
+
+					// Update localStorage
+					localStorage.setItem("fontSize", size);
+
+					// Update button states
+					fontSizeButtons.forEach((btn) => {
+						const isActive = btn.getAttribute("data-size") === size;
+						btn.setAttribute("data-active", isActive.toString());
+						btn.classList.toggle("bg-[var(--auth-button-bg)]", isActive);
+						btn.classList.toggle("text-white", isActive);
+					});
+				} catch (error) {
+					console.error("Failed to update font size:", error);
+				}
+			}
+		});
 	});
 </script>
 
@@ -364,6 +420,9 @@ const currentTheme =
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 	.pali-btn[data-active="true"] {
+		@apply bg-[var(--auth-button-bg)] text-white;
+	}
+	.font-size-btn[data-active="true"] {
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 </style>

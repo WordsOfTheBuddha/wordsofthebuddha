@@ -1,8 +1,10 @@
 export type Theme = 'light' | 'dark';
+export type FontSize = 'large' | 'larger';
 
 export interface UserPreferences {
-    theme?: 'light' | 'dark';
+    theme?: Theme;
     showPali?: boolean;
+    fontSize?: FontSize;
 }
 
 let preferencesLoaded = false;
@@ -30,6 +32,7 @@ export function handleNavigation(event: MouseEvent) {
     }
 }
 
+// Simplify setUIState to only handle storage
 export function setUIState(preferences: Partial<UserPreferences>): void {
     if (preferences.theme) {
         document.documentElement.classList.remove('light', 'dark');
@@ -48,52 +51,41 @@ export function setUIState(preferences: Partial<UserPreferences>): void {
         window.history.replaceState({}, '', url.toString());
         // Don't reload here, let the caller decide
     }
+
+    if (preferences.fontSize) {
+        localStorage.setItem('fontSize', preferences.fontSize);
+    }
 }
 
 // Add new function to synchronize all UI states
 export function synchronizePreferences(preferences: Partial<UserPreferences>) {
     console.log("in synchronize preferences, pali mode is: ", preferences.showPali);
     console.log("in synchronize preferences, theme is: ", preferences.theme);
-    if (preferences.showPali !== undefined) {
+    console.log("in synchronize preferences, font size is: ", preferences.fontSize);
+
+    if (preferences.showPali !== undefined && localStorage.getItem('paliMode') !== preferences.showPali.toString()) {
         localStorage.setItem('paliMode', preferences.showPali.toString());
-        const url = new URL(window.location.href);
-        if (preferences.showPali) {
-            url.searchParams.set('pli', 'true');
-        } else {
-            url.searchParams.delete('pli');
-        }
-        window.history.replaceState({}, '', url.toString());
     }
 
-    if (preferences.theme) {
+    if (preferences.theme && localStorage.theme !== preferences.theme) {
         localStorage.theme = preferences.theme;
-        document.documentElement.classList.remove('light', 'dark');
-        document.documentElement.classList.add(preferences.theme);
-    }
-}
-
-export async function loadPreferences(): Promise<UserPreferences> {
-    if (preferencesLoaded) {
-        return {};
     }
 
-    try {
-        const response = await fetch('/api/preferences/get');
-        if (!response.ok) throw new Error('Failed to load preferences');
-
-        const data = await response.json();
-        const prefs: UserPreferences = {
-            theme: data['theme'] || localStorage.getItem('theme') || 'dark',
-            showPali: data['showPali']
-        };
-
-        synchronizePreferences(prefs);
-        preferencesLoaded = true;
-        return prefs;
-    } catch (error) {
-        console.error('Error loading preferences:', error);
-        return {};
+    if (preferences.fontSize && localStorage.fontSize !== preferences.fontSize) {
+        localStorage.setItem('fontSize', preferences.fontSize);
     }
+
+    // Clean up URL parameters
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('load-preferences')) {
+        url.searchParams.delete('load-preferences');
+    }
+
+    if (url.searchParams.has('theme')) {
+        url.searchParams.delete('theme');
+    }
+
+    window.history.replaceState({}, '', url.toString());
 }
 
 export function toggleTheme(): void {

@@ -14,15 +14,17 @@
   --secondary-color-light: #ff5722;
   --link-color-light: #1a73e8;
   --link-hover-color-light: #0c47a1;
+  --tooltip-border-light: rgba(255, 87, 34, 0.3); /* #ff5722 with opacity */
 
   --icon-fill-color-dark: #ffffff;
   --bookmark-fill-color-dark: #a9a9a9;
-  --text-color-dark: #ffffff;
+  --text-color-dark: rgba(255, 255, 255, 0.9);
   --background-color-dark: #1c1c1c;
   --primary-color-dark: #d47445;
   --secondary-color-dark: #d47445;
   --link-color-dark: #87cefa;
   --link-hover-color-dark: #ffffff;
+  --tooltip-border-dark: rgba(212, 116, 69, 0.3); /* #d47445 with opacity */
 
   --background-header-light: #f4f4f4;
   --background-row-even-light: #f9f9f9;
@@ -47,6 +49,7 @@
   --background-row-hover: var(--background-row-hover-light);
   --callout-background: rgba(219, 234, 254, 1);
   --border-color: rgba(191, 219, 254, 1);
+  --tooltip-border: var(--tooltip-border-light);
 
   --auth-card-bg-light: #ffffff;
   --auth-card-shadow-light: rgba(0, 0, 0, 0.1);
@@ -84,6 +87,7 @@ html.dark {
   --background-row-hover: var(--background-row-hover-dark);
   --callout-background: rgba(30, 58, 138, 0.3);
   --border-color: rgba(191, 219, 254, 0.3);
+  --tooltip-border: var(--tooltip-border-dark);
 
   --auth-card-bg: var(--auth-card-bg-dark);
   --auth-card-shadow: var(--auth-card-shadow-dark);
@@ -113,4 +117,9 @@ body {
     color: var(--text-color); /* Use theme variable */
     --verse-accent: theme(colors.gray.300);
   }
+}
+
+.prose-xl {
+  font-size: 1.3rem;
+  line-height: 1.85;
 }

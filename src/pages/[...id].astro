@@ -22,6 +22,7 @@ if (currentIndex === -1) {
 
 // Get showPali from query string
 const showPali = Astro.url.searchParams.get("pli") === "true";
+console.log("page: ", id, "showPali: ", showPali);
 
 // Load content
 const contentItem = await getEntry("all", id);

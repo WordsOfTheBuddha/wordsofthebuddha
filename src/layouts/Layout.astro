@@ -17,8 +17,9 @@ import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 
+const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
-const serverTheme = "dark";
+const serverTheme = paramTheme === "light" ? "light" : "dark";
 
 const {
 	id,
@@ -39,7 +40,7 @@ if (title != "Words of the Buddha" && title) {
 	SEOTitle = title + " - Words of the Buddha";
 }
 if (id) {
-	SEOTitle = id + " " + title;
+	SEOTitle = id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
 }
 ---
 
@@ -50,6 +51,32 @@ if (id) {
 		<title>{SEOTitle || "Words of the Buddha"}</title>
 		<meta name="description" content={description || "Default Description"} />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<script is:inline>
+			function getInitialTheme() {
+				const storedTheme = localStorage.getItem("theme");
+				const urlParams = new URLSearchParams(window.location.search);
+				const paliMode = urlParams.get("pli");
+				if (!paliMode) {
+					localStorage.setItem("paliMode", false);
+				}
+				const paramTheme = urlParams.get("theme");
+
+				if (paramTheme === "light" || paramTheme === "dark") {
+					return paramTheme;
+				}
+
+				if (storedTheme === "light" || storedTheme === "dark") {
+					return storedTheme;
+				}
+
+				return window.matchMedia("(prefers-color-scheme: dark)").matches
+					? "dark"
+					: "light";
+			}
+
+			document.documentElement.classList.remove("light", "dark");
+			document.documentElement.classList.add(getInitialTheme());
+		</script>
 	</head>
 	<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 		<Analytics />
@@ -94,20 +121,25 @@ if (id) {
 		</main>
 	</body>
 	<script>
-		import { handleNavigation, loadPreferences } from "../utils/theme";
+		import { handleNavigation, synchronizePreferences } from "../utils/theme";
+		import type { UserPreferences, Theme, FontSize } from "../utils/theme";
 
 		// Load preferences once when the page loads
 		document.addEventListener("DOMContentLoaded", async () => {
 			const urlParams = new URLSearchParams(window.location.search);
-			if (urlParams.get("load-preferences") === "true") {
-				await loadPreferences();
-			} else {
-				// Set theme based on localStorage
-				const storedTheme = localStorage.getItem("theme");
-				if (storedTheme) {
-					document.documentElement.classList.remove("dark");
-					document.documentElement.classList.add(storedTheme);
-				}
+			const preferences: UserPreferences = {
+				theme:
+					(urlParams.get("theme") as Theme) ?? localStorage.theme ?? "dark",
+				showPali: urlParams.get("pli") === "true",
+			};
+			console.log("preferences: ", preferences);
+			synchronizePreferences(preferences);
+			// Apply font size from localStorage
+			const storedFontSize = localStorage.getItem("fontSize") || "large";
+			const prose = document.querySelector("article.prose");
+			if (prose && storedFontSize === "larger") {
+				prose.classList.remove("prose-lg", "prose-xl");
+				prose.classList.add("prose-xl");
 			}
 
 			// Add click handler for all navigation

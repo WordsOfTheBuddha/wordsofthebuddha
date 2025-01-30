@@ -83,7 +83,7 @@ a:hover {
 .tooltip-text {
   cursor: pointer;
   padding-bottom: 1px;
-  border-bottom: 2px solid var(--secondary-color);
+  border-bottom: 2px solid var(--tooltip-border);
   cursor: pointer;
 }
 

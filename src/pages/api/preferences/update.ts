@@ -15,6 +15,12 @@ const preferenceValidators = {
     showPali: (value: string) => {
         const boolValue = value.toLowerCase() === 'true';
         return boolValue;
+    },
+    fontSize: (value: string) => {
+        if (!['large', 'larger'].includes(value)) {
+            throw new Error("Font size must be 'large' or 'larger'");
+        }
+        return value as 'large' | 'larger';
     }
 } as const;
 

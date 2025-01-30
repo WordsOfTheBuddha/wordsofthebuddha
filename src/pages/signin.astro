@@ -99,7 +99,6 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 		signInWithEmailAndPassword,
 	} from "firebase/auth";
 	import { app } from "../firebase/client";
-	import { loadPreferences } from "../utils/theme";
 
 	const returnTo =
 		new URL(window.location.href).searchParams.get("returnTo") || "/dashboard";
@@ -179,7 +178,6 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 
 			if (response.redirected) {
 				console.log("sign in loaded preferences");
-				await loadPreferences();
 				window.location.assign(response.url);
 			}
 		} catch (error: any) {
