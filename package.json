@@ -3,10 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "predev": "node src/utils/generateRoutes.mjs",
-    "dev": "astro dev --host",
-    "prebuild": "node src/utils/generateRoutes.mjs",
-    "build": "astro build",
+    "predev": "node --trace-deprecation src/utils/generateRoutes.mjs",
+    "dev": "node --trace-deprecation ./node_modules/.bin/astro dev --host",
+    "prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs",
+    "build": "node --trace-deprecation ./node_modules/.bin/astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -23,7 +23,6 @@
     "marked": "^15.0.6",
     "rangy": "^1.3.1",
     "rehype-external-links": "^3.0.0",
-    "remark-breaks": "^4.0.0",
     "tailwindcss": "^3.4.17",
     "tippy.js": "^6.3.7",
     "typescript": "^5.7.3"

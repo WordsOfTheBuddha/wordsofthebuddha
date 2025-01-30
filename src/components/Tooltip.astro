@@ -4,9 +4,9 @@
 		for (let node of element.childNodes) {
 			if (node.nodeType === Node.TEXT_NODE) {
 				let text = node.textContent || "";
-				// Replace {text}(tooltip) pattern
+				// Replace |text::tooltip| pattern
 				text = text.replace(
-					/\{([^}]*)\}\s*\(([^)]*)\)/g,
+					/\|([^|:]+)::([^|]+)\|/g,
 					(_, textPart, tooltip) => {
 						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
 					}
