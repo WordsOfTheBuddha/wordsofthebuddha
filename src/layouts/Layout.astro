@@ -55,10 +55,13 @@ if (id) {
 			function getInitialTheme() {
 				const storedTheme = localStorage.getItem("theme");
 				const urlParams = new URLSearchParams(window.location.search);
-				const paliMode = urlParams.get("pli");
-				if (!paliMode) {
-					localStorage.setItem("paliMode", false);
+				const paliMode = urlParams.get("pli") === "true";
+				localStorage.setItem("paliMode", paliMode);
+				const paliLookup = urlParams.get("enablePaliLookup");
+				if (paliLookup) {
+					localStorage.setItem("paliLookup", paliLookup === "true");
 				}
+
 				const paramTheme = urlParams.get("theme");
 
 				if (paramTheme === "light" || paramTheme === "dark") {
@@ -131,6 +134,8 @@ if (id) {
 				theme:
 					(urlParams.get("theme") as Theme) ?? localStorage.theme ?? "dark",
 				showPali: urlParams.get("pli") === "true",
+				enablePaliLookup:
+					urlParams.get("enablePaliLookup") ?? localStorage.paliLookup ?? false,
 			};
 			console.log("preferences: ", preferences);
 			synchronizePreferences(preferences);

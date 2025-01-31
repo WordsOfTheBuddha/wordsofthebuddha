@@ -237,17 +237,31 @@ type ColorName = keyof typeof COLOR_MAP;
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) return;
 
-		// On desktop, only proceed after mouseup
-		if (e instanceof MouseEvent && isMouseDown) return;
-
+		// Get selection first to check all conditions
 		const selection = window.rangy.getSelection();
+		const selectedText = selection.toString().trim();
+
+		// Get Pali context
+		const target = e.target as HTMLElement;
+		const isPaliParagraph = target.closest(".pali-paragraph");
+		const isPaliLookupEnabled = localStorage.getItem("paliLookup") === "true";
+		const isSingleWord = selectedText && !selectedText.includes(" ");
+
+		// Only hide menu if ALL three conditions are met
+		if (isPaliLookupEnabled && isPaliParagraph && isSingleWord) {
+			menu.style.display = "none";
+			return;
+		}
+
+		// Rest of the existing checks
+		if (e instanceof MouseEvent && isMouseDown) return;
 
 		if (selection.isCollapsed || !isSelectionValid(selection)) {
 			menu.style.display = "none";
 			return;
 		}
 
-		// Clear any pending menu positioning
+		// Rest of existing handleSelection code...
 		if (menuPositionTimeout) {
 			clearTimeout(menuPositionTimeout);
 			menuPositionTimeout = null;

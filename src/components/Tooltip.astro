@@ -40,6 +40,8 @@
 			import("tippy.js/animations/scale-subtle.css");
 
 			const { default: tippy } = tippyModule;
+
+			// Setup regular tooltips
 			let tooltips = tippy("[data-tippy-content]", {
 				maxWidth: 320,
 				interactive: true,
@@ -53,6 +55,237 @@
 					instance.popper.style.overflowX = "hidden";
 				},
 			});
+
+			// Setup Pali word lookup if enabled
+			if (localStorage.getItem("paliLookup") === "true") {
+				let activeTooltip: any = null;
+
+				const showDictionary = async (
+					text: string,
+					x: number,
+					y: number,
+					isMobile = false
+				) => {
+					console.log("Showing dictionary for:", text, "at:", x, y);
+
+					if (activeTooltip) {
+						activeTooltip.destroy();
+						activeTooltip = null;
+					}
+
+					const temp = document.createElement("div");
+					temp.style.position = "fixed";
+					temp.style.left = `${x - window.scrollX}px`;
+					temp.style.top = `${y - window.scrollY}px`;
+					document.body.appendChild(temp);
+
+					activeTooltip = tippy(temp, {
+						content: `<div class="loading-spinner">
+							<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+							</svg>
+							<span class="ml-2">Loading definition...</span>
+						</div>`,
+						allowHTML: true,
+						interactive: true,
+						theme: document.documentElement.classList.contains("dark")
+							? "dark dictionary"
+							: "dictionary",
+						placement: isMobile ? "bottom" : "auto", // Force bottom placement for mobile
+						showOnCreate: true,
+						maxWidth: 400,
+						trigger: "manual",
+						hideOnClick: false,
+						onShow(instance) {
+							// Make the tooltip scrollable
+							instance.popper.style.maxHeight = "400px";
+							instance.popper.style.overflowY = "auto";
+						},
+					});
+
+					try {
+						const response = await fetch(
+							`/api/pali/lookup?word=${encodeURIComponent(text)}`
+						);
+						const data = await response.json();
+						if (data.summary_html || data.dpd_html) {
+							// Create a container for the HTML content
+							const contentEl = document.createElement("div");
+							contentEl.innerHTML = `
+        ${data.summary_html ? `<div class="summary">${data.summary_html}</div>` : ""}
+        ${data.dpd_html ? `<div class="dpd-content">${data.dpd_html}</div>` : ""}
+      `;
+
+							// Intercept anchor links that start with '#'
+							contentEl.addEventListener("click", (e) => {
+								const link = (e.target as HTMLElement).closest("a");
+								if (link && link.getAttribute("href")?.startsWith("#")) {
+									e.preventDefault();
+									e.stopPropagation();
+
+									const container =
+										activeTooltip.popper.querySelector(".tippy-content");
+									const targetId = link.getAttribute("href")?.substring(1);
+									const targetEl =
+										targetId && container.querySelector(`#${targetId}`);
+
+									if (targetEl) {
+										const containerTop = container.getBoundingClientRect().top;
+										const targetTop = targetEl.getBoundingClientRect().top;
+										const visibleRange = 400; // matches maxHeight setting
+
+										console.log("Visibility check:", {
+											containerTop,
+											targetTop,
+											visibleRange,
+											diff: targetTop - containerTop,
+											isVisible:
+												targetTop - containerTop >= 0 &&
+												targetTop - containerTop <= visibleRange,
+										});
+
+										if (
+											targetTop - containerTop >= 0 &&
+											targetTop - containerTop <= visibleRange
+										) {
+											console.log("Target in viewport - removing href");
+											link.removeAttribute("href");
+											return;
+										}
+
+										console.log("Target outside viewport - scrolling");
+										targetEl.scrollIntoView({
+											behavior: "smooth",
+											block: "start",
+										});
+									}
+								}
+							});
+
+							activeTooltip.setContent(contentEl);
+						}
+					} catch (error) {
+						console.error("Failed to fetch definition:", error);
+						activeTooltip.setContent("Failed to load definition");
+					}
+				};
+
+				// Desktop: Keep double-click handler
+				if (!("ontouchstart" in window)) {
+					document.addEventListener("dblclick", (e) => {
+						const target = e.target as HTMLElement;
+						if (!target.closest(".pali-paragraph")) return;
+
+						const selection = window.getSelection();
+						const text = selection?.toString().trim();
+						if (!text || /\s/.test(text)) return;
+
+						showDictionary(text, e.pageX, e.pageY, false);
+					});
+				}
+
+				// Desktop: click outside to close
+				if (!("ontouchstart" in window)) {
+					document.addEventListener("click", (e) => {
+						console.log("Desktop click event for closing tooltip:", e.target);
+						const target = e.target as HTMLElement;
+						if (activeTooltip && !target.closest(".tippy-content")) {
+							console.log("Closing dictionary tooltip on desktop.");
+							activeTooltip.destroy();
+							activeTooltip = null;
+						}
+					});
+				}
+
+				// Mobile: Use long press handler
+				if ("ontouchstart" in window) {
+					let pressTimer: number | null = null;
+					let startTouch: Touch | null = null;
+					const LONG_PRESS_DURATION = 700;
+
+					// Add close button to tooltip
+					document.addEventListener("click", (e) => {
+						const target = e.target as HTMLElement;
+						if (
+							activeTooltip &&
+							!target.closest(".tippy-content") &&
+							!target.closest(".pali-paragraph")
+						) {
+							activeTooltip.destroy();
+							activeTooltip = null;
+						}
+					});
+
+					// Prevent default context menu on mobile
+					document.addEventListener("contextmenu", (e) => {
+						const target = e.target as HTMLElement;
+						if (target.closest(".pali-paragraph")) {
+							e.preventDefault();
+						}
+					});
+
+					document.addEventListener(
+						"touchstart",
+						(e) => {
+							const target = e.target as HTMLElement;
+							if (!target.closest(".pali-paragraph")) return;
+
+							startTouch = e.touches[0];
+							pressTimer = window.setTimeout(() => {
+								const selection = window.getSelection();
+								const text = selection?.toString().trim();
+
+								console.log("Long press detected:", {
+									text,
+									hasPaliParent: !!target.closest(".pali-paragraph"),
+								});
+
+								if (text && !text.includes(" ")) {
+									showDictionary(
+										text,
+										startTouch!.pageX,
+										startTouch!.pageY,
+										true
+									);
+								}
+							}, LONG_PRESS_DURATION);
+						},
+						{ passive: true }
+					);
+
+					document.addEventListener(
+						"touchmove",
+						(e) => {
+							if (pressTimer) {
+								clearTimeout(pressTimer);
+								pressTimer = null;
+							}
+						},
+						{ passive: true }
+					);
+
+					document.addEventListener(
+						"touchend",
+						() => {
+							if (pressTimer) {
+								clearTimeout(pressTimer);
+								pressTimer = null;
+								// Don't remove the tooltip here anymore
+							}
+						},
+						{ passive: true }
+					);
+
+					// Add a document-wide click handler to close tooltip when clicking outside
+					document.addEventListener("click", (e) => {
+						const target = e.target as HTMLElement;
+						if (activeTooltip && !target.closest(".tippy-content")) {
+							activeTooltip.hide();
+						}
+					});
+				}
+			}
 
 			// Close tooltips when clicking outside
 			document.addEventListener("click", (event) => {
@@ -93,3 +326,92 @@
 		});
 	});
 </script>
+
+<style is:global>
+	/* Dictionary content styling */
+	.tippy-box[data-theme~="dictionary"] {
+		background-color: var(--auth-card-bg);
+		color: var(--text-color);
+		padding: 0.5rem;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .tippy-content {
+		padding: 0.5rem;
+	}
+
+	/* DPD styles */
+	.tippy-box[data-theme~="dictionary"] .example {
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .pali {
+		color: var(--primary-color);
+		font-weight: 500;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .grammar {
+		color: var(--secondary-color);
+		font-style: italic;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .definition {
+		margin-top: 0.25rem;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .summary {
+		border-bottom: 1px solid var(--auth-input-border);
+		margin-bottom: 0.5rem;
+		padding-bottom: 0.5rem;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .dpd-content {
+		margin-top: 0.5rem;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .box-content {
+		display: none;
+	}
+
+	.tippy-box[data-theme~="dictionary"] .button-box {
+		display: none;
+	}
+
+	.tippy-box[data-theme~="dictionary"] table.grammar_dict {
+		border-collapse: collapse;
+		border: 1px solid var(--auth-input-border);
+	}
+
+	.loading-spinner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+		color: var(--text-color);
+	}
+
+	/* Table styles for dictionary content */
+	.tippy-box[data-theme~="dictionary"] table.grammar_dict {
+		border-collapse: collapse;
+		border: 1px solid var(--auth-input-border);
+		width: 100%;
+		margin: 0.5rem 0;
+		font-size: 0.9rem;
+	}
+
+	.tippy-box[data-theme~="dictionary"] table.grammar_dict th,
+	.tippy-box[data-theme~="dictionary"] table.grammar_dict td {
+		border: 1px solid var(--auth-input-border);
+		padding: 0.25rem 0.5rem;
+		text-align: left;
+	}
+
+	.tippy-box[data-theme~="dictionary"] table.grammar_dict th {
+		background-color: var(--auth-input-bg);
+		font-weight: 500;
+	}
+
+	.tippy-box[data-theme~="dictionary"] table.grammar_dict tr:nth-child(even) {
+		background-color: var(--auth-input-bg);
+	}
+</style>

@@ -5,6 +5,7 @@ export interface UserPreferences {
     theme?: Theme;
     showPali?: boolean;
     fontSize?: FontSize;
+    enablePaliLookup?: boolean;
 }
 
 let preferencesLoaded = false;
@@ -75,6 +76,10 @@ export function synchronizePreferences(preferences: Partial<UserPreferences>) {
         localStorage.setItem('fontSize', preferences.fontSize);
     }
 
+    if (preferences.enablePaliLookup !== undefined && localStorage.getItem('enablePaliLookup') !== preferences.enablePaliLookup.toString()) {
+        localStorage.setItem('paliLookup', preferences.enablePaliLookup.toString());
+    }
+
     // Clean up URL parameters
     const url = new URL(window.location.href);
     if (url.searchParams.has('load-preferences')) {
@@ -83,6 +88,10 @@ export function synchronizePreferences(preferences: Partial<UserPreferences>) {
 
     if (url.searchParams.has('theme')) {
         url.searchParams.delete('theme');
+    }
+
+    if (url.searchParams.has('enablePaliLookup')) {
+        url.searchParams.delete('enablePaliLookup');
     }
 
     window.history.replaceState({}, '', url.toString());

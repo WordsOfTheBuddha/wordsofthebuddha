@@ -31,6 +31,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         const userData = userDoc.data() || {};
         const showPali = userData['preferences.showPali'];
         const theme = userData['preferences.theme'];
+        const enablePaliLookup = userData['preferences.enablePaliLookup'] || false;
 
         // Create session cookie
         const twoWeeks = 60 * 60 * 24 * 14 * 1000;
@@ -52,6 +53,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
             redirectUrl.searchParams.delete('pli');
         }
         redirectUrl.searchParams.set('theme', theme);
+        redirectUrl.searchParams.set('enablePaliLookup', enablePaliLookup.toString());
 
         return redirect(redirectUrl.toString());
     } catch (error) {

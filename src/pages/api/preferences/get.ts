@@ -22,7 +22,8 @@ export const GET: APIRoute = async ({ cookies }) => {
         // Transform flat structure back into nested object
         const preferences: UserPreferences = {
             theme: userData['preferences.theme'],
-            showPali: userData['preferences.showPali']
+            showPali: userData['preferences.showPali'],
+            enablePaliLookup: userData['preferences.enablePaliLookup'] || false
         };
 
         return new Response(JSON.stringify(preferences), {

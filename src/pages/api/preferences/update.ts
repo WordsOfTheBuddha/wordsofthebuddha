@@ -21,6 +21,10 @@ const preferenceValidators = {
             throw new Error("Font size must be 'large' or 'larger'");
         }
         return value as 'large' | 'larger';
+    },
+    enablePaliLookup: (value: string) => {
+        const boolValue = value.toLowerCase() === 'true';
+        return boolValue;
     }
 } as const;
 

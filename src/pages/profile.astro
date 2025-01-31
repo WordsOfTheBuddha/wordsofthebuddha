@@ -159,7 +159,7 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 
 					<div class="flex items-center justify-between">
 						<span class="text-base font-medium text-[var(--text-color)]"
-							>Enable Pāli word lookup on double-click</span
+							>Pāli word lookup on double-click/long-press</span
 						>
 						<button
 							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-lookup-btn"
@@ -178,6 +178,27 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 
 <script>
 	import { setTheme } from "../utils/theme";
+
+	// Add synchronization of localStorage with userData
+	// for preferences that are only settable in the profile UI
+	document.addEventListener("DOMContentLoaded", () => {
+		const enablePaliLookup =
+			document
+				.querySelector(".pali-lookup-btn")
+				?.getAttribute("data-active") === "true";
+		const currentFontSize =
+			document
+				.querySelector('.font-size-btn[data-active="true"]')
+				?.getAttribute("data-size") || "normal";
+
+		// Update localStorage if values are different
+		if (localStorage.getItem("paliLookup") !== enablePaliLookup.toString()) {
+			localStorage.setItem("paliLookup", enablePaliLookup.toString());
+		}
+		if (localStorage.getItem("fontSize") !== currentFontSize) {
+			localStorage.setItem("fontSize", currentFontSize);
+		}
+	});
 
 	const profileForm = document.getElementById(
 		"profile-form"
@@ -386,7 +407,8 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 			// 3. Update button UI
 			paliBtn.setAttribute("data-active", newState.toString());
 			paliBtn.textContent = newState ? "On" : "Off";
-			paliBtn.classList.add("bg-[var(--auth-button-bg)]", "text-white");
+			paliBtn.classList.toggle("bg-[var(--auth-button-bg)]", newState);
+			paliBtn.classList.toggle("text-white", newState);
 		} catch (error) {
 			console.error("Failed to update Pali preference:", error);
 		}
@@ -467,6 +489,9 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 	.font-size-btn[data-active="true"] {
+		@apply bg-[var(--auth-button-bg)] text-white;
+	}
+	.pali-lookup-btn[data-active="true"] {
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 </style>
