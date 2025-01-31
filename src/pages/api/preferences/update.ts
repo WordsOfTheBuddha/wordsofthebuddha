@@ -1,8 +1,7 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
-import { app } from "../../../firebase/server";
+import { app, db } from "../../../firebase/server";
 
 // Preference validators and their document paths
 const preferenceValidators = {
@@ -30,7 +29,6 @@ const preferenceValidators = {
 
 export const POST: APIRoute = async ({ request, cookies }) => {
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
     const sessionCookie = cookies.get("__session")?.value;
     if (!sessionCookie) {

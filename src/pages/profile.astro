@@ -1,9 +1,8 @@
 ---
 export const prerender = false;
 import Layout from "../layouts/Layout.astro";
-import { app } from "../firebase/server";
+import { app, db } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 import FontSizeLarger from "../assets/font-size-larger.svg?raw";
 import FontSizeLarge from "../assets/font-size-large.svg?raw";
 
@@ -26,7 +25,6 @@ if (!user) {
 }
 
 // Get preferences from Firestore
-const db = getFirestore(app);
 const userDoc = await db.collection("users").doc(user.uid).get();
 const userData = userDoc.data() || {};
 

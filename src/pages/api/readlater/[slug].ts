@@ -1,8 +1,7 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
+import { app, db } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 
 export const POST: APIRoute = async ({ params, request, cookies }) => {
     try {
@@ -20,7 +19,6 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
             return new Response(JSON.stringify({ error: "Missing slug param" }), { status: 400 });
         }
 
-        const db = getFirestore(app);
         const readLaterRef = db
             .collection('users')
             .doc(decodedCookie.uid)

@@ -1,9 +1,9 @@
 ---
 export const prerender = false;
 import { getEntry } from "astro:content";
-import { app } from "../firebase/server";
+import { app, db } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
+// Remove getFirestore import
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import ClockSolid from "../assets/clock-solid.svg?raw";
@@ -29,7 +29,6 @@ if (!user) {
 	return Astro.redirect("/signin");
 }
 
-const db = getFirestore(app);
 const readLaterRef = db
 	.collection("users")
 	.doc(user.uid)
