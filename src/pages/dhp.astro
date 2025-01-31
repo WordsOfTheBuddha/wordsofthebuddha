@@ -17,7 +17,7 @@ const naturalSort = (a: CollectionEntry<"dhp">, b: CollectionEntry<"dhp">) => {
 const sortedPosts = allDhpPosts.sort(naturalSort);
 ---
 
-<Layout title="Dhammapada Verses">
+<Layout title="Dhammapada Verses" showAuth={true}>
 	<main class="container">
 		<div class="posts-grid">
 			{

@@ -156,6 +156,20 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 							{paliEnabled ? "On" : "Off"}
 						</button>
 					</div>
+
+					<div class="flex items-center justify-between">
+						<span class="text-base font-medium text-[var(--text-color)]"
+							>Enable Pāli word lookup on double-click</span
+						>
+						<button
+							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-lookup-btn"
+							data-active={(
+								userData["preferences.enablePaliLookup"] ?? false
+							).toString()}
+						>
+							{userData["preferences.enablePaliLookup"] ? "On" : "Off"}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -375,6 +389,36 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 			paliBtn.classList.add("bg-[var(--auth-button-bg)]", "text-white");
 		} catch (error) {
 			console.error("Failed to update Pali preference:", error);
+		}
+	});
+
+	// Handle Pali lookup preference
+	const paliLookupBtn = document.querySelector(".pali-lookup-btn");
+
+	paliLookupBtn?.addEventListener("click", async () => {
+		const isCurrentlyActive =
+			paliLookupBtn.getAttribute("data-active") === "true";
+		const newState = !isCurrentlyActive;
+
+		try {
+			const formData = new FormData();
+			formData.append("enablePaliLookup", newState.toString());
+			const response = await fetch("/api/preferences/update", {
+				method: "POST",
+				body: formData,
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to update Pali lookup preference");
+			}
+
+			localStorage.setItem("paliLookup", newState.toString());
+			paliLookupBtn.setAttribute("data-active", newState.toString());
+			paliLookupBtn.textContent = newState ? "On" : "Off";
+			paliLookupBtn.classList.toggle("bg-[var(--auth-button-bg)]", newState);
+			paliLookupBtn.classList.toggle("text-white", newState);
+		} catch (error) {
+			console.error("Failed to update Pali lookup preference:", error);
 		}
 	});
 

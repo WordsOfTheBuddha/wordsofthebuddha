@@ -16,7 +16,7 @@ const naturalSort = (a: CollectionEntry<"ud">, b: CollectionEntry<"ud">) => {
 const sortedPosts = allUdPosts.sort(naturalSort);
 ---
 
-<Layout title="Inspired Utterances">
+<Layout title="Inspired Utterances" showAuth={true}>
 	<main class="container">
 		<div class="posts-grid">
 			{

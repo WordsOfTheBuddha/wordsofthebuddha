@@ -16,7 +16,7 @@ const naturalSort = (a: CollectionEntry<"sn">, b: CollectionEntry<"sn">) => {
 const sortedPosts = allSnPosts.sort(naturalSort);
 ---
 
-<Layout title="Linked Discourses">
+<Layout title="Linked Discourses" showAuth={true}>
 	<main class="container">
 		<div class="posts-grid">
 			{
