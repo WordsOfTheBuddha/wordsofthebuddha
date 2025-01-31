@@ -1,10 +1,9 @@
 ---
-import ArrowsUpDown from "../assets/arrows-up-down.svg?raw";
-import Check from "../assets/check.svg?raw";
+import ChevronRight from "../assets/chevron-right.svg?raw";
+import ChevronDown from "../assets/chevron-down.svg?raw";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
-import { setUIState } from "../utils/theme";
 
 const url = new URL(Astro.url);
 let isPaliMode = url.searchParams.get("pli") === "true";
@@ -29,7 +28,7 @@ if (!url.searchParams.has("pli")) {
 <button
 	id="paliButton"
 	class:list={[
-		"inline-flex items-center gap-1 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		"inline-flex items-center gap-1 pl-0 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
 		{ "text-primary-color dark:text-primary-color": isPaliMode },
 	]}
 	aria-label="Toggle Pali text"
@@ -37,15 +36,15 @@ if (!url.searchParams.has("pli")) {
 >
 	<span
 		id="paliIcon"
-		class:list={["w-5 h-5", { hidden: isPaliMode }]}
-		set:html={ArrowsUpDown}
+		class:list={["w-4 h-4", { hidden: isPaliMode }]}
+		set:html={ChevronRight}
 	/>
 	<span
-		id="paliCheckIcon"
-		class:list={["w-5 h-5", { hidden: !isPaliMode }]}
-		set:html={Check}
+		id="paliEyeIcon"
+		class:list={["w-4 h-4", { hidden: !isPaliMode }]}
+		set:html={ChevronDown}
 	/>
-	<span>Show Pāli</span>
+	<span>Pāli</span>
 </button>
 
 <script>
