@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
+import { Image } from "astro:assets";
 import CC0Button from "../assets/CC0_button.svg";
 ---
 
@@ -7,11 +8,12 @@ import CC0Button from "../assets/CC0_button.svg";
 	<div class="flex-none text-lg font-bold"><ThemeToggle /></div>
 	<div class="flex items-center space-x-4 ml-auto">
 		<div>
-			<img
-				loading="lazy"
-				src={CC0Button.src}
+			<Image
+				src={CC0Button}
 				alt="CC0 License Button"
 				class="h-8 opacity-30"
+				width={88}
+				height={31}
 			/>
 		</div>
 	</div>
