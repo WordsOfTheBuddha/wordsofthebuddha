@@ -17,7 +17,7 @@ type ContentEntry = {
 export function parseContent(paliContent: ContentEntry, englishContent: ContentEntry) {
     const pairs: ContentPair[] = [];
     const paliText = paliContent?.body?.trim?.() ? paliContent.body : '';
-    const englishText = englishContent?.body || '';
+    const englishText = toSmartQuotes(englishContent?.body || '');
 
     const paliParagraphs = paliText
         ? paliText
@@ -54,6 +54,12 @@ export function parseContent(paliContent: ContentEntry, englishContent: ContentE
     return pairs;
 }
 
+function toSmartQuotes(text: string): string {
+    return text
+        .replace(/"([^"]*)"/g, '“$1”')
+        .replace(/'([^']*)'/g, '‘$1’');
+}
+
 export function createCombinedMarkdown(pairs: ContentPair[], showPali: boolean) {
     const result = pairs.map(pair => {
         if (pair.type === 'other') {
@@ -63,7 +69,9 @@ export function createCombinedMarkdown(pairs: ContentPair[], showPali: boolean) 
         const verseEnglish = isVerse(pair.english) ? 'verse' : '';
 
         if (!showPali || !pair.pali) {
-            return isVerseText ? `<p class="english-paragraph ${verseEnglish}">${transformVerseNewlines(pair.english)}</p>` : pair.english;
+            return isVerseText
+                ? `<p class="english-paragraph ${verseEnglish}">${transformVerseNewlines(pair.english)}</p>`
+                : pair.english;
         }
         const versePali = isVerse(pair.pali) ? 'verse-basic' : '';
         return `<p class="pali-paragraph ${versePali}">${isVerseText ? transformVerseNewlines(pair.pali) : pair.pali}</p>\n\n<p class="english-paragraph ${verseEnglish}">${isVerseText ? transformVerseNewlines(pair.english) : pair.english}</p>`;
