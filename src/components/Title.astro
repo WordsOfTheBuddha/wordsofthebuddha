@@ -4,8 +4,15 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const hasSeparator = title?.includes("-");
+const [paliTitle, ...englishParts] = hasSeparator
+	? title.split("-").map((part) => part.trim())
+	: [title];
+const englishTitle = englishParts.join(" - ");
 ---
 
 <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8">
-	<slot />{title}
+	<slot />
+	<span class="pali-paragraph">{paliTitle}</span>
+	{hasSeparator && ` - ${englishTitle}`}
 </h1>
