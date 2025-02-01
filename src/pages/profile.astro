@@ -11,7 +11,7 @@ import FontSizeLarge from "../assets/font-size-large.svg?raw";
 let user: UserRecord | null = null;
 let paliEnabled = false;
 let currentTheme = "dark";
-let currentFontSize = "normal";
+let currentFontSize = "large";
 let paliLookup = false;
 
 const auth = getAuth(app);
@@ -63,7 +63,7 @@ try {
 	// Extract preferences with type safety
 	paliEnabled = userData["preferences.showPali"] === true;
 	currentTheme = userData["preferences.theme"] || "dark";
-	currentFontSize = userData["preferences.fontSize"] || "normal";
+	currentFontSize = userData["preferences.fontSize"] || "large";
 	paliLookup = userData["preferences.enablePaliLookup"] || false;
 
 	console.log("[Profile] Auth successful, rendering profile page");
@@ -492,7 +492,7 @@ if (!user) {
 	fontSizeButtons.forEach((button) => {
 		button.addEventListener("click", async () => {
 			const size = button.getAttribute("data-size");
-			if (size && ["normal", "large", "larger"].includes(size)) {
+			if (size && ["large", "larger"].includes(size)) {
 				try {
 					const formData = new FormData();
 					formData.append("fontSize", size);
