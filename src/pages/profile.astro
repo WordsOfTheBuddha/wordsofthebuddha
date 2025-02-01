@@ -231,7 +231,7 @@ if (!user) {
 		const currentFontSize =
 			document
 				.querySelector('.font-size-btn[data-active="true"]')
-				?.getAttribute("data-size") || "normal";
+				?.getAttribute("data-size") || "large";
 
 		// Update localStorage if values are different
 		if (localStorage.getItem("paliLookup") !== enablePaliLookup.toString()) {
