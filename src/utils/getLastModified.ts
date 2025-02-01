@@ -31,11 +31,20 @@ function loadCache(): CacheData {
 export function getLastModified(filepath: string): Date {
     if (!filepath) return new Date();
 
-    console.log('file path requested: ', filepath);
-    const normalizedPath = normalizeFilePath(filepath);
-    console.log('normalized file path: ', normalizedPath);
+    const debugInfo = {
+        requestedPath: filepath,
+        normalizedPath: normalizeFilePath(filepath),
+        availableCacheKeys: Object.keys(loadCache()).length
+    };
+
+    console.log('[getLastModified] Debug info:', JSON.stringify(debugInfo));
+
     const cache = loadCache();
-    const cachedDate = cache[normalizedPath];
+    const cachedDate = cache[debugInfo.normalizedPath];
+
+    if (!cachedDate) {
+        console.warn(`[getLastModified] No cache entry found for ${debugInfo.normalizedPath}`);
+    }
 
     return cachedDate ? new Date(cachedDate) : new Date();
 }

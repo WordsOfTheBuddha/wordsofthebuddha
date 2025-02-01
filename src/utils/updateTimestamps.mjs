@@ -86,19 +86,8 @@ try {
   Object.entries(cleanCache)
     .slice(0, 3)
     .forEach(([k, v]) => {
-      console.log("Cache key format:", JSON.stringify(k));
-      console.log("Normalized key:", JSON.stringify(normalizeFilePath(k)));
-      console.log(`${k} : ${v}`);
+      console.log(`Debug: Cache entry "${k}" : "${v}"`);
     });
-
-  // Debug output without any string formatting
-  console.log(
-    `Updated timestamp cache for ${Object.keys(cleanCache).length} files`
-  );
-  console.log("Sample cache entries (raw):");
-  Object.entries(cleanCache)
-    .slice(0, 3)
-    .forEach(([k, v]) => console.log(k, ":", v));
 } catch (error) {
   console.error("Failed to update timestamps:", error);
   process.exit(1);
