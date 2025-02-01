@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -8,7 +7,8 @@ interface CacheData {
     [filepath: string]: string; // ISO date strings
 }
 
-// Normalize filepath to be relative to project root
+let globalCache: CacheData | null = null;
+
 function normalizeFilePath(filepath: string): string {
     const projectRoot = process.cwd();
     const absolutePath = path.isAbsolute(filepath)
@@ -17,59 +17,24 @@ function normalizeFilePath(filepath: string): string {
     return path.relative(projectRoot, absolutePath);
 }
 
-let globalCache: CacheData = {};
-let isInitialized = false;
-
-function initializeCache(): void {
-    if (isInitialized) return;
+function loadCache(): CacheData {
+    if (globalCache) return globalCache;
 
     try {
-        // First load existing cache
-        try {
-            globalCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
-        } catch {
-            globalCache = {};
-        }
-
-        // Get all file modifications in a single git command
-        const gitLog = execSync(
-            'git ls-files --stage | cut -f3- | xargs git log -1 --format="%H %ct %aI %s" --',
-            { encoding: 'utf-8' }
-        );
-
-        // Parse and update cache
-        gitLog.trim().split('\n').forEach(line => {
-            if (!line) return;
-            const [hash, timestamp, isoDate] = line.split(' ');
-            const filepath = execSync(
-                `git diff-tree --no-commit-id --name-only -r ${hash}`,
-                { encoding: 'utf-8' }
-            ).trim();
-            if (filepath) {
-                globalCache[filepath] = isoDate;
-            }
-        });
-
-        // Save updated cache
-        fs.writeFileSync(CACHE_FILE, JSON.stringify(globalCache, null, 2));
-        isInitialized = true;
+        globalCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
+        return globalCache || {};
     } catch (error) {
-        console.error('Error initializing git cache:', error);
-        isInitialized = true; // Prevent retrying
+        console.warn('Could not load timestamp cache:', error);
+        return {};
     }
 }
 
 export function getLastModified(filepath: string): Date {
-    if (!isInitialized) {
-        initializeCache();
-    }
+    if (!filepath) return new Date();
 
     const normalizedPath = normalizeFilePath(filepath);
-    const cachedDate = globalCache[normalizedPath];
+    const cache = loadCache();
+    const cachedDate = cache[normalizedPath];
 
-    if (cachedDate) {
-        return new Date(cachedDate);
-    }
-
-    return new Date(); // Fallback to current date if not found
+    return cachedDate ? new Date(cachedDate) : new Date();
 }

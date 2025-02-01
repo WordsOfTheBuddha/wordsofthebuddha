@@ -1,28 +1,39 @@
 ---
 const { lastUpdated, path } = Astro.props;
 
-export const formatDate = (date: string) => {
-	return new Date(date).toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
+export const formatDate = (date: string | null) => {
+	if (!date) return null;
+	try {
+		return new Date(date).toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
+	} catch {
+		return null;
+	}
 };
+
+const formattedDate = formatDate(lastUpdated);
 ---
 
-<div class="flex justify-between items-center">
-	<p class="text-sm" style="color: var(--gray-500)">
-		Last updated on {formatDate(lastUpdated)}
-	</p>
-	<div class="flex items-center space-x-4 ml-auto">
-		<a
-			href={`https://github.com/wordsofthebuddha/wordsofthebuddha/edit/main/src/content/en/${path}.mdx`}
-			class="ml-2 hover:underline text-sm"
-			style="color: var(--gray-500)"
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			Edit Page ↗
-		</a>
-	</div>
-</div>
+{
+	formattedDate && (
+		<div class="flex justify-between items-center">
+			<p class="text-sm" style="color: var(--gray-500)">
+				Last updated on {formattedDate}
+			</p>
+			<div class="flex items-center space-x-4 ml-auto">
+				<a
+					href={`https://github.com/wordsofthebuddha/wordsofthebuddha/edit/main/src/content/en/${path}.mdx`}
+					class="ml-2 hover:underline text-sm"
+					style="color: var(--gray-500)"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Edit Page ↗
+				</a>
+			</div>
+		</div>
+	)
+}

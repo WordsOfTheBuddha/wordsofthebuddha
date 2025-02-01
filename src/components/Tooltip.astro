@@ -11,13 +11,6 @@
 						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
 					}
 				);
-				// Replace text(tooltip) pattern without braces
-				text = text.replace(
-					/(\p{L}[\p{L}0-9'-]+)\s*\(([^)]*)\)/gu,
-					(match, textPart, tooltip) => {
-						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
-					}
-				);
 				const span = document.createElement("span");
 				span.innerHTML = text;
 				if (node.parentNode) {

@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "predev": "node --trace-deprecation src/utils/generateRoutes.mjs",
+    "predev": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs",
     "dev": "node --trace-deprecation ./node_modules/.bin/astro dev --host",
-    "prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs",
+    "prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs",
     "build": "node --trace-deprecation ./node_modules/.bin/astro build",
     "preview": "astro preview",
     "astro": "astro"
