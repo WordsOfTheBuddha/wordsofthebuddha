@@ -12,7 +12,7 @@ let user: UserRecord | null = null;
 let paliEnabled = false;
 let currentTheme = "dark";
 let currentFontSize = "large";
-let paliLookup = false;
+let paliLookup = true;
 
 const auth = getAuth(app);
 
@@ -64,7 +64,7 @@ try {
 	paliEnabled = userData["preferences.showPali"] === true;
 	currentTheme = userData["preferences.theme"] || "dark";
 	currentFontSize = userData["preferences.fontSize"] || "large";
-	paliLookup = userData["preferences.enablePaliLookup"] || false;
+	paliLookup = userData["preferences.enablePaliLookup"] || true;
 
 	console.log("[Profile] Auth successful, rendering profile page");
 } catch (error) {
@@ -207,7 +207,7 @@ if (!user) {
 						>
 						<button
 							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-lookup-btn"
-							data-active={(paliLookup ?? false).toString()}
+							data-active={(paliLookup ?? true).toString()}
 						>
 							{paliLookup ? "On" : "Off"}
 						</button>

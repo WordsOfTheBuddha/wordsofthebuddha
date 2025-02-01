@@ -60,6 +60,8 @@ if (id) {
 				const paliLookup = urlParams.get("enablePaliLookup");
 				if (paliLookup) {
 					localStorage.setItem("paliLookup", paliLookup === "true");
+				} else if (!localStorage.getItem("paliLookup")) {
+					localStorage.setItem("paliLookup", true);
 				}
 
 				const paramTheme = urlParams.get("theme");
