@@ -1,6 +1,6 @@
 ---
 title: Sāḷha sutta - With Sāḷha
-description: The venerable Nandaka teaches Sāḷha and his friend about the unwholesome and wholesome mental qualities.
+description: The venerable Nandaka teaches Sāḷha and his friend about how to independently verify the unwholesome and wholesome mental qualities.
 fetter: sensual desire,ill-will,ignorance
 tags: greed,aversion,delusion,wholesome,unwholesome,blameless,blameworthy,wise,loving-kindness,good-will,contentment,clear apprehension
 slug: an3.66
@@ -104,4 +104,4 @@ So evaṁ pajānāti: ‘atthi idaṁ, atthi hīnaṁ, atthi paṇītaṁ, atthi
 
 ‘Khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyā’ti pajānāti.
 
-So evaṁ pajānāti: ‘ahu pubbe lobho, tadahu akusalaṁ, so etarahi natthi, iccetaṁ kusalaṁ; ahu pubbe doso …pe… ahu pubbe moho, tadahu akusalaṁ, so etarahi natthi, iccetaṁ kusalan’ti. So diṭṭheva dhamme nicchāto nibbuto sītibhūto sukhappaṭisaṁvedī brahmabhūtena attanā viharatī”ti.
+So evaṁ pajānāti: ‘ahu pubbe lobho, tadahu akusalaṁ, so etarahi natthi, iccetaṁ kusalaṁ; ahu pubbe doso, tadahu akusalaṁ, so etarahi natthi, iccetaṁ kusalaṁ; ahu pubbe moho, tadahu akusalaṁ, so etarahi natthi, iccetaṁ kusalan’ti. So diṭṭheva dhamme nicchāto nibbuto sītibhūto sukhappaṭisaṁvedī brahmabhūtena attanā viharatī”ti.
