@@ -41,15 +41,45 @@
 
 			const { default: tippy } = tippyModule;
 
+			// Define activeTooltip at a higher scope
+			let activeTooltip: any = null;
+
 			// Setup regular tooltips
 			let tooltips = tippy("[data-tippy-content]", {
-				maxWidth: 320,
+				maxWidth: 400,
 				interactive: true,
-				trigger: "click", // Change trigger to click
+				trigger: "click",
 				hideOnClick: false,
 				placement: "top",
 				animation: "scale-subtle",
+				theme: document.documentElement.classList.contains("dark")
+					? "dark dictionary"
+					: "dictionary",
+				allowHTML: true,
+				onCreate(instance) {
+					// Format the content into the same style as dictionary tooltips
+					const content = instance.props.content;
+					instance.setContent(`
+						<div class="tooltip-content">
+							<div class="summary">${instance.reference.textContent}</div>
+							<div class="dpd-content">
+								<div class="definition">${content}</div>
+							</div>
+						</div>
+					`);
+				},
 				onShow: (instance) => {
+					// Hide all other tooltips when showing a new one
+					tooltips.forEach((tooltip) => {
+						if (tooltip !== instance) {
+							tooltip.hide();
+						}
+					});
+					if (activeTooltip) {
+						activeTooltip.destroy();
+						activeTooltip = null;
+					}
+
 					instance.popper.style.maxHeight = "180px";
 					instance.popper.style.overflowY = "auto";
 					instance.popper.style.overflowX = "hidden";
@@ -66,17 +96,59 @@
 					y: number,
 					isMobile = false
 				) => {
-					console.log("Showing dictionary for:", text, "at:", x, y);
+					// Hide all regular tooltips when showing dictionary tooltip
+					tooltips.forEach((tooltip) => tooltip.hide());
 
 					if (activeTooltip) {
 						activeTooltip.destroy();
 						activeTooltip = null;
 					}
 
+					// Get selection coordinates
+					const selection = window.getSelection();
+					const range = selection?.getRangeAt(0);
+					const rect = range?.getBoundingClientRect();
+
+					console.log(
+						"Selection rect:",
+						rect
+							? {
+									top: rect.top,
+									bottom: rect.bottom,
+									left: rect.left,
+									right: rect.right,
+									height: rect.height,
+									width: rect.width,
+								}
+							: "No rect available"
+					);
+
+					// Create temporary element for the tooltip
 					const temp = document.createElement("div");
-					temp.style.position = "fixed";
-					temp.style.left = `${x - window.scrollX}px`;
-					temp.style.top = `${y - window.scrollY}px`;
+					temp.style.position = "absolute"; // Changed from fixed
+					temp.style.zIndex = "9999";
+
+					// Position anchor point based on device type
+					if (rect) {
+						const scrollX = window.scrollX;
+						const scrollY = window.scrollY;
+						const isTouchDevice = "ontouchstart" in window;
+
+						temp.style.left = `${rect.left + scrollX + rect.width / 2}px`;
+						// Use bottom position for touch devices, top for desktop
+						temp.style.top = `${(isTouchDevice ? rect.bottom : rect.top) + scrollY}px`;
+
+						console.log("Anchor position:", {
+							left: rect.left + scrollX,
+							top: (isTouchDevice ? rect.bottom : rect.top) + scrollY,
+							withScroll: true,
+							device: isTouchDevice ? "touch" : "desktop",
+						});
+					} else {
+						temp.style.left = `${x}px`;
+						temp.style.top = `${y}px`;
+					}
+
 					document.body.appendChild(temp);
 
 					activeTooltip = tippy(temp, {
@@ -92,13 +164,35 @@
 						theme: document.documentElement.classList.contains("dark")
 							? "dark dictionary"
 							: "dictionary",
-						placement: isMobile ? "bottom" : "auto", // Force bottom placement for mobile
+						placement: "ontouchstart" in window ? "bottom" : "top", // Change placement based on device
+						strategy: "fixed", // Use fixed positioning strategy
+						popperOptions: {
+							modifiers: [
+								{
+									name: "offset",
+									options: {
+										offset: [0, 10], // [skidding (horizontal), distance (vertical)]
+									},
+								},
+								{
+									name: "preventOverflow",
+									options: {
+										boundary: "viewport",
+										altAxis: true, // Prevents overflow on both axes
+										padding: 10, // Keeps 10px from viewport edges
+									},
+								},
+								{
+									name: "flip",
+									enabled: false, // Disable flipping to top
+								},
+							],
+						},
 						showOnCreate: true,
 						maxWidth: 400,
 						trigger: "manual",
 						hideOnClick: false,
 						onShow(instance) {
-							// Make the tooltip scrollable
 							instance.popper.style.maxHeight = "400px";
 							instance.popper.style.overflowY = "auto";
 						},
@@ -133,7 +227,7 @@
 									if (targetEl) {
 										const containerTop = container.getBoundingClientRect().top;
 										const targetTop = targetEl.getBoundingClientRect().top;
-										const visibleRange = 400; // matches maxHeight setting
+										const visibleRange = 350; // matches maxHeight setting
 
 										console.log("Visibility check:", {
 											containerTop,
@@ -198,11 +292,9 @@
 					});
 				}
 
-				// Mobile: Use long press handler
+				// Mobile: Use touch handler
 				if ("ontouchstart" in window) {
-					let pressTimer: number | null = null;
 					let startTouch: Touch | null = null;
-					const LONG_PRESS_DURATION = 700;
 
 					// Add close button to tooltip
 					document.addEventListener("click", (e) => {
@@ -230,49 +322,30 @@
 						(e) => {
 							const target = e.target as HTMLElement;
 							if (!target.closest(".pali-paragraph")) return;
-
 							startTouch = e.touches[0];
-							pressTimer = window.setTimeout(() => {
-								const selection = window.getSelection();
-								const text = selection?.toString().trim();
-
-								console.log("Long press detected:", {
-									text,
-									hasPaliParent: !!target.closest(".pali-paragraph"),
-								});
-
-								if (text && !text.includes(" ")) {
-									showDictionary(
-										text,
-										startTouch!.pageX,
-										startTouch!.pageY,
-										true
-									);
-								}
-							}, LONG_PRESS_DURATION);
-						},
-						{ passive: true }
-					);
-
-					document.addEventListener(
-						"touchmove",
-						(e) => {
-							if (pressTimer) {
-								clearTimeout(pressTimer);
-								pressTimer = null;
-							}
 						},
 						{ passive: true }
 					);
 
 					document.addEventListener(
 						"touchend",
-						() => {
-							if (pressTimer) {
-								clearTimeout(pressTimer);
-								pressTimer = null;
-								// Don't remove the tooltip here anymore
+						(e) => {
+							if (!startTouch) return;
+
+							const selection = window.getSelection();
+							const text = selection?.toString().trim();
+
+							console.log("Touch detected:", {
+								text,
+								hasPaliParent: !!(e.target as HTMLElement).closest(
+									".pali-paragraph"
+								),
+							});
+
+							if (text && !text.includes(" ")) {
+								showDictionary(text, startTouch.pageX, startTouch.pageY, true);
 							}
+							startTouch = null;
 						},
 						{ passive: true }
 					);
@@ -413,5 +486,30 @@
 
 	.tippy-box[data-theme~="dictionary"] table.grammar_dict tr:nth-child(even) {
 		background-color: var(--auth-input-bg);
+	}
+
+	/* Add specific styles for regular tooltips */
+	.tooltip-content .summary {
+		color: var(--primary-color);
+		font-weight: 500;
+		border-bottom: 1px solid var(--auth-input-border);
+		margin-bottom: 0.5rem;
+		padding-bottom: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.tooltip-content .definition {
+		color: var(--text-color);
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	/* Ensure dark theme works for regular tooltips */
+	:root[class~="dark"] .tooltip-content .summary {
+		border-color: var(--auth-input-border);
+	}
+
+	:root[class~="dark"] .tooltip-content .definition {
+		color: var(--text-color);
 	}
 </style>
