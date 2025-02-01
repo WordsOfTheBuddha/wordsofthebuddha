@@ -1,5 +1,5 @@
 ---
-title: Dutiyalokadhamma sutta - Worldly Conditions <span class="text-sm">(Second)</span>
+title: Dutiyalokadhamma sutta - Worldly Conditions (Second)
 description: The Buddha explains the distinction between the uninstructed ordinary person and the instructed disciple of the noble ones regarding the eight worldly conditions.
 fetter: personal existence, sensual desire, ill-will, conceit, ignorance
 tags: an, an8, worldly, gain, acquisition, loss, fame, disgrace, disrepute, blame, praise, pleasure, pain, impermanence, mindfulness, wisdom, distinction, uninstructed ordinary person, instructed disciple of the noble ones, delight, resistance, entanglement

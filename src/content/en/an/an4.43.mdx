@@ -1,5 +1,5 @@
 ---
-title: Paṭhamakodhagaru sutta - Valuing Anger <span class="text-sm">(First)</span>
+title: Paṭhamakodhagaru sutta - Valuing Anger (First)
 description: The Buddha shares the four kinds of persons found existing in the world - those who value anger, contempt, gain, and honor, and those who value the good Dhamma instead.
 fetter: ill-will,sensual desire
 tags: anger, contempt, gain, honor, good Dhamma, ill-will, sensual desire, an, an4

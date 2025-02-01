@@ -1,5 +1,5 @@
 ---
-title: Dutiyaāsava sutta - Defilements <span class="text-sm">(Second)</span>
+title: Dutiyaāsava sutta - Defilements (Second)
 description: The Buddha describes the three defilements - the taint of sensual desire, the taint of being, and the taint of ignorance, and one who is free from them.
 fetter: sensual desire, desire for material existence, desire for immaterial existence, ignorance
 tags: defilement, taint, sensual desire, being, existence, ignorance, attachment, release, Māra, iti, iti50-99

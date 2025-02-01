@@ -1,5 +1,5 @@
 ---
-title: Dutiyasamādhi  sutta - Collectedness <span class="text-sm">(Second)</span>
+title: Dutiyasamādhi  sutta - Collectedness (Second)
 description: The Buddha describes the four kinds of persons found existing in the world and how they can develop both tranquility and insight.
 fetter: ignorance
 tags: tranquility, insight, wisdom, an, an4

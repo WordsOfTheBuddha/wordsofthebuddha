@@ -1,5 +1,5 @@
 ---
-title: Paṭhamajananakuhana sutta - Deceiving <span class="text-sm">(First)</span>
+title: Paṭhamajananakuhana sutta - Deceiving (First)
 description: The spiritual life is not lived for the purpose of deceiving people, nor for the purpose of winning favor with people, nor for the sake of acquisitions, respect, and popularity, nor for the thought 'Let people know me.' But rather, this spiritual life is lived for the purpose of restraint and for the purpose of letting go.
 fetter: personal existence, conceit, ignorance
 tags: spiritual life, restraint, letting go, self-control, precepts, sense-restraint, Nibbāna, acquisitions, respect, popularity, iti, iti28-49

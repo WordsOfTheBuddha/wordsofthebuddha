@@ -1,5 +1,5 @@
 ---
-title: Tatiyabodhi sutta - Upon Awakening <span class="text-sm">(Third)</span>
+title: Tatiyabodhi sutta - Upon Awakening (Third)
 description: The Buddha contemplates dependent co-arising in forward and reverse order just after his awakening.
 fetter: ignorance
 tags: ud,ud1,awakening,dependent origination, dependent co-arising,wise attention,ignorance

@@ -1,5 +1,5 @@
 ---
-title: Dutiyaesanā sutta - Quest <span class="text-sm">(Second)</span>
+title: Dutiyaesanā sutta - Quest (Second)
 description: The Buddha describes the three quests of sensual pleasure, renewed existence, and spiritual life as the result of holding tight to the thought 'This is the truth' and the accumulation of bases for views.
 fetter: doubt, sensual desire, desire for fine-material existence, desire for immaterial existence, ignorance
 tags: iti, iti50-99, quest, pursuit, sensual pleasure, renewed existence, spiritual life, cessation, cease, desireless, fulfilled, without doubt, buddha
