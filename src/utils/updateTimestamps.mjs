@@ -17,24 +17,11 @@ try {
     }
   }
 
-  // Debug: Print git status and current depth
-  console.log(
-    "Git status:",
-    execSync("git status --short", { encoding: "utf-8" })
-  );
-  console.log(
-    "Commit count:",
-    execSync("git rev-list --count HEAD", { encoding: "utf-8" })
-  );
-
   // Get all file modifications using the working approach
-  console.log("Debug: Starting git log command...");
   const gitLog = execSync(
     'git ls-files --stage "src/content/**/*.mdx" | cut -f3- | xargs git log -1 --format="%H %ai" --',
     { encoding: "utf-8" }
   );
-
-  console.log("Debug: Raw git log output first line:", gitLog.split("\n")[0]);
 
   // Load existing cache
   const cache = fs.existsSync(CACHE_FILE)
@@ -47,7 +34,6 @@ try {
     .split("\n")
     .forEach((line) => {
       if (!line) return;
-      console.log("Debug: Processing line:", JSON.stringify(line));
 
       // Split on first space for hash, then take rest as date
       const [hash, ...dateParts] = line.split(" ");
@@ -58,9 +44,6 @@ try {
         `git diff-tree --no-commit-id --name-only -r ${hash}`,
         { encoding: "utf-8" }
       ).trim();
-
-      console.log("Debug: Found filepath:", JSON.stringify(filepath));
-      console.log("Debug: Found date:", JSON.stringify(dateStr));
 
       if (
         filepath &&
@@ -84,24 +67,10 @@ try {
 
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cleanCache, null, 2));
   console.log(
-    `Updated timestamp cache at ${CACHE_FILE} with ${
-      Object.keys(cleanCache).length
-    } files`
+    `Updated timestamp cache with ${Object.keys(cleanCache).length} files`
   );
-
-  // Debug output with path format
-  console.log(
-    `Updated timestamp cache for ${Object.keys(cleanCache).length} files`
-  );
-  console.log("Sample cache entries (raw):");
-  Object.entries(cleanCache)
-    .slice(0, 3)
-    .forEach(([k, v]) => {
-      console.log(`Debug: Cache entry "${k}" : "${v}"`);
-    });
 } catch (error) {
   console.error("Failed to update timestamps:", error);
-  console.error("Working directory:", process.cwd());
   console.error("Cache file path:", CACHE_FILE);
   process.exit(1);
 }
