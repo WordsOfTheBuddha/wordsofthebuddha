@@ -6,9 +6,19 @@ const CACHE_FILE = ".timestamp-cache.json";
 try {
   console.log("Updating timestamp cache...");
 
-  // Get all file modifications in a single optimized git command
+  // Handle shallow clones (like in Vercel)
+  if (process.env.VERCEL_GIT_FETCH_DEPTH) {
+    try {
+      console.log("Fetching full git history...");
+      execSync("git fetch --unshallow", { stdio: "pipe" });
+    } catch (e) {
+      console.log("Repository might already have full history");
+    }
+  }
+
+  // Get all file modifications with full history
   const gitLog = execSync(
-    'git ls-files "src/content/**/*.mdx" | xargs -I {} git log -1 --format="%H %aI {}" -- {}',
+    'git ls-files "src/content/**/*.mdx" | xargs -I {} git log --follow -1 --format="%H %aI {}" -- {}',
     { encoding: "utf-8" }
   );
 
