@@ -166,30 +166,41 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 		submitButton.disabled = true;
 		submitButton.innerHTML = "Signing in...";
 
+		let signInTimeoutId: number | undefined;
+		let backendTimeoutId: number | undefined;
+
 		try {
-			// Add timeout to Firebase operations
-			const timeoutMs = 8000;
+			// Increased Firebase timeout since it's working
+			const firebaseTimeoutMs = 10000;
 			console.log("[Auth-Client] Attempting Firebase signin");
 
-			const signInResult = (await Promise.race([
+			const signInResult = await Promise.race<
+				import("@firebase/auth").UserCredential
+			>([
 				signInWithEmailAndPassword(auth, email, password),
-				new Promise((_, reject) =>
-					setTimeout(() => {
-						console.log("[Auth-Client] Firebase signin timed out");
-						reject(new Error("Sign in timeout"));
-					}, timeoutMs)
-				),
-			])) as Awaited<ReturnType<typeof signInWithEmailAndPassword>>;
+				new Promise((_, reject) => {
+					signInTimeoutId = setTimeout(() => {
+						console.log("[Auth-Client] Firebase signin timeout triggered");
+						reject(new Error("Firebase sign in timeout"));
+					}, firebaseTimeoutMs) as unknown as number;
+				}),
+			]);
+
+			// Clear Firebase timeout since we succeeded
+			if (signInTimeoutId) clearTimeout(signInTimeoutId);
 
 			console.log("[Auth-Client] Firebase signin successful, getting token");
 			const idToken = await signInResult.user.getIdToken();
 
+			// Shorter timeout for backend call since it's timing out
+			const backendTimeoutMs = 5000;
 			console.log("[Auth-Client] Token received, calling backend");
+
 			const controller = new AbortController();
-			const timeoutId = setTimeout(() => {
-				console.log("[Auth-Client] Backend request timed out");
+			backendTimeoutId = setTimeout(() => {
+				console.log("[Auth-Client] Backend request timeout triggered");
 				controller.abort();
-			}, timeoutMs);
+			}, backendTimeoutMs) as unknown as number;
 
 			const response = await fetch(
 				`/api/auth/signin?returnTo=${encodeURIComponent(returnTo)}`,
@@ -202,8 +213,16 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 				}
 			);
 
-			clearTimeout(timeoutId);
+			// Clear backend timeout since we got a response
+			if (backendTimeoutId) clearTimeout(backendTimeoutId);
+
 			console.log(`[Auth-Client] Backend response status: ${response.status}`);
+
+			if (!response.ok) {
+				const errorText = await response.text();
+				console.error("[Auth-Client] Backend error:", errorText);
+				throw new Error(`Backend error: ${errorText}`);
+			}
 
 			if (response.redirected) {
 				console.log("[Auth-Client] Successful signin, redirecting");
@@ -213,23 +232,28 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 				window.location.assign(response.url);
 			}
 		} catch (error: any) {
+			// Clear any pending timeouts
+			if (signInTimeoutId) clearTimeout(signInTimeoutId);
+			if (backendTimeoutId) clearTimeout(backendTimeoutId);
+
 			console.error("[Auth-Client] Signin error:", {
-				code: error.code,
+				code: error.code || error.status,
 				message: error.message,
 				type: error.constructor.name,
 				timeTaken: Date.now() - startTime,
+				name: error.name,
 			});
 
 			submitButton.disabled = false;
 			submitButton.innerHTML = "Sign in";
 
-			if (error.name === "AbortError" || error.message === "Sign in timeout") {
-				showError(passwordError, "Request timed out. Please try again.");
-				return;
-			}
-
-			// Handle Firebase auth errors
-			if (error.code === "auth/invalid-email") {
+			if (error.name === "AbortError") {
+				showError(passwordError, "Server request timed out. Please try again.");
+			} else if (error.message?.includes("timeout")) {
+				showError(passwordError, "Authentication timed out. Please try again.");
+			} else if (error.message?.includes("Backend error")) {
+				showError(passwordError, "Server error. Please try again later.");
+			} else if (error.code === "auth/invalid-email") {
 				showError(emailError, "Invalid email format");
 			} else if (error.code === "auth/user-not-found") {
 				showError(emailError, "No account found with this email");
@@ -238,8 +262,7 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 			} else {
 				showError(
 					passwordError,
-					`An error occurred during sign in: ",
-					${error.code}`
+					"An error occurred during sign in. Please try again."
 				);
 			}
 		}
