@@ -28,10 +28,13 @@ try {
   );
 
   // Get all file modifications using the working approach
+  console.log("Debug: Starting git log command...");
   const gitLog = execSync(
-    'git ls-files --stage "src/content/**/*.mdx" | cut -f3- | xargs git log -1 --format="%H %ct %aI" --',
+    'git ls-files --stage "src/content/**/*.mdx" | cut -f3- | xargs git log -1 --format="%H %ai" --',
     { encoding: "utf-8" }
   );
+
+  console.log("Debug: Raw git log output first line:", gitLog.split("\n")[0]);
 
   // Load existing cache
   const cache = fs.existsSync(CACHE_FILE)
@@ -44,40 +47,45 @@ try {
     .split("\n")
     .forEach((line) => {
       if (!line) return;
-      const [hash, _, dateStr] = line.split(" ");
+      console.log("Debug: Processing line:", JSON.stringify(line));
+
+      // Split on first space for hash, then take rest as date
+      const [hash, ...dateParts] = line.split(" ");
+      const dateStr = dateParts.join(" "); // Rejoin date parts in case they contain spaces
       if (!hash) return;
 
-      // Get actual filepath using diff-tree and clean it
       const filepath = execSync(
         `git diff-tree --no-commit-id --name-only -r ${hash}`,
         { encoding: "utf-8" }
-      )
-        .trim()
-        .replace(/[\n\r]/g, ""); // Remove any newlines
+      ).trim();
+
+      console.log("Debug: Found filepath:", JSON.stringify(filepath));
+      console.log("Debug: Found date:", JSON.stringify(dateStr));
 
       if (
         filepath &&
         filepath.startsWith("src/content/") &&
         filepath.endsWith(".mdx")
       ) {
-        console.log(
-          `Debug: Processing clean path: "${filepath}" with date ${dateStr}`
-        );
-        cache[filepath] = dateStr;
+        // Store clean values without any extra whitespace
+        cache[filepath.trim()] = dateStr.trim();
       }
     });
 
-  // Save updated cache
-  fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
-  console.log(`Updated timestamp cache for ${Object.keys(cache).length} files`);
-
-  // Debug: Print some cache entries (with quotes to see any whitespace issues)
-  console.log(
-    "Sample cache entries:",
-    Object.entries(cache)
-      .slice(0, 3)
-      .map(([k, v]) => `\n"${k}": "${v}"`)
+  // Save updated cache with pretty printing but no extra whitespace
+  const cleanCache = Object.fromEntries(
+    Object.entries(cache).map(([k, v]) => [k.trim(), v.trim()])
   );
+  fs.writeFileSync(CACHE_FILE, JSON.stringify(cleanCache, null, 2));
+
+  // Debug output without any string formatting
+  console.log(
+    `Updated timestamp cache for ${Object.keys(cleanCache).length} files`
+  );
+  console.log("Sample cache entries (raw):");
+  Object.entries(cleanCache)
+    .slice(0, 3)
+    .forEach(([k, v]) => console.log(k, ":", v));
 } catch (error) {
   console.error("Failed to update timestamps:", error);
   process.exit(1);
