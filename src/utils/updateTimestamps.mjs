@@ -47,18 +47,22 @@ try {
       const [hash, _, dateStr] = line.split(" ");
       if (!hash) return;
 
-      // Get actual filepath using diff-tree
+      // Get actual filepath using diff-tree and clean it
       const filepath = execSync(
         `git diff-tree --no-commit-id --name-only -r ${hash}`,
         { encoding: "utf-8" }
-      ).trim();
+      )
+        .trim()
+        .replace(/[\n\r]/g, ""); // Remove any newlines
 
       if (
         filepath &&
         filepath.startsWith("src/content/") &&
         filepath.endsWith(".mdx")
       ) {
-        console.log(`Debug: Processing ${filepath} with date ${dateStr}`);
+        console.log(
+          `Debug: Processing clean path: "${filepath}" with date ${dateStr}`
+        );
         cache[filepath] = dateStr;
       }
     });
@@ -67,12 +71,12 @@ try {
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
   console.log(`Updated timestamp cache for ${Object.keys(cache).length} files`);
 
-  // Debug: Print some cache entries
+  // Debug: Print some cache entries (with quotes to see any whitespace issues)
   console.log(
     "Sample cache entries:",
     Object.entries(cache)
       .slice(0, 3)
-      .map(([k, v]) => `\n${k}: ${v}`)
+      .map(([k, v]) => `\n"${k}": "${v}"`)
   );
 } catch (error) {
   console.error("Failed to update timestamps:", error);
