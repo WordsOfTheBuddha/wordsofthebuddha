@@ -2,6 +2,9 @@ import type { ServiceAccount } from "firebase-admin";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
+console.log('[Firebase-Server] Project ID:', process.env.FIREBASE_PROJECT_ID);
+console.log('[Firebase-Server] Client email exists:', !!process.env.FIREBASE_CLIENT_EMAIL);
+
 const activeApps = getApps();
 const serviceAccount = {
     type: "service_account",
