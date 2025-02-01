@@ -33,6 +33,7 @@ const paliEnabled = userData["preferences.showPali"] === true;
 const currentTheme =
 	userData["preferences.theme"] || localStorage.getItem("theme") || "dark";
 const currentFontSize = userData["preferences.fontSize"] || "normal";
+const paliLookup = userData["preferences.enablePaliLookup"] || false;
 ---
 
 <Layout showAuth={true}>
@@ -161,11 +162,9 @@ const currentFontSize = userData["preferences.fontSize"] || "normal";
 						>
 						<button
 							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-lookup-btn"
-							data-active={(
-								userData["preferences.enablePaliLookup"] ?? false
-							).toString()}
+							data-active={(paliLookup ?? false).toString()}
 						>
-							{userData["preferences.enablePaliLookup"] ? "On" : "Off"}
+							{paliLookup ? "On" : "Off"}
 						</button>
 					</div>
 				</div>

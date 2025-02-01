@@ -133,6 +133,8 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 	};
 
 	form.addEventListener("submit", async (e) => {
+		const startTime = Date.now();
+		console.log("[Auth-Client] Starting signin attempt");
 		e.preventDefault();
 		let isValid = true;
 
@@ -158,14 +160,37 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 
 		if (!isValid) return;
 
+		const submitButton = form.querySelector(
+			'button[type="submit"]'
+		) as HTMLButtonElement;
+		submitButton.disabled = true;
+		submitButton.innerHTML = "Signing in...";
+
 		try {
-			const userCredential = await signInWithEmailAndPassword(
-				auth,
-				email,
-				password
-			);
-			const idToken = await userCredential.user.getIdToken();
-			// Append returnTo param
+			// Add timeout to Firebase operations
+			const timeoutMs = 8000;
+			console.log("[Auth-Client] Attempting Firebase signin");
+
+			const signInResult = (await Promise.race([
+				signInWithEmailAndPassword(auth, email, password),
+				new Promise((_, reject) =>
+					setTimeout(() => {
+						console.log("[Auth-Client] Firebase signin timed out");
+						reject(new Error("Sign in timeout"));
+					}, timeoutMs)
+				),
+			])) as Awaited<ReturnType<typeof signInWithEmailAndPassword>>;
+
+			console.log("[Auth-Client] Firebase signin successful, getting token");
+			const idToken = await signInResult.user.getIdToken();
+
+			console.log("[Auth-Client] Token received, calling backend");
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => {
+				console.log("[Auth-Client] Backend request timed out");
+				controller.abort();
+			}, timeoutMs);
+
 			const response = await fetch(
 				`/api/auth/signin?returnTo=${encodeURIComponent(returnTo)}`,
 				{
@@ -173,14 +198,36 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 					headers: {
 						Authorization: `Bearer ${idToken}`,
 					},
+					signal: controller.signal,
 				}
 			);
 
+			clearTimeout(timeoutId);
+			console.log(`[Auth-Client] Backend response status: ${response.status}`);
+
 			if (response.redirected) {
-				console.log("sign in loaded preferences");
+				console.log("[Auth-Client] Successful signin, redirecting");
+				console.log(
+					`[Auth-Client] Total signin took ${Date.now() - startTime}ms`
+				);
 				window.location.assign(response.url);
 			}
 		} catch (error: any) {
+			console.error("[Auth-Client] Signin error:", {
+				code: error.code,
+				message: error.message,
+				type: error.constructor.name,
+				timeTaken: Date.now() - startTime,
+			});
+
+			submitButton.disabled = false;
+			submitButton.innerHTML = "Sign in";
+
+			if (error.name === "AbortError" || error.message === "Sign in timeout") {
+				showError(passwordError, "Request timed out. Please try again.");
+				return;
+			}
+
 			// Handle Firebase auth errors
 			if (error.code === "auth/invalid-email") {
 				showError(emailError, "Invalid email format");
