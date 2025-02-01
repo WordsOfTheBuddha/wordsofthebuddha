@@ -56,18 +56,6 @@ const initApp = () => {
     });
 };
 
-// Declare exports
-let app;
-let db;
-
 // Add error handling for initialization
-try {
-    app = activeApps.length === 0 ? initApp() : activeApps[0];
-    db = getFirestore(app);
-    logger.info('Firebase initialization successful');
-} catch (error) {
-    logger.error('Firebase initialization failed:', error);
-    throw error;
-}
-
-export { app, db };
+export const app = activeApps.length === 0 ? initApp() : activeApps[0];
+export const db = getFirestore(app);

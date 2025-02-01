@@ -3,37 +3,82 @@ export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { app, db } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import type { UserRecord, DecodedIdToken } from "firebase-admin/auth";
 import FontSizeLarger from "../assets/font-size-larger.svg?raw";
 import FontSizeLarge from "../assets/font-size-large.svg?raw";
 
+// Initialize variables outside try/catch
+let user: UserRecord | null = null;
+let paliEnabled = false;
+let currentTheme = "dark";
+let currentFontSize = "normal";
+let paliLookup = false;
+
 const auth = getAuth(app);
 
-if (!Astro.cookies.has("__session")) {
+// Add debug logging
+console.log("[Profile] Checking auth state");
+console.log("[Profile] Has session cookie:", Astro.cookies.has("__session"));
+
+try {
+	// Check for session cookie
+	if (!Astro.cookies.has("__session")) {
+		console.log("[Profile] No session cookie found, redirecting to signin");
+		return Astro.redirect("/signin?returnTo=/profile");
+	}
+
+	const sessionCookie = Astro.cookies.get("__session")?.value;
+	if (!sessionCookie) {
+		console.log("[Profile] Session cookie is empty, redirecting to signin");
+		return Astro.redirect("/signin?returnTo=/profile");
+	}
+
+	// Verify session with a timeout
+	const decodedCookie = (await Promise.race([
+		auth.verifySessionCookie(sessionCookie, true), // true for checkRevoked
+		new Promise((_, reject) =>
+			setTimeout(() => reject(new Error("Session verification timeout")), 5000)
+		),
+	])) as DecodedIdToken;
+
+	if (!decodedCookie) {
+		console.log("[Profile] Invalid session, redirecting to signin");
+		// Clear invalid cookie
+		Astro.cookies.delete("__session");
+		return Astro.redirect("/signin?returnTo=/profile");
+	}
+
+	// Get user data with type safety
+	user = await auth.getUser(decodedCookie.uid);
+	if (!user) {
+		console.log("[Profile] User not found, redirecting to signin");
+		Astro.cookies.delete("__session");
+		return Astro.redirect("/signin?returnTo=/profile");
+	}
+
+	// Get user preferences with error handling
+	const userDoc = await db.collection("users").doc(user.uid).get();
+	const userData = userDoc.data() || {};
+
+	// Extract preferences with type safety
+	paliEnabled = userData["preferences.showPali"] === true;
+	currentTheme = userData["preferences.theme"] || "dark";
+	currentFontSize = userData["preferences.fontSize"] || "normal";
+	paliLookup = userData["preferences.enablePaliLookup"] || false;
+
+	console.log("[Profile] Auth successful, rendering profile page");
+} catch (error) {
+	console.error("[Profile] Auth error:", error);
+	// Clear potentially corrupted session
+	Astro.cookies.delete("__session");
 	return Astro.redirect("/signin?returnTo=/profile");
 }
 
-const sessionCookie = Astro.cookies.get("__session")?.value;
-if (!sessionCookie) {
-	return Astro.redirect("/signin?returnTo=/profile");
-}
-
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
-
+// Verify we have required data before rendering
 if (!user) {
+	console.error("[Profile] No user data available after auth");
 	return Astro.redirect("/signin?returnTo=/profile");
 }
-
-// Get preferences from Firestore
-const userDoc = await db.collection("users").doc(user.uid).get();
-const userData = userDoc.data() || {};
-
-// Extract preferences with dot notation
-const paliEnabled = userData["preferences.showPali"] === true;
-const currentTheme =
-	userData["preferences.theme"] || localStorage.getItem("theme") || "dark";
-const currentFontSize = userData["preferences.fontSize"] || "normal";
-const paliLookup = userData["preferences.enablePaliLookup"] || false;
 ---
 
 <Layout showAuth={true}>
@@ -64,7 +109,7 @@ const paliLookup = userData["preferences.enablePaliLookup"] || false;
 							type="text"
 							id="displayName"
 							name="displayName"
-							value={user.displayName}
+							value={user.displayName || ""}
 							disabled
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
@@ -79,7 +124,7 @@ const paliLookup = userData["preferences.enablePaliLookup"] || false;
 							type="email"
 							id="email"
 							name="email"
-							value={user.email}
+							value={user.email || ""}
 							disabled
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
@@ -108,14 +153,14 @@ const paliLookup = userData["preferences.enablePaliLookup"] || false;
 							<button
 								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
 								data-theme="light"
-								data-active={currentTheme === "light" ? "true" : "false"}
+								data-active={(currentTheme === "light").toString()}
 							>
 								Light
 							</button>
 							<button
 								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
 								data-theme="dark"
-								data-active={currentTheme === "dark" ? "true" : "false"}
+								data-active={(currentTheme === "dark").toString()}
 							>
 								Dark
 							</button>
