@@ -10,11 +10,10 @@ interface CacheData {
 let globalCache: CacheData | null = null;
 
 function normalizeFilePath(filepath: string): string {
-    const projectRoot = process.cwd();
-    const absolutePath = path.isAbsolute(filepath)
+    // Simplify path normalization to match cache format
+    return filepath.startsWith('src/')
         ? filepath
-        : path.join(projectRoot, filepath);
-    return path.relative(projectRoot, absolutePath);
+        : path.join('src', filepath).replace(/\\/g, '/');
 }
 
 function loadCache(): CacheData {
@@ -32,7 +31,9 @@ function loadCache(): CacheData {
 export function getLastModified(filepath: string): Date {
     if (!filepath) return new Date();
 
+    console.log('file path requested: ', filepath);
     const normalizedPath = normalizeFilePath(filepath);
+    console.log('normalized file path: ', normalizedPath);
     const cache = loadCache();
     const cachedDate = cache[normalizedPath];
 

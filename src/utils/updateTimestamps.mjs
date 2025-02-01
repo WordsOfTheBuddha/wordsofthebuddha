@@ -78,6 +78,19 @@ try {
   );
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cleanCache, null, 2));
 
+  // Debug output with path format
+  console.log(
+    `Updated timestamp cache for ${Object.keys(cleanCache).length} files`
+  );
+  console.log("Sample cache entries (raw):");
+  Object.entries(cleanCache)
+    .slice(0, 3)
+    .forEach(([k, v]) => {
+      console.log("Cache key format:", JSON.stringify(k));
+      console.log("Normalized key:", JSON.stringify(normalizeFilePath(k)));
+      console.log(`${k} : ${v}`);
+    });
+
   // Debug output without any string formatting
   console.log(
     `Updated timestamp cache for ${Object.keys(cleanCache).length} files`
