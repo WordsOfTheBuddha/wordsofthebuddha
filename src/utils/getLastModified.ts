@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const CACHE_FILE = '.timestamp-cache.json';
+const CACHE_FILE = path.join(process.cwd(), '.timestamp-cache.json');
 
 interface CacheData {
     [filepath: string]: string; // ISO date strings
@@ -20,10 +20,16 @@ function loadCache(): CacheData {
     if (globalCache) return globalCache;
 
     try {
+        console.log('[getLastModified] Loading cache from:', CACHE_FILE);
+        if (!fs.existsSync(CACHE_FILE)) {
+            console.warn('[getLastModified] Cache file not found at:', CACHE_FILE);
+            return {};
+        }
         globalCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
+        console.log(`[getLastModified] Loaded cache with ${Object.keys(globalCache || {}).length} entries`);
         return globalCache || {};
     } catch (error) {
-        console.warn('Could not load timestamp cache:', error);
+        console.warn('[getLastModified] Could not load timestamp cache:', error);
         return {};
     }
 }

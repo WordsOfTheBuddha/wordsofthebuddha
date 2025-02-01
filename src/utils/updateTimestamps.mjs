@@ -2,10 +2,10 @@ import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
 
-const CACHE_FILE = ".timestamp-cache.json";
+const CACHE_FILE = path.join(process.cwd(), ".timestamp-cache.json");
 
 try {
-  console.log("Updating timestamp cache...");
+  console.log("Updating timestamp cache at:", CACHE_FILE);
 
   // Handle shallow clones (like in Vercel)
   if (process.env.VERCEL_GIT_FETCH_DEPTH) {
@@ -76,7 +76,18 @@ try {
   const cleanCache = Object.fromEntries(
     Object.entries(cache).map(([k, v]) => [k.trim(), v.trim()])
   );
+
+  const cacheDir = path.dirname(CACHE_FILE);
+  if (!fs.existsSync(cacheDir)) {
+    fs.mkdirSync(cacheDir, { recursive: true });
+  }
+
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cleanCache, null, 2));
+  console.log(
+    `Updated timestamp cache at ${CACHE_FILE} with ${
+      Object.keys(cleanCache).length
+    } files`
+  );
 
   // Debug output with path format
   console.log(
@@ -90,5 +101,7 @@ try {
     });
 } catch (error) {
   console.error("Failed to update timestamps:", error);
+  console.error("Working directory:", process.cwd());
+  console.error("Cache file path:", CACHE_FILE);
   process.exit(1);
 }
