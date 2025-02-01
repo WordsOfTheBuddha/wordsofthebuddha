@@ -9,10 +9,16 @@ const logger = {
 };
 
 logger.info('[Firebase-Server] Starting initialization');
+
+// Helper to get env vars with fallback to import.meta.env
+const getEnvVar = (key: string): string | undefined => {
+    return process.env[key] || import.meta.env[key];
+};
+
 logger.debug('[Firebase-Server] Config:', {
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    hasClientEmail: !!process.env.FIREBASE_CLIENT_EMAIL,
-    hasPrivateKey: !!process.env.FIREBASE_PRIVATE_KEY
+    projectId: getEnvVar('FIREBASE_PROJECT_ID'),
+    hasClientEmail: !!getEnvVar('FIREBASE_CLIENT_EMAIL'),
+    hasPrivateKey: !!getEnvVar('FIREBASE_PRIVATE_KEY')
 });
 
 // Parse private key - handle both quoted and unquoted formats
@@ -26,27 +32,42 @@ const parsePrivateKey = (key: string | undefined) => {
 const activeApps = getApps();
 const serviceAccount = {
     type: "service_account",
-    project_id: import.meta.env.FIREBASE_PROJECT_ID,
-    private_key_id: import.meta.env.FIREBASE_PRIVATE_KEY_ID,
-    private_key: parsePrivateKey(import.meta.env.FIREBASE_PRIVATE_KEY),
-    client_email: import.meta.env.FIREBASE_CLIENT_EMAIL,
-    client_id: import.meta.env.FIREBASE_CLIENT_ID,
-    auth_uri: import.meta.env.FIREBASE_AUTH_URI,
-    token_uri: import.meta.env.FIREBASE_TOKEN_URI,
-    auth_provider_x509_cert_url: import.meta.env.FIREBASE_AUTH_CERT_URL,
-    client_x509_cert_url: import.meta.env.FIREBASE_CLIENT_CERT_URL,
+    project_id: getEnvVar('FIREBASE_PROJECT_ID'),
+    private_key_id: getEnvVar('FIREBASE_PRIVATE_KEY_ID'),
+    private_key: parsePrivateKey(getEnvVar('FIREBASE_PRIVATE_KEY')),
+    client_email: getEnvVar('FIREBASE_CLIENT_EMAIL'),
+    client_id: getEnvVar('FIREBASE_CLIENT_ID'),
+    auth_uri: getEnvVar('FIREBASE_AUTH_URI'),
+    token_uri: getEnvVar('FIREBASE_TOKEN_URI'),
+    auth_provider_x509_cert_url: getEnvVar('FIREBASE_AUTH_CERT_URL'),
+    client_x509_cert_url: getEnvVar('FIREBASE_CLIENT_CERT_URL'),
 };
 
 const initApp = () => {
-    if (import.meta.env.PROD) {
-        logger.info('PROD env detected. Using default service account.');
-        return initializeApp();
+    if (process.env.NODE_ENV === 'production') {
+        logger.info('PROD env detected. Using service account from env.');
+        return initializeApp({
+            credential: cert(serviceAccount as ServiceAccount)
+        });
     }
-    logger.info('Loading service account from env.');
+    logger.info('DEV env detected. Loading service account from local env.');
     return initializeApp({
         credential: cert(serviceAccount as ServiceAccount)
     });
+};
+
+// Declare exports
+let app;
+let db;
+
+// Add error handling for initialization
+try {
+    app = activeApps.length === 0 ? initApp() : activeApps[0];
+    db = getFirestore(app);
+    logger.info('Firebase initialization successful');
+} catch (error) {
+    logger.error('Firebase initialization failed:', error);
+    throw error;
 }
 
-export const app = activeApps.length === 0 ? initApp() : activeApps[0];
-export const db = getFirestore(app);
+export { app, db };
