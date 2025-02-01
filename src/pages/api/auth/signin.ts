@@ -4,18 +4,19 @@ import { app, db } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import type { DecodedIdToken } from "firebase-admin/auth";
 import type { UserPreferences } from "../../../utils/theme";
-import { DocumentSnapshot } from "firebase-admin/firestore";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     const startTime = Date.now();
     console.log(`[Auth] Starting signin at ${new Date().toISOString()}`);
+    console.log('[Auth] Request headers:', Object.fromEntries(request.headers));
 
     const auth = getAuth(app);
-    const TIMEOUT_MS = 5000; // Reduced to 5 seconds
+    const TIMEOUT_MS = 7000; // Increased to 7 seconds
 
     try {
         // Early validation
         const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
+        console.log(`[Auth] Token extraction took ${Date.now() - startTime}ms`);
         if (!idToken) {
             console.log("[Auth] No token found");
             return new Response("No token found", { status: 401 });
@@ -24,17 +25,24 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         const url = new URL(request.url);
         const returnTo = url.searchParams.get("returnTo") || "/dashboard";
 
+        console.log('[Auth] Starting auth operations at', Date.now() - startTime);
         // Run token verification and session creation in parallel
         // with a shorter timeout
-        const authResult = await Promise.race<Promise<[DecodedIdToken, string]>>([
+        const authResult = await Promise.race([
             Promise.all([
                 auth.verifyIdToken(idToken),
                 auth.createSessionCookie(idToken, {
                     expiresIn: 60 * 60 * 24 * 14 * 1000
                 })
-            ]),
+            ]).then(result => {
+                console.log(`[Auth] Token verification completed in ${Date.now() - startTime}ms`);
+                return result as [DecodedIdToken, string];
+            }),
             new Promise<[DecodedIdToken, string]>((_, reject) =>
-                setTimeout(() => reject(new Error('Auth timeout')), TIMEOUT_MS)
+                setTimeout(() => {
+                    console.log(`[Auth] Auth timeout triggered at ${Date.now() - startTime}ms`);
+                    reject(new Error('Auth timeout'));
+                }, TIMEOUT_MS)
             )
         ]);
 
@@ -73,7 +81,8 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         console.error('[Auth] Failed:', {
             error,
             timeTaken,
-            url: request.url
+            url: request.url,
+            headers: Object.fromEntries(request.headers)
         });
 
         // More specific error handling

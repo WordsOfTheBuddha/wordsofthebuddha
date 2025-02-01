@@ -170,8 +170,11 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 		let backendTimeoutId: number | undefined;
 
 		try {
-			// Increased Firebase timeout since it's working
+			// Keep Firebase timeout at 10s
 			const firebaseTimeoutMs = 10000;
+			// Increase backend timeout to 8s
+			const backendTimeoutMs = 8000;
+
 			console.log("[Auth-Client] Attempting Firebase signin");
 
 			const signInResult = await Promise.race<
@@ -193,13 +196,16 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 			const idToken = await signInResult.user.getIdToken();
 
 			// Shorter timeout for backend call since it's timing out
-			const backendTimeoutMs = 5000;
 			console.log("[Auth-Client] Token received, calling backend");
+			console.log("[Auth-Client] Backend timeout set to:", backendTimeoutMs);
 
 			const controller = new AbortController();
 			backendTimeoutId = setTimeout(() => {
-				console.log("[Auth-Client] Backend request timeout triggered");
-				controller.abort();
+				console.log(
+					"[Auth-Client] Backend request timing out at:",
+					Date.now() - startTime
+				);
+				controller.abort("Backend request timeout");
 			}, backendTimeoutMs) as unknown as number;
 
 			const response = await fetch(
@@ -208,6 +214,7 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 					method: "GET",
 					headers: {
 						Authorization: `Bearer ${idToken}`,
+						"Client-Timeout": backendTimeoutMs.toString(),
 					},
 					signal: controller.signal,
 				}
@@ -248,7 +255,14 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 			submitButton.innerHTML = "Sign in";
 
 			if (error.name === "AbortError") {
-				showError(passwordError, "Server request timed out. Please try again.");
+				console.error("[Auth-Client] Request aborted:", {
+					timeTaken: Date.now() - startTime,
+					error: error.message || "No reason provided",
+				});
+				showError(
+					passwordError,
+					"Server is taking longer than expected. Please try again."
+				);
 			} else if (error.message?.includes("timeout")) {
 				showError(passwordError, "Authentication timed out. Please try again.");
 			} else if (error.message?.includes("Backend error")) {
