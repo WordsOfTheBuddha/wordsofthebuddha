@@ -17,6 +17,7 @@ function cleanupDpdHtml(html: string): string {
         'style',              // Remove inline styles
         '.metadata',          // Remove metadata
         '.box-title',         // Remove title box
+        '.deconstructor_footer',
         // Dictionary-specific elements
         '[id^="grammar_dhamma_"]',
         '[id^="examples_dhamma_"]',
