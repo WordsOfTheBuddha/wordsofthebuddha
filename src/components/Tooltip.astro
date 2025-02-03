@@ -1,508 +1,508 @@
 <!-- this is a client-only script component -->
 <script>
-	function replaceTooltips(element: HTMLElement) {
-		for (let node of element.childNodes) {
-			if (node.nodeType === Node.TEXT_NODE) {
-				let text = node.textContent || "";
-				// Replace |text::tooltip| pattern
-				text = text.replace(
-					/\|([^|:]+)::([^|]+)\|/g,
-					(_, textPart, tooltip) => {
-						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
-					}
-				);
-				const span = document.createElement("span");
-				span.innerHTML = text;
-				if (node.parentNode) {
-					node.parentNode.replaceChild(span, node);
-				}
-			} else if (
-				node.nodeType === Node.ELEMENT_NODE &&
-				node instanceof HTMLElement
-			) {
-				replaceTooltips(node);
-			}
-		}
-	}
+  function replaceTooltips(element: HTMLElement) {
+    for (let node of element.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        let text = node.textContent || "";
+        // Replace |text::tooltip| pattern
+        text = text.replace(
+          /\|([^|:]+)::([^|]+)\|/g,
+          (_, textPart, tooltip) => {
+            return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
+          }
+        );
+        const span = document.createElement("span");
+        span.innerHTML = text;
+        if (node.parentNode) {
+          node.parentNode.replaceChild(span, node);
+        }
+      } else if (
+        node.nodeType === Node.ELEMENT_NODE &&
+        node instanceof HTMLElement
+      ) {
+        replaceTooltips(node);
+      }
+    }
+  }
 
-	document.addEventListener("DOMContentLoaded", () => {
-		replaceTooltips(document.body);
+  document.addEventListener("DOMContentLoaded", () => {
+    replaceTooltips(document.body);
 
-		// Initialize tippy.js after replacements
-		import("tippy.js").then((tippyModule) => {
-			import("tippy.js/animations/scale-subtle.css");
+    // Initialize tippy.js after replacements
+    import("tippy.js").then((tippyModule) => {
+      import("tippy.js/animations/scale-subtle.css");
 
-			const { default: tippy } = tippyModule;
+      const { default: tippy } = tippyModule;
 
-			// Define activeTooltip at a higher scope
-			let activeTooltip: any = null;
+      // Define activeTooltip at a higher scope
+      let activeTooltip: any = null;
 
-			// Setup regular tooltips
-			let tooltips = tippy("[data-tippy-content]", {
-				maxWidth: 400,
-				interactive: true,
-				trigger: "click",
-				hideOnClick: false,
-				placement: "top",
-				animation: "scale-subtle",
-				theme: document.documentElement.classList.contains("dark")
-					? "dark dictionary"
-					: "dictionary",
-				allowHTML: true,
-				onCreate(instance) {
-					// Format the content into the same style as dictionary tooltips
-					const content = instance.props.content;
-					instance.setContent(`
+      // Setup regular tooltips
+      let tooltips = tippy("[data-tippy-content]", {
+        maxWidth: 400,
+        interactive: true,
+        trigger: "click",
+        hideOnClick: false,
+        placement: "top",
+        animation: "scale-subtle",
+        theme: document.documentElement.classList.contains("dark")
+          ? "dark dictionary"
+          : "dictionary",
+        allowHTML: true,
+        onCreate(instance) {
+          // Format the content into the same style as dictionary tooltips
+          const content = instance.props.content;
+          instance.setContent(`
 						<div class="tooltip-content">
 							<div class="summary">${instance.reference.textContent}</div>
 							<div class="dpd-content">
-								<div class="definition">${content}</div>
+                <div class="definition">${String(content).replace(/\\n/g, "<br>")}</div>
 							</div>
 						</div>
 					`);
-				},
-				onShow: (instance) => {
-					// Hide all other tooltips when showing a new one
-					tooltips.forEach((tooltip) => {
-						if (tooltip !== instance) {
-							tooltip.hide();
-						}
-					});
-					if (activeTooltip) {
-						activeTooltip.destroy();
-						activeTooltip = null;
-					}
+        },
+        onShow: (instance) => {
+          // Hide all other tooltips when showing a new one
+          tooltips.forEach((tooltip) => {
+            if (tooltip !== instance) {
+              tooltip.hide();
+            }
+          });
+          if (activeTooltip) {
+            activeTooltip.destroy();
+            activeTooltip = null;
+          }
 
-					instance.popper.style.maxHeight = "180px";
-					instance.popper.style.overflowY = "auto";
-					instance.popper.style.overflowX = "hidden";
-				},
-			});
+          instance.popper.style.maxHeight = "180px";
+          instance.popper.style.overflowY = "auto";
+          instance.popper.style.overflowX = "hidden";
+        },
+      });
 
-			// Setup Pali word lookup if enabled
-			if (localStorage.getItem("paliLookup") === "true") {
-				let activeTooltip: any = null;
+      // Setup Pali word lookup if enabled
+      if (localStorage.getItem("paliLookup") === "true") {
+        let activeTooltip: any = null;
 
-				const showDictionary = async (
-					text: string,
-					x: number,
-					y: number,
-					isMobile = false
-				) => {
-					// Hide all regular tooltips when showing dictionary tooltip
-					tooltips.forEach((tooltip) => tooltip.hide());
+        const showDictionary = async (
+          text: string,
+          x: number,
+          y: number,
+          isMobile = false
+        ) => {
+          // Hide all regular tooltips when showing dictionary tooltip
+          tooltips.forEach((tooltip) => tooltip.hide());
 
-					if (activeTooltip) {
-						activeTooltip.destroy();
-						activeTooltip = null;
-					}
+          if (activeTooltip) {
+            activeTooltip.destroy();
+            activeTooltip = null;
+          }
 
-					// Get selection coordinates
-					const selection = window.getSelection();
-					const range = selection?.getRangeAt(0);
-					const rect = range?.getBoundingClientRect();
+          // Get selection coordinates
+          const selection = window.getSelection();
+          const range = selection?.getRangeAt(0);
+          const rect = range?.getBoundingClientRect();
 
-					console.log(
-						"Selection rect:",
-						rect
-							? {
-									top: rect.top,
-									bottom: rect.bottom,
-									left: rect.left,
-									right: rect.right,
-									height: rect.height,
-									width: rect.width,
-								}
-							: "No rect available"
-					);
+          console.log(
+            "Selection rect:",
+            rect
+              ? {
+                  top: rect.top,
+                  bottom: rect.bottom,
+                  left: rect.left,
+                  right: rect.right,
+                  height: rect.height,
+                  width: rect.width,
+                }
+              : "No rect available"
+          );
 
-					// Create temporary element for the tooltip
-					const temp = document.createElement("div");
-					temp.style.position = "absolute"; // Changed from fixed
-					temp.style.zIndex = "9999";
+          // Create temporary element for the tooltip
+          const temp = document.createElement("div");
+          temp.style.position = "absolute"; // Changed from fixed
+          temp.style.zIndex = "9999";
 
-					// Position anchor point based on device type
-					if (rect) {
-						const scrollX = window.scrollX;
-						const scrollY = window.scrollY;
-						const isTouchDevice = "ontouchstart" in window;
+          // Position anchor point based on device type
+          if (rect) {
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+            const isTouchDevice = "ontouchstart" in window;
 
-						temp.style.left = `${rect.left + scrollX + rect.width / 2}px`;
-						// Use bottom position for touch devices, top for desktop
-						temp.style.top = `${(isTouchDevice ? rect.bottom : rect.top) + scrollY}px`;
+            temp.style.left = `${rect.left + scrollX + rect.width / 2}px`;
+            // Use bottom position for touch devices, top for desktop
+            temp.style.top = `${(isTouchDevice ? rect.bottom : rect.top) + scrollY}px`;
 
-						console.log("Anchor position:", {
-							left: rect.left + scrollX,
-							top: (isTouchDevice ? rect.bottom : rect.top) + scrollY,
-							withScroll: true,
-							device: isTouchDevice ? "touch" : "desktop",
-						});
-					} else {
-						temp.style.left = `${x}px`;
-						temp.style.top = `${y}px`;
-					}
+            console.log("Anchor position:", {
+              left: rect.left + scrollX,
+              top: (isTouchDevice ? rect.bottom : rect.top) + scrollY,
+              withScroll: true,
+              device: isTouchDevice ? "touch" : "desktop",
+            });
+          } else {
+            temp.style.left = `${x}px`;
+            temp.style.top = `${y}px`;
+          }
 
-					document.body.appendChild(temp);
+          document.body.appendChild(temp);
 
-					activeTooltip = tippy(temp, {
-						content: `<div class="loading-spinner">
+          activeTooltip = tippy(temp, {
+            content: `<div class="loading-spinner">
 							<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
 								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
 							</svg>
 							<span class="ml-2">Loading definition...</span>
 						</div>`,
-						allowHTML: true,
-						interactive: true,
-						theme: document.documentElement.classList.contains("dark")
-							? "dark dictionary"
-							: "dictionary",
-						placement: "ontouchstart" in window ? "bottom" : "top", // Change placement based on device
-						strategy: "fixed", // Use fixed positioning strategy
-						popperOptions: {
-							modifiers: [
-								{
-									name: "offset",
-									options: {
-										offset: [0, 10], // [skidding (horizontal), distance (vertical)]
-									},
-								},
-								{
-									name: "preventOverflow",
-									options: {
-										boundary: "viewport",
-										altAxis: true, // Prevents overflow on both axes
-										padding: 10, // Keeps 10px from viewport edges
-									},
-								},
-								{
-									name: "flip",
-									enabled: false, // Disable flipping to top
-								},
-							],
-						},
-						showOnCreate: true,
-						maxWidth: 400,
-						trigger: "manual",
-						hideOnClick: false,
-						onShow(instance) {
-							instance.popper.style.maxHeight = "400px";
-							instance.popper.style.overflowY = "auto";
-						},
-					});
+            allowHTML: true,
+            interactive: true,
+            theme: document.documentElement.classList.contains("dark")
+              ? "dark dictionary"
+              : "dictionary",
+            placement: "ontouchstart" in window ? "bottom" : "top", // Change placement based on device
+            strategy: "fixed", // Use fixed positioning strategy
+            popperOptions: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, 10], // [skidding (horizontal), distance (vertical)]
+                  },
+                },
+                {
+                  name: "preventOverflow",
+                  options: {
+                    boundary: "viewport",
+                    altAxis: true, // Prevents overflow on both axes
+                    padding: 10, // Keeps 10px from viewport edges
+                  },
+                },
+                {
+                  name: "flip",
+                  enabled: false, // Disable flipping to top
+                },
+              ],
+            },
+            showOnCreate: true,
+            maxWidth: 400,
+            trigger: "manual",
+            hideOnClick: false,
+            onShow(instance) {
+              instance.popper.style.maxHeight = "400px";
+              instance.popper.style.overflowY = "auto";
+            },
+          });
 
-					try {
-						const response = await fetch(
-							`/api/pali/lookup?word=${encodeURIComponent(text)}`
-						);
-						const data = await response.json();
-						if (data.summary_html || data.dpd_html) {
-							// Create a container for the HTML content
-							const contentEl = document.createElement("div");
-							contentEl.innerHTML = `
+          try {
+            const response = await fetch(
+              `/api/pali/lookup?word=${encodeURIComponent(text)}`
+            );
+            const data = await response.json();
+            if (data.summary_html || data.dpd_html) {
+              // Create a container for the HTML content
+              const contentEl = document.createElement("div");
+              contentEl.innerHTML = `
         ${data.summary_html ? `<div class="summary">${data.summary_html}</div>` : ""}
         ${data.dpd_html ? `<div class="dpd-content">${data.dpd_html}</div>` : ""}
       `;
 
-							// Intercept anchor links that start with '#'
-							contentEl.addEventListener("click", (e) => {
-								const link = (e.target as HTMLElement).closest("a");
-								if (link && link.getAttribute("href")?.startsWith("#")) {
-									e.preventDefault();
-									e.stopPropagation();
+              // Intercept anchor links that start with '#'
+              contentEl.addEventListener("click", (e) => {
+                const link = (e.target as HTMLElement).closest("a");
+                if (link && link.getAttribute("href")?.startsWith("#")) {
+                  e.preventDefault();
+                  e.stopPropagation();
 
-									const container =
-										activeTooltip.popper.querySelector(".tippy-content");
-									const targetId = link.getAttribute("href")?.substring(1);
-									const targetEl =
-										targetId && container.querySelector(`#${targetId}`);
+                  const container =
+                    activeTooltip.popper.querySelector(".tippy-content");
+                  const targetId = link.getAttribute("href")?.substring(1);
+                  const targetEl =
+                    targetId && container.querySelector(`#${targetId}`);
 
-									if (targetEl) {
-										const containerTop = container.getBoundingClientRect().top;
-										const targetTop = targetEl.getBoundingClientRect().top;
-										const visibleRange = 350; // matches maxHeight setting
+                  if (targetEl) {
+                    const containerTop = container.getBoundingClientRect().top;
+                    const targetTop = targetEl.getBoundingClientRect().top;
+                    const visibleRange = 350; // matches maxHeight setting
 
-										console.log("Visibility check:", {
-											containerTop,
-											targetTop,
-											visibleRange,
-											diff: targetTop - containerTop,
-											isVisible:
-												targetTop - containerTop >= 0 &&
-												targetTop - containerTop <= visibleRange,
-										});
+                    console.log("Visibility check:", {
+                      containerTop,
+                      targetTop,
+                      visibleRange,
+                      diff: targetTop - containerTop,
+                      isVisible:
+                        targetTop - containerTop >= 0 &&
+                        targetTop - containerTop <= visibleRange,
+                    });
 
-										if (
-											targetTop - containerTop >= 0 &&
-											targetTop - containerTop <= visibleRange
-										) {
-											console.log("Target in viewport - removing href");
-											link.removeAttribute("href");
-											return;
-										}
+                    if (
+                      targetTop - containerTop >= 0 &&
+                      targetTop - containerTop <= visibleRange
+                    ) {
+                      console.log("Target in viewport - removing href");
+                      link.removeAttribute("href");
+                      return;
+                    }
 
-										console.log("Target outside viewport - scrolling");
-										targetEl.scrollIntoView({
-											behavior: "smooth",
-											block: "start",
-										});
-									}
-								}
-							});
+                    console.log("Target outside viewport - scrolling");
+                    targetEl.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }
+                }
+              });
 
-							activeTooltip.setContent(contentEl);
-						}
-					} catch (error) {
-						console.error("Failed to fetch definition:", error);
-						activeTooltip.setContent("Failed to load definition");
-					}
-				};
+              activeTooltip.setContent(contentEl);
+            }
+          } catch (error) {
+            console.error("Failed to fetch definition:", error);
+            activeTooltip.setContent("Failed to load definition");
+          }
+        };
 
-				// Desktop: Keep double-click handler
-				if (!("ontouchstart" in window)) {
-					document.addEventListener("dblclick", (e) => {
-						const target = e.target as HTMLElement;
-						if (!target.closest(".pali-paragraph")) return;
+        // Desktop: Keep double-click handler
+        if (!("ontouchstart" in window)) {
+          document.addEventListener("dblclick", (e) => {
+            const target = e.target as HTMLElement;
+            if (!target.closest(".pali-paragraph")) return;
 
-						const selection = window.getSelection();
-						const text = selection?.toString().trim();
-						if (!text || /\s/.test(text)) return;
+            const selection = window.getSelection();
+            const text = selection?.toString().trim();
+            if (!text || /\s/.test(text)) return;
 
-						showDictionary(text, e.pageX, e.pageY, false);
-					});
-				}
+            showDictionary(text, e.pageX, e.pageY, false);
+          });
+        }
 
-				// Desktop: click outside to close
-				if (!("ontouchstart" in window)) {
-					document.addEventListener("click", (e) => {
-						console.log("Desktop click event for closing tooltip:", e.target);
-						const target = e.target as HTMLElement;
-						if (activeTooltip && !target.closest(".tippy-content")) {
-							console.log("Closing dictionary tooltip on desktop.");
-							activeTooltip.destroy();
-							activeTooltip = null;
-						}
-					});
-				}
+        // Desktop: click outside to close
+        if (!("ontouchstart" in window)) {
+          document.addEventListener("click", (e) => {
+            console.log("Desktop click event for closing tooltip:", e.target);
+            const target = e.target as HTMLElement;
+            if (activeTooltip && !target.closest(".tippy-content")) {
+              console.log("Closing dictionary tooltip on desktop.");
+              activeTooltip.destroy();
+              activeTooltip = null;
+            }
+          });
+        }
 
-				// Mobile: Use touch handler
-				if ("ontouchstart" in window) {
-					let startTouch: Touch | null = null;
+        // Mobile: Use touch handler
+        if ("ontouchstart" in window) {
+          let startTouch: Touch | null = null;
 
-					// Add close button to tooltip
-					document.addEventListener("click", (e) => {
-						const target = e.target as HTMLElement;
-						if (
-							activeTooltip &&
-							!target.closest(".tippy-content") &&
-							!target.closest(".pali-paragraph")
-						) {
-							activeTooltip.destroy();
-							activeTooltip = null;
-						}
-					});
+          // Add close button to tooltip
+          document.addEventListener("click", (e) => {
+            const target = e.target as HTMLElement;
+            if (
+              activeTooltip &&
+              !target.closest(".tippy-content") &&
+              !target.closest(".pali-paragraph")
+            ) {
+              activeTooltip.destroy();
+              activeTooltip = null;
+            }
+          });
 
-					// Prevent default context menu on mobile
-					document.addEventListener("contextmenu", (e) => {
-						const target = e.target as HTMLElement;
-						if (target.closest(".pali-paragraph")) {
-							e.preventDefault();
-						}
-					});
+          // Prevent default context menu on mobile
+          document.addEventListener("contextmenu", (e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest(".pali-paragraph")) {
+              e.preventDefault();
+            }
+          });
 
-					document.addEventListener(
-						"touchstart",
-						(e) => {
-							const target = e.target as HTMLElement;
-							if (!target.closest(".pali-paragraph")) return;
-							startTouch = e.touches[0];
-						},
-						{ passive: true }
-					);
+          document.addEventListener(
+            "touchstart",
+            (e) => {
+              const target = e.target as HTMLElement;
+              if (!target.closest(".pali-paragraph")) return;
+              startTouch = e.touches[0];
+            },
+            { passive: true }
+          );
 
-					document.addEventListener(
-						"touchend",
-						(e) => {
-							if (!startTouch) return;
+          document.addEventListener(
+            "touchend",
+            (e) => {
+              if (!startTouch) return;
 
-							const selection = window.getSelection();
-							const text = selection?.toString().trim();
+              const selection = window.getSelection();
+              const text = selection?.toString().trim();
 
-							console.log("Touch detected:", {
-								text,
-								hasPaliParent: !!(e.target as HTMLElement).closest(
-									".pali-paragraph"
-								),
-							});
+              console.log("Touch detected:", {
+                text,
+                hasPaliParent: !!(e.target as HTMLElement).closest(
+                  ".pali-paragraph"
+                ),
+              });
 
-							if (text && !text.includes(" ")) {
-								showDictionary(text, startTouch.pageX, startTouch.pageY, true);
-							}
-							startTouch = null;
-						},
-						{ passive: true }
-					);
+              if (text && !text.includes(" ")) {
+                showDictionary(text, startTouch.pageX, startTouch.pageY, true);
+              }
+              startTouch = null;
+            },
+            { passive: true }
+          );
 
-					// Add a document-wide click handler to close tooltip when clicking outside
-					document.addEventListener("click", (e) => {
-						const target = e.target as HTMLElement;
-						if (activeTooltip && !target.closest(".tippy-content")) {
-							activeTooltip.hide();
-						}
-					});
-				}
-			}
+          // Add a document-wide click handler to close tooltip when clicking outside
+          document.addEventListener("click", (e) => {
+            const target = e.target as HTMLElement;
+            if (activeTooltip && !target.closest(".tippy-content")) {
+              activeTooltip.hide();
+            }
+          });
+        }
+      }
 
-			// Close tooltips when clicking outside
-			document.addEventListener("click", (event) => {
-				const target = event.target as HTMLElement;
-				const clickedTooltip = target?.closest(".tooltip-text");
-				const clickedTooltipContent = target?.closest(".tippy-content");
-				const clickedTooltipBox = target?.closest(".tippy-box");
+      // Close tooltips when clicking outside
+      document.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement;
+        const clickedTooltip = target?.closest(".tooltip-text");
+        const clickedTooltipContent = target?.closest(".tippy-content");
+        const clickedTooltipBox = target?.closest(".tippy-box");
 
-				if (!clickedTooltip && !clickedTooltipContent && !clickedTooltipBox) {
-					tooltips.forEach((tooltip) => tooltip.hide());
-				}
-			});
+        if (!clickedTooltip && !clickedTooltipContent && !clickedTooltipBox) {
+          tooltips.forEach((tooltip) => tooltip.hide());
+        }
+      });
 
-			// Function to update tooltip themes
-			function updateTooltipTheme() {
-				tooltips.forEach((tooltip) => {
-					if (document.documentElement.classList.contains("dark")) {
-						tooltip.popper.classList.add("dark-tooltip");
-					} else {
-						tooltip.popper.classList.remove("dark-tooltip");
-					}
-				});
-			}
+      // Function to update tooltip themes
+      function updateTooltipTheme() {
+        tooltips.forEach((tooltip) => {
+          if (document.documentElement.classList.contains("dark")) {
+            tooltip.popper.classList.add("dark-tooltip");
+          } else {
+            tooltip.popper.classList.remove("dark-tooltip");
+          }
+        });
+      }
 
-			// Initial theme setup
-			updateTooltipTheme();
+      // Initial theme setup
+      updateTooltipTheme();
 
-			// Observe changes to the 'dark' class on the HTML element
-			const observer = new MutationObserver((mutations) => {
-				mutations.forEach((mutation) => {
-					if (mutation.attributeName === "class") {
-						updateTooltipTheme();
-					}
-				});
-			});
+      // Observe changes to the 'dark' class on the HTML element
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === "class") {
+            updateTooltipTheme();
+          }
+        });
+      });
 
-			observer.observe(document.documentElement, { attributes: true });
-		});
-	});
+      observer.observe(document.documentElement, { attributes: true });
+    });
+  });
 </script>
 
 <style is:global>
-	/* Dictionary content styling */
-	.tippy-box[data-theme~="dictionary"] {
-		background-color: var(--auth-card-bg);
-		color: var(--text-color);
-		padding: 0.5rem;
-	}
+  /* Dictionary content styling */
+  .tippy-box[data-theme~="dictionary"] {
+    background-color: var(--auth-card-bg);
+    color: var(--text-color);
+    padding: 0.5rem;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .tippy-content {
-		padding: 0.5rem;
-	}
+  .tippy-box[data-theme~="dictionary"] .tippy-content {
+    padding: 0.5rem;
+  }
 
-	/* DPD styles */
-	.tippy-box[data-theme~="dictionary"] .example {
-		font-size: 0.9rem;
-		line-height: 1.4;
-	}
+  /* DPD styles */
+  .tippy-box[data-theme~="dictionary"] .example {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .pali {
-		color: var(--primary-color);
-		font-weight: 500;
-	}
+  .tippy-box[data-theme~="dictionary"] .pali {
+    color: var(--primary-color);
+    font-weight: 500;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .grammar {
-		color: var(--secondary-color);
-		font-style: italic;
-	}
+  .tippy-box[data-theme~="dictionary"] .grammar {
+    color: var(--secondary-color);
+    font-style: italic;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .definition {
-		margin-top: 0.25rem;
-	}
+  .tippy-box[data-theme~="dictionary"] .definition {
+    margin-top: 0.25rem;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .summary {
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-	}
+  .tippy-box[data-theme~="dictionary"] .summary {
+    border-bottom: 1px solid var(--auth-input-border);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .dpd-content {
-		margin-top: 0.5rem;
-	}
+  .tippy-box[data-theme~="dictionary"] .dpd-content {
+    margin-top: 0.5rem;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .box-content {
-		display: none;
-	}
+  .tippy-box[data-theme~="dictionary"] .box-content {
+    display: none;
+  }
 
-	.tippy-box[data-theme~="dictionary"] .button-box {
-		display: none;
-	}
+  .tippy-box[data-theme~="dictionary"] .button-box {
+    display: none;
+  }
 
-	.tippy-box[data-theme~="dictionary"] table.grammar_dict {
-		border-collapse: collapse;
-		border: 1px solid var(--auth-input-border);
-	}
+  .tippy-box[data-theme~="dictionary"] table.grammar_dict {
+    border-collapse: collapse;
+    border: 1px solid var(--auth-input-border);
+  }
 
-	.loading-spinner {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 1rem;
-		color: var(--text-color);
-	}
+  .loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: var(--text-color);
+  }
 
-	/* Table styles for dictionary content */
-	.tippy-box[data-theme~="dictionary"] table.grammar_dict {
-		border-collapse: collapse;
-		border: 1px solid var(--auth-input-border);
-		width: 100%;
-		margin: 0.5rem 0;
-		font-size: 0.9rem;
-	}
+  /* Table styles for dictionary content */
+  .tippy-box[data-theme~="dictionary"] table.grammar_dict {
+    border-collapse: collapse;
+    border: 1px solid var(--auth-input-border);
+    width: 100%;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
 
-	.tippy-box[data-theme~="dictionary"] table.grammar_dict th,
-	.tippy-box[data-theme~="dictionary"] table.grammar_dict td {
-		border: 1px solid var(--auth-input-border);
-		padding: 0.25rem 0.5rem;
-		text-align: left;
-	}
+  .tippy-box[data-theme~="dictionary"] table.grammar_dict th,
+  .tippy-box[data-theme~="dictionary"] table.grammar_dict td {
+    border: 1px solid var(--auth-input-border);
+    padding: 0.25rem 0.5rem;
+    text-align: left;
+  }
 
-	.tippy-box[data-theme~="dictionary"] table.grammar_dict th {
-		background-color: var(--auth-input-bg);
-		font-weight: 500;
-	}
+  .tippy-box[data-theme~="dictionary"] table.grammar_dict th {
+    background-color: var(--auth-input-bg);
+    font-weight: 500;
+  }
 
-	.tippy-box[data-theme~="dictionary"] table.grammar_dict tr:nth-child(even) {
-		background-color: var(--auth-input-bg);
-	}
+  .tippy-box[data-theme~="dictionary"] table.grammar_dict tr:nth-child(even) {
+    background-color: var(--auth-input-bg);
+  }
 
-	/* Add specific styles for regular tooltips */
-	.tooltip-content .summary {
-		color: var(--primary-color);
-		font-weight: 500;
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-		font-size: 0.9rem;
-	}
+  /* Add specific styles for regular tooltips */
+  .tooltip-content .summary {
+    color: var(--primary-color);
+    font-weight: 500;
+    border-bottom: 1px solid var(--auth-input-border);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
 
-	.tooltip-content .definition {
-		color: var(--text-color);
-		font-size: 0.9rem;
-		line-height: 1.4;
-	}
+  .tooltip-content .definition {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
 
-	/* Ensure dark theme works for regular tooltips */
-	:root[class~="dark"] .tooltip-content .summary {
-		border-color: var(--auth-input-border);
-	}
+  /* Ensure dark theme works for regular tooltips */
+  :root[class~="dark"] .tooltip-content .summary {
+    border-color: var(--auth-input-border);
+  }
 
-	:root[class~="dark"] .tooltip-content .definition {
-		color: var(--text-color);
-	}
+  :root[class~="dark"] .tooltip-content .definition {
+    color: var(--text-color);
+  }
 </style>
