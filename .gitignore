@@ -26,3 +26,5 @@ pnpm-debug.log*
 src/utils/routes.ts
 
 .vercel/
+
+.timestamp-cache.json
