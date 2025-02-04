@@ -94,6 +94,10 @@ export function synchronizePreferences(preferences: Partial<UserPreferences>) {
         url.searchParams.delete('enablePaliLookup');
     }
 
+    if (url.searchParams.has('note-id')) {
+        url.searchParams.delete('note-id');
+    }
+
     window.history.replaceState({}, '', url.toString());
 }
 
