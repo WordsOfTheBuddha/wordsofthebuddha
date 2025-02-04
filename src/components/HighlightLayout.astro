@@ -1,4 +1,22 @@
 ---
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+
+// Get authentication status
+let isAuthenticated = false;
+if (Astro.cookies.has("__session")) {
+	const sessionCookie = Astro.cookies.get("__session")?.value;
+	if (sessionCookie) {
+		const auth = getAuth(app);
+		try {
+			await auth.verifySessionCookie(sessionCookie);
+			isAuthenticated = true;
+		} catch (error) {
+			// Invalid cookie
+		}
+	}
+}
+
 // HighlightLayout.astro
 const { currentPath } = Astro.props;
 
@@ -12,40 +30,47 @@ const COLOR_MAP = {
 type ColorName = keyof typeof COLOR_MAP;
 ---
 
-<div id="highlight-root" class:list={["highlight-container"]}>
+<div
+	id="highlight-root"
+	class:list={["highlight-container"]}
+	data-authenticated={isAuthenticated}
+>
 	<slot />
 
-	<div
-		id="highlight-menu"
-		class="highlight-menu"
-		style="display: none; --x: 0; --y: 0;"
-	>
-		{
-			Object.entries(COLOR_MAP).map(([colorName, bgColor]) => (
-				<button
-					data-color={colorName}
-					style={`background-color: ${bgColor}`}
-					class="color-swatch"
-				/>
-			))
-		}
-		<button id="highlight-eraser" class="eraser-btn" style="display: none;">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 32 32"
-				width="16"
-				height="16"
-			>
-				<path
-					fill="currentColor"
-					d="M28.7 8.9l-5.7-5.7c-1.1-1.1-3.1-1.1-4.2 0l-7.1 7.1c0 0 0 0 0 0s0 0 0 0l-7.5 7.5c-1.2 1.2-1.2 3.1 0 4.2l3.8 3.8c0.2 0.2 0.4 0.3 0.7 0.3h6.6c0.3 0 0.5-0.1 0.7-0.3l12.7-12.7c0 0 0 0 0 0C29.9 12 29.9 10.1 28.7 8.9zM14.9 24.1H9.2l-3.5-3.5c-0.4-0.4-0.4-1 0-1.4l6.8-6.8l7.1 7.1L14.9 24.1z"
-				></path>
-				<path
-					fill="currentColor"
-					d="M27 28H5c-0.6 0-1 0.4-1 1s0.4 1 1 1h22c0.6 0 1-0.4 1-1S27.6 28 27 28z"
-				></path>
-			</svg>
-		</button>
+	<div id="highlight-menu" class="highlight-menu" style="display: none;">
+		<div class="menu-items">
+			{
+				Object.entries(COLOR_MAP).map(([colorName, bgColor]) => (
+					<button
+						data-color={colorName}
+						style={`background-color: ${bgColor}`}
+						class="color-swatch"
+					/>
+				))
+			}
+			<button id="highlight-eraser" class="eraser-btn" style="display: none;">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 32 32"
+					width="16"
+					height="16"
+				>
+					<path
+						fill="currentColor"
+						d="M28.7 8.9l-5.7-5.7c-1.1-1.1-3.1-1.1-4.2 0l-7.1 7.1c0 0 0 0 0 0s0 0 0 0l-7.5 7.5c-1.2 1.2-1.2 3.1 0 4.2l3.8 3.8c0.2 0.2 0.4 0.3 0.7 0.3h6.6c0.3 0 0.5-0.1 0.7-0.3l12.7-12.7c0 0 0 0 0 0C29.9 12 29.9 10.1 28.7 8.9zM14.9 24.1H9.2l-3.5-3.5c-0.4-0.4-0.4-1 0-1.4l6.8-6.8l7.1 7.1L14.9 24.1z"
+					></path>
+					<path
+						fill="currentColor"
+						d="M27 28H5c-0.6 0-1 0.4-1 1s0.4 1 1 1h22c0.6 0 1-0.4 1-1S27.6 28 27 28z"
+					></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<!-- Sign in prompt -->
+	<div id="highlight-signin" class="highlight-signin" style="display: none;">
+		<a href="/signin" class="signin-link">Sign in to highlight and add notes</a>
 	</div>
 </div>
 
@@ -58,22 +83,28 @@ type ColorName = keyof typeof COLOR_MAP;
 		position: absolute;
 		left: 0;
 		top: 0;
-		background: var(--menu-bg, #fff);
-		border: 1px solid var(--menu-border, #ccc);
+		background: var(--bg-color, #fff);
+		border: 1px solid var(--border-color, #e5e7eb);
 		opacity: 1 !important;
 		border-radius: 6px;
 		padding: 8px;
-		display: flex;
-		gap: 8px;
 		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 		transform: none;
-		transition: opacity 0.2s;
-		z-index: 9999;
+		transition: all 0.2s;
+		z-index: 9998;
+		pointer-events: none;
 	}
 
-	:global(.dark-mode .highlight-menu) {
-		--menu-bg: #333;
-		--menu-border: #555;
+	:global(.dark .highlight-menu) {
+		--bg-color: #1f2937;
+		--border-color: #374151;
+	}
+
+	:global(.highlight-menu .menu-items) {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		pointer-events: all;
 	}
 
 	:global(.color-swatch) {
@@ -83,6 +114,8 @@ type ColorName = keyof typeof COLOR_MAP;
 		border-radius: 50%;
 		cursor: pointer;
 		transition: transform 0.2s;
+		padding: 0;
+		flex-shrink: 0;
 	}
 
 	:global(.color-swatch:hover) {
@@ -92,15 +125,17 @@ type ColorName = keyof typeof COLOR_MAP;
 	:global(.eraser-btn) {
 		width: 24px;
 		height: 24px;
+		min-width: 24px;
 		border: none;
 		border-radius: 50%;
 		background: #999;
 		color: white;
 		cursor: pointer;
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		padding: 0;
+		flex-shrink: 0;
 	}
 
 	:global(.eraser-btn:hover) {
@@ -124,6 +159,34 @@ type ColorName = keyof typeof COLOR_MAP;
 	:global(.highlight-blue) {
 		background-color: #bfdbfe;
 	}
+
+	.highlight-signin {
+		position: absolute;
+		left: 0;
+		top: 0;
+		background: var(--menu-bg, #fff);
+		border: 1px solid var(--menu-border, #ccc);
+		border-radius: 6px;
+		padding: 8px 12px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+		z-index: 9999;
+		font-size: 0.875rem;
+		pointer-events: all;
+	}
+
+	.signin-link {
+		color: var(--text-color);
+		text-decoration: none;
+	}
+
+	.signin-link:hover {
+		text-decoration: underline;
+	}
+
+	:global(.dark-mode .highlight-signin) {
+		--menu-bg: #333;
+		--menu-border: #555;
+	}
 </style>
 
 <script>
@@ -146,7 +209,7 @@ type ColorName = keyof typeof COLOR_MAP;
 	let highlighter: Highlighter | null = null;
 	let currentRange: Range | null = null;
 	const storageKey = `my-highlights-${window.location.pathname}`;
-	const menu = document.getElementById("highlight-menu") as HTMLDivElement;
+	let menu = document.getElementById("highlight-menu") as HTMLDivElement;
 	let rootElement: HTMLElement | null = null;
 
 	// Mobile detection and range preservation
@@ -177,6 +240,14 @@ type ColorName = keyof typeof COLOR_MAP;
 		}
 	}
 
+	function updateTheme(): void {
+		const isDark = document.documentElement.classList.contains("dark");
+		if (menu) {
+			menu.style.setProperty("--bg-color", isDark ? "#1f2937" : "#fff");
+			menu.style.setProperty("--border-color", isDark ? "#374151" : "#e5e7eb");
+		}
+	}
+
 	// Initialize everything after Rangy is loaded
 	async function initializeHighlighter(): Promise<void> {
 		try {
@@ -188,11 +259,6 @@ type ColorName = keyof typeof COLOR_MAP;
 			Object.entries(COLOR_MAP).forEach(([colorName, bgColor]) => {
 				const applier = rangy.createClassApplier(`highlight-${colorName}`, {
 					elementTagName: "mark",
-					elementProperties: {
-						style: {
-							backgroundColor: bgColor,
-						},
-					},
 					splitExisting: true,
 					normalize: true,
 				});
@@ -222,7 +288,7 @@ type ColorName = keyof typeof COLOR_MAP;
 	}
 
 	function calculateMenuPosition(
-		menu: HTMLDivElement,
+		menu: HTMLElement,
 		finalRect: DOMRect,
 		rootElement: HTMLElement
 	) {
@@ -237,14 +303,32 @@ type ColorName = keyof typeof COLOR_MAP;
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) return;
 
+		// Hide both menus initially
+		menu.style.display = "none";
+		document.getElementById("highlight-signin")!.style.display = "none";
+
+		const target = e.target as HTMLElement;
+
+		// Check if target is inside a tooltip
+		if (target.closest(".tooltip-text") || target.closest(".tippy-content")) {
+			menu.style.display = "none";
+			return;
+		}
+
 		// Get selection first to check all conditions
 		const selection = window.rangy.getSelection();
-		const selectedText = selection.toString().trim();
+
+		// Early return if no valid selection
+		if (selection.isCollapsed || !isSelectionValid(selection)) {
+			menu.style.display = "none";
+			document.getElementById("highlight-signin")!.style.display = "none";
+			return;
+		}
 
 		// Get Pali context
-		const target = e.target as HTMLElement;
 		const isPaliParagraph = target.closest(".pali-paragraph");
 		const isPaliLookupEnabled = localStorage.getItem("paliLookup") === "true";
+		const selectedText = selection.toString().trim();
 		const isSingleWord = selectedText && !selectedText.includes(" ");
 
 		// Only hide menu if ALL three conditions are met
@@ -270,9 +354,33 @@ type ColorName = keyof typeof COLOR_MAP;
 		menuPositionTimeout = setTimeout(() => {
 			updateMenuPosition(selection);
 		}, 50) as unknown as number;
+
+		// Get authentication status
+		const isAuthenticated = rootElement?.dataset.authenticated === "true";
+
+		// Handle Pali lookup cases
+		if (isPaliLookupEnabled && isPaliParagraph && isSingleWord) {
+			menu.style.display = "none";
+			document.getElementById("highlight-signin")!.style.display = "none";
+			return;
+		}
+
+		// Show appropriate menu based on auth status
+		if (!isAuthenticated) {
+			const signinPrompt = document.getElementById("highlight-signin")!;
+			updateMenuPosition(selection, signinPrompt);
+			return;
+		}
+
+		// Show highlight menu for authenticated users
+		menu.style.display = "block";
+		updateMenuPosition(selection, menu);
 	}
 
-	function updateMenuPosition(selection: RangySelection) {
+	function updateMenuPosition(
+		selection: RangySelection,
+		element: HTMLElement = menu
+	) {
 		currentRange = selection.getRangeAt(0).nativeRange;
 		savedRange = currentRange.cloneRange();
 
@@ -310,10 +418,10 @@ type ColorName = keyof typeof COLOR_MAP;
 		}
 
 		if (finalRect) {
-			calculateMenuPosition(menu, finalRect, rootElement!);
+			calculateMenuPosition(element, finalRect, rootElement!);
 		}
 
-		menu.style.display = "flex";
+		element.style.display = "block";
 
 		// Add back the eraser visibility check
 		const eraser = document.getElementById("highlight-eraser");
@@ -468,8 +576,11 @@ type ColorName = keyof typeof COLOR_MAP;
 	// Initialize on page load
 	document.addEventListener("DOMContentLoaded", () => {
 		rootElement = document.getElementById("highlight-root");
+		menu = document.getElementById("highlight-menu") as HTMLDivElement;
 		updateDarkMode(); // Initial theme state
-		window.addEventListener("themeToggled", updateDarkMode); // Listen on window instead of document
+		updateTheme(); // Initial theme colors
+		window.addEventListener("themeToggled", updateDarkMode);
+		document.addEventListener("themeChanged", updateTheme);
 		initializeHighlighter();
 	});
 </script>

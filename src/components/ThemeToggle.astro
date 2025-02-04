@@ -11,5 +11,7 @@
 
 	document.getElementById("themeToggle")?.addEventListener("click", () => {
 		toggleTheme();
+		// Dispatch custom event for components that need theme updates
+		document.dispatchEvent(new CustomEvent("themeChanged"));
 	});
 </script>
