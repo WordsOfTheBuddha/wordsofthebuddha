@@ -18,7 +18,7 @@ if (Astro.cookies.has("__session")) {
 }
 
 // HighlightLayout.astro
-const { currentPath } = Astro.props;
+const currentPath = Astro.url.pathname;
 
 const COLOR_MAP = {
 	yellow: "#FEF08A",
@@ -70,7 +70,9 @@ type ColorName = keyof typeof COLOR_MAP;
 
 	<!-- Sign in prompt -->
 	<div id="highlight-signin" class="highlight-signin" style="display: none;">
-		<a href="/signin" class="signin-link">Sign in to highlight and add notes</a>
+		<a href={`/signin?returnTo=${currentPath}`} class="signin-link"
+			>Sign in to highlight and add notes</a
+		>
 	</div>
 </div>
 

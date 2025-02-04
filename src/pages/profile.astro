@@ -64,7 +64,7 @@ try {
 	paliEnabled = userData["preferences.showPali"] === true;
 	currentTheme = userData["preferences.theme"] || "dark";
 	currentFontSize = userData["preferences.fontSize"] || "large";
-	paliLookup = userData["preferences.enablePaliLookup"] || true;
+	paliLookup = userData["preferences.enablePaliLookup"] ?? true;
 
 	console.log("[Profile] Auth successful, rendering profile page");
 } catch (error) {

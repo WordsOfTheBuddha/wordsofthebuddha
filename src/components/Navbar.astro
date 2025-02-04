@@ -69,7 +69,11 @@ if (showAuth) {
 								>
 									Profile
 								</a>
-								<form action="/api/auth/signout" method="post">
+								<form
+									action="/api/auth/signout"
+									method="post"
+									onsubmit="localStorage.removeItem('note-id');"
+								>
 									<input type="hidden" name="returnTo" value={currentPath} />
 									<button
 										type="submit"
