@@ -26,11 +26,6 @@ interface RangyStatic {
         className: string,
         options: {
             elementTagName: string;
-            elementProperties: {
-                style: {
-                    [key: string]: any;
-                };
-            };
             splitOnGet?: boolean;
             normalize?: boolean;
             splitExisting?: boolean;

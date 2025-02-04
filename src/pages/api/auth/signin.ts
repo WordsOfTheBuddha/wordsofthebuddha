@@ -2,8 +2,10 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { app, db } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import { Timestamp } from 'firebase-admin/firestore';
 import type { DecodedIdToken } from "firebase-admin/auth";
 import type { UserPreferences } from "../../../utils/theme";
+import type { Note } from '../../../types/notes';
 
 // Add debug flag to force logging
 const DEBUG = true;
@@ -82,10 +84,31 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         logger.debug(`[${requestId}] DB returned:`, userPrefs);
         logger.info(`[${requestId}] DB query done in ${Date.now() - startTime}ms`);
 
+        // After getting userPrefs, check for notes collection
+        const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+        let noteId = userDoc.get('defaultNoteId');
+
+        if (!noteId) {
+            logger.info(`[${requestId}] Creating default notes collection for user`);
+            const noteRef = await db.collection('notes').add({
+                author: decodedToken.uid,
+                name: 'My Highlights',
+                createdAt: Timestamp.now()
+            } as Note);
+
+            await db.collection('users').doc(decodedToken.uid).update({
+                defaultCollectionId: noteRef.id
+            });
+
+            noteId = noteRef.id;
+            logger.debug(`[${requestId}] Created note with ID: ${noteId}`);
+        }
+
         // Build redirect URL
         const redirectUrl = new URL(returnTo, request.url);
         if (userPrefs?.showPali === true) redirectUrl.searchParams.set('pli', 'true');
         if (userPrefs.theme) redirectUrl.searchParams.set('theme', userPrefs.theme);
+        redirectUrl.searchParams.set('note-id', noteId);
 
         logger.info(`[${requestId}] Redirecting after ${Date.now() - startTime}ms to ${redirectUrl}`);
         return redirect(redirectUrl.toString());
