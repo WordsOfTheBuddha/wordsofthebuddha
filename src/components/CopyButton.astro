@@ -2,7 +2,7 @@
 <button
 	id="highlight-copy"
 	class="copy-btn"
-	title="Copy text"
+	data-tooltip="Rich content copy"
 	aria-label="Copy text"
 >
 	<svg
@@ -114,11 +114,48 @@
 		padding: 0;
 		flex-shrink: 0;
 		transition: background-color 0.2s;
+		position: relative;
 	}
 	.copy-btn:hover {
 		background: #666;
 	}
 	.copy-btn.copied {
 		background: var(--primary-color, #4caf50);
+	}
+
+	/* Tooltip styles */
+	[data-tooltip] {
+		position: relative;
+	}
+
+	[data-tooltip]::before,
+	[data-tooltip]::after {
+		position: absolute;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+	}
+
+	/* Tooltip box */
+	[data-tooltip]::before {
+		content: attr(data-tooltip);
+		bottom: calc(100% + 5px);
+		left: 50%;
+		transform: translateX(-50%);
+		padding: 4px 8px;
+		border-radius: 4px;
+		background: var(--bg-color, #fff);
+		color: var(--text-color, #000);
+		font-size: 12px;
+		white-space: nowrap;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Show on hover */
+	[data-tooltip]:hover::before,
+	[data-tooltip]:hover::after {
+		opacity: 1;
+		visibility: visible;
 	}
 </style>
