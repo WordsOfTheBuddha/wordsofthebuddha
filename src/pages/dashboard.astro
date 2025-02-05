@@ -3,12 +3,12 @@ export const prerender = false;
 import { getEntry } from "astro:content";
 import { app, db } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
-// Remove getFirestore import
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import ClockSolid from "../assets/clock-solid.svg?raw";
 import SaveSolid from "../assets/save-solid.svg?raw";
-import HighlightIcon from "../assets/highlight-icon.svg?raw";
+import HighlightIcon from "../assets/highlight.svg?raw";
+import type { Highlight } from "../types/notes";
 
 const auth = getAuth(app);
 
@@ -28,6 +28,17 @@ const user = await auth.getUser(decodedCookie.uid);
 if (!user) {
 	return Astro.redirect("/signin");
 }
+
+// Fetch highlights from API
+const highlightsResponse = await fetch(
+	`${Astro.url.origin}/api/highlights/list`,
+	{
+		headers: {
+			cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
+		},
+	}
+);
+const { highlights: validHighlights } = await highlightsResponse.json();
 
 const readLaterRef = db
 	.collection("users")
@@ -86,25 +97,75 @@ const validSavedEntries = savedEntries
 
 <Layout showAuth={true}>
 	<div class="py-4 px-4 sm:px-6 lg:px-8">
-		<div class="max-w-5xl mx-auto">
-			<div class="border-b border-gray-200 dark:border-gray-700">
+		<div class="max-w-5xl mx-auto" id="dashboard-container">
+			<div class="sticky top-0 bg-white dark:bg-gray-900 z-10 py-2">
 				<nav class="-mb-px flex space-x-8" aria-label="Tabs">
-					<a href="#readlater" class="tab-link active" data-tab="readlater">
+					<a href="#highlights" class="tab-link active" data-tab="highlights">
+						<span class="inline-flex text-base sm:text-lg items-center gap-2">
+							<span class="w-5 h-5" set:html={HighlightIcon} />
+							Highlights
+						</span>
+					</a>
+					<a href="#readlater" class="tab-link" data-tab="readlater">
 						<span class="inline-flex text-base sm:text-lg items-center gap-2">
 							<span class="w-5 h-5" set:html={ClockSolid} />
 							Read Later
 						</span>
 					</a>
-					<a href="#saved" class="tab-link" data-tab="saved">
+					<a href="#saves" class="tab-link" data-tab="saves">
 						<span class="inline-flex text-base sm:text-lg items-center gap-2">
 							<span class="w-5 h-5" set:html={SaveSolid} />
-							Saved
+							Saves
 						</span>
 					</a>
 				</nav>
 			</div>
 
-			<div id="readlater" class="tab-content">
+			<div id="highlights" class="tab-content">
+				<div class="mt-8 space-y-4">
+					{
+						validHighlights.length === 0 ? (
+							<div class="text-center py-8 text-gray-500">
+								<p>No highlights found.</p>
+							</div>
+						) : (
+							validHighlights.map((highlight: Highlight) => (
+								<div class="highlight-page">
+									<div class="flex items-start">
+										<div class="min-w-0 pr-4">
+											<h2 class="text-base sm:text-lg font-semibold mb-2">
+												<a
+													href={highlight.slug}
+													class="text-gray-500 hover:text-link-color"
+												>
+													{highlight.title}
+												</a>
+											</h2>
+											{highlight.description && (
+												<p class="text-text line-clamp-2 text-sm">
+													{highlight.description}
+												</p>
+											)}
+										</div>
+									</div>
+									<div class="highlight-content">
+										{Object.values(highlight.highlightSegments)
+											.sort((a, b) => a.order - b.order)
+											.map((segment) => (
+												<Fragment set:html={segment.containerHTML} />
+											))}
+									</div>
+									<p class="text-gray-500 text-xs my-0 text-right">
+										Highlighted on {highlight.formattedDate}
+									</p>
+								</div>
+							))
+						)
+					}
+				</div>
+			</div>
+
+			<div id="readlater" class="tab-content hidden">
 				<div class="mt-8">
 					{
 						validReadLaterEntries.length === 0 ? (
@@ -128,7 +189,7 @@ const validSavedEntries = savedEntries
 				</div>
 			</div>
 
-			<div id="saved" class="tab-content hidden">
+			<div id="saves" class="tab-content hidden">
 				<div class="mt-8">
 					{
 						validSavedEntries.length === 0 ? (
@@ -168,6 +229,65 @@ const validSavedEntries = savedEntries
 		border-color: var(--secondary-color);
 		color: var(--secondary-color);
 	}
+
+	.highlight-page {
+		@apply relative flex flex-col w-full p-5 rounded-lg;
+		@apply bg-white dark:bg-gray-800;
+		@apply text-gray-800 dark:text-gray-200;
+		@apply transition-all duration-200;
+		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];
+		@apply hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)];
+		@apply opacity-50 hover:opacity-80;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.highlight-content {
+		@apply mt-4 space-y-4 overflow-y-auto text-sm;
+		max-height: 300px;
+	}
+
+	.highlight-content mark {
+		@apply bg-opacity-50;
+	}
+
+	.highlight-page h1 {
+		@apply text-xl font-semibold mb-2;
+	}
+
+	.highlight-page a {
+		color: var(--link-color);
+		text-decoration: none;
+		&:hover {
+			color: var(--link-hover-color);
+			text-decoration: underline;
+		}
+	}
+
+	.highlight-date {
+		@apply text-xs text-gray-500 dark:text-gray-400 my-0 text-right;
+	}
+
+	mark {
+		@apply rounded px-0.5;
+	}
+
+	.highlight-yellow {
+		@apply bg-yellow-200 bg-opacity-50;
+	}
+	.highlight-pink {
+		@apply bg-pink-200 bg-opacity-50;
+	}
+	.highlight-green {
+		@apply bg-green-200 bg-opacity-50;
+	}
+	.highlight-blue {
+		@apply bg-blue-200 bg-opacity-50;
+	}
+
+	#dashboard-container {
+		scroll-margin-top: 1rem;
+	}
 </style>
 
 <script>
@@ -183,12 +303,18 @@ const validSavedEntries = savedEntries
 
 		targetContent?.classList.remove("hidden");
 		targetLink?.classList.add("active");
+
+		// Scroll dashboard into view smoothly
+		document.getElementById("dashboard-container")?.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+		});
 	}
 
 	tabLinks.forEach((link) => {
 		link.addEventListener("click", (e) => {
 			e.preventDefault();
-			const tabId = link.getAttribute("data-tab") || "readlater";
+			const tabId = link.getAttribute("data-tab") || "highlights";
 			showTab(tabId);
 			history.pushState(null, "", `#${tabId}`);
 		});
@@ -196,12 +322,12 @@ const validSavedEntries = savedEntries
 
 	// Handle initial load and back/forward navigation
 	window.addEventListener("load", () => {
-		const hash = window.location.hash.slice(1) || "readlater";
+		const hash = window.location.hash.slice(1) || "highlights";
 		showTab(hash);
 	});
 
 	window.addEventListener("hashchange", () => {
-		const hash = window.location.hash.slice(1) || "readlater";
+		const hash = window.location.hash.slice(1) || "highlights";
 		showTab(hash);
 	});
 </script>

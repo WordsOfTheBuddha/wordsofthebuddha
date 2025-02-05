@@ -99,8 +99,11 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
             await highlightRef.set({
                 rangyHash: highlights.rangyHash,
                 highlightSegments: highlights.highlightSegments,
-                updatedAt: new Date()
-            });
+                updatedAt: new Date(),
+                title: highlights.title,
+                description: highlights.description,
+                slug: highlights.slug,
+            }, { merge: true }); // Use merge to preserve any existing fields
         } else if (operation === 'delete') {
             console.log(`[${opId}] Deleting highlight doc for slug: ${slug}`);
             await highlightRef.delete();

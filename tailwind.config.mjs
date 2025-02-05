@@ -54,6 +54,11 @@ export default {
           light: "var(--link-hover-color-light)",
           dark: "var(--link-hover-color-dark)",
         },
+        primary: {
+          400: "var(--primary-color)",
+          600: "var(--primary-color)",
+          // Add more shades if needed
+        },
         // Add other colors as needed
       },
     },

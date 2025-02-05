@@ -27,13 +27,30 @@ const COLOR_MAP = {
 	blue: "#BFDBFE",
 } as const;
 
-type ColorName = keyof typeof COLOR_MAP;
+// Add blacklist for pages where highlighting should be disabled
+const HIGHLIGHT_BLACKLIST = [
+	"/dashboard",
+	"/search",
+	"/profile",
+	"/signin",
+	"/register",
+	"/about",
+];
+
+const isHighlightingDisabled = HIGHLIGHT_BLACKLIST.some((path) =>
+	currentPath.startsWith(path)
+);
+
+const { title, description } = Astro.props;
 ---
 
 <div
 	id="highlight-root"
 	class:list={["highlight-container"]}
 	data-authenticated={isAuthenticated}
+	data-title={title}
+	data-description={description}
+	data-highlight-disabled={isHighlightingDisabled}
 >
 	<slot />
 
@@ -318,6 +335,11 @@ type ColorName = keyof typeof COLOR_MAP;
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) return;
+
+		// Check if highlighting is disabled for this page
+		if (rootElement?.dataset.highlightDisabled === "true") {
+			return;
+		}
 
 		// Hide both menus initially
 		menu.style.display = "none";
@@ -698,27 +720,15 @@ type ColorName = keyof typeof COLOR_MAP;
 	async function persistToFirestore(rangyHash: string): Promise<void> {
 		console.log("Starting highlight persistence", { rangyHash });
 
-		// Scan entire page for highlighted containers in order
 		const highlightedContainers = scanPageForHighlights();
 		console.log("Found highlighted containers:", highlightedContainers.length);
 
-		// If no highlights found anywhere, delete the highlight doc
 		if (highlightedContainers.length === 0) {
-			console.log("No highlights remain, deleting highlight doc");
-			const slug = getSlug();
-			try {
-				await fetch("/api/highlights/delete", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ slug }),
-				});
-			} catch (error) {
-				console.error("Error deleting highlights:", error);
-			}
+			// ...existing delete code...
 			return;
 		}
 
-		// Build highlight segments from found containers
+		// Build highlight segments
 		const highlightSegments: { [key: string]: any } = {};
 		highlightedContainers.forEach(({ containerIndex, container, order }) => {
 			const highlightText = extractHighlightedText(container);
@@ -738,15 +748,17 @@ type ColorName = keyof typeof COLOR_MAP;
 			}
 		});
 
-		// Create highlight document
 		const slug = getSlug();
 		const highlight = {
+			slug,
+			title: document.getElementById("highlight-root")?.dataset.title || "",
+			description:
+				document.getElementById("highlight-root")?.dataset.description || "",
 			rangyHash,
 			highlightSegments,
-			updatedAt: new Date(),
+			updatedAt: new Date() as any, // Will be converted to Timestamp in Firestore
 		};
 
-		// Always use add operation since we're updating the whole document
 		try {
 			const response = await fetch("/api/highlights/add", {
 				method: "POST",

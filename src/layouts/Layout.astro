@@ -89,7 +89,11 @@ if (id) {
 		<Tooltip />
 		<main class="p-4">
 			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
-				<HighlightLayout currentPath={fp}>
+				<HighlightLayout
+					currentPath={fp}
+					title={title}
+					description={description}
+				>
 					<Navbar showAuth={showAuth} />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					<Title title={title}>

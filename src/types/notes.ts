@@ -9,9 +9,12 @@ export interface Note {
 
 export interface Highlight {
     slug: string;          // URL path used as key
+    title: string;         // content page title
+    description: string;   // content page description
     rangyHash: string;     // Rangy serialized highlight data
     highlightSegments: { [segmentId: string]: HighlightSegment };
     updatedAt: Timestamp;
+    formattedDate?: string;
 }
 
 export interface HighlightSegment {
