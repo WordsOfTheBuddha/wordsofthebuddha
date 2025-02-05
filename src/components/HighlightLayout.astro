@@ -1,6 +1,7 @@
 ---
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import CopyButton from "./CopyButton.astro";
 
 // Get authentication status
 let isAuthenticated = false;
@@ -56,6 +57,7 @@ const { title, description } = Astro.props;
 
 	<div id="highlight-menu" class="highlight-menu" style="display: none;">
 		<div class="menu-items">
+			<CopyButton />
 			{
 				Object.entries(COLOR_MAP).map(([colorName, bgColor]) => (
 					<button
@@ -139,6 +141,13 @@ const { title, description } = Astro.props;
 
 	:global(.color-swatch:hover) {
 		transform: scale(1.1);
+	}
+
+	:global(.menu-items) {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		pointer-events: all;
 	}
 
 	:global(.eraser-btn) {

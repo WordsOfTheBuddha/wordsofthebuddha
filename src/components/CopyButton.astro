@@ -1,0 +1,124 @@
+<!-- src/components/CopyButton.astro -->
+<button
+	id="highlight-copy"
+	class="copy-btn"
+	title="Copy text"
+	aria-label="Copy text"
+>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="16"
+		height="16"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+	>
+		<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+		<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+	</svg>
+</button>
+
+<script>
+	function getFormattedContainer(range: Range) {
+		const container = document.createElement("div");
+		container.appendChild(range.cloneContents());
+		// Replace tooltip spans with formatted HTML.
+		container.querySelectorAll(".tooltip-text").forEach((tooltip) => {
+			const text = tooltip.textContent || "";
+			const tooltipContent = tooltip.getAttribute("data-tippy-content");
+			if (tooltipContent && tooltip.parentNode) {
+				const formatted = `<b>${text}</b> (${tooltipContent})`;
+				const span = document.createElement("span");
+				span.innerHTML = formatted;
+				tooltip.parentNode.replaceChild(span, tooltip);
+			}
+		});
+		return container;
+	}
+
+	// NEW: Recursive function to process nodes.
+	function processNode(node: Node): string {
+		if (node.nodeType === Node.TEXT_NODE) {
+			return node.textContent || "";
+		}
+		if (node.nodeType === Node.ELEMENT_NODE) {
+			const el = node as HTMLElement;
+			const tag = el.tagName.toLowerCase();
+			if (tag === "br") return "\n";
+			let result = "";
+			el.childNodes.forEach((child) => {
+				result += processNode(child);
+			});
+			if (["p", "h1", "h2", "h3", "h4", "h5", "h6"].includes(tag)) {
+				result = result.trim() + "\n\n";
+			}
+			return result;
+		}
+		return "";
+	}
+
+	// NEW: Updated plain text generator using processNode.
+	function getPlainTextFromContainer(container: HTMLElement): string {
+		let text = "";
+		container.childNodes.forEach((node) => {
+			text += processNode(node);
+		});
+		return text.replace(/\n{3,}/g, "\n\n").trim();
+	}
+
+	function copyHighlightedText() {
+		const selection = window.getSelection();
+		if (!selection?.rangeCount) return;
+		const range = selection.getRangeAt(0);
+		const container = getFormattedContainer(range);
+		// Wrap the HTML in a div with white-space: pre-wrap so line breaks are preserved.
+		const richText = `<div style="white-space: pre-wrap;">${container.innerHTML}</div>`;
+
+		// NEW: Use helper function to generate plain text with extra newlines after paragraphs.
+		let plainText = getPlainTextFromContainer(container);
+
+		const clipboardItem = new ClipboardItem({
+			"text/html": new Blob([richText], { type: "text/html" }),
+			"text/plain": new Blob([plainText], { type: "text/plain" }),
+		});
+
+		navigator.clipboard
+			.write([clipboardItem])
+			.then(() => {
+				const copyBtn = document.getElementById("highlight-copy");
+				if (copyBtn) {
+					copyBtn.classList.add("copied");
+					setTimeout(() => copyBtn.classList.remove("copied"), 2000);
+				}
+			})
+			.catch((err) => console.error("Copy failed:", err));
+	}
+
+	document
+		.getElementById("highlight-copy")
+		?.addEventListener("click", copyHighlightedText);
+</script>
+
+<style>
+	.copy-btn {
+		width: 24px;
+		height: 24px;
+		border: none;
+		border-radius: 50%;
+		background: #777;
+		color: white;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		flex-shrink: 0;
+		transition: background-color 0.2s;
+	}
+	.copy-btn:hover {
+		background: #666;
+	}
+	.copy-btn.copied {
+		background: var(--primary-color, #4caf50);
+	}
+</style>
