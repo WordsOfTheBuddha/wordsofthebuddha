@@ -270,24 +270,37 @@ type ColorName = keyof typeof COLOR_MAP;
 				}
 			});
 
-			// Restore existing highlights
-			const saved = localStorage.getItem(storageKey);
-			if (saved) {
-				highlighter.deserialize(saved);
-			}
-
-			// Set up event listeners
+			// Set up event listeners first
 			setupEventListeners();
+
+			// Then fetch and restore highlights from Firestore
+			await fetchHighlights();
 		} catch (error) {
 			console.error("Failed to initialize Rangy:", error);
 		}
 	}
 
 	function isSelectionValid(selection: RangySelection) {
+		if (!selection.rangeCount) return false;
+
 		const range = selection.getRangeAt(0).nativeRange;
 		if (!range) return false;
+
+		// Check for text content
 		const textContent = range.toString().trim();
-		return textContent.length > 0;
+		if (textContent.length === 0) return false;
+
+		// Get containers
+		const containers = getAllHighlightContainers(range);
+		console.log("Found containers for selection:", {
+			containerCount: containers.length,
+			containers: containers.map((c) => ({
+				type: c.tagName,
+				text: c.textContent?.substring(0, 50) + "...",
+			})),
+		});
+
+		return containers.length > 0;
 	}
 
 	function calculateMenuPosition(
@@ -311,6 +324,17 @@ type ColorName = keyof typeof COLOR_MAP;
 		document.getElementById("highlight-signin")!.style.display = "none";
 
 		const target = e.target as HTMLElement;
+		const selection = window.rangy.getSelection();
+
+		// Log selection details for debugging
+		console.log("Selection details:", {
+			isCollapsed: selection.isCollapsed,
+			hasRange: selection.rangeCount > 0,
+			text: selection.toString().trim(),
+		});
+
+		// Early return if no valid selection
+		if (selection.isCollapsed || !selection.rangeCount) return;
 
 		// Check if target is inside a tooltip
 		if (target.closest(".tooltip-text") || target.closest(".tippy-content")) {
@@ -318,13 +342,9 @@ type ColorName = keyof typeof COLOR_MAP;
 			return;
 		}
 
-		// Get selection first to check all conditions
-		const selection = window.rangy.getSelection();
-
-		// Early return if no valid selection
-		if (selection.isCollapsed || !isSelectionValid(selection)) {
-			menu.style.display = "none";
-			document.getElementById("highlight-signin")!.style.display = "none";
+		// Validate selection and get containers
+		if (!isSelectionValid(selection)) {
+			console.log("Invalid selection");
 			return;
 		}
 
@@ -345,6 +365,7 @@ type ColorName = keyof typeof COLOR_MAP;
 
 		if (selection.isCollapsed || !isSelectionValid(selection)) {
 			menu.style.display = "none";
+			document.getElementById("highlight-signin")!.style.display = "none";
 			return;
 		}
 
@@ -523,7 +544,10 @@ type ColorName = keyof typeof COLOR_MAP;
 		const existing = highlighter.getHighlightsInSelection(selection);
 		if (existing.length > 0) {
 			highlighter.removeHighlights(existing);
-			persist();
+
+			// Get the updated state after removal
+			const updatedRangyHash = highlighter.serialize();
+			persist(updatedRangyHash, "delete");
 		}
 
 		if (!isMobile) {
@@ -533,9 +557,266 @@ type ColorName = keyof typeof COLOR_MAP;
 		menu.style.display = "none";
 	}
 
-	function persist(): void {
+	function persist(
+		rangyHash?: string,
+		operation: "add" | "delete" = "add"
+	): void {
 		if (!highlighter) return;
-		localStorage.setItem(storageKey, highlighter.serialize());
+		const serialized = rangyHash || highlighter.serialize();
+		persistToFirestore(serialized);
+	}
+
+	function getAllHighlightContainers(range: Range): Element[] {
+		const containers = new Set<Element>();
+		const validContainers = [
+			"p",
+			"div",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"li",
+			"table",
+		];
+
+		// Start from the common ancestor of the selection
+		const commonAncestor = range.commonAncestorContainer;
+		const rootElement = document.getElementById("highlight-root");
+
+		// If the common ancestor is not an element, get its parent
+		const startContainer =
+			commonAncestor.nodeType === Node.TEXT_NODE
+				? commonAncestor.parentElement
+				: (commonAncestor as Element);
+
+		if (!startContainer || !rootElement) return [];
+
+		// Get all elements between start and end of range
+		const elements = document.createNodeIterator(
+			startContainer,
+			NodeFilter.SHOW_ELEMENT,
+			{
+				acceptNode: (node) => {
+					if (range.intersectsNode(node)) {
+						return NodeFilter.FILTER_ACCEPT;
+					}
+					return NodeFilter.FILTER_SKIP;
+				},
+			}
+		);
+
+		let current: Element | null = elements.nextNode() as Element;
+		while (current) {
+			// Check for table cells first
+			if (
+				current.tagName.toLowerCase() === "td" ||
+				current.tagName.toLowerCase() === "th"
+			) {
+				const table = current.closest("table");
+				if (table && !table.id.includes("highlight-root")) {
+					containers.add(table);
+				}
+			} else {
+				// For other elements, find the closest valid container
+				const container = current.closest(validContainers.join(","));
+				if (
+					container &&
+					!container.id.includes("highlight-root") &&
+					container.contains(current) &&
+					rootElement.contains(container)
+				) {
+					containers.add(container);
+				}
+			}
+			current = elements.nextNode() as Element;
+		}
+
+		return Array.from(containers);
+	}
+
+	interface HighlightInfo {
+		text: string;
+		color: string;
+		index: number;
+	}
+
+	function extractHighlightedText(container: Element): string {
+		// Parse the container HTML to access DOM methods
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(container.outerHTML, "text/html");
+		const containerEl = doc.body.firstElementChild;
+		if (!containerEl) return "";
+
+		// Get all highlight marks in order
+		const highlights: HighlightInfo[] = [];
+		const marks = containerEl.querySelectorAll("mark");
+
+		marks.forEach((mark, index) => {
+			const color = Array.from(mark.classList)
+				.find((cls) => cls.startsWith("highlight-"))
+				?.replace("highlight-", "");
+			if (color) {
+				highlights.push({
+					text: mark.textContent || "",
+					color,
+					index,
+				});
+			}
+		});
+
+		if (highlights.length === 0) return "";
+
+		// Group continuous segments of same color
+		const segments: string[] = [];
+		let currentGroup: HighlightInfo[] = [highlights[0]];
+
+		for (let i = 1; i < highlights.length; i++) {
+			const current = highlights[i];
+			const prev = highlights[i - 1];
+
+			// Check if segments are continuous (adjacent indices and same color)
+			if (current.color === prev.color && current.index === prev.index + 1) {
+				currentGroup.push(current);
+			} else {
+				// Add completed group and start new one
+				segments.push(currentGroup.map((h) => h.text).join(" "));
+				currentGroup = [current];
+			}
+		}
+		// Add the last group
+		segments.push(currentGroup.map((h) => h.text).join(" "));
+
+		return segments.join(" ... ");
+	}
+
+	function scanPageForHighlights(): {
+		containerIndex: string;
+		container: Element;
+	}[] {
+		const validContainers = [
+			"p",
+			"div",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"li",
+			"table",
+		];
+
+		const results: { containerIndex: string; container: Element }[] = [];
+		const root = document.getElementById("highlight-root");
+		if (!root) return results;
+
+		// Query all valid containers in the page
+		const selector = validContainers.join(",");
+		const containers = root.querySelectorAll(selector);
+
+		containers.forEach((container) => {
+			// Check if container has any highlights
+			const marks = container.querySelectorAll('mark[class*="highlight-"]');
+			if (marks.length > 0) {
+				results.push({
+					containerIndex: getContainerIndex(container),
+					container,
+				});
+			}
+		});
+
+		return results;
+	}
+
+	async function persistToFirestore(rangyHash: string): Promise<void> {
+		console.log("Starting highlight persistence", { rangyHash });
+
+		// Scan entire page for highlighted containers
+		const highlightedContainers = scanPageForHighlights();
+		console.log("Found highlighted containers:", highlightedContainers.length);
+
+		// If no highlights found anywhere, delete the highlight doc
+		if (highlightedContainers.length === 0) {
+			console.log("No highlights remain, deleting highlight doc");
+			const slug = getSlug();
+			try {
+				await fetch("/api/highlights/delete", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ slug }),
+				});
+			} catch (error) {
+				console.error("Error deleting highlights:", error);
+			}
+			return;
+		}
+
+		// Build highlight segments from found containers
+		const highlightSegments: { [key: string]: any } = {};
+		highlightedContainers.forEach(({ containerIndex, container }) => {
+			const highlightText = extractHighlightedText(container);
+			if (highlightText) {
+				highlightSegments[containerIndex] = {
+					containerHTML: container.outerHTML,
+					highlightText,
+					domPath: getDomPath(container),
+				};
+			}
+		});
+
+		// Create highlight document
+		const slug = getSlug();
+		const highlight = {
+			rangyHash,
+			highlightSegments,
+			updatedAt: new Date(),
+		};
+
+		// Always use add operation since we're updating the whole document
+		try {
+			const response = await fetch("/api/highlights/add", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					slug,
+					highlights: highlight,
+				}),
+			});
+			const data = await response.json();
+			console.log("Server response:", data);
+
+			if (data.error) {
+				console.error("Server reported error:", data.error);
+			}
+		} catch (error) {
+			console.error("Error persisting highlights:", error);
+		}
+	}
+
+	async function fetchHighlights(): Promise<void> {
+		try {
+			const slug = getSlug();
+			console.log("Fetching highlights for:", slug);
+
+			const response = await fetch(
+				`/api/highlights/get?slug=${encodeURIComponent(slug)}`
+			);
+			const data = await response.json();
+
+			console.log("Received highlights:", {
+				opId: data.opId,
+				hasHighlights: !!data.highlights?.rangyHash,
+			});
+
+			if (data.highlights?.rangyHash && highlighter) {
+				console.log("Deserializing highlights");
+				highlighter.deserialize(data.highlights.rangyHash);
+			}
+		} catch (error) {
+			console.error("Error fetching highlights:", error);
+		}
 	}
 
 	function setupSwatchListeners() {
@@ -574,6 +855,85 @@ type ColorName = keyof typeof COLOR_MAP;
 	function handleMouseUp(e: MouseEvent) {
 		isMouseDown = false;
 		handleSelection(e);
+	}
+
+	const getSlug = () => {
+		const url = new URL(window.location.href);
+		// Get path without hash
+		const basePath = url.pathname;
+		// Only consider pli parameter
+		const pliParam = url.searchParams.get("pli");
+		// Ignore other parameters and hash
+		return pliParam ? `${basePath}?pli=true` : basePath;
+	};
+
+	const noteId = localStorage.getItem("noteId"); // Assuming noteId is stored in localStorage
+
+	function getHighlightContainer(element: Element | null): Element | null {
+		if (!element) return null;
+
+		// Valid container elements
+		const validContainers = [
+			"p",
+			"div",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"li",
+			"table",
+		];
+
+		let current = element;
+		while (current && current.parentElement) {
+			// Stop if we hit the highlight root
+			if (current.id === "highlight-root") return null;
+
+			// Special handling for table cells
+			if (
+				current.tagName.toLowerCase() === "td" ||
+				current.tagName.toLowerCase() === "th"
+			) {
+				const table = current.closest("table");
+				if (table && (table.textContent?.length || 0) <= 1000) {
+					return table;
+				}
+			}
+
+			// Check if current element is a valid container
+			if (validContainers.includes(current.tagName.toLowerCase())) {
+				// Don't select containers that are too large
+				const text = current.textContent || "";
+				if (text.length <= 1000) {
+					return current;
+				}
+			}
+			current = current.parentElement;
+		}
+		return null;
+	}
+
+	function getContainerIndex(element: Element): string {
+		// Get type of container (p, div, h1, etc)
+		const type = element.tagName.toLowerCase();
+		// Find all elements of same type
+		const sameTypeElements = Array.from(document.getElementsByTagName(type));
+		// Get index of our element
+		const index = sameTypeElements.indexOf(element);
+		return `${type}-${index}`;
+	}
+
+	function getDomPath(element: Element): string {
+		const path: number[] = [];
+		while (element && element.parentElement) {
+			const parent = element.parentElement;
+			const index = Array.from(parent.children).indexOf(element);
+			path.unshift(index);
+			element = parent;
+		}
+		return path.join("-");
 	}
 
 	// Initialize on page load

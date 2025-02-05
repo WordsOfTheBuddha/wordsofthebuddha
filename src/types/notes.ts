@@ -8,23 +8,23 @@ export interface Note {
 }
 
 export interface Highlight {
-    id: string;
-    slug: string;
-    highlightColor: 'yellow' | 'pink' | 'green' | 'blue';
-    content: {
-        text: string;
-        html: string;
-        context: {
-            previous: string;
-            next: string;
-        }
-    };
-    rangyHash: string;
-    addedAt: Timestamp;
+    slug: string;          // URL path used as key
+    rangyHash: string;     // Rangy serialized highlight data
+    highlightSegments: { [segmentId: string]: HighlightSegment };
+    updatedAt: Timestamp;
 }
+
+export interface HighlightSegment {
+    containerHTML: string;    // Container element with highlights
+    highlightText: string;    // Extracted text from highlight
+    domPath: string;   // For debugging/validation - not used as key
+}
+
+// segmentId format: "{elementType}-{index}"
+// e.g.: "p-0" for first paragraph, "h2-1" for second h2
 
 export type HighlightOperation = {
     type: 'add' | 'delete';
-    collectionId: string;
-    highlights: Highlight[] | string[]; // Highlight[] for add, string[] (ids) for delete
+    noteId: string;
+    highlights: Highlight[] | string[]; // Highlight[] for add, string[] (slugs) for delete
 };
