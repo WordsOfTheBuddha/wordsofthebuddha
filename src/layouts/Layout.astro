@@ -63,10 +63,6 @@ if (id) {
 				} else if (!localStorage.getItem("paliLookup")) {
 					localStorage.setItem("paliLookup", true);
 				}
-				const noteId = urlParams.get("note-id");
-				if (noteId !== "") {
-					localStorage.setItem("noteId", noteId);
-				}
 
 				const paramTheme = urlParams.get("theme");
 

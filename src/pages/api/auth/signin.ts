@@ -65,7 +65,6 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
             redirectUrl.searchParams.set('theme', theme);
         }
         redirectUrl.searchParams.set('enablePaliLookup', enablePaliLookup.toString());
-        redirectUrl.searchParams.set('note-id', noteId);
 
         return redirect(redirectUrl.toString());
     } catch (error) {
