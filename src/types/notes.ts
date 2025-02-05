@@ -17,7 +17,8 @@ export interface Highlight {
 export interface HighlightSegment {
     containerHTML: string;    // Container element with highlights
     highlightText: string;    // Extracted text from highlight
-    domPath: string;   // For debugging/validation - not used as key
+    domPath: string;         // For debugging/validation
+    order: number;          // Position in document order
 }
 
 // segmentId format: "{elementType}-{index}"

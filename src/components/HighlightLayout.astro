@@ -370,14 +370,6 @@ type ColorName = keyof typeof COLOR_MAP;
 		}
 
 		// Rest of existing handleSelection code...
-		if (menuPositionTimeout) {
-			clearTimeout(menuPositionTimeout);
-			menuPositionTimeout = null;
-		}
-
-		menuPositionTimeout = setTimeout(() => {
-			updateMenuPosition(selection);
-		}, 50) as unknown as number;
 
 		// Get authentication status
 		const isAuthenticated = rootElement?.dataset.authenticated === "true";
@@ -405,12 +397,24 @@ type ColorName = keyof typeof COLOR_MAP;
 		selection: RangySelection,
 		element: HTMLElement = menu
 	) {
-		currentRange = selection.getRangeAt(0).nativeRange;
-		savedRange = currentRange.cloneRange();
+		// Early return if no valid selection
+		if (!selection?.rangeCount) {
+			element.style.display = "none";
+			return;
+		}
+
+		const range = selection.getRangeAt(0).nativeRange;
+		if (!range) {
+			element.style.display = "none";
+			return;
+		}
+
+		currentRange = range;
+		savedRange = range.cloneRange();
 
 		// Get the end point of the selection
 		const endRange = document.createRange();
-		endRange.setStart(currentRange.endContainer, currentRange.endOffset);
+		endRange.setStart(range.endContainer, range.endOffset);
 		endRange.collapse(true); // Collapse to end point
 
 		// Get the position of the last character in the selection
@@ -691,49 +695,10 @@ type ColorName = keyof typeof COLOR_MAP;
 		return segments.join(" ... ");
 	}
 
-	function scanPageForHighlights(): {
-		containerIndex: string;
-		container: Element;
-	}[] {
-		const validContainers = [
-			"p",
-			"div",
-			"h1",
-			"h2",
-			"h3",
-			"h4",
-			"h5",
-			"h6",
-			"li",
-			"table",
-		];
-
-		const results: { containerIndex: string; container: Element }[] = [];
-		const root = document.getElementById("highlight-root");
-		if (!root) return results;
-
-		// Query all valid containers in the page
-		const selector = validContainers.join(",");
-		const containers = root.querySelectorAll(selector);
-
-		containers.forEach((container) => {
-			// Check if container has any highlights
-			const marks = container.querySelectorAll('mark[class*="highlight-"]');
-			if (marks.length > 0) {
-				results.push({
-					containerIndex: getContainerIndex(container),
-					container,
-				});
-			}
-		});
-
-		return results;
-	}
-
 	async function persistToFirestore(rangyHash: string): Promise<void> {
 		console.log("Starting highlight persistence", { rangyHash });
 
-		// Scan entire page for highlighted containers
+		// Scan entire page for highlighted containers in order
 		const highlightedContainers = scanPageForHighlights();
 		console.log("Found highlighted containers:", highlightedContainers.length);
 
@@ -755,14 +720,21 @@ type ColorName = keyof typeof COLOR_MAP;
 
 		// Build highlight segments from found containers
 		const highlightSegments: { [key: string]: any } = {};
-		highlightedContainers.forEach(({ containerIndex, container }) => {
+		highlightedContainers.forEach(({ containerIndex, container, order }) => {
 			const highlightText = extractHighlightedText(container);
 			if (highlightText) {
 				highlightSegments[containerIndex] = {
 					containerHTML: container.outerHTML,
 					highlightText,
 					domPath: getDomPath(container),
+					order,
 				};
+				console.log("Saving container:", {
+					index: containerIndex,
+					order,
+					text: container.textContent?.substring(0, 50) + "...",
+					highlightText,
+				});
 			}
 		});
 
@@ -934,6 +906,79 @@ type ColorName = keyof typeof COLOR_MAP;
 			element = parent;
 		}
 		return path.join("-");
+	}
+
+	function scanPageForHighlights(): {
+		containerIndex: string;
+		container: Element;
+		order: number;
+	}[] {
+		const validContainers = [
+			"p",
+			"div",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"li",
+			"table",
+		];
+		const root = document.getElementById("highlight-root");
+		if (!root) return [];
+
+		console.log("Starting page scan");
+
+		// First, find all highlighted elements
+		const highlightedElements = Array.from(
+			root.querySelectorAll('mark[class*="highlight-"]')
+		);
+		console.log("Found highlighted marks:", highlightedElements.length);
+
+		// Get their containers
+		const containers = new Set<Element>();
+		highlightedElements.forEach((mark) => {
+			for (
+				let el = mark.parentElement;
+				el && el !== root;
+				el = el.parentElement
+			) {
+				if (validContainers.includes(el.tagName.toLowerCase())) {
+					containers.add(el);
+					break; // Stop at first valid container
+				}
+			}
+		});
+
+		console.log("Found containers:", containers.size);
+
+		// Convert to array and sort by document position
+		const orderedContainers = Array.from(containers);
+		orderedContainers.sort((a, b) => {
+			const position = a.compareDocumentPosition(b);
+			return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+		});
+
+		// Map to result format
+		const results = orderedContainers.map((container, index) => ({
+			containerIndex: getContainerIndex(container),
+			container,
+			order: index,
+		}));
+
+		// Debug log
+		results.forEach(({ container, order }) => {
+			console.log("Container in order:", {
+				tag: container.tagName,
+				order,
+				text: container.textContent?.substring(0, 50) + "...",
+				highlights: container.querySelectorAll('mark[class*="highlight-"]')
+					.length,
+			});
+		});
+
+		return results;
 	}
 
 	// Initialize on page load

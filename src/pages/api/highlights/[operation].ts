@@ -22,6 +22,10 @@ function generateOpId(): string {
     return `op-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
+function normalizeSlug(slug: string): string {
+    return slug === '/' ? '/home' : slug;
+}
+
 export const GET: APIRoute = async ({ request, cookies }) => {
     const opId = generateOpId();
     console.log(`[${opId}] GET highlights request started`);
@@ -34,7 +38,8 @@ export const GET: APIRoute = async ({ request, cookies }) => {
             throw new Error('Slug parameter is required');
         }
 
-        console.log(`[${opId}] Using provided slug: ${slug}`);
+        const normalizedSlug = normalizeSlug(slug);
+        console.log(`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`);
 
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -48,7 +53,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
         const highlightDoc = await db.collection('notes')
             .doc(noteId)
             .collection('highlights')
-            .doc(slug)
+            .doc(normalizedSlug)
             .get();
 
         console.log(`[${opId}] Highlights fetch completed. Found: ${highlightDoc.exists}`);
@@ -81,10 +86,13 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
             throw new Error('Slug is required');
         }
 
+        const normalizedSlug = normalizeSlug(slug);
+        console.log(`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`);
+
         const highlightRef = db.collection('notes')
             .doc(noteId)
             .collection('highlights')
-            .doc(slug);
+            .doc(normalizedSlug);
 
         if (operation === 'add') {
             console.log(`[${opId}] Adding/updating highlights for slug: ${slug}`);
