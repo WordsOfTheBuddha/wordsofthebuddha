@@ -733,7 +733,17 @@ const { title, description } = Astro.props;
 		console.log("Found highlighted containers:", highlightedContainers.length);
 
 		if (highlightedContainers.length === 0) {
-			// ...existing delete code...
+			console.log("No highlights remain, deleting highlight doc");
+			const slug = getSlug();
+			try {
+				await fetch("/api/highlights/delete", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ slug }),
+				});
+			} catch (error) {
+				console.error("Error deleting highlights:", error);
+			}
 			return;
 		}
 
