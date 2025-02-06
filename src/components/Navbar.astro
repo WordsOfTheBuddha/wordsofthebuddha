@@ -9,6 +9,8 @@ interface Props {
 
 const { showAuth = false } = Astro.props;
 const currentPath = Astro.url.pathname;
+const isInReviewSection =
+	currentPath === "/review-room" || currentPath === "/profile";
 
 // Only check auth if showAuth is true
 let user = null;
@@ -33,7 +35,7 @@ if (showAuth) {
 	<div class="text-xl font-bold">
 		<a href="/" class="hover:underline"> Words of the Buddha </a>
 	</div>
-	<div class="flex items-center gap-2 min-h-[2.25rem]">
+	<div class="flex items-center gap-2 min-h-[2.25rem] z-50">
 		{
 			showAuth &&
 				(user ? (
@@ -57,11 +59,19 @@ if (showAuth) {
 							class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[var(--auth-card-bg)] ring-1 ring-black ring-opacity-5"
 						>
 							<div class="py-1">
+								{isInReviewSection && (
+									<a
+										href="/"
+										class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
+									>
+										Reading Room
+									</a>
+								)}
 								<a
-									href="/dashboard"
+									href="/review-room"
 									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
 								>
-									Dashboard
+									Review Room
 								</a>
 								<a
 									href="/profile"

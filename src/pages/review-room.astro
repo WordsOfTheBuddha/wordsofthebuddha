@@ -9,6 +9,7 @@ import ClockSolid from "../assets/clock-solid.svg?raw";
 import SaveSolid from "../assets/save-solid.svg?raw";
 import HighlightIcon from "../assets/highlight.svg?raw";
 import type { Highlight } from "../types/notes";
+import { transformId } from "../utils/transformId";
 
 const auth = getAuth(app);
 
@@ -138,6 +139,10 @@ const validSavedEntries = savedEntries
 													href={highlight.slug}
 													class="text-gray-500 hover:text-link-color"
 												>
+													{transformId(
+														highlight.slug?.replace(/^\//, "").split("?")[0] ||
+															""
+													)}
 													{highlight.title}
 												</a>
 											</h2>
