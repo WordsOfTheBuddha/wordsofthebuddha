@@ -70,8 +70,6 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
     console.log(`[${opId}] POST ${operation} operation started`);
 
     try {
-        const db = getFirestore(app);
-
         const sessionCookie = cookies.get("__session")?.value;
         if (!sessionCookie) throw new Error('No session');
 
