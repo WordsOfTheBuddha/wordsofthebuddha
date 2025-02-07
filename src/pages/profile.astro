@@ -1,9 +1,9 @@
 ---
 export const prerender = false;
 import Layout from "../layouts/Layout.astro";
-import { app, db } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
-import type { UserRecord, DecodedIdToken } from "firebase-admin/auth";
+import { db } from "../firebase/server";
+import type { UserRecord } from "firebase-admin/auth";
+import { verifyUser } from "../middleware/auth";
 import FontSizeLarger from "../assets/font-size-larger.svg?raw";
 import FontSizeLarge from "../assets/font-size-large.svg?raw";
 
@@ -14,69 +14,28 @@ let currentTheme = "dark";
 let currentFontSize = "large";
 let paliLookup = true;
 
-const auth = getAuth(app);
-
-// Add debug logging
-console.log("[Profile] Checking auth state");
-console.log("[Profile] Has session cookie:", Astro.cookies.has("__session"));
-
+// Replace inline auth verification with verifyUser
 try {
-	// Check for session cookie
-	if (!Astro.cookies.has("__session")) {
-		console.log("[Profile] No session cookie found, redirecting to signin");
-		return Astro.redirect("/signin?returnTo=/profile");
-	}
-
 	const sessionCookie = Astro.cookies.get("__session")?.value;
-	if (!sessionCookie) {
-		console.log("[Profile] Session cookie is empty, redirecting to signin");
-		return Astro.redirect("/signin?returnTo=/profile");
-	}
-
-	// Verify session with a timeout
-	const decodedCookie = (await Promise.race([
-		auth.verifySessionCookie(sessionCookie, true), // true for checkRevoked
-		new Promise((_, reject) =>
-			setTimeout(() => reject(new Error("Session verification timeout")), 5000)
-		),
-	])) as DecodedIdToken;
-
-	if (!decodedCookie) {
-		console.log("[Profile] Invalid session, redirecting to signin");
-		// Clear invalid cookie
-		Astro.cookies.delete("__session");
-		return Astro.redirect("/signin?returnTo=/profile");
-	}
-
-	// Get user data with type safety
-	user = await auth.getUser(decodedCookie.uid);
-	if (!user) {
-		console.log("[Profile] User not found, redirecting to signin");
-		Astro.cookies.delete("__session");
-		return Astro.redirect("/signin?returnTo=/profile");
-	}
-
-	// Get user preferences with error handling
-	const userDoc = await db.collection("users").doc(user.uid).get();
-	const userData = userDoc.data() || {};
-
-	// Extract preferences with type safety
-	paliEnabled = userData["preferences.showPali"] === true;
-	currentTheme = userData["preferences.theme"] || "dark";
-	currentFontSize = userData["preferences.fontSize"] || "large";
-	paliLookup = userData["preferences.enablePaliLookup"] ?? true;
-
-	console.log("[Profile] Auth successful, rendering profile page");
+	if (!sessionCookie) return Astro.redirect("/signin?returnTo=/profile");
+	user = await verifyUser(sessionCookie);
 } catch (error) {
-	console.error("[Profile] Auth error:", error);
-	// Clear potentially corrupted session
 	Astro.cookies.delete("__session");
 	return Astro.redirect("/signin?returnTo=/profile");
 }
 
-// Verify we have required data before rendering
+// Get user preferences with error handling
+const userDoc = await db.collection("users").doc(user.uid).get();
+const userData = userDoc.data() || {};
+
+// Extract preferences with type safety
+paliEnabled = userData["preferences.showPali"] === true;
+currentTheme = userData["preferences.theme"] || "dark";
+currentFontSize = userData["preferences.fontSize"] || "large";
+paliLookup = userData["preferences.enablePaliLookup"] ?? true;
+
+// Ensure user exists before rendering
 if (!user) {
-	console.error("[Profile] No user data available after auth");
 	return Astro.redirect("/signin?returnTo=/profile");
 }
 ---

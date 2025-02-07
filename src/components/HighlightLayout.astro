@@ -2,20 +2,18 @@
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import CopyButton from "./CopyButton.astro";
+import { verifyUser } from "../middleware/auth";
 
 // Get authentication status
 let isAuthenticated = false;
-if (Astro.cookies.has("__session")) {
+try {
 	const sessionCookie = Astro.cookies.get("__session")?.value;
 	if (sessionCookie) {
-		const auth = getAuth(app);
-		try {
-			await auth.verifySessionCookie(sessionCookie);
-			isAuthenticated = true;
-		} catch (error) {
-			// Invalid cookie
-		}
+		const user = await verifyUser(sessionCookie);
+		isAuthenticated = !!user;
 	}
+} catch (error) {
+	// Invalid cookie
 }
 
 // HighlightLayout.astro
@@ -280,6 +278,10 @@ const { title, description } = Astro.props;
 	// Initialize everything after Rangy is loaded
 	async function initializeHighlighter(): Promise<void> {
 		try {
+			// Check if highlighting is disabled for this page
+			if (rootElement?.dataset.highlightDisabled === "true") {
+				return;
+			}
 			const rangy = await importRangy();
 			window.rangy = rangy;
 			rangy.init();
@@ -299,8 +301,11 @@ const { title, description } = Astro.props;
 			// Set up event listeners first
 			setupEventListeners();
 
-			// Then fetch and restore highlights from Firestore
-			await fetchHighlights();
+			console.log("auth status: ", rootElement?.dataset);
+			if (rootElement?.dataset.authenticated === "true") {
+				// Then fetch and restore highlights from Firestore
+				await fetchHighlights();
+			}
 		} catch (error) {
 			console.error("Failed to initialize Rangy:", error);
 		}
@@ -344,11 +349,6 @@ const { title, description } = Astro.props;
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) return;
-
-		// Check if highlighting is disabled for this page
-		if (rootElement?.dataset.highlightDisabled === "true") {
-			return;
-		}
 
 		// Hide both menus initially
 		menu.style.display = "none";

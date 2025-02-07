@@ -2,7 +2,6 @@
 export const prerender = false;
 import { getEntry } from "astro:content";
 import { app, db } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import ClockSolid from "../assets/clock-solid.svg?raw";
@@ -10,23 +9,14 @@ import SaveSolid from "../assets/save-solid.svg?raw";
 import HighlightIcon from "../assets/highlight.svg?raw";
 import type { Highlight } from "../types/notes";
 import { transformId } from "../utils/transformId";
-
-const auth = getAuth(app);
-
-/* Check current session */
-if (!Astro.cookies.has("__session")) {
-	return Astro.redirect("/signin");
-}
+import { verifyUser } from "../middleware/auth";
 
 const sessionCookie = Astro.cookies.get("__session")?.value;
-if (!sessionCookie) {
-	return Astro.redirect("/signin");
-}
-
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
-
-if (!user) {
+if (!sessionCookie) return Astro.redirect("/signin");
+let user;
+try {
+	user = await verifyUser(sessionCookie);
+} catch (err) {
 	return Astro.redirect("/signin");
 }
 

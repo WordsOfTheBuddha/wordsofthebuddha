@@ -1,8 +1,8 @@
 ---
 export const prerender = false;
 import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
 import ThemeToggle from "./ThemeToggle.astro";
+import { verifyUser } from "../middleware/auth";
 
 interface Props {
 	showAuth?: boolean;
@@ -13,18 +13,13 @@ const currentPath = Astro.url.pathname;
 const isInReviewSection =
 	currentPath === "/review-room" || currentPath === "/profile";
 
-// Only check auth if showAuth is true
 let user = null;
 if (showAuth) {
-	const auth = getAuth(app);
-	if (Astro.cookies.has("__session")) {
-		const sessionCookie = Astro.cookies.get("__session")?.value;
-		if (sessionCookie) {
-			const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-			if (decodedCookie) {
-				user = await auth.getUser(decodedCookie.uid);
-			}
-		}
+	const sessionCookie = Astro.cookies.get("__session")?.value;
+	if (sessionCookie) {
+		try {
+			user = await verifyUser(sessionCookie);
+		} catch (e) {}
 	}
 }
 ---

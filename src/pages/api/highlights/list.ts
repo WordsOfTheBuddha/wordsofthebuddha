@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
 import { getFirestore } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth";
 import { app } from "../../../firebase/server";
 import { formatDate } from "../../../components/PostCard.astro";
 import type { Highlight } from "../../../types/notes";
+import { verifyUser } from "../../../middleware/auth";
 
 interface HighlightResponse extends Omit<Highlight, 'updatedAt'> {
     updatedAt: number;
@@ -28,14 +28,12 @@ export const GET: APIRoute = async ({ cookies }) => {
     console.log(`[${opId}] Starting highlights list operation`);
 
     try {
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
         const sessionCookie = cookies.get("__session")?.value;
         if (!sessionCookie) throw new Error('No session');
+        const user = await verifyUser(sessionCookie);
 
-        const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-        const noteId = await getUserNoteId(decodedCookie.uid);
+        const db = getFirestore(app);
+        const noteId = await getUserNoteId(user.uid);
 
         console.log(`[${opId}] Fetching highlights for noteId: ${noteId}`);
 

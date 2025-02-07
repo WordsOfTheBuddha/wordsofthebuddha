@@ -1,13 +1,12 @@
 import type { APIRoute } from "astro";
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth";
-import { app } from "../../../firebase/server";
+import { db } from "../../../firebase/server";
 import type { Highlight } from "../../../types/notes";
+import { verifyUser } from "../../../middleware/auth";
 
 export const prerender = false;
 
 async function getUserNoteId(userId: string): Promise<string> {
-    const db = getFirestore(app);
     const userDoc = await db.collection('users').doc(userId).get();
     const noteId = userDoc.data()?.defaultNoteId;
 
@@ -41,13 +40,11 @@ export const GET: APIRoute = async ({ request, cookies }) => {
         const normalizedSlug = normalizeSlug(slug);
         console.log(`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`);
 
-        const auth = getAuth(app);
-        const db = getFirestore(app);
         const sessionCookie = cookies.get("__session")?.value;
         if (!sessionCookie) throw new Error('No session');
 
-        const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-        const noteId = await getUserNoteId(decodedCookie.uid);
+        const user = await verifyUser(sessionCookie);
+        const noteId = await getUserNoteId(user.uid);
 
         console.log(`[${opId}] Fetching highlights for slug: ${slug}`);
         const highlightDoc = await db.collection('notes')
@@ -73,14 +70,13 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
     console.log(`[${opId}] POST ${operation} operation started`);
 
     try {
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
         const sessionCookie = cookies.get("__session")?.value;
         if (!sessionCookie) throw new Error('No session');
 
-        const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-        const noteId = await getUserNoteId(decodedCookie.uid);
+        const user = await verifyUser(sessionCookie);
+        const noteId = await getUserNoteId(user.uid);
         const { highlights, slug } = await request.json();
         if (!slug) {
             throw new Error('Slug is required');
