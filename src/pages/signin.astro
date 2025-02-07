@@ -11,11 +11,11 @@ if (Astro.cookies.has("__session")) {
 	if (!sessionCookie) return;
 	const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 	if (decodedCookie) {
-		return Astro.redirect("/dashboard");
+		return Astro.redirect("/review-room");
 	}
 }
 
-const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
+const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 ---
 
 <Layout>
@@ -101,7 +101,8 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/dashboard";
 	import { app } from "../firebase/client";
 
 	const returnTo =
-		new URL(window.location.href).searchParams.get("returnTo") || "/dashboard";
+		new URL(window.location.href).searchParams.get("returnTo") ||
+		"/review-room";
 
 	const auth = getAuth(app);
 	// This will prevent the browser from storing session data

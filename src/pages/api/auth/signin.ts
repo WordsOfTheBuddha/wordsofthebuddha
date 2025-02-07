@@ -54,7 +54,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
         // Build redirect URL
         const url = new URL(request.url);
         const returnTo = url.searchParams.get("returnTo");
-        const baseRedirectPath = returnTo ? new URL(returnTo, request.url).pathname : "/dashboard";
+        const baseRedirectPath = returnTo ? new URL(returnTo, request.url).pathname : "/review-room";
         const redirectUrl = new URL(baseRedirectPath, request.url);
 
         redirectUrl.searchParams.append('load-preferences', 'true');
