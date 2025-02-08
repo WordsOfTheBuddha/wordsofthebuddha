@@ -1,7 +1,8 @@
 ---
 import CopyButton from "./CopyButton.astro";
 import { verifyUser } from "../middleware/auth";
-import Eraser from "../assets/eraser.svg?raw"; // Add this import
+import Eraser from "../assets/eraser.svg?raw";
+import "../styles/highlight.css"; // Add this import
 
 // Get authentication status
 let isAuthenticated = false;
@@ -77,129 +78,6 @@ const { title, description } = Astro.props;
 		>
 	</div>
 </div>
-
-<style>
-	:global(.highlight-container) {
-		position: relative;
-	}
-
-	:global(.highlight-menu) {
-		position: absolute;
-		left: 0;
-		top: 0;
-		background: var(--bg-color, #fff);
-		border: 1px solid var(--border-color, #e5e7eb);
-		opacity: 1 !important;
-		border-radius: 6px;
-		padding: 8px;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-		transform: none;
-		transition: all 0.2s;
-		z-index: 9998;
-		pointer-events: none;
-	}
-
-	:global(.dark .highlight-menu) {
-		--bg-color: #1f2937;
-		--border-color: #374151;
-	}
-
-	:global(.highlight-menu .menu-items) {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		pointer-events: all;
-	}
-
-	:global(.color-swatch) {
-		width: 24px;
-		height: 24px;
-		border: none;
-		border-radius: 50%;
-		cursor: pointer;
-		transition: transform 0.2s;
-		padding: 0;
-		flex-shrink: 0;
-	}
-
-	:global(.color-swatch:hover) {
-		transform: scale(1.1);
-	}
-
-	:global(.menu-items) {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		pointer-events: all;
-	}
-
-	:global(.eraser-btn) {
-		width: 24px;
-		height: 24px;
-		min-width: 24px;
-		border: none;
-		border-radius: 50%;
-		background: #999;
-		color: white;
-		cursor: pointer;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0;
-		flex-shrink: 0;
-	}
-
-	:global(.eraser-btn:hover) {
-		background: #777;
-	}
-
-	:global(mark) {
-		border-radius: 2px;
-		padding: 0 2px;
-	}
-
-	:global(.highlight-yellow) {
-		background-color: #fef08a;
-	}
-	:global(.highlight-pink) {
-		background-color: #fbcfe8;
-	}
-	:global(.highlight-green) {
-		background-color: #bbf7d0;
-	}
-	:global(.highlight-blue) {
-		background-color: #bfdbfe;
-	}
-
-	.highlight-signin {
-		position: absolute;
-		left: 0;
-		top: 0;
-		background: var(--menu-bg, #fff);
-		border: 1px solid var(--menu-border, #ccc);
-		border-radius: 6px;
-		padding: 8px 12px;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-		z-index: 9999;
-		font-size: 0.875rem;
-		pointer-events: all;
-		width: fit-content;
-	}
-
-	.signin-link {
-		color: var(--text-color);
-		text-decoration: none;
-	}
-
-	.signin-link:hover {
-		text-decoration: underline;
-	}
-
-	:global(.dark-mode .highlight-signin) {
-		--menu-bg: #333;
-		--menu-border: #555;
-	}
-</style>
 
 <script>
 	// Remove duplicate interface definitions since they're now in rangy.d.ts
