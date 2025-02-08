@@ -3,7 +3,7 @@ import { app } from "../firebase/server";
 
 const userCache = new Map<string, { user: any; timestamp: number }>();
 const CACHE_TTL = 30 * 60 * 1000; // 30 minutes TTL
-const AUTH_GET_USER_TIMEOUT = 5000; // 5 seconds
+const AUTH_GET_USER_TIMEOUT = 10000; // 10 seconds
 
 /* Centralized session verification */
 export async function verifyUser(sessionCookie: string | undefined) {
