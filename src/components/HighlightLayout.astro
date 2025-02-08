@@ -141,13 +141,13 @@ const { title, description } = Astro.props;
 
 	// Initialize everything after Rangy is loaded
 	async function initializeHighlighter(): Promise<void> {
-		console.log(`[highlight] Initializing highlighter...`);
 		try {
 			// Check if highlighting is disabled for this page
 			if (rootElement?.dataset.highlightDisabled === "true") {
 				console.log(`[highlight] Highlighting disabled for this page`);
 				return;
 			}
+			console.log(`[highlight] Initializing highlighter...`);
 			const rangy = await importRangy();
 			window.rangy = rangy;
 			rangy.init();
@@ -404,17 +404,9 @@ const { title, description } = Astro.props;
 			});
 	}
 
-	// Move imports before initialization
-	console.log("[highlight] Script starting");
-
 	async function init() {
-		console.log("[highlight] Init function called");
 		rootElement = document.getElementById("highlight-root");
 		menu = document.getElementById("highlight-menu") as HTMLDivElement;
-		console.log(`[highlight] Elements found:`, {
-			rootElement: !!rootElement,
-			menu: !!menu,
-		});
 
 		try {
 			const [selectionHandlerModule, highlightServiceModule] =
@@ -422,7 +414,6 @@ const { title, description } = Astro.props;
 					import("../service/selectionHandler"),
 					import("../service/highlightService"),
 				]);
-			console.log("[highlight] Services loaded");
 
 			window.selectionHandler = selectionHandlerModule;
 			window.highlightService = highlightServiceModule;
@@ -439,12 +430,8 @@ const { title, description } = Astro.props;
 
 	// Replace DOMContentLoaded with immediate init if document is already loaded
 	if (document.readyState === "loading") {
-		console.log(
-			"[highlight] Document still loading, waiting for DOMContentLoaded"
-		);
 		document.addEventListener("DOMContentLoaded", init);
 	} else {
-		console.log("[highlight] Document already loaded, initializing now");
 		init();
 	}
 </script>

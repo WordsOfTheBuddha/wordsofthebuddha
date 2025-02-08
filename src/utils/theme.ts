@@ -60,9 +60,9 @@ export function setUIState(preferences: Partial<UserPreferences>): void {
 
 // Add new function to synchronize all UI states
 export function synchronizePreferences(preferences: Partial<UserPreferences>) {
-    console.log("in synchronize preferences, pali mode is: ", preferences.showPali);
+    /*console.log("in synchronize preferences, pali mode is: ", preferences.showPali);
     console.log("in synchronize preferences, theme is: ", preferences.theme);
-    console.log("in synchronize preferences, font size is: ", preferences.fontSize);
+    console.log("in synchronize preferences, font size is: ", preferences.fontSize);*/
 
     if (preferences.showPali !== undefined && localStorage.getItem('paliMode') !== preferences.showPali.toString()) {
         localStorage.setItem('paliMode', preferences.showPali.toString());
