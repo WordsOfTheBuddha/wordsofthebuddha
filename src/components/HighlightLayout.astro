@@ -1,8 +1,7 @@
 ---
-import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
 import CopyButton from "./CopyButton.astro";
 import { verifyUser } from "../middleware/auth";
+import Eraser from "../assets/eraser.svg?raw"; // Add this import
 
 // Get authentication status
 let isAuthenticated = false;
@@ -66,21 +65,7 @@ const { title, description } = Astro.props;
 				))
 			}
 			<button id="highlight-eraser" class="eraser-btn" style="display: none;">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 32 32"
-					width="16"
-					height="16"
-				>
-					<path
-						fill="currentColor"
-						d="M28.7 8.9l-5.7-5.7c-1.1-1.1-3.1-1.1-4.2 0l-7.1 7.1c0 0 0 0 0 0s0 0 0 0l-7.5 7.5c-1.2 1.2-1.2 3.1 0 4.2l3.8 3.8c0.2 0.2 0.4 0.3 0.7 0.3h6.6c0.3 0 0.5-0.1 0.7-0.3l12.7-12.7c0 0 0 0 0 0C29.9 12 29.9 10.1 28.7 8.9zM14.9 24.1H9.2l-3.5-3.5c-0.4-0.4-0.4-1 0-1.4l6.8-6.8l7.1 7.1L14.9 24.1z"
-					></path>
-					<path
-						fill="currentColor"
-						d="M27 28H5c-0.6 0-1 0.4-1 1s0.4 1 1 1h22c0.6 0 1-0.4 1-1S27.6 28 27 28z"
-					></path>
-				</svg>
+				<Fragment set:html={Eraser} />
 			</button>
 		</div>
 	</div>
@@ -235,7 +220,6 @@ const { title, description } = Astro.props;
 
 	let highlighter: Highlighter | null = null;
 	let currentRange: Range | null = null;
-	const storageKey = `my-highlights-${window.location.pathname}`;
 	let menu = document.getElementById("highlight-menu") as HTMLDivElement;
 	let rootElement: HTMLElement | null = null;
 
@@ -243,7 +227,6 @@ const { title, description } = Astro.props;
 	let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 	let savedRange: Range | null = null;
 	let isMouseDown = false;
-	let menuPositionTimeout: number | null = null;
 
 	const COLOR_MAP = {
 		yellow: "#FEF08A",
@@ -321,17 +304,7 @@ const { title, description } = Astro.props;
 		const textContent = range.toString().trim();
 		if (textContent.length === 0) return false;
 
-		// Get containers
-		const containers = getAllHighlightContainers(range);
-		console.log("Found containers for selection:", {
-			containerCount: containers.length,
-			containers: containers.map((c) => ({
-				type: c.tagName,
-				text: c.textContent?.substring(0, 50) + "...",
-			})),
-		});
-
-		return containers.length > 0;
+		return true;
 	}
 
 	function calculateMenuPosition(
@@ -599,76 +572,6 @@ const { title, description } = Astro.props;
 		persistToFirestore(serialized);
 	}
 
-	function getAllHighlightContainers(range: Range): Element[] {
-		const containers = new Set<Element>();
-		const validContainers = [
-			"p",
-			"div",
-			"h1",
-			"h2",
-			"h3",
-			"h4",
-			"h5",
-			"h6",
-			"li",
-			"table",
-		];
-
-		// Start from the common ancestor of the selection
-		const commonAncestor = range.commonAncestorContainer;
-		const rootElement = document.getElementById("highlight-root");
-
-		// If the common ancestor is not an element, get its parent
-		const startContainer =
-			commonAncestor.nodeType === Node.TEXT_NODE
-				? commonAncestor.parentElement
-				: (commonAncestor as Element);
-
-		if (!startContainer || !rootElement) return [];
-
-		// Get all elements between start and end of range
-		const elements = document.createNodeIterator(
-			startContainer,
-			NodeFilter.SHOW_ELEMENT,
-			{
-				acceptNode: (node) => {
-					if (range.intersectsNode(node)) {
-						return NodeFilter.FILTER_ACCEPT;
-					}
-					return NodeFilter.FILTER_SKIP;
-				},
-			}
-		);
-
-		let current: Element | null = elements.nextNode() as Element;
-		while (current) {
-			// Check for table cells first
-			if (
-				current.tagName.toLowerCase() === "td" ||
-				current.tagName.toLowerCase() === "th"
-			) {
-				const table = current.closest("table");
-				if (table && !table.id.includes("highlight-root")) {
-					containers.add(table);
-				}
-			} else {
-				// For other elements, find the closest valid container
-				const container = current.closest(validContainers.join(","));
-				if (
-					container &&
-					!container.id.includes("highlight-root") &&
-					container.contains(current) &&
-					rootElement.contains(container)
-				) {
-					containers.add(container);
-				}
-			}
-			current = elements.nextNode() as Element;
-		}
-
-		return Array.from(containers);
-	}
-
 	interface HighlightInfo {
 		text: string;
 		color: string;
@@ -867,54 +770,6 @@ const { title, description } = Astro.props;
 		// Ignore other parameters and hash
 		return pliParam ? `${basePath}?pli=true` : basePath;
 	};
-
-	const noteId = localStorage.getItem("noteId"); // Assuming noteId is stored in localStorage
-
-	function getHighlightContainer(element: Element | null): Element | null {
-		if (!element) return null;
-
-		// Valid container elements
-		const validContainers = [
-			"p",
-			"div",
-			"h1",
-			"h2",
-			"h3",
-			"h4",
-			"h5",
-			"h6",
-			"li",
-			"table",
-		];
-
-		let current = element;
-		while (current && current.parentElement) {
-			// Stop if we hit the highlight root
-			if (current.id === "highlight-root") return null;
-
-			// Special handling for table cells
-			if (
-				current.tagName.toLowerCase() === "td" ||
-				current.tagName.toLowerCase() === "th"
-			) {
-				const table = current.closest("table");
-				if (table && (table.textContent?.length || 0) <= 1000) {
-					return table;
-				}
-			}
-
-			// Check if current element is a valid container
-			if (validContainers.includes(current.tagName.toLowerCase())) {
-				// Don't select containers that are too large
-				const text = current.textContent || "";
-				if (text.length <= 1000) {
-					return current;
-				}
-			}
-			current = current.parentElement;
-		}
-		return null;
-	}
 
 	function getContainerIndex(element: Element): string {
 		// Get type of container (p, div, h1, etc)
