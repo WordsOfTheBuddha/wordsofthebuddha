@@ -2,7 +2,8 @@
 import CopyButton from "./CopyButton.astro";
 import { verifyUser } from "../middleware/auth";
 import Eraser from "../assets/eraser.svg?raw";
-import "../styles/highlight.css"; // Add this import
+import "../styles/highlight.css";
+import type { HighlightInfo } from "../service/highlightService";
 
 // Get authentication status
 let isAuthenticated = false;
@@ -84,6 +85,8 @@ const { title, description } = Astro.props;
 	declare global {
 		interface Window {
 			rangy: RangyStatic;
+			selectionHandler: any;
+			highlightService: any;
 		}
 	}
 
@@ -100,6 +103,7 @@ const { title, description } = Astro.props;
 	let currentRange: Range | null = null;
 	let menu = document.getElementById("highlight-menu") as HTMLDivElement;
 	let rootElement: HTMLElement | null = null;
+	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
 
 	// Mobile detection and range preservation
 	let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -138,15 +142,18 @@ const { title, description } = Astro.props;
 
 	// Initialize everything after Rangy is loaded
 	async function initializeHighlighter(): Promise<void> {
+		console.log(`[highlight] Initializing highlighter...`);
 		try {
 			// Check if highlighting is disabled for this page
 			if (rootElement?.dataset.highlightDisabled === "true") {
+				console.log(`[highlight] Highlighting disabled for this page`);
 				return;
 			}
 			const rangy = await importRangy();
 			window.rangy = rangy;
 			rangy.init();
 			highlighter = rangy.createHighlighter();
+			console.log(`[highlight] Rangy initialized, highlighter created`);
 
 			Object.entries(COLOR_MAP).forEach(([colorName, bgColor]) => {
 				const applier = rangy.createClassApplier(`highlight-${colorName}`, {
@@ -158,189 +165,106 @@ const { title, description } = Astro.props;
 					highlighter.addClassApplier(applier);
 				}
 			});
+			console.log(`[highlight] Color appliers registered`);
 
 			// Set up event listeners first
 			setupEventListeners();
+			console.log(`[highlight] Event listeners setup complete`);
 
 			console.log("auth status: ", rootElement?.dataset);
 			if (rootElement?.dataset.authenticated === "true") {
+				console.log(`[highlight] Fetching existing highlights...`);
 				// Then fetch and restore highlights from Firestore
-				await fetchHighlights();
+				await highlightService.fetchHighlights(highlighter); // Updated to pass highlighter
 			}
 		} catch (error) {
-			console.error("Failed to initialize Rangy:", error);
+			console.error("[highlight] Failed to initialize:", error);
 		}
 	}
 
-	function isSelectionValid(selection: RangySelection) {
-		if (!selection.rangeCount) return false;
-
-		const range = selection.getRangeAt(0).nativeRange;
-		if (!range) return false;
-
-		// Check for text content
-		const textContent = range.toString().trim();
-		if (textContent.length === 0) return false;
-
-		return true;
-	}
-
-	function calculateMenuPosition(
-		menu: HTMLElement,
-		finalRect: DOMRect,
-		rootElement: HTMLElement
-	) {
-		const containerRect = rootElement.getBoundingClientRect();
-		const menuLeft =
-			finalRect.right - containerRect.left + rootElement.scrollLeft + 5;
-		const maxLeft = containerRect.width - menu.offsetWidth;
-		menu.style.left = `${Math.min(menuLeft, maxLeft)}px`;
-		menu.style.top = `${finalRect.bottom - containerRect.top + rootElement.scrollTop}px`;
-	}
+	// Client-side imports need to be dynamic or use the ?inline suffix
+	const selectionHandler = await import("../service/selectionHandler");
+	const highlightService = await import("../service/highlightService");
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
-		if (!window.rangy || !highlighter) return;
+		console.log(`[highlight] Selection event triggered`);
+		if (!window.rangy || !highlighter) {
+			console.log(`[highlight] Rangy or highlighter not initialized`);
+			return;
+		}
 
-		// Hide both menus initially
 		menu.style.display = "none";
 		document.getElementById("highlight-signin")!.style.display = "none";
 
 		const target = e.target as HTMLElement;
 		const selection = window.rangy.getSelection();
-
-		// Log selection details for debugging
-		console.log("Selection details:", {
+		console.log(`[highlight] Selection details:`, {
 			isCollapsed: selection.isCollapsed,
 			hasRange: selection.rangeCount > 0,
 			text: selection.toString().trim(),
 		});
 
-		// Early return if no valid selection
-		if (selection.isCollapsed || !selection.rangeCount) return;
-
-		// Check if target is inside a tooltip
-		if (target.closest(".tooltip-text") || target.closest(".tippy-content")) {
-			menu.style.display = "none";
+		// Early validations
+		if (
+			selection.isCollapsed ||
+			!selection.rangeCount ||
+			!selectionHandler.isSelectionValid(selection)
+		) {
+			console.log(`[highlight] Invalid selection`);
 			return;
 		}
 
-		// Validate selection and get containers
-		if (!isSelectionValid(selection)) {
-			console.log("Invalid selection");
-			return;
-		}
-
-		// Get Pali context
-		const isPaliParagraph = target.closest(".pali-paragraph");
-		const isPaliLookupEnabled = localStorage.getItem("paliLookup") === "true";
-		const selectedText = selection.toString().trim();
-		const isSingleWord = selectedText && !selectedText.includes(" ");
-
-		// Only hide menu if ALL three conditions are met
-		if (isPaliLookupEnabled && isPaliParagraph && isSingleWord) {
-			menu.style.display = "none";
-			return;
-		}
-
-		// Rest of the existing checks
-		if (e instanceof MouseEvent && isMouseDown) return;
-
-		if (selection.isCollapsed || !isSelectionValid(selection)) {
-			menu.style.display = "none";
-			document.getElementById("highlight-signin")!.style.display = "none";
-			return;
-		}
-
-		// Get authentication status
-		const isAuthenticated = rootElement?.dataset.authenticated === "true";
-
-		// Handle Pali lookup cases
-		if (isPaliLookupEnabled && isPaliParagraph && isSingleWord) {
-			menu.style.display = "none";
-			document.getElementById("highlight-signin")!.style.display = "none";
+		// Handle tooltip and Pali cases
+		const isPaliContext = checkPaliContext(target, selection);
+		if (isPaliContext) {
+			console.log(`[highlight] Pali context detected, ignoring`);
 			return;
 		}
 
 		// Show appropriate menu based on auth status
+		const isAuthenticated = rootElement?.dataset.authenticated === "true";
+		console.log(`[highlight] Auth check for menu:`, isAuthenticated);
 		if (!isAuthenticated) {
 			const signinPrompt = document.getElementById("highlight-signin")!;
-			updateMenuPosition(selection, signinPrompt);
+			const { savedRange: newSavedRange } = selectionHandler.updateMenuPosition(
+				selection,
+				signinPrompt,
+				rootElement,
+				currentRange,
+				menu,
+				highlighter
+			);
+			savedRange = newSavedRange;
 			return;
 		}
 
-		// Show highlight menu for authenticated users
 		menu.style.display = "block";
-		updateMenuPosition(selection, menu);
+		const { savedRange: newSavedRange } = selectionHandler.updateMenuPosition(
+			selection,
+			menu,
+			rootElement,
+			currentRange,
+			menu,
+			highlighter
+		);
+		savedRange = newSavedRange;
+
+		// Add outside click listener
+		setupOutsideClickListener();
 	}
 
-	function updateMenuPosition(
-		selection: RangySelection,
-		element: HTMLElement = menu
-	) {
-		// Early return if no valid selection
-		if (!selection?.rangeCount) {
-			element.style.display = "none";
-			return;
-		}
+	function checkPaliContext(
+		target: HTMLElement,
+		selection: RangySelection
+	): boolean {
+		const isPaliParagraph = target.closest(".pali-paragraph");
+		const isPaliLookupEnabled = localStorage.getItem("paliLookup") === "true";
+		const selectedText = selection.toString().trim();
+		const isSingleWord = selectedText && !selectedText.includes(" ");
+		return Boolean(isPaliLookupEnabled && isPaliParagraph && isSingleWord);
+	}
 
-		const range = selection.getRangeAt(0).nativeRange;
-		if (!range) {
-			element.style.display = "none";
-			return;
-		}
-
-		currentRange = range;
-		savedRange = range.cloneRange();
-
-		// Get the end point of the selection
-		const endRange = document.createRange();
-		endRange.setStart(range.endContainer, range.endOffset);
-		endRange.collapse(true); // Collapse to end point
-
-		// Get the position of the last character in the selection
-		const endRects = endRange.getClientRects();
-		let finalRect: DOMRect | null = null;
-
-		if (endRects.length > 0) {
-			// Use the last visible cursor position at selection end
-			finalRect = endRects[endRects.length - 1];
-		} else {
-			// Fallback to first rect in selection
-			const rects = currentRange.getClientRects();
-			if (rects.length > 0) {
-				finalRect = rects[rects.length - 1];
-			} else {
-				finalRect = currentRange.getBoundingClientRect();
-			}
-		}
-
-		// Validate rootElement first
-		if (!rootElement) {
-			menu.style.display = "none";
-			return;
-		}
-
-		if (!isSelectionValid(selection)) {
-			menu.style.display = "none";
-			return;
-		}
-
-		if (finalRect) {
-			calculateMenuPosition(element, finalRect, rootElement!);
-		}
-
-		element.style.display = "block";
-
-		// Add back the eraser visibility check
-		const eraser = document.getElementById("highlight-eraser");
-		if (eraser && highlighter) {
-			// Get fresh selection reference after potential range adjustments
-			const currentSelection = window.rangy.getSelection();
-			const existing = highlighter.getHighlightsInSelection(currentSelection);
-			eraser.style.display = existing.length > 0 ? "flex" : "none";
-		}
-
-		// Keep existing outside click listener logic
+	function setupOutsideClickListener() {
 		outsideClickListener = (e: MouseEvent) => {
 			const target = e.target as Node;
 			if (!menu.contains(target)) {
@@ -352,22 +276,7 @@ const { title, description } = Astro.props;
 		document.addEventListener("mousedown", outsideClickListener);
 	}
 
-	function handleSelectionChange() {
-		if (!window.rangy || !highlighter) return;
-
-		// Hide the menu whenever the selection is actively changing
-		menu.style.display = "none";
-
-		const selection = window.rangy.getSelection();
-		// If no selection, nothing else to do
-		if (selection.isCollapsed || selection.rangeCount === 0) {
-			return;
-		}
-
-		// We don't reposition or show the menu here
-		// because we only want it visible after mouseup or touchend
-	}
-
+	// Keep core highlight application
 	function applyHighlight(colorName: ColorName): void {
 		if (!highlighter || !window.rangy) return;
 
@@ -447,160 +356,39 @@ const { title, description } = Astro.props;
 	): void {
 		if (!highlighter) return;
 		const serialized = rangyHash || highlighter.serialize();
-		persistToFirestore(serialized);
+		highlightService.persistToFirestore(serialized, highlighter);
 	}
 
-	interface HighlightInfo {
-		text: string;
-		color: string;
-		index: number;
-	}
-
-	function extractHighlightedText(container: Element): string {
-		// Parse the container HTML to access DOM methods
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(container.outerHTML, "text/html");
-		const containerEl = doc.body.firstElementChild;
-		if (!containerEl) return "";
-
-		// Get all highlight marks in order
-		const highlights: HighlightInfo[] = [];
-		const marks = containerEl.querySelectorAll("mark");
-
-		marks.forEach((mark, index) => {
-			const color = Array.from(mark.classList)
-				.find((cls) => cls.startsWith("highlight-"))
-				?.replace("highlight-", "");
-			if (color) {
-				highlights.push({
-					text: mark.textContent || "",
-					color,
-					index,
-				});
-			}
+	// Keep event setup and initialization
+	function setupEventListeners(): void {
+		document.addEventListener("mousedown", () => {
+			isMouseDown = true;
 		});
-
-		if (highlights.length === 0) return "";
-
-		// Group continuous segments of same color
-		const segments: string[] = [];
-		let currentGroup: HighlightInfo[] = [highlights[0]];
-
-		for (let i = 1; i < highlights.length; i++) {
-			const current = highlights[i];
-			const prev = highlights[i - 1];
-
-			// Check if segments are continuous (adjacent indices and same color)
-			if (current.color === prev.color && current.index === prev.index + 1) {
-				currentGroup.push(current);
-			} else {
-				// Add completed group and start new one
-				segments.push(currentGroup.map((h) => h.text).join(" "));
-				currentGroup = [current];
-			}
-		}
-		// Add the last group
-		segments.push(currentGroup.map((h) => h.text).join(" "));
-
-		return segments.join(" ... ");
-	}
-
-	async function persistToFirestore(rangyHash: string): Promise<void> {
-		console.log("Starting highlight persistence", { rangyHash });
-
-		const highlightedContainers = scanPageForHighlights();
-		console.log("Found highlighted containers:", highlightedContainers.length);
-
-		if (highlightedContainers.length === 0) {
-			console.log("No highlights remain, deleting highlight doc");
-			const slug = getSlug();
-			try {
-				await fetch("/api/highlights/delete", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ slug }),
-				});
-			} catch (error) {
-				console.error("Error deleting highlights:", error);
-			}
-			return;
-		}
-
-		// Build highlight segments
-		const highlightSegments: { [key: string]: any } = {};
-		highlightedContainers.forEach(({ containerIndex, container, order }) => {
-			const highlightText = extractHighlightedText(container);
-			if (highlightText) {
-				highlightSegments[containerIndex] = {
-					containerHTML: container.outerHTML,
-					highlightText,
-					domPath: getDomPath(container),
-					order,
-				};
-				console.log("Saving container:", {
-					index: containerIndex,
-					order,
-					text: container.textContent?.substring(0, 50) + "...",
-					highlightText,
-				});
-			}
-		});
-
-		const slug = getSlug();
-		const highlight = {
-			slug,
-			title: document.getElementById("highlight-root")?.dataset.title || "",
-			description:
-				document.getElementById("highlight-root")?.dataset.description || "",
-			rangyHash,
-			highlightSegments,
-			updatedAt: new Date() as any, // Will be converted to Timestamp in Firestore
-		};
-
-		try {
-			const response = await fetch("/api/highlights/add", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					slug,
-					highlights: highlight,
-				}),
-			});
-			const data = await response.json();
-			console.log("Server response:", data);
-
-			if (data.error) {
-				console.error("Server reported error:", data.error);
-			}
-		} catch (error) {
-			console.error("Error persisting highlights:", error);
+		document.addEventListener("mouseup", handleMouseUp);
+		document.addEventListener("touchend", handleSelection);
+		document.addEventListener("selectionchange", handleSelectionChange);
+		setupSwatchListeners();
+		const eraserBtn = document.getElementById("highlight-eraser");
+		if (eraserBtn) {
+			eraserBtn.addEventListener("click", handleClear);
+			eraserBtn.addEventListener("touchend", handleClear);
 		}
 	}
 
-	async function fetchHighlights(): Promise<void> {
-		try {
-			const slug = getSlug();
-			console.log("Fetching highlights for:", slug);
-
-			const response = await fetch(
-				`/api/highlights/get?slug=${encodeURIComponent(slug)}`
-			);
-			const data = await response.json();
-
-			console.log("Received highlights:", {
-				opId: data.opId,
-				hasHighlights: !!data.highlights?.rangyHash,
-			});
-
-			if (data.highlights?.rangyHash && highlighter) {
-				console.log("Deserializing highlights");
-				highlighter.deserialize(data.highlights.rangyHash);
-			}
-		} catch (error) {
-			console.error("Error fetching highlights:", error);
-		}
+	function handleMouseUp(e: MouseEvent) {
+		isMouseDown = false;
+		handleSelection(e);
 	}
 
+	// Add handleSelectionChange function that was missing
+	function handleSelectionChange() {
+		if (!window.rangy || !highlighter) return;
+		menu.style.display = "none";
+		const selection = window.rangy.getSelection();
+		if (selection.isCollapsed || selection.rangeCount === 0) return;
+	}
+
+	// Add setupSwatchListeners function that was missing
 	function setupSwatchListeners() {
 		document
 			.querySelectorAll<HTMLButtonElement>(".color-swatch")
@@ -617,140 +405,47 @@ const { title, description } = Astro.props;
 			});
 	}
 
-	function setupEventListeners(): void {
-		document.addEventListener("mousedown", () => {
-			isMouseDown = true;
-		});
-		document.addEventListener("mouseup", handleMouseUp);
-		document.addEventListener("touchend", handleSelection);
-		document.addEventListener("selectionchange", handleSelectionChange);
-		setupSwatchListeners();
-		const eraserBtn = document.getElementById("highlight-eraser");
-		if (eraserBtn) {
-			eraserBtn.addEventListener("click", handleClear);
-			eraserBtn.addEventListener("touchend", handleClear);
-		}
-	}
+	// Move imports before initialization
+	console.log("[highlight] Script starting");
 
-	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
-
-	function handleMouseUp(e: MouseEvent) {
-		isMouseDown = false;
-		handleSelection(e);
-	}
-
-	const getSlug = () => {
-		const url = new URL(window.location.href);
-		// Get path without hash
-		const basePath = url.pathname;
-		// Only consider pli parameter
-		const pliParam = url.searchParams.get("pli");
-		// Ignore other parameters and hash
-		return pliParam ? `${basePath}?pli=true` : basePath;
-	};
-
-	function getContainerIndex(element: Element): string {
-		// Get type of container (p, div, h1, etc)
-		const type = element.tagName.toLowerCase();
-		// Find all elements of same type
-		const sameTypeElements = Array.from(document.getElementsByTagName(type));
-		// Get index of our element
-		const index = sameTypeElements.indexOf(element);
-		return `${type}-${index}`;
-	}
-
-	function getDomPath(element: Element): string {
-		const path: number[] = [];
-		while (element && element.parentElement) {
-			const parent = element.parentElement;
-			const index = Array.from(parent.children).indexOf(element);
-			path.unshift(index);
-			element = parent;
-		}
-		return path.join("-");
-	}
-
-	function scanPageForHighlights(): {
-		containerIndex: string;
-		container: Element;
-		order: number;
-	}[] {
-		const validContainers = [
-			"p",
-			"div",
-			"h1",
-			"h2",
-			"h3",
-			"h4",
-			"h5",
-			"h6",
-			"li",
-			"table",
-		];
-		const root = document.getElementById("highlight-root");
-		if (!root) return [];
-
-		console.log("Starting page scan");
-
-		// First, find all highlighted elements
-		const highlightedElements = Array.from(
-			root.querySelectorAll('mark[class*="highlight-"]')
-		);
-		console.log("Found highlighted marks:", highlightedElements.length);
-
-		// Get their containers
-		const containers = new Set<Element>();
-		highlightedElements.forEach((mark) => {
-			for (
-				let el = mark.parentElement;
-				el && el !== root;
-				el = el.parentElement
-			) {
-				if (validContainers.includes(el.tagName.toLowerCase())) {
-					containers.add(el);
-					break; // Stop at first valid container
-				}
-			}
-		});
-
-		console.log("Found containers:", containers.size);
-
-		// Convert to array and sort by document position
-		const orderedContainers = Array.from(containers);
-		orderedContainers.sort((a, b) => {
-			const position = a.compareDocumentPosition(b);
-			return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
-		});
-
-		// Map to result format
-		const results = orderedContainers.map((container, index) => ({
-			containerIndex: getContainerIndex(container),
-			container,
-			order: index,
-		}));
-
-		// Debug log
-		results.forEach(({ container, order }) => {
-			console.log("Container in order:", {
-				tag: container.tagName,
-				order,
-				text: container.textContent?.substring(0, 50) + "...",
-				highlights: container.querySelectorAll('mark[class*="highlight-"]')
-					.length,
-			});
-		});
-
-		return results;
-	}
-
-	// Initialize on page load
-	document.addEventListener("DOMContentLoaded", () => {
+	async function init() {
+		console.log("[highlight] Init function called");
 		rootElement = document.getElementById("highlight-root");
 		menu = document.getElementById("highlight-menu") as HTMLDivElement;
-		updateDarkMode(); // Initial theme state
-		updateTheme(); // Initial theme colors
-		window.addEventListener("themeToggled", updateDarkMode);
-		document.addEventListener("themeChanged", updateTheme);
-		initializeHighlighter();
-	});
+		console.log(`[highlight] Elements found:`, {
+			rootElement: !!rootElement,
+			menu: !!menu,
+		});
+
+		try {
+			const [selectionHandlerModule, highlightServiceModule] =
+				await Promise.all([
+					import("../service/selectionHandler"),
+					import("../service/highlightService"),
+				]);
+			console.log("[highlight] Services loaded");
+
+			window.selectionHandler = selectionHandlerModule;
+			window.highlightService = highlightServiceModule;
+
+			updateDarkMode();
+			updateTheme();
+			window.addEventListener("themeToggled", updateDarkMode);
+			document.addEventListener("themeChanged", updateTheme);
+			await initializeHighlighter();
+		} catch (error) {
+			console.error("[highlight] Init error:", error);
+		}
+	}
+
+	// Replace DOMContentLoaded with immediate init if document is already loaded
+	if (document.readyState === "loading") {
+		console.log(
+			"[highlight] Document still loading, waiting for DOMContentLoaded"
+		);
+		document.addEventListener("DOMContentLoaded", init);
+	} else {
+		console.log("[highlight] Document already loaded, initializing now");
+		init();
+	}
 </script>
