@@ -48,9 +48,13 @@ export const GET: APIRoute = async ({ cookies }) => {
             const data = doc.data() as Highlight;
             const updatedDate = data.updatedAt.toDate();
 
+            if (data.slug === '/' || data.slug === '/?pli=true') {
+                return null;
+            }
+
             const processedHighlight: HighlightResponse = {
                 slug: data.slug,
-                title: data.slug === '/' ? 'Home' : data.title,
+                title: data.title,
                 description: data.description,
                 rangyHash: data.rangyHash,
                 highlightSegments: data.highlightSegments,
