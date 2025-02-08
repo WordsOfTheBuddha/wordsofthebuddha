@@ -3,6 +3,7 @@ export const prerender = false;
 import { app } from "../firebase/server";
 import ThemeToggle from "./ThemeToggle.astro";
 import { verifyUser } from "../middleware/auth";
+import SearchIcon from "../assets/search.svg?raw"; // Add this import
 
 interface Props {
 	showAuth?: boolean;
@@ -32,6 +33,13 @@ if (showAuth) {
 		<a href="/" class="hover:underline"> Words of the Buddha </a>
 	</div>
 	<div class="flex items-center gap-2 min-h-[2.25rem] z-50">
+		<a
+			href="/search"
+			class="p-2 hover:text-[var(--link-hover-color)]"
+			title="Search"
+		>
+			<Fragment set:html={SearchIcon} />
+		</a>
 		{
 			showAuth &&
 				(user ? (

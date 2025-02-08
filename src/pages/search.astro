@@ -1,0 +1,344 @@
+---
+export const prerender = false;
+import Layout from "../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { transformId } from "../utils/transformId";
+import Fuse from "fuse.js";
+import SearchIcon from "../assets/search.svg?raw"; // Add this import
+
+const query = Astro.url.searchParams.get("q") || "";
+
+interface SearchData {
+	slug: string;
+	title: string;
+	description: string;
+	collection: string;
+	content: string;
+}
+
+// Get all content
+const allContent = await getCollection("all");
+const searchData: SearchData[] = allContent.map(
+	(item: CollectionEntry<"all">) => ({
+		slug: item.data.slug,
+		title: item.data.title,
+		description: item.data.description,
+		collection: item.collection,
+		content: item.body || "",
+	})
+);
+
+// Add utility for diacritic normalization
+function normalizeText(text: string): string {
+	return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function escapeRegExp(string: string) {
+	return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Create a pattern that matches words with optional diacritics
+function createDiacriticPattern(word: string): string {
+	const normalized = normalizeText(word);
+	const escaped = escapeRegExp(normalized);
+	return `\\b${escaped.replace(/[aeiou]/g, (letter) => `[${letter}\\u0100-\\u017f]`)}\\b`;
+}
+
+// Configure Fuse.js with diacritics handling
+const fuse = new Fuse(searchData, {
+	keys: [
+		{ name: "slug", weight: 3 },
+		{ name: "title", weight: 2 },
+		{ name: "description", weight: 1.5 },
+		{ name: "content", weight: 1 },
+	],
+	includeMatches: true,
+	threshold: 0.3,
+	ignoreLocation: true,
+	ignoreDiacritics: true, // Add this option
+});
+
+interface ParagraphMatch {
+	text: string;
+	matchCount: number;
+	fullPhraseMatches: number;
+	indices: [number, number][];
+	debug?: {
+		terms: string[];
+		termMatches: Record<string, number>;
+		fullPhraseCount: number;
+	};
+}
+
+function isExactQuery(query: string): boolean {
+	return /^".*"$/.test(query.trim());
+}
+
+function findBestMatchingParagraph(
+	text: string,
+	indices: [number, number][],
+	query: string
+): string | null {
+	const isExact = isExactQuery(query);
+	const cleanQuery = isExact ? query.slice(1, -1) : query;
+	const queryTerms = isExact
+		? [cleanQuery]
+		: cleanQuery.toLowerCase().split(/\s+/).filter(Boolean);
+
+	// Normalize query terms for matching
+	const normalizedTerms = queryTerms.map((term) =>
+		normalizeText(term.toLowerCase())
+	);
+	const normalizedQuery = normalizeText(cleanQuery.toLowerCase());
+
+	console.log(
+		`Debug: Query type: ${isExact ? "exact" : "fuzzy"}, terms:`,
+		queryTerms
+	);
+
+	const fullQuery = query.toLowerCase();
+
+	const paragraphs = text.split(/\n\n+/);
+	let bestMatch: ParagraphMatch | null = null;
+	let currentLength = 0;
+
+	console.log(`Debug: Searching for query "${query}" with terms:`, queryTerms);
+
+	// Process each paragraph
+	for (const paragraph of paragraphs) {
+		const paragraphLower = paragraph.toLowerCase();
+		const normalizedParagraph = normalizeText(paragraphLower);
+		const paragraphEnd = currentLength + paragraph.length;
+		const paragraphMatches: [number, number][] = [];
+
+		// Find matches that fall within this paragraph
+		for (const [start, end] of indices) {
+			if (start >= currentLength && start <= paragraphEnd) {
+				paragraphMatches.push([
+					start - currentLength,
+					Math.min(end - currentLength, paragraph.length),
+				]);
+			}
+		}
+
+		if (paragraphMatches.length > 0) {
+			// Count full phrase matches (weighted higher)
+			const fullPhraseMatches = (
+				normalizedParagraph.match(new RegExp(normalizedQuery, "g")) || []
+			).length;
+
+			// Count individual term matches
+			const termMatches: Record<string, number> = {};
+			let totalTermMatches = 0;
+
+			normalizedTerms.forEach((term, index) => {
+				const count = (normalizedParagraph.match(new RegExp(term, "g")) || [])
+					.length;
+				termMatches[queryTerms[index]] = count;
+				totalTermMatches += count;
+			});
+
+			const debug = {
+				terms: queryTerms,
+				termMatches,
+				fullPhraseCount: fullPhraseMatches,
+			};
+
+			console.log(`Debug: Paragraph match analysis:`, {
+				preview: paragraph.slice(0, 50) + "...",
+				fullPhraseMatches,
+				termMatches,
+				totalTermMatches,
+			});
+
+			// Calculate relevance score
+			// Full phrase matches are weighted 2x individual term matches
+			const relevanceScore = fullPhraseMatches * 2 + totalTermMatches;
+
+			if (
+				!bestMatch ||
+				relevanceScore > bestMatch.fullPhraseMatches * 2 + bestMatch.matchCount
+			) {
+				bestMatch = {
+					text: paragraph,
+					matchCount: totalTermMatches,
+					fullPhraseMatches,
+					indices: paragraphMatches,
+					debug,
+				};
+			}
+		}
+
+		currentLength += paragraph.length + 2;
+	}
+
+	if (!bestMatch) {
+		console.log("Debug: No matches found in any paragraph");
+		return null;
+	}
+
+	console.log("Debug: Best match found:", {
+		preview: bestMatch.text.slice(0, 50) + "...",
+		score: bestMatch.fullPhraseMatches * 2 + bestMatch.matchCount,
+		debug: bestMatch.debug,
+	});
+
+	// Split text into segments, preserving Pāli boundaries using updated pattern
+	const segments = bestMatch.text.split(/(\|[^|]+::[^|]+\|)/g);
+
+	console.log("Debug: Segments found:", segments.length, segments);
+
+	// Process each segment separately
+	const processed = segments.map((segment) => {
+		// Skip highlighting if segment is a Pāli term (matches |text::translation| pattern)
+		if (/^\|[^|]+::[^|]+\|$/.test(segment)) {
+			console.log("Debug: Skipping Pāli term:", segment);
+			return segment;
+		}
+
+		let highlighted = segment;
+		// Apply full phrase highlighting
+		if (isExact) {
+			// Create a pattern that matches the query with any diacritic variations
+			const pattern = createDiacriticPattern(cleanQuery);
+			highlighted = highlighted.replace(
+				new RegExp(pattern, "gi"),
+				(match) =>
+					`<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">${match}</mark>`
+			);
+		} else {
+			// Handle individual terms with diacritics
+			normalizedTerms.forEach((normalizedTerm, index) => {
+				const pattern = createDiacriticPattern(normalizedTerm);
+				highlighted = highlighted.replace(
+					new RegExp(`(?<!<mark[^>]*>)${pattern}(?![^<]*</mark>)`, "gi"),
+					(match) =>
+						`<mark class="bg-yellow-100 dark:bg-yellow-900 px-1 rounded">${match}</mark>`
+				);
+			});
+		}
+
+		return highlighted;
+	});
+
+	return processed.join("").trim();
+}
+
+// Perform search on server if query exists
+const searchResults = query
+	? fuse.search(query).map(({ item, matches }) => {
+			const contentMatches = matches?.filter((m) => m.key === "content");
+			let contentSnippet = null;
+
+			if (contentMatches?.length) {
+				contentSnippet = findBestMatchingParagraph(
+					item.content,
+					contentMatches.flatMap((match) => match.indices),
+					query
+				);
+			}
+
+			return {
+				...item,
+				contentSnippet,
+			};
+		})
+	: [];
+---
+
+<Layout title="" showAuth={true}>
+	<div class="max-w-2xl mx-auto">
+		<form class="mb-8" method="get" action="/search">
+			<div class="relative">
+				<input
+					type="search"
+					name="q"
+					value={query}
+					placeholder="Search suttas..."
+					class="w-full p-4 pl-12 text-lg border rounded-lg bg-[var(--auth-input-bg)] border-[var(--auth-input-border)] text-[var(--text-color)] search-input"
+					autocomplete="off"
+				/>
+				<div class="absolute left-4 top-5 text-gray-400">
+					<Fragment set:html={SearchIcon} />
+				</div>
+			</div>
+		</form>
+
+		<div>
+			{
+				query && (
+					<p class="mb-4 text-sm text-gray-500">
+						Found {searchResults.length} results for {query}
+					</p>
+				)
+			}
+
+			{
+				searchResults.length === 0 && query && (
+					<p class="text-center text-gray-500">No results found</p>
+				)
+			}
+
+			{
+				searchResults.map((item) => (
+					<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+						<div class="flex items-start">
+							<div class="min-w-0 pr-4">
+								<h2 class="text-base sm:text-lg font-semibold">
+									<a
+										href={`/${item.slug}`}
+										class="text-gray-500 hover:text-link-color id mr-2 font-normal"
+									>
+										{transformId(`${item.slug}`)}&nbsp;
+										<span style="color:var(--text-color)">{item.title}</span>
+									</a>
+								</h2>
+							</div>
+						</div>
+						{item.description && (
+							<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
+								{item.description}
+							</p>
+						)}
+						{item.contentSnippet && (
+							<p
+								class="mt-2 text-gray-500 text-sm"
+								set:html={item.contentSnippet}
+							/>
+						)}
+					</div>
+				))
+			}
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.id {
+		font-size: 0.95rem;
+		display: inline-block;
+		@media (min-width: 640px) {
+			font-size: 1.1rem;
+		}
+	}
+	.text-text {
+		color: var(--text-color);
+		margin: 0.5rem 0;
+	}
+
+	/* Remove the clear (x) button */
+	.search-input::-webkit-search-cancel-button {
+		display: none;
+	}
+	.search-input::-webkit-search-decoration {
+		display: none;
+	}
+	.search-input::-ms-clear {
+		display: none;
+	}
+
+	/* Add styles for the highlighted text */
+	:global(mark) {
+		color: var(--text-color);
+	}
+</style>
