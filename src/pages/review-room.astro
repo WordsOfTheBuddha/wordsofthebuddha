@@ -20,70 +20,79 @@ try {
 	return Astro.redirect("/signin");
 }
 
-// Fetch highlights from API
-const highlightsResponse = await fetch(
-	`${Astro.url.origin}/api/highlights/list`,
-	{
-		headers: {
-			cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
-		},
-	}
-);
-const { highlights: validHighlights } = await highlightsResponse.json();
+let validHighlights: any[] = [];
+let validReadLaterEntries: any[] = [];
+let validSavedEntries: any[] = [];
 
-const readLaterRef = db
-	.collection("users")
-	.doc(user.uid)
-	.collection("readLater");
+try {
+	const [highlightsResponse, readLaterDocs, savedDocs] = await Promise.all([
+		fetch(`${Astro.url.origin}/api/highlights/list`, {
+			headers: {
+				cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
+			},
+		}),
+		db
+			.collection("users")
+			.doc(user.uid)
+			.collection("readLater")
+			.orderBy("addedAt", "desc")
+			.get(),
+		db
+			.collection("users")
+			.doc(user.uid)
+			.collection("saves")
+			.orderBy("savedAt", "desc")
+			.get(),
+	]);
 
-const readLaterDocs = await readLaterRef.orderBy("addedAt", "desc").get();
+	const { highlights: validHighlightsData } = await highlightsResponse.json();
+	validHighlights = validHighlightsData;
 
-const readLaterEntries = await Promise.all(
-	readLaterDocs.docs.map(async (doc) => {
-		try {
-			const entry = await getEntry("all", doc.id); // doc.id is the slug
-			return entry
-				? {
-						...entry,
-						addedAt: doc.data().addedAt.toDate(),
-						timestamp: doc.data().addedAt.toMillis(), // Add timestamp for sorting
-					}
-				: null;
-		} catch {
-			return null;
-		}
-	})
-);
+	const readLaterEntries = await Promise.all(
+		readLaterDocs.docs.map(async (doc) => {
+			try {
+				const entry = await getEntry("all", doc.id); // doc.id is the slug
+				return entry
+					? {
+							...entry,
+							addedAt: doc.data().addedAt.toDate(),
+							timestamp: doc.data().addedAt.toMillis(), // Add timestamp for sorting
+						}
+					: null;
+			} catch {
+				return null;
+			}
+		})
+	);
 
-// Filter out null entries and sort by timestamp
-const validReadLaterEntries = readLaterEntries
-	.filter(Boolean)
-	.sort((a, b) => b.timestamp - a.timestamp);
+	// Filter out null entries and sort by timestamp
+	validReadLaterEntries = readLaterEntries
+		.filter(Boolean)
+		.sort((a, b) => b.timestamp - a.timestamp);
 
-const savedRef = db.collection("users").doc(user.uid).collection("saves");
+	const savedEntries = await Promise.all(
+		savedDocs.docs.map(async (doc) => {
+			try {
+				const entry = await getEntry("all", doc.id);
+				return entry
+					? {
+							...entry,
+							savedAt: doc.data().savedAt.toDate(),
+							timestamp: doc.data().savedAt.toMillis(),
+						}
+					: null;
+			} catch {
+				return null;
+			}
+		})
+	);
 
-const savedDocs = await savedRef.orderBy("savedAt", "desc").get();
-
-const savedEntries = await Promise.all(
-	savedDocs.docs.map(async (doc) => {
-		try {
-			const entry = await getEntry("all", doc.id);
-			return entry
-				? {
-						...entry,
-						savedAt: doc.data().savedAt.toDate(),
-						timestamp: doc.data().savedAt.toMillis(),
-					}
-				: null;
-		} catch {
-			return null;
-		}
-	})
-);
-
-const validSavedEntries = savedEntries
-	.filter(Boolean)
-	.sort((a, b) => b.timestamp - a.timestamp);
+	validSavedEntries = savedEntries
+		.filter(Boolean)
+		.sort((a, b) => b.timestamp - a.timestamp);
+} catch (error) {
+	console.error("Error fetching data concurrently:", error);
+}
 ---
 
 <Layout showAuth={true}>
