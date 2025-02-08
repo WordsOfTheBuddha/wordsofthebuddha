@@ -43,12 +43,12 @@ if (Astro.cookies.has("__session")) {
 	>
 		<span
 			id="readLaterIcon"
-			class:list={["w-5 h-5", { hidden: isInReadLater }]}
+			class:list={["w-4 h-4", { hidden: isInReadLater }]}
 			set:html={ClockOutline}
 		/>
 		<span
 			id="readLaterCheckIcon"
-			class:list={["w-5 h-5", { hidden: !isInReadLater }]}
+			class:list={["w-4 h-4", { hidden: !isInReadLater }]}
 			set:html={Check}
 		/>
 		<span id="readLaterLabel"

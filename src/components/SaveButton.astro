@@ -42,12 +42,12 @@ if (Astro.cookies.has("__session")) {
 	>
 		<span
 			id="saveIcon"
-			class:list={["w-5 h-5", { hidden: isSaved }]}
+			class:list={["w-4 h-4", { hidden: isSaved }]}
 			set:html={SaveOutline}
 		/>
 		<span
 			id="saveCheckIcon"
-			class:list={["w-5 h-5", { hidden: !isSaved }]}
+			class:list={["w-4 h-4", { hidden: !isSaved }]}
 			set:html={Check}
 		/>
 		<span id="saveLabel">{isSaved ? "Saved" : "Save"}</span>
