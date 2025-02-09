@@ -3,6 +3,7 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve, extname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { naturalSort } from "./sort-routes.mjs";
+import { watch } from "node:fs";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const CONTENT_DIR = resolve(__dirname, "../content/en");
@@ -46,4 +47,29 @@ export const routes = ${JSON.stringify(sortedRoutes)};
   }
 }
 
+async function watchContentDirectory() {
+  console.log(`👀 Watching for changes in ${CONTENT_DIR}...`);
+
+  watch(CONTENT_DIR, { recursive: true }, async (eventType, filename) => {
+    console.log(
+      `\nDetected ${eventType} on ${filename}. Regenerating routes...`
+    );
+    try {
+      await generateRoutes();
+    } catch (error) {
+      console.error("❌ Route generation failed during watch:", error);
+    }
+  });
+}
+
+// Call generateRoutes initially to create the routes on startup
 generateRoutes();
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+const shouldWatch = args.includes("--watch");
+
+// Only watch if --watch flag is present
+if (shouldWatch) {
+  watchContentDirectory();
+}

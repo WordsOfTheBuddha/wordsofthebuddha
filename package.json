@@ -3,12 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "predev": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs",
-    "dev": "node --trace-deprecation ./node_modules/.bin/astro dev --host",
+    "watch-routes": "node --trace-deprecation src/utils/generateRoutes.mjs --watch",
+    "predev": "node --trace-deprecation src/utils/updateTimestamps.mjs",
+    "dev": "concurrently \"yarn run watch-routes\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
     "prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs",
-    "build": "node --trace-deprecation ./node_modules/.bin/astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "build": "node --trace-deprecation ./node_modules/.bin/astro build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -33,6 +32,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.10.7",
-    "@types/rangy": "^0.0.38"
+    "@types/rangy": "^0.0.38",
+    "concurrently": "^9.1.2"
   }
 }
