@@ -18,6 +18,11 @@ interface ParsedTerm {
     isFieldSpecific?: boolean;
 }
 
+interface SimplifiedTerm {
+    value: string;
+    operator?: '|';  // Add more operators if needed
+}
+
 function createFieldQuery(term: string): Record<SearchField, string> {
     // Remove any leftover parentheses
     term = term.replace(/^\(|\)$/g, '').trim();
@@ -159,10 +164,53 @@ function parseQuery(query: string): ParseResult {
 }
 
 function expandGenericTerm(term: string): Array<Record<string, string>> {
-    return SEARCH_FIELDS.map(field => ({ [field]: term }));
+    // Check if term is a negation
+    const isNegation = term.startsWith('!');
+    const value = isNegation ? term : term;  // Keep ! for Fuse.js to handle
+    const fieldQueries = SEARCH_FIELDS.map(field => ({ [field]: value }));
+
+    // For negations, wrap in $and to ensure all fields match the negation
+    return isNegation ? [{ $and: fieldQueries }] : fieldQueries;
 }
 
-export function buildFuseQuery(query: string): FuseQueryTerm {
+function simplifyGroupedTerms(terms: string[]): string[] {
+    return terms.map(term => {
+        // Handle double negation in field-specific terms
+        const fieldMatch = term.match(/^(\w+):!!(.+)$/);
+        if (fieldMatch && SEARCH_FIELDS.includes(fieldMatch[1] as SearchField)) {
+            return `${fieldMatch[1]}:${fieldMatch[2]}`;
+        }
+
+        // Handle regular double negation
+        if (term.startsWith('!!')) {
+            return term.slice(2);
+        }
+        return term;
+    });
+}
+
+function simplifyQuery(query: string): string {
+    // First handle terms in parentheses
+    let simplified = query.replace(/\(([^)]+)\)/g, (match, group) => {
+        const innerTerms = group.split(/\s+/);
+        const simplifiedInner = simplifyGroupedTerms(innerTerms).join(' ');
+        return `(${simplifiedInner})`;
+    });
+
+    // Then handle remaining terms
+    const terms = simplified.split(/\s+/);
+    simplified = simplifyGroupedTerms(terms).join(' ');
+
+    console.log("Simplified query:", simplified);
+    return simplified;
+}
+
+export function buildFuseQuery(rawQuery: string): FuseQueryTerm {
+    // Phase 1: Query Simplification
+    const query = simplifyQuery(rawQuery);
+    console.log("After simplification:", query);
+
+    // Phase 2: Query Transformation
     const { terms: parsedTerms } = parseQuery(query);
     const andTerms: Array<Record<string, string> | FuseQueryTerm> = [];
 
@@ -185,18 +233,25 @@ export function buildFuseQuery(query: string): FuseQueryTerm {
             };
             andTerms.push(orGroup);
         } else if (term.isFieldSpecific && term.field) {
+            // Handle field-specific terms (no need to wrap negations in AND as they're single field)
             andTerms.push({ [term.field]: term.value });
         } else {
-            andTerms.push({ $or: expandGenericTerm(term.value) });
+            // Handle generic terms, using expandGenericTerm to handle negations
+            const expanded = expandGenericTerm(term.value);
+            andTerms.push(expanded.length === 1 ? expanded[0] : { $or: expanded });
         }
     });
 
     return { $and: andTerms };
 }
 
-// Add test case
+// Update test function to show both phases
 export function testQueries() {
     const tests = [
+        "!!evil",  // Double negation -> evil
+        "!defilement",  // Keep single negation
+        "(!defilement | !jhana)",  // Preserve negations in OR groups
+        "(title:!!mind | description:noble)",  // Field-specific double negation
         "title:'consciousness description:danger slug:^AN | slug:^MN",
         "title:mind | title:consciousness description:noble",
         "title:'consciousness | title:mind slug:^AN description:noble",
@@ -210,8 +265,9 @@ export function testQueries() {
     ];
 
     tests.forEach(query => {
-        console.log('\nInput:', query);
-        console.log('Output:', JSON.stringify(buildFuseQuery(query), null, 2));
+        console.log('\nOriginal:', query);
+        console.log('Simplified:', simplifyQuery(query));
+        console.log('Final Query:', JSON.stringify(buildFuseQuery(query), null, 2));
         console.log('---');
     });
 }
