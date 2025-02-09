@@ -10,7 +10,7 @@ import SearchIcon from "../assets/search.svg?raw"; // Add this import
 const query = decodeURIComponent(Astro.url.searchParams.get("q") || "");
 const { query: fuseQuery, highlightTerms } = buildFuseQuery(query);
 console.log("query is: ", query);
-// console.log("built query is: ", JSON.stringify(fuseQuery, null, 2));
+console.log("built query is: ", JSON.stringify(fuseQuery, null, 2));
 console.log("highlight terms: ", highlightTerms);
 
 interface SearchData {
@@ -115,7 +115,8 @@ function createHighlightPattern(
 		case "exact":
 			return `\\b${diacriticPattern}\\b`; // Full word match only
 		case "startsWith":
-			return `^${diacriticPattern}`; // Must be at start of content
+			// For highlighting, we should only highlight if it's at start of paragraph
+			return `^[^\\S\\r\\n]*${diacriticPattern}`; // Match start of content with optional whitespace
 		case "endsWith":
 			return `${diacriticPattern}$`; // Must be at end of content
 		default:
@@ -277,11 +278,8 @@ function findBestMatchingParagraph(
 		let highlighted = segment;
 		termsToHighlight.forEach((ht) => {
 			const cleanTerm = processTermForHighlight(ht);
-			// For highlighting, we use word boundary patterns for better visual results
-			const pattern =
-				ht.operation === "startsWith" || ht.operation === "endsWith"
-					? `\\b${escapeRegExp(cleanTerm)}`
-					: createHighlightPattern(cleanTerm, ht.operation);
+			// Don't use word boundary for startsWith/endsWith anymore since it's handled in pattern
+			const pattern = createHighlightPattern(cleanTerm, ht.operation);
 
 			if (!pattern) return;
 
@@ -371,86 +369,111 @@ const searchResults = query
 				id="search-help"
 				class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
 			>
-				<h3 class="font-semibold mb-2">Advanced Search Syntax:</h3>
+				<h3 class="font-semibold mb-2">Search Syntax:</h3>
 				<ul class="space-y-1">
-					<li><code class="not-prose">jhana</code> - Fuzzy match on jhana</li>
 					<li>
-						<code class="not-prose">'jhana</code> - Must include jhana exactly
+						<code class="not-prose">quest</code> - Relevance (including fuzzy) match
+						on quest
 					</li>
-					<li><code class="not-prose">!word</code> - Must not include</li>
-					<li><code class="not-prose">^word</code> - Starts with</li>
-					<li><code class="not-prose">word$</code> - Ends with</li>
-					<li><code class="not-prose">term1 term2</code> - AND (both terms)</li>
-					<li><code class="not-prose">term1|term2</code> - OR (either term)</li>
+					<li>
+						<code class="not-prose">'jhana</code> - Exact match on jhana
+					</li>
+					<li>
+						<code class="not-prose">!wrong</code> - Discourses that do not have the
+						term wrong are matched
+					</li>
+					<li>
+						<code class="not-prose">^SN22</code> - Discourses that start with SN22
+					</li>
+					<li><code class="not-prose">world$</code> - Ends with world</li>
+					<li>
+						<code class="not-prose">"perception consciousness jhana"</code> - Exact
+						matches for perception, consciousness, and jhana
+					</li>
+
+					<li>
+						<code class="not-prose">"letting go" !anger</code> - Exactly matches
+						"letting go" and without anger
+					</li>
+					<li>
+						<code class="not-prose">illusion | ignorance</code> - Matches either
+						illusion or ignorance on any fields
+					</li>
 				</ul>
-				<h3 class="font-semibold mb-2">Examples:</h3>
+				<h3 class="font-semibold mb-2">More Specific Examples:</h3>
 				<p class="mt-2 text-xs text-gray-500">
 					<ul class="space-y-1">
 						<li>
-							<code class="not-prose">^DHP</code> will list all DhammaPada verses
+							<code class="not-prose">!^DHP</code> matches all discourses except
+							those starting with DHP
 						</li>
 						<li>
-							<code class="not-prose">^SN 'consciousness 'nibbana</code> will search
-							for all SN discourses that contain both the terms consciousness and
-							nibbana
+							<code class="not-prose"
+								>^SN content:'consciousness content:!perception</code
+							> matches all SN discourses that have consciousness in content but
+							do not have perception in content.
 						</li>
 						<li>
-							<code class="not-prose">!^DHP 'jhana</code> will look for the term
-							jhana in all discourses except in DhammaPada verses
+							<code class="not-prose"
+								>title:element (content:space | content;consciousness)</code
+							> matches where title is element and content has either space or consciousness.
 						</li>
 						<li>
-							<code class="not-prose">^AN 'harm | 'danger</code>will search for
+							<code class="not-prose"
+								>^AN (urgency | faith) !mindfulness !child</code
+							> matches AN discourses that have urgency or fatih in them, and do
+							not have the words mindfulness or child in them.
 						</li>
 					</ul>
 				</p>
 			</div>
+		</div>
 
-			<div class="mt-4">
-				{
-					query && (
-						<p class="mb-4 text-sm text-gray-500">
-							Found {searchResults.length} results for {query}
-						</p>
-					)
-				}
+		<div class="mt-4">
+			{
+				query && (
+					<p class="mb-4 text-sm text-gray-500">
+						Found {searchResults.length} results for {query}
+					</p>
+				)
+			}
 
-				{
-					searchResults.length === 0 && query && (
-						<p class="text-center text-gray-500">No results found</p>
-					)
-				}
+			{
+				searchResults.length === 0 && query && (
+					<p class="text-center text-gray-500">No results found</p>
+				)
+			}
 
-				{
-					searchResults.map((item) => (
-						<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-							<div class="flex items-start">
-								<div class="min-w-0 pr-4">
-									<h2 class="text-base sm:text-lg font-semibold">
-										<a
-											href={`/${item.slug}`}
-											class="text-gray-500 hover:text-link-color id mr-2 font-normal"
-										>
-											{transformId(`${item.slug}`)}&nbsp;
-											<span style="color:var(--text-color)">{item.title}</span>
-										</a>
-									</h2>
-								</div>
+			{
+				searchResults.map((item) => (
+					<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+						<div class="flex items-start">
+							<div class="min-w-0 pr-4">
+								<h2 class="text-base sm:text-lg font-semibold">
+									<a
+										href={`/${item.slug}`}
+										class="text-gray-500 hover:text-link-color id mr-2 font-normal"
+									>
+										{transformId(`${item.slug}`)}&nbsp;
+										<span style="color:var(--text-color)">{item.title}</span>
+									</a>
+								</h2>
 							</div>
-							{item.description && (
-								<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
-									{item.description}
-								</p>
-							)}
-							{item.contentSnippet && (
-								<p
-									class="mt-2 text-gray-500 text-sm"
-									set:html={item.contentSnippet}
-								/>
-							)}
 						</div>
-					))
-				}
-			</div>
+						{item.description && (
+							<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
+								{item.description}
+							</p>
+						)}
+						{item.contentSnippet && (
+							<p
+								class="mt-2 text-gray-500 text-sm"
+								set:html={item.contentSnippet}
+							/>
+						)}
+					</div>
+				))
+			}
 		</div>
 	</div>
 </Layout>
