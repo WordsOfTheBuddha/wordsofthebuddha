@@ -3,14 +3,15 @@ export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { transformId } from "../utils/transformId";
-import { buildFuseQuery } from "../utils/fuseQueryParser";
+import { buildFuseQuery, type HighlightTerm } from "../utils/fuseQueryParser";
 import Fuse from "fuse.js";
 import SearchIcon from "../assets/search.svg?raw"; // Add this import
 
 const query = decodeURIComponent(Astro.url.searchParams.get("q") || "");
-const fuseQuery = buildFuseQuery(query);
+const { query: fuseQuery, highlightTerms } = buildFuseQuery(query);
 console.log("query is: ", query);
-console.log("built query is: ", JSON.stringify(fuseQuery, null, 2));
+// console.log("built query is: ", JSON.stringify(fuseQuery, null, 2));
+console.log("highlight terms: ", highlightTerms);
 
 interface SearchData {
 	slug: string;
@@ -74,39 +75,77 @@ interface ParagraphMatch {
 	};
 }
 
+interface MatchCounts {
+	exact: Set<string>;
+	fuzzy: number;
+	startsWith: number;
+	endsWith: number;
+	doesNotStartWith: number;
+	doesNotEndWith: number;
+	negation: number;
+	[key: string]: number | Set<string>; // Add index signature
+}
+
 function isExactQuery(query: string): boolean {
 	return /^".*"$/.test(query.trim());
+}
+
+function processTermForHighlight(highlightTerm: HighlightTerm): string {
+	// Return just the clean term - word boundaries will be added in the pattern creation
+	return highlightTerm.term;
+}
+
+function createHighlightPattern(
+	term: string,
+	operation: HighlightTerm["operation"],
+	context: string = "" // For startsWith/endsWith checks
+): string {
+	const normalized = normalizeText(term);
+	const escaped = escapeRegExp(normalized);
+	const diacriticPattern = escaped.replace(
+		/[aeiou]/g,
+		(letter) => `[${letter}\\u0100-\\u017f]`
+	);
+
+	switch (operation) {
+		case "doesNotStartWith":
+		case "doesNotEndWith":
+		case "negation":
+			return "";
+		case "exact":
+			return `\\b${diacriticPattern}\\b`; // Full word match only
+		case "startsWith":
+			return `^${diacriticPattern}`; // Must be at start of content
+		case "endsWith":
+			return `${diacriticPattern}$`; // Must be at end of content
+		default:
+			return diacriticPattern; // Infix match (can be part of another word)
+	}
 }
 
 function findBestMatchingParagraph(
 	text: string,
 	indices: [number, number][],
-	query: string
+	highlightTerms: HighlightTerm[]
 ): string | null {
-	const isExact = isExactQuery(query);
-	const cleanQuery = isExact ? query.slice(1, -1) : query;
-	const queryTerms = isExact
-		? [cleanQuery]
-		: cleanQuery.toLowerCase().split(/\s+/).filter(Boolean);
+	const termsToHighlight = highlightTerms.filter(
+		(ht) =>
+			(!ht.field || ht.field === "content") &&
+			!["doesNotStartWith", "doesNotEndWith", "negation"].includes(ht.operation)
+	);
 
-	// Normalize query terms for matching
+	const queryTerms = termsToHighlight.map((ht) => processTermForHighlight(ht));
 	const normalizedTerms = queryTerms.map((term) =>
 		normalizeText(term.toLowerCase())
 	);
-	const normalizedQuery = normalizeText(cleanQuery.toLowerCase());
 
-	console.log(
-		`Debug: Query type: ${isExact ? "exact" : "fuzzy"}, terms:`,
-		queryTerms
-	);
-
-	const fullQuery = query.toLowerCase();
+	const fullQuery = queryTerms.join(" ").toLowerCase();
 
 	const paragraphs = text.split(/\n\n+/);
 	let bestMatch: ParagraphMatch | null = null;
 	let currentLength = 0;
 
-	console.log(`Debug: Searching for query "${query}" with terms:`, queryTerms);
+	// console.log(`Debug: Searching for query terms:`, queryTerms);
 
 	// Process each paragraph
 	for (const paragraph of paragraphs) {
@@ -126,47 +165,82 @@ function findBestMatchingParagraph(
 		}
 
 		if (paragraphMatches.length > 0) {
-			// Count full phrase matches (weighted higher)
-			const fullPhraseMatches = (
-				normalizedParagraph.match(new RegExp(normalizedQuery, "g")) || []
-			).length;
+			// Track unique exact matches and total matches by operation
+			const matchCounts: MatchCounts = {
+				exact: new Set<string>(),
+				fuzzy: 0,
+				startsWith: 0,
+				endsWith: 0,
+				doesNotStartWith: 0,
+				doesNotEndWith: 0,
+				negation: 0,
+			};
 
-			// Count individual term matches
-			const termMatches: Record<string, number> = {};
+			// Track individual term matches
+			const termMatches: Record<
+				string,
+				{ count: number; operation: HighlightTerm["operation"] }
+			> = {};
 			let totalTermMatches = 0;
 
 			normalizedTerms.forEach((term, index) => {
-				const count = (normalizedParagraph.match(new RegExp(term, "g")) || [])
-					.length;
-				termMatches[queryTerms[index]] = count;
-				totalTermMatches += count;
+				const highlightTerm = termsToHighlight[index];
+				const pattern = createHighlightPattern(
+					term,
+					highlightTerm.operation,
+					normalizedParagraph
+				);
+				if (!pattern) return; // Skip negated terms
+
+				let matches = 0;
+				if (
+					highlightTerm.operation === "startsWith" ||
+					highlightTerm.operation === "endsWith"
+				) {
+					// For start/end, check against full paragraph
+					matches = new RegExp(pattern, "iu").test(normalizedParagraph) ? 1 : 0;
+				} else {
+					// For exact/fuzzy, find all matches
+					matches = (
+						normalizedParagraph.match(new RegExp(pattern, "giu")) || []
+					).length;
+				}
+
+				termMatches[queryTerms[index]] = {
+					count: matches,
+					operation: highlightTerm.operation,
+				};
+
+				// For exact matches, add the term to Set if there's a match
+				if (highlightTerm.operation === "exact" && matches > 0) {
+					matchCounts.exact.add(term);
+				} else if (highlightTerm.operation !== "exact") {
+					// Only increment number counters for non-exact operations
+					(matchCounts[highlightTerm.operation] as number) += matches;
+				}
 			});
+
+			// Weight different types of matches
+			const relevanceScore =
+				matchCounts.exact.size * 10 + // Number of unique exact terms matched
+				matchCounts.startsWith * 3 + // Start/end weighted medium
+				matchCounts.endsWith * 3 +
+				matchCounts.fuzzy * 1; // Fuzzy matches weighted lowest
 
 			const debug = {
 				terms: queryTerms,
-				termMatches,
-				fullPhraseCount: fullPhraseMatches,
+				termMatches: Object.fromEntries(
+					Object.entries(termMatches).map(([key, value]) => [key, value.count])
+				),
+				fullPhraseCount: matchCounts.exact.size,
+				uniqueExactMatches: Array.from(matchCounts.exact),
 			};
 
-			/* console.log(`Debug: Paragraph match analysis:`, {
-				preview: paragraph.slice(0, 50) + "...",
-				fullPhraseMatches,
-				termMatches,
-				totalTermMatches,
-			}); */
-
-			// Calculate relevance score
-			// Full phrase matches are weighted 2x individual term matches
-			const relevanceScore = fullPhraseMatches * 2 + totalTermMatches;
-
-			if (
-				!bestMatch ||
-				relevanceScore > bestMatch.fullPhraseMatches * 2 + bestMatch.matchCount
-			) {
+			if (!bestMatch || relevanceScore > bestMatch.matchCount) {
 				bestMatch = {
 					text: paragraph,
-					matchCount: totalTermMatches,
-					fullPhraseMatches,
+					matchCount: relevanceScore,
+					fullPhraseMatches: matchCounts.exact.size, // Update to use exact matches
 					indices: paragraphMatches,
 					debug,
 				};
@@ -181,11 +255,11 @@ function findBestMatchingParagraph(
 		return null;
 	}
 
-	console.log("Debug: Best match found:", {
+	/* console.log("Debug: Best match found:", {
 		preview: bestMatch.text.slice(0, 50) + "...",
 		score: bestMatch.fullPhraseMatches * 2 + bestMatch.matchCount,
 		debug: bestMatch.debug,
-	});
+	}); */
 
 	// Split text into segments, preserving tooltip boundaries using updated pattern
 	const segments = bestMatch.text.split(/(\|[^|]+::[^|]+\|)/g);
@@ -196,31 +270,31 @@ function findBestMatchingParagraph(
 	const processed = segments.map((segment) => {
 		// Skip highlighting if segment is a Pāli term (matches |text::translation| pattern)
 		if (/^\|[^|]+::[^|]+\|$/.test(segment)) {
-			console.log("Debug: Skipping Pāli term:", segment);
+			// console.log("Debug: Skipping Pāli term:", segment);
 			return segment;
 		}
 
 		let highlighted = segment;
-		// Apply full phrase highlighting
-		if (isExact) {
-			// Create a pattern that matches the query with any diacritic variations
-			const pattern = createDiacriticPattern(cleanQuery);
+		termsToHighlight.forEach((ht) => {
+			const cleanTerm = processTermForHighlight(ht);
+			// For highlighting, we use word boundary patterns for better visual results
+			const pattern =
+				ht.operation === "startsWith" || ht.operation === "endsWith"
+					? `\\b${escapeRegExp(cleanTerm)}`
+					: createHighlightPattern(cleanTerm, ht.operation);
+
+			if (!pattern) return;
+
 			highlighted = highlighted.replace(
-				new RegExp(pattern, "gi"),
+				new RegExp(pattern, "giu"),
 				(match) =>
-					`<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">${match}</mark>`
+					`<mark class="${
+						ht.operation === "exact"
+							? "bg-yellow-200 dark:bg-yellow-800"
+							: "bg-yellow-100 dark:bg-yellow-900"
+					} px-1 rounded">${match}</mark>`
 			);
-		} else {
-			// Handle individual terms with diacritics
-			normalizedTerms.forEach((normalizedTerm, index) => {
-				const pattern = createDiacriticPattern(normalizedTerm);
-				highlighted = highlighted.replace(
-					new RegExp(`(?<!<mark[^>]*>)${pattern}(?![^<]*</mark>)`, "gi"),
-					(match) =>
-						`<mark class="bg-yellow-100 dark:bg-yellow-900 px-1 rounded">${match}</mark>`
-				);
-			});
-		}
+		});
 
 		return highlighted;
 	});
@@ -234,13 +308,13 @@ const searchResults = query
 			const contentMatches = matches?.filter((m) => m.key === "content");
 			let contentSnippet = null;
 
-			/*if (contentMatches?.length) {
+			if (contentMatches?.length) {
 				contentSnippet = findBestMatchingParagraph(
 					item.content,
 					contentMatches.flatMap((match) => match.indices),
-					query
+					highlightTerms
 				);
-			}*/
+			}
 
 			return {
 				...item,
@@ -251,39 +325,48 @@ const searchResults = query
 ---
 
 <Layout title="" showAuth={true}>
-	<div class="max-w-2xl mx-auto">
-		<form class="mb-8" method="get" action="/search">
-			<div class="relative">
-				<input
-					type="search"
-					name="q"
-					value={query}
-					placeholder="Search suttas..."
-					class="w-full p-4 pl-12 text-lg border rounded-lg bg-[var(--auth-input-bg)] border-[var(--auth-input-border)] text-[var(--text-color)] search-input"
-					autocomplete="off"
-				/>
-				<div class="absolute left-4 top-5 text-gray-400">
-					<Fragment set:html={SearchIcon} />
-				</div>
-				<button
-					type="button"
-					class="absolute right-4 top-5 text-gray-400 hover:text-gray-600"
-					title="Search Help"
-					onclick="document.getElementById('search-help').classList.toggle('hidden')"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-							clip-rule="evenodd"></path>
-					</svg>
-				</button>
+	<div class="relative">
+		<!-- Sticky search container -->
+		<div class="sticky top-0 z-10 bg-[var(--bg-color)] py-4 shadow-sm">
+			<div class="max-w-2xl mx-auto">
+				<form method="get" action="/search">
+					<div class="relative">
+						<input
+							type="search"
+							name="q"
+							value={query}
+							placeholder="Search suttas..."
+							class="w-full p-4 pl-12 text-lg border rounded-lg bg-[var(--auth-input-bg)] border-[var(--auth-input-border)] text-[var(--text-color)] search-input"
+							autocomplete="off"
+						/>
+						<div class="absolute left-4 top-5 text-gray-400">
+							<Fragment set:html={SearchIcon} />
+						</div>
+						<button
+							type="button"
+							class="absolute right-4 top-5 text-gray-400 hover:text-gray-600"
+							title="Search Help"
+							onclick="document.getElementById('search-help').classList.toggle('hidden')"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+									clip-rule="evenodd"></path>
+							</svg>
+						</button>
+					</div>
+				</form>
 			</div>
+		</div>
+
+		<!-- Search help and results container -->
+		<div class="max-w-2xl mx-auto mt-2">
 			<div
 				id="search-help"
 				class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
@@ -321,53 +404,53 @@ const searchResults = query
 					</ul>
 				</p>
 			</div>
-		</form>
 
-		<div>
-			{
-				query && (
-					<p class="mb-4 text-sm text-gray-500">
-						Found {searchResults.length} results for {query}
-					</p>
-				)
-			}
+			<div class="mt-4">
+				{
+					query && (
+						<p class="mb-4 text-sm text-gray-500">
+							Found {searchResults.length} results for {query}
+						</p>
+					)
+				}
 
-			{
-				searchResults.length === 0 && query && (
-					<p class="text-center text-gray-500">No results found</p>
-				)
-			}
+				{
+					searchResults.length === 0 && query && (
+						<p class="text-center text-gray-500">No results found</p>
+					)
+				}
 
-			{
-				searchResults.map((item) => (
-					<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-						<div class="flex items-start">
-							<div class="min-w-0 pr-4">
-								<h2 class="text-base sm:text-lg font-semibold">
-									<a
-										href={`/${item.slug}`}
-										class="text-gray-500 hover:text-link-color id mr-2 font-normal"
-									>
-										{transformId(`${item.slug}`)}&nbsp;
-										<span style="color:var(--text-color)">{item.title}</span>
-									</a>
-								</h2>
+				{
+					searchResults.map((item) => (
+						<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+							<div class="flex items-start">
+								<div class="min-w-0 pr-4">
+									<h2 class="text-base sm:text-lg font-semibold">
+										<a
+											href={`/${item.slug}`}
+											class="text-gray-500 hover:text-link-color id mr-2 font-normal"
+										>
+											{transformId(`${item.slug}`)}&nbsp;
+											<span style="color:var(--text-color)">{item.title}</span>
+										</a>
+									</h2>
+								</div>
 							</div>
+							{item.description && (
+								<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
+									{item.description}
+								</p>
+							)}
+							{item.contentSnippet && (
+								<p
+									class="mt-2 text-gray-500 text-sm"
+									set:html={item.contentSnippet}
+								/>
+							)}
 						</div>
-						{item.description && (
-							<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
-								{item.description}
-							</p>
-						)}
-						{item.contentSnippet && (
-							<p
-								class="mt-2 text-gray-500 text-sm"
-								set:html={item.contentSnippet}
-							/>
-						)}
-					</div>
-				))
-			}
+					))
+				}
+			</div>
 		</div>
 	</div>
 </Layout>
@@ -404,5 +487,10 @@ const searchResults = query
 
 	code {
 		@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
+	}
+
+	/* Add smooth transition for sticky header shadow */
+	.sticky {
+		transition: box-shadow 0.2s ease-in-out;
 	}
 </style>

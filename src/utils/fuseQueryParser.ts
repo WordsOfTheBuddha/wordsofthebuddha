@@ -1,13 +1,8 @@
 export const SEARCH_FIELDS = ['slug', 'title', 'description', 'content'] as const;
 type SearchField = typeof SEARCH_FIELDS[number];
 
-interface FieldQuery {
-    field: SearchField;
-    value: string;
-}
-
 interface FuseQueryTerm {
-    $or?: Array<Record<SearchField, string>>;
+    $or?: Array<Record<SearchField, string> | FuseQueryTerm>;
     $and?: Array<Record<SearchField, string> | FuseQueryTerm>;
 }
 
@@ -18,35 +13,23 @@ interface ParsedTerm {
     isFieldSpecific?: boolean;
 }
 
-interface SimplifiedTerm {
-    value: string;
-    operator?: '|';  // Add more operators if needed
-}
-
-function createFieldQuery(term: string): Record<SearchField, string> {
-    // Remove any leftover parentheses
-    term = term.replace(/^\(|\)$/g, '').trim();
-    return {
-        slug: term,
-        title: term,
-        description: term,
-        content: term
-    };
-}
-
-function createGenericQuery(term: string): Record<SearchField, string> {
-    return SEARCH_FIELDS.reduce((acc, field) => {
-        acc[field] = term;
-        return acc;
-    }, {} as Record<SearchField, string>);
-}
-
 interface ParseResult {
     terms: ParsedTerm[];
     usedTerms: Set<string>;  // Track terms used in OR operations
 }
 
-function parseFieldPattern(term: string): { field?: SearchField; value: string } {
+export interface FuseQueryResult {
+    query: FuseQueryTerm;
+    highlightTerms: HighlightTerm[];
+}
+
+export type HighlightTerm = {
+    field: string;
+    term: string;
+    operation: 'startsWith' | 'endsWith' | 'negation' | 'exact' | 'fuzzy' | 'doesNotStartWith' | 'doesNotEndWith';
+}
+
+export function parseFieldPattern(term: string): { field?: SearchField; value: string } {
     const fieldMatch = term.match(/^(\w+):(.+)$/);
     if (fieldMatch && SEARCH_FIELDS.includes(fieldMatch[1] as SearchField)) {
         return {
@@ -103,7 +86,7 @@ function parseQuery(query: string): ParseResult {
     }
     if (current.trim()) terms.push(current.trim());
 
-    console.log("Initial terms:", terms);
+    // console.log("Initial terms:", terms);
 
     // Group terms connected by |
     let i = 0;
@@ -114,12 +97,12 @@ function parseQuery(query: string): ParseResult {
         // Look ahead for OR operators
         if (i + 2 < terms.length && terms[i + 1] === '|') {
             const orTerms = [term];
-            console.log("Starting OR group with term:", term);
+            // console.log("Starting OR group with term:", term);
 
             // Collect all terms connected by |
             while (i + 2 < terms.length && terms[i + 1] === '|') {
                 const nextTerm = terms[i + 2];
-                console.log("Adding to OR group:", nextTerm);
+                // console.log("Adding to OR group:", nextTerm);
                 orTerms.push(nextTerm);
                 usedTerms.add(term);
                 usedTerms.add(nextTerm);
@@ -128,7 +111,7 @@ function parseQuery(query: string): ParseResult {
             }
 
             const orGroup = `(${orTerms.join(' | ')})`;
-            console.log("Created OR group:", orGroup);
+            // console.log("Created OR group:", orGroup);
             groupedTerms.push(orGroup);
             continue;
         } else {
@@ -136,7 +119,7 @@ function parseQuery(query: string): ParseResult {
             const splitTerms = splitParenthesizedTerms(term);
             splitTerms.forEach(t => {
                 if (!usedTerms.has(t)) {
-                    console.log("Adding term:", t);
+                    // console.log("Adding term:", t);
                     groupedTerms.push(t);
                 }
             });
@@ -144,7 +127,7 @@ function parseQuery(query: string): ParseResult {
         i++;
     }
 
-    console.log("Final grouped terms:", groupedTerms);
+    // console.log("Final grouped terms:", groupedTerms);
 
     // Convert to ParsedTerms
     const parsedTerms = groupedTerms.map(term => {
@@ -163,7 +146,7 @@ function parseQuery(query: string): ParseResult {
     return { terms: parsedTerms, usedTerms };
 }
 
-function expandGenericTerm(term: string): Array<Record<string, string>> {
+function expandGenericTerm(term: string): Array<Record<string, string> | FuseQueryTerm> {
     // Check if term is a negation
     const isNegation = term.startsWith('!');
     const value = isNegation ? term : term;  // Keep ! for Fuse.js to handle
@@ -190,7 +173,17 @@ function simplifyGroupedTerms(terms: string[]): string[] {
 }
 
 function simplifyQuery(query: string): string {
-    // First handle terms in parentheses
+    // First normalize quotes to straight quotes
+    query = query
+        .replace(/[\u2018\u2019]/g, "'") // Replace single prose quotes with straight single quote
+        .replace(/[\u201C\u201D]/g, '"'); // Replace double prose quotes with straight double quote
+
+    // Then handle quoted phrases - transform "term1 term2" into 'term1 'term2
+    query = query.replace(/"([^"]+)"/g, (_: string, phrase: string): string =>
+        phrase.split(/\s+/).map((term: string): string => `'${term}`).join(' ')
+    );
+
+    // Then handle terms in parentheses
     let simplified = query.replace(/\(([^)]+)\)/g, (match, group) => {
         const innerTerms = group.split(/\s+/);
         const simplifiedInner = simplifyGroupedTerms(innerTerms).join(' ');
@@ -201,18 +194,47 @@ function simplifyQuery(query: string): string {
     const terms = simplified.split(/\s+/);
     simplified = simplifyGroupedTerms(terms).join(' ');
 
-    console.log("Simplified query:", simplified);
+    // console.log("Simplified query:", simplified);
     return simplified;
 }
 
-export function buildFuseQuery(rawQuery: string): FuseQueryTerm {
-    // Phase 1: Query Simplification
-    const query = simplifyQuery(rawQuery);
-    console.log("After simplification:", query);
+function extractHighlightTerm(term: string): HighlightTerm | null {
+    const { field, value } = parseFieldPattern(term);
+    let operation: HighlightTerm['operation'] = 'fuzzy';
+    let cleanValue = value;
 
-    // Phase 2: Query Transformation
+    if (value.startsWith('!^')) {
+        operation = 'doesNotStartWith';
+        cleanValue = value.slice(2);
+    } else if (value.match(/!.*\$$/)) {
+        operation = 'doesNotEndWith';
+        cleanValue = value.slice(1, -1);
+    } else if (value.startsWith('!')) {
+        operation = 'negation';
+        cleanValue = value.slice(1);
+    } else if (value.startsWith('^')) {
+        operation = 'startsWith';
+        cleanValue = value.slice(1);
+    } else if (value.startsWith("'")) {
+        operation = 'exact';
+        cleanValue = value.slice(1);
+    } else if (value.endsWith('$')) {
+        operation = 'endsWith';
+        cleanValue = value.slice(0, -1);
+    }
+
+    return {
+        field: field || 'content',
+        term: cleanValue,
+        operation
+    };
+}
+
+export function buildFuseQuery(rawQuery: string): FuseQueryResult {
+    const query = simplifyQuery(rawQuery);
     const { terms: parsedTerms } = parseQuery(query);
     const andTerms: Array<Record<string, string> | FuseQueryTerm> = [];
+    const highlightTerms: Set<HighlightTerm> = new Set();
 
     parsedTerms.forEach(term => {
         if (term.isOr) {
@@ -223,6 +245,12 @@ export function buildFuseQuery(rawQuery: string): FuseQueryTerm {
                 .map(t => t.trim())
                 .filter(Boolean);
 
+            orTerms.forEach(orTerm => {
+                const highlightTerm = extractHighlightTerm(orTerm);
+                if (highlightTerm) highlightTerms.add(highlightTerm);
+            });
+
+            // ...existing OR group query building...
             const orGroup: FuseQueryTerm = {
                 $or: orTerms.flatMap(orTerm => {
                     const { field, value } = parseFieldPattern(orTerm);
@@ -232,22 +260,33 @@ export function buildFuseQuery(rawQuery: string): FuseQueryTerm {
                 })
             };
             andTerms.push(orGroup);
-        } else if (term.isFieldSpecific && term.field) {
-            // Handle field-specific terms (no need to wrap negations in AND as they're single field)
-            andTerms.push({ [term.field]: term.value });
         } else {
-            // Handle generic terms, using expandGenericTerm to handle negations
-            const expanded = expandGenericTerm(term.value);
-            andTerms.push(expanded.length === 1 ? expanded[0] : { $or: expanded });
+            const highlightTerm = extractHighlightTerm(term.value);
+            if (highlightTerm) highlightTerms.add(highlightTerm);
+
+            // ...existing term handling...
+            if (term.isFieldSpecific && term.field) {
+                andTerms.push({ [term.field]: term.value });
+            } else {
+                const expanded = expandGenericTerm(term.value);
+                andTerms.push(expanded.length === 1 ? expanded[0] : { $or: expanded });
+            }
         }
     });
 
-    return { $and: andTerms };
+    return {
+        query: { $and: andTerms },
+        highlightTerms: Array.from(highlightTerms)
+    };
 }
 
-// Update test function to show both phases
+// Update test cases
 export function testQueries() {
     const tests = [
+        "^AN title:happiness",
+        "slug:^SN 'noble 'truth",
+        "(slug:^SN | slug:^AN) 'harm !anger",
+        "title:truth$ title:^su",
         "!!evil",  // Double negation -> evil
         "!defilement",  // Keep single negation
         "(!defilement | !jhana)",  // Preserve negations in OR groups
@@ -262,12 +301,16 @@ export function testQueries() {
         "title:'danger | noble harm",
         "(slug:^AN slug:^MN)", // Test parenthesized group without OR
         "(title:noble description:path)", // Test multiple field-specific terms in parentheses
+        '"boundless consciousness"',  // Should become: 'boundless 'consciousness
+        'title:"noble truth"',        // Should become: title:'noble 'truth
+        '"right view" | "wrong view"', // Should become: ('right 'view | 'wrong 'view)
     ];
 
     tests.forEach(query => {
-        console.log('\nOriginal:', query);
-        console.log('Simplified:', simplifyQuery(query));
-        console.log('Final Query:', JSON.stringify(buildFuseQuery(query), null, 2));
-        console.log('---');
+        // console.log('\nInput:', query);
+        const result = buildFuseQuery(query);
+        // console.log('Query:', JSON.stringify(result.query, null, 2));
+        // console.log('Highlight Terms:', result.highlightTerms);
+        // console.log('---');
     });
 }
