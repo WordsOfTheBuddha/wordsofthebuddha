@@ -17,7 +17,7 @@ const { id } = Astro.params;
 const currentIndex = routes.findIndex((route) => route === id);
 
 if (currentIndex === -1) {
-	return Astro.redirect("/404");
+	return Astro.redirect(`/search?q=${id}`);
 }
 
 // Get showPali from query string
@@ -29,7 +29,7 @@ const contentItem = await getEntry("all", id);
 if (!contentItem) {
 	console.warn("English content not found");
 	console.groupEnd();
-	return Astro.redirect("/404");
+	return Astro.redirect(`/search?q=${id}`);
 }
 
 // Always parse content through contentParser

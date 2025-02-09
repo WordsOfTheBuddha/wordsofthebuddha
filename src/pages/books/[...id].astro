@@ -5,32 +5,17 @@ import { routes } from "../../utils/routes";
 import Layout from "../../layouts/Layout.astro";
 import { getLastModified } from "../../utils/getLastModified";
 
-// TODO: Should be updated for each added book
-export function getStaticPaths() {
-	return [
-		{
-			params: {
-				id: "noble-truths-noble-path",
-			},
-		},
-	];
-}
-
 // Extract slug from params
 const { id } = Astro.params;
 
 // Find current index in sorted routes
 const currentIndex = routes.findIndex((route) => route === id);
-
+console.log("idis ; ", id);
 if (currentIndex === -1) {
-	return Astro.redirect("/404");
+	return Astro.redirect(`/search?q='book+${id}`);
 }
 
 const contentItem = await getEntry("all", id);
-
-if (!contentItem) {
-	return Astro.redirect("/404");
-}
 
 // Extract last two segments of file path and remove extension
 const fpParts = (contentItem.filePath ?? "").split("/");

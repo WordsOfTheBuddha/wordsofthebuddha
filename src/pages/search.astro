@@ -6,12 +6,13 @@ import { transformId } from "../utils/transformId";
 import { buildFuseQuery, type HighlightTerm } from "../utils/fuseQueryParser";
 import Fuse from "fuse.js";
 import SearchIcon from "../assets/search.svg?raw"; // Add this import
+import HelpIcon from "../assets/help-solid.svg?raw";
 
 const query = decodeURIComponent(Astro.url.searchParams.get("q") || "");
 const { query: fuseQuery, highlightTerms } = buildFuseQuery(query);
-console.log("query is: ", query);
-console.log("built query is: ", JSON.stringify(fuseQuery, null, 2));
-console.log("highlight terms: ", highlightTerms);
+console.log("[search] query is: ", query);
+console.log("[search] built query is: ", JSON.stringify(fuseQuery, null, 2));
+console.log("[search] highlight terms: ", highlightTerms);
 
 interface SearchData {
 	slug: string;
@@ -39,13 +40,6 @@ function normalizeText(text: string): string {
 
 function escapeRegExp(string: string) {
 	return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-// Create a pattern that matches words with optional diacritics
-function createDiacriticPattern(word: string): string {
-	const normalized = normalizeText(word);
-	const escaped = escapeRegExp(normalized);
-	return `\\b${escaped.replace(/[aeiou]/g, (letter) => `[${letter}\\u0100-\\u017f]`)}\\b`;
 }
 
 // Configure Fuse.js with diacritics handling
@@ -84,10 +78,6 @@ interface MatchCounts {
 	doesNotEndWith: number;
 	negation: number;
 	[key: string]: number | Set<string>; // Add index signature
-}
-
-function isExactQuery(query: string): boolean {
-	return /^".*"$/.test(query.trim());
 }
 
 function processTermForHighlight(highlightTerm: HighlightTerm): string {
@@ -346,174 +336,177 @@ const searchResults = query
 							title="Search Help"
 							onclick="document.getElementById('search-help').classList.toggle('hidden')"
 						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="h-5 w-5"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-									clip-rule="evenodd"></path>
-							</svg>
+							<Fragment set:html={HelpIcon} />
 						</button>
 					</div>
 				</form>
-			</div>
-		</div>
 
-		<!-- Search help and results container -->
-		<div class="max-w-2xl mx-auto mt-2">
-			<div
-				id="search-help"
-				class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
-			>
-				<h3 class="font-semibold mb-2">Search Syntax:</h3>
-				<ul class="space-y-1">
-					<li>
-						<code class="not-prose">quest</code> - Relevance (including fuzzy) match
-						on quest
-					</li>
-					<li>
-						<code class="not-prose">'jhana</code> - Exact match on jhana
-					</li>
-					<li>
-						<code class="not-prose">!wrong</code> - Discourses that do not have the
-						term wrong are matched
-					</li>
-					<li>
-						<code class="not-prose">^SN22</code> - Discourses that start with SN22
-					</li>
-					<li><code class="not-prose">world$</code> - Ends with world</li>
-					<li>
-						<code class="not-prose">"perception consciousness jhana"</code> - Exact
-						matches for perception, consciousness, and jhana
-					</li>
+				<!-- Search help and results container -->
+				<div class="max-w-2xl mx-auto mt-2">
+					<div
+						id="search-help"
+						class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
+					>
+						<h3 class="font-semibold mb-2">Search Syntax:</h3>
+						<ul class="space-y-1">
+							<li>
+								<code class="not-prose">quest</code> - Relevance (including fuzzy)
+								match on quest
+							</li>
+							<li>
+								<code class="not-prose">'jhana</code> - Exact match on jhana
+							</li>
+							<li>
+								<code class="not-prose">!wrong</code> - Discourses that do not have
+								the term wrong are matched
+							</li>
+							<li>
+								<code class="not-prose">^SN22</code> - Discourses that start with
+								SN22
+							</li>
+							<li><code class="not-prose">world$</code> - Ends with world</li>
+							<li>
+								<code class="not-prose">"perception consciousness jhana"</code> -
+								Exact matches for perception, consciousness, and jhana
+							</li>
 
-					<li>
-						<code class="not-prose">"letting go" !anger</code> - Exactly matches
-						"letting go" and without anger
-					</li>
-					<li>
-						<code class="not-prose">illusion | ignorance</code> - Matches either
-						illusion or ignorance on any fields
-					</li>
-				</ul>
-				<h3 class="font-semibold mb-2">More Specific Examples:</h3>
-				<p class="mt-2 text-xs text-gray-500">
-					<ul class="space-y-1">
-						<li>
-							<code class="not-prose">!^DHP</code> matches all discourses except
-							those starting with DHP
-						</li>
-						<li>
-							<code class="not-prose"
-								>^SN content:'consciousness content:!perception</code
-							> matches all SN discourses that have consciousness in content but
-							do not have perception in content.
-						</li>
-						<li>
-							<code class="not-prose"
-								>title:element (content:space | content;consciousness)</code
-							> matches where title is element and content has either space or consciousness.
-						</li>
-						<li>
-							<code class="not-prose"
-								>^AN (urgency | faith) !mindfulness !child</code
-							> matches AN discourses that have urgency or fatih in them, and do
-							not have the words mindfulness or child in them.
-						</li>
-					</ul>
-				</p>
-			</div>
-		</div>
-
-		<div class="mt-4">
-			{
-				query && (
-					<p class="mb-4 text-sm text-gray-500">
-						Found {searchResults.length} results for {query}
-					</p>
-				)
-			}
-
-			{
-				searchResults.length === 0 && query && (
-					<p class="text-center text-gray-500">No results found</p>
-				)
-			}
-
-			{
-				searchResults.map((item) => (
-					<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-						<div class="flex items-start">
-							<div class="min-w-0 pr-4">
-								<h2 class="text-base sm:text-lg font-semibold">
-									<a
-										href={`/${item.slug}`}
-										class="text-gray-500 hover:text-link-color id mr-2 font-normal"
-									>
-										{transformId(`${item.slug}`)}&nbsp;
-										<span style="color:var(--text-color)">{item.title}</span>
-									</a>
-								</h2>
-							</div>
-						</div>
-						{item.description && (
-							<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
-								{item.description}
-							</p>
-						)}
-						{item.contentSnippet && (
-							<p
-								class="mt-2 text-gray-500 text-sm"
-								set:html={item.contentSnippet}
-							/>
-						)}
+							<li>
+								<code class="not-prose">"letting go" !anger</code> - Exactly matches
+								"letting go" and without anger
+							</li>
+							<li>
+								<code class="not-prose">illusion | ignorance</code> - Matches either
+								illusion or ignorance on any fields
+							</li>
+						</ul>
+						<h3 class="font-semibold mb-2">More Specific Examples:</h3>
+						<p class="mt-2 text-xs text-gray-500">
+							<ul class="space-y-1">
+								<li>
+									<code class="not-prose">!^DHP</code> matches all discourses except
+									those starting with DHP
+								</li>
+								<li>
+									<code class="not-prose"
+										>^SN content:'consciousness content:!perception</code
+									> matches all SN discourses that have consciousness in content
+									but do not have perception in content.
+								</li>
+								<li>
+									<code class="not-prose"
+										>title:element (content:space | content;consciousness)</code
+									> matches where title is element and content has either space or
+									consciousness.
+								</li>
+								<li>
+									<code class="not-prose"
+										>^AN (urgency | faith) !mindfulness !child</code
+									> matches AN discourses that have urgency or fatih in them, and
+									do not have the words mindfulness or child in them.
+								</li>
+							</ul>
+						</p>
 					</div>
-				))
-			}
+				</div>
+
+				<div class="mt-4">
+					{
+						query && (
+							<p class="mb-4 text-sm text-gray-500">
+								Found {searchResults.length} results for {query}
+							</p>
+						)
+					}
+
+					{
+						searchResults.length === 0 && query && (
+							<p class="text-center text-gray-500">No results found</p>
+						)
+					}
+
+					{
+						searchResults.map((item) => (
+							<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+								<div class="flex items-start">
+									<div class="min-w-0 pr-4">
+										<h2 class="text-base sm:text-lg font-semibold">
+											<a
+												href={`/${item.slug}`}
+												class="text-gray-500 hover:text-link-color id mr-2 font-normal"
+											>
+												{transformId(`${item.slug}`)}&nbsp;
+												<span style="color:var(--text-color)">
+													{item.title}
+												</span>
+											</a>
+										</h2>
+									</div>
+								</div>
+								{item.description && (
+									<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
+										{item.description}
+									</p>
+								)}
+								{item.contentSnippet && (
+									<p
+										class="mt-2 text-gray-500 text-sm"
+										set:html={item.contentSnippet}
+									/>
+								)}
+							</div>
+						))
+					}
+				</div>
+			</div>
 		</div>
-	</div>
-</Layout>
 
-<style>
-	.id {
-		font-size: 0.95rem;
-		display: inline-block;
-		@media (min-width: 640px) {
-			font-size: 1.1rem;
-		}
-	}
-	.text-text {
-		color: var(--text-color);
-		margin: 0.5rem 0;
-	}
+		<style>
+			.id {
+				font-size: 0.95rem;
+				display: inline-block;
+				@media (min-width: 640px) {
+					font-size: 1.1rem;
+				}
+			}
+			.text-text {
+				color: var(--text-color);
+				margin: 0.5rem 0;
+			}
 
-	/* Remove the clear (x) button */
-	.search-input::-webkit-search-cancel-button {
-		display: none;
-	}
-	.search-input::-webkit-search-decoration {
-		display: none;
-	}
+			/* Remove the clear (x) button */
+			.search-input::-webkit-search-cancel-button {
+				display: none;
+			}
+			.search-input::-webkit-search-decoration {
+				display: none;
+			}
 
-	.search-input::-ms-clear {
-		display: none;
-	}
+			.search-input::-ms-clear {
+				display: none;
+			}
 
-	/* Add styles for the highlighted text */
-	:global(mark) {
-		color: var(--text-color);
-	}
+			/* Add styles for the highlighted text */
+			:global(mark) {
+				color: var(--text-color);
+			}
+			/* Add selection styles for better contrast */
+			:global(mark::selection) {
+				color: white;
+				background-color: #2563eb; /* blue-600 */
+			}
 
-	code {
-		@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
-	}
+			.text-gray-500 {
+				@apply dark:text-gray-300;
+			}
 
-	/* Add smooth transition for sticky header shadow */
-	.sticky {
-		transition: box-shadow 0.2s ease-in-out;
-	}
-</style>
+			code {
+				@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
+			}
+
+			/* Add smooth transition for sticky header shadow */
+			.sticky {
+				transition: box-shadow 0.2s ease-in-out;
+			}
+		</style>
+	</div></Layout
+>

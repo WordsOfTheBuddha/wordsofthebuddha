@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 
 const home = await getEntry("all", "index");
 if (!home) {
-	return Astro.redirect("/404");
+	return Astro.redirect("/search");
 }
 const { title, description } = home.data;
 const { Content } = await render(home);
