@@ -2,7 +2,7 @@ import { getAuth } from "firebase-admin/auth";
 import { app } from "../firebase/server";
 
 const userCache = new Map<string, { user: any; timestamp: number }>();
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes TTL
+const CACHE_TTL = 120 * 60 * 1000; // 120 minutes TTL
 const AUTH_GET_USER_TIMEOUT = 10000; // 10 seconds
 
 /* Centralized session verification */
