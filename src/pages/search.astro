@@ -3,10 +3,14 @@ export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { transformId } from "../utils/transformId";
+import { buildFuseQuery } from "../utils/fuseQueryParser";
 import Fuse from "fuse.js";
 import SearchIcon from "../assets/search.svg?raw"; // Add this import
 
-const query = Astro.url.searchParams.get("q") || "";
+const query = decodeURIComponent(Astro.url.searchParams.get("q") || "");
+const fuseQuery = buildFuseQuery(query);
+console.log("query is: ", query);
+console.log("built query is: ", JSON.stringify(fuseQuery, null, 2));
 
 interface SearchData {
 	slug: string;
@@ -23,7 +27,6 @@ const searchData: SearchData[] = allContent.map(
 		slug: item.data.slug,
 		title: item.data.title,
 		description: item.data.description,
-		collection: item.collection,
 		content: item.body || "",
 	})
 );
@@ -56,6 +59,7 @@ const fuse = new Fuse(searchData, {
 	threshold: 0.3,
 	ignoreLocation: true,
 	ignoreDiacritics: true, // Add this option
+	useExtendedSearch: true, // Enable extended search
 });
 
 interface ParagraphMatch {
@@ -144,12 +148,12 @@ function findBestMatchingParagraph(
 				fullPhraseCount: fullPhraseMatches,
 			};
 
-			console.log(`Debug: Paragraph match analysis:`, {
+			/* console.log(`Debug: Paragraph match analysis:`, {
 				preview: paragraph.slice(0, 50) + "...",
 				fullPhraseMatches,
 				termMatches,
 				totalTermMatches,
-			});
+			}); */
 
 			// Calculate relevance score
 			// Full phrase matches are weighted 2x individual term matches
@@ -183,10 +187,10 @@ function findBestMatchingParagraph(
 		debug: bestMatch.debug,
 	});
 
-	// Split text into segments, preserving Pāli boundaries using updated pattern
+	// Split text into segments, preserving tooltip boundaries using updated pattern
 	const segments = bestMatch.text.split(/(\|[^|]+::[^|]+\|)/g);
 
-	console.log("Debug: Segments found:", segments.length, segments);
+	// console.log("Debug: Segments found:", segments.length, segments);
 
 	// Process each segment separately
 	const processed = segments.map((segment) => {
@@ -226,17 +230,17 @@ function findBestMatchingParagraph(
 
 // Perform search on server if query exists
 const searchResults = query
-	? fuse.search(query).map(({ item, matches }) => {
+	? fuse.search(fuseQuery).map(({ item, matches }) => {
 			const contentMatches = matches?.filter((m) => m.key === "content");
 			let contentSnippet = null;
 
-			if (contentMatches?.length) {
+			/*if (contentMatches?.length) {
 				contentSnippet = findBestMatchingParagraph(
 					item.content,
 					contentMatches.flatMap((match) => match.indices),
 					query
 				);
-			}
+			}*/
 
 			return {
 				...item,
@@ -261,6 +265,61 @@ const searchResults = query
 				<div class="absolute left-4 top-5 text-gray-400">
 					<Fragment set:html={SearchIcon} />
 				</div>
+				<button
+					type="button"
+					class="absolute right-4 top-5 text-gray-400 hover:text-gray-600"
+					title="Search Help"
+					onclick="document.getElementById('search-help').classList.toggle('hidden')"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						viewBox="0 0 20 20"
+						fill="currentColor"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+							clip-rule="evenodd"></path>
+					</svg>
+				</button>
+			</div>
+			<div
+				id="search-help"
+				class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
+			>
+				<h3 class="font-semibold mb-2">Advanced Search Syntax:</h3>
+				<ul class="space-y-1">
+					<li><code class="not-prose">jhana</code> - Fuzzy match on jhana</li>
+					<li>
+						<code class="not-prose">'jhana</code> - Must include jhana exactly
+					</li>
+					<li><code class="not-prose">!word</code> - Must not include</li>
+					<li><code class="not-prose">^word</code> - Starts with</li>
+					<li><code class="not-prose">word$</code> - Ends with</li>
+					<li><code class="not-prose">term1 term2</code> - AND (both terms)</li>
+					<li><code class="not-prose">term1|term2</code> - OR (either term)</li>
+				</ul>
+				<h3 class="font-semibold mb-2">Examples:</h3>
+				<p class="mt-2 text-xs text-gray-500">
+					<ul class="space-y-1">
+						<li>
+							<code class="not-prose">^DHP</code> will list all DhammaPada verses
+						</li>
+						<li>
+							<code class="not-prose">^SN 'consciousness 'nibbana</code> will search
+							for all SN discourses that contain both the terms consciousness and
+							nibbana
+						</li>
+						<li>
+							<code class="not-prose">!^DHP 'jhana</code> will look for the term
+							jhana in all discourses except in DhammaPada verses
+						</li>
+						<li>
+							<code class="not-prose">^AN 'harm | 'danger</code>will search for
+						</li>
+					</ul>
+				</p>
 			</div>
 		</form>
 
@@ -333,6 +392,7 @@ const searchResults = query
 	.search-input::-webkit-search-decoration {
 		display: none;
 	}
+
 	.search-input::-ms-clear {
 		display: none;
 	}
@@ -340,5 +400,9 @@ const searchResults = query
 	/* Add styles for the highlighted text */
 	:global(mark) {
 		color: var(--text-color);
+	}
+
+	code {
+		@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
 	}
 </style>
