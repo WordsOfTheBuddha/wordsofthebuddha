@@ -51,6 +51,32 @@ const fuse = new Fuse(searchData, {
 		{ name: "content", weight: 1 },
 	],
 	includeMatches: true,
+	sortFn: (a: any, b: any) => {
+		// Round scores to 3 decimal points for comparison
+		const scoreA = Math.round(a.score * 10e10) / 10e10;
+		const scoreB = Math.round(b.score * 10e10) / 10e10;
+
+		// If scores are different, sort by score
+		if (scoreA !== scoreB) {
+			return scoreA - scoreB;
+		}
+
+		// Extract slugs with proper type checking
+		const getSlug = (item: any) => {
+			if (!item?.item?.[0]) return "";
+			const slug = item.item[0];
+			return typeof slug === "object" && "v" in slug ? slug.v : "";
+		};
+
+		const slugA = getSlug(a);
+		const slugB = getSlug(b);
+
+		// If scores are equal, use natural sort on slug
+		return String(slugA).localeCompare(String(slugB), undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	},
 	threshold: 0.3,
 	ignoreLocation: true,
 	ignoreDiacritics: true, // Add this option
