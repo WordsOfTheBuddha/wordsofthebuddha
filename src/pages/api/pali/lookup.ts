@@ -9,7 +9,7 @@ interface DpdResponse {
     [key: string]: any;
 }
 
-const TIMEOUT = 18000;
+const TIMEOUT = 25000;
 
 function cleanupDpdHtml(html: string): string {
     const dom = new JSDOM(html);
@@ -131,7 +131,8 @@ export const GET: APIRoute = async ({ url }) => {
 
             const response = Object.fromEntries(
                 results
-                    .filter(result => result.data?.summary_html)
+                    .filter((result): result is { word: string, data: DpdResponse } =>
+                        result.data !== null && result.data.summary_html !== undefined)
                     .map(result => [result.word, result.data.summary_html])
             );
 
