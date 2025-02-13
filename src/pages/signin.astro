@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-import { app } from "../firebase/server";
+import { app } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 
@@ -60,7 +60,11 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 							pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
-						<p class="mt-1 text-sm text-red-500 hidden" id="email-error"></p>
+						<p
+							class="mt-1 text-sm text-red-500 hidden"
+							id="email-error"
+						>
+						</p>
 					</div>
 					<div>
 						<label
@@ -76,7 +80,11 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 							minlength="6"
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
-						<p class="mt-1 text-sm text-red-500 hidden" id="password-error"></p>
+						<p
+							class="mt-1 text-sm text-red-500 hidden"
+							id="password-error"
+						>
+						</p>
 					</div>
 				</div>
 
@@ -98,7 +106,7 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 		inMemoryPersistence,
 		signInWithEmailAndPassword,
 	} from "firebase/auth";
-	import { app } from "../firebase/client";
+	import { app } from "../service/firebase/client";
 
 	const returnTo =
 		new URL(window.location.href).searchParams.get("returnTo") ||
@@ -110,7 +118,9 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 
 	const form = document.querySelector("form") as HTMLFormElement;
 	const emailInput = document.getElementById("email") as HTMLInputElement;
-	const passwordInput = document.getElementById("password") as HTMLInputElement;
+	const passwordInput = document.getElementById(
+		"password"
+	) as HTMLInputElement;
 	const emailError = document.getElementById(
 		"email-error"
 	) as HTMLParagraphElement;
@@ -155,7 +165,10 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 
 		// Validate password
 		if (password.length < 6) {
-			showError(passwordError, "Password must be at least 6 characters long");
+			showError(
+				passwordError,
+				"Password must be at least 6 characters long"
+			);
 			isValid = false;
 		}
 
@@ -184,7 +197,9 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 				signInWithEmailAndPassword(auth, email, password),
 				new Promise((_, reject) => {
 					signInTimeoutId = setTimeout(() => {
-						console.log("[Auth-Client] Firebase signin timeout triggered");
+						console.log(
+							"[Auth-Client] Firebase signin timeout triggered"
+						);
 						reject(new Error("Firebase sign in timeout"));
 					}, firebaseTimeoutMs) as unknown as number;
 				}),
@@ -193,12 +208,17 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 			// Clear Firebase timeout since we succeeded
 			if (signInTimeoutId) clearTimeout(signInTimeoutId);
 
-			console.log("[Auth-Client] Firebase signin successful, getting token");
+			console.log(
+				"[Auth-Client] Firebase signin successful, getting token"
+			);
 			const idToken = await signInResult.user.getIdToken();
 
 			// Shorter timeout for backend call since it's timing out
 			console.log("[Auth-Client] Token received, calling backend");
-			console.log("[Auth-Client] Backend timeout set to:", backendTimeoutMs);
+			console.log(
+				"[Auth-Client] Backend timeout set to:",
+				backendTimeoutMs
+			);
 
 			const controller = new AbortController();
 			backendTimeoutId = setTimeout(() => {
@@ -224,7 +244,9 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 			// Clear backend timeout since we got a response
 			if (backendTimeoutId) clearTimeout(backendTimeoutId);
 
-			console.log(`[Auth-Client] Backend response status: ${response.status}`);
+			console.log(
+				`[Auth-Client] Backend response status: ${response.status}`
+			);
 
 			if (!response.ok) {
 				const errorText = await response.text();
@@ -265,9 +287,15 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 					"Server is taking longer than expected. Please try again."
 				);
 			} else if (error.message?.includes("timeout")) {
-				showError(passwordError, "Authentication timed out. Please try again.");
+				showError(
+					passwordError,
+					"Authentication timed out. Please try again."
+				);
 			} else if (error.message?.includes("Backend error")) {
-				showError(passwordError, "Server error. Please try again later.");
+				showError(
+					passwordError,
+					"Server error. Please try again later."
+				);
 			} else if (error.code === "auth/invalid-email") {
 				showError(emailError, "Invalid email format");
 			} else if (error.code === "auth/user-not-found") {

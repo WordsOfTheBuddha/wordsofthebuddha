@@ -2,7 +2,7 @@
 import ClockOutline from "../assets/clock-outline.svg?raw";
 import Check from "../assets/check.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
-import { app } from "../firebase/server";
+import { app } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -78,9 +78,13 @@ if (Astro.cookies.has("__session")) {
 			btn?.classList.add("text-primary-color", "dark:text-primary-color");
 			outline?.classList.add("hidden");
 			check?.classList.remove("hidden");
-			if (readLaterLabel) readLaterLabel.innerText = "Added to Read Later";
+			if (readLaterLabel)
+				readLaterLabel.innerText = "Added to Read Later";
 		} else {
-			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
+			btn?.classList.remove(
+				"text-primary-color",
+				"dark:text-primary-color"
+			);
 			outline?.classList.remove("hidden");
 			check?.classList.add("hidden");
 			if (readLaterLabel) readLaterLabel.innerText = "Read Later";
@@ -137,9 +141,11 @@ if (Astro.cookies.has("__session")) {
 
 		// Handle sign-in prompt close button if prompt exists
 		if (prompt) {
-			document.querySelector(".close-prompt")?.addEventListener("click", () => {
-				prompt.classList.add("hidden");
-			});
+			document
+				.querySelector(".close-prompt")
+				?.addEventListener("click", () => {
+					prompt.classList.add("hidden");
+				});
 		}
 	}
 </script>

@@ -3,33 +3,49 @@ export const prerender = false;
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
+import { performSearch, type SearchResult } from "../service/search/search";
 
-const allDhpPosts = await getCollection("dhp");
-
-// Natural sort function
-const naturalSort = (a: CollectionEntry<"dhp">, b: CollectionEntry<"dhp">) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
-};
-
-// console.log(allDhpPosts);
-const sortedPosts = allDhpPosts.sort(naturalSort);
+const pagePosts: SearchResult[] = await performSearch("^dhp", {
+	highlight: true,
+});
 ---
 
-<Layout title="Dhammapada Verses" showAuth={true}>
+<Layout
+	title="Dhammapada Verses"
+	description="A widely read collection of 423 verses of the sayings of the Buddha organized by memorable chapters."
+	showAuth={true}
+	showFilter={true}
+>
 	<main class="container">
-		<div class="posts-grid">
+		<div id="posts-container" class="posts-grid" data-filter="">
 			{
-				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
+				pagePosts.map((post) => (
 					<PostCard
-						title={post.data.title}
-						description={post.data.description}
-						id={post.data.slug}
+						title={post.title}
+						description={post.description}
+						id={post.slug}
 					/>
 				))
 			}
 		</div>
 	</main>
 </Layout>
+
+<script>
+	const input = document.getElementById("client-filter") as HTMLInputElement;
+	const container = document.getElementById("posts-container");
+	const posts = container?.querySelectorAll(".post-item");
+
+	input?.addEventListener("input", (e) => {
+		const filter = (e.target as HTMLInputElement).value.toLowerCase();
+		container?.setAttribute("data-filter", filter);
+
+		posts?.forEach((post) => {
+			const content = post.textContent?.toLowerCase() || "";
+			post.classList.toggle(
+				"hidden",
+				!!filter && !content.includes(filter)
+			);
+		});
+	});
+</script>

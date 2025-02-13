@@ -26,6 +26,7 @@ const {
 	fp,
 	title,
 	description,
+	filterString, // Add new prop
 	prev,
 	next,
 	lastUpdated,
@@ -34,13 +35,16 @@ const {
 	titleIcon = null, // Add new prop for title icon
 	showAuth = false, // Add new prop
 	showPali = false,
+	showFilter = false, // Add new prop
 } = Astro.props;
+
 let SEOTitle = title;
 if (title != "Words of the Buddha" && title) {
 	SEOTitle = title + " - Words of the Buddha";
 }
 if (id) {
-	SEOTitle = id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
+	SEOTitle =
+		id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
 }
 ---
 
@@ -49,7 +53,10 @@ if (id) {
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{SEOTitle || "Words of the Buddha"}</title>
-		<meta name="description" content={description || "Default Description"} />
+		<meta
+			name="description"
+			content={description || "Default Description"}
+		/>
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<script is:inline>
 			function getInitialTheme() {
@@ -96,17 +103,19 @@ if (id) {
 				>
 					<Navbar showAuth={showAuth} />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
-					<Title title={title}>
-						{
-							titleIcon && (
-								<span
-									class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color"
-									set:html={titleIcon}
-								/>
-							)
-						}
-					</Title>
-					<Description description={description} />
+					{(<Description description={description} />)}
+					<div class="flex items-start justify-between">
+						<Title title={title} showFilter={showFilter}>
+							{
+								titleIcon && (
+									<span
+										class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color"
+										set:html={titleIcon}
+									/>
+								)
+							}
+						</Title>
+					</div>
 					{
 						(showPali || showReadLater || showSave) && (
 							<>
@@ -122,7 +131,11 @@ if (id) {
 						)
 					}
 					<slot />
-					{lastUpdated && <LastUpdated lastUpdated={lastUpdated} path={fp} />}
+					{
+						lastUpdated && (
+							<LastUpdated lastUpdated={lastUpdated} path={fp} />
+						)
+					}
 					<FooterNavigation prev={prev} next={next} />
 					<Footer />
 				</HighlightLayout>
@@ -130,7 +143,10 @@ if (id) {
 		</main>
 	</body>
 	<script>
-		import { handleNavigation, synchronizePreferences } from "../utils/theme";
+		import {
+			handleNavigation,
+			synchronizePreferences,
+		} from "../utils/theme";
 		import type { UserPreferences, Theme, FontSize } from "../utils/theme";
 
 		// Load preferences once when the page loads
@@ -138,10 +154,14 @@ if (id) {
 			const urlParams = new URLSearchParams(window.location.search);
 			const preferences: UserPreferences = {
 				theme:
-					(urlParams.get("theme") as Theme) ?? localStorage.theme ?? "dark",
+					(urlParams.get("theme") as Theme) ??
+					localStorage.theme ??
+					"dark",
 				showPali: urlParams.get("pli") === "true",
 				enablePaliLookup:
-					urlParams.get("enablePaliLookup") ?? localStorage.paliLookup ?? false,
+					urlParams.get("enablePaliLookup") ??
+					localStorage.paliLookup ??
+					false,
 			};
 			console.log("preferences: ", preferences);
 			synchronizePreferences(preferences);

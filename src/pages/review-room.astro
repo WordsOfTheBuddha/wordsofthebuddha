@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 import { getEntry } from "astro:content";
-import { app, db } from "../firebase/server";
+import { app, db } from "../service/firebase/server";
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import ClockSolid from "../assets/clock-solid.svg?raw";
@@ -100,20 +100,30 @@ try {
 		<div class="max-w-5xl mx-auto" id="dashboard-container">
 			<div class="sticky top-0 bg-white dark:bg-gray-900 z-10 py-2">
 				<nav class="-mb-px flex space-x-8" aria-label="Tabs">
-					<a href="#highlights" class="tab-link active" data-tab="highlights">
-						<span class="inline-flex text-base sm:text-lg items-center gap-2">
+					<a
+						href="#highlights"
+						class="tab-link active"
+						data-tab="highlights"
+					>
+						<span
+							class="inline-flex text-base sm:text-lg items-center gap-2"
+						>
 							<span class="w-4 h-4" set:html={HighlightIcon} />
 							Highlights
 						</span>
 					</a>
 					<a href="#readlater" class="tab-link" data-tab="readlater">
-						<span class="inline-flex text-base sm:text-lg items-center gap-2">
+						<span
+							class="inline-flex text-base sm:text-lg items-center gap-2"
+						>
 							<span class="w-4 h-4" set:html={ClockSolid} />
 							Read Later
 						</span>
 					</a>
 					<a href="#saves" class="tab-link" data-tab="saves">
-						<span class="inline-flex text-base sm:text-lg items-center gap-2">
+						<span
+							class="inline-flex text-base sm:text-lg items-center gap-2"
+						>
 							<span class="w-4 h-4" set:html={SaveSolid} />
 							Saves
 						</span>
@@ -139,8 +149,9 @@ try {
 													class="text-gray-500 hover:text-link-color"
 												>
 													{transformId(
-														highlight.slug?.replace(/^\//, "").split("?")[0] ||
-															""
+														highlight.slug
+															?.replace(/^\//, "")
+															.split("?")[0] || ""
 													)}
 													{highlight.title}
 												</a>
@@ -153,10 +164,16 @@ try {
 										</div>
 									</div>
 									<div class="highlight-content">
-										{Object.values(highlight.highlightSegments)
+										{Object.values(
+											highlight.highlightSegments
+										)
 											.sort((a, b) => a.order - b.order)
 											.map((segment) => (
-												<Fragment set:html={segment.containerHTML} />
+												<Fragment
+													set:html={
+														segment.containerHTML
+													}
+												/>
 											))}
 									</div>
 									<p class="text-gray-500 text-xs my-0 text-right">

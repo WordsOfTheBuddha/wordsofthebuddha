@@ -1,9 +1,10 @@
 ---
 interface Props {
 	title: string;
+	showFilter?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, showFilter = false } = Astro.props;
 const hasSeparator = title?.includes("-");
 const [paliTitle, ...englishParts] = hasSeparator
 	? title.split("-").map((part) => part.trim())
@@ -11,8 +12,23 @@ const [paliTitle, ...englishParts] = hasSeparator
 const englishTitle = englishParts.join(" - ");
 ---
 
-<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8">
-	<slot />
-	<span class="pali-paragraph">{paliTitle}</span>
-	{hasSeparator && ` - ${englishTitle}`}
-</h1>
+<div class="relative flex items-start justify-between mt-8 w-full">
+	<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex-shrink">
+		<slot />
+		<span class="pali-paragraph">{paliTitle}</span>
+		{hasSeparator && ` - ${englishTitle}`}
+	</h1>
+	{
+		showFilter && (
+			<div class="flex-shrink-0 ml-4">
+				<input
+					type="text"
+					id="client-filter"
+					placeholder="Filter..."
+					autocomplete="off"
+					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+				/>
+			</div>
+		)
+	}
+</div>

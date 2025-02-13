@@ -26,7 +26,7 @@ const {
 ---
 
 <div
-	class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+	class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
 >
 	<div class="flex items-start">
 		<div class="min-w-0 pr-4">
@@ -34,8 +34,8 @@ const {
 				<a
 					href={id}
 					class="text-gray-500 hover:text-link-color id mr-2 font-normal"
-					>{transformId(id)}&nbsp;<span style="color:var(--text-color)"
-						>{title}</span
+					>{transformId(id)}&nbsp;<span
+						style="color:var(--text-color)">{title}</span
 					></a
 				>
 			</h2>
@@ -55,12 +55,15 @@ const {
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						stroke-width="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+					></path>
 				</svg>
 			</button>
 		</div>
 	</div>
-	<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">{description}</p>
+	<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
+		{description}
+	</p>
 	{
 		lastUpdated && (
 			<p class="text-gray-500 text-xs my-0 text-right">

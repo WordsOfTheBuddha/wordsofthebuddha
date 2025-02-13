@@ -1,7 +1,7 @@
 ---
 import ChevronRight from "../assets/chevron-right.svg?raw";
 import ChevronDown from "../assets/chevron-down.svg?raw";
-import { app } from "../firebase/server";
+import { app } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -16,7 +16,10 @@ if (!url.searchParams.has("pli")) {
 		if (sessionCookie) {
 			const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 			const db = getFirestore(app);
-			const userDoc = await db.collection("users").doc(decodedCookie.uid).get();
+			const userDoc = await db
+				.collection("users")
+				.doc(decodedCookie.uid)
+				.get();
 			isPaliMode = userDoc.exists
 				? userDoc.data()?.preferences?.showPali === true
 				: false;
@@ -55,7 +58,8 @@ if (!url.searchParams.has("pli")) {
 	if (btn) {
 		btn.addEventListener("click", () => {
 			const isPaliMode =
-				new URL(window.location.href).searchParams.get("pli") === "true";
+				new URL(window.location.href).searchParams.get("pli") ===
+				"true";
 			setPaliState(!isPaliMode);
 			// Reload only if we need to show/hide Pali content
 			window.location.reload();

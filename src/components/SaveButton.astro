@@ -2,7 +2,7 @@
 import SaveOutline from "../assets/save-outline.svg?raw";
 import Check from "../assets/check.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
-import { app } from "../firebase/server";
+import { app } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -70,7 +70,10 @@ if (Astro.cookies.has("__session")) {
 			check?.classList.remove("hidden");
 			if (saveLabel) saveLabel.innerText = "Saved";
 		} else {
-			btn?.classList.remove("text-primary-color", "dark:text-primary-color");
+			btn?.classList.remove(
+				"text-primary-color",
+				"dark:text-primary-color"
+			);
 			outline?.classList.remove("hidden");
 			check?.classList.add("hidden");
 			if (saveLabel) saveLabel.innerText = "Save";

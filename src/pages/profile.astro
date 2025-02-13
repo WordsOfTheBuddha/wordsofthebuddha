@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 import Layout from "../layouts/Layout.astro";
-import { db } from "../firebase/server";
+import { db } from "../service/firebase/server";
 import type { UserRecord } from "firebase-admin/auth";
 import { verifyUser } from "../middleware/auth";
 import FontSizeLarger from "../assets/font-size-larger.svg?raw";
@@ -25,6 +25,9 @@ try {
 }
 
 // Get user preferences with error handling
+if (!user) {
+	return Astro.redirect("/signin?returnTo=/profile");
+}
 const userDoc = await db.collection("users").doc(user.uid).get();
 const userData = userDoc.data() || {};
 
@@ -87,7 +90,11 @@ if (!user) {
 							disabled
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
-						<p id="emailError" class="mt-1 text-sm text-red-500 hidden"></p>
+						<p
+							id="emailError"
+							class="mt-1 text-sm text-red-500 hidden"
+						>
+						</p>
 					</div>
 					<button
 						type="submit"
@@ -100,26 +107,33 @@ if (!user) {
 			</div>
 
 			<div class="bg-[var(--auth-card-bg)] p-8 rounded-lg shadow-lg">
-				<h2 class="text-2xl font-semibold mb-4 text-[var(--text-color)]">
+				<h2
+					class="text-2xl font-semibold mb-4 text-[var(--text-color)]"
+				>
 					Preferences
 				</h2>
 				<div class="space-y-4">
 					<div class="flex items-center justify-between">
-						<span class="text-base font-medium text-[var(--text-color)]"
+						<span
+							class="text-base font-medium text-[var(--text-color)]"
 							>Theme</span
 						>
 						<div class="flex items-center space-x-2">
 							<button
 								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
 								data-theme="light"
-								data-active={(currentTheme === "light").toString()}
+								data-active={(
+									currentTheme === "light"
+								).toString()}
 							>
 								Light
 							</button>
 							<button
 								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] theme-btn"
 								data-theme="dark"
-								data-active={(currentTheme === "dark").toString()}
+								data-active={(
+									currentTheme === "dark"
+								).toString()}
 							>
 								Dark
 							</button>
@@ -127,21 +141,27 @@ if (!user) {
 					</div>
 
 					<div class="flex items-center justify-between">
-						<span class="text-base font-medium text-[var(--text-color)]">
+						<span
+							class="text-base font-medium text-[var(--text-color)]"
+						>
 							Reading Font Size
 						</span>
 						<div class="flex items-baseline space-x-2">
 							<button
 								class="p-2 rounded-md border border-[var(--auth-input-border)] font-size-btn flex items-center justify-center"
 								data-size="large"
-								data-active={currentFontSize === "large" ? "true" : "false"}
+								data-active={currentFontSize === "large"
+									? "true"
+									: "false"}
 								title="Large"
 								set:html={FontSizeLarge}
 							/>
 							<button
 								class="p-2 rounded-md border border-[var(--auth-input-border)] font-size-btn flex items-center justify-center"
 								data-size="larger"
-								data-active={currentFontSize === "larger" ? "true" : "false"}
+								data-active={currentFontSize === "larger"
+									? "true"
+									: "false"}
 								title="Larger"
 								set:html={FontSizeLarger}
 							/>
@@ -149,7 +169,8 @@ if (!user) {
 					</div>
 
 					<div class="flex items-center justify-between">
-						<span class="text-base font-medium text-[var(--text-color)]"
+						<span
+							class="text-base font-medium text-[var(--text-color)]"
 							>Display Pāli text interleaved with English</span
 						>
 						<button
@@ -161,7 +182,8 @@ if (!user) {
 					</div>
 
 					<div class="flex items-center justify-between">
-						<span class="text-base font-medium text-[var(--text-color)]"
+						<span
+							class="text-base font-medium text-[var(--text-color)]"
 							>Pāli word lookup on double-click/long-press</span
 						>
 						<button
@@ -193,7 +215,9 @@ if (!user) {
 				?.getAttribute("data-size") || "large";
 
 		// Update localStorage if values are different
-		if (localStorage.getItem("paliLookup") !== enablePaliLookup.toString()) {
+		if (
+			localStorage.getItem("paliLookup") !== enablePaliLookup.toString()
+		) {
 			localStorage.setItem("paliLookup", enablePaliLookup.toString());
 		}
 		if (localStorage.getItem("fontSize") !== currentFontSize) {
@@ -204,7 +228,9 @@ if (!user) {
 	const profileForm = document.getElementById(
 		"profile-form"
 	) as HTMLFormElement;
-	const editToggle = document.getElementById("editToggle") as HTMLButtonElement;
+	const editToggle = document.getElementById(
+		"editToggle"
+	) as HTMLButtonElement;
 	const submitButton = profileForm.querySelector(
 		'button[type="submit"]'
 	) as HTMLButtonElement;
@@ -229,7 +255,10 @@ if (!user) {
 		}
 	});
 
-	function validateEmail(email: string): { isValid: boolean; message: string } {
+	function validateEmail(email: string): {
+		isValid: boolean;
+		message: string;
+	} {
 		// Allow: letters, numbers, dots, underscores, hyphens, plus, @ symbol
 		const allowedChars = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		const consecutiveDots = /\.\./;
@@ -334,9 +363,15 @@ if (!user) {
 			const isActive = buttonTheme === currentTheme;
 			button.setAttribute("data-active", isActive.toString());
 			if (isActive) {
-				button.classList.add("bg-[var(--auth-button-bg)]", "text-white");
+				button.classList.add(
+					"bg-[var(--auth-button-bg)]",
+					"text-white"
+				);
 			} else {
-				button.classList.remove("bg-[var(--auth-button-bg)]", "text-white");
+				button.classList.remove(
+					"bg-[var(--auth-button-bg)]",
+					"text-white"
+				);
 			}
 		});
 	}
@@ -379,7 +414,8 @@ if (!user) {
 	const paliBtn = document.querySelector(".pali-btn");
 
 	paliBtn?.addEventListener("click", async () => {
-		const isCurrentlyActive = paliBtn.getAttribute("data-active") === "true";
+		const isCurrentlyActive =
+			paliBtn.getAttribute("data-active") === "true";
 		const newState = !isCurrentlyActive;
 
 		try {
@@ -438,7 +474,10 @@ if (!user) {
 			localStorage.setItem("paliLookup", newState.toString());
 			paliLookupBtn.setAttribute("data-active", newState.toString());
 			paliLookupBtn.textContent = newState ? "On" : "Off";
-			paliLookupBtn.classList.toggle("bg-[var(--auth-button-bg)]", newState);
+			paliLookupBtn.classList.toggle(
+				"bg-[var(--auth-button-bg)]",
+				newState
+			);
 			paliLookupBtn.classList.toggle("text-white", newState);
 		} catch (error) {
 			console.error("Failed to update Pali lookup preference:", error);
@@ -461,7 +500,9 @@ if (!user) {
 					});
 
 					if (!response.ok) {
-						throw new Error("Failed to update font size preference");
+						throw new Error(
+							"Failed to update font size preference"
+						);
 					}
 
 					// Update localStorage
@@ -471,7 +512,10 @@ if (!user) {
 					fontSizeButtons.forEach((btn) => {
 						const isActive = btn.getAttribute("data-size") === size;
 						btn.setAttribute("data-active", isActive.toString());
-						btn.classList.toggle("bg-[var(--auth-button-bg)]", isActive);
+						btn.classList.toggle(
+							"bg-[var(--auth-button-bg)]",
+							isActive
+						);
 						btn.classList.toggle("text-white", isActive);
 					});
 				} catch (error) {

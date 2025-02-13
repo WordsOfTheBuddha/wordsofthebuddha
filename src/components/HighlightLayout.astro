@@ -65,7 +65,11 @@ const { title, description } = Astro.props;
 					/>
 				))
 			}
-			<button id="highlight-eraser" class="eraser-btn" style="display: none;">
+			<button
+				id="highlight-eraser"
+				class="eraser-btn"
+				style="display: none;"
+			>
 				<Fragment set:html={Eraser} />
 			</button>
 		</div>
@@ -120,7 +124,9 @@ const { title, description } = Astro.props;
 
 	// Theme handling
 	function updateDarkMode(): void {
-		if (!rootElement) rootElement = document.getElementById("highlight-root");
+		console.log("updating theme toggle");
+		if (!rootElement)
+			rootElement = document.getElementById("highlight-root");
 		if (!rootElement) return;
 
 		const isDark = document.documentElement.classList.contains("dark");
@@ -132,11 +138,16 @@ const { title, description } = Astro.props;
 	}
 
 	function updateTheme(): void {
+		console.log("updating theme");
 		const isDark = document.documentElement.classList.contains("dark");
 		if (menu) {
 			menu.style.setProperty("--bg-color", isDark ? "#1f2937" : "#fff");
-			menu.style.setProperty("--border-color", isDark ? "#374151" : "#e5e7eb");
+			menu.style.setProperty(
+				"--border-color",
+				isDark ? "#374151" : "#e5e7eb"
+			);
 		}
+		updateDarkMode();
 	}
 
 	// Initialize everything after Rangy is loaded
@@ -155,11 +166,14 @@ const { title, description } = Astro.props;
 			console.log(`[highlight] Rangy initialized, highlighter created`);
 
 			Object.entries(COLOR_MAP).forEach(([colorName, bgColor]) => {
-				const applier = rangy.createClassApplier(`highlight-${colorName}`, {
-					elementTagName: "mark",
-					splitExisting: true,
-					normalize: true,
-				});
+				const applier = rangy.createClassApplier(
+					`highlight-${colorName}`,
+					{
+						elementTagName: "mark",
+						splitExisting: true,
+						normalize: true,
+					}
+				);
 				if (highlighter) {
 					highlighter.addClassApplier(applier);
 				}
@@ -225,27 +239,29 @@ const { title, description } = Astro.props;
 		console.log(`[highlight] Auth check for menu:`, isAuthenticated);
 		if (!isAuthenticated) {
 			const signinPrompt = document.getElementById("highlight-signin")!;
-			const { savedRange: newSavedRange } = selectionHandler.updateMenuPosition(
-				selection,
-				signinPrompt,
-				rootElement,
-				currentRange,
-				menu,
-				highlighter
-			);
+			const { savedRange: newSavedRange } =
+				selectionHandler.updateMenuPosition(
+					selection,
+					signinPrompt,
+					rootElement,
+					currentRange,
+					menu,
+					highlighter
+				);
 			savedRange = newSavedRange;
 			return;
 		}
 
 		menu.style.display = "block";
-		const { savedRange: newSavedRange } = selectionHandler.updateMenuPosition(
-			selection,
-			menu,
-			rootElement,
-			currentRange,
-			menu,
-			highlighter
-		);
+		const { savedRange: newSavedRange } =
+			selectionHandler.updateMenuPosition(
+				selection,
+				menu,
+				rootElement,
+				currentRange,
+				menu,
+				highlighter
+			);
 		savedRange = newSavedRange;
 
 		// Add outside click listener
@@ -257,7 +273,8 @@ const { title, description } = Astro.props;
 		selection: RangySelection
 	): boolean {
 		const isPaliParagraph = target.closest(".pali-paragraph");
-		const isPaliLookupEnabled = localStorage.getItem("paliLookup") === "true";
+		const isPaliLookupEnabled =
+			localStorage.getItem("paliLookup") === "true";
 		const selectedText = selection.toString().trim();
 		const isSingleWord = selectedText && !selectedText.includes(" ");
 		return Boolean(isPaliLookupEnabled && isPaliParagraph && isSingleWord);
@@ -269,7 +286,10 @@ const { title, description } = Astro.props;
 			if (!menu.contains(target)) {
 				menu.style.display = "none";
 				window.getSelection()?.removeAllRanges();
-				document.removeEventListener("mousedown", outsideClickListener!);
+				document.removeEventListener(
+					"mousedown",
+					outsideClickListener!
+				);
 			}
 		};
 		document.addEventListener("mousedown", outsideClickListener);
