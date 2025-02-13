@@ -1,34 +1,10 @@
 ---
 export const prerender = false;
-import { getCollection, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-
-const allItiPosts = await getCollection("iti");
-
-// Natural sort function
-const naturalSort = (a: CollectionEntry<"iti">, b: CollectionEntry<"iti">) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
-};
-
-const sortedPosts = allItiPosts.sort(naturalSort);
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 ---
 
-<Layout title="As It Was Said" showAuth={true}>
-	<main class="container">
-		<div class="posts-grid">
-			{
-				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
-					<PostCard
-						title={post.data.title}
-						description={post.data.description}
-						id={post.data.slug}
-					/>
-				))
-			}
-		</div>
-	</main>
-</Layout>
+<CollectionLayout
+	title="As it was Said"
+	description="A collection of 112 short discourses where the Buddha’s words are framed with “Thus it was said,” covering core aspects of Dhamma in concise and impactful teachings."
+	searchPattern="slug:^iti"
+/>

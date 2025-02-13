@@ -1,51 +1,10 @@
 ---
 export const prerender = false;
-import { getCollection, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-import { performSearch, type SearchResult } from "../service/search/search";
-
-const pagePosts: SearchResult[] = await performSearch("^dhp", {
-	highlight: true,
-});
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 ---
 
-<Layout
+<CollectionLayout
 	title="Dhammapada Verses"
-	description="A widely read collection of 423 verses of the sayings of the Buddha organized by memorable chapters."
-	showAuth={true}
-	showFilter={true}
->
-	<main class="container">
-		<div id="posts-container" class="posts-grid" data-filter="">
-			{
-				pagePosts.map((post) => (
-					<PostCard
-						title={post.title}
-						description={post.description}
-						id={post.slug}
-					/>
-				))
-			}
-		</div>
-	</main>
-</Layout>
-
-<script>
-	const input = document.getElementById("client-filter") as HTMLInputElement;
-	const container = document.getElementById("posts-container");
-	const posts = container?.querySelectorAll(".post-item");
-
-	input?.addEventListener("input", (e) => {
-		const filter = (e.target as HTMLInputElement).value.toLowerCase();
-		container?.setAttribute("data-filter", filter);
-
-		posts?.forEach((post) => {
-			const content = post.textContent?.toLowerCase() || "";
-			post.classList.toggle(
-				"hidden",
-				!!filter && !content.includes(filter)
-			);
-		});
-	});
-</script>
+	description="A widely read collection of 423 verses of the Buddha's teachings, offering practical wisdom on ethics, mental cultivation, and liberation, organized into memorable chapters."
+	searchPattern="slug:^dhp"
+/>

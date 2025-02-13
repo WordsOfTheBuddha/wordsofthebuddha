@@ -1,34 +1,10 @@
 ---
 export const prerender = false;
-import { getCollection, render, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-
-const allSnpPosts = await getCollection("snp");
-
-// Natural sort function
-const naturalSort = (a: CollectionEntry<"snp">, b: CollectionEntry<"snp">) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
-};
-
-const sortedPosts = allSnpPosts.sort(naturalSort);
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 ---
 
-<Layout title="Sutta Nipāta" showAuth={true}>
-	<main class="container">
-		<div class="posts-grid">
-			{
-				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
-					<PostCard
-						title={post.data.title}
-						description={post.data.description}
-						id={post.data.slug}
-					/>
-				))
-			}
-		</div>
-	</main>
-</Layout>
+<CollectionLayout
+	title="Sutta Nipāta"
+	description="An early collection of discourses in verse, emphasizing simplicity, renunciation, and deep philosophical inquiry, including some of the oldest and most poetic teachings of the Buddha."
+	searchPattern="slug:^snp"
+/>

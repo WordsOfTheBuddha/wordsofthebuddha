@@ -1,34 +1,10 @@
 ---
 export const prerender = false;
-import { getCollection, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-
-const allUdPosts = await getCollection("ud");
-
-// Natural sort function
-const naturalSort = (a: CollectionEntry<"ud">, b: CollectionEntry<"ud">) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
-};
-
-const sortedPosts = allUdPosts.sort(naturalSort);
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 ---
 
-<Layout title="Inspired Utterances" showAuth={true}>
-	<main class="container">
-		<div class="posts-grid">
-			{
-				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
-					<PostCard
-						title={post.data.title}
-						description={post.data.description}
-						id={post.data.slug}
-					/>
-				))
-			}
-		</div>
-	</main>
-</Layout>
+<CollectionLayout
+	title="Inspired Utterances"
+	description="A collection of 80 inspired utterances of the Buddha, often arising spontaneously in response to profound moments, expressing deep insight and realization."
+	searchPattern="slug:^ud"
+/>

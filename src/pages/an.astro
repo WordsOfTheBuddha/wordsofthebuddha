@@ -1,34 +1,10 @@
 ---
 export const prerender = false;
-import { getCollection, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-
-const allAnPosts = await getCollection("an");
-
-// Natural sort function
-const naturalSort = (a: CollectionEntry<"an">, b: CollectionEntry<"an">) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
-};
-
-const sortedPosts = allAnPosts.sort(naturalSort);
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 ---
 
-<Layout title="Numerical Discourses" showAuth={true}>
-	<main class="container">
-		<div class="posts-grid">
-			{
-				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
-					<PostCard
-						title={post.data.title}
-						description={post.data.description}
-						id={post.data.slug}
-					/>
-				))
-			}
-		</div>
-	</main>
-</Layout>
+<CollectionLayout
+	title="Numerical Discourses"
+	description="A vast collection of discourses structured by numerical categories, systematically presenting the Buddha’s teachings on ethics, meditation, and wisdom."
+	searchPattern="slug:^an"
+/>

@@ -1,0 +1,64 @@
+---
+import Layout from "./Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import { performSearch, type SearchResult } from "../service/search/search";
+
+interface Props {
+	title: string;
+	description: string;
+	searchPattern: string;
+}
+
+const { title, description, searchPattern } = Astro.props;
+
+const pagePosts: SearchResult[] = await performSearch(searchPattern, {
+	highlight: true,
+});
+---
+
+<Layout
+	title={title}
+	description={description}
+	showAuth={true}
+	showFilter={true}
+>
+	<main class="container">
+		<div id="posts-container" class="posts-grid" data-filter="">
+			{
+				pagePosts.map((post) => (
+					<PostCard
+						title={post.title}
+						description={post.description}
+						id={post.slug}
+					/>
+				))
+			}
+		</div>
+	</main>
+</Layout>
+
+<script>
+	const input = document.getElementById("client-filter") as HTMLInputElement;
+	const container = document.getElementById("posts-container");
+	const posts = container?.querySelectorAll(".post-item");
+
+	input?.addEventListener("input", (e) => {
+		const filter = (e.target as HTMLInputElement).value
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+		container?.setAttribute("data-filter", filter);
+
+		posts?.forEach((post) => {
+			const content =
+				post.textContent
+					?.toLowerCase()
+					.normalize("NFD")
+					.replace(/[\u0300-\u036f]/g, "") || "";
+			post.classList.toggle(
+				"hidden",
+				!!filter && !content.includes(filter)
+			);
+		});
+	});
+</script>

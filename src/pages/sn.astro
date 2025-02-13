@@ -1,34 +1,10 @@
 ---
 export const prerender = false;
-import { getCollection, render, type CollectionEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-
-const allSnPosts = await getCollection("sn");
-
-// Natural sort function
-const naturalSort = (a: CollectionEntry<"sn">, b: CollectionEntry<"sn">) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
-};
-
-const sortedPosts = allSnPosts.sort(naturalSort);
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 ---
 
-<Layout title="Linked Discourses" showAuth={true}>
-	<main class="container">
-		<div class="posts-grid">
-			{
-				sortedPosts.map((post: (typeof sortedPosts)[0]) => (
-					<PostCard
-						title={post.data.title}
-						description={post.data.description}
-						id={post.data.slug}
-					/>
-				))
-			}
-		</div>
-	</main>
-</Layout>
+<CollectionLayout
+	title="Linked Discourses"
+	description="A collection of discourses grouped by theme, offering rich explorations of core Buddhist concepts such as dependent origination, the five aggregates, and the path to liberation."
+	searchPattern="slug:^sn"
+/>
