@@ -50,14 +50,17 @@ const pagePosts: SearchResult[] = await performSearch(searchPattern, {
 		container?.setAttribute("data-filter", filter);
 
 		posts?.forEach((post) => {
+			const aTag = post.querySelector("a");
+			const hrefValue = aTag?.getAttribute("href")?.toLowerCase() || "";
 			const content =
 				post.textContent
 					?.toLowerCase()
 					.normalize("NFD")
 					.replace(/[\u0300-\u036f]/g, "") || "";
+			const combinedContent = `${hrefValue} ${content}`;
 			post.classList.toggle(
 				"hidden",
-				!!filter && !content.includes(filter)
+				!!filter && !combinedContent.includes(filter)
 			);
 		});
 	});
