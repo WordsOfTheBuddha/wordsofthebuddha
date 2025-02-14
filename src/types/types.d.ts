@@ -1,7 +1,13 @@
 /// <reference types="astro/client" />
 
 declare interface LastUpdatedData {
-    [key: string]: string;
+	[key: string]: string;
 }
 
-// Add any other general application types here
+export type RouteType = "collection" | "sutta" | "search";
+
+// Add DirectoryMetaData types for better type safety
+export interface DirectoryMetaData {
+	title: string;
+	description?: string;
+}

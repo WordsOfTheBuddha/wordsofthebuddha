@@ -1,10 +1,10 @@
 ---
 export const prerender = false;
 
-import { render, getEntry } from "astro:content";
-import { marked } from "marked";
+import { determineRouteType } from "../utils/routeHandler";
+import CollectionLayout from "../layouts/CollectionLayout.astro";
+import { getEntry } from "astro:content";
 import { parseContent, createCombinedMarkdown } from "../utils/contentParser";
-import path from "path";
 import { routes } from "../utils/routes";
 import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
@@ -12,68 +12,99 @@ import MDContent from "../components/MDContent.astro";
 
 // Extract slug from params
 const { id } = Astro.params;
+const route = determineRouteType(id);
 
-// Find current index in sorted routes
-const currentIndex = routes.findIndex((route) => route === id);
+// Initialize variables for different route types
+let collectionProps;
+let suttaProps;
+let combinedContent = "";
 
-if (currentIndex === -1) {
-	return Astro.redirect(`/search?q=${id}`);
-}
+// Handle collection routes
+if (route.type === "collection" && route.pattern) {
+	collectionProps = {
+		title: route.metadata?.title || "Collection",
+		description: route.metadata?.description || "Collection of suttas",
+	};
+} else {
+	// Continue with existing sutta handling logic
 
-// Get showPali from query string
-const showPali = Astro.url.searchParams.get("pli") === "true";
-console.log("page: ", id, "showPali: ", showPali);
+	// Find current index in sorted routes
+	const currentIndex = routes.findIndex((route) => route === id);
 
-// Load content
-const contentItem = await getEntry("all", id);
-if (!contentItem) {
-	console.warn("English content not found");
-	console.groupEnd();
-	return Astro.redirect(`/search?q=${id}`);
-}
-
-// Always parse content through contentParser
-let paliContent = { body: "" };
-if (showPali) {
-	const paliEntry = await getEntry("pliAll", id);
-	if (paliEntry) {
-		paliContent = paliEntry;
+	if (currentIndex === -1) {
+		return Astro.redirect(`/search?q=${id}`);
 	}
+
+	// Get showPali from query string
+	const showPali = Astro.url.searchParams.get("pli") === "true";
+	console.log("page: ", id, "showPali: ", showPali);
+
+	// Load content
+	const contentItem = await getEntry("all", id);
+	if (!contentItem) {
+		console.warn("English content not found");
+		console.groupEnd();
+		return Astro.redirect(`/search?q=${id}`);
+	}
+
+	// Always parse content through contentParser
+	let paliContent = { body: "" };
+	if (showPali) {
+		const paliEntry = await getEntry("pliAll", id);
+		if (paliEntry) {
+			paliContent = paliEntry;
+		}
+	}
+
+	// Parse and combine content
+	const pairs = await parseContent(paliContent, contentItem);
+	combinedContent = createCombinedMarkdown(pairs, showPali);
+
+	// Extract last two segments of file path and remove extension
+	const fpParts = (contentItem.filePath ?? "").split("/");
+	let folder = fpParts[fpParts.length - 2] || "";
+	const fp = folder ? `${folder}/${id}` : id;
+
+	// Find next and previous items
+	const nextIndex = currentIndex + 1;
+	const prevIndex = currentIndex - 1;
+	const next =
+		nextIndex < routes.length
+			? await getEntry("all", routes[nextIndex])
+			: null;
+	const prev =
+		prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
+
+	// Get the file's last modified time
+	const filePath = contentItem.filePath || "";
+	const lastUpdated = getLastModified(filePath);
+
+	suttaProps = {
+		fp,
+		title: contentItem.data.title,
+		description: contentItem.data.description,
+		prev,
+		next,
+		id,
+		showReadLater: true,
+		showSave: true,
+		lastUpdated,
+		showAuth: true,
+		showPali: true,
+	};
 }
-
-// Parse and combine content
-const pairs = await parseContent(paliContent, contentItem);
-const combinedContent = createCombinedMarkdown(pairs, showPali);
-
-// Extract last two segments of file path and remove extension
-const fpParts = (contentItem.filePath ?? "").split("/");
-let folder = fpParts[fpParts.length - 2] || "";
-const fp = folder ? `${folder}/${id}` : id;
-
-// Find next and previous items
-const nextIndex = currentIndex + 1;
-const prevIndex = currentIndex - 1;
-const next =
-	nextIndex < routes.length ? await getEntry("all", routes[nextIndex]) : null;
-const prev = prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
-
-// Get the file's last modified time
-const filePath = contentItem.filePath || "";
-const lastUpdated = getLastModified(filePath);
 ---
 
-<Layout
-	fp={fp}
-	title={contentItem.data.title}
-	description={contentItem.data.description}
-	prev={prev}
-	next={next}
-	id={id}
-	showReadLater={true}
-	showSave={true}
-	lastUpdated={lastUpdated}
-	showAuth={true}
-	showPali={true}
->
-	<MDContent content={combinedContent} />
-</Layout>
+{
+	route.type === "collection" ? (
+		<CollectionLayout
+			title={route.metadata?.title || ""}
+			description={route.metadata?.description || ""}
+			searchPattern={route.pattern || ""}
+		/>
+	) : (
+		<Layout {...suttaProps}>
+			<MDContent content={combinedContent} />
+		</Layout>
+	)
+}
