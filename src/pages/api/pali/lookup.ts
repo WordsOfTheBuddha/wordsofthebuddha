@@ -129,7 +129,7 @@ export const GET: APIRoute = async ({ url }) => {
 			.split(",")
 			.map((w) => w.trim())
 			.filter((w) => w.length > 0)
-			.slice(0, 5);
+			.slice(0, 10);
 
 		if (words.length === 0) {
 			return new Response("No valid words provided", { status: 400 });
