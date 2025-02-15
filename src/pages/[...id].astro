@@ -13,6 +13,7 @@ import MDContent from "../components/MDContent.astro";
 // Extract slug from params
 const { id } = Astro.params;
 const route = determineRouteType(id);
+console.log("route type is: ", route.type);
 
 // Initialize variables for different route types
 let collectionProps;

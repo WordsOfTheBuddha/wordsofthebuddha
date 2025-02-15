@@ -23,7 +23,6 @@ let fuseIndex: Fuse<SearchData> | null = null;
 
 async function getSearchIndex() {
 	if (fuseIndex) {
-		console.log("Debug: Using cached search index");
 		return fuseIndex;
 	}
 

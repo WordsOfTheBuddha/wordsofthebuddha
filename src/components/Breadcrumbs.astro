@@ -1,5 +1,6 @@
 ---
-import { transformId } from "../utils/transformId.ts";
+import { getBreadcrumbPath } from "../utils/getBreadcrumbPath";
+import { getSlugId } from "../utils/transformId";
 
 const { path } = Astro.props;
 
@@ -19,45 +20,46 @@ if (
 	return null;
 
 const segments = path.split("/").filter(Boolean);
+const breadcrumbs =
+	segments.length > 0 ? getBreadcrumbPath(segments[segments.length - 1]) : [];
 ---
 
 <div
 	class="flex items-center text-sm py-2 px-4 text-[var(--text-color)] border-b border-[var(--border-color)]"
 >
-	<span>
-		<a
-			href="/"
-			class="text-[var(--text-color)] hover:text-[var(--link-hover-color)] transition-colors duration-200"
-			>Home</a
-		>
-	</span>
 	{
-		segments.map((segment: string, index: number) => (
-			<span class="flex items-center">
-				<svg
-					class="w-4 h-4 mx-2 text-gray-400 dark:text-gray-500"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M9 5l7 7-7 7"
-					/>
-				</svg>
-				{index === segments.length - 1 ? (
-					<span class="text-[var(--text-muted)]">{transformId(segment)}</span>
+		breadcrumbs.map((item, index) => (
+			<>
+				{index > 0 && (
+					<svg
+						class="w-4 h-4 mx-2 text-gray-400 dark:text-gray-500"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 5l7 7-7 7"
+						/>
+					</svg>
+				)}
+				{index === breadcrumbs.length - 1 &&
+				path.split("/")[1] === getSlugId(item.label) ? (
+					<span class="text-[var(--text-muted)]" title={item.title}>
+						{item.label}
+					</span>
 				) : (
 					<a
-						href={`/${segments.slice(0, index + 1).join("/")}`}
+						href={item.path}
 						class="text-[var(--text-color)] hover:text-[var(--link-hover-color)] transition-colors duration-200"
+						title={item.title}
 					>
-						{transformId(segment)}
+						{item.label}
 					</a>
 				)}
-			</span>
+			</>
 		))
 	}
 </div>
