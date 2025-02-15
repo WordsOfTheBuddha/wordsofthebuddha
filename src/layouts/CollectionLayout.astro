@@ -2,40 +2,113 @@
 import Layout from "./Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import { performSearch, type SearchResult } from "../service/search/search";
+import type { DirectoryStructure } from "../types/directory";
 
 interface Props {
 	title: string;
 	description: string;
 	searchPattern: string;
+	collection?: boolean;
+	children?: Record<string, DirectoryStructure>;
 }
 
-const { title, description, searchPattern } = Astro.props;
+const {
+	title,
+	description,
+	searchPattern,
+	collection = false,
+	children,
+} = Astro.props;
 
 const pagePosts: SearchResult[] = await performSearch(searchPattern, {
 	highlight: true,
 });
+
+const hasChildren = children && Object.keys(children).length > 0;
+const showCollections =
+	hasChildren && Astro.url.searchParams.get("view") !== "discourses";
 ---
 
 <Layout
 	title={title}
 	description={description}
 	showAuth={true}
-	showFilter={true}
+	showFilter={false}
 >
 	<main class="container">
+		{
+			hasChildren && (
+				<div class="flex justify-between items-center mb-6">
+					<div class="inline-flex rounded-full border border-gray-600 dark:border-gray-500 p-1 bg-white dark:bg-gray-800">
+						<a
+							href="?view=collections"
+							class={[
+								"px-4 py-1 text-sm rounded-full transition-colors",
+								showCollections
+									? "bg-primary text-white dark:text-gray-100"
+									: "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100",
+							].join(" ")}
+						>
+							Collections
+						</a>
+						<a
+							href="?view=discourses"
+							class={[
+								"px-4 py-1 text-sm rounded-full transition-colors",
+								!showCollections
+									? "bg-primary text-white dark:text-gray-100"
+									: "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100",
+							].join(" ")}
+						>
+							Discourses
+						</a>
+					</div>
+					{!showCollections && (
+						<div class="relative">
+							<input
+								type="text"
+								id="client-filter"
+								class="px-4 py-1 text-sm rounded-full border border-gray-600 dark:border-gray-500 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 focus:outline-none focus:border-primary"
+								placeholder="Filter discourses..."
+							/>
+						</div>
+					)}
+				</div>
+			)
+		}
+
 		<div id="posts-container" class="posts-grid" data-filter="">
 			{
-				pagePosts.map((post) => (
-					<PostCard
-						title={post.title}
-						description={post.description}
-						id={post.slug}
-					/>
-				))
+				hasChildren && showCollections
+					? (
+							Object.entries(children || {}) as [
+								string,
+								DirectoryStructure,
+							][]
+						).map(([slug, data]) => (
+							<PostCard
+								title={data.title}
+								description={data.description || ""}
+								id={slug}
+							/>
+						))
+					: pagePosts.map((post) => (
+							<PostCard
+								title={post.title}
+								description={post.description}
+								id={post.slug}
+							/>
+						))
 			}
 		</div>
 	</main>
 </Layout>
+
+<style>
+	.bg-primary {
+		background-color: var(--primary-color);
+	}
+</style>
 
 <script>
 	const input = document.getElementById("client-filter") as HTMLInputElement;

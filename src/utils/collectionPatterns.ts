@@ -17,6 +17,15 @@ export function createSearchPattern(collection: string): string | null {
 		return numbers.map((n) => `slug:${prefix}${n}$`).join(" | ");
 	}
 
+	// handle top-level collection specific cases
+	if (collection === "sn") {
+		return `slug:^sn slug:!^snp`;
+	}
+
+	if (/^[a-z]+$/.test(collection)) {
+		return `slug:^${collection}`;
+	}
+
 	// Simple pattern (e.g., ud5, sn12)
 	return `slug:^${collection}.`;
 }

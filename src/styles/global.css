@@ -6,120 +6,120 @@
 
 /* global.css */
 :root {
-  --icon-fill-color-light: #000000;
-  --bookmark-fill-color-light: #898989;
-  --text-color-light: #555;
-  --background-color-light: #ffffff;
-  --primary-color-light: #1a73e8;
-  --secondary-color-light: #ff5722;
-  --link-color-light: #1a73e8;
-  --link-hover-color-light: #0c47a1;
-  --tooltip-border-light: rgba(255, 87, 34, 0.3); /* #ff5722 with opacity */
+	--icon-fill-color-light: #000000;
+	--bookmark-fill-color-light: #898989;
+	--text-color-light: #555;
+	--background-color-light: #ffffff;
+	--primary-color-light: #1a73e8;
+	--secondary-color-light: #ff5722;
+	--link-color-light: #1a73e8;
+	--link-hover-color-light: #0c47a1;
+	--tooltip-border-light: rgba(255, 87, 34, 0.3); /* #ff5722 with opacity */
 
-  --icon-fill-color-dark: #ffffff;
-  --bookmark-fill-color-dark: #a9a9a9;
-  --text-color-dark: rgba(255, 255, 255, 0.9);
-  --background-color-dark: #1c1c1c;
-  --primary-color-dark: #d47445;
-  --secondary-color-dark: #d47445;
-  --link-color-dark: #87cefa;
-  --link-hover-color-dark: #ffffff;
-  --tooltip-border-dark: rgba(212, 116, 69, 0.3); /* #d47445 with opacity */
+	--icon-fill-color-dark: #ffffff;
+	--bookmark-fill-color-dark: #a9a9a9;
+	--text-color-dark: rgba(255, 255, 255, 0.9);
+	--background-color-dark: #1c1c1c;
+	--primary-color-dark: #d47445;
+	--secondary-color-dark: #d47445;
+	--link-color-dark: #87cefa;
+	--link-hover-color-dark: #ffffff;
+	--tooltip-border-dark: rgba(212, 116, 69, 0.3); /* #d47445 with opacity */
 
-  --background-header-light: #f4f4f4;
-  --background-row-even-light: #f9f9f9;
-  --background-row-hover-light: #f1f1f1;
-  --background-header-dark: #242f36;
-  --background-row-even-dark: #242f36;
-  --background-row-hover-dark: #555;
-  --gray-200: #f3f4f6;
-  --gray-400: #d1d5db;
-  --gray-500: #9ca3af;
+	--background-header-light: #f4f4f4;
+	--background-row-even-light: #f9f9f9;
+	--background-row-hover-light: #f1f1f1;
+	--background-header-dark: #242f36;
+	--background-row-even-dark: #242f36;
+	--background-row-hover-dark: #555;
+	--gray-200: #f3f4f6;
+	--gray-400: #d1d5db;
+	--gray-500: #9ca3af;
 
-  --icon-fill-color: var(--icon-fill-color-light);
-  --bookmark-fill-color: var(--bookmark-fill-color-light);
-  --text-color: var(--text-color-light);
-  --background-color: var(--background-color-light);
-  --primary-color: var(--primary-color-light);
-  --secondary-color: var(--secondary-color-light);
-  --link-color: var(--link-color-light);
-  --link-hover-color: var(--link-hover-color-light);
-  --background-header: var(--background-header-light);
-  --background-row-even: var(--background-row-even-light);
-  --background-row-hover: var(--background-row-hover-light);
-  --callout-background: rgba(219, 234, 254, 1);
-  --border-color: rgba(191, 219, 254, 1);
-  --tooltip-border: var(--tooltip-border-light);
+	--icon-fill-color: var(--icon-fill-color-light);
+	--bookmark-fill-color: var(--bookmark-fill-color-light);
+	--text-color: var(--text-color-light);
+	--background-color: var(--background-color-light);
+	--primary-color: var(--primary-color-light);
+	--secondary-color: var(--secondary-color-light);
+	--link-color: var(--link-color-light);
+	--link-hover-color: var(--link-hover-color-light);
+	--background-header: var(--background-header-light);
+	--background-row-even: var(--background-row-even-light);
+	--background-row-hover: var(--background-row-hover-light);
+	--callout-background: rgba(219, 234, 254, 1);
+	--border-color: rgba(191, 219, 254, 1);
+	--tooltip-border: var(--tooltip-border-light);
 
-  --auth-card-bg-light: #ffffff;
-  --auth-card-shadow-light: rgba(0, 0, 0, 0.1);
-  --auth-input-bg-light: #f8f8f8;
-  --auth-input-border-light: #e2e8f0;
-  --auth-button-bg-light: #1a73e8;
-  --auth-button-hover-light: #1557b0;
+	--auth-card-bg-light: #ffffff;
+	--auth-card-shadow-light: rgba(0, 0, 0, 0.1);
+	--auth-input-bg-light: #f8f8f8;
+	--auth-input-border-light: #e2e8f0;
+	--auth-button-bg-light: #1a73e8;
+	--auth-button-hover-light: #1557b0;
 
-  --auth-card-bg-dark: #2d3748;
-  --auth-card-shadow-dark: rgba(255, 255, 255, 0.1);
-  --auth-input-bg-dark: #1a202c;
-  --auth-input-border-dark: #4a5568;
-  --auth-button-bg-dark: #d47445;
-  --auth-button-hover-dark: #d47445;
+	--auth-card-bg-dark: #2d3748;
+	--auth-card-shadow-dark: rgba(255, 255, 255, 0.1);
+	--auth-input-bg-dark: #1a202c;
+	--auth-input-border-dark: #4a5568;
+	--auth-button-bg-dark: #d47445;
+	--auth-button-hover-dark: #d47445;
 
-  --auth-card-bg: var(--auth-card-bg-light);
-  --auth-card-shadow: var(--auth-card-shadow-light);
-  --auth-input-bg: var(--auth-input-bg-light);
-  --auth-input-border: var(--auth-input-border-light);
-  --auth-button-bg: var(--auth-button-bg-light);
-  --auth-button-hover: var(--auth-button-hover-light);
+	--auth-card-bg: var(--auth-card-bg-light);
+	--auth-card-shadow: var(--auth-card-shadow-light);
+	--auth-input-bg: var(--auth-input-bg-light);
+	--auth-input-border: var(--auth-input-border-light);
+	--auth-button-bg: var(--auth-button-bg-light);
+	--auth-button-hover: var(--auth-button-hover-light);
 }
 
 html.dark {
-  --icon-fill-color: var(--icon-fill-color-dark);
-  --bookmark-fill-color: var(--bookmark-fill-color-dark);
-  --text-color: var(--text-color-dark);
-  --background-color: var(--background-color-dark);
-  --primary-color: var(--primary-color-dark);
-  --secondary-color: var(--secondary-color-dark);
-  --link-color: var(--link-color-dark);
-  --link-hover-color: var(--link-hover-color-dark);
-  --background-header: var(--background-header-dark);
-  --background-row-even: var(--background-row-even-dark);
-  --background-row-hover: var(--background-row-hover-dark);
-  --callout-background: rgba(30, 58, 138, 0.3);
-  --border-color: rgba(191, 219, 254, 0.3);
-  --tooltip-border: var(--tooltip-border-dark);
+	--icon-fill-color: var(--icon-fill-color-dark);
+	--bookmark-fill-color: var(--bookmark-fill-color-dark);
+	--text-color: var(--text-color-dark);
+	--background-color: var(--background-color-dark);
+	--primary-color: var(--primary-color-dark);
+	--secondary-color: var(--secondary-color-dark);
+	--link-color: var(--link-color-dark);
+	--link-hover-color: var(--link-hover-color-dark);
+	--background-header: var(--background-header-dark);
+	--background-row-even: var(--background-row-even-dark);
+	--background-row-hover: var(--background-row-hover-dark);
+	--callout-background: rgba(30, 58, 138, 0.3);
+	--border-color: rgba(191, 219, 254, 0.3);
+	--tooltip-border: var(--tooltip-border-dark);
 
-  --auth-card-bg: var(--auth-card-bg-dark);
-  --auth-card-shadow: var(--auth-card-shadow-dark);
-  --auth-input-bg: var(--auth-input-bg-dark);
-  --auth-input-border: var(--auth-input-border-dark);
-  --auth-button-bg: var(--auth-button-bg-dark);
-  --auth-button-hover: var(--auth-button-hover-dark);
+	--auth-card-bg: var(--auth-card-bg-dark);
+	--auth-card-shadow: var(--auth-card-shadow-dark);
+	--auth-input-bg: var(--auth-input-bg-dark);
+	--auth-input-border: var(--auth-input-border-dark);
+	--auth-button-bg: var(--auth-button-bg-dark);
+	--auth-button-hover: var(--auth-button-hover-dark);
 }
 
 body {
-  font-family: Spectral, serif, system-ui, -apple-system, "system-ui",
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
-  font-feature-settings: auto;
-  font-kerning: auto;
-  -webkit-font-smoothing: antialiased;
+	font-family: Spectral, serif, system-ui, -apple-system, "system-ui",
+		"Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol";
+	font-feature-settings: auto;
+	font-kerning: auto;
+	-webkit-font-smoothing: antialiased;
 }
 
 @layer components {
-  .verse {
-    @apply pl-4 my-6 border-l-4 border-gray-300;
-    color: var(--text-color); /* Use theme variable */
-    --verse-accent: theme(colors.gray.300);
-  }
-  .verse-basic {
-    @apply pl-4;
-    color: var(--text-color); /* Use theme variable */
-    --verse-accent: theme(colors.gray.300);
-  }
+	.verse {
+		@apply pl-4 my-6 border-l-4 border-gray-300;
+		color: var(--text-color); /* Use theme variable */
+		--verse-accent: theme(colors.gray.300);
+	}
+	.verse-basic {
+		@apply pl-4;
+		color: var(--text-color); /* Use theme variable */
+		--verse-accent: theme(colors.gray.300);
+	}
 }
 
 .prose-xl {
-  font-size: 1.3rem;
-  line-height: 1.85;
+	font-size: 1.3rem;
+	line-height: 1.85;
 }

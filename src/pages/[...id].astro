@@ -13,7 +13,7 @@ import MDContent from "../components/MDContent.astro";
 // Extract slug from params
 const { id } = Astro.params;
 const route = determineRouteType(id);
-console.log("route type is: ", route.type);
+console.log("route type is: ", route.type, route.metadata);
 
 // Initialize variables for different route types
 let collectionProps;
@@ -22,9 +22,13 @@ let combinedContent = "";
 
 // Handle collection routes
 if (route.type === "collection" && route.pattern) {
+	const viewMode = Astro.url.searchParams.get("view") || "collections";
 	collectionProps = {
 		title: route.metadata?.title || "Collection",
 		description: route.metadata?.description || "Collection of suttas",
+		collection: viewMode === "collections",
+		children: route.metadata?.children || {},
+		searchPattern: route.pattern,
 	};
 } else {
 	// Continue with existing sutta handling logic
@@ -101,6 +105,8 @@ if (route.type === "collection" && route.pattern) {
 		<CollectionLayout
 			title={route.metadata?.title || ""}
 			description={route.metadata?.description || ""}
+			collection
+			children={route.metadata?.children || {}}
 			searchPattern={route.pattern || ""}
 		/>
 	) : (
