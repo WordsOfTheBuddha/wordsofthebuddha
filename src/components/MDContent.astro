@@ -6,12 +6,13 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const parsedContent = parseMarkdown(content);
+const parsedContent = await parseMarkdown(content);
 ---
 
-<Fragment set:html={parsedContent}>
-	<article class="md-content prose prose-lg dark:prose-invert"></article>
-</Fragment>
+<article
+	class="md-content prose prose-lg dark:prose-invert"
+	set:html={parsedContent}
+/>
 
 <style>
 	.md-content :global(.pali-paragraph) {
