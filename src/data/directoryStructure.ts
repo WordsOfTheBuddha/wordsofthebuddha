@@ -101,6 +101,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on the Six Sense Bases" contains discourses focusing on the six sense bases and their corresponding objects. These teachings explore the nature of sensory experience, the arising of contact, and the role of consciousness in the process of perception. By examining the interplay between the senses and their objects, these discourses offer insights into the nature of reality and the conditions for suffering and liberation.',
 					},
+					sn36: {
+						title: "Vedanāsaṁyutta - Linked Discourses on Feelings",
+						description:
+							'The "Linked Discourses on Feeling" explores the nature of felt experiences—pleasant, painful, and neutral—as a fundamental aspect of experience. These teachings examine how feelings arise, their role in shaping perception, and the underlying tendencies that lead to attachment or aversion. By understanding the conditioned nature of feeling and its cessation, these discourses offer insight into the path to liberation and the ending of suffering.',
+					},
 					sn43: {
 						title: "Asaṅkhatasaṁyutta - Linked Discourses on the Unconditioned",
 						description:
