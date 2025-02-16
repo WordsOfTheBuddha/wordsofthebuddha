@@ -7,7 +7,7 @@ interface Props {
 const { title, showFilter = false } = Astro.props;
 const hasSeparator = title?.includes("-");
 const [paliTitle, ...englishParts] = hasSeparator
-	? title.split("-").map((part) => part.trim())
+	? title.split("-").map((part: string) => part.trim())
 	: [title];
 const englishTitle = englishParts.join(" - ");
 ---
@@ -24,7 +24,7 @@ const englishTitle = englishParts.join(" - ");
 				<input
 					type="text"
 					id="client-filter"
-					placeholder="Filter..."
+					placeholder="Filter discourses..."
 					autocomplete="off"
 					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
 				/>

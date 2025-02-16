@@ -33,7 +33,7 @@ const showCollections =
 	title={title}
 	description={description}
 	showAuth={true}
-	showFilter={false}
+	showFilter={!hasChildren}
 >
 	<main class="container">
 		{
@@ -68,7 +68,7 @@ const showCollections =
 							<input
 								type="text"
 								id="client-filter"
-								class="px-4 py-1 text-sm rounded-full border border-gray-600 dark:border-gray-500 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 focus:outline-none focus:border-primary"
+								class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
 								placeholder="Filter discourses..."
 							/>
 						</div>

@@ -9,10 +9,9 @@ const { content } = Astro.props;
 const parsedContent = parseMarkdown(content);
 ---
 
-<article
-	class="md-content prose prose-lg dark:prose-invert"
-	set:html={parsedContent}
-/>
+<Fragment set:html={parsedContent}>
+	<article class="md-content prose prose-lg dark:prose-invert"></article>
+</Fragment>
 
 <style>
 	.md-content :global(.pali-paragraph) {

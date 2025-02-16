@@ -9,9 +9,47 @@ import { routes } from "../utils/routes";
 import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
+import { transformId } from "../utils/transformId";
+
+// Helper function to check if a number is within a range
+function isNumberInRange(num: number, rangeStr: string): boolean {
+	const [start, end] = rangeStr.split("-").map(Number);
+	return num >= start && num <= end;
+}
+
+// Helper function to compare hierarchical numbers
+function compareHierarchicalNumbers(target: string, rangeStr: string): boolean {
+	// Split numbers into their hierarchical parts
+	const targetParts = target.split(".").map(Number);
+	const [startStr, endStr] = rangeStr.split("-");
+
+	// If no decimal points, do simple range comparison
+	if (!target.includes(".") && !startStr.includes(".")) {
+		return isNumberInRange(Number(target), rangeStr);
+	}
+
+	// Otherwise handle hierarchical numbers
+	const startParts = startStr.split(".").map(Number);
+	const endParts = endStr.split(".").map(Number);
+
+	// For single-level numbers, just compare the main number
+	if (targetParts.length === 1) {
+		return targetParts[0] >= startParts[0] && targetParts[0] <= endParts[0];
+	}
+
+	// For hierarchical numbers, first compare the primary number
+	if (targetParts[0] !== startParts[0]) return false;
+
+	// Then check if secondary number is in range
+	const secondaryNum = targetParts[1];
+	const rangeStart = startParts[1] || 1;
+	const rangeEnd = endParts[1] || endParts[0];
+	return secondaryNum >= rangeStart && secondaryNum <= rangeEnd;
+}
 
 // Extract slug from params
-const { id } = Astro.params;
+const { id: originalId } = Astro.params;
+let id = originalId;
 const route = determineRouteType(id);
 console.log("route type is: ", route.type, route.metadata);
 
@@ -33,8 +71,46 @@ if (route.type === "collection" && route.pattern) {
 } else {
 	// Continue with existing sutta handling logic
 
-	// Find current index in sorted routes
-	const currentIndex = routes.findIndex((route) => route === id);
+	// Find current index in sorted routes or find containing route
+	let currentIndex = routes.findIndex((route) => route === id);
+	let sectionNumber;
+	let fullRef;
+
+	if (currentIndex === -1) {
+		// Parse the ID to find potential parent route
+		const match = id.match(/^([a-z]+)(\d+(?:\.\d+)?)/);
+		if (match) {
+			const [, prefix, num] = match;
+			const targetNumber = parseFloat(num);
+			sectionNumber = num;
+
+			// Find a route that contains this number in its range
+			const parentRoute = routes.find((route) => {
+				if (!route.startsWith(prefix)) return false;
+				const rangeMatch = route.match(
+					/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/
+				);
+				if (!rangeMatch) return false;
+				return compareHierarchicalNumbers(num, rangeMatch[0]);
+			});
+
+			if (parentRoute) {
+				currentIndex = routes.findIndex(
+					(route) => route === parentRoute
+				);
+				id = parentRoute;
+				fullRef = transformId(parentRoute);
+				console.log(
+					"matched route:",
+					id,
+					"for section:",
+					sectionNumber,
+					", full ref: ",
+					fullRef
+				);
+			}
+		}
+	}
 
 	if (currentIndex === -1) {
 		return Astro.redirect(`/search?q=${id}`);
@@ -62,8 +138,14 @@ if (route.type === "collection" && route.pattern) {
 	}
 
 	// Parse and combine content
-	const pairs = await parseContent(paliContent, contentItem);
+	const pairs = await parseContent(
+		paliContent,
+		contentItem,
+		sectionNumber,
+		fullRef
+	);
 	combinedContent = createCombinedMarkdown(pairs, showPali);
+	console.log("combined content: ", combinedContent);
 
 	// Extract last two segments of file path and remove extension
 	const fpParts = (contentItem.filePath ?? "").split("/");
