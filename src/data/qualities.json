@@ -1,0 +1,53 @@
+{
+	"negative": [
+		"anger",
+		"anxiety",
+		"conceit",
+		"drowsiness",
+		"immaturity",
+		"personal existence",
+		"sensual desire"
+	],
+	"neutral": ["companionship"],
+	"positive": [
+		"diligence",
+		"ethical conduct",
+		"merit",
+		"recognition of impermanence",
+		"self-control",
+		"solitude",
+		"wisdom"
+	],
+	"synonyms": {
+		"anger": ["ill-will", "hatred", "aversion", "resentment"],
+		"anxiety": ["worry", "distress", "agitation", "restlessness"],
+		"conceit": ["arrogance", "egotism", "tendency of self-comparison"],
+		"drowsiness": ["sleepiness", "yawning", "lethargic"],
+		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
+		"ethical conduct": ["moral integrity", "virtue"],
+		"immaturity": [
+			"lacking in discernment",
+			"lacking in good sense",
+			"child-like in understanding",
+			"lack of wisdom",
+			"lack of experience"
+		],
+		"merit": ["good deeds", "spiritual wealth"],
+		"personal existence": [
+			"identity view",
+			"self-view",
+			"self-identification",
+			"embodied being",
+			"egoism"
+		],
+		"recognition of impermanence": ["perception of impermanence"],
+		"self-control": ["self-restraint", "self-mastery"],
+		"sensual desire": [
+			"passion for sensual pleasures",
+			"lust",
+			"craving for pleasure"
+		],
+		"solitude": ["seclusion"],
+		"wisdom": ["understanding the four noble truths"]
+	}
+}
