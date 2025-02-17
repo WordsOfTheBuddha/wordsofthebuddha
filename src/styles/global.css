@@ -71,6 +71,11 @@
 	--auth-input-border: var(--auth-input-border-light);
 	--auth-button-bg: var(--auth-button-bg-light);
 	--auth-button-hover: var(--auth-button-hover-light);
+
+	--layout-color-light: #1a73e8;
+	--layout-color-dark: var(--link-color-dark);
+
+	--layout-active-color: var(--layout-color-light);
 }
 
 html.dark {
@@ -95,6 +100,7 @@ html.dark {
 	--auth-input-border: var(--auth-input-border-dark);
 	--auth-button-bg: var(--auth-button-bg-dark);
 	--auth-button-hover: var(--auth-button-hover-dark);
+	--layout-active-color: var(--layout-color-dark);
 }
 
 body {

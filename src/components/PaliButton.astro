@@ -5,6 +5,7 @@ import { app } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
+const { class: className } = Astro.props;
 const url = new URL(Astro.url);
 let isPaliMode = url.searchParams.get("pli") === "true";
 
@@ -31,20 +32,24 @@ if (!url.searchParams.has("pli")) {
 <button
 	id="paliButton"
 	class:list={[
-		"inline-flex items-center gap-1 pl-0 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
-		{ "text-primary-color dark:text-primary-color": isPaliMode },
+		"inline-flex items-center gap-1 pl-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		className,
 	]}
+	style={isPaliMode ? "color: var(--layout-active-color)" : ""}
 	aria-label="Toggle Pali text"
 	aria-pressed={isPaliMode}
+	title={isPaliMode ? "Hide Pāli text" : "Show Pāli text alongside English"}
 >
 	<span
 		id="paliIcon"
 		class:list={["w-4 h-4", { hidden: isPaliMode }]}
+		style="color: inherit"
 		set:html={ChevronRight}
 	/>
 	<span
 		id="paliEyeIcon"
 		class:list={["w-4 h-4", { hidden: !isPaliMode }]}
+		style="color: inherit"
 		set:html={ChevronDown}
 	/>
 	<span>Pāli</span>

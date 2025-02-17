@@ -37,6 +37,7 @@ if (Astro.cookies.has("__session")) {
 			"inline-flex items-center gap-1 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
 			{ "text-primary-color dark:text-primary-color": isSaved },
 		]}
+		style={isSaved ? "color: var(--layout-active-color)" : ""}
 		aria-label="Save content"
 		data-authenticated={Boolean(userId)}
 	>
@@ -65,15 +66,12 @@ if (Astro.cookies.has("__session")) {
 
 	function updateState(isSaved: boolean) {
 		if (isSaved) {
-			btn?.classList.add("text-primary-color", "dark:text-primary-color");
+			btn?.setAttribute("style", "color: var(--layout-active-color)");
 			outline?.classList.add("hidden");
 			check?.classList.remove("hidden");
 			if (saveLabel) saveLabel.innerText = "Saved";
 		} else {
-			btn?.classList.remove(
-				"text-primary-color",
-				"dark:text-primary-color"
-			);
+			btn?.removeAttribute("style");
 			outline?.classList.remove("hidden");
 			check?.classList.add("hidden");
 			if (saveLabel) saveLabel.innerText = "Save";

@@ -56,7 +56,11 @@ console.log("route type is: ", route.type, route.metadata);
 // Initialize variables for different route types
 let collectionProps;
 let suttaProps;
-let combinedContent = "";
+let mainContent = "";
+let sideContent;
+const layout =
+	(Astro.url.searchParams.get("layout") as "split" | "interleaved") ||
+	"interleaved";
 
 // Handle collection routes
 if (route.type === "collection" && route.pattern) {
@@ -144,8 +148,15 @@ if (route.type === "collection" && route.pattern) {
 		sectionNumber,
 		fullRef
 	);
-	combinedContent = createCombinedMarkdown(pairs, showPali);
-	console.log("combined content: ", combinedContent);
+	const content = createCombinedMarkdown(pairs, showPali, layout);
+
+	// Prepare content based on layout type
+	if (typeof content === "string") {
+		mainContent = content;
+	} else {
+		mainContent = content.english;
+		sideContent = content.pali;
+	}
 
 	// Extract last two segments of file path and remove extension
 	const fpParts = (contentItem.filePath ?? "").split("/");
@@ -193,7 +204,11 @@ if (route.type === "collection" && route.pattern) {
 		/>
 	) : (
 		<Layout {...suttaProps}>
-			<MDContent content={combinedContent} />
+			<MDContent
+				content={mainContent}
+				sideContent={sideContent}
+				layout={layout}
+			/>
 		</Layout>
 	)
 }

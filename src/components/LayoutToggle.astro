@@ -1,0 +1,81 @@
+---
+import ArrowsUpDown from "../assets/unified-view.svg?raw";
+import ArrowsRightLeft from "../assets/split-view.svg?raw";
+
+const { class: className } = Astro.props;
+const isPaliMode = Astro.url.searchParams.get("pli") === "true";
+
+// Don't render if Pali is not enabled
+if (!isPaliMode) return null;
+---
+
+<button
+	id="layoutToggle"
+	class:list={[
+		"inline-flex items-center gap-1 p-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		className,
+	]}
+	style="color: var(--layout-active-color)"
+	title="Switch to interleaved view"
+>
+	<span class="interleaved-icon hidden w-4 h-4" set:html={ArrowsUpDown} />
+	<span class="split-icon hidden w-4 h-4" set:html={ArrowsRightLeft} />
+</button>
+
+<script>
+	import { setLayoutState } from "../utils/theme";
+
+	function initializeLayout() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const layoutParam = urlParams.get("layout");
+		const storedLayout = localStorage.getItem("layout");
+
+		// URL param takes precedence over localStorage
+		const currentLayout = layoutParam || storedLayout || "interleaved";
+		console.log("current layout is: ", currentLayout);
+
+		// Set initial state
+		document.documentElement.classList.toggle(
+			"split",
+			currentLayout === "split"
+		);
+
+		// Ensure localStorage and URL are in sync
+		if (currentLayout === "split") {
+			setLayoutState("split");
+		} else {
+			setLayoutState("interleaved");
+		}
+	}
+
+	const toggle = document.getElementById("layoutToggle");
+	if (toggle) {
+		const updateToggleState = (isSplit: boolean) => {
+			const splitIcon = toggle.querySelector(".split-icon");
+			const interleavedIcon = toggle.querySelector(".interleaved-icon");
+
+			if (splitIcon && interleavedIcon) {
+				splitIcon.classList.toggle("hidden", !isSplit);
+				interleavedIcon.classList.toggle("hidden", isSplit);
+			}
+			toggle.title = isSplit
+				? "Switch to vertical interleaved view"
+				: "Switch to side split view";
+		};
+
+		// Initialize on page load
+		initializeLayout();
+		updateToggleState(document.documentElement.classList.contains("split"));
+
+		toggle.addEventListener("click", () => {
+			const isSplit =
+				document.documentElement.classList.contains("split");
+			const newLayout = isSplit ? "interleaved" : "split";
+			document.documentElement.classList.toggle("split");
+			setLayoutState(newLayout);
+			updateToggleState(!isSplit);
+			// Dispatch event for components that need layout updates
+			document.dispatchEvent(new CustomEvent("layoutChanged"));
+		});
+	}
+</script>

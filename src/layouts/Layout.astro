@@ -16,6 +16,7 @@ import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
 import PaliButton from "../components/PaliButton.astro";
+import LayoutToggle from "src/components/LayoutToggle.astro";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -104,6 +105,24 @@ if (id) {
 					<Navbar showAuth={showAuth} />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					{(<Description description={description} />)}
+					{
+						(showPali || showReadLater || showSave) && (
+							<>
+								<div class="flex items-center justify-between gap-1">
+									{showPali && (
+										<div class="flex items-center gap-1">
+											<PaliButton />
+											<LayoutToggle />
+										</div>
+									)}
+									<div class="flex items-center gap-1">
+										{showReadLater && <ReadLaterButton />}
+										{showSave && <SaveButton />}
+									</div>
+								</div>
+							</>
+						)
+					}
 					<div class="flex items-start justify-between">
 						<Title title={title} showFilter={showFilter}>
 							{
@@ -116,20 +135,6 @@ if (id) {
 							}
 						</Title>
 					</div>
-					{
-						(showPali || showReadLater || showSave) && (
-							<>
-								<div class="flex items-center justify-between gap-1">
-									{showPali && <PaliButton />}
-									<div class="flex items-center gap-1">
-										{showReadLater && <ReadLaterButton />}
-										{showSave && <SaveButton />}
-									</div>
-								</div>
-								<hr class="mt-2 mb-8" />
-							</>
-						)
-					}
 					<slot />
 					{
 						lastUpdated && (
@@ -162,6 +167,9 @@ if (id) {
 					urlParams.get("enablePaliLookup") ??
 					localStorage.paliLookup ??
 					false,
+				layout:
+					(urlParams.get("layout") as "split" | "interleaved") ??
+					"interleaved",
 			};
 			console.log("preferences: ", preferences);
 			synchronizePreferences(preferences);

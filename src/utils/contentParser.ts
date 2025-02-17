@@ -140,37 +140,63 @@ function toSmartQuotes(text: string): string {
 	return text.replace(/"([^"]*)"/g, "“$1”").replace(/'([^']*)'/g, "‘$1’");
 }
 
+export type SplitContent = {
+	pali: string;
+	english: string;
+};
+
+function formatBlock(text: string, isPali: boolean = false): string {
+	// Handle headings
+	if (text.startsWith("#")) {
+		return text; // Return headings without wrapping in <p>
+	}
+
+	// Handle verses and regular paragraphs
+	const isVerseText = isVerse(text);
+	const className = isPali ? "pali-paragraph" : "english-paragraph";
+	const verseClass = isPali ? "verse-basic" : isVerseText ? "verse" : "";
+
+	return isVerseText
+		? `<p class="${className} ${verseClass}">${transformVerseNewlines(
+				text
+		  )}</p>`
+		: `<p class="${className}">${text}</p>`;
+}
+
+// Modify the return type to handle split content
 export function createCombinedMarkdown(
 	pairs: ContentPair[],
-	showPali: boolean
-) {
-	const result = pairs
-		.map((pair) => {
-			if (pair.type === "other") {
-				return pair.english;
-			}
-			const isVerseText = isVerse(pair.english);
-			const verseEnglish = isVerse(pair.english) ? "verse" : "";
+	showPali: boolean,
+	layout: "split" | "interleaved" = "interleaved"
+): string | SplitContent {
+	if (layout === "split" && showPali) {
+		const pali = pairs
+			.filter(
+				(pair): pair is ContentPair & { pali: string } =>
+					pair.pali !== undefined
+			)
+			.map((pair) => formatBlock(pair.pali, true))
+			.join("\n\n");
 
+		const english = pairs
+			.map((pair) => formatBlock(pair.english, false))
+			.join("\n\n");
+
+		return { pali, english };
+	}
+
+	// Return interleaved content as before
+	return pairs
+		.map((pair) => {
 			if (!showPali || !pair.pali) {
-				return isVerseText
-					? `<p class="english-paragraph ${verseEnglish}">${transformVerseNewlines(
-							pair.english
-					  )}</p>`
-					: pair.english;
+				return formatBlock(pair.english, false);
 			}
-			const versePali = isVerse(pair.pali) ? "verse-basic" : "";
-			return `<p class="pali-paragraph ${versePali}">${
-				isVerseText ? transformVerseNewlines(pair.pali) : pair.pali
-			}</p>\n\n<p class="english-paragraph ${verseEnglish}">${
-				isVerseText
-					? transformVerseNewlines(pair.english)
-					: pair.english
-			}</p>`;
+			return `${formatBlock(pair.pali, true)}\n\n${formatBlock(
+				pair.english,
+				false
+			)}`;
 		})
 		.join("\n\n");
-
-	return result;
 }
 
 const isVerse = (text: string) => {

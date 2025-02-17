@@ -3,16 +3,41 @@ import { parseMarkdown } from "../utils/mdParser";
 
 interface Props {
 	content: string;
+	sideContent?: string;
+	layout?: "split" | "interleaved";
 }
 
-const { content } = Astro.props;
+const { content, sideContent, layout = "interleaved" } = Astro.props;
+const isSplit = layout === "split" && sideContent;
+
 const parsedContent = await parseMarkdown(content);
+const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 ---
 
-<article
-	class="md-content prose prose-lg dark:prose-invert"
-	set:html={parsedContent}
-/>
+{
+	isSplit ? (
+		<div class="split-wrapper">
+			<article
+				id="panel1"
+				class="split-panel md-content prose prose-lg dark:prose-invert"
+				set:html={parsedContent}
+			/>
+			<div class="resizer" role="separator" aria-label="Resize panels">
+				<div class="resizer-line" />
+			</div>
+			<article
+				id="panel2"
+				class="split-panel md-content prose prose-lg dark:prose-invert"
+				set:html={parsedSideContent}
+			/>
+		</div>
+	) : (
+		<article
+			class="md-content prose prose-lg dark:prose-invert"
+			set:html={parsedContent}
+		/>
+	)
+}
 
 <style>
 	.md-content :global(.pali-paragraph) {
@@ -33,4 +58,89 @@ const parsedContent = await parseMarkdown(content);
 		padding-top: 1rem;
 		border-top: 1px solid rgba(156, 163, 175, 0.2);
 	}
+
+	.split-wrapper {
+		display: grid;
+		grid-template-columns: 1fr 2px 1fr;
+		gap: 0;
+		min-height: 100%;
+		position: relative;
+	}
+
+	.split-panel {
+		padding: 0 1rem;
+	}
+
+	.resizer {
+		cursor: col-resize;
+		display: flex;
+		justify-content: center;
+		background: transparent;
+		user-select: none;
+		touch-action: none;
+	}
+
+	.resizer-line {
+		width: 2px;
+		height: 100%;
+		background-color: var(--gray-200);
+		transition: background-color 0.2s;
+	}
+
+	.resizer:hover .resizer-line,
+	.resizer:active .resizer-line {
+		background-color: var(--primary-color);
+	}
+
+	/* Prevent text selection while resizing */
+	.resize-active {
+		user-select: none;
+		cursor: col-resize;
+	}
 </style>
+
+<script>
+	const container = document.querySelector(".split-wrapper");
+	const resizer = document.querySelector(".resizer");
+	const leftPanel = document.querySelector("#panel1");
+	const rightPanel = document.querySelector("#panel2");
+
+	if (container && resizer && leftPanel && rightPanel) {
+		let isResizing = false;
+		let startX;
+		let startLeftWidth;
+
+		resizer.addEventListener("pointerdown", initResize);
+
+		function initResize(e) {
+			isResizing = true;
+			startX = e.pageX;
+			startLeftWidth = leftPanel.offsetWidth;
+
+			document.documentElement.classList.add("resize-active");
+			document.addEventListener("pointermove", resize);
+			document.addEventListener("pointerup", stopResize);
+		}
+
+		function resize(e) {
+			if (!isResizing) return;
+
+			const containerWidth = container.offsetWidth;
+			const newLeftWidth = startLeftWidth + (e.pageX - startX);
+			const minWidth = 200;
+			const maxWidth = containerWidth - minWidth;
+
+			if (newLeftWidth >= minWidth && newLeftWidth <= maxWidth) {
+				const leftPercentage = (newLeftWidth / containerWidth) * 100;
+				container.style.gridTemplateColumns = `${leftPercentage}% 2px calc(${100 - leftPercentage}% - 2px)`;
+			}
+		}
+
+		function stopResize() {
+			isResizing = false;
+			document.documentElement.classList.remove("resize-active");
+			document.removeEventListener("pointermove", resize);
+			document.removeEventListener("pointerup", stopResize);
+		}
+	}
+</script>
