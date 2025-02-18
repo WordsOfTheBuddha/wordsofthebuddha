@@ -128,7 +128,7 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 			document
 				.querySelectorAll("#panel2 [data-pair-id]")
 				.forEach((el) => {
-					el.style.marginTop = "8px";
+					(el as HTMLElement).style.marginTop = "8px";
 				});
 
 			const engParas = document.querySelectorAll(
@@ -142,8 +142,8 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 				);
 
 				if (pali) {
-					void eng.offsetHeight;
-					void pali.offsetHeight;
+					void (eng as HTMLElement).offsetHeight;
+					void (pali as HTMLElement).offsetHeight;
 
 					const engRect = eng.getBoundingClientRect();
 					const paliRect = pali.getBoundingClientRect();
@@ -153,7 +153,8 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 					if (Math.abs(diff) > 1) {
 						const additionalMargin = Math.max(diff, 0);
-						pali.style.marginTop = `${8 + additionalMargin}px`; // Base margin + adjustment
+						(pali as HTMLElement).style.marginTop =
+							`${8 + additionalMargin}px`;
 					}
 				}
 			});
