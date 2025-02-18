@@ -16,7 +16,7 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 {
 	isSplit ? (
-		<div class="split-wrapper">
+		<div class="content-fade split-wrapper">
 			<article
 				id="panel1"
 				class="split-panel md-content prose prose-lg dark:prose-invert"
@@ -30,7 +30,7 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 		</div>
 	) : (
 		<article
-			class="md-content prose prose-lg dark:prose-invert"
+			class="content-fade md-content prose prose-lg dark:prose-invert"
 			set:html={parsedContent}
 		/>
 	)
@@ -38,8 +38,8 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 <style>
 	.md-content :global(.pali-paragraph) {
-		margin-bottom: 0.1rem;
 		opacity: 0.8;
+		margin-bottom: 0;
 		color: var(--text-color);
 	}
 	.md-content :global(.english-paragraph) {
@@ -59,9 +59,15 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 	.split-wrapper {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 2rem;
+		gap: 1rem;
 		min-height: 100%;
 		position: relative;
+		opacity: 0;
+		transition: opacity 0.3s ease-in;
+	}
+
+	.split-wrapper.visible {
+		opacity: 1;
 	}
 
 	.split-panel {
@@ -80,54 +86,87 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 	.split-wrapper [data-pair-id] {
 		margin-bottom: var(--min-para-spacing, 1rem);
 	}
+
+	/* Ensure consistent base margins */
+	.split-panel [data-pair-id] {
+		margin-top: 8px; /* Match the English paragraph margin */
+	}
+
+	/* Common fade transition */
+	.content-fade {
+		opacity: 0;
+		transition: opacity 0.3s ease-in;
+	}
+
+	.content-fade.visible {
+		opacity: 1;
+	}
+
+	/* Other existing styles remain unchanged */
 </style>
 
 <script>
-	// Configuration
-	const PARA_SPACING = 24;
-
-	function adjustParagraphAlignment(iteration = 1) {
-		const leftPanel = document.querySelector("#panel1");
-		const rightPanel = document.querySelector("#panel2");
-
-		if (!leftPanel || !rightPanel) {
-			console.log("Error: Panels not found");
-			return;
+	function showContent() {
+		const content = document.querySelector(".content-fade");
+		if (content) {
+			requestAnimationFrame(() => {
+				content.classList.add("visible");
+			});
 		}
+	}
 
-		const engParas = document.querySelectorAll("#panel1 [data-pair-id]");
+	function adjustParagraphAlignment() {
+		const splitWrapper = document.querySelector(".split-wrapper");
 
-		engParas.forEach((eng) => {
-			const id = eng.getAttribute("data-pair-id");
-			const pali = document.querySelector(
-				`#panel2 [data-pair-id="${id}"]`
+		if (splitWrapper) {
+			const leftPanel = document.querySelector("#panel1");
+			const rightPanel = document.querySelector("#panel2");
+
+			if (!leftPanel || !rightPanel) return;
+
+			// Reset margins but keep the base margin
+			document
+				.querySelectorAll("#panel2 [data-pair-id]")
+				.forEach((el) => {
+					el.style.marginTop = "8px";
+				});
+
+			const engParas = document.querySelectorAll(
+				"#panel1 [data-pair-id]"
 			);
 
-			if (pali) {
-				// Reset margins to base spacing
-				eng.style.margin = `${PARA_SPACING}px 0`;
-				pali.style.margin = `${PARA_SPACING}px 0`;
+			engParas.forEach((eng, index) => {
+				const id = eng.getAttribute("data-pair-id");
+				const pali = document.querySelector(
+					`#panel2 [data-pair-id="${id}"]`
+				);
 
-				void eng.offsetHeight;
-				void pali.offsetHeight;
+				if (pali) {
+					void eng.offsetHeight;
+					void pali.offsetHeight;
 
-				const engRect = eng.getBoundingClientRect();
-				const paliRect = pali.getBoundingClientRect();
-				const diff = engRect.top - paliRect.top;
+					const engRect = eng.getBoundingClientRect();
+					const paliRect = pali.getBoundingClientRect();
 
-				if (Math.abs(diff) > 1) {
-					pali.style.marginTop = `${Math.max(diff, 0) + PARA_SPACING}px`;
-					const newPaliRect = pali.getBoundingClientRect();
+					// Calculate raw position difference
+					const diff = engRect.top - paliRect.top;
+
+					if (Math.abs(diff) > 1) {
+						const additionalMargin = Math.max(diff, 0);
+						pali.style.marginTop = `${8 + additionalMargin}px`; // Base margin + adjustment
+					}
 				}
-			}
-		});
+			});
+		}
+
+		showContent();
 	}
 
 	// First adjustment on load
 	window.addEventListener("load", () => {
 		// Adjustment after small delay of 10ms
 		setTimeout(() => {
-			adjustParagraphAlignment(1);
-		}, 10);
+			adjustParagraphAlignment();
+		}, 1);
 	});
 </script>
