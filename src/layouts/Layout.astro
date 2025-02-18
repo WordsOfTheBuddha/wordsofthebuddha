@@ -52,6 +52,23 @@ if (id) {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- Preload critical fonts -->
+		<link
+			rel="preload"
+			href="/assets/fonts/Spectral-Regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link
+			rel="preload"
+			href="/assets/fonts/Spectral-Italic.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+
 		<title>{SEOTitle || "Words of the Buddha"}</title>
 		<meta
 			name="description"

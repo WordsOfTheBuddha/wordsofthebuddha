@@ -1,4 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400&display=swap");
+@font-face {
+	font-family: "Spectral";
+	font-style: normal;
+	font-weight: 400;
+	font-display: block; /* Forces text to only show when font is loaded */
+	src: url("/assets/fonts/Spectral-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Spectral";
+	font-style: italic;
+	font-weight: 400;
+	font-display: block;
+	src: url("/assets/fonts/Spectral-Italic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Spectral";
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: url("/assets/fonts/Spectral-Bold.woff2") format("woff2");
+}
 
 @tailwind base;
 @tailwind components;
