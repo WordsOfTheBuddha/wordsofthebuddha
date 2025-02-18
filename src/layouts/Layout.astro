@@ -16,7 +16,7 @@ import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
 import PaliButton from "../components/PaliButton.astro";
-import LayoutToggle from "src/components/LayoutToggle.astro";
+import PaliLayoutToggle from "src/components/PaliLayoutToggle.astro";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -27,7 +27,6 @@ const {
 	fp,
 	title,
 	description,
-	filterString, // Add new prop
 	prev,
 	next,
 	lastUpdated,
@@ -112,7 +111,7 @@ if (id) {
 									{showPali && (
 										<div class="flex items-center gap-1">
 											<PaliButton />
-											<LayoutToggle />
+											<PaliLayoutToggle />
 										</div>
 									)}
 									<div class="flex items-center gap-1">
@@ -167,18 +166,24 @@ if (id) {
 					urlParams.get("enablePaliLookup") ??
 					localStorage.paliLookup ??
 					false,
-				layout:
-					(urlParams.get("layout") as "split" | "interleaved") ??
-					"interleaved",
 			};
+			preferences.layout = preferences.showPali
+				? window.innerWidth < 768
+					? "interleaved"
+					: ((urlParams.get("layout") as "split" | "interleaved") ??
+						localStorage.layout ??
+						"interleaved")
+				: undefined;
 			console.log("preferences: ", preferences);
 			synchronizePreferences(preferences);
 			// Apply font size from localStorage
 			const storedFontSize = localStorage.getItem("fontSize") || "large";
-			const prose = document.querySelector("article.prose");
-			if (prose && storedFontSize === "larger") {
-				prose.classList.remove("prose-lg", "prose-xl");
-				prose.classList.add("prose-xl");
+			const proseElements = document.querySelectorAll("article.prose");
+			if (proseElements && storedFontSize === "larger") {
+				proseElements.forEach((prose) => {
+					prose.classList.remove("prose-lg", "prose-xl");
+					prose.classList.add("prose-xl");
+				});
 			}
 
 			// Add click handler for all navigation

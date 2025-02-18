@@ -6,6 +6,8 @@ import type { UserRecord } from "firebase-admin/auth";
 import { verifyUser } from "../middleware/auth";
 import FontSizeLarger from "../assets/font-size-larger.svg?raw";
 import FontSizeLarge from "../assets/font-size-large.svg?raw";
+import UnifiedView from "../assets/unified-view.svg?raw";
+import SplitView from "../assets/split-view.svg?raw";
 
 // Initialize variables outside try/catch
 let user: UserRecord | null = null;
@@ -13,6 +15,7 @@ let paliEnabled = false;
 let currentTheme = "dark";
 let currentFontSize = "large";
 let paliLookup = true;
+let paliLayout = "interleaved";
 
 // Replace inline auth verification with verifyUser
 try {
@@ -36,6 +39,7 @@ paliEnabled = userData["preferences.showPali"] === true;
 currentTheme = userData["preferences.theme"] || "dark";
 currentFontSize = userData["preferences.fontSize"] || "large";
 paliLookup = userData["preferences.enablePaliLookup"] ?? true;
+paliLayout = userData["preferences.paliLayout"] || "interleaved";
 
 // Ensure user exists before rendering
 if (!user) {
@@ -171,7 +175,7 @@ if (!user) {
 					<div class="flex items-center justify-between">
 						<span
 							class="text-base font-medium text-[var(--text-color)]"
-							>Display Pāli text interleaved with English</span
+							>Display Pāli text alongside English</span
 						>
 						<button
 							class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-btn"
@@ -179,6 +183,40 @@ if (!user) {
 						>
 							{paliEnabled ? "On" : "Off"}
 						</button>
+					</div>
+
+					{/* Only show Pali layout options when Pali is enabled */}
+					<div
+						id="pali-layout-row"
+						class={`items-center justify-between ${!paliEnabled ? "hidden" : ""}`}
+					>
+						<span
+							class="text-base font-medium text-[var(--text-color)]"
+						>
+							Choose default Pāli text layout
+						</span>
+						<div class="flex items-center space-x-2">
+							<button
+								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-layout-btn flex items-center gap-2"
+								data-layout="interleaved"
+								data-active={(
+									paliLayout === "interleaved"
+								).toString()}
+							>
+								<span set:html={UnifiedView} class="w-5 h-5" />
+								Interleaved
+							</button>
+							<button
+								class="px-3 py-2 text-sm rounded-md border border-[var(--auth-input-border)] pali-layout-btn flex items-center gap-2"
+								data-layout="split"
+								data-active={(
+									paliLayout === "split"
+								).toString()}
+							>
+								<span set:html={SplitView} class="w-5 h-5" />
+								Split View
+							</button>
+						</div>
 					</div>
 
 					<div class="flex items-center justify-between">
@@ -446,9 +484,61 @@ if (!user) {
 			paliBtn.textContent = newState ? "On" : "Off";
 			paliBtn.classList.toggle("bg-[var(--auth-button-bg)]", newState);
 			paliBtn.classList.toggle("text-white", newState);
+			// Hide Pali layout UI when turning Pali mode off
+			if (!newState) {
+				document
+					.querySelector("#pali-layout-row")
+					?.classList.add("hidden");
+			} else {
+				document
+					.querySelector("#pali-layout-row")
+					?.classList.remove("hidden");
+			}
 		} catch (error) {
 			console.error("Failed to update Pali preference:", error);
 		}
+	});
+
+	// Handle Pali Layout preference
+	const paliLayoutButtons = document.querySelectorAll(".pali-layout-btn");
+
+	paliLayoutButtons.forEach((button) => {
+		button.addEventListener("click", async () => {
+			const layout = button.getAttribute("data-layout");
+			if (layout && ["interleaved", "split"].includes(layout)) {
+				try {
+					const formData = new FormData();
+					formData.append("paliLayout", layout);
+					const response = await fetch("/api/preferences/update", {
+						method: "POST",
+						body: formData,
+					});
+
+					if (!response.ok) {
+						throw new Error(
+							"Failed to update Pali layout preference"
+						);
+					}
+
+					// Update localStorage
+					localStorage.setItem("layout", layout);
+
+					// Update button states
+					paliLayoutButtons.forEach((btn) => {
+						const isActive =
+							btn.getAttribute("data-layout") === layout;
+						btn.setAttribute("data-active", isActive.toString());
+						btn.classList.toggle(
+							"bg-[var(--auth-button-bg)]",
+							isActive
+						);
+						btn.classList.toggle("text-white", isActive);
+					});
+				} catch (error) {
+					console.error("Failed to update Pali layout:", error);
+				}
+			}
+		});
 	});
 
 	// Handle Pali lookup preference
@@ -537,6 +627,9 @@ if (!user) {
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 	.pali-lookup-btn[data-active="true"] {
+		@apply bg-[var(--auth-button-bg)] text-white;
+	}
+	.pali-layout-btn[data-active="true"] {
 		@apply bg-[var(--auth-button-bg)] text-white;
 	}
 </style>

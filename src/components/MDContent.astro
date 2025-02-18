@@ -22,9 +22,6 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 				class="split-panel md-content prose prose-lg dark:prose-invert"
 				set:html={parsedContent}
 			/>
-			<div class="resizer" role="separator" aria-label="Resize panels">
-				<div class="resizer-line" />
-			</div>
 			<article
 				id="panel2"
 				class="split-panel md-content prose prose-lg dark:prose-invert"
@@ -61,8 +58,8 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 	.split-wrapper {
 		display: grid;
-		grid-template-columns: 1fr 2px 1fr;
-		gap: 0;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem;
 		min-height: 100%;
 		position: relative;
 	}
@@ -71,76 +68,66 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 		padding: 0 1rem;
 	}
 
-	.resizer {
-		cursor: col-resize;
-		display: flex;
-		justify-content: center;
-		background: transparent;
-		user-select: none;
-		touch-action: none;
+	/* Add styles for heading spacing in split mode */
+	.split-wrapper h3,
+	.split-wrapper h4 {
+		margin-top: 2rem;
+		padding-bottom: 1rem;
+		position: relative;
 	}
 
-	.resizer-line {
-		width: 2px;
-		height: 100%;
-		background-color: var(--gray-200);
-		transition: background-color 0.2s;
-	}
-
-	.resizer:hover .resizer-line,
-	.resizer:active .resizer-line {
-		background-color: var(--primary-color);
-	}
-
-	/* Prevent text selection while resizing */
-	.resize-active {
-		user-select: none;
-		cursor: col-resize;
+	/* Add base spacing for paragraphs in split mode */
+	.split-wrapper [data-pair-id] {
+		margin-bottom: var(--min-para-spacing, 1rem);
 	}
 </style>
 
 <script>
-	const container = document.querySelector(".split-wrapper");
-	const resizer = document.querySelector(".resizer");
-	const leftPanel = document.querySelector("#panel1");
-	const rightPanel = document.querySelector("#panel2");
+	// Configuration
+	const PARA_SPACING = 24;
 
-	if (container && resizer && leftPanel && rightPanel) {
-		let isResizing = false;
-		let startX;
-		let startLeftWidth;
+	function adjustParagraphAlignment(iteration = 1) {
+		const leftPanel = document.querySelector("#panel1");
+		const rightPanel = document.querySelector("#panel2");
 
-		resizer.addEventListener("pointerdown", initResize);
-
-		function initResize(e) {
-			isResizing = true;
-			startX = e.pageX;
-			startLeftWidth = leftPanel.offsetWidth;
-
-			document.documentElement.classList.add("resize-active");
-			document.addEventListener("pointermove", resize);
-			document.addEventListener("pointerup", stopResize);
+		if (!leftPanel || !rightPanel) {
+			console.log("Error: Panels not found");
+			return;
 		}
 
-		function resize(e) {
-			if (!isResizing) return;
+		const engParas = document.querySelectorAll("#panel1 [data-pair-id]");
 
-			const containerWidth = container.offsetWidth;
-			const newLeftWidth = startLeftWidth + (e.pageX - startX);
-			const minWidth = 200;
-			const maxWidth = containerWidth - minWidth;
+		engParas.forEach((eng) => {
+			const id = eng.getAttribute("data-pair-id");
+			const pali = document.querySelector(
+				`#panel2 [data-pair-id="${id}"]`
+			);
 
-			if (newLeftWidth >= minWidth && newLeftWidth <= maxWidth) {
-				const leftPercentage = (newLeftWidth / containerWidth) * 100;
-				container.style.gridTemplateColumns = `${leftPercentage}% 2px calc(${100 - leftPercentage}% - 2px)`;
+			if (pali) {
+				// Reset margins to base spacing
+				eng.style.margin = `${PARA_SPACING}px 0`;
+				pali.style.margin = `${PARA_SPACING}px 0`;
+
+				void eng.offsetHeight;
+				void pali.offsetHeight;
+
+				const engRect = eng.getBoundingClientRect();
+				const paliRect = pali.getBoundingClientRect();
+				const diff = engRect.top - paliRect.top;
+
+				if (Math.abs(diff) > 1) {
+					pali.style.marginTop = `${Math.max(diff, 0) + PARA_SPACING}px`;
+					const newPaliRect = pali.getBoundingClientRect();
+				}
 			}
-		}
-
-		function stopResize() {
-			isResizing = false;
-			document.documentElement.classList.remove("resize-active");
-			document.removeEventListener("pointermove", resize);
-			document.removeEventListener("pointerup", stopResize);
-		}
+		});
 	}
+
+	// First adjustment on load
+	window.addEventListener("load", () => {
+		// Adjustment after small delay of 10ms
+		setTimeout(() => {
+			adjustParagraphAlignment(1);
+		}, 10);
+	});
 </script>

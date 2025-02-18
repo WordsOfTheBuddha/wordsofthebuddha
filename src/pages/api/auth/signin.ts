@@ -40,6 +40,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		const enablePaliLookup =
 			userData["preferences.enablePaliLookup"] || false;
 		let noteId = userData["defaultNoteId"];
+		const layout = userData["preferences.paliLayout"];
 		console.log(
 			`[${opId}] User preferences: showPali=${showPali}, theme=${theme}, enablePaliLookup=${enablePaliLookup}, noteId=${noteId}`
 		);
@@ -101,6 +102,9 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		}
 		if (theme) {
 			redirectUrl.searchParams.set("theme", theme);
+		}
+		if (layout) {
+			redirectUrl.searchParams.set("layout", layout);
 		}
 		redirectUrl.searchParams.set(
 			"enablePaliLookup",

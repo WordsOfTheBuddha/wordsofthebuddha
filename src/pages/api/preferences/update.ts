@@ -25,6 +25,12 @@ const preferenceValidators = {
 		const boolValue = value.toLowerCase() === "true";
 		return boolValue;
 	},
+	paliLayout: (value: string) => {
+		if (!["interleaved", "split"].includes(value)) {
+			throw new Error("Pali layout must be 'interleaved' or 'split'");
+		}
+		return value as "interleaved" | "split";
+	},
 } as const;
 
 export const POST: APIRoute = async ({ request, cookies }) => {

@@ -10,9 +10,9 @@ if (!isPaliMode) return null;
 ---
 
 <button
-	id="layoutToggle"
+	id="paliLayoutToggle"
 	class:list={[
-		"inline-flex items-center gap-1 p-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		"hidden md:inline-flex items-center gap-1 p-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
 		className,
 	]}
 	style="color: var(--layout-active-color)"
@@ -26,6 +26,9 @@ if (!isPaliMode) return null;
 	import { setLayoutState } from "../utils/theme";
 
 	function initializeLayout() {
+		if (window.innerWidth < 768) {
+			return;
+		}
 		const urlParams = new URLSearchParams(window.location.search);
 		const layoutParam = urlParams.get("layout");
 		const storedLayout = localStorage.getItem("layout");
@@ -48,7 +51,7 @@ if (!isPaliMode) return null;
 		}
 	}
 
-	const toggle = document.getElementById("layoutToggle");
+	const toggle = document.getElementById("paliLayoutToggle");
 	if (toggle) {
 		const updateToggleState = (isSplit: boolean) => {
 			const splitIcon = toggle.querySelector(".split-icon");
@@ -64,18 +67,22 @@ if (!isPaliMode) return null;
 		};
 
 		// Initialize on page load
-		initializeLayout();
-		updateToggleState(document.documentElement.classList.contains("split"));
+		if (window.innerWidth >= 768) {
+			initializeLayout();
+			updateToggleState(
+				document.documentElement.classList.contains("split")
+			);
 
-		toggle.addEventListener("click", () => {
-			const isSplit =
-				document.documentElement.classList.contains("split");
-			const newLayout = isSplit ? "interleaved" : "split";
-			document.documentElement.classList.toggle("split");
-			setLayoutState(newLayout);
-			updateToggleState(!isSplit);
-			// Dispatch event for components that need layout updates
-			document.dispatchEvent(new CustomEvent("layoutChanged"));
-		});
+			toggle.addEventListener("click", () => {
+				const isSplit =
+					document.documentElement.classList.contains("split");
+				const newLayout = isSplit ? "interleaved" : "split";
+				document.documentElement.classList.toggle("split");
+				setLayoutState(newLayout);
+				updateToggleState(!isSplit);
+				// Dispatch event for components that need layout updates
+				document.dispatchEvent(new CustomEvent("layoutChanged"));
+			});
+		}
 	}
 </script>

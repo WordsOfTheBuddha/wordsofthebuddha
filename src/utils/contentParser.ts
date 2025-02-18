@@ -145,22 +145,25 @@ export type SplitContent = {
 	english: string;
 };
 
-function formatBlock(text: string, isPali: boolean = false): string {
-	// Handle headings
+function formatBlock(
+	text: string,
+	isPali: boolean = false,
+	index?: number
+): string {
+	// Handle headings - they count in the sequence but don't get pair IDs
 	if (text.startsWith("#")) {
-		return text; // Return headings without wrapping in <p>
+		return text;
 	}
 
-	// Handle verses and regular paragraphs
+	// Add data-pair-id to track corresponding paragraphs
+	const pairAttr = index !== undefined ? ` data-pair-id="${index}"` : "";
 	const isVerseText = isVerse(text);
 	const className = isPali ? "pali-paragraph" : "english-paragraph";
-	const verseClass = isPali ? "verse-basic" : isVerseText ? "verse" : "";
+	const verseClass = isVerseText ? (isPali ? "verse-basic" : "verse") : "";
 
-	return isVerseText
-		? `<p class="${className} ${verseClass}">${transformVerseNewlines(
-				text
-		  )}</p>`
-		: `<p class="${className}">${text}</p>`;
+	return `<p${pairAttr} class="${className} ${verseClass}">${
+		isVerseText ? transformVerseNewlines(text) : text
+	}</p>`;
 }
 
 // Modify the return type to handle split content
@@ -170,16 +173,33 @@ export function createCombinedMarkdown(
 	layout: "split" | "interleaved" = "interleaved"
 ): string | SplitContent {
 	if (layout === "split" && showPali) {
+		let pairIndex = 0;
+
+		// Process Pali content with sequential indexing
 		const pali = pairs
 			.filter(
 				(pair): pair is ContentPair & { pali: string } =>
 					pair.pali !== undefined
 			)
-			.map((pair) => formatBlock(pair.pali, true))
+			.map((pair) => {
+				// Only increment index for non-heading content
+				if (!pair.pali.startsWith("#")) {
+					return formatBlock(pair.pali, true, pairIndex++);
+				}
+				return formatBlock(pair.pali, true);
+			})
 			.join("\n\n");
 
+		// Reset index for English content
+		pairIndex = 0;
 		const english = pairs
-			.map((pair) => formatBlock(pair.english, false))
+			.map((pair) => {
+				// Only increment index for non-heading content
+				if (!pair.english.startsWith("#")) {
+					return formatBlock(pair.english, false, pairIndex++);
+				}
+				return formatBlock(pair.english, false);
+			})
 			.join("\n\n");
 
 		return { pali, english };
