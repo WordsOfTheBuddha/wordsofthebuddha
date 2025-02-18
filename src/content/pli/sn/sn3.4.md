@@ -14,7 +14,9 @@ Tassa mayhaṁ, bhante, etadahosi: ‘ye ca kho keci kāyena duccaritaṁ carant
 
 Ye ca kho keci kāyena sucaritaṁ caranti, vācāya sucaritaṁ caranti, manasā sucaritaṁ caranti; tesaṁ piyo attā. Kiñcāpi te evaṁ vadeyyuṁ: ‘appiyo no attā’ti; atha kho tesaṁ piyo attā. Taṁ kissa hetu? Yañhi piyo piyassa kareyya, taṁ te attanāva attano karonti; tasmā tesaṁ piyo attā”ti.
 
-“Evametaṁ, mahārāja, evametaṁ, mahārāja. Ye hi keci, mahārāja, kāyena duccaritaṁ caranti, vācāya duccaritaṁ caranti, manasā duccaritaṁ caranti; tasmā tesaṁ appiyo attā. Kiñcāpi te evaṁ vadeyyuṁ: ‘piyo no attā’ti, atha kho tesaṁ appiyo attā. Taṁ kissa hetu? Yañhi, mahārāja, appiyo appiyassa kareyya, taṁ te attanāva attano karonti; tasmā tesaṁ appiyo attā. Ye ca kho keci, mahārāja, kāyena sucaritaṁ caranti, vācāya sucaritaṁ caranti, manasā sucaritaṁ caranti; tesaṁ piyo attā. Kiñcāpi te evaṁ vadeyyuṁ: ‘appiyo no attā’ti; atha kho tesaṁ piyo attā. Taṁ kissa hetu? Yañhi, mahārāja, piyo piyassa kareyya, taṁ te attanāva attano karonti; tasmā tesaṁ piyo attā”ti.
+“Evametaṁ, mahārāja, evametaṁ, mahārāja. Ye hi keci, mahārāja, kāyena duccaritaṁ caranti, vācāya duccaritaṁ caranti, manasā duccaritaṁ caranti; tasmā tesaṁ appiyo attā. Kiñcāpi te evaṁ vadeyyuṁ: ‘piyo no attā’ti, atha kho tesaṁ appiyo attā. Taṁ kissa hetu? Yañhi, mahārāja, appiyo appiyassa kareyya, taṁ te attanāva attano karonti; tasmā tesaṁ appiyo attā.
+
+Ye ca kho keci, mahārāja, kāyena sucaritaṁ caranti, vācāya sucaritaṁ caranti, manasā sucaritaṁ caranti; tesaṁ piyo attā. Kiñcāpi te evaṁ vadeyyuṁ: ‘appiyo no attā’ti; atha kho tesaṁ piyo attā. Taṁ kissa hetu? Yañhi, mahārāja, piyo piyassa kareyya, taṁ te attanāva attano karonti; tasmā tesaṁ piyo attā”ti.
 
 Idamavoca bhagavā. Idaṁ vatvāna sugato athāparaṁ etadavoca satthā:
 

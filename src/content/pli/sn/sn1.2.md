@@ -14,7 +14,7 @@ Atha kho aññatarā devatā abhikkantāya rattiyā abhikkantavaṇṇā kevalak
 
 “Yathākathaṁ pana tvaṁ, mārisa, jānāsi sattānaṁ nimokkhaṁ pamokkhaṁ vivekan”ti?
 
-“Nandībhavaparikkhayā, Variant: Nandībhavaparikkhayā → nandibhavaparikkhayā (sya-all, km)
+“Nandībhavaparikkhayā,
 Saññāviññāṇasaṅkhayā;
 Vedanānaṁ nirodhā upasamā,
 Evaṁ khvāhaṁ āvuso jānāmi;
