@@ -18,8 +18,9 @@ const { prev, next } = Astro.props;
 		prev && (
 			<a
 				href={`/${prev.id}`}
-				class="block w-full ml-2 mr-8 my-2 sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-left"
+				class="nav-link block w-full ml-2 mr-8 my-2 sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-left"
 				style="color: var(--link-color)"
+				data-base-href={`/${prev.id}`}
 			>
 				← {transformId(prev.id)} {prev.data.title}
 			</a>
@@ -29,11 +30,33 @@ const { prev, next } = Astro.props;
 		next && (
 			<a
 				href={`/${next.id}`}
-				class="block w-full ml-8 mr-2 sm:ml-auto sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-right"
+				class="nav-link block w-full ml-8 mr-2 sm:ml-auto sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-right"
 				style="color: var(--link-color)"
+				data-base-href={`/${next.id}`}
 			>
 				{transformId(next.id)} {next.data.title} →
 			</a>
 		)
 	}
 </nav>
+
+<script>
+	function updateLinks() {
+		const paliMode = localStorage.getItem("paliMode") === "true";
+		const layout = localStorage.getItem("layout") || "interleaved";
+		const links = document.querySelectorAll("a.nav-link");
+
+		links.forEach((link) => {
+			const baseHref = link.getAttribute("data-base-href");
+			const params = new URLSearchParams();
+			if (paliMode) params.set("pli", "true");
+			if (layout === "split") params.set("layout", layout);
+			if (params.toString()) {
+				(link as HTMLAnchorElement).href =
+					`${baseHref}?${params.toString()}`;
+			}
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", updateLinks);
+</script>

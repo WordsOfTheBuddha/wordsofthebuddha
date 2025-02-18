@@ -33,9 +33,11 @@ const {
 			<h2 class="text-base sm:text-lg font-semibold text-text">
 				<a
 					href={id}
-					class="text-gray-500 hover:text-link-color id mr-2 font-normal"
-					>{transformId(id)}&nbsp;<span
-						style="color:var(--text-color)">{title}</span
+					class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal"
+					data-base-href={id}
+				>
+					{transformId(id)}&nbsp;<span style="color:var(--text-color)"
+						>{title}</span
 					></a
 				>
 			</h2>
@@ -72,6 +74,27 @@ const {
 		)
 	}
 </div>
+
+<script>
+	function updatePostLinks() {
+		const paliMode = localStorage.getItem("paliMode") === "true";
+		const layout = localStorage.getItem("layout") || "interleaved";
+		const links = document.querySelectorAll("a.post-link");
+
+		links.forEach((link) => {
+			const baseHref = link.getAttribute("data-base-href");
+			const params = new URLSearchParams();
+			if (paliMode) params.set("pli", "true");
+			if (layout === "split") params.set("layout", layout);
+			if (params.toString()) {
+				(link as HTMLAnchorElement).href =
+					`${baseHref}?${params.toString()}`;
+			}
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", updatePostLinks);
+</script>
 
 <style>
 	.id {
