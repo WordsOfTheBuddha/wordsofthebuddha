@@ -139,7 +139,7 @@ export const GET: APIRoute = async ({ url }) => {
 			const results = await Promise.all(
 				words.map(async (w) => ({
 					word: w,
-					data: await lookupWord(w, true),
+					data: await lookupWord(w.toLowerCase(), true),
 				}))
 			);
 
@@ -178,7 +178,7 @@ export const GET: APIRoute = async ({ url }) => {
 	}
 
 	try {
-		const result = await lookupWord(word);
+		const result = await lookupWord(word.toLowerCase());
 		if (!result) {
 			return new Response(
 				JSON.stringify({
