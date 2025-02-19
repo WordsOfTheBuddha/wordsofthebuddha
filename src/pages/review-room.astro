@@ -168,13 +168,19 @@ try {
 											highlight.highlightSegments
 										)
 											.sort((a, b) => a.order - b.order)
-											.map((segment) => (
-												<Fragment
-													set:html={
-														segment.containerHTML
-													}
-												/>
-											))}
+											.map((segment) => {
+												// Remove style attribute from p elements, handling any style content
+												const cleanedHTML =
+													segment.containerHTML?.replace(
+														/<p([^>]*?)style="[^"]*"([^>]*?)>/g,
+														"<p$1$2>"
+													);
+												return (
+													<Fragment
+														set:html={cleanedHTML}
+													/>
+												);
+											})}
 									</div>
 									<p class="text-gray-500 text-xs my-0 text-right">
 										Highlighted on {highlight.formattedDate}
