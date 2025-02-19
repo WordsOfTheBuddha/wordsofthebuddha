@@ -186,8 +186,8 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 		try {
 			// Keep Firebase timeout at 10s
 			const firebaseTimeoutMs = 10000;
-			// Increase backend timeout to 8s
-			const backendTimeoutMs = 8000;
+			// Increase backend timeout to 20s
+			const backendTimeoutMs = 20000;
 
 			console.log("[Auth-Client] Attempting Firebase signin");
 
