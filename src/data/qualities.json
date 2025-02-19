@@ -10,17 +10,26 @@
 	],
 	"neutral": ["companionship"],
 	"positive": [
+		"arousing energy",
 		"diligence",
 		"ethical conduct",
 		"merit",
+		"mindfulness",
 		"recognition of impermanence",
 		"self-control",
 		"solitude",
-		"wisdom"
+		"vigour",
+		"wisdom",
+		"wise attention"
 	],
 	"synonyms": {
 		"anger": ["ill-will", "hatred", "aversion", "resentment"],
 		"anxiety": ["worry", "distress", "agitation", "restlessness"],
+		"arousing energy": [
+			"determination",
+			"taking initiative",
+			"making a mental decision to act"
+		],
 		"conceit": ["arrogance", "egotism", "tendency of self-comparison"],
 		"drowsiness": ["sleepiness", "yawning", "lethargic"],
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
@@ -33,6 +42,7 @@
 			"lack of experience"
 		],
 		"merit": ["good deeds", "spiritual wealth"],
+		"mindfulness": ["full awareness", "clear comprehension"],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -48,6 +58,20 @@
 			"craving for pleasure"
 		],
 		"solitude": ["seclusion"],
-		"wisdom": ["understanding the four noble truths"]
+		"vigour": [
+			"energy",
+			"effort",
+			"enthusiasm",
+			"zeal",
+			"determination",
+			"persistence"
+		],
+		"wisdom": ["understanding the four noble truths"],
+		"wise attention": [
+			"proper attention",
+			"prudent use of the mind",
+			"wise reflection",
+			"attention to the source"
+		]
 	}
 }
