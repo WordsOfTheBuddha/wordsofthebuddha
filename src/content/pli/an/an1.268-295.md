@@ -2,7 +2,7 @@
 title: Aṭṭhāna vagga - The Chapter On The Impossible
 description: Short teachings on the impossibility of certain events, actions, or outcomes.
 theme: principle
-qualities: ethical conduct
+qualities: ethical conduct, wisdom
 slug: an1.268-295
 ---
 
