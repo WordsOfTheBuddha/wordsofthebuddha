@@ -1,5 +1,5 @@
 ---
-title: Paṭhamanibbānapaṭisaṁyutta sutta - First Discourse on Nibbāna
+title: Paṭhama nibbānapaṭisaṁyutta sutta - First Discourse on Nibbāna
 description: The Blessed One instructs the bhikkhus on the base where there is no coming, going, staying, no passing away, and no arising.
 fetter: ignorance
 tags: ud,ud8,Nibbāna,mindful,base,āyatana,wisdom

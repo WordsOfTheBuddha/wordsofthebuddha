@@ -1,5 +1,5 @@
 ---
-title: Dutiyajananakuhana sutta
+title: Dutiya jananakuhana sutta
 slug: iti36
 ---
 

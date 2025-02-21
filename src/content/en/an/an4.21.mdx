@@ -1,5 +1,5 @@
 ---
-title: Paṭhamauruvela  sutta - Uruvelā (First)
+title: Paṭhama uruvela  sutta - Uruvelā (First)
 description: The Buddha reflects on the Dhamma after his enlightenment and is encouraged by Brahmā Sahampati to rely on the Dhamma.
 fetter: doubt
 tags: buddha,an,an4,doubt

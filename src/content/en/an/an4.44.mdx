@@ -1,5 +1,5 @@
 ---
-title: Dutiyakodhagaru sutta - Valuing Anger (Second)
+title: Dutiya kodhagaru sutta - Valuing Anger (Second)
 description: The Buddha shares the four unwholesome practices of valuing anger, contempt, gain, and honor, and the four wholesome practices of valuing the good Dhamma instead.
 fetter: ill-will, sensual desire
 tags: anger, contempt, gain, honor, good Dhamma, ill-will, sensual desire, an, an4

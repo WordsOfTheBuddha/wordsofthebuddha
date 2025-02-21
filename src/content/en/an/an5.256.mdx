@@ -1,5 +1,5 @@
 ---
-title: Paṭhamajhāna sutta - First Jhāna
+title: Paṭhama jhāna sutta - First Jhāna
 description: The Buddha explains that one is incapable of entering and dwelling in the first jhāna without giving up five qualities.
 fetter: doubt, sensual desire, ignorance
 tags: jhāna, stinginess, sensual desire, doubt, ignorance, acquisition, reputation, teachings, family, dwelling, gain, an, an5
