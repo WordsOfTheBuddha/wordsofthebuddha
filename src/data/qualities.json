@@ -11,8 +11,11 @@
 	"neutral": ["companionship"],
 	"positive": [
 		"arousing energy",
+		"complete comprehension",
 		"diligence",
 		"ethical conduct",
+		"dispassion",
+		"giving up",
 		"merit",
 		"mindfulness",
 		"recognition of impermanence",
@@ -30,10 +33,19 @@
 			"taking initiative",
 			"making a mental decision to act"
 		],
+		"complete comprehension": ["full understanding", "knowing full well"],
 		"conceit": ["arrogance", "egotism", "tendency of self-comparison"],
+		"direct knowing": ["experiential understanding", "direct experience"],
+		"dispassion": ["detachment", "disinterest"],
 		"drowsiness": ["sleepiness", "yawning", "lethargic"],
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
 		"ethical conduct": ["moral integrity", "virtue"],
+		"giving up": [
+			"renunciation",
+			"relinquishment",
+			"letting go",
+			"abandonment"
+		],
 		"immaturity": [
 			"lacking in discernment",
 			"lacking in good sense",
