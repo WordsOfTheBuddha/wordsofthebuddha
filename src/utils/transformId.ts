@@ -7,8 +7,9 @@ export const keyMap: { [key: string]: string } = {
 	snp: "Sutta Nipāta",
 	an: "Numerical Discourses",
 	iti: "As It Was Said",
-	books: "Books",
+	anthologies: "Anthologies",
 	"noble-truths-noble-path": "Noble Truths, Noble Path",
+	"in-the-buddhas-words": "In the Buddha's Words",
 };
 
 // Function to transform the ID based on character and digit boundaries

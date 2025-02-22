@@ -1,5 +1,6 @@
 import { directoryStructure } from "../data/directoryStructure";
 import { transformId } from "../utils/transformId";
+import { keyMap } from "./transformId";
 
 export interface BreadcrumbItem {
 	label: string;
@@ -7,13 +8,26 @@ export interface BreadcrumbItem {
 	title?: string;
 }
 
-export function getBreadcrumbPath(id: string): BreadcrumbItem[] {
+export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 	const path: BreadcrumbItem[] = [{ label: "Home", path: "/" }];
 
+	const id = idPath[idPath.length - 1];
+	// Handle non-collection routes
+	if (idPath[0] === "anthologies") {
+		path.push({
+			label: "Anthologies",
+			path: "/anthologies",
+		});
+		path.push({
+			label: keyMap[id],
+			path: `/${id}`,
+		});
+		return path;
+	}
 	// Extract prefix and numbers
 	const prefix = id.match(/^[a-z]+/i)?.[0] || "";
 	const [baseId, subNumber] = id.split(".");
-
+	console.log("id: ", id, ", prefix: ", prefix);
 	if (prefix && prefix in directoryStructure) {
 		// Add collection level (e.g., "SN")
 		const collection = directoryStructure[prefix];
@@ -22,6 +36,15 @@ export function getBreadcrumbPath(id: string): BreadcrumbItem[] {
 			path: `/${prefix}`,
 			title: collection.title,
 		});
+		if (!collection.children) {
+			if (id !== prefix) {
+				path.push({
+					label: transformId(id),
+					path: `/${id}`,
+				});
+			}
+			return path;
+		}
 
 		// If the id is a range key or a direct child, add it once
 		if (collection.children?.[id]) {
@@ -58,6 +81,17 @@ export function getBreadcrumbPath(id: string): BreadcrumbItem[] {
 							path: `/${baseId}`,
 							title: child.title,
 						});
+						if (baseId !== id) {
+							path.push({
+								label: transformId(id),
+								path: `/${id}`,
+							});
+						}
+					} else {
+						path.push({
+							label: transformId(id),
+							path: `/${id}`,
+						});
 					}
 					break;
 				}
@@ -72,6 +106,12 @@ export function getBreadcrumbPath(id: string): BreadcrumbItem[] {
 				path: `/${baseId}`,
 				title: child.title,
 			});
+			if (baseId !== id) {
+				path.push({
+					label: transformId(id),
+					path: `/${id}`,
+				});
+			}
 			return path;
 		}
 	}

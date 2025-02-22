@@ -1,8 +1,11 @@
 ---
 import { getBreadcrumbPath } from "../utils/getBreadcrumbPath";
-import { getSlugId } from "../utils/transformId";
+import { getSlugId, transformId } from "../utils/transformId";
 
 const { path } = Astro.props;
+
+const urlPathSegments = Astro.url.pathname.split("/");
+const urlPath = urlPathSegments[urlPathSegments.length - 1];
 
 // Pages to exclude breadcrumbs from
 if (
@@ -20,8 +23,16 @@ if (
 	return null;
 
 const segments = path.split("/").filter(Boolean);
-const breadcrumbs =
-	segments.length > 0 ? getBreadcrumbPath(segments[segments.length - 1]) : [];
+const lastSegment = segments[segments.length - 1];
+let breadcrumbs = segments.length > 0 ? getBreadcrumbPath(segments) : [];
+if (breadcrumbs.length > 0) {
+	if (breadcrumbs[breadcrumbs.length - 1].path.substring(1) !== urlPath) {
+		breadcrumbs.push({
+			label: transformId(urlPath),
+			path: `/${urlPath}`,
+		});
+	}
+}
 ---
 
 <div
@@ -46,7 +57,7 @@ const breadcrumbs =
 					</svg>
 				)}
 				{index === breadcrumbs.length - 1 &&
-				path.split("/")[1] === getSlugId(item.label) ? (
+				path.split("/")[1] === lastSegment ? (
 					<span class="text-[var(--text-muted)]" title={item.title}>
 						{item.label}
 					</span>
