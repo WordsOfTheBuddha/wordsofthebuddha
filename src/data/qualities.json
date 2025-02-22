@@ -4,9 +4,12 @@
 		"anxiety",
 		"conceit",
 		"drowsiness",
+		"harmful",
 		"immaturity",
+		"negligence",
 		"personal existence",
-		"sensual desire"
+		"sensual desire",
+		"unprincipled"
 	],
 	"neutral": ["companionship"],
 	"positive": [
@@ -46,6 +49,7 @@
 			"letting go",
 			"abandonment"
 		],
+		"harmful": ["injurious", "destructive", "bad", "evil"],
 		"immaturity": [
 			"lacking in discernment",
 			"lacking in good sense",
@@ -55,6 +59,7 @@
 		],
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
+		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -70,6 +75,7 @@
 			"craving for pleasure"
 		],
 		"solitude": ["seclusion"],
+		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
 		"vigour": [
 			"energy",
 			"effort",
