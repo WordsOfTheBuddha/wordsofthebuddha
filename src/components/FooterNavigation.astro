@@ -11,33 +11,35 @@ interface Props {
 const { prev, next } = Astro.props;
 ---
 
-<nav
-	class="relative flex flex-col sm:flex-row gap-1 sm:gap-2 items-center my-6"
->
-	{
-		prev && (
-			<a
-				href={`/${prev.id}`}
-				class="nav-link block w-full ml-2 mr-8 my-2 sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-left"
-				style="color: var(--link-color)"
-				data-base-href={`/${prev.id}`}
-			>
-				← {transformId(prev.id)} {prev.data.title}
-			</a>
-		)
-	}
-	{
-		next && (
-			<a
-				href={`/${next.id}`}
-				class="nav-link block w-full ml-8 mr-2 sm:ml-auto sm:w-auto sm:max-w-[45%] p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-right"
-				style="color: var(--link-color)"
-				data-base-href={`/${next.id}`}
-			>
-				{transformId(next.id)} {next.data.title} →
-			</a>
-		)
-	}
+<nav class="relative flex flex-col sm:flex-row gap-1 w-full my-6">
+	<div class="w-full sm:w-1/2 flex justify-start">
+		{
+			prev && (
+				<a
+					href={`/${prev.id}`}
+					class="nav-link w-fit p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-left"
+					style="color: var(--link-color)"
+					data-base-href={`/${prev.id}`}
+				>
+					← {transformId(prev.id)} {prev.data.title}
+				</a>
+			)
+		}
+	</div>
+	<div class="w-full sm:w-1/2 flex justify-end">
+		{
+			next && (
+				<a
+					href={`/${next.id}`}
+					class="nav-link w-fit p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-right"
+					style="color: var(--link-color)"
+					data-base-href={`/${next.id}`}
+				>
+					{transformId(next.id)} {next.data.title} →
+				</a>
+			)
+		}
+	</div>
 </nav>
 
 <script>
