@@ -11,10 +11,18 @@ marked.setOptions({
 // Custom renderer
 const renderer = new marked.Renderer();
 
+// Add slugify helper
+function slugify(text: string): string {
+	return text
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/(^-|-$)/g, "");
+}
+
 // Fix heading renderer to match marked's interface
 renderer.heading = (heading: Tokens.Heading) => {
 	const { depth, text } = heading;
-	return `<h${depth}>${text}</h${depth}>`;
+	return `<h${depth} id=${slugify(text)}>${text}</h${depth}>`;
 };
 
 // Customize paragraph rendering without heading logic
