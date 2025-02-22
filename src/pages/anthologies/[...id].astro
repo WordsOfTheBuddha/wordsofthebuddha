@@ -10,9 +10,8 @@ const { id } = Astro.params;
 
 // Find current index in sorted routes
 const currentIndex = routes.findIndex((route) => route === id);
-console.log("idis ; ", id);
 if (currentIndex === -1) {
-	return Astro.redirect(`/search?q='book+${id}`);
+	return Astro.redirect(`/search?q='anthology+${id}`);
 }
 
 const contentItem = await getEntry("all", id);

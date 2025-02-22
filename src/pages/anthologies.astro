@@ -4,24 +4,21 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import BookCard from "../components/BookCard.astro";
 
-const allBooks = await getCollection("books");
+const allBooks = await getCollection("anthologies");
 
 // Natural sort function
 const naturalSort = (
-	a: CollectionEntry<"books">,
-	b: CollectionEntry<"books">
+	a: CollectionEntry<"anthologies">,
+	b: CollectionEntry<"anthologies">
 ) => {
-	return a.id.localeCompare(b.id, undefined, {
-		numeric: true,
-		sensitivity: "base",
-	});
+	return a.data.order - b.data.order;
 };
 
 // console.log(allBooks);
 const sortedPosts = allBooks.sort(naturalSort);
 ---
 
-<Layout title="Books" showAuth={true}>
+<Layout title="Anthologies" showAuth={true}>
 	<main class="container">
 		<div class="posts-grid">
 			{

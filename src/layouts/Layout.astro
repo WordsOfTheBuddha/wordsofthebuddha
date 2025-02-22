@@ -38,11 +38,14 @@ const {
 	showFilter = false, // Add new prop
 } = Astro.props;
 
+console.log("title is: ", title, " fp: ", fp);
 let SEOTitle = title;
 if (title != "Words of the Buddha" && title) {
 	SEOTitle = title + " - Words of the Buddha";
 }
-if (id) {
+if (id && fp.includes("anthologies")) {
+	SEOTitle = "Anthology - " + title;
+} else if (id) {
 	SEOTitle =
 		id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
 }

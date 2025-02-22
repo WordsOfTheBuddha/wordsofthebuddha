@@ -1,0 +1,46 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BookCard from "./BookCard.astro";
+
+interface Props {
+	n?: number;
+}
+
+const { n = 5 } = Astro.props;
+
+const anthologies = await getCollection("anthologies");
+
+const topAnthologies = anthologies
+	.sort(
+		(
+			a: CollectionEntry<"anthologies">,
+			b: CollectionEntry<"anthologies">
+		) => {
+			// If both have order, compare by order
+			if (a.data.order && b.data.order) {
+				return a.data.order - b.data.order;
+			}
+			// If only one has order, the one with order comes first
+			if (a.data.order) return -1;
+			if (b.data.order) return 1;
+			// If neither has order, sort by title
+			return a.data.title.localeCompare(b.data.title);
+		}
+	)
+	.slice(0, n);
+---
+
+<div class="px-2">
+	{
+		topAnthologies.map((anthology: (typeof topAnthologies)[0]) => (
+			<BookCard
+				title={anthology.data.title}
+				description={anthology.data.description || ""}
+				summary={anthology.data.summary}
+				author={anthology.data.author}
+				imagePath={anthology.data.imagePath || ""}
+				slug={anthology.data.slug}
+			/>
+		))
+	}
+</div>

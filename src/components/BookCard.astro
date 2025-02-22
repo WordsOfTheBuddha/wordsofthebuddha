@@ -16,7 +16,7 @@ interface Props {
 const { title, description, summary, imagePath, slug, author, lastUpdated } =
 	Astro.props;
 
-const bookItem = await getEntry("books", slug);
+const bookItem = await getEntry("anthologies", slug);
 
 export const formatDate = (date: string | Date) => {
 	return new Date(date).toLocaleDateString("en-US", {
@@ -42,7 +42,7 @@ export const formatDate = (date: string | Date) => {
 				class="text-lg sm:text-xl text-center sm:text-left font-semibold flex-1 my-4"
 			>
 				<a
-					href={`/books/${slug}`}
+					href={`/anthologies/${slug}`}
 					class="text-text hover:text-link-color transition-colors"
 				>
 					{title || bookItem.data.title}
@@ -63,7 +63,8 @@ export const formatDate = (date: string | Date) => {
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						stroke-width="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+					></path>
 				</svg>
 			</button>
 		</div>
