@@ -1,122 +1,21 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { db } from "../../../service/firebase/server";
-import { JSDOM } from "jsdom";
+import dictionaryData from "../../../data/pli2en_dpd.json" assert { type: "json" };
+const dictArray = dictionaryData as DictionaryEntry[];
 
-interface DpdResponse {
-	dpd_html?: string;
-	summary_html?: string;
-	[key: string]: any;
+interface DictionaryEntry {
+	entry: string;
+	definition: string[];
 }
 
-const TIMEOUT = 25000;
+const dictionaryMap = new Map<string, DictionaryEntry>();
+dictArray.forEach((entry: DictionaryEntry) => {
+	dictionaryMap.set(entry.entry.toLowerCase(), entry);
+});
 
-function cleanupDpdHtml(html: string): string {
-	const dom = new JSDOM(html);
-	const doc = dom.window.document;
-
-	const selectorsToRemove = [
-		".box-footer",
-		".comments",
-		".button-box",
-		"script",
-		"style",
-		".metadata",
-		".box-title",
-		".deconstructor_footer",
-		'[id^="grammar_dhamma_"]',
-		'[id^="examples_dhamma_"]',
-		'[id^="declension_dhamma_"]',
-		'[id^="family_root_dhamma_"]',
-		'[id^="family_compound_dhamma_"]',
-		'[id^="family_idiom_dhamma_"]',
-		'[id^="frequency_dhamma_"]',
-		'[id^="feedback_dhamma_"]',
-		".button_box",
-	];
-
-	selectorsToRemove.forEach((selector) => {
-		doc.querySelectorAll(selector).forEach((el: Element) => el.remove());
-	});
-
-	return doc.body.innerHTML;
-}
-
-async function fetchFromCache(word: string): Promise<DpdResponse | null> {
-	const cacheRef = db.collection("dpd").doc(word);
-	try {
-		const cacheDoc = await cacheRef.get();
-		return cacheDoc.exists ? (cacheDoc.data() as DpdResponse) : null;
-	} catch (error) {
-		console.error(`Cache read error for ${word}:`, error);
-		return null;
-	}
-}
-
-async function fetchFromApi(word: string): Promise<DpdResponse | null> {
-	const controller = new AbortController();
-	const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
-
-	try {
-		const response = await fetch(
-			`https://dpdict.net/search_json?q=${encodeURIComponent(word)}`,
-			{ signal: controller.signal }
-		);
-		clearTimeout(timeoutId);
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-
-		const data: DpdResponse = await response.json();
-
-		// Clean up HTML content
-		if (data.dpd_html) {
-			data.dpd_html = cleanupDpdHtml(data.dpd_html);
-		}
-		if (data.summary_html) {
-			data.summary_html = cleanupDpdHtml(data.summary_html);
-		}
-
-		// Cache the cleaned data
-		try {
-			await db.collection("dpd").doc(word).set(data);
-		} catch (error) {
-			console.error(`Cache write failed for ${word}:`, error);
-		}
-
-		return data;
-	} catch (error: any) {
-		clearTimeout(timeoutId);
-		console.error(`API error for ${word}:`, error);
-
-		if (error.name === "AbortError") {
-			throw new Error("TIMEOUT");
-		}
-		throw error;
-	}
-}
-
-async function lookupWord(
-	word: string,
-	summaryOnly = false
-): Promise<DpdResponse | null> {
-	try {
-		// Try cache first
-		const cached = await fetchFromCache(word);
-		if (cached) {
-			return summaryOnly ? { summary_html: cached.summary_html } : cached;
-		}
-
-		// If not in cache, fetch from API
-		const data = await fetchFromApi(word);
-		return summaryOnly ? { summary_html: data?.summary_html } : data;
-	} catch (error: any) {
-		if (error.message === "TIMEOUT") {
-			throw new Error("TIMEOUT");
-		}
-		throw error;
-	}
+function lookupWord(word: string): string | null {
+	const entry = dictionaryMap.get(word.toLowerCase());
+	return entry ? entry.definition.join("\n") : null;
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -136,26 +35,16 @@ export const GET: APIRoute = async ({ url }) => {
 		}
 
 		try {
-			const results = await Promise.all(
-				words.map(async (w) => ({
-					word: w,
-					data: await lookupWord(w.toLowerCase(), true),
-				}))
+			const results = Object.fromEntries(
+				words
+					.map((w) => {
+						const definition = lookupWord(w.toLowerCase());
+						return [w, definition];
+					})
+					.filter(([_, def]) => def !== null)
 			);
 
-			const response = Object.fromEntries(
-				results
-					.filter(
-						(
-							result
-						): result is { word: string; data: DpdResponse } =>
-							result.data !== null &&
-							result.data.summary_html !== undefined
-					)
-					.map((result) => [result.word, result.data.summary_html])
-			);
-
-			return new Response(JSON.stringify(response), {
+			return new Response(JSON.stringify(results), {
 				status: 200,
 				headers: {
 					"Content-Type": "application/json",
@@ -163,11 +52,10 @@ export const GET: APIRoute = async ({ url }) => {
 				},
 			});
 		} catch (error) {
+			console.error("Batch lookup error:", error);
 			return new Response(
 				JSON.stringify({ error: "Batch lookup failed" }),
-				{
-					status: 500,
-				}
+				{ status: 500 }
 			);
 		}
 	}
@@ -178,8 +66,8 @@ export const GET: APIRoute = async ({ url }) => {
 	}
 
 	try {
-		const result = await lookupWord(word.toLowerCase());
-		if (!result) {
+		const definition = lookupWord(word);
+		if (!definition) {
 			return new Response(
 				JSON.stringify({
 					error: "Word not found",
@@ -189,30 +77,21 @@ export const GET: APIRoute = async ({ url }) => {
 			);
 		}
 
-		return new Response(JSON.stringify(result), {
+		return new Response(JSON.stringify({ definition }), {
 			status: 200,
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Origin": "*",
 			},
 		});
-	} catch (error: any) {
-		if (error.message === "TIMEOUT") {
-			return new Response(
-				JSON.stringify({
-					error: "Dictionary API timeout",
-					word: word,
-				}),
-				{ status: 504 }
-			);
-		}
-
+	} catch (error) {
+		console.error("Lookup error:", error);
 		return new Response(
 			JSON.stringify({
-				error: "Dictionary API error",
+				error: "Dictionary lookup error",
 				word: word,
 			}),
-			{ status: 502 }
+			{ status: 500 }
 		);
 	}
 };
