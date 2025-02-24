@@ -151,6 +151,8 @@ async function lookupWord(word: string): Promise<WordDefinition[] | null> {
 				pattern: result.pattern,
 				construction: result.construction,
 				meaning: result.meaning || result.meaning_1,
+				meaning_lit: result.meaning_lit,
+				lemma: result.lemma_1,
 			})
 		);
 	} catch (error) {
