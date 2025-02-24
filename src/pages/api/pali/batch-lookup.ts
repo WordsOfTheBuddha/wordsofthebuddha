@@ -1,42 +1,6 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { Dictionary } from "@sc-voice/ms-dpd/main.mjs";
-
-const dictionary = await Dictionary.create();
-
-interface DictionaryResult {
-	pos?: string;
-	meaning?: string;
-	meaning_1?: string;
-	pattern?: string;
-	construction?: string;
-}
-
-interface WordDefinition {
-	pos?: string;
-	pattern?: string;
-	construction?: string;
-	meaning?: string;
-}
-
-async function lookupWord(word: string): Promise<WordDefinition[] | null> {
-	try {
-		const results = dictionary.find(word);
-		if (!results?.data?.length) return null;
-
-		return results.data.map(
-			(result: DictionaryResult): WordDefinition => ({
-				pos: result.pos,
-				pattern: result.pattern,
-				construction: result.construction,
-				meaning: result.meaning || result.meaning_1,
-			})
-		);
-	} catch (error) {
-		console.error(`Lookup error for word ${word}:`, error);
-		return null;
-	}
-}
+import { lookupSingleWord, type WordDefinition } from "./lookup";
 
 export const POST: APIRoute = async ({ request }) => {
 	try {
@@ -62,9 +26,9 @@ export const POST: APIRoute = async ({ request }) => {
 		for (let i = 0; i < words.length; i += batchSize) {
 			const batch = words.slice(i, i + batchSize);
 			const lookupPromises = batch.map(async (word) => {
-				const definitions = await lookupWord(word);
-				if (definitions) {
-					results[word] = definitions;
+				const result = await lookupSingleWord(word);
+				if (result && result.definitions) {
+					results[word] = result.definitions;
 				}
 			});
 			await Promise.all(lookupPromises);

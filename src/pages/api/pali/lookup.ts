@@ -4,40 +4,133 @@ import { Dictionary } from "@sc-voice/ms-dpd/main.mjs";
 
 const dictionary = await Dictionary.create();
 
-interface DictionaryResult {
+export interface DictionaryResult {
 	pos?: string;
 	meaning?: string;
 	meaning_1?: string;
 	pattern?: string;
 	construction?: string;
+	meaning_lit?: string;
+	lemma_1?: string;
 }
 
-interface WordDefinition {
+export interface WordDefinition {
 	pos?: string;
 	pattern?: string;
 	construction?: string;
 	meaning?: string;
+	lemma?: string;
+	meaning_lit?: string;
 }
 
-interface LookupResponse {
+export interface LookupResponse {
 	word: string;
 	definitions: WordDefinition[];
 }
 
+export const paliPosMap: Record<string, string> = {
+	adj: "Adjective",
+	nt: "Neuter Noun",
+	prefix: "Prefix",
+	pron: "Pronoun",
+	masc: "Masculine Noun",
+	fem: "Feminine Noun",
+	ind: "Indeclinable",
+	abbrev: "Abbreviation",
+	aor: "Aorist",
+	ptp: "Participle",
+	prp: "Preposition",
+	card: "Cardinal Number",
+	cs: "Conjunctional Suffix",
+	cond: "Conditional",
+	fut: "Future",
+	ger: "Gerund",
+	idiom: "Idiom",
+	imp: "Imperative",
+	imperf: "Imperfect",
+	inf: "Infinitive",
+	letter: "Letter",
+	opt: "Optative",
+	ordin: "Ordinal Number",
+	perf: "Perfect",
+	pp: "Past Participle",
+	pr: "Conjugation (Pronoun/Verb modification)",
+	sandhi: "Sandhi (joining of words)",
+	suffix: "Suffix",
+	root: "Root",
+	ve: "Verb Ending",
+};
+
+const RIGHT_SINGLE_QUOTE = "\u2019"; // '
+const APOSTROPHE = "\u0027"; // '
+
 // Separate function for single word lookup with original format
-async function lookupSingleWord(word: string): Promise<LookupResponse | null> {
+export async function lookupSingleWord(
+	word: string
+): Promise<LookupResponse | null> {
 	try {
-		const results = dictionary.find(word);
+		let results = dictionary.find(word);
+		console.log(
+			`Initial lookup for "${word}": found ${
+				results?.data?.length || 0
+			} results`
+		);
+
+		// If no results and word contains apostrophe, try variations
+		if (!results?.data?.length) {
+			const hasApostrophe =
+				word.includes(RIGHT_SINGLE_QUOTE) || word.includes(APOSTROPHE);
+			if (hasApostrophe) {
+				console.log(
+					`Word "${word}" contains apostrophe (${
+						word.includes(RIGHT_SINGLE_QUOTE)
+							? "RIGHT_SINGLE_QUOTE"
+							: "APOSTROPHE"
+					})`
+				);
+
+				const basePart = word.split(
+					new RegExp(`[${RIGHT_SINGLE_QUOTE}${APOSTROPHE}]`)
+				)[0];
+				if (basePart) {
+					// Try full base part
+					console.log(`Trying base part: "${basePart}"`);
+					results = dictionary.find(basePart);
+					console.log(
+						`Fallback lookup found ${
+							results?.data?.length || 0
+						} results`
+					);
+
+					// If still no results, try base part minus last character
+					if (!results?.data?.length && basePart.length > 1) {
+						const shortenedBase = basePart.slice(0, -1);
+						console.log(
+							`Trying shortened base part: "${shortenedBase}"`
+						);
+						results = dictionary.find(shortenedBase);
+						console.log(
+							`Second fallback lookup found ${
+								results?.data?.length || 0
+							} results`
+						);
+					}
+				}
+			}
+		}
+
 		if (!results?.data?.length) return null;
 
 		return {
 			word,
 			definitions: results.data.map(
 				(result: DictionaryResult): WordDefinition => ({
-					pos: result.pos,
+					pos: result.pos ? paliPosMap[result.pos] : result.pos,
 					pattern: result.pattern,
 					construction: result.construction,
 					meaning: result.meaning || result.meaning_1,
+					meaning_lit: result.meaning_lit,
+					lemma: result.lemma_1,
 				})
 			),
 		};

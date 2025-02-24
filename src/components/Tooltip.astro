@@ -372,29 +372,37 @@
 
 	function createTooltipContent(word: string, data: any) {
 		const { definitions } = data;
-		console.log("word: ", word);
-		console.log("data: ", data);
 		return `
 			<div class="tooltip-content">
-				<div class="title">${word}</div>
+                <div class="title">
+                    <span>
+                        ${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
+                    <span style="margin-left: 8px">
+                    ${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+                    </span>
+                    </span>
+                    ${
+						definitions[0].construction
+							? `
+                    <span>
+                        <span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
+                    </span>`
+							: ""
+					}
+                </div>
 				<div class="dpd-content">
 					${definitions
 						.map(
 							(def: any, idx: number) => `
 						<div class="summary${idx === definitions.length - 1 ? " last" : ""}">
 							<div class="def-line">
-								${def.pos ? `<span class="grammar">${def.pos}</span>` : ""}
-								<span class="meaning">${def.meaning}</span>
+								<span class="meaning">${idx + 1}. ${def.meaning}${def.meaning_lit ? ";" : ""}</span>
+                                ${
+									def.meaning_lit
+										? `<span class="meaning" style="font-style: italic;">lit. ${def.meaning_lit}</span>`
+										: ""
+								}
 							</div>
-							${
-								def.construction
-									? `
-								<div class="construction">
-									<span class="label">construction:</span> ${def.construction}
-								</div>
-							`
-									: ""
-							}
 						</div>
 					`
 						)
@@ -422,6 +430,9 @@
 	}
 
 	.tooltip-content .title {
+		display: flex;
+		align-items: baseline;
+		flex-direction: column;
 		color: var(--primary-color);
 		font-weight: 500;
 		border-bottom: 1px solid var(--auth-input-border);
@@ -459,11 +470,5 @@
 
 	.tooltip-content .construction .label {
 		font-style: italic;
-	}
-
-	.def-line {
-		display: flex;
-		align-items: baseline;
-		gap: 0.5rem;
 	}
 </style>
