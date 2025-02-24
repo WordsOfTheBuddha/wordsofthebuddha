@@ -14,6 +14,7 @@
 		"@astrojs/mdx": "^4.0.8",
 		"@astrojs/tailwind": "^6.0.0",
 		"@astrojs/vercel": "^8.0.7",
+		"@sc-voice/ms-dpd": "^2.53.0",
 		"@vercel/analytics": "^1.4.1",
 		"@vercel/speed-insights": "^1.1.0",
 		"astro": "^5.3.0",

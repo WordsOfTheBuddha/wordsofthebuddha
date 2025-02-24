@@ -200,24 +200,12 @@
 							`/api/pali/lookup?word=${encodeURIComponent(text)}`
 						);
 						const data = await response.json();
-						if (data.definition) {
-							// Create a container for the definition content
+						if (data.definitions && data.definitions.length > 0) {
 							const contentEl = document.createElement("div");
-							const parts = data.definition.split("\n");
-							contentEl.innerHTML = `
-								<div class="tooltip-content">
-									<p class="title">${text}</p>
-									<div class="dpd-content">
-										${parts
-											.map(
-												(def, index) =>
-													`<div class="summary${index === parts.length - 1 ? " last" : ""}">${def}</div>`
-											)
-											.join("")}
-									</div>
-								</div>
-							`;
-
+							contentEl.innerHTML = createTooltipContent(
+								text,
+								data
+							);
 							activeTooltip.setContent(contentEl);
 						} else {
 							activeTooltip.setContent("No definition found");
@@ -381,6 +369,40 @@
 			observer.observe(document.documentElement, { attributes: true });
 		});
 	});
+
+	function createTooltipContent(word: string, data: any) {
+		const { definitions } = data;
+		console.log("word: ", word);
+		console.log("data: ", data);
+		return `
+			<div class="tooltip-content">
+				<div class="title">${word}</div>
+				<div class="dpd-content">
+					${definitions
+						.map(
+							(def: any, idx: number) => `
+						<div class="summary${idx === definitions.length - 1 ? " last" : ""}">
+							<div class="def-line">
+								${def.pos ? `<span class="grammar">${def.pos}</span>` : ""}
+								<span class="meaning">${def.meaning}</span>
+							</div>
+							${
+								def.construction
+									? `
+								<div class="construction">
+									<span class="label">construction:</span> ${def.construction}
+								</div>
+							`
+									: ""
+							}
+						</div>
+					`
+						)
+						.join("")}
+				</div>
+			</div>
+		`;
+	}
 </script>
 
 <style is:global>
@@ -410,5 +432,38 @@
 
 	:root[class~="dark"] .tooltip-content .title {
 		color: var(--text-color);
+	}
+
+	.tooltip-content .grammar {
+		color: var(--secondary-color);
+		font-style: italic;
+		margin-right: 0.5rem;
+	}
+
+	.tooltip-content .pattern {
+		color: var(--text-muted);
+		font-size: 0.8rem;
+		margin-right: 0.5rem;
+	}
+
+	.tooltip-content .meaning {
+		display: inline; /* Changed from block */
+		margin: 0;
+	}
+
+	.tooltip-content .construction {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		margin-top: 0.25rem;
+	}
+
+	.tooltip-content .construction .label {
+		font-style: italic;
+	}
+
+	.def-line {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
 	}
 </style>
