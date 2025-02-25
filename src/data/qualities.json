@@ -9,15 +9,18 @@
 		"negligence",
 		"personal existence",
 		"sensual desire",
-		"unprincipled"
+		"unprincipled",
+		"wrong view"
 	],
 	"neutral": ["companionship"],
 	"positive": [
 		"arousing energy",
 		"complete comprehension",
 		"diligence",
-		"ethical conduct",
+		"disenchantment",
 		"dispassion",
+		"ending",
+		"ethical conduct",
 		"giving up",
 		"merit",
 		"mindfulness",
@@ -36,12 +39,18 @@
 			"taking initiative",
 			"making a mental decision to act"
 		],
-		"complete comprehension": ["full understanding", "knowing full well"],
+		"complete comprehension": [
+			"full understanding",
+			"knowing full well",
+			"seeing things as they are"
+		],
 		"conceit": ["arrogance", "egotism", "tendency of self-comparison"],
 		"direct knowing": ["experiential understanding", "direct experience"],
-		"dispassion": ["detachment", "disinterest"],
+		"disenchantment": ["de-illusionment", "disinterest"],
+		"dispassion": ["detachment", "disinterest", "fading of desire"],
 		"drowsiness": ["sleepiness", "yawning", "lethargic"],
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
+		"ending": ["cessation", "gradual ending"],
 		"ethical conduct": ["moral integrity", "virtue"],
 		"giving up": [
 			"renunciation",
@@ -90,6 +99,7 @@
 			"prudent use of the mind",
 			"wise reflection",
 			"attention to the source"
-		]
+		],
+		"wrong view": ["distorted perceptions", "untrue views", "false beliefs"]
 	}
 }
