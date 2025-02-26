@@ -158,9 +158,73 @@ function extractRefinedTranslation(rawOutput) {
 }
 
 /**
+ * Cleans and extracts title from LLM output
+ * @param {string} rawTitle - Raw title from LLM
+ * @returns {string} Cleaned title suitable for frontmatter
+ */
+function cleanTitle(rawTitle) {
+	if (!rawTitle) return "";
+
+	// Remove "Refined Translation" and any other static text
+	let cleaned = rawTitle.replace(/Refined Translation/i, "").trim();
+
+	// Remove any markdown formatting
+	cleaned = cleaned
+		.replace(/\*\*/g, "")
+		.replace(/\*/g, "")
+		.replace(/\|.*?\|/g, "")
+		.replace(/^["']|["']$/g, "");
+
+	// Take only the first line
+	cleaned = cleaned.split("\n")[0].trim();
+
+	// Remove trailing dash or hyphen
+	cleaned = cleaned.replace(/\s*[-—–]\s*$/, "").trim();
+
+	return cleaned;
+}
+
+/**
+ * Filters out commentary and notes from translation content
+ * @param {string} content - Raw translation content
+ * @returns {string} Filtered content without commentary
+ */
+function filterTranslationContent(content) {
+	if (!content) return "";
+
+	// In the Pass 2 output, the first paragraph is always the actual translation,
+	// followed by blank lines and then explanations, notes, etc.
+
+	// Split by double newline and take just the first paragraph
+	const paragraphs = content.split(/\n\s*\n/);
+	if (paragraphs.length > 0) {
+		// Further clean the first paragraph to handle any inline notes
+		let translationOnly = paragraphs[0];
+
+		// Remove any markdown formatting that might appear in the paragraph itself
+		translationOnly = translationOnly.replace(/\*\*.*?\*\*/g, "").trim();
+
+		// Handle any single-paragraph explanations that might start with these markers
+		const explanationMarkers = ["Note:", "Explanation:", "Commentary:"];
+		for (const marker of explanationMarkers) {
+			const markerIndex = translationOnly.indexOf(marker);
+			if (markerIndex > 0) {
+				translationOnly = translationOnly
+					.substring(0, markerIndex)
+					.trim();
+			}
+		}
+
+		return translationOnly;
+	}
+
+	return content.trim();
+}
+
+/**
  * Process translation content to include frontmatter with translated title
  * @param {string} suttaId - The sutta ID
- * @param {string} translatedContents - Array of Pass 2 translations
+ * @param {string[]} translatedContents - Array of Pass 2 translations
  * @param {string} originalContent - The original Pali content
  * @param {string|null} englishTitle - Translated title if available
  * @returns {Promise<string>} Processed content with frontmatter
@@ -192,6 +256,11 @@ async function processTranslationWithFrontmatter(
 
 	const originalTitle = titleMatch[1].trim();
 
+	// Clean up the englishTitle if it exists (remove markdown formatting)
+	if (englishTitle) {
+		englishTitle = cleanTitle(englishTitle);
+	}
+
 	// Create new frontmatter with both original and English titles
 	let newFrontmatter = "";
 	if (englishTitle) {
@@ -205,9 +274,10 @@ async function processTranslationWithFrontmatter(
 		newFrontmatter = originalFrontmatter;
 	}
 
-	// Combine new frontmatter with processed content
-	// Ensure we maintain 1-1 mapping with original paragraphs
-	return `${newFrontmatter}\n${translatedContents.join("\n\n")}`;
+	// Combine new frontmatter with processed content - ensure proper spacing
+	return `${newFrontmatter}\n\n${translatedContents
+		.slice(englishTitle ? 1 : 0)
+		.join("\n\n")}`;
 }
 
 /**
@@ -276,9 +346,10 @@ export async function saveTranslation(
 		}
 
 		// Extract refined translations only
-		const refinedContents = rawContents.map((raw) =>
-			extractRefinedTranslation(raw)
-		);
+		const refinedContents = rawContents.map((raw) => {
+			const extracted = extractRefinedTranslation(raw);
+			return filterTranslationContent(extracted);
+		});
 
 		// If we already have content and frontmatter, just ensure we keep it
 		if (existingContent && existingContent.startsWith("---")) {
@@ -493,8 +564,13 @@ export async function saveTranslation(
 
 		// Ensure there's always a newline after the frontmatter
 		let finalContent = processedContent;
+		// Make sure we have proper spacing after frontmatter
 		if (finalContent.includes("---\n")) {
-			finalContent = finalContent.replace("---\n", "---\n\n");
+			// Replace first occurrence only (at start of file)
+			const firstDashPos = finalContent.indexOf("---\n");
+			if (firstDashPos === 0) {
+				finalContent = "---" + finalContent.substring(3);
+			}
 		}
 
 		await fs.writeFile(refinedTranslation, finalContent, "utf-8");
