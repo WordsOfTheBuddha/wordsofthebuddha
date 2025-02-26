@@ -106,6 +106,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on Feeling" explores the nature of felt experiences—pleasant, painful, and neutral—as a fundamental aspect of experience. These teachings examine how feelings arise, their role in shaping perception, and the underlying tendencies that lead to attachment or aversion. By understanding the conditioned nature of feeling and its cessation, these discourses offer insight into the path to liberation and the ending of suffering.',
 					},
+					sn38: {
+						title: "Jambukhādakasaṁyutta - Linked Discourses with Jambukhādaka",
+						description:
+							'The "Linked Discourses with Jambukhādaka" features a series of conversations between Venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
+					},
 					sn43: {
 						title: "Asaṅkhatasaṁyutta - Linked Discourses on the Unconditioned",
 						description:
