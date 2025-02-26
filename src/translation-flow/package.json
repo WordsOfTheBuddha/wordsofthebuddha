@@ -1,0 +1,26 @@
+{
+  "name": "sutta-translation-flow",
+  "version": "0.1.0",
+  "description": "Interactive CLI tool for translating Pali suttas",
+  "type": "module",
+  "main": "translation-cli.js",
+  "bin": {
+    "translate-sutta": "./translation-cli.js"
+  },
+  "scripts": {
+    "start": "node translation-cli.js",
+    "link": "npm link",
+    "unlink": "npm unlink"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "inquirer": "^9.2.12",
+    "node-fetch": "^3.3.2",
+    "ora": "^7.0.1"
+  },
+  "engines": {
+    "node": ">=14.16"
+  }
+}

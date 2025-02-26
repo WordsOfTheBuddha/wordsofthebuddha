@@ -28,3 +28,7 @@ src/utils/routes.ts
 .vercel/
 
 .timestamp-cache.json
+
+# translation flow
+src/translation-flow/.debug/*
+src/translation-flow/.work/*
