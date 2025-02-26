@@ -6,6 +6,7 @@ interface Props {
 	id: string;
 	lastUpdated?: string | Date;
 	dateLabel?: string;
+	clamp?: number;
 }
 
 export const formatDate = (date: string | Date) => {
@@ -22,6 +23,7 @@ const {
 	id,
 	lastUpdated,
 	dateLabel = "Last updated on",
+	clamp = 3,
 } = Astro.props;
 ---
 
@@ -63,7 +65,7 @@ const {
 			</button>
 		</div>
 	</div>
-	<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
+	<p class=`mt-2 text-text line-clamp-${clamp} text-sm sm:text-base`>
 		{description}
 	</p>
 	{
