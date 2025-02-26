@@ -3,8 +3,10 @@
 		"anger",
 		"anxiety",
 		"conceit",
+		"craving",
 		"drowsiness",
 		"harmful",
+		"ignorance",
 		"immaturity",
 		"negligence",
 		"personal existence",
@@ -45,6 +47,7 @@
 			"seeing things as they are"
 		],
 		"conceit": ["arrogance", "egotism", "tendency of self-comparison"],
+		"craving": ["wanting", "yearning", "longing", "attachment", "taṇha"],
 		"direct knowing": ["experiential understanding", "direct experience"],
 		"disenchantment": ["de-illusionment", "disinterest"],
 		"dispassion": ["detachment", "disinterest", "fading of desire"],
@@ -59,6 +62,15 @@
 			"abandonment"
 		],
 		"harmful": ["injurious", "destructive", "bad", "evil"],
+		"ignorance": [
+			"delusion",
+			"illusion",
+			"illusion of knowing",
+			"fundamental unawareness of the true nature of reality",
+			"misunderstanding of how things have come to be",
+			"not knowing the four noble truths",
+			"avijja"
+		],
 		"immaturity": [
 			"lacking in discernment",
 			"lacking in good sense",
