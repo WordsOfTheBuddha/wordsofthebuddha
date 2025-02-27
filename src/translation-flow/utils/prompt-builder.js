@@ -14,7 +14,7 @@ Please translate the following Pali text in two passes:
 Break down the text at a sentence or sub-sentence level. Focus on capturing the grammatical structure and meaning accurately. Show your work by explaining key grammatical elements and word choices.
 
 ### Pass 2: Refined Translation
-Create a more polished, readable translation that preserves the meaning while being natural English. Prioritize fidelity to the original Pali but improve readability and flow. You should aim for choosing from the translation meanings provided in the prompt except in a rare case where there is a more suitable choice. No Pāli text should be omitted in the translation. When translating a verse, maintain a line-wise fidelity to the Pali text whenever possible.
+Create a more polished, readable translation that preserves the meaning while being natural English. Prioritize fidelity to the original Pali while enhancing flow. Choose from the provided translation meanings unless a more suitable alternative is clear. Ensure no Pāli text is omitted. For verses, maintain line-wise fidelity to the Pali text whenever possible.
 
 ## Word Meanings Dictionary
 Below is a dictionary of word meanings to assist your translation:
@@ -29,7 +29,9 @@ Below is the previous translated and approved text of prior paragraphs. Your tra
 
 {{PARAGRAPH}}
 
-Please provide your translation in the following format. Include and notes or explanation before the refined translation.
+## Output Format Requirements
+
+Your final output must strictly adhere to the following format to facilitate automated extraction. Do not include any extra commentary outside these sections:
 
 # Pass 1: Analytical Translation
 [Your detailed analytical translation with explanations]
