@@ -2,33 +2,13 @@
 import ClockOutline from "../assets/clock-outline.svg?raw";
 import Check from "../assets/check.svg?raw";
 import SignInPrompt from "./SignInPrompt.astro";
-import { app } from "../service/firebase/server";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 
-let userId = null;
-let isInReadLater = false;
+// Get slug for API calls
 const slug = Astro.url.pathname.replace(/^\/+/, "");
 
-const auth = getAuth(app);
-if (Astro.cookies.has("__session")) {
-	const sessionCookie = Astro.cookies.get("__session")?.value;
-	if (sessionCookie) {
-		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-		if (decodedCookie) {
-			userId = decodedCookie.uid;
-			// Check if article is in read later
-			const db = getFirestore(app);
-			const docRef = await db
-				.collection("users")
-				.doc(userId)
-				.collection("readLater")
-				.doc(slug)
-				.get();
-			isInReadLater = docRef.exists;
-		}
-	}
-}
+// Initial state will be determined by client-side JS
+const isInReadLater = false;
+const userId = null;
 ---
 
 <div class="relative shrink-0">
@@ -37,32 +17,19 @@ if (Astro.cookies.has("__session")) {
 		class:list={[
 			"inline-flex items-center gap-1 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
 		]}
-		style={isInReadLater ? "color: var(--layout-active-color)" : ""}
 		aria-label="Read Later content"
 		data-authenticated={Boolean(userId)}
+		data-loading="true"
+		data-slug={slug}
 	>
-		<span
-			id="readLaterIcon"
-			class:list={["w-4 h-4", { hidden: isInReadLater }]}
-			set:html={ClockOutline}
-		/>
-		<span
-			id="readLaterCheckIcon"
-			class:list={["w-4 h-4", { hidden: !isInReadLater }]}
-			set:html={Check}
-		/>
-		<span id="readLaterLabel"
-			>{isInReadLater ? "Added to Read Later" : "Read Later"}</span
-		>
+		<span id="readLaterIcon" class="w-4 h-4" set:html={ClockOutline} />
+		<span id="readLaterCheckIcon" class="w-4 h-4 hidden" set:html={Check} />
+		<span id="readLaterLabel">Read Later</span>
 	</button>
-	{
-		!userId && (
-			<SignInPrompt
-				id="readLaterSignInPrompt"
-				feature="add this page for later"
-			/>
-		)
-	}
+	<SignInPrompt
+		id="readLaterSignInPrompt"
+		feature="add this page for later"
+	/>
 </div>
 
 <script>
@@ -71,7 +38,11 @@ if (Astro.cookies.has("__session")) {
 	const check = document.getElementById("readLaterCheckIcon");
 	const readLaterLabel = document.getElementById("readLaterLabel");
 	const prompt = document.getElementById("readLaterSignInPrompt");
-	const slug = window.location.pathname.replace(/^\/+/, "");
+	const slug =
+		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, "");
+
+	// Local storage key for offline mode
+	const READ_LATER_ITEMS_KEY = "offlineReadLaterItems";
 
 	function updateState(isSaved: boolean) {
 		if (isSaved) {
@@ -88,7 +59,77 @@ if (Astro.cookies.has("__session")) {
 		}
 	}
 
+	// Load read later state from local storage
+	function getOfflineReadLaterState(): boolean {
+		try {
+			const items = JSON.parse(
+				localStorage.getItem(READ_LATER_ITEMS_KEY) || "[]"
+			);
+			return items.includes(slug);
+		} catch (e) {
+			return false;
+		}
+	}
+
+	// Update local storage for offline mode
+	function updateOfflineReadLaterState(isActive: boolean) {
+		try {
+			let items = JSON.parse(
+				localStorage.getItem(READ_LATER_ITEMS_KEY) || "[]"
+			);
+			if (isActive && !items.includes(slug)) {
+				items.push(slug);
+			} else if (!isActive) {
+				items = items.filter((item: string) => item !== slug);
+			}
+			localStorage.setItem(READ_LATER_ITEMS_KEY, JSON.stringify(items));
+		} catch (e) {
+			console.error("Error updating offline read later state", e);
+		}
+	}
+
+	// Check read later status from server or fall back to offline mode
+	async function checkReadLaterStatus() {
+		try {
+			// First check if we have a cached version
+			const cachedState = getOfflineReadLaterState();
+
+			try {
+				const response = await fetch(`/api/readlater/${slug}`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json" },
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					// Update button state based on server data
+					updateState(data.isInReadLater);
+					// Update authentication status
+					btn?.setAttribute(
+						"data-authenticated",
+						data.isAuthenticated.toString()
+					);
+					// Update offline cache
+					updateOfflineReadLaterState(data.isInReadLater);
+				} else {
+					// If API fails, use cached state
+					updateState(cachedState);
+				}
+			} catch (error) {
+				// Network error - offline mode
+				console.log("Using offline mode for read later status");
+				updateState(cachedState);
+			}
+		} finally {
+			// Remove loading state
+			btn?.removeAttribute("data-loading");
+		}
+	}
+
 	if (btn) {
+		// Check status when page loads
+		checkReadLaterStatus();
+
 		btn.addEventListener("click", async () => {
 			const isAuthenticated = btn.dataset.authenticated === "true";
 			if (!isAuthenticated) {
@@ -103,46 +144,45 @@ if (Astro.cookies.has("__session")) {
 			}
 
 			const wasSaved = check?.classList.contains("hidden") === false;
-
 			// Start animation before API call
 			if (!wasSaved) {
 				btn?.classList.add("animate-pulse");
 			}
 
 			try {
-				const response = await fetch(`/api/readlater/${slug}`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ isActive: !wasSaved }),
-				});
+				// Try online mode first
+				try {
+					const response = await fetch(`/api/readlater/${slug}`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ isActive: !wasSaved }),
+					});
 
-				if (response.ok) {
-					// Remove animation after API call resolves
-					btn?.classList.remove("animate-pulse");
-					if (!wasSaved) {
-						updateState(true);
+					if (response.ok) {
+						updateState(!wasSaved);
+						updateOfflineReadLaterState(!wasSaved);
 					} else {
-						updateState(false);
+						throw new Error("API error");
 					}
-				} else {
-					console.error("Error updating read later status");
-					btn?.classList.remove("animate-pulse");
+				} catch (error) {
+					// Offline mode fallback
+					console.log("Using offline mode for read later action");
+					updateState(!wasSaved);
+					updateOfflineReadLaterState(!wasSaved);
 				}
-			} catch (error) {
-				console.error("Error:", error);
+			} finally {
 				btn?.classList.remove("animate-pulse");
 			}
 		});
 
 		// Handle sign-in prompt close button if prompt exists
 		if (prompt) {
-			document
-				.querySelector(".close-prompt")
-				?.addEventListener("click", () => {
-					prompt.classList.add("hidden");
-				});
+			const closeBtn = prompt.querySelector(".close-prompt");
+			closeBtn?.addEventListener("click", () => {
+				prompt.classList.add("hidden");
+			});
 		}
 	}
 </script>
