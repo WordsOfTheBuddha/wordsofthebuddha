@@ -23,6 +23,7 @@
 	"positive": [
 		"arousing energy",
 		"complete comprehension",
+		"compassion",
 		"diligence",
 		"disenchantment",
 		"dispassion",
@@ -30,12 +31,14 @@
 		"ethical conduct",
 		"giving up",
 		"inquisitiveness",
+		"learning",
 		"merit",
 		"mindfulness",
 		"recognition of impermanence",
 		"self-control",
 		"solitude",
 		"vigour",
+		"vision",
 		"wisdom",
 		"wise attention"
 	],
@@ -47,6 +50,7 @@
 			"taking initiative",
 			"making a mental decision to act"
 		],
+		"compassion": ["benevolence", "concern", "sympathy", "mercy"],
 		"complete comprehension": [
 			"full understanding",
 			"knowing full well",
@@ -99,6 +103,7 @@
 			"unwilling to part with"
 		],
 		"laziness": ["indolence", "idleness", "inactivity", "sluggishness"],
+		"learning": ["acquiring knowledge", "studying", "understanding"],
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
 		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
@@ -127,6 +132,11 @@
 			"zeal",
 			"determination",
 			"persistence"
+		],
+		"vision": [
+			"seeing things as they are",
+			"seeing the truth",
+			"seeing the dhamma"
 		],
 		"wisdom": ["understanding the four noble truths"],
 		"wise attention": [
