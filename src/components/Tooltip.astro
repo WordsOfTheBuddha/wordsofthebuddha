@@ -1,5 +1,23 @@
 <!-- this is a client-only script component -->
 <script>
+	// Helper function to parse Markdown-style links
+	function parseMarkdownLinks(text: string) {
+		return text.replace(
+			/\[([^\]]+)\]\(([^)]+)\)/g,
+			'<a href="$2" class="tooltip-link">$1</a>'
+		);
+	}
+
+	// Helper to properly escape HTML for attribute values
+	function escapeHtml(text: string) {
+		return text
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
+	}
+
 	function replaceTooltips(element: HTMLElement) {
 		for (let node of element.childNodes) {
 			if (node.nodeType === Node.TEXT_NODE) {
@@ -8,7 +26,11 @@
 				text = text.replace(
 					/\|([^|:]+)::([^|]+)\|/g,
 					(_, textPart, tooltip) => {
-						return `<span class="tooltip-text" data-tippy-content="${tooltip}">${textPart}</span>`;
+						// Parse any Markdown links in the tooltip content
+						const parsedTooltip = parseMarkdownLinks(tooltip);
+						// Properly escape HTML for attribute value
+						const escapedTooltip = escapeHtml(parsedTooltip);
+						return `<span class="tooltip-text" data-tippy-content="${escapedTooltip}">${textPart}</span>`;
 					}
 				);
 				const span = document.createElement("span");
@@ -50,16 +72,34 @@
 					: "dictionary",
 				allowHTML: true,
 				onCreate(instance) {
+					// Parse the data-tippy-content attribute
+					const content =
+						instance.reference.getAttribute("data-tippy-content") ||
+						"";
+
 					// Format the content into the same style as dictionary tooltips
-					const content = instance.props.content;
 					instance.setContent(`
 						<div class="tooltip-content">
 							<div class="title">${instance.reference.textContent}</div>
 							<div class="dpd-content">
-                <div class="definition">${String(content).replace(/\\n/g, "<br>")}</div>
+                <div class="definition">${content}</div>
 							</div>
 						</div>
 					`);
+
+					// Add event delegation for links in tooltips
+					instance.popper.addEventListener("click", (e) => {
+						const link = (e.target as HTMLElement).closest(
+							".tooltip-link, a"
+						);
+						if (link && link instanceof HTMLAnchorElement) {
+							e.preventDefault();
+							window.location.href =
+								link.getAttribute("href") || "";
+							// Close all tooltips after navigation
+							tooltips.forEach((tooltip) => tooltip.hide());
+						}
+					});
 				},
 				onShow: (instance) => {
 					// Hide all other tooltips when showing a new one
@@ -470,5 +510,13 @@
 
 	.tooltip-content .construction .label {
 		font-style: italic;
+	}
+
+	/* Add styles for links in tooltips */
+	.tooltip-link,
+	.tippy-content a {
+		color: var(--link-color);
+		text-decoration: underline;
+		cursor: pointer;
 	}
 </style>
