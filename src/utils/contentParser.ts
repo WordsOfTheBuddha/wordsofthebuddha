@@ -136,8 +136,40 @@ function processBlocks(englishText: string, paliText: string): ContentPair[] {
 	return pairs;
 }
 
+// Helper to process quotes in a paragraph based on boundaries.
+function processParagraphQuotes(
+	p: string,
+	quote: string,
+	open: string,
+	close: string
+): string {
+	// Replace quote at start/end and adjacent to whitespace
+	p = p
+		.replace(new RegExp(`^${quote}`, "g"), open)
+		.replace(new RegExp(`${quote}$`, "g"), close)
+		.replace(new RegExp(`(\\s)${quote}`, "g"), `$1${open}`)
+		.replace(new RegExp(`${quote}(\\s)`, "g"), `${close}$1`);
+	return p;
+}
+
 function toSmartQuotes(text: string): string {
-	return text.replace(/"([^"]*)"/g, "“$1”").replace(/'([^']*)'/g, "‘$1’");
+	// First handle paired quotes via regex.
+	let processed = text
+		.replace(/"([^"]*?)"/g, "“$1”")
+		.replace(/'([^']*?)'/g, "‘$1’");
+
+	// Handle contractions (preserving apostrophes) explicitly.
+	processed = processed.replace(/(\w)'(\w)/g, "$1’$2");
+
+	// Split into paragraphs for context-based processing.
+	const paragraphs = processed.split(/\n\n+/);
+	for (let i = 0; i < paragraphs.length; i++) {
+		let p = paragraphs[i];
+		p = processParagraphQuotes(p, '"', "“", "”");
+		p = processParagraphQuotes(p, "'", "‘", "’");
+		paragraphs[i] = p;
+	}
+	return paragraphs.join("\n\n");
 }
 
 export type SplitContent = {
@@ -230,7 +262,7 @@ const isVerse = (text: string) => {
 	const lastLine = lines[lines.length - 1];
 	const otherLines = lines.slice(0, -1);
 
-	const lastLineValid = /[.?"—'’;‘”]$/.test(lastLine);
+	const lastLineValid = /[.?"—'’;‘”“]$/.test(lastLine);
 	const otherLinesValid = otherLines.every((line) => /[,;:.?!]?$/.test(line));
 
 	return lastLineValid && otherLinesValid;
