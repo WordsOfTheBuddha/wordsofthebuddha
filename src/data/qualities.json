@@ -8,9 +8,13 @@
 		"harmful",
 		"ignorance",
 		"immaturity",
+		"irritable",
+		"jealous",
 		"negligence",
 		"personal existence",
 		"sensual desire",
+		"stingy",
+		"undiscerning",
 		"unprincipled",
 		"wrong view"
 	],
@@ -85,6 +89,14 @@
 			"lack of experience"
 		],
 		"inquisitive": ["curious", "inquiring", "interested"],
+		"irritable": ["cranky", "moody", "prone to anger"],
+		"jealous": [
+			"covetous",
+			"envious",
+			"possessive",
+			"protective of",
+			"unwilling to part with"
+		],
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
 		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
@@ -103,6 +115,8 @@
 			"craving for pleasure"
 		],
 		"solitude": ["seclusion"],
+		"stingy": ["miserly", "greedy", "mean", "tight-fisted"],
+		"undiscerning": ["lacking in wisdom"],
 		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
 		"vigour": [
 			"energy",
