@@ -10,6 +10,7 @@
 		"immaturity",
 		"irritable",
 		"jealous",
+		"laziness",
 		"negligence",
 		"personal existence",
 		"sensual desire",
@@ -97,6 +98,7 @@
 			"protective of",
 			"unwilling to part with"
 		],
+		"laziness": ["indolence", "idleness", "inactivity", "sluggishness"],
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
 		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
