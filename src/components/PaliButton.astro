@@ -1,32 +1,10 @@
 ---
 import ChevronRight from "../assets/chevron-right.svg?raw";
 import ChevronDown from "../assets/chevron-down.svg?raw";
-import { app } from "../service/firebase/server";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 
 const { class: className } = Astro.props;
 const url = new URL(Astro.url);
 let isPaliMode = url.searchParams.get("pli") === "true";
-
-// Check user preference if not set in URL
-if (!url.searchParams.has("pli")) {
-	const auth = getAuth(app);
-	if (Astro.cookies.has("__session")) {
-		const sessionCookie = Astro.cookies.get("__session")?.value;
-		if (sessionCookie) {
-			const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-			const db = getFirestore(app);
-			const userDoc = await db
-				.collection("users")
-				.doc(decodedCookie.uid)
-				.get();
-			isPaliMode = userDoc.exists
-				? userDoc.data()?.preferences?.showPali === true
-				: false;
-		}
-	}
-}
 ---
 
 <button

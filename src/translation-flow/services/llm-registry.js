@@ -3,7 +3,7 @@ import { DeepseekService } from "./llm/deepseek-service.js";
 /**
  * Registry of available LLM services
  */
-const LLM_SERVICES = {
+export const LLM_SERVICES = {
 	"deepseek-reasoner": DeepseekService,
 	"deepseek-chat": DeepseekService,
 };
@@ -25,6 +25,6 @@ export function getLlmService(modelName) {
 	// Create service instance with the model name for configuration
 	const service = new LLM_SERVICES[modelName]();
 	service.modelName = modelName; // Set model name so service knows which model to use
-	
+
 	return service;
 }

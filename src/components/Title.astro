@@ -12,8 +12,10 @@ const [paliTitle, ...englishParts] = hasSeparator
 const englishTitle = englishParts.join(" - ");
 ---
 
-<div class="relative flex items-start justify-between mt-8 w-full">
-	<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex-shrink">
+<div class="relative flex items-start justify-between mt-2 w-full">
+	<h1
+		class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex-shrink pl-0"
+	>
 		<slot />
 		<span class="pali-paragraph">{paliTitle}</span>
 		{hasSeparator && ` - ${englishTitle}`}

@@ -19,6 +19,9 @@ import { getLlmService } from "../services/llm-registry.js";
  * @returns {Object} Pipeline with execute method
  */
 export function getTranslationPipeline(options) {
+	// Store editor preference for the current session
+	let preferredEditor = null;
+
 	return {
 		// The main execution function for the pipeline
 		async execute(suttaId) {
@@ -51,7 +54,7 @@ export function getTranslationPipeline(options) {
 			}
 
 			// Step 4: Get LLM service based on options
-			const llmService = getLlmService(options.model);
+			let llmService = getLlmService(options.model);
 
 			// Step 5: Prepare for processing
 			let translatedParagraphs = [];
@@ -215,6 +218,12 @@ export function getTranslationPipeline(options) {
 				// Build the prompt with previous context
 				// Use only translated paragraphs for context, not raw outputs
 				const previousTranslations = translatedParagraphs.slice(0, i);
+				// Debug context length
+				console.log(
+					chalk.dim(
+						`Including ${previousTranslations.length} previous translation(s) as context`
+					)
+				);
 				const previousPali = paliParagraphs.slice(0, i);
 				const prompt = buildPrompt({
 					paragraph,
@@ -225,7 +234,10 @@ export function getTranslationPipeline(options) {
 				});
 
 				// Save the curl command for later display
-				const curlCommand = formatCurl(prompt, options.model);
+				const curlCommand = formatCurl(prompt, options.model, {
+					suttaId,
+					paragraphIndex: i,
+				});
 
 				// Flag to track if we're showing prompt details only
 				let showPromptMode = false;
@@ -284,7 +296,7 @@ export function getTranslationPipeline(options) {
 										value: "prompt",
 									},
 									{
-										name: "Retry with different settings",
+										name: "Retry with different model",
 										value: "retry",
 									},
 									{
@@ -305,21 +317,64 @@ export function getTranslationPipeline(options) {
 							console.log(chalk.dim(curlCommand));
 							showPromptMode = true; // Set flag to prevent API call on next loop
 						} else if (action === "edit") {
-							// Ask for editor preference
-							const { editorChoice } = await inquirer.prompt([
-								{
-									type: "list",
-									name: "editorChoice",
-									message: "Choose editor:",
-									choices: [
-										{ name: "Use VSCode", value: "vscode" },
-										{
-											name: "Use default editor",
-											value: "default",
-										},
-									],
-								},
-							]);
+							// Use previously chosen editor or ask for preference
+							let editorChoice = preferredEditor;
+
+							if (!editorChoice) {
+								// Ask for editor preference if not already set
+								const response = await inquirer.prompt([
+									{
+										type: "list",
+										name: "editorChoice",
+										message: "Choose editor:",
+										choices: [
+											{
+												name: "Use VSCode",
+												value: "vscode",
+											},
+											{
+												name: "Use default editor",
+												value: "default",
+											},
+											{
+												name: "Always use VSCode for this session",
+												value: "vscode-always",
+											},
+											{
+												name: "Always use default editor for this session",
+												value: "default-always",
+											},
+										],
+									},
+								]);
+
+								editorChoice = response.editorChoice;
+
+								// Handle "always use" options
+								if (editorChoice === "vscode-always") {
+									preferredEditor = "vscode";
+									editorChoice = "vscode";
+									console.log(
+										chalk.blue(
+											"Using VSCode for all edits in this session"
+										)
+									);
+								} else if (editorChoice === "default-always") {
+									preferredEditor = "default";
+									editorChoice = "default";
+									console.log(
+										chalk.blue(
+											"Using default editor for all edits in this session"
+										)
+									);
+								}
+							} else {
+								console.log(
+									chalk.dim(
+										`Using previously selected editor: ${preferredEditor}`
+									)
+								);
+							}
 
 							if (editorChoice === "vscode") {
 								// Create a temporary file and open in VSCode
@@ -403,6 +458,36 @@ export function getTranslationPipeline(options) {
 							}
 							break; // Exit the loop after editing
 						} else if (action === "retry") {
+							// Let user select a different model
+							const {
+								LLM_SERVICES,
+								getLlmService: getNewLlmService,
+							} = await import("../services/llm-registry.js");
+							const availableModels = Object.keys(LLM_SERVICES);
+
+							const { modelChoice } = await inquirer.prompt([
+								{
+									type: "list",
+									name: "modelChoice",
+									message: "Choose model to retry with:",
+									choices: availableModels,
+									default: options.model,
+								},
+							]);
+
+							// Update model option
+							options.model = modelChoice;
+							// Update LLM service
+							// Get new LLM service with selected model and use it for subsequent calls
+							const newLlmService = getNewLlmService(modelChoice);
+
+							console.log(
+								chalk.blue(`Switching to model: ${modelChoice}`)
+							);
+
+							// We need to declare a new variable for the next translation call
+							// The LLM service will be passed to the translate call
+
 							i--; // Stay on same paragraph
 							break; // Exit the loop to retry
 						} else if (action === "skip") {
@@ -482,6 +567,24 @@ export function getTranslationPipeline(options) {
 								}`
 							)
 						);
+
+						// Update translatedParagraphs array to include the new translation
+						// This ensures subsequent paragraphs will include this as context
+						if (i >= translatedParagraphs.length) {
+							translatedParagraphs.push(finalTranslation);
+							console.log(
+								chalk.dim(
+									`Added new translation to context (total: ${translatedParagraphs.length})`
+								)
+							);
+						} else {
+							translatedParagraphs[i] = finalTranslation;
+							console.log(
+								chalk.dim(
+									`Updated translation in context at position ${i}`
+								)
+							);
+						}
 					} else {
 						console.log(
 							chalk.red(
