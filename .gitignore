@@ -32,3 +32,4 @@ src/utils/routes.ts
 # translation flow
 src/translation-flow/.debug/*
 src/translation-flow/.work/*
+src/.debug/*
