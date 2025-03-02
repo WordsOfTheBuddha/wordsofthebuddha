@@ -14,6 +14,7 @@
 		"negligence",
 		"personal existence",
 		"sensual desire",
+		"shamelessness",
 		"stingy",
 		"undiscerning",
 		"unprincipled",
@@ -22,6 +23,7 @@
 	"neutral": ["companionship"],
 	"positive": [
 		"arousing energy",
+		"collectedness",
 		"complete comprehension",
 		"compassion",
 		"diligence",
@@ -29,6 +31,8 @@
 		"dispassion",
 		"ending",
 		"ethical conduct",
+		"fear of wrongdoing",
+		"full awareness",
 		"giving up",
 		"inquisitiveness",
 		"learning",
@@ -36,9 +40,12 @@
 		"mindfulness",
 		"recognition of impermanence",
 		"self-control",
+		"sense of right and wrong",
+		"sense restraint",
 		"solitude",
 		"vigour",
 		"vision",
+		"wakefulness",
 		"wisdom",
 		"wise attention"
 	],
@@ -49,6 +56,13 @@
 			"determination",
 			"taking initiative",
 			"making a mental decision to act"
+		],
+		"collectedness": [
+			"concentration",
+			"jhāna",
+			"samādhi",
+			"mental composure",
+			"stillness of mind"
 		],
 		"compassion": ["benevolence", "concern", "sympathy", "mercy"],
 		"complete comprehension": [
@@ -70,6 +84,8 @@
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
 		"ending": ["cessation", "gradual ending"],
 		"ethical conduct": ["moral integrity", "virtue"],
+		"fear of wrongdoing": ["moral dread", "respect for others"],
+		"full awareness": ["clear comprehension"],
 		"giving up": [
 			"renunciation",
 			"relinquishment",
@@ -116,10 +132,24 @@
 		],
 		"recognition of impermanence": ["perception of impermanence"],
 		"self-control": ["self-restraint", "self-mastery"],
+		"sense of right and wrong": [
+			"with conscience",
+			"sense of shame",
+			"modest"
+		],
+		"sense restraint": [
+			"guarding the sense faculties",
+			"watching the sense doors",
+			"not grasping at the prominent features or details of sense objects"
+		],
 		"sensual desire": [
 			"passion for sensual pleasures",
 			"lust",
 			"craving for pleasure"
+		],
+		"shamelessness": [
+			"lack of conscience",
+			"lacking sense of right and wrong"
 		],
 		"solitude": ["seclusion"],
 		"stingy": ["miserly", "greedy", "mean", "tight-fisted"],
@@ -138,6 +168,7 @@
 			"seeing the truth",
 			"seeing the dhamma"
 		],
+		"wakefulness": ["lucidity", "alertness", "vigilance"],
 		"wisdom": ["understanding the four noble truths"],
 		"wise attention": [
 			"proper attention",
