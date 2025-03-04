@@ -10,7 +10,7 @@ const MAX_BATCH_SIZE = 1000;
  */
 function getApiBaseUrl() {
 	// Use localhost in development
-	return process.env.API_BASE_URL || "http://localhost:4321";
+	return process.env.API_BASE_URL || "https://wordsofthebuddha.org";
 }
 
 /**

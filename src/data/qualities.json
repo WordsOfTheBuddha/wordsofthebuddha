@@ -1,6 +1,7 @@
 {
 	"negative": [
 		"anger",
+		"aversion",
 		"anxiety",
 		"conceit",
 		"craving",
@@ -8,10 +9,12 @@
 		"harmful",
 		"ignorance",
 		"immaturity",
+		"illusion",
 		"irritable",
 		"jealous",
 		"laziness",
 		"negligence",
+		"passion",
 		"personal existence",
 		"sensual desire",
 		"shamelessness",
@@ -57,6 +60,7 @@
 			"taking initiative",
 			"making a mental decision to act"
 		],
+		"aversion": ["ill-will", "hate", "fault-finding mindset", "resentment"],
 		"collectedness": [
 			"concentration",
 			"jhāna",
@@ -102,6 +106,12 @@
 			"not knowing the four noble truths",
 			"avijja"
 		],
+		"illusion": [
+			"delusion",
+			"hallucination",
+			"misperception",
+			"distorted view"
+		],
 		"immaturity": [
 			"lacking in discernment",
 			"lacking in good sense",
@@ -123,6 +133,13 @@
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
 		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
+		"passion": [
+			"intense desire",
+			"strong emotion",
+			"infatuation",
+			"obsession",
+			"lust"
+		],
 		"personal existence": [
 			"identity view",
 			"self-view",
