@@ -94,8 +94,20 @@ export async function lookupSingleWord(
 				)[0];
 				if (basePart) {
 					// Try full base part
-					console.log(`Trying base part: "${basePart}"`);
-					results = dictionary.find(basePart);
+					const pluralMap: Record<string, string> = {
+						ā: "a",
+						ī: "i",
+						ū: "u",
+					};
+
+					let singularBase = basePart;
+					const lastChar = basePart.slice(-1);
+					if (lastChar in pluralMap) {
+						singularBase =
+							basePart.slice(0, -1) + pluralMap[lastChar];
+					}
+					console.log(`Trying base part: "${singularBase}"`);
+					results = dictionary.find(singularBase);
 					console.log(
 						`Fallback lookup found ${
 							results?.data?.length || 0
@@ -142,19 +154,8 @@ export async function lookupSingleWord(
 
 async function lookupWord(word: string): Promise<WordDefinition[] | null> {
 	try {
-		const results = dictionary.find(word);
-		if (!results?.data?.length) return null;
-
-		return results.data.map(
-			(result: DictionaryResult): WordDefinition => ({
-				pos: result.pos,
-				pattern: result.pattern,
-				construction: result.construction,
-				meaning: result.meaning || result.meaning_1,
-				meaning_lit: result.meaning_lit,
-				lemma: result.lemma_1,
-			})
-		);
+		const lookupResponse = await lookupSingleWord(word);
+		return lookupResponse?.definitions || null;
 	} catch (error) {
 		console.error(`Lookup error for word ${word}:`, error);
 		return null;
@@ -185,6 +186,7 @@ async function batchLookup(
 export const GET: APIRoute = async ({ url }) => {
 	const wordParam = url.searchParams.get("word");
 	const query = url.searchParams.get("q");
+	console.log("query", query);
 
 	// Helper to get words from parameter
 	const getWords = (param: string | null) =>
