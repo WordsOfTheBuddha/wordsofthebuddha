@@ -1,11 +1,14 @@
 {
 	"negative": [
+		"attachment",
 		"anger",
 		"aversion",
 		"anxiety",
 		"conceit",
 		"craving",
+		"desire",
 		"drowsiness",
+		"fear",
 		"harmful",
 		"ignorance",
 		"immaturity",
@@ -29,13 +32,16 @@
 		"collectedness",
 		"complete comprehension",
 		"compassion",
+		"cultivation",
 		"diligence",
 		"disenchantment",
 		"dispassion",
 		"ending",
 		"ethical conduct",
+		"faith",
 		"fear of wrongdoing",
 		"full awareness",
+		"giving",
 		"giving up",
 		"inquisitiveness",
 		"learning",
@@ -53,6 +59,7 @@
 		"wise attention"
 	],
 	"synonyms": {
+		"attachment": ["bond", "clinging", "grasping", "holding on"],
 		"anger": ["ill-will", "hatred", "aversion", "resentment"],
 		"anxiety": ["worry", "distress", "agitation", "restlessness"],
 		"arousing energy": [
@@ -80,7 +87,14 @@
 			"pride",
 			"tendency of self-comparison"
 		],
-		"craving": ["wanting", "yearning", "longing", "attachment", "taṇha"],
+		"craving": ["wanting", "yearning", "longing", "taṇha"],
+		"cultivation": [
+			"development",
+			"improvement",
+			"meditation",
+			"nurturing",
+			"growth"
+		],
 		"direct knowing": ["experiential understanding", "direct experience"],
 		"disenchantment": ["de-illusionment", "disinterest"],
 		"dispassion": ["detachment", "disinterest", "fading of desire"],
@@ -88,13 +102,41 @@
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
 		"ending": ["cessation", "gradual ending"],
 		"ethical conduct": ["moral integrity", "virtue"],
+		"faith": ["confidence", "trust", "belief", "conviction"],
+		"fear": [
+			"afraid",
+			"fearfulness",
+			"fright",
+			"horror",
+			"panic",
+			"scared",
+			"terror"
+		],
 		"fear of wrongdoing": ["moral dread", "respect for others"],
 		"full awareness": ["clear comprehension"],
+		"giving": [
+			"generosity",
+			"charity",
+			"donating",
+			"philanthropy",
+			"providing with",
+			"gift with"
+		],
 		"giving up": [
 			"renunciation",
 			"relinquishment",
 			"letting go",
 			"abandonment"
+		],
+		"desire": [
+			"objective",
+			"interest",
+			"aspiration",
+			"wish",
+			"intention",
+			"desire",
+			"impulse",
+			"chanda"
 		],
 		"harmful": ["injurious", "destructive", "bad", "evil"],
 		"ignorance": [
@@ -186,6 +228,15 @@
 			"seeing the dhamma"
 		],
 		"wakefulness": ["lucidity", "alertness", "vigilance"],
+		"wholesome": [
+			"skillful",
+			"beneficial",
+			"good",
+			"useful",
+			"healthy",
+			"nourishing",
+			"sustaining"
+		],
 		"wisdom": ["understanding the four noble truths"],
 		"wise attention": [
 			"proper attention",
