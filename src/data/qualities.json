@@ -37,6 +37,7 @@
 		"disenchantment",
 		"dispassion",
 		"ending",
+		"equanimity",
 		"ethical conduct",
 		"faith",
 		"fear of wrongdoing",
@@ -52,6 +53,7 @@
 		"sense of right and wrong",
 		"sense restraint",
 		"solitude",
+		"tranquility",
 		"vigour",
 		"vision",
 		"wakefulness",
@@ -101,6 +103,14 @@
 		"drowsiness": ["sleepiness", "yawning", "lethargic"],
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
 		"ending": ["cessation", "gradual ending"],
+		"equanimity": [
+			"mental poise",
+			"mental balance",
+			"equipose",
+			"non-reactivity",
+			"composure",
+			"upekkha"
+		],
 		"ethical conduct": ["moral integrity", "virtue"],
 		"faith": ["confidence", "trust", "belief", "conviction"],
 		"fear": [
@@ -212,6 +222,7 @@
 		],
 		"solitude": ["seclusion"],
 		"stingy": ["miserly", "greedy", "mean", "tight-fisted"],
+		"tranquility": ["calmness", "peacefulness", "serenity"],
 		"undiscerning": ["lacking in wisdom"],
 		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
 		"vigour": [
