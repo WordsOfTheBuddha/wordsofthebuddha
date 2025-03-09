@@ -5,7 +5,13 @@ const { description } = Astro.props;
 {
 	description && (
 		<div class="my-2 mt-4 p-4 rounded-lg border border-[var(--border-color)] w-[fit-content]">
-			<p class="my-0 text-lg">{description}</p>
+			<p
+				class="my-0 text-lg"
+				set:html={description?.replace(
+					/\[([^\]]+)\]\(([^)]+)\)/g,
+					'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
+				)}
+			/>
 		</div>
 	)
 }
