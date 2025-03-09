@@ -88,6 +88,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							"The \"Linked Discourses with Vacchagotta\" features dialogues between the Buddha and Vacchagotta, a wandering ascetic who engages the Buddha in philosophical debates. Vacchagotta is known for his skepticism and challenging questions, which the Buddha skillfully addresses with wisdom and compassion. These discourses explore a wide range of topics, including the nature of the self, the nature of the world, and the path to liberation. The Buddha's responses to Vacchagotta's inquiries offer profound insights into the core teachings of the Dhamma and the path to awakening.",
 					},
+					sn34: {
+						title: "Jhānasaṁyutta - Linked Discourses on Collectedness (jhāna)",
+						description:
+							'The "Linked Discourses on Collectedness" contains discourses dealing with the meditative skills required to perfect jhānas. Each discourse describes a meditator who is skilled in some aspects, but not in others, and holds the one skilled in all aspects to be the best.',
+					},
 				},
 			},
 			"sn35-44": {
@@ -133,6 +138,16 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						title: "Bojjhaṅgasaṁyutta - Linked Discourses on the Factors of Awakening",
 						description:
 							'The "Linked Discourses on the Factors of Awakening" contains discourses focusing on the seven factors that lead to awakening when cultivated. These factors include mindfulness, investigation of mental qualities (principles, states), energy, joy, tranquility, collectedness, and equanimity (mental poise). These teachings explore the qualities that support spiritual growth and the development of insight. By examining the factors of awakening, these discourses offer insights into the conditions for spiritual progress and liberation.',
+					},
+					sn47: {
+						title: "Satipaṭṭhānasaṁyutta - Linked Discourses on the Establishments of Mindfulness",
+						description:
+							'The "Linked Discourses on the Establishments of Mindfulness" contains discourses focusing on the four foundations of mindfulness: clear comprehension and full awareness of the body, felt experience, mind, and mental qualities. These teachings explore how to establish mindfulness as a means to develop right collectedness, insight and wisdom.',
+					},
+					sn48: {
+						title: "Indriyasaṁyutta - Linked Discourses on the Faculties",
+						description:
+							'The "Linked Discourses on the Faculties" explores the five spiritual faculties: faith, energy, mindfulness, collectedness, and wisdom. These teachings examine how these faculties function as both the means to attain liberation and as qualities that become increasingly refined through practice. By developing these faculties in a balanced way, practitioners can progress on the path to awakening.',
 					},
 					sn51: {
 						title: "Iddhipādasaṁyutta - Linked Discourses on the Bases of Psychic Ability",
@@ -355,7 +370,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 		},
 	},
 	dhp: {
-		title: "Dhammapada - The Path of Truth",
+		title: "Dhammapada - The Path of Dhamma",
 		description:
 			"A widely read collection of 423 verses of the Buddha's teachings, offering practical wisdom on ethics, mental cultivation, and liberation, organized into memorable chapters.",
 	},
