@@ -7,6 +7,7 @@ interface Props {
 	lastUpdated?: string | Date;
 	dateLabel?: string;
 	clamp?: number;
+	count?: number; // Added count property
 }
 
 export const formatDate = (date: string | Date) => {
@@ -24,49 +25,66 @@ const {
 	lastUpdated,
 	dateLabel = "Last updated on",
 	clamp = 3,
+	count = 0, // Default count to 0
 } = Astro.props;
 ---
 
 <div
 	class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
 >
-	<div class="flex items-start">
-		<div class="min-w-0 pr-4">
-			<h2 class="text-base sm:text-lg font-semibold text-text">
-				<a
-					href={id}
-					class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal"
-					data-base-href={id}
+	<div class="flex items-start justify-between">
+		<div class="flex items-start flex-grow">
+			<div class="min-w-0 pr-4">
+				<h2 class="text-base sm:text-lg font-semibold text-text">
+					<a
+						href={id}
+						class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal"
+						data-base-href={id}
+					>
+						{transformId(id)}&nbsp;<span
+							style="color:var(--text-color)">{title}</span
+						></a
+					>
+				</h2>
+			</div>
+			<div class="flex items-center shrink-0">
+				<button
+					class="text-gray-400 hover:text-gray-600 opacity-0 transition-opacity duration-200"
 				>
-					{transformId(id)}&nbsp;<span style="color:var(--text-color)"
-						>{title}</span
-					></a
-				>
-			</h2>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="w-6 h-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+						></path>
+					</svg>
+				</button>
+			</div>
 		</div>
-		<div class="flex items-center shrink-0">
-			<button
-				class="text-gray-400 hover:text-gray-600 opacity-0 transition-opacity duration-200"
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="w-6 h-6"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-					></path>
-				</svg>
-			</button>
-		</div>
+		{
+			count > 0 && (
+				<div class="shrink-0 self-start">
+					<span class="px-2 py-0.5 rounded-md text-xs font-medium text-white bg-primary shadow-sm">
+						{count}
+					</span>
+				</div>
+			)
+		}
 	</div>
 	<p class=`mt-2 text-text line-clamp-${clamp} text-sm sm:text-base`>
-		{description}
+		{
+			description?.replace(
+				/\[([^\]]+)\]\(([^)]+)\)/g,
+				'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
+			)
+		}
 	</p>
 	{
 		lastUpdated && (
@@ -115,5 +133,13 @@ const {
 	}
 	.hover\:text-link-color:hover {
 		color: var(--link-color);
+	}
+	.bg-primary {
+		background-color: color-mix(
+			in srgb,
+			var(--primary-color),
+			transparent 20%
+		);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
 </style>
