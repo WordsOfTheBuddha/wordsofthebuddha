@@ -6,4 +6,5 @@ export interface DirectoryStructure {
 		start: number;
 		end: number;
 	};
+	contentCount?: number;
 }

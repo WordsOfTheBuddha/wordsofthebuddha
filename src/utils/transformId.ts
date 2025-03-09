@@ -1,10 +1,10 @@
 // src/utils/transformId.ts
 export const keyMap: { [key: string]: string } = {
-	dhp: "DhammaPada",
+	dhp: "The Path of Dhamma",
 	mn: "Middle Length Discourses",
-	ud: "Udāna",
+	ud: "Inspired Utterances",
 	sn: "Linked Discourses",
-	snp: "Sutta Nipāta",
+	snp: "The Buddha's Ancient Discourses",
 	an: "Numerical Discourses",
 	iti: "As It Was Said",
 	anthologies: "Anthologies",

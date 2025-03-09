@@ -1,23 +1,58 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
 import { keyMap } from "../utils/transformId";
+import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
 
-const allDhpPosts = await getCollection("dhp");
-const allMnPosts = await getCollection("mn");
-const allItiPosts = await getCollection("iti");
-const allSnPosts = await getCollection("sn");
-const allSnpPosts = await getCollection("snp");
-const allAnPosts = await getCollection("an");
-const allUdPosts = await getCollection("ud");
-
+// Define collection info - using our new counts from directoryStructureWithCounts
 const collections = [
-	{ name: "dhp", count: allDhpPosts.length, suffix: "chapters" },
-	{ name: "mn", count: allMnPosts.length, suffix: "discourses" },
-	{ name: "snp", count: allSnpPosts.length, suffix: "poems" },
-	{ name: "an", count: allAnPosts.length, suffix: "discourses" },
-	{ name: "sn", count: allSnPosts.length, suffix: "discourses" },
-	{ name: "iti", count: allItiPosts.length, suffix: "sayings" },
-	{ name: "ud", count: allUdPosts.length, suffix: "inspired utterances" },
+	{
+		name: "dhp",
+		count: directoryStructureWithCounts.dhp?.contentCount || 0,
+		suffix: "verses",
+		title: directoryStructureWithCounts.dhp?.title || "Dhammapada",
+		total: 423,
+	},
+	{
+		name: "iti",
+		count: directoryStructureWithCounts.iti?.contentCount || 0,
+		suffix: "sayings",
+		title: directoryStructureWithCounts.iti?.title || "Itivuttaka",
+		total: 112,
+	},
+	{
+		name: "mn",
+		count: directoryStructureWithCounts.mn?.contentCount || 0,
+		suffix: "discourses",
+		title: directoryStructureWithCounts.mn?.title || "Majjhima Nikāya",
+		total: 152,
+	},
+	{
+		name: "snp",
+		count: directoryStructureWithCounts.snp?.contentCount || 0,
+		suffix: "teachings",
+		title: directoryStructureWithCounts.snp?.title || "Sutta Nipāta",
+		total: 71,
+	},
+	{
+		name: "sn",
+		count: directoryStructureWithCounts.sn?.contentCount || 0,
+		suffix: "discourses",
+		title: directoryStructureWithCounts.sn?.title || "Saṃyutta Nikāya",
+		total: 2889,
+	},
+	{
+		name: "an",
+		count: directoryStructureWithCounts.an?.contentCount || 0,
+		suffix: "discourses",
+		title: directoryStructureWithCounts.an?.title || "Aṅguttara Nikāya",
+		total: 9557,
+	},
+	{
+		name: "ud",
+		count: directoryStructureWithCounts.ud?.contentCount || 0,
+		suffix: "utterances",
+		title: directoryStructureWithCounts.ud?.title || "Udāna",
+		total: 80,
+	},
 ];
 ---
 
@@ -27,21 +62,72 @@ const collections = [
 			<th class="py-2 px-4 text-left border-b dark:border-gray-700"
 				>Collection</th
 			>
-			<th class="py-2 px-4 text-left border-b dark:border-gray-700">Status</th>
+			<th
+				class="py-2 px-4 text-left border-b dark:border-gray-700 hidden sm:table-cell"
+				>Available</th
+			>
+			<th class="py-2 px-4 text-left border-b dark:border-gray-700"></th>
 		</tr>
 	</thead>
 	<tbody>
 		{
-			collections.map(({ name, count, suffix }) => (
-				<tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-					<td class="py-2 px-4 border-b dark:border-gray-700">
-						<a href={name}>{keyMap[name] || name}</a>
-					</td>
-					<td class="py-2 px-4 border-b dark:border-gray-700">
-						{count} {suffix}
-					</td>
-				</tr>
-			))
+			collections.map(({ name, count, suffix, title, total }) => {
+				const percentage = Math.round((count / total) * 100) || 0;
+				const color =
+					percentage < 30
+						? "bg-amber-500"
+						: percentage < 70
+							? "bg-blue-500"
+							: "bg-green-500";
+
+				return (
+					<tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+						<td class="py-2 px-4 border-b dark:border-gray-700">
+							<a href={name} class="flex items-center">
+								<span class="font-medium">
+									{keyMap[name] || name}
+								</span>
+								<span class="ml-2 text-xs text-gray-500 hidden sm:inline">
+									({title.split(" - ")[0]})
+								</span>
+							</a>
+						</td>
+						<td class="py-2 px-4 border-b dark:border-gray-700 hidden sm:table-cell">
+							<span class="font-medium">{count}</span> {suffix}
+						</td>
+						<td class="py-2 px-4 border-b dark:border-gray-700">
+							<div class="text-xs text-gray-500 sm:hidden mt-1">
+								{count} {suffix}
+							</div>
+							<div class="flex items-center">
+								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mr-2 sm:mr-4">
+									<div
+										class={`h-2.5 rounded-full transition-all duration-500 ${color}`}
+										style={`width: ${percentage}%`}
+									/>
+								</div>
+								<div class="whitespace-nowrap text-xs sm:text-sm">
+									<span class="font-medium">
+										{percentage}%
+									</span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				);
+			})
 		}
 	</tbody>
 </table>
+
+<style>
+	@keyframes progress {
+		0% {
+			width: 0;
+		}
+	}
+
+	.h-2.5 {
+		height: 0.625rem;
+	}
+</style>

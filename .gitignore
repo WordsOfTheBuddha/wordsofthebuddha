@@ -29,6 +29,9 @@ src/utils/routes.ts
 
 .timestamp-cache.json
 
+# data auto generation
+src/data/directoryStructureWithCounts.ts
+
 # translation flow
 src/translation-flow/.debug/*
 src/translation-flow/.work/*

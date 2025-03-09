@@ -3,6 +3,7 @@ import Layout from "./Layout.astro";
 import PostCard from "../components/PostCard.astro";
 import { performSearch, type SearchResult } from "../service/search/search";
 import type { DirectoryStructure } from "../types/directory";
+import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
 
 interface Props {
 	title: string;
@@ -27,6 +28,74 @@ const pagePosts: SearchResult[] = await performSearch(searchPattern, {
 const hasChildren = children && Object.keys(children).length > 0;
 const showCollections =
 	hasChildren && Astro.url.searchParams.get("view") !== "discourses";
+
+// Function to find content count for a specific slug
+function getContentCount(slug: string): number {
+	// Get the current URL path to determine context
+	const currentPath = Astro.url.pathname.replace(/\/$/, "");
+	const pathParts = currentPath.split("/").filter(Boolean);
+
+	// For debugging
+	console.log(`Getting count for slug: ${slug} (in path: ${currentPath})`);
+
+	// Case 1: Direct match in top level
+	if (directoryStructureWithCounts[slug]?.contentCount !== undefined) {
+		console.log(
+			`Found as top-level collection: ${directoryStructureWithCounts[slug].contentCount}`
+		);
+		return directoryStructureWithCounts[slug].contentCount;
+	}
+
+	// Case 2: When viewing a path like "/sn1-11" and looking for slugs like "sn1"
+	if (pathParts.length === 1) {
+		// First, find if the current path is a valid collection
+		// Check if the current path is a child of a parent collection
+		const parentKey = Object.keys(directoryStructureWithCounts).find(
+			(key) => directoryStructureWithCounts[key]?.children?.[pathParts[0]]
+		);
+
+		if (parentKey) {
+			// We found the parent (e.g., "sn" for "sn1-11")
+			const currentPathCollection =
+				directoryStructureWithCounts[parentKey].children[pathParts[0]];
+
+			// Now check if the requested slug is a child of this collection
+			if (
+				currentPathCollection?.children?.[slug]?.contentCount !==
+				undefined
+			) {
+				console.log(
+					`Found as child of ${pathParts[0]}: ${currentPathCollection.children[slug].contentCount}`
+				);
+				return currentPathCollection.children[slug].contentCount;
+			}
+		}
+	}
+
+	// Case 3: When we're viewing a top-level collection page (e.g., /an, /sn)
+	if (
+		pathParts.length === 1 &&
+		directoryStructureWithCounts[pathParts[0]]?.children
+	) {
+		// Check direct children of the current path
+		const parent = directoryStructureWithCounts[pathParts[0]];
+		if (parent.children[slug]?.contentCount !== undefined) {
+			console.log(
+				`Found as direct child of ${pathParts[0]}: ${parent.children[slug].contentCount}`
+			);
+			return parent.children[slug].contentCount;
+		}
+	}
+
+	// Case 4: Check if the slug is in the children prop passed to the component
+	if (children && children[slug]?.contentCount !== undefined) {
+		console.log(`Found in children prop: ${children[slug].contentCount}`);
+		return children[slug].contentCount;
+	}
+
+	console.log(`No count found for ${slug}`);
+	return 0;
+}
 ---
 
 <Layout
@@ -91,6 +160,7 @@ const showCollections =
 								description={data.description || ""}
 								id={slug}
 								clamp={5}
+								count={getContentCount(slug)}
 							/>
 						))
 					: pagePosts.map((post) => (
