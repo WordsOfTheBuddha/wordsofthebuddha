@@ -57,7 +57,9 @@ function getContentCount(slug: string): number {
 		if (parentKey) {
 			// We found the parent (e.g., "sn" for "sn1-11")
 			const currentPathCollection =
-				directoryStructureWithCounts[parentKey].children[pathParts[0]];
+				directoryStructureWithCounts[parentKey]?.children?.[
+					pathParts[0]
+				];
 
 			// Now check if the requested slug is a child of this collection
 			if (
@@ -79,7 +81,10 @@ function getContentCount(slug: string): number {
 	) {
 		// Check direct children of the current path
 		const parent = directoryStructureWithCounts[pathParts[0]];
-		if (parent.children[slug]?.contentCount !== undefined) {
+		if (
+			parent.children &&
+			parent.children[slug]?.contentCount !== undefined
+		) {
 			console.log(
 				`Found as direct child of ${pathParts[0]}: ${parent.children[slug].contentCount}`
 			);
