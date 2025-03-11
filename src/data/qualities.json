@@ -16,6 +16,7 @@
 		"irritable",
 		"jealous",
 		"laziness",
+		"moral recklessness",
 		"negligence",
 		"passion",
 		"personal existence",
@@ -29,11 +30,13 @@
 	"neutral": ["companionship"],
 	"positive": [
 		"arousing energy",
+		"celibacy",
 		"collectedness",
 		"complete comprehension",
 		"compassion",
 		"cultivation",
 		"diligence",
+		"discernment",
 		"disenchantment",
 		"dispassion",
 		"ending",
@@ -71,6 +74,7 @@
 			"making a mental decision to act"
 		],
 		"aversion": ["ill-will", "hate", "fault-finding mindset", "resentment"],
+		"celibacy": ["abstinence", "chastity", "sexual restraint"],
 		"collectedness": [
 			"concentration",
 			"jhāna",
@@ -99,6 +103,13 @@
 			"growth"
 		],
 		"direct knowing": ["experiential understanding", "direct experience"],
+		"discernment": [
+			"able to judge well",
+			"able to see distinctions",
+			"clear seeing",
+			"penetrating internal vision",
+			"insight"
+		],
 		"disenchantment": ["de-illusionment", "disinterest"],
 		"dispassion": ["detachment", "disinterest", "fading of desire"],
 		"drowsiness": ["sleepiness", "yawning", "lethargic"],
@@ -185,6 +196,12 @@
 		"learning": ["acquiring knowledge", "studying", "understanding"],
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
+		"moral recklessness": [
+			"fearlessness of wrongdoing",
+			"without concern for others",
+			"lack of prudence",
+			"anottappa"
+		],
 		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
 		"non-harm": [
 			"non-violence",
@@ -228,7 +245,7 @@
 			"lack of conscience",
 			"lacking sense of right and wrong"
 		],
-		"solitude": ["seclusion"],
+		"solitude": ["seclusion", "privacy"],
 		"stingy": ["miserly", "greedy", "mean", "tight-fisted"],
 		"tranquility": ["calmness", "peacefulness", "serenity"],
 		"undiscerning": ["lacking in wisdom"],
