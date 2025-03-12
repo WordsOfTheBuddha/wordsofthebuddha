@@ -1,7 +1,7 @@
 ---
 title: Kamboja sutta - Kamboja
 description: The Buddha describes the cause and condition for why a woman neither sits in public assemblies, nor pursues occupations, nor journeys to Kamboja.
-qualities: irritable, jealous, stingy, undiscerning
+qualities: irritable, jealousy, stinginess, undiscerning
 theme: cultivating discernment
 slug: an4.80
 ---
