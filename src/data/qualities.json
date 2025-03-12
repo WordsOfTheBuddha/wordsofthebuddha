@@ -1,30 +1,37 @@
 {
 	"negative": [
+		"aggressiveness",
 		"attachment",
 		"anger",
 		"aversion",
 		"anxiety",
 		"conceit",
+		"contempt",
 		"craving",
 		"desire",
 		"drowsiness",
 		"fear",
+		"feuding",
 		"harmful",
 		"ignorance",
 		"immaturity",
 		"illusion",
 		"irritable",
-		"jealous",
+		"jealousy",
 		"laziness",
 		"moral recklessness",
 		"negligence",
 		"passion",
 		"personal existence",
+		"resentment",
 		"sensual desire",
 		"shamelessness",
-		"stingy",
+		"stinginess",
+		"stubbornness",
+		"treachery",
 		"undiscerning",
 		"unprincipled",
+		"vanity",
 		"wrong view"
 	],
 	"neutral": ["companionship"],
@@ -34,6 +41,7 @@
 		"collectedness",
 		"complete comprehension",
 		"compassion",
+		"contentment",
 		"cultivation",
 		"diligence",
 		"discernment",
@@ -65,8 +73,26 @@
 		"wise attention"
 	],
 	"synonyms": {
+		"aggressiveness": [
+			"hostility",
+			"antagonism",
+			"belligerence",
+			"combativeness",
+			"pugnacity",
+			"violence",
+			"injury causing behavior",
+			"sārambha"
+		],
 		"attachment": ["bond", "clinging", "grasping", "holding on"],
-		"anger": ["ill-will", "hatred", "aversion", "resentment"],
+		"anger": [
+			"ill-will",
+			"hatred",
+			"aversion",
+			"rage",
+			"wrath",
+			"fury",
+			"indignation"
+		],
 		"anxiety": ["worry", "distress", "agitation", "restlessness"],
 		"arousing energy": [
 			"determination",
@@ -92,7 +118,23 @@
 			"arrogance",
 			"egotism",
 			"pride",
+			"self-importance",
 			"tendency of self-comparison"
+		],
+		"contempt": [
+			"ungratefulness",
+			"depreciation",
+			"denigration",
+			"disrespect",
+			"belittlement",
+			"disparagement",
+			"makkha"
+		],
+		"contentment": [
+			"satisfaction",
+			"ease",
+			"fewness of wishes",
+			"santutthi"
 		],
 		"craving": ["wanting", "yearning", "longing", "taṇha"],
 		"cultivation": [
@@ -135,6 +177,13 @@
 			"terror"
 		],
 		"fear of wrongdoing": ["moral dread", "respect for others"],
+		"feuding": [
+			"quarreling",
+			"rivalry",
+			"opposition",
+			"struggle",
+			"conflict"
+		],
 		"full awareness": ["clear comprehension"],
 		"giving": [
 			"generosity",
@@ -185,10 +234,10 @@
 		],
 		"inquisitive": ["curious", "inquiring", "interested"],
 		"irritable": ["cranky", "moody", "prone to anger"],
-		"jealous": [
-			"covetous",
-			"envious",
-			"possessive",
+		"jealousy": [
+			"covetousness",
+			"envy",
+			"possessiveness",
 			"protective of",
 			"unwilling to part with"
 		],
@@ -225,6 +274,7 @@
 			"egoism"
 		],
 		"recognition of impermanence": ["perception of impermanence"],
+		"resentment": ["bearing a grudge", "harboring enmity"],
 		"self-control": ["self-restraint", "self-mastery"],
 		"sense of right and wrong": [
 			"with conscience",
@@ -246,10 +296,25 @@
 			"lacking sense of right and wrong"
 		],
 		"solitude": ["seclusion", "privacy"],
-		"stingy": ["miserly", "greedy", "mean", "tight-fisted"],
-		"tranquility": ["calmness", "peacefulness", "serenity"],
+		"stinginess": ["miserliness", "greed", "meanness", "tight-fistedness"],
+		"stubbornness": [
+			"bullheadedness",
+			"obstinacy",
+			"inflexibility",
+			"pigheadedness",
+			"thambha"
+		],
+		"tranquility": ["calmness", "peacefulness", "serenity", "upasama"],
+		"treachery": ["deviousness", "scamming", "betrayal"],
 		"undiscerning": ["lacking in wisdom"],
 		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
+		"vanity": [
+			"indulgence",
+			"excess",
+			"extravagance",
+			"intoxication",
+			"mada"
+		],
 		"vigour": [
 			"energy",
 			"effort",
