@@ -9,7 +9,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			"sn1-11": {
 				title: "The Group of Linked Discourses With Verses",
 				description:
-					'The "Book With Verses" is the first of the five books in the Saṁyutta Nikāya, containing 271 suttas divided into eleven saṁyuttas or sections...',
+					'The "Book With Verses" is the first of the five books in the Saṁyutta Nikāya, containing 271 suttas divided into eleven saṁyuttas or sections.',
 				range: { start: 1, end: 11 },
 				children: {
 					sn1: {
@@ -249,15 +249,21 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			"A collection of 152 suttas that provide in-depth teachings on meditation, wisdom, and the path to liberation, balancing practical guidance with deep philosophical inquiry.",
 		children: {
 			"mn1-50": {
-				title: "Mūlapaṇṇāsa - The Root Fifty",
+				title: "Mūlapaṇṇāsa - The First Fifty",
+				description:
+					"The first book of the Majjhima Nikāya, the Mūlapaṇṇāsa, contains discourses that establish the foundational principles of the Buddha’s teachings, beginning with the Mūlapariyāya Sutta, which examines how the notion of a personal existence emerges from the process of perception. Other discourses explore various aspects of the Dhamma through Buddha's own experiences leading to his full awakening, illustrative similes, training guidelines and paired discourses on key doctrines. This book provides a comprehensive introduction to the core teachings of the Buddha and the practices of early Buddhism.",
 				range: { start: 1, end: 50 },
 			},
 			"mn51-100": {
 				title: "Majjhimapaṇṇāsa - The Middle Fifty",
+				description:
+					"The second book of the Majjhima Nikāya, the Majjhimapaṇṇāsa, features discourses organized around the individuals involved in the teachings, such as householders, bhikkhus, wanderers, kings, and brahmins. Each of its five chapters (groupings of 10 discourses) presents teachings tailored to these groups, addressing their specific concerns and illustrating the practical application of the Dhamma across diverse contexts.",
 				range: { start: 51, end: 100 },
 			},
 			"mn101-152": {
-				title: "Uparipaṇṇāsa - The Last Fifty",
+				title: "Uparipaṇṇāsa - The Final Fifty-Two",
+				description:
+					"The third book of the Majjhima Nikāya, the Uparipaṇṇāsa, delves into specific themes and advanced topics, with chapters exploring critiques of other philosophical views, meditation practices, the concept of emptiness, analytical methods, and the six sense bases. This book offers profound insights for those seeking a deeper understanding of the Buddha’s teachings.",
 				range: { start: 101, end: 152 },
 			},
 		},
