@@ -1,6 +1,6 @@
 ---
 title: Nandamātā sutta - Nanda's Mother
-description: The seven wonderful and marvelous qualities of Nandamātā, a female lay follower.
+description: The seven wonderful and marvelous qualities of Nandamātā, a female lay disciple.
 fetter: doubt
 tags: five lower fetters, great king Vessavaṇa, Nandamātā, Sāriputta, Moggallāna, jhana, an, an7
 slug: an7.53
