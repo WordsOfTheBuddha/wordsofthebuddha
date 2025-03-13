@@ -83,7 +83,16 @@
 			"injury causing behavior",
 			"sārambha"
 		],
-		"attachment": ["bond", "clinging", "grasping", "holding on"],
+		"attachment": [
+			"bond",
+			"clinging",
+			"grasping",
+			"holding on",
+			"possession",
+			"entanglement",
+			"bound",
+			"connected"
+		],
 		"anger": [
 			"ill-will",
 			"hatred",
