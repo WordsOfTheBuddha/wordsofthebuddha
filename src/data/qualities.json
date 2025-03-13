@@ -28,6 +28,7 @@
 		"shamelessness",
 		"stinginess",
 		"stubbornness",
+		"suffering",
 		"treachery",
 		"undiscerning",
 		"unprincipled",
@@ -312,6 +313,18 @@
 			"inflexibility",
 			"pigheadedness",
 			"thambha"
+		],
+		"suffering": [
+			"discomfort",
+			"unpleasantness",
+			"discontentment",
+			"dissatisfaction",
+			"stress",
+			"pain",
+			"disease",
+			"distress",
+			"afflication",
+			"dukkha"
 		],
 		"tranquility": ["calmness", "peacefulness", "serenity", "upasama"],
 		"treachery": ["deviousness", "scamming", "betrayal"],
