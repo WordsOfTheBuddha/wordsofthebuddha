@@ -13,9 +13,14 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 				range: { start: 1, end: 11 },
 				children: {
 					sn1: {
-						title: "Devatāsaṁyutta",
+						title: "Devatāsaṁyutta - Linked Discourses with Deities",
 						description:
-							'The "Linked Discourses With Deities" features dialogues between the Buddha and various deities...',
+							'The "Linked Discourses With Deities" features dialogues between the Buddha and various deities, beings who visit, often at night, to engage in dialogues about the Dhamma. These suttas, frequently featuring verses, explore a wide range of topics, from the nature of suffering to the path of liberation. The devas, depicted as luminous and reverent, approach the Awakened One with questions or reflections, revealing their eagerness to deepen their understanding. This collection highlights the universal reach of the Buddha’s teachings, extending even to beings of higher realms seeking wisdom.',
+					},
+					sn2: {
+						title: "Devaputtasaṁyutta - Linked Discourses with Young Deities",
+						description:
+							'The "Linked Discourses with Young Deities" features young celestial beings, often newly reborn from human lives, who come to the Buddha or his disciples to express their insights or seek further guidance. These suttas, rich with verse, delve into themes of kamma, rebirth, and the pursuit of wisdom, as the young devas reflect on their past actions and their current exalted state. Portrayed with a mix of awe and curiosity, these beings engage in poignant exchanges that underscore the continuity of the spiritual journey across realms. This collection offers a vivid exploration of how past deeds shape present existence, even among the divine.',
 					},
 					sn3: {
 						title: "Kosalasaṁyutta - Linked Discourses With King Pasenadi of Kosala",

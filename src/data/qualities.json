@@ -57,11 +57,13 @@
 		"giving",
 		"giving up",
 		"inquisitiveness",
+		"investigation",
 		"learning",
 		"merit",
 		"mindfulness",
 		"non-harm",
 		"recognition of impermanence",
+		"right speech",
 		"self-control",
 		"sense of right and wrong",
 		"sense restraint",
@@ -243,6 +245,7 @@
 			"lack of experience"
 		],
 		"inquisitive": ["curious", "inquiring", "interested"],
+		"investigation": ["consideration", "reflection", "examination"],
 		"irritable": ["cranky", "moody", "prone to anger"],
 		"jealousy": [
 			"covetousness",
@@ -285,6 +288,16 @@
 		],
 		"recognition of impermanence": ["perception of impermanence"],
 		"resentment": ["bearing a grudge", "harboring enmity"],
+		"right speech": [
+			"truthful speech",
+			"honest speech",
+			"kind speech",
+			"beneficial speech",
+			"harmonious speech",
+			"articulate words",
+			"eloquent communication",
+			"samma vaca"
+		],
 		"self-control": ["self-restraint", "self-mastery"],
 		"sense of right and wrong": [
 			"with conscience",
