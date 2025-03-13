@@ -88,6 +88,21 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on the Aggregates" contains discourses focusing on the five aggregates that constitute personal experience: form, feeling, perception, volitional formations, and consciousness. These teachings explore the nature of the aggregates, their arising and ceasing, and their relationship to suffering and liberation. By examining the components of experience, these discourses offer insights into the nature of self and the conditions for suffering and liberation.',
 					},
+					sn23: {
+						title: "Rādhasaṁyutta - Linked Discourses with Rādha",
+						description:
+							"The \"Linked Discourses with Rādha\" centers on Venerable Rādha, a disciple of the Buddha known for his sharp intellect and his role in asking profound questions that lead to deep teachings. These discourses often involve Venerable Rādha approaching the Buddha with inquiries about the nature of reality, the self, and the path to liberation. The Buddha's responses are typically concise yet deeply insightful, using metaphors and analogies to illuminate complex concepts. This collection provides a glimpse into the dynamic between teacher and student, showcasing how the Buddha's wisdom unfolds through dialogue.",
+					},
+					sn25: {
+						title: "Okkantasaṁyutta - Linked Discourses on Arrival",
+						description:
+							'The "Linked Discourses on Arrival" focuses on the theme of arrival or entry into the Dhamma, exploring the moment when one first comprehends the truth of the teachings. These suttas often feature the Buddha or his disciples explaining the significance of this pivotal moment, using vivid imagery and examples to convey the transformative power of understanding. The discourses in this collection emphasize the importance of direct experience and the sudden, profound shift that occurs when one truly sees the Dhamma. This saṁyutta offers a compelling look at the threshold of awakening.',
+					},
+					sn28: {
+						title: "Sāriputtasaṁyutta - Linked Discourses with Sāriputta",
+						description:
+							"The \"Linked Discourses with Sāriputta\" features Venerable Sāriputta, one of the Buddha's foremost disciples, renowned for his wisdom and analytical skills. These discourses often involve Sāriputta engaging in discussions with the Buddha or other bhikkhus, delving into intricate aspects of the Dhamma. The suttas in this collection are characterized by their depth and precision, as Sāriputta's questions and reflections lead to detailed expositions on topics such as dependent origination, the nature of consciousness, and the path to liberation. This saṁyutta highlights the intellectual rigor and clarity that Sāriputta brings to the teachings.",
+					},
 					sn33: {
 						title: "Vacchagottasaṁyutta - Linked Discourses with Vacchagotta",
 						description:
