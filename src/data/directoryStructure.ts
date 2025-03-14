@@ -7,9 +7,9 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			"A collection of discourses grouped by theme, offering rich explorations of core Buddhist concepts such as dependent origination, the five aggregates, and the path to liberation.",
 		children: {
 			"sn1-11": {
-				title: "The Group of Linked Discourses With Verses",
+				title: "The Group of Linked Discourses with Verses",
 				description:
-					'The "Book With Verses" is the first of the five books in the Saṁyutta Nikāya, containing 271 suttas divided into eleven saṁyuttas or sections.',
+					'The "Group of Linked Discourses with Verses" forms the opening section of the Saṁyutta Nikāya. Distinguished by its frequent use of verse, often paired with prose, this collection presents the Buddha’s teachings through a poetic lens. The suttas feature a diverse cast of figures—deities, Brahmās (Gods), kings, and disciples—engaging in dialogues that address core elements of the Dhamma, such as suffering, liberation, and the law of kamma. Rich with vivid imagery and lyrical expression, this division weaves together profound insights and narrative depth, offering an evocative introduction to early Buddhist thought.',
 				range: { start: 1, end: 11 },
 				children: {
 					sn1: {
@@ -32,10 +32,40 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							"The \"Linked Discourses With Māra\" features dialogues between the Buddha and Māra, the personification of evil and the tempter of beings. Māra is depicted as a powerful figure who seeks to obstruct the Buddha's path to awakening and enlightenment. These discourses often involve Māra's attempts to dissuade the Buddha from teaching or to distract him from his meditation. The Buddha responds with wisdom and compassion, skillfully countering Māra's deceptions and revealing the path to liberation.",
 					},
+					sn5: {
+						title: "Bhikkhunīsaṁyutta - Linked Discourses with Bhikkhunīs",
+						description:
+							'The "Linked Discourses with Bhikkhunīs" contains verses from ten awakened bhikkhunis who express their liberation through poetic reflections. Each sutta features a bhikkhunī confronting Māra or celebrating her mastery of the Dhamma, showcasing their insight into impermanence, suffering, and not-self. These discourses highlight the spiritual accomplishments of these women in the early Buddhist community.',
+					},
+					sn6: {
+						title: "Brahmasaṁyutta - Linked Discourses with Brahmas",
+						description:
+							'The "Linked Discourses with Brahmas" recount interactions between the Buddha or his disciples and Brahmas, mighty celestial beings residing in exalted realms. In these suttas, Brahmas often approach the Buddha to seek clarification, offer praise, or discuss profound topics such as the nature of existence and the path to liberation. The dialogues explore themes like impermanence, the limitations of even the highest states of being, and the unparalleled depth of the Buddha’s wisdom. This saṁyutta illustrates the expansive reach of the Dhamma, demonstrating its relevance and authority even among the most elevated beings in the cosmos.',
+					},
 					sn7: {
 						title: "Brāhmaṇasaṁyutta - Linked Discourses with Brahmins",
 						description:
 							"The \"Linked Discourses with Brahmins\" focuses on the Buddha's interactions with brahmins, the religious scholars and ritual practitioners of his time. In these dialogues, the Buddha challenges the brahmins' reliance on caste and rituals, emphasizing the importance of ethical actions and inner virtue over birth or societal status. These suttas often depict brahmins boasting about their superiority, only to be gently corrected by the Buddha, where he teaches that one's deeds —not birth— make one a true brahmin. This collection illustrates the Buddha's critique of rigid social hierarchies and his emphasis on a universal path of ethical conduct and wisdom for spiritual liberation.",
+					},
+					sn8: {
+						title: "Vangīsasaṁyutta - Linked Discourses with Vangīsa",
+						description:
+							'The "Linked Discourses with Vangīsa" focus on Venerable Vangīsa, a distinguished disciple of the Buddha celebrated for his exceptional poetic abilities. This collection features suttas where Vangīsa composes spontaneous verses to express his deep devotion to the Buddha, his admiration for the Dhamma, or his contemplations on the spiritual journey. Through his lyrical compositions, Vangīsa captures profound spiritual truths and emotions, blending artistry with insight. The discourses showcase the transformative power of poetry as a medium for conveying the essence of the Buddha’s teachings, making this saṁyutta a unique fusion of wisdom and beauty.',
+					},
+					sn9: {
+						title: "Vanasaṁyutta - Linked Discourses in the Forest",
+						description:
+							'The "Linked Discourses in the Forest" centers on the bhikkhus who dwell in the wilderness. Typically, the bhikkhu is slack or negligent in some way, and a deity appears to call them out and encourages them to strive with greater diligence. These suttas emphasize the need for effort and mindfulness in solitary practice.',
+					},
+					sn10: {
+						title: "Yakkhasaṁyutta - Linked Discourses with Yakkhas",
+						description:
+							'The "Linked Discourses with Yakkhas" depicts encounters between the Buddha or his disciples and yakkhas, territorial spirits who often challenge or question them. In each sutta, the Buddha or a disciple responds with teachings on morality, impermanence, or the dangers of anger, subduing or instructing the yakkhas. These discourses illustrate the Dhamma’s power to transform even hostile beings.',
+					},
+					sn11: {
+						title: "Sakkasaṁyutta - Linked Discourses with Sakka",
+						description:
+							'The "Linked Discourses with Sakka" features Sakka, the lord of the deities, in conversations with the Buddha. In these suttas, Sakka seeks clarification on ethical conduct, the benefits of giving, or the path to liberation, often prompted by challenges in his celestial rule. The discourses reveal his devotion to the Dhamma and its application to leadership.',
 					},
 				},
 			},
