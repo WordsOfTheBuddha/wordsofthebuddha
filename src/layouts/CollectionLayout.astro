@@ -4,6 +4,7 @@ import PostCard from "../components/PostCard.astro";
 import { performSearch, type SearchResult } from "../service/search/search";
 import type { DirectoryStructure } from "../types/directory";
 import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
+import ScrollToTop from "../components/ScrollToTop.astro";
 
 interface Props {
 	title: string;
@@ -178,6 +179,8 @@ function getContentCount(slug: string): number {
 			}
 		</div>
 	</main>
+
+	<ScrollToTop />
 </Layout>
 
 <style>

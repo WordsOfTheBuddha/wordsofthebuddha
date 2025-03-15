@@ -16,7 +16,8 @@ import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
 import PaliButton from "../components/PaliButton.astro";
-import PaliLayoutToggle from "src/components/PaliLayoutToggle.astro";
+import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -174,6 +175,7 @@ if (id && fp.includes("anthologies")) {
 				</HighlightLayout>
 			</div>
 		</main>
+		<ScrollToTop />
 	</body>
 	<script>
 		import {

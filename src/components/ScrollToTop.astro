@@ -1,0 +1,78 @@
+---
+// ScrollToTop.astro - Button that appears when scrolling up and allows users to return to top
+import ArrowUpCircle from "../assets/arrow-up-circle.svg?raw";
+---
+
+<button
+	id="scroll-to-top"
+	aria-label="Scroll to top"
+	class="scroll-to-top-button fixed bottom-4 right-4 p-2 rounded-full opacity-0 invisible transition-all duration-300 z-50"
+>
+	<span class="icon-container" set:html={ArrowUpCircle} />
+</button>
+
+<style>
+	.scroll-to-top-button {
+		background: transparent;
+	}
+
+	.icon-container {
+		display: block;
+		width: 24px;
+		height: 24px;
+	}
+
+	.icon-container :global(svg) {
+		width: 100%;
+		height: 100%;
+		stroke: var(--primary-color);
+		opacity: 0.8; /* 20% transparency (80% opacity) */
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+	}
+
+	/* Special hover effect */
+	.scroll-to-top-button:hover {
+		transform: translateY(-3px);
+	}
+</style>
+
+<script>
+	const scrollToTopButton = document.getElementById("scroll-to-top");
+	let lastScrollPosition = window.scrollY;
+	let ticking = false;
+
+	function handleScroll() {
+		const currentScrollPosition = window.scrollY;
+		const isScrollingUp = lastScrollPosition > currentScrollPosition;
+
+		// Show button when scrolled down 300px AND scrolling up
+		if (currentScrollPosition > 300 && isScrollingUp) {
+			scrollToTopButton?.classList.remove("opacity-0", "invisible");
+			scrollToTopButton?.classList.add("opacity-100", "visible");
+		} else {
+			scrollToTopButton?.classList.add("opacity-0", "invisible");
+			scrollToTopButton?.classList.remove("opacity-100", "visible");
+		}
+
+		lastScrollPosition = currentScrollPosition;
+		ticking = false;
+	}
+
+	// Throttle scroll events
+	function onScroll() {
+		if (!ticking) {
+			window.requestAnimationFrame(handleScroll);
+			ticking = true;
+		}
+	}
+
+	// Scroll to top when button is clicked
+	scrollToTopButton?.addEventListener("click", () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		});
+	});
+
+	window.addEventListener("scroll", onScroll);
+</script>
