@@ -42,7 +42,9 @@
 		"collectedness",
 		"complete comprehension",
 		"compassion",
+		"contemplation",
 		"contentment",
+		"continuous effort",
 		"cultivation",
 		"diligence",
 		"discernment",
@@ -57,12 +59,13 @@
 		"giving",
 		"giving up",
 		"inquisitiveness",
-		"investigation",
+		"examination",
 		"learning",
 		"merit",
 		"mindfulness",
 		"non-harm",
 		"recognition of impermanence",
+		"respect",
 		"right speech",
 		"self-control",
 		"sense of right and wrong",
@@ -142,11 +145,27 @@
 			"disparagement",
 			"makkha"
 		],
+		"contemplation": [
+			"deliberation",
+			"reflection",
+			"weighing",
+			"measuring",
+			"refining one's understanding",
+			"cogitation"
+		],
 		"contentment": [
 			"satisfaction",
 			"ease",
 			"fewness of wishes",
 			"santutthi"
+		],
+		"continuous effort": [
+			"unremitting effort",
+			"ardent",
+			"persistent",
+			"zealous",
+			"unflagging endeavor",
+			"ātāpī"
 		],
 		"craving": ["wanting", "yearning", "longing", "taṇha"],
 		"cultivation": [
@@ -245,7 +264,7 @@
 			"lack of experience"
 		],
 		"inquisitive": ["curious", "inquiring", "interested"],
-		"investigation": ["consideration", "reflection", "examination"],
+		"examination": ["consideration", "reflection", "investigation"],
 		"irritable": ["cranky", "moody", "prone to anger"],
 		"jealousy": [
 			"covetousness",
@@ -288,6 +307,17 @@
 		],
 		"recognition of impermanence": ["perception of impermanence"],
 		"resentment": ["bearing a grudge", "harboring enmity"],
+		"respect": [
+			"reverence",
+			"veneration",
+			"regard",
+			"admiration",
+			"politeness",
+			"appreciation",
+			"deference",
+			"honour",
+			"attentiveness"
+		],
 		"right speech": [
 			"truthful speech",
 			"honest speech",
@@ -356,6 +386,7 @@
 			"enthusiasm",
 			"zeal",
 			"determination",
+			"application of will",
 			"persistence"
 		],
 		"vision": [
