@@ -4,6 +4,7 @@ description: The Buddha explains the three unwholesome roots and the three whole
 fetter: ignorance, sensual desire, ill-will
 tags: greed, hatred, delusion, contentment, good-will, wisdom, an, an3, unwholesome, wholesome
 slug: an3.69
+simile: māluvā creeper
 ---
 
 “Tīṇimāni, bhikkhave, akusalamūlāni. Katamāni tīṇi? Lobho akusalamūlaṁ, doso akusalamūlaṁ, moho akusalamūlaṁ.

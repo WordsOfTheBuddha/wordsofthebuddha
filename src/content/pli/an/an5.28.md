@@ -1,6 +1,10 @@
 ---
 title: Pañcaṅgika sutta - Fivefold
+description: The Buddha teaches the cultivation of the noble fivefold right collectedness with vivid similes, and shares how one who has cultivated this can realize any phenomenon realizable by direct knowing.
+qualities: collectedness
+theme: training guideline, direct knowing
 slug: an5.28
+simile: bath attendant, lake with spring water welling up from below, lotus suffused from its tip to its root with cool water, person covered from head to toe with a white cloth, water jar filled to the brim, four-sided pond enclosed by embankments, chariot yoked to thoroughbred horses
 ---
 
 “Ariyassa, bhikkhave, pañcaṅgikassa sammāsamādhissa bhāvanaṁ desessāmi. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.
