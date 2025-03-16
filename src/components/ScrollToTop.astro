@@ -1,6 +1,6 @@
 ---
 // ScrollToTop.astro - Button that appears when scrolling up and allows users to return to top
-import ArrowUpCircle from "../assets/arrow-up-circle.svg?raw";
+import ChevronUp from "../assets/chevron-up.svg?raw";
 ---
 
 <button
@@ -8,12 +8,12 @@ import ArrowUpCircle from "../assets/arrow-up-circle.svg?raw";
 	aria-label="Scroll to top"
 	class="scroll-to-top-button fixed bottom-4 right-4 p-2 rounded-full opacity-0 invisible transition-all duration-300 z-50"
 >
-	<span class="icon-container" set:html={ArrowUpCircle} />
+	<span class="icon-container" set:html={ChevronUp} />
 </button>
 
 <style>
 	.scroll-to-top-button {
-		background: transparent;
+		background: var(--background-color);
 	}
 
 	.icon-container {
