@@ -5,6 +5,7 @@
 		"anger",
 		"aversion",
 		"anxiety",
+		"clinging to rules and observances",
 		"conceit",
 		"contempt",
 		"craving",
@@ -117,6 +118,18 @@
 		],
 		"aversion": ["ill-will", "hate", "fault-finding mindset", "resentment"],
 		"celibacy": ["abstinence", "chastity", "sexual restraint"],
+		"clinging to rules and observances": [
+			"attachment to rites and rituals",
+			"attachment to precepts",
+			"attachment to practices",
+			"attachment to customs",
+			"attachment to conventions",
+			"attachment to traditions",
+			"attachment to ceremonies",
+			"attachment to rules",
+			"attachment to regulations",
+			"attachment to laws"
+		],
 		"collectedness": [
 			"concentration",
 			"jhāna",
