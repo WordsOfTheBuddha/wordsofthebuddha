@@ -226,27 +226,27 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			snp1: {
 				title: "Uragavagga - The Serpent Chapter",
 				description:
-					"This chapter of the Sutta Nipāta consists of twelve diverse poems, beginning with a series of similes that compare a liberated one to a serpent shedding its skin. The poems vary in style and content, likely collected from different sources. This chapter includes many timeless teachings, such as the Mettā Sutta on loving-kindness and the Parābhava Sutta, which warns against the causes of downfall. This collection offers profound insights into the Buddha's teachings through poetic expression.",
+					"This chapter contains twelve poetic suttas, opening with the Uraga Sutta, which likens liberation to a snake shedding its skin. Key texts include the Mettā Sutta, teaching loving-kindness, and the Parābhava Sutta, listing causes of downfall. Drawn from varied sources, these poems offer practical lessons on ethics, mindfulness, and wisdom in diverse styles.",
 			},
 			snp2: {
 				title: "Cūḷavagga - The Lesser Chapter",
 				description:
-					"This chapter of the Sutta Nipāta consists of fourteen diverse poems, each offering unique insights into the Buddha's teachings. The poems address a range of spiritual themes, including the treasures of the Triple Gem, the nature of true defilement, the blessings of skillful behavior, and the conduct of a true brahmin.",
+					"This chapter of the Sutta Nipāta consists of fourteen diverse poetic suttas, exploring themes like the worth of the Triple Gem, the inner nature of defilement, and the rewards of skillful conduct. It also defines a true brahmin by actions, not birth. These verses provide straightforward guidance on living morally and pursuing liberation.",
 			},
 			snp3: {
 				title: "Mahāvagga - The Great Chapter",
 				description:
-					"This chapter of the Sutta Nipāta contains twelve longer poems, which often expand into legendary narratives. The first two discourses and the Nalaka Sutta provide early glimpses into crucial episodes of the Buddha's life. While some of these poems appear elsewhere in the canon, the Dvayatānupassanā Sutta offers a unique perspective on dependent co-arising and other topics typically explored in prose texts. This chapter offers a rich blend of storytelling and profound teachings, providing deeper insights into the Buddha's life and core principles of the Dhamma.",
+					"This chapter features twelve longer suttas, blending narrative and doctrine. The Pabbajjā Sutta and Padhāna Sutta recount the Buddha’s renunciation and fight with Māra, while the Nalaka Sutta shares a prophecy about his life. The Dvayatānupassanā Sutta examines dependent co-arising. It merges storytelling with core Buddhist teachings.",
 			},
 			snp4: {
 				title: "Aṭṭhakavagga - The Chapter of Eights",
 				description:
-					"This chapter is considered one of the earliest texts in the canon. It is known for its direct and powerful style, stripped of literary embellishments. A distinctive feature of this chapter is its critique of meaningless debates and attachment to views. Notably, the Attadaṇḍa Sutta provides an alternative account of the reasons for the Buddha's renunciation. This collection offers profound insights into the Buddha's teachings, emphasizing clarity and purpose in spiritual practice.",
+					"An early collection of sixteen suttas, often in sets of eight verses, this chapter critiques clinging to views and fruitless arguments. The Attadaṇḍa Sutta ties the Buddha’s renunciation to life’s suffering. Direct and unadorned, it emphasizes clarity, detachment, and the path to peace.",
 			},
 			snp5: {
 				title: "Pārāyanavagga - The Chapter on the Way to the Beyond",
 				description:
-					"This chapter is considered one of the most profound and poetic compositions in early Buddhism. It begins with a brahmin teacher, troubled by an unwanted curse, who sends his students on a journey to seek the Buddha. Upon meeting the Buddha, the students ask a series of deep and philosophical questions that reflect their advanced understanding and meditation practice. The discourses cover a wide range of topics, including the nature of mindfulness, the cessation of suffering, and the qualities of a true sage. The chapter concludes with a powerful declaration of faith and dedication to the Buddha's teachings, capturing the transformative impact of the encounter. This collection provides a rich and moving exploration of spiritual inquiry and the way of practice to liberation.",
+					"This chapter starts with a brahmin sending sixteen students to ask the Buddha profound questions about mindfulness, ending suffering, and a sage’s qualities. The Buddha’s replies lead to their declarations of faith. Poetic and deep, it traces a clear path to liberation through dialogue.",
 			},
 		},
 	},
