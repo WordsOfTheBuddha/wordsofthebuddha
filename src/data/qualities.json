@@ -9,6 +9,7 @@
 		"conceit",
 		"contempt",
 		"craving",
+		"cruelty",
 		"desire",
 		"displeasure",
 		"drowsiness",
@@ -28,6 +29,7 @@
 		"resentment",
 		"sensual desire",
 		"shamelessness",
+		"slaughtering",
 		"stinginess",
 		"stubbornness",
 		"suffering",
@@ -60,9 +62,11 @@
 		"full awareness",
 		"giving",
 		"giving up",
+		"greed",
 		"inquisitiveness",
 		"examination",
 		"learning",
+		"loving-kindness",
 		"merit",
 		"mindfulness",
 		"non-harm",
@@ -73,6 +77,7 @@
 		"sense of right and wrong",
 		"sense restraint",
 		"solitude",
+		"sympathetic joy",
 		"tranquility",
 		"vigour",
 		"vision",
@@ -182,6 +187,7 @@
 			"ātāpī"
 		],
 		"craving": ["wanting", "yearning", "longing", "taṇha"],
+		"cruelty": ["brutality", "inhumanity", "sadism", "barbarity"],
 		"cultivation": [
 			"development",
 			"improvement",
@@ -245,6 +251,14 @@
 			"letting go",
 			"abandonment"
 		],
+		"greed": [
+			"avarice",
+			"covetousness",
+			"rapacity",
+			"money grabbing",
+			"grabbiness",
+			"lobha"
+		],
 		"desire": [
 			"objective",
 			"interest",
@@ -290,6 +304,13 @@
 		],
 		"laziness": ["indolence", "idleness", "inactivity", "sluggishness"],
 		"learning": ["acquiring knowledge", "studying", "understanding"],
+		"loving-kindness": [
+			"metta",
+			"goodwill",
+			"benevolence",
+			"kindness",
+			"friendliness"
+		],
 		"merit": ["good deeds", "spiritual wealth"],
 		"mindfulness": ["full awareness", "clear comprehension"],
 		"moral recklessness": [
@@ -363,7 +384,14 @@
 			"lack of conscience",
 			"lacking sense of right and wrong"
 		],
+		"slaughtering": ["killing", "murdering", "taking life"],
 		"solitude": ["seclusion", "privacy"],
+		"sympathetic joy": [
+			"mudita",
+			"appreciation",
+			"rejoicing in the happiness of others",
+			"delight in the success of others"
+		],
 		"stinginess": ["miserliness", "greed", "meanness", "tight-fistedness"],
 		"stubbornness": [
 			"bullheadedness",
