@@ -312,7 +312,13 @@
 			"friendliness"
 		],
 		"merit": ["good deeds", "spiritual wealth"],
-		"mindfulness": ["full awareness", "clear comprehension"],
+		"mindfulness": [
+			"being present",
+			"keeping in mind",
+			"awareness",
+			"observing body, felt experience, mind, and mental qualities",
+			"sati"
+		],
 		"moral recklessness": [
 			"fearlessness of wrongdoing",
 			"without concern for others",
