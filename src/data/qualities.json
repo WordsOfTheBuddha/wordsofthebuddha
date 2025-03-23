@@ -24,6 +24,7 @@
 		"laziness",
 		"moral recklessness",
 		"negligence",
+		"non-restraint",
 		"passion",
 		"personal existence",
 		"resentment",
@@ -332,6 +333,11 @@
 			"non-harming",
 			"non-killing",
 			"non-hurting"
+		],
+		"non-restraint": [
+			"unguarded in sense faculties",
+			"not watching the sense doors",
+			"grasping at prominent features or details of sense objects"
 		],
 		"passion": [
 			"intense desire",
