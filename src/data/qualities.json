@@ -22,6 +22,7 @@
 		"irritable",
 		"jealousy",
 		"laziness",
+		"mental proliferation",
 		"moral recklessness",
 		"negligence",
 		"non-restraint",
@@ -313,6 +314,12 @@
 			"friendliness"
 		],
 		"merit": ["good deeds", "spiritual wealth"],
+		"mental proliferation": [
+			"papanca",
+			"conceptual proliferation",
+			"conceptualization",
+			"forming various opinions"
+		],
 		"mindfulness": [
 			"being present",
 			"keeping in mind",
