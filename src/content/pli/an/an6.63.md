@@ -22,7 +22,7 @@ Kammaṁ, bhikkhave, veditabbaṁ, kammānaṁ nidānasambhavo veditabbo, kammā
 
 Dukkhaṁ, bhikkhave, veditabbaṁ, dukkhassa nidānasambhavo veditabbo, dukkhassa vemattatā veditabbā, dukkhassa vipāko veditabbo, dukkhanirodho veditabbo, dukkhanirodhagāminī paṭipadā veditabbā.
 
-‘Kāmā, bhikkhave, veditabbā, kāmānaṁ nidānasambhavo veditabbo, kāmānaṁ vemattatā veditabbā, kāmānaṁ vipāko veditabbo, kāmanirodho veditabbo, kāmanirodhagāminī paṭipadā veditabbā’ti, iti kho panetaṁ vuttaṁ. Kiñcetaṁ paṭicca vuttaṁ? Pañcime, bhikkhave, kāmaguṇā— cakkhuviññeyyā rūpā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā, sotaviññeyyā saddā … ghānaviññeyyā gandhā … jivhāviññeyyā rasā … kāyaviññeyyā phoṭṭhabbā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā. Api ca kho, bhikkhave, nete kāmā kāmaguṇā nāmete ariyassa vinaye vuccanti—
+‘Kāmā, bhikkhave, veditabbā, kāmānaṁ nidānasambhavo veditabbo, kāmānaṁ vemattatā veditabbā, kāmānaṁ vipāko veditabbo, kāmanirodho veditabbo, kāmanirodhagāminī paṭipadā veditabbā’ti, iti kho panetaṁ vuttaṁ. Kiñcetaṁ paṭicca vuttaṁ? Pañcime, bhikkhave, kāmaguṇā— cakkhuviññeyyā rūpā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā, sotaviññeyyā saddā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā, ghānaviññeyyā gandhā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā, jivhāviññeyyā rasā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā, kāyaviññeyyā phoṭṭhabbā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā. Api ca kho, bhikkhave, nete kāmā kāmaguṇā nāmete ariyassa vinaye vuccanti—
 
 Saṅkapparāgo purisassa kāmo,
 Nete kāmā yāni citrāni loke;
