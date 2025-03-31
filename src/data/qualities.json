@@ -5,6 +5,7 @@
 		"anger",
 		"aversion",
 		"anxiety",
+		"boastful",
 		"clinging to rules and observances",
 		"conceit",
 		"contempt",
@@ -12,8 +13,11 @@
 		"cruelty",
 		"desire",
 		"displeasure",
+		"distracted",
+		"doubtful",
 		"drowsiness",
-		"fear",
+		"dullness",
+		"fearful",
 		"feuding",
 		"harmful",
 		"ignorance",
@@ -24,6 +28,7 @@
 		"laziness",
 		"mental proliferation",
 		"moral recklessness",
+		"muddle-minded",
 		"negligence",
 		"non-restraint",
 		"passion",
@@ -39,6 +44,7 @@
 		"undiscerning",
 		"unprincipled",
 		"vanity",
+		"weak in effort",
 		"wrong view"
 	],
 	"neutral": ["companionship"],
@@ -76,6 +82,7 @@
 		"recognition of impermanence",
 		"respect",
 		"right speech",
+		"right view",
 		"self-control",
 		"sense of right and wrong",
 		"sense restraint",
@@ -118,7 +125,14 @@
 			"fury",
 			"indignation"
 		],
-		"anxiety": ["worry", "distress", "agitation", "restlessness"],
+		"anxiety": [
+			"worry",
+			"distress",
+			"agitation",
+			"restlessness",
+			"unbalanced",
+			"confused about what is right and wrong"
+		],
 		"arousing energy": [
 			"determination",
 			"taking initiative",
@@ -143,7 +157,8 @@
 			"jhāna",
 			"samādhi",
 			"mental composure",
-			"stillness of mind"
+			"stillness of mind",
+			"stability of mind"
 		],
 		"compassion": ["benevolence", "concern", "sympathy", "mercy"],
 		"complete comprehension": [
@@ -209,7 +224,24 @@
 		"disenchantment": ["de-illusionment", "disinterest"],
 		"dispassion": ["detachment", "disinterest", "fading of desire"],
 		"displeasure": ["bitterness", "unhappiness", "bitterness"],
-		"drowsiness": ["sleepiness", "yawning", "lethargic"],
+		"distracted": [
+			"with scattered attention",
+			"uncollected",
+			"not well-composed",
+			"having a wandering mind",
+			"with runaway thoughts",
+			"asamāhita"
+		],
+		"doubtful": [
+			"confused",
+			"indecisive",
+			"uncertain",
+			"wavering",
+			"perplexed",
+			"vicikiccha"
+		],
+		"drowsiness": ["sleepiness", "yawning", "lethargic", "middha"],
+		"dullness": ["sluggishness", "fuzziness", "thina"],
 		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
 		"ending": ["cessation", "gradual ending"],
 		"equanimity": [
@@ -222,9 +254,10 @@
 		],
 		"ethical conduct": ["moral integrity", "virtue"],
 		"faith": ["confidence", "trust", "belief", "conviction"],
-		"fear": [
+		"fearful": [
 			"afraid",
-			"fearfulness",
+			"timid",
+			"dread",
 			"fright",
 			"horror",
 			"panic",
@@ -335,6 +368,7 @@
 			"lack of prudence",
 			"anottappa"
 		],
+		"muddle-minded": ["forgetful", "not mindful", "muṭṭhassatī"],
 		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
 		"non-harm": [
 			"non-violence",
@@ -385,7 +419,20 @@
 			"eloquent communication",
 			"samma vaca"
 		],
+		"right view": [
+			"right understanding",
+			"right belief",
+			"view that is inline with the Dhamma",
+			"samma ditthi"
+		],
 		"self-control": ["self-restraint", "self-mastery"],
+		"boastful": [
+			"braggart",
+			"exalting oneself",
+			"overbearing",
+			"self-praise",
+			"attukkaṁsaka"
+		],
 		"sense of right and wrong": [
 			"with conscience",
 			"sense of shame",
@@ -459,6 +506,11 @@
 			"seeing the dhamma"
 		],
 		"wakefulness": ["lucidity", "alertness", "vigilance"],
+		"weak in effort": [
+			"low in energy",
+			"lacking in endurance",
+			"hīnavīriya"
+		],
 		"wholesome": [
 			"skillful",
 			"beneficial",
