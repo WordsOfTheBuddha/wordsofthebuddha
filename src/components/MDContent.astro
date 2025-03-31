@@ -125,50 +125,134 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 			if (!leftPanel || !rightPanel) return;
 
-			// Reset margins but keep the base margin
+			// Reset margins to base value
 			document
-				.querySelectorAll("#panel2 [data-pair-id]")
+				.querySelectorAll(
+					"#panel1 [data-pair-id], #panel2 [data-pair-id]"
+				)
 				.forEach((el) => {
 					(el as HTMLElement).style.marginTop = "8px";
 				});
 
+			// Get all paragraph pairs
 			const engParas = document.querySelectorAll(
 				"#panel1 [data-pair-id]"
 			);
+			const paraIds = Array.from(engParas).map((p) =>
+				p.getAttribute("data-pair-id")
+			);
 
-			engParas.forEach((eng, index) => {
-				const id = eng.getAttribute("data-pair-id");
+			// First align the tops of each paragraph pair
+			paraIds.forEach((id) => {
+				const eng = document.querySelector(
+					`#panel1 [data-pair-id="${id}"]`
+				);
 				const pali = document.querySelector(
 					`#panel2 [data-pair-id="${id}"]`
 				);
 
-				if (pali) {
+				if (eng && pali) {
 					void (eng as HTMLElement).offsetHeight;
 					void (pali as HTMLElement).offsetHeight;
 
 					const engRect = eng.getBoundingClientRect();
 					const paliRect = pali.getBoundingClientRect();
 
-					// Calculate raw position difference
-					const diff = engRect.top - paliRect.top;
-
-					if (Math.abs(diff) > 1) {
-						const additionalMargin = Math.max(diff, 0);
-						(pali as HTMLElement).style.marginTop =
-							`${8 + additionalMargin}px`;
+					const topDiff = engRect.top - paliRect.top;
+					if (Math.abs(topDiff) > 1) {
+						if (topDiff > 0) {
+							(pali as HTMLElement).style.marginTop =
+								`${8 + topDiff}px`;
+						} else {
+							(eng as HTMLElement).style.marginTop =
+								`${8 - topDiff}px`;
+						}
 					}
 				}
 			});
+
+			// Add consistent spacing between paragraph pairs
+			const PARAGRAPH_SPACING = 24; // Constant spacing between paragraph blocks
+
+			for (let i = 0; i < paraIds.length - 1; i++) {
+				const currentId = paraIds[i];
+				const nextId = paraIds[i + 1];
+
+				const currentEng = document.querySelector(
+					`#panel1 [data-pair-id="${currentId}"]`
+				);
+				const currentPali = document.querySelector(
+					`#panel2 [data-pair-id="${currentId}"]`
+				);
+				const nextEng = document.querySelector(
+					`#panel1 [data-pair-id="${nextId}"]`
+				);
+				const nextPali = document.querySelector(
+					`#panel2 [data-pair-id="${nextId}"]`
+				);
+
+				if (currentEng && currentPali && nextEng && nextPali) {
+					// Force reflow for accurate measurements
+					void (currentEng as HTMLElement).offsetHeight;
+					void (currentPali as HTMLElement).offsetHeight;
+
+					const engRect = currentEng.getBoundingClientRect();
+					const paliRect = currentPali.getBoundingClientRect();
+
+					// Find the bottom of the tallest paragraph in current pair
+					const maxBottom = Math.max(engRect.bottom, paliRect.bottom);
+
+					// Set consistent spacing from tallest paragraph
+					const nextEngRect = nextEng.getBoundingClientRect();
+					const nextPaliRect = nextPali.getBoundingClientRect();
+
+					// Calculate how much additional margin is needed
+					const engMarginNeeded =
+						maxBottom + PARAGRAPH_SPACING - nextEngRect.top;
+					const paliMarginNeeded =
+						maxBottom + PARAGRAPH_SPACING - nextPaliRect.top;
+
+					if (engMarginNeeded > 0) {
+						const currentMargin =
+							parseInt(getComputedStyle(nextEng).marginTop) || 8;
+						(nextEng as HTMLElement).style.marginTop =
+							`${currentMargin + engMarginNeeded}px`;
+					}
+
+					if (paliMarginNeeded > 0) {
+						const currentMargin =
+							parseInt(getComputedStyle(nextPali).marginTop) || 8;
+						(nextPali as HTMLElement).style.marginTop =
+							`${currentMargin + paliMarginNeeded}px`;
+					}
+				}
+			}
 		}
 
 		showContent();
 	}
 
-	// First adjustment on load
+	// Run adjustment on load
 	window.addEventListener("load", () => {
-		// Adjustment after small delay of 10ms
 		setTimeout(() => {
 			adjustParagraphAlignment();
-		}, 1);
+		}, 10);
 	});
+
+	// Add resize listener to handle window size changes
+	window.addEventListener("resize", () => {
+		// Debounce resize events
+		if (window.resizeTimer) clearTimeout(window.resizeTimer);
+		window.resizeTimer = setTimeout(() => {
+			adjustParagraphAlignment();
+		}, 100);
+	});
+</script>
+
+<script>
+	declare global {
+		interface Window {
+			resizeTimer?: ReturnType<typeof setTimeout>;
+		}
+	}
 </script>
