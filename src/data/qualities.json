@@ -327,7 +327,8 @@
 			"lacking in good sense",
 			"child-like in understanding",
 			"lack of wisdom",
-			"lack of experience"
+			"lack of experience",
+			"foolish"
 		],
 		"inquisitive": ["curious", "inquiring", "interested"],
 		"examination": ["consideration", "reflection", "investigation"],
@@ -482,7 +483,7 @@
 		],
 		"tranquility": ["calmness", "peacefulness", "serenity", "upasama"],
 		"treachery": ["deviousness", "scamming", "betrayal"],
-		"undiscerning": ["lacking in wisdom"],
+		"undiscerning": ["lacking in wisdom", "foolish"],
 		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
 		"vanity": [
 			"indulgence",
