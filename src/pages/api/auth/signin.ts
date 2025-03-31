@@ -78,13 +78,25 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 				`[${opId}] Error creating session cookie:`,
 				createCookieError
 			);
-			return new Response("Failed to create session cookie", {
-				status: 500,
+			// Try to get more specific error information
+			let errorMessage = "Failed to create session cookie";
+			if (createCookieError.code) {
+				errorMessage += ` (${createCookieError.code})`;
+			}
+			return new Response(errorMessage, {
+				status: 401, // Changed from 500 to 401 since this is an auth issue
 			});
 		}
 
+		// Clear any existing cookie first to avoid stacking issues
+		cookies.delete("__session");
+
+		// Set new cookie with explicit options
 		cookies.set("__session", sessionCookie, {
 			path: "/",
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production", // Secure in production
+			sameSite: "lax",
 		});
 		console.log(`[${opId}] Session cookie set`);
 
@@ -115,8 +127,17 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		return redirect(redirectUrl.toString());
 	} catch (error) {
 		console.error(`[${opId}] Authentication failed:`, error);
+		// Clean up any partial session
+		cookies.delete("__session", { path: "/" });
+
 		if (error instanceof Error) {
-			return new Response(error.message, { status: 401 });
+			const isExpiredToken = error.message.includes("expired");
+			const statusCode = isExpiredToken ? 401 : 500;
+			const errorMessage = isExpiredToken
+				? "Authentication token has expired. Please try signing in again."
+				: error.message;
+
+			return new Response(errorMessage, { status: statusCode });
 		}
 		return new Response("Authentication failed", { status: 401 });
 	}

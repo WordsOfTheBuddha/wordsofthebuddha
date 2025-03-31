@@ -9,9 +9,15 @@ const auth = getAuth(app);
 if (Astro.cookies.has("__session")) {
 	const sessionCookie = Astro.cookies.get("__session")?.value;
 	if (!sessionCookie) return;
-	const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-	if (decodedCookie) {
-		return Astro.redirect("/review-room");
+	try {
+		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+		if (decodedCookie) {
+			return Astro.redirect("/review-room");
+		}
+	} catch (error) {
+		// Session cookie is invalid or expired - delete it
+		console.error("Session verification failed:", error);
+		Astro.cookies.delete("__session", { path: "/" });
 	}
 }
 

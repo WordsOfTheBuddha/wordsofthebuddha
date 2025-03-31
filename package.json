@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"watch-routes": "node --trace-deprecation src/utils/generateRoutes.mjs --watch",
-		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs",
+		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
 		"prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts",
 		"build": "node --trace-deprecation ./node_modules/.bin/astro build"
