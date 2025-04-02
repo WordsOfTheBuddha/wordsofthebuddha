@@ -75,6 +75,7 @@
 		"inquisitiveness",
 		"examination",
 		"learning",
+		"liberation",
 		"loving-kindness",
 		"merit",
 		"mindfulness",
@@ -342,6 +343,13 @@
 		],
 		"laziness": ["indolence", "idleness", "inactivity", "sluggishness"],
 		"learning": ["acquiring knowledge", "studying", "understanding"],
+		"liberation": [
+			"freedom",
+			"release",
+			"deliverance",
+			"emancipation",
+			"vimutti"
+		],
 		"loving-kindness": [
 			"metta",
 			"goodwill",
