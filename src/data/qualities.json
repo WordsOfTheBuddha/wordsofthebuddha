@@ -17,9 +17,11 @@
 		"doubtful",
 		"drowsiness",
 		"dullness",
+		"faithlessness",
 		"fearful",
 		"feuding",
 		"harmful",
+		"hypocrisy",
 		"ignorance",
 		"immaturity",
 		"illusion",
@@ -37,6 +39,7 @@
 		"sensual desire",
 		"shamelessness",
 		"slaughtering",
+		"stealing",
 		"stinginess",
 		"stubbornness",
 		"suffering",
@@ -45,6 +48,7 @@
 		"unprincipled",
 		"vanity",
 		"weak in effort",
+		"wrong intention",
 		"wrong view"
 	],
 	"neutral": ["companionship"],
@@ -72,6 +76,7 @@
 		"giving",
 		"giving up",
 		"greed",
+		"humility",
 		"inquisitiveness",
 		"examination",
 		"learning",
@@ -80,13 +85,16 @@
 		"merit",
 		"mindfulness",
 		"non-harm",
+		"not taking what is not given",
 		"recognition of impermanence",
 		"respect",
+		"right intention",
 		"right speech",
 		"right view",
 		"self-control",
 		"sense of right and wrong",
 		"sense restraint",
+		"sincerity",
 		"solitude",
 		"sympathetic joy",
 		"tranquility",
@@ -255,6 +263,13 @@
 		],
 		"ethical conduct": ["moral integrity", "virtue"],
 		"faith": ["confidence", "trust", "belief", "conviction"],
+		"faithlessness": [
+			"lack of confidence",
+			"lack of conviction",
+			"disbelief",
+			"cynicism",
+			"assadha"
+		],
 		"fearful": [
 			"afraid",
 			"timid",
@@ -308,6 +323,20 @@
 			"chanda"
 		],
 		"harmful": ["injurious", "destructive", "bad", "evil"],
+		"humility": [
+			"modesty",
+			"unpretentiousness",
+			"humbleness",
+			"lack of pride"
+		],
+		"hypocrisy": [
+			"pretense",
+			"insincerity",
+			"deceitfulness",
+			"putting on a false front",
+			"fraudulent",
+			"māyāvī"
+		],
 		"ignorance": [
 			"delusion",
 			"illusion",
@@ -391,6 +420,13 @@
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects"
 		],
+		"not taking what is not given": [
+			"not stealing",
+			"trustworthiness",
+			"honesty regarding possessions",
+			"accepting what is offered",
+			"dinnādāna"
+		],
 		"passion": [
 			"intense desire",
 			"strong emotion",
@@ -417,6 +453,13 @@
 			"deference",
 			"honour",
 			"attentiveness"
+		],
+		"right intention": [
+			"correct resolve",
+			"wholesome thought",
+			"skillful aspiration",
+			"right volition",
+			"sammāsaṅkappa"
 		],
 		"right speech": [
 			"truthful speech",
@@ -461,13 +504,22 @@
 			"lack of conscience",
 			"lacking sense of right and wrong"
 		],
+		"sincerity": [
+			"genuineness",
+			"honesty",
+			"straightforwardness",
+			"openness",
+			"non-deception",
+			"amāyā"
+		],
 		"slaughtering": ["killing", "murdering", "taking life"],
 		"solitude": ["seclusion", "privacy"],
-		"sympathetic joy": [
-			"mudita",
-			"appreciation",
-			"rejoicing in the happiness of others",
-			"delight in the success of others"
+		"stealing": [
+			"theft",
+			"taking what is not given",
+			"taking what is not offerred",
+			"dishonesty regarding possessions",
+			"adinnādānā"
 		],
 		"stinginess": ["miserliness", "greed", "meanness", "tight-fistedness"],
 		"stubbornness": [
@@ -488,6 +540,12 @@
 			"distress",
 			"afflication",
 			"dukkha"
+		],
+		"sympathetic joy": [
+			"mudita",
+			"appreciation",
+			"rejoicing in the happiness of others",
+			"delight in the success of others"
 		],
 		"tranquility": ["calmness", "peacefulness", "serenity", "upasama"],
 		"treachery": ["deviousness", "scamming", "betrayal"],
@@ -535,6 +593,14 @@
 			"prudent use of the mind",
 			"wise reflection",
 			"attention to the source"
+		],
+		"wrong intention": [
+			"incorrect resolve",
+			"unwholesome thought",
+			"unskillful aspiration",
+			"wrong thought",
+			"harmful volition",
+			"micchāsaṅkappa"
 		],
 		"wrong view": ["distorted perceptions", "untrue views", "false beliefs"]
 	}
