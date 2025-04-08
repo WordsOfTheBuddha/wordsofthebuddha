@@ -1,8 +1,8 @@
 ---
 title: Bilaṅgika sutta - Bilaṅgika
 description: The brahmin Bilaṅgika Bhāradvāja insults the Buddha, but after the Buddha's response, he becomes a bhikkhu and soon attains arahantship.
-fetter: ill-will, ignorance
-tags: anger, ill-will, harm, blameless, immature person, sn, sn1-11, sn7
+fetter: ill will, ignorance
+tags: anger, ill will, harm, blameless, immature person, sn, sn1-11, sn7
 simile: fine dust thrown against the wind
 slug: sn7.4
 ---

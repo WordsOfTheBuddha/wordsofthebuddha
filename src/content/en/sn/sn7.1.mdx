@@ -1,7 +1,7 @@
 ---
 title: Dhanañjānī sutta - Dhanañjānī
 description: When a brahmin woman expresses faith in the Buddha, her husband, a brahmin of the Bhāradvāja clan, goes to dispute the doctrine of the Buddha. The Buddha teaches the brahmin the importance of cutting off anger.
-fetter: ill-will, ignorance
+fetter: ill will, ignorance
 tags: faith, confidence, anger, dispute, dhamma, sn, sn1-11, sn7
 qualities: anger
 theme: wisdom

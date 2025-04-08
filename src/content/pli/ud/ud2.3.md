@@ -1,7 +1,7 @@
 ---
 title: Daṇḍa sutta - On stick
 description: He who, while seeking his own happiness, harms with a stick beings who desire happiness, will not find happiness after passing away.
-fetter: ill-will
+fetter: ill will
 tags: ud,ud2,loving-kindness,harm,bodily misconduct,bodily conduct
 slug: ud2.3
 ---

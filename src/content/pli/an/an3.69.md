@@ -1,7 +1,7 @@
 ---
 title: Akusalamūla sutta - Unwholesome Roots
 description: The Buddha explains the three unwholesome roots and the three wholesome roots.
-fetter: ignorance, sensual desire, ill-will
+fetter: ignorance, sensual desire, ill will
 tags: greed, hatred, delusion, contentment, good-will, wisdom, an, an3, unwholesome, wholesome
 slug: an3.69
 simile: māluvā creeper

@@ -1,7 +1,7 @@
 ---
 title: Dutiya lokadhamma sutta - Worldly Conditions (Second)
 description: The Buddha explains the distinction between the uninstructed ordinary person and the |learned::well-studied, instructed [sutavant]| disciple of the noble ones regarding the eight worldly conditions.
-fetter: personal existence, sensual desire, ill-will, conceit, ignorance
+fetter: personal existence, sensual desire, ill will, conceit, ignorance
 tags: an, an8, worldly, gain, acquisition, loss, fame, disgrace, disrepute, blame, praise, pleasure, pain, impermanence, mindfulness, wisdom, distinction, uninstructed ordinary person, learned disciple of the noble ones, delight, resistance, entanglement
 slug: an8.6
 ---

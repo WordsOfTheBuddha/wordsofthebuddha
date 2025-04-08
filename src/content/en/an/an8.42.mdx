@@ -1,7 +1,7 @@
 ---
 title: Vitthatūposatha sutta - Uposatha In Detail
 description: The Buddha explains the fruit, benefit, brightness, and reach of observing the Uposatha endowed with the eight factors in detail.
-fetter: adherence to rules and observances, doubt, sensual desire, ill-will, conceit, ignorance
+fetter: adherence to rules and observances, doubt, sensual desire, ill will, conceit, ignorance
 tags: uposatha, eight precepts, virtue, morality, precepts, arahant, mindfulness, heedfulness, diligence, negligence, death, liberation, nibbāna, four great kings, thirty-three gods, yāma gods, tusita gods, nimmānarati gods, paranimmita-vasavatti gods
 slug: an8.42
 ---

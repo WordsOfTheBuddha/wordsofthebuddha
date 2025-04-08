@@ -1,8 +1,8 @@
 ---
 title: Cara sutta - Walking
-description: The Buddha describes two types of bhikkhus based on how they deal with thoughts of sensuality, ill-will, and harming while walking, standing, sitting, and lying down, and which one is capable of reaching the highest awakening.
-fetter: doubt, sensual desire, ill-will, ignorance
-tags: sensual desire, ill-will, harming, effort, concern, energy, awakening, an, an4, walking, standing, sitting, lying down, doubt
+description: The Buddha describes two types of bhikkhus based on how they deal with thoughts of sensuality, ill will, and harming while walking, standing, sitting, and lying down, and which one is capable of reaching the highest awakening.
+fetter: doubt, sensual desire, ill will, ignorance
+tags: sensual desire, ill will, harming, effort, concern, energy, awakening, an, an4, walking, standing, sitting, lying down, doubt
 slug: an4.11
 commentary: |
   A more detailed discourse on the theme of dealing with thoughts is in [MN 19](/mn19), and one on shaping of thoughts is in [MN 20](/mn20).

@@ -1,7 +1,7 @@
 ---
 title: Gaṇikā sutta - Courtesan
 description: On hearing about two factions infatuated with a courtesan, the Buddha expresses an inspired utterance on the extremes - one of taking rules and observances as the essence and the other of seeing no fault in sensual pleasures.
-fetter: personal existence, rules and observances, sensual desire, ill-will, conceit, ignorance
+fetter: personal existence, rules and observances, sensual desire, ill will, conceit, ignorance
 tags: infatuation, obsession, rules and observances, rites, rituals, celibacy, sensual pleasure, sensual desire, cycle of existence, cemetery, views, direct knowing, ud, ud6
 slug: ud6.8
 ---

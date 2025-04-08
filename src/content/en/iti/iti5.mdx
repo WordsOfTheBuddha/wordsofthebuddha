@@ -1,8 +1,8 @@
 ---
 title: Makkha sutta - Contempt
 description: The Buddha describes the abandoning of contempt as the guarantee for non-returning.
-fetter: ill-will
-tags: contempt, ungratefulness, non-returning, iti, ill-will
+fetter: ill will
+tags: contempt, ungratefulness, non-returning, iti, ill will
 slug: iti5
 ---
 

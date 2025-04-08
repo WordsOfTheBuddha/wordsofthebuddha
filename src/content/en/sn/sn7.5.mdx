@@ -1,7 +1,7 @@
 ---
 title: Ahiṁsaka sutta - Harmless
 description: When the brahmin Ahiṁsaka Bhāradvāja claims to be harmless, the Buddha explains what it truly means to be harmless.
-fetter: doubt, ill-will, ignorance
+fetter: doubt, ill will, ignorance
 tags: harm, harmless, body, speech, mind, actions, injury, arahant, sn, sn7, sn1-11
 slug: sn7.5
 ---

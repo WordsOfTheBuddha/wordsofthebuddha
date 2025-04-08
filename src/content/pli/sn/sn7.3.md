@@ -1,7 +1,7 @@
 ---
 title: Asurindaka sutta - Asurindaka
 description: The Buddha teaches the brahmin Asurindaka Bhāradvāja, who had approached him with harsh words, how to respond to anger and how to win a hard battle.
-fetter: ill-will, ignorance
+fetter: ill will, ignorance
 tags: harshness, anger, patience, endurance, mindfulness, healing, dhamma, sn, sn1-11, sn7
 slug: sn7.3
 ---

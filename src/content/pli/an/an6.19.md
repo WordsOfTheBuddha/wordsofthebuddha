@@ -1,7 +1,7 @@
 ---
 title: Paṭhama maraṇassati sutta - Mindfulness Of Death (First)
 description: The Buddha explains the benefits of developing mindfulness of death, and how to cultivate it with diligence for the wearing away of the taints.
-fetter: sensual desire, ill-will, conceit, ignorance
+fetter: sensual desire, ill will, conceit, ignorance
 tags: mindfulness, death, recollection, deathless, diligence, negligence, taints, mental defilements, an, an6
 slug: an6.19
 ---

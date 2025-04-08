@@ -6,7 +6,7 @@ tags: mn, mn1-50, mn1-10, virtue, tranquility, meditation, discernment, empty dw
 slug: mn6
 commentary: |
   [1] The three lower fetters are doubt, personal existence, and adherence to rules and observances. A person who has overcome them is called a stream-enterer.
-  [2] The five lower fetters are view(s) relating to personal existence, doubt, adherence to rules and observances, sensual desire, and ill-will. A person who has overcome them is called a non-returner.
+  [2] The five lower fetters are view(s) relating to personal existence, doubt, adherence to rules and observances, sensual desire, and ill will. A person who has overcome them is called a non-returner.
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

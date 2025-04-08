@@ -1,8 +1,8 @@
 ---
 title: Saṅgaha sutta - Supportive
 description: The Buddha explains the four bases of a supportive relationship.
-fetter: ill-will,conceit
-tags: an,an4,relationships,ill-will,conceit
+fetter: ill will,conceit
+tags: an,an4,relationships,ill will,conceit
 slug: an4.32
 ---
 
