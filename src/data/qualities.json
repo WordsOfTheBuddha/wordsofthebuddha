@@ -46,6 +46,7 @@
 		"treachery",
 		"undiscerning",
 		"unprincipled",
+		"unwise attention",
 		"vanity",
 		"weak in effort",
 		"wrong intention",
@@ -125,15 +126,7 @@
 			"bound",
 			"connected"
 		],
-		"anger": [
-			"ill-will",
-			"hatred",
-			"aversion",
-			"rage",
-			"wrath",
-			"fury",
-			"indignation"
-		],
+		"anger": ["hatred", "rage", "wrath", "fury", "indignation"],
 		"anxiety": [
 			"worry",
 			"distress",
@@ -551,6 +544,12 @@
 		"treachery": ["deviousness", "scamming", "betrayal"],
 		"undiscerning": ["lacking in wisdom", "foolish"],
 		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
+		"unwise attention": [
+			"improper attention",
+			"imprudent use of the mind",
+			"unfocused attention",
+			"ayonisomanasikāra"
+		],
 		"vanity": [
 			"indulgence",
 			"excess",
@@ -563,7 +562,6 @@
 			"effort",
 			"enthusiasm",
 			"zeal",
-			"determination",
 			"application of will",
 			"persistence"
 		],
