@@ -16,9 +16,20 @@ export const keyMap: { [key: string]: string } = {
 export const transformId = (id: string) => {
 	if (typeof id !== "string") return "";
 	id = keyMap[id] || id;
-	return id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
+
+	// Try the existing pattern replacement first
+	const transformed = id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
 		return `${chars.toUpperCase()} ${digits}`;
 	});
+
+	// If the pattern didn't match (id unchanged), apply the fallback transformation
+	if (transformed === id) {
+		// Decode URL encoded characters and capitalize first letter
+		const decoded = decodeURIComponent(id);
+		return decoded.charAt(0).toUpperCase() + decoded.slice(1);
+	}
+
+	return transformed;
 };
 
 export const getSlugId = (id: string) => {

@@ -5,8 +5,8 @@ const baseSchema = z.object({
 	title: z.string(),
 	slug: z.string(),
 	description: z.string().optional(),
-	fetter: z.string().optional(),
-	tags: z.string().optional(),
+	qualities: z.string().optional(),
+	theme: z.string().optional(),
 	simile: z.string().optional(),
 });
 
@@ -23,7 +23,7 @@ const bookSchema = baseSchema.extend({
 function createCollection(
 	base: string,
 	pattern: string = "*.mdx",
-	schema = baseSchema
+	schema = baseSchema,
 ) {
 	return defineCollection({
 		loader: glob({ pattern, base }),
@@ -41,7 +41,7 @@ const iti = createCollection("src/content/en/iti/");
 const anthologies = createCollection(
 	"src/content/en/anthologies/",
 	"*.mdx",
-	bookSchema
+	bookSchema,
 );
 const all = createCollection("src/content/en/", "**/*.mdx");
 const pliAll = createCollection("src/content/pli/", "**/*.md");

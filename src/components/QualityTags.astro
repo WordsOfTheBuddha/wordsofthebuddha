@@ -1,0 +1,186 @@
+---
+import qualities from "../data/qualities.json";
+
+interface Props {
+	tags: string[] | string | null | undefined;
+}
+
+const { tags = [] } = Astro.props;
+
+// Ensure tags is an array before filtering
+const tagsArray = Array.isArray(tags)
+	? tags
+	: typeof tags === "string"
+		? tags.includes(",")
+			? tags.split(",").map((tag) => tag.trim())
+			: [tags.trim()]
+		: [];
+
+// Filter tags into positive, negative, and neutral categories
+const positiveQualities = tagsArray
+	.filter((tag) => qualities.positive.includes(tag))
+	.sort(); // Sort alphabetically
+
+const negativeQualities = tagsArray
+	.filter((tag) => qualities.negative.includes(tag))
+	.sort(); // Sort alphabetically
+
+const neutralQualities = tagsArray.filter((tag) =>
+	qualities.neutral.includes(tag)
+);
+
+// Helper function to capitalize first letter
+function capitalizeFirstLetter(string: string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+---
+
+<div class="quality-tags my-4">
+	<p class="text-sm mt-8" style="color: var(--gray-500);">Qualities:</p>
+	{
+		positiveQualities.length > 0 && (
+			<div class="quality-row positive-qualities mb-2">
+				<div class="quality-list">
+					{positiveQualities.map((quality) => (
+						<a
+							href={`/qualities/${quality}`}
+							class="quality-tag positive"
+						>
+							{capitalizeFirstLetter(quality)}
+						</a>
+					))}
+				</div>
+			</div>
+		)
+	}
+
+	{
+		negativeQualities.length > 0 && (
+			<div class="quality-row negative-qualities mb-2">
+				<div class="quality-list">
+					{negativeQualities.map((quality) => (
+						<a
+							href={`/qualities/${quality}`}
+							class="quality-tag negative"
+						>
+							{capitalizeFirstLetter(quality)}
+						</a>
+					))}
+				</div>
+			</div>
+		)
+	}
+
+	{
+		neutralQualities.length > 0 && (
+			<div class="quality-row neutral-qualities">
+				<div class="quality-list">
+					{neutralQualities.map((quality) => (
+						<a
+							href={`/qualities/${quality}`}
+							class="quality-tag neutral"
+						>
+							{capitalizeFirstLetter(quality)}
+						</a>
+					))}
+				</div>
+			</div>
+		)
+	}
+</div>
+
+<style>
+	.quality-tags {
+		margin: 1rem 0;
+	}
+
+	.quality-row {
+		display: flex;
+		align-items: flex-start;
+		margin-bottom: 0.5rem;
+	}
+
+	.quality-badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.125rem 0.5rem;
+		font-size: 0.75rem;
+		font-weight: bold;
+		margin-right: 0.5rem;
+		border-radius: 9999px;
+		color: white;
+	}
+
+	.quality-badge.positive {
+		background-color: #f59e0b; /* amber-500 */
+	}
+
+	.quality-badge.negative {
+		background-color: #64748b; /* slate-500 */
+	}
+
+	.quality-badge.neutral {
+		background-color: var(--gray-500, #9ca3af);
+	}
+
+	.quality-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.quality-tag {
+		display: inline-block;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+
+	.quality-tag.positive {
+		background-color: rgba(245, 158, 11, 0.1); /* amber-500 with opacity */
+		color: #d97706; /* amber-600 */
+		border: 1px solid rgba(245, 158, 11, 0.2);
+	}
+
+	.quality-tag.negative {
+		background-color: rgba(100, 116, 139, 0.1); /* slate-500 with opacity */
+		color: #475569; /* slate-600 */
+		border: 1px solid rgba(100, 116, 139, 0.2);
+	}
+
+	.quality-tag.neutral {
+		background-color: rgba(156, 163, 175, 0.1);
+		color: var(--gray-500, #9ca3af);
+		border: 1px solid rgba(156, 163, 175, 0.2);
+	}
+
+	html.dark .quality-tag.positive {
+		background-color: rgba(245, 158, 11, 0.2);
+		color: #fbbf24; /* amber-400 for better contrast in dark mode */
+		border: 1px solid rgba(245, 158, 11, 0.3);
+	}
+
+	html.dark .quality-tag.negative {
+		background-color: rgba(100, 116, 139, 0.2);
+		color: #94a3b8; /* slate-400 for better contrast in dark mode */
+		border: 1px solid rgba(100, 116, 139, 0.3);
+	}
+
+	html.dark .quality-tag.neutral {
+		background-color: rgba(156, 163, 175, 0.2);
+		color: #d1d5db; /* gray-300 for better contrast in dark mode */
+		border: 1px solid rgba(156, 163, 175, 0.3);
+	}
+
+	.quality-tag:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	html.dark .quality-tag:hover {
+		box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+	}
+</style>
