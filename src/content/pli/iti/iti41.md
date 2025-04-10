@@ -1,7 +1,7 @@
 ---
 title: Paññāparihīna sutta - Lacking in Wisdom
 description: The Buddha describes the sentient beings who lack in wisdom as truly deprived, dwelling in suffering, annoyance, hardship, and distress.
-qualities: immaturity, undiscerning, wisdom
+qualities: immaturity, lack of discernment, wisdom
 theme: cultivating discernment
 slug: iti41
 ---
