@@ -2173,7 +2173,14 @@
       "collection": "an"
     }
   ],
-  "boastfulness": [],
+  "boastfulness": [
+    {
+      "id": "mn4",
+      "title": "Bhayabherava sutta - Fright and Dread",
+      "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
+      "collection": "mn"
+    }
+  ],
   "clinging to rules and observances": [
     {
       "id": "mn11",
@@ -2497,6 +2504,12 @@
     }
   ],
   "fearful": [
+    {
+      "id": "mn4",
+      "title": "Bhayabherava sutta - Fright and Dread",
+      "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
+      "collection": "mn"
+    },
     {
       "id": "an8.31",
       "title": "Paṭhama dāna sutta - Giving (First)",
