@@ -24,6 +24,15 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		});
 		return path;
 	}
+
+	// Handle qualities pages
+	if (idPath[0] === "qualities") {
+		path.push({
+			label: "Qualities",
+			path: "/qualities",
+		});
+		return path;
+	}
 	// Extract prefix and numbers
 	const prefix = id.match(/^[a-z]+/i)?.[0] || "";
 	const [baseId, subNumber] = id.split(".");
@@ -61,7 +70,7 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		const num = parseInt(baseId.replace(prefix, ""));
 		if (collection.children) {
 			for (const [rangeKey, rangeData] of Object.entries(
-				collection.children
+				collection.children,
 			)) {
 				if (
 					rangeData.range &&

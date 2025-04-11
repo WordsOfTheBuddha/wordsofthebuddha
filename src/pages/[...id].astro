@@ -181,6 +181,9 @@ if (route.type === "collection" && route.pattern) {
 		fp,
 		title: contentItem.data.title,
 		description: contentItem.data.description,
+		qualities: contentItem.data.qualities
+			?.split(",")
+			.map((tag: string) => tag.trim()),
 		prev,
 		next,
 		id,
