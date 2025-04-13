@@ -1,0 +1,200 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import qualities from "../../data/qualities.json";
+import qualityMappings from "../../data/qualityMappings.json";
+
+// Type definitions for data structures
+interface Discourse {
+	id: string;
+	title: string;
+	description: string;
+	collection: string;
+}
+
+interface Collection {
+	name: string;
+	items: Discourse[];
+}
+
+type CollectionKey = "dhp" | "iti" | "mn" | "snp" | "sn" | "an" | "ud";
+
+// Extract quality from params
+const { id } = Astro.params;
+if (!id || !(id in qualityMappings)) {
+	return Astro.redirect("/qualities");
+}
+
+const discourses: Discourse[] = (qualityMappings[
+	id as keyof typeof qualityMappings
+] || []) as Discourse[];
+const synonyms: string[] = (qualities.synonyms[
+	id as keyof typeof qualities.synonyms
+] || []) as string[];
+
+// Group by collection
+const collections: Record<CollectionKey, Collection> = {
+	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
+	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
+	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
+	snp: { name: "The Buddha's Ancient Discourses (Sutta Nipāta)", items: [] },
+	sn: { name: "Linked Discourses (Saṃyutta Nikāya)", items: [] },
+	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
+	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+};
+
+// Define collection order
+const collectionOrder: CollectionKey[] = [
+	"dhp",
+	"iti",
+	"mn",
+	"snp",
+	"sn",
+	"an",
+	"ud",
+];
+
+// Sort discourses into collections
+discourses.forEach((discourse) => {
+	const collection = discourse.collection as CollectionKey;
+	if (collection in collections) {
+		collections[collection].items.push(discourse);
+	}
+});
+
+// Natural sort for each collection
+for (const key in collections) {
+	const typedKey = key as CollectionKey;
+	collections[typedKey].items.sort((a, b) => {
+		return a.id.localeCompare(b.id, undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	});
+}
+
+// Format quality name for display
+const qualityName = decodeURIComponent(id);
+const displayName = qualityName.charAt(0).toUpperCase() + qualityName.slice(1);
+
+// Determine type (positive or negative)
+let qualityType = "neutral";
+if (qualities.positive.includes(qualityName)) {
+	qualityType = "positive";
+} else if (qualities.negative.includes(qualityName)) {
+	qualityType = "negative";
+}
+---
+
+<Layout
+	seoTitle={`Discourses on ${displayName} - Words of the Buddha`}
+	showAuth={true}
+>
+	<main class="container mx-auto px-4 py-8">
+		<div class="mb-8">
+			<div
+				class="post-item relative flex flex-col w-full p-5 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+			>
+				<div class="flex items-start justify-between">
+					<div class="flex items-start flex-grow">
+						<div class="min-w-0 pr-4">
+							<h1
+								class="text-xl font-semibold flex items-center flex-wrap"
+							>
+								<span>{displayName}</span>
+								{
+									qualityType !== "neutral" && (
+										<span
+											class={`ml-2 px-2 py-0.5 text-xs rounded-full cursor-help tooltip ${
+												qualityType === "positive"
+													? "border-2 border-amber-400 text-amber-600 dark:text-amber-400"
+													: "border-2 border-slate-500 text-slate-600 dark:text-slate-400"
+											}`}
+											data-tooltip={
+												qualityType === "positive"
+													? "When a bright quality is cultivated, it brings benefit, clarity of vision, and the growth of wisdom."
+													: "When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
+											}
+										>
+											{qualityType === "positive"
+												? "☀️ bright"
+												: "☁️ dark"}
+										</span>
+									)
+								}
+							</h1>
+						</div>
+					</div>
+					<div class="shrink-0 self-start">
+						<span
+							class="px-2 py-0.25 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm"
+						>
+							{discourses.length} discourses
+						</span>
+					</div>
+				</div>
+				{
+					synonyms.length > 0 && (
+						<p class="mt-2 text-sm text-text">
+							<span class="text-gray-500 dark:text-gray-400">
+								Similar:{" "}
+							</span>
+							{synonyms.join(", ")}
+						</p>
+					)
+				}
+			</div>
+		</div>
+
+		<div class="space-y-10">
+			{
+				collectionOrder.map((collectionKey) => {
+					const collection = collections[collectionKey];
+					if (collection.items.length === 0) return null;
+
+					return (
+						<div>
+							<h4 class="mb-6 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 pb-2 pl-4">
+								In {collection.name}
+							</h4>
+							<div class="px-2">
+								{collection.items.map((discourse) => (
+									<PostCard
+										title={discourse.title}
+										description={discourse.description}
+										id={discourse.id}
+									/>
+								))}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.tooltip {
+		position: relative;
+	}
+
+	.tooltip:hover::after {
+		content: attr(data-tooltip);
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: calc(100% + 5px);
+		background: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
+		white-space: normal;
+		width: max-content;
+		max-width: 250px;
+		z-index: 10;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	}
+</style>

@@ -5,27 +5,27 @@
 		"anger",
 		"aversion",
 		"anxiety",
-		"boastful",
+		"boastfulness",
 		"clinging to rules and observances",
 		"conceit",
 		"contempt",
 		"craving",
 		"cruelty",
-		"desire",
 		"displeasure",
-		"distracted",
-		"doubtful",
+		"distraction",
+		"doubt",
 		"drowsiness",
 		"dullness",
 		"faithlessness",
 		"fearful",
 		"feuding",
+		"greed",
 		"harmful",
 		"hypocrisy",
 		"ignorance",
 		"immaturity",
 		"illusion",
-		"irritable",
+		"irritability",
 		"jealousy",
 		"laziness",
 		"mental proliferation",
@@ -44,8 +44,8 @@
 		"stubbornness",
 		"suffering",
 		"treachery",
-		"undiscerning",
-		"unprincipled",
+		"lack of discernment",
+		"lack of principles",
 		"unwise attention",
 		"vanity",
 		"weak in effort",
@@ -63,6 +63,7 @@
 		"contentment",
 		"continuous effort",
 		"cultivation",
+		"desire",
 		"diligence",
 		"discernment",
 		"disenchantment",
@@ -76,7 +77,6 @@
 		"full awareness",
 		"giving",
 		"giving up",
-		"greed",
 		"humility",
 		"inquisitiveness",
 		"examination",
@@ -230,20 +230,20 @@
 		"disenchantment": ["de-illusionment", "disinterest"],
 		"dispassion": ["detachment", "disinterest", "fading of desire"],
 		"displeasure": ["bitterness", "unhappiness", "bitterness"],
-		"distracted": [
-			"with scattered attention",
+		"distraction": [
+			"scattered attention",
 			"uncollected",
 			"not well-composed",
-			"having a wandering mind",
+			"with a wandering mind",
 			"with runaway thoughts",
 			"asamāhita"
 		],
-		"doubtful": [
-			"confused",
-			"indecisive",
-			"uncertain",
+		"doubt": [
+			"confusion",
+			"indecisiveness",
+			"uncertainty",
 			"wavering",
-			"perplexed",
+			"perplexity",
 			"vicikiccha"
 		],
 		"drowsiness": ["sleepiness", "yawning", "lethargic", "middha"],
@@ -315,7 +315,6 @@
 			"aspiration",
 			"wish",
 			"intention",
-			"desire",
 			"impulse",
 			"chanda"
 		],
@@ -359,7 +358,12 @@
 		],
 		"inquisitive": ["curious", "inquiring", "interested"],
 		"examination": ["consideration", "reflection", "investigation"],
-		"irritable": ["cranky", "moody", "prone to anger"],
+		"irritability": [
+			"crankiness",
+			"moodiness",
+			"being prone to annoyance",
+			"being prone to anger"
+		],
 		"jealousy": [
 			"covetousness",
 			"envy",
@@ -475,11 +479,12 @@
 			"samma ditthi"
 		],
 		"self-control": ["self-restraint", "self-mastery"],
-		"boastful": [
+		"boastfulness": [
 			"braggart",
 			"exalting oneself",
 			"overbearing",
-			"self-praise",
+			"self-promotion",
+			"self-praising",
 			"attukkaṁsaka"
 		],
 		"sense of right and wrong": [
@@ -546,8 +551,11 @@
 		],
 		"tranquility": ["calmness", "peacefulness", "serenity", "upasama"],
 		"treachery": ["deviousness", "scamming", "betrayal"],
-		"undiscerning": ["lacking in wisdom", "foolish"],
-		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
+		"lack of discernment": ["lacking in wisdom", "foolish"],
+		"lack of principles": [
+			"lacking in moral principles",
+			"lacking in ethics"
+		],
 		"unwise attention": [
 			"improper attention",
 			"imprudent use of the mind",
@@ -589,7 +597,10 @@
 			"nourishing",
 			"sustaining"
 		],
-		"wisdom": ["understanding the four noble truths"],
+		"wisdom": [
+			"the quality of possessing experience alongside knowledge and sound judgment",
+			"an experiential understanding of the four noble truths"
+		],
 		"wise attention": [
 			"proper attention",
 			"prudent use of the mind",

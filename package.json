@@ -4,9 +4,9 @@
 	"version": "0.0.1",
 	"scripts": {
 		"watch-routes": "node --trace-deprecation src/utils/generateRoutes.mjs --watch",
-		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts",
+		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
-		"prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts",
+		"prebuild": "node --trace-deprecation src/utils/generateRoutes.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts",
 		"build": "node --trace-deprecation ./node_modules/.bin/astro build"
 	},
 	"dependencies": {
@@ -34,6 +34,8 @@
 		"@types/jsdom": "^21.1.7",
 		"@types/node": "^22.10.7",
 		"@types/rangy": "^0.0.38",
-		"concurrently": "^9.1.2"
+		"concurrently": "^9.1.2",
+		"glob": "^11.0.1",
+		"gray-matter": "^4.0.3"
 	}
 }

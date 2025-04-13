@@ -18,6 +18,7 @@ import SaveButton from "../components/SaveButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
+import QualityTags from "../components/QualityTags.astro";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -28,27 +29,32 @@ const {
 	fp,
 	title,
 	description,
+	qualities,
 	prev,
 	next,
 	lastUpdated,
 	showReadLater = false,
 	showSave = false,
-	titleIcon = null, // Add new prop for title icon
-	showAuth = false, // Add new prop
+	titleIcon = null,
+	showAuth = false,
 	showPali = false,
-	showFilter = false, // Add new prop
+	showFilter = false,
+	seoTitle = null, // Add new prop for SEO title
 } = Astro.props;
 
 console.log("title is: ", title, " fp: ", fp);
-let SEOTitle = title;
-if (title != "Words of the Buddha" && title) {
-	SEOTitle = title + " - Words of the Buddha";
-}
-if (id && fp.includes("anthologies")) {
-	SEOTitle = "Anthology - " + title;
-} else if (id) {
-	SEOTitle =
-		id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
+console.log("qualities are: ", qualities);
+let SEOTitle = seoTitle;
+if (!SEOTitle) {
+	if (title != "Words of the Buddha" && title) {
+		SEOTitle = title + " - Words of the Buddha";
+	}
+	if (id && fp.includes("anthologies")) {
+		SEOTitle = "Anthology - " + title;
+	} else if (id) {
+		SEOTitle =
+			id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
+	}
 }
 ---
 
@@ -165,6 +171,11 @@ if (id && fp.includes("anthologies")) {
 						</Title>
 					</div>
 					<slot />
+					{
+						qualities && qualities.length > 0 && (
+							<QualityTags tags={qualities} />
+						)
+					}
 					{
 						lastUpdated && (
 							<LastUpdated lastUpdated={lastUpdated} path={fp} />
