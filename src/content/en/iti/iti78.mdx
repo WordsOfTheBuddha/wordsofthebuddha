@@ -1,7 +1,7 @@
 ---
 title: Dhātusosaṁsandana sutta - The Coming Together of Elements
 description: Beings come together and associate with other beings according to their disposition. Therefore, one should avoid associating with those that are lazy and keep company with the wise.
-qualities: laziness, wisdom, arousing energy
+qualities: laziness, wisdom, rousing of energy
 theme: principle, wisdom, inspiration
 slug: iti78
 ---
