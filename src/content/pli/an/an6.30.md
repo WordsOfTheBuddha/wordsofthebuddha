@@ -2,7 +2,7 @@
 title: Anuttariya sutta - Unsurpassable
 description: The Buddha describes the six unsurpassable things among seeing, listening, acquisitions, training, service, and recollection.
 fetter: doubt, ignorance
-tags: unsurpassable, seeing, listening, acquisitions, training, service, recollection, disenchantment, fading of desire, gradual ending, tranquility, direct knowing, full awakening, Nibbāna, an, an6
+tags: unsurpassable, seeing, listening, acquisitions, training, service, recollection, disenchantment, fading of desire, gradual ending, tranquility, directly knowing, full awakening, Nibbāna, an, an6
 slug: an6.30
 ---
 

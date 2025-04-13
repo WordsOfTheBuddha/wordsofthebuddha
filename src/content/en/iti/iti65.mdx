@@ -2,7 +2,7 @@
 title: Sucarita sutta - Good Conduct
 description: The Buddha describes the three kinds of good conduct - by body, speech and mind.
 qualities: ethical conduct, giving up, loving-kindness, non-harm
-theme: principle, direct knowing
+theme: principle, directly knowing
 slug: iti65
 ---
 
