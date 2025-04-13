@@ -1,5 +1,5 @@
 {
-  "arousing energy": [
+  "rousing of energy": [
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -22,6 +22,12 @@
       "id": "iti78",
       "title": "Dhātusosaṁsandana sutta - The Coming Together of Elements",
       "description": "Beings come together and associate with other beings according to their disposition. Therefore, one should avoid associating with those that are lazy and keep company with the wise.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti109",
+      "title": "Nadīsota sutta - River's Current",
+      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
     {
@@ -930,6 +936,12 @@
       "id": "iti65",
       "title": "Sucarita sutta - Good Conduct",
       "description": "The Buddha describes the three kinds of good conduct - by body, speech and mind.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti109",
+      "title": "Nadīsota sutta - River's Current",
+      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
     {
@@ -2037,6 +2049,12 @@
       "collection": "iti"
     },
     {
+      "id": "iti109",
+      "title": "Nadīsota sutta - River's Current",
+      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -2348,6 +2366,12 @@
       "id": "iti64",
       "title": "Duccarita sutta - Misconduct",
       "description": "The Buddha describes the three kinds of misconduct - by body, speech and mind.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti109",
+      "title": "Nadīsota sutta - River's Current",
+      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
     {
@@ -3032,6 +3056,12 @@
       "id": "iti87",
       "title": "Andhakaraṇa sutta - Blinding",
       "description": "The three unwholesome thoughts are blinding, produce lack of clarity, cause ignorance, obstruct wisdom, and are troublesome and not conducive to Nibbāna. The three wholesome thoughts give sight, produce clarity and create insight, grow wisdom, and are trouble-free and conducive to Nibbāna.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti109",
+      "title": "Nadīsota sutta - River's Current",
+      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
     {
