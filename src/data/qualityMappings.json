@@ -26,7 +26,7 @@
     },
     {
       "id": "iti109",
-      "title": "Nadīsota sutta - River's Current",
+      "title": "Nadīsota sutta - River Current",
       "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
@@ -127,7 +127,7 @@
     {
       "id": "an5.28",
       "title": "Pañcaṅgika sutta - Fivefold",
-      "description": "The Buddha teaches the cultivation of the noble fivefold right collectedness with vivid similes, and shares how one who has cultivated this can realize any phenomenon realizable by direct knowing.",
+      "description": "The Buddha teaches the cultivation of the noble fivefold right collectedness with vivid similes, and shares how one who has cultivated this can realize any phenomenon realizable by directly knowing.",
       "collection": "an"
     },
     {
@@ -303,25 +303,11 @@
       "title": "Paṭhama dāna sutta - Giving (First)",
       "description": "The Buddha explains eight kinds of giving, including giving out of fear, giving to maintain a good reputation, and giving to purify the mind.",
       "collection": "an"
-    }
-  ],
-  "desire": [
-    {
-      "id": "mn95",
-      "title": "Caṅkī sutta - With Caṅkī",
-      "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
-      "collection": "mn"
     },
     {
-      "id": "dhp360-382",
-      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
-      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
-      "collection": "dhp"
-    },
-    {
-      "id": "an8.33",
-      "title": "Dānavatthu sutta - Grounds for Giving",
-      "description": "The Buddha describes eight motivations for giving, including giving out of desire, aversion, and fear.",
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - Dirt Cleaner",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes layers of impurity—coarse, medium, and subtle—until the gold becomes workable and radiant, a practitioner abandons defilements in stages. This progressive refinement leads to deep mental collectedness, which forms the foundation for attaining supernormal abilities and, ultimately, full liberation.",
       "collection": "an"
     }
   ],
@@ -793,6 +779,14 @@
       "collection": "an"
     }
   ],
+  "flexible": [
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - Dirt Cleaner",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes layers of impurity—coarse, medium, and subtle—until the gold becomes workable and radiant, a practitioner abandons defilements in stages. This progressive refinement leads to deep mental collectedness, which forms the foundation for attaining supernormal abilities and, ultimately, full liberation.",
+      "collection": "an"
+    }
+  ],
   "formless": [
     {
       "id": "iti73",
@@ -940,7 +934,7 @@
     },
     {
       "id": "iti109",
-      "title": "Nadīsota sutta - River's Current",
+      "title": "Nadīsota sutta - River Current",
       "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
@@ -2050,7 +2044,7 @@
     },
     {
       "id": "iti109",
-      "title": "Nadīsota sutta - River's Current",
+      "title": "Nadīsota sutta - River Current",
       "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
@@ -2370,7 +2364,7 @@
     },
     {
       "id": "iti109",
-      "title": "Nadīsota sutta - River's Current",
+      "title": "Nadīsota sutta - River Current",
       "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
@@ -3060,7 +3054,7 @@
     },
     {
       "id": "iti109",
-      "title": "Nadīsota sutta - River's Current",
+      "title": "Nadīsota sutta - River Current",
       "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
       "collection": "iti"
     },
@@ -3338,6 +3332,26 @@
       "title": "Nāga vagga - Chapter 23 - The Elephant",
       "description": "Dhammapada verses 320–333 highlight self-discipline, wisdom, and perseverance through the imagery of elephants. They highlight inner mastery over strength, the value of solitude over company of immature persons, and the importance of taming one’s mind. Honoring parents, cultivating virtue, and letting go of suffering lead to true ease.",
       "collection": "dhp"
+    }
+  ],
+  "desire": [
+    {
+      "id": "mn95",
+      "title": "Caṅkī sutta - With Caṅkī",
+      "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
+      "collection": "mn"
+    },
+    {
+      "id": "dhp360-382",
+      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
+      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
+      "collection": "dhp"
+    },
+    {
+      "id": "an8.33",
+      "title": "Dānavatthu sutta - Grounds for Giving",
+      "description": "The Buddha describes eight motivations for giving, including giving out of desire, aversion, and fear.",
+      "collection": "an"
     }
   ]
 }
