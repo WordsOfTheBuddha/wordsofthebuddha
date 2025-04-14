@@ -80,18 +80,22 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 							</h2>
 							<div class="space-y-4">
 								{qualitiesForLetter.sort().map((quality) => {
+									// Explicitly type synonymsList as array of strings or arrays of strings
+									const synonymsList: (string | string[])[] =
+										qualities.synonyms[
+											quality as keyof typeof qualities.synonyms
+										] || [];
 									const discourses =
 										qualityMappings[
 											quality as keyof typeof qualityMappings
-										] || [];
-									const synonymsList =
-										qualities.synonyms[
-											quality as keyof typeof qualities.synonyms
 										] || [];
 									const isPositive =
 										qualities.positive.includes(quality);
 									const isNegative =
 										qualities.negative.includes(quality);
+									const displayName =
+										quality.charAt(0).toUpperCase() +
+										quality.slice(1);
 
 									return (
 										<div class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
@@ -103,12 +107,7 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																href={`/qualities/${quality}`}
 																class="post-link hover:text-link-color id font-normal"
 															>
-																{quality
-																	.charAt(0)
-																	.toUpperCase() +
-																	quality.slice(
-																		1
-																	)}
+																{displayName}
 															</a>
 															{isPositive && (
 																<span
@@ -126,6 +125,16 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																	☁️ dark
 																</span>
 															)}
+															{!isPositive &&
+																!isNegative && (
+																	<span
+																		class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-cyan-400 text-cyan-600 dark:text-cyan-400 cursor-help tooltip"
+																		data-tooltip="This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises."
+																	>
+																		💠
+																		neutral
+																	</span>
+																)}
 														</h3>
 													</div>
 												</div>
@@ -136,12 +145,78 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 												</div>
 											</div>
 											{synonymsList.length > 0 && (
-												<p class="mt-2 text-sm text-text">
-													<span class="text-gray-500 dark:text-gray-400">
-														Similar:{" "}
-													</span>
-													{synonymsList.join(", ")}
-												</p>
+												<div class="mt-6 grid grid-cols-[auto_1fr] gap-y-2 text-sm">
+													{/* Non-Pāli terms */}
+													{synonymsList.some(
+														(
+															term
+														): term is string =>
+															typeof term ===
+																"string" &&
+															!term.startsWith(
+																"["
+															)
+													) && (
+														<>
+															<span class="text-gray-500 dark:text-gray-400 pr-4">
+																Similar:
+															</span>
+															<span class="text-text">
+																{synonymsList
+																	.filter(
+																		(
+																			term
+																		): term is string =>
+																			typeof term ===
+																				"string" &&
+																			!term.startsWith(
+																				"["
+																			)
+																	)
+																	.join(", ")}
+															</span>
+														</>
+													)}
+
+													{/* Pāli terms */}
+													{synonymsList.some(
+														(
+															term
+														): term is string =>
+															typeof term ===
+																"string" &&
+															term.startsWith("[")
+													) && (
+														<>
+															<span class="text-gray-500 dark:text-gray-400 pr-4">
+																Pāli term:
+															</span>
+															<span class="pali-paragraph font-semibold text-text">
+																{synonymsList
+																	.filter(
+																		(
+																			term
+																		): term is string =>
+																			typeof term ===
+																				"string" &&
+																			term.startsWith(
+																				"["
+																			)
+																	)
+																	.map(
+																		(
+																			term
+																		) =>
+																			term.replace(
+																				/[\[\]]/g,
+																				""
+																			)
+																	)
+																	.join(", ")}
+															</span>
+														</>
+													)}
+												</div>
 											)}
 										</div>
 									);

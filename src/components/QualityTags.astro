@@ -36,57 +36,30 @@ function capitalizeFirstLetter(string: string) {
 ---
 
 <div class="quality-tags my-4">
-	<p class="text-sm mt-8" style="color: var(--gray-500);">Qualities:</p>
-	{
-		positiveQualities.length > 0 && (
-			<div class="quality-row positive-qualities mb-2">
-				<div class="quality-list">
-					{positiveQualities.map((quality) => (
-						<a
-							href={`/qualities/${quality}`}
-							class="quality-tag positive"
-						>
-							{capitalizeFirstLetter(quality)}
-						</a>
-					))}
-				</div>
-			</div>
-		)
-	}
-
-	{
-		negativeQualities.length > 0 && (
-			<div class="quality-row negative-qualities mb-2">
-				<div class="quality-list">
-					{negativeQualities.map((quality) => (
-						<a
-							href={`/qualities/${quality}`}
-							class="quality-tag negative"
-						>
-							{capitalizeFirstLetter(quality)}
-						</a>
-					))}
-				</div>
-			</div>
-		)
-	}
-
-	{
-		neutralQualities.length > 0 && (
-			<div class="quality-row neutral-qualities">
-				<div class="quality-list">
-					{neutralQualities.map((quality) => (
-						<a
-							href={`/qualities/${quality}`}
-							class="quality-tag neutral"
-						>
-							{capitalizeFirstLetter(quality)}
-						</a>
-					))}
-				</div>
-			</div>
-		)
-	}
+	<span class="text-sm" style="color: var(--gray-500);">Qualities:</span>
+	<div class="quality-list ml-2 inline-flex">
+		{
+			positiveQualities.map((quality) => (
+				<a href={`/qualities/${quality}`} class="quality-tag positive">
+					{capitalizeFirstLetter(quality)}
+				</a>
+			))
+		}
+		{
+			negativeQualities.map((quality) => (
+				<a href={`/qualities/${quality}`} class="quality-tag negative">
+					{capitalizeFirstLetter(quality)}
+				</a>
+			))
+		}
+		{
+			neutralQualities.map((quality) => (
+				<a href={`/qualities/${quality}`} class="quality-tag neutral">
+					{capitalizeFirstLetter(quality)}
+				</a>
+			))
+		}
+	</div>
 </div>
 
 <style>
@@ -125,9 +98,10 @@ function capitalizeFirstLetter(string: string) {
 	}
 
 	.quality-list {
-		display: flex;
+		display: inline-flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
+		align-items: center;
 	}
 
 	.quality-tag {

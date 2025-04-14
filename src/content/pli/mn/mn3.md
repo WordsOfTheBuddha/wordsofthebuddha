@@ -1,7 +1,7 @@
 ---
 title: Dhammadāyāda sutta - Heirs in the Dhamma
 description: The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.
-qualities: greed, aversion, ignorance, aggressiveness, jealousy, stinginess, anger, resentment, contempt, feuding, treachery, conceit, vanity, stubbornness, negligence, seclusion, arousing energy, collectedness, contentment, wisdom, vision, tranquility, direct knowing
+qualities: greed, aversion, ignorance, aggressiveness, jealousy, stinginess, anger, resentment, contempt, feuding, treachery, conceit, vanity, stubbornness, negligence, seclusion, rousing of energy, collectedness, contentment, wisdom, vision, tranquility, directly knowing
 theme: cultivating discernment, training guideline
 slug: mn3
 character: Venerable Sāriputta

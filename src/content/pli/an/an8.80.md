@@ -1,6 +1,6 @@
 ---
 title: Kusītārambhavatthu sutta - Grounds for Laziness and Arousing Energy
-description: The Buddha explains the eight grounds of laziness and the eight grounds for arousing energy.
+description: The Buddha explains the eight grounds of laziness and the eight grounds for rousing of energy.
 fetter: doubt, adherence to rules and observances, sensual desire, ill will
 tags: laziness, energy, effort, diligence, an, an8
 slug: an8.80

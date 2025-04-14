@@ -109,17 +109,23 @@ if (qualities.positive.includes(qualityName)) {
 											class={`ml-2 px-2 py-0.5 text-xs rounded-full cursor-help tooltip ${
 												qualityType === "positive"
 													? "border-2 border-amber-400 text-amber-600 dark:text-amber-400"
-													: "border-2 border-slate-500 text-slate-600 dark:text-slate-400"
+													: qualityType === "negative"
+														? "border-2 border-slate-500 text-slate-600 dark:text-slate-400"
+														: "border-2 border-cyan-400 text-cyan-600 dark:text-cyan-400"
 											}`}
 											data-tooltip={
 												qualityType === "positive"
 													? "When a bright quality is cultivated, it brings benefit, clarity of vision, and the growth of wisdom."
-													: "When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
+													: qualityType === "negative"
+														? "When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
+														: "This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises."
 											}
 										>
 											{qualityType === "positive"
 												? "☀️ bright"
-												: "☁️ dark"}
+												: qualityType === "negative"
+													? "☁️ dark"
+													: "💠 neutral"}
 										</span>
 									)
 								}
@@ -136,12 +142,42 @@ if (qualities.positive.includes(qualityName)) {
 				</div>
 				{
 					synonyms.length > 0 && (
-						<p class="mt-2 text-sm text-text">
-							<span class="text-gray-500 dark:text-gray-400">
-								Similar:{" "}
-							</span>
-							{synonyms.join(", ")}
-						</p>
+						<div class="mt-2 ml-2 grid grid-cols-[auto_1fr] gap-y-2 text-sm">
+							{/* Non-Pāli terms */}
+							{synonyms.some((term) => !term.startsWith("[")) && (
+								<>
+									<span class="text-gray-500 dark:text-gray-400 pr-4">
+										Similar:
+									</span>
+									<span class="text-text">
+										{synonyms
+											.filter(
+												(term) => !term.startsWith("[")
+											)
+											.join(", ")}
+									</span>
+								</>
+							)}
+
+							{/* Pāli terms */}
+							{synonyms.some((term) => term.startsWith("[")) && (
+								<>
+									<span class="text-gray-500 dark:text-gray-400 pr-4">
+										Pāli term:
+									</span>
+									<span class="pali-paragraph font-semibold text-text">
+										{synonyms
+											.filter((term) =>
+												term.startsWith("[")
+											)
+											.map((term) =>
+												term.replace(/[\[\]]/g, "")
+											)
+											.join(", ")}
+									</span>
+								</>
+							)}
+						</div>
 					)
 				}
 			</div>

@@ -2,7 +2,7 @@
 title: Attarakkhita sutta - Self-Protection
 description: Even if protected by an entire army, one who engages in misconduct is unprotected. But one who engages in good conduct protects themselves, even without external protection.
 qualities: ethical conduct, right speech, sense restraint, self-control
-theme: principle, direct knowing
+theme: principle, directly knowing
 slug: sn3.5
 character: King Pasenadi of Kosala
 ---

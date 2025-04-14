@@ -1,7 +1,7 @@
 ---
 title: Bhayabherava sutta - Fright and Dread
 description: The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.
-qualities: ethical conduct, craving, passion, aversion, loving-kindness, dullness, drowsiness, anxiety, doubt, contempt, boastfulness, fearful, laziness, weak in effort, arousing energy, muddle-minded, distraction, collectedness, undiscerning
+qualities: ethical conduct, craving, passion, aversion, loving-kindness, dullness, drowsiness, anxiety, doubt, contempt, boastfulness, fearful, laziness, weak in effort, rousing of energy, muddle-minded, distraction, collectedness, undiscerning
 theme: inspiration, training guideline
 slug: mn4
 ---
