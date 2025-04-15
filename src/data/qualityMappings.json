@@ -687,7 +687,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     },
     {
@@ -901,6 +901,12 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    },
+    {
+      "id": "iti75",
+      "title": "Avuṭṭhika sutta - Rainless",
+      "description": "Three kinds of persons are found in the world - 1) one like a rainless cloud, 2) one like a cloud that rains in a certain area, and 3) one like a cloud that rains everywhere.",
+      "collection": "iti"
     },
     {
       "id": "iti106",
@@ -1339,7 +1345,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     },
     {
@@ -1427,6 +1433,12 @@
       "title": "Aniccasaññā sutta - Recognition Of Impermanence",
       "description": "The Buddha shares vivid similes to illustrate the benefits of developing the recognition of impermanence. This practice gradually exhausts all passion for sensual pleasure, materiality, becoming, ignorance, and uproots the conceit ‘I am.’",
       "collection": "sn"
+    },
+    {
+      "id": "iti77",
+      "title": "Bhidura sutta - Fragile",
+      "description": "The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change.",
+      "collection": "iti"
     },
     {
       "id": "dhp360-382",
@@ -1858,7 +1870,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     },
     {
@@ -2121,6 +2133,12 @@
       "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion's Roar",
       "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of clinging.",
       "collection": "mn"
+    },
+    {
+      "id": "iti77",
+      "title": "Bhidura sutta - Fragile",
+      "description": "The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change.",
+      "collection": "iti"
     },
     {
       "id": "dhp360-382",
@@ -2747,7 +2765,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     },
     {
@@ -3034,7 +3052,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     },
     {
@@ -3262,7 +3280,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     }
   ],
@@ -3304,7 +3322,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     }
   ],
@@ -3338,6 +3356,12 @@
       "title": "Cūḷadukkhakkhandha sutta - The Shorter Discourse on the Mass of Suffering",
       "description": "A lay disciple asks the Buddha why greed, aversion, and illusion still occupy and remain in his mind. The Buddha explains the importance of cultivating discernment of the gratification, drawback, and escape in the case of sensual pleasures along with cultivating the joy and happiness apart from sensual pleasures. He then recounts a conversation with the Nigaṇṭhas on this topic.",
       "collection": "mn"
+    },
+    {
+      "id": "iti75",
+      "title": "Avuṭṭhika sutta - Rainless",
+      "description": "Three kinds of persons are found in the world - 1) one like a rainless cloud, 2) one like a cloud that rains in a certain area, and 3) one like a cloud that rains everywhere.",
+      "collection": "iti"
     },
     {
       "id": "an4.80",
@@ -3378,6 +3402,12 @@
       "title": "Cūḷadhammasamādāna sutta - The Shorter Discourse on the Cases of Taking up Practices",
       "description": "The Buddha explains the four cases of taking up practices, based on whether they are pleasant or painful now and whether they ripen as suffering or a pleasant abiding in the future.",
       "collection": "mn"
+    },
+    {
+      "id": "iti77",
+      "title": "Bhidura sutta - Fragile",
+      "description": "The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change.",
+      "collection": "iti"
     },
     {
       "id": "dhp360-382",
@@ -3469,7 +3499,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     }
   ],
@@ -3499,7 +3529,7 @@
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
-      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
       "collection": "iti"
     },
     {
