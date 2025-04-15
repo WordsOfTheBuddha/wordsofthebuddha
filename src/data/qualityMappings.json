@@ -71,6 +71,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn51.13",
+      "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
+      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "collection": "sn"
+    },
+    {
       "id": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
       "description": "The Buddha explains in detail each factor of the noble eightfold path—right view, right intention, right speech, right action, right livelihood, right effort, right mindfulness, and right collectedness.",
@@ -148,6 +154,12 @@
       "id": "sn35.26",
       "title": "Paṭhama aparijānana sutta - Not Completely Comprehending (First)",
       "description": "Everything, when not directly known, not completely comprehended, not detached from, and not let go of, is incapable of resulting in the wearing away of suffering.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
       "collection": "sn"
     },
     {
@@ -306,8 +318,8 @@
     },
     {
       "id": "an3.101",
-      "title": "Paṁsudhovaka sutta - Dirt Cleaner",
-      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes layers of impurity—coarse, medium, and subtle—until the gold becomes workable and radiant, a practitioner abandons defilements in stages. This progressive refinement leads to deep mental collectedness, which forms the foundation for attaining supernormal abilities and, ultimately, full liberation.",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     }
   ],
@@ -473,6 +485,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
       "id": "sn15.8",
       "title": "Gaṅgā sutta - Ganges",
       "description": "The Buddha explains to a brahmin that the cycle of existence is without a discoverable beginning, and that it is not easy to calculate the number of aeons that have passed by and gone.",
@@ -514,6 +532,18 @@
       "id": "sn35.241",
       "title": "Paṭhama dārukkhandhopama sutta - Simile of the Wooden Log (First)",
       "description": "The Buddha uses the simile of a log of wood carried by a river to explain the eight obstacles to reaching Nibbāna.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
       "collection": "sn"
     },
     {
@@ -655,6 +685,12 @@
       "collection": "iti"
     },
     {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    },
+    {
       "id": "iti67",
       "title": "Moneyya sutta - Sagacity",
       "description": "The Buddha describes the three kinds of sagacity - by body, speech and mind.",
@@ -701,6 +737,44 @@
       "title": "Aṭṭhāna vagga - The Chapter On The Impossible",
       "description": "Short teachings on the impossibility of certain events, actions, or outcomes.",
       "collection": "an"
+    }
+  ],
+  "examination": [
+    {
+      "id": "sn51.13",
+      "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
+      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn12.65",
+      "title": "Nagara sutta - The City",
+      "description": "The Buddha recounts how he attained full awakening by examining the principle of dependent co-arising. He likens this realization to a man discovering an ancient, forgotten city.",
+      "collection": "sn"
+    },
+    {
+      "id": "mn95",
+      "title": "Caṅkī sutta - With Caṅkī",
+      "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn47",
+      "title": "Vīmaṁsaka sutta - Examining",
+      "description": "The Buddha provides a detailed and rigorous method for examining a Teacher. By discerning the teacher’s mental qualities, through prolonged observation, questioning, and learning directly, one gradually realizes a certain aspect of the teaching and builds unshakeable confidence in both the teacher and the teachings.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn13",
+      "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
+      "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
+      "collection": "mn"
+    },
+    {
+      "id": "dhp360-382",
+      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
+      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
+      "collection": "dhp"
     }
   ],
   "faith": [
@@ -782,8 +856,8 @@
   "flexible": [
     {
       "id": "an3.101",
-      "title": "Paṁsudhovaka sutta - Dirt Cleaner",
-      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes layers of impurity—coarse, medium, and subtle—until the gold becomes workable and radiant, a practitioner abandons defilements in stages. This progressive refinement leads to deep mental collectedness, which forms the foundation for attaining supernormal abilities and, ultimately, full liberation.",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     }
   ],
@@ -829,6 +903,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti106",
+      "title": "Sabrahmaka sutta - With Brahmā",
+      "description": "Where children honor their mother and father, those families are said to dwell with Brahmā.",
+      "collection": "iti"
+    },
+    {
       "id": "an8.37",
       "title": "Sappurisadāna sutta - Gifts of a True Person",
       "description": "The Buddha explains the eight gifts of a true person, including giving what is pure, excellent, and at the proper time.",
@@ -856,6 +936,12 @@
       "id": "an8.23",
       "title": "Paṭhamahatthaka sutta - With Hatthaka (First)",
       "description": "The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise.  Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.31",
+      "title": "Sabrahmaka sutta - With Brahmā",
+      "description": "Where children honor their mother and father, those families are said to dwell with Brahmā.",
       "collection": "an"
     }
   ],
@@ -943,8 +1029,15 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
+      "collection": "an"
     }
   ],
+  "good friendship": [],
   "humility": [
     {
       "id": "mn8",
@@ -967,38 +1060,7 @@
       "collection": "sn"
     }
   ],
-  "examination": [
-    {
-      "id": "sn12.65",
-      "title": "Nagara sutta - The City",
-      "description": "The Buddha recounts how he attained full awakening by examining the principle of dependent co-arising. He likens this realization to a man discovering an ancient, forgotten city.",
-      "collection": "sn"
-    },
-    {
-      "id": "mn95",
-      "title": "Caṅkī sutta - With Caṅkī",
-      "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
-      "collection": "mn"
-    },
-    {
-      "id": "mn47",
-      "title": "Vīmaṁsaka sutta - Examining",
-      "description": "The Buddha provides a detailed and rigorous method for examining a Teacher. By discerning the teacher’s mental qualities, through prolonged observation, questioning, and learning directly, one gradually realizes a certain aspect of the teaching and builds unshakeable confidence in both the teacher and the teachings.",
-      "collection": "mn"
-    },
-    {
-      "id": "mn13",
-      "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
-      "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
-      "collection": "mn"
-    },
-    {
-      "id": "dhp360-382",
-      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
-      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
-      "collection": "dhp"
-    }
-  ],
+  "knowledge": [],
   "learning": [
     {
       "id": "snp5.1",
@@ -1051,6 +1113,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -1066,6 +1134,12 @@
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     },
     {
@@ -1263,6 +1337,12 @@
       "collection": "iti"
     },
     {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    },
+    {
       "id": "iti67",
       "title": "Moneyya sutta - Sagacity",
       "description": "The Buddha describes the three kinds of sagacity - by body, speech and mind.",
@@ -1299,6 +1379,40 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    }
+  ],
+  "one-pointedness": [
+    {
+      "id": "sn51.13",
+      "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
+      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "collection": "sn"
+    },
+    {
+      "id": "mn4",
+      "title": "Bhayabherava sutta - Fright and Dread",
+      "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "an3.40",
+      "title": "Ādhipateyya sutta - Authorities",
+      "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
+      "collection": "an"
+    }
+  ],
+  "patience": [
+    {
+      "id": "dhp179-196",
+      "title": "Buddha vagga - Chapter 14 - Buddha",
+      "description": "DhammaPada verses 179-196 describe the boundless and traceless nature of the Buddha, the teachings of all the Buddhas, rarity of a human birth, rarity of the arising of a Buddha, what is a safe refuge that leads to release from suffering, and the merit gained by ones who honor the Buddhas or their disciples.",
+      "collection": "dhp"
     }
   ],
   "recognition of impermanence": [
@@ -1347,6 +1461,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti106",
+      "title": "Sabrahmaka sutta - With Brahmā",
+      "description": "Where children honor their mother and father, those families are said to dwell with Brahmā.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -1356,6 +1476,12 @@
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.31",
+      "title": "Sabrahmaka sutta - With Brahmā",
+      "description": "Where children honor their mother and father, those families are said to dwell with Brahmā.",
       "collection": "an"
     }
   ],
@@ -1587,6 +1713,7 @@
       "collection": "mn"
     }
   ],
+  "tame": [],
   "tranquility": [
     {
       "id": "sn2.20",
@@ -1644,6 +1771,12 @@
     }
   ],
   "vigour": [
+    {
+      "id": "sn51.13",
+      "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
+      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "collection": "sn"
+    },
     {
       "id": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
@@ -1715,6 +1848,26 @@
       "collection": "mn"
     }
   ],
+  "wholesome": [
+    {
+      "id": "sn35.247",
+      "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
+      "description": "The Buddha explains how there is non-restraint and restraint with a simile of six animals with different domains and feeding grounds. He uses strong post or pillar as a designation for mindfulness directed to the body.",
+      "collection": "sn"
+    },
+    {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    },
+    {
+      "id": "an8.32",
+      "title": "Dutiya dāna sutta - Giving (Second)",
+      "description": "Wholesome giving along with faith and a sense of right and wrong is the way of practice that leads to the world of gods.",
+      "collection": "an"
+    }
+  ],
   "wisdom": [
     {
       "id": "ud2.5",
@@ -1762,6 +1915,12 @@
       "id": "sn22.71",
       "title": "Rādha sutta - Rādha",
       "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and pride cease to arise.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
       "collection": "sn"
     },
     {
@@ -1917,6 +2076,7 @@
       "collection": "an"
     }
   ],
+  "adventurous": [],
   "aggressiveness": [
     {
       "id": "mn7",
@@ -2069,6 +2229,12 @@
   ],
   "aversion": [
     {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
+      "collection": "sn"
+    },
+    {
       "id": "mn95",
       "title": "Caṅkī sutta - With Caṅkī",
       "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
@@ -2185,6 +2351,7 @@
       "collection": "an"
     }
   ],
+  "bad friendship": [],
   "boastfulness": [
     {
       "id": "mn4",
@@ -2423,6 +2590,7 @@
       "collection": "dhp"
     }
   ],
+  "disturbed": [],
   "doubt": [
     {
       "id": "mn8",
@@ -2577,6 +2745,12 @@
       "collection": "iti"
     },
     {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    },
+    {
       "id": "iti64",
       "title": "Duccarita sutta - Misconduct",
       "description": "The Buddha describes the three kinds of misconduct - by body, speech and mind.",
@@ -2589,6 +2763,7 @@
       "collection": "an"
     }
   ],
+  "having many desires": [],
   "hypocrisy": [
     {
       "id": "mn8",
@@ -2608,6 +2783,12 @@
       "id": "sn35.53",
       "title": "Avijjāpahāna sutta - Abandoning Ignorance",
       "description": "The Buddha teaches on how to know and see the impermanence of the six sense bases and the process leading up to the arising of feeling and perception for the abandoning of ignorance and the arising of wisdom.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
       "collection": "sn"
     },
     {
@@ -2851,6 +3032,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -3071,6 +3258,14 @@
       "collection": "an"
     }
   ],
+  "sexual misconduct": [
+    {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    }
+  ],
   "shamelessness": [
     {
       "id": "mn8",
@@ -3105,6 +3300,12 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    },
+    {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
     }
   ],
   "stinginess": [
@@ -3264,6 +3465,12 @@
       "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
       "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
     }
   ],
   "weak in effort": [
@@ -3286,6 +3493,20 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    }
+  ],
+  "wrong speech": [
+    {
+      "id": "iti74",
+      "title": "Putta sutta - Child",
+      "description": "Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.",
+      "collection": "iti"
+    },
+    {
+      "id": "an4.148",
+      "title": "Duccarita sutta - Misconduct",
+      "description": "The Buddha shares in brief the four kinds of verbal misconduct - 1) lying, 2) divisive speech, 3) harsh speech, and 4) frivolous chatter.",
+      "collection": "an"
     }
   ],
   "wrong view": [
@@ -3335,6 +3556,12 @@
     }
   ],
   "desire": [
+    {
+      "id": "sn51.13",
+      "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
+      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "collection": "sn"
+    },
     {
       "id": "mn95",
       "title": "Caṅkī sutta - With Caṅkī",

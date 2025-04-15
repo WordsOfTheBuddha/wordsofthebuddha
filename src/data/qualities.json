@@ -1,10 +1,12 @@
 {
 	"negative": [
+		"adventurous",
 		"aggressiveness",
 		"attachment",
 		"anger",
 		"aversion",
 		"anxiety",
+		"bad friendship",
 		"boastfulness",
 		"clinging to rules and observances",
 		"conceit",
@@ -13,6 +15,7 @@
 		"cruelty",
 		"displeasure",
 		"distraction",
+		"disturbed",
 		"doubt",
 		"drowsiness",
 		"dullness",
@@ -21,6 +24,7 @@
 		"feuding",
 		"greed",
 		"harmful",
+		"having many desires",
 		"hypocrisy",
 		"ignorance",
 		"immaturity",
@@ -37,6 +41,7 @@
 		"personal existence",
 		"resentment",
 		"sensual desire",
+		"sexual misconduct",
 		"shamelessness",
 		"slaughtering",
 		"stealing",
@@ -50,6 +55,7 @@
 		"vanity",
 		"weak in effort",
 		"wrong intention",
+		"wrong speech",
 		"wrong view"
 	],
 	"neutral": ["companionship", "desire"],
@@ -70,6 +76,7 @@
 		"ending",
 		"equanimity",
 		"ethical conduct",
+		"examination",
 		"faith",
 		"fear of wrongdoing",
 		"flexible",
@@ -77,9 +84,10 @@
 		"full awareness",
 		"giving",
 		"giving up",
+		"good friendship",
 		"humility",
 		"inquisitiveness",
-		"examination",
+		"knowledge",
 		"learning",
 		"liberation",
 		"loving-kindness",
@@ -87,6 +95,8 @@
 		"mindfulness",
 		"non-harm",
 		"not taking what is not given",
+		"one-pointedness",
+		"patience",
 		"recognition of impermanence",
 		"respect",
 		"right intention",
@@ -98,14 +108,17 @@
 		"sincerity",
 		"solitude",
 		"sympathetic joy",
+		"tame",
 		"tranquility",
 		"vigour",
 		"vision",
 		"wakefulness",
+		"wholesome",
 		"wisdom",
 		"wise attention"
 	],
 	"synonyms": {
+		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
 		"aggressiveness": [
 			"hostility",
 			"antagonism",
@@ -147,6 +160,10 @@
 			"fault-finding mindset",
 			"resentment",
 			"[dosa]"
+		],
+		"bad friendship": [
+			"friendship with unwholesome persons",
+			"[pāpamittatā]"
 		],
 		"boastfulness": [
 			"braggart",
@@ -309,6 +326,14 @@
 			"with runaway thoughts",
 			"[asamāhita]"
 		],
+		"disturbed": [
+			"agitated",
+			"stirred up",
+			"cloudy",
+			"foggy",
+			"murky",
+			"[āvilena]"
+		],
 		"doubt": [
 			"confusion",
 			"indecisiveness",
@@ -409,6 +434,10 @@
 			"abandonment",
 			"[nekkhamma]"
 		],
+		"good friendship": [
+			"friendship with wholesome persons",
+			"[kalyāṇamittatā]"
+		],
 		"greed": [
 			"avarice",
 			"covetousness",
@@ -418,6 +447,7 @@
 			"[lobha]"
 		],
 		"harmful": ["injurious", "destructive", "bad", "evil", "[pāpaka]"],
+		"having many desires": ["greediness", "[mahicchatā]"],
 		"humility": [
 			"modesty",
 			"unpretentiousness",
@@ -480,6 +510,12 @@
 			"unwilling to part with",
 			"[issā]"
 		],
+		"knowledge": [
+			"knowing (of)",
+			"insight (into)",
+			"understanding (of)",
+			"[ñāṇa]"
+		],
 		"lack of discernment": [
 			"lack of clear comprehension",
 			"lack of wisdom",
@@ -540,6 +576,12 @@
 			"[anottappa]"
 		],
 		"muddle-minded": ["forgetful", "not mindful", "[muṭṭhassatī]"],
+		"one-pointedness": [
+			"concentration",
+			"focus",
+			"unification of mind",
+			"[ekagga]"
+		],
 		"negligence": [
 			"carelessness",
 			"heedlessness",
@@ -575,6 +617,7 @@
 			"lust",
 			"[rāga]"
 		],
+		"patience": ["endurance", "tolerance", "[khanti]"],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -615,13 +658,13 @@
 			"harmonious speech",
 			"articulate words",
 			"eloquent communication",
-			"[samma vaca]"
+			"[sammāvācā]"
 		],
 		"right view": [
 			"right understanding",
 			"right belief",
 			"view that is inline with the Dhamma",
-			"[samma ditthi]"
+			"[sammādiṭṭhi]"
 		],
 		"rousing of energy": [
 			"determination",
@@ -649,6 +692,13 @@
 			"craving for pleasure",
 			"[kāmacchanda]"
 		],
+		"sexual misconduct": [
+			"crossing boundaries",
+			"infidelity",
+			"inappropriate sexual behavior",
+			"unfaithfulness to one's partner",
+			"[kāmesumicchācāra]"
+		],
 		"shamelessness": [
 			"lack of conscience",
 			"lacking sense of right and wrong",
@@ -673,7 +723,6 @@
 		],
 		"stinginess": [
 			"miserliness",
-			"greed",
 			"meanness",
 			"tight-fistedness",
 			"[macchariya]"
@@ -704,6 +753,7 @@
 			"delight in the success of others",
 			"[muditā]"
 		],
+		"tame": ["trained", "mastered", "subdued", "[danta]"],
 		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
 		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
 		"unwise attention": [
@@ -769,6 +819,14 @@
 			"wrong thought",
 			"harmful volition",
 			"[micchāsaṅkappa]"
+		],
+		"wrong speech": [
+			"false speech",
+			"lying",
+			"slanderous or defamatory or malicious speech",
+			"abusive or rude or unkind way of speaking",
+			"meaningless talk or idle chatter or gossip",
+			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
 		],
 		"wrong view": [
 			"distorted perceptions",
