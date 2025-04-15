@@ -151,6 +151,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
+      "collection": "sn"
+    },
+    {
       "id": "mn13",
       "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
       "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
@@ -306,8 +312,8 @@
     },
     {
       "id": "an3.101",
-      "title": "Paṁsudhovaka sutta - Dirt Cleaner",
-      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes layers of impurity—coarse, medium, and subtle—until the gold becomes workable and radiant, a practitioner abandons defilements in stages. This progressive refinement leads to deep mental collectedness, which forms the foundation for attaining supernormal abilities and, ultimately, full liberation.",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     }
   ],
@@ -473,6 +479,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
       "id": "sn15.8",
       "title": "Gaṅgā sutta - Ganges",
       "description": "The Buddha explains to a brahmin that the cycle of existence is without a discoverable beginning, and that it is not easy to calculate the number of aeons that have passed by and gone.",
@@ -514,6 +526,18 @@
       "id": "sn35.241",
       "title": "Paṭhama dārukkhandhopama sutta - Simile of the Wooden Log (First)",
       "description": "The Buddha uses the simile of a log of wood carried by a river to explain the eight obstacles to reaching Nibbāna.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
       "collection": "sn"
     },
     {
@@ -782,8 +806,8 @@
   "flexible": [
     {
       "id": "an3.101",
-      "title": "Paṁsudhovaka sutta - Dirt Cleaner",
-      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes layers of impurity—coarse, medium, and subtle—until the gold becomes workable and radiant, a practitioner abandons defilements in stages. This progressive refinement leads to deep mental collectedness, which forms the foundation for attaining supernormal abilities and, ultimately, full liberation.",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     }
   ],
@@ -943,6 +967,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
+      "collection": "an"
     }
   ],
   "humility": [
@@ -1051,6 +1081,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -1066,6 +1102,12 @@
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     },
     {
@@ -1587,6 +1629,7 @@
       "collection": "mn"
     }
   ],
+  "tame": [],
   "tranquility": [
     {
       "id": "sn2.20",
@@ -1762,6 +1805,12 @@
       "id": "sn22.71",
       "title": "Rādha sutta - Rādha",
       "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and pride cease to arise.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
       "collection": "sn"
     },
     {
@@ -2068,6 +2117,12 @@
     }
   ],
   "aversion": [
+    {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
+      "collection": "sn"
+    },
     {
       "id": "mn95",
       "title": "Caṅkī sutta - With Caṅkī",
@@ -2608,6 +2663,12 @@
       "id": "sn35.53",
       "title": "Avijjāpahāna sutta - Abandoning Ignorance",
       "description": "The Buddha teaches on how to know and see the impermanence of the six sense bases and the process leading up to the arising of feeling and perception for the abandoning of ignorance and the arising of wisdom.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.23",
+      "title": "Pariñña sutta - Full Understanding",
+      "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
       "collection": "sn"
     },
     {
@@ -3251,6 +3312,7 @@
       "collection": "iti"
     }
   ],
+  "untamed": [],
   "unwise attention": [],
   "vanity": [
     {

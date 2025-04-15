@@ -1,10 +1,12 @@
 {
 	"negative": [
+		"adventurous",
 		"aggressiveness",
 		"attachment",
 		"anger",
 		"aversion",
 		"anxiety",
+		"bad friendship",
 		"boastfulness",
 		"clinging to rules and observances",
 		"conceit",
@@ -13,6 +15,7 @@
 		"cruelty",
 		"displeasure",
 		"distraction",
+		"disturbed",
 		"doubt",
 		"drowsiness",
 		"dullness",
@@ -21,6 +24,7 @@
 		"feuding",
 		"greed",
 		"harmful",
+		"having many desires",
 		"hypocrisy",
 		"ignorance",
 		"immaturity",
@@ -77,6 +81,7 @@
 		"full awareness",
 		"giving",
 		"giving up",
+		"good friendship",
 		"humility",
 		"inquisitiveness",
 		"examination",
@@ -98,6 +103,7 @@
 		"sincerity",
 		"solitude",
 		"sympathetic joy",
+		"tame",
 		"tranquility",
 		"vigour",
 		"vision",
@@ -106,6 +112,7 @@
 		"wise attention"
 	],
 	"synonyms": {
+		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
 		"aggressiveness": [
 			"hostility",
 			"antagonism",
@@ -147,6 +154,10 @@
 			"fault-finding mindset",
 			"resentment",
 			"[dosa]"
+		],
+		"bad friendship": [
+			"friendship with unwholesome persons",
+			"[pāpamittatā]"
 		],
 		"boastfulness": [
 			"braggart",
@@ -309,6 +320,14 @@
 			"with runaway thoughts",
 			"[asamāhita]"
 		],
+		"disturbed": [
+			"agitated",
+			"stirred up",
+			"cloudy",
+			"foggy",
+			"murky",
+			"[āvilena]"
+		],
 		"doubt": [
 			"confusion",
 			"indecisiveness",
@@ -409,6 +428,10 @@
 			"abandonment",
 			"[nekkhamma]"
 		],
+		"good friendship": [
+			"friendship with wholesome persons",
+			"[kalyāṇamittatā]"
+		],
 		"greed": [
 			"avarice",
 			"covetousness",
@@ -418,6 +441,7 @@
 			"[lobha]"
 		],
 		"harmful": ["injurious", "destructive", "bad", "evil", "[pāpaka]"],
+		"having many desires": ["greediness", "[mahicchatā]"],
 		"humility": [
 			"modesty",
 			"unpretentiousness",
@@ -673,7 +697,6 @@
 		],
 		"stinginess": [
 			"miserliness",
-			"greed",
 			"meanness",
 			"tight-fistedness",
 			"[macchariya]"
@@ -704,6 +727,7 @@
 			"delight in the success of others",
 			"[muditā]"
 		],
+		"tame": ["trained", "mastered", "subdued", "[danta]"],
 		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
 		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
 		"unwise attention": [
