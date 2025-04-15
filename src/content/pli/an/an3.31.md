@@ -2,6 +2,7 @@
 title: Sabrahmaka sutta - With Brahmā
 description: Where children honor their mother and father, those families are said to dwell with Brahmā.
 fetter: ignorance
+qualities: giving, respect
 tags: an,an3,brahmā,parents,mother,father,family,children,wise
 slug: an3.31
 ---

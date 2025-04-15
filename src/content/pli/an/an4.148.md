@@ -2,6 +2,7 @@
 title: Duccarita sutta - Misconduct
 description: Four kinds of verbal misconduct - 1) lying, 2) divisive speech, 3) harsh speech, and 4) frivolous chatter.
 fetter: sensual desire, ill will, personal existence, conceit, ignorance
+qualities: wrong speech
 tags: verbal misconduct, lying, divisive speech, harsh speech, frivolous chatter, speech, communication, an, an4
 slug: an4.148
 ---
