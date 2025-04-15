@@ -6,56 +6,37 @@ const CACHE_TTL = 120 * 60 * 1000; // 120 minutes TTL
 const AUTH_GET_USER_TIMEOUT = 10000; // 10 seconds
 
 /* Centralized session verification */
-export async function verifyUser(sessionCookie: string | undefined) {
-	const opId = `verifyUser-${Date.now()}`;
-	console.log(`[${opId}] Verifying user with session cookie`);
+export async function verifyUser(sessionCookie: string, forceRefresh = false): Promise<UserRecord | null> {
+  try {
+    const auth = getAuth(app);
+    const decodedCookie = await auth.verifySessionCookie(sessionCookie, true);
+    const uid = decodedCookie.uid;
+    
+    // Check if we have a valid cached user and not forcing refresh
+    const cachedData = userCache.get(uid);
+    const now = Date.now();
+    
+    if (!forceRefresh && cachedData && (now - cachedData.timestamp < CACHE_TTL)) {
+      return cachedData.user;
+    }
+    
+    // If no valid cache or forced refresh, get fresh data
+    const freshUserData = await auth.getUser(uid);
+    
+    // Update cache with new data
+    userCache.set(uid, { 
+      user: freshUserData, 
+      timestamp: now 
+    });
+    
+    return freshUserData;
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    return null;
+  }
+}
 
-	if (!sessionCookie) {
-		console.log(`[${opId}] No session cookie provided`);
-		throw new Error("No session");
-	}
-
-	const now = Date.now();
-	const cached = userCache.get(sessionCookie);
-	if (cached && now - cached.timestamp < CACHE_TTL) {
-		console.log(`[${opId}] Returning cached user`);
-		return cached.user;
-	}
-
-	try {
-		const auth = getAuth(app);
-		console.log(`[${opId}] Verifying session cookie with Firebase Auth`);
-		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-		console.log(`[${opId}] Session cookie verified, fetching user`);
-
-		// Add a timeout to the getUser call
-		const getUserPromise = auth.getUser(decodedCookie.uid);
-		const timeoutPromise = new Promise((_, reject) =>
-			setTimeout(
-				() =>
-					reject(
-						new Error(
-							`Timeout of ${AUTH_GET_USER_TIMEOUT}ms exceeded`
-						)
-					),
-				AUTH_GET_USER_TIMEOUT
-			)
-		);
-
-		const user = await Promise.race([getUserPromise, timeoutPromise]);
-
-		console.log(`[${opId}] User fetched successfully`);
-
-		if (!user) {
-			console.log(`[${opId}] User not found in Firebase Auth`);
-			throw new Error("User not found");
-		}
-
-		userCache.set(sessionCookie, { user, timestamp: now });
-		console.log(`[${opId}] User cached and returning`);
-		return user;
-	} catch (error: any) {
-		console.error(`[${opId}] Error verifying user: ${error.message}`);
-		throw error;
-	}
+// Function to clear cache for specific user (can be called after profile update)
+export function clearUserCache(uid: string): void {
+  userCache.delete(uid);
 }

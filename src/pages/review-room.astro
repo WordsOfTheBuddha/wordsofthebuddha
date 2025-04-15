@@ -15,8 +15,10 @@ import { verifyUser } from "../middleware/auth";
 const sessionCookie = Astro.cookies.get("__session")?.value;
 if (!sessionCookie) return Astro.redirect("/signin");
 let user;
+let userDisplayName = "there"; // Default display name
 try {
 	user = await verifyUser(sessionCookie);
+	userDisplayName = user.displayName || user.email || "there"; // Get display name or fallback
 } catch (err) {
 	return Astro.redirect("/signin");
 }
@@ -24,10 +26,11 @@ try {
 let validHighlights: any[] = [];
 let validReadLaterEntries: any[] = [];
 let validSavedEntries: any[] = [];
-let validReadEntries: any[] = []; // New array for read entries
+let validReadEntries: any[] = [];
 
 try {
-	const [highlightsResponse, readLaterDocs, savedDocs, readDoc] =
+	// Fetch highlights API, and the single 'pages' documents for readLater, saves, and read
+	const [highlightsResponse, readLaterDoc, savedDoc, readDoc] =
 		await Promise.all([
 			fetch(`${Astro.url.origin}/api/highlights/list`, {
 				headers: {
@@ -38,13 +41,13 @@ try {
 				.collection("users")
 				.doc(user.uid)
 				.collection("readLater")
-				.orderBy("addedAt", "desc")
+				.doc("pages") // Fetch single doc
 				.get(),
 			db
 				.collection("users")
 				.doc(user.uid)
 				.collection("saves")
-				.orderBy("savedAt", "desc")
+				.doc("pages") // Fetch single doc
 				.get(),
 			db
 				.collection("users")
@@ -54,51 +57,63 @@ try {
 				.get(),
 		]);
 
+	// Process highlights
 	const { highlights: validHighlightsData } = await highlightsResponse.json();
 	validHighlights = validHighlightsData;
 
-	const readLaterEntries = await Promise.all(
-		readLaterDocs.docs.map(async (doc) => {
-			try {
-				const entry = await getEntry("all", doc.id); // doc.id is the slug
-				return entry
-					? {
-							...entry,
-							addedAt: doc.data().addedAt.toDate(),
-							timestamp: doc.data().addedAt.toMillis(), // Add timestamp for sorting
-						}
-					: null;
-			} catch {
-				return null;
-			}
-		})
-	);
+	// Process readLater entries from the 'pages' document
+	if (readLaterDoc.exists && readLaterDoc.data()?.pages) {
+		const readLaterPages = readLaterDoc.data()?.pages || {};
+		const readLaterSlugs = Object.keys(readLaterPages);
 
-	// Filter out null entries and sort by timestamp
-	validReadLaterEntries = readLaterEntries
-		.filter(Boolean)
-		.sort((a, b) => b.timestamp - a.timestamp);
+		const readLaterEntries = await Promise.all(
+			readLaterSlugs.map(async (slug) => {
+				try {
+					const entry = await getEntry("all", slug);
+					const timestampInMinutes = readLaterPages[slug];
+					return entry
+						? {
+								...entry,
+								addedAt: new Date(timestampInMinutes * 60000), // Convert minutes back to Date
+								timestamp: timestampInMinutes, // Keep minutes for sorting
+							}
+						: null;
+				} catch {
+					return null;
+				}
+			})
+		);
+		validReadLaterEntries = readLaterEntries
+			.filter(Boolean)
+			.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (minutes)
+	}
 
-	const savedEntries = await Promise.all(
-		savedDocs.docs.map(async (doc) => {
-			try {
-				const entry = await getEntry("all", doc.id);
-				return entry
-					? {
-							...entry,
-							savedAt: doc.data().savedAt.toDate(),
-							timestamp: doc.data().savedAt.toMillis(),
-						}
-					: null;
-			} catch {
-				return null;
-			}
-		})
-	);
+	// Process saved entries from the 'pages' document
+	if (savedDoc.exists && savedDoc.data()?.pages) {
+		const savedPages = savedDoc.data()?.pages || {};
+		const savedSlugs = Object.keys(savedPages);
 
-	validSavedEntries = savedEntries
-		.filter(Boolean)
-		.sort((a, b) => b.timestamp - a.timestamp);
+		const savedEntries = await Promise.all(
+			savedSlugs.map(async (slug) => {
+				try {
+					const entry = await getEntry("all", slug);
+					const timestampInMinutes = savedPages[slug];
+					return entry
+						? {
+								...entry,
+								savedAt: new Date(timestampInMinutes * 60000), // Convert minutes back to Date
+								timestamp: timestampInMinutes, // Keep minutes for sorting
+							}
+						: null;
+				} catch {
+					return null;
+				}
+			})
+		);
+		validSavedEntries = savedEntries
+			.filter(Boolean)
+			.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (minutes)
+	}
 
 	// Process read entries
 	if (readDoc.exists && readDoc.data()?.pages) {
@@ -109,11 +124,12 @@ try {
 			readSlugs.map(async (slug) => {
 				try {
 					const entry = await getEntry("all", slug);
+					const timestampInMinutes = readPages[slug];
 					return entry
 						? {
 								...entry,
-								readAt: new Date(readPages[slug] * 60000), // Convert minutes back to milliseconds
-								timestamp: readPages[slug] * 60000,
+								readAt: new Date(timestampInMinutes * 60000), // Convert minutes back to milliseconds
+								timestamp: timestampInMinutes, // Keep minutes for sorting
 							}
 						: null;
 				} catch {
@@ -124,7 +140,7 @@ try {
 
 		validReadEntries = readEntries
 			.filter(Boolean)
-			.sort((a, b) => b.timestamp - a.timestamp);
+			.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (minutes)
 	}
 } catch (error) {
 	console.error("Error fetching data concurrently:", error);
@@ -134,6 +150,13 @@ try {
 <Layout showAuth={true}>
 	<div class="py-4 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-5xl mx-auto" id="dashboard-container">
+			<!-- Greeting Message -->
+			<div
+				id="greeting"
+				class="text-xl sm:text-2xl font-light mb-4 text-center sm:text-left text-gradient-accent"
+			>
+			</div>
+
 			<div class="sticky top-0 bg-white dark:bg-gray-900 z-10 py-2">
 				<nav class="-mb-px flex space-x-8" aria-label="Tabs">
 					<a
@@ -265,7 +288,7 @@ try {
 					{
 						validSavedEntries.length === 0 ? (
 							<div class="text-center py-8 text-gray-500">
-								<p>No posts saved yet.</p>
+								<p>No discourses saved yet.</p>
 							</div>
 						) : (
 							<div class="space-y-4">
@@ -385,11 +408,29 @@ try {
 	}
 </style>
 
-<script>
+<script define:vars={{ userDisplayName }}>
+	// Greeting Script
+	const greetingEl = document.getElementById("greeting");
+	if (greetingEl) {
+		const hour = new Date().getHours();
+		let timeOfDayGreeting;
+		if (hour >= 5 && hour < 12) {
+			timeOfDayGreeting = "Good morning";
+		} else if (hour >= 12 && hour < 18) {
+			timeOfDayGreeting = "Good afternoon";
+		} else {
+			timeOfDayGreeting = "Good evening";
+		}
+		// Use the display name directly from the server-side variable
+		const displayName = userDisplayName || "there"; // Access variable directly
+		greetingEl.textContent = `${timeOfDayGreeting}, ${displayName}.`;
+	}
+
+	// Tab Script
 	const tabLinks = document.querySelectorAll(".tab-link");
 	const tabContents = document.querySelectorAll(".tab-content");
 
-	function showTab(tabId: string) {
+	function showTab(tabId) {
 		tabContents.forEach((content) => content.classList.add("hidden"));
 		tabLinks.forEach((link) => link.classList.remove("active"));
 
