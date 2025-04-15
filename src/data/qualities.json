@@ -41,6 +41,7 @@
 		"personal existence",
 		"resentment",
 		"sensual desire",
+		"sexual misconduct",
 		"shamelessness",
 		"slaughtering",
 		"stealing",
@@ -54,6 +55,7 @@
 		"vanity",
 		"weak in effort",
 		"wrong intention",
+		"wrong speech",
 		"wrong view"
 	],
 	"neutral": ["companionship", "desire"],
@@ -74,6 +76,7 @@
 		"ending",
 		"equanimity",
 		"ethical conduct",
+		"examination",
 		"faith",
 		"fear of wrongdoing",
 		"flexible",
@@ -84,7 +87,7 @@
 		"good friendship",
 		"humility",
 		"inquisitiveness",
-		"examination",
+		"knowledge",
 		"learning",
 		"liberation",
 		"loving-kindness",
@@ -92,6 +95,8 @@
 		"mindfulness",
 		"non-harm",
 		"not taking what is not given",
+		"one-pointedness",
+		"patience",
 		"recognition of impermanence",
 		"respect",
 		"right intention",
@@ -108,6 +113,7 @@
 		"vigour",
 		"vision",
 		"wakefulness",
+		"wholesome",
 		"wisdom",
 		"wise attention"
 	],
@@ -504,6 +510,12 @@
 			"unwilling to part with",
 			"[issā]"
 		],
+		"knowledge": [
+			"knowing (of)",
+			"insight (into)",
+			"understanding (of)",
+			"[ñāṇa]"
+		],
 		"lack of discernment": [
 			"lack of clear comprehension",
 			"lack of wisdom",
@@ -564,6 +576,12 @@
 			"[anottappa]"
 		],
 		"muddle-minded": ["forgetful", "not mindful", "[muṭṭhassatī]"],
+		"one-pointedness": [
+			"concentration",
+			"focus",
+			"unification of mind",
+			"[ekagga]"
+		],
 		"negligence": [
 			"carelessness",
 			"heedlessness",
@@ -599,6 +617,7 @@
 			"lust",
 			"[rāga]"
 		],
+		"patience": ["endurance", "tolerance", "[khanti]"],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -639,13 +658,13 @@
 			"harmonious speech",
 			"articulate words",
 			"eloquent communication",
-			"[samma vaca]"
+			"[sammāvācā]"
 		],
 		"right view": [
 			"right understanding",
 			"right belief",
 			"view that is inline with the Dhamma",
-			"[samma ditthi]"
+			"[sammādiṭṭhi]"
 		],
 		"rousing of energy": [
 			"determination",
@@ -672,6 +691,13 @@
 			"lust",
 			"craving for pleasure",
 			"[kāmacchanda]"
+		],
+		"sexual misconduct": [
+			"crossing boundaries",
+			"infidelity",
+			"inappropriate sexual behavior",
+			"unfaithfulness to one's partner",
+			"[kāmesumicchācāra]"
 		],
 		"shamelessness": [
 			"lack of conscience",
@@ -793,6 +819,14 @@
 			"wrong thought",
 			"harmful volition",
 			"[micchāsaṅkappa]"
+		],
+		"wrong speech": [
+			"false speech",
+			"lying",
+			"slanderous or defamatory or malicious speech",
+			"abusive or rude or unkind way of speaking",
+			"meaningless talk or idle chatter or gossip",
+			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
 		],
 		"wrong view": [
 			"distorted perceptions",
