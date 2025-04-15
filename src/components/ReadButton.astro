@@ -1,0 +1,319 @@
+---
+import Check from "../assets/check.svg?raw";
+import CheckDashed from "../assets/check-dashed.svg?raw";
+import SignInPrompt from "./SignInPrompt.astro";
+
+// Get slug for API calls
+const slug = Astro.url.pathname.replace(/^\/+/, "");
+
+// Initial state will be determined by client-side JS
+const hasRead = false;
+const userId = null;
+---
+
+<div class="relative shrink-0">
+	<button
+		id="readButton"
+		class:list={[
+			"inline-flex items-center gap-1 px-4 py-2 text-sm rounded-full transition-all duration-300",
+			"border border-gray-300 dark:border-gray-700",
+			"hover:bg-gray-100 dark:hover:bg-gray-800",
+			"relative", // For positioning the ping
+		]}
+		aria-label="Mark content as read"
+		data-authenticated={Boolean(userId)}
+		data-loading="true"
+		data-slug={slug}
+	>
+		<!-- Static ping indicator that's always in the DOM but hidden by default -->
+		<div id="pingIndicator" class="hidden">
+			<span class="absolute -right-1 -top-1 flex h-4 w-4 rounded-full">
+				<span
+					class="ping-animation absolute inline-flex h-full w-full rounded-full opacity-75"
+				></span>
+				<span class="relative inline-flex rounded-full h-4 w-4"></span>
+			</span>
+		</div>
+
+		<span id="readCheckDashedIcon" class="w-4 h-4" set:html={CheckDashed} />
+		<span id="readCheckIcon" class="w-4 h-4 hidden" set:html={Check} />
+		<span id="readLabel">Mark as read</span>
+	</button>
+	<SignInPrompt id="readSignInPrompt" feature="mark this page as read" />
+</div>
+
+<script>
+	const btn = document.getElementById("readButton");
+	const check = document.getElementById("readCheckIcon");
+	const dashedCheck = document.getElementById("readCheckDashedIcon");
+	const readLabel = document.getElementById("readLabel");
+	const prompt = document.getElementById("readSignInPrompt");
+	const pingIndicator = document.getElementById("pingIndicator");
+	const slug =
+		btn?.dataset.slug || window.location.pathname.replace(/^\/+/, "");
+
+	// Local storage key for offline mode
+	const READ_ITEMS_KEY = "offlineReadItems";
+
+	// Time tracking
+	let startTime = Date.now();
+	let hasReachedBottom = false;
+	let isPingAnimationShown = false;
+	let userInteractedWithReadButton = false; // New flag
+
+	function updateState(isRead: boolean) {
+		if (isRead) {
+			btn?.setAttribute(
+				"style",
+				"color: var(--layout-active-color); border-color: var(--layout-active-color)"
+			);
+			dashedCheck?.classList.add("hidden");
+			check?.classList.remove("hidden");
+			if (readLabel) readLabel.innerText = "Read";
+			// Hide ping animation and reset flag when marked as read
+			if (pingIndicator) pingIndicator.style.display = "none";
+		} else {
+			btn?.removeAttribute("style");
+			dashedCheck?.classList.remove("hidden");
+			check?.classList.add("hidden");
+			if (readLabel) readLabel.innerText = "Mark as read";
+		}
+	}
+
+	// Load read state from local storage
+	function getOfflineReadState(): boolean {
+		try {
+			const items = JSON.parse(
+				localStorage.getItem(READ_ITEMS_KEY) || '{"pages":{}}'
+			);
+			return Boolean(items.pages[slug]);
+		} catch (e) {
+			return false;
+		}
+	}
+
+	// Update local storage for offline mode
+	function updateOfflineReadState(isRead: boolean) {
+		try {
+			let items = JSON.parse(
+				localStorage.getItem(READ_ITEMS_KEY) || '{"pages":{}}'
+			);
+
+			if (isRead) {
+				// Store timestamp with minute precision
+				items.pages[slug] = Math.floor(Date.now() / 60000);
+			} else {
+				delete items.pages[slug];
+			}
+
+			localStorage.setItem(READ_ITEMS_KEY, JSON.stringify(items));
+		} catch (e) {
+			console.error("Error updating offline read state", e);
+		}
+	}
+
+	// Check read status from server or fall back to offline mode
+	async function checkReadStatus() {
+		try {
+			// First check if we have a cached version
+			const cachedState = getOfflineReadState();
+			let initialStateIsRead = cachedState; // Assume cached state initially
+
+			try {
+				const response = await fetch(`/api/read/${slug}`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json" },
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					initialStateIsRead = data.hasRead; // Update with server state
+					// Update button state based on server data
+					updateState(data.hasRead);
+					// Update authentication status
+					btn?.setAttribute(
+						"data-authenticated",
+						data.isAuthenticated.toString()
+					);
+					// Update offline cache
+					updateOfflineReadState(data.hasRead);
+				} else {
+					// If API fails, use cached state
+					updateState(cachedState);
+				}
+			} catch (error) {
+				// Network error - offline mode
+				console.log("Using offline mode for read status");
+				updateState(cachedState);
+			}
+
+			// If the initial state is 'Read', prevent the ping animation from ever showing
+			if (initialStateIsRead) {
+				isPingAnimationShown = true; // Prevent initial show
+				userInteractedWithReadButton = true; // Consider initial 'Read' state as interaction
+			}
+		} finally {
+			// Remove loading state
+			btn?.removeAttribute("data-loading");
+		}
+	}
+
+	function showPingAnimation() {
+		// Prevent showing if already shown, if content is already marked as read, or if user interacted
+		const isAlreadyRead = !check?.classList.contains("hidden");
+		if (
+			isPingAnimationShown ||
+			isAlreadyRead ||
+			userInteractedWithReadButton
+		) {
+			return;
+		}
+
+		// Direct DOM approach to ensure visibility
+		if (pingIndicator) {
+			console.log("Showing ping animation");
+			pingIndicator.style.display = "block";
+
+			// Apply the theme's accent color to both ping elements
+			const pingElements = pingIndicator.querySelectorAll("span");
+			pingElements.forEach((el) => {
+				el.style.backgroundColor = "var(--secondary-color)";
+			});
+
+			isPingAnimationShown = true; // Set flag to true after showing
+		} else {
+			console.error("Ping indicator element not found");
+		}
+	}
+
+	function checkScrollPosition() {
+		// Calculate if user has reached the bottom of the content
+		const scrollPosition = window.scrollY + window.innerHeight;
+		const contentElement =
+			document.querySelector("article") || document.querySelector("main");
+
+		if (contentElement) {
+			const contentBottom =
+				contentElement.offsetTop + contentElement.offsetHeight - 200; // 200px before actual bottom
+			hasReachedBottom = scrollPosition >= contentBottom;
+
+			// Check conditions for ping animation
+			const timeSpent = (Date.now() - startTime) / 1000; // time in seconds
+			const isAlreadyRead = !check?.classList.contains("hidden");
+
+			// FOR TESTING - Trigger quickly
+			// if (timeSpent > 5 && !isPingAnimationShown && !isAlreadyRead) {
+			// 	console.log("TEST: 5 seconds passed");
+			// 	showPingAnimation();
+			// }
+
+			if (
+				hasReachedBottom &&
+				timeSpent >= 60 && // Use 60 seconds for production
+				!isPingAnimationShown &&
+				!isAlreadyRead && // Only show when NOT read
+				!userInteractedWithReadButton // Only show if user hasn't clicked the button yet
+			) {
+				showPingAnimation();
+			}
+		}
+	}
+
+	if (btn) {
+		// Check status when page loads
+		checkReadStatus();
+
+		btn.addEventListener("click", async () => {
+			userInteractedWithReadButton = true; // Set flag on first interaction
+
+			const isAuthenticated = btn.dataset.authenticated === "true";
+			if (!isAuthenticated) {
+				// Close all other prompts first
+				document.querySelectorAll("[data-prompt]").forEach((p) => {
+					if (p.id !== "readSignInPrompt") {
+						p.classList.add("hidden");
+					}
+				});
+				prompt?.classList.remove("hidden");
+				return;
+			}
+
+			const wasRead = !check?.classList.contains("hidden");
+
+			// Hide ping animation on click regardless of state change
+			if (pingIndicator) pingIndicator.style.display = "none";
+			isPingAnimationShown = false; // Reset flag on interaction (though userInteracted flag prevents reshow)
+
+			// Start animation before API call
+			if (!wasRead) {
+				btn?.classList.add("animate-pulse");
+			}
+
+			try {
+				// Try online mode first
+				try {
+					const response = await fetch(`/api/read/${slug}`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ isRead: !wasRead }),
+					});
+
+					if (response.ok) {
+						updateState(!wasRead);
+						updateOfflineReadState(!wasRead);
+					} else {
+						throw new Error("API error");
+					}
+				} catch (error) {
+					// Offline mode fallback
+					console.log("Using offline mode for read action");
+					updateState(!wasRead);
+					updateOfflineReadState(!wasRead);
+				}
+			} finally {
+				btn?.classList.remove("animate-pulse");
+			}
+		});
+
+		// Handle sign-in prompt close button if prompt exists
+		if (prompt) {
+			const closeBtn = prompt.querySelector(".close-prompt");
+			closeBtn?.addEventListener("click", () => {
+				prompt.classList.add("hidden");
+			});
+		}
+
+		// Monitor scroll and time for ping animation
+		window.addEventListener("scroll", checkScrollPosition);
+
+		// Check scroll position every second for more reliable detection
+		const intervalId = setInterval(checkScrollPosition, 1000);
+
+		// Cleanup when component is removed
+		document.addEventListener("astro:page-load", () => {
+			clearInterval(intervalId);
+			window.removeEventListener("scroll", checkScrollPosition);
+		});
+	}
+</script>
+
+<style>
+	/* Custom ping animation for better visibility */
+	.ping-animation {
+		animation: custom-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+	}
+
+	@keyframes custom-ping {
+		0% {
+			transform: scale(0.8);
+			opacity: 1;
+		}
+		75%,
+		100% {
+			transform: scale(1.8);
+			opacity: 0;
+		}
+	}
+</style>
