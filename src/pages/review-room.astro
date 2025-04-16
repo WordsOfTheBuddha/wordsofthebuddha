@@ -7,6 +7,7 @@ import PostCard from "../components/PostCard.astro";
 import ClockSolid from "../assets/clock-solid.svg?raw";
 import SaveSolid from "../assets/save-solid.svg?raw";
 import HighlightIcon from "../assets/highlight.svg?raw";
+import CheckSolid from "../assets/check.svg?raw";
 import type { Highlight } from "../types/notes";
 import { transformId } from "../utils/transformId";
 import { verifyUser } from "../middleware/auth";
@@ -14,8 +15,10 @@ import { verifyUser } from "../middleware/auth";
 const sessionCookie = Astro.cookies.get("__session")?.value;
 if (!sessionCookie) return Astro.redirect("/signin");
 let user;
+let userDisplayName = "there"; // Default display name
 try {
 	user = await verifyUser(sessionCookie);
+	userDisplayName = user.displayName || user.email || "there"; // Get display name or fallback
 } catch (err) {
 	return Astro.redirect("/signin");
 }
@@ -23,73 +26,122 @@ try {
 let validHighlights: any[] = [];
 let validReadLaterEntries: any[] = [];
 let validSavedEntries: any[] = [];
+let validReadEntries: any[] = [];
 
 try {
-	const [highlightsResponse, readLaterDocs, savedDocs] = await Promise.all([
-		fetch(`${Astro.url.origin}/api/highlights/list`, {
-			headers: {
-				cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
-			},
-		}),
-		db
-			.collection("users")
-			.doc(user.uid)
-			.collection("readLater")
-			.orderBy("addedAt", "desc")
-			.get(),
-		db
-			.collection("users")
-			.doc(user.uid)
-			.collection("saves")
-			.orderBy("savedAt", "desc")
-			.get(),
-	]);
+	// Fetch highlights API, and the single 'pages' documents for readLater, saves, and read
+	const [highlightsResponse, readLaterDoc, savedDoc, readDoc] =
+		await Promise.all([
+			fetch(`${Astro.url.origin}/api/highlights/list`, {
+				headers: {
+					cookie: `__session=${Astro.cookies.get("__session")?.value || ""}`,
+				},
+			}),
+			db
+				.collection("users")
+				.doc(user.uid)
+				.collection("readLater")
+				.doc("pages") // Fetch single doc
+				.get(),
+			db
+				.collection("users")
+				.doc(user.uid)
+				.collection("saves")
+				.doc("pages") // Fetch single doc
+				.get(),
+			db
+				.collection("users")
+				.doc(user.uid)
+				.collection("read")
+				.doc("pages")
+				.get(),
+		]);
 
+	// Process highlights
 	const { highlights: validHighlightsData } = await highlightsResponse.json();
 	validHighlights = validHighlightsData;
 
-	const readLaterEntries = await Promise.all(
-		readLaterDocs.docs.map(async (doc) => {
-			try {
-				const entry = await getEntry("all", doc.id); // doc.id is the slug
-				return entry
-					? {
-							...entry,
-							addedAt: doc.data().addedAt.toDate(),
-							timestamp: doc.data().addedAt.toMillis(), // Add timestamp for sorting
-						}
-					: null;
-			} catch {
-				return null;
-			}
-		})
-	);
+	// Process readLater entries from the 'pages' document
+	if (readLaterDoc.exists && readLaterDoc.data()?.pages) {
+		const readLaterPages = readLaterDoc.data()?.pages || {};
+		const readLaterSlugs = Object.keys(readLaterPages);
 
-	// Filter out null entries and sort by timestamp
-	validReadLaterEntries = readLaterEntries
-		.filter(Boolean)
-		.sort((a, b) => b.timestamp - a.timestamp);
+		const readLaterEntries = await Promise.all(
+			readLaterSlugs.map(async (slug) => {
+				try {
+					const entry = await getEntry("all", slug);
+					const timestampInMinutes = readLaterPages[slug];
+					return entry
+						? {
+								...entry,
+								addedAt: new Date(timestampInMinutes * 60000), // Convert minutes back to Date
+								timestamp: timestampInMinutes, // Keep minutes for sorting
+							}
+						: null;
+				} catch {
+					return null;
+				}
+			})
+		);
+		validReadLaterEntries = readLaterEntries
+			.filter(Boolean)
+			.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (minutes)
+	}
 
-	const savedEntries = await Promise.all(
-		savedDocs.docs.map(async (doc) => {
-			try {
-				const entry = await getEntry("all", doc.id);
-				return entry
-					? {
-							...entry,
-							savedAt: doc.data().savedAt.toDate(),
-							timestamp: doc.data().savedAt.toMillis(),
-						}
-					: null;
-			} catch {
-				return null;
-			}
-		})
-	);
+	// Process saved entries from the 'pages' document
+	if (savedDoc.exists && savedDoc.data()?.pages) {
+		const savedPages = savedDoc.data()?.pages || {};
+		const savedSlugs = Object.keys(savedPages);
 
-	validSavedEntries = savedEntries
-		.filter(Boolean)
-		.sort((a, b) => b.timestamp - a.timestamp);
+		const savedEntries = await Promise.all(
+			savedSlugs.map(async (slug) => {
+				try {
+					const entry = await getEntry("all", slug);
+					const timestampInMinutes = savedPages[slug];
+					return entry
+						? {
+								...entry,
+								savedAt: new Date(timestampInMinutes * 60000), // Convert minutes back to Date
+								timestamp: timestampInMinutes, // Keep minutes for sorting
+							}
+						: null;
+				} catch {
+					return null;
+				}
+			})
+		);
+		validSavedEntries = savedEntries
+			.filter(Boolean)
+			.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (minutes)
+	}
+
+	// Process read entries
+	if (readDoc.exists && readDoc.data()?.pages) {
+		const readPages = readDoc.data()?.pages || {};
+		const readSlugs = Object.keys(readPages);
+
+		const readEntries = await Promise.all(
+			readSlugs.map(async (slug) => {
+				try {
+					const entry = await getEntry("all", slug);
+					const timestampInMinutes = readPages[slug];
+					return entry
+						? {
+								...entry,
+								readAt: new Date(timestampInMinutes * 60000), // Convert minutes back to milliseconds
+								timestamp: timestampInMinutes, // Keep minutes for sorting
+							}
+						: null;
+				} catch {
+					return null;
+				}
+			})
+		);
+
+		validReadEntries = readEntries
+			.filter(Boolean)
+			.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp (minutes)
+	}
 } catch (error) {
 	console.error("Error fetching data concurrently:", error);
 }
@@ -98,145 +150,229 @@ try {
 <Layout showAuth={true}>
 	<div class="py-4 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-5xl mx-auto" id="dashboard-container">
-			<div class="sticky top-0 bg-white dark:bg-gray-900 z-10 py-2">
-				<nav class="-mb-px flex space-x-8" aria-label="Tabs">
-					<a
-						href="#highlights"
-						class="tab-link active"
-						data-tab="highlights"
+			<!-- Tab Navigation as Pills - Mobile scrolling, tablet+ center alignment -->
+			<div class="sticky top-0 z-10 bg-white dark:bg-gray-900 py-2 mb-4">
+				<!-- Scrollable container with fade indicators for mobile only -->
+				<div class="pills-scroll-container relative">
+					<div
+						class="pills-scroll-fade-left absolute left-0 top-0 h-full w-8 pointer-events-none md:hidden"
 					>
-						<span
-							class="inline-flex text-base sm:text-lg items-center gap-2"
+					</div>
+					<nav
+						class="pills-scroll flex gap-2 sm:gap-4 overflow-x-auto py-1 md:justify-center md:flex-wrap scrollbar-hide"
+						aria-label="Tabs"
+					>
+						<a
+							href="#highlights"
+							class="tab-pill flex-shrink-0"
+							data-tab="highlights"
 						>
-							<span class="w-4 h-4" set:html={HighlightIcon} />
-							Highlights
-						</span>
-					</a>
-					<a href="#readlater" class="tab-link" data-tab="readlater">
-						<span
-							class="inline-flex text-base sm:text-lg items-center gap-2"
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span
+									class="w-4 h-4"
+									set:html={HighlightIcon}
+								/>
+								Highlights
+							</span>
+						</a>
+						<a
+							href="#read"
+							class="tab-pill flex-shrink-0"
+							data-tab="read"
 						>
-							<span class="w-4 h-4" set:html={ClockSolid} />
-							Read Later
-						</span>
-					</a>
-					<a href="#saves" class="tab-link" data-tab="saves">
-						<span
-							class="inline-flex text-base sm:text-lg items-center gap-2"
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={CheckSolid} />
+								Read
+							</span>
+						</a>
+						<a
+							href="#saves"
+							class="tab-pill flex-shrink-0"
+							data-tab="saves"
 						>
-							<span class="w-4 h-4" set:html={SaveSolid} />
-							Saves
-						</span>
-					</a>
-				</nav>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={SaveSolid} />
+								Saves
+							</span>
+						</a>
+						<a
+							href="#readlater"
+							class="tab-pill flex-shrink-0"
+							data-tab="readlater"
+						>
+							<span
+								class="inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
+							>
+								<span class="w-4 h-4" set:html={ClockSolid} />
+								Read Later
+							</span>
+						</a>
+					</nav>
+					<div
+						class="pills-scroll-fade-right absolute right-0 top-0 h-full w-8 pointer-events-none md:hidden"
+					>
+					</div>
+				</div>
 			</div>
 
-			<div id="highlights" class="tab-content">
-				<div class="mt-8 space-y-4">
-					{
-						validHighlights.length === 0 ? (
-							<div class="text-center py-8 text-gray-500">
-								<p>No highlights found.</p>
-							</div>
-						) : (
-							validHighlights.map((highlight: Highlight) => (
-								<div class="highlight-page">
-									<div class="flex items-start">
-										<div class="min-w-0 pr-4">
-											<h2 class="text-base sm:text-lg font-semibold mb-2">
-												<a
-													href={highlight.slug}
-													class="text-gray-500 hover:text-link-color"
-												>
-													{transformId(
-														highlight.slug
-															?.replace(/^\//, "")
-															.split("?")[0] || ""
-													)}
-													{highlight.title}
-												</a>
-											</h2>
-											{highlight.description && (
-												<p class="text-text line-clamp-2 text-sm">
-													{highlight.description}
-												</p>
-											)}
+			<!-- Greeting Message -->
+			<div
+				id="greeting"
+				class="text-xl sm:text-2xl font-light mt-6 mb-6 text-center text-gradient-accent"
+			>
+			</div>
+
+			<!-- Tab Content Area -->
+			<div id="tab-content-area" class="px-2">
+				<div id="highlights" class="tab-content hidden">
+					<div class="mt-4 space-y-4">
+						{
+							validHighlights.length === 0 ? (
+								<div class="text-center py-8 text-gray-500">
+									<p>No highlights found.</p>
+								</div>
+							) : (
+								validHighlights.map((highlight: Highlight) => (
+									<div class="highlight-page">
+										<div class="flex items-start">
+											<div class="min-w-0 pr-4">
+												<h2 class="text-base sm:text-lg font-semibold mb-2">
+													<a
+														href={highlight.slug}
+														class="text-gray-500 hover:text-link-color"
+													>
+														{transformId(
+															highlight.slug
+																?.replace(
+																	/^\//,
+																	""
+																)
+																.split(
+																	"?"
+																)[0] || ""
+														)}
+														{highlight.title}
+													</a>
+												</h2>
+												{highlight.description && (
+													<p class="text-text line-clamp-2 text-sm">
+														{highlight.description}
+													</p>
+												)}
+											</div>
 										</div>
-									</div>
-									<div class="highlight-content">
-										{Object.values(
-											highlight.highlightSegments
-										)
-											.sort((a, b) => a.order - b.order)
-											.map((segment) => {
-												// Remove style attribute from p elements, handling any style content
-												const cleanedHTML =
-													segment.containerHTML?.replace(
-														/<p([^>]*?)style="[^"]*"([^>]*?)>/g,
-														"<p$1$2>"
+										<div class="highlight-content">
+											{Object.values(
+												highlight.highlightSegments
+											)
+												.sort(
+													(a, b) => a.order - b.order
+												)
+												.map((segment) => {
+													// Remove style attribute from p elements, handling any style content
+													const cleanedHTML =
+														segment.containerHTML?.replace(
+															/<p([^>]*?)style="[^"]*"([^>]*?)>/g,
+															"<p$1$2>"
+														);
+													return (
+														<Fragment
+															set:html={
+																cleanedHTML
+															}
+														/>
 													);
-												return (
-													<Fragment
-														set:html={cleanedHTML}
-													/>
-												);
-											})}
+												})}
+										</div>
+										<p class="text-gray-500 text-xs my-0 text-right">
+											Highlighted on{" "}
+											{highlight.formattedDate}
+										</p>
 									</div>
-									<p class="text-gray-500 text-xs my-0 text-right">
-										Highlighted on {highlight.formattedDate}
+								))
+							)
+						}
+					</div>
+				</div>
+
+				<div id="readlater" class="tab-content hidden">
+					<div class="mt-4">
+						{
+							validReadLaterEntries.length === 0 ? (
+								<div class="text-center py-8 text-gray-500">
+									<p>
+										No discourses added for later reading.
 									</p>
 								</div>
-							))
-						)
-					}
+							) : (
+								<div class="space-y-4">
+									{validReadLaterEntries.map((entry) => (
+										<PostCard
+											id={entry.data.slug}
+											title={entry.data.title}
+											description={entry.data.description}
+											lastUpdated={entry.addedAt}
+											dateLabel="Added on"
+										/>
+									))}
+								</div>
+							)
+						}
+					</div>
 				</div>
-			</div>
 
-			<div id="readlater" class="tab-content hidden">
-				<div class="mt-8">
-					{
-						validReadLaterEntries.length === 0 ? (
-							<div class="text-center py-8 text-gray-500">
-								<p>No discourses added for later reading.</p>
-							</div>
-						) : (
-							<div class="space-y-4">
-								{validReadLaterEntries.map((entry) => (
-									<PostCard
-										id={entry.data.slug}
-										title={entry.data.title}
-										description={entry.data.description}
-										lastUpdated={entry.addedAt}
-										dateLabel="Added on"
-									/>
-								))}
-							</div>
-						)
-					}
+				<div id="saves" class="tab-content hidden">
+					<div class="mt-4">
+						{
+							validSavedEntries.length === 0 ? (
+								<div class="text-center py-8 text-gray-500">
+									<p>No discourses saved yet.</p>
+								</div>
+							) : (
+								<div class="space-y-4">
+									{validSavedEntries.map((entry) => (
+										<PostCard
+											id={entry.data.slug}
+											title={entry.data.title}
+											description={entry.data.description}
+											lastUpdated={entry.savedAt}
+											dateLabel="Saved on"
+										/>
+									))}
+								</div>
+							)
+						}
+					</div>
 				</div>
-			</div>
 
-			<div id="saves" class="tab-content hidden">
-				<div class="mt-8">
-					{
-						validSavedEntries.length === 0 ? (
-							<div class="text-center py-8 text-gray-500">
-								<p>No posts saved yet.</p>
-							</div>
-						) : (
-							<div class="space-y-4">
-								{validSavedEntries.map((entry) => (
-									<PostCard
-										id={entry.data.slug}
-										title={entry.data.title}
-										description={entry.data.description}
-										lastUpdated={entry.savedAt}
-										dateLabel="Saved on"
-									/>
-								))}
-							</div>
-						)
-					}
+				<div id="read" class="tab-content hidden">
+					<div class="mt-4">
+						{
+							validReadEntries.length === 0 ? (
+								<div class="text-center py-8 text-gray-500">
+									<p>No read discourses yet.</p>
+								</div>
+							) : (
+								<div class="space-y-4">
+									{validReadEntries.map((entry) => (
+										<PostCard
+											id={entry.data.slug}
+											title={entry.data.title}
+											description={entry.data.description}
+											lastUpdated={entry.readAt}
+											dateLabel="Read on"
+										/>
+									))}
+								</div>
+							)
+						}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -244,17 +380,78 @@ try {
 </Layout>
 
 <style>
-	.tab-link {
-		@apply border-b-2 border-transparent px-1 pb-4 text-sm font-medium;
+	.tab-pill {
+		@apply inline-flex items-center gap-1 px-3 py-1.5 sm:px-4 sm:py-2 text-sm rounded-full transition-all duration-300;
+		@apply border border-gray-300 dark:border-gray-700;
 		color: var(--text-color);
+		background-color: transparent;
 		&:hover {
-			border-color: var(--gray-400);
-			color: var(--text-color);
+			@apply bg-gray-100 dark:bg-gray-800;
 		}
 	}
-	.tab-link.active {
-		border-color: var(--secondary-color);
-		color: var(--secondary-color);
+
+	.tab-pill.active {
+		color: var(--layout-active-color);
+		border-color: var(--layout-active-color);
+		background-color: var(--layout-active-bg, transparent);
+	}
+
+	/* Pill scrolling styles - only apply scrolling behavior on mobile */
+	.pills-scroll {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+		padding-bottom: 4px;
+
+		/* On medium screens and up, return to standard flex layout */
+		@media (min-width: 768px) {
+			overflow-x: visible;
+		}
+	}
+
+	.pills-scroll::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Horizontal scroll container */
+	.pills-scroll-container {
+		@apply w-full;
+	}
+
+	/* Fade indicators for scrollable content */
+	.pills-scroll-fade-left {
+		background: linear-gradient(
+			to right,
+			var(--bg-color, #ffffff) 20%,
+			rgba(255, 255, 255, 0) 100%
+		);
+		opacity: 0; /* Start hidden */
+	}
+
+	.pills-scroll-fade-right {
+		background: linear-gradient(
+			to left,
+			var(--bg-color, #ffffff) 20%,
+			rgba(255, 255, 255, 0) 100%
+		);
+	}
+
+	/* Dark mode support for fade indicators */
+	@media (prefers-color-scheme: dark) {
+		.pills-scroll-fade-left {
+			background: linear-gradient(
+				to right,
+				var(--dark-bg-color, #1a202c) 20%,
+				rgba(26, 32, 44, 0) 100%
+			);
+		}
+
+		.pills-scroll-fade-right {
+			background: linear-gradient(
+				to left,
+				var(--dark-bg-color, #1a202c) 20%,
+				rgba(26, 32, 44, 0) 100%
+			);
+		}
 	}
 
 	.highlight-page {
@@ -317,44 +514,168 @@ try {
 	}
 </style>
 
-<script>
-	const tabLinks = document.querySelectorAll(".tab-link");
-	const tabContents = document.querySelectorAll(".tab-content");
+<script define:vars={{ userDisplayName }}>
+	// Greeting Script
+	const greetingEl = document.getElementById("greeting");
+	if (greetingEl) {
+		const hour = new Date().getHours();
+		let timeOfDayGreeting;
+		if (hour >= 5 && hour < 12) {
+			timeOfDayGreeting = "Good morning";
+		} else if (hour >= 12 && hour < 18) {
+			timeOfDayGreeting = "Good afternoon";
+		} else {
+			timeOfDayGreeting = "Good evening";
+		}
+		const displayName = userDisplayName || "there";
+		greetingEl.textContent = `${timeOfDayGreeting}, ${displayName}.`;
+	}
 
-	function showTab(tabId: string) {
+	// Tab Script - Simplified Direct Approach
+	const tabLinks = document.querySelectorAll(".tab-pill");
+	const tabContents = document.querySelectorAll(".tab-content");
+	const greetingContainer = document.getElementById("greeting");
+	const pillsScroll = document.querySelector(".pills-scroll");
+	const fadeLeft = document.querySelector(".pills-scroll-fade-left");
+	const fadeRight = document.querySelector(".pills-scroll-fade-right");
+
+	// Simple function to directly show greeting and hide all tabs
+	function showGreeting() {
+		// Hide all tabs first
 		tabContents.forEach((content) => content.classList.add("hidden"));
+
+		// Deactivate all pills
 		tabLinks.forEach((link) => link.classList.remove("active"));
 
+		// Show greeting
+		greetingContainer?.classList.remove("hidden");
+
+		// Update URL without hash
+		const currentPath = window.location.pathname + window.location.search;
+		history.replaceState(null, "", currentPath);
+	}
+
+	// Simple function to directly show a specific tab and hide greeting
+	function showTabContent(tabId) {
+		if (!tabId) {
+			showGreeting();
+			return;
+		}
+
+		// Get target elements
 		const targetContent = document.getElementById(tabId);
 		const targetLink = document.querySelector(`[data-tab="${tabId}"]`);
 
-		targetContent?.classList.remove("hidden");
-		targetLink?.classList.add("active");
+		// Ensure elements exist
+		if (!targetContent || !targetLink) {
+			showGreeting();
+			return;
+		}
 
-		// Scroll dashboard into view smoothly
-		document.getElementById("dashboard-container")?.scrollIntoView({
-			behavior: "smooth",
-			block: "start",
-		});
+		// Hide all content and deactivate all pills first
+		tabContents.forEach((content) => content.classList.add("hidden"));
+		tabLinks.forEach((link) => link.classList.remove("active"));
+
+		// Hide greeting
+		greetingContainer?.classList.add("hidden");
+
+		// Show target tab
+		targetContent.classList.remove("hidden");
+		targetLink.classList.add("active");
+
+		// Update URL with hash
+		history.replaceState(null, "", `#${tabId}`);
+
+		// Scroll the active pill into view - helps on mobile
+		if (pillsScroll && targetLink) {
+			// Scroll the tab into view with some padding
+			const padding = 40;
+			const scrollContainer = pillsScroll;
+			const scrollLeft = targetLink.offsetLeft - padding;
+
+			// Use smooth scrolling for a nicer experience
+			scrollContainer.scrollTo({
+				left: scrollLeft,
+				behavior: "smooth",
+			});
+		}
 	}
 
+	// Handle click events on tabs
 	tabLinks.forEach((link) => {
-		link.addEventListener("click", (e) => {
-			e.preventDefault();
-			const tabId = link.getAttribute("data-tab") || "highlights";
-			showTab(tabId);
-			history.pushState(null, "", `#${tabId}`);
-		});
+		link.addEventListener(
+			"click",
+			function (e) {
+				// Stop event from propagating to other handlers
+				e.preventDefault();
+				e.stopPropagation();
+
+				const tabId = this.getAttribute("data-tab");
+				const isAlreadyActive = this.classList.contains("active");
+
+				if (isAlreadyActive) {
+					// Force removal of active state right away
+					this.classList.remove("active");
+					// Show greeting view
+					setTimeout(() => showGreeting(), 0);
+				} else {
+					// Show the tab content (after any other handlers)
+					setTimeout(() => showTabContent(tabId), 0);
+				}
+
+				// Return false to prevent default and bubbling
+				return false;
+			},
+			true
+		); // Use capture phase to ensure our handler runs first
 	});
 
-	// Handle initial load and back/forward navigation
-	window.addEventListener("load", () => {
-		const hash = window.location.hash.slice(1) || "highlights";
-		showTab(hash);
-	});
+	// Handle scroll indicators for pill container - only affects mobile
+	function updateScrollFadeIndicators() {
+		if (!pillsScroll || !fadeLeft || !fadeRight) return;
 
-	window.addEventListener("hashchange", () => {
-		const hash = window.location.hash.slice(1) || "highlights";
-		showTab(hash);
-	});
+		// Only update indicators on mobile screens
+		if (window.innerWidth >= 768) {
+			fadeLeft.style.opacity = "0";
+			fadeRight.style.opacity = "0";
+			return;
+		}
+
+		// Show/hide left fade based on scroll position
+		fadeLeft.style.opacity = pillsScroll.scrollLeft > 10 ? "1" : "0";
+
+		// Show/hide right fade based on whether there's more content to scroll
+		const isScrolledToEnd =
+			pillsScroll.scrollWidth - pillsScroll.scrollLeft <=
+			pillsScroll.clientWidth + 10;
+		fadeRight.style.opacity = isScrolledToEnd ? "0" : "1";
+	}
+
+	// Set up scroll handling for pill container
+	if (pillsScroll) {
+		pillsScroll.addEventListener("scroll", updateScrollFadeIndicators);
+		// Initial check for fade indicators
+		setTimeout(updateScrollFadeIndicators, 100);
+
+		// Update when window resizes
+		window.addEventListener("resize", updateScrollFadeIndicators);
+	}
+
+	// Handle initial page load based on URL hash
+	function handleInitialLoad() {
+		const hash = window.location.hash.slice(1);
+
+		if (hash && document.getElementById(hash)) {
+			showTabContent(hash);
+		} else {
+			showGreeting();
+		}
+	}
+
+	// Set up event listeners
+	window.addEventListener("load", handleInitialLoad);
+	window.addEventListener("popstate", handleInitialLoad);
+
+	// Call this once on script execution to set the initial state
+	setTimeout(handleInitialLoad, 0);
 </script>

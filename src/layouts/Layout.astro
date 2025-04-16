@@ -15,6 +15,7 @@ import FooterNavigation from "../components/FooterNavigation.astro";
 import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
+import ReadButton from "../components/ReadButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
@@ -35,6 +36,7 @@ const {
 	lastUpdated,
 	showReadLater = false,
 	showSave = false,
+	showRead = false,
 	titleIcon = null,
 	showAuth = false,
 	showPali = false,
@@ -171,6 +173,13 @@ if (!SEOTitle) {
 						</Title>
 					</div>
 					<slot />
+					{
+						showRead && (
+							<div class="flex justify-end mt-6 mb-4">
+								<ReadButton />
+							</div>
+						)
+					}
 					{
 						qualities && qualities.length > 0 && (
 							<QualityTags tags={qualities} />

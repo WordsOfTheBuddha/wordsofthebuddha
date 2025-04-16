@@ -1,7 +1,8 @@
 ---
 title: Putta sutta - Child
-description: Three kinds of children - one who surpasses their parents, one who follows in their footsteps, and one who falls below them.
+description: Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.
 qualities: ethical conduct, harmful, stealing, sexual misconduct, non-harm, wholesome, wrong speech, vanity, negligence
+theme: cultivating discernment, inspiration
 slug: iti74
 simile: moon freed from clouds
 ---

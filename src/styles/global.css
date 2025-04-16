@@ -33,6 +33,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Static gradient without animation */
+@layer utilities {
+  .text-gradient-accent {
+    /* Light mode gradient with static positioning */
+    background-image: linear-gradient(
+      135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 50%,
+      var(--primary-color) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  html.dark .text-gradient-accent {
+    /* Dark mode gradient with static positioning */
+    background-image: linear-gradient(
+      135deg,
+      var(--link-color) 0%,
+      var(--secondary-color) 50%,
+      var(--link-color) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
 /* global.css */
 :root {
 	--icon-fill-color-light: #000000;
