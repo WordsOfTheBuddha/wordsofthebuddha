@@ -36,7 +36,7 @@ Cattārome, byagghapajja, dhammā kulaputtassa samparāyahitāya saṁvattanti s
 
 1 Katamā ca, byagghapajja, saddhāsampadā? Idha, byagghapajja, kulaputto saddho hoti, saddahati tathāgatassa bodhiṁ: ‘itipi so bhagavā arahaṁ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṁ buddho bhagavā’ti. Ayaṁ vuccati, byagghapajja, saddhāsampadā.
 
-2 Katamā ca, byagghapajja, sīlasampadā? Idha, byagghapajja, kulaputto pāṇātipātā paṭivirato hoti, musāvādā paṭivirato hoti, surāmerayamajjapamādaṭṭhānā paṭivirato hoti. Ayaṁ vuccati, byagghapajja, sīlasampadā.
+2 Katamā ca, byagghapajja, sīlasampadā? Idha, byagghapajja, kulaputto pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, kāmesumicchācārā paṭivirato hoti, musāvādā paṭivirato hoti, surāmerayamajjapamādaṭṭhānā paṭivirato hoti. Ayaṁ vuccati, byagghapajja, sīlasampadā.
 
 3 Katamā ca, byagghapajja, cāgasampadā? Idha, byagghapajja, kulaputto vigatamalamaccherena cetasā agāraṁ ajjhāvasati muttacāgo payatapāṇi vossaggarato yācayogo dānasaṁvibhāgarato. Ayaṁ vuccati, byagghapajja, cāgasampadā.
 
