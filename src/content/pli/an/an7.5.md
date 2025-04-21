@@ -1,6 +1,6 @@
 ---
 title: Saṅkhittadhana sutta - Wealth in Brief
-description: description: The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.
+description: The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.
 qualities: faith, ethical conduct, sense of right and wrong, fear of wrongdoing, learning, giving, wisdom
 theme: wisdom, inspiration
 slug: an7.5

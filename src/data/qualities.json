@@ -7,12 +7,14 @@
 		"aversion",
 		"anxiety",
 		"bad friendship",
+		"bad habits",
 		"boastfulness",
 		"clinging to rules and observances",
 		"conceit",
 		"contempt",
 		"craving",
 		"cruelty",
+		"discontentment",
 		"displeasure",
 		"distraction",
 		"disturbed",
@@ -51,6 +53,7 @@
 		"treachery",
 		"lack of discernment",
 		"lack of principles",
+		"unwholesome",
 		"unwise attention",
 		"vanity",
 		"weak in effort",
@@ -58,7 +61,7 @@
 		"wrong speech",
 		"wrong view"
 	],
-	"neutral": ["companionship", "desire"],
+	"neutral": ["companionship", "cultivation", "desire"],
 	"positive": [
 		"rousing of energy",
 		"celibacy",
@@ -68,7 +71,6 @@
 		"contemplation",
 		"contentment",
 		"continuous effort",
-		"cultivation",
 		"diligence",
 		"discernment",
 		"disenchantment",
@@ -85,6 +87,7 @@
 		"giving",
 		"giving up",
 		"good friendship",
+		"good habits",
 		"humility",
 		"inquisitiveness",
 		"knowledge",
@@ -158,12 +161,17 @@
 			"ill will",
 			"hate",
 			"fault-finding mindset",
-			"resentment",
+			"upset",
 			"[dosa]"
 		],
 		"bad friendship": [
 			"friendship with unwholesome persons",
 			"[pāpamittatā]"
+		],
+		"bad habits": [
+			"practice of unbeneficial actions",
+			"pursuing unskillful actions",
+			"[anuyoga + akusala]"
 		],
 		"boastfulness": [
 			"braggart",
@@ -305,6 +313,7 @@
 			"insight",
 			"[vipassanā, nipaka]"
 		],
+		"discontentment": ["dissatisfaction", "[asantuṭṭhitā]"],
 		"disenchantment": ["de-illusionment", "disinterest", "[nibbidā]"],
 		"dispassion": [
 			"detachment",
@@ -438,6 +447,11 @@
 			"friendship with wholesome persons",
 			"[kalyāṇamittatā]"
 		],
+		"good habits": [
+			"practice of beneficial actions",
+			"pursuing skillful actions",
+			"[anuyoga + kusala]"
+		],
 		"greed": [
 			"avarice",
 			"covetousness",
@@ -465,7 +479,6 @@
 		],
 		"ignorance": [
 			"delusion",
-			"illusion",
 			"illusion of knowing",
 			"fundamental unawareness of the true nature of reality",
 			"misunderstanding of how things have come to be",
@@ -477,6 +490,7 @@
 			"hallucination",
 			"misapprehension",
 			"distorted view",
+			"that which fuels further confusion and doubt",
 			"[moha]"
 		],
 		"immaturity": [
@@ -743,7 +757,7 @@
 			"pain",
 			"disease",
 			"distress",
-			"afflication",
+			"affliction",
 			"[dukkha]"
 		],
 		"sympathetic joy": [
@@ -756,6 +770,13 @@
 		"tame": ["trained", "mastered", "subdued", "[danta]"],
 		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
 		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
+		"unwholesome": [
+			"unhealthy",
+			"unskillful",
+			"unbeneficial",
+			"karmically unprofitable",
+			"[akusala]"
+		],
 		"unwise attention": [
 			"improper attention",
 			"imprudent use of the mind",

@@ -2,6 +2,7 @@
 title: Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship
 description: The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.
 fetter: ignorance
+qualities: good friendship, good habits, bad habits, unwise attention, wise attention, wisdom
 tags: friends, habits, attention, wisdom, relatives, wealth, reputation, wholesome, unwholesome, an, an1
 slug: an1.71-81
 ---
