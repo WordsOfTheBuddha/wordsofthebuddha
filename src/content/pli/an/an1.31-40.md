@@ -2,7 +2,7 @@
 title: Adanta vagga - The Chapter on the Untamed
 description: Short teachings contrasting the untamed and the tamed mind.
 fetter: ignorance
-qualities: non-restraint, harmful, negligence, non-harm, self-control, diligence
+qualities: non-restraint, harmful, adventurous, non-harm, self-control, tame
 tags: mind, harm, untamed, tamed, benefit, an, an1
 slug: an1.31-40
 ---

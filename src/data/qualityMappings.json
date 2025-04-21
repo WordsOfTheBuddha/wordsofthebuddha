@@ -37,9 +37,39 @@
       "collection": "dhp"
     },
     {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
       "id": "an3.40",
       "title": "Ādhipateyya sutta - Authorities",
       "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
       "collection": "an"
     },
     {
@@ -125,10 +155,28 @@
       "collection": "mn"
     },
     {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "",
+      "collection": "dhp"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
     },
     {
       "id": "an5.28",
@@ -140,6 +188,12 @@
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
       "collection": "an"
     }
   ],
@@ -173,6 +227,12 @@
       "title": "Diṭṭhigata sutta - Two Kinds Of Wrong Views",
       "description": "Overcome by two kinds of wrong views, some get stuck, while others overreach. But those with vision see.",
       "collection": "iti"
+    },
+    {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "",
+      "collection": "dhp"
     }
   ],
   "compassion": [
@@ -217,6 +277,12 @@
       "collection": "ud"
     },
     {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -253,9 +319,33 @@
       "collection": "an"
     },
     {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    },
+    {
       "id": "an1.378-393",
       "title": "Pasādakaradhamma vagga - Qualities Inspiring Confidence",
       "description": "The Buddha shares qualities that inspire confidence in the spiritual life.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.21-30",
+      "title": "Akammaniya vagga - The Chapter On The Ineffective",
+      "description": "The Buddha contrasts the undeveloped and developed mind.",
       "collection": "an"
     }
   ],
@@ -267,6 +357,12 @@
       "collection": "mn"
     },
     {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "",
+      "collection": "dhp"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -276,50 +372,6 @@
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
-      "collection": "an"
-    }
-  ],
-  "cultivation": [
-    {
-      "id": "sn2.2",
-      "title": "Dutiya kassapa sutta - Kassapa (Second)",
-      "description": "The young deity Kassapa shares a verse on the instruction for a bhikkhu.",
-      "collection": "sn"
-    },
-    {
-      "id": "mn36",
-      "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
-      "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
-      "collection": "mn"
-    },
-    {
-      "id": "iti45",
-      "title": "Paṭisallāna sutta - Seclusion",
-      "description": "The Buddha instructs to dwell in seclusion, enjoying solitude, being devoted to tranquility of mind, meditating with diligence, being endowed with discernment, practicing in an empty dwelling.",
-      "collection": "iti"
-    },
-    {
-      "id": "dhp360-382",
-      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
-      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
-      "collection": "dhp"
-    },
-    {
-      "id": "an8.33",
-      "title": "Dānavatthu sutta - Grounds for Giving",
-      "description": "The Buddha describes eight motivations for giving, including giving out of desire, aversion, and fear.",
-      "collection": "an"
-    },
-    {
-      "id": "an8.31",
-      "title": "Paṭhama dāna sutta - Giving (First)",
-      "description": "The Buddha explains eight kinds of giving, including giving out of fear, giving to maintain a good reputation, and giving to purify the mind.",
-      "collection": "an"
-    },
-    {
-      "id": "an3.101",
-      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
-      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
       "collection": "an"
     }
   ],
@@ -371,6 +423,24 @@
       "title": "Devadūta sutta - Divine Messengers",
       "description": "The Buddha describes the three divine messengers that appear among human beings and what happens to those who do not heed their message.",
       "collection": "an"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
     }
   ],
   "discernment": [
@@ -414,6 +484,18 @@
       "id": "sn35.228",
       "title": "Paṭhama samudda sutta - Ocean (First)",
       "description": "The Buddha uses the simile of an ocean to describe the six sense bases and their respective objects.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.118",
+      "title": "Sakkapañha sutta - Sakka's Question",
+      "description": "The Buddha answers Sakka's question on the causes and supporting conditions whereby some beings do not attain Nibbāna in this very life and some beings do attain Nibbāna in this very life.",
       "collection": "sn"
     },
     {
@@ -463,6 +545,12 @@
       "title": "Ajāta sutta - Unborn",
       "description": "The Buddha shares on the state that is unborn, unbecome, unmade, and unconditioned, which is beyond the realm of thought and enduring.",
       "collection": "iti"
+    },
+    {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "",
+      "collection": "dhp"
     },
     {
       "id": "dhp360-382",
@@ -569,6 +657,12 @@
       "title": "Diṭṭhigata sutta - Two Kinds Of Wrong Views",
       "description": "Overcome by two kinds of wrong views, some get stuck, while others overreach. But those with vision see.",
       "collection": "iti"
+    },
+    {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "",
+      "collection": "dhp"
     },
     {
       "id": "dhp334-359",
@@ -727,6 +821,18 @@
       "collection": "an"
     },
     {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
@@ -827,6 +933,30 @@
       "collection": "an"
     },
     {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
       "id": "an1.378-393",
       "title": "Pasādakaradhamma vagga - Qualities Inspiring Confidence",
       "description": "The Buddha shares qualities that inspire confidence in the spiritual life.",
@@ -851,6 +981,30 @@
       "title": "Paṭhamahatthaka sutta - With Hatthaka (First)",
       "description": "The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise.  Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.",
       "collection": "an"
+    },
+    {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
     }
   ],
   "flexible": [
@@ -858,6 +1012,12 @@
       "id": "an3.101",
       "title": "Paṁsudhovaka sutta - The Dirt Rinser",
       "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
       "collection": "an"
     }
   ],
@@ -887,6 +1047,24 @@
       "title": "Acchariyaabbhuta sutta - Wonderful and Marvelous",
       "description": "Venerable Ānanda recollects the wonderful and marvelous qualities of the Tathāgata, the Buddha, relating to his conception and birth. The Buddha then caps it off by sharing what he considers the most wonderful and marvelous quality of all.",
       "collection": "mn"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
     }
   ],
   "giving": [
@@ -942,6 +1120,18 @@
       "id": "an8.23",
       "title": "Paṭhamahatthaka sutta - With Hatthaka (First)",
       "description": "The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise.  Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
       "collection": "an"
     },
     {
@@ -1043,7 +1233,40 @@
       "collection": "an"
     }
   ],
-  "good friendship": [],
+  "good friendship": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.71-81",
+      "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
+      "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    }
+  ],
+  "good habits": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.71-81",
+      "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
+      "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    }
+  ],
   "humility": [
     {
       "id": "mn8",
@@ -1105,9 +1328,27 @@
       "collection": "an"
     },
     {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
       "id": "an4.172",
       "title": "Vibhatti sutta - Analytical Knowledges",
       "description": "Venerable Sāriputta describes the four analytical knowledges he realized a half-month after his full ordination.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
       "collection": "an"
     }
   ],
@@ -1229,6 +1470,12 @@
       "collection": "an"
     },
     {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -1311,6 +1558,18 @@
       "collection": "dhp"
     },
     {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
       "id": "an3.49",
       "title": "Ātappakaraṇīya sutta - Vigour",
       "description": "The Buddha describes three cases where vigour should be applied.",
@@ -1376,6 +1635,12 @@
       "id": "an11.15",
       "title": "Mettā sutta - Loving-Kindness",
       "description": "11 benefits of cultivating loving-kindness from sleeping with ease to dying unconfused to going to the Brahma world.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.31-40",
+      "title": "Adanta vagga - The Chapter on the Untamed",
+      "description": "Short teachings contrasting the untamed and the tamed mind.",
       "collection": "an"
     }
   ],
@@ -1555,6 +1820,12 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
     }
   ],
   "self-control": [
@@ -1581,6 +1852,12 @@
       "title": "Nāga vagga - Chapter 23 - The Elephant",
       "description": "Dhammapada verses 320–333 highlight self-discipline, wisdom, and perseverance through the imagery of elephants. They highlight inner mastery over strength, the value of solitude over company of immature persons, and the importance of taming one’s mind. Honoring parents, cultivating virtue, and letting go of suffering lead to true ease.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.31-40",
+      "title": "Adanta vagga - The Chapter on the Untamed",
+      "description": "Short teachings contrasting the untamed and the tamed mind.",
+      "collection": "an"
     }
   ],
   "sense of right and wrong": [
@@ -1607,6 +1884,30 @@
       "title": "Paṭhamahatthaka sutta - With Hatthaka (First)",
       "description": "The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise.  Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.",
       "collection": "an"
+    },
+    {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
     }
   ],
   "sense restraint": [
@@ -1632,6 +1933,18 @@
       "id": "sn35.228",
       "title": "Paṭhama samudda sutta - Ocean (First)",
       "description": "The Buddha uses the simile of an ocean to describe the six sense bases and their respective objects.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.118",
+      "title": "Sakkapañha sutta - Sakka's Question",
+      "description": "The Buddha answers Sakka's question on the causes and supporting conditions whereby some beings do not attain Nibbāna in this very life and some beings do attain Nibbāna in this very life.",
       "collection": "sn"
     },
     {
@@ -1725,7 +2038,14 @@
       "collection": "mn"
     }
   ],
-  "tame": [],
+  "tame": [
+    {
+      "id": "an1.31-40",
+      "title": "Adanta vagga - The Chapter on the Untamed",
+      "description": "Short teachings contrasting the untamed and the tamed mind.",
+      "collection": "an"
+    }
+  ],
   "tranquility": [
     {
       "id": "sn2.20",
@@ -1776,6 +2096,12 @@
       "collection": "dhp"
     },
     {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -1806,6 +2132,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
     },
     {
       "id": "an3.49",
@@ -1878,6 +2216,12 @@
       "title": "Dutiya dāna sutta - Giving (Second)",
       "description": "Wholesome giving along with faith and a sense of right and wrong is the way of practice that leads to the world of gods.",
       "collection": "an"
+    },
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
     }
   ],
   "wisdom": [
@@ -1921,6 +2265,18 @@
       "id": "sn35.228",
       "title": "Paṭhama samudda sutta - Ocean (First)",
       "description": "The Buddha uses the simile of an ocean to describe the six sense bases and their respective objects.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.118",
+      "title": "Sakkapañha sutta - Sakka's Question",
+      "description": "The Buddha answers Sakka's question on the causes and supporting conditions whereby some beings do not attain Nibbāna in this very life and some beings do attain Nibbāna in this very life.",
       "collection": "sn"
     },
     {
@@ -2020,6 +2376,30 @@
       "collection": "an"
     },
     {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
@@ -2041,6 +2421,18 @@
       "id": "an3.131",
       "title": "Paṭicchanna sutta - Obscured",
       "description": "Three things thrive when obscured, not when exposed. And three things that shine forth when exposed, not when obscured.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.71-81",
+      "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
+      "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
       "collection": "an"
     },
     {
@@ -2082,13 +2474,44 @@
       "collection": "an"
     },
     {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.71-81",
+      "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
+      "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
       "collection": "an"
     }
   ],
-  "adventurous": [],
+  "adventurous": [
+    {
+      "id": "an1.31-40",
+      "title": "Adanta vagga - The Chapter on the Untamed",
+      "description": "Short teachings contrasting the untamed and the tamed mind.",
+      "collection": "an"
+    }
+  ],
   "aggressiveness": [
     {
       "id": "mn7",
@@ -2243,6 +2666,12 @@
       "title": "Paṭhama dāna sutta - Giving (First)",
       "description": "The Buddha explains eight kinds of giving, including giving out of fear, giving to maintain a good reputation, and giving to purify the mind.",
       "collection": "an"
+    },
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
     }
   ],
   "aversion": [
@@ -2325,6 +2754,12 @@
       "collection": "an"
     },
     {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -2369,7 +2804,40 @@
       "collection": "an"
     }
   ],
-  "bad friendship": [],
+  "bad friendship": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    }
+  ],
+  "bad habits": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.71-81",
+      "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
+      "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    }
+  ],
   "boastfulness": [
     {
       "id": "mn4",
@@ -2580,6 +3048,26 @@
       "collection": "mn"
     }
   ],
+  "discontentment": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    }
+  ],
   "displeasure": [
     {
       "id": "mn5",
@@ -2608,7 +3096,14 @@
       "collection": "dhp"
     }
   ],
-  "disturbed": [],
+  "disturbed": [
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
+    }
+  ],
   "doubt": [
     {
       "id": "mn8",
@@ -2779,9 +3274,46 @@
       "title": "Devadūta sutta - Divine Messengers",
       "description": "The Buddha describes the three divine messengers that appear among human beings and what happens to those who do not heed their message.",
       "collection": "an"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.31-40",
+      "title": "Adanta vagga - The Chapter on the Untamed",
+      "description": "Short teachings contrasting the untamed and the tamed mind.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.21-30",
+      "title": "Akammaniya vagga - The Chapter On The Ineffective",
+      "description": "The Buddha contrasts the undeveloped and developed mind.",
+      "collection": "an"
     }
   ],
-  "having many desires": [],
+  "having many desires": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    }
+  ],
   "hypocrisy": [
     {
       "id": "mn8",
@@ -2850,6 +3382,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
     }
   ],
   "immaturity": [
@@ -2982,6 +3520,24 @@
       "collection": "iti"
     },
     {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -3066,6 +3622,30 @@
       "title": "Devadūta sutta - Divine Messengers",
       "description": "The Buddha describes the three divine messengers that appear among human beings and what happens to those who do not heed their message.",
       "collection": "an"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
     }
   ],
   "non-restraint": [
@@ -3074,6 +3654,12 @@
       "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
       "description": "The Buddha explains how there is non-restraint and restraint with a simile of six animals with different domains and feeding grounds. He uses strong post or pillar as a designation for mindfulness directed to the body.",
       "collection": "sn"
+    },
+    {
+      "id": "an1.31-40",
+      "title": "Adanta vagga - The Chapter on the Untamed",
+      "description": "Short teachings contrasting the untamed and the tamed mind.",
+      "collection": "an"
     }
   ],
   "passion": [
@@ -3081,6 +3667,12 @@
       "id": "sn35.70",
       "title": "Upavāṇasandiṭṭhika sutta - Directly Visible with Upavāṇa",
       "description": "The Buddha explains how the Dhamma is directly visible, immediate, inviting one to come and see, applicable, and to be personally experienced by the wise through the six sense bases.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
       "collection": "sn"
     },
     {
@@ -3130,6 +3722,12 @@
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
       "collection": "an"
+    },
+    {
+      "id": "an1.1-10",
+      "title": "Cittapariyādāna vagga - The Chapter on the Obsession of the Mind",
+      "description": "The Buddha explains how the mind can be obsessed by the senses.",
+      "collection": "an"
     }
   ],
   "personal existence": [
@@ -3143,6 +3741,12 @@
       "id": "sn36.6",
       "title": "Salla sutta - Arrow",
       "description": "The Buddha explains the difference between an uninstructed ordinary person and a learned noble disciple in how they experience pleasant, painful, and neither-painful-nor-pleasant feelings.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
       "collection": "sn"
     },
     {
@@ -3188,6 +3792,12 @@
       "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
       "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
     }
   ],
   "sensual desire": [
@@ -3207,6 +3817,18 @@
       "id": "sn35.230",
       "title": "Bāḷisikopama sutta - The Fisherman's Simile",
       "description": "The Buddha likens the six types of desirable sense objects to baited hooks, set in the world for the misfortune of beings—those who cling to them fall under Māra’s power.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn35.118",
+      "title": "Sakkapañha sutta - Sakka's Question",
+      "description": "The Buddha answers Sakka's question on the causes and supporting conditions whereby some beings do not attain Nibbāna in this very life and some beings do attain Nibbāna in this very life.",
       "collection": "sn"
     },
     {
@@ -3264,6 +3886,12 @@
       "collection": "iti"
     },
     {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "",
+      "collection": "dhp"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -3273,6 +3901,12 @@
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.1-10",
+      "title": "Cittapariyādāna vagga - The Chapter on the Obsession of the Mind",
+      "description": "The Buddha explains how the mind can be obsessed by the senses.",
       "collection": "an"
     }
   ],
@@ -3398,6 +4032,12 @@
       "collection": "ud"
     },
     {
+      "id": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
       "id": "mn45",
       "title": "Cūḷadhammasamādāna sutta - The Shorter Discourse on the Cases of Taking up Practices",
       "description": "The Buddha explains the four cases of taking up practices, based on whether they are pleasant or painful now and whether they ripen as suffering or a pleasant abiding in the future.",
@@ -3414,6 +4054,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.21-30",
+      "title": "Akammaniya vagga - The Chapter On The Ineffective",
+      "description": "The Buddha contrasts the undeveloped and developed mind.",
+      "collection": "an"
     },
     {
       "id": "an1.11-20",
@@ -3466,6 +4112,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
     }
   ],
   "lack of principles": [
@@ -3482,7 +4140,40 @@
       "collection": "iti"
     }
   ],
-  "unwise attention": [],
+  "unwholesome": [
+    {
+      "id": "an1.51-60",
+      "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
+      "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
+    }
+  ],
+  "unwise attention": [
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.71-81",
+      "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
+      "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    }
+  ],
   "vanity": [
     {
       "id": "mn7",
@@ -3569,6 +4260,12 @@
       "title": "Paṭicchanna sutta - Obscured",
       "description": "Three things thrive when obscured, not when exposed. And three things that shine forth when exposed, not when obscured.",
       "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
     }
   ],
   "companionship": [
@@ -3583,6 +4280,62 @@
       "title": "Nāga vagga - Chapter 23 - The Elephant",
       "description": "Dhammapada verses 320–333 highlight self-discipline, wisdom, and perseverance through the imagery of elephants. They highlight inner mastery over strength, the value of solitude over company of immature persons, and the importance of taming one’s mind. Honoring parents, cultivating virtue, and letting go of suffering lead to true ease.",
       "collection": "dhp"
+    }
+  ],
+  "cultivation": [
+    {
+      "id": "sn2.2",
+      "title": "Dutiya kassapa sutta - Kassapa (Second)",
+      "description": "The young deity Kassapa shares a verse on the instruction for a bhikkhu.",
+      "collection": "sn"
+    },
+    {
+      "id": "mn36",
+      "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
+      "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "iti45",
+      "title": "Paṭisallāna sutta - Seclusion",
+      "description": "The Buddha instructs to dwell in seclusion, enjoying solitude, being devoted to tranquility of mind, meditating with diligence, being endowed with discernment, practicing in an empty dwelling.",
+      "collection": "iti"
+    },
+    {
+      "id": "dhp360-382",
+      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
+      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
+      "collection": "dhp"
+    },
+    {
+      "id": "an8.33",
+      "title": "Dānavatthu sutta - Grounds for Giving",
+      "description": "The Buddha describes eight motivations for giving, including giving out of desire, aversion, and fear.",
+      "collection": "an"
+    },
+    {
+      "id": "an8.31",
+      "title": "Paṭhama dāna sutta - Giving (First)",
+      "description": "The Buddha explains eight kinds of giving, including giving out of fear, giving to maintain a good reputation, and giving to purify the mind.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.101",
+      "title": "Paṁsudhovaka sutta - The Dirt Rinser",
+      "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.41-50",
+      "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
+      "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.21-30",
+      "title": "Akammaniya vagga - The Chapter On The Ineffective",
+      "description": "The Buddha contrasts the undeveloped and developed mind.",
+      "collection": "an"
     }
   ],
   "desire": [
