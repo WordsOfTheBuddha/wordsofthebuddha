@@ -1,7 +1,7 @@
 ---
 title: Macchabandha sutta - Fisherman
 description: On observing a fisherman killing fish and selling them, the Buddha explains the consequences of cruelty.
-fetter: ill-will, ignorance
+fetter: ill will, ignorance
 tags: fisherman, butcher, cruelty, animals, killing, livelihood, wealth, rebirth, hell, an, an6
 simile: fisherman
 slug: an6.18

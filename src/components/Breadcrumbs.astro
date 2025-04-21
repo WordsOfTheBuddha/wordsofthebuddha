@@ -18,6 +18,7 @@ if (
 		"/signin",
 		"/review-room",
 		"/profile",
+		"/qualities",
 	].indexOf(path) !== -1
 )
 	return null;
@@ -29,7 +30,7 @@ if (breadcrumbs.length > 0) {
 	if (breadcrumbs[breadcrumbs.length - 1].path.substring(1) !== urlPath) {
 		breadcrumbs.push({
 			label: transformId(urlPath),
-			path: `/${urlPath}`,
+			path: !path.startsWith("/qualities") ? `/${urlPath}` : ``,
 		});
 	}
 }

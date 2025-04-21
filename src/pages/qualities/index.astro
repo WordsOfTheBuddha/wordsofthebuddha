@@ -1,0 +1,273 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import qualityMappings from "../../data/qualityMappings.json";
+import qualities from "../../data/qualities.json";
+
+// Ensure this page is server-rendered
+export const prerender = false;
+
+// Group qualities by first letter with TypeScript type annotations
+function groupByFirstLetter(items: string[]): Record<string, string[]> {
+	const groups: Record<string, string[]> = {};
+
+	items.forEach((item) => {
+		const firstLetter = item.charAt(0).toUpperCase();
+		if (!groups[firstLetter]) {
+			groups[firstLetter] = [];
+		}
+		groups[firstLetter].push(item);
+	});
+
+	return groups;
+}
+
+// Get all available first letters
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const positiveByLetter = groupByFirstLetter(qualities.positive);
+const negativeByLetter = groupByFirstLetter(qualities.negative);
+const neutralByLetter = groupByFirstLetter(qualities.neutral);
+---
+
+<Layout seoTitle="Mental Qualities - Words of the Buddha" showAuth={true}>
+	<h3 class="text-2xl font-bold mb-4 border-b pb-2">
+		Discover Discourses by Qualities
+	</h3>
+	<main class="container mx-auto px-4 py-8">
+		<!-- A-Z Index -->
+		<div class="mb-8 flex flex-wrap gap-2">
+			{
+				alphabet.map((letter) => {
+					const hasQualities =
+						(positiveByLetter[letter] &&
+							positiveByLetter[letter].length > 0) ||
+						(negativeByLetter[letter] &&
+							negativeByLetter[letter].length > 0) ||
+						(neutralByLetter[letter] &&
+							neutralByLetter[letter].length > 0);
+
+					return (
+						<a
+							href={hasQualities ? `#${letter}` : "#"}
+							class={`w-8 h-8 flex items-center justify-center rounded-md transition-colors ${
+								hasQualities
+									? "text-[var(--primary-color)] hover:opacity-80 border border-[var(--primary-color)]"
+									: "text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-default"
+							}`}
+						>
+							{letter}
+						</a>
+					);
+				})
+			}
+		</div>
+
+		<!-- Quality listings -->
+		<div class="space-y-8">
+			{
+				alphabet.map((letter) => {
+					let qualitiesForLetter = [
+						...(positiveByLetter[letter] || []),
+						...(negativeByLetter[letter] || []),
+						...(neutralByLetter[letter] || []),
+					];
+
+					if (qualitiesForLetter.length === 0) return null;
+
+					return (
+						<div id={letter} class="scroll-mt-16">
+							<h2 class="text-2xl font-bold mb-4 border-b pb-2">
+								{letter}
+							</h2>
+							<div class="space-y-4">
+								{qualitiesForLetter.sort().map((quality) => {
+									// Explicitly type synonymsList as array of strings or arrays of strings
+									const synonymsList: (string | string[])[] =
+										qualities.synonyms[
+											quality as keyof typeof qualities.synonyms
+										] || [];
+									const discourses =
+										qualityMappings[
+											quality as keyof typeof qualityMappings
+										] || [];
+									const isPositive =
+										qualities.positive.includes(quality);
+									const isNegative =
+										qualities.negative.includes(quality);
+									const displayName =
+										quality.charAt(0).toUpperCase() +
+										quality.slice(1);
+
+									return (
+										<div class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+											<div class="flex items-start justify-between">
+												<div class="flex items-start flex-grow">
+													<div class="min-w-0 pr-4">
+														<h3 class="text-base sm:text-lg font-semibold flex items-center flex-wrap">
+															<a
+																href={`/qualities/${quality}`}
+																class="post-link hover:text-link-color id font-normal"
+															>
+																{displayName}
+															</a>
+															{isPositive && (
+																<span
+																	class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-amber-400 text-amber-600 dark:text-amber-400 cursor-help tooltip"
+																	data-tooltip="When a bright quality is cultivated, it brings benefit, clarity of vision, and the growth of wisdom."
+																>
+																	☀️ bright
+																</span>
+															)}
+															{isNegative && (
+																<span
+																	class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-slate-500 text-slate-600 dark:text-slate-400 cursor-help tooltip"
+																	data-tooltip="When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
+																>
+																	☁️ dark
+																</span>
+															)}
+															{!isPositive &&
+																!isNegative && (
+																	<span
+																		class="ml-2 px-2 py-0.5 text-xs rounded-full border-2 border-cyan-400 text-cyan-600 dark:text-cyan-400 cursor-help tooltip"
+																		data-tooltip="This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises."
+																	>
+																		💠
+																		neutral
+																	</span>
+																)}
+														</h3>
+													</div>
+												</div>
+												<div class="shrink-0 self-start">
+													<span class="px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
+														{discourses.length}
+													</span>
+												</div>
+											</div>
+											{synonymsList.length > 0 && (
+												<div class="mt-6 grid grid-cols-[auto_1fr] gap-y-2 text-sm">
+													{/* Non-Pāli terms */}
+													{synonymsList.some(
+														(
+															term
+														): term is string =>
+															typeof term ===
+																"string" &&
+															!term.startsWith(
+																"["
+															)
+													) && (
+														<>
+															<span class="text-gray-500 dark:text-gray-400 pr-4">
+																Similar:
+															</span>
+															<span class="text-text">
+																{synonymsList
+																	.filter(
+																		(
+																			term
+																		): term is string =>
+																			typeof term ===
+																				"string" &&
+																			!term.startsWith(
+																				"["
+																			)
+																	)
+																	.join(", ")}
+															</span>
+														</>
+													)}
+
+													{/* Pāli terms */}
+													{synonymsList.some(
+														(
+															term
+														): term is string =>
+															typeof term ===
+																"string" &&
+															term.startsWith("[")
+													) && (
+														<>
+															<span class="text-gray-500 dark:text-gray-400 pr-4">
+																Pāli term:
+															</span>
+															<span class="pali-paragraph font-semibold text-text">
+																{synonymsList
+																	.filter(
+																		(
+																			term
+																		): term is string =>
+																			typeof term ===
+																				"string" &&
+																			term.startsWith(
+																				"["
+																			)
+																	)
+																	.map(
+																		(
+																			term
+																		) =>
+																			term.replace(
+																				/[\[\]]/g,
+																				""
+																			)
+																	)
+																	.join(", ")}
+															</span>
+														</>
+													)}
+												</div>
+											)}
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<script>
+	// Smooth scrolling for anchor links
+	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+		anchor.addEventListener("click", function (e) {
+			const href = this.getAttribute("href");
+			if (href === "#") return;
+
+			e.preventDefault();
+			const target = document.querySelector(href);
+			if (target) {
+				target.scrollIntoView({
+					behavior: "smooth",
+				});
+			}
+		});
+	});
+</script>
+
+<style>
+	.tooltip {
+		position: relative;
+	}
+
+	.tooltip:hover::after {
+		content: attr(data-tooltip);
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: calc(100% + 5px);
+		background: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
+		white-space: normal;
+		width: max-content;
+		max-width: 250px;
+		z-index: 10;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	}
+</style>

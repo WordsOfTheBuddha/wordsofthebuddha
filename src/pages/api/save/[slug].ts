@@ -2,6 +2,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { db } from "../../../service/firebase/server";
 import { verifyUser } from "../../../middleware/auth";
+import { FieldValue } from "firebase-admin/firestore"; // Import FieldValue
 
 export const GET: APIRoute = async ({ params, cookies }) => {
 	const slug = params.slug;
@@ -25,15 +26,18 @@ export const GET: APIRoute = async ({ params, cookies }) => {
 				const user = await verifyUser(sessionCookie);
 				userId = user.uid;
 
-				// Check if the content is saved
+				// Check if the content is in the saves pages map
 				const docRef = await db
 					.collection("users")
 					.doc(userId)
 					.collection("saves")
-					.doc(slug)
+					.doc("pages") // Fetch the single 'pages' document
 					.get();
 
-				isSaved = docRef.exists;
+				if (docRef.exists) {
+					const data = docRef.data();
+					isSaved = Boolean(data?.pages?.[slug]); // Check if slug exists in the map
+				}
 			} catch (error) {
 				console.error("Session verification failed:", error);
 				// Continue with userId = null (unauthenticated state)
@@ -88,14 +92,23 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 			.collection("users")
 			.doc(user.uid)
 			.collection("saves")
-			.doc(slug);
+				.doc("pages"); // Reference the single 'pages' document
 
 		if (isActive) {
-			await saveRef.set({
-				savedAt: new Date(),
-			});
+			// Add/update the slug in the pages map with timestamp (minute precision)
+			await saveRef.set(
+				{
+					pages: {
+						[slug]: Math.floor(Date.now() / 60000), // Timestamp in minutes
+					},
+				},
+				{ merge: true }
+			);
 		} else {
-			await saveRef.delete();
+			// Remove the slug from the pages map using FieldValue.delete()
+			await saveRef.update({
+				[`pages.${slug}`]: FieldValue.delete(),
+			});
 		}
 
 		return new Response(JSON.stringify({ success: true }), {

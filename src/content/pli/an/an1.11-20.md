@@ -2,8 +2,8 @@
 title: Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances
 description: The Buddha explains what causes the hindrances to arise and how to abandon them.
 fetter: ignorance
-qualities: sensual desire, passion, aversion, dullness, drowsiness, suffering, laziness, anxiety, doubtful, loving-kindness, liberation, vigour, arousing energy, continuous effort, tranquility, wise attention
-tags: sensual desire, ill-will, dullness and drowsiness, restlessness and worry, doubt, five hindrances, wise attention, unwise attention, an, an1
+qualities: sensual desire, passion, aversion, dullness, drowsiness, suffering, laziness, anxiety, doubt, loving-kindness, liberation, vigour, rousing of energy, continuous effort, tranquility, wise attention
+tags: sensual desire, ill will, dullness and drowsiness, restlessness and worry, doubt, five hindrances, wise attention, unwise attention, an, an1
 slug: an1.11-20
 ---
 

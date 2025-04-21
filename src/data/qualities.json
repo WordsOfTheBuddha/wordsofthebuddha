@@ -1,31 +1,35 @@
 {
 	"negative": [
+		"adventurous",
 		"aggressiveness",
 		"attachment",
 		"anger",
 		"aversion",
 		"anxiety",
-		"boastful",
+		"bad friendship",
+		"boastfulness",
 		"clinging to rules and observances",
 		"conceit",
 		"contempt",
 		"craving",
 		"cruelty",
-		"desire",
 		"displeasure",
-		"distracted",
-		"doubtful",
+		"distraction",
+		"disturbed",
+		"doubt",
 		"drowsiness",
 		"dullness",
 		"faithlessness",
 		"fearful",
 		"feuding",
+		"greed",
 		"harmful",
+		"having many desires",
 		"hypocrisy",
 		"ignorance",
 		"immaturity",
 		"illusion",
-		"irritable",
+		"irritability",
 		"jealousy",
 		"laziness",
 		"mental proliferation",
@@ -37,6 +41,7 @@
 		"personal existence",
 		"resentment",
 		"sensual desire",
+		"sexual misconduct",
 		"shamelessness",
 		"slaughtering",
 		"stealing",
@@ -44,17 +49,18 @@
 		"stubbornness",
 		"suffering",
 		"treachery",
-		"undiscerning",
-		"unprincipled",
+		"lack of discernment",
+		"lack of principles",
 		"unwise attention",
 		"vanity",
 		"weak in effort",
 		"wrong intention",
+		"wrong speech",
 		"wrong view"
 	],
-	"neutral": ["companionship"],
+	"neutral": ["companionship", "desire"],
 	"positive": [
-		"arousing energy",
+		"rousing of energy",
 		"celibacy",
 		"collectedness",
 		"complete comprehension",
@@ -70,16 +76,18 @@
 		"ending",
 		"equanimity",
 		"ethical conduct",
+		"examination",
 		"faith",
 		"fear of wrongdoing",
+		"flexible",
 		"formless",
 		"full awareness",
 		"giving",
 		"giving up",
-		"greed",
+		"good friendship",
 		"humility",
 		"inquisitiveness",
-		"examination",
+		"knowledge",
 		"learning",
 		"liberation",
 		"loving-kindness",
@@ -87,6 +95,8 @@
 		"mindfulness",
 		"non-harm",
 		"not taking what is not given",
+		"one-pointedness",
+		"patience",
 		"recognition of impermanence",
 		"respect",
 		"right intention",
@@ -98,14 +108,17 @@
 		"sincerity",
 		"solitude",
 		"sympathetic joy",
+		"tame",
 		"tranquility",
 		"vigour",
 		"vision",
 		"wakefulness",
+		"wholesome",
 		"wisdom",
 		"wise attention"
 	],
 	"synonyms": {
+		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
 		"aggressiveness": [
 			"hostility",
 			"antagonism",
@@ -114,7 +127,7 @@
 			"pugnacity",
 			"violence",
 			"injury causing behavior",
-			"sārambha"
+			"[sārambha]"
 		],
 		"attachment": [
 			"bond",
@@ -124,24 +137,48 @@
 			"possession",
 			"entanglement",
 			"bound",
-			"connected"
+			"connected",
+			"[upadhi, sakiñcana]"
 		],
-		"anger": ["hatred", "rage", "wrath", "fury", "indignation"],
+		"anger": ["hatred", "rage", "wrath", "fury", "indignation", "[kodha]"],
 		"anxiety": [
 			"worry",
 			"distress",
 			"agitation",
 			"restlessness",
 			"unbalanced",
-			"confused about what is right and wrong"
+			"fidgetiness",
+			"edginess",
+			"regret",
+			"remorse",
+			"confused about what is right and wrong",
+			"[kukkucca, uddhacca]"
 		],
-		"arousing energy": [
-			"determination",
-			"taking initiative",
-			"making a mental decision to act"
+		"aversion": [
+			"ill will",
+			"hate",
+			"fault-finding mindset",
+			"resentment",
+			"[dosa]"
 		],
-		"aversion": ["ill-will", "hate", "fault-finding mindset", "resentment"],
-		"celibacy": ["abstinence", "chastity", "sexual restraint"],
+		"bad friendship": [
+			"friendship with unwholesome persons",
+			"[pāpamittatā]"
+		],
+		"boastfulness": [
+			"braggart",
+			"exalting oneself",
+			"overbearing",
+			"self-promotion",
+			"self-praising",
+			"[attukkaṁsaka]"
+		],
+		"celibacy": [
+			"abstinence",
+			"chastity",
+			"sexual restraint",
+			"[brahmacariya]"
+		],
 		"clinging to rules and observances": [
 			"attachment to rites and rituals",
 			"attachment to precepts",
@@ -152,28 +189,42 @@
 			"attachment to ceremonies",
 			"attachment to rules",
 			"attachment to regulations",
-			"attachment to laws"
+			"attachment to laws",
+			"[sīlabbataparāmāsa]"
 		],
 		"collectedness": [
 			"concentration",
-			"jhāna",
-			"samādhi",
 			"mental composure",
 			"stillness of mind",
-			"stability of mind"
+			"stability of mind",
+			"[jhāna, samādhi]"
 		],
-		"compassion": ["benevolence", "concern", "sympathy", "mercy"],
+		"companionship": [
+			"friendship",
+			"fellowship",
+			"camaraderie",
+			"[sahāyatā]"
+		],
+		"compassion": [
+			"benevolence",
+			"concern",
+			"sympathy",
+			"kindness towards those who are suffering",
+			"[karuṇā]"
+		],
 		"complete comprehension": [
 			"full understanding",
 			"knowing full well",
-			"seeing things as they are"
+			"seeing things as they are",
+			"[sampajañña]"
 		],
 		"conceit": [
 			"arrogance",
 			"egotism",
 			"pride",
 			"self-importance",
-			"tendency of self-comparison"
+			"tendency of self-comparison",
+			"[māna]"
 		],
 		"contempt": [
 			"ungratefulness",
@@ -182,7 +233,7 @@
 			"disrespect",
 			"belittlement",
 			"disparagement",
-			"makkha"
+			"[makkha]"
 		],
 		"contemplation": [
 			"deliberation",
@@ -190,13 +241,14 @@
 			"weighing",
 			"measuring",
 			"refining one's understanding",
-			"cogitation"
+			"cogitation",
+			"[anupassanā]"
 		],
 		"contentment": [
 			"satisfaction",
 			"ease",
 			"fewness of wishes",
-			"santutthi"
+			"[santutthi]"
 		],
 		"continuous effort": [
 			"unremitting effort",
@@ -204,98 +256,187 @@
 			"persistent",
 			"zealous",
 			"unflagging endeavor",
-			"ātāpī"
+			"[ātāpī, parakkamma]"
 		],
-		"craving": ["wanting", "yearning", "longing", "taṇha"],
-		"cruelty": ["brutality", "inhumanity", "sadism", "barbarity"],
+		"craving": ["wanting", "yearning", "longing", "lit. thirst", "[taṇha]"],
+		"cruelty": [
+			"abuse",
+			"hurting",
+			"fierceness",
+			"inhumanity",
+			"injuring",
+			"viciousness",
+			"[vihiṁsā]"
+		],
 		"cultivation": [
 			"development",
 			"improvement",
 			"meditation",
 			"nurturing",
-			"growth"
+			"growth",
+			"[bhāvanā]"
 		],
-		"direct knowing": ["experiential understanding", "direct experience"],
+		"desire": [
+			"having an objective",
+			"interest",
+			"aspiration",
+			"wish",
+			"intention",
+			"impulse",
+			"[chanda]"
+		],
+		"directly knowing": [
+			"experiential understanding",
+			"direct experience",
+			"[abhiññāya]"
+		],
+		"diligence": [
+			"alertness",
+			"carefulness",
+			"care",
+			"conscientiousness",
+			"[appamāda]"
+		],
 		"discernment": [
 			"able to judge well",
 			"able to see distinctions",
 			"clear seeing",
 			"penetrating internal vision",
-			"insight"
+			"insight",
+			"[vipassanā, nipaka]"
 		],
-		"disenchantment": ["de-illusionment", "disinterest"],
-		"dispassion": ["detachment", "disinterest", "fading of desire"],
-		"displeasure": ["bitterness", "unhappiness", "bitterness"],
-		"distracted": [
-			"with scattered attention",
+		"disenchantment": ["de-illusionment", "disinterest", "[nibbidā]"],
+		"dispassion": [
+			"detachment",
+			"disinterest",
+			"fading of desire",
+			"[virāga]"
+		],
+		"displeasure": [
+			"bitterness",
+			"unhappiness",
+			"bitterness",
+			"[domanassa]"
+		],
+		"distraction": [
+			"scattered attention",
 			"uncollected",
 			"not well-composed",
-			"having a wandering mind",
+			"with a wandering mind",
 			"with runaway thoughts",
-			"asamāhita"
+			"[asamāhita]"
 		],
-		"doubtful": [
-			"confused",
-			"indecisive",
-			"uncertain",
+		"disturbed": [
+			"agitated",
+			"stirred up",
+			"cloudy",
+			"foggy",
+			"murky",
+			"[āvilena]"
+		],
+		"doubt": [
+			"confusion",
+			"indecisiveness",
+			"uncertainty",
 			"wavering",
-			"perplexed",
-			"vicikiccha"
+			"perplexity",
+			"[vicikiccha]"
 		],
-		"drowsiness": ["sleepiness", "yawning", "lethargic", "middha"],
-		"dullness": ["sluggishness", "fuzziness", "thina"],
-		"diligence": ["alertness", "carefulness", "care", "conscientiousness"],
-		"ending": ["cessation", "gradual ending"],
+		"drowsiness": [
+			"sleepiness",
+			"torpor",
+			"feeling lethargic",
+			"lit. stiffness (of mind/body due to tiredness)",
+			"[middha]"
+		],
+		"dullness": [
+			"lack or mental clarity or alertness",
+			"inertia",
+			"mental sluggishness",
+			"inattentiveness or lack of sharpness",
+			"[thina]"
+		],
+		"ending": ["cessation", "gradual ending", "[nirodha]"],
 		"equanimity": [
 			"mental poise",
 			"mental balance",
 			"equipose",
 			"non-reactivity",
 			"composure",
-			"upekkha"
+			"[upekkha]"
 		],
-		"ethical conduct": ["moral integrity", "virtue"],
-		"faith": ["confidence", "trust", "belief", "conviction"],
+		"ethical conduct": ["moral integrity", "virtue", "[sīla]"],
+		"examination": [
+			"analysis",
+			"investigation",
+			"probing",
+			"lit. picking",
+			"[vicaya]"
+		],
+		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
 		"faithlessness": [
 			"lack of confidence",
 			"lack of conviction",
 			"disbelief",
 			"cynicism",
-			"assadha"
+			"[assadha]"
 		],
 		"fearful": [
-			"afraid",
+			"feeling afraid",
 			"timid",
 			"dread",
 			"fright",
 			"horror",
 			"panic",
-			"scared",
-			"terror"
+			"terror",
+			"[bhaya]"
 		],
-		"fear of wrongdoing": ["moral dread", "respect for others"],
+		"fear of wrongdoing": [
+			"moral dread",
+			"respect for others",
+			"(comm) originating from outside",
+			"[ottappa]"
+		],
 		"feuding": [
+			"competitiveness",
+			"contentiousness",
 			"quarreling",
 			"rivalry",
 			"opposition",
 			"struggle",
-			"conflict"
+			"conflict",
+			"[paḷāsa]"
 		],
-		"formless": ["immaterial", "surpassing forms", "arūpa"],
-		"full awareness": ["clear comprehension"],
+		"flexible": [
+			"pliable",
+			"workable",
+			"malleable",
+			"yielding",
+			"ready",
+			"suitable for use",
+			"[mudu, kammañña]"
+		],
+		"formless": ["immaterial", "surpassing forms", "[arūpa]"],
+		"full awareness": ["clear comprehension", "[sampajañña]"],
 		"giving": [
 			"generosity",
 			"charity",
 			"donating",
 			"philanthropy",
 			"providing with",
-			"gift with"
+			"gift with",
+			"[dāna]"
 		],
 		"giving up": [
 			"renunciation",
 			"relinquishment",
 			"letting go",
-			"abandonment"
+			"abandonment",
+			"[nekkhamma]"
+		],
+		"good friendship": [
+			"friendship with wholesome persons",
+			"[kalyāṇamittatā]"
 		],
 		"greed": [
 			"avarice",
@@ -303,24 +444,16 @@
 			"rapacity",
 			"money grabbing",
 			"grabbiness",
-			"lobha"
+			"[lobha]"
 		],
-		"desire": [
-			"objective",
-			"interest",
-			"aspiration",
-			"wish",
-			"intention",
-			"desire",
-			"impulse",
-			"chanda"
-		],
-		"harmful": ["injurious", "destructive", "bad", "evil"],
+		"harmful": ["injurious", "destructive", "bad", "evil", "[pāpaka]"],
+		"having many desires": ["greediness", "[mahicchatā]"],
 		"humility": [
 			"modesty",
 			"unpretentiousness",
 			"humbleness",
-			"lack of pride"
+			"lack of pride",
+			"[anatimāna]"
 		],
 		"hypocrisy": [
 			"pretense",
@@ -328,7 +461,7 @@
 			"deceitfulness",
 			"putting on a false front",
 			"fraudulent",
-			"māyāvī"
+			"[māyāvī]"
 		],
 		"ignorance": [
 			"delusion",
@@ -337,13 +470,14 @@
 			"fundamental unawareness of the true nature of reality",
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
-			"avijja"
+			"[avijja]"
 		],
 		"illusion": [
 			"delusion",
 			"hallucination",
-			"misperception",
-			"distorted view"
+			"misapprehension",
+			"distorted view",
+			"[moha]"
 		],
 		"immaturity": [
 			"lacking in discernment",
@@ -351,91 +485,152 @@
 			"child-like in understanding",
 			"lack of wisdom",
 			"lack of experience",
-			"foolish"
+			"foolishness",
+			"[bāla]"
 		],
-		"inquisitive": ["curious", "inquiring", "interested"],
-		"examination": ["consideration", "reflection", "investigation"],
-		"irritable": ["cranky", "moody", "prone to anger"],
+		"inquisitiveness": [
+			"considering",
+			"curious",
+			"inquiring",
+			"testing",
+			"[vīmaṃsā]"
+		],
+		"irritability": [
+			"crankiness",
+			"moodiness",
+			"being prone to annoyance",
+			"being prone to anger",
+			"[kodhana]"
+		],
 		"jealousy": [
 			"covetousness",
 			"envy",
 			"possessiveness",
 			"protective of",
-			"unwilling to part with"
+			"unwilling to part with",
+			"[issā]"
 		],
-		"laziness": ["indolence", "idleness", "inactivity", "sluggishness"],
-		"learning": ["acquiring knowledge", "studying", "understanding"],
+		"knowledge": [
+			"knowing (of)",
+			"insight (into)",
+			"understanding (of)",
+			"[ñāṇa]"
+		],
+		"lack of discernment": [
+			"lack of clear comprehension",
+			"lack of wisdom",
+			"immaturity",
+			"child-like in understanding",
+			"[asampajañña, bāla]"
+		],
+		"lack of principles": [
+			"lacking in moral principles",
+			"lacking in ethics",
+			"[dussīlya]"
+		],
+		"laziness": [
+			"indolence",
+			"idleness",
+			"inactivity",
+			"sluggishness",
+			"[kosajja, tandī]"
+		],
+		"learning": [
+			"acquiring knowledge",
+			"studying",
+			"understanding",
+			"[suta]"
+		],
 		"liberation": [
 			"freedom",
 			"release",
 			"deliverance",
 			"emancipation",
-			"vimutti"
+			"[vimutti]"
 		],
 		"loving-kindness": [
-			"metta",
 			"goodwill",
 			"benevolence",
 			"kindness",
-			"friendliness"
+			"friendliness",
+			"[metta]"
 		],
-		"merit": ["good deeds", "spiritual wealth"],
+		"merit": ["good deeds", "spiritual wealth", "[puñña]"],
 		"mental proliferation": [
-			"papanca",
 			"conceptual proliferation",
 			"conceptualization",
-			"forming various opinions"
+			"forming various opinions",
+			"[papañca]"
 		],
 		"mindfulness": [
 			"being present",
 			"keeping in mind",
 			"awareness",
 			"observing body, felt experience, mind, and mental qualities",
-			"sati"
+			"[sati]"
 		],
 		"moral recklessness": [
 			"fearlessness of wrongdoing",
 			"without concern for others",
 			"lack of prudence",
-			"anottappa"
+			"[anottappa]"
 		],
-		"muddle-minded": ["forgetful", "not mindful", "muṭṭhassatī"],
-		"negligence": ["carelessness", "heedlessness", "inattentiveness"],
+		"muddle-minded": ["forgetful", "not mindful", "[muṭṭhassatī]"],
+		"one-pointedness": [
+			"concentration",
+			"focus",
+			"unification of mind",
+			"[ekagga]"
+		],
+		"negligence": [
+			"carelessness",
+			"heedlessness",
+			"inattentiveness",
+			"[pamāda]"
+		],
 		"non-harm": [
 			"non-violence",
 			"non-injury",
 			"non-harming",
 			"non-killing",
-			"non-hurting"
+			"non-hurting",
+			"[avihiṃsā]"
 		],
 		"non-restraint": [
 			"unguarded in sense faculties",
 			"not watching the sense doors",
-			"grasping at prominent features or details of sense objects"
+			"grasping at prominent features or details of sense objects",
+			"[asaṃvara]"
 		],
 		"not taking what is not given": [
 			"not stealing",
 			"trustworthiness",
 			"honesty regarding possessions",
 			"accepting what is offered",
-			"dinnādāna"
+			"[adinnādāna veramaṇī]"
 		],
 		"passion": [
 			"intense desire",
 			"strong emotion",
 			"infatuation",
 			"obsession",
-			"lust"
+			"lust",
+			"[rāga]"
 		],
+		"patience": ["endurance", "tolerance", "[khanti]"],
 		"personal existence": [
 			"identity view",
 			"self-view",
 			"self-identification",
 			"embodied being",
-			"egoism"
+			"egoism",
+			"[sakkāya-diṭṭhi]"
 		],
-		"recognition of impermanence": ["perception of impermanence"],
-		"resentment": ["bearing a grudge", "harboring enmity"],
+		"recognition of impermanence": [
+			"perception of impermanence",
+			"[anicca-saññā]"
+		],
+		"resentment": ["bearing a grudge", "harboring enmity", "[upanāha]"],
 		"respect": [
 			"reverence",
 			"veneration",
@@ -445,14 +640,15 @@
 			"appreciation",
 			"deference",
 			"honour",
-			"attentiveness"
+			"attentiveness",
+			"[gārava, sakkāra]"
 		],
 		"right intention": [
 			"correct resolve",
 			"wholesome thought",
 			"skillful aspiration",
 			"right volition",
-			"sammāsaṅkappa"
+			"[sammāsaṅkappa]"
 		],
 		"right speech": [
 			"truthful speech",
@@ -462,40 +658,51 @@
 			"harmonious speech",
 			"articulate words",
 			"eloquent communication",
-			"samma vaca"
+			"[sammāvācā]"
 		],
 		"right view": [
 			"right understanding",
 			"right belief",
 			"view that is inline with the Dhamma",
-			"samma ditthi"
+			"[sammādiṭṭhi]"
 		],
-		"self-control": ["self-restraint", "self-mastery"],
-		"boastful": [
-			"braggart",
-			"exalting oneself",
-			"overbearing",
-			"self-praise",
-			"attukkaṁsaka"
+		"rousing of energy": [
+			"determination",
+			"taking initiative",
+			"making a mental decision to act",
+			"[vīriyārambha]"
 		],
+		"self-control": ["self-restraint", "self-mastery", "[saṃvara]"],
 		"sense of right and wrong": [
 			"with conscience",
 			"sense of shame",
-			"modest"
+			"modesty",
+			"(comm) originating from inside",
+			"[hirī]"
 		],
 		"sense restraint": [
 			"guarding the sense faculties",
 			"watching the sense doors",
-			"not grasping at the prominent features or details of sense objects"
+			"not grasping at the prominent features or details of sense objects",
+			"[indriya saṃvara]"
 		],
 		"sensual desire": [
 			"passion for sensual pleasures",
 			"lust",
-			"craving for pleasure"
+			"craving for pleasure",
+			"[kāmacchanda]"
+		],
+		"sexual misconduct": [
+			"crossing boundaries",
+			"infidelity",
+			"inappropriate sexual behavior",
+			"unfaithfulness to one's partner",
+			"[kāmesumicchācāra]"
 		],
 		"shamelessness": [
 			"lack of conscience",
-			"lacking sense of right and wrong"
+			"lacking sense of right and wrong",
+			"[ahirika]"
 		],
 		"sincerity": [
 			"genuineness",
@@ -503,24 +710,29 @@
 			"straightforwardness",
 			"openness",
 			"non-deception",
-			"amāyā"
+			"[amāyā]"
 		],
-		"slaughtering": ["killing", "murdering", "taking life"],
-		"solitude": ["seclusion", "privacy"],
+		"slaughtering": ["killing", "murdering", "taking life", "[pāṇātipāta]"],
+		"solitude": ["seclusion", "privacy", "[viveka]"],
 		"stealing": [
 			"theft",
 			"taking what is not given",
 			"taking what is not offerred",
 			"dishonesty regarding possessions",
-			"adinnādānā"
+			"[adinnādānā]"
 		],
-		"stinginess": ["miserliness", "greed", "meanness", "tight-fistedness"],
+		"stinginess": [
+			"miserliness",
+			"meanness",
+			"tight-fistedness",
+			"[macchariya]"
+		],
 		"stubbornness": [
 			"bullheadedness",
 			"obstinacy",
 			"inflexibility",
 			"pigheadedness",
-			"thambha"
+			"[thambha]"
 		],
 		"suffering": [
 			"discomfort",
@@ -532,30 +744,30 @@
 			"disease",
 			"distress",
 			"afflication",
-			"dukkha"
+			"[dukkha]"
 		],
 		"sympathetic joy": [
 			"mudita",
 			"appreciation",
 			"rejoicing in the happiness of others",
-			"delight in the success of others"
+			"delight in the success of others",
+			"[muditā]"
 		],
-		"tranquility": ["calmness", "peacefulness", "serenity", "upasama"],
-		"treachery": ["deviousness", "scamming", "betrayal"],
-		"undiscerning": ["lacking in wisdom", "foolish"],
-		"unprincipled": ["lacking in moral principles", "lacking in ethics"],
+		"tame": ["trained", "mastered", "subdued", "[danta]"],
+		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
+		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
 		"unwise attention": [
 			"improper attention",
 			"imprudent use of the mind",
 			"unfocused attention",
-			"ayonisomanasikāra"
+			"[ayonisomanasikāra]"
 		],
 		"vanity": [
 			"indulgence",
 			"excess",
 			"extravagance",
 			"intoxication",
-			"mada"
+			"[mada]"
 		],
 		"vigour": [
 			"energy",
@@ -563,18 +775,20 @@
 			"enthusiasm",
 			"zeal",
 			"application of will",
-			"persistence"
+			"persistence",
+			"[vīriya]"
 		],
 		"vision": [
 			"seeing things as they are",
 			"seeing the truth",
-			"seeing the dhamma"
+			"seeing the dhamma",
+			"[dassana]"
 		],
-		"wakefulness": ["lucidity", "alertness", "vigilance"],
+		"wakefulness": ["lucidity", "alertness", "vigilance", "[jāgariyā]"],
 		"weak in effort": [
 			"low in energy",
 			"lacking in endurance",
-			"hīnavīriya"
+			"[hīnavīriya]"
 		],
 		"wholesome": [
 			"skillful",
@@ -583,14 +797,20 @@
 			"useful",
 			"healthy",
 			"nourishing",
-			"sustaining"
+			"sustaining",
+			"[kusala]"
 		],
-		"wisdom": ["understanding the four noble truths"],
+		"wisdom": [
+			"the quality of possessing experience alongside knowledge and sound judgment",
+			"an experiential understanding of the four noble truths",
+			"[paññā]"
+		],
 		"wise attention": [
 			"proper attention",
 			"prudent use of the mind",
 			"wise reflection",
-			"attention to the source"
+			"attention to the source",
+			"[yonisomanasikāra]"
 		],
 		"wrong intention": [
 			"incorrect resolve",
@@ -598,8 +818,21 @@
 			"unskillful aspiration",
 			"wrong thought",
 			"harmful volition",
-			"micchāsaṅkappa"
+			"[micchāsaṅkappa]"
 		],
-		"wrong view": ["distorted perceptions", "untrue views", "false beliefs"]
+		"wrong speech": [
+			"false speech",
+			"lying",
+			"slanderous or defamatory or malicious speech",
+			"abusive or rude or unkind way of speaking",
+			"meaningless talk or idle chatter or gossip",
+			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
+		],
+		"wrong view": [
+			"distorted perceptions",
+			"untrue views",
+			"false beliefs",
+			"[micchādiṭṭhi]"
+		]
 	}
 }

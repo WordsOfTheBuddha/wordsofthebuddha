@@ -2,6 +2,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { db } from "../../../service/firebase/server";
 import { verifyUser } from "../../../middleware/auth";
+import { FieldValue } from "firebase-admin/firestore";
 
 export const GET: APIRoute = async ({ params, cookies }) => {
 	const slug = params.slug;
@@ -25,18 +26,20 @@ export const GET: APIRoute = async ({ params, cookies }) => {
 				const user = await verifyUser(sessionCookie);
 				userId = user.uid;
 
-				// Check if the content is in read later
+				// Check if the content is in the readLater pages map
 				const docRef = await db
 					.collection("users")
 					.doc(userId)
 					.collection("readLater")
-					.doc(slug)
+					.doc("pages")
 					.get();
 
-				isInReadLater = docRef.exists;
+				if (docRef.exists) {
+					const data = docRef.data();
+					isInReadLater = Boolean(data?.pages?.[slug]);
+				}
 			} catch (error) {
 				console.error("Session verification failed:", error);
-				// Continue with userId = null (unauthenticated state)
 			}
 		}
 
@@ -88,14 +91,23 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 			.collection("users")
 			.doc(user.uid)
 			.collection("readLater")
-			.doc(slug);
+				.doc("pages");
 
 		if (isActive) {
-			await readLaterRef.set({
-				addedAt: new Date(),
-			});
+			// Add/update the slug in the pages map with timestamp (minute precision)
+			await readLaterRef.set(
+				{
+					pages: {
+						[slug]: Math.floor(Date.now() / 60000),
+					},
+				},
+				{ merge: true }
+			);
 		} else {
-			await readLaterRef.delete();
+			// Remove the slug from the pages map using FieldValue.delete()
+			await readLaterRef.update({
+				[`pages.${slug}`]: FieldValue.delete(),
+			});
 		}
 
 		return new Response(JSON.stringify({ success: true }), {

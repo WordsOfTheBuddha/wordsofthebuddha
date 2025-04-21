@@ -2,7 +2,7 @@
 title: Bāla vagga - The Chapter Beginning With The Immature
 description: The Buddha contrasts the immature and wise persons, shares on who misrepresents the Buddha, virtuous and unprincipled behavior, wrong and right view, why he dwells in forests and remote lodgings, and the importance of tranquility and insight.
 fetter: ignorance
-tags: immature, wise, misrepresent, virtuous, unprincipled, wrong view, right view, forest, remote, tranquility, insight, an, an2
+tags: immature, wise, misrepresent, virtuous, lack of principles, wrong view, right view, forest, remote, tranquility, insight, an, an2
 slug: an2.21-31
 ---
 

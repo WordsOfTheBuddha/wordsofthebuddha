@@ -2,6 +2,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { getAuth } from "firebase-admin/auth";
 import { app } from "../../../service/firebase/server";
+import { clearUserCache } from "../../../middleware/auth";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
 	const auth = getAuth(app);
@@ -18,18 +19,23 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
 		const displayName = data.displayName?.toString();
 		const email = data.email?.toString();
+        console.log('received display name: ', displayName);
 
 		if (!displayName || !email) {
 			return new Response("Missing required fields", { status: 400 });
 		}
 
 		const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+		const uid = decodedCookie.uid;
 
 		// Update user profile
-		await auth.updateUser(decodedCookie.uid, {
+		await auth.updateUser(uid, {
 			displayName,
 			email,
 		});
+
+		// Clear the user's cache entry to ensure fresh data on next request
+		clearUserCache(uid);
 
 		return new Response(
 			JSON.stringify({

@@ -1,7 +1,7 @@
 ---
 title: Mettābhāvanā sutta - Development Of Loving-kindness
 description: The Buddha uses similes to illustrate the benefits of developing loving-kindess. The liberation of mind by loving-kindness surpasses all other forms of merit-making associated with acquisitions by far.
-fetter: personal existence, ill-will, conceit, adherence to rules and observances, doubt, ignorance
+fetter: personal existence, ill will, conceit, adherence to rules and observances, doubt, ignorance
 tags: loving-kindness, benevolence, acquisitions, liberation of mind, release of mind, merit, boundless, mindfulness, radiance, fetters, attachment, clinging, iti, iti1-27
 simile: moonlight surpassing twinkling of all the stars, sun dispelling all the darkness spread across the sky, morning star shining brightly in the last watch of the night
 slug: iti27

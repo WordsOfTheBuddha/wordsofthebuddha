@@ -1,7 +1,7 @@
 ---
 title: Nibbānadhātu sutta - The Nibbāna Element
 description: The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining.
-fetter: sensual desire,ill-will,ignorance
+fetter: sensual desire,ill will,ignorance
 tags: iti,nibbāna,wisdom,passion,aversion,delusion
 slug: iti44
 ---

@@ -1,7 +1,7 @@
 ---
 title: Vitakka sutta - Two Thoughts
 description: The Blessed One explains the two thoughts that frequently arise in him - the thought of safety for beings and the thought of seclusion.
-fetter: sensual desire, ill-will, ignorance
+fetter: sensual desire, ill will, ignorance
 tags: safety, seclusion, benevolence, oppression, obstruction, unwholesome, Māra, Dhamma, wisdom, craving, aging, birth, liberation, iti, iti28-49
 slug: iti38
 important: true

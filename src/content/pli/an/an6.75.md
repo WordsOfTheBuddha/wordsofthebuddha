@@ -1,8 +1,8 @@
 ---
 title: Dukkha sutta - Suffering
-description: Six qualities to dwell in ease, without distress, without anguish - 1) thoughts of relinquishment, 2) non-ill-will, 3) non-harming, 4) perceptions of relinquishment, 5) non-ill will, 6) non-harming.
-fetter: ill-will,sensual desire,doubt
-tags: an,an6,suffering,ill-will,sensual desire,doubt,relinquishment,non-ill-will,non-harming
+description: Six qualities to dwell in ease, without distress, without anguish - 1) thoughts of relinquishment, 2) non-ill will, 3) non-harming, 4) perceptions of relinquishment, 5) non-ill will, 6) non-harming.
+fetter: ill will,sensual desire,doubt
+tags: an,an6,suffering,ill will,sensual desire,doubt,relinquishment,non-ill will,non-harming
 slug: an6.75
 ---
 

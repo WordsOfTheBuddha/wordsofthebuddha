@@ -2,7 +2,7 @@
 title: Nissaraṇiya sutta - Escape
 description: The Buddha describes the three elements of escape - renunciation, formless existence and cessation.
 qualities: giving up, formless, cessation
-theme: wisdom, direct knowing
+theme: wisdom, directly knowing
 slug: iti72
 ---
 
