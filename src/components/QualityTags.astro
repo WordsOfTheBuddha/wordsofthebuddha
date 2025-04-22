@@ -46,15 +46,15 @@ function capitalizeFirstLetter(string: string) {
 			))
 		}
 		{
-			negativeQualities.map((quality) => (
-				<a href={`/qualities/${quality}`} class="quality-tag negative">
+			neutralQualities.map((quality) => (
+				<a href={`/qualities/${quality}`} class="quality-tag neutral">
 					{capitalizeFirstLetter(quality)}
 				</a>
 			))
 		}
 		{
-			neutralQualities.map((quality) => (
-				<a href={`/qualities/${quality}`} class="quality-tag neutral">
+			negativeQualities.map((quality) => (
+				<a href={`/qualities/${quality}`} class="quality-tag negative">
 					{capitalizeFirstLetter(quality)}
 				</a>
 			))
@@ -94,7 +94,7 @@ function capitalizeFirstLetter(string: string) {
 	}
 
 	.quality-badge.neutral {
-		background-color: var(--gray-500, #9ca3af);
+		background-color: #22d3ee; /* cyan-400 */
 	}
 
 	.quality-list {
@@ -126,9 +126,9 @@ function capitalizeFirstLetter(string: string) {
 	}
 
 	.quality-tag.neutral {
-		background-color: rgba(156, 163, 175, 0.1);
-		color: var(--gray-500, #9ca3af);
-		border: 1px solid rgba(156, 163, 175, 0.2);
+		background-color: rgba(34, 211, 238, 0.1); /* cyan-400 with opacity */
+		color: #0891b2; /* cyan-600 */
+		border: 1px solid rgba(34, 211, 238, 0.2);
 	}
 
 	html.dark .quality-tag.positive {
@@ -144,9 +144,9 @@ function capitalizeFirstLetter(string: string) {
 	}
 
 	html.dark .quality-tag.neutral {
-		background-color: rgba(156, 163, 175, 0.2);
-		color: #d1d5db; /* gray-300 for better contrast in dark mode */
-		border: 1px solid rgba(156, 163, 175, 0.3);
+		background-color: rgba(34, 211, 238, 0.2);
+		color: #22d3ee; /* cyan-400 for better contrast in dark mode */
+		border: 1px solid rgba(34, 211, 238, 0.3);
 	}
 
 	.quality-tag:hover {
