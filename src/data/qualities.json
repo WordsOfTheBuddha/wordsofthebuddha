@@ -119,7 +119,8 @@
 		"wakefulness",
 		"wholesome",
 		"wisdom",
-		"wise attention"
+		"wise attention",
+		"without fear"
 	],
 	"synonyms": {
 		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
@@ -717,8 +718,9 @@
 			"[kāmesumicchācāra]"
 		],
 		"shamelessness": [
-			"lack of conscience",
-			"lacking sense of right and wrong",
+			"act without thinking about what is right, fair, or appropriate",
+			"disregarding one's moral sense of right and wrong",
+			"unconscientiousness",
 			"[ahirika]"
 		],
 		"sincerity": [
@@ -836,6 +838,7 @@
 			"attention to the source",
 			"[yonisomanasikāra]"
 		],
+		"without fear": ["fearlessness", "free of distress", "[niddara]"],
 		"wrong intention": [
 			"incorrect resolve",
 			"unwholesome thought",
