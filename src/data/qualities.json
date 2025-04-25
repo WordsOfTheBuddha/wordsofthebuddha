@@ -97,6 +97,7 @@
 		"merit",
 		"mindfulness",
 		"non-harm",
+		"non-proliferation",
 		"not taking what is not given",
 		"one-pointedness",
 		"patience",
@@ -118,7 +119,8 @@
 		"wakefulness",
 		"wholesome",
 		"wisdom",
-		"wise attention"
+		"wise attention",
+		"without fear"
 	],
 	"synonyms": {
 		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
@@ -255,6 +257,7 @@
 		"contentment": [
 			"satisfaction",
 			"ease",
+			"having few desires",
 			"fewness of wishes",
 			"[santutthi]"
 		],
@@ -569,7 +572,7 @@
 			"friendliness",
 			"[metta]"
 		],
-		"merit": ["good deeds", "spiritual wealth", "[puñña]"],
+		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
 		"mental proliferation": [
 			"conceptual proliferation",
 			"conceptualization",
@@ -610,6 +613,7 @@
 			"non-hurting",
 			"[avihiṃsā]"
 		],
+		"non-proliferation": ["not forming various opinions", "[nippapañca]"],
 		"non-restraint": [
 			"unguarded in sense faculties",
 			"not watching the sense doors",
@@ -684,7 +688,7 @@
 			"determination",
 			"taking initiative",
 			"making a mental decision to act",
-			"[vīriyārambha]"
+			"[vīriyārambha, āraddhavīriya]"
 		],
 		"self-control": ["self-restraint", "self-mastery", "[saṃvara]"],
 		"sense of right and wrong": [
@@ -714,8 +718,9 @@
 			"[kāmesumicchācāra]"
 		],
 		"shamelessness": [
-			"lack of conscience",
-			"lacking sense of right and wrong",
+			"act without thinking about what is right, fair, or appropriate",
+			"disregarding one's moral sense of right and wrong",
+			"unconscientiousness",
 			"[ahirika]"
 		],
 		"sincerity": [
@@ -833,6 +838,7 @@
 			"attention to the source",
 			"[yonisomanasikāra]"
 		],
+		"without fear": ["fearlessness", "free of distress", "[niddara]"],
 		"wrong intention": [
 			"incorrect resolve",
 			"unwholesome thought",
