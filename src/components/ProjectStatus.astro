@@ -2,6 +2,9 @@
 import { keyMap } from "../utils/transformId";
 import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
 
+// Define status type for type safety
+type StatusType = "review" | "complete";
+
 // Define collection info - using our new counts from directoryStructureWithCounts
 const collections = [
 	{
@@ -10,6 +13,8 @@ const collections = [
 		suffix: "verses",
 		title: directoryStructureWithCounts.dhp?.title || "Dhammapada",
 		total: 423,
+		// Optional status for 100% collections: 'review' or 'complete'
+		status: "review" as StatusType,
 	},
 	{
 		name: "iti",
@@ -17,6 +22,8 @@ const collections = [
 		suffix: "sayings",
 		title: directoryStructureWithCounts.iti?.title || "Itivuttaka",
 		total: 112,
+		// Example of a completed collection
+		status: "complete" as StatusType,
 	},
 	{
 		name: "mn",
@@ -54,6 +61,27 @@ const collections = [
 		total: 80,
 	},
 ];
+
+// Status display configurations with proper typing
+const statusConfig: Record<
+	StatusType,
+	{
+		color: string;
+		label: string;
+		shortLabel: string;
+	}
+> = {
+	review: {
+		color: "bg-indigo-600", // Deeper color representing almost complete
+		label: "Edit Review",
+		shortLabel: "Review",
+	},
+	complete: {
+		color: "bg-emerald-600", // Deepest color for final completion
+		label: "Complete",
+		shortLabel: "✓",
+	},
+};
 ---
 
 <table class="min-w-full border-collapse my-4">
@@ -71,14 +99,29 @@ const collections = [
 	</thead>
 	<tbody>
 		{
-			collections.map(({ name, count, suffix, title, total }) => {
+			collections.map(({ name, count, suffix, title, total, status }) => {
 				const percentage = Math.round((count / total) * 100) || 0;
-				const color =
-					percentage < 30
-						? "bg-amber-500"
-						: percentage < 70
-							? "bg-blue-500"
-							: "bg-green-500";
+				const isComplete = percentage >= 100;
+
+				// Determine color and label based on percentage or status
+				let color, statusText;
+
+				if (isComplete && status) {
+					// Use manual status for 100% collections with status
+					// Type assertion to ensure TypeScript knows status is a valid key
+					const typedStatus = status as StatusType;
+					color = statusConfig[typedStatus].color;
+					statusText = statusConfig[typedStatus].label;
+				} else {
+					// Use percentage-based color with gradual progression
+					color =
+						percentage < 30
+							? "bg-amber-500" // Early progress
+							: percentage < 70
+								? "bg-blue-500" // Medium progress
+								: "bg-green-500"; // Significant progress
+					statusText = null; // No status text for percentage-based items
+				}
 
 				return (
 					<tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -100,17 +143,34 @@ const collections = [
 								{count} {suffix}
 							</div>
 							<div class="flex items-center">
-								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mr-2 sm:mr-4">
+								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-sm h-6 mr-1 sm:mr-2 relative">
 									<div
-										class={`h-2.5 rounded-full transition-all duration-500 ${color}`}
-										style={`width: ${percentage}%`}
-									/>
+										class={`h-full rounded-sm transition-all duration-500 flex items-center justify-center text-white text-xs ${color}`}
+										style={`width: ${isComplete ? "100" : percentage}%`}
+									>
+										<span
+											class={`${percentage < 15 ? "invisible" : ""}`}
+										>
+											{percentage >= 30
+												? `${percentage} %`
+												: `${percentage}%`}
+										</span>
+									</div>
 								</div>
-								<div class="whitespace-nowrap text-xs sm:text-sm">
-									<span class="font-medium">
-										{percentage}%
-									</span>
-								</div>
+								{isComplete && status && (
+									<div class="whitespace-nowrap text-xs sm:text-sm">
+										<span class="font-medium hidden sm:inline">
+											{statusText}
+										</span>
+										<span class="font-medium sm:hidden">
+											{
+												statusConfig[
+													status as StatusType
+												].shortLabel
+											}
+										</span>
+									</div>
+								)}
 							</div>
 						</td>
 					</tr>
@@ -129,5 +189,10 @@ const collections = [
 
 	.h-2.5 {
 		height: 0.625rem;
+	}
+
+	/* Update height for the progress bar to fit text */
+	.h-6 {
+		height: 1.5rem;
 	}
 </style>
