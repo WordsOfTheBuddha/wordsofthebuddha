@@ -120,6 +120,7 @@
 		"wholesome",
 		"wisdom",
 		"wise attention",
+		"with nothing",
 		"without fear"
 	],
 	"synonyms": {
@@ -285,6 +286,7 @@
 			"meditation",
 			"nurturing",
 			"growth",
+			"Context: The term 'cultivation' implies that which causes to be, and so although it primarily features as a bright quality, the quality of cultivation is classified as being neutral.",
 			"[bhāvanā]"
 		],
 		"desire": [
@@ -838,6 +840,7 @@
 			"attention to the source",
 			"[yonisomanasikāra]"
 		],
+		"with nothing": ["having no-thing", "possession-less", "[akiñcana]"],
 		"without fear": ["fearlessness", "free of distress", "[niddara]"],
 		"wrong intention": [
 			"incorrect resolve",

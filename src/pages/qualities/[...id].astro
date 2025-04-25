@@ -140,17 +140,41 @@ if (qualities.positive.includes(qualityName)) {
 					synonyms.length > 0 && (
 						<div class="mt-2 ml-2 grid grid-cols-[auto_1fr] gap-y-2 text-sm">
 							{/* Non-Pāli terms */}
-							{synonyms.some((term) => !term.startsWith("[")) && (
+							{synonyms.some(
+								(term) =>
+									!term.startsWith("[") &&
+									!term.startsWith("Context:")
+							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 pr-4">
-										Similar:
+										Synonyms:
 									</span>
 									<span class="text-text">
 										{synonyms
 											.filter(
-												(term) => !term.startsWith("[")
+												(term) =>
+													!term.startsWith("[") &&
+													!term.startsWith("Context:")
 											)
 											.join(", ")}
+									</span>
+								</>
+							)}
+
+							{/* Context information */}
+							{synonyms.some((term) =>
+								term.startsWith("Context:")
+							) && (
+								<>
+									<span class="text-gray-500 dark:text-gray-400 pr-4">
+										Context:
+									</span>
+									<span class="text-text italic">
+										{synonyms
+											.find((term) =>
+												term.startsWith("Context:")
+											)
+											?.replace("Context: ", "")}
 									</span>
 								</>
 							)}
