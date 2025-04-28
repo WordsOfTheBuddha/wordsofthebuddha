@@ -103,7 +103,10 @@
 		"patience",
 		"quenching",
 		"recognition of impermanence",
+		"recognition of not-self",
+		"recollection of death",
 		"respect",
+		"right effort",
 		"right intention",
 		"right speech",
 		"right view",
@@ -115,6 +118,7 @@
 		"sympathetic joy",
 		"tame",
 		"tranquility",
+		"unperturbed",
 		"vigour",
 		"vision",
 		"wakefulness",
@@ -386,6 +390,7 @@
 			"investigation",
 			"probing",
 			"lit. picking",
+			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
 			"[vicaya]"
 		],
 		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
@@ -534,7 +539,8 @@
 			"knowing (of)",
 			"insight (into)",
 			"understanding (of)",
-			"[ñāṇa]"
+			"right knowledge",
+			"[ñāṇa, sammāñāṇa]"
 		],
 		"lack of discernment": [
 			"lack of clear comprehension",
@@ -657,6 +663,8 @@
 			"perception of impermanence",
 			"[anicca-saññā]"
 		],
+		"recognition of not-self": ["perception of not-self", "[anatta-saññā]"],
+		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
 		"resentment": ["bearing a grudge", "harboring enmity", "[upanāha]"],
 		"respect": [
 			"reverence",
@@ -669,6 +677,12 @@
 			"honour",
 			"attentiveness",
 			"[gārava, sakkāra]"
+		],
+		"right effort": [
+			"right endeavor",
+			"right striving",
+			"Context: Energy and resolve directed toward preventing unwholesome states from arising, abandoning arisen unwholesome states, cultivating wholesome states, and maintaining arisen wholesome states; persistent application of the mind aligned with the path.",
+			"[sammāvāyāma]"
 		],
 		"right intention": [
 			"correct resolve",
@@ -784,6 +798,13 @@
 		"tame": ["trained", "mastered", "subdued", "[danta]"],
 		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
 		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
+		"unperturbed": [
+			"unshaken",
+			"untroubled",
+			"unagitated",
+			"no mental uneasiness",
+			"[aparitassa]"
+		],
 		"unwholesome": [
 			"unhealthy",
 			"unskillful",
