@@ -155,11 +155,14 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																"string" &&
 															!term.startsWith(
 																"["
+															) &&
+															!term.startsWith(
+																"Context:"
 															)
 													) && (
 														<>
 															<span class="text-gray-500 dark:text-gray-400 pr-4">
-																Similar:
+																Synonyms:
 															</span>
 															<span class="text-text">
 																{synonymsList
@@ -171,9 +174,47 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 																				"string" &&
 																			!term.startsWith(
 																				"["
+																			) &&
+																			!term.startsWith(
+																				"Context:"
 																			)
 																	)
 																	.join(", ")}
+															</span>
+														</>
+													)}
+
+													{/* Context information */}
+													{synonymsList.some(
+														(
+															term
+														): term is string =>
+															typeof term ===
+																"string" &&
+															term.startsWith(
+																"Context:"
+															)
+													) && (
+														<>
+															<span class="text-gray-500 dark:text-gray-400 pr-4">
+																Context:
+															</span>
+															<span class="text-text italic">
+																{synonymsList
+																	.find(
+																		(
+																			term
+																		): term is string =>
+																			typeof term ===
+																				"string" &&
+																			term.startsWith(
+																				"Context:"
+																			)
+																	)
+																	?.replace(
+																		"Context: ",
+																		""
+																	)}
 															</span>
 														</>
 													)}
