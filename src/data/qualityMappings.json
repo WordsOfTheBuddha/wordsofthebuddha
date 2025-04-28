@@ -155,6 +155,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "mn108",
       "title": "Gopakamoggallāna sutta - With Gopaka Moggallāna",
       "description": "Shortly after the Buddha's final Nibbāna, Venerable Ānanda addresses the brahmins Gopaka Moggallāna and chief minister Vassakāra, clarifying that the Buddha appointed no successor, establishing the Dhamma itself as the refuge for the Saṅgha. He outlines ten qualities that make a bhikkhu worthy of veneration and distinguishes the meditations praised by the Buddha from those based on hindrances.",
@@ -169,7 +175,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -249,7 +255,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     }
   ],
@@ -327,7 +333,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -389,7 +395,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -437,6 +443,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti82",
+      "title": "Devasadda sutta - Divine Sound",
+      "description": "The Buddha describes three occasions when divine sounds arise among the gods.",
+      "collection": "iti"
+    },
+    {
       "id": "iti46",
       "title": "Sikkhānisaṁsa sutta - With Training as Benefit",
       "description": "The Buddha advises to live with training as the benefit, wisdom as the north star, liberation as the essence, ruled by mindfulness.",
@@ -445,7 +457,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -591,7 +603,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -677,6 +689,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.53",
+      "title": "Upaya sutta - Attachment",
+      "description": "Consciousness, while persisting, might persist attached to form, feeling, perception, and intentional constructions. When passion for these is abandoned, the support for the establishment of consciousness is completely cut off. That consciousness, being unestablished, does not grow, and by not intentionally constructing, is liberated.",
+      "collection": "sn"
+    },
+    {
       "id": "sn22.23",
       "title": "Pariñña sutta - Full Understanding",
       "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
@@ -715,7 +733,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -821,6 +839,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "mn108",
       "title": "Gopakamoggallāna sutta - With Gopaka Moggallāna",
       "description": "Shortly after the Buddha's final Nibbāna, Venerable Ānanda addresses the brahmins Gopaka Moggallāna and chief minister Vassakāra, clarifying that the Buddha appointed no successor, establishing the Dhamma itself as the refuge for the Saṅgha. He outlines ten qualities that make a bhikkhu worthy of veneration and distinguishes the meditations praised by the Buddha from those based on hindrances.",
@@ -859,7 +883,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -940,6 +964,12 @@
       "id": "mn13",
       "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
       "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
       "collection": "mn"
     },
     {
@@ -1307,7 +1337,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -1373,7 +1403,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     }
   ],
@@ -1391,7 +1421,14 @@
       "collection": "sn"
     }
   ],
-  "knowledge": [],
+  "knowledge": [
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    }
+  ],
   "learning": [
     {
       "id": "snp5.1",
@@ -1480,6 +1517,18 @@
       "collection": "mn"
     },
     {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
+    {
+      "id": "iti82",
+      "title": "Devasadda sutta - Divine Sound",
+      "description": "The Buddha describes three occasions when divine sounds arise among the gods.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -1562,7 +1611,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -1666,6 +1715,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "iti46",
       "title": "Sikkhānisaṁsa sutta - With Training as Benefit",
       "description": "The Buddha advises to live with training as the benefit, wisdom as the north star, liberation as the essence, ruled by mindfulness.",
@@ -1748,7 +1803,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -1788,7 +1843,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     }
   ],
@@ -1822,13 +1877,21 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
       "id": "dhp179-196",
       "title": "Buddha vagga - Chapter 14 - Buddha",
       "description": "DhammaPada verses 179-196 describe the boundless and traceless nature of the Buddha, the teachings of all the Buddhas, rarity of a human birth, rarity of the arising of a Buddha, what is a safe refuge that leads to release from suffering, and the merit gained by ones who honor the Buddhas or their disciples.",
+      "collection": "dhp"
+    }
+  ],
+  "quenching": [
+    {
+      "id": "dhp383-423",
+      "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     }
   ],
@@ -1858,6 +1921,15 @@
       "collection": "dhp"
     }
   ],
+  "recognition of not-self": [
+    {
+      "id": "sn22.159",
+      "title": "Ānanda sutta - With Ānanda",
+      "description": "When the venerable Ānanda wishes to go for a solitary retreat, the Buddha teaches him to contemplate the five aggregates subject to appropriation and being assumed as one's self.",
+      "collection": "sn"
+    }
+  ],
+  "recollection of death": [],
   "respect": [
     {
       "id": "sn6.2",
@@ -1914,11 +1986,25 @@
       "collection": "an"
     }
   ],
+  "right effort": [
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    }
+  ],
   "right intention": [
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
       "collection": "mn"
     }
   ],
@@ -1948,6 +2034,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -1974,6 +2066,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "an1.82-97",
       "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
       "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
@@ -1996,7 +2094,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -2212,7 +2310,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -2274,7 +2372,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -2294,6 +2392,14 @@
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
       "collection": "an"
+    }
+  ],
+  "unperturbed": [
+    {
+      "id": "sn22.53",
+      "title": "Upaya sutta - Attachment",
+      "description": "Consciousness, while persisting, might persist attached to form, feeling, perception, and intentional constructions. When passion for these is abandoned, the support for the establishment of consciousness is completely cut off. That consciousness, being unestablished, does not grow, and by not intentionally constructing, is liberated.",
+      "collection": "sn"
     }
   ],
   "vigour": [
@@ -2702,7 +2808,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     }
   ],
@@ -2738,7 +2844,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     }
   ],
@@ -2768,6 +2874,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.53",
+      "title": "Upaya sutta - Attachment",
+      "description": "Consciousness, while persisting, might persist attached to form, feeling, perception, and intentional constructions. When passion for these is abandoned, the support for the establishment of consciousness is completely cut off. That consciousness, being unestablished, does not grow, and by not intentionally constructing, is liberated.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -2788,7 +2900,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -3096,7 +3208,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -3542,7 +3654,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -4218,7 +4330,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -4458,7 +4570,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
@@ -4487,6 +4599,12 @@
     }
   ],
   "lack of principles": [
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
     {
       "id": "iti76",
       "title": "Sukhapatthanā sutta - Aspiring for Happiness",
@@ -4574,9 +4692,21 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    },
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
     }
   ],
   "wrong speech": [
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    },
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
@@ -4601,6 +4731,12 @@
       "id": "mn36",
       "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
       "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
       "collection": "mn"
     },
     {
@@ -4664,7 +4800,7 @@
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
-      "description": "",
+      "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
     },
     {
