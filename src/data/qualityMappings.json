@@ -655,6 +655,12 @@
       "title": "Diṭṭhigata sutta - Two Kinds Of Wrong Views",
       "description": "Overcome by two kinds of wrong views, some get stuck, while others overreach. But those with vision see.",
       "collection": "iti"
+    },
+    {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
+      "collection": "an"
     }
   ],
   "dispassion": [
@@ -741,6 +747,12 @@
       "title": "Taṇhā vagga - Chapter 24 - Craving",
       "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and longing, crossing beyond birth and aging. The highest gift is the Dhamma, surpassing all wealth and pleasures, and the destruction of craving is the greatest victory. Offerings to those free from defilements bear the greatest fruit.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
+      "collection": "an"
     }
   ],
   "ending": [
@@ -773,6 +785,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
+      "collection": "an"
     }
   ],
   "equanimity": [
@@ -926,6 +944,12 @@
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
       "collection": "an"
     },
     {
@@ -1253,6 +1277,12 @@
       "title": "Sabrahmaka sutta - With Brahmā",
       "description": "Where children honor their mother and father, those families are said to dwell with Brahmā.",
       "collection": "an"
+    },
+    {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
+      "collection": "an"
     }
   ],
   "giving up": [
@@ -1547,6 +1577,12 @@
       "collection": "an"
     },
     {
+      "id": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -1663,6 +1699,12 @@
       "title": "Vaṇijja sutta - Trade",
       "description": "The Buddha describes the cause and condition for why a trade, once undertaken, leads to loss, fails to meet its intended aim, succeeds as intended, or surpasses even its intended aim.",
       "collection": "an"
+    },
+    {
+      "id": "an1.140-149",
+      "title": "Adhamma vagga - The Chapter On Not The Teaching",
+      "description": "The Buddha shares the importance of explaining correctly what is not the Dhamma, discipline, spoken or uttered, practiced, and prescribed by the Tathāgata.",
+      "collection": "an"
     }
   ],
   "mindfulness": [
@@ -1754,6 +1796,18 @@
       "id": "an3.40",
       "title": "Ādhipateyya sutta - Authorities",
       "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.616-627",
+      "title": "Amata vagga - The Chapter On The Deathless",
+      "description": "The Buddha explains the importance of mindfulness of the body in partaking in the deathless.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
       "collection": "an"
     }
   ],
@@ -1929,7 +1983,14 @@
       "collection": "sn"
     }
   ],
-  "recollection of death": [],
+  "recollection of death": [
+    {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
+      "collection": "an"
+    }
+  ],
   "respect": [
     {
       "id": "sn6.2",
@@ -2001,6 +2062,14 @@
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
     },
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    }
+  ],
+  "right livelihood": [
     {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
@@ -2388,6 +2457,12 @@
       "collection": "an"
     },
     {
+      "id": "an1.296-305",
+      "title": "Paṭhama vagga - First Subchapter On One Thing",
+      "description": "The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -2512,9 +2587,21 @@
       "collection": "an"
     },
     {
+      "id": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
+      "collection": "an"
+    },
+    {
       "id": "an1.51-60",
       "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
       "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.140-149",
+      "title": "Adhamma vagga - The Chapter On Not The Teaching",
+      "description": "The Buddha shares the importance of explaining correctly what is not the Dhamma, discipline, spoken or uttered, practiced, and prescribed by the Tathāgata.",
       "collection": "an"
     }
   ],
@@ -2727,6 +2814,12 @@
       "id": "an1.71-81",
       "title": "Kalyāṇamittādi vagga - The Chapter Beginning With Good Friendship",
       "description": "The Buddha explains the importance of good friendship, the consequences of habitual engagement in unwholesome and wholesome qualities, wise and unwise attention, the loss or increase of relatives, wealth, and reputation contrasted with the loss or increase of wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
       "collection": "an"
     },
     {
@@ -3284,6 +3377,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
+      "collection": "an"
     }
   ],
   "contempt": [
@@ -3778,6 +3877,12 @@
       "collection": "dhp"
     },
     {
+      "id": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
+      "collection": "an"
+    },
+    {
       "id": "an1.41-50",
       "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
       "description": "The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.",
@@ -4051,6 +4156,12 @@
       "id": "an1.82-97",
       "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
       "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.616-627",
+      "title": "Amata vagga - The Chapter On The Deathless",
+      "description": "The Buddha explains the importance of mindfulness of the body in partaking in the deathless.",
       "collection": "an"
     },
     {
@@ -4693,6 +4804,14 @@
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
     },
+    {
+      "id": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
+      "collection": "mn"
+    }
+  ],
+  "wrong livelihood": [
     {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",

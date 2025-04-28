@@ -58,6 +58,7 @@
 		"vanity",
 		"weak in effort",
 		"wrong intention",
+		"wrong livelihood",
 		"wrong speech",
 		"wrong view"
 	],
@@ -108,6 +109,7 @@
 		"respect",
 		"right effort",
 		"right intention",
+		"right livelihood",
 		"right speech",
 		"right view",
 		"self-control",
@@ -691,6 +693,11 @@
 			"right volition",
 			"[sammāsaṅkappa]"
 		],
+		"right livelihood": [
+			"correct livelihood",
+			"right mode of earning a living",
+			"[sammāājīva]"
+		],
 		"right speech": [
 			"truthful speech",
 			"honest speech",
@@ -877,6 +884,11 @@
 			"wrong thought",
 			"harmful volition",
 			"[micchāsaṅkappa]"
+		],
+		"wrong livelihood": [
+			"unwholesome livelihood",
+			"wrong way of earning a living",
+			"[micchāājīva]"
 		],
 		"wrong speech": [
 			"false speech",
