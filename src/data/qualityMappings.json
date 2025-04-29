@@ -155,6 +155,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
@@ -725,6 +731,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "iti81",
       "title": "Sakkāra sutta - Respect",
       "description": "The Blessed One describes how beings are affected by respect and disrespect, and how this affects their rebirth. The true person is one who is collected, detached, and delights in the ending of grasping.",
@@ -766,6 +778,12 @@
       "id": "mn36",
       "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
       "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
     },
     {
@@ -816,6 +834,12 @@
       "id": "mn36",
       "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
       "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
     },
     {
@@ -988,6 +1012,12 @@
       "id": "mn13",
       "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
       "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
     },
     {
@@ -1181,6 +1211,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "an1.98-139",
       "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
       "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
@@ -1329,6 +1365,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "iti87",
       "title": "Andhakaraṇa sutta - Blinding",
       "description": "The three unwholesome thoughts are blinding, produce lack of clarity, cause ignorance, obstruct wisdom, and are troublesome and not conducive to Nibbāna. The three wholesome thoughts give sight, produce clarity and create insight, grow wisdom, and are trouble-free and conducive to Nibbāna.",
@@ -1451,7 +1493,21 @@
       "collection": "sn"
     }
   ],
+  "joyful pleasure": [
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    }
+  ],
   "knowledge": [
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
     {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
@@ -1544,6 +1600,12 @@
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
     },
     {
@@ -1757,6 +1819,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
@@ -1963,6 +2031,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "iti77",
       "title": "Bhidura sutta - Fragile",
       "description": "The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change.",
@@ -2048,6 +2122,12 @@
     }
   ],
   "right effort": [
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
     {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
@@ -2421,6 +2501,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
+      "collection": "mn"
+    },
+    {
       "id": "iti73",
       "title": "Santatara sutta - More Peaceful than",
       "description": "The formless existence is more peaceful than the form realm. Yet, cessation is more peaceful than the formless existence.",
@@ -2712,6 +2798,12 @@
       "id": "mn3",
       "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
       "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
     },
     {
@@ -4908,6 +5000,12 @@
       "id": "mn36",
       "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
       "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
     },
     {
