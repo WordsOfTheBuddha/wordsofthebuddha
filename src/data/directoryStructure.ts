@@ -166,6 +166,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses with Jambukhādaka" features a series of conversations between Venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
 					},
+					sn42: {
+						title: "Gāmaṇisaṁyutta - Linked Discourses with Headman",
+						description:
+							'The "Linked Discourses with Headman" contains dialogues between the Buddha and village leaders, focusing on ethical conduct, social harmony, and the application of Dhamma in daily life. These teachings offer guidance on virtuous living and wise leadership, illuminating the path to personal and communal well-being. Through these conversations, the Buddha addresses the headmen\'s concerns, emphasizing practical principles such as right action, generosity, and moral integrity, tailored to the responsibilities and spiritual development of lay practitioners.',
+					},
 					sn43: {
 						title: "Asaṅkhatasaṁyutta - Linked Discourses on the Unconditioned",
 						description:

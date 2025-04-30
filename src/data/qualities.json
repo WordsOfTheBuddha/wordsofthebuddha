@@ -1,6 +1,7 @@
 {
 	"negative": [
 		"adventurous",
+		"affection",
 		"aggressiveness",
 		"attachment",
 		"anger",
@@ -133,6 +134,7 @@
 	],
 	"synonyms": {
 		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
+		"affection": ["dearness", "fondness", "[pema]"],
 		"aggressiveness": [
 			"hostility",
 			"antagonism",
@@ -362,7 +364,7 @@
 			"uncertainty",
 			"wavering",
 			"perplexity",
-			"[vicikiccha]"
+			"[vicikiccha, kaṅkhā, vimati]"
 		],
 		"drowsiness": [
 			"sleepiness",
