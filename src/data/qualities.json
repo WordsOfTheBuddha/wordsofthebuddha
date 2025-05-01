@@ -70,6 +70,7 @@
 		"collectedness",
 		"complete comprehension",
 		"compassion",
+		"conscience",
 		"contemplation",
 		"contentment",
 		"continuous effort",
@@ -104,6 +105,7 @@
 		"not taking what is not given",
 		"one-pointedness",
 		"patience",
+		"politeness",
 		"quenching",
 		"recognition of impermanence",
 		"recognition of not-self",
@@ -115,7 +117,6 @@
 		"right speech",
 		"right view",
 		"self-control",
-		"sense of right and wrong",
 		"sense restraint",
 		"sincerity",
 		"solitude",
@@ -246,6 +247,13 @@
 			"self-importance",
 			"tendency of self-comparison",
 			"[māna]"
+		],
+		"conscience": [
+			"with sense of right and wrong",
+			"sense of shame",
+			"modesty",
+			"(comm) originating from inside",
+			"[hirī]"
 		],
 		"contempt": [
 			"ungratefulness",
@@ -664,6 +672,13 @@
 			"egoism",
 			"[sakkāya-diṭṭhi]"
 		],
+		"politeness": [
+			"courtesy",
+			"being considerate",
+			"being well-mannered",
+			"friendliness",
+			"[paṭisanthāra]"
+		],
 		"quenching": [
 			"being cooled",
 			"fully satiated",
@@ -730,13 +745,6 @@
 			"[vīriyārambha, āraddhavīriya]"
 		],
 		"self-control": ["self-restraint", "self-mastery", "[saṃvara]"],
-		"sense of right and wrong": [
-			"with conscience",
-			"sense of shame",
-			"modesty",
-			"(comm) originating from inside",
-			"[hirī]"
-		],
 		"sense restraint": [
 			"guarding the sense faculties",
 			"watching the sense doors",
