@@ -1,7 +1,7 @@
 ---
 title: Ugga sutta - Ugga
 description: Migāra of Rohaṇa is a wealthy man, but even his riches are vulnerable to the vicissitudes of life, unlike the seven kinds of wealth the Buddha describes which cannot be taken away.
-qualities: faith, ethical conduct, sense of right and wrong, fear of wrongdoing, learning, giving, wisdom
+qualities: faith, ethical conduct, conscience, fear of wrongdoing, learning, giving, wisdom
 theme: wisdom, inspiration
 slug: an7.7
 ---

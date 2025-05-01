@@ -1,7 +1,7 @@
 ---
 title: Vitthatabala sutta - Powers in Detail
 description: The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.
-qualities: faith, rousing of energy, vigour, sense of right and wrong, fear of wrongdoing, mindfulness, collectedness, wisdom
+qualities: faith, rousing of energy, vigour, conscience, fear of wrongdoing, mindfulness, collectedness, wisdom
 theme: wisdom, principle
 slug: an7.4
 ---
