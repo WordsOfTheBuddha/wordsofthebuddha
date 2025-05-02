@@ -285,6 +285,68 @@
       "collection": "an"
     }
   ],
+  "conscience": [
+    {
+      "id": "mn8",
+      "title": "Sallekha sutta - Effacement",
+      "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn39",
+      "title": "Mahāassapura sutta - The Greater Discourse at Assapura",
+      "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
+      "collection": "mn"
+    },
+    {
+      "id": "an8.32",
+      "title": "Dutiya dāna sutta - Giving (Second)",
+      "description": "Wholesome giving along with faith and a sense of right and wrong is the way of practice that leads to the world of gods.",
+      "collection": "an"
+    },
+    {
+      "id": "an8.23",
+      "title": "Paṭhamahatthaka sutta - With Hatthaka (First)",
+      "description": "The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise.  Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.7",
+      "title": "Ugga sutta - Ugga",
+      "description": "Migāra of Rohaṇa is a wealthy man, but even his riches are vulnerable to the vicissitudes of life, unlike the seven kinds of wealth the Buddha describes which cannot be taken away.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an6.33",
+      "title": "Dutiyaaparihānasutta - Non-decline (Second)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) conscience, and 6) moral dread. The Buddha confirms these as conditions for stability and progress on the path.",
+      "collection": "an"
+    }
+  ],
   "contemplation": [
     {
       "id": "mn95",
@@ -425,6 +487,12 @@
       "collection": "snp"
     },
     {
+      "id": "snp2.10",
+      "title": "Uṭṭhāna sutta - Rise Up",
+      "description": "Verses urging one to rise from negligence, train steadfastly for the state of peace, and not waste the fleeting opportunity of the present moment. The teaching emphasizes the urgency of effort with the imagery of the afflicted pierced by a dart and the King of Death misleading one who remains negligent.",
+      "collection": "snp"
+    },
+    {
       "id": "sn38.2",
       "title": "Arahattapañhā sutta - Questions on Enlightenment",
       "description": "The Noble Eightfold Path is the path and the way of practice for the realization of enlightenment.",
@@ -471,6 +539,18 @@
       "title": "Nāga vagga - Chapter 23 - The Elephant",
       "description": "Dhammapada verses 320–333 highlight self-discipline, wisdom, and perseverance through the imagery of elephants. They highlight inner mastery over strength, the value of solitude over company of immature persons, and the importance of taming one’s mind. Honoring parents, cultivating virtue, and letting go of suffering lead to true ease.",
       "collection": "dhp"
+    },
+    {
+      "id": "an6.33",
+      "title": "Dutiyaaparihānasutta - Non-decline (Second)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) conscience, and 6) moral dread. The Buddha confirms these as conditions for stability and progress on the path.",
+      "collection": "an"
+    },
+    {
+      "id": "an6.32",
+      "title": "Paṭhamaaparihānasutta - Non-decline (First)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) diligence, and 6) courteousness. The Buddha affirms these qualities as supportive of progress toward Nibbāna.",
+      "collection": "an"
     },
     {
       "id": "an3.49",
@@ -1166,6 +1246,12 @@
       "id": "an7.3",
       "title": "Saṅkhittabala sutta - Powers in Brief",
       "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an6.33",
+      "title": "Dutiyaaparihānasutta - Non-decline (Second)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) conscience, and 6) moral dread. The Buddha confirms these as conditions for stability and progress on the path.",
       "collection": "an"
     }
   ],
@@ -2009,6 +2095,14 @@
       "collection": "dhp"
     }
   ],
+  "politeness": [
+    {
+      "id": "an6.32",
+      "title": "Paṭhamaaparihānasutta - Non-decline (First)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) diligence, and 6) courteousness. The Buddha affirms these qualities as supportive of progress toward Nibbāna.",
+      "collection": "an"
+    }
+  ],
   "quenching": [
     {
       "id": "dhp383-423",
@@ -2022,6 +2116,12 @@
       "id": "sn35.53",
       "title": "Avijjāpahāna sutta - Abandoning Ignorance",
       "description": "The Buddha teaches on how to know and see the impermanence of the six sense bases and the process leading up to the arising of feeling and perception for the abandoning of ignorance and the arising of wisdom.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.150",
+      "title": "Ajjhatta sutta - Internal",
+      "description": "By clinging to the five aggregates, one experiences pleasure and pain.",
       "collection": "sn"
     },
     {
@@ -2054,6 +2154,12 @@
       "id": "sn22.159",
       "title": "Ānanda sutta - With Ānanda",
       "description": "When the venerable Ānanda wishes to go for a solitary retreat, the Buddha teaches him to contemplate the five aggregates subject to appropriation and being assumed as one's self.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.150",
+      "title": "Ajjhatta sutta - Internal",
+      "description": "By clinging to the five aggregates, one experiences pleasure and pain.",
       "collection": "sn"
     }
   ],
@@ -2107,6 +2213,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an6.33",
+      "title": "Dutiyaaparihānasutta - Non-decline (Second)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) conscience, and 6) moral dread. The Buddha confirms these as conditions for stability and progress on the path.",
+      "collection": "an"
+    },
+    {
+      "id": "an6.32",
+      "title": "Paṭhamaaparihānasutta - Non-decline (First)",
+      "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) diligence, and 6) courteousness. The Buddha affirms these qualities as supportive of progress toward Nibbāna.",
+      "collection": "an"
     },
     {
       "id": "an4.21",
@@ -2262,62 +2380,6 @@
       "id": "an1.31-40",
       "title": "Adanta vagga - The Chapter on the Untamed",
       "description": "Short teachings contrasting the untamed and the tamed mind.",
-      "collection": "an"
-    }
-  ],
-  "sense of right and wrong": [
-    {
-      "id": "mn8",
-      "title": "Sallekha sutta - Effacement",
-      "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
-      "collection": "mn"
-    },
-    {
-      "id": "mn39",
-      "title": "Mahāassapura sutta - The Greater Discourse at Assapura",
-      "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
-      "collection": "mn"
-    },
-    {
-      "id": "an8.32",
-      "title": "Dutiya dāna sutta - Giving (Second)",
-      "description": "Wholesome giving along with faith and a sense of right and wrong is the way of practice that leads to the world of gods.",
-      "collection": "an"
-    },
-    {
-      "id": "an8.23",
-      "title": "Paṭhamahatthaka sutta - With Hatthaka (First)",
-      "description": "The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise.  Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.7",
-      "title": "Ugga sutta - Ugga",
-      "description": "Migāra of Rohaṇa is a wealthy man, but even his riches are vulnerable to the vicissitudes of life, unlike the seven kinds of wealth the Buddha describes which cannot be taken away.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.6",
-      "title": "Vitthatadhana sutta - Wealth in Detail",
-      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.5",
-      "title": "Saṅkhittadhana sutta - Wealth in Brief",
-      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.4",
-      "title": "Vitthatabala sutta - Powers in Detail",
-      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.3",
-      "title": "Saṅkhittabala sutta - Powers in Brief",
-      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
       "collection": "an"
     }
   ],
@@ -2705,6 +2767,12 @@
       "collection": "snp"
     },
     {
+      "id": "snp2.10",
+      "title": "Uṭṭhāna sutta - Rise Up",
+      "description": "Verses urging one to rise from negligence, train steadfastly for the state of peace, and not waste the fleeting opportunity of the present moment. The teaching emphasizes the urgency of effort with the imagery of the afflicted pierced by a dart and the King of Death misleading one who remains negligent.",
+      "collection": "snp"
+    },
+    {
       "id": "sn6.2",
       "title": "Gārava sutta - Respect",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
@@ -3013,6 +3081,14 @@
       "collection": "an"
     }
   ],
+  "affection": [
+    {
+      "id": "sn42.11",
+      "title": "Bhadraka sutta - With Bhadraka",
+      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
+      "collection": "sn"
+    }
+  ],
   "aggressiveness": [
     {
       "id": "mn7",
@@ -3045,6 +3121,18 @@
       "title": "Upāsaka sutta - Lay Disciple",
       "description": "The Buddha expresses an inspired utterance contrasting one who has comprehended the nature of reality with one who is with possessions.",
       "collection": "ud"
+    },
+    {
+      "id": "snp2.10",
+      "title": "Uṭṭhāna sutta - Rise Up",
+      "description": "Verses urging one to rise from negligence, train steadfastly for the state of peace, and not waste the fleeting opportunity of the present moment. The teaching emphasizes the urgency of effort with the imagery of the afflicted pierced by a dart and the King of Death misleading one who remains negligent.",
+      "collection": "snp"
+    },
+    {
+      "id": "sn42.11",
+      "title": "Bhadraka sutta - With Bhadraka",
+      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
+      "collection": "sn"
     },
     {
       "id": "sn35.60",
@@ -4197,6 +4285,12 @@
   ],
   "negligence": [
     {
+      "id": "snp2.10",
+      "title": "Uṭṭhāna sutta - Rise Up",
+      "description": "Verses urging one to rise from negligence, train steadfastly for the state of peace, and not waste the fleeting opportunity of the present moment. The teaching emphasizes the urgency of effort with the imagery of the afflicted pierced by a dart and the King of Death misleading one who remains negligent.",
+      "collection": "snp"
+    },
+    {
       "id": "sn35.246",
       "title": "Vīṇopama sutta - Simile of the Lute",
       "description": "The Buddha explains how to rein in the mind when desire, passion, aversion, illusion, or repulsion arises in regard to the six sense bases using the simile of a watchman and an ox and the simile of a lute.",
@@ -4683,9 +4777,21 @@
       "collection": "ud"
     },
     {
+      "id": "sn42.11",
+      "title": "Bhadraka sutta - With Bhadraka",
+      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
+      "collection": "sn"
+    },
+    {
       "id": "sn35.136",
       "title": "Paṭhamarūpārāma sutta - Delight in Forms",
       "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.150",
+      "title": "Ajjhatta sutta - Internal",
+      "description": "By clinging to the five aggregates, one experiences pleasure and pain.",
       "collection": "sn"
     },
     {
@@ -5068,6 +5174,12 @@
       "id": "sn51.13",
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
       "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn42.11",
+      "title": "Bhadraka sutta - With Bhadraka",
+      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
       "collection": "sn"
     },
     {
