@@ -290,7 +290,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			"iti100-112": {
 				title: "Catukkanipāta - The Book of the Fours",
 				description:
-					'The "The Book of the Fours" contains 13 discourses. Here, teachings are presented in groups of fours, covering various sets of four principles or qualities, such as the Four Noble Truths or the four Brahmavihāras (divine abidings: loving-kindness, compassion, sympathetic joy, and equanimity).',
+					'The "The Book of the Fours" contains 13 discourses. Here, teachings are presented in groups of fours, covering various sets of four principles or qualities, such as the Four Noble Truths or the four Brahmavihāras (divine abidings: loving-kindness, compassion, appreciative joy, and equanimity).',
 				range: {
 					start: 100,
 					end: 112,

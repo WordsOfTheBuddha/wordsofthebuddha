@@ -273,6 +273,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn55",
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
@@ -615,6 +621,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn35.232",
+      "title": "Koṭṭhika sutta - Koṭṭhika",
+      "description": "Venerable Mahākoṭṭhika asks Venerable Sāriputta if the eye is the fetter of forms or if forms are the fetter of the eye. Venerable Sāriputta explains that it is the desire and lust that arises in dependence on both that is the fetter.",
+      "collection": "sn"
+    },
+    {
       "id": "sn35.230",
       "title": "Bāḷisikopama sutta - The Fisherman's Simile",
       "description": "The Buddha likens the six types of desirable sense objects to baited hooks, set in the world for the misfortune of beings—those who cling to them fall under Māra’s power.",
@@ -905,6 +917,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn55",
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
@@ -1143,6 +1161,12 @@
       "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
       "description": "The Buddha explains the difference between cultivation and lack of cultivation with regard to body and mind, and recounts his own journey to full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "iti83",
+      "title": "Pañcapubbanimitta sutta - Five Preceding Signs",
+      "description": "The Buddha describes the five signs that appear when a deity is about to pass away, and the three blessings that the gods give to the deity.",
+      "collection": "iti"
     },
     {
       "id": "dhp360-382",
@@ -1565,6 +1589,14 @@
       "collection": "dhp"
     }
   ],
+  "impartiality": [
+    {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    }
+  ],
   "inquisitiveness": [
     {
       "id": "sn38.2",
@@ -1757,6 +1789,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn55",
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
@@ -1837,6 +1875,12 @@
       "collection": "sn"
     },
     {
+      "id": "iti83",
+      "title": "Pañcapubbanimitta sutta - Five Preceding Signs",
+      "description": "The Buddha describes the five signs that appear when a deity is about to pass away, and the three blessings that the gods give to the deity.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp320-333",
       "title": "Nāga vagga - Chapter 23 - The Elephant",
       "description": "Dhammapada verses 320–333 highlight self-discipline, wisdom, and perseverance through the imagery of elephants. They highlight inner mastery over strength, the value of solitude over company of immature persons, and the importance of taming one’s mind. Honoring parents, cultivating virtue, and letting go of suffering lead to true ease.",
@@ -1884,6 +1928,12 @@
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
       "collection": "mn"
     },
     {
@@ -2131,6 +2181,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn118",
       "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
       "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
@@ -2161,6 +2217,12 @@
       "title": "Ajjhatta sutta - Internal",
       "description": "By clinging to the five aggregates, one experiences pleasure and pain.",
       "collection": "sn"
+    },
+    {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
     }
   ],
   "recollection of death": [
@@ -2497,7 +2559,7 @@
       "collection": "an"
     }
   ],
-  "sympathetic joy": [
+  "appreciative joy": [
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -2508,6 +2570,12 @@
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
       "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
       "collection": "mn"
     },
     {
@@ -2623,6 +2691,12 @@
       "title": "Upaya sutta - Attachment",
       "description": "Consciousness, while persisting, might persist attached to form, feeling, perception, and intentional constructions. When passion for these is abandoned, the support for the establishment of consciousness is completely cut off. That consciousness, being unestablished, does not grow, and by not intentionally constructing, is liberated.",
       "collection": "sn"
+    },
+    {
+      "id": "iti83",
+      "title": "Pañcapubbanimitta sutta - Five Preceding Signs",
+      "description": "The Buddha describes the five signs that appear when a deity is about to pass away, and the three blessings that the gods give to the deity.",
+      "collection": "iti"
     }
   ],
   "vigour": [
@@ -2732,6 +2806,12 @@
       "id": "an8.32",
       "title": "Dutiya dāna sutta - Giving (Second)",
       "description": "Wholesome giving along with faith and a sense of right and wrong is the way of practice that leads to the world of gods.",
+      "collection": "an"
+    },
+    {
+      "id": "an4.232",
+      "title": "Saṅkhitta sutta - Kamma in Brief",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results.",
       "collection": "an"
     },
     {
@@ -3313,6 +3393,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn55",
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
@@ -3529,6 +3615,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn5",
       "title": "Anaṅgaṇa sutta - Blemish Free",
       "description": "Venerable Sāriputta explains the four kinds of persons based on their understanding of blemishes and blemish-free qualities. He uses the simile of a bronze bowl to illustrate the importance of understanding one's blemishes and blemish-free qualities.",
@@ -3685,6 +3777,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn55",
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
@@ -3692,6 +3790,12 @@
     }
   ],
   "discontentment": [
+    {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
     {
       "id": "an8.30",
       "title": "Anuruddhamahāvitakka sutta - Anuruddha and Thoughts of a Great Person",
@@ -4397,6 +4501,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
+      "collection": "mn"
+    },
+    {
       "id": "mn55",
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
@@ -4928,6 +5038,12 @@
     }
   ],
   "unwholesome": [
+    {
+      "id": "an4.232",
+      "title": "Saṅkhitta sutta - Kamma in Brief",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results.",
+      "collection": "an"
+    },
     {
       "id": "an1.51-60",
       "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",

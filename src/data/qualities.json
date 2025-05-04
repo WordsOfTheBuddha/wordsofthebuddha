@@ -92,6 +92,7 @@
 		"good friendship",
 		"good habits",
 		"humility",
+		"impartiality",
 		"inquisitiveness",
 		"joyful pleasure",
 		"knowledge",
@@ -120,7 +121,7 @@
 		"sense restraint",
 		"sincerity",
 		"solitude",
-		"sympathetic joy",
+		"appreciative joy",
 		"tame",
 		"tranquility",
 		"unperturbed",
@@ -232,6 +233,7 @@
 			"concern",
 			"sympathy",
 			"kindness towards those who are suffering",
+			"Context: Mental quality of wise empathy in response to suffering, which counters qualities of harm or cruelty.",
 			"[karuṇā]"
 		],
 		"complete comprehension": [
@@ -336,7 +338,7 @@
 			"insight",
 			"[vipassanā, nipaka]"
 		],
-		"discontentment": ["dissatisfaction", "[asantuṭṭhitā]"],
+		"discontentment": ["dissatisfaction", "[asantuṭṭhitā, aratī]"],
 		"disenchantment": ["de-illusionment", "disinterest", "[nibbidā]"],
 		"dispassion": [
 			"detachment",
@@ -526,6 +528,13 @@
 			"foolishness",
 			"[bāla]"
 		],
+		"impartiality": [
+			"suchness",
+			"equipose",
+			"unaffectedness",
+			"Context: Represents the nature of an awakened being - steady, incorruptible, not favoring or rejecting based on personal bias.",
+			"[tādibhāva]"
+		],
 		"inquisitiveness": [
 			"considering",
 			"curious",
@@ -598,6 +607,7 @@
 			"benevolence",
 			"kindness",
 			"friendliness",
+			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
 			"[metta]"
 		],
 		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
@@ -812,11 +822,12 @@
 			"affliction",
 			"[dukkha]"
 		],
-		"sympathetic joy": [
+		"appreciative joy": [
 			"mudita",
 			"appreciation",
 			"rejoicing in the happiness of others",
 			"delight in the success of others",
+			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
 			"[muditā]"
 		],
 		"tame": ["trained", "mastered", "subdued", "[danta]"],
