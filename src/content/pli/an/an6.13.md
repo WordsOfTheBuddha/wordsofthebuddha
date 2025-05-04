@@ -1,8 +1,8 @@
 ---
 title: Nissāraṇīya sutta - Leading To Release
-description: The Buddha describes the six releases of mind, through 1) loving-kindness, 2) compassion, 3) sympathetic joy, 4) equanimity, 5) the signless, and 6) the uprooting of the conceit "I am" - that assuredly lead to freedom from 1) ill will, 2) cruelty, 3) dissatisfaction, 4) passion, 5) following after signs, and 6) the conceit "I am" when developed and cultivated to fulfillment.
+description: The Buddha describes the six releases of mind, through 1) loving-kindness, 2) compassion, 3) appreciative joy, 4) equanimity, 5) the signless, and 6) the uprooting of the conceit "I am" - that assuredly lead to freedom from 1) ill will, 2) cruelty, 3) dissatisfaction, 4) passion, 5) following after signs, and 6) the conceit "I am" when developed and cultivated to fulfillment.
 fetter: sensual desire, ill will, conceit, desire for fine-material existence, desire for immaterial existence, restlessness, ignorance
-tags: release of mind, loving-kindness, compassion, sympathetic joy, equanimity, signless, conceit, ill will, cruelty, dissatisfaction, passion, signs, doubt, uncertainty, conceit, escape, freedom, an, an6
+tags: release of mind, loving-kindness, compassion, appreciative joy, equanimity, signless, conceit, ill will, cruelty, dissatisfaction, passion, signs, doubt, uncertainty, conceit, escape, freedom, an, an6
 slug: an6.13
 ---
 
