@@ -1,6 +1,6 @@
 ---
 title: Saṅkhitta sutta - Kamma in Brief
-description: The Buddha describes the four kinds of kamma (actions) and their results.
+description: The Buddha describes the four kinds of kamma (actions) and their results in brief.
 qualities: wholesome, unwholesome
 theme: principle, directly knowing
 slug: an4.232
