@@ -47,6 +47,7 @@
 		"sexual misconduct",
 		"shamelessness",
 		"slaughtering",
+		"sorrow",
 		"stealing",
 		"stinginess",
 		"stubbornness",
@@ -65,7 +66,7 @@
 	],
 	"neutral": ["companionship", "cultivation", "desire"],
 	"positive": [
-		"rousing of energy",
+		"appreciative joy",
 		"celibacy",
 		"collectedness",
 		"complete comprehension",
@@ -117,11 +118,12 @@
 		"right livelihood",
 		"right speech",
 		"right view",
+		"rousing of energy",
 		"self-control",
 		"sense restraint",
 		"sincerity",
 		"solitude",
-		"appreciative joy",
+		"sorrow-free",
 		"tame",
 		"tranquility",
 		"unperturbed",
@@ -220,6 +222,7 @@
 			"mental composure",
 			"stillness of mind",
 			"stability of mind",
+			"undistractedness",
 			"[jhāna, samādhi]"
 		],
 		"companionship": [
@@ -790,6 +793,8 @@
 		],
 		"slaughtering": ["killing", "murdering", "taking life", "[pāṇātipāta]"],
 		"solitude": ["seclusion", "privacy", "[viveka]"],
+		"sorrow": ["sadness", "grief", "[soka, socati]"],
+		"sorrow-free": ["free from sadness", "without grief", "[asoka]"],
 		"stealing": [
 			"theft",
 			"taking what is not given",
@@ -841,6 +846,7 @@
 			"[aparitassa]"
 		],
 		"unwholesome": [
+			"blameworthy",
 			"unhealthy",
 			"unskillful",
 			"unbeneficial",
@@ -882,6 +888,7 @@
 			"[hīnavīriya]"
 		],
 		"wholesome": [
+			"blameless",
 			"skillful",
 			"beneficial",
 			"good",
