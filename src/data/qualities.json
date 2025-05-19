@@ -111,6 +111,7 @@
 		"quenching",
 		"recognition of impermanence",
 		"recognition of not-self",
+		"recognition of unattractiveness",
 		"recollection of death",
 		"respect",
 		"right effort",
@@ -703,6 +704,11 @@
 			"[anicca-saññā]"
 		],
 		"recognition of not-self": ["perception of not-self", "[anatta-saññā]"],
+		"recognition of unattractiveness": [
+			"perception of unattractiveness",
+			"contemplation on the drawbacks",
+			"[asubha-saññā]"
+		],
 		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
 		"resentment": ["bearing a grudge", "harboring enmity", "[upanāha]"],
 		"respect": [

@@ -1,5 +1,5 @@
 {
-  "rousing of energy": [
+  "appreciative joy": [
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -7,82 +7,22 @@
       "collection": "mn"
     },
     {
-      "id": "mn4",
-      "title": "Bhayabherava sutta - Fright and Dread",
-      "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
+      "id": "mn7",
+      "title": "Vattha sutta - The Simile of the Cloth",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
-      "id": "mn3",
-      "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
-      "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
+      "id": "mn62",
+      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
+      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
       "collection": "mn"
     },
     {
-      "id": "iti78",
-      "title": "Dhātusosaṁsandana sutta - The Coming Together of Elements",
-      "description": "Beings come together and associate with other beings according to their disposition. Therefore, one should avoid associating with those that are lazy and keep company with the wise.",
-      "collection": "iti"
-    },
-    {
-      "id": "iti109",
-      "title": "Nadīsota sutta - River Current",
-      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
-      "collection": "iti"
-    },
-    {
-      "id": "dhp360-382",
-      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
-      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
-      "collection": "dhp"
-    },
-    {
-      "id": "an8.30",
-      "title": "Anuruddhamahāvitakka sutta - Anuruddha and Thoughts of a Great Person",
-      "description": "Venerable Anuruddha reflects on seven qualities conducive for practicing the Dhamma, but his thoughts are incomplete until the Buddha appears to add an eighth.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.4",
-      "title": "Vitthatabala sutta - Powers in Detail",
-      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
-      "collection": "an"
-    },
-    {
-      "id": "an7.3",
-      "title": "Saṅkhittabala sutta - Powers in Brief",
-      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
-      "collection": "an"
-    },
-    {
-      "id": "an3.40",
-      "title": "Ādhipateyya sutta - Authorities",
-      "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
-      "collection": "an"
-    },
-    {
-      "id": "an1.98-139",
-      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
-      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
-      "collection": "an"
-    },
-    {
-      "id": "an1.82-97",
-      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
-      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
-      "collection": "an"
-    },
-    {
-      "id": "an1.61-70",
-      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
-      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
-      "collection": "an"
-    },
-    {
-      "id": "an1.11-20",
-      "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
-      "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
-      "collection": "an"
+      "id": "mn55",
+      "title": "Jīvaka sutta - Discourse with Jīvaka",
+      "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
+      "collection": "mn"
     }
   ],
   "celibacy": [
@@ -173,6 +113,18 @@
       "collection": "mn"
     },
     {
+      "id": "iti94",
+      "title": "Upaparikkha sutta - Examining",
+      "description": "The Buddha instructs that one should examine experience in such a way that consciousness does not become scattered among external sense objects, fixated internally, or entangled through grasping.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
       "id": "iti81",
       "title": "Sakkāra sutta - Respect",
       "description": "The Blessed One describes how beings are affected by respect and disrespect, and how this affects their rebirth. The true person is one who is collected, detached, and delights in the ending of grasping.",
@@ -221,6 +173,12 @@
       "collection": "an"
     },
     {
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
+      "collection": "an"
+    },
+    {
       "id": "an1.51-60",
       "title": "Accharāsaṅghāta vagga - The Chapter On A Finger Snap",
       "description": "The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.",
@@ -251,6 +209,12 @@
       "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
       "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "iti49",
@@ -303,6 +267,12 @@
       "title": "Mahāassapura sutta - The Greater Discourse at Assapura",
       "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
       "collection": "mn"
+    },
+    {
+      "id": "iti97",
+      "title": "Kalyāṇasīla sutta - Virtuous Conduct",
+      "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
+      "collection": "iti"
     },
     {
       "id": "an8.32",
@@ -359,6 +329,12 @@
       "title": "Caṅkī sutta - With Caṅkī",
       "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
       "collection": "mn"
+    },
+    {
+      "id": "iti85",
+      "title": "Asubhānupassī sutta - Contemplating Unattractiveness",
+      "description": "The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.",
+      "collection": "iti"
     },
     {
       "id": "dhp360-382",
@@ -429,6 +405,18 @@
       "collection": "an"
     },
     {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
+      "collection": "an"
+    },
+    {
+      "id": "an4.233",
+      "title": "Vitthāra sutta - Kamma in Detail",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results in detail.",
+      "collection": "an"
+    },
+    {
       "id": "an1.98-139",
       "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
       "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
@@ -465,6 +453,12 @@
       "title": "Caṅkī sutta - With Caṅkī",
       "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
       "collection": "mn"
+    },
+    {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
     },
     {
       "id": "dhp383-423",
@@ -545,6 +539,12 @@
       "title": "Nāga vagga - Chapter 23 - The Elephant",
       "description": "Dhammapada verses 320–333 highlight self-discipline, wisdom, and perseverance through the imagery of elephants. They highlight inner mastery over strength, the value of solitude over company of immature persons, and the importance of taming one’s mind. Honoring parents, cultivating virtue, and letting go of suffering lead to true ease.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
+      "collection": "an"
     },
     {
       "id": "an6.33",
@@ -675,6 +675,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "mn13",
       "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
       "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
@@ -685,6 +691,12 @@
       "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion's Roar",
       "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of clinging.",
       "collection": "mn"
+    },
+    {
+      "id": "iti97",
+      "title": "Kalyāṇasīla sutta - Virtuous Conduct",
+      "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
+      "collection": "iti"
     },
     {
       "id": "iti45",
@@ -829,6 +841,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
       "id": "iti81",
       "title": "Sakkāra sutta - Respect",
       "description": "The Blessed One describes how beings are affected by respect and disrespect, and how this affects their rebirth. The true person is one who is collected, detached, and delights in the ending of grasping.",
@@ -941,6 +959,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti86",
+      "title": "Dhammānudhammapaṭipanna sutta - Practicing in Accordance with the Dhamma",
+      "description": "It is natural for a practitioner practicing in accordance with the Dhamma to speak and think only in terms of the Dhamma, not in terms of what is not the Dhamma.",
+      "collection": "iti"
+    },
+    {
       "id": "iti62",
       "title": "Indriya sutta - Mental Faculties",
       "description": "The Buddha describes the three mental faculties - the faculty that senses ‘I will know the unknown,’ the faculty of awakening, and the faculty of one who is awakened.",
@@ -979,6 +1003,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
@@ -989,6 +1019,12 @@
       "title": "Gopakamoggallāna sutta - With Gopaka Moggallāna",
       "description": "Shortly after the Buddha's final Nibbāna, Venerable Ānanda addresses the brahmins Gopaka Moggallāna and chief minister Vassakāra, clarifying that the Buddha appointed no successor, establishing the Dhamma itself as the refuge for the Saṅgha. He outlines ten qualities that make a bhikkhu worthy of veneration and distinguishes the meditations praised by the Buddha from those based on hindrances.",
       "collection": "mn"
+    },
+    {
+      "id": "iti97",
+      "title": "Kalyāṇasīla sutta - Virtuous Conduct",
+      "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
+      "collection": "iti"
     },
     {
       "id": "iti76",
@@ -1125,6 +1161,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti94",
+      "title": "Upaparikkha sutta - Examining",
+      "description": "The Buddha instructs that one should examine experience in such a way that consciousness does not become scattered among external sense objects, fixated internally, or entangled through grasping.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -1214,6 +1256,12 @@
       "id": "an7.3",
       "title": "Saṅkhittabala sutta - Powers in Brief",
       "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
       "collection": "an"
     },
     {
@@ -1325,6 +1373,12 @@
       "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
       "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "an1.98-139",
@@ -1469,6 +1523,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn14.12",
+      "title": "Sanidāna sutta - From A Cause",
+      "description": "The Buddha explains how thoughts of sensuality, ill will, and harming arise from a cause and how to abandon them.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -1529,6 +1589,12 @@
       "collection": "dhp"
     },
     {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
       "id": "an3.101",
       "title": "Paṁsudhovaka sutta - The Dirt Rinser",
       "description": "The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.",
@@ -1583,10 +1649,22 @@
       "collection": "mn"
     },
     {
+      "id": "iti97",
+      "title": "Kalyāṇasīla sutta - Virtuous Conduct",
+      "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
       "description": "Dhammapada verses 383–423 redefine 'Brāhmaṇa' (sage) by inner attainment, not birth or appearance. Through effort, a true sage cuts craving, understands reality, and realizes Nibbāna. Fearless, detached, pure, and restrained, they embody non-violence and patience. Free from defilements and attachments, having overcome suffering and rebirth, the sage achieves the ultimate goal, radiating wisdom and peace.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
     }
   ],
   "impartiality": [
@@ -1631,6 +1709,12 @@
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
       "collection": "mn"
+    },
+    {
+      "id": "iti85",
+      "title": "Asubhānupassī sutta - Contemplating Unattractiveness",
+      "description": "The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.",
+      "collection": "iti"
     }
   ],
   "learning": [
@@ -1777,6 +1861,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn14.12",
+      "title": "Sanidāna sutta - From A Cause",
+      "description": "The Buddha explains how thoughts of sensuality, ill will, and harming arise from a cause and how to abandon them.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -1805,6 +1895,18 @@
       "title": "Bhayabherava sutta - Fright and Dread",
       "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "iti87",
@@ -1967,6 +2069,18 @@
       "collection": "mn"
     },
     {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti85",
+      "title": "Asubhānupassī sutta - Contemplating Unattractiveness",
+      "description": "The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.",
+      "collection": "iti"
+    },
+    {
       "id": "iti46",
       "title": "Sikkhānisaṁsa sutta - With Training as Benefit",
       "description": "The Buddha advises to live with training as the benefit, wisdom as the north star, liberation as the essence, ruled by mindfulness.",
@@ -1988,6 +2102,12 @@
       "id": "an7.3",
       "title": "Saṅkhittabala sutta - Powers in Brief",
       "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
       "collection": "an"
     },
     {
@@ -2023,9 +2143,21 @@
       "collection": "sn"
     },
     {
+      "id": "sn14.12",
+      "title": "Sanidāna sutta - From A Cause",
+      "description": "The Buddha explains how thoughts of sensuality, ill will, and harming arise from a cause and how to abandon them.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
       "collection": "mn"
     },
     {
@@ -2119,6 +2251,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
       "id": "an3.40",
       "title": "Ādhipateyya sutta - Authorities",
       "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
@@ -2154,6 +2292,12 @@
     }
   ],
   "quenching": [
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
     {
       "id": "dhp383-423",
       "title": "Brāhmaṇa vagga - Chapter 26 - The Sage",
@@ -2193,6 +2337,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti85",
+      "title": "Asubhānupassī sutta - Contemplating Unattractiveness",
+      "description": "The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.",
+      "collection": "iti"
+    },
+    {
       "id": "iti77",
       "title": "Bhidura sutta - Fragile",
       "description": "The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change.",
@@ -2223,6 +2373,14 @@
       "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
       "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
       "collection": "mn"
+    }
+  ],
+  "recognition of unattractiveness": [
+    {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
     }
   ],
   "recollection of death": [
@@ -2395,15 +2553,125 @@
       "collection": "mn"
     },
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
       "collection": "mn"
     },
     {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
       "id": "an1.82-97",
       "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
       "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    }
+  ],
+  "rousing of energy": [
+    {
+      "id": "mn8",
+      "title": "Sallekha sutta - Effacement",
+      "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn4",
+      "title": "Bhayabherava sutta - Fright and Dread",
+      "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn3",
+      "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
+      "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
+      "collection": "mn"
+    },
+    {
+      "id": "iti78",
+      "title": "Dhātusosaṁsandana sutta - The Coming Together of Elements",
+      "description": "Beings come together and associate with other beings according to their disposition. Therefore, one should avoid associating with those that are lazy and keep company with the wise.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti109",
+      "title": "Nadīsota sutta - River Current",
+      "description": "The Buddha uses the simile of a person carried downstream by a lovely and alluring river current to illustrate the painful results of craving and indulgence in the internal sense bases.",
+      "collection": "iti"
+    },
+    {
+      "id": "dhp360-382",
+      "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
+      "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
+      "collection": "dhp"
+    },
+    {
+      "id": "an8.30",
+      "title": "Anuruddhamahāvitakka sutta - Anuruddha and Thoughts of a Great Person",
+      "description": "Venerable Anuruddha reflects on seven qualities conducive for practicing the Dhamma, but his thoughts are incomplete until the Buddha appears to add an eighth.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.40",
+      "title": "Ādhipateyya sutta - Authorities",
+      "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.98-139",
+      "title": "Dutiya pamādādi vagga - Second Chapter Starting With Negligence",
+      "description": "The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.82-97",
+      "title": "Pamādādi vagga - The Chapter Beginning With Negligence",
+      "description": "The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.61-70",
+      "title": "Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy",
+      "description": "The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.",
+      "collection": "an"
+    },
+    {
+      "id": "an1.11-20",
+      "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
+      "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
       "collection": "an"
     }
   ],
@@ -2553,36 +2821,24 @@
       "collection": "an"
     },
     {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
+      "collection": "an"
+    },
+    {
       "id": "an3.40",
       "title": "Ādhipateyya sutta - Authorities",
       "description": "The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.",
       "collection": "an"
     }
   ],
-  "appreciative joy": [
+  "sorrow-free": [
     {
-      "id": "mn8",
-      "title": "Sallekha sutta - Effacement",
-      "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
-      "collection": "mn"
-    },
-    {
-      "id": "mn7",
-      "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
-      "collection": "mn"
-    },
-    {
-      "id": "mn62",
-      "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
-      "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
-      "collection": "mn"
-    },
-    {
-      "id": "mn55",
-      "title": "Jīvaka sutta - Discourse with Jīvaka",
-      "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
-      "collection": "mn"
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
+      "collection": "an"
     }
   ],
   "tame": [
@@ -2635,6 +2891,12 @@
       "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
       "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
       "collection": "mn"
+    },
+    {
+      "id": "iti86",
+      "title": "Dhammānudhammapaṭipanna sutta - Practicing in Accordance with the Dhamma",
+      "description": "It is natural for a practitioner practicing in accordance with the Dhamma to speak and think only in terms of the Dhamma, not in terms of what is not the Dhamma.",
+      "collection": "iti"
     },
     {
       "id": "iti73",
@@ -2691,6 +2953,18 @@
       "title": "Upaya sutta - Attachment",
       "description": "Consciousness, while persisting, might persist attached to form, feeling, perception, and intentional constructions. When passion for these is abandoned, the support for the establishment of consciousness is completely cut off. That consciousness, being unestablished, does not grow, and by not intentionally constructing, is liberated.",
       "collection": "sn"
+    },
+    {
+      "id": "iti94",
+      "title": "Upaparikkha sutta - Examining",
+      "description": "The Buddha instructs that one should examine experience in such a way that consciousness does not become scattered among external sense objects, fixated internally, or entangled through grasping.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "iti83",
@@ -2797,6 +3071,12 @@
       "collection": "sn"
     },
     {
+      "id": "iti97",
+      "title": "Kalyāṇasīla sutta - Virtuous Conduct",
+      "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
+      "collection": "iti"
+    },
+    {
       "id": "iti74",
       "title": "Putta sutta - Child",
       "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
@@ -2809,9 +3089,21 @@
       "collection": "an"
     },
     {
+      "id": "an4.233",
+      "title": "Vitthāra sutta - Kamma in Detail",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results in detail.",
+      "collection": "an"
+    },
+    {
       "id": "an4.232",
       "title": "Saṅkhitta sutta - Kamma in Brief",
-      "description": "The Buddha describes the four kinds of kamma (actions) and their results.",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results in brief.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
       "collection": "an"
     },
     {
@@ -2897,7 +3189,7 @@
     {
       "id": "sn22.71",
       "title": "Rādha sutta - Rādha",
-      "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and pride cease to arise.",
+      "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and conceit cease to arise.",
       "collection": "sn"
     },
     {
@@ -2959,6 +3251,18 @@
       "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion's Roar",
       "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of clinging.",
       "collection": "mn"
+    },
+    {
+      "id": "iti97",
+      "title": "Kalyāṇasīla sutta - Virtuous Conduct",
+      "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
     },
     {
       "id": "iti78",
@@ -3027,6 +3331,12 @@
       "collection": "an"
     },
     {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
       "id": "an4.21",
       "title": "Paṭhama uruvela  sutta - Uruvelā (First)",
       "description": "The Buddha reflects on who he should honor and respect after his full awakening. Brahmā Sahampati encourages him to honor and respect the Dhamma.",
@@ -3085,7 +3395,7 @@
     {
       "id": "sn22.71",
       "title": "Rādha sutta - Rādha",
-      "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and pride cease to arise.",
+      "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and conceit cease to arise.",
       "collection": "sn"
     },
     {
@@ -3099,6 +3409,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.20",
+      "title": "Niddasavatthu sutta - Grounds for Inclination",
+      "description": "The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.",
+      "collection": "an"
     },
     {
       "id": "an3.40",
@@ -3154,6 +3470,12 @@
     }
   ],
   "adventurous": [
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
     {
       "id": "an1.31-40",
       "title": "Adanta vagga - The Chapter on the Untamed",
@@ -3325,6 +3647,18 @@
       "collection": "mn"
     },
     {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
+    },
+    {
       "id": "iti87",
       "title": "Andhakaraṇa sutta - Blinding",
       "description": "The three unwholesome thoughts are blinding, produce lack of clarity, cause ignorance, obstruct wisdom, and are troublesome and not conducive to Nibbāna. The three wholesome thoughts give sight, produce clarity and create insight, grow wisdom, and are trouble-free and conducive to Nibbāna.",
@@ -3429,6 +3763,24 @@
       "collection": "mn"
     },
     {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
+    },
+    {
       "id": "iti69",
       "title": "Dutiya rāga sutta - Passion (Second)",
       "description": "Whoever has let go of passion, aversion, and illusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, lurking with fierce animals and monsters.",
@@ -3450,6 +3802,18 @@
       "id": "an8.33",
       "title": "Dānavatthu sutta - Grounds for Giving",
       "description": "The Buddha describes eight motivations for giving, including giving out of desire, aversion, and fear.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
       "collection": "an"
     },
     {
@@ -3489,6 +3853,12 @@
       "title": "Gopakamoggallāna sutta - With Gopaka Moggallāna",
       "description": "Shortly after the Buddha's final Nibbāna, Venerable Ānanda addresses the brahmins Gopaka Moggallāna and chief minister Vassakāra, clarifying that the Buddha appointed no successor, establishing the Dhamma itself as the refuge for the Saṅgha. He outlines ten qualities that make a bhikkhu worthy of veneration and distinguishes the meditations praised by the Buddha from those based on hindrances.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "iti79",
@@ -3593,7 +3963,7 @@
     {
       "id": "sn22.71",
       "title": "Rādha sutta - Rādha",
-      "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and pride cease to arise.",
+      "description": "The Venerable Rādha asks the Buddha on how to know and see so that the underlying tendencies to self-identification, possessiveness, and conceit cease to arise.",
       "collection": "sn"
     },
     {
@@ -3649,6 +4019,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
+      "collection": "an"
     },
     {
       "id": "an1.575-615",
@@ -3739,10 +4121,22 @@
       "collection": "mn"
     },
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "mn11",
       "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion's Roar",
       "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of clinging.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "iti64",
@@ -3843,6 +4237,12 @@
       "collection": "mn"
     },
     {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
       "id": "dhp360-382",
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
@@ -3856,6 +4256,12 @@
     }
   ],
   "disturbed": [
+    {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
+    },
     {
       "id": "an1.41-50",
       "title": "Paṇihitaaccha vagga - The Chapter On Directing The Mind",
@@ -3887,6 +4293,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
+      "collection": "an"
     },
     {
       "id": "an1.11-20",
@@ -4007,9 +4425,33 @@
       "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
       "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
     }
   ],
   "harmful": [
+    {
+      "id": "sn14.12",
+      "title": "Sanidāna sutta - From A Cause",
+      "description": "The Buddha explains how thoughts of sensuality, ill will, and harming arise from a cause and how to abandon them.",
+      "collection": "sn"
+    },
+    {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
     {
       "id": "iti87",
       "title": "Andhakaraṇa sutta - Blinding",
@@ -4067,6 +4509,12 @@
   ],
   "having many desires": [
     {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
       "id": "an8.30",
       "title": "Anuruddhamahāvitakka sutta - Anuruddha and Thoughts of a Great Person",
       "description": "Venerable Anuruddha reflects on seven qualities conducive for practicing the Dhamma, but his thoughts are incomplete until the Buddha appears to add an eighth.",
@@ -4097,6 +4545,12 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    },
+    {
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
+      "collection": "an"
     }
   ],
   "ignorance": [
@@ -4143,6 +4597,18 @@
       "collection": "mn"
     },
     {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti85",
+      "title": "Asubhānupassī sutta - Contemplating Unattractiveness",
+      "description": "The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.",
+      "collection": "iti"
+    },
+    {
       "id": "iti69",
       "title": "Dutiya rāga sutta - Passion (Second)",
       "description": "Whoever has let go of passion, aversion, and illusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, lurking with fierce animals and monsters.",
@@ -4159,6 +4625,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
+      "collection": "an"
     },
     {
       "id": "an1.575-615",
@@ -4225,6 +4703,18 @@
       "collection": "mn"
     },
     {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
+    },
+    {
       "id": "iti69",
       "title": "Dutiya rāga sutta - Passion (Second)",
       "description": "Whoever has let go of passion, aversion, and illusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, lurking with fierce animals and monsters.",
@@ -4243,6 +4733,12 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
       "collection": "mn"
+    },
+    {
+      "id": "iti88",
+      "title": "Antarāmala sutta - Internal Impurity",
+      "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
+      "collection": "iti"
     },
     {
       "id": "an4.80",
@@ -4385,6 +4881,12 @@
       "title": "Bhayabherava sutta - Fright and Dread",
       "description": "The Buddha explains to the brahmin Jāṇussoṇi how he overcame fright and dread while practicing seclusion in remote lodgings in the forests and woodlands, leading to the three true knowledges and full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     }
   ],
   "negligence": [
@@ -4417,6 +4919,12 @@
       "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
       "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
       "collection": "mn"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
     },
     {
       "id": "iti74",
@@ -4531,6 +5039,24 @@
       "collection": "mn"
     },
     {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti85",
+      "title": "Asubhānupassī sutta - Contemplating Unattractiveness",
+      "description": "The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.",
+      "collection": "iti"
+    },
+    {
       "id": "iti69",
       "title": "Dutiya rāga sutta - Passion (Second)",
       "description": "Whoever has let go of passion, aversion, and illusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, lurking with fierce animals and monsters.",
@@ -4547,6 +5073,18 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
+      "collection": "an"
     },
     {
       "id": "an1.11-20",
@@ -4591,6 +5129,12 @@
       "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion's Roar",
       "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of clinging.",
       "collection": "mn"
+    },
+    {
+      "id": "iti93",
+      "title": "Aggi sutta - Fire",
+      "description": "The Buddha describes the fires of passion, hatred, and illusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.",
+      "collection": "iti"
     },
     {
       "id": "iti79",
@@ -4687,6 +5231,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn14.12",
+      "title": "Sanidāna sutta - From A Cause",
+      "description": "The Buddha explains how thoughts of sensuality, ill will, and harming arise from a cause and how to abandon them.",
+      "collection": "sn"
+    },
+    {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
       "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
@@ -4723,6 +5273,18 @@
       "collection": "mn"
     },
     {
+      "id": "iti96",
+      "title": "Kāmayoga sutta - Yoke of Sensual Pleasures",
+      "description": "The Buddha classifies beings according to their attachment or detachment from sensual pleasures and conditioned existence. Those entangled in both are returners; those detached from sensual pleasures but still bound to existence are non-returners; and those freed from both are arahants who have ended the taints.",
+      "collection": "iti"
+    },
+    {
+      "id": "iti92",
+      "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
+      "description": "The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.",
+      "collection": "iti"
+    },
+    {
       "id": "iti87",
       "title": "Andhakaraṇa sutta - Blinding",
       "description": "The three unwholesome thoughts are blinding, produce lack of clarity, cause ignorance, obstruct wisdom, and are troublesome and not conducive to Nibbāna. The three wholesome thoughts give sight, produce clarity and create insight, grow wisdom, and are trouble-free and conducive to Nibbāna.",
@@ -4747,6 +5309,24 @@
       "collection": "dhp"
     },
     {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
+      "collection": "an"
+    },
+    {
       "id": "an1.11-20",
       "title": "Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances",
       "description": "The Buddha explains what causes the hindrances to arise and how to abandon them.",
@@ -4760,6 +5340,12 @@
     }
   ],
   "sexual misconduct": [
+    {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
     {
       "id": "iti74",
       "title": "Putta sutta - Child",
@@ -4799,6 +5385,20 @@
       "title": "Jīvaka sutta - Discourse with Jīvaka",
       "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
       "collection": "mn"
+    },
+    {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    }
+  ],
+  "sorrow": [
+    {
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
+      "collection": "an"
     }
   ],
   "stealing": [
@@ -4806,6 +5406,12 @@
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
       "collection": "mn"
     },
     {
@@ -4935,6 +5541,12 @@
       "collection": "an"
     },
     {
+      "id": "an4.233",
+      "title": "Vitthāra sutta - Kamma in Detail",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results in detail.",
+      "collection": "an"
+    },
+    {
       "id": "an1.21-30",
       "title": "Akammaniya vagga - The Chapter On The Ineffective",
       "description": "The Buddha contrasts the undeveloped and developed mind.",
@@ -5039,9 +5651,21 @@
   ],
   "unwholesome": [
     {
+      "id": "an4.233",
+      "title": "Vitthāra sutta - Kamma in Detail",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results in detail.",
+      "collection": "an"
+    },
+    {
       "id": "an4.232",
       "title": "Saṅkhitta sutta - Kamma in Brief",
-      "description": "The Buddha describes the four kinds of kamma (actions) and their results.",
+      "description": "The Buddha describes the four kinds of kamma (actions) and their results in brief.",
+      "collection": "an"
+    },
+    {
+      "id": "an3.29",
+      "title": "Andha sutta - Blind",
+      "description": "The Buddha describes three types of people - the blind, the one-eyed, and the two-eyed.",
       "collection": "an"
     },
     {
@@ -5091,6 +5715,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "iti74",
       "title": "Putta sutta - Child",
       "description": "Three kinds of children - 1) one who surpasses their parents, 2) one who follows in their footsteps, and 3) one who falls below them.",
@@ -5135,6 +5765,12 @@
   ],
   "wrong speech": [
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
@@ -5167,6 +5803,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn136",
+      "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
+      "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
+      "collection": "mn"
+    },
+    {
       "id": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He shows how right view leads to the sequential development of the path, culminating in right knowledge and right liberation.",
@@ -5183,6 +5825,18 @@
       "title": "Diṭṭhigata sutta - Two Kinds Of Wrong Views",
       "description": "Overcome by two kinds of wrong views, some get stuck, while others overreach. But those with vision see.",
       "collection": "iti"
+    },
+    {
+      "id": "an7.12",
+      "title": "Dutiyaanusaya sutta - Underlying Tendencies (Second)",
+      "description": "The spiritual life is lived for the abandoning and complete uprooting of the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance.",
+      "collection": "an"
+    },
+    {
+      "id": "an7.11",
+      "title": "Paṭhamaanusaya sutta - Underlying Tendencies (First)",
+      "description": "The Buddha describes the seven underlying tendencies toward 1) sensual desire, 2) aversion, 3) views, 4) doubt, 5) conceit, 6) passion for existence, and 7) ignorance that are present in living beings.",
+      "collection": "an"
     },
     {
       "id": "an3.131",
