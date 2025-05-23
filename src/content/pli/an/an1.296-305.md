@@ -2,7 +2,7 @@
 title: Paṭhama vagga - First Subchapter On One Thing
 description: The Buddha shares the importance of recollection of the Buddha, Dhamma, Saṅgha, one's virtue, generosity, deities, in-and-out breathing, death, body, and peace.
 fetter: doubt, personal existence, conceit, ignorance
-qualities: disenchantment, dispassion, ending, tranquility, directly knowing, ethical conduct, giving, recollection of death
+qualities: disenchantment, dispassion, ending, tranquility, direct knowledge, ethical conduct, giving, recollection of death
 tags: recollection, Buddha, Dhamma, Saṅgha, virtue, generosity, deities, in-and-out breathing, death, body, peace, disenchantment, fading of desire, gradual ending, tranquility, directly knowing, full awakening, Nibbāna, an, an1
 slug: an1.296-305
 ---
