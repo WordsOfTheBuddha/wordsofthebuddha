@@ -30,8 +30,9 @@
 		"having many desires",
 		"hypocrisy",
 		"ignorance",
-		"immaturity",
 		"illusion",
+		"immaturity",
+		"impatience",
 		"irritability",
 		"jealousy",
 		"laziness",
@@ -175,6 +176,7 @@
 			"regret",
 			"remorse",
 			"confused about what is right and wrong",
+			"Related:{impatience, irritability}",
 			"[kukkucca, uddhacca]"
 		],
 		"aversion": [
@@ -541,6 +543,13 @@
 			"Context: Represents the nature of an awakened being - steady, incorruptible, not favoring or rejecting based on personal bias.",
 			"[tādibhāva]"
 		],
+		"impatience": [
+			"lack of tolerance",
+			"unable to endure",
+			"eagerness for results",
+			"Related:{irritability, anxiety}",
+			"[akkhama]"
+		],
 		"inquisitiveness": [
 			"considering",
 			"curious",
@@ -553,6 +562,7 @@
 			"moodiness",
 			"being prone to annoyance",
 			"being prone to anger",
+			"Related:{impatience, anxiety}",
 			"[kodhana]"
 		],
 		"jealousy": [
@@ -679,7 +689,12 @@
 			"lust",
 			"[rāga]"
 		],
-		"patience": ["endurance", "tolerance", "[khanti]"],
+		"patience": [
+			"endurance",
+			"tolerance",
+			"forbearance",
+			"[khanti, khama]"
+		],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -776,6 +791,7 @@
 			"passion for sensual pleasures",
 			"lust",
 			"craving for pleasure",
+			"pulled towards enticing sense objects",
 			"[kāmacchanda]"
 		],
 		"sexual misconduct": [
