@@ -1,6 +1,6 @@
 ---
 title: Akkhama sutta - Unable to Endure
-description: The Buddha describes the contrasting qualities of a person who is able to patiently endure the five senses and one who is unable to do so, using the example of a king's elephant.
+description: Using the example of a king’s elephant on the battlefield, the Buddha presents two contrasting scenarios - In one case, a person, overwhelmed by enticing sights, sounds, smells, tastes, and touches is unable to collect and settle the mind; in the other, a person patiently endures without becoming infatuated with external objects, and is able to compose and stabilize the mind amidst sensory contact.
 qualities: patience, impatience, sensual desire
 theme: cultivating discernment, inspiration
 slug: an5.139
