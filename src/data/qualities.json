@@ -164,7 +164,15 @@
 			"connected",
 			"[upadhi, sakiñcana]"
 		],
-		"anger": ["hatred", "rage", "wrath", "fury", "indignation", "[kodha]"],
+		"anger": [
+			"hatred",
+			"rage",
+			"wrath",
+			"fury",
+			"indignation",
+			"Related:{aversion, irritability}",
+			"[kodha]"
+		],
 		"anxiety": [
 			"worry",
 			"distress",
@@ -176,14 +184,15 @@
 			"regret",
 			"remorse",
 			"confused about what is right and wrong",
-			"Related:{impatience, irritability}",
-			"[kukkucca, uddhacca]"
+			"Related:{impatience}",
+			"[kukkucca, uddhacca, darathaja]"
 		],
 		"aversion": [
 			"ill will",
 			"hate",
 			"fault-finding mindset",
 			"upset",
+			"Related:{anger, irritability}",
 			"[dosa]"
 		],
 		"bad friendship": [
@@ -414,6 +423,7 @@
 			"probing",
 			"lit. picking",
 			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
+			"Related:{inquisitiveness}",
 			"[vicaya, parikkhati]"
 		],
 		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
@@ -555,6 +565,7 @@
 			"curious",
 			"inquiring",
 			"testing",
+			"Related:{examination}",
 			"[vīmaṃsā]"
 		],
 		"irritability": [
@@ -562,7 +573,7 @@
 			"moodiness",
 			"being prone to annoyance",
 			"being prone to anger",
-			"Related:{impatience, anxiety}",
+			"Related:{impatience, anger, anxiety}",
 			"[kodhana]"
 		],
 		"jealousy": [
@@ -867,7 +878,7 @@
 			"untroubled",
 			"unagitated",
 			"no mental uneasiness",
-			"[aparitassa]"
+			"[aparitassa, anigha]"
 		],
 		"unwholesome": [
 			"blameworthy",
