@@ -30,8 +30,9 @@
 		"having many desires",
 		"hypocrisy",
 		"ignorance",
-		"immaturity",
 		"illusion",
+		"immaturity",
+		"impatience",
 		"irritability",
 		"jealousy",
 		"laziness",
@@ -42,6 +43,7 @@
 		"non-restraint",
 		"passion",
 		"personal existence",
+		"perturbation",
 		"resentment",
 		"sensual desire",
 		"sexual misconduct",
@@ -59,6 +61,7 @@
 		"unwise attention",
 		"vanity",
 		"weak in effort",
+		"wrong effort",
 		"wrong intention",
 		"wrong livelihood",
 		"wrong speech",
@@ -76,6 +79,7 @@
 		"contentment",
 		"continuous effort",
 		"diligence",
+		"direct knowledge",
 		"discernment",
 		"disenchantment",
 		"dispassion",
@@ -111,6 +115,7 @@
 		"quenching",
 		"recognition of impermanence",
 		"recognition of not-self",
+		"recognition of unattractiveness",
 		"recollection of death",
 		"respect",
 		"right effort",
@@ -160,7 +165,15 @@
 			"connected",
 			"[upadhi, sakiñcana]"
 		],
-		"anger": ["hatred", "rage", "wrath", "fury", "indignation", "[kodha]"],
+		"anger": [
+			"hatred",
+			"rage",
+			"wrath",
+			"fury",
+			"indignation",
+			"Related:{aversion, irritability}",
+			"[kodha]"
+		],
 		"anxiety": [
 			"worry",
 			"distress",
@@ -172,13 +185,15 @@
 			"regret",
 			"remorse",
 			"confused about what is right and wrong",
-			"[kukkucca, uddhacca]"
+			"Related:{impatience}",
+			"[kukkucca, uddhacca, darathaja]"
 		],
 		"aversion": [
 			"ill will",
 			"hate",
 			"fault-finding mindset",
 			"upset",
+			"Related:{anger, irritability}",
 			"[dosa]"
 		],
 		"bad friendship": [
@@ -321,7 +336,7 @@
 			"impulse",
 			"[chanda]"
 		],
-		"directly knowing": [
+		"direct knowledge": [
 			"experiential understanding",
 			"direct experience",
 			"[abhiññāya]"
@@ -409,6 +424,7 @@
 			"probing",
 			"lit. picking",
 			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
+			"Related:{inquisitiveness}",
 			"[vicaya, parikkhati]"
 		],
 		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
@@ -538,11 +554,19 @@
 			"Context: Represents the nature of an awakened being - steady, incorruptible, not favoring or rejecting based on personal bias.",
 			"[tādibhāva]"
 		],
+		"impatience": [
+			"lack of tolerance",
+			"unable to endure",
+			"eagerness for results",
+			"Related:{irritability, anxiety}",
+			"[akkhama]"
+		],
 		"inquisitiveness": [
 			"considering",
 			"curious",
 			"inquiring",
 			"testing",
+			"Related:{examination}",
 			"[vīmaṃsā]"
 		],
 		"irritability": [
@@ -550,6 +574,7 @@
 			"moodiness",
 			"being prone to annoyance",
 			"being prone to anger",
+			"Related:{impatience, anger, anxiety}",
 			"[kodhana]"
 		],
 		"jealousy": [
@@ -676,7 +701,12 @@
 			"lust",
 			"[rāga]"
 		],
-		"patience": ["endurance", "tolerance", "[khanti]"],
+		"patience": [
+			"endurance",
+			"tolerance",
+			"forbearance",
+			"[khanti, khama]"
+		],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -684,6 +714,14 @@
 			"embodied being",
 			"egoism",
 			"[sakkāya-diṭṭhi]"
+		],
+		"perturbation": [
+			"agitation",
+			"disturbance",
+			"excitement",
+			"being stirred up",
+			"lit. shaking",
+			"[kopa, uddhacca, āvila]"
 		],
 		"politeness": [
 			"courtesy",
@@ -703,6 +741,11 @@
 			"[anicca-saññā]"
 		],
 		"recognition of not-self": ["perception of not-self", "[anatta-saññā]"],
+		"recognition of unattractiveness": [
+			"perception of unattractiveness",
+			"contemplation on the drawbacks",
+			"[asubha-saññā]"
+		],
 		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
 		"resentment": ["bearing a grudge", "harboring enmity", "[upanāha]"],
 		"respect": [
@@ -768,6 +811,7 @@
 			"passion for sensual pleasures",
 			"lust",
 			"craving for pleasure",
+			"pulled towards enticing sense objects",
 			"[kāmacchanda]"
 		],
 		"sexual misconduct": [
@@ -843,7 +887,7 @@
 			"untroubled",
 			"unagitated",
 			"no mental uneasiness",
-			"[aparitassa]"
+			"[aparitassa, anigha]"
 		],
 		"unwholesome": [
 			"blameworthy",
@@ -912,6 +956,7 @@
 		],
 		"with nothing": ["having no-thing", "possession-less", "[akiñcana]"],
 		"without fear": ["fearlessness", "free of distress", "[niddara]"],
+		"wrong effort": ["incorrect endeavor", "[micchāvāyāma]"],
 		"wrong intention": [
 			"incorrect resolve",
 			"unwholesome thought",

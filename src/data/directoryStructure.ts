@@ -136,7 +136,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn33: {
 						title: "Vacchagottasaṁyutta - Linked Discourses with Vacchagotta",
 						description:
-							"The \"Linked Discourses with Vacchagotta\" features dialogues between the Buddha and Vacchagotta, a wandering ascetic who engages the Buddha in philosophical debates. Vacchagotta is known for his skepticism and challenging questions, which the Buddha skillfully addresses with wisdom and compassion. These discourses explore a wide range of topics, including the nature of the self, the nature of the world, and the path to liberation. The Buddha's responses to Vacchagotta's inquiries offer profound insights into the core teachings of the Dhamma and the path to awakening.",
+							"The \"Linked Discourses with Vacchagotta\" features dialogues between the Buddha and Vacchagotta, a wanderer who engages the Buddha in philosophical debates. Vacchagotta is known for his skepticism and challenging questions, which the Buddha skillfully addresses with wisdom and compassion. These discourses explore a wide range of topics, including the nature of the self, the nature of the world, and the path to liberation. The Buddha's responses to Vacchagotta's inquiries offer profound insights into the core teachings of the Dhamma and the path to awakening.",
 					},
 					sn34: {
 						title: "Jhānasaṁyutta - Linked Discourses on Collectedness (jhāna)",

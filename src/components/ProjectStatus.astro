@@ -23,7 +23,7 @@ const collections = [
 		title: directoryStructureWithCounts.iti?.title || "Itivuttaka",
 		total: 112,
 		// Example of a completed collection
-		status: "complete" as StatusType,
+		status: "review" as StatusType,
 	},
 	{
 		name: "mn",
@@ -73,7 +73,7 @@ const statusConfig: Record<
 > = {
 	review: {
 		color: "bg-indigo-600", // Deeper color representing almost complete
-		label: "Reviewing",
+		label: "Proofreading",
 		shortLabel: "",
 	},
 	complete: {
