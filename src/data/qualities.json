@@ -44,6 +44,7 @@
 		"passion",
 		"personal existence",
 		"perturbation",
+		"regret",
 		"resentment",
 		"sensual desire",
 		"sexual misconduct",
@@ -57,6 +58,7 @@
 		"treachery",
 		"lack of discernment",
 		"lack of principles",
+		"undeveloped",
 		"unwholesome",
 		"unwise attention",
 		"vanity",
@@ -67,7 +69,7 @@
 		"wrong speech",
 		"wrong view"
 	],
-	"neutral": ["companionship", "cultivation", "desire"],
+	"neutral": ["companionship", "desire"],
 	"positive": [
 		"appreciative joy",
 		"celibacy",
@@ -78,6 +80,7 @@
 		"contemplation",
 		"contentment",
 		"continuous effort",
+		"cultivation",
 		"diligence",
 		"direct knowledge",
 		"discernment",
@@ -116,6 +119,7 @@
 		"recognition of impermanence",
 		"recognition of not-self",
 		"recognition of unattractiveness",
+		"recollection of the Buddha",
 		"recollection of death",
 		"respect",
 		"right effort",
@@ -166,35 +170,35 @@
 			"[upadhi, sakiñcana]"
 		],
 		"anger": [
-			"hatred",
 			"rage",
 			"wrath",
 			"fury",
 			"indignation",
-			"Related:{aversion, irritability}",
+			"Related:{aversion, irritability, resentment}",
 			"[kodha]"
 		],
 		"anxiety": [
-			"worry",
-			"distress",
 			"agitation",
-			"restlessness",
-			"unbalanced",
+			"confusion about what is right and wrong",
+			"distress",
+			"fickleness",
 			"fidgetiness",
 			"edginess",
-			"regret",
-			"remorse",
-			"confused about what is right and wrong",
+			"restlessness",
+			"wavering",
+			"worry",
 			"Related:{impatience}",
 			"[kukkucca, uddhacca, darathaja]"
 		],
 		"aversion": [
+			"animosity",
 			"ill will",
 			"hate",
+			"hostility",
 			"fault-finding mindset",
 			"upset",
-			"Related:{anger, irritability}",
-			"[dosa]"
+			"Related:{anger, irritability, resentment}",
+			"[dosa, vera]"
 		],
 		"bad friendship": [
 			"friendship with unwholesome persons",
@@ -234,11 +238,13 @@
 		],
 		"collectedness": [
 			"concentration",
+			"composed",
 			"mental composure",
 			"stillness of mind",
 			"stability of mind",
 			"undistractedness",
-			"[jhāna, samādhi]"
+			"Related:{one-pointedness}",
+			"[jhāna, samādhi, samāhita]"
 		],
 		"companionship": [
 			"friendship",
@@ -298,7 +304,7 @@
 			"ease",
 			"having few desires",
 			"fewness of wishes",
-			"[santutthi]"
+			"[santutthi, appicchatā]"
 		],
 		"continuous effort": [
 			"unremitting effort",
@@ -306,9 +312,17 @@
 			"persistent",
 			"zealous",
 			"unflagging endeavor",
+			"Related:{diligence}",
 			"[ātāpī, parakkamma]"
 		],
-		"craving": ["wanting", "yearning", "longing", "lit. thirst", "[taṇha]"],
+		"craving": [
+			"wanting",
+			"yearning",
+			"longing",
+			"lit. thirst",
+			"Related:{greed, passion, sensual desire}",
+			"[taṇha]"
+		],
 		"cruelty": [
 			"abuse",
 			"hurting",
@@ -316,6 +330,7 @@
 			"inhumanity",
 			"injuring",
 			"viciousness",
+			"Related:{harmful, slaughtering}",
 			"[vihiṁsā]"
 		],
 		"cultivation": [
@@ -324,7 +339,7 @@
 			"meditation",
 			"nurturing",
 			"growth",
-			"Context: The term 'cultivation' implies that which causes to be, and so although it primarily features as a bright quality, the quality of cultivation is classified as being neutral.",
+			"Context: The term 'cultivation' implies that which causes to be, it is primarily described in the context of developing and nurturing a bright quality.",
 			"[bhāvanā]"
 		],
 		"desire": [
@@ -346,6 +361,7 @@
 			"carefulness",
 			"care",
 			"conscientiousness",
+			"Related:{continuous effort}",
 			"[appamāda]"
 		],
 		"discernment": [
@@ -356,13 +372,24 @@
 			"insight",
 			"[vipassanā, nipaka]"
 		],
-		"discontentment": ["dissatisfaction", "[asantuṭṭhitā, aratī]"],
-		"disenchantment": ["de-illusionment", "disinterest", "[nibbidā]"],
+		"discontentment": [
+			"dissatisfaction",
+			"boredom",
+			"[asantuṭṭhitā, aratī, atitta]"
+		],
+		"disenchantment": [
+			"de-illusionment",
+			"disinterest",
+			"Related:{dispassion}",
+			"[nibbidā]"
+		],
 		"dispassion": [
 			"detachment",
 			"disinterest",
 			"fading of desire",
-			"[virāga]"
+			"disentanglement",
+			"Related:{disenchantment}",
+			"[virāga, visaṃyutta]"
 		],
 		"displeasure": [
 			"bitterness",
@@ -399,6 +426,7 @@
 			"torpor",
 			"feeling lethargic",
 			"lit. stiffness (of mind/body due to tiredness)",
+			"Related:{dullness}",
 			"[middha]"
 		],
 		"dullness": [
@@ -406,6 +434,7 @@
 			"inertia",
 			"mental sluggishness",
 			"inattentiveness or lack of sharpness",
+			"Related:{drowsiness}",
 			"[thina]"
 		],
 		"ending": ["cessation", "gradual ending", "[nirodha]"],
@@ -471,7 +500,12 @@
 			"[mudu, kammañña]"
 		],
 		"formless": ["immaterial", "surpassing forms", "[arūpa]"],
-		"full awareness": ["clear comprehension", "[sampajañña]"],
+		"full awareness": [
+			"clear comprehension",
+			"attentiveness",
+			"Related:{mindfulness, wakefulness}",
+			"[sampajañña]"
+		],
 		"giving": [
 			"generosity",
 			"charity",
@@ -503,9 +537,17 @@
 			"rapacity",
 			"money grabbing",
 			"grabbiness",
+			"Related:{passion, craving, stinginess}",
 			"[lobha]"
 		],
-		"harmful": ["injurious", "destructive", "bad", "evil", "[pāpaka]"],
+		"harmful": [
+			"injurious",
+			"destructive",
+			"bad",
+			"evil",
+			"Related:{cruelty}",
+			"[pāpaka]"
+		],
 		"having many desires": ["greediness", "[mahicchatā]"],
 		"humility": [
 			"modesty",
@@ -608,6 +650,7 @@
 		"lack of principles": [
 			"lacking in moral principles",
 			"lacking in ethics",
+			"immoral",
 			"[dussīlya]"
 		],
 		"laziness": [
@@ -628,7 +671,8 @@
 			"release",
 			"deliverance",
 			"emancipation",
-			"[vimutti]"
+			"Context:Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna",
+			"[vimutti, nibbāna]"
 		],
 		"loving-kindness": [
 			"goodwill",
@@ -636,7 +680,7 @@
 			"kindness",
 			"friendliness",
 			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
-			"[metta]"
+			"[metta, abyāpāda]"
 		],
 		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
 		"mental proliferation": [
@@ -650,6 +694,7 @@
 			"keeping in mind",
 			"awareness",
 			"observing body, felt experience, mind, and mental qualities",
+			"Related:{wakefulness, full awareness}",
 			"[sati]"
 		],
 		"moral recklessness": [
@@ -663,6 +708,7 @@
 			"concentration",
 			"focus",
 			"unification of mind",
+			"Related:{collectedness}",
 			"[ekagga]"
 		],
 		"negligence": [
@@ -699,6 +745,7 @@
 			"infatuation",
 			"obsession",
 			"lust",
+			"Related:{craving, sensual desire, greed}",
 			"[rāga]"
 		],
 		"patience": [
@@ -746,8 +793,25 @@
 			"contemplation on the drawbacks",
 			"[asubha-saññā]"
 		],
+		"recollection of the Buddha": [
+			"mindfulness of the Buddha",
+			"reflection on the qualities of the Buddha",
+			"Context: Mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
+			"[buddhānussati, buddhānusmṛti]"
+		],
 		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
-		"resentment": ["bearing a grudge", "harboring enmity", "[upanāha]"],
+		"regret": [
+			"to be burned",
+			"to be consumed",
+			"to suffer remorse",
+			"[tappati]"
+		],
+		"resentment": [
+			"bearing a grudge",
+			"harboring enmity",
+			"Related:{anger, aversion}",
+			"[upanāha]"
+		],
 		"respect": [
 			"reverence",
 			"veneration",
@@ -796,11 +860,18 @@
 		],
 		"rousing of energy": [
 			"determination",
+			"being energetic",
 			"taking initiative",
 			"making a mental decision to act",
-			"[vīriyārambha, āraddhavīriya]"
+			"Related:{vigour}",
+			"[vīriyārambha, āraddhavīriya, uṭṭhānavant]"
 		],
-		"self-control": ["self-restraint", "self-mastery", "[saṃvara]"],
+		"self-control": [
+			"self-restraint",
+			"self-mastery",
+			"Related:{tame}",
+			"[saṃvara, saññata]"
+		],
 		"sense restraint": [
 			"guarding the sense faculties",
 			"watching the sense doors",
@@ -812,6 +883,7 @@
 			"lust",
 			"craving for pleasure",
 			"pulled towards enticing sense objects",
+			"Related:{craving, greed, passion}",
 			"[kāmacchanda]"
 		],
 		"sexual misconduct": [
@@ -835,10 +907,20 @@
 			"non-deception",
 			"[amāyā]"
 		],
-		"slaughtering": ["killing", "murdering", "taking life", "[pāṇātipāta]"],
+		"slaughtering": [
+			"killing",
+			"murdering",
+			"taking life",
+			"Related:{cruelty}",
+			"[pāṇātipāta]"
+		],
 		"solitude": ["seclusion", "privacy", "[viveka]"],
 		"sorrow": ["sadness", "grief", "[soka, socati]"],
-		"sorrow-free": ["free from sadness", "without grief", "[asoka]"],
+		"sorrow-free": [
+			"free from sadness",
+			"without grief",
+			"[asoka, visoka]"
+		],
 		"stealing": [
 			"theft",
 			"taking what is not given",
@@ -850,6 +932,7 @@
 			"miserliness",
 			"meanness",
 			"tight-fistedness",
+			"Related:{greed}",
 			"[macchariya]"
 		],
 		"stubbornness": [
@@ -879,9 +962,16 @@
 			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
 			"[muditā]"
 		],
-		"tame": ["trained", "mastered", "subdued", "[danta]"],
+		"tame": [
+			"trained",
+			"mastered",
+			"subdued",
+			"Related:{self-control}",
+			"[danta]"
+		],
 		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
 		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
+		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"unperturbed": [
 			"unshaken",
 			"untroubled",
@@ -917,6 +1007,7 @@
 			"zeal",
 			"application of will",
 			"persistence",
+			"Related:{rousing of energy}",
 			"[vīriya]"
 		],
 		"vision": [
@@ -925,10 +1016,17 @@
 			"seeing the dhamma",
 			"[dassana]"
 		],
-		"wakefulness": ["lucidity", "alertness", "vigilance", "[jāgariyā]"],
+		"wakefulness": [
+			"lucidity",
+			"alertness",
+			"vigilance",
+			"Related:{full awareness}",
+			"[jāgariyā]"
+		],
 		"weak in effort": [
 			"low in energy",
 			"lacking in endurance",
+			"Related:{wrong effort}",
 			"[hīnavīriya]"
 		],
 		"wholesome": [
@@ -944,8 +1042,9 @@
 		],
 		"wisdom": [
 			"the quality of possessing experience alongside knowledge and sound judgment",
+			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable",
 			"an experiential understanding of the four noble truths",
-			"[paññā]"
+			"[paññā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
 			"proper attention",
@@ -956,7 +1055,11 @@
 		],
 		"with nothing": ["having no-thing", "possession-less", "[akiñcana]"],
 		"without fear": ["fearlessness", "free of distress", "[niddara]"],
-		"wrong effort": ["incorrect endeavor", "[micchāvāyāma]"],
+		"wrong effort": [
+			"incorrect endeavor",
+			"Related:{weak in effort}",
+			"[micchāvāyāma]"
+		],
 		"wrong intention": [
 			"incorrect resolve",
 			"unwholesome thought",

@@ -1,8 +1,10 @@
 ---
-title: Vesārajja sutta - Confidence
+title: Vesārajja sutta - Assurances
 description: The Buddha describes the four assurances possessed by the Tathāgata.
 fetter: ignorance
-tags: confidence, tathāgata, realization, taints, obstruction, cessation of suffering, an, an4
+qualities: faith, recollection of the Buddha
+theme: inspiration, principle
+tags: confidence, tathāgata, realization, taints, obstruction, ending of suffering, an, an4
 slug: an4.8
 ---
 
