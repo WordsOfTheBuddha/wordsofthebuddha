@@ -12,6 +12,7 @@
 		"boastfulness",
 		"clinging to rules and observances",
 		"conceit",
+		"consuming intoxicants",
 		"contempt",
 		"craving",
 		"cruelty",
@@ -135,6 +136,8 @@
 		"sorrow-free",
 		"tame",
 		"tranquility",
+		"truth",
+		"unassuming",
 		"unperturbed",
 		"vigour",
 		"vision",
@@ -146,7 +149,14 @@
 		"without fear"
 	],
 	"synonyms": {
-		"adventurous": ["bold", "wild", "unrestrained", "untamed", "[adanta]"],
+		"adventurous": [
+			"audacious",
+			"bold",
+			"wild",
+			"unrestrained",
+			"untamed",
+			"[adanta]"
+		],
 		"affection": ["dearness", "fondness", "[pema]"],
 		"aggressiveness": [
 			"hostility",
@@ -264,7 +274,7 @@
 			"full understanding",
 			"knowing full well",
 			"seeing things as they are",
-			"[sampajañña]"
+			"[sampajañña, saṅkhāya]"
 		],
 		"conceit": [
 			"arrogance",
@@ -272,7 +282,7 @@
 			"pride",
 			"self-importance",
 			"tendency of self-comparison",
-			"[māna]"
+			"[māna, unnaḷa]"
 		],
 		"conscience": [
 			"with sense of right and wrong",
@@ -280,6 +290,12 @@
 			"modesty",
 			"(comm) originating from inside",
 			"[hirī]"
+		],
+		"consuming intoxicants": [
+			"drinking liquor and wine",
+			"drinking alcohol",
+			"taking intoxicating substances",
+			"[surāmerayapāna]"
 		],
 		"contempt": [
 			"ungratefulness",
@@ -297,6 +313,7 @@
 			"measuring",
 			"refining one's understanding",
 			"cogitation",
+			"Related:{examination}",
 			"[anupassanā]"
 		],
 		"contentment": [
@@ -367,10 +384,11 @@
 		"discernment": [
 			"able to judge well",
 			"able to see distinctions",
+			"ability to discriminate, distinguish",
 			"clear seeing",
 			"penetrating internal vision",
 			"insight",
-			"[vipassanā, nipaka]"
+			"[vipassanā, nipaka, niccheyya]"
 		],
 		"discontentment": [
 			"dissatisfaction",
@@ -453,7 +471,7 @@
 			"probing",
 			"lit. picking",
 			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
-			"Related:{inquisitiveness}",
+			"Related:{inquisitiveness, contemplation}",
 			"[vicaya, parikkhati]"
 		],
 		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
@@ -532,6 +550,7 @@
 			"[anuyoga + kusala]"
 		],
 		"greed": [
+			"acquisitiveness",
 			"avarice",
 			"covetousness",
 			"rapacity",
@@ -545,7 +564,7 @@
 			"destructive",
 			"bad",
 			"evil",
-			"Related:{cruelty}",
+			"Related:{cruelty, unwholesome}",
 			"[pāpaka]"
 		],
 		"having many desires": ["greediness", "[mahicchatā]"],
@@ -597,9 +616,10 @@
 			"[tādibhāva]"
 		],
 		"impatience": [
+			"eagerness for results",
+			"impulsiveness",
 			"lack of tolerance",
 			"unable to endure",
-			"eagerness for results",
 			"Related:{irritability, anxiety}",
 			"[akkhama]"
 		],
@@ -720,10 +740,10 @@
 		"non-harm": [
 			"non-violence",
 			"non-injury",
-			"non-harming",
+			"harmlessness",
 			"non-killing",
 			"non-hurting",
-			"[avihiṃsā]"
+			"[avihiṃsā, ahiṁsa]"
 		],
 		"non-proliferation": ["not forming various opinions", "[nippapañca]"],
 		"non-restraint": [
@@ -870,7 +890,7 @@
 			"self-restraint",
 			"self-mastery",
 			"Related:{tame}",
-			"[saṃvara, saññata]"
+			"[saṃvara, saññata, saṃvuta]"
 		],
 		"sense restraint": [
 			"guarding the sense faculties",
@@ -971,12 +991,21 @@
 		],
 		"tranquility": ["calmness", "peacefulness", "serenity", "[upasama]"],
 		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
+		"truth": ["accuracy", "reliability", "verifiability", "[sacca]"],
+		"unassuming": [
+			"courteous",
+			"respectful",
+			"unpretentious",
+			"not cheeky",
+			"[appagabbha]"
+		],
 		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"unperturbed": [
+			"unagitated",
 			"unshaken",
 			"untroubled",
-			"unagitated",
-			"no mental uneasiness",
+			"unwavering",
+			"without mental unease",
 			"[aparitassa, anigha]"
 		],
 		"unwholesome": [
@@ -985,6 +1014,7 @@
 			"unskillful",
 			"unbeneficial",
 			"karmically unprofitable",
+			"Related:{harmful}",
 			"[akusala]"
 		],
 		"unwise attention": [
@@ -994,9 +1024,10 @@
 			"[ayonisomanasikāra]"
 		],
 		"vanity": [
-			"indulgence",
+			"drinking one's own cool-aid",
 			"excess",
 			"extravagance",
+			"indulgence",
 			"intoxication",
 			"[mada]"
 		],
@@ -1011,6 +1042,7 @@
 			"[vīriya]"
 		],
 		"vision": [
+			"seeing clearly",
 			"seeing things as they are",
 			"seeing the truth",
 			"seeing the dhamma",
@@ -1020,14 +1052,16 @@
 			"lucidity",
 			"alertness",
 			"vigilance",
+			"watchfulness",
 			"Related:{full awareness}",
 			"[jāgariyā]"
 		],
 		"weak in effort": [
 			"low in energy",
 			"lacking in endurance",
+			"lax, loose, slack, unaspirated, indistinct",
 			"Related:{wrong effort}",
-			"[hīnavīriya]"
+			"[hīnavīriya, sithila]"
 		],
 		"wholesome": [
 			"blameless",
@@ -1044,7 +1078,7 @@
 			"the quality of possessing experience alongside knowledge and sound judgment",
 			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable",
 			"an experiential understanding of the four noble truths",
-			"[paññā, dhīra, paṇḍita]"
+			"[paññā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
 			"proper attention",
