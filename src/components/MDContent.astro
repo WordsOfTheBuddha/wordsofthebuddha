@@ -111,6 +111,19 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 		opacity: 1;
 	}
 
+	/* Responsive adjustments for split view */
+	@media (min-width: 768px) {
+		.split-wrapper {
+			grid-template-columns: 55% 45%; /* Give more space to English on medium and large screens */
+		}
+	}
+
+	@media (max-width: 767px) {
+		.split-wrapper {
+			grid-template-columns: 1fr; /* Stack vertically on mobile */
+		}
+	}
+
 	/* Other existing styles remain unchanged */
 </style>
 
