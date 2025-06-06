@@ -1,4 +1,18 @@
 {
+  "affection": [
+    {
+      "id": "sn42.11",
+      "title": "Bhadraka sutta - With Bhadraka",
+      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
+      "collection": "sn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    }
+  ],
   "appreciative joy": [
     {
       "id": "mn8",
@@ -68,6 +82,12 @@
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
       "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
       "collection": "mn"
     },
     {
@@ -305,6 +325,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn39",
       "title": "Mahāassapura sutta - The Greater Discourse at Assapura",
       "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
@@ -420,6 +446,12 @@
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
       "collection": "mn"
     },
     {
@@ -623,6 +655,12 @@
       "title": "Dutiya kassapa sutta - Kassapa (Second)",
       "description": "The young deity Kassapa shares a verse on the instruction for a bhikkhu.",
       "collection": "sn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
     },
     {
       "id": "mn36",
@@ -1045,6 +1083,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn5",
       "title": "Anaṅgaṇa sutta - Blemish Free",
       "description": "Venerable Sāriputta explains the four kinds of persons based on their understanding of blemishes and blemish-free qualities. He uses the simile of a bronze bowl to illustrate the importance of understanding one's blemishes and blemish-free qualities.",
@@ -1410,6 +1454,12 @@
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
       "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
       "collection": "mn"
     },
     {
@@ -1847,6 +1897,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn39",
       "title": "Mahāassapura sutta - The Greater Discourse at Assapura",
       "description": "The Buddha outlines a progressive training guideline for the bhikkhus to undertake in order to be recognized as ascetics and Brahmins. The Buddha also describes the abandonment of the five hindrances, the four jhānas, and the three knowledges using similes.",
@@ -1924,6 +1980,12 @@
     }
   ],
   "full awareness": [
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
     {
       "id": "mn39",
       "title": "Mahāassapura sutta - The Greater Discourse at Assapura",
@@ -2163,6 +2225,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn118",
       "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
       "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfulness, which in turn fulfill the seven factors of awakening, culminating in true knowledge and liberation.",
@@ -2354,6 +2422,12 @@
     }
   ],
   "joyful pleasure": [
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
     {
       "id": "mn118",
       "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
@@ -2769,6 +2843,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn62",
       "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
       "description": "The Buddha instructs Rāhula on how to regard the five aggregates as not-self which he immediately applies to practice. The Buddha then teaches Rāhula on how to meditate on the elements, the divine abodes, unattractiveness, impermanence, and mindfulness of breathing to abandon unwholesome mental qualities and cultivate wholesome mental qualities.",
@@ -2884,6 +2964,12 @@
     }
   ],
   "non-harm": [
+    {
+      "id": "snp3.3",
+      "title": "Subhāsita sutta - Well Spoken",
+      "description": "The Buddha explains the four qualities of speech that is well-spoken - 1) speaking only what is well spoken, 2) speaking only the Dhamma, 3) speaking only what is pleasing, and 4) speaking only the truth. The Venerable Vaṅgīsa then praises the Buddha's teaching with verses on the nature of well-spoken speech.",
+      "collection": "snp"
+    },
     {
       "id": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
@@ -3027,6 +3113,12 @@
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
       "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
       "collection": "sn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
     },
     {
       "id": "mn4",
@@ -3317,6 +3409,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn108",
       "title": "Gopakamoggallāna sutta - With Gopaka Moggallāna",
       "description": "Shortly after the Buddha's final Nibbāna, Venerable Ānanda addresses the brahmins Gopaka Moggallāna and chief minister Vassakāra, clarifying that the Buddha appointed no successor, establishing the Dhamma itself as the refuge for the Saṅgha. He outlines ten qualities that make a bhikkhu worthy of veneration and distinguishes the meditations praised by the Buddha from those based on hindrances.",
@@ -3432,6 +3530,12 @@
     }
   ],
   "right speech": [
+    {
+      "id": "snp3.3",
+      "title": "Subhāsita sutta - Well Spoken",
+      "description": "The Buddha explains the four qualities of speech that is well-spoken - 1) speaking only what is well spoken, 2) speaking only the Dhamma, 3) speaking only what is pleasing, and 4) speaking only the truth. The Venerable Vaṅgīsa then praises the Buddha's teaching with verses on the nature of well-spoken speech.",
+      "collection": "snp"
+    },
     {
       "id": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
@@ -4033,6 +4137,12 @@
       "collection": "mn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn3",
       "title": "Dhammadāyāda sutta - Heirs in the Dhamma",
       "description": "The Buddha illustrates that his true inheritance is the Dhamma, not material possessions. Venerable Sāriputta clarifies the practice of seclusion by listing numerous harmful qualities to abandon and the Middle Way that leads to abandoning of them, to clear vision, wisdom, tranquility, to full awakening.",
@@ -4131,6 +4241,12 @@
   ],
   "truth": [
     {
+      "id": "snp3.3",
+      "title": "Subhāsita sutta - Well Spoken",
+      "description": "The Buddha explains the four qualities of speech that is well-spoken - 1) speaking only what is well spoken, 2) speaking only the Dhamma, 3) speaking only what is pleasing, and 4) speaking only the truth. The Venerable Vaṅgīsa then praises the Buddha's teaching with verses on the nature of well-spoken speech.",
+      "collection": "snp"
+    },
+    {
       "id": "dhp256-272",
       "title": "Dhammaṭṭha vagga - Chapter 19 - Firmly Established In The Dhamma",
       "description": "Dhammapada verses 256-272 emphasize the qualities that define true wisdom, nobility, and spiritual attainment. These verses critique superficial markers such as age, outward appearance, or rituals. The chapter underscores the importance of avoiding harm, evaluating actions with discernment, and not resting content until there is the complete elimination of mental defilements.",
@@ -4145,7 +4261,7 @@
       "collection": "dhp"
     }
   ],
-  "unperturbed": [
+  "imperturbable": [
     {
       "id": "snp1.1",
       "title": "Uraga sutta - Serpent",
@@ -4157,6 +4273,12 @@
       "title": "Upaya sutta - Attachment",
       "description": "Consciousness, while persisting, might persist attached to form, feeling, perception, and intentional constructions. When passion for these is abandoned, the support for the establishment of consciousness is completely cut off. That consciousness, being unestablished, does not grow, and by not intentionally constructing, is liberated.",
       "collection": "sn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
     },
     {
       "id": "iti94",
@@ -4323,6 +4445,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "iti97",
       "title": "Kalyāṇasīla sutta - Virtuous Conduct",
       "description": "The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.",
@@ -4412,6 +4540,12 @@
       "id": "snp5.1",
       "title": "Ajitamāṇavapucchā - Ajita’s Questions",
       "description": "Ajita asks the Buddha a series of questions about the nature of the world, the currents of defilements, how to overcome name and form and the conduct of those who have comprehended the Dhamma.",
+      "collection": "snp"
+    },
+    {
+      "id": "snp3.3",
+      "title": "Subhāsita sutta - Well Spoken",
+      "description": "The Buddha explains the four qualities of speech that is well-spoken - 1) speaking only what is well spoken, 2) speaking only the Dhamma, 3) speaking only what is pleasing, and 4) speaking only the truth. The Venerable Vaṅgīsa then praises the Buddha's teaching with verses on the nature of well-spoken speech.",
       "collection": "snp"
     },
     {
@@ -4885,14 +5019,6 @@
       "collection": "an"
     }
   ],
-  "affection": [
-    {
-      "id": "sn42.11",
-      "title": "Bhadraka sutta - With Bhadraka",
-      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
-      "collection": "sn"
-    }
-  ],
   "aggressiveness": [
     {
       "id": "mn7",
@@ -4972,6 +5098,12 @@
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
       "collection": "mn"
     },
     {
@@ -5429,9 +5561,21 @@
       "collection": "sn"
     },
     {
+      "id": "sn17.9",
+      "title": "Verambha sutta - Turbulent",
+      "description": "The Buddha explains how acquisitions, respect, and popularity are harsh, bitter, and severe, obstructing the attainment of the unsurpassed safety from bondage, using a simile of turbulent winds high in the sky.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn17.8",
+      "title": "Siṅgāla sutta - Jackal",
+      "description": "The Buddha explains how acquisitions, respect, and popularity are harsh, bitter, and severe, obstructing the attainment of the unsurpassed safety from bondage, using a simile of an old jackal with mange.",
+      "collection": "sn"
+    },
+    {
       "id": "sn17.3",
       "title": "Kumma sutta - The Turtle",
-      "description": "",
+      "description": "The Buddha uses the simile of a turtle struck by a harpoon to illustrate how attachments to acquisitions, respect, and popularity can lead to misfortune and hinder spiritual progress.",
       "collection": "sn"
     },
     {
@@ -5753,6 +5897,12 @@
   ],
   "displeasure": [
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "mn5",
       "title": "Anaṅgaṇa sutta - Blemish Free",
       "description": "Venerable Sāriputta explains the four kinds of persons based on their understanding of blemishes and blemish-free qualities. He uses the simile of a bronze bowl to illustrate the importance of understanding one's blemishes and blemish-free qualities.",
@@ -5975,9 +6125,21 @@
   ],
   "greed": [
     {
+      "id": "sn17.9",
+      "title": "Verambha sutta - Turbulent",
+      "description": "The Buddha explains how acquisitions, respect, and popularity are harsh, bitter, and severe, obstructing the attainment of the unsurpassed safety from bondage, using a simile of turbulent winds high in the sky.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn17.8",
+      "title": "Siṅgāla sutta - Jackal",
+      "description": "The Buddha explains how acquisitions, respect, and popularity are harsh, bitter, and severe, obstructing the attainment of the unsurpassed safety from bondage, using a simile of an old jackal with mange.",
+      "collection": "sn"
+    },
+    {
       "id": "sn17.3",
       "title": "Kumma sutta - The Turtle",
-      "description": "",
+      "description": "The Buddha uses the simile of a turtle struck by a harpoon to illustrate how attachments to acquisitions, respect, and popularity can lead to misfortune and hinder spiritual progress.",
       "collection": "sn"
     },
     {
@@ -6340,6 +6502,12 @@
     }
   ],
   "immaturity": [
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
     {
       "id": "iti76",
       "title": "Sukhapatthanā sutta - Aspiring for Happiness",
@@ -6763,6 +6931,24 @@
       "collection": "sn"
     },
     {
+      "id": "sn17.9",
+      "title": "Verambha sutta - Turbulent",
+      "description": "The Buddha explains how acquisitions, respect, and popularity are harsh, bitter, and severe, obstructing the attainment of the unsurpassed safety from bondage, using a simile of turbulent winds high in the sky.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn17.8",
+      "title": "Siṅgāla sutta - Jackal",
+      "description": "The Buddha explains how acquisitions, respect, and popularity are harsh, bitter, and severe, obstructing the attainment of the unsurpassed safety from bondage, using a simile of an old jackal with mange.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn17.3",
+      "title": "Kumma sutta - The Turtle",
+      "description": "The Buddha uses the simile of a turtle struck by a harpoon to illustrate how attachments to acquisitions, respect, and popularity can lead to misfortune and hinder spiritual progress.",
+      "collection": "sn"
+    },
+    {
       "id": "mn75",
       "title": "Māgaṇḍiya sutta - To Māgaṇḍiya",
       "description": "The wanderer Māgaṇḍiya holds the view that sensual indulgence is spiritual growth and harshly criticizes the Buddha for teaching sense restraint, calling him a destroyer of spiritual growth. The Buddha skilfully reveals the true nature of sensual pleasures through vivid similes such as a leper finding relief by scorching himself over burning coals and a blind man mistaking a filthy rag for a spotless white cloth.",
@@ -6941,6 +7127,12 @@
   ],
   "perturbation": [
     {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
+    {
       "id": "dhp33-43",
       "title": "Citta vagga - Chapter 3 - Mind",
       "description": "DhammaPada verses 33-43 share about the nature of the mind, the drawbacks of an untamed mind, and the benefits of protecting and restraining the mind. Those who restrain the mind will be freed from the shackles of death. Not even one's own mother, father, or any other relatives can do as much good as a rightly oriented mind can.",
@@ -7052,6 +7244,12 @@
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
       "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "collection": "mn"
+    },
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
       "collection": "mn"
     },
     {
@@ -7632,6 +7830,12 @@
     }
   ],
   "unwholesome": [
+    {
+      "id": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
+      "collection": "mn"
+    },
     {
       "id": "iti89",
       "title": "Devadatta sutta - Devadatta",

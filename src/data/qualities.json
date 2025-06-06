@@ -1,7 +1,6 @@
 {
 	"negative": [
 		"adventurous",
-		"affection",
 		"aggressiveness",
 		"attachment",
 		"anger",
@@ -72,6 +71,7 @@
 	],
 	"neutral": ["companionship", "desire"],
 	"positive": [
+		"affection",
 		"appreciative joy",
 		"celibacy",
 		"collectedness",
@@ -138,7 +138,7 @@
 		"tranquility",
 		"truth",
 		"unassuming",
-		"unperturbed",
+		"imperturbable",
 		"vigour",
 		"vision",
 		"wakefulness",
@@ -1000,7 +1000,7 @@
 			"[appagabbha]"
 		],
 		"undeveloped": ["not cultivated", "[abhāvita]"],
-		"unperturbed": [
+		"imperturbable": [
 			"unagitated",
 			"unshaken",
 			"untroubled",
