@@ -166,9 +166,11 @@
 			"pugnacity",
 			"violence",
 			"injury causing behavior",
-			"[sārambha]"
+			"Related:{anger}",
+			"[sārambha, caṇḍa]"
 		],
 		"attachment": [
+			"acquisition",
 			"bond",
 			"clinging",
 			"grasping",
@@ -177,15 +179,15 @@
 			"entanglement",
 			"bound",
 			"connected",
-			"[upadhi, sakiñcana]"
+			"[upadhi, upādāna, sakiñcana]"
 		],
 		"anger": [
 			"rage",
 			"wrath",
 			"fury",
 			"indignation",
-			"Related:{aversion, irritability, resentment}",
-			"[kodha]"
+			"Related:{aggressiveness, aversion, irritability, resentment}",
+			"[kodha, kopa]"
 		],
 		"anxiety": [
 			"agitation",
@@ -795,7 +797,8 @@
 			"being considerate",
 			"being well-mannered",
 			"friendliness",
-			"[paṭisanthāra]"
+			"Related:{unassuming}",
+			"[paṭisanthāra, saṇha, sorata]"
 		],
 		"quenching": [
 			"being cooled",
@@ -997,7 +1000,8 @@
 			"respectful",
 			"unpretentious",
 			"not cheeky",
-			"[appagabbha]"
+			"Related:{politeness}",
+			"[appagabbha, sorata]"
 		],
 		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"unperturbed": [
