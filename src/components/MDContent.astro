@@ -113,8 +113,14 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 	/* Responsive adjustments for split view */
 	@media (min-width: 768px) {
+		/* For medium and larger screens, set custom column widths */
 		.split-wrapper {
-			grid-template-columns: 55% 45%; /* Give more space to English on medium and large screens */
+			grid-template-columns: 52% 48%;
+		}
+
+		/* Give more space to English for medium and larger screens when verse content is present */
+		.split-wrapper.has-verse {
+			grid-template-columns: 55% 45%;
 		}
 	}
 
@@ -141,6 +147,14 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 		const splitWrapper = document.querySelector(".split-wrapper");
 
 		if (splitWrapper) {
+			// Check if there are any verse elements in the English content
+			const verseElements = document.querySelectorAll("#panel1 .verse");
+			if (verseElements.length > 0) {
+				splitWrapper.classList.add("has-verse");
+			} else {
+				splitWrapper.classList.remove("has-verse");
+			}
+
 			const leftPanel = document.querySelector("#panel1");
 			const rightPanel = document.querySelector("#panel2");
 
