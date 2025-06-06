@@ -1,7 +1,7 @@
 ---
 title: Uraga sutta - Serpent
 description: Verses depicting the path to liberation through the central metaphor of a serpent shedding its skin. Each stanza illustrates how a bhikkhu abandons defilements like anger, passion, craving, and conceit, thereby casting off attachment to this world and the next.
-qualities: giving up, dispassion, unperturbed, non-proliferation, discernment
+qualities: giving up, dispassion, imperturbable, non-proliferation, discernment
 theme: inspiration, principle
 slug: snp1.1
 simile: serpent casting off its old worn-out skin, searching for flowers on a fig tree
