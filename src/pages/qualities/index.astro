@@ -22,7 +22,7 @@ function groupByFirstLetter(items: string[]): Record<string, string[]> {
 }
 
 // Get all available first letters
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVW".split("");
 const positiveByLetter = groupByFirstLetter(qualities.positive);
 const negativeByLetter = groupByFirstLetter(qualities.negative);
 const neutralByLetter = groupByFirstLetter(qualities.neutral);

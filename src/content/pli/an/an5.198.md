@@ -1,7 +1,9 @@
 ---
 title: Vācā sutta - Speech
-description: Five factors of well-spoken speech.
-fetter: ill will, sensual desire, conceit, self-identity view
+description: Five factors of well-spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.
+qualities: right speech, loving-kindness, truth
+theme: wisdom, principle
+fetter: ill will, sensual desire, conceit, personal existence
 tags: speech, an, an5
 slug: an5.198
 ---
