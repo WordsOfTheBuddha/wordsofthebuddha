@@ -1,6 +1,12 @@
 {
   "affection": [
     {
+      "id": "ud5.1",
+      "title": "Piyatara sutta - Dearer",
+      "description": "King Pasenadi of Kosala and Queen Mallikā discuss who is dearer to them.",
+      "collection": "ud"
+    },
+    {
       "id": "sn42.11",
       "title": "Bhadraka sutta - With Bhadraka",
       "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha skillfully reveals that such sorrow arises not from the events themselves but from one’s own attachment and desire.",
@@ -23,7 +29,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -63,7 +69,7 @@
     {
       "id": "sn51.13",
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
-      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "description": "An analysis of the four bases of psychic powers that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
       "collection": "sn"
     },
     {
@@ -81,7 +87,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -237,6 +243,54 @@
   ],
   "complete comprehension": [
     {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.179",
+      "title": "Orambhāgiya sutta - Lower Fetters",
+      "description": "The five lower fetters - 1) personality view, 2) doubt, 3) attachment to rites and rituals, 4) sensual desire, and 5) ill will - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five lower fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.178",
+      "title": "Upādānakkhandha sutta - Aggregates Subject to Clinging",
+      "description": "The five aggregates that are subject to clinging - 1) form, 2) feeling, 3) perception, 4) intentional constructions, and 5) consciousness - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five aggregates that are subject to clinging.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.176",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five cords of sensual pleasure.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
+      "collection": "sn"
+    },
+    {
       "id": "sn35.60",
       "title": "Sabbupādānapariññā sutta - Complete Comprehension of All Clinging",
       "description": "The Buddha teaches the Dhamma for the complete comprehension of all clinging through seeing the dependent co-arising of feeling through the six sense bases.",
@@ -295,7 +349,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -440,6 +494,12 @@
       "id": "sn35.136",
       "title": "Paṭhamarūpārāma sutta - Delight in Forms",
       "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
       "collection": "sn"
     },
     {
@@ -648,6 +708,54 @@
       "id": "sn7.6",
       "title": "Jaṭā sutta - Knot",
       "description": "The Buddha explains how the tangle of defilements can be disentangled through the practice of virtue, meditation, and wisdom.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.179",
+      "title": "Orambhāgiya sutta - Lower Fetters",
+      "description": "The five lower fetters - 1) personality view, 2) doubt, 3) attachment to rites and rituals, 4) sensual desire, and 5) ill will - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five lower fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.178",
+      "title": "Upādānakkhandha sutta - Aggregates Subject to Clinging",
+      "description": "The five aggregates that are subject to clinging - 1) form, 2) feeling, 3) perception, 4) intentional constructions, and 5) consciousness - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five aggregates that are subject to clinging.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.176",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five cords of sensual pleasure.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
       "collection": "sn"
     },
     {
@@ -918,6 +1026,54 @@
     }
   ],
   "direct knowledge": [
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.179",
+      "title": "Orambhāgiya sutta - Lower Fetters",
+      "description": "The five lower fetters - 1) personality view, 2) doubt, 3) attachment to rites and rituals, 4) sensual desire, and 5) ill will - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five lower fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.178",
+      "title": "Upādānakkhandha sutta - Aggregates Subject to Clinging",
+      "description": "The five aggregates that are subject to clinging - 1) form, 2) feeling, 3) perception, 4) intentional constructions, and 5) consciousness - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five aggregates that are subject to clinging.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.176",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five cords of sensual pleasure.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
+      "collection": "sn"
+    },
     {
       "id": "sn35.26",
       "title": "Paṭhama aparijānana sutta - Not Completely Comprehending (First)",
@@ -1255,6 +1411,12 @@
   ],
   "dispassion": [
     {
+      "id": "ud7.7",
+      "title": "Papañcakhaya sutta - Wearing Away of Mental Proliferation",
+      "description": "The Buddha expresses an inspired utterance after reflecting on his own giving up of the proliferation of conceptual perceptions.",
+      "collection": "ud"
+    },
+    {
       "id": "snp3.8",
       "title": "Salla sutta - The Dart",
       "description": "Verses depicting the uncertain, brief, and suffering-laden nature of mortal life, emphasizing the inevitability of death for all beings, like ripe fruits fated to fall. The Buddha counsels against futile grief and lamentation over the departed, urging the wise to understand the world's relentless course of decay and death.",
@@ -1306,6 +1468,12 @@
       "id": "sn22.23",
       "title": "Pariñña sutta - Full Understanding",
       "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
       "collection": "sn"
     },
     {
@@ -1453,7 +1621,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -1501,6 +1669,12 @@
   ],
   "ethical conduct": [
     {
+      "id": "ud5.5",
+      "title": "Uposatha sutta - Uposatha",
+      "description": "The Buddha sits silently among the Saṅgha of bhikkhus on an Uposatha night when the assembly wasn't pure. Afterwards, the Buddha explains the eight wonderful and marvelous qualities of the Dhamma and Vinaya, likening them to similarly wonderful qualities of the great ocean.",
+      "collection": "ud"
+    },
+    {
       "id": "sn7.6",
       "title": "Jaṭā sutta - Knot",
       "description": "The Buddha explains how the tangle of defilements can be disentangled through the practice of virtue, meditation, and wisdom.",
@@ -1527,7 +1701,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -1709,7 +1883,7 @@
     {
       "id": "sn51.13",
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
-      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "description": "An analysis of the four bases of psychic powers that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
       "collection": "sn"
     },
     {
@@ -1783,7 +1957,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -1966,6 +2140,12 @@
     }
   ],
   "formless": [
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
     {
       "id": "iti73",
       "title": "Santatara sutta - More Peaceful than",
@@ -2165,6 +2345,12 @@
   ],
   "giving up": [
     {
+      "id": "ud7.7",
+      "title": "Papañcakhaya sutta - Wearing Away of Mental Proliferation",
+      "description": "The Buddha expresses an inspired utterance after reflecting on his own giving up of the proliferation of conceptual perceptions.",
+      "collection": "ud"
+    },
+    {
       "id": "snp5.11",
       "title": "Jatukaṇṇimāṇavapucchā - Jatukaṇṇi’s Questions",
       "description": "The venerable Jatukaṇṇi asks the Buddha on how to attain the state of peace and abandon birth and old age. The Buddha advises him to remove greed for sensual pleasures by seeing renunciation as safety, and to cease all grasping related to name and form in the past, future, as well as present.",
@@ -2198,6 +2384,12 @@
       "id": "sn35.24",
       "title": "Pahāna sutta - Giving Up",
       "description": "The Buddha teaches the Dhamma for the giving up of everything based on the six sense bases and the process leading up to the arising of feeling and perception.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
       "collection": "sn"
     },
     {
@@ -2525,6 +2717,12 @@
   ],
   "liberation": [
     {
+      "id": "ud5.5",
+      "title": "Uposatha sutta - Uposatha",
+      "description": "The Buddha sits silently among the Saṅgha of bhikkhus on an Uposatha night when the assembly wasn't pure. Afterwards, the Buddha explains the eight wonderful and marvelous qualities of the Dhamma and Vinaya, likening them to similarly wonderful qualities of the great ocean.",
+      "collection": "ud"
+    },
+    {
       "id": "snp3.8",
       "title": "Salla sutta - The Dart",
       "description": "Verses depicting the uncertain, brief, and suffering-laden nature of mortal life, emphasizing the inevitability of death for all beings, like ripe fruits fated to fall. The Buddha counsels against futile grief and lamentation over the departed, urging the wise to understand the world's relentless course of decay and death.",
@@ -2540,6 +2738,12 @@
       "id": "sn22.59",
       "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
       "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
       "collection": "sn"
     },
     {
@@ -2649,7 +2853,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -2740,6 +2944,12 @@
       "id": "an8.1",
       "title": "Mettā sutta - Loving-Kindness",
       "description": "Eight benefits of cultivating loving-kindness from sleeping with ease to fire, poison, and weapons not harming one to going to the Brahma world.",
+      "collection": "an"
+    },
+    {
+      "id": "an5.198",
+      "title": "Vācā sutta - Speech",
+      "description": "Five factors of well-spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.",
       "collection": "an"
     },
     {
@@ -2965,6 +3175,12 @@
   ],
   "non-harm": [
     {
+      "id": "ud5.1",
+      "title": "Piyatara sutta - Dearer",
+      "description": "King Pasenadi of Kosala and Queen Mallikā discuss who is dearer to them.",
+      "collection": "ud"
+    },
+    {
       "id": "snp3.3",
       "title": "Subhāsita sutta - Well Spoken",
       "description": "The Buddha explains the four qualities of speech that is well-spoken - 1) speaking only what is well spoken, 2) speaking only the Dhamma, 3) speaking only what is pleasing, and 4) speaking only the truth. The Venerable Vaṅgīsa then praises the Buddha's teaching with verses on the nature of well-spoken speech.",
@@ -3111,7 +3327,7 @@
     {
       "id": "sn51.13",
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
-      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "description": "An analysis of the four bases of psychic powers that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
       "collection": "sn"
     },
     {
@@ -3179,13 +3395,31 @@
   ],
   "politeness": [
     {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
+    {
       "id": "an6.32",
       "title": "Paṭhamaaparihānasutta - Non-decline (First)",
       "description": "A radiant deity visits the Buddha and shares six qualities that ensure the non-decline of a bhikkhu - 1) respect for the Teacher, 2) the Dhamma, 3) the Saṅgha, 4) the training, 5) diligence, and 6) courteousness. The Buddha affirms these qualities as supportive of progress toward Nibbāna.",
       "collection": "an"
+    },
+    {
+      "id": "an5.198",
+      "title": "Vācā sutta - Speech",
+      "description": "Five factors of well-spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.",
+      "collection": "an"
     }
   ],
   "quenching": [
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
+      "collection": "sn"
+    },
     {
       "id": "iti92",
       "title": "Saṅghāṭikaṇṇa sutta - Corner of Robe",
@@ -3503,6 +3737,12 @@
   ],
   "right intention": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -3597,6 +3837,18 @@
       "collection": "dhp"
     },
     {
+      "id": "an7.28",
+      "title": "Paṭhama parihāni sutta - Decline (First)",
+      "description": "The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.",
+      "collection": "an"
+    },
+    {
+      "id": "an5.198",
+      "title": "Vācā sutta - Speech",
+      "description": "Five factors of well-spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.",
+      "collection": "an"
+    },
+    {
       "id": "an1.378-393",
       "title": "Pasādakaradhamma vagga - Qualities Inspiring Confidence",
       "description": "The Buddha shares qualities that inspire confidence in the spiritual life.",
@@ -3604,6 +3856,12 @@
     }
   ],
   "right view": [
+    {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
     {
       "id": "snp5.15",
       "title": "Mogharājamāṇavapucchā - Mogharāja’s Question",
@@ -3813,6 +4071,12 @@
   ],
   "self-control": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "sn3.5",
       "title": "Attarakkhita sutta - Self-Protection",
       "description": "Even if protected by an entire army, one who engages in misconduct is unprotected. But one who engages in good conduct protects themselves, even without external protection.",
@@ -3939,6 +4203,12 @@
       "title": "Atta vagga - Chapter 12 - Self",
       "description": "Dhammapada verses 157-166 emphasize self-discipline, personal responsibility, and inner mastery. A wise person must first establish themselves properly before guiding others, as self-mastery is difficult but essential. Purity and impurity are personal matters, and one should prioritize their own spiritual welfare over external concerns, for no one can purify another.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.28",
+      "title": "Paṭhama parihāni sutta - Decline (First)",
+      "description": "The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.",
+      "collection": "an"
     }
   ],
   "sincerity": [
@@ -4251,9 +4521,21 @@
       "title": "Dhammaṭṭha vagga - Chapter 19 - Firmly Established In The Dhamma",
       "description": "Dhammapada verses 256-272 emphasize the qualities that define true wisdom, nobility, and spiritual attainment. These verses critique superficial markers such as age, outward appearance, or rituals. The chapter underscores the importance of avoiding harm, evaluating actions with discernment, and not resting content until there is the complete elimination of mental defilements.",
       "collection": "dhp"
+    },
+    {
+      "id": "an5.198",
+      "title": "Vācā sutta - Speech",
+      "description": "Five factors of well-spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.",
+      "collection": "an"
     }
   ],
   "unassuming": [
+    {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
     {
       "id": "dhp235-255",
       "title": "Mala vagga - Chapter 18 - Stain",
@@ -4327,7 +4609,7 @@
     {
       "id": "sn51.13",
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
-      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "description": "An analysis of the four bases of psychic powers that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
       "collection": "sn"
     },
     {
@@ -4641,7 +4923,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5021,9 +5303,15 @@
   ],
   "aggressiveness": [
     {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
+    {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5047,6 +5335,18 @@
   ],
   "attachment": [
     {
+      "id": "ud7.4",
+      "title": "Dutiyasatta sutta - Clinging (Second)",
+      "description": "On seeing the people of Sāvatthi clinging to sensual pleasures, the Buddha expresses an inspired utterance on harm that comes from sensual desire.",
+      "collection": "ud"
+    },
+    {
+      "id": "ud7.3",
+      "title": "Paṭhamasatta sutta - Clinging (First)",
+      "description": "On seeing the people of Sāvatthi excessively clinging to sensual pleasures, the Buddha expresses an inspired utterance on the bondage that ensues from sensual desire.",
+      "collection": "ud"
+    },
+    {
       "id": "ud2.9",
       "title": "Visākhā sutta - Visākha",
       "description": "The Buddha expresses an inspired utterance to Visākhā on how all under another's control brings suffering.",
@@ -5068,6 +5368,24 @@
       "id": "sn7.6",
       "title": "Jaṭā sutta - Knot",
       "description": "The Buddha explains how the tangle of defilements can be disentangled through the practice of virtue, meditation, and wisdom.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.178",
+      "title": "Upādānakkhandha sutta - Aggregates Subject to Clinging",
+      "description": "The five aggregates that are subject to clinging - 1) form, 2) feeling, 3) perception, 4) intentional constructions, and 5) consciousness - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five aggregates that are subject to clinging.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
       "collection": "sn"
     },
     {
@@ -5169,6 +5487,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
+    {
       "id": "sn2.3",
       "title": "Māgha sutta - Māgha",
       "description": "The young deity Māgha asks the Buddha in a verse on what to cut off to sleep with ease and grieve no more. The Buddha advises to cut off anger.",
@@ -5183,7 +5507,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5261,6 +5585,30 @@
   ],
   "aversion": [
     {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
+    {
       "id": "sn22.23",
       "title": "Pariñña sutta - Full Understanding",
       "description": "The Buddha teaches the things to be fully understood and what full understanding is.",
@@ -5281,7 +5629,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5407,6 +5755,24 @@
   ],
   "anxiety": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
       "id": "sn36.6",
       "title": "Salla sutta - Arrow",
       "description": "The Buddha explains the difference between an uninstructed ordinary person and a learned noble disciple in how they experience pleasant, painful, and neither-painful-nor-pleasant feelings.",
@@ -5517,6 +5883,24 @@
   ],
   "clinging to rules and observances": [
     {
+      "id": "sn45.179",
+      "title": "Orambhāgiya sutta - Lower Fetters",
+      "description": "The five lower fetters - 1) personality view, 2) doubt, 3) attachment to rites and rituals, 4) sensual desire, and 5) ill will - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five lower fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
+      "collection": "sn"
+    },
+    {
       "id": "mn11",
       "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion's Roar",
       "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of clinging.",
@@ -5536,6 +5920,24 @@
     }
   ],
   "conceit": [
+    {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
     {
       "id": "sn36.6",
       "title": "Salla sutta - Arrow",
@@ -5587,7 +5989,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5693,7 +6095,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5729,10 +6131,28 @@
   ],
   "craving": [
     {
+      "id": "ud7.4",
+      "title": "Dutiyasatta sutta - Clinging (Second)",
+      "description": "On seeing the people of Sāvatthi clinging to sensual pleasures, the Buddha expresses an inspired utterance on harm that comes from sensual desire.",
+      "collection": "ud"
+    },
+    {
       "id": "snp5.1",
       "title": "Ajitamāṇavapucchā - Ajita’s Questions",
       "description": "Ajita asks the Buddha a series of questions about the nature of the world, the currents of defilements, how to overcome name and form and the conduct of those who have comprehended the Dhamma.",
       "collection": "snp"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
+      "collection": "sn"
     },
     {
       "id": "sn15.8",
@@ -5749,7 +6169,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -5911,6 +6331,12 @@
   ],
   "distraction": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -5949,6 +6375,12 @@
   ],
   "disturbed": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "iti88",
       "title": "Antarāmala sutta - Internal Impurity",
       "description": "Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.",
@@ -5962,6 +6394,24 @@
     }
   ],
   "doubt": [
+    {
+      "id": "sn45.179",
+      "title": "Orambhāgiya sutta - Lower Fetters",
+      "description": "The five lower fetters - 1) personality view, 2) doubt, 3) attachment to rites and rituals, 4) sensual desire, and 5) ill will - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five lower fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -6007,6 +6457,18 @@
   ],
   "drowsiness": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -6045,6 +6507,18 @@
   ],
   "dullness": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -6078,6 +6552,12 @@
     }
   ],
   "fearful": [
+    {
+      "id": "ud5.4",
+      "title": "Kumāraka sutta - Boys",
+      "description": "If suffering is displeasing to you, do not commit evil deeds, whether openly or in secret.",
+      "collection": "ud"
+    },
     {
       "id": "snp3.8",
       "title": "Salla sutta - The Dart",
@@ -6113,7 +6593,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -6145,7 +6625,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -6317,6 +6797,12 @@
   ],
   "hypocrisy": [
     {
+      "id": "ud5.5",
+      "title": "Uposatha sutta - Uposatha",
+      "description": "The Buddha sits silently among the Saṅgha of bhikkhus on an Uposatha night when the assembly wasn't pure. Afterwards, the Buddha explains the eight wonderful and marvelous qualities of the Dhamma and Vinaya, likening them to similarly wonderful qualities of the great ocean.",
+      "collection": "ud"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -6347,6 +6833,18 @@
       "title": "Ajitamāṇavapucchā - Ajita’s Questions",
       "description": "Ajita asks the Buddha a series of questions about the nature of the world, the currents of defilements, how to overcome name and form and the conduct of those who have comprehended the Dhamma.",
       "collection": "snp"
+    },
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
     },
     {
       "id": "sn35.53",
@@ -6447,6 +6945,12 @@
   ],
   "illusion": [
     {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
+    {
       "id": "mn95",
       "title": "Caṅkī sutta - With Caṅkī",
       "description": "The Buddha answers the questions of the reputed brahmin Caṅkī's learned student, who asks the Buddha on how there is preservation of truth, awakening to the truth, final arrival at the truth, and what is most helpful for the final arrival at the truth.",
@@ -6502,6 +7006,12 @@
     }
   ],
   "immaturity": [
+    {
+      "id": "ud5.5",
+      "title": "Uposatha sutta - Uposatha",
+      "description": "The Buddha sits silently among the Saṅgha of bhikkhus on an Uposatha night when the assembly wasn't pure. Afterwards, the Buddha explains the eight wonderful and marvelous qualities of the Dhamma and Vinaya, likening them to similarly wonderful qualities of the great ocean.",
+      "collection": "ud"
+    },
     {
       "id": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
@@ -6601,7 +7111,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -6717,6 +7227,12 @@
   ],
   "mental proliferation": [
     {
+      "id": "ud7.7",
+      "title": "Papañcakhaya sutta - Wearing Away of Mental Proliferation",
+      "description": "The Buddha expresses an inspired utterance after reflecting on his own giving up of the proliferation of conceptual perceptions.",
+      "collection": "ud"
+    },
+    {
       "id": "iti63",
       "title": "Addhā sutta - The Three Times",
       "description": "The Buddha speaks on how beings cling to what can be expressed—concepts and designations, including the three times of past, future, and present. Not fully understanding these, they fall under the yoke of death. But one who sees beyond conceptual fabrications touches liberation and does not resort to mental proliferation.",
@@ -6763,6 +7279,18 @@
   ],
   "muddle-minded": [
     {
+      "id": "ud5.9",
+      "title": "Sadhāyamāna sutta - Mocking",
+      "description": "The Blessed One sees a group of young brāhmaṇas passing by, appearing to be mocking.",
+      "collection": "ud"
+    },
+    {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -6803,7 +7331,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -6899,10 +7427,22 @@
   ],
   "non-restraint": [
     {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "sn35.247",
       "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
       "description": "The Buddha explains how there is non-restraint and restraint with a simile of six animals with different domains and feeding grounds. He uses strong post or pillar as a designation for mindfulness directed to the body.",
       "collection": "sn"
+    },
+    {
+      "id": "an7.28",
+      "title": "Paṭhama parihāni sutta - Decline (First)",
+      "description": "The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.",
+      "collection": "an"
     },
     {
       "id": "an1.31-40",
@@ -6912,6 +7452,30 @@
     }
   ],
   "passion": [
+    {
+      "id": "ud7.4",
+      "title": "Dutiyasatta sutta - Clinging (Second)",
+      "description": "On seeing the people of Sāvatthi clinging to sensual pleasures, the Buddha expresses an inspired utterance on harm that comes from sensual desire.",
+      "collection": "ud"
+    },
+    {
+      "id": "sn45.180",
+      "title": "Uddhambhāgiya sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five higher fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn42.1",
+      "title": "Caṇḍa sutta - Aggressive",
+      "description": "The Buddha explains the cause and condition by which a person comes to be recognized as aggressive or gentle. He illuminates how the presence or absence of passion, aversion, and illusion determines whether one is susceptible to provocation and reacts with anger, or remains unshaken.",
+      "collection": "sn"
+    },
     {
       "id": "sn35.70",
       "title": "Upavāṇasandiṭṭhika sutta - Directly Visible with Upavāṇa",
@@ -6928,6 +7492,12 @@
       "id": "sn3.22",
       "title": "Ayyikā sutta - Grandmother",
       "description": "King Pasenadi expresses deep sorrow over his grandmother's death. The Buddha teaches him that all beings, without exception, are subject to death and cannot escape it, likening it to a potter's pots that are all bound to break.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
       "collection": "sn"
     },
     {
@@ -7065,6 +7635,12 @@
       "collection": "snp"
     },
     {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
+      "collection": "sn"
+    },
+    {
       "id": "sn36.6",
       "title": "Salla sutta - Arrow",
       "description": "The Buddha explains the difference between an uninstructed ordinary person and a learned noble disciple in how they experience pleasant, painful, and neither-painful-nor-pleasant feelings.",
@@ -7111,6 +7687,12 @@
       "title": "Bhikkhu vagga - Chapter 25 - Bhikkhu",
       "description": "Dhammapada verses 360–382 depict the ideal bhikkhu as one who restrains the senses, body, speech, and mind, leading to freedom from suffering. Emphasis is placed on mindfulness, inner joy, collectedness, and self-reliance. Through discipline and reflection, the bhikkhu advances towards the peace of Nibbāna, shining like the moon freed from clouds.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.28",
+      "title": "Paṭhama parihāni sutta - Decline (First)",
+      "description": "The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.",
+      "collection": "an"
     },
     {
       "id": "an6.15",
@@ -7169,7 +7751,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -7193,10 +7775,52 @@
   ],
   "sensual desire": [
     {
+      "id": "ud7.4",
+      "title": "Dutiyasatta sutta - Clinging (Second)",
+      "description": "On seeing the people of Sāvatthi clinging to sensual pleasures, the Buddha expresses an inspired utterance on harm that comes from sensual desire.",
+      "collection": "ud"
+    },
+    {
+      "id": "ud7.3",
+      "title": "Paṭhamasatta sutta - Clinging (First)",
+      "description": "On seeing the people of Sāvatthi excessively clinging to sensual pleasures, the Buddha expresses an inspired utterance on the bondage that ensues from sensual desire.",
+      "collection": "ud"
+    },
+    {
       "id": "snp5.11",
       "title": "Jatukaṇṇimāṇavapucchā - Jatukaṇṇi’s Questions",
       "description": "The venerable Jatukaṇṇi asks the Buddha on how to attain the state of peace and abandon birth and old age. The Buddha advises him to remove greed for sensual pleasures by seeing renunciation as safety, and to cease all grasping related to name and form in the past, future, as well as present.",
       "collection": "snp"
+    },
+    {
+      "id": "sn45.179",
+      "title": "Orambhāgiya sutta - Lower Fetters",
+      "description": "The five lower fetters - 1) personality view, 2) doubt, 3) attachment to rites and rituals, 4) sensual desire, and 5) ill will - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five lower fetters.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five hindrances.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.176",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five cords of sensual pleasure.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.173",
+      "title": "Upādāna sutta - Clinging",
+      "description": "The four kinds of clinging - 1) clinging to sensual pleasures, 2) clinging to views, 3) clinging to rules and observances, and 4) clinging to a doctrine of self - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these four kinds of clinging.",
+      "collection": "sn"
     },
     {
       "id": "sn36.6",
@@ -7223,6 +7847,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
+      "collection": "sn"
+    },
+    {
       "id": "sn22.102",
       "title": "Aniccasaññā sutta - Recognition Of Impermanence",
       "description": "The Buddha shares vivid similes to illustrate the benefits of developing the recognition of impermanence. This practice gradually exhausts all passion for sensual pleasure, materiality, becoming, ignorance, and uproots the conceit ‘I am.’",
@@ -7243,7 +7873,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -7341,6 +7971,12 @@
       "title": "Piya vagga - Chapter 16 - Beloved",
       "description": "DhammaPada verses 209–220 explore the danger of attachment to what is pleasing, how sorrow and fear arise from the beloved, fondness, delight, sensual pleasures, and craving, who is dear to the people, who flows upstream, and on the importance of merit.",
       "collection": "dhp"
+    },
+    {
+      "id": "an7.28",
+      "title": "Paṭhama parihāni sutta - Decline (First)",
+      "description": "The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.",
+      "collection": "an"
     },
     {
       "id": "an7.12",
@@ -7531,7 +8167,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -7581,7 +8217,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -7598,6 +8234,12 @@
     }
   ],
   "suffering": [
+    {
+      "id": "ud5.4",
+      "title": "Kumāraka sutta - Boys",
+      "description": "If suffering is displeasing to you, do not commit evil deeds, whether openly or in secret.",
+      "collection": "ud"
+    },
     {
       "id": "ud2.9",
       "title": "Visākhā sutta - Visākha",
@@ -7620,6 +8262,12 @@
       "id": "sn35.136",
       "title": "Paṭhamarūpārāma sutta - Delight in Forms",
       "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the differing views of happiness held by the world and the Noble Ones.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
       "collection": "sn"
     },
     {
@@ -7723,7 +8371,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -7915,7 +8563,7 @@
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
-      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. The Blessed One also addresses a brahmin in verses who believes in purification by bathing in river.",
+      "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.",
       "collection": "mn"
     },
     {
@@ -8019,6 +8667,18 @@
   ],
   "wrong speech": [
     {
+      "id": "ud5.9",
+      "title": "Sadhāyamāna sutta - Mocking",
+      "description": "The Blessed One sees a group of young brāhmaṇas passing by, appearing to be mocking.",
+      "collection": "ud"
+    },
+    {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
       "id": "mn136",
       "title": "Mahākammavibhaṅga sutta - Great Exposition on Action",
       "description": "Prompted by a misquotation of the Buddha regarding mental versus physical and verbal actions, the Buddha clarifies the nature of kamma and its results. He explains, through a framework of four paradoxical cases, how actions may lead to unexpected outcomes based on prior deeds or conditions at death.",
@@ -8067,6 +8727,12 @@
       "collection": "dhp"
     },
     {
+      "id": "an7.28",
+      "title": "Paṭhama parihāni sutta - Decline (First)",
+      "description": "The Buddha explains seven things that lead to the decline of a trainee bhikkhu and seven things that do not.",
+      "collection": "an"
+    },
+    {
       "id": "an4.148",
       "title": "Duccarita sutta - Misconduct",
       "description": "The Buddha shares in brief the four kinds of verbal misconduct - 1) lying, 2) divisive speech, 3) harsh speech, and 4) frivolous chatter.",
@@ -8074,6 +8740,24 @@
     }
   ],
   "wrong view": [
+    {
+      "id": "ud4.2",
+      "title": "Uddhata sutta - Restless",
+      "description": "The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.",
+      "collection": "ud"
+    },
+    {
+      "id": "sn45.175",
+      "title": "Anusaya sutta - Underlying Tendencies",
+      "description": "The seven underlying tendencies - 1) sensual desire, 2) aversion, 3) wrong view, 4) doubt, 5) conceit, 6) attachment to existence, and 7) ignorance - are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these tendencies.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that 'This is the truth' are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these knots.",
+      "collection": "sn"
+    },
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -8189,7 +8873,7 @@
     {
       "id": "sn51.13",
       "title": "Chandasamādhi sutta - Collectedness Arising From Aspiration",
-      "description": "An analysis of the four bases of psychic abilities that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
+      "description": "An analysis of the four bases of psychic powers that are endowed with collectedness arising from aspiration, determination, purification of mind, and investigation.",
       "collection": "sn"
     },
     {

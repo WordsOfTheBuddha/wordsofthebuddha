@@ -5,7 +5,7 @@ qualities: anger, displeasure, conceit, discernment
 theme: cultivating discernment
 slug: mn5
 simile: bronze bowl covered with dirt and stains
-character: Venerable Sāriputta, Venerable Mahā Moggallāna
+character: Venerable Sāriputta, Venerable Mahāmoggallāna
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.
@@ -96,7 +96,7 @@ Seyyathāpi, āvuso, kaṁsapāti ābhatā āpaṇā vā kammārakulā vā paris
 
 Evameva kho, āvuso, yassa kassaci bhikkhuno ime pāpakā akusalā icchāvacarā pahīnā dissanti ceva sūyanti ca, kiñcāpi so hoti gāmantavihārī nemantaniko gahapaticīvaradharo, atha kho naṁ sabrahmacārī sakkaronti garuṁ karonti mānenti pūjenti. Taṁ kissa hetu? Te hi tassa āyasmato pāpakā akusalā icchāvacarā pahīnā dissanti ceva sūyanti cā”ti.
 
-### Mahā Moggallāna Draws a Parallel
+### Mahāmoggallāna Draws a Parallel
 
 Evaṁ vutte, āyasmā mahāmoggallāno āyasmantaṁ sāriputtaṁ etadavoca: “upamā maṁ, āvuso sāriputta, paṭibhātī”ti.
 

@@ -205,9 +205,9 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 							'The "Linked Discourses on the Faculties" explores the five spiritual faculties: faith, energy, mindfulness, collectedness, and wisdom. These teachings examine how these faculties function as both the means to attain liberation and as qualities that become increasingly refined through practice. By developing these faculties in a balanced way, practitioners can progress on the path to awakening.',
 					},
 					sn51: {
-						title: "Iddhipādasaṁyutta - Linked Discourses on the Bases of Psychic Ability",
+						title: "Iddhipādasaṁyutta - Linked Discourses on the Bases of Psychic Power",
 						description:
-							'The "Linked Discourses on the Bases of Psychic Ability" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic ability when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
+							'The "Linked Discourses on the Bases of Psychic Power" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic power when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
 					},
 					sn55: {
 						title: "Sotāpattisaṁyutta - Linked Discourses on Stream-Entry",
