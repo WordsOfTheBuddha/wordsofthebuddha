@@ -1,8 +1,8 @@
 ---
-title: Iddhipāda sutta - Psychic Ability
-description: The four bases of psychic ability that should be developed for the full understanding of passion, desire, and attachment.
+title: Iddhipāda sutta - Psychic Power
+description: The four bases of psychic power that should be developed for the full understanding of passion, desire, and attachment.
 fetter: sensual desire, desire for fine-material existence, desire for immaterial existence, conceit, restlessness, ignorance
-tags: an,an4,spiritual power,psychic ability,passion,desire,attachment,collectedness,goal,aspiration,interest,objective,intention,effort,persistence,mind,consciousness,investigation,reflection,close examination
+tags: an,an4,spiritual power,psychic power,passion,desire,attachment,collectedness,goal,aspiration,interest,objective,intention,effort,persistence,mind,consciousness,investigation,reflection,close examination
 slug: an4.276
 ---
 
