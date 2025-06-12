@@ -1,6 +1,8 @@
 ---
 title: Piyatara sutta - Dearer
 description: King Pasenadi of Kosala and Queen Mallikā discuss who is dearer to them.
+qualities: affection, non-harm
+theme: inspiration, wisdom
 fetter: ignorance
 tags: dear,ud,ud5
 slug: ud5.1
