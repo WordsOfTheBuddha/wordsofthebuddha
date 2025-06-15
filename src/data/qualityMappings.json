@@ -21,6 +21,12 @@
   ],
   "appreciative joy": [
     {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -346,6 +352,12 @@
     }
   ],
   "compassion": [
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
     {
       "id": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
@@ -765,6 +777,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
       "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
@@ -1081,6 +1099,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "mn47",
       "title": "Vīmaṁsaka sutta - Examining",
       "description": "The Buddha provides a detailed and rigorous method for examining a Teacher. By discerning the teacher’s mental qualities, through prolonged observation, questioning, and learning directly, one gradually realizes a certain aspect of the teaching and builds unshakeable confidence in both the teacher and the teachings.",
@@ -1233,6 +1257,18 @@
       "collection": "sn"
     },
     {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -1375,7 +1411,7 @@
     {
       "id": "sn22.59",
       "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
-      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "description": "After examining the impermanence, unsatisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, as not being suitable to identify with.",
       "collection": "sn"
     },
     {
@@ -1455,7 +1491,7 @@
     {
       "id": "sn22.59",
       "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
-      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "description": "After examining the impermanence, unsatisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, as not being suitable to identify with.",
       "collection": "sn"
     },
     {
@@ -1612,6 +1648,12 @@
     }
   ],
   "equanimity": [
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
     {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -2161,6 +2203,12 @@
   ],
   "full awareness": [
     {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
+    {
       "id": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
       "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
@@ -2233,6 +2281,12 @@
       "title": "Uttara sutta - Uttara",
       "description": "A young deity recites a verse to the Buddha about the shortness of life and the importance of doing meritorious deeds.",
       "collection": "sn"
+    },
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
     },
     {
       "id": "mn8",
@@ -2737,7 +2791,7 @@
     {
       "id": "sn22.59",
       "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
-      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "description": "After examining the impermanence, unsatisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, as not being suitable to identify with.",
       "collection": "sn"
     },
     {
@@ -2843,6 +2897,12 @@
       "title": "Sanidāna sutta - From A Cause",
       "description": "The Buddha explains how thoughts of sensuality, ill will, and harming arise from a cause and how to abandon them.",
       "collection": "sn"
+    },
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
     },
     {
       "id": "mn8",
@@ -2979,6 +3039,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "iti83",
       "title": "Pañcapubbanimitta sutta - Five Preceding Signs",
       "description": "The Buddha describes the five signs that appear when a deity is about to pass away, and the three blessings that the gods give to the deity.",
@@ -3044,6 +3110,12 @@
       "id": "sn35.247",
       "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
       "description": "The Buddha explains how there is non-restraint and restraint with a simile of six animals with different domains and feeding grounds. He uses strong post or pillar as a designation for mindfulness directed to the body.",
+      "collection": "sn"
+    },
+    {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
       "collection": "sn"
     },
     {
@@ -4517,6 +4589,12 @@
       "collection": "snp"
     },
     {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "dhp256-272",
       "title": "Dhammaṭṭha vagga - Chapter 19 - Firmly Established In The Dhamma",
       "description": "Dhammapada verses 256-272 emphasize the qualities that define true wisdom, nobility, and spiritual attainment. These verses critique superficial markers such as age, outward appearance, or rituals. The chapter underscores the importance of avoiding harm, evaluating actions with discernment, and not resting content until there is the complete elimination of mental defilements.",
@@ -4727,6 +4805,12 @@
       "collection": "sn"
     },
     {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
+    {
       "id": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
       "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types of practitioners based on their response to attachment and mindfulness. The discourse also presents gradual refinement of meditative attainments from the first jhāna to the cessation of perception and feeling.",
@@ -4893,7 +4977,7 @@
     {
       "id": "sn22.59",
       "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
-      "description": "After examining the impermanence, dis-satisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, with identifying with them.",
+      "description": "After examining the impermanence, unsatisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, as not being suitable to identify with.",
       "collection": "sn"
     },
     {
@@ -4907,6 +4991,12 @@
       "title": "Anāthapiṇḍika sutta - Anāthapiṇḍika",
       "description": "Household Anāthapiṇḍika, after passing away, appears as a young deity and recites verses to the Buddha on the value of thoroughly examining the Dhamma.",
       "collection": "sn"
+    },
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
     },
     {
       "id": "mn95",
@@ -5981,6 +6071,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
+    {
       "id": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes peaceful abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through restraint, cultivation of the noble eightfold path, and diligent training, culminating in the complete freedom of Nibbāna.",
@@ -6284,6 +6380,12 @@
     }
   ],
   "discontentment": [
+    {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
     {
       "id": "mn62",
       "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
@@ -7865,6 +7967,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
+    {
       "id": "mn75",
       "title": "Māgaṇḍiya sutta - To Māgaṇḍiya",
       "description": "The wanderer Māgaṇḍiya holds the view that sensual indulgence is spiritual growth and harshly criticizes the Buddha for teaching sense restraint, calling him a destroyer of spiritual growth. The Buddha skilfully reveals the true nature of sensual pleasures through vivid similes such as a leper finding relief by scorching himself over burning coals and a blind man mistaking a filthy rag for a spotless white cloth.",
@@ -8277,6 +8385,12 @@
       "collection": "sn"
     },
     {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
+    {
       "id": "mn45",
       "title": "Cūḷadhammasamādāna sutta - The Shorter Discourse on the Cases of Taking up Practices",
       "description": "The Buddha explains the four cases of taking up practices, based on whether they are pleasant or painful now and whether they ripen as suffering or a pleasant abiding in the future.",
@@ -8478,6 +8592,12 @@
     }
   ],
   "unwholesome": [
+    {
+      "id": "sn1.20",
+      "title": "Samiddhi sutta - With Samiddhi",
+      "description": "A radiant deity tempts young Samiddhi to enjoy sensual pleasures. The Buddha later reveals that true liberation transcends identity and craving, and is only found by those who let go of even the need to describe themselves.",
+      "collection": "sn"
+    },
     {
       "id": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
@@ -8838,6 +8958,12 @@
     }
   ],
   "companionship": [
+    {
+      "id": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, and then teaches the path to companionship with Brahmā through cultivation of the qualities of loving-kindness, compassion, appreciative joy, and equanimity.",
+      "collection": "mn"
+    },
     {
       "id": "dhp76-89",
       "title": "Paṇḍita vagga - Chapter 6 - The Wise",
