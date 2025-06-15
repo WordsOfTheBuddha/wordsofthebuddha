@@ -1,6 +1,6 @@
 ---
 title: Alabbhanīyaṭhāna sutta - અપ્રાપ્ય અવસ્થાઓ
-description: How an uninstructed ordinary person and a learned disciple of the noble ones respond to the five unobtainable states of aging, illness, death, perishing, and loss.
+description: How an uninstructed ordinary person and a learned disciple of the Noble Ones respond to the five unobtainable states of aging, illness, death, perishing, and loss.
 fetter: ignorance
 tags: aging, illness, death, perishing, loss, sorrow, suffering, ignorance, wisdom, an, an5
 slug: an5.48
