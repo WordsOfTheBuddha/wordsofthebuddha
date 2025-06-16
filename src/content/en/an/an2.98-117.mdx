@@ -1,6 +1,7 @@
 ---
 title: Bāla vagga - Immature Persons
 description: The Buddha explains the difference between immature and wise persons, and how mental defilements increase or decrease based on how one perceives.
+qualities: immaturity, anxiety, wise
 fetter: restlessness, ignorance
 tags: an, an2, bala, wise, immature, fool, defilements, perception, discipline, dhamma, vinaya, offense, allowable, ignorance, wisdom, anxiety, mental agitation, restlessness
 slug: an2.98-117

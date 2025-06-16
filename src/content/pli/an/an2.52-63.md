@@ -1,6 +1,7 @@
 ---
 title: Puggala vagga - Persons
 description: The Buddha explains the importance of the perfectly awakened one and the wheel-turning monarch, shares about the two types of Buddhas, who does not tremble when a thunder strikes, how living with the unvirtuous and virtuous occurs, and the consequences of not internally settling contention of views and resentment arising from a disciplinary issue.
+qualities: without fear, wrong speech, discontentment, resentment
 fetter: ignorance
 tags: Tathāgata, Arahant, wheel-turning monarch, Buddha, Paccekabuddha, discipline, contention, resentment, acrimony, animosity, virtuous, unvirtuous, an, an2
 slug: an2.52-63
