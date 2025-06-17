@@ -7,7 +7,7 @@ tags: fault, life, next life, striving, laypeople, gone forth, regret, not regre
 slug: an2.1-10
 ---
 
-### 2.1 Vajjasutta
+#### 2.1 Vajjasutta
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
 
@@ -27,7 +27,7 @@ Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘diṭṭhadhammikassa vajjassa 
 
 Paṭhamaṁ.
 
-### 2.2 Padhānasutta
+#### 2.2 Padhānasutta
 
 “Dvemāni, bhikkhave, padhānāni durabhisambhavāni lokasmiṁ. Katamāni dve? Yañca gihīnaṁ agāraṁ ajjhāvasataṁ cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānuppadānatthaṁ padhānaṁ, yañca agārasmā anagāriyaṁ pabbajitānaṁ sabbūpadhipaṭinissaggatthaṁ padhānaṁ. Imāni kho, bhikkhave, dve padhānāni durabhisambhavāni lokasmiṁ.
 
@@ -37,19 +37,19 @@ Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘sabbūpadhipaṭinissaggattha�
 
 Dutiyaṁ.
 
-### 2.3 Tapanīyasutta
+#### 2.3 Tapanīyasutta
 
 “Dveme, bhikkhave, dhammā tapanīyā. Katame dve? Idha, bhikkhave, ekaccassa kāyaduccaritaṁ kataṁ hoti, akataṁ hoti kāyasucaritaṁ; vacīduccaritaṁ kataṁ hoti, akataṁ hoti vacīsucaritaṁ; manoduccaritaṁ kataṁ hoti, akataṁ hoti manosucaritaṁ. So ‘kāyaduccaritaṁ me katan’ti tappati, ‘akataṁ me kāyasucaritan’ti tappati; ‘vacīduccaritaṁ me katan’ti tappati, ‘akataṁ me vacīsucaritan’ti tappati; ‘manoduccaritaṁ me katan’ti tappati, ‘akataṁ me manosucaritan’ti tappati. Ime kho, bhikkhave, dve dhammā tapanīyā”ti.
 
 Tatiyaṁ.
 
-### 2.4 Atapanīyasutta
+#### 2.4 Atapanīyasutta
 
 “Dveme, bhikkhave, dhammā atapanīyā. Katame dve? Idha, bhikkhave, ekaccassa kāyasucaritaṁ kataṁ hoti, akataṁ hoti kāyaduccaritaṁ; vacīsucaritaṁ kataṁ hoti, akataṁ hoti vacīduccaritaṁ; manosucaritaṁ kataṁ hoti, akataṁ hoti manoduccaritaṁ. So ‘kāyasucaritaṁ me katan’ti na tappati, ‘akataṁ me kāyaduccaritan’ti na tappati; ‘vacīsucaritaṁ me katan’ti na tappati, ‘akataṁ me vacīduccaritan’ti na tappati; ‘manosucaritaṁ me katan’ti na tappati, ‘akataṁ me manoduccaritan’ti na tappati. Ime kho, bhikkhave, dve dhammā atapanīyā”ti.
 
 Catutthaṁ.
 
-### 2.5 Upaññātasutta
+#### 2.5 Upaññātasutta
 
 “Dvinnāhaṁ, bhikkhave, dhammānaṁ upaññāsiṁ— yā ca asantuṭṭhitā kusalesu dhammesu, yā ca appaṭivānitā padhānasmiṁ.
 
@@ -63,7 +63,7 @@ Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘appaṭivānaṁ padahissāma. 
 
 Pañcamaṁ.
 
-### 2.6 Saṁyojanasutta
+#### 2.6 Saṁyojanasutta
 
 “Dveme, bhikkhave, dhammā. Katame dve? Yā ca saṁyojaniyesu dhammesu assādānupassitā, yā ca saṁyojaniyesu dhammesu nibbidānupassitā. Saṁyojaniyesu, bhikkhave, dhammesu assādānupassī viharanto rāgaṁ na pajahati, dosaṁ na pajahati, mohaṁ na pajahati. Rāgaṁ appahāya, dosaṁ appahāya, mohaṁ appahāya na parimuccati jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi. Na parimuccati dukkhasmāti vadāmi.
 
@@ -71,25 +71,25 @@ Saṁyojaniyesu, bhikkhave, dhammesu nibbidānupassī viharanto rāgaṁ pajahat
 
 Chaṭṭhaṁ.
 
-### 2.7 Kaṇhasutta
+#### 2.7 Kaṇhasutta
 
 “Dveme, bhikkhave, dhammā kaṇhā. Katame dve? Ahirikañca anottappañca. Ime kho, bhikkhave, dve dhammā kaṇhā”ti.
 
 Sattamaṁ.
 
-### 2.8 Sukkasutta
+#### 2.8 Sukkasutta
 
 “Dveme, bhikkhave, dhammā sukkā. Katame dve? Hirī ca ottappañca. Ime kho, bhikkhave, dve dhammā sukkā”ti.
 
 Aṭṭhamaṁ.
 
-### 2.9 Cariyasutta
+#### 2.9 Cariyasutta
 
 “Dveme, bhikkhave, dhammā sukkā lokaṁ pālenti. Katame dve? Hirī ca ottappañca. Ime kho, bhikkhave, dve sukkā dhammā lokaṁ na pāleyyuṁ, nayidha paññāyetha mātāti vā mātucchāti vā mātulānīti vā ācariyabhariyāti vā garūnaṁ dārāti vā. Sambhedaṁ loko agamissa, yathā ajeḷakā kukkuṭasūkarā soṇasiṅgālā. Yasmā ca kho, bhikkhave, ime dve sukkā dhammā lokaṁ pālenti tasmā paññāyati mātāti vā mātucchāti vā mātulānīti vā ācariyabhariyāti vā garūnaṁ dārāti vā”ti.
 
 Navamaṁ.
 
-### 2.10 Vassūpanāyikasutta
+#### 2.10 Vassūpanāyikasutta
 
 “Dvemā, bhikkhave, vassūpanāyikā. Katamā dve? Purimikā ca pacchimikā ca. Imā kho, bhikkhave, dve vassūpanāyikā”ti.
 

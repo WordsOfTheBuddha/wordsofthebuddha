@@ -7,31 +7,31 @@ tags: mind, harm, untamed, tamed, benefit, an, an1
 slug: an1.31-40
 ---
 
-### 1.31
+#### 1.31
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ adantaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, adantaṁ mahato anatthāya saṁvattatī”ti.
 
-### 1.32
+#### 1.32
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ dantaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, dantaṁ mahato atthāya saṁvattatī”ti.
 
-### 1.33
+#### 1.33
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ aguttaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, aguttaṁ mahato anatthāya saṁvattatī”ti.
 
-### 1.34
+#### 1.34
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ guttaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, guttaṁ mahato atthāya saṁvattatī”ti.
 
-### 1.35
+#### 1.35
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ arakkhitaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, arakkhitaṁ mahato anatthāya saṁvattatī”ti.
 
-### 1.36
+#### 1.36
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ rakkhitaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, rakkhitaṁ mahato atthāya saṁvattatī”ti.
 
-### 1.37
+#### 1.37
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ asaṁvutaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, asaṁvutaṁ mahato anatthāya saṁvattatī”ti.
 

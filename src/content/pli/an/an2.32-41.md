@@ -11,7 +11,7 @@ commentary: |
   [2] In AN 2.36, the fettered externally (bound outwardly) is a reference to the five higher fetters of desire for fine-material existence, desire for immaterial existence, conceit, restlessness, and ignorance. This refers to a non-returner.
 ---
 
-### 2.32
+#### 2.32
 
 “Asappurisabhūmiñca vo, bhikkhave, desessāmi sappurisabhūmiñca. Taṁ suṇātha, sādhukaṁ manasi karotha. bhāsissāmī”ti.
 
@@ -19,7 +19,7 @@ commentary: |
 
 “Katamā ca, bhikkhave, asappurisabhūmi? Asappuriso, bhikkhave, akataññū hoti akatavedī. Asabbhi hetaṁ, bhikkhave, upaññātaṁ yadidaṁ akataññutā akataveditā. Kevalā esā, bhikkhave, asappurisabhūmi yadidaṁ akataññutā akataveditā. (…) Sappuriso ca kho, bhikkhave, kataññū hoti katavedī. Sabbhi hetaṁ, bhikkhave, upaññātaṁ yadidaṁ kataññutā kataveditā. Kevalā esā, bhikkhave, sappurisabhūmi yadidaṁ kataññutā kataveditā”ti.
 
-### 2.33
+#### 2.33
 
 “Dvinnāhaṁ, bhikkhave, na suppatikāraṁ vadāmi. Katamesaṁ dvinnaṁ? Mātu ca pitu ca.
 
@@ -29,7 +29,7 @@ Imissā ca, bhikkhave, mahāpathaviyā pahūtarattaratanāya mātāpitaro issar�
 
 Yo ca kho, bhikkhave, mātāpitaro assaddhe saddhāsampadāya samādapeti niveseti patiṭṭhāpeti, dussīle sīlasampadāya samādapeti niveseti patiṭṭhāpeti, maccharī cāgasampadāya samādapeti niveseti patiṭṭhāpeti, duppaññe paññāsampadāya samādapeti niveseti patiṭṭhāpeti, ettāvatā kho, bhikkhave, mātāpitūnaṁ katañca hoti paṭikatañcā”ti.
 
-### 2.34
+#### 2.34
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ …pe… ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca: “kiṁvādī bhavaṁ gotamo kimakkhāyī”ti?
 
@@ -41,7 +41,7 @@ Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā 
 
 “Abhikkantaṁ, bho gotama …pe… upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-### 2.35
+#### 2.35
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho anāthapiṇḍiko gahapati bhagavantaṁ etadavoca: “kati nu kho, bhante, loke dakkhiṇeyyā, kattha ca dānaṁ dātabban”ti?
 
@@ -56,7 +56,7 @@ Vācāya uda cetasā;
 Khettaṁ taṁ yajamānānaṁ,
 Ettha dinnaṁ mahapphalan”ti.
 
-### 2.36
+#### 2.36
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
 
@@ -88,7 +88,7 @@ Tasmātiha, sāriputta, evaṁ sikkhitabbaṁ: ‘santindriyā bhavissāma santa
 
 Anassuṁ kho, sāriputta, aññatitthiyā paribbājakā ye imaṁ dhammapariyāyaṁ nāssosun’”ti.
 
-### 2.37
+#### 2.37
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā mahākaccāno varaṇāyaṁ viharati bhaddasāritīre.
 
@@ -122,7 +122,7 @@ Yo hi so bhagavā imañceva kāmarāgābhinivesavinibandhapaligedhapariyuṭṭh
 
 “Abhikkantaṁ, bho kaccāna, abhikkantaṁ, bho kaccāna. Seyyathāpi, bho kaccāna, nikkujjitaṁ vā ukkujjeyya, paṭicchannaṁ vā vivareyya, mūḷhassa vā maggaṁ ācikkheyya; andhakāre vā telapajjotaṁ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṁ bhotā kaccānena anekapariyāyena dhammo pakāsito. Esāhaṁ, bho kaccāna, taṁ bhavantaṁ gotamaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca. Upāsakaṁ maṁ bhavaṁ kaccāno dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-### 2.38
+#### 2.38
 
 Ekaṁ samayaṁ āyasmā mahākaccāno madhurāyaṁ viharati gundāvane.
 
@@ -136,19 +136,19 @@ Evaṁ vutte, kandarāyano brāhmaṇo uṭṭhāyāsanā ekaṁsaṁ uttarāsa�
 
 “Abhikkantaṁ, bho kaccāna …pe… upāsakaṁ maṁ bhavaṁ kaccāno dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-### 2.39
+#### 2.39
 
 “Yasmiṁ, bhikkhave, samaye corā balavanto honti, rājāno tasmiṁ samaye dubbalā honti. Tasmiṁ, bhikkhave, samaye rañño na phāsu hoti atiyātuṁ vā niyyātuṁ vā paccantime vā janapade anusaññātuṁ. Brāhmaṇagahapatikānampi tasmiṁ samaye na phāsu hoti atiyātuṁ vā niyyātuṁ vā bāhirāni vā kammantāni paṭivekkhituṁ. Evamevaṁ kho, bhikkhave, yasmiṁ samaye pāpabhikkhū balavanto honti, pesalā bhikkhū tasmiṁ samaye dubbalā honti. Tasmiṁ, bhikkhave, samaye pesalā bhikkhū tuṇhībhūtā tuṇhībhūtāva saṅghamajjhe saṅkasāyanti paccantime vā janapade acchanti. Tayidaṁ, bhikkhave, hoti bahujanāhitāya bahujanāsukhāya, bahuno janassa anatthāya ahitāya dukkhāya devamanussānaṁ.
 
 Yasmiṁ, bhikkhave, samaye rājāno balavanto honti, corā tasmiṁ samaye dubbalā honti. Tasmiṁ, bhikkhave, samaye rañño phāsu hoti atiyātuṁ vā niyyātuṁ vā paccantime vā janapade anusaññātuṁ. Brāhmaṇagahapatikānampi tasmiṁ samaye phāsu hoti atiyātuṁ vā niyyātuṁ vā bāhirāni vā kammantāni paṭivekkhituṁ. Evamevaṁ kho, bhikkhave, yasmiṁ samaye pesalā bhikkhū balavanto honti, pāpabhikkhū tasmiṁ samaye dubbalā honti. Tasmiṁ, bhikkhave, samaye pāpabhikkhū tuṇhībhūtā tuṇhībhūtāva saṅghamajjhe saṅkasāyanti, yena vā pana tena pakkamanti. Tayidaṁ, bhikkhave, hoti bahujanahitāya bahujanasukhāya, bahuno janassa atthāya hitāya sukhāya devamanussānan”ti.
 
-### 2.40
+#### 2.40
 
 “Dvinnāhaṁ, bhikkhave, micchāpaṭipattiṁ na vaṇṇemi, gihissa vā pabbajitassa vā. Gihī vā, bhikkhave, pabbajito vā micchāpaṭipanno micchāpaṭipattādhikaraṇahetu na ārādhako hoti ñāyaṁ dhammaṁ kusalaṁ.
 
 Dvinnāhaṁ, bhikkhave, sammāpaṭipattiṁ vaṇṇemi, gihissa vā pabbajitassa vā. Gihī vā, bhikkhave, pabbajito vā sammāpaṭipanno sammāpaṭipattādhikaraṇahetu ārādhako hoti ñāyaṁ dhammaṁ kusalan”ti.
 
-### 2.41
+#### 2.41
 
 “Ye te, bhikkhave, bhikkhū duggahitehi suttantehi byañjanappatirūpakehi atthañca dhammañca paṭibāhanti te, bhikkhave, bhikkhū bahujanāhitāya paṭipannā bahujanāsukhāya, bahuno janassa anatthāya ahitāya dukkhāya devamanussānaṁ. Bahuñca te, bhikkhave, bhikkhū apuññaṁ pasavanti, te cimaṁ saddhammaṁ antaradhāpenti.
 
