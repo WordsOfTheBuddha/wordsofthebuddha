@@ -31,6 +31,8 @@ src/utils/routes.ts
 
 # data auto generation
 src/data/directoryStructureWithCounts.ts
+src/data/qualityMappings.json
+src/data/simileMappings.json
 
 # translation flow
 src/translation-flow/.debug/*

@@ -1,0 +1,181 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import simileMappings from "../../data/simileMappings.json";
+import { transformId } from "../../utils/transformId";
+
+// Type definitions for data structures
+interface Discourse {
+	id: string;
+	title: string;
+	description: string;
+	collection: string;
+}
+
+interface Collection {
+	name: string;
+	items: Discourse[];
+}
+
+interface SimileMap {
+	[letter: string]: {
+		[simile: string]: Discourse[];
+	};
+}
+
+// Cast the imported data to the proper type
+const typedSimileMappings = simileMappings as unknown as SimileMap;
+
+type CollectionKey = "dhp" | "iti" | "mn" | "snp" | "sn" | "an" | "ud";
+
+// Extract simile parameters
+const { id } = Astro.params;
+
+if (!id) {
+	return Astro.redirect("/similes");
+}
+
+// Find the simile in the mappings
+let simileData: Discourse[] = [];
+let simileMatch = "";
+console.log("Searching for simile:", id);
+// Loop through each first letter category
+Object.keys(typedSimileMappings).forEach((letter) => {
+	// Loop through each simile in that category
+	Object.keys(typedSimileMappings[letter]).forEach((simile) => {
+		// If the URL-encoded simile matches our id parameter
+		if (simile.toLowerCase() === id.toLowerCase()) {
+			simileData = typedSimileMappings[letter][simile];
+			simileMatch = simile;
+		}
+	});
+});
+
+// Redirect if simile not found
+if (!simileMatch) {
+	return Astro.redirect("/similes");
+}
+
+// Group by collection
+const collections: Record<CollectionKey, Collection> = {
+	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
+	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
+	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
+	snp: { name: "The Buddha's Ancient Discourses (Sutta Nipāta)", items: [] },
+	sn: { name: "Linked Discourses (Saṃyutta Nikāya)", items: [] },
+	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
+	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+};
+
+// Define collection order
+const collectionOrder: CollectionKey[] = [
+	"dhp",
+	"iti",
+	"mn",
+	"snp",
+	"sn",
+	"an",
+	"ud",
+];
+
+// Sort discourses into collections
+simileData.forEach((discourse) => {
+	const collection = discourse.collection as CollectionKey;
+	if (collection in collections) {
+		collections[collection].items.push(discourse);
+	}
+});
+
+// Natural sort for each collection
+for (const key in collections) {
+	const typedKey = key as CollectionKey;
+	collections[typedKey].items.sort((a, b) => {
+		return a.id.localeCompare(b.id, undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	});
+}
+
+// Format simile name for display
+const displayName = simileMatch.charAt(0).toUpperCase() + simileMatch.slice(1);
+---
+
+<Layout
+	seoTitle={`Simile: ${displayName} - Words of the Buddha`}
+	showAuth={true}
+>
+	<main class="container mx-auto px-4 py-8">
+		<div class="mb-8">
+			<h1
+				class="text-2xl font-semibold border-b pb-2 flex items-center justify-between"
+			>
+				<span>Simile: {displayName}</span>
+				<span class="text-base text-gray-500 dark:text-gray-400">
+					{simileData.length}
+					{simileData.length === 1 ? " discourse" : " discourses"}
+				</span>
+			</h1>
+		</div>
+
+		<div class="space-y-10">
+			{
+				collectionOrder.map((collectionKey) => {
+					const collection = collections[collectionKey];
+					if (collection.items.length === 0) return null;
+
+					return (
+						<div>
+							<h2 class="text-xl font-semibold mb-4">
+								{collection.name}
+							</h2>
+							<div class="space-y-4">
+								{collection.items.map((discourse) => (
+									<div class="mb-4">
+										<h3 class="text-lg font-semibold">
+											<a
+												href={`/${discourse.id}`}
+												class="hover:text-[var(--primary-color)]"
+											>
+												{transformId(discourse.id)} -{" "}
+												{discourse.title}
+											</a>
+										</h3>
+										<p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+											{discourse.description}
+										</p>
+									</div>
+								))}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.tooltip {
+		position: relative;
+	}
+
+	.tooltip:hover::after {
+		content: attr(data-tooltip);
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: calc(100% + 5px);
+		background: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
+		white-space: normal;
+		width: max-content;
+		max-width: 250px;
+		z-index: 10;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	}
+</style>

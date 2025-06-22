@@ -6,7 +6,7 @@ qualities: ethical conduct, wisdom
 slug: an1.268-295
 ---
 
-#### Paṭhama vagga
+### Paṭhama vagga
 
 #### 1.268
 
@@ -48,7 +48,7 @@ slug: an1.268-295
 
 “Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ ekissā lokadhātuyā dve arahanto sammāsambuddhā apubbaṁ acarimaṁ uppajjeyyuṁ. Netaṁ ṭhānaṁ vijjati. Ṭhānañca kho etaṁ, bhikkhave, vijjati yaṁ ekissā lokadhātuyā ekova arahaṁ sammāsambuddho uppajjeyya. Ṭhānametaṁ vijjatī”ti.
 
-#### Dutiya vagga - Second Chapter
+### Dutiya vagga - Second Chapter
 
 #### 1.278
 
