@@ -98,7 +98,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn17: {
 						title: "Lābhasakkārasaṁyutta - Linked Discourses on Acquisitions and Respect",
 						description:
-							'The "Linked Discourses on Acquisitions and Respect"  contain teachings on the danger of acqusitions, respect, and popularity for spiritual practitioners. The Buddha emphasizes how these worldly rewards are harsh, bitter, severe, and obstructive, leading to complacency, attachment, and spiritual downfall. Through vivid similes — such as comparing acquisitions and respect to a fisherman\'s baited hook — the discourses highlight how even accomplished practitioners can become ensnared if they relish praise and recognition.',
+							'The "Linked Discourses on Acquisitions and Respect"  contain teachings on the danger of acqusitions, respect, and popularity for spiritual practitioners. The Buddha emphasizes how these worldly rewards are vicious, bitter, severe, and obstructive, leading to complacency, attachment, and spiritual downfall. Through vivid similes — such as comparing acquisitions and respect to a fisherman\'s baited hook — the discourses highlight how even accomplished practitioners can become ensnared if they relish praise and recognition.',
 					},
 					sn20: {
 						title: "Opammavagga - Linked Discourses with Similes",
