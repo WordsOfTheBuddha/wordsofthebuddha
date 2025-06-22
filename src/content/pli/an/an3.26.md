@@ -1,7 +1,7 @@
 ---
 title: Sevitabba sutta - Should Be Associated With
 description: The Buddha explains the three kinds of persons found existing in the world and who should not be associated with, who should be associated with, and who should be attended to closely with honor and respect.
-qualities: companionship, bad friendship, good friendship, compassion, ethical conduct
+qualities: companionship, compassion, ethical conduct
 fetter: doubt, ignorance
 tags: association, virtue, collectedness, wisdom, compassion, sympathy, an, an3
 slug: an3.26
