@@ -46,10 +46,20 @@ const similesByLetter = groupByFirstLetter(typedSimileMappings);
 ---
 
 <Layout seoTitle="Simile - Words of the Buddha" showAuth={true}>
-	<h3 class="text-2xl font-bold mb-4 border-b pb-2">
-		Discover Discourses by Simile
-	</h3>
 	<main class="container mx-auto px-4 py-8">
+		<div class="flex justify-between items-baseline mb-4 border-b pb-2">
+			<h3 class="text-2xl font-bold flex-grow mr-4">
+				Discover Discourses by Simile
+			</h3>
+			<div class="relative">
+				<input
+					type="text"
+					id="simile-filter"
+					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+					placeholder="Filter similes..."
+				/>
+			</div>
+		</div>
 		<!-- A-Z Index -->
 		<div class="mb-8 flex flex-wrap gap-2">
 			{
@@ -85,7 +95,7 @@ const similesByLetter = groupByFirstLetter(typedSimileMappings);
 						return null;
 
 					return (
-						<div id={letter} class="scroll-mt-16">
+						<div id={letter} class="scroll-mt-16 letter-section">
 							<h2 class="text-2xl font-bold mb-4 border-b pb-2">
 								{letter}
 							</h2>
@@ -117,7 +127,7 @@ const similesByLetter = groupByFirstLetter(typedSimileMappings);
 											simile.slice(1);
 
 										return (
-											<div class="mb-4">
+											<div class="simile-item mb-4">
 												<h3 class="text-lg font-semibold">
 													{displayName}
 												</h3>
@@ -175,6 +185,39 @@ const similesByLetter = groupByFirstLetter(typedSimileMappings);
 			}
 		);
 	});
+
+	// Simile filtering functionality
+	const filterInput = document.getElementById(
+		"simile-filter"
+	) as HTMLInputElement;
+	const simileItems = document.querySelectorAll(".simile-item");
+	const letterSections = document.querySelectorAll(".letter-section");
+
+	filterInput?.addEventListener("input", (e) => {
+		const filter = (e.target as HTMLInputElement).value
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+
+		simileItems.forEach((item) => {
+			const content =
+				item.textContent
+					?.toLowerCase()
+					.normalize("NFD")
+					.replace(/[\u0300-\u036f]/g, "") || "";
+
+			const isVisible = !filter || content.includes(filter);
+			item.classList.toggle("hidden", !isVisible);
+		});
+
+		// Hide/show letter sections if all their similes are hidden
+		letterSections.forEach((section) => {
+			const visibleSimiles = section.querySelectorAll(
+				".simile-item:not(.hidden)"
+			);
+			section.classList.toggle("hidden", visibleSimiles.length === 0);
+		});
+	});
 </script>
 
 <style>
@@ -198,5 +241,10 @@ const similesByLetter = groupByFirstLetter(typedSimileMappings);
 		max-width: 300px;
 		z-index: 10;
 		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Hide letter sections that have no visible similes */
+	.letter-section.hidden {
+		display: none;
 	}
 </style>
