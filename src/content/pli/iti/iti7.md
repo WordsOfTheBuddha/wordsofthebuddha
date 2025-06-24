@@ -1,6 +1,8 @@
 ---
-title: Sabbapariññā sutta - Completely Understanding All
-description: One is incapable of ending suffering without directly knowing, not completely understanding the all, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by fully understanding the all, with the mind detaching from it, and by abandoning it.
+title: Sabbapariññā sutta - Completely Comprehending Everything
+description: One is incapable of ending suffering without directly knowing and completely comprehending everything, without the mind not detaching from it and without abandoning it. One is capable of ending suffering by directly knowing and completely comprehending everything, with the mind detaching from it, and by abandoning it.
+qualities: complete comprehension, dispassion, suffering, ending, direct knowledge
+theme: principle
 fetter: ignorance
 tags: suffering, ignorance, understanding, detachment, abandoning, iti
 slug: iti7

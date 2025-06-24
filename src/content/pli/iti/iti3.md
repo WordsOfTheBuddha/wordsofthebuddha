@@ -2,6 +2,7 @@
 title: Moha sutta - Illusion
 description: The Buddha describes the abandoning of illusion as a security for non-returning.
 qualities: illusion
+theme: principle
 fetter: ignorance
 tags: delusion,ignorance,iti, non-returning
 slug: iti3

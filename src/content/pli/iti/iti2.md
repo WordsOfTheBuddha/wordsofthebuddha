@@ -1,6 +1,8 @@
 ---
 title: Dosapariññā sutta - Completely Comprehending Aversion
 description: The Buddha describes the abandoning of aversion as a security for non-returning.
+qualities: aversion
+theme: principle
 fetter: ill will, hate
 tags: suffering, aversion, ill will, hate, wisdom, detachment, abandoning, iti
 slug: iti2

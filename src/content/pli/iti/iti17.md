@@ -1,6 +1,8 @@
 ---
 title: Dutiya sekha sutta - Trainee (Second)
-description: The Buddha shares on the importance of good friendship for a trainee bhikkhu.
+description: There is no other single external factor as helpful as good friendship for a trainee bhikkhu who is aspiring for the highest goal.
+qualities: good friendship, politeness, unassuming, mindfulness, cultivation, wholesome
+theme: inspiration, wisdom
 fetter: doubt,personal existence,adherence to rules and observances
 tags: iti,trainee,wholesome,unwholesome,good friendship,kalyāṇa mittatā
 slug: iti17

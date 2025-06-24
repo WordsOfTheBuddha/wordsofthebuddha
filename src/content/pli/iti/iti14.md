@@ -1,6 +1,8 @@
 ---
 title: Avijjānīvaraṇa sutta - Barrier Of Ignorance
-description: The Blessed One explains the barrier of ignorance as surpassing all other barriers, causing beings to transmigrate through repeated existence for a long time.
+description: The Buddha describes the barrier of ignorance as the most significant obstruction, by which beings continue wandering on in cyclic existence.
+qualities: ignorance, illusion
+theme: principle
 fetter: ignorance
 tags: ignorance, delusion, illusion, misapprehension, distorted view, iti
 slug: iti14

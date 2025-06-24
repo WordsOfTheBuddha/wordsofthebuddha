@@ -2,7 +2,7 @@
 title: Lobha sutta - Greed
 description: The Buddha describes the abandoning of greed as a security for non-returning.
 qualities: greed
-theme: inspiration, principle
+theme: principle
 fetter: sensual desire
 tags: greed, non-returning, iti, sensual desire
 slug: iti1

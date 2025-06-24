@@ -1,6 +1,8 @@
 ---
 title: Kodha sutta - Anger
-description: The Buddha describes the abandoning of anger as the guarantee for non-returning.
+description: The Buddha describes the abandoning of anger as a security for non-returning.
+qualities: anger
+theme: principle
 fetter: ill will
 tags: anger,ill will,aversion,iti, non-returning
 slug: iti4
