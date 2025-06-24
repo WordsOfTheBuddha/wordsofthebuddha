@@ -33,6 +33,16 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		});
 		return path;
 	}
+
+	// Handle similes paths
+	if (idPath[0] === "simile") {
+		path.push({
+			label: "Simile",
+			path: "/simile",
+		});
+		return path;
+	}
+
 	// Extract prefix and numbers
 	const prefix = id.match(/^[a-z]+/i)?.[0] || "";
 	const [baseId, subNumber] = id.split(".");

@@ -1,0 +1,250 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import simileMappings from "../../data/simileMappings.json";
+import { transformId } from "../../utils/transformId";
+
+// Ensure this page is server-rendered
+export const prerender = false;
+
+// Define types for simileMappings
+interface Discourse {
+	id: string;
+	title: string;
+	description: string;
+	collection: string;
+}
+
+interface SimileMap {
+	[letter: string]: {
+		[simile: string]: Discourse[];
+	};
+}
+
+// Cast the imported data to the proper type
+const typedSimileMappings = simileMappings as unknown as SimileMap;
+
+// Group similes by first letter
+function groupByFirstLetter(items: SimileMap): Record<string, string[]> {
+	const result: Record<string, string[]> = {};
+
+	Object.entries(items).forEach(([letter, similes]) => {
+		if (!result[letter.toUpperCase()]) {
+			result[letter.toUpperCase()] = [];
+		}
+
+		Object.keys(similes).forEach((simile) => {
+			result[letter.toUpperCase()].push(simile);
+		});
+	});
+
+	return result;
+}
+
+// Get all available first letters
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const similesByLetter = groupByFirstLetter(typedSimileMappings);
+---
+
+<Layout seoTitle="Simile - Words of the Buddha" showAuth={true}>
+	<main class="container mx-auto px-4 py-8">
+		<div class="flex justify-between items-baseline mb-4 border-b pb-2">
+			<h3 class="text-2xl font-bold flex-grow mr-4">
+				Discover Discourses by Simile
+			</h3>
+			<div class="relative">
+				<input
+					type="text"
+					id="simile-filter"
+					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+					placeholder="Filter similes..."
+				/>
+			</div>
+		</div>
+		<!-- A-Z Index -->
+		<div class="mb-8 flex flex-wrap gap-2">
+			{
+				alphabet.map((letter) => {
+					const hasSimiles =
+						similesByLetter[letter] &&
+						similesByLetter[letter].length > 0;
+
+					return (
+						<a
+							href={hasSimiles ? `#${letter}` : "#"}
+							class={`w-8 h-8 flex items-center justify-center rounded-md transition-colors ${
+								hasSimiles
+									? "text-[var(--primary-color)] hover:opacity-80 border border-[var(--primary-color)]"
+									: "text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-default"
+							}`}
+						>
+							{letter}
+						</a>
+					);
+				})
+			}
+		</div>
+
+		<!-- Simile listings -->
+		<div class="space-y-8">
+			{
+				alphabet.map((letter) => {
+					if (
+						!similesByLetter[letter] ||
+						similesByLetter[letter].length === 0
+					)
+						return null;
+
+					return (
+						<div id={letter} class="scroll-mt-16 letter-section">
+							<h2 class="text-2xl font-bold mb-4 border-b pb-2">
+								{letter}
+							</h2>
+							<div class="space-y-4">
+								{similesByLetter[letter]
+									.sort()
+									.map((simile) => {
+										const discourses =
+											typedSimileMappings[
+												letter.toLowerCase()
+											]?.[simile] || [];
+
+										// Sort discourses by id in ascending order
+										const sortedDiscourses = [
+											...discourses,
+										].sort((a, b) =>
+											a.id.localeCompare(
+												b.id,
+												undefined,
+												{
+													numeric: true,
+													sensitivity: "base",
+												}
+											)
+										);
+
+										const displayName =
+											simile.charAt(0).toUpperCase() +
+											simile.slice(1);
+
+										return (
+											<div class="simile-item mb-4">
+												<h3 class="text-lg font-semibold">
+													{displayName}
+												</h3>
+												<div class="ml-5 mt-1 space-y-1">
+													{sortedDiscourses.map(
+														(discourse) => (
+															<div>
+																<a
+																	href={`/${discourse.id}`}
+																	class="hover:text-[var(--primary-color)] tooltip"
+																	data-tooltip={
+																		discourse.description
+																	}
+																>
+																	{transformId(
+																		discourse.id
+																	)}
+																	-{" "}
+																	{
+																		discourse.title
+																	}
+																</a>
+															</div>
+														)
+													)}
+												</div>
+											</div>
+										);
+									})}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<script>
+	// Smooth scrolling for anchor links
+	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+		anchor.addEventListener(
+			"click",
+			function (this: HTMLAnchorElement, e: Event) {
+				const href = this.getAttribute("href");
+				if (href === "#") return;
+
+				e.preventDefault();
+				const target = document.querySelector(href as string);
+				if (target) {
+					target.scrollIntoView({
+						behavior: "smooth",
+					});
+				}
+			}
+		);
+	});
+
+	// Simile filtering functionality
+	const filterInput = document.getElementById(
+		"simile-filter"
+	) as HTMLInputElement;
+	const simileItems = document.querySelectorAll(".simile-item");
+	const letterSections = document.querySelectorAll(".letter-section");
+
+	filterInput?.addEventListener("input", (e) => {
+		const filter = (e.target as HTMLInputElement).value
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+
+		simileItems.forEach((item) => {
+			const content =
+				item.textContent
+					?.toLowerCase()
+					.normalize("NFD")
+					.replace(/[\u0300-\u036f]/g, "") || "";
+
+			const isVisible = !filter || content.includes(filter);
+			item.classList.toggle("hidden", !isVisible);
+		});
+
+		// Hide/show letter sections if all their similes are hidden
+		letterSections.forEach((section) => {
+			const visibleSimiles = section.querySelectorAll(
+				".simile-item:not(.hidden)"
+			);
+			section.classList.toggle("hidden", visibleSimiles.length === 0);
+		});
+	});
+</script>
+
+<style>
+	.tooltip {
+		position: relative;
+	}
+
+	.tooltip:hover::after {
+		content: attr(data-tooltip);
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: calc(100% + 5px);
+		background: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 0.25rem;
+		font-size: 0.75rem;
+		white-space: normal;
+		width: max-content;
+		max-width: 300px;
+		z-index: 10;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Hide letter sections that have no visible similes */
+	.letter-section.hidden {
+		display: none;
+	}
+</style>
