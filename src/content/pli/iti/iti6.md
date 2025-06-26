@@ -1,6 +1,8 @@
 ---
 title: Māna sutta - Conceit
-description: The Buddha describes the abandoning of conceit as the guarantee for non-returning.
+description: The Buddha describes the abandoning of conceit as a security for non-returning.
+qualities: conceit
+theme: principle
 fetter: conceit
 tags: conceit, non-returning, iti, pride
 slug: iti6

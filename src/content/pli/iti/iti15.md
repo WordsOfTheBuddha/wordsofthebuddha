@@ -1,6 +1,8 @@
 ---
 title: Taṇhāsaṁyojana sutta - Fettered By Craving
-description: The Buddha describes craving as the single fetter by which beings are bound that causes them to wander and transmigrate for a long time.
+description: The Buddha describes the fetter of craving as the most significant bond, bound by which, beings continue wandering on in cyclic existence.
+qualities: craving, suffering
+theme: principle
 fetter: sensual desire
 tags: craving, suffering, transmigration, iti
 slug: iti15
