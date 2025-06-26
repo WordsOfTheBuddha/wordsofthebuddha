@@ -1,7 +1,7 @@
 ---
 title: Lekha sutta - Etched Line
 description: The Buddha describes three persons based on how they respond to anger. One person is like a line etched on rock, another like a line etched on ground, and the third like a line etched on water.
-qualities: anger, wrong speech, politeness
+qualities: anger, right speech, politeness
 fetter: ill will, ignorance
 tags: anger, harshness, friendliness, harmony, greeting, rock, ground, water, an, an3
 slug: an3.132

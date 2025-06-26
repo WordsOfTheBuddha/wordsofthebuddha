@@ -1,7 +1,7 @@
 ---
 title: Akusalamūla sutta - Unwholesome Roots
 description: The Buddha explains the three unwholesome roots and the three wholesome roots.
-qualities: greed, aversion, illusion, wrong speech, wrong action
+qualities: greed, aversion, illusion, wrong speech, slaughtering, stealing, contentment, loving-kindness, wisdom, right speech, unwholesome, wholesome, harmful
 fetter: ignorance, sensual desire, ill will
 tags: greed, hatred, delusion, contentment, good-will, wisdom, an, an3, unwholesome, wholesome
 slug: an3.69
