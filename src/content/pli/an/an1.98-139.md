@@ -1,5 +1,5 @@
 ---
-title: Dutiya pamādādi vagga - Second Chapter Starting With Negligence
+title: Dutiya pamādādi vagga - Second Chapter Starting with Negligence
 description: The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.
 fetter: ignorance
 qualities: negligence, diligence, laziness, rousing of energy, having many desires, contentment, discontentment, unwise attention, wise attention, lack of discernment, full awareness, bad friendship, good friendship, bad habits, good habits, harmful

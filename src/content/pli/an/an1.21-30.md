@@ -1,5 +1,5 @@
 ---
-title: Akammaniya vagga - The Chapter On The Ineffective
+title: Akammaniya vagga - The Chapter on the Ineffective
 description: The Buddha contrasts the undeveloped and developed mind.
 fetter: ignorance
 qualities: cultivation, harmful, suffering, contentment

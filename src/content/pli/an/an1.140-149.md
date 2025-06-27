@@ -1,5 +1,5 @@
 ---
-title: Adhamma vagga - The Chapter On Not The Teaching
+title: Adhamma vagga - The Chapter on not the Teaching
 description: The Buddha shares the importance of explaining correctly what is not the Dhamma, Vinaya, spoken or uttered, practiced, and prescribed by the Tathāgata.
 fetter: ignorance
 qualities: merit, wholesome

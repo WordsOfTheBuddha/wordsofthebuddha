@@ -1,5 +1,5 @@
 ---
-title: Nīvaraṇappahāna vagga - The Chapter On The Abandoning Of The Hindrances
+title: Nīvaraṇappahāna vagga - The Chapter on the Abandoning of the Hindrances
 description: The Buddha explains what causes the hindrances to arise and how to abandon them.
 fetter: ignorance
 qualities: sensual desire, passion, aversion, dullness, drowsiness, suffering, laziness, anxiety, doubt, loving-kindness, liberation, vigour, rousing of energy, continuous effort, tranquility, wise attention
