@@ -115,6 +115,8 @@
 		"not taking what is not given",
 		"one-pointedness",
 		"patience",
+		"perceiving gratification",
+		"perceiving drawbacks",
 		"politeness",
 		"psychic power",
 		"quenching",
@@ -698,7 +700,7 @@
 			"release",
 			"deliverance",
 			"emancipation",
-			"Context:Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna",
+			"Context: Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna",
 			"[vimutti, nibbāna]"
 		],
 		"loving-kindness": [
@@ -781,6 +783,17 @@
 			"forbearance",
 			"[khanti, khama]"
 		],
+		"perceiving gratification": [
+			"following pleasure",
+			"seeing enjoyment",
+			"[assādānupassī]"
+		],
+		"perceiving drawbacks": [
+			"observing the disadvantage",
+			"contemplating the unsatisfactoriness",
+			"Related:{recognition of unsatisfactoriness}",
+			"[ādīnavānupassī]"
+		],
 		"personal existence": [
 			"identity view",
 			"self-view",
@@ -803,7 +816,7 @@
 			"being well-mannered",
 			"friendliness",
 			"Related:{unassuming}",
-			"[paṭisanthāra, saṇha, sorata]"
+			"[paṭisanthāra, saṇha, sorata, sappatissa]"
 		],
 		"psychic power": [
 			"supernormal abilities",
@@ -831,6 +844,7 @@
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
+			"Related:{perceiving drawbacks}",
 			"[dukkha-saññā]"
 		],
 		"recollection of the Buddha": [
