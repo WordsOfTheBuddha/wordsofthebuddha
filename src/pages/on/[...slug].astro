@@ -1,0 +1,358 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import {
+	getAllTopics,
+	findTopicByRedirect,
+	loadTopic,
+	getCollection,
+} from "../../utils/loadTopics";
+import qualityMappings from "../../data/qualityMappings.json";
+import simileMappings from "../../data/simileMappings.json";
+import { getEntry } from "astro:content";
+
+// Get the slug from params
+const { slug } = Astro.params;
+if (!slug) {
+	return Astro.redirect("/");
+}
+
+// Load all topics to check for direct matches and redirects
+const allTopics = getAllTopics();
+let contentType: string | null = null;
+let actualSlug = slug;
+let content: any = null;
+
+// First, check if this is a direct topic match
+if (allTopics[slug]) {
+	contentType = "topic";
+	content = loadTopic(slug);
+}
+// Check if this is a redirect for any topic
+else {
+	const topicSlug = findTopicByRedirect(slug);
+	if (topicSlug) {
+		contentType = "topic";
+		actualSlug = topicSlug;
+		content = loadTopic(topicSlug);
+	}
+}
+
+// If not found in topics, check qualities
+if (!contentType && (qualityMappings as any)[slug]) {
+	contentType = "quality";
+	// For qualities, redirect to the quality page since we don't have the quality loading logic here
+	return Astro.redirect(`/qualities/${slug}`);
+}
+
+// If not found in qualities, check similes
+if (!contentType) {
+	const firstLetter = slug[0];
+	if (
+		(simileMappings as any)[firstLetter] &&
+		(simileMappings as any)[firstLetter][slug]
+	) {
+		contentType = "simile";
+		// For similes, redirect to the simile page since we don't have the simile loading logic here
+		return Astro.redirect(`/simile/${slug}`);
+	}
+}
+
+// If no content found, redirect to search
+if (!contentType || !content) {
+	return Astro.redirect(`/search?q=${encodeURIComponent(slug)}`);
+}
+
+// If we get here, we have a topic to display
+// Load discourse data for topic (same logic as topic page)
+let allDiscourses: any[] = [];
+
+const primaryDiscourses = await Promise.all(
+	content.discourses.map(async (discourse: any) => {
+		try {
+			const entry = await getEntry("all", discourse.id);
+			if (!entry) return null;
+
+			return {
+				id: discourse.id,
+				title: entry.data.title,
+				description: entry.data.description,
+				note: discourse.note,
+				curated: true,
+				collection: getCollection(discourse.id),
+			};
+		} catch (error) {
+			console.error(`Failed to load discourse ${discourse.id}:`, error);
+			return null;
+		}
+	})
+).then((results) => results.filter(Boolean));
+
+allDiscourses = [...primaryDiscourses];
+
+// Add quality mappings if this topic slug exists in quality mappings
+if ((qualityMappings as any)[actualSlug]) {
+	console.log(`Found quality mappings for ${actualSlug}`);
+	const qualityDiscourses = (qualityMappings as any)[actualSlug] || [];
+	const curatedIds = primaryDiscourses.map((d) => d!.id);
+	const additionalDiscourses = await Promise.all(
+		qualityDiscourses
+			.filter((discourse: any) => !curatedIds.includes(discourse.id))
+			.map(async (discourse: any) => {
+				try {
+					const entry = await getEntry("all", discourse.id);
+					if (!entry) return null;
+
+					return {
+						id: discourse.id,
+						title: entry.data.title,
+						description: entry.data.description,
+						curated: false,
+						collection: getCollection(discourse.id),
+					};
+				} catch (error) {
+					console.error(
+						`Failed to load discourse ${discourse.id}:`,
+						error
+					);
+					return null;
+				}
+			})
+	).then((results) => results.filter(Boolean));
+	allDiscourses = [...allDiscourses, ...additionalDiscourses];
+	console.log(
+		`Total discourses after quality mapping: ${allDiscourses.length}`
+	);
+}
+
+// Group by collections
+const collections: Record<string, { name: string; items: any[] }> = {
+	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
+	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
+	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
+	snp: { name: "The Buddha's Ancient Discourses (Sutta Nipāta)", items: [] },
+	sn: { name: "Linked Discourses (Saṃyutta Nikāya)", items: [] },
+	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
+	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+};
+
+const collectionOrder = ["dhp", "iti", "mn", "snp", "sn", "an", "ud"];
+
+allDiscourses.forEach((discourse) => {
+	const collection = discourse.collection;
+	if (collection in collections) {
+		collections[collection].items.push(discourse);
+	}
+});
+
+for (const key in collections) {
+	collections[key].items.sort((a, b) => {
+		return a.id.localeCompare(b.id, undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	});
+}
+
+const displayTitle = content.title;
+---
+
+<Layout seoTitle={`${displayTitle} - Words of the Buddha`} showAuth={true}>
+	<main class="container mx-auto px-4 py-8">
+		<div class="mb-8">
+			<div
+				class="post-item relative flex flex-col w-full p-5 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md"
+			>
+				<div class="flex items-start justify-between">
+					<div class="flex items-start flex-grow">
+						<div class="min-w-0 pr-4">
+							<h1
+								class="text-xl font-semibold flex items-center flex-wrap"
+							>
+								<span>{displayTitle}</span>
+							</h1>
+						</div>
+					</div>
+					<div class="shrink-0 self-start">
+						<span
+							class="px-2 py-0.25 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm"
+						>
+							{allDiscourses.length} discourses
+						</span>
+					</div>
+				</div>
+
+				<div
+					class="mt-2 ml-2 grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 text-sm"
+				>
+					<span class="text-gray-500 dark:text-gray-400 pr-4"
+						>Description:</span
+					>
+					<span class="text-text">{content.description}</span>
+
+					{
+						content.synonyms && content.synonyms.length > 0 && (
+							<>
+								<span class="text-gray-500 dark:text-gray-400 pr-4">
+									Synonyms:
+								</span>
+								<span class="text-text">
+									{content.synonyms.join(", ")}
+								</span>
+							</>
+						)
+					}
+
+					{
+						content.pali && content.pali.length > 0 && (
+							<>
+								<span class="text-gray-500 dark:text-gray-400 pr-4">
+									Pāli term:
+								</span>
+								<span class="pali-paragraph font-semibold text-text">
+									{content.pali.join(", ")}
+								</span>
+							</>
+						)
+					}
+
+					{
+						content.related && content.related.length > 0 && (
+							<>
+								<span class="text-gray-500 dark:text-gray-400 self-center">
+									Related:
+								</span>
+								<div class="flex flex-wrap gap-2">
+									{content.related.map(
+										(relatedSlug: string) => {
+											const capitalizedName = relatedSlug
+												.split("-")
+												.map(
+													(word: string) =>
+														word
+															.charAt(0)
+															.toUpperCase() +
+														word.slice(1)
+												)
+												.join(" ");
+
+											return (
+												<a
+													href={`/on/${relatedSlug}`}
+													class="topic-tag"
+												>
+													{capitalizedName}
+												</a>
+											);
+										}
+									)}
+								</div>
+							</>
+						)
+					}
+				</div>
+			</div>
+		</div>
+
+		{/* Featured Discourses Section - Always show first */}
+		{
+			primaryDiscourses.length > 0 && (
+				<div class="mb-10">
+					<h2 class="text-xl font-medium mb-4">
+						Featured Discourses
+					</h2>
+					<div class="space-y-6">
+						{primaryDiscourses.map(
+							(discourse) =>
+								discourse && (
+									<div class="mb-6">
+										<div class="relative">
+											<PostCard
+												title={discourse.title}
+												description={
+													discourse.description
+												}
+												id={discourse.id}
+											/>
+											{discourse.note && (
+												<div class="absolute top-3 right-3">
+													<span class="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">
+														{discourse.note}
+													</span>
+												</div>
+											)}
+										</div>
+									</div>
+								)
+						)}
+					</div>
+				</div>
+			)
+		}
+
+		{/* Additional Discourses by Collection - Only non-curated ones */}
+		{
+			allDiscourses.length > primaryDiscourses.length && (
+				<div class="space-y-10">
+					<h2 class="text-xl font-medium mb-4">More Discourses</h2>
+					{collectionOrder.map((collectionKey) => {
+						const collection = collections[collectionKey];
+
+						// Only show non-curated discourses in collections
+						const nonCuratedItems = collection.items.filter(
+							(item) => !item.curated
+						);
+						if (nonCuratedItems.length === 0) return null;
+
+						return (
+							<div>
+								<h4 class="mb-6 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 pb-2 pl-4">
+									In {collection.name}
+								</h4>
+								<div class="px-2 space-y-4">
+									{nonCuratedItems.map((discourse) => (
+										<PostCard
+											title={discourse.title}
+											description={discourse.description}
+											id={discourse.id}
+										/>
+									))}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			)
+		}
+	</main>
+</Layout>
+
+<style>
+	.topic-tag {
+		display: inline-block;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		text-decoration: none;
+		transition: all 0.2s ease;
+		background-color: rgba(34, 211, 238, 0.1);
+		color: #0891b2;
+		border: 1px solid rgba(34, 211, 238, 0.2);
+	}
+
+	html.dark .topic-tag {
+		background-color: rgba(34, 211, 238, 0.2);
+		color: #22d3ee;
+		border: 1px solid rgba(34, 211, 238, 0.3);
+	}
+
+	.topic-tag:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	html.dark .topic-tag:hover {
+		box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+	}
+</style>

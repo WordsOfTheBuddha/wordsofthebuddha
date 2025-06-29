@@ -1,0 +1,854 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import Funnel from "../../assets/funnel.svg?raw";
+
+const seoTitle = "Discover Teachings - Words of the Buddha";
+const description =
+	"Explore Buddhist teachings by topics, qualities, and similes from the Pali Canon";
+
+// Generate alphabet for A-Z navigation
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+---
+
+<Layout seoTitle={seoTitle} showAuth={true}>
+	<main class="container mx-auto px-4 py-8">
+		<div class="mb-8">
+			<h1 class="text-3xl font-bold mb-4">Discover Buddha's Words</h1>
+			<p class="text-gray-600 dark:text-gray-400 mb-6">
+				Explore Buddhist teachings organized by topics, qualities, and
+				similes from the Pali Canon
+			</p>
+
+			<!-- Sticky Filter Controls -->
+			<div
+				id="filter-controls"
+				class="sticky top-0 bg-white dark:bg-gray-900 z-10 pb-4 mb-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+			>
+				<!-- Row 1: Show Options & Search (responsive layout) -->
+				<div
+					class="bg-gray-50 dark:bg-gray-800 rounded-t-lg rounded-b-none p-4"
+				>
+					<!-- Mobile/Tablet: Stacked layout -->
+					<div class="md:hidden space-y-4">
+						<div class="flex items-center gap-4">
+							<div class="flex flex-wrap gap-4">
+								<label
+									class="flex items-center gap-2 cursor-pointer"
+								>
+									<input
+										type="checkbox"
+										id="filter-topics"
+										value="topics"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Topics</span>
+								</label>
+								<label
+									class="flex items-center gap-2 cursor-pointer"
+								>
+									<input
+										type="checkbox"
+										id="filter-qualities"
+										value="qualities"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Qualities</span>
+								</label>
+								<label
+									class="flex items-center gap-2 cursor-pointer"
+								>
+									<input
+										type="checkbox"
+										id="filter-similes"
+										value="similes"
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Simile</span>
+								</label>
+							</div>
+						</div>
+						<input
+							type="text"
+							id="search-input"
+							placeholder="Filter by text..."
+							class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent text-[70%]"
+						/>
+					</div>
+
+					<!-- Desktop: Single row layout -->
+					<div class="hidden md:flex items-center gap-6">
+						<div class="flex items-center gap-4 flex-shrink-0">
+							<div class="flex items-center">
+								<div
+									class="w-5 h-5 text-gray-600 dark:text-gray-400"
+								>
+									<Fragment set:html={Funnel} />
+								</div>
+								<span
+									class="text-sm font-medium text-gray-700 dark:text-gray-300"
+								>
+									Show:
+								</span>
+							</div>
+							<div class="flex gap-4">
+								<label
+									class="flex items-center gap-2 cursor-pointer"
+								>
+									<input
+										type="checkbox"
+										id="filter-topics-desktop"
+										value="topics"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Topics</span>
+								</label>
+								<label
+									class="flex items-center gap-2 cursor-pointer"
+								>
+									<input
+										type="checkbox"
+										id="filter-qualities-desktop"
+										value="qualities"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Qualities</span>
+								</label>
+								<label
+									class="flex items-center gap-2 cursor-pointer"
+								>
+									<input
+										type="checkbox"
+										id="filter-similes-desktop"
+										value="similes"
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Simile</span>
+								</label>
+							</div>
+						</div>
+
+						<div class="flex-1 max-w-md">
+							<input
+								type="text"
+								id="search-input-desktop"
+								placeholder="Filter with text..."
+								class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent text-[70%]"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<!-- Row 2: A-Z Navigation (compact single row) -->
+				<div
+					class="bg-gray-50 dark:bg-gray-800 rounded-t-none rounded-b-lg p-3"
+				>
+					<div class="flex flex-wrap gap-1 justify-center lg:gap-2">
+						{
+							alphabet.map((letter) => (
+								<button
+									data-letter={letter}
+									class="alphabet-link text-sm lg:text-base px-1 py-1 rounded transition-all duration-200 text-gray-500 dark:text-gray-400 hover:text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:bg-opacity-10 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50"
+								>
+									{letter}
+								</button>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Loading State -->
+		<div id="loading" class="text-center py-8">
+			<div
+				class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-gray-100"
+			>
+			</div>
+			<p class="mt-2 text-gray-600 dark:text-gray-400">
+				Loading teachings...
+			</p>
+		</div>
+
+		<!-- Results Container -->
+		<div id="results-container" class="hidden">
+			<!-- Results -->
+			<div id="results" class="space-y-6">
+				<!-- Will be populated by JavaScript -->
+			</div>
+
+			<!-- No Results Message -->
+			<div id="no-results" class="hidden text-center py-8">
+				<p class="text-gray-600 dark:text-gray-400">
+					No teachings found matching your criteria.
+				</p>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<script>
+	interface UnifiedContentItem {
+		id: string;
+		slug: string;
+		type: "topic" | "quality" | "simile";
+		title: string;
+		description?: string;
+		synonyms?: string[];
+		pali?: string[];
+		redirects?: string[];
+		qualityType?: "positive" | "negative" | "neutral";
+		context?: string;
+		related?: string[];
+		discourses: Array<{
+			id: string;
+			title: string;
+			description: string;
+			collection: string;
+			note?: string;
+		}>;
+	}
+
+	let allData: UnifiedContentItem[] = [];
+	let filteredData: UnifiedContentItem[] = [];
+	let currentFilters = new Set(["topics", "qualities"]);
+	let searchTerm = "";
+	let expandedItems = new Set<string>();
+	let searchTimeout: NodeJS.Timeout | null = null;
+
+	const loadingEl = document.getElementById("loading");
+	const resultsContainer = document.getElementById("results-container");
+	const resultsEl = document.getElementById("results");
+	const noResultsEl = document.getElementById("no-results");
+	const searchInput = document.getElementById(
+		"search-input"
+	) as HTMLInputElement;
+	const searchInputDesktop = document.getElementById(
+		"search-input-desktop"
+	) as HTMLInputElement;
+
+	// Initialize
+	document.addEventListener("DOMContentLoaded", async () => {
+		await loadData();
+		setupEventListeners();
+		setupScrollSpy();
+		updateDisplay();
+	});
+
+	async function loadData() {
+		try {
+			const by = Array.from(currentFilters).join(",");
+			const filter = searchTerm || "";
+			const response = await fetch(
+				`/api/discover?by=${by}&filter=${encodeURIComponent(filter)}`
+			);
+			const result = await response.json();
+
+			if (result.success) {
+				allData = result.data;
+				filteredData = result.data; // API does the filtering now
+				updateDisplay();
+			} else {
+				console.error("Failed to load data:", result.error);
+			}
+		} catch (error) {
+			console.error("Error loading data:", error);
+		}
+	}
+
+	function setupEventListeners() {
+		// Filter checkboxes
+		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach((checkbox) => {
+			checkbox.addEventListener("change", handleFilterChange);
+		});
+
+		// Search inputs - sync mobile and desktop
+		if (searchInput) {
+			searchInput.addEventListener("input", handleSearchInput);
+		}
+		if (searchInputDesktop) {
+			searchInputDesktop.addEventListener("input", handleSearchInput);
+		}
+
+		// Alphabet links
+		document.querySelectorAll(".alphabet-link").forEach((link) => {
+			link.addEventListener("click", handleAlphabetClick);
+		});
+	}
+
+	function setupScrollSpy() {
+		const observerOptions: IntersectionObserverInit = {
+			root: null,
+			rootMargin: "-100px 0px -50% 0px",
+			threshold: [0, 0.1, 0.5],
+		};
+
+		const observer = new IntersectionObserver(
+			(entries: IntersectionObserverEntry[]) => {
+				let maxRatio = 0;
+				let activeElement: Element | null = null;
+
+				entries.forEach((entry) => {
+					if (
+						entry.isIntersecting &&
+						entry.intersectionRatio > maxRatio
+					) {
+						maxRatio = entry.intersectionRatio;
+						activeElement = entry.target;
+					}
+				});
+
+				if (activeElement) {
+					const htmlElement = activeElement as HTMLElement;
+					if (htmlElement.id) {
+						const letter = htmlElement.id.replace("letter-", "");
+						updateActiveAlphabetLink(letter);
+					}
+				}
+			},
+			observerOptions
+		);
+
+		// Will observe letter sections after they're rendered
+		window.setupLetterObserver = observer;
+	}
+
+	function updateActiveAlphabetLink(activeLetter: string) {
+		document.querySelectorAll(".alphabet-link").forEach((link) => {
+			const letter = link.getAttribute("data-letter");
+			if (letter === activeLetter) {
+				link.classList.add("alphabet-active");
+			} else {
+				link.classList.remove("alphabet-active");
+			}
+		});
+	}
+
+	function handleAlphabetClick(event: Event) {
+		event.preventDefault();
+		const button = event.target as HTMLButtonElement;
+
+		// Don't scroll if disabled
+		if (button.disabled) {
+			return;
+		}
+
+		const letter = button.getAttribute("data-letter");
+		if (letter) {
+			const targetElement = document.getElementById(`letter-${letter}`);
+			if (targetElement) {
+				const headerOffset = 160; // Account for sticky header
+				const elementPosition = targetElement.offsetTop;
+				const offsetPosition = elementPosition - headerOffset;
+
+				window.scrollTo({
+					top: offsetPosition,
+					behavior: "smooth",
+				});
+			}
+		}
+	}
+
+	function handleFilterChange(event: Event) {
+		const checkbox = event.target as HTMLInputElement;
+		const value = checkbox.value;
+
+		if (checkbox.checked) {
+			currentFilters.add(value);
+		} else {
+			// Prevent unchecking if it's the only active filter
+			if (currentFilters.size > 1) {
+				currentFilters.delete(value);
+			} else {
+				checkbox.checked = true; // Revert the change
+				return;
+			}
+		}
+
+		loadData();
+	}
+
+	function handleSearchInput(event: Event) {
+		const input = event.target as HTMLInputElement;
+		searchTerm = input.value.trim();
+
+		// Sync both search inputs
+		if (searchInput && input !== searchInput) {
+			searchInput.value = input.value;
+		}
+		if (searchInputDesktop && input !== searchInputDesktop) {
+			searchInputDesktop.value = input.value;
+		}
+
+		// Debounce search to avoid too many API calls
+		if (searchTimeout) {
+			clearTimeout(searchTimeout);
+		}
+
+		searchTimeout = setTimeout(() => {
+			loadData();
+		}, 300);
+	}
+
+	function toggleExpanded(itemId: string) {
+		if (expandedItems.has(itemId)) {
+			expandedItems.delete(itemId);
+		} else {
+			expandedItems.add(itemId);
+		}
+		updateDisplay();
+	}
+
+	// Make function globally available
+	window.toggleExpanded = toggleExpanded;
+
+	function updateDisplay() {
+		if (loadingEl) loadingEl.classList.add("hidden");
+		if (resultsContainer) resultsContainer.classList.remove("hidden");
+
+		if (filteredData.length === 0) {
+			if (resultsEl) resultsEl.innerHTML = "";
+			if (noResultsEl) noResultsEl.classList.remove("hidden");
+			updateAlphabetAvailability();
+			return;
+		}
+
+		if (noResultsEl) noResultsEl.classList.add("hidden");
+		updateAlphabetAvailability();
+		renderResults();
+	}
+
+	function updateAlphabetAvailability() {
+		const availableLetters = new Set<string>();
+		filteredData.forEach((item) => {
+			availableLetters.add(item.title.charAt(0).toUpperCase());
+		});
+
+		document.querySelectorAll(".alphabet-link").forEach((link) => {
+			const letter = link.getAttribute("data-letter");
+			if (availableLetters.has(letter!)) {
+				link.classList.remove("opacity-50", "cursor-not-allowed");
+				(link as HTMLButtonElement).disabled = false;
+			} else {
+				link.classList.add("opacity-50", "cursor-not-allowed");
+				link.classList.remove("alphabet-active");
+				(link as HTMLButtonElement).disabled = true;
+			}
+		});
+	}
+
+	function renderResults() {
+		if (!resultsEl) return;
+
+		// Group by first letter
+		const groupedData = new Map<string, UnifiedContentItem[]>();
+		filteredData.forEach((item) => {
+			const firstLetter = item.title.charAt(0).toUpperCase();
+			if (!groupedData.has(firstLetter)) {
+				groupedData.set(firstLetter, []);
+			}
+			groupedData.get(firstLetter)!.push(item);
+		});
+
+		const sortedLetters = Array.from(groupedData.keys()).sort();
+
+		resultsEl.innerHTML = sortedLetters
+			.map((letter) => {
+				const items = groupedData.get(letter)!;
+				return `
+				<div id="letter-${letter}" class="mb-8 scroll-mt-32">
+					<h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200 border-b pb-2">${letter}</h2>
+					<div class="space-y-4">
+						${items.map((item) => renderItem(item)).join("")}
+					</div>
+				</div>
+			`;
+			})
+			.join("");
+
+		// Set up intersection observer for scroll spy
+		if (window.setupLetterObserver) {
+			document.querySelectorAll('[id^="letter-"]').forEach((section) => {
+				window.setupLetterObserver.observe(section);
+			});
+		}
+	}
+
+	function renderItem(item: UnifiedContentItem): string {
+		const isExpanded = expandedItems.has(item.id);
+		const isSimile = item.type === "simile";
+		const qualityType = item.qualityType;
+
+		// Quality type indicators
+		const qualityIndicator = qualityType
+			? {
+					positive: {
+						emoji: "☀️",
+						text: "quality",
+						type: "bright",
+						class: "bg-amber-200 dark:bg-amber-700 text-amber-800 dark:text-amber-100",
+					},
+					negative: {
+						emoji: "☁️",
+						text: "quality",
+						type: "dark",
+						class: "bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-100",
+					},
+					neutral: {
+						emoji: "💠",
+						text: "quality",
+						type: "neutral",
+						class: "bg-cyan-200 dark:bg-cyan-500 text-cyan-800 dark:text-cyan-100",
+					},
+				}[qualityType]
+			: null;
+		// Topic type indicator
+		const topicIndicator =
+			item.type === "topic"
+				? `
+                    <span class="inline-block px-2 py-0.5 text-xs rounded-full cursor-help bg-blue-200 dark:bg-blue-500 text-gray-600 dark:text-gray-300 align-middle"
+                        title="A curated list of discourses on a theme of the Buddha's words.">
+                        topic
+                    </span>
+                `
+				: "";
+
+		return `
+			<div class="post-item relative flex flex-col w-full p-5 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200">
+				<div class="flex items-start justify-between mb-2">
+					<div class="flex items-start flex-grow min-w-0">
+						<span class="text-lg mt-1 mb-1">
+							${
+								isSimile
+									? `
+								<span class="font-normal">${item.title}</span>
+                                <span class="inline-block px-2 py-0.5 text-xs rounded-full cursor-help bg-purple-200 dark:bg-purple-500 text-gray-600 dark:text-gray-300 align-middle" 
+									  title="Metaphor or comparison used by the Buddha to illustrate a teaching concept">
+									simile
+								</span>
+							`
+									: `
+								<span class="font-normal">${item.title}</span>
+								${
+									qualityIndicator
+										? `
+										<span class="px-2 py-0.5 text-xs rounded-full cursor-help ${qualityIndicator.class}" 
+											  title="${
+													qualityIndicator.type ===
+													"bright"
+														? "When a bright quality is cultivated, it brings benefit, clarity of vision, and the growth of wisdom."
+														: qualityIndicator.type ===
+															  "dark"
+															? "When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
+															: "This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises."
+												}">
+											${qualityIndicator.text}
+										</span>
+									`
+										: topicIndicator
+								}
+							`
+							}
+						</h3>
+					</div>
+				</div>
+
+				${
+					!isSimile
+						? `
+					<div class="mt-2 ml-2 grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 text-sm">
+						${
+							item.description
+								? `
+							<span class="text-gray-500 dark:text-gray-400 pr-4">Description:</span>
+							<span class="text-text">${item.description}</span>
+						`
+								: ""
+						}
+						
+						${
+							item.synonyms && item.synonyms.length > 0
+								? `
+							<span class="text-gray-500 dark:text-gray-400 pr-4">Synonyms:</span>
+							<span class="text-text">${item.synonyms.join(", ")}</span>
+						`
+								: ""
+						}
+						
+						${
+							item.pali && item.pali.length > 0
+								? `
+							<span class="text-gray-500 dark:text-gray-400 pr-4">Pāli term:</span>
+							<span class="pali-paragraph font-semibold text-text">${item.pali.join(", ")}</span>
+						`
+								: ""
+						}
+					</div>
+				`
+						: `
+					<!-- Simile Description (only when expanded) -->
+					${
+						item.description && isExpanded
+							? `
+						<div class="mt-2 grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 text-sm">
+							<span class="text-gray-500 dark:text-gray-400 pr-4">Description:</span>
+							<span class="text-text">${item.description}</span>
+						</div>
+					`
+							: ""
+					}
+				`
+				}
+
+				<!-- Use consistent discourse section for all types -->
+				${renderDiscourseSection(item)}
+			</div>
+		`;
+	}
+
+	// Reusable discourse section functions for consistent behavior across all types
+	function renderDiscourseSection(item: UnifiedContentItem): string {
+		const isExpanded = expandedItems.has(item.id);
+		const discourseCount = item.discourses.length;
+
+		return `
+			<div class="discourses-section mt-4">
+				${renderDiscourseList(item, isExpanded)}
+				${!isExpanded ? renderExpandButton(item.id, discourseCount) : ""}
+			</div>
+		`;
+	}
+
+	function renderDiscourseList(
+		item: UnifiedContentItem,
+		isExpanded: boolean
+	): string {
+		const discoursesToShow = isExpanded
+			? item.discourses
+			: item.discourses.slice(0, 3);
+		const showDescriptions = isExpanded;
+
+		const scrollContainer = isExpanded
+			? `style="max-height: 50vh; overflow-y: auto; position: relative;"`
+			: "";
+
+		return `
+			<div class="discourse-list" ${scrollContainer}>
+				<div class="space-y-3 border-l-2 border-[var(--primary-color)] border-opacity-30 py-1">
+					${discoursesToShow
+						.map((discourse) =>
+							renderSingleDiscourse(
+								discourse,
+								showDescriptions,
+								item.type
+							)
+						)
+						.join("")}
+				</div>
+				
+				${isExpanded ? renderStickyCollapseButton(item.id) : ""}
+			</div>
+		`;
+	}
+
+	function renderSingleDiscourse(
+		discourse: any,
+		showDescription: boolean,
+		contentType: string
+	): string {
+		return `
+			<div class="text-sm dark:bg-gray-800 rounded-lg px-2 mt-1">
+				<a href="/${discourse.id}" class="text-[var(--link-color)] hover:text-[var(--link-hover-color)] font-medium block mb-1 inline-block">
+					${discourse.id.replace(
+						/([a-zA-Z]+)(\d+)/,
+						(_: string, chars: string, digits: string) => {
+							return `${chars.toUpperCase()} ${digits}`;
+						}
+					)}
+                </a>
+                <span>
+                    ${discourse.title}
+                </span>
+				${
+					discourse.note
+						? `
+					<div class="mb-2 inline-block ml-1">
+						<span class="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">
+							${discourse.note}
+						</span>
+					</div>
+				`
+						: ""
+				}
+				${
+					showDescription && discourse.description
+						? `<p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed my-1">${discourse.description}</p>`
+						: ""
+				}
+			</div>
+		`;
+	}
+
+	function renderExpandButton(
+		itemId: string,
+		discourseCount: number
+	): string {
+		const buttonText = getConsistentButtonText(discourseCount, false);
+
+		return `
+			<button 
+				onclick="toggleExpanded('${itemId}')" 
+				class="flex items-center gap-2 text-sm text-[var(--primary-color)] hover:text-[var(--link-hover-color)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50 rounded mt-3 ml-1"
+			>
+				${buttonText}
+			</button>
+		`;
+	}
+
+	function renderStickyCollapseButton(slug: string): string {
+		return `
+        <div style="position: sticky; bottom: 0; padding-top: 20px; text-align: left;">
+            <button onclick="toggleExpanded('${slug}')" class="flex items-center gap-2 text-sm text-[var(--primary-color)] hover:text-[var(--link-hover-color)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50 rounded bg-white dark:bg-gray-800 px-1 py-1 mb-2 ml-1">
+                [- Show Less]
+            </button>
+        </div>
+    `;
+	}
+
+	function getConsistentButtonText(
+		discourseCount: number,
+		isExpanded: boolean
+	): string {
+		if (isExpanded) {
+			return "[- Show Less]";
+		}
+
+		return discourseCount <= 3
+			? "[+ Show More]"
+			: `[+ ${discourseCount - 3} ${discourseCount - 3 === 1 ? "discourse" : "discourses"} - Show More]`;
+	}
+
+	// Global function for window
+	declare global {
+		interface Window {
+			toggleExpanded: (itemId: string) => void;
+			setupLetterObserver: IntersectionObserver;
+		}
+	}
+</script>
+
+<style>
+	.post-item:hover {
+		transform: translateY(-2px);
+	}
+
+	.alphabet-link {
+		transition: all 0.2s ease;
+	}
+
+	.alphabet-link:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	.alphabet-link:disabled:hover {
+		color: rgb(107 114 128); /* gray-500 */
+		background-color: transparent;
+	}
+
+	html.dark .alphabet-link:disabled:hover {
+		color: rgb(156 163 175); /* gray-400 */
+	}
+
+	.alphabet-link.alphabet-active {
+		color: var(--primary-color);
+		background-color: color-mix(
+			in srgb,
+			var(--primary-color) 10%,
+			transparent
+		);
+		font-weight: 600;
+		border: 1px solid
+			color-mix(in srgb, var(--primary-color) 30%, transparent);
+	}
+
+	.pali-paragraph {
+		font-family: "Gentium Plus", serif;
+	}
+
+	/* Smooth scrolling for anchor links */
+	html {
+		scroll-behavior: smooth;
+	}
+
+	/* Custom scrollbar */
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.1);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: var(--primary-color);
+		border-radius: 4px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--link-hover-color);
+	}
+
+	/* Improved focus styles */
+	.alphabet-link:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--primary-color);
+		box-shadow: 0 0 0 2px
+			color-mix(in srgb, var(--primary-color) 50%, transparent);
+	}
+
+	/* Enhanced transitions */
+	.post-item {
+		transition: all 0.3s ease;
+	}
+
+	.post-item:hover {
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+	}
+
+	html.dark .post-item:hover {
+		box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+	}
+
+	/* Sticky collapse button styling */
+	.sticky-button-container {
+		--bg-color: white;
+	}
+
+	html.dark .sticky-button-container {
+		--bg-color: rgb(31, 41, 55); /* gray-800 */
+	}
+
+	.discourse-list::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.discourse-list::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	.discourse-list::-webkit-scrollbar-thumb {
+		background: var(--primary-color);
+		border-radius: 3px;
+		opacity: 0.6;
+	}
+
+	.discourse-list::-webkit-scrollbar-thumb:hover {
+		opacity: 1;
+	}
+</style>

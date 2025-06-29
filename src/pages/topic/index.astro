@@ -1,0 +1,215 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAllTopics, getTotalDiscourseCount } from "../../utils/loadTopics";
+
+// Ensure this page is server-rendered
+export const prerender = false;
+
+// Group topics by first letter with TypeScript type annotations
+function groupByFirstLetter(
+	items: Array<{
+		slug: string;
+		title: string;
+		description: string;
+		totalDiscourses: number;
+	}>
+): Record<
+	string,
+	Array<{
+		slug: string;
+		title: string;
+		description: string;
+		totalDiscourses: number;
+	}>
+> {
+	const groups: Record<
+		string,
+		Array<{
+			slug: string;
+			title: string;
+			description: string;
+			totalDiscourses: number;
+		}>
+	> = {};
+
+	items.forEach((item) => {
+		const firstLetter = item.title.charAt(0).toUpperCase();
+		if (!groups[firstLetter]) {
+			groups[firstLetter] = [];
+		}
+		groups[firstLetter].push(item);
+	});
+
+	return groups;
+}
+
+// Get all topics
+const topics = getAllTopics();
+const topicsArray = Object.entries(topics).map(([slug, data]) => ({
+	slug,
+	title: data.title,
+	description: data.description,
+	totalDiscourses: getTotalDiscourseCount(slug, data),
+}));
+
+// Sort by title
+topicsArray.sort((a, b) => a.title.localeCompare(b.title));
+
+// Get all available first letters
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const topicsByLetter = groupByFirstLetter(topicsArray);
+---
+
+<Layout seoTitle="Topics - Words of the Buddha" showAuth={true}>
+	<main class="container mx-auto px-4 py-8">
+		<div class="flex justify-between items-baseline mb-4 border-b pb-2">
+			<h3 class="text-2xl font-bold flex-grow mr-4">
+				Discover Discourses by Topics
+			</h3>
+			<div class="relative">
+				<input
+					type="text"
+					id="topic-filter"
+					class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+					placeholder="Filter topics..."
+				/>
+			</div>
+		</div>
+
+		<!-- A-Z Index -->
+		<div class="mb-8 flex flex-wrap gap-2">
+			{
+				alphabet.map((letter) => {
+					const hasTopics =
+						topicsByLetter[letter] &&
+						topicsByLetter[letter].length > 0;
+
+					return (
+						<a
+							href={hasTopics ? `#${letter}` : "#"}
+							class={`w-8 h-8 flex items-center justify-center rounded-md transition-colors ${
+								hasTopics
+									? "text-[var(--primary-color)] hover:opacity-80 border border-[var(--primary-color)]"
+									: "text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-default"
+							}`}
+						>
+							{letter}
+						</a>
+					);
+				})
+			}
+		</div>
+
+		<!-- Topic listings -->
+		<div class="space-y-8">
+			{
+				alphabet.map((letter) => {
+					const topicsForLetter = topicsByLetter[letter] || [];
+
+					if (topicsForLetter.length === 0) return null;
+
+					return (
+						<div id={letter} class="scroll-mt-16 letter-section">
+							<h2 class="text-2xl font-bold mb-4 border-b pb-2">
+								{letter}
+							</h2>
+							<div class="space-y-4">
+								{topicsForLetter.map((topic) => (
+									<div class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+										<div class="flex items-start justify-between">
+											<div class="flex items-start flex-grow">
+												<div class="min-w-0 pr-4">
+													<h3 class="text-base sm:text-lg font-semibold flex items-center flex-wrap">
+														<a
+															href={`/topic/${topic.slug}`}
+															class="post-link hover:text-link-color id font-normal"
+														>
+															{topic.title}
+														</a>
+													</h3>
+													<p class="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-2">
+														{topic.description}
+													</p>
+												</div>
+											</div>
+											<div class="shrink-0 self-start">
+												<span class="px-2 py-0.5 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm">
+													{topic.totalDiscourses}
+												</span>
+											</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</main>
+</Layout>
+
+<script>
+	// Smooth scrolling for anchor links
+	document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+		anchor.addEventListener("click", function (this: HTMLAnchorElement, e) {
+			const href = this.getAttribute("href");
+			if (href === "#") return;
+
+			e.preventDefault();
+			const target = href ? document.querySelector(href as string) : null;
+			if (target) {
+				target.scrollIntoView({
+					behavior: "smooth",
+				});
+			}
+		});
+	});
+
+	// Topic filtering functionality
+	const filterInput = document.getElementById(
+		"topic-filter"
+	) as HTMLInputElement;
+	const topicItems = document.querySelectorAll(".post-item");
+	const letterSections = document.querySelectorAll(".letter-section");
+
+	filterInput?.addEventListener("input", (e) => {
+		const filter = (e.target as HTMLInputElement).value
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+
+		topicItems.forEach((item) => {
+			const content =
+				item.textContent
+					?.toLowerCase()
+					.normalize("NFD")
+					.replace(/[\u0300-\u036f]/g, "") || "";
+
+			const isVisible = !filter || content.includes(filter);
+			item.classList.toggle("hidden", !isVisible);
+		});
+
+		// Hide/show letter sections if all their topics are hidden
+		letterSections.forEach((section) => {
+			const visibleTopics = section.querySelectorAll(
+				".post-item:not(.hidden)"
+			);
+			section.classList.toggle("hidden", visibleTopics.length === 0);
+		});
+	});
+</script>
+
+<style>
+	/* Hide letter sections that have no visible topics */
+	.letter-section.hidden {
+		display: none;
+	}
+
+	.line-clamp-2 {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+</style>
