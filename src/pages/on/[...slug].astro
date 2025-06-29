@@ -274,14 +274,8 @@ const displayTitle = content.title;
 													discourse.description
 												}
 												id={discourse.id}
+												titleTag={discourse.note}
 											/>
-											{discourse.note && (
-												<div class="absolute top-3 right-3">
-													<span class="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">
-														{discourse.note}
-													</span>
-												</div>
-											)}
 										</div>
 									</div>
 								)
