@@ -217,32 +217,24 @@ export const GET: APIRoute = async ({ url }) => {
 		// Apply search filter if provided
 		if (filterParam) {
 			const filterLower = filterParam.toLowerCase();
+			const filterWithSpaces = filterLower.replace(/-/g, " ");
+
+			// Helper function to check if text matches either filter variant
+			const matchesFilter = (text: string): boolean => {
+				const textLower = text.toLowerCase();
+				return textLower.includes(filterLower) || textLower.includes(filterWithSpaces);
+			};
 
 			allContent = allContent
 				.map((item) => {
 					// Check if the match is at item level (topic/quality/simile level)
 					const itemLevelMatch =
-						item.title.toLowerCase().includes(filterLower) ||
-						(item.description &&
-							item.description
-								.toLowerCase()
-								.includes(filterLower)) ||
-						(item.synonyms &&
-							item.synonyms.some((s) =>
-								s.toLowerCase().includes(filterLower),
-							)) ||
-						(item.pali &&
-							item.pali.some((p) =>
-								p.toLowerCase().includes(filterLower),
-							)) ||
-						(item.redirects &&
-							item.redirects.some((r) =>
-								r.toLowerCase().includes(filterLower),
-							)) ||
-						(item.related &&
-							item.related.some((r) =>
-								r.toLowerCase().includes(filterLower),
-							));
+						matchesFilter(item.title) ||
+						(item.description && matchesFilter(item.description)) ||
+						(item.synonyms && item.synonyms.some(s => matchesFilter(s))) ||
+						(item.pali && item.pali.some(p => matchesFilter(p))) ||
+						(item.redirects && item.redirects.some(r => matchesFilter(r))) ||
+						(item.related && item.related.some(r => matchesFilter(r)));
 
 					if (itemLevelMatch) {
 						// Item-level match: return the item with ALL discourses
@@ -252,10 +244,10 @@ export const GET: APIRoute = async ({ url }) => {
 					// Check for discourse-level matches
 					const matchingDiscourses = item.discourses.filter(
 						(d) =>
-							d.id.toLowerCase().includes(filterLower) ||
-							d.collection.toLowerCase().includes(filterLower) ||
-							d.title.toLowerCase().includes(filterLower) ||
-							d.description.toLowerCase().includes(filterLower),
+							matchesFilter(d.id) ||
+							matchesFilter(d.collection) ||
+							matchesFilter(d.title) ||
+							matchesFilter(d.description),
 					);
 
 					if (matchingDiscourses.length > 0) {

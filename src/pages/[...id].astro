@@ -50,6 +50,29 @@ function compareHierarchicalNumbers(target: string, rangeStr: string): boolean {
 // Extract slug from params
 const { id: originalId } = Astro.params;
 let id = originalId;
+
+// Filter out system/browser requests early
+const SYSTEM_REQUEST_PATTERNS = [
+	".well-known",
+	"favicon.ico",
+	"robots.txt",
+	"sitemap.xml",
+	"apple-touch-icon",
+	"chrome-extension",
+	"__webpack",
+	"_next",
+	".js.map",
+	".css.map",
+];
+
+const isSystemRequest = SYSTEM_REQUEST_PATTERNS.some((pattern) =>
+	originalId?.includes(pattern)
+);
+
+if (isSystemRequest) {
+	return new Response(null, { status: 404 });
+}
+
 const route = determineRouteType(id);
 console.log("route type is: ", route.type, route.metadata);
 

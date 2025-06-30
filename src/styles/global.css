@@ -35,31 +35,31 @@
 
 /* Static gradient without animation */
 @layer utilities {
-  .text-gradient-accent {
-    /* Light mode gradient with static positioning */
-    background-image: linear-gradient(
-      135deg,
-      var(--primary-color) 0%,
-      var(--secondary-color) 50%,
-      var(--primary-color) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  
-  html.dark .text-gradient-accent {
-    /* Dark mode gradient with static positioning */
-    background-image: linear-gradient(
-      135deg,
-      var(--link-color) 0%,
-      var(--secondary-color) 50%,
-      var(--link-color) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+	.text-gradient-accent {
+		/* Light mode gradient with static positioning */
+		background-image: linear-gradient(
+			135deg,
+			var(--primary-color) 0%,
+			var(--secondary-color) 50%,
+			var(--primary-color) 100%
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	html.dark .text-gradient-accent {
+		/* Dark mode gradient with static positioning */
+		background-image: linear-gradient(
+			135deg,
+			var(--link-color) 0%,
+			var(--secondary-color) 50%,
+			var(--link-color) 100%
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
 }
 
 /* global.css */
@@ -73,6 +73,7 @@
 	--link-color-light: #1a73e8;
 	--link-hover-color-light: #0c47a1;
 	--tooltip-border-light: rgba(255, 87, 34, 0.3); /* #ff5722 with opacity */
+	--popover-border-light: rgba(26, 115, 232, 0.3);
 
 	--icon-fill-color-dark: #ffffff;
 	--bookmark-fill-color-dark: #a9a9a9;
@@ -83,6 +84,7 @@
 	--link-color-dark: #87cefa;
 	--link-hover-color-dark: #ffffff;
 	--tooltip-border-dark: rgba(212, 116, 69, 0.3); /* #d47445 with opacity */
+	--popover-border-dark: rgba(212, 116, 69, 0.3);
 
 	--background-header-light: #f4f4f4;
 	--background-row-even-light: #f9f9f9;
@@ -108,6 +110,7 @@
 	--callout-background: rgba(219, 234, 254, 1);
 	--border-color: rgba(191, 219, 254, 1);
 	--tooltip-border: var(--tooltip-border-light);
+	--popover-border: var(--popover-border-light);
 
 	--auth-card-bg-light: #ffffff;
 	--auth-card-shadow-light: rgba(0, 0, 0, 0.1);
@@ -151,6 +154,7 @@ html.dark {
 	--callout-background: rgba(30, 58, 138, 0.3);
 	--border-color: rgba(191, 219, 254, 0.3);
 	--tooltip-border: var(--tooltip-border-dark);
+	--popover-border: var(--popover-border-dark);
 
 	--auth-card-bg: var(--auth-card-bg-dark);
 	--auth-card-shadow: var(--auth-card-shadow-dark);
