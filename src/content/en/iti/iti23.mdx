@@ -1,6 +1,8 @@
 ---
 title: Ubhayattha sutta - Both Benefits
 description: Developing and cultivating diligence in wholesome states secures both benefits—those pertaining to the present life and those pertaining to the hereafter.
+qualities: diligence, wisdom
+theme: inspiration, wisdom
 fetter: doubt, adherence to rules and observances, ignorance
 tags: diligence, heedfulness, present life, future life, wholesome states, benefit, wise, ignorance, iti, iti1-27
 slug: iti23

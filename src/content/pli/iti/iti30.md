@@ -1,6 +1,8 @@
 ---
 title: Tapanīya sutta - Causing Remorse
 description: A person who has not done good, has not done what is wholesome, has not protected others from fear, but has done evil, cruelty, and misdeeds, feels remorse.
+qualities: regret, unwholesome, lack of discernment
+theme: wisdom, principle
 fetter: restlessness
 tags: remorse, unwholesome, wholesome, evil, cruelty, misdeeds, hell, iti, iti28-49
 slug: iti30

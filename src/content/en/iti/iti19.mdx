@@ -1,6 +1,8 @@
 ---
 title: Saṅghasāmaggī sutta - Harmony In The Community
 description: The Buddha shares the benefits of harmony within the monastic community.
+qualities: faith
+theme: wisdom, principle
 fetter: personal existence, conceit, ignorance
 tags: iti, community, harmony, unity, sangha, benefit, happiness, iti1-27
 slug: iti19

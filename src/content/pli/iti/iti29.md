@@ -1,6 +1,8 @@
 ---
 title: Sukhavihāra sutta - Contented Abiding
 description: A bhikkhu endowed with the two qualities of guarding the sense faculties and moderation in eating lives happily in this very life and after death, a good destination is expected.
+qualities: contentment, sense restraint
+theme: wisdom, directly knowing
 fetter: ignorance
 tags: contentment, guarding, sense bases, sense faculties, moderation, eating, happiness, ease, iti
 slug: iti29

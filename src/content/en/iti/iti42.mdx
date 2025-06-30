@@ -1,6 +1,8 @@
 ---
 title: Sukkadhamma sutta - Bright Qualities
 description: These two bright qualities protect the world - 1) sense of shame and 2) moral dread.
+qualities: conscience, fear of wrongdoing
+theme: cultivating discernment, wisdom
 fetter: ignorance
 tags: sense of shame, moral dread, conscience, fear of wrongdoing, respect, brightness, spiritual life, bright qualities, iti, iti28-49
 slug: iti42

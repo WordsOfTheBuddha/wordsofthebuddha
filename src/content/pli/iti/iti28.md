@@ -1,6 +1,8 @@
 ---
 title: Dukkhavihāra sutta - Discontented Abiding
 description: A bhikkhu endowed with the two qualities of guarding the sense doors and moderation in eating lives with discontentedness in this very life and after death, a bad destination is expected.
+qualities: vanity, non-restraint, discontentment, suffering
+theme: wisdom, directly knowing
 fetter: ignorance, sensual desire
 tags: suffering, guarding, sense bases, sense doors, moderation, eating, iti
 slug: iti28

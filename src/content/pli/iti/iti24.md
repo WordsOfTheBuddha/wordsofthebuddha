@@ -1,6 +1,8 @@
 ---
 title: Aṭṭhipuñja sutta - Heap Of Bones
 description: The Buddha describes the vast accumulation of bones that would result from wandering and transmigrating for an aeon.
+qualities: wisdom, suffering, ending
+theme: wisdom, principle
 fetter: personal existence, conceit, ignorance
 tags: bones, wandering, transmigration, aeon, suffering, noble truths, noble eightfold path, iti, iti1-27
 slug: iti24
