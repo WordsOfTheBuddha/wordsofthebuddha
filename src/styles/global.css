@@ -74,6 +74,7 @@
 	--link-hover-color-light: #0c47a1;
 	--tooltip-border-light: rgba(255, 87, 34, 0.3); /* #ff5722 with opacity */
 	--popover-border-light: rgba(26, 115, 232, 0.3);
+	--text-muted-light: #6b7280; /* gray-500 */
 
 	--icon-fill-color-dark: #ffffff;
 	--bookmark-fill-color-dark: #a9a9a9;
@@ -85,6 +86,7 @@
 	--link-hover-color-dark: #ffffff;
 	--tooltip-border-dark: rgba(212, 116, 69, 0.3); /* #d47445 with opacity */
 	--popover-border-dark: rgba(212, 116, 69, 0.3);
+	--text-muted-dark: #9ca3af; /* gray-500 but darker for dark mode */
 
 	--background-header-light: #f4f4f4;
 	--background-row-even-light: #f9f9f9;
@@ -111,6 +113,7 @@
 	--border-color: rgba(191, 219, 254, 1);
 	--tooltip-border: var(--tooltip-border-light);
 	--popover-border: var(--popover-border-light);
+	--text-muted: var(--text-muted-light);
 
 	--auth-card-bg-light: #ffffff;
 	--auth-card-shadow-light: rgba(0, 0, 0, 0.1);
@@ -155,6 +158,7 @@ html.dark {
 	--border-color: rgba(191, 219, 254, 0.3);
 	--tooltip-border: var(--tooltip-border-dark);
 	--popover-border: var(--popover-border-dark);
+	--text-muted: var(--text-muted-dark);
 
 	--auth-card-bg: var(--auth-card-bg-dark);
 	--auth-card-shadow: var(--auth-card-shadow-dark);

@@ -18,6 +18,109 @@
 			.replace(/'/g, "&#039;");
 	}
 
+	// Bottom popover manager
+	class BottomPopover {
+		private popover: HTMLElement | null = null;
+		private isVisible: boolean = false;
+
+		constructor() {
+			this.createPopover();
+		}
+
+		private createPopover() {
+			this.popover = document.createElement("div");
+			this.popover.className = "bottom-popover";
+			this.popover.innerHTML = `
+				<div class="popover-content">
+					<button class="close-btn" aria-label="Close">
+						<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+							<path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"/>
+						</svg>
+					</button>
+					<div class="popover-body"></div>
+				</div>
+			`;
+
+			// Add close button event
+			const closeBtn = this.popover.querySelector(".close-btn");
+			closeBtn?.addEventListener("click", () => this.hide());
+
+			document.body.appendChild(this.popover);
+		}
+
+		show(
+			content: string,
+			contentType: "markdown" | "dictionary",
+			primaryText?: string
+		) {
+			if (!this.popover) return;
+
+			const contentEl = this.popover.querySelector(".popover-body");
+			if (!contentEl) return;
+
+			if (contentType === "markdown") {
+				// For |text::tooltip| content - show primary word/phrase
+				// Extract bracketed text (Pali term) from content
+				const bracketMatch = content.match(/\[([^\]]+)\]$/);
+				const paliTerm = bracketMatch ? bracketMatch[1] : null;
+				const cleanContent = paliTerm
+					? content.replace(/\s*\[([^\]]+)\]$/, "")
+					: content;
+
+				contentEl.innerHTML = `
+					<div class="tooltip-content markdown-content">
+						${
+							primaryText
+								? `
+							<div class="title">
+								<span class="title-text">${primaryText}</span>
+								${paliTerm ? `<span class="pali-term">[${paliTerm}]</span>` : ""}
+							</div>
+						`
+								: ""
+						}
+						<div class="definition">${cleanContent}</div>
+					</div>
+				`;
+			} else {
+				// For Pali dictionary content
+				contentEl.innerHTML = content;
+			}
+
+			this.popover.classList.add("visible");
+			this.isVisible = true;
+
+			// Handle link clicks within popover
+			this.setupLinkHandlers();
+		}
+
+		hide() {
+			if (!this.popover) return;
+			this.popover.classList.remove("visible");
+			this.isVisible = false;
+		}
+
+		private setupLinkHandlers() {
+			const links = this.popover?.querySelectorAll(".tooltip-link, a");
+			links?.forEach((link) => {
+				link.addEventListener("click", (e) => {
+					if (link instanceof HTMLAnchorElement) {
+						e.preventDefault();
+						window.location.href = link.getAttribute("href") || "";
+						this.hide();
+					}
+				});
+			});
+		}
+
+		isOpen() {
+			return this.isVisible;
+		}
+	}
+
+	// Global popover instance
+	let bottomPopover: BottomPopover;
+
 	function replaceTooltips(element: HTMLElement) {
 		for (let node of element.childNodes) {
 			if (node.nodeType === Node.TEXT_NODE) {
@@ -28,9 +131,8 @@
 					(_, textPart, tooltip) => {
 						// Parse any Markdown links in the tooltip content
 						const parsedTooltip = parseMarkdownLinks(tooltip);
-						// Properly escape HTML for attribute value
-						const escapedTooltip = escapeHtml(parsedTooltip);
-						return `<span class="tooltip-text" data-tippy-content="${escapedTooltip}">${textPart}</span>`;
+						// Store original content for popover
+						return `<span class="tooltip-text" data-tooltip-content="${escapeHtml(parsedTooltip)}">${textPart}</span>`;
 					}
 				);
 				const span = document.createElement("span");
@@ -47,389 +149,60 @@
 		}
 	}
 
-	document.addEventListener("DOMContentLoaded", () => {
-		replaceTooltips(document.body);
+	async function showDictionaryPopover(word: string) {
+		if (!bottomPopover) return;
 
-		// Initialize tippy.js after replacements
-		import("tippy.js").then((tippyModule) => {
-			import("tippy.js/animations/scale-subtle.css");
+		// Show loading state
+		bottomPopover.show(
+			`
+			<div class="loading-spinner">
+				<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+					<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+				</svg>
+				<span class="ml-2">Loading definition...</span>
+			</div>
+		`,
+			"dictionary"
+		);
 
-			const { default: tippy } = tippyModule;
-
-			// Define activeTooltip at a higher scope
-			let activeTooltip: any = null;
-
-			// Setup regular tooltips
-			let tooltips = tippy("[data-tippy-content]", {
-				maxWidth: 400,
-				interactive: true,
-				trigger: "click",
-				hideOnClick: false,
-				placement: "top",
-				animation: "scale-subtle",
-				theme: document.documentElement.classList.contains("dark")
-					? "dark dictionary"
-					: "dictionary",
-				allowHTML: true,
-				onCreate(instance) {
-					// Parse the data-tippy-content attribute
-					const content =
-						instance.reference.getAttribute("data-tippy-content") ||
-						"";
-
-					// Format the content into the same style as dictionary tooltips
-					instance.setContent(`
-						<div class="tooltip-content">
-							<div class="title">${instance.reference.textContent}</div>
-							<div class="dpd-content">
-                <div class="definition">${content}</div>
-							</div>
-						</div>
-					`);
-
-					// Add event delegation for links in tooltips
-					instance.popper.addEventListener("click", (e) => {
-						const link = (e.target as HTMLElement).closest(
-							".tooltip-link, a"
-						);
-						if (link && link instanceof HTMLAnchorElement) {
-							e.preventDefault();
-							window.location.href =
-								link.getAttribute("href") || "";
-							// Close all tooltips after navigation
-							tooltips.forEach((tooltip) => tooltip.hide());
-						}
-					});
-				},
-				onShow: (instance) => {
-					// Hide all other tooltips when showing a new one
-					tooltips.forEach((tooltip) => {
-						if (tooltip !== instance) {
-							tooltip.hide();
-						}
-					});
-					if (activeTooltip) {
-						activeTooltip.destroy();
-						activeTooltip = null;
-					}
-
-					instance.popper.style.maxHeight = "250px";
-					instance.popper.style.overflowY = "auto";
-					instance.popper.style.overflowX = "hidden";
-				},
-			});
-
-			// Setup Pali word lookup if enabled
-			if (localStorage.getItem("paliLookup") === "true") {
-				let activeTooltip: any = null;
-
-				const showDictionary = async (
-					text: string,
-					x: number,
-					y: number,
-					isMobile = false
-				) => {
-					// Hide all regular tooltips when showing dictionary tooltip
-					tooltips.forEach((tooltip) => tooltip.hide());
-
-					if (activeTooltip) {
-						activeTooltip.destroy();
-						activeTooltip = null;
-					}
-
-					// Get selection coordinates
-					const selection = window.getSelection();
-					const range = selection?.getRangeAt(0);
-					const rect = range?.getBoundingClientRect();
-
-					console.log(
-						"Selection rect:",
-						rect
-							? {
-									top: rect.top,
-									bottom: rect.bottom,
-									left: rect.left,
-									right: rect.right,
-									height: rect.height,
-									width: rect.width,
-								}
-							: "No rect available"
-					);
-
-					// Create temporary element for the tooltip
-					const temp = document.createElement("div");
-					temp.style.position = "absolute"; // Changed from fixed
-					temp.style.zIndex = "9999";
-
-					// Position anchor point based on device type
-					if (rect) {
-						const scrollX = window.scrollX;
-						const scrollY = window.scrollY;
-						const isTouchDevice = "ontouchstart" in window;
-
-						temp.style.left = `${rect.left + scrollX + rect.width / 2}px`;
-						// Use bottom position for touch devices, top for desktop
-						temp.style.top = `${(isTouchDevice ? rect.bottom : rect.top) + scrollY}px`;
-
-						console.log("Anchor position:", {
-							left: rect.left + scrollX,
-							top:
-								(isTouchDevice ? rect.bottom : rect.top) +
-								scrollY,
-							withScroll: true,
-							device: isTouchDevice ? "touch" : "desktop",
-						});
-					} else {
-						temp.style.left = `${x}px`;
-						temp.style.top = `${y}px`;
-					}
-
-					document.body.appendChild(temp);
-
-					activeTooltip = tippy(temp, {
-						content: `<div class="loading-spinner">
-							<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-							</svg>
-							<span class="ml-2">Loading definition...</span>
-						</div>`,
-						allowHTML: true,
-						interactive: true,
-						theme: document.documentElement.classList.contains(
-							"dark"
-						)
-							? "dark dictionary"
-							: "dictionary",
-						placement: "ontouchstart" in window ? "bottom" : "top", // Change placement based on device
-						strategy: "fixed", // Use fixed positioning strategy
-						popperOptions: {
-							modifiers: [
-								{
-									name: "offset",
-									options: {
-										offset: [0, 10], // [skidding (horizontal), distance (vertical)]
-									},
-								},
-								{
-									name: "preventOverflow",
-									options: {
-										boundary: "viewport",
-										altAxis: true, // Prevents overflow on both axes
-										padding: 10, // Keeps 10px from viewport edges
-									},
-								},
-								{
-									name: "flip",
-									enabled: false, // Disable flipping to top
-								},
-							],
-						},
-						showOnCreate: true,
-						maxWidth: 400,
-						trigger: "manual",
-						hideOnClick: false,
-						onShow(instance) {
-							instance.popper.style.maxHeight = "300px";
-							instance.popper.style.overflowY = "auto";
-						},
-					});
-
-					try {
-						const response = await fetch(
-							`/api/pali/lookup?word=${encodeURIComponent(text)}`
-						);
-						const data = await response.json();
-						if (data.definitions && data.definitions.length > 0) {
-							const contentEl = document.createElement("div");
-							contentEl.innerHTML = createTooltipContent(
-								text,
-								data
-							);
-							activeTooltip.setContent(contentEl);
-						} else {
-							activeTooltip.setContent("No definition found");
-						}
-					} catch (error) {
-						console.error("Failed to fetch definition:", error);
-						activeTooltip.setContent("Failed to load definition");
-					}
-				};
-
-				// Desktop: Keep double-click handler
-				if (!("ontouchstart" in window)) {
-					document.addEventListener("dblclick", (e) => {
-						const target = e.target as HTMLElement;
-						if (!target.closest(".pali-paragraph")) return;
-
-						const selection = window.getSelection();
-						const text = selection?.toString().trim();
-						if (!text || /\s/.test(text)) return;
-
-						showDictionary(text, e.pageX, e.pageY, false);
-					});
-				}
-
-				// Desktop: click outside to close
-				if (!("ontouchstart" in window)) {
-					document.addEventListener("click", (e) => {
-						console.log(
-							"Desktop click event for closing tooltip:",
-							e.target
-						);
-						const target = e.target as HTMLElement;
-						if (
-							activeTooltip &&
-							!target.closest(".tippy-content")
-						) {
-							console.log(
-								"Closing dictionary tooltip on desktop."
-							);
-							activeTooltip.destroy();
-							activeTooltip = null;
-						}
-					});
-				}
-
-				// Mobile: Use touch handler
-				if ("ontouchstart" in window) {
-					let startTouch: Touch | null = null;
-
-					// Add close button to tooltip
-					document.addEventListener("click", (e) => {
-						const target = e.target as HTMLElement;
-						if (
-							activeTooltip &&
-							!target.closest(".tippy-content") &&
-							!target.closest(".pali-paragraph")
-						) {
-							activeTooltip.destroy();
-							activeTooltip = null;
-						}
-					});
-
-					// Prevent default context menu on mobile
-					document.addEventListener("contextmenu", (e) => {
-						const target = e.target as HTMLElement;
-						if (target.closest(".pali-paragraph")) {
-							e.preventDefault();
-						}
-					});
-
-					document.addEventListener(
-						"touchstart",
-						(e) => {
-							const target = e.target as HTMLElement;
-							if (!target.closest(".pali-paragraph")) return;
-							startTouch = e.touches[0];
-						},
-						{ passive: true }
-					);
-
-					document.addEventListener(
-						"touchend",
-						(e) => {
-							if (!startTouch) return;
-
-							const selection = window.getSelection();
-							const text = selection?.toString().trim();
-
-							console.log("Touch detected:", {
-								text,
-								hasPaliParent: !!(
-									e.target as HTMLElement
-								).closest(".pali-paragraph"),
-							});
-
-							if (text && !text.includes(" ")) {
-								showDictionary(
-									text,
-									startTouch.pageX,
-									startTouch.pageY,
-									true
-								);
-							}
-							startTouch = null;
-						},
-						{ passive: true }
-					);
-
-					// Add a document-wide click handler to close tooltip when clicking outside
-					document.addEventListener("click", (e) => {
-						const target = e.target as HTMLElement;
-						if (
-							activeTooltip &&
-							!target.closest(".tippy-content")
-						) {
-							activeTooltip.hide();
-						}
-					});
-				}
+		try {
+			const response = await fetch(
+				`/api/pali/lookup?word=${encodeURIComponent(word)}`
+			);
+			const data = await response.json();
+			if (data.definitions && data.definitions.length > 0) {
+				const content = createTooltipContent(word, data);
+				bottomPopover.show(content, "dictionary");
+			} else {
+				bottomPopover.show("No definition found", "dictionary");
 			}
-
-			// Close tooltips when clicking outside
-			document.addEventListener("click", (event) => {
-				const target = event.target as HTMLElement;
-				const clickedTooltip = target?.closest(".tooltip-text");
-				const clickedTooltipContent = target?.closest(".tippy-content");
-				const clickedTooltipBox = target?.closest(".tippy-box");
-
-				if (
-					!clickedTooltip &&
-					!clickedTooltipContent &&
-					!clickedTooltipBox
-				) {
-					tooltips.forEach((tooltip) => tooltip.hide());
-				}
-			});
-
-			// Function to update tooltip themes
-			function updateTooltipTheme() {
-				tooltips.forEach((tooltip) => {
-					if (document.documentElement.classList.contains("dark")) {
-						tooltip.popper.classList.add("dark-tooltip");
-					} else {
-						tooltip.popper.classList.remove("dark-tooltip");
-					}
-				});
-			}
-
-			// Initial theme setup
-			updateTooltipTheme();
-
-			// Observe changes to the 'dark' class on the HTML element
-			const observer = new MutationObserver((mutations) => {
-				mutations.forEach((mutation) => {
-					if (mutation.attributeName === "class") {
-						updateTooltipTheme();
-					}
-				});
-			});
-
-			observer.observe(document.documentElement, { attributes: true });
-		});
-	});
+		} catch (error) {
+			console.error("Failed to fetch definition:", error);
+			bottomPopover.show("Failed to load definition", "dictionary");
+		}
+	}
 
 	function createTooltipContent(word: string, data: any) {
 		const { definitions } = data;
 		return `
 			<div class="tooltip-content">
-                <div class="title">
-                    <span>
-                        ${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
-                    <span style="margin-left: 8px">
-                    ${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-                    </span>
-                    </span>
-                    ${
+				<div class="title">
+					<span>
+						${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
+						<span style="margin-left: 8px">
+							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+						</span>
+					</span>
+					${
 						definitions[0].construction
 							? `
-                    <span>
-                        <span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
-                    </span>`
+						<span>
+							<span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
+						</span>`
 							: ""
 					}
-                </div>
+				</div>
 				<div class="dpd-content">
 					${definitions
 						.map(
@@ -437,11 +210,7 @@
 						<div class="summary${idx === definitions.length - 1 ? " last" : ""}">
 							<div class="def-line">
 								<span class="meaning">${idx + 1}. ${def.meaning}${def.meaning_lit ? ";" : ""}</span>
-                                ${
-									def.meaning_lit
-										? `<span class="meaning" style="font-style: italic;">lit. ${def.meaning_lit}</span>`
-										: ""
-								}
+								${def.meaning_lit ? `<span class="meaning" style="font-style: italic;">lit. ${def.meaning_lit}</span>` : ""}
 							</div>
 						</div>
 					`
@@ -451,38 +220,169 @@
 			</div>
 		`;
 	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		replaceTooltips(document.body);
+		bottomPopover = new BottomPopover();
+
+		// Handle |text::tooltip| clicks
+		document.addEventListener("click", (e) => {
+			const tooltipElement = (e.target as HTMLElement).closest(
+				".tooltip-text"
+			);
+			if (tooltipElement) {
+				e.preventDefault();
+				const content =
+					tooltipElement.getAttribute("data-tooltip-content") || "";
+				const primaryText = tooltipElement.textContent || "";
+				bottomPopover.show(content, "markdown", primaryText);
+			}
+		});
+
+		// Handle Pali word lookup if enabled
+		if (localStorage.getItem("paliLookup") === "true") {
+			// Desktop: double-click handler
+			if (!("ontouchstart" in window)) {
+				document.addEventListener("dblclick", (e) => {
+					const target = e.target as HTMLElement;
+					if (!target.closest(".pali-paragraph")) return;
+
+					const selection = window.getSelection();
+					const text = selection?.toString().trim();
+					if (!text || /\s/.test(text)) return;
+
+					showDictionaryPopover(text);
+				});
+			}
+
+			// Mobile: touch handler
+			if ("ontouchstart" in window) {
+				let startTouch: Touch | null = null;
+
+				document.addEventListener("contextmenu", (e) => {
+					const target = e.target as HTMLElement;
+					if (target.closest(".pali-paragraph")) {
+						e.preventDefault();
+					}
+				});
+
+				document.addEventListener(
+					"touchstart",
+					(e) => {
+						const target = e.target as HTMLElement;
+						if (!target.closest(".pali-paragraph")) return;
+						startTouch = e.touches[0];
+					},
+					{ passive: true }
+				);
+
+				document.addEventListener(
+					"touchend",
+					(e) => {
+						if (!startTouch) return;
+
+						const selection = window.getSelection();
+						const text = selection?.toString().trim();
+
+						if (text && !text.includes(" ")) {
+							showDictionaryPopover(text);
+						}
+						startTouch = null;
+					},
+					{ passive: true }
+				);
+			}
+		}
+	});
 </script>
 
 <style is:global>
-	.tippy-box[data-theme~="dictionary"] .summary:not(.last) {
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-	}
-
-	.tippy-box[data-theme~="dictionary"] .title {
-		color: var(--primary-color);
-		font-weight: 500;
-		font-size: 0.9rem;
-		border-bottom: 1px solid var(--auth-input-border);
-		padding-bottom: 0.5rem;
-		margin-bottom: 0.5rem;
-	}
-
-	.tooltip-content .title {
+	.bottom-popover {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100vw;
+		height: 25vh;
+		background-color: var(--background-color);
+		border-top: 1px solid var(--popover-border);
+		box-shadow:
+			0 -4px 6px -1px rgba(0, 0, 0, 0.1),
+			0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+		transform: translateY(100%);
+		transition: transform 0.3s ease-in-out;
+		z-index: 1000;
 		display: flex;
-		align-items: baseline;
 		flex-direction: column;
+	}
+
+	html.dark .bottom-popover {
+		box-shadow:
+			0 -4px 6px -1px rgba(0, 0, 0, 0.3),
+			0 -2px 4px -1px rgba(0, 0, 0, 0.2);
+	}
+
+	.bottom-popover.visible {
+		transform: translateY(0);
+	}
+
+	.popover-content {
+		position: relative;
+		padding: 1.5rem 1.5rem 2rem;
+		overflow-y: auto;
+		flex: 1;
+	}
+
+	.close-btn {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: none;
+		border: none;
+		color: var(--text-color);
+		cursor: pointer;
+		padding: 0.25rem;
+		border-radius: 0.25rem;
+		transition: background-color 0.2s;
+		z-index: 1;
+	}
+
+	.close-btn:hover {
+		background-color: var(--background-row-hover);
+	}
+
+	.popover-body {
+		padding-right: 3rem; /* Make room for close button */
+	}
+
+	/* Tooltip text styling - remove underline effect */
+	.tooltip-text {
+		cursor: pointer;
+	}
+
+	/* Preserve existing tooltip content styles */
+	.tooltip-content .title {
 		color: var(--primary-color);
 		font-weight: 500;
 		border-bottom: 1px solid var(--auth-input-border);
 		margin-bottom: 0.5rem;
 		padding-bottom: 0.5rem;
 		font-size: 0.9rem;
+		line-height: 1.6;
 	}
 
-	:root[class~="dark"] .tooltip-content .title {
-		color: var(--text-color);
+	html.dark .tooltip-content .title {
+		color: var(--primary-color);
+	}
+
+	.tooltip-content .title-text {
+		color: inherit;
+	}
+
+	.tooltip-content .pali-term {
+		color: var(--text-muted);
+		font-weight: 400;
+		margin-left: 0.25rem;
 	}
 
 	.tooltip-content .grammar {
@@ -491,32 +391,52 @@
 		margin-right: 0.5rem;
 	}
 
-	.tooltip-content .pattern {
-		color: var(--text-muted);
-		font-size: 0.8rem;
-		margin-right: 0.5rem;
-	}
-
 	.tooltip-content .meaning {
-		display: inline; /* Changed from block */
+		display: inline;
 		margin: 0;
 	}
 
 	.tooltip-content .construction {
 		font-size: 0.8rem;
-		color: var(--text-muted);
+		color: var(--text-color);
+		opacity: 0.7;
 		margin-top: 0.25rem;
 	}
 
-	.tooltip-content .construction .label {
-		font-style: italic;
+	.tooltip-content .summary:not(.last) {
+		border-bottom: 1px solid var(--auth-input-border);
+		margin-bottom: 0.5rem;
+		padding-bottom: 0.5rem;
 	}
 
-	/* Add styles for links in tooltips */
 	.tooltip-link,
-	.tippy-content a {
+	.popover-content a {
 		color: var(--link-color);
 		text-decoration: underline;
 		cursor: pointer;
+	}
+
+	.loading-spinner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		color: var(--text-color);
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.animate-spin {
+		animation: spin 1s linear infinite;
+	}
+
+	/* Markdown content styling */
+	.markdown-content .definition {
+		color: var(--text-color);
+		line-height: 1.6;
 	}
 </style>
