@@ -235,11 +235,14 @@ const totalDiscourses = allDiscourses.length;
 		{
 			additionalDiscourses.length > 0 && (
 				<div class="space-y-10">
-					<h2 class="text-xl font-medium mb-4">
-						{contentType === "topic" && primaryDiscourses.length > 0
-							? "More Discourses"
-							: "Discourses"}
-					</h2>
+					{primaryDiscourses.length > 0 && (
+						<h2 class="text-xl font-medium mb-4">
+							{contentType === "topic" &&
+							primaryDiscourses.length > 0
+								? "More Discourses"
+								: "Discourses"}
+						</h2>
+					)}
 					{collectionOrder.map((collectionKey) => {
 						const collection = collections[collectionKey];
 						if (collection.items.length === 0) return null;
