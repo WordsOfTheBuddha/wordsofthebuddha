@@ -100,6 +100,7 @@
 		"giving up",
 		"good friendship",
 		"good habits",
+		"happiness",
 		"humility",
 		"impartiality",
 		"inquisitiveness",
@@ -131,6 +132,7 @@
 		"right speech",
 		"right view",
 		"rousing of energy",
+		"safety",
 		"self-control",
 		"sense restraint",
 		"sincerity",
@@ -203,6 +205,14 @@
 			"worry",
 			"Related:{impatience}",
 			"[kukkucca, uddhacca, darathaja]"
+		],
+		"appreciative joy": [
+			"mudita",
+			"appreciation",
+			"rejoicing in the happiness of others",
+			"delight in the success of others",
+			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
+			"[muditā]"
 		],
 		"aversion": [
 			"animosity",
@@ -326,6 +336,7 @@
 			"ease",
 			"having few desires",
 			"fewness of wishes",
+			"Related:{happiness, joyful pleasure}",
 			"[santutthi, appicchatā]"
 		],
 		"continuous effort": [
@@ -461,7 +472,7 @@
 			"Related:{drowsiness}",
 			"[thina]"
 		],
-		"ending": ["cessation", "gradual ending", "[nirodha]"],
+		"ending": ["cessation", "gradual ending", "[khaya, nirodha]"],
 		"equanimity": [
 			"mental poise",
 			"mental balance",
@@ -499,6 +510,7 @@
 			"[bhaya]"
 		],
 		"fear of wrongdoing": [
+			"conscientious",
 			"moral dread",
 			"respect for others",
 			"(comm) originating from outside",
@@ -565,6 +577,15 @@
 			"Related:{passion, craving, stinginess}",
 			"Context: A grasping mental quality of craving, possessiveness, or lustful wanting that clings to objects or experiences; it fuels attachment and obstructs renunciation and contentment",
 			"[lobha]"
+		],
+		"happiness": [
+			"ease",
+			"gladness",
+			"joy",
+			"pleasant abiding",
+			"positive state of mind",
+			"Related:{joyful pleasure, contentment}",
+			"[sukha, somanassa]"
 		],
 		"harmful": [
 			"injurious",
@@ -658,6 +679,7 @@
 			"heartfelt joy",
 			"spiritual rapture",
 			"lit. lovely feeling",
+			"Related:{happiness, contentment}",
 			"[pīti]"
 		],
 		"knowledge": [
@@ -906,6 +928,7 @@
 			"Related:{vigour}",
 			"[vīriyārambha, āraddhavīriya, uṭṭhānavant]"
 		],
+		"safety": ["sanctuary", "security", "peace", "rest", "[khema]"],
 		"self-control": [
 			"self-restraint",
 			"self-mastery",
@@ -994,14 +1017,6 @@
 			"affliction",
 			"[dukkha]"
 		],
-		"appreciative joy": [
-			"mudita",
-			"appreciation",
-			"rejoicing in the happiness of others",
-			"delight in the success of others",
-			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
-			"[muditā]"
-		],
 		"tame": [
 			"trained",
 			"mastered",
@@ -1023,6 +1038,7 @@
 		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"imperturbable": [
 			"unagitated",
+			"unruffled",
 			"unshaken",
 			"untroubled",
 			"unwavering",
@@ -1099,7 +1115,7 @@
 			"the quality of possessing experience alongside knowledge and sound judgment",
 			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable",
 			"an experiential understanding of the four noble truths",
-			"[paññā, medhā, dhīra, paṇḍita]"
+			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
 			"proper attention",

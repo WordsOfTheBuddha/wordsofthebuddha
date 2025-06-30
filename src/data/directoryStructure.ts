@@ -116,7 +116,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn22: {
 						title: "Khandhasaṁyutta - Linked Discourses on the Aggregates",
 						description:
-							'The "Linked Discourses on the Aggregates" contains discourses focusing on the five aggregates that constitute personal experience: form, feeling, perception, intentional constructions, and consciousness. These teachings explore the nature of the aggregates, their arising and ceasing, and their relationship to suffering and liberation. By examining the components of experience, these discourses offer insights into the nature of self and the conditions for suffering and liberation.',
+							'The "Linked Discourses on the Aggregates" contains discourses focusing on the five aggregates that constitute personal experience: form, feeling, perception, intentional constructs, and consciousness. These teachings explore the nature of the aggregates, their arising and ceasing, and their relationship to suffering and liberation. By examining the components of experience, these discourses offer insights into the nature of self and the conditions for suffering and liberation.',
 					},
 					sn23: {
 						title: "Rādhasaṁyutta - Linked Discourses with Rādha",
