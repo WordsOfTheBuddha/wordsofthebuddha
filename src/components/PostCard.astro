@@ -8,6 +8,7 @@ interface Props {
 	dateLabel?: string;
 	clamp?: number;
 	count?: number; // Added count property
+	titleTag?: string; // Added title tag property
 }
 
 export const formatDate = (date: string | Date) => {
@@ -26,6 +27,7 @@ const {
 	dateLabel = "Last updated on",
 	clamp = 3,
 	count = 0, // Default count to 0
+	titleTag, // Added title tag
 } = Astro.props;
 ---
 
@@ -45,6 +47,13 @@ const {
 							style="color:var(--text-color)">{title}</span
 						></a
 					>
+					{
+						titleTag && (
+							<span class="ml-2 px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom -translate-y-0.5 mt-1">
+								{titleTag}
+							</span>
+						)
+					}
 				</h2>
 			</div>
 			<div class="flex items-center shrink-0">

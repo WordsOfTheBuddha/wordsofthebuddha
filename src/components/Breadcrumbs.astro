@@ -20,6 +20,7 @@ if (
 		"/profile",
 		"/qualities",
 		"/simile",
+		"/topic",
 	].indexOf(path) !== -1
 )
 	return null;
@@ -60,7 +61,11 @@ if (breadcrumbs.length > 0) {
 				)}
 				{index === breadcrumbs.length - 1 &&
 				path.split("/")[1] === lastSegment ? (
-					<span class="text-[var(--text-muted)]" title={item.title}>
+					<span
+						class="text-[var(--text-muted)]"
+						title={item.title}
+						aria-current="page"
+					>
 						{item.label}
 					</span>
 				) : (
@@ -68,6 +73,7 @@ if (breadcrumbs.length > 0) {
 						href={item.path}
 						class="text-[var(--text-color)] hover:text-[var(--link-hover-color)] transition-colors duration-200"
 						title={item.title}
+						aria-label={`Go to ${item.label}`}
 					>
 						{item.label}
 					</a>
