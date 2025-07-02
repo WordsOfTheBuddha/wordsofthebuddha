@@ -130,7 +130,6 @@ const { title, description } = Astro.props;
 
 	// Theme handling
 	function updateDarkMode(): void {
-		console.log("updating theme toggle");
 		if (!rootElement)
 			rootElement = document.getElementById("highlight-root");
 		if (!rootElement) return;
@@ -144,7 +143,6 @@ const { title, description } = Astro.props;
 	}
 
 	function updateTheme(): void {
-		console.log("updating theme");
 		const isDark = document.documentElement.classList.contains("dark");
 		if (menu) {
 			menu.style.setProperty("--bg-color", isDark ? "#1f2937" : "#fff");
@@ -161,15 +159,12 @@ const { title, description } = Astro.props;
 		try {
 			// Check if highlighting is disabled for this page
 			if (rootElement?.dataset.highlightDisabled === "true") {
-				console.log(`[highlight] Highlighting disabled for this page`);
 				return;
 			}
-			console.log(`[highlight] Initializing highlighter...`);
 			const rangy = await importRangy();
 			window.rangy = rangy;
 			rangy.init();
 			highlighter = rangy.createHighlighter();
-			console.log(`[highlight] Rangy initialized, highlighter created`);
 
 			Object.entries(COLOR_MAP).forEach(([colorName, bgColor]) => {
 				const applier = rangy.createClassApplier(
@@ -184,15 +179,11 @@ const { title, description } = Astro.props;
 					highlighter.addClassApplier(applier);
 				}
 			});
-			console.log(`[highlight] Color appliers registered`);
 
 			// Set up event listeners first
 			setupEventListeners();
-			console.log(`[highlight] Event listeners setup complete`);
 
-			console.log("auth status: ", rootElement?.dataset);
 			if (rootElement?.dataset.authenticated === "true") {
-				console.log(`[highlight] Fetching existing highlights...`);
 				// Then fetch and restore highlights from Firestore
 				await highlightService.fetchHighlights(highlighter); // Updated to pass highlighter
 			}
@@ -206,9 +197,7 @@ const { title, description } = Astro.props;
 	const highlightService = await import("../service/highlightService");
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
-		console.log(`[highlight] Selection event triggered`);
 		if (!window.rangy || !highlighter) {
-			console.log(`[highlight] Rangy or highlighter not initialized`);
 			return;
 		}
 
@@ -217,11 +206,6 @@ const { title, description } = Astro.props;
 
 		const target = e.target as HTMLElement;
 		const selection = window.rangy.getSelection();
-		console.log(`[highlight] Selection details:`, {
-			isCollapsed: selection.isCollapsed,
-			hasRange: selection.rangeCount > 0,
-			text: selection.toString().trim(),
-		});
 
 		// Early validations
 		if (
@@ -229,20 +213,21 @@ const { title, description } = Astro.props;
 			!selection.rangeCount ||
 			!selectionHandler.isSelectionValid(selection)
 		) {
-			console.log(`[highlight] Invalid selection`);
 			return;
 		}
 
 		// Handle tooltip and Pali cases
 		const isPaliContext = checkPaliContext(target, selection);
 		if (isPaliContext) {
-			console.log(`[highlight] Pali context detected, ignoring`);
 			return;
 		}
 
+		// Check if selection intersects with collapse elements
+		const intersectsCollapse = checkCollapseIntersection(selection);
+
 		// Show appropriate menu based on auth status
 		const isAuthenticated = rootElement?.dataset.authenticated === "true";
-		console.log(`[highlight] Auth check for menu:`, isAuthenticated);
+
 		if (!isAuthenticated) {
 			const signinPrompt = document.getElementById("highlight-signin")!;
 			const { savedRange: newSavedRange } =
@@ -258,6 +243,7 @@ const { title, description } = Astro.props;
 			return;
 		}
 
+		// Show menu and configure based on collapse intersection
 		menu.style.display = "block";
 		const { savedRange: newSavedRange } =
 			selectionHandler.updateMenuPosition(
@@ -270,8 +256,104 @@ const { title, description } = Astro.props;
 			);
 		savedRange = newSavedRange;
 
+		// Show/hide highlight colors based on collapse intersection
+		updateHighlightingAvailability(intersectsCollapse);
+
 		// Add outside click listener
 		setupOutsideClickListener();
+	}
+
+	function checkCollapseIntersection(selection: RangySelection): boolean {
+		if (!selection.rangeCount) return false;
+
+		for (let i = 0; i < selection.rangeCount; i++) {
+			const range = selection.getRangeAt(i).nativeRange;
+			if (!range) continue;
+
+			// Check if selection starts or ends within a collapse element
+			const startElement =
+				range.startContainer.nodeType === Node.ELEMENT_NODE
+					? (range.startContainer as Element)
+					: range.startContainer.parentElement;
+			const endElement =
+				range.endContainer.nodeType === Node.ELEMENT_NODE
+					? (range.endContainer as Element)
+					: range.endContainer.parentElement;
+
+			// Check if start or end is within a collapse element
+			if (startElement && isWithinCollapseElement(startElement)) {
+				return true;
+			}
+			if (endElement && isWithinCollapseElement(endElement)) {
+				return true;
+			}
+
+			// Check if any collapse elements are contained within the range
+			const commonAncestor = range.commonAncestorContainer;
+			if (commonAncestor.nodeType === Node.ELEMENT_NODE) {
+				const collapseElements = (
+					commonAncestor as Element
+				).querySelectorAll(".collapse-toggle");
+
+				for (const collapseEl of collapseElements) {
+					if (range.intersectsNode(collapseEl)) {
+						return true;
+					}
+				}
+			} else if (commonAncestor.parentElement) {
+				// If common ancestor is a text node, check its parent
+				const collapseElements =
+					commonAncestor.parentElement.querySelectorAll(
+						".collapse-toggle"
+					);
+
+				for (const collapseEl of collapseElements) {
+					if (range.intersectsNode(collapseEl)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	function updateHighlightingAvailability(intersectsCollapse: boolean): void {
+		// Show/hide color swatches based on collapse intersection
+		const colorSwatches = document.querySelectorAll(".color-swatch");
+		const eraserBtn = document.getElementById("highlight-eraser");
+
+		colorSwatches.forEach((swatch) => {
+			const display = intersectsCollapse ? "none" : "block";
+			(swatch as HTMLElement).style.display = display;
+		});
+
+		// Also hide eraser if highlighting is disabled
+		if (eraserBtn) {
+			if (intersectsCollapse) {
+				eraserBtn.style.display = "none";
+			} else {
+				// Keep existing eraser visibility logic (show only if there are existing highlights)
+				if (highlighter && window.rangy) {
+					const selection = window.rangy.getSelection();
+					const existing =
+						highlighter.getHighlightsInSelection(selection);
+					const display = existing.length > 0 ? "flex" : "none";
+					eraserBtn.style.display = display;
+				}
+			}
+		}
+	}
+
+	function isWithinCollapseElement(element: Element): boolean {
+		let current = element;
+		while (current && current !== rootElement) {
+			if (current.classList?.contains("collapse-toggle")) {
+				return true;
+			}
+			current = current.parentElement!;
+		}
+		return false;
 	}
 
 	function checkPaliContext(
@@ -305,7 +387,15 @@ const { title, description } = Astro.props;
 	function applyHighlight(colorName: ColorName): void {
 		if (!highlighter || !window.rangy) return;
 
+		// Double check that we're not trying to highlight collapse intersections
 		const selection = window.rangy.getSelection();
+		const intersectsCollapse = checkCollapseIntersection(selection);
+		if (intersectsCollapse) {
+			console.warn(
+				"Attempted to highlight selection that intersects with collapse elements"
+			);
+			return;
+		}
 
 		if (isMobile && savedRange) {
 			setTimeout(() => {
@@ -347,6 +437,15 @@ const { title, description } = Astro.props;
 		if (!highlighter || !window.rangy) return;
 
 		const selection = window.rangy.getSelection();
+
+		// Double check that we're not trying to clear highlights in collapse intersections
+		const intersectsCollapse = checkCollapseIntersection(selection);
+		if (intersectsCollapse) {
+			console.warn(
+				"Attempted to clear highlights in selection that intersects with collapse elements"
+			);
+			return;
+		}
 
 		if (isMobile && savedRange) {
 			try {

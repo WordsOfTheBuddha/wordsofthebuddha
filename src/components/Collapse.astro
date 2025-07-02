@@ -1,0 +1,100 @@
+---
+/**
+ * Collapse.astro
+ *
+ * Collapses every <collapse> … </collapse> element into a clickable
+ * mid-line ellipsis (⋯, U+22EF). Clicking toggles the full text.
+ *
+ * Usage (once per page):
+ *   import Collapse from "../components/Collapse.astro";
+ *   <Collapse />
+ *   <Collapse defaultState="expand" />
+ *
+ * Authoring example:
+ *   This is <collapse>some hidden, repeated wording</collapse> in a paragraph.
+ *   This is <collapse expand>some visible, repeated wording</collapse> in a paragraph.
+ *
+ * Priority (highest to lowest):
+ *   1. <collapse expand> attribute in markdown
+ *   2. defaultState prop passed to component
+ *   3. Default "collapse" behavior
+ *
+ * If JS/CSS is absent the original text simply remains visible.
+ */
+
+export interface Props {
+	defaultState?: "expand" | "collapse";
+}
+
+const { defaultState = "collapse" } = Astro.props;
+---
+
+<script define:vars={{ defaultState }}>
+	const COLLAPSE_MARK = "\u2219\u2219\u2219"; // "∙∙∙" Mid-line Horizontal Ellipsis (centered dots)
+
+	function initCollapse() {
+		// Replace <collapse> elements with clickable span placeholders
+		document.querySelectorAll("collapse").forEach((node) => {
+			const full = node.textContent?.trim() || "";
+			const span = document.createElement("span");
+			span.className = "collapse-toggle";
+			span.dataset.content = full;
+
+			// Priority system:
+			// 1. Check for 'expand' attribute in markdown
+			// 2. Use defaultState prop from component
+			// 3. Default to 'collapse'
+			const hasExpandAttr = node.hasAttribute("expand");
+			const shouldExpand = hasExpandAttr
+				? true
+				: defaultState === "expand";
+
+			if (shouldExpand) {
+				span.textContent = full;
+				span.classList.add("expanded");
+				span.title = "Click to collapse";
+			} else {
+				span.textContent = COLLAPSE_MARK;
+				span.classList.add("collapsed");
+				span.title = "Click to expand";
+			}
+
+			node.replaceWith(span);
+		});
+
+		// Toggle logic via event delegation
+		document.body.addEventListener("click", (e) => {
+			const el = e.target?.closest(".collapse-toggle");
+			if (!el) return;
+
+			if (el.classList.contains("collapsed")) {
+				el.textContent = el.dataset.content || "";
+				el.classList.replace("collapsed", "expanded");
+				el.title = "Click to collapse";
+			} else {
+				el.textContent = COLLAPSE_MARK;
+				el.classList.replace("expanded", "collapsed");
+				el.title = "Click to expand";
+			}
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initCollapse);
+	} else {
+		initCollapse();
+	}
+</script>
+
+<style is:global>
+	.collapse-toggle {
+		cursor: pointer;
+	}
+	.collapse-toggle.collapsed {
+		opacity: 1;
+	}
+	.collapse-toggle.expanded {
+		text-decoration: none;
+		opacity: 0.7;
+	}
+</style>
