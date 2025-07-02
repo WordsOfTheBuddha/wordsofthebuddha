@@ -30,7 +30,7 @@ const { defaultState = "collapse" } = Astro.props;
 ---
 
 <script define:vars={{ defaultState }}>
-	const COLLAPSE_MARK = "\u2219\u2219\u2219"; // "∙∙∙" Mid-line Horizontal Ellipsis (centered dots)
+	const COLLAPSE_MARK = "\u2024\u2024\u2024"; // "․․․"
 
 	function initCollapse() {
 		// Replace <collapse> elements with clickable span placeholders

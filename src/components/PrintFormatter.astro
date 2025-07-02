@@ -1,0 +1,94 @@
+<!-- src/components/PrintFormatter.astro -->
+<script>
+	import { getFormattedContainer } from "../utils/tooltipFormatter";
+
+	function setupPrintFormatting() {
+		let originalContent: string | null = null;
+
+		window.addEventListener("beforeprint", () => {
+			// Find the main content area (where tooltips exist)
+			const contentArea =
+				document.querySelector("article.prose") ||
+				document.querySelector("main") ||
+				document.querySelector(".prose");
+
+			if (!contentArea) return;
+
+			// Store original content
+			originalContent = contentArea.innerHTML;
+
+			// Create range for the content
+			const range = document.createRange();
+			range.selectNodeContents(contentArea);
+
+			// Apply rich formatting (same logic as copy button)
+			const threshold = parseInt(
+				localStorage.getItem("tooltipThreshold") || "35"
+			);
+			const formattedContainer = getFormattedContainer(range, threshold);
+
+			// Replace content with formatted version
+			contentArea.innerHTML = formattedContainer.innerHTML;
+			contentArea.classList.add("print-formatted");
+		});
+
+		window.addEventListener("afterprint", () => {
+			// Restore original content
+			const contentArea = document.querySelector(".print-formatted");
+			if (originalContent && contentArea) {
+				contentArea.innerHTML = originalContent;
+				contentArea.classList.remove("print-formatted");
+				originalContent = null;
+			}
+		});
+	}
+
+	// Initialize
+	document.addEventListener("DOMContentLoaded", setupPrintFormatting);
+</script>
+
+<style is:global>
+	@media print {
+		/* Hide interactive elements */
+		.copy-btn,
+		.bottom-popover,
+		button:not(.print-keep),
+		.navbar,
+		nav,
+		.breadcrumbs {
+			display: none !important;
+		}
+
+		.print-formatted {
+			font-family: "Times New Roman", serif;
+			font-size: 12pt;
+			line-height: 1.6;
+			color: black !important;
+		}
+
+		.print-formatted b {
+			font-weight: bold;
+		}
+
+		/* Style footnotes section */
+		.print-formatted > div:last-child {
+			page-break-inside: avoid;
+			margin-top: 2em;
+			padding-top: 1em;
+			border-top: 1px solid #333;
+			font-size: 11pt;
+		}
+
+		/* Ensure good page breaks */
+		.print-formatted h1,
+		.print-formatted h2,
+		.print-formatted h3 {
+			page-break-after: avoid;
+		}
+
+		.print-formatted p {
+			orphans: 3;
+			widows: 3;
+		}
+	}
+</style>
