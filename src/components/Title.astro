@@ -1,10 +1,12 @@
 ---
+import { transformId } from "../utils/transformId";
 interface Props {
 	title: string;
 	showFilter?: boolean;
+	id?: string;
 }
 
-const { title, showFilter = false } = Astro.props;
+const { title, showFilter = false, id } = Astro.props;
 const hasSeparator = title?.includes("-");
 const [paliTitle, ...englishParts] = hasSeparator
 	? title.split("-").map((part: string) => part.trim())
@@ -19,6 +21,7 @@ const englishTitle = englishParts.join(" - ");
 		tabindex="-1"
 		aria-label={title}
 	>
+		{id && <span class="mr-2 text-primary-color">{transformId(id)}</span>}
 		<slot />
 		<span class="pali-paragraph">{paliTitle}</span>
 		{hasSeparator && ` - ${englishTitle}`}

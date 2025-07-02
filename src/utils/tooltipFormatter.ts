@@ -7,11 +7,13 @@
 
 export function getFormattedContainer(range: Range, threshold?: number): HTMLDivElement {
     const container = document.createElement("div");
-    container.appendChild(range.cloneContents());
+    const originalContent = range.cloneContents();
+    container.appendChild(originalContent);
 
     const tooltips = Array.from(
         container.querySelectorAll(".tooltip-text")
     );
+
     const actualThreshold = threshold ?? parseInt(
         localStorage.getItem("tooltipThreshold") || "35"
     );
@@ -46,21 +48,25 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
     });
 
     // Process inline tooltips (existing logic)
-    inlineTooltips.forEach(({ element, content }) => {
+    inlineTooltips.forEach(({ element, content }, index) => {
         const text = element.textContent || "";
+        const originalHTML = element.innerHTML;
         const formatted = `<b>${text}</b> (${content})`;
         const span = document.createElement("span");
         span.innerHTML = formatted;
+
         if (element.parentNode) {
             element.parentNode.replaceChild(span, element);
         }
     });
 
     // Process footnoted tooltips with numbered references
-    footnotedTooltips.forEach(({ element, text, refNum }) => {
+    footnotedTooltips.forEach(({ element, text, refNum }, index) => {
+        const originalHTML = element.innerHTML;
         const formatted = `<b>${text}</b> [${refNum}]`;
         const span = document.createElement("span");
         span.innerHTML = formatted;
+
         if (element.parentNode) {
             element.parentNode.replaceChild(span, element);
         }
@@ -69,9 +75,8 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
     // Add footnotes section if there are any footnoted tooltips
     if (footnotedTooltips.length > 0) {
         const footnotesDiv = document.createElement("div");
-        footnotesDiv.innerHTML = `<br><br>`;
 
-        footnotedTooltips.forEach(({ text, content, refNum }) => {
+        footnotedTooltips.forEach(({ text, content, refNum }, index) => {
             // Extract Pali term from content if it exists (pattern: [paliTerm])
             const paliMatch = content.match(/\[([^\]]+)\]$/);
             const paliTerm = paliMatch ? paliMatch[1] : null;

@@ -8,6 +8,7 @@
 		window.addEventListener("beforeprint", () => {
 			// Find the main content area (where tooltips exist)
 			const contentArea =
+				document.querySelector(".split-wrapper") ||
 				document.querySelector("article.prose") ||
 				document.querySelector("main") ||
 				document.querySelector(".prose");
@@ -30,6 +31,12 @@
 			// Replace content with formatted version
 			contentArea.innerHTML = formattedContainer.innerHTML;
 			contentArea.classList.add("print-formatted");
+
+			// Notify that tooltip formatting is complete
+			setTimeout(() => {
+				const alignmentEvent = new Event("print-formatting-complete");
+				window.dispatchEvent(alignmentEvent);
+			}, 50);
 		});
 
 		window.addEventListener("afterprint", () => {
@@ -55,7 +62,10 @@
 		button:not(.print-keep),
 		.navbar,
 		nav,
-		.breadcrumbs {
+		.breadcrumbs,
+		.quality-tags,
+		.last-updated,
+		footer {
 			display: none !important;
 		}
 
@@ -66,17 +76,32 @@
 			color: black !important;
 		}
 
+		/* Force consistent font sizing for all text elements including Pali */
+		.print-formatted .pali-paragraph {
+			font-size: 12pt !important;
+			opacity: 1 !important;
+			color: #333 !important;
+		}
+
+		.print-formatted .verse {
+			color: black !important;
+		}
+
 		.print-formatted b {
 			font-weight: bold;
 		}
 
 		/* Style footnotes section */
 		.print-formatted > div:last-child {
-			page-break-inside: avoid;
-			margin-top: 2em;
+			margin-top: 1em;
 			padding-top: 1em;
 			border-top: 1px solid #333;
 			font-size: 11pt;
+		}
+
+		/* Ensure footnotes content also has consistent sizing */
+		.print-formatted > div:last-child * {
+			font-size: 11pt !important;
 		}
 
 		/* Ensure good page breaks */
