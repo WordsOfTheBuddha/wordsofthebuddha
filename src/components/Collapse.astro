@@ -50,7 +50,9 @@ const { defaultState = "collapse" } = Astro.props;
 				: defaultState === "expand";
 
 			if (shouldExpand) {
-				span.textContent = full;
+				// Process tooltips for expanded content immediately
+				const processedContent = processTooltipsInText(full);
+				span.innerHTML = processedContent;
 				span.classList.add("expanded");
 				span.title = "Click to collapse";
 			} else {
@@ -64,11 +66,21 @@ const { defaultState = "collapse" } = Astro.props;
 
 		// Toggle logic via event delegation
 		document.body.addEventListener("click", (e) => {
+			// Check if the click is on a tooltip element
+			const tooltipElement = e.target?.closest(".tooltip-text");
+			if (tooltipElement) {
+				// Don't handle collapse toggle if clicking on tooltip
+				return;
+			}
+
 			const el = e.target?.closest(".collapse-toggle");
 			if (!el) return;
 
 			if (el.classList.contains("collapsed")) {
-				el.textContent = el.dataset.content || "";
+				// Process tooltips when expanding
+				const rawContent = el.dataset.content || "";
+				const processedContent = processTooltipsInText(rawContent);
+				el.innerHTML = processedContent;
 				el.classList.replace("collapsed", "expanded");
 				el.title = "Click to collapse";
 			} else {
@@ -77,6 +89,29 @@ const { defaultState = "collapse" } = Astro.props;
 				el.title = "Click to expand";
 			}
 		});
+	}
+
+	// Helper function to process tooltips in text
+	function processTooltipsInText(text) {
+		return text.replace(
+			/\|([^|:]+)::([^|]+)\|/g,
+			(_, textPart, tooltip) => {
+				// Parse any Markdown links in the tooltip content
+				const parsedTooltip = tooltip.replace(
+					/\[([^\]]+)\]\(([^)]+)\)/g,
+					'<a href="$2" class="tooltip-link">$1</a>'
+				);
+				// Escape HTML for attribute storage
+				const escapedTooltip = parsedTooltip
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
+
+				return `<span class="tooltip-text" data-tooltip-content="${escapedTooltip}">${textPart}</span>`;
+			}
+		);
 	}
 
 	if (document.readyState === "loading") {
@@ -95,6 +130,6 @@ const { defaultState = "collapse" } = Astro.props;
 	}
 	.collapse-toggle.expanded {
 		text-decoration: none;
-		opacity: 0.7;
+		opacity: 0.75;
 	}
 </style>
