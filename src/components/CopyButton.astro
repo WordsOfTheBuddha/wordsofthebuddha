@@ -69,7 +69,8 @@
 		const selection = window.getSelection();
 		if (!selection?.rangeCount) return;
 		const range = selection.getRangeAt(0);
-		const container = getFormattedContainer(range);
+		const threshold = getTooltipThreshold();
+		const container = getFormattedContainer(range, threshold);
 		// Wrap the HTML in a div with white-space: pre-wrap so line breaks are preserved.
 		const richText = `<div style="white-space: pre-wrap;">${container.innerHTML}</div>`;
 
@@ -93,9 +94,8 @@
 			.catch((err) => console.error("Copy failed:", err));
 	}
 
-	// Utility functions for threshold configuration
 	function getTooltipThreshold(): number {
-		return parseInt(localStorage.getItem("tooltipThreshold") || "20");
+		return parseInt(localStorage.getItem("tooltipThreshold") || "35");
 	}
 
 	function setTooltipThreshold(threshold: number): void {

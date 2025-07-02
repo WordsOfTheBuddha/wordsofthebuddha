@@ -3,6 +3,7 @@
  *
  * Shared formatting logic for tooltips used by both CopyButton and PrintFormatter components.
  * Supports both inline and footnoted tooltip formatting based on content length threshold.
+ * Includes duplicate term tracking to avoid redundant annotations.
  */
 
 export function getFormattedContainer(range: Range, threshold?: number): HTMLDivElement {
@@ -10,62 +11,65 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
     const originalContent = range.cloneContents();
     container.appendChild(originalContent);
 
-    const tooltips = Array.from(
-        container.querySelectorAll(".tooltip-text")
+    // Support both .tooltip-text and [data-tooltip] elements
+    const tooltipElements = Array.from(
+        container.querySelectorAll(".tooltip-text, [data-tooltip]")
     );
 
     const actualThreshold = threshold ?? parseInt(
         localStorage.getItem("tooltipThreshold") || "35"
     );
 
-    const inlineTooltips: Array<{ element: Element; content: string }> = [];
-    const footnotedTooltips: Array<{
-        element: Element;
-        content: string;
-        text: string;
-        refNum: number;
-    }> = [];
+    // Track processed terms to avoid duplicates
+    const processedTerms = new Set<string>();
+    const footnotes: Array<{ text: string; content: string; refNum: number }> = [];
+    let footnoteCounter = 1;
 
-    // Categorize tooltips by content length
-    tooltips.forEach((tooltip) => {
-        const text = tooltip.textContent || "";
+    tooltipElements.forEach((element) => {
+        // Get tooltip content from either attribute
         const tooltipContent =
-            tooltip.getAttribute("data-tooltip-content") || "";
+            element.getAttribute("data-tooltip") ||
+            element.getAttribute("data-tooltip-content") ||
+            "";
+
+        const textContent = element.textContent;
+
+        // Skip if tooltip text or element text content is null/empty
+        if (!tooltipContent || !textContent) {
+            return;
+        }
+
+        const termText = textContent.trim().toLowerCase();
+
+        // Skip if this term has already been processed
+        if (processedTerms.has(termText)) {
+            // For duplicates, just keep the bold formatting without tooltip processing
+            const span = document.createElement("span");
+            span.innerHTML = `${textContent}`;
+            if (element.parentNode) {
+                element.parentNode.replaceChild(span, element);
+            }
+            return;
+        }
+
+        // Mark this term as processed
+        processedTerms.add(termText);
+
+        const span = document.createElement("span");
 
         if (tooltipContent.length <= actualThreshold) {
-            inlineTooltips.push({
-                element: tooltip,
-                content: tooltipContent,
-            });
+            // Inline format: <b>term</b> (definition)
+            span.innerHTML = `<b>${textContent}</b> (${tooltipContent})`;
         } else {
-            footnotedTooltips.push({
-                element: tooltip,
+            // Footnote format: <b>term</b> [1]
+            span.innerHTML = `<b>${textContent}</b> [${footnoteCounter}]`;
+            footnotes.push({
+                text: textContent,
                 content: tooltipContent,
-                text: text,
-                refNum: footnotedTooltips.length + 1,
+                refNum: footnoteCounter
             });
+            footnoteCounter++;
         }
-    });
-
-    // Process inline tooltips (existing logic)
-    inlineTooltips.forEach(({ element, content }, index) => {
-        const text = element.textContent || "";
-        const originalHTML = element.innerHTML;
-        const formatted = `<b>${text}</b> (${content})`;
-        const span = document.createElement("span");
-        span.innerHTML = formatted;
-
-        if (element.parentNode) {
-            element.parentNode.replaceChild(span, element);
-        }
-    });
-
-    // Process footnoted tooltips with numbered references
-    footnotedTooltips.forEach(({ element, text, refNum }, index) => {
-        const originalHTML = element.innerHTML;
-        const formatted = `<b>${text}</b> [${refNum}]`;
-        const span = document.createElement("span");
-        span.innerHTML = formatted;
 
         if (element.parentNode) {
             element.parentNode.replaceChild(span, element);
@@ -73,10 +77,10 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
     });
 
     // Add footnotes section if there are any footnoted tooltips
-    if (footnotedTooltips.length > 0) {
+    if (footnotes.length > 0) {
         const footnotesDiv = document.createElement("div");
 
-        footnotedTooltips.forEach(({ text, content, refNum }, index) => {
+        footnotes.forEach(({ text, content, refNum }) => {
             // Extract Pali term from content if it exists (pattern: [paliTerm])
             const paliMatch = content.match(/\[([^\]]+)\]$/);
             const paliTerm = paliMatch ? paliMatch[1] : null;
