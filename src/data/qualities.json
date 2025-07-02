@@ -161,6 +161,7 @@
 			"wild",
 			"unrestrained",
 			"untamed",
+			"Related:{non-restraint}",
 			"[adanta]"
 		],
 		"affection": ["dearness", "fondness", "[pema]"],
@@ -291,7 +292,7 @@
 			"full understanding",
 			"knowing full well",
 			"seeing things as they are",
-			"[sampajañña, saṅkhāya]"
+			"[pariññāya, sammadaññā, sampajañña, saṅkhāya]"
 		],
 		"conceit": [
 			"arrogance",
@@ -781,6 +782,7 @@
 			"unguarded in sense faculties",
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects",
+			"Related:{adventurous}",
 			"[asaṃvara]"
 		],
 		"not taking what is not given": [
