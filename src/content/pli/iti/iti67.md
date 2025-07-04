@@ -1,8 +1,8 @@
 ---
 title: Moneyya sutta - Sagacity
 description: The Buddha describes the three kinds of sagacity - by body, speech and mind.
-qualities: ethical conduct, giving up, loving-kindness, non-harm
-theme: wisdom
+qualities: ethical conduct, non-harm
+theme: inspiration, wisdom
 slug: iti67
 ---
 

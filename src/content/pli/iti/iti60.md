@@ -1,6 +1,8 @@
 ---
-title: Puññakiriyavatthu sutta - Basis For Meritorious Action
-description: The Buddha shares the three bases for meritorious action - 1) through generosity, 2) through virtuous conduct, and 3) through meditation.
+title: Puññakiriyavatthu sutta - Grounds for Making Merit
+description: The Buddha shares the three grounds for making merit through cultivation of  1) giving, 2) ethical conduct, and 3) a mind of loving-kindness.
+qualities: giving, ethical conduct, loving-kindness
+theme: inspiration, principle
 fetter: doubt, ignorance
 tags: merit, generosity, virtuous conduct, meditation, happiness, iti, iti50-99
 slug: iti60

@@ -1,9 +1,12 @@
 ---
 title: Māradheyya sutta - Māra's Domain
 description: The Buddha describes the three qualities that a bhikkhu should be endowed with to transcend Māra's domain and shine like the sun.
+qualities: ethical conduct, collectedness, wisdom, cultivation
+theme: inspiration
 fetter: doubt, ignorance
 tags: virtue, ethical conduct, collectedness, wisdom, Māra, domain, sun, iti, iti50-99
 slug: iti59
+simile: shines like the sun
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

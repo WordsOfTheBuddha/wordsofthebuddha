@@ -1,9 +1,10 @@
 ---
 title: Dutiya rāga sutta - Passion (Second)
 description: Whoever has let go of passion, aversion, and illusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, lurking with fierce animals and monsters.
-qualities: passion, aversion, illusion, ignorance
-theme: cultivating discernment
+qualities: passion, aversion, illusion, ignorance, giving up, free from attachment
+theme: cultivating discernment, inspiration
 slug: iti69
+simile: ocean
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
