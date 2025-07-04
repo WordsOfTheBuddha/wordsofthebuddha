@@ -2,6 +2,7 @@
 	"negative": [
 		"adventurous",
 		"aggressiveness",
+		"ambition",
 		"attachment",
 		"anger",
 		"aversion",
@@ -95,6 +96,7 @@
 		"fear of wrongdoing",
 		"flexible",
 		"formless",
+		"free from attachment",
 		"full awareness",
 		"giving",
 		"giving up",
@@ -176,17 +178,13 @@
 			"Related:{anger}",
 			"[sārambha, caṇḍa]"
 		],
-		"attachment": [
-			"acquisition",
-			"bond",
-			"clinging",
-			"grasping",
-			"holding on",
-			"possession",
-			"entanglement",
-			"bound",
-			"connected",
-			"[upadhi, upādāna, sakiñcana]"
+		"ambition": [
+			"aspiration for identity",
+			"drive for status or attainment",
+			"romanticizing some better self or future state",
+			"Context: Spiritual or worldly striving to “be someone,” the “I must become something” energy",
+			"Related:{personal existence, conceit}",
+			"[bhavataṇhā, bhavesanā]"
 		],
 		"anger": [
 			"rage",
@@ -216,6 +214,18 @@
 			"delight in the success of others",
 			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
 			"[muditā]"
+		],
+		"attachment": [
+			"acquisition",
+			"bond",
+			"clinging",
+			"grasping",
+			"holding on",
+			"possession",
+			"entanglement",
+			"bound",
+			"connected",
+			"[upadhi, upādāna, sakiñcana]"
 		],
 		"aversion": [
 			"animosity",
@@ -300,6 +310,7 @@
 			"pride",
 			"self-importance",
 			"tendency of self-comparison",
+			"Related:{ambition, personal existence}",
 			"[māna, unnaḷa]"
 		],
 		"conscience": [
@@ -475,7 +486,13 @@
 			"Related:{drowsiness}",
 			"[thina]"
 		],
-		"ending": ["cessation", "gradual ending", "[khaya, nirodha]"],
+		"ending": [
+			"cessation",
+			"exhaustion",
+			"gradual ending",
+			"wearing away",
+			"[khaya, khīṇa, nirodha]"
+		],
 		"equanimity": [
 			"mental poise",
 			"mental balance",
@@ -539,6 +556,14 @@
 			"[mudu, kammañña]"
 		],
 		"formless": ["immaterial", "surpassing forms", "[arūpa]"],
+		"free from attachment": [
+			"free from grasping",
+			"not appropriating",
+			"not taking as mine",
+			"without acquisitions",
+			"Related:{dispassion}",
+			"[nirūpadhi]"
+		],
 		"full awareness": [
 			"clear comprehension",
 			"attentiveness",
@@ -824,6 +849,7 @@
 			"self-identification",
 			"embodied being",
 			"egoism",
+			"Related:{ambition, conceit}",
 			"[sakkāya-diṭṭhi]"
 		],
 		"perturbation": [
@@ -851,9 +877,11 @@
 		],
 		"quenching": [
 			"being cooled",
+			"free from hope",
+			"fulfilled",
 			"fully satiated",
 			"having attained emancipation",
-			"[nibbuta]"
+			"[nibbuta, nirāsa]"
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",

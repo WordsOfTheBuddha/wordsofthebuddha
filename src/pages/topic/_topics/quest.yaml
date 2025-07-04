@@ -1,0 +1,25 @@
+title: "Quest"
+description: "A seeking, a pursuit, a search. It arises from holding tight the thought, ‘this is the truth.’ A quest can be for sensual pleasure, seeking existence, or seeking renunciation."
+synonyms:
+    - search
+    - pursuit
+pali:
+    - esanā
+redirects:
+    - seeking
+    - exploration
+    - inquiry
+    - search
+related:
+    - aspiration
+discourses:
+    - id: "iti54"
+      note: "Understanding the different kinds of quests"
+    - id: "sn14.7"
+      note: "How quests arise"
+    - id: "sn14.9"
+      note: "Quests lead to acquisitions"
+    - id: mn26
+      note: "Recounting the Buddha's noble quest for awakening"
+    - id: "iti55"
+      note: "Why do quests arise"
