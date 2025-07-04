@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as path from "path";
 import { globSync } from "glob";
 import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
 import matter from "gray-matter";
 import qualities from "../data/qualities.json" assert { type: "json" };
 
@@ -12,8 +11,6 @@ interface DiscourseItem {
 	description: string;
 	collection: string;
 }
-
-type CollectionKey = "mn" | "iti" | "sn" | "snp" | "an" | "ud" | "dhp";
 
 export async function generateQualityMappings() {
 	try {
