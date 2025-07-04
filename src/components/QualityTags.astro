@@ -40,21 +40,21 @@ function capitalizeFirstLetter(string: string) {
 	<div class="quality-list ml-2 inline-flex">
 		{
 			positiveQualities.map((quality) => (
-				<a href={`/qualities/${quality}`} class="quality-tag positive">
+				<a href={`/on/${quality}`} class="quality-tag positive">
 					{capitalizeFirstLetter(quality)}
 				</a>
 			))
 		}
 		{
 			neutralQualities.map((quality) => (
-				<a href={`/qualities/${quality}`} class="quality-tag neutral">
+				<a href={`/on/${quality}`} class="quality-tag neutral">
 					{capitalizeFirstLetter(quality)}
 				</a>
 			))
 		}
 		{
 			negativeQualities.map((quality) => (
-				<a href={`/qualities/${quality}`} class="quality-tag negative">
+				<a href={`/on/${quality}`} class="quality-tag negative">
 					{capitalizeFirstLetter(quality)}
 				</a>
 			))

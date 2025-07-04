@@ -33,6 +33,7 @@ src/utils/routes.ts
 src/data/directoryStructureWithCounts.ts
 src/data/qualityMappings.json
 src/data/simileMappings.json
+src/data/topicMappings.json
 
 # translation flow
 src/translation-flow/.debug/*

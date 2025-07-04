@@ -1,6 +1,8 @@
 ---
 title: Dutiya sīla sutta - Ethical Conduct (Second)
 description: Endowed with the mental qualities of auspicious conduct and views, one is reborn in heaven.
+qualities: ethical conduct, right view, wisdom
+theme: wisdom, principle
 fetter: personal existence, conceit, ignorance
 tags: ethical conduct, virtue, auspicious, right view, rebirth, heaven, personal existence, conceit, ignorance, iti, iti28-49
 slug: iti33

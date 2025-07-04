@@ -1,6 +1,8 @@
 ---
 title: Vijjā sutta - Wisdom
 description: Ignorance is the forerunner in the arising of unwholesome qualities, and wisdom is the forerunner in the arising of wholesome qualities.
+qualities: ignorance, shamelessness, moral recklessness, wisdom, conscience, fear of wrongdoing, craving, greed, contempt
+theme: cultivating discernment, wisdom
 fetter: ignorance, sensual desire
 tags: ignorance, unwholesome, wholesome, conscience, fear of wrongdoing, wisdom, sense of shame, respect, craving, greed, grasping, shamelessness, moral recklessness, iti, iti28-49
 slug: iti40

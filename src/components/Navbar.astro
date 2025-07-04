@@ -35,6 +35,8 @@ if (showAuth) {
 			href="/search"
 			class="p-2 hover:text-[var(--link-hover-color)]"
 			title="Search"
+			aria-label="Search"
+			role="button"
 		>
 			<Fragment set:html={SearchIcon} />
 		</a>
@@ -48,7 +50,11 @@ if (showAuth) {
 							class="flex items-center gap-2 px-1 py-1 text-sm font-medium text-[var(--text-color)] hover:text-[var(--link-hover-color)] focus:outline-none"
 						>
 							<span>{user.displayName}</span>
-							<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+							<svg
+								class="w-4 h-4"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
 								<path
 									fill-rule="evenodd"
 									d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -61,14 +67,12 @@ if (showAuth) {
 							class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[var(--auth-card-bg)] ring-1 ring-black ring-opacity-5"
 						>
 							<div class="py-1">
-								{isInReviewSection && (
-									<a
-										href="/"
-										class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
-									>
-										Reading Room
-									</a>
-								)}
+								<a
+									href="/discover"
+									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
+								>
+									Discover
+								</a>
 								<a
 									href="/review-room"
 									class="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"
@@ -82,7 +86,11 @@ if (showAuth) {
 									Profile
 								</a>
 								<form action="/api/auth/signout" method="post">
-									<input type="hidden" name="returnTo" value={currentPath} />
+									<input
+										type="hidden"
+										name="returnTo"
+										value={currentPath}
+									/>
 									<button
 										type="submit"
 										class="block w-full text-left px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--auth-input-bg)]"

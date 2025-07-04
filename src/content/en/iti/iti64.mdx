@@ -1,8 +1,8 @@
 ---
 title: Duccarita sutta - Misconduct
 description: The Buddha describes the three kinds of misconduct - by body, speech and mind.
-qualities: lack of principles, craving, anger, harmful
-theme: principle, directly knowing
+qualities: lack of principles, wrong speech, harmful, non-restraint, lack of discernment
+theme: inspiration, principle
 slug: iti64
 ---
 

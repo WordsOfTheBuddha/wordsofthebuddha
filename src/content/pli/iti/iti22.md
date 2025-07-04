@@ -1,6 +1,8 @@
 ---
 title: Metta sutta - Loving-kindness
 description: The Buddha shares the benefits of developing a mind of loving-kindness based on his direct knowledge.
+qualities: loving-kindness, merit, giving, self-control
+theme: training guideline, principle
 fetter: ill will, ignorance
 tags: iti, loving-kindness, metta, happiness, merit, benevolence, giving, taming, restraint, iti1-27
 slug: iti22

@@ -1,6 +1,8 @@
 ---
 title: Paṭhama vedan sutta - Felt Experiences (First)
 description: The Buddha describes the three felt experiences that are experienced on contact through the sense doors - pleasant, painful, and neither-painful-nor-pleasant.
+qualities: collectedness, full awareness, mindfulness, discernment, quenching
+theme: cultivating discernment
 fetter: sensual desire, ill will, desire for fine-material existence, desire for immaterial existence, ignorance
 tags: sensation, feeling, pleasant, painful, neither-painful-nor-pleasant, discernment, quenching, buddha, iti, iti50-99
 slug: iti52

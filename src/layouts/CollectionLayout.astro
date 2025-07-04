@@ -138,16 +138,18 @@ function getContentCount(slug: string): number {
 							Discourses
 						</a>
 					</div>
-					{!showCollections && (
-						<div class="relative">
-							<input
-								type="text"
-								id="client-filter"
-								class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
-								placeholder="Filter discourses..."
-							/>
-						</div>
-					)}
+					<div class="flex items-center gap-3">
+						{!showCollections && (
+							<div class="relative">
+								<input
+									type="text"
+									id="client-filter"
+									class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+									placeholder="Filter discourses..."
+								/>
+							</div>
+						)}
+					</div>
 				</div>
 			)
 		}
@@ -174,6 +176,7 @@ function getContentCount(slug: string): number {
 								title={post.title}
 								description={post.description}
 								id={post.slug}
+								clamp={4}
 							/>
 						))
 			}

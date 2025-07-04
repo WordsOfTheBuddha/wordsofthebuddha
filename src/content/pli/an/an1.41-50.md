@@ -1,5 +1,5 @@
 ---
-title: Paṇihitaaccha vagga - The Chapter On Directing The Mind
+title: Paṇihitaaccha vagga - The Chapter on Directing the Mind
 description: The Buddha contrasts the misdirected and well-directed mind, and explains the importance of directing the mind.
 fetter: ignorance
 qualities: ignorance, wisdom, anger, aversion, resentment, tranquility, disturbed, flexible, cultivation

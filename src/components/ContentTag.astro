@@ -1,0 +1,156 @@
+---
+export interface Props {
+	contentType:
+		| "bright-quality"
+		| "negative-quality"
+		| "neutral-quality"
+		| "simile"
+		| "topic"
+		| "person";
+	emoji?: string;
+	cssClass?: string;
+	tooltip?: string;
+	label?: string;
+}
+
+const { contentType, emoji, cssClass, tooltip, label } = Astro.props;
+
+// Default configurations for each content type
+const contentTypeConfigs = {
+	"bright-quality": {
+		emoji: "☀️",
+		label: "bright",
+		tooltip:
+			"When a bright quality is cultivated, it brings benefit, clarity of vision, and leads to growth in wisdom.",
+		cssClass:
+			"text-xs border border-amber-300 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20",
+	},
+	"negative-quality": {
+		emoji: "☁️",
+		label: "dark",
+		tooltip:
+			"When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom.",
+		cssClass:
+			"text-xs border border-slate-300 text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950/20",
+	},
+	"neutral-quality": {
+		emoji: "💠",
+		label: "neutral",
+		tooltip:
+			"This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises.",
+		cssClass:
+			"text-xs border border-cyan-300 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/20",
+	},
+	simile: {
+		emoji: "🌱",
+		label: "simile",
+		tooltip:
+			"A teaching illustration that uses comparison to make the Dhamma easier to understand.",
+		cssClass:
+			"text-xs bg-green-200 dark:bg-green-900 text-gray-600 dark:text-green-200",
+	},
+	topic: {
+		emoji: "",
+		label: "topic",
+		tooltip:
+			"A curated collection of discourses on a specific theme or subject.",
+		cssClass:
+			"text-xs bg-blue-200 dark:bg-blue-500 text-gray-600 dark:text-gray-300",
+	},
+	person: {
+		emoji: "👤",
+		label: "person",
+		tooltip:
+			"A person mentioned in the discourses, often a student or interlocutor of the Buddha.",
+		cssClass:
+			"text-xs border border-purple-300 text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/20",
+	},
+};
+
+// Get the configuration for the current content type
+const config = contentTypeConfigs[contentType];
+
+// Use provided props or fall back to defaults
+const finalEmoji = emoji ?? config.emoji;
+const finalLabel = label ?? config.label;
+const finalTooltip = tooltip ?? config.tooltip;
+const finalCssClass = cssClass ?? config.cssClass;
+---
+
+<span class={`content-tag ${finalCssClass}`} data-tooltip={finalTooltip}>
+	{finalEmoji}
+	{finalLabel}
+</span>
+
+<style>
+	.content-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.25rem 0.5rem;
+		border-radius: 9999px;
+		font-size: 0.75rem;
+		font-weight: 500;
+		cursor: help;
+		position: relative;
+		transition: all 0.2s ease;
+	}
+
+	.content-tag:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	html.dark .content-tag:hover {
+		box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+	}
+
+	/* Tooltip styles - using global CSS variables for consistency */
+	.content-tag:hover::after {
+		content: attr(data-tooltip);
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: calc(100% + 8px);
+
+		/* Use global background and text colors */
+		background-color: var(--background-color);
+		color: var(--text-color);
+		border: 1px solid var(--popover-border);
+
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.375rem;
+		font-size: 0.75rem;
+		font-weight: 400;
+		white-space: normal;
+		width: max-content;
+		max-width: 280px;
+		z-index: 50;
+		box-shadow:
+			0 10px 15px -3px rgba(0, 0, 0, 0.1),
+			0 4px 6px -2px rgba(0, 0, 0, 0.05);
+		line-height: 1.4;
+	}
+
+	/* Dark theme shadow adjustment */
+	html.dark .content-tag:hover::after {
+		box-shadow:
+			0 10px 15px -3px rgba(0, 0, 0, 0.3),
+			0 4px 6px -2px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Tooltip arrow */
+	.content-tag:hover::before {
+		content: "";
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: calc(100% + 2px);
+		width: 0;
+		height: 0;
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-top: 6px solid var(--popover-border);
+		z-index: 50;
+	}
+</style>

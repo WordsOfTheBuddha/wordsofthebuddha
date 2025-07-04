@@ -1,5 +1,5 @@
 ---
-title: Aṭṭhāna vagga - The Chapter On The Impossible
+title: Aṭṭhāna vagga - The Chapter on the Impossible
 description: Short teachings on the impossibility of certain events, actions, or outcomes.
 theme: principle
 qualities: ethical conduct, wisdom

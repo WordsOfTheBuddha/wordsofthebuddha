@@ -2,6 +2,7 @@
 	"negative": [
 		"adventurous",
 		"aggressiveness",
+		"ambition",
 		"attachment",
 		"anger",
 		"aversion",
@@ -95,11 +96,13 @@
 		"fear of wrongdoing",
 		"flexible",
 		"formless",
+		"free from attachment",
 		"full awareness",
 		"giving",
 		"giving up",
 		"good friendship",
 		"good habits",
+		"happiness",
 		"humility",
 		"impartiality",
 		"inquisitiveness",
@@ -115,6 +118,8 @@
 		"not taking what is not given",
 		"one-pointedness",
 		"patience",
+		"perceiving gratification",
+		"perceiving drawbacks",
 		"politeness",
 		"psychic power",
 		"quenching",
@@ -131,6 +136,7 @@
 		"right speech",
 		"right view",
 		"rousing of energy",
+		"safety",
 		"self-control",
 		"sense restraint",
 		"sincerity",
@@ -157,6 +163,7 @@
 			"wild",
 			"unrestrained",
 			"untamed",
+			"Related:{non-restraint}",
 			"[adanta]"
 		],
 		"affection": ["dearness", "fondness", "[pema]"],
@@ -171,17 +178,13 @@
 			"Related:{anger}",
 			"[sārambha, caṇḍa]"
 		],
-		"attachment": [
-			"acquisition",
-			"bond",
-			"clinging",
-			"grasping",
-			"holding on",
-			"possession",
-			"entanglement",
-			"bound",
-			"connected",
-			"[upadhi, upādāna, sakiñcana]"
+		"ambition": [
+			"aspiration for identity",
+			"drive for status or attainment",
+			"romanticizing some better self or future state",
+			"Context: Spiritual or worldly striving to “be someone,” the “I must become something” energy",
+			"Related:{personal existence, conceit}",
+			"[bhavataṇhā, bhavesanā]"
 		],
 		"anger": [
 			"rage",
@@ -203,6 +206,26 @@
 			"worry",
 			"Related:{impatience}",
 			"[kukkucca, uddhacca, darathaja]"
+		],
+		"appreciative joy": [
+			"mudita",
+			"appreciation",
+			"rejoicing in the happiness of others",
+			"delight in the success of others",
+			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
+			"[muditā]"
+		],
+		"attachment": [
+			"acquisition",
+			"bond",
+			"clinging",
+			"grasping",
+			"holding on",
+			"possession",
+			"entanglement",
+			"bound",
+			"connected",
+			"[upadhi, upādāna, sakiñcana]"
 		],
 		"aversion": [
 			"animosity",
@@ -279,7 +302,7 @@
 			"full understanding",
 			"knowing full well",
 			"seeing things as they are",
-			"[sampajañña, saṅkhāya]"
+			"[pariññāya, sammadaññā, sampajañña, saṅkhāya]"
 		],
 		"conceit": [
 			"arrogance",
@@ -287,6 +310,7 @@
 			"pride",
 			"self-importance",
 			"tendency of self-comparison",
+			"Related:{ambition, personal existence}",
 			"[māna, unnaḷa]"
 		],
 		"conscience": [
@@ -326,6 +350,7 @@
 			"ease",
 			"having few desires",
 			"fewness of wishes",
+			"Related:{happiness, joyful pleasure}",
 			"[santutthi, appicchatā]"
 		],
 		"continuous effort": [
@@ -461,7 +486,13 @@
 			"Related:{drowsiness}",
 			"[thina]"
 		],
-		"ending": ["cessation", "gradual ending", "[nirodha]"],
+		"ending": [
+			"cessation",
+			"exhaustion",
+			"gradual ending",
+			"wearing away",
+			"[khaya, khīṇa, nirodha]"
+		],
 		"equanimity": [
 			"mental poise",
 			"mental balance",
@@ -499,6 +530,7 @@
 			"[bhaya]"
 		],
 		"fear of wrongdoing": [
+			"conscientious",
 			"moral dread",
 			"respect for others",
 			"(comm) originating from outside",
@@ -524,6 +556,14 @@
 			"[mudu, kammañña]"
 		],
 		"formless": ["immaterial", "surpassing forms", "[arūpa]"],
+		"free from attachment": [
+			"free from grasping",
+			"not appropriating",
+			"not taking as mine",
+			"without acquisitions",
+			"Related:{dispassion}",
+			"[nirūpadhi]"
+		],
 		"full awareness": [
 			"clear comprehension",
 			"attentiveness",
@@ -565,6 +605,15 @@
 			"Related:{passion, craving, stinginess}",
 			"Context: A grasping mental quality of craving, possessiveness, or lustful wanting that clings to objects or experiences; it fuels attachment and obstructs renunciation and contentment",
 			"[lobha]"
+		],
+		"happiness": [
+			"ease",
+			"gladness",
+			"joy",
+			"pleasant abiding",
+			"positive state of mind",
+			"Related:{joyful pleasure, contentment}",
+			"[sukha, somanassa]"
 		],
 		"harmful": [
 			"injurious",
@@ -658,6 +707,7 @@
 			"heartfelt joy",
 			"spiritual rapture",
 			"lit. lovely feeling",
+			"Related:{happiness, contentment}",
 			"[pīti]"
 		],
 		"knowledge": [
@@ -698,7 +748,7 @@
 			"release",
 			"deliverance",
 			"emancipation",
-			"Context:Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna",
+			"Context: Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna",
 			"[vimutti, nibbāna]"
 		],
 		"loving-kindness": [
@@ -757,6 +807,7 @@
 			"unguarded in sense faculties",
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects",
+			"Related:{adventurous}",
 			"[asaṃvara]"
 		],
 		"not taking what is not given": [
@@ -781,12 +832,24 @@
 			"forbearance",
 			"[khanti, khama]"
 		],
+		"perceiving gratification": [
+			"following pleasure",
+			"seeing enjoyment",
+			"[assādānupassī]"
+		],
+		"perceiving drawbacks": [
+			"observing the disadvantage",
+			"contemplating the unsatisfactoriness",
+			"Related:{recognition of unsatisfactoriness}",
+			"[ādīnavānupassī]"
+		],
 		"personal existence": [
 			"identity view",
 			"self-view",
 			"self-identification",
 			"embodied being",
 			"egoism",
+			"Related:{ambition, conceit}",
 			"[sakkāya-diṭṭhi]"
 		],
 		"perturbation": [
@@ -803,7 +866,7 @@
 			"being well-mannered",
 			"friendliness",
 			"Related:{unassuming}",
-			"[paṭisanthāra, saṇha, sorata]"
+			"[paṭisanthāra, saṇha, sorata, sappatissa]"
 		],
 		"psychic power": [
 			"supernormal abilities",
@@ -814,9 +877,11 @@
 		],
 		"quenching": [
 			"being cooled",
+			"free from hope",
+			"fulfilled",
 			"fully satiated",
 			"having attained emancipation",
-			"[nibbuta]"
+			"[nibbuta, nirāsa]"
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
@@ -831,6 +896,7 @@
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
+			"Related:{perceiving drawbacks}",
 			"[dukkha-saññā]"
 		],
 		"recollection of the Buddha": [
@@ -906,6 +972,7 @@
 			"Related:{vigour}",
 			"[vīriyārambha, āraddhavīriya, uṭṭhānavant]"
 		],
+		"safety": ["sanctuary", "security", "peace", "rest", "[khema]"],
 		"self-control": [
 			"self-restraint",
 			"self-mastery",
@@ -994,14 +1061,6 @@
 			"affliction",
 			"[dukkha]"
 		],
-		"appreciative joy": [
-			"mudita",
-			"appreciation",
-			"rejoicing in the happiness of others",
-			"delight in the success of others",
-			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
-			"[muditā]"
-		],
 		"tame": [
 			"trained",
 			"mastered",
@@ -1023,6 +1082,7 @@
 		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"imperturbable": [
 			"unagitated",
+			"unruffled",
 			"unshaken",
 			"untroubled",
 			"unwavering",
@@ -1099,7 +1159,7 @@
 			"the quality of possessing experience alongside knowledge and sound judgment",
 			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable",
 			"an experiential understanding of the four noble truths",
-			"[paññā, medhā, dhīra, paṇḍita]"
+			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
 			"proper attention",

@@ -1,6 +1,8 @@
 ---
 title: Paduṭṭhacitta sutta - Corrupted Mind
 description: The Buddha shares the consequences for a person acting with a corrupted mind based on his direct knowledge.
+qualities: anger, aversion
+theme: directly knowing, principle
 fetter: doubt, ill will, ignorance
 tags: iti, corrupt, hell, misery, iti1-27
 slug: iti20

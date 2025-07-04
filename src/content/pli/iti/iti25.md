@@ -1,6 +1,8 @@
 ---
 title: Musāvāda sutta - Intentional Lying
 description: One who has transgressed the principle of intentional lying is capable of committing any evil deed.
+qualities: wrong speech
+theme: wisdom, inspiration
 fetter: personal existence, ignorance
 tags: lying, false speech, evil deeds, principle, iti, iti1-27
 slug: iti25

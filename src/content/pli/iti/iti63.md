@@ -1,8 +1,8 @@
 ---
-title: Addhā sutta - The Three Times
-description: The Buddha speaks on how beings cling to what can be expressed—concepts and designations, including the three times of past, future, and present. Not fully understanding these, they fall under the yoke of death. But one who sees beyond conceptual fabrications touches liberation and does not resort to mental proliferation.
+title: Addhā sutta - Time Periods
+description: The Buddha speaks on how beings cling to what can be expressed—concepts and designations, including the three time periods of past, future, and present. Not fully understanding these, they fall under the yoke of death. But one who sees beyond conceptual fabrications touches liberation and does not resort to mental proliferation.
 qualities: mental proliferation, clinging, personal existence, conceit
-theme: inspiration
+theme: inspiration, wisdom
 slug: iti63
 ---
 

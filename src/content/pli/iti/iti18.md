@@ -1,8 +1,10 @@
 ---
-title: Saṅghabheda sutta - Splitting Apart Of The Community
+title: Saṅghabheda sutta - Splitting Apart of the Community
 description: The Buddha shares the consequences of causing division within the monastic community.
+qualities: suffering, harmful, doubt
+theme: wisdom, principle
 fetter: personal existence, conceit, ignorance
-tags: iti, community, division, schism, saṅgha, harm, suffering, iti1-27
+tags: iti, community, division, schism, sangha, harm, suffering, iti1-27
 slug: iti18
 ---
 

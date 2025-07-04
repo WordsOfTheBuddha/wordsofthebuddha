@@ -1,8 +1,8 @@
 ---
 title: Sikkhānisaṁsa sutta - With Training as Benefit
 description: The Buddha advises to live with training as the benefit, wisdom as the north star, liberation as the essence, ruled by mindfulness.
-qualities: diligence, wisdom, mindfulness
-theme: inspiration
+qualities: diligence, wisdom, mindfulness, liberation
+theme: inspiration, wisdom
 slug: iti46
 ---
 

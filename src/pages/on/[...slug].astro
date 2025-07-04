@@ -1,0 +1,300 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import ContentTag from "../../components/ContentTag.astro";
+import { getContentTypeFromApiData } from "../../utils/ContentTagUtils";
+
+// Get the slug from params
+const { slug } = Astro.params;
+if (!slug) {
+	return Astro.redirect("/");
+}
+
+// Use the discover API to find content for this slug
+let content: any = null;
+let contentType: string | null = null;
+
+try {
+	const apiUrl = new URL("/api/discover", Astro.url.origin);
+	const filterValue = slug.replace(/-/g, " ");
+	apiUrl.searchParams.set("filter", slug);
+	apiUrl.searchParams.set("by", "topics,qualities,similes");
+
+	const response = await fetch(apiUrl.toString());
+
+	const result = await response.json();
+
+	if (result.success && result.data.length > 0) {
+		// Find exact match by slug first
+		const exactMatch = result.data.find(
+			(item: any) =>
+				item.slug === slug.toLocaleLowerCase() ||
+				item.slug === filterValue
+		);
+
+		if (exactMatch) {
+			content = exactMatch;
+			contentType = exactMatch.type;
+		} else {
+			// If no exact match, check if any item has this slug in redirects (for topics)
+			const redirectMatch = result.data.find(
+				(item: any) => item.redirects && item.redirects.includes(slug)
+			);
+
+			if (redirectMatch) {
+				// Redirect to the canonical slug instead of displaying content
+				return Astro.redirect(`/on/${redirectMatch.slug}`);
+			}
+		}
+	}
+} catch (error) {
+	console.error("Error fetching content from API:", error);
+}
+
+// If no content found, redirect to search
+if (!contentType || !content) {
+	return Astro.redirect(`/search?q=${encodeURIComponent(slug)}`);
+}
+
+// Get the appropriate content type for the tag
+const tagContentType = getContentTypeFromApiData(content);
+
+// ...existing code... (process discourses data, collections, etc.)
+const allDiscourses = content.discourses || [];
+
+const primaryDiscourses =
+	contentType === "topic" ? allDiscourses.filter((d: any) => d.note) : [];
+
+const additionalDiscourses =
+	contentType === "topic"
+		? allDiscourses.filter((d: any) => !d.note)
+		: allDiscourses;
+
+// Group by collections
+const collections: Record<string, { name: string; items: any[] }> = {
+	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
+	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
+	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
+	snp: { name: "The Buddha's Ancient Discourses (Sutta Nipāta)", items: [] },
+	sn: { name: "Linked Discourses (Saṃyutta Nikāya)", items: [] },
+	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
+	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+};
+
+const collectionOrder = ["dhp", "iti", "mn", "snp", "sn", "an", "ud"];
+
+additionalDiscourses.forEach((discourse: any) => {
+	const collection = discourse.collection;
+	if (collection in collections) {
+		collections[collection].items.push(discourse);
+	}
+});
+
+for (const key in collections) {
+	collections[key].items.sort((a, b) => {
+		return a.id.localeCompare(b.id, undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	});
+}
+
+const displayTitle = content.title;
+const totalDiscourses = allDiscourses.length;
+---
+
+<Layout seoTitle={`${displayTitle} - Words of the Buddha`} showAuth={true}>
+	<main class="container mx-auto px-4 py-8">
+		<div class="mb-8">
+			<div
+				class="post-item relative flex flex-col w-full p-5 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md"
+			>
+				<div class="flex items-start justify-between">
+					<div class="flex items-start flex-grow">
+						<div class="min-w-0 pr-4">
+							<h1
+								class="text-xl font-semibold flex items-center flex-wrap gap-2"
+							>
+								<span>{displayTitle}</span>
+								<ContentTag
+									contentType={tagContentType}
+									{...tagContentType &&
+									tagContentType.endsWith("quality")
+										? { label: "quality" }
+										: {}}
+								/>
+							</h1>
+						</div>
+					</div>
+					<div class="shrink-0 self-start">
+						<span
+							class="px-2 py-0.25 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm"
+						>
+							{totalDiscourses}
+							{totalDiscourses === 1 ? "discourse" : "discourses"}
+						</span>
+					</div>
+				</div>
+
+				<div class="mt-2 ml-2 space-y-2 text-sm">
+					{
+						content.description && (
+							<div class="text-text">{content.description}</div>
+						)
+					}
+
+					{
+						content.synonyms && content.synonyms.length > 0 && (
+							<div class="text-gray-600 dark:text-gray-400 text-xs">
+								Also known as: {content.synonyms.join(", ")}
+							</div>
+						)
+					}
+
+					{
+						content.context && (
+							<div class="text-gray-600 dark:text-gray-400 text-xs italic">
+								Context: {content.context}
+							</div>
+						)
+					}
+
+					{
+						content.pali && content.pali.length > 0 && (
+							<div class="pali-paragraph font-semibold text-text text-xs">
+								Pāli: {content.pali.join(", ")}
+							</div>
+						)
+					}
+
+					{
+						content.related && content.related.length > 0 && (
+							<div class="text-gray-600 dark:text-gray-400 text-xs">
+								Related:
+								<span class="inline-flex flex-wrap gap-1 ml-1">
+									{content.related.map(
+										(relatedSlug: string) => {
+											const capitalizedName = relatedSlug
+												.split("-")
+												.map(
+													(word: string) =>
+														word
+															.charAt(0)
+															.toUpperCase() +
+														word.slice(1)
+												)
+												.join(" ");
+
+											return (
+												<a
+													href={`/on/${relatedSlug}`}
+													class="topic-tag"
+												>
+													{capitalizedName}
+												</a>
+											);
+										}
+									)}
+								</span>
+							</div>
+						)
+					}
+				</div>
+			</div>
+		</div>
+
+		{
+			/* Featured Discourses Section - Only for topics with curated content */
+		}
+		{
+			primaryDiscourses.length > 0 && (
+				<div class="mb-10">
+					<h2 class="text-xl font-medium mb-4">
+						Featured Discourses
+					</h2>
+					<div class="space-y-6">
+						{primaryDiscourses.map((discourse: any) => (
+							<div class="mb-6">
+								<div class="relative">
+									<PostCard
+										title={discourse.title}
+										description={discourse.description}
+										id={discourse.id}
+										titleTag={discourse.note}
+									/>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			)
+		}
+
+		{/* All Discourses or More Discourses Section */}
+		{
+			additionalDiscourses.length > 0 && (
+				<div class="space-y-10">
+					{primaryDiscourses.length > 0 && (
+						<h2 class="text-xl font-medium mb-4">
+							{contentType === "topic" &&
+							primaryDiscourses.length > 0
+								? "More Discourses"
+								: "Discourses"}
+						</h2>
+					)}
+					{collectionOrder.map((collectionKey) => {
+						const collection = collections[collectionKey];
+						if (collection.items.length === 0) return null;
+
+						return (
+							<div>
+								<h4 class="mb-6 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 pb-2 pl-4">
+									In {collection.name}
+								</h4>
+								<div class="px-2 space-y-4">
+									{collection.items.map((discourse: any) => (
+										<PostCard
+											title={discourse.title}
+											description={discourse.description}
+											id={discourse.id}
+										/>
+									))}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			)
+		}
+	</main>
+</Layout>
+
+<style>
+	.topic-tag {
+		display: inline-block;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		text-decoration: none;
+		transition: all 0.2s ease;
+		background-color: rgba(34, 211, 238, 0.1);
+		color: #0891b2;
+		border: 1px solid rgba(34, 211, 238, 0.2);
+	}
+
+	html.dark .topic-tag {
+		background-color: rgba(34, 211, 238, 0.2);
+		color: #22d3ee;
+		border: 1px solid rgba(34, 211, 238, 0.3);
+	}
+
+	.topic-tag:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	html.dark .topic-tag:hover {
+		box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+	}
+</style>

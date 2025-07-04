@@ -1,6 +1,8 @@
 ---
 title: Atapanīya sutta - Not Causing Remorse
 description: A person who has done good, has done what is wholesome, has protected others from fear, has not done evil, has not done cruelty, and has not done misdeeds, does not feel remorse.
+qualities: wholesome
+theme: wisdom, principle
 fetter: restlessness
 tags: remorse, unwholesome, wholesome, evil, cruelty, misdeeds, heaven, iti, iti28-49
 slug: iti31

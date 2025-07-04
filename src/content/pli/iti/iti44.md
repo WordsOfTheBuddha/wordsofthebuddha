@@ -1,6 +1,8 @@
 ---
 title: Nibbānadhātu sutta - The Nibbāna Element
-description: The Buddha shares on the two Nibbāna elements - 1.) with fuel remaining and 2.) without fuel remaining.
+description: The Buddha describes the distinction between the two Nibbāna elements - 1) one with fuel remaining pertaining to this life, and 2) one without fuel remaining and of relevance to the hereafter.
+qualities: liberation, complete comprehension, ending, giving up
+theme: wisdom, principle
 fetter: sensual desire,ill will,ignorance
 tags: iti,nibbāna,wisdom,passion,aversion,delusion
 slug: iti44

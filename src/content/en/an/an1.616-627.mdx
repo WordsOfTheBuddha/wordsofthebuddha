@@ -1,5 +1,5 @@
 ---
-title: Amata vagga - The Chapter On The Deathless
+title: Amata vagga - The Chapter on the Deathless
 description: The Buddha explains the importance of mindfulness of the body in partaking in the deathless.
 fetter: ignorance
 qualities: mindfulness, negligence

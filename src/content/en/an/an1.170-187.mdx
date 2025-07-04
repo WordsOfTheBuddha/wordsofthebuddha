@@ -1,5 +1,5 @@
 ---
-title: Ekapuggala vagga - The Chapter On One Person
+title: Ekapuggala vagga - The Chapter on One Person
 description: The Buddha describes the unique qualities of the Tathāgata, the Arahant, the perfectly Awakened One.
 qualities: compassion, vision, wisdom
 theme: recollection of the Buddha

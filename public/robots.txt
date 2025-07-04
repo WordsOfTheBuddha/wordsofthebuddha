@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Disallow system/admin paths
+Disallow: /api/
+Disallow: /.well-known/
+Disallow: /profile
+Disallow: /signin
+Disallow: /register
+Disallow: /topic/
+Allow: /qualities/
+Allow: /simile/
+
+# Allow important pages
+Allow: /search
+Allow: /anthologies
+Allow: /discover
+Allow: /on/
+
+# Sitemap location
+Sitemap: https://wordsofthebuddha.org/sitemap.xml

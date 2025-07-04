@@ -43,6 +43,24 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		return path;
 	}
 
+	// Handle topic paths
+	if (idPath[0] === "topic") {
+		path.push({
+			label: "Topic",
+			path: "/topic",
+		});
+		return path;
+	}
+
+	// Handle on paths
+	if (idPath[0] === "on") {
+		path.push({
+			label: "Buddha's Words On",
+			path: "/discover",
+		});
+		return path;
+	}
+
 	// Extract prefix and numbers
 	const prefix = id.match(/^[a-z]+/i)?.[0] || "";
 	const [baseId, subNumber] = id.split(".");

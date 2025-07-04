@@ -1,6 +1,8 @@
 ---
 title: Desanā sutta - Teaching
 description: The Blessed One explains the two principles of explaining the Dhamma - 1) 'See evil as evil' and 2) 'Having seen evil as evil, become disenchanted with it, become detached from it, and be released from it.'
+qualities: vision, harm, disenchantment, dispassion, liberation, recollection of the Buddha, ending
+theme: principle, recollection of the Buddha
 fetter: ignorance
 tags: Dhamma, evil, disenchantment, detachment, release, iti, iti28-49
 slug: iti39
