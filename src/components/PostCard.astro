@@ -49,7 +49,7 @@ const {
 					>
 					{
 						titleTag && (
-							<span class="ml-2 px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom -translate-y-0.5 mt-1">
+							<span class="px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom -translate-y-0.5 mt-1">
 								{titleTag}
 							</span>
 						)
@@ -87,7 +87,9 @@ const {
 			)
 		}
 	</div>
-	<p class=`mt-2 text-text line-clamp-${clamp} text-sm sm:text-base`>
+	<p
+		class=`mt-2 text-text line-clamp-${clamp+1} md:line-clamp-${clamp} text-sm sm:text-base`
+	>
 		{
 			description?.replace(
 				/\[([^\]]+)\]\(([^)]+)\)/g,
@@ -150,5 +152,26 @@ const {
 			transparent 20%
 		);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+	.line-clamp-4 {
+		display: -webkit-box;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.line-clamp-5 {
+		display: -webkit-box;
+		-webkit-line-clamp: 5;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.line-clamp-6 {
+		display: -webkit-box;
+		-webkit-line-clamp: 6;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>
