@@ -57,9 +57,9 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 				`[${opId}] Default note created with ID: ${noteRef.id}`
 			);
 
-			await db.collection("users").doc(decodedToken.uid).update({
+			await db.collection("users").doc(decodedToken.uid).set({
 				defaultNoteId: noteRef.id,
-			});
+			}, { merge: true });
 			console.log(`[${opId}] User's defaultNoteId updated`);
 			noteId = noteRef.id;
 		}
