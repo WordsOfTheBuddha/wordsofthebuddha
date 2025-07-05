@@ -47,6 +47,7 @@
 		"perturbation",
 		"regret",
 		"resentment",
+		"self-rejection",
 		"sensual desire",
 		"sexual misconduct",
 		"shamelessness",
@@ -58,7 +59,7 @@
 		"suffering",
 		"treachery",
 		"lack of discernment",
-		"lack of principles",
+		"unprincipled",
 		"undeveloped",
 		"unwholesome",
 		"unwise attention",
@@ -107,8 +108,8 @@
 		"impartiality",
 		"inquisitiveness",
 		"joyful pleasure",
-		"knowledge",
-		"learning",
+		"insight",
+		"learned",
 		"liberation",
 		"loving-kindness",
 		"merit",
@@ -401,7 +402,9 @@
 		"direct knowledge": [
 			"experiential understanding",
 			"direct experience",
-			"[abhiññāya]"
+			"Context: A deep, firsthand realization or knowing that arises from personal experience, not from study or conceptual understanding; it is an immediate, unmediated apprehension of truth.",
+			"Related:{insight, psychic power}",
+			"[abhiñña]"
 		],
 		"diligence": [
 			"alertness",
@@ -417,7 +420,6 @@
 			"ability to discriminate, distinguish",
 			"clear seeing",
 			"penetrating internal vision",
-			"insight",
 			"[vipassanā, nipaka, niccheyya]"
 		],
 		"discontentment": [
@@ -710,11 +712,12 @@
 			"Related:{happiness, contentment}",
 			"[pīti]"
 		],
-		"knowledge": [
-			"knowing (of)",
-			"insight (into)",
-			"understanding (of)",
+		"insight": [
+			"having insight",
+			"with understanding",
 			"right knowledge",
+			"Context: Insight is the deep, intuitive realization, a penetrative seeing into the true nature of things that transforms understanding",
+			"Related:{learned, direct knowledge}",
 			"[ñāṇa, sammāñāṇa]"
 		],
 		"lack of discernment": [
@@ -722,9 +725,9 @@
 			"lack of wisdom",
 			"immaturity",
 			"child-like in understanding",
-			"[asampajañña, bāla]"
+			"[asampajañña, bāla, duppañña]"
 		],
-		"lack of principles": [
+		"unprincipled": [
 			"lacking in moral principles",
 			"lacking in ethics",
 			"immoral",
@@ -737,11 +740,12 @@
 			"sluggishness",
 			"[kosajja, tandī]"
 		],
-		"learning": [
-			"acquiring knowledge",
-			"studying",
-			"understanding",
-			"[suta]"
+		"learned": [
+			"having knowledge",
+			"well studied",
+			"Related:{insight}",
+			"Context: Refers to a person who is well educated and knowledgeable. Learning is the process of acquiring knowledge.",
+			"[bahussuta, suta]"
 		],
 		"liberation": [
 			"freedom",
@@ -978,6 +982,14 @@
 			"self-mastery",
 			"Related:{tame}",
 			"[saṃvara, saññata, saṃvuta]"
+		],
+		"self-rejection": [
+			"identity aversion",
+			"self-hatred",
+			"self-loathing",
+			"worthlessness",
+			"Context: A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
+			"[vibhavataṇhā]"
 		],
 		"sense restraint": [
 			"guarding the sense faculties",
