@@ -34,15 +34,35 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		const userData = userDoc.data() || {};
 		console.log(`[${opId}] User data fetched:`, userData);
 
-		// Get user preferences
-		const showPali = userData["preferences.showPali"];
-		const theme = userData["preferences.theme"];
+		// Get user preferences with proper defaults
+		const showPali = userData["preferences.showPali"] || false;
+		const theme = userData["preferences.theme"] || "dark";
 		const enablePaliLookup =
-			userData["preferences.enablePaliLookup"] || false;
+			userData["preferences.enablePaliLookup"] ?? true;
 		let noteId = userData["defaultNoteId"];
-		const layout = userData["preferences.paliLayout"];
+		const layout = userData["preferences.paliLayout"] || "interleaved";
+		const fontSize = userData["preferences.fontSize"] || "large";
+
+		// Initialize default preferences if they don't exist (for new users)
+		const needsPreferenceInit = userData["preferences.enablePaliLookup"] === undefined ||
+			userData["preferences.theme"] === undefined ||
+			userData["preferences.fontSize"] === undefined ||
+			userData["preferences.paliLayout"] === undefined;
+
+		if (needsPreferenceInit) {
+			console.log(`[${opId}] Initializing default preferences for new user`);
+			await db.collection("users").doc(decodedToken.uid).set({
+				"preferences.theme": theme,
+				"preferences.showPali": showPali,
+				"preferences.enablePaliLookup": enablePaliLookup,
+				"preferences.paliLayout": layout,
+				"preferences.fontSize": fontSize,
+			}, { merge: true });
+			console.log(`[${opId}] Default preferences initialized`);
+		}
+
 		console.log(
-			`[${opId}] User preferences: showPali=${showPali}, theme=${theme}, enablePaliLookup=${enablePaliLookup}, noteId=${noteId}`
+			`[${opId}] User preferences: showPali=${showPali}, theme=${theme}, enablePaliLookup=${enablePaliLookup}, noteId=${noteId}, layout=${layout}, fontSize=${fontSize}`
 		);
 
 		// Create default note if it doesn't exist
@@ -117,6 +137,9 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		}
 		if (layout) {
 			redirectUrl.searchParams.set("layout", layout);
+		}
+		if (fontSize) {
+			redirectUrl.searchParams.set("fontSize", fontSize);
 		}
 		redirectUrl.searchParams.set(
 			"enablePaliLookup",
