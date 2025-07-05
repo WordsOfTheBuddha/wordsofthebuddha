@@ -1,7 +1,7 @@
 ---
 title: Hiri sutta - Conscience
 description: Verses describing the characteristics of a false friend—one who disregards conscience and speaks without sincerity—contrasted with a true friend whose loyalty is unbreakable and whose actions reflect inner integrity. It further speaks to the joy and peace found in virtuous conduct, seclusion, and the realization of the Dhamma.
-qualities: shamelessness, good friendship, bad friendship, diligence, seclusion, tranquility, without fear
+qualities: shamelessness, good friendship, bad friendship, diligence, solitude, tranquility, without fear
 theme: cultivating discernment, inspiration
 slug: snp2.3
 ---

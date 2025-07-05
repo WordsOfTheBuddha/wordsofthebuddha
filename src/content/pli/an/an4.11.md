@@ -2,7 +2,7 @@
 title: Cara sutta - Walking
 description: The Buddha describes two types of bhikkhus based on how they deal with thoughts of sensuality, ill will, and harming while walking, standing, sitting, and lying down, and which one is capable of reaching the highest awakening.
 fetter: doubt, sensual desire, ill will, ignorance
-qualities: sensual desire, ill will, harmful, laziness, wrong effort, giving up, ending, rousing of energy, continuous effort, right effort
+qualities: sensual desire, aversion, harmful, laziness, wrong effort, giving up, ending, rousing of energy, continuous effort, right effort
 tags: sensual desire, ill will, harming, effort, concern, energy, awakening, an, an4, walking, standing, sitting, lying down, doubt
 slug: an4.11
 similar: iti110

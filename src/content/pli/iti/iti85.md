@@ -1,7 +1,7 @@
 ---
 title: Asubhānupassī sutta - Contemplating Unattractiveness
 description: The Buddha advises to 1) dwell contemplating the unattractive nature of the body, 2) establish mindfulness as the first priority while breathing in and out, and 3) observe impermanence in all conditioned phenomena.
-qualities: recognition of impermanence, mindfulness, passion, contemplation, ignorance, knowledge
+qualities: recognition of impermanence, mindfulness, passion, contemplation, ignorance, insight
 theme: training guideline, wisdom
 slug: iti85
 ---
