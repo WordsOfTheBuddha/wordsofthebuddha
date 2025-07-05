@@ -98,8 +98,8 @@ function processBlocks(englishText: string, paliText: string): ContentPair[] {
 
 	const paliParagraphs = paliText
 		? paliText
-				.split(/\n\n+/)
-				.filter((p) => p.trim().length > 0 && !p.startsWith("---"))
+			.split(/\n\n+/)
+			.filter((p) => p.trim().length > 0 && !p.startsWith("---"))
 		: [];
 
 	const englishBlocks = englishText
@@ -177,6 +177,19 @@ export type SplitContent = {
 	english: string;
 };
 
+// Add word wrapping for Pali text to enable word-by-word navigation
+function wrapPaliWords(text: string): string {
+	// Pali-specific word boundary regex that includes diacritics and special characters
+	// Matches: letters (including diacritics), then optional punctuation that's part of the word
+	const paliWordRegex = /([a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]+(?:['''](?:[a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]+))*)/g;
+
+	return text.replace(paliWordRegex, (match, word) => {
+		// Clean the word for dictionary lookup (remove apostrophes and convert to lowercase)
+		const cleanWord = word.toLowerCase().replace(/[''']/g, '');
+		return `<span class="pali-word" data-word="${cleanWord}" data-original="${word}">${word}</span>`;
+	});
+}
+
 function formatBlock(
 	text: string,
 	isPali: boolean = false,
@@ -193,9 +206,14 @@ function formatBlock(
 	const className = isPali ? "pali-paragraph" : "english-paragraph";
 	const verseClass = isVerseText ? (isPali ? "verse-basic" : "verse") : "";
 
-	return `<p${pairAttr} class="${className} ${verseClass}">${
-		isVerseText ? transformVerseNewlines(text) : text
-	}</p>`;
+	// Wrap individual words if this is a Pali paragraph
+	let processedText = text;
+	if (isPali) {
+		processedText = wrapPaliWords(text);
+	}
+
+	return `<p${pairAttr} class="${className} ${verseClass}">${isVerseText ? transformVerseNewlines(processedText) : processedText
+		}</p>`;
 }
 
 // Modify the return type to handle split content

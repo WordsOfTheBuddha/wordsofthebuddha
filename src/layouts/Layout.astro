@@ -8,7 +8,7 @@ import Breadcrumbs from "../components/Breadcrumbs.astro";
 import LastUpdated from "../components/LastUpdated.astro";
 import Footer from "../components/Footer.astro";
 import Collapse from "../components/Collapse.astro";
-import Tooltip from "../components/Tooltip.astro";
+import BottomDrawer from "../components/BottomDrawer.astro";
 import PrintFormatter from "../components/PrintFormatter.astro";
 import "../styles/content.css";
 import Title from "../components/Title.astro";
@@ -95,6 +95,10 @@ if (!SEOTitle) {
 			name="description"
 			content={description || "Default Description"}
 		/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+		/>
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<script is:inline>
 			function getInitialTheme() {
@@ -133,7 +137,7 @@ if (!SEOTitle) {
 	<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 		<Analytics />
 		<SpeedInsights />
-		<Tooltip />
+		<BottomDrawer />
 		<PrintFormatter />
 		<main class="p-4">
 			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
