@@ -1,7 +1,7 @@
 ---
 title: Titthāyatana sutta - Bases Of Sectarian Views
 description: The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by the wise.
-qualities: wrong view, doubt, ignorance, sense restraint, non-restraint
+qualities: wrong view, ignorance, slaughtering, stealing, sexual misconduct, wrong speech, greed, aversion, weak in effort, muddle-minded, happiness, displeasure, equanimity, suffering
 fetter: clinging to views, adherence to rules and observances, doubt, ignorance
 tags: kamma, sectarian views, past actions, God, Dhamma, six elements, earth, water, fire, air, space, consciousness, six sense bases, eighteen mental explorations, four noble truths, suffering, dependent origination, dependent co-arising, ignorance, intentional constructs, name and form, six sense bases, felt experience, feeling, craving, clinging, appropriation, grasping, existence, birth, death an, an3
 slug: an3.61
