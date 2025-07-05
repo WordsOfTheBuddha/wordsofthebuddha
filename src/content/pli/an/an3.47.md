@@ -1,6 +1,7 @@
 ---
 title: Saṅkhatalakkhaṇa sutta - Characteristics Of The Conditioned
 description: The three characteristics of the conditioned and the unconditioned.
+qualities: recognition of impermanence
 fetter: ignorance
 tags: conditioned, unconditioned, arising, passing away, alteration, an, an3
 slug: an3.47
