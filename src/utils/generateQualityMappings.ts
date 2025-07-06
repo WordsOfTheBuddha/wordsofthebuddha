@@ -3,7 +3,6 @@ import * as path from "path";
 import { globSync } from "glob";
 import { readFileSync } from "fs";
 import matter from "gray-matter";
-import qualities from "../data/qualities.json" assert { type: "json" };
 
 interface DiscourseItem {
 	id: string;
@@ -14,6 +13,11 @@ interface DiscourseItem {
 
 export async function generateQualityMappings() {
 	try {
+		// Dynamically read qualities.json to avoid caching issues
+		const qualitiesPath = path.join(process.cwd(), "src/data/qualities.json");
+		const qualitiesContent = readFileSync(qualitiesPath, "utf8");
+		const qualities = JSON.parse(qualitiesContent);
+
 		// Use glob to find all content files
 		const contentFiles = globSync("src/content/en/**/*.mdx");
 
@@ -53,6 +57,8 @@ export async function generateQualityMappings() {
 							description: data.description || "",
 							collection: collection,
 						});
+					} else {
+						console.warn(`⚠️ Quality "${quality}" found in ${filePath} but not in qualities.json`);
 					}
 				});
 			} catch (err) {
@@ -92,8 +98,12 @@ export async function generateQualityMappings() {
 
 		// Convert to serializable object
 		const qualityData: Record<string, DiscourseItem[]> = {};
+		let emptyQualitiesCount = 0;
 		qualityMap.forEach((discourses: DiscourseItem[], quality: string) => {
 			qualityData[quality] = discourses;
+			if (discourses.length === 0) {
+				emptyQualitiesCount++;
+			}
 		});
 
 		// Write to file
@@ -102,7 +112,10 @@ export async function generateQualityMappings() {
 			JSON.stringify(qualityData, null, 2),
 		);
 
-		console.log("Quality mappings generated successfully");
+		console.log(`✅ Quality mappings generated successfully`);
+		if (emptyQualitiesCount > 0) {
+			console.log(`⚠️ ${emptyQualitiesCount} qualities have no associated discourses`);
+		}
 	} catch (err) {
 		console.error("Error generating quality mappings:", err);
 	}

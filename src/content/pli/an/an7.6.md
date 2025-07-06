@@ -1,7 +1,7 @@
 ---
 title: Vitthatadhana sutta - Wealth in Detail
 description: The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly poor, and their life is not lived in vain.
-qualities: faith, ethical conduct, conscience, fear of wrongdoing, learning, giving, wisdom
+qualities: faith, ethical conduct, conscience, fear of wrongdoing, learned, giving, wisdom
 theme: wisdom, inspiration
 slug: an7.6
 ---

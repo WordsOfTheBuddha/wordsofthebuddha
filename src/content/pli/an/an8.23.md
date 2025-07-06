@@ -1,7 +1,7 @@
 ---
 title: Paṭhamahatthaka sutta - With Hatthaka (First)
 description: The Buddha describes the seven wonderful and marvelous qualities of the householder Hatthaka of Āḷavī. When he learns about this from a certain bhikkhu, Hatthaka is concerned if any other householder heard the praise. Learning of this, the Buddha adds contentment as the eighth wonderful and marvelous quality of Hatthaka.
-qualities: faith, ethical conduct, conscience, fear of wrongdoing, learning, giving, wisdom, contentment
+qualities: faith, ethical conduct, conscience, fear of wrongdoing, learned, giving, wisdom, contentment
 theme: inspiration
 slug: an8.23
 character: Hatthaka of Āḷavī

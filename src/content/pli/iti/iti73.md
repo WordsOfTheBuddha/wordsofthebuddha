@@ -1,7 +1,7 @@
 ---
 title: Santatara sutta - More Peaceful than
 description: The formless existence is more peaceful than the form realm. Yet, cessation is more peaceful than the formless existence.
-qualities: formless, ending, tranquility
+qualities: formless, ending, tranquility, free from attachment
 theme: wisdom, directly knowing
 slug: iti73
 ---

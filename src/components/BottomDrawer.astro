@@ -82,6 +82,9 @@
 						<div class="definition">${cleanContent}</div>
 					</div>
 				`;
+
+				// Remove any existing navigation controls for markdown content
+				this.removeNavigationControls();
 			} else {
 				// For Pali dictionary content
 				contentEl.innerHTML = content;
@@ -116,14 +119,53 @@
 		isOpen() {
 			return this.isVisible;
 		}
+
+		// Helper methods for navigation
+		getPopoverElement() {
+			return this.popover;
+		}
+
+		addNavigationControls(html: string) {
+			const popoverContent =
+				this.popover?.querySelector(".popover-content");
+			if (popoverContent) {
+				// Remove existing navigation controls
+				const existingNav = popoverContent.querySelector(
+					".navigation-controls"
+				);
+				if (existingNav) existingNav.remove();
+
+				// Add new navigation controls
+				popoverContent.insertAdjacentHTML("beforeend", html);
+			}
+		}
+
+		removeNavigationControls() {
+			const navControls = this.popover?.querySelector(
+				".navigation-controls"
+			);
+			if (navControls) {
+				navControls.remove();
+			}
+		}
 	}
 
 	// Global popover instance
 	let bottomPopover: BottomPopover;
 
+	// Navigation state
+	let currentWords: HTMLElement[] = [];
+	let currentWordIndex: number = -1;
+	let isNavigationMode: boolean = false;
+
 	function replaceTooltips(element: HTMLElement) {
 		for (let node of element.childNodes) {
 			if (node.nodeType === Node.TEXT_NODE) {
+				// Skip if we're already inside a pali-word span
+				if (node.parentElement?.closest(".pali-word")) {
+					continue;
+				}
+
 				let text = node.textContent || "";
 				// Replace |text::tooltip| pattern
 				text = text.replace(
@@ -149,7 +191,126 @@
 		}
 	}
 
-	async function showDictionaryPopover(word: string) {
+	// Navigation functions
+	function enableWordNavigation(clickedWord: HTMLElement) {
+		isNavigationMode = true;
+
+		// Get ALL pali words from ALL paragraphs (cross-paragraph navigation)
+		currentWords = Array.from(document.querySelectorAll(".pali-word"));
+		currentWordIndex = currentWords.indexOf(clickedWord);
+		highlightCurrentWord();
+	}
+
+	function disableWordNavigation() {
+		isNavigationMode = false;
+		currentWordIndex = -1;
+		currentWords = [];
+		clearWordHighlights();
+		bottomPopover.removeNavigationControls();
+	}
+
+	function navigateToNextWord() {
+		if (currentWordIndex < currentWords.length - 1) {
+			currentWordIndex++;
+			highlightCurrentWord();
+			showCurrentWordDefinition();
+			updateNavigationButtons();
+		}
+	}
+
+	function navigateToPreviousWord() {
+		if (currentWordIndex > 0) {
+			currentWordIndex--;
+			highlightCurrentWord();
+			showCurrentWordDefinition();
+			updateNavigationButtons();
+		}
+	}
+
+	function updateNavigationButtons() {
+		const popover = bottomPopover.getPopoverElement();
+		const prevBtn = popover?.querySelector(
+			".nav-prev"
+		) as HTMLButtonElement;
+		const nextBtn = popover?.querySelector(
+			".nav-next"
+		) as HTMLButtonElement;
+
+		if (prevBtn) {
+			prevBtn.disabled = currentWordIndex <= 0;
+		}
+		if (nextBtn) {
+			nextBtn.disabled = currentWordIndex >= currentWords.length - 1;
+		}
+	}
+
+	function highlightCurrentWord() {
+		clearWordHighlights();
+
+		if (currentWordIndex >= 0 && currentWordIndex < currentWords.length) {
+			const currentWord = currentWords[currentWordIndex];
+			currentWord.classList.add("pali-word-highlighted");
+
+			// Scroll word into view
+			currentWord.scrollIntoView({
+				behavior: "smooth",
+				block: "center",
+				inline: "center",
+			});
+		}
+	}
+
+	function clearWordHighlights() {
+		document.querySelectorAll(".pali-word-highlighted").forEach((word) => {
+			word.classList.remove("pali-word-highlighted");
+		});
+	}
+
+	async function showCurrentWordDefinition() {
+		if (currentWordIndex >= 0 && currentWordIndex < currentWords.length) {
+			const word = currentWords[currentWordIndex];
+			const cleanWord = word.dataset.word || word.textContent || "";
+			await showDictionaryPopover(cleanWord, true);
+		}
+	}
+
+	function addNavigationControls() {
+		if (!isNavigationMode) return;
+
+		const navigationHtml = `
+			<div class="navigation-controls">
+				<button class="nav-btn nav-prev" ${currentWordIndex <= 0 ? "disabled" : ""}>
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+						<path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+					</svg>
+					Previous
+				</button>
+				<button class="nav-btn nav-next" ${currentWordIndex >= currentWords.length - 1 ? "disabled" : ""}>
+					Next
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+						<path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+					</svg>
+				</button>
+			</div>
+		`;
+
+		bottomPopover.addNavigationControls(navigationHtml);
+		setupNavigationEventListeners();
+	}
+
+	function setupNavigationEventListeners() {
+		const popover = bottomPopover.getPopoverElement();
+		const prevBtn = popover?.querySelector(".nav-prev");
+		const nextBtn = popover?.querySelector(".nav-next");
+
+		prevBtn?.addEventListener("click", navigateToPreviousWord);
+		nextBtn?.addEventListener("click", navigateToNextWord);
+	}
+
+	async function showDictionaryPopover(
+		word: string,
+		enableNavigation: boolean = false
+	) {
 		if (!bottomPopover) return;
 
 		// Show loading state
@@ -174,6 +335,11 @@
 			if (data.definitions && data.definitions.length > 0) {
 				const content = createTooltipContent(word, data);
 				bottomPopover.show(content, "dictionary");
+
+				// Add navigation controls if enabled
+				if (enableNavigation) {
+					addNavigationControls();
+				}
 			} else {
 				bottomPopover.show("No definition found", "dictionary");
 			}
@@ -235,7 +401,23 @@
 				const content =
 					tooltipElement.getAttribute("data-tooltip-content") || "";
 				const primaryText = tooltipElement.textContent || "";
+				// English tooltips don't get navigation - pass false for enableNavigation
 				bottomPopover.show(content, "markdown", primaryText);
+				return;
+			}
+
+			// Handle Pali word clicks
+			const paliWord = (e.target as HTMLElement).closest(".pali-word");
+			if (paliWord && localStorage.getItem("paliLookup") === "true") {
+				e.preventDefault();
+				const word =
+					(paliWord as HTMLElement).dataset.word ||
+					paliWord.textContent ||
+					"";
+				enableWordNavigation(paliWord as HTMLElement);
+				// Pali dictionary content gets navigation - pass true for enableNavigation
+				showDictionaryPopover(word, true);
+				return;
 			}
 		});
 
@@ -293,6 +475,37 @@
 				);
 			}
 		}
+
+		// Override popover hide to disable navigation mode
+		const originalHide = bottomPopover.hide.bind(bottomPopover);
+		bottomPopover.hide = function () {
+			disableWordNavigation();
+			originalHide();
+		};
+
+		// Keyboard navigation
+		document.addEventListener("keydown", (e) => {
+			// Only handle keyboard shortcuts when navigation mode is active and drawer is open
+			if (!isNavigationMode || !bottomPopover?.isOpen()) return;
+
+			switch (e.key) {
+				case "ArrowLeft":
+					e.preventDefault();
+					navigateToPreviousWord();
+					break;
+
+				case "ArrowRight":
+					e.preventDefault();
+					navigateToNextWord();
+					break;
+
+				case "Escape":
+					e.preventDefault();
+					disableWordNavigation();
+					bottomPopover.hide();
+					break;
+			}
+		});
 	});
 </script>
 
@@ -303,7 +516,7 @@
 		left: 0;
 		right: 0;
 		width: 100vw;
-		height: 25vh;
+		height: 30vh;
 		background-color: var(--background-color);
 		border-top: 1px solid var(--popover-border);
 		box-shadow:
@@ -311,7 +524,7 @@
 			0 -2px 4px -1px rgba(0, 0, 0, 0.06);
 		transform: translateY(100%);
 		transition: transform 0.3s ease-in-out;
-		z-index: 1000;
+		z-index: 9999;
 		display: flex;
 		flex-direction: column;
 	}
@@ -328,16 +541,18 @@
 
 	.popover-content {
 		position: relative;
-		padding: 1.5rem 1.5rem 2rem;
-		overflow-y: auto;
+		padding: 1.5rem 1.5rem 0;
+		overflow: hidden;
 		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.close-btn {
 		position: fixed;
 		top: 1rem;
 		right: 1rem;
-		background: none;
+		background-color: var(--background-color);
 		border: none;
 		color: var(--text-color);
 		cursor: pointer;
@@ -345,6 +560,7 @@
 		border-radius: 0.25rem;
 		transition: background-color 0.2s;
 		z-index: 1;
+		box-shadow: 0 0 0 2px var(--background-color);
 	}
 
 	.close-btn:hover {
@@ -353,6 +569,34 @@
 
 	.popover-body {
 		padding-right: 3rem; /* Make room for close button */
+		flex: 1;
+		overflow-y: auto;
+		padding-bottom: 1rem;
+	}
+
+	/* Custom scrollbar for popover to match page scrollbars */
+	.popover-body::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.popover-body::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	.popover-body::-webkit-scrollbar-thumb {
+		background: #c1c1c1;
+		border-radius: 3px;
+		opacity: 0.6;
+	}
+
+	.popover-body::-webkit-scrollbar-thumb:hover {
+		opacity: 1;
+	}
+
+	/* Firefox scrollbar styling */
+	.popover-body {
+		scrollbar-width: thin;
+		scrollbar-color: #c1c1c1 rgba(0, 0, 0, 0.05);
 	}
 
 	/* Tooltip text styling - remove underline effect */
@@ -367,7 +611,7 @@
 		border-bottom: 1px solid var(--auth-input-border);
 		margin-bottom: 0.5rem;
 		padding-bottom: 0.5rem;
-		font-size: 0.9rem;
+		font-size: 1rem;
 		line-height: 1.6;
 	}
 
@@ -377,6 +621,7 @@
 
 	.tooltip-content .title-text {
 		color: inherit;
+		font-size: 1.1rem;
 	}
 
 	.tooltip-content .pali-term {
@@ -438,5 +683,88 @@
 	.markdown-content .definition {
 		color: var(--text-color);
 		line-height: 1.6;
+	}
+
+	/* Pali word navigation styles */
+	.pali-word {
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		padding: 1px 0px;
+		margin: 0 2px;
+		border-radius: 2px;
+		display: inline-block;
+		white-space: nowrap;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+	}
+
+	.pali-word:hover {
+		background-color: var(--background-row-hover);
+	}
+
+	.pali-word-highlighted {
+		background-color: var(--primary-color);
+		color: white;
+		font-weight: 500;
+	}
+
+	.pali-word-highlighted:hover {
+		background-color: var(--primary-color);
+		color: white;
+	}
+
+	/* Navigation controls */
+	.navigation-controls {
+		display: flex;
+		position: sticky;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		border-top: 1px solid var(--popover-border);
+		background-color: var(--background-color);
+		z-index: 10;
+		margin-top: auto;
+		flex-shrink: 0;
+	}
+
+	.nav-btn {
+		flex: 1;
+		padding: 0.8rem;
+		border: none;
+		background: none;
+		color: var(--text-color);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		font-size: 0.9rem;
+		transition: background-color 0.2s;
+	}
+
+	.nav-btn:not(:last-child) {
+		border-right: 1px solid var(--popover-border);
+	}
+
+	.nav-btn:hover:not(:disabled) {
+		background-color: var(--background-row-hover);
+	}
+
+	.nav-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.popover-content:has(.navigation-controls) {
+		padding-bottom: 0; /* Remove bottom padding when navigation is present */
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.popover-content:has(.navigation-controls) .popover-body {
+		flex: 1;
+		overflow-y: auto;
+		padding-bottom: 1rem;
 	}
 </style>
