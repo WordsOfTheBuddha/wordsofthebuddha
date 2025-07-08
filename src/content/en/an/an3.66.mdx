@@ -1,6 +1,7 @@
 ---
 title: Sāḷha sutta - With Sāḷha
 description: The venerable Nandaka teaches Sāḷha and his friend about how to independently verify the unwholesome and wholesome mental qualities.
+qualities: unwholesome, examination, greed, craving, aversion, illusion, ignorance, lack of discernment, slaughtering, stealing, sexual misconduct, suffering, wholesome, contentment, loving-kindness, wisdom, full awareness, mindfulness, compassion, appreciative joy, equanimity, liberation
 fetter: sensual desire,ill will,ignorance
 tags: greed,aversion,delusion,wholesome,unwholesome,blameless,blameworthy,wise,loving-kindness,good-will,contentment,clear apprehension
 slug: an3.66
