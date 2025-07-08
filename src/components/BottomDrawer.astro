@@ -227,6 +227,69 @@
 		}
 	}
 
+	function navigateVertically(direction: "up" | "down") {
+		const currentWord = currentWords[currentWordIndex];
+		if (!currentWord) return;
+
+		const targetWord = findWordVertically(currentWord, direction);
+		if (targetWord) {
+			const targetIndex = currentWords.indexOf(targetWord);
+			if (targetIndex >= 0) {
+				currentWordIndex = targetIndex;
+				highlightCurrentWord();
+				showCurrentWordDefinition();
+				updateNavigationButtons();
+			}
+		}
+	}
+
+	// Spatial navigation function
+	function findWordVertically(
+		currentWord: HTMLElement,
+		direction: "up" | "down"
+	): HTMLElement | null {
+		const currentRect = currentWord.getBoundingClientRect();
+		const currentCenter = {
+			x: currentRect.left + currentRect.width / 2,
+			y: currentRect.top + currentRect.height / 2,
+		};
+
+		let bestMatch: HTMLElement | null = null;
+		let bestDistance = Infinity;
+
+		currentWords.forEach((word) => {
+			if (word === currentWord) return;
+
+			const wordRect = word.getBoundingClientRect();
+			const wordCenter = {
+				x: wordRect.left + wordRect.width / 2,
+				y: wordRect.top + wordRect.height / 2,
+			};
+
+			// Check if word is in the right vertical direction
+			const isInDirection =
+				direction === "up"
+					? wordCenter.y < currentCenter.y - 5 // 5px threshold to avoid same-line words
+					: wordCenter.y > currentCenter.y + 5;
+
+			if (!isInDirection) return;
+
+			// Calculate weighted distance (prioritize vertical proximity, then horizontal)
+			const verticalDistance = Math.abs(wordCenter.y - currentCenter.y);
+			const horizontalDistance = Math.abs(wordCenter.x - currentCenter.x);
+
+			// Weight vertical movement as primary, horizontal as secondary
+			const totalDistance = verticalDistance + horizontalDistance * 0.2;
+
+			if (totalDistance < bestDistance) {
+				bestDistance = totalDistance;
+				bestMatch = word;
+			}
+		});
+
+		return bestMatch;
+	}
+
 	function updateNavigationButtons() {
 		const popover = bottomPopover.getPopoverElement();
 		const prevBtn = popover?.querySelector(
@@ -500,6 +563,16 @@
 				case "ArrowRight":
 					e.preventDefault();
 					navigateToNextWord();
+					break;
+
+				case "ArrowUp":
+					e.preventDefault();
+					navigateVertically("up");
+					break;
+
+				case "ArrowDown":
+					e.preventDefault();
+					navigateVertically("down");
 					break;
 
 				case "Escape":
