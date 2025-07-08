@@ -341,7 +341,10 @@
 					addNavigationControls();
 				}
 			} else {
-				bottomPopover.show("No definition found", "dictionary");
+				bottomPopover.show(
+					`<div>${word}: No definition found</div>`,
+					"dictionary"
+				);
 			}
 		} catch (error) {
 			console.error("Failed to fetch definition:", error);
@@ -685,12 +688,15 @@
 		line-height: 1.6;
 	}
 
+	.word-space {
+		margin-left: 4px;
+	}
+
 	/* Pali word navigation styles */
 	.pali-word {
 		cursor: pointer;
 		transition: background-color 0.2s ease;
-		padding: 1px 0px;
-		margin: 0 2px;
+		margin: 0;
 		border-radius: 2px;
 		display: inline-block;
 		white-space: nowrap;

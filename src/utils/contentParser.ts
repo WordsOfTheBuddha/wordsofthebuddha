@@ -179,15 +179,51 @@ export type SplitContent = {
 
 // Add word wrapping for Pali text to enable word-by-word navigation
 function wrapPaliWords(text: string): string {
-	// Pali-specific word boundary regex that includes diacritics and special characters
-	// Matches: letters (including diacritics), then optional punctuation that's part of the word
-	const paliWordRegex = /([a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]+(?:['''](?:[a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]+))*)/g;
+    // Split on whitespace while preserving it
+    const tokens = text.split(/(\s+)/);
 
-	return text.replace(paliWordRegex, (match, word) => {
-		// Clean the word for dictionary lookup (remove apostrophes and convert to lowercase)
-		const cleanWord = word.toLowerCase().replace(/[''']/g, '');
-		return `<span class="pali-word" data-word="${cleanWord}" data-original="${word}">${word}</span>`;
-	});
+    return tokens.map((token, index) => {
+        // If it's whitespace, wrap it in a span to preserve it
+        if (/^\s+$/.test(token)) {
+            return `<span class="word-space">${token}</span>`;
+        }
+
+        // Check if token contains Pali characters
+        if (/[a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]/.test(token)) {
+            // Handle breaking punctuation (em-dash, en-dash, etc.)
+            const breakingPunctuation = /([—–])/g;
+
+            if (breakingPunctuation.test(token)) {
+                // Split on breaking punctuation while preserving it
+                const parts = token.split(/([—–])/);
+
+                return parts.map(part => {
+                    if (/[—–]/.test(part)) {
+                        // Breaking punctuation gets its own span
+                        return `<span class="punctuation">${part}</span>`;
+                    } else if (/[a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]/.test(part)) {
+                        // Word part gets pali-word span
+                        const cleanWord = part.toLowerCase().replace(/[''.,;:!?…"'"'\(\)\[\]\{\}«»""]/g, '');
+                        return `<span class="pali-word" data-word="${cleanWord}" data-original="${part}">${part}</span>`;
+                    } else {
+                        // Other punctuation (attached to words)
+                        return part;
+                    }
+                }).join('');
+            } else {
+                // No breaking punctuation, treat as single word
+                const cleanWord = token.toLowerCase().replace(/[''.,;:!?…—"'"'\(\)\[\]\{\}«»""]/g, '');
+                return `<span class="pali-word" data-word="${cleanWord}" data-original="${token}">${token}</span>`;
+            }
+        }
+
+        // Other tokens (pure punctuation), return as-is or wrap in punctuation span
+        if (/[—–]/.test(token)) {
+            return `<span class="punctuation">${token}</span>`;
+        }
+
+        return token;
+    }).join('');
 }
 
 function formatBlock(
