@@ -1,7 +1,7 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { getAuth } from "firebase-admin/auth";
-import { app } from "../../../service/firebase/server";
+import { app, isFirebaseInitialized } from "../../../service/firebase/server";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
 	// Debug request information
@@ -10,6 +10,17 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 		"Request Headers:",
 		Object.fromEntries(request.headers.entries())
 	);
+
+	// Check if Firebase is properly configured
+	if (!isFirebaseInitialized || !app) {
+		console.log("Firebase not configured for registration");
+		return new Response("Registration service is not available. Please check server configuration.", {
+			status: 503,
+			headers: {
+				'Content-Type': 'text/plain'
+			}
+		});
+	}
 
 	// Debug raw body
 	const rawBody = await request.text();

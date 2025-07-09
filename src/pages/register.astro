@@ -1,6 +1,13 @@
 ---
 export const prerender = false;
 import Layout from "../layouts/Layout.astro";
+import { isFirebaseInitialized } from "../service/firebase/server";
+
+/* Check if Firebase is initialized */
+if (!isFirebaseInitialized) {
+	// Redirect to home page with error message
+	return Astro.redirect("/?auth-unavailable=true");
+}
 
 const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 console.log("return to in register is: ", returnTo);
@@ -62,7 +69,11 @@ console.log("return to in register is: ", returnTo);
 							required
 							class="mt-1 block w-full px-3 py-2 bg-[var(--auth-input-bg)] border border-[var(--auth-input-border)] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
 						/>
-						<p id="emailError" class="mt-1 text-sm text-red-500 hidden"></p>
+						<p
+							id="emailError"
+							class="mt-1 text-sm text-red-500 hidden"
+						>
+						</p>
 					</div>
 					<div>
 						<label
@@ -102,7 +113,10 @@ console.log("return to in register is: ", returnTo);
 		'button[type="submit"]'
 	) as HTMLButtonElement;
 
-	function validateEmail(email: string): { isValid: boolean; message: string } {
+	function validateEmail(email: string): {
+		isValid: boolean;
+		message: string;
+	} {
 		// Allow: letters, numbers, dots, underscores, hyphens, plus, @ symbol
 		const allowedChars = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		const consecutiveDots = /\.\./;

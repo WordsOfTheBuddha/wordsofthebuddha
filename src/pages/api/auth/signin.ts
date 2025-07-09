@@ -1,6 +1,6 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { app } from "../../../service/firebase/server";
+import { app, isFirebaseInitialized } from "../../../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { Timestamp } from "firebase-admin/firestore";
@@ -11,6 +11,17 @@ const SESSION_COOKIE_TIMEOUT = 40000; // Increase timeout to 40 seconds
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 	const opId = `signin-${Date.now()}`;
 	console.log(`[${opId}] Sign-in request started`);
+
+	// Check if Firebase is properly configured
+	if (!isFirebaseInitialized || !app) {
+		console.log(`[${opId}] Firebase not configured`);
+		return new Response("Authentication service is not available. Please check server configuration.", {
+			status: 503,
+			headers: {
+				'Content-Type': 'text/plain'
+			}
+		});
+	}
 
 	const auth = getAuth(app);
 	const db = getFirestore(app);
