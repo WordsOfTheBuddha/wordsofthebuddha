@@ -422,9 +422,6 @@
 				<div class="title">
 					<span>
 						${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
-						<span style="margin-left: 8px">
-							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-						</span>
 					</span>
 					${
 						definitions[0].construction
@@ -434,6 +431,9 @@
 						</span>`
 							: ""
 					}
+													<span>
+							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+						</span>
 				</div>
 				<div class="dpd-content">
 					${definitions
@@ -746,8 +746,9 @@
 
 	.tooltip-content .grammar {
 		color: var(--secondary-color);
-		font-style: italic;
-		margin-right: 0.5rem;
+		font-style: semi-italic;
+		font-size: 1rem;
+		margin-left: 0.5rem;
 	}
 
 	.tooltip-content .meaning {
@@ -756,10 +757,11 @@
 	}
 
 	.tooltip-content .construction {
-		font-size: 0.8rem;
+		font-size: 1rem;
 		color: var(--text-color);
 		opacity: 0.7;
 		margin-top: 0.25rem;
+		margin-left: 0.5rem;
 	}
 
 	.tooltip-content .summary:not(.last) {
