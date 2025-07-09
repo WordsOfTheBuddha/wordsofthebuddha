@@ -1,7 +1,7 @@
 ---
 title: Āpāyika sutta - Destined for Suffering
 description: The Buddha describes the two behaviors that lead to suffering and rebirth in hell if not abandoned.
-qualities: celibacy, unprincipled, non-restraint, harmful, suffering
+qualities: celibacy, unprincipled, non-restraint, harm, suffering
 theme: principle
 slug: iti48
 simile: blazing iron ball

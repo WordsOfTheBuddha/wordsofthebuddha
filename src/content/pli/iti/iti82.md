@@ -1,7 +1,7 @@
 ---
 title: Devasadda sutta - Divine Sound
 description: The Buddha describes three occasions when divine sounds arise among the gods.
-qualities: diligence, liberation
+qualities: diligence, liberation, direct knowledge
 slug: iti82
 ---
 
