@@ -1,22 +1,21 @@
 title: "Diligence"
 description: "The quality of careful and persistent effort in practice."
 synonyms:
-  - perseverance
-  - persistence
+    - perseverance
+    - persistence
 pali:
-  - appamāda
-  - uṭṭhāna
+    - appamāda
+    - uṭṭhāna
 redirects:
-  - heedfulness
-  - vigilance
-  - mindfulness-of-effort
+    - heedfulness
+    - vigilance
 related:
-  - mindfulness
-  - energy
+    - continuous effort
+    - right effort
 discourses:
-  - id: "an6.53"
-    note: "The Buddha explains diligence as the foremost quality"
-  - id: "dhp25"
-    note: "Comparing the diligent to those flying like swans"
-  - id: "sn3.17"
-    note: "Discourse on diligence to King Pasenadi"
+    - id: "sn45.139"
+      note: "As the foremost quality"
+    - id: "dhp21-32"
+      note: "Contrasting diligence and negligence"
+    - id: "sn3.17"
+      note: "Discourse on diligence to King Pasenadi"
