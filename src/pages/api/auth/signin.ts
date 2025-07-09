@@ -138,9 +138,6 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		if (layout) {
 			redirectUrl.searchParams.set("layout", layout);
 		}
-		if (fontSize) {
-			redirectUrl.searchParams.set("fontSize", fontSize);
-		}
 		redirectUrl.searchParams.set(
 			"enablePaliLookup",
 			enablePaliLookup.toString()
