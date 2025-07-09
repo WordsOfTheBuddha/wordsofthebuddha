@@ -1,7 +1,7 @@
 ---
 title: Devadūta sutta - Divine Messengers
 description: The Buddha describes the three divine messengers that appear among human beings and what happens to those who do not heed their message.
-qualities: negligence, harmful, diligence, unprincipled
+qualities: negligence, harm, diligence, unprincipled
 theme: wisdom, directly knowing
 slug: an3.36
 ---
