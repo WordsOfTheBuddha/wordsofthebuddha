@@ -1,26 +1,27 @@
-title: "Jhāna"
-description: "The meditative absorptions that bring profound tranquility and clarity to the mind through sustained concentration."
+title: "Jhana"
+description: "The meditative absorptions that bring profound tranquility and clarity to the mind through sustained collectedness."
 synonyms:
-  - absorption
-  - meditative concentration
-  - collectedness
+    - absorption
+    - meditative concentration
+    - collectedness
 pali:
-  - jhāna
-  - samādhi
+    - jhāna
+    - samādhi
 redirects:
-  - jhana
-  - samadhi
-  - right-concentration
-  - right-collectedness
-  - collectedness
+    - samadhi
+    - concentration
+    - right-concentration
+    - right-collectedness
+    - collectedness
+    - right-collectedness
 related:
-  - mindfulness
-  - concentration
-  - meditation
+    - mindfulness
+    - collectedness
+    - cultivation
 discourses:
-  - id: "an5.28"
-    note: "Progressive development with rich similes"
-  - id: "mn111"
-    note: "Detailed instruction on jhāna practice"
-  - id: "sn48.9"
-    note: "The relationship between jhānas and spiritual faculties"
+    - id: "an5.28"
+      note: "Progressive development with rich similes"
+    - id: "mn111"
+      note: "Detailed instruction on jhāna practice"
+    - id: "sn48.9"
+      note: "The relationship between jhānas and spiritual faculties"

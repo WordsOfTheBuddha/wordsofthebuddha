@@ -1,7 +1,7 @@
 ---
 title: Ayyikā sutta - Grandmother
 description: King Pasenadi expresses deep sorrow over his grandmother's death. The Buddha teaches him that all beings, without exception, are subject to death and cannot escape it, likening it to a potter's pots that are all bound to break.
-qualities: attachment, passion, merit, harmful
+qualities: attachment, passion, merit, harm
 slug: sn3.22
 simile: potter's pots
 ---

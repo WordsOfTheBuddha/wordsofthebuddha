@@ -130,6 +130,7 @@ export const GET: APIRoute = async ({ url }) => {
 							synonyms: topic.synonyms,
 							pali: topic.pali,
 							redirects: topic.redirects,
+							related: topic.related,
 							discourses: topic.discourses,
 						},
 						topic.description,

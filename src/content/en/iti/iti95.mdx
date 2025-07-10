@@ -1,7 +1,7 @@
 ---
 title: Kāmūpapatti sutta - Rebirths in the Sensual Realm
 description: The Buddha describes three kinds of beings who partake in sensual pleasures - 1) those who enjoy what is presently available, 2) those who delight in their own creations, and 3) those who wield power over the creations of others.
-qualities: sensual desire, wisdom
+qualities: sensual desire, wisdom, ending
 theme: inspiration, wisdom
 slug: iti95
 ---

@@ -3,6 +3,7 @@ export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import ContentTag from "../../components/ContentTag.astro";
+import qualities from "../../data/qualities.json";
 import { getContentTypeFromApiData } from "../../utils/ContentTagUtils";
 
 // Get the slug from params
@@ -26,25 +27,55 @@ try {
 	const result = await response.json();
 
 	if (result.success && result.data.length > 0) {
-		// Find exact match by slug first
-		const exactMatch = result.data.find(
+		// Priority 1: Check for topic by exact slug match
+		const topicMatch = result.data.find(
 			(item: any) =>
-				item.slug === slug.toLocaleLowerCase() ||
-				item.slug === filterValue
+				item.type === "topic" &&
+				(item.slug === slug.toLocaleLowerCase() ||
+					item.slug === filterValue)
 		);
 
-		if (exactMatch) {
-			content = exactMatch;
-			contentType = exactMatch.type;
+		if (topicMatch) {
+			content = topicMatch;
+			contentType = topicMatch.type;
 		} else {
-			// If no exact match, check if any item has this slug in redirects (for topics)
+			// Priority 2: Check if any topic has this slug in redirects
 			const redirectMatch = result.data.find(
-				(item: any) => item.redirects && item.redirects.includes(slug)
+				(item: any) =>
+					item.type === "topic" &&
+					item.redirects &&
+					item.redirects.includes(slug)
 			);
 
 			if (redirectMatch) {
-				// Redirect to the canonical slug instead of displaying content
+				// Redirect to the canonical topic slug
 				return Astro.redirect(`/on/${redirectMatch.slug}`);
+			} else {
+				// Priority 3: Check for quality by exact slug match
+				const qualityMatch = result.data.find(
+					(item: any) =>
+						item.type === "quality" &&
+						(item.slug === slug.toLocaleLowerCase() ||
+							item.slug === filterValue)
+				);
+
+				if (qualityMatch) {
+					content = qualityMatch;
+					contentType = qualityMatch.type;
+				} else {
+					// Priority 4: Check for simile by exact slug match
+					const simileMatch = result.data.find(
+						(item: any) =>
+							item.type === "simile" &&
+							(item.slug === slug.toLocaleLowerCase() ||
+								item.slug === filterValue)
+					);
+
+					if (simileMatch) {
+						content = simileMatch;
+						contentType = simileMatch.type;
+					}
+				}
 			}
 		}
 	}
@@ -186,10 +217,26 @@ const totalDiscourses = allDiscourses.length;
 												)
 												.join(" ");
 
+											// Determine quality type for styling
+											const isPositive =
+												qualities.positive.includes(
+													relatedSlug
+												);
+											const isNegative =
+												qualities.negative.includes(
+													relatedSlug
+												);
+
+											const tagClass = isPositive
+												? "topic-tag positive"
+												: isNegative
+													? "topic-tag negative"
+													: "topic-tag neutral";
+
 											return (
 												<a
 													href={`/on/${relatedSlug}`}
-													class="topic-tag"
+													class={tagClass}
 												>
 													{capitalizedName}
 												</a>
@@ -278,14 +325,41 @@ const totalDiscourses = allDiscourses.length;
 		font-size: 0.875rem;
 		text-decoration: none;
 		transition: all 0.2s ease;
-		background-color: rgba(34, 211, 238, 0.1);
-		color: #0891b2;
+	}
+
+	.topic-tag.positive {
+		background-color: rgba(245, 158, 11, 0.1); /* amber-500 with opacity */
+		color: #d97706; /* amber-600 */
+		border: 1px solid rgba(245, 158, 11, 0.2);
+	}
+
+	.topic-tag.negative {
+		background-color: rgba(100, 116, 139, 0.1); /* slate-500 with opacity */
+		color: #475569; /* slate-600 */
+		border: 1px solid rgba(100, 116, 139, 0.2);
+	}
+
+	.topic-tag.neutral {
+		background-color: rgba(34, 211, 238, 0.1); /* cyan-400 with opacity */
+		color: #0891b2; /* cyan-600 */
 		border: 1px solid rgba(34, 211, 238, 0.2);
 	}
 
-	html.dark .topic-tag {
+	html.dark .topic-tag.positive {
+		background-color: rgba(245, 158, 11, 0.2);
+		color: #fbbf24; /* amber-400 for better contrast in dark mode */
+		border: 1px solid rgba(245, 158, 11, 0.3);
+	}
+
+	html.dark .topic-tag.negative {
+		background-color: rgba(100, 116, 139, 0.2);
+		color: #94a3b8; /* slate-400 for better contrast in dark mode */
+		border: 1px solid rgba(100, 116, 139, 0.3);
+	}
+
+	html.dark .topic-tag.neutral {
 		background-color: rgba(34, 211, 238, 0.2);
-		color: #22d3ee;
+		color: #22d3ee; /* cyan-400 for better contrast in dark mode */
 		border: 1px solid rgba(34, 211, 238, 0.3);
 	}
 

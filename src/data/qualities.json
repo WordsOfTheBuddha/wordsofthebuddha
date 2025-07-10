@@ -27,10 +27,11 @@
 		"fearful",
 		"feuding",
 		"greed",
-		"harmful",
+		"harm",
 		"having many desires",
 		"hypocrisy",
 		"ignorance",
+		"ill will",
 		"illusion",
 		"immaturity",
 		"impatience",
@@ -84,6 +85,7 @@
 		"contentment",
 		"continuous effort",
 		"cultivation",
+		"detachment",
 		"diligence",
 		"direct knowledge",
 		"discernment",
@@ -128,8 +130,10 @@
 		"recognition of not-self",
 		"recognition of unattractiveness",
 		"recognition of unsatisfactoriness",
-		"recollection of the Buddha",
 		"recollection of death",
+		"recollection of the Buddha",
+		"recollection of the Dhamma",
+		"recollection of the Saṅgha",
 		"respect",
 		"right effort",
 		"right intention",
@@ -214,6 +218,7 @@
 			"rejoicing in the happiness of others",
 			"delight in the success of others",
 			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
+			"Related:{loving-kindness}",
 			"[muditā]"
 		],
 		"attachment": [
@@ -230,17 +235,17 @@
 		],
 		"aversion": [
 			"animosity",
-			"ill will",
 			"hate",
 			"hostility",
 			"fault-finding mindset",
 			"upset",
-			"Related:{anger, irritability, resentment}",
-			"Context: A rejecting mental quality of ill will, irritation, or hostility that pushes away unpleasant objects or experiences; it fuels conflict and resists acceptance, obstructing patience and kindness",
+			"Related:{anger, irritability, resentment, ill will, patience}",
+			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance",
 			"[dosa, vera]"
 		],
 		"bad friendship": [
 			"friendship with unwholesome persons",
+			"Related:{companionship}",
 			"[pāpamittatā]"
 		],
 		"bad habits": [
@@ -289,6 +294,7 @@
 			"friendship",
 			"fellowship",
 			"camaraderie",
+			"Related:{good friendship, bad friendship}",
 			"[sahāyatā]"
 		],
 		"compassion": [
@@ -378,7 +384,7 @@
 			"inhumanity",
 			"injuring",
 			"viciousness",
-			"Related:{harmful, slaughtering}",
+			"Related:{harm, slaughtering}",
 			"[vihiṁsā]"
 		],
 		"cultivation": [
@@ -389,6 +395,13 @@
 			"growth",
 			"Context: The term 'cultivation' implies that which causes to be, it is primarily described in the context of developing and nurturing a bright quality.",
 			"[bhāvanā]"
+		],
+		"detachment": [
+			"free from attachment",
+			"free from grasping",
+			"without possessions",
+			"without acquisitions",
+			"[nirūpadhi]"
 		],
 		"desire": [
 			"having an objective",
@@ -590,6 +603,7 @@
 		],
 		"good friendship": [
 			"friendship with wholesome persons",
+			"Related:{companionship}",
 			"[kalyāṇamittatā]"
 		],
 		"good habits": [
@@ -617,9 +631,9 @@
 			"Related:{joyful pleasure, contentment}",
 			"[sukha, somanassa]"
 		],
-		"harmful": [
-			"injurious",
-			"destructive",
+		"harm": [
+			"injury causing behavior",
+			"destructiveness",
 			"bad",
 			"evil",
 			"Related:{cruelty, unwholesome}",
@@ -648,6 +662,14 @@
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
 			"[avijja]"
+		],
+		"ill will": [
+			"actively opposing or rejecting others in thought",
+			"thought of malevolence towards another",
+			"hostile reflections towards another",
+			"Related:{aversion, anger, irritability, loving-kindness}",
+			"Context: A mental quality of actively opposing or rejecting others in thought, manifesting as deliberate thoughts or intentions that oppose kindness and compassion; it fuels conflict and obstructs goodwill.",
+			"[byāpāda]"
 		],
 		"illusion": [
 			"delusion",
@@ -738,6 +760,8 @@
 			"idleness",
 			"inactivity",
 			"sluggishness",
+			"Context: Laziness is a mental quality characterized by unwillingness or lack of energy and motivation to engage in wholesome activities or exert effort; it leads to stagnation and missed opportunities for growth.",
+			"Related:{weak in effort}",
 			"[kosajja, tandī]"
 		],
 		"learned": [
@@ -761,6 +785,7 @@
 			"kindness",
 			"friendliness",
 			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
+			"Related:{appreciative joy, ill will}",
 			"[metta, abyāpāda]"
 		],
 		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
@@ -903,13 +928,25 @@
 			"Related:{perceiving drawbacks}",
 			"[dukkha-saññā]"
 		],
+		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
 		"recollection of the Buddha": [
 			"mindfulness of the Buddha",
 			"reflection on the qualities of the Buddha",
 			"Context: Mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
 			"[buddhānussati, buddhānusmṛti]"
 		],
-		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
+		"recollection of the Dhamma": [
+			"mindfulness of the Dhamma",
+			"reflection on the qualities of the Dhamma",
+			"Context: Mental quality of reflecting on the qualities of the Dhamma, which counters doubt and strengthens faith.",
+			"[dhammānussati, dhammānusmṛti]"
+		],
+		"recollection of the Saṅgha": [
+			"mindfulness of the Saṅgha",
+			"reflection on the qualities of the Saṅgha",
+			"Context: Mental quality of reflecting on the qualities of the Saṅgha, which counters doubt and strengthens faith.",
+			"[saṅghānussati, saṅghānusmṛti]"
+		],
 		"regret": [
 			"to be burned",
 			"to be consumed",
@@ -919,7 +956,7 @@
 		"resentment": [
 			"bearing a grudge",
 			"harboring enmity",
-			"Related:{anger, aversion}",
+			"Related:{anger, aversion, ill will}",
 			"[upanāha]"
 		],
 		"respect": [
@@ -1107,7 +1144,7 @@
 			"unskillful",
 			"unbeneficial",
 			"karmically unprofitable",
-			"Related:{harmful}",
+			"Related:{harm}",
 			"[akusala]"
 		],
 		"unwise attention": [
@@ -1153,7 +1190,7 @@
 			"low in energy",
 			"lacking in endurance",
 			"lax, loose, slack, unaspirated, indistinct",
-			"Related:{wrong effort}",
+			"Related:{wrong effort, laziness}",
 			"[hīnavīriya, sithila]"
 		],
 		"wholesome": [

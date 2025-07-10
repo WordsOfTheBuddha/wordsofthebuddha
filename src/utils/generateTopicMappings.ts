@@ -13,6 +13,7 @@ interface TopicMapping {
 	synonyms?: string[];
 	pali?: string[];
 	redirects?: string[];
+	related?: string[];
 	discourses: Array<{
 		id: string;
 		title: string;
@@ -236,6 +237,7 @@ export async function generateTopicMappings() {
 			synonyms: topic.synonyms,
 			pali: topic.pali,
 			redirects: topic.redirects,
+			related: topic.related,
 			discourses: mergedDiscourses,
 		};
 	}

@@ -1,7 +1,7 @@
 ---
 title: Sakkāra sutta - Respect
 description: The Blessed One describes how beings are affected by respect and disrespect, and how this affects their rebirth. The true person is one who is collected, detached, and delights in the ending of grasping.
-qualities: respect, contempt, collectedness, dispassion
+qualities: conceit, contempt, collectedness, dispassion
 theme: cultivating discernment, principle
 slug: iti81
 ---

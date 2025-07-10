@@ -1,7 +1,7 @@
 ---
 title: Kāmayoga sutta - Yoke of Sensual Pleasures
 description: The Buddha classifies beings according to their attachment or detachment from sensual pleasures and conditioned existence. Those entangled in both are returners; those detached from sensual pleasures but still bound to existence are non-returners; and those freed from both are arahants who have ended the taints.
-qualities: sensual desire
+qualities: sensual desire, ending
 theme: cultivating discernment, principle
 slug: iti96
 ---
