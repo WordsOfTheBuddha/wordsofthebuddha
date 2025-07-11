@@ -51,6 +51,11 @@ function compareHierarchicalNumbers(target: string, rangeStr: string): boolean {
 const { id: originalId } = Astro.params;
 let id = originalId;
 
+// Handle undefined id case
+if (!id) {
+	return new Response(null, { status: 404 });
+}
+
 // Filter out system/browser requests early
 const SYSTEM_REQUEST_PATTERNS = [
 	".well-known",
@@ -147,8 +152,109 @@ if (route.type === "collection" && route.pattern) {
 	const showPali = Astro.url.searchParams.get("pli") === "true";
 	console.log("page: ", id, "showPali: ", showPali);
 
-	// Load content
-	const contentItem = await getEntry("all", id);
+	// Load content with fresh file system read in development
+	let contentItem;
+	if (import.meta.env.DEV) {
+		try {
+			const { readFile } = await import("node:fs/promises");
+			const { join } = await import("node:path");
+
+			// Get the correct file path from getEntry
+			const tempContentItem = await getEntry("all", id);
+			if (tempContentItem?.filePath) {
+				const filePath = join(process.cwd(), tempContentItem.filePath);
+				const rawContent = await readFile(filePath, "utf-8");
+
+				// Use getEntry for metadata but replace body with fresh content
+				contentItem = await getEntry("all", id);
+				if (contentItem && rawContent) {
+					const frontmatterStart = rawContent.indexOf("---");
+
+					if (frontmatterStart !== -1) {
+						const frontmatterEnd = rawContent.indexOf(
+							"\n---\n",
+							frontmatterStart + 3
+						);
+
+						if (frontmatterEnd !== -1) {
+							// Extract and parse frontmatter
+							const frontmatterContent = rawContent.slice(
+								frontmatterStart + 3,
+								frontmatterEnd
+							);
+
+							// Parse frontmatter YAML
+							try {
+								const frontmatterLines =
+									frontmatterContent.split("\n");
+								const frontmatterData: Record<string, any> = {};
+
+								for (const line of frontmatterLines) {
+									const colonIndex = line.indexOf(":");
+									if (colonIndex > 0) {
+										const key = line
+											.substring(0, colonIndex)
+											.trim();
+										const value = line
+											.substring(colonIndex + 1)
+											.trim();
+										// Remove quotes if present
+										const cleanValue = value.replace(
+											/^["']|["']$/g,
+											""
+										);
+										frontmatterData[key] = cleanValue;
+									}
+								}
+
+								// Update contentItem.data properties if they exist in frontmatter
+								if (frontmatterData.title) {
+									contentItem.data.title =
+										frontmatterData.title;
+								}
+								if (frontmatterData.description) {
+									contentItem.data.description =
+										frontmatterData.description;
+								}
+								if (frontmatterData.qualities) {
+									contentItem.data.qualities =
+										frontmatterData.qualities;
+								}
+							} catch (frontmatterError) {
+								console.error(
+									`Error parsing frontmatter:`,
+									frontmatterError
+								);
+							}
+
+							let bodyStart = frontmatterEnd + 5; // Skip '\n---\n'
+
+							// Skip any additional newlines
+							while (
+								bodyStart < rawContent.length &&
+								rawContent[bodyStart] === "\n"
+							) {
+								bodyStart++;
+							}
+
+							const extractedBody = rawContent.slice(bodyStart);
+
+							contentItem.body = extractedBody;
+						}
+					}
+				}
+			} else {
+				contentItem = await getEntry("all", id);
+			}
+		} catch (error) {
+			console.error(`Error in file reading:`, error);
+			// Fallback to standard getEntry on any error
+			contentItem = await getEntry("all", id);
+		}
+	} else {
+		contentItem = await getEntry("all", id);
+	}
+
 	if (!contentItem) {
 		console.warn("English content not found");
 		console.groupEnd();
