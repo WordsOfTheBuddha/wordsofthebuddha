@@ -201,6 +201,15 @@
 		highlightCurrentWord();
 	}
 
+	function enableTooltipNavigation(clickedTooltip: HTMLElement) {
+		isNavigationMode = true;
+
+		// Get ALL tooltip elements from the page
+		currentWords = Array.from(document.querySelectorAll(".tooltip-text"));
+		currentWordIndex = currentWords.indexOf(clickedTooltip);
+		highlightCurrentWord();
+	}
+
 	function disableWordNavigation() {
 		isNavigationMode = false;
 		currentWordIndex = -1;
@@ -300,7 +309,7 @@
 		) as HTMLButtonElement;
 
 		if (prevBtn) {
-			prevBtn.disabled = currentWordIndex <= 0;
+			prevBtn.disabled = currentWordIndex <= 1;
 		}
 		if (nextBtn) {
 			nextBtn.disabled = currentWordIndex >= currentWords.length - 1;
@@ -312,7 +321,12 @@
 
 		if (currentWordIndex >= 0 && currentWordIndex < currentWords.length) {
 			const currentWord = currentWords[currentWordIndex];
-			currentWord.classList.add("pali-word-highlighted");
+			// Use different highlight classes for different types
+			if (currentWord.classList.contains("pali-word")) {
+				currentWord.classList.add("pali-word-highlighted");
+			} else if (currentWord.classList.contains("tooltip-text")) {
+				currentWord.classList.add("tooltip-text-highlighted");
+			}
 
 			// Scroll word into view
 			currentWord.scrollIntoView({
@@ -324,16 +338,32 @@
 	}
 
 	function clearWordHighlights() {
-		document.querySelectorAll(".pali-word-highlighted").forEach((word) => {
-			word.classList.remove("pali-word-highlighted");
-		});
+		document
+			.querySelectorAll(
+				".pali-word-highlighted, .tooltip-text-highlighted"
+			)
+			.forEach((word) => {
+				word.classList.remove(
+					"pali-word-highlighted",
+					"tooltip-text-highlighted"
+				);
+			});
 	}
 
 	async function showCurrentWordDefinition() {
 		if (currentWordIndex >= 0 && currentWordIndex < currentWords.length) {
 			const word = currentWords[currentWordIndex];
-			const cleanWord = word.dataset.word || word.textContent || "";
-			await showDictionaryPopover(cleanWord, true);
+
+			// Check if it's a Pali word or English tooltip
+			if (word.classList.contains("pali-word")) {
+				const cleanWord = word.dataset.word || word.textContent || "";
+				await showDictionaryPopover(cleanWord, true);
+			} else if (word.classList.contains("tooltip-text")) {
+				const content = word.getAttribute("data-tooltip-content") || "";
+				const primaryText = word.textContent || "";
+				bottomPopover.show(content, "markdown", primaryText);
+				addNavigationControls(); // Add navigation controls for English tooltips
+			}
 		}
 	}
 
@@ -342,7 +372,7 @@
 
 		const navigationHtml = `
 			<div class="navigation-controls">
-				<button class="nav-btn nav-prev" ${currentWordIndex <= 0 ? "disabled" : ""}>
+				<button class="nav-btn nav-prev" ${currentWordIndex <= 1 ? "disabled" : ""}>
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
 						<path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 					</svg>
@@ -422,9 +452,6 @@
 				<div class="title">
 					<span>
 						${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
-						<span style="margin-left: 8px">
-							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-						</span>
 					</span>
 					${
 						definitions[0].construction
@@ -434,6 +461,9 @@
 						</span>`
 							: ""
 					}
+													<span>
+							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+						</span>
 				</div>
 				<div class="dpd-content">
 					${definitions
@@ -504,8 +534,11 @@
 				const content =
 					tooltipElement.getAttribute("data-tooltip-content") || "";
 				const primaryText = tooltipElement.textContent || "";
-				// English tooltips don't get navigation - pass false for enableNavigation
+				// Enable navigation for English tooltips
+				enableTooltipNavigation(tooltipElement as HTMLElement);
 				bottomPopover.show(content, "markdown", primaryText);
+				// Add navigation controls for English tooltips
+				addNavigationControls();
 				return;
 			}
 
@@ -588,7 +621,17 @@
 
 		// Keyboard navigation
 		document.addEventListener("keydown", (e) => {
-			// Only handle keyboard shortcuts when navigation mode is active and drawer is open
+			// Handle escape key for any open drawer
+			if (e.key === "Escape" && bottomPopover?.isOpen()) {
+				e.preventDefault();
+				if (isNavigationMode) {
+					disableWordNavigation();
+				}
+				bottomPopover.hide();
+				return;
+			}
+
+			// Only handle other keyboard shortcuts when navigation mode is active and drawer is open
 			if (!isNavigationMode || !bottomPopover?.isOpen()) return;
 
 			switch (e.key) {
@@ -604,18 +647,32 @@
 
 				case "ArrowUp":
 					e.preventDefault();
-					navigateVertically("up");
+					// For Pali words, use vertical navigation; for English tooltips, use sequential
+					if (
+						currentWords.length > 0 &&
+						currentWords[currentWordIndex]?.classList.contains(
+							"pali-word"
+						)
+					) {
+						navigateVertically("up");
+					} else {
+						navigateToPreviousWord();
+					}
 					break;
 
 				case "ArrowDown":
 					e.preventDefault();
-					navigateVertically("down");
-					break;
-
-				case "Escape":
-					e.preventDefault();
-					disableWordNavigation();
-					bottomPopover.hide();
+					// For Pali words, use vertical navigation; for English tooltips, use sequential
+					if (
+						currentWords.length > 0 &&
+						currentWords[currentWordIndex]?.classList.contains(
+							"pali-word"
+						)
+					) {
+						navigateVertically("down");
+					} else {
+						navigateToNextWord();
+					}
 					break;
 			}
 		});
@@ -712,9 +769,27 @@
 		scrollbar-color: #c1c1c1 rgba(0, 0, 0, 0.05);
 	}
 
-	/* Tooltip text styling - remove underline effect */
+	/* Tooltip text styling - add navigation highlighting */
 	.tooltip-text {
 		cursor: pointer;
+		transition: background-color 0.2s ease;
+		margin: 0;
+		border-radius: 2px;
+	}
+
+	.tooltip-text:hover {
+		background-color: var(--background-row-hover);
+	}
+
+	.tooltip-text-highlighted {
+		background-color: var(--primary-color);
+		color: white;
+		font-weight: 500;
+	}
+
+	.tooltip-text-highlighted:hover {
+		background-color: var(--primary-color);
+		color: white;
 	}
 
 	/* Preserve existing tooltip content styles */
@@ -746,8 +821,9 @@
 
 	.tooltip-content .grammar {
 		color: var(--secondary-color);
-		font-style: italic;
-		margin-right: 0.5rem;
+		font-style: semi-italic;
+		font-size: 1rem;
+		margin-left: 0.5rem;
 	}
 
 	.tooltip-content .meaning {
@@ -756,10 +832,11 @@
 	}
 
 	.tooltip-content .construction {
-		font-size: 0.8rem;
+		font-size: 1rem;
 		color: var(--text-color);
 		opacity: 0.7;
 		margin-top: 0.25rem;
+		margin-left: 0.5rem;
 	}
 
 	.tooltip-content .summary:not(.last) {

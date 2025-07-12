@@ -316,7 +316,7 @@ const isVerse = (text: string) => {
 	const lastLine = lines[lines.length - 1];
 	const otherLines = lines.slice(0, -1);
 
-	const lastLineValid = /[\]!.?"—'’;‘”“]$/.test(lastLine);
+	const lastLineValid = /[\]!.?"—'’;:‘”“]$/.test(lastLine);
 	const otherLinesValid = otherLines.every((line) => /[,;:.?!]?$/.test(line));
 
 	return lastLineValid && otherLinesValid;

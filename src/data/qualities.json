@@ -85,7 +85,6 @@
 		"contentment",
 		"continuous effort",
 		"cultivation",
-		"detachment",
 		"diligence",
 		"direct knowledge",
 		"discernment",
@@ -122,7 +121,7 @@
 		"one-pointedness",
 		"patience",
 		"perceiving gratification",
-		"perceiving drawbacks",
+		"perceiving drawback",
 		"politeness",
 		"psychic power",
 		"quenching",
@@ -358,7 +357,7 @@
 			"having few desires",
 			"fewness of wishes",
 			"Related:{happiness, joyful pleasure}",
-			"[santutthi, appicchatā]"
+			"[santutthi, appicchatā, tuṭṭha]"
 		],
 		"continuous effort": [
 			"unremitting effort",
@@ -395,13 +394,6 @@
 			"growth",
 			"Context: The term 'cultivation' implies that which causes to be, it is primarily described in the context of developing and nurturing a bright quality.",
 			"[bhāvanā]"
-		],
-		"detachment": [
-			"free from attachment",
-			"free from grasping",
-			"without possessions",
-			"without acquisitions",
-			"[nirūpadhi]"
 		],
 		"desire": [
 			"having an objective",
@@ -444,7 +436,7 @@
 		"disenchantment": [
 			"de-illusionment",
 			"disinterest",
-			"Related:{dispassion}",
+			"Related:{dispassion, free from attachment}",
 			"[nibbidā]"
 		],
 		"dispassion": [
@@ -452,7 +444,7 @@
 			"disinterest",
 			"fading of desire",
 			"disentanglement",
-			"Related:{disenchantment}",
+			"Related:{disenchantment, free from attachment}",
 			"[virāga, visaṃyutta]"
 		],
 		"displeasure": [
@@ -526,7 +518,13 @@
 			"Related:{inquisitiveness, contemplation}",
 			"[vicaya, parikkhati]"
 		],
-		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
+		"faith": [
+			"confidence",
+			"trust",
+			"belief",
+			"conviction",
+			"[saddha, pasanna]"
+		],
 		"faithlessness": [
 			"lack of confidence",
 			"lack of conviction",
@@ -576,7 +574,8 @@
 			"not appropriating",
 			"not taking as mine",
 			"without acquisitions",
-			"Related:{dispassion}",
+			"Related:{disenchantment, dispassion}",
+			"Opposite:{attachment, passion}",
 			"[nirūpadhi]"
 		],
 		"full awareness": [
@@ -667,7 +666,8 @@
 			"actively opposing or rejecting others in thought",
 			"thought of malevolence towards another",
 			"hostile reflections towards another",
-			"Related:{aversion, anger, irritability, loving-kindness}",
+			"Related:{aversion, anger, irritability}",
+			"Opposite:{loving-kindness}",
 			"Context: A mental quality of actively opposing or rejecting others in thought, manifesting as deliberate thoughts or intentions that oppose kindness and compassion; it fuels conflict and obstructs goodwill.",
 			"[byāpāda]"
 		],
@@ -785,7 +785,8 @@
 			"kindness",
 			"friendliness",
 			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
-			"Related:{appreciative joy, ill will}",
+			"Related:{appreciative joy}",
+			"Opposite:{ill will}",
 			"[metta, abyāpāda]"
 		],
 		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
@@ -866,7 +867,7 @@
 			"seeing enjoyment",
 			"[assādānupassī]"
 		],
-		"perceiving drawbacks": [
+		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
 			"Related:{recognition of unsatisfactoriness}",
@@ -925,7 +926,7 @@
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
-			"Related:{perceiving drawbacks}",
+			"Related:{perceiving drawback}",
 			"[dukkha-saññā]"
 		],
 		"recollection of death": ["mindfulness of death", "[maraṇassati]"],

@@ -39,6 +39,15 @@ export function updateMenuPosition(
         ? endRects[endRects.length - 1]
         : null;
 
+    // --- MINIMAL FIX ---
+    // If the endpoint rectangle isn't found (can happen on first selection),
+    // fall back to the bounding rectangle of the entire selection.
+    // This ensures the menu always has a position without changing the logic.
+    if (!finalRect) {
+        finalRect = range.getBoundingClientRect();
+    }
+    // --- END FIX ---
+
     if (!finalRect && currentRange) {
         const rects = currentRange.getClientRects();
         finalRect = rects.length > 0

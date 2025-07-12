@@ -4,6 +4,7 @@ description: Verses describing the characteristics of a false friend—one who d
 qualities: shamelessness, good friendship, bad friendship, diligence, solitude, tranquility, without fear
 theme: cultivating discernment, inspiration
 slug: snp2.3
+simile: child on mother's breast
 ---
 
 Hiriṁ tarantaṁ vijigucchamānaṁ,

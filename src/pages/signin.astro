@@ -1,8 +1,14 @@
 ---
 export const prerender = false;
-import { app } from "../service/firebase/server";
+import { app, isFirebaseInitialized } from "../service/firebase/server";
 import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
+
+/* Check if Firebase is initialized */
+if (!isFirebaseInitialized || !app) {
+	// Redirect to home page with error message
+	return Astro.redirect("/?auth-unavailable=true");
+}
 
 /* Check if the user is authenticated */
 const auth = getAuth(app);
