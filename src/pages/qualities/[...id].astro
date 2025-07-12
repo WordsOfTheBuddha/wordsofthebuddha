@@ -144,7 +144,8 @@ if (qualities.positive.includes(qualityName)) {
 								(term) =>
 									!term.startsWith("[") &&
 									!term.startsWith("Context:") &&
-									!term.startsWith("Related:")
+									!term.startsWith("Related:") &&
+									!term.startsWith("Opposite:")
 							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 pr-4">
@@ -158,7 +159,12 @@ if (qualities.positive.includes(qualityName)) {
 													!term.startsWith(
 														"Context:"
 													) &&
-													!term.startsWith("Related:")
+													!term.startsWith(
+														"Related:"
+													) &&
+													!term.startsWith(
+														"Opposite:"
+													)
 											)
 											.join(", ")}
 									</span>
@@ -208,7 +214,7 @@ if (qualities.positive.includes(qualityName)) {
 							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 self-center">
-										Related Qualities:
+										Related:
 									</span>
 									<div class="flex flex-wrap gap-2">
 										{synonyms
@@ -216,6 +222,64 @@ if (qualities.positive.includes(qualityName)) {
 												term.startsWith("Related:")
 											)
 											?.replace("Related:", "")
+											.replace(/[{}]/g, "")
+											.split(",")
+											.map((quality) => quality.trim())
+											.sort()
+											.map((quality) => {
+												const qualitySlug =
+													encodeURIComponent(
+														quality.toLowerCase()
+													);
+												const capitalizedQuality =
+													quality
+														.charAt(0)
+														.toUpperCase() +
+													quality.slice(1);
+
+												// Determine quality type for styling
+												const isPositive =
+													qualities.positive.includes(
+														quality.toLowerCase()
+													);
+												const isNegative =
+													qualities.negative.includes(
+														quality.toLowerCase()
+													);
+
+												const tagClass = isPositive
+													? "quality-tag positive"
+													: isNegative
+														? "quality-tag negative"
+														: "quality-tag neutral";
+
+												return (
+													<a
+														href={`/qualities/${qualitySlug}`}
+														class={tagClass}
+													>
+														{capitalizedQuality}
+													</a>
+												);
+											})}
+									</div>
+								</>
+							)}
+
+							{/* Opposite qualities */}
+							{synonyms.some((term) =>
+								term.startsWith("Opposite:")
+							) && (
+								<>
+									<span class="text-gray-500 dark:text-gray-400 self-center">
+										Opposite:
+									</span>
+									<div class="flex flex-wrap gap-2">
+										{synonyms
+											.find((term) =>
+												term.startsWith("Opposite:")
+											)
+											?.replace("Opposite:", "")
 											.replace(/[{}]/g, "")
 											.split(",")
 											.map((quality) => quality.trim())

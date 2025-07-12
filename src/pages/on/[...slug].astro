@@ -247,6 +247,55 @@ const totalDiscourses = allDiscourses.length;
 							</div>
 						)
 					}
+
+					{
+						content.opposite && content.opposite.length > 0 && (
+							<div class="text-gray-600 dark:text-gray-400 text-xs">
+								Opposite:
+								<span class="inline-flex flex-wrap gap-1 ml-1">
+									{content.opposite.map(
+										(oppositeSlug: string) => {
+											const capitalizedName = oppositeSlug
+												.split("-")
+												.map(
+													(word: string) =>
+														word
+															.charAt(0)
+															.toUpperCase() +
+														word.slice(1)
+												)
+												.join(" ");
+
+											// Determine quality type for styling
+											const isPositive =
+												qualities.positive.includes(
+													oppositeSlug
+												);
+											const isNegative =
+												qualities.negative.includes(
+													oppositeSlug
+												);
+
+											const tagClass = isPositive
+												? "topic-tag positive"
+												: isNegative
+													? "topic-tag negative"
+													: "topic-tag neutral";
+
+											return (
+												<a
+													href={`/on/${oppositeSlug}`}
+													class={tagClass}
+												>
+													{capitalizedName}
+												</a>
+											);
+										}
+									)}
+								</span>
+							</div>
+						)
+					}
 				</div>
 			</div>
 		</div>
