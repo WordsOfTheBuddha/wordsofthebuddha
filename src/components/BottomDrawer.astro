@@ -204,8 +204,23 @@
 	function enableTooltipNavigation(clickedTooltip: HTMLElement) {
 		isNavigationMode = true;
 
-		// Get ALL tooltip elements from the page
-		currentWords = Array.from(document.querySelectorAll(".tooltip-text"));
+		// Get ALL tooltip elements from the page and filter out invalid ones
+		const allTooltips = Array.from(
+			document.querySelectorAll(".tooltip-text")
+		) as HTMLElement[];
+		currentWords = allTooltips.filter((el) => {
+			const text = el.textContent?.trim();
+			const content = el.getAttribute("data-tooltip-content");
+			// Filter out tooltips with template variables or empty content
+			return (
+				text &&
+				content &&
+				!text.includes("${") &&
+				!content.includes("${") &&
+				text !== "${textPart}"
+			);
+		});
+
 		currentWordIndex = currentWords.indexOf(clickedTooltip);
 		highlightCurrentWord();
 	}
@@ -309,7 +324,7 @@
 		) as HTMLButtonElement;
 
 		if (prevBtn) {
-			prevBtn.disabled = currentWordIndex <= 1;
+			prevBtn.disabled = currentWordIndex <= 0;
 		}
 		if (nextBtn) {
 			nextBtn.disabled = currentWordIndex >= currentWords.length - 1;
@@ -372,7 +387,7 @@
 
 		const navigationHtml = `
 			<div class="navigation-controls">
-				<button class="nav-btn nav-prev" ${currentWordIndex <= 1 ? "disabled" : ""}>
+				<button class="nav-btn nav-prev" ${currentWordIndex <= 0 ? "disabled" : ""}>
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
 						<path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 					</svg>
@@ -624,6 +639,8 @@
 			// Handle escape key for any open drawer
 			if (e.key === "Escape" && bottomPopover?.isOpen()) {
 				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
 				if (isNavigationMode) {
 					disableWordNavigation();
 				}
@@ -634,48 +651,54 @@
 			// Only handle other keyboard shortcuts when navigation mode is active and drawer is open
 			if (!isNavigationMode || !bottomPopover?.isOpen()) return;
 
-			switch (e.key) {
-				case "ArrowLeft":
-					e.preventDefault();
-					navigateToPreviousWord();
-					break;
+			// Check if this is a navigation key we want to handle
+			const isNavigationKey = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key);
+			
+			if (isNavigationKey) {
+				// Stop all event propagation to prevent browser extension interference
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
 
-				case "ArrowRight":
-					e.preventDefault();
-					navigateToNextWord();
-					break;
-
-				case "ArrowUp":
-					e.preventDefault();
-					// For Pali words, use vertical navigation; for English tooltips, use sequential
-					if (
-						currentWords.length > 0 &&
-						currentWords[currentWordIndex]?.classList.contains(
-							"pali-word"
-						)
-					) {
-						navigateVertically("up");
-					} else {
+				switch (e.key) {
+					case "ArrowLeft":
 						navigateToPreviousWord();
-					}
-					break;
+						break;
 
-				case "ArrowDown":
-					e.preventDefault();
-					// For Pali words, use vertical navigation; for English tooltips, use sequential
-					if (
-						currentWords.length > 0 &&
-						currentWords[currentWordIndex]?.classList.contains(
-							"pali-word"
-						)
-					) {
-						navigateVertically("down");
-					} else {
+					case "ArrowRight":
 						navigateToNextWord();
-					}
-					break;
+						break;
+
+					case "ArrowUp":
+						// For Pali words, use vertical navigation; for English tooltips, use sequential
+						if (
+							currentWords.length > 0 &&
+							currentWords[currentWordIndex]?.classList.contains(
+								"pali-word"
+							)
+						) {
+							navigateVertically("up");
+						} else {
+							navigateToPreviousWord();
+						}
+						break;
+
+					case "ArrowDown":
+						// For Pali words, use vertical navigation; for English tooltips, use sequential
+						if (
+							currentWords.length > 0 &&
+							currentWords[currentWordIndex]?.classList.contains(
+								"pali-word"
+							)
+						) {
+							navigateVertically("down");
+						} else {
+							navigateToNextWord();
+						}
+						break;
+				}
 			}
-		});
+		}, true); // Use capture phase to handle before other listeners
 	});
 </script>
 
