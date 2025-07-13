@@ -469,7 +469,7 @@ import "../styles/bottomDrawer.css";
 		const { definitions } = data;
 
 		// Check if this is a compound word by looking for constituent patterns in meanings
-		const isCompound = definitions.some((def) => {
+		const isCompound = definitions.some((def: any) => {
 			const matches =
 				def.meaning && /^[^\s]+\s+\d+\.\s/.test(def.meaning);
 			return matches;
