@@ -203,7 +203,7 @@ function wrapPaliWords(text: string): string {
 						return `<span class="punctuation">${part}</span>`;
 					} else if (/[a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]/.test(part)) {
 						// Word part gets pali-word span
-						const cleanWord = part.toLowerCase().replace(/[''.,;:!?…"'"'\(\)\[\]\{\}«»""]/g, '');
+						const cleanWord = part.toLowerCase().replace(/[''.,;:!?…"'"'\(\)\[\]\{\}«»"“”‘’]/g, '');
 						return `<span class="pali-word" data-word="${cleanWord}" data-original="${part}">${part}</span>`;
 					} else {
 						// Other punctuation (attached to words)
@@ -212,7 +212,7 @@ function wrapPaliWords(text: string): string {
 				}).join('');
 			} else {
 				// No breaking punctuation, treat as single word
-				const cleanWord = token.toLowerCase().replace(/[''.,;:!?…—"'"'\(\)\[\]\{\}«»""]/g, '');
+				const cleanWord = token.toLowerCase().replace(/[''.,;:!?…—"'"'\(\)\[\]\{\}«»"“”‘’]/g, '');
 				return `<span class="pali-word" data-word="${cleanWord}" data-original="${token}">${token}</span>`;
 			}
 		}

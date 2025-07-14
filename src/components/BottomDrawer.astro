@@ -1,3 +1,8 @@
+---
+export const prerender = false;
+import "../styles/bottomDrawer.css";
+---
+
 <!-- this is a client-only script component -->
 <script>
 	// Helper function to parse Markdown-style links
@@ -204,8 +209,23 @@
 	function enableTooltipNavigation(clickedTooltip: HTMLElement) {
 		isNavigationMode = true;
 
-		// Get ALL tooltip elements from the page
-		currentWords = Array.from(document.querySelectorAll(".tooltip-text"));
+		// Get ALL tooltip elements from the page and filter out invalid ones
+		const allTooltips = Array.from(
+			document.querySelectorAll(".tooltip-text")
+		) as HTMLElement[];
+		currentWords = allTooltips.filter((el) => {
+			const text = el.textContent?.trim();
+			const content = el.getAttribute("data-tooltip-content");
+			// Filter out tooltips with template variables or empty content
+			return (
+				text &&
+				content &&
+				!text.includes("${") &&
+				!content.includes("${") &&
+				text !== "${textPart}"
+			);
+		});
+
 		currentWordIndex = currentWords.indexOf(clickedTooltip);
 		highlightCurrentWord();
 	}
@@ -309,7 +329,7 @@
 		) as HTMLButtonElement;
 
 		if (prevBtn) {
-			prevBtn.disabled = currentWordIndex <= 1;
+			prevBtn.disabled = currentWordIndex <= 0;
 		}
 		if (nextBtn) {
 			nextBtn.disabled = currentWordIndex >= currentWords.length - 1;
@@ -372,7 +392,7 @@
 
 		const navigationHtml = `
 			<div class="navigation-controls">
-				<button class="nav-btn nav-prev" ${currentWordIndex <= 1 ? "disabled" : ""}>
+				<button class="nav-btn nav-prev" ${currentWordIndex <= 0 ? "disabled" : ""}>
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
 						<path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 					</svg>
@@ -447,12 +467,29 @@
 
 	function createTooltipContent(word: string, data: any) {
 		const { definitions } = data;
+
+		// Check if this is a compound word by looking for constituent patterns in meanings
+		const isCompound = definitions.some((def: any) => {
+			const matches =
+				def.meaning && /^[^\s]+\s+\d+\.\s/.test(def.meaning);
+			return matches;
+		});
+
+		if (isCompound) {
+			return createCompoundTooltipContent(word, data);
+		}
+
+		// Use the same clean style for regular words
+		return createUnifiedTooltipContent(word, data);
+	}
+
+	function createUnifiedTooltipContent(word: string, data: any) {
+		const { definitions } = data;
+
 		return `
 			<div class="tooltip-content">
 				<div class="title">
-					<span>
-						${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
-					</span>
+					<span>${word}</span>
 					${
 						definitions[0].construction
 							? `
@@ -461,18 +498,82 @@
 						</span>`
 							: ""
 					}
-													<span>
-							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-						</span>
+					<span>
+						${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+					</span>
 				</div>
-				<div class="dpd-content">
-					${definitions
+				<div class="dpd-content compound-content">
+					<div class="constituent-group">
+						<div class="constituent-header">${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}:</div>
+						<div class="constituent-meanings">
+							${definitions
+								.map(
+									(def: any, idx: number) => `
+								<div class="meaning-item">${idx + 1}. ${def.meaning}${def.meaning_lit ? `; <em>lit. ${def.meaning_lit}</em>` : ""}</div>
+							`
+								)
+								.join("")}
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+	}
+
+	function createCompoundTooltipContent(word: string, data: any) {
+		const { definitions } = data;
+
+		console.log(
+			"createCompoundTooltipContent called with definitions:",
+			definitions
+		);
+
+		// Group definitions by constituent
+		const constituents = new Map();
+
+		definitions.forEach((def: any) => {
+			if (def.meaning) {
+				const match = def.meaning.match(/^([^\s]+)\s+(\d+)\.\s(.+)$/);
+				if (match) {
+					const [, constituent, num, meaning] = match;
+					if (!constituents.has(constituent)) {
+						constituents.set(constituent, []);
+					}
+					constituents.get(constituent).push(`${num}. ${meaning}`);
+				}
+			}
+		});
+
+		return `
+			<div class="tooltip-content">
+				<div class="title">
+					<span>${word}</span>
+					${
+						definitions[0].construction
+							? `
+						<span>
+							<span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
+						</span>`
+							: ""
+					}
+					<span>
+						${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+					</span>
+				</div>
+				<div class="dpd-content compound-content">
+					${Array.from(constituents.entries())
 						.map(
-							(def: any, idx: number) => `
-						<div class="summary${idx === definitions.length - 1 ? " last" : ""}">
-							<div class="def-line">
-								<span class="meaning">${idx + 1}. ${def.meaning}${def.meaning_lit ? ";" : ""}</span>
-								${def.meaning_lit ? `<span class="meaning" style="font-style: italic;">lit. ${def.meaning_lit}</span>` : ""}
+							([constituent, meanings]) => `
+						<div class="constituent-group">
+							<div class="constituent-header">${constituent}:</div>
+							<div class="constituent-meanings">
+								${meanings
+									.map(
+										(meaning: string) => `
+									<div class="meaning-item">${meaning}</div>
+								`
+									)
+									.join("")}
 							</div>
 						</div>
 					`
@@ -620,341 +721,78 @@
 		};
 
 		// Keyboard navigation
-		document.addEventListener("keydown", (e) => {
-			// Handle escape key for any open drawer
-			if (e.key === "Escape" && bottomPopover?.isOpen()) {
-				e.preventDefault();
-				if (isNavigationMode) {
-					disableWordNavigation();
+		document.addEventListener(
+			"keydown",
+			(e) => {
+				// Handle escape key for any open drawer
+				if (e.key === "Escape" && bottomPopover?.isOpen()) {
+					e.preventDefault();
+					e.stopPropagation();
+					e.stopImmediatePropagation();
+					if (isNavigationMode) {
+						disableWordNavigation();
+					}
+					bottomPopover.hide();
+					return;
 				}
-				bottomPopover.hide();
-				return;
-			}
 
-			// Only handle other keyboard shortcuts when navigation mode is active and drawer is open
-			if (!isNavigationMode || !bottomPopover?.isOpen()) return;
+				// Only handle other keyboard shortcuts when navigation mode is active and drawer is open
+				if (!isNavigationMode || !bottomPopover?.isOpen()) return;
 
-			switch (e.key) {
-				case "ArrowLeft":
+				// Check if this is a navigation key we want to handle
+				const isNavigationKey = [
+					"ArrowLeft",
+					"ArrowRight",
+					"ArrowUp",
+					"ArrowDown",
+				].includes(e.key);
+
+				if (isNavigationKey) {
+					// Stop all event propagation to prevent browser extension interference
 					e.preventDefault();
-					navigateToPreviousWord();
-					break;
+					e.stopPropagation();
+					e.stopImmediatePropagation();
 
-				case "ArrowRight":
-					e.preventDefault();
-					navigateToNextWord();
-					break;
+					switch (e.key) {
+						case "ArrowLeft":
+							navigateToPreviousWord();
+							break;
 
-				case "ArrowUp":
-					e.preventDefault();
-					// For Pali words, use vertical navigation; for English tooltips, use sequential
-					if (
-						currentWords.length > 0 &&
-						currentWords[currentWordIndex]?.classList.contains(
-							"pali-word"
-						)
-					) {
-						navigateVertically("up");
-					} else {
-						navigateToPreviousWord();
+						case "ArrowRight":
+							navigateToNextWord();
+							break;
+
+						case "ArrowUp":
+							// For Pali words, use vertical navigation; for English tooltips, use sequential
+							if (
+								currentWords.length > 0 &&
+								currentWords[
+									currentWordIndex
+								]?.classList.contains("pali-word")
+							) {
+								navigateVertically("up");
+							} else {
+								navigateToPreviousWord();
+							}
+							break;
+
+						case "ArrowDown":
+							// For Pali words, use vertical navigation; for English tooltips, use sequential
+							if (
+								currentWords.length > 0 &&
+								currentWords[
+									currentWordIndex
+								]?.classList.contains("pali-word")
+							) {
+								navigateVertically("down");
+							} else {
+								navigateToNextWord();
+							}
+							break;
 					}
-					break;
-
-				case "ArrowDown":
-					e.preventDefault();
-					// For Pali words, use vertical navigation; for English tooltips, use sequential
-					if (
-						currentWords.length > 0 &&
-						currentWords[currentWordIndex]?.classList.contains(
-							"pali-word"
-						)
-					) {
-						navigateVertically("down");
-					} else {
-						navigateToNextWord();
-					}
-					break;
-			}
-		});
+				}
+			},
+			true
+		); // Use capture phase to handle before other listeners
 	});
 </script>
-
-<style is:global>
-	.bottom-popover {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		width: 100vw;
-		height: 30vh;
-		background-color: var(--background-color);
-		border-top: 1px solid var(--popover-border);
-		box-shadow:
-			0 -4px 6px -1px rgba(0, 0, 0, 0.1),
-			0 -2px 4px -1px rgba(0, 0, 0, 0.06);
-		transform: translateY(100%);
-		transition: transform 0.3s ease-in-out;
-		z-index: 9999;
-		display: flex;
-		flex-direction: column;
-	}
-
-	html.dark .bottom-popover {
-		box-shadow:
-			0 -4px 6px -1px rgba(0, 0, 0, 0.3),
-			0 -2px 4px -1px rgba(0, 0, 0, 0.2);
-	}
-
-	.bottom-popover.visible {
-		transform: translateY(0);
-	}
-
-	.popover-content {
-		position: relative;
-		padding: 1.5rem 1.5rem 0;
-		overflow: hidden;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.close-btn {
-		position: fixed;
-		top: 1rem;
-		right: 1rem;
-		background-color: var(--background-color);
-		border: none;
-		color: var(--text-color);
-		cursor: pointer;
-		padding: 0.25rem;
-		border-radius: 0.25rem;
-		transition: background-color 0.2s;
-		z-index: 1;
-		box-shadow: 0 0 0 2px var(--background-color);
-	}
-
-	.close-btn:hover {
-		background-color: var(--background-row-hover);
-	}
-
-	.popover-body {
-		padding-right: 3rem; /* Make room for close button */
-		flex: 1;
-		overflow-y: auto;
-		padding-bottom: 1rem;
-	}
-
-	/* Custom scrollbar for popover to match page scrollbars */
-	.popover-body::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	.popover-body::-webkit-scrollbar-track {
-		background: rgba(0, 0, 0, 0.05);
-	}
-
-	.popover-body::-webkit-scrollbar-thumb {
-		background: #c1c1c1;
-		border-radius: 3px;
-		opacity: 0.6;
-	}
-
-	.popover-body::-webkit-scrollbar-thumb:hover {
-		opacity: 1;
-	}
-
-	/* Firefox scrollbar styling */
-	.popover-body {
-		scrollbar-width: thin;
-		scrollbar-color: #c1c1c1 rgba(0, 0, 0, 0.05);
-	}
-
-	/* Tooltip text styling - add navigation highlighting */
-	.tooltip-text {
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-		margin: 0;
-		border-radius: 2px;
-	}
-
-	.tooltip-text:hover {
-		background-color: var(--background-row-hover);
-	}
-
-	.tooltip-text-highlighted {
-		background-color: var(--primary-color);
-		color: white;
-		font-weight: 500;
-	}
-
-	.tooltip-text-highlighted:hover {
-		background-color: var(--primary-color);
-		color: white;
-	}
-
-	/* Preserve existing tooltip content styles */
-	.tooltip-content .title {
-		color: var(--primary-color);
-		font-family: "Gentium Plus", serif;
-		font-weight: 500;
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-		font-size: 1.2rem;
-		line-height: 1.6;
-	}
-
-	html.dark .tooltip-content .title {
-		color: var(--primary-color);
-	}
-
-	.tooltip-content .title-text {
-		color: inherit;
-		font-size: 1.2rem;
-	}
-
-	.tooltip-content .pali-term {
-		color: var(--text-muted);
-		font-weight: 400;
-		margin-left: 0.25rem;
-	}
-
-	.tooltip-content .grammar {
-		color: var(--secondary-color);
-		font-style: semi-italic;
-		font-size: 1rem;
-		margin-left: 0.5rem;
-	}
-
-	.tooltip-content .meaning {
-		display: inline;
-		margin: 0;
-	}
-
-	.tooltip-content .construction {
-		font-size: 1rem;
-		color: var(--text-color);
-		opacity: 0.7;
-		margin-top: 0.25rem;
-		margin-left: 0.5rem;
-	}
-
-	.tooltip-content .summary:not(.last) {
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-	}
-
-	.tooltip-link,
-	.popover-content a {
-		color: var(--link-color);
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	.loading-spinner {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 2rem;
-		color: var(--text-color);
-	}
-
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
-	}
-
-	.animate-spin {
-		animation: spin 1s linear infinite;
-	}
-
-	/* Markdown content styling */
-	.markdown-content .definition {
-		color: var(--text-color);
-		line-height: 1.6;
-	}
-
-	/* Pali word navigation styles */
-	.pali-word {
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-		margin: 0;
-		border-radius: 2px;
-		display: inline-block;
-		white-space: nowrap;
-		word-wrap: break-word;
-		overflow-wrap: break-word;
-	}
-
-	.pali-word:hover {
-		background-color: var(--background-row-hover);
-	}
-
-	.pali-word-highlighted {
-		background-color: var(--primary-color);
-		color: white;
-		font-weight: 500;
-	}
-
-	.pali-word-highlighted:hover {
-		background-color: var(--primary-color);
-		color: white;
-	}
-
-	/* Navigation controls */
-	.navigation-controls {
-		display: flex;
-		position: sticky;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		border-top: 1px solid var(--popover-border);
-		background-color: var(--background-color);
-		z-index: 10;
-		margin-top: auto;
-		flex-shrink: 0;
-	}
-
-	.nav-btn {
-		flex: 1;
-		padding: 0.8rem;
-		border: none;
-		background: none;
-		color: var(--text-color);
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		font-size: 0.9rem;
-		transition: background-color 0.2s;
-	}
-
-	.nav-btn:not(:last-child) {
-		border-right: 1px solid var(--popover-border);
-	}
-
-	.nav-btn:hover:not(:disabled) {
-		background-color: var(--background-row-hover);
-	}
-
-	.nav-btn:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.popover-content:has(.navigation-controls) {
-		padding-bottom: 0; /* Remove bottom padding when navigation is present */
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-	}
-
-	.popover-content:has(.navigation-controls) .popover-body {
-		flex: 1;
-		overflow-y: auto;
-		padding-bottom: 1rem;
-	}
-</style>

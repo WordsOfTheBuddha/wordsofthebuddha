@@ -35,11 +35,14 @@ slug: an1.31-40
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ asaṁvutaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, asaṁvutaṁ mahato anatthāya saṁvattatī”ti.
 
-38
+#### 1.38
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ saṁvutaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, saṁvutaṁ mahato atthāya saṁvattatī”ti.
 
-39
+#### 1.39
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ adantaṁ aguttaṁ arakkhitaṁ asaṁvutaṁ mahato anatthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, adantaṁ aguttaṁ arakkhitaṁ asaṁvutaṁ mahato anatthāya saṁvattatī”ti.
 
-40
+#### 1.40
+
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yaṁ evaṁ dantaṁ guttaṁ rakkhitaṁ saṁvutaṁ mahato atthāya saṁvattati yathayidaṁ, bhikkhave, cittaṁ. Cittaṁ, bhikkhave, dantaṁ guttaṁ rakkhitaṁ saṁvutaṁ mahato atthāya saṁvattatī”ti.

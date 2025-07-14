@@ -9,7 +9,7 @@ interface Props {
 const { title, showFilter = false, id } = Astro.props;
 const hasSeparator = title?.includes("-");
 const [paliTitle, ...englishParts] = hasSeparator
-	? title.split("-").map((part: string) => part.trim())
+	? title.split(" - ").map((part: string) => part.trim())
 	: [title];
 const englishTitle = englishParts.join(" - ");
 ---

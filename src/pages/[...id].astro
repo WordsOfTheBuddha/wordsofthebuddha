@@ -145,12 +145,12 @@ if (route.type === "collection" && route.pattern) {
 	}
 
 	if (currentIndex === -1) {
+		console.log("No matching route found for:", id);
 		return Astro.redirect(`/search?q=${id}`);
 	}
 
 	// Get showPali from query string
 	const showPali = Astro.url.searchParams.get("pli") === "true";
-	console.log("page: ", id, "showPali: ", showPali);
 
 	// Load content with fresh file system read in development
 	let contentItem;
