@@ -37,9 +37,9 @@ Tassa evaṁ jānato evaṁ passato kāmāsavāpi cittaṁ vimuccati, bhavāsav�
 
 ‘Khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyā’ti pajānāti. Ayaṁ vuccati, bhikkhave: ‘bhikkhu sināto antarena sinānenā’”ti.
 
-Tena kho pana samayena sundarikabhāradvājo brāhmaṇo bhagavato avidūre nisinno hoti. Atha kho sundarikabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “gacchati pana bhavaṁ gotamo bāhukaṁ nadiṁ sināyitun”ti?
-
 ### Bathing in a River
+
+Tena kho pana samayena sundarikabhāradvājo brāhmaṇo bhagavato avidūre nisinno hoti. Atha kho sundarikabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “gacchati pana bhavaṁ gotamo bāhukaṁ nadiṁ sināyitun”ti?
 
 “Kiṁ, brāhmaṇa, bāhukāya nadiyā? Kiṁ bāhukā nadī karissatī”ti?
 
