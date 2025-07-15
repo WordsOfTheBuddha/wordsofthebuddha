@@ -1,7 +1,7 @@
 ---
 title: Vattha sutta - The Simile of the Cloth
 description: The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practice that one arrives at unshakeable faith in the Buddha, the Dhamma, and the Saṅgha. The Buddha also addresses a brahmin in verses who believes in purification by bathing in river.
-qualities: craving, greed, aversion, aggressiveness, jealousy, stinginess, anger, resentment, contempt, feuding, treachery, conceit, vanity, negligence, stubbornness, faith, ethical conduct, collectedness, wisdom, loving-kindness, compassion, appreciative joy, equanimity, sensual desire
+qualities: craving, greed, aversion, aggressiveness, jealousy, stinginess, anger, resentment, contempt, feuding, treachery, conceit, vanity, negligence, stubbornness, faith, ethical conduct, collectedness, wisdom, loving-kindness, compassion, appreciative joy, equanimity, sensual desire, clinging to rules and observances
 theme: cultivating discernment, inspiration, principle
 slug: mn7
 simile: defiled and stained cloth, pure and bright cloth
@@ -37,9 +37,9 @@ Tassa evaṁ jānato evaṁ passato kāmāsavāpi cittaṁ vimuccati, bhavāsav�
 
 ‘Khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyā’ti pajānāti. Ayaṁ vuccati, bhikkhave: ‘bhikkhu sināto antarena sinānenā’”ti.
 
-Tena kho pana samayena sundarikabhāradvājo brāhmaṇo bhagavato avidūre nisinno hoti. Atha kho sundarikabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “gacchati pana bhavaṁ gotamo bāhukaṁ nadiṁ sināyitun”ti?
-
 ### Bathing in a River
+
+Tena kho pana samayena sundarikabhāradvājo brāhmaṇo bhagavato avidūre nisinno hoti. Atha kho sundarikabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “gacchati pana bhavaṁ gotamo bāhukaṁ nadiṁ sināyitun”ti?
 
 “Kiṁ, brāhmaṇa, bāhukāya nadiyā? Kiṁ bāhukā nadī karissatī”ti?
 

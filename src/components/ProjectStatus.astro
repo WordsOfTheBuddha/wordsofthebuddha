@@ -148,29 +148,42 @@ const statusConfig: Record<
 										class={`h-full rounded-sm transition-all duration-500 flex items-center justify-center text-white text-xs ${color}`}
 										style={`width: ${isComplete ? "100" : percentage}%`}
 									>
-										<span
-											class={`${percentage < 15 ? "invisible" : ""}`}
-										>
-											{percentage >= 30
-												? `${percentage} %`
-												: `${percentage}%`}
-										</span>
+										{/* Mobile: show in filled area only if >= 40% */}
+										{percentage >= 40 && (
+											<span class="font-medium sm:hidden">
+												{percentage} %
+											</span>
+										)}
+										{/* Tablet and up: show in filled area if >= 15% */}
+										{percentage >= 15 && (
+											<span class="font-medium hidden sm:inline">
+												{percentage} %
+											</span>
+										)}
 									</div>
+									{/* Mobile: show in unfilled area if < 40% */}
+									{percentage < 40 && (
+										<div class="absolute inset-0 flex items-center justify-center text-gray-700 dark:text-gray-300 text-xs font-medium sm:hidden">
+											{percentage} %
+										</div>
+									)}
 								</div>
-								{isComplete && status && (
-									<div class="whitespace-nowrap text-xs sm:text-sm">
-										<span class="font-medium hidden sm:inline">
-											{statusText}
-										</span>
-										<span class="font-medium sm:hidden">
-											{
-												statusConfig[
-													status as StatusType
-												].shortLabel
-											}
-										</span>
-									</div>
-								)}
+								<div class="whitespace-nowrap text-xs sm:text-sm">
+									{isComplete && status && (
+										<>
+											<span class="font-medium hidden sm:inline">
+												{statusText}
+											</span>
+											<span class="font-medium sm:hidden">
+												{
+													statusConfig[
+														status as StatusType
+													].shortLabel
+												}
+											</span>
+										</>
+									)}
+								</div>
 							</div>
 						</td>
 					</tr>
