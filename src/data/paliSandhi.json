@@ -16,7 +16,11 @@
 	"dhāropanti": ["dhāropa", "iti"],
 	"poṇanti": ["poṇa", "iti"],
 	"pisīlavanti": ["pisīlava", "iti"],
-    "bahvettha": ["bahu", "ettha"],
-    "brāhmaṇāti": ["brāhmaṇa", "iti"],
-    "ḍaṁsamakasavātātapasarīsapasamphassoti": ["ḍaṃsamakasavātātapasarīsapasamphassa:contact with gadflies, mosquitoes, wind, heat and creepy crawlies", "iti"]
+	"dhammamacchariyanti": ["dhammamacchariya", "iti"],
+	"bahvettha": ["bahu", "ettha"],
+	"brāhmaṇāti": ["brāhmaṇa", "iti"],
+	"ḍaṁsamakasavātātapasarīsapasamphassoti": [
+		"ḍaṃsamakasavātātapasarīsapasamphassa:contact with gadflies, mosquitoes, wind, heat and creepy crawlies",
+		"iti"
+	]
 }
