@@ -20,6 +20,7 @@ import SaveButton from "../components/SaveButton.astro";
 import ReadButton from "../components/ReadButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
+import ParagraphToggle from "../components/ParagraphToggle.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
 import { debug } from "../utils/contentParser";
@@ -159,6 +160,7 @@ if (!SEOTitle) {
 										<div class="flex items-center gap-1">
 											<PaliButton />
 											<PaliLayoutToggle />
+											<ParagraphToggle />
 										</div>
 									)}
 									<div class="flex items-center gap-1">
@@ -299,7 +301,9 @@ if (!SEOTitle) {
 				}
 
 				// Remove duplicates and sort
-				const uniqueParagraphs = [...new Set(paragraphNumbers)].sort((a, b) => a - b);
+				const uniqueParagraphs = [...new Set(paragraphNumbers)].sort(
+					(a, b) => a - b
+				);
 
 				return {
 					paragraphs: uniqueParagraphs,

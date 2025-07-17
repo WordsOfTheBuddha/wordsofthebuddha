@@ -524,8 +524,11 @@ function formatBlock(
 
 	// Generate paragraph number and anchor ID (just the number, no prefix)
 	// Only add anchor IDs to English paragraphs to avoid conflicts
+	// Skip anchor IDs for "View full text" links
 	let anchorId = "";
-	if (index !== undefined && !isPali) {
+	const isViewFullTextLink = text.includes('View full text for:');
+
+	if (index !== undefined && !isPali && !isViewFullTextLink) {
 		// Use actual paragraph number if available, otherwise calculate from request
 		let paragraphNum = actualParagraphNumber;
 
