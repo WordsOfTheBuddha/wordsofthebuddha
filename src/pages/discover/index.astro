@@ -3,24 +3,27 @@ export const prerender = false;
 import Layout from "../../layouts/Layout.astro";
 import Funnel from "../../assets/funnel.svg?raw";
 import "../../styles/discover.css";
+import ProjectStatus from "src/components/ProjectStatus.astro";
 
 const seoTitle = "Discover the Words of the Buddha";
-const description = "Explore by topics, qualities, and similes";
+const description = "Or explore by topics, qualities, and similes";
 
 // Generate alphabet for A-Z navigation
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 ---
 
 <Layout seoTitle={seoTitle} showAuth={true}>
-	<main class="container mx-auto px-4 py-8">
+	<main class="container mx-auto p-4 pt-0">
 		<div class="mb-8">
-			<h1 class="text-3xl font-bold mb-4">
-				{seoTitle}
-			</h1>
 			<p class="text-gray-600 dark:text-gray-400 mb-6">
-				{description}
+				{seoTitle}
 			</p>
 
+			<ProjectStatus />
+
+			<p class="text-gray-600 dark:text-gray-400 mt-6 mb-4">
+				{description}
+			</p>
 			<!-- Sticky Filter Controls -->
 			<div
 				id="filter-controls"
@@ -607,7 +610,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 					if (isMobile) {
 						// Auto-collapse on mobile when scrolling down - but only once
 						if (
-							currentScrollY > 200 &&
+							currentScrollY > 1000 &&
 							currentScrollY > lastScrollY &&
 							!isFilterCollapsed &&
 							!hasAutoCollapsed
