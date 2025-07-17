@@ -1,9 +1,10 @@
 ---
 title: Visākhā sutta - Visākha
-description: The Buddha expresses an inspired utterance to Visākhā on how all under another's control brings suffering.
+description: The Buddha expresses an inspired utterance to Visākhā on how all under another’s control brings suffering.
 qualities: attachment, suffering, contentment
-theme: cultivating discernment
+theme: inspiration, wisdom
 slug: ud2.9
+character: Visākhā
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Tena kho pana samayena visākhāya migāramātuyā kocideva attho raññe pasenadimhi kosale paṭibaddho hoti. Taṁ rājā pasenadi kosalo na yathādhippāyaṁ tīreti.
