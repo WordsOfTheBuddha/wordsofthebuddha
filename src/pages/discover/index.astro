@@ -4,9 +4,8 @@ import Layout from "../../layouts/Layout.astro";
 import Funnel from "../../assets/funnel.svg?raw";
 import "../../styles/discover.css";
 
-const seoTitle = "Discover Teachings - Words of the Buddha";
-const description =
-	"Explore Buddhist teachings by topics, qualities, and similes from the Pali Canon";
+const seoTitle = "Discover the Words of the Buddha";
+const description = "Explore by topics, qualities, and similes";
 
 // Generate alphabet for A-Z navigation
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -15,10 +14,11 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 <Layout seoTitle={seoTitle} showAuth={true}>
 	<main class="container mx-auto px-4 py-8">
 		<div class="mb-8">
-			<h1 class="text-3xl font-bold mb-4">Discover Buddha's Words</h1>
+			<h1 class="text-3xl font-bold mb-4">
+				{seoTitle}
+			</h1>
 			<p class="text-gray-600 dark:text-gray-400 mb-6">
-				Explore Buddhist teachings organized by topics, qualities, and
-				similes from the Pali Canon
+				{description}
 			</p>
 
 			<!-- Sticky Filter Controls -->
@@ -253,7 +253,10 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 				<!-- No Results Message -->
 				<div id="no-results" class="hidden text-center py-8">
 					<p class="text-gray-600 dark:text-gray-400">
-						No teachings found matching your criteria.
+						No topics, qualities or similes found matching your
+						criteria. <a href="/search" id="full-text-search-link">
+							Try discourse search
+						</a>
 					</p>
 				</div>
 			</div>
@@ -486,20 +489,35 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 			// Sync both search inputs
 			if (searchInput && input !== searchInput) {
-				searchInput.value = input.value;
+				searchInput.value = searchTerm;
 			}
 			if (searchInputDesktop && input !== searchInputDesktop) {
-				searchInputDesktop.value = input.value;
+				searchInputDesktop.value = searchTerm;
 			}
 
 			// Debounce search to avoid too many API calls
 			if (searchTimeout) {
 				clearTimeout(searchTimeout);
 			}
-
+			updateFullTextSearchLink(searchTerm);
 			searchTimeout = setTimeout(() => {
 				loadData();
-			}, 300);
+			}, 50);
+		}
+
+		function updateFullTextSearchLink(searchInput: string) {
+			const fullTextSearchLink = document.querySelector(
+				"#full-text-search-link"
+			) as HTMLAnchorElement;
+
+			if (fullTextSearchLink) {
+				const filterValue = searchInput.trim();
+				if (filterValue) {
+					fullTextSearchLink.href = `/search?q=${encodeURIComponent(filterValue)}`;
+				} else {
+					fullTextSearchLink.href = "/search";
+				}
+			}
 		}
 
 		function toggleExpanded(itemId: string) {

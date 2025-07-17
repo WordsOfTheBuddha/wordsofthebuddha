@@ -9,7 +9,7 @@ export interface BreadcrumbItem {
 }
 
 export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
-	const path: BreadcrumbItem[] = [{ label: "Home", path: "/" }];
+	const path: BreadcrumbItem[] = [{ label: "Discover", path: "/discover" }];
 
 	const id = idPath[idPath.length - 1];
 	// Handle non-collection routes

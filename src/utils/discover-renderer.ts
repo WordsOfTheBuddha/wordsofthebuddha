@@ -124,7 +124,7 @@ export class DiscoverRenderer {
 					${item.synonyms && item.synonyms.length > 0
                     ? `
 						<div class="text-gray-600 dark:text-gray-400 text-xs">
-							Also known as: ${item.synonyms.join(", ")}
+							Similar: ${item.synonyms.join(", ")}
 						</div>
 					`
                     : ""
