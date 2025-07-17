@@ -21,7 +21,13 @@ const englishTitle = englishParts.join(" - ");
 		tabindex="-1"
 		aria-label={title}
 	>
-		{id && <span class="mr-2 text-primary-color">{transformId(id)}</span>}
+		{
+			id && (
+				<span class="mr-2 text-primary-color">
+					{transformId(id)}&nbsp;
+				</span>
+			)
+		}
 		<slot />
 		<span class="pali-paragraph">{paliTitle}</span>
 		{hasSeparator && ` - ${englishTitle}`}
