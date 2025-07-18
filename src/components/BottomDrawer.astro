@@ -523,11 +523,6 @@ import "../styles/bottomDrawer.css";
 	function createCompoundTooltipContent(word: string, data: any) {
 		const { definitions } = data;
 
-		console.log(
-			"createCompoundTooltipContent called with definitions:",
-			definitions
-		);
-
 		// Group definitions by constituent
 		const constituents = new Map();
 

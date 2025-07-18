@@ -199,9 +199,10 @@ html.dark .tooltip-content .title {
 	margin: 0;
 	border-radius: 2px;
 	display: inline-block;
-	white-space: nowrap;
+	white-space: normal;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
+	max-width: 100%;
 }
 
 .pali-word:hover {
