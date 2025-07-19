@@ -24,6 +24,7 @@ interface UnifiedContentItem {
 		description: string;
 		collection: string;
 		note?: string;
+		isFeatured?: boolean;
 	}>;
 }
 
@@ -198,6 +199,7 @@ export const GET: APIRoute = async ({ url }) => {
 									title: d.title,
 									description: d.description,
 									collection: d.collection,
+									isFeatured: false,
 								})),
 							},
 							context || "", // Use context as description if available
@@ -229,6 +231,7 @@ export const GET: APIRoute = async ({ url }) => {
 										title: d.title,
 										description: d.description,
 										collection: d.collection,
+										isFeatured: false,
 									})),
 								}),
 							); // No description for similes

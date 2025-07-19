@@ -20,6 +20,7 @@ interface TopicMapping {
 		description: string;
 		collection: string;
 		note?: string;
+		isFeatured?: boolean;
 	}>;
 }
 
@@ -164,6 +165,7 @@ function mergeAdditionalDiscourses(
 		.filter((discourse) => !existingIds.has(discourse.id))
 		.map((discourse) => ({
 			...discourse,
+			isFeatured: false, // Mark as additional discourse from quality/simile mappings
 			// Don't add note since quality/simile discourses don't have notes
 		}));
 
@@ -199,6 +201,7 @@ export async function generateTopicMappings() {
 					description: data.description,
 					collection: getCollection(discourse.id),
 					note: discourse.note,
+					isFeatured: true, // Mark as topic-specific discourse
 				};
 			})
 			.filter(Boolean);

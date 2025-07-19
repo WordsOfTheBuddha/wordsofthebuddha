@@ -4,19 +4,19 @@ import qualities from "../data/qualities.json";
 export const contentTypeConfigs = {
   "bright-quality": {
     emoji: "☀️",
-    label: "bright",
+    label: "bright quality",
     tooltip: "When a bright quality is cultivated, it brings benefit, clarity of vision, and leads to growth in wisdom.",
     cssClass: "text-xs border border-amber-300 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20",
   },
   "negative-quality": {
     emoji: "☁️",
-    label: "dark",
+    label: "dark quality",
     tooltip: "When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom.",
     cssClass: "text-xs border border-slate-300 text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950/20",
   },
   "neutral-quality": {
     emoji: "💠",
-    label: "neutral",
+    label: "neutral quality",
     tooltip: "This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises.",
     cssClass: "text-xs border border-cyan-300 text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/20",
   },
