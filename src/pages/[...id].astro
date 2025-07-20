@@ -248,13 +248,24 @@ if (route.type === "collection" && route.pattern) {
 
 						if (!rangeMatch) return false;
 
-						// Check if the section number falls within the route's range
+						// Proper range checking - compare against start and end bounds
 						const [, rangeStart, rangeEnd] = rangeMatch;
-						const isInRange =
-							compareHierarchicalNumber(numericPart, rangeStart) >= 0 &&
-							compareHierarchicalNumber(numericPart, rangeEnd) <= 0;
 
-						debug(`Checking if ${numericPart} is in range ${rangeStart}-${rangeEnd}: ${isInRange}`);
+						// Construct the proper end value (e.g., "17.13-20" becomes "17.13" to "17.20")
+						const properRangeEnd = constructHierarchicalEnd(
+							rangeStart,
+							rangeEnd
+						);
+
+						const isInRange =
+							compareHierarchicalNumber(
+								numericPart,
+								rangeStart
+							) >= 0 &&
+							compareHierarchicalNumber(
+								numericPart,
+								properRangeEnd
+							) <= 0;
 
 						return isInRange;
 					});
