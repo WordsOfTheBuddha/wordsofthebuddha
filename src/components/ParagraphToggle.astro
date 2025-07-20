@@ -1,5 +1,5 @@
 ---
-const { class: className } = Astro.props;
+const { class: className, paragraphRequest } = Astro.props;
 ---
 
 <button
@@ -10,6 +10,9 @@ const { class: className } = Astro.props;
 	]}
 	style="color: var(--layout-active-color)"
 	title="Toggle paragraph numbering"
+	data-paragraph-request={paragraphRequest
+		? JSON.stringify(paragraphRequest)
+		: ""}
 >
 	<span
 		class="w-4 h-4 flex items-center justify-center font-bold text-sm leading-none"
@@ -22,10 +25,18 @@ const { class: className } = Astro.props;
 		const toggle = document.getElementById("paragraphToggle");
 		if (!toggle) return;
 
-		// Get initial state from sessionStorage or default to false (disabled)
+		// Check if we should auto-enable paragraph numbering based on paragraph requests or URL hash
+		const paragraphRequest = toggle.dataset.paragraphRequest;
+		const hasUrlHash =
+			window.location.hash && window.location.hash.match(/^#\d+(-\d+)?/);
+
+		const shouldAutoEnable = !!(paragraphRequest || hasUrlHash);
+
+		// Get initial state from sessionStorage, but override if we should auto-enable
 		const storedState = sessionStorage.getItem("showParagraphNumbers");
 		const showParagraphs =
-			storedState === null ? false : storedState === "true";
+			shouldAutoEnable ||
+			(storedState === null ? false : storedState === "true");
 
 		// Update toggle appearance
 		const updateToggleState = (isActive: boolean) => {
@@ -65,6 +76,11 @@ const { class: className } = Astro.props;
 		// Initialize state
 		applyParagraphState(showParagraphs);
 		updateToggleState(showParagraphs);
+
+		// Store the auto-enabled state if it was triggered
+		if (shouldAutoEnable && storedState !== "true") {
+			sessionStorage.setItem("showParagraphNumbers", "true");
+		}
 
 		// Add click handler
 		toggle.addEventListener("click", () => {

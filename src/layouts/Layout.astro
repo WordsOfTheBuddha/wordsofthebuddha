@@ -46,6 +46,7 @@ const {
 	showPali = false,
 	showFilter = false,
 	seoTitle = null, // Add new prop for SEO title
+	paragraphRequest = null,
 } = Astro.props;
 
 // Debug logging in development only
@@ -160,7 +161,11 @@ if (!SEOTitle) {
 										<div class="flex items-center gap-1">
 											<PaliButton />
 											<PaliLayoutToggle />
-											<ParagraphToggle />
+											<ParagraphToggle
+												paragraphRequest={
+													paragraphRequest
+												}
+											/>
 										</div>
 									)}
 									<div class="flex items-center gap-1">
@@ -340,7 +345,18 @@ if (!SEOTitle) {
 					);
 					if (targetElement) {
 						setTimeout(() => {
-							targetElement.scrollIntoView({
+							// Calculate position with 100px buffer
+							const elementRect =
+								targetElement.getBoundingClientRect();
+							const absoluteElementTop =
+								elementRect.top + window.pageYOffset;
+							const scrollToPosition = Math.max(
+								0,
+								absoluteElementTop - 100
+							);
+
+							window.scrollTo({
+								top: scrollToPosition,
 								behavior: "smooth",
 							});
 						}, 100);
