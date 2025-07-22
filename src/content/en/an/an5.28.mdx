@@ -1,5 +1,5 @@
 ---
-title: Pañcaṅgika sutta - Fivefold
+title: Pañcaṅgika sutta - Fivefold Collectedness
 description: The Buddha teaches the cultivation of the noble fivefold right collectedness with vivid similes, and shares how one who has cultivated this can realize any phenomenon realizable by direct knowledge.
 qualities: collectedness, one-pointedness, mindfulness, full awareness, equanimity, direct knowledge, liberation
 theme: training guideline, directly knowing
