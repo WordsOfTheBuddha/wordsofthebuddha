@@ -249,7 +249,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					"An early collection of sixteen suttas, often in sets of eight verses, this chapter critiques clinging to views and fruitless arguments. The Attadaṇḍa Sutta ties the Buddha’s renunciation to life’s suffering. Direct and unadorned, it emphasizes clarity, detachment, and the path to peace.",
 			},
 			snp5: {
-				title: "Pārāyanavagga - The Chapter on the Way to the Beyond",
+				title: "Pārāyanavagga - The Chapter on the Way to the Far Shore",
 				description:
 					"This chapter starts with a brahmin sending sixteen students to ask the Buddha profound questions about mindfulness, ending suffering, and a sage’s qualities. The Buddha’s replies lead to their declarations of faith. Poetic and deep, it traces a clear path to liberation through dialogue.",
 			},

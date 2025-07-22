@@ -110,6 +110,7 @@
 		"inquisitiveness",
 		"joyful pleasure",
 		"insight",
+		"inspiration",
 		"learned",
 		"liberation",
 		"loving-kindness",
@@ -709,6 +710,15 @@
 			"testing",
 			"Related:{examination}",
 			"[vīmaṃsā]"
+		],
+		"inspiration": [
+			"eloquence",
+			"intuition",
+			"ingenuity",
+			"wit",
+			"creativity",
+			"Context: A mental quality characterized by a sudden burst of creative insight or understanding, often leading to innovative ideas or solutions.",
+			"[paṭibhāna]"
 		],
 		"irritability": [
 			"crankiness",
