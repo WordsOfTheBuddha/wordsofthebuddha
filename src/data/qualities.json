@@ -27,10 +27,11 @@
 		"fearful",
 		"feuding",
 		"greed",
-		"harmful",
+		"harm",
 		"having many desires",
 		"hypocrisy",
 		"ignorance",
+		"ill will",
 		"illusion",
 		"immaturity",
 		"impatience",
@@ -109,6 +110,7 @@
 		"inquisitiveness",
 		"joyful pleasure",
 		"insight",
+		"inspiration",
 		"learned",
 		"liberation",
 		"loving-kindness",
@@ -120,7 +122,7 @@
 		"one-pointedness",
 		"patience",
 		"perceiving gratification",
-		"perceiving drawbacks",
+		"perceiving drawback",
 		"politeness",
 		"psychic power",
 		"quenching",
@@ -128,8 +130,10 @@
 		"recognition of not-self",
 		"recognition of unattractiveness",
 		"recognition of unsatisfactoriness",
-		"recollection of the Buddha",
 		"recollection of death",
+		"recollection of the Buddha",
+		"recollection of the Dhamma",
+		"recollection of the Saṅgha",
 		"respect",
 		"right effort",
 		"right intention",
@@ -180,7 +184,7 @@
 			"[sārambha, caṇḍa]"
 		],
 		"ambition": [
-			"aspiration for identity",
+			"an aspiration for identity",
 			"drive for status or attainment",
 			"romanticizing some better self or future state",
 			"Context: Spiritual or worldly striving to “be someone,” the “I must become something” energy",
@@ -214,6 +218,7 @@
 			"rejoicing in the happiness of others",
 			"delight in the success of others",
 			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
+			"Related:{loving-kindness}",
 			"[muditā]"
 		],
 		"attachment": [
@@ -230,17 +235,17 @@
 		],
 		"aversion": [
 			"animosity",
-			"ill will",
 			"hate",
 			"hostility",
 			"fault-finding mindset",
 			"upset",
-			"Related:{anger, irritability, resentment}",
-			"Context: A rejecting mental quality of ill will, irritation, or hostility that pushes away unpleasant objects or experiences; it fuels conflict and resists acceptance, obstructing patience and kindness",
+			"Related:{anger, irritability, resentment, ill will, patience}",
+			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance",
 			"[dosa, vera]"
 		],
 		"bad friendship": [
 			"friendship with unwholesome persons",
+			"Related:{companionship}",
 			"[pāpamittatā]"
 		],
 		"bad habits": [
@@ -289,6 +294,7 @@
 			"friendship",
 			"fellowship",
 			"camaraderie",
+			"Related:{good friendship, bad friendship}",
 			"[sahāyatā]"
 		],
 		"compassion": [
@@ -352,7 +358,7 @@
 			"having few desires",
 			"fewness of wishes",
 			"Related:{happiness, joyful pleasure}",
-			"[santutthi, appicchatā]"
+			"[santutthi, appicchatā, tuṭṭha]"
 		],
 		"continuous effort": [
 			"unremitting effort",
@@ -378,7 +384,7 @@
 			"inhumanity",
 			"injuring",
 			"viciousness",
-			"Related:{harmful, slaughtering}",
+			"Related:{harm, slaughtering}",
 			"[vihiṁsā]"
 		],
 		"cultivation": [
@@ -415,12 +421,11 @@
 			"[appamāda]"
 		],
 		"discernment": [
-			"able to judge well",
-			"able to see distinctions",
+			"ability to make out distinctions",
 			"ability to discriminate, distinguish",
 			"clear seeing",
 			"penetrating internal vision",
-			"[vipassanā, nipaka, niccheyya]"
+			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
 		"discontentment": [
 			"dissatisfaction",
@@ -431,7 +436,7 @@
 		"disenchantment": [
 			"de-illusionment",
 			"disinterest",
-			"Related:{dispassion}",
+			"Related:{dispassion, free from attachment}",
 			"[nibbidā]"
 		],
 		"dispassion": [
@@ -439,7 +444,7 @@
 			"disinterest",
 			"fading of desire",
 			"disentanglement",
-			"Related:{disenchantment}",
+			"Related:{disenchantment, free from attachment}",
 			"[virāga, visaṃyutta]"
 		],
 		"displeasure": [
@@ -513,7 +518,13 @@
 			"Related:{inquisitiveness, contemplation}",
 			"[vicaya, parikkhati]"
 		],
-		"faith": ["confidence", "trust", "belief", "conviction", "[saddha]"],
+		"faith": [
+			"confidence",
+			"trust",
+			"belief",
+			"conviction",
+			"[saddha, pasanna]"
+		],
 		"faithlessness": [
 			"lack of confidence",
 			"lack of conviction",
@@ -563,7 +574,8 @@
 			"not appropriating",
 			"not taking as mine",
 			"without acquisitions",
-			"Related:{dispassion}",
+			"Related:{disenchantment, dispassion}",
+			"Opposite:{attachment, passion}",
 			"[nirūpadhi]"
 		],
 		"full awareness": [
@@ -590,6 +602,7 @@
 		],
 		"good friendship": [
 			"friendship with wholesome persons",
+			"Related:{companionship}",
 			"[kalyāṇamittatā]"
 		],
 		"good habits": [
@@ -617,9 +630,9 @@
 			"Related:{joyful pleasure, contentment}",
 			"[sukha, somanassa]"
 		],
-		"harmful": [
-			"injurious",
-			"destructive",
+		"harm": [
+			"injury causing behavior",
+			"destructiveness",
 			"bad",
 			"evil",
 			"Related:{cruelty, unwholesome}",
@@ -648,6 +661,15 @@
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
 			"[avijja]"
+		],
+		"ill will": [
+			"actively opposing or rejecting others in thought",
+			"thought of malevolence towards another",
+			"hostile reflections towards another",
+			"Related:{aversion, anger, irritability}",
+			"Opposite:{loving-kindness}",
+			"Context: A mental quality of actively opposing or rejecting others in thought, manifesting as deliberate thoughts or intentions that oppose kindness and compassion; it fuels conflict and obstructs goodwill.",
+			"[byāpāda]"
 		],
 		"illusion": [
 			"delusion",
@@ -688,6 +710,15 @@
 			"testing",
 			"Related:{examination}",
 			"[vīmaṃsā]"
+		],
+		"inspiration": [
+			"eloquence",
+			"intuition",
+			"ingenuity",
+			"wit",
+			"creativity",
+			"Context: A mental quality characterized by a sudden burst of creative insight or understanding, often leading to innovative ideas or solutions.",
+			"[paṭibhāna]"
 		],
 		"irritability": [
 			"crankiness",
@@ -738,6 +769,8 @@
 			"idleness",
 			"inactivity",
 			"sluggishness",
+			"Context: Laziness is a mental quality characterized by unwillingness or lack of energy and motivation to engage in wholesome activities or exert effort; it leads to stagnation and missed opportunities for growth.",
+			"Related:{weak in effort}",
 			"[kosajja, tandī]"
 		],
 		"learned": [
@@ -761,13 +794,16 @@
 			"kindness",
 			"friendliness",
 			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
-			"[metta, abyāpāda]"
+			"Related:{appreciative joy}",
+			"Opposite:{ill will}",
+			"[metta, abyāpāda, abyāpajja]"
 		],
 		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
 		"mental proliferation": [
 			"conceptual proliferation",
 			"conceptualization",
 			"forming various opinions",
+			"Context:Mental proliferation is the tendency to overelaborate mental constructs—such as opinions, judgments, projections, and narratives—arising from sensory experience. It entangles the mind in a cascade of thoughts, concepts, and perceptions, giving rise to unwholesome states and suffering.",
 			"[papañca]"
 		],
 		"mindfulness": [
@@ -841,7 +877,7 @@
 			"seeing enjoyment",
 			"[assādānupassī]"
 		],
-		"perceiving drawbacks": [
+		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
 			"Related:{recognition of unsatisfactoriness}",
@@ -900,16 +936,28 @@
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
-			"Related:{perceiving drawbacks}",
+			"Related:{perceiving drawback}",
 			"[dukkha-saññā]"
 		],
+		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
 		"recollection of the Buddha": [
 			"mindfulness of the Buddha",
 			"reflection on the qualities of the Buddha",
 			"Context: Mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
 			"[buddhānussati, buddhānusmṛti]"
 		],
-		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
+		"recollection of the Dhamma": [
+			"mindfulness of the Dhamma",
+			"reflection on the qualities of the Dhamma",
+			"Context: Mental quality of reflecting on the qualities of the Dhamma, which counters doubt and strengthens faith.",
+			"[dhammānussati, dhammānusmṛti]"
+		],
+		"recollection of the Saṅgha": [
+			"mindfulness of the Saṅgha",
+			"reflection on the qualities of the Saṅgha",
+			"Context: Mental quality of reflecting on the qualities of the Saṅgha, which counters doubt and strengthens faith.",
+			"[saṅghānussati, saṅghānusmṛti]"
+		],
 		"regret": [
 			"to be burned",
 			"to be consumed",
@@ -919,7 +967,7 @@
 		"resentment": [
 			"bearing a grudge",
 			"harboring enmity",
-			"Related:{anger, aversion}",
+			"Related:{anger, aversion, ill will}",
 			"[upanāha]"
 		],
 		"respect": [
@@ -1107,7 +1155,7 @@
 			"unskillful",
 			"unbeneficial",
 			"karmically unprofitable",
-			"Related:{harmful}",
+			"Related:{harm}",
 			"[akusala]"
 		],
 		"unwise attention": [
@@ -1153,7 +1201,7 @@
 			"low in energy",
 			"lacking in endurance",
 			"lax, loose, slack, unaspirated, indistinct",
-			"Related:{wrong effort}",
+			"Related:{wrong effort, laziness}",
 			"[hīnavīriya, sithila]"
 		],
 		"wholesome": [
@@ -1209,9 +1257,9 @@
 			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
 		],
 		"wrong view": [
-			"distorted perceptions",
-			"untrue views",
-			"false beliefs",
+			"distorted or inverted perception",
+			"untrue view",
+			"false belief",
 			"[micchādiṭṭhi]"
 		]
 	}

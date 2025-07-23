@@ -140,6 +140,21 @@
 	--layout-color-dark: var(--link-color-dark);
 
 	--layout-active-color: var(--layout-color-light);
+
+	--warning-bg-light: #fef3c7;
+	--warning-border-light: #f59e0b;
+	--warning-text-light: #92400e;
+	--warning-heading-light: #78350f;
+
+	--warning-bg-dark: #3b3a44;
+	--warning-border-dark: #d97706;
+	--warning-text-dark: #fbbf24;
+	--warning-heading-dark: #fcd34d;
+
+	--warning-bg: var(--warning-bg-light);
+	--warning-border: var(--warning-border-light);
+	--warning-text: var(--warning-text-light);
+	--warning-heading: var(--warning-heading-light);
 }
 
 html.dark {
@@ -167,6 +182,11 @@ html.dark {
 	--auth-button-bg: var(--auth-button-bg-dark);
 	--auth-button-hover: var(--auth-button-hover-dark);
 	--layout-active-color: var(--layout-color-dark);
+
+	--warning-bg: var(--warning-bg-dark);
+	--warning-border: var(--warning-border-dark);
+	--warning-text: var(--warning-text-dark);
+	--warning-heading: var(--warning-heading-dark);
 }
 
 body {
@@ -188,6 +208,34 @@ body {
 		@apply pl-4;
 		color: var(--text-color); /* Use theme variable */
 		--verse-accent: theme(colors.gray.300);
+	}
+
+	/* Paragraph anchor hover display - now controlled by ParagraphToggle component */
+	/* p[id]::before rule moved to ParagraphToggle.astro */
+
+	/* Smooth scroll for hash navigation */
+	html {
+		scroll-behavior: smooth;
+	}
+
+	/* Highlight target paragraph */
+	p:target {
+		background-color: var(--auth-card-bg);
+		border-left: 4px solid var(--warning-border);
+		padding-left: 0.5rem;
+		margin-left: -0.5rem;
+		border-radius: 0.25rem;
+		transition: background-color 0.3s, border-color 0.3s;
+	}
+
+	/* Highlight range paragraphs */
+	p.paragraph-highlight {
+		background-color: var(--warning-bg);
+		border-left: 4px solid var(--warning-border);
+		padding-left: 0.5rem;
+		margin-left: -0.5rem;
+		border-radius: 0.25rem;
+		transition: background-color 0.3s, border-color 0.3s;
 	}
 }
 

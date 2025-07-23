@@ -1,0 +1,30 @@
+title: Giving
+description: "The act of generosity, sharing, or offering to others without expecting anything in return. Giving is considered a foundational virtue in Buddhist practice, fostering selflessness and compassion."
+synonyms:
+    - generosity
+    - charity
+    - donation
+    - almsgiving
+pali:
+    - dāna
+redirects:
+    - generosity
+    - almsgiving
+    - alms
+    - donation
+    - charity
+related:
+    - virtue
+    - morality
+    - compassion
+    - renunciation
+    - gratitude
+discourses:
+    - id: "iti26"
+      note: "The benefits of giving"
+    - id: "an5.148"
+      note: "Five rewards of giving"
+    - id: "sn1.41"
+      note: "Giving to the worthy"
+    - id: "iti75"
+      note: "Contrasts giving with stinginess using a simile"

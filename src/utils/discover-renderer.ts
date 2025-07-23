@@ -1,4 +1,5 @@
 import type { UnifiedContentItem } from "../types/discover";
+import { generateContentTagHtml, getContentTypeFromApiData } from "./ContentTagUtils";
 
 export class DiscoverRenderer {
     constructor(
@@ -38,80 +39,23 @@ export class DiscoverRenderer {
 
     private renderItem(item: UnifiedContentItem): string {
         const isExpanded = this.expandedItems.has(item.id);
-        const isSimile = item.type === "simile";
-        const qualityType = item.qualityType;
 
-        // Quality type indicators
-        const qualityIndicator = qualityType
-            ? {
-                positive: {
-                    emoji: "☀️",
-                    text: "quality",
-                    type: "bright",
-                    class: "bg-amber-200 dark:bg-amber-700 text-amber-800 dark:text-amber-100",
-                },
-                negative: {
-                    emoji: "☁️",
-                    text: "quality",
-                    type: "dark",
-                    class: "bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-100",
-                },
-                neutral: {
-                    emoji: "💠",
-                    text: "quality",
-                    type: "neutral",
-                    class: "bg-cyan-200 dark:bg-cyan-500 text-cyan-800 dark:text-cyan-100",
-                },
-            }[qualityType]
-            : null;
-
-        // Topic type indicator
-        const topicIndicator =
-            item.type === "topic"
-                ? `
-                <span class="inline-block px-2 py-0.5 text-xs rounded-full cursor-help bg-blue-200 dark:bg-blue-500 text-gray-600 dark:text-gray-300 -translate-y-0.5"
-                    title="A curated list of discourses on a theme of the Buddha's words.">
-                    topic
-                </span>
-            `
-                : "";
+        // Get the content type and generate the tag HTML
+        const contentType = getContentTypeFromApiData(item);
+        const contentTagHtml = generateContentTagHtml(contentType);
 
         return `
 		<div class="post-item relative flex flex-col w-full p-5 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200">
 			<div class="flex items-start justify-between mb-2">
 				<div class="flex items-start flex-grow min-w-0">
-					<span class="text-lg mt-1 mb-1">
-						${isSimile
-                ? `
-							<span class="font-normal">${item.title}</span>
-                            <span class="inline-block px-2 py-0.5 text-xs rounded-full cursor-help bg-purple-200 dark:bg-purple-500 text-gray-600 dark:text-gray-300 -translate-y-0.5" 
-								  title="Metaphor or comparison used by the Buddha to illustrate a teaching concept">
-								simile
-							</span>
-						`
-                : `
-							<span class="font-normal">${item.title}</span>
-							${qualityIndicator
-                    ? `
-									<span class="inline-block px-2 py-0.5 text-xs rounded-full cursor-help ${qualityIndicator.class} -translate-y-0.5" 
-										  title="${qualityIndicator.type === "bright"
-                        ? "When a bright quality is cultivated, it brings benefit, clarity of vision, and the growth of wisdom."
-                        : qualityIndicator.type === "dark"
-                            ? "When a dark quality is maintained or not abandoned, it brings harm, obscured vision, and the decline of wisdom."
-                            : "This quality can be either skillful or unskillful depending on how it is applied and the context in which it arises."
-                    }">
-										${qualityIndicator.text}
-									</span>
-								`
-                    : topicIndicator
-                }
-						`
-            }
+					<h3 class="text-lg mt-1 mb-1">
+						<span class="font-normal">${item.title}</span>
+						${contentTagHtml}
 					</h3>
 				</div>
 			</div>
 
-			${!isSimile
+			${item.type !== "simile"
                 ? `
 				<div class="mt-2 ml-2 space-y-2 text-sm">
 					${item.description
@@ -124,7 +68,7 @@ export class DiscoverRenderer {
 					${item.synonyms && item.synonyms.length > 0
                     ? `
 						<div class="text-gray-600 dark:text-gray-400 text-xs">
-							Also known as: ${item.synonyms.join(", ")}
+							Similar: ${item.synonyms.join(", ")}
 						</div>
 					`
                     : ""

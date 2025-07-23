@@ -9,7 +9,7 @@ export interface BreadcrumbItem {
 }
 
 export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
-	const path: BreadcrumbItem[] = [{ label: "Home", path: "/" }];
+	const path: BreadcrumbItem[] = [{ label: "Discover", path: "/discover" }];
 
 	const id = idPath[idPath.length - 1];
 	// Handle non-collection routes
@@ -52,19 +52,14 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 		return path;
 	}
 
-	// Handle on paths
+	// Don't add a prefix for "on" paths
 	if (idPath[0] === "on") {
-		path.push({
-			label: "Buddha's Words On",
-			path: "/discover",
-		});
 		return path;
 	}
 
 	// Extract prefix and numbers
 	const prefix = id.match(/^[a-z]+/i)?.[0] || "";
-	const [baseId, subNumber] = id.split(".");
-	console.log("id: ", id, ", prefix: ", prefix);
+	const [baseId, _] = id.split(".");
 	if (prefix && prefix in directoryStructure) {
 		// Add collection level (e.g., "SN")
 		const collection = directoryStructure[prefix];

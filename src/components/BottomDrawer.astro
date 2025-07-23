@@ -1,3 +1,8 @@
+---
+export const prerender = false;
+import "../styles/bottomDrawer.css";
+---
+
 <!-- this is a client-only script component -->
 <script>
 	// Helper function to parse Markdown-style links
@@ -201,6 +206,30 @@
 		highlightCurrentWord();
 	}
 
+	function enableTooltipNavigation(clickedTooltip: HTMLElement) {
+		isNavigationMode = true;
+
+		// Get ALL tooltip elements from the page and filter out invalid ones
+		const allTooltips = Array.from(
+			document.querySelectorAll(".tooltip-text")
+		) as HTMLElement[];
+		currentWords = allTooltips.filter((el) => {
+			const text = el.textContent?.trim();
+			const content = el.getAttribute("data-tooltip-content");
+			// Filter out tooltips with template variables or empty content
+			return (
+				text &&
+				content &&
+				!text.includes("${") &&
+				!content.includes("${") &&
+				text !== "${textPart}"
+			);
+		});
+
+		currentWordIndex = currentWords.indexOf(clickedTooltip);
+		highlightCurrentWord();
+	}
+
 	function disableWordNavigation() {
 		isNavigationMode = false;
 		currentWordIndex = -1;
@@ -227,6 +256,69 @@
 		}
 	}
 
+	function navigateVertically(direction: "up" | "down") {
+		const currentWord = currentWords[currentWordIndex];
+		if (!currentWord) return;
+
+		const targetWord = findWordVertically(currentWord, direction);
+		if (targetWord) {
+			const targetIndex = currentWords.indexOf(targetWord);
+			if (targetIndex >= 0) {
+				currentWordIndex = targetIndex;
+				highlightCurrentWord();
+				showCurrentWordDefinition();
+				updateNavigationButtons();
+			}
+		}
+	}
+
+	// Spatial navigation function
+	function findWordVertically(
+		currentWord: HTMLElement,
+		direction: "up" | "down"
+	): HTMLElement | null {
+		const currentRect = currentWord.getBoundingClientRect();
+		const currentCenter = {
+			x: currentRect.left + currentRect.width / 2,
+			y: currentRect.top + currentRect.height / 2,
+		};
+
+		let bestMatch: HTMLElement | null = null;
+		let bestDistance = Infinity;
+
+		currentWords.forEach((word) => {
+			if (word === currentWord) return;
+
+			const wordRect = word.getBoundingClientRect();
+			const wordCenter = {
+				x: wordRect.left + wordRect.width / 2,
+				y: wordRect.top + wordRect.height / 2,
+			};
+
+			// Check if word is in the right vertical direction
+			const isInDirection =
+				direction === "up"
+					? wordCenter.y < currentCenter.y - 5 // 5px threshold to avoid same-line words
+					: wordCenter.y > currentCenter.y + 5;
+
+			if (!isInDirection) return;
+
+			// Calculate weighted distance (prioritize vertical proximity, then horizontal)
+			const verticalDistance = Math.abs(wordCenter.y - currentCenter.y);
+			const horizontalDistance = Math.abs(wordCenter.x - currentCenter.x);
+
+			// Weight vertical movement as primary, horizontal as secondary
+			const totalDistance = verticalDistance + horizontalDistance * 0.2;
+
+			if (totalDistance < bestDistance) {
+				bestDistance = totalDistance;
+				bestMatch = word;
+			}
+		});
+
+		return bestMatch;
+	}
+
 	function updateNavigationButtons() {
 		const popover = bottomPopover.getPopoverElement();
 		const prevBtn = popover?.querySelector(
@@ -249,7 +341,12 @@
 
 		if (currentWordIndex >= 0 && currentWordIndex < currentWords.length) {
 			const currentWord = currentWords[currentWordIndex];
-			currentWord.classList.add("pali-word-highlighted");
+			// Use different highlight classes for different types
+			if (currentWord.classList.contains("pali-word")) {
+				currentWord.classList.add("pali-word-highlighted");
+			} else if (currentWord.classList.contains("tooltip-text")) {
+				currentWord.classList.add("tooltip-text-highlighted");
+			}
 
 			// Scroll word into view
 			currentWord.scrollIntoView({
@@ -261,16 +358,32 @@
 	}
 
 	function clearWordHighlights() {
-		document.querySelectorAll(".pali-word-highlighted").forEach((word) => {
-			word.classList.remove("pali-word-highlighted");
-		});
+		document
+			.querySelectorAll(
+				".pali-word-highlighted, .tooltip-text-highlighted"
+			)
+			.forEach((word) => {
+				word.classList.remove(
+					"pali-word-highlighted",
+					"tooltip-text-highlighted"
+				);
+			});
 	}
 
 	async function showCurrentWordDefinition() {
 		if (currentWordIndex >= 0 && currentWordIndex < currentWords.length) {
 			const word = currentWords[currentWordIndex];
-			const cleanWord = word.dataset.word || word.textContent || "";
-			await showDictionaryPopover(cleanWord, true);
+
+			// Check if it's a Pali word or English tooltip
+			if (word.classList.contains("pali-word")) {
+				const cleanWord = word.dataset.word || word.textContent || "";
+				await showDictionaryPopover(cleanWord, true);
+			} else if (word.classList.contains("tooltip-text")) {
+				const content = word.getAttribute("data-tooltip-content") || "";
+				const primaryText = word.textContent || "";
+				bottomPopover.show(content, "markdown", primaryText);
+				addNavigationControls(); // Add navigation controls for English tooltips
+			}
 		}
 	}
 
@@ -341,7 +454,10 @@
 					addNavigationControls();
 				}
 			} else {
-				bottomPopover.show("No definition found", "dictionary");
+				bottomPopover.show(
+					`<div><span style="font-family: 'Gentium Plus', serif;">${word}</span>: No definition found</div>`,
+					"dictionary"
+				);
 			}
 		} catch (error) {
 			console.error("Failed to fetch definition:", error);
@@ -351,15 +467,29 @@
 
 	function createTooltipContent(word: string, data: any) {
 		const { definitions } = data;
+
+		// Check if this is a compound word by looking for constituent patterns in meanings
+		const isCompound = definitions.some((def: any) => {
+			const matches =
+				def.meaning && /^[^\s]+\s+\d+\.\s/.test(def.meaning);
+			return matches;
+		});
+
+		if (isCompound) {
+			return createCompoundTooltipContent(word, data);
+		}
+
+		// Use the same clean style for regular words
+		return createUnifiedTooltipContent(word, data);
+	}
+
+	function createUnifiedTooltipContent(word: string, data: any) {
+		const { definitions } = data;
+
 		return `
 			<div class="tooltip-content">
 				<div class="title">
-					<span>
-						${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}
-						<span style="margin-left: 8px">
-							${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-						</span>
-					</span>
+					<span>${word}</span>
 					${
 						definitions[0].construction
 							? `
@@ -368,15 +498,77 @@
 						</span>`
 							: ""
 					}
+					<span>
+						${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+					</span>
 				</div>
-				<div class="dpd-content">
-					${definitions
+				<div class="dpd-content compound-content">
+					<div class="constituent-group">
+						<div class="constituent-header">${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}:</div>
+						<div class="constituent-meanings">
+							${definitions
+								.map(
+									(def: any, idx: number) => `
+								<div class="meaning-item">${idx + 1}. ${def.meaning}${def.meaning_lit ? `; <em>lit. ${def.meaning_lit}</em>` : ""}</div>
+							`
+								)
+								.join("")}
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+	}
+
+	function createCompoundTooltipContent(word: string, data: any) {
+		const { definitions } = data;
+
+		// Group definitions by constituent
+		const constituents = new Map();
+
+		definitions.forEach((def: any) => {
+			if (def.meaning) {
+				const match = def.meaning.match(/^([^\s]+)\s+(\d+)\.\s(.+)$/);
+				if (match) {
+					const [, constituent, num, meaning] = match;
+					if (!constituents.has(constituent)) {
+						constituents.set(constituent, []);
+					}
+					constituents.get(constituent).push(`${num}. ${meaning}`);
+				}
+			}
+		});
+
+		return `
+			<div class="tooltip-content">
+				<div class="title">
+					<span>${word}</span>
+					${
+						definitions[0].construction
+							? `
+						<span>
+							<span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
+						</span>`
+							: ""
+					}
+					<span>
+						${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
+					</span>
+				</div>
+				<div class="dpd-content compound-content">
+					${Array.from(constituents.entries())
 						.map(
-							(def: any, idx: number) => `
-						<div class="summary${idx === definitions.length - 1 ? " last" : ""}">
-							<div class="def-line">
-								<span class="meaning">${idx + 1}. ${def.meaning}${def.meaning_lit ? ";" : ""}</span>
-								${def.meaning_lit ? `<span class="meaning" style="font-style: italic;">lit. ${def.meaning_lit}</span>` : ""}
+							([constituent, meanings]) => `
+						<div class="constituent-group">
+							<div class="constituent-header">${constituent}:</div>
+							<div class="constituent-meanings">
+								${meanings
+									.map(
+										(meaning: string) => `
+									<div class="meaning-item">${meaning}</div>
+								`
+									)
+									.join("")}
 							</div>
 						</div>
 					`
@@ -387,9 +579,46 @@
 		`;
 	}
 
+	// Add this new function to insert actual spaces
+	function addCopyableSpaces() {
+		const paliParagraphs = document.querySelectorAll(".pali-paragraph");
+
+		paliParagraphs.forEach((paragraph) => {
+			const children = Array.from(paragraph.childNodes);
+
+			for (let i = children.length - 1; i >= 0; i--) {
+				const child = children[i];
+
+				// If this is a pali-word span and it's not the last child
+				if (
+					child.nodeType === Node.ELEMENT_NODE &&
+					(child as Element).classList.contains("pali-word") &&
+					i < children.length - 1
+				) {
+					// Check if the next sibling is a word-space span
+					const nextSibling = children[i + 1];
+					if (
+						nextSibling &&
+						nextSibling.nodeType === Node.ELEMENT_NODE &&
+						(nextSibling as Element).classList.contains(
+							"word-space"
+						)
+					) {
+						// Insert a text node with a space after the pali-word
+						const spaceNode = document.createTextNode(" ");
+						paragraph.insertBefore(spaceNode, nextSibling);
+					}
+				}
+			}
+		});
+	}
+
 	document.addEventListener("DOMContentLoaded", () => {
 		replaceTooltips(document.body);
 		bottomPopover = new BottomPopover();
+
+		// Add spaces after Pali words for proper copying
+		addCopyableSpaces();
 
 		// Handle |text::tooltip| clicks
 		document.addEventListener("click", (e) => {
@@ -401,8 +630,11 @@
 				const content =
 					tooltipElement.getAttribute("data-tooltip-content") || "";
 				const primaryText = tooltipElement.textContent || "";
-				// English tooltips don't get navigation - pass false for enableNavigation
+				// Enable navigation for English tooltips
+				enableTooltipNavigation(tooltipElement as HTMLElement);
 				bottomPopover.show(content, "markdown", primaryText);
+				// Add navigation controls for English tooltips
+				addNavigationControls();
 				return;
 			}
 
@@ -484,287 +716,78 @@
 		};
 
 		// Keyboard navigation
-		document.addEventListener("keydown", (e) => {
-			// Only handle keyboard shortcuts when navigation mode is active and drawer is open
-			if (!isNavigationMode || !bottomPopover?.isOpen()) return;
-
-			switch (e.key) {
-				case "ArrowLeft":
+		document.addEventListener(
+			"keydown",
+			(e) => {
+				// Handle escape key for any open drawer
+				if (e.key === "Escape" && bottomPopover?.isOpen()) {
 					e.preventDefault();
-					navigateToPreviousWord();
-					break;
-
-				case "ArrowRight":
-					e.preventDefault();
-					navigateToNextWord();
-					break;
-
-				case "Escape":
-					e.preventDefault();
-					disableWordNavigation();
+					e.stopPropagation();
+					e.stopImmediatePropagation();
+					if (isNavigationMode) {
+						disableWordNavigation();
+					}
 					bottomPopover.hide();
-					break;
-			}
-		});
+					return;
+				}
+
+				// Only handle other keyboard shortcuts when navigation mode is active and drawer is open
+				if (!isNavigationMode || !bottomPopover?.isOpen()) return;
+
+				// Check if this is a navigation key we want to handle
+				const isNavigationKey = [
+					"ArrowLeft",
+					"ArrowRight",
+					"ArrowUp",
+					"ArrowDown",
+				].includes(e.key);
+
+				if (isNavigationKey) {
+					// Stop all event propagation to prevent browser extension interference
+					e.preventDefault();
+					e.stopPropagation();
+					e.stopImmediatePropagation();
+
+					switch (e.key) {
+						case "ArrowLeft":
+							navigateToPreviousWord();
+							break;
+
+						case "ArrowRight":
+							navigateToNextWord();
+							break;
+
+						case "ArrowUp":
+							// For Pali words, use vertical navigation; for English tooltips, use sequential
+							if (
+								currentWords.length > 0 &&
+								currentWords[
+									currentWordIndex
+								]?.classList.contains("pali-word")
+							) {
+								navigateVertically("up");
+							} else {
+								navigateToPreviousWord();
+							}
+							break;
+
+						case "ArrowDown":
+							// For Pali words, use vertical navigation; for English tooltips, use sequential
+							if (
+								currentWords.length > 0 &&
+								currentWords[
+									currentWordIndex
+								]?.classList.contains("pali-word")
+							) {
+								navigateVertically("down");
+							} else {
+								navigateToNextWord();
+							}
+							break;
+					}
+				}
+			},
+			true
+		); // Use capture phase to handle before other listeners
 	});
 </script>
-
-<style is:global>
-	.bottom-popover {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		width: 100vw;
-		height: 30vh;
-		background-color: var(--background-color);
-		border-top: 1px solid var(--popover-border);
-		box-shadow:
-			0 -4px 6px -1px rgba(0, 0, 0, 0.1),
-			0 -2px 4px -1px rgba(0, 0, 0, 0.06);
-		transform: translateY(100%);
-		transition: transform 0.3s ease-in-out;
-		z-index: 9999;
-		display: flex;
-		flex-direction: column;
-	}
-
-	html.dark .bottom-popover {
-		box-shadow:
-			0 -4px 6px -1px rgba(0, 0, 0, 0.3),
-			0 -2px 4px -1px rgba(0, 0, 0, 0.2);
-	}
-
-	.bottom-popover.visible {
-		transform: translateY(0);
-	}
-
-	.popover-content {
-		position: relative;
-		padding: 1.5rem 1.5rem 0;
-		overflow: hidden;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.close-btn {
-		position: fixed;
-		top: 1rem;
-		right: 1rem;
-		background-color: var(--background-color);
-		border: none;
-		color: var(--text-color);
-		cursor: pointer;
-		padding: 0.25rem;
-		border-radius: 0.25rem;
-		transition: background-color 0.2s;
-		z-index: 1;
-		box-shadow: 0 0 0 2px var(--background-color);
-	}
-
-	.close-btn:hover {
-		background-color: var(--background-row-hover);
-	}
-
-	.popover-body {
-		padding-right: 3rem; /* Make room for close button */
-		flex: 1;
-		overflow-y: auto;
-		padding-bottom: 1rem;
-	}
-
-	/* Custom scrollbar for popover to match page scrollbars */
-	.popover-body::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	.popover-body::-webkit-scrollbar-track {
-		background: rgba(0, 0, 0, 0.05);
-	}
-
-	.popover-body::-webkit-scrollbar-thumb {
-		background: #c1c1c1;
-		border-radius: 3px;
-		opacity: 0.6;
-	}
-
-	.popover-body::-webkit-scrollbar-thumb:hover {
-		opacity: 1;
-	}
-
-	/* Firefox scrollbar styling */
-	.popover-body {
-		scrollbar-width: thin;
-		scrollbar-color: #c1c1c1 rgba(0, 0, 0, 0.05);
-	}
-
-	/* Tooltip text styling - remove underline effect */
-	.tooltip-text {
-		cursor: pointer;
-	}
-
-	/* Preserve existing tooltip content styles */
-	.tooltip-content .title {
-		color: var(--primary-color);
-		font-weight: 500;
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-		font-size: 1rem;
-		line-height: 1.6;
-	}
-
-	html.dark .tooltip-content .title {
-		color: var(--primary-color);
-	}
-
-	.tooltip-content .title-text {
-		color: inherit;
-		font-size: 1.1rem;
-	}
-
-	.tooltip-content .pali-term {
-		color: var(--text-muted);
-		font-weight: 400;
-		margin-left: 0.25rem;
-	}
-
-	.tooltip-content .grammar {
-		color: var(--secondary-color);
-		font-style: italic;
-		margin-right: 0.5rem;
-	}
-
-	.tooltip-content .meaning {
-		display: inline;
-		margin: 0;
-	}
-
-	.tooltip-content .construction {
-		font-size: 0.8rem;
-		color: var(--text-color);
-		opacity: 0.7;
-		margin-top: 0.25rem;
-	}
-
-	.tooltip-content .summary:not(.last) {
-		border-bottom: 1px solid var(--auth-input-border);
-		margin-bottom: 0.5rem;
-		padding-bottom: 0.5rem;
-	}
-
-	.tooltip-link,
-	.popover-content a {
-		color: var(--link-color);
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	.loading-spinner {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 2rem;
-		color: var(--text-color);
-	}
-
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
-	}
-
-	.animate-spin {
-		animation: spin 1s linear infinite;
-	}
-
-	/* Markdown content styling */
-	.markdown-content .definition {
-		color: var(--text-color);
-		line-height: 1.6;
-	}
-
-	/* Pali word navigation styles */
-	.pali-word {
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-		padding: 1px 0px;
-		margin: 0 2px;
-		border-radius: 2px;
-		display: inline-block;
-		white-space: nowrap;
-		word-wrap: break-word;
-		overflow-wrap: break-word;
-	}
-
-	.pali-word:hover {
-		background-color: var(--background-row-hover);
-	}
-
-	.pali-word-highlighted {
-		background-color: var(--primary-color);
-		color: white;
-		font-weight: 500;
-	}
-
-	.pali-word-highlighted:hover {
-		background-color: var(--primary-color);
-		color: white;
-	}
-
-	/* Navigation controls */
-	.navigation-controls {
-		display: flex;
-		position: sticky;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		border-top: 1px solid var(--popover-border);
-		background-color: var(--background-color);
-		z-index: 10;
-		margin-top: auto;
-		flex-shrink: 0;
-	}
-
-	.nav-btn {
-		flex: 1;
-		padding: 0.8rem;
-		border: none;
-		background: none;
-		color: var(--text-color);
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		font-size: 0.9rem;
-		transition: background-color 0.2s;
-	}
-
-	.nav-btn:not(:last-child) {
-		border-right: 1px solid var(--popover-border);
-	}
-
-	.nav-btn:hover:not(:disabled) {
-		background-color: var(--background-row-hover);
-	}
-
-	.nav-btn:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.popover-content:has(.navigation-controls) {
-		padding-bottom: 0; /* Remove bottom padding when navigation is present */
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-	}
-
-	.popover-content:has(.navigation-controls) .popover-body {
-		flex: 1;
-		overflow-y: auto;
-		padding-bottom: 1rem;
-	}
-</style>

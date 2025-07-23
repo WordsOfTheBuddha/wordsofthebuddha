@@ -1,7 +1,7 @@
 ---
-title: Paduṭṭhacitta sutta - Corrupted Mind
-description: The Buddha shares the consequences for a person acting with a corrupted mind based on his direct knowledge.
-qualities: anger, aversion
+title: Paduṭṭhacitta sutta - Upset Mind
+description: The Buddha shares the consequences for a person acting with an upset mind based on his direct knowledge.
+qualities: anger, irritability, ill will, resentment
 theme: directly knowing, principle
 fetter: doubt, ill will, ignorance
 tags: iti, corrupt, hell, misery, iti1-27

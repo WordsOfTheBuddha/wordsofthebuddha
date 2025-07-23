@@ -1,7 +1,7 @@
 ---
 title: Dhammānudhammapaṭipanna sutta - Practicing in Accordance with the Dhamma
 description: It is natural for a practitioner practicing in accordance with the Dhamma to speak and think only in terms of the Dhamma, not in terms of what is not the Dhamma.
-qualities: equanimity, tranquility
+qualities: recollection of the Dhamma, tranquility
 theme: wisdom, principle
 slug: iti86
 ---

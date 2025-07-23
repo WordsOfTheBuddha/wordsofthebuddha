@@ -2,6 +2,7 @@
 export const prerender = false;
 import { getEntry, render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import { isFirebaseInitialized } from "../service/firebase/server";
 
 const home = await getEntry("all", "index");
 if (!home) {
@@ -12,5 +13,48 @@ const { Content } = await render(home);
 ---
 
 <Layout title={""} description={""} showAuth={true}>
+	{
+		!isFirebaseInitialized && (
+			<div
+				class="mx-4 my-4 p-4 rounded-md border"
+				style="background-color: var(--warning-bg); border-color: var(--warning-border);"
+			>
+				<div class="flex mt-3">
+					<div class="flex-shrink-0">
+						<svg
+							class="h-5 w-5"
+							style="color: var(--warning-border);"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</div>
+					<div class="ml-3">
+						<h3
+							class="text-sm font-medium mt-0"
+							style="color: var(--warning-heading);"
+						>
+							Authentication Unavailable
+						</h3>
+						<div
+							class="mt-2 text-sm"
+							style="color: var(--warning-text);"
+						>
+							<p>
+								Sign-in and registration features are currently
+								unavailable due to server configuration. You can
+								still browse and read content.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		)
+	}
 	<Content />
 </Layout>

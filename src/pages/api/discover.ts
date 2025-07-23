@@ -17,12 +17,14 @@ interface UnifiedContentItem {
 	redirects?: string[];
 	qualityType?: "positive" | "negative" | "neutral";
 	related?: string[];
+	opposite?: string[];
 	discourses: Array<{
 		id: string;
 		title: string;
 		description: string;
 		collection: string;
 		note?: string;
+		isFeatured?: boolean;
 	}>;
 }
 
@@ -42,6 +44,7 @@ function getQualitySynonyms(qualitySlug: string): string[] {
 			(s: string) =>
 				!s.startsWith("[") &&
 				!s.startsWith("Related:") &&
+				!s.startsWith("Opposite:") &&
 				!s.startsWith("Context:"),
 		);
 	}
@@ -80,6 +83,25 @@ function getQualityRelated(qualitySlug: string): string[] {
 				.replace("Related:", "")
 				.replace(/[{}]/g, "");
 			return relatedString
+				.split(",")
+				.map((s: string) => s.trim())
+				.filter((s: string) => s.length > 0);
+		}
+	}
+	return [];
+}
+
+function getQualityOpposite(qualitySlug: string): string[] {
+	const synonymsData = qualities.synonyms as any;
+	if (synonymsData[qualitySlug]) {
+		const oppositeItem = synonymsData[qualitySlug].find((s: string) =>
+			s.startsWith("Opposite:"),
+		);
+		if (oppositeItem) {
+			const oppositeString = oppositeItem
+				.replace("Opposite:", "")
+				.replace(/[{}]/g, "");
+			return oppositeString
 				.split(",")
 				.map((s: string) => s.trim())
 				.filter((s: string) => s.length > 0);
@@ -130,6 +152,7 @@ export const GET: APIRoute = async ({ url }) => {
 							synonyms: topic.synonyms,
 							pali: topic.pali,
 							redirects: topic.redirects,
+							related: topic.related,
 							discourses: topic.discourses,
 						},
 						topic.description,
@@ -157,6 +180,7 @@ export const GET: APIRoute = async ({ url }) => {
 					const pali = getQualityPali(slug);
 					const context = getQualityContext(slug);
 					const related = getQualityRelated(slug);
+					const opposite = getQualityOpposite(slug);
 
 					allContent.push(
 						createContentItem(
@@ -169,11 +193,13 @@ export const GET: APIRoute = async ({ url }) => {
 								synonyms: synonyms,
 								pali: pali,
 								related: related,
+								opposite: opposite,
 								discourses: discoursesArray.map((d) => ({
 									id: d.id,
 									title: d.title,
 									description: d.description,
 									collection: d.collection,
+									isFeatured: false,
 								})),
 							},
 							context || "", // Use context as description if available
@@ -205,6 +231,7 @@ export const GET: APIRoute = async ({ url }) => {
 										title: d.title,
 										description: d.description,
 										collection: d.collection,
+										isFeatured: false,
 									})),
 								}),
 							); // No description for similes

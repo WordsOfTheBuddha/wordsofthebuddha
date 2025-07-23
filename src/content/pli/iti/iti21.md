@@ -1,6 +1,6 @@
 ---
-title: Pasannacitta sutta - Pure Mind
-description: The Buddha shares the benefits for a person acting with a pure mind based on his direct knowledge.
+title: Pasannacitta sutta - Settled Mind
+description: The Buddha shares the benefits for a person acting with a settled mind based on his direct knowledge.
 qualities: faith
 theme: directly knowing, principle
 fetter: doubt, ignorance

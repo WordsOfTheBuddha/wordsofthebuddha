@@ -41,7 +41,7 @@ function extractCollections(
 		// Process children recursively if they exist
 		if (hasChildren) {
 			const childCollections = extractCollections(
-				dir.children,
+				dir.children!,
 				currentPath
 			);
 			for (const [childKey, childInfo] of childCollections) {
@@ -66,9 +66,10 @@ function parseFile(
 	filename: string,
 	collections: Map<string, CollectionInfo>
 ): { collectionKey: string; count: number } | null {
-	if (!filename.endsWith(".mdx") && !filename.endsWith(".md")) return null;
+	// Only process .mdx files that have a number before the extension
+	if (!/\d\.mdx$/.test(filename)) return null;
 
-	const baseName = filename.replace(/\.(mdx?|md)$/, "");
+	const baseName = filename.replace(/\.mdx$/, "");
 
 	// Get only leaf collections
 	const leafCollections = Array.from(collections.entries())
@@ -240,16 +241,14 @@ async function processFiles(
 		console.log("\nCollection match summary:");
 		for (const [collKey, files] of matchDebug.entries()) {
 			console.log(
-				`  ${collKey} (${counts.get(collKey) || 0}): ${
-					files.length
+				`  ${collKey} (${counts.get(collKey) || 0}): ${files.length
 				} files`
 			);
 			if (files.length <= 10) {
 				console.log(`    ${files.join(", ")}`);
 			} else {
 				console.log(
-					`    ${files.slice(0, 5).join(", ")}... and ${
-						files.length - 5
+					`    ${files.slice(0, 5).join(", ")}... and ${files.length - 5
 					} more`
 				);
 			}
@@ -367,11 +366,11 @@ async function main() {
 			),
 			`// This file is auto-generated - do not edit directly
 import type { DirectoryStructure } from "../types/directory";\n\n` +
-				`export const directoryStructureWithCounts: Record<string, DirectoryStructure> = ${JSON.stringify(
-					enrichedStructure,
-					null,
-					2
-				)};\n`
+			`export const directoryStructureWithCounts: Record<string, DirectoryStructure> = ${JSON.stringify(
+				enrichedStructure,
+				null,
+				2
+			)};\n`
 		);
 
 		console.log(

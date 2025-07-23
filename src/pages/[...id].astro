@@ -4,48 +4,19 @@ export const prerender = false;
 import { determineRouteType } from "../utils/routeHandler";
 import CollectionLayout from "../layouts/CollectionLayout.astro";
 import { getEntry } from "astro:content";
-import { parseContent, createCombinedMarkdown } from "../utils/contentParser";
+import {
+	parseContent,
+	createCombinedMarkdown,
+	compareHierarchicalNumber,
+	constructHierarchicalEnd,
+	isValidParagraphRange,
+	debug,
+} from "../utils/contentParser";
 import { routes } from "../utils/routes";
 import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
-
-// Helper function to check if a number is within a range
-function isNumberInRange(num: number, rangeStr: string): boolean {
-	const [start, end] = rangeStr.split("-").map(Number);
-	return num >= start && num <= end;
-}
-
-// Helper function to compare hierarchical numbers
-function compareHierarchicalNumbers(target: string, rangeStr: string): boolean {
-	// Split numbers into their hierarchical parts
-	const targetParts = target.split(".").map(Number);
-	const [startStr, endStr] = rangeStr.split("-");
-
-	// If no decimal points, do simple range comparison
-	if (!target.includes(".") && !startStr.includes(".")) {
-		return isNumberInRange(Number(target), rangeStr);
-	}
-
-	// Otherwise handle hierarchical numbers
-	const startParts = startStr.split(".").map(Number);
-	const endParts = endStr.split(".").map(Number);
-
-	// For single-level numbers, just compare the main number
-	if (targetParts.length === 1) {
-		return targetParts[0] >= startParts[0] && targetParts[0] <= endParts[0];
-	}
-
-	// For hierarchical numbers, first compare the primary number
-	if (targetParts[0] !== startParts[0]) return false;
-
-	// Then check if secondary number is in range
-	const secondaryNum = targetParts[1];
-	const rangeStart = startParts[1] || 1;
-	const rangeEnd = endParts[1] || endParts[0];
-	return secondaryNum >= rangeStart && secondaryNum <= rangeEnd;
-}
 
 // Extract slug from params
 const { id: originalId } = Astro.params;
@@ -69,12 +40,12 @@ const isSystemRequest = SYSTEM_REQUEST_PATTERNS.some((pattern) =>
 	originalId?.includes(pattern)
 );
 
-if (isSystemRequest) {
+if (isSystemRequest || !id) {
 	return new Response(null, { status: 404 });
 }
 
 const route = determineRouteType(id);
-console.log("route type is: ", route.type, route.metadata);
+debug("route type is: ", route.type, route.metadata);
 
 // Initialize variables for different route types
 let collectionProps;
@@ -102,53 +73,331 @@ if (route.type === "collection" && route.pattern) {
 	let currentIndex = routes.findIndex((route) => route === id);
 	let sectionNumber;
 	let fullRef;
+	let paragraphRequest: {
+		type: "single" | "range";
+		start: number;
+		end?: number;
+	} | null = null;
+	let baseDiscourseId = id;
+	let discourseRange: { start: string; end: string } | null = null;
+
+	// Helper function to check if a range contains another range
+	function rangeContainsRange(
+		parentRange: string,
+		targetRange: string
+	): boolean {
+		const [parentStart, parentEnd] = parentRange.split("-");
+		const [targetStart, targetEnd] = targetRange.split("-");
+
+		// Debug logging in development only
+		debug(
+			`Checking if parent range ${parentRange} contains target range ${targetRange}`
+		);
+		debug(
+			`Parent: ${parentStart} to ${parentEnd}, Target: ${targetStart} to ${targetEnd}`
+		);
+
+		// Use hierarchical comparison instead of parseFloat
+		const targetStartInRange =
+			compareHierarchicalNumber(targetStart, parentStart) >= 0;
+		const targetEndInRange =
+			compareHierarchicalNumber(targetEnd, parentEnd) <= 0;
+
+		debug(
+			`targetStartInRange: ${targetStartInRange}, targetEndInRange: ${targetEndInRange}`
+		);
+
+		return targetStartInRange && targetEndInRange;
+	}
 
 	if (currentIndex === -1) {
-		// Parse the ID to find potential parent route
-		const match = id.match(/^([a-z]+)(\d+(?:\.\d+)?)/);
-		if (match) {
-			const [, prefix, num] = match;
-			const targetNumber = parseFloat(num);
-			sectionNumber = num;
+		// Parse the ID to find potential parent route OR paragraph request
+		// First, try to parse the full ID more carefully
+		debug(`Full ID parsing for: ${id}`);
 
-			// Find a route that contains this number in its range
-			const parentRoute = routes.find((route) => {
-				if (!route.startsWith(prefix)) return false;
-				const rangeMatch = route.match(
-					/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/
-				);
-				if (!rangeMatch) return false;
-				return compareHierarchicalNumbers(num, rangeMatch[0]);
-			});
+		// Check if this looks like a paragraph range (ends with .X or .X-Y)
+		const paragraphRangeMatch = id.match(/^(.+)\.(\d+(?:-\d+)?)$/);
+		if (paragraphRangeMatch) {
+			const [, baseId, paragraphPart] = paragraphRangeMatch;
+			debug(
+				`Detected potential paragraph range - baseId: ${baseId}, paragraphPart: ${paragraphPart}`
+			);
 
-			if (parentRoute) {
-				currentIndex = routes.findIndex(
-					(route) => route === parentRoute
+			// Check if the baseId exists as a discourse
+			const baseContent = await getEntry("all", baseId);
+			if (baseContent) {
+				debug(
+					`Found baseContent for ${baseId} - treating as paragraph range`
 				);
-				id = parentRoute;
-				fullRef = transformId(parentRoute);
-				console.log(
-					"matched route:",
-					id,
-					"for section:",
-					sectionNumber,
-					", full ref: ",
-					fullRef
+				// Parse the paragraph part
+				if (paragraphPart.includes("-")) {
+					const [start, end] = paragraphPart.split("-").map(Number);
+					if (isValidParagraphRange(start, end)) {
+						paragraphRequest = { type: "range", start, end };
+						baseDiscourseId = baseId;
+						id = baseId;
+						currentIndex = routes.findIndex(
+							(route) => route === baseId
+						);
+						fullRef = transformId(baseId);
+						debug(
+							`Set up paragraph range: ${start}-${end} for ${baseId}`
+						);
+					}
+				} else {
+					const paragraphNum = Number(paragraphPart);
+					if (!isNaN(paragraphNum)) {
+						paragraphRequest = {
+							type: "single",
+							start: paragraphNum,
+						};
+						baseDiscourseId = baseId;
+						id = baseId;
+						currentIndex = routes.findIndex(
+							(route) => route === baseId
+						);
+						fullRef = transformId(baseId);
+						debug(
+							`Set up single paragraph: ${paragraphNum} for ${baseId}`
+						);
+					}
+				}
+			} else {
+				debug(
+					`No baseContent found for ${baseId} - not a paragraph range`
 				);
+			}
+		}
+
+		// If still no match, try the original discourse range logic
+		if (currentIndex === -1) {
+			debug(`No paragraph range match, trying discourse range logic`);
+			const idParseMatch = id.match(/^([a-z]+)(\d+(?:\.\d+)?(?:-\d+)?)/);
+			debug(`Discourse range parsing - id: ${id}, match:`, idParseMatch);
+			if (idParseMatch) {
+				const [, prefix, numericPart] = idParseMatch;
+				debug(
+					`Parsed for discourse range - prefix: ${prefix}, numericPart: ${numericPart}`
+				);
+
+				// Check for discourse ranges
+				if (numericPart.includes("-")) {
+					const [startStr, endStr] = numericPart.split("-");
+					debug(
+						`Found range in numericPart: ${startStr} to ${endStr}`
+					);
+
+					// Find a route that contains this range
+					const parentRoute = routes.find((route) => {
+						if (!route.startsWith(prefix)) return false;
+
+						const rangeMatch = route.match(
+							/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/
+						);
+
+						if (!rangeMatch) return false;
+
+						// Check if the route's range contains our target range
+						const routeRangeStr = rangeMatch[0];
+						const targetRangeStr = `${startStr}-${endStr}`;
+						const contains = rangeContainsRange(
+							routeRangeStr,
+							targetRangeStr
+						);
+
+						return contains;
+					});
+
+					if (parentRoute) {
+						debug(
+							`Found parent route for discourse range: ${parentRoute}`
+						);
+						currentIndex = routes.findIndex(
+							(route) => route === parentRoute
+						);
+						id = parentRoute;
+						fullRef = transformId(parentRoute);
+						// Set up discourse range for content parsing
+						// Construct the proper end value with full hierarchical structure
+						const constructedEnd = constructHierarchicalEnd(
+							startStr,
+							endStr
+						);
+						discourseRange = {
+							start: startStr,
+							end: constructedEnd,
+						};
+						debug(`Set up discourse range:`, discourseRange);
+					} else {
+						debug(`No parent route found for discourse range`);
+					}
+				} else {
+					debug(
+						`No range found, checking for single discourse section`
+					);
+					// Single discourse section (existing logic)
+					sectionNumber = numericPart;
+
+					// Find a route that contains this number in its range
+					const parentRoute = routes.find((route) => {
+						if (!route.startsWith(prefix)) return false;
+
+						const rangeMatch = route.match(
+							/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/
+						);
+
+						if (!rangeMatch) return false;
+
+						// Proper range checking - compare against start and end bounds
+						const [, rangeStart, rangeEnd] = rangeMatch;
+
+						// Construct the proper end value (e.g., "17.13-20" becomes "17.13" to "17.20")
+						const properRangeEnd = constructHierarchicalEnd(
+							rangeStart,
+							rangeEnd
+						);
+
+						const isInRange =
+							compareHierarchicalNumber(
+								numericPart,
+								rangeStart
+							) >= 0 &&
+							compareHierarchicalNumber(
+								numericPart,
+								properRangeEnd
+							) <= 0;
+
+						return isInRange;
+					});
+
+					if (parentRoute) {
+						debug(
+							`Found parent route for single section: ${parentRoute}`
+						);
+						currentIndex = routes.findIndex(
+							(route) => route === parentRoute
+						);
+						id = parentRoute;
+						fullRef = transformId(parentRoute);
+					} else {
+						debug(`No parent route found for single section`);
+					}
+				}
 			}
 		}
 	}
 
 	if (currentIndex === -1) {
+		debug("No matching route found for:", id);
 		return Astro.redirect(`/search?q=${id}`);
 	}
 
 	// Get showPali from query string
 	const showPali = Astro.url.searchParams.get("pli") === "true";
-	console.log("page: ", id, "showPali: ", showPali);
 
-	// Load content
-	const contentItem = await getEntry("all", id);
+	// Load content with fresh file system read in development
+	let contentItem;
+	if (import.meta.env.DEV) {
+		try {
+			const { readFile } = await import("node:fs/promises");
+			const { join } = await import("node:path");
+
+			// Get the correct file path from getEntry
+			const tempContentItem = await getEntry("all", id);
+			if (tempContentItem?.filePath) {
+				const filePath = join(process.cwd(), tempContentItem.filePath);
+				const rawContent = await readFile(filePath, "utf-8");
+
+				// Use getEntry for metadata but replace body with fresh content
+				contentItem = await getEntry("all", id);
+				if (contentItem && rawContent) {
+					const frontmatterStart = rawContent.indexOf("---");
+
+					if (frontmatterStart !== -1) {
+						const frontmatterEnd = rawContent.indexOf(
+							"\n---\n",
+							frontmatterStart + 3
+						);
+
+						if (frontmatterEnd !== -1) {
+							// Extract and parse frontmatter
+							const frontmatterContent = rawContent.slice(
+								frontmatterStart + 3,
+								frontmatterEnd
+							);
+
+							// Parse frontmatter YAML
+							try {
+								const frontmatterLines =
+									frontmatterContent.split("\n");
+								const frontmatterData: Record<string, any> = {};
+
+								for (const line of frontmatterLines) {
+									const colonIndex = line.indexOf(":");
+									if (colonIndex > 0) {
+										const key = line
+											.substring(0, colonIndex)
+											.trim();
+										const value = line
+											.substring(colonIndex + 1)
+											.trim();
+										// Remove quotes if present
+										const cleanValue = value.replace(
+											/^["']|["']$/g,
+											""
+										);
+										frontmatterData[key] = cleanValue;
+									}
+								}
+
+								// Update contentItem.data properties if they exist in frontmatter
+								if (frontmatterData.title) {
+									contentItem.data.title =
+										frontmatterData.title;
+								}
+								if (frontmatterData.description) {
+									contentItem.data.description =
+										frontmatterData.description;
+								}
+								if (frontmatterData.qualities) {
+									contentItem.data.qualities =
+										frontmatterData.qualities;
+								}
+							} catch (frontmatterError) {
+								console.error(
+									`Error parsing frontmatter:`,
+									frontmatterError
+								);
+							}
+
+							let bodyStart = frontmatterEnd + 5; // Skip '\n---\n'
+
+							// Skip any additional newlines
+							while (
+								bodyStart < rawContent.length &&
+								rawContent[bodyStart] === "\n"
+							) {
+								bodyStart++;
+							}
+
+							const extractedBody = rawContent.slice(bodyStart);
+
+							contentItem.body = extractedBody;
+						}
+					}
+				}
+			} else {
+				contentItem = await getEntry("all", id);
+			}
+		} catch (error) {
+			console.error(`Error in file reading:`, error);
+			// Fallback to standard getEntry on any error
+			contentItem = await getEntry("all", id);
+		}
+	} else {
+		contentItem = await getEntry("all", id);
+	}
+
 	if (!contentItem) {
 		console.warn("English content not found");
 		console.groupEnd();
@@ -168,10 +417,18 @@ if (route.type === "collection" && route.pattern) {
 	const pairs = await parseContent(
 		paliContent,
 		contentItem,
-		sectionNumber,
-		fullRef
+		!paragraphRequest && !discourseRange ? sectionNumber : undefined,
+		fullRef,
+		paragraphRequest,
+		discourseRange
 	);
-	const content = createCombinedMarkdown(pairs, showPali, layout);
+
+	const content = createCombinedMarkdown(
+		pairs,
+		showPali,
+		layout,
+		paragraphRequest
+	);
 
 	// Prepare content based on layout type
 	if (typeof content === "string") {
@@ -216,6 +473,7 @@ if (route.type === "collection" && route.pattern) {
 		lastUpdated,
 		showAuth: true,
 		showPali: true,
+		paragraphRequest,
 	};
 }
 ---

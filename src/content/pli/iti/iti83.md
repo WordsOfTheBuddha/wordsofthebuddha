@@ -1,7 +1,7 @@
 ---
 title: Pañcapubbanimitta sutta - Five Preceding Signs
 description: The Buddha describes the five signs that appear when a deity is about to pass away, and the three blessings that the gods give to the deity.
-qualities: faith, imperturbable, merit
+qualities: faith, imperturbable, merit, free from attachment
 theme: inspiration, principle
 slug: iti83
 ---

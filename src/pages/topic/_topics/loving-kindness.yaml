@@ -1,23 +1,28 @@
-title: "Loving-Kindness"
+title: "Loving Kindness"
 description: "The practice of developing boundless love and goodwill toward all beings, starting with oneself and extending outward."
 synonyms:
-  - metta practice
-  - unconditional love
-  - goodwill meditation
+    - metta practice
+    - unconditional love
+    - goodwill meditation
 pali:
-  - mettā
+    - mettā
 redirects:
-  - metta
-  - loving-kindness-meditation
-  - universal-love
+    - "loving kindness"
+    - metta
+    - loving-kindness-meditation
+    - universal-love
 related:
-  - compassion
-  - brahmaviharas
-  - jhana
+    - appreciative joy
+    - ill will
+    - resentment
 discourses:
-  - id: "snp1.8"
-    note: "The complete Metta Sutta on loving-kindness practice"
-  - id: "an8.1"
-    note: "Benefits of loving-kindness meditation"
-  - id: "sn46.54"
-    note: "Loving-kindness as a factor of awakening"
+    - id: "snp1.8"
+      note: "training guideline on cultivating loving-kindness"
+    - id: "an11.15"
+      note: "⭐️"
+    - id: "iti27"
+      note: "Loving-kindness as a factor of awakening"
+    - id: "sn20.4"
+      note: "using a simile"
+    - id: "an5.161"
+      note: "as an anti-dote to resentment"
