@@ -1,6 +1,7 @@
 ---
 title: Anubuddha sutta - Understood
 description: The Buddha explains how misunderstanding and not penetrating four principles - 1) ethical conduct, 2) collectedness, 3) wisdom, and 4) liberation - has led to wandering on in cyclic existence for a long time.
+qualities: illusion, ethical conduct, collectedness, wisdom, liberation
 fetter: ignorance
 tags: ethical conduct, collectedness, wisdom, liberation, misunderstanding, cyclic existence, wandering, ignorance, an, an4
 slug: an4.1

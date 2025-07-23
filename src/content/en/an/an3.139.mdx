@@ -1,6 +1,7 @@
 ---
 title: Vuddhi sutta - Growth
 description: The Buddha shares in brief the three types of growth - 1) confidence, 2) virtue, and 3) wisdom.
+qualities: cultivation
 fetter: doubt
 tags: confidence, virtue, wisdom, growth, an, an3
 slug: an3.139
