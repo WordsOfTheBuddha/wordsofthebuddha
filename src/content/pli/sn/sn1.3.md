@@ -1,6 +1,8 @@
 ---
 title: Upanīya sutta - The Short Life
-description: For one brought to old age, there are no shelters
+description: For one brought to old age, there are no shelters.
+qualities: giving up, tranquility
+theme: inspiration, wisdom
 fetter: ignorance
 tags: life,peace,happiness,sn,sn1-11,sn1
 slug: sn1.3
