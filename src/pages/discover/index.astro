@@ -115,6 +115,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 											type="checkbox"
 											id="filter-similes"
 											value="similes"
+											checked
 											class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 										/>
 										<span class="text-sm">Simile</span>
@@ -195,6 +196,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 											type="checkbox"
 											id="filter-similes-desktop"
 											value="similes"
+											checked
 											class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 										/>
 										<span class="text-sm">Simile</span>
@@ -272,7 +274,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 		let allData: UnifiedContentItem[] = [];
 		let filteredData: UnifiedContentItem[] = [];
-		let currentFilters = new Set(["topics", "qualities"]);
+		let currentFilters = new Set(["topics", "qualities", "similes"]);
 		let searchTerm = "";
 		let expandedItems = new Set<string>();
 		let searchTimeout: NodeJS.Timeout | null = null;
