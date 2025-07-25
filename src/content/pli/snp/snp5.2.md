@@ -4,6 +4,7 @@ description: The Buddha answers Tissa Metteyya's questions about who is content 
 qualities: contentment, imperturbable, mindfulness, celibacy, quenching
 theme: inspiration, wisdom
 slug: snp5.2
+commentary: See [AN 6.61](/an6.61) for a detailed explanation of the Buddha's response to Tissa Metteyya's questions.
 ---
 
 “Kodha santusito loke,

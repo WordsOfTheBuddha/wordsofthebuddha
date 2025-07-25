@@ -6,8 +6,7 @@ theme: inspiration, recollection of the Buddha
 fetter: personal existence, conceit, ignorance
 tags: spiritual life, restraint, letting go, self-control, precepts, sense-restraint, Nibbāna, acquisitions, respect, popularity, iti, iti28-49
 slug: iti35
-commentary: |
-    A similar discourse is at [AN 4.25](/an4.25)
+commentary: A similar discourse is at [AN 4.25](/an4.25).
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

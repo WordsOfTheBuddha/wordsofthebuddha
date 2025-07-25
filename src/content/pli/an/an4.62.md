@@ -4,6 +4,8 @@ description: The Buddha explains the four kinds of happiness that are attainable
 fetter: sensual desire, ignorance
 tags: an, an4, happiness, ownership, using wealth, debtlessness, blamelessness, debt, blame, wisdom, insight, bodily conduct, verbal conduct, mental conduct, sensual desire
 slug: an4.62
+commentary:
+    - "[1] The two kinds of happiness compared here are: the happiness of debtlessness, ownership, and the enjoyment of wealth as one kind, available to laypersons who enjoy sensual pleasures; and the happiness of being blameless as the second kind, available to laypersons who enjoy sensual pleasures and in addition are purified in ethical conduct, disciples of the Noble Ones."
 ---
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:

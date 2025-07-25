@@ -6,8 +6,7 @@ theme: cultivating discernment, wisdom
 fetter: ignorance, sensual desire
 tags: ignorance, unwholesome, wholesome, conscience, fear of wrongdoing, wisdom, sense of shame, respect, craving, greed, grasping, shamelessness, moral recklessness, iti, iti28-49
 slug: iti40
-commentary: |
-  A related teaching is at [SN 45.1 Avijjā Sutta - Ignorance](/sn45.1).
+commentary: A related teaching is at [SN 45.1 Avijjā Sutta - Ignorance](/sn45.1).
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
