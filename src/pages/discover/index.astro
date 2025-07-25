@@ -454,14 +454,21 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 			const value = checkbox.value;
 
 			if (checkbox.checked) {
-				currentFilters.add(value);
+				currentFilters.clear();
+				document
+					.querySelectorAll('input[type="checkbox"]')
+					.forEach((cb) => {
+						if ((cb as HTMLInputElement).checked) {
+							currentFilters.add((cb as HTMLInputElement).value);
+						}
+					});
 			} else {
-				// Prevent unchecking if it's the only active filter
-				if (currentFilters.size > 1) {
-					currentFilters.delete(value);
-				} else {
-					checkbox.checked = true; // Revert the change
-					return;
+				currentFilters.delete(value);
+				// If no filters are selected, treat it as all are selected
+				if (currentFilters.size === 0) {
+					currentFilters.add("topics");
+					currentFilters.add("qualities");
+					currentFilters.add("similes");
 				}
 			}
 
