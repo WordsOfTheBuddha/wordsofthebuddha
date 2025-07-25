@@ -23,6 +23,7 @@ import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
 import ParagraphToggle from "../components/ParagraphToggle.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
+import Commentary from "../components/Commentary.astro";
 import { debug } from "../utils/contentParser";
 
 const paramTheme = Astro.url.searchParams.get("theme");
@@ -47,11 +48,13 @@ const {
 	showFilter = false,
 	seoTitle = null, // Add new prop for SEO title
 	paragraphRequest = null,
+	commentary,
 } = Astro.props;
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);
 debug("qualities are: ", qualities);
+debug("commentary is: ", commentary);
 let SEOTitle = seoTitle;
 if (!SEOTitle) {
 	if (title != "Words of the Buddha" && title) {
@@ -190,6 +193,7 @@ if (!SEOTitle) {
 					</div>
 					<Collapse defaultState="collapse" />
 					<slot />
+					<Commentary commentary={commentary} />
 					{
 						showRead && (
 							<div class="flex justify-end mt-6 mb-4">

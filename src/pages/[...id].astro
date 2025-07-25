@@ -363,6 +363,14 @@ if (route.type === "collection" && route.pattern) {
 									contentItem.data.qualities =
 										frontmatterData.qualities;
 								}
+								if (frontmatterData.commentary) {
+									contentItem.data.commentary =
+										frontmatterData.commentary;
+									console.log(
+										"Commentary found:",
+										frontmatterData.commentary
+									);
+								}
 							} catch (frontmatterError) {
 								console.error(
 									`Error parsing frontmatter:`,
@@ -474,6 +482,7 @@ if (route.type === "collection" && route.pattern) {
 		showAuth: true,
 		showPali: true,
 		paragraphRequest,
+		commentary: contentItem.data.commentary,
 	};
 }
 ---

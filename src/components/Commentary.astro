@@ -1,0 +1,127 @@
+---
+import { parseSimpleMarkdown } from "../utils/mdParser";
+
+const { commentary } = Astro.props;
+
+// Handle both string and array formats
+let commentaryContent = "";
+if (commentary) {
+	if (Array.isArray(commentary)) {
+		// Join array elements with double line breaks for paragraph separation
+		commentaryContent = commentary.join("\n\n");
+	} else if (typeof commentary === "string" && commentary.trim() !== "") {
+		commentaryContent = commentary;
+	}
+}
+
+// Parse the commentary using the enhanced simple markdown parser
+const parsedCommentary = commentaryContent
+	? parseSimpleMarkdown(commentaryContent)
+	: "";
+---
+
+{
+	commentaryContent && commentaryContent.trim() !== "" && (
+		<div class="commentary-section mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+			<div
+				class="commentary-content prose prose-sm dark:prose-invert max-w-none"
+				set:html={parsedCommentary}
+			/>
+		</div>
+	)
+}
+
+<style>
+	.commentary-content {
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.commentary-content p {
+		margin-bottom: 1rem;
+	}
+
+	.commentary-content a {
+		@apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300;
+	}
+
+	/* Table styles */
+	.commentary-content .commentary-table {
+		@apply w-full border-collapse border border-gray-300 dark:border-gray-600 mt-4 mb-4;
+	}
+
+	.commentary-content .commentary-table th,
+	.commentary-content .commentary-table td {
+		@apply border border-gray-300 dark:border-gray-600 px-3 py-2 text-left;
+	}
+
+	.commentary-content .commentary-table th {
+		@apply bg-gray-100 dark:bg-gray-800 font-semibold;
+	}
+
+	.commentary-content .commentary-table td {
+		@apply bg-white dark:bg-gray-900;
+	}
+
+	/* Responsive table on smaller screens */
+	@media (max-width: 768px) {
+		.commentary-content .commentary-table {
+			@apply text-sm;
+		}
+
+		.commentary-content .commentary-table th,
+		.commentary-content .commentary-table td {
+			@apply px-2 py-1;
+		}
+	}
+
+	/* Print-specific styles */
+	@media print {
+		.commentary-section {
+			border-top: 1px solid #333 !important;
+			margin-top: 2rem !important;
+			padding-top: 0.5rem !important;
+		}
+
+		.commentary-content {
+			color: #333 !important;
+			font-size: 11pt !important;
+			line-height: 1.5 !important;
+		}
+
+		.commentary-content * {
+			color: #333 !important;
+		}
+
+		.commentary-content p {
+			margin-bottom: 0.8rem !important;
+		}
+
+		.commentary-content a {
+			color: #333 !important;
+			text-decoration: underline !important;
+		}
+
+		/* Table print styles */
+		.commentary-content .commentary-table {
+			border: 1px solid #333 !important;
+			margin: 1rem 0 !important;
+		}
+
+		.commentary-content .commentary-table th,
+		.commentary-content .commentary-table td {
+			border: 1px solid #333 !important;
+			padding: 0.3rem !important;
+			color: #333 !important;
+		}
+
+		.commentary-content .commentary-table th {
+			background-color: #f5f5f5 !important;
+			font-weight: bold !important;
+		}
+
+		.commentary-content .commentary-table td {
+			background-color: white !important;
+		}
+	}
+</style>
