@@ -1,6 +1,6 @@
 ---
-title: Paṭhama ugga sutta - With Ugga of Vesālī
-description: Ugga, the householder of Vesālī is endowed with eight wonderful and marvelous qualities.
+title: Paṭhama ugga sutta - With Ugga of Vesāli
+description: Ugga, the householder of Vesāli is endowed with eight wonderful and marvelous qualities.
 fetter: doubt
 tags: confidence, Buddha, Dhamma, Sangha, virtues, wealth, possessions, fame, an, an8
 slug: an8.21
