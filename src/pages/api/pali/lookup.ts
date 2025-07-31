@@ -1,7 +1,7 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { Dictionary } from "@sc-voice/ms-dpd/main.mjs";
-import paliSandhi from '../../../data/paliSandhi.json';
+import paliSandhi from "../../../data/paliSandhi.json";
 
 const dictionary = await Dictionary.create();
 
@@ -66,7 +66,9 @@ const RIGHT_SINGLE_QUOTE = "\u2019"; // '
 const APOSTROPHE = "\u0027"; // '
 
 // Compound word lookup function
-async function lookupCompoundWord(word: string): Promise<LookupResponse | null> {
+async function lookupCompoundWord(
+	word: string
+): Promise<LookupResponse | null> {
 	const lowerWord = word.toLowerCase();
 	const compounds = paliSandhi as Record<string, string[]>;
 
@@ -74,12 +76,12 @@ async function lookupCompoundWord(word: string): Promise<LookupResponse | null> 
 
 	const constituents = compounds[lowerWord];
 	const definitions: WordDefinition[] = [];
-	let compoundPos: string = 'Sandhi (joining of words)';
+	let compoundPos: string = "Sandhi (joining of words)";
 
 	// Parse constituents to separate word from inline meaning
-	const parsedConstituents = constituents.map(constituent => {
-		if (constituent.includes(':')) {
-			const [word, meaning] = constituent.split(':');
+	const parsedConstituents = constituents.map((constituent) => {
+		if (constituent.includes(":")) {
+			const [word, meaning] = constituent.split(":");
 			return { word: word.trim(), inlineMeaning: meaning.trim() };
 		}
 		return { word: constituent.trim(), inlineMeaning: null };
@@ -98,7 +100,9 @@ async function lookupCompoundWord(word: string): Promise<LookupResponse | null> 
 		console.error(`Error getting POS for compound "${word}":`, error);
 	}
 
-	const compoundConstruction = parsedConstituents.map(p => p.word).join(' + ');
+	const compoundConstruction = parsedConstituents
+		.map((p) => p.word)
+		.join(" + ");
 	let isFirstDefinition = true;
 
 	// Look up each constituent
@@ -108,7 +112,9 @@ async function lookupCompoundWord(word: string): Promise<LookupResponse | null> 
 			definitions.push({
 				pos: compoundPos,
 				pattern: undefined,
-				construction: isFirstDefinition ? compoundConstruction : undefined,
+				construction: isFirstDefinition
+					? compoundConstruction
+					: undefined,
 				meaning: `${constituent} 1. ${inlineMeaning}`,
 				meaning_lit: undefined,
 				lemma: constituent,
@@ -119,20 +125,29 @@ async function lookupCompoundWord(word: string): Promise<LookupResponse | null> 
 			try {
 				const results = dictionary.find(constituent);
 				if (results?.data?.length) {
-					results.data.forEach((result: DictionaryResult, index: number) => {
-						definitions.push({
-							pos: compoundPos,
-							pattern: result.pattern,
-							construction: isFirstDefinition ? compoundConstruction : undefined,
-							meaning: `${constituent} ${index + 1}. ${result.meaning || result.meaning_1}`,
-							meaning_lit: result.meaning_lit,
-							lemma: result.lemma_1,
-						});
-						isFirstDefinition = false;
-					});
+					results.data.forEach(
+						(result: DictionaryResult, index: number) => {
+							definitions.push({
+								pos: compoundPos,
+								pattern: result.pattern,
+								construction: isFirstDefinition
+									? compoundConstruction
+									: undefined,
+								meaning: `${constituent} ${index + 1}. ${
+									result.meaning || result.meaning_1
+								}`,
+								meaning_lit: result.meaning_lit,
+								lemma: result.lemma_1,
+							});
+							isFirstDefinition = false;
+						}
+					);
 				}
 			} catch (error) {
-				console.error(`Error looking up constituent "${constituent}":`, error);
+				console.error(
+					`Error looking up constituent "${constituent}":`,
+					error
+				);
 			}
 		}
 	}
@@ -145,20 +160,20 @@ export async function lookupSingleWord(
 	word: string
 ): Promise<LookupResponse | null> {
 	try {
+		// Try compound lookup first
+		const compoundResult = await lookupCompoundWord(word);
+		if (compoundResult) {
+			console.log(`Found compound breakdown for "${word}"`);
+			return compoundResult;
+		}
+
+		// Then try regular dictionary lookup
 		let results = dictionary.find(word);
 		console.log(
-			`Initial lookup for "${word}": found ${results?.data?.length || 0
+			`Dictionary lookup for "${word}": found ${
+				results?.data?.length || 0
 			} results`
 		);
-
-		// If no results, try compound lookup before other fallbacks
-		if (!results?.data?.length) {
-			const compoundResult = await lookupCompoundWord(word);
-			if (compoundResult) {
-				console.log(`Found compound breakdown for "${word}"`);
-				return compoundResult;
-			}
-		}
 
 		// If no results and word contains apostrophe, try variations
 		if (!results?.data?.length) {
@@ -166,9 +181,10 @@ export async function lookupSingleWord(
 				word.includes(RIGHT_SINGLE_QUOTE) || word.includes(APOSTROPHE);
 			if (hasApostrophe) {
 				console.log(
-					`Word "${word}" contains apostrophe (${word.includes(RIGHT_SINGLE_QUOTE)
-						? "RIGHT_SINGLE_QUOTE"
-						: "APOSTROPHE"
+					`Word "${word}" contains apostrophe (${
+						word.includes(RIGHT_SINGLE_QUOTE)
+							? "RIGHT_SINGLE_QUOTE"
+							: "APOSTROPHE"
 					})`
 				);
 
@@ -192,7 +208,8 @@ export async function lookupSingleWord(
 					console.log(`Trying base part: "${singularBase}"`);
 					results = dictionary.find(singularBase);
 					console.log(
-						`Fallback lookup found ${results?.data?.length || 0
+						`Fallback lookup found ${
+							results?.data?.length || 0
 						} results`
 					);
 
@@ -204,7 +221,8 @@ export async function lookupSingleWord(
 						);
 						results = dictionary.find(shortenedBase);
 						console.log(
-							`Second fallback lookup found ${results?.data?.length || 0
+							`Second fallback lookup found ${
+								results?.data?.length || 0
 							} results`
 						);
 					}
