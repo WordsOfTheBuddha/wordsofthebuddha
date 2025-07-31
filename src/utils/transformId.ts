@@ -7,6 +7,7 @@ export const keyMap: { [key: string]: string } = {
 	snp: "The Buddha's Ancient Discourses",
 	an: "Numerical Discourses",
 	iti: "As It Was Said",
+	kp: "Minor Passages",
 	anthologies: "Anthologies",
 	"noble-truths-noble-path": "Noble Truths, Noble Path",
 	"in-the-buddhas-words": "In the Buddha's Words",

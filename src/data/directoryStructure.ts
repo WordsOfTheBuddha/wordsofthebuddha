@@ -435,4 +435,9 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 		description:
 			"A widely read collection of 423 verses of the Buddha's teachings, offering practical wisdom on ethics, mental cultivation, and liberation, organized into memorable chapters.",
 	},
+	kp: {
+		title: "Khuddakapāṭha - Short Passages",
+		description:
+			"A concise collection of nine short passages serving as a primer for novice monks and nuns, including essential recitations on taking refuge, precepts, body contemplation, protective blessings, treasures, merit-sharing, and loving-kindness, widely chanted for daily practice, protection, and introduction to core teachings.",
+	},
 };
