@@ -1,6 +1,7 @@
 ---
 title: Kāḷakārāma sutta - At Kāḷaka's park
 description: The Buddha does not cling to anything so when he sees, hears, senses, or cognizes, he does not formulate the seen, the unseen, what can be seen, or one who sees. He does not formulate the heard, the unheard, what can be heard, or one who hears. He does not formulate the sensed, the unsensed, what can be sensed, or one who senses. He does not formulate the cognized, the uncognized, what can be cognized, or one who cognizes.
+qualities: mental proliferation, vision, complete comprehension, discernment
 fetter: ignorance
 tags: ignorance,clinging,formulation,an,an4
 slug: an4.24
