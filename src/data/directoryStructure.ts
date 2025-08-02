@@ -249,7 +249,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					"An early collection of sixteen suttas, often in sets of eight verses, this chapter critiques clinging to views and fruitless arguments. The Attadaṇḍa Sutta ties the Buddha’s renunciation to life’s suffering. Direct and unadorned, it emphasizes clarity, detachment, and the path to peace.",
 			},
 			snp5: {
-				title: "Pārāyanavagga - The Chapter on the Way to the Beyond",
+				title: "Pārāyanavagga - The Chapter on the Way to the Far Shore",
 				description:
 					"This chapter starts with a brahmin sending sixteen students to ask the Buddha profound questions about mindfulness, ending suffering, and a sage’s qualities. The Buddha’s replies lead to their declarations of faith. Poetic and deep, it traces a clear path to liberation through dialogue.",
 			},
@@ -434,5 +434,10 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 		title: "Dhammapada - The Path of Dhamma",
 		description:
 			"A widely read collection of 423 verses of the Buddha's teachings, offering practical wisdom on ethics, mental cultivation, and liberation, organized into memorable chapters.",
+	},
+	kp: {
+		title: "Khuddakapāṭha - Short Passages",
+		description:
+			"A concise collection of nine short passages serving as a primer for novice monks and nuns, including essential recitations on taking refuge, precepts, body contemplation, protective blessings, treasures, merit-sharing, and loving-kindness, widely chanted for daily practice, protection, and introduction to core teachings.",
 	},
 };

@@ -1,3 +1,10 @@
+// Debug helper for development-only console output
+export function debug(...args: any[]) {
+	if (import.meta.env.DEV) {
+		console.log(...args);
+	}
+}
+
 type Heading = {
 	depth: number;
 	slug: string;
@@ -8,23 +15,248 @@ type ContentPair = {
 	type: "paragraph" | "other";
 	english: string;
 	pali?: string;
+	actualParagraphNumber?: number;
 };
 
 type ContentEntry = {
 	body: string;
 };
 
+// Shared utility functions for hierarchical number handling
+export function parseHierarchicalNumber(num: string) {
+	const parts = num.split('.');
+	return {
+		major: parseInt(parts[0]),
+		minor: parts[1] ? parseInt(parts[1]) : 0
+	};
+}
+
+export function compareHierarchicalNumber(a: string, b: string): number {
+	const aParts = parseHierarchicalNumber(a);
+	const bParts = parseHierarchicalNumber(b);
+
+	if (aParts.major !== bParts.major) {
+		return aParts.major - bParts.major;
+	}
+	return aParts.minor - bParts.minor;
+}
+
+export function isHierarchicalNumberInRange(num: string, start: string, end: string): boolean {
+	const numParts = parseHierarchicalNumber(num);
+	const startParts = parseHierarchicalNumber(start);
+	const endParts = parseHierarchicalNumber(end);
+
+	const isAtOrAfterStart = (numParts.major > startParts.major) ||
+		(numParts.major === startParts.major && numParts.minor >= startParts.minor);
+	const isAtOrBeforeEnd = (numParts.major < endParts.major) ||
+		(numParts.major === endParts.major && numParts.minor <= endParts.minor);
+
+	return isAtOrAfterStart && isAtOrBeforeEnd;
+}
+
+export function constructHierarchicalEnd(startStr: string, endStr: string): string {
+	if (startStr.includes(".")) {
+		// For hierarchical discourse numbers like "1.306-308", construct "1.308"
+		const startParts = startStr.split(".");
+		return startParts.slice(0, -1).join(".") + "." + endStr;
+	}
+	return endStr;
+}
+
+export function isValidParagraphRange(start: number, end: number): boolean {
+	return !isNaN(start) && !isNaN(end) && start <= end;
+}
+
 export function parseContent(
 	paliContent: ContentEntry,
 	englishContent: ContentEntry,
-	sectionNumber?: string,
-	fullReference?: string // e.g. "DHP 1-20"
+	sectionNumber?: number | string,
+	fullReference?: string,
+	paragraphRequest?: { type: 'single' | 'range'; start: number; end?: number } | null,
+	discourseRange?: { start: string; end: string } | null
 ) {
 	const pairs: ContentPair[] = [];
 	const paliText = paliContent?.body?.trim?.() ? paliContent.body : "";
 	const englishText = toSmartQuotes(englishContent?.body || "");
 
+	// Handle paragraph requests
+	if (paragraphRequest) {
+		const allPairs = processBlocks(englishText, paliText, null);
+
+		let paragraphCount = 0;
+		const filteredPairs: ContentPair[] = [];
+		const pendingHeadings: ContentPair[] = [];
+		let inRange = false;
+
+		for (const pair of allPairs) {
+			const isHeading = pair.english.startsWith("#");
+
+			if (isHeading) {
+				// Store headings to potentially include later
+				pendingHeadings.push(pair);
+			} else {
+				paragraphCount++;
+
+				if (paragraphRequest.type === 'single') {
+					if (paragraphCount === paragraphRequest.start) {
+						// For single paragraphs, don't include any headings (as per requirements)
+						filteredPairs.push(pair);
+						break;
+					}
+				} else if (paragraphRequest.type === 'range') {
+					const rangeStart = paragraphRequest.start;
+					const rangeEnd = paragraphRequest.end || paragraphRequest.start;
+
+					if (paragraphCount >= rangeStart && paragraphCount <= rangeEnd) {
+						// We're in the range
+						if (!inRange) {
+							// First paragraph in range - include any pending headings
+							if (pendingHeadings.length > 0) {
+								filteredPairs.push(...pendingHeadings);
+							}
+							inRange = true;
+						} else {
+							// We're already in range - include any pending headings that appeared between paragraphs
+							if (pendingHeadings.length > 0) {
+								filteredPairs.push(...pendingHeadings);
+							}
+						}
+
+						filteredPairs.push(pair);
+						pendingHeadings.length = 0; // Clear pending headings after using them
+
+					} else if (paragraphCount > rangeEnd) {
+						break;
+					} else {
+						// Clear pending headings if we're not in range yet
+						pendingHeadings.length = 0;
+					}
+				}
+			}
+		}
+
+		// Add "View full text" link for paragraph ranges and single paragraphs
+		if ((paragraphRequest.type === 'range' || paragraphRequest.type === 'single') && filteredPairs.length > 0 && fullReference) {
+			const baseId = fullReference;
+			filteredPairs.push({
+				type: "paragraph",
+				english: `\n\n<p><a href="/${baseId.toLowerCase().replace(/\s+/g, '')}" class="text-blue-600 hover:underline">View full text for: ${baseId}</a></p>`
+			});
+		}
+
+		return filteredPairs;
+	}
+
+	// Handle discourse range requests (e.g., an1.306-308)
+	if (discourseRange) {
+		debug('Processing discourse range:', discourseRange);
+		const englishBlocks = englishText.split(/\n\n+/);
+		const paliBlocks = paliText.split(/\n\n+/);
+		let inTargetRange = false;
+		let targetEnglish: string[] = [];
+		let targetPali: string[] = [];
+		let foundEndHeading = false;
+
+		debug('Total English blocks to process:', englishBlocks.length);
+		debug('Looking for start:', discourseRange.start, 'end:', discourseRange.end);
+
+		// Process English content
+		for (let i = 0; i < englishBlocks.length; i++) {
+			const block = englishBlocks[i];
+			const isHeading = block.startsWith("###") || block.startsWith("####");
+
+			if (isHeading) {
+				const headingNumber = block.match(/#{3,4}\s+(\d+(?:\.\d+)?)/)?.[1];
+				debug(`Block ${i}: Found heading ${headingNumber}, inTargetRange: ${inTargetRange}`);
+
+				if (headingNumber) {
+					debug(`Parsing hierarchical numbers:`);
+					debug(`- Heading: ${headingNumber} -> major: ${parseHierarchicalNumber(headingNumber).major}, minor: ${parseHierarchicalNumber(headingNumber).minor}`);
+					debug(`- Start: ${discourseRange.start} -> major: ${parseHierarchicalNumber(discourseRange.start).major}, minor: ${parseHierarchicalNumber(discourseRange.start).minor}`);
+					debug(`- End: ${discourseRange.end} -> major: ${parseHierarchicalNumber(discourseRange.end).major}, minor: ${parseHierarchicalNumber(discourseRange.end).minor}`);
+
+					const isInRange = isHierarchicalNumberInRange(headingNumber, discourseRange.start, discourseRange.end);
+					debug(`- isInRange: ${isInRange}`);
+
+					// Check if this heading is the start of our range
+					if (headingNumber === discourseRange.start) {
+						inTargetRange = true;
+						targetEnglish.push(block);
+						debug(`Found START heading ${headingNumber}, entering range`);
+					} else if (inTargetRange && headingNumber === discourseRange.end) {
+						// Include the end heading and mark that we found it
+						targetEnglish.push(block);
+						foundEndHeading = true;
+						debug(`Found END heading ${headingNumber}, marking end found`);
+					} else if (inTargetRange && isInRange) {
+						// This is a heading within our range (between start and end)
+						targetEnglish.push(block);
+						debug(`Found WITHIN range heading ${headingNumber}, including`);
+					} else if (inTargetRange && !isInRange) {
+						// We've passed the end range
+						debug(`Found heading ${headingNumber} beyond end range, breaking`);
+						break;
+					}
+				}
+			} else if (inTargetRange) {
+				targetEnglish.push(block);
+				debug(`Block ${i}: Added content block to target (inTargetRange: ${inTargetRange})`);
+			} else {
+				debug(`Block ${i}: Skipping content block (not in range)`);
+			}
+		}
+
+		debug('Collected English blocks:', targetEnglish.length);
+		debug('Found end heading:', foundEndHeading);
+
+		// Process Pali content similarly
+		inTargetRange = false;
+		foundEndHeading = false;
+		for (const block of paliBlocks) {
+			const isHeading = block.startsWith("###") || block.startsWith("####");
+			if (isHeading) {
+				const headingNumber = block.match(/#{3,4}\s+(\d+(?:\.\d+)?)/)?.[1];
+
+				if (headingNumber) {
+					const isInRange = isHierarchicalNumberInRange(headingNumber, discourseRange.start, discourseRange.end);
+
+					if (headingNumber === discourseRange.start) {
+						inTargetRange = true;
+						targetPali.push(block);
+					} else if (inTargetRange && headingNumber === discourseRange.end) {
+						targetPali.push(block);
+						foundEndHeading = true;
+					} else if (inTargetRange && isInRange) {
+						targetPali.push(block);
+					} else if (inTargetRange && !isInRange) {
+						break;
+					}
+				}
+			} else if (inTargetRange) {
+				targetPali.push(block);
+			}
+		}
+
+		// Add "View full text" link if this is a partial view
+		if (fullReference) {
+			targetEnglish.push(
+				`\n\n<p><a href="/${fullReference
+					.toLowerCase()
+					.replace(" ", "")}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`
+			);
+		}
+
+		const result = processBlocks(
+			targetEnglish.join("\n\n"),
+			targetPali.join("\n\n"),
+			{ type: 'discourse', originalContent: englishText } // Pass original content for paragraph numbering
+		);
+		return result;
+	}
+
+	// Handle existing section logic (for discourse ranges like an1.308 -> an1.306-315)
 	if (sectionNumber) {
+		debug('Processing single section:', sectionNumber);
 		// Find section boundaries in both English and Pali content
 		const englishBlocks = englishText.split(/\n\n+/);
 		const paliBlocks = paliText.split(/\n\n+/);
@@ -40,14 +272,18 @@ export function parseContent(
 				const headingNumber = block.match(
 					/#{3,4}\s+(\d+(?:\.\d+)?)/
 				)?.[1];
+				debug('Found heading:', headingNumber, 'looking for:', sectionNumber);
 				if (headingNumber === sectionNumber) {
 					inTargetSection = true;
 					targetEnglish.push(block);
+					debug('Entered target section');
 				} else if (inTargetSection) {
+					debug('Exiting target section');
 					break;
 				}
 			} else if (inTargetSection) {
 				targetEnglish.push(block);
+				debug('Added block to target section');
 			}
 		}
 
@@ -83,17 +319,27 @@ export function parseContent(
 			);
 		}
 
-		// Process the section content
-		return processBlocks(
+		debug('Target English blocks for section:', targetEnglish.length);
+		debug('Will use discourse-style processing for single section');
+
+		// Process the section content with discourse-style paragraph numbering
+		const result = processBlocks(
 			targetEnglish.join("\n\n"),
-			targetPali.join("\n\n")
+			targetPali.join("\n\n"),
+			{ type: 'discourse', originalContent: englishText } // Use discourse logic for proper paragraph numbering
 		);
+		return result;
 	}
 
-	return processBlocks(englishText, paliText);
+	const result = processBlocks(englishText, paliText, null);
+	return result;
 }
 
-function processBlocks(englishText: string, paliText: string): ContentPair[] {
+function processBlocks(
+	englishText: string,
+	paliText: string,
+	options?: { type: 'discourse'; originalContent: string } | null
+): ContentPair[] {
 	const pairs: ContentPair[] = [];
 
 	const paliParagraphs = paliText
@@ -107,8 +353,40 @@ function processBlocks(englishText: string, paliText: string): ContentPair[] {
 		.filter((p) => p.trim().length > 0 && !p.startsWith("---"));
 
 	let paliIndex = 0;
+	let actualParagraphNumber = 1;
 
-	englishBlocks.forEach((block: string) => {
+	// If this is a discourse range, calculate the starting paragraph number
+	if (options?.type === 'discourse' && options.originalContent) {
+		const originalBlocks = options.originalContent
+			.split(/\n\n+/)
+			.filter((p) => p.trim().length > 0 && !p.startsWith("---"));
+
+		debug('Calculating paragraph starting number for discourse range');
+		debug('Original blocks count:', originalBlocks.length);
+		debug('Target blocks count:', englishBlocks.length);
+
+		// Find where our first NON-HEADING block appears in the original content
+		const firstNonHeadingBlock = englishBlocks.find(block => !block.startsWith("#"));
+		debug('First non-heading block:', firstNonHeadingBlock?.substring(0, 100));
+
+		if (firstNonHeadingBlock) {
+			let paragraphCount = 0;
+			for (const block of originalBlocks) {
+				const isPlainParagraph = !block.startsWith("#") && !block.startsWith("<") && !block.startsWith("```");
+				if (isPlainParagraph) {
+					paragraphCount++;
+				}
+				if (block === firstNonHeadingBlock) {
+					actualParagraphNumber = paragraphCount;
+					debug('Found first non-heading block at paragraph position:', paragraphCount);
+					break;
+				}
+			}
+		}
+		debug('Starting paragraph number set to:', actualParagraphNumber);
+	}
+
+	englishBlocks.forEach((block: string, blockIndex: number) => {
 		const isPlainParagraph =
 			!block.startsWith("#") &&
 			!block.startsWith("<") &&
@@ -123,12 +401,18 @@ function processBlocks(englishText: string, paliText: string): ContentPair[] {
 				type: "paragraph",
 				english: block,
 				pali: paliParagraphs[paliIndex],
+				actualParagraphNumber: isPlainParagraph ? actualParagraphNumber : undefined
 			});
 		} else {
 			pairs.push({
 				type: "paragraph",
 				english: block,
+				actualParagraphNumber: isPlainParagraph ? actualParagraphNumber : undefined
 			});
+		}
+
+		if (isPlainParagraph) {
+			actualParagraphNumber++;
 		}
 		paliIndex++;
 	});
@@ -229,11 +513,39 @@ function wrapPaliWords(text: string): string {
 function formatBlock(
 	text: string,
 	isPali: boolean = false,
-	index?: number
+	index?: number,
+	paragraphRequest?: { type: 'single' | 'range'; start: number; end?: number } | null,
+	actualParagraphNumber?: number
 ): string {
-	// Handle headings - they count in the sequence but don't get pair IDs
+	// Handle headings
 	if (text.startsWith("#")) {
 		return text;
+	}
+
+	// Generate paragraph number and anchor ID (just the number, no prefix)
+	// Only add anchor IDs to English paragraphs to avoid conflicts
+	// Skip anchor IDs for "View full text" links
+	let anchorId = "";
+	const isViewFullTextLink = text.includes('View full text for:');
+
+	if (index !== undefined && !isPali && !isViewFullTextLink) {
+		// Use actual paragraph number if available, otherwise calculate from request
+		let paragraphNum = actualParagraphNumber;
+
+		if (!paragraphNum) {
+			// Fall back to old logic if no actual paragraph number
+			paragraphNum = index + 1;
+			if (paragraphRequest) {
+				if (paragraphRequest.type === 'single') {
+					paragraphNum = paragraphRequest.start;
+				} else if (paragraphRequest.type === 'range') {
+					paragraphNum = paragraphRequest.start + index;
+				}
+			}
+		}
+
+		debug('Assigning paragraph number:', paragraphNum, 'to paragraph:', text.substring(0, 50));
+		anchorId = ` id="${paragraphNum}" data-paragraph-number="${paragraphNum}"`;
 	}
 
 	// Add data-pair-id to track corresponding paragraphs
@@ -248,61 +560,64 @@ function formatBlock(
 		processedText = wrapPaliWords(text);
 	}
 
-	return `<p${pairAttr} class="${className} ${verseClass}">${isVerseText ? transformVerseNewlines(processedText) : processedText
-		}</p>`;
+	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${isVerseText ? transformVerseNewlines(processedText) : processedText}</p>`;
 }
 
-// Modify the return type to handle split content
 export function createCombinedMarkdown(
 	pairs: ContentPair[],
 	showPali: boolean,
-	layout: "split" | "interleaved" = "interleaved"
+	layout: "split" | "interleaved" = "interleaved",
+	paragraphRequest?: { type: 'single' | 'range'; start: number; end?: number } | null
 ): string | SplitContent {
 	if (layout === "split" && showPali) {
 		let pairIndex = 0;
 
-		// Process Pali content with sequential indexing
 		const pali = pairs
 			.filter(
 				(pair): pair is ContentPair & { pali: string } =>
 					pair.pali !== undefined
 			)
 			.map((pair) => {
-				// Only increment index for non-heading content
 				if (!pair.pali.startsWith("#")) {
-					return formatBlock(pair.pali, true, pairIndex++);
+					return formatBlock(pair.pali, true, pairIndex++, paragraphRequest, pair.actualParagraphNumber);
 				}
-				return formatBlock(pair.pali, true);
+				return formatBlock(pair.pali, true, undefined, paragraphRequest, pair.actualParagraphNumber);
 			})
 			.join("\n\n");
 
-		// Reset index for English content
 		pairIndex = 0;
 		const english = pairs
 			.map((pair) => {
-				// Only increment index for non-heading content
 				if (!pair.english.startsWith("#")) {
-					return formatBlock(pair.english, false, pairIndex++);
+					return formatBlock(pair.english, false, pairIndex++, paragraphRequest, pair.actualParagraphNumber);
 				}
-				return formatBlock(pair.english, false);
+				return formatBlock(pair.english, false, undefined, paragraphRequest, pair.actualParagraphNumber);
 			})
 			.join("\n\n");
 
 		return { pali, english };
 	}
 
-	// Return interleaved content as before
-	return pairs
+	// Return interleaved content
+	let pairIndex = 0;
+	const result = pairs
 		.map((pair) => {
 			if (!showPali || !pair.pali) {
-				return formatBlock(pair.english, false);
+				const currentIndex = pair.english.startsWith("#") ? undefined : pairIndex++;
+				return formatBlock(pair.english, false, currentIndex, paragraphRequest, pair.actualParagraphNumber);
 			}
-			return `${formatBlock(pair.pali, true)}\n\n${formatBlock(
+			const currentIndex = pair.english.startsWith("#") ? undefined : pairIndex++;
+			return `${formatBlock(pair.pali, true, currentIndex, paragraphRequest, pair.actualParagraphNumber)}\n\n${formatBlock(
 				pair.english,
-				false
+				false,
+				currentIndex,
+				paragraphRequest,
+				pair.actualParagraphNumber
 			)}`;
 		})
 		.join("\n\n");
+
+	return result;
 }
 
 const isVerse = (text: string) => {

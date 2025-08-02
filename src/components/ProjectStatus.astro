@@ -60,6 +60,13 @@ const collections = [
 		title: directoryStructureWithCounts.ud?.title || "Udāna",
 		total: 80,
 	},
+	{
+		name: "kp",
+		count: directoryStructureWithCounts.kp?.contentCount || 0,
+		suffix: "passages",
+		title: directoryStructureWithCounts.kp?.title || "Khuddakapāṭha",
+		total: 9,
+	},
 ];
 
 // Status display configurations with proper typing
@@ -157,7 +164,7 @@ const statusConfig: Record<
 										{/* Tablet and up: show in filled area if >= 15% */}
 										{percentage >= 15 && (
 											<span class="font-medium hidden sm:inline">
-												{percentage} %
+												{percentage}%
 											</span>
 										)}
 									</div>

@@ -21,7 +21,13 @@ const englishTitle = englishParts.join(" - ");
 		tabindex="-1"
 		aria-label={title}
 	>
-		{id && <span class="mr-2 text-primary-color">{transformId(id)}</span>}
+		{
+			id && (
+				<span class="mr-2 text-primary-color">
+					{transformId(id)}&nbsp;
+				</span>
+			)
+		}
 		<slot />
 		<span class="pali-paragraph">{paliTitle}</span>
 		{hasSeparator && ` - ${englishTitle}`}
@@ -40,3 +46,37 @@ const englishTitle = englishParts.join(" - ");
 		)
 	}
 </div>
+
+<style>
+	@media print {
+		/* Hide filter input for print */
+		input[type="text"] {
+			display: none !important;
+		}
+
+		/* Title styling for print */
+		h1 {
+			color: #333 !important;
+			font-size: 18pt !important;
+			font-weight: bold !important;
+			margin: 0.5rem 0 !important;
+			line-height: 1.4 !important;
+		}
+
+		/* ID/number styling */
+		h1 span:first-child {
+			color: #333 !important;
+		}
+
+		/* Pali paragraph styling */
+		.pali-paragraph {
+			color: #333 !important;
+			font-style: italic !important;
+		}
+
+		/* Container styling */
+		.relative {
+			margin: 0 !important;
+		}
+	}
+</style>

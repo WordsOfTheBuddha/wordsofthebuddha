@@ -4,8 +4,6 @@ description: King Pasenadi asks the Buddha if there is one Dhamma which, having 
 fetter: ignorance
 tags: diligence, welfare, present, future, ignorance, sn, sn1-11, sn3
 slug: sn3.17
-commentary: |
-  Diligence is a quality of the mind that is about carrying out one's duty or obligations well, with continuous effort, while maintaining both an alertness and care (gentleness).
 ---
 
 Sāvatthinidānaṁ.

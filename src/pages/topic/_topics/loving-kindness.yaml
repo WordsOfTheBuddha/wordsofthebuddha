@@ -1,4 +1,4 @@
-title: "loving-kindness"
+title: "Loving Kindness"
 description: "The practice of developing boundless love and goodwill toward all beings, starting with oneself and extending outward."
 synonyms:
     - metta practice
@@ -7,13 +7,16 @@ synonyms:
 pali:
     - mettā
 redirects:
+    - "loving kindness"
     - metta
     - loving-kindness-meditation
     - universal-love
 related:
     - appreciative joy
+opposite:
     - ill will
     - resentment
+    - anger
 discourses:
     - id: "snp1.8"
       note: "training guideline on cultivating loving-kindness"

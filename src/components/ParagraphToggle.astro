@@ -1,0 +1,102 @@
+---
+const { class: className, paragraphRequest } = Astro.props;
+---
+
+<button
+	id="paragraphToggle"
+	class:list={[
+		"hidden lg:inline-flex items-center gap-1 p-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		className,
+	]}
+	style="color: var(--layout-active-color)"
+	title="Toggle paragraph numbering"
+	data-paragraph-request={paragraphRequest
+		? JSON.stringify(paragraphRequest)
+		: ""}
+>
+	<span
+		class="w-4 h-4 flex items-center justify-center font-bold text-sm leading-none"
+		>¶</span
+	>
+</button>
+
+<script>
+	function initializeParagraphToggle() {
+		const toggle = document.getElementById("paragraphToggle");
+		if (!toggle) return;
+
+		// Check if we should auto-enable paragraph numbering based on paragraph requests or URL hash
+		const paragraphRequest = toggle.dataset.paragraphRequest;
+		const hasUrlHash =
+			window.location.hash && window.location.hash.match(/^#\d+(-\d+)?/);
+
+		const shouldAutoEnable = !!(paragraphRequest || hasUrlHash);
+
+		// Get initial state from sessionStorage, but override if we should auto-enable
+		const storedState = sessionStorage.getItem("showParagraphNumbers");
+		const showParagraphs =
+			shouldAutoEnable ||
+			(storedState === null ? false : storedState === "true");
+
+		// Update toggle appearance
+		const updateToggleState = (isActive: boolean) => {
+			toggle.style.opacity = isActive ? "1" : "0.5";
+			toggle.title = isActive
+				? "Hide paragraph numbering"
+				: "Show paragraph numbering";
+		};
+
+		// Apply paragraph numbering state
+		const applyParagraphState = (show: boolean) => {
+			const style = document.getElementById("paragraph-numbers-style");
+			if (style) {
+				style.remove();
+			}
+
+			if (show) {
+				const newStyle = document.createElement("style");
+				newStyle.id = "paragraph-numbers-style";
+				newStyle.textContent = `
+					p[id]::before {
+						content: "¶ " attr(data-paragraph-number);
+						position: absolute;
+						left: -3rem;
+						padding-top: 8px;
+						color: var(--text-muted);
+						font-size: 0.75rem;
+						opacity: 0.7;
+						cursor: pointer;
+						pointer-events: none;
+					}
+				`;
+				document.head.appendChild(newStyle);
+			}
+		};
+
+		// Initialize state
+		applyParagraphState(showParagraphs);
+		updateToggleState(showParagraphs);
+
+		// Store the auto-enabled state if it was triggered
+		if (shouldAutoEnable && storedState !== "true") {
+			sessionStorage.setItem("showParagraphNumbers", "true");
+		}
+
+		// Add click handler
+		toggle.addEventListener("click", () => {
+			// Get current state from sessionStorage directly
+			const currentStoredState = sessionStorage.getItem(
+				"showParagraphNumbers"
+			);
+			const currentState = currentStoredState === "true";
+			const newState = !currentState;
+
+			sessionStorage.setItem("showParagraphNumbers", newState.toString());
+			applyParagraphState(newState);
+			updateToggleState(newState);
+		});
+	}
+
+	// Initialize on page load
+	document.addEventListener("DOMContentLoaded", initializeParagraphToggle);
+</script>

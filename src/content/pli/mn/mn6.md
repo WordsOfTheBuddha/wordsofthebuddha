@@ -4,9 +4,9 @@ description: Should one aspire for the higher spiritual attainments, one should 
 fetter: doubt, personal existence, adherence to rules and observances
 tags: mn, mn1-50, mn1-10, virtue, tranquility, meditation, discernment, empty dwelling, spiritual attainments, jhānas, stream-enterer, non-returner, psychic powers, divine ear, mind-reading, past lives, divine eye, defilements, liberation
 slug: mn6
-commentary: |
-  [1] The three lower fetters are doubt, personal existence, and adherence to rules and observances. A person who has overcome them is called a stream-enterer.
-  [2] The five lower fetters are view(s) relating to personal existence, doubt, adherence to rules and observances, sensual desire, and ill will. A person who has overcome them is called a non-returner.
+commentary:
+    - "[1] The three lower fetters are doubt, personal existence, and adherence to rules and observances. A person who has overcome them is called a stream-enterer."
+    - "[2] The five lower fetters are views relating to personal existence, doubt, adherence to rules and observances, sensual desire, and ill will. A person who has overcome them is called a non-returner."
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

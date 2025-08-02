@@ -6,8 +6,7 @@ qualities: sensual desire, aversion, harm, laziness, wrong effort, giving up, en
 tags: sensual desire, ill will, harming, effort, concern, energy, awakening, an, an4, walking, standing, sitting, lying down, doubt
 slug: an4.11
 similar: iti110
-commentary: |
-    A more detailed discourse on the theme of dealing with thoughts is in [MN 19](/mn19), and one on shaping of thoughts is in [MN 20](/mn20).
+commentary: A more detailed discourse on the theme of dealing with thoughts is in [MN 19](/mn19), and one on shaping of thoughts is in [MN 20](/mn20).
 ---
 
 ### Toleration of harmful thoughts

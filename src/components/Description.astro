@@ -15,3 +15,26 @@ const { description } = Astro.props;
 		</div>
 	)
 }
+
+<style>
+	@media print {
+		div {
+			border: 1px solid #333 !important;
+			margin: 0.5rem 0 !important;
+			padding: 0.75rem !important;
+			background: transparent !important;
+		}
+
+		p {
+			color: #333 !important;
+			font-size: 12pt !important;
+			margin: 0 !important;
+			line-height: 1.5 !important;
+		}
+
+		a {
+			color: #333 !important;
+			text-decoration: underline !important;
+		}
+	}
+</style>

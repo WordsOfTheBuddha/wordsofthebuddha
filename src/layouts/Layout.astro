@@ -20,8 +20,11 @@ import SaveButton from "../components/SaveButton.astro";
 import ReadButton from "../components/ReadButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
+import ParagraphToggle from "../components/ParagraphToggle.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
+import Commentary from "../components/Commentary.astro";
+import { debug } from "../utils/contentParser";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -44,10 +47,14 @@ const {
 	showPali = false,
 	showFilter = false,
 	seoTitle = null, // Add new prop for SEO title
+	paragraphRequest = null,
+	commentary,
 } = Astro.props;
 
-console.log("title is: ", title, " fp: ", fp);
-console.log("qualities are: ", qualities);
+// Debug logging in development only
+debug("title is: ", title, " fp: ", fp);
+debug("qualities are: ", qualities);
+debug("commentary is: ", commentary);
 let SEOTitle = seoTitle;
 if (!SEOTitle) {
 	if (title != "Words of the Buddha" && title) {
@@ -157,6 +164,11 @@ if (!SEOTitle) {
 										<div class="flex items-center gap-1">
 											<PaliButton />
 											<PaliLayoutToggle />
+											<ParagraphToggle
+												paragraphRequest={
+													paragraphRequest
+												}
+											/>
 										</div>
 									)}
 									<div class="flex items-center gap-1">
@@ -181,6 +193,7 @@ if (!SEOTitle) {
 					</div>
 					<Collapse defaultState="collapse" />
 					<slot />
+					<Commentary commentary={commentary} />
 					{
 						showRead && (
 							<div class="flex justify-end mt-6 mb-4">
@@ -233,7 +246,6 @@ if (!SEOTitle) {
 						localStorage.layout ??
 						"interleaved")
 				: undefined;
-			console.log("preferences: ", preferences);
 			synchronizePreferences(preferences);
 			// Apply font size from localStorage
 			const storedFontSize = localStorage.getItem("fontSize") || "large";
@@ -247,6 +259,129 @@ if (!SEOTitle) {
 
 			// Add click handler for all navigation
 			document.addEventListener("click", handleNavigation);
+
+			// Helper function to parse hash and return paragraph numbers and scroll target
+			function parseHashRange(hash: string): {
+				paragraphs: number[];
+				scrollTo: number | null;
+			} {
+				if (!hash) return { paragraphs: [], scrollTo: null };
+
+				const hashValue = hash.replace("#", "");
+				const paragraphNumbers: number[] = [];
+				let scrollTo: number | null = null;
+
+				// Split by comma to handle multiple values/ranges (e.g., "1,2,4-6")
+				const parts = hashValue.split(",");
+
+				for (const part of parts) {
+					const trimmedPart = part.trim();
+
+					// Check for range format (e.g., "4-6")
+					if (trimmedPart.includes("-")) {
+						const [startStr, endStr] = trimmedPart.split("-");
+						const startNum = Number(startStr);
+						const endNum = Number(endStr);
+
+						if (
+							!isNaN(startNum) &&
+							!isNaN(endNum) &&
+							startNum <= endNum
+						) {
+							for (let i = startNum; i <= endNum; i++) {
+								paragraphNumbers.push(i);
+							}
+							// Set scrollTo to the first paragraph if not already set
+							if (scrollTo === null) {
+								scrollTo = startNum;
+							}
+						}
+					} else {
+						// Single paragraph format (e.g., "1", "2")
+						const paragraphNum = Number(trimmedPart);
+						if (!isNaN(paragraphNum)) {
+							paragraphNumbers.push(paragraphNum);
+							// Set scrollTo to the first paragraph if not already set
+							if (scrollTo === null) {
+								scrollTo = paragraphNum;
+							}
+						}
+					}
+				}
+
+				// Remove duplicates and sort
+				const uniqueParagraphs = [...new Set(paragraphNumbers)].sort(
+					(a, b) => a - b
+				);
+
+				return {
+					paragraphs: uniqueParagraphs,
+					scrollTo: scrollTo,
+				};
+			}
+
+			// Helper function to apply highlighting and navigation
+			function applyHighlightingAndNavigation(
+				paragraphNumbers: number[],
+				scrollTargetId: number | null
+			): void {
+				// Clear existing highlights
+				document
+					.querySelectorAll(".paragraph-highlight")
+					.forEach((element) => {
+						element.classList.remove("paragraph-highlight");
+					});
+
+				// Apply new highlights to valid paragraph elements
+				paragraphNumbers.forEach((paragraphNum) => {
+					const paragraphElement = document.getElementById(
+						paragraphNum.toString()
+					);
+					if (paragraphElement) {
+						paragraphElement.classList.add("paragraph-highlight");
+					}
+				});
+
+				// Navigate to target paragraph with smooth scroll
+				if (scrollTargetId) {
+					const targetElement = document.getElementById(
+						scrollTargetId.toString()
+					);
+					if (targetElement) {
+						setTimeout(() => {
+							// Calculate position with 100px buffer
+							const elementRect =
+								targetElement.getBoundingClientRect();
+							const absoluteElementTop =
+								elementRect.top + window.pageYOffset;
+							const scrollToPosition = Math.max(
+								0,
+								absoluteElementTop - 100
+							);
+
+							window.scrollTo({
+								top: scrollToPosition,
+								behavior: "smooth",
+							});
+						}, 100);
+					}
+				}
+			}
+
+			// Handle hash navigation for paragraph anchors
+			function handleHashNavigation() {
+				if (window.location.hash) {
+					const hash = window.location.hash.substring(1);
+					const { paragraphs, scrollTo } = parseHashRange(hash);
+					applyHighlightingAndNavigation(paragraphs, scrollTo);
+				}
+			}
+
+			// Handle initial hash navigation
+			handleHashNavigation();
+
+			// Listen for hash changes
+			window.addEventListener("hashchange", handleHashNavigation);
 
 			// Remove empty spans after preferences are applied
 			document.querySelectorAll("span").forEach((span) => {

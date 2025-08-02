@@ -1,6 +1,8 @@
 ---
 title: Paññā sutta - Wisdom
 description: The Buddha explains the eight causes and conditions that lead to the attainment, further development, growth, cultivation, and fulfillment of wisdom that pertains to the fundamentals of the spiritual life.
+qualities: wisdom, conscience, fear of wrongdoing, respect, affection, cultivation, ethical conduct, solitude, learned, rousing of energy, right effort, right speech, recognition of impermanence
+theme: training guideline, wisdom
 fetter: doubt, ignorance
 tags: sense of right and wrong, fear of wrongdoing, affection, respect, inquiring, seclusion, aroused energy, five aggregates, wisdom, ignorance, an, an8
 slug: an8.2

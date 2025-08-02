@@ -95,11 +95,13 @@ const tagContentType = getContentTypeFromApiData(content);
 const allDiscourses = content.discourses || [];
 
 const primaryDiscourses =
-	contentType === "topic" ? allDiscourses.filter((d: any) => d.note) : [];
+	contentType === "topic"
+		? allDiscourses.filter((d: any) => d.isFeatured)
+		: [];
 
 const additionalDiscourses =
 	contentType === "topic"
-		? allDiscourses.filter((d: any) => !d.note)
+		? allDiscourses.filter((d: any) => !d.isFeatured)
 		: allDiscourses;
 
 // Group by collections
@@ -148,13 +150,7 @@ const totalDiscourses = allDiscourses.length;
 								class="text-xl font-semibold flex items-center flex-wrap gap-2"
 							>
 								<span>{displayTitle}</span>
-								<ContentTag
-									contentType={tagContentType}
-									{...tagContentType &&
-									tagContentType.endsWith("quality")
-										? { label: "quality" }
-										: {}}
-								/>
+								<ContentTag contentType={tagContentType} />
 							</h1>
 						</div>
 					</div>
@@ -203,7 +199,7 @@ const totalDiscourses = allDiscourses.length;
 						content.related && content.related.length > 0 && (
 							<div class="text-gray-600 dark:text-gray-400 text-xs">
 								Related:
-								<span class="inline-flex flex-wrap gap-1 ml-1">
+								<span class="inline-flex flex-wrap gap-2 ml-1">
 									{content.related.map(
 										(relatedSlug: string) => {
 											const capitalizedName = relatedSlug

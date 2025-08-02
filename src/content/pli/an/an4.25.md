@@ -4,8 +4,7 @@ description: The spiritual life is not lived for the purpose of deceiving people
 fetter: personal existence, conceit, ignorance
 tags: an,an4,spiritual life, conceit, restraint, letting go, self-control, precepts, sense-restraint, Nibbāna, iti, iti28-49
 slug: an4.25
-commentary: |
-  A similar discourse is at [ITI 35](/iti35)
+commentary: A similar discourse is at [ITI 35](/iti35).
 ---
 
 “Nayidaṁ, bhikkhave, brahmacariyaṁ vussati janakuhanatthaṁ, na janalapanatthaṁ, na lābhasakkārasilokānisaṁsatthaṁ, na itivādappamokkhānisaṁsatthaṁ, na ‘iti maṁ jano jānātū’ti. Atha kho idaṁ, bhikkhave, brahmacariyaṁ vussati saṁvaratthaṁ pahānatthaṁ virāgatthaṁ nirodhatthanti.

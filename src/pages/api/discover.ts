@@ -24,11 +24,12 @@ interface UnifiedContentItem {
 		description: string;
 		collection: string;
 		note?: string;
+		isFeatured?: boolean;
 	}>;
 }
 
 function getQualityType(
-	qualitySlug: string,
+	qualitySlug: string
 ): "positive" | "negative" | "neutral" {
 	if (qualities.positive.includes(qualitySlug)) return "positive";
 	if (qualities.negative.includes(qualitySlug)) return "negative";
@@ -44,7 +45,7 @@ function getQualitySynonyms(qualitySlug: string): string[] {
 				!s.startsWith("[") &&
 				!s.startsWith("Related:") &&
 				!s.startsWith("Opposite:") &&
-				!s.startsWith("Context:"),
+				!s.startsWith("Context:")
 		);
 	}
 	return [];
@@ -64,7 +65,7 @@ function getQualityContext(qualitySlug: string): string | undefined {
 	const synonymsData = qualities.synonyms as any;
 	if (synonymsData[qualitySlug]) {
 		const contextItem = synonymsData[qualitySlug].find((s: string) =>
-			s.startsWith("Context:"),
+			s.startsWith("Context:")
 		);
 		return contextItem ? contextItem.replace("Context: ", "") : undefined;
 	}
@@ -75,7 +76,7 @@ function getQualityRelated(qualitySlug: string): string[] {
 	const synonymsData = qualities.synonyms as any;
 	if (synonymsData[qualitySlug]) {
 		const relatedItem = synonymsData[qualitySlug].find((s: string) =>
-			s.startsWith("Related:"),
+			s.startsWith("Related:")
 		);
 		if (relatedItem) {
 			const relatedString = relatedItem
@@ -94,7 +95,7 @@ function getQualityOpposite(qualitySlug: string): string[] {
 	const synonymsData = qualities.synonyms as any;
 	if (synonymsData[qualitySlug]) {
 		const oppositeItem = synonymsData[qualitySlug].find((s: string) =>
-			s.startsWith("Opposite:"),
+			s.startsWith("Opposite:")
 		);
 		if (oppositeItem) {
 			const oppositeString = oppositeItem
@@ -112,7 +113,7 @@ function getQualityOpposite(qualitySlug: string): string[] {
 // Helper function to create content items with conditional description
 function createContentItem(
 	base: Omit<UnifiedContentItem, "description">,
-	description?: string,
+	description?: string
 ): UnifiedContentItem {
 	const item: UnifiedContentItem = { ...base };
 	if (description && description.trim()) {
@@ -152,10 +153,11 @@ export const GET: APIRoute = async ({ url }) => {
 							pali: topic.pali,
 							redirects: topic.redirects,
 							related: topic.related,
+							opposite: (topic as any).opposite,
 							discourses: topic.discourses,
 						},
-						topic.description,
-					),
+						topic.description
+					)
 				);
 			});
 		}
@@ -170,7 +172,7 @@ export const GET: APIRoute = async ({ url }) => {
 						.split("-")
 						.map(
 							(word) =>
-								word.charAt(0).toUpperCase() + word.slice(1),
+								word.charAt(0).toUpperCase() + word.slice(1)
 						)
 						.join(" ");
 
@@ -198,12 +200,13 @@ export const GET: APIRoute = async ({ url }) => {
 									title: d.title,
 									description: d.description,
 									collection: d.collection,
+									isFeatured: false,
 								})),
 							},
-							context || "", // Use context as description if available
-						),
+							context || "" // Use context as description if available
+						)
 					);
-				},
+				}
 			);
 		}
 
@@ -215,7 +218,7 @@ export const GET: APIRoute = async ({ url }) => {
 						([slug, discourses]) => {
 							const discoursesArray = discourses as any[];
 							const title = toChicagoTitleCase(
-								slug.split("-").join(" "),
+								slug.split("-").join(" ")
 							);
 
 							allContent.push(
@@ -229,12 +232,13 @@ export const GET: APIRoute = async ({ url }) => {
 										title: d.title,
 										description: d.description,
 										collection: d.collection,
+										isFeatured: false,
 									})),
-								}),
+								})
 							); // No description for similes
-						},
+						}
 					);
-				},
+				}
 			);
 		}
 
@@ -246,7 +250,10 @@ export const GET: APIRoute = async ({ url }) => {
 			// Helper function to check if text matches either filter variant
 			const matchesFilter = (text: string): boolean => {
 				const textLower = text.toLowerCase();
-				return textLower.includes(filterLower) || textLower.includes(filterWithSpaces);
+				return (
+					textLower.includes(filterLower) ||
+					textLower.includes(filterWithSpaces)
+				);
 			};
 
 			allContent = allContent
@@ -255,10 +262,14 @@ export const GET: APIRoute = async ({ url }) => {
 					const itemLevelMatch =
 						matchesFilter(item.title) ||
 						(item.description && matchesFilter(item.description)) ||
-						(item.synonyms && item.synonyms.some(s => matchesFilter(s))) ||
-						(item.pali && item.pali.some(p => matchesFilter(p))) ||
-						(item.redirects && item.redirects.some(r => matchesFilter(r))) ||
-						(item.related && item.related.some(r => matchesFilter(r)));
+						(item.synonyms &&
+							item.synonyms.some((s) => matchesFilter(s))) ||
+						(item.pali &&
+							item.pali.some((p) => matchesFilter(p))) ||
+						(item.redirects &&
+							item.redirects.some((r) => matchesFilter(r))) ||
+						(item.related &&
+							item.related.some((r) => matchesFilter(r)));
 
 					if (itemLevelMatch) {
 						// Item-level match: return the item with ALL discourses
@@ -271,7 +282,7 @@ export const GET: APIRoute = async ({ url }) => {
 							matchesFilter(d.id) ||
 							matchesFilter(d.collection) ||
 							matchesFilter(d.title) ||
-							matchesFilter(d.description),
+							matchesFilter(d.description)
 					);
 
 					if (matchingDiscourses.length > 0) {
@@ -290,7 +301,7 @@ export const GET: APIRoute = async ({ url }) => {
 
 		// Sort alphabetically by title
 		allContent.sort((a: UnifiedContentItem, b: UnifiedContentItem) =>
-			a.title.localeCompare(b.title),
+			a.title.localeCompare(b.title)
 		);
 
 		return new Response(
@@ -304,7 +315,7 @@ export const GET: APIRoute = async ({ url }) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			},
+			}
 		);
 	} catch (error) {
 		console.error("Error in /api/discover:", error);
@@ -318,7 +329,7 @@ export const GET: APIRoute = async ({ url }) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			},
+			}
 		);
 	}
 };

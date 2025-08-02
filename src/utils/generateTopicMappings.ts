@@ -14,12 +14,14 @@ interface TopicMapping {
 	pali?: string[];
 	redirects?: string[];
 	related?: string[];
+	opposite?: string[];
 	discourses: Array<{
 		id: string;
 		title: string;
 		description: string;
 		collection: string;
 		note?: string;
+		isFeatured?: boolean;
 	}>;
 }
 
@@ -54,15 +56,15 @@ function loadDiscourseData() {
 
 					// Extract frontmatter
 					const frontmatterMatch = content.match(
-						/^---\n([\s\S]*?)\n---/,
+						/^---\n([\s\S]*?)\n---/
 					);
 					if (frontmatterMatch) {
 						const frontmatter = frontmatterMatch[1];
 						const titleMatch = frontmatter.match(
-							/title:\s*["']?([^"'\n]+)["']?/,
+							/title:\s*["']?([^"'\n]+)["']?/
 						);
 						const descMatch = frontmatter.match(
-							/description:\s*["']?([^"'\n]+)["']?/,
+							/description:\s*["']?([^"'\n]+)["']?/
 						);
 
 						if (titleMatch) {
@@ -81,7 +83,7 @@ function loadDiscourseData() {
 			});
 		} else {
 			console.log(
-				`Collection directory does not exist: ${collectionDir}`,
+				`Collection directory does not exist: ${collectionDir}`
 			);
 		}
 	});
@@ -107,7 +109,7 @@ function findQualityDiscourses(
 	topicTitle: string,
 	slug: string,
 	synonyms: string[] = [],
-	qualityMappings: any,
+	qualityMappings: any
 ) {
 	const searchTerms = [
 		slug.toLowerCase(),
@@ -129,7 +131,7 @@ function findSimileDiscourses(
 	topicTitle: string,
 	slug: string,
 	synonyms: string[] = [],
-	simileMappings: any,
+	simileMappings: any
 ) {
 	const searchTerms = [
 		slug.toLowerCase(),
@@ -143,7 +145,7 @@ function findSimileDiscourses(
 			if (typeof letterGroup === "object" && letterGroup !== null) {
 				if ((letterGroup as any)[searchTerm]) {
 					console.log(
-						`Found simile match for topic ${slug}: ${searchTerm}`,
+						`Found simile match for topic ${slug}: ${searchTerm}`
 					);
 					return (letterGroup as any)[searchTerm];
 				}
@@ -157,13 +159,14 @@ function findSimileDiscourses(
 function mergeAdditionalDiscourses(
 	existingDiscourses: any[],
 	additionalDiscourses: any[],
-	sourceType: string,
+	sourceType: string
 ) {
 	const existingIds = new Set(existingDiscourses.map((d) => d.id));
 	const newDiscourses = additionalDiscourses
 		.filter((discourse) => !existingIds.has(discourse.id))
 		.map((discourse) => ({
 			...discourse,
+			isFeatured: false, // Mark as additional discourse from quality/simile mappings
 			// Don't add note since quality/simile discourses don't have notes
 		}));
 
@@ -176,7 +179,7 @@ export async function generateTopicMappings() {
 	// Load discourse data first
 	const discourseData = loadDiscourseData();
 	console.log(
-		`Loaded ${Object.keys(discourseData).length} discourse entries`,
+		`Loaded ${Object.keys(discourseData).length} discourse entries`
 	);
 
 	const allTopics = getAllTopics();
@@ -199,6 +202,7 @@ export async function generateTopicMappings() {
 					description: data.description,
 					collection: getCollection(discourse.id),
 					note: discourse.note,
+					isFeatured: true, // Mark as topic-specific discourse
 				};
 			})
 			.filter(Boolean);
@@ -211,13 +215,13 @@ export async function generateTopicMappings() {
 			topic.title,
 			slug,
 			topic.synonyms,
-			qualityMappings,
+			qualityMappings
 		);
 		const simileDiscourses = findSimileDiscourses(
 			topic.title,
 			slug,
 			topic.synonyms,
-			simileMappings,
+			simileMappings
 		);
 
 		const allAdditionalDiscourses = [
@@ -228,7 +232,7 @@ export async function generateTopicMappings() {
 		const mergedDiscourses = mergeAdditionalDiscourses(
 			discourses,
 			allAdditionalDiscourses,
-			"additional",
+			"additional"
 		);
 
 		topicMappings[slug] = {
@@ -238,6 +242,7 @@ export async function generateTopicMappings() {
 			pali: topic.pali,
 			redirects: topic.redirects,
 			related: topic.related,
+			opposite: topic.opposite,
 			discourses: mergedDiscourses,
 		};
 	}
@@ -247,7 +252,9 @@ export async function generateTopicMappings() {
 	fs.writeFileSync(outputPath, JSON.stringify(topicMappings, null, 2));
 
 	console.log(
-		`Generated topic mappings for ${Object.keys(topicMappings).length} topics`,
+		`Generated topic mappings for ${
+			Object.keys(topicMappings).length
+		} topics`
 	);
 	console.log(`Written to: ${outputPath}`);
 }
