@@ -117,6 +117,7 @@
 		"merit",
 		"mindfulness",
 		"non-harm",
+		"non-identification",
 		"non-proliferation",
 		"non-regret",
 		"not taking what is not given",
@@ -320,6 +321,7 @@
 			"self-importance",
 			"tendency of self-comparison",
 			"Related:{ambition, personal existence}",
+			"Opposite:{non-identification}",
 			"[māna, unnaḷa]"
 		],
 		"conscience": [
@@ -377,7 +379,7 @@
 			"longing",
 			"lit. thirst",
 			"Related:{greed, passion, sensual desire}",
-			"[taṇha]"
+			"[taṇha, abhijjhā]"
 		],
 		"cruelty": [
 			"abuse",
@@ -850,7 +852,19 @@
 			"non-hurting",
 			"[avihiṃsā, ahiṁsa]"
 		],
-		"non-proliferation": ["not forming various opinions", "[nippapañca]"],
+		"non-identification": [
+			"principle of non-identification",
+			"(comm) no craving",
+			"lit. not made of that state",
+			"Related:{non-proliferation}",
+			"Opposite:{conceit}",
+			"[atammayatā]"
+		],
+		"non-proliferation": [
+			"not forming various opinions",
+			"Related:{non-identification}",
+			"[nippapañca]"
+		],
 		"non-regret": [
 			"non-remorse",
 			"lit. not remembering back negatively",
@@ -1157,6 +1171,7 @@
 		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"imperturbable": [
 			"unagitated",
+			"unmoved",
 			"unruffled",
 			"unshaken",
 			"untroubled",
