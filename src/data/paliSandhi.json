@@ -98,5 +98,25 @@
 	"saṁvijjatīti": ["saṁvijjati"],
 	"appamāṇoti": ["appamāṇa"],
 	"susamāraddhoti": ["susamāraddha"],
+	"jīvamanupucchasi": [
+		"jīva",
+		"anupucchati:asks; enquires (somebody about something)"
+	],
+	"pattassuttamavedanaṁ": [
+		"patta:reached; attained; gained; accomplished; found",
+		"uttama",
+		"vedanā"
+	],
+	"kaṇhassābhippahārinī": [
+		"kaṇhassa",
+		"abhippahārī:striking; attacking; harming"
+	],
+	"pagāḷhettha": [
+		"pagāḷha:reckless; undisciplined; dissolute; unrestrained",
+		"ettha"
+	],
+	"medavaṇṇaṃva": ["medavaṇṇa", "iva"],
+	"vāyasetto": ["vāyasa", "etto"],
+	"tatthevantaradhāyathāti": ["tattheva", "antaradhāyatha", "iti"],
 	"nānubhavissatīti": ["nānubhavissati", "iti"]
 }
