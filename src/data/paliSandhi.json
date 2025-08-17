@@ -74,5 +74,49 @@
 	"brahmametaṁ": ["brahma", "etaṁ"],
 	"vihāramidhamāhu": ["vihāra", "idha", "āhu"],
 	"jātuggabbhaseyya": ["jātu", "gabbhaseyya"],
+	"gehasitāti": ["gehasita", "iti"],
+	"gaṇamanusāsitumarahatīti": ["gaṇamanusāsitumarahati", "iti"],
+	"veditabbānīti": ["veditabba"],
+	"purisadammasārathīti": ["purisadammasārathi"],
+	"bhadanteti": ["bhadante"],
+	"bhikkhavoti": ["bhikkhavo"],
+	"rocesīti": ["rocesi"],
+	"mamañca": ["mamañca"],
+	"yannūnassāhaṁ": ["yaṁ", "nūna", "assa", "ahaṁ"],
+	"deseyyanti": ["deseti"],
+	"sikkheyyāti": ["sikkheyya"],
+	"saṅkhatametanti": ["saṅkhata", "etaṁ"],
+	"aphāsumakāsīti": ["na", "phāsum", "akāsi"],
+	"abhikkamathāyasmanto": ["abhikkamatha", "āyasmanto"],
+	"kilamathāti": ["kilamatha", "iti"],
+	"viharāmāti": ["viharāma", "iti"],
+	"kilamāmāti": ["kilamāma"],
+	"anuppattoti": ["anuppatto"],
+	"samanupassāmāti": ["samanupassāma"],
+	"lābhinoti": ["lābhino"],
+	"yatthidaṁ": ["yattha", "idaṁ"],
+	"saṁvijjatīti": ["saṁvijjati"],
+	"appamāṇoti": ["appamāṇa"],
+	"susamāraddhoti": ["susamāraddha"],
+	"jīvamanupucchasi": [
+		"jīva",
+		"anupucchati:asks; enquires (somebody about something)"
+	],
+	"pattassuttamavedanaṁ": [
+		"patta:reached; attained; gained; accomplished; found",
+		"uttama",
+		"vedanā"
+	],
+	"kaṇhassābhippahārinī": [
+		"kaṇhassa",
+		"abhippahārī:striking; attacking; harming"
+	],
+	"pagāḷhettha": [
+		"pagāḷha:reckless; undisciplined; dissolute; unrestrained",
+		"ettha"
+	],
+	"medavaṇṇaṃva": ["medavaṇṇa", "iva"],
+	"vāyasetto": ["vāyasa", "etto"],
+	"tatthevantaradhāyathāti": ["tattheva", "antaradhāyatha", "iti"],
 	"nānubhavissatīti": ["nānubhavissati", "iti"]
 }

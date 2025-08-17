@@ -117,6 +117,7 @@
 		"merit",
 		"mindfulness",
 		"non-harm",
+		"non-identification",
 		"non-proliferation",
 		"non-regret",
 		"not taking what is not given",
@@ -320,6 +321,7 @@
 			"self-importance",
 			"tendency of self-comparison",
 			"Related:{ambition, personal existence}",
+			"Opposite:{non-identification}",
 			"[māna, unnaḷa]"
 		],
 		"conscience": [
@@ -368,7 +370,8 @@
 			"persistent",
 			"zealous",
 			"unflagging endeavor",
-			"Related:{diligence}",
+			"Related:{diligence, rousing of energy}",
+			"Opposite:{laziness, negligence, weak in effort, wrong effort}",
 			"[ātāpī, parakkamma]"
 		],
 		"craving": [
@@ -377,7 +380,7 @@
 			"longing",
 			"lit. thirst",
 			"Related:{greed, passion, sensual desire}",
-			"[taṇha]"
+			"[taṇha, abhijjhā]"
 		],
 		"cruelty": [
 			"abuse",
@@ -577,9 +580,11 @@
 			"not appropriating",
 			"not taking as mine",
 			"without acquisitions",
+			"not clinging",
+			"not holding onto",
 			"Related:{disenchantment, dispassion}",
 			"Opposite:{attachment, passion}",
-			"[nirūpadhi]"
+			"[nirūpadhi, nānupādāya]"
 		],
 		"full awareness": [
 			"clear comprehension",
@@ -594,6 +599,7 @@
 			"philanthropy",
 			"providing with",
 			"gift with",
+			"Opposite:{stinginess}",
 			"[dāna]"
 		],
 		"giving up": [
@@ -850,7 +856,19 @@
 			"non-hurting",
 			"[avihiṃsā, ahiṁsa]"
 		],
-		"non-proliferation": ["not forming various opinions", "[nippapañca]"],
+		"non-identification": [
+			"principle of non-identification",
+			"(comm) no craving",
+			"lit. not made of that state",
+			"Related:{non-proliferation}",
+			"Opposite:{conceit}",
+			"[atammayatā]"
+		],
+		"non-proliferation": [
+			"not forming various opinions",
+			"Related:{non-identification}",
+			"[nippapañca]"
+		],
 		"non-regret": [
 			"non-remorse",
 			"lit. not remembering back negatively",
@@ -939,19 +957,19 @@
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
-			"[anicca-saññā]"
+			"[aniccasaññā]"
 		],
-		"recognition of not-self": ["perception of not-self", "[anatta-saññā]"],
+		"recognition of not-self": ["perception of not-self", "[anattasaññā]"],
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
 			"contemplation on the drawbacks",
-			"[asubha-saññā]"
+			"[asubhasaññā]"
 		],
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
 			"Related:{perceiving drawback}",
-			"[dukkha-saññā]"
+			"[dukkhasaññā]"
 		],
 		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
 		"recollection of the Buddha": [
@@ -1036,7 +1054,7 @@
 			"being energetic",
 			"taking initiative",
 			"making a mental decision to act",
-			"Related:{vigour}",
+			"Related:{continuous effort, vigour}",
 			"[vīriyārambha, āraddhavīriya, uṭṭhānavant]"
 		],
 		"safety": ["sanctuary", "security", "peace", "rest", "[khema]"],
@@ -1115,6 +1133,7 @@
 			"meanness",
 			"tight-fistedness",
 			"Related:{greed}",
+			"Opposite:{giving}",
 			"[macchariya]"
 		],
 		"stubbornness": [
@@ -1157,6 +1176,7 @@
 		"undeveloped": ["not cultivated", "[abhāvita]"],
 		"imperturbable": [
 			"unagitated",
+			"unmoved",
 			"unruffled",
 			"unshaken",
 			"untroubled",

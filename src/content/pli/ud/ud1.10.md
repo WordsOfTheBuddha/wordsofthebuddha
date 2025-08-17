@@ -1,8 +1,10 @@
 ---
 title: Bāhiya sutta - To Bāhiya
-description: Bāhiya of the Bark Cloth realizes the Dhamma and attains final Nibbāna immediately after receiving a concise teaching from the Buddha.
+description: Upon learning that he was not awakened, Bāhiya travels a great distance to seek the Buddha. Upon arriving, he sees the Buddha on alms round and begs for urgent instruction despite the hour. The Buddha gives him a terse training to see only the seen, heard, sensed, and cognized—without clinging. Bāhiya realizes the Dhamma immediately, only to be killed by a charging cow shortly after. The Buddha declares his attainment and honors him.
+qualities: faith, ending, liberation, non-identification, non-proliferation
+theme: training guideline, inspiration
 fetter: desire for fine-material existence, desire for immaterial existence, conceit, restlessness, ignorance
-tags: arahant, path, Dhamma, Bāhiya, Suppāraka, Sāvatthi, Jeta's Grove, Anāthapiṇḍika's park, alms, death, cremation, stupa, final Nibbāna, seen, heard, sensed, cognized, ud, ud1
+tags: arahant, path, Dhamma, Bāhiya, Suppāraka, Sāvatthi, Jeta’s Grove, Anāthapiṇḍika’s park, alms, death, cremation, stupa, final Nibbāna, seen, heard, sensed, cognized, ud, ud1
 character: Bāhiya of the Bark Cloth
 slug: ud1.10
 ---
