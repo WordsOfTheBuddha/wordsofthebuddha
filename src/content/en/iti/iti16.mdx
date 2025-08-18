@@ -1,7 +1,7 @@
 ---
 title: Paṭhama sekha sutta - Trainee (First)
 description: There is no other single factor as helpful as wise attention for a trainee bhikkhu who is aspiring for the highest goal.
-qualities: wise attention, wholesome
+qualities: wise attention, wholesome, ending
 theme: inspiration, wisdom
 fetter: doubt,personal existence,adherence to rules and observances
 tags: iti,trainee,wholesome,unwholesome,wise attention,yoniso manasikāra
