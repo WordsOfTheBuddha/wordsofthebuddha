@@ -36,6 +36,7 @@ async function generateRoutes() {
 
 		// Process files to get base names without extensions
 		const routes = files
+			.filter((file) => extname(file).toLowerCase() === ".mdx")
 			.map((file) => basename(file)) // Get just the filename
 			.map((file) => file.replace(extname(file), "")); // Remove extension
 

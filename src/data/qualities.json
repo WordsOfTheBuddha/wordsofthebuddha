@@ -1114,7 +1114,13 @@
 			"Related:{cruelty}",
 			"[pāṇātipāta]"
 		],
-		"solitude": ["seclusion", "privacy", "[viveka]"],
+		"solitude": [
+			"seclusion",
+			"privacy",
+			"aloofness",
+			"non-association",
+			"[viveka]"
+		],
 		"sorrow": ["sadness", "grief", "[soka, socati]"],
 		"sorrow-free": [
 			"free from sadness",
