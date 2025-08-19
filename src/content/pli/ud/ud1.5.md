@@ -1,7 +1,7 @@
 ---
 title: Brāhmaṇa sutta - Brāhmaṇ
 description: The Buddha defines a sage, a Brāhmaṇ not by birth, but as one who has cast off harmful qualities and is always mindful.
-qualities: ending, giving up
+qualities: ending, giving up, mindfulness
 theme: inspiration, wisdom
 slug: ud1.5
 ---
