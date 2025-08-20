@@ -1,9 +1,11 @@
 ---
 title: Guhaṭṭhaka sutta - Cave
-description: Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of 'mine'.
-fetter: ignorance,sensual desire
-tags: snp, snp4,ignorance,sensual desire,
+description: Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of ‘mine’.
+qualities: illusion, sensual desire, perceiving gratification, greed, suffering, wisdom, personal existence, with nothing, attachment, dispassion, free from attachment, diligence, complete comprehension
+theme: inspiration, wisdom, inquisitiveness
 slug: snp4.2
+simile: fish in a dwindling stream of little water
+commentary: For [1], See [AN 6.61](/an6.61) for different meanings of both ends.
 ---
 
 Satto guhāyaṁ bahunābhichanno,

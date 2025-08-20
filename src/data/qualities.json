@@ -267,7 +267,10 @@
 		"celibacy": [
 			"abstinence",
 			"chastity",
+			"holy life",
 			"sexual restraint",
+			"spiritual life",
+			"Context: A life of celibacy, contemplation, and ethical discipline lived for the sake of liberation; oriented toward inner development rather than sensual pleasures",
 			"[brahmacariya]"
 		],
 		"clinging to rules and observances": [
@@ -782,7 +785,7 @@
 			"Context: Laziness is a mental quality characterized by unwillingness or lack of energy and motivation to engage in wholesome activities or exert effort; it leads to stagnation and missed opportunities for growth.",
 			"Related:{negligence, weak in effort}",
 			"Opposite:{continuous effort, right effort, rousing of energy}",
-			"[kosajja, tandī]"
+			"[kosajja, tandī, ālasya]"
 		],
 		"learned": [
 			"having knowledge",
@@ -880,7 +883,7 @@
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects",
 			"Related:{adventurous}",
-			"[asaṃvara]"
+			"[asaṁvara, asaṁyama]"
 		],
 		"not taking what is not given": [
 			"not stealing",
@@ -1114,7 +1117,13 @@
 			"Related:{cruelty}",
 			"[pāṇātipāta]"
 		],
-		"solitude": ["seclusion", "privacy", "[viveka]"],
+		"solitude": [
+			"seclusion",
+			"privacy",
+			"aloofness",
+			"non-association",
+			"[viveka]"
+		],
 		"sorrow": ["sadness", "grief", "[soka, socati]"],
 		"sorrow-free": [
 			"free from sadness",

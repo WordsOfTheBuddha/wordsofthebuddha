@@ -1,9 +1,11 @@
 ---
 title: Kāmasutta - Sensual Pleasures
 description: In this teaching, the Buddha succinctly shares the allure and the drawbacks of desiring sensual pleasures.
+qualities: sensual desire, craving, tranquility, mindfulness, attachment, suffering, perceiving gratification
+theme: inspiration, wisdom
 fetter: sensual desire
 tags: snp, snp4, sensual desire, craving, sensual pleasures, delight, dart, tranquility, mindfulness, entanglement, possessions, insecurity, far shore
-simile: avoids stepping on a snake's head, having bailed out the boat
+simile: avoids stepping on a snake’s head, water filling into a broken boat
 slug: snp4.1
 ---
 

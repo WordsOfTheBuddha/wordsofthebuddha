@@ -1,8 +1,8 @@
 ---
 title: Jarā sutta - Old Age
-description: A deity asks the Blessed One what is good until old age, what is good when established, what is a treasure for humans, and what cannot be stolen by thieves.
-fetter: ignorance
-tags: old age, virtue, faith, wisdom, merit, sn, sn1-11, sn1
+description: A deity asks the Buddha what is good until old age, what is good when established, what is the treasure of humans, and what cannot be stolen by thieves.
+qualities: faith, ethical conduct, wisdom, merit
+theme: inspiration, wisdom, inquisitiveness
 slug: sn1.51
 ---
 

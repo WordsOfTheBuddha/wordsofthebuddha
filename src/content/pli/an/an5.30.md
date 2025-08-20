@@ -2,7 +2,7 @@
 title: Nāgita sutta - With Nāgita
 description: When approached with abundant offerings, the Buddha expresses a heartfelt wish to avoid fame, and speaks of five contemplations which result in being established in dispassion and wisdom.
 qualities: ambition, conceit, recognition of impermanence, recognition of unattractiveness, recognition of unsatisfactoriness dispassion, passion
-theme: cultivating discernment, inspiration, wisdom, recollection of the Buddha
+theme: cultivating discernment, inspiration, wisdom, recollection of the Buddha, inquisitiveness
 slug: an5.30
 character: Venerable Nāgita
 ---
