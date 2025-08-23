@@ -291,7 +291,7 @@ html.dark .tooltip-content .title {
 }
 
 /* Fall back to single column on smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 	.compound-content:has(.constituent-group:nth-child(2)) {
 		grid-template-columns: 1fr;
 		gap: 1rem;
