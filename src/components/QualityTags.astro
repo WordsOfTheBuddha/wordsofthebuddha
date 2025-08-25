@@ -16,18 +16,25 @@ const tagsArray = Array.isArray(tags)
 			: [tags.trim()]
 		: [];
 
-// Filter tags into positive, negative, and neutral categories
-const positiveQualities = tagsArray
-	.filter((tag) => qualities.positive.includes(tag))
-	.sort(); // Sort alphabetically
+// De-duplicate incoming tags
+const uniqueTags = Array.from(new Set(tagsArray.filter(Boolean)));
 
-const negativeQualities = tagsArray
-	.filter((tag) => qualities.negative.includes(tag))
-	.sort(); // Sort alphabetically
+// Build categories without repeats across them (positive -> neutral -> negative)
+const seen = new Set<string>();
 
-const neutralQualities = tagsArray.filter((tag) =>
-	qualities.neutral.includes(tag)
-);
+const positiveQualities = uniqueTags
+	.filter((tag) => qualities.positive.includes(tag) && !seen.has(tag))
+	.sort(); // Sort alphabetically
+positiveQualities.forEach((tag) => seen.add(tag));
+
+const neutralQualities = uniqueTags
+	.filter((tag) => qualities.neutral.includes(tag) && !seen.has(tag))
+	.sort(); // Sort alphabetically
+neutralQualities.forEach((tag) => seen.add(tag));
+
+const negativeQualities = uniqueTags
+	.filter((tag) => qualities.negative.includes(tag) && !seen.has(tag))
+	.sort(); // Sort alphabetically
 
 // Helper function to capitalize first letter
 function capitalizeFirstLetter(string: string) {
