@@ -1,6 +1,7 @@
 ---
 title: Padhāna sutta - Striving
 description: The Buddha describes the four right efforts concisely and precisely.
+qualities: vigour, right effort
 fetter: ignorance
 tags: right effort, striving, four right efforts, unwholesome qualities, wholesome qualities, Māra, an, an4
 slug: an4.13
