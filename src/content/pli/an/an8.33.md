@@ -1,7 +1,7 @@
 ---
 title: Dānavatthu sutta - Grounds for Giving
 description: The Buddha describes eight motivations for giving, including giving out of desire, aversion, and fear.
-qualities: desire, aversion, fearful, giving, attachment, cultivation
+qualities: desire, aversion, fear, giving, attachment, cultivation
 theme: cultivating discernment
 slug: an8.33
 ---

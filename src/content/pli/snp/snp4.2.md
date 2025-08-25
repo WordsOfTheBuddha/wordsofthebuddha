@@ -5,7 +5,7 @@ qualities: illusion, sensual desire, perceiving gratification, greed, suffering,
 theme: inspiration, wisdom, inquisitiveness
 slug: snp4.2
 simile: fish in a dwindling stream of little water
-commentary: For [1], See [AN 6.61](/an6.61) for different meanings of both ends.
+commentary: \[1] See [AN 6.61](/an6.61) for different meanings of both ends.
 ---
 
 Satto guhāyaṁ bahunābhichanno,

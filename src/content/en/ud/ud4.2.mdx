@@ -1,7 +1,7 @@
 ---
 title: Uddhata sutta - Restless
 description: The Buddha expresses an inspired utterance about the qualities of a person who falls under the sway of Māra and of one who overcomes all bad destinations.
-qualities: anxiety, conceit, disturbed, muddle-minded, wrong speech, distraction, non-restraint, wrong view, dullness, drowsiness, self-control, right view, right intention
+qualities: anxiety, conceit, perturbation, muddle-minded, wrong speech, distraction, non-restraint, wrong view, dullness, drowsiness, self-control, right view, right intention
 theme: inspiration, principle
 slug: ud4.2
 ---
