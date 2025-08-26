@@ -1,7 +1,7 @@
 ---
 title: Nāgita sutta - To Nāgita
 description: The Buddha rejects fame and the pleasure of gains, extolling seclusion and awakening. He disapproves of living near villages—even when collected—as it invites disturbance and attachment to acquisitions, honor, and praise. He approves forest dwelling—even if dozing or distracted—for it leads to unification, collectedness, and freeing an unliberated mind.
-qualities: collectedness, seclusion, conceit, sensual desire, personal existence
+qualities: collectedness, solitude, conceit, sensual desire, personal existence
 theme: inquisitiveness, inspiration, cultivating discernment, recollection of the Buddha
 slug: an6.42
 character: Venerable Nāgita
