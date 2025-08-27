@@ -1,7 +1,7 @@
 ---
 title: Paṭhama dāna sutta - Giving (First)
 description: The Buddha explains eight kinds of giving, including giving out of fear, giving to maintain a good reputation, and giving to purify the mind.
-qualities: anger, fearful, cultivation, giving
+qualities: anger, fear, cultivation, giving
 theme: cultivating discernment
 slug: an8.31
 ---

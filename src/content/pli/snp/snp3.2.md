@@ -1,7 +1,7 @@
 ---
 title: Padhāna sutta - Striving
 description: The Buddha recounts his striving and meditation under the Nerañjarā river, where he was approached by Māra. The Buddha rejects Māra's temptations and describes the qualities of a true practitioner who conquers Māra's army.
-qualities: vigour, continuous effort, right effort, mindfulness, wisdom, cultivation, negligence, diligence, faith, sorrow-free, sensual desire, craving, discontentment, dullness, drowsiness, doubt, fearful, conceit, personal existence, boastfulness, contempt, stubbornness, sorrow
+qualities: vigour, continuous effort, right effort, mindfulness, wisdom, cultivation, negligence, diligence, faith, sorrow-free, sensual desire, craving, discontentment, dullness, drowsiness, doubt, fear, conceit, personal existence, boastfulness, contempt, stubbornness, sorrow
 theme: inspiration, wisdom
 slug: snp3.2
 ---

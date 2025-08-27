@@ -1,7 +1,7 @@
 ---
 title: Arañña sutta - Wilderness
 description: A deity asks the Buddha how the complexion of those dwelling in the wilderness and living the spiritual life becomes serene.
-qualities: sorrow-free, celibacy, regret, craving, immaturity
+qualities: sorrow-free, spiritual life, regret, craving, immaturity
 fetter: ignorance
 tags: wilderness, complexion, serenity, present, future, past, ignorance, sn, sn1-11, sn1
 simile: reed being cut down

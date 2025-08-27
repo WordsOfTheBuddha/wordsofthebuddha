@@ -1,7 +1,7 @@
 ---
 title: Najīrati sutta - Does not Decay
 description: A deity asks the Buddha what wears out and what does not decay, what is the wrong way, what is the stain on the spiritual life, and what are the six fissures in the world where one's wealth does not last.
-qualities: laziness, negligence, weak in effort, non-restraint, dullness, drowsiness, passion, greed, attachment, celibacy, self-control, truth
+qualities: laziness, negligence, weak in effort, non-restraint, dullness, drowsiness, passion, greed, attachment, spiritual life, self-control, truth
 theme: inspiration, wisdom
 slug: sn1.76
 ---
