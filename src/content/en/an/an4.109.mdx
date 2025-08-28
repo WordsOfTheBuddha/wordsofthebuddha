@@ -1,6 +1,7 @@
 ---
 title: Rukkha sutta - Tree
 description: The Buddha describes four kinds of people based on their ethical conduct and the qualities of their associates, comparing them to trees made of softwood or heartwood and surrounded by softwood or heartwood trees.
+qualities: ethical conduct, companionship, good friendship, ignorance
 fetter: adherence to rules and observances, personal existence, conceit, ignorance
 tags: tree, softwood, heartwood, ethical conduct, harmful qualities, wholesome qualities, associates, community, harm, benefit, an, an4
 simile: four kinds of tree
