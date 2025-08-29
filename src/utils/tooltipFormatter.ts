@@ -17,7 +17,7 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
     );
 
     const actualThreshold = threshold ?? parseInt(
-        localStorage.getItem("tooltipThreshold") || "35"
+        localStorage.getItem("tooltipThreshold") || "25"
     );
 
     // Track processed terms to avoid duplicates
