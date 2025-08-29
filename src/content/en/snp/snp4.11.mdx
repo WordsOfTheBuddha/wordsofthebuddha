@@ -1,7 +1,7 @@
 ---
 title: Kalahavivāda sutta - Quarrels and Disputes
 description: The Buddha answers step-by-step to a series of questions starting with the source of quarrels and disputes, followed by the arising of various things such as hopes, aims, desires, possessions; leading all the way to the description of the ultimate purity of the spirit.
-qualities: wrong speech, ambition, jealousy, sorrow, lamentation, conceit, dearness, argumentativeness, greed, craving, desire, anger, wrong speech, doubt, attachment, free from attachment, wisdom, discernment
+qualities: wrong speech, self-making, jealousy, sorrow, lamentation, conceit, dearness, argumentativeness, greed, craving, desire, anger, wrong speech, doubt, attachment, free from attachment, wisdom, discernment
 theme: inspiration, wisdom, cultivating discernment
 slug: snp4.11
 ---
