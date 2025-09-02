@@ -5,6 +5,7 @@ qualities: wrong view, ignorance, slaughtering, stealing, sexual misconduct, wro
 fetter: clinging to views, adherence to rules and observances, doubt, ignorance
 tags: kamma, sectarian views, past actions, God, Dhamma, six elements, earth, water, fire, air, space, consciousness, six sense bases, eighteen mental explorations, four noble truths, suffering, dependent origination, dependent co-arising, ignorance, intentional constructs, name and form, six sense bases, felt experience, feeling, craving, clinging, appropriation, grasping, existence, birth, death an, an3
 slug: an3.61
+priority: 3
 ---
 
 “Tīṇimāni, bhikkhave, titthāyatanāni yāni paṇḍitehi samanuyuñjiyamānāni samanugāhiyamānāni samanubhāsiyamānāni parampi gantvā akiriyāya saṇṭhahanti. Katamāni tīṇi?
