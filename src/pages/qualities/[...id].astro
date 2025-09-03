@@ -29,8 +29,8 @@ if (!id || !(id in qualityMappings)) {
 const discourses: Discourse[] = (qualityMappings[
 	id as keyof typeof qualityMappings
 ] || []) as Discourse[];
-const synonyms: string[] = (qualities.synonyms[
-	id as keyof typeof qualities.synonyms
+const synonyms: string[] = (qualities.qualities[
+	id as keyof typeof qualities.qualities
 ] || []) as string[];
 
 // Group by collection

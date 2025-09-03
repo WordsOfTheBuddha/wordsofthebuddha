@@ -5,28 +5,7 @@ import qualityMappings from "../../data/qualityMappings.json";
 import simileMappings from "../../data/simileMappings.json";
 import qualities from "../../data/qualities.json";
 import { toChicagoTitleCase } from "../../utils/toChicagoTitleCase";
-
-interface UnifiedContentItem {
-	id: string;
-	slug: string;
-	type: "topic" | "quality" | "simile";
-	title: string;
-	description?: string;
-	synonyms?: string[];
-	pali?: string[];
-	redirects?: string[];
-	qualityType?: "positive" | "negative" | "neutral";
-	related?: string[];
-	opposite?: string[];
-	discourses: Array<{
-		id: string;
-		title: string;
-		description: string;
-		collection: string;
-		note?: string;
-		isFeatured?: boolean;
-	}>;
-}
+import { type UnifiedContentItem } from "../../types/discover.ts";
 
 function getQualityType(
 	qualitySlug: string
@@ -38,12 +17,14 @@ function getQualityType(
 }
 
 function getQualitySynonyms(qualitySlug: string): string[] {
-	const synonymsData = qualities.synonyms as any;
+	const synonymsData = qualities.qualities as any;
 	if (synonymsData[qualitySlug]) {
 		return synonymsData[qualitySlug].filter(
 			(s: string) =>
 				!s.startsWith("[") &&
 				!s.startsWith("Related:") &&
+				!s.startsWith("Supported by:") &&
+				!s.startsWith("Leads to:") &&
 				!s.startsWith("Opposite:") &&
 				!s.startsWith("Context:")
 		);
@@ -52,7 +33,7 @@ function getQualitySynonyms(qualitySlug: string): string[] {
 }
 
 function getQualityPali(qualitySlug: string): string[] {
-	const synonymsData = qualities.synonyms as any;
+	const synonymsData = qualities.qualities as any;
 	if (synonymsData[qualitySlug]) {
 		return synonymsData[qualitySlug]
 			.filter((s: string) => s.startsWith("["))
@@ -62,7 +43,7 @@ function getQualityPali(qualitySlug: string): string[] {
 }
 
 function getQualityContext(qualitySlug: string): string | undefined {
-	const synonymsData = qualities.synonyms as any;
+	const synonymsData = qualities.qualities as any;
 	if (synonymsData[qualitySlug]) {
 		const contextItem = synonymsData[qualitySlug].find((s: string) =>
 			s.startsWith("Context:")
@@ -73,7 +54,7 @@ function getQualityContext(qualitySlug: string): string | undefined {
 }
 
 function getQualityRelated(qualitySlug: string): string[] {
-	const synonymsData = qualities.synonyms as any;
+	const synonymsData = qualities.qualities as any;
 	if (synonymsData[qualitySlug]) {
 		const relatedItem = synonymsData[qualitySlug].find((s: string) =>
 			s.startsWith("Related:")
@@ -91,8 +72,46 @@ function getQualityRelated(qualitySlug: string): string[] {
 	return [];
 }
 
+function getQualitySupportedBy(qualitySlug: string): string[] {
+	const synonymsData = qualities.qualities as any;
+	if (synonymsData[qualitySlug]) {
+		const relatedItem = synonymsData[qualitySlug].find((s: string) =>
+			s.startsWith("Supported by:")
+		);
+		if (relatedItem) {
+			const relatedString = relatedItem
+				.replace("Supported by:", "")
+				.replace(/[{}]/g, "");
+			return relatedString
+				.split(",")
+				.map((s: string) => s.trim())
+				.filter((s: string) => s.length > 0);
+		}
+	}
+	return [];
+}
+
+function getQualityLeadsTo(qualitySlug: string): string[] {
+	const synonymsData = qualities.qualities as any;
+	if (synonymsData[qualitySlug]) {
+		const relatedItem = synonymsData[qualitySlug].find((s: string) =>
+			s.startsWith("Leads to:")
+		);
+		if (relatedItem) {
+			const relatedString = relatedItem
+				.replace("Leads to:", "")
+				.replace(/[{}]/g, "");
+			return relatedString
+				.split(",")
+				.map((s: string) => s.trim())
+				.filter((s: string) => s.length > 0);
+		}
+	}
+	return [];
+}
+
 function getQualityOpposite(qualitySlug: string): string[] {
-	const synonymsData = qualities.synonyms as any;
+	const synonymsData = qualities.qualities as any;
 	if (synonymsData[qualitySlug]) {
 		const oppositeItem = synonymsData[qualitySlug].find((s: string) =>
 			s.startsWith("Opposite:")
@@ -178,6 +197,8 @@ export const GET: APIRoute = async ({ url }) => {
 
 					const qualityType = getQualityType(slug);
 					const synonyms = getQualitySynonyms(slug);
+					const supportedBy = getQualitySupportedBy(slug);
+					const leadsTo = getQualityLeadsTo(slug);
 					const pali = getQualityPali(slug);
 					const context = getQualityContext(slug);
 					const related = getQualityRelated(slug);
@@ -192,6 +213,8 @@ export const GET: APIRoute = async ({ url }) => {
 								title: title,
 								qualityType: qualityType,
 								synonyms: synonyms,
+								supportedBy: supportedBy,
+								leadsTo: leadsTo,
 								pali: pali,
 								related: related,
 								opposite: opposite,

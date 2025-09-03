@@ -54,10 +54,15 @@ export function getContentTypeFromApiData(item: any): "bright-quality" | "negati
 }
 
 // Server-side HTML generation for ContentTag
-export function generateContentTagHtml(contentType: "bright-quality" | "negative-quality" | "neutral-quality" | "simile" | "topic" | "person"): string {
+export function generateContentTagHtml(
+  contentType: "bright-quality" | "negative-quality" | "neutral-quality" | "simile" | "topic" | "person",
+  options?: { tooltipPos?: "top" | "bottom" }
+): string {
   const config = contentTypeConfigs[contentType];
+  const posAttr = options?.tooltipPos ? options.tooltipPos : "top";
+  console.log('tooltip options: ', options, posAttr);
 
-  return `<span class="content-tag ${config.cssClass}" data-tooltip="${config.tooltip}">
+  return `<span class="content-tag ${config.cssClass}" data-tooltip="${config.tooltip}" data-tooltip-pos="${posAttr}">
     ${config.emoji} ${config.label}
   </span>`;
 }

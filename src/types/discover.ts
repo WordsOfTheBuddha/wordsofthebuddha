@@ -5,11 +5,14 @@ export interface UnifiedContentItem {
     title: string;
     description?: string;
     synonyms?: string[];
+    supportedBy?: string[];
+    leadsTo?: string[];
+    related?: string[];
+    opposite?: string[];
     pali?: string[];
     redirects?: string[];
     qualityType?: "positive" | "negative" | "neutral";
     context?: string;
-    related?: string[];
     discourses: Array<{
         id: string;
         title: string;

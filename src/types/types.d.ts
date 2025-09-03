@@ -11,3 +11,9 @@ export interface DirectoryMetaData {
 	title: string;
 	description?: string;
 }
+
+// Allow importing raw SVGs via Vite query
+declare module "*.svg?raw" {
+	const content: string;
+	export default content;
+}

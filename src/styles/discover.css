@@ -205,6 +205,20 @@ html.dark .content-tag:hover {
 	line-height: 1.4;
 }
 
+/* Alternative placement: below when data-tooltip-pos="bottom" */
+.content-tag[data-tooltip-pos="bottom"]:hover::after,
+.content-tag[data-tooltip-pos="bottom"]:focus::after {
+	top: calc(100% + 8px);
+	bottom: auto;
+}
+.content-tag[data-tooltip-pos="bottom"]:hover::before,
+.content-tag[data-tooltip-pos="bottom"]:focus::before {
+	bottom: auto;
+	top: calc(100% + 2px);
+	border-top: none;
+	border-bottom: 6px solid var(--popover-border);
+}
+
 /* Dark theme shadow adjustment */
 html.dark .content-tag:hover::after {
 	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
@@ -224,4 +238,24 @@ html.dark .content-tag:hover::after {
 	border-right: 6px solid transparent;
 	border-top: 6px solid var(--popover-border);
 	z-index: 50;
+}
+
+/* Uniform label/value grid used in drawer and on-page cards */
+.meta-grid {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	column-gap: 0.5rem;
+	row-gap: 0.6rem;
+	align-items: center;
+}
+.meta-row {
+	display: contents;
+}
+.meta-label {
+	align-self: center;
+}
+.inline-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
 }

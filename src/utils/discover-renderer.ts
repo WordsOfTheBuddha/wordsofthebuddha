@@ -1,5 +1,11 @@
 import type { UnifiedContentItem } from "../types/discover";
 import { generateContentTagHtml, getContentTypeFromApiData } from "./ContentTagUtils";
+import qualities from "../data/qualities.json";
+import "../styles/topicTag.css";
+import graphSvg from "../assets/graph.svg?raw";
+
+// Ensure the inline SVG renders at the expected size
+const graphIcon = graphSvg.replace("<svg", '<svg class="w-6 h-6"');
 
 export class DiscoverRenderer {
     constructor(
@@ -55,33 +61,100 @@ export class DiscoverRenderer {
 				</div>
 			</div>
 
-			${item.type !== "simile"
+            ${item.type !== "simile"
                 ? `
 				<div class="mt-2 ml-2 space-y-2 text-sm">
 					${item.description
                     ? `
 						<div class="text-text">${item.description}</div>
 					`
-                    : ""
-                }
-					
+                    : ""}
+
 					${item.synonyms && item.synonyms.length > 0
                     ? `
 						<div class="text-gray-600 dark:text-gray-400 text-xs">
-							Similar: ${item.synonyms.join(", ")}
+							Synonyms: ${item.synonyms.join(", ")}
 						</div>
 					`
-                    : ""
-                }
+                    : ""}
 					
-					${item.pali && item.pali.length > 0
+                    ${item.pali && item.pali.length > 0
                     ? `
 						<div class="pali-paragraph font-semibold text-text text-xs">
 							Pāli: ${item.pali.join(", ")}
 						</div>
 					`
-                    : ""
-                }
+                    : ""}
+
+                    ${isExpanded ? `
+                        ${(item.supportedBy?.length || item.leadsTo?.length || item.related?.length || (item as any).opposite?.length) ? `
+                        <div class="meta-grid text-xs text-gray-600 dark:text-gray-400 mt-2">
+                            ${item.supportedBy?.length ? `
+                            <div class="meta-row">
+                                <div class="soft meta-label">Supported by</div>
+                                <div class="inline-tags">
+                                    ${item.supportedBy.map((slug: string) => {
+                        const name = slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        const isPositive = qualities.positive.includes(slug);
+                        const isNegative = qualities.negative.includes(slug);
+                        const tagClass = isPositive ? 'topic-tag positive' : isNegative ? 'topic-tag negative' : 'topic-tag neutral';
+                        return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
+                    }).join('')}
+                                </div>
+                            </div>` : ''}
+
+                            ${item.leadsTo?.length ? `
+                            <div class="meta-row">
+                                <div class="soft meta-label">Leads to</div>
+                                <div class="inline-tags">
+                                    ${item.leadsTo.map((slug: string) => {
+                        const name = slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        const isPositive = qualities.positive.includes(slug);
+                        const isNegative = qualities.negative.includes(slug);
+                        const tagClass = isPositive ? 'topic-tag positive' : isNegative ? 'topic-tag negative' : 'topic-tag neutral';
+                        return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
+                    }).join('')}
+                                </div>
+                            </div>` : ''}
+
+                            ${item.related?.length ? `
+                            <div class="meta-row">
+                                <div class="soft meta-label">Related</div>
+                                <div class="inline-tags">
+                                    ${item.related.map((slug: string) => {
+                        const name = slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        const isPositive = qualities.positive.includes(slug);
+                        const isNegative = qualities.negative.includes(slug);
+                        const tagClass = isPositive ? 'topic-tag positive' : isNegative ? 'topic-tag negative' : 'topic-tag neutral';
+                        return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
+                    }).join('')}
+                                </div>
+                            </div>` : ''}
+
+                            ${(item as any).opposite?.length ? `
+                            <div class="meta-row">
+                                <div class="soft meta-label">Opposite</div>
+                                <div class="inline-tags">
+                                    ${(item as any).opposite.map((slug: string) => {
+                        const name = slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        const isPositive = qualities.positive.includes(slug);
+                        const isNegative = qualities.negative.includes(slug);
+                        const tagClass = isPositive ? 'topic-tag positive' : isNegative ? 'topic-tag negative' : 'topic-tag neutral';
+                        return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
+                    }).join('')}
+                                </div>
+                            </div>` : ''}
+                        </div>
+                        ` : ''}
+
+                        <div class="mt-2 text-xs flex items-center gap-2">
+                            <a href="/explorer?focus=${encodeURIComponent(item.slug)}&full=1" aria-label="View in explorer" title="View in explorer" class="inline-flex items-center gap-1 px-2 py-1 rounded border border-[var(--border-color)] bg-[var(--background-color)] text-[var(--link-color)] hover:text-[var(--link-hover-color)] hover:border-[var(--primary-color)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-color)] focus-visible:ring-opacity-50">
+                                <span class="mt-1">${graphIcon}</span>
+                                <span>View in explorer</span>
+                            </a>
+                        </div>
+
+                    ` : ""}
 				</div>
 			`
                 : `

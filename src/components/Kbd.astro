@@ -1,0 +1,93 @@
+---
+interface Props {
+	keys: string | string[];
+	sep?: string; // separator between keys, default '+'
+}
+const { keys, sep = "+" } = Astro.props as Props;
+const arr = Array.isArray(keys) ? keys : String(keys).split("+");
+function renderKey(k: string) {
+	const t = k.trim();
+	// Keep literal unless it's a known alias; mapping can be refined later
+	switch (t.toLowerCase()) {
+		case "cmd":
+			return "⌘";
+		case "mod":
+			return "⌘"; // default to mac; can be swapped by script below
+		case "ctrl":
+			return "Ctrl";
+		case "alt":
+		case "opt":
+			return "⌥";
+		case "shift":
+			return "⇧";
+		case "enter":
+		case "return":
+			return "↩";
+		case "esc":
+		case "escape":
+			return "⎋";
+		case "space":
+			return "Space";
+		case "tab":
+			return "Tab";
+		default:
+			return t.length === 1 ? t.toUpperCase() : t;
+	}
+}
+---
+
+<span class="kbd-group" data-sep={sep}>
+	{
+		arr.map((k, i) => (
+			<Fragment>
+				<kbd class="kbd" data-key={k}>
+					{renderKey(k)}
+				</kbd>
+				{i < arr.length - 1 && (
+					<span class="kbd-sep">{` ${sep} `}</span>
+				)}
+			</Fragment>
+		))
+	}
+</span>
+
+<style>
+	.kbd-group {
+		white-space: nowrap;
+	}
+	.kbd {
+		display: inline-block;
+		padding: 1px 4px;
+		border: 1px solid var(--border-color);
+		border-bottom-width: 2px;
+		border-radius: 4px;
+		background: var(--background-color);
+		color: var(--text-color);
+		font:
+			600 11px/1 system-ui,
+			-apple-system,
+			Segoe UI,
+			Roboto,
+			sans-serif;
+		min-width: 1.2em;
+		text-align: center;
+	}
+	.kbd-sep {
+		opacity: 0.8;
+	}
+</style>
+
+<script>
+	// Optional: adjust 'mod' label for non-mac platforms at runtime
+	try {
+		const isMac = /Mac|iPhone|iPad/.test(navigator.platform || "");
+		if (!isMac) {
+			document.querySelectorAll('.kbd[data-key="mod"]').forEach((el) => {
+				el.textContent = "Ctrl";
+			});
+			document.querySelectorAll('.kbd[data-key="opt"]').forEach((el) => {
+				el.textContent = "Alt";
+			});
+		}
+	} catch {}
+</script>

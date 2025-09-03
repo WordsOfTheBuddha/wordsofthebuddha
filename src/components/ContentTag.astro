@@ -14,9 +14,11 @@ export interface Props {
 	cssClass?: string;
 	tooltip?: string;
 	label?: string;
+	tooltipPos?: "top" | "bottom";
 }
 
-const { contentType, emoji, cssClass, tooltip, label } = Astro.props;
+const { contentType, emoji, cssClass, tooltip, label, tooltipPos } =
+	Astro.props;
 
 // Get the configuration for the current content type
 const config = contentTypeConfigs[contentType];
@@ -28,7 +30,83 @@ const finalTooltip = tooltip ?? config.tooltip;
 const finalCssClass = cssClass ?? config.cssClass;
 ---
 
-<span class={`content-tag ${finalCssClass}`} data-tooltip={finalTooltip}>
+<span
+	class={`content-tag ${finalCssClass}`}
+	data-tooltip={finalTooltip}
+	{...tooltipPos ? { "data-tooltip-pos": tooltipPos } : {}}
+>
 	{finalEmoji}
 	{finalLabel}
 </span>
+
+<script is:inline>
+	// Initialize once per page: dynamic tooltip positioning for .content-tag
+	(function () {
+		try {
+			if (window.__wotbContentTagTooltipsInitialized) return;
+			window.__wotbContentTagTooltipsInitialized = true;
+
+			var measureEl = null;
+			function getMeasureEl() {
+				if (measureEl && document.body.contains(measureEl))
+					return measureEl;
+				measureEl = document.createElement("div");
+				measureEl.style.position = "fixed";
+				measureEl.style.left = "-9999px";
+				measureEl.style.top = "-9999px";
+				measureEl.style.visibility = "hidden";
+				measureEl.style.pointerEvents = "none";
+				measureEl.style.maxWidth = "280px";
+				measureEl.style.padding = "0.5rem 0.75rem";
+				measureEl.style.border = "1px solid transparent";
+				measureEl.style.borderRadius = "0.375rem";
+				measureEl.style.fontSize = "0.75rem";
+				measureEl.style.lineHeight = "1.4";
+				measureEl.style.fontWeight = "400";
+				measureEl.style.whiteSpace = "normal";
+				document.body.appendChild(measureEl);
+				return measureEl;
+			}
+
+			function pickPosition(el) {
+				var tooltip = el.getAttribute("data-tooltip") || "";
+				if (!tooltip) return "top";
+				var rect = el.getBoundingClientRect();
+				var meas = getMeasureEl();
+				meas.textContent = tooltip;
+				// Constrain width similar to CSS rule
+				meas.style.width = "";
+				// After textContent update, measure height; width naturally wraps up to maxWidth
+				var height = meas.offsetHeight || 0;
+				var arrow = 8; // px gap + arrow approx
+				var spaceAbove = rect.top;
+				var spaceBelow = window.innerHeight - rect.bottom;
+				if (spaceAbove >= height + arrow) return "top";
+				if (spaceBelow >= height + arrow) return "bottom";
+				// Choose the side with more space as fallback
+				return spaceBelow >= spaceAbove ? "bottom" : "top";
+			}
+
+			function onEnter(ev) {
+				var t = ev.target;
+				var el = t && t.closest ? t.closest(".content-tag") : null;
+				if (!el) return;
+				var pos = pickPosition(el);
+				if (pos === "bottom")
+					el.setAttribute("data-tooltip-pos", "bottom");
+				else el.removeAttribute("data-tooltip-pos");
+			}
+			function onLeave(ev) {
+				var t = ev.target;
+				var el = t && t.closest ? t.closest(".content-tag") : null;
+				if (!el) return;
+				el.removeAttribute("data-tooltip-pos");
+			}
+
+			document.addEventListener("mouseenter", onEnter, true);
+			document.addEventListener("focusin", onEnter, true);
+			document.addEventListener("mouseleave", onLeave, true);
+			document.addEventListener("focusout", onLeave, true);
+		} catch (e) {}
+	})();
+</script>
