@@ -4,6 +4,7 @@ description: The Buddha advises Mahāpajāpatī Gotamī on how to discern the te
 fetter: doubt, conceit, ignorance
 tags: an,an8,passion,dispassion,accumulation,reduction,greediness,contentment,company,seclusion,procrastination,energy,effort,arousal,enthusiasm,support,abandonment,embracement
 slug: an8.53
+character: Mahāpajāpati Gotamī
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho mahāpajāpatī gotamī yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitā kho sā mahāpajāpatī gotamī bhagavantaṁ etadavoca:
