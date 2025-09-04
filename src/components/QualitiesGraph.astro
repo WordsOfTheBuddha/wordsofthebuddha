@@ -784,5 +784,7 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 	set:html={JSON.stringify({ focus, depth, flags })}
 />
 <script type="module">
-	import "/src/components/qualities-graph-client.ts";
+	// Let Vite/Astro hoist and bundle this import into a built /assets chunk.
+	// Avoids referencing /src/* paths in production and prevents 404 -> /search rewrites.
+	import "./qualities-graph-client.ts";
 </script>
