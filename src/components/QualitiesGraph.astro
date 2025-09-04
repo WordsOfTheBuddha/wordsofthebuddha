@@ -1,6 +1,5 @@
 ---
 import qualities from "../data/qualities.json";
-import clientUrl from "./qualities-graph-client.ts?url";
 import funnelSvg from "../assets/funnel.svg?raw";
 import "../styles/topicTag.css";
 import "../styles/discover.css";
@@ -784,4 +783,4 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 	id="qualities-map-options"
 	set:html={JSON.stringify({ focus, depth, flags })}
 />
-<script type="module" src={clientUrl}></script>
+<script type="module" src="/src/components/qualities-graph-client.ts"></script>
