@@ -783,4 +783,6 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 	id="qualities-map-options"
 	set:html={JSON.stringify({ focus, depth, flags })}
 />
-<script type="module" src="/src/components/qualities-graph-client.ts"></script>
+<script type="module">
+	import "/src/components/qualities-graph-client.ts";
+</script>
