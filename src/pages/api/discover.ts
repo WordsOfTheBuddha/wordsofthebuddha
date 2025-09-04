@@ -25,6 +25,7 @@ function getQualitySynonyms(qualitySlug: string): string[] {
 				!s.startsWith("Related:") &&
 				!s.startsWith("Supported by:") &&
 				!s.startsWith("Leads to:") &&
+				!s.startsWith("Guarded by:") &&
 				!s.startsWith("Opposite:") &&
 				!s.startsWith("Context:")
 		);
