@@ -322,7 +322,7 @@
 			"undistractedness",
 			"Supported by:{contentment, full awareness, happiness}",
 			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
-			"[jhāna, samādhi, samāhita]"
+			"[jhāna, samādhi, samāhita, susamāhita]"
 		],
 		"companionship": [
 			"friendship",
@@ -655,6 +655,7 @@
 			"respect for others",
 			"(comm) originating from outside",
 			"Related:{conscience}",
+			"Supported by:{respect}",
 			"Leads to:{ethical conduct}",
 			"[ottappa]"
 		],
@@ -896,7 +897,7 @@
 			"Context: Insight is the deep, intuitive realization, a penetrative seeing into the true nature of things that transforms understanding",
 			"Related:{learned}",
 			"Supported by:{wisdom}",
-			"Leads to:{direct knowledge}",
+			"Leads to:{direct knowledge, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
 			"[ñāṇa, sammāñāṇa]"
 		],
 		"inspiration": [
@@ -1216,24 +1217,28 @@
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
+			"Supported by:{insight}",
 			"Leads to:{vision}",
 			"[aniccasaññā]"
 		],
 		"recognition of not-self": [
 			"perception of not-self",
 			"recognition of alteration and changing nature",
+			"Supported by:{insight}",
 			"Leads to:{vision}",
 			"[anattasaññā]"
 		],
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
 			"contemplation on the drawbacks",
+			"Supported by:{insight}",
 			"Leads to:{vision}",
 			"[asubhasaññā]"
 		],
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
+			"Supported by:{insight}",
 			"Leads to:{vision}",
 			"[dukkhasaññā]"
 		],
@@ -1297,7 +1302,7 @@
 			"honour",
 			"attentiveness",
 			"Supported by:{truth}",
-			"Leads to:{humility}",
+			"Leads to:{fear of wrongdoing, humility}",
 			"[gārava, sakkāra]"
 		],
 		"right effort": [
@@ -1464,7 +1469,7 @@
 			"aloofness",
 			"non-association",
 			"Leads to:{wholesome}",
-			"[viveka]"
+			"[viveka, asaṃsaṭṭha]"
 		],
 		"sorrow": [
 			"grief",
@@ -1687,7 +1692,7 @@
 		],
 		"wisdom": [
 			"the quality of possessing experience alongside knowledge and sound judgment",
-			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable",
+			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable, steadfast",
 			"an experiential understanding of the four noble truths",
 			"Leads to:{good friendship, good habits, insight, patience}",
 			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
