@@ -1,6 +1,7 @@
 ---
 title: Ūmibhaya sutta - Peril Of Waves
 description: The Buddha describes four perils that can be encountered by those who have gone forth into homelessness, drawing an analogy to the dangers faced when entering water. These perils are anger and irritation (waves), gluttony (crocodiles), sensual pleasures (whirlpools), and lust (carnivorous fish).
+qualities: anger, irritability, greed, non-restraint, muddle-minded, sensual desire, passion
 fetter: sensual desire, ill will, ignorance
 tags: peril, danger, going forth, homelessness, mindfulness, unrestrained sense faculties, women, sensual pleasure, sensual desire, anger, irritation, gluttony, overeating, lust, passion, an, an4
 simile: waves, gluttony, whirlpools, carnivorous fish
