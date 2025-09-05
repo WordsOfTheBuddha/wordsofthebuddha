@@ -1,6 +1,7 @@
 ---
 title: Paṭhama samādhi  sutta - Collectedness (First)
 description: The Buddha describes the four kinds of persons found existing in the world.
+qualities: insight, tranquility, discernment, wisdom
 fetter: ignorance
 tags: tranquility, insight, wisdom, an, an4
 slug: an4.92
