@@ -92,8 +92,8 @@ const neutralByLetter = groupByFirstLetter(qualities.neutral);
 								{qualitiesForLetter.sort().map((quality) => {
 									// Explicitly type synonymsList as array of strings or arrays of strings
 									const synonymsList: (string | string[])[] =
-										qualities.synonyms[
-											quality as keyof typeof qualities.synonyms
+										qualities.qualities[
+											quality as keyof typeof qualities.qualities
 										] || [];
 									const discourses =
 										qualityMappings[

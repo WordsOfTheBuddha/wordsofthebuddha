@@ -1,7 +1,7 @@
 ---
 title: Guhaṭṭhaka sutta - Cave
 description: Eight verses on overcoming the mire of delusion by avoiding attachment to sensory pleasures, discerning their causes, and practicing for being free of ‘mine’.
-qualities: illusion, sensual desire, perceiving gratification, greed, suffering, wisdom, personal existence, with nothing, attachment, dispassion, free from attachment, diligence, complete comprehension
+qualities: illusion, sensual desire, perceiving gratification, greed, suffering, wisdom, personal existence, free from attachment, attachment, dispassion, free from attachment, diligence, complete comprehension
 theme: inspiration, wisdom, inquisitiveness
 slug: snp4.2
 simile: fish in a dwindling stream of little water

@@ -2,7 +2,6 @@
 	"negative": [
 		"adventurous",
 		"aggressiveness",
-		"ambition",
 		"argumentativeness",
 		"attachment",
 		"anger",
@@ -47,11 +46,13 @@
 		"negligence",
 		"non-restraint",
 		"passion",
+		"perceiving gratification",
 		"personal existence",
 		"perturbation",
 		"regret",
 		"resentment",
-		"self-rejection",
+		"self-erasure",
+		"self-making",
 		"sensual desire",
 		"sexual misconduct",
 		"shamelessness",
@@ -110,10 +111,10 @@
 		"humility",
 		"impartiality",
 		"inquisitiveness",
-		"joy",
-		"joyful pleasure",
 		"insight",
 		"inspiration",
+		"joy",
+		"joyful pleasure",
 		"learned",
 		"liberation",
 		"loving-kindness",
@@ -126,7 +127,6 @@
 		"not taking what is not given",
 		"one-pointedness",
 		"patience",
-		"perceiving gratification",
 		"perceiving drawback",
 		"politeness",
 		"psychic power",
@@ -138,7 +138,7 @@
 		"recollection of death",
 		"recollection of the Buddha",
 		"recollection of the Dhamma",
-		"recollection of the Saṅgha",
+		"recollection of the Sangha",
 		"respect",
 		"right effort",
 		"right intention",
@@ -167,14 +167,16 @@
 		"with nothing",
 		"without fear"
 	],
-	"synonyms": {
+	"qualities": {
 		"adventurous": [
 			"audacious",
 			"bold",
 			"wild",
 			"unrestrained",
 			"untamed",
-			"Rooted in:{non-restraint}",
+			"Supported by:{non-restraint}",
+			"Leads to:{discontentment}",
+			"Opposite:{tame}",
 			"[adanta]"
 		],
 		"affection": [
@@ -182,8 +184,8 @@
 			"love",
 			"tender regard",
 			"Context: Mental quality of tender affection and fond regard, often wholesome when rooted in kindness, which inclines the mind toward warmth and care. When unguarded, it may turn toward fixation upon what is 'dear,' leading the mind to attachment and the grief that follows separation from what has been clung to as 'dear'.",
-			"Related:{dearness}",
-			"Rooted in:{loving-kindness}",
+			"Supported by:{loving-kindness}",
+			"Leads to:{compassion, dearness}",
 			"Opposite:{aversion}",
 			"[pema]"
 		],
@@ -195,25 +197,16 @@
 			"pugnacity",
 			"violence",
 			"injury causing behavior",
-			"Rooted in:{anger}",
+			"Supported by:{anger, argumentativeness}",
+			"Leads to:{harm}",
 			"[sārambha, caṇḍa]"
-		],
-		"ambition": [
-			"an aspiration for identity",
-			"drive for status or attainment",
-			"romanticizing some better self or future state",
-			"Context: Spiritual or worldly striving to “be someone,” the “I must become something” energy",
-			"Related:{personal existence}",
-			"Rooted in:{conceit, desire}",
-			"[bhavataṇhā, bhavesanā]"
 		],
 		"anger": [
 			"rage",
 			"wrath",
 			"fury",
 			"indignation",
-			"Related:{aggressiveness, irritability, resentment}",
-			"Rooted in:{aversion}",
+			"Supported by:{irritability, resentment}",
 			"Leads to:{aggressiveness}",
 			"Opposite:{loving-kindness}",
 			"[kodha, kopa]"
@@ -229,7 +222,8 @@
 			"wavering",
 			"worry",
 			"Related:{impatience}",
-			"Rooted in:{perturbation}",
+			"Supported by:{perturbation}",
+			"Leads to:{ignorance}",
 			"[kukkucca, uddhacca, darathaja]"
 		],
 		"appreciative joy": [
@@ -238,7 +232,8 @@
 			"rejoicing in the happiness of others",
 			"delight in the success of others",
 			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
-			"Rooted in:{contentment, loving-kindness, happiness}",
+			"Supported by:{contentment, compassion}",
+			"Leads to:{politeness, equanimity}",
 			"Opposite:{jealousy}",
 			"[muditā]"
 		],
@@ -248,9 +243,9 @@
 			"contrariness",
 			"quarrelsomeness",
 			"Context: Disposition or tendency to argue, disagree or engage in contention, often motivated by conceit or attachment to views. It obstructs harmony and feeds quarrels, rivalry, and feuding.",
-			"Related:{feuding}",
-			"Rooted in:{conceit, clinging to rules and observances}",
-			["kalaha", "viggaha", "vivāda"]
+			"Supported by:{boastfulness, clinging to rules and observances, jealousy}",
+			"Lead to:{aggressiveness, feuding}",
+			"[kalaha, viggaha, vivāda]"
 		],
 		"attachment": [
 			"acquisition",
@@ -262,7 +257,7 @@
 			"entanglement",
 			"bound",
 			"connected",
-			"Rooted in:{craving}",
+			"Supported by:{craving, merit}",
 			"Leads to:{dearness, lamentation, sorrow}",
 			"[upadhi, upādāna, sakiñcana]"
 		],
@@ -272,8 +267,8 @@
 			"hostility",
 			"fault-finding mindset",
 			"upset",
-			"Rooted in:{ignorance}",
-			"Leads to:{anger, displeasure, fear, harm, ill will, impatience, irritability, resentment}",
+			"Supported by:{ignorance, perceiving gratification}",
+			"Leads to:{displeasure, fear, harm, ill will, impatience, irritability, lack of discernment}",
 			"Opposite:{patience}",
 			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance",
 			"[dosa, paṭighasaññā, vera]"
@@ -281,13 +276,15 @@
 		"bad friendship": [
 			"friendship with unwholesome persons",
 			"Related:{companionship}",
-			"Rooted in:{immaturity}",
+			"Supported by:{immaturity, lack of discernment}",
+			"Leads to:{consuming intoxicants, moral recklessness, shamelessness, wrong effort}",
 			"[pāpamittatā]"
 		],
 		"bad habits": [
 			"practice of unbeneficial actions",
 			"pursuing unskillful actions",
-			"Rooted in:{laziness, negligence}",
+			"Supported by:{laziness}",
+			"Leads to:{harm}",
 			"[anuyoga + akusala]"
 		],
 		"boastfulness": [
@@ -296,7 +293,9 @@
 			"overbearing",
 			"self-promotion",
 			"self-praising",
-			"Rooted in:{conceit}",
+			"Supported by:{conceit, personal existence}",
+			"Leads to:{argumentativeness}",
+			"Opposite:{unassuming}",
 			"[attukkaṁsaka]"
 		],
 		"clinging to rules and observances": [
@@ -310,7 +309,8 @@
 			"attachment to rules",
 			"attachment to regulations",
 			"attachment to laws",
-			"Rooted in:{wrong view}",
+			"Supported by:{wrong view}",
+			"Leads to:{stubbornness}",
 			"[sīlabbataparāmāsa]"
 		],
 		"collectedness": [
@@ -320,16 +320,16 @@
 			"stillness of mind",
 			"stability of mind",
 			"undistractedness",
-			"Rooted in:{joyful pleasure, one-pointedness, tranquility}",
-			"Leads to:{equanimity, formless, psychic power}",
-			"[jhāna, samādhi, samāhita]"
+			"Supported by:{contentment, full awareness, happiness}",
+			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
+			"[jhāna, samādhi, samāhita, susamāhita]"
 		],
 		"companionship": [
 			"friendship",
 			"fellowship",
 			"camaraderie",
 			"Related:{good friendship, bad friendship}",
-			"Rooted in:{desire}",
+			"Supported by:{desire}",
 			"[sahāyatā]"
 		],
 		"compassion": [
@@ -337,7 +337,8 @@
 			"concern",
 			"sympathy",
 			"kindness towards those who are suffering",
-			"Rooted in:{loving-kindness, non-harm}",
+			"Supported by:{affection, merit, non-harm}",
+			"Leads to:{appreciative joy, equanimity}",
 			"Context: Mental quality of wise empathy in response to suffering, which counters qualities of harm or cruelty.",
 			"[karuṇā]"
 		],
@@ -345,7 +346,8 @@
 			"full understanding",
 			"knowing full well",
 			"seeing things as they are",
-			"Rooted in:{wisdom, insight, direct knowledge}",
+			"Supported by:{wisdom, insight, direct knowledge}",
+			"Leads to:{ending}",
 			"[pariññāya, sammadaññā, sampajañña, saṅkhāya]"
 		],
 		"conceit": [
@@ -355,9 +357,9 @@
 			"self-importance",
 			"tendency of self-comparison",
 			"Context: self-view expressed as comparison—seeing oneself as superior, inferior, or equal; the persistent “I am” conceit (asmimāna) that underlies identification and fuels rebirth",
-			"Rooted in:{ignorance}",
-			"Leads to:{ambition, argumentativeness, boastfulness, contempt, feuding, personal existence, stubbornness, vanity}",
-			"Opposite:{non-identification, non-proliferation}",
+			"Supported by:{ignorance}",
+			"Leads to:{argumentativeness, boastfulness, feuding, mental proliferation, personal existence, stubbornness, vanity}",
+			"Opposite:{humility, non-identification, non-proliferation}",
 			"[māna, atimāna, unnaḷa]"
 		],
 		"conscience": [
@@ -366,6 +368,7 @@
 			"modesty",
 			"(comm) originating from inside",
 			"Related:{fear of wrongdoing}",
+			"Supported by:{respect, truth}",
 			"Leads to:{ethical conduct}",
 			"[hirī]"
 		],
@@ -373,7 +376,8 @@
 			"drinking liquor and wine",
 			"drinking alcohol",
 			"taking intoxicating substances",
-			"Rooted in:{wrong view}",
+			"Supported by:{wrong view, bad friendship}",
+			"Leads to:{harm, negligence}",
 			"[surāmerayapāna]"
 		],
 		"contempt": [
@@ -383,7 +387,8 @@
 			"disrespect",
 			"belittlement",
 			"disparagement",
-			"Rooted in:{conceit}",
+			"Supported by:{displeasure, personal existence}",
+			"Leads to:{ill will}",
 			"[makkha]"
 		],
 		"contemplation": [
@@ -394,7 +399,8 @@
 			"refining one's understanding",
 			"cogitation",
 			"Related:{examination}",
-			"Rooted in:{wise attention}",
+			"Supported by:{wise attention}",
+			"Leads to:{perceiving drawback}",
 			"[anupassanā]"
 		],
 		"contentment": [
@@ -402,8 +408,9 @@
 			"having few desires",
 			"satisfaction",
 			"sense of ease",
-			"Related:{joy, joyful pleasure, happiness}",
-			"Rooted in:{sense restraint}",
+			"Related:{joy, happiness}",
+			"Supported by:{sense restraint, self-control}",
+			"Leads to:{collectedness}",
 			"[santutthi, appicchatā, tuṭṭha]"
 		],
 		"continuous effort": [
@@ -413,10 +420,9 @@
 			"zealous",
 			"unflagging endeavor",
 			"Context: The flame of effort. It is the application of diligence put into moment-to-moment continuity",
-			"Related:{rousing of energy}",
-			"Rooted in:{diligence}",
+			"Supported by:{diligence, rousing of energy}",
 			"Leads to:{vigour}",
-			"Opposite:{laziness, negligence, weak in effort, wrong effort}",
+			"Opposite:{laziness, weak in effort, wrong effort}",
 			"[ātāpī, parakkamma]"
 		],
 		"craving": [
@@ -424,8 +430,9 @@
 			"yearning",
 			"longing",
 			"lit. thirst",
-			"Related:{greed, passion, sensual desire}",
-			"Rooted in:{ignorance}",
+			"Related:{self-erasure, self-making, sensual desire}",
+			"Supported by:{ignorance}",
+			"Leads to:{passion, mental proliferation}",
 			"[taṇha, abhijjhā]"
 		],
 		"cruelty": [
@@ -436,7 +443,8 @@
 			"injuring",
 			"viciousness",
 			"Related:{harm, slaughtering}",
-			"Rooted in:{aversion}",
+			"Supported by:{aversion}",
+			"Leads to:{regret}",
 			"[vihiṁsā]"
 		],
 		"cultivation": [
@@ -446,7 +454,7 @@
 			"nurturing",
 			"growth",
 			"Context: The term 'cultivation' implies that which causes to be, it is primarily described in the context of developing and nurturing a bright quality.",
-			"Rooted in:{desire, diligence}",
+			"Supported by:{desire, diligence}",
 			"Leads to:{good habits}",
 			"[bhāvanā]"
 		],
@@ -455,8 +463,8 @@
 			"cherished",
 			"pleasing",
 			"Context: Mental quality of holding something or someone as 'dear' through attachment, which binds the mind with craving and possessiveness. It is the external fixation upon what the mind clings to, often giving rise to envy, quarrels, and sorrow.",
-			"Related: {affection, jealousy}",
-			"Rooted in:{attachment}",
+			"Supported by:{affection, attachment}",
+			"Leads to:{jealousy, sorrow, lamentation}",
 			"Opposite: {aversion}",
 			"[piya]"
 		],
@@ -467,15 +475,16 @@
 			"wish",
 			"intention",
 			"impulse",
-			"Leads to:{ambition, companionship, cultivation}",
+			"Supported by:{ignorance, wisdom}",
+			"Leads to:{self-making, companionship, cultivation, vigour}",
 			"[chanda]"
 		],
 		"direct knowledge": [
 			"experiential understanding",
 			"direct experience",
 			"Context: A deep, firsthand realization or knowing that arises from personal experience, not from study or conceptual understanding; it is an immediate, unmediated apprehension of truth.",
-			"Rooted in:{collectedness, tranquility}",
-			"Leads to:{complete comprehension, quenching}",
+			"Supported by:{flexible, tranquility}",
+			"Leads to:{complete comprehension}",
 			"[abhiñña]"
 		],
 		"diligence": [
@@ -492,7 +501,7 @@
 			"ability to discriminate, distinguish",
 			"clear seeing",
 			"penetrating internal vision",
-			"Rooted in:{mindfulness, full awareness, wise attention}",
+			"Supported by:{mindfulness, full awareness, wise attention}",
 			"Leads to:{wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
@@ -500,13 +509,14 @@
 			"dissatisfaction",
 			"unsatisfactoriness",
 			"boredom",
-			"Rooted in:{craving}",
+			"Supported by:{craving}",
+			"Leads to:{having many desires}",
 			"[asantuṭṭhitā, aratī, atitta]"
 		],
 		"disenchantment": [
 			"de-illusionment",
 			"disinterest",
-			"Rooted in:{perceiving drawback, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
+			"Supported by:{perceiving drawback, vision}",
 			"Leads to:{dispassion}",
 			"[nibbidā]"
 		],
@@ -515,9 +525,9 @@
 			"disinterest",
 			"fading of desire",
 			"disentanglement",
-			"Related:{free from attachment}",
-			"Rooted in:{disenchantment}",
-			"Leads to:{direct knowledge, ending}",
+			"Supported by:{disenchantment}",
+			"Leads to:{direct knowledge, giving up}",
+			"Opposite:{passion}",
 			"[virāga, visaṃyutta]"
 		],
 		"displeasure": [
@@ -525,7 +535,8 @@
 			"unhappiness",
 			"bitterness",
 			"Related:{anger, sorrow}",
-			"Rooted in:{aversion}",
+			"Supported by:{aversion, muddle-minded}",
+			"Leads to:{contempt, irritability, distraction}",
 			"[domanassa]"
 		],
 		"distraction": [
@@ -534,7 +545,8 @@
 			"not well-composed",
 			"with a wandering mind",
 			"with runaway thoughts",
-			"Rooted in:{perturbation}",
+			"Supported by:{displeasure, perturbation}",
+			"Leads to:{perceiving gratification, muddle-minded}",
 			"Opposite:{collectedness}",
 			"[asamāhita, asamādhi]"
 		],
@@ -544,8 +556,8 @@
 			"uncertainty",
 			"wavering",
 			"perplexity",
-			"Related:{faithlessness}",
-			"Rooted in:{illusion, unwise attention}",
+			"Supported by:{illusion, unwise attention}",
+			"Leads to:{faithlessness, ignorance}",
 			"[vicikiccha, kaṅkhā, vimati]"
 		],
 		"drowsiness": [
@@ -554,7 +566,8 @@
 			"feeling lethargic",
 			"lit. stiffness (of mind/body due to tiredness)",
 			"Related:{dullness}",
-			"Rooted in:{discontentment}",
+			"Supported by:{discontentment}",
+			"Leads to:{ignorance}",
 			"[middha]"
 		],
 		"dullness": [
@@ -563,7 +576,8 @@
 			"mental sluggishness",
 			"inattentiveness or lack of sharpness",
 			"Related:{drowsiness}",
-			"Rooted in:{discontentment}",
+			"Supported by:{discontentment}",
+			"Leads to:{ignorance}",
 			"[thina]"
 		],
 		"ending": [
@@ -571,8 +585,8 @@
 			"exhaustion",
 			"gradual ending",
 			"wearing away",
-			"Rooted in:{dispassion}",
-			"Leads to:{tranquility}",
+			"Supported by:{free from attachment, complete comprehension}",
+			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
 		],
 		"equanimity": [
@@ -581,14 +595,15 @@
 			"equipose",
 			"non-reactivity",
 			"composure",
-			"Rooted in:{collectedness}",
-			"Leads to:{impartiality}",
+			"Supported by:{collectedness, compassion, appreciative joy}",
+			"Guarded by:{patience}",
+			"Leads to:{imperturbable}",
 			"[upekkha]"
 		],
 		"ethical conduct": [
 			"moral integrity",
 			"virtue",
-			"Rooted in:{conscience, fear of wrongdoing}",
+			"Supported by:{conscience, fear of wrongdoing}",
 			"Leads to:{non-regret}",
 			"[sīla]"
 		],
@@ -598,14 +613,18 @@
 			"probing",
 			"lit. picking",
 			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
-			"Related:{inquisitiveness, contemplation}",
-			"[vicaya, parikkhati]"
+			"Related:{contemplation}",
+			"Supported by:{inquisitiveness, mindfulness, wise attention}",
+			"Leads to:{perceiving drawback, rousing of energy}",
+			"[vicaya, parikkhati, dhammavicaya]"
 		],
 		"faith": [
 			"confidence",
 			"trust",
 			"belief",
 			"conviction",
+			"Supported by:{suffering}",
+			"Leads to:{joy, recollection of the Buddha, recollection of the Dhamma, recollection of the Sangha, rousing of energy}",
 			"[saddha, pasanna]"
 		],
 		"faithlessness": [
@@ -613,7 +632,9 @@
 			"lack of conviction",
 			"disbelief",
 			"cynicism",
-			"Rooted in:{doubt}",
+			"Supported by:{doubt}",
+			"Leads to:{suffering}",
+			"Opposite:{faith}",
 			"[assadha]"
 		],
 		"fear": [
@@ -624,6 +645,8 @@
 			"horror",
 			"panic",
 			"terror",
+			"Supported by:{harm}",
+			"Leads to:{suffering}",
 			"[bhaya]"
 		],
 		"fear of wrongdoing": [
@@ -631,6 +654,9 @@
 			"moral dread",
 			"respect for others",
 			"(comm) originating from outside",
+			"Related:{conscience}",
+			"Supported by:{respect}",
+			"Leads to:{ethical conduct}",
 			"[ottappa]"
 		],
 		"feuding": [
@@ -641,8 +667,8 @@
 			"opposition",
 			"struggle",
 			"conflict",
-			"Related:{argumentativeness}",
-			"Rooted in:{conceit}",
+			"Supported by:{argumentativeness, stubbornness}",
+			"Leads to:{harm, perturbation}",
 			"[paḷāsa]"
 		],
 		"flexible": [
@@ -652,12 +678,15 @@
 			"yielding",
 			"ready",
 			"suitable for use",
+			"Supported by:{collectedness}",
+			"Leads to:{direct knowledge, tame}",
 			"[mudu, kammañña]"
 		],
 		"formless": [
 			"immaterial",
 			"surpassing forms",
-			"Rooted in:{collectedness}",
+			"Supported by:{imperturbable}",
+			"Leads to:{non-proliferation}",
 			"[arūpa]"
 		],
 		"free from attachment": [
@@ -667,14 +696,17 @@
 			"without acquisitions",
 			"not clinging",
 			"not holding onto",
-			"Related:{disenchantment, dispassion}",
-			"Opposite:{attachment, passion}",
+			"Supported by:{giving up}",
+			"Leads to:{ending}",
+			"Opposite:{attachment}",
 			"[nirūpadhi, nānupādāya]"
 		],
 		"full awareness": [
 			"clear comprehension",
 			"attentiveness",
-			"Related:{mindfulness, wakefulness}",
+			"Supported by:{mindfulness}",
+			"Leads to:{collectedness}",
+			"Opposite:{distraction}",
 			"[sampajañña]"
 		],
 		"giving": [
@@ -684,6 +716,8 @@
 			"philanthropy",
 			"providing with",
 			"gift with",
+			"Supported by:{truth}",
+			"Leads to:{merit, spiritual life}",
 			"Opposite:{stinginess}",
 			"[dāna]"
 		],
@@ -692,17 +726,22 @@
 			"relinquishment",
 			"letting go",
 			"abandonment",
+			"Supported by:{dispassion, spiritual life}",
+			"Leads to:{free from attachment}",
 			"[nekkhamma]"
 		],
 		"good friendship": [
 			"friendship with wholesome persons",
 			"Related:{companionship}",
+			"Supported by:{wisdom, diligence}",
+			"Leads to:{right view}",
 			"[kalyāṇamittatā]"
 		],
 		"good habits": [
 			"practice of beneficial actions",
 			"pursuing skillful actions",
-			"Rooted in:{diligence}",
+			"Supported by:{wisdom, diligence}",
+			"Leads to:{vigour}",
 			"[anuyoga + kusala]"
 		],
 		"greed": [
@@ -712,7 +751,9 @@
 			"rapacity",
 			"money grabbing",
 			"grabbiness",
-			"Related:{passion, craving, stinginess, jealousy}",
+			"Related:{passion}",
+			"Supported by:{mental proliferation}",
+			"Leads to:{having many desires, stinginess}",
 			"Context: A grasping mental quality of craving, possessiveness, or lustful wanting that clings to objects or experiences; it fuels attachment and obstructs renunciation and contentment",
 			"[lobha]"
 		],
@@ -721,6 +762,8 @@
 			"positive state of mind",
 			"sense of ease",
 			"Related:{joy, joyful pleasure, contentment}",
+			"Supported by:{tranquility}",
+			"Leads to:{collectedness}",
 			"[sukha, somanassa]"
 		],
 		"harm": [
@@ -728,15 +771,30 @@
 			"destructiveness",
 			"bad",
 			"evil",
-			"Related:{cruelty, unwholesome}",
+			"Related:{cruelty}",
+			"Supported by:{aggressiveness, bad habits, bad friendship, feuding, non-restraint, treachery, wrong speech}",
+			"Leads to:{fear, regret}",
 			"[pāpaka]"
 		],
-		"having many desires": ["greediness", "[mahicchatā]"],
+		"having many desires": [
+			"greediness",
+			"Related to:{sensual desire}",
+			"Supported by:{greed, discontentment}",
+			"Leads to:{hypocrisy}",
+			"[mahicchatā]"
+		],
 		"humility": [
+			"accepting of correction",
 			"modesty",
 			"unpretentiousness",
 			"humbleness",
-			"lack of pride",
+			"freedom from self-importance",
+			"recognition of limits",
+			"staying teachable",
+			"Supported by:{respect, sincerity}",
+			"Leads to:{politeness, unassuming}",
+			"Opposite:{conceit}",
+			"Context: An honest, even-toned self-appraisal that stays open to feedback, honors others, and neither inflates nor denies one’s real abilities; it supports learning, concord, and restraint.",
 			"[anatimāna]"
 		],
 		"hypocrisy": [
@@ -745,6 +803,10 @@
 			"deceitfulness",
 			"putting on a false front",
 			"fraudulent",
+			"Supported by:{having many desires, shamelessness}",
+			"Leads to:{treachery}",
+			"Opposite:{sincerity}",
+			"Context: A counterfeit display of virtue or attainment—concealing faults and projecting qualities one lacks—often to secure material support, status, or admiration; it thrives on craving for recognition and collapses with honesty, modesty, and accountability.",
 			"[māyāvī]"
 		],
 		"ignorance": [
@@ -753,13 +815,17 @@
 			"fundamental unawareness of the true nature of reality",
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
-			"[avijja]"
+			"Supported by:{anxiety, doubt, drowsiness, dullness, ill will, sensual desire}",
+			"Leads to:{aversion, conceit, craving, desire, illusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
+			"[avijjā]"
 		],
 		"ill will": [
 			"actively opposing or rejecting others in thought",
 			"thought of malevolence towards another",
 			"hostile reflections towards another",
-			"Related:{aversion, anger, irritability}",
+			"Related:{anger, irritability}",
+			"Supported by:{aversion, contempt, wrong view}",
+			"Leads to:{resentment, ignorance}",
 			"Opposite:{loving-kindness}",
 			"Context: A mental quality of actively opposing or rejecting others in thought, manifesting as deliberate thoughts or intentions that oppose kindness and compassion; it fuels conflict and obstructs goodwill.",
 			"[byāpāda]"
@@ -770,7 +836,8 @@
 			"misapprehension",
 			"distorted view",
 			"that which fuels further confusion and doubt",
-			"Leads to:{doubt}",
+			"Supported by:{ignorance, perceiving gratification}",
+			"Leads to:{doubt, lack of discernment}",
 			"[moha]"
 		],
 		"immaturity": [
@@ -780,6 +847,8 @@
 			"lack of wisdom",
 			"lack of experience",
 			"foolishness",
+			"Supported by:{ignorance}",
+			"Leads to:{bad friendship}",
 			"[bāla]"
 		],
 		"impartiality": [
@@ -787,7 +856,8 @@
 			"equipose",
 			"unaffectedness",
 			"Context: Represents the nature of an awakened being - steady, incorruptible, not favoring or rejecting based on personal bias.",
-			"Rooted in:{equanimity}",
+			"Related:{sorrow-free, without fear}",
+			"Supported by:{quenching}",
 			"[tādibhāva]"
 		],
 		"impatience": [
@@ -796,6 +866,8 @@
 			"lack of tolerance",
 			"unable to endure",
 			"Related:{irritability, anxiety}",
+			"Supported by:{aversion, wrong intention}",
+			"Leads to:{irritability}",
 			"[akkhama]"
 		],
 		"inquisitiveness": [
@@ -803,7 +875,8 @@
 			"curiosity",
 			"inquiring",
 			"testing",
-			"Related:{examination}",
+			"Leads to:{learned, examination}",
+			"Supported by:{inspiration}",
 			"[vīmaṃsā]"
 		],
 		"insanity": [
@@ -813,8 +886,19 @@
 			"loss of reason",
 			"madness",
 			"Context: A disturbed and unstable mental condition in which the mind is scattered, erratic, or deranged. It can range from temporary disorientation and agitation to severe forms of insanity, obstructing clarity and discernment.",
-			"Rooted in:{unwise attention, wrong view}",
+			"Supported by:{unwise attention, wrong view}",
+			"Leads to:{suffering}",
 			"[ummattaka, cittakkhepa]"
+		],
+		"insight": [
+			"having insight",
+			"with understanding",
+			"right knowledge",
+			"Context: Insight is the deep, intuitive realization, a penetrative seeing into the true nature of things that transforms understanding",
+			"Related:{learned}",
+			"Supported by:{wisdom}",
+			"Leads to:{direct knowledge, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
+			"[ñāṇa, sammāñāṇa]"
 		],
 		"inspiration": [
 			"eloquence",
@@ -823,6 +907,8 @@
 			"wit",
 			"creativity",
 			"Context: A mental quality characterized by a sudden burst of creative insight or understanding, often leading to innovative ideas or solutions.",
+			"Supported by:{truth}",
+			"Leads to:{inquisitiveness}",
 			"Opposite:{mental proliferation}",
 			"[paṭibhāna]"
 		],
@@ -831,7 +917,9 @@
 			"moodiness",
 			"being prone to annoyance",
 			"being prone to anger",
-			"Related:{impatience, anger, anxiety}",
+			"Related:{anxiety, muddle-minded}",
+			"Supported by:{displeasure, impatience}",
+			"Leads to:{anger, wrong speech}",
 			"[kodhana]"
 		],
 		"jealousy": [
@@ -840,45 +928,43 @@
 			"possessiveness",
 			"protective of",
 			"unwilling to part with",
-			"Related:{greed, stinginess}",
+			"Related:{stinginess}",
+			"Supported by:{dearness}",
+			"Leads to:{argumentativeness}",
 			"Opposite:{appreciative joy}",
 			"[issā]"
 		],
 		"joy": [
 			"gladness",
-			"Rooted in:{non-regret}",
+			"wellbeing",
+			"Supported by:{non-regret}",
 			"Related:{contentment, happiness}",
 			"Leads to:{joyful pleasure}",
-			["pāmojja"]
+			"[pāmojja]"
 		],
 		"joyful pleasure": [
 			"heartfelt joy",
 			"spiritual rapture",
 			"lit. lovely feeling",
 			"Related:{happiness, contentment}",
-			"Rooted in:{joy}",
+			"Supported by:{joy}",
+			"Leads to:{one-pointedness, tranquility}",
 			"[pīti]"
-		],
-		"insight": [
-			"having insight",
-			"with understanding",
-			"right knowledge",
-			"Context: Insight is the deep, intuitive realization, a penetrative seeing into the true nature of things that transforms understanding",
-			"Related:{learned, direct knowledge}",
-			"[ñāṇa, sammāñāṇa]"
 		],
 		"lack of discernment": [
 			"lack of clear comprehension",
 			"lack of wisdom",
-			"immaturity",
 			"child-like in understanding",
+			"Supported by:{passion, aversion, illusion, unwise attention}",
+			"Leads to:{immaturity, bad friendship}",
 			"[asampajañña, bāla, duppañña]"
 		],
 		"lamentation": [
 			"crying",
 			"wailing",
 			"mourning",
-			"Related:{sorrow}",
+			"Supported by:{attachment, dearness}",
+			"Leads to:{sorrow}",
 			"[parideva]"
 		],
 		"laziness": [
@@ -887,7 +973,8 @@
 			"inactivity",
 			"sluggishness",
 			"Context: Laziness is a mental quality characterized by unwillingness or lack of energy and motivation to engage in wholesome activities or exert effort; it leads to stagnation and missed opportunities for growth.",
-			"Related:{negligence, weak in effort}",
+			"Supported by:{weak in effort}",
+			"Leads to:{bad habits}",
 			"Opposite:{continuous effort, right effort, rousing of energy}",
 			"[kosajja, tandī, ālasya]"
 		],
@@ -896,6 +983,9 @@
 			"well studied",
 			"Related:{insight}",
 			"Context: Refers to a person who is well educated and knowledgeable. Learning is the process of acquiring knowledge.",
+			"Related:{insight}",
+			"Supported by:{truth}",
+			"Leads to:{inquisitiveness}",
 			"[bahussuta, suta]"
 		],
 		"liberation": [
@@ -904,6 +994,8 @@
 			"deliverance",
 			"emancipation",
 			"Context: Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna",
+			"Supported by:{ending}",
+			"Leads to:{quenching}",
 			"[vimutti, nibbāna]"
 		],
 		"loving-kindness": [
@@ -912,17 +1004,27 @@
 			"kindness",
 			"friendliness",
 			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
-			"Related:{appreciative joy}",
+			"Related:{politeness, right intention}",
+			"Supported by:{right view}",
+			"Leads to:{affection}",
 			"Opposite:{ill will}",
 			"[metta, abyāpāda, abyāpajja]"
 		],
-		"merit": ["good deeds", "spiritual wealth", "[puñña, kalyāṇa]"],
+		"merit": [
+			"good deeds",
+			"spiritual wealth",
+			"Supported by:{giving}",
+			"Leads to:{attachment, compassion}",
+			"[puñña, kalyāṇa]"
+		],
 		"mental proliferation": [
 			"conceptual proliferation",
 			"conceptualization",
 			"forming various opinions",
 			"Context:Mental proliferation is the tendency to overelaborate mental constructs—such as opinions, judgments, projections, and narratives—arising from sensory experience. It entangles the mind in a cascade of thoughts, concepts, and perceptions, giving rise to unwholesome states and suffering.",
-			"Opposite:{inspiration}",
+			"Supported by:{conceit, craving}",
+			"Leads to:{greed, self-making}",
+			"Opposite:{inspiration, non-proliferation}",
 			"[papañca]"
 		],
 		"mindfulness": [
@@ -930,29 +1032,35 @@
 			"keeping in mind",
 			"awareness",
 			"observing body, felt experience, mind, and mental qualities",
-			"Related:{wakefulness, full awareness}",
+			"Supported by:{right effort, wakefulness}",
+			"Leads to:{examination, full awareness}",
+			"Opposite:{muddle-minded}",
 			"[sati]"
 		],
 		"moral recklessness": [
 			"fearlessness of wrongdoing",
 			"without concern for others",
 			"lack of prudence",
+			"Related:{wrong view}",
+			"Supported by:{ignorance, bad friendship}",
+			"Leads to:{harm, sexual misconduct, slaughtering, stealing, unprincipled}",
 			"[anottappa]"
 		],
-		"muddle-minded": ["forgetful", "not mindful", "[muṭṭhassatī]"],
-		"one-pointedness": [
-			"concentration",
-			"focus",
-			"unification of mind",
-			"Related:{collectedness}",
-			"[ekagga]"
+		"muddle-minded": [
+			"forgetfulness",
+			"not mindful",
+			"Related:{irritability}",
+			"Supported by:{distraction, wrong effort}",
+			"Leads to:{displeasure, weak in effort}",
+			"Opposite:{mindfulness}",
+			"[muṭṭhassatī]"
 		],
 		"negligence": [
 			"carelessness",
 			"heedlessness",
 			"inattentiveness",
-			"Related:{laziness, weak in effort}",
-			"Leads to:{non-restraint}",
+			"Supported by:{consuming intoxicants, sensual desire, wrong view}",
+			"Leads to:{non-restraint, weak in effort}",
 			"Opposite:{diligence}",
 			"[pamāda]"
 		],
@@ -962,26 +1070,32 @@
 			"harmlessness",
 			"non-killing",
 			"non-hurting",
+			"Supported by:{right view, right intention, right speech}",
+			"Guarded by:{right effort, mindfulness, patience}",
+			"Leads to:{right livelihood, without fear}",
 			"[avihiṃsā, ahiṁsa]"
 		],
 		"non-identification": [
 			"principle of non-identification",
 			"(comm) no craving",
 			"lit. not made of that state",
-			"Related:{non-proliferation}",
+			"Supported by:{equanimity, non-proliferation}",
+			"Leads to:{complete comprehension}",
 			"Opposite:{conceit}",
 			"[atammayatā]"
 		],
 		"non-proliferation": [
 			"not forming various opinions",
-			"Related:{non-identification}",
+			"Supported by:{formless}",
+			"Leads to:{non-identification}",
+			"Opposite:{mental proliferation}",
 			"[nippapañca]"
 		],
 		"non-regret": [
 			"non-remorse",
 			"lit. not remembering back negatively",
 			"Context: A mental quality of not regretting past actions, characterized by a clear conscience and absence of remorse; it arises from accomplishment in ethical conduct",
-			"Rooted in:{ethical conduct}",
+			"Supported by:{ethical conduct}",
 			"Leads to:{joy}",
 			"[avippaṭisāra]"
 		],
@@ -989,8 +1103,8 @@
 			"unguarded in sense faculties",
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects",
-			"Rooted in:{negligence}",
-			"Leads to:{discontentment}",
+			"Supported by:{negligence}",
+			"Leads to:{adventurous, discontentment}",
 			"[asaṁvara, asaṁyama]"
 		],
 		"not taking what is not given": [
@@ -998,32 +1112,56 @@
 			"trustworthiness",
 			"honesty regarding possessions",
 			"accepting what is offered",
+			"Supported by:{right intention}",
+			"Leads to:{right livelihood}",
+			"Opposite:{stealing}",
 			"[adinnādāna veramaṇī]"
 		],
+		"one-pointedness": [
+			"concentration",
+			"focus",
+			"unification of mind",
+			"Related:{collectedness}",
+			"Supported by:{joyful pleasure}",
+			"Leads to:{tranquility}",
+			"[ekagga]"
+		],
 		"passion": [
+			"burning fever",
 			"intense desire",
 			"strong emotion",
 			"infatuation",
 			"obsession",
 			"lust",
-			"Related:{craving, sensual desire, greed}",
+			"Related:{greed}",
+			"Supported by:{craving, ignorance, perceiving gratification}",
+			"Leads to:{sensual desire, lack of discernment}",
+			"Opposite:{dispassion}",
 			"[rāga]"
 		],
 		"patience": [
 			"endurance",
 			"tolerance",
 			"forbearance",
+			"Supported by:{wisdom, tame}",
+			"Leads to:{self-control}",
+			"Opposite:{impatience}",
 			"[khanti, khama]"
 		],
 		"perceiving gratification": [
 			"following pleasure",
 			"seeing enjoyment",
+			"sign of beautiful",
+			"Supported by:{sensual desire, distraction}",
+			"Leads to:{sensual desire}",
+			"Opposite:{perceiving drawback}",
 			"[assādānupassī]"
 		],
 		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
-			"Related:{recognition of unsatisfactoriness}",
+			"Supported by:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, contemplation}",
+			"Leads to:{wise attention}",
 			"[ādīnavānupassī]"
 		],
 		"personal existence": [
@@ -1032,7 +1170,8 @@
 			"self-identification",
 			"embodied being",
 			"egoism",
-			"Related:{ambition, conceit}",
+			"Supported by:{self-making, self-erasure}",
+			"Leads to:{boastfulness, contempt, vanity}",
 			"[sakkāya-diṭṭhi]"
 		],
 		"perturbation": [
@@ -1041,6 +1180,7 @@
 			"excitement",
 			"being stirred up",
 			"lit. shaking",
+			"Supported by:{feuding}",
 			"Leads to:{distraction}",
 			"[kopa, uddhacca, āvila]"
 		],
@@ -1049,7 +1189,11 @@
 			"being considerate",
 			"being well-mannered",
 			"friendliness",
-			"Related:{unassuming}",
+			"Related:{loving-kindness, unassuming}",
+			"Supported by:{appreciative joy, humility}",
+			"Leads to:{non-regret}",
+			"Guarded by:{patience}",
+			"Context: A relational quality of being considerate, timely, and gentle in conduct—especially in speech—that gives ease to others, attends to social cues, and avoids harshness; it supports concord in community.",
 			"[paṭisanthāra, saṇha, sorata, sappatissa]"
 		],
 		"psychic power": [
@@ -1057,7 +1201,8 @@
 			"psychic ability",
 			"spiritual power",
 			"Related:{direct knowledge}",
-			"Rooted in:{collectedness}",
+			"Supported by:{collectedness}",
+			"Leads to:{faith, vigour}",
 			"[iddhi, iddhimant]"
 		],
 		"quenching": [
@@ -1066,54 +1211,84 @@
 			"fulfilled",
 			"fully satiated",
 			"having attained emancipation",
-			"Rooted in:{direct knowledge}",
+			"Supported by:{liberation}",
+			"Leads to:{impartiality, safety, sorrow-free, without fear, with nothing}",
 			"[nibbuta, nirāsa]"
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
+			"Supported by:{insight}",
+			"Leads to:{vision}",
 			"[aniccasaññā]"
 		],
-		"recognition of not-self": ["perception of not-self", "[anattasaññā]"],
+		"recognition of not-self": [
+			"perception of not-self",
+			"recognition of alteration and changing nature",
+			"Supported by:{insight}",
+			"Leads to:{vision}",
+			"[anattasaññā]"
+		],
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
 			"contemplation on the drawbacks",
+			"Supported by:{insight}",
+			"Leads to:{vision}",
 			"[asubhasaññā]"
 		],
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
-			"Related:{perceiving drawback}",
+			"Supported by:{insight}",
+			"Leads to:{vision}",
 			"[dukkhasaññā]"
 		],
-		"recollection of death": ["mindfulness of death", "[maraṇassati]"],
+		"recollection of death": [
+			"mindfulness of death",
+			"Supported by:{mindfulness, truth}",
+			"Leads to:{vision}",
+			"[maraṇassati]"
+		],
 		"recollection of the Buddha": [
+			"recollection of Buddha",
 			"mindfulness of the Buddha",
 			"reflection on the qualities of the Buddha",
 			"Context: Mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
+			"Supported by:{faith}",
+			"Leads to:{joy}",
 			"[buddhānussati, buddhānusmṛti]"
 		],
 		"recollection of the Dhamma": [
+			"recollection of Dhamma",
 			"mindfulness of the Dhamma",
 			"reflection on the qualities of the Dhamma",
 			"Context: Mental quality of reflecting on the qualities of the Dhamma, which counters doubt and strengthens faith.",
+			"Supported by:{faith}",
+			"Leads to:{joy}",
 			"[dhammānussati, dhammānusmṛti]"
 		],
-		"recollection of the Saṅgha": [
+		"recollection of the Sangha": [
+			"recollection of Saṅgha",
 			"mindfulness of the Saṅgha",
 			"reflection on the qualities of the Saṅgha",
 			"Context: Mental quality of reflecting on the qualities of the Saṅgha, which counters doubt and strengthens faith.",
+			"Supported by:{faith}",
+			"Leads to:{joy}",
 			"[saṅghānussati, saṅghānusmṛti]"
 		],
 		"regret": [
 			"to be burned",
 			"to be consumed",
 			"to suffer remorse",
+			"Supported by:{cruelty, harm, sexual misconduct, slaughtering, stealing, unprincipled}",
+			"Leads to:{suffering}",
 			"[tappati]"
 		],
 		"resentment": [
 			"bearing a grudge",
 			"harboring enmity",
-			"Related:{anger, aversion, ill will}",
+			"Related:{aversion}",
+			"Supported by:{ill will}",
+			"Leads to:{anger}",
 			"Opposite:{loving-kindness}",
 			"[upanāha]"
 		],
@@ -1122,17 +1297,21 @@
 			"veneration",
 			"regard",
 			"admiration",
-			"politeness",
 			"appreciation",
 			"deference",
 			"honour",
 			"attentiveness",
+			"Supported by:{truth}",
+			"Leads to:{fear of wrongdoing, humility}",
 			"[gārava, sakkāra]"
 		],
 		"right effort": [
 			"right endeavor",
 			"right striving",
 			"Context: Energy and resolve directed toward preventing unwholesome states from arising, abandoning arisen unwholesome states, cultivating wholesome states, and maintaining arisen wholesome states; persistent application of the mind aligned with the path.",
+			"Supported by:{right livelihood, vigour}",
+			"Leads to:{mindfulness}",
+			"Guarded by:{right view, mindfulness}",
 			"[sammāvāyāma]"
 		],
 		"right intention": [
@@ -1140,11 +1319,17 @@
 			"wholesome thought",
 			"skillful aspiration",
 			"right volition",
+			"Supported by:{right view}",
+			"Guarded by:{right view, right effort, mindfulness}",
+			"Leads to:{right speech, non-harm}",
 			"[sammāsaṅkappa]"
 		],
 		"right livelihood": [
 			"correct livelihood",
 			"right mode of earning a living",
+			"Supported by:{non-harm, not taking what is not given}",
+			"Guarded by:{right view, right effort, mindfulness}",
+			"Leads to:{right effort}",
 			"[sammāājīva]"
 		],
 		"right speech": [
@@ -1155,12 +1340,17 @@
 			"harmonious speech",
 			"articulate words",
 			"eloquent communication",
+			"Supported by:{right intention}",
+			"Guarded by:{right view, right effort, mindfulness}",
+			"Leads to:{non-harm}",
 			"[sammāvācā]"
 		],
 		"right view": [
 			"right understanding",
 			"right belief",
 			"view that is inline with the Dhamma",
+			"Guarded by:{right effort, mindfulness}",
+			"Leads to:{loving-kindness, non-harm}",
 			"[sammādiṭṭhi]"
 		],
 		"rousing of energy": [
@@ -1168,30 +1358,58 @@
 			"being energetic",
 			"taking initiative",
 			"making a mental decision to act",
-			"Related:{continuous effort, vigour}",
+			"Supported by:{faith, examination}",
+			"Related:{vigour}",
+			"Leads to:{continuous effort}",
 			"[vīriyārambha, āraddhavīriya, uṭṭhānavant]"
 		],
-		"safety": ["sanctuary", "security", "peace", "rest", "[khema]"],
+		"safety": [
+			"sanctuary",
+			"security",
+			"peace",
+			"rest",
+			"Supported by:{quenching}",
+			"Leads to:{without fear}",
+			"[khema]"
+		],
 		"self-control": [
 			"self-restraint",
 			"self-mastery",
-			"Related:{tame}",
+			"Related:{sense restraint}",
+			"Supported by:{patience}",
+			"Leads to:{contentment}",
 			"[saṃvara, saññata, saṃvuta]"
 		],
-		"self-rejection": [
-			"identity aversion",
-			"self-hatred",
-			"self-loathing",
-			"worthlessness",
+		"self-erasure": [
+			"non-being craving",
+			"identity deletion",
+			"urge to vanish",
+			"self-negation",
+			"annihilation drive",
 			"Context: A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
+			"Supported by:{wrong view}",
+			"Leads to:{personal existence}",
 			"[vibhavataṇhā]"
+		],
+		"self-making": [
+			"an aspiration for identity",
+			"drive for status or attainment",
+			"craving to be",
+			"romanticizing some better self or future state",
+			"Context: Spiritual or worldly striving to “be someone,” the “I must become something” energy",
+			"Supported by:{mental proliferation}",
+			"Leads to:{personal existence}",
+			"[bhavataṇhā, bhavesanā]"
 		],
 		"sense restraint": [
 			"guarding the sense faculties",
 			"watching the sense doors",
 			"not grasping at the prominent features or details of sense objects",
-			"Rooted in:{diligence}",
-			"Leads to:{contentment}",
+			"moderation in eating",
+			"Related:{self-control}",
+			"Supported by:{diligence}",
+			"Leads to:{contentment, wakefulness}",
+			"Opposite:{non-restraint}",
 			"[indriya saṃvara]"
 		],
 		"sensual desire": [
@@ -1199,7 +1417,9 @@
 			"lust",
 			"craving for pleasure",
 			"pulled towards enticing sense objects",
-			"Related:{craving, greed, passion}",
+			"Related:{having many desires}",
+			"Supported by:{passion, stinginess, wrong intention}",
+			"Leads to:{ignorance, negligence, perceiving gratification}",
 			"[kāmacchanda]"
 		],
 		"sexual misconduct": [
@@ -1207,12 +1427,17 @@
 			"infidelity",
 			"inappropriate sexual behavior",
 			"unfaithfulness to one's partner",
+			"Supported by:{moral recklessness, shamelessness, wrong intention, wrong speech}",
+			"Leads to:{regret, wrong livelihood}",
 			"[kāmesumicchācāra]"
 		],
 		"shamelessness": [
 			"act without thinking about what is right, fair, or appropriate",
 			"disregarding one's moral sense of right and wrong",
 			"unconscientiousness",
+			"Related:{moral recklessness}",
+			"Supported by:{ignorance, bad friendship}",
+			"Leads to:{hypocrisy, sexual misconduct, stealing, unprincipled}",
 			"[ahirika]"
 		],
 		"sincerity": [
@@ -1221,6 +1446,12 @@
 			"straightforwardness",
 			"openness",
 			"non-deception",
+			"Related:{unassuming}",
+			"Supported by:{conscience, truth}",
+			"Guarded by:{fear of wrongdoing}",
+			"Leads to:{humility}",
+			"Opposite:{hypocrisy}",
+			"Context: Inner alignment of intention and speech with what is true—nothing hidden or embellished; willing to admit faults or uncertainty and to keep one’s word without manipulating appearances.",
 			"[amāyā]"
 		],
 		"slaughtering": [
@@ -1228,6 +1459,8 @@
 			"murdering",
 			"taking life",
 			"Related:{cruelty}",
+			"Supported by:{moral recklessness, wrong intention, wrong speech}",
+			"Leads to:{regret, wrong livelihood}",
 			"[pāṇātipāta]"
 		],
 		"solitude": [
@@ -1235,18 +1468,22 @@
 			"privacy",
 			"aloofness",
 			"non-association",
-			"[viveka]"
+			"Leads to:{wholesome}",
+			"[viveka, asaṃsaṭṭha]"
 		],
 		"sorrow": [
 			"grief",
 			"sadness",
-			"Related:{lamentation}",
+			"Supported by:{attachment, dearness, lamentation}",
+			"Leads to:{suffering}",
 			"Opposite:{sorrow-free}",
 			"[soka, socati]"
 		],
 		"sorrow-free": [
 			"free from sadness",
 			"without grief",
+			"Supported by:{quenching}",
+			"Related:{impartiality, without fear}",
 			"Opposite:{sorrow}",
 			"[asoka, visoka]"
 		],
@@ -1255,6 +1492,9 @@
 			"taking what is not given",
 			"taking what is not offerred",
 			"dishonesty regarding possessions",
+			"Supported by:{moral recklessness, shamelessness, wrong intention, wrong speech}",
+			"Leads to:{regret, wrong livelihood}",
+			"Opposite:{not taking what is not given}",
 			"[adinnādānā]"
 		],
 		"spiritual life": [
@@ -1263,7 +1503,8 @@
 			"chastity",
 			"holy life",
 			"sexual restraint",
-			"Rooted in:{giving up}",
+			"Supported by:{giving, wisdom}",
+			"Leads to:{giving up}",
 			"Context: A life of celibacy, contemplation, and ethical discipline lived for the sake of liberation; oriented toward inner development rather than sensual pleasures",
 			"[brahmacariya]"
 		],
@@ -1271,7 +1512,8 @@
 			"miserliness",
 			"meanness",
 			"tight-fistedness",
-			"Related:{greed, jealousy}",
+			"Related:{jealousy}",
+			"Leads to:{sensual desire}",
 			"Opposite:{giving}",
 			"[macchariya]"
 		],
@@ -1280,18 +1522,22 @@
 			"obstinacy",
 			"inflexibility",
 			"pigheadedness",
+			"Supported by:{clinging to rules and observances}",
+			"Leads to:{feuding}",
 			"[thambha]"
 		],
 		"suffering": [
 			"discomfort",
 			"unpleasantness",
-			"discontentment",
+			"discontentedness",
 			"dissatisfaction",
 			"stress",
 			"pain",
 			"disease",
 			"distress",
 			"affliction",
+			"Supported by:{faithlessness, fear, regret, insanity, unwholesome}",
+			"Leads to:{faith}",
 			"[dukkha]"
 		],
 		"tame": [
@@ -1299,26 +1545,49 @@
 			"mastered",
 			"subdued",
 			"Related:{self-control}",
+			"Supported by:{flexible}",
+			"Leads to:{patience}",
+			"Opposite:{adventurous}",
 			"[danta]"
 		],
 		"tranquility": [
 			"calmness",
 			"peacefulness",
 			"serenity",
-			"Rooted in:{ending}",
-			"[upasama]"
+			"Supported by:{joyful pleasure, one-pointedness}",
+			"Leads to:{happiness}",
+			"[passaddhi, upasama, upasanta]"
 		],
-		"treachery": ["deviousness", "scamming", "betrayal", "[sāṭheyya]"],
-		"truth": ["accuracy", "reliability", "verifiability", "[sacca]"],
+		"treachery": [
+			"deviousness",
+			"scamming",
+			"betrayal",
+			"Supported by:{hypocrisy, unprincipled}",
+			"Leads to:{harm, wrong livelihood}",
+			"[sāṭheyya]"
+		],
+		"truth": [
+			"accuracy",
+			"reliability",
+			"verifiability",
+			"Leads to:{conscience, giving, inspiration, learned, respect}",
+			"[sacca]"
+		],
 		"unassuming": [
 			"courteous",
+			"low-key",
 			"respectful",
+			"not impudent",
+			"self-effacing",
 			"unpretentious",
-			"not cheeky",
 			"Related:{politeness}",
+			"Supported by:{humility, contentment}",
+			"Leads to:{non-regret}",
+			"Opposite:{boastfulness}",
+			"Context: A gentle, low-profile way of speaking and acting that avoids drawing attention to oneself; restrained in self-display, giving space to others, and simple in manner.",
 			"[appagabbha, sorata]"
 		],
-		"undeveloped": ["not cultivated", "[abhāvita]"],
+		"undeveloped": ["not cultivated", "Leads to:{passion}", "[abhāvita]"],
 		"imperturbable": [
 			"unagitated",
 			"unmoved",
@@ -1327,12 +1596,16 @@
 			"untroubled",
 			"unwavering",
 			"without mental unease",
+			"Supported by:{collectedness, equanimity}",
+			"Leads to:{formless}",
 			"[aparitassa, anigha]"
 		],
 		"unprincipled": [
 			"lacking in moral principles",
 			"lacking in ethics",
 			"immoral",
+			"Supported by:{moral recklessness, shamelessness}",
+			"Leads to:{treachery, regret}",
 			"[dussīlya]"
 		],
 		"unwholesome": [
@@ -1341,13 +1614,16 @@
 			"unskillful",
 			"unbeneficial",
 			"karmically unprofitable",
-			"Related:{harm}",
+			"Leads to:{suffering}",
+			"Opposite:{wholesome}",
 			"[akusala]"
 		],
 		"unwise attention": [
 			"improper attention",
 			"imprudent use of the mind",
 			"unfocused attention",
+			"Supported by:{negligence, ignorance}",
+			"Leads to:{lack of discernment}",
 			"[ayonisomanasikāra]"
 		],
 		"vanity": [
@@ -1356,6 +1632,8 @@
 			"extravagance",
 			"indulgence",
 			"intoxication",
+			"Supported by:{personal existence}",
+			"Leads to:{craving, negligence}",
 			"[mada]"
 		],
 		"vigour": [
@@ -1366,7 +1644,8 @@
 			"application of will",
 			"persistence",
 			"Related:{rousing of energy}",
-			"Rooted in:{continuous effort}",
+			"Leads to:{right effort}",
+			"Supported by:{continuous effort, desire, good habits}",
 			"[vīriya]"
 		],
 		"vision": [
@@ -1374,6 +1653,8 @@
 			"seeing things as they are",
 			"seeing the truth",
 			"seeing the dhamma",
+			"Supported by:{collectedness, recognition of impermanence, recogntion of unsatisfactoriness, recognition of not-self, recognition of unattractiveness, recollection of death}",
+			"Leads to:{disenchantment}",
 			"[dassana]"
 		],
 		"wakefulness": [
@@ -1381,14 +1662,17 @@
 			"alertness",
 			"vigilance",
 			"watchfulness",
-			"Related:{full awareness}",
+			"Supported by:{sense restraint}",
+			"Leads to:{mindfulness}",
 			"[jāgariyā]"
 		],
 		"weak in effort": [
 			"low in energy",
 			"lacking in endurance",
 			"lax, loose, slack, unaspirated, indistinct",
-			"Related:{laziness, negligence, wrong effort}",
+			"Related:{wrong effort}",
+			"Supported by:{negligence, muddle-minded}",
+			"Leads to:{laziness}",
 			"Opposite:{continuous effort, right effort, rousing of energy}",
 			"[hīnavīriya, sithila]"
 		],
@@ -1401,12 +1685,16 @@
 			"healthy",
 			"nourishing",
 			"sustaining",
+			"Supported by:{solitude}",
+			"Leads to:{joy}",
+			"Opposite:{unwholesome}",
 			"[kusala]"
 		],
 		"wisdom": [
 			"the quality of possessing experience alongside knowledge and sound judgment",
-			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable",
+			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable, steadfast",
 			"an experiential understanding of the four noble truths",
+			"Leads to:{good friendship, good habits, insight, patience}",
 			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
@@ -1414,13 +1702,28 @@
 			"prudent use of the mind",
 			"wise reflection",
 			"attention to the source",
+			"Supported by:{wisdom, perceiving drawback}",
+			"Leads to:{contemplation, discernment, examination}",
 			"[yonisomanasikāra]"
 		],
-		"with nothing": ["having no-thing", "possession-less", "[akiñcana]"],
-		"without fear": ["fearlessness", "free of distress", "[niddara]"],
+		"with nothing": [
+			"having no-thing",
+			"possession-less",
+			"Supported by:{quenching}",
+			"[akiñcana]"
+		],
+		"without fear": [
+			"fearlessness",
+			"free of distress",
+			"Related:{impartiality, sorrow-free}",
+			"Supported by:{non-harm, quenching, safety}",
+			"[niddara]"
+		],
 		"wrong effort": [
 			"incorrect endeavor",
 			"Related:{weak in effort}",
+			"Supported by:{bad friendship, wrong livelihood}",
+			"Leads to:{muddle-minded}",
 			"[micchāvāyāma]"
 		],
 		"wrong intention": [
@@ -1429,11 +1732,15 @@
 			"unskillful aspiration",
 			"wrong thought",
 			"harmful volition",
+			"Supported by:{wrong view}",
+			"Leads to:{irritability, sensual desire, wrong speech}",
 			"[micchāsaṅkappa]"
 		],
 		"wrong livelihood": [
 			"unwholesome livelihood",
 			"wrong way of earning a living",
+			"Supported by:{greed, sexual misconduct, slaughtering, stealing, treachery}",
+			"Leads to:{wrong effort}",
 			"[micchāājīva]"
 		],
 		"wrong speech": [
@@ -1442,12 +1749,16 @@
 			"divisive, slanderous or defamatory or malicious speech",
 			"abusive or rude or unkind way of speaking",
 			"meaningless talk or idle chatter or gossip",
+			"Supported by:{wrong intention, irritability}",
+			"Leads to:{harm, sexual misconduct, slaughtering, stealing}",
 			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
 		],
 		"wrong view": [
 			"distorted or inverted perception",
 			"untrue view",
 			"false belief",
+			"Supported by:{unwise attention, ignorance}",
+			"Leads to:{wrong intention}",
 			"[micchādiṭṭhi]"
 		]
 	}

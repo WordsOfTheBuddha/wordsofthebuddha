@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import QualitiesGraph from "../components/QualitiesGraph.astro";
+export const prerender = false;
+---
+
+<Layout seoTitle="Qualities Map - Words of the Buddha" showAuth={true}>
+	<!-- Inject pre-hydration bootstrap only on this page -->
+	<script slot="head" is:inline>
+		(function () {
+			try {
+				document.documentElement.classList.add("qm-boot");
+				var s = localStorage.getItem("qm.sidebar");
+				if (s === "collapsed") {
+					document.documentElement.classList.add("qm-collapsed");
+				} else {
+					document.documentElement.classList.remove("qm-collapsed");
+				}
+				// Apply fullscreen class as early as possible
+				try {
+					var qs = new URL(location.href).searchParams;
+					var full = (
+						qs.get("full") ||
+						qs.get("expanded") ||
+						""
+					).toLowerCase();
+					if (full === "1" || full === "true" || full === "yes") {
+						document.documentElement.classList.add("qm-full");
+					} else {
+						document.documentElement.classList.remove("qm-full");
+					}
+				} catch (e2) {}
+			} catch (e) {}
+		})();
+	</script>
+	<main class="container mx-auto px-4 py-6">
+		<h1 class="text-xl font-semibold mb-3">Qualities Explorer</h1>
+		<QualitiesGraph />
+	</main>
+</Layout>

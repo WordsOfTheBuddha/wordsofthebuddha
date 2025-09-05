@@ -1,7 +1,7 @@
 ---
 title: Suppavāsā sutta - Suppavāsā
 description: The story of Suppavāsā, a noblewoman of the Koliyan clan, who endures a difficult pregnancy and ultimately gives birth to a healthy son with the blessings of the Buddha. Overjoyed, she declares she would endure it again. The Buddha then utters a verse on how suffering, disguised as pleasure, overpowers the negligent.
-qualities: faith, negligence, suffering, dearness, recollection of the Buddha, recollection of the Dhamma, recollection of the Saṅgha
+qualities: faith, negligence, suffering, dearness, recollection of the Buddha, recollection of the Dhamma, recollection of the Sangha
 theme: inspiration
 slug: ud2.8
 character: Suppavāsā

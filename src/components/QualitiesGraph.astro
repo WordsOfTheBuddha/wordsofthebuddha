@@ -1,0 +1,790 @@
+---
+import qualities from "../data/qualities.json";
+import funnelSvg from "../assets/funnel.svg?raw";
+import "../styles/topicTag.css";
+import "../styles/discover.css";
+import InfoPopover from "./InfoPopover.astro";
+interface Flags {
+	related?: boolean;
+	opposite?: boolean;
+}
+interface Props {
+	focus?: string;
+	depth?: number; // 0 = full graph
+	height?: number | string; // px or CSS (e.g., "calc(100svh - 120px)")
+	flags?: Flags;
+}
+
+const {
+	focus = undefined,
+	depth = 0,
+	height = "calc(100svh - 120px)",
+	flags = { related: true, opposite: true },
+} = Astro.props as Props;
+const heightStyle = typeof height === "number" ? `${height}px` : height;
+---
+
+<style>
+	.map-wrap {
+		display: block;
+	}
+	.cy-wrap {
+		position: relative;
+	}
+
+	#cy {
+		width: 100%;
+		height: var(--h, 640px);
+		border: 1px solid var(--border-color);
+		border-radius: 0.5rem;
+		background: var(--background-color);
+	}
+
+	/* Vertical, collapsible side panel */
+	.sidepanel {
+		position: absolute;
+		top: 0.5rem;
+		bottom: 0.5rem;
+		left: 0.5rem;
+		width: min(210px, 90vw);
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 0.6rem;
+		border: 1px solid var(--border-color);
+		border-radius: 0.5rem;
+		background: var(--background-color);
+		-webkit-backdrop-filter: blur(6px);
+		backdrop-filter: blur(6px);
+		z-index: 5;
+		transition: width 0.2s ease;
+		overflow: hidden;
+	}
+	html.qm-boot .sidepanel {
+		transition: none !important;
+	}
+	.sidepanel.collapsed,
+	html.qm-collapsed .sidepanel {
+		width: 44px;
+		padding: 0.4rem;
+	}
+	.sidepanel .sp-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+	}
+	.sidepanel .sp-title {
+		font-weight: 600;
+		font-size: 0.95rem;
+		color: var(--text-color);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	/* Size and color the funnel icon from assets */
+	.sp-title .sp-icon svg {
+		width: 16px;
+		height: 16px;
+		display: block;
+	}
+	.sp-title .sp-icon svg {
+		stroke: currentColor;
+		fill: none;
+	}
+	.sidepanel.collapsed .sp-title,
+	html.qm-collapsed .sidepanel .sp-title {
+		display: none;
+	}
+	.sidepanel .sp-collapse {
+		border: 1px solid var(--border-color);
+		background: var(--background-color);
+		padding: 0.25rem 0.45rem;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		margin-left: 0.2rem;
+	}
+	.sidepanel .sp-section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.sidepanel .sp-label {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+	.sidepanel.collapsed .sp-content,
+	html.qm-collapsed .sidepanel .sp-content {
+		display: none;
+	}
+	/* no vertical label when collapsed */
+	.sidepanel input[type="text"] {
+		width: 100%;
+		padding: 0.35rem 0.5rem;
+		border: 1px solid var(--border-color);
+		border-radius: 0.375rem;
+		background: var(--background-color);
+		color: var(--text-color);
+	}
+	/* Search adornment */
+	.sp-search {
+		position: relative;
+	}
+	.sp-search input {
+		padding-right: 2rem;
+		padding-bottom: 1rem; /* make room for bottom-aligned enter icon */
+	}
+	.sp-search .q-icon {
+		position: absolute;
+		right: 0.35rem;
+		bottom: -11px; /* sit near bottom border inside the input */
+		transform: none;
+		width: 22px;
+		height: 22px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--background-color);
+		border-radius: 0.25rem;
+		font-size: 12px;
+		line-height: 0; /* remove font baseline extra space */
+		padding-top: 1px; /* subtle nudge to counter glyph bottom padding */
+		cursor: pointer;
+		z-index: 2; /* above input */
+	}
+	/* On focus, nudge icon slightly for feedback */
+	.sp-search:focus-within .q-icon {
+		bottom: -11px;
+	}
+	.sp-search .q-icon.hidden {
+		display: none;
+	}
+	.sidepanel .toggle-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.sidepanel .toggle-row label {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.9rem;
+		padding: 0.15rem 0.35rem;
+		border: 1px solid var(--border-color);
+		border-radius: 0.35rem;
+		background: var(--background-color);
+	}
+	/* Node filter circular chips (after checkbox) */
+	.sidepanel .toggle-row label .node-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: currentColor;
+		border: 1px solid var(--border-color);
+		display: inline-block;
+	}
+	.sidepanel .toggle-row label.node-bright {
+		color: #10b981;
+	}
+	.sidepanel .toggle-row label.node-dark {
+		color: #ef4444;
+	}
+	.sidepanel .toggle-row label.node-neutral {
+		color: #6366f1;
+	}
+	/* Edge filter line indicators (after checkbox) */
+	.sidepanel .toggle-row label .edge-chip {
+		display: inline-block;
+		position: relative;
+		width: 20px;
+		height: 0;
+		border-bottom: 2px solid currentColor;
+	}
+	/* Default: no arrowhead; colors per type below */
+	.sidepanel .toggle-row label .edge-chip::after {
+		content: "";
+		position: absolute;
+		right: -1px;
+		top: -4px;
+		border-width: 5px 0 5px 7px;
+		border-style: solid;
+		border-color: transparent transparent transparent currentColor;
+	}
+	/* Supported by: green with arrow */
+	.sidepanel .toggle-row label.edge-supported {
+		color: #059669;
+	}
+	.sidepanel .toggle-row label.edge-supported .edge-chip {
+		border-bottom-style: solid;
+	}
+	/* Leads to: blue with arrow */
+	.sidepanel .toggle-row label.edge-leads {
+		color: #2563eb;
+	}
+	.sidepanel .toggle-row label.edge-leads .edge-chip {
+		border-bottom-style: solid;
+	}
+	/* Related: yellow solid line, no arrow */
+	.sidepanel .toggle-row label.edge-related {
+		color: #eab308;
+	}
+	.sidepanel .toggle-row label.edge-related .edge-chip {
+		border-bottom-style: solid;
+	}
+	.sidepanel .toggle-row label.edge-related .edge-chip::after {
+		content: none;
+	}
+	/* Opposite: red dashed line, no arrow */
+	.sidepanel .toggle-row label.edge-opposite {
+		color: #ef4444;
+	}
+	.sidepanel .toggle-row label.edge-opposite .edge-chip {
+		border-bottom-style: dashed;
+	}
+	.sidepanel .toggle-row label.edge-opposite .edge-chip::after {
+		content: none;
+	}
+	.sidepanel .btn {
+		border: 1px solid #d1d5db;
+		background: #fff;
+		padding: 0.35rem 0.6rem;
+		border-radius: 0.375rem;
+		cursor: pointer;
+	}
+
+	/* Facet tags */
+	.tags {
+		display: flex;
+		gap: 0.35rem;
+		flex-wrap: wrap;
+	}
+	.tag {
+		padding: 0.2rem 0.5rem;
+		border: 1px solid #d1d5db;
+		border-radius: 0.75rem;
+		font-size: 0.8rem;
+		background: #fff;
+		cursor: pointer;
+	}
+	.tag.on {
+		background: #111827;
+		color: #fff;
+		border-color: #111827;
+	}
+
+	/* Bottom-left zoom bar */
+	.zoom-bar {
+		position: absolute;
+		left: 0.9rem;
+		bottom: 0.8rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		z-index: 5;
+	}
+	/* When sidepanel is open, show the zoom bar horizontally */
+	.zoom-bar.horizontal {
+		flex-direction: row;
+	}
+	/* During bootstrap only, use html.qm-boot + qm-collapsed to set initial orientation without flicker */
+	html.qm-boot:not(.qm-collapsed) .cy-wrap .zoom-bar {
+		flex-direction: row;
+	}
+	html.qm-boot.qm-collapsed .cy-wrap .zoom-bar {
+		flex-direction: column;
+	}
+	.zoom-bar .icon {
+		width: 32px;
+		height: 32px;
+		display: grid;
+		place-items: center;
+		border: 1px solid var(--border-color);
+		background: var(--background-color);
+		border-radius: 0.375rem;
+		cursor: pointer;
+	}
+	.zoom-bar .icon:active {
+		transform: scale(0.98);
+	}
+	.zoom-bar .icon.hidden {
+		display: none;
+	}
+
+	/* Viewport toggle button in bottom-right */
+	.vp-toggle {
+		position: absolute;
+		right: 0.9rem;
+		bottom: 0.8rem;
+		z-index: 6;
+		width: 32px;
+		height: 32px;
+		display: grid;
+		place-items: center;
+		border: 1px solid var(--border-color);
+		background: var(--background-color);
+		border-radius: 0.375rem;
+		cursor: pointer;
+	}
+	.vp-toggle:active {
+		transform: scale(0.98);
+	}
+
+	/* Fullscreen canvas mode */
+	html.qm-full .cy-wrap {
+		position: fixed;
+		inset: 0;
+		z-index: 60;
+		background: var(--background-color);
+	}
+	html.qm-full #cy {
+		width: 100vw;
+		height: 100svh;
+		border-radius: 0;
+	}
+	html.qm-full .zoom-bar {
+		bottom: 0.8rem;
+		left: 0.9rem;
+	}
+	/* Keep drawer visible above the full-viewport canvas */
+	html.qm-full #drawer {
+		z-index: 70;
+	}
+
+	/* Drawer */
+	.drawer {
+		position: fixed;
+		inset: 0 0 0 auto;
+		width: min(480px, 92vw);
+		background: var(--background-color);
+		border-left: 1px solid var(--border-color);
+		box-shadow: -10px 0 30px rgba(0, 0, 0, 0.08);
+		transform: translateX(100%);
+		transition: transform 0.25s ease;
+		z-index: 50;
+		display: flex;
+		flex-direction: column;
+	}
+	.drawer.open {
+		transform: translateX(0);
+	}
+	.drawer header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid #eee;
+	}
+	.drawer header h3 {
+		font-size: 1.05rem;
+		margin: 0;
+	}
+	.drawer .body {
+		padding: 0.75rem 1rem 1rem;
+		overflow: auto;
+	}
+	.drawer .list {
+		margin: 0.4rem 0 0;
+		padding-left: 1rem;
+	}
+	.meta-row {
+		display: flex;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+	.inline-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+	.chip {
+		display: inline-block;
+		border-radius: 0.4rem;
+		font-size: 0.75rem;
+		margin: 0.1rem 0.25rem 0.1rem 0;
+	}
+	.chip.pos {
+		background: rgba(16, 185, 129, 0.12);
+		color: #065f46;
+	}
+	html.dark .chip.pos {
+		background: rgba(16, 185, 129, 0.2);
+		color: #34d399;
+	}
+	.chip.neg {
+		background: rgba(239, 68, 68, 0.12);
+		color: #7f1d1d;
+	}
+	html.dark .chip.neg {
+		background: rgba(239, 68, 68, 0.2);
+		color: #fca5a5;
+	}
+	.chip.neu {
+		color: var(--link-color);
+	}
+
+	.disc {
+		margin: 0.5rem 0 0;
+		padding-left: 1rem;
+	}
+	.soft {
+		color: var(--text-muted);
+		font-size: 0.85rem;
+	}
+	.btn {
+		border: 1px solid var(--border-color);
+		background: var(--background-color);
+		padding: 0.35rem 0.6rem;
+		border-radius: 0.375rem;
+		cursor: pointer;
+	}
+
+	/* Drawer details: one parent grid so all values align to the same x */
+	.meta-grid {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		column-gap: 0.5rem;
+		row-gap: 0.6rem;
+		align-items: center; /* center label with first row of tags */
+	}
+	.meta-row {
+		display: contents;
+	}
+	.meta-label {
+		align-self: center;
+	}
+	.inline-tags,
+	.meta-value {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+	.map-wrap,
+	.cy-wrap {
+		position: relative;
+	}
+</style>
+
+<!-- Prevent initial flicker: set a bootstrap class on <html> before the panel renders -->
+<script>
+	(function () {
+		try {
+			document.documentElement.classList.add("qm-boot");
+			var s = localStorage.getItem("qm.sidebar");
+			if (s === "collapsed") {
+				document.documentElement.classList.add("qm-collapsed");
+			} else {
+				document.documentElement.classList.remove("qm-collapsed");
+			}
+			// Apply fullscreen class as early as possible to avoid initial flicker
+			try {
+				var qs = new URL(location.href).searchParams;
+				var full = (
+					qs.get("full") ||
+					qs.get("expanded") ||
+					""
+				).toLowerCase();
+				if (full === "1" || full === "true" || full === "yes") {
+					document.documentElement.classList.add("qm-full");
+				} else {
+					document.documentElement.classList.remove("qm-full");
+				}
+			} catch (e2) {
+				/* ignore */
+			}
+		} catch (e) {
+			/* ignore */
+		}
+	})();
+</script>
+
+<div class="map-wrap" style={`--h:${heightStyle}`}>
+	<div class="cy-wrap">
+		<InfoPopover
+			title="Qualities Explorer"
+			description="Explore relations between mental qualities and browse associated discourses."
+			items={[
+				"Click or tap to <strong>focus on a node</strong> and see its related mental qualities.",
+				"Double-click or long press on a node to <strong>see the related qualities and discourses</strong> in a drawer UI. Keyboard shortcut: <kbd>o</kbd>",
+				"Use <strong>explorer panel</strong> to search a mental quality and filter UI view. Keyboard shortcut: <kbd>e</kbd>",
+			]}
+		/>
+		<div id="cy" aria-label="Qualities graph"></div>
+		<div id="sidepanel" class="sidepanel" aria-label="Map controls">
+			<div class="sp-head">
+				<div class="sp-title">
+					<span
+						class="sp-icon"
+						aria-hidden="true"
+						set:html={funnelSvg}
+					/>
+					Qualities Explorer
+				</div>
+				<button
+					id="sp-collapse"
+					class="sp-collapse"
+					aria-expanded="true">⟨</button
+				>
+			</div>
+			<div class="sp-content">
+				<div class="sp-section">
+					<div class="sp-label">Search Qualities</div>
+					<div class="sp-search">
+						<input
+							id="q"
+							type="text"
+							placeholder="e.g. joy, dukkha"
+						/>
+						<button
+							id="q-go"
+							class="q-icon hidden"
+							aria-label="Submit search"
+							title="Search (Enter)">↵</button
+						>
+					</div>
+				</div>
+				<div class="sp-section">
+					<div class="sp-label mt-2">Show Nodes</div>
+					<div class="toggle-row">
+						<label class="node-bright">
+							<input
+								type="checkbox"
+								id="node-show-bright"
+								checked
+							/>
+							<span class="node-dot" aria-hidden="true"></span>
+							<span class="node-text">Wholesome</span>
+							<span
+								id="count-bright"
+								class="soft"
+								style="margin-left:.25rem;">—</span
+							>
+						</label>
+						<label class="node-dark">
+							<input
+								type="checkbox"
+								id="node-show-dark"
+								checked
+							/>
+							<span class="node-dot" aria-hidden="true"></span>
+							<span class="node-text">Unwholesome</span>
+							<span
+								id="count-dark"
+								class="soft"
+								style="margin-left:.25rem;">—</span
+							>
+						</label>
+						<label class="node-neutral">
+							<input
+								type="checkbox"
+								id="node-show-neutral"
+								checked
+							/>
+							<span class="node-dot" aria-hidden="true"></span>
+							<span class="node-text">Neutral</span>
+							<span
+								id="count-neutral"
+								class="soft"
+								style="margin-left:.25rem;">—</span
+							>
+						</label>
+					</div>
+				</div>
+				<div class="sp-section">
+					<div class="sp-label mt-2">Show Edges</div>
+					<div class="toggle-row">
+						<label class="edge-supported">
+							<input
+								type="checkbox"
+								id="show-supported"
+								checked
+							/>
+							<span class="edge-chip" aria-hidden="true"></span>
+							<span class="edge-text">Supported by</span>
+						</label>
+						<label class="edge-leads">
+							<input type="checkbox" id="show-leads" checked />
+							<span class="edge-chip" aria-hidden="true"></span>
+							<span class="edge-text">Leads to</span>
+						</label>
+						<label class="edge-related">
+							<input type="checkbox" id="show-related" checked />
+							<span class="edge-chip" aria-hidden="true"></span>
+							<span class="edge-text">Related</span>
+						</label>
+						<label class="edge-opposite">
+							<input type="checkbox" id="show-opposite" checked />
+							<span class="edge-chip" aria-hidden="true"></span>
+							<span class="edge-text">Opposite</span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Hydrate collapse icon/aria early to avoid post-hydration flip -->
+			<script>
+				(function () {
+					try {
+						var btn = document.getElementById("sp-collapse");
+						var panel = document.getElementById("sidepanel");
+						if (!btn || !panel) return;
+						var saved = localStorage.getItem("qm.sidebar");
+						var collapsed =
+							saved === "collapsed" ||
+							document.documentElement.classList.contains(
+								"qm-collapsed"
+							) ||
+							panel.classList.contains("collapsed");
+						panel.classList.toggle("collapsed", collapsed);
+						btn.setAttribute(
+							"aria-expanded",
+							collapsed ? "false" : "true"
+						);
+						btn.textContent = collapsed ? "⟩" : "⟨";
+						// Also sync the fullscreen toggle icon/aria early
+						var vp = document.getElementById("vp-toggle");
+						if (vp) {
+							var isFull =
+								document.documentElement.classList.contains(
+									"qm-full"
+								);
+							vp.textContent = isFull ? "⤡" : "⤢";
+							vp.setAttribute(
+								"aria-label",
+								isFull
+									? "Collapse to normal view"
+									: "Expand to fullscreen"
+							);
+							vp.setAttribute(
+								"title",
+								isFull
+									? "Collapse to normal view"
+									: "Expand to fullscreen"
+							);
+						}
+					} catch (e) {}
+				})();
+			</script>
+		</div>
+		<div class="zoom-bar" role="group" aria-label="Zoom controls">
+			<button id="zoom-in" class="icon" aria-label="Zoom in">+</button>
+			<button id="zoom-out" class="icon" aria-label="Zoom out">−</button>
+			<button id="zoom-reset" class="icon" aria-label="Reset view"
+				>⟲</button
+			>
+		</div>
+		<!-- Bottom-right viewport expand/collapse toggle -->
+		<button
+			id="vp-toggle"
+			class="vp-toggle"
+			aria-label="Expand to fullscreen"
+			title="Expand to fullscreen">⤢</button
+		>
+	</div>
+</div>
+
+<div
+	id="drawer"
+	class="drawer"
+	aria-live="polite"
+	aria-label="Quality details panel"
+>
+	<header>
+		<h3
+			class="title"
+			style="display:flex; align-items:center; gap:.5rem; margin:0;"
+		>
+			<a id="drawer-title" href="#">—</a>
+			<span id="drawer-pol-tag" class="chip neu">neutral</span>
+		</h3>
+		<div style="display:flex; gap:.5rem; align-items:center;">
+			<button id="close-drawer" class="btn" aria-label="Close">✕</button>
+		</div>
+	</header>
+	<div class="body">
+		<div id="drawer-context" class="soft" style="margin-top:.25rem;"></div>
+		<div style="margin-top:.5rem;">
+			<div
+				id="drawer-also-text"
+				class="text-gray-600 dark:text-gray-100 text-xs"
+				style="display:none;"
+			>
+			</div>
+			<div
+				id="drawer-pali-text"
+				class="pali-paragraph font-semibold text-text text-xs mt-2 mb-4"
+				style="display:none;"
+			>
+			</div>
+			<!-- Order: Related, Supported by, Guarded by, Leads to, Opposite -->
+			<div class="meta-grid">
+				<div id="drawer-related" class="meta-row" style="display:none;">
+					<div class="soft meta-label">Related</div>
+					<div id="drawer-related-row" class="inline-tags meta-value">
+					</div>
+				</div>
+				<div
+					id="drawer-supported"
+					class="meta-row"
+					style="display:none;"
+				>
+					<div class="soft meta-label">Supported by</div>
+					<div
+						id="drawer-supported-row"
+						class="inline-tags meta-value"
+					>
+					</div>
+				</div>
+				<div id="drawer-guarded" class="meta-row" style="display:none;">
+					<div class="soft meta-label">Guarded by</div>
+					<div id="drawer-guarded-row" class="inline-tags meta-value">
+					</div>
+				</div>
+				<div id="drawer-leads" class="meta-row" style="display:none;">
+					<div class="soft meta-label">Leads to</div>
+					<div id="drawer-leads-row" class="inline-tags meta-value">
+					</div>
+				</div>
+				<div
+					id="drawer-opposite"
+					class="meta-row"
+					style="display:none;"
+				>
+					<div class="soft meta-label">Opposite</div>
+					<div
+						id="drawer-opposite-row"
+						class="inline-tags meta-value"
+					>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="drawer-disc" style="margin-top:.9rem;">
+			<div class="soft">Discourses</div>
+			<div
+				id="drawer-disc-cards"
+				style="display:grid; gap:.6rem; margin-top:.35rem;"
+			>
+			</div>
+			<div id="drawer-disc-sentinel" style="height: 1px;"></div>
+		</div>
+	</div>
+</div>
+
+<!-- pass raw JSON + options to the client safely (use set:html to avoid HTML-escaping) -->
+<script
+	type="application/json"
+	id="qualities-json"
+	set:html={JSON.stringify(qualities)}
+/>
+<script
+	type="application/json"
+	id="qualities-map-options"
+	set:html={JSON.stringify({ focus, depth, flags })}
+/>
+<script>
+	// Let Astro hoist and bundle this import into the page JS (like other working components).
+	// This avoids runtime URL resolution that can hit route rewrites (e.g., /search) in dev/prod.
+	import "./qualities-graph-client.ts";
+</script>

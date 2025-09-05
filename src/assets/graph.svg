@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg     viewBox="0 0 32 32"
+    width="16"
+    height="16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+<path d="M13.5 7L17 10.5" stroke="currentColor" stroke-linecap="round"/>
+<path d="M7 13.5L10.5 17" stroke="currentColor" stroke-linecap="round"/>
+<path d="M10.5 7L7 10.5" stroke="currentColor" stroke-linecap="round"/>
+<path d="M17 13.5L13.5 17" stroke="currentColor" stroke-linecap="round"/>
+<circle cx="12" cy="5.5" r="2" stroke="currentColor"/>
+<circle cx="12" cy="18.5" r="2" stroke="currentColor"/>
+<circle cx="5.5" cy="12" r="2" stroke="currentColor"/>
+<circle cx="18.5" cy="12" r="2" stroke="currentColor"/>
+<circle cx="5.5" cy="12" r="0.5" stroke="currentColor"/>
+</svg>
