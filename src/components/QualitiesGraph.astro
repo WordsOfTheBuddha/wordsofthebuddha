@@ -783,8 +783,8 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 	id="qualities-map-options"
 	set:html={JSON.stringify({ focus, depth, flags })}
 />
-<script type="module">
-	// Let Vite/Astro hoist and bundle this import into a built /assets chunk.
-	// Avoids referencing /src/* paths in production and prevents 404 -> /search rewrites.
+<script>
+	// Let Astro hoist and bundle this import into the page JS (like other working components).
+	// This avoids runtime URL resolution that can hit route rewrites (e.g., /search) in dev/prod.
 	import "./qualities-graph-client.ts";
 </script>
