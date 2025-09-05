@@ -144,6 +144,35 @@ function createContentItem(
 
 export const GET: APIRoute = async ({ url }) => {
 	try {
+		// Build a global priority map (id -> priority) from qualityMappings
+		// so we can apply discourse-level priority consistently across topics, qualities, and similes.
+		const priorityMap: Map<string, number> = new Map();
+		try {
+			Object.values(qualityMappings as any).forEach((discourses: any) => {
+				(discourses as any[]).forEach((d) => {
+					if (typeof d?.priority === "number") {
+						const existing = priorityMap.get(d.id);
+						if (existing === undefined || d.priority < existing) {
+							priorityMap.set(d.id, d.priority);
+						}
+					}
+				});
+			});
+		} catch (e) {
+			console.warn("Priority map build warning:", e);
+		}
+
+		// Collection ordering fallback
+		const collectionPriority: Record<string, number> = {
+			mn: 1,
+			iti: 2,
+			sn: 3,
+			snp: 4,
+			an: 5,
+			ud: 6,
+			dhp: 7,
+		};
+
 		const byParam =
 			url.searchParams.get("by") || "topics,qualities,similes";
 		const filterParam = url.searchParams.get("filter") || "";
@@ -162,6 +191,19 @@ export const GET: APIRoute = async ({ url }) => {
 		// Add topics if requested
 		if (requestedTypes.includes("topics")) {
 			Object.entries(topicMappings).forEach(([slug, topic]) => {
+				const topicDiscourses = (topic.discourses as any[]).map(
+					(d) => ({
+						id: d.id,
+						title: d.title,
+						description: d.description,
+						collection: d.collection,
+						note: d.note,
+						isFeatured: !!d.isFeatured,
+						// Attach global priority if available
+						priority: priorityMap.get(d.id),
+					})
+				);
+
 				allContent.push(
 					createContentItem(
 						{
@@ -174,7 +216,7 @@ export const GET: APIRoute = async ({ url }) => {
 							redirects: topic.redirects,
 							related: topic.related,
 							opposite: (topic as any).opposite,
-							discourses: topic.discourses,
+							discourses: topicDiscourses,
 						},
 						topic.description
 					)
@@ -225,6 +267,11 @@ export const GET: APIRoute = async ({ url }) => {
 									description: d.description,
 									collection: d.collection,
 									isFeatured: false,
+									// Preserve priority coming from generator
+									priority:
+										typeof d.priority === "number"
+											? d.priority
+											: priorityMap.get(d.id),
 								})),
 							},
 							context || "" // Use context as description if available
@@ -257,6 +304,7 @@ export const GET: APIRoute = async ({ url }) => {
 										description: d.description,
 										collection: d.collection,
 										isFeatured: false,
+										priority: priorityMap.get(d.id),
 									})),
 								})
 							); // No description for similes
@@ -265,6 +313,39 @@ export const GET: APIRoute = async ({ url }) => {
 				}
 			);
 		}
+
+		// Before filtering, sort discourses within each item by: Featured → Priority → Collection → Id
+		const sortDiscourses = (arr: any[]) =>
+			arr.sort((a, b) => {
+				const fa = a.isFeatured ? 0 : 1;
+				const fb = b.isFeatured ? 0 : 1;
+				if (fa !== fb) return fa - fb;
+
+				const pa =
+					typeof a.priority === "number"
+						? a.priority
+						: Number.POSITIVE_INFINITY;
+				const pb =
+					typeof b.priority === "number"
+						? b.priority
+						: Number.POSITIVE_INFINITY;
+				if (pa !== pb) return pa - pb;
+
+				const cpa = collectionPriority[a.collection] ?? 999;
+				const cpb = collectionPriority[b.collection] ?? 999;
+				if (cpa !== cpb) return cpa - cpb;
+
+				return a.id.localeCompare(b.id, undefined, {
+					numeric: true,
+					sensitivity: "base",
+				});
+			});
+
+		allContent.forEach((item) => {
+			if (Array.isArray(item.discourses)) {
+				sortDiscourses(item.discourses);
+			}
+		});
 
 		// Apply search filter if provided
 		if (filterParam) {
@@ -310,7 +391,7 @@ export const GET: APIRoute = async ({ url }) => {
 					);
 
 					if (matchingDiscourses.length > 0) {
-						// Discourse-level match: return the item with only matching discourses
+						// Discourse-level match: return the item with only matching discourses (preserve relative order)
 						return {
 							...item,
 							discourses: matchingDiscourses,

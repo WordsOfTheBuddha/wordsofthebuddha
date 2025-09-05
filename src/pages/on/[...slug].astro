@@ -108,35 +108,6 @@ const additionalDiscourses =
 		? allDiscourses.filter((d: any) => !d.isFeatured)
 		: allDiscourses;
 
-// Group by collections
-const collections: Record<string, { name: string; items: any[] }> = {
-	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
-	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
-	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
-	snp: { name: "The Buddha's Ancient Discourses (Sutta Nipāta)", items: [] },
-	sn: { name: "Linked Discourses (Saṃyutta Nikāya)", items: [] },
-	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
-	ud: { name: "Inspired Utterances (Udāna)", items: [] },
-};
-
-const collectionOrder = ["dhp", "iti", "mn", "snp", "sn", "an", "ud"];
-
-additionalDiscourses.forEach((discourse: any) => {
-	const collection = discourse.collection;
-	if (collection in collections) {
-		collections[collection].items.push(discourse);
-	}
-});
-
-for (const key in collections) {
-	collections[key].items.sort((a, b) => {
-		return a.id.localeCompare(b.id, undefined, {
-			numeric: true,
-			sensitivity: "base",
-		});
-	});
-}
-
 const displayTitle = content.title;
 const totalDiscourses = allDiscourses.length;
 ---
@@ -424,10 +395,12 @@ const totalDiscourses = allDiscourses.length;
 			)
 		}
 
-		{/* All Discourses or More Discourses Section */}
+		{
+			/* All Discourses or More Discourses Section (flat list in API order) */
+		}
 		{
 			additionalDiscourses.length > 0 && (
-				<div class="space-y-10">
+				<div class="space-y-6">
 					{primaryDiscourses.length > 0 && (
 						<h2 class="text-xl font-medium mb-4">
 							{contentType === "topic" &&
@@ -436,27 +409,15 @@ const totalDiscourses = allDiscourses.length;
 								: "Discourses"}
 						</h2>
 					)}
-					{collectionOrder.map((collectionKey) => {
-						const collection = collections[collectionKey];
-						if (collection.items.length === 0) return null;
-
-						return (
-							<div>
-								<h4 class="mb-6 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 pb-2 pl-4">
-									In {collection.name}
-								</h4>
-								<div class="px-2 space-y-4">
-									{collection.items.map((discourse: any) => (
-										<PostCard
-											title={discourse.title}
-											description={discourse.description}
-											id={discourse.id}
-										/>
-									))}
-								</div>
-							</div>
-						);
-					})}
+					<div class="px-2 space-y-4">
+						{additionalDiscourses.map((discourse: any) => (
+							<PostCard
+								title={discourse.title}
+								description={discourse.description}
+								id={discourse.id}
+							/>
+						))}
+					</div>
 				</div>
 			)
 		}
