@@ -5,6 +5,7 @@ qualities: examination, learned, contemplation, right view, muddle-minded, mindf
 theme: inspiration, directly knowing, wisdom
 slug: an4.191
 simile: sound of kettledrum, sound of conch shell
+priority: 2
 ---
 
 “Sotānugatānaṁ, bhikkhave, dhammānaṁ, vacasā paricitānaṁ, manasānupekkhitānaṁ, diṭṭhiyā suppaṭividdhānaṁ cattāro ānisaṁsā pāṭikaṅkhā. Katame cattāro?
