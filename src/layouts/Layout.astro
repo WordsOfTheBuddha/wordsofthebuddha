@@ -230,6 +230,16 @@ if (!SEOTitle) {
 		// Load preferences once when the page loads
 		document.addEventListener("DOMContentLoaded", async () => {
 			const urlParams = new URLSearchParams(window.location.search);
+			// Client-side safety net: if width < 768 and layout=split is present, drop it and clean the URL
+			if (
+				window.innerWidth < 768 &&
+				urlParams.get("layout") === "split"
+			) {
+				urlParams.delete("layout");
+				const newSearch = urlParams.toString();
+				const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ""}${window.location.hash}`;
+				window.history.replaceState(null, "", newUrl);
+			}
 			const preferences: UserPreferences = {
 				theme:
 					(urlParams.get("theme") as Theme) ??
