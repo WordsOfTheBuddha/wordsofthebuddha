@@ -52,9 +52,26 @@ let collectionProps;
 let suttaProps;
 let mainContent = "";
 let sideContent;
-const layout =
-	(Astro.url.searchParams.get("layout") as "split" | "interleaved") ||
-	"interleaved";
+// Determine effective layout, forcing interleaved on mobile UAs to avoid SSR split on phones
+const requestedLayout = Astro.url.searchParams.get("layout") as
+	| "split"
+	| "interleaved"
+	| null;
+
+const ua = Astro.request.headers.get("user-agent") || "";
+const isMobileUA =
+	/Mobile|Android|iP(hone|od|ad)|IEMobile|BlackBerry|Opera Mini/i.test(ua);
+
+// If a mobile UA requested layout=split, drop the param immediately to keep URL clean
+if (isMobileUA && requestedLayout === "split") {
+	const url = new URL(Astro.request.url);
+	url.searchParams.delete("layout");
+	return Astro.redirect(`${url.pathname}${url.search}`);
+}
+
+const layout: "split" | "interleaved" = isMobileUA
+	? "interleaved"
+	: (requestedLayout ?? "interleaved");
 
 // Handle collection routes
 if (route.type === "collection" && route.pattern) {
