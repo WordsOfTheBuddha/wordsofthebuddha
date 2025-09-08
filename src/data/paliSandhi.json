@@ -196,5 +196,13 @@
 	"bherisaddotveva": ["bherisadda", "iti", "eva"],
 	"acarinti": ["acari"],
 	"saṅkhasaddoti": ["saṅkhasadda", "iti"],
+	"dhammavicayasambojjhaṅgaṭṭhāniyānaṁ": [
+		"dhammavicayasambojjhaṅga",
+		"ṭhāniya"
+	],
+	"vīriyasambojjhaṅgaṭṭhāniyānaṁ": ["vīriyasambojjhaṅga", "ṭhāniya"],
+	"pītisambojjhaṅgaṭṭhāniyānaṁ": ["pītisambojjhaṅga", "ṭhāniya"],
+	"passaddhisambojjhaṅgaṭṭhāniyānaṁ": ["passaddhisambojjhaṅga", "ṭhāniya"],
+	"samādhisambojjhaṅgaṭṭhāniyānaṁ": ["samādhisambojjhaṅga", "ṭhāniya"],
 	"nānubhavissatīti": ["nānubhavissati", "iti"]
 }
