@@ -1,6 +1,6 @@
 ---
 title: Devadatta sutta - Devadatta
-description: The Buddha explains how Devadatta, overcome by evil desires, bad friendship, and abandoning the training, fell to Avīci hell. Though once esteemed, his envy led to ruin. The wise should associate with those whose path leads to the end of suffering.
+description: The Buddha explains how Devadatta, overcome by evil desires, bad friendship, and abandoning the training, arrived at a state of prolonged suffering. Though once esteemed, his envy led to ruin. The wise should associate with those whose path leads to the end of suffering.
 qualities: self-making, bad friendship, harm, conceit, unwholesome, wrong effort, contempt, wrong speech, tranquility, non-harm
 theme: inspiration, cultivating discernment
 simile: poison the ocean with a jar of venom
