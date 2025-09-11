@@ -166,6 +166,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses with Jambukhādaka" features a series of conversations between Venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
 					},
+					sn41: {
+						title: "Cittasaṁyutta - Linked Discourses with Citta the Householder",
+						description:
+							'The "Linked Discourses with Citta the Householder" features Citta, the foremost lay disciple of the Buddha in giving Dhamma discourses. These discourses often involve Citta engaging in dialogues with elder bhikkhus. He skillfully discusses complex topics such as the nature of fetters, the diversity of elements, and the subtleties of meditative states. Citta\'s profound wisdom and clarity highlights that deep insight into the Dhamma is accessible to lay practitioners as well as monastics.',
+					},
 					sn42: {
 						title: "Gāmaṇisaṁyutta - Linked Discourses with Headman",
 						description:

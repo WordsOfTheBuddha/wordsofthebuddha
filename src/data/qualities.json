@@ -502,7 +502,7 @@
 			"clear seeing",
 			"penetrating internal vision",
 			"Supported by:{mindfulness, full awareness, wise attention}",
-			"Leads to:{wisdom}",
+			"Leads to:{perceiving drawback, wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
 		"discontentment": [
@@ -615,7 +615,7 @@
 			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
 			"Related:{contemplation}",
 			"Supported by:{inquisitiveness, mindfulness, wise attention}",
-			"Leads to:{perceiving drawback, rousing of energy}",
+			"Leads to:{mindfulness, perceiving drawback, rousing of energy}",
 			"[vicaya, parikkhati, dhammavicaya, anupekkhita]"
 		],
 		"faith": [
@@ -1032,7 +1032,7 @@
 			"keeping in mind",
 			"awareness",
 			"observing body, felt experience, mind, and mental qualities",
-			"Supported by:{right effort, wakefulness}",
+			"Supported by:{right view, right effort, wakefulness}",
 			"Leads to:{examination, full awareness}",
 			"Opposite:{muddle-minded}",
 			"[sati]"
@@ -1135,7 +1135,7 @@
 			"lust",
 			"Related:{greed}",
 			"Supported by:{craving, ignorance, perceiving gratification}",
-			"Leads to:{sensual desire, lack of discernment}",
+			"Leads to:{perceiving gratification, lack of discernment}",
 			"Opposite:{dispassion}",
 			"[rāga]"
 		],
@@ -1152,7 +1152,7 @@
 			"following pleasure",
 			"seeing enjoyment",
 			"sign of beautiful",
-			"Supported by:{sensual desire, distraction}",
+			"Supported by:{passion, distraction}",
 			"Leads to:{sensual desire}",
 			"Opposite:{perceiving drawback}",
 			"[assādānupassī]"
@@ -1160,8 +1160,8 @@
 		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
-			"Supported by:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, contemplation}",
-			"Leads to:{wise attention}",
+			"Supported by:{contemplation, examination}",
+			"Leads to:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, contemplation}",
 			"[ādīnavānupassī]"
 		],
 		"personal existence": [
@@ -1181,7 +1181,7 @@
 			"being stirred up",
 			"lit. shaking",
 			"Supported by:{feuding}",
-			"Leads to:{distraction}",
+			"Leads to:{anxiety, distraction}",
 			"[kopa, uddhacca, āvila]"
 		],
 		"politeness": [
@@ -1217,28 +1217,28 @@
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[aniccasaññā]"
 		],
 		"recognition of not-self": [
 			"perception of not-self",
 			"recognition of alteration and changing nature",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[anattasaññā]"
 		],
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
 			"contemplation on the drawbacks",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[asubhasaññā]"
 		],
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[dukkhasaññā]"
 		],
@@ -1420,8 +1420,8 @@
 			"craving for pleasure",
 			"pulled towards enticing sense objects",
 			"Related:{having many desires}",
-			"Supported by:{passion, stinginess, wrong intention}",
-			"Leads to:{ignorance, negligence, perceiving gratification}",
+			"Supported by:{perceiving gratification, stinginess, wrong intention}",
+			"Leads to:{ignorance, negligence}",
 			"[kāmacchanda]"
 		],
 		"sexual misconduct": [
