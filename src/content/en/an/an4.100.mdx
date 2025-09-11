@@ -1,6 +1,7 @@
 ---
 title: Potaliya sutta - Potaliya
 description: The Buddha shares with Potaliya, the wanderer, the four kinds of persons found existing in the world - 1) one who criticizes the blameworthy, 2) who praises the praiseworthy, 3) who neither criticizes nor praises, and 4) who criticizes the blameworthy and praises the praiseworthy.
+qualities: unwholesome, right speech, discernment, impartiality, hypocrisy, equanimity
 fetter: ignorance
 tags: criticism, praise, equanimity, appropriateness, accurate, actual, timely, an, an4
 slug: an4.100

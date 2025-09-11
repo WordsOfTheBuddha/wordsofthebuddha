@@ -1,6 +1,7 @@
 ---
 title: Ānaṇya sutta - Debtlessness
 description: The Buddha explains the four kinds of happiness that are attainable by a lay person who enjoys sensual pleasures.
+qualities: happiness, sensual desire, right effort, right livelihood, wholesome, right speech, right action, ethical conduct, discernment, wisdom
 fetter: sensual desire, ignorance
 tags: an, an4, happiness, ownership, using wealth, debtlessness, blamelessness, debt, blame, wisdom, insight, bodily conduct, verbal conduct, mental conduct, sensual desire
 slug: an4.62

@@ -1,6 +1,7 @@
 ---
 title: Tatiya samādhi  sutta - Collectedness (Third)
 description: To develop tranquility and insight, one should ask experienced practitioners.
+qualities: insight, tranquility, discernment, wisdom, continuous effort, right effort, companionship, good friendship, humility, cultivation, collectedness
 fetter: ignorance
 tags: tranquility, insight, wisdom, an, an4
 slug: an4.94
