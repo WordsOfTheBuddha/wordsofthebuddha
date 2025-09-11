@@ -1,6 +1,7 @@
 ---
 title: Taṇhā sutta - Craving
 description: The eighteen ways of craving pertaining to the internal bases, and the eighteen ways of craving pertaining to the external bases.
+qualities: craving, personal existence, self-making
 fetter: conceit
 tags: craving,an,an4,conceit
 slug: an4.199
