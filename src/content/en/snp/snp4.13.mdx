@@ -1,6 +1,6 @@
 ---
 title: Mahābyūha sutta - The Greater Discourse on the Array of Views
-description: "Among those entrenched in views, crying “This alone is truth,” the Buddha calls it a small matter with two fruits: blame and praise. Seeing safety in the ground of non-dispute, the wise do not seek purity by precepts and vows or by what is seen, heard, or sensed. The sage ends craving for various states of existence and stands equanimous."
+description: "Among those entrenched in views, arguing “This alone is truth,” the Buddha calls praise won by such to be a small matter. Seeing safety in the ground of non-dispute, the wise do not seek purity by precepts and vows or by what is seen, heard, or sensed. The sage ends craving for various states of existence and stands equanimous."
 qualities: argumentativeness, clinging to rules and observances, feuding, personal existence, safety, tranquility, perturbation, craving, self-making, equanimity, tranquility, wisdom, stubbornness, attachment, free from attachment
 theme: inspiration, cultivating discernment, wisdom, inquisitiveness
 slug: snp4.13

@@ -228,5 +228,22 @@
 	"nānanti": ["nānaṁ"],
 	"gahapatīti": ["gahapati"],
 	"kamatīti": ["kamati"],
+	"sūpadhāritanti": ["sūpadhārita"],
+	"ekamidaṁ": ["eka", "idaṁ"],
+	"suññatāvihārenāhaṁ": [
+		"suññatāvihāra:meditation on emptiness; dwelling in voidness (of a self)",
+		"ahaṁ"
+	],
+	"pubbepāhaṁ": ["pubbe", "api", "ahaṁ"],
+	"cevidaṁ": ["ce", "eva", "idaṁ"],
+	"evampissa": ["evaṁ", "api", "assa"],
+	"jīvitapaccayāti": ["jīvitapaccaya"],
+	"suññamidaṁ": ["suñña", "idaṁ"],
+	"karuṇācetovimuttīti": ["karuṇācetovimutti"],
+	"mettācetovimuttīti": ["mettācetovimutti"],
+	"muditācetovimuttīti": ["muditācetovimutti"],
+	"upekkhācetovimuttīti": ["upekkhācetovimutti"],
+	"animittācetovimuttīti": ["animittācetovimutti"],
+	"mānasamugghātoti": ["māna", "samugghāta"],
 	"nānubhavissatīti": ["nānubhavissati", "iti"]
 }
