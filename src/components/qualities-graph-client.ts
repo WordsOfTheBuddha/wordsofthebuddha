@@ -1944,17 +1944,18 @@ function renderDrawer(nodeId: string) {
 	resetInfiniteScroll();
 	discCards.innerHTML = `<div class="soft">Loading…</div>`;
 	drawer.classList.add("open");
-	const apiUrl = new URL("/api/discover", window.location.origin);
-	apiUrl.searchParams.set("filter", slug);
-	apiUrl.searchParams.set("by", "topics,qualities");
-	fetch(apiUrl.toString())
-		.then((r) => r.json())
-		.then((result) => {
-			const item = (result?.data || []).find((x: any) => {
+	// Build locally for offline support using the embedded JSON in the page bundle
+	import("../utils/discover-data")
+		.then((mod) => {
+			const items = mod.buildUnifiedContent({
+				include: ["topics", "qualities"],
+				filter: slug,
+			});
+			const item = (items || []).find((x: any) => {
 				return (
-					x.slug.toLocaleLowerCase() === slug.toLocaleLowerCase() ||
-					x.slug.toLocaleLowerCase() ===
-						slug.replaceAll("-", " ").toLocaleLowerCase()
+					String(x.slug).toLowerCase() === slug.toLowerCase() ||
+					String(x.slug).toLowerCase() ===
+						slug.replaceAll("-", " ").toLowerCase()
 				);
 			});
 			const disc = item?.discourses || [];
@@ -1967,7 +1968,8 @@ function renderDrawer(nodeId: string) {
 				initInfiniteScroll();
 			}
 		})
-		.catch(() => {
+		.catch((e) => {
+			console.error("Failed to build local discover data:", e);
 			discCards.innerHTML = `<div class="soft">Could not load discourses.</div>`;
 		});
 }

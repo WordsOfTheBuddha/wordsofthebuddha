@@ -270,6 +270,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 	<script>
 		import { DiscoverRenderer } from "../../utils/discover-renderer";
+		import { buildUnifiedContent } from "../../utils/discover-data";
 		import type { UnifiedContentItem } from "../../types/discover";
 
 		let allData: UnifiedContentItem[] = [];
@@ -308,24 +309,18 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 			updateDisplay();
 		});
 
-		async function loadData() {
+		function loadData() {
 			try {
-				const by = Array.from(currentFilters).join(",");
+				const include = Array.from(currentFilters) as Array<
+					"topics" | "qualities" | "similes"
+				>;
 				const filter = searchTerm || "";
-				const response = await fetch(
-					`/api/discover?by=${by}&filter=${encodeURIComponent(filter)}`
-				);
-				const result = await response.json();
-
-				if (result.success) {
-					allData = result.data;
-					filteredData = result.data; // API does the filtering now
-					updateDisplay();
-				} else {
-					console.error("Failed to load data:", result.error);
-				}
+				const data = buildUnifiedContent({ include, filter });
+				allData = data;
+				filteredData = data; // util applies the filtering
+				updateDisplay();
 			} catch (error) {
-				console.error("Error loading data:", error);
+				console.error("Error building discover data:", error);
 			}
 		}
 
