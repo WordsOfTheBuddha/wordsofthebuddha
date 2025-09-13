@@ -330,6 +330,8 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 	},
 	an: {
 		title: "Aṅguttara Nikāya - Numerical Discourses",
+		description:
+			"A vast collection of discourses organized by numbered sets, offering practical teachings on daily application, cultivating virtue, collectedness, and wisdom for progress on the path to liberation.",
 		children: {
 			an1: {
 				title: "The Book of the Ones",

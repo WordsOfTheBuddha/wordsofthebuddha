@@ -1,8 +1,5 @@
 ---
 export const prerender = false;
-
-import { determineRouteType } from "../utils/routeHandler";
-import CollectionLayout from "../layouts/CollectionLayout.astro";
 import { getEntry } from "astro:content";
 import {
 	parseContent,
@@ -44,8 +41,7 @@ if (isSystemRequest || !id) {
 	return new Response(null, { status: 404 });
 }
 
-const route = determineRouteType(id);
-debug("route type is: ", route.type, route.metadata);
+// Dynamic route only handles discourses; collections are handled by src/pages/[collection].astro
 
 // Initialize variables for different route types
 let collectionProps;
@@ -73,17 +69,7 @@ const layout: "split" | "interleaved" = isMobileUA
 	? "interleaved"
 	: (requestedLayout ?? "interleaved");
 
-// Handle collection routes
-if (route.type === "collection" && route.pattern) {
-	const viewMode = Astro.url.searchParams.get("view") || "collections";
-	collectionProps = {
-		title: route.metadata?.title || "Collection",
-		description: route.metadata?.description || "Collection of suttas",
-		collection: viewMode === "collections",
-		children: route.metadata?.children || {},
-		searchPattern: route.pattern,
-	};
-} else {
+{
 	// Continue with existing sutta handling logic
 
 	// Find current index in sorted routes or find containing route
@@ -504,22 +490,10 @@ if (route.type === "collection" && route.pattern) {
 }
 ---
 
-{
-	route.type === "collection" ? (
-		<CollectionLayout
-			title={route.metadata?.title || ""}
-			description={route.metadata?.description || ""}
-			collection
-			children={route.metadata?.children || {}}
-			searchPattern={route.pattern || ""}
-		/>
-	) : (
-		<Layout {...suttaProps}>
-			<MDContent
-				content={mainContent}
-				sideContent={sideContent}
-				layout={layout}
-			/>
-		</Layout>
-	)
-}
+<Layout {...suttaProps}>
+	<MDContent
+		content={mainContent}
+		sideContent={sideContent}
+		layout={layout}
+	/>
+</Layout>
