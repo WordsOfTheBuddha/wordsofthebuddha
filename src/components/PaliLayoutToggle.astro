@@ -3,10 +3,7 @@ import ArrowsUpDown from "../assets/unified-view.svg?raw";
 import ArrowsRightLeft from "../assets/split-view.svg?raw";
 
 const { class: className } = Astro.props;
-const isPaliMode = Astro.url.searchParams.get("pli") === "true";
-
-// Don't render if Pali is not enabled
-if (!isPaliMode) return null;
+// Render always; visibility is controlled client-side by the 'pali-on' class
 ---
 
 <button
@@ -35,7 +32,6 @@ if (!isPaliMode) return null;
 
 		// URL param takes precedence over localStorage
 		const currentLayout = layoutParam || storedLayout || "interleaved";
-		console.log("current layout is: ", currentLayout);
 
 		// Set initial state
 		document.documentElement.classList.toggle(
@@ -43,16 +39,20 @@ if (!isPaliMode) return null;
 			currentLayout === "split"
 		);
 
-		// Ensure localStorage and URL are in sync
-		if (currentLayout === "split") {
-			setLayoutState("split");
-		} else {
-			setLayoutState("interleaved");
-		}
+		// Do not call setLayoutState here to avoid redundant writes; we only reflect existing state.
 	}
 
 	const toggle = document.getElementById("paliLayoutToggle");
 	if (toggle) {
+		// Control visibility: show only when Pali is enabled
+		const applyVisibility = () => {
+			const enabled =
+				document.documentElement.classList.contains("pali-on");
+			toggle.classList.toggle("hidden", !enabled);
+		};
+		applyVisibility();
+		document.addEventListener("paliModeChanged", applyVisibility as any);
+
 		const updateToggleState = (isSplit: boolean) => {
 			const splitIcon = toggle.querySelector(".split-icon");
 			const interleavedIcon = toggle.querySelector(".interleaved-icon");
@@ -86,3 +86,14 @@ if (!isPaliMode) return null;
 		}
 	}
 </script>
+
+<style>
+	/* Hide the layout toggle when Pāli is off, even before JS runs */
+	:global(html:not(.pali-on)) #paliLayoutToggle {
+		display: none !important;
+	}
+	/* Ensure it appears inline on md+ screens when Pāli is enabled */
+	:global(html.pali-on) #paliLayoutToggle {
+		display: inline-flex;
+	}
+</style>

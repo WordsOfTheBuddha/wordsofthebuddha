@@ -1,5 +1,6 @@
 ---
-export const prerender = false;
+// Hybrid rendering: enable prerender only when flagged
+export const prerender = true;
 import { getEntry } from "astro:content";
 import {
 	parseContent,
@@ -14,6 +15,11 @@ import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
+
+// Enumerate canonical discourse pages from routes.ts for prerender
+export async function getStaticPaths() {
+	return routes.map((id) => ({ params: { id } }));
+}
 
 // Extract slug from params
 const { id: originalId } = Astro.params;
@@ -41,6 +47,8 @@ if (isSystemRequest || !id) {
 	return new Response(null, { status: 404 });
 }
 
+console.log("requesting page:", id);
+
 // Dynamic route only handles discourses; collections are handled by src/pages/[collection].astro
 
 // Initialize variables for different route types
@@ -48,26 +56,11 @@ let collectionProps;
 let suttaProps;
 let mainContent = "";
 let sideContent;
-// Determine effective layout, forcing interleaved on mobile UAs to avoid SSR split on phones
-const requestedLayout = Astro.url.searchParams.get("layout") as
-	| "split"
-	| "interleaved"
-	| null;
-
-const ua = Astro.request.headers.get("user-agent") || "";
-const isMobileUA =
-	/Mobile|Android|iP(hone|od|ad)|IEMobile|BlackBerry|Opera Mini/i.test(ua);
-
-// If a mobile UA requested layout=split, drop the param immediately to keep URL clean
-if (isMobileUA && requestedLayout === "split") {
-	const url = new URL(Astro.request.url);
-	url.searchParams.delete("layout");
-	return Astro.redirect(`${url.pathname}${url.search}`);
-}
-
-const layout: "split" | "interleaved" = isMobileUA
-	? "interleaved"
-	: (requestedLayout ?? "interleaved");
+let splitEnglish: string | undefined = undefined;
+let splitPali: string | undefined = undefined;
+// Server should not decide layout; default to interleaved for prerender/SSR.
+// Client (Layout.astro) handles layout toggling and URL cleanup.
+const layout: "split" | "interleaved" = "interleaved";
 
 {
 	// Continue with existing sutta handling logic
@@ -295,9 +288,6 @@ const layout: "split" | "interleaved" = isMobileUA
 		return Astro.redirect(`/search?q=${id}`);
 	}
 
-	// Get showPali from query string
-	const showPali = Astro.url.searchParams.get("pli") === "true";
-
 	// Load content with fresh file system read in development
 	let contentItem;
 	if (import.meta.env.DEV) {
@@ -416,12 +406,11 @@ const layout: "split" | "interleaved" = isMobileUA
 	}
 
 	// Always parse content through contentParser
-	let paliContent = { body: "" };
-	if (showPali) {
+	// Always include Pali content so client can toggle without server roundtrips
+	let paliContent = { body: "" } as any;
+	{
 		const paliEntry = await getEntry("pliAll", id);
-		if (paliEntry) {
-			paliContent = paliEntry;
-		}
+		if (paliEntry) paliContent = paliEntry;
 	}
 
 	// Parse and combine content
@@ -434,19 +423,26 @@ const layout: "split" | "interleaved" = isMobileUA
 		discourseRange
 	);
 
-	const content = createCombinedMarkdown(
+	// Generate both interleaved and split variants; client toggles via html classes
+	const interleavedContent = createCombinedMarkdown(
 		pairs,
-		showPali,
-		layout,
+		true,
+		"interleaved",
+		paragraphRequest
+	);
+	const splitContent = createCombinedMarkdown(
+		pairs,
+		true,
+		"split",
 		paragraphRequest
 	);
 
-	// Prepare content based on layout type
-	if (typeof content === "string") {
-		mainContent = content;
-	} else {
-		mainContent = content.english;
-		sideContent = content.pali;
+	if (typeof interleavedContent === "string") {
+		mainContent = interleavedContent;
+	}
+	if (typeof splitContent !== "string") {
+		splitEnglish = splitContent.english;
+		splitPali = splitContent.pali;
 	}
 
 	// Extract last two segments of file path and remove extension
@@ -493,7 +489,7 @@ const layout: "split" | "interleaved" = isMobileUA
 <Layout {...suttaProps}>
 	<MDContent
 		content={mainContent}
-		sideContent={sideContent}
-		layout={layout}
+		splitEnglish={splitEnglish}
+		splitPali={splitPali}
 	/>
 </Layout>

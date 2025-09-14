@@ -127,18 +127,8 @@ export function synchronizePreferences(preferences: Partial<UserPreferences>) {
 
 export function setLayoutState(layout: Layout): void {
 	localStorage.setItem("layout", layout);
-	const url = new URL(window.location.href);
-	console.log("setting layout to: ", layout);
-	// Only update URL if layout has changed
-	if (url.searchParams.get("layout") !== layout) {
-		if (layout === "split") {
-			url.searchParams.set("layout", layout);
-			window.location.href = url.toString(); // This will cause a reload
-		} else if (url.searchParams.get("layout")) {
-			url.searchParams.delete("layout");
-			window.location.href = url.toString();
-		}
-	}
+	// Apply class immediately without URL changes or reloads
+	document.documentElement.classList.toggle("split", layout === "split");
 }
 
 export function toggleTheme(): void {
