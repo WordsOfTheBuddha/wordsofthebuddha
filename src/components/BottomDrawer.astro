@@ -441,18 +441,14 @@ import "../styles/bottomDrawer.css";
 		);
 
 		try {
-			const response = await fetch(
-				`/api/pali/lookup?word=${encodeURIComponent(word)}`
-			);
-			const data = await response.json();
-			if (data.definitions && data.definitions.length > 0) {
+			const mod = await import("../utils/paliLookup");
+			const data = await mod.lookupSingleWord(word);
+
+			if (data && data.definitions && data.definitions.length > 0) {
 				const content = createTooltipContent(word, data);
 				bottomPopover.show(content, "dictionary");
 
-				// Add navigation controls if enabled
-				if (enableNavigation) {
-					addNavigationControls();
-				}
+				if (enableNavigation) addNavigationControls();
 			} else {
 				bottomPopover.show(
 					`<div><span style="font-family: 'Gentium Plus', serif;">${word}</span>: No definition found</div>`,
@@ -460,7 +456,7 @@ import "../styles/bottomDrawer.css";
 				);
 			}
 		} catch (error) {
-			console.error("Failed to fetch definition:", error);
+			console.error("Failed to load definition:", error);
 			bottomPopover.show("Failed to load definition", "dictionary");
 		}
 	}
