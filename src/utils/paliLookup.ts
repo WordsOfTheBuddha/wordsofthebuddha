@@ -166,6 +166,8 @@ export async function lookupSingleWord(
 	word: string
 ): Promise<LookupResponse | null> {
 	try {
+		// Normalize to NFC to handle composed/ decomposed diacritics from URLs
+		word = (word || "").trim().normalize("NFC");
 		// Try compound lookup first
 		const compoundResult = await lookupCompoundWord(word);
 		if (compoundResult) return compoundResult;
@@ -226,12 +228,14 @@ export async function batchLookup(
 	words: string[]
 ): Promise<Record<string, WordDefinition[]>> {
 	const results: Record<string, WordDefinition[]> = {};
+	const normalized = words.map((w) => (w ?? "").trim().normalize("NFC"));
 	const batchSize = 50;
-	for (let i = 0; i < words.length; i += batchSize) {
-		const batch = words.slice(i, i + batchSize);
+	for (let i = 0; i < normalized.length; i += batchSize) {
+		const batch = normalized.slice(i, i + batchSize);
 		const lookups = batch.map(async (w) => {
 			const defs = await lookupSingleWord(w);
 			if (defs?.definitions) results[w] = defs.definitions;
+			else results[w] = [];
 		});
 		await Promise.all(lookups);
 	}
