@@ -34,6 +34,7 @@ src/data/directoryStructureWithCounts.ts
 src/data/qualityMappings.json
 src/data/simileMappings.json
 src/data/topicMappings.json
+src/data/searchIndex.ts
 
 # translation flow
 src/translation-flow/.debug/*

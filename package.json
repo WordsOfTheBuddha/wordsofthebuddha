@@ -4,12 +4,13 @@
 	"version": "0.0.1",
 	"scripts": {
 		"watch-routes": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs --watch",
-		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts",
+		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateSearchIndex.ts",
 		"gen:qualities": "npx tsx src/utils/generateQualityMappings.ts",
 		"gen:similes": "npx tsx src/utils/generateSimileMappings.ts",
 		"gen:topics": "npx tsx src/utils/generateTopicMappings.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
-		"prebuild": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts",
+		"prebuild": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateSearchIndex.ts",
+		"gen:search": "npx tsx src/utils/generateSearchIndex.ts",
 		"build": "node --trace-deprecation ./node_modules/.bin/astro build"
 	},
 	"dependencies": {
