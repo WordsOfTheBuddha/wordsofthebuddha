@@ -1,6 +1,6 @@
 ---
-// Hybrid rendering: enable prerender only when flagged
-export const prerender = true;
+// Catch-all stays SSR to support partial paragraph routes
+export const prerender = false;
 import { getEntry } from "astro:content";
 import {
 	parseContent,
@@ -15,11 +15,6 @@ import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
-
-// Enumerate canonical discourse pages from routes.ts for prerender
-export async function getStaticPaths() {
-	return routes.map((id) => ({ params: { id } }));
-}
 
 // Extract slug from params
 const { id: originalId } = Astro.params;
@@ -289,115 +284,7 @@ const layout: "split" | "interleaved" = "interleaved";
 	}
 
 	// Load content with fresh file system read in development
-	let contentItem;
-	if (import.meta.env.DEV) {
-		try {
-			const { readFile } = await import("node:fs/promises");
-			const { join } = await import("node:path");
-
-			// Get the correct file path from getEntry
-			const tempContentItem = await getEntry("all", id);
-			if (tempContentItem?.filePath) {
-				const filePath = join(process.cwd(), tempContentItem.filePath);
-				const rawContent = await readFile(filePath, "utf-8");
-
-				// Use getEntry for metadata but replace body with fresh content
-				contentItem = await getEntry("all", id);
-				if (contentItem && rawContent) {
-					const frontmatterStart = rawContent.indexOf("---");
-
-					if (frontmatterStart !== -1) {
-						const frontmatterEnd = rawContent.indexOf(
-							"\n---\n",
-							frontmatterStart + 3
-						);
-
-						if (frontmatterEnd !== -1) {
-							// Extract and parse frontmatter
-							const frontmatterContent = rawContent.slice(
-								frontmatterStart + 3,
-								frontmatterEnd
-							);
-
-							// Parse frontmatter YAML
-							try {
-								const frontmatterLines =
-									frontmatterContent.split("\n");
-								const frontmatterData: Record<string, any> = {};
-
-								for (const line of frontmatterLines) {
-									const colonIndex = line.indexOf(":");
-									if (colonIndex > 0) {
-										const key = line
-											.substring(0, colonIndex)
-											.trim();
-										const value = line
-											.substring(colonIndex + 1)
-											.trim();
-										// Remove quotes if present
-										const cleanValue = value.replace(
-											/^["']|["']$/g,
-											""
-										);
-										frontmatterData[key] = cleanValue;
-									}
-								}
-
-								// Update contentItem.data properties if they exist in frontmatter
-								if (frontmatterData.title) {
-									contentItem.data.title =
-										frontmatterData.title;
-								}
-								if (frontmatterData.description) {
-									contentItem.data.description =
-										frontmatterData.description;
-								}
-								if (frontmatterData.qualities) {
-									contentItem.data.qualities =
-										frontmatterData.qualities;
-								}
-								if (frontmatterData.commentary) {
-									contentItem.data.commentary =
-										frontmatterData.commentary;
-									console.log(
-										"Commentary found:",
-										frontmatterData.commentary
-									);
-								}
-							} catch (frontmatterError) {
-								console.error(
-									`Error parsing frontmatter:`,
-									frontmatterError
-								);
-							}
-
-							let bodyStart = frontmatterEnd + 5; // Skip '\n---\n'
-
-							// Skip any additional newlines
-							while (
-								bodyStart < rawContent.length &&
-								rawContent[bodyStart] === "\n"
-							) {
-								bodyStart++;
-							}
-
-							const extractedBody = rawContent.slice(bodyStart);
-
-							contentItem.body = extractedBody;
-						}
-					}
-				}
-			} else {
-				contentItem = await getEntry("all", id);
-			}
-		} catch (error) {
-			console.error(`Error in file reading:`, error);
-			// Fallback to standard getEntry on any error
-			contentItem = await getEntry("all", id);
-		}
-	} else {
-		contentItem = await getEntry("all", id);
-	}
+	let contentItem = await getEntry("all", id);
 
 	if (!contentItem) {
 		console.warn("English content not found");
