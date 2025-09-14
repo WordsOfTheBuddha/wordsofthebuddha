@@ -1,0 +1,561 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout seoTitle="Offline" showAuth={false}>
+	<main class="container mx-auto px-4 py-8">
+		<h1 class="text-2xl font-semibold mb-4">Offline control center</h1>
+		<p class="mb-6 text-gray-600 dark:text-gray-300">
+			Manage what to make available offline. Core assets and collection
+			pages are always cached.
+		</p>
+
+		<section class="mb-8 p-4 border rounded-lg">
+			<h2 class="text-lg font-medium mb-3">Collections</h2>
+			<div class="mb-2">
+				<label class="inline-flex items-center gap-2">
+					<input
+						id="toggle-collections-all"
+						type="checkbox"
+						class="h-4 w-4"
+					/>
+					<span>All Collections</span>
+					<span
+						id="collections-all-estimate"
+						class="ml-2 text-sm text-gray-500"></span>
+				</label>
+			</div>
+			<div
+				id="collections-list"
+				class="divide-y divide-gray-200 dark:divide-gray-700 rounded-md border"
+			>
+				<!-- rows inserted by script -->
+			</div>
+			<div class="mt-3 text-sm text-gray-500" id="collections-progress">
+			</div>
+		</section>
+
+		<section class="mb-8 p-4 border rounded-lg">
+			<h2 class="text-lg font-medium mb-3">Discovery (/on) pages</h2>
+			<label class="inline-flex items-center gap-2">
+				<input id="toggle-on" type="checkbox" class="h-4 w-4" />
+				<span>Cache all /on/:slug pages</span>
+				<span id="on-estimate" class="ml-2 text-sm text-gray-500"
+				></span>
+			</label>
+			<div class="mt-3 text-sm text-gray-500" id="on-progress"></div>
+		</section>
+
+		<section class="p-4 border rounded-lg mb-8">
+			<div class="flex flex-col sm:flex-row sm:items-center gap-3">
+				<button
+					id="download"
+					class="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+					disabled>Download selected</button
+				>
+				<div class="flex-1">
+					<div id="progress-wrap" class="hidden">
+						<div
+							class="h-2 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden"
+						>
+							<div
+								id="progress-bar"
+								class="h-full bg-blue-500"
+								style="width:0%"
+							>
+							</div>
+						</div>
+						<div class="mt-2 flex items-center gap-2 text-sm">
+							<span id="progress-text"></span>
+							<button
+								id="pause-resume"
+								class="px-2 py-0.5 border rounded">Pause</button
+							>
+						</div>
+					</div>
+				</div>
+				<button id="clear" class="px-3 py-1 border rounded hidden"
+					>Clear Cache</button
+				>
+			</div>
+		</section>
+
+		<!-- Install app section -->
+		<section class="p-4 border rounded-lg mb-8">
+			<h2 class="text-lg font-medium mb-3">Install app</h2>
+			<p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+				Install this site as an app for quick access and better offline
+				support.
+			</p>
+			<button id="a2hs" class="px-4 py-2 border rounded hidden"
+				>Add to Home Screen</button
+			>
+			<p
+				id="a2hs-installed-note"
+				class="text-sm text-green-700 dark:text-green-400 hidden mt-3"
+			>
+				App is already installed.
+			</p>
+		</section>
+	</main>
+
+	<script>
+		const STATE: any = {
+			manifest: null,
+			onJob: null,
+			collectionsJob: null,
+			selectedCollections: new Set(),
+		};
+
+		// Primary eight collections and their display labels
+		const PRIMARY_COLLECTIONS = [
+			{ keys: ["dhp"], label: "The Path of Dhamma", pali: "Dhammapada" },
+			{ keys: ["iti"], label: "As It Was Said", pali: "Itivuttaka" },
+			{
+				keys: ["mn"],
+				label: "Middle Length Discourses",
+				pali: "Majjhima Nikāya",
+			},
+			{
+				keys: ["snp"],
+				label: "The Buddha's Ancient Discourses",
+				pali: "Sutta Nipāta",
+			},
+			{
+				keys: ["sn"],
+				label: "Linked Discourses",
+				pali: "Saṁyutta Nikāya",
+			},
+			{
+				keys: ["an"],
+				label: "Numerical Discourses",
+				pali: "Aṅguttara Nikāya",
+			},
+			{ keys: ["ud"], label: "Inspired Utterances", pali: "Udāna" },
+			{ keys: ["khp"], label: "Minor Passages", pali: "Khuddakapāṭha" },
+		];
+
+		async function loadManifest() {
+			try {
+				const res = await fetch("/offline-manifest.json", {
+					cache: "no-store",
+				});
+				STATE.manifest = await res.json();
+				setupCollections();
+			} catch (e) {
+				console.error("Failed to load manifest", e);
+			}
+		}
+
+		function getSW() {
+			return navigator.serviceWorker?.controller || null;
+		}
+
+		// Utility: pretty sizes
+		function formatBytes(bytes: number) {
+			if (!bytes || bytes <= 0) return "";
+			const units = ["B", "KB", "MB", "GB"];
+			let i = 0;
+			let n = bytes;
+			while (n >= 1024 && i < units.length - 1) {
+				n /= 1024;
+				i++;
+			}
+			return `${n.toFixed(n < 10 && i > 0 ? 1 : 0)} ${units[i]}`;
+		}
+		async function estimateForUrls(urls: string[], sample = 3) {
+			if (!urls || urls.length === 0) return 0;
+			const picks = urls.slice(0, Math.min(sample, urls.length));
+			let total = 0;
+			let counted = 0;
+			for (const u of picks) {
+				try {
+					const res = await fetch(u, {
+						method: "HEAD",
+						cache: "no-store",
+					});
+					const cl = res.headers.get("content-length");
+					if (cl) {
+						total += parseInt(cl, 10) || 0;
+						counted++;
+						continue;
+					}
+				} catch {}
+				try {
+					const res2 = await fetch(u, { cache: "no-store" });
+					const buf = await res2.arrayBuffer();
+					total += buf.byteLength;
+					counted++;
+				} catch {}
+			}
+			if (!counted) return 0;
+			const avg = total / counted;
+			return Math.round(avg * urls.length);
+		}
+
+		function updateAllCollectionsEstimate(keys: string[]) {
+			if (!keys || !keys.length) return;
+			const total = keys.reduce(
+				(acc, k) =>
+					acc + ((STATE._estimates && STATE._estimates[k]) || 0),
+				0
+			);
+			const el = document.getElementById("collections-all-estimate");
+			if (el) el.textContent = total ? `~ ${formatBytes(total)}` : "";
+			STATE._allCollectionsEstimate = total;
+		}
+
+		function setupCollections() {
+			const container = document.getElementById(
+				"collections-list"
+			) as HTMLElement | null;
+			if (!container) return;
+			container.innerHTML = "";
+			const map =
+				(STATE.manifest &&
+					(STATE.manifest as any).discourseByCollection) ||
+				{};
+			const presentKeys = Object.keys(map);
+
+			// Build rows only for the primary eight, using whichever key is available
+			const effectiveKeys: string[] = [];
+			for (const item of PRIMARY_COLLECTIONS) {
+				const key = item.keys.find((k) => presentKeys.includes(k));
+				if (!key) continue; // skip if collection absent
+				effectiveKeys.push(key);
+				const id = `toggle-col-${key}`;
+				const row = document.createElement("div");
+				row.className = "flex items-center gap-3 px-3 py-3";
+				row.innerHTML = `
+          <input id="${id}" type="checkbox" class="h-4 w-4" />
+          <label for="${id}" class="flex-1 cursor-pointer">
+            <span class="text-base sm:text-lg">${item.label}</span>
+            <span class="text-sm sm:text-base text-gray-500 dark:text-gray-400 ml-2">(${item.pali})</span>
+          </label>
+          <span id="size-col-${key}" class="text-sm text-gray-500"></span>
+        `;
+				container.appendChild(row);
+				const cb = row.querySelector(
+					"input"
+				) as HTMLInputElement | null;
+				cb?.addEventListener("change", () => {
+					if (cb && cb.checked) STATE.selectedCollections.add(key);
+					else STATE.selectedCollections.delete(key);
+					syncAllToggle(effectiveKeys);
+					updateDownloadButton();
+				});
+
+				// Estimate for this collection
+				const urls = map[key] || [];
+				estimateForUrls(urls).then((bytes) => {
+					const el = document.getElementById(`size-col-${key}`);
+					if (el) el.textContent = formatBytes(bytes);
+					(STATE._estimates || (STATE._estimates = {}))[key] = bytes;
+					updateAllCollectionsEstimate(effectiveKeys);
+				});
+			}
+			const allCb = document.getElementById(
+				"toggle-collections-all"
+			) as HTMLInputElement | null;
+			allCb?.addEventListener("change", (e: any) => {
+				const on = !!e?.target?.checked;
+				for (const key of effectiveKeys) {
+					const cb = document.getElementById(
+						`toggle-col-${key}`
+					) as HTMLInputElement | null;
+					if (cb) cb.checked = on;
+					if (on) STATE.selectedCollections.add(key);
+					else STATE.selectedCollections.delete(key);
+				}
+				updateDownloadButton();
+			});
+
+			// Estimate for All Collections
+			updateAllCollectionsEstimate(effectiveKeys);
+
+			// Estimate for /on pages
+			const onUrls =
+				(STATE.manifest && (STATE.manifest as any).onPages) || [];
+			estimateForUrls(onUrls).then((bytes) => {
+				const el = document.getElementById("on-estimate");
+				if (el) el.textContent = formatBytes(bytes);
+				STATE._onEstimate = bytes;
+			});
+		}
+
+		function syncAllToggle(keys?: string[]) {
+			const allKeys =
+				keys ||
+				Object.keys(
+					(STATE.manifest &&
+						(STATE.manifest as any).discourseByCollection) ||
+						{}
+				);
+			const allOn =
+				allKeys.length > 0 &&
+				allKeys.every((k: string) => STATE.selectedCollections.has(k));
+			const allCb = document.getElementById(
+				"toggle-collections-all"
+			) as HTMLInputElement | null;
+			if (allCb) allCb.checked = allOn;
+		}
+
+		function postToSW(message: any) {
+			const sw = getSW();
+			if (!sw) {
+				// Post to active worker even if not controlling yet
+				navigator.serviceWorker
+					?.getRegistration()
+					.then((reg) => {
+						reg?.active?.postMessage(message);
+					})
+					.catch(() => {});
+				// Also retry once after a short delay in case control attaches
+				setTimeout(() => {
+					const ctrl = getSW();
+					if (ctrl) ctrl.postMessage(message);
+				}, 1200);
+				return;
+			}
+			sw.postMessage(message);
+		}
+
+		let onProgressCount = 0;
+		let onProgressTotal = 0;
+		let colProgressCount = 0;
+		let colProgressTotal = 0;
+		navigator.serviceWorker?.addEventListener("message", (event) => {
+			const msg = event.data || {};
+			if (msg.progressKey === "on") {
+				if (msg.type === "PROGRESS") {
+					onProgressCount = msg.done;
+					onProgressTotal = msg.total;
+				}
+				if (msg.type === "DONE") {
+					onProgressCount = onProgressTotal;
+				}
+				if (msg.type === "ERROR") {
+					// show minimal error state
+				}
+				const onp = document.getElementById("on-progress");
+				if (onp)
+					onp.textContent = onProgressTotal
+						? `Caching /on pages: ${onProgressCount}/${onProgressTotal}`
+						: "";
+			}
+			if (msg.progressKey === "collections") {
+				if (msg.type === "PROGRESS") {
+					colProgressCount = msg.done;
+					colProgressTotal = msg.total;
+				}
+				if (msg.type === "DONE") {
+					colProgressCount = colProgressTotal;
+				}
+				const cp = document.getElementById("collections-progress");
+				if (cp)
+					cp.textContent = colProgressTotal
+						? `Caching collections: ${colProgressCount}/${colProgressTotal}`
+						: "";
+			}
+
+			// Unified download progress
+			if (msg.progressKey === "download") {
+				const wrap = document.getElementById("progress-wrap");
+				const bar = document.getElementById("progress-bar");
+				const text = document.getElementById("progress-text");
+				const pauseBtn = document.getElementById("pause-resume");
+				if (wrap) wrap.classList.remove("hidden");
+				if (msg.type === "PROGRESS") {
+					const pct = msg.total
+						? Math.round((msg.done / msg.total) * 100)
+						: 0;
+					if (bar) (bar as any).style.width = pct + "%";
+					if (text)
+						text.textContent = `${msg.done}/${msg.total} (${pct}%)`;
+					// ensure controls visible during active job
+					pauseBtn?.classList.remove("hidden");
+				}
+				if (msg.type === "PAUSED") {
+					// No persistent label; button text already shows state
+				}
+				if (msg.type === "RESUMED") {
+					// no-op
+				}
+				if (msg.type === "DONE" || msg.type === "ERROR") {
+					if (msg.type === "DONE") {
+						// Hide Pause on completion
+						pauseBtn?.classList.add("hidden");
+						// Optional: mark completed
+						if (
+							text &&
+							text.textContent &&
+							!text.textContent.includes("Completed")
+						) {
+							text.textContent =
+								(text.textContent || "") + " • Completed";
+						}
+					}
+					refreshClearVisibility();
+				}
+			}
+
+			if (msg.type === "CLEARED") {
+				refreshClearVisibility();
+			}
+		});
+
+		function updateDownloadButton() {
+			const btn = document.getElementById(
+				"download"
+			) as HTMLButtonElement | null;
+			if (!btn) return;
+			const anySelected =
+				(STATE.selectedCollections &&
+					STATE.selectedCollections.size > 0) ||
+				!!(
+					document.getElementById(
+						"toggle-on"
+					) as HTMLInputElement | null
+				)?.checked;
+			btn.disabled = !anySelected;
+		}
+
+		const toggleOn = document.getElementById(
+			"toggle-on"
+		) as HTMLInputElement | null;
+		toggleOn?.addEventListener("change", () => updateDownloadButton());
+
+		const downloadBtn = document.getElementById("download");
+		const pauseResumeBtn = document.getElementById("pause-resume");
+		downloadBtn?.addEventListener("click", () => {
+			if (!STATE.manifest) return;
+			const map = (STATE.manifest as any).discourseByCollection || {};
+			const urlsCollections = Array.from(
+				STATE.selectedCollections as Set<string>
+			).flatMap((k: string) => map[k] || []);
+			const urlsOn = (
+				document.getElementById("toggle-on") as HTMLInputElement | null
+			)?.checked
+				? (STATE.manifest as any).onPages
+				: [];
+			const urls = [...urlsCollections, ...(urlsOn || [])];
+			if (urls.length === 0) return;
+			const wrap = document.getElementById("progress-wrap");
+			if (wrap) wrap.classList.remove("hidden");
+			(document.getElementById("progress-bar") as any).style.width = "0%";
+			(document.getElementById("progress-text") as any).textContent =
+				"Starting…";
+			// Reset Pause/Cancel on new job
+			const pauseBtn = document.getElementById("pause-resume");
+			if (pauseBtn) {
+				(pauseBtn as HTMLButtonElement).textContent = "Pause";
+				pauseBtn.classList.remove("hidden");
+			}
+			postToSW({
+				type: "CACHE_URLS",
+				urls,
+				cacheName: "bulk-download",
+				progressKey: "download",
+			});
+		});
+		pauseResumeBtn?.addEventListener("click", () => {
+			const btn = document.getElementById(
+				"pause-resume"
+			) as HTMLButtonElement | null;
+			if (!btn) return;
+			if (btn.textContent === "Pause") {
+				postToSW({ type: "PAUSE_JOB", progressKey: "download" });
+				btn.textContent = "Resume";
+			} else {
+				postToSW({ type: "RESUME_JOB", progressKey: "download" });
+				btn.textContent = "Pause";
+			}
+		});
+		document.getElementById("clear")?.addEventListener("click", () => {
+			// Abort any in-flight job and clear caches
+			postToSW({ type: "CANCEL_JOB" });
+			postToSW({ type: "CLEAR_ALL" });
+			// Reset progress UI
+			const wrap = document.getElementById("progress-wrap");
+			const bar = document.getElementById("progress-bar");
+			const text = document.getElementById("progress-text");
+			const pauseBtn = document.getElementById("pause-resume");
+			if (wrap) wrap.classList.add("hidden");
+			if (bar) (bar as any).style.width = "0%";
+			if (text) text.textContent = "";
+			if (pauseBtn) pauseBtn.classList.add("hidden");
+		});
+
+		// Show/Hide clear button based on caches content
+		async function refreshClearVisibility() {
+			try {
+				const keys = await caches.keys();
+				const OPTIONAL_CACHES = [
+					"bulk-download",
+					"collections-pages",
+					"on-pages",
+				];
+				let hasEntries = false;
+				for (const k of keys) {
+					if (!OPTIONAL_CACHES.includes(k)) continue;
+					const c = await caches.open(k);
+					const reqs = await c.keys();
+					if (reqs && reqs.length) {
+						hasEntries = true;
+						break;
+					}
+				}
+				const btn = document.getElementById("clear");
+				if (btn) btn.classList.toggle("hidden", !hasEntries);
+			} catch {}
+		}
+		refreshClearVisibility();
+		updateDownloadButton();
+
+		// Add to Home Screen (A2HS)
+		(function setupA2HS() {
+			const btn = document.getElementById("a2hs");
+			const installedNote = document.getElementById(
+				"a2hs-installed-note"
+			);
+			if (!btn) return;
+
+			// Detect already installed
+			const isStandalone =
+				window.matchMedia &&
+				window.matchMedia("(display-mode: standalone)").matches;
+			const isIOSStandalone =
+				(window as any).navigator?.standalone === true;
+			if (isStandalone || isIOSStandalone) {
+				btn.classList.add("hidden");
+				installedNote?.classList.remove("hidden");
+				return;
+			}
+
+			let deferredPrompt: any = null;
+			window.addEventListener("beforeinstallprompt", (e: any) => {
+				e.preventDefault();
+				deferredPrompt = e;
+				btn.classList.remove("hidden");
+			});
+
+			btn.addEventListener("click", async () => {
+				if (!deferredPrompt) return;
+				deferredPrompt.prompt();
+				try {
+					await deferredPrompt.userChoice;
+				} catch {}
+				deferredPrompt = null;
+				btn.classList.add("hidden");
+				installedNote?.classList.remove("hidden");
+			});
+
+			window.addEventListener("appinstalled", () => {
+				btn.classList.add("hidden");
+				installedNote?.classList.remove("hidden");
+			});
+		})();
+
+		loadManifest();
+	</script>
+</Layout>
