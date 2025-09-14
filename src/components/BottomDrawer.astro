@@ -5,6 +5,7 @@ import "../styles/bottomDrawer.css";
 
 <!-- this is a client-only script component -->
 <script>
+	import { lookupSingleWord } from "../utils/paliLookup";
 	// Helper function to parse Markdown-style links
 	function parseMarkdownLinks(text: string) {
 		return text.replace(
@@ -441,8 +442,7 @@ import "../styles/bottomDrawer.css";
 		);
 
 		try {
-			const mod = await import("../utils/paliLookup");
-			const data = await mod.lookupSingleWord(word);
+			const data = await lookupSingleWord(word);
 
 			if (data && data.definitions && data.definitions.length > 0) {
 				const content = createTooltipContent(word, data);

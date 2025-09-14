@@ -1,8 +1,9 @@
 // Shared Pali lookup utility (server + client)
-// - Lazy-loads @sc-voice/ms-dpd dictionary
+// - Statically imports @sc-voice/ms-dpd dictionary and creates a singleton on first use
 // - Provides compound handling via paliSandhi.json
 
 import paliSandhi from "../data/paliSandhi.json";
+import * as msdpd from "@sc-voice/ms-dpd/main.mjs";
 
 export interface DictionaryResult {
 	pos?: string;
@@ -68,10 +69,8 @@ let dictionaryPromise: Promise<any> | null = null;
 
 async function getDictionary() {
 	if (!dictionaryPromise) {
-		dictionaryPromise = (async () => {
-			const mod: any = await import("@sc-voice/ms-dpd/main.mjs");
-			return await mod.Dictionary.create();
-		})();
+		// Create the dictionary instance once (module is statically imported above)
+		dictionaryPromise = (msdpd as any).Dictionary.create();
 	}
 	return dictionaryPromise;
 }
