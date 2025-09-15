@@ -1,230 +1,288 @@
 ---
-export const prerender = false;
+export const prerender = true;
 import Layout from "../layouts/Layout.astro";
-import { transformId } from "../utils/transformId";
+import BottomDrawer from "../components/BottomDrawer.astro";
 import SearchIcon from "../assets/search.svg?raw";
-import HelpIcon from "../assets/help-solid.svg?raw";
-import { performSearch, type SearchResult } from "../service/search/search";
-
-const query = decodeURIComponent(Astro.url.searchParams.get("q") || "");
-const searchResults: SearchResult[] = query
-	? await performSearch(query, { highlight: true })
-	: [];
-console.log("results length: ", searchResults.length);
+import HelpIcon from "../assets/question-mark-circle.svg?raw";
 ---
 
 <Layout title="" showAuth={true}>
-	<div class="relative">
-		<!-- Sticky search container -->
+	<div class="relative search-client">
 		<div class="sticky top-0 z-10 bg-[var(--bg-color)] py-4 shadow-sm">
 			<div class="max-w-2xl mx-auto">
-				<form method="get" action="/search">
+				<form id="search-form" action="#" onsubmit="return false">
 					<div class="relative">
 						<input
 							type="search"
 							name="q"
-							value={query}
+							value=""
 							placeholder="Search suttas..."
 							class="w-full p-4 pl-12 text-lg border rounded-lg bg-[var(--auth-input-bg)] border-[var(--auth-input-border)] text-[var(--text-color)] search-input"
-							autocomplete="off"
 						/>
-						<div class="absolute left-4 top-5 text-gray-400">
+						<div
+							class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+						>
 							<Fragment set:html={SearchIcon} />
 						</div>
 						<button
 							type="button"
-							class="absolute right-4 top-5 text-gray-400 hover:text-gray-600"
+							class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
 							title="Search Help"
-							onclick="document.getElementById('search-help').classList.toggle('hidden')"
+							onclick="document.getElementById('search-help')?.classList.toggle('hidden')"
 						>
 							<Fragment set:html={HelpIcon} />
 						</button>
 					</div>
 				</form>
-
-				<!-- Search help and results container -->
-				<div class="max-w-2xl mx-auto mt-2">
-					<div
-						id="search-help"
-						class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
-					>
-						<h3 class="font-semibold mb-2">Search Syntax:</h3>
-						<ul class="space-y-1">
-							<li>
-								<code class="not-prose">quest</code> - Relevance
-								(including fuzzy) match on quest
-							</li>
-							<li>
-								<code class="not-prose">'jhana</code> - Exact match
-								on jhana
-							</li>
-							<li>
-								<code class="not-prose">!wrong</code> - Discourses
-								that do not have the term wrong are matched
-							</li>
-							<li>
-								<code class="not-prose">^SN22</code> - Discourses
-								that start with SN22
-							</li>
-							<li>
-								<code class="not-prose">world$</code> - Ends with
-								world
-							</li>
-							<li>
-								<code class="not-prose"
-									>"perception consciousness jhana"</code
-								> - Exact matches for perception, consciousness,
-								and jhana
-							</li>
-
-							<li>
-								<code class="not-prose"
-									>"letting go" !anger</code
-								> - Exactly matches "letting go" and without anger
-							</li>
-							<li>
-								<code class="not-prose"
-									>illusion | ignorance</code
-								> - Matches either illusion or ignorance on any fields
-							</li>
-						</ul>
-						<h3 class="font-semibold mb-2">
-							More Specific Examples:
-						</h3>
-						<p class="mt-2 text-xs text-gray-500">
-							<ul class="space-y-1">
-								<li>
-									<code class="not-prose">!^DHP</code> matches
-									all discourses except those starting with DHP
-								</li>
-								<li>
-									<code class="not-prose"
-										>^SN content:'consciousness
-										content:!perception</code
-									> matches all SN discourses that have consciousness
-									in content but do not have perception in content.
-								</li>
-								<li>
-									<code class="not-prose"
-										>title:element (content:space |
-										content;consciousness)</code
-									> matches where title is element and content
-									has either space or consciousness.
-								</li>
-								<li>
-									<code class="not-prose"
-										>^AN (urgency | faith) !mindfulness
-										!child</code
-									> matches AN discourses that have urgency or
-									fatih in them, and do not have the words mindfulness
-									or child in them.
-								</li>
-							</ul>
-						</p>
-					</div>
-				</div>
-
-				<div class="mt-4">
-					{
-						query && (
-							<p class="mb-4 text-sm text-gray-500">
-								Found {searchResults.length} results for {query}
-							</p>
-						)
-					}
-
-					{
-						searchResults.length === 0 && query && (
-							<p class="text-center text-gray-500">
-								No results found
-							</p>
-						)
-					}
-
-					{
-						searchResults.map((item: SearchResult) => (
-							<div class="relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-								<div class="flex items-start">
-									<div class="min-w-0 pr-4">
-										<h2 class="text-base sm:text-lg font-semibold text-text">
-											<a
-												href={`/${item.slug}`}
-												class="hover:text-link-color id mr-2 font-normal"
-											>
-												{transformId(`${item.slug}`)}
-												&nbsp;
-												<span style="color:var(--text-color)">
-													{item.title}
-												</span>
-											</a>
-										</h2>
-									</div>
-								</div>
-								{item.description && (
-									<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">
-										{item.description}
-									</p>
-								)}
-								{item.contentSnippet && (
-									<p
-										class="mt-2 text-gray-500 text-sm"
-										set:html={item.contentSnippet}
-									/>
-								)}
-							</div>
-						))
-					}
-				</div>
 			</div>
 		</div>
 
-		<style>
-			.id {
-				font-size: 0.95rem;
-				display: inline-block;
-				@media (min-width: 640px) {
-					font-size: 1.1rem;
+		<!-- Search help and results container -->
+		<div class="max-w-2xl mx-auto mt-2">
+			<div
+				id="search-help"
+				class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
+			>
+				<h3 class="font-semibold mb-2">Search Syntax:</h3>
+				<ul class="space-y-1">
+					<li>
+						<code class="not-prose">quest</code> - Relevance (including
+						fuzzy) match on quest
+					</li>
+					<li>
+						<code class="not-prose">'jhana</code> - Exact match on jhana
+					</li>
+					<li>
+						<code class="not-prose">!wrong</code> - Discourses that do
+						not have the term wrong are matched
+					</li>
+					<li>
+						<code class="not-prose">^SN22</code> - Discourses that start
+						with SN22
+					</li>
+					<li>
+						<code class="not-prose">world$</code> - Ends with world
+					</li>
+					<li>
+						<code class="not-prose"
+							>"perception consciousness jhana"</code
+						> - Exact matches for perception, consciousness, and jhana
+					</li>
+
+					<li>
+						<code class="not-prose">"letting go" !anger</code> - Exactly
+						matches "letting go" and without anger
+					</li>
+					<li>
+						<code class="not-prose">illusion | ignorance</code> - Matches
+						either illusion or ignorance on any fields
+					</li>
+				</ul>
+				<h3 class="font-semibold mb-2">More Specific Examples:</h3>
+				<p class="mt-2 text-xs text-gray-500">
+					<ul class="space-y-1">
+						<li>
+							<code class="not-prose">!^DHP</code> matches all discourses
+							except those starting with DHP
+						</li>
+						<li>
+							<code class="not-prose"
+								>^SN content:'consciousness content:!perception</code
+							> matches all SN discourses that have consciousness in
+							content but do not have perception in content.
+						</li>
+						<li>
+							<code class="not-prose"
+								>title:element (content:space |
+								content;consciousness)</code
+							> matches where title is element and content has either
+							space or consciousness.
+						</li>
+						<li>
+							<code class="not-prose"
+								>^AN (urgency | faith) !mindfulness !child</code
+							> matches AN discourses that have urgency or fatih in
+							them, and do not have the words mindfulness or child
+							in them.
+						</li>
+					</ul>
+				</p>
+			</div>
+		</div>
+
+		<div class="max-w-2xl mx-auto mt-4 results-container"></div>
+
+		<BottomDrawer />
+	</div>
+
+	<style is:global>
+		.search-client .id {
+			display: inline-block;
+		}
+		@media (min-width: 640px) {
+			.search-client .id {
+				font-size: 1.1rem;
+			}
+		}
+		.search-client .text-text {
+			color: var(--text-color);
+			margin: 0.5rem 0;
+		}
+		.search-client .search-input::-webkit-search-cancel-button {
+			display: none;
+		}
+		.search-client .search-input::-webkit-search-decoration {
+			display: none;
+		}
+		.search-client .search-input::-ms-clear {
+			display: none;
+		}
+		.search-client mark {
+			color: var(--text-color);
+		}
+		.search-client mark::selection {
+			color: white;
+			background-color: #2563eb;
+		}
+		.search-client .text-gray-500 {
+			@apply dark:text-gray-300;
+		}
+		.search-client code {
+			@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
+		}
+		.search-client .sticky {
+			transition: box-shadow 0.2s ease-in-out;
+		}
+	</style>
+
+	<script>
+		// @ts-nocheck
+		(async () => {
+			const container = document.querySelector(".results-container");
+			const input = document.querySelector('input[name="q"]');
+			const form = document.getElementById("search-form");
+			const params = new URLSearchParams(window.location.search);
+			const initial = params.get("q") || "";
+			if (input && initial) {
+				input.value = initial;
+				// Also perform the search when URL has ?q=
+				const tryAutoSearch = () => {
+					try {
+						// Ensure deps are initialized (TDZ-safe)
+						void transformId;
+						void performSearch;
+						doSearch(initial);
+						// After consuming ?q=, remove only that param without reloading (preserve others and hash)
+						try {
+							const url = new URL(window.location.href);
+							url.searchParams.delete("q");
+							const newHref = `${url.pathname}${url.search}${url.hash}`;
+							history.replaceState(history.state, "", newHref);
+						} catch {}
+					} catch {
+						setTimeout(tryAutoSearch, 0);
+					}
+				};
+				tryAutoSearch();
+			}
+			const { transformId } = await import("../utils/transformId");
+
+			function updateURLQuery(q) {
+				const url = new URL(window.location.href);
+				const current = url.searchParams.get("q") || "";
+				if (q) url.searchParams.set("q", q);
+				else url.searchParams.delete("q");
+				const state = { q };
+				if (current === q) {
+					history.replaceState(state, "", url);
+				} else {
+					history.pushState(state, "", url);
 				}
 			}
-			.text-text {
-				color: var(--text-color);
-				margin: 0.5rem 0;
+
+			function stripTooltipContext(html) {
+				// Replace |meaning::anything| with just meaning
+				return (html || "").replace(/\|([^|:]+)::[^|]+\|/g, "$1");
 			}
 
-			/* Remove the clear (x) button */
-			.search-input::-webkit-search-cancel-button {
-				display: none;
-			}
-			.search-input::-webkit-search-decoration {
-				display: none;
+			function render(list, q) {
+				container.innerHTML = "";
+				if (!q) return;
+				if (!list || list.length === 0) {
+					const emptyP = document.createElement("p");
+					emptyP.className = "text-center text-gray-500 no-results";
+					emptyP.textContent = "No results found";
+					container.appendChild(emptyP);
+					return;
+				}
+				const countP = document.createElement("p");
+				countP.className =
+					"mb-4 text-sm text-gray-500 dark:text-gray-300";
+				countP.textContent = `Found ${list.length} results for ${q}`;
+				container.appendChild(countP);
+
+				for (const item of list) {
+					const card = document.createElement("div");
+					card.className =
+						"relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]";
+					card.setAttribute("data-search-result", "");
+					const header = document.createElement("div");
+					header.className = "flex items-start";
+					header.innerHTML =
+						'<div class="min-w-0 pr-4">' +
+						'<h2 class="text-base sm:text-lg font-semibold text-text">' +
+						'<a class="hover:text-link-color id mr-2 font-normal" href="/' +
+						item.slug +
+						'">' +
+						`${transformId(item.slug)}&nbsp; <span style="color:var(--text-color)">${item.title}</span>` +
+						"</a>" +
+						"</h2>" +
+						"</div>";
+					card.appendChild(header);
+					if (item.description) {
+						const p = document.createElement("p");
+						p.className =
+							"mt-2 text-text line-clamp-3 text-sm sm:text-base";
+						p.textContent = item.description;
+						card.appendChild(p);
+					}
+					if (item.contentSnippet) {
+						const p = document.createElement("p");
+						p.className =
+							"mt-2 text-gray-500 dark:text-gray-300 text-sm";
+						p.innerHTML = stripTooltipContext(item.contentSnippet);
+						card.appendChild(p);
+					}
+					container.appendChild(card);
+				}
 			}
 
-			.search-input::-ms-clear {
-				display: none;
+			const { performSearch } = await import("../service/search/search");
+			async function doSearch(q) {
+				console.log("search called");
+				try {
+					const list = await performSearch(q, { highlight: true });
+					render(list, q);
+				} catch {
+					render([], q);
+				}
 			}
-
-			/* Add styles for the highlighted text */
-			:global(mark) {
-				color: var(--text-color);
-			}
-			/* Add selection styles for better contrast */
-			:global(mark::selection) {
-				color: white;
-				background-color: #2563eb; /* blue-600 */
-			}
-
-			.text-gray-500 {
-				@apply dark:text-gray-300;
-			}
-
-			code {
-				@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
-			}
-
-			/* Add smooth transition for sticky header shadow */
-			.sticky {
-				transition: box-shadow 0.2s ease-in-out;
-			}
-		</style>
-	</div></Layout
->
+			form?.addEventListener("submit", (e) => {
+				e.preventDefault();
+				const q = input?.value.trim() || "";
+				if (q) doSearch(q);
+				else container.innerHTML = "";
+			});
+			// Ensure Enter triggers submit even if some browsers don't
+			input?.addEventListener("keydown", (e) => {
+				if (e.key === "Enter") {
+					e.preventDefault();
+					const q = input.value.trim();
+					if (q) doSearch(q);
+					else container.innerHTML = "";
+				}
+			});
+			// Do not auto-run search from URL; only on Enter/submit
+		})();
+	</script>
+</Layout>
