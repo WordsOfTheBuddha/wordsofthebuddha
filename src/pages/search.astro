@@ -161,30 +161,6 @@ import HelpIcon from "../assets/question-mark-circle.svg?raw";
 			const container = document.querySelector(".results-container");
 			const input = document.querySelector('input[name="q"]');
 			const form = document.getElementById("search-form");
-			const params = new URLSearchParams(window.location.search);
-			const initial = params.get("q") || "";
-			if (input && initial) {
-				input.value = initial;
-				// Also perform the search when URL has ?q=
-				const tryAutoSearch = () => {
-					try {
-						// Ensure deps are initialized (TDZ-safe)
-						void transformId;
-						void performSearch;
-						doSearch(initial);
-						// After consuming ?q=, remove only that param without reloading (preserve others and hash)
-						try {
-							const url = new URL(window.location.href);
-							url.searchParams.delete("q");
-							const newHref = `${url.pathname}${url.search}${url.hash}`;
-							history.replaceState(history.state, "", newHref);
-						} catch {}
-					} catch {
-						setTimeout(tryAutoSearch, 0);
-					}
-				};
-				tryAutoSearch();
-			}
 			const { transformId } = await import("../utils/transformId");
 
 			function updateURLQuery(q) {
@@ -259,13 +235,27 @@ import HelpIcon from "../assets/question-mark-circle.svg?raw";
 
 			const { performSearch } = await import("../service/search/search");
 			async function doSearch(q) {
-				console.log("search called");
 				try {
 					const list = await performSearch(q, { highlight: true });
 					render(list, q);
 				} catch {
 					render([], q);
 				}
+			}
+
+			// Only run the initial search after dynamic imports are ready
+			const params = new URLSearchParams(window.location.search);
+			const initial = params.get("q") || "";
+			if (input && initial) {
+				input.value = initial;
+				await doSearch(initial);
+				// Remove only the q param without reloading (preserve others and hash)
+				try {
+					const url = new URL(window.location.href);
+					url.searchParams.delete("q");
+					const newHref = `${url.pathname}${url.search}${url.hash}`;
+					history.replaceState(history.state, "", newHref);
+				} catch {}
 			}
 			form?.addEventListener("submit", (e) => {
 				e.preventDefault();
