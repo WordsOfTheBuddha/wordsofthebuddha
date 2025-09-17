@@ -109,6 +109,12 @@ import Layout from "../layouts/Layout.astro";
 				Downloads unavailable: this browser context doesn’t support the
 				Cache API or Service Worker.
 			</div>
+			<!-- Reload countdown notice appears just above the Clear button when clearing -->
+			<div
+				id="reload-countdown"
+				class="mb-2 text-sm text-amber-700 dark:text-amber-300 hidden"
+			>
+			</div>
 			<div class="flex flex-col sm:flex-row sm:items-center gap-3">
 				<button
 					id="download"
@@ -539,8 +545,44 @@ import Layout from "../layouts/Layout.astro";
 			if (msg.type === "CLEARED") {
 				applyClearedUIState();
 				refreshClearVisibility();
+				// After caches are cleared, show a short countdown and reload
+				startReloadCountdown();
 			}
 		});
+		let _reloading = false;
+		let _reloadTimer: number | null = null;
+		function startReloadCountdown(seconds = 3) {
+			try {
+				if (_reloading) return;
+				_reloading = true;
+				const el = document.getElementById("reload-countdown");
+				if (!el) {
+					setTimeout(() => location.reload(), seconds * 1000);
+					return;
+				}
+				el.classList.remove("hidden");
+				let n = Math.max(1, Math.floor(seconds));
+				const render = () => {
+					el.textContent = `Reloading the page in ${n}…`;
+				};
+				render();
+				const tick = () => {
+					if (n <= 1) {
+						if (_reloadTimer != null) {
+							clearInterval(_reloadTimer as any);
+							_reloadTimer = null;
+						}
+						location.reload();
+						return;
+					}
+					n -= 1;
+					render();
+				};
+				_reloadTimer = window.setInterval(tick, 1000);
+			} catch {
+				setTimeout(() => location.reload(), seconds * 1000);
+			}
+		}
 
 		// Ensure the page is controlled by the SW before starting downloads (iOS PWA quirk)
 		async function waitForSWControl(timeout = 5000): Promise<boolean> {
@@ -739,11 +781,9 @@ import Layout from "../layouts/Layout.astro";
 			]);
 			const urls = Array.from(urlsSet);
 			// If Search was selected, also include the base /search to trigger a visible job
-			// and prefetch its linked assets. Also include /offline so the Offline page
 			// entry chunk and its linked modules (tooltipFormatter, theme, etc.) are cached.
 			if (searchChecked) {
 				urls.push("/search");
-				urls.push("/offline");
 			}
 
 			// Queue download
@@ -801,6 +841,7 @@ import Layout from "../layouts/Layout.astro";
 				cb.disabled = true;
 				cb.textContent = "Cache is clear!";
 			}
+			// Countdown will start after we receive the CLEARED message from SW
 		});
 
 		function setStatusPill(
@@ -1158,8 +1199,8 @@ import Layout from "../layouts/Layout.astro";
 							}
 						}
 					} catch {}
-					// 5) Reload this context fresh
-					location.reload();
+					// 5) Show countdown and reload this context fresh
+					startReloadCountdown();
 				});
 			} catch {}
 		})();

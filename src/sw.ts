@@ -374,10 +374,8 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 						const u = new URL(url, self.location.origin);
 						// Skip storing /offline and /search HTML,
 						// but still prefetch their linked assets.
-						if (
-							u.pathname !== "/offline" &&
-							u.pathname !== "/search"
-						) {
+						// Skip storing /offline HTML, but allow /search and others
+						if (u.pathname !== "/offline") {
 							await navCache.put(url, res.clone());
 						}
 						// Prefetch linked assets for this HTML (always)
