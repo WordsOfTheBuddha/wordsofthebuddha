@@ -14,7 +14,9 @@ self.addEventListener("install", (event) => {
 	event.waitUntil(
 		(async () => {
 			try {
-				const res = await fetch("/offline-manifest.json", { cache: "no-store" });
+				const res = await fetch("/offline-manifest.json", {
+					cache: "no-store",
+				});
 				const manifest = await res.json();
 				// Minimal, durable core; do NOT include collection pages here
 				const coreList = new Set([
@@ -73,7 +75,9 @@ async function networkFirst(req) {
 			const base = await caches.match("/search");
 			if (base) return base;
 			const off = await caches.match("/offline");
-			return off || new Response("", { status: 503, statusText: "Offline" });
+			return (
+				off || new Response("", { status: 503, statusText: "Offline" })
+			);
 		}
 	}
 
@@ -82,17 +86,28 @@ async function networkFirst(req) {
 		const to = setTimeout(() => ctrl.abort(), 5000);
 		const res = await fetch(req, { signal: ctrl.signal });
 		clearTimeout(to);
-		if (res && res.ok) cache.put(req, res.clone());
+		if (res && res.ok) {
+			cache.put(req, res.clone());
+			try {
+				const ct = res.headers.get("content-type") || "";
+				if (ct.includes("text/html")) {
+					const html = await res.clone().text();
+					await prefetchLinkedAssets(html, url);
+				}
+			} catch {}
+		}
 		return res;
 	} catch (_) {
 		// Default: Try any cache, then nav cache, then offline, including normalized variants
-		const tryMatch = async (key) => (await cache.match(key)) || (await caches.match(key));
+		const tryMatch = async (key) =>
+			(await cache.match(key)) || (await caches.match(key));
 		let cached = (await tryMatch(req)) || (await tryMatch(url.pathname));
 		if (!cached) {
 			const p = url.pathname;
 			const variants = new Set();
 			variants.add(p.endsWith("/") ? p.slice(0, -1) : p + "/");
-			if (p.endsWith("/index.html")) variants.add(p.replace(/\/?index\.html$/, "/"));
+			if (p.endsWith("/index.html"))
+				variants.add(p.replace(/\/?index\.html$/, "/"));
 			else variants.add((p.endsWith("/") ? p : p + "/") + "index.html");
 			for (const v of variants) {
 				cached = await tryMatch(v);
@@ -111,7 +126,8 @@ async function cacheFirst(req, cacheName) {
 	if (cached) return cached;
 	try {
 		const res = await fetch(req);
-		if (res && (res.ok || res.type === "opaque")) await cache.put(req, res.clone());
+		if (res && (res.ok || res.type === "opaque"))
+			await cache.put(req, res.clone());
 		return res;
 	} catch (_) {
 		return cached || Response.error();
@@ -123,7 +139,10 @@ self.addEventListener("fetch", (event) => {
 	const url = new URL(req.url);
 
 	// Serve offline-manifest.json from cache when possible, with {} fallback offline
-	if (url.origin === self.location.origin && url.pathname === "/offline-manifest.json") {
+	if (
+		url.origin === self.location.origin &&
+		url.pathname === "/offline-manifest.json"
+	) {
 		event.respondWith(
 			(async () => {
 				const cached = await caches.match("/offline-manifest.json");
@@ -134,7 +153,9 @@ self.addEventListener("fetch", (event) => {
 					core.put("/offline-manifest.json", res.clone());
 					return res;
 				} catch (_) {
-					return new Response("{}", { headers: { "content-type": "application/json" } });
+					return new Response("{}", {
+						headers: { "content-type": "application/json" },
+					});
 				}
 			})()
 		);
@@ -142,25 +163,44 @@ self.addEventListener("fetch", (event) => {
 	}
 
 	// Dev-only: stub Vite/Astro dev resources when offline so pages render in local dev
-	const isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/.test(self.location.hostname);
+	const isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/.test(
+		self.location.hostname
+	);
 	if (isLocalhost && !self.navigator?.onLine) {
 		if (url.pathname === "/@vite/client") {
-			event.respondWith(new Response("export {};// offline stub", { headers: { "Content-Type": "application/javascript" } }));
+			event.respondWith(
+				new Response("export {};// offline stub", {
+					headers: { "Content-Type": "application/javascript" },
+				})
+			);
 			return;
 		}
-		const isSrcCss = url.pathname.startsWith("/src/") && url.pathname.endsWith(".css");
+		const isSrcCss =
+			url.pathname.startsWith("/src/") && url.pathname.endsWith(".css");
 		const isAstroStyle = url.search.includes("astro&type=style");
 		if (isSrcCss || isAstroStyle) {
-			event.respondWith(new Response("/* offline css stub */", { headers: { "Content-Type": "text/css" } }));
+			event.respondWith(
+				new Response("/* offline css stub */", {
+					headers: { "Content-Type": "text/css" },
+				})
+			);
 			return;
 		}
 		const isAstroScriptTs = url.search.includes("astro&type=script");
 		if (isAstroScriptTs) {
-			event.respondWith(new Response("export {};// offline stub", { headers: { "Content-Type": "application/javascript" } }));
+			event.respondWith(
+				new Response("export {};// offline stub", {
+					headers: { "Content-Type": "application/javascript" },
+				})
+			);
 			return;
 		}
 		if (url.pathname.startsWith("/@id/")) {
-			event.respondWith(new Response("export {};// offline stub", { headers: { "Content-Type": "application/javascript" } }));
+			event.respondWith(
+				new Response("export {};// offline stub", {
+					headers: { "Content-Type": "application/javascript" },
+				})
+			);
 			return;
 		}
 	}
@@ -172,26 +212,37 @@ self.addEventListener("fetch", (event) => {
 	}
 
 	// Built asset bundles emitted by Astro/Vite (dev parity)
-	if (url.origin === self.location.origin && url.pathname.startsWith("/_astro/")) {
+	if (
+		url.origin === self.location.origin &&
+		url.pathname.startsWith("/_astro/")
+	) {
 		event.respondWith(cacheFirst(req, ASSETS_CACHE));
 		return;
 	}
 
 	// Local assets
-	if (url.origin === self.location.origin && url.pathname.startsWith("/assets/")) {
+	if (
+		url.origin === self.location.origin &&
+		url.pathname.startsWith("/assets/")
+	) {
 		event.respondWith(cacheFirst(req, ASSETS_CACHE));
 		return;
 	}
 	// Favicons/public
 	if (
 		url.origin === self.location.origin &&
-		/(favicon|android-chrome|apple-touch-icon|robots\.txt|manifest\.webmanifest)/.test(url.pathname)
+		/(favicon|android-chrome|apple-touch-icon|robots\.txt|manifest\.webmanifest)/.test(
+			url.pathname
+		)
 	) {
 		event.respondWith(cacheFirst(req, ASSETS_CACHE));
 		return;
 	}
 	// Fonts local
-	if (url.origin === self.location.origin && url.pathname.startsWith("/assets/fonts/")) {
+	if (
+		url.origin === self.location.origin &&
+		url.pathname.startsWith("/assets/fonts/")
+	) {
 		event.respondWith(cacheFirst(req, FONTS_LOCAL_CACHE));
 		return;
 	}
@@ -210,9 +261,11 @@ const CONTROLLER = {
 };
 
 function notifyAll(message) {
-	return self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
-		clients.forEach((c) => c.postMessage(message));
-	});
+	return self.clients
+		.matchAll({ includeUncontrolled: true })
+		.then((clients) => {
+			clients.forEach((c) => c.postMessage(message));
+		});
 }
 
 function waitWhilePaused(signal) {
@@ -236,32 +289,102 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 		if (signal.aborted) throw new Error("cancelled");
 		// Pause support
 		if (CONTROLLER.paused) {
-			await notifyAll({ type: "PAUSED", progressKey, done, total: urls.length });
+			await notifyAll({
+				type: "PAUSED",
+				progressKey,
+				done,
+				total: urls.length,
+			});
 			await waitWhilePaused(signal);
 			if (signal.aborted) throw new Error("cancelled");
-			await notifyAll({ type: "RESUMED", progressKey, done, total: urls.length });
+			await notifyAll({
+				type: "RESUMED",
+				progressKey,
+				done,
+				total: urls.length,
+			});
 		}
 		try {
 			const res = await fetch(url, { credentials: "same-origin" });
-			if (res && (res.ok || res.type === "opaque")) await cache.put(url, res.clone());
+			if (res && (res.ok || res.type === "opaque"))
+				await cache.put(url, res.clone());
 			// If it looks like a navigation (html path), also store in NAV_CACHE
 			try {
 				if (/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url)) {
 					const navCache = await caches.open(NAV_CACHE);
 					try {
 						const u = new URL(url, self.location.origin);
-						if (u.pathname !== "/offline" && u.pathname !== "/search") {
+						if (
+							u.pathname !== "/offline" &&
+							u.pathname !== "/search"
+						) {
 							await navCache.put(url, res.clone());
+							try {
+								const ct = res.headers.get("content-type") || "";
+								if (ct.includes("text/html")) {
+									const html = await res.clone().text();
+									await prefetchLinkedAssets(html, u);
+								}
+							} catch {}
 						}
 					} catch {}
 				}
 			} catch {}
 		} catch (e) {
-			await notifyAll({ type: "ERROR", progressKey, url, error: String(e) });
+			await notifyAll({
+				type: "ERROR",
+				progressKey,
+				url,
+				error: String(e),
+			});
 		}
 		done += 1;
-		await notifyAll({ type: "PROGRESS", progressKey, done, total: urls.length });
+		await notifyAll({
+			type: "PROGRESS",
+			progressKey,
+			done,
+			total: urls.length,
+		});
 	}
+}
+
+async function prefetchLinkedAssets(html, baseUrl) {
+	try {
+		const assetHrefs = new Set();
+		const re = /\b(?:href|src)=("|')(.*?)\1/gi;
+		let m;
+		while ((m = re.exec(html))) {
+			const raw = m[2];
+			if (!raw) continue;
+			let abs;
+			try {
+				abs = new URL(raw, baseUrl).href;
+			} catch {
+				continue;
+			}
+			const u = new URL(abs);
+			const sameOrigin = u.origin === self.location.origin;
+			const path = u.pathname;
+			if (sameOrigin && (path.startsWith("/_astro/") || path.startsWith("/assets/") || /favicon|manifest\.webmanifest/.test(path))) {
+				assetHrefs.add(u.href);
+			}
+		}
+		if (assetHrefs.size === 0) return;
+		const cache = await caches.open(ASSETS_CACHE);
+		await Promise.all(
+			Array.from(assetHrefs).map(async (href) => {
+				try {
+					const req = new Request(href, { credentials: "same-origin" });
+					const hit = await cache.match(req);
+					if (hit) return;
+					const res = await fetch(req);
+					if (res && (res.ok || res.type === "opaque")) {
+						await cache.put(req, res.clone());
+					}
+				} catch {}
+			})
+		);
+	} catch {}
 }
 
 self.addEventListener("message", (event) => {
@@ -269,7 +392,7 @@ self.addEventListener("message", (event) => {
 	// Lightweight handshake for clients to confirm SW control (useful on iOS PWA)
 	if (data.type === "PING") {
 		try {
-			(event.source)?.postMessage?.({ type: "PONG" });
+			event.source?.postMessage?.({ type: "PONG" });
 		} catch {
 			notifyAll({ type: "PONG" });
 		}
@@ -290,12 +413,26 @@ self.addEventListener("message", (event) => {
 		event.waitUntil(
 			(async () => {
 				try {
-					await notifyAll({ type: "STARTED", progressKey, total: urls.length });
-					await fetchAndCacheBatch(urls, cacheName, signal, progressKey);
+					await notifyAll({
+						type: "STARTED",
+						progressKey,
+						total: urls.length,
+					});
+					await fetchAndCacheBatch(
+						urls,
+						cacheName,
+						signal,
+						progressKey
+					);
 					await notifyAll({ type: "DONE", progressKey });
 				} catch (e) {
-					const msgType = String(e) === "cancelled" ? "CANCELLED" : "ERROR";
-					await notifyAll({ type: msgType, progressKey, error: String(e) });
+					const msgType =
+						String(e) === "cancelled" ? "CANCELLED" : "ERROR";
+					await notifyAll({
+						type: msgType,
+						progressKey,
+						error: String(e),
+					});
 				}
 			})()
 		);
@@ -325,7 +462,8 @@ self.addEventListener("message", (event) => {
 				const keys = await caches.keys();
 				await Promise.all(
 					keys.map((k) => {
-						if (k.startsWith("core-")) return Promise.resolve(false);
+						if (k.startsWith("core-"))
+							return Promise.resolve(false);
 						return caches.delete(k);
 					})
 				);
@@ -333,11 +471,20 @@ self.addEventListener("message", (event) => {
 				try {
 					const core = await caches.open(CORE_CACHE);
 					const [offlineRes, manifestRes] = await Promise.all([
-						fetch("/offline", { cache: "reload" }).catch(() => null),
-						fetch("/offline-manifest.json", { cache: "reload" }).catch(() => null),
+						fetch("/offline", { cache: "reload" }).catch(
+							() => null
+						),
+						fetch("/offline-manifest.json", {
+							cache: "reload",
+						}).catch(() => null),
 					]);
-					if (offlineRes) await core.put("/offline", offlineRes.clone());
-					if (manifestRes) await core.put("/offline-manifest.json", manifestRes.clone());
+					if (offlineRes)
+						await core.put("/offline", offlineRes.clone());
+					if (manifestRes)
+						await core.put(
+							"/offline-manifest.json",
+							manifestRes.clone()
+						);
 				} catch {}
 				await notifyAll({ type: "CLEARED" });
 			})()

@@ -17,7 +17,9 @@ self.addEventListener("install", (event) => {
 	event.waitUntil(
 		(async () => {
 			try {
-				const res = await fetch("/offline-manifest.json", { cache: "no-store" });
+				const res = await fetch("/offline-manifest.json", {
+					cache: "no-store",
+				});
 				const manifest = await res.json();
 				// Minimal, durable core; do NOT include collection pages here
 				const coreList = new Set<string>([
@@ -87,17 +89,29 @@ async function networkFirst(req) {
 		const to = setTimeout(() => ctrl.abort(), 5000);
 		const res = await fetch(req, { signal: ctrl.signal });
 		clearTimeout(to);
-		if (res && res.ok) cache.put(req, res.clone());
+		if (res && res.ok) {
+			cache.put(req, res.clone());
+			// Prefetch linked assets when we get HTML
+			try {
+				const ct = res.headers.get("content-type") || "";
+				if (ct.includes("text/html")) {
+					const html = await res.clone().text();
+					await prefetchLinkedAssets(html, url);
+				}
+			} catch {}
+		}
 		return res;
 	} catch (_) {
 		// Default: Try any cache, then nav cache, then offline, including normalized variants
-		const tryMatch = async (key) => (await cache.match(key)) || (await caches.match(key));
+		const tryMatch = async (key) =>
+			(await cache.match(key)) || (await caches.match(key));
 		let cached = (await tryMatch(req)) || (await tryMatch(url.pathname));
 		if (!cached) {
 			const p = url.pathname;
 			const variants = new Set();
 			variants.add(p.endsWith("/") ? p.slice(0, -1) : p + "/");
-			if (p.endsWith("/index.html")) variants.add(p.replace(/\/?index\.html$/, "/"));
+			if (p.endsWith("/index.html"))
+				variants.add(p.replace(/\/?index\.html$/, "/"));
 			else variants.add((p.endsWith("/") ? p : p + "/") + "index.html");
 			for (const v of variants) {
 				cached = await tryMatch(v);
@@ -106,9 +120,7 @@ async function networkFirst(req) {
 		}
 		if (cached) return cached;
 		const off = await caches.match("/offline");
-		return (
-			off || new Response("", { status: 503, statusText: "Offline" })
-		);
+		return off || new Response("", { status: 503, statusText: "Offline" });
 	}
 }
 
@@ -131,7 +143,10 @@ self.addEventListener("fetch", (event) => {
 	const url = new URL(req.url);
 
 	// Serve offline-manifest.json from cache when possible, with {} fallback offline
-	if (url.origin === self.location.origin && url.pathname === "/offline-manifest.json") {
+	if (
+		url.origin === self.location.origin &&
+		url.pathname === "/offline-manifest.json"
+	) {
 		event.respondWith(
 			(async () => {
 				const cached = await caches.match("/offline-manifest.json");
@@ -297,17 +312,28 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 			const res = await fetch(url, { credentials: "same-origin" });
 			if (res && (res.ok || res.type === "opaque"))
 				await cache.put(url, res.clone());
-				// If it looks like a navigation (html path), also store in NAV_CACHE
+			// If it looks like a navigation (html path), also store in NAV_CACHE
 			try {
-					if (/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url)) {
+				if (/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url)) {
 					const navCache = await caches.open(NAV_CACHE);
-						// Skip caching /offline and /search HTML via batch
-						try {
-							const u = new URL(url, self.location.origin);
-							if (u.pathname !== "/offline" && u.pathname !== "/search") {
-								await navCache.put(url, res.clone());
-							}
-						} catch {}
+					// Skip caching /offline and /search HTML via batch
+					try {
+						const u = new URL(url, self.location.origin);
+						if (
+							u.pathname !== "/offline" &&
+							u.pathname !== "/search"
+						) {
+							await navCache.put(url, res.clone());
+							// Prefetch linked assets for this HTML
+							try {
+								const ct = res.headers.get("content-type") || "";
+								if (ct.includes("text/html")) {
+									const html = await res.clone().text();
+									await prefetchLinkedAssets(html, u);
+								}
+							} catch {}
+						}
+					} catch {}
 				}
 			} catch {}
 		} catch (e) {
@@ -326,6 +352,48 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 			total: urls.length,
 		});
 	}
+}
+
+// Extract and prefetch linked assets from HTML so offline pages include CSS/JS
+async function prefetchLinkedAssets(html: string, baseUrl: URL) {
+	try {
+		const assetHrefs = new Set<string>();
+		const re = /\b(?:href|src)=("|')(.*?)\1/gi;
+		let m: RegExpExecArray | null;
+		while ((m = re.exec(html))) {
+			const raw = m[2];
+			if (!raw) continue;
+			// Resolve relative URLs against the page URL
+			let abs: string;
+			try {
+				abs = new URL(raw, baseUrl).href;
+			} catch {
+				continue;
+			}
+			const u = new URL(abs);
+			const sameOrigin = u.origin === self.location.origin;
+			const path = u.pathname;
+			// Same-origin app assets
+			if (sameOrigin && (path.startsWith("/_astro/") || path.startsWith("/assets/") || /favicon|manifest\.webmanifest/.test(path))) {
+				assetHrefs.add(u.href);
+			}
+		}
+		if (assetHrefs.size === 0) return;
+		const cache = await caches.open(ASSETS_CACHE);
+		await Promise.all(
+			Array.from(assetHrefs).map(async (href) => {
+				try {
+					const req = new Request(href, { credentials: "same-origin" });
+					const hit = await cache.match(req);
+					if (hit) return;
+					const res = await fetch(req);
+					if (res && (res.ok || res.type === "opaque")) {
+						await cache.put(req, res.clone());
+					}
+				} catch {}
+			})
+		);
+	} catch {}
 }
 
 self.addEventListener("message", (event) => {
@@ -355,7 +423,11 @@ self.addEventListener("message", (event) => {
 		event.waitUntil(
 			(async () => {
 				try {
-					await notifyAll({ type: "STARTED", progressKey, total: urls.length });
+					await notifyAll({
+						type: "STARTED",
+						progressKey,
+						total: urls.length,
+					});
 					await fetchAndCacheBatch(
 						urls,
 						cacheName,
@@ -400,7 +472,8 @@ self.addEventListener("message", (event) => {
 				const keys = await caches.keys();
 				await Promise.all(
 					keys.map((k) => {
-						if (k.startsWith("core-")) return Promise.resolve(false);
+						if (k.startsWith("core-"))
+							return Promise.resolve(false);
 						return caches.delete(k);
 					})
 				);
@@ -408,11 +481,20 @@ self.addEventListener("message", (event) => {
 				try {
 					const core = await caches.open(CORE_CACHE);
 					const [offlineRes, manifestRes] = await Promise.all([
-						fetch("/offline", { cache: "reload" }).catch(() => null),
-						fetch("/offline-manifest.json", { cache: "reload" }).catch(() => null),
+						fetch("/offline", { cache: "reload" }).catch(
+							() => null
+						),
+						fetch("/offline-manifest.json", {
+							cache: "reload",
+						}).catch(() => null),
 					]);
-					if (offlineRes) await core.put("/offline", offlineRes.clone());
-					if (manifestRes) await core.put("/offline-manifest.json", manifestRes.clone());
+					if (offlineRes)
+						await core.put("/offline", offlineRes.clone());
+					if (manifestRes)
+						await core.put(
+							"/offline-manifest.json",
+							manifestRes.clone()
+						);
 				} catch {}
 				await notifyAll({ type: "CLEARED" });
 			})()

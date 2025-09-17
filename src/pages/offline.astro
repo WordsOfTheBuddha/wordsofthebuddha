@@ -106,7 +106,8 @@ import Layout from "../layouts/Layout.astro";
 				id="compat-msg"
 				class="mb-2 text-sm text-red-700 dark:text-red-300 hidden"
 			>
-				Downloads unavailable: this browser context doesn’t support the Cache API or Service Worker.
+				Downloads unavailable: this browser context doesn’t support the
+				Cache API or Service Worker.
 			</div>
 			<div class="flex flex-col sm:flex-row sm:items-center gap-3">
 				<button
@@ -220,14 +221,23 @@ import Layout from "../layouts/Layout.astro";
 
 		function hasCacheAPI(): boolean {
 			try {
-				return typeof window !== "undefined" && !!(window as any).caches;
-			} catch { return false; }
+				return (
+					typeof window !== "undefined" && !!(window as any).caches
+				);
+			} catch {
+				return false;
+			}
 		}
 
 		function hasSW(): boolean {
 			try {
-				return typeof navigator !== "undefined" && !!navigator.serviceWorker;
-			} catch { return false; }
+				return (
+					typeof navigator !== "undefined" &&
+					!!navigator.serviceWorker
+				);
+			} catch {
+				return false;
+			}
 		}
 
 		// Utility: pretty sizes
@@ -335,7 +345,8 @@ import Layout from "../layouts/Layout.astro";
 					const doubled = Math.round((bytes || 0) * 2);
 					const el = document.getElementById(`size-col-${key}`);
 					if (el) el.textContent = formatBytes(doubled);
-					(STATE._estimates || (STATE._estimates = {}))[key] = doubled;
+					(STATE._estimates || (STATE._estimates = {}))[key] =
+						doubled;
 					updateAllCollectionsEstimate(effectiveKeys);
 				});
 			}
@@ -479,7 +490,8 @@ import Layout from "../layouts/Layout.astro";
 				if (wrap) wrap.classList.remove("hidden");
 				if (msg.type === "STARTED") {
 					const total = msg.total || 0;
-					if (bar && bar instanceof HTMLElement) bar.style.width = "0%";
+					if (bar && bar instanceof HTMLElement)
+						bar.style.width = "0%";
 					if (text) text.textContent = `0/${total} (0%)`;
 					pauseBtn?.classList.remove("hidden");
 				}
@@ -561,7 +573,11 @@ import Layout from "../layouts/Layout.astro";
 					clearTimeout(timer);
 					resolve(true);
 				};
-				navigator.serviceWorker?.addEventListener("controllerchange", onChange, { once: true } as any);
+				navigator.serviceWorker?.addEventListener(
+					"controllerchange",
+					onChange,
+					{ once: true } as any
+				);
 			});
 		}
 
@@ -577,7 +593,9 @@ import Layout from "../layouts/Layout.astro";
 					}
 				};
 				window.addEventListener("message", handler as any);
-				try { postToSW({ type: "PING" }); } catch {}
+				try {
+					postToSW({ type: "PING" });
+				} catch {}
 				setTimeout(() => {
 					if (settled) return;
 					window.removeEventListener("message", handler as any);
@@ -892,12 +910,15 @@ import Layout from "../layouts/Layout.astro";
 					// Show compatibility message and set all pills to Not in Cache
 					const c = document.getElementById("compat-msg");
 					c?.classList.remove("hidden");
-					const searchStatus = document.getElementById("search-status");
+					const searchStatus =
+						document.getElementById("search-status");
 					setStatusPill(searchStatus as HTMLElement, "Not in Cache");
 					const onStatusEl = document.getElementById("on-status");
 					setStatusPill(onStatusEl as HTMLElement, "Not in Cache");
 					for (const key of STATE.effectiveKeys || []) {
-						const pill = document.getElementById(`status-col-${key}`) as HTMLElement | null;
+						const pill = document.getElementById(
+							`status-col-${key}`
+						) as HTMLElement | null;
 						setStatusPill(pill, "Not in Cache");
 					}
 					updateDownloadButton();
@@ -965,7 +986,8 @@ import Layout from "../layouts/Layout.astro";
 					if (present !== expected.length) {
 						const missing: string[] = [];
 						for (const url of expected) {
-							if (!anyVariantPresent(url, navSet)) missing.push(url);
+							if (!anyVariantPresent(url, navSet))
+								missing.push(url);
 						}
 						STATE._lastMissingByCollection[key] = missing;
 					} else {
@@ -1056,7 +1078,9 @@ import Layout from "../layouts/Layout.astro";
 			try {
 				const params = new URLSearchParams(location.search);
 				if (params.get("debug") !== "1") return;
-				const nukeBtn = document.getElementById("nuke") as HTMLButtonElement | null;
+				const nukeBtn = document.getElementById(
+					"nuke"
+				) as HTMLButtonElement | null;
 				if (!nukeBtn) return;
 				nukeBtn.classList.remove("hidden");
 				nukeBtn.addEventListener("click", async () => {
@@ -1068,9 +1092,11 @@ import Layout from "../layouts/Layout.astro";
 					} catch {}
 					try {
 						// 2) Unregister all service workers for this origin
-						const reg = await navigator.serviceWorker?.getRegistration();
+						const reg =
+							await navigator.serviceWorker?.getRegistration();
 						if (reg) await reg.unregister();
-						const regs = await navigator.serviceWorker?.getRegistrations?.();
+						const regs =
+							await navigator.serviceWorker?.getRegistrations?.();
 						if (regs && Array.isArray(regs)) {
 							await Promise.all(regs.map((r) => r.unregister()));
 						}
@@ -1089,7 +1115,20 @@ import Layout from "../layouts/Layout.astro";
 							if (Array.isArray(dbs)) {
 								await Promise.all(
 									dbs.map((d: any) => {
-										try { return new Promise<void>((res) => { const req = indexedDB.deleteDatabase(d.name); req.onsuccess = req.onerror = req.onblocked = () => res(); }); } catch { return Promise.resolve(); }
+										try {
+											return new Promise<void>((res) => {
+												const req =
+													indexedDB.deleteDatabase(
+														d.name
+													);
+												req.onsuccess =
+													req.onerror =
+													req.onblocked =
+														() => res();
+											});
+										} catch {
+											return Promise.resolve();
+										}
 									})
 								);
 							}

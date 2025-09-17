@@ -300,7 +300,6 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		// Initialize renderer
 		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded);
 
-
 		// Initialize (robust to scripts loaded after DOMContentLoaded)
 		async function initDiscover() {
 			try {
@@ -313,9 +312,11 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 				console.error("discover init failed", e);
 				// Fail-open: show container to avoid a stuck loader
 				const loadingEl = document.getElementById("loading");
-				const resultsContainer = document.getElementById("results-container");
+				const resultsContainer =
+					document.getElementById("results-container");
 				if (loadingEl) loadingEl.classList.add("hidden");
-				if (resultsContainer) resultsContainer.classList.remove("hidden");
+				if (resultsContainer)
+					resultsContainer.classList.remove("hidden");
 			}
 		}
 

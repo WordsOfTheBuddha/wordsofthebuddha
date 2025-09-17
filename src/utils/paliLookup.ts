@@ -82,7 +82,9 @@ export async function warmupPaliDictionary(): Promise<void> {
 		const dictionary = await getDictionary();
 		// Light touch to trigger any lazy paths; ignore results
 		if (dictionary && typeof dictionary.find === "function") {
-			try { dictionary.find("a"); } catch {}
+			try {
+				dictionary.find("a");
+			} catch {}
 		}
 	} catch {}
 }
@@ -234,7 +236,10 @@ export async function lookupSingleWord(
 		try {
 			const ctx = {
 				word,
-				online: typeof navigator !== "undefined" ? navigator.onLine : undefined,
+				online:
+					typeof navigator !== "undefined"
+						? navigator.onLine
+						: undefined,
 				hasMsDpd: !!(msdpd as any),
 			};
 			console.error(`Lookup error for word ${word}:`, error, ctx);
