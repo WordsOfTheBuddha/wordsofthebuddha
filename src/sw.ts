@@ -310,19 +310,14 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 		}
 		try {
 			const res = await fetch(url, { credentials: "same-origin" });
-			if (res && (res.ok || res.type === "opaque"))
-				await cache.put(url, res.clone());
-			// If it looks like a navigation (html path), also store in NAV_CACHE
-			try {
-				if (/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url)) {
+			if (res && (res.ok || res.type === "opaque")) {
+				const isNavLike = /^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url);
+				if (isNavLike) {
+					// Store navigation-like HTML only in NAV cache (deduplicate)
 					const navCache = await caches.open(NAV_CACHE);
-					// Skip caching /offline and /search HTML via batch
 					try {
 						const u = new URL(url, self.location.origin);
-						if (
-							u.pathname !== "/offline" &&
-							u.pathname !== "/search"
-						) {
+						if (u.pathname !== "/offline" && u.pathname !== "/search") {
 							await navCache.put(url, res.clone());
 							// Prefetch linked assets for this HTML
 							try {
@@ -334,8 +329,11 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 							} catch {}
 						}
 					} catch {}
+				} else {
+					// Non-HTML assets go to the requested cache
+					await cache.put(url, res.clone());
 				}
-			} catch {}
+			}
 		} catch (e) {
 			await notifyAll({
 				type: "ERROR",

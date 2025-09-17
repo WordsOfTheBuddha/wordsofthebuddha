@@ -341,12 +341,9 @@ import Layout from "../layouts/Layout.astro";
 				// Estimate for this collection
 				const urls = map[key] || [];
 				estimateForUrls(urls).then((bytes) => {
-					// We cache navigations and assets in two places; reflect that in estimate
-					const doubled = Math.round((bytes || 0) * 2);
 					const el = document.getElementById(`size-col-${key}`);
-					if (el) el.textContent = formatBytes(doubled);
-					(STATE._estimates || (STATE._estimates = {}))[key] =
-						doubled;
+					if (el) el.textContent = formatBytes(bytes);
+					(STATE._estimates || (STATE._estimates = {}))[key] = bytes;
 					updateAllCollectionsEstimate(effectiveKeys);
 				});
 			}
@@ -371,14 +368,13 @@ import Layout from "../layouts/Layout.astro";
 			updateAllCollectionsEstimate(effectiveKeys);
 			STATE.effectiveKeys = effectiveKeys;
 
-			// Estimate for /on pages (double to reflect duplicated caching)
+			// Estimate for /on pages
 			const onUrls =
 				(STATE.manifest && (STATE.manifest as any).onPages) || [];
 			estimateForUrls(onUrls).then((bytes) => {
-				const doubled = Math.round((bytes || 0) * 2);
 				const el = document.getElementById("on-estimate");
-				if (el) el.textContent = formatBytes(doubled);
-				STATE._onEstimate = doubled;
+				if (el) el.textContent = formatBytes(bytes);
+				STATE._onEstimate = bytes;
 			});
 
 			// Estimate size for making search available offline using the actual index module size
@@ -672,6 +668,23 @@ import Layout from "../layouts/Layout.astro";
 				cbBtn.textContent = "Clear Cache";
 			}
 			// status text removed; button label reflects state
+			// Predictable prewarm of dynamic modules so offline pages work without first-run online
+			try {
+				const anyCollectionsSelected = (STATE.selectedCollections?.size || 0) > 0;
+				const onToggled = (document.getElementById("toggle-on") as HTMLInputElement | null)?.checked;
+				if (anyCollectionsSelected || onToggled) {
+					await Promise.all([
+						import("../service/selectionHandler").catch(() => {}),
+						import("../service/highlightService").catch(() => {}),
+						import("../utils/tooltipFormatter").catch(() => {}),
+						import("../utils/transformId").catch(() => {}),
+						import("../utils/dom").catch(() => {}),
+						import("../utils/theme").catch(() => {}),
+						import("../utils/paliLookup").then((m: any) => m?.warmupPaliDictionary?.()).catch(() => {}),
+					]);
+				}
+			} catch {}
+
 			// Build URLs lists guarded by manifest presence so Search-only works even before manifest loads
 			const selectedKeys = Array.from(
 				STATE.selectedCollections as Set<string>
@@ -690,9 +703,7 @@ import Layout from "../layouts/Layout.astro";
 						selectedKeys.some((k) => belongsToCollectionPath(p, k))
 					)
 				: [];
-			const onToggled = (
-				document.getElementById("toggle-on") as HTMLInputElement | null
-			)?.checked;
+			// onToggled already computed above
 			const urlsOn =
 				onToggled && STATE.manifest
 					? ["/discover", ...((STATE.manifest as any).onPages || [])]
