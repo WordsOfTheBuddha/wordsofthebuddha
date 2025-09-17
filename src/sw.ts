@@ -13,6 +13,42 @@ const ASSETS_CACHE = "assets-v1";
 const FONTS_LOCAL_CACHE = "fonts-local-v1";
 const FONTS_WEB_CACHE = "fonts-web-v1";
 
+// Consider URLs without a known file extension as HTML-like navigations.
+// Slugs like "/sn12.2" include a dot but are NOT file extensions; we only
+// treat it as an asset if the extension is in this known set.
+const KNOWN_ASSET_EXT = new Set([
+	"css",
+	"js",
+	"mjs",
+	"json",
+	"png",
+	"jpg",
+	"jpeg",
+	"svg",
+	"webp",
+	"ico",
+	"woff",
+	"woff2",
+	"ttf",
+	"otf",
+	"map",
+	"txt",
+	"pdf",
+]);
+
+function isHtmlLikePath(pathname: string): boolean {
+	// Trailing slash or index.html are clearly navigations
+	if (pathname.endsWith("/")) return true;
+	if (/\/index\.html$/.test(pathname)) return true;
+	// If there's no dot in the last path segment, it's HTML-like
+	const last = pathname.split("/").pop() || "";
+	const dotIdx = last.lastIndexOf(".");
+	if (dotIdx === -1) return true;
+	const ext = last.slice(dotIdx + 1).toLowerCase();
+	// Treat unknown extensions as HTML-like to be safe
+	return !KNOWN_ASSET_EXT.has(ext);
+}
+
 self.addEventListener("install", (event) => {
 	event.waitUntil(
 		(async () => {
@@ -72,6 +108,14 @@ async function networkFirst(req) {
 			clearTimeout(to);
 			if (res && res.ok && !url.search) {
 				await cache.put("/search", res.clone());
+				// Also prefetch linked assets so search page works offline
+				try {
+					const ct = res.headers.get("content-type") || "";
+					if (ct.includes("text/html")) {
+						const html = await res.clone().text();
+						await prefetchLinkedAssets(html, url);
+					}
+				} catch {}
 			}
 			return res;
 		} catch (_) {
@@ -311,28 +355,39 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 		try {
 			const res = await fetch(url, { credentials: "same-origin" });
 			if (res && (res.ok || res.type === "opaque")) {
-				const isNavLike =
-					/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url);
-				if (isNavLike) {
+				// Determine HTML-like by pathname and known asset extensions
+				let treatAsNavigation = false;
+				try {
+					const u = new URL(url, self.location.origin);
+					treatAsNavigation =
+						u.origin === self.location.origin &&
+						isHtmlLikePath(u.pathname);
+				} catch {
+					// If URL parsing fails, fall back to previous heuristic
+					treatAsNavigation =
+						/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url);
+				}
+				if (treatAsNavigation) {
 					// Store navigation-like HTML only in NAV cache (deduplicate)
 					const navCache = await caches.open(NAV_CACHE);
 					try {
 						const u = new URL(url, self.location.origin);
+						// Skip storing /offline and /search HTML,
+						// but still prefetch their linked assets.
 						if (
 							u.pathname !== "/offline" &&
 							u.pathname !== "/search"
 						) {
 							await navCache.put(url, res.clone());
-							// Prefetch linked assets for this HTML
-							try {
-								const ct =
-									res.headers.get("content-type") || "";
-								if (ct.includes("text/html")) {
-									const html = await res.clone().text();
-									await prefetchLinkedAssets(html, u);
-								}
-							} catch {}
 						}
+						// Prefetch linked assets for this HTML (always)
+						try {
+							const ct = res.headers.get("content-type") || "";
+							if (ct.includes("text/html")) {
+								const html = await res.clone().text();
+								await prefetchLinkedAssets(html, u);
+							}
+						} catch {}
 					} catch {}
 				} else {
 					// Non-HTML assets go to the requested cache
