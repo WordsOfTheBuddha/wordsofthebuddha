@@ -330,6 +330,16 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 
 self.addEventListener("message", (event) => {
 	const data = event.data || {};
+	// Lightweight handshake for clients to confirm SW control (useful on iOS PWA)
+	if (data.type === "PING") {
+		try {
+			(event.source as any)?.postMessage?.({ type: "PONG" });
+		} catch {
+			// fallback broadcast
+			notifyAll({ type: "PONG" });
+		}
+		return;
+	}
 	if (data.type === "CACHE_URLS") {
 		const { urls = [], cacheName = "bulk-v1", progressKey = "job" } = data;
 		CONTROLLER.abortController?.abort();
@@ -345,6 +355,7 @@ self.addEventListener("message", (event) => {
 		event.waitUntil(
 			(async () => {
 				try {
+					await notifyAll({ type: "STARTED", progressKey, total: urls.length });
 					await fetchAndCacheBatch(
 						urls,
 						cacheName,

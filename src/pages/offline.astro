@@ -101,6 +101,13 @@ import Layout from "../layouts/Layout.astro";
 			>
 				Go online to download content
 			</div>
+			<!-- Compatibility notice when Cache API / SW unavailable -->
+			<div
+				id="compat-msg"
+				class="mb-2 text-sm text-red-700 dark:text-red-300 hidden"
+			>
+				Downloads unavailable: this browser context doesn’t support the Cache API or Service Worker.
+			</div>
 			<div class="flex flex-col sm:flex-row sm:items-center gap-3">
 				<button
 					id="download"
@@ -132,6 +139,12 @@ import Layout from "../layouts/Layout.astro";
 					id="clear"
 					class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
 					>Clear Cache</button
+				>
+				<!-- Debug-only: appears when ?debug=1 is present in URL -->
+				<button
+					id="nuke"
+					class="px-3 py-1 border rounded text-red-700 dark:text-red-300 hidden"
+					>Nuke all (debug)</button
 				>
 			</div>
 		</section>
@@ -203,6 +216,18 @@ import Layout from "../layouts/Layout.astro";
 
 		function getSW() {
 			return navigator.serviceWorker?.controller || null;
+		}
+
+		function hasCacheAPI(): boolean {
+			try {
+				return typeof window !== "undefined" && !!(window as any).caches;
+			} catch { return false; }
+		}
+
+		function hasSW(): boolean {
+			try {
+				return typeof navigator !== "undefined" && !!navigator.serviceWorker;
+			} catch { return false; }
 		}
 
 		// Utility: pretty sizes
@@ -306,9 +331,11 @@ import Layout from "../layouts/Layout.astro";
 				// Estimate for this collection
 				const urls = map[key] || [];
 				estimateForUrls(urls).then((bytes) => {
+					// We cache navigations and assets in two places; reflect that in estimate
+					const doubled = Math.round((bytes || 0) * 2);
 					const el = document.getElementById(`size-col-${key}`);
-					if (el) el.textContent = formatBytes(bytes);
-					(STATE._estimates || (STATE._estimates = {}))[key] = bytes;
+					if (el) el.textContent = formatBytes(doubled);
+					(STATE._estimates || (STATE._estimates = {}))[key] = doubled;
 					updateAllCollectionsEstimate(effectiveKeys);
 				});
 			}
@@ -333,13 +360,14 @@ import Layout from "../layouts/Layout.astro";
 			updateAllCollectionsEstimate(effectiveKeys);
 			STATE.effectiveKeys = effectiveKeys;
 
-			// Estimate for /on pages
+			// Estimate for /on pages (double to reflect duplicated caching)
 			const onUrls =
 				(STATE.manifest && (STATE.manifest as any).onPages) || [];
 			estimateForUrls(onUrls).then((bytes) => {
+				const doubled = Math.round((bytes || 0) * 2);
 				const el = document.getElementById("on-estimate");
-				if (el) el.textContent = formatBytes(bytes);
-				STATE._onEstimate = bytes;
+				if (el) el.textContent = formatBytes(doubled);
+				STATE._onEstimate = doubled;
 			});
 
 			// Estimate size for making search available offline using the actual index module size
@@ -449,6 +477,12 @@ import Layout from "../layouts/Layout.astro";
 				const text = document.getElementById("progress-text");
 				const pauseBtn = document.getElementById("pause-resume");
 				if (wrap) wrap.classList.remove("hidden");
+				if (msg.type === "STARTED") {
+					const total = msg.total || 0;
+					if (bar && bar instanceof HTMLElement) bar.style.width = "0%";
+					if (text) text.textContent = `0/${total} (0%)`;
+					pauseBtn?.classList.remove("hidden");
+				}
 				if (msg.type === "PROGRESS") {
 					const pct = msg.total
 						? Math.round((msg.done / msg.total) * 100)
@@ -511,6 +545,47 @@ import Layout from "../layouts/Layout.astro";
 			}
 		});
 
+		// Ensure the page is controlled by the SW before starting downloads (iOS PWA quirk)
+		async function waitForSWControl(timeout = 5000): Promise<boolean> {
+			if (navigator.serviceWorker?.controller) return true;
+			return new Promise((resolve) => {
+				let done = false;
+				const timer = setTimeout(() => {
+					if (done) return;
+					done = true;
+					resolve(!!navigator.serviceWorker?.controller);
+				}, timeout);
+				const onChange = () => {
+					if (done) return;
+					done = true;
+					clearTimeout(timer);
+					resolve(true);
+				};
+				navigator.serviceWorker?.addEventListener("controllerchange", onChange, { once: true } as any);
+			});
+		}
+
+		function pingSW(timeout = 1500): Promise<boolean> {
+			return new Promise((resolve) => {
+				let settled = false;
+				const handler = (event: MessageEvent) => {
+					const data = event.data || {};
+					if (data && data.type === "PONG" && !settled) {
+						settled = true;
+						window.removeEventListener("message", handler as any);
+						resolve(true);
+					}
+				};
+				window.addEventListener("message", handler as any);
+				try { postToSW({ type: "PING" }); } catch {}
+				setTimeout(() => {
+					if (settled) return;
+					window.removeEventListener("message", handler as any);
+					resolve(false);
+				}, timeout);
+			});
+		}
+
 		function updateDownloadButton() {
 			const btn = document.getElementById(
 				"download"
@@ -531,9 +606,12 @@ import Layout from "../layouts/Layout.astro";
 				)?.checked;
 			const isOnline =
 				typeof navigator !== "undefined" ? navigator.onLine : true;
-			btn.disabled = !(anySelected && isOnline);
+			const compatible = hasCacheAPI() && hasSW();
+			btn.disabled = !(anySelected && isOnline && compatible);
 			const offlineMsg = document.getElementById("offline-msg");
 			if (offlineMsg) offlineMsg.classList.toggle("hidden", !!isOnline);
+			const compatMsg = document.getElementById("compat-msg");
+			if (compatMsg) compatMsg.classList.toggle("hidden", !!compatible);
 		}
 
 		const toggleOn = document.getElementById(
@@ -554,10 +632,19 @@ import Layout from "../layouts/Layout.astro";
 			"pause-resume"
 		) as HTMLButtonElement | null;
 		downloadBtn?.addEventListener("click", async () => {
+			// Bail if Cache API or SW aren’t available in this context
+			if (!hasCacheAPI() || !hasSW()) {
+				const c = document.getElementById("compat-msg");
+				c?.classList.remove("hidden");
+				return;
+			}
 			// Guard against offline activation
 			if (typeof navigator !== "undefined" && !navigator.onLine) {
 				return;
 			}
+			// Guard against no SW control; wait briefly and ping for readiness (iOS PWA)
+			await waitForSWControl(4000);
+			await pingSW(1500);
 			// New job starting: re-enable Clear and clear any message
 			const cbBtn = document.getElementById(
 				"clear"
@@ -753,6 +840,7 @@ import Layout from "../layouts/Layout.astro";
 		}
 
 		async function buildNavKeySet() {
+			if (!hasCacheAPI()) return new Set<string>();
 			const cacheNames = await caches.keys();
 			const consider = cacheNames.filter(
 				(n) =>
@@ -780,6 +868,7 @@ import Layout from "../layouts/Layout.astro";
 		}
 
 		async function hasCoreSearch() {
+			if (!hasCacheAPI()) return false;
 			const names = await caches.keys();
 			const coreName = names.find((n) => n.startsWith("core-"));
 			if (!coreName) return false;
@@ -799,6 +888,21 @@ import Layout from "../layouts/Layout.astro";
 
 		async function scanCachesAndMarkStatus() {
 			try {
+				if (!hasCacheAPI()) {
+					// Show compatibility message and set all pills to Not in Cache
+					const c = document.getElementById("compat-msg");
+					c?.classList.remove("hidden");
+					const searchStatus = document.getElementById("search-status");
+					setStatusPill(searchStatus as HTMLElement, "Not in Cache");
+					const onStatusEl = document.getElementById("on-status");
+					setStatusPill(onStatusEl as HTMLElement, "Not in Cache");
+					for (const key of STATE.effectiveKeys || []) {
+						const pill = document.getElementById(`status-col-${key}`) as HTMLElement | null;
+						setStatusPill(pill, "Not in Cache");
+					}
+					updateDownloadButton();
+					return;
+				}
 				const navSet = await buildNavKeySet();
 				// Search status
 				const hasSearch =
@@ -946,6 +1050,56 @@ import Layout from "../layouts/Layout.astro";
 		// Keep button and notice in sync with connectivity changes
 		window.addEventListener("online", updateDownloadButton);
 		window.addEventListener("offline", updateDownloadButton);
+
+		// Debug-only "nuke" control when ?debug=1
+		(function setupDebugNuke() {
+			try {
+				const params = new URLSearchParams(location.search);
+				if (params.get("debug") !== "1") return;
+				const nukeBtn = document.getElementById("nuke") as HTMLButtonElement | null;
+				if (!nukeBtn) return;
+				nukeBtn.classList.remove("hidden");
+				nukeBtn.addEventListener("click", async () => {
+					nukeBtn.disabled = true;
+					nukeBtn.textContent = "Nuking…";
+					try {
+						// 1) Cancel any active job
+						postToSW({ type: "CANCEL_JOB" });
+					} catch {}
+					try {
+						// 2) Unregister all service workers for this origin
+						const reg = await navigator.serviceWorker?.getRegistration();
+						if (reg) await reg.unregister();
+						const regs = await navigator.serviceWorker?.getRegistrations?.();
+						if (regs && Array.isArray(regs)) {
+							await Promise.all(regs.map((r) => r.unregister()));
+						}
+					} catch {}
+					try {
+						// 3) Delete all caches
+						const names = await caches.keys();
+						await Promise.all(names.map((n) => caches.delete(n)));
+					} catch {}
+					try {
+						// 4) Clear storage: localStorage, sessionStorage, IndexedDB
+						localStorage.clear();
+						sessionStorage.clear();
+						if ((window as any).indexedDB) {
+							const dbs = await (indexedDB as any).databases?.();
+							if (Array.isArray(dbs)) {
+								await Promise.all(
+									dbs.map((d: any) => {
+										try { return new Promise<void>((res) => { const req = indexedDB.deleteDatabase(d.name); req.onsuccess = req.onerror = req.onblocked = () => res(); }); } catch { return Promise.resolve(); }
+									})
+								);
+							}
+						}
+					} catch {}
+					// 5) Reload this context fresh
+					location.reload();
+				});
+			} catch {}
+		})();
 
 		// Add to Home Screen (A2HS)
 		(async function setupA2HS() {
