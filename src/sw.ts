@@ -331,7 +331,8 @@ function waitWhilePaused(signal: AbortSignal, progressKey: string) {
 }
 
 async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
-	const cache = await caches.open(cacheName);
+	// Route non-HTML assets to the global assets cache (assets-v1); we ignore cacheName
+	const assetsCache = await caches.open(ASSETS_CACHE);
 	let done = 0;
 	for (const url of urls) {
 		if (signal.aborted) throw new Error("cancelled");
@@ -388,8 +389,8 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 						} catch {}
 					} catch {}
 				} else {
-					// Non-HTML assets go to the requested cache
-					await cache.put(url, res.clone());
+					// Non-HTML assets go to ASSETS_CACHE
+					await assetsCache.put(url, res.clone());
 				}
 			}
 		} catch (e) {

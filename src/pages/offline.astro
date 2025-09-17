@@ -802,7 +802,6 @@ import Layout from "../layouts/Layout.astro";
 			postToSW({
 				type: "CACHE_URLS",
 				urls,
-				cacheName: "bulk-download",
 				progressKey: "download",
 			});
 		});
@@ -924,10 +923,7 @@ import Layout from "../layouts/Layout.astro";
 			if (!hasCacheAPI()) return new Set<string>();
 			const cacheNames = await caches.keys();
 			const consider = cacheNames.filter(
-				(n) =>
-					n.startsWith("navigations-") ||
-					n === "bulk-download" ||
-					n.startsWith("core-")
+				(n) => n.startsWith("navigations-") || n.startsWith("core-")
 			);
 			const set: Set<string> = new Set<string>();
 			for (const n of consider) {

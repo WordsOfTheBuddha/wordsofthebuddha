@@ -323,7 +323,8 @@ function waitWhilePaused(signal) {
 }
 
 async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
-	const cache = await caches.open(cacheName);
+	// Route non-HTML assets to global assets cache; ignore cacheName
+	const assetsCache = await caches.open(ASSETS_CACHE);
 	let done = 0;
 	for (const url of urls) {
 		if (signal.aborted) throw new Error("cancelled");
@@ -374,7 +375,7 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 						} catch {}
 					} catch {}
 				} else {
-					await cache.put(url, res.clone());
+					await assetsCache.put(url, res.clone());
 				}
 			}
 		} catch (e) {
