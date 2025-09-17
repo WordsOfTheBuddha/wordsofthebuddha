@@ -1,6 +1,7 @@
 ---
 title: Ummagga sutta - Fundamental Questions
 description: A bhikkhu asks the Buddha about the nature of the world, the mind, and wisdom.
+qualities: perturbation, learned, insight, right view, wisdom, suffering, harm, contemplation, loving-kindness
 fetter: ignorance
 tags: an,an4,ignorance,mind,wisdom
 slug: an4.186

@@ -1,6 +1,7 @@
 ---
 title: Sasaṅkhāra  sutta - With Exertion
 description: The Buddha describes four ways to attain final Nibbāna with or without exertion.
+qualities: right effort, recognition of unattractiveness, recognition of unsatisfactoriness, recognition of impermanence, recollection of death, faith, conscience, fear of wrongdoing, vigour, mindfulness, collectedness, wise attention, examination, solitude, full awareness
 fetter: ignorance
 tags: impermanence, conditions, exertion, tranquility, insight, wisdom, jhāna, an, an4
 slug: an4.169
