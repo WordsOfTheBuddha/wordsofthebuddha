@@ -86,10 +86,8 @@ import Layout from "../layouts/Layout.astro";
 				</span>
 			</div>
 			<p class="mt-2 text-xs text-gray-500 dark:text-gray-300">
-				Caches the search index only (not per‑query results). The
-				/search page HTML is intentionally not cached by the service
-				worker to avoid stale queries; it loads client‑side and works
-				offline via the bundled index.
+				Caches the /search page and the search index to allow offline
+				searching.
 			</p>
 		</section>
 
