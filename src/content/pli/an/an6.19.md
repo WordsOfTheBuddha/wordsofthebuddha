@@ -1,8 +1,8 @@
 ---
-title: Paṭhama maraṇassati sutta - Mindfulness Of Death (First)
-description: The Buddha explains the benefits of developing mindfulness of death, and how to cultivate it with diligence for the wearing away of the taints.
-fetter: sensual desire, ill will, conceit, ignorance
-tags: mindfulness, death, recollection, deathless, diligence, negligence, taints, mental defilements, an, an6
+title: Paṭhama maraṇassati sutta - Recollection Of Death (First)
+description: When the Buddha asks the bhikkhus on how they cultivate recollection of death, their answers reveal a negligent mindset. The Buddha then instructs to cultivate recollection of death with diligence and keenness, which leads to the wearing away of the taints.
+qualities: recollection of death, diligence, negligence, quenching, recollection of the Buddha, vigour
+theme: training guideline, inspiration
 slug: an6.19
 ---
 
