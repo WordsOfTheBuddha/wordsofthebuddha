@@ -262,20 +262,9 @@ import Layout from "../layouts/Layout.astro";
 			let counted = 0;
 			for (const u of picks) {
 				try {
-					const res = await fetch(u, {
-						method: "HEAD",
-						cache: "no-store",
-					});
-					const cl = res.headers.get("content-length");
-					if (cl) {
-						total += parseInt(cl, 10) || 0;
-						counted++;
-						continue;
-					}
-				} catch {}
-				try {
-					const res2 = await fetch(u, { cache: "no-store" });
-					const buf = await res2.arrayBuffer();
+					// Always GET and use decoded bytes; HEAD on Vercel returns compressed sizes
+					const res = await fetch(u, { cache: "no-store" });
+					const buf = await res.arrayBuffer();
 					total += buf.byteLength;
 					counted++;
 				} catch {}
