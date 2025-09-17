@@ -545,14 +545,18 @@ self.addEventListener("message", (event) => {
 				// Try to refresh core entries from network when possible
 				try {
 					const core = await caches.open(CORE_CACHE);
-					const [offlineRes, manifestRes] = await Promise.all([
-						fetch("/offline", { cache: "reload" }).catch(
-							() => null
-						),
-						fetch("/offline-manifest.json", {
-							cache: "reload",
-						}).catch(() => null),
-					]);
+					const [offlineRes, manifestRes, searchRes] =
+						await Promise.all([
+							fetch("/offline", { cache: "reload" }).catch(
+								() => null
+							),
+							fetch("/offline-manifest.json", {
+								cache: "reload",
+							}).catch(() => null),
+							fetch("/search", { cache: "reload" }).catch(
+								() => null
+							),
+						]);
 					if (offlineRes)
 						await core.put("/offline", offlineRes.clone());
 					if (manifestRes)
@@ -560,6 +564,7 @@ self.addEventListener("message", (event) => {
 							"/offline-manifest.json",
 							manifestRes.clone()
 						);
+					if (searchRes) await core.put("/search", searchRes.clone());
 				} catch {}
 				await notifyAll({ type: "CLEARED" });
 			})()

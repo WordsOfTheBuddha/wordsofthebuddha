@@ -672,11 +672,25 @@ import Layout from "../layouts/Layout.astro";
 			const onToggled = (
 				document.getElementById("toggle-on") as HTMLInputElement | null
 			)?.checked;
+			const searchCheckedEarly = (
+				document.getElementById(
+					"toggle-search"
+				) as HTMLInputElement | null
+			)?.checked;
 			// Predictable prewarm of dynamic modules so offline pages work without first-run online
 			try {
 				const anyCollectionsSelected =
 					(STATE.selectedCollections?.size || 0) > 0;
-				if (anyCollectionsSelected || onToggled) {
+				console.debug(
+					"anyCollectionsSelected",
+					anyCollectionsSelected,
+					"onToggled",
+					onToggled,
+					"searchCheckedEarly",
+					searchCheckedEarly
+				);
+				if (anyCollectionsSelected || onToggled || searchCheckedEarly) {
+					console.debug("downloading - prewarming dynamic modules");
 					await Promise.all([
 						import("../service/selectionHandler").catch(() => {}),
 						import("../service/highlightService").catch(() => {}),
