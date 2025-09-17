@@ -750,8 +750,12 @@ import Layout from "../layouts/Layout.astro";
 			]);
 			const urls = Array.from(urlsSet);
 			// If Search was selected, also include the base /search to trigger a visible job
-			// and prefetch its linked assets.
-			if (searchChecked) urls.push("/search");
+			// and prefetch its linked assets. Also include /offline so the Offline page
+			// entry chunk and its linked modules (tooltipFormatter, theme, etc.) are cached.
+			if (searchChecked) {
+				urls.push("/search");
+				urls.push("/offline");
+			}
 
 			// Queue download
 
