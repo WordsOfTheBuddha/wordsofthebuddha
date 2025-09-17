@@ -668,10 +668,14 @@ import Layout from "../layouts/Layout.astro";
 				cbBtn.textContent = "Clear Cache";
 			}
 			// status text removed; button label reflects state
+			// Compute once so it's available for both prewarm and URL building
+			const onToggled = (
+				document.getElementById("toggle-on") as HTMLInputElement | null
+			)?.checked;
 			// Predictable prewarm of dynamic modules so offline pages work without first-run online
 			try {
-				const anyCollectionsSelected = (STATE.selectedCollections?.size || 0) > 0;
-				const onToggled = (document.getElementById("toggle-on") as HTMLInputElement | null)?.checked;
+				const anyCollectionsSelected =
+					(STATE.selectedCollections?.size || 0) > 0;
 				if (anyCollectionsSelected || onToggled) {
 					await Promise.all([
 						import("../service/selectionHandler").catch(() => {}),
@@ -680,7 +684,9 @@ import Layout from "../layouts/Layout.astro";
 						import("../utils/transformId").catch(() => {}),
 						import("../utils/dom").catch(() => {}),
 						import("../utils/theme").catch(() => {}),
-						import("../utils/paliLookup").then((m: any) => m?.warmupPaliDictionary?.()).catch(() => {}),
+						import("../utils/paliLookup")
+							.then((m: any) => m?.warmupPaliDictionary?.())
+							.catch(() => {}),
 					]);
 				}
 			} catch {}

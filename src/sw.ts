@@ -311,17 +311,22 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 		try {
 			const res = await fetch(url, { credentials: "same-origin" });
 			if (res && (res.ok || res.type === "opaque")) {
-				const isNavLike = /^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url);
+				const isNavLike =
+					/^\//.test(url) && !/\.[a-zA-Z0-9]+$/.test(url);
 				if (isNavLike) {
 					// Store navigation-like HTML only in NAV cache (deduplicate)
 					const navCache = await caches.open(NAV_CACHE);
 					try {
 						const u = new URL(url, self.location.origin);
-						if (u.pathname !== "/offline" && u.pathname !== "/search") {
+						if (
+							u.pathname !== "/offline" &&
+							u.pathname !== "/search"
+						) {
 							await navCache.put(url, res.clone());
 							// Prefetch linked assets for this HTML
 							try {
-								const ct = res.headers.get("content-type") || "";
+								const ct =
+									res.headers.get("content-type") || "";
 								if (ct.includes("text/html")) {
 									const html = await res.clone().text();
 									await prefetchLinkedAssets(html, u);
@@ -372,7 +377,12 @@ async function prefetchLinkedAssets(html: string, baseUrl: URL) {
 			const sameOrigin = u.origin === self.location.origin;
 			const path = u.pathname;
 			// Same-origin app assets
-			if (sameOrigin && (path.startsWith("/_astro/") || path.startsWith("/assets/") || /favicon|manifest\.webmanifest/.test(path))) {
+			if (
+				sameOrigin &&
+				(path.startsWith("/_astro/") ||
+					path.startsWith("/assets/") ||
+					/favicon|manifest\.webmanifest/.test(path))
+			) {
 				assetHrefs.add(u.href);
 			}
 		}
@@ -381,7 +391,9 @@ async function prefetchLinkedAssets(html: string, baseUrl: URL) {
 		await Promise.all(
 			Array.from(assetHrefs).map(async (href) => {
 				try {
-					const req = new Request(href, { credentials: "same-origin" });
+					const req = new Request(href, {
+						credentials: "same-origin",
+					});
 					const hit = await cache.match(req);
 					if (hit) return;
 					const res = await fetch(req);
