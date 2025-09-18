@@ -1,6 +1,9 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { lookupSingleWord, type WordDefinition } from "./lookup";
+import {
+	lookupSingleWord,
+	type WordDefinition,
+} from "../../../utils/paliLookup";
 
 export const POST: APIRoute = async ({ request }) => {
 	try {

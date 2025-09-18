@@ -1,0 +1,1328 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout seoTitle="Offline access - Words of the Buddha" showAuth={false}>
+	<main class="container mx-auto px-4 py-8">
+		<h1 class="text-2xl font-semibold mb-4">Offline control center</h1>
+		<p class="mb-6 text-gray-600 dark:text-gray-300">
+			Manage what to make available offline. Core assets are always
+			cached.
+		</p>
+
+		<!-- Install app section -->
+		<section id="a2hs-section" class="p-4 border rounded-lg mb-8">
+			<h2 class="text-lg font-medium my-3">Install app</h2>
+			<p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+				Install Words of the Buddha site as an app for quick access and
+				better offline support.
+			</p>
+			<button
+				id="a2hs"
+				class="px-4 py-2 border rounded hidden disabled:opacity-50 disabled:cursor-not-allowed"
+				disabled>Add to Home Screen</button
+			>
+			<div
+				id="a2hs-fallback"
+				class="mt-2 text-sm text-gray-600 dark:text-gray-300 hidden"
+			>
+			</div>
+		</section>
+
+		<section class="mb-8 p-4 border rounded-lg">
+			<h2 class="text-lg font-medium my-3">Collections</h2>
+			<div class="mb-2">
+				<label class="inline-flex items-center gap-2">
+					<input
+						id="toggle-collections-all"
+						type="checkbox"
+						class="h-4 w-4"
+					/>
+					<span>All Collections</span>
+					<span
+						id="collections-all-estimate"
+						class="ml-2 text-sm text-gray-500"></span>
+				</label>
+			</div>
+			<div
+				id="collections-list"
+				class="divide-y divide-gray-200 dark:divide-gray-700 rounded-md border"
+			>
+				<!-- rows inserted by script -->
+			</div>
+			<div class="mt-3 text-sm text-gray-500" id="collections-progress">
+			</div>
+		</section>
+
+		<section class="mb-8 p-4 border rounded-lg">
+			<h2 class="text-lg font-medium my-3">Discovery pages</h2>
+			<div class="flex items-center gap-2">
+				<input id="toggle-on" type="checkbox" class="h-4 w-4" />
+				<label for="toggle-on" class="cursor-pointer"
+					>Make discovery pages available offline</label
+				>
+				<span class="ml-auto flex items-center gap-2">
+					<span id="on-estimate" class="text-sm text-gray-500"></span>
+					<span id="on-status" class="text-xs"></span>
+				</span>
+			</div>
+			<p class="mt-2 text-xs text-gray-500 dark:text-gray-300">
+				Caches /discover and all /on/:slug pages.
+				<div class="mt-3 text-sm text-gray-500" id="on-progress"></div>
+			</p>
+		</section>
+
+		<section class="mb-8 p-4 border rounded-lg">
+			<h2 class="text-lg font-medium my-3">Search</h2>
+			<div class="flex items-center gap-2">
+				<input id="toggle-search" type="checkbox" class="h-4 w-4" />
+				<label for="toggle-search" class="cursor-pointer"
+					>Make search available offline</label
+				>
+				<span class="ml-auto flex items-center gap-2">
+					<span id="search-estimate" class="text-sm text-gray-500"
+					></span>
+					<span id="search-status" class="text-xs"></span>
+				</span>
+			</div>
+			<p class="mt-2 text-xs text-gray-500 dark:text-gray-300">
+				Caches the /search page and the search index to allow offline
+				searching.
+			</p>
+		</section>
+
+		<section class="p-4 border rounded-lg mb-8">
+			<!-- Offline notice shown above the Download button when offline -->
+			<div
+				id="offline-msg"
+				class="mb-2 text-sm text-amber-700 dark:text-amber-300 hidden"
+			>
+				Go online to download content
+			</div>
+			<!-- Compatibility notice when Cache API / SW unavailable -->
+			<div
+				id="compat-msg"
+				class="mb-2 text-sm text-red-700 dark:text-red-300 hidden"
+			>
+				Downloads unavailable: this browser context doesn’t support the
+				Cache API or Service Worker.
+			</div>
+			<!-- Reload countdown notice appears just above the Clear button when clearing -->
+			<div
+				id="reload-countdown"
+				class="mb-2 text-sm text-amber-700 dark:text-amber-300 hidden"
+			>
+			</div>
+			<div class="flex flex-col sm:flex-row sm:items-center gap-3">
+				<button
+					id="download"
+					class="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+					disabled>Download selected</button
+				>
+				<div class="flex-1">
+					<div id="progress-wrap" class="hidden">
+						<div
+							class="h-2 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden"
+						>
+							<div
+								id="progress-bar"
+								class="h-full bg-blue-500"
+								style="width:0%"
+							>
+							</div>
+						</div>
+						<div class="mt-2 flex items-center gap-2 text-sm">
+							<span id="progress-text"></span>
+							<button
+								id="pause-resume"
+								class="px-2 py-0.5 border rounded">Pause</button
+							>
+						</div>
+					</div>
+				</div>
+				<button
+					id="clear"
+					class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+					>Clear Cache</button
+				>
+				<!-- Debug-only: appears when ?debug=1 is present in URL -->
+				<button
+					id="nuke"
+					class="px-3 py-1 border rounded text-red-700 dark:text-red-300 hidden"
+					>Nuke all (debug)</button
+				>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const STATE = {
+			manifest: null as any,
+			onJob: null as any,
+			collectionsJob: null as any,
+			selectedCollections: new Set<string>(),
+			effectiveKeys: [] as string[],
+			_estimates: {} as Record<string, number>,
+			_allCollectionsEstimate: 0,
+			_onEstimate: 0,
+			_searchEstimate: 0,
+			_lastMissingByCollection: {} as Record<string, string[]>,
+		};
+
+		// Primary eight collections and their display labels
+		const PRIMARY_COLLECTIONS = [
+			{
+				keys: ["dhp"],
+				label: "The Path of Dhamma",
+				pali: "Dhammapada",
+			},
+			{ keys: ["iti"], label: "As It Was Said", pali: "Itivuttaka" },
+			{
+				keys: ["mn"],
+				label: "Middle Length Discourses",
+				pali: "Majjhima Nikāya",
+			},
+			{
+				keys: ["snp"],
+				label: "The Buddha's Ancient Discourses",
+				pali: "Sutta Nipāta",
+			},
+			{
+				keys: ["sn"],
+				label: "Linked Discourses",
+				pali: "Saṁyutta Nikāya",
+			},
+			{
+				keys: ["an"],
+				label: "Numerical Discourses",
+				pali: "Aṅguttara Nikāya",
+			},
+			{ keys: ["ud"], label: "Inspired Utterances", pali: "Udāna" },
+			{
+				keys: ["kp"],
+				label: "Minor Passages",
+				pali: "Khuddakapāṭha",
+			},
+		];
+
+		async function loadManifest() {
+			try {
+				const res = await fetch("/offline-manifest.json");
+				if (!res.ok) throw new Error("bad status");
+				STATE.manifest = await res.json();
+				setupCollections();
+			} catch (e) {
+				console.error("Failed to load manifest", e);
+				// Graceful offline fallback: allow Search-only downloads without manifest
+				STATE.manifest = null;
+				setupCollections();
+			}
+		}
+
+		function getSW() {
+			return navigator.serviceWorker?.controller || null;
+		}
+
+		function hasCacheAPI(): boolean {
+			try {
+				return (
+					typeof window !== "undefined" && !!(window as any).caches
+				);
+			} catch {
+				return false;
+			}
+		}
+
+		function hasSW(): boolean {
+			try {
+				return (
+					typeof navigator !== "undefined" &&
+					!!navigator.serviceWorker
+				);
+			} catch {
+				return false;
+			}
+		}
+
+		// Utility: pretty sizes
+		function formatBytes(bytes: number): string {
+			if (!bytes || bytes <= 0) return "";
+			const units = ["B", "KB", "MB", "GB"];
+			let i = 0;
+			let n = bytes;
+			while (n >= 1024 && i < units.length - 1) {
+				n /= 1024;
+				i++;
+			}
+			return `${n.toFixed(n < 10 && i > 0 ? 1 : 0)} ${units[i]}`;
+		}
+		async function estimateForUrls(
+			urls: string[],
+			sample = 3
+		): Promise<number> {
+			if (!urls || urls.length === 0) return 0;
+			const picks = urls.slice(0, Math.min(sample, urls.length));
+			let total = 0;
+			let counted = 0;
+			for (const u of picks) {
+				try {
+					// Always GET and use decoded bytes; HEAD on Vercel returns compressed sizes
+					const res = await fetch(u, { cache: "no-store" });
+					const buf = await res.arrayBuffer();
+					total += buf.byteLength;
+					counted++;
+				} catch {}
+			}
+			if (!counted) return 0;
+			const avg = total / counted;
+			return Math.round(avg * urls.length);
+		}
+
+		function updateAllCollectionsEstimate(keys: string[]) {
+			if (!keys || !keys.length) return;
+			const total = keys.reduce(
+				(acc: number, k: string) =>
+					acc + ((STATE._estimates && STATE._estimates[k]) || 0),
+				0
+			);
+			const el = document.getElementById("collections-all-estimate");
+			if (el) el.textContent = total ? `~ ${formatBytes(total)}` : "";
+			STATE._allCollectionsEstimate = total;
+		}
+
+		function setupCollections() {
+			const container = document.getElementById("collections-list");
+			if (!container) return;
+			container.innerHTML = "";
+			const map =
+				(STATE.manifest &&
+					(STATE.manifest as any).discourseByCollection) ||
+				{};
+			const presentKeys = Object.keys(map);
+
+			// Build rows only for the primary eight, using whichever key is available
+			const effectiveKeys: string[] = [];
+			for (const item of PRIMARY_COLLECTIONS) {
+				const key = item.keys.find((k) => presentKeys.includes(k));
+				if (!key) continue; // skip if collection absent
+				effectiveKeys.push(key);
+				const id = `toggle-col-${key}`;
+				const row = document.createElement("div");
+				row.className = "flex items-center gap-3 px-3 py-3";
+				row.innerHTML = `
+					<input id="${id}" type="checkbox" class="h-4 w-4" />
+					<label for="${id}" class="flex-1 cursor-pointer">
+						<span class="text-base sm:text-lg">${item.label}</span>
+						<span class="text-sm sm:text-base text-gray-500 dark:text-gray-400 ml-2">(${item.pali})</span>
+					</label>
+					<span class="ml-auto flex items-center gap-2">
+						<span id="size-col-${key}" class="text-sm text-gray-500"></span>
+						<span id="status-col-${key}" class="text-xs"></span>
+					</span>
+				`;
+				container.appendChild(row);
+				const cb = row.querySelector(
+					"input"
+				) as HTMLInputElement | null;
+				cb?.addEventListener("change", () => {
+					if (cb && cb.checked) STATE.selectedCollections.add(key);
+					else STATE.selectedCollections.delete(key);
+					syncAllToggle(effectiveKeys);
+					updateDownloadButton();
+				});
+
+				// Estimate for this collection
+				const urls = map[key] || [];
+				estimateForUrls(urls).then((bytes) => {
+					const el = document.getElementById(`size-col-${key}`);
+					if (el) el.textContent = formatBytes(bytes);
+					(STATE._estimates || (STATE._estimates = {}))[key] = bytes;
+					updateAllCollectionsEstimate(effectiveKeys);
+				});
+			}
+			const allCb = document.getElementById(
+				"toggle-collections-all"
+			) as HTMLInputElement | null;
+			allCb?.addEventListener("change", (e: Event) => {
+				const target = e.target as HTMLInputElement | null;
+				const on = !!target?.checked;
+				for (const key of effectiveKeys) {
+					const cb = document.getElementById(
+						`toggle-col-${key}`
+					) as HTMLInputElement | null;
+					if (cb) cb.checked = on;
+					if (on) STATE.selectedCollections.add(key);
+					else STATE.selectedCollections.delete(key);
+				}
+				updateDownloadButton();
+			});
+
+			// Estimate for All Collections
+			updateAllCollectionsEstimate(effectiveKeys);
+			STATE.effectiveKeys = effectiveKeys;
+
+			// Estimate for /on pages
+			const onUrls =
+				(STATE.manifest && (STATE.manifest as any).onPages) || [];
+			estimateForUrls(onUrls).then((bytes) => {
+				const el = document.getElementById("on-estimate");
+				if (el) el.textContent = formatBytes(bytes);
+				STATE._onEstimate = bytes;
+			});
+
+			// Estimate size for making search available offline using the actual index module size
+			(async () => {
+				try {
+					const mod: any = await import("../data/searchIndex");
+					const data =
+						(mod && (mod.default || mod.searchIndex)) || [];
+					const bytes = new TextEncoder().encode(
+						JSON.stringify(data)
+					).length;
+					const se = document.getElementById("search-estimate");
+					if (se) se.textContent = formatBytes(bytes);
+					STATE._searchEstimate = bytes;
+				} catch (e) {
+					// Fallback estimate if dynamic import fails
+					const fallback = 4 * 1024 * 1024;
+					const se = document.getElementById("search-estimate");
+					if (se) se.textContent = formatBytes(fallback);
+					STATE._searchEstimate = fallback;
+				}
+			})();
+
+			// After rendering rows and estimates kick off, scan cache once to pre-label and pre-select
+			scanCachesAndMarkStatus();
+		}
+
+		function syncAllToggle(keys?: string[]) {
+			const allKeys =
+				keys ||
+				Object.keys(
+					(STATE.manifest &&
+						(STATE.manifest as any).discourseByCollection) ||
+						{}
+				);
+			const allOn =
+				allKeys.length > 0 &&
+				allKeys.every((k: string) => STATE.selectedCollections.has(k));
+			const allCb = document.getElementById(
+				"toggle-collections-all"
+			) as HTMLInputElement | null;
+			if (allCb) allCb.checked = allOn;
+		}
+
+		function postToSW(message: any) {
+			const sw = getSW();
+			if (!sw) {
+				// Post to active worker even if not controlling yet
+				navigator.serviceWorker
+					?.getRegistration()
+					.then((reg) => {
+						reg?.active?.postMessage(message);
+					})
+					.catch(() => {});
+				// Also retry once after a short delay in case control attaches
+				setTimeout(() => {
+					const ctrl = getSW();
+					if (ctrl) ctrl.postMessage(message);
+				}, 1200);
+				return;
+			}
+			sw.postMessage(message);
+		}
+
+		let onProgressCount = 0;
+		let onProgressTotal = 0;
+		let colProgressCount = 0;
+		let colProgressTotal = 0;
+		navigator.serviceWorker?.addEventListener("message", (event) => {
+			const msg = event.data || {};
+			if (msg.progressKey === "on") {
+				if (msg.type === "PROGRESS") {
+					onProgressCount = msg.done;
+					onProgressTotal = msg.total;
+				}
+				if (msg.type === "DONE") {
+					onProgressCount = onProgressTotal;
+				}
+				if (msg.type === "ERROR") {
+					// show minimal error state
+				}
+				const onp = document.getElementById("on-progress");
+				if (onp)
+					onp.textContent = onProgressTotal
+						? `Caching /on pages: ${onProgressCount}/${onProgressTotal}`
+						: "";
+			}
+			if (msg.progressKey === "collections") {
+				if (msg.type === "PROGRESS") {
+					colProgressCount = msg.done;
+					colProgressTotal = msg.total;
+				}
+				if (msg.type === "DONE") {
+					colProgressCount = colProgressTotal;
+				}
+				const cp = document.getElementById("collections-progress");
+				if (cp)
+					cp.textContent = colProgressTotal
+						? `Caching collections: ${colProgressCount}/${colProgressTotal}`
+						: "";
+			}
+
+			// Unified download progress
+			if (msg.progressKey === "download") {
+				const wrap = document.getElementById("progress-wrap");
+				const bar = document.getElementById("progress-bar");
+				const text = document.getElementById("progress-text");
+				const pauseBtn = document.getElementById("pause-resume");
+				if (wrap) wrap.classList.remove("hidden");
+				if (msg.type === "STARTED") {
+					const total = msg.total || 0;
+					if (bar && bar instanceof HTMLElement)
+						bar.style.width = "0%";
+					if (text) text.textContent = `0/${total} (0%)`;
+					pauseBtn?.classList.remove("hidden");
+				}
+				if (msg.type === "PROGRESS") {
+					const pct = msg.total
+						? Math.round((msg.done / msg.total) * 100)
+						: 0;
+					if (bar) (bar as any).style.width = pct + "%";
+					if (text)
+						text.textContent = `${msg.done}/${msg.total} (${pct}%)`;
+					// ensure controls visible during active job
+					pauseBtn?.classList.remove("hidden");
+				}
+				if (msg.type === "PAUSED") {
+					// No persistent label; button text already shows state
+				}
+				if (msg.type === "RESUMED") {
+					// no-op
+				}
+				if (msg.type === "DONE" || msg.type === "ERROR") {
+					if (msg.type === "DONE") {
+						// Hide Pause on completion
+						pauseBtn?.classList.add("hidden");
+						// Optional: mark completed
+						if (
+							text &&
+							text.textContent &&
+							!text.textContent.includes("Completed")
+						) {
+							text.textContent =
+								(text.textContent || "") + " • Completed";
+						}
+						// After a completed download, unselect all toggles
+						try {
+							const onEl = document.getElementById(
+								"toggle-on"
+							) as HTMLInputElement | null;
+							if (onEl) onEl.checked = false;
+							const searchEl = document.getElementById(
+								"toggle-search"
+							) as HTMLInputElement | null;
+							if (searchEl) searchEl.checked = false;
+							for (const key of STATE.effectiveKeys || []) {
+								const cb = document.getElementById(
+									`toggle-col-${key}`
+								) as HTMLInputElement | null;
+								if (cb) cb.checked = false;
+							}
+							STATE.selectedCollections.clear();
+							// Keep status pills; only uncheck UI
+							syncAllToggle(STATE.effectiveKeys);
+							updateDownloadButton();
+						} catch {}
+						scanCachesAndMarkStatus();
+					}
+					refreshClearVisibility();
+				}
+			}
+
+			if (msg.type === "CLEARED") {
+				applyClearedUIState();
+				refreshClearVisibility();
+				// After caches are cleared, show a short countdown and reload
+				startReloadCountdown();
+			}
+		});
+		let _reloading = false;
+		let _reloadTimer: number | null = null;
+		function startReloadCountdown(seconds = 3) {
+			try {
+				if (_reloading) return;
+				_reloading = true;
+				const el = document.getElementById("reload-countdown");
+				if (!el) {
+					setTimeout(() => location.reload(), seconds * 1000);
+					return;
+				}
+				el.classList.remove("hidden");
+				let n = Math.max(1, Math.floor(seconds));
+				const render = () => {
+					el.textContent = `Reloading the page in ${n}…`;
+				};
+				render();
+				const tick = () => {
+					if (n <= 1) {
+						if (_reloadTimer != null) {
+							clearInterval(_reloadTimer as any);
+							_reloadTimer = null;
+						}
+						location.reload();
+						return;
+					}
+					n -= 1;
+					render();
+				};
+				_reloadTimer = window.setInterval(tick, 1000);
+			} catch {
+				setTimeout(() => location.reload(), seconds * 1000);
+			}
+		}
+
+		// Ensure the page is controlled by the SW before starting downloads (iOS PWA quirk)
+		async function waitForSWControl(timeout = 5000): Promise<boolean> {
+			if (navigator.serviceWorker?.controller) return true;
+			return new Promise((resolve) => {
+				let done = false;
+				const timer = setTimeout(() => {
+					if (done) return;
+					done = true;
+					resolve(!!navigator.serviceWorker?.controller);
+				}, timeout);
+				const onChange = () => {
+					if (done) return;
+					done = true;
+					clearTimeout(timer);
+					resolve(true);
+				};
+				navigator.serviceWorker?.addEventListener(
+					"controllerchange",
+					onChange,
+					{ once: true } as any
+				);
+			});
+		}
+
+		function pingSW(timeout = 1500): Promise<boolean> {
+			return new Promise((resolve) => {
+				let settled = false;
+				const handler = (event: MessageEvent) => {
+					const data = event.data || {};
+					if (data && data.type === "PONG" && !settled) {
+						settled = true;
+						window.removeEventListener("message", handler as any);
+						resolve(true);
+					}
+				};
+				window.addEventListener("message", handler as any);
+				try {
+					postToSW({ type: "PING" });
+				} catch {}
+				setTimeout(() => {
+					if (settled) return;
+					window.removeEventListener("message", handler as any);
+					resolve(false);
+				}, timeout);
+			});
+		}
+
+		function updateDownloadButton() {
+			const btn = document.getElementById(
+				"download"
+			) as HTMLButtonElement | null;
+			if (!btn) return;
+			const anySelected =
+				(STATE.selectedCollections &&
+					STATE.selectedCollections.size > 0) ||
+				!!(
+					document.getElementById(
+						"toggle-on"
+					) as HTMLInputElement | null
+				)?.checked ||
+				!!(
+					document.getElementById(
+						"toggle-search"
+					) as HTMLInputElement | null
+				)?.checked;
+			const isOnline =
+				typeof navigator !== "undefined" ? navigator.onLine : true;
+			const compatible = hasCacheAPI() && hasSW();
+			btn.disabled = !(anySelected && isOnline && compatible);
+			const offlineMsg = document.getElementById("offline-msg");
+			if (offlineMsg) offlineMsg.classList.toggle("hidden", !!isOnline);
+			const compatMsg = document.getElementById("compat-msg");
+			if (compatMsg) compatMsg.classList.toggle("hidden", !!compatible);
+		}
+
+		const toggleOn = document.getElementById(
+			"toggle-on"
+		) as HTMLInputElement | null;
+		toggleOn?.addEventListener("change", () => updateDownloadButton());
+
+		// Ensure the Download button reflects the Search toggle state
+		const toggleSearch = document.getElementById(
+			"toggle-search"
+		) as HTMLInputElement | null;
+		toggleSearch?.addEventListener("change", () => updateDownloadButton());
+
+		const downloadBtn = document.getElementById(
+			"download"
+		) as HTMLButtonElement | null;
+		const pauseResumeBtn = document.getElementById(
+			"pause-resume"
+		) as HTMLButtonElement | null;
+		downloadBtn?.addEventListener("click", async () => {
+			// Bail if Cache API or SW aren’t available in this context
+			if (!hasCacheAPI() || !hasSW()) {
+				const c = document.getElementById("compat-msg");
+				c?.classList.remove("hidden");
+				return;
+			}
+			// Guard against offline activation
+			if (typeof navigator !== "undefined" && !navigator.onLine) {
+				return;
+			}
+			// Guard against no SW control; wait briefly and ping for readiness (iOS PWA)
+			await waitForSWControl(4000);
+			await pingSW(1500);
+			// New job starting: re-enable Clear and clear any message
+			const cbBtn = document.getElementById(
+				"clear"
+			) as HTMLButtonElement | null;
+			if (cbBtn) {
+				cbBtn.disabled = false;
+				cbBtn.textContent = "Clear Cache";
+			}
+			// status text removed; button label reflects state
+			// Compute once so it's available for both prewarm and URL building
+			const onToggled = (
+				document.getElementById("toggle-on") as HTMLInputElement | null
+			)?.checked;
+			const searchCheckedEarly = (
+				document.getElementById(
+					"toggle-search"
+				) as HTMLInputElement | null
+			)?.checked;
+			// Predictable prewarm of dynamic modules so offline pages work without first-run online
+			try {
+				const anyCollectionsSelected =
+					(STATE.selectedCollections?.size || 0) > 0;
+				console.debug(
+					"anyCollectionsSelected",
+					anyCollectionsSelected,
+					"onToggled",
+					onToggled,
+					"searchCheckedEarly",
+					searchCheckedEarly
+				);
+				if (anyCollectionsSelected || onToggled || searchCheckedEarly) {
+					console.debug("downloading - prewarming dynamic modules");
+					await Promise.all([
+						import("../service/selectionHandler").catch(() => {}),
+						import("../service/highlightService").catch(() => {}),
+						import("../utils/tooltipFormatter").catch(() => {}),
+						import("../utils/transformId").catch(() => {}),
+						import("../utils/dom").catch(() => {}),
+						import("../utils/theme").catch(() => {}),
+						import("../utils/paliLookup")
+							.then((m: any) => m?.warmupPaliDictionary?.())
+							.catch(() => {}),
+					]);
+				}
+			} catch {}
+
+			// Build URLs lists guarded by manifest presence so Search-only works even before manifest loads
+			const selectedKeys = Array.from(
+				STATE.selectedCollections as Set<string>
+			);
+			const map: Record<string, string[]> =
+				((STATE.manifest &&
+					((STATE.manifest as any).discourseByCollection ||
+						{})) as Record<string, string[]>) || {};
+			const urlsCollections = selectedKeys.flatMap((k) => map[k] || []);
+			// Also include collection index pages (e.g., /ud, /ud1, /ud2...) for selected collections
+			const allCollectionPages: string[] =
+				(STATE.manifest && (STATE.manifest as any).collectionPages) ||
+				[];
+			const urlsCollectionPages = selectedKeys.length
+				? allCollectionPages.filter((p) =>
+						selectedKeys.some((k) => belongsToCollectionPath(p, k))
+					)
+				: [];
+			// onToggled already computed above
+			const urlsOn =
+				onToggled && STATE.manifest
+					? ["/discover", ...((STATE.manifest as any).onPages || [])]
+					: [];
+			const searchChecked = (
+				document.getElementById(
+					"toggle-search"
+				) as HTMLInputElement | null
+			)?.checked;
+			// Prewarm the search index by dynamically importing the search module,
+			// which pulls in the bundled index chunk so the SW caches it.
+			if (searchChecked) {
+				const text = document.getElementById("progress-text");
+				if (text) text.textContent = "Fetching search index…";
+				try {
+					await import("../service/search/search");
+				} catch {}
+			}
+			// Deduplicate URLs
+			const urlsSet = new Set([
+				...urlsCollections,
+				...urlsCollectionPages,
+				...(urlsOn || []),
+			]);
+			const urls = Array.from(urlsSet);
+			// If Search was selected, also include the base /search to trigger a visible job
+			// entry chunk and its linked modules (tooltipFormatter, theme, etc.) are cached.
+			if (searchChecked) {
+				urls.push("/search");
+			}
+
+			// Queue download
+
+			if (urls.length === 0) return;
+			const wrap = document.getElementById("progress-wrap");
+			if (wrap) wrap.classList.remove("hidden");
+			const pbar = document.getElementById("progress-bar");
+			if (pbar && pbar instanceof HTMLElement) pbar.style.width = "0%";
+			const ptxt = document.getElementById("progress-text");
+			if (ptxt) ptxt.textContent = "Starting…";
+			// Reset Pause/Cancel on new job
+			const pauseBtn = document.getElementById("pause-resume");
+			if (pauseBtn) {
+				(pauseBtn as HTMLButtonElement).textContent = "Pause";
+				pauseBtn.classList.remove("hidden");
+			}
+			postToSW({
+				type: "CACHE_URLS",
+				urls,
+				progressKey: "download",
+			});
+		});
+		pauseResumeBtn?.addEventListener("click", () => {
+			const btn = document.getElementById("pause-resume");
+			if (!btn) return;
+			if (btn.textContent === "Pause") {
+				postToSW({ type: "PAUSE_JOB", progressKey: "download" });
+				btn.textContent = "Resume";
+			} else {
+				postToSW({ type: "RESUME_JOB", progressKey: "download" });
+				btn.textContent = "Pause";
+			}
+		});
+		document.getElementById("clear")?.addEventListener("click", () => {
+			// Abort any in-flight job and clear caches
+			postToSW({ type: "CANCEL_JOB" });
+			postToSW({ type: "CLEAR_ALL" });
+			// Reset progress UI
+			const wrap = document.getElementById("progress-wrap");
+			const bar = document.getElementById("progress-bar");
+			const text = document.getElementById("progress-text");
+			const pauseBtn = document.getElementById("pause-resume");
+			if (wrap) wrap.classList.add("hidden");
+			if (bar && bar instanceof HTMLElement) bar.style.width = "0%";
+			if (text) text.textContent = "";
+			if (pauseBtn) pauseBtn.classList.add("hidden");
+			// Immediate visual cleared state
+			applyClearedUIState();
+			const cb = document.getElementById(
+				"clear"
+			) as HTMLButtonElement | null;
+			if (cb) {
+				cb.disabled = true;
+				cb.textContent = "Cache is clear!";
+			}
+			// Countdown will start after we receive the CLEARED message from SW
+		});
+
+		function setStatusPill(
+			el: HTMLElement | null,
+			status: "Installed" | "Partial" | "Not in Cache",
+			present?: number,
+			expected?: number
+		) {
+			if (!el) return;
+			el.textContent = "";
+			el.className = "text-xs px-2 py-0.5 rounded-full";
+			if (status === "Installed") {
+				el.textContent = "Installed";
+				el.classList.add(
+					"bg-green-100",
+					"text-green-800",
+					"dark:bg-green-900",
+					"dark:text-green-200"
+				);
+			} else if (status === "Partial") {
+				el.textContent =
+					present != null && expected != null
+						? `Partial (${present}/${expected})`
+						: "Partial";
+				el.classList.add(
+					"bg-amber-100",
+					"text-amber-800",
+					"dark:bg-amber-900",
+					"dark:text-amber-200"
+				);
+			} else {
+				el.textContent = "Not in Cache";
+				el.classList.add(
+					"bg-gray-200",
+					"text-gray-700",
+					"dark:bg-gray-700",
+					"dark:text-gray-300"
+				);
+			}
+		}
+
+		function addPathVariantsToSet(path: string, set: Set<string>) {
+			const p = path.split("#")[0];
+			set.add(p);
+			if (p.endsWith("/")) set.add(p.slice(0, -1));
+			else set.add(p + "/");
+			if (p.endsWith("/index.html"))
+				set.add(p.replace(/\/?index\.html$/, "/"));
+			else set.add((p.endsWith("/") ? p : p + "/") + "index.html");
+		}
+
+		// Boundary-aware check: does a collection index page belong to the given key?
+		// Accepts:
+		//   /sn, /sn/..., /sn-..., /sn1, /sn22, etc.
+		// Rejects:
+		//   /snp..., /snx..., etc.
+		function belongsToCollectionPath(p: string, key: string): boolean {
+			const prefix = `/${key}`;
+			if (!p.startsWith(prefix)) return false;
+			const next = p.slice(prefix.length);
+			if (next.length === 0) return true; // exact match
+			const ch = next.charAt(0);
+			return ch === "/" || ch === "-" || (ch >= "0" && ch <= "9");
+		}
+
+		function anyVariantPresent(path: string, set: Set<string>) {
+			// Consider raw, encoded, and decoded forms to cope with spaces and unicode in slugs
+			const candidates = new Set<string>([path]);
+			try {
+				candidates.add(encodeURI(path));
+			} catch {}
+			try {
+				candidates.add(decodeURI(path));
+			} catch {}
+			const variants = new Set<string>();
+			for (const p of candidates) addPathVariantsToSet(p, variants);
+			for (const v of variants) if (set.has(v)) return true;
+			return false;
+		}
+
+		async function buildNavKeySet() {
+			if (!hasCacheAPI()) return new Set<string>();
+			const cacheNames = await caches.keys();
+			const consider = cacheNames.filter(
+				(n) => n.startsWith("navigations-") || n.startsWith("core-")
+			);
+			const set: Set<string> = new Set<string>();
+			for (const n of consider) {
+				try {
+					const c = await caches.open(n);
+					const reqs = await c.keys();
+					for (const r of reqs) {
+						const u = new URL(r.url);
+						const p =
+							u.pathname +
+							(u.search && !u.search.startsWith("?pli=")
+								? u.search
+								: "");
+						addPathVariantsToSet(p, set);
+					}
+				} catch {}
+			}
+			return set;
+		}
+
+		async function hasCoreSearch() {
+			if (!hasCacheAPI()) return false;
+			const names = await caches.keys();
+			const coreName = names.find((n) => n.startsWith("core-"));
+			if (!coreName) return false;
+			try {
+				const c = await caches.open(coreName);
+				const m = await c.match("/search");
+				if (m) return true;
+				const ms = await Promise.all([
+					c.match("/search/"),
+					c.match("/search/index.html"),
+				]);
+				return ms.some(Boolean);
+			} catch {
+				return false;
+			}
+		}
+
+		async function scanCachesAndMarkStatus() {
+			try {
+				if (!hasCacheAPI()) {
+					// Show compatibility message and set all pills to Not in Cache
+					const c = document.getElementById("compat-msg");
+					c?.classList.remove("hidden");
+					const searchStatus =
+						document.getElementById("search-status");
+					setStatusPill(searchStatus as HTMLElement, "Not in Cache");
+					const onStatusEl = document.getElementById("on-status");
+					setStatusPill(onStatusEl as HTMLElement, "Not in Cache");
+					for (const key of STATE.effectiveKeys || []) {
+						const pill = document.getElementById(
+							`status-col-${key}`
+						) as HTMLElement | null;
+						setStatusPill(pill, "Not in Cache");
+					}
+					updateDownloadButton();
+					return;
+				}
+				const navSet = await buildNavKeySet();
+				// Search status
+				const hasSearch =
+					anyVariantPresent("/search", navSet) ||
+					(await hasCoreSearch());
+				const searchStatus = document.getElementById("search-status");
+				setStatusPill(
+					searchStatus,
+					hasSearch ? "Installed" : "Not in Cache"
+				);
+
+				// Discovery (/on) status, including the /discover page itself
+				const onStatusEl = document.getElementById("on-status");
+				const onUrls =
+					(STATE.manifest && (STATE.manifest as any).onPages) || [];
+				const expectedOn = ["/discover", ...onUrls];
+				let presentOn = 0;
+				for (const url of expectedOn) {
+					if (anyVariantPresent(url, navSet)) presentOn++;
+				}
+				const onStatus =
+					presentOn === 0
+						? "Not in Cache"
+						: presentOn === expectedOn.length
+							? "Installed"
+							: "Partial";
+				setStatusPill(
+					onStatusEl,
+					onStatus as any,
+					presentOn,
+					expectedOn.length
+				);
+				// Don't auto-check discovery toggle
+
+				// Collections
+				const map =
+					(STATE.manifest &&
+						(STATE.manifest as any).discourseByCollection) ||
+					{};
+				const allCollectionPages: string[] =
+					(STATE.manifest &&
+						(STATE.manifest as any).collectionPages) ||
+					[];
+				for (const key of STATE.effectiveKeys || []) {
+					const discourses = map[key] || [];
+					const pages = allCollectionPages.filter((p) =>
+						belongsToCollectionPath(p, key)
+					);
+					const expected = [...new Set([...discourses, ...pages])];
+					let present = 0;
+					const presentUrls: string[] = [];
+					for (const url of expected) {
+						if (anyVariantPresent(url, navSet)) {
+							present++;
+							// Only needed if present < 20; collecting up to 20 is enough
+							if (presentUrls.length < 20) presentUrls.push(url);
+						}
+					}
+					// If partial, compute and log which URLs are missing for easier diagnosis
+					if (present !== expected.length) {
+						const missing: string[] = [];
+						for (const url of expected) {
+							if (!anyVariantPresent(url, navSet))
+								missing.push(url);
+						}
+						STATE._lastMissingByCollection[key] = missing;
+					} else {
+						try {
+							delete (STATE._lastMissingByCollection as any)[key];
+						} catch {}
+					}
+					const status =
+						present === 0
+							? "Not in Cache"
+							: present === expected.length
+								? "Installed"
+								: "Partial";
+					const pill = document.getElementById(`status-col-${key}`);
+					setStatusPill(
+						pill,
+						status as any,
+						present,
+						expected.length
+					);
+				}
+				// Expose for quick inspection in DevTools
+				try {
+					(window as any).__offlineMissing =
+						STATE._lastMissingByCollection;
+				} catch {}
+				syncAllToggle(STATE.effectiveKeys);
+				updateDownloadButton();
+			} catch (e) {
+				console.warn("Cache scan failed", e);
+			}
+		}
+
+		function applyClearedUIState() {
+			try {
+				const onEl = document.getElementById(
+					"toggle-on"
+				) as HTMLInputElement | null;
+				if (onEl) onEl.checked = false;
+				const onPill = document.getElementById(
+					"on-status"
+				) as HTMLElement | null;
+				setStatusPill(onPill, "Not in Cache");
+				const searchEl = document.getElementById(
+					"toggle-search"
+				) as HTMLInputElement | null;
+				if (searchEl) searchEl.checked = false;
+				for (const key of STATE.effectiveKeys || []) {
+					const cb = document.getElementById(
+						`toggle-col-${key}`
+					) as HTMLInputElement | null;
+					if (cb) cb.checked = false;
+					const pill = document.getElementById(
+						`status-col-${key}`
+					) as HTMLElement | null;
+					setStatusPill(pill as HTMLElement, "Not in Cache");
+				}
+				// Also reset Search status pill
+				const searchPill = document.getElementById(
+					"search-status"
+				) as HTMLElement | null;
+				setStatusPill(searchPill, "Not in Cache");
+				STATE.selectedCollections.clear();
+				updateDownloadButton();
+				// no separate status span; button label shows state
+				const cbBtn = document.getElementById(
+					"clear"
+				) as HTMLButtonElement | null;
+				if (cbBtn) cbBtn.disabled = true;
+			} catch {}
+		}
+
+		// Show/Hide clear button based on caches content
+		async function refreshClearVisibility() {
+			// Always show Clear Cache to allow a full reset during testing
+			const btn = document.getElementById("clear");
+			if (btn) btn.classList.remove("hidden");
+		}
+		refreshClearVisibility();
+		updateDownloadButton();
+
+		// Keep button and notice in sync with connectivity changes
+		window.addEventListener("online", updateDownloadButton);
+		window.addEventListener("offline", updateDownloadButton);
+
+		// Debug-only "nuke" control when ?debug=1
+		(function setupDebugNuke() {
+			try {
+				const params = new URLSearchParams(location.search);
+				if (params.get("debug") !== "1") return;
+				const nukeBtn = document.getElementById(
+					"nuke"
+				) as HTMLButtonElement | null;
+				if (!nukeBtn) return;
+				nukeBtn.classList.remove("hidden");
+				nukeBtn.addEventListener("click", async () => {
+					nukeBtn.disabled = true;
+					nukeBtn.textContent = "Nuking…";
+					try {
+						// 1) Cancel any active job
+						postToSW({ type: "CANCEL_JOB" });
+					} catch {}
+					try {
+						// 2) Unregister all service workers for this origin
+						const reg =
+							await navigator.serviceWorker?.getRegistration();
+						if (reg) await reg.unregister();
+						const regs =
+							await navigator.serviceWorker?.getRegistrations?.();
+						if (regs && Array.isArray(regs)) {
+							await Promise.all(regs.map((r) => r.unregister()));
+						}
+					} catch {}
+					try {
+						// 3) Delete all caches
+						const names = await caches.keys();
+						await Promise.all(names.map((n) => caches.delete(n)));
+					} catch {}
+					try {
+						// 4) Clear storage: localStorage, sessionStorage, IndexedDB
+						localStorage.clear();
+						sessionStorage.clear();
+						if ((window as any).indexedDB) {
+							const dbs = await (indexedDB as any).databases?.();
+							if (Array.isArray(dbs)) {
+								await Promise.all(
+									dbs.map((d: any) => {
+										try {
+											return new Promise<void>((res) => {
+												const req =
+													indexedDB.deleteDatabase(
+														d.name
+													);
+												req.onsuccess =
+													req.onerror =
+													req.onblocked =
+														() => res();
+											});
+										} catch {
+											return Promise.resolve();
+										}
+									})
+								);
+							}
+						}
+					} catch {}
+					// 5) Show countdown and reload this context fresh
+					startReloadCountdown();
+				});
+			} catch {}
+		})();
+
+		// Add to Home Screen (A2HS)
+		(async function setupA2HS() {
+			const btn = document.getElementById(
+				"a2hs"
+			) as HTMLButtonElement | null;
+			const btnSection = document.getElementById("a2hs-section");
+			if (!btn) return;
+			btn.disabled = true;
+
+			// Detect already installed or previously installed on this device
+			const isStandalone =
+				window.matchMedia &&
+				window.matchMedia("(display-mode: standalone)").matches;
+			const isIOSStandalone =
+				(window as any).navigator?.standalone === true;
+
+			const wasInstalled = localStorage.getItem("pwaInstalled") === "1"; // informational only; don’t gate UI on this
+
+			let hasRelated = false;
+			if ((navigator as any).getInstalledRelatedApps) {
+				try {
+					const related = await (
+						navigator as any
+					).getInstalledRelatedApps();
+					hasRelated = Array.isArray(related) && related.length > 0;
+				} catch {}
+			}
+
+			// Hide only if actually running standalone or a related app is detected.
+			if (isStandalone || isIOSStandalone || hasRelated) {
+				btn.classList.add("hidden");
+				btnSection?.classList.add("hidden");
+				return;
+			}
+
+			let deferredPrompt: any = null;
+			window.addEventListener("beforeinstallprompt", (e: any) => {
+				e.preventDefault();
+				deferredPrompt = e;
+				btn.disabled = false;
+				btn.classList.remove("hidden");
+			});
+
+			btn.addEventListener("click", async () => {
+				if (!deferredPrompt) {
+					// No install prompt available (e.g., Safari/iOS). Keep disabled.
+					return;
+				}
+				deferredPrompt.prompt();
+				try {
+					await deferredPrompt.userChoice;
+				} catch {}
+				deferredPrompt = null;
+				btn.classList.add("hidden");
+				// Optionally show a toast/notice here
+			});
+
+			window.addEventListener("appinstalled", () => {
+				try {
+					localStorage.setItem("pwaInstalled", "1");
+				} catch {}
+				btn.classList.add("hidden");
+				btnSection?.classList.add("hidden");
+				// Optionally show a toast/notice here
+			});
+
+			// --- Fallback: show manual install instructions when no prompt is available ---
+			function isSafariUA() {
+				const ua = navigator.userAgent;
+				const isSafari =
+					/Safari\//.test(ua) &&
+					!/Chrome\//.test(ua) &&
+					!/CriOS\//.test(ua);
+				return isSafari;
+			}
+			function isIOS() {
+				return /iPad|iPhone|iPod/.test(navigator.userAgent);
+			}
+			function isMac() {
+				return /Macintosh|MacIntel|MacPPC|Mac68K/.test(
+					navigator.platform
+				);
+			}
+			function showA2HSHelp(
+				kind: "safari-ios" | "safari-mac" | "chrome"
+			) {
+				const help = document.getElementById("a2hs-fallback");
+				if (!help) return;
+				let html = "";
+				if (kind === "safari-ios") {
+					html =
+						"On iPhone/iPad: open the Share menu \u2192 <strong>Add to Home Screen</strong>.";
+				} else if (kind === "safari-mac") {
+					html =
+						"On macOS Safari: use <strong>File \u2192 Add to Dock…</strong> (or Share \u2192 Add to Dock).";
+				} else {
+					html =
+						"In Chrome: use the <strong>Install</strong> button in the address bar (\u2795 icon) \u2192 <strong>Install</strong>.";
+				}
+				help.innerHTML = html;
+				help.classList.remove("hidden");
+			}
+
+			// Give the browser a moment to fire `beforeinstallprompt`; if it doesn’t, show guidance.
+			setTimeout(() => {
+				const help = document.getElementById("a2hs-fallback");
+				if (!help) return;
+				// If the custom prompt became available, the button is already visible/enabled; no fallback needed.
+				const promptAvailable =
+					!btn.classList.contains("hidden") && !btn.disabled;
+				if (promptAvailable) return;
+				// If we’re already standalone or have a related app, the section was hidden earlier.
+				if (isStandalone || isIOSStandalone || hasRelated) return;
+				// Show platform-appropriate instructions.
+				if (isSafariUA()) {
+					if (isIOS()) showA2HSHelp("safari-ios");
+					else if (isMac()) showA2HSHelp("safari-mac");
+					else showA2HSHelp("safari-mac");
+				} else {
+					showA2HSHelp("chrome");
+				}
+			}, 1500);
+		})();
+
+		loadManifest();
+	</script>
+</Layout>

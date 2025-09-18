@@ -40,18 +40,50 @@ let isPaliMode = url.searchParams.get("pli") === "true";
 
 	if (btn) {
 		btn.addEventListener("click", () => {
-			const isPaliMode =
-				new URL(window.location.href).searchParams.get("pli") ===
-				"true";
-			setPaliState(!isPaliMode);
-			// Reload only if we need to show/hide Pali content
-			window.location.reload();
+			const url = new URL(window.location.href);
+			const isPaliMode = url.searchParams.get("pli") === "true";
+			const next = !isPaliMode;
+			setPaliState(next);
+			document.documentElement.classList.toggle("pali-on", next);
+			// Update URL param for shareability without reload
+			if (next) url.searchParams.set("pli", "true");
+			else url.searchParams.delete("pli");
+			window.history.replaceState({}, "", url.toString());
+
+			// Update button UI (icons, title, aria)
+			const icon = document.getElementById("paliIcon");
+			const eye = document.getElementById("paliEyeIcon");
+			if (icon && eye) {
+				icon.classList.toggle("hidden", next);
+				eye.classList.toggle("hidden", !next);
+			}
+			btn.setAttribute("aria-pressed", String(next));
+			btn.title = next
+				? "Hide Pāli text"
+				: "Show Pāli text alongside English";
+
+			// Notify listeners (e.g., layout toggle visibility)
+			document.dispatchEvent(
+				new CustomEvent("paliModeChanged", {
+					detail: { enabled: next },
+				})
+			);
 		});
 	}
 
 	// Initialize from localStorage if available
 	const storedPaliMode = localStorage.getItem("paliMode") === "true";
-	if (storedPaliMode) {
-		setPaliState(true);
+	document.documentElement.classList.toggle("pali-on", storedPaliMode);
+	const icon = document.getElementById("paliIcon");
+	const eye = document.getElementById("paliEyeIcon");
+	if (icon && eye) {
+		icon.classList.toggle("hidden", storedPaliMode);
+		eye.classList.toggle("hidden", !storedPaliMode);
+	}
+	if (btn) {
+		btn.setAttribute("aria-pressed", String(storedPaliMode));
+		btn.title = storedPaliMode
+			? "Hide Pāli text"
+			: "Show Pāli text alongside English";
 	}
 </script>

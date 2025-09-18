@@ -3,36 +3,44 @@ import { parseMarkdown } from "../utils/mdParser";
 
 interface Props {
 	content: string;
-	sideContent?: string;
-	layout?: "split" | "interleaved";
+	// Optional split-mode content; when provided, split view can be shown via html.split
+	splitEnglish?: string;
+	splitPali?: string;
 }
 
-const { content, sideContent, layout = "interleaved" } = Astro.props;
-const isSplit = layout === "split" && sideContent;
-
-const parsedContent = await parseMarkdown(content);
-const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
+const { content, splitEnglish, splitPali } = Astro.props;
+const parsedInterleaved = await parseMarkdown(content);
+const parsedSplitEnglish = splitEnglish
+	? await parseMarkdown(splitEnglish)
+	: null;
+const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 ---
 
 {
-	isSplit ? (
-		<div class="content-fade split-wrapper">
+	(
+		<>
+			<!-- Interleaved article (default) -->
 			<article
-				id="panel1"
-				class="split-panel md-content prose prose-lg dark:prose-invert"
-				set:html={parsedContent}
+				class="content-fade md-content prose prose-lg dark:prose-invert interleaved-article"
+				set:html={parsedInterleaved}
 			/>
-			<article
-				id="panel2"
-				class="split-panel md-content prose prose-lg dark:prose-invert"
-				set:html={parsedSideContent}
-			/>
-		</div>
-	) : (
-		<article
-			class="content-fade md-content prose prose-lg dark:prose-invert"
-			set:html={parsedContent}
-		/>
+
+			<!-- Split wrapper (only visible when html has split + pali-on) -->
+			{parsedSplitEnglish && parsedSplitPali && (
+				<div class="content-fade split-wrapper">
+					<article
+						id="panel1"
+						class="split-panel md-content prose prose-lg dark:prose-invert"
+						set:html={parsedSplitEnglish}
+					/>
+					<article
+						id="panel2"
+						class="split-panel md-content prose prose-lg dark:prose-invert"
+						set:html={parsedSplitPali}
+					/>
+				</div>
+			)}
+		</>
 	)
 }
 
@@ -42,6 +50,10 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 		margin-bottom: 0;
 		color: var(--text-color);
 		font-family: "Gentium Plus", serif;
+	}
+	/* Hide Pali paragraphs unless globally enabled */
+	:global(html:not(.pali-on)) .md-content :global(.pali-paragraph) {
+		display: none !important;
 	}
 	.md-content :global(.english-paragraph) {
 		margin-top: 0.5rem;
@@ -58,13 +70,23 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 	}
 
 	.split-wrapper {
-		display: grid;
+		display: none; /* hidden by default */
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
 		min-height: 100%;
 		position: relative;
 		opacity: 0;
 		transition: opacity 0.3s ease-in;
+	}
+
+	/* Show split only when explicitly enabled and pali is on */
+	:global(html.split.pali-on) .split-wrapper {
+		display: grid;
+	}
+
+	/* Hide interleaved when split + pali-on */
+	:global(html.split.pali-on) .interleaved-article {
+		display: none;
 	}
 
 	.split-wrapper.visible {
@@ -111,6 +133,12 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 		opacity: 1;
 	}
 
+	@media print {
+		/* Ensure the visible container prints at full opacity and black text */
+		.content-fade { opacity: 1 !important; }
+		.interleaved-article, .split-wrapper { color: #000 !important; }
+	}
+
 	/* Responsive adjustments for split view */
 	@media (min-width: 768px) {
 		/* For medium and larger screens, set custom column widths */
@@ -133,10 +161,10 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 <script>
 	function showContent() {
-		const content = document.querySelector(".content-fade");
-		if (content) {
+		const contents = document.querySelectorAll(".content-fade");
+		if (contents && contents.length) {
 			requestAnimationFrame(() => {
-				content.classList.add("visible");
+				contents.forEach((el) => el.classList.add("visible"));
 			});
 		}
 	}
@@ -269,6 +297,7 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 	window.addEventListener("load", () => {
 		setTimeout(() => {
 			adjustParagraphAlignment();
+			showContent();
 		}, 10);
 	});
 
@@ -285,6 +314,20 @@ const parsedSideContent = sideContent ? await parseMarkdown(sideContent) : null;
 
 	window.addEventListener("afterprint", () => {
 		restoreSplitLayout();
+	});
+
+	// When layout toggles, ensure visibility state is applied and alignment recalculated
+	document.addEventListener("layoutChanged", () => {
+		showContent();
+		// Only adjust when in split mode and Pāli is visible
+		if (
+			document.documentElement.classList.contains("split") &&
+			document.documentElement.classList.contains("pali-on")
+		) {
+			setTimeout(() => {
+				adjustParagraphAlignment();
+			}, 10);
+		}
 	});
 
 	// Add minimal print formatting function

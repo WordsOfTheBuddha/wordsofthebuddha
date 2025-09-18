@@ -422,7 +422,7 @@
 			"Context: The flame of effort. It is the application of diligence put into moment-to-moment continuity",
 			"Supported by:{diligence, rousing of energy}",
 			"Leads to:{vigour}",
-			"Opposite:{laziness, weak in effort, wrong effort}",
+			"Opposite:{laziness}",
 			"[ātāpī, parakkamma]"
 		],
 		"craving": [
@@ -502,7 +502,7 @@
 			"clear seeing",
 			"penetrating internal vision",
 			"Supported by:{mindfulness, full awareness, wise attention}",
-			"Leads to:{wisdom}",
+			"Leads to:{perceiving drawback, wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
 		"discontentment": [
@@ -611,12 +611,13 @@
 			"analysis",
 			"investigation",
 			"probing",
+			"reviewing",
 			"lit. picking",
 			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
 			"Related:{contemplation}",
 			"Supported by:{inquisitiveness, mindfulness, wise attention}",
-			"Leads to:{perceiving drawback, rousing of energy}",
-			"[vicaya, parikkhati, dhammavicaya]"
+			"Leads to:{mindfulness, perceiving drawback, rousing of energy}",
+			"[vicaya, parikkhati, dhammavicaya, anupekkhita]"
 		],
 		"faith": [
 			"confidence",
@@ -975,7 +976,7 @@
 			"Context: Laziness is a mental quality characterized by unwillingness or lack of energy and motivation to engage in wholesome activities or exert effort; it leads to stagnation and missed opportunities for growth.",
 			"Supported by:{weak in effort}",
 			"Leads to:{bad habits}",
-			"Opposite:{continuous effort, right effort, rousing of energy}",
+			"Opposite:{continuous effort, rousing of energy}",
 			"[kosajja, tandī, ālasya]"
 		],
 		"learned": [
@@ -1032,7 +1033,7 @@
 			"keeping in mind",
 			"awareness",
 			"observing body, felt experience, mind, and mental qualities",
-			"Supported by:{right effort, wakefulness}",
+			"Supported by:{right view, right effort, wakefulness}",
 			"Leads to:{examination, full awareness}",
 			"Opposite:{muddle-minded}",
 			"[sati]"
@@ -1120,6 +1121,8 @@
 		"one-pointedness": [
 			"concentration",
 			"focus",
+			"oneness",
+			"singleness of mind",
 			"unification of mind",
 			"Related:{collectedness}",
 			"Supported by:{joyful pleasure}",
@@ -1135,7 +1138,7 @@
 			"lust",
 			"Related:{greed}",
 			"Supported by:{craving, ignorance, perceiving gratification}",
-			"Leads to:{sensual desire, lack of discernment}",
+			"Leads to:{perceiving gratification, lack of discernment}",
 			"Opposite:{dispassion}",
 			"[rāga]"
 		],
@@ -1152,7 +1155,7 @@
 			"following pleasure",
 			"seeing enjoyment",
 			"sign of beautiful",
-			"Supported by:{sensual desire, distraction}",
+			"Supported by:{passion, distraction}",
 			"Leads to:{sensual desire}",
 			"Opposite:{perceiving drawback}",
 			"[assādānupassī]"
@@ -1160,8 +1163,8 @@
 		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
-			"Supported by:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, contemplation}",
-			"Leads to:{wise attention}",
+			"Supported by:{contemplation, examination}",
+			"Leads to:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, contemplation}",
 			"[ādīnavānupassī]"
 		],
 		"personal existence": [
@@ -1181,7 +1184,7 @@
 			"being stirred up",
 			"lit. shaking",
 			"Supported by:{feuding}",
-			"Leads to:{distraction}",
+			"Leads to:{anxiety, distraction}",
 			"[kopa, uddhacca, āvila]"
 		],
 		"politeness": [
@@ -1217,28 +1220,28 @@
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[aniccasaññā]"
 		],
 		"recognition of not-self": [
 			"perception of not-self",
 			"recognition of alteration and changing nature",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[anattasaññā]"
 		],
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
 			"contemplation on the drawbacks",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[asubhasaññā]"
 		],
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
-			"Supported by:{insight}",
+			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[dukkhasaññā]"
 		],
@@ -1312,6 +1315,7 @@
 			"Supported by:{right livelihood, vigour}",
 			"Leads to:{mindfulness}",
 			"Guarded by:{right view, mindfulness}",
+			"Opposite:{weak in effort, wrong effort}",
 			"[sammāvāyāma]"
 		],
 		"right intention": [
@@ -1361,7 +1365,8 @@
 			"Supported by:{faith, examination}",
 			"Related:{vigour}",
 			"Leads to:{continuous effort}",
-			"[vīriyārambha, āraddhavīriya, uṭṭhānavant]"
+			"Opposite:{weak in effort}",
+			"[vīriyārambha, āraddhavīriya, uṭṭhānavant, atandita]"
 		],
 		"safety": [
 			"sanctuary",
@@ -1418,8 +1423,8 @@
 			"craving for pleasure",
 			"pulled towards enticing sense objects",
 			"Related:{having many desires}",
-			"Supported by:{passion, stinginess, wrong intention}",
-			"Leads to:{ignorance, negligence, perceiving gratification}",
+			"Supported by:{perceiving gratification, stinginess, wrong intention}",
+			"Leads to:{ignorance, negligence}",
 			"[kāmacchanda]"
 		],
 		"sexual misconduct": [
@@ -1724,6 +1729,7 @@
 			"Related:{weak in effort}",
 			"Supported by:{bad friendship, wrong livelihood}",
 			"Leads to:{muddle-minded}",
+			"Opposite:{right effort}",
 			"[micchāvāyāma]"
 		],
 		"wrong intention": [

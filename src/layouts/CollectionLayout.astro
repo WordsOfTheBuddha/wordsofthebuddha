@@ -27,79 +27,55 @@ const pagePosts: SearchResult[] = await performSearch(searchPattern, {
 });
 
 const hasChildren = children && Object.keys(children).length > 0;
-const showCollections =
+// Build-time default; client JS will honor ?view=…
+const defaultShowCollections =
 	hasChildren && Astro.url.searchParams.get("view") !== "discourses";
 
 // Function to find content count for a specific slug
 function getContentCount(slug: string): number {
-	// Get the current URL path to determine context
 	const currentPath = Astro.url.pathname.replace(/\/$/, "");
 	const pathParts = currentPath.split("/").filter(Boolean);
 
-	// For debugging
-	console.log(`Getting count for slug: ${slug} (in path: ${currentPath})`);
-
-	// Case 1: Direct match in top level
 	if (directoryStructureWithCounts[slug]?.contentCount !== undefined) {
-		console.log(
-			`Found as top-level collection: ${directoryStructureWithCounts[slug].contentCount}`
-		);
 		return directoryStructureWithCounts[slug].contentCount;
 	}
 
-	// Case 2: When viewing a path like "/sn1-11" and looking for slugs like "sn1"
 	if (pathParts.length === 1) {
-		// First, find if the current path is a valid collection
-		// Check if the current path is a child of a parent collection
 		const parentKey = Object.keys(directoryStructureWithCounts).find(
 			(key) => directoryStructureWithCounts[key]?.children?.[pathParts[0]]
 		);
 
 		if (parentKey) {
-			// We found the parent (e.g., "sn" for "sn1-11")
 			const currentPathCollection =
 				directoryStructureWithCounts[parentKey]?.children?.[
 					pathParts[0]
 				];
-
-			// Now check if the requested slug is a child of this collection
 			if (
 				currentPathCollection?.children?.[slug]?.contentCount !==
 				undefined
 			) {
-				console.log(
-					`Found as child of ${pathParts[0]}: ${currentPathCollection.children[slug].contentCount}`
-				);
 				return currentPathCollection.children[slug].contentCount;
 			}
 		}
 	}
 
-	// Case 3: When we're viewing a top-level collection page (e.g., /an, /sn)
 	if (
 		pathParts.length === 1 &&
 		directoryStructureWithCounts[pathParts[0]]?.children
 	) {
-		// Check direct children of the current path
 		const parent = directoryStructureWithCounts[pathParts[0]];
 		if (
 			parent.children &&
 			parent.children[slug]?.contentCount !== undefined
 		) {
-			console.log(
-				`Found as direct child of ${pathParts[0]}: ${parent.children[slug].contentCount}`
-			);
 			return parent.children[slug].contentCount;
 		}
 	}
 
-	// Case 4: Check if the slug is in the children prop passed to the component
-	if (children && children[slug]?.contentCount !== undefined) {
-		console.log(`Found in children prop: ${children[slug].contentCount}`);
-		return children[slug].contentCount;
+	if (children && (children as any)[slug]?.contentCount !== undefined) {
+		return (children as any)[slug].contentCount as number;
 	}
 
-	console.log(`No count found for ${slug}`);
 	return 0;
 }
 ---
@@ -115,70 +91,95 @@ function getContentCount(slug: string): number {
 			hasChildren && (
 				<div class="flex justify-between items-center mb-6">
 					<div class="inline-flex rounded-full border border-gray-600 dark:border-gray-500 p-1 bg-white dark:bg-gray-800">
-						<a
-							href="?view=collections"
+						<button
+							type="button"
+							id="view-collections"
 							class={[
 								"px-4 py-1 text-sm rounded-full transition-colors",
-								showCollections
+								defaultShowCollections
 									? "bg-primary text-white dark:text-gray-100"
 									: "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100",
 							].join(" ")}
 						>
 							Collections
-						</a>
-						<a
-							href="?view=discourses"
+						</button>
+						<button
+							type="button"
+							id="view-discourses"
 							class={[
 								"px-4 py-1 text-sm rounded-full transition-colors",
-								!showCollections
+								!defaultShowCollections
 									? "bg-primary text-white dark:text-gray-100"
 									: "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100",
 							].join(" ")}
 						>
 							Discourses
-						</a>
+						</button>
 					</div>
-					<div class="flex items-center gap-3">
-						{!showCollections && (
-							<div class="relative">
-								<input
-									type="text"
-									id="client-filter"
-									class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
-									placeholder="Filter discourses..."
-								/>
-							</div>
-						)}
+					<div
+						id="filter-wrap"
+						class={[
+							"flex items-center gap-3",
+							defaultShowCollections ? "hidden" : "",
+						].join(" ")}
+					>
+						<div class="relative">
+							<input
+								type="text"
+								id="client-filter"
+								class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+								placeholder="Filter discourses..."
+							/>
+						</div>
 					</div>
 				</div>
 			)
 		}
 
-		<div id="posts-container" class="posts-grid" data-filter="">
+		{/* Render both; client toggles based on ?view=… */}
+		{
+			hasChildren && (
+				<div
+					id="collections-grid"
+					class={[
+						"posts-grid",
+						defaultShowCollections ? "" : "hidden",
+					].join(" ")}
+				>
+					{(
+						Object.entries(children || {}) as [
+							string,
+							DirectoryStructure,
+						][]
+					).map(([slug, data]) => (
+						<PostCard
+							title={data.title}
+							description={data.description || ""}
+							id={slug}
+							clamp={5}
+							count={getContentCount(slug)}
+						/>
+					))}
+				</div>
+			)
+		}
+
+		<div
+			id="discourses-grid"
+			class={[
+				"posts-grid",
+				hasChildren && defaultShowCollections ? "hidden" : "",
+			].join(" ")}
+		>
 			{
-				hasChildren && showCollections
-					? (
-							Object.entries(children || {}) as [
-								string,
-								DirectoryStructure,
-							][]
-						).map(([slug, data]) => (
-							<PostCard
-								title={data.title}
-								description={data.description || ""}
-								id={slug}
-								clamp={5}
-								count={getContentCount(slug)}
-							/>
-						))
-					: pagePosts.map((post) => (
-							<PostCard
-								title={post.title}
-								description={post.description}
-								id={post.slug}
-								clamp={4}
-							/>
-						))
+				pagePosts.map((post) => (
+					<PostCard
+						title={post.title}
+						description={post.description}
+						id={post.slug}
+						clamp={4}
+					/>
+				))
 			}
 		</div>
 	</main>
@@ -190,20 +191,70 @@ function getContentCount(slug: string): number {
 	.bg-primary {
 		background-color: var(--primary-color);
 	}
+	.hidden {
+		display: none;
+	}
+	.active-tab {
+		background-color: var(--primary-color);
+		color: white;
+	}
 </style>
 
 <script>
-	const input = document.getElementById("client-filter") as HTMLInputElement;
-	const container = document.getElementById("posts-container");
-	const posts = container?.querySelectorAll(".post-item");
+	const params = new URLSearchParams(window.location.search);
+	const view = params.get("view");
+	const hasChildren = !!document.getElementById("collections-grid");
+	const collectionsGrid = document.getElementById("collections-grid");
+	const discoursesGrid = document.getElementById("discourses-grid");
+	const filterWrap = document.getElementById("filter-wrap");
+	const btnCollections = document.getElementById("view-collections");
+	const btnDiscourses = document.getElementById("view-discourses");
 
+	function setView(mode: string) {
+		const showCollections = hasChildren && mode !== "discourses";
+		// Batch DOM changes to next frame to reduce flicker
+		requestAnimationFrame(() => {
+			if (collectionsGrid)
+				collectionsGrid.classList.toggle("hidden", !showCollections);
+			if (discoursesGrid)
+				discoursesGrid.classList.toggle("hidden", showCollections);
+			if (filterWrap)
+				filterWrap.classList.toggle("hidden", showCollections);
+			if (btnCollections && btnDiscourses) {
+				btnCollections.classList.toggle("bg-primary", showCollections);
+				btnCollections.classList.toggle("text-white", showCollections);
+				btnDiscourses.classList.toggle("bg-primary", !showCollections);
+				btnDiscourses.classList.toggle("text-white", !showCollections);
+			}
+		});
+	}
+
+	// Initial
+	if (view) setView(view);
+
+	// Enhance tabs to toggle without full reload
+	btnCollections?.addEventListener("click", () => {
+		setView("collections");
+		const url = new URL(window.location.href);
+		url.searchParams.set("view", "collections");
+		// Defer URL update slightly to avoid layout paint race
+		setTimeout(() => window.history.replaceState({}, "", url), 0);
+	});
+	btnDiscourses?.addEventListener("click", () => {
+		setView("discourses");
+		const url = new URL(window.location.href);
+		url.searchParams.set("view", "discourses");
+		setTimeout(() => window.history.replaceState({}, "", url), 0);
+	});
+
+	// Client-side filter for discourses list
+	const input = document.getElementById("client-filter") as HTMLInputElement;
+	const posts = discoursesGrid?.querySelectorAll(".post-item");
 	input?.addEventListener("input", (e) => {
 		const filter = (e.target as HTMLInputElement).value
 			.toLowerCase()
 			.normalize("NFD")
 			.replace(/[\u0300-\u036f]/g, "");
-		container?.setAttribute("data-filter", filter);
-
 		posts?.forEach((post) => {
 			const aTag = post.querySelector("a");
 			const hrefValue = aTag?.getAttribute("href")?.toLowerCase() || "";

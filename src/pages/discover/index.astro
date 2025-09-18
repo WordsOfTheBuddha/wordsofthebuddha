@@ -1,5 +1,5 @@
 ---
-export const prerender = false;
+export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import Funnel from "../../assets/funnel.svg?raw";
 import "../../styles/discover.css";
@@ -270,6 +270,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 	<script>
 		import { DiscoverRenderer } from "../../utils/discover-renderer";
+		import { buildUnifiedContent } from "../../utils/discover-data";
 		import type { UnifiedContentItem } from "../../types/discover";
 
 		let allData: UnifiedContentItem[] = [];
@@ -299,33 +300,46 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		// Initialize renderer
 		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded);
 
-		// Initialize
-		document.addEventListener("DOMContentLoaded", async () => {
-			await loadData();
-			setupEventListeners();
-			setupScrollSpy();
-			setupStickyFilters();
-			updateDisplay();
-		});
-
-		async function loadData() {
+		// Initialize (robust to scripts loaded after DOMContentLoaded)
+		async function initDiscover() {
 			try {
-				const by = Array.from(currentFilters).join(",");
-				const filter = searchTerm || "";
-				const response = await fetch(
-					`/api/discover?by=${by}&filter=${encodeURIComponent(filter)}`
-				);
-				const result = await response.json();
+				await loadData();
+				setupEventListeners();
+				setupScrollSpy();
+				setupStickyFilters();
+				updateDisplay();
+			} catch (e) {
+				console.error("discover init failed", e);
+				// Fail-open: show container to avoid a stuck loader
+				const loadingEl = document.getElementById("loading");
+				const resultsContainer =
+					document.getElementById("results-container");
+				if (loadingEl) loadingEl.classList.add("hidden");
+				if (resultsContainer)
+					resultsContainer.classList.remove("hidden");
+			}
+		}
 
-				if (result.success) {
-					allData = result.data;
-					filteredData = result.data; // API does the filtering now
-					updateDisplay();
-				} else {
-					console.error("Failed to load data:", result.error);
-				}
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", initDiscover, {
+				once: true,
+			});
+		} else {
+			initDiscover();
+		}
+
+		function loadData() {
+			try {
+				const include = Array.from(currentFilters) as Array<
+					"topics" | "qualities" | "similes"
+				>;
+				const filter = searchTerm || "";
+				const data = buildUnifiedContent({ include, filter });
+				allData = data;
+				filteredData = data; // util applies the filtering
+				updateDisplay();
 			} catch (error) {
-				console.error("Error loading data:", error);
+				console.error("Error building discover data:", error);
 			}
 		}
 

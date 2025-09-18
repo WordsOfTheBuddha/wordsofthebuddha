@@ -9,6 +9,7 @@ const baseSchema = z.object({
 	theme: z.string().optional(),
 	simile: z.string().optional(),
 	commentary: z.union([z.string(), z.array(z.string())]).optional(),
+	priority: z.number().optional(),
 });
 
 const bookSchema = baseSchema.extend({

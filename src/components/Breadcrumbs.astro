@@ -8,24 +8,32 @@ const urlPathSegments = Astro.url.pathname.split("/");
 const urlPath = urlPathSegments[urlPathSegments.length - 1];
 
 // Pages to exclude breadcrumbs from
-if (
-	[
-		"/",
-		"/search",
-		"/read-later",
-		"/saves",
-		"/register",
-		"/signin",
-		"/review-room",
-		"/profile",
-		"/qualities",
-		"/simile",
-		"/topic",
-		"/discover",
-		"/explorer",
-	].indexOf(path) !== -1
-)
-	return null;
+function normalizePath(p: string) {
+	if (!p) return p;
+	let out = p;
+	// Remove trailing slash (except for root)
+	if (out.length > 1) out = out.replace(/\/$/, "");
+	// Collapse /index.html to its parent route
+	out = out.replace(/\/index\.html$/, "");
+	return out || "/";
+}
+const normalizedPath = normalizePath(path);
+const hideBreadcrumbs = [
+	"/",
+	"/search",
+	"/read-later",
+	"/saves",
+	"/register",
+	"/signin",
+	"/review-room",
+	"/profile",
+	"/qualities",
+	"/simile",
+	"/topic",
+	"/discover",
+	"/explorer",
+	"/offline",
+].includes(normalizedPath);
 
 const segments = path.split("/").filter(Boolean);
 const lastSegment = segments[segments.length - 1];
@@ -40,52 +48,52 @@ if (breadcrumbs.length > 0) {
 }
 ---
 
-<div
-	class="breadcrumbs text-sm py-2 px-4 text-[var(--text-color)] border-b border-[var(--border-color)] overflow-x-auto scrollbar-hide"
->
-	<div class="flex items-center whitespace-nowrap min-w-max">
-		{
-			breadcrumbs.map((item, index) => (
-				<>
-					{index > 0 && (
-						<svg
-							class="w-4 h-4 mx-2 text-gray-400 dark:text-gray-500 flex-shrink-0"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 5l7 7-7 7"
-							/>
-						</svg>
-					)}
-					{index === breadcrumbs.length - 1 &&
-					path.split("/")[1] === lastSegment ? (
-						<span
-							class="text-[var(--text-muted)] flex-shrink-0"
-							title={item.title}
-							aria-current="page"
-						>
-							{item.label}
-						</span>
-					) : (
-						<a
-							href={item.path}
-							class="text-[var(--text-color)] hover:text-[var(--link-hover-color)] transition-colors duration-200 flex-shrink-0"
-							title={item.title}
-							aria-label={`Go to ${item.label}`}
-						>
-							{item.label}
-						</a>
-					)}
-				</>
-			))
-		}
-	</div>
-</div>
+{
+	!hideBreadcrumbs && (
+		<div class="breadcrumbs text-sm py-2 px-4 text-[var(--text-color)] border-b border-[var(--border-color)] overflow-x-auto scrollbar-hide">
+			<div class="flex items-center whitespace-nowrap min-w-max">
+				{breadcrumbs.map((item, index) => (
+					<>
+						{index > 0 && (
+							<svg
+								class="w-4 h-4 mx-2 text-gray-400 dark:text-gray-500 flex-shrink-0"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M9 5l7 7-7 7"
+								/>
+							</svg>
+						)}
+						{index === breadcrumbs.length - 1 &&
+						path.split("/")[1] === lastSegment ? (
+							<span
+								class="text-[var(--text-muted)] flex-shrink-0"
+								title={item.title}
+								aria-current="page"
+							>
+								{item.label}
+							</span>
+						) : (
+							<a
+								href={item.path}
+								class="text-[var(--text-color)] hover:text-[var(--link-hover-color)] transition-colors duration-200 flex-shrink-0"
+								title={item.title}
+								aria-label={`Go to ${item.label}`}
+							>
+								{item.label}
+							</a>
+						)}
+					</>
+				))}
+			</div>
+		</div>
+	)
+}
 
 <style>
 	.scrollbar-hide {
