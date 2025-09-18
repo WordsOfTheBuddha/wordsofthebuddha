@@ -17,7 +17,7 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
     );
 
     const actualThreshold = threshold ?? parseInt(
-        localStorage.getItem("tooltipThreshold") || "25"
+        localStorage.getItem("tooltipThreshold") || "18"
     );
 
     // Track processed terms to avoid duplicates
@@ -61,8 +61,8 @@ export function getFormattedContainer(range: Range, threshold?: number): HTMLDiv
             // Inline format: <b>term</b> (definition)
             span.innerHTML = `<b>${textContent}</b> (${tooltipContent})`;
         } else {
-            // Footnote format: <b>term</b> [1]
-            span.innerHTML = `<b>${textContent}</b> [${footnoteCounter}]`;
+            // Footnote format now omits the inline reference marker: <b>term</b>
+            span.innerHTML = `<b>${textContent}</b>`;
             footnotes.push({
                 text: textContent,
                 content: tooltipContent,
