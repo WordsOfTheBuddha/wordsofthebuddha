@@ -9,6 +9,28 @@
 	"theme_color": "#111827",
 	"icons": [
 		{
+			"src": "/icon-512-rounded.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "/icon-192-rounded.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/icon-192-maskable.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/icon-512-maskable.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
 			"src": "/android-chrome-192x192.png",
 			"sizes": "192x192",
 			"type": "image/png"
