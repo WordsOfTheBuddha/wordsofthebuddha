@@ -107,6 +107,8 @@ if (!SEOTitle) {
 			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 		/>
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<meta name="theme-color" content="#111827" />
 		<script is:inline>
 			function getInitialTheme() {
 				const storedTheme = localStorage.getItem("theme");
@@ -226,6 +228,39 @@ if (!SEOTitle) {
 		<ScrollToTop />
 	</body>
 	<script>
+		// Register the Service Worker for offline support (dev and prod)
+		if ("serviceWorker" in navigator) {
+			window.addEventListener("load", () => {
+				navigator.serviceWorker.register("/sw.js?v=3").catch(() => {
+					/* ignore */
+				});
+
+				// After the SW takes control, prewarm the Pāli lookup chunk so it is cached for offline use.
+				// This is intentionally low-priority and guarded by the user's preference.
+				navigator.serviceWorker.ready
+					.then(() => {
+						const pref = localStorage.getItem("paliLookup");
+						const enabled = pref == null ? true : pref === "true";
+						if (!enabled || !navigator.onLine) return;
+						// Yield to the event loop/idle time before importing
+						const prewarm = () =>
+							import("../utils/paliLookup")
+								.then((m) => m.warmupPaliDictionary?.())
+								.catch(() => {});
+						if ("requestIdleCallback" in window) {
+							(requestIdleCallback as any)(prewarm, {
+								timeout: 3000,
+							});
+						} else {
+							setTimeout(prewarm, 0);
+						}
+					})
+					.catch(() => {
+						/* ignore */
+					});
+			});
+		}
+
 		import {
 			handleNavigation,
 			synchronizePreferences,

@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# generated scripts
+public/offline-manifest.json
+
 # macOS-specific files
 .DS_Store
 

@@ -1,10 +1,8 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-
 import tailwind from "@astrojs/tailwind";
-
 import mdx from "@astrojs/mdx";
-import vercel from "@astrojs/vercel";
+import node from "@astrojs/node";
 import rehypeExternalLinks from "rehype-external-links";
 
 const externalLinksOptions = {
@@ -13,41 +11,24 @@ const externalLinksOptions = {
 	content: { type: "text", value: " ↗" },
 };
 
-// https://astro.build/config
 export default defineConfig({
 	markdown: {
 		rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
 	},
-
 	integrations: [
-		tailwind({
-			applyBaseStyles: false,
-		}),
-		mdx({
-			rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
-		}),
+		tailwind({ applyBaseStyles: false }),
+		mdx({ rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]] }),
 	],
-
 	vite: {
-		optimizeDeps: {
-			include: ["rangy"],
-		},
-		build: {
-			commonjsOptions: {
-				include: [/rangy/],
-			},
-		},
+		optimizeDeps: { include: ["rangy"] },
+		build: { commonjsOptions: { include: [/rangy/] } },
 		logLevel: "error",
 		clearScreen: false,
-		ssr: {
-			noExternal: ["rangy"],
-		},
+		ssr: { noExternal: ["rangy"] },
 	},
-
-	adapter: vercel({
-		maxDuration: 30,
-	}),
-
+	output: "server",
+	adapter: node({ mode: "standalone" }),
+	// Remove server adapter and redirects to avoid routing issues in preview
 	redirects: {
 		"/dhammapada": "/dhp",
 		"/suttanipata": "/snp",

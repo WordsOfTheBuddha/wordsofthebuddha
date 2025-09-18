@@ -1,5 +1,5 @@
 ---
-export const prerender = false;
+export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import Funnel from "../../assets/funnel.svg?raw";
 import "../../styles/discover.css";
@@ -300,14 +300,33 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 		// Initialize renderer
 		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded);
 
-		// Initialize
-		document.addEventListener("DOMContentLoaded", async () => {
-			await loadData();
-			setupEventListeners();
-			setupScrollSpy();
-			setupStickyFilters();
-			updateDisplay();
-		});
+		// Initialize (robust to scripts loaded after DOMContentLoaded)
+		async function initDiscover() {
+			try {
+				await loadData();
+				setupEventListeners();
+				setupScrollSpy();
+				setupStickyFilters();
+				updateDisplay();
+			} catch (e) {
+				console.error("discover init failed", e);
+				// Fail-open: show container to avoid a stuck loader
+				const loadingEl = document.getElementById("loading");
+				const resultsContainer =
+					document.getElementById("results-container");
+				if (loadingEl) loadingEl.classList.add("hidden");
+				if (resultsContainer)
+					resultsContainer.classList.remove("hidden");
+			}
+		}
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", initDiscover, {
+				once: true,
+			});
+		} else {
+			initDiscover();
+		}
 
 		function loadData() {
 			try {

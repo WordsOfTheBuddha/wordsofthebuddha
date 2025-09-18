@@ -1,4 +1,5 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+// Use the prebuilt static index so search can run server- and client-side (offline)
+import searchIndex from "../../data/searchIndex";
 import {
 	buildFuseQuery,
 	type HighlightTerm,
@@ -26,17 +27,8 @@ async function getSearchIndex() {
 		return fuseIndex;
 	}
 
-	console.log("Debug: Building search index");
-
-	const allContent = await getCollection("all");
-	const searchData: SearchData[] = allContent.map(
-		(item: CollectionEntry<"all">) => ({
-			slug: item.data.slug,
-			title: item.data.title,
-			description: item.data.description,
-			content: item.body || "",
-		})
-	);
+	// The generated module exports an array of {slug,title,description,content}
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
 
 	fuseIndex = new Fuse(searchData, {
 		keys: [
@@ -344,9 +336,9 @@ export async function performSearch(
 	query: string,
 	options: SearchOptions = {}
 ): Promise<SearchResult[]> {
-	console.log("Debug: Performing search with query: ", query);
+	// console.debug("Search query:", query);
 	const { query: fuseQuery, highlightTerms } = buildFuseQuery(query);
-	console.log("Debug: Parsed query:", JSON.stringify(fuseQuery, null, 1));
+	// console.debug("Parsed query:", JSON.stringify(fuseQuery));
 	const fuse = await getSearchIndex();
 
 	if (!query) return [];

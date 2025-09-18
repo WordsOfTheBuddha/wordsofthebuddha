@@ -18,9 +18,9 @@ import { transformId } from "../utils/transformId";
 
 // Extract slug from params
 const { id: originalId } = Astro.params;
-let id = originalId;
+let id: string = originalId || "";
 
-// Filter out system/browser requests early
+// Filter out system/browser and asset-like requests early to avoid hijacking dev/build assets
 const SYSTEM_REQUEST_PATTERNS = [
 	".well-known",
 	"favicon.ico",
@@ -30,15 +30,22 @@ const SYSTEM_REQUEST_PATTERNS = [
 	"chrome-extension",
 	"__webpack",
 	"_next",
-	".js.map",
-	".css.map",
+	"@vite",
+	"@fs",
 ];
 
-const isSystemRequest = SYSTEM_REQUEST_PATTERNS.some((pattern) =>
-	originalId?.includes(pattern)
-);
+const ASSET_EXT_REGEX =
+	/\.(?:js|css|json|png|jpg|jpeg|svg|ico|gif|webp|avif|woff2?|ttf|otf|map|xml|webmanifest)$/i;
 
-if (isSystemRequest || !id) {
+const isSystemRequest =
+	!id ||
+	SYSTEM_REQUEST_PATTERNS.some((pattern) => originalId?.includes(pattern)) ||
+	// Any nested path (like assets/*) shouldn't be handled by this catch-all
+	originalId?.includes("/") ||
+	// Typical asset requests by extension
+	ASSET_EXT_REGEX.test(originalId ?? "");
+
+if (isSystemRequest) {
 	return new Response(null, { status: 404 });
 }
 
