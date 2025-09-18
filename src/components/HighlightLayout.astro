@@ -185,9 +185,20 @@ const { title, description } = Astro.props;
 			// Set up event listeners first
 			setupEventListeners();
 
-			if (rootElement?.dataset.authenticated === "true") {
-				// Then fetch and restore highlights from Firestore
-				await highlightService.fetchHighlights(highlighter); // Updated to pass highlighter
+			// If already authenticated (SSR or hydrated early) and not yet loaded
+			if (
+				rootElement?.dataset.authenticated === "true" &&
+				rootElement?.dataset.highlightsLoaded !== "true"
+			) {
+				try {
+					await highlightService.fetchHighlights(highlighter);
+					rootElement.dataset.highlightsLoaded = "true";
+				} catch (e) {
+					console.warn(
+						"[highlight] fetchHighlights (init) failed",
+						e
+					);
+				}
 			}
 		} catch (error) {
 			console.error("[highlight] Failed to initialize:", error);
@@ -197,6 +208,42 @@ const { title, description } = Astro.props;
 	// Client-side imports need to be dynamic or use the ?inline suffix
 	const selectionHandler = await import("../service/selectionHandler");
 	const highlightService = await import("../service/highlightService");
+
+	// Hydrate auth state on client (mirrors navbar logic) so prerendered pages can enable highlights
+	async function hydrateAuth() {
+		try {
+			if (!rootElement)
+				rootElement = document.getElementById("highlight-root");
+			if (!rootElement) return;
+			// Already authenticated or tried
+			if (rootElement.dataset.authenticated === "true") return;
+			const res = await fetch("/api/auth/me", {
+				credentials: "same-origin",
+			});
+			if (!res.ok) return;
+			const data = await res.json();
+			if (data?.signedIn) {
+				rootElement.dataset.authenticated = "true";
+				// If highlighter already exists and highlights not yet fetched, fetch now
+				if (
+					highlighter &&
+					rootElement.dataset.highlightsLoaded !== "true"
+				) {
+					try {
+						await highlightService.fetchHighlights(highlighter);
+						rootElement.dataset.highlightsLoaded = "true";
+					} catch (e) {
+						console.warn(
+							"[highlight] fetchHighlights (hydrate) failed",
+							e
+						);
+					}
+				}
+			}
+		} catch (e) {
+			/* ignore */
+		}
+	}
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) {
@@ -549,6 +596,8 @@ const { title, description } = Astro.props;
 			updateTheme();
 			window.addEventListener("themeToggled", updateDarkMode);
 			document.addEventListener("themeChanged", updateTheme);
+			// Fire off auth hydration without blocking highlighter setup
+			hydrateAuth();
 			await initializeHighlighter();
 		} catch (error) {
 			console.error("[highlight] Init error:", error);
