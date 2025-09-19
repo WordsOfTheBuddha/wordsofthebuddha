@@ -17,6 +17,7 @@
 		"craving",
 		"cruelty",
 		"dearness",
+		"delusion",
 		"discontentment",
 		"displeasure",
 		"distraction",
@@ -32,7 +33,6 @@
 		"hypocrisy",
 		"ignorance",
 		"ill will",
-		"illusion",
 		"immaturity",
 		"impatience",
 		"insanity",
@@ -468,6 +468,16 @@
 			"Opposite: {aversion}",
 			"[piya]"
 		],
+		"delusion": [
+			"illusion",
+			"hallucination",
+			"misapprehension",
+			"distorted view",
+			"that which fuels further confusion and doubt",
+			"Supported by:{ignorance, perceiving gratification}",
+			"Leads to:{doubt, lack of discernment}",
+			"[moha]"
+		],
 		"desire": [
 			"having an objective",
 			"interest",
@@ -556,7 +566,7 @@
 			"uncertainty",
 			"wavering",
 			"perplexity",
-			"Supported by:{illusion, unwise attention}",
+			"Supported by:{delusion, unwise attention}",
 			"Leads to:{faithlessness, ignorance}",
 			"[vicikiccha, kaṅkhā, vimati]"
 		],
@@ -811,13 +821,12 @@
 			"[māyāvī]"
 		],
 		"ignorance": [
-			"delusion",
 			"illusion of knowing",
 			"fundamental unawareness of the true nature of reality",
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
 			"Supported by:{anxiety, doubt, drowsiness, dullness, ill will, sensual desire}",
-			"Leads to:{aversion, conceit, craving, desire, illusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
+			"Leads to:{aversion, conceit, craving, desire, delusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
 			"[avijjā]"
 		],
 		"ill will": [
@@ -830,16 +839,6 @@
 			"Opposite:{loving-kindness}",
 			"Context: A mental quality of actively opposing or rejecting others in thought, manifesting as deliberate thoughts or intentions that oppose kindness and compassion; it fuels conflict and obstructs goodwill.",
 			"[byāpāda]"
-		],
-		"illusion": [
-			"delusion",
-			"hallucination",
-			"misapprehension",
-			"distorted view",
-			"that which fuels further confusion and doubt",
-			"Supported by:{ignorance, perceiving gratification}",
-			"Leads to:{doubt, lack of discernment}",
-			"[moha]"
 		],
 		"immaturity": [
 			"lacking in discernment",
@@ -956,7 +955,7 @@
 			"lack of clear comprehension",
 			"lack of wisdom",
 			"child-like in understanding",
-			"Supported by:{passion, aversion, illusion, unwise attention}",
+			"Supported by:{passion, aversion, delusion, unwise attention}",
 			"Leads to:{immaturity, bad friendship}",
 			"[asampajañña, bāla, duppañña]"
 		],

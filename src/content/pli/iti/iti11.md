@@ -1,7 +1,7 @@
 ---
-title: Mohapariññā sutta - Completely Comprehending Illusion
-description: One is incapable of ending suffering without directly knowing and completely comprehending illusion, without the mind detaching from it and without abandoning it. One is capable of ending suffering by directly knowing and completely comprehending illusion, with the mind detaching from it, and by abandoning it.
-qualities: illusion, complete comprehension, dispassion, suffering, ending, direct knowledge
+title: Mohapariññā sutta - Completely Comprehending Delusion
+description: One is incapable of ending suffering without directly knowing and completely comprehending delusion, without the mind detaching from it and without abandoning it. One is capable of ending suffering by directly knowing and completely comprehending delusion, with the mind detaching from it, and by abandoning it.
+qualities: delusion, complete comprehension, dispassion, suffering, ending, direct knowledge
 theme: principle
 fetter: ignorance, delusion
 tags: suffering, ignorance, delusion, wisdom, detachment, abandoning, iti

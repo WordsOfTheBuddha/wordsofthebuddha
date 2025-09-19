@@ -1,7 +1,7 @@
 ---
 title: Paṭhamanidāna sutta - Cause (First)
-description: What are the causes for the arising of kamma? The Buddha explains that greed, aversion, and illusion are the roots of unwholesome kamma, leading to painful results, and leading to further kamma. In contrast, non-greed, non-aversion, and non-delusion are the roots of wholesome kamma, leading to pleasant results and to the cessation of kamma.
-qualities: greed, aversion, illusion, unwholesome, suffering, ending, contentment, loving-kindness, wisdom
+description: What are the causes for the arising of kamma? The Buddha explains that greed, aversion, and delusion are the roots of unwholesome kamma, leading to painful results, and leading to further kamma. In contrast, non-greed, non-aversion, and non-delusion are the roots of wholesome kamma, leading to pleasant results and to the cessation of kamma.
+qualities: greed, aversion, delusion, unwholesome, suffering, ending, contentment, loving-kindness, wisdom
 theme: cultivating discernment, wisdom, inquisitiveness
 slug: an3.111
 priority: 1.2

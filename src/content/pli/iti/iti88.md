@@ -1,7 +1,7 @@
 ---
 title: Antarāmala sutta - Internal Impurity
-description: Greed, aversion, and illusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.
-qualities: greed, aversion, illusion, perturbation, anger, ignorance
+description: Greed, aversion, and delusion are internal impurities that act as one's internal enemies. Though they obscure clarity and injure one from within, most people fail to recognize their true nature.
+qualities: greed, aversion, delusion, perturbation, anger, ignorance
 theme: wisdom, principle
 slug: iti88
 simile: water drops from a lotus leaf, ripe palm fruit falling from its stalk, rising sun dispelling the darkness

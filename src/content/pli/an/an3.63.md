@@ -1,7 +1,7 @@
 ---
 title: Venāgapura sutta - At Venāgapura
-description: When a brahmin assumes that the Buddha’s serene faculties and radiant appearance must result from enjoying the finest worldly luxuries, the Buddha explains the true “luxurious and lofty beds” he attains—the heavenly bed, through abiding in the jhānas; the brahmic bed, through the boundless cultivation of loving-kindness, compassion, appreciative joy, and equanimity; and the noble bed, through the complete abandonment of passion, aversion, and illusion.
-qualities: loving-kindness, compassion, appreciative joy, equanimity, collectedness, giving up, passion, aversion, illusion
+description: When a brahmin assumes that the Buddha’s serene faculties and radiant appearance must result from enjoying the finest worldly luxuries, the Buddha explains the true “luxurious and lofty beds” he attains—the heavenly bed, through abiding in the jhānas; the brahmic bed, through the boundless cultivation of loving-kindness, compassion, appreciative joy, and equanimity; and the noble bed, through the complete abandonment of passion, aversion, and delusion.
+qualities: loving-kindness, compassion, appreciative joy, equanimity, collectedness, giving up, passion, aversion, delusion
 theme: inspiration, wisdom, cultivating discernment
 slug: an3.63
 simile: luxurious and lofty bed

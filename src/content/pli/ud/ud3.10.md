@@ -1,7 +1,7 @@
 ---
 title: Loka sutta - The World
-description: After his full awakening, the Buddha surveys the world, seeing beings aflame with passion, aversion, and illusion. He reflects on the nature of the world and the suffering inherent in existence. By seeing the world as it truly is, he points to the path of liberation.
-qualities: self-making, self-erasure, complete comprehension, passion, aversion, illusion, suffering, fear, mental proliferation, spiritual life, attachment, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, ignorance, wisdom, dispassion, ending, liberation, quenching
+description: After his full awakening, the Buddha surveys the world, seeing beings aflame with passion, aversion, and delusion. He reflects on the nature of the world and the suffering inherent in existence. By seeing the world as it truly is, he points to the path of liberation.
+qualities: self-making, self-erasure, complete comprehension, passion, aversion, delusion, suffering, fear, mental proliferation, spiritual life, attachment, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, ignorance, wisdom, dispassion, ending, liberation, quenching
 theme: inspiration, wisdom
 slug: ud3.10
 ---
