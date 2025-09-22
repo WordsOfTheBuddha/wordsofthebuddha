@@ -1,6 +1,6 @@
 ---
 title: Jarā sutta - Ageing
-description: The Buddha explains the nature of aging and the impermanence of life in these verses, as well as the state of an Arahant.
+description: The Buddha shares a reflection on aging and the impermanence of life and possessions. Seeing that all we call ‘mine’ must be lost at death, one should not cling to self. The sage, like a lotus leaf unstained by water, does not cling or spurn what is seen, heard, or sensed.
 qualities: free from attachment, attachment, giving up, recognition of impermanence, sorrow, lamentation, dearness, stinginess, solitude, mental proliferation
 theme: inspiration, inquisitiveness, wisdom
 slug: snp4.6
