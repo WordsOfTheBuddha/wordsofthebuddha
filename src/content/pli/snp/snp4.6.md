@@ -1,9 +1,11 @@
 ---
 title: Jarā sutta - Ageing
 description: The Buddha explains the nature of aging and the impermanence of life in these verses, as well as the state of an Arahant.
-fetter: sensual desire,conceit,self-identity view
-tags: snp,snp4,aging,impermanence,attachment,death,sensual desire,conceit,self-identity view,arahant
+qualities: free from attachment, attachment, giving up, recognition of impermanence, sorrow, lamentation, dearness, stinginess, solitude, mental proliferation
+theme: inspiration, inquisitiveness, wisdom
 slug: snp4.6
+priority: 1.5
+simile: water drops from a lotus leaf
 ---
 
 Appaṁ vata jīvitaṁ idaṁ,
