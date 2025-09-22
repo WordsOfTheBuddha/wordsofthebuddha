@@ -1,7 +1,8 @@
 title: Investigation
-description: "Investigation involves the process of inquiry, examination, and discernment of mental qualities to understand their true nature and support the development of wisdom and awakening."
+description: "Investigation involves the process of a careful inquiry of mental states, qualities, and phenomena, examining their arising, persisting, and ceasing in order to understand their true nature and support the cultivation of wisdom and awakening."
 synonyms:
     - inquiry
+    - contemplation
     - examination
     - analysis
     - exploration
@@ -11,6 +12,7 @@ pali:
     - parikkhati
 redirects:
     - inquiry
+    - contemplation
     - examination
     - examining
     - analysis
@@ -18,7 +20,6 @@ redirects:
     - investigate
 related:
     - inquisitiveness
-    - contemplation
 discourses:
     - id: "sn12.66"
       note: "how to inwardly examine"

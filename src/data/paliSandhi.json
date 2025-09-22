@@ -263,5 +263,21 @@
 	"sāmaggiyamāhu": ["sāmaggiya", "āhu"],
 	"nopalimpati": ["nopalippati"],
 	"visuddhimicchati": ["visuddhiṁ", "icchati"],
+	"takkamanussaranti": ["takka", "anussaranti"],
+	"dvayadhammamāhu": ["dvaya", "dhammaṁ", "āhu"],
+	"tenātumānaṁ": ["tena", "ātumānaṁ"],
+	"sayamattanā": ["sayaṁ", "attanā"],
+	"kusalāvadāno": ["kusalā", "vadāna"],
+	"yābhivadanti": ["yā", "abhivadanti"],
+	"suddhimakevalī": ["suddhiṁ", "akevalī"],
+	"tebhirattā": ["te", "abhirattā"],
+	"bālamasuddhidhammaṁ": ["bāla", "asuddhi", "dhammaṁ"],
+	"medhagamāvaheyya": ["medhagaṁ", "āvaheyya"],
+	"uddhaṁsa": ["uddhaṁ", "sa"],
+	"diṭṭhimakaṁsu": ["diṭṭhiṁ", "akaṁsu"],
+	"dhammamanānujānaṁ": [
+		"dhammaṁ",
+		"anānujānanta:not accepting; not allowing; not permitting; not agreeing (with)"
+	],
 	"nānubhavissatīti": ["nānubhavissati", "iti"]
 }
