@@ -336,14 +336,21 @@ export async function performSearch(
 	query: string,
 	options: SearchOptions = {}
 ): Promise<SearchResult[]> {
-	// console.debug("Search query:", query);
+	if (import.meta.env?.DEV) {
+		console.log("[search] query:", query);
+	}
 	const { query: fuseQuery, highlightTerms } = buildFuseQuery(query);
-	// console.debug("Parsed query:", JSON.stringify(fuseQuery));
+	if (import.meta.env?.DEV) {
+		console.log("[search] parsed:", JSON.stringify(fuseQuery));
+	}
 	const fuse = await getSearchIndex();
 
 	if (!query) return [];
 
 	const searchResults = fuse.search(fuseQuery);
+	if (import.meta.env?.DEV) {
+		console.log("[search] results:", searchResults.length);
+	}
 
 	return searchResults.map(({ item, matches }) => {
 		const result: SearchResult = {

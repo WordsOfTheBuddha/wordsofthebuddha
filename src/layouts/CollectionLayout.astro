@@ -31,6 +31,18 @@ const hasChildren = children && Object.keys(children).length > 0;
 const defaultShowCollections =
 	hasChildren && Astro.url.searchParams.get("view") !== "discourses";
 
+// Dev-time debug: log render context (collection view vs discourses view)
+if (import.meta.env?.DEV) {
+	console.log("[CollectionLayout] rendering", {
+		path: Astro.url.pathname,
+		hasChildren,
+		searchPattern,
+		posts: pagePosts.length,
+		childCollections: hasChildren ? Object.keys(children || {}).length : 0,
+		defaultShowCollections,
+	});
+}
+
 // Function to find content count for a specific slug
 function getContentCount(slug: string): number {
 	const currentPath = Astro.url.pathname.replace(/\/$/, "");
