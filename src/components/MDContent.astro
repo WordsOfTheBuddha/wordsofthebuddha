@@ -22,12 +22,13 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 			<!-- Interleaved article (default) -->
 			<article
 				class="content-fade md-content prose prose-lg dark:prose-invert interleaved-article"
+				aria-hidden="false"
 				set:html={parsedInterleaved}
 			/>
 
 			<!-- Split wrapper (only visible when html has split + pali-on) -->
 			{parsedSplitEnglish && parsedSplitPali && (
-				<div class="content-fade split-wrapper">
+				<div class="content-fade split-wrapper" aria-hidden="true">
 					<article
 						id="panel1"
 						class="split-panel md-content prose prose-lg dark:prose-invert"
@@ -160,6 +161,17 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 </style>
 
 <script>
+	function isSplitVisible() {
+		const root = document.documentElement;
+		if (!root.classList.contains("split") || !root.classList.contains("pali-on")) {
+			return false;
+		}
+		const wrapper = document.querySelector(".split-wrapper");
+		if (!wrapper) return false;
+		const style = window.getComputedStyle(wrapper);
+		return style.display !== "none" && style.visibility !== "hidden";
+	}
+
 	function showContent() {
 		const contents = document.querySelectorAll(".content-fade");
 		if (contents && contents.length) {
@@ -169,7 +181,46 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 		}
 	}
 
-	function adjustParagraphAlignment() {
+	function updateA11yVisibility() {
+		const interleaved = document.querySelector(
+			".interleaved-article"
+		) as HTMLElement | null;
+		const split = document.querySelector(".split-wrapper") as
+			| HTMLElement
+			| null;
+		const splitOn = isSplitVisible();
+		if (interleaved) interleaved.setAttribute("aria-hidden", splitOn ? "true" : "false");
+		if (split) split.setAttribute("aria-hidden", splitOn ? "false" : "true");
+	}
+
+	function waitForFontsReady(timeoutMs = 300) {
+		return new Promise<void>((resolve) => {
+			let done = false;
+			const finish = () => {
+				if (!done) {
+					done = true;
+					resolve();
+				}
+			};
+			if ((document as any).fonts && (document as any).fonts.ready) {
+				Promise.race([
+					(document as any).fonts.ready,
+					new Promise((r) => setTimeout(r, timeoutMs)),
+				]).then(finish);
+			} else {
+				setTimeout(finish, 0);
+			}
+		});
+	}
+
+	async function adjustParagraphAlignment() {
+		// Only attempt when split is active and visible
+		if (!isSplitVisible()) {
+			return;
+		}
+
+		await waitForFontsReady();
+		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 		const splitWrapper = document.querySelector(".split-wrapper");
 
 		if (splitWrapper) {
@@ -296,6 +347,7 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 	// Run adjustment on load
 	window.addEventListener("load", () => {
 		setTimeout(() => {
+			updateA11yVisibility();
 			adjustParagraphAlignment();
 			showContent();
 		}, 10);
@@ -318,12 +370,20 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 
 	// When layout toggles, ensure visibility state is applied and alignment recalculated
 	document.addEventListener("layoutChanged", () => {
+		updateA11yVisibility();
 		showContent();
-		// Only adjust when in split mode and Pāli is visible
-		if (
-			document.documentElement.classList.contains("split") &&
-			document.documentElement.classList.contains("pali-on")
-		) {
+		if (isSplitVisible()) {
+			setTimeout(() => {
+				adjustParagraphAlignment();
+			}, 10);
+		}
+	});
+
+	// Also respond to Pāli mode changes (when user toggles Pāli on/off)
+	document.addEventListener("paliModeChanged", () => {
+		updateA11yVisibility();
+		showContent();
+		if (isSplitVisible()) {
 			setTimeout(() => {
 				adjustParagraphAlignment();
 			}, 10);
