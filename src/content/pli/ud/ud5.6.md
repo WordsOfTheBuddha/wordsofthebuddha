@@ -1,6 +1,6 @@
 ---
 title: Soṇa sutta - Soṇa
-description: The story of the lay disciple Soṇa Kuṭikaṇṇa, whose persistent desire to become a monk is tested by his teacher. He eventually journeys to meet the Buddha, who is inspired by his beautiful recitation and his reason for delaying ordination, praising one who sees the world’s drawbacks and chooses a harmless life.
+description: The story of the lay disciple Soṇa Kuṭikaṇṇa, whose desire to become a monk gets tested by his teacher. He eventually journeys to meet the Buddha, who is inspired by his beautiful recitation and his reason for delaying ordination, praising one who sees the world’s drawbacks and chooses a harmless life.
 qualities: spiritual life, tranquility, tame, sense restraint, inspiration, perceiving drawback, free from attachment, non-harm
 theme: recollection of the Buddha, inspiration, wisdom
 slug: ud5.6

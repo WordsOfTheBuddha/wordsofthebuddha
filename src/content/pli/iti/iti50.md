@@ -6,7 +6,7 @@ theme: inspiration, wisdom
 fetter: sensual desire, ill will, ignorance
 tags: roots, unwholesome, greed, aversion, delusion, mind, simile, iti
 slug: iti50
-simile: banana plant
+simile: reed destroyed by its own fruit
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
