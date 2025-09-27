@@ -14,12 +14,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 	// Check if Firebase is properly configured
 	if (!isFirebaseInitialized || !app) {
 		console.log("Firebase not configured for registration");
-		return new Response("Registration service is not available. Please check server configuration.", {
-			status: 503,
-			headers: {
-				'Content-Type': 'text/plain'
+		return new Response(
+			"Registration service is not available. Please check server configuration.",
+			{
+				status: 503,
+				headers: {
+					"Content-Type": "text/plain",
+				},
 			}
-		});
+		);
 	}
 
 	// Debug raw body
@@ -71,5 +74,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 		});
 	}
 
-	return redirect(returnTo || "/signin");
+	// Ensure redirect path is safe and ASCII-encoded for the Location header
+	const safePath = returnTo
+		? new URL(returnTo, request.url).pathname
+		: "/signin";
+	return redirect(safePath);
 };

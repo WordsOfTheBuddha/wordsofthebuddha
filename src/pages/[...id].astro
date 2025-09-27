@@ -287,7 +287,8 @@ const layout: "split" | "interleaved" = "interleaved";
 
 	if (currentIndex === -1) {
 		debug("No matching route found for:", id);
-		return Astro.redirect(`/search?q=${id}`);
+		// Encode potential non-ASCII characters to avoid invalid Location header values
+		return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 	}
 
 	// Load content with fresh file system read in development
@@ -296,7 +297,8 @@ const layout: "split" | "interleaved" = "interleaved";
 	if (!contentItem) {
 		console.warn("English content not found");
 		console.groupEnd();
-		return Astro.redirect(`/search?q=${id}`);
+		// Encode potential non-ASCII characters to avoid invalid Location header values
+		return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 	}
 
 	// Always parse content through contentParser
