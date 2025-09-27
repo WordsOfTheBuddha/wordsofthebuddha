@@ -1,9 +1,10 @@
 ---
 title: Mallikā sutta - With Queen Mallikā
-description: King Pasenadi of Kosala and Queen Mallikā discuss who is dearer to them.
-fetter: ignorance
-tags: dear,sn,sn1-11,sn3
+description: King Pasenadi of Kosala and Queen Mallikā ask each other who is more dearer to them than themselves.
+qualities: dearness, non-harm
+theme: wisdom, principle
 slug: sn3.8
+character: King Pasenadi of Kosala, Queen Mallikā
 ---
 
 Sāvatthinidānaṁ.
