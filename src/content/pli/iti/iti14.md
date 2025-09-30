@@ -1,7 +1,7 @@
 ---
 title: Avijjānīvaraṇa sutta - Barrier Of Ignorance
 description: The Buddha describes the barrier of ignorance as the most significant obstruction, by which beings continue wandering on in cyclic existence.
-qualities: ignorance, illusion
+qualities: ignorance, delusion
 theme: principle
 fetter: ignorance
 tags: ignorance, delusion, illusion, misapprehension, distorted view, iti

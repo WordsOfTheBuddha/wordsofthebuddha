@@ -1,0 +1,38 @@
+---
+// Statically prerender collection pages (sn, sn1-11, sn1, …) using directoryStructure
+export const prerender = true;
+
+import CollectionLayout from "../layouts/CollectionLayout.astro";
+import { determineRouteType } from "../utils/routeHandler";
+import { directoryStructure } from "../data/directoryStructure";
+
+// Gather all collection slugs from directoryStructure (top-level + nested)
+export async function getStaticPaths() {
+	const slugs: string[] = [];
+	function walk(map: Record<string, any>) {
+		for (const key of Object.keys(map)) {
+			slugs.push(key);
+			const child = map[key]?.children;
+			if (child && typeof child === "object") walk(child);
+		}
+	}
+	walk(directoryStructure);
+	return slugs.map((collection) => ({ params: { collection } }));
+}
+
+const { collection } = Astro.params;
+const route = determineRouteType(collection as string);
+
+if (route.type !== "collection") {
+	// Only handle collections here; let other routes fall through to SSR handler
+	throw new Error("Not a collection route");
+}
+---
+
+<CollectionLayout
+	title={route.metadata?.title || ""}
+	description={route.metadata?.description || ""}
+	collection
+	children={route.metadata?.children || {}}
+	searchPattern={route.pattern || ""}
+/>

@@ -37,6 +37,8 @@ export default defineConfig({
 				include: [/rangy/],
 			},
 		},
+		logLevel: "error",
+		clearScreen: false,
 		ssr: {
 			noExternal: ["rangy"],
 		},

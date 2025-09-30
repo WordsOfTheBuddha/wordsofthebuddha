@@ -41,6 +41,7 @@ const HIGHLIGHT_BLACKLIST = [
 	"/on/",
 	"/api/",
 	"/anthologies/",
+	"/offline",
 ];
 
 const isHighlightingDisabled = HIGHLIGHT_BLACKLIST.some((path) =>
@@ -114,6 +115,7 @@ const { title, description } = Astro.props;
 	let menu = document.getElementById("highlight-menu") as HTMLDivElement;
 	let rootElement: HTMLElement | null = null;
 	let outsideClickListener: ((e: MouseEvent) => void) | null = null;
+	let restoreScheduled = false; // prevent duplicate restore scheduling
 
 	// Mobile detection and range preservation
 	let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -184,10 +186,8 @@ const { title, description } = Astro.props;
 			// Set up event listeners first
 			setupEventListeners();
 
-			if (rootElement?.dataset.authenticated === "true") {
-				// Then fetch and restore highlights from Firestore
-				await highlightService.fetchHighlights(highlighter); // Updated to pass highlighter
-			}
+			// Schedule restore (will no-op if unauthenticated yet)
+			scheduleRestore();
 		} catch (error) {
 			console.error("[highlight] Failed to initialize:", error);
 		}
@@ -196,6 +196,61 @@ const { title, description } = Astro.props;
 	// Client-side imports need to be dynamic or use the ?inline suffix
 	const selectionHandler = await import("../service/selectionHandler");
 	const highlightService = await import("../service/highlightService");
+
+	function scheduleRestore(attempt: number = 0) {
+		if (!rootElement)
+			rootElement = document.getElementById("highlight-root");
+		if (!rootElement) return;
+		if (rootElement.dataset.highlightsLoaded === "true") return;
+		if (restoreScheduled && attempt === 0) return; // skip duplicate first call
+		if (!highlighter) {
+			// Highlighter not ready yet; retry a few times (max ~1s)
+			if (attempt < 10) {
+				setTimeout(() => scheduleRestore(attempt + 1), 100);
+			}
+			return;
+		}
+		if (rootElement.dataset.authenticated !== "true") return; // only restore for authed users
+		restoreScheduled = true;
+		const run = async () => {
+			if (!highlighter) return;
+			if (rootElement!.dataset.highlightsLoaded === "true") return;
+			try {
+				await highlightService.fetchHighlights(highlighter);
+				rootElement!.dataset.highlightsLoaded = "true";
+			} catch (e) {
+				console.warn("[highlight] restore failed", e);
+			}
+		};
+		if ("requestIdleCallback" in window) {
+			(requestIdleCallback as any)(run, { timeout: 1500 });
+		} else {
+			setTimeout(run, 0);
+		}
+	}
+
+	// Hydrate auth state on client (mirrors navbar logic) so prerendered pages can enable highlights
+	async function hydrateAuth() {
+		try {
+			if (!rootElement)
+				rootElement = document.getElementById("highlight-root");
+			if (!rootElement) return;
+			// Already authenticated or tried
+			if (rootElement.dataset.authenticated === "true") return;
+			const res = await fetch("/api/auth/me", {
+				credentials: "same-origin",
+			});
+			if (!res.ok) return;
+			const data = await res.json();
+			if (data?.signedIn) {
+				rootElement.dataset.authenticated = "true";
+				// Now that we're authenticated, attempt restoration
+				scheduleRestore();
+			}
+		} catch (e) {
+			/* ignore */
+		}
+	}
 
 	function handleSelection(e: MouseEvent | TouchEvent) {
 		if (!window.rangy || !highlighter) {
@@ -548,7 +603,11 @@ const { title, description } = Astro.props;
 			updateTheme();
 			window.addEventListener("themeToggled", updateDarkMode);
 			document.addEventListener("themeChanged", updateTheme);
-			await initializeHighlighter();
+			// Fire off auth hydration & highlighter init without blocking interactivity
+			hydrateAuth();
+			initializeHighlighter().catch((e) =>
+				console.error("[highlight] init fail", e)
+			);
 		} catch (error) {
 			console.error("[highlight] Init error:", error);
 		}

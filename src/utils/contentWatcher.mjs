@@ -6,6 +6,10 @@ import { naturalSort } from "./sort-routes.mjs";
 import { watch } from "node:fs";
 import { generateTopicMappings } from "./generateTopicMappings.ts";
 import { generateQualityMappings } from "./generateQualityMappings.ts";
+import { exec as _exec } from "node:child_process";
+import { promisify } from "node:util";
+
+const exec = promisify(_exec);
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const CONTENT_DIR = resolve(__dirname, "../content/en");
@@ -56,16 +60,39 @@ export const routes = ${JSON.stringify(sortedRoutes)};
 
 async function watchContentDirectory() {
 	console.log(`👀 Watching for changes in ${CONTENT_DIR}...`);
+	let debounceTimer = null;
+	const runGenerators = async () => {
+		try {
+			console.log(
+				"🚧 Running generators: routes, counts, search index..."
+			);
+			await generateRoutes();
+			console.log("   • routes.ts updated");
+			// Generate content counts (directoryStructureWithCounts.ts)
+			await exec(
+				`npx tsx ${resolve(__dirname, "./generateContentCounts.ts")}`
+			);
+			console.log("   • directoryStructureWithCounts.ts updated");
+			// Regenerate search index used by collection discourses view
+			await exec(
+				`npx tsx ${resolve(__dirname, "./generateSearchIndex.ts")}`
+			);
+			console.log("   • searchIndex.ts updated");
+			console.log("✅ Generators complete");
+		} catch (error) {
+			console.error("❌ Generator run failed:", error?.stderr || error);
+		}
+	};
 
 	watch(CONTENT_DIR, { recursive: true }, async (eventType, filename) => {
+		if (!filename) return;
+		// Only react to MDX content changes
+		if (!filename.endsWith(".mdx")) return;
 		console.log(
-			`\nDetected ${eventType} on ${filename}. Regenerating routes...`
+			`\nDetected ${eventType} on ${filename}. Scheduling regeneration...`
 		);
-		try {
-			await generateRoutes();
-		} catch (error) {
-			console.error("❌ Route generation failed during watch:", error);
-		}
+		if (debounceTimer) clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(runGenerators, 200);
 	});
 
 	// Watch topics directory

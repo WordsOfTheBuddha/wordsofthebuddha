@@ -107,12 +107,19 @@ if (!SEOTitle) {
 			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 		/>
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<meta name="theme-color" content="#111827" />
 		<script is:inline>
 			function getInitialTheme() {
 				const storedTheme = localStorage.getItem("theme");
 				const urlParams = new URLSearchParams(window.location.search);
-				const paliMode = urlParams.get("pli") === "true";
-				localStorage.setItem("paliMode", paliMode);
+				const pliParam = urlParams.get("pli");
+				let paliMode = localStorage.getItem("paliMode") === "true";
+				if (pliParam !== null) {
+					paliMode = pliParam === "true";
+					localStorage.setItem("paliMode", paliMode.toString());
+				}
+				document.documentElement.classList.toggle("pali-on", paliMode);
 				const paliLookup = urlParams.get("enablePaliLookup");
 				if (paliLookup) {
 					localStorage.setItem("paliLookup", paliLookup === "true");
@@ -221,6 +228,39 @@ if (!SEOTitle) {
 		<ScrollToTop />
 	</body>
 	<script>
+		// Register the Service Worker for offline support (dev and prod)
+		if ("serviceWorker" in navigator) {
+			window.addEventListener("load", () => {
+				navigator.serviceWorker.register("/sw.js?v=3").catch(() => {
+					/* ignore */
+				});
+
+				// After the SW takes control, prewarm the Pāli lookup chunk so it is cached for offline use.
+				// This is intentionally low-priority and guarded by the user's preference.
+				navigator.serviceWorker.ready
+					.then(() => {
+						const pref = localStorage.getItem("paliLookup");
+						const enabled = pref == null ? true : pref === "true";
+						if (!enabled || !navigator.onLine) return;
+						// Yield to the event loop/idle time before importing
+						const prewarm = () =>
+							import("../utils/paliLookup")
+								.then((m) => m.warmupPaliDictionary?.())
+								.catch(() => {});
+						if ("requestIdleCallback" in window) {
+							(requestIdleCallback as any)(prewarm, {
+								timeout: 3000,
+							});
+						} else {
+							setTimeout(prewarm, 0);
+						}
+					})
+					.catch(() => {
+						/* ignore */
+					});
+			});
+		}
+
 		import {
 			handleNavigation,
 			synchronizePreferences,
@@ -259,6 +299,14 @@ if (!SEOTitle) {
 						"interleaved")
 				: undefined;
 			synchronizePreferences(preferences);
+			// Defensive: strip stray ?layout/pli parameters that may have been appended to the hash fragment by copy/paste
+			if (window.location.hash.includes("?")) {
+				const cleanHash = window.location.hash
+					.split("?")[0]
+					.split("&")[0];
+				const baseUrl = `${window.location.pathname}${window.location.search}${cleanHash}`;
+				window.history.replaceState(null, "", baseUrl);
+			}
 			// Apply font size from localStorage
 			const storedFontSize = localStorage.getItem("fontSize") || "large";
 			const proseElements = document.querySelectorAll("article.prose");
@@ -277,17 +325,29 @@ if (!SEOTitle) {
 				paragraphs: number[];
 				scrollTo: number | null;
 			} {
+				console.log("hash is: ", hash);
 				if (!hash) return { paragraphs: [], scrollTo: null };
 
-				const hashValue = hash.replace("#", "");
+				// Remove leading # and any accidental query-string fragments after the hash
+				let hashValue = hash.startsWith("#") ? hash.slice(1) : hash;
+				// If the hash mistakenly contains ?key=value or &key=value, keep only the paragraph part
+				hashValue = hashValue.split(/[?&]/)[0];
+				try {
+					hashValue = decodeURIComponent(hashValue);
+				} catch {}
 				const paragraphNumbers: number[] = [];
 				let scrollTo: number | null = null;
 
 				// Split by comma to handle multiple values/ranges (e.g., "1,2,4-6")
-				const parts = hashValue.split(",");
+				const parts = hashValue
+					.split(",")
+					.map((p) => p.trim())
+					.filter(Boolean);
+				console.log("parts: ", parts);
 
 				for (const part of parts) {
 					const trimmedPart = part.trim();
+					if (!trimmedPart) continue;
 
 					// Check for range format (e.g., "4-6")
 					if (trimmedPart.includes("-")) {
@@ -321,6 +381,8 @@ if (!SEOTitle) {
 					}
 				}
 
+				console.log("parsed paragraphs: ", paragraphNumbers);
+
 				// Remove duplicates and sort
 				const uniqueParagraphs = [...new Set(paragraphNumbers)].sort(
 					(a, b) => a - b
@@ -344,33 +406,40 @@ if (!SEOTitle) {
 						element.classList.remove("paragraph-highlight");
 					});
 
-				// Apply new highlights to valid paragraph elements
+				// Apply new highlights to all matching paragraph elements (interleaved and split)
 				paragraphNumbers.forEach((paragraphNum) => {
-					const paragraphElement = document.getElementById(
-						paragraphNum.toString()
-					);
-					if (paragraphElement) {
-						paragraphElement.classList.add("paragraph-highlight");
-					}
+					const selector = `[id="${paragraphNum}"]`;
+					document.querySelectorAll(selector).forEach((el) => {
+						el.classList.add("paragraph-highlight");
+					});
 				});
 
 				// Navigate to target paragraph with smooth scroll
-				if (scrollTargetId) {
-					const targetElement = document.getElementById(
-						scrollTargetId.toString()
+				if (scrollTargetId != null) {
+					const idSel = `[id="${scrollTargetId}"]`;
+					// Prefer the English panel in split mode if available
+					let targetElement: Element | null = document.querySelector(
+						`#panel1 ${idSel}`
 					);
+					if (!targetElement) {
+						// Fallback to interleaved article
+						targetElement = document.querySelector(
+							"article.prose " + idSel
+						);
+					}
+					if (!targetElement) {
+						// Final fallback to any element with that id
+						targetElement = document.querySelector(idSel);
+					}
+
 					if (targetElement) {
 						setTimeout(() => {
-							// Calculate position with 100px buffer
-							const elementRect =
-								targetElement.getBoundingClientRect();
-							const absoluteElementTop =
-								elementRect.top + window.pageYOffset;
+							const rect = targetElement!.getBoundingClientRect();
+							const absoluteTop = rect.top + window.pageYOffset;
 							const scrollToPosition = Math.max(
 								0,
-								absoluteElementTop - 100
+								absoluteTop - 100
 							);
-
 							window.scrollTo({
 								top: scrollToPosition,
 								behavior: "smooth",
@@ -385,6 +454,7 @@ if (!SEOTitle) {
 				if (window.location.hash) {
 					const hash = window.location.hash.substring(1);
 					const { paragraphs, scrollTo } = parseHashRange(hash);
+					console.log("detected paragraphs: ", paragraphs);
 					applyHighlightingAndNavigation(paragraphs, scrollTo);
 				}
 			}
@@ -394,6 +464,9 @@ if (!SEOTitle) {
 
 			// Listen for hash changes
 			window.addEventListener("hashchange", handleHashNavigation);
+			// Re-apply highlighting when layout or Pali mode changes
+			document.addEventListener("layoutChanged", handleHashNavigation);
+			document.addEventListener("paliModeChanged", handleHashNavigation);
 
 			// Remove empty spans after preferences are applied
 			document.querySelectorAll("span").forEach((span) => {

@@ -4,7 +4,7 @@ description: The Buddha describes the four assurances possessed by the Tathāgat
 fetter: ignorance
 qualities: faith, recollection of the Buddha
 theme: inspiration, principle
-tags: confidence, tathāgata, realization, taints, obstruction, ending of suffering, an, an4
+tags: confidence, tathāgata, realization, taints, obstruction, end of suffering, an, an4
 slug: an4.8
 ---
 

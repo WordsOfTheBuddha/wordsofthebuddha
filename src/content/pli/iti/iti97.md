@@ -1,6 +1,6 @@
 ---
 title: Kalyāṇasīla sutta - Virtuous Conduct
-description: The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the ending of suffering—complete in training and free from the mental defilements.
+description: The Buddha defines the perfected person as one who is virtuous in conduct, devoted to the cultivation of the seven sets of qualities that lead to awakening, and possessing wisdom of the end of suffering—complete in training and free from the mental defilements.
 qualities: ethical conduct, wholesome, wisdom, conscience, humility, discernment, ending, imperturbable
 theme: inspiration, wisdom
 slug: iti97

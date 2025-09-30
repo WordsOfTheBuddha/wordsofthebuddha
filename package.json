@@ -4,13 +4,19 @@
 	"version": "0.0.1",
 	"scripts": {
 		"watch-routes": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs --watch",
-		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts",
+		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts",
 		"gen:qualities": "npx tsx src/utils/generateQualityMappings.ts",
 		"gen:similes": "npx tsx src/utils/generateSimileMappings.ts",
 		"gen:topics": "npx tsx src/utils/generateTopicMappings.ts",
+		"gen:offline": "npx tsx src/utils/generateOfflineManifest.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
-		"prebuild": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts",
-		"build": "node --trace-deprecation ./node_modules/.bin/astro build"
+		"prebuild": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts",
+		"gen:search": "npx tsx src/utils/generateSearchIndex.ts",
+		"build": "node --trace-deprecation ./node_modules/.bin/astro build --silent",
+		"build:pwa": "astro build --config astro.config.pwa.mjs --silent",
+		"prebuild:pwa": "npm run prebuild",
+		"preview:pwa": "HOST=0.0.0.0 PORT=4322 node dist/server/entry.mjs",
+		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.4",
@@ -36,6 +42,7 @@
 		"typescript": "^5.7.3"
 	},
 	"devDependencies": {
+		"@astrojs/node": "^9.4.3",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/js-yaml": "^4.0.9",
 		"@types/jsdom": "^21.1.7",

@@ -1,0 +1,98 @@
+---
+// Prerendered canonical discourse pages for offline/PWA and fast static delivery.
+// These pages mirror the SSR catch-all output for canonical slugs only.
+export const prerender = true;
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import MDContent from "../components/MDContent.astro";
+import { routes } from "../utils/routes";
+import { parseContent, createCombinedMarkdown } from "../utils/contentParser";
+import { getLastModified } from "../utils/getLastModified";
+
+export async function getStaticPaths() {
+	// Only canonical routes that exist in the 'all' content collection
+	const entries: { params: { discourse: string } }[] = [];
+	for (const rid of routes) {
+		try {
+			const e = await getEntry("all", rid);
+			if (e) entries.push({ params: { discourse: rid } });
+		} catch {}
+	}
+	return entries;
+}
+
+const { discourse: id } = Astro.params as { discourse?: string };
+
+// Guard: if somehow invoked with a non-canonical id, 404
+if (!id || !routes.includes(id)) {
+	return new Response(null, { status: 404 });
+}
+
+// Load English and Pali content
+const contentItem = await getEntry("all", id);
+if (!contentItem) {
+	return new Response(null, { status: 404 });
+}
+let paliContent: any = { body: "" };
+const paliEntry = await getEntry("pliAll", id);
+if (paliEntry) paliContent = paliEntry;
+
+// Build pairs and both variants (interleaved + split) always, client toggles via CSS
+const pairs = await parseContent(paliContent, contentItem);
+const interleavedContent = createCombinedMarkdown(pairs, true, "interleaved");
+const splitContent = createCombinedMarkdown(pairs, true, "split");
+
+let mainContent =
+	typeof interleavedContent === "string" ? interleavedContent : "";
+let splitEnglish =
+	typeof splitContent !== "string" ? splitContent.english : undefined;
+let splitPali =
+	typeof splitContent !== "string" ? splitContent.pali : undefined;
+
+// Metadata and nav
+const filePath = contentItem.filePath || "";
+const lastUpdated = getLastModified(filePath);
+const fpParts = (contentItem.filePath ?? "").split("/");
+let folder = fpParts[fpParts.length - 2] || "";
+const fp = folder ? `${folder}/${id}` : id;
+
+const currentIndex = routes.findIndex((r) => r === id);
+const next =
+	currentIndex + 1 < routes.length
+		? await getEntry("all", routes[currentIndex + 1])
+		: null;
+const prev =
+	currentIndex - 1 >= 0
+		? await getEntry("all", routes[currentIndex - 1])
+		: null;
+
+const suttaProps = {
+	fp,
+	title: contentItem.data.title,
+	description: contentItem.data.description,
+	qualities: contentItem.data.qualities
+		?.split(",")
+		.map((t: string) => t.trim()),
+	prev,
+	next,
+	id,
+	showReadLater: true,
+	showSave: true,
+	showRead: true,
+	lastUpdated,
+	showAuth: true,
+	showPali: true,
+	paragraphRequest: null,
+	commentary: contentItem.data.commentary,
+};
+---
+
+<Layout {...suttaProps}>
+	<MDContent
+		content={mainContent}
+		splitEnglish={splitEnglish}
+		splitPali={splitPali}
+	/>
+
+	<!-- Note: Canonical discourse pages are static. Paragraph ranges via path (e.g., /sn1.1.1-2) are handled by SSR catch-all at src/pages/[...id].astro. -->
+</Layout>

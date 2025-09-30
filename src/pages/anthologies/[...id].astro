@@ -11,7 +11,8 @@ const { id } = Astro.params;
 // Find current index in sorted routes
 const currentIndex = routes.findIndex((route) => route === id);
 if (currentIndex === -1) {
-	return Astro.redirect(`/search?q='anthology+${id}`);
+	// Ensure non-ASCII characters are encoded for safe redirect Location header
+	return Astro.redirect(`/search?q=${encodeURIComponent(`anthology ${id}`)}`);
 }
 
 const contentItem = await getEntry("all", id);

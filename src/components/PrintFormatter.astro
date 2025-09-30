@@ -6,10 +6,15 @@
 		let originalContent: string | null = null;
 
 		window.addEventListener("beforeprint", () => {
-			// Find the main content area (where tooltips exist)
+			// Find the main content area (prefer the currently visible layout)
+			const isSplit =
+				document.documentElement.classList.contains("split") &&
+				document.documentElement.classList.contains("pali-on");
 			const contentArea =
-				document.querySelector(".split-wrapper") ||
-				document.querySelector("article.prose") ||
+				(isSplit
+					? document.querySelector(".split-wrapper")
+					: document.querySelector("article.prose") ||
+						document.querySelector(".interleaved-article")) ||
 				document.querySelector("main") ||
 				document.querySelector(".prose");
 
@@ -24,7 +29,7 @@
 
 			// Apply rich formatting (same logic as copy button)
 			const threshold = parseInt(
-				localStorage.getItem("tooltipThreshold") || "25"
+				localStorage.getItem("tooltipThreshold") || "18"
 			);
 			const formattedContainer = getFormattedContainer(range, threshold);
 
@@ -73,20 +78,27 @@
 			font-family: "Times New Roman", serif;
 			font-size: 12pt;
 			line-height: 1.6;
-			color: black !important;
+			color: #000 !important;
 		}
 
 		/* Normalize all colors to black for printing */
+		.print-formatted,
+		.print-formatted *,
+		.print-formatted :is(p, span, li, em, strong, blockquote) {
+			color: #000 !important;
+			opacity: 1 !important;
+			-webkit-text-fill-color: #000 !important; /* Safari print */
+		}
 
 		/* Force consistent font sizing for all text elements including Pali */
 		.print-formatted .pali-paragraph {
 			font-size: 12pt !important;
 			opacity: 1 !important;
-			color: #333 !important;
+			color: #000 !important;
 		}
 
 		.print-formatted .verse {
-			color: black !important;
+			color: #000 !important;
 		}
 
 		.print-formatted b {

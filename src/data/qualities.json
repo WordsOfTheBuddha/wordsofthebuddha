@@ -17,6 +17,7 @@
 		"craving",
 		"cruelty",
 		"dearness",
+		"delusion",
 		"discontentment",
 		"displeasure",
 		"distraction",
@@ -32,7 +33,6 @@
 		"hypocrisy",
 		"ignorance",
 		"ill will",
-		"illusion",
 		"immaturity",
 		"impatience",
 		"insanity",
@@ -58,6 +58,7 @@
 		"shamelessness",
 		"slaughtering",
 		"sorrow",
+		"speculation",
 		"stealing",
 		"stinginess",
 		"stubbornness",
@@ -84,7 +85,6 @@
 		"complete comprehension",
 		"compassion",
 		"conscience",
-		"contemplation",
 		"contentment",
 		"continuous effort",
 		"cultivation",
@@ -257,9 +257,10 @@
 			"entanglement",
 			"bound",
 			"connected",
+			"taking as mine",
 			"Supported by:{craving, merit}",
 			"Leads to:{dearness, lamentation, sorrow}",
-			"[upadhi, upādāna, sakiñcana]"
+			"[upadhi, upādāna, sakiñcana, mamatta]"
 		],
 		"aversion": [
 			"animosity",
@@ -391,18 +392,6 @@
 			"Leads to:{ill will}",
 			"[makkha]"
 		],
-		"contemplation": [
-			"deliberation",
-			"reflection",
-			"weighing",
-			"measuring",
-			"refining one's understanding",
-			"cogitation",
-			"Related:{examination}",
-			"Supported by:{wise attention}",
-			"Leads to:{perceiving drawback}",
-			"[anupassanā]"
-		],
 		"contentment": [
 			"fewness of wishes",
 			"having few desires",
@@ -468,6 +457,16 @@
 			"Opposite: {aversion}",
 			"[piya]"
 		],
+		"delusion": [
+			"illusion",
+			"hallucination",
+			"misapprehension",
+			"distorted view",
+			"that which fuels further confusion and doubt",
+			"Supported by:{ignorance, perceiving gratification}",
+			"Leads to:{doubt, lack of discernment}",
+			"[moha]"
+		],
 		"desire": [
 			"having an objective",
 			"interest",
@@ -501,7 +500,7 @@
 			"ability to discriminate, distinguish",
 			"clear seeing",
 			"penetrating internal vision",
-			"Supported by:{mindfulness, full awareness, wise attention}",
+			"Supported by:{examination, full awareness}",
 			"Leads to:{perceiving drawback, wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
@@ -556,7 +555,7 @@
 			"uncertainty",
 			"wavering",
 			"perplexity",
-			"Supported by:{illusion, unwise attention}",
+			"Supported by:{delusion, speculation}",
 			"Leads to:{faithlessness, ignorance}",
 			"[vicikiccha, kaṅkhā, vimati]"
 		],
@@ -609,13 +608,18 @@
 		],
 		"examination": [
 			"analysis",
+			"deliberation",
+			"discursive contemplation",
 			"investigation",
 			"probing",
+			"reflection",
+			"reviewing",
+			"scrutinization",
 			"lit. picking",
-			"Context: Careful investigation and discernment of mental qualities; exploring their arising, persisting, and ceasing, to understand their true nature and support the development of wisdom and awakening.",
-			"Related:{contemplation}",
-			"Supported by:{inquisitiveness, mindfulness, wise attention}",
-			"Leads to:{mindfulness, perceiving drawback, rousing of energy}",
+			"Context: Process of a careful inquiry of mental states, qualities, and phenomena, examining their arising, persisting, and ceasing in order to understand their true nature and support the cultivation of wisdom and awakening",
+			"Supported by:{inquisitiveness, mindfulness}",
+			"Leads to:{discernment, perceiving drawback, rousing of energy}",
+			"Opposite:{speculation}",
 			"[vicaya, parikkhati, dhammavicaya, anupekkhita]"
 		],
 		"faith": [
@@ -810,13 +814,12 @@
 			"[māyāvī]"
 		],
 		"ignorance": [
-			"delusion",
 			"illusion of knowing",
 			"fundamental unawareness of the true nature of reality",
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
 			"Supported by:{anxiety, doubt, drowsiness, dullness, ill will, sensual desire}",
-			"Leads to:{aversion, conceit, craving, desire, illusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
+			"Leads to:{aversion, conceit, craving, desire, delusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
 			"[avijjā]"
 		],
 		"ill will": [
@@ -829,16 +832,6 @@
 			"Opposite:{loving-kindness}",
 			"Context: A mental quality of actively opposing or rejecting others in thought, manifesting as deliberate thoughts or intentions that oppose kindness and compassion; it fuels conflict and obstructs goodwill.",
 			"[byāpāda]"
-		],
-		"illusion": [
-			"delusion",
-			"hallucination",
-			"misapprehension",
-			"distorted view",
-			"that which fuels further confusion and doubt",
-			"Supported by:{ignorance, perceiving gratification}",
-			"Leads to:{doubt, lack of discernment}",
-			"[moha]"
 		],
 		"immaturity": [
 			"lacking in discernment",
@@ -955,7 +948,7 @@
 			"lack of clear comprehension",
 			"lack of wisdom",
 			"child-like in understanding",
-			"Supported by:{passion, aversion, illusion, unwise attention}",
+			"Supported by:{passion, aversion, delusion, unwise attention}",
 			"Leads to:{immaturity, bad friendship}",
 			"[asampajañña, bāla, duppañña]"
 		],
@@ -1021,8 +1014,8 @@
 			"conceptual proliferation",
 			"conceptualization",
 			"forming various opinions",
-			"Context:Mental proliferation is the tendency to overelaborate mental constructs—such as opinions, judgments, projections, and narratives—arising from sensory experience. It entangles the mind in a cascade of thoughts, concepts, and perceptions, giving rise to unwholesome states and suffering.",
-			"Supported by:{conceit, craving}",
+			"Context: Tendency to overelaborate mental constructs—such as opinions, judgments, projections, and narratives—arising from sensory experience. It entangles the mind in a cascade of thoughts, concepts, and perceptions, giving rise to unwholesome states and suffering.",
+			"Supported by:{conceit, craving, speculation}",
 			"Leads to:{greed, self-making}",
 			"Opposite:{inspiration, non-proliferation}",
 			"[papañca]"
@@ -1032,10 +1025,10 @@
 			"keeping in mind",
 			"awareness",
 			"observing body, felt experience, mind, and mental qualities",
-			"Supported by:{right view, right effort, wakefulness}",
+			"Supported by:{right view, right effort, wakefulness, wise attention}",
 			"Leads to:{examination, full awareness}",
 			"Opposite:{muddle-minded}",
-			"[sati]"
+			"[sati, anupassanā]"
 		],
 		"moral recklessness": [
 			"fearlessness of wrongdoing",
@@ -1162,8 +1155,8 @@
 		"perceiving drawback": [
 			"observing the disadvantage",
 			"contemplating the unsatisfactoriness",
-			"Supported by:{contemplation, examination}",
-			"Leads to:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, contemplation}",
+			"Supported by:{examination}",
+			"Leads to:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness}",
 			"[ādīnavānupassī]"
 		],
 		"personal existence": [
@@ -1232,7 +1225,7 @@
 		],
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
-			"contemplation on the drawbacks",
+			"recognition of the drawbacks",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[asubhasaññā]"
@@ -1491,6 +1484,19 @@
 			"Opposite:{sorrow}",
 			"[asoka, visoka]"
 		],
+		"speculation": [
+			"analytical thinking disconnected from direct experience",
+			"conjecture",
+			"discursive reasoning",
+			"theorizing",
+			"hypothesis-making",
+			"reasoned reflection",
+			"Context: A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often rooted in unwise attention. Speculation can further proliferate into views and opinions.",
+			"Supported by:{unwise attention}",
+			"Leads to:{mental proliferation, doubt}",
+			"Opposite:{examination}",
+			"[takka]"
+		],
 		"stealing": [
 			"theft",
 			"taking what is not given",
@@ -1627,7 +1633,7 @@
 			"imprudent use of the mind",
 			"unfocused attention",
 			"Supported by:{negligence, ignorance}",
-			"Leads to:{lack of discernment}",
+			"Leads to:{lack of discernment, speculation}",
 			"[ayonisomanasikāra]"
 		],
 		"vanity": [
@@ -1704,10 +1710,9 @@
 		"wise attention": [
 			"proper attention",
 			"prudent use of the mind",
-			"wise reflection",
 			"attention to the source",
 			"Supported by:{wisdom, perceiving drawback}",
-			"Leads to:{contemplation, discernment, examination}",
+			"Leads to:{mindfulness}",
 			"[yonisomanasikāra]"
 		],
 		"with nothing": [

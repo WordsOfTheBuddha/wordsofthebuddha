@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# generated scripts
+public/offline-manifest.json
+
 # macOS-specific files
 .DS_Store
 
@@ -34,6 +37,7 @@ src/data/directoryStructureWithCounts.ts
 src/data/qualityMappings.json
 src/data/simileMappings.json
 src/data/topicMappings.json
+src/data/searchIndex.ts
 
 # translation flow
 src/translation-flow/.debug/*

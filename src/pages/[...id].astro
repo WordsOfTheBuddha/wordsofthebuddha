@@ -1,8 +1,6 @@
 ---
+// Catch-all stays SSR to support partial paragraph routes
 export const prerender = false;
-
-import { determineRouteType } from "../utils/routeHandler";
-import CollectionLayout from "../layouts/CollectionLayout.astro";
 import { getEntry } from "astro:content";
 import {
 	parseContent,
@@ -20,9 +18,9 @@ import { transformId } from "../utils/transformId";
 
 // Extract slug from params
 const { id: originalId } = Astro.params;
-let id = originalId;
+let id: string = originalId || "";
 
-// Filter out system/browser requests early
+// Filter out system/browser and asset-like requests early to avoid hijacking dev/build assets
 const SYSTEM_REQUEST_PATTERNS = [
 	".well-known",
 	"favicon.ico",
@@ -32,58 +30,41 @@ const SYSTEM_REQUEST_PATTERNS = [
 	"chrome-extension",
 	"__webpack",
 	"_next",
-	".js.map",
-	".css.map",
+	"@vite",
+	"@fs",
 ];
 
-const isSystemRequest = SYSTEM_REQUEST_PATTERNS.some((pattern) =>
-	originalId?.includes(pattern)
-);
+const ASSET_EXT_REGEX =
+	/\.(?:js|css|json|png|jpg|jpeg|svg|ico|gif|webp|avif|woff2?|ttf|otf|map|xml|webmanifest)$/i;
 
-if (isSystemRequest || !id) {
+const isSystemRequest =
+	!id ||
+	SYSTEM_REQUEST_PATTERNS.some((pattern) => originalId?.includes(pattern)) ||
+	// Any nested path (like assets/*) shouldn't be handled by this catch-all
+	originalId?.includes("/") ||
+	// Typical asset requests by extension
+	ASSET_EXT_REGEX.test(originalId ?? "");
+
+if (isSystemRequest) {
 	return new Response(null, { status: 404 });
 }
 
-const route = determineRouteType(id);
-debug("route type is: ", route.type, route.metadata);
+console.log("requesting page:", id);
+
+// Dynamic route only handles discourses; collections are handled by src/pages/[collection].astro
 
 // Initialize variables for different route types
 let collectionProps;
 let suttaProps;
 let mainContent = "";
 let sideContent;
-// Determine effective layout, forcing interleaved on mobile UAs to avoid SSR split on phones
-const requestedLayout = Astro.url.searchParams.get("layout") as
-	| "split"
-	| "interleaved"
-	| null;
+let splitEnglish: string | undefined = undefined;
+let splitPali: string | undefined = undefined;
+// Server should not decide layout; default to interleaved for prerender/SSR.
+// Client (Layout.astro) handles layout toggling and URL cleanup.
+const layout: "split" | "interleaved" = "interleaved";
 
-const ua = Astro.request.headers.get("user-agent") || "";
-const isMobileUA =
-	/Mobile|Android|iP(hone|od|ad)|IEMobile|BlackBerry|Opera Mini/i.test(ua);
-
-// If a mobile UA requested layout=split, drop the param immediately to keep URL clean
-if (isMobileUA && requestedLayout === "split") {
-	const url = new URL(Astro.request.url);
-	url.searchParams.delete("layout");
-	return Astro.redirect(`${url.pathname}${url.search}`);
-}
-
-const layout: "split" | "interleaved" = isMobileUA
-	? "interleaved"
-	: (requestedLayout ?? "interleaved");
-
-// Handle collection routes
-if (route.type === "collection" && route.pattern) {
-	const viewMode = Astro.url.searchParams.get("view") || "collections";
-	collectionProps = {
-		title: route.metadata?.title || "Collection",
-		description: route.metadata?.description || "Collection of suttas",
-		collection: viewMode === "collections",
-		children: route.metadata?.children || {},
-		searchPattern: route.pattern,
-	};
-} else {
+{
 	// Continue with existing sutta handling logic
 
 	// Find current index in sorted routes or find containing route
@@ -306,136 +287,26 @@ if (route.type === "collection" && route.pattern) {
 
 	if (currentIndex === -1) {
 		debug("No matching route found for:", id);
-		return Astro.redirect(`/search?q=${id}`);
+		// Encode potential non-ASCII characters to avoid invalid Location header values
+		return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 	}
-
-	// Get showPali from query string
-	const showPali = Astro.url.searchParams.get("pli") === "true";
 
 	// Load content with fresh file system read in development
-	let contentItem;
-	if (import.meta.env.DEV) {
-		try {
-			const { readFile } = await import("node:fs/promises");
-			const { join } = await import("node:path");
-
-			// Get the correct file path from getEntry
-			const tempContentItem = await getEntry("all", id);
-			if (tempContentItem?.filePath) {
-				const filePath = join(process.cwd(), tempContentItem.filePath);
-				const rawContent = await readFile(filePath, "utf-8");
-
-				// Use getEntry for metadata but replace body with fresh content
-				contentItem = await getEntry("all", id);
-				if (contentItem && rawContent) {
-					const frontmatterStart = rawContent.indexOf("---");
-
-					if (frontmatterStart !== -1) {
-						const frontmatterEnd = rawContent.indexOf(
-							"\n---\n",
-							frontmatterStart + 3
-						);
-
-						if (frontmatterEnd !== -1) {
-							// Extract and parse frontmatter
-							const frontmatterContent = rawContent.slice(
-								frontmatterStart + 3,
-								frontmatterEnd
-							);
-
-							// Parse frontmatter YAML
-							try {
-								const frontmatterLines =
-									frontmatterContent.split("\n");
-								const frontmatterData: Record<string, any> = {};
-
-								for (const line of frontmatterLines) {
-									const colonIndex = line.indexOf(":");
-									if (colonIndex > 0) {
-										const key = line
-											.substring(0, colonIndex)
-											.trim();
-										const value = line
-											.substring(colonIndex + 1)
-											.trim();
-										// Remove quotes if present
-										const cleanValue = value.replace(
-											/^["']|["']$/g,
-											""
-										);
-										frontmatterData[key] = cleanValue;
-									}
-								}
-
-								// Update contentItem.data properties if they exist in frontmatter
-								if (frontmatterData.title) {
-									contentItem.data.title =
-										frontmatterData.title;
-								}
-								if (frontmatterData.description) {
-									contentItem.data.description =
-										frontmatterData.description;
-								}
-								if (frontmatterData.qualities) {
-									contentItem.data.qualities =
-										frontmatterData.qualities;
-								}
-								if (frontmatterData.commentary) {
-									contentItem.data.commentary =
-										frontmatterData.commentary;
-									console.log(
-										"Commentary found:",
-										frontmatterData.commentary
-									);
-								}
-							} catch (frontmatterError) {
-								console.error(
-									`Error parsing frontmatter:`,
-									frontmatterError
-								);
-							}
-
-							let bodyStart = frontmatterEnd + 5; // Skip '\n---\n'
-
-							// Skip any additional newlines
-							while (
-								bodyStart < rawContent.length &&
-								rawContent[bodyStart] === "\n"
-							) {
-								bodyStart++;
-							}
-
-							const extractedBody = rawContent.slice(bodyStart);
-
-							contentItem.body = extractedBody;
-						}
-					}
-				}
-			} else {
-				contentItem = await getEntry("all", id);
-			}
-		} catch (error) {
-			console.error(`Error in file reading:`, error);
-			// Fallback to standard getEntry on any error
-			contentItem = await getEntry("all", id);
-		}
-	} else {
-		contentItem = await getEntry("all", id);
-	}
+	let contentItem = await getEntry("all", id);
 
 	if (!contentItem) {
 		console.warn("English content not found");
 		console.groupEnd();
-		return Astro.redirect(`/search?q=${id}`);
+		// Encode potential non-ASCII characters to avoid invalid Location header values
+		return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 	}
 
 	// Always parse content through contentParser
-	let paliContent = { body: "" };
-	if (showPali) {
+	// Always include Pali content so client can toggle without server roundtrips
+	let paliContent = { body: "" } as any;
+	{
 		const paliEntry = await getEntry("pliAll", id);
-		if (paliEntry) {
-			paliContent = paliEntry;
-		}
+		if (paliEntry) paliContent = paliEntry;
 	}
 
 	// Parse and combine content
@@ -448,19 +319,26 @@ if (route.type === "collection" && route.pattern) {
 		discourseRange
 	);
 
-	const content = createCombinedMarkdown(
+	// Generate both interleaved and split variants; client toggles via html classes
+	const interleavedContent = createCombinedMarkdown(
 		pairs,
-		showPali,
-		layout,
+		true,
+		"interleaved",
+		paragraphRequest
+	);
+	const splitContent = createCombinedMarkdown(
+		pairs,
+		true,
+		"split",
 		paragraphRequest
 	);
 
-	// Prepare content based on layout type
-	if (typeof content === "string") {
-		mainContent = content;
-	} else {
-		mainContent = content.english;
-		sideContent = content.pali;
+	if (typeof interleavedContent === "string") {
+		mainContent = interleavedContent;
+	}
+	if (typeof splitContent !== "string") {
+		splitEnglish = splitContent.english;
+		splitPali = splitContent.pali;
 	}
 
 	// Extract last two segments of file path and remove extension
@@ -504,22 +382,10 @@ if (route.type === "collection" && route.pattern) {
 }
 ---
 
-{
-	route.type === "collection" ? (
-		<CollectionLayout
-			title={route.metadata?.title || ""}
-			description={route.metadata?.description || ""}
-			collection
-			children={route.metadata?.children || {}}
-			searchPattern={route.pattern || ""}
-		/>
-	) : (
-		<Layout {...suttaProps}>
-			<MDContent
-				content={mainContent}
-				sideContent={sideContent}
-				layout={layout}
-			/>
-		</Layout>
-	)
-}
+<Layout {...suttaProps}>
+	<MDContent
+		content={mainContent}
+		splitEnglish={splitEnglish}
+		splitPali={splitPali}
+	/>
+</Layout>

@@ -1,12 +1,12 @@
 ---
 title: Mūla sutta - Roots [Of The Unwholesome]
 description: The Buddha lists the three roots of the unwholesome - greed, aversion, and delusion, and explain their effect on the mind with a simile.
-qualities: greed, aversion, illusion, unwholesome
+qualities: greed, aversion, delusion, unwholesome
 theme: inspiration, wisdom
 fetter: sensual desire, ill will, ignorance
 tags: roots, unwholesome, greed, aversion, delusion, mind, simile, iti
 slug: iti50
-simile: banana plant
+simile: reed destroyed by its own fruit
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

@@ -1,5 +1,5 @@
 ---
-export const prerender = false;
+export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import ContentTag from "../../components/ContentTag.astro";
@@ -7,6 +7,17 @@ import qualities from "../../data/qualities.json";
 import { getContentTypeFromApiData } from "../../utils/ContentTagUtils";
 import "../../styles/topicTag.css";
 import graphSvg from "../../assets/graph.svg?raw";
+import {
+	buildAllContent,
+	findContentBySlug,
+	getStaticOnSlugs,
+} from "../../utils/discover-data";
+import type { UnifiedContentItem } from "../../types/discover";
+
+// Generate static paths for all topics, qualities, and similes (including topic redirects)
+export async function getStaticPaths() {
+	return getStaticOnSlugs().map((slug) => ({ params: { slug } }));
+}
 
 const graphIcon = graphSvg.replace("<svg", '<svg class="w-6 h-6"');
 
@@ -16,80 +27,14 @@ if (!slug) {
 	return Astro.redirect("/");
 }
 
-// Use the discover API to find content for this slug
-let content: any = null;
-let contentType: string | null = null;
-
-try {
-	const apiUrl = new URL("/api/discover", Astro.url.origin);
-	const filterValue = slug.replace(/-/g, " ");
-	apiUrl.searchParams.set("filter", slug);
-	apiUrl.searchParams.set("by", "topics,qualities,similes");
-
-	const response = await fetch(apiUrl.toString());
-
-	const result = await response.json();
-
-	if (result.success && result.data.length > 0) {
-		// Priority 1: Check for topic by exact slug match
-		const topicMatch = result.data.find(
-			(item: any) =>
-				item.type === "topic" &&
-				(item.slug === slug.toLocaleLowerCase() ||
-					item.slug === filterValue)
-		);
-
-		if (topicMatch) {
-			content = topicMatch;
-			contentType = topicMatch.type;
-		} else {
-			// Priority 2: Check if any topic has this slug in redirects
-			const redirectMatch = result.data.find(
-				(item: any) =>
-					item.type === "topic" &&
-					item.redirects &&
-					item.redirects.includes(slug)
-			);
-
-			if (redirectMatch) {
-				// Redirect to the canonical topic slug
-				return Astro.redirect(`/on/${redirectMatch.slug}`);
-			} else {
-				// Priority 3: Check for quality by exact slug match
-				const qualityMatch = result.data.find(
-					(item: any) =>
-						item.type === "quality" &&
-						(item.slug === slug.toLocaleLowerCase() ||
-							item.slug === filterValue)
-				);
-
-				if (qualityMatch) {
-					content = qualityMatch;
-					contentType = qualityMatch.type;
-				} else {
-					// Priority 4: Check for simile by exact slug match
-					const simileMatch = result.data.find(
-						(item: any) =>
-							item.type === "simile" &&
-							(item.slug === slug.toLocaleLowerCase() ||
-								item.slug === filterValue)
-					);
-
-					if (simileMatch) {
-						content = simileMatch;
-						contentType = simileMatch.type;
-					}
-				}
-			}
-		}
-	}
-} catch (error) {
-	console.error("Error fetching content from API:", error);
-}
-
-// If no content found, redirect to search
-if (!contentType || !content) {
-	return Astro.redirect(`/search?q=${encodeURIComponent(slug)}`);
+// Build content and select the item for this slug using the shared utility
+const allContent = buildAllContent();
+const { item: content, type: contentType } = findContentBySlug(
+	slug,
+	allContent
+);
+if (!content || !contentType) {
+	return new Response(null, { status: 404 });
 }
 
 // Get the appropriate content type for the tag
@@ -185,13 +130,13 @@ const totalDiscourses = allDiscourses.length;
 							content.related?.length ||
 							content.opposite?.length) && (
 							<div class="meta-grid text-xs text-gray-600 dark:text-gray-400 mt-2">
-								{content.supportedBy?.length > 0 && (
+								{(content.supportedBy ?? []).length > 0 && (
 									<div class="meta-row">
 										<div class="soft meta-label">
 											Supported by
 										</div>
 										<div class="inline-tags">
-											{content.supportedBy.map(
+											{(content.supportedBy ?? []).map(
 												(slug: string) => {
 													const name = slug
 														.split("-")
@@ -229,13 +174,13 @@ const totalDiscourses = allDiscourses.length;
 										</div>
 									</div>
 								)}
-								{content.leadsTo?.length > 0 && (
+								{(content.leadsTo ?? []).length > 0 && (
 									<div class="meta-row">
 										<div class="soft meta-label">
 											Leads to
 										</div>
 										<div class="inline-tags">
-											{content.leadsTo.map(
+											{(content.leadsTo ?? []).map(
 												(slug: string) => {
 													const name = slug
 														.split("-")
@@ -273,13 +218,13 @@ const totalDiscourses = allDiscourses.length;
 										</div>
 									</div>
 								)}
-								{content.related?.length > 0 && (
+								{(content.related ?? []).length > 0 && (
 									<div class="meta-row">
 										<div class="soft meta-label">
 											Related
 										</div>
 										<div class="inline-tags">
-											{content.related.map(
+											{(content.related ?? []).map(
 												(slug: string) => {
 													const name = slug
 														.split("-")
@@ -317,13 +262,13 @@ const totalDiscourses = allDiscourses.length;
 										</div>
 									</div>
 								)}
-								{content.opposite?.length > 0 && (
+								{(content.opposite ?? []).length > 0 && (
 									<div class="meta-row">
 										<div class="soft meta-label">
 											Opposite
 										</div>
 										<div class="inline-tags">
-											{content.opposite.map(
+											{(content.opposite ?? []).map(
 												(slug: string) => {
 													const name = slug
 														.split("-")
