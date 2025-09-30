@@ -1,6 +1,7 @@
 ---
 title: Brahmacariya sutta - The Spiritual Life
 description: The spiritual life is not lived for the purpose of deceiving people, nor for the purpose of winning favor with people, nor for the sake of acquisitions, respect and popularity, nor for the thought 'Let people know me.'
+qualities: self-control, sense restraint, giving up, dispassion, ending
 fetter: personal existence, conceit, ignorance
 tags: an,an4,spiritual life, conceit, restraint, letting go, self-control, precepts, sense-restraint, Nibbāna, iti, iti28-49
 slug: an4.25

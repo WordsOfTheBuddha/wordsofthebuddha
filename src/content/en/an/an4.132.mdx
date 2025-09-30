@@ -1,6 +1,7 @@
 ---
 title: Paṭibhāna sutta - Eloquence
 description: The four types of people found in the world based on the presence or absence of rational and spontaneous eloquence.
+qualities: inspiration
 fetter: ignorance
 tags: eloquence, rational, spontaneous, an, an4
 slug: an4.132

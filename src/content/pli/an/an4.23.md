@@ -1,6 +1,7 @@
 ---
 title: Loka sutta - World
 description: The Buddha explains why he is called the Tathāgata, the one who has fully comprehended the world, its arising, cessation, and the path leading to its cessation.
+qualities: insight, wisdom, dispassion, ending, right speech, ethical conduct, liberation, free from attachment, without fear, tame, tranquility
 fetter: ignorance, doubt
 tags: tathagata, world, doubt, defilements, iti, four noble truths, ignorance, doubt
 slug: an4.23

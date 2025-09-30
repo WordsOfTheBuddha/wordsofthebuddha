@@ -1,6 +1,7 @@
 ---
 title: Appassuta sutta - Little Learned
 description: The Buddha describes the four types of persons found in the world - those with little learning who are not accomplished by that learning, those with little learning who are accomplished by that learning, those with much learning who are not accomplished by that learning, and those with much learning who are accomplished by that learning.
+qualities: learned, ethical conduct
 fetter: doubt, adherence to rules and observances
 tags: virtue, learning, wisdom, praise, criticism, an, an4
 slug: an4.6

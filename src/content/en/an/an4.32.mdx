@@ -1,6 +1,7 @@
 ---
 title: Saṅgaha sutta - Supportive
 description: The Buddha explains the four bases of a supportive relationship.
+qualities: good friendship, bad friendship, companionship, giving, right speech, good habits, impartiality
 fetter: ill will,conceit
 tags: an,an4,relationships,ill will,conceit
 slug: an4.32

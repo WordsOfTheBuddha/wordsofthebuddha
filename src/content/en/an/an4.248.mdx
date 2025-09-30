@@ -1,6 +1,7 @@
 ---
 title: Paññāvuddhi sutta - Growth Of Wisdom
 description: The four things that lead to the growth of wisdom.
+qualities: wisdom, cultivation, right effort, good friendship, wise attention
 fetter: ignorance
 tags: wisdom, growth, good people, Dhamma, wise attention, yoniso manasikāra, practice, an, an4
 slug: an4.248
