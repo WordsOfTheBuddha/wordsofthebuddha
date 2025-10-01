@@ -315,5 +315,23 @@
 	"panesāhaṁ": ["pana", "esa", "ahaṁ"],
 	"paññāvimuttinoti": ["paññāvimuttino"],
 	"parisāti": ["parisa"],
+	"sabbamuparundhe": ["sabbaṁ", "uparundhe"],
+	"asmīti": ["asmīti:'I am'"],
+	"dhammamabhijaññā": ["dhammaṁ", "abhijaññā"],
+	"ajjhattamevupasame": ["ajjhatta", "eva", "upasame"],
+	"annānamatho": ["annānaṁ", "atho"],
+	"athāsanesu": ["atha", "āsanesu"],
+	"nāññamatimaññe": ["nāññaṁ", "atimaññe"],
+	"santīti": ["santi"],
+	"sakkhidhammamanītihamadassī": ["sakkhidhammaṁ", "anītihaṁ", "adassī"],
+	"namassamanusikkheti": ["namassa", "anusikkhe"],
+	"namassamanusikkhe": ["namassa", "anusikkhe"],
+	"ayamācāro": ["ayaṁ", "ācāro"],
+	"itivādappamokkhānisaṁsañceva": [
+		"itivādappamokkha",
+		"ānisaṁsa",
+		"ca",
+		"eva"
+	],
 	"nānubhavissatīti": ["nānubhavissati", "iti"]
 }
