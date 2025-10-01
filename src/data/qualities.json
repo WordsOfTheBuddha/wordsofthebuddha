@@ -10,6 +10,7 @@
 		"bad friendship",
 		"bad habits",
 		"boastfulness",
+		"brashness",
 		"clinging to rules and observances",
 		"conceit",
 		"consuming intoxicants",
@@ -298,6 +299,16 @@
 			"Leads to:{argumentativeness}",
 			"Opposite:{unassuming}",
 			"[attukkaṁsaka]"
+		],
+		"brashness": [
+			"cockiness",
+			"forwardness",
+			"impudence",
+			"shameless assertiveness",
+			"Supported by:{moral recklessness, shamelessness, unprincipled}",
+			"Leads to:{argumentativeness, stealing, sexual misconduct, wrong speech}",
+			"Context: Overstepping of bounds in speech and conduct, marked by pushiness, arrogance, and disregard for restraint; contrasted with humility and modesty.",
+			"[pāgabbhiya]"
 		],
 		"clinging to rules and observances": [
 			"attachment to rites and rituals",
@@ -1036,7 +1047,7 @@
 			"lack of prudence",
 			"Related:{wrong view}",
 			"Supported by:{ignorance, bad friendship}",
-			"Leads to:{harm, sexual misconduct, slaughtering, stealing, unprincipled}",
+			"Leads to:{brashness, harm, slaughtering, unprincipled}",
 			"[anottappa]"
 		],
 		"muddle-minded": [
@@ -1090,6 +1101,7 @@
 			"Context: A mental quality of not regretting past actions, characterized by a clear conscience and absence of remorse; it arises from accomplishment in ethical conduct",
 			"Supported by:{ethical conduct}",
 			"Leads to:{joy}",
+			"Opposite:{regret}",
 			"[avippaṭisāra]"
 		],
 		"non-restraint": [
@@ -1276,6 +1288,7 @@
 			"to suffer remorse",
 			"Supported by:{cruelty, harm, sexual misconduct, slaughtering, stealing, unprincipled}",
 			"Leads to:{suffering}",
+			"Opposite:{non-regret}",
 			"[tappati]"
 		],
 		"resentment": [
@@ -1424,7 +1437,7 @@
 			"infidelity",
 			"inappropriate sexual behavior",
 			"unfaithfulness to one's partner",
-			"Supported by:{moral recklessness, shamelessness, wrong intention, wrong speech}",
+			"Supported by:{brashness, wrong intention, wrong speech}",
 			"Leads to:{regret, wrong livelihood}",
 			"[kāmesumicchācāra]"
 		],
@@ -1434,7 +1447,7 @@
 			"unconscientiousness",
 			"Related:{moral recklessness}",
 			"Supported by:{ignorance, bad friendship}",
-			"Leads to:{hypocrisy, sexual misconduct, stealing, unprincipled}",
+			"Leads to:{brashness, hypocrisy, sexual misconduct, stealing, unprincipled}",
 			"[ahirika]"
 		],
 		"sincerity": [
@@ -1502,7 +1515,7 @@
 			"taking what is not given",
 			"taking what is not offerred",
 			"dishonesty regarding possessions",
-			"Supported by:{moral recklessness, shamelessness, wrong intention, wrong speech}",
+			"Supported by:{brashness, shamelessness, wrong intention, wrong speech}",
 			"Leads to:{regret, wrong livelihood}",
 			"Opposite:{not taking what is not given}",
 			"[adinnādānā]"
@@ -1608,14 +1621,14 @@
 			"without mental unease",
 			"Supported by:{collectedness, equanimity}",
 			"Leads to:{formless}",
-			"[aparitassa, anigha]"
+			"[aparitassa, anigha, aneja]"
 		],
 		"unprincipled": [
 			"lacking in moral principles",
 			"lacking in ethics",
 			"immoral",
 			"Supported by:{moral recklessness, shamelessness}",
-			"Leads to:{treachery, regret}",
+			"Leads to:{brashness, treachery, regret}",
 			"[dussīlya]"
 		],
 		"unwholesome": [
@@ -1759,7 +1772,7 @@
 			"divisive, slanderous or defamatory or malicious speech",
 			"abusive or rude or unkind way of speaking",
 			"meaningless talk or idle chatter or gossip",
-			"Supported by:{wrong intention, irritability}",
+			"Supported by:{wrong intention, irritability, brashness}",
 			"Leads to:{harm, sexual misconduct, slaughtering, stealing}",
 			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
 		],
