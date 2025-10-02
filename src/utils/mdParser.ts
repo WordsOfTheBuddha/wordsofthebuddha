@@ -19,21 +19,29 @@ function slugify(text: string): string {
 		.replace(/(^-|-$)/g, "");
 }
 
-// Fix heading renderer to match marked's interface
-renderer.heading = (heading: Tokens.Heading) => {
-	const { depth, text } = heading;
-	return `<h${depth} id=${slugify(text)}>${text}</h${depth}>`;
+// Heading renderer using token-based API; render inline tokens to support links/emphasis
+renderer.heading = function (this: any, token: Tokens.Heading) {
+	const html = this.parser?.parseInline
+		? this.parser.parseInline(token.tokens)
+		: token.text ?? "";
+	const raw = (token.text ?? html).replace(/<[^>]*>/g, "");
+	const id = slugify(raw);
+	return `<h${token.depth} id="${id}">${html}</h${token.depth}>`;
 };
 
 // Customize paragraph rendering without heading logic
-renderer.paragraph = ({ text }) => {
-	if (text.startsWith('<div class="pali-paragraph"')) {
-		return text; // Don't wrap Pāli divs in paragraphs
+renderer.paragraph = function (this: any, token: Tokens.Paragraph) {
+	const html: string = this.parser?.parseInline
+		? this.parser.parseInline(token.tokens)
+		: token.text ?? "";
+	const t = html.trimStart();
+	if (t.startsWith('<div class="pali-paragraph"')) {
+		return html; // Don't wrap Pāli divs in paragraphs
 	}
-	if (text.startsWith('<div class="english-paragraph"')) {
-		return text; // Don't wrap English divs in paragraphs
+	if (t.startsWith('<div class="english-paragraph"')) {
+		return html; // Don't wrap English divs in paragraphs
 	}
-	return `<p>${text}</p>`;
+	return `<p>${html}</p>`;
 };
 
 marked.use({ renderer });

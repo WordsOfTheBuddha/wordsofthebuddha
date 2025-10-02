@@ -675,11 +675,23 @@ function formatBlock(
 	const className = isPali ? "pali-paragraph" : "english-paragraph";
 	const verseClass = isVerseText ? (isPali ? "verse-basic" : "verse") : "";
 
-	// Wrap individual words if this is a Pali paragraph
+	// Helper to convert inline markdown links to anchors inside pre-wrapped HTML
+	const replaceMarkdownLinksInline = (s: string): string => {
+		return s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, url) => {
+			const href = String(url).trim();
+			const isExternal = /^https?:\/\//i.test(href);
+			const extra = isExternal ? ' target="_blank" rel="noopener"' : "";
+			return `<a href="${href}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"${extra}>${label}</a>`;
+		});
+	};
+
+	// Wrap individual words if this is a Pali paragraph and convert inline markdown links
 	let processedText = text;
 	if (isPali) {
 		processedText = wrapPaliWords(text);
 	}
+	// Convert inline markdown links for both English and Pāli content
+	processedText = replaceMarkdownLinksInline(processedText);
 
 	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${
 		isVerseText ? transformVerseNewlines(processedText) : processedText
