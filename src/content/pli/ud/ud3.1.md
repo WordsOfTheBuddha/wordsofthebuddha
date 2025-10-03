@@ -1,8 +1,8 @@
 ---
-title: Kammavipākaja sutta - Caused By The Results Of One's Actions
-description: A bhikkhu endures sharp, severe, and painful bodily sensations caused by the results of past actions, while remaining mindful and fully aware, untroubled by the experience.
-fetter: conceit, ignorance
-tags: ud,ud3,abandoning,actions,complaining,results,past,sharp,severe,painful, kamma
+title: Kammavipākaja sutta - Caused By The Results Of One’s Actions
+description: A bhikkhu endures sharp, severe, and painful bodily feelings caused by the results of past actions, while remaining mindful and fully aware, untroubled by the experience.
+qualities: mindfulness, full awareness, imperturbable, free from attachment
+theme: wisdom, inspiration
 slug: ud3.1
 ---
 
