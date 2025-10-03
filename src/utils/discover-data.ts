@@ -93,10 +93,8 @@ function buildPriorityMap(): Map<string, number> {
 				if (typeof (d as any)?.priority === "number") {
 					const id = (d as any).id;
 					const current = priorityMap.get(id);
-					if (
-						current === undefined ||
-						(d as any).priority < current
-					) {
+					// Keep the maximum priority value seen for a discourse
+					if (current === undefined || (d as any).priority > current) {
 						priorityMap.set(id, (d as any).priority);
 					}
 				}
@@ -113,15 +111,16 @@ function sortDiscoursesInPlace(arr: any[]) {
 		const fa = a.isFeatured ? 0 : 1;
 		const fb = b.isFeatured ? 0 : 1;
 		if (fa !== fb) return fa - fb;
-		const pa =
-			typeof a.priority === "number"
-				? a.priority
-				: Number.POSITIVE_INFINITY;
-		const pb =
-			typeof b.priority === "number"
-				? b.priority
-				: Number.POSITIVE_INFINITY;
-		if (pa !== pb) return pa - pb;
+		// Priority: higher numeric priority first; undefined goes last
+		const aHasPriority = typeof a.priority === "number";
+		const bHasPriority = typeof b.priority === "number";
+		if (aHasPriority && bHasPriority) {
+			if (a.priority !== b.priority) {
+				return (b.priority as number) - (a.priority as number);
+			}
+		} else if (aHasPriority !== bHasPriority) {
+			return aHasPriority ? -1 : 1;
+		}
 		const cpa = collectionPriority[a.collection] ?? 999;
 		const cpb = collectionPriority[b.collection] ?? 999;
 		if (cpa !== cpb) return cpa - cpb;
@@ -253,11 +252,12 @@ export function buildAllContent(
 		);
 	}
 
-	// Sort discourses inside each item
-	items.forEach(
-		(it) =>
-			Array.isArray(it.discourses) && sortDiscoursesInPlace(it.discourses)
-	);
+	// Sort discourses inside each item, but avoid re-sorting qualities (sorted at build time)
+	items.forEach((it) => {
+		if (Array.isArray(it.discourses) && it.type !== "quality") {
+			sortDiscoursesInPlace(it.discourses);
+		}
+	});
 
 	// Sort items alphabetically by title
 	items.sort((a, b) => a.title.localeCompare(b.title));

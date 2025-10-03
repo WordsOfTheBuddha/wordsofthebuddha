@@ -92,16 +92,19 @@ export async function generateQualityMappings() {
 		// Sort discourses for each quality
 		qualityMap.forEach((discourses: DiscourseItem[], quality: string) => {
 			discourses.sort((a: DiscourseItem, b: DiscourseItem) => {
-				// Priority first (lower value first). Undefined -> Infinity so it goes after any numeric priority
-				const pa =
-					typeof a.priority === "number"
-						? a.priority
-						: Number.POSITIVE_INFINITY;
-				const pb =
-					typeof b.priority === "number"
-						? b.priority
-						: Number.POSITIVE_INFINITY;
-				if (pa !== pb) return pa - pb;
+				// Priority first (higher value first). Undefined priorities go last.
+				const aHasPriority = typeof a.priority === "number";
+				const bHasPriority = typeof b.priority === "number";
+
+				if (aHasPriority && bHasPriority) {
+					if (a.priority !== b.priority) {
+						// Descending: higher priority number first
+						return (b.priority as number) - (a.priority as number);
+					}
+				} else if (aHasPriority !== bHasPriority) {
+					// Item with a numeric priority should come before one without
+					return aHasPriority ? -1 : 1;
+				}
 
 				// Then by collection priority
 				const cpa = collectionPriority[a.collection] ?? 999;
