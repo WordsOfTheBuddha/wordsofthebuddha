@@ -354,6 +354,22 @@
 	"paṭissavāti": ["paṭissava"],
 	"kāmakaṇḍako": ["kāma", "kaṇṭaka"],
 	"gaṇimāgato": ["gaṇi", "āgata"],
+	"gaṇimāgataṁ": ["gaṇi", "āgataṁ"],
 	"ratimajjhagā": ["rati", "ajjhagā"],
-	"bahūnamidha": ["bahūnaṁ", "idha"]
+	"bahūnamidha": ["bahūnaṁ", "idha"],
+	"rittamāsanaṁ": ["rittaṁ", "āsanaṁ"],
+	"kyāssa": ["kiṁ", "assa"],
+	"kyāssassu": ["kiṁ", "assa", "assu"],
+	"sīlabbatānāssu": ["sīlabbata", "assu"],
+	"malamattano": ["mala", "attano"],
+	"athāparāni": ["atha", "aparāni"],
+	"athuṇhaṁ": ["atuṇha:extreme heat; excessive heat"],
+	"parakkammadaḷhaṁ": ["parakkamma", "daḷhaṁ"],
+	"yadāvilattaṁ": ["yad", "āvilatta"],
+	"athappiyaṁ": ["atha", "piyaṁ"],
+	"kukkucciyūpachinde": [
+		"kukkucciya:restlessness; uneasiness; anxiety",
+		"upachinde:severs; cuts off; breaks off; completely stops"
+	],
+	"satimābhinande": ["satimā", "abhinande"]
 }
