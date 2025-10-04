@@ -1,6 +1,6 @@
 ---
 title: Nanda sutta - With Nanda
-description: When the venerable Nanda is dissatisfied with the spiritual life due to thoughts of a beautiful woman, the Buddha takes him to the realm of the gods and shows him celestial nymphs far more beautiful. Tempted, Nanda consents to remain, but is soon mocked by his companions as a “wage labourer” and a “bought man.” Stung by shame, he turns to earnest practice, and before long realizes the perfection of the spiritual life.
+description: When the venerable Nanda is dissatisfied with the spiritual life due to thoughts of a beautiful woman, the Buddha takes him to the realm of the gods and shows him celestial nymphs far more beautiful. Delighted, Nanda consents to continue leading the spiritual life, but is soon mocked by his companions as a ‘wage labourer’ and a ‘bought man.’ Stung by shame, he turns to earnest practice, and before long realizes the perfection of the spiritual life.
 qualities: spiritual life, discontentment, sensual desire, conscience, perturbation, diligence, continuous effort, rousing of energy, direct knowledge, liberation, delusion, free from attachment
 theme: inspiration, directly knowing
 slug: ud3.2
