@@ -675,14 +675,38 @@ function formatBlock(
 	const className = isPali ? "pali-paragraph" : "english-paragraph";
 	const verseClass = isVerseText ? (isPali ? "verse-basic" : "verse") : "";
 
-	// Helper to convert inline markdown links to anchors inside pre-wrapped HTML
-	const replaceMarkdownLinksInline = (s: string): string => {
-		return s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, url) => {
+	// Helper to convert inline markdown links to anchors, but NOT inside gloss patterns |term::definition|
+	const replaceMarkdownLinksOutsideGloss = (s: string): string => {
+		const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+		const glossRegex = /\|[^|]*?::[^|]*?\|/g; // non-greedy gloss pattern
+		let result = "";
+		let lastIndex = 0;
+		let match: RegExpExecArray | null;
+
+		while ((match = glossRegex.exec(s)) !== null) {
+			const before = s.slice(lastIndex, match.index);
+			// Replace links in the segment before gloss
+			result += before.replace(linkRegex, (_m, label, url) => {
+				const href = String(url).trim();
+				const isExternal = /^https?:\/\//i.test(href);
+				const extra = isExternal
+					? ' target="_blank" rel="noopener"'
+					: "";
+				return `<a href="${href}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"${extra}>${label}</a>`;
+			});
+			// Append gloss untouched
+			result += match[0];
+			lastIndex = glossRegex.lastIndex;
+		}
+		// Trailing remainder
+		const tail = s.slice(lastIndex);
+		result += tail.replace(linkRegex, (_m, label, url) => {
 			const href = String(url).trim();
 			const isExternal = /^https?:\/\//i.test(href);
 			const extra = isExternal ? ' target="_blank" rel="noopener"' : "";
 			return `<a href="${href}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"${extra}>${label}</a>`;
 		});
+		return result;
 	};
 
 	// Wrap individual words if this is a Pali paragraph and convert inline markdown links
@@ -690,8 +714,8 @@ function formatBlock(
 	if (isPali) {
 		processedText = wrapPaliWords(text);
 	}
-	// Convert inline markdown links for both English and Pāli content
-	processedText = replaceMarkdownLinksInline(processedText);
+	// Convert inline markdown links for both English and Pāli content, but keep links inside gloss patterns as raw markdown
+	processedText = replaceMarkdownLinksOutsideGloss(processedText);
 
 	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${
 		isVerseText ? transformVerseNewlines(processedText) : processedText
