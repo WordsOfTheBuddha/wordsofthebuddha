@@ -1,9 +1,10 @@
 ---
 title: Suddhaṭṭhaka sutta - Pure
-description: The Buddha describes some of the wrong views on attaining purity as well as the the state of an Arahant in these verses.
-fetter: adherence to rules and observances
-tags: snp,snp4,precepts,purity,arahant
+description: Can seeing the pure in another purify one still bound by attachments? A sage’s purity is not found through another, nor through what is seen, heard, or sensed. While the attached mind swings like a monkey from branch to branch, the wise one, having relinquished all grasping, abides unbound.
+qualities: attachment, non-proliferation, non-identification, craving, wisdom, speculation, free from attachment
+theme: cultivating discernment, wisdom, inspiration
 slug: snp4.4
+simile: monkey swinging from branch to branch
 ---
 
 Passāmi suddhaṁ paramaṁ arogaṁ,

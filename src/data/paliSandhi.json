@@ -371,5 +371,15 @@
 		"kukkucciya:restlessness; uneasiness; anxiety",
 		"upachinde:severs; cuts off; breaks off; completely stops"
 	],
-	"satimābhinande": ["satimā", "abhinande"]
+	"satimābhinande": ["satimā", "abhinande"],
+	"tenāyasmā": ["tena", "āyasmā"],
+	"yaduttari": ["yad", "uttari"],
+	"sabbamāha": ["sabbaṁ", "āha"],
+	"hīnamaññaṁ": ["hīna", "maññaṁ"],
+	"yassūbhayante": ["yassa", "ubhaya", "ante"],
+	"paṇidhīdha": ["paṇidhi", "idha"],
+	"diṭṭhimanādiyānaṁ": [
+		"diṭṭhiṁ",
+		"anādiyāna:not taking up; not grasping; not accepting"
+	]
 }

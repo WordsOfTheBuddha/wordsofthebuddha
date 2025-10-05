@@ -1,9 +1,10 @@
 ---
-title: Paramaṭṭhaka sutta - Ultimate
-description: The Buddha advises against engaging in views deemed the ultimate, as it leads to disputes and clinging to views and doesn't lead to the cessation of suffering.
-fetter: conceit,self-identity view,ignorance
-tags: snp,snp4,disputes,views,ultimate,conceit,clinging
+title: Paramaṭṭhaka sutta - Sublime
+description: By esteeming one’s view as superior in the world, one cannot overcome disputes. The steadfast sage is one who has abandoned all grasping and clinging, standing free from every view.
+qualities: conceit, argumentativeness, clinging to rules and observances, attachment, free from attachment, discernment, speculation, impartiality
+theme: wisdom, cultivating discernment, inquisitiveness
 slug: snp4.5
+commentary: \[1] See [AN 6.61](/an6.61) for different meanings of both ends.
 ---
 
 Paramanti diṭṭhīsu paribbasāno,
