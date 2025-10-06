@@ -148,10 +148,12 @@ export class DiscoverRenderer {
                         ` : ''}
 
                         <div class="mt-2 text-xs flex items-center gap-2">
+                            ${(item.type === "topic" || item.type === "quality") ? `
                             <a href="/explorer?focus=${encodeURIComponent(item.slug)}&full=1" aria-label="View in explorer" title="View in explorer" class="inline-flex items-center gap-1 px-2 py-1 rounded border border-[var(--border-color)] bg-[var(--background-color)] text-[var(--link-color)] hover:text-[var(--link-hover-color)] hover:border-[var(--primary-color)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-color)] focus-visible:ring-opacity-50">
                                 <span class="mt-1">${graphIcon}</span>
                                 <span>View in explorer</span>
                             </a>
+                            ` : ""}
                         </div>
 
                     ` : ""}

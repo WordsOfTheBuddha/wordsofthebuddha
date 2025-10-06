@@ -71,15 +71,23 @@ const totalDiscourses = allDiscourses.length;
 							>
 								<span>{displayTitle}</span>
 								<ContentTag contentType={tagContentType} />
-								<a
-									href=`/explorer?focus=${slug}&full=1`
-									aria-label="View in explorer"
-									title="View in explorer"
-									class="inline-flex items-center gap-1 ml-4 px-2 py-1 rounded border border-[var(--border-color)] bg-[var(--background-color)] text-[var(--link-color)] hover:text-[var(--link-hover-color)] hover:border-[var(--primary-color)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-color)] focus-visible:ring-opacity-50"
-								>
-									<span class="mt-1" set:html={graphIcon} />
-									<span>View in explorer</span>
-								</a>
+								{
+									(contentType === "topic" ||
+										contentType === "quality") && (
+										<a
+											href={`/explorer?focus=${slug}&full=1`}
+											aria-label="View in explorer"
+											title="View in explorer"
+											class="inline-flex items-center gap-0 ml-4 px-1.5 py-0.5 rounded border text-xs border-[var(--border-color)] bg-[var(--background-color)] text-[var(--link-color)] hover:text-[var(--link-hover-color)] hover:border-[var(--primary-color)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-color)] focus-visible:ring-opacity-50"
+										>
+											<span
+												class="mt-0.5 scale-75"
+												set:html={graphIcon}
+											/>
+											<span>View in explorer</span>
+										</a>
+									)
+								}
 							</h1>
 						</div>
 					</div>
