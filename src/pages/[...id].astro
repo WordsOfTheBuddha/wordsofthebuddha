@@ -11,14 +11,47 @@ import {
 	debug,
 } from "../utils/contentParser";
 import { routes } from "../utils/routes";
+import { directoryStructure } from "../data/directoryStructure";
 import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
 
-// Extract slug from params
+// Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
 let id: string = originalId || "";
+
+// Support legacy / nested style paths like /iti/iti50-99 or /ud/ud8/ud8.2 by redirecting
+// to the canonical top-level discourse slug (last segment) if it exists.
+if (originalId && originalId.includes("/")) {
+	const segments = originalId.split("/").filter(Boolean);
+	if (segments.length > 1) {
+		const candidate = segments[segments.length - 1];
+
+		// Collect collection slugs (same logic as [collection].astro)
+		const collectionSlugs: string[] = [];
+		const walk = (map: Record<string, any>) => {
+			for (const key of Object.keys(map)) {
+				collectionSlugs.push(key);
+				const child = map[key]?.children;
+				if (child && typeof child === "object") walk(child);
+			}
+		};
+		walk(directoryStructure);
+		const isCollection = collectionSlugs.includes(candidate);
+		const isDiscourse = routes.includes(candidate);
+
+		if (isCollection || isDiscourse) {
+			if (originalId !== candidate) {
+				const location = `/${candidate}`;
+				return new Response(null, {
+					status: 301,
+					headers: { Location: location },
+				});
+			}
+		}
+	}
+}
 
 // Filter out system/browser and asset-like requests early to avoid hijacking dev/build assets
 const SYSTEM_REQUEST_PATTERNS = [
@@ -40,9 +73,7 @@ const ASSET_EXT_REGEX =
 const isSystemRequest =
 	!id ||
 	SYSTEM_REQUEST_PATTERNS.some((pattern) => originalId?.includes(pattern)) ||
-	// Any nested path (like assets/*) shouldn't be handled by this catch-all
-	originalId?.includes("/") ||
-	// Typical asset requests by extension
+	// Typical asset requests by extension (including nested ones we did not redirect above)
 	ASSET_EXT_REGEX.test(originalId ?? "");
 
 if (isSystemRequest) {
