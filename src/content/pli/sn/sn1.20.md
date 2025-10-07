@@ -6,7 +6,7 @@ theme: cultivating discernment, wisdom
 slug: sn1.20
 character: Venerable Samiddhi
 topic: sensual pleasures
-priority: 10
+priority: 2
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati tapodārāme.
