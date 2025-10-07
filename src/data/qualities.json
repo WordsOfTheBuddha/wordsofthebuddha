@@ -791,6 +791,7 @@
 			"Related:{cruelty}",
 			"Supported by:{aggressiveness, bad habits, bad friendship, feuding, non-restraint, treachery, wrong speech}",
 			"Leads to:{fear, regret}",
+			"Opposite:{non-harm}",
 			"[pāpaka]"
 		],
 		"having many desires": [
@@ -874,6 +875,7 @@
 			"Related:{irritability, anxiety}",
 			"Supported by:{aversion, wrong intention}",
 			"Leads to:{irritability}",
+			"Opposite:{patience}",
 			"[akkhama]"
 		],
 		"inquisitiveness": [
@@ -1079,6 +1081,7 @@
 			"Supported by:{right view, right intention, right speech}",
 			"Guarded by:{right effort, mindfulness, patience}",
 			"Leads to:{right livelihood, without fear}",
+			"Opposite:{harm}",
 			"[avihiṃsā, ahiṁsa]"
 		],
 		"non-identification": [
@@ -1191,7 +1194,8 @@
 			"lit. shaking",
 			"Supported by:{feuding}",
 			"Leads to:{anxiety, distraction}",
-			"[kopa, uddhacca, āvila]"
+			"Opposite:{imperturbable}",
+			"[kopa, uddhacca, āvila, paritassati]"
 		],
 		"politeness": [
 			"courtesy",
@@ -1624,6 +1628,7 @@
 			"without mental unease",
 			"Supported by:{collectedness, equanimity}",
 			"Leads to:{formless}",
+			"Opposite:{perturbation}",
 			"[aparitassa, anigha, aneja, avihaññamāna]"
 		],
 		"unprincipled": [
@@ -1658,9 +1663,10 @@
 			"extravagance",
 			"indulgence",
 			"intoxication",
+			"being misguided",
 			"Supported by:{personal existence}",
 			"Leads to:{craving, negligence}",
-			"[mada]"
+			"[mada, mogha]"
 		],
 		"vigour": [
 			"energy",
@@ -1679,7 +1685,7 @@
 			"seeing things as they are",
 			"seeing the truth",
 			"seeing the dhamma",
-			"Supported by:{collectedness, recognition of impermanence, recogntion of unsatisfactoriness, recognition of not-self, recognition of unattractiveness, recollection of death}",
+			"Supported by:{collectedness, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness, recollection of death}",
 			"Leads to:{disenchantment}",
 			"[dassana]"
 		],

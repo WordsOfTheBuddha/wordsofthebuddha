@@ -381,5 +381,25 @@
 	"diṭṭhimanādiyānaṁ": [
 		"diṭṭhiṁ",
 		"anādiyāna:not taking up; not grasping; not accepting"
-	]
+	],
+	"samparitāpessāmīti": ["samparitāpe", "essāmī:I will"],
+	"kāḷīti": ["kāḷī"],
+	"ayyeti": ["ayye"],
+	"nādhivāseyyāthāti": [
+		"na",
+		"adhivāseyyātha:you all would accept, consent, endure"
+	],
+	"samparitāpeyyāti": ["sam", "paritāpeyya"],
+	"bhavasīti": ["bhavasi"],
+	"vobhindissatīti": ["vo", "bhindissati"],
+	"vīmaṁseyyanti": ["vīmaṁseyya"],
+	"viharasīti": ["viharasi"],
+	"gahapatānīti": ["gahapatāni"],
+	"paritassatīti": ["paritassati"],
+	"paritassanāti": ["paritassanā"],
+	"aparitassanāti": ["na", "paritassanā"],
+	"bāladhammoti": ["bāladhamma"],
+	"diṭṭhevāhaṁ": ["diṭṭhe", "eva", "ahaṁ"],
+	"karīyantīti": ["karīyanti"],
+	"sokaparidevadukkhadomanassupāyāsāti": ["sokaparidevadukkhadomanassupāyāsa"]
 }
