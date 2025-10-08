@@ -1,6 +1,6 @@
 ---
 title: Tuvaṭaka sutta - Immediate Way of Practice
-description: "When asked about the state of peace and the way of practice to reach it, the Buddha describes this state as being steady and unruffled, like the middle of the ocean where no wave arises. He then shares the immediate way of practice to achieve it: guarding the senses, letting go of indulgence, to be a meditator who cultivates wakefulness, and through investigation, abandoning a host of unwholesome qualities."
+description: "When asked about the state of peace and the way of practice to reach it, the Buddha describes this state as being steady and unruffled, like the middle of the ocean where no wave arises. He then shares the way of practice to achieve it without delay: guarding the senses, letting go of indulgence, to be a meditator who cultivates wakefulness, and through investigation, abandoning a host of unwholesome qualities."
 qualities: sense restraint, solitude, quenching, collectedness, tranquility, mental proliferation, imperturbable, craving, fear, cultivation, non-regret, wakefulness, continuous effort, laziness, hypocrisy, wrong livelihood, conceit, greed, stinginess, anger, wrong speech, boastfulness, brashness, treachery, examination, diligence
 theme: training guideline, wisdom, inspiration
 slug: snp4.14
