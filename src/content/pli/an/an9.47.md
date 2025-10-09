@@ -1,6 +1,6 @@
 ---
 title: Sandiṭṭhika nibbāna sutta - Directly Visible Nibbāna
-description: Nibbāna is directly visible in a provisional sense when one enters a jhāna or subsequent meditation attainments. It is visible in the definitive sense when one attains the cessation of perception and feeling, and having seen with wisdom, completely exhausts mental defilements.
+description: Nibbāna is directly visible in a provisional sense when one enters a jhāna or subsequent meditation attainments. It is visible in the definitive sense when one attains the cessation of perception and what is felt, and having seen with wisdom, completely exhausts mental defilements.
 qualities: cultivation, ending, quenching, collectedness
 theme: inspiration, wisdom, inquisitiveness
 slug: an9.47
