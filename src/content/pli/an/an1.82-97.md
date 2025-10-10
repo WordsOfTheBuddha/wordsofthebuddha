@@ -1,6 +1,6 @@
 ---
 title: Pamādādi vagga - The Chapter Beginning with Negligence
-description: The Buddha explains the consequences of negligence and diligence, laziness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.
+description: The Buddha explains the consequences of negligence and diligence, idleness and arousing of energy, having many desires and having few wishes, discontentment and contentment, unwise and wise attention, full awareness and lack of it, bad and good friendships, and good and bad habits.
 fetter: ignorance
 qualities: negligence, diligence, laziness, rousing of energy, having many desires, contentment, discontentment, unwise attention, wise attention, wrong view, right view, bad friendship, good friendship, lack of discernment, full awareness
 tags: negligence, diligence, laziness, arousing of energy, desires, wishes, discontentment, contentment, wise attention, right view, full awareness, friendship, an, an1
