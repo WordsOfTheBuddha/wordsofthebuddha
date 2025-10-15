@@ -51,6 +51,7 @@
 		"personal existence",
 		"perturbation",
 		"regret",
+		"recognition of diversity",
 		"resentment",
 		"self-erasure",
 		"self-making",
@@ -559,7 +560,7 @@
 			"Supported by:{displeasure, perturbation}",
 			"Leads to:{perceiving gratification, muddle-minded}",
 			"Opposite:{collectedness}",
-			"[asamāhita, asamādhi]"
+			"[asamāhita, asamādhi, amanasikāra]"
 		],
 		"doubt": [
 			"confusion",
@@ -1227,6 +1228,12 @@
 			"Supported by:{liberation}",
 			"Leads to:{impartiality, safety, sorrow-free, without fear, with nothing}",
 			"[nibbuta, nirāsa]"
+		],
+		"recognition of diversity": [
+			"concept of variety",
+			"perception of diversity",
+			"perception of multiplicity",
+			"[nānattasaññā]"
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
