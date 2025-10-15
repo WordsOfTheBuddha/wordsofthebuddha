@@ -4,17 +4,20 @@ import { Image } from "astro:assets";
 import CC0Button from "../assets/CC0_button.svg";
 ---
 
-<footer class="flex justify-between items-center border-t dark:border-gray-700">
+<footer
+	class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center border-t dark:border-gray-700 py-4"
+>
 	<div class="flex-none text-lg font-bold"><ThemeToggle /></div>
-	<div class="flex items-center space-x-4 ml-auto">
-		<div>
-			<Image
-				src={CC0Button}
-				alt="CC0 License Button"
-				class="h-8 opacity-30"
-				width={88}
-				height={31}
-			/>
-		</div>
+	<div class="flex items-center gap-4 ml-auto">
+		<a
+			href="/public-domain"
+			class="text-sm text-gray-600 dark:text-gray-300 hover:underline"
+			>Public Domain</a
+		>
+		<a
+			href="/privacy"
+			class="text-sm text-gray-600 dark:text-gray-300 hover:underline"
+			>Privacy</a
+		>
 	</div>
 </footer>

@@ -1,0 +1,162 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const effectiveDate = new Date().toLocaleDateString(undefined, {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<Layout
+	fp="/privacy"
+	title="Privacy Policy"
+	seoTitle="Privacy Policy - Words of the Buddha"
+	description="How Words of the Buddha handles your data: what we collect, why, how it's stored, and your choices."
+	showAuth={false}
+>
+	<section aria-labelledby="privacy-title">
+		<p>
+			This page explains what information Words of the Buddha ("we",
+			"our", "the site") collects, how it’s used, and the choices you
+			have. This policy applies to the website and any associated services
+			exposed under this domain.
+		</p>
+
+		<p><strong>Effective date:</strong> {effectiveDate}</p>
+
+		<h3>What we collect</h3>
+		<ul>
+			<li>
+				Basic usage data for analytics and performance. We use
+				privacy-friendly website analytics and performance tooling
+				provided by our hosting platform to understand aggregate usage
+				(e.g., pages visited, general device/browser info). This is used
+				to improve the site and does not include the contents of your
+				reading or highlighting.
+			</li>
+			<li>
+				Preferences you set in your browser are stored locally on your
+				device using localStorage (e.g., theme, Pāli mode, layout, font
+				size, and Pāli lookup preference). These do not leave your
+				device unless you explicitly share your URL or screenshots.
+			</li>
+			<li>
+				If you choose to sign in, we create a session cookie to keep you
+				logged in and we store account-related data in our database
+				(e.g., your user ID and the content you choose to save such as
+				highlights, saved items, or read-later lists). We do not require
+				an account to read content.
+			</li>
+		</ul>
+
+		<h3>Cookies and local storage</h3>
+		<ul>
+			<li>
+				<strong>Session cookie</strong>: When authentication is enabled
+				and you sign in, an HTTP-only session cookie (named <code
+					>__session</code
+				>) is set to authenticate requests to our API. It is only used
+				for security and identifying your account to save or retrieve
+				your data (e.g., highlights or saved items).
+			</li>
+			<li>
+				<strong>Local storage</strong>: We store UI preferences like
+				theme (<code>theme</code>), Pāli mode (<code>paliMode</code>),
+				Pāli word lookup preference (<code>paliLookup</code>), layout (<code
+					>layout</code
+				>), and font size (<code>fontSize</code>) in your browser. You
+				can clear these at any time from your browser settings.
+			</li>
+		</ul>
+
+		<h3>Authentication and account data</h3>
+		<p>
+			Sign-in is optional. If you sign in, we use Firebase Authentication
+			to verify your identity and a server-managed session cookie to
+			authorize requests. We may store your email address and a unique
+			user ID provided by the authentication service. If you use features
+			like “Save,” “Read later,” or “Highlights,” the data you create is
+			stored in our database and associated with your account.
+		</p>
+
+		<h3>Analytics and performance</h3>
+		<p>
+			We use privacy-conscious analytics and performance tooling (e.g.,
+			Vercel Analytics and Speed Insights) to understand site usage and
+			performance. These services typically focus on aggregated and
+			de-identified metrics to help improve the site.
+		</p>
+
+		<h3>Offline use and caching</h3>
+		<p>
+			This site supports offline use with a Service Worker (PWA). Your
+			browser may cache pages and assets for faster loads and offline
+			reading. Cached data lives on your device and can be cleared via
+			your browser’s site data settings.
+		</p>
+
+		<h3>How we use your data</h3>
+		<ul>
+			<li>Provide and improve the site and reading experience.</li>
+			<li>
+				Enable optional features tied to your account (e.g., highlights,
+				saved items).
+			</li>
+			<li>Maintain the security and reliability of our services.</li>
+		</ul>
+
+		<h3>Data sharing</h3>
+		<ul>
+			<li>We do not sell your personal information.</li>
+			<li>
+				We use trusted processors to operate the site (e.g., Firebase
+				for authentication and data storage, and our hosting provider’s
+				analytics). These processors handle data on our behalf under
+				their own terms and privacy practices.
+			</li>
+			<li>
+				We may disclose information if required by law or to protect the
+				rights, property, or safety of our users and the public.
+			</li>
+		</ul>
+
+		<h3>Data retention</h3>
+		<p>
+			Account-related data (if you sign in) is retained while your account
+			remains active. You can request deletion of your account data at any
+			time. Cached files on your device persist until your browser clears
+			them based on its own policies or your manual action.
+		</p>
+
+		<h3>Your choices</h3>
+		<ul>
+			<li>
+				Use the site without signing in. Most content is available
+				without an account.
+			</li>
+			<li>Manage cookies and site data in your browser settings.</li>
+			<li>
+				Clear local storage and cached data in your browser at any time.
+			</li>
+			<li>
+				Request access to or deletion of your account data if you have
+				signed in.
+			</li>
+		</ul>
+
+		<h3>Contact</h3>
+		<p>
+			For questions about this policy or to request access or deletion of
+			your account data, email <a href="mailto:hello@wordsofthebuddha.org"
+				>hello@wordsofthebuddha.org</a
+			>.
+		</p>
+
+		<h3>Updates to this policy</h3>
+		<p>
+			We may update this policy to reflect changes to the site or legal
+			requirements. We’ll update the “Effective date” above when we do.
+		</p>
+	</section>
+</Layout>

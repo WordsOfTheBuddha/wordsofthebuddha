@@ -1,6 +1,6 @@
 # Words of the Buddha – HTTP API
 
-This document describes the public API endpoints for retrieving raw text and performing Pāli dictionary lookups.
+This document describes the public API endpoints for retrieving raw text, performing Pāli dictionary lookups, and exploring curated content.
 
 -   All endpoints return JSON with `Content-Type: application/json`.
 -   CORS: `Access-Control-Allow-Origin: *` is enabled.
