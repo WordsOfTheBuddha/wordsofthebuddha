@@ -372,7 +372,7 @@
 			"tendency of self-comparison",
 			"Context: self-view expressed as comparison—seeing oneself as superior, inferior, or equal; the persistent “I am” conceit (asmimāna) that underlies identification and fuels rebirth",
 			"Supported by:{ignorance}",
-			"Leads to:{argumentativeness, boastfulness, feuding, mental proliferation, personal existence, stubbornness, vanity}",
+			"Leads to:{argumentativeness, boastfulness, feuding, mental proliferation, personal existence, recognition of diversity, stubbornness, vanity}",
 			"Opposite:{humility, non-identification, non-proliferation}",
 			"[māna, atimāna, unnaḷa]"
 		],
@@ -434,7 +434,7 @@
 			"lit. thirst",
 			"Related:{self-erasure, self-making, sensual desire}",
 			"Supported by:{ignorance}",
-			"Leads to:{passion, mental proliferation}",
+			"Leads to:{mental proliferation, passion, recognition of diversity}",
 			"[taṇha, abhijjhā]"
 		],
 		"cruelty": [
@@ -704,6 +704,7 @@
 			"surpassing forms",
 			"Supported by:{imperturbable}",
 			"Leads to:{non-proliferation}",
+			"Opposite:{recognition of diversity}",
 			"[arūpa]"
 		],
 		"free from attachment": [
@@ -1031,7 +1032,7 @@
 			"conceptualization",
 			"forming various opinions",
 			"Context: Tendency to overelaborate mental constructs—such as opinions, judgments, projections, and narratives—arising from sensory experience. It entangles the mind in a cascade of thoughts, concepts, and perceptions, giving rise to unwholesome states and suffering.",
-			"Supported by:{conceit, craving, speculation}",
+			"Supported by:{conceit, craving, recognition of diversity, speculation}",
 			"Leads to:{greed, self-making}",
 			"Opposite:{inspiration, non-proliferation}",
 			"[papañca]"
@@ -1233,6 +1234,9 @@
 			"concept of variety",
 			"perception of diversity",
 			"perception of multiplicity",
+			"Supported by:{conceit, craving}",
+			"Leads to:{mental proliferation, speculation}",
+			"Opposite:{formless}",
 			"[nānattasaññā]"
 		],
 		"recognition of impermanence": [
@@ -1519,7 +1523,7 @@
 			"hypothesis-making",
 			"reasoned reflection",
 			"Context: A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often rooted in unwise attention. Speculation can further proliferate into views and opinions.",
-			"Supported by:{unwise attention}",
+			"Supported by:{unwise attention, recognition of diversity}",
 			"Leads to:{mental proliferation, doubt}",
 			"Opposite:{examination}",
 			"[takka]"
