@@ -1,6 +1,6 @@
 ---
 title: Suppavāsā sutta - Suppavāsā
-description: The Buddha teaches the laywoman Suppavāsā that giving food bestows life, beauty, happiness, and strength upon the recipient and, in turn, upon the giver. Such generosity, especially towards those accomplished in conduct is very fruitful.
+description: The Buddha teaches the laywoman Suppavāsā that giving food bestows life, beauty, happiness, and strength upon the recipient and, in turn, upon the giver. Such generosity, especially toward those accomplished in conduct is very fruitful.
 qualities: giving, stinginess, merit
 theme: inspiration, principle, wisdom
 slug: an4.57
