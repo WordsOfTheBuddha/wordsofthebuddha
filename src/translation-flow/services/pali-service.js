@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import chalk from "chalk";
 
-const API_ENDPOINT = "/api/pali/batch-lookup";
+const API_ENDPOINT = "/api/lookup/pali";
 const MAX_BATCH_SIZE = 1000;
 
 /**
