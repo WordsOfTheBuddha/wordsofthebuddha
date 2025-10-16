@@ -4,6 +4,7 @@ description: When approached with abundant offerings, the Buddha expresses a hea
 qualities: self-making, conceit, recognition of impermanence, recognition of unattractiveness, recognition of unsatisfactoriness dispassion, passion
 theme: cultivating discernment, inspiration, wisdom, recollection of the Buddha, inquisitiveness
 slug: an5.30
+simile: fishermen making a haul of fish
 character: Venerable Nāgita
 ---
 

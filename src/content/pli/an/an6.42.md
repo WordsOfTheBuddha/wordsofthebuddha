@@ -4,6 +4,7 @@ description: The Buddha rejects fame and the pleasure of gains, extolling seclus
 qualities: collectedness, solitude, conceit, sensual desire, personal existence
 theme: inquisitiveness, inspiration, cultivating discernment, recollection of the Buddha
 slug: an6.42
+simile: fishermen making a haul of fish
 character: Venerable Nāgita
 ---
 
