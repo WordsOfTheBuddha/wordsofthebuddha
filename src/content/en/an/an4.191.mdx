@@ -1,7 +1,7 @@
 ---
 title: Sotānugata sutta - Followed by Ear
 description: The Buddha describes four benefits of deeply internalizing the Dhamma. Even if one dies muddle-minded, they are reborn among the deities, where hearing the Dhamma again and recollecting their past spiritual practice enables them to swiftly reach distinction.
-qualities: examination, learned, right view, muddle-minded, mindfulness, recollection of the Dhamma, spiritual life, discernment
+qualities: examination, learned, right view, muddle-mindedness, mindfulness, recollection of the Dhamma, spiritual life, discernment
 theme: inspiration, directly knowing, wisdom
 slug: an4.191
 simile: sound of kettledrum, sound of conch shell
