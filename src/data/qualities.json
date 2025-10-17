@@ -43,7 +43,7 @@
 		"laziness",
 		"mental proliferation",
 		"moral recklessness",
-		"muddle-minded",
+		"muddle-mindedness",
 		"negligence",
 		"non-restraint",
 		"passion",
@@ -76,6 +76,7 @@
 		"wrong effort",
 		"wrong intention",
 		"wrong livelihood",
+		"wrong mindfulness",
 		"wrong speech",
 		"wrong view"
 	],
@@ -434,7 +435,7 @@
 			"lit. thirst",
 			"Related:{self-erasure, self-making, sensual desire}",
 			"Supported by:{ignorance}",
-			"Leads to:{mental proliferation, passion, recognition of diversity}",
+			"Leads to:{mental proliferation, passion, recognition of diversity, wrong mindfulness}",
 			"[taṇha, abhijjhā]"
 		],
 		"cruelty": [
@@ -547,7 +548,7 @@
 			"unhappiness",
 			"bitterness",
 			"Related:{anger, sorrow}",
-			"Supported by:{aversion, muddle-minded}",
+			"Supported by:{aversion, muddle-mindedness}",
 			"Leads to:{contempt, irritability, distraction}",
 			"[domanassa]"
 		],
@@ -558,7 +559,7 @@
 			"with a wandering mind",
 			"with runaway thoughts",
 			"Supported by:{displeasure, perturbation}",
-			"Leads to:{perceiving gratification, muddle-minded}",
+			"Leads to:{perceiving gratification, muddle-mindedness}",
 			"Opposite:{collectedness}",
 			"[asamāhita, asamādhi, amanasikāra]"
 		],
@@ -927,7 +928,7 @@
 			"moodiness",
 			"being prone to annoyance",
 			"being prone to anger",
-			"Related:{anxiety, muddle-minded}",
+			"Related:{anxiety, muddle-mindedness}",
 			"Supported by:{displeasure, impatience}",
 			"Leads to:{anger, wrong speech}",
 			"[kodhana]"
@@ -1044,7 +1045,7 @@
 			"observing body, felt experience, mind, and mental qualities",
 			"Supported by:{right view, right effort, wakefulness, wise attention}",
 			"Leads to:{examination, full awareness}",
-			"Opposite:{muddle-minded}",
+			"Opposite:{muddle-mindedness, wrong mindfulness}",
 			"[sati, anupassanā]"
 		],
 		"moral recklessness": [
@@ -1056,12 +1057,12 @@
 			"Leads to:{brashness, harm, slaughtering, unprincipled}",
 			"[anottappa]"
 		],
-		"muddle-minded": [
+		"muddle-mindedness": [
 			"forgetfulness",
 			"not mindful",
-			"Related:{irritability}",
-			"Supported by:{distraction, wrong effort}",
-			"Leads to:{displeasure, weak in effort}",
+			"Related:{wrong mindfulness}",
+			"Supported by:{distraction, wrong mindfulness}",
+			"Leads to:{displeasure, distraction}",
 			"Opposite:{mindfulness}",
 			"[muṭṭhassatī]"
 		],
@@ -1714,7 +1715,7 @@
 			"lacking in endurance",
 			"lax, loose, slack, unaspirated, indistinct",
 			"Related:{wrong effort}",
-			"Supported by:{negligence, muddle-minded}",
+			"Supported by:{negligence}",
 			"Leads to:{laziness}",
 			"Opposite:{continuous effort, right effort, rousing of energy}",
 			"[hīnavīriya, sithila]"
@@ -1765,7 +1766,7 @@
 			"incorrect endeavor",
 			"Related:{weak in effort}",
 			"Supported by:{bad friendship, wrong livelihood}",
-			"Leads to:{muddle-minded}",
+			"Leads to:{wrong mindfulness, muddle-mindedness}",
 			"Opposite:{right effort}",
 			"[micchāvāyāma]"
 		],
@@ -1785,6 +1786,14 @@
 			"Supported by:{greed, sexual misconduct, slaughtering, stealing, treachery}",
 			"Leads to:{wrong effort}",
 			"[micchāājīva]"
+		],
+		"wrong mindfulness": [
+			"Context: Attention distorted by craving and aversion; unwholesome recollection that reinforces delusion or distraction",
+			"Related:{muddle-mindedness}",
+			"Supported by:{craving, aversion, wrong effort}",
+			"Leads to:{distraction}",
+			"Opposite:{mindfulness}",
+			"[micchāsati]"
 		],
 		"wrong speech": [
 			"false speech",
