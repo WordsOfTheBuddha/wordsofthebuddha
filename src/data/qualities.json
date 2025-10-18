@@ -665,7 +665,8 @@
 			"terror",
 			"Supported by:{harm}",
 			"Leads to:{suffering}",
-			"[bhaya]"
+			"Opposite:{without fear}",
+			"[bhaya, dara]"
 		],
 		"fear of wrongdoing": [
 			"conscientious",
@@ -1394,7 +1395,7 @@
 		"safety": [
 			"sanctuary",
 			"security",
-			"peace",
+			"at peace",
 			"rest",
 			"Supported by:{quenching}",
 			"Leads to:{without fear}",
@@ -1598,7 +1599,7 @@
 			"serenity",
 			"Supported by:{joyful pleasure, one-pointedness}",
 			"Leads to:{happiness}",
-			"[passaddhi, upasama, upasanta]"
+			"[passaddhi, santi, upasama, upasanta]"
 		],
 		"treachery": [
 			"deviousness",
@@ -1760,6 +1761,7 @@
 			"free of distress",
 			"Related:{impartiality, sorrow-free}",
 			"Supported by:{non-harm, quenching, safety}",
+			"Opposite:{fear}",
 			"[niddara]"
 		],
 		"wrong effort": [
