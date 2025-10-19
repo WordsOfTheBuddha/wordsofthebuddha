@@ -424,5 +424,15 @@
 	"dassanakāmoti": ["dassanakāma"],
 	"sukhamasayitthāti": ["sukhamasayittha"],
 	"cetasoti": ["cetaso"],
-	"pacchāpabbhāranti": ["pacchā", "pabbhāraṁ"]
+	"pacchāpabbhāranti": ["pacchā", "pabbhāraṁ"],
+	"lokasmimanekarūpā": ["lokasmiṁ", "anekarūpā"],
+	"tiriyañcāpi": ["tiriyaṁ", "ca", "api"],
+	"etābhinandāmi": ["eta", "abhinandāmi"],
+	"gotamanūpadhīkaṁ": [
+		"gotamā",
+		"anūpadhīka:free from attachment; free from taking things as mine; lit. not placing near state"
+	],
+	"vedagumābhijaññā": ["vedagū", "abhijaññā"],
+	"oghamimaṁ": ["ogha", "imaṁ"],
+	"saṅgamimaṁ": ["saṅgaṁ", "imaṁ"]
 }
