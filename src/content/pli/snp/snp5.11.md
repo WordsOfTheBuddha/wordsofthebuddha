@@ -4,6 +4,7 @@ description: The venerable Jatukaṇṇi asks the Buddha on how to attain the st
 qualities: sensual desire, giving up
 theme: inspiration, principle
 slug: snp5.11
+character: Venerable Jatukaṇṇi
 ---
 
 “Sutvānahaṁ vīramakāmakāmiṁ,

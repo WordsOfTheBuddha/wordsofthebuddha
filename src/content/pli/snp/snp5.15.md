@@ -4,6 +4,7 @@ description: The venerable Mogharāja asks the Buddha how to look upon the world
 qualities: right view, mindfulness, personal existence
 theme: directly knowing, wisdom
 slug: snp5.15
+character: Venerable Mogharāja
 ---
 
 “Dvāhaṁ sakkaṁ apucchissaṁ,
