@@ -4,7 +4,7 @@ description: The Buddha describes how wrong view leads to unwholesome qualities 
 qualities: wrong view, right view, unwise attention, wise attention
 theme: cultivating discernment, inspiration
 slug: an1.306-315
-simile: seeds
+simile: seed
 ---
 
 #### 1.306
