@@ -1,7 +1,7 @@
 ---
 title: Sadhāyamāna sutta - Mocking
 description: The Blessed One sees a group of young brāhmaṇas passing by, appearing to be mocking.
-qualities: wrong speech, muddle-minded
+qualities: wrong speech, muddle-mindedness
 theme: inspiration, wisdom
 fetter: ignorance
 tags: mocking,ignorance,ud,ud5
