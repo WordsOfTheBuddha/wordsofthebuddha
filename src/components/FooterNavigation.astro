@@ -17,7 +17,7 @@ const { prev, next } = Astro.props;
 			prev && (
 				<a
 					href={`/${prev.id}`}
-					class="nav-link w-fit p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-left"
+					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-left"
 					style="color: var(--link-color)"
 					data-base-href={`/${prev.id}`}
 				>
@@ -31,7 +31,7 @@ const { prev, next } = Astro.props;
 			next && (
 				<a
 					href={`/${next.id}`}
-					class="nav-link w-fit p-3 rounded-lg bg-white dark:bg-gray-800 text-sm shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-shadow duration-200 text-right"
+					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-right"
 					style="color: var(--link-color)"
 					data-base-href={`/${next.id}`}
 				>

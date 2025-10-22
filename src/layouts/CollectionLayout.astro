@@ -102,7 +102,7 @@ function getContentCount(slug: string): number {
 		{
 			hasChildren && (
 				<div class="flex justify-between items-center mb-6">
-					<div class="inline-flex rounded-full border border-gray-600 dark:border-gray-500 p-1 bg-white dark:bg-gray-800">
+					<div class="inline-flex rounded-full border border-[var(--border-color)] p-1 bg-[var(--surface-paper)]">
 						<button
 							type="button"
 							id="view-collections"
@@ -110,7 +110,7 @@ function getContentCount(slug: string): number {
 								"px-4 py-1 text-sm rounded-full transition-colors",
 								defaultShowCollections
 									? "bg-primary text-white dark:text-gray-100"
-									: "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100",
+									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
 							].join(" ")}
 						>
 							Collections
@@ -122,7 +122,7 @@ function getContentCount(slug: string): number {
 								"px-4 py-1 text-sm rounded-full transition-colors",
 								!defaultShowCollections
 									? "bg-primary text-white dark:text-gray-100"
-									: "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100",
+									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
 							].join(" ")}
 						>
 							Discourses
@@ -139,7 +139,7 @@ function getContentCount(slug: string): number {
 							<input
 								type="text"
 								id="client-filter"
-								class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-gray-300 dark:border-gray-700 focus:outline-none focus:border-primary-color dark:focus:border-primary-color"
+								class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
 								placeholder="Filter discourses..."
 							/>
 						</div>

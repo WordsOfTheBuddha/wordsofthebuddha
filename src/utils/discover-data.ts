@@ -94,7 +94,10 @@ function buildPriorityMap(): Map<string, number> {
 					const id = (d as any).id;
 					const current = priorityMap.get(id);
 					// Keep the maximum priority value seen for a discourse
-					if (current === undefined || (d as any).priority > current) {
+					if (
+						current === undefined ||
+						(d as any).priority > current
+					) {
 						priorityMap.set(id, (d as any).priority);
 					}
 				}
@@ -324,6 +327,38 @@ export function buildUnifiedContent(
 	return allContent;
 }
 
+function createSlugVariants(value: string): string[] {
+	const collapseWhitespace = (s: string) => s.replace(/\s+/g, " ").trim();
+	const lower = collapseWhitespace(value.toLowerCase());
+	const hyphenated = lower
+		.replace(/[\s_]+/g, "-")
+		.replace(/-+/g, "-")
+		.trim();
+	const spacedFromHyphen = collapseWhitespace(hyphenated.replace(/-+/g, " "));
+	const underscoreAsSpace = collapseWhitespace(lower.replace(/[_]+/g, " "));
+	return Array.from(
+		new Set([lower, hyphenated, spacedFromHyphen, underscoreAsSpace])
+	);
+}
+
+function matchesSlugValue(
+	value: string | undefined,
+	referenceVariants: Set<string>
+): boolean {
+	if (!value) return false;
+	return createSlugVariants(value).some((variant) =>
+		referenceVariants.has(variant)
+	);
+}
+
+function matchesSlugArray(
+	values: string[] | undefined,
+	referenceVariants: Set<string>
+): boolean {
+	if (!Array.isArray(values)) return false;
+	return values.some((value) => matchesSlugValue(value, referenceVariants));
+}
+
 /**
  * Helper for /on/[...slug].astro: find an item by slug with priority
  * Topic slug -> topic redirects -> quality -> simile.
@@ -336,36 +371,28 @@ export function findContentBySlug(
 	type: UnifiedContentItem["type"] | null;
 } {
 	const all = items ?? buildAllContent();
-	const normSlug = slug.toLowerCase();
-	const filterValue = normSlug.replace(/-/g, " ");
+	const slugVariants = new Set(createSlugVariants(slug));
 
 	let content: UnifiedContentItem | undefined;
 	content = all.find(
-		(i) =>
-			i.type === "topic" &&
-			(i.slug === normSlug || i.slug === filterValue)
+		(i) => i.type === "topic" && matchesSlugValue(i.slug, slugVariants)
 	);
 	if (content) return { item: content, type: content.type };
 
 	content = all.find(
 		(i) =>
 			i.type === "topic" &&
-			Array.isArray(i.redirects) &&
-			(i.redirects as string[]).includes(normSlug)
+			matchesSlugArray(i.redirects as string[] | undefined, slugVariants)
 	);
 	if (content) return { item: content, type: content.type };
 
 	content = all.find(
-		(i) =>
-			i.type === "quality" &&
-			(i.slug === normSlug || i.slug === filterValue)
+		(i) => i.type === "quality" && matchesSlugValue(i.slug, slugVariants)
 	);
 	if (content) return { item: content, type: content.type };
 
 	content = all.find(
-		(i) =>
-			i.type === "simile" &&
-			(i.slug === normSlug || i.slug === filterValue)
+		(i) => i.type === "simile" && matchesSlugValue(i.slug, slugVariants)
 	);
 	if (content) return { item: content, type: content.type };
 

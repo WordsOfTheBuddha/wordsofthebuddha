@@ -8,10 +8,23 @@ interface Props {
 
 const { title, showFilter = false, id } = Astro.props;
 const hasSeparator = title?.includes("-");
+console.log("has separator: ", hasSeparator);
 const [paliTitle, ...englishParts] = hasSeparator
 	? title.split(" - ").map((part: string) => part.trim())
 	: [title];
+console.log("pali title: ", paliTitle);
 const englishTitle = englishParts.join(" - ");
+
+const normalized = (value: string | undefined | null) =>
+	(value ?? "")
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/['’`´]/g, "")
+		.replace(/\s+/g, " ")
+		.trim();
+
+const transformedId = id ? transformId(id) : "";
+const shouldShowId = id && normalized(transformedId) !== normalized(title);
 ---
 
 <div class="relative flex items-start justify-between mt-2 w-full">
@@ -22,9 +35,9 @@ const englishTitle = englishParts.join(" - ");
 		aria-label={title}
 	>
 		{
-			id && (
+			shouldShowId && (
 				<span class="mr-2 text-primary-color">
-					{transformId(id)}&nbsp;
+					{transformedId}&nbsp;
 				</span>
 			)
 		}

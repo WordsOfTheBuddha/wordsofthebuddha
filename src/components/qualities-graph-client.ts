@@ -1781,7 +1781,7 @@ function renderCardsNextPage() {
 		.map((d: any) => {
 			const note = d.note ? String(d.note) : "";
 			return `
-                        <div class="post-item relative flex flex-col w-full p-5 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md">
+						<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
                             <div class="flex items-start justify-between">
                                 <div class="flex items-start flex-grow">
                                     <div class="min-w-0 pr-4">

@@ -12,15 +12,27 @@ import type { Highlight } from "../types/notes";
 import { transformId } from "../utils/transformId";
 import { verifyUser } from "../middleware/auth";
 
+type VerifiedUser = {
+	uid: string;
+	displayName?: string | null;
+	email?: string | null;
+};
+
 const sessionCookie = Astro.cookies.get("__session")?.value;
 if (!sessionCookie) return Astro.redirect("/signin");
-let user;
-let userDisplayName = "there"; // Default display name
-try {
-	user = await verifyUser(sessionCookie);
-	userDisplayName = user.displayName || user.email || "there"; // Get display name or fallback
-} catch (err) {
+
+const user = (await verifyUser(sessionCookie).catch(
+	() => null
+)) as VerifiedUser | null;
+
+if (!user) {
 	return Astro.redirect("/signin");
+}
+
+const userDisplayName = user.displayName || user.email || "there"; // Default display name
+
+if (!db) {
+	throw new Error("Firestore database is not initialized.");
 }
 
 let validHighlights: any[] = [];
@@ -151,7 +163,9 @@ try {
 	<div class="py-4 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-5xl mx-auto" id="dashboard-container">
 			<!-- Tab Navigation as Pills - Mobile scrolling, tablet+ center alignment -->
-			<div class="sticky top-0 z-10 bg-white dark:bg-gray-900 py-2 mb-4">
+			<div
+				class="sticky top-0 z-10 bg-[var(--background-color)] dark:bg-[var(--surface-elevated)] py-2 mb-4"
+			>
 				<!-- Scrollable container with fade indicators for mobile only -->
 				<div class="pills-scroll-container relative">
 					<div
@@ -456,7 +470,7 @@ try {
 
 	.highlight-page {
 		@apply relative flex flex-col w-full p-5 rounded-lg;
-		@apply bg-white dark:bg-gray-800;
+		@apply bg-[var(--surface-paper)];
 		@apply text-gray-800 dark:text-gray-200;
 		@apply transition-all duration-200;
 		@apply shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)];

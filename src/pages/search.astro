@@ -17,7 +17,7 @@ import HelpIcon from "../assets/question-mark-circle.svg?raw";
 							name="q"
 							value=""
 							placeholder="Search suttas..."
-							class="w-full p-4 pl-12 text-lg border rounded-lg bg-[var(--auth-input-bg)] border-[var(--auth-input-border)] text-[var(--text-color)] search-input"
+							class="w-full p-4 pl-12 text-lg border border-[color:var(--surface-border)] rounded-lg bg-[var(--surface-elevated)] text-[var(--surface-ink)] search-input"
 						/>
 						<div
 							class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -41,7 +41,7 @@ import HelpIcon from "../assets/question-mark-circle.svg?raw";
 		<div class="max-w-2xl mx-auto mt-2">
 			<div
 				id="search-help"
-				class="hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm"
+				class="hidden mt-2 p-4 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-sm text-sm"
 			>
 				<h3 class="font-semibold mb-2">Search Syntax:</h3>
 				<ul class="space-y-1">
@@ -200,7 +200,7 @@ import HelpIcon from "../assets/question-mark-circle.svg?raw";
 				for (const item of list) {
 					const card = document.createElement("div");
 					card.className =
-						"relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]";
+						"relative flex flex-col w-full p-5 mt-6 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-md hover:shadow-lg";
 					card.setAttribute("data-search-result", "");
 					const header = document.createElement("div");
 					header.className = "flex items-start";

@@ -91,17 +91,22 @@ const statusConfig: Record<
 };
 ---
 
-<table class="min-w-full border-collapse my-4">
-	<thead class="bg-gray-100 dark:bg-gray-800">
+<table
+	class="min-w-full border-collapse my-4 bg-[var(--surface-elevated)] border border-[color:var(--surface-border)] rounded-xl overflow-hidden"
+>
+	<thead class="bg-[var(--surface-paper)]">
 		<tr>
-			<th class="py-2 px-4 text-left border-b dark:border-gray-700"
+			<th
+				class="py-2 px-4 text-left border-b border-[color:var(--surface-border)]"
 				>Collection</th
 			>
 			<th
-				class="py-2 px-4 text-left border-b dark:border-gray-700 hidden sm:table-cell"
+				class="py-2 px-4 text-left border-b border-[color:var(--surface-border)] hidden sm:table-cell"
 				>Available</th
 			>
-			<th class="py-2 px-4 text-left border-b dark:border-gray-700"></th>
+			<th
+				class="py-2 px-4 text-left border-b border-[color:var(--surface-border)]"
+			></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -131,8 +136,8 @@ const statusConfig: Record<
 				}
 
 				return (
-					<tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-						<td class="py-2 px-4 border-b dark:border-gray-700 align-middle">
+					<tr class="hover:bg-[rgba(44,44,44,0.04)] dark:hover:bg-[rgba(231,220,196,0.06)]">
+						<td class="py-2 px-4 border-b border-[color:var(--surface-border)] align-middle">
 							<a href={name} class="flex items-center">
 								<span class="font-medium">
 									{keyMap[name] || name}
@@ -142,15 +147,15 @@ const statusConfig: Record<
 								</span>
 							</a>
 						</td>
-						<td class="py-2 px-4 border-b dark:border-gray-700 hidden sm:table-cell">
+						<td class="py-2 px-4 border-b border-[color:var(--surface-border)] hidden sm:table-cell">
 							<span class="font-medium">{count}</span> {suffix}
 						</td>
-						<td class="py-2 px-4 border-b dark:border-gray-700">
+						<td class="py-2 px-4 border-b border-[color:var(--surface-border)]">
 							<div class="text-xs text-gray-500 sm:hidden mt-1">
 								{count} {suffix}
 							</div>
 							<div class="flex items-center">
-								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-sm h-6 mr-1 sm:mr-2 relative">
+								<div class="w-full bg-[var(--surface-paper)] rounded-sm h-6 mr-1 sm:mr-2 relative border border-[color:var(--surface-border)]">
 									<div
 										class={`h-full rounded-sm transition-all duration-500 flex items-center justify-center text-white text-xs ${color}`}
 										style={`width: ${isComplete ? "100" : percentage}%`}

@@ -64,10 +64,24 @@
 
 /* global.css */
 :root {
+	--surface-paper-light: #faf8f3;
+	--surface-paper-dark: #1f1c17;
+	--surface-ink-light: #2c2c2c;
+	--surface-ink-dark: #e7dcc4;
+	--surface-elevated-light: #fdfaf2;
+	--surface-elevated-dark: #262018;
+	--surface-border-light: rgba(44, 44, 44, 0.12);
+	--surface-border-dark: rgba(231, 220, 196, 0.2);
+
+	--surface-paper: var(--surface-paper-light);
+	--surface-ink: var(--surface-ink-light);
+	--surface-elevated: var(--surface-elevated-light);
+	--surface-border: var(--surface-border-light);
+
 	--icon-fill-color-light: #000000;
 	--bookmark-fill-color-light: #898989;
-	--text-color-light: #555;
-	--background-color-light: #ffffff;
+	--text-color-light: var(--surface-ink-light);
+	--background-color-light: var(--surface-paper-light);
 	--primary-color-light: #1a73e8;
 	--secondary-color-light: #ff5722;
 	--link-color-light: #1a73e8;
@@ -78,8 +92,8 @@
 
 	--icon-fill-color-dark: #ffffff;
 	--bookmark-fill-color-dark: #a9a9a9;
-	--text-color-dark: rgba(255, 255, 255, 0.9);
-	--background-color-dark: #1c1c1c;
+	--text-color-dark: var(--surface-ink-dark);
+	--background-color-dark: var(--surface-paper-dark);
 	--primary-color-dark: #d47445;
 	--secondary-color-dark: #d47445;
 	--link-color-dark: #87cefa;
@@ -158,6 +172,11 @@
 }
 
 html.dark {
+	--surface-paper: var(--surface-paper-dark);
+	--surface-ink: var(--surface-ink-dark);
+	--surface-elevated: var(--surface-elevated-dark);
+	--surface-border: var(--surface-border-dark);
+
 	--icon-fill-color: var(--icon-fill-color-dark);
 	--bookmark-fill-color: var(--bookmark-fill-color-dark);
 	--text-color: var(--text-color-dark);
@@ -196,47 +215,104 @@ body {
 	font-feature-settings: auto;
 	font-kerning: auto;
 	-webkit-font-smoothing: antialiased;
+	position: relative;
+	min-height: 100vh;
+	background-color: var(--background-color);
+	color: var(--text-color);
 }
 
-@layer components {
-	.verse {
-		@apply pl-4 my-6 border-l-4 border-gray-300;
-		color: var(--text-color); /* Use theme variable */
-		--verse-accent: theme(colors.gray.300);
-	}
-	.verse-basic {
-		@apply pl-4;
-		color: var(--text-color); /* Use theme variable */
-		--verse-accent: theme(colors.gray.300);
-	}
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: -1;
+	background-image: radial-gradient(
+			circle at 20% 20%,
+			rgba(255, 255, 255, 0.6),
+			transparent 55%
+		),
+		radial-gradient(
+			circle at 80% 0%,
+			rgba(255, 255, 255, 0.35),
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 0% 60%,
+			rgba(255, 255, 255, 0.25),
+			transparent 55%
+		);
+	opacity: 0.35;
+	mix-blend-mode: multiply;
+}
 
-	/* Paragraph anchor hover display - now controlled by ParagraphToggle component */
-	/* p[id]::before rule moved to ParagraphToggle.astro */
+html.dark body::before {
+	background-image: radial-gradient(
+			circle at 20% 20%,
+			rgba(94, 76, 52, 0.3),
+			transparent 55%
+		),
+		radial-gradient(
+			circle at 80% 5%,
+			rgba(120, 92, 60, 0.28),
+			transparent 55%
+		),
+		radial-gradient(
+			circle at 0% 60%,
+			rgba(60, 48, 30, 0.25),
+			transparent 55%
+		);
+	opacity: 0.28;
+	mix-blend-mode: screen;
+}
 
-	/* Smooth scroll for hash navigation */
-	html {
-		scroll-behavior: smooth;
+@media (prefers-reduced-motion: reduce), (prefers-contrast: more) {
+	body::before {
+		opacity: 0.15;
+		background-image: none;
 	}
+}
 
-	/* Highlight target paragraph */
-	p:target {
-		background-color: var(--auth-card-bg);
-		border-left: 4px solid var(--warning-border);
-		padding-left: 0.5rem;
-		margin-left: -0.5rem;
-		border-radius: 0.25rem;
-		transition: background-color 0.3s, border-color 0.3s;
-	}
+.verse {
+	padding-left: 1rem;
+	margin: 1.5rem 0;
+	border-left: 4px solid #d1d5db;
+	color: var(--text-color);
+	--verse-accent: #d1d5db;
+}
 
-	/* Highlight range paragraphs */
-	p.paragraph-highlight {
-		background-color: var(--warning-bg);
-		border-left: 4px solid var(--warning-border);
-		padding-left: 0.5rem;
-		margin-left: -0.5rem;
-		border-radius: 0.25rem;
-		transition: background-color 0.3s, border-color 0.3s;
-	}
+.verse-basic {
+	padding-left: 1rem;
+	color: var(--text-color);
+	--verse-accent: #d1d5db;
+}
+
+/* Paragraph anchor hover display - now controlled by ParagraphToggle component */
+/* p[id]::before rule moved to ParagraphToggle.astro */
+
+/* Smooth scroll for hash navigation */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Highlight target paragraph */
+p:target {
+	background-color: var(--auth-card-bg);
+	border-left: 4px solid var(--warning-border);
+	padding-left: 0.5rem;
+	margin-left: -0.5rem;
+	border-radius: 0.25rem;
+	transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Highlight range paragraphs */
+p.paragraph-highlight {
+	background-color: var(--warning-bg);
+	border-left: 4px solid var(--warning-border);
+	padding-left: 0.5rem;
+	margin-left: -0.5rem;
+	border-radius: 0.25rem;
+	transition: background-color 0.3s, border-color 0.3s;
 }
 
 .prose-xl {

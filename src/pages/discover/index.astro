@@ -27,12 +27,12 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 			<!-- Sticky Filter Controls -->
 			<div
 				id="filter-controls"
-				class="sticky top-0 bg-gray-50 dark:bg-gray-800 z-10 mb-6 rounded-lg transition-all duration-300"
+				class="sticky top-0 z-10 mb-6 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] shadow-sm transition-all duration-300"
 			>
 				<!-- Collapsed State - Mobile Only -->
 				<div
 					id="filter-collapsed"
-					class="hidden md:hidden bg-gray-50 dark:bg-gray-800 rounded-lg p-3 shadow-sm"
+					class="hidden md:hidden rounded-lg p-3 shadow-sm border border-[color:var(--surface-border)] bg-[var(--surface-elevated)]"
 				>
 					<div class="flex items-center justify-between">
 						<div class="flex items-center gap-2">
@@ -77,7 +77,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 				<!-- Expanded State -->
 				<div id="filter-expanded" class="transition-all duration-300">
 					<!-- Row 1: Show Options & Search (responsive layout) -->
-					<div class="rounded-t-lg bg-gray-50 dark:bg-gray-800 p-4">
+					<div class="rounded-t-lg bg-[var(--surface-elevated)] p-4">
 						<!-- Mobile/Tablet: Updated layout with collapse button inline -->
 						<div class="md:hidden space-y-4">
 							<div
@@ -145,7 +145,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 								type="text"
 								id="search-input"
 								placeholder="Filter by text..."
-								class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent text-[70%]"
+								class="w-full px-4 py-2 border border-[color:var(--surface-border)] rounded-lg bg-[var(--surface-elevated)] text-[var(--surface-ink)] focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent text-[70%]"
 							/>
 						</div>
 
@@ -209,7 +209,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 									type="text"
 									id="search-input-desktop"
 									placeholder="Filter with text..."
-									class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent text-[70%]"
+									class="w-full px-4 py-2 border border-[color:var(--surface-border)] rounded-lg bg-[var(--surface-elevated)] text-[var(--surface-ink)] focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent text-[70%]"
 								/>
 							</div>
 						</div>
@@ -217,7 +217,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 					<!-- Row 2: A-Z Navigation (compact single row) -->
 					<div
-						class="bg-gray-50 dark:bg-gray-800 rounded-t-none rounded-b-lg p-3"
+						class="bg-[var(--surface-elevated)] rounded-t-none rounded-b-lg border-t border-[color:var(--surface-border)] p-3"
 					>
 						<div
 							class="flex flex-wrap gap-1 justify-center lg:gap-2"

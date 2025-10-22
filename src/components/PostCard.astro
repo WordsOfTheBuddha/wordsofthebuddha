@@ -32,7 +32,7 @@ const {
 ---
 
 <div
-	class="post-item relative flex flex-col w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+	class="post-item relative flex flex-col w-full p-5 mt-6 rounded-2xl border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-sm hover:shadow-md"
 >
 	<div class="flex items-start justify-between">
 		<div class="flex items-start flex-grow">
@@ -40,7 +40,7 @@ const {
 				<h2 class="text-base sm:text-lg font-semibold text-text">
 					<a
 						href={`/${id}`}
-						class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal"
+						class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id mr-2 font-normal"
 						data-base-href={`/${id}`}
 					>
 						{transformId(id)}&nbsp;<span
@@ -58,7 +58,7 @@ const {
 			</div>
 			<div class="flex items-center shrink-0">
 				<button
-					class="text-gray-400 hover:text-gray-600 opacity-0 transition-opacity duration-200"
+					class="bookmark-btn opacity-0 transition-opacity duration-200"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -93,13 +93,13 @@ const {
 		{
 			description?.replace(
 				/\[([^\]]+)\]\(([^)]+)\)/g,
-				'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
+				'<a href="$2" class="inline-link">$1</a>'
 			)
 		}
 	</p>
 	{
 		lastUpdated && (
-			<p class="text-gray-500 text-xs my-0 text-right">
+			<p class="text-[var(--text-muted)] text-xs my-0 text-right">
 				{dateLabel} {formatDate(lastUpdated)}
 			</p>
 		)
@@ -142,8 +142,14 @@ const {
 		color: var(--text-color);
 		margin: 0.5rem 0;
 	}
-	.hover\:text-link-color:hover {
+	.inline-link {
 		color: var(--link-color);
+		text-decoration: underline;
+		text-decoration-thickness: 0.05em;
+		text-underline-offset: 0.15em;
+	}
+	.inline-link:hover {
+		color: var(--link-hover-color);
 	}
 	.bg-primary {
 		background-color: color-mix(
@@ -152,6 +158,26 @@ const {
 			transparent 20%
 		);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+	.bookmark-btn {
+		color: var(--text-muted);
+	}
+	.bookmark-btn:hover {
+		color: var(--surface-ink);
+	}
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.25rem 0.5rem;
+		border-radius: 9999px;
+		font-size: 0.75rem;
+		font-weight: 400;
+		background-color: color-mix(
+			in srgb,
+			var(--surface-ink) 8%,
+			transparent
+		);
+		color: var(--surface-ink);
 	}
 	.line-clamp-4 {
 		display: -webkit-box;

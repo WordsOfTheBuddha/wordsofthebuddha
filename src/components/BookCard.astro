@@ -28,7 +28,7 @@ export const formatDate = (date: string | Date) => {
 ---
 
 <div
-	class="relative flex flex-col sm:flex-row items-start w-full p-5 mt-6 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-shadow duration-200 shadow-md dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+	class="relative flex flex-col sm:flex-row items-start w-full p-5 mt-6 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-md hover:shadow-lg"
 >
 	<img
 		src={imagePath || bookItem.data.imagePath}
@@ -87,7 +87,7 @@ export const formatDate = (date: string | Date) => {
 
 		{
 			(author || bookItem.data.author) && (
-				<p class="mt-2 text-sm text-center sm:text-left text-gray-600 dark:text-gray-400">
+				<p class="mt-2 text-sm text-center sm:text-left text-[var(--text-muted)]">
 					By {author || bookItem.data.author}
 				</p>
 			)
@@ -95,7 +95,7 @@ export const formatDate = (date: string | Date) => {
 
 		{
 			lastUpdated && (
-				<p class="text-gray-500 text-xs mt-2 text-right">
+				<p class="text-[var(--text-muted)] text-xs mt-2 text-right">
 					Updated {formatDate(lastUpdated)}
 				</p>
 			)

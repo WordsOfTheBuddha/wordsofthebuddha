@@ -150,12 +150,14 @@ if (!SEOTitle) {
 		<!-- Optional per-page head slot (e.g., to inject pre-hydration scripts) -->
 		<slot name="head" />
 	</head>
-	<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+	<body
+		class="flex flex-col min-h-screen bg-[var(--background-color)] text-[var(--text-color)]"
+	>
 		<Analytics />
 		<SpeedInsights />
 		<BottomDrawer />
 		<PrintFormatter />
-		<main class="p-4">
+		<main class="flex-1 p-4">
 			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
 				<HighlightLayout
 					currentPath={fp}

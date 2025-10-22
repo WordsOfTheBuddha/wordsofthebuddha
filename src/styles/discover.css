@@ -168,6 +168,7 @@ html.dark #filter-collapsed {
 	position: relative;
 	transition: all 0.2s ease;
 	margin-left: 0.5rem;
+	z-index: 10;
 }
 
 .content-tag:hover {
