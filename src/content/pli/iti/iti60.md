@@ -1,11 +1,10 @@
 ---
-title: Puññakiriyavatthu sutta - Grounds for Making Merit
-description: The Buddha shares the three grounds for making merit through cultivation of  1) giving, 2) ethical conduct, and 3) a mind of loving-kindness.
-qualities: giving, ethical conduct, loving-kindness
+title: Puññakiriyavatthu sutta - Bases for Making Merit
+description: The Buddha shares the three bases for making merit through 1) giving, 2) ethical conduct, and 3) cultivating a mind of loving-kindness.
+qualities: giving, ethical conduct, loving-kindness, cultivation
 theme: inspiration, principle
-fetter: doubt, ignorance
-tags: merit, generosity, virtuous conduct, meditation, happiness, iti, iti50-99
 slug: iti60
+commentary: See [AN 8.36](/an8.36) for a detailed parallel version of this discourse.
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
