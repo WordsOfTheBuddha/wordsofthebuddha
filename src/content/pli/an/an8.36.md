@@ -1,5 +1,8 @@
 ---
-title: Puññakiriyavatthu sutta - Grounds for Making Merit
+title: Puññakiriyavatthu sutta - Bases for Making Merit
+description: "Depending on the extent of one's practice of giving and ethical conduct, one is reborn in human and various heavenly realms if one has not undertaken cultivation of the mind."
+qualities: merit, giving, ethical conduct, cultivation
+theme: inspiration, wisdom, principle
 slug: an8.36
 ---
 
