@@ -131,6 +131,7 @@
 		"one-pointedness",
 		"patience",
 		"perceiving drawback",
+		"perceiving escape",
 		"politeness",
 		"psychic power",
 		"quenching",
@@ -515,7 +516,7 @@
 			"clear seeing",
 			"penetrating internal vision",
 			"Supported by:{examination, full awareness}",
-			"Leads to:{perceiving drawback, wisdom}",
+			"Leads to:{perceiving drawback, perceiving escape, wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
 		"discontentment": [
@@ -598,7 +599,7 @@
 			"exhaustion",
 			"gradual ending",
 			"wearing away",
-			"Supported by:{free from attachment, complete comprehension}",
+			"Supported by:{complete comprehension, free from attachment, perceiving escape}",
 			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
 		],
@@ -704,7 +705,7 @@
 		"formless": [
 			"immaterial",
 			"surpassing forms",
-			"Supported by:{imperturbable}",
+			"Supported by:{imperturbable, perceiving escape}",
 			"Leads to:{non-proliferation}",
 			"Opposite:{recognition of diversity}",
 			"[arūpa]"
@@ -746,7 +747,7 @@
 			"relinquishment",
 			"letting go",
 			"abandonment",
-			"Supported by:{dispassion, spiritual life}",
+			"Supported by:{perceiving escape, spiritual life}",
 			"Leads to:{free from attachment}",
 			"Opposite:{sensual desire}",
 			"[nekkhamma]"
@@ -1165,21 +1166,35 @@
 			"Opposite:{impatience}",
 			"[khanti, khama]"
 		],
+		"perceiving drawback": [
+			"observing the disadvantage",
+			"contemplating the unsatisfactoriness",
+			"Context: The contemplative perception that discerns the danger, inadequacy, and unsatisfactoriness of conditioned pleasures, leading the mind to turn away from clinging.",
+			"Supported by:{examination}",
+			"Leads to:{disenchantment, recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, perceiving escape}",
+			"Opposite:{perceiving gratification}",
+			"[ādīnavānupassī]"
+		],
 		"perceiving gratification": [
 			"following pleasure",
 			"seeing enjoyment",
 			"sign of beautiful",
+			"Context: The contemplative perception that focuses on the attractive or pleasurable aspect of experience, fueling delight and attachment to sense pleasures.",
 			"Supported by:{passion, distraction}",
 			"Leads to:{sensual desire}",
-			"Opposite:{perceiving drawback}",
+			"Opposite:{perceiving drawback, perceiving escape}",
 			"[assādānupassī]"
 		],
-		"perceiving drawback": [
-			"observing the disadvantage",
-			"contemplating the unsatisfactoriness",
-			"Supported by:{examination}",
-			"Leads to:{recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness}",
-			"[ādīnavānupassī]"
+		"perceiving escape": [
+			"observing the release",
+			"seeing the way out",
+			"contemplating the remedy",
+			"recognizing the way leading beyond suffering",
+			"Context: The contemplative perception that recognizes the way out of bondage after understanding gratification and danger, seeing cessation of a dissatisfactory experience as its true escape.",
+			"Supported by:{perceiving drawback, discernment}",
+			"Leads to:{giving up, formless, ending}",
+			"Opposite:{perceiving gratification}",
+			"[nissaraṇānupassī, nissaraṇaṁ yathābhūtaṁ pajānāti]"
 		],
 		"personal existence": [
 			"identity view",
@@ -1249,7 +1264,8 @@
 			"[aniccasaññā]"
 		],
 		"recognition of not-self": [
-			"perception of not-self",
+			"perception of not being suitable to identify with",
+			"realization of being subject to change",
 			"recognition of alteration and changing nature",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
