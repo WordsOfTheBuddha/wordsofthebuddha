@@ -1,9 +1,10 @@
 ---
 title: Tissametteyya sutta - To Tissa Metteyya
 description: The Buddha advises Tissa Metteyya on the dangers of engaging in sexual activity and the benefits of solitary conduct.
-fetter: sensual desire,conceit
-tags: snp,snp4,sensual desire,sexual activity,conceit,seclusion
+qualities: solitude, spiritual life, suffering, wrong speech, wrong intention, sensual desire, conceit, immaturity
+theme: inspiration, wisdom
 slug: snp4.7
+character: Venerable Tissa Metteyya
 ---
 
 “Methunamanuyuttassa,
