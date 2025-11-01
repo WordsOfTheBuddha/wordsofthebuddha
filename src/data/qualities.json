@@ -25,6 +25,7 @@
 		"doubt",
 		"drowsiness",
 		"dullness",
+		"elation",
 		"faithlessness",
 		"fear",
 		"feuding",
@@ -602,6 +603,13 @@
 			"Supported by:{complete comprehension, free from attachment, perceiving escape}",
 			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
+		],
+		"elation": [
+			"exhilaration",
+			"joyous excitement",
+			"thrill",
+			"lit. jumping up",
+			"[hassatī, uppila]"
 		],
 		"equanimity": [
 			"mental poise",

@@ -1,8 +1,8 @@
 ---
 title: Pasūra sutta - To Pasūra
-description: The Buddha advises Pasūra on the futility of engaging in debates and the dangers of becoming conceited.
-fetter: conceit,self-identity views
-tags: snp,snp4,debate,conceit,pride,purity
+description: The Buddha advises Pasūra on the futility of debate and the danger of conceit. Seeking praise, one finds only pride in victory or humiliation in defeat. This whole cycle of elation and dejection is fruitless, bringing no true benefit beyond fleeting praise and gain.
+qualities: argumentativeness, conceit, feuding, speculation, free from attachment, greed, anxiety, aversion, perturbation, elation, lamentation, sorrow, attachment
+theme: inspiration, wisdom
 slug: snp4.8
 ---
 
