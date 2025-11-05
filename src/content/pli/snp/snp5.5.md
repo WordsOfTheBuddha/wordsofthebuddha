@@ -1,6 +1,6 @@
 ---
 title: Dhotakamāṇavapucchā - Questions of the Young Brahmin Dhotaka
-description: The venerable Dhotaka asks the Buddha to free him from doubt and teach him the principle of peace. The Buddha explains that liberation comes not from him, but from directly knowing the Dhamma. He instructs Dhotaka to recognize the knowing of any phenomena to be a “sticking point” in the world and to cease craving for any state of existence.
+description: The venerable Dhotaka asks the Buddha to free him from doubt and teach the principle of peace. The Buddha explains that liberation cannot be bestowed by another but arises from directly knowing the Dhamma. He instructs Dhotaka to see even the act of knowing as a ‘sticking point’ in the world, and to abandon craving for any state of existence.
 qualities: attachment, craving, self-making, complete comprehension, tranquility, free from attachment, direct knowledge, with nothing, vigour
 theme: wisdom, inspiration
 slug: snp5.5
