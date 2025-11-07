@@ -1,8 +1,8 @@
 ---
 title: Rāja sutta - Kings
-description: When the Buddha learned that the bhikkhus had been discussing the worldly affairs of two kings, he reminded them that for those who have gone forth in faith, only two modes of gathering are proper - either engaging in a Dhamma discussion or maintaining noble silence.
+description: When the Buddha learns that the bhikkhus had been discussing the worldly affairs of two kings, he reminds them that for those who have gone forth in faith, only two modes of gathering are proper—either engaging in a Dhamma discussion or maintaining noble silence.
 qualities: happiness, wrong speech, ending, sensual desire
-theme: inspiration, wisdom
+theme: inspiration, training guideline
 slug: ud2.2
 ---
 

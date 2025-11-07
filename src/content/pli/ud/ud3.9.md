@@ -1,6 +1,6 @@
 ---
 title: Sippa sutta - Craft
-description: When the Buddha learns that the bhikkhus had been discussing about various crafts, he reminds them that for those who have gone forth in faith, only two modes of gathering are proper - either engaging in a Dhamma discussion or maintaining noble silence.
+description: When the Buddha learns that the bhikkhus had been discussing about various crafts, he reminds them that for those who have gone forth in faith, only two modes of gathering are proper—either engaging in a Dhamma discussion or maintaining noble silence.
 qualities: recollection of the Dhamma, wrong speech
 theme: inspiration, training guideline
 slug: ud3.9
