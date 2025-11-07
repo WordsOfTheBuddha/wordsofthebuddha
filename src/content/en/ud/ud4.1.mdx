@@ -4,6 +4,7 @@ description: When the venerable Meghiya seeks solitude for meditation before his
 qualities: good friendship, liberation, ethical conduct, disenchantment, rousing of energy, right effort, wisdom, ending, recognition of unattractiveness, mindfulness, recognition of impermanence, recognition of not-self, conceit, perturbation
 theme: inspiration, cultivating discernment, wisdom
 slug: ud4.1
+priority: 1.5
 character: Venerable Meghiya
 ---
 
