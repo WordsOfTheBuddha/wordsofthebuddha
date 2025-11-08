@@ -1,9 +1,10 @@
 ---
 title: Abhiṇhapaccavekkhitabbaṭhāna sutta - Subjects That Should Be Frequently Reflected Upon
-description: The Buddha teaches the importance of frequently reflecting upon the five subjects of 1) aging, 2) illness, 3) death, 4) separation from everyone and everything dear and pleasing, and 5) one's relation to one's actions.
-fetter: sensual desire, desire for fine material existence, desire for immaterial existence, ignorance
-tags: intoxication, health, youth, beauty, life, aging, illness, death, separation, actions, deeds, kamma, owner, benefit, reflection, spiritual life, noble one, fetters, underlying tendencies, Nibbāna, an, an5
+description: The Buddha teaches the importance of frequently reflecting upon the five subjects of 1) aging, 2) illness, 3) death, 4) separation from everyone and everything dear and pleasing, and 5) one’s relation to one’s actions.
+qualities: recognition of impermanence, recollection of death, recognition of not-self
 slug: an5.57
+priority: 2
+commentary: "[1] See [Cūḷakammavibhaṅga sutta - MN 135](/mn135) discourse for a detailed exposition of the reflection: ‘I am the owner of my actions, the heir to my actions, born from my actions, related to my actions, and have actions as my refuge.’"
 ---
 
 “Pañcimāni, bhikkhave, ṭhānāni abhiṇhaṁ paccavekkhitabbāni itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā. Katamāni pañca?
