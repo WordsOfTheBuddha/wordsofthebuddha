@@ -979,6 +979,7 @@
 			"child-like in understanding",
 			"Supported by:{passion, aversion, delusion, unwise attention}",
 			"Leads to:{immaturity, bad friendship}",
+			"Opposite:{wisdom}",
 			"[asampajañña, bāla, duppañña]"
 		],
 		"lamentation": [
@@ -1592,7 +1593,7 @@
 			"pigheadedness",
 			"Supported by:{clinging to rules and observances}",
 			"Leads to:{feuding}",
-			"[thambha]"
+			"[thambha, thaddha, patiṭṭhīyati]"
 		],
 		"suffering": [
 			"discomfort",
@@ -1765,6 +1766,7 @@
 			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable, steadfast",
 			"an experiential understanding of the four noble truths",
 			"Leads to:{good friendship, good habits, insight, patience}",
+			"Opposite:{lack of discernment}",
 			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
