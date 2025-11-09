@@ -1,9 +1,15 @@
 ---
-title: Attadaṇḍa sutta - Fear arises from harm
+title: Attadaṇḍa sutta - Arming Oneself
 description: The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an awakened being.
-fetter: doubt,ignorance
-tags: snp,snp4,fear,conflict,wisdom,practice
+qualities: anxiety, fear, feuding, aggressiveness, discontentment, sensual desire, truth, unassuming, sincerity, affection, greed, laziness, dullness, complete comprehension, conceit, impatience, craving, passion, mental proliferation, free from attachment, imperturbable, safety, giving
+theme: inspiration, wisdom, training guideline
 slug: snp4.15
+simile: fish in a dwindling stream of little water, great flood
+priority: 1.2
+commentary:
+    - "[1] “I did not see any place uninhabited” is a reference to old age inhabiting all youth, illness inhabiting all health, death inhabiting all life, loss inhabiting all gain, dishonor inhabiting all fame, blame inhabiting all praise, and pain inhabiting all pleasure."
+    - "[2] “Having seen those hostile even at the end” is a reference to beings with stricken minds still hostile even at the end of youth when old age has arrived."
+    - "[3] “Whoever is struck by that dart” is a reference to being caught up in one of the seven states of lust, hatred, delusion, conceit, views, sorrow, and doubt."
 ---
 
 “Attadaṇḍā bhayaṁ jātaṁ,

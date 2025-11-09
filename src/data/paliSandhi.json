@@ -460,5 +460,17 @@
 	"saddasilokanissitoti": ["saddasilokanissito"],
 	"sannāmeyyāti": ["sannāmeti"],
 	"pūreyyanti": ["pūreyya"],
-	"manussānaṁyeva": ["manussānaṁ", "eva"]
+	"manussānaṁyeva": ["manussānaṁ", "eva"],
+	"bhayamāvisi": ["bhayaṁ", "āvisi"],
+	"samantamasāro": ["samanta", "asāro"],
+	"bhavanamattano": ["bhavanaṁ", "attano"],
+	"sallamaddakkhiṁ": ["salla", "addakkhiṁ"],
+	"sallamabbuyha": ["salla", "abbuyha"],
+	"sikkhānugīyanti": [
+		"sikkhā",
+		"anugīyanti:(of oral scriptures) is chanted; is recited"
+	],
+	"pihetīdha": ["piheti", "idha"],
+	"tamānisaṁsaṁ": ["taṁ", "ānisaṁsaṁ"],
+	"nirassatīti": ["nirassati"]
 }
