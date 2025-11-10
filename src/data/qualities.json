@@ -406,6 +406,7 @@
 			"disparagement",
 			"Supported by:{displeasure, personal existence}",
 			"Leads to:{ill will}",
+			"Opposite:{respect}",
 			"[makkha]"
 		],
 		"contentment": [
@@ -1356,6 +1357,7 @@
 			"attentiveness",
 			"Supported by:{truth}",
 			"Leads to:{fear of wrongdoing, humility}",
+			"Opposite:{contempt}",
 			"[gārava, sakkāra]"
 		],
 		"right effort": [
