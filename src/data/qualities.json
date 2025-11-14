@@ -871,6 +871,7 @@
 			"foolishness",
 			"Supported by:{ignorance}",
 			"Leads to:{bad friendship}",
+			"Opposite:{wisdom}",
 			"[bāla]"
 		],
 		"impartiality": [
@@ -1768,7 +1769,7 @@
 			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable, steadfast",
 			"an experiential understanding of the four noble truths",
 			"Leads to:{good friendship, good habits, insight, patience}",
-			"Opposite:{lack of discernment}",
+			"Opposite:{immaturity, lack of discernment}",
 			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
