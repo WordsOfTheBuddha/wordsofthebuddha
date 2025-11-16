@@ -129,7 +129,7 @@
 		"non-proliferation",
 		"non-regret",
 		"not taking what is not given",
-		"one-pointedness",
+		"unification",
 		"patience",
 		"perceiving drawback",
 		"perceiving escape",
@@ -732,12 +732,13 @@
 			"[nirūpadhi, nānupādāya, asita, anuggaha]"
 		],
 		"full awareness": [
+			"clear awareness",
 			"clear comprehension",
-			"attentiveness",
+			"being intentional, deliberate, purposeful",
 			"Supported by:{mindfulness}",
 			"Leads to:{collectedness}",
 			"Opposite:{distraction}",
-			"[sampajañña]"
+			"[sampajañña, sampajāna]"
 		],
 		"giving": [
 			"generosity",
@@ -972,7 +973,7 @@
 			"lit. lovely feeling",
 			"Related:{happiness, contentment}",
 			"Supported by:{joy}",
-			"Leads to:{one-pointedness, tranquility}",
+			"Leads to:{unification, tranquility}",
 			"[pīti]"
 		],
 		"lack of discernment": [
@@ -1053,10 +1054,11 @@
 			"[papañca]"
 		],
 		"mindfulness": [
-			"being present",
+			"recollecting",
+			"remembering",
 			"keeping in mind",
+			"presence",
 			"awareness",
-			"observing body, felt experience, mind, and mental qualities",
 			"Supported by:{right view, right effort, wakefulness, wise attention}",
 			"Leads to:{examination, full awareness}",
 			"Opposite:{muddle-mindedness, wrong mindfulness}",
@@ -1144,16 +1146,16 @@
 			"Opposite:{stealing}",
 			"[adinnādāna veramaṇī]"
 		],
-		"one-pointedness": [
-			"concentration",
-			"focus",
+		"unification": [
+			"unification of mind",
+			"being collected",
+			"integration",
 			"oneness",
 			"singleness of mind",
-			"unification of mind",
 			"Related:{collectedness}",
 			"Supported by:{joyful pleasure}",
 			"Leads to:{tranquility}",
-			"[ekagga]"
+			"[ekagga, ekodibhāva]"
 		],
 		"passion": [
 			"burning fever",
@@ -1626,7 +1628,7 @@
 			"calmness",
 			"peacefulness",
 			"serenity",
-			"Supported by:{joyful pleasure, one-pointedness}",
+			"Supported by:{joyful pleasure, unification}",
 			"Leads to:{happiness}",
 			"[passaddhi, santi, upasama, upasanta]"
 		],
