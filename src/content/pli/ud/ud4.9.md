@@ -1,7 +1,7 @@
 ---
 title: Upasena sutta - Upasena
 description: The venerable Upasena reflects on his fortunate spiritual life and his teacher, the Buddha. The Buddha, perceiving Upasena's thoughts, expresses an inspired utterance.
-qualities: solitude, ethical conduct, collectedness, one-pointedness, recollection of the Buddha, sorrow-free
+qualities: solitude, ethical conduct, collectedness, unification, recollection of the Buddha, sorrow-free
 theme: recollection of the Buddha, inspiration, wisdom
 slug: ud4.9
 character: Venerable Upasena

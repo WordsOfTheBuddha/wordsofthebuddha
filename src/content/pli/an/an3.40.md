@@ -2,7 +2,7 @@
 title: Ādhipateyya sutta - Authorities
 description: The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.
 theme: wisdom
-qualities: rousing of energy, mindfulness, solitude, wise attention, one-pointedness
+qualities: rousing of energy, mindfulness, solitude, wise attention, unification
 slug: an3.40
 ---
 

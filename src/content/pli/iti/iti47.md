@@ -1,7 +1,7 @@
 ---
 title: Jāgariya sutta - Wakefulness
 description: One of two results is to be expected for a bhikkhu who dwells wakeful, mindful, fully aware, collected, joyful, tranquil, and discerning with clarity at a suitable occasion in regard to the wholesome mental qualities - 1) full awakening here and now, or 2) the state of non-returning.
-qualities: wakefulness, mindfulness, full awareness, collectedness, tranquility, discernment, wholesome, one-pointedness
+qualities: wakefulness, mindfulness, full awareness, collectedness, tranquility, discernment, wholesome, unification
 theme: inspiration, cultivating discernment
 fetter: ignorance
 tags: wakefulness, mindfulness, attentiveness, clarity, wholesome, mental qualities, joy, collectedness, tranquility, discernment, wisdom, iti, iti28-49

@@ -1,7 +1,7 @@
 ---
 title: Parisa vagga - The Chapter on the Assemblies
 description: The Buddha contrasts shallow and deep, factious and unified, worldly and Dhamma-centered assemblies. Communities bound by empty talk, indulgence, and discord decline, while those rooted in seclusion, concord, discipline, inquiry, and the true Dhamma flourish.
-qualities: anxiety, conceit, wrong speech, muddle-mindedness, distraction, non-restraint, collectedness, one-pointedness, mindfulness, argumentativeness, boastfulness, feuding, loving-kindness, politeness, negligence, vanity, weak in effort, suffering, ending, desire, aversion, delusion, fear, doubt, attachment, ethical conduct, unprincipled
+qualities: anxiety, conceit, wrong speech, muddle-mindedness, distraction, non-restraint, collectedness, unification, mindfulness, argumentativeness, boastfulness, feuding, loving-kindness, politeness, negligence, vanity, weak in effort, suffering, ending, desire, aversion, delusion, fear, doubt, attachment, ethical conduct, unprincipled
 theme: cultivating discernment
 slug: an2.42-51
 ---

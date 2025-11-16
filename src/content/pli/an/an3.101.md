@@ -1,7 +1,7 @@
 ---
 title: Paṁsudhovaka sutta - The Dirt Rinser
 description: The Buddha uses the gradual purification of gold as a metaphor for mental cultivation through meditation. Just as a goldsmith removes coarse, medium, and subtle impurities until the gold is workable and radiant, a meditator abandons defilements in stages. This gradual refinement leads to deep collectedness of mind, forming the foundation for supernormal abilities and, ultimately, liberation.
-qualities: cultivation, flexible, giving up, liberation, one-pointedness
+qualities: cultivation, flexible, giving up, liberation, unification
 theme: training guideline
 slug: an3.101
 simile: gold purification
