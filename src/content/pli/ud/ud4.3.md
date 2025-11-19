@@ -1,6 +1,6 @@
 ---
 title: Gopālaka sutta - Cowherd
-description: When a cowherd is murdered shortly after serving the Buddha a meal, the monks report the tragedy. The Buddha responds with an inspired utterance, revealing that a wrongly directed mind inflicts even greater harm on oneself than what an enemy might do to an enemy.
+description: When a cowherd is murdered shortly after serving the Buddha a meal, the monks report the tragedy. The Buddha responds with an inspired utterance, revealing that a wrongly directed mind inflicts even greater harm on oneself than what an enemy may do to an enemy.
 qualities: harm, giving, aggressiveness
 theme: inspiration, wisdom
 slug: ud4.3
