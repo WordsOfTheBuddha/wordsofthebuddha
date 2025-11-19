@@ -1,6 +1,6 @@
 ---
 title: Nandamāṇavapucchā - Questions of Nanda
-description: "The Venerable Nanda asks: Is a sage defined by knowledge or by way of life? The Buddha replies that neither views nor observances lead to liberation. Only by abandoning all fixed ways and by completely comprehending craving does one cross over the flood."
+description: "The venerable Nanda asks: Is a sage defined by knowledge or by way of life? The Buddha replies that neither views nor observances lead to liberation. Only by abandoning all fixed ways and by completely comprehending craving does one cross over the flood."
 qualities: complete comprehension, craving, free from attachment, clinging to rules and observances, safety, imperturbable, quenching
 theme: inspiration, wisdom
 slug: snp5.7
