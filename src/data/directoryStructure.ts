@@ -214,6 +214,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on the Bases of Psychic Power" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic power when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
 					},
+					sn54: {
+						title: "Ānāpānasaṁyutta - Linked Discourses on Mindfulness of Breathing",
+						description:
+							'The "Linked Discourses on Mindfulness of Breathing" contains discourses focusing on the practice of mindfulness of breathing (ānāpānasati). These teachings explore the sixteen steps of mindfulness of breathing, which fulfill the four foundations of mindfulness and lead to the seven factors of awakening. By cultivating this practice, one develops collectedness and insight, leading to liberation.',
+					},
 					sn55: {
 						title: "Sotāpattisaṁyutta - Linked Discourses on Stream-Entry",
 						description:
