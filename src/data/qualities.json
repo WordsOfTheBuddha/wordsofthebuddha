@@ -68,12 +68,13 @@
 		"suffering",
 		"treachery",
 		"lack of discernment",
-		"unprincipled",
+		"unprincipled conduct",
 		"undeveloped",
 		"unwholesome",
 		"unwise attention",
 		"vanity",
 		"weak in effort",
+		"wrong collectedness",
 		"wrong effort",
 		"wrong intention",
 		"wrong livelihood",
@@ -310,7 +311,7 @@
 			"forwardness",
 			"impudence",
 			"shameless assertiveness",
-			"Supported by:{moral recklessness, shamelessness, unprincipled}",
+			"Supported by:{moral recklessness, shamelessness, unprincipled conduct}",
 			"Leads to:{argumentativeness, stealing, sexual misconduct, wrong speech}",
 			"Context: Overstepping of bounds in speech and conduct, marked by pushiness, arrogance, and disregard for restraint; contrasted with humility and modesty.",
 			"[pāgabbhiya]"
@@ -331,15 +332,15 @@
 			"[sīlabbataparāmāsa]"
 		],
 		"collectedness": [
-			"concentration",
-			"composed",
 			"mental composure",
-			"stillness of mind",
 			"stability of mind",
-			"undistractedness",
+			"stillness of mind",
+			"concentration",
+			"undistracted awareness",
 			"Supported by:{contentment, full awareness, happiness}",
 			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
-			"[jhāna, samādhi, samāhita, susamāhita]"
+			"Opposite:{wrong collectedness}",
+			"[jhāna, samādhi, samāhita, susamāhita, sammāsamādhi]"
 		],
 		"companionship": [
 			"friendship",
@@ -482,7 +483,8 @@
 			"that which fuels further confusion and doubt",
 			"Supported by:{ignorance, perceiving gratification}",
 			"Leads to:{doubt, lack of discernment}",
-			"[moha]"
+			"Opposite:{wisdom}",
+			"[moha, micchāñāṇa]"
 		],
 		"desire": [
 			"having an objective",
@@ -625,10 +627,12 @@
 		],
 		"ethical conduct": [
 			"moral integrity",
+			"right action",
 			"virtue",
 			"Supported by:{conscience, fear of wrongdoing}",
 			"Leads to:{non-regret}",
-			"[sīla]"
+			"Opposite:{unprincipled conduct}",
+			"[sīla, sammākammanta]"
 		],
 		"examination": [
 			"analysis",
@@ -1070,7 +1074,7 @@
 			"lack of prudence",
 			"Related:{wrong view}",
 			"Supported by:{ignorance, bad friendship}",
-			"Leads to:{brashness, harm, slaughtering, unprincipled}",
+			"Leads to:{brashness, harm, slaughtering, unprincipled conduct}",
 			"[anottappa]"
 		],
 		"muddle-mindedness": [
@@ -1335,7 +1339,7 @@
 			"to be burned",
 			"to be consumed",
 			"to suffer remorse",
-			"Supported by:{cruelty, harm, sexual misconduct, slaughtering, stealing, unprincipled}",
+			"Supported by:{cruelty, harm, sexual misconduct, slaughtering, stealing, unprincipled conduct}",
 			"Leads to:{suffering}",
 			"Opposite:{non-regret}",
 			"[tappati]"
@@ -1498,7 +1502,7 @@
 			"unconscientiousness",
 			"Related:{moral recklessness}",
 			"Supported by:{ignorance, bad friendship}",
-			"Leads to:{brashness, hypocrisy, sexual misconduct, stealing, unprincipled}",
+			"Leads to:{brashness, hypocrisy, sexual misconduct, stealing, unprincipled conduct}",
 			"[ahirika]"
 		],
 		"sincerity": [
@@ -1636,7 +1640,7 @@
 			"deviousness",
 			"scamming",
 			"betrayal",
-			"Supported by:{hypocrisy, unprincipled}",
+			"Supported by:{hypocrisy, unprincipled conduct}",
 			"Leads to:{harm, wrong livelihood}",
 			"[sāṭheyya]"
 		],
@@ -1675,13 +1679,15 @@
 			"Opposite:{perturbation}",
 			"[aparitassa, anigha, aneja, avihaññamāna]"
 		],
-		"unprincipled": [
+		"unprincipled conduct": [
 			"lacking in moral principles",
 			"lacking in ethics",
 			"immoral",
+			"wrong action",
 			"Supported by:{moral recklessness, shamelessness}",
 			"Leads to:{brashness, treachery, regret}",
-			"[dussīlya]"
+			"Opposite:{ethical conduct}",
+			"[dussīlya, micchākammanta]"
 		],
 		"unwholesome": [
 			"blameworthy",
@@ -1771,7 +1777,7 @@
 			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable, steadfast",
 			"an experiential understanding of the four noble truths",
 			"Leads to:{good friendship, good habits, insight, patience}",
-			"Opposite:{immaturity, lack of discernment}",
+			"Opposite:{delusion, immaturity, lack of discernment}",
 			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
 		],
 		"wise attention": [
@@ -1795,6 +1801,14 @@
 			"Supported by:{non-harm, quenching, safety}",
 			"Opposite:{fear}",
 			"[niddara]"
+		],
+		"wrong collectedness": [
+			"wrong concentration",
+			"Context:Wrong concentration that can cause harm to oneself, destabilize the mind, or reinforce and grow delusion",
+			"Supported by:{wrong mindfulness}",
+			"Leads to:{insanity}",
+			"Opposite:{collectedness}",
+			"[micchāsamādhi]"
 		],
 		"wrong effort": [
 			"incorrect endeavor",
@@ -1822,10 +1836,10 @@
 			"[micchāājīva]"
 		],
 		"wrong mindfulness": [
-			"Context: Attention distorted by craving and aversion; unwholesome recollection that reinforces delusion or distraction",
+			"Context: Imperfect memory, misinformed recollection that reinforces delusion or distraction",
 			"Related:{muddle-mindedness}",
 			"Supported by:{craving, aversion, wrong effort}",
-			"Leads to:{distraction}",
+			"Leads to:{distraction, wrong collectedness}",
 			"Opposite:{mindfulness}",
 			"[micchāsati]"
 		],
