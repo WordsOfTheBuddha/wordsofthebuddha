@@ -1,7 +1,7 @@
 ---
 title: Sappurisa sutta - Person of Integrity
 description: The Buddha describes the four qualities that distinguish a person of integrity from one lacking in integrity.
-qualities: unwholesome, wholesome, ethical conduct, unprincipled, discernment, conscience, fear of wrongdoing
+qualities: unwholesome, wholesome, ethical conduct, unprincipled conduct, discernment, conscience, fear of wrongdoing
 theme: cultivating discernment, inquisitiveness, inspiration
 slug: an4.73
 simile: newly arrived young bride

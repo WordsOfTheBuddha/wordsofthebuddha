@@ -1,7 +1,7 @@
 ---
 title: Sukhapatthanā sutta - Aspiring for Happiness
 description: The Buddha teaches that a wise person aspiring for the three kinds of happiness - of 1) praise, 2) wealth, and 3) good rebirth - should safeguard their virtue.
-qualities: lack of discernment, unprincipled, harm, immaturity, ethical conduct
+qualities: lack of discernment, unprincipled conduct, harm, immaturity, ethical conduct
 theme: cultivating discernment, inspiration
 slug: iti76
 simile: rotten fish, fragrant powder

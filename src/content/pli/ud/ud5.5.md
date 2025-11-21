@@ -1,7 +1,7 @@
 ---
 title: Uposatha sutta - Uposatha
 description: The Buddha sits silently among the Saṅgha of bhikkhus on an Uposatha night when the assembly wasn't pure. Afterwards, the Buddha explains the eight wonderful and marvelous qualities of the Dhamma and Vinaya, likening them to similarly wonderful qualities of the great ocean.
-qualities: unprincipled, immaturity, hypocrisy, ethical conduct, liberation
+qualities: unprincipled conduct, immaturity, hypocrisy, ethical conduct, liberation
 theme: inspiration, wisdom
 slug: ud5.5
 ---
