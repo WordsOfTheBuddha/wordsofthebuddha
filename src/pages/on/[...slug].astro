@@ -3,7 +3,9 @@ export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import ContentTag from "../../components/ContentTag.astro";
+import EntityPopover from "../../components/EntityPopover.astro";
 import qualities from "../../data/qualities.json";
+import topicMappings from "../../data/topicMappings.json";
 import { getContentTypeFromApiData } from "../../utils/ContentTagUtils";
 import "../../styles/topicTag.css";
 import graphSvg from "../../assets/graph.svg?raw";
@@ -40,6 +42,39 @@ if (!content || !contentType) {
 // Get the appropriate content type for the tag
 const tagContentType = getContentTypeFromApiData(content);
 
+// Determine if we should show dual tags
+let isTopic = contentType === "topic";
+if (!isTopic) {
+	// Check if this slug is a synonym for any topic
+	const slugLower = slug.toLowerCase();
+	for (const [topicSlug, topicData] of Object.entries(topicMappings)) {
+		const tData = topicData as any;
+		if (
+			tData.synonyms &&
+			tData.synonyms.some(
+				(s: string) =>
+					s.toLowerCase().replace(/\s+/g, "-") === slugLower
+			)
+		) {
+			isTopic = true;
+			break;
+		}
+	}
+}
+
+const isQuality =
+	contentType === "quality" ||
+	qualities.positive.includes(slug) ||
+	qualities.negative.includes(slug) ||
+	qualities.neutral.includes(slug);
+
+let qualityType = "neutral-quality";
+if (isQuality) {
+	if (qualities.positive.includes(slug)) qualityType = "bright-quality";
+	else if (qualities.negative.includes(slug))
+		qualityType = "negative-quality";
+}
+
 // ...existing code... (process discourses data, collections, etc.)
 const allDiscourses = content.discourses || [];
 
@@ -59,7 +94,7 @@ const totalDiscourses = allDiscourses.length;
 
 <Layout seoTitle={`${displayTitle} - Words of the Buddha`} showAuth={true}>
 	<main class="container mx-auto px-4 py-8">
-		<div class="mb-8">
+		<div class="mb-8 relative z-10">
 			<div
 				class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md"
 			>
@@ -70,7 +105,21 @@ const totalDiscourses = allDiscourses.length;
 								class="text-xl font-semibold flex items-center flex-wrap gap-2"
 							>
 								<span>{displayTitle}</span>
-								<ContentTag contentType={tagContentType} />
+								{isTopic && <ContentTag contentType="topic" />}
+								{
+									isQuality && (
+										<ContentTag
+											contentType={qualityType as any}
+										/>
+									)
+								}
+								{
+									!isTopic && !isQuality && (
+										<ContentTag
+											contentType={tagContentType}
+										/>
+									)
+								}
 								{
 									(contentType === "topic" ||
 										contentType === "quality") && (
@@ -156,6 +205,10 @@ const totalDiscourses = allDiscourses.length;
 																w.slice(1)
 														)
 														.join(" ");
+													const isTopic =
+														Object.keys(
+															topicMappings
+														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
 															slug
@@ -164,18 +217,29 @@ const totalDiscourses = allDiscourses.length;
 														qualities.negative.includes(
 															slug
 														);
-													const tagClass = isPositive
-														? "topic-tag positive"
-														: isNegative
-															? "topic-tag negative"
-															: "topic-tag neutral";
+													let tagClass =
+														"topic-tag neutral";
+													if (isTopic)
+														tagClass =
+															"topic-tag topic";
+													else if (isPositive)
+														tagClass =
+															"topic-tag positive";
+													else if (isNegative)
+														tagClass =
+															"topic-tag negative";
+
 													return (
-														<a
-															href={`/on/${slug}`}
-															class={tagClass}
+														<EntityPopover
+															itemId={slug}
 														>
-															{name}
-														</a>
+															<a
+																href={`/on/${slug}`}
+																class={tagClass}
+															>
+																{name}
+															</a>
+														</EntityPopover>
 													);
 												}
 											)}
@@ -200,6 +264,10 @@ const totalDiscourses = allDiscourses.length;
 																w.slice(1)
 														)
 														.join(" ");
+													const isTopic =
+														Object.keys(
+															topicMappings
+														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
 															slug
@@ -208,18 +276,29 @@ const totalDiscourses = allDiscourses.length;
 														qualities.negative.includes(
 															slug
 														);
-													const tagClass = isPositive
-														? "topic-tag positive"
-														: isNegative
-															? "topic-tag negative"
-															: "topic-tag neutral";
+													let tagClass =
+														"topic-tag neutral";
+													if (isTopic)
+														tagClass =
+															"topic-tag topic";
+													else if (isPositive)
+														tagClass =
+															"topic-tag positive";
+													else if (isNegative)
+														tagClass =
+															"topic-tag negative";
+
 													return (
-														<a
-															href={`/on/${slug}`}
-															class={tagClass}
+														<EntityPopover
+															itemId={slug}
 														>
-															{name}
-														</a>
+															<a
+																href={`/on/${slug}`}
+																class={tagClass}
+															>
+																{name}
+															</a>
+														</EntityPopover>
 													);
 												}
 											)}
@@ -244,6 +323,10 @@ const totalDiscourses = allDiscourses.length;
 																w.slice(1)
 														)
 														.join(" ");
+													const isTopic =
+														Object.keys(
+															topicMappings
+														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
 															slug
@@ -252,18 +335,29 @@ const totalDiscourses = allDiscourses.length;
 														qualities.negative.includes(
 															slug
 														);
-													const tagClass = isPositive
-														? "topic-tag positive"
-														: isNegative
-															? "topic-tag negative"
-															: "topic-tag neutral";
+													let tagClass =
+														"topic-tag neutral";
+													if (isTopic)
+														tagClass =
+															"topic-tag topic";
+													else if (isPositive)
+														tagClass =
+															"topic-tag positive";
+													else if (isNegative)
+														tagClass =
+															"topic-tag negative";
+
 													return (
-														<a
-															href={`/on/${slug}`}
-															class={tagClass}
+														<EntityPopover
+															itemId={slug}
 														>
-															{name}
-														</a>
+															<a
+																href={`/on/${slug}`}
+																class={tagClass}
+															>
+																{name}
+															</a>
+														</EntityPopover>
 													);
 												}
 											)}
@@ -288,6 +382,10 @@ const totalDiscourses = allDiscourses.length;
 																w.slice(1)
 														)
 														.join(" ");
+													const isTopic =
+														Object.keys(
+															topicMappings
+														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
 															slug
@@ -296,18 +394,29 @@ const totalDiscourses = allDiscourses.length;
 														qualities.negative.includes(
 															slug
 														);
-													const tagClass = isPositive
-														? "topic-tag positive"
-														: isNegative
-															? "topic-tag negative"
-															: "topic-tag neutral";
+													let tagClass =
+														"topic-tag neutral";
+													if (isTopic)
+														tagClass =
+															"topic-tag topic";
+													else if (isPositive)
+														tagClass =
+															"topic-tag positive";
+													else if (isNegative)
+														tagClass =
+															"topic-tag negative";
+
 													return (
-														<a
-															href={`/on/${slug}`}
-															class={tagClass}
+														<EntityPopover
+															itemId={slug}
 														>
-															{name}
-														</a>
+															<a
+																href={`/on/${slug}`}
+																class={tagClass}
+															>
+																{name}
+															</a>
+														</EntityPopover>
 													);
 												}
 											)}

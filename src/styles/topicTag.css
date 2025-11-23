@@ -25,6 +25,12 @@
 	border: 1px solid rgba(34, 211, 238, 0.2);
 }
 
+.topic-tag.topic {
+	background-color: rgba(59, 130, 246, 0.1); /* blue-500 with opacity */
+	color: #2563eb; /* blue-600 */
+	border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
 html.dark .topic-tag.positive {
 	background-color: rgba(245, 158, 11, 0.2);
 	color: #fbbf24; /* amber-400 for better contrast in dark mode */
@@ -41,6 +47,12 @@ html.dark .topic-tag.neutral {
 	background-color: rgba(34, 211, 238, 0.2);
 	color: #22d3ee; /* cyan-400 for better contrast in dark mode */
 	border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+html.dark .topic-tag.topic {
+	background-color: rgba(59, 130, 246, 0.2);
+	color: #60a5fa; /* blue-400 */
+	border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .topic-tag:hover {

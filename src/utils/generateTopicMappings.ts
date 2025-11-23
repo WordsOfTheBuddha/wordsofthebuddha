@@ -14,6 +14,8 @@ interface TopicMapping {
 	pali?: string[];
 	redirects?: string[];
 	related?: string[];
+	supportedBy?: string[];
+	leadsTo?: string[];
 	opposite?: string[];
 	discourses: Array<{
 		id: string;
@@ -35,7 +37,7 @@ function loadDiscourseData() {
 	console.log(`Looking for content in: ${contentDir}`);
 	const discourseData: Record<
 		string,
-		{ title: string; description: string }
+		{ title: string; description: string; qualities: string[] }
 	> = {};
 
 	// Load from various collection directories
@@ -66,6 +68,9 @@ function loadDiscourseData() {
 						const descMatch = frontmatter.match(
 							/description:\s*["']?([^"'\n]+)["']?/
 						);
+						const qualitiesMatch = frontmatter.match(
+							/qualities:\s*([^\n]+)/
+						);
 
 						if (titleMatch) {
 							const id = file.replace(".mdx", "");
@@ -74,6 +79,11 @@ function loadDiscourseData() {
 								description: descMatch
 									? descMatch[1].trim()
 									: "",
+								qualities: qualitiesMatch
+									? qualitiesMatch[1]
+											.split(",")
+											.map((s) => s.trim())
+									: [],
 							};
 						}
 					}
@@ -242,6 +252,8 @@ export async function generateTopicMappings() {
 			pali: topic.pali,
 			redirects: topic.redirects,
 			related: topic.related,
+			supportedBy: topic.supportedBy,
+			leadsTo: topic.leadsTo,
 			opposite: topic.opposite,
 			discourses: mergedDiscourses,
 		};

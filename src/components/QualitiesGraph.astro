@@ -1,5 +1,6 @@
 ---
 import qualities from "../data/qualities.json";
+import topicMappings from "../data/topicMappings.json";
 import funnelSvg from "../assets/funnel.svg?raw";
 import "../styles/topicTag.css";
 import "../styles/discover.css";
@@ -191,6 +192,9 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 	}
 	.sidepanel .toggle-row label.node-neutral {
 		color: #6366f1;
+	}
+	.sidepanel .toggle-row label.node-topic {
+		color: #f59e0b;
 	}
 	/* Edge filter line indicators (after checkbox) */
 	.sidepanel .toggle-row label .edge-chip {
@@ -554,7 +558,7 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 								checked
 							/>
 							<span class="node-dot" aria-hidden="true"></span>
-							<span class="node-text">Wholesome</span>
+							<span class="node-text">Positive qualities</span>
 							<span
 								id="count-bright"
 								class="soft"
@@ -568,7 +572,7 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 								checked
 							/>
 							<span class="node-dot" aria-hidden="true"></span>
-							<span class="node-text">Unwholesome</span>
+							<span class="node-text">Negative qualities</span>
 							<span
 								id="count-dark"
 								class="soft"
@@ -582,9 +586,23 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 								checked
 							/>
 							<span class="node-dot" aria-hidden="true"></span>
-							<span class="node-text">Neutral</span>
+							<span class="node-text">Neutral qualities</span>
 							<span
 								id="count-neutral"
+								class="soft"
+								style="margin-left:.25rem;">—</span
+							>
+						</label>
+						<label class="node-topic">
+							<input
+								type="checkbox"
+								id="node-show-topic"
+								checked
+							/>
+							<span class="node-dot" aria-hidden="true"></span>
+							<span class="node-text">Topics</span>
+							<span
+								id="count-topic"
 								class="soft"
 								style="margin-left:.25rem;">—</span
 							>
@@ -777,6 +795,11 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 	type="application/json"
 	id="qualities-json"
 	set:html={JSON.stringify(qualities)}
+/>
+<script
+	type="application/json"
+	id="topics-json"
+	set:html={JSON.stringify(topicMappings)}
 />
 <script
 	type="application/json"

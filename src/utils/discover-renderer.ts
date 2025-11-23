@@ -4,6 +4,7 @@ import {
 	getContentTypeFromApiData,
 } from "./ContentTagUtils";
 import qualities from "../data/qualities.json";
+import topicMappings from "../data/topicMappings.json";
 import "../styles/topicTag.css";
 import graphSvg from "../assets/graph.svg?raw";
 
@@ -54,13 +55,60 @@ export class DiscoverRenderer {
 
 		// Get the content type and generate the tag HTML
 		const contentType = getContentTypeFromApiData(item);
-		const contentTagHtml = generateContentTagHtml(contentType);
+
+		// Determine if we should show dual tags
+		let isTopic = item.type === "topic";
+		if (!isTopic) {
+			// Check if this slug is a synonym for any topic
+			const slugLower = item.slug.toLowerCase();
+			for (const [topicSlug, topicData] of Object.entries(
+				topicMappings
+			)) {
+				const tData = topicData as any;
+				if (
+					tData.synonyms &&
+					tData.synonyms.some(
+						(s: string) =>
+							s.toLowerCase().replace(/\s+/g, "-") === slugLower
+					)
+				) {
+					isTopic = true;
+					break;
+				}
+			}
+		}
+
+		const isQuality =
+			item.type === "quality" ||
+			qualities.positive.includes(item.slug) ||
+			qualities.negative.includes(item.slug) ||
+			qualities.neutral.includes(item.slug);
+
+		let contentTagHtml = "";
+
+		if (isTopic) {
+			contentTagHtml += generateContentTagHtml("topic");
+		}
+
+		if (isQuality) {
+			let qualityType = "neutral-quality";
+			if (qualities.positive.includes(item.slug))
+				qualityType = "bright-quality";
+			else if (qualities.negative.includes(item.slug))
+				qualityType = "negative-quality";
+
+			contentTagHtml += generateContentTagHtml(qualityType as any);
+		}
+
+		if (!contentTagHtml) {
+			contentTagHtml = generateContentTagHtml(contentType);
+		}
 
 		return `
         <div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md hover:shadow-lg transition-shadow duration-200">
 			<div class="flex items-start justify-between mb-2">
 				<div class="flex items-start flex-grow min-w-0">
-					<h3 class="text-lg mt-1 mb-1">
+					<h3 class="text-lg mt-1 mb-1 flex items-center gap-2 flex-wrap">
 						<span class="font-normal">${item.title}</span>
 						${contentTagHtml}
 					</h3>

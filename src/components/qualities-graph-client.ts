@@ -5,7 +5,10 @@ import { generateContentTagHtml } from "../utils/ContentTagUtils";
 // Discourse cards are rendered as raw HTML matching PostCard styles
 
 const RAW = JSON.parse(document.getElementById("qualities-json")!.textContent!);
-const built = buildGraphFromQualities(RAW);
+const TOPICS = JSON.parse(
+	document.getElementById("topics-json")?.textContent || "{}"
+);
+const built = buildGraphFromQualities(RAW, TOPICS);
 
 // Layout tuning knobs
 const BASE_LAYOUT = {
@@ -38,6 +41,8 @@ const cy = cytoscape({
 						? "#10b981"
 						: el.data("polarity") === "negative"
 						? "#ef4444"
+						: el.data("polarity") === "topic"
+						? "#f59e0b"
 						: "#6366f1",
 				label: "data(label)",
 				"font-size": 15,
@@ -492,20 +497,34 @@ const nodeShowDark = document.getElementById(
 const nodeShowNeutral = document.getElementById(
 	"node-show-neutral"
 ) as HTMLInputElement;
+const nodeShowTopic = document.getElementById(
+	"node-show-topic"
+) as HTMLInputElement;
 const countBright = document.getElementById("count-bright");
 const countDark = document.getElementById("count-dark");
 const countNeutral = document.getElementById("count-neutral");
+const countTopic = document.getElementById("count-topic");
 function applyNodeFilters() {
 	const showPos = !!nodeShowBright?.checked;
 	const showNeg = !!nodeShowDark?.checked;
 	const showNeu = !!nodeShowNeutral?.checked;
+	const showTopic = !!nodeShowTopic?.checked;
 	cy.nodes().forEach((n) => {
 		const pol = n.data("polarity");
-		const hide =
-			(pol === "positive" && !showPos) ||
-			(pol === "negative" && !showNeg) ||
-			(pol === "neutral" && !showNeu);
-		n.toggleClass("hidden", hide);
+		const isTopic = n.data("isTopic");
+
+		const isPos = pol === "positive";
+		const isNeg = pol === "negative";
+		const isNeu = pol === "neutral";
+		const isTop = pol === "topic" || isTopic;
+
+		const visible =
+			(isPos && showPos) ||
+			(isNeg && showNeg) ||
+			(isNeu && showNeu) ||
+			(isTop && showTopic);
+
+		n.toggleClass("hidden", !visible);
 	});
 	// hide edges if either endpoint hidden
 	cy.edges().forEach((e) => {
@@ -525,6 +544,16 @@ function applyNodeFilters() {
 		countNeutral.textContent = String(
 			cy.nodes("[polarity = 'neutral']").not(".hidden").length
 		);
+	if (countTopic)
+		countTopic.textContent = String(
+			cy
+				.nodes()
+				.filter(
+					(n) =>
+						(n.data("polarity") === "topic" || n.data("isTopic")) &&
+						!n.hasClass("hidden")
+				).length
+		);
 }
 nodeShowBright?.addEventListener("change", () => {
 	applyNodeFilters();
@@ -537,6 +566,11 @@ nodeShowDark?.addEventListener("change", () => {
 	if (vis.nonempty()) cy.fit(vis, 80);
 });
 nodeShowNeutral?.addEventListener("change", () => {
+	applyNodeFilters();
+	const vis = cy.elements().not(".hidden");
+	if (vis.nonempty()) cy.fit(vis, 80);
+});
+nodeShowTopic?.addEventListener("change", () => {
 	applyNodeFilters();
 	const vis = cy.elements().not(".hidden");
 	if (vis.nonempty()) cy.fit(vis, 80);
@@ -1701,7 +1735,6 @@ const guardRow = document.getElementById("drawer-guarded-row")!;
 const oppWrap = document.getElementById("drawer-opposite") as HTMLElement;
 const oppRow = document.getElementById("drawer-opposite-row")!;
 const discCards = document.getElementById("drawer-disc-cards")!;
-const discSentinel = document.getElementById("drawer-disc-sentinel")!;
 
 // helpers mirrored from server utils (lightweight)
 function transformId(id: string): string {
@@ -1758,93 +1791,69 @@ document.addEventListener("keydown", (ev) => {
 	}
 });
 
-let currentDiscourses: any[] = [];
-let discPage = 0;
-const PAGE_SIZE = 10;
-let intersectionObserver: IntersectionObserver | null = null;
+function discourseCardHtml(d: any): string {
+	const note = d.note ? String(d.note) : "";
+	return `
+		<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
+			<div class="flex items-start justify-between">
+				<div class="flex items-start flex-grow">
+					<div class="min-w-0 pr-4">
+						<h2 class="text-base sm:text-lg font-semibold text-text mt-2 mb-2">
+							<a href="/${
+								d.id
+							}" class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal" data-base-href="/${
+		d.id
+	}">
+								${transformId(d.id)}&nbsp;<span style="color:var(--text-color)">${
+		d.title
+	}</span>
+							</a>
+							${
+								note
+									? `<span class="px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom -translate-y-0.5 mt-1">${note}</span>`
+									: ""
+							}
+						</h2>
+					</div>
+				</div>
+			</div>
+			<p class="mt-2 text-text text-sm sm:text-base">${(d.description || "").replace(
+				/\[([^\]]+)\]\(([^)]+)\)/g,
+				'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
+			)}</p>
+		</div>`;
+}
 
-function resetInfiniteScroll() {
-	discPage = 0;
-	currentDiscourses = [];
-	discCards.innerHTML = "";
-	if (intersectionObserver) {
-		intersectionObserver.disconnect();
+function renderDiscourseSections(list: any[]) {
+	if (!Array.isArray(list) || !list.length) {
+		discCards.innerHTML = `<div class="soft">No discourses found.</div>`;
+		return;
 	}
-}
-
-function renderCardsNextPage() {
-	const start = discPage * PAGE_SIZE;
-	const end = Math.min(start + PAGE_SIZE, currentDiscourses.length);
-	if (start >= end) return;
-	const slice = currentDiscourses.slice(start, end);
-	const html = slice
-		.map((d: any) => {
-			const note = d.note ? String(d.note) : "";
-			return `
-						<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
-                            <div class="flex items-start justify-between">
-                                <div class="flex items-start flex-grow">
-                                    <div class="min-w-0 pr-4">
-                                        <h2 class="text-base sm:text-lg font-semibold text-text mt-2 mb-2">
-                                            <a href="/${
-												d.id
-											}" class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal" data-base-href="/${
-				d.id
-			}">
-                                                ${transformId(
-													d.id
-												)}&nbsp;<span style="color:var(--text-color)">${
-				d.title
-			}</span>
-                                            </a>
-                                            ${
-												note
-													? `<span class="px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom -translate-y-0.5 mt-1">${note}</span>`
-													: ""
-											}
-                                        </h2>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="mt-2 text-text text-sm sm:text-base">${(
-								d.description || ""
-							).replace(
-								/\[([^\]]+)\]\(([^)]+)\)/g,
-								'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
-							)}</p>
-                        </div>`;
-		})
-		.join("");
-	discCards.insertAdjacentHTML("beforeend", html);
+	const featured = list.filter((d) => d.isFeatured);
+	const others = list.filter((d) => !d.isFeatured);
+	const sections: string[] = [];
+	const sectionHtml = (title: string, items: any[]) =>
+		`${items.map(discourseCardHtml).join("")}`;
+	if (featured.length)
+		sections.push(sectionHtml("Featured discourses", featured));
+	if (others.length) sections.push(sectionHtml("Further discourses", others));
+	const html =
+		sections.join("") || `<div class="soft">No discourses found.</div>`;
+	discCards.innerHTML = html;
 	updatePostLinks(discCards as HTMLElement);
-	discPage++;
-}
-
-function initInfiniteScroll() {
-	if (intersectionObserver) intersectionObserver.disconnect();
-	intersectionObserver = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) renderCardsNextPage();
-			});
-		},
-		{
-			root: document.querySelector("#drawer .body"),
-			rootMargin: "200px",
-			threshold: 0,
-		}
-	);
-	intersectionObserver.observe(discSentinel);
 }
 
 function tagHtmlForQuality(slug: string): string {
 	const s = String(slug);
 	const isPos = RAW.positive?.includes(s);
 	const isNeg = RAW.negative?.includes(s);
+	const isTopic = TOPICS[s];
 	const cls = isPos
 		? "topic-tag positive"
 		: isNeg
 		? "topic-tag negative"
+		: isTopic
+		? "topic-tag topic"
 		: "topic-tag neutral";
 	const label = s
 		.split("-")
@@ -1862,15 +1871,58 @@ function renderDrawer(nodeId: string) {
 	const slug = slugify(id);
 	titleEl.textContent = label;
 	titleEl.href = `/on/${slug}`;
-	const polType =
-		pol === "positive"
-			? "bright-quality"
-			: pol === "negative"
-			? "negative-quality"
-			: "neutral-quality";
-	polTag.innerHTML = generateContentTagHtml(polType as any, {
-		tooltipPos: "bottom",
-	});
+
+	// Check if it's a topic directly or via synonym
+	let isTopic = !!TOPICS[slug];
+	if (!isTopic) {
+		// Check if this ID is a synonym for any topic
+		const idLower = id.toLowerCase();
+		for (const [topicSlug, topicData] of Object.entries(TOPICS)) {
+			const tData = topicData as any;
+			if (
+				tData.synonyms &&
+				tData.synonyms.some((s: string) => s.toLowerCase() === idLower)
+			) {
+				isTopic = true;
+				break;
+			}
+		}
+	}
+
+	const isQuality =
+		RAW.positive.includes(id) ||
+		RAW.negative.includes(id) ||
+		RAW.neutral.includes(id);
+
+	let tagsHtml = "";
+	if (isTopic) {
+		tagsHtml += generateContentTagHtml("topic", { tooltipPos: "bottom" });
+	}
+
+	if (isQuality) {
+		let qType = "neutral-quality";
+		if (RAW.positive.includes(id)) qType = "bright-quality";
+		else if (RAW.negative.includes(id)) qType = "negative-quality";
+
+		tagsHtml += generateContentTagHtml(qType as any, {
+			tooltipPos: "bottom",
+		});
+	}
+
+	if (!tagsHtml) {
+		const polType =
+			pol === "positive"
+				? "bright-quality"
+				: pol === "negative"
+				? "negative-quality"
+				: pol === "topic"
+				? "topic"
+				: "neutral-quality";
+		tagsHtml = generateContentTagHtml(polType as any, {
+			tooltipPos: "bottom",
+		});
+	}
+	polTag.innerHTML = tagsHtml;
 	ctxEl.textContent = meta.context || "";
 
 	// parse structured lists from lines
@@ -1941,7 +1993,6 @@ function renderDrawer(nodeId: string) {
 	setRow(leadsWrap, leadsRow as HTMLElement, leadsTo);
 	setRow(oppWrap, oppRow as HTMLElement, opposite);
 
-	resetInfiniteScroll();
 	discCards.innerHTML = `<div class="soft">Loading…</div>`;
 	drawer.classList.add("open");
 	// Build locally for offline support using the embedded JSON in the page bundle
@@ -1958,15 +2009,16 @@ function renderDrawer(nodeId: string) {
 						slug.replaceAll("-", " ").toLowerCase()
 				);
 			});
-			const disc = item?.discourses || [];
-			currentDiscourses = disc;
-			discCards.innerHTML = disc.length
-				? ""
-				: `<div class="soft">No discourses found.</div>`;
-			if (disc.length) {
-				renderCardsNextPage();
-				initInfiniteScroll();
-			}
+			let disc = item?.discourses || [];
+			// Sort discourses: featured first, then by priority/collection
+			disc.sort((a: any, b: any) => {
+				const fa = a.isFeatured ? 0 : 1;
+				const fb = b.isFeatured ? 0 : 1;
+				if (fa !== fb) return fa - fb;
+				// Maintain original order for featured items if possible, or rely on buildUnifiedContent sort
+				return 0;
+			});
+			renderDiscourseSections(disc);
 		})
 		.catch((e) => {
 			console.error("Failed to build local discover data:", e);

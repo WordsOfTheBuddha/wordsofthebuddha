@@ -1,5 +1,7 @@
 ---
 import qualities from "../data/qualities.json";
+import topicMappings from "../data/topicMappings.json";
+import EntityPopover from "./EntityPopover.astro";
 
 interface Props {
 	tags: string[] | string | null | undefined;
@@ -22,6 +24,13 @@ const uniqueTags = Array.from(new Set(tagsArray.filter(Boolean)));
 // Build categories without repeats across them (positive -> neutral -> negative)
 const seen = new Set<string>();
 
+const topicKeys = Object.keys(topicMappings);
+
+const topics = uniqueTags
+	.filter((tag) => topicKeys.includes(tag) && !seen.has(tag))
+	.sort(); // Sort alphabetically
+topics.forEach((tag) => seen.add(tag));
+
 const positiveQualities = uniqueTags
 	.filter((tag) => qualities.positive.includes(tag) && !seen.has(tag))
 	.sort(); // Sort alphabetically
@@ -40,30 +49,61 @@ const negativeQualities = uniqueTags
 function capitalizeFirstLetter(string: string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+const hasTopics = topics.length > 0;
+const hasQualities =
+	positiveQualities.length > 0 ||
+	neutralQualities.length > 0 ||
+	negativeQualities.length > 0;
+
+const label =
+	hasTopics && hasQualities
+		? "Topics & Qualities:"
+		: hasQualities
+			? "Qualities:"
+			: "Topics:";
 ---
 
 <div class="quality-tags my-4">
-	<p class="text-sm" style="color: var(--gray-500);">Qualities:</p>
+	<p class="text-sm" style="color: var(--gray-500);">{label}</p>
 	<div class="quality-list ml-2 inline-flex">
 		{
+			topics.map((topic) => (
+				<EntityPopover itemId={topic}>
+					<a href={`/on/${topic}`} class="quality-tag topic">
+						{
+							topicMappings[topic as keyof typeof topicMappings]
+								.title
+						}
+					</a>
+				</EntityPopover>
+			))
+		}
+		{
 			positiveQualities.map((quality) => (
-				<a href={`/on/${quality}`} class="quality-tag positive">
-					{capitalizeFirstLetter(quality)}
-				</a>
+				<EntityPopover itemId={quality}>
+					<a href={`/on/${quality}`} class="quality-tag positive">
+						{capitalizeFirstLetter(quality)}
+					</a>
+				</EntityPopover>
 			))
 		}
 		{
 			neutralQualities.map((quality) => (
-				<a href={`/on/${quality}`} class="quality-tag neutral">
-					{capitalizeFirstLetter(quality)}
-				</a>
+				<EntityPopover itemId={quality}>
+					<a href={`/on/${quality}`} class="quality-tag neutral">
+						{capitalizeFirstLetter(quality)}
+					</a>
+				</EntityPopover>
 			))
 		}
 		{
 			negativeQualities.map((quality) => (
-				<a href={`/on/${quality}`} class="quality-tag negative">
-					{capitalizeFirstLetter(quality)}
-				</a>
+				<EntityPopover itemId={quality}>
+					<a href={`/on/${quality}`} class="quality-tag negative">
+						{capitalizeFirstLetter(quality)}
+					</a>
+				</EntityPopover>
 			))
 		}
 	</div>
@@ -138,6 +178,12 @@ function capitalizeFirstLetter(string: string) {
 		border: 1px solid rgba(34, 211, 238, 0.2);
 	}
 
+	.quality-tag.topic {
+		background-color: rgba(59, 130, 246, 0.1); /* blue-500 with opacity */
+		color: #2563eb; /* blue-600 */
+		border: 1px solid rgba(59, 130, 246, 0.2);
+	}
+
 	html.dark .quality-tag.positive {
 		background-color: rgba(245, 158, 11, 0.2);
 		color: #fbbf24; /* amber-400 for better contrast in dark mode */
@@ -154,6 +200,12 @@ function capitalizeFirstLetter(string: string) {
 		background-color: rgba(34, 211, 238, 0.2);
 		color: #22d3ee; /* cyan-400 for better contrast in dark mode */
 		border: 1px solid rgba(34, 211, 238, 0.3);
+	}
+
+	html.dark .quality-tag.topic {
+		background-color: rgba(59, 130, 246, 0.2);
+		color: #60a5fa; /* blue-400 */
+		border: 1px solid rgba(59, 130, 246, 0.3);
 	}
 
 	.quality-tag:hover {

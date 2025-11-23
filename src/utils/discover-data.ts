@@ -154,6 +154,69 @@ export function buildAllContent(
 				isFeatured: !!d.isFeatured,
 				priority: priorityMap.get(d.id),
 			}));
+
+			// Fallback to quality data if topic data is missing
+			let qualityData = (qualities as any).qualities?.[slug];
+			let qualitySlug = (qualities as any).qualities?.[slug]
+				? slug
+				: undefined;
+
+			if (!qualityData) {
+				const allQualities = (qualities as any).qualities || {};
+				const candidates = [topic.title, ...(topic.synonyms || [])];
+				for (const c of candidates) {
+					const k = c.toLowerCase();
+					// Try exact match first
+					if (allQualities[k]) {
+						qualityData = allQualities[k];
+						qualitySlug = k;
+						break;
+					}
+					// Try hyphenated match
+					const hyphenated = k.replace(/\s+/g, "-");
+					if (allQualities[hyphenated]) {
+						qualityData = allQualities[hyphenated];
+						qualitySlug = hyphenated;
+						break;
+					}
+				}
+			}
+
+			const resolveAttr = (
+				topicAttr: string[] | undefined,
+				qualityLabel: string
+			) => {
+				if (topicAttr?.length) return topicAttr;
+				if (!qualityData) return undefined;
+				const fromQuality = extractBracketed(qualityData, qualityLabel);
+				return fromQuality.length ? fromQuality : undefined;
+			};
+
+			const supportedBy = resolveAttr(topic.supportedBy, "Supported by:");
+			const leadsTo = resolveAttr(topic.leadsTo, "Leads to:");
+			const related = resolveAttr(topic.related, "Related:");
+			const opposite = resolveAttr((topic as any).opposite, "Opposite:");
+
+			// Merge discourses from quality if available (deduplicated)
+			if (qualitySlug && (qualityMappings as any)[qualitySlug]) {
+				const qDiscourses = (qualityMappings as any)[qualitySlug];
+				const existingIds = new Set(topicDiscourses.map((d) => d.id));
+				qDiscourses.forEach((d: any) => {
+					if (!existingIds.has(d.id)) {
+						topicDiscourses.push({
+							id: d.id,
+							title: d.title,
+							description: d.description,
+							collection: d.collection,
+							note: undefined,
+							isFeatured: false,
+							priority: priorityMap.get(d.id),
+						});
+						existingIds.add(d.id);
+					}
+				});
+			}
+
 			items.push(
 				createContentItem(
 					{
@@ -164,8 +227,10 @@ export function buildAllContent(
 						synonyms: topic.synonyms,
 						pali: topic.pali,
 						redirects: topic.redirects,
-						related: topic.related,
-						opposite: (topic as any).opposite,
+						related,
+						supportedBy,
+						leadsTo,
+						opposite,
 						discourses: topicDiscourses,
 					},
 					topic.description
@@ -190,6 +255,61 @@ export function buildAllContent(
 			const supportedBy = extractBracketed(synonymsList, "Supported by:");
 			const leadsTo = extractBracketed(synonymsList, "Leads to:");
 			const opposite = extractBracketed(synonymsList, "Opposite:");
+
+			// Check if this quality is a synonym for a topic to pull in featured discourses
+			let featuredDiscourses: any[] = [];
+			const slugLower = slug.toLowerCase();
+
+			for (const [tSlug, topic] of Object.entries(topicMappings as any)) {
+				const t = topic as any;
+				// Check for direct match or synonym match
+				const matchesTopic = tSlug === slugLower;
+				const matchesSynonym = t.synonyms?.some(
+					(s: string) =>
+						s.toLowerCase().replace(/\s+/g, "-") === slugLower
+				);
+
+				if (matchesTopic || matchesSynonym) {
+					const topicFeatured = (t.discourses || [])
+						.filter((d: any) => d.isFeatured)
+						.map((d: any) => ({
+							id: d.id,
+							title: d.title,
+							description: d.description,
+							collection: d.collection,
+							note: d.note,
+							isFeatured: true,
+							priority: priorityMap.get(d.id),
+						}));
+					featuredDiscourses = [
+						...featuredDiscourses,
+						...topicFeatured,
+					];
+				}
+			}
+
+			const qualityDiscourses = list.map((d) => ({
+				id: d.id,
+				title: d.title,
+				description: d.description,
+				collection: d.collection,
+				isFeatured: false,
+				priority:
+					typeof d.priority === "number"
+						? d.priority
+						: priorityMap.get(d.id),
+			}));
+
+			// Merge featured discourses, avoiding duplicates
+			const featuredIds = new Set(featuredDiscourses.map((d) => d.id));
+			const uniqueQualityDiscourses = qualityDiscourses.filter(
+				(d) => !featuredIds.has(d.id)
+			);
+			const finalDiscourses = [
+				...featuredDiscourses,
+				...uniqueQualityDiscourses,
+			];
+
 			items.push(
 				createContentItem(
 					{
@@ -204,17 +324,7 @@ export function buildAllContent(
 						pali,
 						related,
 						opposite,
-						discourses: list.map((d) => ({
-							id: d.id,
-							title: d.title,
-							description: d.description,
-							collection: d.collection,
-							isFeatured: false,
-							priority:
-								typeof d.priority === "number"
-									? d.priority
-									: priorityMap.get(d.id),
-						})),
+						discourses: finalDiscourses,
 					},
 					context || ""
 				)
@@ -256,8 +366,13 @@ export function buildAllContent(
 	}
 
 	// Sort discourses inside each item, but avoid re-sorting qualities (sorted at build time)
+	// Also avoid re-sorting topics to preserve YAML order (e.g. featured items order)
 	items.forEach((it) => {
-		if (Array.isArray(it.discourses) && it.type !== "quality") {
+		if (
+			Array.isArray(it.discourses) &&
+			it.type !== "quality" &&
+			it.type !== "topic"
+		) {
 			sortDiscoursesInPlace(it.discourses);
 		}
 	});

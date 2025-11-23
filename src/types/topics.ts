@@ -9,6 +9,8 @@ export interface Topic {
 	synonyms?: string[];
 	pali?: string[];
 	related?: string[];
+	supportedBy?: string[];
+	leadsTo?: string[];
 	opposite?: string[];
 	redirects?: string[];
 	discourses: TopicDiscourse[];

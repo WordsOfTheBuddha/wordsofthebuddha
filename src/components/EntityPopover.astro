@@ -1,0 +1,357 @@
+---
+import qualities from "../data/qualities.json";
+import topicMappings from "../data/topicMappings.json";
+import { generateContentTagHtml } from "../utils/ContentTagUtils";
+import { marked } from "marked";
+
+interface Props {
+	itemId: string;
+	class?: string;
+}
+
+const { itemId, class: className } = Astro.props;
+
+// --- Data Resolution ---
+const topicData = topicMappings[itemId as keyof typeof topicMappings];
+let title = "";
+let context = "";
+let synonyms: string[] = [];
+let pali: string[] = [];
+let type: "topic" | "bright-quality" | "negative-quality" | "neutral-quality" =
+	"neutral-quality";
+
+if (topicData) {
+	title = topicData.title;
+	context = topicData.description;
+	synonyms = topicData.synonyms || [];
+	pali = topicData.pali || [];
+	type = "topic";
+} else {
+	const qData = (qualities.qualities as any)[itemId];
+	if (qData) {
+		title = itemId.charAt(0).toUpperCase() + itemId.slice(1);
+
+		if (qualities.positive.includes(itemId)) type = "bright-quality";
+		else if (qualities.negative.includes(itemId)) type = "negative-quality";
+		else type = "neutral-quality";
+
+		const lines = Array.isArray(qData) ? qData : [];
+		lines.forEach((line: string) => {
+			if (line.startsWith("Context:")) {
+				context = line.replace("Context:", "").trim();
+			} else if (line.startsWith("[")) {
+				const content = line.replace(/[\[\]]/g, "");
+				pali.push(...content.split(",").map((s) => s.trim()));
+			} else if (
+				!line.includes("Supported by:") &&
+				!line.includes("Leads to:") &&
+				!line.includes("Related:") &&
+				!line.includes("Opposite:") &&
+				!line.includes("Guarded by:")
+			) {
+				synonyms.push(line.trim());
+			}
+		});
+	}
+}
+
+const contextHtml = context ? await marked.parseInline(context) : "";
+const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
+---
+
+{
+	title ? (
+		<div class:list={["entity-popover-wrapper", className]}>
+			<div class="popover-trigger" tabindex="0">
+				<slot />
+			</div>
+
+			<div class="popover-content">
+				<div class="popover-header">
+					<h3 class="popover-title">{title}</h3>
+					<div class="popover-badge" set:html={badgeHtml} />
+				</div>
+
+				{context && (
+					<p class="popover-context" set:html={contextHtml} />
+				)}
+
+				{synonyms.length > 0 && (
+					<div class="popover-section">
+						<span class="label">Also known as: </span>
+						<span class="value">{synonyms.join(", ")}</span>
+					</div>
+				)}
+
+				{pali.length > 0 && (
+					<div class="popover-section">
+						<span class="label">Pāli: </span>
+						<span class="value pali">{pali.join(", ")}</span>
+					</div>
+				)}
+
+				<div class="popover-arrow" />
+			</div>
+		</div>
+	) : (
+		<slot />
+	)
+}
+
+<style>
+	.entity-popover-wrapper {
+		position: relative;
+		display: inline-block;
+	}
+
+	.popover-trigger {
+		cursor: help;
+	}
+
+	.popover-content {
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-10px);
+		width: 360px;
+		max-width: 90vw;
+		background-color: var(--surface-elevated, #ffffff);
+		border: 1px solid var(--popover-border, #e5e7eb);
+		border-radius: 0.5rem;
+		padding: 1rem;
+		box-shadow:
+			0 10px 15px -3px rgba(0, 0, 0, 0.1),
+			0 4px 6px -2px rgba(0, 0, 0, 0.05);
+		z-index: 1000;
+
+		/* Hidden state */
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.2s ease,
+			transform 0.2s ease,
+			visibility 0.2s;
+		transition-delay: 0.2s; /* Delay hiding to allow moving mouse to content */
+		/* pointer-events: none; Removed to allow hovering during transition */
+
+		/* Text styles */
+		text-align: left;
+		color: var(--surface-ink, #1f2937);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	/* Show state */
+	.entity-popover-wrapper:hover .popover-content,
+	.popover-trigger:focus + .popover-content,
+	.popover-trigger:focus-within + .popover-content {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) translateY(-5px); /* Slide up slightly */
+		transition-delay: 0s; /* Show immediately */
+	}
+
+	/* Invisible bridge to prevent closing when moving mouse between trigger and content */
+	.popover-content::before {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		height: 15px;
+		background: transparent;
+	}
+
+	/* Arrow */
+	.popover-arrow {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -6px;
+		border-width: 6px;
+		border-style: solid;
+		border-color: var(--surface-elevated, #ffffff) transparent transparent
+			transparent;
+		/* Add a border shadow effect if needed, but simple is better for now */
+		filter: drop-shadow(0 1px 0 var(--popover-border, #e5e7eb));
+	}
+
+	/* Content Styling */
+	.popover-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 0.75rem;
+		border-bottom: 1px solid var(--surface-border, #f3f4f6);
+		padding-bottom: 0.5rem;
+	}
+
+	.popover-title {
+		font-family: "Crimson Pro", serif;
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0;
+		color: var(--surface-ink, #111827);
+		line-height: 1.2;
+	}
+
+	.popover-badge {
+		flex-shrink: 0;
+	}
+
+	.popover-context {
+		margin-bottom: 0.75rem;
+		color: var(--text-color, #374151);
+	}
+
+	.popover-context :global(a) {
+		color: var(--color-primary, #d97706);
+		text-decoration: underline;
+	}
+
+	.popover-context :global(a:hover) {
+		text-decoration: none;
+	}
+
+	.popover-section {
+		font-size: 0.85rem;
+		margin-top: 0.5rem;
+	}
+
+	.label {
+		color: var(--text-muted, #9ca3af);
+	}
+
+	.value {
+		color: var(--surface-ink, #1f2937);
+	}
+
+	.value.pali {
+		font-style: italic;
+	}
+
+	/* Dynamic Positioning Classes (applied by JS) */
+	.popover-content.opens-down {
+		bottom: auto;
+		top: 100%;
+		transform: translateX(calc(-50% + var(--x-offset, 0px)))
+			translateY(10px);
+	}
+
+	.popover-content.opens-down::before {
+		top: auto;
+		bottom: 100%;
+	}
+
+	.entity-popover-wrapper:hover .popover-content.opens-down,
+	.popover-trigger:focus + .popover-content.opens-down,
+	.popover-trigger:focus-within + .popover-content.opens-down {
+		transform: translateX(calc(-50% + var(--x-offset, 0px))) translateY(5px);
+	}
+
+	/* Arrow adjustment for opens-down */
+	.popover-content.opens-down .popover-arrow {
+		top: auto;
+		bottom: 100%;
+		border-color: transparent transparent var(--surface-elevated, #ffffff)
+			transparent;
+		filter: drop-shadow(0 -1px 0 var(--popover-border, #e5e7eb));
+	}
+
+	/* Apply horizontal offset if set */
+	.popover-content[style*="--x-offset"] {
+		transform: translateX(calc(-50% + var(--x-offset, 0px)))
+			translateY(-10px);
+	}
+
+	.entity-popover-wrapper:hover .popover-content[style*="--x-offset"],
+	.popover-trigger:focus + .popover-content[style*="--x-offset"],
+	.popover-trigger:focus-within + .popover-content[style*="--x-offset"] {
+		transform: translateX(calc(-50% + var(--x-offset, 0px)))
+			translateY(-5px);
+	}
+</style>
+
+<script>
+	// Defensive positioning logic
+	function setupPopovers() {
+		const wrappers = document.querySelectorAll(".entity-popover-wrapper");
+
+		wrappers.forEach((wrapper) => {
+			const trigger = wrapper.querySelector(
+				".popover-trigger"
+			) as HTMLElement;
+			const content = wrapper.querySelector(
+				".popover-content"
+			) as HTMLElement;
+
+			if (!trigger || !content) return;
+
+			const updatePosition = () => {
+				const triggerRect = trigger.getBoundingClientRect();
+				const contentHeight = content.offsetHeight || 200; // Fallback estimate if hidden
+				const contentWidth = content.offsetWidth || 360;
+
+				// Vertical Check
+				const spaceAbove = triggerRect.top;
+				const spaceBelow = window.innerHeight - triggerRect.bottom;
+
+				// Determine direction based on available space
+				// 1. If it fits in one but not the other, choose the one it fits.
+				// 2. If it fits in both or neither, choose the one with MORE space.
+
+				const fitsAbove = spaceAbove >= contentHeight + 20;
+				const fitsBelow = spaceBelow >= contentHeight + 20;
+
+				let shouldOpenDown = false;
+
+				if (fitsAbove && !fitsBelow) {
+					shouldOpenDown = false;
+				} else if (!fitsAbove && fitsBelow) {
+					shouldOpenDown = true;
+				} else {
+					// Fits both or neither: pick the side with more space
+					shouldOpenDown = spaceBelow > spaceAbove;
+				}
+
+				if (shouldOpenDown) {
+					content.classList.add("opens-down");
+				} else {
+					content.classList.remove("opens-down");
+				}
+
+				// Horizontal Check
+				const viewportWidth = window.innerWidth;
+				const centerX = triggerRect.left + triggerRect.width / 2;
+				const halfWidth = contentWidth / 2;
+
+				let xOffset = 0;
+
+				if (centerX - halfWidth < 10) {
+					// Clips left
+					xOffset = 10 - (centerX - halfWidth);
+				} else if (centerX + halfWidth > viewportWidth - 10) {
+					// Clips right
+					xOffset = viewportWidth - 10 - (centerX + halfWidth);
+				}
+
+				if (xOffset !== 0) {
+					content.style.setProperty("--x-offset", `${xOffset}px`);
+				} else {
+					content.style.removeProperty("--x-offset");
+				}
+			};
+
+			trigger.addEventListener("mouseenter", updatePosition);
+			trigger.addEventListener("focus", updatePosition);
+			trigger.addEventListener("touchstart", updatePosition, {
+				passive: true,
+			});
+		});
+	}
+
+	// Run on load and after Astro swaps
+	setupPopovers();
+	document.addEventListener("astro:page-load", setupPopovers);
+</script>
