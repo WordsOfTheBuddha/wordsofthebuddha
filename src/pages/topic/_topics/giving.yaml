@@ -14,11 +14,8 @@ redirects:
     - donation
     - charity
 related:
-    - virtue
-    - morality
-    - compassion
-    - renunciation
-    - gratitude
+    - ethical conduct
+    - giving up
 discourses:
     - id: "iti26"
       note: "The benefits of giving"

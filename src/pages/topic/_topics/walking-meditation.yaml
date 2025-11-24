@@ -1,0 +1,21 @@
+title: "Walking Meditation"
+description: "A form of meditation practiced while walking back and forth along a path. It is praised for its benefits in digestion, endurance, and developing long-lasting collectedness."
+synonyms:
+    - walking back and forth
+    - mindful walking
+pali:
+    - caṅkama
+redirects:
+    - walking
+    - cankama
+supportedBy:
+    - wakefulness
+leadsTo:
+    - collectedness
+related:
+    - mindfulness
+    - vigour
+discourses:
+    - id: "an5.29"
+      note: "⭐️"
+    - id: "an3.63"

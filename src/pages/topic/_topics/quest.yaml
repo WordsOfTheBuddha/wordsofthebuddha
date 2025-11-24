@@ -10,8 +10,12 @@ redirects:
     - exploration
     - inquiry
     - search
+supportedBy:
+    - self-making
+leadsTo:
+    - attachment
 related:
-    - aspiration
+    - desire
 discourses:
     - id: "iti54"
       note: "Understanding the different kinds of quests"

@@ -1,6 +1,6 @@
 {
 	"negative": [
-		"adventurous",
+		"adventurousness",
 		"aggressiveness",
 		"argumentativeness",
 		"attachment",
@@ -174,13 +174,14 @@
 		"without fear"
 	],
 	"qualities": {
-		"adventurous": [
+		"adventurousness": [
 			"audacious",
 			"bold",
 			"wild",
 			"unrestrained",
 			"untamed",
 			"with wanderlust",
+			"Context: A restless, thrill-seeking bent of mind that delights in novelty and roaming rather than in restraint. When untrained, it pulls one outward to stimulation and risk, making it hard to settle, listen, or practice steadily.",
 			"Supported by:{non-restraint}",
 			"Leads to:{discontentment}",
 			"Opposite:{tame}",
@@ -190,7 +191,7 @@
 			"fondness",
 			"love",
 			"tender regard",
-			"Context: Mental quality of tender affection and fond regard, often wholesome when rooted in kindness, which inclines the mind toward warmth and care. When unguarded, it may turn toward fixation upon what is 'dear,' leading the mind to attachment and the grief that follows separation from what has been clung to as 'dear'.",
+			"Context: A mental quality of tender affection and fond regard, often wholesome when rooted in kindness, which inclines the mind toward warmth and care. When unguarded, it may turn toward fixation upon what is 'dear,' leading the mind to attachment and the grief that follows separation from what has been clung to as 'dear'.",
 			"Supported by:{loving-kindness}",
 			"Leads to:{compassion, dearness}",
 			"Opposite:{aversion}",
@@ -204,6 +205,7 @@
 			"pugnacity",
 			"violence",
 			"injury causing behavior",
+			"Context: A pushing, forceful mental stance that seeks to overpower, threaten, or injure—physically or verbally. It often rides on anger and the urge to win, destroying safety and trust for oneself and others.",
 			"Supported by:{anger, argumentativeness}",
 			"Leads to:{harm}",
 			"[sārambha, caṇḍa]"
@@ -213,6 +215,7 @@
 			"wrath",
 			"fury",
 			"indignation",
+			"Context: A fiery surge of aversion toward people or situations that scorches clarity and kindness, narrows perception, and feeds harsh speech and action.",
 			"Supported by:{irritability, resentment}",
 			"Leads to:{aggressiveness}",
 			"Opposite:{loving-kindness}",
@@ -228,6 +231,7 @@
 			"restlessness",
 			"wavering",
 			"worry",
+			"Context: A fluttering, unsettled state of mind, worried about past or future and unsure what is right to do. It keeps the mind circling around concerns without resolution, weakening confidence and obscuring calm discernment.",
 			"Related:{impatience}",
 			"Supported by:{perturbation}",
 			"Leads to:{ignorance}",
@@ -238,7 +242,7 @@
 			"appreciation",
 			"rejoicing in the happiness of others",
 			"delight in the success of others",
-			"Context: Mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
+			"Context: A mental quality of rejoicing in the success and happiness of others, which counters envy and leads to the abandoning of discontentment from the mind.",
 			"Supported by:{contentment, compassion}",
 			"Leads to:{politeness, equanimity}",
 			"Opposite:{jealousy}",
@@ -265,6 +269,7 @@
 			"bound",
 			"connected",
 			"taking as mine",
+			"Context: A mental fastening onto people, things, views, or states as “me” or “mine,” unwilling to release them. This clinging can give a sense of security and sweetness.",
 			"Supported by:{craving, merit}",
 			"Leads to:{dearness, lamentation, sorrow}",
 			"[upadhi, upādāna, sakiñcana, mamatta]"
@@ -337,6 +342,7 @@
 			"stillness of mind",
 			"concentration",
 			"undistracted awareness",
+			"Context: A mental quality of composure where awareness is gathered, steady, rather than scattered or tense. In such collectedness, supported by mindfulness and right view, experience is clearly known and can be wisely contemplated, unlike narrow or disconnected concentration that shuts out the senses and feeds delusion.",
 			"Supported by:{contentment, full awareness, happiness}",
 			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
 			"Opposite:{wrong collectedness}",
@@ -357,7 +363,7 @@
 			"kindness towards those who are suffering",
 			"Supported by:{affection, merit, non-harm}",
 			"Leads to:{appreciative joy, equanimity}",
-			"Context: Mental quality of wise empathy in response to suffering, which counters qualities of harm or cruelty.",
+			"Context: A mental quality of wise empathy in response to suffering, which counters qualities of harm or cruelty.",
 			"[karuṇā]"
 		],
 		"complete comprehension": [
@@ -415,6 +421,7 @@
 			"having few desires",
 			"satisfaction",
 			"sense of ease",
+			"Context: The quality of being satisfied with what one has, especially regarding the four requisites (robes, food, shelter, medicine), which supports simplicity and peace of mind.",
 			"Related:{joy, happiness}",
 			"Supported by:{sense restraint, self-control}",
 			"Leads to:{collectedness}",
@@ -437,6 +444,7 @@
 			"yearning",
 			"longing",
 			"lit. thirst",
+			"Context: A driving ‘thirst’ that reaches out toward experiences, identities, or outcomes as the place to find satisfaction—“if only I had that.” It spins stories of lack, binds the mind to becoming, and invariably leads to suffering.",
 			"Related:{self-erasure, self-making, sensual desire}",
 			"Supported by:{ignorance}",
 			"Leads to:{mental proliferation, passion, recognition of diversity, wrong mindfulness}",
@@ -469,7 +477,7 @@
 			"beloved",
 			"cherished",
 			"pleasing",
-			"Context: Mental quality of holding something or someone as 'dear' through attachment, which binds the mind with craving and possessiveness. It is the external fixation upon what the mind clings to, often giving rise to envy, quarrels, and sorrow.",
+			"Context: A mental quality of holding something or someone as 'dear' through attachment, which binds the mind with craving and possessiveness. It is the external fixation upon what the mind clings to, often giving rise to envy, quarrels, and sorrow.",
 			"Supported by:{affection, attachment}",
 			"Leads to:{jealousy, sorrow, lamentation}",
 			"Opposite: {aversion}",
@@ -480,7 +488,7 @@
 			"hallucination",
 			"misapprehension",
 			"distorted view",
-			"that which fuels further confusion and doubt",
+			"Context: A fundamental distortion of reality that sustains confusion, clouds discernment, and fuels further doubt.",
 			"Supported by:{ignorance, perceiving gratification}",
 			"Leads to:{doubt, lack of discernment}",
 			"Opposite:{wisdom}",
@@ -493,6 +501,7 @@
 			"wish",
 			"intention",
 			"impulse",
+			"Context: A wholesome motivation, interest, or objective that acts as the starting point for effort and application of will.",
 			"Supported by:{ignorance, wisdom}",
 			"Leads to:{self-making, companionship, cultivation, vigour}",
 			"[chanda]"
@@ -508,8 +517,9 @@
 		"diligence": [
 			"alertness",
 			"carefulness",
-			"care",
 			"conscientiousness",
+			"heedfulness",
+			"Context: The quality of wishing to do one’s work or duty well, with alertness, carefulness and care.",
 			"Leads to:{continuous effort, cultivation, good habits, sense restraint}",
 			"Opposite:{negligence}",
 			"[appamāda]"
@@ -620,6 +630,7 @@
 			"equipose",
 			"non-reactivity",
 			"composure",
+			"Context: A state of mental poise and balance, characterized by non-reactivity and composure in the face of agreeable or disagreeable experiences.",
 			"Supported by:{collectedness, compassion, appreciative joy}",
 			"Guarded by:{patience}",
 			"Leads to:{imperturbable}",
@@ -852,6 +863,7 @@
 			"fundamental unawareness of the true nature of reality",
 			"misunderstanding of how things have come to be",
 			"not knowing the four noble truths",
+			"Context: A fundamental blindness to the true nature of reality. It is not merely a lack of information, but an active misperception that views the transient as permanent and the unsatisfactory as a source of happiness, thereby fueling the cycle of suffering.",
 			"Supported by:{anxiety, doubt, drowsiness, dullness, ill will, sensual desire}",
 			"Leads to:{aversion, conceit, craving, desire, delusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
 			"[avijjā]"
@@ -1033,7 +1045,7 @@
 			"benevolence",
 			"kindness",
 			"friendliness",
-			"Context: Mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
+			"Context: A mental quality of universal goodwill and non-harming toward all beings, which counters qualities of ill will and hatred.",
 			"Related:{politeness, right intention}",
 			"Supported by:{right view}",
 			"Leads to:{affection}",
@@ -1063,6 +1075,7 @@
 			"keeping in mind",
 			"presence",
 			"awareness",
+			"Context: Remembering to be present with continuous effort, observing the body, feelings, mind, and mental qualities in and of themselves.",
 			"Supported by:{right view, right effort, wakefulness, wise attention}",
 			"Leads to:{examination, full awareness}",
 			"Opposite:{muddle-mindedness, wrong mindfulness}",
@@ -1137,7 +1150,7 @@
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects",
 			"Supported by:{negligence}",
-			"Leads to:{adventurous, discontentment}",
+			"Leads to:{adventurousness, discontentment}",
 			"[asaṁvara, asaṁyama]"
 		],
 		"not taking what is not given": [
@@ -1257,10 +1270,12 @@
 		],
 		"quenching": [
 			"being cooled",
+			"desirelessness",
 			"free from hope",
 			"fulfilled",
 			"fully satiated",
 			"having attained emancipation",
+			"Context: An experiential state of being “cooled,” where the burning fever of craving has subsided and the mind dwells in a peace free from the anxiety of needing to become something else.",
 			"Supported by:{liberation}",
 			"Leads to:{impartiality, safety, sorrow-free, without fear, with nothing}",
 			"[nibbuta, nirāsa]"
@@ -1276,6 +1291,8 @@
 		],
 		"recognition of impermanence": [
 			"perception of impermanence",
+			"perception of instability",
+			"realization of transience",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[aniccasaññā]"
@@ -1312,7 +1329,7 @@
 			"recollection of Buddha",
 			"mindfulness of the Buddha",
 			"reflection on the qualities of the Buddha",
-			"Context: Mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
+			"Context: A mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
 			"Supported by:{faith}",
 			"Leads to:{joy}",
 			"[buddhānussati, buddhānusmṛti]"
@@ -1321,7 +1338,7 @@
 			"recollection of Dhamma",
 			"mindfulness of the Dhamma",
 			"reflection on the qualities of the Dhamma",
-			"Context: Mental quality of reflecting on the qualities of the Dhamma, which counters doubt and strengthens faith.",
+			"Context: A mental quality of reflecting on the qualities of the Dhamma, which counters doubt and strengthens faith.",
 			"Supported by:{faith}",
 			"Leads to:{joy}",
 			"[dhammānussati, dhammānusmṛti]"
@@ -1330,7 +1347,7 @@
 			"recollection of Saṅgha",
 			"mindfulness of the Saṅgha",
 			"reflection on the qualities of the Saṅgha",
-			"Context: Mental quality of reflecting on the qualities of the Saṅgha, which counters doubt and strengthens faith.",
+			"Context: A mental quality of reflecting on the qualities of the Saṅgha, which counters doubt and strengthens faith.",
 			"Supported by:{faith}",
 			"Leads to:{joy}",
 			"[saṅghānussati, saṅghānusmṛti]"
@@ -1382,6 +1399,7 @@
 			"wholesome thought",
 			"skillful aspiration",
 			"right volition",
+			"Context: Intention of renunciation, goodwill, and harmlessness; the resolve to let go of craving, ill will, and cruelty, cultivating thoughts that lead to peace and liberation.",
 			"Supported by:{right view}",
 			"Guarded by:{right view, right effort, mindfulness}",
 			"Leads to:{right speech, non-harm}",
@@ -1390,6 +1408,7 @@
 		"right livelihood": [
 			"correct livelihood",
 			"right mode of earning a living",
+			"Context: Means of living that does not cause harm to others or oneself; earning a living ethically without deceit, exploitation, or violence.",
 			"Supported by:{non-harm, not taking what is not given}",
 			"Guarded by:{right view, right effort, mindfulness}",
 			"Leads to:{right effort}",
@@ -1403,6 +1422,7 @@
 			"harmonious speech",
 			"articulate words",
 			"eloquent communication",
+			"Context: Speech that is truthful, harmonious, gentle, and beneficial, abstaining from lying, divisive speech, harsh speech, and idle chatter.",
 			"Supported by:{right intention}",
 			"Guarded by:{right view, right effort, mindfulness}",
 			"Leads to:{non-harm}",
@@ -1412,6 +1432,7 @@
 			"right understanding",
 			"right belief",
 			"view that is inline with the Dhamma",
+			"Context: View that is in line with the Dhamma — teachings of the Buddha that point to the nature of reality, the ultimate truth.",
 			"Guarded by:{right effort, mindfulness}",
 			"Leads to:{loving-kindness, non-harm}",
 			"[sammādiṭṭhi]"
@@ -1480,7 +1501,8 @@
 			"passion for sensual pleasures",
 			"lust",
 			"craving for pleasure",
-			"pulled towards enticing sense objects",
+			"pull toward enticing sense objects",
+			"Context: A mental quality of desiring sensory gratification. It pulls the mind’s attention toward sights, sounds, smells, tastes, or touches in a search for satisfaction.",
 			"Related:{having many desires}",
 			"Supported by:{perceiving gratification, stinginess, wrong intention}",
 			"Leads to:{ignorance, negligence}",
@@ -1614,6 +1636,7 @@
 			"disease",
 			"distress",
 			"affliction",
+			"Context: Unpleasantness, discontentment, dissatisfaction, stress, pain, disease, i.e. mild or intense suffering that is inherent in conditioned existence.",
 			"Supported by:{faithlessness, fear, regret, insanity, unwholesome}",
 			"Leads to:{faith}",
 			"[dukkha]"
@@ -1625,7 +1648,7 @@
 			"Related:{self-control}",
 			"Supported by:{flexible}",
 			"Leads to:{patience}",
-			"Opposite:{adventurous}",
+			"Opposite:{adventurousness}",
 			"[danta]"
 		],
 		"tranquility": [
@@ -1773,9 +1796,9 @@
 			"[kusala]"
 		],
 		"wisdom": [
-			"the quality of possessing experience alongside knowledge and sound judgment",
-			"(of a person) wise, astutue, intelligent, learned, skilled, firm, stable, steadfast",
+			"(of a person) wise, astute, intelligent, learned, skilled, firm, stable, steadfast",
 			"an experiential understanding of the four noble truths",
+			"Context: Lived understanding and sound judgment that steers the mind away from suffering, distinct from mere accumulation of facts.",
 			"Leads to:{good friendship, good habits, insight, patience}",
 			"Opposite:{delusion, immaturity, lack of discernment}",
 			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
@@ -1791,6 +1814,8 @@
 		"with nothing": [
 			"having no-thing",
 			"possession-less",
+			"epithet of an Arahant",
+			"Context: A quality of lightness and ownership-free existence, where the mind no longer claims anything as “me” or “mine.” It refers to the abandonment of all spiritual and material burdens, leaving the mind unencumbered by the anxiety of possession or the defense of a self-image.",
 			"Supported by:{quenching}",
 			"[akiñcana]"
 		],
@@ -1804,7 +1829,7 @@
 		],
 		"wrong collectedness": [
 			"wrong concentration",
-			"Context:Wrong concentration that can cause harm to oneself, destabilize the mind, or reinforce and grow delusion",
+			"Context: Wrong concentration that can cause harm to oneself, destabilize the mind, or reinforce and grow delusion",
 			"Supported by:{wrong mindfulness}",
 			"Leads to:{insanity}",
 			"Opposite:{collectedness}",

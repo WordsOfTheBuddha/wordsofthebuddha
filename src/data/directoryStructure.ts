@@ -214,6 +214,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on the Bases of Psychic Power" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic power when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
 					},
+					sn53: {
+						title: "Jhānasaṁyutta - Linked Discourses on Collectedness",
+						description:
+							'The "Linked Discourses on Collectedness" contains teachings on the four jhānas—states of mental composure where awareness is gathered and steady. These discourses emphasize how cultivating jhānas leads a practitioner to slant, slope, and incline towards Nibbāna. Through the progressive deepening of collectedness—from reflection and examination to equanimity and purification of mindfulness—these teachings reveal the transformative power of cultivating this stable, undistracted awareness on the path to liberation.',
+					},
 					sn54: {
 						title: "Ānāpānasaṁyutta - Linked Discourses on Mindfulness of Breathing",
 						description:
