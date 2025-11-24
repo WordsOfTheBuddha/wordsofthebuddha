@@ -1,6 +1,10 @@
 ---
 title: Todeyyamāṇavapucchā - Questions of Todeyya
+description: The venerable Todeyya asks the Buddha about the characteristic of deliverance of one free from sensual desires and without doubt.
+qualities: craving, sensual desire, wisdom, with nothing, quenching
+theme: inspiration, wisdom
 slug: snp5.9
+character: Venerable Todeyya
 ---
 
 “Yasmiṁ kāmā na vasanti,
