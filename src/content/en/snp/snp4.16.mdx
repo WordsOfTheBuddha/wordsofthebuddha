@@ -1,7 +1,7 @@
 ---
 title: Sāriputta sutta - Sāriputta
 description: Venerable Sāriputta inquires of the Buddha about how a bhikkhu dwelling in solitude should deal with various challenges and cultivate the path. The Buddha delivers a complete guide for dispelling the darkness, moving from withstanding hardships to dispelling ‘distressing thoughts’ and ultimately purifying the mind from the ‘five kinds of dust.’
-qualities: recollection of the Buddha, solitude, rousing of energy, unification, mindfulness, continuous effort, not taking what is not given, right speech, loving-kindness, anger, conceit, wisdom, sense restraint, contentment, wrong speech, adventurous, cultivation, wakefulness, self-control, equanimity, anxiety, speculation, passion, desire, examination
+qualities: recollection of the Buddha, solitude, rousing of energy, unification, mindfulness, continuous effort, not taking what is not given, right speech, loving-kindness, anger, conceit, wisdom, sense restraint, contentment, wrong speech, adventurousness, cultivation, wakefulness, self-control, equanimity, anxiety, speculation, passion, desire, examination
 theme: training guideline, inspiration, wisdom
 slug: snp4.16
 simile: smith removing flaws of the silver

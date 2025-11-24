@@ -1,8 +1,8 @@
 ---
 title: Caṅkama sutta - Walking Meditation
 description: The Buddha explains the benefits of walking meditation.
-fetter: doubt
-tags: walking meditation,meditation,doubt,an,an5
+qualities: collectedness, walking-meditation
+theme: inspiration, wisdom
 slug: an5.29
 ---
 
