@@ -740,6 +740,7 @@
 			"not taking as mine",
 			"without acquisitions",
 			"not clinging",
+			"not grasping",
 			"not holding onto",
 			"Supported by:{giving up}",
 			"Leads to:{ending}",
@@ -802,7 +803,7 @@
 			"Supported by:{mental proliferation}",
 			"Leads to:{having many desires, stinginess}",
 			"Context: A grasping mental quality of craving, possessiveness, or lustful wanting that clings to objects or experiences; it fuels attachment and obstructs renunciation and contentment",
-			"[lobha]"
+			"[lobha, gedha]"
 		],
 		"happiness": [
 			"pleasant abiding",
