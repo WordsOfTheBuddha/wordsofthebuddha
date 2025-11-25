@@ -1,11 +1,10 @@
 ---
 title: Vācā sutta - Speech
-description: Five factors of well-spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.
-qualities: right speech, loving-kindness, truth
-theme: wisdom, principle
-fetter: ill will, sensual desire, conceit, personal existence
-tags: speech, an, an5
+description: Five factors of well spoken speech are - 1) It is spoken at the proper time, 2) truthfully, 3) gently, 4) in a way that benefits, and 5) spoken with a mind of loving-kindness.
+qualities: loving-kindness, truth, politeness, well spoken speech
+theme: wisdom, inspiration
 slug: an5.198
+priority: 1.2
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgatā vācā subhāsitā hoti, no dubbhāsitā, anavajjā ca ananuvajjā ca viññūnaṁ. Katamehi pañcahi?

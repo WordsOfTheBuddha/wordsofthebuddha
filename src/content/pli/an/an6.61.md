@@ -1,6 +1,6 @@
 ---
 title: Majjhe sutta - Middle
-description: A number of elder bhikkhus are discussing the meaning of the Buddha's words from the verse on ‘Metteyya’s Questions’ in the Sutta Nipāta. They each share a well-spoken explanation and then present it to the Buddha, who presents his intended meaning when he spoke those words.
+description: A number of elder bhikkhus are discussing the meaning of the Buddha's words from the verse on ‘Metteyya’s Questions’ in the Sutta Nipāta. They each share a well spoken explanation and then present it to the Buddha, who presents his intended meaning when he spoke those words.
 qualities: wisdom, ending, craving, direct knowledge, complete comprehension, inspiration
 theme: inspiration, wisdom
 slug: an6.61
