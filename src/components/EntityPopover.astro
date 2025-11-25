@@ -7,56 +7,78 @@ import { marked } from "marked";
 interface Props {
 	itemId: string;
 	class?: string;
+	href?: string;
 }
 
-const { itemId, class: className } = Astro.props;
+const { itemId, class: className, href } = Astro.props;
 
 // --- Data Resolution ---
 const topicData = topicMappings[itemId as keyof typeof topicMappings];
+const qData = (qualities.qualities as any)[itemId];
+
 let title = "";
 let context = "";
 let synonyms: string[] = [];
 let pali: string[] = [];
-let type: "topic" | "bright-quality" | "negative-quality" | "neutral-quality" =
-	"neutral-quality";
+let types: (
+	| "topic"
+	| "bright-quality"
+	| "negative-quality"
+	| "neutral-quality"
+)[] = [];
 
+// Check if it's a topic
 if (topicData) {
 	title = topicData.title;
 	context = topicData.description;
 	synonyms = topicData.synonyms || [];
 	pali = topicData.pali || [];
-	type = "topic";
-} else {
-	const qData = (qualities.qualities as any)[itemId];
-	if (qData) {
+	types.push("topic");
+}
+
+// Check if it's also a quality (can be both topic and quality)
+if (qData) {
+	if (!title) {
 		title = itemId.charAt(0).toUpperCase() + itemId.slice(1);
-
-		if (qualities.positive.includes(itemId)) type = "bright-quality";
-		else if (qualities.negative.includes(itemId)) type = "negative-quality";
-		else type = "neutral-quality";
-
-		const lines = Array.isArray(qData) ? qData : [];
-		lines.forEach((line: string) => {
-			if (line.startsWith("Context:")) {
-				context = line.replace("Context:", "").trim();
-			} else if (line.startsWith("[")) {
-				const content = line.replace(/[\[\]]/g, "");
-				pali.push(...content.split(",").map((s) => s.trim()));
-			} else if (
-				!line.includes("Supported by:") &&
-				!line.includes("Leads to:") &&
-				!line.includes("Related:") &&
-				!line.includes("Opposite:") &&
-				!line.includes("Guarded by:")
-			) {
-				synonyms.push(line.trim());
-			}
-		});
 	}
+
+	if (qualities.positive.includes(itemId)) types.push("bright-quality");
+	else if (qualities.negative.includes(itemId))
+		types.push("negative-quality");
+	else types.push("neutral-quality");
+
+	const lines = Array.isArray(qData) ? qData : [];
+	lines.forEach((line: string) => {
+		if (line.startsWith("Context:")) {
+			// Only use quality context if we don't have topic description
+			if (!context) {
+				context = line.replace("Context:", "").trim();
+			}
+		} else if (line.startsWith("[")) {
+			const content = line.replace(/[\[\]]/g, "");
+			const paliTerms = content.split(",").map((s) => s.trim());
+			// Merge pali terms, avoiding duplicates
+			paliTerms.forEach((term) => {
+				if (!pali.includes(term)) pali.push(term);
+			});
+		} else if (
+			!line.includes("Supported by:") &&
+			!line.includes("Leads to:") &&
+			!line.includes("Related:") &&
+			!line.includes("Opposite:") &&
+			!line.includes("Guarded by:")
+		) {
+			// Merge synonyms, avoiding duplicates
+			const syn = line.trim();
+			if (syn && !synonyms.includes(syn)) synonyms.push(syn);
+		}
+	});
 }
 
 const contextHtml = context ? await marked.parseInline(context) : "";
-const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
+const badgeHtmlArray = types.map((type) =>
+	generateContentTagHtml(type, { tooltipPos: "bottom" })
+);
 ---
 
 {
@@ -69,7 +91,11 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 			<div class="popover-content">
 				<div class="popover-header">
 					<h3 class="popover-title">{title}</h3>
-					<div class="popover-badge" set:html={badgeHtml} />
+					<div class="popover-badges">
+						{badgeHtmlArray.map((badgeHtml) => (
+							<div class="popover-badge" set:html={badgeHtml} />
+						))}
+					</div>
 				</div>
 
 				{context && (
@@ -88,6 +114,12 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 						<span class="label">Pāli: </span>
 						<span class="value pali">{pali.join(", ")}</span>
 					</div>
+				)}
+
+				{href && (
+					<a href={href} class="popover-link">
+						View all discourses →
+					</a>
 				)}
 
 				<div class="popover-arrow" />
@@ -144,7 +176,8 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 	/* Show state */
 	.entity-popover-wrapper:hover .popover-content,
 	.popover-trigger:focus + .popover-content,
-	.popover-trigger:focus-within + .popover-content {
+	.popover-trigger:focus-within + .popover-content,
+	.entity-popover-wrapper.is-open .popover-content {
 		opacity: 1;
 		visibility: visible;
 		transform: translateX(-50%) translateY(-5px); /* Slide up slightly */
@@ -181,7 +214,7 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 1rem;
+		gap: 0.1rem;
 		margin-bottom: 0.75rem;
 		border-bottom: 1px solid var(--surface-border, #f3f4f6);
 		padding-bottom: 0.5rem;
@@ -197,6 +230,12 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 	}
 
 	.popover-badge {
+		flex-shrink: 0;
+	}
+
+	.popover-badges {
+		display: flex;
+		gap: 0.25rem;
 		flex-shrink: 0;
 	}
 
@@ -231,6 +270,21 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 		font-style: italic;
 	}
 
+	.popover-link {
+		display: block;
+		margin-top: 0.75rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--surface-border, #f3f4f6);
+		font-size: 0.85rem;
+		color: var(--color-primary, #d97706);
+		text-decoration: none;
+		text-align: right;
+	}
+
+	.popover-link:hover {
+		text-decoration: underline;
+	}
+
 	/* Dynamic Positioning Classes (applied by JS) */
 	.popover-content.opens-down {
 		bottom: auto;
@@ -246,7 +300,8 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 
 	.entity-popover-wrapper:hover .popover-content.opens-down,
 	.popover-trigger:focus + .popover-content.opens-down,
-	.popover-trigger:focus-within + .popover-content.opens-down {
+	.popover-trigger:focus-within + .popover-content.opens-down,
+	.entity-popover-wrapper.is-open .popover-content.opens-down {
 		transform: translateX(calc(-50% + var(--x-offset, 0px))) translateY(5px);
 	}
 
@@ -267,16 +322,34 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 
 	.entity-popover-wrapper:hover .popover-content[style*="--x-offset"],
 	.popover-trigger:focus + .popover-content[style*="--x-offset"],
-	.popover-trigger:focus-within + .popover-content[style*="--x-offset"] {
+	.popover-trigger:focus-within + .popover-content[style*="--x-offset"],
+	.entity-popover-wrapper.is-open .popover-content[style*="--x-offset"] {
 		transform: translateX(calc(-50% + var(--x-offset, 0px)))
 			translateY(-5px);
 	}
 </style>
 
 <script>
-	// Defensive positioning logic
+	// Defensive positioning logic and touch handling
 	function setupPopovers() {
 		const wrappers = document.querySelectorAll(".entity-popover-wrapper");
+		let activePopover: HTMLElement | null = null;
+
+		// Close any open popover when tapping outside
+		function closeActivePopover() {
+			if (activePopover) {
+				activePopover.classList.remove("is-open");
+				activePopover = null;
+			}
+		}
+
+		document.addEventListener("click", (e) => {
+			const target = e.target as HTMLElement;
+			// If click is outside any popover wrapper, close active
+			if (!target.closest(".entity-popover-wrapper")) {
+				closeActivePopover();
+			}
+		});
 
 		wrappers.forEach((wrapper) => {
 			const trigger = wrapper.querySelector(
@@ -343,11 +416,32 @@ const badgeHtml = generateContentTagHtml(type, { tooltipPos: "bottom" });
 				}
 			};
 
+			// Touch handling: toggle popover on tap
+			trigger.addEventListener("click", (e) => {
+				// Check if we're on a touch device (no hover capability)
+				const isTouchDevice =
+					window.matchMedia("(hover: none)").matches;
+
+				if (isTouchDevice) {
+					e.preventDefault();
+					e.stopPropagation();
+
+					const isCurrentlyOpen =
+						wrapper.classList.contains("is-open");
+
+					// Close any other open popover
+					closeActivePopover();
+
+					if (!isCurrentlyOpen) {
+						updatePosition();
+						wrapper.classList.add("is-open");
+						activePopover = wrapper as HTMLElement;
+					}
+				}
+			});
+
 			trigger.addEventListener("mouseenter", updatePosition);
 			trigger.addEventListener("focus", updatePosition);
-			trigger.addEventListener("touchstart", updatePosition, {
-				passive: true,
-			});
 		});
 	}
 

@@ -21,15 +21,39 @@ const tagsArray = Array.isArray(tags)
 // De-duplicate incoming tags
 const uniqueTags = Array.from(new Set(tagsArray.filter(Boolean)));
 
-// Build categories without repeats across them (positive -> neutral -> negative)
+// Build a reverse lookup from lowercase title -> slug for topics
+const titleToSlug = new Map<string, string>();
+for (const [slug, data] of Object.entries(topicMappings)) {
+	titleToSlug.set(data.title.toLowerCase(), slug);
+}
+
+// Helper to resolve a tag to a topic slug (by slug or title match)
+function resolveTopicSlug(tag: string): string | null {
+	const topicKeys = Object.keys(topicMappings);
+	// Exact slug match
+	if (topicKeys.includes(tag)) {
+		return tag;
+	}
+	// Case-insensitive title match
+	const slugFromTitle = titleToSlug.get(tag.toLowerCase());
+	if (slugFromTitle) {
+		return slugFromTitle;
+	}
+	return null;
+}
+
+// Build categories without repeats across them (topics -> positive -> neutral -> negative)
 const seen = new Set<string>();
 
-const topicKeys = Object.keys(topicMappings);
-
-const topics = uniqueTags
-	.filter((tag) => topicKeys.includes(tag) && !seen.has(tag))
-	.sort(); // Sort alphabetically
-topics.forEach((tag) => seen.add(tag));
+const topics: string[] = [];
+for (const tag of uniqueTags) {
+	const slug = resolveTopicSlug(tag);
+	if (slug && !seen.has(slug)) {
+		topics.push(slug);
+		seen.add(slug);
+	}
+}
+topics.sort(); // Sort alphabetically
 
 const positiveQualities = uniqueTags
 	.filter((tag) => qualities.positive.includes(tag) && !seen.has(tag))
@@ -69,40 +93,40 @@ const label =
 	<div class="quality-list ml-2 inline-flex">
 		{
 			topics.map((topic) => (
-				<EntityPopover itemId={topic}>
-					<a href={`/on/${topic}`} class="quality-tag topic">
+				<EntityPopover itemId={topic} href={`/on/${topic}`}>
+					<span class="quality-tag topic">
 						{
 							topicMappings[topic as keyof typeof topicMappings]
 								.title
 						}
-					</a>
+					</span>
 				</EntityPopover>
 			))
 		}
 		{
 			positiveQualities.map((quality) => (
-				<EntityPopover itemId={quality}>
-					<a href={`/on/${quality}`} class="quality-tag positive">
+				<EntityPopover itemId={quality} href={`/on/${quality}`}>
+					<span class="quality-tag positive">
 						{capitalizeFirstLetter(quality)}
-					</a>
+					</span>
 				</EntityPopover>
 			))
 		}
 		{
 			neutralQualities.map((quality) => (
-				<EntityPopover itemId={quality}>
-					<a href={`/on/${quality}`} class="quality-tag neutral">
+				<EntityPopover itemId={quality} href={`/on/${quality}`}>
+					<span class="quality-tag neutral">
 						{capitalizeFirstLetter(quality)}
-					</a>
+					</span>
 				</EntityPopover>
 			))
 		}
 		{
 			negativeQualities.map((quality) => (
-				<EntityPopover itemId={quality}>
-					<a href={`/on/${quality}`} class="quality-tag negative">
+				<EntityPopover itemId={quality} href={`/on/${quality}`}>
+					<span class="quality-tag negative">
 						{capitalizeFirstLetter(quality)}
-					</a>
+					</span>
 				</EntityPopover>
 			))
 		}
