@@ -31,11 +31,11 @@ Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane 
 
 Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘ye te santā vimokkhā atikkamma rūpe āruppā, te kāyena phusitvā vihareyyan’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
 
-Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘tiṇṇaṁ saṁyojanānaṁ parikkhayā [1] sotāpanno assaṁ avinipātadhammo niyato sambodhiparāyaṇo’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘tiṇṇaṁ saṁyojanānaṁ parikkhayā sotāpanno assaṁ avinipātadhammo niyato sambodhiparāyaṇo’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
 
 Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘tiṇṇaṁ saṁyojanānaṁ parikkhayā rāgadosamohānaṁ tanuttā sakadāgāmī assaṁ sakideva imaṁ lokaṁ āgantvā dukkhassantaṁ kareyyan’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
 
-Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ [2] parikkhayā opapātiko assaṁ tattha parinibbāyī anāvattidhammo tasmā lokā’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
+Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko assaṁ tattha parinibbāyī anāvattidhammo tasmā lokā’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
 
 Ākaṅkheyya ce, bhikkhave, bhikkhu: ‘anekavihitaṁ iddhividhaṁ paccanubhaveyyaṁ—ekopi hutvā bahudhā assaṁ, bahudhāpi hutvā eko assaṁ; āvibhāvaṁ tirobhāvaṁ; tirokuṭṭaṁ tiropākāraṁ tiropabbataṁ asajjamāno gaccheyyaṁ, seyyathāpi ākāse; pathaviyāpi ummujjanimujjaṁ kareyyaṁ, seyyathāpi udake; udakepi abhijjamāne gaccheyyaṁ, seyyathāpi pathaviyaṁ; ākāsepi pallaṅkena kameyyaṁ, seyyathāpi pakkhī sakuṇo; imepi candimasūriye evaṁmahiddhike evaṁmahānubhāve pāṇinā parāmaseyyaṁ parimajjeyyaṁ; yāva brahmalokāpi kāyena vasaṁ vatteyyan’ti, sīlesvevassa paripūrakārī ajjhattaṁ cetosamathamanuyutto anirākatajjhāno vipassanāya samannāgato brūhetā suññāgārānaṁ.
 
