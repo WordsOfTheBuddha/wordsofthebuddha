@@ -1,0 +1,22 @@
+title: "Well Spoken Speech"
+description: "Speech that accords with right speech and is also timely, beneficial, and spoken with a mind of loving-kindness."
+synonyms:
+    - good speech
+    - eloquent communication
+pali:
+    - subhāsitā
+supportedBy:
+    - right speech
+    - loving-kindness
+    - collectedness
+leadsTo:
+    - wholesome
+opposite:
+    - wrong speech
+redirects:
+    - good-speech
+discourses:
+    - id: "an5.198"
+      note: "⭐️"
+    - id: "mn58"
+      note: "Speech of an Awakened One"

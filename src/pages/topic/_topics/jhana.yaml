@@ -24,13 +24,14 @@ redirects:
     - right-collectedness
 related:
     - mindfulness
-    - full awareness
     - cultivation
 discourses:
-    - id: "an5.28"
-      note: "Progressive development with rich similes"
     - id: "mn107"
       note: "gradual training guidelines to cultivate jhānas"
+    - id: "mn119"
+      note: "with extra guideline details and similes"
+    - id: "an5.28"
+      note: "Jhanas explained with rich similes"
     - id: "mn39"
       note: "training guidelines with similes"
     - id: "an5.256"
