@@ -342,8 +342,8 @@
 			"stillness of mind",
 			"concentration",
 			"undistracted awareness",
-			"Context: A mental quality of composure where awareness is gathered, steady, rather than scattered or tense. In such collectedness, supported by mindfulness and right view, experience is clearly known and can be wisely contemplated, unlike narrow or disconnected concentration that shuts out the senses and feeds delusion.",
-			"Supported by:{contentment, full awareness, happiness}",
+			"Context: A mental quality of composure where awareness is gathered, steady, rather than scattered or tense. In such collectedness, supported by mindfulness and right view, experience is clearly known and can be wisely contemplated.",
+			"Supported by:{contentment, full awareness, happiness, mindfulness}",
 			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
 			"Opposite:{wrong collectedness}",
 			"[jhāna, samādhi, samāhita, susamāhita, sammāsamādhi]"
@@ -364,7 +364,7 @@
 			"Supported by:{affection, merit, non-harm}",
 			"Leads to:{appreciative joy, equanimity}",
 			"Context: A mental quality of wise empathy in response to suffering, which counters qualities of harm or cruelty.",
-			"[karuṇā]"
+			"[karuṇā, anukampa]"
 		],
 		"complete comprehension": [
 			"full understanding",
@@ -422,6 +422,7 @@
 			"satisfaction",
 			"sense of ease",
 			"Context: The quality of being satisfied with what one has, especially regarding the four requisites (robes, food, shelter, medicine), which supports simplicity and peace of mind.",
+			"Opposite:{discontentment}",
 			"Related:{joy, happiness}",
 			"Supported by:{sense restraint, self-control}",
 			"Leads to:{collectedness}",
@@ -529,6 +530,7 @@
 			"ability to discriminate, distinguish",
 			"clear seeing",
 			"penetrating internal vision",
+			"Context: Clear seeing that distinguishes what is wholesome from unwholesome, true from false.",
 			"Supported by:{examination, full awareness}",
 			"Leads to:{perceiving drawback, perceiving escape, wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
@@ -537,6 +539,7 @@
 			"dissatisfaction",
 			"unsatisfactoriness",
 			"boredom",
+			"Opposite:{contentment}",
 			"Supported by:{craving}",
 			"Leads to:{having many desires}",
 			"[asantuṭṭhitā, aratī, atitta]"
@@ -613,6 +616,7 @@
 			"exhaustion",
 			"gradual ending",
 			"wearing away",
+			"Context: The complete exhaustion and cessation of craving, aversion, and delusion—the three roots of suffering. It refers to both the gradual wearing away of defilements through practice and the final cessation that constitutes Nibbāna.",
 			"Supported by:{complete comprehension, free from attachment, perceiving escape}",
 			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
@@ -729,6 +733,7 @@
 		"formless": [
 			"immaterial",
 			"surpassing forms",
+			"Context: A meditative domain that transcends all perception of material form, progressing through the bases of infinite space, infinite consciousness, nothingness, and neither-perception-nor-non-perception. These states represent refined levels of collectedness beyond attachment to physical phenomena.",
 			"Supported by:{imperturbable, perceiving escape}",
 			"Leads to:{non-proliferation}",
 			"Opposite:{recognition of diversity}",
@@ -1264,6 +1269,7 @@
 			"supernormal abilities",
 			"psychic ability",
 			"spiritual power",
+			"Context: Supernormal capacities resulting from a practice of collectedness rooted in aspiration, determination, purification of mind, and investigation of phenomena.",
 			"Related:{direct knowledge}",
 			"Supported by:{collectedness}",
 			"Leads to:{faith, vigour}",
@@ -1423,7 +1429,7 @@
 			"harmonious speech",
 			"articulate words",
 			"eloquent communication",
-			"Context: Speech that is truthful, harmonious, gentle, and beneficial, abstaining from lying, divisive speech, harsh speech, and idle chatter.",
+			"Context: Speech that is purified by abstaining from falsehood, divisive talk, harsh words, and idle chatter.",
 			"Supported by:{right intention}",
 			"Guarded by:{right view, right effort, mindfulness}",
 			"Leads to:{non-harm}",
@@ -1492,6 +1498,7 @@
 			"watching the sense doors",
 			"not grasping at the prominent features or details of sense objects",
 			"moderation in eating",
+			"Context: A practice of guarding the sense doors by not grasping at the general features or details of sense objects when seeing, hearing, sensing, and cognizing.",
 			"Related:{self-control}",
 			"Supported by:{diligence}",
 			"Leads to:{contentment, wakefulness}",
@@ -1656,6 +1663,7 @@
 			"calmness",
 			"peacefulness",
 			"serenity",
+			"Context: A mental quality of calm and stillness that arises when the body and mind are unburdened by agitation.",
 			"Supported by:{joyful pleasure, unification}",
 			"Leads to:{happiness}",
 			"[passaddhi, santi, upasama, upasanta]"
@@ -1672,6 +1680,7 @@
 			"accuracy",
 			"reliability",
 			"verifiability",
+			"Context: The quality of what is real and dependable; speech and conduct aligned with reality, honesty, and integrity.",
 			"Leads to:{conscience, giving, inspiration, learned, respect}",
 			"[sacca]"
 		],
@@ -1719,6 +1728,7 @@
 			"unskillful",
 			"unbeneficial",
 			"karmically unprofitable",
+			"Context: Conducive to or suggestive of poor health and mental well-being.",
 			"Leads to:{suffering}",
 			"Opposite:{wholesome}",
 			"[akusala]"
@@ -1791,6 +1801,7 @@
 			"healthy",
 			"nourishing",
 			"sustaining",
+			"Context: Conducive to or suggestive of good health and mental well-being.",
 			"Supported by:{solitude}",
 			"Leads to:{joy}",
 			"Opposite:{unwholesome}",
@@ -1823,6 +1834,7 @@
 		"without fear": [
 			"fearlessness",
 			"free of distress",
+			"Context: A quality of complete security and freedom from distress that arises when one has abandoned all grounds for fear.",
 			"Related:{impartiality, sorrow-free}",
 			"Supported by:{non-harm, quenching, safety}",
 			"Opposite:{fear}",
@@ -1875,6 +1887,7 @@
 			"divisive, slanderous or defamatory or malicious speech",
 			"abusive or rude or unkind way of speaking",
 			"meaningless talk or idle chatter or gossip",
+			"Context: Speech that is corrupted by falsehood, divisiveness, harshness, or idle chatter.",
 			"Supported by:{wrong intention, irritability, brashness}",
 			"Leads to:{harm, sexual misconduct, slaughtering, stealing}",
 			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
