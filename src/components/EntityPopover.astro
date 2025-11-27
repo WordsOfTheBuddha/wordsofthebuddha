@@ -98,23 +98,25 @@ const badgeHtmlArray = types.map((type) =>
 					</div>
 				</div>
 
-				{context && (
-					<p class="popover-context" set:html={contextHtml} />
-				)}
+				<div class="popover-contentarea">
+					{context && (
+						<p class="popover-context" set:html={contextHtml} />
+					)}
 
-				{synonyms.length > 0 && (
-					<div class="popover-section">
-						<span class="label">Also known as: </span>
-						<span class="value">{synonyms.join(", ")}</span>
-					</div>
-				)}
+					{synonyms.length > 0 && (
+						<div class="popover-section">
+							<span class="label">Also known as: </span>
+							<span class="value">{synonyms.join(", ")}</span>
+						</div>
+					)}
 
-				{pali.length > 0 && (
-					<div class="popover-section">
-						<span class="label">Pāli: </span>
-						<span class="value pali">{pali.join(", ")}</span>
-					</div>
-				)}
+					{pali.length > 0 && (
+						<div class="popover-section">
+							<span class="label">Pāli: </span>
+							<span class="value pali">{pali.join(", ")}</span>
+						</div>
+					)}
+				</div>
 
 				{href && (
 					<a href={href} class="popover-link">
@@ -156,6 +158,10 @@ const badgeHtmlArray = types.map((type) =>
 			0 4px 6px -2px rgba(0, 0, 0, 0.05);
 		z-index: 1000;
 
+		/* Flex layout for header/body/footer structure */
+		display: flex;
+		flex-direction: column;
+
 		/* Hidden state */
 		opacity: 0;
 		visibility: hidden;
@@ -171,6 +177,32 @@ const badgeHtmlArray = types.map((type) =>
 		color: var(--surface-ink, #1f2937);
 		font-size: 0.95rem;
 		line-height: 1.5;
+
+		/* Dynamic max-height set by JS */
+		max-height: var(--popover-max-height, 400px);
+	}
+
+	/* Scrollable body section */
+	.popover-contentarea {
+		flex: 1;
+		overflow-y: auto;
+		min-height: 0; /* Allow shrinking */
+		/* Subtle scroll indicator */
+		scrollbar-width: thin;
+		scrollbar-color: var(--gray-300, #d1d5db) transparent;
+	}
+
+	.popover-contentarea::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	.popover-contentarea::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.popover-contentarea::-webkit-scrollbar-thumb {
+		background-color: var(--gray-300, #d1d5db);
+		border-radius: 2px;
 	}
 
 	/* Show state */
@@ -255,7 +287,7 @@ const badgeHtmlArray = types.map((type) =>
 
 	.popover-section {
 		font-size: 0.85rem;
-		margin-top: 0.5rem;
+		margin-top: 0.75rem;
 	}
 
 	.label {
@@ -363,35 +395,47 @@ const badgeHtmlArray = types.map((type) =>
 
 			const updatePosition = () => {
 				const triggerRect = trigger.getBoundingClientRect();
-				const contentHeight = content.offsetHeight || 200; // Fallback estimate if hidden
 				const contentWidth = content.offsetWidth || 360;
 
 				// Vertical Check
 				const spaceAbove = triggerRect.top;
 				const spaceBelow = window.innerHeight - triggerRect.bottom;
 
-				// Determine direction based on available space
-				// 1. If it fits in one but not the other, choose the one it fits.
-				// 2. If it fits in both or neither, choose the one with MORE space.
+				// Minimum threshold: only flip to bottom if space above is really small
+				// Header (~50px) + some body content (~80px) + footer (~40px) + padding (~30px) = ~200px min
+				const minThreshold = 150;
 
-				const fitsAbove = spaceAbove >= contentHeight + 20;
-				const fitsBelow = spaceBelow >= contentHeight + 20;
-
+				// Prefer opening above (top) for consistency
+				// Only open below if space above is below minimum threshold
 				let shouldOpenDown = false;
 
-				if (fitsAbove && !fitsBelow) {
+				if (spaceAbove >= minThreshold) {
+					// Enough space above - open on top with scrollable body if needed
 					shouldOpenDown = false;
-				} else if (!fitsAbove && fitsBelow) {
+				} else if (spaceBelow > spaceAbove) {
+					// Not enough space above, and more space below
 					shouldOpenDown = true;
 				} else {
-					// Fits both or neither: pick the side with more space
-					shouldOpenDown = spaceBelow > spaceAbove;
+					// Both cramped, prefer top
+					shouldOpenDown = false;
 				}
 
 				if (shouldOpenDown) {
 					content.classList.add("opens-down");
+					// Set max-height based on available space below
+					const maxHeight = Math.min(spaceBelow - 20, 400);
+					content.style.setProperty(
+						"--popover-max-height",
+						`${maxHeight}px`
+					);
 				} else {
 					content.classList.remove("opens-down");
+					// Set max-height based on available space above
+					const maxHeight = Math.min(spaceAbove - 20, 400);
+					content.style.setProperty(
+						"--popover-max-height",
+						`${maxHeight}px`
+					);
 				}
 
 				// Horizontal Check
