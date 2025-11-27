@@ -16,6 +16,10 @@ export const keyMap: { [key: string]: string } = {
 // Function to transform the ID based on character and digit boundaries
 export const transformId = (id: string) => {
 	if (typeof id !== "string") return "";
+
+	// Strip hash and following characters
+	id = id.split("#")[0];
+
 	id = keyMap[id] || id;
 
 	// Try the existing pattern replacement first

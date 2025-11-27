@@ -1752,6 +1752,8 @@ function transformId(id: string): string {
 		"noble-truths-noble-path": "Noble Truths, Noble Path",
 		"in-the-buddhas-words": "In the Buddha's Words",
 	};
+	// Strip hash and following characters
+	id = id.split("#")[0];
 	id = keyMap[id] || id;
 	const transformed = id.replace(
 		/([a-zA-Z]+)(\d+)/,

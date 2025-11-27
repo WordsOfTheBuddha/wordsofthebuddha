@@ -200,7 +200,8 @@ export async function generateTopicMappings() {
 
 		const discourses = topic.discourses
 			.map((discourse: any) => {
-				const data = discourseData[discourse.id];
+				const baseId = discourse.id?.split("#")[0];
+				const data = discourseData[baseId];
 				if (!data) {
 					console.warn(`Discourse entry not found: ${discourse.id}`);
 					return null;
@@ -210,7 +211,7 @@ export async function generateTopicMappings() {
 					id: discourse.id,
 					title: data.title,
 					description: data.description,
-					collection: getCollection(discourse.id),
+					collection: getCollection(baseId),
 					note: discourse.note,
 					isFeatured: true, // Mark as topic-specific discourse
 				};
