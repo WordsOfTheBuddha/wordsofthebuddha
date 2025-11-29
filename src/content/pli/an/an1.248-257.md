@@ -1,5 +1,5 @@
 ---
-title: Etadagga Chaṭṭha vagga - The Chapter on the Foremost (Sixth)
+title: Chaṭṭha Etadagga vagga - The Chapter on the Foremost (Sixth)
 description: The Buddha describes the foremost of his lay disciples in various categories.
 qualities: giving, faith
 theme: inspiration

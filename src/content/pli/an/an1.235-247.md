@@ -1,5 +1,5 @@
 ---
-title: Etadagga Pañcama vagga - The Chapter on the Foremost (Fifth)
+title: Pañcama Etadagga vagga - The Chapter on the Foremost (Fifth)
 description: The Buddha describes the foremost of his bhikkhunī disciples in various categories.
 qualities: wisdom, psychic power, collectedness, direct knowledge
 theme: inspiration

@@ -1,5 +1,5 @@
 ---
-title: Etadagga Sattama vagga - The Chapter on the Foremost (Seventh)
+title: Sattama Etadagga vagga - The Chapter on the Foremost (Seventh)
 description: The Buddha describes the foremost of his female lay disciples in various categories.
 qualities: giving, learned, loving-kindness, collectedness, faith
 theme: inspiration

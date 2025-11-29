@@ -1,5 +1,5 @@
 ---
-title: Etadagga Paṭhama vagga - The Chapter on the Foremost (First)
+title: Paṭhama Etadagga vagga - The Chapter on the Foremost (First)
 description: The Buddha describes the foremost of his bhikkhu disciples in various categories.
 qualities: wisdom, psychic power, patience
 theme: inspiration
