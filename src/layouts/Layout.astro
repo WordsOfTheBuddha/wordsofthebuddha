@@ -415,18 +415,22 @@ if (!SEOTitle) {
 				// Navigate to target paragraph with smooth scroll
 				if (scrollTargetId != null) {
 					const idSel = `[id="${scrollTargetId}"]`;
-					
+
 					// Check if we're in split layout mode (Pali mode with split layout)
-					const isSplitMode = document.documentElement.classList.contains("pali-on") && 
-						localStorage.getItem("layout") === "split";
-					
+					const isSplitMode =
+						document.documentElement.classList.contains(
+							"pali-on"
+						) && localStorage.getItem("layout") === "split";
+
 					let targetElement: Element | null = null;
-					
+
 					if (isSplitMode) {
 						// Prefer the English panel in split mode if available
-						targetElement = document.querySelector(`#panel1 ${idSel}`);
+						targetElement = document.querySelector(
+							`#panel1 ${idSel}`
+						);
 					}
-					
+
 					if (!targetElement) {
 						// Fallback to interleaved article
 						targetElement = document.querySelector(
@@ -443,21 +447,24 @@ if (!SEOTitle) {
 						const scrollToElement = () => {
 							const rect = targetElement!.getBoundingClientRect();
 							const absoluteTop = rect.top + window.pageYOffset;
-							
+
 							// If rect.top is 0 and we're at the top of the page, the element likely hasn't been laid out yet
 							if (rect.top === 0 && window.pageYOffset === 0) {
 								// Try again after a short delay
 								setTimeout(scrollToElement, 50);
 								return;
 							}
-							
-							const scrollToPosition = Math.max(0, absoluteTop - 100);
+
+							const scrollToPosition = Math.max(
+								0,
+								absoluteTop - 100
+							);
 							window.scrollTo({
 								top: scrollToPosition,
 								behavior: "smooth",
 							});
 						};
-						
+
 						// Start with a small delay to let initial render complete
 						setTimeout(scrollToElement, 50);
 					}
