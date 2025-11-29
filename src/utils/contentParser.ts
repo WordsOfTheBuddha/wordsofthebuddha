@@ -639,9 +639,26 @@ function formatBlock(
 	} | null,
 	actualParagraphNumber?: number
 ): string {
-	// Handle headings
+	// Helper to convert bold (**text**), italic (*text*), and superscript (^text^) markdown to HTML
+	// Must process bold first to avoid conflicts with italic
+	const processInlineEmphasis = (s: string): string => {
+		// Handle bold: **text** or __text__ (non-greedy)
+		let result = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+		result = result.replace(/__(.+?)__/g, "<strong>$1</strong>");
+		// Handle italic: *text* or _text_ (non-greedy, but not inside words for underscore)
+		result = result.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, "<em>$1</em>");
+		result = result.replace(
+			/(?<![a-zA-Z])_(.+?)_(?![a-zA-Z])/g,
+			"<em>$1</em>"
+		);
+		// Handle superscript: ^text^ - everything between carets becomes superscript (non-greedy)
+		result = result.replace(/\^(.+?)\^/g, "<sup>$1</sup>");
+		return result;
+	};
+
+	// Handle headings - still process inline emphasis
 	if (text.startsWith("#")) {
-		return text;
+		return processInlineEmphasis(text);
 	}
 
 	// Generate paragraph number and anchor ID (just the number, no prefix)
@@ -716,6 +733,8 @@ function formatBlock(
 	}
 	// Convert inline markdown links for both English and Pāli content, but keep links inside gloss patterns as raw markdown
 	processedText = replaceMarkdownLinksOutsideGloss(processedText);
+	// Convert bold, italic, and superscript markdown to HTML
+	processedText = processInlineEmphasis(processedText);
 
 	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${
 		isVerseText ? transformVerseNewlines(processedText) : processedText

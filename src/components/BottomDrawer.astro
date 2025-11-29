@@ -173,6 +173,10 @@ import "../styles/bottomDrawer.css";
 				}
 
 				let text = node.textContent || "";
+				// Only process if the text contains tooltip pattern
+				if (!/\|[^|:]+::[^|]+\|/.test(text)) {
+					continue; // No tooltip pattern, leave text node as-is
+				}
 				// Replace |text::tooltip| pattern
 				text = text.replace(
 					/\|([^|:]+)::([^|]+)\|/g,
@@ -218,16 +222,60 @@ import "../styles/bottomDrawer.css";
 			const text = el.textContent?.trim();
 			const content = el.getAttribute("data-tooltip-content");
 			// Filter out tooltips with template variables or empty content
-			return (
-				text &&
-				content &&
-				!text.includes("${") &&
-				!content.includes("${") &&
-				text !== "${textPart}"
+			if (
+				!text ||
+				!content ||
+				text.includes("${") ||
+				content.includes("${") ||
+				text === "${textPart}"
+			) {
+				return false;
+			}
+			// Filter out tooltips that are not visible (e.g., in hidden split panel)
+			// Check if element or any ancestor is hidden
+			const isVisible =
+				el.offsetParent !== null ||
+				el.closest('[aria-hidden="true"]') === null;
+			if (!isVisible) {
+				return false;
+			}
+			// Also check computed visibility
+			const style = window.getComputedStyle(el);
+			if (style.display === "none" || style.visibility === "hidden") {
+				return false;
+			}
+			// Check if parent article/container is hidden
+			const parentArticle = el.closest(
+				"article, .split-wrapper, .interleaved-article"
 			);
+			if (parentArticle) {
+				const parentStyle = window.getComputedStyle(parentArticle);
+				if (
+					parentStyle.display === "none" ||
+					parentStyle.visibility === "hidden"
+				) {
+					return false;
+				}
+			}
+			return true;
 		});
 
+		// Find the index - try direct reference first
 		currentWordIndex = currentWords.indexOf(clickedTooltip);
+
+		// If not found (element reference mismatch), find by matching text content
+		if (currentWordIndex === -1) {
+			const clickedText = clickedTooltip.textContent?.trim();
+			const clickedContent = clickedTooltip.getAttribute(
+				"data-tooltip-content"
+			);
+			currentWordIndex = currentWords.findIndex(
+				(el) =>
+					el.textContent?.trim() === clickedText &&
+					el.getAttribute("data-tooltip-content") === clickedContent
+			);
+		}
+
 		highlightCurrentWord();
 	}
 
@@ -410,6 +458,8 @@ import "../styles/bottomDrawer.css";
 
 		bottomPopover.addNavigationControls(navigationHtml);
 		setupNavigationEventListeners();
+		// Ensure button states are correctly set after DOM update
+		updateNavigationButtons();
 	}
 
 	function setupNavigationEventListeners() {
