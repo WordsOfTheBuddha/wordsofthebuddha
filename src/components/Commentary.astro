@@ -3,36 +3,80 @@ import { parseSimpleMarkdown } from "../utils/mdParser";
 
 const { commentary } = Astro.props;
 
+// Helper to unescape YAML's leading \[
+const unescape = (s: string) =>
+	s.startsWith("\\[") ? s.replace(/^\\\[/, "[") : s;
+
 // Handle both string and array formats
 let commentaryContent = "";
+let commentaryItems: { num: string; content: string }[] = [];
+
 if (commentary) {
 	if (Array.isArray(commentary)) {
-		// Join array elements with double line breaks for paragraph separation
+		commentary.forEach((item: string) => {
+			const processed = unescape(item);
+			const match = processed.match(/^\[(\d+)\]\s*(.*)/);
+			if (match) {
+				commentaryItems.push({
+					num: match[1],
+					content: match[2].trim(),
+				});
+			}
+		});
 		commentaryContent = commentary.join("\n\n");
-	} else if (typeof commentary === "string" && commentary.trim() !== "") {
+	} else if (typeof commentary === "string" && commentary.trim()) {
 		commentaryContent = commentary;
+		const processed = unescape(commentaryContent);
+		const match = processed.match(/^\[(\d+)\]\s*(.*)/);
+		if (match) {
+			commentaryItems.push({ num: match[1], content: match[2].trim() });
+		}
 	}
 }
 
-// Unescape a leading "\[" to "[" before parsing (workaround for YAML plain-scalar restriction)
-if (commentaryContent && commentaryContent.startsWith("\\[")) {
-	commentaryContent = commentaryContent.replace(/^\\\[/, "[");
-}
+// Unescape for parsing
+commentaryContent = unescape(commentaryContent);
 
-// Parse the commentary using the enhanced simple markdown parser
 const parsedCommentary = commentaryContent
 	? parseSimpleMarkdown(commentaryContent)
 	: "";
+
+// Create JSON for client-side popover (only if there are items)
+const commentaryDataJson =
+	commentaryItems.length > 0
+		? JSON.stringify(
+				Object.fromEntries(
+					commentaryItems.map((i) => [i.num, i.content])
+				)
+			)
+		: "{}";
 ---
 
 {
 	commentaryContent && commentaryContent.trim() !== "" && (
-		<div class="commentary-section mt-8 pt-2 border-t border-gray-200 dark:border-gray-700">
-			<div
-				class="commentary-content prose prose-sm dark:prose-invert max-w-none"
-				set:html={parsedCommentary}
+		<>
+			{/* Hidden data for client-side popover */}
+			<script
+				id="commentary-data"
+				type="application/json"
+				set:html={commentaryDataJson}
 			/>
-		</div>
+
+			{/* Popover container (positioned by JS) */}
+			<div id="commentary-popover" class="commentary-popover">
+				<div class="popover-wrapper">
+					<div class="popover-contentarea" />
+					<div class="popover-arrow" />
+				</div>
+			</div>
+
+			<div class="commentary-section mt-8 pt-2 border-t border-gray-200 dark:border-gray-700">
+				<div
+					class="commentary-content prose prose-sm dark:prose-invert max-w-none"
+					set:html={parsedCommentary}
+				/>
+			</div>
+		</>
 	)
 }
 
@@ -129,4 +173,227 @@ const parsedCommentary = commentaryContent
 			background-color: white !important;
 		}
 	}
+
+	/* Commentary note markers */
+	.commentary-content :global(.note-marker) {
+		font-weight: 600;
+		color: var(--secondary-color);
+	}
+
+	/* Commentary Popover Styles */
+	.commentary-popover {
+		position: fixed;
+		z-index: 1000;
+		pointer-events: none;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.2s ease,
+			visibility 0.2s;
+	}
+
+	.commentary-popover.visible {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+
+	.commentary-popover .popover-wrapper {
+		position: relative;
+		width: 360px;
+		max-width: 90vw;
+		background-color: var(--surface-elevated, #ffffff);
+		border: 1px solid var(--popover-border, #e5e7eb);
+		border-radius: 0.5rem;
+		box-shadow:
+			0 10px 15px -3px rgba(0, 0, 0, 0.1),
+			0 4px 6px -2px rgba(0, 0, 0, 0.05);
+		color: var(--surface-ink, #1f2937);
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.commentary-popover .popover-contentarea {
+		max-height: 250px;
+		overflow-y: auto;
+		padding: 1rem;
+		/* Firefox scrollbar styling */
+		scrollbar-width: thin;
+		scrollbar-color: var(--gray-500, #9ca3af) transparent;
+	}
+
+	/* Only show scrollbar on hover/scroll for WebKit browsers */
+	.commentary-popover .popover-contentarea::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.commentary-popover .popover-contentarea::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.commentary-popover .popover-contentarea::-webkit-scrollbar-thumb {
+		background-color: var(--gray-500, #9ca3af);
+		border-radius: 3px;
+	}
+
+	.commentary-popover .popover-contentarea :global(a) {
+		color: var(--link-color);
+		text-decoration: none;
+	}
+
+	.commentary-popover .popover-contentarea :global(a:hover) {
+		text-decoration: underline;
+	}
+
+	.commentary-popover .popover-contentarea :global(strong) {
+		font-weight: 600;
+	}
+
+	.commentary-popover .popover-arrow {
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		background-color: var(--surface-elevated, #ffffff);
+		border: 1px solid var(--popover-border, #e5e7eb);
+		transform: rotate(45deg);
+	}
+
+	/* Arrow at bottom (popover above trigger) */
+	.commentary-popover.arrow-bottom .popover-arrow {
+		bottom: -7px;
+		border-top: none;
+		border-left: none;
+	}
+
+	/* Arrow at top (popover below trigger) */
+	.commentary-popover.arrow-top .popover-arrow {
+		top: -7px;
+		border-bottom: none;
+		border-right: none;
+	}
 </style>
+
+<script>
+	function initCommentaryPopover() {
+		const dataEl = document.getElementById("commentary-data");
+		if (!dataEl) return;
+
+		const commentaryData: Record<string, string> = JSON.parse(
+			dataEl.textContent || "{}"
+		);
+		if (!Object.keys(commentaryData).length) return;
+
+		const popoverEl = document.getElementById(
+			"commentary-popover"
+		) as HTMLElement;
+		const bodyEl = popoverEl?.querySelector(
+			".popover-contentarea"
+		) as HTMLElement;
+		const arrowEl = popoverEl?.querySelector(
+			".popover-arrow"
+		) as HTMLElement;
+		if (!popoverEl || !bodyEl || !arrowEl) return;
+
+		const refs = document.querySelectorAll<HTMLElement>(".commentary-ref");
+		if (!refs.length) return;
+
+		let activeRef: HTMLElement | null = null;
+
+		// Parse basic markdown syntax
+		const parseContent = (content: string) =>
+			content
+				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+				.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+				.replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+		function showPopover(ref: HTMLElement) {
+			const noteNum = ref.dataset.note;
+			if (!noteNum || !commentaryData[noteNum]) return;
+
+			activeRef = ref;
+			bodyEl.innerHTML = parseContent(commentaryData[noteNum]);
+
+			// Measure popover height
+			popoverEl.style.cssText = "visibility:hidden;top:0;left:0";
+			popoverEl.classList.add("visible");
+			const popoverHeight = popoverEl.getBoundingClientRect().height;
+
+			const rect = ref.getBoundingClientRect();
+			const { innerHeight: vh, innerWidth: vw } = window;
+			const spaceAbove = rect.top;
+
+			// Prefer top, fallback to bottom
+			const showAbove =
+				spaceAbove >= popoverHeight + 15 ||
+				spaceAbove >= vh - rect.bottom;
+			const top = showAbove
+				? rect.top - popoverHeight - 10
+				: rect.bottom + 10;
+
+			// Center horizontally, keep in viewport
+			const padding = 10;
+			let left = Math.max(
+				padding,
+				Math.min(rect.left + rect.width / 2 - 180, vw - 360 - padding)
+			);
+
+			// Position arrow relative to trigger
+			const arrowLeft = Math.max(
+				16,
+				Math.min(rect.left + rect.width / 2 - left - 6, 344)
+			);
+
+			popoverEl.style.cssText = `top:${top}px;left:${left}px;visibility:visible`;
+			arrowEl.style.left = `${arrowLeft}px`;
+			popoverEl.classList.remove("arrow-top", "arrow-bottom");
+			popoverEl.classList.add(showAbove ? "arrow-bottom" : "arrow-top");
+		}
+
+		const hidePopover = () => {
+			popoverEl.classList.remove("visible");
+			activeRef = null;
+		};
+
+		// Setup click handlers
+		refs.forEach((ref) => {
+			if (!ref.dataset.note || !commentaryData[ref.dataset.note]) return;
+			ref.style.cssText = "cursor:pointer;color:var(--secondary-color)";
+			ref.addEventListener("click", (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				activeRef === ref && popoverEl.classList.contains("visible")
+					? hidePopover()
+					: showPopover(ref);
+			});
+		});
+
+		// Close handlers
+		document.addEventListener("click", (e) => {
+			if (
+				activeRef &&
+				!popoverEl.contains(e.target as Node) &&
+				!activeRef.contains(e.target as Node)
+			)
+				hidePopover();
+		});
+		document.addEventListener(
+			"keydown",
+			(e) => e.key === "Escape" && hidePopover()
+		);
+
+		// Reposition on scroll/resize
+		const reposition = () =>
+			activeRef &&
+			popoverEl.classList.contains("visible") &&
+			showPopover(activeRef);
+		window.addEventListener("scroll", reposition, { passive: true });
+		window.addEventListener("resize", reposition, { passive: true });
+	}
+
+	// Initialize
+	const init = () => setTimeout(initCommentaryPopover, 50);
+	document.addEventListener("astro:page-load", init);
+	document.readyState === "loading"
+		? document.addEventListener("DOMContentLoaded", init)
+		: init();
+</script>
