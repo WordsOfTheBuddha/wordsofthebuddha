@@ -1,6 +1,11 @@
 {
 	"wisdom": ["reflection", "understanding"],
-	"principle": ["theorem", "working hypothesis", "framework"],
+	"principle": [
+		"theorem",
+		"working hypothesis",
+		"framework",
+		"proposition that serves as the foundation"
+	],
 	"training guideline": ["practice instruction", "meditation instruction"],
 	"inquisitiveness": ["curiosity", "interest in learning"],
 	"inspiration": [

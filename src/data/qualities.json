@@ -288,6 +288,7 @@
 		],
 		"bad friendship": [
 			"friendship with unwholesome persons",
+			"Context: Association with those who are unprincipled, faithless, or unwise. Such companionship leads one away from the Dhamma, fostering negligence and wrong view.",
 			"Related:{companionship}",
 			"Supported by:{immaturity, lack of discernment}",
 			"Leads to:{consuming intoxicants, moral recklessness, shamelessness, wrong effort}",
@@ -296,6 +297,7 @@
 		"bad habits": [
 			"practice of unbeneficial actions",
 			"pursuing unskillful actions",
+			"Context: The repeated indulgence in unskillful actions. Habitual engagement with the unwholesome strengthens defilements, making them harder to abandon and leading to decline.",
 			"Supported by:{laziness}",
 			"Leads to:{harm}",
 			"[anuyoga + akusala]"
@@ -421,7 +423,7 @@
 			"having few desires",
 			"satisfaction",
 			"sense of ease",
-			"Context: The quality of being satisfied with what one has, especially regarding the four requisites (robes, food, shelter, medicine), which supports simplicity and peace of mind.",
+			"Context: The quality of being satisfied with the requisites one has and with the present conditions, resulting in having few desires and being free from agitation.",
 			"Opposite:{discontentment}",
 			"Related:{joy, happiness}",
 			"Supported by:{sense restraint, self-control}",
@@ -469,7 +471,7 @@
 			"meditation",
 			"nurturing",
 			"growth",
-			"Context: The term 'cultivation' implies that which causes to be, it is primarily described in the context of developing and nurturing a bright quality.",
+			"Context: The active practice of 'bringing into being' wholesome states. It is the deliberate nurturing of the bright state of mind.",
 			"Supported by:{desire, diligence}",
 			"Leads to:{good habits}",
 			"[bhāvanā]"
@@ -520,7 +522,7 @@
 			"carefulness",
 			"conscientiousness",
 			"heedfulness",
-			"Context: The quality of wishing to do one’s work or duty well, with alertness, carefulness and care.",
+			"Context: The protective quality of guarding the mind amidst sensory experience. By restraining the faculties with alert presence, the mind remains unsoiled by attraction.",
 			"Leads to:{continuous effort, cultivation, good habits, sense restraint}",
 			"Opposite:{negligence}",
 			"[appamāda]"
@@ -539,6 +541,7 @@
 			"dissatisfaction",
 			"unsatisfactoriness",
 			"boredom",
+			"Context: A state of dissatisfaction with one's requisites or conditions. It fuels the search for more, disturbing peace and preventing the mind from settling into collectedness.",
 			"Opposite:{contentment}",
 			"Supported by:{craving}",
 			"Leads to:{having many desires}",
@@ -587,6 +590,7 @@
 			"uncertainty",
 			"wavering",
 			"perplexity",
+			"Context: Paralyzing indecision about the path or practice. Doubt obstructs confidence and clarity.",
 			"Supported by:{delusion, speculation}",
 			"Leads to:{faithlessness, ignorance}",
 			"[vicikiccha, kaṅkhā, vimati]"
@@ -596,6 +600,7 @@
 			"torpor",
 			"feeling lethargic",
 			"lit. stiffness (of mind/body due to tiredness)",
+			"Context: A heaviness or stiffness of the mind that leads to sleepiness. It shrouds clarity like a fog, making the mind unwieldy and prone to drifting away from its object.",
 			"Related:{dullness}",
 			"Supported by:{discontentment}",
 			"Leads to:{ignorance}",
@@ -606,6 +611,7 @@
 			"inertia",
 			"mental sluggishness",
 			"inattentiveness or lack of sharpness",
+			"Context: Mental stagnation and lack of driving power. It is an inertia where the mind feels thick and incapable of active engagement or investigation.",
 			"Related:{drowsiness}",
 			"Supported by:{discontentment}",
 			"Leads to:{ignorance}",
@@ -659,7 +665,7 @@
 			"reviewing",
 			"scrutinization",
 			"lit. picking",
-			"Context: Process of a careful inquiry of mental states, qualities, and phenomena, examining their arising, persisting, and ceasing in order to understand their true nature and support the cultivation of wisdom and awakening",
+			"Context: Process of a careful inquiry of mental states, qualities, and phenomena, examining their arising, persisting, and ceasing in order to understand their true nature and support the cultivation of wisdom and awakening.",
 			"Supported by:{inquisitiveness, mindfulness}",
 			"Leads to:{discernment, perceiving drawback, rousing of energy}",
 			"Opposite:{speculation}",
@@ -670,6 +676,7 @@
 			"trust",
 			"belief",
 			"conviction",
+			"Context: Confidence in the Buddha's awakening and the efficacy of the path. It brightens and steadies the mind, removing doubt and inspiring energy toward wholesome practice. True faith rests on clarity and direct experience rather than mere belief.",
 			"Supported by:{suffering}",
 			"Leads to:{joy, recollection of the Buddha, recollection of the Dhamma, recollection of the Sangha, rousing of energy}",
 			"[saddha, pasanna]"
@@ -726,6 +733,7 @@
 			"yielding",
 			"ready",
 			"suitable for use",
+			"Context: A quality of the cultivated mind—malleable, workable, and free from rigidity and resistance. Akin to refined gold, a flexible mind is suitable for cultivation of direct knowledge.",
 			"Supported by:{collectedness}",
 			"Leads to:{direct knowledge, tame}",
 			"[mudu, kammañña]"
@@ -747,6 +755,7 @@
 			"not clinging",
 			"not grasping",
 			"not holding onto",
+			"Context: Release from grasping, not taking anything as “me” or “mine,” ceasing to appropriate or identify with people, things, views, or experiences.",
 			"Supported by:{giving up}",
 			"Leads to:{ending}",
 			"Opposite:{attachment}",
@@ -756,6 +765,7 @@
 			"clear awareness",
 			"clear comprehension",
 			"being intentional, deliberate, purposeful",
+			"Context: Clear comprehension that accompanies mindfulness, knowing what one is doing and why. Full awareness keeps the mind steady, intentional, and free from distraction.",
 			"Supported by:{mindfulness}",
 			"Leads to:{collectedness}",
 			"Opposite:{distraction}",
@@ -778,6 +788,7 @@
 			"relinquishment",
 			"letting go",
 			"abandonment",
+			"Context: The mental quality of renunciation and release from attachment. It delights in simplicity and freedom rather than in sensual pleasure. Giving up is not loss but the joyful abandoning of burden, opening the way to peace and insight.",
 			"Supported by:{perceiving escape, spiritual life}",
 			"Leads to:{free from attachment}",
 			"Opposite:{sensual desire}",
@@ -785,6 +796,7 @@
 		],
 		"good friendship": [
 			"friendship with wholesome persons",
+			"Context: Association with those who are virtuous and wise, who encourage faith, ethical conduct, and discernment. Good friendship is the chief support for progress on the path, guiding one toward right view and wholesome living.",
 			"Related:{companionship}",
 			"Supported by:{wisdom, diligence}",
 			"Leads to:{right view}",
@@ -793,6 +805,7 @@
 		"good habits": [
 			"practice of beneficial actions",
 			"pursuing skillful actions",
+			"Context: The repeated practice and pursuit of skillful qualities. By frequently cultivating what is wholesome, the mind inclines naturally toward the good, making the path easier to tread.",
 			"Supported by:{wisdom, diligence}",
 			"Leads to:{vigour}",
 			"[anuyoga + kusala]"
@@ -824,6 +837,7 @@
 			"destructiveness",
 			"bad",
 			"evil",
+			"Context: Intention or action that causes injury or suffering to oneself or others. It arises from aversion and heedlessness and destroys trust and safety. The opposite of non-harm, it obscures compassion and leads to regret.",
 			"Related:{cruelty}",
 			"Supported by:{aggressiveness, bad habits, bad friendship, feuding, non-restraint, treachery, wrong speech}",
 			"Leads to:{fear, regret}",
@@ -832,6 +846,7 @@
 		],
 		"having many desires": [
 			"greediness",
+			"Context: An excessive wanting for possessions, pleasure, or recognition that keeps the mind unsatisfied. It grows from craving and discontentment and feeds restlessness. The many-desiring mind cannot find ease, for it multiplies its own needs endlessly.",
 			"Related to:{sensual desire}",
 			"Supported by:{greed, discontentment}",
 			"Leads to:{hypocrisy}",
@@ -892,6 +907,7 @@
 			"lack of wisdom",
 			"lack of experience",
 			"foolishness",
+			"Context: A childish lack of discernment that fails to see the results of actions clearly. It delights in surface pleasure and ignores consequence. Immaturity leads to poor choices and association with unwise companions.",
 			"Supported by:{ignorance}",
 			"Leads to:{bad friendship}",
 			"Opposite:{wisdom}",
@@ -911,6 +927,7 @@
 			"impulsiveness",
 			"lack of tolerance",
 			"unable to endure",
+			"Context: The inability to endure hardship, delay, or disagreement. It manifests as agitation and a rush for results, undermining the steady effort required for cultivation.",
 			"Related:{irritability, anxiety}",
 			"Supported by:{aversion, wrong intention}",
 			"Leads to:{irritability}",
@@ -1002,6 +1019,7 @@
 			"lack of clear comprehension",
 			"lack of wisdom",
 			"child-like in understanding",
+			"Context: Failure to understand cause and effect or to recognize wholesome from unwholesome. It clouds judgment and makes the mind easily led by craving and aversion.",
 			"Supported by:{passion, aversion, delusion, unwise attention}",
 			"Leads to:{immaturity, bad friendship}",
 			"Opposite:{wisdom}",
@@ -1030,8 +1048,7 @@
 			"having knowledge",
 			"well studied",
 			"Related:{insight}",
-			"Context: Refers to a person who is well educated and knowledgeable. Learning is the process of acquiring knowledge.",
-			"Related:{insight}",
+			"Context: One who has broad learning and retention of the Dhamma, gained through hearing, reciting, and carefully investigating the teachings. Such learning penetrates their meaning through discernment and serves as a strong support for practice.",
 			"Supported by:{truth}",
 			"Leads to:{inquisitiveness}",
 			"[bahussuta, suta]"
@@ -1061,6 +1078,7 @@
 		"merit": [
 			"good deeds",
 			"spiritual wealth",
+			"Context: Wholesome result of good conduct, generosity, and right intention. Merit brightens the mind and supports happiness and favorable conditions for practice.",
 			"Supported by:{giving}",
 			"Leads to:{attachment, compassion}",
 			"[puñña, kalyāṇa]"
@@ -1069,7 +1087,7 @@
 			"conceptual proliferation",
 			"conceptualization",
 			"forming various opinions",
-			"Context: Tendency to overelaborate mental constructs—such as opinions, judgments, projections, and narratives—arising from sensory experience. It entangles the mind in a cascade of thoughts, concepts, and perceptions, giving rise to unwholesome states and suffering.",
+			"Context: Mind's tendency to spin out elaborate stories, interpretations, and emotional reactions from simple experiences.",
 			"Supported by:{conceit, craving, recognition of diversity, speculation}",
 			"Leads to:{greed, self-making}",
 			"Opposite:{inspiration, non-proliferation}",
@@ -1109,6 +1127,7 @@
 			"carelessness",
 			"heedlessness",
 			"inattentiveness",
+			"Context: Dwelling with unrestrained faculties, soiled by sensory attraction. Negligence is the failure to guard the mind and to arouse heedfulness, blocking the arising of wholesome states.",
 			"Supported by:{consuming intoxicants, sensual desire, wrong view}",
 			"Leads to:{non-restraint, weak in effort}",
 			"Opposite:{diligence}",
@@ -1120,6 +1139,7 @@
 			"harmlessness",
 			"non-killing",
 			"non-hurting",
+			"Context: The intention of harmlessness, rooted in the understanding that all beings tremble at violence and fear death.",
 			"Supported by:{right view, right intention, right speech}",
 			"Guarded by:{right effort, mindfulness, patience}",
 			"Leads to:{right livelihood, without fear}",
@@ -1155,6 +1175,7 @@
 			"unguarded in sense faculties",
 			"not watching the sense doors",
 			"grasping at prominent features or details of sense objects",
+			"Context: Failure to guard the sense doors. It occurs when attention chases after the signs and features of sense objects, allowing craving and aversion to invade the mind.",
 			"Supported by:{negligence}",
 			"Leads to:{adventurousness, discontentment}",
 			"[asaṁvara, asaṁyama]"
@@ -1187,6 +1208,7 @@
 			"infatuation",
 			"obsession",
 			"lust",
+			"Context: Intense desire or lust that dyes the mind. It fixates on the features of objects, coloring perception with infatuation and making it difficult to see things as they truly are.",
 			"Related:{greed}",
 			"Supported by:{craving, ignorance, perceiving gratification}",
 			"Leads to:{perceiving gratification, lack of discernment}",
@@ -1197,6 +1219,7 @@
 			"endurance",
 			"tolerance",
 			"forbearance",
+			"Context: A quality of calm endurance that bears hardship, delay, and harshness without resentment. It is the strength to remain composed and gentle under provocation, grounded in wisdom and compassion.",
 			"Supported by:{wisdom, tame}",
 			"Leads to:{self-control}",
 			"Opposite:{impatience}",
@@ -1248,6 +1271,7 @@
 			"excitement",
 			"being stirred up",
 			"lit. shaking",
+			"Context: The shaking or agitation of the mind caused by defilements. It is the loss of stillness when the mind is stirred by gain or loss, praise or blame, pleasure or pain.",
 			"Supported by:{feuding}",
 			"Leads to:{anxiety, distraction}",
 			"Opposite:{imperturbable}",
@@ -1371,6 +1395,7 @@
 		"resentment": [
 			"bearing a grudge",
 			"harboring enmity",
+			"Context: Holding a grudge and keeping anger alive in memory. Unlike a sudden flash of anger, resentment ties a knot of hostility, holding onto past grievances and refusing to forgive.",
 			"Related:{aversion}",
 			"Supported by:{ill will}",
 			"Leads to:{anger}",
@@ -1449,6 +1474,7 @@
 			"being energetic",
 			"taking initiative",
 			"making a mental decision to act",
+			"Context: The arousing of effort and determination in body and mind. It begins with confidence and reflection on purpose, stirring energy for wholesome action.",
 			"Supported by:{faith, examination}",
 			"Related:{vigour}",
 			"Leads to:{continuous effort}",
@@ -1467,6 +1493,7 @@
 		"self-control": [
 			"self-restraint",
 			"self-mastery",
+			"Context: A quality of mastering one’s impulses and responses through restraint.",
 			"Related:{sense restraint}",
 			"Supported by:{patience}",
 			"Leads to:{contentment}",
@@ -1563,6 +1590,7 @@
 			"privacy",
 			"aloofness",
 			"non-association",
+			"Context: Physical seclusion from crowds and mental seclusion from unwholesome states. It provides the quietude necessary for the mind to settle, detach from worldly entanglements, and develop deep collectedness.",
 			"Leads to:{wholesome}",
 			"[viveka, asaṃsaṭṭha]"
 		],
@@ -1593,7 +1621,7 @@
 			"Supported by:{unwise attention, recognition of diversity}",
 			"Leads to:{mental proliferation, doubt}",
 			"Opposite:{examination}",
-			"[takka]"
+			"[takka, kappa]"
 		],
 		"stealing": [
 			"theft",
@@ -1653,6 +1681,7 @@
 			"trained",
 			"mastered",
 			"subdued",
+			"Context: The quality of a mind that has been trained and disciplined, no longer wild or controlled by passions. Like a tamed thoroughbred, it is pliable, responsive, and fit for work.",
 			"Related:{self-control}",
 			"Supported by:{flexible}",
 			"Leads to:{patience}",
@@ -1737,8 +1766,10 @@
 			"improper attention",
 			"imprudent use of the mind",
 			"unfocused attention",
+			"Context: Attention that misses the point of contact, fixating on concepts or features. Disconnected from the source of experience, it then engages in reactions of craving, aversion, and delusion.",
 			"Supported by:{negligence, ignorance}",
 			"Leads to:{lack of discernment, speculation}",
+			"Opposite:{wise attention}",
 			"[ayonisomanasikāra]"
 		],
 		"vanity": [
@@ -1759,6 +1790,7 @@
 			"zeal",
 			"application of will",
 			"persistence",
+			"Context: Energetic effort and resilience in practice. It is the refusal to shrink back, the 'uphill' force that initiates and sustains wholesome actions against the gravity of habit.",
 			"Related:{rousing of energy}",
 			"Leads to:{right effort}",
 			"Supported by:{continuous effort, desire, good habits}",
@@ -1769,6 +1801,7 @@
 			"seeing things as they are",
 			"seeing the truth",
 			"seeing the dhamma",
+			"Context: The corrective clarity that clearly sees into the true nature of things as they actually are.",
 			"Supported by:{collectedness, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness, recollection of death}",
 			"Leads to:{disenchantment}",
 			"[dassana]"
@@ -1819,8 +1852,10 @@
 			"proper attention",
 			"prudent use of the mind",
 			"attention to the source",
+			"Context: Paying attention to the point of contact where experience originates. It discerns the specific cause of the present moment, preventing the mind from drifting into proliferation.",
 			"Supported by:{wisdom, perceiving drawback}",
 			"Leads to:{mindfulness}",
+			"Opposite:{unwise attention}",
 			"[yonisomanasikāra]"
 		],
 		"with nothing": [
@@ -1896,6 +1931,7 @@
 			"distorted or inverted perception",
 			"untrue view",
 			"false belief",
+			"Context: Distorted understanding that takes what is impermanent, dissatisfactory, and not-self to be lasting, pleasant, and “mine.” Wrong view obscures discernment and guides the mind toward unwholesome action.",
 			"Supported by:{unwise attention, ignorance}",
 			"Leads to:{wrong intention}",
 			"[micchādiṭṭhi]"
