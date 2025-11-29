@@ -51,12 +51,7 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 					</a>
 				</p>
 			</div>
-			<form
-				class="mt-8 space-y-6"
-				action="/api/auth/signin"
-				method="post"
-				novalidate
-			>
+			<form class="mt-8 space-y-6" id="signin-form" novalidate>
 				<div class="rounded-md shadow-sm space-y-4">
 					<div>
 						<label
@@ -128,7 +123,7 @@ const returnTo = Astro.url.searchParams.get("returnTo") || "/review-room";
 	// This will prevent the browser from storing session data
 	auth.setPersistence(inMemoryPersistence);
 
-	const form = document.querySelector("form") as HTMLFormElement;
+	const form = document.getElementById("signin-form") as HTMLFormElement;
 	const emailInput = document.getElementById("email") as HTMLInputElement;
 	const passwordInput = document.getElementById(
 		"password"

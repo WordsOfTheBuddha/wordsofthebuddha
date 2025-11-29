@@ -15,12 +15,15 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 	// Check if Firebase is properly configured
 	if (!isFirebaseInitialized || !app) {
 		console.log(`[${opId}] Firebase not configured`);
-		return new Response("Authentication service is not available. Please check server configuration.", {
-			status: 503,
-			headers: {
-				'Content-Type': 'text/plain'
+		return new Response(
+			"Authentication service is not available. Please check server configuration.",
+			{
+				status: 503,
+				headers: {
+					"Content-Type": "text/plain",
+				},
 			}
-		});
+		);
 	}
 
 	const auth = getAuth(app);
@@ -55,20 +58,26 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		const fontSize = userData["preferences.fontSize"] || "large";
 
 		// Initialize default preferences if they don't exist (for new users)
-		const needsPreferenceInit = userData["preferences.enablePaliLookup"] === undefined ||
+		const needsPreferenceInit =
+			userData["preferences.enablePaliLookup"] === undefined ||
 			userData["preferences.theme"] === undefined ||
 			userData["preferences.fontSize"] === undefined ||
 			userData["preferences.paliLayout"] === undefined;
 
 		if (needsPreferenceInit) {
-			console.log(`[${opId}] Initializing default preferences for new user`);
-			await db.collection("users").doc(decodedToken.uid).set({
-				"preferences.theme": theme,
-				"preferences.showPali": showPali,
-				"preferences.enablePaliLookup": enablePaliLookup,
-				"preferences.paliLayout": layout,
-				"preferences.fontSize": fontSize,
-			}, { merge: true });
+			console.log(
+				`[${opId}] Initializing default preferences for new user`
+			);
+			await db.collection("users").doc(decodedToken.uid).set(
+				{
+					"preferences.theme": theme,
+					"preferences.showPali": showPali,
+					"preferences.enablePaliLookup": enablePaliLookup,
+					"preferences.paliLayout": layout,
+					"preferences.fontSize": fontSize,
+				},
+				{ merge: true }
+			);
 			console.log(`[${opId}] Default preferences initialized`);
 		}
 
@@ -88,9 +97,12 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 				`[${opId}] Default note created with ID: ${noteRef.id}`
 			);
 
-			await db.collection("users").doc(decodedToken.uid).set({
-				defaultNoteId: noteRef.id,
-			}, { merge: true });
+			await db.collection("users").doc(decodedToken.uid).set(
+				{
+					defaultNoteId: noteRef.id,
+				},
+				{ merge: true }
+			);
 			console.log(`[${opId}] User's defaultNoteId updated`);
 			noteId = noteRef.id;
 		}
@@ -172,4 +184,16 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 		}
 		return new Response("Authentication failed", { status: 401 });
 	}
+};
+
+// POST handler - redirect to sign-in page since this endpoint requires the token in headers
+// This handles cases where the form is submitted before JavaScript loads
+export const POST: APIRoute = async ({ request, redirect }) => {
+	const url = new URL(request.url);
+	const returnTo = url.searchParams.get("returnTo") || "/review-room";
+
+	// Redirect back to signin page - the JS will handle the actual authentication
+	return redirect(
+		`/signin?returnTo=${encodeURIComponent(returnTo)}&retry=true`
+	);
 };
