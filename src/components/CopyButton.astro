@@ -35,7 +35,7 @@
 	 * - getTooltipThreshold(): Get current threshold
 	 */
 
-	// NEW: Recursive function to process nodes.
+	// Recursive function to process nodes for plain text extraction.
 	function processNode(node: Node): string {
 		if (node.nodeType === Node.TEXT_NODE) {
 			return node.textContent || "";
@@ -48,21 +48,25 @@
 			el.childNodes.forEach((child) => {
 				result += processNode(child);
 			});
+			// Block-level elements that should have paragraph breaks
 			if (["p", "h1", "h2", "h3", "h4", "h5", "h6"].includes(tag)) {
 				result = result.trim() + "\n\n";
 			}
+			// Divs with content should not add extra newlines unless they contain block elements
+			// The block elements inside will handle their own spacing
 			return result;
 		}
 		return "";
 	}
 
-	// NEW: Updated plain text generator using processNode.
+	// Plain text generator that normalizes whitespace properly.
 	function getPlainTextFromContainer(container: HTMLElement): string {
 		let text = "";
 		container.childNodes.forEach((node) => {
 			text += processNode(node);
 		});
-		return text.replace(/\n{3,}/g, "\n\n").trim();
+		// Normalize multiple newlines to exactly two (one blank line between paragraphs)
+		return text.replace(/\n{2,}/g, "\n\n").trim();
 	}
 
 	function copyHighlightedText() {
