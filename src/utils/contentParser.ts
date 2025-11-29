@@ -467,9 +467,12 @@ function processBlocks(
 		if (firstNonHeadingBlock) {
 			let paragraphCount = 0;
 			for (const block of originalBlocks) {
+				// Check if block is a plain paragraph (not a heading, code block, or HTML element)
+				// Allow <collapse> tags as they wrap regular paragraph content
 				const isPlainParagraph =
 					!block.startsWith("#") &&
-					!block.startsWith("<") &&
+					(!block.startsWith("<") ||
+						block.startsWith("<collapse>")) &&
 					!block.startsWith("```");
 				if (isPlainParagraph) {
 					paragraphCount++;
@@ -488,9 +491,11 @@ function processBlocks(
 	}
 
 	englishBlocks.forEach((block: string, blockIndex: number) => {
+		// Check if block is a plain paragraph (not a heading, code block, or HTML element)
+		// Allow <collapse> tags as they wrap regular paragraph content
 		const isPlainParagraph =
 			!block.startsWith("#") &&
-			!block.startsWith("<") &&
+			(!block.startsWith("<") || block.startsWith("<collapse>")) &&
 			!block.startsWith("```");
 
 		if (
@@ -651,7 +656,12 @@ function formatBlock(
 			/(?<![a-zA-Z])_(.+?)_(?![a-zA-Z])/g,
 			"<em>$1</em>"
 		);
-		// Handle superscript: ^text^ - everything between carets becomes superscript (non-greedy)
+		// Handle superscript: ^[n]^ - commentary references get data attributes for popover
+		result = result.replace(
+			/\^\[(\d+)\]\^/g,
+			'<sup class="commentary-ref" data-note="$1">[$1]</sup>'
+		);
+		// Handle other superscript: ^text^ - everything between carets becomes superscript (non-greedy)
 		result = result.replace(/\^(.+?)\^/g, "<sup>$1</sup>");
 		return result;
 	};
