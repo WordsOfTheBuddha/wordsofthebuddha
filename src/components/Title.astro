@@ -8,11 +8,9 @@ interface Props {
 
 const { title, showFilter = false, id } = Astro.props;
 const hasSeparator = title?.includes("-");
-console.log("has separator: ", hasSeparator);
 const [paliTitle, ...englishParts] = hasSeparator
 	? title.split(" - ").map((part: string) => part.trim())
 	: [title];
-console.log("pali title: ", paliTitle);
 const englishTitle = englishParts.join(" - ");
 
 const normalized = (value: string | undefined | null) =>

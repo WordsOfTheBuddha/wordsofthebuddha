@@ -13,6 +13,11 @@ interface DiscourseItem {
 	priority?: number;
 }
 
+interface TopicEntry {
+	title: string;
+	redirects?: string[];
+}
+
 export async function generateQualityMappings() {
 	try {
 		// Dynamically read qualities.json to avoid caching issues
@@ -22,6 +27,26 @@ export async function generateQualityMappings() {
 		);
 		const qualitiesContent = readFileSync(qualitiesPath, "utf8");
 		const qualities = JSON.parse(qualitiesContent);
+
+		// Dynamically read topicMappings.json to allow topic titles/slugs as qualities
+		const topicMappingsPath = path.join(
+			process.cwd(),
+			"src/data/topicMappings.json"
+		);
+		const topicMappingsContent = readFileSync(topicMappingsPath, "utf8");
+		const topicMappings: Record<string, TopicEntry> = JSON.parse(topicMappingsContent);
+
+		// Build a set of valid topic identifiers (slugs, titles, and redirects)
+		const validTopicIdentifiers = new Set<string>();
+		Object.entries(topicMappings).forEach(([slug, topic]) => {
+			validTopicIdentifiers.add(slug);
+			validTopicIdentifiers.add(topic.title.toLowerCase());
+			if (topic.redirects) {
+				topic.redirects.forEach((redirect) => {
+					validTopicIdentifiers.add(redirect.toLowerCase());
+				});
+			}
+		});
 
 		// Use glob to find all content files
 		const contentFiles = globSync("src/content/en/**/*.mdx");
@@ -67,9 +92,10 @@ export async function generateQualityMappings() {
 									? (data as any).priority
 									: undefined,
 						});
-					} else {
+					} else if (!validTopicIdentifiers.has(quality.toLowerCase())) {
+						// Only warn if it's not a valid quality AND not a valid topic identifier
 						console.warn(
-							`⚠️ Quality "${quality}" found in ${filePath} but not in qualities.json`
+							`⚠️ Quality "${quality}" found in ${filePath} but not in qualities.json or topicMappings.json`
 						);
 					}
 				});
