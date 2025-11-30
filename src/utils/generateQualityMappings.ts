@@ -29,24 +29,29 @@ export async function generateQualityMappings() {
 		const qualities = JSON.parse(qualitiesContent);
 
 		// Dynamically read topicMappings.json to allow topic titles/slugs as qualities
+		// This file may not exist on first build, so we handle that gracefully
 		const topicMappingsPath = path.join(
 			process.cwd(),
 			"src/data/topicMappings.json"
 		);
-		const topicMappingsContent = readFileSync(topicMappingsPath, "utf8");
-		const topicMappings: Record<string, TopicEntry> = JSON.parse(topicMappingsContent);
-
+		
 		// Build a set of valid topic identifiers (slugs, titles, and redirects)
 		const validTopicIdentifiers = new Set<string>();
-		Object.entries(topicMappings).forEach(([slug, topic]) => {
-			validTopicIdentifiers.add(slug);
-			validTopicIdentifiers.add(topic.title.toLowerCase());
-			if (topic.redirects) {
-				topic.redirects.forEach((redirect) => {
-					validTopicIdentifiers.add(redirect.toLowerCase());
-				});
-			}
-		});
+		
+		if (fs.existsSync(topicMappingsPath)) {
+			const topicMappingsContent = readFileSync(topicMappingsPath, "utf8");
+			const topicMappings: Record<string, TopicEntry> = JSON.parse(topicMappingsContent);
+			
+			Object.entries(topicMappings).forEach(([slug, topic]) => {
+				validTopicIdentifiers.add(slug);
+				validTopicIdentifiers.add(topic.title.toLowerCase());
+				if (topic.redirects) {
+					topic.redirects.forEach((redirect) => {
+						validTopicIdentifiers.add(redirect.toLowerCase());
+					});
+				}
+			});
+		}
 
 		// Use glob to find all content files
 		const contentFiles = globSync("src/content/en/**/*.mdx");
