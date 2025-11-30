@@ -283,7 +283,7 @@
 			"Supported by:{ignorance, perceiving gratification}",
 			"Leads to:{displeasure, fear, harm, ill will, impatience, irritability, lack of discernment}",
 			"Opposite:{patience}",
-			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance",
+			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance.",
 			"[dosa, paṭighasaññā, vera]"
 		],
 		"bad friendship": [
@@ -372,6 +372,7 @@
 			"full understanding",
 			"knowing full well",
 			"seeing things as they are",
+			"Context: The thorough understanding of phenomena as they truly are—fully knowing their arising, passing, and the unsatisfactoriness inherent in them while they persist.",
 			"Supported by:{wisdom, insight, direct knowledge}",
 			"Leads to:{ending}",
 			"[pariññāya, sammadaññā, sampajañña, saṅkhāya]"
@@ -382,7 +383,7 @@
 			"pride",
 			"self-importance",
 			"tendency of self-comparison",
-			"Context: self-view expressed as comparison—seeing oneself as superior, inferior, or equal; the persistent “I am” conceit (asmimāna) that underlies identification and fuels rebirth",
+			"Context: Self-view expressed as comparison—seeing oneself as superior, inferior, or equal; the persistent “I am” conceit (asmimāna) that underlies identification and fuels rebirth",
 			"Supported by:{ignorance}",
 			"Leads to:{argumentativeness, boastfulness, feuding, mental proliferation, personal existence, recognition of diversity, stubbornness, vanity}",
 			"Opposite:{humility, non-identification, non-proliferation}",
@@ -460,6 +461,7 @@
 			"inhumanity",
 			"injuring",
 			"viciousness",
+			"Context: The wish to cause pain or the enjoyment of another’s suffering. Rooted in aversion and moral blindness, cruelty hardens the heart and erases compassion.",
 			"Related:{harm, slaughtering}",
 			"Supported by:{aversion}",
 			"Leads to:{regret}",
@@ -650,6 +652,7 @@
 			"moral integrity",
 			"right action",
 			"virtue",
+			"Context: A disciplined way of living grounded in harmlessness and integrity. Ethical conduct restrains the body and speech from harm, purifies behavior, and forms the foundation for collectedness and wisdom.",
 			"Supported by:{conscience, fear of wrongdoing}",
 			"Leads to:{non-regret}",
 			"Opposite:{unprincipled conduct}",
@@ -1117,6 +1120,7 @@
 		"muddle-mindedness": [
 			"forgetfulness",
 			"not mindful",
+			"Context: Forgetful, scattered awareness where mindfulness is absent or lost. The mind drifts through distraction or dullness, unable to stay with its object or purpose.",
 			"Related:{wrong mindfulness}",
 			"Supported by:{distraction, wrong mindfulness}",
 			"Leads to:{displeasure, distraction}",
@@ -1261,6 +1265,7 @@
 			"self-identification",
 			"embodied being",
 			"egoism",
+			"Context: The view that there is a real self within or a substantial reality outside. This mistaken grasp of self and world sustains attachment, conceit, and the cycle of suffering.",
 			"Supported by:{self-making, self-erasure}",
 			"Leads to:{boastfulness, contempt, vanity}",
 			"[sakkāya-diṭṭhi]"
@@ -1324,6 +1329,7 @@
 			"perception of impermanence",
 			"perception of instability",
 			"realization of transience",
+			"Context: Perceiving all conditioned things as unstable and transient. This recognition weakens attachment by revealing the continual arising and ceasing of phenomena, turning the mind toward wisdom and release.",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[aniccasaññā]"
@@ -1332,6 +1338,7 @@
 			"perception of not being suitable to identify with",
 			"realization of being subject to change",
 			"recognition of alteration and changing nature",
+			"Context: Seeing that no phenomenon can rightly be taken as “I” or “mine.” It reveals the impersonal, dependently arisen nature of all experience, undermining conceit and attachment to identity.",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[anattasaññā]"
@@ -1339,6 +1346,7 @@
 		"recognition of unattractiveness": [
 			"perception of unattractiveness",
 			"recognition of the drawbacks",
+			"Context: Contemplation that perceives the body as composed of impure and impermanent parts, countering the delusion of beauty and sensual infatuation. This perception cools passion, fosters dispassion, and restores clear seeing of the body’s true nature as conditioned and transient.",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[asubhasaññā]"
@@ -1346,12 +1354,14 @@
 		"recognition of unsatisfactoriness": [
 			"perception of unsatisfactoriness",
 			"recognition of discontentment",
+			"Context: Perceiving the inherent inadequacy and unreliability of conditioned existence. This recognition loosens craving and the pursuit of lasting satisfaction in what cannot endure.",
 			"Supported by:{insight, perceiving drawback}",
 			"Leads to:{vision}",
 			"[dukkhasaññā]"
 		],
 		"recollection of death": [
 			"mindfulness of death",
+			"Context: Keeping in view the certainty and nearness of death. Recollection of death ignites wholesome desire for awakening and sustains uphill vigour against habitual tendencies.",
 			"Supported by:{mindfulness, truth}",
 			"Leads to:{vision}",
 			"[maraṇassati]"
@@ -1431,7 +1441,7 @@
 			"wholesome thought",
 			"skillful aspiration",
 			"right volition",
-			"Context: Intention of renunciation, goodwill, and harmlessness; the resolve to let go of craving, ill will, and cruelty, cultivating thoughts that lead to peace and liberation.",
+			"Context: Intention of renunciation, goodwill, or harmlessness; the resolve to let go of craving, ill will, and cruelty, cultivating thoughts that lead to peace and liberation.",
 			"Supported by:{right view}",
 			"Guarded by:{right view, right effort, mindfulness}",
 			"Leads to:{right speech, non-harm}",
@@ -1746,7 +1756,8 @@
 			"lacking in ethics",
 			"immoral",
 			"wrong action",
-			"Supported by:{moral recklessness, shamelessness}",
+			"Context: Conduct that disregards moral restraint and ignores the consequences of harm done to oneself or others through body or speech. Such behavior clouds the mind and leads to regret and further decline.",
+			"Supported by:{moral recklessness, shamelessness, wrong intention}",
 			"Leads to:{brashness, treachery, regret}",
 			"Opposite:{ethical conduct}",
 			"[dussīlya, micchākammanta]"
@@ -1779,6 +1790,7 @@
 			"indulgence",
 			"intoxication",
 			"being misguided",
+			"Context: A swelling intoxication arising from youth, health, life, beauty, or possessions that blinds one to impermanence and breeds negligence. Like a soiled cloth, it stains the mind with conceit and craving, obstructing clear seeing.",
 			"Supported by:{personal existence}",
 			"Leads to:{craving, negligence}",
 			"[mada, mogha]"
@@ -1819,6 +1831,7 @@
 			"low in energy",
 			"lacking in endurance",
 			"lax, loose, slack, unaspirated, indistinct",
+			"Context: A slack, feeble application of energy. The mind shrinks from wholesome striving, dawdling in comfort and doubt. It can leave the path unattended and growth stalled.",
 			"Related:{wrong effort}",
 			"Supported by:{negligence}",
 			"Leads to:{laziness}",
@@ -1877,7 +1890,7 @@
 		],
 		"wrong collectedness": [
 			"wrong concentration",
-			"Context: Wrong concentration that can cause harm to oneself, destabilize the mind, or reinforce and grow delusion",
+			"Context: A concentration that steadies the mind upon unwholesome aims—power, sensual pleasure, or self-exaltation. Though appearing calm, it is unpurified by right view or intention. Such collectedness deepens delusion instead of insight.",
 			"Supported by:{wrong mindfulness}",
 			"Leads to:{insanity}",
 			"Opposite:{collectedness}",
@@ -1885,6 +1898,7 @@
 		],
 		"wrong effort": [
 			"incorrect endeavor",
+			"Context: Misapplied energy directed toward goals rooted in craving, aversion, or delusion. It manifests as striving for sensual pleasure, gain, fame, or domination, exhausting the mind and feeding defilements.",
 			"Related:{weak in effort}",
 			"Supported by:{bad friendship, wrong livelihood}",
 			"Leads to:{wrong mindfulness, muddle-mindedness}",
@@ -1897,19 +1911,21 @@
 			"unskillful aspiration",
 			"wrong thought",
 			"harmful volition",
+			"Context: Intention of sensuality, ill will, or harming. It inclines thought and action toward harm and exploitation, opposing the intentions of renunciation, goodwill, and harmlessness.",
 			"Supported by:{wrong view}",
-			"Leads to:{irritability, sensual desire, wrong speech}",
+			"Leads to:{irritability, sensual desire, wrong speech, unprincipled conduct}",
 			"[micchāsaṅkappa]"
 		],
 		"wrong livelihood": [
 			"unwholesome livelihood",
 			"wrong way of earning a living",
+			"Context: Sustaining oneself through deceit, exploitation, or manipulation for gain. It includes cheating, flattery, hinting for favors, belittling others, and pursuing gain by means of gain.",
 			"Supported by:{greed, sexual misconduct, slaughtering, stealing, treachery}",
 			"Leads to:{wrong effort}",
 			"[micchāājīva]"
 		],
 		"wrong mindfulness": [
-			"Context: Imperfect memory, misinformed recollection that reinforces delusion or distraction",
+			"Context: Remembering in the wrong way. It holds to the signs of craving and aversion, or attends carefully to what sustains delusion. Such mindfulness appears clear but lacks right view, turning awareness into a servant of defilement. It remembers what should be forgotten and forgets what should be remembered.",
 			"Related:{muddle-mindedness}",
 			"Supported by:{craving, aversion, wrong effort}",
 			"Leads to:{distraction, wrong collectedness}",
@@ -1922,7 +1938,7 @@
 			"divisive, slanderous or defamatory or malicious speech",
 			"abusive or rude or unkind way of speaking",
 			"meaningless talk or idle chatter or gossip",
-			"Context: Speech that is corrupted by falsehood, divisiveness, harshness, or idle chatter.",
+			"Context: Speech that deceives, divides, wounds, or wastes. It includes lying, slander, harshness, and idle chatter. Such speech distorts truth, breaks trust, and stirs the mind toward harm and discord.",
 			"Supported by:{wrong intention, irritability, brashness}",
 			"Leads to:{harm, sexual misconduct, slaughtering, stealing}",
 			"[musāvāda, pisuṇavācā, pharusāvācā, samphappalāpa]"
@@ -1931,7 +1947,7 @@
 			"distorted or inverted perception",
 			"untrue view",
 			"false belief",
-			"Context: Distorted understanding that takes what is impermanent, dissatisfactory, and not-self to be lasting, pleasant, and “mine.” Wrong view obscures discernment and guides the mind toward unwholesome action.",
+			"Context: A distorted understanding that sees permanence in the impermanent, satisfaction in the unsatisfactory, or self in the not-self. Wrong view guides action by delusion, obscuring cause and effect, and closes the door to wisdom and release.",
 			"Supported by:{unwise attention, ignorance}",
 			"Leads to:{wrong intention}",
 			"[micchādiṭṭhi]"
