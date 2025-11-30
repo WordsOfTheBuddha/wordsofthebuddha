@@ -1,0 +1,47 @@
+---
+import {
+	getCollectionNavigation,
+	formatCollectionTitle,
+} from "../utils/collectionNavigation";
+import { transformId } from "../utils/transformId";
+
+interface Props {
+	collection: string;
+}
+
+const { collection } = Astro.props;
+const navigation = getCollectionNavigation(collection);
+---
+
+{
+	(navigation.prev || navigation.next) && (
+		<nav class="relative flex flex-col sm:flex-row gap-4 sm:gap-8 w-full my-6">
+			<div class="w-full sm:w-1/2 flex justify-start">
+				{navigation.prev && (
+					<a
+						href={`/${navigation.prev.slug}`}
+						class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-left"
+						style="color: var(--link-color)"
+						data-base-href={`/${navigation.prev.slug}`}
+					>
+						← {transformId(navigation.prev.slug)} -{" "}
+						{formatCollectionTitle(navigation.prev.title)}
+					</a>
+				)}
+			</div>
+			<div class="w-full sm:w-1/2 flex justify-end">
+				{navigation.next && (
+					<a
+						href={`/${navigation.next.slug}`}
+						class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-right"
+						style="color: var(--link-color)"
+						data-base-href={`/${navigation.next.slug}`}
+					>
+						{transformId(navigation.next.slug)} -{" "}
+						{formatCollectionTitle(navigation.next.title)} →
+					</a>
+				)}
+			</div>
+		</nav>
+	)
+}

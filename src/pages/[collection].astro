@@ -35,4 +35,5 @@ if (route.type !== "collection") {
 	collection
 	children={route.metadata?.children || {}}
 	searchPattern={route.pattern || ""}
+	collectionSlug={collection as string}
 />

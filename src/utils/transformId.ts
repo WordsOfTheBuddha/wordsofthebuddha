@@ -22,6 +22,14 @@ export const transformId = (id: string) => {
 
 	id = keyMap[id] || id;
 
+	// Handle range-based collection IDs like "sn1-11", "mn1-50", "iti1-27"
+	const rangePattern = /^([a-zA-Z]+)(\d+)-(\d+)$/;
+	const rangeMatch = id.match(rangePattern);
+	if (rangeMatch) {
+		const [, chars, start, end] = rangeMatch;
+		return `${chars.toUpperCase()} ${start}–${end}`;
+	}
+
 	// Try the existing pattern replacement first
 	const transformed = id.replace(/([a-zA-Z]+)(\d+)/, (_, chars, digits) => {
 		return `${chars.toUpperCase()} ${digits}`;

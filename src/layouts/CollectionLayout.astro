@@ -5,6 +5,7 @@ import { performSearch, type SearchResult } from "../service/search/search";
 import type { DirectoryStructure } from "../types/directory";
 import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
 import ScrollToTop from "../components/ScrollToTop.astro";
+import CollectionNavigation from "../components/CollectionNavigation.astro";
 
 interface Props {
 	title: string;
@@ -12,6 +13,7 @@ interface Props {
 	searchPattern: string;
 	collection?: boolean;
 	children?: Record<string, DirectoryStructure>;
+	collectionSlug?: string;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
 	searchPattern,
 	collection = false,
 	children,
+	collectionSlug,
 } = Astro.props;
 
 const pagePosts: SearchResult[] = await performSearch(searchPattern, {
@@ -194,6 +197,8 @@ function getContentCount(slug: string): number {
 				))
 			}
 		</div>
+
+		{collectionSlug && <CollectionNavigation collection={collectionSlug} />}
 	</main>
 
 	<ScrollToTop />
