@@ -215,7 +215,7 @@
 			"wrath",
 			"fury",
 			"indignation",
-			"Context: A fiery surge of aversion toward people or situations that scorches clarity and kindness, narrows perception, and feeds harsh speech and action.",
+			"Context: A burning surge of aversion that erupts against people or situations, scorching clarity and kindness. It distorts perception and drives speech and action toward harm.",
 			"Supported by:{irritability, resentment}",
 			"Leads to:{aggressiveness}",
 			"Opposite:{loving-kindness}",
@@ -414,6 +414,7 @@
 			"disrespect",
 			"belittlement",
 			"disparagement",
+			"Context: A dismissive or belittling attitude that refuses to acknowledge worth or goodness. It closes the heart, undermines gratitude, and prepares the ground for ill will.",
 			"Supported by:{displeasure, personal existence}",
 			"Leads to:{ill will}",
 			"Opposite:{respect}",
@@ -474,8 +475,9 @@
 			"nurturing",
 			"growth",
 			"Context: The active practice of 'bringing into being' wholesome states. It is the deliberate nurturing of the bright state of mind.",
-			"Supported by:{desire, diligence}",
+			"Supported by:{desire, diligence, right view}",
 			"Leads to:{good habits}",
+			"Opposite:{undeveloped}",
 			"[bhāvanā]"
 		],
 		"dearness": [
@@ -619,6 +621,7 @@
 			"Related:{drowsiness}",
 			"Supported by:{discontentment}",
 			"Leads to:{ignorance}",
+			"Opposite:{wakefulness}",
 			"[thina]"
 		],
 		"ending": [
@@ -986,6 +989,7 @@
 			"moodiness",
 			"being prone to annoyance",
 			"being prone to anger",
+			"Context: A prickly restlessness of mind easily stirred by small discomforts or disagreement. It weakens patience and readies the ground for anger and harsh reaction.",
 			"Related:{anxiety, muddle-mindedness}",
 			"Supported by:{displeasure, impatience}",
 			"Leads to:{anger, wrong speech}",
@@ -1105,7 +1109,7 @@
 			"presence",
 			"awareness",
 			"Context: Remembering to be present with continuous effort, observing the body, feelings, mind, and mental qualities in and of themselves.",
-			"Supported by:{right view, right effort, wakefulness, wise attention}",
+			"Supported by:{right view, right effort, wakefulness}",
 			"Leads to:{examination, full awareness}",
 			"Opposite:{muddle-mindedness, wrong mindfulness}",
 			"[sati, anupassanā]"
@@ -1399,6 +1403,7 @@
 			"to be burned",
 			"to be consumed",
 			"to suffer remorse",
+			"Context: A remorseful stirring of the mind that recalls what was done or left undone, weighing heavily and disturbing inner calm. It binds awareness to the past and obscures clarity.",
 			"Supported by:{cruelty, harm, sexual misconduct, slaughtering, stealing, unprincipled conduct}",
 			"Leads to:{suffering}",
 			"Opposite:{non-regret}",
@@ -1423,6 +1428,7 @@
 			"deference",
 			"honour",
 			"attentiveness",
+			"Context: A mental attitude of reverent attentiveness that values goodness and wisdom in oneself and others. It steadies conduct and opens the mind to learning and humility.",
 			"Supported by:{truth}",
 			"Leads to:{fear of wrongdoing, humility}",
 			"Opposite:{contempt}",
@@ -1477,8 +1483,9 @@
 			"right belief",
 			"view that is inline with the Dhamma",
 			"Context: View that is in line with the Dhamma — teachings of the Buddha that point to the nature of reality, the ultimate truth.",
+			"Supported by:{wise attention}",
 			"Guarded by:{right effort, mindfulness}",
-			"Leads to:{loving-kindness, non-harm}",
+			"Leads to:{cultivation, loving-kindness, non-harm}",
 			"[sammādiṭṭhi]"
 		],
 		"rousing of energy": [
@@ -1609,6 +1616,7 @@
 		"sorrow": [
 			"grief",
 			"sadness",
+			"Context: Grief or sadness that follows loss or disappointment, dimming the mind’s natural brightness. It clouds clear perception.",
 			"Supported by:{attachment, dearness, lamentation}",
 			"Leads to:{suffering}",
 			"Opposite:{sorrow-free}",
@@ -1617,6 +1625,7 @@
 		"sorrow-free": [
 			"free from sadness",
 			"without grief",
+			"Context: A serene balance of mind that is untroubled by loss or change. It allows the mind’s natural clarity to surface when freed from clinging.",
 			"Supported by:{quenching}",
 			"Related:{impartiality, without fear}",
 			"Opposite:{sorrow}",
@@ -1739,7 +1748,14 @@
 			"Context: A gentle, low-profile way of speaking and acting that avoids drawing attention to oneself; restrained in self-display, giving space to others, and simple in manner.",
 			"[appagabbha, sorata]"
 		],
-		"undeveloped": ["not cultivated", "Leads to:{passion}", "[abhāvita]"],
+		"undeveloped": [
+			"not cultivated",
+			"Context: The untrained condition of mind before cultivation, dull and unsteady. Without development, discernment and stability remain immature.",
+			"Supported by:{wrong view}",
+			"Leads to:{passion}",
+			"Opposite:{cultivation}",
+			"[abhāvita]"
+		],
 		"imperturbable": [
 			"unagitated",
 			"unmoved",
@@ -1825,8 +1841,10 @@
 			"alertness",
 			"vigilance",
 			"watchfulness",
+			"Context: A bright alertness of mind that remains clear and attentive, unclouded by dullness or drowsiness. It guards the senses and supports continuous mindfulness.",
 			"Supported by:{sense restraint}",
 			"Leads to:{mindfulness}",
+			"Opposite:{dullness}",
 			"[jāgariyā]"
 		],
 		"weak in effort": [
@@ -1869,7 +1887,7 @@
 			"attention to the source",
 			"Context: Paying attention to the point of contact where experience originates. It discerns the specific cause of the present moment, preventing the mind from drifting into proliferation.",
 			"Supported by:{wisdom, perceiving drawback}",
-			"Leads to:{mindfulness}",
+			"Leads to:{right view}",
 			"Opposite:{unwise attention}",
 			"[yonisomanasikāra]"
 		],
@@ -1951,7 +1969,7 @@
 			"false belief",
 			"Context: A distorted understanding that sees permanence in the impermanent, satisfaction in the unsatisfactory, or self in the not-self. Wrong view guides action by delusion, obscuring cause and effect, and closes the door to wisdom and release.",
 			"Supported by:{unwise attention, ignorance}",
-			"Leads to:{wrong intention}",
+			"Leads to:{undeveloped, wrong intention}",
 			"[micchādiṭṭhi]"
 		]
 	}
