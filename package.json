@@ -19,14 +19,14 @@
 		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host"
 	},
 	"dependencies": {
-		"@astrojs/check": "^0.9.4",
-		"@astrojs/mdx": "4.3.4",
+		"@astrojs/check": "0.9.6",
+		"@astrojs/mdx": "4.3.12",
 		"@astrojs/tailwind": "6.0.2",
-		"@astrojs/vercel": "8.2.7",
+		"@astrojs/vercel": "9.0.2",
 		"@sc-voice/ms-dpd": "^2.53.0",
 		"@vercel/analytics": "^1.4.1",
 		"@vercel/speed-insights": "^1.1.0",
-		"astro": "5.13.5",
+		"astro": "5.16.3",
 		"cytoscape": "^3.33.1",
 		"firebase": "^11.2.0",
 		"firebase-admin": "^13.0.2",
@@ -42,7 +42,7 @@
 		"typescript": "^5.7.3"
 	},
 	"devDependencies": {
-		"@astrojs/node": "^9.4.3",
+		"@astrojs/node": "9.5.1",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/js-yaml": "^4.0.9",
 		"@types/jsdom": "^21.1.7",
