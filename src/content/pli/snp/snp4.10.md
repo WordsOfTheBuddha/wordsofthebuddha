@@ -1,6 +1,6 @@
 ---
 title: Purābheda sutta - Before the Breakup
-description: The Buddha describes the conduct of a person who is said to be ‘peaceful’. Such a person is free from craving before the breakup of body. He is one who examines distinctions in all contacts, withdrawn, straightforward, unassuming, unmoved amid views, not holding to a construct, and for whom, there is no ‘mine’ in the world.
+description: The Buddha describes the conduct of a person who is said to be ‘peaceful’. Such a person is free from craving before the breaking up of body. He is one who examines distinctions in all contacts, withdrawn, straightforward, unassuming, unmoved amid views, not holding to a construct, and for whom, there is no ‘mine’ in the world.
 qualities: humility, without fear, right speech, dispassion, solitude, sincerity, unassuming, conceit, imperturbable, equanimity, mindfulness, tranquility, sorrow-free
 theme: inspiration, wisdom
 slug: snp4.10
