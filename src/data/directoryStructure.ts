@@ -161,6 +161,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on Feeling" explores the nature of felt experiences—pleasant, painful, and neutral—as a fundamental aspect of experience. These teachings examine how feelings arise, their role in shaping perception, and the underlying tendencies that lead to attachment or aversion. By understanding the conditioned nature of feeling and its cessation, these discourses offer insight into the path to liberation and the end of suffering.',
 					},
+					sn37: {
+						title: "Mātugāmasaṁyutta - Linked Discourses on Females",
+						description:
+							'The "Linked Discourses on Females" contains discourses dealing with the specific circumstances and qualities of women. These suttas often discuss the five powers of a woman—beauty, wealth, relatives, sons, and virtue—and how these qualities influence her life and future rebirths. The teachings also address the social roles of women and the importance of ethical conduct. While reflecting the cultural context of ancient India, these discourses underscore the universal principle that spiritual progress depends on one\'s actions and wisdom.',
+					},
 					sn38: {
 						title: "Jambukhādakasaṁyutta - Linked Discourses with Jambukhādaka",
 						description:
@@ -180,6 +185,11 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						title: "Asaṅkhatasaṁyutta - Linked Discourses on the Unconditioned",
 						description:
 							'The "Linked Discourses on the Unconditioned" contains discourses focusing on the unconditioned, the ultimate reality beyond conditioned phenomena. These teachings explore the nature of the unconditioned, its relationship to the conditioned, and the path to realizing the unconditioned. By examining the nature of ultimate reality, these discourses offer insights into the nature of liberation and the conditions for spiritual awakening.',
+					},
+					sn44: {
+						title: "Abyākatasaṁyutta - Linked Discourses on the Undeclared",
+						description:
+							'The "Linked Discourses on the Undeclared" features dialogues concerning the "undeclared" (abyākata) points—questions the Buddha refused to answer, such as whether the world is eternal or infinite, and the status of an Awakened One after death. These discourses clarify why the Buddha set these questions aside: they are speculative, do not lead to liberation, and are often based on misconceptions about the self. This collection highlights the Buddha\'s pragmatic focus on suffering and its cessation.',
 					},
 				},
 			},
