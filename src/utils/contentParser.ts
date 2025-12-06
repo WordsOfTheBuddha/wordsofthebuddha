@@ -44,7 +44,7 @@ export function compareHierarchicalNumber(a: string, b: string): number {
 export function isHierarchicalNumberInRange(
 	num: string,
 	start: string,
-	end: string
+	end: string,
 ): boolean {
 	const numParts = parseHierarchicalNumber(num);
 	const startParts = parseHierarchicalNumber(start);
@@ -63,7 +63,7 @@ export function isHierarchicalNumberInRange(
 
 export function constructHierarchicalEnd(
 	startStr: string,
-	endStr: string
+	endStr: string,
 ): string {
 	if (startStr.includes(".")) {
 		// For hierarchical discourse numbers like "1.306-308", construct "1.308"
@@ -87,7 +87,7 @@ export function parseContent(
 		start: number;
 		end?: number;
 	} | null,
-	discourseRange?: { start: string; end: string } | null
+	discourseRange?: { start: string; end: string } | null,
 ) {
 	const pairs: ContentPair[] = [];
 	const paliText = paliContent?.body?.trim?.() ? paliContent.body : "";
@@ -166,7 +166,7 @@ export function parseContent(
 					.toLowerCase()
 					.replace(
 						/\s+/g,
-						""
+						"",
 					)}" class="text-blue-600 hover:underline">View full text for: ${baseId}</a></p>`,
 			});
 		}
@@ -189,7 +189,7 @@ export function parseContent(
 			"Looking for start:",
 			discourseRange.start,
 			"end:",
-			discourseRange.end
+			discourseRange.end,
 		);
 
 		// Process English content
@@ -200,10 +200,10 @@ export function parseContent(
 
 			if (isHeading) {
 				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/
+					/#{3,4}\s+(\d+(?:\.\d+)?)/,
 				)?.[1];
 				debug(
-					`Block ${i}: Found heading ${headingNumber}, inTargetRange: ${inTargetRange}`
+					`Block ${i}: Found heading ${headingNumber}, inTargetRange: ${inTargetRange}`,
 				);
 
 				if (headingNumber) {
@@ -213,27 +213,27 @@ export function parseContent(
 							parseHierarchicalNumber(headingNumber).major
 						}, minor: ${
 							parseHierarchicalNumber(headingNumber).minor
-						}`
+						}`,
 					);
 					debug(
 						`- Start: ${discourseRange.start} -> major: ${
 							parseHierarchicalNumber(discourseRange.start).major
 						}, minor: ${
 							parseHierarchicalNumber(discourseRange.start).minor
-						}`
+						}`,
 					);
 					debug(
 						`- End: ${discourseRange.end} -> major: ${
 							parseHierarchicalNumber(discourseRange.end).major
 						}, minor: ${
 							parseHierarchicalNumber(discourseRange.end).minor
-						}`
+						}`,
 					);
 
 					const isInRange = isHierarchicalNumberInRange(
 						headingNumber,
 						discourseRange.start,
-						discourseRange.end
+						discourseRange.end,
 					);
 					debug(`- isInRange: ${isInRange}`);
 
@@ -242,7 +242,7 @@ export function parseContent(
 						inTargetRange = true;
 						targetEnglish.push(block);
 						debug(
-							`Found START heading ${headingNumber}, entering range`
+							`Found START heading ${headingNumber}, entering range`,
 						);
 					} else if (
 						inTargetRange &&
@@ -252,18 +252,18 @@ export function parseContent(
 						targetEnglish.push(block);
 						foundEndHeading = true;
 						debug(
-							`Found END heading ${headingNumber}, marking end found`
+							`Found END heading ${headingNumber}, marking end found`,
 						);
 					} else if (inTargetRange && isInRange) {
 						// This is a heading within our range (between start and end)
 						targetEnglish.push(block);
 						debug(
-							`Found WITHIN range heading ${headingNumber}, including`
+							`Found WITHIN range heading ${headingNumber}, including`,
 						);
 					} else if (inTargetRange && !isInRange) {
 						// We've passed the end range
 						debug(
-							`Found heading ${headingNumber} beyond end range, breaking`
+							`Found heading ${headingNumber} beyond end range, breaking`,
 						);
 						break;
 					}
@@ -271,7 +271,7 @@ export function parseContent(
 			} else if (inTargetRange) {
 				targetEnglish.push(block);
 				debug(
-					`Block ${i}: Added content block to target (inTargetRange: ${inTargetRange})`
+					`Block ${i}: Added content block to target (inTargetRange: ${inTargetRange})`,
 				);
 			} else {
 				debug(`Block ${i}: Skipping content block (not in range)`);
@@ -289,14 +289,14 @@ export function parseContent(
 				block.startsWith("###") || block.startsWith("####");
 			if (isHeading) {
 				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/
+					/#{3,4}\s+(\d+(?:\.\d+)?)/,
 				)?.[1];
 
 				if (headingNumber) {
 					const isInRange = isHierarchicalNumberInRange(
 						headingNumber,
 						discourseRange.start,
-						discourseRange.end
+						discourseRange.end,
 					);
 
 					if (headingNumber === discourseRange.start) {
@@ -326,15 +326,15 @@ export function parseContent(
 					.toLowerCase()
 					.replace(
 						" ",
-						""
-					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`
+						"",
+					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`,
 			);
 		}
 
 		const result = processBlocks(
 			targetEnglish.join("\n\n"),
 			targetPali.join("\n\n"),
-			{ type: "discourse", originalContent: englishText } // Pass original content for paragraph numbering
+			{ type: "discourse", originalContent: englishText }, // Pass original content for paragraph numbering
 		);
 		return result;
 	}
@@ -355,13 +355,13 @@ export function parseContent(
 				block.startsWith("###") || block.startsWith("####");
 			if (isHeading) {
 				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/
+					/#{3,4}\s+(\d+(?:\.\d+)?)/,
 				)?.[1];
 				debug(
 					"Found heading:",
 					headingNumber,
 					"looking for:",
-					sectionNumber
+					sectionNumber,
 				);
 				if (headingNumber === sectionNumber) {
 					inTargetSection = true;
@@ -384,7 +384,7 @@ export function parseContent(
 				block.startsWith("###") || block.startsWith("####");
 			if (isHeading) {
 				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/
+					/#{3,4}\s+(\d+(?:\.\d+)?)/,
 				)?.[1];
 				if (headingNumber === sectionNumber) {
 					inTargetSection = true;
@@ -404,8 +404,8 @@ export function parseContent(
 					.toLowerCase()
 					.replace(
 						" ",
-						""
-					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`
+						"",
+					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`,
 			);
 		}
 
@@ -416,7 +416,7 @@ export function parseContent(
 		const result = processBlocks(
 			targetEnglish.join("\n\n"),
 			targetPali.join("\n\n"),
-			{ type: "discourse", originalContent: englishText } // Use discourse logic for proper paragraph numbering
+			{ type: "discourse", originalContent: englishText }, // Use discourse logic for proper paragraph numbering
 		);
 		return result;
 	}
@@ -428,7 +428,7 @@ export function parseContent(
 function processBlocks(
 	englishText: string,
 	paliText: string,
-	options?: { type: "discourse"; originalContent: string } | null
+	options?: { type: "discourse"; originalContent: string } | null,
 ): ContentPair[] {
 	const pairs: ContentPair[] = [];
 
@@ -457,11 +457,11 @@ function processBlocks(
 
 		// Find where our first NON-HEADING block appears in the original content
 		const firstNonHeadingBlock = englishBlocks.find(
-			(block) => !block.startsWith("#")
+			(block) => !block.startsWith("#"),
 		);
 		debug(
 			"First non-heading block:",
-			firstNonHeadingBlock?.substring(0, 100)
+			firstNonHeadingBlock?.substring(0, 100),
 		);
 
 		if (firstNonHeadingBlock) {
@@ -481,7 +481,7 @@ function processBlocks(
 					actualParagraphNumber = paragraphCount;
 					debug(
 						"Found first non-heading block at paragraph position:",
-						paragraphCount
+						paragraphCount,
 					);
 					break;
 				}
@@ -527,6 +527,22 @@ function processBlocks(
 		paliIndex++;
 	});
 
+	// In development mode, if there are more Pali paragraphs than English,
+	// include one extra Pali paragraph to help with translation workflow
+	if (import.meta.env.DEV && paliIndex < paliParagraphs.length) {
+		const nextPali = paliParagraphs[paliIndex];
+		// Only add if it's not a heading
+		if (nextPali && !nextPali.startsWith("#")) {
+			pairs.push({
+				type: "paragraph",
+				english:
+					'<span class="text-gray-400 italic">Translation in progress...</span>',
+				pali: nextPali,
+				// No actualParagraphNumber for unpaired Pali
+			});
+		}
+	}
+
 	return pairs;
 }
 
@@ -535,7 +551,7 @@ function processParagraphQuotes(
 	p: string,
 	quote: string,
 	open: string,
-	close: string
+	close: string,
 ): string {
 	// Replace quote at start/end and adjacent to whitespace
 	p = p
@@ -605,7 +621,7 @@ function wrapPaliWords(text: string): string {
 									.toLowerCase()
 									.replace(
 										/[''.,;:!?…"'"'\(\)\[\]\{\}«»"“”‘’]/g,
-										""
+										"",
 									);
 								return `<span class="pali-word" data-word="${cleanWord}" data-original="${part}">${part}</span>`;
 							} else {
@@ -642,7 +658,7 @@ function formatBlock(
 		start: number;
 		end?: number;
 	} | null,
-	actualParagraphNumber?: number
+	actualParagraphNumber?: number,
 ): string {
 	// Helper to convert bold (**text**), italic (*text*), and superscript (^text^) markdown to HTML
 	// Must process bold first to avoid conflicts with italic
@@ -654,12 +670,12 @@ function formatBlock(
 		result = result.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, "<em>$1</em>");
 		result = result.replace(
 			/(?<![a-zA-Z])_(.+?)_(?![a-zA-Z])/g,
-			"<em>$1</em>"
+			"<em>$1</em>",
 		);
 		// Handle superscript: ^[n]^ - commentary references get data attributes for popover
 		result = result.replace(
 			/\^\[(\d+)\]\^/g,
-			'<sup class="commentary-ref" data-note="$1">[$1]</sup>'
+			'<sup class="commentary-ref" data-note="$1">[$1]</sup>',
 		);
 		// Handle other superscript: ^text^ - everything between carets becomes superscript (non-greedy)
 		result = result.replace(/\^(.+?)\^/g, "<sup>$1</sup>");
@@ -759,7 +775,7 @@ export function createCombinedMarkdown(
 		type: "single" | "range";
 		start: number;
 		end?: number;
-	} | null
+	} | null,
 ): string | SplitContent {
 	if (layout === "split" && showPali) {
 		let pairIndex = 0;
@@ -767,7 +783,7 @@ export function createCombinedMarkdown(
 		const pali = pairs
 			.filter(
 				(pair): pair is ContentPair & { pali: string } =>
-					pair.pali !== undefined
+					pair.pali !== undefined,
 			)
 			.map((pair) => {
 				if (!pair.pali.startsWith("#")) {
@@ -776,7 +792,7 @@ export function createCombinedMarkdown(
 						true,
 						pairIndex++,
 						paragraphRequest,
-						pair.actualParagraphNumber
+						pair.actualParagraphNumber,
 					);
 				}
 				return formatBlock(
@@ -784,7 +800,7 @@ export function createCombinedMarkdown(
 					true,
 					undefined,
 					paragraphRequest,
-					pair.actualParagraphNumber
+					pair.actualParagraphNumber,
 				);
 			})
 			.join("\n\n");
@@ -798,7 +814,7 @@ export function createCombinedMarkdown(
 						false,
 						pairIndex++,
 						paragraphRequest,
-						pair.actualParagraphNumber
+						pair.actualParagraphNumber,
 					);
 				}
 				return formatBlock(
@@ -806,7 +822,7 @@ export function createCombinedMarkdown(
 					false,
 					undefined,
 					paragraphRequest,
-					pair.actualParagraphNumber
+					pair.actualParagraphNumber,
 				);
 			})
 			.join("\n\n");
@@ -827,7 +843,7 @@ export function createCombinedMarkdown(
 					false,
 					currentIndex,
 					paragraphRequest,
-					pair.actualParagraphNumber
+					pair.actualParagraphNumber,
 				);
 			}
 			const currentIndex = pair.english.startsWith("#")
@@ -838,13 +854,13 @@ export function createCombinedMarkdown(
 				true,
 				currentIndex,
 				paragraphRequest,
-				pair.actualParagraphNumber
+				pair.actualParagraphNumber,
 			)}\n\n${formatBlock(
 				pair.english,
 				false,
 				currentIndex,
 				paragraphRequest,
-				pair.actualParagraphNumber
+				pair.actualParagraphNumber,
 			)}`;
 		})
 		.join("\n\n");
