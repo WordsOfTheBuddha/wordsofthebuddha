@@ -162,9 +162,9 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 							'The "Linked Discourses on Feeling" explores the nature of felt experiences—pleasant, painful, and neutral—as a fundamental aspect of experience. These teachings examine how feelings arise, their role in shaping perception, and the underlying tendencies that lead to attachment or aversion. By understanding the conditioned nature of feeling and its cessation, these discourses offer insight into the path to liberation and the end of suffering.',
 					},
 					sn37: {
-						title: "Mātugāmasaṁyutta - Linked Discourses on Females",
+						title: "Mātugāmasaṁyutta - Linked Discourses on Women",
 						description:
-							'The "Linked Discourses on Females" contains discourses dealing with the specific circumstances and qualities of women. These suttas often discuss the five powers of a woman—beauty, wealth, relatives, sons, and virtue—and how these qualities influence her life and future rebirths. The teachings also address the social roles of women and the importance of ethical conduct. While reflecting the cultural context of ancient India, these discourses underscore the universal principle that spiritual progress depends on one\'s actions and wisdom.',
+							'The "Linked Discourses on Women" contains discourses dealing with the specific circumstances and qualities of women. These suttas often discuss the five powers of a woman—beauty, wealth, relatives, sons, and virtue—and how these qualities influence her life and future rebirths. The teachings also address the social roles of women and the importance of ethical conduct. While reflecting the cultural context of ancient India, these discourses underscore the universal principle that spiritual progress depends on one\'s actions and wisdom.',
 					},
 					sn38: {
 						title: "Jambukhādakasaṁyutta - Linked Discourses with Jambukhādaka",
