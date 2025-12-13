@@ -119,7 +119,7 @@
 		"insight",
 		"inspiration",
 		"joy",
-		"joyful pleasure",
+		"uplifting joy",
 		"learned",
 		"liberation",
 		"loving-kindness",
@@ -281,7 +281,7 @@
 			"fault-finding mindset",
 			"upset",
 			"Supported by:{ignorance, perceiving gratification}",
-			"Leads to:{displeasure, fear, harm, ill will, impatience, irritability, lack of discernment}",
+			"Leads to:{contempt, displeasure, fear, harm, ill will, impatience, irritability, lack of discernment}",
 			"Opposite:{patience}",
 			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance.",
 			"[dosa, paṭighasaññā, vera]"
@@ -415,7 +415,7 @@
 			"belittlement",
 			"disparagement",
 			"Context: A dismissive or belittling attitude that refuses to acknowledge worth or goodness. It closes the heart, undermines gratitude, and prepares the ground for ill will.",
-			"Supported by:{displeasure, personal existence}",
+			"Supported by:{aversion, personal existence}",
 			"Leads to:{ill will}",
 			"Opposite:{respect}",
 			"[makkha]"
@@ -571,12 +571,13 @@
 			"[virāga, visaṃyutta]"
 		],
 		"displeasure": [
-			"bitterness",
-			"unhappiness",
-			"bitterness",
-			"Related:{anger, sorrow}",
-			"Supported by:{aversion, muddle-mindedness}",
-			"Leads to:{contempt, irritability, distraction}",
+			"mental pain",
+			"mental distress",
+			"melancholy",
+			"sadness",
+			"Supported by:{aversion, laziness}",
+			"Leads to:{irritability, distraction}",
+			"Opposite:{joy}",
 			"[domanassa]"
 		],
 		"distraction": [
@@ -835,10 +836,10 @@
 			"pleasant abiding",
 			"positive state of mind",
 			"sense of ease",
-			"Related:{joy, joyful pleasure, contentment}",
+			"Related:{joy, uplifting joy, contentment}",
 			"Supported by:{tranquility}",
 			"Leads to:{collectedness}",
-			"[sukha, somanassa]"
+			"[sukha]"
 		],
 		"harm": [
 			"injury causing behavior",
@@ -1008,17 +1009,22 @@
 			"[issā]"
 		],
 		"joy": [
+			"cheerfulness",
 			"gladness",
 			"wellbeing",
+			"Context: A fresh and mild happiness arising from a sense of spiritual well-being and a clear conscience",
 			"Supported by:{non-regret}",
 			"Related:{contentment, happiness}",
-			"Leads to:{joyful pleasure}",
-			"[pāmojja]"
+			"Leads to:{uplifting joy}",
+			"Opposite: {displeasure}",
+			"[pāmojja, somanassa]"
 		],
-		"joyful pleasure": [
+		"uplifting joy": [
 			"heartfelt joy",
-			"spiritual rapture",
-			"lit. lovely feeling",
+			"mental exhilaration",
+			"rapture",
+			"lit. refreshment",
+			"Context: An energetic mental quality that creates a sense of lift or thrill; it ranges from a gentle delight to overwhelming rapture",
 			"Related:{happiness, contentment}",
 			"Supported by:{joy}",
 			"Leads to:{unification, tranquility}",
@@ -1049,7 +1055,7 @@
 			"sluggishness",
 			"Context: A mental quality characterized by unwillingness, aversion, or lack of motivation to exert effort in wholesome activities. It reflects an inner resistance to energy and discipline, the seed from which idleness arises. It leads to stagnation, missed opportunities for growth, and failure to cultivate beneficial states.",
 			"Supported by:{weak in effort}",
-			"Leads to:{bad habits}",
+			"Leads to:{bad habits, displeasure}",
 			"Opposite:{continuous effort, rousing of energy}",
 			"[ālasya, kosajja, tandī]"
 		],
@@ -1207,7 +1213,7 @@
 			"oneness",
 			"singleness of mind",
 			"Related:{collectedness}",
-			"Supported by:{joyful pleasure}",
+			"Supported by:{uplifting joy}",
 			"Leads to:{tranquility}",
 			"[ekagga, ekodibhāva]"
 		],
@@ -1615,7 +1621,6 @@
 		],
 		"sorrow": [
 			"grief",
-			"sadness",
 			"Context: Grief or sadness that follows loss or disappointment, dimming the mind’s natural brightness. It clouds clear perception.",
 			"Supported by:{attachment, dearness, lamentation}",
 			"Leads to:{suffering}",
@@ -1714,7 +1719,7 @@
 			"peacefulness",
 			"serenity",
 			"Context: A mental quality of calm and stillness that arises when the body and mind are unburdened by agitation.",
-			"Supported by:{joyful pleasure, unification}",
+			"Supported by:{uplifting joy, unification}",
 			"Leads to:{happiness}",
 			"[passaddhi, santi, upasama, upasanta]"
 		],
