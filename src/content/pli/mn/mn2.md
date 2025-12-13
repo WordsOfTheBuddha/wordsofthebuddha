@@ -84,19 +84,19 @@ Yañhissa, bhikkhave, avinodayato uppajjeyyuṁ āsavā vighātapariḷāhā, vi
 
 Katame ca, bhikkhave, āsavā bhāvanā pahātabbā?
 
-1 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso satisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
+1.) Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso satisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
 
-2 paṭisaṅkhā yoniso dhammavicayasambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
+2.) paṭisaṅkhā yoniso dhammavicayasambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
 
-3 paṭisaṅkhā yoniso vīriyasambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
+3.) paṭisaṅkhā yoniso vīriyasambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
 
-4 paṭisaṅkhā yoniso pītisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
+4.) paṭisaṅkhā yoniso pītisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
 
-5 paṭisaṅkhā yoniso passaddhisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
+5.) paṭisaṅkhā yoniso passaddhisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
 
-6 paṭisaṅkhā yoniso samādhisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
+6.) paṭisaṅkhā yoniso samādhisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ;
 
-7 paṭisaṅkhā yoniso upekkhāsambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ.
+7.) paṭisaṅkhā yoniso upekkhāsambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vossaggapariṇāmiṁ.
 
 Yañhissa, bhikkhave, abhāvayato uppajjeyyuṁ āsavā vighātapariḷāhā, bhāvayato evaṁsa te āsavā vighātapariḷāhā na honti. Ime vuccanti, bhikkhave, āsavā bhāvanā pahātabbā.
 

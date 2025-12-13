@@ -1,7 +1,7 @@
 ---
 title: Saṁvara sutta - Restraint
 description: "The Buddha outlines the four right strivings: striving for restraint, striving to abandon, striving to cultivate, and striving to protect."
-qualities: right effort, giving up, cultivation, sense restraint, right intention, mindfulness, examination, joyful pleasure, tranquility, collectedness, equanimity, recognition of unattractiveness, continuous effort
+qualities: right effort, giving up, cultivation, sense restraint, right intention, mindfulness, examination, uplifting joy, tranquility, collectedness, equanimity, recognition of unattractiveness, continuous effort
 theme: wisdom, inquisitiveness, training guideline
 slug: an4.14
 ---

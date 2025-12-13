@@ -9,12 +9,12 @@ slug: an4.148
 
 “Cattārimāni, bhikkhave, vacīduccaritāni. Katamāni cattāri?
 
-1 Musāvādo,
+1.) Musāvādo,
 
-2 pisuṇā vācā,
+2.) pisuṇā vācā,
 
-3 pharusā vācā,
+3.) pharusā vācā,
 
-4 samphappalāpo
+4.) samphappalāpo
 
 Imāni kho, bhikkhave, cattāri vacīduccaritānī”ti.

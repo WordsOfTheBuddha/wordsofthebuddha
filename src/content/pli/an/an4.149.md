@@ -8,12 +8,12 @@ slug: an4.149
 
 “Cattārimāni, bhikkhave, vacīsucaritāni. Katamāni cattāri?
 
-1 Saccavācā,
+1.) Saccavācā,
 
-2 apisuṇā vācā,
+2.) apisuṇā vācā,
 
-3 saṇhā vācā,
+3.) saṇhā vācā,
 
-4 mantabhāsā
+4.) mantabhāsā
 
 Imāni kho, bhikkhave, cattāri vacīsucaritānī”ti.

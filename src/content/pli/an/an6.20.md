@@ -1,7 +1,7 @@
 ---
 title: Dutiya maraṇassati sutta - Recollection Of Death (Second)
 description: The Buddha explains how to cultivate recollection of death so that it is of great fruit and great benefit, and leads to the deathless.
-qualities: recollection of death, cultivation, examination, joyful pleasure, joy, desire, rousing of energy, vigour, continuous effort, mindfulness, full awareness, unwholesome, wholesome
+qualities: recollection of death, cultivation, examination, uplifting joy, joy, desire, rousing of energy, vigour, continuous effort, mindfulness, full awareness, unwholesome, wholesome
 theme: training guideline
 slug: an6.20
 priority: 1.2

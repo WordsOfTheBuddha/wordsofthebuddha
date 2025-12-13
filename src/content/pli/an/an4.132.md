@@ -8,12 +8,12 @@ slug: an4.132
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
 
-1. Yuttappaṭibhāno, no muttappaṭibhāno;
+1.) Yuttappaṭibhāno, no muttappaṭibhāno;
 
-2. muttappaṭibhāno, no yuttappaṭibhāno;
+2.) muttappaṭibhāno, no yuttappaṭibhāno;
 
-3. yuttappaṭibhāno ca muttappaṭibhāno ca;
+3.) yuttappaṭibhāno ca muttappaṭibhāno ca;
 
-4. neva yuttappaṭibhāno na muttappaṭibhāno—
+4.) neva yuttappaṭibhāno na muttappaṭibhāno—
 
 ime kho, bhikkhave, cattāro puggalā santo saṁvijjamānā lokasmin”ti.

@@ -15,21 +15,21 @@ Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāya�
 
 “Ye kho tvaṁ, gotami, dhamme jāneyyāsi:
 
-1 ‘ime dhammā sarāgāya saṁvattanti, no virāgāya;
+1.) ‘ime dhammā sarāgāya saṁvattanti, no virāgāya;
 
-2 saṁyogāya saṁvattanti, no visaṁyogāya;
+2.) saṁyogāya saṁvattanti, no visaṁyogāya;
 
-3 ācayāya saṁvattanti, no apacayāya;
+3.) ācayāya saṁvattanti, no apacayāya;
 
-4 mahicchatāya saṁvattanti, no appicchatāya;
+4.) mahicchatāya saṁvattanti, no appicchatāya;
 
-5 asantuṭṭhiyā saṁvattanti, no santuṭṭhiyā;
+5.) asantuṭṭhiyā saṁvattanti, no santuṭṭhiyā;
 
-6 saṅgaṇikāya saṁvattanti, no pavivekāya;
+6.) saṅgaṇikāya saṁvattanti, no pavivekāya;
 
-7 kosajjāya saṁvattanti, no vīriyārambhāya;
+7.) kosajjāya saṁvattanti, no vīriyārambhāya;
 
-8 dubbharatāya saṁvattanti, no subharatāyā’ti.
+8.) dubbharatāya saṁvattanti, no subharatāyā’ti.
 
 ekaṁsena, gotami, dhāreyyāsi: ‘neso dhammo, neso vinayo, netaṁ satthusāsanan’ti.
 
@@ -37,20 +37,20 @@ ekaṁsena, gotami, dhāreyyāsi: ‘neso dhammo, neso vinayo, netaṁ satthusā
 
 Ye ca kho tvaṁ, gotami, dhamme jāneyyāsi:
 
-1 ‘ime dhammā virāgāya saṁvattanti, no sarāgāya;
+1.) ‘ime dhammā virāgāya saṁvattanti, no sarāgāya;
 
-2 visaṁyogāya saṁvattanti, no saṁyogāya;
+2.) visaṁyogāya saṁvattanti, no saṁyogāya;
 
-3 apacayāya saṁvattanti, no ācayāya;
+3.) apacayāya saṁvattanti, no ācayāya;
 
-4 appicchatāya saṁvattanti, no mahicchatāya;
+4.) appicchatāya saṁvattanti, no mahicchatāya;
 
-5 santuṭṭhiyā saṁvattanti, no asantuṭṭhiyā;
+5.) santuṭṭhiyā saṁvattanti, no asantuṭṭhiyā;
 
-6 pavivekāya saṁvattanti, no saṅgaṇikāya;
+6.) pavivekāya saṁvattanti, no saṅgaṇikāya;
 
-7 vīriyārambhāya saṁvattanti, no kosajjāya;
+7.) vīriyārambhāya saṁvattanti, no kosajjāya;
 
-8 subharatāya saṁvattanti, no dubbharatāyā’ti.
+8.) subharatāya saṁvattanti, no dubbharatāyā’ti.
 
 ekaṁsena, gotami, dhāreyyāsi: ‘eso dhammo, eso vinayo, etaṁ satthusāsanan’”ti.
