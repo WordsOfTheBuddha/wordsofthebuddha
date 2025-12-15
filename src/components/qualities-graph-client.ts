@@ -6,7 +6,7 @@ import { generateContentTagHtml } from "../utils/ContentTagUtils";
 
 const RAW = JSON.parse(document.getElementById("qualities-json")!.textContent!);
 const TOPICS = JSON.parse(
-	document.getElementById("topics-json")?.textContent || "{}"
+	document.getElementById("topics-json")?.textContent || "{}",
 );
 const built = buildGraphFromQualities(RAW, TOPICS);
 
@@ -40,10 +40,10 @@ const cy = cytoscape({
 					el.data("polarity") === "positive"
 						? "#10b981"
 						: el.data("polarity") === "negative"
-						? "#ef4444"
-						: el.data("polarity") === "topic"
-						? "#f59e0b"
-						: "#6366f1",
+							? "#ef4444"
+							: el.data("polarity") === "topic"
+								? "#f59e0b"
+								: "#6366f1",
 				label: "data(label)",
 				"font-size": 15,
 				"text-wrap": "wrap",
@@ -69,15 +69,15 @@ const cy = cytoscape({
 					e.data("type") === "supportedBy"
 						? "#059669"
 						: e.data("type") === "leadsTo"
-						? "#2563eb"
-						: "#7c3aed",
+							? "#2563eb"
+							: "#7c3aed",
 				"target-arrow-shape": "triangle",
 				"target-arrow-color": (e) =>
 					e.data("type") === "supportedBy"
 						? "#059669"
 						: e.data("type") === "leadsTo"
-						? "#2563eb"
-						: "#7c3aed",
+							? "#2563eb"
+							: "#7c3aed",
 				"arrow-scale": 0.8,
 				opacity: 0.9,
 			},
@@ -110,8 +110,8 @@ const cy = cytoscape({
 					e.data("type") === "related"
 						? "solid"
 						: e.data("type") === "opposite"
-						? "dashed"
-						: "solid",
+							? "dashed"
+							: "solid",
 				"line-color": (e) =>
 					e.data("type") === "related" ? "#eab308" : "#ef4444",
 				opacity: 0.6,
@@ -208,7 +208,7 @@ const SEARCH_INDEX: SearchEntry[] = (() => {
 			if (!s) continue;
 			if (
 				/^\s*(Supported by|Leads to|Related|Related to|Opposite|Guarded by|Context)\s*:/i.test(
-					s
+					s,
 				)
 			)
 				continue;
@@ -237,18 +237,18 @@ function searchEntries(query: string): SearchEntry[] {
 	if (exact.length) {
 		console.debug(
 			"[QM][search] exact token hits=",
-			exact.map((e) => e.id)
+			exact.map((e) => e.id),
 		);
 		return exact;
 	}
 	// starts-with token priority
 	const starts = SEARCH_INDEX.filter((e) =>
-		e.tokens.some((t) => t.startsWith(q))
+		e.tokens.some((t) => t.startsWith(q)),
 	);
 	if (starts.length) {
 		console.debug(
 			"[QM][search] starts-with hits=",
-			starts.map((e) => e.id)
+			starts.map((e) => e.id),
 		);
 		return starts;
 	}
@@ -257,7 +257,7 @@ function searchEntries(query: string): SearchEntry[] {
 	if (contains.length) {
 		console.debug(
 			"[QM][search] contains hits=",
-			contains.map((e) => e.id)
+			contains.map((e) => e.id),
 		);
 		return contains;
 	}
@@ -269,7 +269,7 @@ function searchEntries(query: string): SearchEntry[] {
 				(t) =>
 					t === q ||
 					(Math.abs(t.length - q.length) <= 1 &&
-						editDistanceLe1(t, q))
+						editDistanceLe1(t, q)),
 			)
 		) {
 			d1.push(e);
@@ -278,14 +278,14 @@ function searchEntries(query: string): SearchEntry[] {
 	if (d1.length)
 		console.debug(
 			"[QM][search] fuzzy<=1 hits=",
-			d1.map((e) => e.id)
+			d1.map((e) => e.id),
 		);
 	return d1;
 }
 
 function pickPreferredIfAmbiguous(
 	query: string,
-	results: SearchEntry[]
+	results: SearchEntry[],
 ): SearchEntry | null {
 	const q = toAscii(query);
 	const preferred = PREFERRED_SYNONYM_TARGET[q];
@@ -295,7 +295,7 @@ function pickPreferredIfAmbiguous(
 		(e) =>
 			toAscii(e.label) === preferred ||
 			toAscii(e.slug) === preferred ||
-			toAscii(e.id) === preferred
+			toAscii(e.id) === preferred,
 	);
 	return hit || null;
 }
@@ -397,8 +397,10 @@ const spCollapse = document.getElementById("sp-collapse") as HTMLButtonElement;
 // Restore persisted collapse state so it survives focus navigation or reloads
 try {
 	const saved = localStorage.getItem("qm.sidebar");
-	if (saved === "collapsed") sidepanel.classList.add("collapsed");
-	const expanded = !sidepanel.classList.contains("collapsed");
+	// Explicitly set collapsed state based on saved preference (handles both add and remove)
+	const shouldCollapse = saved === "collapsed";
+	sidepanel.classList.toggle("collapsed", shouldCollapse);
+	const expanded = !shouldCollapse;
 	spCollapse?.setAttribute("aria-expanded", expanded ? "true" : "false");
 	if (spCollapse) spCollapse.textContent = expanded ? "\u27e8" : "\u27e9";
 	if (zoomBar) zoomBar.classList.toggle("horizontal", expanded);
@@ -435,6 +437,8 @@ if (!sidepanel.classList.contains("collapsed")) {
 spCollapse?.addEventListener("click", () => {
 	sidepanel.classList.toggle("collapsed");
 	const expanded = !sidepanel.classList.contains("collapsed");
+	// Sync qm-collapsed on html for CSS rules that depend on it
+	document.documentElement.classList.toggle("qm-collapsed", !expanded);
 	spCollapse.setAttribute("aria-expanded", expanded ? "true" : "false");
 	spCollapse.textContent = expanded ? "⟨" : "⟩";
 	if (zoomBar) zoomBar.classList.toggle("horizontal", expanded);
@@ -455,10 +459,10 @@ sidepanel?.addEventListener("transitionend", (ev) => {
 // toggles
 const showRelated = document.getElementById("show-related") as HTMLInputElement;
 const showOpposite = document.getElementById(
-	"show-opposite"
+	"show-opposite",
 ) as HTMLInputElement;
 const showSupported = document.getElementById(
-	"show-supported"
+	"show-supported",
 ) as HTMLInputElement;
 const showLeads = document.getElementById("show-leads") as HTMLInputElement;
 function applyEdgeToggles() {
@@ -466,17 +470,17 @@ function applyEdgeToggles() {
 	cy.edges("[type='opposite']").toggleClass("hidden", !showOpposite.checked);
 	cy.edges("[type='supportedBy']").toggleClass(
 		"hidden",
-		!showSupported.checked
+		!showSupported.checked,
 	);
 	cy.edges("[type='leadsTo']").toggleClass("hidden", !showLeads.checked);
 }
 [showRelated, showOpposite, showSupported, showLeads].forEach((el) =>
-	el?.addEventListener("change", applyEdgeToggles)
+	el?.addEventListener("change", applyEdgeToggles),
 );
 // Initialize toggles using server-provided defaults
 try {
 	const opts = JSON.parse(
-		document.getElementById("qualities-map-options")?.textContent || "{}"
+		document.getElementById("qualities-map-options")?.textContent || "{}",
 	);
 	if (opts?.flags) {
 		if (typeof opts.flags.related === "boolean")
@@ -489,16 +493,16 @@ applyEdgeToggles();
 
 // Node filters (checkboxes) for Wholesome/Unwholesome/Neutral with live counts
 const nodeShowBright = document.getElementById(
-	"node-show-bright"
+	"node-show-bright",
 ) as HTMLInputElement;
 const nodeShowDark = document.getElementById(
-	"node-show-dark"
+	"node-show-dark",
 ) as HTMLInputElement;
 const nodeShowNeutral = document.getElementById(
-	"node-show-neutral"
+	"node-show-neutral",
 ) as HTMLInputElement;
 const nodeShowTopic = document.getElementById(
-	"node-show-topic"
+	"node-show-topic",
 ) as HTMLInputElement;
 const countBright = document.getElementById("count-bright");
 const countDark = document.getElementById("count-dark");
@@ -534,15 +538,15 @@ function applyNodeFilters() {
 	});
 	if (countBright)
 		countBright.textContent = String(
-			cy.nodes("[polarity = 'positive']").not(".hidden").length
+			cy.nodes("[polarity = 'positive']").not(".hidden").length,
 		);
 	if (countDark)
 		countDark.textContent = String(
-			cy.nodes("[polarity = 'negative']").not(".hidden").length
+			cy.nodes("[polarity = 'negative']").not(".hidden").length,
 		);
 	if (countNeutral)
 		countNeutral.textContent = String(
-			cy.nodes("[polarity = 'neutral']").not(".hidden").length
+			cy.nodes("[polarity = 'neutral']").not(".hidden").length,
 		);
 	if (countTopic)
 		countTopic.textContent = String(
@@ -551,8 +555,8 @@ function applyNodeFilters() {
 				.filter(
 					(n) =>
 						(n.data("polarity") === "topic" || n.data("isTopic")) &&
-						!n.hasClass("hidden")
-				).length
+						!n.hasClass("hidden"),
+				).length,
 		);
 }
 nodeShowBright?.addEventListener("change", () => {
@@ -592,7 +596,7 @@ function findNodeByFocusKey(key: string) {
 function highlightNeighborhood(node: cytoscape.NodeSingular, depth: number) {
 	cy.batch(() => {
 		cy.elements().removeClass(
-			"dim focus-node from-focus to-focus focus-ring"
+			"dim focus-node from-focus to-focus focus-ring",
 		);
 		node.addClass("focus-node");
 		if (depth <= 0) return;
@@ -633,7 +637,7 @@ function layoutFocusArea(node: cytoscape.NodeSingular, depth: number) {
 		}
 		const nodes = cy
 			.collection(
-				Array.from(dist.keys()).map((id) => cy.getElementById(id))
+				Array.from(dist.keys()).map((id) => cy.getElementById(id)),
 			)
 			.nodes();
 		if (nodes.length < 2) return Promise.resolve();
@@ -687,21 +691,21 @@ function collateAscii(a: string, b: string) {
 }
 function relFromFocus(
 	focus: cytoscape.NodeSingular,
-	n: cytoscape.NodeSingular
+	n: cytoscape.NodeSingular,
 ): "leadsTo" | "supportedBy" | "related" | "opposite" | "other" {
 	const between = focus.edgesWith(n);
 	// Directional precedence
 	if (
 		between.some(
 			(e) =>
-				e.data("type") === "leadsTo" && e.source().id() === focus.id()
+				e.data("type") === "leadsTo" && e.source().id() === focus.id(),
 		)
 	)
 		return "leadsTo";
 	if (
 		between.some(
 			(e) =>
-				e.data("type") === "leadsTo" && e.target().id() === focus.id()
+				e.data("type") === "leadsTo" && e.target().id() === focus.id(),
 		)
 	)
 		return "supportedBy";
@@ -709,7 +713,7 @@ function relFromFocus(
 		between.some(
 			(e) =>
 				e.data("type") === "supportedBy" &&
-				e.target().id() === focus.id()
+				e.target().id() === focus.id(),
 		)
 	)
 		return "supportedBy";
@@ -717,7 +721,7 @@ function relFromFocus(
 		between.some(
 			(e) =>
 				e.data("type") === "supportedBy" &&
-				e.source().id() === focus.id()
+				e.source().id() === focus.id(),
 		)
 	)
 		return "leadsTo";
@@ -795,8 +799,8 @@ function layoutFocusAreaBlock360(node: cytoscape.NodeSingular, depth: number) {
 				groups[k].sort((a, b) =>
 					collateAscii(
 						String(a.data("label") || a.id()),
-						String(b.data("label") || b.id())
-					)
+						String(b.data("label") || b.id()),
+					),
 				);
 			});
 			// Global clockwise order: Leads→, Opposite, Supported by, Related, Other
@@ -841,7 +845,7 @@ function layoutFocusAreaBlock360(node: cytoscape.NodeSingular, depth: number) {
 		// Run preset layout
 		return new Promise<void>((resolve) => {
 			const nodes = cy.collection(
-				Object.keys(positions).map((id) => cy.getElementById(id))
+				Object.keys(positions).map((id) => cy.getElementById(id)),
 			);
 			const layout = nodes.layout({
 				name: "preset",
@@ -868,7 +872,7 @@ function fitAroundNode(node: cytoscape.NodeSingular, depth: number) {
 	}
 	cy.animate(
 		{ fit: { eles, padding: FOCUS_LAYOUT.padding } },
-		{ duration: 280, easing: "ease-in-out" }
+		{ duration: 280, easing: "ease-in-out" },
 	);
 }
 function defaultFocusedView() {
@@ -888,7 +892,7 @@ function applyInitialFocus() {
 	try {
 		const opts = JSON.parse(
 			document.getElementById("qualities-map-options")?.textContent ||
-				"{}"
+				"{}",
 		);
 		const key = getUrlFocus() || String(opts?.focus || "").trim();
 		if (key) {
@@ -927,8 +931,8 @@ function effectiveDepth(input?: number): number {
 		typeof input === "number"
 			? input
 			: typeof fromOpts === "number"
-			? fromOpts
-			: undefined;
+				? fromOpts
+				: undefined;
 	return d && d > 0 ? d : DEFAULT_FOCUS_DEPTH;
 }
 
@@ -939,7 +943,7 @@ function setFocus(
 		updateUrl?: boolean;
 		pushUrl?: boolean;
 		depth?: number;
-	}
+	},
 ) {
 	const depth = effectiveDepth(opts?.depth);
 	currentFocusId = node.id();
@@ -1133,7 +1137,7 @@ function maybeCollapsePanelOnSmallViewport(singleExact: boolean) {
 		if (!singleExact) return; // collapse only on exact single-focus
 		const panel = document.getElementById("sidepanel");
 		const btn = document.getElementById(
-			"sp-collapse"
+			"sp-collapse",
 		) as HTMLButtonElement | null;
 		if (panel && !panel.classList.contains("collapsed")) {
 			panel.classList.add("collapsed");
@@ -1218,7 +1222,7 @@ q.addEventListener("keydown", (ev: KeyboardEvent) => {
 				"[QM][enter] single-result focus=",
 				uniqIds[0],
 				"preserveDrawerOpen=",
-				wasOpen
+				wasOpen,
 			);
 			clearSearchFilters();
 			setFocus(node as any, {
@@ -1233,7 +1237,7 @@ q.addEventListener("keydown", (ev: KeyboardEvent) => {
 		if (fallback) {
 			console.debug(
 				"[QM][enter] fallback direct focus preserveDrawerOpen=",
-				wasOpen
+				wasOpen,
 			);
 			clearSearchFilters();
 			setFocus(fallback, {
@@ -1304,7 +1308,7 @@ q.addEventListener("keydown", (ev: KeyboardEvent) => {
 	console.debug("[QM][enter] multi-match ids=", Array.from(visibleNodeIds));
 	cy.animate(
 		{ fit: { eles: vis, padding: FOCUS_LAYOUT.padding } },
-		{ duration: 260 }
+		{ duration: 260 },
 	);
 });
 
@@ -1314,7 +1318,7 @@ q.addEventListener("keydown", (ev: KeyboardEvent) => {
 // - allowUrlRewrite: when true, replace the URL's focus to the resolved slug on exact match
 function runSearchForTerm(
 	term: string,
-	opts?: { fromUrl?: boolean; allowUrlRewrite?: boolean }
+	opts?: { fromUrl?: boolean; allowUrlRewrite?: boolean },
 ) {
 	try {
 		if (q) {
@@ -1335,7 +1339,7 @@ function runSearchForTerm(
 						(n) =>
 							toAscii(slugify(n.id())) === pref ||
 							toAscii(n.data("label")) === pref ||
-							toAscii(n.id()) === pref
+							toAscii(n.id()) === pref,
 					);
 				if (
 					bySlug &&
@@ -1447,7 +1451,7 @@ function runSearchForTerm(
 	const vis = cy.elements().filter((e) => !e.hasClass("hidden-by-filter"));
 	cy.animate(
 		{ fit: { eles: vis, padding: FOCUS_LAYOUT.padding } },
-		{ duration: 260 }
+		{ duration: 260 },
 	);
 }
 
@@ -1468,7 +1472,7 @@ qGo?.addEventListener("click", () => {
 			if (node && node.nonempty && node.nonempty()) {
 				console.debug(
 					"[QM][enter-icon] pref-target focus=",
-					preferred.id
+					preferred.id,
 				);
 				clearSearchFilters();
 				setFocus(node as any, {
@@ -1488,7 +1492,7 @@ qGo?.addEventListener("click", () => {
 				"[QM][enter-icon] single-result focus=",
 				uniqIds[0],
 				"preserveDrawerOpen=",
-				wasOpen
+				wasOpen,
 			);
 			clearSearchFilters();
 			setFocus(node as any, {
@@ -1503,7 +1507,7 @@ qGo?.addEventListener("click", () => {
 		if (fallback) {
 			console.debug(
 				"[QM][enter-icon] fallback direct focus preserveDrawerOpen=",
-				wasOpen
+				wasOpen,
 			);
 			clearSearchFilters();
 			setFocus(fallback, {
@@ -1552,11 +1556,11 @@ qGo?.addEventListener("click", () => {
 	const vis = cy.elements().filter((e) => !e.hasClass("hidden-by-filter"));
 	console.debug(
 		"[QM][enter-icon] multi-match ids=",
-		Array.from(visibleNodeIds)
+		Array.from(visibleNodeIds),
 	);
 	cy.animate(
 		{ fit: { eles: vis, padding: FOCUS_LAYOUT.padding } },
-		{ duration: 260 }
+		{ duration: 260 },
 	);
 });
 
@@ -1610,7 +1614,7 @@ const zoomIn = document.getElementById("zoom-in") as HTMLButtonElement;
 const zoomOut = document.getElementById("zoom-out") as HTMLButtonElement;
 const zoomReset = document.getElementById("zoom-reset") as HTMLButtonElement;
 const vpToggle = document.getElementById(
-	"vp-toggle"
+	"vp-toggle",
 ) as HTMLButtonElement | null;
 function zoom(delta: number) {
 	const z = cy.zoom();
@@ -1670,7 +1674,8 @@ function applyVpToggleState(full: boolean) {
 				.elements()
 				.filter(
 					(e) =>
-						!e.hasClass("hidden") && !e.hasClass("hidden-by-filter")
+						!e.hasClass("hidden") &&
+						!e.hasClass("hidden-by-filter"),
 				);
 			if (vis.nonempty && vis.nonempty()) cy.fit(vis, 40);
 			else cy.fit(cy.elements(), 40);
@@ -1688,7 +1693,8 @@ function applyVpToggleState(full: boolean) {
 				.elements()
 				.filter(
 					(e) =>
-						!e.hasClass("hidden") && !e.hasClass("hidden-by-filter")
+						!e.hasClass("hidden") &&
+						!e.hasClass("hidden-by-filter"),
 				);
 			if (vis.nonempty && vis.nonempty()) cy.fit(vis, 80);
 			else cy.fit(cy.elements(), 80);
@@ -1711,7 +1717,7 @@ if (vpToggle) {
 	vpToggle.textContent = full ? "⤡" : "⤢";
 	vpToggle.setAttribute(
 		"aria-label",
-		full ? "Collapse to normal view" : "Expand to fullscreen"
+		full ? "Collapse to normal view" : "Expand to fullscreen",
 	);
 	vpToggle.title = full ? "Collapse to normal view" : "Expand to fullscreen";
 }
@@ -1758,7 +1764,7 @@ function transformId(id: string): string {
 	const transformed = id.replace(
 		/([a-zA-Z]+)(\d+)/,
 		(_: any, chars: string, digits: string) =>
-			`${chars.toUpperCase()} ${digits}`
+			`${chars.toUpperCase()} ${digits}`,
 	);
 	if (transformed === id) {
 		const decoded = decodeURIComponent(id);
@@ -1804,11 +1810,11 @@ function discourseCardHtml(d: any): string {
 							<a href="/${
 								d.id
 							}" class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal" data-base-href="/${
-		d.id
-	}">
+								d.id
+							}">
 								${transformId(d.id)}&nbsp;<span style="color:var(--text-color)">${
-		d.title
-	}</span>
+									d.title
+								}</span>
 							</a>
 							${
 								note
@@ -1821,7 +1827,7 @@ function discourseCardHtml(d: any): string {
 			</div>
 			<p class="mt-2 text-text text-sm sm:text-base">${(d.description || "").replace(
 				/\[([^\]]+)\]\(([^)]+)\)/g,
-				'<a href="$2" class="text-blue-600 hover:underline">$1</a>'
+				'<a href="$2" class="text-blue-600 hover:underline">$1</a>',
 			)}</p>
 		</div>`;
 }
@@ -1853,10 +1859,10 @@ function tagHtmlForQuality(slug: string): string {
 	const cls = isPos
 		? "topic-tag positive"
 		: isNeg
-		? "topic-tag negative"
-		: isTopic
-		? "topic-tag topic"
-		: "topic-tag neutral";
+			? "topic-tag negative"
+			: isTopic
+				? "topic-tag topic"
+				: "topic-tag neutral";
 	const label = s
 		.split("-")
 		.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -1916,10 +1922,10 @@ function renderDrawer(nodeId: string) {
 			pol === "positive"
 				? "bright-quality"
 				: pol === "negative"
-				? "negative-quality"
-				: pol === "topic"
-				? "topic"
-				: "neutral-quality";
+					? "negative-quality"
+					: pol === "topic"
+						? "topic"
+						: "neutral-quality";
 		tagsHtml = generateContentTagHtml(polType as any, {
 			tooltipPos: "bottom",
 		});
@@ -1938,7 +1944,7 @@ function renderDrawer(nodeId: string) {
 				body
 					.split(",")
 					.map((s) => s.trim())
-					.filter(Boolean)
+					.filter(Boolean),
 			);
 	};
 	const stripBrackets = (s: string) => s.replace(/[{}\[\]]/g, "").trim();
@@ -1946,8 +1952,8 @@ function renderDrawer(nodeId: string) {
 		.filter(
 			(l) =>
 				!/^(Supported by|Leads to|Related|Related to|Opposite|Context)\s*:/i.test(
-					l
-				) && !/^\[.*\]$/.test(l)
+					l,
+				) && !/^\[.*\]$/.test(l),
 		)
 		.map(stripBrackets)
 		.filter(Boolean);
@@ -2063,7 +2069,7 @@ document.getElementById("drawer")?.addEventListener(
 			}
 		}
 	},
-	true
+	true,
 );
 
 // Helpers for details opening and panel expansion
@@ -2116,7 +2122,7 @@ cy.on("tap", (e) => {
 					.renderer()
 					.projectIntoViewport(
 						e.renderedPosition.x,
-						e.renderedPosition.y
+						e.renderedPosition.y,
 					)
 			: null);
 	// Fallback: if cytoscape already targeted a node, use that
@@ -2128,15 +2134,15 @@ cy.on("tap", (e) => {
 		const candidates = cy.elementsAtPoint(pos.x, pos.y).filter("node");
 		if (candidates.nonempty()) {
 			const visibleFirst = candidates.filter(
-				(n) => !n.hasClass("hidden-by-filter") && !n.hasClass("hidden")
+				(n) => !n.hasClass("hidden-by-filter") && !n.hasClass("hidden"),
 			);
 			const nonDim = visibleFirst.filter((n) => !n.hasClass("dim"));
 			target = (
 				nonDim.nonempty()
 					? nonDim[0]
 					: visibleFirst.nonempty()
-					? visibleFirst[0]
-					: candidates[0]
+						? visibleFirst[0]
+						: candidates[0]
 			) as any;
 		}
 	}

@@ -21,28 +21,39 @@ const tagsArray = Array.isArray(tags)
 // De-duplicate incoming tags
 const uniqueTags = Array.from(new Set(tagsArray.filter(Boolean)));
 
-// Build a reverse lookup from lowercase title -> slug for topics
-const titleToSlug = new Map<string, string>();
+// Build a set of all topic-related terms (titles, synonyms, redirects) mapped to their slug
+const topicTermToSlug = new Map<string, string>();
 for (const [slug, data] of Object.entries(topicMappings)) {
-	titleToSlug.set(data.title.toLowerCase(), slug);
+	const topicData = data as {
+		title: string;
+		synonyms?: string[];
+		redirects?: string[];
+	};
+	// Add slug itself
+	topicTermToSlug.set(slug.toLowerCase(), slug);
+	// Add title
+	topicTermToSlug.set(topicData.title.toLowerCase(), slug);
+	// Add synonyms
+	if (topicData.synonyms) {
+		for (const syn of topicData.synonyms) {
+			topicTermToSlug.set(syn.toLowerCase(), slug);
+		}
+	}
+	// Add redirects
+	if (topicData.redirects) {
+		for (const redirect of topicData.redirects) {
+			topicTermToSlug.set(redirect.toLowerCase(), slug);
+		}
+	}
 }
 
-// Helper to resolve a tag to a topic slug (by slug or title match)
+// Helper to resolve a tag to a topic slug (by slug, title, synonym, or redirect match)
 function resolveTopicSlug(tag: string): string | null {
-	const topicKeys = Object.keys(topicMappings);
-	// Exact slug match
-	if (topicKeys.includes(tag)) {
-		return tag;
-	}
-	// Case-insensitive title match
-	const slugFromTitle = titleToSlug.get(tag.toLowerCase());
-	if (slugFromTitle) {
-		return slugFromTitle;
-	}
-	return null;
+	return topicTermToSlug.get(tag.toLowerCase()) ?? null;
 }
 
 // Build categories without repeats across them (topics -> positive -> neutral -> negative)
+// seen tracks both slugs AND original tag strings (lowercased) to prevent duplicates
 const seen = new Set<string>();
 
 const topics: string[] = [];
@@ -51,22 +62,32 @@ for (const tag of uniqueTags) {
 	if (slug && !seen.has(slug)) {
 		topics.push(slug);
 		seen.add(slug);
+		// Also add the original tag (lowercased) to seen to prevent it appearing as a quality
+		seen.add(tag.toLowerCase());
 	}
 }
 topics.sort(); // Sort alphabetically
 
 const positiveQualities = uniqueTags
-	.filter((tag) => qualities.positive.includes(tag) && !seen.has(tag))
+	.filter(
+		(tag) =>
+			qualities.positive.includes(tag) && !seen.has(tag.toLowerCase())
+	)
 	.sort(); // Sort alphabetically
-positiveQualities.forEach((tag) => seen.add(tag));
+positiveQualities.forEach((tag) => seen.add(tag.toLowerCase()));
 
 const neutralQualities = uniqueTags
-	.filter((tag) => qualities.neutral.includes(tag) && !seen.has(tag))
+	.filter(
+		(tag) => qualities.neutral.includes(tag) && !seen.has(tag.toLowerCase())
+	)
 	.sort(); // Sort alphabetically
-neutralQualities.forEach((tag) => seen.add(tag));
+neutralQualities.forEach((tag) => seen.add(tag.toLowerCase()));
 
 const negativeQualities = uniqueTags
-	.filter((tag) => qualities.negative.includes(tag) && !seen.has(tag))
+	.filter(
+		(tag) =>
+			qualities.negative.includes(tag) && !seen.has(tag.toLowerCase())
+	)
 	.sort(); // Sort alphabetically
 
 // Helper function to capitalize first letter

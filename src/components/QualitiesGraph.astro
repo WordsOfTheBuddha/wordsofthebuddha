@@ -634,12 +634,8 @@ const heightStyle = typeof height === "number" ? `${height}px` : height;
 						var panel = document.getElementById("sidepanel");
 						if (!btn || !panel) return;
 						var saved = localStorage.getItem("qm.sidebar");
-						var collapsed =
-							saved === "collapsed" ||
-							document.documentElement.classList.contains(
-								"qm-collapsed"
-							) ||
-							panel.classList.contains("collapsed");
+						// Only use localStorage as the source of truth for collapsed state
+						var collapsed = saved === "collapsed";
 						panel.classList.toggle("collapsed", collapsed);
 						btn.setAttribute(
 							"aria-expanded",
