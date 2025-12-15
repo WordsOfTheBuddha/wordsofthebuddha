@@ -89,14 +89,11 @@ const {
 	</div>
 	<p
 		class=`mt-2 text-text line-clamp-${clamp+1} md:line-clamp-${clamp} text-sm sm:text-base`
-	>
-		{
-			description?.replace(
-				/\[([^\]]+)\]\(([^)]+)\)/g,
-				'<a href="$2" class="inline-link">$1</a>'
-			)
-		}
-	</p>
+		set:html={description?.replace(
+			/\[([^\]]+)\]\(([^)]+)\)/g,
+			'<a href="$2" class="inline-link">$1</a>'
+		)}
+	/>
 	{
 		lastUpdated && (
 			<p class="text-[var(--text-muted)] text-xs my-0 text-right">
