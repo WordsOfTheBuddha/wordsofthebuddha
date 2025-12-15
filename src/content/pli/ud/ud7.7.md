@@ -1,7 +1,7 @@
 ---
 title: Papañcakhaya sutta - Wearing Away of Mental Proliferation
-description: The Buddha expresses an inspired utterance after reflecting on his own giving up of the proliferation of conceptual perceptions.
-qualities: giving up, mental proliferation, dispassion
+description: The Buddha expresses an inspired utterance after reflecting on his giving up of the perceptions and notions [born of] mental proliferation.
+qualities: giving up, dispassion, non-proliferation, mental proliferation
 theme: inspiration, principle
 slug: ud7.7
 ---
