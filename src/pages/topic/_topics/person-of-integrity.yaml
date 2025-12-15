@@ -1,0 +1,26 @@
+title: "Person of Integrity"
+description: "One whose inner character aligns with their outer conduct—honest about their own faults, appreciative of others' virtues, and grounded in principles that guide action toward what is beneficial."
+pali:
+  - sappurisa
+synonyms:
+  - virtuous person
+  - true person
+redirects:
+  - sappurisa
+supportedBy:
+  - ethical conduct
+  - good friendship
+  - conscience
+  - fear of wrongdoing
+leadsTo:
+  - faith
+  - wisdom
+discourses:
+  - id: mn110
+  - id: an4.73
+  - id: sn45.25
+    note: Relationship wrt Noble Eightfold Path
+  - id: an2.32-41#1-3
+    note: Domain of a person of integrity
+  - id: an5.148
+  - id: an8.37

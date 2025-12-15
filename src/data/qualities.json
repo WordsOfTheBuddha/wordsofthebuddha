@@ -308,6 +308,7 @@
 			"overbearing",
 			"self-promotion",
 			"self-praising",
+			"Context: A puffed-up self-display that advertises one's virtues, attainments, or status to win admiration. It springs from conceit and the craving for recognition, crowding out humility and genuine connection.",
 			"Supported by:{conceit, personal existence}",
 			"Leads to:{argumentativeness}",
 			"Opposite:{unassuming}",
@@ -334,6 +335,7 @@
 			"attachment to rules",
 			"attachment to regulations",
 			"attachment to laws",
+			"Context: A grasping at external forms of practice—rituals, customs, or rules—as ends in themselves, believing they alone lead to purification. It mistakes the letter for the spirit, binding the mind to outward observance while missing the inner transformation they are meant to support.",
 			"Supported by:{wrong view}",
 			"Leads to:{stubbornness}",
 			"[sīlabbataparāmāsa]"
@@ -354,6 +356,7 @@
 			"friendship",
 			"fellowship",
 			"camaraderie",
+			"Context: The state of associating with others, which shapes the mind according to the qualities of one's companions. Companionship itself is neutral—its fruit depends on whether one's associates incline toward wholesome or unwholesome conduct.",
 			"Related:{good friendship, bad friendship}",
 			"Supported by:{desire}",
 			"[sahāyatā]"
@@ -394,15 +397,18 @@
 			"sense of shame",
 			"modesty",
 			"(comm) originating from inside",
+			"Context: An inner moral sensitivity that shrinks from wrongdoing out of self-respect and personal integrity. It is the voice within that knows what is beneath one's dignity, guarding conduct through an inward standard of honor.",
 			"Related:{fear of wrongdoing}",
 			"Supported by:{respect, truth}",
 			"Leads to:{ethical conduct}",
+			"Opposite:{shamelessness}",
 			"[hirī]"
 		],
 		"consuming intoxicants": [
 			"drinking liquor and wine",
 			"drinking alcohol",
 			"taking intoxicating substances",
+			"Context: The use of substances that cloud the mind and impair clear awareness, leading to a loss of self-control and moral recklessness. Such consumption undermines mindfulness and ethical conduct, paving the way for further unwholesome actions.",
 			"Supported by:{wrong view, bad friendship}",
 			"Leads to:{harm, negligence}",
 			"[surāmerayapāna]"
@@ -575,6 +581,7 @@
 			"mental distress",
 			"melancholy",
 			"sadness",
+			"Context: A feeling of mental pain or a disagreeable feeling or unease born of mental contact.",
 			"Supported by:{aversion, laziness}",
 			"Leads to:{irritability, distraction}",
 			"Opposite:{joy}",
@@ -586,6 +593,7 @@
 			"not well-composed",
 			"with a wandering mind",
 			"with runaway thoughts",
+			"Context: A scattered, unfocused state of mind where attention flits from object to object without settling. A distracted mind lacks the composure needed for clear seeing and is easily pulled by whatever arises.",
 			"Supported by:{displeasure, perturbation}",
 			"Leads to:{perceiving gratification, muddle-mindedness}",
 			"Opposite:{collectedness}",
@@ -640,6 +648,7 @@
 			"joyous excitement",
 			"thrill",
 			"lit. jumping up",
+			"Context: An excited, buoyant mental state that leaps up in response to pleasant circumstances. When ungrounded, it can tip into agitation or set the stage for disappointment when conditions change.",
 			"[hassatī, uppila]"
 		],
 		"equanimity": [
@@ -695,6 +704,7 @@
 			"lack of conviction",
 			"disbelief",
 			"cynicism",
+			"Context: An absence of confidence in the path and its fruits. The mind remains unconvinced, unable to commit energy or trust to practice. This inner hesitancy stalls progress and leaves one adrift without direction.",
 			"Supported by:{doubt}",
 			"Leads to:{suffering}",
 			"Opposite:{faith}",
@@ -708,6 +718,7 @@
 			"horror",
 			"panic",
 			"terror",
+			"Context: A constricting mental state that arises when the mind perceives threat or danger. It agitates and destabilizes, driving the mind toward avoidance, paralysis, or desperate action.",
 			"Supported by:{harm}",
 			"Leads to:{suffering}",
 			"Opposite:{without fear}",
@@ -718,9 +729,11 @@
 			"moral dread",
 			"respect for others",
 			"(comm) originating from outside",
+			"Context: A wholesome dread of misconduct that considers consequences and the censure of the wise. It looks outward—aware of blame, loss of reputation, and the suffering that follows unskillful action—and holds the mind back from crossing ethical boundaries.",
 			"Related:{conscience}",
 			"Supported by:{respect}",
 			"Leads to:{ethical conduct}",
+			"Opposite:{moral recklessness}",
 			"[ottappa]"
 		],
 		"feuding": [
@@ -731,6 +744,7 @@
 			"opposition",
 			"struggle",
 			"conflict",
+			"Context: An entrenched pattern of opposition and rivalry where parties seek to prevail over one another. It sustains hostility, disturbs peace, and obstructs harmony in community.",
 			"Supported by:{argumentativeness, stubbornness}",
 			"Leads to:{harm, perturbation}",
 			"[paḷāsa]"
@@ -787,6 +801,7 @@
 			"philanthropy",
 			"providing with",
 			"gift with",
+			"Context: The wholesome act of relinquishing possessions, time, or energy for the benefit of others. Giving opens the hand and heart, loosening the grip of attachment and cultivating a spirit inclined toward renunciation and the welfare of all beings.",
 			"Supported by:{truth}",
 			"Leads to:{merit, spiritual life}",
 			"Opposite:{stinginess}",
@@ -836,6 +851,7 @@
 			"pleasant abiding",
 			"positive state of mind",
 			"sense of ease",
+			"Context: Bodily ease and comfort; a pleasant feeling experienced with the body. In the third jhāna, one dwells experiencing this pleasure with the body. It is abandoned, along with bodily pain, for the fourth jhāna to arise.",
 			"Related:{joy, uplifting joy, contentment}",
 			"Supported by:{tranquility}",
 			"Leads to:{collectedness}",
@@ -948,6 +964,7 @@
 			"curiosity",
 			"inquiring",
 			"testing",
+			"Context: The faculty of investigation that probes into phenomena, testing what is wholesome and unwholesome. It examines the teachings and one's own experience to discern truth from falsity.",
 			"Leads to:{learned, examination}",
 			"Supported by:{inspiration}",
 			"[vīmaṃsā]"
@@ -1002,6 +1019,7 @@
 			"possessiveness",
 			"protective of",
 			"unwilling to part with",
+			"Context: A painful mental state that arises when seeing the good fortune or qualities of others. It begrudges what others have and resents their happiness, closing the heart to appreciative joy.",
 			"Related:{stinginess}",
 			"Supported by:{dearness}",
 			"Leads to:{argumentativeness}",
@@ -1044,6 +1062,7 @@
 			"crying",
 			"wailing",
 			"mourning",
+			"Context: The verbal and bodily expression of grief—crying, wailing, and mourning—that arises from loss or separation from what is held dear. It gives voice to sorrow and can deepen the mind's entanglement with pain.",
 			"Supported by:{attachment, dearness}",
 			"Leads to:{sorrow}",
 			"[parideva]"
@@ -1057,7 +1076,7 @@
 			"Supported by:{weak in effort}",
 			"Leads to:{bad habits, displeasure}",
 			"Opposite:{continuous effort, rousing of energy}",
-			"[ālasya, kosajja, tandī]"
+			"[ālasya, kosajja, kusīta, tandī]"
 		],
 		"learned": [
 			"having knowledge",
@@ -1124,9 +1143,11 @@
 			"fearlessness of wrongdoing",
 			"without concern for others",
 			"lack of prudence",
+			"Context: Acting without moral concern for how one's behavior affects others. The mind sees no reason to hold back from wrongdoing, treating ethical boundaries as irrelevant.",
 			"Related:{wrong view}",
 			"Supported by:{ignorance, bad friendship}",
 			"Leads to:{brashness, harm, slaughtering, unprincipled conduct}",
+			"Opposite: {fear of wrongdoing}",
 			"[anottappa]"
 		],
 		"muddle-mindedness": [
@@ -1166,6 +1187,7 @@
 			"principle of non-identification",
 			"(comm) no craving",
 			"lit. not made of that state",
+			"Context: A quality of mind that does not construct or fabricate a sense of self in relation to experience. It is the absence of the 'I am this' identification—neither claiming ownership nor defining oneself through any state, object, or attainment.",
 			"Supported by:{equanimity, non-proliferation}",
 			"Leads to:{complete comprehension}",
 			"Opposite:{conceit}",
@@ -1173,6 +1195,7 @@
 		],
 		"non-proliferation": [
 			"not forming various opinions",
+			"Context: The cessation of the mind's tendency to spin out elaborate stories, interpretations, and conceptual elaborations. In non-proliferation, experience is met simply and directly without the overlay of mental commentary, preferences, and self-referential thinking.",
 			"Supported by:{formless}",
 			"Leads to:{non-identification}",
 			"Opposite:{mental proliferation}",
@@ -1201,6 +1224,7 @@
 			"trustworthiness",
 			"honesty regarding possessions",
 			"accepting what is offered",
+			"Context: The ethical restraint of accepting only what is freely given. It respects boundaries of ownership, restraining from taking what belongs to another.",
 			"Supported by:{right intention}",
 			"Leads to:{right livelihood}",
 			"Opposite:{stealing}",
@@ -1212,6 +1236,7 @@
 			"integration",
 			"oneness",
 			"singleness of mind",
+			"Context: Mind becoming single and integrated with the settling down of reflection and examination.",
 			"Related:{collectedness}",
 			"Supported by:{uplifting joy}",
 			"Leads to:{tranquility}",
@@ -1332,6 +1357,7 @@
 			"concept of variety",
 			"perception of diversity",
 			"perception of multiplicity",
+			"Context: The perception of multiplicity and variety in experience—seeing distinct forms, beings, and phenomena as separate entities. While natural to ordinary cognition, when fueled by craving and conceit it proliferates into endless distinctions and preferences, binding the mind to the world of differentiation.",
 			"Supported by:{conceit, craving}",
 			"Leads to:{mental proliferation, speculation}",
 			"Opposite:{formless}",
@@ -1511,6 +1537,7 @@
 			"security",
 			"at peace",
 			"rest",
+			"Context: A state of complete security and refuge where there is no threat from defilements or the turbulence of becoming. It is the peace of one who has found shelter from the storms of craving and has nothing left to lose or fear.",
 			"Supported by:{quenching}",
 			"Leads to:{without fear}",
 			"[khema]"
@@ -1574,6 +1601,7 @@
 			"infidelity",
 			"inappropriate sexual behavior",
 			"unfaithfulness to one's partner",
+			"Context: Transgression of boundaries in intimate relations—acting on desire in ways that betray trust, cause harm, or violate the commitments of oneself or others.",
 			"Supported by:{brashness, wrong intention, wrong speech}",
 			"Leads to:{regret, wrong livelihood}",
 			"[kāmesumicchācāra]"
@@ -1582,9 +1610,11 @@
 			"act without thinking about what is right, fair, or appropriate",
 			"disregarding one's moral sense of right and wrong",
 			"unconscientiousness",
+			"Context: A lack of inner concern or self-respect that allows a person to do what they understand as wrong without discomfort or restraint.",
 			"Related:{moral recklessness}",
 			"Supported by:{ignorance, bad friendship}",
 			"Leads to:{brashness, hypocrisy, sexual misconduct, stealing, unprincipled conduct}",
+			"Opposite: {conscience}",
 			"[ahirika]"
 		],
 		"sincerity": [
@@ -1605,6 +1635,7 @@
 			"killing",
 			"murdering",
 			"taking life",
+			"Context: The deliberate killing of a living being, carried out with the intention of ending its life while disregarding its natural drive to continue living.",
 			"Related:{cruelty}",
 			"Supported by:{moral recklessness, wrong intention, wrong speech}",
 			"Leads to:{regret, wrong livelihood}",
@@ -1674,6 +1705,7 @@
 			"miserliness",
 			"meanness",
 			"tight-fistedness",
+			"Context: A contracted, possessive refusal to share what one has—whether material goods, knowledge, or status. It clings tightly to what is “mine,” fearing loss and closing the hand against generosity.",
 			"Related:{jealousy}",
 			"Leads to:{sensual desire}",
 			"Opposite:{giving}",
@@ -1684,7 +1716,8 @@
 			"obstinacy",
 			"inflexibility",
 			"pigheadedness",
-			"Supported by:{clinging to rules and observances}",
+			"Context: A rigid, unyielding stance that refuses to bend or reconsider. Rooted in conceit and attachment to views, it hardens the mind against correction, prevents learning from others, and breeds conflict.",
+			"Supported by:{clinging to rules and observances, conceit}",
 			"Leads to:{feuding}",
 			"[thambha, thaddha, patiṭṭhīyati]"
 		],
@@ -1727,6 +1760,7 @@
 			"deviousness",
 			"scamming",
 			"betrayal",
+			"Context: Deliberate deception that exploits another's trust for personal gain. It wears a mask of friendliness while secretly working against the other's welfare.",
 			"Supported by:{hypocrisy, unprincipled conduct}",
 			"Leads to:{harm, wrong livelihood}",
 			"[sāṭheyya]"
@@ -1769,6 +1803,7 @@
 			"untroubled",
 			"unwavering",
 			"without mental unease",
+			"Context: A stable clarity of mind that does not react strongly to changing circumstances, remaining even and composed in both pleasant and difficult conditions.",
 			"Supported by:{collectedness, equanimity}",
 			"Leads to:{formless}",
 			"Opposite:{perturbation}",
