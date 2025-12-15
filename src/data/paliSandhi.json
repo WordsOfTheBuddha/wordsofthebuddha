@@ -555,5 +555,10 @@
 	"tesametaṁ": ["tesaṁ", "etaṁ"],
 	"atthānanda": ["attha", "ānanda"],
 	"katamañcānanda": ["katamaṁ", "ca", "ānanda"],
-	"kathaṁsūti": ["kathaṁsu"]
+	"kathaṁsūti": ["kathaṁsu"],
+	"ṭhānametaṁ": ["ṭhāna", "etaṁ"],
+	"maṅgalamuttamaṁ": ["maṅgalaṁ", "uttamaṁ"],
+	"mātāpituupaṭṭhānaṁ": ["mātā", "pitu", "upaṭṭhānaṁ"],
+	"dānañca": ["dānaṁ", "ca"],
+	"maparājitā": ["ma", "parājitā"]
 }
