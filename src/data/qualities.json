@@ -26,6 +26,7 @@
 		"drowsiness",
 		"dullness",
 		"elation",
+		"entitlement",
 		"faithlessness",
 		"fear",
 		"feuding",
@@ -112,6 +113,7 @@
 		"giving up",
 		"good friendship",
 		"good habits",
+		"gratefulness",
 		"happiness",
 		"humility",
 		"impartiality",
@@ -421,7 +423,7 @@
 			"belittlement",
 			"disparagement",
 			"Context: A dismissive or belittling attitude that refuses to acknowledge worth or goodness. It closes the heart, undermines gratitude, and prepares the ground for ill will.",
-			"Supported by:{aversion, personal existence}",
+			"Supported by:{aversion, entitlement}",
 			"Leads to:{ill will}",
 			"Opposite:{respect}",
 			"[makkha]"
@@ -633,6 +635,14 @@
 			"Opposite:{wakefulness}",
 			"[thina]"
 		],
+		"elation": [
+			"exhilaration",
+			"joyous excitement",
+			"thrill",
+			"lit. jumping up",
+			"Context: An excited, buoyant mental state that leaps up in response to pleasant circumstances. When ungrounded, it can tip into agitation or set the stage for disappointment when conditions change.",
+			"[hassatī, uppila]"
+		],
 		"ending": [
 			"cessation",
 			"exhaustion",
@@ -643,13 +653,14 @@
 			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
 		],
-		"elation": [
-			"exhilaration",
-			"joyous excitement",
-			"thrill",
-			"lit. jumping up",
-			"Context: An excited, buoyant mental state that leaps up in response to pleasant circumstances. When ungrounded, it can tip into agitation or set the stage for disappointment when conditions change.",
-			"[hassatī, uppila]"
+		"entitlement": [
+			"ungratefulness",
+			"thanklessness",
+			"Context: A mindset of deservingness that expects special treatment or privileges without appreciation. It fosters resentment and dissatisfaction when expectations are unmet.",
+			"Supported by:{conceit, personal existence}",
+			"Leads to:{contempt, resentment}",
+			"Opposite:{gratefulness}",
+			"[akataññutā]"
 		],
 		"equanimity": [
 			"mental poise",
@@ -802,7 +813,7 @@
 			"providing with",
 			"gift with",
 			"Context: The wholesome act of relinquishing possessions, time, or energy for the benefit of others. Giving opens the hand and heart, loosening the grip of attachment and cultivating a spirit inclined toward renunciation and the welfare of all beings.",
-			"Supported by:{truth}",
+			"Supported by:{truth, gratefulness}",
 			"Leads to:{merit, spiritual life}",
 			"Opposite:{stinginess}",
 			"[dāna]"
@@ -833,6 +844,16 @@
 			"Supported by:{wisdom, diligence}",
 			"Leads to:{vigour}",
 			"[anuyoga + kusala]"
+		],
+		"gratefulness": [
+			"thankfulness",
+			"appreciation",
+			"recognition of kindness received",
+			"Context: A warm acknowledgment of the kindness and support one has received from others. It opens the heart, fostering humility and connection, while countering feelings of entitlement or disdain.",
+			"Supported by:{wisdom}",
+			"Leads to:{humility, giving}",
+			"Opposite:{entitlement}",
+			"[kataññutā]"
 		],
 		"greed": [
 			"acquisitiveness",
@@ -885,7 +906,7 @@
 			"freedom from self-importance",
 			"recognition of limits",
 			"staying teachable",
-			"Supported by:{respect, sincerity}",
+			"Supported by:{gratefulness, respect, sincerity}",
 			"Leads to:{politeness, unassuming}",
 			"Opposite:{conceit}",
 			"Context: An honest, even-toned self-appraisal that stays open to feedback, honors others, and neither inflates nor denies one’s real abilities; it supports learning, concord, and restraint.",
@@ -1304,7 +1325,7 @@
 			"egoism",
 			"Context: The view that there is a real self within or a substantial reality outside. This mistaken grasp of self and world sustains attachment, conceit, and the cycle of suffering.",
 			"Supported by:{self-making, self-erasure}",
-			"Leads to:{boastfulness, contempt, vanity}",
+			"Leads to:{boastfulness, entitlement, vanity}",
 			"[sakkāya-diṭṭhi]"
 		],
 		"perturbation": [
