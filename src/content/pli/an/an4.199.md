@@ -1,8 +1,9 @@
 ---
 title: Taṇhā sutta - Craving
-description: The eighteen ways of craving pertaining to the internal bases, and the eighteen ways of craving pertaining to the external bases.
-fetter: conceit
-tags: craving,an,an4,conceit
+description: The Buddha describes craving as a pervasive net that entangles the mind. He analyzes thirty-six modes of mental stirring—eighteen internal ways of conceiving the self and eighteen external ways of identifying with the world. Expanded across time, these 108 cravings form the “tangled ball of thread” that binds beings to suffering and the endless cycle of rebirth.
+qualities: craving, conceit
+theme: inquisitiveness, principle, wisdom
+priority: 1.9
 slug: an4.199
 ---
 
