@@ -2,7 +2,7 @@
 title: Paṭhama maraṇassati sutta - Recollection Of Death (First)
 description: When the Buddha asks the bhikkhus on how they cultivate recollection of death, their answers reveal a negligent mindset. The Buddha then instructs to cultivate recollection of death with diligence and keenness, which leads to the wearing away of the taints.
 qualities: recollection of death, diligence, negligence, quenching, recollection of the Buddha, vigour
-theme: training guideline, inspiration
+theme: training guideline, urgency
 slug: an6.19
 ---
 
