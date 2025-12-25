@@ -1,7 +1,7 @@
 ---
 title: Vipallāsa sutta - Inversion
 description: The Buddha describes these four inversions of perception, thought, and view, and the four non-inversions. An uninstructed ordinary person perceives permanence in the impermanent, pleasure in the unsatisfactory, a self in what is impersonal, and beauty in the unattractive.
-qualities: recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, discontentment, discernment
+qualities: recognition of impermanence, recognition of not-self, recognition of unattractiveness, recognition of unsatisfactoriness, discontentment, discernment, perception
 theme: cultivating discernment, wisdom
 topic: perception
 priority: 5

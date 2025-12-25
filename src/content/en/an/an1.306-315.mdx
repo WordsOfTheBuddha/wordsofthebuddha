@@ -1,7 +1,7 @@
 ---
 title: Dutiya vagga - The Chapter on One Thing (Second)
 description: The Buddha describes how wrong view leads to unwholesome qualities and suffering, while right view leads to wholesome qualities and happiness and what kind of attention fuels what kind of view.
-qualities: wrong view, right view, unwise attention, wise attention
+qualities: wrong view, right view, unwise attention, wise attention, intentional-constructs
 theme: cultivating discernment, inspiration
 slug: an1.306-315
 simile: seed

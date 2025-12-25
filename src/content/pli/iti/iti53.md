@@ -1,7 +1,7 @@
 ---
 title: Dutiya vedan sutta - Felt Experiences (Second)
 description: The Buddha describes how to see the three felt experiences that are experienced on contact through the sense doors - pleasant, painful, and neither-painful-nor-pleasant.
-qualities: recognition of unsatisfactoriness, recognition of impermanence, suffering, complete comprehension, felt experience
+qualities: recognition of unsatisfactoriness, recognition of impermanence, suffering, complete comprehension, felt experience, felt-experience
 theme: cultivating discernment, wisdom
 fetter: sensual desire, ill will, desire for fine-material existence, desire for immaterial existence, conceit, ignorance
 tags: sensation, feeling, pleasant, painful, neither-painful-nor-pleasant, dissatisfaction, discontentment, impermanence, tranquil, conceit, fetters, directly knowing sage, discernment, yoke, iti, iti50-99

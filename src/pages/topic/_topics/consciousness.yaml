@@ -9,20 +9,32 @@ redirects:
   - vinnana
   - awareness
 supportedBy:
-  - ignorance
+  - intentional-constructs
 related:
   - felt-experience
   - perception
 discourses:
-  - id: an3.76
-  - id: an3.77
   - id: mn43
-  - id: mn18
-  - id: sn12.59
-  - id: sn22.87
-  - id: mn140
-  - id: sn33.5
-  - id: an3.61
+    note: "Defines consciousness: it distinguishes; tied to wisdom"
   - id: sn12.38
+    note: "Intend/plan/tendencies sustain consciousness"
+  - id: an3.76
+    note: "Seed simile: consciousness seed; craving moisture"
+  - id: an3.77
+    note: "AN 3.76 + intention/aspiration establish consciousness"
+  - id: sn12.59
+    note: "Enjoyment vs drawback: descent of consciousness"
   - id: iti94
+    note: "Examine so consciousness stays unscattered, not grasping"
+  - id: sn22.87
+    note: "Vakkali: aggregates not-self; consciousness finds no footing"
+  - id: mn140
+    note: "Six elements incl. consciousness element; ends conceiving"
   - id: an7.44
+    note: "Seven planes of consciousness; formless attainments"
+  - id: sn33.5
+    note: "Not knowing consciousness leads to speculative views"
+  - id: an3.61
+    note: "Refutes determinism/creator/no-cause; grounds in analysis"
+  - id: mn18
+    note: "From sense contact to proliferation; how it's stilled"

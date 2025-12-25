@@ -9,17 +9,26 @@ redirects:
   - felt experience
   - sensation
   - vedana
+supportedBy:
+  - ignorance
+  - wisdom
 related:
   - perception
   - consciousness
 discourses:
-  - id: iti52
-    note: The three kinds of feelings
-  - id: mn13#43-46
-    note: Gratification, drawback, and escape wrt feeling
-  - id: sn45.11
-    note: Conditions that give rise to feeling
-  - id: sn36.2
-  - id: iti53
-    note: How to see feeling
   - id: mn59
+    note: "Classifies feelings (2/3/5/6/18/36/108)"
+  - id: sn36.6
+    note: "Two arrows: bodily pain vs mental suffering"
+  - id: sn36.2
+    note: "Seeing feelings vanish at each contact leads to dispassion"
+  - id: sn36.1
+    note: "Three feelings; discern arising, cessation, and the path"
+  - id: iti52
+    note: "Three feelings; discern arising, cessation, and the path"
+  - id: iti53
+    note: "Pleasure as dukkha, pain as thorn, neutral impermanent"
+  - id: mn13#43-46
+    note: "Gratification, drawback, and escape regarding feeling"
+  - id: sn45.11
+    note: "Many conditions for feeling, including path factors"
