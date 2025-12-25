@@ -1,5 +1,5 @@
 title: "Felt Experience"
-description: "Pleasant, neutral, or painful sensation—the experience felt on contact. Sometimes translated as “feeling.” Distinct from an emotional state or reaction, it refers to the affective tone of experience, the bare sensation of pleasure, pain, or neutrality before mental responses arise."
+description: "Pleasant, neutral, or painful sensation—the experience felt on contact. Sometimes translated as “feeling.” Distinct from an emotional state or reaction, it refers to the affective tone of experience, the bare sensation of pleasure, pain, or neutrality before mental responses arise. It is the second of the five aggregates."
 pali:
   - vedanā
 synonyms:
@@ -11,6 +11,7 @@ redirects:
   - vedana
 related:
   - perception
+  - consciousness
 discourses:
   - id: iti52
     note: The three kinds of feelings
