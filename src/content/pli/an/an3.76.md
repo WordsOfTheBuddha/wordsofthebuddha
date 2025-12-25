@@ -1,7 +1,7 @@
 ---
 title: Paṭhama bhava sutta - Existence (First)
 description: "For beings hindered by ignorance and fettered by craving, kamma is the field, consciousness the seed, and craving the moisture for the establishment of their consciousness in the three realms of existence: sensual, form, and formless."
-qualities: ignorance, craving, formless
+qualities: ignorance, craving, formless, consciousness
 theme: principle, wisdom
 slug: an3.76
 character: Venerable Ānanda

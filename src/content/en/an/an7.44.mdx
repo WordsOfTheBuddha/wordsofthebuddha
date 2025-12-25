@@ -1,7 +1,7 @@
 ---
 title: Satta viññāṇaṭṭhiti sutta - Seven Planes of Consciousness
 description: The Buddha describes the seven planes of consciousness, ranging from beings with diverse bodies and perceptions to those perceiving nothingness.
-qualities: formless
+qualities: formless, consciousness
 theme: principle
 slug: an7.44
 ---

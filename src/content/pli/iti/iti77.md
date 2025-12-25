@@ -1,6 +1,6 @@
 ---
 title: Bhidura sutta - Fragile
-description: The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change.
+description: The body is fragile, consciousness is of a fading nature. All substrates of existence are impermanent, unsatisfactory, and subject to change.
 qualities: attachment, suffering, recognition of impermanence
 theme: wisdom, principle
 slug: iti77

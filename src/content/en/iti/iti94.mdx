@@ -1,7 +1,7 @@
 ---
 title: Upaparikkha sutta - Examining
 description: The Buddha instructs that one should examine experience in such a way that consciousness does not become scattered among external sense objects, fixated internally, or entangled through grasping.
-qualities: collectedness, imperturbable, examination, free from attachment
+qualities: collectedness, imperturbable, examination, free from attachment, consciousness
 theme: wisdom, principle
 slug: iti94
 ---

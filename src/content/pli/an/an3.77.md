@@ -1,7 +1,7 @@
 ---
 title: Dutiya bhava sutta - Existence (Second)
 description: "For beings hindered by ignorance and fettered by craving, kamma is the field, consciousness the seed, and craving the moisture for the establishment of their intention and aspiration in the three realms of existence: sensual, form, and formless."
-qualities: ignorance, craving, formless, desire
+qualities: ignorance, craving, formless, desire, consciousness
 theme: principle, wisdom
 slug: an3.77
 character: Venerable Ānanda
