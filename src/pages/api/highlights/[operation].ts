@@ -39,13 +39,15 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
 		const normalizedSlug = normalizeSlug(slug);
 		console.log(
-			`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`
+			`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`,
 		);
 
 		const sessionCookie = cookies.get("__session")?.value;
 		if (!sessionCookie) throw new Error("No session");
 
-		const user = await verifyUser(sessionCookie);
+		const user = await verifyUser(sessionCookie, { cookies });
+		if (!user) throw new Error("Invalid session");
+
 		const noteId = await getUserNoteId(user.uid);
 
 		console.log(`[${opId}] Fetching highlights for slug: ${slug}`);
@@ -57,13 +59,13 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 			.get();
 
 		console.log(
-			`[${opId}] Highlights fetch completed. Found: ${highlightDoc.exists}`
+			`[${opId}] Highlights fetch completed. Found: ${highlightDoc.exists}`,
 		);
 		return new Response(
 			JSON.stringify({
 				highlights: highlightDoc.exists ? highlightDoc.data() : null,
 				opId,
-			})
+			}),
 		);
 	} catch (error: any) {
 		console.error(`[${opId}] Error fetching highlights:`, error);
@@ -82,7 +84,9 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 		const sessionCookie = cookies.get("__session")?.value;
 		if (!sessionCookie) throw new Error("No session");
 
-		const user = await verifyUser(sessionCookie);
+		const user = await verifyUser(sessionCookie, { cookies });
+		if (!user) throw new Error("Invalid session");
+
 		const noteId = await getUserNoteId(user.uid);
 		const { highlights, slug } = await request.json();
 		if (!slug) {
@@ -91,7 +95,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 
 		const normalizedSlug = normalizeSlug(slug);
 		console.log(
-			`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`
+			`[${opId}] Using normalized slug: ${normalizedSlug} (original: ${slug})`,
 		);
 
 		const highlightRef = db
@@ -102,7 +106,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 
 		if (operation === "add") {
 			console.log(
-				`[${opId}] Adding/updating highlights for slug: ${slug}`
+				`[${opId}] Adding/updating highlights for slug: ${slug}`,
 			);
 			await highlightRef.set(
 				{
@@ -113,7 +117,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 					description: highlights.description,
 					slug: highlights.slug,
 				},
-				{ merge: true }
+				{ merge: true },
 			); // Use merge to preserve any existing fields
 		} else if (operation === "delete") {
 			console.log(`[${opId}] Deleting highlight doc for slug: ${slug}`);

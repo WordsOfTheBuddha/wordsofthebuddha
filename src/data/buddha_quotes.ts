@@ -360,7 +360,7 @@ export default [
 	`Whatever kind of friend one makes,\nwhatever kind one associates with;\nSo one becomes likewise,\nfor associating together molds one’s nature. - ITI 76`,
 	`When a person wraps up,\ntagara in a leaf;\nThe leaves themselves come to smell fragrant,\nsuch is association with the wise. - ITI 76`,
 	`When a person wraps up,\nrotten fish in kusa grass;\nThe blades of grass themselves come to smell rotten,\nsuch is association with fools. - ITI 76`,
-	`This body is fragile; consciousness is of a fading nature. All substrates of existence are impermanent, dissatisfactory, and subject to change. - ITI 77`,
+	`This body is fragile; consciousness is of a fading nature. All substrates of existence are impermanent, unsatisfactory, and subject to change. - ITI 77`,
 	`Having known the body as fragile,\nand consciousness as of a fading nature;\nHaving seen the danger in substrates [of existence],\none overcomes birth and death. - ITI 77`,
 	`Beings come together and associate with other beings according to disposition. Those with an inferior disposition come together and associate with those of a similar inferior disposition. Those with a good disposition come together and associate with those of a similar good disposition. - ITI 78`,
 	`From association, craving arises, through non-association, it is cut-off;\nLike one who boards a fragile raft, and sinks in the mighty ocean.\nSo by consorting with a lazy person, even a virtuous person sinks;\nTherefore, one should steer clear of a lazy person, who is weak in effort. - ITI 78`,

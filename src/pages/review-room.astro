@@ -21,7 +21,7 @@ type VerifiedUser = {
 const sessionCookie = Astro.cookies.get("__session")?.value;
 if (!sessionCookie) return Astro.redirect("/signin");
 
-const user = (await verifyUser(sessionCookie).catch(
+const user = (await verifyUser(sessionCookie, { cookies: Astro.cookies }).catch(
 	() => null
 )) as VerifiedUser | null;
 

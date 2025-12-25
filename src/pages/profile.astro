@@ -21,7 +21,7 @@ let paliLayout = "interleaved";
 try {
 	const sessionCookie = Astro.cookies.get("__session")?.value;
 	if (!sessionCookie) return Astro.redirect("/signin?returnTo=/profile");
-	user = await verifyUser(sessionCookie);
+	user = await verifyUser(sessionCookie, { cookies: Astro.cookies });
 } catch (error) {
 	Astro.cookies.delete("__session");
 	return Astro.redirect("/signin?returnTo=/profile");

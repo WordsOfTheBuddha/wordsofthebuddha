@@ -30,7 +30,8 @@ export const GET: APIRoute = async ({ cookies }) => {
 	try {
 		const sessionCookie = cookies.get("__session")?.value;
 		if (!sessionCookie) throw new Error("No session");
-		const user = await verifyUser(sessionCookie);
+		const user = await verifyUser(sessionCookie, { cookies });
+		if (!user) throw new Error("Invalid session");
 
 		const db = getFirestore(app);
 		const noteId = await getUserNoteId(user.uid);
@@ -46,7 +47,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 			.orderBy("updatedAt", "desc")
 			.get();
 		console.log(
-			`[${opId}] Found ${highlights.docs.length} highlight documents`
+			`[${opId}] Found ${highlights.docs.length} highlight documents`,
 		);
 
 		const processedHighlights = highlights.docs.map((doc) => {
@@ -75,14 +76,14 @@ export const GET: APIRoute = async ({ cookies }) => {
 			.sort((a, b) => b.updatedAt - a.updatedAt);
 
 		console.log(
-			`[${opId}] Returning ${validHighlights.length} processed highlights`
+			`[${opId}] Returning ${validHighlights.length} processed highlights`,
 		);
 
 		return new Response(
 			JSON.stringify({
 				highlights: validHighlights,
 				opId,
-			})
+			}),
 		);
 	} catch (error: any) {
 		console.error(`[${opId}] Error in list operation:`, error);
@@ -91,7 +92,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 				error: error.message,
 				opId,
 			}),
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 };

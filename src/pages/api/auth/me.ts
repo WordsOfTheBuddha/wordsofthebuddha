@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 			});
 		}
 
-		const user = await verifyUser(sessionCookie);
+		const user = await verifyUser(sessionCookie, { cookies });
 		if (!user) {
 			return new Response(JSON.stringify({ signedIn: false }), {
 				status: 200,
@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ cookies }) => {
 		const email = user.email || null;
 		return new Response(
 			JSON.stringify({ signedIn: true, user: { displayName, email } }),
-			{ status: 200, headers: { "Content-Type": "application/json" } }
+			{ status: 200, headers: { "Content-Type": "application/json" } },
 		);
 	} catch (e) {
 		return new Response(JSON.stringify({ signedIn: false }), {

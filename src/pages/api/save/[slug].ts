@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ params, cookies }) => {
 			{
 				status: 400,
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 	}
 
@@ -23,20 +23,23 @@ export const GET: APIRoute = async ({ params, cookies }) => {
 		if (cookies.has("__session")) {
 			try {
 				const sessionCookie = cookies.get("__session")?.value;
-				const user = await verifyUser(sessionCookie);
-				userId = user.uid;
+				const user = await verifyUser(sessionCookie, { cookies });
 
-				// Check if the content is in the saves pages map
-				const docRef = await db
-					.collection("users")
-					.doc(userId)
-					.collection("saves")
-					.doc("pages") // Fetch the single 'pages' document
-					.get();
+				if (user) {
+					userId = user.uid;
 
-				if (docRef.exists) {
-					const data = docRef.data();
-					isSaved = Boolean(data?.pages?.[slug]); // Check if slug exists in the map
+					// Check if the content is in the saves pages map
+					const docRef = await db
+						.collection("users")
+						.doc(userId)
+						.collection("saves")
+						.doc("pages") // Fetch the single 'pages' document
+						.get();
+
+					if (docRef.exists) {
+						const data = docRef.data();
+						isSaved = Boolean(data?.pages?.[slug]); // Check if slug exists in the map
+					}
 				}
 			} catch (error) {
 				console.error("Session verification failed:", error);
@@ -52,13 +55,13 @@ export const GET: APIRoute = async ({ params, cookies }) => {
 			{
 				status: 200,
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 	} catch (error) {
 		console.error("Error checking saved status:", error);
 		return new Response(
 			JSON.stringify({ error: "Failed to check saved status" }),
-			{ status: 500, headers: { "Content-Type": "application/json" } }
+			{ status: 500, headers: { "Content-Type": "application/json" } },
 		);
 	}
 };
@@ -72,7 +75,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 				{
 					status: 400,
 					headers: { "Content-Type": "application/json" },
-				}
+				},
 			);
 		}
 
@@ -85,14 +88,20 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 		}
 
 		// Use centralized auth verification
-		const user = await verifyUser(sessionCookie);
+		const user = await verifyUser(sessionCookie, { cookies });
+		if (!user) {
+			return new Response(JSON.stringify({ error: "Invalid session" }), {
+				status: 401,
+				headers: { "Content-Type": "application/json" },
+			});
+		}
 		const { isActive } = await request.json();
 
 		const saveRef = db
 			.collection("users")
 			.doc(user.uid)
 			.collection("saves")
-				.doc("pages"); // Reference the single 'pages' document
+			.doc("pages"); // Reference the single 'pages' document
 
 		if (isActive) {
 			// Add/update the slug in the pages map with timestamp (minute precision)
@@ -102,7 +111,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 						[slug]: Math.floor(Date.now() / 60000), // Timestamp in minutes
 					},
 				},
-				{ merge: true }
+				{ merge: true },
 			);
 		} else {
 			// Remove the slug from the pages map using FieldValue.delete()
@@ -132,7 +141,7 @@ export const POST: APIRoute = async ({ params, request, cookies }) => {
 			{
 				status: 500,
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 	}
 };
