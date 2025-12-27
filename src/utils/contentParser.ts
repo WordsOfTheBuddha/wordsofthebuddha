@@ -528,18 +528,25 @@ function processBlocks(
 	});
 
 	// In development mode, if there are more Pali paragraphs than English,
-	// include one extra Pali paragraph to help with translation workflow
+	// include up to 3 extra Pali paragraphs to help with translation workflow
 	if (import.meta.env.DEV && paliIndex < paliParagraphs.length) {
-		const nextPali = paliParagraphs[paliIndex];
-		// Only add if it's not a heading
-		if (nextPali && !nextPali.startsWith("#")) {
-			pairs.push({
-				type: "paragraph",
-				english:
-					'<span class="text-gray-400 italic">Translation in progress...</span>',
-				pali: nextPali,
-				// No actualParagraphNumber for unpaired Pali
-			});
+		let added = 0;
+		let scanIndex = paliIndex;
+
+		while (scanIndex < paliParagraphs.length && added < 3) {
+			const nextPali = paliParagraphs[scanIndex];
+			// Only add if it's not a heading
+			if (nextPali && !nextPali.startsWith("#")) {
+				pairs.push({
+					type: "paragraph",
+					english:
+						'<span class="text-gray-400 italic">Translation in progress...</span>',
+					pali: nextPali,
+					// No actualParagraphNumber for unpaired Pali
+				});
+				added++;
+			}
+			scanIndex++;
 		}
 	}
 
