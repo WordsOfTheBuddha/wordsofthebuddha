@@ -22,9 +22,11 @@ redirects:
     - right-collectedness
     - collectedness
     - right-collectedness
-related:
+supportedBy:
+    - contentment
+    - happiness
     - mindfulness
-    - cultivation
+    - full awareness
 discourses:
     - id: "mn107"
       note: "gradual training guidelines to cultivate jhānas"

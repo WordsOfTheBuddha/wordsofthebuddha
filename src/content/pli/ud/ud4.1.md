@@ -1,7 +1,7 @@
 ---
 title: Meghiya sutta - With Meghiya
 description: When the venerable Meghiya seeks solitude for meditation before his mind is mature, unwholesome thoughts arise and disturb him. Returning to the Buddha, he learns of five conditions that lead to the ripening of the undeveloped mind, beginning with good friendship.
-qualities: good friendship, liberation, ethical conduct, disenchantment, rousing of energy, right effort, wisdom, ending, recognition of unattractiveness, mindfulness, recognition of impermanence, recognition of not-self, conceit, perturbation
+qualities: good friendship, liberation, ethical conduct, disenchantment, rousing of energy, right effort, wisdom, ending, recognition of unattractiveness, mindfulness, breathing, recognition of impermanence, recognition of not-self, conceit, perturbation
 theme: inspiration, cultivating discernment, wisdom
 slug: ud4.1
 priority: 1.5
