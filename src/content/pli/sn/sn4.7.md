@@ -4,7 +4,7 @@ description: The Buddha, after walking back and forth in the open air for much o
 qualities: wakefulness, mindfulness, full awareness, free from attachment, craving
 theme: inspiration, principle
 slug: sn4.7
-character: Māra
+character: Māra the Evil One
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

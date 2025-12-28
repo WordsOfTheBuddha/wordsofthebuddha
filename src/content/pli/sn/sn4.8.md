@@ -1,8 +1,9 @@
 ---
 title: Nandati sutta - Delights
 description: The Māra and the Buddha exchange verses on whether acquisitions bring delight or sorrow.
-fetter: sensual desire, ignorance
-tags: delight, sorrow, acquisitions, attachment, taking as mine, appropriation, sense of ownership, identification, māra, sn, sn4
+qualities: attachment, sorrow
+theme: inspiration, inquisitiveness, wisdom
+character: Māra the Evil One
 slug: sn4.8
 ---
 
