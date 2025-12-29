@@ -2,6 +2,7 @@
 title: Mahāmoggallāna sutta - Mahāmoggallāna
 description: Venerable Mahāmoggallāna is sitting in meditation posture, aligning his body upright, and having set up mindfulness immersed in the body. The Blessed One sees this and expresses an inspired utterance.
 fetter: ignorance
+qualities: mindfulness of body, sense restraint, collectedness, liberation
 tags: Mahāmoggallāna, meditation, mindfulness, body, senses, sense bases, Nibbāna, ud, ud3
 character: Mahāmoggallāna
 slug: ud3.5
