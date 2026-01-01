@@ -4,6 +4,7 @@ import {
 	buildFuseQuery,
 	type HighlightTerm,
 } from "../../utils/fuseQueryParser";
+import { isStopword } from "../../utils/searchRanking";
 import Fuse from "fuse.js";
 
 export interface SearchResult {
@@ -11,6 +12,7 @@ export interface SearchResult {
 	title: string;
 	description: string;
 	contentSnippet: string | null;
+	priority?: number;
 }
 
 export interface SearchData {
@@ -18,6 +20,7 @@ export interface SearchData {
 	title: string;
 	description: string;
 	content: string;
+	priority?: number;
 }
 
 let fuseIndex: Fuse<SearchData> | null = null;
@@ -115,17 +118,47 @@ function processTermForHighlight(highlightTerm: HighlightTerm): string {
 	return highlightTerm.term;
 }
 
+// Minimum term length for infix (partial word) highlighting
+const MIN_LENGTH_FOR_INFIX_HIGHLIGHT = 4;
+
+// Create diacritic-insensitive pattern for a vowel (both lower and upper case)
+function vowelPattern(vowel: string): string {
+	const patterns: Record<string, string> = {
+		a: "[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄ]",
+		e: "[eEéÉèÈêÊëËēĒĕĔėĖ]",
+		i: "[iIíÍìÌîÎïÏīĪĭĬįĮ]",
+		o: "[oOóÓòÒôÔöÖõÕōŌŏŎőŐ]",
+		u: "[uUúÚùÙûÛüÜūŪŭŬůŮ]",
+	};
+	return patterns[vowel.toLowerCase()] || vowel;
+}
+
+// Create case-insensitive pattern for a consonant
+function consonantPattern(char: string): string {
+	const lower = char.toLowerCase();
+	const upper = char.toUpperCase();
+	if (lower === upper) return escapeRegExp(char);
+	return `[${lower}${upper}]`;
+}
+
 function createHighlightPattern(
 	term: string,
 	operation: HighlightTerm["operation"],
-	context: string = "" // For startsWith/endsWith checks
+	context: string = "", // For startsWith/endsWith checks
 ): string {
 	const normalized = normalizeText(term);
-	const escaped = escapeRegExp(normalized);
-	const diacriticPattern = escaped.replace(
-		/[aeiou]/g,
-		(letter) => `[${letter}\\u0100-\\u017f]`
-	);
+
+	// Build case-insensitive pattern character by character
+	let diacriticPattern = "";
+	for (const char of normalized) {
+		if (/[aeiou]/i.test(char)) {
+			diacriticPattern += vowelPattern(char);
+		} else if (/[a-z]/i.test(char)) {
+			diacriticPattern += consonantPattern(char);
+		} else {
+			diacriticPattern += escapeRegExp(char);
+		}
+	}
 
 	switch (operation) {
 		case "doesNotStartWith":
@@ -140,6 +173,11 @@ function createHighlightPattern(
 		case "endsWith":
 			return `${diacriticPattern}$`; // Must be at end of content
 		default:
+			// For fuzzy/infix, check term length
+			// Short terms (< 4 chars) only match whole words to avoid over-highlighting
+			if (term.length < MIN_LENGTH_FOR_INFIX_HIGHLIGHT) {
+				return `\\b${diacriticPattern}\\b`;
+			}
 			return diacriticPattern; // Infix match (can be part of another word)
 	}
 }
@@ -147,21 +185,21 @@ function createHighlightPattern(
 function findBestMatchingParagraph(
 	text: string,
 	indices: [number, number][],
-	highlightTerms: HighlightTerm[]
+	highlightTerms: HighlightTerm[],
 ): string | null {
 	const termsToHighlight = highlightTerms.filter(
 		(ht) =>
 			(!ht.field || ht.field === "content") &&
 			!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
-				ht.operation
-			)
+				ht.operation,
+			),
 	);
 
 	const queryTerms = termsToHighlight.map((ht) =>
-		processTermForHighlight(ht)
+		processTermForHighlight(ht),
 	);
 	const normalizedTerms = queryTerms.map((term) =>
-		normalizeText(term.toLowerCase())
+		normalizeText(term.toLowerCase()),
 	);
 
 	const fullQuery = queryTerms.join(" ").toLowerCase();
@@ -201,19 +239,26 @@ function findBestMatchingParagraph(
 				negation: 0,
 			};
 
-			// Track individual term matches
+			// Track individual term matches and stopword status
 			const termMatches: Record<
 				string,
-				{ count: number; operation: HighlightTerm["operation"] }
+				{
+					count: number;
+					operation: HighlightTerm["operation"];
+					isStopword: boolean;
+				}
 			> = {};
-			let totalTermMatches = 0;
+			let uniqueTermsMatched = 0;
+			let uniqueNonStopwordTermsMatched = 0;
 
 			normalizedTerms.forEach((term, index) => {
 				const highlightTerm = termsToHighlight[index];
+				const originalTerm = queryTerms[index];
+				const termIsStopword = isStopword(originalTerm);
 				const pattern = createHighlightPattern(
 					term,
 					highlightTerm.operation,
-					normalizedParagraph
+					normalizedParagraph,
 				);
 				if (!pattern) return; // Skip negated terms
 
@@ -224,7 +269,7 @@ function findBestMatchingParagraph(
 				) {
 					// For start/end, check against full paragraph
 					matches = new RegExp(pattern, "iu").test(
-						normalizedParagraph
+						normalizedParagraph,
 					)
 						? 1
 						: 0;
@@ -236,10 +281,19 @@ function findBestMatchingParagraph(
 					).length;
 				}
 
-				termMatches[queryTerms[index]] = {
+				termMatches[originalTerm] = {
 					count: matches,
 					operation: highlightTerm.operation,
+					isStopword: termIsStopword,
 				};
+
+				// Track unique terms matched (regardless of how many times)
+				if (matches > 0) {
+					uniqueTermsMatched++;
+					if (!termIsStopword) {
+						uniqueNonStopwordTermsMatched++;
+					}
+				}
 
 				// For exact matches, add the term to Set if there's a match
 				if (highlightTerm.operation === "exact" && matches > 0) {
@@ -250,11 +304,16 @@ function findBestMatchingParagraph(
 				}
 			});
 
-			// Weight different types of matches
+			// Calculate relevance score:
+			// 1. Prioritize paragraphs with more UNIQUE terms matched (not same word multiple times)
+			// 2. Prioritize paragraphs with non-stopword matches over stopword-only matches
+			// 3. Use total match count as a tiebreaker
 			const relevanceScore =
-				matchCounts.exact.size * 10 + // Number of unique exact terms matched
-				matchCounts.startsWith * 3 + // Start/end weighted medium
-				matchCounts.endsWith * 3 +
+				uniqueNonStopwordTermsMatched * 100 + // Non-stopword unique terms (highest priority)
+				uniqueTermsMatched * 10 + // All unique terms matched
+				matchCounts.exact.size * 5 + // Exact match terms
+				matchCounts.startsWith * 2 + // Start/end weighted medium
+				matchCounts.endsWith * 2 +
 				matchCounts.fuzzy * 1; // Fuzzy matches weighted lowest
 
 			const debug = {
@@ -263,10 +322,12 @@ function findBestMatchingParagraph(
 					Object.entries(termMatches).map(([key, value]) => [
 						key,
 						value.count,
-					])
+					]),
 				),
 				fullPhraseCount: matchCounts.exact.size,
 				uniqueExactMatches: Array.from(matchCounts.exact),
+				uniqueTermsMatched,
+				uniqueNonStopwordTermsMatched,
 			};
 
 			if (!bestMatch || relevanceScore > bestMatch.matchCount) {
@@ -299,34 +360,54 @@ function findBestMatchingParagraph(
 
 	// console.log("Debug: Segments found:", segments.length, segments);
 
-	// Process each segment separately
-	const processed = segments.map((segment) => {
-		// Skip highlighting if segment is a Pāli term (matches |text::translation| pattern)
-		if (/^\|[^|]+::[^|]+\|$/.test(segment)) {
-			// console.log("Debug: Skipping Pāli term:", segment);
-			return segment;
-		}
+	// Track which terms have already been highlighted (for first-match-only)
+	const highlightedTerms = new Set<string>();
 
-		let highlighted = segment;
+	// Helper to apply highlighting to text (only first occurrence per term globally)
+	function applyHighlighting(text: string): string {
+		let highlighted = text;
 		termsToHighlight.forEach((ht) => {
 			const cleanTerm = processTermForHighlight(ht);
-			// Don't use word boundary for startsWith/endsWith anymore since it's handled in pattern
+
+			// Skip if this term was already highlighted in a previous segment
+			if (highlightedTerms.has(cleanTerm.toLowerCase())) return;
+
 			const pattern = createHighlightPattern(cleanTerm, ht.operation);
 
 			if (!pattern) return;
 
-			highlighted = highlighted.replace(
-				new RegExp(pattern, "giu"),
-				(match) =>
-					`<mark class="${
-						ht.operation === "exact"
-							? "bg-yellow-200 dark:bg-yellow-800"
-							: "bg-yellow-100 dark:bg-yellow-900"
-					} px-1 rounded">${match}</mark>`
-			);
-		});
+			const regex = new RegExp(pattern, "u"); // Single match only
+			const match = highlighted.match(regex);
 
+			if (match) {
+				// Mark this term as highlighted so we skip it in future segments
+				highlightedTerms.add(cleanTerm.toLowerCase());
+
+				highlighted = highlighted.replace(
+					regex,
+					(m) =>
+						`<mark class="${ht.operation === "exact" ? "bg-yellow-200 dark:bg-yellow-800" : "bg-yellow-100 dark:bg-yellow-900"} px-1 rounded">${m}</mark>`,
+				);
+			}
+		});
 		return highlighted;
+	}
+
+	// Process each segment separately
+	const processed = segments.map((segment) => {
+		// Handle tooltip segments: |visible text::tooltip text|
+		// We should highlight matches in the visible part but not the tooltip part
+		const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
+		if (tooltipMatch) {
+			const visibleText = tooltipMatch[1];
+			const tooltipText = tooltipMatch[2];
+			// Apply highlighting only to visible text, preserve tooltip
+			const highlightedVisible = applyHighlighting(visibleText);
+			return `|${highlightedVisible}::${tooltipText}|`;
+		}
+
+		// Regular text segment - apply highlighting
+		return applyHighlighting(segment);
 	});
 
 	return processed.join("").trim();
@@ -334,7 +415,7 @@ function findBestMatchingParagraph(
 
 export async function performSearch(
 	query: string,
-	options: SearchOptions = {}
+	options: SearchOptions = {},
 ): Promise<SearchResult[]> {
 	if (import.meta.env?.DEV) {
 		console.log("[search] query:", query);
@@ -358,21 +439,48 @@ export async function performSearch(
 			title: item.title,
 			description: item.description,
 			contentSnippet: null,
+			priority: item.priority,
 		};
 		if (options.highlight && matches) {
 			const contentMatches = matches?.filter((m) => m.key === "content");
-			let contentSnippet = null;
 
 			if (contentMatches?.length) {
-				contentSnippet = findBestMatchingParagraph(
+				const contentSnippet = findBestMatchingParagraph(
 					item.content,
 					contentMatches.flatMap((match) => match.indices),
-					highlightTerms
+					highlightTerms,
 				);
-				result.contentSnippet = contentSnippet;
+				// Only include snippet if it actually contains highlighted text
+				if (contentSnippet && contentSnippet.includes("<mark")) {
+					result.contentSnippet = contentSnippet;
+				}
 			}
 		}
 
 		return result;
 	});
+}
+
+/**
+ * Get all discourses that match the given slug prefixes.
+ * Used for filter-only queries like "^SN12" to return all SN12.* discourses.
+ */
+export async function getFilteredDiscourses(
+	slugPrefixes: string[],
+): Promise<SearchResult[]> {
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+
+	return searchData
+		.filter((item) => {
+			if (slugPrefixes.length === 0) return true;
+			const slugLower = item.slug.toLowerCase();
+			return slugPrefixes.some((prefix) => slugLower.startsWith(prefix));
+		})
+		.map((item) => ({
+			slug: item.slug,
+			title: item.title,
+			description: item.description,
+			contentSnippet: null,
+			priority: item.priority,
+		}));
 }
