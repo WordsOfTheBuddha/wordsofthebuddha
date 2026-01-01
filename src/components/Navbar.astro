@@ -5,9 +5,10 @@ import SearchIcon from "../assets/search.svg?raw"; // Add this import
 
 interface Props {
 	showAuth?: boolean;
+	showSearch?: boolean;
 }
 
-const { showAuth = false } = Astro.props;
+const { showAuth = false, showSearch = true } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isInReviewSection =
 	currentPath === "/review-room" || currentPath === "/profile";
@@ -32,15 +33,19 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 		<a href="/" class="hover:underline">Words of the Buddha</a>
 	</div>
 	<div class="flex items-center gap-2 min-h-[2.25rem] z-50">
-		<a
-			href="/search"
-			class="p-2 hover:text-[var(--link-hover-color)]"
-			title="Search"
-			aria-label="Search"
-			role="button"
-		>
-			<Fragment set:html={SearchIcon} />
-		</a>
+		{
+			showSearch && (
+				<a
+					href="/search"
+					class="p-2 hover:text-[var(--link-hover-color)]"
+					title="Search"
+					aria-label="Search"
+					role="button"
+				>
+					<Fragment set:html={SearchIcon} />
+				</a>
+			)
+		}
 		{
 			showAuth &&
 				(user ? (

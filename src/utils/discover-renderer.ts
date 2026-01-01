@@ -12,14 +12,26 @@ import graphSvg from "../assets/graph.svg?raw";
 const graphIcon = graphSvg.replace("<svg", '<svg class="w-6 h-6"');
 
 export class DiscoverRenderer {
+	private highlightFn?: (text: string) => string;
+
 	constructor(
 		private expandedItems: Set<string>,
-		private toggleExpanded: (itemId: string) => void
-	) {}
+		private toggleExpanded: (itemId: string) => void,
+		highlightFn?: (text: string) => string,
+	) {
+		this.highlightFn = highlightFn;
+	}
+
+	/**
+	 * Helper to apply highlighting if function is provided
+	 */
+	private highlight(text: string): string {
+		return this.highlightFn ? this.highlightFn(text) : text;
+	}
 
 	renderResults(
 		filteredData: UnifiedContentItem[],
-		resultsEl: HTMLElement | null
+		resultsEl: HTMLElement | null,
 	): void {
 		if (!resultsEl) return;
 
@@ -50,6 +62,13 @@ export class DiscoverRenderer {
 			.join("");
 	}
 
+	/**
+	 * Render a single item card. Useful for search results.
+	 */
+	public renderSingleItem(item: UnifiedContentItem): string {
+		return this.renderItem(item);
+	}
+
 	private renderItem(item: UnifiedContentItem): string {
 		const isExpanded = this.expandedItems.has(item.id);
 
@@ -62,14 +81,14 @@ export class DiscoverRenderer {
 			// Check if this slug is a synonym for any topic
 			const slugLower = item.slug.toLowerCase();
 			for (const [topicSlug, topicData] of Object.entries(
-				topicMappings
+				topicMappings,
 			)) {
 				const tData = topicData as any;
 				if (
 					tData.synonyms &&
 					tData.synonyms.some(
 						(s: string) =>
-							s.toLowerCase().replace(/\s+/g, "-") === slugLower
+							s.toLowerCase().replace(/\s+/g, "-") === slugLower,
 					)
 				) {
 					isTopic = true;
@@ -104,12 +123,14 @@ export class DiscoverRenderer {
 			contentTagHtml = generateContentTagHtml(contentType);
 		}
 
+		const itemUrl = `/on/${item.slug}`;
+
 		return `
-        <div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md hover:shadow-lg transition-shadow duration-200">
+        <div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer" data-href="${itemUrl}">
 			<div class="flex items-start justify-between mb-2">
 				<div class="flex items-start flex-grow min-w-0">
 					<h3 class="text-lg mt-1 mb-1 flex items-center gap-2 flex-wrap">
-						<span class="font-normal">${item.title}</span>
+						<a href="${itemUrl}" class="font-normal hover:text-link-color">${this.highlight(item.title)}</a>
 						${contentTagHtml}
 					</h3>
 				</div>
@@ -122,7 +143,7 @@ export class DiscoverRenderer {
 					${
 						item.description
 							? `
-						<div class="text-text">${item.description}</div>
+						<div class="text-text">${this.highlight(item.description)}</div>
 					`
 							: ""
 					}
@@ -131,7 +152,7 @@ export class DiscoverRenderer {
 						item.synonyms && item.synonyms.length > 0
 							? `
 						<div class="text-gray-600 dark:text-gray-400 text-xs">
-							Synonyms: ${item.synonyms.join(", ")}
+							Synonyms: ${this.highlight(item.synonyms.join(", "))}
 						</div>
 					`
 							: ""
@@ -141,7 +162,7 @@ export class DiscoverRenderer {
 						item.pali && item.pali.length > 0
 							? `
 						<div class="pali-paragraph font-semibold text-text text-xs">
-							Pāli: ${item.pali.join(", ")}
+							Pāli: ${this.highlight(item.pali.join(", "))}
 						</div>
 					`
 							: ""
@@ -172,22 +193,22 @@ export class DiscoverRenderer {
 														w
 															.charAt(0)
 															.toUpperCase() +
-														w.slice(1)
+														w.slice(1),
 												)
 												.join(" ");
 											const isPositive =
 												qualities.positive.includes(
-													slug
+													slug,
 												);
 											const isNegative =
 												qualities.negative.includes(
-													slug
+													slug,
 												);
 											const tagClass = isPositive
 												? "topic-tag positive"
 												: isNegative
-												? "topic-tag negative"
-												: "topic-tag neutral";
+													? "topic-tag negative"
+													: "topic-tag neutral";
 											return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
 										})
 										.join("")}
@@ -211,22 +232,22 @@ export class DiscoverRenderer {
 														w
 															.charAt(0)
 															.toUpperCase() +
-														w.slice(1)
+														w.slice(1),
 												)
 												.join(" ");
 											const isPositive =
 												qualities.positive.includes(
-													slug
+													slug,
 												);
 											const isNegative =
 												qualities.negative.includes(
-													slug
+													slug,
 												);
 											const tagClass = isPositive
 												? "topic-tag positive"
 												: isNegative
-												? "topic-tag negative"
-												: "topic-tag neutral";
+													? "topic-tag negative"
+													: "topic-tag neutral";
 											return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
 										})
 										.join("")}
@@ -250,22 +271,22 @@ export class DiscoverRenderer {
 														w
 															.charAt(0)
 															.toUpperCase() +
-														w.slice(1)
+														w.slice(1),
 												)
 												.join(" ");
 											const isPositive =
 												qualities.positive.includes(
-													slug
+													slug,
 												);
 											const isNegative =
 												qualities.negative.includes(
-													slug
+													slug,
 												);
 											const tagClass = isPositive
 												? "topic-tag positive"
 												: isNegative
-												? "topic-tag negative"
-												: "topic-tag neutral";
+													? "topic-tag negative"
+													: "topic-tag neutral";
 											return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
 										})
 										.join("")}
@@ -289,22 +310,22 @@ export class DiscoverRenderer {
 														w
 															.charAt(0)
 															.toUpperCase() +
-														w.slice(1)
+														w.slice(1),
 												)
 												.join(" ");
 											const isPositive =
 												qualities.positive.includes(
-													slug
+													slug,
 												);
 											const isNegative =
 												qualities.negative.includes(
-													slug
+													slug,
 												);
 											const tagClass = isPositive
 												? "topic-tag positive"
 												: isNegative
-												? "topic-tag negative"
-												: "topic-tag neutral";
+													? "topic-tag negative"
+													: "topic-tag neutral";
 											return `<a href="/on/${slug}" class="${tagClass}">${name}</a>`;
 										})
 										.join("")}
@@ -322,7 +343,7 @@ export class DiscoverRenderer {
 								item.type === "topic" || item.type === "quality"
 									? `
                             <a href="/explorer?focus=${encodeURIComponent(
-								item.slug
+								item.slug,
 							)}&full=1" aria-label="View in explorer" title="View in explorer" class="inline-flex items-center gap-1 px-2 py-1 rounded border border-[var(--border-color)] bg-[var(--background-color)] text-[var(--link-color)] hover:text-[var(--link-hover-color)] hover:border-[var(--primary-color)] transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-color)] focus-visible:ring-opacity-50">
                                 <span class="mt-1">${graphIcon}</span>
                                 <span>View in explorer</span>
@@ -343,7 +364,7 @@ export class DiscoverRenderer {
 					item.description && isExpanded
 						? `
 					<div class="mt-2 ml-2 text-sm">
-						<div class="text-text">${item.description}</div>
+						<div class="text-text">${this.highlight(item.description)}</div>
 					</div>
 				`
 						: ""
@@ -371,7 +392,7 @@ export class DiscoverRenderer {
 
 	private renderDiscourseList(
 		item: UnifiedContentItem,
-		isExpanded: boolean
+		isExpanded: boolean,
 	): string {
 		const discoursesToShow = isExpanded
 			? item.discourses
@@ -390,8 +411,8 @@ export class DiscoverRenderer {
 						this.renderSingleDiscourse(
 							discourse,
 							showDescriptions,
-							item.type
-						)
+							item.type,
+						),
 					)
 					.join("")}
 			</div>
@@ -404,7 +425,7 @@ export class DiscoverRenderer {
 	private renderSingleDiscourse(
 		discourse: any,
 		showDescription: boolean,
-		contentType: string
+		contentType: string,
 	): string {
 		return `
 		<div class="text-sm rounded-lg px-2 mt-1 w-[fit-content]">
@@ -415,7 +436,7 @@ export class DiscoverRenderer {
 					/([a-zA-Z]+)(\d+)/,
 					(_: string, chars: string, digits: string) => {
 						return `${chars.toUpperCase()} ${digits}`;
-					}
+					},
 				)}
             </a>
             <span>
@@ -466,7 +487,7 @@ export class DiscoverRenderer {
 
 	private getConsistentButtonText(
 		discourseCount: number,
-		isExpanded: boolean
+		isExpanded: boolean,
 	): string {
 		if (isExpanded) {
 			return "[- Show Less]";
@@ -476,6 +497,6 @@ export class DiscoverRenderer {
 			? "[+ Show More]"
 			: `[+ ${discourseCount - 3} ${
 					discourseCount - 3 === 1 ? "discourse" : "discourses"
-			  } - Show More]`;
+				} - Show More]`;
 	}
 }

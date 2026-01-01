@@ -44,6 +44,7 @@ const {
 	showRead = false,
 	titleIcon = null,
 	showAuth = false,
+	showSearch = true,
 	showPali = false,
 	showFilter = false,
 	seoTitle = null, // Add new prop for SEO title
@@ -164,7 +165,7 @@ if (!SEOTitle) {
 					title={title}
 					description={description}
 				>
-					<Navbar showAuth={showAuth} />
+					<Navbar showAuth={showAuth} showSearch={showSearch} />
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					{(<Description description={description} />)}
 					{

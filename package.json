@@ -16,7 +16,10 @@
 		"build:pwa": "astro build --config astro.config.pwa.mjs --silent",
 		"prebuild:pwa": "npm run prebuild",
 		"preview:pwa": "HOST=0.0.0.0 PORT=4322 node dist/server/entry.mjs",
-		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host"
+		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host",
+		"test:search": "cd src/search-tests && node search-test-cli.js",
+		"test:search:update": "cd src/search-tests && node search-test-cli.js --update",
+		"test:search:ai": "cd src/search-tests && node search-test-cli.js --ai-eval"
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",

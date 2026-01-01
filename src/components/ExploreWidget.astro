@@ -1,0 +1,1660 @@
+---
+/**
+ * ExploreWidget - A reusable component for browsing and searching content
+ * 
+ * Props:
+ * - mode: "full" (Browse A-Z + Search) or "search-only" (Search only, no A-Z toggle)
+ * - showProjectStatus: boolean - whether to show ProjectStatus component
+ * - title: string - page title
+ * - description: string - page description
+ */
+import SearchIcon from "../assets/search.svg?raw";
+import HelpIcon from "../assets/question-mark-circle.svg?raw";
+import Funnel from "../assets/funnel.svg?raw";
+import BrowseIcon from "../assets/list-bullet.svg?raw";
+import ProjectStatus from "./ProjectStatus.astro";
+import "../styles/discover.css";
+
+interface Props {
+	mode?: "full" | "search-only";
+	showProjectStatus?: boolean;
+	title?: string;
+	description?: string;
+}
+
+const { 
+	mode = "full", 
+	showProjectStatus = false,
+	title = "Explore the Teachings",
+	description = "Browse and search the words of the Buddha"
+} = Astro.props;
+
+// Generate alphabet for A-Z navigation
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const isSearchOnly = mode === "search-only";
+---
+
+<div 
+	class="explore-widget" 
+	data-mode={mode}
+	data-search-only={isSearchOnly ? "true" : "false"}
+>
+	{title && (
+		<p class="text-gray-600 dark:text-gray-400 mb-6">
+			{title}
+		</p>
+	)}
+
+	{showProjectStatus && <ProjectStatus />}
+
+	{showProjectStatus && (
+		<p class="text-gray-600 dark:text-gray-400 mt-12 mb-4">
+			{description}
+		</p>
+	)}
+
+	<!-- Sticky Filter Controls -->
+	<div
+		id="filter-controls"
+		class="sticky top-0 z-20 mb-6 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] shadow-sm transition-all duration-300"
+	>
+		<!-- ==================== BROWSE A-Z MODE ==================== -->
+		{!isSearchOnly && (
+			<div id="browse-mode" class="transition-all duration-300">
+				<!-- Row 1: Filter + Checkboxes + Search Icon -->
+				<div class="rounded-t-lg bg-[var(--surface-elevated)] p-4">
+					<!-- Mobile Layout -->
+					<div class="md:hidden">
+						<div class="flex items-center justify-between gap-4">
+							<div class="flex flex-wrap gap-4">
+								<label class="flex items-center gap-2 cursor-pointer">
+									<input
+										type="checkbox"
+										id="browse-filter-topics-qualities"
+										value="topics-qualities"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Topics</span>
+								</label>
+								<label class="flex items-center gap-2 cursor-pointer">
+									<input
+										type="checkbox"
+										id="browse-filter-similes"
+										value="similes"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Similes</span>
+								</label>
+							</div>
+							<!-- Search Mode Switch Button -->
+							<button
+								id="switch-to-search-btn-mobile"
+								class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0 text-gray-600 dark:text-gray-400"
+								aria-label="Switch to search mode"
+								title="Switch to search mode"
+							>
+								<div class="w-5 h-5">
+									<Fragment set:html={SearchIcon} />
+								</div>
+							</button>
+						</div>
+					</div>
+
+					<!-- Desktop Layout -->
+					<div class="hidden md:flex items-center justify-between gap-6">
+						<div class="flex items-center gap-4">
+							<div class="flex items-center gap-1">
+								<div class="w-5 h-5 text-gray-600 dark:text-gray-400">
+									<Fragment set:html={Funnel} />
+								</div>
+								<span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+									Show:
+								</span>
+							</div>
+							<div class="flex gap-4">
+								<label class="flex items-center gap-2 cursor-pointer">
+									<input
+										type="checkbox"
+										id="browse-filter-topics-qualities-desktop"
+										value="topics-qualities"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Topics & Qualities</span>
+								</label>
+								<label class="flex items-center gap-2 cursor-pointer">
+									<input
+										type="checkbox"
+										id="browse-filter-similes-desktop"
+										value="similes"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Similes</span>
+								</label>
+							</div>
+						</div>
+
+						<!-- Search Mode Switch Button -->
+						<button
+							id="switch-to-search-btn-desktop"
+							class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-shrink-0 text-gray-600 dark:text-gray-400"
+							aria-label="Switch to search mode"
+							title="Switch to search mode"
+						>
+							<div class="w-5 h-5">
+								<Fragment set:html={SearchIcon} />
+							</div>
+						</button>
+					</div>
+				</div>
+
+				<!-- Row 2: A-Z Navigation -->
+				<div class="bg-[var(--surface-elevated)] rounded-t-none rounded-b-lg border-t border-[color:var(--surface-border)] p-3">
+					<div class="flex flex-wrap gap-1 justify-center lg:gap-2">
+						{alphabet.map((letter) => (
+							<button
+								data-letter={letter}
+								class="alphabet-link text-sm lg:text-base px-1 py-1 rounded transition-all duration-200 text-gray-500 dark:text-gray-400 border border-transparent focus:outline-none"
+							>
+								{letter}
+							</button>
+						))}
+					</div>
+				</div>
+			</div>
+		)}
+
+		<!-- ==================== SEARCH MODE ==================== -->
+		<div id="search-mode" class={isSearchOnly ? "" : "hidden"} class:list={["transition-all duration-300"]}>
+			<!-- Row 1: Filter Checkboxes with Counts -->
+			<div class="rounded-t-lg bg-[var(--surface-elevated)] p-4">
+				<div class="flex items-center gap-4">
+					<!-- Filter icon and Show: label - hidden on mobile -->
+					<div class="hidden md:flex items-center gap-1">
+						<div class="w-5 h-5 text-gray-600 dark:text-gray-400">
+							<Fragment set:html={Funnel} />
+						</div>
+						<span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+							Show:
+						</span>
+					</div>
+					<div class="flex flex-wrap gap-x-4 gap-y-2">
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								type="checkbox"
+								id="search-filter-discourses"
+								value="discourses"
+								checked
+								class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+							/>
+							<span class="text-sm">
+								Discourses <span id="count-discourses" class="text-gray-500 dark:text-gray-400"></span>
+							</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								type="checkbox"
+								id="search-filter-topics-qualities"
+								value="topics-qualities"
+								checked
+								class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+							/>
+							<span class="text-sm">
+								<span class="hidden md:inline">Topics & Qualities</span>
+								<span class="md:hidden">Topics</span>
+								<span id="count-topics-qualities" class="text-gray-500 dark:text-gray-400"></span>
+							</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								type="checkbox"
+								id="search-filter-similes"
+								value="similes"
+								checked
+								class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+							/>
+							<span class="text-sm">
+								Similes <span id="count-similes" class="text-gray-500 dark:text-gray-400"></span>
+							</span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Row 2: Search Input + Browse A-Z link -->
+			<div class="rounded-b-lg bg-[var(--surface-elevated)] p-4 pt-2">
+				<div class="flex items-center gap-3 md:justify-between">
+					<div class="relative flex-1 md:flex-initial md:w-[600px]">
+						<input
+							type="search"
+							id="search-input"
+							name="q"
+							value=""
+							placeholder="Search suttas..."
+							class="w-full p-4 pl-12 pr-14 text-lg rounded-lg bg-[var(--surface-elevated)] text-gray-900 dark:text-gray-100 search-input border border-[color:var(--surface-border)] focus:ring-2 focus:ring-blue-500 focus:outline-none"
+						/>
+						<div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none w-5 h-5">
+							<Fragment set:html={SearchIcon} />
+						</div>
+						<button
+							type="button"
+							id="search-help-btn"
+							class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 w-5 h-5"
+							title="Search Help"
+						>
+							<Fragment set:html={HelpIcon} />
+						</button>
+					</div>
+					<!-- Browse A-Z link - only show if not search-only mode -->
+					{!isSearchOnly && (
+						<button
+							id="switch-to-browse-btn"
+							class="flex-shrink-0 text-sm text-[var(--link-color)] hover:text-[var(--link-hover-color)] whitespace-nowrap"
+							title="Browse A-Z"
+						>
+							← A-Z
+						</button>
+					)}
+				</div>
+			</div>
+
+			<!-- Search Help Panel -->
+			<div id="search-help" class="hidden bg-[var(--surface-elevated)] px-4 pb-4 rounded-b-lg">
+				<div class="max-w-[600px] p-4 rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] text-[var(--surface-ink)] shadow-sm text-sm max-h-[50vh] overflow-y-auto">
+					<h3 class="font-semibold mb-2">Search Syntax:</h3>
+					<ul class="space-y-1">
+						<li><code class="not-prose">quest</code> - Relevance (including fuzzy) match on quest</li>
+						<li><code class="not-prose">'jhana</code> - Exact match on jhana</li>
+						<li><code class="not-prose">!wrong</code> - Discourses that do not have the term wrong are matched</li>
+						<li><code class="not-prose">^SN22</code> - Discourses that start with SN22</li>
+						<li><code class="not-prose">world$</code> - Ends with world</li>
+						<li><code class="not-prose">"perception consciousness jhana"</code> - Exact matches for perception, consciousness, and jhana</li>
+						<li><code class="not-prose">"letting go" !anger</code> - Exactly matches "letting go" and without anger</li>
+						<li><code class="not-prose">illusion | ignorance</code> - Matches either illusion or ignorance on any fields</li>
+					</ul>
+					<h3 class="font-semibold mb-2 mt-4">More Specific Examples:</h3>
+					<ul class="space-y-1 text-xs text-gray-500">
+						<li><code class="not-prose">!^DHP</code> matches all discourses except those starting with DHP</li>
+						<li><code class="not-prose">^SN content:'consciousness content:!perception</code> matches all SN discourses that have consciousness in content but do not have perception in content.</li>
+						<li><code class="not-prose">title:element (content:space | content:consciousness)</code> matches where title is element and content has either space or consciousness.</li>
+						<li><code class="not-prose">^AN (urgency | faith) !mindfulness !child</code> matches AN discourses that have urgency or faith in them, and do not have the words mindfulness or child in them.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Loading State -->
+	<div id="loading" class="text-center py-8">
+		<div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-gray-100"></div>
+		<p class="mt-2 text-gray-600 dark:text-gray-400">Loading...</p>
+	</div>
+
+	<!-- Results Container -->
+	<div id="results-container" class="hidden overflow-x-hidden">
+		<!-- Browse Results (A-Z grouped) -->
+		{!isSearchOnly && (
+			<div id="browse-results" class="space-y-6">
+				<!-- Will be populated by JavaScript -->
+			</div>
+		)}
+
+		<!-- Search Results (relevance ranked) -->
+		<div id="search-results" class={isSearchOnly ? "" : "hidden"}>
+			<p id="search-results-count" class="mb-4 text-sm text-gray-500 dark:text-gray-300"></p>
+			<div id="search-results-list">
+				<!-- Will be populated by JavaScript -->
+			</div>
+		</div>
+
+		<!-- No Results Message -->
+		<div id="no-results" class="hidden text-center py-8">
+			<p class="text-gray-600 dark:text-gray-400">
+				No results found. Try adjusting your search or filters.
+			</p>
+		</div>
+	</div>
+</div>
+
+<style is:global>
+	/* Search input styles */
+	.explore-widget .search-input {
+		background-color: var(--background-color) !important;
+		color: var(--text-color) !important;
+		-webkit-text-fill-color: var(--text-color) !important;
+		opacity: 1;
+	}
+	.explore-widget .search-input:focus {
+		color: var(--text-color) !important;
+		-webkit-text-fill-color: var(--text-color) !important;
+	}
+	/* iOS autofill/selection styling override */
+	.explore-widget .search-input:-webkit-autofill,
+	.explore-widget .search-input:-webkit-autofill:hover,
+	.explore-widget .search-input:-webkit-autofill:focus {
+		-webkit-text-fill-color: var(--text-color) !important;
+		background-color: var(--background-color) !important;
+		transition: background-color 5000s ease-in-out 0s;
+	}
+	.explore-widget .search-input::selection {
+		background-color: rgba(59, 130, 246, 0.5);
+		color: var(--text-color);
+	}
+	.explore-widget .search-input::-webkit-search-cancel-button {
+		display: none;
+	}
+	.explore-widget .search-input::-webkit-search-decoration {
+		display: none;
+	}
+	.explore-widget .search-input::-ms-clear {
+		display: none;
+	}
+
+	/* Search result highlighting */
+	.explore-widget #search-results mark {
+		color: var(--text-color);
+	}
+	.explore-widget #search-results mark::selection {
+		color: white;
+		background-color: #2563eb;
+	}
+
+	/* Code styling in help panel */
+	.explore-widget #search-help code {
+		@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
+	}
+	.explore-widget #search-help .text-gray-500 {
+		@apply dark:text-gray-300;
+	}
+
+	/* Discourse card in search results */
+	.explore-widget .search-discourse-card {
+		@apply relative flex flex-col w-full p-5 mt-4 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-md;
+	}
+	.explore-widget .search-discourse-card:hover {
+		@apply shadow-lg;
+	}
+
+	/* Category cards in search results */
+	.explore-widget #search-results .post-item {
+		@apply mt-4;
+	}
+
+	/* ID formatting in search results */
+	.explore-widget #search-results .id {
+		display: inline-block;
+	}
+	@media (min-width: 640px) {
+		.explore-widget #search-results .id {
+			font-size: 1.1rem;
+		}
+	}
+	.explore-widget #search-results .text-text {
+		color: var(--text-color);
+		margin: 0.5rem 0;
+	}
+</style>
+
+<script>
+	import { DiscoverRenderer } from "../utils/discover-renderer";
+	import { buildUnifiedContent, buildAllContent } from "../utils/discover-data";
+	import type { UnifiedContentItem } from "../types/discover";
+	import Fuse from "fuse.js";
+
+	// Find the widget container and read configuration
+	const widget = document.querySelector(".explore-widget") as HTMLElement;
+	if (!widget) throw new Error("ExploreWidget container not found");
+	
+	const isSearchOnly = widget.dataset.searchOnly === "true";
+
+	// ==================== STATE ====================
+	type Mode = "browse" | "search";
+	let currentMode: Mode = isSearchOnly ? "search" : "browse";
+
+	// Browse state
+	let browseData: UnifiedContentItem[] = [];
+	let allCategoryData: UnifiedContentItem[] = [];
+	let browseFilters = { topicsQualities: true, similes: true };
+	let expandedItems = new Set<string>();
+
+	// Search state
+	let searchFilters = { discourses: true, topicsQualities: true, similes: true };
+	let searchQuery = "";
+	let searchTimeout: NodeJS.Timeout | null = null;
+	const DEBOUNCE_MS = 300;
+
+	// Fuse.js index for categories
+	let categoryFuse: Fuse<UnifiedContentItem> | null = null;
+
+	// Result counts for display
+	let resultCounts = { discourses: 0, topicsQualities: 0, similes: 0 };
+
+	// ==================== DOM ELEMENTS ====================
+	const browseMode = widget.querySelector("#browse-mode") as HTMLElement;
+	const searchMode = widget.querySelector("#search-mode") as HTMLElement;
+	const loadingEl = widget.querySelector("#loading") as HTMLElement;
+	const resultsContainer = widget.querySelector("#results-container") as HTMLElement;
+	const browseResults = widget.querySelector("#browse-results") as HTMLElement;
+	const searchResults = widget.querySelector("#search-results") as HTMLElement;
+	const searchResultsList = widget.querySelector("#search-results-list") as HTMLElement;
+	const searchResultsCount = widget.querySelector("#search-results-count") as HTMLElement;
+	const noResultsEl = widget.querySelector("#no-results") as HTMLElement;
+	const searchInput = widget.querySelector("#search-input") as HTMLInputElement;
+	const searchHelpBtn = widget.querySelector("#search-help-btn") as HTMLButtonElement;
+	const searchHelp = widget.querySelector("#search-help") as HTMLElement;
+
+	// ==================== INITIALIZATION ====================
+	async function init() {
+		setupEventListeners();
+		await loadData();
+		
+		// Check URL for initial state
+		const urlParams = new URLSearchParams(window.location.search);
+		const queryFromUrl = urlParams.get("q");
+		
+		if (queryFromUrl) {
+			// Start in search mode with query
+			if (!isSearchOnly) switchToSearchMode();
+			if (searchInput) searchInput.value = queryFromUrl;
+			await performSearch(queryFromUrl);
+		} else if (isSearchOnly) {
+			// Search-only mode: show empty search state
+			if (loadingEl) loadingEl.classList.add("hidden");
+			if (resultsContainer) resultsContainer.classList.remove("hidden");
+			if (searchInput) searchInput.focus();
+		} else {
+			// Full mode: start with browse
+			renderBrowseResults();
+			setupScrollSpy();
+		}
+	}
+
+	async function loadData() {
+		try {
+			// Load all content for both browse and search
+			browseData = buildUnifiedContent();
+			initCategoryFuse();
+		} catch (error) {
+			console.error("Failed to load data:", error);
+		}
+	}
+
+	function initCategoryFuse() {
+		// Load all topics, qualities, and similes for Fuse.js search
+		allCategoryData = buildAllContent(["topics", "qualities", "similes"]);
+		
+		// Helper to normalize Pali terms (remove diacritics for comparison)
+		const normalizePali = (term: string) => 
+			term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+		
+		// Helper to extract individual pali terms from an array (handles comma-separated strings)
+		const extractPaliTerms = (paliArray: string[] | undefined): string[] => {
+			if (!paliArray) return [];
+			const terms: string[] = [];
+			paliArray.forEach(p => {
+				// Handle comma-separated pali terms (from qualities.json format)
+				if (p.includes(",")) {
+					p.split(",").forEach(term => terms.push(normalizePali(term)));
+				} else {
+					terms.push(normalizePali(p));
+				}
+			});
+			return terms;
+		};
+		
+		// Build a set of normalized Pali terms from all topics
+		const topics = allCategoryData.filter(item => item.type === "topic");
+		const topicSlugs = new Set(topics.map(item => item.slug));
+		const topicPaliTerms = new Set<string>();
+		
+		topics.forEach(topic => {
+			extractPaliTerms(topic.pali).forEach(term => topicPaliTerms.add(term));
+		});
+		
+		// Deduplicate: remove qualities that share slug OR Pali terms with a topic
+		allCategoryData = allCategoryData.filter(item => {
+			// Keep all topics and similes
+			if (item.type === "topic" || item.type === "simile") return true;
+			
+			// For qualities, check slug match first
+			if (topicSlugs.has(item.slug)) return false;
+			
+			// Check if any Pali term overlaps with a topic's pali terms
+			const qualityPaliTerms = extractPaliTerms(item.pali);
+			for (const term of qualityPaliTerms) {
+				if (topicPaliTerms.has(term)) {
+					return false; // This quality shares a Pali term with a topic
+				}
+			}
+			
+			return true;
+		});
+		
+		categoryFuse = new Fuse(allCategoryData, {
+			keys: [
+				{ name: "title", weight: 3 },
+				{ name: "slug", weight: 2.5 },
+				{ name: "pali", weight: 2 },
+				{ name: "synonyms", weight: 1.5 },
+				{ name: "description", weight: 0.5 },
+			],
+			threshold: 0.4,
+			ignoreLocation: true,
+			ignoreDiacritics: true,
+			includeScore: true,
+			includeMatches: true,
+			useExtendedSearch: true,
+		});
+	}
+
+	// ==================== URL STATE ====================
+	function updateURL() {
+		const params = new URLSearchParams();
+		if (currentMode === "search" && searchQuery) {
+			params.set("q", searchQuery);
+		}
+		const newUrl = params.toString() 
+			? `${window.location.pathname}?${params.toString()}`
+			: window.location.pathname;
+		window.history.replaceState({}, "", newUrl);
+	}
+
+	// ==================== MODE SWITCHING ====================
+	function switchToSearchMode() {
+		if (isSearchOnly) return; // Already in search-only mode
+		
+		currentMode = "search";
+		browseMode?.classList.add("hidden");
+		searchMode?.classList.remove("hidden");
+		browseResults?.classList.add("hidden");
+		searchResults?.classList.remove("hidden");
+		searchInput?.focus();
+		updateURL();
+	}
+
+	function switchToBrowseMode() {
+		if (isSearchOnly) return; // Can't switch to browse in search-only mode
+		
+		currentMode = "browse";
+		searchMode?.classList.add("hidden");
+		browseMode?.classList.remove("hidden");
+		searchResults?.classList.add("hidden");
+		browseResults?.classList.remove("hidden");
+		
+		// Clear search
+		if (searchInput) searchInput.value = "";
+		searchQuery = "";
+		updateURL();
+		
+		// Re-render browse results
+		renderBrowseResults();
+	}
+
+	// ==================== BROWSE MODE ====================
+	function renderBrowseResults() {
+		if (!browseResults || isSearchOnly) return;
+
+		// Filter data based on checkboxes
+		const filtered = browseData.filter(item => {
+			if (item.type === "simile") return browseFilters.similes;
+			return browseFilters.topicsQualities;
+		});
+
+		// Group by first letter
+		const grouped = new Map<string, UnifiedContentItem[]>();
+		filtered.forEach(item => {
+			const letter = item.title.charAt(0).toUpperCase();
+			if (!grouped.has(letter)) grouped.set(letter, []);
+			grouped.get(letter)!.push(item);
+		});
+
+		// Sort groups alphabetically
+		const sortedGroups = Array.from(grouped.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+
+		// Render
+		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded);
+		let html = "";
+
+		sortedGroups.forEach(([letter, items]) => {
+			html += `<div id="letter-${letter}" class="letter-group">`;
+			html += `<h2 class="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300 py-2">${letter}</h2>`;
+			html += `<div class="grid gap-4">`;
+			
+			items.forEach(item => {
+				html += renderer.renderSingleItem(item);
+			});
+			
+			html += `</div></div>`;
+		});
+
+		browseResults.innerHTML = html;
+
+		// Update alphabet link states
+		const availableLetters = new Set(sortedGroups.map(([letter]) => letter));
+		document.querySelectorAll(".alphabet-link").forEach(link => {
+			const letter = link.getAttribute("data-letter");
+			if (letter && !availableLetters.has(letter)) {
+				link.classList.add("opacity-30", "cursor-not-allowed");
+				(link as HTMLButtonElement).disabled = true;
+			} else {
+				link.classList.remove("opacity-30", "cursor-not-allowed");
+				(link as HTMLButtonElement).disabled = false;
+			}
+		});
+
+		// Hide loading, show results
+		if (loadingEl) loadingEl.classList.add("hidden");
+		if (resultsContainer) resultsContainer.classList.remove("hidden");
+	}
+
+	function toggleExpanded(slug: string) {
+		if (expandedItems.has(slug)) {
+			expandedItems.delete(slug);
+		} else {
+			expandedItems.add(slug);
+		}
+		
+		if (currentMode === "browse") {
+			renderBrowseResults();
+		} else if (currentMode === "search" && searchQuery) {
+			// Re-render search results to update expanded state
+			performSearch(searchQuery);
+		}
+	}
+
+	// Make function globally available
+	(window as any).toggleExpanded = toggleExpanded;
+
+	// ==================== SEARCH MODE ====================
+	// Import search ranking utilities
+	import {
+		type ScoredResult,
+		type SearchConfig,
+		type MatchType,
+		DEFAULT_SEARCH_CONFIG,
+		getMaxAllowedEditDistance,
+		allowPrefixMatch,
+		allowInfixMatch,
+		getMatchType as getMatchTypeUtil,
+		textContainsQuery,
+		textContainsWholeWord,
+		normalizeForComparison,
+		levenshteinDistance,
+		minEditDistance,
+		SCORE,
+		rankResultsWithDiversity,
+		getPageSize,
+		isMobileViewport,
+		countRemainingByType,
+		formatRemainingText,
+		isStopword,
+		getNonStopwordTerms,
+		countNonStopwordMatches,
+		parseSlugPrefixes,
+		slugMatchesPrefixes,
+	} from "../utils/searchRanking";
+
+	async function performSearch(query: string) {
+		// Always hide loading and show results container when searching
+		if (loadingEl) loadingEl.classList.add("hidden");
+		if (resultsContainer) resultsContainer.classList.remove("hidden");
+		
+		if (!query.trim()) {
+			if (searchResultsList) searchResultsList.innerHTML = "";
+			if (searchResultsCount) searchResultsCount.textContent = "";
+			updateResultCounts(0, 0, 0);
+			searchQuery = "";
+			updateURL(); // Clear q parameter from URL
+			return;
+		}
+
+		searchQuery = query;
+		updateURL();
+
+		try {
+			const results: ScoredResult[] = [];
+			const allCounts = { discourses: 0, topicsQualities: 0, similes: 0 };
+			
+			// Parse slug prefix filters (e.g., "^SN12 consciousness" → filter to sn12.* slugs)
+			const { prefixes: slugPrefixes, searchQuery: effectiveQuery } = parseSlugPrefixes(query);
+			const hasSlugFilter = slugPrefixes.length > 0;
+			const isFilterOnly = hasSlugFilter && !effectiveQuery.trim();
+			
+			const queryLower = (effectiveQuery || query).toLowerCase().trim();
+			const queryLength = queryLower.length;
+			
+			const maxEditDistance = getMaxAllowedEditDistance(queryLength);
+			const canPrefix = allowPrefixMatch(queryLength);
+			const canInfix = allowInfixMatch(queryLength);
+			
+			// Local match type helper that respects query length
+			function getMatchType(text: string, query: string): MatchType {
+				return getMatchTypeUtil(text, query, DEFAULT_SEARCH_CONFIG);
+			}
+			
+			// Search categories using Fuse.js - skip if slug filter is active
+			if (categoryFuse && !hasSlugFilter && effectiveQuery.trim()) {
+				const categoryResults = categoryFuse.search(effectiveQuery);
+				
+				// Helper to normalize for diacritic-insensitive comparison
+				const queryNormalized = normalizeForComparison(effectiveQuery);
+				
+				// For multi-word queries, split into terms for cross-field matching
+				const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 0);
+				const nonStopTerms = getNonStopwordTerms(effectiveQuery);
+				const isMultiWord = queryTerms.length > 1;
+				
+				categoryResults.forEach((result) => {
+					const item = result.item;
+					const fuseScore = result.score ?? 0.5;
+					
+					// Combine all searchable text for term counting
+					const searchableFields = [
+						item.title || "",
+						item.slug || "",
+						item.description || "",
+						...(item.synonyms || []),
+						...(item.pali || [])
+					];
+					const combinedText = searchableFields.join(" ").toLowerCase();
+					
+					// Strip annotation text (|visible::tooltip|) before counting
+					const cleanedText = combinedText.replace(/\|(.+?)::[^|]+\|/g, "$1");
+					
+					// Count how many non-stopword terms match (for ALL queries)
+					let categoryNonStopMatches = 0;
+					const matchedNonStopTerms: string[] = [];
+					for (const term of nonStopTerms) {
+						const termLower = term.toLowerCase();
+						const wordBoundaryRegex = new RegExp(`\\b${termLower}`, 'i');
+						if (wordBoundaryRegex.test(cleanedText)) {
+							categoryNonStopMatches++;
+							matchedNonStopTerms.push(termLower);
+						}
+					}
+					
+					// For multi-word queries, check if ANY non-stopword term matches title/slug exactly
+					// This handles "craving in" where "in" is stopword but "craving" should match title
+					let bestTermTitleMatch: MatchType = "none";
+					let bestTermSynonymMatch = "none";
+					if (isMultiWord) {
+						const titleLower = (item.title || "").toLowerCase();
+						const slugLower = (item.slug || "").toLowerCase();
+						
+						for (const term of nonStopTerms) {
+							const termMatch = getMatchType(titleLower, term);
+							if (termMatch === "exact" || termMatch === "word-exact") {
+								bestTermTitleMatch = "word-exact";
+								break;
+							} else if (termMatch === "prefix" || termMatch === "word-prefix") {
+								if (bestTermTitleMatch === "none") bestTermTitleMatch = "word-prefix";
+							}
+							
+							// Also check slug
+							const slugMatch = getMatchType(slugLower, term);
+							if (slugMatch === "exact" || slugMatch === "word-exact") {
+								bestTermTitleMatch = "word-exact";
+								break;
+							}
+						}
+						
+						// Check synonyms for term matches
+						if (item.synonyms) {
+							for (const syn of item.synonyms) {
+								for (const term of nonStopTerms) {
+									const match = getMatchType(syn, term);
+									if (match === "exact" || match === "word-exact") {
+										bestTermSynonymMatch = "exact";
+										break;
+									} else if (match === "prefix" || match === "word-prefix") {
+										if (bestTermSynonymMatch === "none") bestTermSynonymMatch = "word-prefix";
+									}
+								}
+								if (bestTermSynonymMatch === "exact") break;
+							}
+						}
+					}
+					
+					// Check match types against FULL query (for single-word queries)
+					const titleMatch = getMatchType(item.title, queryLower);
+					const slugMatch = getMatchType(item.slug, queryLower);
+					
+					// Check if description contains the query (for single-word queries especially)
+					const descriptionMatch = item.description 
+						? (textContainsWholeWord(item.description, queryLower) ? "word-exact" 
+						   : textContainsQuery(item.description, queryLower) ? "infix" : "none")
+						: "none";
+					
+					// Enhanced pali matching - check each term and handle multi-word pali phrases
+					const paliMatch = item.pali?.reduce((best: string, p: string) => {
+						const pNorm = normalizeForComparison(p);
+						// Check if normalized query exactly matches normalized pali term
+						if (pNorm === queryNormalized) return "exact";
+						// Check for word-prefix within multi-word pali phrases (e.g., "akuppa" in "akuppā cetovimutti")
+						const paliWords = pNorm.split(/\s+/);
+						if (paliWords.some(word => word === queryNormalized)) {
+							if (best !== "exact") return "exact"; // Exact word match within phrase
+						}
+						// Only check prefix if query is long enough
+						if (canPrefix) {
+							if (paliWords.some(word => word.startsWith(queryNormalized))) {
+								if (best !== "exact") return "prefix";
+							}
+							// Standard prefix check
+							if (pNorm.startsWith(queryNormalized) && best !== "exact" && best !== "prefix") return "prefix";
+						}
+						return best;
+					}, "none") || "none";
+					
+					const synonymMatch = item.synonyms?.reduce((best: string, s: string) => {
+						const match = getMatchType(s, queryLower);
+						if (match === "exact" || match === "word-exact") return "exact";
+						if (match === "prefix" && best !== "exact" && canPrefix) return "prefix";
+						if (match === "word-prefix" && best !== "exact" && best !== "prefix" && canPrefix) return "word-prefix";
+						return best;
+					}, "none") || "none";
+					
+					// Cross-field matching for multi-word queries
+					// Now includes single non-stopword term queries like "craving in"
+					let crossFieldScore = 0;
+					let crossFieldMatchType = "";
+					if (isMultiWord && categoryNonStopMatches >= 1) {
+						// Check if we have term-level title/synonym matches
+						const titleWords = (item.title || "").toLowerCase().split(/[\s\-_]+/);
+						const hasExactTitleTermMatch = matchedNonStopTerms.some(term => 
+							titleWords.some(word => word === term)
+						);
+						
+						if (categoryNonStopMatches === nonStopTerms.length && nonStopTerms.length > 1) {
+							// All terms found - strong cross-field match
+							if (hasExactTitleTermMatch) {
+								crossFieldScore = SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75;
+								crossFieldMatchType = "cross-field-title";
+							} else {
+								crossFieldScore = SCORE.CATEGORY_CROSS_FIELD_ALL || 70;
+								crossFieldMatchType = "cross-field-all";
+							}
+						} else if (hasExactTitleTermMatch) {
+							// Term exactly matches title word - high priority even with partial match
+							crossFieldScore = SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75;
+							crossFieldMatchType = "cross-field-title";
+						} else if (categoryNonStopMatches >= 1) {
+							// At least one non-stopword term matches somewhere
+							crossFieldScore = SCORE.CATEGORY_CROSS_FIELD_PARTIAL || 30;
+							crossFieldMatchType = "cross-field-partial";
+						}
+					}
+					
+					// Determine best match type and score accordingly
+					let score = 0;
+					let matchType = "fuzzy";
+					
+					if (titleMatch === "exact") {
+						score = SCORE.CATEGORY_EXACT_TITLE; matchType = "exact";
+					} else if (titleMatch === "word-exact") {
+						score = SCORE.CATEGORY_WORD_EXACT_TITLE; matchType = "word-exact";
+					} else if (slugMatch === "exact") {
+						score = SCORE.CATEGORY_EXACT_SLUG; matchType = "exact";
+					} else if (paliMatch === "exact") {
+						score = SCORE.CATEGORY_EXACT_PALI; matchType = "exact";
+					} else if (synonymMatch === "exact") {
+						score = SCORE.CATEGORY_EXACT_SYNONYM; matchType = "exact";
+					} else if (synonymMatch === "word-exact") {
+						score = SCORE.CATEGORY_WORD_EXACT_SYNONYM; matchType = "word-exact";
+					} else if (bestTermTitleMatch === "word-exact") {
+						// For multi-word queries: a non-stopword term matches title exactly
+						// Title match scores higher than synonym match
+						score = SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75; matchType = "term-title-exact";
+					} else if (bestTermSynonymMatch === "exact") {
+						// For multi-word queries: a non-stopword term matches synonym exactly
+						// Synonym match scores slightly lower than title match
+						score = (SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75) - 2; matchType = "term-synonym-exact";
+					} else if (titleMatch === "prefix" && canPrefix) {
+						score = SCORE.CATEGORY_PREFIX_TITLE; matchType = "prefix";
+					} else if (slugMatch === "prefix" && canPrefix) {
+						score = SCORE.CATEGORY_PREFIX_SLUG; matchType = "prefix";
+					} else if (paliMatch === "prefix" && canPrefix) {
+						score = SCORE.CATEGORY_PREFIX_PALI; matchType = "prefix";
+					} else if (synonymMatch === "prefix" && canPrefix) {
+						score = SCORE.CATEGORY_PREFIX_SYNONYM; matchType = "prefix";
+					} else if (crossFieldScore > 0) {
+						// Cross-field matching takes precedence over word-prefix/infix
+						score = crossFieldScore; matchType = crossFieldMatchType;
+					} else if ((titleMatch === "word-prefix" || synonymMatch === "word-prefix") && canPrefix) {
+						score = SCORE.CATEGORY_WORD_PREFIX; matchType = "word-prefix";
+					} else if ((titleMatch === "infix" || slugMatch === "infix") && canInfix) {
+						score = SCORE.CATEGORY_INFIX; matchType = "infix";
+					} else if (descriptionMatch === "word-exact") {
+						// Description contains the query as a whole word - medium priority
+						score = SCORE.CATEGORY_DESCRIPTION_WORD || 40; matchType = "description-word";
+					} else if (descriptionMatch === "infix" && canInfix) {
+						// Description contains the query as substring
+						score = SCORE.CATEGORY_DESCRIPTION_INFIX || 28; matchType = "description-infix";
+					} else {
+						// Fuzzy match - only if query length permits
+						if (maxEditDistance === 0) return; // No fuzzy for short queries
+						
+						// Calculate edit distance against title, slug, and synonyms
+						let bestEditDist = Infinity;
+						
+						bestEditDist = Math.min(bestEditDist, minEditDistance(item.title, queryLower));
+						bestEditDist = Math.min(bestEditDist, minEditDistance(item.slug, queryLower));
+						
+						if (item.synonyms) {
+							for (const syn of item.synonyms) {
+								bestEditDist = Math.min(bestEditDist, minEditDistance(syn, queryLower));
+							}
+						}
+						
+						// Filter by max allowed edit distance based on query length
+						if (bestEditDist > maxEditDistance) return;
+						
+						// Score based on edit distance
+						// Edit distance 1: score 25 (decent fuzzy match)
+						// Edit distance 2: score 18 (weak fuzzy match, only for queries >= 8 chars)
+						if (bestEditDist === 1) {
+							score = SCORE.CATEGORY_FUZZY_1;
+							matchType = "fuzzy-1";
+						} else if (bestEditDist === 2) {
+							score = SCORE.CATEGORY_FUZZY_2;
+							matchType = "fuzzy-2";
+						} else {
+							return;
+						}
+					}
+					
+					// Boost score for multi-term queries when more non-stopword terms match
+					// Categories with both terms should rank higher
+					if (isMultiWord && nonStopTerms.length > 1 && categoryNonStopMatches > 1) {
+						const termBonus = (categoryNonStopMatches - 1) * 5;
+						score += termBonus;
+					}
+					
+					// Only count and include items with reasonable score (>= 15)
+					if (score < SCORE.MIN_SCORE) return;
+					
+					// Determine type
+					const isSimile = item.type === "simile";
+					const type: "topic-quality" | "simile" = isSimile ? "simile" : "topic-quality";
+					
+					// Count all results with good scores regardless of filter
+					if (isSimile) {
+						allCounts.similes++;
+					} else {
+						allCounts.topicsQualities++;
+					}
+					
+					// Only add to results if filter is checked
+					if (isSimile && !searchFilters.similes) return;
+					if (!isSimile && !searchFilters.topicsQualities) return;
+					
+					results.push({ type, score, item, matchType, nonStopwordMatches: categoryNonStopMatches });
+				});
+			}
+
+			// Search discourses using existing Fuse.js search
+			// For filter-only queries, we need to get all matching discourses from the index
+			const { performSearch: searchDiscourses, getFilteredDiscourses } = await import("../service/search/search");
+			
+			let discourseResults: any[];
+			if (isFilterOnly) {
+				// Filter-only: get all discourses matching the slug prefix
+				discourseResults = await getFilteredDiscourses(slugPrefixes);
+			} else {
+				// Normal search with query terms
+				discourseResults = await searchDiscourses(effectiveQuery, { highlight: true });
+			}
+			
+			// Get non-stopword terms for multi-term query ranking
+			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
+			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
+			
+			// Process and count discourses - prioritize actual content matches
+			discourseResults.forEach((item, index) => {
+				const itemSlug = (item as any).slug || (item as any).id || "";
+				
+				// Apply slug prefix filter (for non-filter-only queries that may have both ^prefix and search terms)
+				if (hasSlugFilter && !isFilterOnly && !slugMatchesPrefixes(itemSlug, slugPrefixes)) {
+					return; // Skip items that don't match the prefix filter
+				}
+				
+				// Check if title contains the query (full query)
+				const titleMatch = getMatchType(item.title || "", queryLower);
+				const idMatch = getMatchType(itemSlug, queryLower);
+				
+				// For multi-term queries, also check if any non-stopword term matches title
+				let termTitleMatch: MatchType = "none";
+				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
+					const titleLower = (item.title || "").toLowerCase();
+					for (const term of nonStopwordTerms) {
+						// Check each term against title
+						const termMatch = getMatchType(titleLower, term);
+						if (termMatch === "exact" || termMatch === "word-exact") {
+							termTitleMatch = "word-exact";
+							break;
+						} else if ((termMatch === "prefix" || termMatch === "word-prefix") && termTitleMatch === "none") {
+							termTitleMatch = "word-prefix";
+						}
+					}
+				}
+				
+				// Check if description or content actually contains the query
+				const descriptionContains = textContainsQuery(item.description || "", queryLower);
+				const contentContains = item.contentSnippet 
+					? textContainsQuery(item.contentSnippet, queryLower)
+					: false;
+				const hasContentMatch = descriptionContains || contentContains;
+				
+				// Check for whole word matches (higher priority than substring)
+				const descriptionWholeWord = textContainsWholeWord(item.description || "", queryLower);
+				const contentWholeWord = item.contentSnippet 
+					? textContainsWholeWord(item.contentSnippet, queryLower)
+					: false;
+				const hasWholeWordMatch = descriptionWholeWord || contentWholeWord;
+				
+				// Count non-stopword term matches for multi-term queries
+				// Strip annotation text (|visible::tooltip|) before counting
+				let nonStopwordMatches = 0;
+				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
+					const rawText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
+					const combinedText = rawText.replace(/\|(.+?)::[^|]+\|/g, "$1").toLowerCase();
+					nonStopwordMatches = nonStopwordTerms.filter(term => {
+						// Word boundary at start (prefix match: experience matches experiences)
+						const wordPrefixRegex = new RegExp(`\\b${term.toLowerCase()}`, 'i');
+						return wordPrefixRegex.test(combinedText);
+					}).length;
+				}
+				
+				// For multi-term queries, require ALL non-stopword terms to be found somewhere
+				// to get term-title-match bonus. Otherwise it's misleading ranking.
+				const allNonStopTermsFound = nonStopwordMatches === nonStopwordTerms.length;
+				
+				// Get priority from item if available (from search index)
+				const priority = (item as any).priority ?? 1;
+				
+				let score: number;
+				let matchType = "content";
+				
+				// For filter-only queries, assign a base score
+				if (isFilterOnly) {
+					score = SCORE.DISCOURSE_PREFIX_TITLE || 80;
+					matchType = "slug-filter";
+				} else if (titleMatch === "exact" || idMatch === "exact") {
+					score = SCORE.DISCOURSE_EXACT_TITLE; matchType = "exact";
+				} else if (titleMatch === "word-exact") {
+					score = SCORE.DISCOURSE_WORD_EXACT_TITLE; matchType = "word-exact";
+				} else if ((titleMatch === "prefix" || idMatch === "prefix") && canPrefix) {
+					score = SCORE.DISCOURSE_PREFIX_TITLE; matchType = "prefix";
+				} else if (titleMatch === "word-prefix" && canPrefix) {
+					score = SCORE.DISCOURSE_WORD_PREFIX; matchType = "word-prefix";
+				} else if ((termTitleMatch === "word-exact" || termTitleMatch === "word-prefix") && allNonStopTermsFound) {
+					// Multi-term query: one term matches title AND all terms found in content
+					score = SCORE.DISCOURSE_TERM_TITLE_MATCH; matchType = "term-title-match";
+				} else if (titleMatch === "infix" && canInfix) {
+					// Title contains the query as infix
+					score = hasContentMatch ? SCORE.DISCOURSE_INFIX_WITH_CONTENT : SCORE.DISCOURSE_INFIX_NO_CONTENT;
+					matchType = "infix";
+				} else if (hasWholeWordMatch) {
+					// Content/description contains query as a whole word - high priority
+					score = Math.max(SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN, SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE - (index * 0.5));
+					matchType = "content-whole-word";
+				} else if (hasContentMatch) {
+					// Content/description contains query as substring - lower priority
+					score = Math.max(SCORE.DISCOURSE_CONTENT_EXACT_MIN, SCORE.DISCOURSE_CONTENT_EXACT_BASE - (index * 0.5));
+					matchType = "content-substring";
+				} else {
+					// Fuzzy content match only - low priority, may not actually contain the term
+					// Only allow if query is long enough for fuzzy matching
+					if (maxEditDistance === 0) return; // Skip fuzzy for short queries
+					score = Math.max(SCORE.DISCOURSE_CONTENT_FUZZY_MIN, SCORE.DISCOURSE_CONTENT_FUZZY_BASE - (index * 0.5));
+					matchType = "content-fuzzy";
+				}
+				
+				// Boost score for multi-term queries when non-stopword terms match
+				if (hasMultipleTerms && nonStopwordTerms.length > 1 && nonStopwordMatches > 0) {
+					// If ALL non-stopword terms are found, big boost to 70-75 range
+					if (allNonStopTermsFound) {
+						// Ensure score is at least 70 (like CATEGORY_CROSS_FIELD_ALL)
+						score = Math.max(score, 70 + (nonStopwordMatches - 2) * 2);
+					} else if (nonStopwordMatches > 1) {
+						// Partial match: smaller boost
+						score += (nonStopwordMatches - 1) * 5;
+					}
+				}
+				
+				// Only count items with reasonable score
+				if (score < SCORE.MIN_SCORE) return;
+				
+				allCounts.discourses++;
+				
+				// Only add to results if filter is checked
+				if (!searchFilters.discourses) return;
+				
+				results.push({ 
+					type: "discourse", 
+					score, 
+					item, 
+					matchType,
+					priority,
+					nonStopwordMatches 
+				});
+			});
+
+			// Update counts
+			updateResultCounts(allCounts.discourses, allCounts.topicsQualities, allCounts.similes);
+
+			// Apply ranking algorithm
+			const rankedResults = rankResultsWithDiversity(results);
+
+			// Debug logging in dev mode
+			if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+				console.group(`🔍 Search: "${query}"`);
+				console.log(`Total results: ${rankedResults.length}`);
+				console.table(rankedResults.slice(0, 20).map((r, i) => ({
+					rank: i + 1,
+					type: r.type,
+					title: (r.item.title || r.item.name || '').substring(0, 40),
+					score: r.score.toFixed(1),
+					matchType: r.matchType || 'unknown',
+					priority: r.priority || 1,
+					nonStopwordMatches: r.nonStopwordMatches || 0
+				})));
+				console.groupEnd();
+			}
+
+			// Render results
+			const { transformId } = await import("../utils/transformId");
+			renderSearchResults(rankedResults, query, transformId);
+
+		} catch (error) {
+			console.error("Search error:", error);
+			if (searchResultsList) searchResultsList.innerHTML = '<p class="text-center text-gray-500">Search error. Please try again.</p>';
+		}
+	}
+
+	function updateResultCounts(discourses: number, topicsQualities: number, similes: number) {
+		resultCounts = { discourses, topicsQualities, similes };
+		
+		const countDiscourses = widget.querySelector("#count-discourses");
+		const countTopicsQualities = widget.querySelector("#count-topics-qualities");
+		const countSimiles = widget.querySelector("#count-similes");
+		
+		if (countDiscourses) {
+			countDiscourses.textContent = discourses > 0 ? `(${discourses})` : "";
+		}
+		if (countTopicsQualities) {
+			countTopicsQualities.textContent = topicsQualities > 0 ? `(${topicsQualities})` : "";
+		}
+		if (countSimiles) {
+			countSimiles.textContent = similes > 0 ? `(${similes})` : "";
+		}
+	}
+
+	function stripTooltipContext(html: string): string {
+		// Match |visible::tooltip| where visible may contain <mark> tags with classes
+		// Use a non-greedy match for the visible part, stopping at ::
+		return (html || "").replace(/\|(.+?)::[^|]+\|/g, "$1");
+	}
+
+	// Highlight matching terms in text (for slug, title, description, etc.)
+	// For multi-word queries, highlights the FIRST occurrence of each term only
+	function highlightText(text: string, query: string): string {
+		if (!text || !query || query.length < 2) return text;
+		
+		// Split query into terms and get both stopwords and non-stopwords
+		const terms = query.toLowerCase().split(/\s+/).filter(t => t.length >= 2);
+		if (terms.length === 0) return text;
+		
+		// Sort terms: non-stopwords first (they're more important)
+		const sortedTerms = terms.sort((a, b) => {
+			const aStop = isStopword(a) ? 1 : 0;
+			const bStop = isStopword(b) ? 1 : 0;
+			return aStop - bStop;
+		});
+		
+		let result = text;
+		
+		// Highlight first occurrence of each term only
+		for (const term of sortedTerms) {
+			const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+			
+			// Build case-insensitive pattern with diacritic support
+			let pattern = "";
+			for (const char of escaped) {
+				const lower = char.toLowerCase();
+				if ("aeiou".includes(lower)) {
+					const vowelPatterns: Record<string, string> = {
+						'a': '[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄ]',
+						'e': '[eEéÉèÈêÊëËēĒĕĔėĖ]',
+						'i': '[iIíÍìÌîÎïÏīĪĭĬįĮ]',
+						'o': '[oOóÓòÒôÔöÖõÕōŌŏŎőŐ]',
+						'u': '[uUúÚùÙûÛüÜūŪŭŬůŮ]',
+					};
+					pattern += vowelPatterns[lower] || char;
+				} else if (/[a-z]/i.test(char)) {
+					pattern += `[${char.toLowerCase()}${char.toUpperCase()}]`;
+				} else {
+					pattern += char;
+				}
+			}
+			
+			try {
+				// Use word boundary for short terms, allow infix for longer terms
+				const boundaryPattern = term.length < 4 ? `\\b(${pattern})\\b` : `(${pattern})`;
+				const regex = new RegExp(boundaryPattern, "u"); // Note: removed 'g' flag for first match only
+				// Use different highlight color for stopwords (lighter)
+				const markClass = isStopword(term) 
+					? "bg-yellow-50 dark:bg-yellow-950 px-0.5 rounded"
+					: "bg-yellow-100 dark:bg-yellow-900 px-0.5 rounded";
+				result = result.replace(regex, `<mark class="${markClass}">$1</mark>`);
+			} catch {
+				// Skip invalid patterns
+			}
+		}
+		
+		return result;
+	}
+
+	function renderSearchResults(
+		results: ScoredResult[],
+		query: string,
+		transformId: (id: string) => string
+	) {
+		if (!searchResultsList || !searchResultsCount) return;
+
+		if (results.length === 0) {
+			searchResultsList.innerHTML = "";
+			searchResultsCount.textContent = "";
+			if (noResultsEl) noResultsEl.classList.remove("hidden");
+			return;
+		}
+
+		if (noResultsEl) noResultsEl.classList.add("hidden");
+		
+		const total = results.length;
+		searchResultsCount.textContent = `Found ${total} result${total !== 1 ? "s" : ""} for "${query}"`;
+
+		// Create renderer with highlighting function for search results
+		const highlightFn = (text: string) => highlightText(text, query);
+		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded, highlightFn);
+		const PAGE_SIZE = getPageSize(isMobileViewport());
+		
+		// Dev mode flag for debug info
+		const isDevMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+		
+		// Track current display state
+		let currentlyDisplayed = PAGE_SIZE;
+		
+		function renderPage(upToIndex: number) {
+			let html = "";
+			
+			results.forEach((result, index) => {
+				const isHidden = index >= upToIndex;
+				const hiddenClass = isHidden ? "hidden" : "";
+
+				if (result.type === "discourse") {
+					const item = result.item;
+					const slug = item.slug || item.id || "";
+					const title = item.title || "Untitled";
+					const idFormatted = transformId(slug);
+					
+					// Apply highlighting to displayed text
+					const highlightedId = highlightText(idFormatted, query);
+					const highlightedTitle = highlightText(title, query);
+					const highlightedDescription = item.description ? highlightText(item.description, query) : "";
+					
+					const descriptionHtml = highlightedDescription 
+						? `<p class="mt-2 text-text line-clamp-3 text-sm sm:text-base">${highlightedDescription}</p>` 
+						: "";
+					const snippetHtml = item.contentSnippet 
+						? `<p class="mt-2 text-gray-500 dark:text-gray-300 text-sm">${stripTooltipContext(item.contentSnippet)}</p>` 
+						: "";
+
+					// Debug info for DEV mode
+					const debugHtml = isDevMode ? `
+						<div class="debug-score mt-2 text-xs font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded border border-gray-300 dark:border-gray-600">
+							<span class="text-blue-600 dark:text-blue-400">Score: ${result.score.toFixed(1)}</span> |
+							<span class="text-green-600 dark:text-green-400">Type: ${result.matchType || 'unknown'}</span> |
+							<span class="text-purple-600 dark:text-purple-400">Priority: ${result.priority || 1}</span> |
+							<span class="text-orange-600 dark:text-orange-400">NonStop: ${result.nonStopwordMatches || 0}</span>
+						</div>
+					` : "";
+
+					html += `
+						<div class="${hiddenClass}" data-result-index="${index}" data-result-type="discourse">
+							<div class="search-discourse-card" data-search-result>
+								<div class="flex items-start">
+									<div class="min-w-0 pr-4">
+										<h2 class="text-base sm:text-lg font-semibold text-text">
+											<a class="hover:text-link-color id mr-2 font-normal" href="/${slug}">
+												${highlightedId}&nbsp; <span style="color:var(--text-color)">${highlightedTitle}</span>
+											</a>
+										</h2>
+									</div>
+								</div>
+								${descriptionHtml}
+								${snippetHtml}
+								${debugHtml}
+							</div>
+						</div>
+					`;
+				} else {
+					// Topic, Quality, or Simile - use DiscoverRenderer
+					const item = result.item as UnifiedContentItem;
+					const cardHtml = renderer.renderSingleItem(item);
+					
+					// Debug info for DEV mode
+					const debugHtml = isDevMode ? `
+						<div class="debug-score mt-2 text-xs font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded border border-gray-300 dark:border-gray-600">
+							<span class="text-blue-600 dark:text-blue-400">Score: ${result.score.toFixed(1)}</span> |
+							<span class="text-green-600 dark:text-green-400">Type: ${result.matchType || 'unknown'}</span> |
+							<span class="text-purple-600 dark:text-purple-400">Priority: ${result.priority || 1}</span> |
+							<span class="text-orange-600 dark:text-orange-400">NonStop: ${result.nonStopwordMatches || 0}</span>
+						</div>
+					` : "";
+					
+					html += `<div class="${hiddenClass}" data-result-index="${index}" data-result-type="${result.type}">${cardHtml}${debugHtml}</div>`;
+				}
+			});
+
+			// Calculate remaining and format button text
+			const remaining = countRemainingByType(results, upToIndex);
+			
+			// Show More button if needed
+			if (remaining.total > 0) {
+				const remainingText = formatRemainingText(remaining);
+				
+				html += `
+					<div id="show-more-container" class="text-center mt-6">
+						<button id="show-more-btn" class="px-6 py-2 bg-[var(--primary-color)] text-white rounded-lg hover:opacity-90 transition-opacity">
+							Show More (${remainingText})
+						</button>
+					</div>
+				`;
+			}
+			
+			return html;
+		}
+		
+		searchResultsList.innerHTML = renderPage(currentlyDisplayed);
+
+		// Setup Show More button with incremental loading
+		function setupShowMoreButton() {
+			const showMoreBtn = widget.querySelector("#show-more-btn");
+			if (showMoreBtn) {
+				showMoreBtn.addEventListener("click", () => {
+					// Reveal next page of hidden items
+					const nextBatch = Math.min(currentlyDisplayed + PAGE_SIZE, total);
+					
+					// Reveal items from currentlyDisplayed to nextBatch
+					widget.querySelectorAll("[data-result-index]").forEach(el => {
+						const idx = parseInt(el.getAttribute("data-result-index") || "0", 10);
+						if (idx >= currentlyDisplayed && idx < nextBatch) {
+							el.classList.remove("hidden");
+						}
+					});
+					
+					currentlyDisplayed = nextBatch;
+					
+					// Update or remove the Show More button
+					const remaining = countRemainingByType(results, currentlyDisplayed);
+					const container = widget.querySelector("#show-more-container");
+					
+					if (remaining.total <= 0) {
+						if (container) container.remove();
+					} else {
+						const remainingText = formatRemainingText(remaining);
+						const btn = widget.querySelector("#show-more-btn");
+						if (btn) {
+							btn.textContent = `Show More (${remainingText})`;
+						}
+					}
+				});
+			}
+		}
+		
+		setupShowMoreButton();
+	}
+
+	// ==================== EVENT LISTENERS ====================
+	function setupEventListeners() {
+		// Mode switching buttons (only if not search-only)
+		if (!isSearchOnly) {
+			widget.querySelector("#switch-to-search-btn-mobile")?.addEventListener("click", switchToSearchMode);
+			widget.querySelector("#switch-to-search-btn-desktop")?.addEventListener("click", switchToSearchMode);
+			widget.querySelector("#switch-to-browse-btn")?.addEventListener("click", switchToBrowseMode);
+		}
+
+		// Search help toggle
+		searchHelpBtn?.addEventListener("click", () => {
+			searchHelp?.classList.toggle("hidden");
+		});
+
+		// Browse filters (only if not search-only)
+		if (!isSearchOnly) {
+			["browse-filter-topics-qualities", "browse-filter-topics-qualities-desktop"].forEach(id => {
+				widget.querySelector(`#${id}`)?.addEventListener("change", (e) => {
+					browseFilters.topicsQualities = (e.target as HTMLInputElement).checked;
+					syncBrowseCheckboxes("topics-qualities", browseFilters.topicsQualities);
+					renderBrowseResults();
+				});
+			});
+
+			["browse-filter-similes", "browse-filter-similes-desktop"].forEach(id => {
+				widget.querySelector(`#${id}`)?.addEventListener("change", (e) => {
+					browseFilters.similes = (e.target as HTMLInputElement).checked;
+					syncBrowseCheckboxes("similes", browseFilters.similes);
+					renderBrowseResults();
+				});
+			});
+		}
+
+		// Search filters
+		widget.querySelector("#search-filter-discourses")?.addEventListener("change", (e) => {
+			searchFilters.discourses = (e.target as HTMLInputElement).checked;
+			if (searchQuery) performSearch(searchQuery);
+		});
+
+		widget.querySelector("#search-filter-topics-qualities")?.addEventListener("change", (e) => {
+			searchFilters.topicsQualities = (e.target as HTMLInputElement).checked;
+			if (searchQuery) performSearch(searchQuery);
+		});
+
+		widget.querySelector("#search-filter-similes")?.addEventListener("change", (e) => {
+			searchFilters.similes = (e.target as HTMLInputElement).checked;
+			if (searchQuery) performSearch(searchQuery);
+		});
+
+		// Search input
+		searchInput?.addEventListener("input", handleSearchInput);
+		searchInput?.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				if (searchTimeout) clearTimeout(searchTimeout);
+				performSearch(searchInput.value.trim());
+			}
+		});
+
+		// Alphabet links (only if not search-only)
+		if (!isSearchOnly) {
+			widget.querySelectorAll(".alphabet-link").forEach((link) => {
+				link.addEventListener("click", handleAlphabetClick);
+			});
+		}
+
+		// Make post-item cards clickable (delegated event listener)
+		widget.addEventListener("click", (e) => {
+			const target = e.target as HTMLElement;
+			// Don't interfere if clicking on an actual link, button, or input
+			if (target.closest("a") || target.closest("button") || target.closest("input")) {
+				return;
+			}
+			// Check if we clicked on or inside a post-item with data-href
+			const postItem = target.closest(".post-item[data-href]") as HTMLElement;
+			if (postItem) {
+				const href = postItem.dataset.href;
+				if (href) {
+					window.location.href = href;
+				}
+			}
+		});
+	}
+
+	function syncBrowseCheckboxes(type: string, checked: boolean) {
+		const ids = [`browse-filter-${type}`, `browse-filter-${type}-desktop`];
+		ids.forEach((id) => {
+			const el = widget.querySelector(`#${id}`) as HTMLInputElement;
+			if (el) el.checked = checked;
+		});
+	}
+
+	function handleSearchInput(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const value = input.value.trim();
+
+		if (searchTimeout) clearTimeout(searchTimeout);
+		searchTimeout = setTimeout(() => {
+			performSearch(value);
+		}, DEBOUNCE_MS);
+	}
+
+	function handleAlphabetClick(event: Event) {
+		event.preventDefault();
+
+		let button = event.target as HTMLElement;
+		if (!button.hasAttribute("data-letter")) {
+			button = button.closest(".alphabet-link") as HTMLButtonElement;
+		}
+
+		if (!button || (button as HTMLButtonElement).disabled) return;
+
+		const letter = button.getAttribute("data-letter");
+		if (letter) {
+			updateActiveAlphabetLink(letter);
+
+			const targetElement = document.getElementById(`letter-${letter}`);
+			if (targetElement) {
+				const headerOffset = 200;
+				const elementPosition = targetElement.getBoundingClientRect().top;
+				const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+				window.scrollTo({
+					top: offsetPosition,
+					behavior: "smooth",
+				});
+			}
+		}
+	}
+
+	function updateActiveAlphabetLink(activeLetter: string) {
+		widget.querySelectorAll(".alphabet-link").forEach((link) => {
+			const letter = link.getAttribute("data-letter");
+			if (letter === activeLetter) {
+				link.classList.add("alphabet-active");
+			} else {
+				link.classList.remove("alphabet-active");
+			}
+		});
+	}
+
+	// ==================== SCROLL SPY ====================
+	function setupScrollSpy() {
+		if (isSearchOnly) return;
+		
+		// Disconnect existing observer if any
+		if ((window as any).letterObserver) {
+			(window as any).letterObserver.disconnect();
+		}
+		
+		const observerOptions: IntersectionObserverInit = {
+			root: null,
+			rootMargin: "-150px 0px -60% 0px",
+			threshold: [0, 0.25],
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			// Find the topmost visible letter group
+			let topVisible: Element | null = null;
+			let topY = Infinity;
+
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					const rect = entry.boundingClientRect;
+					if (rect.top < topY && rect.top > -100) {
+						topY = rect.top;
+						topVisible = entry.target;
+					}
+				}
+			});
+
+			if (topVisible) {
+				const id = (topVisible as HTMLElement).id;
+				const letter = id.replace("letter-", "");
+				if (letter) {
+					updateActiveAlphabetLink(letter);
+				}
+			}
+		}, observerOptions);
+
+		// Observe all letter groups
+		document.querySelectorAll(".letter-group").forEach((el) => {
+			observer.observe(el);
+		});
+
+		(window as any).letterObserver = observer;
+	}
+
+	// ==================== DEV: SEARCH TESTING ====================
+	// Expose test helpers in dev mode
+	if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+		// Manual test runner - run a single query and return formatted results
+		(window as any).testSearch = async (query: string) => {
+			console.log(`\n🧪 Testing: "${query}"`);
+			
+			// Trigger search
+			if (searchInput) searchInput.value = query;
+			await performSearch(query);
+			
+			console.log('Check console.table output above for results');
+			console.log('Use testSearch("query") to test more queries');
+		};
+
+		// Run all tests from searchTests.ts
+		(window as any).runSearchTests = async () => {
+			const { SEARCH_TESTS } = await import('../utils/searchTests');
+			
+			console.log('🧪 Running search test suite...\n');
+			
+			for (const test of SEARCH_TESTS) {
+				// Run the search
+				if (searchInput) searchInput.value = test.query;
+				
+				// Wait for search to complete
+				await new Promise<void>(resolve => setTimeout(resolve, 300));
+				await performSearch(test.query);
+				
+				// Show test info
+				console.log(`\n📋 Test: ${test.id} - "${test.query}"`);
+				console.log(`   ${test.description}`);
+				console.log(`   Checks: ${test.checks.join(', ')}`);
+				console.log(`   Priority: ${test.priority}`);
+			}
+			
+			console.log('\n✅ Test suite complete. Review results above.');
+		};
+
+		console.log('🔧 Dev mode: Search testing enabled');
+		console.log('   testSearch("query") - Test a single query');
+		console.log('   runSearchTests() - Run full test suite');
+	}
+
+	// ==================== START ====================
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", init, { once: true });
+	} else {
+		init();
+	}
+</script>
