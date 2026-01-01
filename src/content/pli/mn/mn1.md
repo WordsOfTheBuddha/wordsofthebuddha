@@ -1,10 +1,10 @@
 ---
 title: Mūlapariyāya sutta - Root Of All Things
 description: The Buddha explains how the notion of a personal existence emerges from the process of perception. A wide range of phenomena are considered, embracing naturalistic, cosmological and sense experiences. An uninstructed ordinary person interprets experience in terms of a self, while those who have understood the Dhamma have the same experiences without attachment.
-fetter: doubt, personal existence, conceit, ignorance
-tags: perception, conception, delight, Noble Ones, uninstructed ordinary person, noble disciple, arahant, tathāgata, earth, water, fire, air, beings, deities, creator god, Brahmā, gods of Streaming Radiance, gods of Refulgent Glory, gods of Great Fruit, Overlord, base of boundless space, base of boundless consciousness, base of nothingness, base of neither perception nor non-perception, seen, heard, sensed, cognized, unity, diversity, all, Nibbāna, mn, mn1-50, mn1-10
-qualities: perception
+qualities: perception, attachment, unwise attention, perceiving gratification, free from attachment, complete comprehension, personal existence
+theme: wisdom, cultivating discernment
 slug: mn1
+priority: 1.4
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā ukkaṭṭhāyaṁ viharati subhagavane sālarājamūle. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
