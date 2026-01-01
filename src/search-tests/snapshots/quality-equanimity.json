@@ -1,0 +1,264 @@
+{
+  "query": "equanimity",
+  "timestamp": "2025-12-31T12:03:15.692Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "topic-quality",
+      "slug": "equanimity",
+      "title": "Equanimity",
+      "description": "A state of mental poise and balance, characterized by non-reactivity and composure in the face of agreeable or disagreeable experiences.",
+      "pali": [
+        "upekkha"
+      ],
+      "synonyms": [
+        "mental poise",
+        "mental balance",
+        "equipose",
+        "non-reactivity",
+        "composure"
+      ],
+      "score": 100,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "an5.161",
+      "title": "Paṭhama āghātapaṭivinaya sutta - Overcoming Resentment (First)",
+      "description": "Five ways to overcome arisen resentment - 1) loving-kindness, 2) compassion, 3) equanimity, 4) disregarding and non-attention, 5) reflection on kamma.",
+      "contentSnippet": "Bhikkhus, in whoever resentment might arise, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">equanimity</mark> should be cultivated towards that person. Thus, the resentment towards that p",
+      "score": 80,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "an4.126",
+      "title": "Dutiya mettā sutta - Loving-kindness (Second)",
+      "description": "The Buddha shares the four kinds of persons — those who cultivate loving-kindness, compassion, appreciative joy, and equanimity while perceiving drawbacks — and the difference in their rebirths.",
+      "contentSnippet": "Again, bhikkhus, here a certain person abides pervading one direction with a mind imbued with |compassion::mental quality of wise empathy in response to suffering, which counters qualities of harm or ",
+      "score": 79.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "an4.125",
+      "title": "Paṭhama mettā sutta - Loving-kindness (First)",
+      "description": "The Buddha shares the four kinds of persons — those who cultivate loving-kindness, compassion, appreciative joy, and equanimity while perceiving gratification — and the difference in their rebirths.",
+      "contentSnippet": "Again, bhikkhus, here a certain person abides pervading one direction with a mind imbued with |compassion::mental quality of wise empathy in response to suffering, which counters qualities of harm or ",
+      "score": 79,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "mn106",
+      "title": "Āneñjasappāya sutta - Conducive to the Imperturbable",
+      "description": "The Buddha teaches a progressive path of mental refinements to transcend the world, moving through the imperturbable and the formless attainments. He warns Ānanda that even the highest equanimity can ",
+      "contentSnippet": "“Here, Ānanda, a bhikkhu practices in this way: ‘It might not be, and it might not be mine. It will not be, and it will not be mine. What there is, what has come to be—that I abandon.’ Thus he acquire",
+      "score": 78.5,
+      "matchType": "content-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "an7.53",
+      "title": "Nandamātā sutta - Nanda’s Mother",
+      "description": "After the lay disciple Nandamātā is visited by the deity Vessavaṇa, she recounts the event to the venerable Sāriputta. She then lists her seven wonderful and marvelous qualities, including profound eq",
+      "contentSnippet": "“Venerable sir, that is not the only wonderful and marvelous quality of mine. I have another wonderful and marvelous quality. Here, venerable sir, as long as I wish, I can enter and dwell in the first",
+      "score": 78,
+      "matchType": "content-whole-word",
+      "priority": 1.1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "mn99",
+      "title": "Subha sutta - With Subha",
+      "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, ",
+      "contentSnippet": "and with a mind imbued with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">equanimity</mark>::mental poise, mental balance, equipoise, non-reactivity, composure [upekkhā]|, likewise the ",
+      "score": 77.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "an6.13",
+      "title": "Nissāraṇīya sutta - Leading To Release",
+      "description": "The Buddha describes the six releases of mind, through 1) loving-kindness, 2) compassion, 3) appreciative joy, 4) equanimity, 5) the signless, and 6) the uprooting of the conceit “I am\" - that assured",
+      "contentSnippet": "4.) Here moreover, bhikkhus, a bhikkhu might say: ‘I have cultivated and frequently practiced the release of mind through |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">equanimity</mark>",
+      "score": 77,
+      "matchType": "content-whole-word",
+      "priority": 1.5,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "an3.63",
+      "title": "Venāgapura sutta - At Venāgapura",
+      "description": "When a brahmin assumes that the Buddha’s serene faculties and radiant appearance must result from enjoying the finest worldly luxuries, the Buddha explains the true “luxurious and lofty beds” he attai",
+      "contentSnippet": "“Here, brahmin, when I am dwelling in dependence on a village or a town, in the morning I dress, take my bowl and outer robe, and enter that village or town for alms. After the meal, when I have retur",
+      "score": 76.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "iti86",
+      "title": "Dhammānudhammapaṭipanna sutta - Practicing in Accordance with the Dhamma",
+      "description": "It is natural for a practitioner practicing in accordance with the Dhamma to speak and think only in terms of the Dhamma, not in terms of what is not the Dhamma.",
+      "contentSnippet": "“Bhikkhus, for a bhikkhu practicing in accordance with the |Dhamma::teachings of the Buddha that point to the nature of reality, the ultimate truth [dhamma]|, this is the natural way of expressing him",
+      "score": 76,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "snp4.13",
+      "title": "Mahābyūha sutta - The Greater Discourse on the Array of Views",
+      "description": "Among those entrenched in views, arguing “This alone is truth,” the Buddha calls praise won by such to be a small matter. Seeing safety in the ground of non-dispute, the wise do not seek purity by pre",
+      "contentSnippet": "The sage does not |speculate::fabricate, imagine [kappamupeti]| on |concepts::calculations, enumerations; mental constructs that form the basis for self-identity [saṅkhā]|,\nhe is not |a follower of vi",
+      "score": 75.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn46.5",
+      "title": "Bhikkhu sutta - Bhikkhu",
+      "description": "When a bhikkhu asks the Buddha why the factors of awakening are called so, the Buddha gives a simple and direct answer, ‘since they lead to awakening.’",
+      "contentSnippet": "7.) One cultivates the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">equanimity</mark>::the quality of balanced observation, non-reactivity, and mental equipoise as ",
+      "score": 75,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn46.23",
+      "title": "Ṭhāniya sutta - Serving As A Basis",
+      "description": "The Buddha explains how frequently paying attention to certain things can lead to the arising and expansion of hindrances and awakening factors.",
+      "contentSnippet": "7.) By frequently paying attention to the things serving as a basis for the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">equanimity</mark>::the quality of balanced ",
+      "score": 74.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "sn53.1-12",
+      "title": "Jhānādi sutta - Jhānas And Etc.",
+      "description": "The Buddha describes the cultivation of four jhānas as leading to Nibbāna.",
+      "contentSnippet": "with the abandoning of [bodily] pleasure and |pain::discomfort, unpleasantness. In this context, this is referring to bodily pain or sharp sensations. [dukkha]|, and with the prior settling down of |m",
+      "score": 73.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn46.1",
+      "title": "Himavanta sutta - Himalayas",
+      "description": "The Buddha presents a simile of the nāgās, serpent beings, who rely on the Himalayas to nurture their bodies and acquire strength before entering the ocean, as a metaphor for the bhikkhu cultivating t",
+      "contentSnippet": "7.) a bhikkhu cultivates the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">equanimity</mark>::the quality of balanced observation, non-reactivity, and mental equipoi",
+      "score": 73,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn46.14",
+      "title": "Paṭhama gilāna sutta - Illness (First)",
+      "description": "When the venerable Mahākassapa falls gravely ill, the Buddha visits him and teaches him about the seven factors of awakening. This inspired the venerable Mahākassapa to a swift recovery from his illne",
+      "contentSnippet": "The |awakening factor of mindfulness::the quality of mindfulness leading to full awakening, remembering as a factor of enlightenment; first of the seven awakening factors [satisambojjhaṅga]|, Kassapa,",
+      "score": 72.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "an4.100",
+      "title": "Potaliya sutta - Potaliya",
+      "description": "The Buddha shares with Potaliya, the wanderer, the four kinds of persons found existing in the world - 1) one who criticizes the blameworthy, 2) who praises the praiseworthy, 3) who neither criticizes",
+      "contentSnippet": "“There are, sir Gotama, these four kinds of persons found existing in the world. ... Of these four kinds of persons, the one who seems to me the most excellent and the most sublime is the person who n",
+      "score": 72,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn48.10",
+      "title": "Dutiya vibhaṅga sutta - Analysis of Five Faculties (Second)",
+      "description": "The Buddha explains the five faculties of faith, energy, mindfulness, collectedness, and wisdom.",
+      "contentSnippet": "And what, bhikkhus, is the |faculty of collectedness::mental faculty of stability of mind, mental composure [samādhindriya]|? Here, bhikkhus, a disciple of the Noble Ones, having made letting go his b",
+      "score": 71.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "an7.4",
+      "title": "Vitthatabala sutta - Powers in Detail",
+      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "contentSnippet": "And what, bhikkhus, is the power of |collectedness::stability of mind, stillness of mind, mental composure [samādhi]|? Here, bhikkhus, a disciple of the Noble Ones, quite secluded from sensual pleasur",
+      "score": 71,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "snp4.16",
+      "title": "Sāriputta sutta - Sāriputta",
+      "description": "Venerable Sāriputta inquires of the Buddha about how a bhikkhu dwelling in solitude should deal with various challenges and cultivate the path. The Buddha delivers a complete guide for dispelling the ",
+      "contentSnippet": "|With eyes cast down::with lowered gaze [okkhittacakkhu]| and |without wanderlust::not footloose, lit. not with restless feet [na + pādalola]|,\n|engaged in meditation::intent on jhāna [jhānānuyutta]|,",
+      "score": 70.5,
+      "matchType": "content-whole-word",
+      "priority": 1.1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "equanimity",
+      "maxPosition": 3,
+      "reason": "Should find equanimity quality"
+    }
+  ]
+}

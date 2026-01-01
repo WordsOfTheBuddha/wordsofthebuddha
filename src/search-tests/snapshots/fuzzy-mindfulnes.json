@@ -1,0 +1,309 @@
+{
+  "query": "mindfulnes",
+  "timestamp": "2025-12-31T12:03:33.779Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "topic-quality",
+      "slug": "mindfulness-of-body",
+      "title": "Mindfulness of Body",
+      "description": "Mindfulness of body is the practice of grounding awareness in the body as it is—through breathing, posture, activities, anatomical reflection, the elements, and contemplation of decay. Cultivated and ",
+      "pali": [
+        "kāyagatāsati",
+        "kāyānupassanā"
+      ],
+      "synonyms": [
+        "mindfulness of the body",
+        "mindfulness immersed in the body",
+        "mindfulness directed to the body",
+        "contemplation of the body"
+      ],
+      "score": 92,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 2,
+      "type": "topic-quality",
+      "slug": "mindfulness",
+      "title": "Mindfulness",
+      "description": "Remembering to be present with continuous effort, observing the body, feelings, mind, and mental qualities in and of themselves.",
+      "pali": [
+        "sati, anupassanā"
+      ],
+      "synonyms": [
+        "recollecting",
+        "remembering",
+        "keeping in mind",
+        "presence",
+        "awareness"
+      ],
+      "score": 92,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 3,
+      "type": "topic-quality",
+      "slug": "breathing",
+      "title": "Mindfulness of Breath",
+      "description": "Mindfulness while breathing in and out is a practical application of right mindfulness, the seventh factor of the Noble Eightfold Path. This topic encompasses both the step-by-step training process an",
+      "pali": [
+        "ānāpāna",
+        "ānāpānassati",
+        "ānāpānassatisamādhi"
+      ],
+      "synonyms": [
+        "mindfulness while breathing in and out"
+      ],
+      "score": 92,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "mn119",
+      "title": "Kāyagatāsati sutta - Mindfulness of the Body",
+      "description": "The Buddha details a comprehensive training in mindfulness of the body—from breath and postures to anatomical reflection and charnel-ground contemplations. He explains how this cultivation steadies th",
+      "contentSnippet": "Here, bhikkhus, a bhikkhu, having gone to the forest, to the foot of a tree, or to an empty dwelling, sits down, folding his legs crosswise, setting his body upright, establishing <mark class=\"bg-yell",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "topic-quality",
+      "slug": "recollection of death",
+      "title": "Recollection of death",
+      "description": "Keeping in view the certainty and nearness of death. Recollection of death ignites wholesome desire for awakening and sustains uphill vigour against habitual tendencies.",
+      "pali": [
+        "maraṇassati"
+      ],
+      "synonyms": [
+        "mindfulness of death"
+      ],
+      "score": 86,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 6,
+      "type": "topic-quality",
+      "slug": "recollection of the Buddha",
+      "title": "Recollection of the Buddha",
+      "description": "A mental quality of reflecting on the qualities of the Buddha, which counters doubt and strengthens faith.",
+      "pali": [
+        "buddhānussati, buddhānusmṛti"
+      ],
+      "synonyms": [
+        "recollection of Buddha",
+        "mindfulness of the Buddha",
+        "reflection on the qualities of the Buddha"
+      ],
+      "score": 86,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 7,
+      "type": "topic-quality",
+      "slug": "recollection of the Dhamma",
+      "title": "Recollection of the Dhamma",
+      "description": "A mental quality of reflecting on the qualities of the Dhamma, which counters doubt and strengthens faith.",
+      "pali": [
+        "dhammānussati, dhammānusmṛti"
+      ],
+      "synonyms": [
+        "recollection of Dhamma",
+        "mindfulness of the Dhamma",
+        "reflection on the qualities of the Dhamma"
+      ],
+      "score": 86,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "mn10",
+      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
+      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
+      "contentSnippet": "Here, bhikkhus, when the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulnes</mark>s::the quality of mindfulness leading to full awakening, remembering as a fac",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 1.9,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "topic-quality",
+      "slug": "recollection of the Sangha",
+      "title": "Recollection of the Sangha",
+      "description": "A mental quality of reflecting on the qualities of the Saṅgha, which counters doubt and strengthens faith.",
+      "pali": [
+        "saṅghānussati, saṅghānusmṛti"
+      ],
+      "synonyms": [
+        "recollection of Saṅgha",
+        "mindfulness of the Saṅgha",
+        "reflection on the qualities of the Saṅgha"
+      ],
+      "score": 86,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn47.35",
+      "title": "Sati sutta - Mindfulness",
+      "description": "The Buddha explains how a bhikkhu should live with mindfulness and full awareness.",
+      "contentSnippet": "“Bhikkhus, a bhikkhu should dwell with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulnes</mark>s::remembering to be present with continuous effort, observing the body in and of i",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn47.2",
+      "title": "Sati sutta - Mindfulness",
+      "description": "The Buddha explains how a bhikkhu should live with mindfulness and full awareness.",
+      "contentSnippet": "“Bhikkhus, a bhikkhu should dwell with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulnes</mark>s::remembering to be present with continuous effort, observing the body in and of i",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
+      "contentSnippet": "“One factor, bhikkhus, when cultivated and frequently practiced, leads to great urgency ... great benefit ... great safety from bondage ... to <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounde",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "topic-quality",
+      "slug": "wrong mindfulness",
+      "title": "Wrong mindfulness",
+      "description": "Remembering in the wrong way. It holds to the signs of craving and aversion, or attends carefully to what sustains delusion. Such mindfulness appears clear but lacks right view, turning awareness into",
+      "pali": [
+        "micchāsati"
+      ],
+      "synonyms": [],
+      "score": 80,
+      "matchType": "word-prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfuln",
+      "contentSnippet": "In this Saṅgha of bhikkhus, there are bhikkhus who are devoted to the cultivation of the |four establishments of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulnes</mark>s::four fo",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn43.1",
+      "title": "Kāyagatāsati sutta - Mindfulness Directed to the Body",
+      "description": "The Buddha teaches about the unconditioned and the path leading to it.",
+      "contentSnippet": "And what, bhikkhus, is the path leading to the unconditioned? |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Mindfulnes</mark>s directed to the body::awareness immersed in the body, dwel",
+      "score": 85,
+      "matchType": "word-prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn48.10",
+      "title": "Dutiya vibhaṅga sutta - Analysis of Five Faculties (Second)",
+      "description": "The Buddha explains the five faculties of faith, energy, mindfulness, collectedness, and wisdom.",
+      "contentSnippet": "And what, bhikkhus, is the |faculty of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulnes</mark>s::mental faculty of awareness, presence [satindriya]|? Here, bhikkhus, a disciple o",
+      "score": 76.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "an1.616-627",
+      "title": "Amata vagga - The Chapter on the Deathless",
+      "description": "The Buddha explains the importance of mindfulness of the body in partaking in the deathless.",
+      "contentSnippet": "“Bhikkhus, those who do not partake in <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulnes</mark>s of the body do not partake in the |deathless::deathless state, epithet of Nibbāna ",
+      "score": 76,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "ud7.8",
+      "title": "Kaccāna sutta - Kaccāna",
+      "description": "Seeing venerable Mahākaccāna sitting with mindfulness immersed in the body, the Blessed One expresses an inspired verse about mindfulness leading to the cutting of attachment.",
+      "contentSnippet": "Thus have I heard—At one time, the Blessed One was dwelling at Sāvatthi, in Jeta’s grove, Anāthapiṇḍika’s park. Now, at that time, the venerable |Mahākaccāna::foremost disciple of the Buddha in explai",
+      "score": 75.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "iti46",
+      "title": "Sikkhānisaṁsa sutta - With Training as Benefit",
+      "description": "The Buddha advises to live with training as the benefit, wisdom as the north star, liberation as the essence, ruled by mindfulness.",
+      "contentSnippet": "“Bhikkhus, you should live with |practice::training in the precepts, training guidelines [sikkhā]| as the benefit, with |wisdom::distinctive knowledge, discernment [pañña]| as the |north [star]::chief",
+      "score": 75,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "an7.3",
+      "title": "Saṅkhittabala sutta - Powers in Brief",
+      "description": "The Buddha describes the seven powers in brief, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
+      "contentSnippet": "“Bhikkhus, there are these seven powers. What seven? The power of |faith::confidence, conviction, trust [saddha]|, the power of |energy::willpower, determination [vīriya]|, the power of |conscience::i",
+      "score": 74.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "mindfulness",
+      "maxPosition": 5,
+      "reason": "Should fuzzy match"
+    }
+  ]
+}

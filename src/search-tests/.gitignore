@@ -1,0 +1,5 @@
+# Dependencies
+node_modules/
+
+# Reports are generated per-run
+reports/

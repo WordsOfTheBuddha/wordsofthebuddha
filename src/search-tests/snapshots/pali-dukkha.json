@@ -1,0 +1,256 @@
+{
+  "query": "dukkha",
+  "timestamp": "2025-12-31T12:03:23.241Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "topic-quality",
+      "slug": "suffering",
+      "title": "Suffering",
+      "description": "Unpleasantness, discontentment, dissatisfaction, stress, pain, disease, i.e. mild or intense suffering that is inherent in conditioned existence.",
+      "pali": [
+        "dukkha"
+      ],
+      "synonyms": [
+        "discomfort",
+        "unpleasantness",
+        "discontentedness",
+        "dissatisfaction",
+        "stress",
+        "pain",
+        "disease",
+        "distress",
+        "affliction"
+      ],
+      "score": 96,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "an6.75",
+      "title": "Dukkha sutta - Suffering",
+      "description": "Six qualities to dwell in ease, without distress, without anguish - 1) thoughts of relinquishment, 2) non-ill will, 3) non-harming, 4) perceptions of relinquishment, 5) non-ill will, 6) non-harming.",
+      "score": 93,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "iti28",
+      "title": "Dukkhavihāra sutta - Discontented Abiding",
+      "description": "A person endowed with the two qualities of guarding the sense doors and moderation in eating lives with discontentedness in this very life and after death, a bad destination is expected.",
+      "score": 90,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "sn35.148",
+      "title": "Dukkhanibbānasappāya sutta - Discontentment As Suitable For Realizing Nibbāna",
+      "description": "The way of practice suitable for realizing Nibbāna is to see the six sense bases and their objects as sources of discontentment.",
+      "score": 90,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "topic-quality",
+      "slug": "recognition of unsatisfactoriness",
+      "title": "Recognition of unsatisfactoriness",
+      "description": "Perceiving the inherent inadequacy and unreliability of conditioned existence. This recognition loosens craving and the pursuit of lasting satisfaction in what cannot endure.",
+      "pali": [
+        "dukkhasaññā"
+      ],
+      "synonyms": [
+        "perception of unsatisfactoriness",
+        "recognition of discontentment"
+      ],
+      "score": 88,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "sn14.34",
+      "title": "Ekantadukkha sutta - Exclusively Unpleasant",
+      "description": "If the four great elements were exclusively unpleasant, beings would not be infatuated with them. If they were exclusively pleasurable, beings would not become disenchanted with them.",
+      "score": 40,
+      "matchType": "infix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "mn14",
+      "title": "Cūḷadukkhakkhandha sutta - The Shorter Discourse on the Mass of Suffering",
+      "description": "A lay disciple asks the Buddha why greed, aversion, and delusion still occupy and remain in his mind. The Buddha explains the importance of cultivating discernment of the gratification, drawback, and ",
+      "score": 40,
+      "matchType": "infix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "mn13",
+      "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
+      "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
+      "score": 40,
+      "matchType": "infix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "an4.109",
+      "title": "Rukkha sutta - Tree",
+      "description": "The Buddha describes four kinds of people based on their ethical conduct and the qualities of their associates, comparing them to trees made of softwood or heartwood and surrounded by softwood or hear",
+      "score": 27,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "an5.157",
+      "title": "Dukkathā sutta - Difficult Discussions",
+      "description": "Five types of persons for whom specific discussions are difficult, and five types of persons for whom specific discussions are pleasant.",
+      "score": 26.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn12.55",
+      "title": "Mahārukkha sutta - Great Tree",
+      "description": "Using the simile of a great tree nourished by sap, the Buddha explains that perceiving gratification in graspable objects fuels craving and perpetuates suffering, whereas seeing their drawbacks leads ",
+      "score": 26,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn35.241",
+      "title": "Paṭhama dārukkhandhopama sutta - Simile of the Wooden Log (First)",
+      "description": "The Buddha uses the simile of a log of wood carried by a river to explain the eight obstacles to reaching Nibbāna.",
+      "score": 25.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn38.16",
+      "title": "Dukkarapañhā sutta - Questions on What is Difficult to Do",
+      "description": "Ven. Sāriputta answers the question of what is difficult to do in the teaching and discipline, and what is difficult for one who has gone forth.",
+      "score": 25,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "sn1.59",
+      "title": "Dutiya sutta - Companion",
+      "description": "A deity asks the Buddha what serves as a person‘s companion, what instructs him, and delighting in what is a mortal freed from all suffering.",
+      "score": 24.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn1.55",
+      "title": "Paṭhama jana sutta - Gives Rise To (First)",
+      "description": "A deity asks the Buddha what gives rise to a person, what does he have that wanders about, what experiences cyclic existence, and what is this person‘s great fear.",
+      "score": 24,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn36.2",
+      "title": "Sukha sutta - Pleasant",
+      "description": "Seeing the vanishing nature of the experience that arises with each contact—whether felt as pleasant, painful, or as neither-painful-nor-pleasant—one becomes dispassionate towards it.",
+      "score": 23.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn1.56",
+      "title": "Dutiya jana sutta - Gives Rise To (Second)",
+      "description": "A deity asks the Buddha what gives rise to a person, what does he have that wanders about, what experiences cyclic existence, and from what is this person not yet freed.",
+      "score": 23,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "an7.48",
+      "title": "Paṭhama saññā sutta - Perceptions (First)",
+      "description": "Seven perceptions, of 1) unattractiveness, 2) death, 3) unpleasantness of food, 4) non-delight in the whole world, 5) impermanence, 6) unsatisfactoriness in impermanence, and 7) not-self in unsatisfac",
+      "score": 22.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "iti7",
+      "title": "Sabbapariññā sutta - Completely Comprehending Everything",
+      "description": "One is incapable of ending suffering without directly knowing and completely comprehending everything, without the mind detaching from it and without abandoning it. One is capable of ending suffering ",
+      "score": 22,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "iti16",
+      "title": "Paṭhama sekha sutta - Trainee (First)",
+      "description": "There is no other single factor as helpful as wise attention for a trainee bhikkhu who is aspiring for the highest goal.",
+      "score": 21.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "suffering",
+      "maxPosition": 3,
+      "reason": "dukkha = suffering"
+    }
+  ]
+}

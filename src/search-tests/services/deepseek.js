@@ -1,0 +1,177 @@
+/**
+ * DeepSeek API service for AI-powered search evaluation
+ */
+
+import "dotenv/config";
+
+const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
+
+/**
+ * Call DeepSeek API with a prompt
+ */
+export async function callDeepSeek(prompt, options = {}) {
+	const apiKey = process.env.DEEPSEEK_API_KEY;
+	if (!apiKey) {
+		throw new Error("DEEPSEEK_API_KEY not set in environment");
+	}
+
+	const {
+		model = "deepseek-chat",
+		temperature = 0.3,
+		maxTokens = 2000,
+	} = options;
+
+	const response = await fetch(DEEPSEEK_API_URL, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${apiKey}`,
+		},
+		body: JSON.stringify({
+			model,
+			messages: [{ role: "user", content: prompt }],
+			temperature,
+			max_tokens: maxTokens,
+		}),
+	});
+
+	if (!response.ok) {
+		const error = await response.text();
+		throw new Error(`DeepSeek API error: ${response.status} - ${error}`);
+	}
+
+	const data = await response.json();
+	return data.choices[0].message.content;
+}
+
+/**
+ * Evaluate search results quality using DeepSeek
+ */
+export async function evaluateSearchResults(query, results, rules) {
+	const prompt = buildEvaluationPrompt(query, results, rules);
+
+	const response = await callDeepSeek(prompt, {
+		temperature: 0.2,
+		maxTokens: 1500,
+	});
+
+	return parseEvaluationResponse(response);
+}
+
+/**
+ * Build the evaluation prompt for DeepSeek
+ */
+function buildEvaluationPrompt(query, results, rules) {
+	const resultsText = results
+		.slice(0, 15)
+		.map((r, i) => {
+			return `#${i + 1} | ${r.type} | Score: ${r.score} | ${r.matchType}
+    Title: ${r.title}
+    Slug: ${r.slug}
+    ${r.description ? `Desc: ${r.description.substring(0, 150)}...` : ""}
+    ${r.pali ? `Pali: ${r.pali.join(", ")}` : ""}
+    ${r.synonyms ? `Synonyms: ${r.synonyms.join(", ")}` : ""}
+    NonStopMatches: ${r.nonStopwordMatches || 0}`;
+		})
+		.join("\n\n");
+
+	return `You are evaluating search ranking quality for a Buddhist scripture search engine.
+
+## Query: "${query}"
+
+## Search Ranking Rules
+${rules}
+
+## Results (Top 15)
+${resultsText}
+
+## Evaluation Task
+
+Analyze these search results and provide:
+
+1. **Quality Score (1-10)**: How well do results match the query intent?
+2. **Ranking Assessment**: Are items in the right order?
+3. **Issues Found**: Any bugs or unexpected rankings?
+4. **Suggestions**: How could ranking be improved?
+
+Respond in this JSON format:
+{
+  "qualityScore": <1-10>,
+  "assessment": "<brief assessment>",
+  "issues": [
+    { "rank": <position>, "slug": "<slug>", "issue": "<description>" }
+  ],
+  "suggestions": ["<suggestion1>", "<suggestion2>"],
+  "verdict": "PASS" | "REVIEW" | "FAIL"
+}
+
+Focus on:
+- Is the top result what a user would expect?
+- Are multi-term queries finding items with ALL terms?
+- Are Pali terms matching correctly?
+- Is diversity working (mixing topics/discourses)?
+- Are there clearly wrong results in top positions?`;
+}
+
+/**
+ * Parse the AI evaluation response
+ */
+function parseEvaluationResponse(response) {
+	try {
+		// Extract JSON from response (may have markdown code blocks)
+		const jsonMatch = response.match(/\{[\s\S]*\}/);
+		if (jsonMatch) {
+			return JSON.parse(jsonMatch[0]);
+		}
+
+		// If no JSON found, return a structured error
+		return {
+			qualityScore: 0,
+			assessment: "Failed to parse AI response",
+			issues: [],
+			suggestions: [],
+			verdict: "REVIEW",
+			rawResponse: response,
+		};
+	} catch (error) {
+		return {
+			qualityScore: 0,
+			assessment: `Parse error: ${error.message}`,
+			issues: [],
+			suggestions: [],
+			verdict: "REVIEW",
+			rawResponse: response,
+		};
+	}
+}
+
+/**
+ * Get the ranking rules as a string for the prompt
+ */
+export function getRankingRulesText() {
+	return `
+### Score Hierarchy (Higher = Better)
+
+**Categories (Topics, Qualities, Similes):**
+- exact-title: 100 (query exactly matches title)
+- word-exact-title: 97 (query is a word within title)
+- exact-slug: 98, exact-pali: 96, exact-synonym: 94
+- prefix-*: 86-92 (query is prefix of field)
+- cross-field-title: 75 (multi-term: all terms found + one in title)
+- cross-field-all: 70 (multi-term: all terms found across fields)
+- description-word: 40 (query as whole word in description)
+- infix: 35, cross-field-partial: 30, fuzzy: 18-25
+
+**Discourses:**
+- exact-title: 95, word-exact-title: 93
+- prefix-title: 90, word-prefix: 85
+- term-title-match: 82 (multi-term: one term in title + ALL terms in content)
+- content-whole-word: 60-80, content-substring: 45-65
+- content-fuzzy: 15-30
+
+### Key Rules
+1. For multi-term queries, ALL non-stopword terms should be found
+2. Stopwords (the, a, is, in, of...) are filtered out
+3. After 3 same-type results, different types get diversity boost
+4. Priority and nonStopwordMatches break ties`;
+}

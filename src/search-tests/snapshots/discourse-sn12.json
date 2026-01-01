@@ -1,0 +1,235 @@
+{
+  "query": "sn 12",
+  "timestamp": "2025-12-31T12:02:59.986Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "discourse",
+      "slug": "sn12.59",
+      "title": "Viññāṇa sutta - Consciousness",
+      "description": "When one dwells perceiving enjoyment in things that are the basis for fetters, there is a descent of consciousness. When one dwells perceiving the drawback in things that are the basis for fetters, th",
+      "score": 30,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "sn12.38",
+      "title": "Cetanā sutta - Intending",
+      "description": "Intending, planning, and underlying tendencies are the basis for the continuation of consciousness.",
+      "score": 29.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "sn22.12",
+      "title": "Anicca sutta - Impermanence",
+      "description": "Because the five aggregates are impermanent, the well-studied disciple of the Noble Ones becomes disenchanted with form, felt experience, perception, intentional constructs, and consciousness.",
+      "score": 29,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "snp5.12",
+      "title": "Bhadrāvudhamāṇavapucchā - Questions of Bhadrāvudha",
+      "description": "Responding to Bhadrāvudha’s request to teach the gathered crowd, the Buddha warns that Māra pursues beings through the very things they cling to. He instructs the mindful bhikkhu to dispel all acquisi",
+      "score": 28.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "sn12.21",
+      "title": "Dasabala sutta - Ten Powers",
+      "description": "Endowed with ten powers and four assurances, the Buddha reveals the impermanence of the five aggregates and teaches dependent co-arising.",
+      "score": 28,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "sn12.22",
+      "title": "Dutiyadasabala sutta - Ten Powers (Second)",
+      "description": "The Buddha, endowed with the ten powers and four assurances, reveals the impermanence of the five aggregates and teaches dependent co-arising. He then urges the bhikkhus to practice with diligence for",
+      "score": 27.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "sn12.3",
+      "title": "Paṭipadā sutta - Ways Of Practice",
+      "description": "The Buddha explains the wrong way of practice as that which leads to the arising of suffering, and the right way of practice as that which leads to the end of suffering.",
+      "score": 27,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "sn12.19",
+      "title": "Bālapaṇḍita sutta - The Wise And The Immature",
+      "description": "The Buddha explains the similarities and the differences between the wise and the immature persons through dependent co-arising.",
+      "score": 26.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "sn12.1",
+      "title": "Paṭiccasamuppāda sutta - Dependent Co-Arising",
+      "description": "The Buddha explains the twelve links of dependent co-arising, and how there is an arising and ending of the whole mass of suffering.",
+      "score": 26,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn12.15",
+      "title": "Kaccānagotta sutta - With Kaccānagotta",
+      "description": "Venerable Kaccānagotta asks the Buddha about right view, and the Buddha explains how the world depends on a duality of existence and non-existence, and how the Tathāgata teaches the Dhamma by the midd",
+      "score": 25.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn12.46",
+      "title": "Aññatarabrāhmaṇa sutta - A Certain Brahmin",
+      "description": "A brahmin asks the Buddha whether the one who acts is the same as the one who experiences the result. The Buddha points these as two extreme views, and without approaching either, explains the arising",
+      "score": 25,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn12.12",
+      "title": "Moḷiyaphagguna sutta - With Moḷiyaphagguna",
+      "description": "The Buddha explains dependent co-arising as a process rather than an agentive sequence.",
+      "score": 24.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn12.11",
+      "title": "Āhāra sutta - Nutriment",
+      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
+      "score": 24,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "sn12.20",
+      "title": "Paccaya sutta - Dependence",
+      "description": "The Buddha teaches about dependent co-arising and the phenomena arisen from dependent co-arising. A noble disciple who has thoroughly seen this with right wisdom will no longer be doubtful about who t",
+      "score": 23.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn12.44",
+      "title": "Loka sutta - World",
+      "description": "The Buddha explains the arising and dissolution of the world through the six sense bases.",
+      "score": 23,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn12.62",
+      "title": "Dutiya assutavā sutta - Uninstructed (Second)",
+      "description": "The Buddha explains that while one can become detached from the decaying body, it is harder to detach from the mind, which is far more fleeting. He illustrates the principle of dependent co-arising wi",
+      "score": 22.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn12.33",
+      "title": "Ñāṇavatthu sutta - Basis of Knowledge",
+      "description": "The Buddha describes the forty-four bases of knowledge by understanding.",
+      "score": 22,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn12.61",
+      "title": "Assutavā sutta - Uninstructed",
+      "description": "The Buddha contrasts the body’s visible decay with the mind’s instability, which is clung to as ‘self’, comparing it to a restless monkey jumping between branches. He teaches that wisdom arises from u",
+      "score": 21.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "sn35.124",
+      "title": "Vesālī sutta - At Vesāli",
+      "description": "The Buddha answers the householder Ugga’s question on the causes and supporting conditions whereby some beings do not attain Nibbāna in this very life and some beings do attain Nibbāna in this very li",
+      "score": 21,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "sn12.65",
+      "title": "Nagara sutta - The City",
+      "description": "The Buddha recounts how he attained full awakening by examining the principle of dependent co-arising. He likens this realization to a man discovering an ancient, forgotten city.",
+      "score": 20.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slugPrefix": "sn12",
+      "maxPosition": 10,
+      "reason": "Should find SN 12 discourses"
+    }
+  ]
+}

@@ -1,0 +1,262 @@
+{
+  "query": "noble eightfold path",
+  "timestamp": "2025-12-31T12:02:49.465Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "discourse",
+      "slug": "noble-truths-noble-path",
+      "title": "Noble Truths, Noble Path",
+      "description": "The heart essence of the Buddha’s original teachings",
+      "contentSnippet": "##### 5.3. The <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Eightfold</mark> <mark class=\"bg-yellow-100 dark:bg-",
+      "score": 92,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "dhp273-289",
+      "title": "Magga vagga - Chapter 20 - The Path",
+      "description": "Dhammapada verses 273–289 emphasize the eightfold path as the foremost way to liberation, seeing the impermanent, unsatisfactory, and not-self nature of all things. Further, the verses mention the rel",
+      "contentSnippet": "Of all the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">path</mark>s, the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">eightfold</mark> <mark class=\"bg-yellow-100 dark:bg",
+      "score": 92,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "sn45.91",
+      "title": "Paṭhama pācīnaninna sutta - Slanting Eastwards (First)",
+      "description": "A bhikkhu who develops and cultivates the Noble Eightfold Path slants, slopes, and inclines towards Nibbāna.",
+      "contentSnippet": "And how does a bhikkhu who develops and extensively cultivates the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">",
+      "score": 89.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 4,
+      "type": "topic-quality",
+      "slug": "breathing",
+      "title": "Mindfulness of Breath",
+      "description": "Mindfulness while breathing in and out is a practical application of right mindfulness, the seventh factor of the Noble Eightfold Path. This topic encompasses both the step-by-step training process an",
+      "pali": [
+        "ānāpāna",
+        "ānāpānassati",
+        "ānāpānassatisamādhi"
+      ],
+      "synonyms": [
+        "mindfulness while breathing in and out"
+      ],
+      "score": 80,
+      "matchType": "cross-field-all",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "sn45.35",
+      "title": "Paṭhama sāmañña sutta - Spiritual Life (First)",
+      "description": "The noble eightfold path is the spiritual life. The fruits of the spiritual life are stream-entry, once-returning, non-returning, and arahantship.",
+      "contentSnippet": "“What, bhikkhus, is the |spiritual life::ascetic life, monkhood [sāmañña]|? It is this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">noble</mark> <mark class=\"bg-yellow-100 dark:bg-yello",
+      "score": 89,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "sn38.1",
+      "title": "Nibbānapañhā sutta - A Question On Nibbāna",
+      "description": "The Noble Eightfold Path is the path and the way for the realization of Nibbāna.",
+      "contentSnippet": "“Friend, this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Eightfold</mark> <mark class=\"bg-yellow-100 dark:bg-y",
+      "score": 88.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "sn38.2",
+      "title": "Arahattapañhā sutta - Questions on Awakening",
+      "description": "The Noble Eightfold Path is the path and the way of practice for the realization of awakening.",
+      "contentSnippet": "“Friend, this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Eightfold</mark> <mark class=\"bg-yellow-100 dark:bg-y",
+      "score": 88,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "sn45.63",
+      "title": "Kalyāṇamitta sutta - Good Friend",
+      "description": "Good friendship is greatly beneficial for the arising, development and extensive cultivation of the Noble Eightfold Path.",
+      "contentSnippet": "One thing, bhikkhus, is greatly beneficial for the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">E",
+      "score": 87.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "sn45.49",
+      "title": "Kalyāṇamitta sutta - Good Friend",
+      "description": "The Buddha explains the importance of good friendship in the development and cultivation of the noble eightfold path.",
+      "contentSnippet": "“Bhikkhus, just as the dawn precedes and predicts the rising of the sun, so too does good friendship precede and predict the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">",
+      "score": 87,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn45.55",
+      "title": "Yonisomanasikārasampadā sutta - Accomplishment in Wise Attention",
+      "description": "The Buddha explains the importance of accomplishment in wise attention in the development and cultivation of the noble eightfold path.",
+      "contentSnippet": "“Bhikkhus, just as the dawn precedes and predicts the rising of the sun, so too does accomplishment in wise attention precede and predict the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-9",
+      "score": 86.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn45.50-54",
+      "title": "Sīlasampadādi suttapañcaka - Five Discourses Beginning With Accomplishment in Virtue",
+      "description": "The Buddha explains the importance of accomplishment in virtue, aspiration, self-development, view, and diligence in the development and cultivation of the noble eightfold path.",
+      "contentSnippet": "“Just as, bhikkhus, the forerunner and the precursor of the sunrise is the dawn; so too, bhikkhus, the forerunner and precursor for the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-",
+      "score": 84,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn45.171",
+      "title": "Ogha sutta - Flood",
+      "description": "The four floods of sensual pleasures, continued existence, views, and ignorance are described in brief. The Noble Eightfold Path is the way to directly knowing, full understanding, complete exhaustion",
+      "contentSnippet": "Bhikkhus, for the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete exhaustion::gradual and complete wearing away [parikkh",
+      "score": 83,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn45.64-68",
+      "title": "Sīlasampadādi suttapañcaka - Five Discourses Beginning With Accomplishment in Virtue",
+      "description": "The Buddha explains the importance of accomplishment in virtue, aspiration, self-development, view, and diligence in the development and cultivation of the noble eightfold path.",
+      "contentSnippet": "“One thing, bhikkhus, is greatly beneficial for the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">",
+      "score": 82.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "sn45.172",
+      "title": "Yoga sutta - Bond",
+      "description": "The four bonds of sensual pleasures, continued existence, views, and ignorance are described in brief. The Noble Eightfold Path is the way to directly knowing, full understanding, complete exhaustion,",
+      "contentSnippet": "Bhikkhus, for the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete exhaustion::gradual and complete wearing away [parikkh",
+      "score": 82,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn45.141-145",
+      "title": "Kūṭādi sutta - Beginning with Peak",
+      "description": "The Buddha uses similes of a building with the peaked roof, fragrances, and regional kings to illustrate the importance of diligence in developing the Noble Eightfold Path.",
+      "contentSnippet": "And how, bhikkhus, does a diligent bhikkhu develop and extensively cultivate the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 ",
+      "score": 81.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn45.3",
+      "title": "Sāriputta sutta - Sāriputta",
+      "description": "When Sāriputta says that good friendship is the whole of the spiritual life, the Buddha agrees, explaining that good friendship is the basis for the development of the Noble Eightfold Path.",
+      "contentSnippet": "“Excellent, excellent, Sāriputta. The whole of this spiritual life is this — good friendship, good companionship, good association. It can be expected, Sāriputta, that a bhikkhu with good friends, com",
+      "score": 81,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn45.8",
+      "title": "Vibhaṅga sutta - Analysis",
+      "description": "The Buddha explains in detail each factor of the noble eightfold path—right view, right intention, right speech, right action, right livelihood, right effort, right mindfulness, and right collectednes",
+      "contentSnippet": "“Bhikkhus, I will teach the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">noble</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">eightfold</mark> <mark class=\"bg-yellow",
+      "score": 80.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn45.176",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five cords of sensu",
+      "contentSnippet": "Bhikkhus, for the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete exhaustion::gradual and complete wearing away [parikkh",
+      "score": 80,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that ‘This is the truth’ are described in brief. The Noble Eightfold Path is the way for di",
+      "contentSnippet": "Bhikkhus, for the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete exhaustion::gradual and complete wearing away [parikkh",
+      "score": 79,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "sn45.177",
+      "title": "Nīvaraṇa sutta - Hindrances",
+      "description": "The five hindrances - 1) sensual desire, 2) ill will, 3) dullness and drowsiness, 4) restlessness and worry, and 5) doubt - are described in brief. The Noble Eightfold Path is the way for direct knowl",
+      "contentSnippet": "For the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete exhaustion::gradual and complete wearing away [parikkhaya]|, and",
+      "score": 78.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "titleContains": "path",
+      "maxPosition": 5,
+      "reason": "Should find discourses about the path"
+    }
+  ]
+}

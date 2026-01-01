@@ -1,0 +1,351 @@
+{
+	"version": "1.0.0",
+	"description": "Representative search queries for testing ranking quality",
+	"queries": [
+		{
+			"id": "single-craving",
+			"query": "craving",
+			"category": "single-word",
+			"description": "Basic topic search",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "craving",
+					"position": 1,
+					"reason": "Exact topic match should be #1"
+				},
+				{
+					"type": "has",
+					"slug": "self-making",
+					"maxPosition": 10,
+					"reason": "Related topic via description"
+				}
+			]
+		},
+		{
+			"id": "single-suffering",
+			"query": "suffering",
+			"category": "single-word",
+			"description": "Core Buddhist concept",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "suffering",
+					"position": 1,
+					"reason": "Exact topic match"
+				}
+			]
+		},
+		{
+			"id": "single-mindfulness",
+			"query": "mindfulness",
+			"category": "single-word",
+			"description": "Practice-related topic",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mindfulness",
+					"position": 1,
+					"reason": "Exact topic match"
+				}
+			]
+		},
+		{
+			"id": "pali-tanha",
+			"query": "tanha",
+			"category": "pali",
+			"description": "Pali term for craving",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "craving",
+					"maxPosition": 3,
+					"reason": "Should match via Pali field"
+				}
+			]
+		},
+		{
+			"id": "pali-jhana",
+			"query": "jhana",
+			"category": "pali",
+			"description": "Pali meditation term",
+			"assertions": [
+				{
+					"type": "has",
+					"titleContains": "jhāna",
+					"maxPosition": 5,
+					"reason": "Should match jhāna topics"
+				}
+			]
+		},
+		{
+			"id": "multi-craving-in",
+			"query": "craving in",
+			"category": "stopword-handling",
+			"description": "Query with stopword - should not break search",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "craving",
+					"maxPosition": 5,
+					"reason": "Stopword 'in' should be ignored, craving topic in top 5"
+				}
+			]
+		},
+		{
+			"id": "multi-exhaust-craving",
+			"query": "exhaust craving",
+			"category": "multi-term",
+			"description": "Both terms should be found for high ranking",
+			"assertions": [
+				{
+					"type": "has",
+					"titleContains": "Exhaustion",
+					"titleContains2": "Craving",
+					"maxPosition": 3,
+					"reason": "MN 38 has both terms"
+				},
+				{
+					"type": "not",
+					"slug": "an10.90",
+					"maxPosition": 3,
+					"reason": "AN 10.90 only has 'exhaust', not 'craving'"
+				}
+			]
+		},
+		{
+			"id": "multi-noble-eightfold",
+			"query": "noble eightfold path",
+			"category": "multi-term",
+			"description": "Multi-word search for discourses about the path",
+			"assertions": [
+				{
+					"type": "has",
+					"titleContains": "path",
+					"maxPosition": 5,
+					"reason": "Should find discourses about the path"
+				}
+			]
+		},
+		{
+			"id": "multi-four-noble",
+			"query": "four noble truths",
+			"category": "multi-term",
+			"description": "Multi-word search for discourses about the truths",
+			"assertions": [
+				{
+					"type": "has",
+					"titleContains": "truths",
+					"maxPosition": 5,
+					"reason": "Should find discourses about the truths"
+				}
+			]
+		},
+		{
+			"id": "multi-dependent-origination",
+			"query": "dependent origination",
+			"category": "multi-term",
+			"description": "Multi-word search for discourses about dependent origination",
+			"assertions": [
+				{
+					"type": "has",
+					"titleContains": "dependent",
+					"maxPosition": 5,
+					"reason": "Should find discourses about dependent co-arising"
+				}
+			]
+		},
+		{
+			"id": "discourse-mn38",
+			"query": "mn 38",
+			"category": "discourse-id",
+			"description": "Search by discourse ID",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn38",
+					"maxPosition": 3,
+					"reason": "Should find by ID"
+				}
+			]
+		},
+		{
+			"id": "discourse-sn12",
+			"query": "sn 12",
+			"category": "discourse-id",
+			"description": "Search by collection prefix",
+			"assertions": [
+				{
+					"type": "has",
+					"slugPrefix": "sn12",
+					"maxPosition": 10,
+					"reason": "Should find SN 12 discourses"
+				}
+			]
+		},
+		{
+			"id": "pali-akuppa",
+			"query": "akuppa",
+			"category": "pali-diacritics",
+			"description": "Pali term that may have diacritics - akuppā cetovimutti",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "liberation",
+					"maxPosition": 5,
+					"reason": "Liberation topic has akuppā in Pali field"
+				}
+			]
+		},
+		{
+			"id": "short-self",
+			"query": "self",
+			"category": "short-query",
+			"description": "Short 4-char query - limited matching",
+			"assertions": [
+				{
+					"type": "has",
+					"slugPrefix": "self",
+					"maxPosition": 5,
+					"reason": "Should find self-related topics"
+				}
+			]
+		},
+		{
+			"id": "simile-fire",
+			"query": "fire simile",
+			"category": "simile",
+			"description": "Searching for similes",
+			"assertions": [
+				{
+					"type": "hasType",
+					"resultType": "simile",
+					"maxPosition": 10,
+					"reason": "Should include simile results"
+				}
+			]
+		},
+		{
+			"id": "quality-equanimity",
+			"query": "equanimity",
+			"category": "quality",
+			"description": "Quality/state search",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "equanimity",
+					"maxPosition": 3,
+					"reason": "Should find equanimity quality"
+				}
+			]
+		},
+		{
+			"id": "multi-wrong-effort",
+			"query": "wrong effort",
+			"category": "multi-term",
+			"description": "Multi-word topic",
+			"assertions": [
+				{
+					"type": "has",
+					"titleContains": "Wrong effort",
+					"maxPosition": 3,
+					"reason": "Should match topic name"
+				}
+			]
+		},
+		{
+			"id": "pali-dukkha",
+			"query": "dukkha",
+			"category": "pali",
+			"description": "Common Pali term",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "suffering",
+					"maxPosition": 3,
+					"reason": "dukkha = suffering"
+				}
+			]
+		},
+		{
+			"id": "multi-ending-craving",
+			"query": "ending craving",
+			"category": "multi-term",
+			"description": "Should find Ending topic and craving-related content",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "ending",
+					"maxPosition": 5,
+					"reason": "Should find Ending topic"
+				}
+			]
+		},
+		{
+			"id": "fuzzy-mindfulnes",
+			"query": "mindfulnes",
+			"category": "fuzzy",
+			"description": "Typo - missing 's'",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mindfulness",
+					"maxPosition": 5,
+					"reason": "Should fuzzy match"
+				}
+			]
+		},
+		{
+			"id": "multi-craving-experience",
+			"query": "craving experience",
+			"category": "multi-term",
+			"description": "Both terms must be found for high ranking. ITI 53 has both, ITI 58/52 have only one",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "craving",
+					"maxPosition": 5,
+					"reason": "Topic with both terms in description should rank high"
+				},
+				{
+					"type": "has",
+					"slug": "iti53",
+					"maxPosition": 5,
+					"reason": "ITI 53 has both terms in content"
+				},
+				{
+					"type": "has",
+					"slug": "sn1.55",
+					"maxPosition": 50,
+					"reason": "SN 1.55 has both 'craving' and 'experience' in content"
+				},
+				{
+					"type": "hasBefore",
+					"slugA": "iti53",
+					"slugB": "iti58",
+					"reason": "ITI 53 (both terms) should rank above ITI 58 (only craving)"
+				}
+			]
+		},
+		{
+			"id": "multi-craving-is",
+			"query": "craving is",
+			"category": "stopword-handling",
+			"description": "Query with stopword - Craving topic should rank above Self Erasure",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "craving",
+					"maxPosition": 5,
+					"reason": "Craving topic should be in top 5"
+				},
+				{
+					"type": "hasBefore",
+					"slugA": "craving",
+					"slugB": "self-erasure",
+					"reason": "Craving (title match) should rank above Self Erasure (synonym match)"
+				}
+			]
+		}
+	]
+}

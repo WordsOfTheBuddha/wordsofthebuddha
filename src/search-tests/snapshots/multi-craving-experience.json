@@ -1,0 +1,397 @@
+{
+  "query": "craving experience",
+  "timestamp": "2025-12-31T12:03:38.581Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "discourse",
+      "slug": "iti53",
+      "title": "Dutiya vedan sutta - Felt Experiences (Second)",
+      "description": "The Buddha describes how to see the three felt experiences that are experienced on contact through the sense doors - pleasant, painful, and neither-painful-nor-pleasant.",
+      "contentSnippet": "“There are these three |felt <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">experience</mark>s::pleasant, neutral, or painful sensation, feeling felt on contact through eye, ear, nose, to",
+      "score": 87,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "dhp334-359",
+      "title": "Taṇhā vagga - Chapter 24 - Craving",
+      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
+      "contentSnippet": "Beings, beset by |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>::wanting, desire, lit. thirst [tasiṇā]|,\nwriggle like a trapped hare;\nBound fast by mental fetters,\nthey <m",
+      "score": 87,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 3,
+      "type": "topic-quality",
+      "slug": "craving",
+      "title": "Craving",
+      "description": "A driving ‘thirst’ that reaches out toward experiences, identities, or outcomes as the place to find satisfaction—“if only I had that.” It spins stories of lack, binds the mind to becoming, and invari",
+      "pali": [
+        "taṇha, abhijjhā"
+      ],
+      "synonyms": [
+        "wanting",
+        "yearning",
+        "longing",
+        "lit. thirst"
+      ],
+      "score": 80,
+      "matchType": "term-title-exact",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 4,
+      "type": "topic-quality",
+      "slug": "self-erasure",
+      "title": "Self Erasure",
+      "description": "A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
+      "pali": [
+        "vibhavataṇhā"
+      ],
+      "synonyms": [
+        "non-being craving",
+        "identity deletion",
+        "urge to vanish",
+        "self-negation",
+        "annihilation drive"
+      ],
+      "score": 78,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
+      "type": "topic-quality",
+      "slug": "non-identification",
+      "title": "Non Identification",
+      "description": "A quality of mind that does not construct or fabricate a sense of self in relation to experience. It is the absence of the 'I am this' identification—neither claiming ownership nor defining oneself th",
+      "pali": [
+        "atammayatā"
+      ],
+      "synonyms": [
+        "principle of non-identification",
+        "(comm) no craving",
+        "lit. not made of that state"
+      ],
+      "score": 78,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 6,
+      "type": "topic-quality",
+      "slug": "greed",
+      "title": "Greed",
+      "description": "A grasping mental quality of craving, possessiveness, or lustful wanting that clings to objects or experiences; it fuels attachment and obstructs renunciation and contentment",
+      "pali": [
+        "lobha, gedha"
+      ],
+      "synonyms": [
+        "acquisitiveness",
+        "avarice",
+        "covetousness",
+        "rapacity",
+        "money grabbing",
+        "grabbiness"
+      ],
+      "score": 75,
+      "matchType": "cross-field-all",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 7,
+      "type": "topic-quality",
+      "slug": "unwise attention",
+      "title": "Unwise attention",
+      "description": "Attention that misses the point of contact, fixating on concepts or features. Disconnected from the source of experience, it then engages in reactions of craving, aversion, and delusion.",
+      "pali": [
+        "ayonisomanasikāra"
+      ],
+      "synonyms": [
+        "improper attention",
+        "imprudent use of the mind",
+        "unfocused attention"
+      ],
+      "score": 75,
+      "matchType": "cross-field-all",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 8,
+      "type": "topic-quality",
+      "slug": "recognition of diversity",
+      "title": "Recognition of diversity",
+      "description": "The perception of multiplicity and variety in experience—seeing distinct forms, beings, and phenomena as separate entities. While natural to ordinary cognition, when fueled by craving and conceit it p",
+      "pali": [
+        "nānattasaññā"
+      ],
+      "synonyms": [
+        "concept of variety",
+        "perception of diversity",
+        "perception of multiplicity"
+      ],
+      "score": 75,
+      "matchType": "cross-field-all",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 9,
+      "type": "topic-quality",
+      "slug": "felt-experience",
+      "title": "Felt Experience",
+      "description": "Pleasant, neutral, or painful sensation—the experience felt on contact. Sometimes translated as “feeling.” Distinct from an emotional state or reaction, it refers to the affective tone of experience, ",
+      "pali": [
+        "vedanā"
+      ],
+      "synonyms": [
+        "feeling"
+      ],
+      "score": 75,
+      "matchType": "term-title-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 10,
+      "type": "topic-quality",
+      "slug": "direct knowledge",
+      "title": "Direct knowledge",
+      "description": "A deep, firsthand realization or knowing that arises from personal experience, not from study or conceptual understanding; it is an immediate, unmediated apprehension of truth.",
+      "pali": [
+        "abhiñña"
+      ],
+      "synonyms": [
+        "experiential understanding",
+        "direct experience"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 11,
+      "type": "topic-quality",
+      "slug": "immaturity",
+      "title": "Immaturity",
+      "description": "A childish lack of discernment that fails to see the results of actions clearly. It delights in surface pleasure and ignores consequence. Immaturity leads to poor choices and association with unwise c",
+      "pali": [
+        "bāla"
+      ],
+      "synonyms": [
+        "lacking in discernment",
+        "lacking in good sense",
+        "child-like in understanding",
+        "lack of wisdom",
+        "lack of experience",
+        "foolishness"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 12,
+      "type": "topic-quality",
+      "slug": "speculation",
+      "title": "Speculation",
+      "description": "A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often root",
+      "pali": [
+        "takka, kappa"
+      ],
+      "synonyms": [
+        "analytical thinking disconnected from direct experience",
+        "conjecture",
+        "discursive reasoning",
+        "theorizing",
+        "hypothesis-making",
+        "reasoned reflection"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn1.57",
+      "title": "Tatiya jana sutta - Gives Rise To (Third)",
+      "description": "A deity asks the Buddha what gives rise to a person, what does he have that wanders about, what experiences cyclic existence, and what determines this person‘s destiny.",
+      "contentSnippet": "[The Blessed One]: “|<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Craving</mark>::wanting, yearning, longing, attachment, lit. thirst [taṇha]| gives rise to a person,\nhis |mind::the fac",
+      "score": 30,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 14,
+      "type": "topic-quality",
+      "slug": "non-proliferation",
+      "title": "Non Proliferation",
+      "description": "The cessation of the mind's tendency to spin out elaborate stories, interpretations, and conceptual elaborations. In non-proliferation, experience is met simply and directly without the overlay of men",
+      "pali": [
+        "nippapañca"
+      ],
+      "synonyms": [
+        "not forming various opinions"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 15,
+      "type": "topic-quality",
+      "slug": "mental proliferation",
+      "title": "Mental proliferation",
+      "description": "Mind's tendency to spin out elaborate stories, interpretations, and emotional reactions from simple experiences.",
+      "pali": [
+        "papañca"
+      ],
+      "synonyms": [
+        "conceptual proliferation",
+        "conceptualization",
+        "forming various opinions"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 16,
+      "type": "topic-quality",
+      "slug": "happiness",
+      "title": "Happiness",
+      "description": "Bodily ease and comfort; a pleasant feeling experienced with the body. In the third jhāna, one dwells experiencing this pleasure with the body. It is abandoned, along with bodily pain, for the fourth ",
+      "pali": [
+        "sukha"
+      ],
+      "synonyms": [
+        "pleasant abiding",
+        "positive state of mind",
+        "sense of ease"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "iti58",
+      "title": "Taṇhā sutta - Craving",
+      "description": "The Buddha describes the three kinds of craving - 1) craving for sensual pleasures, 2) craving for becoming, and 3) craving for non-becoming.",
+      "contentSnippet": "“Bhikkhus, there are these three kinds of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>. What three? <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Craving</m",
+      "score": 30,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 18,
+      "type": "topic-quality",
+      "slug": "diligence",
+      "title": "Diligence",
+      "description": "The protective quality of guarding the mind amidst sensory experience. By restraining the faculties, the mind remains unsoiled by attraction.",
+      "pali": [
+        "appamāda",
+        "uṭṭhāna"
+      ],
+      "synonyms": [
+        "alertness",
+        "carefulness",
+        "heedfulness",
+        "conscientiousness",
+        "vigilance"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 19,
+      "type": "topic-quality",
+      "slug": "equanimity",
+      "title": "Equanimity",
+      "description": "A state of mental poise and balance, characterized by non-reactivity and composure in the face of agreeable or disagreeable experiences.",
+      "pali": [
+        "upekkha"
+      ],
+      "synonyms": [
+        "mental poise",
+        "mental balance",
+        "equipose",
+        "non-reactivity",
+        "composure"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 20,
+      "type": "topic-quality",
+      "slug": "perceiving gratification",
+      "title": "Perceiving gratification",
+      "description": "The contemplative perception that focuses on the attractive or pleasurable aspect of experience, fueling delight and attachment to sense pleasures.",
+      "pali": [
+        "assādānupassī"
+      ],
+      "synonyms": [
+        "following pleasure",
+        "seeing enjoyment",
+        "sign of beautiful"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "craving",
+      "maxPosition": 5,
+      "reason": "Topic with both terms in description should rank high"
+    },
+    {
+      "type": "has",
+      "slug": "iti53",
+      "maxPosition": 5,
+      "reason": "ITI 53 has both terms in content"
+    },
+    {
+      "type": "has",
+      "slug": "sn1.55",
+      "maxPosition": 50,
+      "reason": "SN 1.55 has both 'craving' and 'experience' in content"
+    },
+    {
+      "type": "hasBefore",
+      "slugA": "iti53",
+      "slugB": "iti58",
+      "reason": "ITI 53 (both terms) should rank above ITI 58 (only craving)"
+    }
+  ]
+}

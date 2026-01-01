@@ -1,0 +1,38 @@
+{
+  "query": "mn 38",
+  "timestamp": "2025-12-31T12:02:58.302Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahātaṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "score": 30,
+      "matchType": "content-fuzzy",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "mn8",
+      "title": "Sallekha sutta - Effacement",
+      "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
+      "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">38</mark>.) ‘Others could be |lacking sense of right and wrong::shamelessness, lacking conscience [ahirika]|; we shall be with a sense of ri",
+      "score": 29.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "mn38",
+      "maxPosition": 3,
+      "reason": "Should find by ID"
+    }
+  ]
+}

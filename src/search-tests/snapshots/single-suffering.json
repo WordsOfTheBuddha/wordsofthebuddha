@@ -1,0 +1,283 @@
+{
+  "query": "suffering",
+  "timestamp": "2025-12-31T12:02:32.100Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "topic-quality",
+      "slug": "suffering",
+      "title": "Suffering",
+      "description": "Unpleasantness, discontentment, dissatisfaction, stress, pain, disease, i.e. mild or intense suffering that is inherent in conditioned existence.",
+      "pali": [
+        "dukkha"
+      ],
+      "synonyms": [
+        "discomfort",
+        "unpleasantness",
+        "discontentedness",
+        "dissatisfaction",
+        "stress",
+        "pain",
+        "disease",
+        "distress",
+        "affliction"
+      ],
+      "score": 100,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 2,
+      "type": "topic-quality",
+      "slug": "compassion",
+      "title": "Compassion",
+      "description": "A mental quality of wise empathy in response to suffering, which counters qualities of harm or cruelty.",
+      "pali": [
+        "karuṇā, anukampa"
+      ],
+      "synonyms": [
+        "benevolence",
+        "concern",
+        "sympathy",
+        "kindness towards those who are suffering"
+      ],
+      "score": 94,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 3,
+      "type": "topic-quality",
+      "slug": "perceiving escape",
+      "title": "Perceiving escape",
+      "description": "The contemplative perception that recognizes the way out of bondage after understanding gratification and danger, seeing cessation of an unsatisfactory experience as its true escape.",
+      "pali": [
+        "nissaraṇānupassī, nissaraṇaṁ yathābhūtaṁ pajānāti"
+      ],
+      "synonyms": [
+        "observing the release",
+        "seeing the way out",
+        "contemplating the remedy",
+        "recognizing the way leading beyond suffering"
+      ],
+      "score": 94,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "iti48",
+      "title": "Āpāyika sutta - Destined for Suffering",
+      "description": "The Buddha describes the two behaviors that lead to suffering and rebirth in hell if not abandoned.",
+      "contentSnippet": "“Bhikkhus, there are two behaviors that lead to |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>::discomfort, unpleasantness, discontentment, dissatisfaction, stress, pain",
+      "score": 93,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "an6.75",
+      "title": "Dukkha sutta - Suffering",
+      "description": "Six qualities to dwell in ease, without distress, without anguish - 1) thoughts of relinquishment, 2) non-ill will, 3) non-harming, 4) perceptions of relinquishment, 5) non-ill will, 6) non-harming.",
+      "contentSnippet": "“Bhikkhus, endowed with six qualities, a bhikkhu dwells in <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>, with distress, anguish, and burning in this very life, and upon",
+      "score": 93,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "mn14",
+      "title": "Cūḷadukkhakkhandha sutta - The Shorter Discourse on the Mass of Suffering",
+      "description": "A lay disciple asks the Buddha why greed, aversion, and delusion still occupy and remain in his mind. The Buddha explains the importance of cultivating discernment of the gratification, drawback, and ",
+      "contentSnippet": "‘But, friends, do you know that so much <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark> has already been exhausted, or that so much <mark class=\"bg-yellow-100 dark:bg-yell",
+      "score": 93,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "mn13",
+      "title": "Mahādukkhakkhandha sutta - The Greater Discourse on the Mass of Suffering",
+      "description": "The Buddha explains how to completely comprehend the gratification, drawback, and escape in the case of sensual pleasures, form, and felt experience.",
+      "contentSnippet": "Furthermore, bhikkhus, because of sensual pleasures, with sensual pleasures as the cause, source, and basis, kings quarrel with kings, nobles with nobles, brahmins with brahmins, householders with hou",
+      "score": 93,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "ud8.8",
+      "title": "Visākhā sutta - Discourse to Visākhā",
+      "description": "The Blessed One teaches Visākhā on the nature of attachment and suffering.",
+      "contentSnippet": "“Visākhā, for those who have a hundred dear ones, they have a hundred <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>s; for those who have ninety dear ones, they have nine",
+      "score": 78,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "ud5.4",
+      "title": "Kumāraka sutta - Boys",
+      "description": "If suffering is displeasing to you, do not commit evil deeds, whether openly or in secret.",
+      "contentSnippet": "Then the Blessed One, having dressed early in the morning and taking his alms bowl and outer robe, entered Sāvatthi for alms. The Blessed One saw those several boys between Sāvatthi and Jeta’s grove, ",
+      "score": 77.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "ud2.9",
+      "title": "Visākhā sutta - Visākha",
+      "description": "The Buddha expresses an inspired utterance to Visākhā on how all under another’s control brings suffering.",
+      "contentSnippet": "“All under another’s control brings |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>::discomfort, unpleasantness, discontentment, dissatisfaction, stress, pain, disease, i",
+      "score": 77,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn22.29",
+      "title": "Abhinandana sutta - Delight",
+      "description": "The Buddha explains that whoever delights in the five aggregates, delights in suffering and is not freed from suffering.",
+      "contentSnippet": "Whoever delights in feeling, delights in <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>. Whoever delights in perception, delights in <mark class=\"bg-yellow-100 dark:bg-ye",
+      "score": 76.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn1.59",
+      "title": "Dutiya sutta - Companion",
+      "description": "A deity asks the Buddha what serves as a person‘s companion, what instructs him, and delighting in what is a mortal freed from all suffering.",
+      "contentSnippet": "[A deity asked]: “What serves as a person‘s |companion::partner [dutiya]|?\nWhat is it that instructs him?\n|Delighting in::seeking pleasure in, indulging in [abhirata]| what,\nis a mortal freed from all",
+      "score": 76,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn1.1",
+      "title": "Oghataraṇa sutta - Crossing the Flood",
+      "description": "The Buddha crossed the flood of suffering without any support and without struggling.",
+      "score": 75.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "iti41",
+      "title": "Paññāparihīna sutta - Lacking in Wisdom",
+      "description": "The Buddha describes the sentient beings who lack in wisdom as truly deprived, dwelling in suffering, annoyance, hardship, and distress.",
+      "contentSnippet": "“Those sentient beings are truly deprived, bhikkhus, who are lacking in noble wisdom. In this very life, they dwell in |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>::di",
+      "score": 75,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "an6.63",
+      "title": "Nibbedhika sutta - Penetrating",
+      "description": "The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.",
+      "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Suffering</mark>, bhikkhus, is to be understood; the origin of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark> ",
+      "score": 74.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn12.51",
+      "title": "Parivīmaṁsana sutta - Thorough Investigation",
+      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
+      "contentSnippet": "“Here, bhikkhus, a bhikkhu investigating thoroughly reflects: ‘The many diverse kinds of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark> that arise in the world [headed by",
+      "score": 74,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn56.44",
+      "title": "Kūṭāgāra sutta - Mansion",
+      "description": "The Buddha explains the importance of understanding the Four Noble Truths to end suffering with a simile of constructing a mansion.",
+      "contentSnippet": "However, bhikkhus, if someone were to say: ‘By fully understanding the noble truth of |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>::discomfort, unpleasantness, discont",
+      "score": 73.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn22.15",
+      "title": "Yadanicca sutta - That Which is Impermanent",
+      "description": "The Buddha shares a reflection on the three characteristics of impermanence, |suffering::discontentment| and not-self for the five aggregates of form, feeling, perception, formations, and consciousnes",
+      "contentSnippet": "“Form, bhikkhus, is impermanent. What is impermanent is |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">suffering</mark>::discontentment|; what is <mark class=\"bg-yellow-100 dark:bg-yello",
+      "score": 73,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "sn14.35",
+      "title": "Abhinanda sutta - Delight",
+      "description": "Whoever delights in the four great elements, delights in what is subject to suffering, and as a result, is not freed from suffering.",
+      "contentSnippet": "“Bhikkhus, whoever delights in the |earth element::whatever internal or external that is solid, hard, resistant, appears stable and supporting, which can be considered as belonging to oneself, and can",
+      "score": 72.5,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "sn51.2",
+      "title": "Viraddha sutta - Neglected",
+      "description": "For whomever the four bases of psychic powers are neglected, the noble way of practice leading to the complete end of suffering is also neglected.",
+      "contentSnippet": "“Bhikkhus, for whomever the |bases of psychic power::bases for spiritual power, paths to supernormal abilities [iddhipādā]| are neglected, the noble way of practice leading to the complete |end of <ma",
+      "score": 72,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "suffering",
+      "position": 1,
+      "reason": "Exact topic match"
+    }
+  ]
+}

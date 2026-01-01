@@ -1,0 +1,16 @@
+{
+  "name": "search-tests",
+  "version": "1.0.0",
+  "description": "Search ranking test suite with AI evaluation",
+  "type": "module",
+  "main": "search-test-cli.js",
+  "scripts": {
+    "test": "node search-test-cli.js",
+    "test:query": "node search-test-cli.js --query",
+    "test:update": "node search-test-cli.js --update",
+    "test:ai": "node search-test-cli.js --ai-eval"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}

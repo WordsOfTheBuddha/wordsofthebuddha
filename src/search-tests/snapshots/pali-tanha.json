@@ -1,0 +1,244 @@
+{
+  "query": "tanha",
+  "timestamp": "2025-12-31T12:02:36.718Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "topic-quality",
+      "slug": "craving",
+      "title": "Craving",
+      "description": "A driving ‘thirst’ that reaches out toward experiences, identities, or outcomes as the place to find satisfaction—“if only I had that.” It spins stories of lack, binds the mind to becoming, and invari",
+      "pali": [
+        "taṇha, abhijjhā"
+      ],
+      "synonyms": [
+        "wanting",
+        "yearning",
+        "longing",
+        "lit. thirst"
+      ],
+      "score": 88,
+      "matchType": "prefix",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "iti58",
+      "title": "Taṇhā sutta - Craving",
+      "description": "The Buddha describes the three kinds of craving - 1) craving for sensual pleasures, 2) craving for becoming, and 3) craving for non-becoming.",
+      "score": 30,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "an4.199",
+      "title": "Taṇhā sutta - Craving",
+      "description": "The Buddha describes craving as a pervasive net that entangles the mind. He analyzes thirty-six modes of mental stirring—eighteen internal ways of conceiving the self and eighteen external ways of ide",
+      "score": 29.5,
+      "matchType": "content-fuzzy",
+      "priority": 1.9,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "iti15",
+      "title": "Taṇhāsaṁyojana sutta - Fettered By Craving",
+      "description": "The Buddha describes the fetter of craving as the most significant bond, bound by which, beings continue wandering on in cyclic existence.",
+      "score": 29,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "ud7.6",
+      "title": "Taṇhāsaṅkhaya sutta - Extinction of Craving",
+      "description": "Observing Aññāsi Koṇḍañña reviewing his liberation from craving, the Buddha utters an inspired verse praising the arahant who is rootless, unbound, and beyond reproach.",
+      "score": 28.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "dhp334-359",
+      "title": "Taṇhā vagga - Chapter 24 - Craving",
+      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
+      "score": 28,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahātaṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "score": 27.5,
+      "matchType": "content-fuzzy",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "sn45.139",
+      "title": "Tathāgata sutta - Tathāgata",
+      "description": "The Tathāgata is regarded the foremost among beings, and diligence is regarded the foremost among qualities.",
+      "score": 27,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "iti105",
+      "title": "Taṇhuppāda sutta - Uprisings of Craving",
+      "description": "The Buddha describes the four uprisings of craving that can arise in a bhikkhu - 1) for a robe, 2) alms food, 3) lodging, and 4) for this or that state of existence.",
+      "score": 26.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn56.27",
+      "title": "Tatha sutta - Actual",
+      "description": "The Four Noble Truths are actual, unchanging, and not otherwise; therefore, they are called the Noble Truths.",
+      "score": 26,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn12.38",
+      "title": "Cetanā sutta - Intending",
+      "description": "Intending, planning, and underlying tendencies are the basis for the continuation of consciousness.",
+      "score": 25.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn56.20",
+      "title": "Tatha sutta - True",
+      "description": "The Buddha describes the Four Noble Truths in brief.",
+      "score": 25,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn56.11",
+      "title": "Dhammacakkappavattana sutta - Setting in Motion of the Wheel of Dhamma",
+      "description": "The Buddha’s first discourse to the group of five bhikkhus at the Deer Park in Isipatana, near Varanasi. The discourse explains the Four Noble Truths and the Noble Eightfold Path in brief. It ends wit",
+      "score": 24.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "sn14.11",
+      "title": "Sattadhātu sutta - Seven Elements",
+      "description": "The Buddha describes the seven elements of radiance, beauty, boundless space, boundless consciousness, nothingness, neither perception nor non-perception, and cessation of perception and what is felt,",
+      "score": 24,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn35.118",
+      "title": "Sakkapañha sutta - Sakka’s Question",
+      "description": "The Buddha answers Sakka’s question on the causes and supporting conditions whereby some beings do not attain Nibbāna in this very life and some beings do attain Nibbāna in this very life.",
+      "score": 23.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "an7.6",
+      "title": "Vitthatadhana sutta - Wealth in Detail",
+      "description": "The Buddha describes the seven kinds of wealth in detail, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom. One who possesses these is not truly ",
+      "score": 23,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "an3.61",
+      "title": "Titthāyatana sutta - Bases Of Sectarian Views",
+      "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
+      "score": 22.5,
+      "matchType": "content-fuzzy",
+      "priority": 3,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "an7.5",
+      "title": "Saṅkhittadhana sutta - Wealth in Brief",
+      "description": "The Buddha describes the seven kinds of wealth in brief, of 1) faith, 2) virtue, 3) conscience, 4) fear of wrongdoing, 5) learning, 6) generosity, and 7) wisdom.",
+      "score": 22,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "iti27",
+      "title": "Mettābhāvanā sutta - Development Of Loving-kindness",
+      "description": "The Buddha uses similes to illustrate the benefits of developing loving-kindess. The liberation of mind by loving-kindness surpasses all other forms of merit-making associated with acquisitions by far",
+      "score": 21.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "sn38.2",
+      "title": "Arahattapañhā sutta - Questions on Awakening",
+      "description": "The Noble Eightfold Path is the path and the way of practice for the realization of awakening.",
+      "score": 21,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "craving",
+      "maxPosition": 3,
+      "reason": "Should match via Pali field"
+    }
+  ]
+}

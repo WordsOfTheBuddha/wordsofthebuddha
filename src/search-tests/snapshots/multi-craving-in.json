@@ -1,0 +1,330 @@
+{
+  "query": "craving in",
+  "timestamp": "2025-12-31T12:02:42.639Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahātaṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "contentSnippet": "Endowed with this noble aggregate of virtue, endowed with this noble aggregate of |contentment::satisfaction [santuṭṭhi]|, endowed with this noble aggregate of restraint of the senses, endowed with th",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 2,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "an4.199",
+      "title": "Taṇhā sutta - Craving",
+      "description": "The Buddha describes craving as a pervasive net that entangles the mind. He analyzes thirty-six modes of mental stirring—eighteen internal ways of conceiving the self and eighteen external ways of ide",
+      "contentSnippet": "Thus, there are eighteen mental stirrings of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark> dependent on the internal, and eighteen mental stirrings of <mark class=\"bg-yell",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 1.9,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "iti58",
+      "title": "Taṇhā sutta - Craving",
+      "description": "The Buddha describes the three kinds of craving - 1) craving for sensual pleasures, 2) craving for becoming, and 3) craving for non-becoming.",
+      "contentSnippet": "But those who have given up <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>,\nfree from desire for repeated existence;\nThey <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 4,
+      "type": "topic-quality",
+      "slug": "craving",
+      "title": "Craving",
+      "description": "A driving ‘thirst’ that reaches out toward experiences, identities, or outcomes as the place to find satisfaction—“if only I had that.” It spins stories of lack, binds the mind to becoming, and invari",
+      "pali": [
+        "taṇha, abhijjhā"
+      ],
+      "synonyms": [
+        "wanting",
+        "yearning",
+        "longing",
+        "lit. thirst"
+      ],
+      "score": 75,
+      "matchType": "term-title-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "iti15",
+      "title": "Taṇhāsaṁyojana sutta - Fettered By Craving",
+      "description": "The Buddha describes the fetter of craving as the most significant bond, bound by which, beings continue wandering on in cyclic existence.",
+      "contentSnippet": "“Bhikkhus, I do not see any other single fetter by which beings, being bound, have wandered on and undergone |repeated existence::wandering on from one state of existence to another, the cycle of birt",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "ud7.6",
+      "title": "Taṇhāsaṅkhaya sutta - Extinction of Craving",
+      "description": "Observing Aññāsi Koṇḍañña reviewing his liberation from craving, the Buddha utters an inspired verse praising the arahant who is rootless, unbound, and beyond reproach.",
+      "contentSnippet": "Thus have I heard—At one time, the Blessed One was dwelling at Sāvatthi, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">in</mark> Jeta’s grove, Anāthapiṇḍika’s park. Now, at that time, th",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "iti105",
+      "title": "Taṇhuppāda sutta - Uprisings of Craving",
+      "description": "The Buddha describes the four uprisings of craving that can arise in a bhikkhu - 1) for a robe, 2) alms food, 3) lodging, and 4) for this or that state of existence.",
+      "contentSnippet": "“Bhikkhus, there are these four uprisings of |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>::wanting, yearning, longing, attachment, lit. thirst [taṇha]|, where <mark clas",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 8,
+      "type": "topic-quality",
+      "slug": "self-erasure",
+      "title": "Self Erasure",
+      "description": "A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
+      "pali": [
+        "vibhavataṇhā"
+      ],
+      "synonyms": [
+        "non-being craving",
+        "identity deletion",
+        "urge to vanish",
+        "self-negation",
+        "annihilation drive"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "dhp334-359",
+      "title": "Taṇhā vagga - Chapter 24 - Craving",
+      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
+      "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">In</mark> whoever the |thirty-six currents [of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>]::the eighteen way",
+      "score": 82,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn23.2",
+      "title": "Satta sutta - Living Beings",
+      "description": "The Buddha explains to Venerable Rādha that a living being is defined by desire, passion, delight, and craving in form, feeling, perception, formations, and consciousness.",
+      "contentSnippet": "The Blessed One replied, “Rādha, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">in</mark> form, wherever there is desire, passion, delight, and <mark class=\"bg-yellow-100 dark:bg-yellow-9",
+      "score": 76,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 11,
+      "type": "topic-quality",
+      "slug": "self-making",
+      "title": "Self Making",
+      "description": "Spiritual or worldly striving to “be someone,” the “I must become something” energy",
+      "pali": [
+        "bhavataṇhā, bhavesanā"
+      ],
+      "synonyms": [
+        "an aspiration for identity",
+        "drive for status or attainment",
+        "craving to be",
+        "romanticizing some better self or future state"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 12,
+      "type": "topic-quality",
+      "slug": "sensual desire",
+      "title": "Sensual desire",
+      "description": "A mental quality of desiring sensory gratification. It pulls the mind’s attention toward sights, sounds, smells, tastes, or touches in a search for satisfaction.",
+      "pali": [
+        "kāmacchanda"
+      ],
+      "synonyms": [
+        "passion for sensual pleasures",
+        "lust",
+        "craving for pleasure",
+        "pull toward enticing sense objects"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 13,
+      "type": "topic-quality",
+      "slug": "non-identification",
+      "title": "Non Identification",
+      "description": "A quality of mind that does not construct or fabricate a sense of self in relation to experience. It is the absence of the 'I am this' identification—neither claiming ownership nor defining oneself th",
+      "pali": [
+        "atammayatā"
+      ],
+      "synonyms": [
+        "principle of non-identification",
+        "(comm) no craving",
+        "lit. not made of that state"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "an4.13",
+      "title": "Padhāna sutta - Striving",
+      "description": "The Buddha describes the four right strivings concisely and precisely.",
+      "score": 27,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "topic-quality",
+      "slug": "having many desires",
+      "title": "Having many desires",
+      "description": "An excessive wanting for possessions, pleasure, or recognition that keeps the mind unsatisfied. It grows from craving and discontentment and feeds restlessness. The many-desiring mind cannot find ease",
+      "pali": [
+        "mahicchatā"
+      ],
+      "synonyms": [
+        "greediness",
+        "Related to:{sensual desire}"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 16,
+      "type": "topic-quality",
+      "slug": "quenching",
+      "title": "Quenching",
+      "description": "An experiential state of being “cooled,” where the burning fever of craving has subsided and the mind dwells in a peace free from the anxiety of needing to become something else.",
+      "pali": [
+        "nibbuta, nirāsa"
+      ],
+      "synonyms": [
+        "being cooled",
+        "desirelessness",
+        "free from hope",
+        "fulfilled",
+        "fully satiated",
+        "having attained emancipation"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 17,
+      "type": "topic-quality",
+      "slug": "recognition of unsatisfactoriness",
+      "title": "Recognition of unsatisfactoriness",
+      "description": "Perceiving the inherent inadequacy and unreliability of conditioned existence. This recognition loosens craving and the pursuit of lasting satisfaction in what cannot endure.",
+      "pali": [
+        "dukkhasaññā"
+      ],
+      "synonyms": [
+        "perception of unsatisfactoriness",
+        "recognition of discontentment"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "an6.63",
+      "title": "Nibbedhika sutta - Penetrating",
+      "description": "The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.",
+      "contentSnippet": "Sensual pleasures, bhikkhus, are to be understood; the origin of sensual pleasures is to be understood; the diversity of sensual pleasures is to be understood; the result of sensual pleasures is to be",
+      "score": 25.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "topic-quality",
+      "slug": "lack of discernment",
+      "title": "Lack of discernment",
+      "description": "Failure to understand cause and effect or to recognize wholesome from unwholesome. It clouds judgment and makes the mind easily led by craving and aversion.",
+      "pali": [
+        "asampajañña, bāla, duppañña"
+      ],
+      "synonyms": [
+        "lack of clear comprehension",
+        "lack of wisdom",
+        "child-like in understanding"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 20,
+      "type": "topic-quality",
+      "slug": "non-restraint",
+      "title": "Non Restraint",
+      "description": "Failure to guard the sense doors. It occurs when attention chases after the signs and features of sense objects, allowing craving and aversion to invade the mind.",
+      "pali": [
+        "asaṁvara, asaṁyama"
+      ],
+      "synonyms": [
+        "unguarded in sense faculties",
+        "not watching the sense doors",
+        "grasping at prominent features or details of sense objects"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "craving",
+      "maxPosition": 5,
+      "reason": "Stopword 'in' should be ignored, craving topic in top 5"
+    }
+  ]
+}

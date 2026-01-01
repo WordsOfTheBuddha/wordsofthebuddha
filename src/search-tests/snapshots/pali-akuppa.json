@@ -1,0 +1,247 @@
+{
+  "query": "akuppa",
+  "timestamp": "2025-12-31T12:03:01.913Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "topic-quality",
+      "slug": "liberation",
+      "title": "Liberation",
+      "description": "Liberation can imply a temporary release of the mind, i.e. liberated from certain unwholesome mental qualities or complete liberation from all unwholesome qualities of the mind, i.e. Nibbāna.",
+      "pali": [
+        "vimutti",
+        "vimokkha",
+        "cetovimutti",
+        "paññāvimutti",
+        "akuppā cetovimutti"
+      ],
+      "synonyms": [
+        "freedom",
+        "release",
+        "emancipation"
+      ],
+      "score": 96,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "sn12.1",
+      "title": "Paṭiccasamuppāda sutta - Dependent Co-Arising",
+      "description": "The Buddha explains the twelve links of dependent co-arising, and how there is an arising and ending of the whole mass of suffering.",
+      "score": 30,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "an7.15",
+      "title": "Udakūpamā sutta - Comparable to Water",
+      "description": "The Buddha describes seven kinds of persons and likens them to those in water — from those submerged in unwholesomeness to those who cross over fully. They represent the stages from spiritual stagnati",
+      "score": 29.5,
+      "matchType": "content-fuzzy",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "an2.118-129",
+      "title": "Āsāduppajaha vagga - The Chapter Beginning With The Difficult to Abandon",
+      "description": "The Buddha teaches on two hopes that are difficult to abandon, two kinds of people who are rare in the world, two kinds of people who are difficult to satisfy, two causes for the arising of passion, a",
+      "score": 29,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "iti62",
+      "title": "Indriya sutta - Mental Faculties",
+      "description": "The Buddha describes the three mental faculties - 1) the faculty that senses ‘I will know the unknown,’ 2) the faculty of awakening, and 3) the faculty of one who is awakened.",
+      "score": 28.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "sn17.30",
+      "title": "Bhikkhu sutta - Bhikkhu",
+      "description": "The Buddha explains how even for an arahant, acquisitions, respect, and popularity are an obstacle to the attainment of pleasant abidings in this very life.",
+      "score": 28,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "an8.17",
+      "title": "Paṭhamabandhana sutta - Bond (First)",
+      "description": "The Buddha describes the eight ways in which a woman binds a man.",
+      "score": 27.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "an8.18",
+      "title": "Dutiyabandhana sutta - Bond (Second)",
+      "description": "The Buddha describes the eight ways in which a man binds a woman.",
+      "score": 27,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "iti72",
+      "title": "Nissaraṇiya sutta - Escape",
+      "description": "The Buddha describes the three elements of escape - renunciation, formless element and cessation.",
+      "score": 26.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "mn29",
+      "title": "Mahāsāropama sutta - The Greater Discourse on the Simile of the Heartwood",
+      "description": "After Devadatta’s departure, the Buddha taught that the spiritual life is not pursued for acquisitions, respect, popularity, ethical conduct, collectedness, or knowledge and vision. Through the simile",
+      "score": 26,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "mn43",
+      "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
+      "description": "A series of questions and answers between Venerable Sāriputta and Venerable Mahākoṭṭhita that clarify subtle yet important aspects of the teachings. Topics covered include wisdom, consciousness, felt ",
+      "score": 25.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "mn128",
+      "title": "Upakkilesa sutta - Impurity",
+      "description": "When the Buddha fails to achieve reconciliation among quarrelsome bhikkhus at Kosambi, he withdraws into solitude and later encounters an inspiring community of monks devoted to liberation. He teaches",
+      "score": 25,
+      "matchType": "content-fuzzy",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "snp4.8",
+      "title": "Pasūra sutta - To Pasūra",
+      "description": "The Buddha advises Pasūra on the futility of debate and the danger of conceit. Seeking praise, one finds only pride in victory or humiliation in defeat. This whole cycle of elation and dejection is fr",
+      "score": 24.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "snp4.10",
+      "title": "Purābheda sutta - Before the Breakup",
+      "description": "The Buddha describes the conduct of a person who is said to be ‘peaceful’. Such a person is free from craving before the breaking up of body. He is one who examines distinctions in all contacts, withd",
+      "score": 24,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "snp3.1",
+      "title": "Pabbajjā sutta - Going Forth",
+      "description": "The Buddha’s serene conduct on an alms round catches the attention of King Bimbisāra. In the ensuing encounter, the king offers him wealth and royal pleasures, but the Buddha shares his insight on the",
+      "score": 23.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "snp4.15",
+      "title": "Attadaṇḍa sutta - Arming Oneself",
+      "description": "The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an",
+      "score": 23,
+      "matchType": "content-fuzzy",
+      "priority": 1.2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn42.11",
+      "title": "Bhadraka sutta - With Bhadraka",
+      "description": "The Buddha explains to the headman Bhadraka the root cause of suffering through a direct and relatable inquiry. When Bhadraka admits to feeling sorrow when those he cares about are harmed, the Buddha ",
+      "score": 22.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn12.20",
+      "title": "Paccaya sutta - Dependence",
+      "description": "The Buddha teaches about dependent co-arising and the phenomena arisen from dependent co-arising. A noble disciple who has thoroughly seen this with right wisdom will no longer be doubtful about who t",
+      "score": 22,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "sn12.62",
+      "title": "Dutiya assutavā sutta - Uninstructed (Second)",
+      "description": "The Buddha explains that while one can become detached from the decaying body, it is harder to detach from the mind, which is far more fleeting. He illustrates the principle of dependent co-arising wi",
+      "score": 21.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "sn12.61",
+      "title": "Assutavā sutta - Uninstructed",
+      "description": "The Buddha contrasts the body’s visible decay with the mind’s instability, which is clung to as ‘self’, comparing it to a restless monkey jumping between branches. He teaches that wisdom arises from u",
+      "score": 21,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "slug": "liberation",
+      "maxPosition": 5,
+      "reason": "Liberation topic has akuppā in Pali field"
+    }
+  ]
+}

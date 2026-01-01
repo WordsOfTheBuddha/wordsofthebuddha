@@ -1,0 +1,338 @@
+{
+  "query": "exhaust craving",
+  "timestamp": "2025-12-31T12:02:46.307Z",
+  "version": "1.0.0",
+  "results": [
+    {
+      "rank": 1,
+      "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahātaṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "score": 87,
+      "matchType": "term-title-match",
+      "priority": 2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 2,
+      "type": "topic-quality",
+      "slug": "wrong effort",
+      "title": "Wrong effort",
+      "description": "Misapplied energy directed toward goals rooted in craving, aversion, or delusion. It manifests as striving for sensual pleasure, gain, fame, or domination, exhausting the mind and feeding defilements.",
+      "pali": [
+        "micchāvāyāma"
+      ],
+      "synonyms": [
+        "incorrect endeavor"
+      ],
+      "score": 75,
+      "matchType": "cross-field-all",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 3,
+      "type": "topic-quality",
+      "slug": "self-erasure",
+      "title": "Self Erasure",
+      "description": "A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
+      "pali": [
+        "vibhavataṇhā"
+      ],
+      "synonyms": [
+        "non-being craving",
+        "identity deletion",
+        "urge to vanish",
+        "self-negation",
+        "annihilation drive"
+      ],
+      "score": 73,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "sn47.98",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of craving, ill will, clinging to rules and observances, and clinging to the idea that ‘This is the truth’ are described. The four establishments of mindfulness should be cultivated for",
+      "contentSnippet": "“Bhikkhus, there are these four knots. What four? 1) The knot of |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>::greediness, wanting, yearning [abhijjhā]|, 2) the knot of ",
+      "score": 33.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "sn45.174",
+      "title": "Gantha sutta - Knots",
+      "description": "The four knots of 1) craving, 2) ill will, 3) clinging to rules and observances, and 4) clinging to the idea that ‘This is the truth’ are described in brief. The Noble Eightfold Path is the way for di",
+      "contentSnippet": "“Bhikkhus, there are these four knots. What four? 1) The knot of |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>::greediness, wanting, yearning [abhijjhā]|, 2) the knot of ",
+      "score": 33,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 6,
+      "type": "topic-quality",
+      "slug": "recognition of unsatisfactoriness",
+      "title": "Recognition of unsatisfactoriness",
+      "description": "Perceiving the inherent inadequacy and unreliability of conditioned existence. This recognition loosens craving and the pursuit of lasting satisfaction in what cannot endure.",
+      "pali": [
+        "dukkhasaññā"
+      ],
+      "synonyms": [
+        "perception of unsatisfactoriness",
+        "recognition of discontentment"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 7,
+      "type": "topic-quality",
+      "slug": "lack of discernment",
+      "title": "Lack of discernment",
+      "description": "Failure to understand cause and effect or to recognize wholesome from unwholesome. It clouds judgment and makes the mind easily led by craving and aversion.",
+      "pali": [
+        "asampajañña, bāla, duppañña"
+      ],
+      "synonyms": [
+        "lack of clear comprehension",
+        "lack of wisdom",
+        "child-like in understanding"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 8,
+      "type": "topic-quality",
+      "slug": "boastfulness",
+      "title": "Boastfulness",
+      "description": "A puffed-up self-display that advertises one's virtues, attainments, or status to win admiration. It springs from conceit and the craving for recognition, crowding out humility and genuine connection.",
+      "pali": [
+        "attukkaṁsaka"
+      ],
+      "synonyms": [
+        "braggart",
+        "exalting oneself",
+        "overbearing",
+        "self-promotion",
+        "self-praising"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "iti58",
+      "title": "Taṇhā sutta - Craving",
+      "description": "The Buddha describes the three kinds of craving - 1) craving for sensual pleasures, 2) craving for becoming, and 3) craving for non-becoming.",
+      "contentSnippet": "But those who have given up <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>,\nfree from desire for repeated existence;\nThey in this world have truly crossed over,\nwith the |w",
+      "score": 29.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 10,
+      "type": "topic-quality",
+      "slug": "quenching",
+      "title": "Quenching",
+      "description": "An experiential state of being “cooled,” where the burning fever of craving has subsided and the mind dwells in a peace free from the anxiety of needing to become something else.",
+      "pali": [
+        "nibbuta, nirāsa"
+      ],
+      "synonyms": [
+        "being cooled",
+        "desirelessness",
+        "free from hope",
+        "fulfilled",
+        "fully satiated",
+        "having attained emancipation"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 11,
+      "type": "topic-quality",
+      "slug": "hypocrisy",
+      "title": "Hypocrisy",
+      "description": "A counterfeit display of virtue or attainment—concealing faults and projecting qualities one lacks—often to secure material support, status, or admiration; it thrives on craving for recognition and co",
+      "pali": [
+        "māyāvī"
+      ],
+      "synonyms": [
+        "pretense",
+        "insincerity",
+        "deceitfulness",
+        "putting on a false front",
+        "fraudulent"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 12,
+      "type": "topic-quality",
+      "slug": "vanity",
+      "title": "Vanity",
+      "description": "A swelling intoxication arising from youth, health, life, beauty, or possessions that blinds one to impermanence and breeds negligence. Like a soiled cloth, it stains the mind with conceit and craving",
+      "pali": [
+        "mada, mogha"
+      ],
+      "synonyms": [
+        "drinking one's own cool-aid",
+        "excess",
+        "extravagance",
+        "indulgence",
+        "intoxication",
+        "being misguided"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn47.104",
+      "title": "Uddhambhāgiyādi sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The four establishments of mindfu",
+      "contentSnippet": "What are the four? Here, bhikkhus, a bhikkhu dwells observing the body in and of itself, with continuous effort, fully aware and being present, having removed |<mark class=\"bg-yellow-100 dark:bg-yello",
+      "score": 29,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 14,
+      "type": "topic-quality",
+      "slug": "dearness",
+      "title": "Dearness",
+      "description": "A mental quality of holding something or someone as 'dear' through attachment, which binds the mind with craving and possessiveness. It is the external fixation upon what the mind clings to, often giv",
+      "pali": [
+        "piya"
+      ],
+      "synonyms": [
+        "beloved",
+        "cherished",
+        "pleasing"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 15,
+      "type": "topic-quality",
+      "slug": "recognition of diversity",
+      "title": "Recognition of diversity",
+      "description": "The perception of multiplicity and variety in experience—seeing distinct forms, beings, and phenomena as separate entities. While natural to ordinary cognition, when fueled by craving and conceit it p",
+      "pali": [
+        "nānattasaññā"
+      ],
+      "synonyms": [
+        "concept of variety",
+        "perception of diversity",
+        "perception of multiplicity"
+      ],
+      "score": 30,
+      "matchType": "cross-field-partial",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "an10.90",
+      "title": "Khīṇāsavabala sutta - Strength Of One Who Has Exhausted Defilements",
+      "description": "Venerable Sāriputta explains the ten strengths of a bhikkhu who has exhausted the defilements.",
+      "contentSnippet": "1.) Here, venerable sir, for a bhikkhu who has <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">exhaust</mark>ed the defilements, all |formations::intentional constructs, intentions, karmic",
+      "score": 29,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn45.176",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The Noble Eightfold Path is the way for direct knowledge, full understanding, complete exhaustion, and giving up of these five cords of sensu",
+      "score": 27.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn47.100",
+      "title": "Kāmaguṇa sutta - Cords of Sensual Pleasure",
+      "description": "The five cords of sensual pleasure are described in brief. The four establishments of mindfulness should be cultivated for directly knowing, full understanding, complete exhaustion, and giving up of t",
+      "score": 27,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "an9.47",
+      "title": "Sandiṭṭhika nibbāna sutta - Directly Visible Nibbāna",
+      "description": "Nibbāna is directly visible in a provisional sense when one enters a jhāna or subsequent meditation attainments. It is directly visible in the definitive sense when one attains the cessation of percep",
+      "contentSnippet": "Further, friend, with the complete surpassing of the |base of neither perception nor non-perception::field of awareness of subtle mental activity that do not arise to the level of forming a perception",
+      "score": 26.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "an9.46",
+      "title": "Sandiṭṭhika dhamma sutta - Directly Visible Dhamma",
+      "description": "The Dhamma is directly visible in a provisional sense when one enters a jhāna or subsequent meditation attainments. It is directly visible in the definitive sense when one attains the cessation of per",
+      "contentSnippet": "Further, friend, with the complete surpassing of the |base of neither perception nor non-perception::field of awareness of subtle mental activity that do not arise to the level of forming a perception",
+      "score": 26,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    }
+  ],
+  "assertions": [
+    {
+      "type": "has",
+      "titleContains": "Exhaustion",
+      "titleContains2": "Craving",
+      "maxPosition": 3,
+      "reason": "MN 38 has both terms"
+    },
+    {
+      "type": "not",
+      "slug": "an10.90",
+      "maxPosition": 3,
+      "reason": "AN 10.90 only has 'exhaust', not 'craving'"
+    }
+  ]
+}
