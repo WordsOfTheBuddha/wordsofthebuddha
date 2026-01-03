@@ -1,6 +1,6 @@
 {
   "query": "wrong effort",
-  "timestamp": "2025-12-31T12:03:19.752Z",
+  "timestamp": "2026-01-03T22:44:31.558Z",
   "version": "1.0.0",
   "results": [
     {
@@ -8,14 +8,14 @@
       "type": "topic-quality",
       "slug": "wrong effort",
       "title": "Wrong effort",
-      "description": "Misapplied energy directed toward goals rooted in craving, aversion, or delusion. It manifests as striving for sensual pleasure, gain, fame, or domination, exhausting the mind and feeding defilements.",
+      "description": "Misapplied energy directed toward goals rooted in craving, aversion, or delusion. It manifests as striving for sensual pleasure, gain, fame, or domination, overwhelming the mind by feeding defilements",
       "pali": [
         "micchāvāyāma"
       ],
       "synonyms": [
         "incorrect endeavor"
       ],
-      "score": 105,
+      "score": 132,
       "matchType": "exact",
       "priority": 1,
       "nonStopwordMatches": 2
@@ -23,17 +23,173 @@
     {
       "rank": 2,
       "type": "discourse",
+      "slug": "mn117",
+      "title": "Mahācattārīsaka sutta - The Great Forty",
+      "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He",
+      "contentSnippet": "In this matter, bhikkhus, right view comes first. And how does right view come first? For one possessing right view, wrong view is worn away. And the multitude of harmful, unwholesome qualities that a",
+      "score": 109,
+      "matchType": "multi-term-content",
+      "priority": 3,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
       "slug": "an10.103",
       "title": "Micchatta sutta - Wrongness",
       "description": "Approaching wrongness leads to failure, not success. Approaching rightness leads to success, not failure.",
-      "contentSnippet": "“Bhikkhus, approaching <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark>ness leads to failure, not success. How does this happen? For one with |<mark class=\"bg-yellow-100 dark:b",
-      "score": 87,
+      "contentSnippet": "“Bhikkhus, approaching wrongness leads to failure, not success. How does this happen? For one with |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention",
+      "score": 103,
       "matchType": "term-title-match",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 3,
+      "rank": 4,
+      "type": "discourse",
+      "slug": "sn45.18",
+      "title": "Paṭhama kukkuṭārāma sutta - Kukuṭa’s Park (First)",
+      "description": "The venerable Bhadda asks the venerable Ānanda about the wrong spiritual practice.",
+      "contentSnippet": "“This, friend, is the wrong spiritual practice: the eightfold wrong way of practice, that is, wrong view, wrong intention, wrong speech, wrong action, wrong livelihood, <mark class=\"bg-yellow-100 dark",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
+      "slug": "sn45.23",
+      "title": "Paṭhama paṭipadā sutta - Way of Practice (First)",
+      "description": "The Buddha distinguishes the wrong way of practice and the right way of practice.",
+      "contentSnippet": "And what, bhikkhus, is the wrong way of practice? It is: |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "an10.104",
+      "title": "Bīja sutta - Seeds",
+      "description": "With wrong view, all actions lead to suffering. With right view, all actions lead to happiness. The Buddha explains this with an example of seeds.",
+      "contentSnippet": "Bhikkhus, for a person with |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, his |wrong intention::wrong notion, wrong idea [micchāsaṅkappa]|, |wrong speech::speech",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
+      "slug": "sn14.28",
+      "title": "Aṭṭhaṅgika sutta - The Eightfold Path",
+      "description": "Beings come together and associate according to disposition. Those with wrong views come together and associate with those with wrong views, and similar for the other eight factors. Those with right v",
+      "contentSnippet": "“Bhikkhus, beings come together and associate |according to disposition::in line with their mental qualities or inclinations [dhātuso]|. Those |with wrong views::with false beliefs, false concepts, in",
+      "score": 103,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "sn45.1",
+      "title": "Avijjā sutta - Ignorance",
+      "description": "Ignorance is the forerunner in the arising of unwholesome qualities, and wisdom is the forerunner in the arising of wholesome qualities.",
+      "contentSnippet": "“|Ignorance::illusion of knowledge, not knowing [avijjā]|, bhikkhus, is the forerunner in the arising of unwholesome qualities, with |shamelessness::lack of conscience [ahirika]| and |moral recklessne",
+      "score": 103,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "sn45.11",
+      "title": "Paṭhamavihāra sutta - Dwelling (First)",
+      "description": "Emerging from seclusion, the Buddha describes dwelling in the meditative state he had experienced immediately after Awakening. He explains that all the mental factors—from wrong view to right collecte",
+      "contentSnippet": "“Bhikkhus, I have been dwelling in the |meditation attainment::state of mind [vihāra]| in which I dwelt just after I |became fully awakened::attained perfect enlightenment [abhisambuddha]|. I have und",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "an10.106",
+      "title": "Nijjara sutta - Wearing Away",
+      "description": "The Buddha describes the ten bases for the wearing away of the multitude harmful, unwholesome qualities, and for the development of multitude wholesome qualities.",
+      "contentSnippet": "6.) For one with right effort, bhikkhus, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">effort</mark> is worn away",
+      "score": 103,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
+      "slug": "mn8",
+      "title": "Sallekha sutta - Effacement",
+      "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
+      "contentSnippet": "16.) ‘Others could be with <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">effort</mark>; we shall be with right ef",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "mn19",
+      "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
+      "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensual desire, ill will, and harm; and 2) thoughts of relinquishment, non-ill will, and non-harm. He explains how he ab",
+      "contentSnippet": "Bhikkhus, I have given this simile in order to convey a meaning. This is the meaning: ‘The great low-lying marsh’ is a term for sensual pleasures. ‘The large herd of deer’ represents beings. ‘The man ",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn45.24",
+      "title": "Dutiya paṭipadā sutta - Way of Practice (Second)",
+      "description": "The Buddha distinguishes the wrong way of practice and the right way of practice and their outcomes.",
+      "contentSnippet": "And what, bhikkhus, is the wrong way of practice? It is: |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "sn14.29",
+      "title": "Dasaṅgasutta sutta - The Tenfold Path",
+      "description": "Beings come together and associate according to disposition. Those with wrong views come together and associate with those with wrong views, and similar for the other eight factors. Those with right v",
+      "contentSnippet": "“Bhikkhus, beings come together and associate |according to disposition::in line with their mental qualities or inclinations [dhātuso]|. Those |with wrong views::with false beliefs, false concepts, in",
+      "score": 103,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn45.25",
+      "title": "Paṭhama asappurisa sutta - Person with no Integrity (First)",
+      "description": "Who is a person without integrity and who is a person of integrity.",
+      "contentSnippet": "And who, bhikkhus, is a person without integrity? Here, bhikkhus, a certain person holds |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, has |wrong intention::wron",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 16,
       "type": "topic-quality",
       "slug": "continuous effort",
       "title": "Continuous effort",
@@ -51,10 +207,11 @@
       "score": 75,
       "matchType": "term-title-exact",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 1,
+      "synonymMatchPosition": 0
     },
     {
-      "rank": 4,
+      "rank": 17,
       "type": "topic-quality",
       "slug": "weak in effort",
       "title": "Weak in effort",
@@ -73,250 +230,40 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 5,
+      "rank": 18,
       "type": "discourse",
-      "slug": "sn45.18",
-      "title": "Paṭhama kukkuṭārāma sutta - Kukuṭa’s Park (First)",
-      "description": "The venerable Bhadda asks the venerable Ānanda about the wrong spiritual practice.",
-      "contentSnippet": "“This, friend, is the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> spiritual practice: the eightfold <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark",
-      "score": 34.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
+      "slug": "an3.61",
+      "title": "Titthāyatana sutta - Bases Of Sectarian Views",
+      "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
+      "contentSnippet": "And what bhikkhus, is the noble truth of the |way of practice leading to the end of suffering::i.e. the Noble Eightfold Path consisting of right view, right intention, right speech, right action, righ",
+      "score": 70,
+      "matchType": "multi-term-content",
+      "priority": 3,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
-      "type": "discourse",
-      "slug": "sn45.23",
-      "title": "Paṭhama paṭipadā sutta - Way of Practice (First)",
-      "description": "The Buddha distinguishes the wrong way of practice and the right way of practice.",
-      "contentSnippet": "And what, bhikkhus, is the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> way of practice? It is: |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> vi",
-      "score": 34,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 7,
+      "rank": 19,
       "type": "discourse",
       "slug": "dhp306-319",
       "title": "Niraya vagga - Chapter 22 - Hell",
       "description": "Dhammapada verses 306–319 warn of the suffering that follows false speech, misconduct, and wrong view. The verses highlight the danger of negligence, hypocrisy, and slack effort in spiritual practice.",
       "contentSnippet": "Just as |kusa grass::sharp-bladed grass used in the ancient India in ceremonies and symbolic contexts [kusa]|, if <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark>ly grasped,\ncu",
-      "score": 33.5,
-      "matchType": "content-fuzzy",
+      "score": 70,
+      "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 8,
-      "type": "topic-quality",
-      "slug": "desire",
-      "title": "Desire",
-      "description": "A wholesome motivation, interest, or objective that acts as the starting point for effort and application of will.",
-      "pali": [
-        "chanda"
-      ],
-      "synonyms": [
-        "aspiration",
-        "interest",
-        "wish"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 9,
-      "type": "discourse",
-      "slug": "sn45.24",
-      "title": "Dutiya paṭipadā sutta - Way of Practice (Second)",
-      "description": "The Buddha distinguishes the wrong way of practice and the right way of practice and their outcomes.",
-      "contentSnippet": "And what, bhikkhus, is the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> way of practice? It is: |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> vi",
-      "score": 33,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 10,
-      "type": "discourse",
-      "slug": "an10.104",
-      "title": "Bīja sutta - Seeds",
-      "description": "With wrong view, all actions lead to suffering. With right view, all actions lead to happiness. The Buddha explains this with an example of seeds.",
-      "contentSnippet": "Bhikkhus, for a person with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, his |<mark class=\"bg",
-      "score": 32.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 11,
+      "rank": 20,
       "type": "discourse",
       "slug": "sn1.76",
       "title": "Najīrati sutta - Does not Decay",
       "description": "A deity asks the Buddha what wears out and what does not decay, what is the wrong way, what is the stain on the spiritual life, and what are the six fissures in the world where one's wealth does not l",
       "contentSnippet": "There are six fissures in the world,\nwhere one’s wealth does not last;\n|Laziness::A mental quality characterized by unwillingness, aversion, or lack of motivation to exert effort in wholesome activiti",
-      "score": 31.5,
-      "matchType": "content-fuzzy",
+      "score": 70,
+      "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
-    },
-    {
-      "rank": 12,
-      "type": "topic-quality",
-      "slug": "desire",
-      "title": "Desire",
-      "description": "A wholesome motivation, interest, or objective that acts as the starting point for effort and application of will.",
-      "pali": [
-        "chanda"
-      ],
-      "synonyms": [
-        "having an objective",
-        "interest",
-        "aspiration",
-        "wish",
-        "intention",
-        "impulse"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 13,
-      "type": "discourse",
-      "slug": "sn14.28",
-      "title": "Aṭṭhaṅgika sutta - The Eightfold Path",
-      "description": "Beings come together and associate according to disposition. Those with wrong views come together and associate with those with wrong views, and similar for the other eight factors. Those with right v",
-      "contentSnippet": "“Bhikkhus, beings come together and associate |according to disposition::in line with their mental qualities or inclinations [dhātuso]|. Those |with <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 ",
-      "score": 30.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 14,
-      "type": "discourse",
-      "slug": "sn14.29",
-      "title": "Dasaṅgasutta sutta - The Tenfold Path",
-      "description": "Beings come together and associate according to disposition. Those with wrong views come together and associate with those with wrong views, and similar for the other eight factors. Those with right v",
-      "contentSnippet": "“Bhikkhus, beings come together and associate |according to disposition::in line with their mental qualities or inclinations [dhātuso]|. Those |with <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 ",
-      "score": 30,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 15,
-      "type": "topic-quality",
-      "slug": "mindfulness",
-      "title": "Mindfulness",
-      "description": "Remembering to be present with continuous effort, observing the body, feelings, mind, and mental qualities in and of themselves.",
-      "pali": [
-        "sati, anupassanā"
-      ],
-      "synonyms": [
-        "recollecting",
-        "remembering",
-        "keeping in mind",
-        "presence",
-        "awareness"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 16,
-      "type": "topic-quality",
-      "slug": "laziness",
-      "title": "Laziness",
-      "description": "Unwillingness or lack of energy and motivation to engage in wholesome activities or exert effort, leading to stagnation and missed opportunities for growth.",
-      "pali": [
-        "kosajja",
-        "tandī",
-        "ālasya",
-        "kusīta"
-      ],
-      "synonyms": [
-        "sloth",
-        "indolence",
-        "sluggishness",
-        "idleness",
-        "inactivity"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 17,
-      "type": "topic-quality",
-      "slug": "rousing of energy",
-      "title": "Rousing of energy",
-      "description": "The arousing of effort and determination in body and mind. It begins with confidence and reflection on purpose, stirring energy for wholesome action.",
-      "pali": [
-        "vīriyārambha, āraddhavīriya, uṭṭhānavant, atandita, pahitatta"
-      ],
-      "synonyms": [
-        "determination",
-        "being energetic",
-        "taking initiative",
-        "making a mental decision to act"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "sn45.11",
-      "title": "Paṭhamavihāra sutta - Dwelling (First)",
-      "description": "Emerging from seclusion, the Buddha describes dwelling in the meditative state he had experienced immediately after Awakening. He explains that all the mental factors—from wrong view to right collecte",
-      "contentSnippet": "“Bhikkhus, I have been dwelling in the |meditation attainment::state of mind [vihāra]| in which I dwelt just after I |became fully awakened::attained perfect enlightenment [abhisambuddha]|. I have und",
-      "score": 29.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 19,
-      "type": "topic-quality",
-      "slug": "laziness",
-      "title": "Laziness",
-      "description": "A mental quality characterized by unwillingness, aversion, or lack of motivation to exert effort in wholesome activities. It reflects an inner resistance to energy and discipline, the seed from which ",
-      "pali": [
-        "ālasya, kosajja, kusīta, tandī"
-      ],
-      "synonyms": [
-        "indolence",
-        "idleness",
-        "inactivity",
-        "sluggishness"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "an7.4",
-      "title": "Vitthatabala sutta - Powers in Detail",
-      "description": "The Buddha describes the seven powers in detail, of 1) faith, 2) energy, 3) conscience, 4) fear of wrongdoing, 5) mindfulness, 6) collectedness, and 7) wisdom.",
-      "contentSnippet": "And what, bhikkhus, is the power of |fear of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark>doing::moral dread [ottappa]|? Here, bhikkhus, a disciple of the Noble Ones fears <",
-      "score": 27,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 1
     }
   ],
   "assertions": [

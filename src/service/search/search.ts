@@ -4,7 +4,11 @@ import {
 	buildFuseQuery,
 	type HighlightTerm,
 } from "../../utils/fuseQueryParser";
-import { isStopword } from "../../utils/searchRanking";
+import {
+	isStopword,
+	findPhraseMatchPositions,
+	calculatePhraseProximity,
+} from "../../utils/searchRanking";
 import Fuse from "fuse.js";
 
 export interface SearchResult {
@@ -206,12 +210,18 @@ function findBestMatchingParagraph(
 
 	const paragraphs = text.split(/\n\n+/);
 	let bestMatch: ParagraphMatch | null = null;
+	let bestMatchIndex = -1;
 	let currentLength = 0;
 
 	// console.log(`Debug: Searching for query terms:`, queryTerms);
 
 	// Process each paragraph
-	for (const paragraph of paragraphs) {
+	for (
+		let paragraphIndex = 0;
+		paragraphIndex < paragraphs.length;
+		paragraphIndex++
+	) {
+		const paragraph = paragraphs[paragraphIndex];
 		const paragraphLower = paragraph.toLowerCase();
 		const normalizedParagraph = normalizeText(paragraphLower);
 		const paragraphEnd = currentLength + paragraph.length;
@@ -304,11 +314,37 @@ function findBestMatchingParagraph(
 				}
 			});
 
+			// Check for phrase proximity in this paragraph
+			// Get non-stopword query terms for phrase matching
+			const nonStopwordQueryTerms = queryTerms.filter(
+				(t) => !isStopword(t),
+			);
+			let phraseProximityBonus = 0;
+			if (nonStopwordQueryTerms.length >= 2) {
+				const proximity = calculatePhraseProximity(
+					paragraph,
+					nonStopwordQueryTerms,
+				);
+				if (proximity.isAdjacent) {
+					// Strong bonus for adjacent phrase match (e.g., "wrong effort" as a phrase)
+					phraseProximityBonus = 500;
+				} else if (proximity.isNear) {
+					// Moderate bonus for near phrase match
+					phraseProximityBonus = 200;
+				}
+			}
+
 			// Calculate relevance score:
 			// 1. Prioritize paragraphs with more UNIQUE terms matched (not same word multiple times)
 			// 2. Prioritize paragraphs with non-stopword matches over stopword-only matches
 			// 3. Use total match count as a tiebreaker
+			// 4. For multi-term queries, heavily prioritize non-stopword matches
+			// 5. Strongly prioritize paragraphs with phrase proximity (terms appearing together)
+			const hasOnlyStopwordMatches =
+				uniqueNonStopwordTermsMatched === 0 && uniqueTermsMatched > 0;
 			const relevanceScore =
+				phraseProximityBonus + // Phrase proximity is highest priority
+				(hasOnlyStopwordMatches ? -50 : 0) + // Heavy penalty for stopword-only paragraphs
 				uniqueNonStopwordTermsMatched * 100 + // Non-stopword unique terms (highest priority)
 				uniqueTermsMatched * 10 + // All unique terms matched
 				matchCounts.exact.size * 5 + // Exact match terms
@@ -338,6 +374,7 @@ function findBestMatchingParagraph(
 					indices: paragraphMatches,
 					debug,
 				};
+				bestMatchIndex = paragraphIndex;
 			}
 		}
 
@@ -349,6 +386,21 @@ function findBestMatchingParagraph(
 		return null;
 	}
 
+	// If the best match is a section heading, include the next paragraph too
+	let snippetText = bestMatch.text;
+	const isHeading = /^#{2,6}\s+/.test(snippetText.trim());
+	if (
+		isHeading &&
+		bestMatchIndex >= 0 &&
+		bestMatchIndex < paragraphs.length - 1
+	) {
+		const nextParagraph = paragraphs[bestMatchIndex + 1];
+		// Only include if next paragraph is not too long (avoid huge snippets)
+		if (nextParagraph && nextParagraph.length < 500) {
+			snippetText = snippetText + "\n\n" + nextParagraph;
+		}
+	}
+
 	/* console.log("Debug: Best match found:", {
             preview: bestMatch.text.slice(0, 50) + "...",
             score: bestMatch.fullPhraseMatches * 2 + bestMatch.matchCount,
@@ -356,37 +408,191 @@ function findBestMatchingParagraph(
         }); */
 
 	// Split text into segments, preserving tooltip boundaries using updated pattern
-	const segments = bestMatch.text.split(/(\|[^|]+::[^|]+\|)/g);
+	const segments = snippetText.split(/(\|[^|]+::[^|]+\|)/g);
 
-	// console.log("Debug: Segments found:", segments.length, segments);
+	// Extract non-stopword terms for phrase matching
+	const nonStopwordTerms = termsToHighlight
+		.filter(
+			(ht) =>
+				!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
+					ht.operation,
+				) && !isStopword(ht.term),
+		)
+		.map((ht) => processTermForHighlight(ht));
+
+	// Check if there's a phrase match anywhere in the snippet (using visible text)
+	const hasPhraseMatch =
+		nonStopwordTerms.length >= 2
+			? findPhraseMatchPositions(snippetText, nonStopwordTerms) !== null
+			: false;
+
+	// Helper function to check if a segment contains all terms near each other
+	function segmentHasPhraseMatch(segmentText: string): boolean {
+		if (!hasPhraseMatch || nonStopwordTerms.length < 2) return false;
+		const positions = findPhraseMatchPositions(
+			segmentText,
+			nonStopwordTerms,
+		);
+		return positions !== null;
+	}
+
+	// Pre-scan segments to find which one has the phrase match
+	// This ensures we highlight in the phrase segment, not the first occurrence
+	let phraseSegmentIndex = -1;
+	if (hasPhraseMatch) {
+		for (let i = 0; i < segments.length; i++) {
+			const segment = segments[i];
+			// For tooltip segments, check the visible part
+			const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
+			const textToCheck = tooltipMatch ? tooltipMatch[1] : segment;
+			if (segmentHasPhraseMatch(textToCheck)) {
+				phraseSegmentIndex = i;
+				break;
+			}
+		}
+	}
+
+	// Get the actual phrase match positions if we found a phrase segment
+	// This tells us exactly WHERE in the text the phrase terms appear together
+	let phrasePositions: Array<{
+		term: string;
+		startPos: number;
+		endPos: number;
+	}> | null = null;
+	if (phraseSegmentIndex >= 0) {
+		const segment = segments[phraseSegmentIndex];
+		const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
+		const textToCheck = tooltipMatch ? tooltipMatch[1] : segment;
+		phrasePositions = findPhraseMatchPositions(
+			textToCheck,
+			nonStopwordTerms,
+		);
+	}
 
 	// Track which terms have already been highlighted (for first-match-only)
 	const highlightedTerms = new Set<string>();
 
-	// Helper to apply highlighting to text (only first occurrence per term globally)
-	function applyHighlighting(text: string): string {
+	// Helper to apply highlighting to text
+	// When we have a phrase match in this segment, highlight the phrase terms at their specific positions
+	function applyHighlighting(
+		text: string,
+		currentSegmentIndex: number,
+	): string {
 		let highlighted = text;
+
+		// Check if this is the segment with the phrase match
+		const isPhraseSeg = currentSegmentIndex === phraseSegmentIndex;
+
+		// If this is the phrase segment and we have positions, highlight at those specific positions
+		// We need to process positions in reverse order to preserve character indices
+		if (isPhraseSeg && phrasePositions && phrasePositions.length > 0) {
+			console.log(
+				"[applyHighlighting] Processing phrase segment:",
+				currentSegmentIndex,
+			);
+			console.log("[applyHighlighting] text:", text.substring(0, 50));
+			console.log(
+				"[applyHighlighting] phrasePositions:",
+				phrasePositions,
+			);
+
+			const markClass = "bg-yellow-100 dark:bg-yellow-900";
+
+			// Sort positions in reverse order (rightmost first) to preserve indices while replacing
+			const sortedPositions = [...phrasePositions].sort(
+				(a, b) => b.startPos - a.startPos,
+			);
+
+			for (const pos of sortedPositions) {
+				const termLower = pos.term.toLowerCase();
+				// Get the actual text at this position
+				const actualText = text.substring(pos.startPos, pos.endPos);
+				console.log(
+					"[applyHighlighting] pos:",
+					pos,
+					"actualText:",
+					actualText,
+				);
+
+				// Replace at the specific position
+				highlighted =
+					highlighted.substring(0, pos.startPos) +
+					`<mark class="${markClass} px-1 rounded">${actualText}</mark>` +
+					highlighted.substring(pos.endPos);
+
+				console.log(
+					"[applyHighlighting] highlighted after replace:",
+					highlighted.substring(0, 100),
+				);
+
+				highlightedTerms.add(termLower);
+			}
+
+			// Now handle any remaining non-phrase terms that haven't been highlighted
+			termsToHighlight.forEach((ht) => {
+				const cleanTerm = processTermForHighlight(ht);
+				const termLower = cleanTerm.toLowerCase();
+
+				// Skip phrase terms (already handled above)
+				if (nonStopwordTerms.includes(cleanTerm)) return;
+				// Skip if already highlighted
+				if (highlightedTerms.has(termLower)) return;
+
+				const pattern = createHighlightPattern(cleanTerm, ht.operation);
+				if (!pattern) return;
+
+				const regex = new RegExp(pattern, "u");
+				const match = highlighted.match(regex);
+				if (match) {
+					const matchMarkClass =
+						ht.operation === "exact"
+							? "bg-yellow-200 dark:bg-yellow-800"
+							: "bg-yellow-100 dark:bg-yellow-900";
+					highlighted = highlighted.replace(
+						regex,
+						(m) =>
+							`<mark class="${matchMarkClass} px-1 rounded">${m}</mark>`,
+					);
+					highlightedTerms.add(termLower);
+				}
+			});
+
+			return highlighted;
+		}
+
 		termsToHighlight.forEach((ht) => {
 			const cleanTerm = processTermForHighlight(ht);
+			const termLower = cleanTerm.toLowerCase();
 
 			// Skip if this term was already highlighted in a previous segment
-			if (highlightedTerms.has(cleanTerm.toLowerCase())) return;
+			if (highlightedTerms.has(termLower)) return;
 
 			const pattern = createHighlightPattern(cleanTerm, ht.operation);
-
 			if (!pattern) return;
+
+			const markClass =
+				ht.operation === "exact"
+					? "bg-yellow-200 dark:bg-yellow-800"
+					: "bg-yellow-100 dark:bg-yellow-900";
+
+			// If there's a phrase segment found but this isn't it, skip phrase terms
+			// (we want to highlight phrase terms only in the phrase segment)
+			if (
+				phraseSegmentIndex >= 0 &&
+				nonStopwordTerms.includes(cleanTerm)
+			) {
+				return;
+			}
 
 			const regex = new RegExp(pattern, "u"); // Single match only
 			const match = highlighted.match(regex);
 
 			if (match) {
-				// Mark this term as highlighted so we skip it in future segments
-				highlightedTerms.add(cleanTerm.toLowerCase());
-
+				highlightedTerms.add(termLower);
 				highlighted = highlighted.replace(
 					regex,
 					(m) =>
-						`<mark class="${ht.operation === "exact" ? "bg-yellow-200 dark:bg-yellow-800" : "bg-yellow-100 dark:bg-yellow-900"} px-1 rounded">${m}</mark>`,
+						`<mark class="${markClass} px-1 rounded">${m}</mark>`,
 				);
 			}
 		});
@@ -394,7 +600,7 @@ function findBestMatchingParagraph(
 	}
 
 	// Process each segment separately
-	const processed = segments.map((segment) => {
+	const processed = segments.map((segment, segmentIndex) => {
 		// Handle tooltip segments: |visible text::tooltip text|
 		// We should highlight matches in the visible part but not the tooltip part
 		const tooltipMatch = segment.match(/^\|([^|]+)::([^|]+)\|$/);
@@ -402,15 +608,29 @@ function findBestMatchingParagraph(
 			const visibleText = tooltipMatch[1];
 			const tooltipText = tooltipMatch[2];
 			// Apply highlighting only to visible text, preserve tooltip
-			const highlightedVisible = applyHighlighting(visibleText);
+			const highlightedVisible = applyHighlighting(
+				visibleText,
+				segmentIndex,
+			);
 			return `|${highlightedVisible}::${tooltipText}|`;
 		}
 
 		// Regular text segment - apply highlighting
-		return applyHighlighting(segment);
+		return applyHighlighting(segment, segmentIndex);
 	});
 
-	return processed.join("").trim();
+	let result = processed.join("").trim();
+
+	// Post-process: Convert section headings (###, ####, etc.) to bold text
+	result = result.replace(/^(#{2,6})\s+(.+)$/gm, "<strong>$2</strong>");
+
+	// Post-process: Convert markdown links [text](url) to HTML links
+	result = result.replace(
+		/\[([^\]]+)\]\(([^)]+)\)/g,
+		'<a href="$2" class="text-link-color hover:underline">$1</a>',
+	);
+
+	return result;
 }
 
 export async function performSearch(
@@ -483,4 +703,62 @@ export async function getFilteredDiscourses(
 			contentSnippet: null,
 			priority: item.priority,
 		}));
+}
+
+/**
+ * Find discourses that contain the query as a whole word in their content.
+ * Used to supplement Fuse.js results which may miss documents with many content matches.
+ * @param query - The search query
+ * @param excludeSlugs - Set of slugs to exclude (already in Fuse results)
+ */
+export function findContentWholeWordMatches(
+	query: string,
+	excludeSlugs: Set<string>,
+): SearchResult[] {
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+	const queryLower = query.toLowerCase().trim();
+	const queryTerms = queryLower.split(/\s+/).filter((t) => t.length > 0);
+
+	// Find the main non-stopword term to search for
+	const mainTerm = queryTerms.find((t) => !isStopword(t)) || queryTerms[0];
+	if (!mainTerm || mainTerm.length < 3) return [];
+
+	const wordBoundaryRegex = new RegExp(`\\b${mainTerm}\\b`, "i");
+
+	return searchData
+		.filter((item) => {
+			if (excludeSlugs.has(item.slug)) return false;
+			const content = item.content || "";
+			return wordBoundaryRegex.test(content);
+		})
+		.map((item) => ({
+			slug: item.slug,
+			title: item.title,
+			description: item.description,
+			contentSnippet: null,
+			priority: item.priority,
+		}));
+}
+
+/**
+ * Get full content for a discourse by slug.
+ * Used for client-side term matching where contentSnippet is insufficient.
+ */
+export function getFullContentBySlug(slug: string): string | null {
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+	const item = searchData.find((d) => d.slug === slug);
+	return item?.content ?? null;
+}
+
+/**
+ * Create a map of slug -> full content for efficient lookups.
+ * Returns a function that retrieves full content by slug.
+ */
+export function getContentLookup(): (slug: string) => string | null {
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+	const contentMap = new Map<string, string>();
+	for (const item of searchData) {
+		contentMap.set(item.slug, item.content);
+	}
+	return (slug: string) => contentMap.get(slug) ?? null;
 }

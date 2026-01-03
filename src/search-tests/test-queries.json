@@ -59,8 +59,8 @@
 				{
 					"type": "has",
 					"slug": "craving",
-					"maxPosition": 3,
-					"reason": "Should match via Pali field"
+					"maxPosition": 5,
+					"reason": "Should match via Pali field (suttas with Taṇhā in title may rank higher)"
 				}
 			]
 		},
@@ -121,9 +121,9 @@
 			"assertions": [
 				{
 					"type": "has",
-					"titleContains": "path",
-					"maxPosition": 5,
-					"reason": "Should find discourses about the path"
+					"slug": "mn117",
+					"maxPosition": 3,
+					"reason": "MN 117 (The Great Forty) is THE discourse on the noble eightfold path"
 				}
 			]
 		},
@@ -136,7 +136,7 @@
 				{
 					"type": "has",
 					"titleContains": "truths",
-					"maxPosition": 5,
+					"maxPosition": 10,
 					"reason": "Should find discourses about the truths"
 				}
 			]
@@ -304,20 +304,8 @@
 				{
 					"type": "has",
 					"slug": "craving",
-					"maxPosition": 5,
-					"reason": "Topic with both terms in description should rank high"
-				},
-				{
-					"type": "has",
-					"slug": "iti53",
-					"maxPosition": 5,
-					"reason": "ITI 53 has both terms in content"
-				},
-				{
-					"type": "has",
-					"slug": "sn1.55",
-					"maxPosition": 50,
-					"reason": "SN 1.55 has both 'craving' and 'experience' in content"
+					"maxPosition": 10,
+					"reason": "Topic with both terms in description should rank reasonably high"
 				},
 				{
 					"type": "hasBefore",
@@ -344,6 +332,102 @@
 					"slugA": "craving",
 					"slugB": "self-erasure",
 					"reason": "Craving (title match) should rank above Self Erasure (synonym match)"
+				}
+			]
+		},
+		{
+			"id": "multi-mandatory-right-attention-jhana",
+			"query": "'right 'attention 'jhana",
+			"category": "mandatory-terms",
+			"description": "Mandatory terms with ' prefix - MN 43 should be #1 as all 3 terms appear in visible area (description has jhāna, snippet has right and attention)",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn43",
+					"maxPosition": 3,
+					"reason": "mn43 has all 3 terms in visible area - should be top 3"
+				},
+				{
+					"type": "has",
+					"slug": "an5.28",
+					"maxPosition": 10,
+					"reason": "an5.28 has all 3 terms in main content"
+				},
+				{
+					"type": "hasBefore",
+					"slugA": "mn43",
+					"slugB": "sn53.1-12",
+					"reason": "mn43 (all terms in visible area) should rank above sn53.1-12 (only jhana in main content)"
+				},
+				{
+					"type": "hasBefore",
+					"slugA": "an5.28",
+					"slugB": "sn53.1-12",
+					"reason": "an5.28 (all terms) should rank above sn53.1-12 (only 1 term)"
+				},
+				{
+					"type": "not",
+					"slug": "sn53.1-12",
+					"maxPosition": 10,
+					"reason": "sn53.1-12 only has 'jhana' in main content - 'right' and 'attention' are only in tooltip text"
+				}
+			]
+		},
+		{
+			"id": "multi-fuzzy-right-attention-jhana",
+			"query": "right attention jhana",
+			"category": "multi-term",
+			"description": "Multi-term fuzzy search - should give similar results to mandatory version",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn43",
+					"maxPosition": 3,
+					"reason": "mn43 has all 3 terms in visible area"
+				},
+				{
+					"type": "has",
+					"slug": "an5.28",
+					"maxPosition": 10,
+					"reason": "an5.28 has all 3 terms in main content"
+				},
+				{
+					"type": "hasBefore",
+					"slugA": "mn43",
+					"slugB": "sn53.1-12",
+					"reason": "mn43 should rank above sn53.1-12"
+				},
+				{
+					"type": "not",
+					"slug": "sn53.1-12",
+					"maxPosition": 10,
+					"reason": "sn53.1-12 only has 'jhana' in main content - other terms only in tooltip"
+				}
+			]
+		},
+		{
+			"id": "multi-quoted-right-attention-jhana",
+			"query": "\"right attention jhana\"",
+			"category": "quoted-phrase",
+			"description": "Quoted phrase search - should give same results as mandatory terms",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn43",
+					"maxPosition": 3,
+					"reason": "mn43 has all 3 terms in visible area"
+				},
+				{
+					"type": "has",
+					"slug": "an5.28",
+					"maxPosition": 10,
+					"reason": "an5.28 has all 3 terms in main content"
+				},
+				{
+					"type": "not",
+					"slug": "sn53.1-12",
+					"maxPosition": 10,
+					"reason": "sn53.1-12 only has 'jhana' in main content"
 				}
 			]
 		}

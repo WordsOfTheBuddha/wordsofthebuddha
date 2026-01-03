@@ -1,38 +1,14 @@
 {
   "query": "ending craving",
-  "timestamp": "2025-12-31T12:03:29.636Z",
+  "timestamp": "2026-01-03T22:44:42.211Z",
   "version": "1.0.0",
   "results": [
     {
       "rank": 1,
-      "type": "discourse",
-      "slug": "mn38",
-      "title": "Mahātaṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
-      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
-      "contentSnippet": "“Good, bhikkhus. It is well that you say this and I say this: ‘When this does not exist, that does not come to be; with the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of",
-      "score": 87,
-      "matchType": "term-title-match",
-      "priority": 2,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 2,
-      "type": "discourse",
-      "slug": "dhp334-359",
-      "title": "Taṇhā vagga - Chapter 24 - Craving",
-      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
-      "contentSnippet": "Victorious over everything, all I have known,\nyet I remain |untainted::unstained, unsullied [anūpalitta]| by all things conquered and known;\nHaving abandoned all, liberated through the |complete <mark",
-      "score": 87,
-      "matchType": "term-title-match",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 3,
       "type": "topic-quality",
       "slug": "ending",
       "title": "Ending",
-      "description": "The complete exhaustion and cessation of craving, aversion, and delusion—the three roots of suffering. It refers to both the gradual wearing away of defilements through practice and the final cessatio",
+      "description": "The complete exhaustion and ending of craving, aversion, and delusion—the three roots of suffering. It refers to both the gradual wearing away of defilements through practice and the final cessation t",
       "pali": [
         "khaya, khīṇa, nirodha"
       ],
@@ -42,314 +18,239 @@
         "gradual ending",
         "wearing away"
       ],
-      "score": 80,
-      "matchType": "term-title-exact",
+      "score": 118,
+      "matchType": "phrase-description",
       "priority": 1,
+      "nonStopwordMatches": 2,
+      "synonymMatchPosition": 2
+    },
+    {
+      "rank": 2,
+      "type": "discourse",
+      "slug": "an3.61",
+      "title": "Titthāyatana sutta - Bases Of Sectarian Views",
+      "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
+      "contentSnippet": "And what, bhikkhus, is the noble truth of the |end of suffering::ending of discontentment, cessation of distress [dukkhanirodha]|? With the |complete fading away and ending::remainderless dispassion a",
+      "score": 101,
+      "matchType": "multi-term-content",
+      "priority": 3,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "contentSnippet": "“Good, bhikkhus. It is well that you say this and I say this: ‘When this does not exist, that does not come to be; with the ending of this, that ceases. That is: With the complete fading away and endi",
+      "score": 98,
+      "matchType": "term-title-match",
+      "priority": 2,
       "nonStopwordMatches": 2
     },
     {
       "rank": 4,
-      "type": "topic-quality",
-      "slug": "self-erasure",
-      "title": "Self Erasure",
-      "description": "A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
-      "pali": [
-        "vibhavataṇhā"
-      ],
-      "synonyms": [
-        "non-being craving",
-        "identity deletion",
-        "urge to vanish",
-        "self-negation",
-        "annihilation drive"
-      ],
-      "score": 73,
-      "matchType": "term-synonym-exact",
-      "priority": 1,
-      "nonStopwordMatches": 1
+      "type": "discourse",
+      "slug": "mn43",
+      "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
+      "description": "A series of questions and answers between Venerable Sāriputta and Venerable Mahākoṭṭhita that clarify subtle yet important aspects of the teachings. Topics covered include wisdom, consciousness, felt ",
+      "contentSnippet": "“Friend, through the fading away of ignorance, through the arising of wisdom, and the |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-y",
+      "score": 96.8,
+      "matchType": "multi-term-content",
+      "priority": 1.6,
+      "nonStopwordMatches": 2
     },
     {
       "rank": 5,
-      "type": "topic-quality",
-      "slug": "non-identification",
-      "title": "Non Identification",
-      "description": "A quality of mind that does not construct or fabricate a sense of self in relation to experience. It is the absence of the 'I am this' identification—neither claiming ownership nor defining oneself th",
-      "pali": [
-        "atammayatā"
-      ],
-      "synonyms": [
-        "principle of non-identification",
-        "(comm) no craving",
-        "lit. not made of that state"
-      ],
-      "score": 73,
-      "matchType": "term-synonym-exact",
+      "type": "discourse",
+      "slug": "dhp334-359",
+      "title": "Taṇhā vagga - Chapter 24 - Craving",
+      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
+      "contentSnippet": "Victorious over everything, all I have known,\nyet I remain |untainted::unstained, unsullied [anūpalitta]| by all things conquered and known;\nHaving abandoned all, liberated through the |complete <mark",
+      "score": 95,
+      "matchType": "term-title-match",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 6,
       "type": "discourse",
-      "slug": "snp5.7",
-      "title": "Nandamāṇavapucchā - Questions of Nanda",
-      "description": "The venerable Nanda asks: Is a sage defined by knowledge or by way of life? The Buddha replies that neither views nor observances lead to liberation. Only by abandoning all fixed ways and by completel",
-      "contentSnippet": "“I do not say of all ascetics and brahmins,\n(Nanda,” said the Blessed One)\n“that they are |enveloped::veiled, wrapped [nivuta]| by birth and old age;\nHaving abandoned the seen, heard, and |sensed::sme",
-      "score": 64,
-      "matchType": "content-substring",
+      "slug": "an6.63",
+      "title": "Nibbedhika sutta - Penetrating",
+      "description": "The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.",
+      "contentSnippet": "And what, bhikkhus, is the end of suffering? The <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
       "rank": 7,
-      "type": "topic-quality",
-      "slug": "non-restraint",
-      "title": "Non Restraint",
-      "description": "Failure to guard the sense doors. It occurs when attention chases after the signs and features of sense objects, allowing craving and aversion to invade the mind.",
-      "pali": [
-        "asaṁvara, asaṁyama"
-      ],
-      "synonyms": [
-        "unguarded in sense faculties",
-        "not watching the sense doors",
-        "grasping at prominent features or details of sense objects"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.10",
+      "title": "Gotama sutta - Gotama",
+      "description": "The Buddha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependent co-arising.",
+      "contentSnippet": "Thus, with the ending of ignorance, intentional constructs cease; with the ending of intentional constructs, consciousness ceases; with the ending of consciousness, name and form cease; with the endin",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 8,
-      "type": "topic-quality",
-      "slug": "wrong effort",
-      "title": "Wrong effort",
-      "description": "Misapplied energy directed toward goals rooted in craving, aversion, or delusion. It manifests as striving for sensual pleasure, gain, fame, or domination, exhausting the mind and feeding defilements.",
-      "pali": [
-        "micchāvāyāma"
-      ],
-      "synonyms": [
-        "incorrect endeavor"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.12",
+      "title": "Moḷiyaphagguna sutta - With Moḷiyaphagguna",
+      "description": "The Buddha explains dependent co-arising as a process rather than an agentive sequence.",
+      "contentSnippet": "With the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of the six sense bases, Phagguna, there is the ending of contact; with the ending of contact, th",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 9,
-      "type": "topic-quality",
-      "slug": "recognition of unsatisfactoriness",
-      "title": "Recognition of unsatisfactoriness",
-      "description": "Perceiving the inherent inadequacy and unreliability of conditioned existence. This recognition loosens craving and the pursuit of lasting satisfaction in what cannot endure.",
-      "pali": [
-        "dukkhasaññā"
-      ],
-      "synonyms": [
-        "perception of unsatisfactoriness",
-        "recognition of discontentment"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.41",
+      "title": "Pañcaverabhaya sutta - Five Perilous Animosities",
+      "description": "The Buddha explains how one can verify that they are a stream-enterer by reflecting on the five perilous animosities, the four factors of stream-entry, and clearly seeing with wisdom the noble princip",
+      "contentSnippet": "That is, |dependent on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding of the true nature of reality, not experientially understanding the ",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 10,
       "type": "discourse",
-      "slug": "iti58",
-      "title": "Taṇhā sutta - Craving",
-      "description": "The Buddha describes the three kinds of craving - 1) craving for sensual pleasures, 2) craving for becoming, and 3) craving for non-becoming.",
-      "contentSnippet": "“Bhikkhus, there are these three kinds of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>. What three? <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Craving</m",
-      "score": 30,
-      "matchType": "content-fuzzy",
+      "slug": "sn12.51",
+      "title": "Parivīmaṁsana sutta - Thorough Investigation",
+      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
+      "contentSnippet": "“Or further, when there is utterly no craving, with the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 11,
-      "type": "topic-quality",
-      "slug": "lack of discernment",
-      "title": "Lack of discernment",
-      "description": "Failure to understand cause and effect or to recognize wholesome from unwholesome. It clouds judgment and makes the mind easily led by craving and aversion.",
-      "pali": [
-        "asampajañña, bāla, duppañña"
-      ],
-      "synonyms": [
-        "lack of clear comprehension",
-        "lack of wisdom",
-        "child-like in understanding"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.59",
+      "title": "Viññāṇa sutta - Consciousness",
+      "description": "When one dwells perceiving enjoyment in things that are the basis for fetters, there is a descent of consciousness. When one dwells perceiving the drawback in things that are the basis for fetters, th",
+      "contentSnippet": "Bhikkhus, when one dwells perceiving the |drawback::disadvantage, unsatisfactoriness, inadequacy, danger [ādīnava]| in things that are the basis for fetters, there is no descent of consciousness. With",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 12,
-      "type": "topic-quality",
-      "slug": "hypocrisy",
-      "title": "Hypocrisy",
-      "description": "A counterfeit display of virtue or attainment—concealing faults and projecting qualities one lacks—often to secure material support, status, or admiration; it thrives on craving for recognition and co",
-      "pali": [
-        "māyāvī"
-      ],
-      "synonyms": [
-        "pretense",
-        "insincerity",
-        "deceitfulness",
-        "putting on a false front",
-        "fraudulent"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "mn9",
+      "title": "Sammādiṭṭhi sutta - Right View",
+      "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of persp",
+      "contentSnippet": "“There might be, friends. When, friends, a noble disciple understands craving, the origin of craving, the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of <mark class=\"bg-y",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 13,
-      "type": "topic-quality",
-      "slug": "vanity",
-      "title": "Vanity",
-      "description": "A swelling intoxication arising from youth, health, life, beauty, or possessions that blinds one to impermanence and breeds negligence. Like a soiled cloth, it stains the mind with conceit and craving",
-      "pali": [
-        "mada, mogha"
-      ],
-      "synonyms": [
-        "drinking one's own cool-aid",
-        "excess",
-        "extravagance",
-        "indulgence",
-        "intoxication",
-        "being misguided"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
-      "priority": 1,
-      "nonStopwordMatches": 1
+      "type": "discourse",
+      "slug": "mn141",
+      "title": "Saccavibhaṅga sutta - Exposition of the Truths",
+      "description": "The Buddha affirms the Four Noble Truths as the core of his teaching and praises venerable Sāriputta’s deep understanding of them, who then expounds the truths, detailing suffering in all its forms, t",
+      "contentSnippet": "And what, friends, is the noble truth of the end of suffering? It is the |complete fading away and <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark>::remainderless dispassion a",
+      "score": 94,
+      "matchType": "multi-term-content",
+      "priority": 2,
+      "nonStopwordMatches": 2
     },
     {
       "rank": 14,
       "type": "discourse",
-      "slug": "an4.199",
-      "title": "Taṇhā sutta - Craving",
-      "description": "The Buddha describes craving as a pervasive net that entangles the mind. He analyzes thirty-six modes of mental stirring—eighteen internal ways of conceiving the self and eighteen external ways of ide",
-      "contentSnippet": "Thus, there are eighteen mental stirrings of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark> dependent on the internal, and eighteen mental stirrings of <mark class=\"bg-yell",
-      "score": 29.5,
-      "matchType": "content-fuzzy",
-      "priority": 1.9,
-      "nonStopwordMatches": 1
+      "slug": "mn44",
+      "title": "Cūḷavedalla sutta - The Shorter Series Of Questions And Answers",
+      "description": "A series of questions and answers between the lay follower Visākha and bhikkhunī Dhammadinnā that clarify subtle yet important aspects of the teachings. Topics covered include personal existence, Nobl",
+      "contentSnippet": "“Friend Visākha, the |complete fading away and <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark>::remainderless dispassion and cessation [asesavirāganirodha]| of that very <mar",
+      "score": 91,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
     },
     {
       "rank": 15,
-      "type": "topic-quality",
-      "slug": "boastfulness",
-      "title": "Boastfulness",
-      "description": "A puffed-up self-display that advertises one's virtues, attainments, or status to win admiration. It springs from conceit and the craving for recognition, crowding out humility and genuine connection.",
-      "pali": [
-        "attukkaṁsaka"
-      ],
-      "synonyms": [
-        "braggart",
-        "exalting oneself",
-        "overbearing",
-        "self-promotion",
-        "self-praising"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.3",
+      "title": "Paṭipadā sutta - Ways Of Practice",
+      "description": "The Buddha explains the wrong way of practice as that which leads to the arising of suffering, and the right way of practice as that which leads to the end of suffering.",
+      "contentSnippet": "“And what, bhikkhus, is the right way of practice? Dependent on the remainderless fading away and cessation of ignorance comes the ending of intentional constructs; with the ending of intentional cons",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 16,
-      "type": "topic-quality",
-      "slug": "unwise attention",
-      "title": "Unwise attention",
-      "description": "Attention that misses the point of contact, fixating on concepts or features. Disconnected from the source of experience, it then engages in reactions of craving, aversion, and delusion.",
-      "pali": [
-        "ayonisomanasikāra"
-      ],
-      "synonyms": [
-        "improper attention",
-        "imprudent use of the mind",
-        "unfocused attention"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn22.22",
+      "title": "Bhāra sutta - Burden",
+      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
+      "contentSnippet": "And what, bhikkhus, is the putting down of the burden? It is the |complete fading away and <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark>::remainderless dispassion and cessa",
+      "score": 91,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 17,
-      "type": "topic-quality",
-      "slug": "recognition of diversity",
-      "title": "Recognition of diversity",
-      "description": "The perception of multiplicity and variety in experience—seeing distinct forms, beings, and phenomena as separate entities. While natural to ordinary cognition, when fueled by craving and conceit it p",
-      "pali": [
-        "nānattasaññā"
-      ],
-      "synonyms": [
-        "concept of variety",
-        "perception of diversity",
-        "perception of multiplicity"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.4",
+      "title": "Vipassī sutta - Vipassī",
+      "description": "In the far past, the Buddha Vipassī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depend",
+      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 18,
       "type": "discourse",
-      "slug": "ud7.6",
-      "title": "Taṇhāsaṅkhaya sutta - Extinction of Craving",
-      "description": "Observing Aññāsi Koṇḍañña reviewing his liberation from craving, the Buddha utters an inspired verse praising the arahant who is rootless, unbound, and beyond reproach.",
-      "contentSnippet": "Thus have I heard—At one time, the Blessed One was dwelling at Sāvatthi, in Jeta’s grove, Anāthapiṇḍika’s park. Now, at that time, the venerable |Aññāsi Koṇḍañña::first person to realize the Buddha’s ",
-      "score": 29,
-      "matchType": "content-fuzzy",
+      "slug": "sn12.5",
+      "title": "Sikhī sutta - Sikhī",
+      "description": "In the far past, the Buddha Sikhī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependen",
+      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 19,
-      "type": "topic-quality",
-      "slug": "quenching",
-      "title": "Quenching",
-      "description": "An experiential state of being “cooled,” where the burning fever of craving has subsided and the mind dwells in a peace free from the anxiety of needing to become something else.",
-      "pali": [
-        "nibbuta, nirāsa"
-      ],
-      "synonyms": [
-        "being cooled",
-        "desirelessness",
-        "free from hope",
-        "fulfilled",
-        "fully satiated",
-        "having attained emancipation"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.6",
+      "title": "Vessabhū sutta - Vessabhū",
+      "description": "In the far past, the Buddha Vessabhū prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depen",
+      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     },
     {
       "rank": 20,
-      "type": "topic-quality",
-      "slug": "dearness",
-      "title": "Dearness",
-      "description": "A mental quality of holding something or someone as 'dear' through attachment, which binds the mind with craving and possessiveness. It is the external fixation upon what the mind clings to, often giv",
-      "pali": [
-        "piya"
-      ],
-      "synonyms": [
-        "beloved",
-        "cherished",
-        "pleasing"
-      ],
-      "score": 30,
-      "matchType": "cross-field-partial",
+      "type": "discourse",
+      "slug": "sn12.7",
+      "title": "Kakusandha sutta - Kakusandha",
+      "description": "In the far past, the Buddha Kakusandha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dep",
+      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
+      "score": 95,
+      "matchType": "multi-term-content",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 2
     }
   ],
   "assertions": [

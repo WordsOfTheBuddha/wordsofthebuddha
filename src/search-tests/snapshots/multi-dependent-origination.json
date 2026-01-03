@@ -1,6 +1,6 @@
 {
   "query": "dependent origination",
-  "timestamp": "2025-12-31T12:02:56.779Z",
+  "timestamp": "2026-01-03T22:44:07.107Z",
   "version": "1.0.0",
   "results": [
     {
@@ -10,7 +10,7 @@
       "title": "Paṭiccasamuppāda sutta - Dependent Co-Arising",
       "description": "The Buddha explains the twelve links of dependent co-arising, and how there is an arising and ending of the whole mass of suffering.",
       "contentSnippet": "“I will teach you the |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising::arising together from a cause, chain of causation, dependent origination [paṭiccasamuppā",
-      "score": 80,
+      "score": 75,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -22,7 +22,7 @@
       "title": "Vibhaṅga sutta - Analysis of Dependent Co-Arising",
       "description": "The Buddha analyzes each of the twelve links of dependent co-arising, and explains how there is an arising and ending of the whole mass of suffering.",
       "contentSnippet": "“Bhikkhus, I will teach you the |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising::arising together from a cause, chain of causation, dependent origination [paṭi",
-      "score": 79.5,
+      "score": 74.5,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -34,7 +34,7 @@
       "title": "Paccaya sutta - Dependence",
       "description": "The Buddha teaches about dependent co-arising and the phenomena arisen from dependent co-arising. A noble disciple who has thoroughly seen this with right wisdom will no longer be doubtful about who t",
       "contentSnippet": "“I will teach you, bhikkhus, about |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising::arising together from a cause, chain of causation, dependent origination [p",
-      "score": 79,
+      "score": 74,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -46,7 +46,7 @@
       "title": "Pañcaverabhaya sutta - Five Perilous Animosities",
       "description": "The Buddha explains how one can verify that they are a stream-enterer by reflecting on the five perilous animosities, the four factors of stream-entry, and clearly seeing with wisdom the noble princip",
       "contentSnippet": "And what is the noble principle that has been clearly seen and thoroughly penetrated with wisdom? Here, householder, a disciple of the Noble Ones carefully and |wisely attends::properly attends, prude",
-      "score": 77.5,
+      "score": 72.5,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -58,7 +58,7 @@
       "title": "Assutavā sutta - Uninstructed",
       "description": "The Buddha contrasts the body’s visible decay with the mind’s instability, which is clung to as ‘self’, comparing it to a restless monkey jumping between branches. He teaches that wisdom arises from u",
       "contentSnippet": "Therein, bhikkhus, a learned disciple of the Noble Ones, carefully and |wisely::properly, prudently, thoroughly, carefully [yoniso]| applies the mind to |<mark class=\"bg-yellow-100 dark:bg-yellow-900 ",
-      "score": 76,
+      "score": 71,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -70,7 +70,7 @@
       "title": "Dutiya assutavā sutta - Uninstructed (Second)",
       "description": "The Buddha explains that while one can become detached from the decaying body, it is harder to detach from the mind, which is far more fleeting. He illustrates the principle of dependent co-arising wi",
       "contentSnippet": "Therein, bhikkhus, a learned disciple of the Noble Ones, carefully and |wisely::properly, prudently, thoroughly, carefully [yoniso]| applies the mind to |<mark class=\"bg-yellow-100 dark:bg-yellow-900 ",
-      "score": 75.5,
+      "score": 70.5,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -82,7 +82,7 @@
       "title": "Pāsarāsi sutta - Pile Of Snares",
       "description": "The Buddha shares his own journey of seeking the path to awakening, from leaving the household life, to studying under two meditation teachers, to attaining full awakening and an account of teaching t",
       "contentSnippet": "Then, bhikkhus, it occurred to me: ‘The |Dhamma::mental quality, state [dhamma]| I have attained is |profound::hard to fathom [gambhīra]|, hard to perceive, difficult to comprehend, |tranquil::peacefu",
-      "score": 60.5,
+      "score": 56,
       "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -113,6 +113,18 @@
     {
       "rank": 10,
       "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "contentSnippet": "And so, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on ignorance, bhikkhus, intentional constructs [arise]; dependent on intentional constructs, consciousness arises; ",
+      "score": 27.5,
+      "matchType": "content-fuzzy",
+      "priority": 2,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
       "slug": "sn12.46",
       "title": "Aññatarabrāhmaṇa sutta - A Certain Brahmin",
       "description": "A brahmin asks the Buddha whether the one who acts is the same as the one who experiences the result. The Buddha points these as two extreme views, and without approaching either, explains the arising",
@@ -123,7 +135,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 11,
+      "rank": 12,
       "type": "discourse",
       "slug": "sn12.22",
       "title": "Dutiyadasabala sutta - Ten Powers (Second)",
@@ -135,7 +147,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 12,
+      "rank": 13,
       "type": "discourse",
       "slug": "mn18",
       "title": "Madhupiṇḍika sutta - Honey Ball",
@@ -147,42 +159,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 13,
-      "type": "discourse",
-      "slug": "mn38",
-      "title": "Mahātaṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
-      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
-      "contentSnippet": "And so, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on ignorance, bhikkhus, intentional constructs [arise]; <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\"",
-      "score": 24.5,
-      "matchType": "content-fuzzy",
-      "priority": 2,
-      "nonStopwordMatches": 1
-    },
-    {
       "rank": 14,
-      "type": "discourse",
-      "slug": "sn35.245",
-      "title": "Kiṁsukopama sutta - The Kiṁsuka Tree",
-      "description": "The Buddha uses a simile of a kiṁsuka tree to explain the different perspectives of the bhikkhus on the purification of vision. He then shares a simile of a lord of the city to share the importance of",
-      "score": 24,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "sn12.11",
-      "title": "Āhāra sutta - Nutriment",
-      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
-      "contentSnippet": "And so, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on ignorance, bhikkhus, intentional constructs [arise]; <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\"",
-      "score": 23.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 16,
       "type": "discourse",
       "slug": "sn14.13",
       "title": "Giñjakāvasatha sutta - Brick House",
@@ -194,18 +171,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 17,
-      "type": "discourse",
-      "slug": "snp5.6",
-      "title": "Upasīvamāṇavapucchā - Questions of Upasīva",
-      "description": "The venerable Upasīva asks the Buddha for a basis to rely upon to cross the great flood of existence. He then inquires about the destiny of one who is fully liberated.",
-      "score": 22.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 18,
+      "rank": 15,
       "type": "discourse",
       "slug": "sn22.82",
       "title": "Puṇṇama sutta - The Full Moon Night",
@@ -217,7 +183,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 19,
+      "rank": 16,
       "type": "discourse",
       "slug": "sn22.102",
       "title": "Aniccasaññā sutta - Recognition Of Impermanence",
@@ -229,15 +195,52 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 20,
+      "rank": 17,
       "type": "discourse",
-      "slug": "snp4.8",
-      "title": "Pasūra sutta - To Pasūra",
-      "description": "The Buddha advises Pasūra on the futility of debate and the danger of conceit. Seeking praise, one finds only pride in victory or humiliation in defeat. This whole cycle of elation and dejection is fr",
+      "slug": "an3.61",
+      "title": "Titthāyatana sutta - Bases Of Sectarian Views",
+      "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
+      "contentSnippet": "And what, bhikkhus, is the noble truth of the |arising of suffering::source of stress, appearance of discomfort [dukkhasamudaya]|? |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Dependen",
       "score": 21,
       "matchType": "content-fuzzy",
+      "priority": 3,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "mn139",
+      "title": "Araṇavibhaṅga sutta - Exposition on Non-conflict",
+      "description": "True peace is found not through suppression or indulgence, but through understanding. The Buddha teaches how to discern a practice that is a source of conflict and that which is free from conflict, ad",
+      "contentSnippet": "‘One should evaluate pleasure, and knowing that, one should pursue inner happiness’—this was said. And in reference to what was this said? There are, bhikkhus, these five cords of sensual pleasure. Wh",
+      "score": 20.5,
+      "matchType": "content-fuzzy",
       "priority": 1,
-      "nonStopwordMatches": 0
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "mn75",
+      "title": "Māgaṇḍiya sutta - To Māgaṇḍiya",
+      "description": "The wanderer Māgaṇḍiya holds the view that sensual indulgence is spiritual growth and harshly criticizes the Buddha for teaching sense restraint, calling him a destroyer of spiritual growth. The Buddh",
+      "contentSnippet": "In the same way, Māgaṇḍiya, if I were to teach you the Dhamma, saying, ‘This is that health, this is that Nibbāna,’ and you were to truly know that health and see that Nibbāna, then together with the ",
+      "score": 19.5,
+      "matchType": "content-fuzzy",
+      "priority": 2.5,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "snp4.10",
+      "title": "Purābheda sutta - Before the Breakup",
+      "description": "The Buddha describes the conduct of a person who is said to be ‘peaceful’. Such a person is free from craving before the breaking up of body. He is one who examines distinctions in all contacts, withd",
+      "contentSnippet": "“Devoid of |craving::wanting, yearning, longing, attachment, lit. thirst [taṇha]| before the breakup [of body],\n(said the Blessed One)\nnot <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">d",
+      "score": 19.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
     }
   ],
   "assertions": [

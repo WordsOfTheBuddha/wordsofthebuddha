@@ -1,6 +1,6 @@
 {
   "query": "self",
-  "timestamp": "2025-12-31T12:03:04.569Z",
+  "timestamp": "2026-01-02T21:25:44.210Z",
   "version": "1.0.0",
   "results": [
     {
@@ -53,8 +53,8 @@
       ],
       "synonyms": [
         "an aspiration for identity",
-        "drive for status or attainment",
         "craving to be",
+        "drive for status or attainment",
         "romanticizing some better self or future state"
       ],
       "score": 97,
@@ -64,16 +64,41 @@
     },
     {
       "rank": 4,
-      "type": "simile",
-      "slug": "spider-in-its-self-spun-web",
-      "title": "Spider in Its Self-spun Web",
-      "score": 97,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 1
+      "type": "discourse",
+      "slug": "an4.49",
+      "title": "Vipallāsa sutta - Inversion",
+      "description": "The Buddha describes these four inversions of perception, thought, and view, and the four non-inversions. An uninstructed ordinary person perceives permanence in the impermanent, pleasure in the unsat",
+      "contentSnippet": "3.) Bhikkhus, with regard to what is |not-<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>::impersonal [anattani]|, the perception of |self::soul, spirit [attāti]| arises—this i",
+      "score": 96.2,
+      "matchType": "description-whole-word",
+      "priority": 5,
+      "nonStopwordMatches": 0
     },
     {
       "rank": 5,
+      "type": "discourse",
+      "slug": "sn3.5",
+      "title": "Attarakkhita sutta - Self-Protection",
+      "description": "Even if protected by an entire army, one who engages in misconduct is unprotected. But one who engages in good conduct protects themselves, even without external protection.",
+      "score": 94,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "an3.17",
+      "title": "Attabyābādha sutta - Self-Infliction of Harm",
+      "description": "The Buddha explains how bodily, verbal, and mental misconduct lead to self-infliction of harm.",
+      "contentSnippet": "“Bhikkhus, these three qualities lead to <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>-infliction of harm, to the harm of others, and to the harm of both. What are these thre",
+      "score": 93.75,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
       "type": "topic-quality",
       "slug": "recognition of not-self",
       "title": "Recognition of not Self",
@@ -92,28 +117,17 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 6,
-      "type": "topic-quality",
-      "slug": "boastfulness",
-      "title": "Boastfulness",
-      "description": "A puffed-up self-display that advertises one's virtues, attainments, or status to win admiration. It springs from conceit and the craving for recognition, crowding out humility and genuine connection.",
-      "pali": [
-        "attukkaṁsaka"
-      ],
-      "synonyms": [
-        "braggart",
-        "exalting oneself",
-        "overbearing",
-        "self-promotion",
-        "self-praising"
-      ],
-      "score": 94,
-      "matchType": "exact",
+      "rank": 8,
+      "type": "simile",
+      "slug": "spider-in-its-self-spun-web",
+      "title": "Spider in Its Self-spun Web",
+      "score": 97,
+      "matchType": "word-exact",
       "priority": 1,
       "nonStopwordMatches": 1
     },
     {
-      "rank": 7,
+      "rank": 9,
       "type": "topic-quality",
       "slug": "personal existence",
       "title": "Personal existence",
@@ -134,19 +148,64 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 8,
+      "rank": 10,
       "type": "discourse",
-      "slug": "an3.17",
-      "title": "Attabyābādha sutta - Self-Infliction of Harm",
-      "description": "The Buddha explains how bodily, verbal, and mental misconduct lead to self-infliction of harm.",
-      "contentSnippet": "“Bhikkhus, these three qualities lead to <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>-infliction of harm, to the harm of others, and to the harm of both. What are these thre",
-      "score": 93,
+      "slug": "dhp157-166",
+      "title": "Atta vagga - Chapter 12 - Self",
+      "description": "Dhammapada verses 157-166 emphasize self-discipline, personal responsibility, and inner mastery. A wise person must first establish themselves properly before guiding others, as self-mastery is diffic",
+      "contentSnippet": "By one<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark> is |harm::injury causing actions, either to oneself or to others [pāpa]| done,\nby oneself one becomes impure;\nBy oneself i",
+      "score": 93.6,
       "matchType": "word-exact",
       "priority": 1,
       "nonStopwordMatches": 0
     },
     {
-      "rank": 9,
+      "rank": 11,
+      "type": "discourse",
+      "slug": "sn22.59",
+      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
+      "description": "After examining the impermanence, unsatisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, as not being suitable to identify with.",
+      "contentSnippet": "“|Form::materiality, material existence, experience of the material world, i.e. encompassing both one’s body and external objects, whether near or far, gross or subtle, deficient or refined; first of ",
+      "score": 93.6,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn35.149",
+      "title": "Anattanibbānasappāya sutta - Not-self As Suitable For Realizing Nibbāna",
+      "description": "The way of practice suitable for realizing Nibbāna is to see the six sense bases and their objects as not-self.",
+      "contentSnippet": "Here, bhikkhus, a bhikkhu sees the eye as not-<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>, sees forms as not-self, sees the arising eye-consciousness as not-self, sees the ",
+      "score": 93.42857142857143,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "topic-quality",
+      "slug": "boastfulness",
+      "title": "Boastfulness",
+      "description": "A puffed-up self-display that advertises one's virtues, attainments, or status to win admiration. It springs from conceit and the craving for recognition, crowding out humility and genuine connection.",
+      "pali": [
+        "attukkaṁsaka"
+      ],
+      "synonyms": [
+        "braggart",
+        "exalting oneself",
+        "overbearing",
+        "self-promotion",
+        "self-praising"
+      ],
+      "score": 94,
+      "matchType": "exact",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 14,
       "type": "topic-quality",
       "slug": "conceit",
       "title": "Conceit",
@@ -167,7 +226,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 10,
+      "rank": 15,
       "type": "topic-quality",
       "slug": "unassuming",
       "title": "Unassuming",
@@ -189,7 +248,43 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 11,
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn22.45",
+      "title": "Anicca sutta - Impermanence",
+      "description": "The Buddha describes on the impermanent, stressful and not-self nature of the five aggregates of form, feeling, perception, formations and consciousness.",
+      "contentSnippet": "“Form, bhikkhus, is impermanent. What is impermanent is |suffering::discontentment, stress|; what is suffering is not <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>; what is n",
+      "score": 93,
+      "matchType": "content-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "an4.200",
+      "title": "Pema sutta - Affection",
+      "description": "The Buddha explains how four modes of social partiality—affection and aversion arising in relation to others—bind beings to the world. He shows how a bhikkhu transcends these entanglements by means of",
+      "contentSnippet": "And how, bhikkhus, does a bhikkhu pile up? Here, bhikkhus, a bhikkhu perceives |form::materiality, material existence, experience of the material world, i.e. encompassing both one’s body and external ",
+      "score": 88,
+      "matchType": "description-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "mn131",
+      "title": "Bhaddekaratta sutta - A Single Auspicious Night",
+      "description": "The Buddha teaches about the person who has had “a single auspicious night”. One who neither revives the past nor places hope in the future, but diligently discerns present phenomena with insight—with",
+      "contentSnippet": "And how, bhikkhus, |is one swept away by::is carried away by, is drawn along by [saṁhīrati]| presently arisen |phenomena::characteristics, thoughts, mental states, mental qualities [dhammā]|? Here, bh",
+      "score": 88,
+      "matchType": "description-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
       "type": "topic-quality",
       "slug": "humility",
       "title": "Humility",
@@ -212,110 +307,15 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 12,
-      "type": "discourse",
-      "slug": "sn3.5",
-      "title": "Attarakkhita sutta - Self-Protection",
-      "description": "Even if protected by an entire army, one who engages in misconduct is unprotected. But one who engages in good conduct protects themselves, even without external protection.",
-      "score": 93,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 13,
-      "type": "discourse",
-      "slug": "sn35.149",
-      "title": "Anattanibbānasappāya sutta - Not-self As Suitable For Realizing Nibbāna",
-      "description": "The way of practice suitable for realizing Nibbāna is to see the six sense bases and their objects as not-self.",
-      "contentSnippet": "Here, bhikkhus, a bhikkhu sees the eye as not-<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>, sees forms as not-<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">sel",
-      "score": 93,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 14,
-      "type": "discourse",
-      "slug": "dhp157-166",
-      "title": "Atta vagga - Chapter 12 - Self",
-      "description": "Dhammapada verses 157-166 emphasize self-discipline, personal responsibility, and inner mastery. A wise person must first establish themselves properly before guiding others, as self-mastery is diffic",
-      "contentSnippet": "By one<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark> is |harm::injury causing actions, either to oneself or to others [pāpa]| done,\nby one<mark class=\"bg-yellow-100 dark:bg-ye",
-      "score": 93,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "sn22.59",
-      "title": "Anattalakkhaṇa sutta - Characteristic of Being Not-self",
-      "description": "After examining the impermanence, unsatisfactoriness, and the changing nature of the five aggregates, the Buddha teaches how to see them with proper wisdom, as not being suitable to identify with.",
-      "contentSnippet": "“|Form::materiality, material existence, experience of the material world, i.e. encompassing both one’s body and external objects, whether near or far, gross or subtle, deficient or refined; first of ",
-      "score": 93,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 16,
-      "type": "discourse",
-      "slug": "snp4.15",
-      "title": "Attadaṇḍa sutta - Arming Oneself",
-      "description": "The Buddha shares in poignant terms his observations on the agitation all beings experience which led to his urgency to awaken. He then shares on the path to awakening and describes the dwelling of an",
-      "contentSnippet": "One should not be led into |false speech::lie, untruth [mosavajja]|,\nnor form affection toward forms;\nOne should |completely comprehend::fully understand [parijānāti]| |conceit::self-view expressed as",
-      "score": 78,
-      "matchType": "content-whole-word",
-      "priority": 1.2,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 17,
-      "type": "discourse",
-      "slug": "sn35.85",
-      "title": "Suññataloka sutta - Empty Is The World",
-      "description": "The world is empty of self and what belongs to a self.",
-      "contentSnippet": "The eye, Ānanda, is empty of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark> and of what belongs to a <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>. |",
-      "score": 77,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "sn35.234",
-      "title": "Udāyī sutta - With Udāyī",
-      "description": "The venerable Udāyī asks the venerable Ānanda about how to see the not-self nature of consciousness.",
-      "contentSnippet": "“Just as, friend Ānanda, this body has been thoroughly explained by the Blessed One in many aspects as not-<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>, revealing, clarifyin",
-      "score": 76.5,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "sn45.50-54",
-      "title": "Sīlasampadādi suttapañcaka - Five Discourses Beginning With Accomplishment in Virtue",
-      "description": "The Buddha explains the importance of accomplishment in virtue, aspiration, self-development, view, and diligence in the development and cultivation of the noble eightfold path.",
-      "contentSnippet": "For a bhikkhu accomplished in <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>-development, it is expected that he will develop and extensively cultivate the noble eightfold pat",
-      "score": 75.5,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn22.45",
-      "title": "Anicca sutta - Impermanence",
-      "description": "The Buddha describes on the impermanent, stressful and not-self nature of the five aggregates of form, feeling, perception, formations and consciousness.",
-      "contentSnippet": "“Form, bhikkhus, is impermanent. What is impermanent is |suffering::discontentment, stress|; what is suffering is not <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">self</mark>; what is n",
-      "score": 75,
-      "matchType": "content-whole-word",
-      "priority": 1,
+      "slug": "sn47.19",
+      "title": "Sedaka sutta - At Sedaka",
+      "description": "Through a parable of an acrobat and his apprentice, the Buddha teaches that protecting oneself through mindfulness also protects others, and vice versa. Self-discipline through mindfulness leads to co",
+      "contentSnippet": "When this was said, bhikkhus, the apprentice Medakathālikā said this to the acrobat: ‘That’s not the way to do it, teacher. You protect your<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">",
+      "score": 87.2,
+      "matchType": "description-whole-word",
+      "priority": 2,
       "nonStopwordMatches": 0
     }
   ],

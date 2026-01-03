@@ -146,6 +146,131 @@ function parseEvaluationResponse(response) {
 }
 
 /**
+ * Evaluate search result CHANGES using DeepSeek
+ * More efficient - only evaluates what changed, not full results
+ */
+export async function evaluateSearchDiff(query, results, diffContext, rules) {
+	const prompt = buildDiffEvaluationPrompt(
+		query,
+		results,
+		diffContext,
+		rules,
+	);
+
+	const response = await callDeepSeek(prompt, {
+		temperature: 0.2,
+		maxTokens: 1500,
+	});
+
+	return parseEvaluationResponse(response);
+}
+
+/**
+ * Build diff-focused evaluation prompt
+ */
+function buildDiffEvaluationPrompt(query, results, diffContext, rules) {
+	const { newResults, missingResults, rankChanges } = diffContext;
+
+	// Current top 10 results with full details
+	const currentTop = results
+		.slice(0, 10)
+		.map((r, i) => {
+			let details = `#${i + 1} | ${r.type} | Score: ${r.score} | ${r.matchType}
+    Title: ${r.title}
+    Slug: ${r.slug}`;
+			if (r.description)
+				details += `\n    Desc: ${r.description.substring(0, 150)}...`;
+			if (r.pali) details += `\n    Pali: ${r.pali.join(", ")}`;
+			if (r.synonyms)
+				details += `\n    Synonyms: ${r.synonyms.join(", ")}`;
+			if (r.contentSnippet)
+				details += `\n    Content: ${r.contentSnippet.substring(0, 100)}...`;
+			return details;
+		})
+		.join("\n\n");
+
+	// Format changes with full details
+	const newResultsText =
+		newResults.length > 0
+			? newResults
+					.map((r) => {
+						let text = `  + #${r.rank} ${r.title} (${r.type}, score: ${r.score})`;
+						if (r.description)
+							text += `\n      Desc: ${r.description.substring(0, 100)}...`;
+						return text;
+					})
+					.join("\n")
+			: "  (none)";
+
+	const missingResultsText =
+		missingResults.length > 0
+			? missingResults
+					.map((r) => {
+						let text = `  - Was #${r.prevRank}: ${r.title} (${r.type})`;
+						if (r.description)
+							text += `\n      Desc: ${r.description?.substring(0, 100)}...`;
+						return text;
+					})
+					.join("\n")
+			: "  (none)";
+
+	const rankChangesText =
+		rankChanges.length > 0
+			? rankChanges
+					.map((r) => {
+						const arrow = r.delta > 0 ? "↑" : "↓";
+						return `  ${arrow} ${r.title}: #${r.prevRank} → #${r.currRank} (${r.delta > 0 ? "+" : ""}${r.delta})`;
+					})
+					.join("\n")
+			: "  (none)";
+
+	return `You are reviewing CHANGES to search ranking for a Buddhist scripture search engine.
+
+## Query: "${query}"
+
+## Ranking Rules Summary
+${rules}
+
+## Current Top 10 Results
+${currentTop}
+
+## What Changed (vs previous snapshot)
+
+**New in top results:**
+${newResultsText}
+
+**Dropped from top results:**
+${missingResultsText}
+
+**Position changes:**
+${rankChangesText}
+
+## Evaluation Task
+
+Analyze whether these ranking CHANGES are improvements or regressions:
+
+1. **Are the changes good?** Did better results move up? Did worse results drop?
+2. **Any regressions?** Did important results get pushed down incorrectly?
+3. **Quality Score (1-10)**: How good is the current ranking overall?
+
+Respond in this JSON format:
+{
+  "qualityScore": <1-10>,
+  "assessment": "<brief assessment of current ranking>",
+  "diffAssessment": "<are the changes good or bad? why?>",
+  "issues": [
+    { "rank": <position>, "slug": "<slug>", "issue": "<description>" }
+  ],
+  "verdict": "IMPROVED" | "REGRESSED" | "NEUTRAL" | "REVIEW"
+}
+
+Focus on:
+- Did topic/quality cards correctly rank above or below discourses?
+- Are exact matches still at top?
+- Does the new ranking feel more intuitive?`;
+}
+
+/**
  * Get the ranking rules as a string for the prompt
  */
 export function getRankingRulesText() {

@@ -43,3 +43,6 @@ src/data/searchIndex.ts
 src/translation-flow/.debug/*
 src/translation-flow/.work/*
 src/.debug/*
+
+# search-tests
+src/search-tests/snapshots/**

@@ -17,23 +17,80 @@ import {
 	minEditDistance,
 	parseSlugPrefixes,
 	slugMatchesPrefixes,
+	stripAnnotations,
+	countTermMatches,
+	countTermMatchesWithQuality,
+	getTitleCoverageRatio,
+	applyMultiTermBoost,
+	textContainsQuery,
+	textContainsWholeWord,
+	countWholeWordOccurrences,
+	slugMatchesQuery,
+	isStopword,
+	calculatePhraseProximityBoost,
 	type MatchType,
 	type ScoredResult,
 } from "../../utils/searchRanking";
 
-// Helper functions
-function textContainsQuery(text: string, query: string): boolean {
-	return text.toLowerCase().includes(query.toLowerCase());
-}
+// Deduplicate topics/qualities that share the same primary pali term
+// Also deduplicate discourses by slug (in case of Fuse/supplemental overlap)
+// Keeps the result with the higher score
+function deduplicateByPali(results: ScoredResult[]): ScoredResult[] {
+	// Deduplicate discourses by slug (keep highest scoring)
+	const discourseMap = new Map<string, ScoredResult>();
+	for (const r of results.filter((r) => r.type === "discourse")) {
+		const slug = r.item.slug || r.item.id || "";
+		const existing = discourseMap.get(slug);
+		if (!existing || r.score > existing.score) {
+			discourseMap.set(slug, r);
+		}
+	}
+	const discourses = Array.from(discourseMap.values());
 
-function textContainsWholeWord(text: string, query: string): boolean {
-	const regex = new RegExp(`\\b${query}\\b`, "i");
-	return regex.test(text);
-}
+	const categories = results.filter(
+		(r) => r.type === "topic-quality" || r.type === "simile",
+	);
 
-// Strip annotation/gloss syntax: |visible::tooltip| → visible
-function stripAnnotations(text: string): string {
-	return (text || "").replace(/\|(.+?)::[^|]+\|/g, "$1");
+	// Group categories by their first/primary pali term (normalized)
+	const paliGroups = new Map<string, ScoredResult[]>();
+	const noPaliItems: ScoredResult[] = [];
+
+	for (const item of categories) {
+		const paliTerms = item.item.pali || [];
+		if (paliTerms.length === 0) {
+			noPaliItems.push(item);
+			continue;
+		}
+
+		// Get the primary pali term (first one, normalized, split by comma)
+		const firstPali = paliTerms[0];
+		const primaryTerm = normalizeForComparison(
+			firstPali.split(/[,\s]+/)[0],
+		);
+
+		if (!paliGroups.has(primaryTerm)) {
+			paliGroups.set(primaryTerm, []);
+		}
+		paliGroups.get(primaryTerm)!.push(item);
+	}
+
+	// For each group, keep only the highest-scoring item
+	const dedupedCategories: ScoredResult[] = [];
+	for (const [_, group] of paliGroups) {
+		if (group.length === 1) {
+			dedupedCategories.push(group[0]);
+		} else {
+			// Sort by score descending and keep the best one
+			group.sort((a, b) => b.score - a.score);
+			dedupedCategories.push(group[0]);
+		}
+	}
+
+	// Add items with no pali terms
+	dedupedCategories.push(...noPaliItems);
+
+	// Return discourses + deduplicated categories
+	return [...discourses, ...dedupedCategories];
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -102,7 +159,16 @@ export const GET: APIRoute = async ({ url }) => {
 				ignoreLocation: true,
 			});
 
-			const categoryResults = categoryFuse.search(effectiveQuery);
+			// For category search, use only non-stopword terms if there are stopwords in the query
+			// This ensures "craving that" still finds "Craving" (since "that" is a stopword)
+			const categoryNonStopTerms = getNonStopwordTerms(effectiveQuery);
+			const categorySearchQuery =
+				categoryNonStopTerms.length > 0 &&
+				categoryNonStopTerms.length <
+					effectiveQuery.trim().split(/\s+/).length
+					? categoryNonStopTerms.join(" ")
+					: effectiveQuery;
+			const categoryResults = categoryFuse.search(categorySearchQuery);
 			const queryNormalized = normalizeForComparison(effectiveQuery);
 			const queryTerms = queryLower
 				.split(/\s+/)
@@ -140,16 +206,23 @@ export const GET: APIRoute = async ({ url }) => {
 
 				let bestTermTitleMatch: MatchType = "none";
 				let bestTermSynonymMatch = "none";
+				// Track synonym position for term-level matches (used as tie-breaker)
+				let termSynonymMatchPosition: number | undefined = undefined;
+				// Track if a term is an EXACT match for the ENTIRE title (not just word-exact)
+				// This handles "craving that" where "craving" exactly matches title "Craving"
+				let hasTermExactTitleMatch = false;
 				if (isMultiWord) {
 					const titleLower = (item.title || "").toLowerCase();
 					const slugLower = (item.slug || "").toLowerCase();
 
 					for (const term of nonStopTerms) {
 						const termMatch = getMatchType(titleLower, term);
-						if (
-							termMatch === "exact" ||
-							termMatch === "word-exact"
-						) {
+						if (termMatch === "exact") {
+							// Term exactly matches the entire title
+							hasTermExactTitleMatch = true;
+							bestTermTitleMatch = "word-exact";
+							break;
+						} else if (termMatch === "word-exact") {
 							bestTermTitleMatch = "word-exact";
 							break;
 						} else if (
@@ -161,17 +234,27 @@ export const GET: APIRoute = async ({ url }) => {
 						}
 
 						const slugMatch = getMatchType(slugLower, term);
-						if (
-							slugMatch === "exact" ||
-							slugMatch === "word-exact"
-						) {
+						if (slugMatch === "exact") {
+							hasTermExactTitleMatch = true;
+							bestTermTitleMatch = "word-exact";
+							break;
+						} else if (slugMatch === "word-exact") {
 							bestTermTitleMatch = "word-exact";
 							break;
 						}
 					}
 
 					if (item.synonyms) {
-						for (const syn of item.synonyms) {
+						console.log(
+							`[DEBUG] Checking ${item.title} synonyms, nonStopTerms:`,
+							nonStopTerms,
+						);
+						for (
+							let synIdx = 0;
+							synIdx < item.synonyms.length;
+							synIdx++
+						) {
+							const syn = item.synonyms[synIdx];
 							for (const term of nonStopTerms) {
 								const match = getMatchType(syn, term);
 								if (
@@ -179,6 +262,12 @@ export const GET: APIRoute = async ({ url }) => {
 									match === "word-exact"
 								) {
 									bestTermSynonymMatch = "exact";
+									// Track synonym position for term-level matches (for tie-breaking)
+									if (
+										termSynonymMatchPosition === undefined
+									) {
+										termSynonymMatchPosition = synIdx;
+									}
 									break;
 								} else if (
 									match === "prefix" ||
@@ -186,6 +275,12 @@ export const GET: APIRoute = async ({ url }) => {
 								) {
 									if (bestTermSynonymMatch === "none")
 										bestTermSynonymMatch = "word-prefix";
+									// Track synonym position for term-level matches
+									if (
+										termSynonymMatchPosition === undefined
+									) {
+										termSynonymMatchPosition = synIdx;
+									}
 								}
 							}
 							if (bestTermSynonymMatch === "exact") break;
@@ -208,7 +303,10 @@ export const GET: APIRoute = async ({ url }) => {
 					item.pali?.reduce((best: string, p: string) => {
 						const pNorm = normalizeForComparison(p);
 						if (pNorm === queryNormalized) return "exact";
-						const paliWords = pNorm.split(/\s+/);
+						// Split by whitespace AND commas to handle "taṇha, abhijjhā" format
+						const paliWords = pNorm
+							.split(/[\s,]+/)
+							.filter((w) => w.length > 0);
 						if (
 							paliWords.some((word) => word === queryNormalized)
 						) {
@@ -232,22 +330,39 @@ export const GET: APIRoute = async ({ url }) => {
 						return best;
 					}, "none") || "none";
 
-				const synonymMatch =
-					item.synonyms?.reduce((best: string, s: string) => {
+				// Track synonym match and its position (index in the synonyms array)
+				let synonymMatch = "none";
+				let synonymMatchPosition: number | undefined = undefined;
+				if (item.synonyms) {
+					for (let i = 0; i < item.synonyms.length; i++) {
+						const s = item.synonyms[i];
 						const match = getMatchType(s, queryLower);
-						if (match === "exact" || match === "word-exact")
-							return "exact";
-						if (match === "prefix" && best !== "exact" && canPrefix)
-							return "prefix";
+						if (match === "exact" || match === "word-exact") {
+							synonymMatch = "exact";
+							synonymMatchPosition = i;
+							break; // Best possible match, stop searching
+						}
+						if (
+							match === "prefix" &&
+							synonymMatch !== "exact" &&
+							canPrefix
+						) {
+							synonymMatch = "prefix";
+							if (synonymMatchPosition === undefined)
+								synonymMatchPosition = i;
+						}
 						if (
 							match === "word-prefix" &&
-							best !== "exact" &&
-							best !== "prefix" &&
+							synonymMatch !== "exact" &&
+							synonymMatch !== "prefix" &&
 							canPrefix
-						)
-							return "word-prefix";
-						return best;
-					}, "none") || "none";
+						) {
+							synonymMatch = "word-prefix";
+							if (synonymMatchPosition === undefined)
+								synonymMatchPosition = i;
+						}
+					}
+				}
 
 				let crossFieldScore = 0;
 				let crossFieldMatchType = "";
@@ -306,8 +421,16 @@ export const GET: APIRoute = async ({ url }) => {
 					score = SCORE.CATEGORY_WORD_EXACT_SYNONYM;
 					matchType = "word-exact";
 				} else if (bestTermTitleMatch === "word-exact") {
-					score = SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75;
-					matchType = "term-title-exact";
+					// If a term exactly matches the full title, score it like an exact title match
+					// This handles "craving that" where "craving" exactly matches title "Craving"
+					if (hasTermExactTitleMatch) {
+						score = SCORE.CATEGORY_EXACT_TITLE;
+						matchType = "term-title-exact";
+					} else {
+						score =
+							SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75;
+						matchType = "term-title-exact";
+					}
 				} else if (bestTermSynonymMatch === "exact") {
 					// Synonym match scores slightly lower than title match
 					score =
@@ -387,6 +510,28 @@ export const GET: APIRoute = async ({ url }) => {
 					score += (categoryNonStopMatches - 1) * 5;
 				}
 
+				// Apply phrase proximity boost for multi-word queries
+				// This rewards categories where the query phrase appears intact in title/description/synonyms
+				if (isMultiWord && nonStopTerms.length >= 2) {
+					// Build combined synonym text for phrase checking
+					const synonymsText = (item.synonyms || []).join(" ");
+					const phraseBoost = calculatePhraseProximityBoost(
+						item.title || "",
+						item.description || "",
+						synonymsText, // Use synonyms as "content" for categories
+						nonStopTerms,
+					);
+					if (phraseBoost.boost > 0) {
+						score += phraseBoost.boost;
+						// Update match type to indicate phrase match
+						if (phraseBoost.titleMatch && matchType !== "exact") {
+							matchType = "phrase-title";
+						} else if (phraseBoost.descriptionMatch) {
+							matchType = "phrase-description";
+						}
+					}
+				}
+
 				if (score < SCORE.MIN_SCORE) return;
 
 				const isSimile = item.type === "simile";
@@ -406,6 +551,9 @@ export const GET: APIRoute = async ({ url }) => {
 					item,
 					matchType,
 					nonStopwordMatches: categoryNonStopMatches,
+					// Use term-level synonym position if full-query synonym position not set
+					synonymMatchPosition:
+						synonymMatchPosition ?? termSynonymMatchPosition,
 				});
 			});
 		}
@@ -452,7 +600,19 @@ export const GET: APIRoute = async ({ url }) => {
 				}
 
 				const titleMatch = getMatchType(item.title || "", queryLower);
-				const idMatch = getMatchType(itemSlug, queryLower);
+				// Check both raw slug match and normalized slug match (handles "mn 38" → "mn38")
+				const rawIdMatch = getMatchType(itemSlug, queryLower);
+				const normalizedSlugMatch = slugMatchesQuery(
+					itemSlug,
+					queryLower,
+				);
+				// Use the better of the two matches
+				const idMatch: MatchType =
+					normalizedSlugMatch === "exact"
+						? "exact"
+						: normalizedSlugMatch === "prefix"
+							? "prefix"
+							: rawIdMatch;
 
 				let termTitleMatch: MatchType = "none";
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
@@ -488,31 +648,53 @@ export const GET: APIRoute = async ({ url }) => {
 					item.description || "",
 					queryLower,
 				);
+
+				// Look up full content from search index (used for multi-term matching and occurrence counting)
+				const indexedDoc = (searchIndex as any[]).find(
+					(doc) => doc.slug === itemSlug,
+				);
+				const fullContent = indexedDoc?.content || "";
+
+				// Check content for whole word match - use snippet if available, but also check full content
+				// This is important for supplementary results that don't have a snippet
 				const contentWholeWord = item.contentSnippet
 					? textContainsWholeWord(item.contentSnippet, queryLower)
-					: false;
+					: textContainsWholeWord(fullContent, queryLower);
 				const hasWholeWordMatch =
 					descriptionWholeWord || contentWholeWord;
 
 				// Count non-stopword term matches for multi-term queries
-				// Strip annotation text (|visible::tooltip|) before counting
+				// Use FULL indexed content (from searchIndex), stripped of annotation text
+				// This ensures we count matches in the actual discourse text, not just tooltips
 				let nonStopwordMatches = 0;
+				let visibleAreaMatches = 0; // Matches in title + description + snippet (what user sees)
+				let termMatchScore = 0; // Quality-weighted score (exact > prefix > infix)
+				let visibleTermMatchScore = 0;
+
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
-					const rawText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
-					const combinedText =
-						stripAnnotations(rawText).toLowerCase();
-					nonStopwordMatches = nonStopwordTerms.filter((term) => {
-						// Word boundary at start (prefix match: experience matches experiences)
-						const wordPrefixRegex = new RegExp(
-							`\\b${term.toLowerCase()}`,
-							"i",
-						);
-						return wordPrefixRegex.test(combinedText);
-					}).length;
+					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent}`;
+					const visibleText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
+
+					// Use quality-aware term matching (exact > prefix > infix)
+					const fullMatch = countTermMatchesWithQuality(
+						fullText,
+						nonStopwordTerms,
+					);
+					const visibleMatch = countTermMatchesWithQuality(
+						visibleText,
+						nonStopwordTerms,
+					);
+
+					nonStopwordMatches = fullMatch.count;
+					visibleAreaMatches = visibleMatch.count;
+					termMatchScore = fullMatch.score;
+					visibleTermMatchScore = visibleMatch.score;
 				}
 
 				const allNonStopTermsFound =
 					nonStopwordMatches === nonStopwordTerms.length;
+				const allTermsInVisibleArea =
+					visibleAreaMatches === nonStopwordTerms.length;
 				const priority = (item as any).priority ?? 1;
 
 				let score: number;
@@ -537,6 +719,18 @@ export const GET: APIRoute = async ({ url }) => {
 				} else if (titleMatch === "word-prefix" && canPrefix) {
 					score = SCORE.DISCOURSE_WORD_PREFIX;
 					matchType = "word-prefix";
+				} else if (descriptionWholeWord) {
+					// Description match ranks higher than term-title-match - it tells what the discourse is ABOUT
+					score = SCORE.DISCOURSE_DESCRIPTION_WHOLE_WORD;
+					matchType = "description-whole-word";
+					// Add minor content occurrence boost as tiebreaker
+					const contentOccurrences = countWholeWordOccurrences(
+						fullContent,
+						queryLower,
+					);
+					if (contentOccurrences >= 2) {
+						score += Math.min(1, contentOccurrences * 0.1); // Up to +1 for content matches
+					}
 				} else if (
 					(termTitleMatch === "word-exact" ||
 						termTitleMatch === "word-prefix") &&
@@ -549,13 +743,47 @@ export const GET: APIRoute = async ({ url }) => {
 						? SCORE.DISCOURSE_INFIX_WITH_CONTENT
 						: SCORE.DISCOURSE_INFIX_NO_CONTENT;
 					matchType = "infix";
-				} else if (hasWholeWordMatch) {
+				} else if (descriptionContains && canInfix) {
+					// Description substring match
+					score = SCORE.DISCOURSE_DESCRIPTION_INFIX;
+					matchType = "description-infix";
+				} else if (contentWholeWord) {
+					// Content whole word match - count occurrences in FULL content for relevance boost
+					const occurrences = countWholeWordOccurrences(
+						fullContent,
+						queryLower,
+					);
+					// Tiered occurrence boost - high occurrence count indicates significant topic
+					// 1 occurrence: 0, 2-3: +3, 4-6: +8, 7-10: +15, 11+: +20
+					// NOTE: For multi-term queries, this boost will be reduced by scattered penalty
+					// if terms don't appear near each other
+					let occurrenceBoost = 0;
+					if (occurrences >= 11) {
+						occurrenceBoost = 20;
+					} else if (occurrences >= 7) {
+						occurrenceBoost = 15;
+					} else if (occurrences >= 4) {
+						occurrenceBoost = 8;
+					} else if (occurrences >= 2) {
+						occurrenceBoost = 3;
+					}
+					// Reduce index decay for high-occurrence items (they're relevant regardless of Fuse order)
+					const indexPenalty =
+						occurrences >= 4 ? index * 0.2 : index * 0.5;
 					score = Math.max(
 						SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN,
-						SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE - index * 0.5,
+						SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE -
+							indexPenalty +
+							occurrenceBoost,
 					);
 					matchType = "content-whole-word";
-				} else if (hasContentMatch) {
+				} else if (hasMultipleTerms && allNonStopTermsFound) {
+					// Multi-term query with all non-stopword terms found in content
+					// Base score depends on phrase proximity
+					score = SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE;
+					matchType = "multi-term-content";
+				} else if (contentContains) {
+					// Content substring match
 					score = Math.max(
 						SCORE.DISCOURSE_CONTENT_EXACT_MIN,
 						SCORE.DISCOURSE_CONTENT_EXACT_BASE - index * 0.5,
@@ -570,24 +798,54 @@ export const GET: APIRoute = async ({ url }) => {
 					matchType = "content-fuzzy";
 				}
 
-				// Boost for multi-term queries when non-stopword terms match
-				if (
-					hasMultipleTerms &&
-					nonStopwordTerms.length > 1 &&
-					nonStopwordMatches > 0
-				) {
-					// If ALL non-stopword terms are found, big boost to 70-75 range
-					if (allNonStopTermsFound) {
-						// Ensure score is at least 70 (like CATEGORY_CROSS_FIELD_ALL)
-						score = Math.max(
-							score,
-							70 + (nonStopwordMatches - 2) * 2,
-						);
-					} else if (nonStopwordMatches > 1) {
-						// Partial match: smaller boost
-						score += (nonStopwordMatches - 1) * 5;
+				// Apply multi-term boost using shared function
+				if (hasMultipleTerms) {
+					// Calculate phrase proximity boost - terms appearing close together in order
+					// helps queries like "exhaust craving" rank results with those words adjacent
+					const phraseBoost = calculatePhraseProximityBoost(
+						item.title,
+						item.description,
+						fullContent,
+						nonStopwordTerms,
+					);
+
+					score = applyMultiTermBoost({
+						score,
+						matchType,
+						nonStopwordTerms,
+						nonStopwordMatches,
+						termMatchScore,
+						visibleAreaMatches,
+						visibleTermMatchScore,
+						phraseProximityBoost: phraseBoost.boost,
+						hasAnyProximity: phraseBoost.hasAnyProximity,
+					});
+
+					// Penalize results that only match stopwords when query has non-stopwords
+					// e.g., "craving in" - if result only matches "in", penalize it
+					if (
+						nonStopwordTerms.length > 0 &&
+						nonStopwordMatches === 0
+					) {
+						score -= 15; // Heavy penalty for stopword-only matches
 					}
 				}
+
+				// Title coverage boost for title matches
+				// "Suffering" (100% coverage) should rank above "Destined for Suffering" (33%)
+				if (titleMatch !== "none" && titleMatch !== "infix") {
+					const titleCoverage = getTitleCoverageRatio(
+						item.title || "",
+						queryLower,
+					);
+					// Add up to 3 points for high title coverage
+					score += titleCoverage * 3;
+				}
+
+				// Apply priority as additive boost (not multiplicative)
+				// Priority ranges from 1 to 3, so boost is 0 to 6 points
+				// This acts as a tie-breaker for close scores
+				score = score + (priority - 1) * 3;
 
 				if (score < SCORE.MIN_SCORE) return;
 
@@ -604,8 +862,17 @@ export const GET: APIRoute = async ({ url }) => {
 			});
 		}
 
-		// Apply diversity ranking
-		const rankedResults = rankResultsWithDiversity(results);
+		// Deduplicate topics/qualities that share the same primary pali term
+		// This handles cases like "Jhana" (topic) and "Collectedness" (quality)
+		// which both have "jhāna" as their primary pali term
+		const deduplicatedResults = deduplicateByPali(results);
+
+		// Apply diversity ranking (pass hasSlugFilter to enable/disable collection diversity)
+		const rankedResults = rankResultsWithDiversity(
+			deduplicatedResults,
+			undefined,
+			hasSlugFilter,
+		);
 
 		// Format response
 		const formattedResults = rankedResults.slice(0, limit).map((r, i) => ({
@@ -621,6 +888,7 @@ export const GET: APIRoute = async ({ url }) => {
 			matchType: r.matchType,
 			priority: r.priority || 1,
 			nonStopwordMatches: r.nonStopwordMatches || 0,
+			synonymMatchPosition: r.synonymMatchPosition,
 		}));
 
 		return new Response(

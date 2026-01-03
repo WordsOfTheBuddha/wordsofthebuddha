@@ -37,15 +37,25 @@ const TEST_QUERIES_PATH = path.join(__dirname, "test-queries.json");
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const flags = {
-	query: null,
+	query: null, // Ad-hoc query to run
+	id: null, // Filter tests by id pattern
 	update: args.includes("--update"),
 	aiEval: args.includes("--ai-eval"),
 	verbose: args.includes("--verbose") || args.includes("-v"),
+	diff: args.includes("--diff"),
+	add: args.includes("--add"), // Add ad-hoc query to test suite
 };
 
+// Parse --query "term" (ad-hoc search)
 const queryIdx = args.indexOf("--query");
 if (queryIdx !== -1 && args[queryIdx + 1]) {
 	flags.query = args[queryIdx + 1];
+}
+
+// Parse --id "pattern" (filter existing tests)
+const idIdx = args.indexOf("--id");
+if (idIdx !== -1 && args[idIdx + 1]) {
+	flags.id = args[idIdx + 1];
 }
 
 // ==================== COLORS ====================
@@ -67,7 +77,7 @@ const c = {
 
 // ==================== HELPERS ====================
 // Word wrap text to fit within a given width
-function wordWrap(text, maxWidth = 68, indent = "│ ") {
+function wordWrap(text, maxWidth = 80, indent = "│ ") {
 	if (!text) return "";
 	const words = text.split(/\s+/);
 	const lines = [];
@@ -94,7 +104,7 @@ function stripHtml(text) {
 // ==================== ASCII CARD RENDERING ====================
 function renderCard(result, rank) {
 	const width = 72;
-	const textWidth = 66; // Account for box borders and padding
+	const textWidth = 78; // Account for box borders and padding
 	const line = "─".repeat(width);
 	const indent = "│ ";
 
@@ -386,6 +396,75 @@ function compareSnapshots(current, previous) {
 	return { isNew: false, hasChanges, changes };
 }
 
+/**
+ * Render a detailed diff view comparing old and new snapshots
+ * Shows side-by-side comparison of rankings with visual indicators
+ */
+function renderDiff(current, previous, changes) {
+	if (!previous) {
+		console.log(
+			`\n${c.yellow}  📋 New snapshot - no previous data to compare${c.reset}`,
+		);
+		return;
+	}
+
+	if (!changes.hasChanges) {
+		console.log(`\n${c.green}  ✓ No changes detected${c.reset}`);
+		return;
+	}
+
+	// Only show summary in diff mode (skip the full side-by-side comparison)
+	console.log(`\n  ${c.bold}Changes:${c.reset}`);
+	if (changes.changes?.newResults?.length > 0) {
+		console.log(
+			`  ${c.green}+ ${changes.changes.newResults.length} new result(s) in top 20${c.reset}`,
+		);
+		for (const n of changes.changes.newResults.slice(0, 3)) {
+			console.log(
+				`    ${c.green}+${c.reset} ${n.slug || n.id} - ${n.title?.substring(0, 40)} at #${n.rank}`,
+			);
+		}
+	}
+	if (changes.changes?.missingResults?.length > 0) {
+		console.log(
+			`  ${c.red}- ${changes.changes.missingResults.length} result(s) dropped from top 20${c.reset}`,
+		);
+		for (const m of changes.changes.missingResults.slice(0, 3)) {
+			console.log(
+				`    ${c.red}-${c.reset} ${m.slug || m.id} - ${m.title?.substring(0, 40)} (was #${m.prevRank})`,
+			);
+		}
+	}
+	if (changes.changes?.rankChanges?.length > 0) {
+		const improved = changes.changes.rankChanges.filter(
+			(ch) => ch.delta > 0,
+		);
+		const declined = changes.changes.rankChanges.filter(
+			(ch) => ch.delta < 0,
+		);
+		if (improved.length > 0) {
+			console.log(
+				`  ${c.green}↑ ${improved.length} result(s) moved up${c.reset}`,
+			);
+			for (const ch of improved.slice(0, 3)) {
+				console.log(
+					`    ${c.green}↑${c.reset} ${ch.slug || ch.id} #${ch.prevRank} → #${ch.currRank}`,
+				);
+			}
+		}
+		if (declined.length > 0) {
+			console.log(
+				`  ${c.red}↓ ${declined.length} result(s) moved down${c.reset}`,
+			);
+			for (const ch of declined.slice(0, 3)) {
+				console.log(
+					`    ${c.red}↓${c.reset} ${ch.slug || ch.id} #${ch.prevRank} → #${ch.currRank}`,
+				);
+			}
+		}
+	}
+}
+
 // ==================== SEARCH API ====================
 const API_BASE_URL = process.env.SEARCH_API_URL || "http://localhost:4321";
 
@@ -441,26 +520,45 @@ async function runTests() {
 	// Load test queries
 	const testData = JSON.parse(fs.readFileSync(TEST_QUERIES_PATH, "utf-8"));
 	let queries = testData.queries;
+	let isAdhoc = false;
 
-	// Filter to single query if specified
+	// --query "term" = Ad-hoc search (runs the term directly)
 	if (flags.query) {
-		queries = queries.filter(
-			(q) =>
-				q.query.toLowerCase().includes(flags.query.toLowerCase()) ||
-				q.id.includes(flags.query.toLowerCase()),
+		isAdhoc = true;
+		queries = [
+			{
+				id: `adhoc-${flags.query.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+				query: flags.query,
+				category: "adhoc",
+				description: "Ad-hoc query",
+				assertions: [],
+			},
+		];
+		console.log(`${c.cyan}Ad-hoc search: "${flags.query}"${c.reset}`);
+		if (flags.add) {
+			console.log(
+				`${c.dim}Will prompt to add to test suite after run${c.reset}`,
+			);
+		}
+	}
+	// --id "pattern" = Filter existing tests by id
+	else if (flags.id) {
+		queries = queries.filter((q) =>
+			q.id.toLowerCase().includes(flags.id.toLowerCase()),
 		);
 		if (queries.length === 0) {
-			// Ad-hoc query
-			queries = [
-				{
-					id: `adhoc-${Date.now()}`,
-					query: flags.query,
-					category: "adhoc",
-					description: "Ad-hoc query",
-					assertions: [],
-				},
-			];
+			console.log(
+				`${c.red}No tests match id pattern: "${flags.id}"${c.reset}`,
+			);
+			console.log(`${c.dim}Available test ids:${c.reset}`);
+			testData.queries.forEach((q) =>
+				console.log(`  ${c.dim}${q.id}${c.reset}`),
+			);
+			process.exit(1);
 		}
+		console.log(
+			`${c.cyan}Filtered to ${queries.length} test(s) matching "${flags.id}"${c.reset}`,
+		);
 	}
 
 	console.log(`Running ${queries.length} test queries...\n`);
@@ -496,11 +594,13 @@ async function runTests() {
 		// Add rank to results
 		const rankedResults = results.map((r, i) => ({ ...r, rank: i + 1 }));
 
-		// Render top results as cards
-		console.log(`${c.cyan}Top Results:${c.reset}\n`);
-		rankedResults.slice(0, 5).forEach((r, i) => {
-			console.log(renderCard(r, i + 1));
-		});
+		// Render top results as cards (skip in diff mode - only show summary)
+		if (!flags.diff) {
+			console.log(`${c.cyan}Top Results:${c.reset}\n`);
+			rankedResults.slice(0, 5).forEach((r, i) => {
+				console.log(renderCard(r, i + 1));
+			});
+		}
 
 		// Check assertions
 		if (testQuery.assertions?.length > 0) {
@@ -544,6 +644,10 @@ async function runTests() {
 			console.log(`\n${c.yellow}🆕 NEW - No previous snapshot${c.reset}`);
 			summary.newSnapshots++;
 
+			if (flags.diff) {
+				renderDiff(currentSnapshot, previousSnapshot, comparison);
+			}
+
 			if (flags.update) {
 				saveSnapshot(testQuery.id, currentSnapshot);
 				console.log(`${c.green}   Snapshot saved${c.reset}`);
@@ -552,16 +656,25 @@ async function runTests() {
 			console.log(`\n${c.yellow}⚠️  CHANGES DETECTED${c.reset}`);
 			summary.changed++;
 
-			if (comparison.changes.rankChanges.length > 0) {
-				console.log(`${c.dim}  Rank changes:${c.reset}`);
-				for (const ch of comparison.changes.rankChanges.slice(0, 5)) {
-					const icon =
-						ch.delta > 0
-							? `${c.green}↑${c.reset}`
-							: `${c.red}↓${c.reset}`;
-					console.log(
-						`    ${icon} ${ch.title?.substring(0, 30)}: #${ch.prevRank} → #${ch.currRank}`,
-					);
+			if (flags.diff) {
+				// Show detailed diff view
+				renderDiff(currentSnapshot, previousSnapshot, comparison);
+			} else {
+				// Show compact rank changes
+				if (comparison.changes.rankChanges.length > 0) {
+					console.log(`${c.dim}  Rank changes:${c.reset}`);
+					for (const ch of comparison.changes.rankChanges.slice(
+						0,
+						5,
+					)) {
+						const icon =
+							ch.delta > 0
+								? `${c.green}↑${c.reset}`
+								: `${c.red}↓${c.reset}`;
+						console.log(
+							`    ${icon} ${ch.title?.substring(0, 30)}: #${ch.prevRank} → #${ch.currRank}`,
+						);
+					}
 				}
 			}
 
@@ -601,43 +714,113 @@ async function runTests() {
 		);
 
 		try {
-			const { evaluateSearchResults, getRankingRulesText } =
-				await import("./services/deepseek.js");
+			const {
+				evaluateSearchResults,
+				evaluateSearchDiff,
+				getRankingRulesText,
+			} = await import("./services/deepseek.js");
 			const rules = getRankingRulesText();
 
-			for (const queryReport of report.queries.slice(0, 5)) {
-				// Limit to 5 for cost
+			// Evaluate changed queries OR new queries (ad-hoc, no snapshot)
+			const queriesToEval = report.queries.filter(
+				(q) => q.comparison?.hasChanges || q.comparison?.isNew,
+			);
+			const unchangedCount = report.queries.length - queriesToEval.length;
+
+			if (queriesToEval.length === 0) {
 				console.log(
-					`\n${c.cyan}Evaluating: "${queryReport.query}"${c.reset}`,
+					`${c.green}  ✓ No changes detected - skipping AI evaluation${c.reset}`,
 				);
-
-				const evaluation = await evaluateSearchResults(
-					queryReport.query,
-					queryReport.results,
-					rules,
-				);
-
-				queryReport.aiEvaluation = evaluation;
-
-				const scoreColor =
-					evaluation.qualityScore >= 7
-						? c.green
-						: evaluation.qualityScore >= 5
-							? c.yellow
-							: c.red;
-
 				console.log(
-					`  Quality Score: ${scoreColor}${evaluation.qualityScore}/10${c.reset}`,
+					`${c.dim}    All ${unchangedCount} queries match their snapshots${c.reset}`,
 				);
-				console.log(`  Verdict: ${evaluation.verdict}`);
-				console.log(`  ${c.dim}${evaluation.assessment}${c.reset}`);
+			} else {
+				const newCount = queriesToEval.filter(
+					(q) => q.comparison?.isNew,
+				).length;
+				const changedCount = queriesToEval.length - newCount;
+				console.log(
+					`${c.cyan}  Evaluating ${queriesToEval.length} queries${c.reset}`,
+				);
+				if (newCount > 0)
+					console.log(
+						`${c.dim}    ${newCount} new (no snapshot)${c.reset}`,
+					);
+				if (changedCount > 0)
+					console.log(
+						`${c.dim}    ${changedCount} changed${c.reset}`,
+					);
+				if (unchangedCount > 0)
+					console.log(
+						`${c.dim}    ${unchangedCount} unchanged (skipped)${c.reset}`,
+					);
 
-				if (evaluation.issues?.length > 0) {
-					console.log(`  ${c.yellow}Issues:${c.reset}`);
-					for (const issue of evaluation.issues) {
-						console.log(
-							`    - #${issue.rank} ${issue.slug}: ${issue.issue}`,
+				for (const queryReport of queriesToEval.slice(0, 10)) {
+					// Limit to 10 for cost
+					console.log(
+						`\n${c.cyan}Evaluating: "${queryReport.query}"${c.reset}`,
+					);
+
+					// Build diff context for AI (empty for new queries)
+					const diffContext = {
+						newResults:
+							queryReport.comparison?.changes?.newResults || [],
+						missingResults:
+							queryReport.comparison?.changes?.missingResults ||
+							[],
+						rankChanges:
+							queryReport.comparison?.changes?.rankChanges || [],
+					};
+
+					// Use diff-aware evaluation for changed queries, standard for new
+					let evaluation;
+					if (
+						!queryReport.comparison?.isNew &&
+						typeof evaluateSearchDiff === "function"
+					) {
+						evaluation = await evaluateSearchDiff(
+							queryReport.query,
+							queryReport.results,
+							diffContext,
+							rules,
 						);
+					} else {
+						evaluation = await evaluateSearchResults(
+							queryReport.query,
+							queryReport.results,
+							rules,
+						);
+					}
+
+					queryReport.aiEvaluation = evaluation;
+
+					const scoreColor =
+						evaluation.qualityScore >= 7
+							? c.green
+							: evaluation.qualityScore >= 5
+								? c.yellow
+								: c.red;
+
+					console.log(
+						`  Quality Score: ${scoreColor}${evaluation.qualityScore}/10${c.reset}`,
+					);
+					console.log(`  Verdict: ${evaluation.verdict}`);
+					console.log(`  ${c.dim}${evaluation.assessment}${c.reset}`);
+
+					// Show diff-specific feedback
+					if (evaluation.diffAssessment) {
+						console.log(
+							`  ${c.cyan}Change Assessment:${c.reset} ${evaluation.diffAssessment}`,
+						);
+					}
+
+					if (evaluation.issues?.length > 0) {
+						console.log(`  ${c.yellow}Issues:${c.reset}`);
+						for (const issue of evaluation.issues) {
+							console.log(
+								`    - #${issue.rank} ${issue.slug}: ${issue.issue}`,
+							);
+						}
 					}
 				}
 			}
@@ -664,6 +847,73 @@ async function runTests() {
 	console.log(`  ${c.red}Failed:       ${summary.failed}${c.reset}`);
 	console.log(`  ${c.yellow}Changed:      ${summary.changed}${c.reset}`);
 	console.log(`  ${c.blue}New:          ${summary.newSnapshots}${c.reset}`);
+
+	// Add ad-hoc query to test suite if --add flag is set
+	if (isAdhoc && flags.add && report.queries.length > 0) {
+		const adhocQuery = report.queries[0];
+		const newTestId = adhocQuery.id.replace("adhoc-", "");
+
+		console.log(
+			`\n${c.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${c.reset}`,
+		);
+		console.log(`${c.bold}Adding query to test suite${c.reset}\n`);
+
+		// Create a proper test entry
+		const newTest = {
+			id: `custom-${newTestId}`,
+			query: flags.query,
+			category: "custom",
+			description: `Custom test: ${flags.query}`,
+			assertions: [],
+		};
+
+		// Add basic assertions based on top results
+		if (adhocQuery.results.length > 0) {
+			const top = adhocQuery.results[0];
+			newTest.assertions.push({
+				type: "has",
+				slug: top.slug || top.id,
+				maxPosition: 3,
+				reason: `${top.title} should be in top 3`,
+			});
+		}
+
+		// Read and update test-queries.json
+		const testData = JSON.parse(
+			fs.readFileSync(TEST_QUERIES_PATH, "utf-8"),
+		);
+
+		// Check if test already exists
+		const exists = testData.queries.some(
+			(q) => q.query.toLowerCase() === flags.query.toLowerCase(),
+		);
+		if (exists) {
+			console.log(
+				`${c.yellow}  ⚠ Query "${flags.query}" already exists in test suite${c.reset}`,
+			);
+		} else {
+			testData.queries.push(newTest);
+			fs.writeFileSync(
+				TEST_QUERIES_PATH,
+				JSON.stringify(testData, null, "\t"),
+			);
+			console.log(`${c.green}  ✓ Added test: ${newTest.id}${c.reset}`);
+			console.log(`${c.dim}    Query: "${newTest.query}"${c.reset}`);
+			console.log(
+				`${c.dim}    Assertion: ${newTest.assertions[0]?.slug} in top 3${c.reset}`,
+			);
+
+			// Also save the snapshot
+			saveSnapshot(newTest.id, {
+				query: newTest.query,
+				timestamp: new Date().toISOString(),
+				version: "1.0.0",
+				results: adhocQuery.results.slice(0, 20),
+				assertions: newTest.assertions,
+			});
+			console.log(`${c.green}  ✓ Snapshot saved${c.reset}`);
+		}
+	}
 
 	// Save report
 	const reportPath = path.join(
