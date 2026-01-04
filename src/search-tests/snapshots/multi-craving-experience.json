@@ -1,6 +1,6 @@
 {
   "query": "craving experience",
-  "timestamp": "2026-01-03T22:44:54.376Z",
+  "timestamp": "2026-01-04T06:52:32.622Z",
   "version": "1.0.0",
   "results": [
     {
@@ -50,6 +50,18 @@
     {
       "rank": 4,
       "type": "discourse",
+      "slug": "sn12.11",
+      "title": "Āhāra sutta - Nutriment",
+      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
+      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its characteristic, and from what does it come into ",
+      "score": 93.6,
+      "matchType": "multi-term-content",
+      "priority": 1.2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
       "slug": "sn12.4",
       "title": "Vipassī sutta - Vipassī",
       "description": "In the far past, the Buddha Vipassī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depend",
@@ -60,7 +72,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 5,
+      "rank": 6,
       "type": "discourse",
       "slug": "sn12.65",
       "title": "Nagara sutta - The City",
@@ -72,7 +84,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "topic-quality",
       "slug": "self-erasure",
       "title": "Self Erasure",
@@ -87,14 +99,14 @@
         "self-negation",
         "annihilation drive"
       ],
-      "score": 78,
+      "score": 80,
       "matchType": "term-synonym-exact",
       "priority": 1,
       "nonStopwordMatches": 2,
       "synonymMatchPosition": 0
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "topic-quality",
       "slug": "non-identification",
       "title": "Non Identification",
@@ -107,14 +119,14 @@
         "(comm) no craving",
         "lit. not made of that state"
       ],
-      "score": 78,
+      "score": 80,
       "matchType": "term-synonym-exact",
       "priority": 1,
       "nonStopwordMatches": 2,
       "synonymMatchPosition": 1
     },
     {
-      "rank": 8,
+      "rank": 9,
       "type": "discourse",
       "slug": "sn12.66",
       "title": "Sammasa sutta - Examination",
@@ -126,67 +138,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 9,
-      "type": "discourse",
-      "slug": "sn12.5",
-      "title": "Sikhī sutta - Sikhī",
-      "description": "In the far past, the Buddha Sikhī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependen",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Sikhī: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose for B",
-      "score": 91,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
       "rank": 10,
       "type": "discourse",
-      "slug": "sn12.6",
-      "title": "Vessabhū sutta - Vessabhū",
-      "description": "In the far past, the Buddha Vessabhū prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depen",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Vessabhū: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose fo",
-      "score": 91,
+      "slug": "an3.61",
+      "title": "Titthāyatana sutta - Bases Of Sectarian Views",
+      "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
+      "contentSnippet": "And what, bhikkhus, is the noble truth of the |arising of suffering::source of stress, appearance of discomfort [dukkhasamudaya]|? |Dependent on::contingent on, supported by, grounded on [paṭicca]| |i",
+      "score": 76,
       "matchType": "multi-term-content",
-      "priority": 1,
+      "priority": 3,
       "nonStopwordMatches": 2
     },
     {
       "rank": 11,
-      "type": "discourse",
-      "slug": "sn12.7",
-      "title": "Kakusandha sutta - Kakusandha",
-      "description": "In the far past, the Buddha Kakusandha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dep",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Kakusandha: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose ",
-      "score": 91,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 12,
-      "type": "discourse",
-      "slug": "sn12.8",
-      "title": "Koṇāgamana sutta - Koṇāgamana",
-      "description": "In the far past, the Buddha Koṇāgamana prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dep",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Koṇāgamana: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose ",
-      "score": 91,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 13,
-      "type": "discourse",
-      "slug": "sn12.9",
-      "title": "Kassapa sutta - Kassapa",
-      "description": "In the far past, the Buddha Kassapa prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depend",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Kassapa: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose for",
-      "score": 91,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 14,
       "type": "topic-quality",
       "slug": "greed",
       "title": "Greed",
@@ -208,7 +172,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 15,
+      "rank": 12,
       "type": "topic-quality",
       "slug": "unwise attention",
       "title": "Unwise attention",
@@ -227,7 +191,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 16,
+      "rank": 13,
       "type": "topic-quality",
       "slug": "recognition of diversity",
       "title": "Recognition of diversity",
@@ -246,57 +210,117 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 17,
+      "rank": 14,
       "type": "discourse",
-      "slug": "mn11",
-      "title": "Cūḷasīhanāda sutta - The Shorter Discourse on the Lion’s Roar",
-      "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of cli",
-      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its characteristic, and from what does it come into ",
-      "score": 93,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "sn12.10",
-      "title": "Gotama sutta - Gotama",
-      "description": "The Buddha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependent co-arising.",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to me: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose in me with this breakth",
+      "slug": "sn12.5",
+      "title": "Sikhī sutta - Sikhī",
+      "description": "In the far past, the Buddha Sikhī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependen",
+      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Sikhī: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose for B",
       "score": 91,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 19,
+      "rank": 15,
       "type": "discourse",
-      "slug": "sn12.11",
-      "title": "Āhāra sutta - Nutriment",
-      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
-      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its characteristic, and from what does it come into ",
-      "score": 93,
+      "slug": "sn12.6",
+      "title": "Vessabhū sutta - Vessabhū",
+      "description": "In the far past, the Buddha Vessabhū prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depen",
+      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Vessabhū: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose fo",
+      "score": 91,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 20,
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn12.7",
+      "title": "Kakusandha sutta - Kakusandha",
+      "description": "In the far past, the Buddha Kakusandha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dep",
+      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Kakusandha: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose ",
+      "score": 91,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 17,
       "type": "topic-quality",
-      "slug": "felt-experience",
-      "title": "Felt Experience",
-      "description": "Pleasant, neutral, or painful sensation—the experience felt on contact. Sometimes translated as “feeling.” Distinct from an emotional state or reaction, it refers to the affective tone of experience, ",
+      "slug": "speculation",
+      "title": "Speculation",
+      "description": "A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often root",
       "pali": [
-        "vedanā"
+        "takka, kappa"
       ],
       "synonyms": [
-        "feeling"
+        "analytical thinking disconnected from direct experience",
+        "conjecture",
+        "discursive reasoning",
+        "theorizing",
+        "hypothesis-making",
+        "reasoned reflection"
       ],
       "score": 75,
-      "matchType": "term-title-exact",
+      "matchType": "term-synonym-exact",
       "priority": 1,
-      "nonStopwordMatches": 1
+      "nonStopwordMatches": 1,
+      "synonymMatchPosition": 0
+    },
+    {
+      "rank": 18,
+      "type": "topic-quality",
+      "slug": "direct knowledge",
+      "title": "Direct knowledge",
+      "description": "A deep, firsthand realization or knowing that arises from personal experience, not from study or conceptual understanding; it is an immediate, unmediated apprehension of truth.",
+      "pali": [
+        "abhiñña"
+      ],
+      "synonyms": [
+        "experiential understanding",
+        "direct experience"
+      ],
+      "score": 75,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1,
+      "synonymMatchPosition": 1
+    },
+    {
+      "rank": 19,
+      "type": "topic-quality",
+      "slug": "immaturity",
+      "title": "Immaturity",
+      "description": "A childish lack of discernment that fails to see the results of actions clearly. It delights in surface pleasure and ignores consequence. Immaturity leads to poor choices and association with unwise c",
+      "pali": [
+        "bāla"
+      ],
+      "synonyms": [
+        "lacking in discernment",
+        "lacking in good sense",
+        "child-like in understanding",
+        "lack of wisdom",
+        "lack of experience",
+        "foolishness"
+      ],
+      "score": 75,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1,
+      "synonymMatchPosition": 4
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "sn12.8",
+      "title": "Koṇāgamana sutta - Koṇāgamana",
+      "description": "In the far past, the Buddha Koṇāgamana prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dep",
+      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Koṇāgamana: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose ",
+      "score": 91,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
     }
   ],
   "assertions": [

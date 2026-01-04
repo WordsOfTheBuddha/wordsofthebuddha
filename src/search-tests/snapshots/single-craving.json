@@ -1,6 +1,6 @@
 {
   "query": "craving",
-  "timestamp": "2026-01-03T22:43:14.292Z",
+  "timestamp": "2026-01-04T06:51:38.307Z",
   "version": "1.0.0",
   "results": [
     {
@@ -41,6 +41,7 @@
       "slug": "mn38",
       "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
       "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "contentSnippet": "These four nutriments, bhikkhus, have what as their |source::foundation, cause [nidāna]|, what as their |arising::appearance, origination [samudaya]|, what as their |characteristic::nature, quality, t",
       "score": 96.6,
       "matchType": "word-exact",
       "priority": 2,
@@ -184,7 +185,7 @@
       "slug": "dhp334-359",
       "title": "Taṇhā vagga - Chapter 24 - Craving",
       "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
-      "contentSnippet": "In whoever the |thirty-six currents [of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>]::the eighteen ways of craving pertaining to the internal bases and the eighteen ways",
+      "contentSnippet": "Beings, beset by <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>,\nwriggle like a trapped hare;\nTherefore, one should |drive out::dispel, remove [vinodayati]| craving,\naspiri",
       "score": 93.6,
       "matchType": "word-exact",
       "priority": 1,
@@ -217,6 +218,18 @@
     {
       "rank": 15,
       "type": "discourse",
+      "slug": "sn12.11",
+      "title": "Āhāra sutta - Nutriment",
+      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
+      "contentSnippet": "These four nutriments, bhikkhus, have what as their |source::foundation, cause [nidāna]|, what as their |arising::appearance, origination [samudaya]|, what as their |characteristic::nature, quality, t",
+      "score": 85.6,
+      "matchType": "description-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
       "slug": "sn12.52",
       "title": "Upādāna sutta - Clinging",
       "description": "The Buddha uses the simile of a bonfire to explain how perceiving gratification in objects that can be grasped at leads to clinging, to suffering, and how perceiving drawbacks in objects that can be g",
@@ -224,18 +237,6 @@
       "score": 85.2,
       "matchType": "content-whole-word",
       "priority": 3,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 16,
-      "type": "discourse",
-      "slug": "sn12.11",
-      "title": "Āhāra sutta - Nutriment",
-      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
-      "contentSnippet": "These four nutriments, bhikkhus, have what as their |source::foundation, cause [nidāna]|, what as their |arising::appearance, origination [samudaya]|, what as their |characteristic::nature, quality, t",
-      "score": 85,
-      "matchType": "description-whole-word",
-      "priority": 1,
       "nonStopwordMatches": 0
     },
     {

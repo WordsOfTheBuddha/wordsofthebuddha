@@ -1,6 +1,6 @@
 {
   "query": "exhaust craving",
-  "timestamp": "2026-01-03T22:43:50.021Z",
+  "timestamp": "2026-01-04T06:51:53.585Z",
   "version": "1.0.0",
   "results": [
     {
@@ -9,6 +9,7 @@
       "slug": "mn38",
       "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
       "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "contentSnippet": "These four nutriments, bhikkhus, have what as their |source::foundation, cause [nidāna]|, what as their |arising::appearance, origination [samudaya]|, what as their |characteristic::nature, quality, t",
       "score": 114.8,
       "matchType": "term-title-match",
       "priority": 2,
@@ -78,7 +79,7 @@
         "self-negation",
         "annihilation drive"
       ],
-      "score": 73,
+      "score": 75,
       "matchType": "term-synonym-exact",
       "priority": 1,
       "nonStopwordMatches": 1,
@@ -171,18 +172,6 @@
     {
       "rank": 14,
       "type": "discourse",
-      "slug": "sn47.104",
-      "title": "Uddhambhāgiyādi sutta - Higher Fetters",
-      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The four establishments of mindfu",
-      "contentSnippet": "What are the four? Here, bhikkhus, a bhikkhu dwells observing the body in and of itself, with continuous effort, fully aware and being present, having removed |<mark class=\"bg-yellow-100 dark:bg-yello",
-      "score": 68.8,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 15,
-      "type": "discourse",
       "slug": "mn107",
       "title": "Gaṇakamoggallāna sutta - with Accountant Moggallāna",
       "description": "When the accountant Moggallāna asks if the Dhamma and Vinaya have a gradual training, gradual practice, and gradual progression like seen in many professions including his own, the Buddha describes a ",
@@ -193,7 +182,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 16,
+      "rank": 15,
       "type": "discourse",
       "slug": "mn43",
       "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
@@ -205,24 +194,36 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 17,
+      "rank": 16,
       "type": "discourse",
       "slug": "mn22",
       "title": "Alagaddūpama sutta - Simile of the Water Snake",
       "description": "The Dhamma can be like a snake that bites if grasped wrongly. This discourse tackles the danger of misinterpretation, sparked by a bhikkhu who claimed sensual pleasures weren't obstructions. The Buddh",
-      "contentSnippet": "Bhikkhus, the Dhamma well proclaimed by me thus is clear, open, evident, and free of patchwork. In the Dhamma well proclaimed by me thus, which is clear, open, evident, and free of patchwork, there ar",
+      "contentSnippet": "“There could be, bhikkhu,” the Blessed One said. “Here, bhikkhu, it happens to some: ‘This world is the self, I shall be after death, permanent, everlasting, eternal, not subject to change; I shall en",
       "score": 64.7,
       "matchType": "multi-term-content",
       "priority": 1.5,
       "nonStopwordMatches": 2
     },
     {
+      "rank": 17,
+      "type": "discourse",
+      "slug": "sn47.104",
+      "title": "Uddhambhāgiyādi sutta - Higher Fetters",
+      "description": "The five higher fetters - 1) Passion for worldly existence, 2) passion for formless existence, 3) conceit, 4) restlessness, and 5) ignorance - are described in brief. The four establishments of mindfu",
+      "contentSnippet": "Bhikkhus, for the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rou",
+      "score": 63.2,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
       "rank": 18,
       "type": "discourse",
-      "slug": "sn12.51",
-      "title": "Parivīmaṁsana sutta - Thorough Investigation",
-      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
-      "contentSnippet": "“Or further, when there is utterly no <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>, with the ending of craving, could clinging be discerned?”",
+      "slug": "an6.63",
+      "title": "Nibbedhika sutta - Penetrating",
+      "description": "The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.",
+      "contentSnippet": "And what, bhikkhus, is the origin of suffering? <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Craving</mark>, bhikkhus, is the origin of suffering.",
       "score": 63.2,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -231,10 +232,10 @@
     {
       "rank": 19,
       "type": "discourse",
-      "slug": "sn15.1",
-      "title": "Tiṇakaṭṭha sutta - Grass And Sticks",
-      "description": "The Buddha shares that cyclic existence is without a discoverable beginning using an analogy of grass and sticks.",
-      "contentSnippet": "“Bhikkhus, this |cyclic existence::wandering from one state of existence to another, the cycle of birth and death, moving on continuously [saṁsāra]| is without a discoverable beginning. A first point ",
+      "slug": "mn26",
+      "title": "Pāsarāsi sutta - Pile Of Snares",
+      "description": "The Buddha shares his own journey of seeking the path to awakening, from leaving the household life, to studying under two meditation teachers, to attaining full awakening and an account of teaching t",
+      "contentSnippet": "Then, bhikkhus, it occurred to me: ‘The |Dhamma::mental quality, state [dhamma]| I have attained is |profound::hard to fathom [gambhīra]|, hard to perceive, difficult to comprehend, |tranquil::peacefu",
       "score": 63.2,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -243,10 +244,10 @@
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn15.6",
-      "title": "Sāsapa sutta - Mustard Seed",
-      "description": "The Buddha explains the vastness of an aeon using a simile of removing mustard seeds from an iron city.",
-      "contentSnippet": "“Suppose, bhikkhu, there were city made of iron, a |yojana::a unit of distance used in ancient India, ranging from 3.5 to 15 km [yojana]| long, a yojana wide, and a yojana high, completely filled with",
+      "slug": "sn12.51",
+      "title": "Parivīmaṁsana sutta - Thorough Investigation",
+      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
+      "contentSnippet": "“Or further, when there is utterly no <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving</mark>, with the ending of craving, could clinging be discerned?”",
       "score": 63.2,
       "matchType": "multi-term-content",
       "priority": 1,

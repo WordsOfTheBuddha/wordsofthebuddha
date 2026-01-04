@@ -977,8 +977,8 @@ const isSearchOnly = mode === "search-only";
 						}
 					} else if (bestTermSynonymMatch === "exact") {
 						// For multi-word queries: a non-stopword term matches synonym exactly
-						// Synonym match scores slightly lower than title match
-						score = (SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75) - 2; matchType = "term-synonym-exact";
+						// Synonym match should be similar to description match (tells what the concept IS)
+						score = 75; matchType = "term-synonym-exact";
 					} else if (titleMatch === "prefix" && canPrefix) {
 						score = SCORE.CATEGORY_PREFIX_TITLE; matchType = "prefix";
 					} else if (slugMatch === "prefix" && canPrefix) {
@@ -1043,21 +1043,40 @@ const isSearchOnly = mode === "search-only";
 					// Apply phrase proximity boost for multi-word queries
 					// This rewards categories where the query phrase appears intact in title/description/synonyms
 					if (isMultiWord && nonStopTerms.length >= 2) {
-						// Build combined synonym text for phrase checking
-						const synonymsText = (item.synonyms || []).join(" ");
+						// Check each synonym individually for phrase proximity
+						// (don't join them - that could create false matches across synonyms)
+						let bestSynonymPhraseBoost = 0;
+						for (const synonym of item.synonyms || []) {
+							const synBoost = calculatePhraseProximityBoost(
+								"", // no title
+								synonym, // treat synonym as description (gets 1.3x multiplier)
+								"", // no content
+								nonStopTerms
+							);
+							if (synBoost.boost > bestSynonymPhraseBoost) {
+								bestSynonymPhraseBoost = synBoost.boost;
+							}
+						}
+						
+						// Check title and description separately
 						const phraseBoost = calculatePhraseProximityBoost(
 							item.title || "",
 							item.description || "",
-							synonymsText, // Use synonyms as "content" for categories
+							"", // don't pass synonyms as content anymore
 							nonStopTerms
 						);
-						if (phraseBoost.boost > 0) {
-							score += phraseBoost.boost;
+						
+						// Use the best boost from synonyms or title/description
+						const totalPhraseBoost = Math.max(phraseBoost.boost, bestSynonymPhraseBoost);
+						if (totalPhraseBoost > 0) {
+							score += totalPhraseBoost;
 							// Update match type to indicate phrase match
 							if (phraseBoost.titleMatch && matchType !== "exact") {
 								matchType = "phrase-title";
 							} else if (phraseBoost.descriptionMatch) {
 								matchType = "phrase-description";
+							} else if (bestSynonymPhraseBoost > 0) {
+								matchType = "phrase-synonym";
 							}
 						}
 					}
@@ -1329,8 +1348,8 @@ const isSearchOnly = mode === "search-only";
 			// This handles cases like "Jhana" (topic) and "Collectedness" (quality)
 			const deduplicatedResults = deduplicateByPali(results);
 
-			// Apply ranking algorithm (pass hasSlugFilter to enable/disable collection diversity)
-			const rankedResults = rankResultsWithDiversity(deduplicatedResults, undefined, hasSlugFilter);
+			// Apply ranking algorithm
+			const rankedResults = rankResultsWithDiversity(deduplicatedResults, undefined);
 
 			// Debug logging in dev mode
 			if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {

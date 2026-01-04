@@ -355,6 +355,13 @@ function compareSnapshots(current, previous) {
 				slug: key,
 				rank: curr.rank,
 				title: curr.title,
+				type: curr.type,
+				score: curr.score,
+				matchType: curr.matchType,
+				nonStopwordMatches: curr.nonStopwordMatches,
+				priority: curr.priority,
+				description: curr.description,
+				contentSnippet: curr.contentSnippet,
 			});
 		} else {
 			if (prev.rank !== curr.rank) {
@@ -364,6 +371,12 @@ function compareSnapshots(current, previous) {
 					prevRank: prev.rank,
 					currRank: curr.rank,
 					delta: prev.rank - curr.rank, // positive = improved
+					prevType: prev.type,
+					currType: curr.type,
+					prevScore: prev.score,
+					currScore: curr.score,
+					prevMatchType: prev.matchType,
+					currMatchType: curr.matchType,
 				});
 			}
 			if (Math.abs(prev.score - curr.score) > 0.5) {
@@ -371,6 +384,9 @@ function compareSnapshots(current, previous) {
 					slug: key,
 					prevScore: prev.score,
 					currScore: curr.score,
+					title: curr.title,
+					prevMatchType: prev.matchType,
+					currMatchType: curr.matchType,
 				});
 			}
 		}
@@ -384,6 +400,13 @@ function compareSnapshots(current, previous) {
 				slug: key,
 				prevRank: prev.rank,
 				title: prev.title,
+				type: prev.type,
+				score: prev.score,
+				matchType: prev.matchType,
+				nonStopwordMatches: prev.nonStopwordMatches,
+				priority: prev.priority,
+				description: prev.description,
+				contentSnippet: prev.contentSnippet,
 			});
 		}
 	}
@@ -761,6 +784,9 @@ async function runTests() {
 						`\n${c.cyan}Evaluating: "${queryReport.query}"${c.reset}`,
 					);
 
+					// Load previous snapshot for richer diff context (if it exists)
+					const previousForAi = loadSnapshot(queryReport.id);
+
 					// Build diff context for AI (empty for new queries)
 					const diffContext = {
 						newResults:
@@ -770,6 +796,11 @@ async function runTests() {
 							[],
 						rankChanges:
 							queryReport.comparison?.changes?.rankChanges || [],
+						scoreChanges:
+							queryReport.comparison?.changes?.scoreChanges || [],
+						previousTop: previousForAi?.results
+							? previousForAi.results.slice(0, 10)
+							: [],
 					};
 
 					// Use diff-aware evaluation for changed queries, standard for new

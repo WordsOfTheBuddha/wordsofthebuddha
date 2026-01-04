@@ -1,34 +1,10 @@
 {
   "query": "dependent origination",
-  "timestamp": "2026-01-03T22:44:07.107Z",
+  "timestamp": "2026-01-04T06:52:03.794Z",
   "version": "1.0.0",
   "results": [
     {
       "rank": 1,
-      "type": "discourse",
-      "slug": "sn12.1",
-      "title": "Paṭiccasamuppāda sutta - Dependent Co-Arising",
-      "description": "The Buddha explains the twelve links of dependent co-arising, and how there is an arising and ending of the whole mass of suffering.",
-      "contentSnippet": "“I will teach you the |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising::arising together from a cause, chain of causation, dependent origination [paṭiccasamuppā",
-      "score": 75,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 2,
-      "type": "discourse",
-      "slug": "sn12.2",
-      "title": "Vibhaṅga sutta - Analysis of Dependent Co-Arising",
-      "description": "The Buddha analyzes each of the twelve links of dependent co-arising, and explains how there is an arising and ending of the whole mass of suffering.",
-      "contentSnippet": "“Bhikkhus, I will teach you the |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising::arising together from a cause, chain of causation, dependent origination [paṭi",
-      "score": 74.5,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 3,
       "type": "discourse",
       "slug": "sn12.20",
       "title": "Paccaya sutta - Dependence",
@@ -40,31 +16,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 4,
-      "type": "discourse",
-      "slug": "sn12.41",
-      "title": "Pañcaverabhaya sutta - Five Perilous Animosities",
-      "description": "The Buddha explains how one can verify that they are a stream-enterer by reflecting on the five perilous animosities, the four factors of stream-entry, and clearly seeing with wisdom the noble princip",
-      "contentSnippet": "And what is the noble principle that has been clearly seen and thoroughly penetrated with wisdom? Here, householder, a disciple of the Noble Ones carefully and |wisely attends::properly attends, prude",
-      "score": 72.5,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 5,
-      "type": "discourse",
-      "slug": "sn12.61",
-      "title": "Assutavā sutta - Uninstructed",
-      "description": "The Buddha contrasts the body’s visible decay with the mind’s instability, which is clung to as ‘self’, comparing it to a restless monkey jumping between branches. He teaches that wisdom arises from u",
-      "contentSnippet": "Therein, bhikkhus, a learned disciple of the Noble Ones, carefully and |wisely::properly, prudently, thoroughly, carefully [yoniso]| applies the mind to |<mark class=\"bg-yellow-100 dark:bg-yellow-900 ",
-      "score": 71,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 6,
+      "rank": 2,
       "type": "discourse",
       "slug": "sn12.62",
       "title": "Dutiya assutavā sutta - Uninstructed (Second)",
@@ -76,7 +28,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 7,
+      "rank": 3,
       "type": "discourse",
       "slug": "mn26",
       "title": "Pāsarāsi sutta - Pile Of Snares",
@@ -88,19 +40,19 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 8,
+      "rank": 4,
       "type": "discourse",
-      "slug": "sn12.21",
-      "title": "Dasabala sutta - Ten Powers",
-      "description": "Endowed with ten powers and four assurances, the Buddha reveals the impermanence of the five aggregates and teaches dependent co-arising.",
-      "contentSnippet": "Namely, |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding of",
-      "score": 28.5,
+      "slug": "sn12.1",
+      "title": "Paṭiccasamuppāda sutta - Dependent Co-Arising",
+      "description": "The Buddha explains the twelve links of dependent co-arising, and how there is an arising and ending of the whole mass of suffering.",
+      "contentSnippet": "“And what, bhikkhus, is <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising? |Dependent on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamen",
+      "score": 30,
       "matchType": "content-fuzzy",
       "priority": 1,
       "nonStopwordMatches": 1
     },
     {
-      "rank": 9,
+      "rank": 5,
       "type": "discourse",
       "slug": "sn12.51",
       "title": "Parivīmaṁsana sutta - Thorough Investigation",
@@ -111,7 +63,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 10,
+      "rank": 6,
       "type": "discourse",
       "slug": "mn38",
       "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
@@ -123,7 +75,19 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 11,
+      "rank": 7,
+      "type": "discourse",
+      "slug": "sn12.41",
+      "title": "Pañcaverabhaya sutta - Five Perilous Animosities",
+      "description": "The Buddha explains how one can verify that they are a stream-enterer by reflecting on the five perilous animosities, the four factors of stream-entry, and clearly seeing with wisdom the noble princip",
+      "contentSnippet": "That is, |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding o",
+      "score": 27.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 8,
       "type": "discourse",
       "slug": "sn12.46",
       "title": "Aññatarabrāhmaṇa sutta - A Certain Brahmin",
@@ -135,13 +99,49 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 12,
+      "rank": 9,
+      "type": "discourse",
+      "slug": "sn12.2",
+      "title": "Vibhaṅga sutta - Analysis of Dependent Co-Arising",
+      "description": "The Buddha analyzes each of the twelve links of dependent co-arising, and explains how there is an arising and ending of the whole mass of suffering.",
+      "contentSnippet": "“And what, bhikkhus, is <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> co-arising? |Dependent on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamen",
+      "score": 29.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn12.21",
+      "title": "Dasabala sutta - Ten Powers",
+      "description": "Endowed with ten powers and four assurances, the Buddha reveals the impermanence of the five aggregates and teaches dependent co-arising.",
+      "contentSnippet": "Namely, |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding of",
+      "score": 28.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 11,
       "type": "discourse",
       "slug": "sn12.22",
       "title": "Dutiyadasabala sutta - Ten Powers (Second)",
       "description": "The Buddha, endowed with the ten powers and four assurances, reveals the impermanence of the five aggregates and teaches dependent co-arising. He then urges the bhikkhus to practice with diligence for",
       "contentSnippet": "Namely, |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding of",
       "score": 26.5,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn12.61",
+      "title": "Assutavā sutta - Uninstructed",
+      "description": "The Buddha contrasts the body’s visible decay with the mind’s instability, which is clung to as ‘self’, comparing it to a restless monkey jumping between branches. He teaches that wisdom arises from u",
+      "contentSnippet": "Namely, |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding of",
+      "score": 26,
       "matchType": "content-fuzzy",
       "priority": 1,
       "nonStopwordMatches": 1
@@ -161,6 +161,18 @@
     {
       "rank": 14,
       "type": "discourse",
+      "slug": "sn12.11",
+      "title": "Āhāra sutta - Nutriment",
+      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
+      "contentSnippet": "And so, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">dependent</mark> on ignorance, bhikkhus, intentional constructs [arise]; dependent on intentional constructs, consciousness arises; ",
+      "score": 24.1,
+      "matchType": "content-fuzzy",
+      "priority": 1.2,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
       "slug": "sn14.13",
       "title": "Giñjakāvasatha sutta - Brick House",
       "description": "Venerable Kaccāna asks the Buddha about the cause of the arising of the view regarding those who are not fully awakened Buddhas that they are in fact fully awakened Buddhas.",
@@ -171,7 +183,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 15,
+      "rank": 16,
       "type": "discourse",
       "slug": "sn22.82",
       "title": "Puṇṇama sutta - The Full Moon Night",
@@ -183,7 +195,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 16,
+      "rank": 17,
       "type": "discourse",
       "slug": "sn22.102",
       "title": "Aniccasaññā sutta - Recognition Of Impermanence",
@@ -195,7 +207,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 17,
+      "rank": 18,
       "type": "discourse",
       "slug": "an3.61",
       "title": "Titthāyatana sutta - Bases Of Sectarian Views",
@@ -207,7 +219,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "discourse",
       "slug": "mn139",
       "title": "Araṇavibhaṅga sutta - Exposition on Non-conflict",
@@ -219,7 +231,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 19,
+      "rank": 20,
       "type": "discourse",
       "slug": "mn75",
       "title": "Māgaṇḍiya sutta - To Māgaṇḍiya",
@@ -228,18 +240,6 @@
       "score": 19.5,
       "matchType": "content-fuzzy",
       "priority": 2.5,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "snp4.10",
-      "title": "Purābheda sutta - Before the Breakup",
-      "description": "The Buddha describes the conduct of a person who is said to be ‘peaceful’. Such a person is free from craving before the breaking up of body. He is one who examines distinctions in all contacts, withd",
-      "contentSnippet": "“Devoid of |craving::wanting, yearning, longing, attachment, lit. thirst [taṇha]| before the breakup [of body],\n(said the Blessed One)\nnot <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">d",
-      "score": 19.5,
-      "matchType": "content-fuzzy",
-      "priority": 1,
       "nonStopwordMatches": 1
     }
   ],

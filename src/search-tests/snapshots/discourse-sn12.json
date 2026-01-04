@@ -1,10 +1,21 @@
 {
   "query": "sn 12",
-  "timestamp": "2026-01-02T16:03:49.912Z",
+  "timestamp": "2026-01-04T06:52:06.396Z",
   "version": "1.0.0",
   "results": [
     {
       "rank": 1,
+      "type": "discourse",
+      "slug": "sn12.11",
+      "title": "Āhāra sutta - Nutriment",
+      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
+      "score": 90.6,
+      "matchType": "prefix",
+      "priority": 1.2,
+      "nonStopwordMatches": 1
+    },
+    {
+      "rank": 2,
       "type": "discourse",
       "slug": "sn12.1",
       "title": "Paṭiccasamuppāda sutta - Dependent Co-Arising",
@@ -15,7 +26,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 2,
+      "rank": 3,
       "type": "discourse",
       "slug": "sn12.2",
       "title": "Vibhaṅga sutta - Analysis of Dependent Co-Arising",
@@ -26,7 +37,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 3,
+      "rank": 4,
       "type": "discourse",
       "slug": "sn12.3",
       "title": "Paṭipadā sutta - Ways Of Practice",
@@ -37,7 +48,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 4,
+      "rank": 5,
       "type": "discourse",
       "slug": "sn12.4",
       "title": "Vipassī sutta - Vipassī",
@@ -48,7 +59,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 5,
+      "rank": 6,
       "type": "discourse",
       "slug": "sn12.5",
       "title": "Sikhī sutta - Sikhī",
@@ -59,7 +70,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "discourse",
       "slug": "sn12.6",
       "title": "Vessabhū sutta - Vessabhū",
@@ -70,7 +81,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "discourse",
       "slug": "sn12.7",
       "title": "Kakusandha sutta - Kakusandha",
@@ -81,7 +92,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 8,
+      "rank": 9,
       "type": "discourse",
       "slug": "sn12.8",
       "title": "Koṇāgamana sutta - Koṇāgamana",
@@ -92,7 +103,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 9,
+      "rank": 10,
       "type": "discourse",
       "slug": "sn12.9",
       "title": "Kassapa sutta - Kassapa",
@@ -103,22 +114,11 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 10,
+      "rank": 11,
       "type": "discourse",
       "slug": "sn12.10",
       "title": "Gotama sutta - Gotama",
       "description": "The Buddha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependent co-arising.",
-      "score": 90,
-      "matchType": "prefix",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 11,
-      "type": "discourse",
-      "slug": "sn12.11",
-      "title": "Āhāra sutta - Nutriment",
-      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
       "score": 90,
       "matchType": "prefix",
       "priority": 1,

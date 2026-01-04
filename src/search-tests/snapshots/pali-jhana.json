@@ -1,6 +1,6 @@
 {
   "query": "jhana",
-  "timestamp": "2026-01-03T22:43:31.964Z",
+  "timestamp": "2026-01-04T06:51:47.579Z",
   "version": "1.0.0",
   "results": [
     {
@@ -68,18 +68,6 @@
     {
       "rank": 5,
       "type": "discourse",
-      "slug": "an6.74",
-      "title": "Dutiya tajjhāna sutta - First Jhāna (Second)",
-      "description": "Six qualities to abandon to dwell in the first jhāna - 1) thoughts of sensual desire, 2) thoughts of ill will, 3) thoughts of harm, 4) perception of sensual desire, 5) perception of ill will, 6) perce",
-      "contentSnippet": "“Bhikkhus, without |giving up::letting go, abandoning, removing [pahāna]| these six things, one is incapable of entering and abiding in the first <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rou",
-      "score": 93.6,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 6,
-      "type": "discourse",
       "slug": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
       "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types ",
@@ -90,7 +78,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 7,
+      "rank": 6,
       "type": "discourse",
       "slug": "mn119",
       "title": "Kāyagatāsati sutta - Mindfulness of the Body",
@@ -102,7 +90,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 8,
+      "rank": 7,
       "type": "discourse",
       "slug": "mn107",
       "title": "Gaṇakamoggallāna sutta - with Accountant Moggallāna",
@@ -114,7 +102,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 9,
+      "rank": 8,
       "type": "discourse",
       "slug": "an4.200",
       "title": "Pema sutta - Affection",
@@ -126,7 +114,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 10,
+      "rank": 9,
       "type": "discourse",
       "slug": "mn43",
       "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
@@ -138,7 +126,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 11,
+      "rank": 10,
       "type": "discourse",
       "slug": "an7.53",
       "title": "Nandamātā sutta - Nanda’s Mother",
@@ -150,31 +138,19 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 12,
-      "type": "discourse",
-      "slug": "sn28.1",
-      "title": "Vivekaja sutta - born of seclusion",
-      "description": "The Venerable Sāriputta describes his experience of the first jhāna.",
-      "contentSnippet": "“Here, friend, secluded from sensual pleasures, secluded from |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]| mental states, I entered and dwelled in the first",
-      "score": 84.7,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 13,
+      "rank": 11,
       "type": "discourse",
       "slug": "an4.123",
       "title": "Paṭhama nānākaraṇa sutta - Difference (First)",
       "description": "The Buddha shares the four kinds of persons — those who cultivate the first jhāna, the second jhāna, the third jhāna, and the fourth jhāna while perceiving gratification — and the difference in their ",
-      "contentSnippet": "2.) Again, bhikkhus, here a certain person, with the |settling::calming, conciliation, subsiding [vūpasama]| of reflection and examination, a bhikkhu enters and dwells in the second <mark class=\"bg-ye",
+      "contentSnippet": "1.) Here, bhikkhus, a certain person, quite secluded from sensual pleasures and |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]| mental states, enters and dwell",
       "score": 84.7,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 0
     },
     {
-      "rank": 14,
+      "rank": 12,
       "type": "discourse",
       "slug": "mn19",
       "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
@@ -186,7 +162,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 15,
+      "rank": 13,
       "type": "discourse",
       "slug": "an4.124",
       "title": "Dutiya nānākaraṇa sutta - Difference (Second)",
@@ -198,7 +174,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 16,
+      "rank": 14,
       "type": "discourse",
       "slug": "mn27",
       "title": "Cūḷahatthipadopama sutta - The Shorter Discourse on the Simile of the Elephant’s Footprint",
@@ -210,7 +186,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 17,
+      "rank": 15,
       "type": "discourse",
       "slug": "mn31",
       "title": "Cūḷagosiṅga sutta - The Shorter Discourse in Gosiṅga",
@@ -222,19 +198,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "an3.63",
-      "title": "Venāgapura sutta - At Venāgapura",
-      "description": "When a brahmin assumes that the Buddha’s serene faculties and radiant appearance must result from enjoying the finest worldly luxuries, the Buddha explains the true “luxurious and lofty beds” he attai",
-      "contentSnippet": "“Here, brahmin, when I am dwelling in dependence on a village or a town, in the morning I dress, take my bowl and outer robe, and enter that village or town for alms. After the meal, when I have retur",
-      "score": 84.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 19,
+      "rank": 16,
       "type": "discourse",
       "slug": "an4.77",
       "title": "Acinteyya sutta - The Inconceivable",
@@ -246,7 +210,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 20,
+      "rank": 17,
       "type": "discourse",
       "slug": "an9.46",
       "title": "Sandiṭṭhika dhamma sutta - Directly Visible Dhamma",
@@ -254,6 +218,42 @@
       "contentSnippet": "“Here, friend, a bhikkhu, quite secluded from sensual pleasures <collapse>and |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]| mental states,</collapse> enters ",
       "score": 84,
       "matchType": "description-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
+      "slug": "sn28.1",
+      "title": "Vivekaja sutta - born of seclusion",
+      "description": "The Venerable Sāriputta describes his experience of the first jhāna.",
+      "contentSnippet": "“Here, friend, secluded from sensual pleasures, secluded from |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]| mental states, I entered and dwelled in the first",
+      "score": 84.7,
+      "matchType": "description-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "an3.63",
+      "title": "Venāgapura sutta - At Venāgapura",
+      "description": "When a brahmin assumes that the Buddha’s serene faculties and radiant appearance must result from enjoying the finest worldly luxuries, the Buddha explains the true “luxurious and lofty beds” he attai",
+      "contentSnippet": "“Here, brahmin, when I am dwelling in dependence on a village or a town, in the morning I dress, take my bowl and outer robe, and enter that village or town for alms. After the meal, when I have retur",
+      "score": 84.4,
+      "matchType": "description-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 20,
+      "type": "discourse",
+      "slug": "an6.74",
+      "title": "Dutiya tajjhāna sutta - First Jhāna (Second)",
+      "description": "Six qualities to abandon to dwell in the first jhāna - 1) thoughts of sensual desire, 2) thoughts of ill will, 3) thoughts of harm, 4) perception of sensual desire, 5) perception of ill will, 6) perce",
+      "contentSnippet": "“Bhikkhus, without |giving up::letting go, abandoning, removing [pahāna]| these six things, one is incapable of entering and abiding in the first <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rou",
+      "score": 93.6,
+      "matchType": "word-exact",
       "priority": 1,
       "nonStopwordMatches": 0
     }

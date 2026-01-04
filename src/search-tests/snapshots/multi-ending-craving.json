@@ -1,6 +1,6 @@
 {
   "query": "ending craving",
-  "timestamp": "2026-01-03T22:44:42.211Z",
+  "timestamp": "2026-01-04T06:52:25.400Z",
   "version": "1.0.0",
   "results": [
     {
@@ -63,6 +63,18 @@
     {
       "rank": 5,
       "type": "discourse",
+      "slug": "sn12.11",
+      "title": "Āhāra sutta - Nutriment",
+      "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
+      "contentSnippet": "With the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional construc",
+      "score": 95.6,
+      "matchType": "multi-term-content",
+      "priority": 1.2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
       "slug": "dhp334-359",
       "title": "Taṇhā vagga - Chapter 24 - Craving",
       "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
@@ -73,7 +85,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "discourse",
       "slug": "an6.63",
       "title": "Nibbedhika sutta - Penetrating",
@@ -85,24 +97,12 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "discourse",
       "slug": "sn12.10",
       "title": "Gotama sutta - Gotama",
       "description": "The Buddha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependent co-arising.",
       "contentSnippet": "Thus, with the ending of ignorance, intentional constructs cease; with the ending of intentional constructs, consciousness ceases; with the ending of consciousness, name and form cease; with the endin",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 8,
-      "type": "discourse",
-      "slug": "sn12.12",
-      "title": "Moḷiyaphagguna sutta - With Moḷiyaphagguna",
-      "description": "The Buddha explains dependent co-arising as a process rather than an agentive sequence.",
-      "contentSnippet": "With the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of the six sense bases, Phagguna, there is the ending of contact; with the ending of contact, th",
       "score": 95,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -123,30 +123,6 @@
     {
       "rank": 10,
       "type": "discourse",
-      "slug": "sn12.51",
-      "title": "Parivīmaṁsana sutta - Thorough Investigation",
-      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
-      "contentSnippet": "“Or further, when there is utterly no craving, with the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 11,
-      "type": "discourse",
-      "slug": "sn12.59",
-      "title": "Viññāṇa sutta - Consciousness",
-      "description": "When one dwells perceiving enjoyment in things that are the basis for fetters, there is a descent of consciousness. When one dwells perceiving the drawback in things that are the basis for fetters, th",
-      "contentSnippet": "Bhikkhus, when one dwells perceiving the |drawback::disadvantage, unsatisfactoriness, inadequacy, danger [ādīnava]| in things that are the basis for fetters, there is no descent of consciousness. With",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 12,
-      "type": "discourse",
       "slug": "mn9",
       "title": "Sammādiṭṭhi sutta - Right View",
       "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of persp",
@@ -157,7 +133,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 13,
+      "rank": 11,
       "type": "discourse",
       "slug": "mn141",
       "title": "Saccavibhaṅga sutta - Exposition of the Truths",
@@ -169,7 +145,85 @@
       "nonStopwordMatches": 2
     },
     {
+      "rank": 12,
+      "type": "discourse",
+      "slug": "sn12.12",
+      "title": "Moḷiyaphagguna sutta - With Moḷiyaphagguna",
+      "description": "The Buddha explains dependent co-arising as a process rather than an agentive sequence.",
+      "contentSnippet": "With the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of the six sense bases, Phagguna, there is the ending of contact; with the ending of contact, th",
+      "score": 95,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "sn12.51",
+      "title": "Parivīmaṁsana sutta - Thorough Investigation",
+      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
+      "contentSnippet": "“Or further, when there is utterly no craving, with the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">craving",
+      "score": 95,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
       "rank": 14,
+      "type": "discourse",
+      "slug": "sn12.59",
+      "title": "Viññāṇa sutta - Consciousness",
+      "description": "When one dwells perceiving enjoyment in things that are the basis for fetters, there is a descent of consciousness. When one dwells perceiving the drawback in things that are the basis for fetters, th",
+      "contentSnippet": "Bhikkhus, when one dwells perceiving the |drawback::disadvantage, unsatisfactoriness, inadequacy, danger [ādīnava]| in things that are the basis for fetters, there is no descent of consciousness. With",
+      "score": 95,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 15,
+      "type": "topic-quality",
+      "slug": "self-erasure",
+      "title": "Self Erasure",
+      "description": "A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
+      "pali": [
+        "vibhavataṇhā"
+      ],
+      "synonyms": [
+        "non-being craving",
+        "identity deletion",
+        "urge to vanish",
+        "self-negation",
+        "annihilation drive"
+      ],
+      "score": 75,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1,
+      "synonymMatchPosition": 0
+    },
+    {
+      "rank": 16,
+      "type": "topic-quality",
+      "slug": "non-identification",
+      "title": "Non Identification",
+      "description": "A quality of mind that does not construct or fabricate a sense of self in relation to experience. It is the absence of the 'I am this' identification—neither claiming ownership nor defining oneself th",
+      "pali": [
+        "atammayatā"
+      ],
+      "synonyms": [
+        "principle of non-identification",
+        "(comm) no craving",
+        "lit. not made of that state"
+      ],
+      "score": 75,
+      "matchType": "term-synonym-exact",
+      "priority": 1,
+      "nonStopwordMatches": 1,
+      "synonymMatchPosition": 1
+    },
+    {
+      "rank": 17,
       "type": "discourse",
       "slug": "mn44",
       "title": "Cūḷavedalla sutta - The Shorter Series Of Questions And Answers",
@@ -181,19 +235,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "sn12.3",
-      "title": "Paṭipadā sutta - Ways Of Practice",
-      "description": "The Buddha explains the wrong way of practice as that which leads to the arising of suffering, and the right way of practice as that which leads to the end of suffering.",
-      "contentSnippet": "“And what, bhikkhus, is the right way of practice? Dependent on the remainderless fading away and cessation of ignorance comes the ending of intentional constructs; with the ending of intentional cons",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 16,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn22.22",
       "title": "Bhāra sutta - Burden",
@@ -205,36 +247,12 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 17,
-      "type": "discourse",
-      "slug": "sn12.4",
-      "title": "Vipassī sutta - Vipassī",
-      "description": "In the far past, the Buddha Vipassī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depend",
-      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "sn12.5",
-      "title": "Sikhī sutta - Sikhī",
-      "description": "In the far past, the Buddha Sikhī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependen",
-      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
       "rank": 19,
       "type": "discourse",
-      "slug": "sn12.6",
-      "title": "Vessabhū sutta - Vessabhū",
-      "description": "In the far past, the Buddha Vessabhū prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depen",
-      "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
+      "slug": "sn12.3",
+      "title": "Paṭipadā sutta - Ways Of Practice",
+      "description": "The Buddha explains the wrong way of practice as that which leads to the arising of suffering, and the right way of practice as that which leads to the end of suffering.",
+      "contentSnippet": "“And what, bhikkhus, is the right way of practice? Dependent on the remainderless fading away and cessation of ignorance comes the ending of intentional constructs; with the ending of intentional cons",
       "score": 95,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -243,9 +261,9 @@
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn12.7",
-      "title": "Kakusandha sutta - Kakusandha",
-      "description": "In the far past, the Buddha Kakusandha prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dep",
+      "slug": "sn12.4",
+      "title": "Vipassī sutta - Vipassī",
+      "description": "In the far past, the Buddha Vipassī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depend",
       "contentSnippet": "Thus, with the |complete fading away and ending::remainderless dispassion and cessation [asesavirāganirodha]| of ignorance comes the ending of intentional constructs; with the ending of intentional co",
       "score": 95,
       "matchType": "multi-term-content",

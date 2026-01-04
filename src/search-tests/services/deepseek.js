@@ -65,13 +65,13 @@ function buildEvaluationPrompt(query, results, rules) {
 	const resultsText = results
 		.slice(0, 15)
 		.map((r, i) => {
-			return `#${i + 1} | ${r.type} | Score: ${r.score} | ${r.matchType}
+			return `#${i + 1} | ${r.type}
     Title: ${r.title}
     Slug: ${r.slug}
     ${r.description ? `Desc: ${r.description.substring(0, 150)}...` : ""}
     ${r.pali ? `Pali: ${r.pali.join(", ")}` : ""}
     ${r.synonyms ? `Synonyms: ${r.synonyms.join(", ")}` : ""}
-    NonStopMatches: ${r.nonStopwordMatches || 0}`;
+    ${r.contentSnippet ? `Content: ${r.contentSnippet.substring(0, 140)}...` : ""}`;
 		})
 		.join("\n\n");
 
@@ -81,6 +81,11 @@ function buildEvaluationPrompt(query, results, rules) {
 
 ## Search Ranking Rules
 ${rules}
+
+## Important
+- Do NOT mention or reason about internal numeric scores.
+- Do NOT assume that a rank drop is a bug just because it "should score higher".
+- Evaluate ONLY based on user-visible fields: title, description, content snippet, Pali, synonyms, and the query.
 
 ## Results (Top 15)
 ${resultsText}
@@ -169,13 +174,36 @@ export async function evaluateSearchDiff(query, results, diffContext, rules) {
  * Build diff-focused evaluation prompt
  */
 function buildDiffEvaluationPrompt(query, results, diffContext, rules) {
-	const { newResults, missingResults, rankChanges } = diffContext;
+	const {
+		newResults = [],
+		missingResults = [],
+		rankChanges = [],
+		scoreChanges = [],
+		previousTop = [],
+	} = diffContext || {};
+
+	const previousTopText = (previousTop || [])
+		.slice(0, 10)
+		.map((r, i) => {
+			let details = `#${i + 1} | ${r.type}
+    Title: ${r.title}
+    Slug: ${r.slug}`;
+			if (r.description)
+				details += `\n    Desc: ${r.description.substring(0, 150)}...`;
+			if (r.pali) details += `\n    Pali: ${r.pali.join(", ")}`;
+			if (r.synonyms)
+				details += `\n    Synonyms: ${r.synonyms.join(", ")}`;
+			if (r.contentSnippet)
+				details += `\n    Content: ${r.contentSnippet.substring(0, 100)}...`;
+			return details;
+		})
+		.join("\n\n");
 
 	// Current top 10 results with full details
 	const currentTop = results
 		.slice(0, 10)
 		.map((r, i) => {
-			let details = `#${i + 1} | ${r.type} | Score: ${r.score} | ${r.matchType}
+			let details = `#${i + 1} | ${r.type}
     Title: ${r.title}
     Slug: ${r.slug}`;
 			if (r.description)
@@ -194,9 +222,11 @@ function buildDiffEvaluationPrompt(query, results, diffContext, rules) {
 		newResults.length > 0
 			? newResults
 					.map((r) => {
-						let text = `  + #${r.rank} ${r.title} (${r.type}, score: ${r.score})`;
+						let text = `  + #${r.rank} ${r.title} (${r.type})`;
 						if (r.description)
 							text += `\n      Desc: ${r.description.substring(0, 100)}...`;
+						if (r.contentSnippet)
+							text += `\n      Content: ${r.contentSnippet.substring(0, 200)}...`;
 						return text;
 					})
 					.join("\n")
@@ -209,6 +239,8 @@ function buildDiffEvaluationPrompt(query, results, diffContext, rules) {
 						let text = `  - Was #${r.prevRank}: ${r.title} (${r.type})`;
 						if (r.description)
 							text += `\n      Desc: ${r.description?.substring(0, 100)}...`;
+						if (r.contentSnippet)
+							text += `\n      Content: ${r.contentSnippet.substring(0, 200)}...`;
 						return text;
 					})
 					.join("\n")
@@ -224,12 +256,23 @@ function buildDiffEvaluationPrompt(query, results, diffContext, rules) {
 					.join("\n")
 			: "  (none)";
 
+	// We intentionally do NOT show numeric score deltas to the model.
+	// Those are internal engine details and can mislead the evaluation.
+
 	return `You are reviewing CHANGES to search ranking for a Buddhist scripture search engine.
 
 ## Query: "${query}"
 
 ## Ranking Rules Summary
 ${rules}
+
+## Important
+- Do NOT mention or reason about internal numeric scores.
+- Evaluate ONLY based on title, description, content snippet, Pali, synonyms, and the query.
+- Some rank changes can be intentional due to diversity or similar-snippet repelling.
+
+## Previous Top 10 Results (Snapshot)
+${previousTopText || "(not available)"}
 
 ## Current Top 10 Results
 ${currentTop}
@@ -275,28 +318,25 @@ Focus on:
  */
 export function getRankingRulesText() {
 	return `
-### Score Hierarchy (Higher = Better)
+### Matching & Ranking (Qualitative)
 
 **Categories (Topics, Qualities, Similes):**
-- exact-title: 100 (query exactly matches title)
-- word-exact-title: 97 (query is a word within title)
-- exact-slug: 98, exact-pali: 96, exact-synonym: 94
-- prefix-*: 86-92 (query is prefix of field)
-- cross-field-title: 75 (multi-term: all terms found + one in title)
-- cross-field-all: 70 (multi-term: all terms found across fields)
-- description-word: 40 (query as whole word in description)
-- infix: 35, cross-field-partial: 30, fuzzy: 18-25
+- Exact title/slug/Pali/synonym matches should be strongest
+- Word-exact title/synonym matches should rank above prefixes
+- Prefix matches should generally rank above infix/fuzzy
+- Multi-term queries should prefer results containing ALL non-stopword terms
+- For multi-term queries, phrase proximity (terms close together) is preferred over scattered matches
 
 **Discourses:**
-- exact-title: 95, word-exact-title: 93
-- prefix-title: 90, word-prefix: 85
-- term-title-match: 82 (multi-term: one term in title + ALL terms in content)
-- content-whole-word: 60-80, content-substring: 45-65
-- content-fuzzy: 15-30
+- Title matches should be strong signals
+- Content snippet matches help when title is not a direct match
 
 ### Key Rules
 1. For multi-term queries, ALL non-stopword terms should be found
 2. Stopwords (the, a, is, in, of...) are filtered out
-3. After 3 same-type results, different types get diversity boost
-4. Priority and nonStopwordMatches break ties`;
+3. Phrase proximity boosts items where terms appear near each other (esp. title/description)
+4. Scattered multi-term matches can be penalized vs phrase matches
+5. After 3 same-type results, different types get diversity boost
+6. Similar discourse snippets may be repelled to avoid showing many near-duplicates in a row
+7. Priority and nonStopwordMatches break ties`;
 }

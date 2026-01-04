@@ -1,6 +1,6 @@
 {
   "query": "wrong effort",
-  "timestamp": "2026-01-03T22:44:31.558Z",
+  "timestamp": "2026-01-04T06:52:18.824Z",
   "version": "1.0.0",
   "results": [
     {
@@ -35,53 +35,17 @@
     {
       "rank": 3,
       "type": "discourse",
-      "slug": "an10.103",
-      "title": "Micchatta sutta - Wrongness",
-      "description": "Approaching wrongness leads to failure, not success. Approaching rightness leads to success, not failure.",
-      "contentSnippet": "“Bhikkhus, approaching wrongness leads to failure, not success. How does this happen? For one with |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention",
-      "score": 103,
-      "matchType": "term-title-match",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 4,
-      "type": "discourse",
-      "slug": "sn45.18",
-      "title": "Paṭhama kukkuṭārāma sutta - Kukuṭa’s Park (First)",
-      "description": "The venerable Bhadda asks the venerable Ānanda about the wrong spiritual practice.",
-      "contentSnippet": "“This, friend, is the wrong spiritual practice: the eightfold wrong way of practice, that is, wrong view, wrong intention, wrong speech, wrong action, wrong livelihood, <mark class=\"bg-yellow-100 dark",
-      "score": 103,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 5,
-      "type": "discourse",
-      "slug": "sn45.23",
-      "title": "Paṭhama paṭipadā sutta - Way of Practice (First)",
-      "description": "The Buddha distinguishes the wrong way of practice and the right way of practice.",
-      "contentSnippet": "And what, bhikkhus, is the wrong way of practice? It is: |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa",
-      "score": 103,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 6,
-      "type": "discourse",
       "slug": "an10.104",
       "title": "Bīja sutta - Seeds",
       "description": "With wrong view, all actions lead to suffering. With right view, all actions lead to happiness. The Buddha explains this with an example of seeds.",
       "contentSnippet": "Bhikkhus, for a person with |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, his |wrong intention::wrong notion, wrong idea [micchāsaṅkappa]|, |wrong speech::speech",
-      "score": 103,
+      "score": 103.6,
       "matchType": "multi-term-content",
-      "priority": 1,
+      "priority": 1.2,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 7,
+      "rank": 4,
       "type": "discourse",
       "slug": "sn14.28",
       "title": "Aṭṭhaṅgika sutta - The Eightfold Path",
@@ -93,7 +57,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 8,
+      "rank": 5,
       "type": "discourse",
       "slug": "sn45.1",
       "title": "Avijjā sutta - Ignorance",
@@ -105,7 +69,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 9,
+      "rank": 6,
       "type": "discourse",
       "slug": "sn45.11",
       "title": "Paṭhamavihāra sutta - Dwelling (First)",
@@ -117,7 +81,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 10,
+      "rank": 7,
+      "type": "discourse",
+      "slug": "sn45.18",
+      "title": "Paṭhama kukkuṭārāma sutta - Kukuṭa’s Park (First)",
+      "description": "The venerable Bhadda asks the venerable Ānanda about the wrong spiritual practice.",
+      "contentSnippet": "“This, friend, is the wrong spiritual practice: the eightfold wrong way of practice, that is, wrong view, wrong intention, wrong speech, wrong action, wrong livelihood, <mark class=\"bg-yellow-100 dark",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 8,
       "type": "discourse",
       "slug": "an10.106",
       "title": "Nijjara sutta - Wearing Away",
@@ -129,7 +105,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 11,
+      "rank": 9,
       "type": "discourse",
       "slug": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -141,7 +117,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 12,
+      "rank": 10,
       "type": "discourse",
       "slug": "mn19",
       "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
@@ -153,7 +129,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 13,
+      "rank": 11,
       "type": "discourse",
       "slug": "sn45.24",
       "title": "Dutiya paṭipadā sutta - Way of Practice (Second)",
@@ -165,7 +141,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 14,
+      "rank": 12,
+      "type": "discourse",
+      "slug": "an10.103",
+      "title": "Micchatta sutta - Wrongness",
+      "description": "Approaching wrongness leads to failure, not success. Approaching rightness leads to success, not failure.",
+      "contentSnippet": "“Bhikkhus, approaching wrongness leads to failure, not success. How does this happen? For one with |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention",
+      "score": 103,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 13,
       "type": "discourse",
       "slug": "sn14.29",
       "title": "Dasaṅgasutta sutta - The Tenfold Path",
@@ -177,12 +165,24 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 15,
+      "rank": 14,
       "type": "discourse",
       "slug": "sn45.25",
       "title": "Paṭhama asappurisa sutta - Person with no Integrity (First)",
       "description": "Who is a person without integrity and who is a person of integrity.",
       "contentSnippet": "And who, bhikkhus, is a person without integrity? Here, bhikkhus, a certain person holds |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, has |wrong intention::wron",
+      "score": 103,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn45.23",
+      "title": "Paṭhama paṭipadā sutta - Way of Practice (First)",
+      "description": "The Buddha distinguishes the wrong way of practice and the right way of practice.",
+      "contentSnippet": "And what, bhikkhus, is the wrong way of practice? It is: |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa",
       "score": 103,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -235,7 +235,7 @@
       "slug": "an3.61",
       "title": "Titthāyatana sutta - Bases Of Sectarian Views",
       "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
-      "contentSnippet": "And what bhikkhus, is the noble truth of the |way of practice leading to the end of suffering::i.e. the Noble Eightfold Path consisting of right view, right intention, right speech, right action, righ",
+      "contentSnippet": "1.) Bhikkhus, I approached those ascetics and brahmins who hold such a doctrine and view as this: ‘Whatever this person experiences—whether pleasure, pain, or neither-pleasure-nor-pain—all that is due",
       "score": 70,
       "matchType": "multi-term-content",
       "priority": 3,
@@ -256,10 +256,10 @@
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn1.76",
-      "title": "Najīrati sutta - Does not Decay",
-      "description": "A deity asks the Buddha what wears out and what does not decay, what is the wrong way, what is the stain on the spiritual life, and what are the six fissures in the world where one's wealth does not l",
-      "contentSnippet": "There are six fissures in the world,\nwhere one’s wealth does not last;\n|Laziness::A mental quality characterized by unwillingness, aversion, or lack of motivation to exert effort in wholesome activiti",
+      "slug": "iti99",
+      "title": "Tevijja sutta - Possessing the Threefold Knowledge",
+      "description": "The Buddha describes a brahmin possessing the threefold knowledge through the Dhamma, not through mere repetition of what is said. This includes the recollection of past lives, the divine eye seeing b",
+      "contentSnippet": "Again, bhikkhus, the bhikkhu with the |divine eye::the faculty of clairvoyance, the ability to see beyond the ordinary human range [dibbacakkhu]|, purified and surpassing human vision, sees beings pas",
       "score": 70,
       "matchType": "multi-term-content",
       "priority": 1,

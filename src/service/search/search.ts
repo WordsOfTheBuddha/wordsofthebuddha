@@ -8,6 +8,7 @@ import {
 	isStopword,
 	findPhraseMatchPositions,
 	calculatePhraseProximity,
+	stripAnnotations,
 } from "../../utils/searchRanking";
 import Fuse from "fuse.js";
 
@@ -223,7 +224,9 @@ function findBestMatchingParagraph(
 	) {
 		const paragraph = paragraphs[paragraphIndex];
 		const paragraphLower = paragraph.toLowerCase();
-		const normalizedParagraph = normalizeText(paragraphLower);
+		// Strip annotations before matching - they contain text that shouldn't affect term matching
+		const strippedParagraph = stripAnnotations(paragraphLower);
+		const normalizedParagraph = normalizeText(strippedParagraph);
 		const paragraphEnd = currentLength + paragraph.length;
 		const paragraphMatches: [number, number][] = [];
 
@@ -237,7 +240,10 @@ function findBestMatchingParagraph(
 			}
 		}
 
-		if (paragraphMatches.length > 0) {
+		// Always evaluate paragraphs for term matches, even if Fuse.js didn't find matches here
+		// This is important because Fuse.js searches raw content with annotations,
+		// but we search the stripped content for accurate term matching
+		{
 			// Track unique exact matches and total matches by operation
 			const matchCounts: MatchCounts = {
 				exact: new Set<string>(),
@@ -314,6 +320,12 @@ function findBestMatchingParagraph(
 				}
 			});
 
+			// Skip paragraphs with no term matches at all
+			if (uniqueTermsMatched === 0) {
+				currentLength += paragraph.length + 2;
+				continue;
+			}
+
 			// Check for phrase proximity in this paragraph
 			// Get non-stopword query terms for phrase matching
 			const nonStopwordQueryTerms = queryTerms.filter(
@@ -322,7 +334,7 @@ function findBestMatchingParagraph(
 			let phraseProximityBonus = 0;
 			if (nonStopwordQueryTerms.length >= 2) {
 				const proximity = calculatePhraseProximity(
-					paragraph,
+					strippedParagraph, // Use stripped paragraph for phrase matching
 					nonStopwordQueryTerms,
 				);
 				if (proximity.isAdjacent) {
@@ -336,21 +348,34 @@ function findBestMatchingParagraph(
 
 			// Calculate relevance score:
 			// 1. Prioritize paragraphs with more UNIQUE terms matched (not same word multiple times)
-			// 2. Prioritize paragraphs with non-stopword matches over stopword-only matches
+			// 2. REQUIRE non-stopword matches when query has non-stopwords - stopword-only paragraphs should NOT be selected
 			// 3. Use total match count as a tiebreaker
 			// 4. For multi-term queries, heavily prioritize non-stopword matches
 			// 5. Strongly prioritize paragraphs with phrase proximity (terms appearing together)
 			const hasOnlyStopwordMatches =
 				uniqueNonStopwordTermsMatched === 0 && uniqueTermsMatched > 0;
+
+			// Check if the query has non-stopword terms
+			const queryHasNonStopwords = nonStopwordQueryTerms.length > 0;
+
+			// If query has non-stopwords but this paragraph only matches stopwords,
+			// give it a very low score so it won't be selected unless nothing else matches
+			const stopwordOnlyPenalty =
+				queryHasNonStopwords && hasOnlyStopwordMatches ? -10000 : 0;
+
+			// Small bonus for paragraphs that Fuse.js also matched (validation)
+			const fuseMatchBonus = paragraphMatches.length > 0 ? 5 : 0;
+
 			const relevanceScore =
+				stopwordOnlyPenalty + // CRITICAL: paragraphs without non-stopword matches are almost never selected
 				phraseProximityBonus + // Phrase proximity is highest priority
-				(hasOnlyStopwordMatches ? -50 : 0) + // Heavy penalty for stopword-only paragraphs
 				uniqueNonStopwordTermsMatched * 100 + // Non-stopword unique terms (highest priority)
 				uniqueTermsMatched * 10 + // All unique terms matched
 				matchCounts.exact.size * 5 + // Exact match terms
 				matchCounts.startsWith * 2 + // Start/end weighted medium
 				matchCounts.endsWith * 2 +
-				matchCounts.fuzzy * 1; // Fuzzy matches weighted lowest
+				matchCounts.fuzzy * 1 + // Fuzzy matches weighted lowest
+				fuseMatchBonus; // Small bonus for Fuse.js validation
 
 			const debug = {
 				terms: queryTerms,

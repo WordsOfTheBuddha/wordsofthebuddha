@@ -1787,9 +1787,9 @@ export function rankResultsWithDiversity(
 	// Tracks n-gram signatures from already-shown content snippets
 	// Used as a TIE-BREAKER only - does NOT override score differences
 	const seenSnippetSignatures = new Set<string>();
-	// Similarity penalty is medium (10 pts)
-	const SNIPPET_SIMILARITY_PENALTY = 10;
-	const SNIPPET_SIMILARITY_THRESHOLD = 0.7; // Start penalizing at 80% overlap
+	// Similarity penalty - needs to be significant to affect ordering
+	const SNIPPET_SIMILARITY_PENALTY = 25; // Increased from 10 for stronger effect
+	const SNIPPET_SIMILARITY_THRESHOLD = 0.6; // Lower threshold to catch more similar content
 	const ENABLE_SNIPPET_SIMILARITY = true;
 	// Priority threshold: only apply snippet similarity penalty to discourses at or below this priority
 	// This protects important discourses (priority 2+) from being penalized for sharing formulaic passages
@@ -1866,6 +1866,8 @@ export function rankResultsWithDiversity(
 			// Only applies to low-priority discourses - protects important discourses from formulaic passage penalties
 			// This catches formulaic content like jhāna descriptions appearing in many discourses
 			const itemPriority = item.priority ?? 1;
+			const snippetForSimilarity =
+				item.contentSnippet || item.item?.contentSnippet;
 			if (
 				ENABLE_SNIPPET_SIMILARITY &&
 				item.type === "discourse" &&
@@ -1873,16 +1875,15 @@ export function rankResultsWithDiversity(
 				itemStrata === currentStrata && // Only apply within same quality tier
 				itemPriority <= SNIPPET_SIMILARITY_PRIORITY_THRESHOLD // Only penalize low-priority discourses
 			) {
-				const snippet =
-					item.item?.contentSnippet || item.contentSnippet;
-				const itemSignatures = extractSnippetSignatures(snippet);
+				const itemSignatures =
+					extractSnippetSignatures(snippetForSimilarity);
 				const overlap = calculateSnippetOverlap(
 					itemSignatures,
 					seenSnippetSignatures,
 				);
 
 				if (overlap > SNIPPET_SIMILARITY_THRESHOLD) {
-					// Small penalty for tie-breaking only
+					// Penalty for similar snippets - stronger to affect ordering
 					const penaltyFactor =
 						(overlap - SNIPPET_SIMILARITY_THRESHOLD) /
 						(1 - SNIPPET_SIMILARITY_THRESHOLD);
@@ -1917,7 +1918,7 @@ export function rankResultsWithDiversity(
 		// Track content snippet signatures for similarity detection
 		if (selected.type === "discourse") {
 			const snippet =
-				selected.item?.contentSnippet || selected.contentSnippet;
+				selected.contentSnippet || selected.item?.contentSnippet;
 			const signatures = extractSnippetSignatures(snippet);
 			for (const sig of signatures) {
 				seenSnippetSignatures.add(sig);

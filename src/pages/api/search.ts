@@ -432,9 +432,9 @@ export const GET: APIRoute = async ({ url }) => {
 						matchType = "term-title-exact";
 					}
 				} else if (bestTermSynonymMatch === "exact") {
-					// Synonym match scores slightly lower than title match
-					score =
-						(SCORE.CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH || 75) - 2;
+					// Synonym exact match - slightly below description match
+					// since synonyms tell what the concept IS (like description tells what discourse is ABOUT)
+					score = 75;
 					matchType = "term-synonym-exact";
 				} else if (titleMatch === "prefix" && canPrefix) {
 					score = SCORE.CATEGORY_PREFIX_TITLE;
@@ -513,21 +513,43 @@ export const GET: APIRoute = async ({ url }) => {
 				// Apply phrase proximity boost for multi-word queries
 				// This rewards categories where the query phrase appears intact in title/description/synonyms
 				if (isMultiWord && nonStopTerms.length >= 2) {
-					// Build combined synonym text for phrase checking
-					const synonymsText = (item.synonyms || []).join(" ");
+					// Check each synonym individually for phrase proximity
+					// (don't join them - that could create false matches across synonyms)
+					let bestSynonymPhraseBoost = 0;
+					for (const synonym of item.synonyms || []) {
+						const synBoost = calculatePhraseProximityBoost(
+							"", // no title
+							synonym, // treat synonym as description (gets 1.3x multiplier)
+							"", // no content
+							nonStopTerms,
+						);
+						if (synBoost.boost > bestSynonymPhraseBoost) {
+							bestSynonymPhraseBoost = synBoost.boost;
+						}
+					}
+
+					// Check title and description separately
 					const phraseBoost = calculatePhraseProximityBoost(
 						item.title || "",
 						item.description || "",
-						synonymsText, // Use synonyms as "content" for categories
+						"", // don't pass synonyms as content anymore
 						nonStopTerms,
 					);
-					if (phraseBoost.boost > 0) {
-						score += phraseBoost.boost;
+
+					// Use the best boost from synonyms or title/description
+					const totalPhraseBoost = Math.max(
+						phraseBoost.boost,
+						bestSynonymPhraseBoost,
+					);
+					if (totalPhraseBoost > 0) {
+						score += totalPhraseBoost;
 						// Update match type to indicate phrase match
 						if (phraseBoost.titleMatch && matchType !== "exact") {
 							matchType = "phrase-title";
 						} else if (phraseBoost.descriptionMatch) {
 							matchType = "phrase-description";
+						} else if (bestSynonymPhraseBoost > 0) {
+							matchType = "phrase-synonym";
 						}
 					}
 				}
@@ -858,6 +880,8 @@ export const GET: APIRoute = async ({ url }) => {
 					matchType,
 					priority,
 					nonStopwordMatches,
+					// Include contentSnippet at top level for snippet similarity detection
+					contentSnippet: item.contentSnippet,
 				});
 			});
 		}
@@ -867,11 +891,10 @@ export const GET: APIRoute = async ({ url }) => {
 		// which both have "jhāna" as their primary pali term
 		const deduplicatedResults = deduplicateByPali(results);
 
-		// Apply diversity ranking (pass hasSlugFilter to enable/disable collection diversity)
+		// Apply diversity ranking
 		const rankedResults = rankResultsWithDiversity(
 			deduplicatedResults,
 			undefined,
-			hasSlugFilter,
 		);
 
 		// Format response
