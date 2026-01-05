@@ -1,5 +1,5 @@
 ---
-title: Paṭhama nibbānapaṭisaṁyutta sutta - First Discourse on Nibbāna
+title: Paṭhama nibbānapaṭisaṁyutta sutta - Nibbāna (First)
 description: The Buddha expresses an inspired verse on the base where there is no coming, going, staying, no passing away, and no rebirth.
 qualities: ending
 theme: inspiration

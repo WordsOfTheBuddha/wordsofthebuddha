@@ -1,5 +1,5 @@
 ---
-title: Dutiya nibbānapaṭisaṁyutta sutta - Second Discourse on Nibbāna
+title: Dutiya nibbānapaṭisaṁyutta sutta - Nibbāna (Second)
 description: The Buddha expresses an inspired verse on the uninclined nature of Nibbāna, which is hard to perceive.
 qualities: craving, with nothing, truth
 theme: inspiration

@@ -1,10 +1,11 @@
 ---
-title: Tatiya nibbānapaṭisaṁyutta sutta - Third Discourse on Nibbāna
-description: The Blessed One instructs the bhikkhus on the unborn, unbecome, unmade, unconditioned.
-fetter: ignorance
-tags: ud,ud8,Nibbāna,mindful,unconditioned,unborn,wisdom
+title: Tatiya nibbānapaṭisaṁyutta sutta - Nibbāna (Third)
+description: The Buddha expresses an inspired utterance on the unborn, unbecome, unmade, unconditioned.
+qualities: liberation, discernment
+theme: inspiration, principle
 slug: ud8.3
 similar: iti43
+commentary: Similar to [ITI 43](/iti43).
 ---
 
 Evaṁ me sutaṁ — ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tena kho pana samayena bhagavā bhikkhū nibbānapaṭisaṁyuttāya dhammiyā kathāya sandasseti samādapeti samuttejeti sampahaṁseti. Tedha bhikkhū aṭṭhiṁ katvā, manasi katvā, sabbaṁ cetaso samannāharitvā, ohitasotā dhammaṁ suṇanti.
