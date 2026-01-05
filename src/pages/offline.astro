@@ -86,8 +86,8 @@ import Layout from "../layouts/Layout.astro";
 				</span>
 			</div>
 			<p class="mt-2 text-xs text-gray-500 dark:text-gray-300">
-				Caches the /search page and the search index to allow offline
-				searching.
+				Caches the /search page, discourse index, and
+				topics/qualities/similes data for offline searching.
 			</p>
 		</section>
 
@@ -370,21 +370,33 @@ import Layout from "../layouts/Layout.astro";
 				STATE._onEstimate = bytes;
 			});
 
-			// Estimate size for making search available offline using the actual index module size
+			// Estimate size for making search available offline
+			// This includes: discourse searchIndex + topics/qualities/similes data
 			(async () => {
 				try {
-					const mod: any = await import("../data/searchIndex");
-					const data =
-						(mod && (mod.default || mod.searchIndex)) || [];
-					const bytes = new TextEncoder().encode(
-						JSON.stringify(data)
-					).length;
+					// Import all search-related data modules to get accurate size
+					const [searchMod, discoverMod] = await Promise.all([
+						import("../data/searchIndex"),
+						import("../utils/discover-data"),
+					]);
+					
+					// Get discourse index size
+					const searchData = (searchMod && (searchMod.default || searchMod.searchIndex)) || [];
+					const searchBytes = new TextEncoder().encode(JSON.stringify(searchData)).length;
+					
+					// Get topics/qualities/similes size by building unified content
+					const categoryData = discoverMod.buildAllContent(["topics", "qualities", "similes"]);
+					const categoryBytes = new TextEncoder().encode(JSON.stringify(categoryData)).length;
+					
+					// Total estimate (with some overhead for Fuse.js and other bundled code)
+					const totalBytes = searchBytes + categoryBytes + (200 * 1024); // ~200KB overhead
+					
 					const se = document.getElementById("search-estimate");
-					if (se) se.textContent = formatBytes(bytes);
-					STATE._searchEstimate = bytes;
+					if (se) se.textContent = formatBytes(totalBytes);
+					STATE._searchEstimate = totalBytes;
 				} catch (e) {
 					// Fallback estimate if dynamic import fails
-					const fallback = 4 * 1024 * 1024;
+					const fallback = 5 * 1024 * 1024;
 					const se = document.getElementById("search-estimate");
 					if (se) se.textContent = formatBytes(fallback);
 					STATE._searchEstimate = fallback;
