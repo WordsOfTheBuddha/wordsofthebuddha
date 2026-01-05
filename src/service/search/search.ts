@@ -17,7 +17,7 @@ export interface SearchResult {
 	title: string;
 	description: string;
 	contentSnippet: string | null;
-	priority?: number;
+	maxScore?: number;
 }
 
 export interface SearchData {
@@ -25,7 +25,8 @@ export interface SearchData {
 	title: string;
 	description: string;
 	content: string;
-	priority?: number;
+	maxScore?: number; // Cap the maximum score for this doc
+	contentSearchable?: boolean; // If false, don't show content snippets
 }
 
 let fuseIndex: Fuse<SearchData> | null = null;
@@ -45,6 +46,7 @@ async function getSearchIndex() {
 			{ name: "description", weight: 1.5 },
 			{ name: "content", weight: 1 },
 		],
+		includeScore: true, // Required for maxScore capping
 		sortFn: (a: any, b: any) => {
 			// Round scores to 3 decimal points for comparison
 			const scoreA = Math.round(a.score * 10e10) / 10e10;
@@ -678,15 +680,28 @@ export async function performSearch(
 		console.log("[search] results:", searchResults.length);
 	}
 
-	return searchResults.map(({ item, matches }) => {
-		const result: SearchResult = {
+	// Map results and apply maxScore capping
+	const mappedResults = searchResults.map(({ item, matches, score }) => {
+		// Apply maxScore: if item has maxScore, use the worse (higher) of actual score and maxScore
+		// Fuse scores are 0 (perfect) to 1 (no match), so higher = worse
+		const effectiveScore =
+			item.maxScore !== undefined
+				? Math.max(score ?? 0, item.maxScore)
+				: (score ?? 0);
+
+		const result: SearchResult & { _score: number } = {
 			slug: item.slug,
 			title: item.title,
 			description: item.description,
 			contentSnippet: null,
-			priority: item.priority,
+			maxScore: item.maxScore,
+			_score: effectiveScore,
 		};
-		if (options.highlight && matches) {
+
+		// Only show content snippets if contentSearchable is not false
+		const showContentSnippet = item.contentSearchable !== false;
+
+		if (options.highlight && matches && showContentSnippet) {
 			const contentMatches = matches?.filter((m) => m.key === "content");
 
 			if (contentMatches?.length) {
@@ -704,6 +719,12 @@ export async function performSearch(
 
 		return result;
 	});
+
+	// Re-sort by effective score (lower is better in Fuse.js)
+	mappedResults.sort((a, b) => a._score - b._score);
+
+	// Remove internal _score before returning
+	return mappedResults.map(({ _score, ...rest }) => rest);
 }
 
 /**
@@ -726,7 +747,6 @@ export async function getFilteredDiscourses(
 			title: item.title,
 			description: item.description,
 			contentSnippet: null,
-			priority: item.priority,
 		}));
 }
 
@@ -761,7 +781,6 @@ export function findContentWholeWordMatches(
 			title: item.title,
 			description: item.description,
 			contentSnippet: null,
-			priority: item.priority,
 		}));
 }
 
