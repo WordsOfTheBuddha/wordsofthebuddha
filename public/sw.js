@@ -66,7 +66,7 @@ self.addEventListener("install", (event) => {
 				// ignore
 			}
 			await self.skipWaiting();
-		})()
+		})(),
 	);
 });
 
@@ -82,11 +82,11 @@ self.addEventListener("activate", (event) => {
 							return caches.delete(n);
 						}
 						return Promise.resolve(false);
-					})
+					}),
 				);
 			} catch {}
 			await self.clients.claim();
-		})()
+		})(),
 	);
 });
 
@@ -174,9 +174,48 @@ async function cacheFirst(req, cacheName) {
 	}
 }
 
+// Network-first for assets: try network, cache result, fall back to cache if offline
+async function networkFirstAsset(req, cacheName) {
+	const cache = await caches.open(cacheName);
+	try {
+		const res = await fetch(req);
+		if (res && (res.ok || res.type === "opaque")) {
+			cache.put(req, res.clone());
+		}
+		return res;
+	} catch (_) {
+		const cached = await cache.match(req);
+		return cached || Response.error();
+	}
+}
+
 self.addEventListener("fetch", (event) => {
 	const req = event.request;
 	const url = new URL(req.url);
+
+	// Detect localhost/dev environment
+	const isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/.test(
+		self.location.hostname,
+	);
+
+	// In dev mode, use network-first for everything to avoid stale cache issues
+	// Only intercept to provide offline fallback
+	if (isLocalhost) {
+		// For navigations in dev, use networkFirst (already handles offline fallback)
+		if (req.mode === "navigate") {
+			event.respondWith(networkFirst(req));
+			return;
+		}
+		// For other requests in dev, prefer network but cache for offline
+		if (url.origin === self.location.origin) {
+			event.respondWith(networkFirstAsset(req, ASSETS_CACHE));
+			return;
+		}
+		// Let external requests pass through
+		return;
+	}
+
+	// === PRODUCTION MODE BELOW ===
 
 	// Serve offline-manifest.json from cache when possible, with {} fallback offline
 	if (
@@ -197,52 +236,9 @@ self.addEventListener("fetch", (event) => {
 						headers: { "content-type": "application/json" },
 					});
 				}
-			})()
+			})(),
 		);
 		return;
-	}
-
-	// Dev-only: stub Vite/Astro dev resources when offline so pages render in local dev
-	const isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/.test(
-		self.location.hostname
-	);
-	if (isLocalhost && !self.navigator?.onLine) {
-		if (url.pathname === "/@vite/client") {
-			event.respondWith(
-				new Response("export {};// offline stub", {
-					headers: { "Content-Type": "application/javascript" },
-				})
-			);
-			return;
-		}
-		const isSrcCss =
-			url.pathname.startsWith("/src/") && url.pathname.endsWith(".css");
-		const isAstroStyle = url.search.includes("astro&type=style");
-		if (isSrcCss || isAstroStyle) {
-			event.respondWith(
-				new Response("/* offline css stub */", {
-					headers: { "Content-Type": "text/css" },
-				})
-			);
-			return;
-		}
-		const isAstroScriptTs = url.search.includes("astro&type=script");
-		if (isAstroScriptTs) {
-			event.respondWith(
-				new Response("export {};// offline stub", {
-					headers: { "Content-Type": "application/javascript" },
-				})
-			);
-			return;
-		}
-		if (url.pathname.startsWith("/@id/")) {
-			event.respondWith(
-				new Response("export {};// offline stub", {
-					headers: { "Content-Type": "application/javascript" },
-				})
-			);
-			return;
-		}
 	}
 
 	// Navigations
@@ -251,7 +247,7 @@ self.addEventListener("fetch", (event) => {
 		return;
 	}
 
-	// Built asset bundles emitted by Astro/Vite (dev parity)
+	// Built asset bundles emitted by Astro/Vite
 	if (
 		url.origin === self.location.origin &&
 		url.pathname.startsWith("/_astro/")
@@ -272,7 +268,7 @@ self.addEventListener("fetch", (event) => {
 	if (
 		url.origin === self.location.origin &&
 		/(favicon|android-chrome|apple-touch-icon|robots\.txt|manifest\.webmanifest)/.test(
-			url.pathname
+			url.pathname,
 		)
 	) {
 		event.respondWith(cacheFirst(req, ASSETS_CACHE));
@@ -290,6 +286,16 @@ self.addEventListener("fetch", (event) => {
 	if (/https?:\/\/fonts\.(gstatic|googleapis)\.com\//.test(url.href)) {
 		event.respondWith(cacheFirst(req, FONTS_WEB_CACHE));
 		return;
+	}
+
+	// Catch-all: cache any same-origin JS/CSS that wasn't handled above
+	// This ensures dynamically imported chunks get cached for offline use
+	if (url.origin === self.location.origin) {
+		const ext = url.pathname.split(".").pop()?.toLowerCase();
+		if (ext === "js" || ext === "mjs" || ext === "css") {
+			event.respondWith(cacheFirst(req, ASSETS_CACHE));
+			return;
+		}
 	}
 });
 
@@ -437,7 +443,7 @@ async function prefetchLinkedAssets(html, baseUrl) {
 						await cache.put(req, res.clone());
 					}
 				} catch {}
-			})
+			}),
 		);
 	} catch {}
 }
@@ -477,7 +483,7 @@ self.addEventListener("message", (event) => {
 						urls,
 						cacheName,
 						signal,
-						progressKey
+						progressKey,
 					);
 					await notifyAll({ type: "DONE", progressKey });
 				} catch (e) {
@@ -489,7 +495,7 @@ self.addEventListener("message", (event) => {
 						error: String(e),
 					});
 				}
-			})()
+			})(),
 		);
 	} else if (data.type === "CANCEL_JOB") {
 		CONTROLLER.abortController?.abort();
@@ -520,7 +526,7 @@ self.addEventListener("message", (event) => {
 						if (k.startsWith("core-"))
 							return Promise.resolve(false);
 						return caches.delete(k);
-					})
+					}),
 				);
 				// Try to refresh core entries from network when possible
 				try {
@@ -528,13 +534,13 @@ self.addEventListener("message", (event) => {
 					const [offlineRes, manifestRes, searchRes] =
 						await Promise.all([
 							fetch("/offline", { cache: "reload" }).catch(
-								() => null
+								() => null,
 							),
 							fetch("/offline-manifest.json", {
 								cache: "reload",
 							}).catch(() => null),
 							fetch("/search", { cache: "reload" }).catch(
-								() => null
+								() => null,
 							),
 						]);
 					if (offlineRes)
@@ -542,12 +548,12 @@ self.addEventListener("message", (event) => {
 					if (manifestRes)
 						await core.put(
 							"/offline-manifest.json",
-							manifestRes.clone()
+							manifestRes.clone(),
 						);
 					if (searchRes) await core.put("/search", searchRes.clone());
 				} catch {}
 				await notifyAll({ type: "CLEARED" });
-			})()
+			})(),
 		);
 	}
 });

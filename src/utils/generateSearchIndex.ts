@@ -22,7 +22,6 @@ interface SearchDoc {
 const BLACKLISTED_SLUGS = new Set([
 	"index", // Home page
 	"search", // Search page itself
-	"offline", // Offline fallback page
 	"signin", // Auth pages
 	"register",
 	"profile",
