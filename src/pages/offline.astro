@@ -379,18 +379,29 @@ import Layout from "../layouts/Layout.astro";
 						import("../data/searchIndex"),
 						import("../utils/discover-data"),
 					]);
-					
+
 					// Get discourse index size
-					const searchData = (searchMod && (searchMod.default || searchMod.searchIndex)) || [];
-					const searchBytes = new TextEncoder().encode(JSON.stringify(searchData)).length;
-					
+					const searchData =
+						(searchMod &&
+							(searchMod.default || searchMod.searchIndex)) ||
+						[];
+					const searchBytes = new TextEncoder().encode(
+						JSON.stringify(searchData)
+					).length;
+
 					// Get topics/qualities/similes size by building unified content
-					const categoryData = discoverMod.buildAllContent(["topics", "qualities", "similes"]);
-					const categoryBytes = new TextEncoder().encode(JSON.stringify(categoryData)).length;
-					
+					const categoryData = discoverMod.buildAllContent([
+						"topics",
+						"qualities",
+						"similes",
+					]);
+					const categoryBytes = new TextEncoder().encode(
+						JSON.stringify(categoryData)
+					).length;
+
 					// Total estimate (with some overhead for Fuse.js and other bundled code)
-					const totalBytes = searchBytes + categoryBytes + (200 * 1024); // ~200KB overhead
-					
+					const totalBytes = searchBytes + categoryBytes + 200 * 1024; // ~200KB overhead
+
 					const se = document.getElementById("search-estimate");
 					if (se) se.textContent = formatBytes(totalBytes);
 					STATE._searchEstimate = totalBytes;
