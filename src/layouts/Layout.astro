@@ -234,14 +234,62 @@ if (!SEOTitle) {
 		// Register the Service Worker for offline support (dev and prod)
 		if ("serviceWorker" in navigator) {
 			window.addEventListener("load", () => {
-				navigator.serviceWorker.register("/sw.js?v=3").catch(() => {
+				navigator.serviceWorker.register("/sw.js?v=5").catch(() => {
 					/* ignore */
 				});
 
-				// After the SW takes control, prewarm the Pāli lookup chunk so it is cached for offline use.
-				// This is intentionally low-priority and guarded by the user's preference.
+				// After the SW takes control, cache already-loaded resources for offline use
+				// This handles the case where resources loaded before the SW was controlling
 				navigator.serviceWorker.ready
-					.then(() => {
+					.then(async () => {
+						// Cache already-loaded JS/CSS resources that the SW missed on first load
+						if (navigator.onLine && typeof caches !== "undefined") {
+							try {
+								const resources = performance.getEntriesByType(
+									"resource"
+								) as PerformanceResourceTiming[];
+								const assetsToCache = resources
+									.filter((r) => {
+										const url = new URL(
+											r.name,
+											location.origin
+										);
+										if (url.origin !== location.origin)
+											return false;
+										const path = url.pathname;
+										return (
+											path.endsWith(".js") ||
+											path.endsWith(".mjs") ||
+											path.endsWith(".css") ||
+											path.startsWith("/_astro/")
+										);
+									})
+									.map((r) => r.name);
+
+								if (assetsToCache.length > 0) {
+									const cache =
+										await caches.open("assets-v1");
+									await Promise.all(
+										assetsToCache.map(async (url) => {
+											try {
+												const existing =
+													await cache.match(url);
+												if (existing) return;
+												const res = await fetch(url, {
+													cache: "force-cache",
+												});
+												if (res && res.ok) {
+													await cache.put(url, res);
+												}
+											} catch {}
+										})
+									);
+								}
+							} catch {}
+						}
+
+						// Prewarm the Pāli lookup chunk so it is cached for offline use.
+						// This is intentionally low-priority and guarded by the user's preference.
 						const pref = localStorage.getItem("paliLookup");
 						const enabled = pref == null ? true : pref === "true";
 						if (!enabled || !navigator.onLine) return;
