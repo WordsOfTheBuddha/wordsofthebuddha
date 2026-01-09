@@ -28,48 +28,54 @@ export async function generateSimileMappings() {
 				const simileList = data.simile.split(",").map((s) => s.trim());
 
 				simileList.forEach((simile) => {
+					// Normalize simile to lowercase for consistent grouping
+					const normalizedSimile = simile.toLowerCase();
+
 					// Determine the letter for categorization
-					let mainWord = simile.split(" ")[0].toLowerCase();
+					let mainWord = normalizedSimile.split(" ")[0];
 
 					// Handle special cases
-					if (simile.includes("tree") && !mainWord.includes("tree")) {
+					if (
+						normalizedSimile.includes("tree") &&
+						!mainWord.includes("tree")
+					) {
 						mainWord = "tree";
 					} else if (
-						simile.includes("mud") &&
+						normalizedSimile.includes("mud") &&
 						!mainWord.includes("mud")
 					) {
 						mainWord = "mud";
 					} else if (
-						simile.includes("water") &&
+						normalizedSimile.includes("water") &&
 						!mainWord.includes("water")
 					) {
 						mainWord = "water";
 					} else if (
-						(simile.includes("himalayan") ||
-							simile.includes("mountain")) &&
+						(normalizedSimile.includes("himalayan") ||
+							normalizedSimile.includes("mountain")) &&
 						!mainWord.includes("mountain")
 					) {
 						mainWord = "mountain";
 					} else if (
-						simile.includes("clay") &&
+						normalizedSimile.includes("clay") &&
 						!mainWord.includes("clay")
 					) {
 						mainWord = "clay";
 					}
 
 					// Get the first letter for categorization
-					const firstLetter = mainWord.charAt(0).toLowerCase();
+					const firstLetter = mainWord.charAt(0);
 
 					// Initialize nested objects if they don't exist
 					if (!simileMap[firstLetter]) {
 						simileMap[firstLetter] = {};
 					}
-					if (!simileMap[firstLetter][simile]) {
-						simileMap[firstLetter][simile] = [];
+					if (!simileMap[firstLetter][normalizedSimile]) {
+						simileMap[firstLetter][normalizedSimile] = [];
 					}
 
 					// Add discourse information
-					simileMap[firstLetter][simile].push({
+					simileMap[firstLetter][normalizedSimile].push({
 						id: data.slug,
 						title: data.title,
 						description: data.description || "",
