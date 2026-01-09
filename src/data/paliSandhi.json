@@ -612,5 +612,26 @@
 	"ninnaganti": ["ninnaga"],
 	"caramekato": ["cara", "ekato"],
 	"abhāsīti": ["abhāsi"],
-	"abhāsinti": ["abhāsi"]
+	"abhāsinti": ["abhāsi"],
+	"viññāṇakasiṇameke": ["viññāṇakasiṇaṁ", "eke"],
+	"panetāsaṁ": ["pana", "etāsaṁ"],
+	"panekesaṁ": ["pana", "ekesaṁ"],
+	"ākiñcaññāyatanameke": ["ākiñcaññāyatanam", "eke"],
+	"asaññanti": ["asañña"],
+	"atthetanti": ["attha", "etanti"],
+	"byasanañhetaṁ": ["byasana", "hi", "etaṁ"],
+	"saṅkhārasamāpattipattabbamakkhāyati": [
+		"saṅkhārasamāpattipattabba",
+		"akkhāyati"
+	],
+	"saṅkhārāvasesasamāpattipattabbametaṁ": [
+		"saṅkhārāvasesasamāpattipattabba",
+		"etaṁ"
+	],
+	"āyatanamakkhāyati": ["āyatana", "akkhāyati"],
+	"upādānamakkhāyati": ["upādāna", "akkhāyati"],
+	"santohamasmi": ["santo", "ahaṁ", "asmi"],
+	"nibbutohamasmi": ["nibbuto", "ahaṁ", "asmi"],
+	"anupādānohamasmīti": ["anupādāno", "ahaṁ", "asmi"],
+	"anupādāvimokkhoti": ["anupādāvimokkho"]
 }
