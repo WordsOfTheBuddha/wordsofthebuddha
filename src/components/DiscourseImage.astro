@@ -1,0 +1,225 @@
+---
+/**
+ * DiscourseImage - Optional header image for discourse pages
+ *
+ * Features:
+ * - Convention-based image discovery (src/assets/content-images/{id}.{ext})
+ * - Hidden in offline mode (controlled by ImageToggle)
+ * - Print-friendly (hidden)
+ * - Optimized via Astro's Image component
+ *
+ * Toggle button is separate (ImageToggle.astro) and placed in icon row.
+ */
+import { Image } from "astro:assets";
+import type { ContentImageData } from "../utils/contentImage";
+import ZoomIcon from "../assets/magnifying-glass-plus.svg?raw";
+
+interface Props {
+	/** Image data from findContentImage() */
+	imageData: ContentImageData;
+}
+
+const { imageData } = Astro.props;
+const { image, caption, alt } = imageData;
+
+// Standard width for content area - Astro will maintain aspect ratio
+const IMAGE_WIDTH = 800;
+
+const width = (image as any)?.width;
+const height = (image as any)?.height;
+const aspectRatio =
+	typeof width === "number" && typeof height === "number" && height > 0
+		? width / height
+		: null;
+
+// Treat ~3:2 images as "fits"; we can show them fully and skip the zoom affordance.
+const isApproxThreeTwo =
+	aspectRatio != null && aspectRatio >= 1.45 && aspectRatio <= 1.65;
+const shouldShowZoom = !isApproxThreeTwo;
+---
+
+<figure
+	id="discourseImageFigure"
+	class="discourse-image not-prose group relative m-0 mb-3 hidden w-full md:max-w-3xl"
+>
+	<script is:inline>
+		// Prevent FOC (Flash of Content) by checking preference immediately
+		try {
+			const stored = localStorage.getItem("showDiscourseImages");
+			// Default is true if not set
+			const show = stored === null ? true : stored === "true";
+			if (show && navigator.onLine) {
+				document
+					.getElementById("discourseImageFigure")
+					.classList.remove("hidden");
+			}
+		} catch (e) {}
+	</script>
+	<div class="relative rounded-lg overflow-hidden">
+		<Image
+			src={image}
+			alt={alt}
+			width={IMAGE_WIDTH}
+			class:list={[
+				"w-full h-auto rounded-lg",
+				isApproxThreeTwo
+					? "object-contain"
+					: "object-cover max-h-[280px]",
+			]}
+			loading="eager"
+			decoding="async"
+		/>
+		{
+			shouldShowZoom && (
+				<button
+					id="expandImageBtn"
+					class="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0"
+					title="View full image"
+					aria-label="View full image"
+				>
+					<span
+						class="w-5 h-5 flex items-center justify-center"
+						set:html={ZoomIcon}
+					/>
+				</button>
+			)
+		}
+	</div>
+
+	{
+		caption && (
+			<figcaption class="mt-0.5 text-sm text-gray-600 dark:text-gray-400 text-center">
+				{caption}
+			</figcaption>
+		)
+	}
+
+	{
+		shouldShowZoom && (
+			<dialog
+				id="imageModal"
+				class="p-0 bg-transparent backdrop:bg-black/80 max-w-none max-h-none w-full h-full m-0 open:flex items-center justify-center pointer-events-none open:pointer-events-auto"
+			>
+				<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center">
+					<form method="dialog" class="absolute -top-10 right-0">
+						<button
+							class="text-white hover:text-gray-300 focus:outline-none p-2"
+							aria-label="Close"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-8 w-8"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
+								/>
+							</svg>
+						</button>
+					</form>
+					<img
+						id="fullImage"
+						src={image.src}
+						alt={alt}
+						class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+					/>
+					{caption && (
+						<div class="mt-4 text-white/90 text-center bg-black/50 px-4 py-2 rounded-full">
+							{caption}
+						</div>
+					)}
+				</div>
+			</dialog>
+		)
+	}
+</figure>
+
+<script>
+	function initDiscourseImage() {
+		const figure = document.getElementById("discourseImageFigure");
+		const expandBtn = document.getElementById("expandImageBtn");
+		const dialog = document.getElementById(
+			"imageModal"
+		) as HTMLDialogElement;
+
+		if (!figure) return;
+
+		if (expandBtn && dialog) {
+			expandBtn.addEventListener("click", (e) => {
+				e.stopPropagation();
+				dialog.showModal();
+				document.body.style.overflow = "hidden"; // Prevent background scrolling
+			});
+
+			dialog.addEventListener("click", (e) => {
+				if (e.target === dialog) {
+					dialog.close();
+				}
+			});
+
+			dialog.addEventListener("close", () => {
+				document.body.style.overflow = "";
+			});
+		}
+
+		const STORAGE_KEY = "showDiscourseImages";
+
+		const getPreference = (): boolean => {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			return stored === null ? true : stored === "true";
+		};
+
+		const isOffline = (): boolean => !navigator.onLine;
+
+		const updateVisibility = () => {
+			const show = !isOffline() && getPreference();
+			// Only toggle if we need to change state (to avoid interfering with inline script initial state if possible, though classList.toggle is safe)
+			figure.classList.toggle("hidden", !show);
+		};
+
+		// Initialize
+		updateVisibility();
+
+		// Listen for changes
+		window.addEventListener("online", updateVisibility);
+		window.addEventListener("offline", updateVisibility);
+		window.addEventListener("storage", (e) => {
+			if (e.key === STORAGE_KEY) updateVisibility();
+		});
+
+		// Listen for toggle events from ImageToggle
+		document.addEventListener("discourseImageToggled", updateVisibility);
+	}
+
+	initDiscourseImage();
+	document.addEventListener("astro:page-load", initDiscourseImage);
+</script>
+
+<style>
+	.discourse-image {
+		transition: opacity 0.2s ease-in-out;
+	}
+
+	.discourse-image.hidden {
+		display: none;
+	}
+
+	@media print {
+		.discourse-image {
+			display: none !important;
+		}
+	}
+
+	.discourse-image img {
+		filter: brightness(0.98);
+	}
+
+	:global(.dark) .discourse-image img {
+		filter: brightness(0.92);
+	}
+</style>

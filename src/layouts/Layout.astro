@@ -24,6 +24,9 @@ import ParagraphToggle from "../components/ParagraphToggle.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
 import Commentary from "../components/Commentary.astro";
+import DiscourseImage from "../components/DiscourseImage.astro";
+import ImageToggle from "../components/ImageToggle.astro";
+import type { ContentImageData } from "../utils/contentImage";
 import { debug } from "../utils/contentParser";
 
 const paramTheme = Astro.url.searchParams.get("theme");
@@ -50,7 +53,29 @@ const {
 	seoTitle = null, // Add new prop for SEO title
 	paragraphRequest = null,
 	commentary,
-} = Astro.props;
+	contentImage = null, // Optional discourse header image
+} = Astro.props as {
+	id?: string;
+	fp?: string;
+	title?: string;
+	description?: string;
+	qualities?: string[];
+	prev?: any;
+	next?: any;
+	lastUpdated?: string;
+	showReadLater?: boolean;
+	showSave?: boolean;
+	showRead?: boolean;
+	titleIcon?: string | null;
+	showAuth?: boolean;
+	showSearch?: boolean;
+	showPali?: boolean;
+	showFilter?: boolean;
+	seoTitle?: string | null;
+	paragraphRequest?: any;
+	commentary?: string | string[];
+	contentImage?: ContentImageData | null;
+};
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);
@@ -61,7 +86,7 @@ if (!SEOTitle) {
 	if (title != "Words of the Buddha" && title) {
 		SEOTitle = title + " - Words of the Buddha";
 	}
-	if (id && fp.includes("anthologies")) {
+	if (id && fp?.includes("anthologies")) {
 		SEOTitle = "Anthology - " + title;
 	} else if (id) {
 		SEOTitle =
@@ -103,6 +128,39 @@ if (!SEOTitle) {
 			name="description"
 			content={description || "Default Description"}
 		/>
+
+		<!-- Open Graph / Social Media -->
+		<meta property="og:title" content={SEOTitle || "Words of the Buddha"} />
+		<meta
+			property="og:description"
+			content={description || "Default Description"}
+		/>
+		<meta property="og:type" content="article" />
+		{
+			contentImage && (
+				<meta property="og:image" content={contentImage.image.src} />
+			)
+		}
+
+		<!-- Twitter Card -->
+		<meta
+			name="twitter:card"
+			content={contentImage ? "summary_large_image" : "summary"}
+		/>
+		<meta
+			name="twitter:title"
+			content={SEOTitle || "Words of the Buddha"}
+		/>
+		<meta
+			name="twitter:description"
+			content={description || "Default Description"}
+		/>
+		{
+			contentImage && (
+				<meta name="twitter:image" content={contentImage.image.src} />
+			)
+		}
+
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -152,7 +210,7 @@ if (!SEOTitle) {
 		<slot name="head" />
 	</head>
 	<body
-		class="flex flex-col min-h-screen bg-[var(--background-color)] text-[var(--text-color)]"
+		class="flex flex-col min-h-screen bg-[var(--background-color)] text-[var(--text-color)] overflow-x-hidden"
 	>
 		<Analytics />
 		<SpeedInsights />
@@ -169,20 +227,24 @@ if (!SEOTitle) {
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					{(<Description description={description} />)}
 					{
-						(showPali || showReadLater || showSave) && (
+						(showPali ||
+							showReadLater ||
+							showSave ||
+							contentImage) && (
 							<>
 								<div class="flex items-center justify-between gap-1">
-									{showPali && (
-										<div class="flex items-center gap-1">
-											<PaliButton />
-											<PaliLayoutToggle />
-											<ParagraphToggle
-												paragraphRequest={
-													paragraphRequest
-												}
-											/>
-										</div>
-									)}
+									<div class="flex items-center gap-1">
+										{showPali && (
+											<>
+												<PaliButton />
+												<PaliLayoutToggle />
+											</>
+										)}
+										{contentImage && <ImageToggle />}
+										<ParagraphToggle
+											paragraphRequest={paragraphRequest}
+										/>
+									</div>
 									<div class="flex items-center gap-1">
 										{showReadLater && <ReadLaterButton />}
 										{showSave && <SaveButton />}
@@ -192,7 +254,11 @@ if (!SEOTitle) {
 						)
 					}
 					<div class="flex items-start justify-between">
-						<Title id={id} title={title} showFilter={showFilter}>
+						<Title
+							id={id}
+							title={title || ""}
+							showFilter={showFilter}
+						>
 							{
 								titleIcon && (
 									<span
@@ -203,6 +269,11 @@ if (!SEOTitle) {
 							}
 						</Title>
 					</div>
+					{
+						contentImage && (
+							<DiscourseImage imageData={contentImage} />
+						)
+					}
 					<Collapse defaultState="collapse" />
 					<slot />
 					<Commentary commentary={commentary} />

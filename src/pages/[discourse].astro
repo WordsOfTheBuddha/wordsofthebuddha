@@ -8,6 +8,7 @@ import MDContent from "../components/MDContent.astro";
 import { routes } from "../utils/routes";
 import { parseContent, createCombinedMarkdown } from "../utils/contentParser";
 import { getLastModified } from "../utils/getLastModified";
+import { findContentImage } from "../utils/contentImage";
 
 export async function getStaticPaths() {
 	// Only canonical routes that exist in the 'all' content collection
@@ -66,6 +67,16 @@ const prev =
 		? await getEntry("all", routes[currentIndex - 1])
 		: null;
 
+// Look up content image (convention-based: src/assets/content-images/{id}.{ext})
+const contentImage = findContentImage(
+	id,
+	{
+		image: contentItem.data.image,
+		imageCaption: contentItem.data.imageCaption,
+	},
+	contentItem.data.title
+);
+
 const suttaProps = {
 	fp,
 	title: contentItem.data.title,
@@ -84,6 +95,7 @@ const suttaProps = {
 	showPali: true,
 	paragraphRequest: null,
 	commentary: contentItem.data.commentary,
+	contentImage,
 };
 ---
 

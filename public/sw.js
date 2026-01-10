@@ -248,10 +248,18 @@ self.addEventListener("fetch", (event) => {
 	}
 
 	// Built asset bundles emitted by Astro/Vite
+	// Skip caching large image assets (content-images) for offline to save storage
 	if (
 		url.origin === self.location.origin &&
 		url.pathname.startsWith("/_astro/")
 	) {
+		// Check if this is an image file - don't cache for offline to save space
+		const isImage = /\.(webp|jpg|jpeg|png|avif)$/i.test(url.pathname);
+		if (isImage) {
+			// Use network-first without persistent caching for discourse images
+			event.respondWith(fetch(req).catch(() => Response.error()));
+			return;
+		}
 		event.respondWith(cacheFirst(req, ASSETS_CACHE));
 		return;
 	}

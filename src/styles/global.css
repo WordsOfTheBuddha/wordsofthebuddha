@@ -209,9 +209,20 @@ html.dark {
 }
 
 body {
-	font-family: Spectral, serif, system-ui, -apple-system, "system-ui",
-		"Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol";
+	font-family:
+		Spectral,
+		serif,
+		system-ui,
+		-apple-system,
+		"system-ui",
+		"Segoe UI",
+		Roboto,
+		Helvetica,
+		Arial,
+		sans-serif,
+		"Apple Color Emoji",
+		"Segoe UI Emoji",
+		"Segoe UI Symbol";
 	font-feature-settings: auto;
 	font-kerning: auto;
 	-webkit-font-smoothing: antialiased;
@@ -227,7 +238,8 @@ body::before {
 	inset: 0;
 	pointer-events: none;
 	z-index: -1;
-	background-image: radial-gradient(
+	background-image:
+		radial-gradient(
 			circle at 20% 20%,
 			rgba(255, 255, 255, 0.6),
 			transparent 55%
@@ -247,7 +259,8 @@ body::before {
 }
 
 html.dark body::before {
-	background-image: radial-gradient(
+	background-image:
+		radial-gradient(
 			circle at 20% 20%,
 			rgba(94, 76, 52, 0.3),
 			transparent 55%
@@ -293,6 +306,7 @@ html.dark body::before {
 /* Smooth scroll for hash navigation */
 html {
 	scroll-behavior: smooth;
+	overflow-x: hidden;
 }
 
 /* Highlight target paragraph */
@@ -302,7 +316,9 @@ p:target {
 	padding-left: 0.5rem;
 	margin-left: -0.5rem;
 	border-radius: 0.25rem;
-	transition: background-color 0.3s, border-color 0.3s;
+	transition:
+		background-color 0.3s,
+		border-color 0.3s;
 }
 
 /* Highlight range paragraphs */
@@ -312,7 +328,9 @@ p.paragraph-highlight {
 	padding-left: 0.5rem;
 	margin-left: -0.5rem;
 	border-radius: 0.25rem;
-	transition: background-color 0.3s, border-color 0.3s;
+	transition:
+		background-color 0.3s,
+		border-color 0.3s;
 }
 
 .prose-xl {
