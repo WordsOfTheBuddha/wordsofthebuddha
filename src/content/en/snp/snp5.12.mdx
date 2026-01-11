@@ -1,5 +1,5 @@
 ---
-title: Bhadrāvudhamāṇavapucchā - Questions of Bhadrāvudha
+title: Bhadrāvudhamāṇavapucchā - Bhadrāvudha’s Questions
 description: Responding to Bhadrāvudha’s request to teach the gathered crowd, the Buddha warns that Māra pursues beings through the very things they cling to. He instructs the mindful bhikkhu to dispel all acquisitive craving—above, below, and across—recognizing that the world is ensnared in the realm of death solely through attachment.
 qualities: attachment, speculation, mindfulness, free from attachment
 theme: inspiration, wisdom

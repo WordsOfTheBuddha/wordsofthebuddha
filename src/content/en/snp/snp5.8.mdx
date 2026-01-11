@@ -1,5 +1,5 @@
 ---
-title: Hemakamāṇavapucchā - Questions of Hemaka
+title: Hemakamāṇavapucchā - Hemaka’s Questions
 description: The venerable Hemaka dismisses the hearsay and speculation of previous teachers, asking instead for the Dhamma that leads to the destruction of craving.
 qualities: speculation, attachment, tranquility, ending, quenching
 theme: inspiration, wisdom

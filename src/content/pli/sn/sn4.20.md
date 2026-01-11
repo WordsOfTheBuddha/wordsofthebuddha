@@ -5,6 +5,8 @@ qualities: attachment, suffering
 theme: inspiration, wisdom, inquisitiveness
 character: Māra the Evil One
 slug: sn4.20
+image: himalayas.webp
+imageCaption: Himalayas, Nicholas Roerich, 1933
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu viharati himavantapadese araññakuṭikāyaṁ.
