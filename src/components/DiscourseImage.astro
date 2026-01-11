@@ -32,10 +32,11 @@ const aspectRatio =
 		? width / height
 		: null;
 
-// Treat ~3:2 images as "fits"; we can show them fully and skip the zoom affordance.
-const isApproxThreeTwo =
-	aspectRatio != null && aspectRatio >= 1.45 && aspectRatio <= 1.65;
-const shouldShowZoom = !isApproxThreeTwo;
+// Treat a reasonable landscape band as "fits"; show fully and skip zoom.
+// Outside this band (very tall or very wide), we crop and show a zoom affordance.
+const isWithinFitBand =
+	aspectRatio != null && aspectRatio >= 1.2 && aspectRatio <= 1.69;
+const shouldShowZoom = true;
 ---
 
 <figure
@@ -62,9 +63,9 @@ const shouldShowZoom = !isApproxThreeTwo;
 			width={IMAGE_WIDTH}
 			class:list={[
 				"w-full h-auto rounded-lg",
-				isApproxThreeTwo
-					? "object-contain"
-					: "object-cover max-h-[280px]",
+				isWithinFitBand
+					? "object-cover max-h-[440px]"
+					: "object-cover max-h-[320px]",
 			]}
 			loading="eager"
 			decoding="async"
@@ -100,28 +101,28 @@ const shouldShowZoom = !isApproxThreeTwo;
 				id="imageModal"
 				class="p-0 bg-transparent backdrop:bg-black/80 max-w-none max-h-none w-full h-full m-0 open:flex items-center justify-center pointer-events-none open:pointer-events-auto"
 			>
-				<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center">
-					<form method="dialog" class="absolute -top-10 right-0">
-						<button
-							class="text-white hover:text-gray-300 focus:outline-none p-2"
-							aria-label="Close"
+				<form method="dialog" class="fixed top-4 right-4 z-10">
+					<button
+						class="w-12 h-12 inline-flex items-center justify-center text-white hover:text-gray-300 focus:outline-none"
+						aria-label="Close"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-8 w-8"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
 						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="h-8 w-8"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M6 18L18 6M6 6l12 12"
-								/>
-							</svg>
-						</button>
-					</form>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</button>
+				</form>
+				<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center">
 					<img
 						id="fullImage"
 						src={image.src}

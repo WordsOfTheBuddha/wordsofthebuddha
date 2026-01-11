@@ -138,7 +138,10 @@ if (!SEOTitle) {
 		<meta property="og:type" content="article" />
 		{
 			contentImage && (
-				<meta property="og:image" content={contentImage.image.src} />
+				<meta
+					property="og:image"
+					content={new URL(contentImage.image.src, Astro.url).href}
+				/>
 			)
 		}
 
@@ -157,7 +160,10 @@ if (!SEOTitle) {
 		/>
 		{
 			contentImage && (
-				<meta name="twitter:image" content={contentImage.image.src} />
+				<meta
+					name="twitter:image"
+					content={new URL(contentImage.image.src, Astro.url).href}
+				/>
 			)
 		}
 

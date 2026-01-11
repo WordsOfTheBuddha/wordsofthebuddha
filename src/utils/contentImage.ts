@@ -18,6 +18,52 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
+// Build case-insensitive indices so frontmatter overrides work reliably
+// across filesystems (macOS can be case-insensitive; Vercel/Linux is not)
+const imageByPathLower = new Map<string, ImageMetadata>();
+const imageByBasenameLower = new Map<string, ImageMetadata>();
+
+for (const [path, mod] of Object.entries(imageModules)) {
+	const metadata = mod.default;
+	imageByPathLower.set(path.toLowerCase(), metadata);
+	const basename = path.split("/").pop();
+	if (basename) imageByBasenameLower.set(basename.toLowerCase(), metadata);
+}
+
+function resolveFrontmatterImage(
+	frontmatterImage: string,
+): ImageMetadata | undefined {
+	const raw = frontmatterImage.trim();
+	if (!raw) return undefined;
+
+	const candidates: string[] = [];
+
+	// 1) If they provided an absolute module path (e.g. /src/assets/content-images/foo.webp)
+	if (raw.startsWith("/")) {
+		candidates.push(raw);
+	}
+
+	// 2) If they provided a filename (e.g. foo.webp)
+	candidates.push(`/src/assets/content-images/${raw}`);
+
+	// 3) If they provided a relative path that includes content-images (e.g. ../assets/content-images/foo.webp)
+	const contentImagesIndex = raw.toLowerCase().lastIndexOf("content-images/");
+	if (contentImagesIndex !== -1) {
+		const tail = raw.slice(contentImagesIndex); // keep original casing for now
+		candidates.push(`/src/assets/${tail}`);
+	}
+
+	for (const candidate of candidates) {
+		const found = imageByPathLower.get(candidate.toLowerCase());
+		if (found) return found;
+	}
+
+	// 4) Final fallback: match by basename only (handles arbitrary relative paths)
+	const basename = raw.split("/").pop();
+	if (!basename) return undefined;
+	return imageByBasenameLower.get(basename.toLowerCase());
+}
+
 export interface ContentImageData {
 	/** Resolved image metadata for Astro's Image component */
 	image: ImageMetadata;
@@ -54,13 +100,10 @@ export function findContentImage(
 
 	// 1. Check for custom path in frontmatter
 	if (frontmatter?.image) {
-		const customPath = frontmatter.image.startsWith("/")
-			? frontmatter.image
-			: `/src/assets/content-images/${frontmatter.image}`;
-
-		if (imageModules[customPath]) {
+		const resolved = resolveFrontmatterImage(frontmatter.image);
+		if (resolved) {
 			return {
-				image: imageModules[customPath].default,
+				image: resolved,
 				caption: frontmatter.imageCaption,
 				alt: `Illustration for ${title || id}`,
 			};
@@ -96,10 +139,7 @@ export function hasContentImage(
 ): boolean {
 	// Check custom path first
 	if (frontmatter?.image) {
-		const customPath = frontmatter.image.startsWith("/")
-			? frontmatter.image
-			: `/src/assets/content-images/${frontmatter.image}`;
-		if (imageModules[customPath]) return true;
+		if (resolveFrontmatterImage(frontmatter.image)) return true;
 	}
 
 	// Check convention-based path
