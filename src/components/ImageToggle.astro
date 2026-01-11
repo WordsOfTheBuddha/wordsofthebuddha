@@ -1,0 +1,88 @@
+---
+/**
+ * ImageToggle - Toggle button for discourse header images
+ * Placed in the icon row with other controls (Pāli, Read Later, Save)
+ */
+import ImageIcon from "../assets/photo.svg?raw";
+---
+
+<button
+	id="imageToggle"
+	class="inline-flex items-center justify-center gap-1 p-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+	style="color: var(--layout-active-color)"
+	title="Toggle discourse image"
+	aria-label="Toggle discourse image visibility"
+>
+	<span
+		class="image-icon w-5 h-5 flex items-center justify-center text-current"
+		set:html={ImageIcon}
+	/>
+</button>
+
+<script>
+	function initImageToggle() {
+		const toggle = document.getElementById("imageToggle");
+		const figure = document.getElementById("discourseImageFigure");
+
+		if (!toggle || !figure) {
+			// No image on this page - hide toggle
+			toggle?.classList.add("hidden");
+			return;
+		}
+
+		const STORAGE_KEY = "showDiscourseImages";
+
+		const getPreference = (): boolean => {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			return stored === null ? true : stored === "true";
+		};
+
+		const isOffline = (): boolean => !navigator.onLine;
+
+		const updateUI = (show: boolean) => {
+			// Visibility of figure is handled by DiscourseImage component and its inline script
+			// We only update the toggle button state here
+
+			// Update opacity for active/inactive state (0.5 for off, like ParagraphToggle)
+			toggle.style.opacity = show ? "1" : "0.5";
+
+			toggle.title = show
+				? "Hide discourse image"
+				: "Show discourse image";
+		};
+
+		const handleConnectivity = () => {
+			if (isOffline()) {
+				figure.classList.add("hidden");
+				toggle.classList.add("hidden");
+			} else {
+				toggle.classList.remove("hidden");
+				updateUI(getPreference());
+			}
+		};
+
+		// Initialize
+		handleConnectivity();
+
+		window.addEventListener("online", handleConnectivity);
+		window.addEventListener("offline", handleConnectivity);
+
+		toggle.addEventListener("click", () => {
+			const currentState = getPreference();
+			const newState = !currentState;
+			localStorage.setItem(STORAGE_KEY, newState.toString());
+			updateUI(newState);
+			// Notify DiscourseImage component
+			document.dispatchEvent(new CustomEvent("discourseImageToggled"));
+		});
+	}
+
+	initImageToggle();
+	document.addEventListener("astro:page-load", initImageToggle);
+</script>
+
+<style>
+	#imageToggle span {
+		display: inline-flex;
+	}
+</style>

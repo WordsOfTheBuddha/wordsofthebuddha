@@ -15,8 +15,8 @@ const { class: className } = Astro.props;
 	style="color: var(--layout-active-color)"
 	title="Switch to interleaved view"
 >
-	<span class="interleaved-icon hidden w-4 h-4" set:html={ArrowsUpDown} />
-	<span class="split-icon hidden w-4 h-4" set:html={ArrowsRightLeft} />
+	<span class="interleaved-icon w-4 h-4" set:html={ArrowsUpDown} />
+	<span class="split-icon w-4 h-4" set:html={ArrowsRightLeft} />
 </button>
 
 <script>
@@ -54,12 +54,18 @@ const { class: className } = Astro.props;
 		document.addEventListener("paliModeChanged", applyVisibility as any);
 
 		const updateToggleState = (isSplit: boolean) => {
-			const splitIcon = toggle.querySelector(".split-icon");
-			const interleavedIcon = toggle.querySelector(".interleaved-icon");
+			const splitIcon = toggle.querySelector(
+				".split-icon"
+			) as HTMLElement;
+			const interleavedIcon = toggle.querySelector(
+				".interleaved-icon"
+			) as HTMLElement;
 
 			if (splitIcon && interleavedIcon) {
-				splitIcon.classList.toggle("hidden", !isSplit);
-				interleavedIcon.classList.toggle("hidden", isSplit);
+				splitIcon.style.display = isSplit ? "inline-flex" : "none";
+				interleavedIcon.style.display = isSplit
+					? "none"
+					: "inline-flex";
 			}
 			toggle.title = isSplit
 				? "Switch to vertical interleaved view"
@@ -88,12 +94,20 @@ const { class: className } = Astro.props;
 </script>
 
 <style>
+	/* Hide icons by default - JS will show the correct one */
+	.interleaved-icon,
+	.split-icon {
+		display: none;
+	}
+
 	/* Hide the layout toggle when Pāli is off, even before JS runs */
 	:global(html:not(.pali-on)) #paliLayoutToggle {
 		display: none !important;
 	}
 	/* Ensure it appears inline on md+ screens when Pāli is enabled */
-	:global(html.pali-on) #paliLayoutToggle {
-		display: inline-flex;
+	@media (min-width: 768px) {
+		:global(html.pali-on) #paliLayoutToggle {
+			display: inline-flex;
+		}
 	}
 </style>

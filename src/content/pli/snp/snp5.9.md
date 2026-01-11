@@ -1,5 +1,5 @@
 ---
-title: Todeyyamāṇavapucchā - Questions of Todeyya
+title: Todeyyamāṇavapucchā - Todeyya’s Questions
 description: The venerable Todeyya asks the Buddha about the characteristic of deliverance of one free from sensual desires and without doubt.
 qualities: craving, sensual desire, wisdom, with nothing, quenching
 theme: inspiration, wisdom

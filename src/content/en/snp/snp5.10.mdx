@@ -1,5 +1,5 @@
 ---
-title: Kappamāṇavapucchā - Questions of Kappa
+title: Kappamāṇavapucchā - Kappa’s Questions
 description: The venerable Kappa asks the Buddha about the island for those overwhelmed by the flood of aging and death.
 qualities: quenching, with nothing, free from attachment, ending
 theme: inspiration, wisdom

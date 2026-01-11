@@ -1,5 +1,5 @@
 ---
-title: Jatukaṇṇimāṇavapucchā - Questions of Jatukaṇṇi
+title: Jatukaṇṇimāṇavapucchā - Jatukaṇṇi’s Questions
 description: The venerable Jatukaṇṇi asks the Buddha on how to attain the state of peace and abandon birth and old age. The Buddha advises him to remove greed for sensual pleasures by seeing renunciation as safety, and to cease all grasping related to name and form in the past, future, as well as present.
 qualities: sensual desire, giving up
 theme: inspiration, principle

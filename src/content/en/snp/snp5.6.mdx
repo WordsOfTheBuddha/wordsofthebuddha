@@ -1,5 +1,5 @@
 ---
-title: Upasīvamāṇavapucchā - Questions of Upasīva
+title: Upasīvamāṇavapucchā - Upasīva’s Questions
 description: The venerable Upasīva asks the Buddha for a basis to rely upon to cross the great flood of existence. He then inquires about the destiny of one who is fully liberated.
 qualities: ending, craving, with nothing, formless
 theme: inspiration, wisdom, principle

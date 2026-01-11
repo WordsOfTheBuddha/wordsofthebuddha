@@ -16,6 +16,7 @@ import Layout from "../layouts/Layout.astro";
 import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
+import { findContentImage } from "../utils/contentImage";
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
@@ -391,6 +392,16 @@ const layout: "split" | "interleaved" = "interleaved";
 	const filePath = contentItem.filePath || "";
 	const lastUpdated = getLastModified(filePath);
 
+	// Look up content image (convention-based: src/assets/content-images/{id}.{ext})
+	const contentImage = findContentImage(
+		id,
+		{
+			image: contentItem.data.image,
+			imageCaption: contentItem.data.imageCaption,
+		},
+		contentItem.data.title
+	);
+
 	suttaProps = {
 		fp,
 		title: contentItem.data.title,
@@ -409,6 +420,7 @@ const layout: "split" | "interleaved" = "interleaved";
 		showPali: true,
 		paragraphRequest,
 		commentary: contentItem.data.commentary,
+		contentImage,
 	};
 }
 ---
