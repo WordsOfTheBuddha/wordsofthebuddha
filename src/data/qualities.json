@@ -18,6 +18,7 @@
 		"craving",
 		"cruelty",
 		"dearness",
+		"delight",
 		"delusion",
 		"discontentment",
 		"displeasure",
@@ -497,6 +498,15 @@
 			"Leads to:{jealousy, sorrow, lamentation}",
 			"Opposite: {aversion}",
 			"[piya]"
+		],
+		"delight": [
+			"relishing",
+			"enjoyment",
+			"taking pleasure",
+			"Context: A mental quality of relishing and taking pleasure in what is experienced—especially in sensuality or the prospect of continued becoming. When it fastens onto gratification, it nourishes craving and keeps the mind circling around what it wants to experience again.",
+			"Supported by:{perceiving gratification}",
+			"Leads to:{craving, passion}",
+			"[nandi]"
 		],
 		"delusion": [
 			"illusion",
@@ -1302,7 +1312,7 @@
 			"sign of beautiful",
 			"Context: The contemplative perception that focuses on the attractive or pleasurable aspect of experience, fueling delight and attachment to sense pleasures.",
 			"Supported by:{passion, distraction}",
-			"Leads to:{sensual desire}",
+			"Leads to:{delight, sensual desire}",
 			"Opposite:{perceiving drawback, perceiving escape}",
 			"[assādānupassī]"
 		],
