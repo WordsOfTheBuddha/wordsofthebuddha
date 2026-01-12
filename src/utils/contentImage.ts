@@ -20,19 +20,28 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 
 // Build case-insensitive indices so frontmatter overrides work reliably
 // across filesystems (macOS can be case-insensitive; Vercel/Linux is not)
-const imageByPathLower = new Map<string, ImageMetadata>();
-const imageByBasenameLower = new Map<string, ImageMetadata>();
+type ResolvedImage = { image: ImageMetadata; modulePath: string };
+
+const imageByPathLower = new Map<string, ResolvedImage>();
+const imageByBasenameLower = new Map<string, ResolvedImage>();
 
 for (const [path, mod] of Object.entries(imageModules)) {
 	const metadata = mod.default;
-	imageByPathLower.set(path.toLowerCase(), metadata);
+	imageByPathLower.set(path.toLowerCase(), {
+		image: metadata,
+		modulePath: path,
+	});
 	const basename = path.split("/").pop();
-	if (basename) imageByBasenameLower.set(basename.toLowerCase(), metadata);
+	if (basename)
+		imageByBasenameLower.set(basename.toLowerCase(), {
+			image: metadata,
+			modulePath: path,
+		});
 }
 
 function resolveFrontmatterImage(
 	frontmatterImage: string,
-): ImageMetadata | undefined {
+): ResolvedImage | undefined {
 	const raw = frontmatterImage.trim();
 	if (!raw) return undefined;
 
@@ -67,6 +76,8 @@ function resolveFrontmatterImage(
 export interface ContentImageData {
 	/** Resolved image metadata for Astro's Image component */
 	image: ImageMetadata;
+	/** Module path used for resolution, e.g. /src/assets/content-images/foo.jpg */
+	modulePath: string;
 	/** Optional caption (may include credit, e.g., "Description · Credit") */
 	caption?: string;
 	/** Alt text for accessibility */
@@ -103,7 +114,8 @@ export function findContentImage(
 		const resolved = resolveFrontmatterImage(frontmatter.image);
 		if (resolved) {
 			return {
-				image: resolved,
+				image: resolved.image,
+				modulePath: resolved.modulePath,
 				caption: frontmatter.imageCaption,
 				alt: `Illustration for ${title || id}`,
 			};
@@ -116,6 +128,7 @@ export function findContentImage(
 		if (imageModules[path]) {
 			return {
 				image: imageModules[path].default,
+				modulePath: path,
 				caption: frontmatter?.imageCaption,
 				alt: `Illustration for ${title || id}`,
 			};

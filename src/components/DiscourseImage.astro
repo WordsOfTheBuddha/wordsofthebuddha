@@ -13,6 +13,8 @@
 import { Image } from "astro:assets";
 import type { ContentImageData } from "../utils/contentImage";
 import ZoomIcon from "../assets/magnifying-glass-plus.svg?raw";
+import { existsSync } from "node:fs";
+import { resolve as resolvePath } from "node:path";
 
 interface Props {
 	/** Image data from findContentImage() */
@@ -21,6 +23,19 @@ interface Props {
 
 const { imageData } = Astro.props;
 const { image, caption, alt } = imageData;
+
+const modulePath = imageData.modulePath;
+const devFileExists = (() => {
+	// In production this should never happen (build would fail earlier),
+	// but in dev files can be removed while the server is running.
+	if (!import.meta.env.DEV) return true;
+	try {
+		const abs = resolvePath(process.cwd(), modulePath.replace(/^\//, ""));
+		return existsSync(abs);
+	} catch {
+		return true;
+	}
+})();
 
 // Standard width for content area - Astro will maintain aspect ratio
 const IMAGE_WIDTH = 800;
@@ -39,10 +54,12 @@ const isWithinFitBand =
 const shouldShowZoom = true;
 ---
 
-<figure
-	id="discourseImageFigure"
-	class="discourse-image not-prose group relative m-0 mb-3 hidden w-full md:max-w-3xl"
->
+
+{devFileExists && (
+	<figure
+		id="discourseImageFigure"
+		class="discourse-image not-prose group relative m-0 mb-3 hidden w-full md:max-w-3xl"
+	>
 	<script is:inline>
 		// Prevent FOC (Flash of Content) by checking preference immediately
 		try {
@@ -138,7 +155,8 @@ const shouldShowZoom = true;
 			</dialog>
 		)
 	}
-</figure>
+	</figure>
+)}
 
 <script>
 	function initDiscourseImage() {
