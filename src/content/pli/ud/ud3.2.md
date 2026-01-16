@@ -6,6 +6,7 @@ theme: inspiration, directly knowing
 slug: ud3.2
 priority: 1.1
 character: Venerable Nanda
+imageCaption: The Buddha and Nanda visit the divya apsaras in the Trāyastriṃśa heaven, Gandhāra (present-day Pakistan), schist, late 2nd century, San Diego Museum of Art
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tena kho pana samayena āyasmā nando bhagavato bhātā mātucchāputto sambahulānaṁ bhikkhūnaṁ evamāroceti: “anabhirato ahaṁ, āvuso, brahmacariyaṁ carāmi; na sakkomi brahmacariyaṁ sandhāretuṁ, sikkhaṁ paccakkhāya hīnāyāvattissāmī”ti.
