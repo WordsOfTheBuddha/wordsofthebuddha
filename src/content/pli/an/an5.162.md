@@ -1,9 +1,10 @@
 ---
-title: Dutiya āghātapaṭivinaya sutta - Overcoming Resentment (Second)
-description: Five ways to overcome arisen resentment
-fetter: ill will
-tags: resentment, ill will, body, speech, mind, mental clarity, an, an5
+title: Dutiya āghātapaṭivinaya sutta - Removing Resentment (Second)
+description: Five ways to remove arisen resentment toward a person based on their bodily conduct, verbal conduct, and mental clarity.
+qualities: resentment
 slug: an5.162
+simile: cow’s footprint
+character: Venerable Sāriputta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.
