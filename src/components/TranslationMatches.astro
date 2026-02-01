@@ -1,0 +1,2115 @@
+---
+/**
+ * Translation Memory Matches Component
+ * MVP Phase - Client-side matching and popover display
+ * Only active in development mode
+ */
+---
+
+{import.meta.env.DEV && (
+<style is:global>
+  .tm-lookup-btn {
+    background: #ddd6fe;
+    color: #5b21b6;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+  }
+
+  .tm-lookup-btn:hover {
+    opacity: 1;
+    background: #c4b5fd;
+  }
+
+  .dark .tm-lookup-btn {
+    background: #4c1d95;
+    color: #ddd6fe;
+  }
+
+  .dark .tm-lookup-btn:hover {
+    background: #5b21b6;
+  }
+
+  .tm-popover-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .tm-popover {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: calc(100vw - 2rem);
+    height: calc(100vh - 2rem);
+    max-width: 1200px;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dark .tm-popover {
+    background: #1f2937;
+    color: #f3f4f6;
+  }
+
+  .tm-popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 0.5rem;
+  }
+
+  .dark .tm-popover-header {
+    border-bottom-color: #374151;
+  }
+
+  .tm-popover-title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: #374151;
+  }
+
+  .dark .tm-popover-title {
+    color: #e5e7eb;
+  }
+
+  .tm-popover-title .tm-discourse-count {
+    font-weight: 400;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+
+  .dark .tm-popover-title .tm-discourse-count {
+    color: #9ca3af;
+  }
+
+  .tm-tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    background: #f3f4f6;
+    border-bottom: 1px solid #e5e7eb;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .dark .tm-tabs {
+    background: #111827;
+    border-bottom-color: #374151;
+  }
+
+  /* Row 1: Phrase pattern tabs - slightly different styling */
+  .tm-phrase-tabs {
+    background: #e0e7ff;
+    border-bottom-color: #c7d2fe;
+  }
+
+  .dark .tm-phrase-tabs {
+    background: #1e1b4b;
+    border-bottom-color: #312e81;
+  }
+
+  .tm-phrase-tab {
+    font-weight: 500;
+  }
+
+  /* Row 2: Discourse tabs - default styling */
+  .tm-discourse-tabs {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+
+  .tm-more-count {
+    font-size: 0.75rem;
+    color: #6b7280;
+    padding: 0.375rem 0.5rem;
+    font-style: italic;
+  }
+
+  .dark .tm-more-count {
+    color: #9ca3af;
+  }
+
+  .tm-tab {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: all 0.15s ease;
+    outline: none;
+  }
+
+  /* Focus ring for keyboard navigation */
+  .tm-tab:focus-visible {
+    box-shadow: 0 0 0 2px #6366f1, 0 0 0 4px rgba(99, 102, 241, 0.3);
+  }
+
+  .dark .tm-tab:focus-visible {
+    box-shadow: 0 0 0 2px #818cf8, 0 0 0 4px rgba(129, 140, 248, 0.3);
+  }
+
+  /* Inactive tab hover - show preview of active state (lighter shade) */
+  .tm-tab:not(.tm-tab-active):hover {
+    background: #a5b4fc;
+    color: white;
+  }
+
+  .dark .tm-tab:not(.tm-tab-active):hover {
+    background: #4f46e5;
+    color: white;
+  }
+
+  /* Active tab - no hover effect, cursor indicates no action */
+  .tm-tab-active {
+    background: #6366f1;
+    color: white;
+    cursor: default;
+  }
+
+  .dark .tm-tab-active {
+    background: #6366f1;
+    color: white;
+  }
+
+  .tm-highlight {
+    background: #fef08a;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    display: inline;
+  }
+
+  .dark .tm-highlight {
+    background: #854d0e;
+    color: #fef3c7;
+  }
+
+  /* Pali words in TM popover - clickable for dictionary */
+  .tm-popover .pali-word {
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    border-radius: 0.125rem;
+  }
+
+  .tm-popover .pali-word:hover {
+    background: rgba(99, 102, 241, 0.2);
+  }
+
+  .dark .tm-popover .pali-word:hover {
+    background: rgba(99, 102, 241, 0.35);
+  }
+
+  /* Active word being looked up in dictionary - distinct from highlight */
+  .tm-popover .pali-word-highlighted {
+    background: #6366f1 !important;
+    color: white !important;
+    border-radius: 0.125rem;
+  }
+
+  .dark .tm-popover .pali-word-highlighted {
+    background: #818cf8 !important;
+    color: #1e1b4b !important;
+  }
+
+  .tm-popover-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    line-height: 1;
+    padding: 0.25rem;
+  }
+
+  .tm-popover-close:hover {
+    color: #374151;
+  }
+
+  .dark .tm-popover-close:hover {
+    color: #d1d5db;
+  }
+
+  .tm-popover-content {
+    padding: 1rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .tm-section {
+    margin-bottom: 1rem;
+  }
+
+  .tm-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .tm-section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tm-discourse-link {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: none;
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .tm-discourse-link:hover {
+    background: #c7d2fe;
+    text-decoration: none;
+  }
+
+  .dark .tm-discourse-link {
+    background: #312e81;
+    color: #c7d2fe;
+  }
+
+  .dark .tm-discourse-link:hover {
+    background: #3730a3;
+  }
+
+  .dark .tm-section-label {
+    color: #9ca3af;
+  }
+
+  .tm-section-content {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .tm-pali {
+    font-family: 'Gentium Plus', serif;
+    font-style: italic;
+    color: #4b5563;
+  }
+
+  .dark .tm-pali {
+    color: #d1d5db;
+  }
+
+  .tm-source-pali {
+    background: #fef3c7;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border-left: 3px solid #f59e0b;
+  }
+
+  .dark .tm-source-pali {
+    background: #451a03;
+    border-left-color: #d97706;
+  }
+
+  .tm-english {
+    color: #1f2937;
+  }
+
+  .dark .tm-english {
+    color: #f3f4f6;
+  }
+
+  /* Matched phrase section - less prominent highlight */
+  .tm-matched-phrase {
+    background: #f3f4f6;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border-left: 3px solid #9ca3af;
+  }
+
+  .dark .tm-matched-phrase {
+    background: #1f2937;
+    border-left-color: #6b7280;
+  }
+
+  /* Selection-based copy tooltip */
+  .tm-selection-copy-tooltip {
+    background: #1f2937;
+    border-radius: 0.375rem;
+    padding: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .tm-selection-copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.625rem;
+    font-size: 0.75rem;
+    background: transparent;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease;
+  }
+
+  .tm-selection-copy-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .tm-selection-copy-btn.copied {
+    background: #10b981;
+  }
+
+  /* Gloss tooltip styles */
+  .tm-gloss {
+    border-bottom: 1px dotted #6b7280;
+    cursor: help;
+  }
+
+  .tm-gloss:hover {
+    background: rgba(99, 102, 241, 0.1);
+  }
+
+  .dark .tm-gloss {
+    border-bottom-color: #9ca3af;
+  }
+</style>
+
+<script>
+  // Translation Memory - Client-side matching and display
+  // Only runs in dev mode
+
+  // Import routes to check if a path is a valid discourse
+  import { routes } from '../utils/routes';
+  const routeSet = new Set(routes);
+
+  interface TMEntry {
+    id: number;
+    paliNormalized: string;
+    paliOriginal: string;
+    englishOriginal: string;
+    wordCount: number;
+    source: {
+      suttaId: string;
+      paragraphNum: number;
+      collection: string;
+    };
+  }
+
+  // N-gram index type
+  type NgramIndex = Record<string, number[]>;
+
+  interface TranslationMemoryIndex {
+    version: number;
+    generatedAt: string;
+    entries: TMEntry[];
+    ngrams?: NgramIndex;
+    ngramSize?: number;
+  }
+
+  // A single discourse that has a matching phrase
+  interface TMDiscourse {
+    suttaId: string;
+    paragraphNum: number;
+    collection: string;
+    paliOriginal: string;
+    englishOriginal: string;
+  }
+
+  // A group of discourses that share the same phrase pattern
+  interface TMPhraseGroup {
+    phraseNormalized: string;
+    similarity: number;
+    score: number; // Internal score for debug output
+    matchedWordCount: number;
+    contentWordCount: number; // Non-stop words count
+    matchedWords: Set<string>;
+    matchedSegment: string; // The actual matched segment text for debugging
+    startIndex?: number; // Source position range start
+    endIndex?: number;   // Source position range end
+    discourses: TMDiscourse[]; // Stored discourses for diversity selection
+    totalCount: number; // True count of all matches (may exceed stored)
+    diverseDiscourses: TMDiscourse[]; // Top 3 diverse for display
+  }
+
+  interface TMMatchResult {
+    phraseGroups: TMPhraseGroup[];
+    sourcePali: string;
+    totalDiscourses: number;
+    sourceWordCount: number; // Total words in source paragraph for percentage calculation
+  }
+
+  const THRESHOLDS = {
+    PARAGRAPH_SIMILARITY: 0.75,
+    WORD_COUNT_TOLERANCE: 0.50,
+    MAX_PHRASE_GROUPS: 3,
+    MAX_DISCOURSES_TO_STORE: 20, // Store enough for diversity selection
+  };
+
+  // Pali stop words - common particles and forms that appear frequently
+  // These don't count toward match length but still need to be present
+  const PALI_STOP_WORDS = new Set([
+    // Particles
+    'ca', 'vā', 'kho', 'pana', 'hi', 'eva', 'pi', 'nu', 'nanu', 'su', 've', 'tu', 'atha',
+    'ime', 'imā', 'imāni', 'imaṁ', // these/this forms
+    // Common address terms and their grammatical variants
+    'bhante',
+    'āvuso',
+    'bhikkhu', 'bhikkhū', 'bhikkhuṁ', 'bhikkhuno', 'bhikkhussa', 'bhikkhave', 'bhikkhavo',
+    'āyasmā', 'āyasmant', 'āyasmantaṁ', 'āyasmato', 'āyasmante',
+    // Demonstratives and pronouns
+    'so', 'sā', 'taṁ', 'te', 'tassa', 'tesaṁ', 'ayaṁ', 'idaṁ', 'etaṁ', 'yo', 'yā', 'yaṁ', 'ye',
+    // Common verb forms
+    'hoti', 'bhavati', 'atthi', 'iti', 'ti',
+    // Conjunctions
+    'yathā', 'tathā', 'yadā', 'tadā',
+    // Articles/determiners (Pali doesn't really have these but some common forms)
+    'eko', 'ekā', 'ekaṁ',
+  ]);
+
+  let tmIndex: TranslationMemoryIndex | null = null;
+
+  // Normalize Pali text for matching
+  function normalizePali(text: string): string {
+    return text
+      .toLowerCase()
+      // Strip all quotes - using Unicode escapes to be explicit
+      .replace(/['"«»„\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A]/g, '')
+      // Replace punctuation with space (not remove) to preserve word boundaries
+      .replace(/[।.,;:!?…—–\-\(\)\[\]\{\}]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // Check if a word is a stop word
+  function isStopWord(word: string): boolean {
+    return PALI_STOP_WORDS.has(word);
+  }
+
+  // Count content words (non-stop words) in an array
+  function countContentWords(words: string[]): number {
+    return words.filter(w => !isStopWord(w)).length;
+  }
+
+  // Find contiguous match between two word arrays
+  // Tries both directions and returns the better match:
+  // 1. Entry phrase found within source (short entry in long source)
+  // 2. Source phrase found within entry (source in long corpus entry)
+  function findContiguousMatch(entryWords: string[], queryWords: string[]): {
+    startIndex: number;
+    endIndex: number;
+    matchedWords: string[];
+    score: number;
+    contentWordCount: number;
+  } | null {
+    if (entryWords.length === 0 || queryWords.length === 0) return null;
+
+    const maxGap = 2; // Allow up to 2 words gap for flexibility
+
+    // Try to find shorter array within longer array
+    // This handles both directions naturally
+    function slideMatch(shortWords: string[], longWords: string[]): {
+      matchedWords: string[];
+      score: number;
+      contentWordCount: number;
+    } | null {
+      let bestMatch: { matchedWords: string[]; score: number; contentWordCount: number } | null = null;
+
+      for (let longStart = 0; longStart < longWords.length; longStart++) {
+        let sIdx = 0; // short index
+        let lIdx = longStart; // long index
+        let matched: string[] = [];
+        let lastMatchLIdx = longStart - 1;
+
+        while (sIdx < shortWords.length && lIdx < longWords.length) {
+          if (shortWords[sIdx] === longWords[lIdx]) {
+            // Check gap
+            if (matched.length > 0 && (lIdx - lastMatchLIdx) > maxGap + 1) {
+              break;
+            }
+            matched.push(shortWords[sIdx]);
+            lastMatchLIdx = lIdx;
+            sIdx++;
+            lIdx++;
+          } else {
+            lIdx++;
+            if (matched.length > 0 && (lIdx - lastMatchLIdx) > maxGap + 1) {
+              break;
+            }
+          }
+        }
+
+        if (matched.length >= 3) {
+          // Score based on how much of the SHORT array we matched
+          const score = matched.length / shortWords.length;
+          const contentWordCount = countContentWords(matched);
+          const effectiveScore = contentWordCount >= 2 ? score : score * 0.5;
+
+          if (!bestMatch || effectiveScore > bestMatch.score ||
+              (effectiveScore === bestMatch.score && contentWordCount > bestMatch.contentWordCount)) {
+            bestMatch = { matchedWords: matched, score, contentWordCount };
+          }
+        }
+      }
+
+      return bestMatch;
+    }
+
+    // Try both directions
+    const entryInQuery = slideMatch(entryWords, queryWords); // Entry phrase in source
+    const queryInEntry = slideMatch(queryWords, entryWords); // Source phrase in entry
+
+    // Pick the better match
+    let best: { matchedWords: string[]; score: number; contentWordCount: number } | null = null;
+    
+    if (entryInQuery && queryInEntry) {
+      // Both matched - prefer the one with higher score, or more content words as tiebreaker
+      if (entryInQuery.score > queryInEntry.score ||
+          (entryInQuery.score === queryInEntry.score && entryInQuery.contentWordCount >= queryInEntry.contentWordCount)) {
+        best = entryInQuery;
+      } else {
+        best = queryInEntry;
+      }
+    } else {
+      best = entryInQuery || queryInEntry;
+    }
+
+    if (!best) return null;
+
+    return {
+      startIndex: 0, // Not used for highlighting source - we use matchedWords
+      endIndex: 0,
+      matchedWords: best.matchedWords,
+      score: best.score,
+      contentWordCount: best.contentWordCount,
+    };
+  }
+
+  // Extract n-grams from normalized text
+  function extractNgrams(words: string[], n: number): string[] {
+    if (words.length < n) return [];
+    const ngrams: string[] = [];
+    for (let i = 0; i <= words.length - n; i++) {
+      ngrams.push(words.slice(i, i + n).join(' '));
+    }
+    return ngrams;
+  }
+
+  // Compute which source words are covered by matched ngrams
+  // Returns the BEST contiguous run of covered indices (not spanning across gaps)
+  function getSourceWordRange(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number): { 
+    startIndex: number; 
+    endIndex: number; 
+    matchedWords: string[];
+    contentWordCount: number;
+  } | null {
+    if (matchedNgrams.size === 0) return null;
+    
+    // Find all contiguous runs where ngrams match
+    // A run is a sequence of overlapping ngram matches
+    const queryNgrams = extractNgrams(queryWords, ngramSize);
+    
+    // Find positions where matching ngrams START
+    const matchPositions: number[] = [];
+    for (let i = 0; i < queryNgrams.length; i++) {
+      if (matchedNgrams.has(queryNgrams[i])) {
+        matchPositions.push(i);
+      }
+    }
+    
+    if (matchPositions.length === 0) return null;
+    
+    // Group into contiguous runs (overlapping ngrams form a run)
+    // Two ngram positions are connected if they overlap or are adjacent
+    const runs: Array<{ start: number; end: number }> = [];
+    let currentRun = { start: matchPositions[0], end: matchPositions[0] + ngramSize - 1 };
+    
+    for (let i = 1; i < matchPositions.length; i++) {
+      const pos = matchPositions[i];
+      // Check if this position connects to the current run
+      // Connected if pos <= currentRun.end + 1 (overlapping or adjacent)
+      if (pos <= currentRun.end + 1) {
+        // Extend the current run
+        currentRun.end = Math.max(currentRun.end, pos + ngramSize - 1);
+      } else {
+        // Start a new run
+        runs.push(currentRun);
+        currentRun = { start: pos, end: pos + ngramSize - 1 };
+      }
+    }
+    runs.push(currentRun);
+    
+    // Find the best run (most content words)
+    let bestRun = runs[0];
+    let bestContentCount = 0;
+    
+    for (const run of runs) {
+      const runWords = queryWords.slice(run.start, run.end + 1);
+      const contentCount = runWords.filter(w => !isStopWord(w)).length;
+      if (contentCount > bestContentCount) {
+        bestContentCount = contentCount;
+        bestRun = run;
+      }
+    }
+    
+    // Extract matched words from the best run
+    const matchedWords = queryWords.slice(bestRun.start, bestRun.end + 1);
+    const contentWordCount = matchedWords.filter(w => !isStopWord(w)).length;
+    
+    return { startIndex: bestRun.start, endIndex: bestRun.end, matchedWords, contentWordCount };
+  }
+
+  // Find partial matches using n-gram index
+  function findNgramMatches(queryWords: string[], currentSuttaId?: string): Map<number, Set<string>> {
+    if (!tmIndex || !tmIndex.ngrams) return new Map();
+    
+    const ngramSize = tmIndex.ngramSize || 5;
+    const queryNgrams = extractNgrams(queryWords, ngramSize);
+    
+    // Map entry ID -> matched n-grams
+    const entryMatches = new Map<number, Set<string>>();
+    
+    for (const ngram of queryNgrams) {
+      const entryIds = tmIndex.ngrams[ngram];
+      if (!entryIds) continue;
+      
+      for (const id of entryIds) {
+        // Skip same sutta
+        const entry = tmIndex.entries[id];
+        if (currentSuttaId && entry?.source.suttaId === currentSuttaId) continue;
+        
+        if (!entryMatches.has(id)) {
+          entryMatches.set(id, new Set());
+        }
+        entryMatches.get(id)!.add(ngram);
+      }
+    }
+    
+    return entryMatches;
+  }
+
+  // Find multiple matches for a Pali paragraph
+  function findMatches(queryPali: string, queryPaliOriginal: string, currentSuttaId?: string): TMMatchResult | null {
+    if (!tmIndex || tmIndex.entries.length === 0) return null;
+
+    const queryNormalized = normalizePali(queryPali);
+    const queryWords = queryNormalized.split(/\s+/).filter(w => w.length > 0);
+
+    if (queryWords.length < 4) return null;
+
+    // Collect all matches with their details
+    const allMatches: Array<{
+      entry: TMEntry;
+      score: number;
+      matchedWordCount: number;
+      contentWordCount: number;
+      matchedWords: Set<string>;
+      matchedSegment: string;
+      startIndex: number;
+      endIndex: number;
+    }> = [];
+
+    // Step 1: Use n-gram index to find candidate entries with shared phrases
+    const ngramMatches = findNgramMatches(queryWords, currentSuttaId);
+    
+    // Step 2: For entries with n-gram matches, compute detailed match
+    for (const [entryId, matchedNgrams] of ngramMatches) {
+      const entry = tmIndex.entries[entryId];
+      if (!entry) continue;
+      
+      const ngramSize = tmIndex.ngramSize || 5;
+      
+      // Get which source words are covered by the matched ngrams
+      // This tells us EXACTLY which part of the source paragraph this entry matches
+      const sourceRange = getSourceWordRange(queryWords, matchedNgrams, ngramSize);
+      
+      if (sourceRange && sourceRange.contentWordCount >= 2) {
+        // Score based on coverage: how much of the source phrase is matched
+        const ngramBoost = matchedNgrams.size >= 3 ? 1.0 : matchedNgrams.size / 3;
+        
+        allMatches.push({
+          entry,
+          score: ngramBoost,
+          matchedWordCount: sourceRange.matchedWords.length, // Segment length (may include repeated words)
+          contentWordCount: sourceRange.contentWordCount,
+          matchedWords: new Set(sourceRange.matchedWords),
+          matchedSegment: sourceRange.matchedWords.join(' '), // Store actual segment for debugging
+          startIndex: sourceRange.startIndex,
+          endIndex: sourceRange.endIndex,
+        });
+      }
+    }
+
+    // Step 3: Also check entries without n-gram matches but potential contiguous matches
+    // (for short entries that might not have enough n-grams)
+    for (const entry of tmIndex.entries) {
+      // Skip same sutta
+      if (currentSuttaId && entry.source.suttaId === currentSuttaId) continue;
+      
+      // Skip if already processed via n-gram
+      if (ngramMatches.has(entry.id)) continue;
+      
+      // Only check short entries (might match via contiguous but not have n-grams)
+      if (entry.wordCount > 10) continue;
+
+      const entryWords = entry.paliNormalized.split(/\s+/).filter(w => w.length > 0);
+      
+      // Find contiguous match
+      const match = findContiguousMatch(entryWords, queryWords);
+      
+      if (match && match.score >= THRESHOLDS.PARAGRAPH_SIMILARITY && match.contentWordCount >= 2) {
+        allMatches.push({
+          entry,
+          score: match.score,
+          matchedWordCount: match.matchedWords.length, // Segment length
+          contentWordCount: match.contentWordCount,
+          matchedWords: new Set(match.matchedWords),
+          matchedSegment: match.matchedWords.join(' '),
+          startIndex: match.startIndex,
+          endIndex: match.endIndex,
+        });
+      }
+    }
+
+    if (allMatches.length === 0) return null;
+
+    // Sort by content word count first, then by score
+    allMatches.sort((a, b) => {
+      if (b.contentWordCount !== a.contentWordCount) {
+        return b.contentWordCount - a.contentWordCount;
+      }
+      return b.score - a.score;
+    });
+
+    // Group by matched phrase from the SOURCE QUERY (not entry text)
+    // This ensures entries matching the same source words are grouped together,
+    // and entries matching different source regions form separate groups
+    // Key: sorted matched words (the actual phrase pattern from the source)
+    const phraseMap = new Map<string, {
+      score: number;
+      contentWordCount: number; // For internal sorting/matching
+      totalWordCount: number;   // For display (includes stop words)
+      matchedWords: Set<string>;
+      matchedSegment: string;   // The actual matched segment text
+      startIndex: number; // Source position range
+      endIndex: number;
+      discourses: TMDiscourse[];
+      totalCount: number; // Count all matches, even if not stored
+    }>();
+
+    for (const m of allMatches) {
+      // Group by CONTENT words only (excluding stop words) for consistency
+      // This ensures phrases that differ only by stop words (like "ime kho") are grouped together
+      const contentWordsOnly = [...m.matchedWords].filter(w => !isStopWord(w)).sort();
+      const phraseKey = contentWordsOnly.join(' ');
+      
+      if (!phraseMap.has(phraseKey)) {
+        phraseMap.set(phraseKey, {
+          score: m.score,
+          contentWordCount: m.contentWordCount,
+          totalWordCount: m.matchedWordCount, // Total words for display (segment length)
+          matchedWords: m.matchedWords,
+          matchedSegment: m.matchedSegment, // Store segment text for debugging
+          startIndex: m.startIndex,
+          endIndex: m.endIndex,
+          discourses: [],
+          totalCount: 0,
+        });
+      }
+      
+      const group = phraseMap.get(phraseKey)!;
+      group.totalCount++; // Always count
+      
+      // Only store up to MAX for diversity selection
+      if (group.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
+        group.discourses.push({
+          suttaId: m.entry.source.suttaId,
+          paragraphNum: m.entry.source.paragraphNum,
+          collection: m.entry.source.collection,
+          paliOriginal: m.entry.paliOriginal,
+          englishOriginal: m.entry.englishOriginal,
+        });
+      }
+    }
+
+    // Convert to array, sorted by content word count (larger matches first)
+    const sortedGroups = Array.from(phraseMap.entries())
+      .sort((a, b) => b[1].contentWordCount - a[1].contentWordCount || b[1].score - a[1].score);
+
+    // Helper: check if two sets are equal
+    function setsEqual(setA: Set<string>, setB: Set<string>): boolean {
+      if (setA.size !== setB.size) return false;
+      for (const item of setA) {
+        if (!setB.has(item)) return false;
+      }
+      return true;
+    }
+
+    // Helper: check if setA's content words are a subset of setB's content words
+    function isContentWordSubset(setA: Set<string>, setB: Set<string>): boolean {
+      const contentA = [...setA].filter(w => !isStopWord(w));
+      const contentB = [...setB].filter(w => !isStopWord(w));
+      if (contentA.length >= contentB.length) return false; // Must be strictly smaller
+      for (const word of contentA) {
+        if (!setB.has(word)) return false;
+      }
+      return true;
+    }
+
+    // Filter out phrase groups that are subsets OR equal to existing groups
+    // For equal groups, merge their discourses and counts into the first one
+    const phraseGroups: TMPhraseGroup[] = [];
+
+    for (const [phraseNormalized, data] of sortedGroups) {
+      // Check if this group's content words are a subset of any already-added group
+      // If so, merge into the larger group (regardless of whether it has unique suttas)
+      const existingMatch = phraseGroups.find(existing => 
+        setsEqual(data.matchedWords, existing.matchedWords) || 
+        isContentWordSubset(data.matchedWords, existing.matchedWords)
+      );
+
+      if (existingMatch) {
+        
+        // Merge into existing group
+        existingMatch.totalCount += data.totalCount; // Merge counts
+        
+        // Add discourses for diversity (up to limit)
+        for (const d of data.discourses) {
+          if (existingMatch.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
+            existingMatch.discourses.push(d);
+          }
+        }
+        // Update diverse discourses
+        existingMatch.diverseDiscourses = selectDiverseDiscourses(existingMatch.discourses, 3);
+        continue;
+      }
+      
+      if (phraseGroups.length < THRESHOLDS.MAX_PHRASE_GROUPS) {
+        // Apply diversity logic: prefer discourses from different collections
+        const diverseDiscourses = selectDiverseDiscourses(data.discourses, 3);
+        
+        phraseGroups.push({
+          phraseNormalized,
+          similarity: data.score,
+          score: data.score, // Include score for debug output
+          matchedWordCount: data.totalWordCount, // Total words for display (segment length)
+          contentWordCount: data.contentWordCount, // Content words (non-stop words)
+          matchedWords: data.matchedWords,
+          matchedSegment: data.matchedSegment, // The actual matched segment
+          startIndex: data.startIndex,
+          endIndex: data.endIndex,
+          discourses: data.discourses, // Stored for diversity selection
+          totalCount: data.totalCount, // True count of all matches
+          diverseDiscourses, // Top 3 diverse discourses for display
+        });
+      }
+    }
+
+    // Calculate total discourses from actual counts (not just stored)
+    const totalDiscourses = phraseGroups.reduce((sum, pg) => sum + pg.totalCount, 0);
+
+    return {
+      phraseGroups,
+      sourcePali: queryPaliOriginal,
+      totalDiscourses,
+      sourceWordCount: queryWords.length, // Total words for display (users can count and verify)
+    };
+  }
+
+  // Select diverse discourses from different collections
+  function selectDiverseDiscourses(discourses: TMDiscourse[], count: number): TMDiscourse[] {
+    if (discourses.length <= count) return discourses;
+
+    const selected: TMDiscourse[] = [];
+    const seenCollections = new Set<string>();
+
+    // First pass: pick one from each collection
+    for (const d of discourses) {
+      if (selected.length >= count) break;
+      if (!seenCollections.has(d.collection)) {
+        selected.push(d);
+        seenCollections.add(d.collection);
+      }
+    }
+
+    // Second pass: fill remaining slots with any discourses
+    for (const d of discourses) {
+      if (selected.length >= count) break;
+      if (!selected.includes(d)) {
+        selected.push(d);
+      }
+    }
+
+    return selected;
+  }
+
+  // Render Pali text with clickable word spans for dictionary lookup
+  // Optionally highlight matched words within a contiguous span wrapper
+  function renderPaliWithWords(text: string, matchedWords?: Set<string>): string {
+    // Normalize multiple spaces to single space first
+    const normalizedText = text.replace(/\s+/g, ' ');
+    
+    // Word pattern includes Pali letters + all quote types
+    const wordPattern = /[a-zA-ZāīūṃṅñṭḍṇḷṁĀĪŪṂṄÑṬḌṆḶṀ'"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A«»„‚]+/g;
+    const matches = [...normalizedText.matchAll(wordPattern)];
+    
+    if (matches.length === 0) return escapeHtml(normalizedText);
+
+    // If we have matched words, find the best contiguous run for highlighting
+    let highlightStart = -1;
+    let highlightEnd = -1;
+    
+    if (matchedWords && matchedWords.size > 0) {
+      // Build array of which words match
+      const wordMatches = matches.map((m, i) => {
+        const word = m[0];
+        const normalized = normalizePali(word);
+        return {
+          index: i,
+          pos: m.index!,
+          length: m[0].length,
+          isMatch: normalized ? matchedWords.has(normalized) : false
+        };
+      });
+
+      // Find the best contiguous run
+      let bestRun = { start: -1, end: -1, matchCount: 0, totalWords: 0 };
+      
+      for (let start = 0; start < wordMatches.length; start++) {
+        if (!wordMatches[start].isMatch) continue;
+        
+        let matchCount = 0;
+        let lastMatchIdx = start;
+        
+        for (let end = start; end < wordMatches.length; end++) {
+          if (wordMatches[end].isMatch) {
+            matchCount++;
+            lastMatchIdx = end;
+          }
+          
+          const gapFromLastMatch = end - lastMatchIdx;
+          if (gapFromLastMatch > 2 && !wordMatches[end].isMatch) {
+            break;
+          }
+          
+          const totalWords = end - start + 1;
+          const density = matchCount / totalWords;
+          
+          if (matchCount > bestRun.matchCount || 
+              (matchCount === bestRun.matchCount && density > bestRun.matchCount / bestRun.totalWords)) {
+            bestRun = { start, end: lastMatchIdx, matchCount, totalWords: lastMatchIdx - start + 1 };
+          }
+        }
+      }
+
+      if (bestRun.start !== -1) {
+        highlightStart = bestRun.start;
+        highlightEnd = bestRun.end;
+      }
+    }
+
+    // Build HTML with word spans, wrapping highlighted range in a single span
+    let result = '';
+    let lastEnd = 0;
+    let insideHighlight = false;
+
+    matches.forEach((match, idx) => {
+      const word = match[0];
+      const pos = match.index!;
+      
+      // Check if this word is within the highlight range
+      const isHighlighted = highlightStart !== -1 && idx >= highlightStart && idx <= highlightEnd;
+      
+      // Open highlight wrapper at start of highlighted range
+      if (isHighlighted && !insideHighlight) {
+        // Add any text before highlight starts
+        if (pos > lastEnd) {
+          result += `<span style="padding-left:4px;"></span>`;
+        }
+        result += `<span class="tm-highlight">`;
+        insideHighlight = true;
+      } else if (!isHighlighted && insideHighlight) {
+        // Close highlight wrapper when leaving highlighted range
+        result += `</span>`;
+        insideHighlight = false;
+        // Add spacing after highlight
+        if (pos > lastEnd) {
+          result += `<span style="padding-left:4px;"></span>`;
+        }
+      } else if (pos > lastEnd) {
+        // Normal spacing between words
+        result += `<span style="padding-left:4px;"></span>`;
+      }
+      
+      // Clean word for lookup (remove trailing punctuation, quotes)
+      const cleanWord = word.replace(/[,;.!?'"'""]+$/g, '').toLowerCase();
+      
+      // Build the word span (no individual highlight class - wrapper handles it)
+      result += `<span class="pali-word" data-word="${escapeHtml(cleanWord)}" data-original="${escapeHtml(word)}">${escapeHtml(word)}</span>`;
+      
+      lastEnd = pos + word.length;
+    });
+
+    // Close highlight wrapper if still open at end
+    if (insideHighlight) {
+      result += `</span>`;
+    }
+
+    // Add any trailing text
+    if (lastEnd < normalizedText.length) {
+      const trailing = normalizedText.substring(lastEnd);
+      if (trailing.trim()) {
+        result += escapeHtml(trailing);
+      }
+    }
+
+    return result;
+  }
+
+  // Highlight matched phrase in source text as a contiguous span
+  function highlightMatches(text: string, matchedWords: Set<string>): string {
+    // Normalize multiple spaces to single space first
+    const normalizedText = text.replace(/\s+/g, ' ');
+    
+    // Find the BEST contiguous run of matched words (not just first-to-last anywhere)
+    // This is important when a word like "bhikkhave" appears multiple times in a paragraph
+    // Word pattern includes Pali letters + all quote types (using Unicode escapes for reliability)
+    // so "bhikkhavo"ti becomes one token → normalized to bhikkhavoti
+    // Quote Unicode: U+2018-201F (curly quotes), U+0027 ('), U+0022 ("), U+2039-203A (angle quotes)
+    const wordPattern = /[a-zA-ZāīūṃṅñṭḍṇḷṁĀĪŪṂṄÑṬḌṆḶṀ'"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A«»„‚]+/g;
+    const matches = [...normalizedText.matchAll(wordPattern)];
+    
+    if (matches.length === 0) return escapeHtml(normalizedText);
+
+    // Build array of which words match
+    const wordMatches = matches.map((m, i) => {
+      const word = m[0];
+      const normalized = normalizePali(word);
+      return {
+        index: i,
+        pos: m.index!,
+        length: m[0].length,
+        isMatch: normalized ? matchedWords.has(normalized) : false
+      };
+    });
+
+    // Find the best contiguous run: highest count of matched words with minimal gaps
+    let bestRun = { start: -1, end: -1, matchCount: 0, totalWords: 0 };
+    
+    // Sliding window: find runs where most words are matched
+    for (let start = 0; start < wordMatches.length; start++) {
+      if (!wordMatches[start].isMatch) continue; // Start from a matched word
+      
+      let matchCount = 0;
+      let lastMatchIdx = start;
+      
+      for (let end = start; end < wordMatches.length; end++) {
+        if (wordMatches[end].isMatch) {
+          matchCount++;
+          lastMatchIdx = end;
+        }
+        
+        // Allow small gaps (up to 2 non-matching words) within a run
+        const gapFromLastMatch = end - lastMatchIdx;
+        if (gapFromLastMatch > 2 && !wordMatches[end].isMatch) {
+          break; // Too big a gap, end this run
+        }
+        
+        const totalWords = end - start + 1;
+        const density = matchCount / totalWords;
+        
+        // Better run if: more matches, or same matches but tighter (higher density)
+        if (matchCount > bestRun.matchCount || 
+            (matchCount === bestRun.matchCount && density > bestRun.matchCount / bestRun.totalWords)) {
+          bestRun = { start, end: lastMatchIdx, matchCount, totalWords: lastMatchIdx - start + 1 };
+        }
+      }
+    }
+
+    if (bestRun.start === -1) return escapeHtml(normalizedText);
+
+    // Get character positions for the best contiguous span
+    const startPos = wordMatches[bestRun.start].pos;
+    const endWord = wordMatches[bestRun.end];
+    const endPos = endWord.pos + endWord.length;
+
+    // Build the highlighted HTML
+    const before = normalizedText.substring(0, startPos);
+    const highlighted = normalizedText.substring(startPos, endPos);
+    const after = normalizedText.substring(endPos);
+
+    return escapeHtml(before) + 
+           `<strong class="tm-highlight">${escapeHtml(highlighted)}</strong>` + 
+           escapeHtml(after);
+  }
+
+  // Format phrase tab label with discourse count
+  function formatPhraseTabLabel(phraseGroup: TMPhraseGroup, sourceWordCount: number, includeCount: boolean = true): string {
+    const discCount = phraseGroup.totalCount; // Use true count, not just stored
+    const wordLabel = `${phraseGroup.matchedWordCount} words`;
+    
+    return includeCount ? `${wordLabel} · ${discCount} discourses` : wordLabel;
+  }
+
+  // Format discourse reference for display
+  function formatDiscourseRef(source: { suttaId: string; paragraphNum: number }): string {
+    return `${source.suttaId.toUpperCase()} ¶${source.paragraphNum}`;
+  }
+
+  // Get current sutta ID from URL (base ID without paragraph number)
+function getCurrentSuttaId(): string {
+  const path = window.location.pathname;
+  
+  // Extract the discourse ID from the path (e.g., /sn25.1 -> sn25.1, /mn64.1 -> mn64.1)
+  const pathMatch = path.match(/\/([a-z]+[\d\.\-]+)/i);
+  if (!pathMatch) return '';
+  
+  const fullPathId = pathMatch[1].toLowerCase();
+  
+  // Check if the full path ID is a valid discourse
+  if (routes.includes(fullPathId)) {
+    return fullPathId;
+  }
+  
+  // Check if this might be a paragraph reference (e.g., mn64.1 where mn64 is the discourse)
+  const dotIndex = fullPathId.lastIndexOf('.');
+  if (dotIndex > 0) {
+    const baseId = fullPathId.substring(0, dotIndex);
+    if (routes.includes(baseId)) {
+      return baseId;
+    }
+  }
+  
+  // Check for range-based discourses (e.g., dhp1 should match dhp1-20)
+  // Find any route that contains this ID as part of a range
+  const rangeMatch = routes.find(route => {
+    const rangePattern = route.match(/^([a-z]+)(\d+)-(\d+)$/i);
+    if (rangePattern) {
+      const [, prefix, startNum, endNum] = rangePattern;
+      const idPattern = fullPathId.match(/^([a-z]+)(\d+)$/i);
+      if (idPattern && idPattern[1].toLowerCase() === prefix.toLowerCase()) {
+        const num = parseInt(idPattern[2], 10);
+        return num >= parseInt(startNum, 10) && num <= parseInt(endNum, 10);
+      }
+    }
+    return false;
+  });
+  
+  if (rangeMatch) {
+    return rangeMatch;
+  }
+  
+  // Fallback: return the full path ID
+  return fullPathId;
+}
+
+  // Helper: yield to browser to keep UI responsive during heavy computation
+  function yieldToBrowser(): Promise<void> {
+    return new Promise(resolve => {
+      // Use requestAnimationFrame for smooth yielding
+      requestAnimationFrame(() => setTimeout(resolve, 0));
+    });
+  }
+
+  // Pre-compute TM match counts for all TM buttons
+  // Processes in batches with yields to avoid blocking the UI
+  async function preComputeTMCounts() {
+    // Load the index
+    const loaded = await loadTMIndex();
+    if (!loaded) return;
+
+    const currentSuttaId = getCurrentSuttaId();
+
+    // Find all TM buttons that don't have pre-computed matches yet
+    const buttons = Array.from(document.querySelectorAll('.tm-lookup-btn:not([data-tm-matches])'));
+    
+    // Process in batches of 3 to avoid blocking UI
+    const BATCH_SIZE = 3;
+    let processed = 0;
+
+    for (const btn of buttons) {
+      const paliText = btn.getAttribute('data-pali-text');
+      if (!paliText) continue;
+
+      // Compute matches
+      const result = findMatches(paliText, paliText, currentSuttaId);
+
+      if (result && result.phraseGroups.length > 0) {
+        // Convert Sets to arrays for JSON serialization
+        const serializableResult = {
+          ...result,
+          phraseGroups: result.phraseGroups.map(pg => ({
+            ...pg,
+            matchedWords: Array.from(pg.matchedWords),
+          })),
+        };
+
+        btn.textContent = `TM (${result.totalDiscourses})`;
+        btn.setAttribute('data-tm-matches', JSON.stringify(serializableResult));
+      } else {
+        // No matches found
+        btn.textContent = 'TM (0)';
+        (btn as HTMLButtonElement).disabled = true;
+        (btn as HTMLElement).style.opacity = '0.5';
+      }
+
+      // Yield to browser every BATCH_SIZE paragraphs to keep UI responsive
+      processed++;
+      if (processed % BATCH_SIZE === 0) {
+        await yieldToBrowser();
+      }
+    }
+  }
+
+  // Find "Translation in progress..." spans and add TM buttons to their Pali paragraphs
+  // The TM button is placed on the Pali paragraph (right side) for consistent positioning
+  // This function just adds buttons - preComputeTMCounts() will fill in the counts
+  function enhanceTranslationPlaceholders() {
+    // Find all "Translation in progress..." spans
+    const placeholders = Array.from(document.querySelectorAll('span.text-gray-400.italic'));
+
+    for (const placeholder of placeholders) {
+      if (!placeholder.textContent?.includes('Translation in progress')) continue;
+
+      // The structure is: english-paragraph followed by pali-paragraph (they share data-pair-id)
+      // Get the parent paragraph (english-paragraph)
+      const englishParagraph = placeholder.closest('p.english-paragraph, p');
+      if (!englishParagraph) continue;
+
+      let paliParagraph: Element | null = null;
+      let paliText = '';
+
+      // Method 1: Use data-pair-id to find matching pali-paragraph
+      const pairId = englishParagraph.getAttribute('data-pair-id');
+      if (pairId) {
+        paliParagraph = document.querySelector(`p.pali-paragraph[data-pair-id="${pairId}"]`);
+        if (paliParagraph) {
+          paliText = paliParagraph.textContent || '';
+        }
+      }
+
+      // Method 2: Look at the next sibling if Method 1 didn't work
+      if (!paliText) {
+        let nextSibling = englishParagraph.nextElementSibling;
+        while (nextSibling) {
+          if (nextSibling.classList?.contains('pali-paragraph')) {
+            paliParagraph = nextSibling;
+            paliText = nextSibling.textContent || '';
+            break;
+          }
+          // Also check if it's a plain p tag with Pali diacritics
+          if (nextSibling.tagName === 'P' && /[āīūṃṅñṭḍṇḷṁ]/i.test(nextSibling.textContent || '')) {
+            paliParagraph = nextSibling;
+            paliText = nextSibling.textContent || '';
+            break;
+          }
+          nextSibling = nextSibling.nextElementSibling;
+        }
+      }
+
+      if (!paliText || paliText.length < 20 || !paliParagraph) continue;
+      
+      // Skip if Pali paragraph already has a TM button
+      if (paliParagraph.querySelector('.tm-lookup-btn')) continue;
+
+      // Add TM button to the Pali paragraph (right side, consistent with other paragraphs)
+      const btn = document.createElement('button');
+      btn.className = 'tm-lookup-btn';
+      btn.textContent = 'TM';
+      btn.title = 'Translation Memory: Click to find similar translations';
+      btn.setAttribute('data-pali-text', paliText);
+      
+      // Position at the right side of the Pali paragraph
+      const para = paliParagraph as HTMLElement;
+      para.style.position = 'relative';
+      btn.style.position = 'absolute';
+      btn.style.right = '0';
+      btn.style.top = '0';
+      para.appendChild(btn);
+    }
+  }
+
+  // Track the element that opened the popover for focus restoration
+  let popoverTriggerElement: HTMLElement | null = null;
+
+  // Show popover with match details
+  // activePhraseIdx: which phrase group is selected (Row 1)
+  // activeDiscourseIdx: which discourse within that phrase is selected (Row 2)
+  // focusRow: which row to focus after render ('phrase' | 'discourse' | 'auto')
+  // triggerElement: the element that opened the popover (for focus restoration on close)
+  function showPopover(result: TMMatchResult, activePhraseIdx: number = 0, activeDiscourseIdx: number = 0, focusRow: 'phrase' | 'discourse' | 'auto' = 'auto', triggerElement?: HTMLElement) {
+    // Store trigger element for focus restoration (only on initial open)
+    if (triggerElement) {
+      popoverTriggerElement = triggerElement;
+    }
+    
+    // Remove any existing popover
+    const existing = document.querySelector('.tm-popover-overlay');
+    if (existing) existing.remove();
+
+    const phraseGroup = result.phraseGroups[activePhraseIdx];
+    // Use diverse discourses for display, fallback to regular discourses
+    const displayDiscourses = phraseGroup.diverseDiscourses || phraseGroup.discourses.slice(0, 3);
+    const discourse = displayDiscourses[activeDiscourseIdx] || displayDiscourses[0];
+    const percentage = Math.round(phraseGroup.similarity * 100);
+    const sourceUrl = `/${discourse.suttaId}.${discourse.paragraphNum}?pli=true`;
+    const isPartialMatch = percentage < 95;
+
+    // Row 1: Phrase pattern tabs - only show if more than one phrase group
+    const showPhraseRow = result.phraseGroups.length > 1;
+    const phraseTabsHtml = showPhraseRow ? `
+      <div class="tm-tabs tm-phrase-tabs">
+        ${result.phraseGroups.map((pg, i) => {
+          const isActive = i === activePhraseIdx;
+          const label = formatPhraseTabLabel(pg, result.sourceWordCount);
+          return `<button class="tm-tab tm-phrase-tab ${isActive ? 'tm-tab-active' : ''}" data-phrase-index="${i}">
+            ${label}
+          </button>`;
+        }).join('')}
+      </div>
+    ` : '';
+
+    // Row 2: Discourse tabs for the selected phrase (show top 3 diverse discourses)
+    // Use totalCount for the actual count, not just stored discourses
+    const totalInGroup = phraseGroup.totalCount;
+    const remainingDiscourses = totalInGroup - displayDiscourses.length;
+    
+    let discourseTabsHtml = `
+      <div class="tm-tabs tm-discourse-tabs">
+        ${displayDiscourses.map((d, i) => {
+          const isActive = i === activeDiscourseIdx;
+          const discRef = formatDiscourseRef({ suttaId: d.suttaId, paragraphNum: d.paragraphNum });
+          return `<button class="tm-tab tm-discourse-tab ${isActive ? 'tm-tab-active' : ''}" data-discourse-index="${i}">
+            ${discRef}
+          </button>`;
+        }).join('')}
+        ${remainingDiscourses > 0 ? `<span class="tm-more-count">+${remainingDiscourses} disc.</span>` : ''}
+      </div>
+    `;
+
+    // Render source Pali with clickable word spans and highlighting
+    const renderedSourcePali = renderPaliWithWords(result.sourcePali, phraseGroup.matchedWords);
+
+    // Always show source paragraph with highlighting
+    const sourcePaliSection = `
+          <div class="tm-section">
+            <div class="tm-section-label">Source Paragraph (to translate)</div>
+            <div class="tm-section-content tm-pali tm-source-pali pali-paragraph">${renderedSourcePali}</div>
+          </div>
+    `;
+
+    // Build title - include phrase label (without count) if only one phrase group
+    const singlePhraseLabel = !showPhraseRow ? ` · ${formatPhraseTabLabel(phraseGroup, result.sourceWordCount, false)}` : '';
+
+    // Create popover
+    const overlay = document.createElement('div');
+    overlay.className = 'tm-popover-overlay';
+    
+    // Render English with glosses as tooltips
+    const renderedEnglish = renderGlosses(discourse.englishOriginal);
+    
+    // Render matched Pali phrase with clickable word spans
+    const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, phraseGroup.matchedWords);
+    
+    overlay.innerHTML = `
+      <div class="tm-popover" role="dialog" aria-modal="true">
+        <div class="tm-popover-header">
+          <span class="tm-popover-title">
+            Translation Memory <span class="tm-discourse-count">(${result.totalDiscourses} text match${result.totalDiscourses !== 1 ? 'es' : ''})${singlePhraseLabel}</span>
+          </span>
+          <button class="tm-popover-close" aria-label="Close">&times;</button>
+        </div>
+        ${phraseTabsHtml}
+        ${discourseTabsHtml}
+        <div class="tm-popover-content">
+          ${sourcePaliSection}
+          <div class="tm-section">
+            <div class="tm-section-label">
+              Matched Phrase (Pali)
+              <a href="${sourceUrl}" target="_blank" class="tm-discourse-link" title="Open ${formatDiscourseRef({ suttaId: discourse.suttaId, paragraphNum: discourse.paragraphNum })} in new tab">
+                ${formatDiscourseRef({ suttaId: discourse.suttaId, paragraphNum: discourse.paragraphNum })} ↗
+              </a>
+            </div>
+            <div class="tm-section-content tm-pali tm-matched-phrase pali-paragraph">${renderedMatchedPali}</div>
+          </div>
+          <div class="tm-section">
+            <div class="tm-section-label">Matched Translation</div>
+            <div class="tm-section-content tm-english tm-selectable" data-raw-english="${escapeHtml(discourse.englishOriginal)}">${renderedEnglish}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Selection-based copy tooltip for English text
+    const selectableEl = overlay.querySelector('.tm-selectable') as HTMLElement;
+    let copyTooltip: HTMLElement | null = null;
+
+    function removeCopyTooltip() {
+      if (copyTooltip) {
+        copyTooltip.remove();
+        copyTooltip = null;
+      }
+    }
+
+    function getRawTextForSelection(selection: Selection, rawEnglish: string): string {
+      // Get the selected text and find corresponding raw text
+      const selectedText = selection.toString();
+      if (!selectedText) return '';
+
+      const fullText = selectableEl?.textContent || '';
+      
+      // If full selection, return complete raw English
+      if (selectedText.trim() === fullText.trim()) {
+        return rawEnglish;
+      }
+      
+      // Partial selection: try to map back to raw text with gloss syntax
+      // Find where the selection starts/ends in the visible text
+      const selStart = fullText.indexOf(selectedText);
+      if (selStart === -1) {
+        // Selection spans multiple nodes or has whitespace differences - return as-is
+        return selectedText;
+      }
+      const selEnd = selStart + selectedText.length;
+      
+      // Build a mapping from visible text positions to raw text positions
+      // Raw format: text |term::definition [pali]| more text
+      // Visible: text term more text
+      let visiblePos = 0;
+      let rawPos = 0;
+      let rawStart = 0;
+      let rawEnd = rawEnglish.length;
+      
+      const glossPattern = /\|([^|:]+)::([^|]+)\|/g;
+      let lastEnd = 0;
+      let match;
+      
+      // Build segments: [{visible, rawStart, rawEnd}]
+      const segments: Array<{visibleStart: number, visibleEnd: number, rawStart: number, rawEnd: number}> = [];
+      
+      while ((match = glossPattern.exec(rawEnglish)) !== null) {
+        // Text before this gloss
+        const beforeText = rawEnglish.substring(lastEnd, match.index);
+        if (beforeText.length > 0) {
+          segments.push({
+            visibleStart: visiblePos,
+            visibleEnd: visiblePos + beforeText.length,
+            rawStart: lastEnd,
+            rawEnd: match.index
+          });
+          visiblePos += beforeText.length;
+        }
+        
+        // The gloss itself: |term::definition| -> term
+        const term = match[1];
+        segments.push({
+          visibleStart: visiblePos,
+          visibleEnd: visiblePos + term.length,
+          rawStart: match.index,
+          rawEnd: match.index + match[0].length
+        });
+        visiblePos += term.length;
+        lastEnd = match.index + match[0].length;
+      }
+      
+      // Text after last gloss
+      if (lastEnd < rawEnglish.length) {
+        const afterText = rawEnglish.substring(lastEnd);
+        segments.push({
+          visibleStart: visiblePos,
+          visibleEnd: visiblePos + afterText.length,
+          rawStart: lastEnd,
+          rawEnd: rawEnglish.length
+        });
+      }
+      
+      // Find raw positions for selection
+      for (const seg of segments) {
+        if (seg.visibleStart <= selStart && selStart < seg.visibleEnd) {
+          // Selection starts in this segment
+          const offset = selStart - seg.visibleStart;
+          rawStart = seg.rawStart + offset;
+          // If it's a gloss segment, include the whole gloss
+          if (rawEnglish[seg.rawStart] === '|') {
+            rawStart = seg.rawStart;
+          }
+        }
+        if (seg.visibleStart < selEnd && selEnd <= seg.visibleEnd) {
+          // Selection ends in this segment
+          const offset = selEnd - seg.visibleStart;
+          rawEnd = seg.rawStart + offset;
+          // If it's a gloss segment, include the whole gloss
+          if (rawEnglish[seg.rawStart] === '|') {
+            rawEnd = seg.rawEnd;
+          }
+        }
+      }
+      
+      return rawEnglish.substring(rawStart, rawEnd);
+    }
+
+    selectableEl?.addEventListener('mouseup', (e) => {
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+        removeCopyTooltip();
+        return;
+      }
+
+      // Check if selection is within the selectable element
+      const range = selection.getRangeAt(0);
+      if (!selectableEl.contains(range.commonAncestorContainer)) {
+        removeCopyTooltip();
+        return;
+      }
+
+      // Create copy tooltip near the selection
+      removeCopyTooltip();
+      const rect = range.getBoundingClientRect();
+      
+      copyTooltip = document.createElement('div');
+      copyTooltip.className = 'tm-selection-copy-tooltip';
+      copyTooltip.innerHTML = '<button class="tm-selection-copy-btn">📋 Copy raw</button>';
+      copyTooltip.style.position = 'fixed';
+      copyTooltip.style.left = `${rect.left + rect.width / 2}px`;
+      copyTooltip.style.top = `${rect.top - 35}px`;
+      copyTooltip.style.transform = 'translateX(-50%)';
+      copyTooltip.style.zIndex = '10001';
+      
+      document.body.appendChild(copyTooltip);
+
+      copyTooltip.querySelector('.tm-selection-copy-btn')?.addEventListener('click', async (ev) => {
+        ev.stopPropagation();
+        const rawEnglish = discourse.englishOriginal;
+        const rawText = getRawTextForSelection(selection, rawEnglish);
+        
+        try {
+          await navigator.clipboard.writeText(rawText);
+          const btn = copyTooltip?.querySelector('.tm-selection-copy-btn');
+          if (btn) {
+            btn.textContent = '✓ Copied!';
+            btn.classList.add('copied');
+            setTimeout(removeCopyTooltip, 1000);
+          }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+    });
+
+    // Remove tooltip when clicking elsewhere
+    overlay.addEventListener('mousedown', (e) => {
+      if (copyTooltip && !copyTooltip.contains(e.target as Node)) {
+        removeCopyTooltip();
+      }
+    });
+
+    // Gloss click handlers - BottomDrawer listens on document for .tooltip-text clicks
+    // We just need to NOT stop propagation so clicks bubble up to BottomDrawer's handler
+    overlay.querySelectorAll('.tm-gloss').forEach(gloss => {
+      gloss.addEventListener('click', (e) => {
+        // Don't stop propagation - let it bubble to BottomDrawer's document click handler
+        // The .tooltip-text class is enough for BottomDrawer to handle it
+        e.preventDefault(); // Prevent any default behavior
+        // Note: If clicking gloss doesn't work, may need to close popover first
+      });
+    });
+
+    // Phrase tab click handlers (Row 1)
+    overlay.querySelectorAll('.tm-phrase-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        const phraseIdx = parseInt((e.target as HTMLElement).getAttribute('data-phrase-index') || '0');
+        showPopover(result, phraseIdx, 0, 'phrase'); // Stay on phrase row
+      });
+    });
+
+    // Discourse tab click handlers (Row 2)
+    overlay.querySelectorAll('.tm-discourse-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        const discourseIdx = parseInt((e.target as HTMLElement).getAttribute('data-discourse-index') || '0');
+        showPopover(result, activePhraseIdx, discourseIdx, 'discourse'); // Stay on discourse row
+      });
+    });
+
+    // Close popover base function
+    const closePopover = () => {
+      removeCopyTooltip();
+      overlay.remove();
+      // Restore focus to the element that opened the popover
+      if (popoverTriggerElement) {
+        popoverTriggerElement.focus();
+        popoverTriggerElement = null;
+      }
+    };
+
+    // Listen for selection changes to hide copy tooltip when text is unselected
+    const selectionChangeHandler = () => {
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+        removeCopyTooltip();
+      }
+    };
+    document.addEventListener('selectionchange', selectionChangeHandler);
+
+    // Prevent page scroll when popover is open
+    const preventScroll = (e: Event) => {
+      e.preventDefault();
+    };
+    overlay.addEventListener('wheel', preventScroll, { passive: false });
+    overlay.addEventListener('touchmove', preventScroll, { passive: false });
+
+    // Cleanup function for all listeners
+    let handleKeydown: ((e: KeyboardEvent) => void) | null = null;
+    
+    const cleanupAndClose = () => {
+      overlay.removeEventListener('wheel', preventScroll);
+      overlay.removeEventListener('touchmove', preventScroll);
+      if (handleKeydown) {
+        document.removeEventListener('keydown', handleKeydown);
+      }
+      document.removeEventListener('selectionchange', selectionChangeHandler);
+      closePopover();
+    };
+
+    // Close button and overlay click handlers
+    overlay.querySelector('.tm-popover-close')?.addEventListener('click', cleanupAndClose);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) cleanupAndClose();
+    });
+
+    // Escape key handler
+    handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        cleanupAndClose();
+        return;
+      }
+      
+      // Prevent page scroll on arrow keys when popover is open
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+      }
+      
+      // Arrow key navigation for tabs
+      const activeElement = document.activeElement as HTMLElement;
+      const isInPhraseRow = activeElement?.classList.contains('tm-phrase-tab');
+      const isInDiscourseRow = activeElement?.classList.contains('tm-discourse-tab');
+      
+      if (!isInPhraseRow && !isInDiscourseRow) return;
+      
+      const currentRow = isInPhraseRow ? 'phrase' : 'discourse';
+      const tabs = currentRow === 'phrase' 
+        ? Array.from(overlay.querySelectorAll('.tm-phrase-tab')) as HTMLElement[]
+        : Array.from(overlay.querySelectorAll('.tm-discourse-tab')) as HTMLElement[];
+      
+      const currentIdx = tabs.indexOf(activeElement);
+      
+      if (e.key === 'ArrowLeft' && currentIdx > 0) {
+        e.preventDefault();
+        tabs[currentIdx - 1].focus();
+      } else if (e.key === 'ArrowRight' && currentIdx < tabs.length - 1) {
+        e.preventDefault();
+        tabs[currentIdx + 1].focus();
+      } else if (e.key === 'ArrowUp' && isInDiscourseRow && showPhraseRow) {
+        // Move from discourse row to phrase row - maintain column position
+        e.preventDefault();
+        const phraseTabs = Array.from(overlay.querySelectorAll('.tm-phrase-tab')) as HTMLElement[];
+        if (phraseTabs.length > 0) {
+          // Focus tab at same column index, or last tab if current row has more tabs
+          const targetIdx = Math.min(currentIdx, phraseTabs.length - 1);
+          phraseTabs[targetIdx].focus();
+        }
+      } else if (e.key === 'ArrowDown' && isInPhraseRow) {
+        // Move from phrase row to discourse row - maintain column position
+        e.preventDefault();
+        const discourseTabs = Array.from(overlay.querySelectorAll('.tm-discourse-tab')) as HTMLElement[];
+        if (discourseTabs.length > 0) {
+          // Focus tab at same column index, or last tab if current row has more tabs
+          const targetIdx = Math.min(currentIdx, discourseTabs.length - 1);
+          discourseTabs[targetIdx].focus();
+        }
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        // Activate the focused tab
+        e.preventDefault();
+        activeElement.click();
+      }
+    };
+    document.addEventListener('keydown', handleKeydown);
+    
+    // Auto-focus: respect focusRow parameter, default to first available row
+    setTimeout(() => {
+      const shouldFocusPhrase = focusRow === 'phrase' || (focusRow === 'auto' && showPhraseRow);
+      const shouldFocusDiscourse = focusRow === 'discourse' || (focusRow === 'auto' && !showPhraseRow);
+      
+      if (shouldFocusPhrase && showPhraseRow) {
+        const activeTab = overlay.querySelector('.tm-phrase-tab.tm-tab-active') as HTMLElement;
+        activeTab?.focus();
+      } else if (shouldFocusDiscourse) {
+        const activeTab = overlay.querySelector('.tm-discourse-tab.tm-tab-active') as HTMLElement;
+        activeTab?.focus();
+      }
+    }, 50);
+
+    // Clean up selection listener when popover is removed
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.removedNodes) {
+          if (node === overlay) {
+            document.removeEventListener('selectionchange', selectionChangeHandler);
+            observer.disconnect();
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true });
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Render glosses in English text: |term::definition [paliterm]| → clickable tooltip
+  function renderGlosses(text: string): string {
+    // First escape HTML, then replace gloss patterns
+    const escaped = escapeHtml(text);
+    
+    // Pattern: |term::definition [paliterm]| or |term::definition|
+    return escaped.replace(
+      /\|([^|:]+)::([^|]+)\|/g,
+      (_, term, definition) => {
+        const escapedDef = definition.replace(/"/g, '&quot;');
+        return `<span class="tooltip-text tm-gloss" data-tooltip-content="${escapedDef}">${term}</span>`;
+      }
+    );
+  }
+
+  // Get raw English text (with gloss syntax preserved) for copying
+  function getRawEnglish(text: string): string {
+    return text; // Already raw, no transformation needed
+  }
+
+  // Add TM lookup button to all Pali paragraphs (lazy loading - compute on click)
+  function addTMLookupButtons() {
+    // Find all Pali paragraphs
+    const paliParagraphs = document.querySelectorAll('p.pali-paragraph');
+    
+    for (const paliPara of paliParagraphs) {
+      // Skip if already has a TM button
+      if (paliPara.querySelector('.tm-lookup-btn')) continue;
+      
+      const paliText = paliPara.textContent || '';
+      if (paliText.length < 20) continue;
+
+      // Create a TM lookup button (no pre-computation)
+      const btn = document.createElement('button');
+      btn.className = 'tm-lookup-btn';
+      btn.textContent = 'TM';
+      btn.title = 'Translation Memory: Click to find similar translations';
+      
+      // Store the pali text for lazy loading
+      btn.setAttribute('data-pali-text', paliText);
+      
+      // Position at the end of the paragraph
+      const para = paliPara as HTMLElement;
+      para.style.position = 'relative';
+      btn.style.position = 'absolute';
+      btn.style.right = '0';
+      btn.style.top = '0';
+      para.appendChild(btn);
+    }
+  }
+
+  // Load TM index on demand
+  async function loadTMIndex(): Promise<boolean> {
+    if (tmIndex) return true;
+    
+    try {
+      const response = await fetch('/src/data/translationMemory.json');
+      if (response.ok) {
+        tmIndex = await response.json();
+        return true;
+      }
+    } catch {
+      // Translation Memory index not available - this is expected when TM index doesn't exist
+    }
+    return false;
+  }
+
+  // Click handler for TM lookup buttons (lazy loading)
+  document.addEventListener('click', async (e) => {
+    const trigger = (e.target as HTMLElement).closest('.tm-match-trigger, .tm-lookup-btn');
+    if (!trigger) return;
+
+    e.preventDefault();
+
+    // Check for pre-computed matches first
+    const matchDataStr = trigger.getAttribute('data-tm-matches');
+    if (matchDataStr) {
+      try {
+        const result: TMMatchResult = JSON.parse(matchDataStr);
+        result.phraseGroups.forEach(pg => {
+          pg.matchedWords = new Set(pg.matchedWords as unknown as string[]);
+        });
+        showPopover(result, 0, 0, 'auto', trigger as HTMLElement);
+        return;
+      } catch (err) {
+        console.error('Failed to parse TM match data:', err);
+      }
+    }
+
+    // Lazy load: get pali text and compute matches on demand
+    const paliText = trigger.getAttribute('data-pali-text');
+    if (!paliText) return;
+
+    // Show loading state
+    const originalText = trigger.textContent;
+    trigger.textContent = 'Loading...';
+    (trigger as HTMLButtonElement).disabled = true;
+
+    // Load index if needed
+    const loaded = await loadTMIndex();
+    if (!loaded) {
+      trigger.textContent = 'TM (unavailable)';
+      return;
+    }
+
+    const currentSuttaId = getCurrentSuttaId();
+    const result = findMatches(paliText, paliText, currentSuttaId);
+
+    if (result && result.phraseGroups.length > 0) {
+      // Update button with count
+      trigger.textContent = `TM (${result.totalDiscourses})`;
+      (trigger as HTMLButtonElement).disabled = false;
+      
+      // Cache the result for future clicks
+      const serializableResult = {
+        ...result,
+        phraseGroups: result.phraseGroups.map(pg => ({
+          ...pg,
+          matchedWords: Array.from(pg.matchedWords),
+        })),
+      };
+      trigger.setAttribute('data-tm-matches', JSON.stringify(serializableResult));
+      trigger.removeAttribute('data-pali-text'); // No longer needed
+      
+      showPopover(result, 0, 0, 'auto', trigger as HTMLElement);
+    } else {
+      trigger.textContent = 'TM (0)';
+      (trigger as HTMLButtonElement).disabled = false;
+    }
+  });
+
+  // Initialize when DOM is ready
+  async function initialize() {
+    // First, immediately add placeholder TM buttons to all Pali paragraphs (fast, no computation)
+    addTMLookupButtons();
+    
+    // Then, pre-compute TM for "Translation in progress..." paragraphs in background
+    // Use requestIdleCallback to avoid blocking the main thread
+    scheduleBackgroundComputation();
+  }
+  
+  // Schedule non-blocking background computation for TM match counts
+  function scheduleBackgroundComputation() {
+    // Use requestIdleCallback if available, otherwise setTimeout
+    const scheduleIdle = (window as any).requestIdleCallback || 
+      ((fn: () => void) => setTimeout(fn, 100));
+    
+    scheduleIdle(async () => {
+      // First add any missing buttons for translation-in-progress paragraphs
+      enhanceTranslationPlaceholders();
+      // Then compute match counts for all buttons (non-blocking with batching)
+      await preComputeTMCounts();
+    });
+  }
+
+  // Expose debug functions globally for console debugging and testing
+  (window as any).tmDebug = {
+    // Run matching on any Pali text
+    findMatches: (paliText: string, suttaId?: string) => {
+      if (!tmIndex) {
+        console.warn('[TM Debug] Index not loaded. Call loadIndex() first.');
+        return null;
+      }
+      const result = findMatches(paliText, paliText, suttaId);
+      console.log('[TM Debug] Match result:', result);
+      return result;
+    },
+    
+    // Load the index (call this first)
+    loadIndex: async () => {
+      const loaded = await loadTMIndex();
+      if (loaded) {
+        console.log('[TM Debug] Index loaded:', {
+          entries: tmIndex?.entries.length,
+          ngrams: Object.keys(tmIndex?.ngrams || {}).length,
+          ngramSize: tmIndex?.ngramSize,
+        });
+      }
+      return loaded;
+    },
+    
+    // Get index stats
+    getIndexStats: () => {
+      if (!tmIndex) return null;
+      return {
+        entries: tmIndex.entries.length,
+        ngrams: Object.keys(tmIndex.ngrams || {}).length,
+        ngramSize: tmIndex.ngramSize,
+        version: tmIndex.version,
+      };
+    },
+    
+    // Normalize Pali text (for debugging)
+    normalize: normalizePali,
+    
+    // Check if a word is a stop word
+    isStopWord: isStopWord,
+    
+    // Get words from text
+    getWords: (text: string) => {
+      const normalized = normalizePali(text);
+      const words = normalized.split(/\s+/).filter(w => w.length > 0);
+      const contentWords = words.filter(w => !isStopWord(w));
+      const result = {
+        all: words,
+        content: contentWords,
+        totalCount: words.length,
+        contentCount: contentWords.length,
+      };
+      console.log(JSON.stringify(result, null, 2));
+      return result;
+    },
+    
+    // Find matches and return JSON-stringified result for easy copy/paste
+    findMatchesJSON: (paliText: string, suttaId?: string) => {
+      if (!tmIndex) {
+        console.warn('[TM Debug] Index not loaded. Call loadIndex() first.');
+        return null;
+      }
+      const result = findMatches(paliText, paliText, suttaId);
+      if (result) {
+        // Convert Sets to arrays for JSON serialization
+        const serializable = {
+          ...result,
+          phraseGroups: result.phraseGroups.map(pg => ({
+            ...pg,
+            matchedWords: [...pg.matchedWords],
+            discourses: pg.discourses.map(d => ({
+              suttaId: d.suttaId,
+              paragraphNum: d.paragraphNum,
+              collection: d.collection,
+            })),
+            diverseDiscourses: pg.diverseDiscourses.map(d => ({
+              suttaId: d.suttaId,
+              paragraphNum: d.paragraphNum,
+              collection: d.collection,
+            })),
+          })),
+        };
+        console.log(JSON.stringify(serializable, null, 2));
+        return serializable;
+      }
+      return null;
+    },
+    
+    // Get Pali paragraphs from a discourse element on the page
+    // Usage: tmDebug.getPaliParagraphs() - gets all paragraphs from current page
+    getPaliParagraphs: () => {
+      // Look for actual content paragraphs, not the title
+      // Use data-paragraph-num if available, otherwise filter out short title-like elements
+      const paliParas = document.querySelectorAll('.pali-paragraph, [lang="pi"]');
+      const paragraphs: Array<{ num: number; text: string }> = [];
+      let paraNum = 0;
+      paliParas.forEach((el) => {
+        const text = el.textContent?.trim() || '';
+        // Skip very short elements that are likely titles (less than 30 chars and no periods)
+        if (text && (text.length > 30 || text.includes('.'))) {
+          paraNum++;
+          paragraphs.push({ num: paraNum, text });
+        }
+      });
+      console.log(`Found ${paragraphs.length} Pali paragraphs`);
+      return paragraphs;
+    },
+    
+    // Find matches for specific paragraphs on current page
+    // Usage: tmDebug.findPageMatches() - all paragraphs
+    // Usage: tmDebug.findPageMatches(3) - just paragraph 3
+    // Usage: tmDebug.findPageMatches(1, 5) - paragraphs 1 through 5
+    findPageMatches: async (startPara?: number, endPara?: number) => {
+      const loaded = await loadTMIndex();
+      if (!loaded) {
+        console.warn('[TM Debug] Failed to load index');
+        return null;
+      }
+      
+      const currentSuttaId = getCurrentSuttaId();
+      const paragraphs = (window as any).tmDebug.getPaliParagraphs();
+      
+      // If only startPara provided, return just that one paragraph
+      const start = startPara ?? 1;
+      const end = endPara ?? (startPara !== undefined ? startPara : paragraphs.length);
+      
+      const results: Array<{ paragraph: number; text: string; matches: any }> = [];
+      
+      for (let i = start - 1; i < end && i < paragraphs.length; i++) {
+        const para = paragraphs[i];
+        const matches = findMatches(para.text, para.text, currentSuttaId);
+        results.push({
+          paragraph: para.num,
+          text: para.text.substring(0, 100) + (para.text.length > 100 ? '...' : ''),
+          matches: matches ? {
+            totalDiscourses: matches.totalDiscourses,
+            phraseGroups: matches.phraseGroups.length,
+            groups: matches.phraseGroups.map(pg => ({
+              matchedSegment: pg.matchedSegment, // The actual matched segment from source
+              words: pg.matchedWordCount,        // Segment length (including repeated words)
+              contentWords: pg.contentWordCount, // Non-stop words count
+              uniqueWords: pg.matchedWords.size, // Unique words (for highlighting)
+              discourses: pg.totalCount,
+              score: pg.score,
+              wordRange: `${pg.startIndex}-${pg.endIndex}`,
+              firstMatch: pg.diverseDiscourses[0]?.suttaId,
+            })),
+          } : null,
+        });
+      }
+      
+      console.log(JSON.stringify(results, null, 2));
+      return results;
+    },
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+  } else {
+    // Small delay to ensure content is rendered
+    setTimeout(initialize, 100);
+  }
+</script>
+)}

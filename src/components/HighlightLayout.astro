@@ -264,6 +264,13 @@ const { title, description } = Astro.props;
 		document.getElementById("highlight-signin")!.style.display = "none";
 
 		const target = e.target as HTMLElement;
+
+		// Skip if selection is inside Translation Memory popover
+		// SEARCH & FIND: Skip highlighting on components like Translation Memory popover
+		if (target.closest(".tm-popover-overlay")) {
+			return;
+		}
+
 		const selection = window.rangy.getSelection();
 
 		// Early validations

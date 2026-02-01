@@ -205,8 +205,54 @@ import "../styles/bottomDrawer.css";
 	function enableWordNavigation(clickedWord: HTMLElement) {
 		isNavigationMode = true;
 
-		// Get ALL pali words from ALL paragraphs (cross-paragraph navigation)
-		currentWords = Array.from(document.querySelectorAll(".pali-word"));
+		// Check if the clicked word is inside a TM popover - scope navigation to popover only
+		const tmPopover = clickedWord.closest('.tm-popover');
+		
+		let allWords: HTMLElement[];
+		if (tmPopover) {
+			// Only get pali words within the TM popover
+			allWords = Array.from(tmPopover.querySelectorAll(".pali-word")) as HTMLElement[];
+		} else {
+			// Get ALL pali words from page EXCEPT those inside TM popovers
+			allWords = (Array.from(document.querySelectorAll(".pali-word")) as HTMLElement[])
+				.filter(word => !word.closest('.tm-popover'));
+		}
+		
+		// Filter out words that are not visible (e.g., in hidden split panel or interleaved view)
+		currentWords = allWords.filter((el) => {
+			// Check if element or any ancestor is hidden via aria-hidden
+			if (el.closest('[aria-hidden="true"]')) {
+				return false;
+			}
+			// Check if element has no offset parent (detached or display:none ancestor)
+			if (el.offsetParent === null) {
+				// Exception: fixed/sticky positioned elements have null offsetParent but are visible
+				const style = window.getComputedStyle(el);
+				if (style.position !== 'fixed' && style.position !== 'sticky') {
+					return false;
+				}
+			}
+			// Check computed visibility
+			const style = window.getComputedStyle(el);
+			if (style.display === "none" || style.visibility === "hidden") {
+				return false;
+			}
+			// Check if parent article/container is hidden
+			const parentArticle = el.closest(
+				"article, .split-wrapper, .interleaved-article"
+			);
+			if (parentArticle) {
+				const parentStyle = window.getComputedStyle(parentArticle);
+				if (
+					parentStyle.display === "none" ||
+					parentStyle.visibility === "hidden"
+				) {
+					return false;
+				}
+			}
+			return true;
+		});
+		
 		currentWordIndex = currentWords.indexOf(clickedWord);
 		highlightCurrentWord();
 	}
@@ -397,12 +443,16 @@ import "../styles/bottomDrawer.css";
 				currentWord.classList.add("tooltip-text-highlighted");
 			}
 
-			// Scroll word into view
-			currentWord.scrollIntoView({
-				behavior: "smooth",
-				block: "center",
-				inline: "center",
-			});
+			// Only scroll into view if NOT inside a TM popover
+			// (TM popover has its own scrollable container)
+			const isInPopover = currentWord.closest('.tm-popover');
+			if (!isInPopover) {
+				currentWord.scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+					inline: "center",
+				});
+			}
 		}
 	}
 

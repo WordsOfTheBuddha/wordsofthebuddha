@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"watch-routes": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs --watch",
-		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts",
+		"predev": "node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts && npx tsx src/utils/generateTranslationMemory.ts",
 		"gen:qualities": "npx tsx src/utils/generateQualityMappings.ts",
 		"gen:similes": "npx tsx src/utils/generateSimileMappings.ts",
 		"gen:topics": "npx tsx src/utils/generateTopicMappings.ts",
