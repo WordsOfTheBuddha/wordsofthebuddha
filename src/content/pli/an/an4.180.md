@@ -1,8 +1,10 @@
 ---
 title: Mahāpadesa sutta - The Great References
-description: The Buddha teaches the four great references that should be kept in mind to determine the authenticity of the Dhamma, Vinaya, and the teacher's instruction.
+description: The Buddha teaches the four great references that should be kept in mind to determine the authenticity of the Dhamma, Vinaya, and the teacher’s instruction.
+qualities: examination, discernment, recollection of the Dhamma
+theme: principle
 fetter: doubt, ignorance
-tags: Dhamma, teachings, Vinaya, discipline, teacher's instruction, authenticity, doubt, ignorance, reference, suttas, discourses, elders, bhikkhu, community, saṅgha, Ānanda Shrine, Bhoga, an, an4
+tags: Dhamma, teachings, Vinaya, discipline, teacher’s instruction, authenticity, doubt, ignorance, reference, suttas, discourses, elders, bhikkhu, community, saṅgha, Ānanda Shrine, Bhoga, an, an4
 slug: an4.180
 ---
 

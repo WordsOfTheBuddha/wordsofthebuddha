@@ -1,6 +1,6 @@
 ---
 title: Paṭhama sīla sutta - Ethical Conduct (First)
-description: Endowed with the mental qualities of harmful conduct and views, one is reborn in hell.
+description: Possessing the mental qualities of harmful conduct and views, one is reborn in hell.
 qualities: unprincipled conduct, wrong view, lack of discernment
 theme: wisdom, principle
 fetter: personal existence, conceit, ignorance
