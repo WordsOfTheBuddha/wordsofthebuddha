@@ -10,7 +10,7 @@ import "../styles/bottomDrawer.css";
 	function parseMarkdownLinks(text: string) {
 		return text.replace(
 			/\[([^\]]+)\]\(([^)]+)\)/g,
-			'<a href="$2" class="tooltip-link">$1</a>'
+			'<a href="$2" class="tooltip-link">$1</a>',
 		);
 	}
 
@@ -57,7 +57,7 @@ import "../styles/bottomDrawer.css";
 		show(
 			content: string,
 			contentType: "markdown" | "dictionary",
-			primaryText?: string
+			primaryText?: string,
 		) {
 			if (!this.popover) return;
 
@@ -137,7 +137,7 @@ import "../styles/bottomDrawer.css";
 			if (popoverContent) {
 				// Remove existing navigation controls
 				const existingNav = popoverContent.querySelector(
-					".navigation-controls"
+					".navigation-controls",
 				);
 				if (existingNav) existingNav.remove();
 
@@ -148,7 +148,7 @@ import "../styles/bottomDrawer.css";
 
 		removeNavigationControls() {
 			const navControls = this.popover?.querySelector(
-				".navigation-controls"
+				".navigation-controls",
 			);
 			if (navControls) {
 				navControls.remove();
@@ -185,7 +185,7 @@ import "../styles/bottomDrawer.css";
 						const parsedTooltip = parseMarkdownLinks(tooltip);
 						// Store original content for popover
 						return `<span class="tooltip-text" data-tooltip-content="${escapeHtml(parsedTooltip)}">${textPart}</span>`;
-					}
+					},
 				);
 				const span = document.createElement("span");
 				span.innerHTML = text;
@@ -206,18 +206,23 @@ import "../styles/bottomDrawer.css";
 		isNavigationMode = true;
 
 		// Check if the clicked word is inside a TM popover - scope navigation to popover only
-		const tmPopover = clickedWord.closest('.tm-popover');
-		
+		const tmPopover = clickedWord.closest(".tm-popover");
+
 		let allWords: HTMLElement[];
 		if (tmPopover) {
 			// Only get pali words within the TM popover
-			allWords = Array.from(tmPopover.querySelectorAll(".pali-word")) as HTMLElement[];
+			allWords = Array.from(
+				tmPopover.querySelectorAll(".pali-word"),
+			) as HTMLElement[];
 		} else {
 			// Get ALL pali words from page EXCEPT those inside TM popovers
-			allWords = (Array.from(document.querySelectorAll(".pali-word")) as HTMLElement[])
-				.filter(word => !word.closest('.tm-popover'));
+			allWords = (
+				Array.from(
+					document.querySelectorAll(".pali-word"),
+				) as HTMLElement[]
+			).filter((word) => !word.closest(".tm-popover"));
 		}
-		
+
 		// Filter out words that are not visible (e.g., in hidden split panel or interleaved view)
 		currentWords = allWords.filter((el) => {
 			// Check if element or any ancestor is hidden via aria-hidden
@@ -228,7 +233,7 @@ import "../styles/bottomDrawer.css";
 			if (el.offsetParent === null) {
 				// Exception: fixed/sticky positioned elements have null offsetParent but are visible
 				const style = window.getComputedStyle(el);
-				if (style.position !== 'fixed' && style.position !== 'sticky') {
+				if (style.position !== "fixed" && style.position !== "sticky") {
 					return false;
 				}
 			}
@@ -239,7 +244,7 @@ import "../styles/bottomDrawer.css";
 			}
 			// Check if parent article/container is hidden
 			const parentArticle = el.closest(
-				"article, .split-wrapper, .interleaved-article"
+				"article, .split-wrapper, .interleaved-article",
 			);
 			if (parentArticle) {
 				const parentStyle = window.getComputedStyle(parentArticle);
@@ -252,7 +257,7 @@ import "../styles/bottomDrawer.css";
 			}
 			return true;
 		});
-		
+
 		currentWordIndex = currentWords.indexOf(clickedWord);
 		highlightCurrentWord();
 	}
@@ -262,7 +267,7 @@ import "../styles/bottomDrawer.css";
 
 		// Get ALL tooltip elements from the page and filter out invalid ones
 		const allTooltips = Array.from(
-			document.querySelectorAll(".tooltip-text")
+			document.querySelectorAll(".tooltip-text"),
 		) as HTMLElement[];
 		currentWords = allTooltips.filter((el) => {
 			const text = el.textContent?.trim();
@@ -292,7 +297,7 @@ import "../styles/bottomDrawer.css";
 			}
 			// Check if parent article/container is hidden
 			const parentArticle = el.closest(
-				"article, .split-wrapper, .interleaved-article"
+				"article, .split-wrapper, .interleaved-article",
 			);
 			if (parentArticle) {
 				const parentStyle = window.getComputedStyle(parentArticle);
@@ -313,12 +318,12 @@ import "../styles/bottomDrawer.css";
 		if (currentWordIndex === -1) {
 			const clickedText = clickedTooltip.textContent?.trim();
 			const clickedContent = clickedTooltip.getAttribute(
-				"data-tooltip-content"
+				"data-tooltip-content",
 			);
 			currentWordIndex = currentWords.findIndex(
 				(el) =>
 					el.textContent?.trim() === clickedText &&
-					el.getAttribute("data-tooltip-content") === clickedContent
+					el.getAttribute("data-tooltip-content") === clickedContent,
 			);
 		}
 
@@ -370,7 +375,7 @@ import "../styles/bottomDrawer.css";
 	// Spatial navigation function
 	function findWordVertically(
 		currentWord: HTMLElement,
-		direction: "up" | "down"
+		direction: "up" | "down",
 	): HTMLElement | null {
 		const currentRect = currentWord.getBoundingClientRect();
 		const currentCenter = {
@@ -417,10 +422,10 @@ import "../styles/bottomDrawer.css";
 	function updateNavigationButtons() {
 		const popover = bottomPopover.getPopoverElement();
 		const prevBtn = popover?.querySelector(
-			".nav-prev"
+			".nav-prev",
 		) as HTMLButtonElement;
 		const nextBtn = popover?.querySelector(
-			".nav-next"
+			".nav-next",
 		) as HTMLButtonElement;
 
 		if (prevBtn) {
@@ -445,7 +450,7 @@ import "../styles/bottomDrawer.css";
 
 			// Only scroll into view if NOT inside a TM popover
 			// (TM popover has its own scrollable container)
-			const isInPopover = currentWord.closest('.tm-popover');
+			const isInPopover = currentWord.closest(".tm-popover");
 			if (!isInPopover) {
 				currentWord.scrollIntoView({
 					behavior: "smooth",
@@ -459,12 +464,12 @@ import "../styles/bottomDrawer.css";
 	function clearWordHighlights() {
 		document
 			.querySelectorAll(
-				".pali-word-highlighted, .tooltip-text-highlighted"
+				".pali-word-highlighted, .tooltip-text-highlighted",
 			)
 			.forEach((word) => {
 				word.classList.remove(
 					"pali-word-highlighted",
-					"tooltip-text-highlighted"
+					"tooltip-text-highlighted",
 				);
 			});
 	}
@@ -523,7 +528,7 @@ import "../styles/bottomDrawer.css";
 
 	async function showDictionaryPopover(
 		word: string,
-		enableNavigation: boolean = false
+		enableNavigation: boolean = false,
 	) {
 		if (!bottomPopover) return;
 
@@ -538,7 +543,7 @@ import "../styles/bottomDrawer.css";
 				<span class="ml-2">Loading definition...</span>
 			</div>
 		`,
-			"dictionary"
+			"dictionary",
 		);
 
 		try {
@@ -552,7 +557,7 @@ import "../styles/bottomDrawer.css";
 			} else {
 				bottomPopover.show(
 					`<div><span style="font-family: 'Gentium Plus', serif;">${word}</span>: No definition found</div>`,
-					"dictionary"
+					"dictionary",
 				);
 			}
 		} catch (error) {
@@ -606,7 +611,7 @@ import "../styles/bottomDrawer.css";
 								.map(
 									(def: any, idx: number) => `
 								<div class="meaning-item">${idx + 1}. ${def.meaning}${def.meaning_lit ? `; <em>lit. ${def.meaning_lit}</em>` : ""}</div>
-							`
+							`,
 								)
 								.join("")}
 						</div>
@@ -662,12 +667,12 @@ import "../styles/bottomDrawer.css";
 									.map(
 										(meaning: string) => `
 									<div class="meaning-item">${meaning}</div>
-								`
+								`,
 									)
 									.join("")}
 							</div>
 						</div>
-					`
+					`,
 						)
 						.join("")}
 				</div>
@@ -697,7 +702,7 @@ import "../styles/bottomDrawer.css";
 						nextSibling &&
 						nextSibling.nodeType === Node.ELEMENT_NODE &&
 						(nextSibling as Element).classList.contains(
-							"word-space"
+							"word-space",
 						)
 					) {
 						// Insert a text node with a space after the pali-word
@@ -719,7 +724,7 @@ import "../styles/bottomDrawer.css";
 		// Handle |text::tooltip| clicks
 		document.addEventListener("click", (e) => {
 			const tooltipElement = (e.target as HTMLElement).closest(
-				".tooltip-text"
+				".tooltip-text",
 			);
 			if (tooltipElement) {
 				e.preventDefault();
@@ -783,7 +788,7 @@ import "../styles/bottomDrawer.css";
 						if (!target.closest(".pali-paragraph")) return;
 						startTouch = e.touches[0];
 					},
-					{ passive: true }
+					{ passive: true },
 				);
 
 				document.addEventListener(
@@ -799,7 +804,7 @@ import "../styles/bottomDrawer.css";
 						}
 						startTouch = null;
 					},
-					{ passive: true }
+					{ passive: true },
 				);
 			}
 		}
@@ -883,7 +888,7 @@ import "../styles/bottomDrawer.css";
 					}
 				}
 			},
-			true
+			true,
 		); // Use capture phase to handle before other listeners
 	});
 </script>

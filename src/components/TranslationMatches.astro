@@ -19,6 +19,7 @@
     cursor: pointer;
     opacity: 0.7;
     transition: opacity 0.15s ease;
+    user-select: none; /* Prevent TM button from being included in copy */
   }
 
   .tm-lookup-btn:hover {
@@ -436,6 +437,10 @@
     collection: string;
     paliOriginal: string;
     englishOriginal: string;
+    matchedWords?: Set<string>;    // Per-discourse matched words (optional for backward compat)
+    contentWordCount?: number;     // Per-discourse content word count
+    entryStartIndex?: number;      // Position where match starts in entry text
+    entryEndIndex?: number;        // Position where match ends in entry text
   }
 
   // A group of discourses that share the same phrase pattern
@@ -459,6 +464,7 @@
     sourcePali: string;
     totalDiscourses: number;
     sourceWordCount: number; // Total words in source paragraph for percentage calculation
+    sourceRef?: { suttaId: string; paragraphNum: number }; // Source paragraph reference for display
   }
 
   const THRESHOLDS = {
@@ -696,9 +702,8 @@
       if (!entryIds) continue;
       
       for (const id of entryIds) {
-        // Skip same sutta
+        // Note: We now allow same-discourse matching for internal consistency checking
         const entry = tmIndex.entries[id];
-        if (currentSuttaId && entry?.source.suttaId === currentSuttaId) continue;
         
         if (!entryMatches.has(id)) {
           entryMatches.set(id, new Set());
@@ -711,7 +716,8 @@
   }
 
   // Find multiple matches for a Pali paragraph
-  function findMatches(queryPali: string, queryPaliOriginal: string, currentSuttaId?: string): TMMatchResult | null {
+  // sourceRef: optional reference to the source paragraph for display in popover
+  function findMatches(queryPali: string, queryPaliOriginal: string, currentSuttaId?: string, sourceRef?: { suttaId: string; paragraphNum: number }): TMMatchResult | null {
     if (!tmIndex || tmIndex.entries.length === 0) return null;
 
     const queryNormalized = normalizePali(queryPali);
@@ -729,6 +735,8 @@
       matchedSegment: string;
       startIndex: number;
       endIndex: number;
+      entryStartIndex: number;  // Position in entry text
+      entryEndIndex: number;    // Position in entry text
     }> = [];
 
     // Step 1: Use n-gram index to find candidate entries with shared phrases
@@ -739,11 +747,20 @@
       const entry = tmIndex.entries[entryId];
       if (!entry) continue;
       
+      // Skip the exact same paragraph (same suttaId AND same paragraphNum)
+      if (sourceRef && entry.source.suttaId === sourceRef.suttaId && entry.source.paragraphNum === sourceRef.paragraphNum) {
+        continue;
+      }
+      
       const ngramSize = tmIndex.ngramSize || 5;
       
       // Get which source words are covered by the matched ngrams
       // This tells us EXACTLY which part of the source paragraph this entry matches
       const sourceRange = getSourceWordRange(queryWords, matchedNgrams, ngramSize);
+      
+      // Also get which ENTRY words are covered by the matched ngrams
+      const entryWords = entry.paliNormalized.split(/\s+/).filter(w => w.length > 0);
+      const entryRange = getSourceWordRange(entryWords, matchedNgrams, ngramSize);
       
       if (sourceRange && sourceRange.contentWordCount >= 2) {
         // Score based on coverage: how much of the source phrase is matched
@@ -758,6 +775,8 @@
           matchedSegment: sourceRange.matchedWords.join(' '), // Store actual segment for debugging
           startIndex: sourceRange.startIndex,
           endIndex: sourceRange.endIndex,
+          entryStartIndex: entryRange?.startIndex ?? 0,
+          entryEndIndex: entryRange?.endIndex ?? (entryWords.length - 1),
         });
       }
     }
@@ -765,8 +784,10 @@
     // Step 3: Also check entries without n-gram matches but potential contiguous matches
     // (for short entries that might not have enough n-grams)
     for (const entry of tmIndex.entries) {
-      // Skip same sutta
-      if (currentSuttaId && entry.source.suttaId === currentSuttaId) continue;
+      // Skip the exact same paragraph (same suttaId AND same paragraphNum)
+      if (sourceRef && entry.source.suttaId === sourceRef.suttaId && entry.source.paragraphNum === sourceRef.paragraphNum) {
+        continue;
+      }
       
       // Skip if already processed via n-gram
       if (ngramMatches.has(entry.id)) continue;
@@ -780,6 +801,7 @@
       const match = findContiguousMatch(entryWords, queryWords);
       
       if (match && match.score >= THRESHOLDS.PARAGRAPH_SIMILARITY && match.contentWordCount >= 2) {
+        // For short entries, the match covers the whole entry
         allMatches.push({
           entry,
           score: match.score,
@@ -789,6 +811,8 @@
           matchedSegment: match.matchedWords.join(' '),
           startIndex: match.startIndex,
           endIndex: match.endIndex,
+          entryStartIndex: 0,
+          entryEndIndex: entryWords.length - 1,
         });
       }
     }
@@ -822,8 +846,11 @@
     for (const m of allMatches) {
       // Group by CONTENT words only (excluding stop words) for consistency
       // This ensures phrases that differ only by stop words (like "ime kho") are grouped together
+      // Also include content word count to prevent grouping matches of vastly different lengths
       const contentWordsOnly = [...m.matchedWords].filter(w => !isStopWord(w)).sort();
-      const phraseKey = contentWordsOnly.join(' ');
+      // Round content word count to buckets of 10 to allow minor variations in same group
+      const countBucket = Math.floor(m.contentWordCount / 10) * 10;
+      const phraseKey = `${countBucket}:${contentWordsOnly.join(' ')}`;
       
       if (!phraseMap.has(phraseKey)) {
         phraseMap.set(phraseKey, {
@@ -840,7 +867,15 @@
       }
       
       const group = phraseMap.get(phraseKey)!;
-      group.totalCount++; // Always count
+      
+      // Filter out discourses with significantly fewer matched words (subset matches)
+      // Allow up to 10% fewer words, otherwise reject as a subset match
+      const minAllowedWords = Math.floor(group.contentWordCount * 0.9);
+      if (m.contentWordCount < minAllowedWords) {
+        continue; // Skip this discourse - it's a subset match
+      }
+      
+      group.totalCount++; // Count only non-subset matches
       
       // Only store up to MAX for diversity selection
       if (group.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
@@ -850,6 +885,10 @@
           collection: m.entry.source.collection,
           paliOriginal: m.entry.paliOriginal,
           englishOriginal: m.entry.englishOriginal,
+          matchedWords: m.matchedWords, // Store per-discourse matched words
+          contentWordCount: m.contentWordCount, // Store per-discourse content word count
+          entryStartIndex: m.entryStartIndex, // Position in entry text
+          entryEndIndex: m.entryEndIndex,     // Position in entry text
         });
       }
     }
@@ -880,14 +919,25 @@
 
     // Filter out phrase groups that are subsets OR equal to existing groups
     // For equal groups, merge their discourses and counts into the first one
+    // For pure subsets, skip them entirely (don't display redundant smaller matches)
     const phraseGroups: TMPhraseGroup[] = [];
 
     for (const [phraseNormalized, data] of sortedGroups) {
-      // Check if this group's content words are a subset of any already-added group
-      // If so, merge into the larger group (regardless of whether it has unique suttas)
-      const existingMatch = phraseGroups.find(existing => 
-        setsEqual(data.matchedWords, existing.matchedWords) || 
+      // Check if this group's content words are a PURE SUBSET of any already-added group
+      // If so, skip it entirely - the larger group already covers these words
+      const isPureSubset = phraseGroups.some(existing => 
         isContentWordSubset(data.matchedWords, existing.matchedWords)
+      );
+      
+      if (isPureSubset) {
+        // Skip this group - it's a pure subset of a larger match
+        continue;
+      }
+      
+      // Check if this group is EQUAL to an existing group (same matched words)
+      // If so, merge their discourses together
+      const existingMatch = phraseGroups.find(existing => 
+        setsEqual(data.matchedWords, existing.matchedWords)
       );
 
       if (existingMatch) {
@@ -935,26 +985,39 @@
       sourcePali: queryPaliOriginal,
       totalDiscourses,
       sourceWordCount: queryWords.length, // Total words for display (users can count and verify)
+      sourceRef, // Source paragraph reference for display
     };
   }
 
-  // Select diverse discourses from different collections
+  // Select diverse discourses from different suttas (not just collections)
   function selectDiverseDiscourses(discourses: TMDiscourse[], count: number): TMDiscourse[] {
     if (discourses.length <= count) return discourses;
 
     const selected: TMDiscourse[] = [];
+    const seenSuttas = new Set<string>();
     const seenCollections = new Set<string>();
 
-    // First pass: pick one from each collection
+    // First pass: pick one from each unique sutta
     for (const d of discourses) {
       if (selected.length >= count) break;
-      if (!seenCollections.has(d.collection)) {
+      if (!seenSuttas.has(d.suttaId)) {
         selected.push(d);
+        seenSuttas.add(d.suttaId);
         seenCollections.add(d.collection);
       }
     }
 
-    // Second pass: fill remaining slots with any discourses
+    // Second pass: if still need more, pick from different collections
+    for (const d of discourses) {
+      if (selected.length >= count) break;
+      if (!seenSuttas.has(d.suttaId) && !seenCollections.has(d.collection)) {
+        selected.push(d);
+        seenSuttas.add(d.suttaId);
+        seenCollections.add(d.collection);
+      }
+    }
+
+    // Third pass: fill remaining slots with any discourses not yet selected
     for (const d of discourses) {
       if (selected.length >= count) break;
       if (!selected.includes(d)) {
@@ -966,8 +1029,10 @@
   }
 
   // Render Pali text with clickable word spans for dictionary lookup
-  // Optionally highlight matched words within a contiguous span wrapper
-  function renderPaliWithWords(text: string, matchedWords?: Set<string>): string {
+  // Two modes:
+  // 1. matchedWords (Set) - finds best contiguous run of matching words (for entry text)
+  // 2. highlightRange ({ start, end }) - highlights words at specific positions (for source text)
+  function renderPaliWithWords(text: string, matchedWords?: Set<string>, highlightRange?: { start: number; end: number }): string {
     // Normalize multiple spaces to single space first
     const normalizedText = text.replace(/\s+/g, ' ');
     
@@ -977,11 +1042,17 @@
     
     if (matches.length === 0) return escapeHtml(normalizedText);
 
-    // If we have matched words, find the best contiguous run for highlighting
+    // Determine highlight range
     let highlightStart = -1;
     let highlightEnd = -1;
     
-    if (matchedWords && matchedWords.size > 0) {
+    // Mode 1: Position-based highlighting (for source text where we know exact positions)
+    if (highlightRange && highlightRange.start >= 0 && highlightRange.end >= highlightRange.start) {
+      highlightStart = highlightRange.start;
+      highlightEnd = Math.min(highlightRange.end, matches.length - 1);
+    }
+    // Mode 2: Word-based highlighting (for entry text where we match words)
+    else if (matchedWords && matchedWords.size > 0) {
       // Build array of which words match
       const wordMatches = matches.map((m, i) => {
         const word = m[0];
@@ -1044,9 +1115,10 @@
       
       // Open highlight wrapper at start of highlighted range
       if (isHighlighted && !insideHighlight) {
-        // Add any text before highlight starts
+        // Add text before highlight starts (preserving ellipsis, punctuation, etc.)
         if (pos > lastEnd) {
-          result += `<span style="padding-left:4px;"></span>`;
+          const between = normalizedText.substring(lastEnd, pos);
+          result += escapeHtml(between);
         }
         result += `<span class="tm-highlight">`;
         insideHighlight = true;
@@ -1054,13 +1126,15 @@
         // Close highlight wrapper when leaving highlighted range
         result += `</span>`;
         insideHighlight = false;
-        // Add spacing after highlight
+        // Add text after highlight (preserving ellipsis, punctuation, etc.)
         if (pos > lastEnd) {
-          result += `<span style="padding-left:4px;"></span>`;
+          const between = normalizedText.substring(lastEnd, pos);
+          result += escapeHtml(between);
         }
       } else if (pos > lastEnd) {
-        // Normal spacing between words
-        result += `<span style="padding-left:4px;"></span>`;
+        // Normal text between words (preserving ellipsis, punctuation, etc.)
+        const between = normalizedText.substring(lastEnd, pos);
+        result += escapeHtml(between);
       }
       
       // Clean word for lookup (remove trailing punctuation, quotes)
@@ -1170,7 +1244,7 @@
     const discCount = phraseGroup.totalCount; // Use true count, not just stored
     const wordLabel = `${phraseGroup.matchedWordCount} words`;
     
-    return includeCount ? `${wordLabel} · ${discCount} discourses` : wordLabel;
+    return includeCount ? `${wordLabel} · ${discCount} match${discCount !== 1 ? 'es' : ''}` : wordLabel;
   }
 
   // Format discourse reference for display
@@ -1253,8 +1327,31 @@ function getCurrentSuttaId(): string {
       const paliText = btn.getAttribute('data-pali-text');
       if (!paliText) continue;
 
+      // Get paragraph number from parent pali-paragraph's data-pair-id, 
+      // or from the corresponding english-paragraph which has data-paragraph-number
+      const parentPara = btn.closest('.pali-paragraph');
+      let paraNum: string | null = null;
+      
+      if (parentPara) {
+        // Method 1: Use data-pair-id to find corresponding English paragraph
+        const pairId = parentPara.getAttribute('data-pair-id');
+        if (pairId) {
+          const engPara = document.querySelector(`.english-paragraph[data-pair-id="${pairId}"]`);
+          paraNum = engPara?.getAttribute('data-paragraph-number') || engPara?.getAttribute('id') || null;
+        }
+        // Method 2: Fallback - look at previous sibling
+        if (!paraNum) {
+          const prevSibling = parentPara.previousElementSibling;
+          if (prevSibling?.classList.contains('english-paragraph')) {
+            paraNum = prevSibling.getAttribute('data-paragraph-number') || prevSibling.getAttribute('id') || null;
+          }
+        }
+      }
+      
+      const sourceRef = currentSuttaId && paraNum ? { suttaId: currentSuttaId, paragraphNum: parseInt(paraNum, 10) } : undefined;
+
       // Compute matches
-      const result = findMatches(paliText, paliText, currentSuttaId);
+      const result = findMatches(paliText, paliText, currentSuttaId, sourceRef);
 
       if (result && result.phraseGroups.length > 0) {
         // Convert Sets to arrays for JSON serialization
@@ -1405,17 +1502,29 @@ function getCurrentSuttaId(): string {
             ${discRef}
           </button>`;
         }).join('')}
-        ${remainingDiscourses > 0 ? `<span class="tm-more-count">+${remainingDiscourses} disc.</span>` : ''}
+        ${remainingDiscourses > 0 ? `<span class="tm-more-count">+${remainingDiscourses} match${remainingDiscourses !== 1 ? 'es' : ''}</span>` : ''}
       </div>
     `;
 
-    // Render source Pali with clickable word spans and highlighting
-    const renderedSourcePali = renderPaliWithWords(result.sourcePali, phraseGroup.matchedWords);
+    // Render source Pali with clickable word spans and position-based highlighting
+    // Use startIndex/endIndex for accurate highlighting of the matched range
+    const sourceHighlightRange = (phraseGroup.startIndex !== undefined && phraseGroup.endIndex !== undefined)
+      ? { start: phraseGroup.startIndex, end: phraseGroup.endIndex }
+      : undefined;
+    const renderedSourcePali = renderPaliWithWords(result.sourcePali, undefined, sourceHighlightRange);
+
+    // Format source reference link (e.g., "MN112 ¶25 ↗")
+    const sourceRefLink = result.sourceRef 
+      ? `<a href="/${result.sourceRef.suttaId}.${result.sourceRef.paragraphNum}?pli=true" target="_blank" class="tm-discourse-link" title="Open ${formatDiscourseRef(result.sourceRef)} in new tab">${formatDiscourseRef(result.sourceRef)} ↗</a>`
+      : '';
 
     // Always show source paragraph with highlighting
     const sourcePaliSection = `
           <div class="tm-section">
-            <div class="tm-section-label">Source Paragraph (to translate)</div>
+            <div class="tm-section-label">
+              Source Paragraph (to translate)
+              ${sourceRefLink}
+            </div>
             <div class="tm-section-content tm-pali tm-source-pali pali-paragraph">${renderedSourcePali}</div>
           </div>
     `;
@@ -1430,8 +1539,12 @@ function getCurrentSuttaId(): string {
     // Render English with glosses as tooltips
     const renderedEnglish = renderGlosses(discourse.englishOriginal);
     
-    // Render matched Pali phrase with clickable word spans
-    const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, phraseGroup.matchedWords);
+    // Render matched Pali phrase with position-based highlighting
+    // Use entryStartIndex/entryEndIndex to highlight the exact matching range in the entry text
+    const entryHighlightRange = (discourse.entryStartIndex !== undefined && discourse.entryEndIndex !== undefined)
+      ? { start: discourse.entryStartIndex, end: discourse.entryEndIndex }
+      : undefined;
+    const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, undefined, entryHighlightRange);
     
     overlay.innerHTML = `
       <div class="tm-popover" role="dialog" aria-modal="true">
@@ -1674,19 +1787,53 @@ function getCurrentSuttaId(): string {
     };
     document.addEventListener('selectionchange', selectionChangeHandler);
 
-    // Prevent page scroll when popover is open
-    const preventScroll = (e: Event) => {
-      e.preventDefault();
+    // Prevent page scroll when popover is open, but allow scroll inside popover content
+    const preventBackgroundScroll = (e: WheelEvent | TouchEvent) => {
+      const popoverContent = overlay.querySelector('.tm-popover-content') as HTMLElement;
+      if (!popoverContent) {
+        e.preventDefault();
+        return;
+      }
+      
+      // Check if content is scrollable
+      const isScrollable = popoverContent.scrollHeight > popoverContent.clientHeight;
+      if (!isScrollable) {
+        e.preventDefault();
+        return;
+      }
+      
+      // Check if the event target is inside the scrollable content
+      const target = e.target as HTMLElement;
+      if (!popoverContent.contains(target)) {
+        e.preventDefault();
+        return;
+      }
+      
+      // For wheel events, prevent scroll at boundaries to avoid background scroll
+      if (e instanceof WheelEvent) {
+        const { scrollTop, scrollHeight, clientHeight } = popoverContent;
+        const atTop = scrollTop <= 0;
+        const atBottom = scrollTop + clientHeight >= scrollHeight;
+        
+        // Scrolling up at top or down at bottom would scroll background
+        if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+          e.preventDefault();
+          return;
+        }
+      }
+      
+      // Allow the scroll inside popover content
+      e.stopPropagation();
     };
-    overlay.addEventListener('wheel', preventScroll, { passive: false });
-    overlay.addEventListener('touchmove', preventScroll, { passive: false });
+    overlay.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    overlay.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
 
     // Cleanup function for all listeners
     let handleKeydown: ((e: KeyboardEvent) => void) | null = null;
     
     const cleanupAndClose = () => {
-      overlay.removeEventListener('wheel', preventScroll);
-      overlay.removeEventListener('touchmove', preventScroll);
+      overlay.removeEventListener('wheel', preventBackgroundScroll);
+      overlay.removeEventListener('touchmove', preventBackgroundScroll);
       if (handleKeydown) {
         document.removeEventListener('keydown', handleKeydown);
       }
@@ -1707,15 +1854,27 @@ function getCurrentSuttaId(): string {
         return;
       }
       
-      // Prevent page scroll on arrow keys when popover is open
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-      }
-      
       // Arrow key navigation for tabs
       const activeElement = document.activeElement as HTMLElement;
       const isInPhraseRow = activeElement?.classList.contains('tm-phrase-tab');
       const isInDiscourseRow = activeElement?.classList.contains('tm-discourse-tab');
+      
+      // Prevent page scroll on arrow keys ONLY when focus is on tabs
+      // This allows arrow key scrolling inside the popover content when not focused on tabs
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        if (isInPhraseRow || isInDiscourseRow) {
+          e.preventDefault();
+        } else {
+          // Not on tabs - check if we should allow default scroll behavior
+          const popoverContent = overlay.querySelector('.tm-popover-content') as HTMLElement;
+          if (popoverContent && popoverContent.contains(activeElement)) {
+            // Allow arrow key scrolling inside popover content
+            return;
+          }
+          // Prevent background page scroll
+          e.preventDefault();
+        }
+      }
       
       if (!isInPhraseRow && !isInDiscourseRow) return;
       
@@ -1844,11 +2003,16 @@ function getCurrentSuttaId(): string {
   }
 
   // Load TM index on demand
+  // In dev mode, always fetch fresh to pick up changes from contentWatcher
   async function loadTMIndex(): Promise<boolean> {
-    if (tmIndex) return true;
+    // In dev mode, always reload to pick up live updates
+    const isDev = import.meta.env?.DEV || window.location.hostname === 'localhost';
+    if (tmIndex && !isDev) return true;
     
     try {
-      const response = await fetch('/src/data/translationMemory.json');
+      // Add cache-busting query param in dev mode
+      const cacheBuster = isDev ? `?t=${Date.now()}` : '';
+      const response = await fetch(`/src/data/translationMemory.json${cacheBuster}`);
       if (response.ok) {
         tmIndex = await response.json();
         return true;
@@ -1898,7 +2062,31 @@ function getCurrentSuttaId(): string {
     }
 
     const currentSuttaId = getCurrentSuttaId();
-    const result = findMatches(paliText, paliText, currentSuttaId);
+    
+    // Get paragraph number from parent pali-paragraph's data-pair-id,
+    // or from the corresponding english-paragraph which has data-paragraph-number
+    const parentPara = trigger.closest('.pali-paragraph');
+    let paraNum: string | null = null;
+    
+    if (parentPara) {
+      // Method 1: Use data-pair-id to find corresponding English paragraph
+      const pairId = parentPara.getAttribute('data-pair-id');
+      if (pairId) {
+        const engPara = document.querySelector(`.english-paragraph[data-pair-id="${pairId}"]`);
+        paraNum = engPara?.getAttribute('data-paragraph-number') || engPara?.getAttribute('id') || null;
+      }
+      // Method 2: Fallback - look at previous sibling
+      if (!paraNum) {
+        const prevSibling = parentPara.previousElementSibling;
+        if (prevSibling?.classList.contains('english-paragraph')) {
+          paraNum = prevSibling.getAttribute('data-paragraph-number') || prevSibling.getAttribute('id') || null;
+        }
+      }
+    }
+    
+    const sourceRef = currentSuttaId && paraNum ? { suttaId: currentSuttaId, paragraphNum: parseInt(paraNum, 10) } : undefined;
+    
+    const result = findMatches(paliText, paliText, currentSuttaId, sourceRef);
 
     if (result && result.phraseGroups.length > 0) {
       // Update button with count
@@ -2005,13 +2193,61 @@ function getCurrentSuttaId(): string {
       return result;
     },
     
-    // Find matches and return JSON-stringified result for easy copy/paste
-    findMatchesJSON: (paliText: string, suttaId?: string) => {
+    // Debug n-gram matching: show raw candidates before processing
+    findNgramCandidates: (paliText: string) => {
       if (!tmIndex) {
         console.warn('[TM Debug] Index not loaded. Call loadIndex() first.');
         return null;
       }
-      const result = findMatches(paliText, paliText, suttaId);
+      const normalized = normalizePali(paliText);
+      const words = normalized.split(/\s+/).filter(w => w.length > 0);
+      const ngramSize = tmIndex.ngramSize || 5;
+      const queryNgrams = extractNgrams(words, ngramSize);
+      
+      console.log(`[TM Debug] Query has ${words.length} words, ${queryNgrams.length} n-grams`);
+      console.log('[TM Debug] First 5 n-grams:', queryNgrams.slice(0, 5));
+      
+      // Find which n-grams have matches
+      const matchedNgrams: Array<{ ngram: string; entryCount: number }> = [];
+      for (const ngram of queryNgrams) {
+        const entryIds = tmIndex.ngrams?.[ngram];
+        if (entryIds) {
+          matchedNgrams.push({ ngram, entryCount: entryIds.length });
+        }
+      }
+      
+      console.log(`[TM Debug] ${matchedNgrams.length}/${queryNgrams.length} n-grams have matches`);
+      console.log('[TM Debug] Matched n-grams:', matchedNgrams);
+      
+      // Count total unique entries
+      const allEntryIds = new Set<number>();
+      for (const ngram of queryNgrams) {
+        const entryIds = tmIndex.ngrams?.[ngram];
+        if (entryIds) {
+          entryIds.forEach(id => allEntryIds.add(id));
+        }
+      }
+      console.log(`[TM Debug] Total unique candidate entries: ${allEntryIds.size}`);
+      
+      return {
+        words: words.length,
+        ngrams: queryNgrams.length,
+        matchedNgrams: matchedNgrams.length,
+        candidateEntries: allEntryIds.size,
+        matchedNgramDetails: matchedNgrams,
+      };
+    },
+    
+    // Find matches and return JSON-stringified result for easy copy/paste
+    // Pass paragraphNum to properly filter out self-matching
+    findMatchesJSON: (paliText: string, suttaId?: string, paragraphNum?: number) => {
+      if (!tmIndex) {
+        console.warn('[TM Debug] Index not loaded. Call loadIndex() first.');
+        return null;
+      }
+      // Create sourceRef if both suttaId and paragraphNum provided (to skip self-matching)
+      const sourceRef = suttaId && paragraphNum ? { suttaId, paragraphNum } : undefined;
+      const result = findMatches(paliText, paliText, suttaId, sourceRef);
       if (result) {
         // Convert Sets to arrays for JSON serialization
         const serializable = {
@@ -2023,11 +2259,13 @@ function getCurrentSuttaId(): string {
               suttaId: d.suttaId,
               paragraphNum: d.paragraphNum,
               collection: d.collection,
+              contentWordCount: d.contentWordCount, // Include for debugging
             })),
             diverseDiscourses: pg.diverseDiscourses.map(d => ({
               suttaId: d.suttaId,
               paragraphNum: d.paragraphNum,
               collection: d.collection,
+              contentWordCount: d.contentWordCount, // Include for debugging
             })),
           })),
         };
@@ -2041,14 +2279,19 @@ function getCurrentSuttaId(): string {
     // Usage: tmDebug.getPaliParagraphs() - gets all paragraphs from current page
     getPaliParagraphs: () => {
       // Look for actual content paragraphs, not the title
-      // Use data-paragraph-num if available, otherwise filter out short title-like elements
-      const paliParas = document.querySelectorAll('.pali-paragraph, [lang="pi"]');
+      // Only select .pali-paragraph elements (the actual paragraphs)
+      // Avoid [lang="pi"] alone since it might match containers
+      const paliParas = document.querySelectorAll('.pali-paragraph');
+      const seen = new Set<string>();
       const paragraphs: Array<{ num: number; text: string }> = [];
       let paraNum = 0;
       paliParas.forEach((el) => {
         const text = el.textContent?.trim() || '';
         // Skip very short elements that are likely titles (less than 30 chars and no periods)
         if (text && (text.length > 30 || text.includes('.'))) {
+          // Deduplicate by text content
+          if (seen.has(text)) return;
+          seen.add(text);
           paraNum++;
           paragraphs.push({ num: paraNum, text });
         }
@@ -2079,7 +2322,9 @@ function getCurrentSuttaId(): string {
       
       for (let i = start - 1; i < end && i < paragraphs.length; i++) {
         const para = paragraphs[i];
-        const matches = findMatches(para.text, para.text, currentSuttaId);
+        // Pass sourceRef to properly filter out self-matching (same sutta + same paragraph)
+        const sourceRef = currentSuttaId ? { suttaId: currentSuttaId, paragraphNum: para.num } : undefined;
+        const matches = findMatches(para.text, para.text, currentSuttaId, sourceRef);
         results.push({
           paragraph: para.num,
           text: para.text.substring(0, 100) + (para.text.length > 100 ? '...' : ''),

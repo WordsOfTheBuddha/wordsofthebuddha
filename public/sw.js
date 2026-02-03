@@ -127,7 +127,9 @@ async function networkFirst(req) {
 		const res = await fetch(req, { signal: ctrl.signal });
 		clearTimeout(to);
 		if (res && res.ok) {
-			cache.put(req, res.clone());
+			try {
+				await cache.put(req, res.clone());
+			} catch {}
 			try {
 				const ct = res.headers.get("content-type") || "";
 				if (ct.includes("text/html")) {
@@ -166,8 +168,11 @@ async function cacheFirst(req, cacheName) {
 	if (cached) return cached;
 	try {
 		const res = await fetch(req);
-		if (res && (res.ok || res.type === "opaque"))
-			await cache.put(req, res.clone());
+		if (res && res.ok) {
+			try {
+				await cache.put(req, res.clone());
+			} catch {}
+		}
 		return res;
 	} catch (_) {
 		return cached || Response.error();
@@ -179,8 +184,10 @@ async function networkFirstAsset(req, cacheName) {
 	const cache = await caches.open(cacheName);
 	try {
 		const res = await fetch(req);
-		if (res && (res.ok || res.type === "opaque")) {
-			cache.put(req, res.clone());
+		if (res && res.ok) {
+			try {
+				await cache.put(req, res.clone());
+			} catch {}
 		}
 		return res;
 	} catch (_) {
@@ -377,7 +384,9 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 					try {
 						const u = new URL(url, self.location.origin);
 						if (u.pathname !== "/offline") {
-							await navCache.put(url, res.clone());
+							try {
+								await navCache.put(url, res.clone());
+							} catch {}
 						}
 						// Prefetch linked assets for this HTML (always)
 						try {
@@ -389,7 +398,9 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 						} catch {}
 					} catch {}
 				} else {
-					await assetsCache.put(url, res.clone());
+					try {
+						await assetsCache.put(url, res.clone());
+					} catch {}
 				}
 			}
 		} catch (e) {
@@ -447,8 +458,10 @@ async function prefetchLinkedAssets(html, baseUrl) {
 					const hit = await cache.match(req);
 					if (hit) return;
 					const res = await fetch(req);
-					if (res && (res.ok || res.type === "opaque")) {
-						await cache.put(req, res.clone());
+					if (res && res.ok) {
+						try {
+							await cache.put(req, res.clone());
+						} catch {}
 					}
 				} catch {}
 			}),

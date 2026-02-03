@@ -29,7 +29,7 @@ async function getFiles(dir) {
 			if (entry.name.startsWith(".")) return [];
 
 			return entry.isDirectory() ? await getFiles(fullPath) : fullPath;
-		})
+		}),
 	);
 	return files.flat();
 }
@@ -64,20 +64,25 @@ async function watchContentDirectory() {
 	const runGenerators = async () => {
 		try {
 			console.log(
-				"🚧 Running generators: routes, counts, search index..."
+				"🚧 Running generators: routes, counts, search index, translation memory...",
 			);
 			await generateRoutes();
 			console.log("   • routes.ts updated");
 			// Generate content counts (directoryStructureWithCounts.ts)
 			await exec(
-				`npx tsx ${resolve(__dirname, "./generateContentCounts.ts")}`
+				`npx tsx ${resolve(__dirname, "./generateContentCounts.ts")}`,
 			);
 			console.log("   • directoryStructureWithCounts.ts updated");
 			// Regenerate search index used by collection discourses view
 			await exec(
-				`npx tsx ${resolve(__dirname, "./generateSearchIndex.ts")}`
+				`npx tsx ${resolve(__dirname, "./generateSearchIndex.ts")}`,
 			);
 			console.log("   • searchIndex.ts updated");
+			// Regenerate translation memory index for TM matching
+			await exec(
+				`npx tsx ${resolve(__dirname, "./generateTranslationMemory.ts")}`,
+			);
+			console.log("   • translationMemory.json updated");
 			console.log("✅ Generators complete");
 		} catch (error) {
 			console.error("❌ Generator run failed:", error?.stderr || error);
@@ -89,7 +94,7 @@ async function watchContentDirectory() {
 		// Only react to MDX content changes
 		if (!filename.endsWith(".mdx")) return;
 		console.log(
-			`\nDetected ${eventType} on ${filename}. Scheduling regeneration...`
+			`\nDetected ${eventType} on ${filename}. Scheduling regeneration...`,
 		);
 		if (debounceTimer) clearTimeout(debounceTimer);
 		debounceTimer = setTimeout(runGenerators, 200);
@@ -102,14 +107,14 @@ async function watchContentDirectory() {
 			(filename.endsWith(".yaml") || filename.endsWith(".yml"))
 		) {
 			console.log(
-				`\nDetected ${eventType} on ${filename}. Regenerating topic mappings...`
+				`\nDetected ${eventType} on ${filename}. Regenerating topic mappings...`,
 			);
 			try {
 				await generateTopicMappings();
 			} catch (error) {
 				console.error(
 					"❌ Topic mappings generation failed during watch:",
-					error
+					error,
 				);
 			}
 		}
@@ -119,14 +124,14 @@ async function watchContentDirectory() {
 	watch(QUALITIES_FILE, async (eventType, filename) => {
 		if (filename && filename.endsWith(".json")) {
 			console.log(
-				`\nDetected ${eventType} on ${filename}. Regenerating quality mappings...`
+				`\nDetected ${eventType} on ${filename}. Regenerating quality mappings...`,
 			);
 			try {
 				await generateQualityMappings();
 			} catch (error) {
 				console.error(
 					"❌ Quality mappings generation failed during watch:",
-					error
+					error,
 				);
 			}
 		}

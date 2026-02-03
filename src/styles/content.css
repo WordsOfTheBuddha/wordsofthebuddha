@@ -1,101 +1,100 @@
 h1 {
-  color: var(--text-color);
+	color: var(--text-color);
 }
 
 p {
-  line-height: 1.8;
+	line-height: 1.8;
 }
 
 code {
-  background-color: var(--code-bg);
-  color: var(--code-text);
+	background-color: var(--code-bg);
+	color: var(--code-text);
 }
 
 pre {
-  background-color: var(--code-bg);
-  padding: 1rem;
+	background-color: var(--code-bg);
+	padding: 1rem;
 }
 
 .prose article {
-  max-width: inherit;
+	max-width: inherit;
 }
 
 .prose a {
-  color: var(--link-color);
-  text-decoration: none;
+	color: var(--link-color);
+	text-decoration: none;
 }
 
 .prose a.text-white {
-  color: var(--background-color);
-  text-decoration: none;
+	color: var(--background-color);
+	text-decoration: none;
 }
 
 a:hover {
-  color: var(--link-hover-color);
+	color: var(--link-hover-color);
 }
 
 .prose blockquote {
-  quotes: none;
+	quotes: none;
 }
 
 .image-container {
-  display: flex;
-  justify-content: left;
-  margin: 20px 0;
+	display: flex;
+	justify-content: left;
+	margin: 20px 0;
 }
 
 .about-image {
-  max-height: 150px;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	max-height: 150px;
+	border-radius: 50%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .contains-task-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 0.25rem;
+	list-style: none;
+	padding: 0;
+	margin-top: 0.25rem;
 }
 
 .task-list-item input[type="checkbox"] {
-  margin-right: 8px;
-  accent-color: var(--primary-color);
-  width: 1rem;
-  height: 1rem;
+	margin-right: 8px;
+	accent-color: var(--primary-color);
+	width: 1rem;
+	height: 1rem;
 }
 
 .task-list-item input[type="checkbox"]:checked {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
 }
 
 .task-list-item input[type="checkbox"]:disabled {
-  opacity: 1;
-  cursor: not-allowed;
-  border-color: var(--gray-400);
-  background-color: var(--gray-200);
+	opacity: 1;
+	cursor: not-allowed;
+	border-color: var(--gray-400);
+	background-color: var(--gray-200);
 }
 
 .task-list-item input[type="checkbox"]:disabled:checked {
-  background-color: var(--gray-400);
-  border-color: var(--gray-500);
+	background-color: var(--gray-400);
+	border-color: var(--gray-500);
 }
 
 .tooltip-text {
-  cursor: pointer;
-  padding-bottom: 1px;
-  border-bottom: 2px solid var(--tooltip-border);
-  cursor: pointer;
+	padding-bottom: 1px;
+	border-bottom: 1px dotted #6b7280;
+	cursor: help;
 }
 
 .tippy-content {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  border: 1px solid var(--gray-500);
-  user-select: text;
-  font-size: 0.9rem;
-  padding: 10px;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	border: 1px solid var(--gray-500);
+	user-select: text;
+	font-size: 0.9rem;
+	padding: 10px;
 }
 
 .tippy-tooltip::before {
-  border-color: 2px solid var(--secondary-color);
+	border-color: 2px solid var(--secondary-color);
 }
