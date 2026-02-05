@@ -1249,6 +1249,7 @@
 			"Context: Failure to guard the sense doors. It occurs when attention chases after the signs and features of sense objects, allowing craving and aversion to invade the mind.",
 			"Supported by:{negligence}",
 			"Leads to:{adventurousness, discontentment}",
+			"Opposite:{self-control}",
 			"[asaṁvara, asaṁyama]"
 		],
 		"not taking what is not given": [
@@ -1581,7 +1582,8 @@
 			"Related:{sense restraint}",
 			"Supported by:{patience}",
 			"Leads to:{contentment}",
-			"[saṃvara, saññata, saṃvuta]"
+			"Opposite:{non-restraint}",
+			"[saṃvara, saññata, saṃvuta, saṁyama]"
 		],
 		"self-erasure": [
 			"non-being craving",
