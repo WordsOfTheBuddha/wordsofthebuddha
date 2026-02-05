@@ -190,17 +190,37 @@
     color: white;
   }
 
+  /* Wrapper-based highlight - wraps contiguous matched range */
   .tm-highlight {
     background: #fef08a;
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
-    font-weight: 600;
     display: inline;
   }
 
   .dark .tm-highlight {
     background: #854d0e;
     color: #fef3c7;
+  }
+
+  /* Matched words inside the highlight wrapper */
+  .tm-highlight-word {
+    font-weight: 600;
+  }
+
+  .dark .tm-highlight-word {
+    /* inherits from wrapper */
+  }
+
+  /* Gap words - within matched range but not covered by n-grams */
+  .tm-highlight-gap {
+    font-weight: 500;
+    border-bottom: 2px dashed #d97706;
+    opacity: 0.8;
+  }
+
+  .dark .tm-highlight-gap {
+    border-bottom: 2px dashed #fbbf24;
   }
 
   /* Pali words in TM popover - clickable for dictionary */
@@ -441,6 +461,7 @@
     contentWordCount?: number;     // Per-discourse content word count
     entryStartIndex?: number;      // Position where match starts in entry text
     entryEndIndex?: number;        // Position where match ends in entry text
+    entryCoveredPositions?: Set<number>; // Which positions in entry text are actually covered (not gaps)
   }
 
   // A group of discourses that share the same phrase pattern
@@ -454,6 +475,7 @@
     matchedSegment: string; // The actual matched segment text for debugging
     startIndex?: number; // Source position range start
     endIndex?: number;   // Source position range end
+    coveredPositions?: Set<number>; // Which positions in source text are covered (not gaps)
     discourses: TMDiscourse[]; // Stored discourses for diversity selection
     totalCount: number; // True count of all matches (may exceed stored)
     diverseDiscourses: TMDiscourse[]; // Top 3 diverse for display
@@ -470,7 +492,7 @@
   const THRESHOLDS = {
     PARAGRAPH_SIMILARITY: 0.75,
     WORD_COUNT_TOLERANCE: 0.50,
-    MAX_PHRASE_GROUPS: 3,
+    MAX_PHRASE_GROUPS: 10,
     MAX_DISCOURSES_TO_STORE: 20, // Store enough for diversity selection
   };
 
@@ -589,7 +611,7 @@
 
     // Pick the better match
     let best: { matchedWords: string[]; score: number; contentWordCount: number } | null = null;
-    
+
     if (entryInQuery && queryInEntry) {
       // Both matched - prefer the one with higher score, or more content words as tiebreaker
       if (entryInQuery.score > queryInEntry.score ||
@@ -613,6 +635,17 @@
     };
   }
 
+  // Word pattern for extracting words - must match the pattern used in renderPaliWithWords
+  const WORD_PATTERN = /[a-zA-ZāīūṃṅñṭḍṇḷṁĀĪŪṂṄÑṬḌṆḶṀ'"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A«»„‚]+/g;
+
+  // Extract words from text using the same pattern as rendering
+  // This ensures word positions match between index lookup and highlighting
+  function extractWordsForHighlight(text: string): string[] {
+    const normalizedText = text.replace(/\s+/g, ' ');
+    const matches = [...normalizedText.matchAll(WORD_PATTERN)];
+    return matches.map(m => normalizePali(m[0])).filter(w => w.length > 0);
+  }
+
   // Extract n-grams from normalized text
   function extractNgrams(words: string[], n: number): string[] {
     if (words.length < n) return [];
@@ -623,20 +656,306 @@
     return ngrams;
   }
 
+  // Check if matched n-grams appear in consistent order between source and entry
+  // Returns true if the n-grams are in the same relative order (allowing gaps)
+  function checkNgramOrderConsistency(
+    sourceWords: string[],
+    entryWords: string[],
+    matchedNgrams: Set<string>,
+    ngramSize: number
+  ): boolean {
+    if (matchedNgrams.size <= 1) return true; // Single n-gram always consistent
+
+    const sourceNgrams = extractNgrams(sourceWords, ngramSize);
+    const entryNgrams = extractNgrams(entryWords, ngramSize);
+
+    // Find positions of matched n-grams in each text
+    const sourcePositions: Map<string, number> = new Map();
+    const entryPositions: Map<string, number> = new Map();
+
+    sourceNgrams.forEach((ngram, idx) => {
+      if (matchedNgrams.has(ngram) && !sourcePositions.has(ngram)) {
+        sourcePositions.set(ngram, idx);
+      }
+    });
+
+    entryNgrams.forEach((ngram, idx) => {
+      if (matchedNgrams.has(ngram) && !entryPositions.has(ngram)) {
+        entryPositions.set(ngram, idx);
+      }
+    });
+
+    // Get n-grams that exist in both, sorted by source position
+    const commonNgrams = [...matchedNgrams].filter(
+      ng => sourcePositions.has(ng) && entryPositions.has(ng)
+    );
+
+    if (commonNgrams.length <= 1) return true;
+
+    // Sort by source position
+    commonNgrams.sort((a, b) => sourcePositions.get(a)! - sourcePositions.get(b)!);
+
+    // Check if entry positions are also in increasing order
+    let lastEntryPos = -1;
+    for (const ngram of commonNgrams) {
+      const entryPos = entryPositions.get(ngram)!;
+      if (entryPos < lastEntryPos) {
+        return false; // Out of order
+      }
+      lastEntryPos = entryPos;
+    }
+
+    return true;
+  }
+
+  // Known Pali verb conjugation pairs - forms of the same verb that look very different
+  // These are common "to be" and auxiliary verb forms that appear frequently
+  const PALI_VERB_PAIRS: [string, string][] = [
+    ['hoti', 'ahosi'],    // present vs past of "to be"
+    ['hoti', 'ahosiṁ'],   // with first person ending
+    ['hoti', 'bhavati'],  // different forms of "to be"
+    ['hoti', 'honti'],    // singular vs plural
+    ['ahosi', 'ahosiṁ'],  // third vs first person past
+    ['pabbajati', 'pabbajiṁ'], // ordain - present vs past 1st person
+    ['pabbajati', 'pabbaji'],  // ordain - present vs past 3rd person
+    ['viharati', 'vihāsiṁ'],   // dwell
+    ['viharati', 'viharāmi'],  // dwell - present 1st person
+    ['karoti', 'akāsiṁ'],      // do - present vs past
+    ['karoti', 'karoṁ'],       // do - present forms
+  ];
+
+  // Build a lookup set for quick checking
+  const VERB_PAIR_SET = new Set<string>();
+  for (const [a, b] of PALI_VERB_PAIRS) {
+    VERB_PAIR_SET.add(`${a}|${b}`);
+    VERB_PAIR_SET.add(`${b}|${a}`);
+  }
+
+  // Check if two words are similar enough to be considered a match variant
+  // This catches conjugation differences like pabbajiṁ/pabbajati, ahosiṁ/hoti
+  function areSimilarWords(wordA: string, wordB: string): boolean {
+    if (wordA === wordB) return true;
+
+    // Check known verb pairs first (handles irregular conjugations)
+    if (VERB_PAIR_SET.has(`${wordA}|${wordB}`)) {
+      return true;
+    }
+
+    // Get minimum prefix length to compare (at least 3 chars, or shorter word length)
+    const minLen = Math.min(wordA.length, wordB.length);
+    if (minLen < 3) return false;
+
+    // Check for shared prefix of at least 4 chars (or 3 if words are short)
+    const prefixLen = minLen < 5 ? 3 : 4;
+    if (wordA.substring(0, prefixLen) === wordB.substring(0, prefixLen)) {
+      return true;
+    }
+
+    // Check for shared suffix (common in verb conjugations)
+    // e.g., "pativirato" and "paṭivirato" share the ending
+    const suffixLen = minLen < 5 ? 2 : 3;
+    if (wordA.slice(-suffixLen) === wordB.slice(-suffixLen) && minLen >= 5) {
+      // Also check that the words are similar length
+      if (Math.abs(wordA.length - wordB.length) <= 2) {
+        return true;
+      }
+    }
+
+    // Special case for Pali verb forms: check if one contains the other's root
+    if (minLen >= 4) {
+      // Extract likely root (first 2-3 consonants + vowel)
+      const rootA = wordA.substring(0, 3);
+      const rootB = wordB.substring(0, 3);
+      if (wordB.includes(rootA) || wordA.includes(rootB)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Extend match ranges by looking at adjacent chunks and checking match ratio
+  // This captures cases where most words match but 1-2 have conjugation differences
+  // Key insight: count BOTH exact matches AND similar words (conjugation variants) for extension decision
+  // But only exact matches go into coveredPositions (similar words become gap words)
+  // ITERATIVE: Keeps extending until we can't anymore
+  function extendMatchRanges(
+    sourceWords: string[],
+    entryWords: string[],
+    sourceRange: { startIndex: number; endIndex: number; coveredPositions: Set<number> },
+    entryRange: { startIndex: number; endIndex: number; coveredPositions: Set<number> }
+  ): void {
+    const MIN_MATCH_RATIO = 0.70; // Require 70% of words to match (exactly or similar)
+    const MAX_ITERATIONS = 20; // Prevent infinite loops
+
+    // Helper to try extending in a direction
+    function tryExtendBackward(): boolean {
+      const srcWordsBeforeCount = sourceRange.startIndex;
+      const entWordsBeforeCount = entryRange.startIndex;
+
+      if (srcWordsBeforeCount <= 0 || entWordsBeforeCount <= 0) return false;
+
+      const maxBackward = Math.min(srcWordsBeforeCount, entWordsBeforeCount, 15);
+
+      for (let extendBy = maxBackward; extendBy >= 1; extendBy--) {
+        const srcChunk = sourceWords.slice(sourceRange.startIndex - extendBy, sourceRange.startIndex);
+        const entChunk = entryWords.slice(entryRange.startIndex - extendBy, entryRange.startIndex);
+
+        if (srcChunk.length !== entChunk.length) continue;
+
+        let exactMatches = 0;
+        let similarMatches = 0;
+        const exactPositions: number[] = [];
+        for (let i = 0; i < srcChunk.length; i++) {
+          if (srcChunk[i] === entChunk[i]) {
+            exactMatches++;
+            exactPositions.push(i);
+          } else if (areSimilarWords(srcChunk[i], entChunk[i])) {
+            similarMatches++;
+          }
+        }
+
+        const totalMatches = exactMatches + similarMatches;
+        const matchRatio = totalMatches / srcChunk.length;
+
+        if (matchRatio >= MIN_MATCH_RATIO) {
+          const newSrcStart = sourceRange.startIndex - extendBy;
+          const newEntStart = entryRange.startIndex - extendBy;
+
+          // Add exact match positions
+          for (const relPos of exactPositions) {
+            sourceRange.coveredPositions.add(newSrcStart + relPos);
+            entryRange.coveredPositions.add(newEntStart + relPos);
+          }
+
+          sourceRange.startIndex = newSrcStart;
+          entryRange.startIndex = newEntStart;
+
+          // Check overall coverage
+          const totalLen = sourceRange.endIndex - sourceRange.startIndex + 1;
+          const overallCoverage = sourceRange.coveredPositions.size / totalLen;
+          if (overallCoverage < 0.60) {
+            // Revert
+            sourceRange.startIndex += extendBy;
+            entryRange.startIndex += extendBy;
+            for (const relPos of exactPositions) {
+              sourceRange.coveredPositions.delete(newSrcStart + relPos);
+              entryRange.coveredPositions.delete(newEntStart + relPos);
+            }
+            return false;
+          }
+          return true; // Successfully extended
+        }
+      }
+      return false;
+    }
+
+    function tryExtendForward(): boolean {
+      const srcWordsAfterCount = sourceWords.length - 1 - sourceRange.endIndex;
+      const entWordsAfterCount = entryWords.length - 1 - entryRange.endIndex;
+
+      if (srcWordsAfterCount <= 0 || entWordsAfterCount <= 0) return false;
+
+      const maxForward = Math.min(srcWordsAfterCount, entWordsAfterCount, 15);
+
+      for (let extendBy = maxForward; extendBy >= 1; extendBy--) {
+        const srcChunk = sourceWords.slice(sourceRange.endIndex + 1, sourceRange.endIndex + 1 + extendBy);
+        const entChunk = entryWords.slice(entryRange.endIndex + 1, entryRange.endIndex + 1 + extendBy);
+
+        if (srcChunk.length !== entChunk.length) continue;
+
+        let exactMatches = 0;
+        let similarMatches = 0;
+        const exactPositions: number[] = [];
+        for (let i = 0; i < srcChunk.length; i++) {
+          if (srcChunk[i] === entChunk[i]) {
+            exactMatches++;
+            exactPositions.push(i);
+          } else if (areSimilarWords(srcChunk[i], entChunk[i])) {
+            similarMatches++;
+          }
+        }
+
+        const totalMatches = exactMatches + similarMatches;
+        const matchRatio = totalMatches / srcChunk.length;
+
+        if (matchRatio >= MIN_MATCH_RATIO) {
+          const oldSrcEnd = sourceRange.endIndex;
+          const oldEntEnd = entryRange.endIndex;
+
+          // Add exact match positions
+          for (const relPos of exactPositions) {
+            sourceRange.coveredPositions.add(oldSrcEnd + 1 + relPos);
+            entryRange.coveredPositions.add(oldEntEnd + 1 + relPos);
+          }
+
+          sourceRange.endIndex += extendBy;
+          entryRange.endIndex += extendBy;
+
+          const totalLen = sourceRange.endIndex - sourceRange.startIndex + 1;
+          const overallCoverage = sourceRange.coveredPositions.size / totalLen;
+          if (overallCoverage < 0.60) {
+            // Revert
+            sourceRange.endIndex = oldSrcEnd;
+            entryRange.endIndex = oldEntEnd;
+            for (const relPos of exactPositions) {
+              sourceRange.coveredPositions.delete(oldSrcEnd + 1 + relPos);
+              entryRange.coveredPositions.delete(oldEntEnd + 1 + relPos);
+            }
+            return false;
+          }
+          return true; // Successfully extended
+        }
+      }
+      return false;
+    }
+
+    // Keep extending in both directions until we can't anymore
+    let iterations = 0;
+    let extended = true;
+    while (extended && iterations < MAX_ITERATIONS) {
+      extended = false;
+      if (tryExtendBackward()) extended = true;
+      if (tryExtendForward()) extended = true;
+      iterations++;
+    }
+
+    // Final step: Include trailing single word as gap if it's similar (conjugation variant)
+    // This handles cases like pabbajiṁ vs pabbajati at sentence end
+    const srcTrailing = sourceWords.length - 1 - sourceRange.endIndex;
+    const entTrailing = entryWords.length - 1 - entryRange.endIndex;
+
+    if (srcTrailing === 1 && entTrailing === 1) {
+      const srcWord = sourceWords[sourceRange.endIndex + 1];
+      const entWord = entryWords[entryRange.endIndex + 1];
+
+      // If the trailing words are similar (same stem/root), include as gap
+      if (areSimilarWords(srcWord, entWord)) {
+        sourceRange.endIndex += 1;
+        entryRange.endIndex += 1;
+        // Don't add to coveredPositions - these are gap words
+      }
+    }
+  }
+
   // Compute which source words are covered by matched ngrams
   // Returns the BEST contiguous run of covered indices (not spanning across gaps)
+  // Get preliminary word range from n-gram matches
+  // Returns range even if coverage is low - caller should do stem matching to boost coverage
   function getSourceWordRange(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number): { 
-    startIndex: number; 
-    endIndex: number; 
+    startIndex: number;
+    endIndex: number;
     matchedWords: string[];
     contentWordCount: number;
+    coveredPositions: Set<number>; // Which word positions are actually covered by n-grams
+    coverageRatio: number; // For debugging
   } | null {
     if (matchedNgrams.size === 0) return null;
-    
+
     // Find all contiguous runs where ngrams match
     // A run is a sequence of overlapping ngram matches
     const queryNgrams = extractNgrams(queryWords, ngramSize);
-    
+
     // Find positions where matching ngrams START
     const matchPositions: number[] = [];
     for (let i = 0; i < queryNgrams.length; i++) {
@@ -644,74 +963,137 @@
         matchPositions.push(i);
       }
     }
-    
+
     if (matchPositions.length === 0) return null;
-    
-    // Group into contiguous runs (overlapping ngrams form a run)
-    // Two ngram positions are connected if they overlap or are adjacent
+
+    // Gap tolerance: allow for word differences in matches
+    const maxGapPositions = ngramSize + 2;
+
+    // Group into contiguous runs
     const runs: Array<{ start: number; end: number }> = [];
     let currentRun = { start: matchPositions[0], end: matchPositions[0] + ngramSize - 1 };
-    
+
     for (let i = 1; i < matchPositions.length; i++) {
       const pos = matchPositions[i];
-      // Check if this position connects to the current run
-      // Connected if pos <= currentRun.end + 1 (overlapping or adjacent)
-      if (pos <= currentRun.end + 1) {
-        // Extend the current run
+      if (pos <= currentRun.end + maxGapPositions) {
         currentRun.end = Math.max(currentRun.end, pos + ngramSize - 1);
       } else {
-        // Start a new run
         runs.push(currentRun);
         currentRun = { start: pos, end: pos + ngramSize - 1 };
       }
     }
     runs.push(currentRun);
-    
-    // Find the best run (most content words)
-    let bestRun = runs[0];
-    let bestContentCount = 0;
-    
-    for (const run of runs) {
-      const runWords = queryWords.slice(run.start, run.end + 1);
-      const contentCount = runWords.filter(w => !isStopWord(w)).length;
-      if (contentCount > bestContentCount) {
-        bestContentCount = contentCount;
-        bestRun = run;
+
+    // Instead of picking just the "best" run, merge all runs into one
+    // This ensures we capture the full extent of matches even with gaps
+    // The coverage check will still reject matches with too many gaps
+    const mergedRun = {
+      start: runs[0].start,
+      end: runs[runs.length - 1].end,
+    };
+
+    // Extract matched words from the merged run
+    const matchedWords = queryWords.slice(mergedRun.start, mergedRun.end + 1);
+    const contentWordCount = matchedWords.filter(w => !isStopWord(w)).length;
+
+    // Track which word positions are actually covered by matching n-grams
+    const coveredPositions = new Set<number>();
+    for (const pos of matchPositions) {
+      if (pos >= mergedRun.start && pos + ngramSize - 1 <= mergedRun.end) {
+        for (let j = pos; j < pos + ngramSize; j++) {
+          coveredPositions.add(j);
+        }
       }
     }
-    
-    // Extract matched words from the best run
-    const matchedWords = queryWords.slice(bestRun.start, bestRun.end + 1);
-    const contentWordCount = matchedWords.filter(w => !isStopWord(w)).length;
-    
-    return { startIndex: bestRun.start, endIndex: bestRun.end, matchedWords, contentWordCount };
+
+    const rangeLength = mergedRun.end - mergedRun.start + 1;
+    const coverageRatio = coveredPositions.size / rangeLength;
+
+    return {
+      startIndex: mergedRun.start,
+      endIndex: mergedRun.end,
+      matchedWords,
+      contentWordCount,
+      coveredPositions,
+      coverageRatio,
+    };
+  }
+
+  // Boost coverage by checking stem similarity for uncovered positions
+  // This catches conjugation variants like ahosiṁ/hoti, pakkamiṁ/pakkamati
+  function boostCoverageWithStemMatching(
+    sourceWords: string[],
+    entryWords: string[],
+    sourceRange: { startIndex: number; endIndex: number; coveredPositions: Set<number>; coverageRatio: number },
+    entryRange: { startIndex: number; endIndex: number; coveredPositions: Set<number>; coverageRatio: number }
+  ): { sourceCoverage: number; entryCoverage: number } {
+    const sourceLen = sourceRange.endIndex - sourceRange.startIndex + 1;
+    const entryLen = entryRange.endIndex - entryRange.startIndex + 1;
+
+    // Clone covered positions so we can add stem matches
+    const sourceCovered = new Set(sourceRange.coveredPositions);
+    const entryCovered = new Set(entryRange.coveredPositions);
+
+    // Check uncovered positions for stem similarity
+    for (let i = 0; i < sourceLen; i++) {
+      const srcPos = sourceRange.startIndex + i;
+      const entPos = entryRange.startIndex + i;
+
+      // Skip if already covered or out of bounds
+      if (sourceCovered.has(srcPos)) continue;
+      if (entPos > entryRange.endIndex) continue;
+
+      const srcWord = sourceWords[srcPos];
+      const entWord = entryWords[entPos];
+
+      if (!srcWord || !entWord) continue;
+
+      // Check if words are similar (same stem, conjugation variants, etc.)
+      if (areSimilarWords(srcWord, entWord)) {
+        sourceCovered.add(srcPos);
+        entryCovered.add(entPos);
+
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Stem match: "${srcWord}" ~ "${entWord}" at positions ${srcPos}/${entPos}`);
+        }
+      }
+    }
+
+    // Update the ranges with boosted covered positions
+    sourceRange.coveredPositions = sourceCovered;
+    entryRange.coveredPositions = entryCovered;
+
+    const sourceCoverage = sourceCovered.size / sourceLen;
+    const entryCoverage = entryCovered.size / entryLen;
+
+    return { sourceCoverage, entryCoverage };
   }
 
   // Find partial matches using n-gram index
   function findNgramMatches(queryWords: string[], currentSuttaId?: string): Map<number, Set<string>> {
     if (!tmIndex || !tmIndex.ngrams) return new Map();
-    
+
     const ngramSize = tmIndex.ngramSize || 5;
     const queryNgrams = extractNgrams(queryWords, ngramSize);
-    
+
     // Map entry ID -> matched n-grams
     const entryMatches = new Map<number, Set<string>>();
-    
+
     for (const ngram of queryNgrams) {
       const entryIds = tmIndex.ngrams[ngram];
       if (!entryIds) continue;
-      
+
       for (const id of entryIds) {
         // Note: We now allow same-discourse matching for internal consistency checking
         const entry = tmIndex.entries[id];
-        
+
         if (!entryMatches.has(id)) {
           entryMatches.set(id, new Set());
         }
         entryMatches.get(id)!.add(ngram);
       }
     }
-    
+
     return entryMatches;
   }
 
@@ -722,6 +1104,10 @@
 
     const queryNormalized = normalizePali(queryPali);
     const queryWords = queryNormalized.split(/\s+/).filter(w => w.length > 0);
+
+    // Also extract words using the same method as entry words (for extension)
+    // This ensures consistent word comparison during range extension
+    const queryWordsForExtension = extractWordsForHighlight(queryPaliOriginal);
 
     if (queryWords.length < 4) return null;
 
@@ -735,50 +1121,106 @@
       matchedSegment: string;
       startIndex: number;
       endIndex: number;
+      coveredPositions: Set<number>;   // Covered positions in source text
       entryStartIndex: number;  // Position in entry text
       entryEndIndex: number;    // Position in entry text
+      entryCoveredPositions: Set<number>; // Covered positions in entry text
     }> = [];
 
     // Step 1: Use n-gram index to find candidate entries with shared phrases
     const ngramMatches = findNgramMatches(queryWords, currentSuttaId);
-    
+
     // Step 2: For entries with n-gram matches, compute detailed match
     for (const [entryId, matchedNgrams] of ngramMatches) {
       const entry = tmIndex.entries[entryId];
       if (!entry) continue;
-      
+
       // Skip the exact same paragraph (same suttaId AND same paragraphNum)
       if (sourceRef && entry.source.suttaId === sourceRef.suttaId && entry.source.paragraphNum === sourceRef.paragraphNum) {
         continue;
       }
-      
+
       const ngramSize = tmIndex.ngramSize || 5;
-      
+
+      // Also get which ENTRY words are covered by the matched ngrams
+      // IMPORTANT: Use paliOriginal with same word extraction as rendering to ensure positions align
+      const entryWords = extractWordsForHighlight(entry.paliOriginal);
+
+      // Check n-gram order consistency: skip matches where words appear in different order
+      if (!checkNgramOrderConsistency(queryWords, entryWords, matchedNgrams, ngramSize)) {
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}) REJECTED: n-gram order inconsistent`);
+        }
+        continue;
+      }
+
       // Get which source words are covered by the matched ngrams
       // This tells us EXACTLY which part of the source paragraph this entry matches
       const sourceRange = getSourceWordRange(queryWords, matchedNgrams, ngramSize);
-      
-      // Also get which ENTRY words are covered by the matched ngrams
-      const entryWords = entry.paliNormalized.split(/\s+/).filter(w => w.length > 0);
+
       const entryRange = getSourceWordRange(entryWords, matchedNgrams, ngramSize);
-      
-      if (sourceRange && sourceRange.contentWordCount >= 2) {
-        // Score based on coverage: how much of the source phrase is matched
-        const ngramBoost = matchedNgrams.size >= 3 ? 1.0 : matchedNgrams.size / 3;
-        
-        allMatches.push({
-          entry,
-          score: ngramBoost,
-          matchedWordCount: sourceRange.matchedWords.length, // Segment length (may include repeated words)
-          contentWordCount: sourceRange.contentWordCount,
-          matchedWords: new Set(sourceRange.matchedWords),
-          matchedSegment: sourceRange.matchedWords.join(' '), // Store actual segment for debugging
-          startIndex: sourceRange.startIndex,
-          endIndex: sourceRange.endIndex,
-          entryStartIndex: entryRange?.startIndex ?? 0,
-          entryEndIndex: entryRange?.endIndex ?? (entryWords.length - 1),
+
+      // Both source and entry must have valid ranges
+      if (!sourceRange || !entryRange || sourceRange.contentWordCount < 2) {
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}) REJECTED: no valid range`);
+        }
+        continue;
+      }
+
+      // Boost coverage by checking stem similarity for uncovered positions
+      // This catches conjugation variants like ahosiṁ/hoti, pakkamiṁ/pakkamati
+      const { sourceCoverage, entryCoverage } = boostCoverageWithStemMatching(
+        queryWords, entryWords, sourceRange, entryRange
+      );
+
+      if ((window as any).tmDebugVerbose) {
+        console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}):`, {
+          matchedNgramsCount: matchedNgrams.size,
+          sourceRange: { start: sourceRange.startIndex, end: sourceRange.endIndex, initialCoverage: sourceRange.coverageRatio.toFixed(2), boostedCoverage: sourceCoverage.toFixed(2) },
+          entryRange: { start: entryRange.startIndex, end: entryRange.endIndex, initialCoverage: entryRange.coverageRatio.toFixed(2), boostedCoverage: entryCoverage.toFixed(2) },
         });
       }
+
+      // Apply 80% threshold after stem matching boost
+      if (sourceCoverage < 0.8 || entryCoverage < 0.8) {
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Entry ${entryId} REJECTED: coverage below 80% after stem matching`);
+        }
+        continue;
+      }
+
+      // Only extend if word arrays are aligned (same length)
+      // This ensures indices are valid across both arrays
+      const canExtend = queryWords.length === queryWordsForExtension.length;
+
+      if (canExtend) {
+        // Extend ranges to capture adjacent words with conjugation differences
+        // This catches cases like pabbajiṁ/pabbajati, ahosiṁ/hoti at phrase boundaries
+        extendMatchRanges(queryWordsForExtension, entryWords, sourceRange, entryRange);
+      }
+
+      // Update matchedWords after extension
+      const wordsForSlice = canExtend ? queryWordsForExtension : queryWords;
+      sourceRange.matchedWords = wordsForSlice.slice(sourceRange.startIndex, sourceRange.endIndex + 1);
+
+      // Score based on coverage: how much of the source phrase is matched
+      const ngramBoost = matchedNgrams.size >= 3 ? 1.0 : matchedNgrams.size / 3;
+
+      allMatches.push({
+        entry,
+        score: ngramBoost,
+        matchedWordCount: sourceRange.matchedWords.length, // Segment length (may include repeated words)
+        contentWordCount: sourceRange.contentWordCount,
+        matchedWords: new Set(sourceRange.matchedWords),
+        matchedSegment: sourceRange.matchedWords.join(' '), // Store actual segment for debugging
+        startIndex: sourceRange.startIndex,
+        endIndex: sourceRange.endIndex,
+        coveredPositions: sourceRange.coveredPositions,
+        entryStartIndex: entryRange.startIndex,
+        entryEndIndex: entryRange.endIndex,
+        entryCoveredPositions: entryRange.coveredPositions,
+      });
     }
 
     // Step 3: Also check entries without n-gram matches but potential contiguous matches
@@ -788,20 +1230,28 @@
       if (sourceRef && entry.source.suttaId === sourceRef.suttaId && entry.source.paragraphNum === sourceRef.paragraphNum) {
         continue;
       }
-      
+
       // Skip if already processed via n-gram
       if (ngramMatches.has(entry.id)) continue;
-      
+
       // Only check short entries (might match via contiguous but not have n-grams)
       if (entry.wordCount > 10) continue;
 
       const entryWords = entry.paliNormalized.split(/\s+/).filter(w => w.length > 0);
-      
+
       // Find contiguous match
       const match = findContiguousMatch(entryWords, queryWords);
-      
+
       if (match && match.score >= THRESHOLDS.PARAGRAPH_SIMILARITY && match.contentWordCount >= 2) {
         // For short entries, the match covers the whole entry
+        // Use original text word count for proper highlighting
+        const originalWords = extractWordsForHighlight(entry.paliOriginal);
+        // For short entries, assume all positions are covered (no gaps)
+        const allCovered = new Set<number>();
+        for (let i = match.startIndex; i <= match.endIndex; i++) allCovered.add(i);
+        const entryCovered = new Set<number>();
+        for (let i = 0; i < originalWords.length; i++) entryCovered.add(i);
+
         allMatches.push({
           entry,
           score: match.score,
@@ -811,8 +1261,10 @@
           matchedSegment: match.matchedWords.join(' '),
           startIndex: match.startIndex,
           endIndex: match.endIndex,
+          coveredPositions: allCovered,
           entryStartIndex: 0,
-          entryEndIndex: entryWords.length - 1,
+          entryEndIndex: originalWords.length - 1,
+          entryCoveredPositions: entryCovered,
         });
       }
     }
@@ -839,6 +1291,7 @@
       matchedSegment: string;   // The actual matched segment text
       startIndex: number; // Source position range
       endIndex: number;
+      coveredPositions: Set<number>; // Which positions are actually covered (not gaps)
       discourses: TMDiscourse[];
       totalCount: number; // Count all matches, even if not stored
     }>();
@@ -851,7 +1304,7 @@
       // Round content word count to buckets of 10 to allow minor variations in same group
       const countBucket = Math.floor(m.contentWordCount / 10) * 10;
       const phraseKey = `${countBucket}:${contentWordsOnly.join(' ')}`;
-      
+
       if (!phraseMap.has(phraseKey)) {
         phraseMap.set(phraseKey, {
           score: m.score,
@@ -861,22 +1314,23 @@
           matchedSegment: m.matchedSegment, // Store segment text for debugging
           startIndex: m.startIndex,
           endIndex: m.endIndex,
+          coveredPositions: m.coveredPositions, // Which positions in source are covered
           discourses: [],
           totalCount: 0,
         });
       }
-      
+
       const group = phraseMap.get(phraseKey)!;
-      
+
       // Filter out discourses with significantly fewer matched words (subset matches)
       // Allow up to 10% fewer words, otherwise reject as a subset match
       const minAllowedWords = Math.floor(group.contentWordCount * 0.9);
       if (m.contentWordCount < minAllowedWords) {
         continue; // Skip this discourse - it's a subset match
       }
-      
+
       group.totalCount++; // Count only non-subset matches
-      
+
       // Only store up to MAX for diversity selection
       if (group.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
         group.discourses.push({
@@ -889,6 +1343,7 @@
           contentWordCount: m.contentWordCount, // Store per-discourse content word count
           entryStartIndex: m.entryStartIndex, // Position in entry text
           entryEndIndex: m.entryEndIndex,     // Position in entry text
+          entryCoveredPositions: m.entryCoveredPositions, // Which positions in entry are covered
         });
       }
     }
@@ -917,6 +1372,79 @@
       return true;
     }
 
+    // Helper: check if range A is a subset of range B (with tolerance for 1-2 word difference)
+    // This handles cases where a shorter match differs only by a gap word from a longer match
+    function isRangeSubset(
+      rangeA: { startIndex?: number; endIndex?: number },
+      rangeB: { startIndex?: number; endIndex?: number }
+    ): boolean {
+      if (rangeA.startIndex === undefined || rangeA.endIndex === undefined ||
+          rangeB.startIndex === undefined || rangeB.endIndex === undefined) {
+        return false;
+      }
+      const lenA = rangeA.endIndex - rangeA.startIndex + 1;
+      const lenB = rangeB.endIndex - rangeB.startIndex + 1;
+
+      // A must be smaller
+      if (lenA >= lenB) return false;
+
+      // A's range must be mostly contained in B's range
+      // Allow for slight offset (1-2 words) at start/end
+      const startDiff = rangeA.startIndex - rangeB.startIndex;
+      const endDiff = rangeB.endIndex - rangeA.endIndex;
+
+      // Both differences should be non-negative (A is inside B) or very small negative
+      return startDiff >= -1 && endDiff >= -1 && (startDiff + endDiff >= 0);
+    }
+
+    // Helper: check if two phrase groups are highly similar (overlap by 1 word or 90%+ similar)
+    // This helps deduplicate phrase groups that are essentially the same match
+    function isHighlyOverlapping(
+      groupA: { startIndex?: number; endIndex?: number; matchedWords: Set<string> },
+      groupB: { startIndex?: number; endIndex?: number; matchedWords: Set<string> }
+    ): boolean {
+      // Check range overlap first
+      if (groupA.startIndex === undefined || groupA.endIndex === undefined ||
+          groupB.startIndex === undefined || groupB.endIndex === undefined) {
+        return false;
+      }
+
+      // If ranges don't overlap at all, not similar
+      const overlapStart = Math.max(groupA.startIndex, groupB.startIndex);
+      const overlapEnd = Math.min(groupA.endIndex, groupB.endIndex);
+      if (overlapEnd < overlapStart) return false; // No range overlap
+
+      // Calculate Jaccard similarity of content words
+      const contentA = [...groupA.matchedWords].filter(w => !isStopWord(w));
+      const contentB = [...groupB.matchedWords].filter(w => !isStopWord(w));
+
+      const setA = new Set(contentA);
+      const setB = new Set(contentB);
+
+      // Count intersection
+      let intersection = 0;
+      for (const word of setA) {
+        if (setB.has(word)) intersection++;
+      }
+
+      // Union size
+      const union = new Set([...contentA, ...contentB]).size;
+      if (union === 0) return false;
+
+      const jaccardSimilarity = intersection / union;
+
+      // Check if difference is just 1 word
+      const diffSize = Math.abs(setA.size - setB.size);
+      const uniqueToA = contentA.filter(w => !setB.has(w)).length;
+      const uniqueToB = contentB.filter(w => !setA.has(w)).length;
+      const totalDiff = uniqueToA + uniqueToB;
+
+      // Consider highly overlapping if:
+      // 1. 90%+ Jaccard similarity, OR
+      // 2. Differ by at most 1 content word total
+      return jaccardSimilarity >= 0.9 || totalDiff <= 1;
+    }
+
     // Filter out phrase groups that are subsets OR equal to existing groups
     // For equal groups, merge their discourses and counts into the first one
     // For pure subsets, skip them entirely (don't display redundant smaller matches)
@@ -925,26 +1453,61 @@
     for (const [phraseNormalized, data] of sortedGroups) {
       // Check if this group's content words are a PURE SUBSET of any already-added group
       // If so, skip it entirely - the larger group already covers these words
-      const isPureSubset = phraseGroups.some(existing => 
-        isContentWordSubset(data.matchedWords, existing.matchedWords)
+      const isPureSubset = phraseGroups.some(existing =>
+        isContentWordSubset(data.matchedWords, existing.matchedWords) ||
+        isRangeSubset(data, existing)
       );
-      
+
       if (isPureSubset) {
         // Skip this group - it's a pure subset of a larger match
         continue;
       }
-      
+
+      // Check if this group is highly overlapping with an existing group (90%+ similar or differ by 1 word)
+      // If so, merge into the existing group (prefer the larger/first one)
+      // Also check if existing is a subset of this new group (new is superset)
+      const overlappingGroup = phraseGroups.find(existing =>
+        isHighlyOverlapping(data, existing) || isRangeSubset(existing, data)
+      );
+
+      if (overlappingGroup) {
+        // Merge into the existing overlapping group
+        // If new group is larger (superset), update the group's range
+        if (data.startIndex !== undefined && data.endIndex !== undefined &&
+            overlappingGroup.startIndex !== undefined && overlappingGroup.endIndex !== undefined) {
+          const newLen = data.endIndex - data.startIndex + 1;
+          const existingLen = overlappingGroup.endIndex - overlappingGroup.startIndex + 1;
+          if (newLen > existingLen) {
+            // New group is larger - update the group to use new range
+            overlappingGroup.startIndex = data.startIndex;
+            overlappingGroup.endIndex = data.endIndex;
+            overlappingGroup.matchedSegment = data.matchedSegment;
+            overlappingGroup.matchedWordCount = data.totalWordCount;
+            overlappingGroup.matchedWords = data.matchedWords;
+            overlappingGroup.coveredPositions = data.coveredPositions;
+          }
+        }
+        overlappingGroup.totalCount += data.totalCount;
+        for (const d of data.discourses) {
+          if (overlappingGroup.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
+            overlappingGroup.discourses.push(d);
+          }
+        }
+        overlappingGroup.diverseDiscourses = selectDiverseDiscourses(overlappingGroup.discourses, 3);
+        continue;
+      }
+
       // Check if this group is EQUAL to an existing group (same matched words)
       // If so, merge their discourses together
-      const existingMatch = phraseGroups.find(existing => 
+      const existingMatch = phraseGroups.find(existing =>
         setsEqual(data.matchedWords, existing.matchedWords)
       );
 
       if (existingMatch) {
-        
+
         // Merge into existing group
         existingMatch.totalCount += data.totalCount; // Merge counts
-        
+
         // Add discourses for diversity (up to limit)
         for (const d of data.discourses) {
           if (existingMatch.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
@@ -955,11 +1518,11 @@
         existingMatch.diverseDiscourses = selectDiverseDiscourses(existingMatch.discourses, 3);
         continue;
       }
-      
+
       if (phraseGroups.length < THRESHOLDS.MAX_PHRASE_GROUPS) {
         // Apply diversity logic: prefer discourses from different collections
         const diverseDiscourses = selectDiverseDiscourses(data.discourses, 3);
-        
+
         phraseGroups.push({
           phraseNormalized,
           similarity: data.score,
@@ -970,6 +1533,7 @@
           matchedSegment: data.matchedSegment, // The actual matched segment
           startIndex: data.startIndex,
           endIndex: data.endIndex,
+          coveredPositions: data.coveredPositions, // Which positions in source are covered (not gaps)
           discourses: data.discourses, // Stored for diversity selection
           totalCount: data.totalCount, // True count of all matches
           diverseDiscourses, // Top 3 diverse discourses for display
@@ -979,6 +1543,10 @@
 
     // Calculate total discourses from actual counts (not just stored)
     const totalDiscourses = phraseGroups.reduce((sum, pg) => sum + pg.totalCount, 0);
+
+    // Sort phrase groups by position in source text (ascending startIndex)
+    // This shows matches in the order they appear in the source paragraph
+    phraseGroups.sort((a, b) => (a.startIndex ?? 0) - (b.startIndex ?? 0));
 
     return {
       phraseGroups,
@@ -1029,23 +1597,40 @@
   }
 
   // Render Pali text with clickable word spans for dictionary lookup
-  // Two modes:
+  // Three modes:
   // 1. matchedWords (Set) - finds best contiguous run of matching words (for entry text)
   // 2. highlightRange ({ start, end }) - highlights words at specific positions (for source text)
-  function renderPaliWithWords(text: string, matchedWords?: Set<string>, highlightRange?: { start: number; end: number }): string {
+  // 3. coveredPositions (Set<number>) - if provided, words NOT in this set are highlighted as gaps
+  function renderPaliWithWords(
+    text: string,
+    matchedWords?: Set<string>,
+    highlightRange?: { start: number; end: number },
+    coveredPositions?: Set<number> | number[] | object
+  ): string {
+    // Ensure coveredPositions is a Set (may be array from JSON deserialization, or {} from empty Set)
+    let coveredSet: Set<number> | undefined = undefined;
+    if (coveredPositions) {
+      if (coveredPositions instanceof Set) {
+        coveredSet = coveredPositions;
+      } else if (Array.isArray(coveredPositions)) {
+        coveredSet = new Set(coveredPositions);
+      }
+      // If it's an object {} (empty Set serialized), leave coveredSet as undefined
+    }
+
     // Normalize multiple spaces to single space first
     const normalizedText = text.replace(/\s+/g, ' ');
-    
+
     // Word pattern includes Pali letters + all quote types
     const wordPattern = /[a-zA-ZāīūṃṅñṭḍṇḷṁĀĪŪṂṄÑṬḌṆḶṀ'"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A«»„‚]+/g;
     const matches = [...normalizedText.matchAll(wordPattern)];
-    
+
     if (matches.length === 0) return escapeHtml(normalizedText);
 
     // Determine highlight range
     let highlightStart = -1;
     let highlightEnd = -1;
-    
+
     // Mode 1: Position-based highlighting (for source text where we know exact positions)
     if (highlightRange && highlightRange.start >= 0 && highlightRange.end >= highlightRange.start) {
       highlightStart = highlightRange.start;
@@ -1067,28 +1652,28 @@
 
       // Find the best contiguous run
       let bestRun = { start: -1, end: -1, matchCount: 0, totalWords: 0 };
-      
+
       for (let start = 0; start < wordMatches.length; start++) {
         if (!wordMatches[start].isMatch) continue;
-        
+
         let matchCount = 0;
         let lastMatchIdx = start;
-        
+
         for (let end = start; end < wordMatches.length; end++) {
           if (wordMatches[end].isMatch) {
             matchCount++;
             lastMatchIdx = end;
           }
-          
+
           const gapFromLastMatch = end - lastMatchIdx;
           if (gapFromLastMatch > 2 && !wordMatches[end].isMatch) {
             break;
           }
-          
+
           const totalWords = end - start + 1;
           const density = matchCount / totalWords;
-          
-          if (matchCount > bestRun.matchCount || 
+
+          if (matchCount > bestRun.matchCount ||
               (matchCount === bestRun.matchCount && density > bestRun.matchCount / bestRun.totalWords)) {
             bestRun = { start, end: lastMatchIdx, matchCount, totalWords: lastMatchIdx - start + 1 };
           }
@@ -1101,7 +1686,8 @@
       }
     }
 
-    // Build HTML with word spans, wrapping highlighted range in a single span
+    // Build HTML with word spans, using wrapper for contiguous highlight
+    // Gap words within the highlight get a special class
     let result = '';
     let lastEnd = 0;
     let insideHighlight = false;
@@ -1109,44 +1695,52 @@
     matches.forEach((match, idx) => {
       const word = match[0];
       const pos = match.index!;
-      
+
       // Check if this word is within the highlight range
-      const isHighlighted = highlightStart !== -1 && idx >= highlightStart && idx <= highlightEnd;
-      
-      // Open highlight wrapper at start of highlighted range
-      if (isHighlighted && !insideHighlight) {
-        // Add text before highlight starts (preserving ellipsis, punctuation, etc.)
+      const isInRange = highlightStart !== -1 && idx >= highlightStart && idx <= highlightEnd;
+
+      // Check if this position is covered (matching) or a gap
+      const isCovered = !coveredSet || coveredSet.has(idx);
+      const isGap = isInRange && !isCovered;
+
+      // Open/close highlight wrapper at range boundaries
+      if (isInRange && !insideHighlight) {
+        // Add text before highlight starts
         if (pos > lastEnd) {
           const between = normalizedText.substring(lastEnd, pos);
           result += escapeHtml(between);
         }
         result += `<span class="tm-highlight">`;
         insideHighlight = true;
-      } else if (!isHighlighted && insideHighlight) {
-        // Close highlight wrapper when leaving highlighted range
+      } else if (!isInRange && insideHighlight) {
+        // Close highlight wrapper
         result += `</span>`;
         insideHighlight = false;
-        // Add text after highlight (preserving ellipsis, punctuation, etc.)
         if (pos > lastEnd) {
           const between = normalizedText.substring(lastEnd, pos);
           result += escapeHtml(between);
         }
       } else if (pos > lastEnd) {
-        // Normal text between words (preserving ellipsis, punctuation, etc.)
+        // Normal text between words
         const between = normalizedText.substring(lastEnd, pos);
         result += escapeHtml(between);
       }
-      
+
       // Clean word for lookup (remove trailing punctuation, quotes)
       const cleanWord = word.replace(/[,;.!?'"'""]+$/g, '').toLowerCase();
-      
-      // Build the word span (no individual highlight class - wrapper handles it)
-      result += `<span class="pali-word" data-word="${escapeHtml(cleanWord)}" data-original="${escapeHtml(word)}">${escapeHtml(word)}</span>`;
-      
+
+      // Build the word span with appropriate highlighting
+      let highlightClass = '';
+      if (isInRange) {
+        highlightClass = isGap ? ' tm-highlight-gap' : ' tm-highlight-word';
+      }
+
+      result += `<span class="pali-word${highlightClass}" data-word="${escapeHtml(cleanWord)}" data-original="${escapeHtml(word)}">${escapeHtml(word)}</span>`;
+
       lastEnd = pos + word.length;
     });
 
-    // Close highlight wrapper if still open at end
+    // Close highlight wrapper if still open
     if (insideHighlight) {
       result += `</span>`;
     }
@@ -1166,7 +1760,7 @@
   function highlightMatches(text: string, matchedWords: Set<string>): string {
     // Normalize multiple spaces to single space first
     const normalizedText = text.replace(/\s+/g, ' ');
-    
+
     // Find the BEST contiguous run of matched words (not just first-to-last anywhere)
     // This is important when a word like "bhikkhave" appears multiple times in a paragraph
     // Word pattern includes Pali letters + all quote types (using Unicode escapes for reliability)
@@ -1174,7 +1768,7 @@
     // Quote Unicode: U+2018-201F (curly quotes), U+0027 ('), U+0022 ("), U+2039-203A (angle quotes)
     const wordPattern = /[a-zA-ZāīūṃṅñṭḍṇḷṁĀĪŪṂṄÑṬḌṆḶṀ'"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A«»„‚]+/g;
     const matches = [...normalizedText.matchAll(wordPattern)];
-    
+
     if (matches.length === 0) return escapeHtml(normalizedText);
 
     // Build array of which words match
@@ -1191,31 +1785,31 @@
 
     // Find the best contiguous run: highest count of matched words with minimal gaps
     let bestRun = { start: -1, end: -1, matchCount: 0, totalWords: 0 };
-    
+
     // Sliding window: find runs where most words are matched
     for (let start = 0; start < wordMatches.length; start++) {
       if (!wordMatches[start].isMatch) continue; // Start from a matched word
-      
+
       let matchCount = 0;
       let lastMatchIdx = start;
-      
+
       for (let end = start; end < wordMatches.length; end++) {
         if (wordMatches[end].isMatch) {
           matchCount++;
           lastMatchIdx = end;
         }
-        
+
         // Allow small gaps (up to 2 non-matching words) within a run
         const gapFromLastMatch = end - lastMatchIdx;
         if (gapFromLastMatch > 2 && !wordMatches[end].isMatch) {
           break; // Too big a gap, end this run
         }
-        
+
         const totalWords = end - start + 1;
         const density = matchCount / totalWords;
-        
+
         // Better run if: more matches, or same matches but tighter (higher density)
-        if (matchCount > bestRun.matchCount || 
+        if (matchCount > bestRun.matchCount ||
             (matchCount === bestRun.matchCount && density > bestRun.matchCount / bestRun.totalWords)) {
           bestRun = { start, end: lastMatchIdx, matchCount, totalWords: lastMatchIdx - start + 1 };
         }
@@ -1234,8 +1828,8 @@
     const highlighted = normalizedText.substring(startPos, endPos);
     const after = normalizedText.substring(endPos);
 
-    return escapeHtml(before) + 
-           `<strong class="tm-highlight">${escapeHtml(highlighted)}</strong>` + 
+    return escapeHtml(before) +
+           `<strong class="tm-highlight">${escapeHtml(highlighted)}</strong>` +
            escapeHtml(after);
   }
 
@@ -1243,7 +1837,7 @@
   function formatPhraseTabLabel(phraseGroup: TMPhraseGroup, sourceWordCount: number, includeCount: boolean = true): string {
     const discCount = phraseGroup.totalCount; // Use true count, not just stored
     const wordLabel = `${phraseGroup.matchedWordCount} words`;
-    
+
     return includeCount ? `${wordLabel} · ${discCount} match${discCount !== 1 ? 'es' : ''}` : wordLabel;
   }
 
@@ -1318,7 +1912,7 @@ function getCurrentSuttaId(): string {
 
     // Find all TM buttons that don't have pre-computed matches yet
     const buttons = Array.from(document.querySelectorAll('.tm-lookup-btn:not([data-tm-matches])'));
-    
+
     // Process in batches of 3 to avoid blocking UI
     const BATCH_SIZE = 3;
     let processed = 0;
@@ -1327,11 +1921,11 @@ function getCurrentSuttaId(): string {
       const paliText = btn.getAttribute('data-pali-text');
       if (!paliText) continue;
 
-      // Get paragraph number from parent pali-paragraph's data-pair-id, 
+      // Get paragraph number from parent pali-paragraph's data-pair-id,
       // or from the corresponding english-paragraph which has data-paragraph-number
       const parentPara = btn.closest('.pali-paragraph');
       let paraNum: string | null = null;
-      
+
       if (parentPara) {
         // Method 1: Use data-pair-id to find corresponding English paragraph
         const pairId = parentPara.getAttribute('data-pair-id');
@@ -1347,7 +1941,7 @@ function getCurrentSuttaId(): string {
           }
         }
       }
-      
+
       const sourceRef = currentSuttaId && paraNum ? { suttaId: currentSuttaId, paragraphNum: parseInt(paraNum, 10) } : undefined;
 
       // Compute matches
@@ -1360,6 +1954,11 @@ function getCurrentSuttaId(): string {
           phraseGroups: result.phraseGroups.map(pg => ({
             ...pg,
             matchedWords: Array.from(pg.matchedWords),
+            coveredPositions: pg.coveredPositions ? Array.from(pg.coveredPositions) : undefined,
+            discourses: pg.discourses.map(d => ({
+              ...d,
+              entryCoveredPositions: d.entryCoveredPositions ? Array.from(d.entryCoveredPositions) : undefined,
+            })),
           })),
         };
 
@@ -1427,7 +2026,7 @@ function getCurrentSuttaId(): string {
       }
 
       if (!paliText || paliText.length < 20 || !paliParagraph) continue;
-      
+
       // Skip if Pali paragraph already has a TM button
       if (paliParagraph.querySelector('.tm-lookup-btn')) continue;
 
@@ -1437,7 +2036,7 @@ function getCurrentSuttaId(): string {
       btn.textContent = 'TM';
       btn.title = 'Translation Memory: Click to find similar translations';
       btn.setAttribute('data-pali-text', paliText);
-      
+
       // Position at the right side of the Pali paragraph
       const para = paliParagraph as HTMLElement;
       para.style.position = 'relative';
@@ -1461,7 +2060,7 @@ function getCurrentSuttaId(): string {
     if (triggerElement) {
       popoverTriggerElement = triggerElement;
     }
-    
+
     // Remove any existing popover
     const existing = document.querySelector('.tm-popover-overlay');
     if (existing) existing.remove();
@@ -1492,7 +2091,7 @@ function getCurrentSuttaId(): string {
     // Use totalCount for the actual count, not just stored discourses
     const totalInGroup = phraseGroup.totalCount;
     const remainingDiscourses = totalInGroup - displayDiscourses.length;
-    
+
     let discourseTabsHtml = `
       <div class="tm-tabs tm-discourse-tabs">
         ${displayDiscourses.map((d, i) => {
@@ -1508,13 +2107,14 @@ function getCurrentSuttaId(): string {
 
     // Render source Pali with clickable word spans and position-based highlighting
     // Use startIndex/endIndex for accurate highlighting of the matched range
+    // Pass coveredPositions to show gap words with different styling
     const sourceHighlightRange = (phraseGroup.startIndex !== undefined && phraseGroup.endIndex !== undefined)
       ? { start: phraseGroup.startIndex, end: phraseGroup.endIndex }
       : undefined;
-    const renderedSourcePali = renderPaliWithWords(result.sourcePali, undefined, sourceHighlightRange);
+    const renderedSourcePali = renderPaliWithWords(result.sourcePali, undefined, sourceHighlightRange, phraseGroup.coveredPositions);
 
     // Format source reference link (e.g., "MN112 ¶25 ↗")
-    const sourceRefLink = result.sourceRef 
+    const sourceRefLink = result.sourceRef
       ? `<a href="/${result.sourceRef.suttaId}.${result.sourceRef.paragraphNum}?pli=true" target="_blank" class="tm-discourse-link" title="Open ${formatDiscourseRef(result.sourceRef)} in new tab">${formatDiscourseRef(result.sourceRef)} ↗</a>`
       : '';
 
@@ -1535,17 +2135,18 @@ function getCurrentSuttaId(): string {
     // Create popover
     const overlay = document.createElement('div');
     overlay.className = 'tm-popover-overlay';
-    
+
     // Render English with glosses as tooltips
     const renderedEnglish = renderGlosses(discourse.englishOriginal);
-    
+
     // Render matched Pali phrase with position-based highlighting
     // Use entryStartIndex/entryEndIndex to highlight the exact matching range in the entry text
+    // Pass entryCoveredPositions to show gap words with different styling
     const entryHighlightRange = (discourse.entryStartIndex !== undefined && discourse.entryEndIndex !== undefined)
       ? { start: discourse.entryStartIndex, end: discourse.entryEndIndex }
       : undefined;
-    const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, undefined, entryHighlightRange);
-    
+    const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, undefined, entryHighlightRange, discourse.entryCoveredPositions);
+
     overlay.innerHTML = `
       <div class="tm-popover" role="dialog" aria-modal="true">
         <div class="tm-popover-header">
@@ -1594,12 +2195,12 @@ function getCurrentSuttaId(): string {
       if (!selectedText) return '';
 
       const fullText = selectableEl?.textContent || '';
-      
+
       // If full selection, return complete raw English
       if (selectedText.trim() === fullText.trim()) {
         return rawEnglish;
       }
-      
+
       // Partial selection: try to map back to raw text with gloss syntax
       // Find where the selection starts/ends in the visible text
       const selStart = fullText.indexOf(selectedText);
@@ -1608,7 +2209,7 @@ function getCurrentSuttaId(): string {
         return selectedText;
       }
       const selEnd = selStart + selectedText.length;
-      
+
       // Build a mapping from visible text positions to raw text positions
       // Raw format: text |term::definition [pali]| more text
       // Visible: text term more text
@@ -1616,14 +2217,14 @@ function getCurrentSuttaId(): string {
       let rawPos = 0;
       let rawStart = 0;
       let rawEnd = rawEnglish.length;
-      
+
       const glossPattern = /\|([^|:]+)::([^|]+)\|/g;
       let lastEnd = 0;
       let match;
-      
+
       // Build segments: [{visible, rawStart, rawEnd}]
       const segments: Array<{visibleStart: number, visibleEnd: number, rawStart: number, rawEnd: number}> = [];
-      
+
       while ((match = glossPattern.exec(rawEnglish)) !== null) {
         // Text before this gloss
         const beforeText = rawEnglish.substring(lastEnd, match.index);
@@ -1636,7 +2237,7 @@ function getCurrentSuttaId(): string {
           });
           visiblePos += beforeText.length;
         }
-        
+
         // The gloss itself: |term::definition| -> term
         const term = match[1];
         segments.push({
@@ -1648,7 +2249,7 @@ function getCurrentSuttaId(): string {
         visiblePos += term.length;
         lastEnd = match.index + match[0].length;
       }
-      
+
       // Text after last gloss
       if (lastEnd < rawEnglish.length) {
         const afterText = rawEnglish.substring(lastEnd);
@@ -1659,7 +2260,7 @@ function getCurrentSuttaId(): string {
           rawEnd: rawEnglish.length
         });
       }
-      
+
       // Find raw positions for selection
       for (const seg of segments) {
         if (seg.visibleStart <= selStart && selStart < seg.visibleEnd) {
@@ -1681,7 +2282,7 @@ function getCurrentSuttaId(): string {
           }
         }
       }
-      
+
       return rawEnglish.substring(rawStart, rawEnd);
     }
 
@@ -1702,7 +2303,7 @@ function getCurrentSuttaId(): string {
       // Create copy tooltip near the selection
       removeCopyTooltip();
       const rect = range.getBoundingClientRect();
-      
+
       copyTooltip = document.createElement('div');
       copyTooltip.className = 'tm-selection-copy-tooltip';
       copyTooltip.innerHTML = '<button class="tm-selection-copy-btn">📋 Copy raw</button>';
@@ -1711,14 +2312,14 @@ function getCurrentSuttaId(): string {
       copyTooltip.style.top = `${rect.top - 35}px`;
       copyTooltip.style.transform = 'translateX(-50%)';
       copyTooltip.style.zIndex = '10001';
-      
+
       document.body.appendChild(copyTooltip);
 
       copyTooltip.querySelector('.tm-selection-copy-btn')?.addEventListener('click', async (ev) => {
         ev.stopPropagation();
         const rawEnglish = discourse.englishOriginal;
         const rawText = getRawTextForSelection(selection, rawEnglish);
-        
+
         try {
           await navigator.clipboard.writeText(rawText);
           const btn = copyTooltip?.querySelector('.tm-selection-copy-btn');
@@ -1794,34 +2395,34 @@ function getCurrentSuttaId(): string {
         e.preventDefault();
         return;
       }
-      
+
       // Check if content is scrollable
       const isScrollable = popoverContent.scrollHeight > popoverContent.clientHeight;
       if (!isScrollable) {
         e.preventDefault();
         return;
       }
-      
+
       // Check if the event target is inside the scrollable content
       const target = e.target as HTMLElement;
       if (!popoverContent.contains(target)) {
         e.preventDefault();
         return;
       }
-      
+
       // For wheel events, prevent scroll at boundaries to avoid background scroll
       if (e instanceof WheelEvent) {
         const { scrollTop, scrollHeight, clientHeight } = popoverContent;
         const atTop = scrollTop <= 0;
         const atBottom = scrollTop + clientHeight >= scrollHeight;
-        
+
         // Scrolling up at top or down at bottom would scroll background
         if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
           e.preventDefault();
           return;
         }
       }
-      
+
       // Allow the scroll inside popover content
       e.stopPropagation();
     };
@@ -1830,7 +2431,7 @@ function getCurrentSuttaId(): string {
 
     // Cleanup function for all listeners
     let handleKeydown: ((e: KeyboardEvent) => void) | null = null;
-    
+
     const cleanupAndClose = () => {
       overlay.removeEventListener('wheel', preventBackgroundScroll);
       overlay.removeEventListener('touchmove', preventBackgroundScroll);
@@ -1853,12 +2454,12 @@ function getCurrentSuttaId(): string {
         cleanupAndClose();
         return;
       }
-      
+
       // Arrow key navigation for tabs
       const activeElement = document.activeElement as HTMLElement;
       const isInPhraseRow = activeElement?.classList.contains('tm-phrase-tab');
       const isInDiscourseRow = activeElement?.classList.contains('tm-discourse-tab');
-      
+
       // Prevent page scroll on arrow keys ONLY when focus is on tabs
       // This allows arrow key scrolling inside the popover content when not focused on tabs
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
@@ -1875,16 +2476,16 @@ function getCurrentSuttaId(): string {
           e.preventDefault();
         }
       }
-      
+
       if (!isInPhraseRow && !isInDiscourseRow) return;
-      
+
       const currentRow = isInPhraseRow ? 'phrase' : 'discourse';
-      const tabs = currentRow === 'phrase' 
+      const tabs = currentRow === 'phrase'
         ? Array.from(overlay.querySelectorAll('.tm-phrase-tab')) as HTMLElement[]
         : Array.from(overlay.querySelectorAll('.tm-discourse-tab')) as HTMLElement[];
-      
+
       const currentIdx = tabs.indexOf(activeElement);
-      
+
       if (e.key === 'ArrowLeft' && currentIdx > 0) {
         e.preventDefault();
         tabs[currentIdx - 1].focus();
@@ -1916,12 +2517,12 @@ function getCurrentSuttaId(): string {
       }
     };
     document.addEventListener('keydown', handleKeydown);
-    
+
     // Auto-focus: respect focusRow parameter, default to first available row
     setTimeout(() => {
       const shouldFocusPhrase = focusRow === 'phrase' || (focusRow === 'auto' && showPhraseRow);
       const shouldFocusDiscourse = focusRow === 'discourse' || (focusRow === 'auto' && !showPhraseRow);
-      
+
       if (shouldFocusPhrase && showPhraseRow) {
         const activeTab = overlay.querySelector('.tm-phrase-tab.tm-tab-active') as HTMLElement;
         activeTab?.focus();
@@ -1955,7 +2556,7 @@ function getCurrentSuttaId(): string {
   function renderGlosses(text: string): string {
     // First escape HTML, then replace gloss patterns
     const escaped = escapeHtml(text);
-    
+
     // Pattern: |term::definition [paliterm]| or |term::definition|
     return escaped.replace(
       /\|([^|:]+)::([^|]+)\|/g,
@@ -1975,11 +2576,11 @@ function getCurrentSuttaId(): string {
   function addTMLookupButtons() {
     // Find all Pali paragraphs
     const paliParagraphs = document.querySelectorAll('p.pali-paragraph');
-    
+
     for (const paliPara of paliParagraphs) {
       // Skip if already has a TM button
       if (paliPara.querySelector('.tm-lookup-btn')) continue;
-      
+
       const paliText = paliPara.textContent || '';
       if (paliText.length < 20) continue;
 
@@ -1988,10 +2589,10 @@ function getCurrentSuttaId(): string {
       btn.className = 'tm-lookup-btn';
       btn.textContent = 'TM';
       btn.title = 'Translation Memory: Click to find similar translations';
-      
+
       // Store the pali text for lazy loading
       btn.setAttribute('data-pali-text', paliText);
-      
+
       // Position at the end of the paragraph
       const para = paliPara as HTMLElement;
       para.style.position = 'relative';
@@ -2008,7 +2609,7 @@ function getCurrentSuttaId(): string {
     // In dev mode, always reload to pick up live updates
     const isDev = import.meta.env?.DEV || window.location.hostname === 'localhost';
     if (tmIndex && !isDev) return true;
-    
+
     try {
       // Add cache-busting query param in dev mode
       const cacheBuster = isDev ? `?t=${Date.now()}` : '';
@@ -2035,8 +2636,17 @@ function getCurrentSuttaId(): string {
     if (matchDataStr) {
       try {
         const result: TMMatchResult = JSON.parse(matchDataStr);
+        // Restore Set objects that were serialized as arrays
         result.phraseGroups.forEach(pg => {
           pg.matchedWords = new Set(pg.matchedWords as unknown as string[]);
+          if (pg.coveredPositions) {
+            pg.coveredPositions = new Set(pg.coveredPositions as unknown as number[]);
+          }
+          pg.discourses.forEach(d => {
+            if (d.entryCoveredPositions) {
+              d.entryCoveredPositions = new Set(d.entryCoveredPositions as unknown as number[]);
+            }
+          });
         });
         showPopover(result, 0, 0, 'auto', trigger as HTMLElement);
         return;
@@ -2062,12 +2672,12 @@ function getCurrentSuttaId(): string {
     }
 
     const currentSuttaId = getCurrentSuttaId();
-    
+
     // Get paragraph number from parent pali-paragraph's data-pair-id,
     // or from the corresponding english-paragraph which has data-paragraph-number
     const parentPara = trigger.closest('.pali-paragraph');
     let paraNum: string | null = null;
-    
+
     if (parentPara) {
       // Method 1: Use data-pair-id to find corresponding English paragraph
       const pairId = parentPara.getAttribute('data-pair-id');
@@ -2083,27 +2693,32 @@ function getCurrentSuttaId(): string {
         }
       }
     }
-    
+
     const sourceRef = currentSuttaId && paraNum ? { suttaId: currentSuttaId, paragraphNum: parseInt(paraNum, 10) } : undefined;
-    
+
     const result = findMatches(paliText, paliText, currentSuttaId, sourceRef);
 
     if (result && result.phraseGroups.length > 0) {
       // Update button with count
       trigger.textContent = `TM (${result.totalDiscourses})`;
       (trigger as HTMLButtonElement).disabled = false;
-      
+
       // Cache the result for future clicks
       const serializableResult = {
         ...result,
         phraseGroups: result.phraseGroups.map(pg => ({
           ...pg,
           matchedWords: Array.from(pg.matchedWords),
+          coveredPositions: pg.coveredPositions ? Array.from(pg.coveredPositions) : undefined,
+          discourses: pg.discourses.map(d => ({
+            ...d,
+            entryCoveredPositions: d.entryCoveredPositions ? Array.from(d.entryCoveredPositions) : undefined,
+          })),
         })),
       };
       trigger.setAttribute('data-tm-matches', JSON.stringify(serializableResult));
       trigger.removeAttribute('data-pali-text'); // No longer needed
-      
+
       showPopover(result, 0, 0, 'auto', trigger as HTMLElement);
     } else {
       trigger.textContent = 'TM (0)';
@@ -2115,7 +2730,7 @@ function getCurrentSuttaId(): string {
   async function initialize() {
     // First, immediately add placeholder TM buttons to all Pali paragraphs (fast, no computation)
     addTMLookupButtons();
-    
+
     // Then, pre-compute TM for "Translation in progress..." paragraphs in background
     // Use requestIdleCallback to avoid blocking the main thread
     scheduleBackgroundComputation();
@@ -2124,9 +2739,9 @@ function getCurrentSuttaId(): string {
   // Schedule non-blocking background computation for TM match counts
   function scheduleBackgroundComputation() {
     // Use requestIdleCallback if available, otherwise setTimeout
-    const scheduleIdle = (window as any).requestIdleCallback || 
+    const scheduleIdle = (window as any).requestIdleCallback ||
       ((fn: () => void) => setTimeout(fn, 100));
-    
+
     scheduleIdle(async () => {
       // First add any missing buttons for translation-in-progress paragraphs
       enhanceTranslationPlaceholders();
@@ -2147,7 +2762,7 @@ function getCurrentSuttaId(): string {
       console.log('[TM Debug] Match result:', result);
       return result;
     },
-    
+
     // Load the index (call this first)
     loadIndex: async () => {
       const loaded = await loadTMIndex();
@@ -2160,7 +2775,13 @@ function getCurrentSuttaId(): string {
       }
       return loaded;
     },
-    
+
+    // Enable/disable verbose debug logging
+    setVerbose: (enabled: boolean) => {
+      (window as any).tmDebugVerbose = enabled;
+      console.log(`[TM Debug] Verbose logging ${enabled ? 'enabled' : 'disabled'}`);
+    },
+
     // Get index stats
     getIndexStats: () => {
       if (!tmIndex) return null;
@@ -2171,13 +2792,13 @@ function getCurrentSuttaId(): string {
         version: tmIndex.version,
       };
     },
-    
+
     // Normalize Pali text (for debugging)
     normalize: normalizePali,
-    
+
     // Check if a word is a stop word
     isStopWord: isStopWord,
-    
+
     // Get words from text
     getWords: (text: string) => {
       const normalized = normalizePali(text);
@@ -2192,7 +2813,7 @@ function getCurrentSuttaId(): string {
       console.log(JSON.stringify(result, null, 2));
       return result;
     },
-    
+
     // Debug n-gram matching: show raw candidates before processing
     findNgramCandidates: (paliText: string) => {
       if (!tmIndex) {
@@ -2203,10 +2824,10 @@ function getCurrentSuttaId(): string {
       const words = normalized.split(/\s+/).filter(w => w.length > 0);
       const ngramSize = tmIndex.ngramSize || 5;
       const queryNgrams = extractNgrams(words, ngramSize);
-      
+
       console.log(`[TM Debug] Query has ${words.length} words, ${queryNgrams.length} n-grams`);
       console.log('[TM Debug] First 5 n-grams:', queryNgrams.slice(0, 5));
-      
+
       // Find which n-grams have matches
       const matchedNgrams: Array<{ ngram: string; entryCount: number }> = [];
       for (const ngram of queryNgrams) {
@@ -2215,10 +2836,10 @@ function getCurrentSuttaId(): string {
           matchedNgrams.push({ ngram, entryCount: entryIds.length });
         }
       }
-      
+
       console.log(`[TM Debug] ${matchedNgrams.length}/${queryNgrams.length} n-grams have matches`);
       console.log('[TM Debug] Matched n-grams:', matchedNgrams);
-      
+
       // Count total unique entries
       const allEntryIds = new Set<number>();
       for (const ngram of queryNgrams) {
@@ -2228,7 +2849,7 @@ function getCurrentSuttaId(): string {
         }
       }
       console.log(`[TM Debug] Total unique candidate entries: ${allEntryIds.size}`);
-      
+
       return {
         words: words.length,
         ngrams: queryNgrams.length,
@@ -2237,7 +2858,7 @@ function getCurrentSuttaId(): string {
         matchedNgramDetails: matchedNgrams,
       };
     },
-    
+
     // Find matches and return JSON-stringified result for easy copy/paste
     // Pass paragraphNum to properly filter out self-matching
     findMatchesJSON: (paliText: string, suttaId?: string, paragraphNum?: number) => {
@@ -2274,7 +2895,7 @@ function getCurrentSuttaId(): string {
       }
       return null;
     },
-    
+
     // Get Pali paragraphs from a discourse element on the page
     // Usage: tmDebug.getPaliParagraphs() - gets all paragraphs from current page
     getPaliParagraphs: () => {
@@ -2284,7 +2905,7 @@ function getCurrentSuttaId(): string {
       const paliParas = document.querySelectorAll('.pali-paragraph');
       const seen = new Set<string>();
       const paragraphs: Array<{ num: number; text: string }> = [];
-      let paraNum = 0;
+      let fallbackNum = 0;
       paliParas.forEach((el) => {
         const text = el.textContent?.trim() || '';
         // Skip very short elements that are likely titles (less than 30 chars and no periods)
@@ -2292,14 +2913,38 @@ function getCurrentSuttaId(): string {
           // Deduplicate by text content
           if (seen.has(text)) return;
           seen.add(text);
-          paraNum++;
+
+          // Get actual paragraph number from data-paragraph-number attribute
+          // Or find via data-pair-id from the corresponding English paragraph
+          let paraNum: number | null = null;
+          const attrNum = el.getAttribute('data-paragraph-number');
+          if (attrNum) {
+            paraNum = parseInt(attrNum, 10);
+          } else {
+            // Try to find via pair-id
+            const pairId = el.getAttribute('data-pair-id');
+            if (pairId) {
+              const englishPara = document.querySelector(`.english-paragraph[data-pair-id="${pairId}"]`);
+              const engNum = englishPara?.getAttribute('data-paragraph-number');
+              if (engNum) {
+                paraNum = parseInt(engNum, 10);
+              }
+            }
+          }
+
+          // Fallback to sequential numbering if no attribute found
+          if (paraNum === null || isNaN(paraNum)) {
+            fallbackNum++;
+            paraNum = fallbackNum;
+          }
+
           paragraphs.push({ num: paraNum, text });
         }
       });
       console.log(`Found ${paragraphs.length} Pali paragraphs`);
       return paragraphs;
     },
-    
+
     // Find matches for specific paragraphs on current page
     // Usage: tmDebug.findPageMatches() - all paragraphs
     // Usage: tmDebug.findPageMatches(3) - just paragraph 3
@@ -2310,18 +2955,21 @@ function getCurrentSuttaId(): string {
         console.warn('[TM Debug] Failed to load index');
         return null;
       }
-      
+
       const currentSuttaId = getCurrentSuttaId();
       const paragraphs = (window as any).tmDebug.getPaliParagraphs();
-      
-      // If only startPara provided, return just that one paragraph
-      const start = startPara ?? 1;
-      const end = endPara ?? (startPara !== undefined ? startPara : paragraphs.length);
-      
+
+      // Filter paragraphs by actual paragraph number (not array index)
+      // If startPara provided, find paragraphs with that number or in range
+      let filteredParagraphs = paragraphs;
+      if (startPara !== undefined) {
+        const endNum = endPara ?? startPara;
+        filteredParagraphs = paragraphs.filter((p: { num: number }) => p.num >= startPara && p.num <= endNum);
+      }
+
       const results: Array<{ paragraph: number; text: string; matches: any }> = [];
-      
-      for (let i = start - 1; i < end && i < paragraphs.length; i++) {
-        const para = paragraphs[i];
+
+      for (const para of filteredParagraphs) {
         // Pass sourceRef to properly filter out self-matching (same sutta + same paragraph)
         const sourceRef = currentSuttaId ? { suttaId: currentSuttaId, paragraphNum: para.num } : undefined;
         const matches = findMatches(para.text, para.text, currentSuttaId, sourceRef);
@@ -2339,14 +2987,167 @@ function getCurrentSuttaId(): string {
               discourses: pg.totalCount,
               score: pg.score,
               wordRange: `${pg.startIndex}-${pg.endIndex}`,
-              firstMatch: pg.diverseDiscourses[0]?.suttaId,
+              firstMatch: pg.diverseDiscourses[0] ?
+                `${pg.diverseDiscourses[0].suttaId}.${pg.diverseDiscourses[0].paragraphNum}` : null,
             })),
           } : null,
         });
       }
-      
+
       console.log(JSON.stringify(results, null, 2));
       return results;
+    },
+
+    // Debug why a specific phrase isn't matching
+    // Usage: tmDebug.checkPhrase("kāyaparihārikena cīvarena kucchiparihārikena piṇḍapātena")
+    checkPhrase: (phrase: string) => {
+      if (!tmIndex) {
+        console.warn('[TM Debug] Index not loaded. Call loadIndex() first.');
+        return null;
+      }
+
+      const ngramSize = tmIndex.ngramSize || 4;
+      const normalized = normalizePali(phrase);
+      const words = normalized.split(/\s+/).filter(w => w.length > 0);
+      const ngrams = extractNgrams(words, ngramSize);
+
+      console.log(`[TM Debug] Checking phrase: "${phrase}"`);
+      console.log(`[TM Debug] Normalized: "${normalized}"`);
+      console.log(`[TM Debug] Words (${words.length}): ${JSON.stringify(words)}`);
+      console.log(`[TM Debug] N-grams (${ngrams.length}) for n=${ngramSize}:`);
+
+      const results: Array<{ ngram: string; found: boolean; entryCount: number; entries?: Array<{ id: number; suttaId: string; paragraphNum: number }> }> = [];
+
+      for (const ngram of ngrams) {
+        const entryIds = tmIndex.ngrams?.[ngram];
+        const found = !!entryIds && entryIds.length > 0;
+
+        let entries: Array<{ id: number; suttaId: string; paragraphNum: number }> | undefined;
+        if (found && entryIds.length <= 5) {
+          // Show details for small result sets
+          entries = entryIds.map(id => {
+            const entry = tmIndex!.entries[id];
+            return {
+              id,
+              suttaId: entry?.source?.suttaId || 'unknown',
+              paragraphNum: entry?.source?.paragraphNum || 0,
+            };
+          });
+        }
+
+        results.push({
+          ngram,
+          found,
+          entryCount: entryIds?.length || 0,
+          entries,
+        });
+
+        console.log(`  "${ngram}" -> ${found ? `FOUND (${entryIds.length} entries)` : 'NOT FOUND'}`);
+      }
+
+      return results;
+    },
+
+    // Debug the full matching process for a paragraph
+    // Usage: tmDebug.debugParagraph(21)
+    debugParagraph: async (paraNum: number) => {
+      const loaded = await loadTMIndex();
+      if (!loaded) {
+        console.warn('[TM Debug] Failed to load index');
+        return null;
+      }
+
+      const currentSuttaId = getCurrentSuttaId();
+      const paragraphs = (window as any).tmDebug.getPaliParagraphs();
+      const para = paragraphs.find((p: { num: number }) => p.num === paraNum);
+
+      if (!para) {
+        console.warn(`[TM Debug] Paragraph ${paraNum} not found`);
+        return null;
+      }
+
+      const ngramSize = tmIndex!.ngramSize || 4;
+      const queryNormalized = normalizePali(para.text);
+      const queryWords = queryNormalized.split(/\s+/).filter((w: string) => w.length > 0);
+      const queryNgrams = extractNgrams(queryWords, ngramSize);
+
+      console.log(`[TM Debug] === Debugging Paragraph ${paraNum} ===`);
+      console.log(`[TM Debug] Raw text: "${para.text.substring(0, 150)}..."`);
+      console.log(`[TM Debug] Normalized: "${queryNormalized.substring(0, 150)}..."`);
+      console.log(`[TM Debug] Word count: ${queryWords.length}`);
+      console.log(`[TM Debug] First 10 words: ${JSON.stringify(queryWords.slice(0, 10))}`);
+      console.log(`[TM Debug] N-gram count: ${queryNgrams.length} (size=${ngramSize})`);
+
+      // Check each n-gram in the index
+      let matchedNgramCount = 0;
+      const candidateEntryIds = new Set<number>();
+      const ngramDetails: Array<{ ngram: string; found: boolean; count: number }> = [];
+
+      for (const ngram of queryNgrams) {
+        const entryIds = tmIndex!.ngrams?.[ngram];
+        const found = !!entryIds && entryIds.length > 0;
+        if (found) {
+          matchedNgramCount++;
+          // Filter out self-sutta
+          const filteredIds = entryIds.filter(id => {
+            const entry = tmIndex!.entries[id];
+            return entry && entry.source.suttaId !== currentSuttaId;
+          });
+          filteredIds.forEach(id => candidateEntryIds.add(id));
+        }
+        ngramDetails.push({ ngram, found, count: entryIds?.length || 0 });
+      }
+
+      console.log(`[TM Debug] Matched n-grams: ${matchedNgramCount}/${queryNgrams.length}`);
+      console.log(`[TM Debug] Candidate entries (after self-filter): ${candidateEntryIds.size}`);
+
+      // Show first 5 unmatched n-grams
+      const unmatchedNgrams = ngramDetails.filter(d => !d.found).slice(0, 5);
+      if (unmatchedNgrams.length > 0) {
+        console.log(`[TM Debug] First unmatched n-grams: ${JSON.stringify(unmatchedNgrams.map(d => d.ngram))}`);
+      }
+
+      // Show first 5 matched n-grams with their entry counts
+      const matchedNgrams = ngramDetails.filter(d => d.found).slice(0, 5);
+      if (matchedNgrams.length > 0) {
+        console.log(`[TM Debug] First matched n-grams: ${JSON.stringify(matchedNgrams)}`);
+      }
+
+      // Show candidate entries with per-entry n-gram counts
+      if (candidateEntryIds.size > 0 && candidateEntryIds.size <= 10) {
+        // Build a map of entryId -> count of matching n-grams
+        const entryNgramCounts = new Map<number, number>();
+        for (const ngram of queryNgrams) {
+          const entryIds = tmIndex!.ngrams?.[ngram];
+          if (entryIds) {
+            for (const id of entryIds) {
+              if (candidateEntryIds.has(id)) {
+                entryNgramCounts.set(id, (entryNgramCounts.get(id) || 0) + 1);
+              }
+            }
+          }
+        }
+
+        const entryDetails = [...candidateEntryIds].map(id => {
+          const entry = tmIndex!.entries[id];
+          return {
+            id,
+            suttaId: entry?.source?.suttaId,
+            para: entry?.source?.paragraphNum,
+            matchingNgrams: entryNgramCounts.get(id) || 0,
+          };
+        });
+        console.log(`[TM Debug] Candidate entries: ${JSON.stringify(entryDetails)}`);
+      }
+
+      return {
+        paraNum,
+        wordCount: queryWords.length,
+        ngramCount: queryNgrams.length,
+        matchedNgrams: matchedNgramCount,
+        candidateEntries: candidateEntryIds.size,
+        ngramDetails: ngramDetails.slice(0, 20),
+      };
     },
   };
 

@@ -33,7 +33,10 @@ const OUTPUT_FILE = path.join(
 const MIN_WORDS_TO_INDEX = 4;
 
 // N-gram configuration
-const NGRAM_SIZE = 5; // 5-word sequences
+// Using 4-grams instead of 5-grams to allow finding matches with 1-word differences
+// With 5-grams, a single differing word "contaminates" 5 consecutive n-grams
+// With 4-grams, only 4 n-grams are contaminated, leaving more clean n-grams to match
+const NGRAM_SIZE = 4; // 4-word sequences
 const MAX_NGRAM_FREQUENCY = 0.1; // Skip n-grams appearing in >10% of paragraphs (too common)
 
 /**
