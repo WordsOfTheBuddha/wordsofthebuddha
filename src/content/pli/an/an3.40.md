@@ -1,8 +1,8 @@
 ---
 title: Ādhipateyya sutta - Authorities
 description: The Buddha explains the three guiding authorities for developing wholesome qualities and maintaining purity - 1) Oneself, 2) world, and 3) Dhamma.
+qualities: rousing of energy, mindfulness, solitude, wise attention, unification, recollection of the Dhamma
 theme: wisdom
-qualities: rousing of energy, mindfulness, solitude, wise attention, unification
 slug: an3.40
 ---
 
@@ -19,8 +19,6 @@ Katamañca, bhikkhave, lokādhipateyyaṁ? Idha, bhikkhave, bhikkhu araññagato
 Katamañca, bhikkhave, dhammādhipateyyaṁ? Idha, bhikkhave, bhikkhu araññagato vā rukkhamūlagato vā suññāgāragato vā iti paṭisañcikkhati: ‘na kho panāhaṁ cīvarahetu agārasmā anagāriyaṁ pabbajito. Na piṇḍapātahetu, na senāsanahetu, na itibhavābhavahetu agārasmā anagāriyaṁ pabbajito. Api ca khomhi otiṇṇo jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto. Appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethāti. Svākkhāto bhagavatā dhammo sandiṭṭhiko akāliko ehipassiko opaneyyiko paccattaṁ veditabbo viññūhīti. Santi kho pana me sabrahmacārī jānaṁ passaṁ viharanti. Ahañceva kho pana evaṁ svākkhāte dhammavinaye pabbajito samāno kusīto vihareyyaṁ pamatto, na metaṁ assa patirūpan’ti. So iti paṭisañcikkhati: ‘āraddhaṁ kho pana me vīriyaṁ bhavissati asallīnaṁ, upaṭṭhitā sati asammuṭṭhā, passaddho kāyo asāraddho, samāhitaṁ cittaṁ ekaggan’ti. So dhammaṁyeva adhipatiṁ karitvā akusalaṁ pajahati, kusalaṁ bhāveti, sāvajjaṁ pajahati, anavajjaṁ bhāveti, suddhaṁ attānaṁ pariharati. Idaṁ vuccati, bhikkhave, dhammādhipateyyaṁ.
 
 Imāni kho, bhikkhave, tīṇi ādhipateyyānīti.
-
-### Verse
 
 Natthi loke raho nāma,
 pāpakammaṁ pakubbato;
