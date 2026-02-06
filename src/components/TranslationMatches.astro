@@ -938,11 +938,40 @@
     }
   }
 
+  // Type for source range candidate (used by multi-match)
+  type SourceRangeCandidate = {
+    startIndex: number;
+    endIndex: number;
+    matchedWords: string[];
+    contentWordCount: number;
+    coveredPositions: Set<number>;
+    coverageRatio: number;
+  };
+
+  // Check if two ranges have significant overlap (>= threshold)
+  function rangesOverlap(a: SourceRangeCandidate, b: SourceRangeCandidate, threshold: number = 0.9): boolean {
+    const aPositions = new Set<number>();
+    for (let i = a.startIndex; i <= a.endIndex; i++) aPositions.add(i);
+
+    const bPositions = new Set<number>();
+    for (let i = b.startIndex; i <= b.endIndex; i++) bPositions.add(i);
+
+    // Count overlap
+    let overlap = 0;
+    for (const pos of aPositions) {
+      if (bPositions.has(pos)) overlap++;
+    }
+
+    // Check if overlap is >= threshold of the smaller range
+    const smallerSize = Math.min(aPositions.size, bPositions.size);
+    return overlap / smallerSize >= threshold;
+  }
+
   // Compute which source words are covered by matched ngrams
   // Returns the BEST contiguous run of covered indices (not spanning across gaps)
   // Get preliminary word range from n-gram matches
   // Returns range even if coverage is low - caller should do stem matching to boost coverage
-  function getSourceWordRange(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number): { 
+  function getSourceWordRange(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number): {
     startIndex: number;
     endIndex: number;
     matchedWords: string[];
@@ -984,39 +1013,186 @@
     }
     runs.push(currentRun);
 
-    // Instead of picking just the "best" run, merge all runs into one
-    // This ensures we capture the full extent of matches even with gaps
-    // The coverage check will still reject matches with too many gaps
-    const mergedRun = {
-      start: runs[0].start,
-      end: runs[runs.length - 1].end,
+    // Helper to calculate coverage for a given range
+    const calculateRunCoverage = (run: { start: number; end: number }) => {
+      const covered = new Set<number>();
+      for (const pos of matchPositions) {
+        if (pos >= run.start && pos + ngramSize - 1 <= run.end) {
+          for (let j = pos; j < pos + ngramSize; j++) {
+            covered.add(j);
+          }
+        }
+      }
+      const len = run.end - run.start + 1;
+      const words = queryWords.slice(run.start, run.end + 1);
+      const contentCount = words.filter(w => !isStopWord(w)).length;
+      return { covered, coverage: covered.size / len, contentCount, words };
     };
 
-    // Extract matched words from the merged run
-    const matchedWords = queryWords.slice(mergedRun.start, mergedRun.end + 1);
-    const contentWordCount = matchedWords.filter(w => !isStopWord(w)).length;
+    // Strategy: Pick the best run, not merge all runs
+    // "Best" = highest content word count among runs with good coverage (>= 60%)
+    // If no single run has good coverage, try merging adjacent runs
+    const MIN_RUN_COVERAGE = 0.60;
 
-    // Track which word positions are actually covered by matching n-grams
-    const coveredPositions = new Set<number>();
-    for (const pos of matchPositions) {
-      if (pos >= mergedRun.start && pos + ngramSize - 1 <= mergedRun.end) {
-        for (let j = pos; j < pos + ngramSize; j++) {
-          coveredPositions.add(j);
-        }
+    // Evaluate each run
+    const runEvaluations = runs.map((run, idx) => {
+      const { covered, coverage, contentCount, words } = calculateRunCoverage(run);
+      return { run, idx, covered, coverage, contentCount, words };
+    });
+
+    // Find runs with acceptable coverage, sorted by content word count (descending)
+    const goodRuns = runEvaluations
+      .filter(r => r.coverage >= MIN_RUN_COVERAGE)
+      .sort((a, b) => b.contentCount - a.contentCount);
+
+    let bestRun: { start: number; end: number };
+    let coveredPositions: Set<number>;
+    let matchedWords: string[];
+    let contentWordCount: number;
+    let coverageRatio: number;
+
+    if (goodRuns.length > 0) {
+      // Use the best single run
+      const best = goodRuns[0];
+      bestRun = best.run;
+      coveredPositions = best.covered;
+      matchedWords = best.words;
+      contentWordCount = best.contentCount;
+      coverageRatio = best.coverage;
+    } else {
+      // No single run has good coverage - fall back to merged approach
+      // but be more conservative: only merge if coverage stays reasonable
+      const mergedRun = {
+        start: runs[0].start,
+        end: runs[runs.length - 1].end,
+      };
+      const { covered, coverage, contentCount, words } = calculateRunCoverage(mergedRun);
+
+      // If merged coverage is still poor, pick the largest single run anyway
+      if (coverage < 0.40) {
+        // Pick run with most content words regardless of coverage
+        const largest = runEvaluations.sort((a, b) => b.contentCount - a.contentCount)[0];
+        bestRun = largest.run;
+        coveredPositions = largest.covered;
+        matchedWords = largest.words;
+        contentWordCount = largest.contentCount;
+        coverageRatio = largest.coverage;
+      } else {
+        bestRun = mergedRun;
+        coveredPositions = covered;
+        matchedWords = words;
+        contentWordCount = contentCount;
+        coverageRatio = coverage;
       }
     }
 
-    const rangeLength = mergedRun.end - mergedRun.start + 1;
-    const coverageRatio = coveredPositions.size / rangeLength;
-
     return {
-      startIndex: mergedRun.start,
-      endIndex: mergedRun.end,
+      startIndex: bestRun.start,
+      endIndex: bestRun.end,
       matchedWords,
       contentWordCount,
       coveredPositions,
       coverageRatio,
     };
+  }
+
+  // Multi-match version: Return ALL non-overlapping runs with good coverage
+  // This allows a single entry to match multiple distinct regions of the source
+  // Overlap threshold: 90% means runs must be < 90% overlapping to be kept as separate
+  function getSourceWordRanges(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number): SourceRangeCandidate[] {
+    if (matchedNgrams.size === 0) return [];
+
+    const MULTI_MATCH_OVERLAP_THRESHOLD = 0.90; // Runs with >= 90% overlap are considered duplicates
+
+    // Find all contiguous runs where ngrams match
+    const queryNgrams = extractNgrams(queryWords, ngramSize);
+
+    // Find positions where matching ngrams START
+    const matchPositions: number[] = [];
+    for (let i = 0; i < queryNgrams.length; i++) {
+      if (matchedNgrams.has(queryNgrams[i])) {
+        matchPositions.push(i);
+      }
+    }
+
+    if (matchPositions.length === 0) return [];
+
+    // Gap tolerance: allow for word differences in matches
+    const maxGapPositions = ngramSize + 2;
+
+    // Group into contiguous runs
+    const runs: Array<{ start: number; end: number }> = [];
+    let currentRun = { start: matchPositions[0], end: matchPositions[0] + ngramSize - 1 };
+
+    for (let i = 1; i < matchPositions.length; i++) {
+      const pos = matchPositions[i];
+      if (pos <= currentRun.end + maxGapPositions) {
+        currentRun.end = Math.max(currentRun.end, pos + ngramSize - 1);
+      } else {
+        runs.push(currentRun);
+        currentRun = { start: pos, end: pos + ngramSize - 1 };
+      }
+    }
+    runs.push(currentRun);
+
+    // Helper to calculate coverage for a given range
+    const calculateRunCoverage = (run: { start: number; end: number }) => {
+      const covered = new Set<number>();
+      for (const pos of matchPositions) {
+        if (pos >= run.start && pos + ngramSize - 1 <= run.end) {
+          for (let j = pos; j < pos + ngramSize; j++) {
+            covered.add(j);
+          }
+        }
+      }
+      const len = run.end - run.start + 1;
+      const words = queryWords.slice(run.start, run.end + 1);
+      const contentCount = words.filter(w => !isStopWord(w)).length;
+      return { covered, coverage: covered.size / len, contentCount, words };
+    };
+
+    const MIN_RUN_COVERAGE = 0.60;
+
+    // Evaluate each run
+    const runEvaluations = runs.map((run, idx) => {
+      const { covered, coverage, contentCount, words } = calculateRunCoverage(run);
+      return { run, idx, covered, coverage, contentCount, words };
+    });
+
+    // Find runs with acceptable coverage
+    const goodRuns = runEvaluations
+      .filter(r => r.coverage >= MIN_RUN_COVERAGE && r.contentCount >= 2)
+      .sort((a, b) => b.contentCount - a.contentCount); // Prefer longer matches
+
+    // Convert to SourceRangeCandidate format
+    const candidates: SourceRangeCandidate[] = goodRuns.map(r => ({
+      startIndex: r.run.start,
+      endIndex: r.run.end,
+      matchedWords: r.words,
+      contentWordCount: r.contentCount,
+      coveredPositions: r.covered,
+      coverageRatio: r.coverage,
+    }));
+
+    // Filter out overlapping ranges (keep the ones with more content words)
+    const nonOverlapping: SourceRangeCandidate[] = [];
+    for (const candidate of candidates) {
+      // Check if this candidate overlaps significantly with any already-kept candidate
+      const overlapsWithExisting = nonOverlapping.some(existing =>
+        rangesOverlap(candidate, existing, MULTI_MATCH_OVERLAP_THRESHOLD)
+      );
+
+      if (!overlapsWithExisting) {
+        nonOverlapping.push(candidate);
+      }
+    }
+
+    if ((window as any).tmDebugVerbose && nonOverlapping.length > 1) {
+      console.log(`[TM Debug] Multi-match: found ${nonOverlapping.length} distinct regions:`,
+        nonOverlapping.map(r => `${r.startIndex}-${r.endIndex} (${r.contentWordCount} content words)`));
+    }
+
+    return nonOverlapping;
   }
 
   // Boost coverage by checking stem similarity for uncovered positions
@@ -1131,6 +1307,7 @@
     const ngramMatches = findNgramMatches(queryWords, currentSuttaId);
 
     // Step 2: For entries with n-gram matches, compute detailed match
+    // Now supports MULTIPLE matches per entry for distinct regions
     for (const [entryId, matchedNgrams] of ngramMatches) {
       const entry = tmIndex.entries[entryId];
       if (!entry) continue;
@@ -1154,73 +1331,121 @@
         continue;
       }
 
-      // Get which source words are covered by the matched ngrams
-      // This tells us EXACTLY which part of the source paragraph this entry matches
-      const sourceRange = getSourceWordRange(queryWords, matchedNgrams, ngramSize);
+      // Get ALL distinct regions this entry matches in the source (multi-match support)
+      const sourceRanges = getSourceWordRanges(queryWords, matchedNgrams, ngramSize);
+      const entryRanges = getSourceWordRanges(entryWords, matchedNgrams, ngramSize);
 
-      const entryRange = getSourceWordRange(entryWords, matchedNgrams, ngramSize);
-
-      // Both source and entry must have valid ranges
-      if (!sourceRange || !entryRange || sourceRange.contentWordCount < 2) {
+      // If no valid ranges, skip
+      if (sourceRanges.length === 0 || entryRanges.length === 0) {
         if ((window as any).tmDebugVerbose) {
-          console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}) REJECTED: no valid range`);
+          console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}) REJECTED: no valid ranges`);
         }
         continue;
       }
 
-      // Boost coverage by checking stem similarity for uncovered positions
-      // This catches conjugation variants like ahosiṁ/hoti, pakkamiṁ/pakkamati
-      const { sourceCoverage, entryCoverage } = boostCoverageWithStemMatching(
-        queryWords, entryWords, sourceRange, entryRange
-      );
+      // Process each source range as a potential match
+      // For each source range, find the best matching entry range by N-GRAM OVERLAP
+      for (const sourceRange of sourceRanges) {
+        if (sourceRange.contentWordCount < 2) continue;
 
-      if ((window as any).tmDebugVerbose) {
-        console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}):`, {
-          matchedNgramsCount: matchedNgrams.size,
-          sourceRange: { start: sourceRange.startIndex, end: sourceRange.endIndex, initialCoverage: sourceRange.coverageRatio.toFixed(2), boostedCoverage: sourceCoverage.toFixed(2) },
-          entryRange: { start: entryRange.startIndex, end: entryRange.endIndex, initialCoverage: entryRange.coverageRatio.toFixed(2), boostedCoverage: entryCoverage.toFixed(2) },
+        // Get the n-grams that are covered by this source range
+        const sourceRangeNgrams = new Set<string>();
+        const sourceNgrams = extractNgrams(queryWords, ngramSize);
+        for (let i = sourceRange.startIndex; i <= sourceRange.endIndex - ngramSize + 1; i++) {
+          if (matchedNgrams.has(sourceNgrams[i])) {
+            sourceRangeNgrams.add(sourceNgrams[i]);
+          }
+        }
+
+        // Find the entry range with the most n-gram overlap with this source range
+        let bestEntryRange = entryRanges[0];
+        let bestOverlap = 0;
+
+        const entryNgrams = extractNgrams(entryWords, ngramSize);
+        for (const entryRange of entryRanges) {
+          // Count n-grams in this entry range that are also in source range
+          let overlap = 0;
+          for (let i = entryRange.startIndex; i <= entryRange.endIndex - ngramSize + 1; i++) {
+            if (sourceRangeNgrams.has(entryNgrams[i])) {
+              overlap++;
+            }
+          }
+          if (overlap > bestOverlap) {
+            bestOverlap = overlap;
+            bestEntryRange = entryRange;
+          }
+        }
+
+        // Clone the best entry range for modification
+        const entryRange = { ...bestEntryRange };
+
+        // Boost coverage by checking stem similarity for uncovered positions
+        // This catches conjugation variants like ahosiṁ/hoti, pakkamiṁ/pakkamati
+        const workingSourceRange = { ...sourceRange, coveredPositions: new Set(sourceRange.coveredPositions) };
+        const workingEntryRange = { ...entryRange, coveredPositions: new Set(entryRange.coveredPositions) };
+
+        const { sourceCoverage, entryCoverage } = boostCoverageWithStemMatching(
+          queryWords, entryWords, workingSourceRange, workingEntryRange
+        );
+
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}) range ${sourceRange.startIndex}-${sourceRange.endIndex}:`, {
+            matchedNgramsCount: matchedNgrams.size,
+            sourceRange: { start: sourceRange.startIndex, end: sourceRange.endIndex, initialCoverage: sourceRange.coverageRatio.toFixed(2), boostedCoverage: sourceCoverage.toFixed(2) },
+            entryRange: { start: entryRange.startIndex, end: entryRange.endIndex, initialCoverage: entryRange.coverageRatio.toFixed(2), boostedCoverage: entryCoverage.toFixed(2) },
+          });
+        }
+
+        // Apply 80% threshold after stem matching boost
+        if (sourceCoverage < 0.8 || entryCoverage < 0.8) {
+          if ((window as any).tmDebugVerbose) {
+            console.log(`[TM Debug] Entry ${entryId} range ${sourceRange.startIndex}-${sourceRange.endIndex} REJECTED: coverage below 80% after stem matching`);
+          }
+          continue;
+        }
+
+        // Only extend if word arrays are aligned (same length)
+        // This ensures indices are valid across both arrays
+        const canExtend = queryWords.length === queryWordsForExtension.length;
+
+        if (canExtend) {
+          // Extend ranges to capture adjacent words with conjugation differences
+          // This catches cases like pabbajiṁ/pabbajati, ahosiṁ/hoti at phrase boundaries
+          extendMatchRanges(queryWordsForExtension, entryWords, workingSourceRange, workingEntryRange);
+        }
+
+        // Update matchedWords after extension
+        const wordsForSlice = canExtend ? queryWordsForExtension : queryWords;
+        workingSourceRange.matchedWords = wordsForSlice.slice(workingSourceRange.startIndex, workingSourceRange.endIndex + 1);
+
+        // Score based on coverage: how much of the source phrase is matched
+        const ngramBoost = matchedNgrams.size >= 3 ? 1.0 : matchedNgrams.size / 3;
+
+        allMatches.push({
+          entry,
+          score: ngramBoost,
+          matchedWordCount: workingSourceRange.matchedWords.length, // Segment length (may include repeated words)
+          contentWordCount: workingSourceRange.contentWordCount,
+          matchedWords: new Set(workingSourceRange.matchedWords),
+          matchedSegment: workingSourceRange.matchedWords.join(' '), // Store actual segment for debugging
+          startIndex: workingSourceRange.startIndex,
+          endIndex: workingSourceRange.endIndex,
+          coveredPositions: workingSourceRange.coveredPositions,
+          entryStartIndex: workingEntryRange.startIndex,
+          entryEndIndex: workingEntryRange.endIndex,
+          entryCoveredPositions: workingEntryRange.coveredPositions,
         });
-      }
 
-      // Apply 80% threshold after stem matching boost
-      if (sourceCoverage < 0.8 || entryCoverage < 0.8) {
         if ((window as any).tmDebugVerbose) {
-          console.log(`[TM Debug] Entry ${entryId} REJECTED: coverage below 80% after stem matching`);
+          console.log(`[TM Debug] Entry ${entryId} ACCEPTED: added to allMatches`, {
+            suttaId: entry.source.suttaId,
+            paragraphNum: entry.source.paragraphNum,
+            matchedSegment: workingSourceRange.matchedWords.join(' ').substring(0, 60) + '...',
+            wordRange: `${workingSourceRange.startIndex}-${workingSourceRange.endIndex}`,
+            contentWordCount: workingSourceRange.contentWordCount,
+          });
         }
-        continue;
       }
-
-      // Only extend if word arrays are aligned (same length)
-      // This ensures indices are valid across both arrays
-      const canExtend = queryWords.length === queryWordsForExtension.length;
-
-      if (canExtend) {
-        // Extend ranges to capture adjacent words with conjugation differences
-        // This catches cases like pabbajiṁ/pabbajati, ahosiṁ/hoti at phrase boundaries
-        extendMatchRanges(queryWordsForExtension, entryWords, sourceRange, entryRange);
-      }
-
-      // Update matchedWords after extension
-      const wordsForSlice = canExtend ? queryWordsForExtension : queryWords;
-      sourceRange.matchedWords = wordsForSlice.slice(sourceRange.startIndex, sourceRange.endIndex + 1);
-
-      // Score based on coverage: how much of the source phrase is matched
-      const ngramBoost = matchedNgrams.size >= 3 ? 1.0 : matchedNgrams.size / 3;
-
-      allMatches.push({
-        entry,
-        score: ngramBoost,
-        matchedWordCount: sourceRange.matchedWords.length, // Segment length (may include repeated words)
-        contentWordCount: sourceRange.contentWordCount,
-        matchedWords: new Set(sourceRange.matchedWords),
-        matchedSegment: sourceRange.matchedWords.join(' '), // Store actual segment for debugging
-        startIndex: sourceRange.startIndex,
-        endIndex: sourceRange.endIndex,
-        coveredPositions: sourceRange.coveredPositions,
-        entryStartIndex: entryRange.startIndex,
-        entryEndIndex: entryRange.endIndex,
-        entryCoveredPositions: entryRange.coveredPositions,
-      });
     }
 
     // Step 3: Also check entries without n-gram matches but potential contiguous matches
@@ -1305,7 +1530,18 @@
       const countBucket = Math.floor(m.contentWordCount / 10) * 10;
       const phraseKey = `${countBucket}:${contentWordsOnly.join(' ')}`;
 
-      if (!phraseMap.has(phraseKey)) {
+      const isNewGroup = !phraseMap.has(phraseKey);
+
+      if ((window as any).tmDebugVerbose && m.entry.source.suttaId === 'ud7.9') {
+        console.log(`[TM Debug] Grouping ud7.9.${m.entry.source.paragraphNum}:`, {
+          phraseKey: phraseKey.substring(0, 80) + '...',
+          isNewGroup,
+          contentWordCount: m.contentWordCount,
+          wordRange: `${m.startIndex}-${m.endIndex}`,
+        });
+      }
+
+      if (isNewGroup) {
         phraseMap.set(phraseKey, {
           score: m.score,
           contentWordCount: m.contentWordCount,
@@ -1326,10 +1562,27 @@
       // Allow up to 10% fewer words, otherwise reject as a subset match
       const minAllowedWords = Math.floor(group.contentWordCount * 0.9);
       if (m.contentWordCount < minAllowedWords) {
+        if ((window as any).tmDebugVerbose && m.entry.source.suttaId === 'ud7.9') {
+          console.log(`[TM Debug] ud7.9.${m.entry.source.paragraphNum} FILTERED as subset:`, {
+            matchContentWords: m.contentWordCount,
+            groupContentWords: group.contentWordCount,
+            minRequired: minAllowedWords,
+          });
+        }
         continue; // Skip this discourse - it's a subset match
       }
 
-      group.totalCount++; // Count only non-subset matches
+      // Deduplicate: skip if this exact suttaId+paragraphNum is already in the group
+      // This happens when the source paragraph repeats the same phrase multiple times,
+      // causing the same entry to match at multiple source positions
+      const discourseKey = `${m.entry.source.suttaId}.${m.entry.source.paragraphNum}`;
+      const alreadyInGroup = group.discourses.some(
+        d => `${d.suttaId}.${d.paragraphNum}` === discourseKey
+      );
+
+      if (alreadyInGroup) continue;
+
+      group.totalCount++; // Count only unique, non-subset matches
 
       // Only store up to MAX for diversity selection
       if (group.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
@@ -1414,6 +1667,19 @@
       const overlapEnd = Math.min(groupA.endIndex, groupB.endIndex);
       if (overlapEnd < overlapStart) return false; // No range overlap
 
+      // Calculate position-based overlap ratio
+      // If 50%+ of the smaller group's positions are within the larger group, consider overlapping
+      const lenA = groupA.endIndex - groupA.startIndex + 1;
+      const lenB = groupB.endIndex - groupB.startIndex + 1;
+      const overlapLen = overlapEnd - overlapStart + 1;
+      const smallerLen = Math.min(lenA, lenB);
+      const positionOverlapRatio = overlapLen / smallerLen;
+
+      // If position overlap is 80%+, consider highly overlapping
+      if (positionOverlapRatio >= 0.8) {
+        return true;
+      }
+
       // Calculate Jaccard similarity of content words
       const contentA = [...groupA.matchedWords].filter(w => !isStopWord(w));
       const contentB = [...groupB.matchedWords].filter(w => !isStopWord(w));
@@ -1450,6 +1716,10 @@
     // For pure subsets, skip them entirely (don't display redundant smaller matches)
     const phraseGroups: TMPhraseGroup[] = [];
 
+    if ((window as any).tmDebugVerbose) {
+      console.log(`[TM Debug] Filtering ${sortedGroups.length} sorted groups into phrase groups...`);
+    }
+
     for (const [phraseNormalized, data] of sortedGroups) {
       // Check if this group's content words are a PURE SUBSET of any already-added group
       // If so, skip it entirely - the larger group already covers these words
@@ -1459,6 +1729,13 @@
       );
 
       if (isPureSubset) {
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Group SKIPPED (pure subset):`, {
+            wordRange: `${data.startIndex}-${data.endIndex}`,
+            contentWords: data.contentWordCount,
+            segment: data.matchedSegment.substring(0, 50) + '...',
+          });
+        }
         // Skip this group - it's a pure subset of a larger match
         continue;
       }
@@ -1471,6 +1748,14 @@
       );
 
       if (overlappingGroup) {
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Group MERGED into existing:`, {
+            newRange: `${data.startIndex}-${data.endIndex}`,
+            existingRange: `${overlappingGroup.startIndex}-${overlappingGroup.endIndex}`,
+            newContentWords: data.contentWordCount,
+            existingContentWords: overlappingGroup.contentWordCount,
+          });
+        }
         // Merge into the existing overlapping group
         // If new group is larger (superset), update the group's range
         if (data.startIndex !== undefined && data.endIndex !== undefined &&
@@ -1523,6 +1808,15 @@
         // Apply diversity logic: prefer discourses from different collections
         const diverseDiscourses = selectDiverseDiscourses(data.discourses, 3);
 
+        if ((window as any).tmDebugVerbose) {
+          console.log(`[TM Debug] Group ADDED as new phrase group #${phraseGroups.length + 1}:`, {
+            wordRange: `${data.startIndex}-${data.endIndex}`,
+            contentWords: data.contentWordCount,
+            segment: data.matchedSegment.substring(0, 50) + '...',
+            discourses: data.totalCount,
+          });
+        }
+
         phraseGroups.push({
           phraseNormalized,
           similarity: data.score,
@@ -1541,8 +1835,15 @@
       }
     }
 
-    // Calculate total discourses from actual counts (not just stored)
-    const totalDiscourses = phraseGroups.reduce((sum, pg) => sum + pg.totalCount, 0);
+    // Calculate total UNIQUE discourses across all phrase groups
+    // A discourse appearing in multiple phrase groups is counted only once
+    const allDiscourseIds = new Set<string>();
+    for (const pg of phraseGroups) {
+      for (const d of pg.discourses) {
+        allDiscourseIds.add(`${d.suttaId}.${d.paragraphNum}`);
+      }
+    }
+    const totalDiscourses = allDiscourseIds.size;
 
     // Sort phrase groups by position in source text (ascending startIndex)
     // This shows matches in the order they appear in the source paragraph
@@ -1849,18 +2150,18 @@
   // Get current sutta ID from URL (base ID without paragraph number)
 function getCurrentSuttaId(): string {
   const path = window.location.pathname;
-  
+
   // Extract the discourse ID from the path (e.g., /sn25.1 -> sn25.1, /mn64.1 -> mn64.1)
   const pathMatch = path.match(/\/([a-z]+[\d\.\-]+)/i);
   if (!pathMatch) return '';
-  
+
   const fullPathId = pathMatch[1].toLowerCase();
-  
+
   // Check if the full path ID is a valid discourse
   if (routes.includes(fullPathId)) {
     return fullPathId;
   }
-  
+
   // Check if this might be a paragraph reference (e.g., mn64.1 where mn64 is the discourse)
   const dotIndex = fullPathId.lastIndexOf('.');
   if (dotIndex > 0) {
@@ -1869,7 +2170,7 @@ function getCurrentSuttaId(): string {
       return baseId;
     }
   }
-  
+
   // Check for range-based discourses (e.g., dhp1 should match dhp1-20)
   // Find any route that contains this ID as part of a range
   const rangeMatch = routes.find(route => {
@@ -1884,11 +2185,11 @@ function getCurrentSuttaId(): string {
     }
     return false;
   });
-  
+
   if (rangeMatch) {
     return rangeMatch;
   }
-  
+
   // Fallback: return the full path ID
   return fullPathId;
 }
@@ -1944,8 +2245,22 @@ function getCurrentSuttaId(): string {
 
       const sourceRef = currentSuttaId && paraNum ? { suttaId: currentSuttaId, paragraphNum: parseInt(paraNum, 10) } : undefined;
 
+      // DEBUG: Log precompute input
+      if (paraNum === '13') {
+        console.log('[TM Precompute Debug] Para 13 paliText first 100 chars:', paliText.substring(0, 100));
+        console.log('[TM Precompute Debug] Para 13 paliText length:', paliText.length);
+        // Show first 10 words after normalization
+        const debugWords = normalizePali(paliText).split(/\s+/).slice(0, 10);
+        console.log('[TM Precompute Debug] Para 13 first 10 words:', debugWords);
+      }
+
       // Compute matches
       const result = findMatches(paliText, paliText, currentSuttaId, sourceRef);
+
+      // DEBUG: Log precompute result
+      if (paraNum === '13') {
+        console.log('[TM Precompute Debug] Para 13 result phraseGroups:', result?.phraseGroups.length, result?.phraseGroups.map(pg => `${pg.startIndex}-${pg.endIndex}`));
+      }
 
       if (result && result.phraseGroups.length > 0) {
         // Convert Sets to arrays for JSON serialization
@@ -2056,6 +2371,17 @@ function getCurrentSuttaId(): string {
   // focusRow: which row to focus after render ('phrase' | 'discourse' | 'auto')
   // triggerElement: the element that opened the popover (for focus restoration on close)
   function showPopover(result: TMMatchResult, activePhraseIdx: number = 0, activeDiscourseIdx: number = 0, focusRow: 'phrase' | 'discourse' | 'auto' = 'auto', triggerElement?: HTMLElement) {
+    // DEBUG: Log what showPopover receives
+    console.log('[TM UI Debug] showPopover called with:', {
+      phraseGroupCount: result.phraseGroups.length,
+      phraseGroups: result.phraseGroups.map((pg, i) => ({
+        index: i,
+        wordRange: `${pg.startIndex}-${pg.endIndex}`,
+        matchedWordCount: pg.matchedWordCount,
+        segment: pg.matchedSegment.substring(0, 50) + '...'
+      }))
+    });
+
     // Store trigger element for focus restoration (only on initial open)
     if (triggerElement) {
       popoverTriggerElement = triggerElement;
@@ -2075,9 +2401,11 @@ function getCurrentSuttaId(): string {
 
     // Row 1: Phrase pattern tabs - only show if more than one phrase group
     const showPhraseRow = result.phraseGroups.length > 1;
+    console.log('[TM UI Debug] Building tabs:', { showPhraseRow, groupCount: result.phraseGroups.length });
     const phraseTabsHtml = showPhraseRow ? `
       <div class="tm-tabs tm-phrase-tabs">
         ${result.phraseGroups.map((pg, i) => {
+          console.log(`[TM UI Debug] Rendering tab ${i}:`, { wordCount: pg.matchedWordCount, range: `${pg.startIndex}-${pg.endIndex}` });
           const isActive = i === activePhraseIdx;
           const label = formatPhraseTabLabel(pg, result.sourceWordCount);
           return `<button class="tm-tab tm-phrase-tab ${isActive ? 'tm-tab-active' : ''}" data-phrase-index="${i}">
@@ -2581,7 +2909,8 @@ function getCurrentSuttaId(): string {
       // Skip if already has a TM button
       if (paliPara.querySelector('.tm-lookup-btn')) continue;
 
-      const paliText = paliPara.textContent || '';
+      // Normalize whitespace: collapse multiple spaces/nbsp to single space
+      const paliText = (paliPara.textContent || '').replace(/\s+/g, ' ').trim();
       if (paliText.length < 20) continue;
 
       // Create a TM lookup button (no pre-computation)
@@ -2633,9 +2962,11 @@ function getCurrentSuttaId(): string {
 
     // Check for pre-computed matches first
     const matchDataStr = trigger.getAttribute('data-tm-matches');
+    console.log('[TM UI Debug] Click handler - has cached data:', !!matchDataStr);
     if (matchDataStr) {
       try {
         const result: TMMatchResult = JSON.parse(matchDataStr);
+        console.log('[TM UI Debug] Using CACHED data, phraseGroups:', result.phraseGroups.length);
         // Restore Set objects that were serialized as arrays
         result.phraseGroups.forEach(pg => {
           pg.matchedWords = new Set(pg.matchedWords as unknown as string[]);
@@ -2697,6 +3028,7 @@ function getCurrentSuttaId(): string {
     const sourceRef = currentSuttaId && paraNum ? { suttaId: currentSuttaId, paragraphNum: parseInt(paraNum, 10) } : undefined;
 
     const result = findMatches(paliText, paliText, currentSuttaId, sourceRef);
+    console.log('[TM UI Debug] FRESH computation, phraseGroups:', result?.phraseGroups.length);
 
     if (result && result.phraseGroups.length > 0) {
       // Update button with count
@@ -2735,7 +3067,7 @@ function getCurrentSuttaId(): string {
     // Use requestIdleCallback to avoid blocking the main thread
     scheduleBackgroundComputation();
   }
-  
+
   // Schedule non-blocking background computation for TM match counts
   function scheduleBackgroundComputation() {
     // Use requestIdleCallback if available, otherwise setTimeout
@@ -2907,7 +3239,8 @@ function getCurrentSuttaId(): string {
       const paragraphs: Array<{ num: number; text: string }> = [];
       let fallbackNum = 0;
       paliParas.forEach((el) => {
-        const text = el.textContent?.trim() || '';
+        // Normalize whitespace same as precompute
+        const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
         // Skip very short elements that are likely titles (less than 30 chars and no periods)
         if (text && (text.length > 30 || text.includes('.'))) {
           // Deduplicate by text content
@@ -2968,8 +3301,14 @@ function getCurrentSuttaId(): string {
       }
 
       const results: Array<{ paragraph: number; text: string; matches: any }> = [];
+      const seenParaNums = new Set<number>();
 
       for (const para of filteredParagraphs) {
+        // Deduplicate by paragraph number - same paragraph can appear multiple times
+        // if the DOM has duplicate .pali-paragraph elements with the same number
+        if (seenParaNums.has(para.num)) continue;
+        seenParaNums.add(para.num);
+
         // Pass sourceRef to properly filter out self-matching (same sutta + same paragraph)
         const sourceRef = currentSuttaId ? { suttaId: currentSuttaId, paragraphNum: para.num } : undefined;
         const matches = findMatches(para.text, para.text, currentSuttaId, sourceRef);
@@ -2982,11 +3321,16 @@ function getCurrentSuttaId(): string {
             groups: matches.phraseGroups.map(pg => ({
               matchedSegment: pg.matchedSegment, // The actual matched segment from source
               words: pg.matchedWordCount,        // Segment length (including repeated words)
+              segmentWords: pg.matchedSegment.split(/\s+/).length, // Actual words in segment string
               contentWords: pg.contentWordCount, // Non-stop words count
               uniqueWords: pg.matchedWords.size, // Unique words (for highlighting)
               discourses: pg.totalCount,
               score: pg.score,
               wordRange: `${pg.startIndex}-${pg.endIndex}`,
+              rangeLength: (pg.endIndex !== undefined && pg.startIndex !== undefined)
+                ? pg.endIndex - pg.startIndex + 1 : 0,
+              coveredCount: pg.coveredPositions ?
+                (pg.coveredPositions instanceof Set ? pg.coveredPositions.size : (pg.coveredPositions as number[]).length) : 0,
               firstMatch: pg.diverseDiscourses[0] ?
                 `${pg.diverseDiscourses[0].suttaId}.${pg.diverseDiscourses[0].paragraphNum}` : null,
             })),
