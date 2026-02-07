@@ -676,5 +676,14 @@
 	"cudatāri": ["ca", "udatāri"],
 	"paṭivinodetabboti": ["paṭivinodetabbo"],
 	"dhammehīti": ["dhammehi"],
-	"khayāyāti": ["khayāya"]
+	"khayāyāti": ["khayāya"],
+	"divāvihārāyāti": ["divāvihārāya"],
+	"āyusaṅkhārossajjana": [
+		"āyusaṅkhāra",
+		"ossajjana:nt. giving up; abandoning; relinquishing; lit. relinquishing down [ava + √sajj + ana]"
+	],
+	"desessantīti": ["deseti"],
+	"bhavasaṅkhāramavassaji": ["bhavasaṅkhāra", "avassaji"],
+	"kavacamivattasambhavanti": ["kavaca", "iva", "attasambhavaṁ"],
+	"parinibbāyissatīti": ["parinibbāyissati"]
 }
