@@ -459,9 +459,13 @@
     englishOriginal: string;
     matchedWords?: Set<string>;    // Per-discourse matched words (optional for backward compat)
     contentWordCount?: number;     // Per-discourse content word count
+    sourceStartIndex?: number;     // Position where match starts in source text (per-discourse)
+    sourceEndIndex?: number;       // Position where match ends in source text (per-discourse)
+    sourceCoveredPositions?: Set<number>; // Which positions in source text are covered (per-discourse)
     entryStartIndex?: number;      // Position where match starts in entry text
     entryEndIndex?: number;        // Position where match ends in entry text
     entryCoveredPositions?: Set<number>; // Which positions in entry text are actually covered (not gaps)
+    matchQuality?: number;         // Match quality score: higher = more exact (n-gram coverage ratio)
   }
 
   // A group of discourses that share the same phrase pattern
@@ -662,12 +666,38 @@
     sourceWords: string[],
     entryWords: string[],
     matchedNgrams: Set<string>,
-    ngramSize: number
+    ngramSize: number,
+    entryLabel?: string
   ): boolean {
     if (matchedNgrams.size <= 1) return true; // Single n-gram always consistent
 
     const sourceNgrams = extractNgrams(sourceWords, ngramSize);
     const entryNgrams = extractNgrams(entryWords, ngramSize);
+
+    // Check if any matched n-gram appears more than once in the source.
+    // If so, first-occurrence position tracking is unreliable (it picks the wrong
+    // instance), so we skip the order check entirely for this entry.
+    // This is the precise condition that causes false rejections — repeated formulaic
+    // phrases in Pali texts (e.g. "Parinibbātu dāni, bhante, bhagavā" appearing twice).
+    let hasRepeatedSourceNgram = false;
+    const sourceNgramCounts = new Map<string, number>();
+    for (const ngram of sourceNgrams) {
+      if (matchedNgrams.has(ngram)) {
+        const count = (sourceNgramCounts.get(ngram) || 0) + 1;
+        sourceNgramCounts.set(ngram, count);
+        if (count > 1) {
+          hasRepeatedSourceNgram = true;
+          break;
+        }
+      }
+    }
+
+    if (hasRepeatedSourceNgram) {
+      if ((window as any).tmDebugVerbose) {
+        console.log(`[TM Debug] Order check SKIPPED for ${entryLabel || 'entry'}: source has repeated matched n-grams`);
+      }
+      return true;
+    }
 
     // Find positions of matched n-grams in each text
     const sourcePositions: Map<string, number> = new Map();
@@ -697,15 +727,34 @@
 
     // Check if entry positions are also in increasing order
     let lastEntryPos = -1;
+    let outOfOrderNgram: string | null = null;
+    let outOfOrderSourcePos = -1;
+    let outOfOrderEntryPos = -1;
+    let outOfOrderLastEntryPos = -1;
     for (const ngram of commonNgrams) {
       const entryPos = entryPositions.get(ngram)!;
       if (entryPos < lastEntryPos) {
-        return false; // Out of order
+        outOfOrderNgram = ngram;
+        outOfOrderSourcePos = sourcePositions.get(ngram)!;
+        outOfOrderEntryPos = entryPos;
+        outOfOrderLastEntryPos = lastEntryPos;
+        break;
       }
       lastEntryPos = entryPos;
     }
 
-    return true;
+    if (outOfOrderNgram && (window as any).tmDebugVerbose) {
+      console.log(`[TM Debug] Order check FAILED for ${entryLabel || 'entry'}:`, {
+        totalCommonNgrams: commonNgrams.length,
+        totalMatchedNgrams: matchedNgrams.size,
+        failedAtNgram: outOfOrderNgram.substring(0, 40) + '...',
+        sourcePos: outOfOrderSourcePos,
+        entryPos: outOfOrderEntryPos,
+        previousEntryPos: outOfOrderLastEntryPos,
+      });
+    }
+
+    return !outOfOrderNgram;
   }
 
   // Known Pali verb conjugation pairs - forms of the same verb that look very different
@@ -1099,7 +1148,7 @@
   // Multi-match version: Return ALL non-overlapping runs with good coverage
   // This allows a single entry to match multiple distinct regions of the source
   // Overlap threshold: 90% means runs must be < 90% overlapping to be kept as separate
-  function getSourceWordRanges(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number): SourceRangeCandidate[] {
+  function getSourceWordRanges(queryWords: string[], matchedNgrams: Set<string>, ngramSize: number, entryWords?: string[]): SourceRangeCandidate[] {
     if (matchedNgrams.size === 0) return [];
 
     const MULTI_MATCH_OVERLAP_THRESHOLD = 0.90; // Runs with >= 90% overlap are considered duplicates
@@ -1108,10 +1157,69 @@
     const queryNgrams = extractNgrams(queryWords, ngramSize);
 
     // Find positions where matching ngrams START
+    // When a matched n-gram appears multiple times in the source (repeated formulaic phrases),
+    // disambiguate by using unique n-grams as an anchor region
     const matchPositions: number[] = [];
+
+    // Group source positions by n-gram to detect repeats
+    const ngramSourcePositions = new Map<string, number[]>();
     for (let i = 0; i < queryNgrams.length; i++) {
-      if (matchedNgrams.has(queryNgrams[i])) {
-        matchPositions.push(i);
+      const ngram = queryNgrams[i];
+      if (matchedNgrams.has(ngram)) {
+        if (!ngramSourcePositions.has(ngram)) {
+          ngramSourcePositions.set(ngram, []);
+        }
+        ngramSourcePositions.get(ngram)!.push(i);
+      }
+    }
+
+    // Separate unique (1 occurrence) vs repeated (2+ occurrences) n-grams
+    const uniquePositions: number[] = [];
+    const repeatedEntries: Array<{ ngram: string; positions: number[] }> = [];
+    let hasRepeats = false;
+
+    for (const [ngram, positions] of ngramSourcePositions) {
+      if (positions.length === 1) {
+        uniquePositions.push(positions[0]);
+      } else {
+        repeatedEntries.push({ ngram, positions });
+        hasRepeats = true;
+      }
+    }
+
+    if (hasRepeats && uniquePositions.length > 0) {
+      // Compute anchor: median position of unique n-gram matches
+      // The median is robust to outliers and represents the "center" of the true match region
+      const sorted = [...uniquePositions].sort((a, b) => a - b);
+      const anchor = sorted[Math.floor(sorted.length / 2)];
+
+      // For repeated n-grams, pick the occurrence closest to the anchor
+      for (const { ngram, positions } of repeatedEntries) {
+        const best = positions.reduce((closest, pos) =>
+          Math.abs(pos - anchor) < Math.abs(closest - anchor) ? pos : closest
+        );
+        uniquePositions.push(best);
+      }
+
+      // Use disambiguated positions
+      uniquePositions.sort((a, b) => a - b);
+      matchPositions.push(...uniquePositions);
+
+      if ((window as any).tmDebugVerbose && repeatedEntries.length > 0) {
+        console.log(`[TM Debug] Disambiguated ${repeatedEntries.length} repeated n-grams using anchor pos ${anchor}:`,
+          repeatedEntries.map(r => ({
+            ngram: r.ngram.substring(0, 30) + '...',
+            allPositions: r.positions,
+            picked: r.positions.reduce((c, p) => Math.abs(p - anchor) < Math.abs(c - anchor) ? p : c),
+          }))
+        );
+      }
+    } else {
+      // No repeats, or all are repeated (no anchor available) — use all positions
+      for (let i = 0; i < queryNgrams.length; i++) {
+        if (matchedNgrams.has(queryNgrams[i])) {
+          matchPositions.push(i);
+        }
       }
     }
 
@@ -1324,15 +1432,17 @@
       const entryWords = extractWordsForHighlight(entry.paliOriginal);
 
       // Check n-gram order consistency: skip matches where words appear in different order
-      if (!checkNgramOrderConsistency(queryWords, entryWords, matchedNgrams, ngramSize)) {
+      const entryLabel = `${entry.source.suttaId}.${entry.source.paragraphNum}`;
+      if (!checkNgramOrderConsistency(queryWords, entryWords, matchedNgrams, ngramSize, entryLabel)) {
         if ((window as any).tmDebugVerbose) {
-          console.log(`[TM Debug] Entry ${entryId} (${entry.source.suttaId}.${entry.source.paragraphNum}) REJECTED: n-gram order inconsistent`);
+          console.log(`[TM Debug] Entry ${entryId} (${entryLabel}) REJECTED: n-gram order inconsistent`);
         }
         continue;
       }
 
       // Get ALL distinct regions this entry matches in the source (multi-match support)
-      const sourceRanges = getSourceWordRanges(queryWords, matchedNgrams, ngramSize);
+      // Pass entryWords so repeated source n-grams can be disambiguated using entry as anchor
+      const sourceRanges = getSourceWordRanges(queryWords, matchedNgrams, ngramSize, entryWords);
       const entryRanges = getSourceWordRanges(entryWords, matchedNgrams, ngramSize);
 
       // If no valid ranges, skip
@@ -1442,6 +1552,7 @@
             paragraphNum: entry.source.paragraphNum,
             matchedSegment: workingSourceRange.matchedWords.join(' ').substring(0, 60) + '...',
             wordRange: `${workingSourceRange.startIndex}-${workingSourceRange.endIndex}`,
+            entryRange: `${workingEntryRange.startIndex}-${workingEntryRange.endIndex}`,
             contentWordCount: workingSourceRange.contentWordCount,
           });
         }
@@ -1586,6 +1697,12 @@
 
       // Only store up to MAX for diversity selection
       if (group.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
+        // Compute match quality: ratio of covered positions to total range
+        // Higher = more exact match (1.0 = every word in range is covered by n-grams)
+        const entryRangeLen = m.entryEndIndex - m.entryStartIndex + 1;
+        const coveredCount = m.entryCoveredPositions instanceof Set ? m.entryCoveredPositions.size : 0;
+        const quality = entryRangeLen > 0 ? coveredCount / entryRangeLen : 0;
+
         group.discourses.push({
           suttaId: m.entry.source.suttaId,
           paragraphNum: m.entry.source.paragraphNum,
@@ -1594,9 +1711,13 @@
           englishOriginal: m.entry.englishOriginal,
           matchedWords: m.matchedWords, // Store per-discourse matched words
           contentWordCount: m.contentWordCount, // Store per-discourse content word count
+          sourceStartIndex: m.startIndex, // Source-side highlight range (per-discourse)
+          sourceEndIndex: m.endIndex,
+          sourceCoveredPositions: m.coveredPositions, // Source-side covered positions (per-discourse)
           entryStartIndex: m.entryStartIndex, // Position in entry text
           entryEndIndex: m.entryEndIndex,     // Position in entry text
           entryCoveredPositions: m.entryCoveredPositions, // Which positions in entry are covered
+          matchQuality: quality, // Match quality for sorting (1.0 = exact)
         });
       }
     }
@@ -1778,6 +1899,8 @@
             overlappingGroup.discourses.push(d);
           }
         }
+        // Sort by match quality so exact matches are preferred during diversity selection
+        overlappingGroup.discourses.sort((a, b) => (b.matchQuality ?? 0) - (a.matchQuality ?? 0));
         overlappingGroup.diverseDiscourses = selectDiverseDiscourses(overlappingGroup.discourses, 3);
         continue;
       }
@@ -1799,12 +1922,16 @@
             existingMatch.discourses.push(d);
           }
         }
+        // Sort by match quality so exact matches are preferred during diversity selection
+        existingMatch.discourses.sort((a, b) => (b.matchQuality ?? 0) - (a.matchQuality ?? 0));
         // Update diverse discourses
         existingMatch.diverseDiscourses = selectDiverseDiscourses(existingMatch.discourses, 3);
         continue;
       }
 
       if (phraseGroups.length < THRESHOLDS.MAX_PHRASE_GROUPS) {
+        // Sort by match quality so exact matches are preferred during diversity selection
+        data.discourses.sort((a, b) => (b.matchQuality ?? 0) - (a.matchQuality ?? 0));
         // Apply diversity logic: prefer discourses from different collections
         const diverseDiscourses = selectDiverseDiscourses(data.discourses, 3);
 
@@ -2263,6 +2390,18 @@ function getCurrentSuttaId(): string {
       }
 
       if (result && result.phraseGroups.length > 0) {
+        // Helper to convert Sets to arrays for JSON serialization
+        const serializeDiscourse = (d: TMDiscourse) => ({
+          ...d,
+          matchedWords: d.matchedWords instanceof Set ? Array.from(d.matchedWords) : d.matchedWords,
+          sourceCoveredPositions: d.sourceCoveredPositions
+            ? (d.sourceCoveredPositions instanceof Set ? Array.from(d.sourceCoveredPositions) : d.sourceCoveredPositions)
+            : undefined,
+          entryCoveredPositions: d.entryCoveredPositions
+            ? (d.entryCoveredPositions instanceof Set ? Array.from(d.entryCoveredPositions) : d.entryCoveredPositions)
+            : undefined,
+        });
+
         // Convert Sets to arrays for JSON serialization
         const serializableResult = {
           ...result,
@@ -2270,10 +2409,8 @@ function getCurrentSuttaId(): string {
             ...pg,
             matchedWords: Array.from(pg.matchedWords),
             coveredPositions: pg.coveredPositions ? Array.from(pg.coveredPositions) : undefined,
-            discourses: pg.discourses.map(d => ({
-              ...d,
-              entryCoveredPositions: d.entryCoveredPositions ? Array.from(d.entryCoveredPositions) : undefined,
-            })),
+            discourses: pg.discourses.map(serializeDiscourse),
+            diverseDiscourses: pg.diverseDiscourses.map(serializeDiscourse),
           })),
         };
 
@@ -2434,12 +2571,15 @@ function getCurrentSuttaId(): string {
     `;
 
     // Render source Pali with clickable word spans and position-based highlighting
-    // Use startIndex/endIndex for accurate highlighting of the matched range
-    // Pass coveredPositions to show gap words with different styling
-    const sourceHighlightRange = (phraseGroup.startIndex !== undefined && phraseGroup.endIndex !== undefined)
-      ? { start: phraseGroup.startIndex, end: phraseGroup.endIndex }
+    // Use PER-DISCOURSE source coverage data so gaps are accurate for the selected discourse
+    // Fall back to group-level data if per-discourse data is not available
+    const srcStart = discourse.sourceStartIndex ?? phraseGroup.startIndex;
+    const srcEnd = discourse.sourceEndIndex ?? phraseGroup.endIndex;
+    const srcCovered = discourse.sourceCoveredPositions ?? phraseGroup.coveredPositions;
+    const sourceHighlightRange = (srcStart !== undefined && srcEnd !== undefined)
+      ? { start: srcStart, end: srcEnd }
       : undefined;
-    const renderedSourcePali = renderPaliWithWords(result.sourcePali, undefined, sourceHighlightRange, phraseGroup.coveredPositions);
+    const renderedSourcePali = renderPaliWithWords(result.sourcePali, undefined, sourceHighlightRange, srcCovered);
 
     // Format source reference link (e.g., "MN112 ¶25 ↗")
     const sourceRefLink = result.sourceRef
@@ -2968,16 +3108,40 @@ function getCurrentSuttaId(): string {
         const result: TMMatchResult = JSON.parse(matchDataStr);
         console.log('[TM UI Debug] Using CACHED data, phraseGroups:', result.phraseGroups.length);
         // Restore Set objects that were serialized as arrays
+        const restoreDiscourse = (d: any) => {
+          if (d.matchedWords && !(d.matchedWords instanceof Set)) {
+            d.matchedWords = Array.isArray(d.matchedWords) ? new Set(d.matchedWords) : undefined;
+          }
+          if (d.sourceCoveredPositions) {
+            if (d.sourceCoveredPositions instanceof Set) { /* ok */ }
+            else if (Array.isArray(d.sourceCoveredPositions)) {
+              d.sourceCoveredPositions = new Set(d.sourceCoveredPositions);
+            } else {
+              d.sourceCoveredPositions = undefined;
+            }
+          }
+          if (d.entryCoveredPositions) {
+            if (d.entryCoveredPositions instanceof Set) { /* ok */ }
+            else if (Array.isArray(d.entryCoveredPositions)) {
+              d.entryCoveredPositions = new Set(d.entryCoveredPositions);
+            } else {
+              d.entryCoveredPositions = undefined;
+            }
+          }
+        };
         result.phraseGroups.forEach(pg => {
           pg.matchedWords = new Set(pg.matchedWords as unknown as string[]);
           if (pg.coveredPositions) {
-            pg.coveredPositions = new Set(pg.coveredPositions as unknown as number[]);
-          }
-          pg.discourses.forEach(d => {
-            if (d.entryCoveredPositions) {
-              d.entryCoveredPositions = new Set(d.entryCoveredPositions as unknown as number[]);
+            if (Array.isArray(pg.coveredPositions)) {
+              pg.coveredPositions = new Set(pg.coveredPositions as unknown as number[]);
+            } else if (!(pg.coveredPositions instanceof Set)) {
+              pg.coveredPositions = undefined;
             }
-          });
+          }
+          pg.discourses.forEach(restoreDiscourse);
+          if (pg.diverseDiscourses) {
+            pg.diverseDiscourses.forEach(restoreDiscourse);
+          }
         });
         showPopover(result, 0, 0, 'auto', trigger as HTMLElement);
         return;
@@ -3036,16 +3200,24 @@ function getCurrentSuttaId(): string {
       (trigger as HTMLButtonElement).disabled = false;
 
       // Cache the result for future clicks
+      const serializeD = (d: TMDiscourse) => ({
+        ...d,
+        matchedWords: d.matchedWords instanceof Set ? Array.from(d.matchedWords) : d.matchedWords,
+        sourceCoveredPositions: d.sourceCoveredPositions
+          ? (d.sourceCoveredPositions instanceof Set ? Array.from(d.sourceCoveredPositions) : d.sourceCoveredPositions)
+          : undefined,
+        entryCoveredPositions: d.entryCoveredPositions
+          ? (d.entryCoveredPositions instanceof Set ? Array.from(d.entryCoveredPositions) : d.entryCoveredPositions)
+          : undefined,
+      });
       const serializableResult = {
         ...result,
         phraseGroups: result.phraseGroups.map(pg => ({
           ...pg,
           matchedWords: Array.from(pg.matchedWords),
           coveredPositions: pg.coveredPositions ? Array.from(pg.coveredPositions) : undefined,
-          discourses: pg.discourses.map(d => ({
-            ...d,
-            entryCoveredPositions: d.entryCoveredPositions ? Array.from(d.entryCoveredPositions) : undefined,
-          })),
+          discourses: pg.discourses.map(serializeD),
+          diverseDiscourses: pg.diverseDiscourses.map(serializeD),
         })),
       };
       trigger.setAttribute('data-tm-matches', JSON.stringify(serializableResult));
