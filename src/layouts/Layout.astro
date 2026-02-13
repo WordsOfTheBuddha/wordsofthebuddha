@@ -217,7 +217,7 @@ if (!SEOTitle) {
 		<slot name="head" />
 	</head>
 	<body
-		class="flex flex-col min-h-screen bg-[var(--background-color)] text-[var(--text-color)] overflow-x-hidden"
+		class="flex flex-col min-h-screen bg-[var(--background-color)] text-[var(--text-color)] [overflow-x:clip]"
 	>
 		<Analytics />
 		<SpeedInsights />
@@ -325,13 +325,13 @@ if (!SEOTitle) {
 						if (navigator.onLine && typeof caches !== "undefined") {
 							try {
 								const resources = performance.getEntriesByType(
-									"resource"
+									"resource",
 								) as PerformanceResourceTiming[];
 								const assetsToCache = resources
 									.filter((r) => {
 										const url = new URL(
 											r.name,
-											location.origin
+											location.origin,
 										);
 										if (url.origin !== location.origin)
 											return false;
@@ -361,7 +361,7 @@ if (!SEOTitle) {
 													await cache.put(url, res);
 												}
 											} catch {}
-										})
+										}),
 									);
 								}
 							} catch {}
@@ -511,7 +511,7 @@ if (!SEOTitle) {
 
 				// Remove duplicates and sort
 				const uniqueParagraphs = [...new Set(paragraphNumbers)].sort(
-					(a, b) => a - b
+					(a, b) => a - b,
 				);
 
 				return {
@@ -523,7 +523,7 @@ if (!SEOTitle) {
 			// Helper function to apply highlighting and navigation
 			function applyHighlightingAndNavigation(
 				paragraphNumbers: number[],
-				scrollTargetId: number | null
+				scrollTargetId: number | null,
 			): void {
 				// Clear existing highlights
 				document
@@ -547,7 +547,7 @@ if (!SEOTitle) {
 					// Check if we're in split layout mode (Pali mode with split layout)
 					const isSplitMode =
 						document.documentElement.classList.contains(
-							"pali-on"
+							"pali-on",
 						) && localStorage.getItem("layout") === "split";
 
 					let targetElement: Element | null = null;
@@ -555,14 +555,14 @@ if (!SEOTitle) {
 					if (isSplitMode) {
 						// Prefer the English panel in split mode if available
 						targetElement = document.querySelector(
-							`#panel1 ${idSel}`
+							`#panel1 ${idSel}`,
 						);
 					}
 
 					if (!targetElement) {
 						// Fallback to interleaved article
 						targetElement = document.querySelector(
-							"article.prose " + idSel
+							"article.prose " + idSel,
 						);
 					}
 					if (!targetElement) {
@@ -585,7 +585,7 @@ if (!SEOTitle) {
 
 							const scrollToPosition = Math.max(
 								0,
-								absoluteTop - 100
+								absoluteTop - 100,
 							);
 							window.scrollTo({
 								top: scrollToPosition,

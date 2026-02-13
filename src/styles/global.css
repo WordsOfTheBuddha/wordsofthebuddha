@@ -306,7 +306,7 @@ html.dark body::before {
 /* Smooth scroll for hash navigation */
 html {
 	scroll-behavior: smooth;
-	overflow-x: hidden;
+	overflow-x: clip;
 }
 
 /* Highlight target paragraph */
