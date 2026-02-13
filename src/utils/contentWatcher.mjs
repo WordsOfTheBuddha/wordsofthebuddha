@@ -6,10 +6,8 @@ import { naturalSort } from "./sort-routes.mjs";
 import { watch } from "node:fs";
 import { generateTopicMappings } from "./generateTopicMappings.ts";
 import { generateQualityMappings } from "./generateQualityMappings.ts";
-import { exec as _exec } from "node:child_process";
-import { promisify } from "node:util";
-
-const exec = promisify(_exec);
+import { incrementalUpdate as updateTranslationMemory } from "./generateTranslationMemory.ts";
+import { generateContentCounts } from "./addContentCounts.ts";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const CONTENT_DIR = resolve(__dirname, "../content/en");
@@ -61,31 +59,42 @@ export const routes = ${JSON.stringify(sortedRoutes)};
 async function watchContentDirectory() {
 	console.log(`👀 Watching for changes in ${CONTENT_DIR}...`);
 	let debounceTimer = null;
-	const runGenerators = async () => {
-		try {
-			console.log(
-				"🚧 Running generators: routes, counts, search index, translation memory...",
-			);
-			await generateRoutes();
-			console.log("   • routes.ts updated");
-			// Generate content counts (directoryStructureWithCounts.ts)
-			await exec(
-				`npx tsx ${resolve(__dirname, "./generateContentCounts.ts")}`,
-			);
-			console.log("   • directoryStructureWithCounts.ts updated");
-			// Regenerate search index used by collection discourses view
-			await exec(
-				`npx tsx ${resolve(__dirname, "./generateSearchIndex.ts")}`,
-			);
-			console.log("   • searchIndex.ts updated");
-			// Regenerate translation memory index for TM matching
-			await exec(
-				`npx tsx ${resolve(__dirname, "./generateTranslationMemory.ts")}`,
-			);
-			console.log("   • translationMemory.json updated");
-			console.log("✅ Generators complete");
-		} catch (error) {
-			console.error("❌ Generator run failed:", error?.stderr || error);
+	let pendingEvent = null; // Track what kind of change happened
+
+	/**
+	 * Run generators appropriate to the type of change:
+	 * - "rename" (file added/deleted): regenerate routes + counts + incremental TM
+	 * - "change" (content edited): only incremental TM update for the changed file
+	 */
+	const runGenerators = async (eventType, changedFile) => {
+		const absChangedFile = resolve(CONTENT_DIR, changedFile);
+
+		if (eventType === "rename") {
+			// File was added or deleted — need to update routes and counts
+			try {
+				console.log(
+					"🚧 Running generators: routes, counts, translation memory...",
+				);
+				await generateRoutes();
+				console.log("   • routes.ts updated");
+				await generateContentCounts();
+				console.log("   • directoryStructureWithCounts.ts updated");
+				await updateTranslationMemory(absChangedFile);
+				console.log("   • translationMemory.json updated");
+				console.log("✅ Generators complete");
+			} catch (error) {
+				console.error("❌ Generator run failed:", error);
+			}
+		} else {
+			// Content edit — only update translation memory for this file
+			try {
+				console.log(`🚧 Incremental TM update for ${changedFile}...`);
+				await updateTranslationMemory(absChangedFile);
+				console.log("   • translationMemory.json updated");
+				console.log("✅ Generators complete");
+			} catch (error) {
+				console.error("❌ TM update failed:", error);
+			}
 		}
 	};
 
@@ -96,8 +105,17 @@ async function watchContentDirectory() {
 		console.log(
 			`\nDetected ${eventType} on ${filename}. Scheduling regeneration...`,
 		);
+		// If a rename is pending, keep it (it's more expensive and includes everything)
+		if (pendingEvent !== "rename") {
+			pendingEvent = eventType;
+		}
 		if (debounceTimer) clearTimeout(debounceTimer);
-		debounceTimer = setTimeout(runGenerators, 200);
+		const capturedEvent = pendingEvent;
+		const capturedFile = filename;
+		debounceTimer = setTimeout(() => {
+			pendingEvent = null;
+			runGenerators(capturedEvent, capturedFile);
+		}, 1000);
 	});
 
 	// Watch topics directory

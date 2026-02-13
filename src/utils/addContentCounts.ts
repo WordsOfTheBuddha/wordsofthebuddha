@@ -14,7 +14,7 @@ interface CollectionInfo {
 
 function extractCollections(
 	structure: Record<string, DirectoryStructure>,
-	parentPath: string[] = []
+	parentPath: string[] = [],
 ): Map<string, CollectionInfo> {
 	const collections = new Map<string, CollectionInfo>();
 	const leafCollections = new Set<string>();
@@ -42,7 +42,7 @@ function extractCollections(
 		if (hasChildren) {
 			const childCollections = extractCollections(
 				dir.children!,
-				currentPath
+				currentPath,
 			);
 			for (const [childKey, childInfo] of childCollections) {
 				collections.set(childKey, childInfo);
@@ -64,7 +64,7 @@ function extractCollections(
  */
 function parseFile(
 	filename: string,
-	collections: Map<string, CollectionInfo>
+	collections: Map<string, CollectionInfo>,
 ): { collectionKey: string; count: number } | null {
 	// Only process .mdx files that have a number before the extension
 	if (!/\d\.mdx$/.test(filename)) return null;
@@ -123,7 +123,7 @@ function parseFile(
 
 		// First look for exact collection match
 		const exactCollection = leafCollections.find(
-			({ key }) => key.toLowerCase() === collectionPrefix.toLowerCase()
+			({ key }) => key.toLowerCase() === collectionPrefix.toLowerCase(),
 		);
 
 		if (exactCollection) {
@@ -186,7 +186,7 @@ function parseFile(
 
 		if (matchingCollections.length > 0) {
 			console.log(
-				`  Found ${baseName} -> ${matchingCollections[0].key} using pattern matching`
+				`  Found ${baseName} -> ${matchingCollections[0].key} using pattern matching`,
 			);
 			return {
 				collectionKey: matchingCollections[0].key,
@@ -204,7 +204,7 @@ function parseFile(
  */
 async function processFiles(
 	dirPath: string,
-	collections: Map<string, CollectionInfo>
+	collections: Map<string, CollectionInfo>,
 ): Promise<Map<string, number>> {
 	const counts = new Map<string, number>();
 	const matchDebug = new Map<string, string[]>();
@@ -241,15 +241,17 @@ async function processFiles(
 		console.log("\nCollection match summary:");
 		for (const [collKey, files] of matchDebug.entries()) {
 			console.log(
-				`  ${collKey} (${counts.get(collKey) || 0}): ${files.length
-				} files`
+				`  ${collKey} (${counts.get(collKey) || 0}): ${
+					files.length
+				} files`,
 			);
 			if (files.length <= 10) {
 				console.log(`    ${files.join(", ")}`);
 			} else {
 				console.log(
-					`    ${files.slice(0, 5).join(", ")}... and ${files.length - 5
-					} more`
+					`    ${files.slice(0, 5).join(", ")}... and ${
+						files.length - 5
+					} more`,
 				);
 			}
 		}
@@ -274,7 +276,7 @@ function rollUpCounts(collections: Map<string, number>): Map<string, number> {
 			// Add this count to the base collection's total
 			result.set(
 				baseCollection,
-				(result.get(baseCollection) || 0) + count
+				(result.get(baseCollection) || 0) + count,
 			);
 		}
 	}
@@ -287,7 +289,7 @@ function rollUpCounts(collections: Map<string, number>): Map<string, number> {
  */
 async function processDirectoryStructure(
 	structure: Record<string, DirectoryStructure>,
-	collectionCounts: Map<string, number>
+	collectionCounts: Map<string, number>,
 ): Promise<Record<string, DirectoryStructure>> {
 	const result: Record<string, DirectoryStructure> = {};
 
@@ -298,11 +300,11 @@ async function processDirectoryStructure(
 			// Process children recursively
 			newDirectory.children = await processDirectoryStructure(
 				directory.children,
-				collectionCounts
+				collectionCounts,
 			);
 			// Sum up children counts
 			newDirectory.contentCount = Object.values(
-				newDirectory.children
+				newDirectory.children,
 			).reduce((sum, child) => sum + (child.contentCount || 0), 0);
 		} else {
 			// Leaf node - get count from our pre-processed collection counts
@@ -318,7 +320,7 @@ async function processDirectoryStructure(
 /**
  * Main function to run the script
  */
-async function main() {
+export async function generateContentCounts() {
 	try {
 		console.log("Starting content count process...");
 
@@ -330,13 +332,13 @@ async function main() {
 			Array.from(collections.entries())
 				.filter(([_, info]) => info.isLeaf)
 				.map(([key]) => key)
-				.sort()
+				.sort(),
 		);
 
 		// Process files for each base collection
 		const allCounts = new Map<string, number>();
 		for (const baseKey of new Set(
-			Array.from(collections.values()).map((info) => info.path[0])
+			Array.from(collections.values()).map((info) => info.path[0]),
 		)) {
 			const dirPath = path.join(BASE_CONTENT_PATH, baseKey);
 			const counts = await processFiles(dirPath, collections);
@@ -349,32 +351,32 @@ async function main() {
 
 		console.log(
 			"\nFinal collection counts:",
-			Object.fromEntries(allCounts)
+			Object.fromEntries(allCounts),
 		);
 
 		// Then, apply these counts to the directory structure
 		const enrichedStructure = await processDirectoryStructure(
 			directoryStructure,
-			allCounts
+			allCounts,
 		);
 
 		// Write to output file
 		await fs.writeFile(
 			path.join(
 				process.cwd(),
-				"src/data/directoryStructureWithCounts.ts"
+				"src/data/directoryStructureWithCounts.ts",
 			),
 			`// This file is auto-generated - do not edit directly
 import type { DirectoryStructure } from "../types/directory";\n\n` +
-			`export const directoryStructureWithCounts: Record<string, DirectoryStructure> = ${JSON.stringify(
-				enrichedStructure,
-				null,
-				2
-			)};\n`
+				`export const directoryStructureWithCounts: Record<string, DirectoryStructure> = ${JSON.stringify(
+					enrichedStructure,
+					null,
+					2,
+				)};\n`,
 		);
 
 		console.log(
-			"Content counts added successfully to directoryStructureWithCounts.ts"
+			"Content counts added successfully to directoryStructureWithCounts.ts",
 		);
 	} catch (error) {
 		console.error("Error adding content counts:", error);
@@ -382,5 +384,10 @@ import type { DirectoryStructure } from "../types/directory";\n\n` +
 	}
 }
 
-// Run the script
-main();
+// Only run when executed directly (not when imported as a module)
+const isDirectRun =
+	process.argv[1]?.includes("addContentCounts") ||
+	process.argv[1]?.includes("generateContentCounts");
+if (isDirectRun) {
+	generateContentCounts();
+}
