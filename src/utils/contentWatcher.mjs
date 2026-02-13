@@ -7,6 +7,7 @@ import { watch } from "node:fs";
 import { generateTopicMappings } from "./generateTopicMappings.ts";
 import { generateQualityMappings } from "./generateQualityMappings.ts";
 import { incrementalUpdate as updateTranslationMemory } from "./generateTranslationMemory.ts";
+import { incrementalSearchIndexUpdate } from "./generateSearchIndex.ts";
 import { generateContentCounts } from "./addContentCounts.ts";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
@@ -70,15 +71,17 @@ async function watchContentDirectory() {
 		const absChangedFile = resolve(CONTENT_DIR, changedFile);
 
 		if (eventType === "rename") {
-			// File was added or deleted — need to update routes and counts
+			// File was added or deleted — need to update routes, counts, search index, and TM
 			try {
 				console.log(
-					"🚧 Running generators: routes, counts, translation memory...",
+					"🚧 Running generators: routes, counts, search index, translation memory...",
 				);
 				await generateRoutes();
 				console.log("   • routes.ts updated");
 				await generateContentCounts();
 				console.log("   • directoryStructureWithCounts.ts updated");
+				await incrementalSearchIndexUpdate(absChangedFile);
+				console.log("   • searchIndex.ts updated");
 				await updateTranslationMemory(absChangedFile);
 				console.log("   • translationMemory.json updated");
 				console.log("✅ Generators complete");
@@ -86,14 +89,16 @@ async function watchContentDirectory() {
 				console.error("❌ Generator run failed:", error);
 			}
 		} else {
-			// Content edit — only update translation memory for this file
+			// Content edit — update search index + translation memory for this file
 			try {
-				console.log(`🚧 Incremental TM update for ${changedFile}...`);
+				console.log(`🚧 Incremental update for ${changedFile}...`);
+				await incrementalSearchIndexUpdate(absChangedFile);
+				console.log("   • searchIndex.ts updated");
 				await updateTranslationMemory(absChangedFile);
 				console.log("   • translationMemory.json updated");
 				console.log("✅ Generators complete");
 			} catch (error) {
-				console.error("❌ TM update failed:", error);
+				console.error("❌ Incremental update failed:", error);
 			}
 		}
 	};
