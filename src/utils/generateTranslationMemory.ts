@@ -24,8 +24,8 @@ const __dirname = path.dirname(__filename);
 const CONTENT_DIR = path.join(__dirname, "..", "content");
 const OUTPUT_FILE = path.join(
 	__dirname,
-	"..",
-	"data",
+	"../..",
+	"public",
 	"translationMemory.json",
 );
 
@@ -234,35 +234,63 @@ export async function incrementalUpdate(changedEnglishFile: string) {
 
 	const { suttaId } = result;
 
-	// Remove old entries for this sutta
+	// Find old entries for this sutta and collect their IDs
+	const oldEntryIds = new Set<number>();
+	for (const e of existingIndex.entries) {
+		if (e.source.suttaId === suttaId) {
+			oldEntryIds.add(e.id);
+		}
+	}
+	const removedCount = oldEntryIds.size;
+
+	// Remove old entries, append new ones, reassign IDs
 	const keptEntries = existingIndex.entries.filter(
 		(e) => e.source.suttaId !== suttaId,
 	);
-	const removedCount = existingIndex.entries.length - keptEntries.length;
-
-	// Append new entries and reassign IDs
 	const allEntries = [...keptEntries, ...result.entries];
-	for (let i = 0; i < allEntries.length; i++) {
-		allEntries[i].id = i;
+
+	// Build old→new ID mapping for kept entries
+	const idRemap = new Map<number, number>();
+	for (let i = 0; i < keptEntries.length; i++) {
+		idRemap.set(keptEntries[i].id, i);
+		keptEntries[i].id = i;
+	}
+	const newEntriesStartId = keptEntries.length;
+	for (let i = 0; i < result.entries.length; i++) {
+		result.entries[i].id = newEntriesStartId + i;
 	}
 
-	// Rebuild n-gram index
-	const ngramMap = new Map<string, number[]>();
-	for (const entry of allEntries) {
-		const ngrams = extractNgrams(entry.paliNormalized, NGRAM_SIZE);
-		for (const ngram of ngrams) {
-			if (!ngramMap.has(ngram)) {
-				ngramMap.set(ngram, []);
-			}
-			ngramMap.get(ngram)!.push(entry.id);
+	// Patch existing n-gram index instead of full rebuild:
+	// 1. Remap kept entry IDs and remove references to deleted entries
+	const ngrams: NgramIndex = {};
+	for (const [ngram, entryIds] of Object.entries(existingIndex.ngrams)) {
+		const remapped: number[] = [];
+		for (const id of entryIds) {
+			if (oldEntryIds.has(id)) continue; // Remove old sutta references
+			const newId = idRemap.get(id);
+			if (newId !== undefined) remapped.push(newId);
+		}
+		if (remapped.length > 0) {
+			ngrams[ngram] = remapped;
 		}
 	}
 
+	// 2. Add n-grams for the new entries
 	const maxFrequency = Math.floor(allEntries.length * MAX_NGRAM_FREQUENCY);
-	const ngrams: NgramIndex = {};
-	for (const [ngram, entryIds] of ngramMap) {
-		if (entryIds.length <= maxFrequency) {
-			ngrams[ngram] = entryIds;
+	for (const entry of result.entries) {
+		const entryNgrams = extractNgrams(entry.paliNormalized, NGRAM_SIZE);
+		for (const ng of entryNgrams) {
+			if (!ngrams[ng]) {
+				ngrams[ng] = [];
+			}
+			ngrams[ng].push(entry.id);
+		}
+	}
+
+	// 3. Filter out any n-grams that became too common
+	for (const ng of Object.keys(ngrams)) {
+		if (ngrams[ng].length > maxFrequency) {
+			delete ngrams[ng];
 		}
 	}
 

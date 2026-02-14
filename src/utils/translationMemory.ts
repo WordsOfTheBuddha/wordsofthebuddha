@@ -25,9 +25,14 @@ export async function loadIndex(): Promise<TranslationMemoryIndex | null> {
 	if (cachedIndex) return cachedIndex;
 
 	try {
-		// Dynamic import of the JSON file
-		const indexModule = await import("../data/translationMemory.json");
-		cachedIndex = indexModule.default as TranslationMemoryIndex;
+		// Read from public/ directory (avoids Vite module graph invalidation)
+		const { readFile } = await import("node:fs/promises");
+		const { join, dirname } = await import("node:path");
+		const { fileURLToPath } = await import("node:url");
+		const __dirname = dirname(fileURLToPath(import.meta.url));
+		const filePath = join(__dirname, "../../public/translationMemory.json");
+		const raw = await readFile(filePath, "utf-8");
+		cachedIndex = JSON.parse(raw) as TranslationMemoryIndex;
 		return cachedIndex;
 	} catch (err) {
 		console.warn(

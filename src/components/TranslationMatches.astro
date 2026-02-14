@@ -3082,7 +3082,7 @@ function getCurrentSuttaId(): string {
     try {
       // Add cache-busting query param in dev mode
       const cacheBuster = isDev ? `?t=${Date.now()}` : '';
-      const response = await fetch(`/src/data/translationMemory.json${cacheBuster}`);
+      const response = await fetch(`/translationMemory.json${cacheBuster}`);
       if (response.ok) {
         tmIndex = await response.json();
         return true;

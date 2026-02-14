@@ -76,26 +76,43 @@ async function watchContentDirectory() {
 				console.log(
 					"🚧 Running generators: routes, counts, search index, translation memory...",
 				);
-				await generateRoutes();
-				console.log("   • routes.ts updated");
-				await generateContentCounts();
-				console.log("   • directoryStructureWithCounts.ts updated");
-				await incrementalSearchIndexUpdate(absChangedFile);
-				console.log("   • searchIndex.ts updated");
-				await updateTranslationMemory(absChangedFile);
-				console.log("   • translationMemory.json updated");
+				// Routes and counts must complete first (needed for collection pages)
+				await Promise.all([
+					generateRoutes().then(() =>
+						console.log("   • routes.ts updated"),
+					),
+					generateContentCounts().then(() =>
+						console.log(
+							"   • directoryStructureWithCounts.ts updated",
+						),
+					),
+				]);
+				// Search index + TM run concurrently so files are written at ~same time
+				await Promise.all([
+					incrementalSearchIndexUpdate(absChangedFile).then(() =>
+						console.log("   • searchIndex.ts updated"),
+					),
+					updateTranslationMemory(absChangedFile).then(() =>
+						console.log("   • translationMemory.json updated"),
+					),
+				]);
 				console.log("✅ Generators complete");
 			} catch (error) {
 				console.error("❌ Generator run failed:", error);
 			}
 		} else {
-			// Content edit — update search index + translation memory for this file
+			// Content edit — update search index + TM concurrently
+			// TM is in public/ so writing it won't trigger Vite re-render
 			try {
 				console.log(`🚧 Incremental update for ${changedFile}...`);
-				await incrementalSearchIndexUpdate(absChangedFile);
-				console.log("   • searchIndex.ts updated");
-				await updateTranslationMemory(absChangedFile);
-				console.log("   • translationMemory.json updated");
+				await Promise.all([
+					incrementalSearchIndexUpdate(absChangedFile).then(() =>
+						console.log("   • searchIndex.ts updated"),
+					),
+					updateTranslationMemory(absChangedFile).then(() =>
+						console.log("   • translationMemory.json updated"),
+					),
+				]);
 				console.log("✅ Generators complete");
 			} catch (error) {
 				console.error("❌ Incremental update failed:", error);

@@ -38,7 +38,7 @@ src/data/qualityMappings.json
 src/data/simileMappings.json
 src/data/topicMappings.json
 src/data/searchIndex.ts
-src/data/translationMemory.json
+public/translationMemory.json
 
 # translation flow
 src/translation-flow/.debug/*

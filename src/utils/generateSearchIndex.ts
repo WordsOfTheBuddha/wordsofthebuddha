@@ -166,6 +166,19 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 	// Replace existing entry or add new one
 	const existingIdx = docs.findIndex((d) => d.slug === newDoc.slug);
 	if (existingIdx !== -1) {
+		const old = docs[existingIdx];
+		// Skip write if only body content changed (avoids Vite re-render).
+		// Title/description changes still trigger a write for collection pages.
+		if (
+			old.slug === newDoc.slug &&
+			old.title === newDoc.title &&
+			old.description === newDoc.description
+		) {
+			console.log(
+				`search-index: skipped (body-only change) for ${newDoc.slug} (${Date.now() - start}ms)`,
+			);
+			return;
+		}
 		docs[existingIdx] = newDoc;
 	} else {
 		docs.push(newDoc);

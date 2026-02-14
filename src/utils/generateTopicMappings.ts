@@ -17,6 +17,11 @@ interface TopicMapping {
 	supportedBy?: string[];
 	leadsTo?: string[];
 	opposite?: string[];
+	post?: {
+		url: string;
+		title: string;
+		description?: string;
+	};
 	discourses: Array<{
 		id: string;
 		title: string;
@@ -256,6 +261,7 @@ export async function generateTopicMappings() {
 			supportedBy: topic.supportedBy,
 			leadsTo: topic.leadsTo,
 			opposite: topic.opposite,
+			post: topic.post,
 			discourses: mergedDiscourses,
 		};
 	}
