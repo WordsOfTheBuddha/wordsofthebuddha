@@ -164,9 +164,10 @@ export function parseContent(
 				type: "paragraph",
 				english: `\n\n<p><a href="/${baseId
 					.toLowerCase()
+					.replace(/\s+/g, "")
 					.replace(
-						/\s+/g,
-						"",
+						/[–—]/g,
+						"-",
 					)}" class="text-blue-600 hover:underline">View full text for: ${baseId}</a></p>`,
 			});
 		}
@@ -324,9 +325,10 @@ export function parseContent(
 			targetEnglish.push(
 				`\n\n<p><a href="/${fullReference
 					.toLowerCase()
+					.replace(/\s+/g, "")
 					.replace(
-						" ",
-						"",
+						/[–—]/g,
+						"-",
 					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`,
 			);
 		}
@@ -349,21 +351,65 @@ export function parseContent(
 		let targetEnglish: string[] = [];
 		let targetPali: string[] = [];
 
+		// Helper to extract heading number and check if it matches or contains sectionNumber
+		function headingMatchesSectionNumber(
+			heading: string,
+			targetSection: string | number,
+		): boolean {
+			// Extract the full heading content (everything after heading markers)
+			const headingContent = heading.replace(/^#+\s+/, "");
+
+			// Try to match range headings (e.g., "1.395–401" or "1.395-401")
+			// Handles both en-dash (–) and hyphen (-) separators
+			const rangeMatch = headingContent.match(
+				/^(\d+(?:\.\d+)?)(?:[–\-])(\d+(?:\.\d+)?)(?:\s|$)/,
+			);
+
+			if (rangeMatch) {
+				const rangeStart = rangeMatch[1];
+				const rangeEnd = rangeMatch[2];
+
+				// For range headings like "1.395–401", construct the full end value
+				// e.g., rangeStart="1.395", rangeEnd="401" -> "1.401"
+				const properRangeEnd = constructHierarchicalEnd(
+					rangeStart,
+					rangeEnd,
+				);
+
+				debug(
+					`Checking range heading: ${rangeStart}–${properRangeEnd} for section: ${targetSection}`,
+				);
+
+				// Check if target section falls within this range
+				return isHierarchicalNumberInRange(
+					String(targetSection),
+					rangeStart,
+					properRangeEnd,
+				);
+			}
+
+			// Try to match single heading numbers (e.g., "1.394")
+			const singleMatch = headingContent.match(/^(\d+(?:\.\d+)?)/);
+			if (singleMatch) {
+				const headingNumber = singleMatch[1];
+				debug(
+					"Found single heading:",
+					headingNumber,
+					"looking for:",
+					targetSection,
+				);
+				return headingNumber === String(targetSection);
+			}
+
+			return false;
+		}
+
 		// Process English content
 		for (const block of englishBlocks) {
 			const isHeading =
 				block.startsWith("###") || block.startsWith("####");
 			if (isHeading) {
-				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/,
-				)?.[1];
-				debug(
-					"Found heading:",
-					headingNumber,
-					"looking for:",
-					sectionNumber,
-				);
-				if (headingNumber === sectionNumber) {
+				if (headingMatchesSectionNumber(block, sectionNumber)) {
 					inTargetSection = true;
 					targetEnglish.push(block);
 					debug("Entered target section");
@@ -383,10 +429,7 @@ export function parseContent(
 			const isHeading =
 				block.startsWith("###") || block.startsWith("####");
 			if (isHeading) {
-				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/,
-				)?.[1];
-				if (headingNumber === sectionNumber) {
+				if (headingMatchesSectionNumber(block, sectionNumber)) {
 					inTargetSection = true;
 					targetPali.push(block);
 				} else if (inTargetSection) {
@@ -402,9 +445,10 @@ export function parseContent(
 			targetEnglish.push(
 				`\n\n<p><a href="/${fullReference
 					.toLowerCase()
+					.replace(/\s+/g, "")
 					.replace(
-						" ",
-						"",
+						/[–—]/g,
+						"-",
 					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`,
 			);
 		}
