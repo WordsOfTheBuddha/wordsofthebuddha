@@ -1,6 +1,6 @@
 ---
 title: Kesamutti sutta - With the Kālāmas of Kesamutta
-description: "When the Kālāmas, perplexed by conflicting teachers, ask the Buddha how to know truth from falsehood, he advises against blind reliance on tradition or authority. Instead, offering a pragmatic test: reject what causes harm and cultivate that which leads to well-being."
+description: "When the Kālāmas, perplexed by conflicting teachers, ask the Buddha how to know truth from falsehood, he advises against blind reliance on tradition or authority. Instead, offering a pragmatic test: reject what leads to detriment and cultivate that which leads to well-being."
 qualities: doubt, wisdom, wholesome, unwholesome, greed, aversion, delusion, giving, loving-kindness, compassion, appreciative joy, equanimity
 theme: cultivating discernment, inquisitiveness, wisdom
 priority: 2

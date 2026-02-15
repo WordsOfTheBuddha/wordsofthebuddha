@@ -1,12 +1,11 @@
 ---
 title: Dutiya pamādādi vagga - Second Chapter Starting with Negligence
 description: The Buddha lists the mental qualities that form the internal factors leading to harm or benefit, the qualities that lead to the decline or continuity of the true Dhamma, and the actions that lead to the harm of many people.
-fetter: ignorance
 qualities: negligence, diligence, laziness, rousing of energy, having many desires, contentment, discontentment, unwise attention, wise attention, lack of discernment, full awareness, bad friendship, good friendship, bad habits, good habits, harm
-tags: harm, benefit, true Dhamma, friends, habits, attention, wisdom, relatives, wealth, reputation, wholesome, unwholesome, teaching, discipline, vinaya, spoken, practiced, prescribed, an, an1
+theme: wisdom
 slug: an1.98-139
 commentary:
-    - 1.99 - Diligence is a quality of the mind that is about carrying out one’s duty or obligations well, with continuous effort, while maintaining alertness and |care::gentleness|.
+    - 1.99 - Diligence is a quality of the mind that is about carrying out one’s duty or obligations well, with continuous effort, while maintaining alertness and care.
 ---
 
 ## Leading to harm or benefit
