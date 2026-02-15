@@ -3,6 +3,12 @@ export interface TopicDiscourse {
 	note?: string;
 }
 
+export interface TopicPost {
+	url: string;
+	title: string;
+	description?: string;
+}
+
 export interface Topic {
 	title: string;
 	description: string;
@@ -13,5 +19,6 @@ export interface Topic {
 	leadsTo?: string[];
 	opposite?: string[];
 	redirects?: string[];
+	post?: TopicPost;
 	discourses: TopicDiscourse[];
 }

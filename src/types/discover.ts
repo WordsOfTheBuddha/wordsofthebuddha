@@ -13,6 +13,11 @@ export interface UnifiedContentItem {
 	redirects?: string[];
 	qualityType?: "positive" | "negative" | "neutral";
 	context?: string;
+	post?: {
+		url: string;
+		title: string;
+		description?: string;
+	};
 	discourses: Array<{
 		id: string;
 		title: string;

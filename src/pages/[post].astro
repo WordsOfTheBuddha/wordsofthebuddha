@@ -1,0 +1,31 @@
+---
+// Prerendered post pages — serves posts from src/pages/posts/ at root-level URLs.
+// Follows the same pattern as [discourse].astro: prerender + getStaticPaths + rewrite.
+export const prerender = true;
+
+import { routes } from "../utils/routes";
+
+export async function getStaticPaths() {
+	// Discover all markdown/mdx files in the posts directory
+	const postFiles = import.meta.glob("./posts/*.{md,mdx}");
+
+	// Build paths, excluding any slug that conflicts with a discourse route
+	const discourseSet = new Set(routes);
+	return Object.keys(postFiles)
+		.map((filePath) => {
+			const slug = filePath
+				.replace("./posts/", "")
+				.replace(/\.mdx?$/, "");
+			return { params: { post: slug } };
+		})
+		.filter(({ params }) => !discourseSet.has(params.post));
+}
+
+const { post } = Astro.params;
+if (!post) {
+	return new Response(null, { status: 404 });
+}
+
+// Rewrite to the actual posts/ page — Astro renders it at this root-level URL
+return Astro.rewrite(`/posts/${post}`);
+---

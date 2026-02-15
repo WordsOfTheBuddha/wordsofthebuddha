@@ -33,7 +33,7 @@ if (!slug) {
 const allContent = buildAllContent();
 const { item: content, type: contentType } = findContentBySlug(
 	slug,
-	allContent
+	allContent,
 );
 if (!content || !contentType) {
 	return new Response(null, { status: 404 });
@@ -53,7 +53,7 @@ if (!isTopic) {
 			tData.synonyms &&
 			tData.synonyms.some(
 				(s: string) =>
-					s.toLowerCase().replace(/\s+/g, "-") === slugLower
+					s.toLowerCase().replace(/\s+/g, "-") === slugLower,
 			)
 		) {
 			isTopic = true;
@@ -202,20 +202,20 @@ const totalDiscourses = allDiscourses.length;
 																w
 																	.charAt(0)
 																	.toUpperCase() +
-																w.slice(1)
+																w.slice(1),
 														)
 														.join(" ");
 													const isTopic =
 														Object.keys(
-															topicMappings
+															topicMappings,
 														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
-															slug
+															slug,
 														);
 													const isNegative =
 														qualities.negative.includes(
-															slug
+															slug,
 														);
 													let tagClass =
 														"topic-tag neutral";
@@ -241,7 +241,7 @@ const totalDiscourses = allDiscourses.length;
 															</span>
 														</EntityPopover>
 													);
-												}
+												},
 											)}
 										</div>
 									</div>
@@ -261,20 +261,20 @@ const totalDiscourses = allDiscourses.length;
 																w
 																	.charAt(0)
 																	.toUpperCase() +
-																w.slice(1)
+																w.slice(1),
 														)
 														.join(" ");
 													const isTopic =
 														Object.keys(
-															topicMappings
+															topicMappings,
 														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
-															slug
+															slug,
 														);
 													const isNegative =
 														qualities.negative.includes(
-															slug
+															slug,
 														);
 													let tagClass =
 														"topic-tag neutral";
@@ -300,7 +300,7 @@ const totalDiscourses = allDiscourses.length;
 															</span>
 														</EntityPopover>
 													);
-												}
+												},
 											)}
 										</div>
 									</div>
@@ -320,20 +320,20 @@ const totalDiscourses = allDiscourses.length;
 																w
 																	.charAt(0)
 																	.toUpperCase() +
-																w.slice(1)
+																w.slice(1),
 														)
 														.join(" ");
 													const isTopic =
 														Object.keys(
-															topicMappings
+															topicMappings,
 														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
-															slug
+															slug,
 														);
 													const isNegative =
 														qualities.negative.includes(
-															slug
+															slug,
 														);
 													let tagClass =
 														"topic-tag neutral";
@@ -359,7 +359,7 @@ const totalDiscourses = allDiscourses.length;
 															</span>
 														</EntityPopover>
 													);
-												}
+												},
 											)}
 										</div>
 									</div>
@@ -379,20 +379,20 @@ const totalDiscourses = allDiscourses.length;
 																w
 																	.charAt(0)
 																	.toUpperCase() +
-																w.slice(1)
+																w.slice(1),
 														)
 														.join(" ");
 													const isTopic =
 														Object.keys(
-															topicMappings
+															topicMappings,
 														).includes(slug);
 													const isPositive =
 														qualities.positive.includes(
-															slug
+															slug,
 														);
 													const isNegative =
 														qualities.negative.includes(
-															slug
+															slug,
 														);
 													let tagClass =
 														"topic-tag neutral";
@@ -418,7 +418,7 @@ const totalDiscourses = allDiscourses.length;
 															</span>
 														</EntityPopover>
 													);
-												}
+												},
 											)}
 										</div>
 									</div>
@@ -429,6 +429,48 @@ const totalDiscourses = allDiscourses.length;
 				</div>
 			</div>
 		</div>
+
+		{/* Featured Post/Essay Section - Shows before discourses */}
+		{
+			content.post && (
+				<div class="mb-10">
+					<h2 class="text-xl font-medium mb-4">Featured Essay</h2>
+					<a
+						href={content.post.url}
+						class="post-item group relative flex flex-col w-full p-5 rounded-2xl border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-sm hover:shadow-md no-underline"
+					>
+						<div class="flex items-start justify-between">
+							<div class="min-w-0 pr-4">
+								<h3 class="text-base sm:text-lg font-semibold text-text group-hover:text-[var(--link-color)] transition-colors">
+									{content.post.title}
+								</h3>
+								{content.post.description && (
+									<p class="mt-2 text-sm text-[var(--text-muted)] line-clamp-3">
+										{content.post.description}
+									</p>
+								)}
+							</div>
+							<div class="shrink-0 self-center ml-2 text-[var(--text-muted)] group-hover:text-[var(--link-color)] transition-colors">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="w-5 h-5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M9 5l7 7-7 7"
+									/>
+								</svg>
+							</div>
+						</div>
+					</a>
+				</div>
+			)
+		}
 
 		{
 			/* Featured Discourses Section - Only for topics with curated content */

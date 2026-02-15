@@ -1,0 +1,363 @@
+---
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import "../styles/global.css";
+import "../styles/content.css";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import BottomDrawer from "../components/BottomDrawer.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
+import DiscourseImage from "../components/DiscourseImage.astro";
+import { findContentImage } from "../utils/contentImage";
+
+const props = Astro.props.frontmatter || Astro.props;
+const { title, description, date, image, imageCaption, hideHeader = false } = props;
+
+// When hideHeader is true, the layout skips rendering title/description/image
+// in the page body — the MDX content handles its own header.
+// Frontmatter title/description are still used for SEO meta tags.
+const showHeader = !hideHeader;
+
+// --- Date handling ---
+// Use frontmatter date if provided, otherwise fall back to file modification time
+let displayDate: string | null = null;
+if (date) {
+	displayDate = new Date(date).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+} else {
+	// Auto-detect from file system modification time
+	try {
+		const fs = await import("node:fs");
+		const path = await import("node:path");
+		// Astro.props.file holds the absolute path for .md pages
+		const filePath = (Astro.props as any).file;
+		if (filePath) {
+			const stat = fs.statSync(filePath);
+			displayDate = stat.mtime.toLocaleDateString("en-US", {
+				year: "numeric",
+				month: "long",
+				day: "numeric",
+			});
+		}
+	} catch {
+		// Silently ignore — no date shown
+	}
+}
+
+// --- Banner image handling ---
+// Derive slug from the page URL — use last path segment to handle rewrites
+// e.g., /toe -> toe, /posts/toe -> toe
+const pathSegments = Astro.url.pathname.replace(/^\//, "").replace(/\/$/, "").split("/");
+const slug = pathSegments[pathSegments.length - 1] || "";
+const contentImage = findContentImage(slug, { image, imageCaption }, title);
+
+// Strip annotation markup (|word::tooltip|) from title for SEO
+const cleanTitle = title?.replace(/\|([^:|]+)::[^|]*\|/g, '$1');
+
+let SEOTitle = "Words of the Buddha";
+if (cleanTitle) {
+	SEOTitle = cleanTitle + " - Words of the Buddha";
+}
+
+const serverTheme = "dark";
+---
+
+<html lang="en" class={serverTheme} dir="ltr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+		/>
+
+		<!-- Preload critical fonts -->
+		<link
+			rel="preload"
+			href="/assets/fonts/Spectral-Regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link
+			rel="preload"
+			href="/assets/fonts/Spectral-Italic.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link
+			rel="preload"
+			href="/assets/fonts/GentiumPlus-Regular.ttf"
+			as="font"
+			type="font/ttf"
+			crossorigin="anonymous"
+		/>
+
+		<title>{SEOTitle}</title>
+		<meta
+			name="description"
+			content={description || "Words of the Buddha"}
+		/>
+
+		<!-- Open Graph -->
+		<meta property="og:title" content={SEOTitle} />
+		<meta
+			property="og:description"
+			content={description || "Words of the Buddha"}
+		/>
+		<meta property="og:type" content="article" />
+		{
+			contentImage && (
+				<meta
+					property="og:image"
+					content={new URL(contentImage.image.src, Astro.url).href}
+				/>
+			)
+		}
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content={contentImage ? "summary_large_image" : "summary"} />
+		<meta name="twitter:title" content={SEOTitle} />
+		<meta
+			name="twitter:description"
+			content={description || "Words of the Buddha"}
+		/>
+		{
+			contentImage && (
+				<meta
+					name="twitter:image"
+					content={new URL(contentImage.image.src, Astro.url).href}
+				/>
+			)
+		}
+
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<meta name="theme-color" content="#111827" />
+
+		<script is:inline>
+			(function () {
+				var stored = localStorage.getItem("theme");
+				var param = new URLSearchParams(window.location.search).get(
+					"theme",
+				);
+				var theme =
+					param === "light" || param === "dark"
+						? param
+						: stored === "light" || stored === "dark"
+							? stored
+							: window.matchMedia("(prefers-color-scheme: dark)")
+										.matches
+								? "dark"
+								: "light";
+				document.documentElement.classList.remove("light", "dark");
+				document.documentElement.classList.add(theme);
+				localStorage.setItem("theme", theme);
+			})();
+		</script>
+	</head>
+	<body
+		class="flex flex-col min-h-screen bg-[var(--background-color)] text-[var(--text-color)] [overflow-x:clip]"
+	>
+		<Analytics />
+		<SpeedInsights />
+		<BottomDrawer />
+		<main class="flex-1">
+			<div class="post-container">
+				<div class="post-nav prose prose-lg dark:prose-invert">
+					<Navbar showAuth={true} showSearch={true} />
+				</div>
+				<div class="post-body">
+					<article
+						class="post-content prose prose-lg dark:prose-invert max-w-none p-4 pt-6"
+						style="opacity: 0; transition: opacity 0.15s ease-in;"
+					>
+						{
+							showHeader && title && (
+								<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 pl-0 mb-2">
+									{title}
+								</h1>
+							)
+						}
+						{
+							showHeader && description && (
+								<p class="text-base italic text-[var(--text-muted)] mt-1 mb-4">{description}</p>
+							)
+						}
+						{
+							showHeader && contentImage && (
+								<div class="not-prose m-0 mt-4 mb-6 w-full">
+									<DiscourseImage imageData={contentImage} />
+								</div>
+							)
+						}
+						<slot />
+						{
+							displayDate && (
+								<div class="mt-12 pt-4 border-t border-gray-200 dark:border-gray-700">
+									<p class="text-sm text-gray-500 dark:text-gray-400 m-0">
+										Last updated on {displayDate}
+									</p>
+								</div>
+							)
+						}
+					</article>
+					<nav
+						class="post-toc"
+						id="post-toc"
+						aria-label="Table of contents"
+					>
+					</nav>
+				</div>
+				<Footer />
+			</div>
+		</main>
+		<ScrollToTop />
+	</body>
+
+	<style>
+		/* Centered container — matches content width on mobile, widens for ToC on desktop */
+		.post-container {
+			max-width: 56rem;
+			margin: 0 auto;
+			padding: 0 1rem;
+		}
+
+		/* Navbar wrapper — prose gives link colors matching the rest of the site */
+		.post-nav {
+			max-width: none;
+		}
+
+		.post-toc {
+			display: none;
+		}
+
+		@media (min-width: 1024px) {
+			.post-container {
+				max-width: calc(56rem + 260px + 1.5rem);
+				padding: 0 2rem;
+			}
+			.post-body {
+				display: grid;
+				grid-template-columns: minmax(0, 56rem) 260px;
+				column-gap: 1.5rem;
+			}
+			.post-content {
+				grid-column: 1;
+				min-width: 0;
+			}
+			.post-toc {
+				display: block;
+				grid-column: 2;
+				position: sticky;
+				top: 2rem;
+				align-self: start;
+				margin-top: 2.5rem;
+				max-height: calc(100vh - 4rem);
+				overflow-y: auto;
+				font-size: 0.82rem;
+				line-height: 1.6;
+				border-left: 2px solid rgba(245, 158, 11, 0.2);
+				padding-left: 0.75rem;
+				padding-right: 0.5rem;
+			}
+			.post-toc :global(a) {
+				display: block;
+				color: #a8a29e;
+				text-decoration: none;
+				padding: 0.15rem 0;
+				transition: color 0.15s;
+			}
+			.post-toc :global(a:hover),
+			.post-toc :global(a.active) {
+				color: #f59e0b;
+			}
+			.post-toc :global(a.toc-h3) {
+				padding-left: 0.75rem;
+				font-size: 0.78rem;
+			}
+		}
+
+		@media (min-width: 1280px) {
+			.post-container {
+				max-width: calc(56rem + 280px + 2.5rem);
+			}
+			.post-body {
+				grid-template-columns: minmax(0, 56rem) 280px;
+				column-gap: 2.5rem;
+			}
+		}
+	</style>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Open all content links in new tabs (skip anchor links)
+			var links = document.querySelectorAll(".post-content a");
+			for (var i = 0; i < links.length; i++) {
+				var href = links[i].getAttribute("href");
+				if (href && href.charAt(0) !== "#") {
+					links[i].setAttribute("target", "_blank");
+					links[i].setAttribute("rel", "noopener");
+				}
+			}
+
+			// Reveal content after tooltips have been processed by BottomDrawer
+			var article = document.querySelector(".post-content") as HTMLElement;
+			if (article) {
+				// Use requestAnimationFrame to ensure BottomDrawer's DOMContentLoaded
+				// handler (replaceTooltips) has completed first
+				requestAnimationFrame(function () {
+					article.style.opacity = "1";
+				});
+			}
+
+			// Build ToC from headings
+			var headings = document.querySelectorAll(
+				".post-content h2, .post-content h3",
+			);
+			var nav = document.getElementById("post-toc");
+			if (!nav || headings.length === 0) return;
+
+			for (var j = 0; j < headings.length; j++) {
+				var h = headings[j] as HTMLElement;
+				if (!h.id) {
+					h.id = (h.textContent || "")
+						.toLowerCase()
+						.replace(/[^a-z0-9]+/g, "-")
+						.replace(/(^-|-$)/g, "");
+				}
+				var a = document.createElement("a");
+				a.href = "#" + h.id;
+				a.textContent = h.textContent;
+				if (h.tagName === "H3") a.className = "toc-h3";
+				nav.appendChild(a);
+			}
+
+			// Highlight current section on scroll
+			var observer = new IntersectionObserver(
+				function (entries) {
+					for (var k = 0; k < entries.length; k++) {
+						if (entries[k].isIntersecting) {
+							var tocLinks = nav!.querySelectorAll("a");
+							for (var m = 0; m < tocLinks.length; m++)
+								tocLinks[m].classList.remove("active");
+							var active = nav!.querySelector(
+								'a[href="#' +
+									(entries[k].target as HTMLElement).id +
+									'"]',
+							);
+							if (active) active.classList.add("active");
+						}
+					}
+				},
+				{ rootMargin: "-20% 0px -70% 0px" },
+			);
+
+			for (var n = 0; n < headings.length; n++)
+				observer.observe(headings[n]);
+		});
+	</script>
+</html>

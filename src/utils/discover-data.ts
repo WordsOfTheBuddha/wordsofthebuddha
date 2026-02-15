@@ -24,7 +24,7 @@ const collectionPriority: Record<string, number> = {
 };
 
 function getQualityType(
-	qualitySlug: string
+	qualitySlug: string,
 ): "positive" | "negative" | "neutral" {
 	if ((qualities as any).positive.includes(qualitySlug)) return "positive";
 	if ((qualities as any).negative.includes(qualitySlug)) return "negative";
@@ -43,8 +43,8 @@ function getQualitySynonyms(qualitySlug: string): string[] {
 					!s.startsWith("Leads to:") &&
 					!s.startsWith("Guarded by:") &&
 					!s.startsWith("Opposite:") &&
-					!s.startsWith("Context:")
-		  )
+					!s.startsWith("Context:"),
+			)
 		: [];
 }
 
@@ -77,7 +77,7 @@ function extractBracketed(list: string[], label: string): string[] {
 
 function createContentItem(
 	base: Omit<UnifiedContentItem, "description">,
-	description?: string
+	description?: string,
 ): UnifiedContentItem {
 	const item: UnifiedContentItem = { ...(base as any) };
 	if (description && description.trim())
@@ -138,7 +138,7 @@ function sortDiscoursesInPlace(arr: any[]) {
  * Build the unified content list without search filtering.
  */
 export function buildAllContent(
-	include: Kind[] = ["topics", "qualities", "similes"]
+	include: Kind[] = ["topics", "qualities", "similes"],
 ): UnifiedContentItem[] {
 	const priorityMap = buildPriorityMap();
 	const items: UnifiedContentItem[] = [];
@@ -184,7 +184,7 @@ export function buildAllContent(
 
 			const resolveAttr = (
 				topicAttr: string[] | undefined,
-				qualityLabel: string
+				qualityLabel: string,
 			) => {
 				if (topicAttr?.length) return topicAttr;
 				if (!qualityData) return undefined;
@@ -231,10 +231,11 @@ export function buildAllContent(
 						supportedBy,
 						leadsTo,
 						opposite,
+						post: topic.post,
 						discourses: topicDiscourses,
 					},
-					topic.description
-				)
+					topic.description,
+				),
 			);
 		});
 	}
@@ -266,7 +267,7 @@ export function buildAllContent(
 				const matchesTopic = tSlug === slugLower;
 				const matchesSynonym = t.synonyms?.some(
 					(s: string) =>
-						s.toLowerCase().replace(/\s+/g, "-") === slugLower
+						s.toLowerCase().replace(/\s+/g, "-") === slugLower,
 				);
 
 				if (matchesTopic || matchesSynonym) {
@@ -303,7 +304,7 @@ export function buildAllContent(
 			// Merge featured discourses, avoiding duplicates
 			const featuredIds = new Set(featuredDiscourses.map((d) => d.id));
 			const uniqueQualityDiscourses = qualityDiscourses.filter(
-				(d) => !featuredIds.has(d.id)
+				(d) => !featuredIds.has(d.id),
 			);
 			const finalDiscourses = [
 				...featuredDiscourses,
@@ -326,8 +327,8 @@ export function buildAllContent(
 						opposite,
 						discourses: finalDiscourses,
 					},
-					context || ""
-				)
+					context || "",
+				),
 			);
 		});
 	}
@@ -357,11 +358,11 @@ export function buildAllContent(
 									isFeatured: false,
 									priority: undefined,
 								})),
-							})
+							}),
 						);
-					}
+					},
 				);
-			}
+			},
 		);
 	}
 
@@ -386,7 +387,7 @@ export function buildAllContent(
  * Build content similarly to the API (supports include + filter).
  */
 export function buildUnifiedContent(
-	options: BuildOptions = {}
+	options: BuildOptions = {},
 ): UnifiedContentItem[] {
 	const include = options.include ?? ["topics", "qualities", "similes"];
 	const filterParam = options.filter?.trim() ?? "";
@@ -424,7 +425,7 @@ export function buildUnifiedContent(
 						matchesFilter(d.id) ||
 						matchesFilter(d.collection) ||
 						matchesFilter(d.title) ||
-						matchesFilter(d.description)
+						matchesFilter(d.description),
 				);
 
 				if (matchingDiscourses.length > 0) {
@@ -452,23 +453,23 @@ function createSlugVariants(value: string): string[] {
 	const spacedFromHyphen = collapseWhitespace(hyphenated.replace(/-+/g, " "));
 	const underscoreAsSpace = collapseWhitespace(lower.replace(/[_]+/g, " "));
 	return Array.from(
-		new Set([lower, hyphenated, spacedFromHyphen, underscoreAsSpace])
+		new Set([lower, hyphenated, spacedFromHyphen, underscoreAsSpace]),
 	);
 }
 
 function matchesSlugValue(
 	value: string | undefined,
-	referenceVariants: Set<string>
+	referenceVariants: Set<string>,
 ): boolean {
 	if (!value) return false;
 	return createSlugVariants(value).some((variant) =>
-		referenceVariants.has(variant)
+		referenceVariants.has(variant),
 	);
 }
 
 function matchesSlugArray(
 	values: string[] | undefined,
-	referenceVariants: Set<string>
+	referenceVariants: Set<string>,
 ): boolean {
 	if (!Array.isArray(values)) return false;
 	return values.some((value) => matchesSlugValue(value, referenceVariants));
@@ -480,7 +481,7 @@ function matchesSlugArray(
  */
 export function findContentBySlug(
 	slug: string,
-	items?: UnifiedContentItem[]
+	items?: UnifiedContentItem[],
 ): {
 	item: UnifiedContentItem | null;
 	type: UnifiedContentItem["type"] | null;
@@ -490,24 +491,24 @@ export function findContentBySlug(
 
 	let content: UnifiedContentItem | undefined;
 	content = all.find(
-		(i) => i.type === "topic" && matchesSlugValue(i.slug, slugVariants)
+		(i) => i.type === "topic" && matchesSlugValue(i.slug, slugVariants),
 	);
 	if (content) return { item: content, type: content.type };
 
 	content = all.find(
 		(i) =>
 			i.type === "topic" &&
-			matchesSlugArray(i.redirects as string[] | undefined, slugVariants)
+			matchesSlugArray(i.redirects as string[] | undefined, slugVariants),
 	);
 	if (content) return { item: content, type: content.type };
 
 	content = all.find(
-		(i) => i.type === "quality" && matchesSlugValue(i.slug, slugVariants)
+		(i) => i.type === "quality" && matchesSlugValue(i.slug, slugVariants),
 	);
 	if (content) return { item: content, type: content.type };
 
 	content = all.find(
-		(i) => i.type === "simile" && matchesSlugValue(i.slug, slugVariants)
+		(i) => i.type === "simile" && matchesSlugValue(i.slug, slugVariants),
 	);
 	if (content) return { item: content, type: content.type };
 
