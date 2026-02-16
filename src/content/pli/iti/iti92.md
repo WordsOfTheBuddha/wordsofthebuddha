@@ -1,7 +1,7 @@
 ---
 title: Saṅghāṭikaṇṇa sutta - Corner of Robe
 description: The Buddha teaches that one could be far from him despite being physically close, and one could be near to him despite being physically far. When one sees the Dhamma, one sees the Buddha.
-qualities: craving, greed, sensual desire, passion, aversion, muddle-mindedness, negligence, distraction, adventurousness, having many desires, anxiety, loving-kindness, collectedness, mindfulness, complete comprehension, dispassion, full awareness, unification, quenching, imperturbable, recollection of the Dhamma, companionship
+qualities: craving, greed, sensual desire, passion, aversion, muddle-mindedness, negligence, distraction, adventurousness, having many desires, anxiety, loving-kindness, collectedness, mindfulness, complete comprehension, dispassion, clear awareness, unification, quenching, imperturbable, recollection of the Dhamma, companionship
 theme: inspiration, wisdom
 slug: iti92
 ---

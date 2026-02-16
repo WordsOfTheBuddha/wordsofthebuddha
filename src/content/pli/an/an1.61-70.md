@@ -2,7 +2,7 @@
 title: Vīriyārambhādi vagga - The Chapter Beginning with the Rousing of Energy
 description: The Buddha explains the importance of rousing of energy and the consequences of having many desires, few desires, dissatisfaction, contentment, (careless) attention, wise attention, clear comprehension and lack of it, and bad friendship.
 fetter: ignorance
-qualities: rousing of energy, having many desires, contentment, discontentment, unwise attention, wise attention, negligence, full awareness, bad friendship
+qualities: rousing of energy, having many desires, contentment, discontentment, unwise attention, wise attention, negligence, clear awareness, bad friendship
 tags: energy, desires, dissatisfaction, contentment, attention, clear comprehension, friends, wholesome, unwholesome, an, an1
 slug: an1.61-70
 ---

@@ -1,7 +1,7 @@
 ---
 title: Nandamātā sutta - Nanda’s Mother
 description: After the lay disciple Nandamātā is visited by the deity Vessavaṇa, she recounts the event to the venerable Sāriputta. She then lists her seven wonderful and marvelous qualities, including profound equanimity in the face of tragedy, her attainment of the four jhānas, and her attainment of non-returning.
-qualities: giving, collectedness, merit, uplifting joy, unification, tranquility, happiness, equanimity, mindfulness, full awareness, giving up
+qualities: giving, collectedness, merit, uplifting joy, unification, tranquility, happiness, equanimity, mindfulness, clear awareness, giving up
 theme: inspiration
 slug: an7.53
 priority: 1.1

@@ -1,7 +1,7 @@
 ---
 title: Aparaaccharāsaṅghāta vagga - The Chapter on the Finger Snap
 description: How much practice makes one a true practitioner? The Buddha declares that even a “finger snap” of cultivation fulfills the Teacher's instruction. A rapid-fire survey of the path's essential practices, emphasizing that if a moment is worthy, frequent practice is beyond measure.
-qualities: cultivation, collectedness, mindfulness, continuous effort, full awareness, right effort, wholesome, unwholesome
+qualities: cultivation, collectedness, mindfulness, continuous effort, clear awareness, right effort, wholesome, unwholesome
 theme: wisdom, inspiration
 slug: an1.394-574
 ---

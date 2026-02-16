@@ -1,7 +1,7 @@
 ---
 title: Dutiya nānākaraṇa sutta - Difference (Second)
 description: The Buddha shares the four kinds of persons — those who cultivate the first jhāna, the second jhāna, the third jhāna, and the fourth jhāna while perceiving drawbacks — and the difference in their rebirths.
-qualities: collectedness, unification, uplifting joy, tranquility, mindfulness, full awareness, equanimity, perceiving drawback
+qualities: collectedness, unification, uplifting joy, tranquility, mindfulness, clear awareness, equanimity, perceiving drawback
 theme: inspiration, principle
 slug: an4.124
 ---

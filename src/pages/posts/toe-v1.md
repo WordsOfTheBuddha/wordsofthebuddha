@@ -333,7 +333,7 @@ Now the fire reaches a temperature where it no longer needs kindling. In chemist
 
 ### Third Jhāna: The Embers
 
-The initial flare of joy settles. What remains is deep, radiant heat — like a bed of coals that has moved past visible flame into sustained, even warmth. The brightness of pīti fades, but the warmth of sukha deepens. Equanimity begins to appear, like the stability of embers that no longer flicker. Mindful and fully aware, the meditator dwells in what the Buddha calls "pleasant abiding."
+The initial flare of joy settles. What remains is deep, radiant heat — like a bed of coals that has moved past visible flame into sustained, even warmth. The brightness of pīti fades, but the warmth of sukha deepens. Equanimity begins to appear, like the stability of embers that no longer flicker. Mindful and clearly aware, the meditator dwells in what the Buddha calls "pleasant abiding."
 
 ### Fourth Jhāna: The Perfect Flame
 

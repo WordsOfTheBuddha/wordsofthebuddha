@@ -212,7 +212,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn47: {
 						title: "Satipaṭṭhānasaṁyutta - Linked Discourses on the Establishments of Mindfulness",
 						description:
-							'The "Linked Discourses on the Establishments of Mindfulness" contains discourses focusing on the four foundations of mindfulness: clear comprehension and full awareness of the body, felt experience, mind, and mental qualities. These teachings explore how to establish mindfulness as a means to develop right collectedness, insight and wisdom.',
+							'The "Linked Discourses on the Establishments of Mindfulness" contains discourses focusing on the four foundations of mindfulness: clear comprehension and clear awareness of the body, felt experience, mind, and mental qualities. These teachings explore how to establish mindfulness as a means to develop right collectedness, insight and wisdom.',
 					},
 					sn48: {
 						title: "Indriyasaṁyutta - Linked Discourses on the Faculties",

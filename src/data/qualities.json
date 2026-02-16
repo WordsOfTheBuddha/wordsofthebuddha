@@ -109,7 +109,7 @@
 		"flexible",
 		"formless",
 		"free from attachment",
-		"full awareness",
+		"clear awareness",
 		"giving",
 		"giving up",
 		"good friendship",
@@ -351,7 +351,7 @@
 			"concentration",
 			"undistracted awareness",
 			"Context: A mental quality of composure where awareness is gathered, steady, rather than scattered or tense. In such collectedness, supported by mindfulness and right view, experience is clearly known and can be wisely contemplated.",
-			"Supported by:{contentment, full awareness, happiness, mindfulness}",
+			"Supported by:{contentment, clear awareness, happiness, mindfulness}",
 			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
 			"Opposite:{wrong collectedness}",
 			"[jhāna, samādhi, samāhita, susamāhita, sammāsamādhi]"
@@ -556,7 +556,7 @@
 			"clear seeing",
 			"penetrating internal vision",
 			"Context: Clear seeing that distinguishes what is wholesome from unwholesome, true from false.",
-			"Supported by:{examination, full awareness}",
+			"Supported by:{examination, clear awareness}",
 			"Leads to:{perceiving drawback, perceiving escape, wisdom}",
 			"[viveka, vipassanā, nipaka, niccheyya]"
 		],
@@ -806,11 +806,11 @@
 			"Opposite:{attachment}",
 			"[nirūpadhi, nānupādāya, asita, anuggaha]"
 		],
-		"full awareness": [
+		"clear awareness": [
 			"clear awareness",
 			"clear comprehension",
 			"being intentional, deliberate, purposeful",
-			"Context: Clear comprehension that accompanies mindfulness, knowing what one is doing and why. Full awareness keeps the mind steady, intentional, and free from distraction.",
+			"Context: Clear comprehension that accompanies mindfulness, knowing what one is doing and why. Clear awareness keeps the mind steady, intentional, and free from distraction.",
 			"Supported by:{mindfulness}",
 			"Leads to:{collectedness}",
 			"Opposite:{distraction}",
@@ -1167,7 +1167,7 @@
 			"awareness",
 			"Context: Remembering to be present with continuous effort, observing the body, feelings, mind, and mental qualities in and of themselves.",
 			"Supported by:{right view, right effort, wakefulness}",
-			"Leads to:{examination, full awareness}",
+			"Leads to:{examination, clear awareness}",
 			"Opposite:{muddle-mindedness, wrong mindfulness}",
 			"[sati, anupassanā]"
 		],

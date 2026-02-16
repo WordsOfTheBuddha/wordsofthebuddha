@@ -1,11 +1,11 @@
 ---
 title: Paṭhamaāhuneyya sutta - Worthy of Offerings (First)
 description: The Buddha explains the six qualities in relation to the six senses that makes a person worthy of offerings, hospitality, gifts, and reverence.
-qualities: equanimity, mindfulness, full awareness
+qualities: equanimity, mindfulness, clear awareness
 theme: inspiration, wisdom
 slug: an6.1
 commentary:
-    - The equanimity here is not a matter of indifference or apathy toward an unrelated object; rather, it is the quality of mental poise that arises through the purification of mindfulness and full awareness, leading to the relinquishment of craving and aversion toward sensory experiences.
+    - The equanimity here is not a matter of indifference or apathy toward an unrelated object; rather, it is the quality of mental poise that arises through the purification of mindfulness and clear awareness, leading to the relinquishment of craving and aversion toward sensory experiences.
     - These six qualities are describing the constant abiding of a fully awakened being, an Arahant.
 ---
 

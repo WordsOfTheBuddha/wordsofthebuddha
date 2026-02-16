@@ -1,7 +1,7 @@
 ---
 title: Supati sutta - Sleep
 description: The Buddha, after walking back and forth in the open air for much of the night, lies down in the lion's posture. Māra approaches him and taunts him for sleeping.
-qualities: wakefulness, mindfulness, full awareness, free from attachment, craving
+qualities: wakefulness, mindfulness, clear awareness, free from attachment, craving
 theme: inspiration, principle
 slug: sn4.7
 character: Māra the Evil One

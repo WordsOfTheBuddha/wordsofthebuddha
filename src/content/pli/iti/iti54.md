@@ -1,7 +1,7 @@
 ---
 title: Paṭhama esan sutta - Quest (First)
 description: The Buddha describes the three quests of sensual pleasure, renewed existence, and spiritual life.
-qualities: sensual desire, self-making, collectedness, full awareness, giving up, mindfulness, ending, quenching
+qualities: sensual desire, self-making, collectedness, clear awareness, giving up, mindfulness, ending, quenching
 theme: cultivating discernment, wisdom
 topic: quest
 fetter: doubt, sensual desire, desire for fine-material existence, desire for immaterial existence, ignorance
