@@ -98,3 +98,21 @@ a:hover {
 .tippy-tooltip::before {
 	border-color: 2px solid var(--secondary-color);
 }
+
+/* SVG diagrams: horizontal scroll on mobile */
+figure:has(svg) {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+figure:has(svg) svg {
+	min-width: 600px;
+}
+
+/* Draft badge + title alignment: float badge right, zero h2 margin so they share a row */
+.post-content > .post-badge {
+	margin-top: 0.35em;
+}
+.post-content > .post-badge ~ h2:first-of-type {
+	margin-top: 0 !important;
+}

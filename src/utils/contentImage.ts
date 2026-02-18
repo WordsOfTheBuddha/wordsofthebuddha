@@ -14,7 +14,7 @@
 
 // Import all images from content-images directory at build time
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-	"/src/assets/content-images/*.{webp,jpg,jpeg,png}",
+	"/src/assets/content-images/*.{webp,jpg,jpeg,png,svg}",
 	{ eager: true },
 );
 
@@ -107,7 +107,7 @@ export function findContentImage(
 ): ContentImageData | undefined {
 	// Normalize ID for file matching (lowercase, handle edge cases)
 	const normalizedId = id.toLowerCase();
-	const extensions = ["webp", "jpg", "jpeg", "png"];
+	const extensions = ["webp", "jpg", "jpeg", "png", "svg"];
 
 	// 1. Check for custom path in frontmatter
 	if (frontmatter?.image) {
@@ -157,7 +157,7 @@ export function hasContentImage(
 
 	// Check convention-based path
 	const normalizedId = id.toLowerCase();
-	const extensions = ["webp", "jpg", "jpeg", "png"];
+	const extensions = ["webp", "jpg", "jpeg", "png", "svg"];
 
 	for (const ext of extensions) {
 		const path = `/src/assets/content-images/${normalizedId}.${ext}`;

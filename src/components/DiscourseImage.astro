@@ -25,6 +25,7 @@ const { imageData } = Astro.props;
 const { image, caption, alt } = imageData;
 
 const modulePath = imageData.modulePath;
+const isSvg = modulePath.toLowerCase().endsWith(".svg");
 const devFileExists = (() => {
 	// In production this should never happen (build would fail earlier),
 	// but in dev files can be removed while the server is running.
@@ -74,19 +75,33 @@ const shouldShowZoom = true;
 		} catch (e) {}
 	</script>
 	<div class="relative rounded-lg overflow-hidden">
-		<Image
-			src={image}
-			alt={alt}
-			width={IMAGE_WIDTH}
-			class:list={[
-				"w-full h-auto rounded-lg",
-				isWithinFitBand
-					? "object-cover max-h-[440px]"
-					: "object-cover max-h-[320px]",
-			]}
-			loading="eager"
-			decoding="async"
-		/>
+		{isSvg ? (
+			<img
+				src={image.src}
+				alt={alt}
+				width={IMAGE_WIDTH}
+				class:list={[
+					"w-full h-auto rounded-lg object-cover",
+					isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
+				]}
+				loading="eager"
+				decoding="async"
+			/>
+		) : (
+			<Image
+				src={image}
+				alt={alt}
+				width={IMAGE_WIDTH}
+				class:list={[
+					"w-full h-auto rounded-lg",
+					isWithinFitBand
+						? "object-cover max-h-[440px]"
+						: "object-cover max-h-[320px]",
+				]}
+				loading="eager"
+				decoding="async"
+			/>
+		)}
 		{
 			shouldShowZoom && (
 				<button
