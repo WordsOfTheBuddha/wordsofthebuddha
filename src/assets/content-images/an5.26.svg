@@ -1,0 +1,425 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1100" width="920" height="1100">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="40%" stop-color="#111d38" />
+            <stop offset="100%" stop-color="#0e1830" />
+        </linearGradient>
+
+        <!-- Liberation radial glow -->
+        <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.5" />
+            <stop offset="35%" stop-color="#ffd700" stop-opacity="0.12" />
+            <stop offset="70%" stop-color="#daa520" stop-opacity="0.04" />
+            <stop offset="100%" stop-color="#ffd700" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Chain connection gradient (bottom to top) -->
+        <linearGradient id="chainUp" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#8a6830" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#daa520" stop-opacity="0.9" />
+        </linearGradient>
+
+        <!-- Cause connection lines -->
+        <linearGradient id="causeLine" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#4a6890" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="#8a9ab0" stop-opacity="0.7" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow3" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="14" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+
+        <!-- Arrowhead for convergence curves -->
+        <marker id="convArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+            markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7898b0" opacity="0.9" />
+        </marker>
+
+        <!-- Arrow marker (unused, kept for reference) -->
+
+        <!-- Stage node gradients (progressively brighter) -->
+        <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3d3020" />
+            <stop offset="100%" stop-color="#2a2018" />
+        </linearGradient>
+        <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#443822" />
+            <stop offset="100%" stop-color="#30281a" />
+        </linearGradient>
+        <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4a3e26" />
+            <stop offset="100%" stop-color="#38301e" />
+        </linearGradient>
+        <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#50442a" />
+            <stop offset="100%" stop-color="#403822" />
+        </linearGradient>
+        <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#584c2e" />
+            <stop offset="100%" stop-color="#484026" />
+        </linearGradient>
+
+        <!-- Cause box gradient -->
+        <linearGradient id="causeBox" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e3050" />
+            <stop offset="100%" stop-color="#162440" />
+        </linearGradient>
+
+        <!-- Convergence node gradient -->
+        <linearGradient id="convGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4a3828" />
+            <stop offset="100%" stop-color="#382a1c" />
+        </linearGradient>
+
+        <!-- Foundation gradient -->
+        <linearGradient id="foundGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1a2848" stop-opacity="0" />
+            <stop offset="15%" stop-color="#1a2848" />
+            <stop offset="85%" stop-color="#1a2848" />
+            <stop offset="100%" stop-color="#1a2848" stop-opacity="0" />
+        </linearGradient>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1100" fill="url(#bg)" />
+
+    <!-- Subtle decorative circles -->
+    <circle cx="460" cy="145" r="380" fill="none" stroke="#ffffff" stroke-opacity="0.015"
+        stroke-width="0.8" />
+    <circle cx="460" cy="145" r="320" fill="none" stroke="#ffffff" stroke-opacity="0.02"
+        stroke-width="0.6" />
+    <circle cx="460" cy="145" r="260" fill="none" stroke="#ffffff" stroke-opacity="0.025"
+        stroke-width="0.5" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#d8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">AN 5.26 — VIMUTTĀYATANA</text>
+    <text x="460" y="64" text-anchor="middle" fill="#a09070"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">The Five Causes for Liberation</text>
+
+    <!-- Thin decorative line under title -->
+    <line x1="310" y1="78" x2="610" y2="78" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+    <!-- ============ LIBERATION (APEX) ============ -->
+    <g>
+        <!-- Outer radiance -->
+        <ellipse cx="460" cy="148" rx="140" ry="100" fill="url(#libGlow)" />
+
+        <!-- Rays of light -->
+        <g opacity="0.25" filter="url(#glow2)">
+            <line x1="460" y1="148" x2="460" y2="85" stroke="#ffd700" stroke-width="1.2" />
+            <line x1="460" y1="148" x2="396" y2="96" stroke="#ffd700" stroke-width="1" />
+            <line x1="460" y1="148" x2="524" y2="96" stroke="#ffd700" stroke-width="1" />
+            <line x1="460" y1="148" x2="355" y2="118" stroke="#ffd700" stroke-width="0.8" />
+            <line x1="460" y1="148" x2="565" y2="118" stroke="#ffd700" stroke-width="0.8" />
+            <line x1="460" y1="148" x2="340" y2="148" stroke="#ffd700" stroke-width="0.7" />
+            <line x1="460" y1="148" x2="580" y2="148" stroke="#ffd700" stroke-width="0.7" />
+            <line x1="460" y1="148" x2="375" y2="108" stroke="#ffd700" stroke-width="0.6" />
+            <line x1="460" y1="148" x2="545" y2="108" stroke="#ffd700" stroke-width="0.6" />
+        </g>
+
+        <!-- Outer ring -->
+        <circle cx="460" cy="148" r="50" fill="none" stroke="#ffd700" stroke-width="1.5"
+            stroke-opacity="0.35" filter="url(#glow2)" />
+        <!-- Inner circle -->
+        <circle cx="460" cy="148" r="38" fill="#ffd700" fill-opacity="0.08" stroke="#ffd700"
+            stroke-width="2" stroke-opacity="0.7" filter="url(#glow1)" />
+
+        <!-- Text -->
+        <text x="460" y="143" text-anchor="middle" fill="#ffd700"
+            font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold"
+            letter-spacing="2" filter="url(#glow1)">LIBERATION</text>
+        <text x="460" y="162" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vimutti</text>
+    </g>
+
+    <!-- ============ ASCENDING CHAIN ============ -->
+    <!-- Vertical connecting line (behind nodes) -->
+    <line x1="460" y1="198" x2="460" y2="680" stroke="url(#chainUp)" stroke-width="2"
+        stroke-dasharray="none" opacity="0.4" />
+
+    <!-- Arrow between Liberation and Collectedness -->
+    <path d="M 449 224 L 460 210 L 471 224" stroke="#c8a050" stroke-width="1.5" fill="none"
+        stroke-linejoin="round" opacity="0.7" />
+
+    <!-- ── COLLECTEDNESS (samādhi) ── y=270 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="340" y="250" width="240" height="48" rx="10" fill="url(#stg5)" stroke="#c8a050"
+            stroke-width="1.2" stroke-opacity="0.6" />
+    </g>
+    <text x="460" y="271" text-anchor="middle" fill="#e8c860"
+        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">
+        Collectedness</text>
+    <text x="460" y="289" text-anchor="middle" fill="#a89048"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">samādhi</text>
+
+    <!-- Arrow -->
+    <path d="M 449 324 L 460 310 L 471 324" stroke="#c8a050" stroke-width="1.4" fill="none"
+        stroke-linejoin="round" opacity="0.6" />
+
+    <!-- ── CONTENTMENT (sukha) ── y=350 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="340" y="338" width="240" height="48" rx="10" fill="url(#stg4)" stroke="#c09840"
+            stroke-width="1" stroke-opacity="0.5" />
+    </g>
+    <text x="460" y="359" text-anchor="middle" fill="#d8b858"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Contentment</text>
+    <text x="460" y="377" text-anchor="middle" fill="#a08840"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">sukha</text>
+
+    <!-- Arrow -->
+    <path d="M 449 412 L 460 398 L 471 412" stroke="#c8a050" stroke-width="1.4" fill="none"
+        stroke-linejoin="round" opacity="0.55" />
+
+    <!-- ── TRANQUILITY (passaddhi) ── y=430 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="340" y="425" width="240" height="48" rx="10" fill="url(#stg3)" stroke="#b89040"
+            stroke-width="1" stroke-opacity="0.45" />
+    </g>
+    <text x="460" y="446" text-anchor="middle" fill="#c8a850"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Tranquility</text>
+    <text x="460" y="464" text-anchor="middle" fill="#988038"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">passaddhi</text>
+
+    <!-- Arrow -->
+    <path d="M 449 499 L 460 485 L 471 499" stroke="#c8a050" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.5" />
+
+    <!-- ── UPLIFTING JOY (pīti) ── y=520 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="340" y="513" width="240" height="48" rx="10" fill="url(#stg2)" stroke="#a88838"
+            stroke-width="1" stroke-opacity="0.4" />
+    </g>
+    <text x="460" y="534" text-anchor="middle" fill="#b89848"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Uplifting
+        Joy</text>
+    <text x="460" y="552" text-anchor="middle" fill="#908030"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">pīti</text>
+
+    <!-- Arrow -->
+    <path d="M 449 587 L 460 573 L 471 587" stroke="#c8a050" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.45" />
+
+    <!-- ── JOY (pāmojja) ── y=610 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="340" y="600" width="240" height="48" rx="10" fill="url(#stg1)" stroke="#987830"
+            stroke-width="1" stroke-opacity="0.35" />
+    </g>
+    <text x="460" y="621" text-anchor="middle" fill="#a88840"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Joy</text>
+    <text x="460" y="639" text-anchor="middle" fill="#887030"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">pāmojja</text>
+
+    <!-- Arrow -->
+    <path d="M 449 678 L 460 664 L 471 678" stroke="#c8a050" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.4" />
+
+    <!-- ============ CONVERGENCE NODE ============ -->
+    <!-- "Experiences Meaning & the Dhamma" -->
+    <g filter="url(#shadowDrop)">
+        <rect x="325" y="695" width="270" height="58" rx="12" fill="url(#convGrad)" stroke="#a88838"
+            stroke-width="1.3" stroke-opacity="0.5" />
+    </g>
+    <text x="460" y="718" text-anchor="middle" fill="#d0a848"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Experiences
+        the Meaning</text>
+    <text x="460" y="738" text-anchor="middle" fill="#b89040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">&amp; the
+        Dhamma</text>
+
+    <!-- ============ CURVED PATHS FROM FIVE CAUSES ============ -->
+    <!-- The five causes converge into the "Experiences Meaning" node -->
+    <g opacity="0.55">
+        <!-- Cause 1 (far left) → convergence -->
+        <path d="M 102 840 C 102 790, 380 790, 380 770 L 380 755" stroke="#5a80a8"
+            stroke-width="1.5"
+            fill="none" stroke-dasharray="4,3" marker-end="url(#convArrow)" />
+        <!-- Cause 2 (left) → convergence -->
+        <path d="M 270 840 C 270 800, 420 800, 420 770 L 420 755" stroke="#5a80a8"
+            stroke-width="1.5"
+            fill="none" stroke-dasharray="4,3" marker-end="url(#convArrow)" />
+        <!-- Cause 3 (center) → convergence -->
+        <path d="M 460 840 L 460 755" stroke="#5a80a8" stroke-width="1.5" fill="none"
+            stroke-dasharray="4,3" marker-end="url(#convArrow)" />
+        <!-- Cause 4 (right) → convergence -->
+        <path d="M 650 840 C 650 800, 500 800, 500 770 L 500 755" stroke="#5a80a8"
+            stroke-width="1.5"
+            fill="none" stroke-dasharray="4,3" marker-end="url(#convArrow)" />
+        <!-- Cause 5 (far right) → convergence -->
+        <path d="M 818 840 C 818 790, 540 790, 540 770 L 540 755" stroke="#5a80a8"
+            stroke-width="1.5"
+            fill="none" stroke-dasharray="4,3" marker-end="url(#convArrow)" />
+    </g>
+
+    <!-- ============ FIVE CAUSES ============ -->
+    <!-- Cause 1: Hearing the Dhamma from a Teacher -->
+    <g filter="url(#shadowDrop)">
+        <rect x="32" y="850" width="140" height="100" rx="10" fill="url(#causeBox)" stroke="#4a6888"
+            stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <circle cx="52" cy="882" r="10" fill="none" stroke="#6a90b8" stroke-width="1.2" opacity="0.6" />
+    <text x="52" y="886" text-anchor="middle" fill="#6a90b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">1</text>
+    <text x="102" y="884" text-anchor="middle" fill="#b0c8e0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Hearing</text>
+    <text x="102" y="904" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">the Dhamma</text>
+    <text x="102" y="920" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">from a Teacher</text>
+    <text x="102" y="940" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">dhammaṁ
+        suṇāti</text>
+
+    <!-- Cause 2: Teaching the Dhamma to Others -->
+    <g filter="url(#shadowDrop)">
+        <rect x="200" y="850" width="140" height="100" rx="10" fill="url(#causeBox)"
+            stroke="#4a6888" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <circle cx="220" cy="882" r="10" fill="none" stroke="#6a90b8" stroke-width="1.2" opacity="0.6" />
+    <text x="220" y="886" text-anchor="middle" fill="#6a90b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">2</text>
+    <text x="270" y="884" text-anchor="middle" fill="#b0c8e0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Teaching</text>
+    <text x="270" y="904" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">the Dhamma</text>
+    <text x="270" y="920" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">to Others</text>
+    <text x="270" y="940" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">dhammaṁ
+        deseti</text>
+
+    <!-- Cause 3: Reciting the Dhamma -->
+    <g filter="url(#shadowDrop)">
+        <rect x="390" y="850" width="140" height="100" rx="10" fill="url(#causeBox)"
+            stroke="#4a6888" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <circle cx="410" cy="882" r="10" fill="none" stroke="#6a90b8" stroke-width="1.2" opacity="0.6" />
+    <text x="410" y="885" text-anchor="middle" fill="#6a90b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">3</text>
+    <text x="460" y="884" text-anchor="middle" fill="#b0c8e0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Reciting</text>
+    <text x="460" y="904" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">the Dhamma</text>
+    <text x="460" y="924" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sajjhāyaṁ
+        karoti</text>
+
+    <!-- Cause 4: Reflecting on the Dhamma -->
+    <g filter="url(#shadowDrop)">
+        <rect x="580" y="850" width="140" height="100" rx="10" fill="url(#causeBox)"
+            stroke="#4a6888" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <circle cx="600" cy="882" r="10" fill="none" stroke="#6a90b8" stroke-width="1.2" opacity="0.6" />
+    <text x="600" y="885" text-anchor="middle" fill="#6a90b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">4</text>
+    <text x="650" y="884" text-anchor="middle" fill="#b0c8e0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Reflecting</text>
+    <text x="650" y="904" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">on the Dhamma</text>
+    <text x="650" y="924" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">anuvitakketi</text>
+
+    <!-- Cause 5: Attending to a Theme of Stillness -->
+    <g filter="url(#shadowDrop)">
+        <rect x="748" y="850" width="140" height="100" rx="10" fill="url(#causeBox)"
+            stroke="#4a6888" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <circle cx="768" cy="882" r="10" fill="none" stroke="#6a90b8" stroke-width="1.2" opacity="0.6" />
+    <text x="768" y="885" text-anchor="middle" fill="#6a90b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">5</text>
+    <text x="818" y="884" text-anchor="middle" fill="#b0c8e0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Attending
+    </text>
+    <text x="818" y="904" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">to a Theme of</text>
+    <text x="818" y="920" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Stillness</text>
+    <text x="818" y="940" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">
+        samādhinimitta</text>
+
+    <!-- ============ FOUNDATION BAR ============ -->
+    <rect x="100" y="1000" width="720" height="44" rx="8" fill="url(#foundGrad)" stroke="#3a5070"
+        stroke-width="0.8" stroke-opacity="0.5" />
+    <!-- Three prerequisites -->
+    <text x="460" y="1019" text-anchor="middle" fill="#7890a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="2"
+        text-transform="uppercase">PREREQUISITES</text>
+    <text x="460" y="1037" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" letter-spacing="1">
+        Diligent · Resolute · With Continuous Effort
+    </text>
+    <!-- Pali terms underneath -->
+    <text x="460" y="1056" text-anchor="middle" fill="#506878"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        letter-spacing="1">appamatta · pahitatta · ātāpī</text>
+
+    <!-- ============ DECORATIVE SIDE ANNOTATIONS ============ -->
+    <!-- Left side: subtle label for the progressive chain -->
+    <text x="310" y="475" text-anchor="end" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        transform="rotate(-90, 310, 475)">progressive liberation</text>
+
+    <!-- Right side: arrow annotation -->
+    <text x="610" y="575" text-anchor="start" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        transform="rotate(-90, 610, 575)">causes and conditions</text>
+
+    <!-- ============ SIDE GLOW ACCENTS ============ -->
+    <!-- Subtle warm glow dots along the chain -->
+    <circle cx="335" cy="274" r="3" fill="#e8c860" opacity="0.2" filter="url(#glow1)" />
+    <circle cx="335" cy="362" r="3" fill="#d8b050" opacity="0.18" filter="url(#glow1)" />
+    <circle cx="335" cy="449" r="3" fill="#c8a048" opacity="0.15" filter="url(#glow1)" />
+    <circle cx="335" cy="537" r="3" fill="#b89040" opacity="0.12" filter="url(#glow1)" />
+    <circle cx="335" cy="624" r="3" fill="#a88038" opacity="0.1" filter="url(#glow1)" />
+
+    <circle cx="585" cy="274" r="3" fill="#e8c860" opacity="0.2" filter="url(#glow1)" />
+    <circle cx="585" cy="362" r="3" fill="#d8b050" opacity="0.18" filter="url(#glow1)" />
+    <circle cx="585" cy="449" r="3" fill="#c8a048" opacity="0.15" filter="url(#glow1)" />
+    <circle cx="585" cy="537" r="3" fill="#b89040" opacity="0.12" filter="url(#glow1)" />
+    <circle cx="585" cy="624" r="3" fill="#a88038" opacity="0.1" filter="url(#glow1)" />
+
+    <!-- ============ BOTTOM DECORATIVE LINE ============ -->
+    <line x1="260" y1="1072" x2="660" y2="1072" stroke="#304058" stroke-opacity="0.3"
+        stroke-width="0.5" />
+
+    <!-- ============ TINY LOTUS MOTIF AT BOTTOM ============ -->
+    <g transform="translate(460, 1085)" opacity="0.2">
+        <!-- Simple stylized lotus -->
+        <ellipse cx="0" cy="-3" rx="6" ry="8" fill="none" stroke="#8a9ab0" stroke-width="0.7" />
+        <ellipse cx="-7" cy="0" rx="5" ry="7" fill="none" stroke="#8a9ab0" stroke-width="0.6"
+            transform="rotate(-25)" />
+        <ellipse cx="7" cy="0" rx="5" ry="7" fill="none" stroke="#8a9ab0" stroke-width="0.6"
+            transform="rotate(25)" />
+        <ellipse cx="-12" cy="3" rx="4" ry="6" fill="none" stroke="#8a9ab0" stroke-width="0.5"
+            transform="rotate(-45)" />
+        <ellipse cx="12" cy="3" rx="4" ry="6" fill="none" stroke="#8a9ab0" stroke-width="0.5"
+            transform="rotate(45)" />
+    </g>
+</svg>

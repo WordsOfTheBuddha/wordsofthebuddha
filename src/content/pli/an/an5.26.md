@@ -4,7 +4,7 @@ description: The Buddha explains the five causes for liberation, which include h
 qualities: learned, joy, uplifting joy, tranquility, happiness, collectedness, liberation, examination
 theme: cultivating discernment, wisdom, inquisitiveness
 slug: an5.26
-priority: 1.2
+priority: 1.4
 ---
 
 “Pañcimāni, bhikkhave, vimuttāyatanāni yattha bhikkhuno appamattassa ātāpino pahitattassa viharato avimuttaṁ vā cittaṁ vimuccati, aparikkhīṇā vā āsavā parikkhayaṁ gacchanti, ananuppattaṁ vā anuttaraṁ yogakkhemaṁ anupāpuṇāti. Katamāni pañca?
