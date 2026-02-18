@@ -51,6 +51,7 @@ const {
 	showSearch = true,
 	showPali = false,
 	showFilter = false,
+	hideNavbar = false,
 	seoTitle = null, // Add new prop for SEO title
 	paragraphRequest = null,
 	commentary,
@@ -72,6 +73,7 @@ const {
 	showSearch?: boolean;
 	showPali?: boolean;
 	showFilter?: boolean;
+	hideNavbar?: boolean;
 	seoTitle?: string | null;
 	paragraphRequest?: any;
 	commentary?: string | string[];
@@ -231,7 +233,14 @@ if (!SEOTitle) {
 					title={title}
 					description={description}
 				>
-					<Navbar showAuth={showAuth} showSearch={showSearch} />
+					{
+						!hideNavbar && (
+							<Navbar
+								showAuth={showAuth}
+								showSearch={showSearch}
+							/>
+						)
+					}
 					<Breadcrumbs path={fp || Astro.url.pathname} />
 					{(<Description description={description} />)}
 					{

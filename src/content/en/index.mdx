@@ -1,7 +1,7 @@
 ---
 title: Words of the Buddha
-description: The Words of the Buddha project is dedicated to restoring the Buddha's teachings through accessible translations and by offering tools to support learning and reflection.
-tags: introduction,buddha,words,wisdom,translation,roadmap,project
+description: Explore the earliest recorded teachings of the Buddha with parallel Pāli-English texts, contextual tooltips, and personal study tools.
+tags: introduction,buddha,words,wisdom,translation,project
 fetter: ignorance
 slug: index
 ---
@@ -9,117 +9,239 @@ slug: index
 import ProjectStatus from '../../components/ProjectStatus.astro'
 import LatestDiscourses from '../../components/LatestDiscourses.astro'
 import TopAnthologies from '../../components/TopAnthologies.astro'
+import { routes } from '../../utils/routes';
 
-<article class="prose prose-lg mt-12 mb-12">
-<div class="mb-8">
-🌐 **Web Reader** — Learn the Buddha's teachings in their earliest recorded form, with parallel Pāli and English texts.
+{/* ── Hero ── */}
+<section class="flex flex-col items-center text-center pt-16 pb-12 px-4">
+  <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-4 text-gradient-accent" style="font-family:'Spectral', serif;">
+    Words of the Buddha
+  </h1>
+  <p class="text-lg sm:text-xl max-w-2xl mb-8" style="color:var(--text-muted);">
+    Explore the Buddha's original teachings in his own words. Access over {routes.length.toLocaleString()} texts with parallel Pāli-English translations and built-in study tools.
+  </p>
+  <div class="flex flex-wrap gap-3 justify-center">
+    <a href="/discover" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-medium shadow-sm transition-transform hover:scale-[1.02]" style="background-color:var(--primary-color);">
+      Start Exploring
+    </a>
+    <a href="/random" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border transition-colors" style="border-color:var(--surface-border); color:var(--text-color);">
+      Random Reading
+    </a>
+  </div>
+</section>
+
+{/* ── Daily Quote ── */}
+<section class="max-w-2xl mx-auto px-4 mb-14">
+  <div class="rounded-2xl border p-6 sm:p-8 text-center" style="border-color:var(--surface-border); background:var(--surface-elevated);">
+    <p class="text-sm font-medium uppercase tracking-widest mb-4" style="color:var(--text-muted);">Reflection of the Day</p>
+    <blockquote class="text-lg sm:text-xl leading-relaxed italic" style="quotes:none; border:none; margin:0; padding:0;">
+      <span id="daily-quote">"This mind is radiant, and it is freed from incoming defilements."</span>
+    </blockquote>
+    <p class="mt-3 text-sm" style="color:var(--text-muted);">— <span id="daily-quote-source">AN 1.50</span></p>
+  </div>
+  <script is:inline>{`
+    (function() {
+      var quotes = [
+        { text: "This mind is radiant, and it is freed from incoming defilements.", src: "AN 1.50", href: "/an1.50" },
+        { text: "A developed mind leads to great benefit.", src: "AN 1.24", href: "/an1.24" },
+        { text: "A tamed mind leads to great benefit.", src: "AN 1.32", href: "/an1.32" },
+        { text: "A guarded mind leads to great benefit.", src: "AN 1.34", href: "/an1.34" },
+        { text: "A restrained mind leads to great benefit.", src: "AN 1.38", href: "/an1.38" },
+        { text: "If one develops a mind of loving-kindness even for the time of a finger snap, one is not devoid of jhāna.", src: "AN 1.53", href: "/an1.53" },
+        { text: "Whatever qualities are wholesome, associated with the wholesome, all are preceded by the mind; the mind arises first, then wholesome qualities follow.", src: "AN 1.57", href: "/an1.57" },
+        { text: "I do not see any other single quality that prevents unarisen ill will from arising, or causes arisen ill will to be abandoned, as the release of mind through loving-kindness.", src: "AN 1.17", href: "/an1.17" },
+        { text: "I do not see any other single quality that prevents unarisen doubt from arising, or causes arisen doubt to be abandoned, as wise attention.", src: "AN 1.20", href: "/an1.20" },
+        { text: "Suppose there is a lake that is clear, calm, and ripple-free. A person with good eyesight standing on the shore would see what is beneath. In the same way, with a clear mind one understands their own welfare, the welfare of others, or both.", src: "AN 1.46", href: "/an1.46" }
+      ];
+      var d = new Date();
+      var idx = (d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % quotes.length;
+      var q = quotes[idx];
+      var el = document.getElementById('daily-quote');
+      if (el) el.textContent = '\u201C' + q.text + '\u201D';
+      var sr = document.getElementById('daily-quote-source');
+      if (sr) sr.innerHTML = '<a href="' + q.href + '">' + q.src + '</a>';
+    })();
+  `}</script>
+</section>
+
+{/* ── Ways to Study ── */}
+<section class="max-w-4xl mx-auto px-4 mb-14">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <div class="rounded-2xl border p-6 text-center" style="border-color:var(--surface-border); background:var(--surface-elevated);">
+      <div class="text-3xl mb-3">📖</div>
+      <h3 class="text-base font-semibold mb-1">Parallel Texts</h3>
+      <p class="text-sm" style="color:var(--text-muted);">Read Pāli and English side-by-side or interleaved, with line-by-line fidelity to the source.</p>
+    </div>
+    <div class="rounded-2xl border p-6 text-center" style="border-color:var(--surface-border); background:var(--surface-elevated);">
+      <div class="text-3xl mb-3">💬</div>
+      <h3 class="text-base font-semibold mb-1">Contextual Tooltips</h3>
+      <p class="text-sm" style="color:var(--text-muted);">Click any Pāli word or translated term for on-the-spot explanations that deepen understanding.</p>
+    </div>
+    <div class="rounded-2xl border p-6 text-center" style="border-color:var(--surface-border); background:var(--surface-elevated);">
+      <div class="text-3xl mb-3">🔖</div>
+      <h3 class="text-base font-semibold mb-1">Bookmarks & Highlights</h3>
+      <p class="text-sm" style="color:var(--text-muted);">Save discourses and highlight key passages to build your personal collection of insights.</p>
+    </div>
+  </div>
+</section>
+
+{/* ── Why Study ── */}
+<div class="max-w-4xl mx-auto px-4 mb-14 text-center">
+  <button id="testimonials-trigger" class="text-sm font-medium cursor-pointer bg-transparent border-none transition-colors" style="color:var(--link-color);">
+    Why study the words of the Buddha &rarr;
+  </button>
 </div>
-<div class="mb-8">
-💬 **Contextual Tooltips** — Build a deeper understanding with on-click explanations of Pāli text and key translated terms. Try them on this excerpt from [AN 3.66 - Sāḷha sutta](/an3.66):
+<script is:inline>{`
+(function() {
+  var trigger = document.getElementById("testimonials-trigger");
+  if (!trigger) return;
 
-<p class="ml-4 pl-2 pali-paragraph opacity-80 mb-1 border-l-4 border-gray-500" style="font-family:'Gentium Plus', serif;"><span class="pali-word" data-word="taṁ" data-original="Taṁ">Taṁ</span> <span style="padding-left:4px;"></span><span class="pali-word" data-word="kiṁ" data-original="kiṁ">kiṁ</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="maññatha" data-original="maññatha,">maññatha,</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="sāḷhā" data-original="sāḷhā,">sāḷhā,</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="ime" data-original="ime">ime</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="dhammā" data-original="dhammā">dhammā</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="kusalā" data-original="kusalā">kusalā</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="vā" data-original="vā">vā</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="akusalā" data-original="akusalā">akusalā</span><span style="padding-left:4px;"></span><span class="pali-word" data-word="vāti" data-original="vāti.">vāti.</span></p>
+  var quotes = [
+    { text: "\u201CMore than two thousand five hundred years have passed since our kind teacher, Buddha \u015a\u0101kyamuni, taught in India. He offered advice to all who wished to heed it, inviting them to listen, reflect, and critically examine what he had to say.\u201D<br><br>\u201CThe P\u0101li Canon is one of the earliest of these written records and the only complete early version that has survived intact. Within the P\u0101li Canon, the texts known as the Nik\u0101yas have the special value of being a single cohesive collection of the Buddha\x27s teachings in his own words.\u201D", author: "Venerable Tenzin Gyatso, the Fourteenth Dalai Lama" },
+    { text: "\u201CThe suttas, along with their counterparts, constitute the most ancient records of the Buddha\x27s teachings available to us; they are the closest we can come to what the historical Buddha Gotama himself actually taught. The teachings found in them have served as the fountainhead, the primal source, for all the evolving streams of Buddhist doctrine and practice through the centuries. For this reason, they constitute the common heritage of the entire Buddhist tradition, and Buddhists of all schools who wish to understand the taproot of Buddhism should make a close and careful study of them a priority.\u201D", author: "Bhikkhu Bodhi, <em>In the Buddha\x27s Words</em>" },
+    { text: "\u201CIt was, and is, my attitude towards the Suttas that, if I find anything in them that is against my own view, they are right, and I am wrong.\u201D", author: "Venerable \u00d1\u0101\u1e47av\u012bra Thera" },
+    { text: "\u201CAT PRESENT, ALL THAT IS LEFT of Buddhism are the words of the Buddha.\u201D", author: "Venerable \u0100cariya Mah\u0101 Boowa" },
+    { text: '\u201CTherefore, \u0100nanda, dwell with yourselves as your own island, with yourselves as your own refuge, with no other refuge; dwell with the Dhamma as your island, with the Dhamma as your refuge, with no other refuge.\u201D', author: 'The Buddha to \u0100nanda, <a href="/sn47.13" style="color:var(--link-color)">SN 47.13</a>' }
+  ];
 
-<p class="ml-4 pl-2 mt-0">What do you |think::presume, suppose, imagine, conceive [maññati]|, Sāḷha, are these |mental qualities::characteristics, traits, and tendencies of the mind, shaped by repeated actions and sustained attention, guided by particular ways of understanding; they may be wholesome or unwholesome, bright or dark [dhammā]| |wholesome::healthy, beneficial, useful [kusalesu]| or |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]|?</p>
-</div>
-<div class="mb-8">
-🫂 Embrace your **independent learning journey** — Bookmark discourses and <span class="highlight-yellow text-[marktext]">highlight key passages</span> to gradually build <span class="highlight-green text-[marktext]"> your personal collection of insights.</span>
-</div>
-</article>
+  function openTestimonials() {
+    var overlay = document.createElement("div");
+    overlay.style.cssText = "position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.5);";
 
-### Status
+    var panel = document.createElement("div");
+    panel.style.cssText = "background:var(--surface-paper);border:1px solid var(--surface-border);color:var(--text-color);border-radius:1rem;width:calc(100vw - 2rem);max-width:48rem;max-height:calc(100vh - 4rem);display:flex;flex-direction:column;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);";
 
-These volumes of the Pāli Canon are currently being actively translated and unified with contextual tooltips, one discourse at a time. Completed translations available for reading and study:
+    var header = document.createElement("div");
+    header.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.25rem 0.75rem;border-bottom:1px solid var(--surface-border);";
+    header.innerHTML = '<h2 style="font-size:1.125rem;font-weight:600;margin:0;">Why study the words of the Buddha</h2><button style="background:none;border:none;cursor:pointer;padding:0.25rem;color:var(--text-muted);" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>';
 
-<ProjectStatus />
+    var content = document.createElement("div");
+    content.style.cssText = "padding:1.25rem;overflow-y:auto;flex:1;";
+    var html = "";
+    for (var i = 0; i < quotes.length; i++) {
+      var q = quotes[i];
+      var mb = i < quotes.length - 1 ? "margin-bottom:1.5rem;" : "";
+      html += '<blockquote style="padding-left:1rem;border-left:4px solid var(--surface-border);font-style:italic;font-size:0.875rem;line-height:1.625;' + mb + '"><p style="margin:0 0 0.5rem;">' + q.text + '</p><footer style="margin-top:0.5rem;font-size:0.875rem;font-style:normal;color:var(--text-muted);">\u2014 ' + q.author + '</footer></blockquote>';
+    }
+    content.innerHTML = html;
 
+    panel.appendChild(header);
+    panel.appendChild(content);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = "hidden";
 
-### Latest Discourses
+    function close() {
+      overlay.removeEventListener("wheel", preventBgScroll);
+      overlay.removeEventListener("touchmove", preventBgScroll);
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+      overlay.remove();
+    }
 
-<LatestDiscourses />
+    function preventBgScroll(e) {
+      if (!content.contains(e.target)) { e.preventDefault(); return; }
+      var isScrollable = content.scrollHeight > content.clientHeight;
+      if (!isScrollable) { e.preventDefault(); return; }
+      if (e instanceof WheelEvent) {
+        var atTop = content.scrollTop <= 0;
+        var atBot = content.scrollTop + content.clientHeight >= content.scrollHeight;
+        if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBot)) { e.preventDefault(); }
+      }
+    }
 
+    function onKey(e) { if (e.key === "Escape") close(); }
 
-### Anthologies
+    header.querySelector("button").addEventListener("click", close);
+    overlay.addEventListener("click", function(e) { if (e.target === overlay) close(); });
+    overlay.addEventListener("wheel", preventBgScroll, { passive: false });
+    overlay.addEventListener("touchmove", preventBgScroll, { passive: false });
+    document.addEventListener("keydown", onKey);
+  }
 
-<TopAnthologies />
+  trigger.addEventListener("click", openTestimonials);
+})();
+`}</script>
 
+{/* ── Discourses by Text Collections ── */}
+<section class="max-w-4xl mx-auto px-4 mb-14">
+  <h2 class="text-2xl font-semibold mb-2">Discourses by Text Collections</h2>
+  <p class="mb-4 text-sm" style="color:var(--text-muted);">Over 2,100 discourses are available and growing, across the following collections of the Pāli Canon:</p>
+  <ProjectStatus />
+</section>
 
-### Studying With The Words of The Buddha
+{/* ── Featured Essay ── */}
+<section class="max-w-4xl mx-auto px-4 mb-14">
+  <a href="/toe" class="group rounded-2xl border overflow-hidden flex flex-col sm:flex-row transition-shadow hover:shadow-md no-underline" style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);">
+    <div class="sm:w-2/5 flex-shrink-0 !p-0 !m-0">
+      <img src="/assets/content-images/toe.webp" alt="The Magdalen with the Smoking Flame" class="w-full h-48 sm:h-full object-cover !m-0 !p-0" loading="lazy" />
+    </div>
+    <div class="flex-1 p-5 sm:p-6 flex flex-col justify-center">
+      <div class="flex items-center gap-2 flex-wrap mb-2">
+        <span class="px-2 py-0.5 text-xs rounded-full font-medium" style="background:var(--surface-paper); color:var(--text-muted); border:1px solid var(--surface-border);">Featured Essay</span>
+      </div>
+      <h3 class="text-lg font-semibold mb-1 group-hover:text-[var(--link-color)] transition-colors !mt-0">A Theory of Experience</h3>
+      <p class="text-sm italic mb-2" style="color:var(--text-muted);">Extending the Buddha's Fire Simile with What We Now Know About Fire</p>
+      <p class="text-sm mb-0 line-clamp-3" style="color:var(--text-muted);">The word Nibbāna itself derives from the extinguishing of a flame. The entire framework of liberation is cast in the language of fire and its cessation.</p>
+      <span class="mt-3 text-sm font-medium inline-flex items-center gap-1 group-hover:text-[var(--link-color)] transition-colors" style="color:var(--text-muted);">
+        Read essay
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
+      </span>
+    </div>
+  </a>
+</section>
 
-> “More than two thousand five hundred years have passed since our kind teacher, Buddha Śākyamuni, taught in India. He offered advice to all who wished to heed it, inviting them to listen, reflect, and critically examine what he had to say. He addressed different individuals and groups of people over a period of more than forty years.
+{/* ── Latest Discourses ── */}
+<section class="max-w-4xl mx-auto px-4 mb-14">
+  <div class="flex items-baseline justify-between mb-2">
+    <h2 class="text-2xl font-semibold">Latest Discourses</h2>
+    <a href="/discover" class="text-sm font-medium" style="color:var(--link-color);">View all &rarr;</a>
+  </div>
+  <LatestDiscourses />
+</section>
 
-> After the Buddha's passing, a record of what he said was maintained as an oral tradition. Those who heard the teachings would periodically meet with others for communal recitations of what they had heard and memorized. In due course, these recitations from memory were written down, laying the basis for all subsequent Buddhist literature. The Pāli Canon is one of the earliest of these written records and the only complete early version that has survived intact. Within the Pāli Canon, the texts known as the Nikāyas have the special value of being a single cohesive collection of the Buddha's teachings in his own words. These teachings cover a wide range of topics; they deal not only with renunciation and liberation, but also with the proper relations between husbands and wives, the management of the household, and the way countries should be governed. They explain the path of spiritual development—from generosity and ethics, through mind training and the realization of wisdom, all the way up to the attainment of liberation.”
+{/* ── Anthologies ── */}
+<section class="max-w-4xl mx-auto px-4 mb-14">
+  <div class="flex items-baseline justify-between mb-2">
+    <h2 class="text-2xl font-semibold">Anthologies</h2>
+    <a href="/anthologies" class="text-sm font-medium" style="color:var(--link-color);">View all &rarr;</a>
+  </div>
+  <TopAnthologies />
+</section>
 
-— Venerable Tenzin Gyatso, the Fourteenth Dalai Lama's forward to In the Buddha's Words
-
-> “The Buddha's discourses preserved in the Pāli Canon are called suttas, the Pāli equivalent of the Sanskrit word sūtras. Although the Pāli Canon belongs to a particular Buddhist school—the Theravāda, or School of the Elders—the suttas are by no means exclusively Theravāda Buddhist texts. They stem from the earliest period of Buddhist literary history, a period lasting roughly a hundred years after the Buddha's death, before the original Buddhist community divided into different schools. The Pāli suttas have counterparts from other early Buddhist schools now extinct, texts sometimes strikingly similar to the Pāli version, differing mainly in settings and arrangements but not in points of doctrine. The suttas, along with their counterparts, thus constitute the most ancient records of the Buddha's teachings available to us; they are the closest we can come to what the historical Buddha Gotama himself actually taught. The teachings found in them have served as the fountainhead, the primal source, for all the evolving streams of Buddhist doctrine and practice through the centuries. For this reason, they constitute the common heritage of the entire Buddhist tradition, and Buddhists of all schools who wish to understand the taproot of Buddhism should make a close and careful study of them a priority.”
-
-— Bhikkhu Bodhi in In the Buddha's Words
-
-> “It was, and is, my attitude towards the Suttas that, if I find anything in them that is against my own view, they are right, and I am wrong.”
-
-— Venerable Ñāṇavīra Thera
-
-> “AT PRESENT, ALL THAT IS LEFT of Buddhism are the words of the Buddha.”
-
-— Venerable Ācariya Mahā Boowa in Arahattamagga ArahattaPhala
-
-
-> “Therefore, Ānanda, dwell with yourselves as your own island, with yourselves as your own refuge, with no other refuge; dwell with the Dhamma as your island, with the Dhamma as your refuge, with no other refuge.
-
-> Whoever, Ānanda, now or after my passing, dwells as an island unto themselves, with themselves as their own refuge, not dependent on another as a refuge; with the Dhamma as their island, with the Dhamma as their refuge, not dependent on another as a refuge; they, Ānanda, will be the foremost of those who are keen on the training.”
-
-— The **Buddha's advise** to Ānanda in [Cundasutta SN 47.13](/sn47.13)
-
-
-### About
-
-The Words of the Buddha project is dedicated to restoring the Buddha's teachings by unifying existing translations of the Pāli Canon into a clear, consistent, and accessible resource.
-
-<div className="image-container">
-  <img alt="Siddharth Kothari profile picture" src="https://avatars.githubusercontent.com/u/630042?v=4" className="about-image" />
-</div>
-
-The project is founded by Siddharth Kothari, a practitioner of the Buddha's teachings since 2022. Siddharth is also the creator of the Reddit community [r/WordsOftheBuddha](https://reddit.com/r/WordsOfTheBuddha/) and [Buddha GPT - Buddhism Dhamma Companion for ChatGPT](https://chatgpt.com/g/g-pBierD1G2-buddha-gpt-buddhism-dhamma-companion). He has a major in Computer Science and previously founded ReactiveSearch, a search developer tools business.
-
-> I have been reviewing and translating 1-2 suttas daily since March, 2024.
-
-The Words Of The Buddha project then got its start on July 1, 2024 from an inspiration when Siddharth was on a retreat at the Papae meditation centre near Chiang Mai, Northern Thailand.
-
-
-#### Roadmap
-
-##### Unification Goals
-
-- [x] Faithful reproduction from the source texts with a line-by-line fidelity between Pali and English texts. The Pali to English meanings are informed based on [Digital Pali Dictionary](https://digitalpalidictionary.github.io/changelog.html) as well as available English translations.
-- [x] Preservation words in their original form that are representative of people, a way of practice, a significant term or a place: e.g. bhikkhu, jhāna, Nibbāna, Sāvatthi, etc.
-- [x] Provide context with tooltips for key terms that can benefit from a broader understanding.
-- [x] Preserve causality sequence when inferable from the Pāli texts of how things have come to be, how they change and how they fade away, e.g. wearing away of the mental defilements instead of destruction of the taints.
-- [x] Preserve repetitions in the Pāli texts to maintain the original structure and rhythm of the teachings.
-
-##### Reading experience
-
-- [x] Reading mode with a focus on the text and minimal distractions.
-- [x] Display Pāli text side-by-side or interleaved with English translations.
-
-##### Platform
-
-- [x] Website
-- [x] Search by sutta title, keyword or text
-- [x] Bookmarking
-- [x] Highlights
-- [ ] Annotations
-- [x] User sign-in and personal study space
-
-
-##### Improve Discovery
-
-- [x] Sutta recommendations by mental qualities
-- [x] Sutta index by similes
-- [ ] Sutta index by key persons
-- [ ] Recommended reading paths
-
-### License: Free To Use
-
-Translations are in the public domain and are available for free to use with no rights reserved by the author.
-
-<br/>
+{/* ── Community ── */}
+<section class="max-w-4xl mx-auto px-4 mb-16">
+  <a href="https://reddit.com/r/WordsOfTheBuddha" target="_blank" rel="noopener noreferrer" class="group rounded-2xl border p-5 sm:p-6 flex items-center gap-4 transition-shadow hover:shadow-md no-underline" style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);">
+    <div class="flex-shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="var(--text-muted)">
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-.002.002A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0Zm6.378 14.013c.04.218.06.441.06.669 0 3.415-3.974 6.182-8.878 6.182s-8.878-2.767-8.878-6.182c0-.228.02-.451.06-.669A1.791 1.791 0 0 1 .16 12.6a1.802 1.802 0 0 1 2.93-1.402c1.413-1.02 3.362-1.678 5.544-1.756l1.04-4.896a.395.395 0 0 1 .47-.31l3.46.735a1.28 1.28 0 1 1-.145.68l-3.084-.654-.93 4.372c2.145.098 4.058.757 5.445 1.76a1.8 1.8 0 1 1 2.491 2.584ZM9.56 11.864a1.802 1.802 0 1 0 0 3.604 1.802 1.802 0 0 0 0-3.604Zm4.88 0a1.802 1.802 0 1 0 0 3.604 1.802 1.802 0 0 0 0-3.604Zm2.92 4.442c-.06.06-1.5 1.5-5.36 1.5s-5.3-1.44-5.36-1.5a.364.364 0 0 1 .516-.516c.02.02 1.34 1.296 4.844 1.296 3.516 0 4.824-1.276 4.844-1.296a.364.364 0 1 1 .516.516Z"/>
+      </svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-sm font-semibold">Join r/WordsOfTheBuddha</span>
+        <span id="reddit-stats" class="text-xs px-2 py-0.5 rounded-full" style="background:var(--surface-paper); color:var(--text-muted); border:1px solid var(--surface-border);">1,725 members</span>
+      </div>
+      <p class="text-sm mt-1 mb-0" style="color:var(--text-muted);">A daily learning feed of the Buddha's teachings — learn, reflect, and apply in practice.</p>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" style="color:var(--text-muted);"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+  <script is:inline>{`
+    (function() {
+      fetch('https://www.reddit.com/r/WordsOfTheBuddha/about.json', {
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d && d.data) {
+            var count = d.data.subscribers;
+            var el = document.getElementById('reddit-stats');
+            if (el && count) {
+              var active = d.data.active_user_count;
+              el.textContent = count.toLocaleString() + ' members' + (active ? ' \u00b7 ' + active + ' online' : '');
+            }
+          }
+        })
+        .catch(function() {});
+    })();
+  `}</script>
+</section>

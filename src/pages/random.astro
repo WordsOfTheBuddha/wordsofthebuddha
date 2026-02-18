@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+// @ts-ignore
+import { routes } from "../utils/routes";
+---
+
+<Layout title="Random Sutta">
+	<div
+		class="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center"
+	>
+		<div class="animate-spin mb-4" style="color:var(--primary-color);">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="32"
+				height="32"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg
+			>
+		</div>
+		<h1 class="text-xl font-medium">Selecting a random teaching...</h1>
+		<p class="mt-2" style="color:var(--text-muted);">
+			If you are not redirected automatically, <a
+				href="/discover"
+				style="color:var(--link-color);">click here</a
+			>.
+		</p>
+	</div>
+
+	<script define:vars={{ routes }}>
+		try {
+			// Pick a random route from the available list
+			const randomRoute =
+				routes[Math.floor(Math.random() * routes.length)];
+
+			// Small delay to ensure the spinner is seen briefly if it's instant, or just redirect immediately
+			window.location.replace("/" + randomRoute);
+		} catch (e) {
+			window.location.href = "/discover";
+		}
+	</script>
+</Layout>
