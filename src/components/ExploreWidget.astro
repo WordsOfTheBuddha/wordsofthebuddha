@@ -19,6 +19,7 @@ interface Props {
 	mode?: "full" | "search-only";
 	showProjectStatus?: boolean;
 	title?: string;
+	subTitle?: string;
 	description?: string;
 }
 
@@ -26,6 +27,7 @@ const {
 	mode = "full", 
 	showProjectStatus = false,
 	title = "Explore the Teachings",
+	subTitle,
 	description = "Browse and search the words of the Buddha"
 } = Astro.props;
 
@@ -42,6 +44,12 @@ const isSearchOnly = mode === "search-only";
 	{title && (
 		<p class="text-gray-600 dark:text-gray-400 mb-6">
 			{title}
+		</p>
+	)}
+
+	{subTitle && (
+		<p class="text-sm text-gray-500 dark:text-gray-400 -mt-4 mb-6" style="color:var(--text-muted);">
+			{subTitle}
 		</p>
 	)}
 

@@ -9,6 +9,7 @@ slug: index
 import ProjectStatus from '../../components/ProjectStatus.astro'
 import LatestDiscourses from '../../components/LatestDiscourses.astro'
 import TopAnthologies from '../../components/TopAnthologies.astro'
+import DailyQuote from '../../components/DailyQuote.astro'
 import { routes } from '../../utils/routes';
 
 {/* ── Hero ── */}
@@ -17,50 +18,40 @@ import { routes } from '../../utils/routes';
     Words of the Buddha
   </h1>
   <p class="text-lg sm:text-xl max-w-2xl mb-8" style="color:var(--text-muted);">
-    Explore the Buddha's original teachings in his own words. Access over {routes.length.toLocaleString()} texts with parallel Pāli-English translations and built-in study tools.
+    Explore the Buddha's earliest teachings through his words. Access over {routes.length.toLocaleString()} texts with parallel Pāli-English translations and built-in study tools.
   </p>
-  <div class="flex flex-wrap gap-3 justify-center">
-    <a href="/discover" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-medium shadow-sm transition-transform hover:scale-[1.02]" style="background-color:var(--primary-color);">
+  <div class="flex flex-wrap gap-2 justify-center">
+    <a href="/discover" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-white text-sm font-medium shadow-sm transition-colors hover:opacity-95" style="background-color:var(--primary-color);">
       Start Exploring
     </a>
-    <a href="/random" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border transition-colors" style="border-color:var(--surface-border); color:var(--text-color);">
+    <a href="/random" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-sm font-medium border transition-colors hover:bg-[rgba(44,44,44,0.08)] dark:hover:bg-[rgba(231,220,196,0.12)]" style="border-color:var(--surface-border); color:var(--text-color);">
       Random Reading
     </a>
   </div>
 </section>
 
 {/* ── Daily Quote ── */}
-<section class="max-w-2xl mx-auto px-4 mb-14">
-  <div class="rounded-2xl border p-6 sm:p-8 text-center" style="border-color:var(--surface-border); background:var(--surface-elevated);">
-    <p class="text-sm font-medium uppercase tracking-widest mb-4" style="color:var(--text-muted);">Reflection of the Day</p>
-    <blockquote class="text-lg sm:text-xl leading-relaxed italic" style="quotes:none; border:none; margin:0; padding:0;">
-      <span id="daily-quote">"This mind is radiant, and it is freed from incoming defilements."</span>
-    </blockquote>
-    <p class="mt-3 text-sm" style="color:var(--text-muted);">— <span id="daily-quote-source">AN 1.50</span></p>
-  </div>
-  <script is:inline>{`
-    (function() {
-      var quotes = [
-        { text: "This mind is radiant, and it is freed from incoming defilements.", src: "AN 1.50", href: "/an1.50" },
-        { text: "A developed mind leads to great benefit.", src: "AN 1.24", href: "/an1.24" },
-        { text: "A tamed mind leads to great benefit.", src: "AN 1.32", href: "/an1.32" },
-        { text: "A guarded mind leads to great benefit.", src: "AN 1.34", href: "/an1.34" },
-        { text: "A restrained mind leads to great benefit.", src: "AN 1.38", href: "/an1.38" },
-        { text: "If one develops a mind of loving-kindness even for the time of a finger snap, one is not devoid of jhāna.", src: "AN 1.53", href: "/an1.53" },
-        { text: "Whatever qualities are wholesome, associated with the wholesome, all are preceded by the mind; the mind arises first, then wholesome qualities follow.", src: "AN 1.57", href: "/an1.57" },
-        { text: "I do not see any other single quality that prevents unarisen ill will from arising, or causes arisen ill will to be abandoned, as the release of mind through loving-kindness.", src: "AN 1.17", href: "/an1.17" },
-        { text: "I do not see any other single quality that prevents unarisen doubt from arising, or causes arisen doubt to be abandoned, as wise attention.", src: "AN 1.20", href: "/an1.20" },
-        { text: "Suppose there is a lake that is clear, calm, and ripple-free. A person with good eyesight standing on the shore would see what is beneath. In the same way, with a clear mind one understands their own welfare, the welfare of others, or both.", src: "AN 1.46", href: "/an1.46" }
-      ];
-      var d = new Date();
-      var idx = (d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % quotes.length;
-      var q = quotes[idx];
-      var el = document.getElementById('daily-quote');
-      if (el) el.textContent = '\u201C' + q.text + '\u201D';
-      var sr = document.getElementById('daily-quote-source');
-      if (sr) sr.innerHTML = '<a href="' + q.href + '">' + q.src + '</a>';
-    })();
-  `}</script>
+<DailyQuote variant="simple" />
+
+{/* ── Featured Essay ── */}
+<section class="max-w-4xl mx-auto px-4 mb-14">
+  <a href="/toe" class="group rounded-2xl border overflow-hidden flex flex-col sm:flex-row transition-shadow hover:shadow-md no-underline" style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);">
+    <div class="sm:w-2/5 flex-shrink-0 !p-0 !m-0">
+      <img src="/assets/content-images/toe.webp" alt="The Magdalen with the Smoking Flame" class="w-full h-48 sm:h-full object-cover !m-0 !p-0" loading="lazy" />
+    </div>
+    <div class="flex-1 p-5 sm:p-6 flex flex-col justify-center">
+      <div class="flex items-center gap-2 flex-wrap mb-2">
+        <span class="px-2 py-0.5 text-xs rounded-full font-medium" style="background:var(--surface-paper); color:var(--text-muted); border:1px solid var(--surface-border);">Featured Essay</span>
+      </div>
+      <h3 class="text-lg font-semibold mb-1 group-hover:text-[var(--link-color)] transition-colors !mt-0">A Theory of Experience</h3>
+      <p class="text-sm italic mb-2" style="color:var(--text-muted);">Extending the Buddha's Fire Simile with What We Now Know About Fire</p>
+      <p class="text-sm mb-0 line-clamp-5 lg:line-clamp-3" style="color:var(--text-muted);">The Buddha chose fire as his simile for consciousness. Modern physics reveals how precisely this pattern holds — from the texture of a single moment to the architecture of jhāna to the extinguishing that is Nibbāna.</p>
+      <span class="mt-3 text-sm font-medium inline-flex items-center gap-1 group-hover:text-[var(--link-color)] transition-colors" style="color:var(--text-muted);">
+        Read essay
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
+      </span>
+    </div>
+  </a>
 </section>
 
 {/* ── Ways to Study ── */}
@@ -165,29 +156,8 @@ import { routes } from '../../utils/routes';
 {/* ── Discourses by Text Collections ── */}
 <section class="max-w-4xl mx-auto px-4 mb-14">
   <h2 class="text-2xl font-semibold mb-2">Discourses by Text Collections</h2>
-  <p class="mb-4 text-sm" style="color:var(--text-muted);">Over 2,100 discourses are available and growing, across the following collections of the Pāli Canon:</p>
+  <p class="mb-4 text-sm" style="color:var(--text-muted);">Access over 2,100 discourses with parallel Pāli-English translations</p>
   <ProjectStatus />
-</section>
-
-{/* ── Featured Essay ── */}
-<section class="max-w-4xl mx-auto px-4 mb-14">
-  <a href="/toe" class="group rounded-2xl border overflow-hidden flex flex-col sm:flex-row transition-shadow hover:shadow-md no-underline" style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);">
-    <div class="sm:w-2/5 flex-shrink-0 !p-0 !m-0">
-      <img src="/assets/content-images/toe.webp" alt="The Magdalen with the Smoking Flame" class="w-full h-48 sm:h-full object-cover !m-0 !p-0" loading="lazy" />
-    </div>
-    <div class="flex-1 p-5 sm:p-6 flex flex-col justify-center">
-      <div class="flex items-center gap-2 flex-wrap mb-2">
-        <span class="px-2 py-0.5 text-xs rounded-full font-medium" style="background:var(--surface-paper); color:var(--text-muted); border:1px solid var(--surface-border);">Featured Essay</span>
-      </div>
-      <h3 class="text-lg font-semibold mb-1 group-hover:text-[var(--link-color)] transition-colors !mt-0">A Theory of Experience</h3>
-      <p class="text-sm italic mb-2" style="color:var(--text-muted);">Extending the Buddha's Fire Simile with What We Now Know About Fire</p>
-      <p class="text-sm mb-0 line-clamp-3" style="color:var(--text-muted);">The word Nibbāna itself derives from the extinguishing of a flame. The entire framework of liberation is cast in the language of fire and its cessation.</p>
-      <span class="mt-3 text-sm font-medium inline-flex items-center gap-1 group-hover:text-[var(--link-color)] transition-colors" style="color:var(--text-muted);">
-        Read essay
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
-      </span>
-    </div>
-  </a>
 </section>
 
 {/* ── Latest Discourses ── */}
