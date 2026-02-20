@@ -38,6 +38,11 @@ a:hover {
 	quotes: none;
 }
 
+.prose blockquote p::before,
+.prose blockquote p::after {
+	content: none;
+}
+
 .image-container {
 	display: flex;
 	justify-content: left;

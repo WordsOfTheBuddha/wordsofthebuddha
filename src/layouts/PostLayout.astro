@@ -262,19 +262,54 @@ const serverTheme = "dark";
 			aria-label="Table of contents"
 			class="mobile-toc-toggle fixed bottom-4 left-4 p-2.5 rounded-full z-50 opacity-0 invisible transition-all duration-300"
 		>
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-				<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="10" y2="18"/>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<line x1="3" y1="6" x2="21" y2="6"></line><line
+					x1="3"
+					y1="12"
+					x2="15"
+					y2="12"></line><line x1="3" y1="18" x2="10" y2="18"></line>
 			</svg>
 		</button>
 		<div id="mobile-toc-overlay" class="mobile-toc-overlay">
 			<div class="mobile-toc-sheet" id="mobile-toc-sheet">
 				<div class="mobile-toc-header">
 					<span class="mobile-toc-title">Contents</span>
-					<button id="mobile-toc-close" aria-label="Close table of contents" class="mobile-toc-close">
-						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+					<button
+						id="mobile-toc-close"
+						aria-label="Close table of contents"
+						class="mobile-toc-close"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							><path d="M18 6 6 18"></path><path d="m6 6 12 12"
+							></path></svg
+						>
 					</button>
 				</div>
-				<nav id="mobile-toc-nav" class="mobile-toc-nav" aria-label="Table of contents (mobile)"></nav>
+				<nav
+					id="mobile-toc-nav"
+					class="mobile-toc-nav"
+					aria-label="Table of contents (mobile)"
+				>
+				</nav>
 			</div>
 		</div>
 	</body>
@@ -381,7 +416,9 @@ const serverTheme = "dark";
 			background: rgba(0, 0, 0, 0.45);
 			opacity: 0;
 			visibility: hidden;
-			transition: opacity 0.2s ease, visibility 0.2s ease;
+			transition:
+				opacity 0.2s ease,
+				visibility 0.2s ease;
 		}
 		.mobile-toc-overlay.open {
 			opacity: 1;
@@ -529,7 +566,8 @@ const serverTheme = "dark";
 				}
 
 				mobileToggle.addEventListener("click", openMobileToc);
-				if (mobileClose) mobileClose.addEventListener("click", closeMobileToc);
+				if (mobileClose)
+					mobileClose.addEventListener("click", closeMobileToc);
 				mobileOverlay.addEventListener("click", function (e) {
 					if (e.target === mobileOverlay) closeMobileToc();
 				});
@@ -548,7 +586,8 @@ const serverTheme = "dark";
 				function (entries) {
 					for (var k = 0; k < entries.length; k++) {
 						if (entries[k].isIntersecting) {
-							var headingId = (entries[k].target as HTMLElement).id;
+							var headingId = (entries[k].target as HTMLElement)
+								.id;
 							var selector = 'a[href="#' + headingId + '"]';
 
 							// Desktop ToC
@@ -560,11 +599,16 @@ const serverTheme = "dark";
 
 							// Mobile ToC
 							if (mobileNav) {
-								var mobileTocLinks = mobileNav.querySelectorAll("a");
+								var mobileTocLinks =
+									mobileNav.querySelectorAll("a");
 								for (var q = 0; q < mobileTocLinks.length; q++)
-									mobileTocLinks[q].classList.remove("active");
-								var mobileActive = mobileNav.querySelector(selector);
-								if (mobileActive) mobileActive.classList.add("active");
+									mobileTocLinks[q].classList.remove(
+										"active",
+									);
+								var mobileActive =
+									mobileNav.querySelector(selector);
+								if (mobileActive)
+									mobileActive.classList.add("active");
 							}
 						}
 					}
