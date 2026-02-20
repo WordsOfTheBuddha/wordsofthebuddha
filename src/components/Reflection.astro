@@ -1,0 +1,44 @@
+---
+/**
+ * Reflection — a component for profound, original insights
+ * that are not sutta quotations. Displays centered text
+ * with a large decorative opening quote mark, inviting
+ * the reader to pause and reflect.
+ */
+---
+
+<aside class="reflection" role="note">
+	<span class="reflection-mark" aria-hidden="true">&#x201C;</span>
+	<p class="reflection-text"><slot /></p>
+</aside>
+
+<style>
+	.reflection {
+		margin: 2.5rem auto;
+		max-width: 32rem;
+		position: relative;
+		padding-left: 2.5rem;
+	}
+
+	.reflection-mark {
+		position: absolute;
+		left: 0;
+		top: -0.25rem;
+		font-family: Georgia, serif;
+		font-size: 3.5rem;
+		line-height: 1;
+		color: #f59e0b;
+		opacity: 0.45;
+		user-select: none;
+	}
+
+	.reflection-text {
+		font-family: "Spectral", Georgia, serif;
+		font-size: 1.2rem;
+		font-style: italic;
+		line-height: 1.7;
+		color: var(--surface-ink);
+		letter-spacing: 0.01em;
+		margin: 0;
+	}
+</style>
