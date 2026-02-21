@@ -714,5 +714,24 @@
 	"samanupassasīti": ["samanupassati"],
 	"dukkhañceva": ["dukkhaṁ", "ce", "eva"],
 	"nirodhanti": ["nirodha"],
-	"tenupasaṅkameyyanti": ["tenupasaṅkamati"]
+	"tenupasaṅkameyyanti": ["tenupasaṅkamati"],
+	"paṭiccakammanti": ["paṭiccakamma"],
+	"saggūpagoti": ["saggūpaga"],
+	"saggūpagāti": ["saggūpaga"],
+	"kiriyavādīti": ["kiriyavādi"],
+	"saggūpagenapīti": ["saggūpagena", "api"],
+	"anupagatoti": [
+		"anupagata:pp. avoided; steered clear (of); lit. not gone near"
+	],
+	"diṭṭhigatametaṁ": ["diṭṭhigata", "etaṁ"],
+	"apanītametaṁ": ["apanīta", "etaṁ"],
+	"sabbaahaṅkāramamaṅkāramānānusayānaṁ": [
+		"sabba",
+		"ahaṅkāramamaṅkāramānānusaya"
+	],
+	"antarahitāti": ["antarahita"],
+	"jalatīti": ["jalatī"],
+	"nibbutotveva": ["nibbuto", "iti", "eva"],
+	"upetīti": ["upeti"],
+	"desetūti": ["desetu"]
 }
