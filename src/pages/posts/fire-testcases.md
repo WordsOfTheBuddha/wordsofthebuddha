@@ -1,4 +1,4 @@
-# Test Cases for "Fire: Inquiring into Recurrent Experience" (fire.mdx)
+# Test Cases for "Fire: Investigating Recurrent Experience" (fire.mdx)
 
 ## How to Update This File
 
