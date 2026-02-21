@@ -1,6 +1,10 @@
 ---
 title: Dutiya anāgatabhaya sutta - Future Perils (Second)
+description: Reflecting on five future perils, the Buddha advises one to dwell diligent, resolute, and with continuous effort for the attainment of the as-yet-unattained.
+qualities: diligence, rousing of energy, continuous effort
+theme: urgency
 slug: an5.78
+priority: 1.2
 ---
 
 “Pañcimāni, bhikkhave, anāgatabhayāni sampassamānena alameva bhikkhunā appamattena ātāpinā pahitattena viharituṁ appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya. Katamāni pañca?
