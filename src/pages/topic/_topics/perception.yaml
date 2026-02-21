@@ -1,45 +1,45 @@
 title: "Perception"
 description: "The mental process of recognizing and giving meaning to experience. It marks sensory information by signs, labels, or associations drawn from memory and the field of contact. Perception shapes how one experiences the world. It is the third of the five aggregates."
 pali:
-  - sañña
+    - sañña
 synonyms:
-  - recognition
-  - conception
+    - recognition
+    - conception
 redirects:
-  - sanna
-  - perception
+    - sanna
+    - perception
 post:
-  url: /fire
-  title: "Fire: An Inquiry into Recurrent Experience"
-  description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
+    url: /fire
+    title: "Fire: Inquiring into Recurrent Experience"
+    description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
 supportedBy:
-  - ignorance
-  - wisdom
+    - ignorance
+    - wisdom
 related:
-  - felt-experience
-  - consciousness
+    - felt-experience
+    - consciousness
 discourses:
-  - id: mn1
-    note: "How perception leads to conceiving and 'mine'"
-  - id: mn18
-    note: "From contact to proliferation through perception"
-  - id: sn14.7
-    note: "Diversity of perceptions conditions intention and desire"
-  - id: sn14.9
-    note: "Perception links to intention, contact, feeling, craving"
-  - id: sn14.11
-    note: "Attainments of perception; cessation of perception-feeling"
-  - id: sn33.3
-    note: "Views arise from not knowing perception and its ending"
-  - id: mn102
-    note: "Examining various views related to perception and self"
-  - id: an7.48
-    note: "Seven perceptions to cultivate leading to the deathless"
-  - id: an7.49
-    note: "Seven perceptions explained in detail for practice"
-  - id: an4.49
-    note: "Inversions of perception: permanence, pleasure, self, beauty"
-  - id: sn22.95
-    note: "Perception like a mirage"
-  - id: sn22.122
-    note: "how to attend to perception at each stage of awakening"
+    - id: mn1
+      note: "How perception leads to conceiving and 'mine'"
+    - id: mn18
+      note: "From contact to proliferation through perception"
+    - id: sn14.7
+      note: "Diversity of perceptions conditions intention and desire"
+    - id: sn14.9
+      note: "Perception links to intention, contact, feeling, craving"
+    - id: sn14.11
+      note: "Attainments of perception; cessation of perception-feeling"
+    - id: sn33.3
+      note: "Views arise from not knowing perception and its ending"
+    - id: mn102
+      note: "Examining various views related to perception and self"
+    - id: an7.48
+      note: "Seven perceptions to cultivate leading to the deathless"
+    - id: an7.49
+      note: "Seven perceptions explained in detail for practice"
+    - id: an4.49
+      note: "Inversions of perception: permanence, pleasure, self, beauty"
+    - id: sn22.95
+      note: "Perception like a mirage"
+    - id: sn22.122
+      note: "how to attend to perception at each stage of awakening"

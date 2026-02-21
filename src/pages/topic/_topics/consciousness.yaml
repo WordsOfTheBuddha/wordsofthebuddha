@@ -1,56 +1,56 @@
 title: "Consciousness"
 description: "Consciousness, the fifth aggregate, has two key meanings in the discourses: 1.) The distinctive quality of awareness which knows and arises in dependence on the meeting of eye and form, ear and sound, nose and odor, tongue and taste, body and tangible object, mind and mind object. 2.) A seed that finds a footing in a realm, established by ignorance and intention, leading to renewed existence."
 pali:
-  - viññāṇa
+    - viññāṇa
 synonyms:
-  - awareness
-  - the faculty that distinguishes
+    - awareness
+    - the faculty that distinguishes
 redirects:
-  - vinnana
-  - awareness
+    - vinnana
+    - awareness
 post:
-  url: /fire
-  title: "Fire: An Inquiry into Recurrent Experience"
-  description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
+    url: /fire
+    title: "Fire: Inquiring into Recurrent Experience"
+    description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
 supportedBy:
-  - intentional-constructs
+    - intentional-constructs
 related:
-  - felt-experience
-  - perception
+    - felt-experience
+    - perception
 discourses:
-  - id: mn43
-    note: "Defines consciousness: it distinguishes; tied to wisdom"
-  - id: mn38
-    note: "Nutriment + fire simile: consciousness arises only with conditions"
-  - id: sn12.38
-    note: "Intend/plan/tendencies sustain consciousness"
-  - id: an3.76
-    note: "Seed simile: consciousness seed; craving moisture"
-  - id: an3.77
-    note: "AN 3.76 + intention/aspiration establish consciousness"
-  - id: sn12.59
-    note: "Enjoyment vs drawback: descent of consciousness"
-  - id: iti94
-    note: "Examine so consciousness stays unscattered, not grasping"
-  - id: sn22.87
-    note: "Vakkali: aggregates not-self; consciousness finds no footing"
-  - id: mn140
-    note: "Six elements incl. consciousness element; ends conceiving"
-  - id: an7.44
-    note: "Seven planes of consciousness; formless attainments"
-  - id: sn33.5
-    note: "Not knowing consciousness leads to speculative views"
-  - id: an3.61
-    note: "Refutes determinism/creator/no-cause; grounds in analysis"
-  - id: mn18
-    note: "From sense contact to proliferation; how it's stilled"
-  - id: sn12.11
-    note: "Consciousness as a nutriment"
-  - id: sn12.64
-    note: "role of lust and craving in the establishment of consciousness"
-  - id: snp5.13
-    note: "How does consciousness cease?"
-  - id: sn22.122
-    note: "how to attend to consciousness at each stage of awakening"
-  - id: sn22.95
-    note: "Consciousness as a magic trick"
+    - id: mn43
+      note: "Defines consciousness: it distinguishes; tied to wisdom"
+    - id: mn38
+      note: "Nutriment + fire simile: consciousness arises only with conditions"
+    - id: sn12.38
+      note: "Intend/plan/tendencies sustain consciousness"
+    - id: an3.76
+      note: "Seed simile: consciousness seed; craving moisture"
+    - id: an3.77
+      note: "AN 3.76 + intention/aspiration establish consciousness"
+    - id: sn12.59
+      note: "Enjoyment vs drawback: descent of consciousness"
+    - id: iti94
+      note: "Examine so consciousness stays unscattered, not grasping"
+    - id: sn22.87
+      note: "Vakkali: aggregates not-self; consciousness finds no footing"
+    - id: mn140
+      note: "Six elements incl. consciousness element; ends conceiving"
+    - id: an7.44
+      note: "Seven planes of consciousness; formless attainments"
+    - id: sn33.5
+      note: "Not knowing consciousness leads to speculative views"
+    - id: an3.61
+      note: "Refutes determinism/creator/no-cause; grounds in analysis"
+    - id: mn18
+      note: "From sense contact to proliferation; how it's stilled"
+    - id: sn12.11
+      note: "Consciousness as a nutriment"
+    - id: sn12.64
+      note: "role of lust and craving in the establishment of consciousness"
+    - id: snp5.13
+      note: "How does consciousness cease?"
+    - id: sn22.122
+      note: "how to attend to consciousness at each stage of awakening"
+    - id: sn22.95
+      note: "Consciousness as a magic trick"

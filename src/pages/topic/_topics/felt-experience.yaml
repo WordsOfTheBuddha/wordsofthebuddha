@@ -1,50 +1,50 @@
 title: "Felt Experience"
 description: "Pleasant, neutral, or painful sensation—the experience felt on contact. Sometimes translated as “feeling.” Distinct from an emotional state or reaction, it refers to the affective tone of experience, the bare sensation of pleasure, pain, or neutrality before mental responses arise. It is the second of the five aggregates."
 pali:
-  - vedanā
+    - vedanā
 synonyms:
-  - feeling
+    - feeling
 redirects:
-  - feeling
-  - felt experience
-  - sensation
-  - vedana
+    - feeling
+    - felt experience
+    - sensation
+    - vedana
 post:
-  url: /fire
-  title: "Fire: An Inquiry into Recurrent Experience"
-  description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
+    url: /fire
+    title: "Fire: Inquiring into Recurrent Experience"
+    description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
 supportedBy:
-  - ignorance
-  - wisdom
+    - ignorance
+    - wisdom
 related:
-  - perception
-  - consciousness
+    - perception
+    - consciousness
 discourses:
-  - id: mn59
-    note: "Classifies feelings (2/3/5/6/18/36/108)"
-  - id: sn36.6
-    note: "Two arrows: bodily pain vs mental suffering"
-  - id: sn36.2
-    note: "Seeing feelings vanish at each contact leads to dispassion"
-  - id: sn36.1
-    note: "Three feelings; discern arising, cessation, and the path"
-  - id: sn12.11
-    note: "Contact conditions felt experience, which in turn conditions craving"
-  - id: mn38
-    note: "Taking pleasure in feelings is clinging"
-  - id: iti52
-    note: "Three feelings; discern arising, cessation, and the path"
-  - id: iti53
-    note: "Pleasure as dukkha, pain as thorn, neutral impermanent"
-  - id: mn13#43-46
-    note: "Gratification, drawback, and escape regarding feeling"
-  - id: mn102
-    note: "Examining various views related to feeling and self"
-  - id: sn45.11
-    note: "Many conditions for feeling, including path factors"
-  - id: snp5.13
-    note: "When not delighting in feeling, consciousness ceases"
-  - id: sn22.95
-    note: "Feeling like a water bubble"
-  - id: sn22.122
-    note: "how to attend to felt experience at each stage of awakening"
+    - id: mn59
+      note: "Classifies feelings (2/3/5/6/18/36/108)"
+    - id: sn36.6
+      note: "Two arrows: bodily pain vs mental suffering"
+    - id: sn36.2
+      note: "Seeing feelings vanish at each contact leads to dispassion"
+    - id: sn36.1
+      note: "Three feelings; discern arising, cessation, and the path"
+    - id: sn12.11
+      note: "Contact conditions felt experience, which in turn conditions craving"
+    - id: mn38
+      note: "Taking pleasure in feelings is clinging"
+    - id: iti52
+      note: "Three feelings; discern arising, cessation, and the path"
+    - id: iti53
+      note: "Pleasure as dukkha, pain as thorn, neutral impermanent"
+    - id: mn13#43-46
+      note: "Gratification, drawback, and escape regarding feeling"
+    - id: mn102
+      note: "Examining various views related to feeling and self"
+    - id: sn45.11
+      note: "Many conditions for feeling, including path factors"
+    - id: snp5.13
+      note: "When not delighting in feeling, consciousness ceases"
+    - id: sn22.95
+      note: "Feeling like a water bubble"
+    - id: sn22.122
+      note: "how to attend to felt experience at each stage of awakening"
