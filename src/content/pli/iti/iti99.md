@@ -1,6 +1,6 @@
 ---
-title: Tevijja sutta - Possessing the Threefold Knowledge
-description: The Buddha describes a brahmin possessing the threefold knowledge through the Dhamma, not through mere repetition of what is said. This includes the recollection of past lives, the divine eye seeing beings’ rebirths according to kamma, and the realization of liberation through the wearing away of mental defilements.
+title: Tevijja sutta - Threefold Knowledge
+description: The Buddha describes a brahmin possessing the three true knowledges through the Dhamma, not through mere repetition of what is said. This includes the recollection of past lives, the divine eye seeing beings’ rebirths according to kamma, and the realization of liberation through the wearing away of mental defilements.
 qualities: continuous effort, diligence, rousing of energy, direct knowledge, wisdom
 theme: inspiration, principle
 slug: iti99
