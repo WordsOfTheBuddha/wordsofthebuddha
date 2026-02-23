@@ -77,6 +77,52 @@ export function isValidParagraphRange(start: number, end: number): boolean {
 	return !isNaN(start) && !isNaN(end) && start <= end;
 }
 
+// Detect MDX-specific blocks (import statements, JSX components like <Image />)
+// that only appear in English content and have no Pali counterpart
+function isCodeOrComponentBlock(block: string): boolean {
+	return block.startsWith("import ") || /^<[A-Z]/.test(block);
+}
+
+// Build a map of import variable names to their resolved public asset paths.
+// Handles imports like: import liberationImage from '../../../assets/content-images/an10.61-vijjavimutti.svg';
+function buildImportMap(blocks: string[]): Map<string, string> {
+	const map = new Map<string, string>();
+	for (const block of blocks) {
+		// Match: import varName from '...path...'  (or "...path...")
+		const match = block.match(/^import\s+(\w+)\s+from\s+['"](.+?)['"]/);
+		if (match) {
+			const varName = match[1];
+			const importPath = match[2];
+			// Resolve asset paths to public URL (content-images convention)
+			const filenameMatch = importPath.match(/content-images\/(.+)$/);
+			if (filenameMatch) {
+				map.set(varName, `/assets/content-images/${filenameMatch[1]}`);
+			}
+		}
+	}
+	return map;
+}
+
+// Convert MDX <Image> component to a plain <img> tag using the import map.
+// Returns null if the block is not an <Image> component or can't be resolved.
+function resolveImageComponent(
+	block: string,
+	importMap: Map<string, string>,
+): string | null {
+	// Match <Image src={varName} alt="..." /> or similar JSX
+	const match = block.match(
+		/<Image\s+src=\{(\w+)\}\s+alt=["']([^"']*)["']\s*\/?>/,
+	);
+	if (!match) return null;
+
+	const varName = match[1];
+	const alt = match[2];
+	const resolvedSrc = importMap.get(varName);
+	if (!resolvedSrc) return null;
+
+	return `<img src="${resolvedSrc}" alt="${alt}" class="content-image" loading="lazy" />`;
+}
+
 export function parseContent(
 	paliContent: ContentEntry,
 	englishContent: ContentEntry,
@@ -104,9 +150,10 @@ export function parseContent(
 
 		for (const pair of allPairs) {
 			const isHeading = pair.english.startsWith("#");
+			const isComponentBlock = pair.type === "other";
 
-			if (isHeading) {
-				// Store headings to potentially include later
+			if (isHeading || isComponentBlock) {
+				// Store headings/component blocks to potentially include later
 				pendingHeadings.push(pair);
 			} else {
 				paragraphCount++;
@@ -489,6 +536,9 @@ function processBlocks(
 	let paliIndex = 0;
 	let actualParagraphNumber = 1;
 
+	// Build import map for resolving MDX <Image> components to <img> tags
+	const importMap = buildImportMap(englishBlocks);
+
 	// If this is a discourse range, calculate the starting paragraph number
 	if (options?.type === "discourse" && options.originalContent) {
 		const originalBlocks = options.originalContent
@@ -511,13 +561,14 @@ function processBlocks(
 		if (firstNonHeadingBlock) {
 			let paragraphCount = 0;
 			for (const block of originalBlocks) {
-				// Check if block is a plain paragraph (not a heading, code block, or HTML element)
+				// Check if block is a plain paragraph (not a heading, code block, HTML element, or MDX import/component)
 				// Allow <collapse> tags as they wrap regular paragraph content
 				const isPlainParagraph =
 					!block.startsWith("#") &&
 					(!block.startsWith("<") ||
 						block.startsWith("<collapse>")) &&
-					!block.startsWith("```");
+					!block.startsWith("```") &&
+					!isCodeOrComponentBlock(block);
 				if (isPlainParagraph) {
 					paragraphCount++;
 				}
@@ -535,6 +586,36 @@ function processBlocks(
 	}
 
 	englishBlocks.forEach((block: string, blockIndex: number) => {
+		// Skip MDX import statements entirely (they have no visual output)
+		if (block.startsWith("import ")) {
+			return; // Don't advance paliIndex or paragraph numbering
+		}
+
+		// Convert MDX <Image> components to plain <img> tags
+		if (/^<[A-Z]/.test(block)) {
+			const resolvedImg = resolveImageComponent(block, importMap);
+			if (resolvedImg) {
+				pairs.push({
+					type: "other",
+					english: resolvedImg,
+				});
+			}
+			// Drop unresolvable components silently
+			return; // Don't advance paliIndex or paragraph numbering
+		}
+
+		// Pass through standalone HTML elements (e.g. <img>) without consuming a Pali paragraph
+		if (
+			/^<(?!collapse)[a-z][a-z0-9]*[\s/>]/i.test(block) &&
+			!block.startsWith("<collapse")
+		) {
+			pairs.push({
+				type: "other",
+				english: block,
+			});
+			return; // Don't advance paliIndex or paragraph numbering
+		}
+
 		// Check if block is a plain paragraph (not a heading, code block, or HTML element)
 		// Allow <collapse> tags as they wrap regular paragraph content
 		const isPlainParagraph =
@@ -614,20 +695,47 @@ function processParagraphQuotes(
 }
 
 function toSmartQuotes(text: string): string {
-	// First handle paired quotes via regex.
-	let processed = text
-		.replace(/"([^"]*?)"/g, "“$1”")
-		.replace(/'([^']*?)'/g, "‘$1’");
+	// Smart quote characters
+	const LDQ = "\u201C"; // left double quote "
+	const RDQ = "\u201D"; // right double quote "
+	const LSQ = "\u2018"; // left single quote '
+	const RSQ = "\u2019"; // right single quote '
 
-	// Handle contractions (preserving apostrophes) explicitly.
-	processed = processed.replace(/(\w)'(\w)/g, "$1’$2");
-
-	// Split into paragraphs for context-based processing.
-	const paragraphs = processed.split(/\n\n+/);
+	// Split into paragraphs for processing.
+	const paragraphs = text.split(/\n\n+/);
 	for (let i = 0; i < paragraphs.length; i++) {
 		let p = paragraphs[i];
-		p = processParagraphQuotes(p, '"', "“", "”");
-		p = processParagraphQuotes(p, "'", "‘", "’");
+
+		// Skip MDX code blocks: import statements and JSX components (e.g. <Image ... />)
+		// Their quotes must remain as ASCII for proper parsing
+		if (p.startsWith("import ") || /^<[A-Z]/.test(p)) {
+			continue;
+		}
+
+		// Protect quotes inside HTML tags (e.g. <img src="..." alt="..." />)
+		// by temporarily replacing tags with placeholders
+		const tagPlaceholders: string[] = [];
+		p = p.replace(/<[^>]+>/g, (match) => {
+			tagPlaceholders.push(match);
+			return `\x00TAG${tagPlaceholders.length - 1}\x00`;
+		});
+
+		// Handle paired quotes via regex.
+		p = p
+			.replace(/"([^"]*?)"/g, `${LDQ}$1${RDQ}`)
+			.replace(/'([^']*?)'/g, `${LSQ}$1${RSQ}`);
+
+		// Handle contractions (preserving apostrophes) explicitly.
+		p = p.replace(/(\w)'(\w)/g, `$1${RSQ}$2`);
+
+		p = processParagraphQuotes(p, '"', LDQ, RDQ);
+		p = processParagraphQuotes(p, "'", LSQ, RSQ);
+
+		// Restore HTML tags with their original (ASCII) quotes
+		p = p.replace(
+			/\x00TAG(\d+)\x00/g,
+			(_, idx) => tagPlaceholders[parseInt(idx)],
+		);
 		paragraphs[i] = p;
 	}
 	return paragraphs.join("\n\n");
@@ -859,6 +967,10 @@ export function createCombinedMarkdown(
 		pairIndex = 0;
 		const english = pairs
 			.map((pair) => {
+				// Pass through resolved component blocks (e.g. <img> from <Image>)
+				if (pair.type === "other") {
+					return pair.english;
+				}
 				if (!pair.english.startsWith("#")) {
 					return formatBlock(
 						pair.english,
@@ -885,6 +997,10 @@ export function createCombinedMarkdown(
 	let pairIndex = 0;
 	const result = pairs
 		.map((pair) => {
+			// Pass through resolved component blocks (e.g. <img> from <Image>)
+			if (pair.type === "other") {
+				return pair.english;
+			}
 			if (!showPali || !pair.pali) {
 				const currentIndex = pair.english.startsWith("#")
 					? undefined
