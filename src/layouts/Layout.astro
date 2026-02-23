@@ -77,13 +77,21 @@ const {
 	seoTitle?: string | null;
 	paragraphRequest?: any;
 	commentary?: string | string[];
-	contentImage?: ContentImageData | null;
+	contentImage?: ContentImageData | ContentImageData[] | null;
 };
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);
 debug("qualities are: ", qualities);
 debug("commentary is: ", commentary);
+
+// Extract first image for SEO meta tags (works with single or array)
+const firstContentImage = contentImage
+	? Array.isArray(contentImage)
+		? contentImage[0]
+		: contentImage
+	: null;
+
 let SEOTitle = seoTitle;
 if (!SEOTitle) {
 	if (title != "Words of the Buddha" && title) {
@@ -140,10 +148,10 @@ if (!SEOTitle) {
 		/>
 		<meta property="og:type" content="article" />
 		{
-			contentImage && (
+			firstContentImage && (
 				<meta
 					property="og:image"
-					content={new URL(contentImage.image.src, Astro.url).href}
+					content={new URL(firstContentImage.image.src, Astro.url).href}
 				/>
 			)
 		}
@@ -151,7 +159,7 @@ if (!SEOTitle) {
 		<!-- Twitter Card -->
 		<meta
 			name="twitter:card"
-			content={contentImage ? "summary_large_image" : "summary"}
+			content={firstContentImage ? "summary_large_image" : "summary"}
 		/>
 		<meta
 			name="twitter:title"
@@ -162,10 +170,10 @@ if (!SEOTitle) {
 			content={description || "Default Description"}
 		/>
 		{
-			contentImage && (
+			firstContentImage && (
 				<meta
 					name="twitter:image"
-					content={new URL(contentImage.image.src, Astro.url).href}
+					content={new URL(firstContentImage.image.src, Astro.url).href}
 				/>
 			)
 		}

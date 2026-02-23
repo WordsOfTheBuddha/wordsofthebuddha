@@ -4,6 +4,7 @@
  *
  * Features:
  * - Convention-based image discovery (src/assets/content-images/{id}.{ext})
+ * - Carousel mode when multiple images are provided
  * - Hidden in offline mode (controlled by ImageToggle)
  * - Print-friendly (hidden)
  * - Optimized via Astro's Image component
@@ -17,55 +18,60 @@ import { existsSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
 
 interface Props {
-	/** Image data from findContentImage() */
-	imageData: ContentImageData;
+	/** Single image or array of images from findContentImages() */
+	imageData: ContentImageData | ContentImageData[];
 }
 
-const { imageData } = Astro.props;
-const { image, caption, alt } = imageData;
+const { imageData: rawImageData } = Astro.props;
 
-const modulePath = imageData.modulePath;
-const isSvg = modulePath.toLowerCase().endsWith(".svg");
-const devFileExists = (() => {
-	// In production this should never happen (build would fail earlier),
-	// but in dev files can be removed while the server is running.
-	if (!import.meta.env.DEV) return true;
-	try {
-		const abs = resolvePath(process.cwd(), modulePath.replace(/^\//, ""));
-		return existsSync(abs);
-	} catch {
-		return true;
-	}
-})();
+// Normalize to array
+const allImages = Array.isArray(rawImageData) ? rawImageData : [rawImageData];
+const isCarousel = allImages.length > 1;
 
 // Standard width for content area - Astro will maintain aspect ratio
 const IMAGE_WIDTH = 800;
 
-const width = (image as any)?.width;
-const height = (image as any)?.height;
-const aspectRatio =
-	typeof width === "number" && typeof height === "number" && height > 0
-		? width / height
-		: null;
+// Process each image for rendering
+const processedImages = allImages.map((img) => {
+	const modulePath = img.modulePath;
+	const isSvg = modulePath.toLowerCase().endsWith(".svg");
+	const devFileExists = (() => {
+		if (!import.meta.env.DEV) return true;
+		try {
+			const abs = resolvePath(process.cwd(), modulePath.replace(/^\//, ""));
+			return existsSync(abs);
+		} catch {
+			return true;
+		}
+	})();
 
-// Treat a reasonable landscape band as "fits"; show fully and skip zoom.
-// Outside this band (very tall or very wide), we crop and show a zoom affordance.
-const isWithinFitBand =
-	aspectRatio != null && aspectRatio >= 1.2 && aspectRatio <= 1.69;
-const shouldShowZoom = true;
+	const width = (img.image as any)?.width;
+	const height = (img.image as any)?.height;
+	const aspectRatio =
+		typeof width === "number" && typeof height === "number" && height > 0
+			? width / height
+			: null;
+	const isWithinFitBand =
+		aspectRatio != null && aspectRatio >= 1.2 && aspectRatio <= 1.69;
+
+	return { ...img, isSvg, devFileExists, isWithinFitBand };
+});
+
+// Filter to only existing images
+const images = processedImages.filter((img) => img.devFileExists);
+const firstImage = images[0];
+if (!firstImage) return;
 ---
 
-
-{devFileExists && (
+{images.length > 0 && (
 	<figure
 		id="discourseImageFigure"
 		class="discourse-image not-prose group relative m-0 mb-3 hidden w-full md:max-w-3xl"
+		data-carousel={isCarousel ? "true" : undefined}
 	>
 	<script is:inline>
-		// Prevent FOC (Flash of Content) by checking preference immediately
 		try {
 			const stored = localStorage.getItem("showDiscourseImages");
-			// Default is true if not set
 			const show = stored === null ? true : stored === "true";
 			if (show && navigator.onLine) {
 				document
@@ -74,102 +80,200 @@ const shouldShowZoom = true;
 			}
 		} catch (e) {}
 	</script>
+
 	<div class="relative rounded-lg overflow-hidden">
-		{isSvg ? (
-			<img
-				src={image.src}
-				alt={alt}
-				width={IMAGE_WIDTH}
-				class:list={[
-					"w-full h-auto rounded-lg object-cover",
-					isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
-				]}
-				loading="eager"
-				decoding="async"
-			/>
-		) : (
-			<Image
-				src={image}
-				alt={alt}
-				width={IMAGE_WIDTH}
-				class:list={[
-					"w-full h-auto rounded-lg",
-					isWithinFitBand
-						? "object-cover max-h-[440px]"
-						: "object-cover max-h-[320px]",
-				]}
-				loading="eager"
-				decoding="async"
-			/>
-		)}
-		{
-			shouldShowZoom && (
-				<button
-					id="expandImageBtn"
-					class="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0"
-					title="View full image"
-					aria-label="View full image"
+		{/* Carousel wrapper */}
+		<div id="carouselTrack" class="relative w-full">
+			{images.map((img, idx) => (
+				<div
+					class:list={[
+						"carousel-slide w-full",
+						idx === 0 ? "" : "hidden",
+					]}
+					data-slide-index={idx}
 				>
-					<span
-						class="w-5 h-5 flex items-center justify-center"
-						set:html={ZoomIcon}
-					/>
+					{img.isSvg ? (
+						<img
+							src={img.image.src}
+							alt={img.alt}
+							width={IMAGE_WIDTH}
+							class:list={[
+								"w-full h-auto rounded-lg object-cover",
+								img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
+							]}
+							loading={idx === 0 ? "eager" : "lazy"}
+							decoding="async"
+						/>
+					) : (
+						<Image
+							src={img.image}
+							alt={img.alt}
+							width={IMAGE_WIDTH}
+							class:list={[
+								"w-full h-auto rounded-lg",
+								img.isWithinFitBand
+									? "object-cover max-h-[440px]"
+									: "object-cover max-h-[320px]",
+							]}
+							loading={idx === 0 ? "eager" : "lazy"}
+							decoding="async"
+						/>
+					)}
+				</div>
+			))}
+		</div>
+
+		{/* Carousel navigation arrows */}
+		{isCarousel && (
+			<>
+				<button
+					id="carouselPrev"
+					class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10"
+					title="Previous image"
+					aria-label="Previous image"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
 				</button>
-			)
-		}
+				<button
+					id="carouselNext"
+					class="absolute right-12 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10"
+					title="Next image"
+					aria-label="Next image"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+					</svg>
+				</button>
+			</>
+		)}
+
+		{/* Zoom button */}
+		<button
+			id="expandImageBtn"
+			class="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10"
+			title="View full image"
+			aria-label="View full image"
+		>
+			<span
+				class="w-5 h-5 flex items-center justify-center"
+				set:html={ZoomIcon}
+			/>
+		</button>
 	</div>
 
+	{/* Carousel dots */}
+	{isCarousel && (
+		<div id="carouselDots" class="flex justify-center gap-2 mt-2">
+			{images.map((_, idx) => (
+				<button
+					class:list={[
+						"carousel-dot w-2 h-2 rounded-full transition-all duration-200",
+						idx === 0
+							? "bg-amber-500 dark:bg-amber-400 w-4"
+							: "bg-gray-400 dark:bg-gray-600 hover:bg-gray-500",
+					]}
+					data-dot-index={idx}
+					aria-label={`Go to image ${idx + 1}`}
+				/>
+			))}
+		</div>
+	)}
+
 	{
-		caption && (
+		firstImage.caption && (
 			<figcaption class="mt-0.5 text-sm text-gray-600 dark:text-gray-400 text-center">
-				{caption}
+				{firstImage.caption}
 			</figcaption>
 		)
 	}
 
-	{
-		shouldShowZoom && (
-			<dialog
-				id="imageModal"
-				class="p-0 bg-transparent backdrop:bg-black/80 max-w-none max-h-none w-full h-full m-0 open:flex items-center justify-center pointer-events-none open:pointer-events-auto"
+	{/* Zoom modal — shows current slide's image with carousel nav */}
+	<dialog
+		id="imageModal"
+		class="p-0 bg-transparent backdrop:bg-black/80 max-w-none max-h-none w-full h-full m-0 open:flex items-center justify-center pointer-events-none open:pointer-events-auto"
+	>
+		<form method="dialog" class="fixed top-4 right-4 z-10">
+			<button
+				class="w-12 h-12 inline-flex items-center justify-center text-white hover:text-gray-300 focus:outline-none"
+				aria-label="Close"
 			>
-				<form method="dialog" class="fixed top-4 right-4 z-10">
-					<button
-						class="w-12 h-12 inline-flex items-center justify-center text-white hover:text-gray-300 focus:outline-none"
-						aria-label="Close"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-8 w-8"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
-				</form>
-				<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center">
-					<img
-						id="fullImage"
-						src={image.src}
-						alt={alt}
-						class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-8 w-8"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
 					/>
-					{caption && (
-						<div class="mt-4 text-white/90 text-center bg-black/50 px-4 py-2 rounded-full">
-							{caption}
-						</div>
-					)}
+				</svg>
+			</button>
+		</form>
+
+		{/* Modal carousel arrows */}
+		{isCarousel && (
+			<>
+				<button
+					id="modalPrev"
+					class="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/15 hover:bg-white/30 text-white rounded-full flex items-center justify-center p-0 z-10 transition-colors duration-200"
+					title="Previous image"
+					aria-label="Previous image"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+				</button>
+				<button
+					id="modalNext"
+					class="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/15 hover:bg-white/30 text-white rounded-full flex items-center justify-center p-0 z-10 transition-colors duration-200"
+					title="Next image"
+					aria-label="Next image"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+					</svg>
+				</button>
+			</>
+		)}
+
+		<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center">
+			<img
+				id="fullImage"
+				src={firstImage.image.src}
+				alt={firstImage.alt}
+				class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+			/>
+			{firstImage.caption && (
+				<div class="mt-4 text-white/90 text-center bg-black/50 px-4 py-2 rounded-full">
+					{firstImage.caption}
 				</div>
-			</dialog>
-		)
-	}
+			)}
+
+			{/* Modal dots */}
+			{isCarousel && (
+				<div id="modalDots" class="flex justify-center gap-2.5 mt-4">
+					{images.map((_, idx) => (
+						<button
+							class:list={[
+								"modal-dot w-2.5 h-2.5 rounded-full transition-all duration-200",
+								idx === 0
+									? "bg-amber-400 w-5"
+									: "bg-white/40 hover:bg-white/60",
+							]}
+							data-modal-dot-index={idx}
+							aria-label={`Go to image ${idx + 1}`}
+						/>
+					))}
+				</div>
+			)}
+		</div>
+	</dialog>
 	</figure>
 )}
 
@@ -177,17 +281,124 @@ const shouldShowZoom = true;
 	function initDiscourseImage() {
 		const figure = document.getElementById("discourseImageFigure");
 		const expandBtn = document.getElementById("expandImageBtn");
-		const dialog = document.getElementById(
-			"imageModal"
-		) as HTMLDialogElement;
+		const dialog = document.getElementById("imageModal") as HTMLDialogElement;
+		const fullImage = document.getElementById("fullImage") as HTMLImageElement;
 
 		if (!figure) return;
 
+		// --- Carousel logic ---
+		const isCarousel = figure.dataset.carousel === "true";
+		let currentSlide = 0;
+		const slides = figure.querySelectorAll<HTMLElement>(".carousel-slide");
+		const dots = figure.querySelectorAll<HTMLElement>(".carousel-dot");
+		const totalSlides = slides.length;
+
+		// Collect all image sources for modal navigation
+		const imageSources: { src: string; alt: string }[] = [];
+		slides.forEach((slide) => {
+			const img = slide.querySelector("img");
+			if (img) imageSources.push({ src: img.src, alt: img.alt });
+		});
+
+		const modalDots = figure.querySelectorAll<HTMLElement>(".modal-dot");
+
+		function updateModalSlide(index: number) {
+			if (!fullImage) return;
+			const source = imageSources[index];
+			if (source) {
+				fullImage.src = source.src;
+				fullImage.alt = source.alt;
+			}
+			// Update modal dots
+			modalDots.forEach((dot, i) => {
+				dot.classList.toggle("bg-amber-400", i === index);
+				dot.classList.toggle("w-5", i === index);
+				dot.classList.toggle("bg-white/40", i !== index);
+				dot.classList.toggle("hover:bg-white/60", i !== index);
+				dot.classList.toggle("w-2.5", i !== index);
+			});
+		}
+
+		function goToSlide(index: number) {
+			if (index < 0) index = totalSlides - 1;
+			if (index >= totalSlides) index = 0;
+
+			slides.forEach((slide, i) => {
+				slide.classList.toggle("hidden", i !== index);
+			});
+			dots.forEach((dot, i) => {
+				dot.classList.toggle("bg-amber-500", i === index);
+				dot.classList.toggle("dark:bg-amber-400", i === index);
+				dot.classList.toggle("w-4", i === index);
+				dot.classList.toggle("bg-gray-400", i !== index);
+				dot.classList.toggle("dark:bg-gray-600", i !== index);
+				dot.classList.toggle("hover:bg-gray-500", i !== index);
+				dot.classList.toggle("w-2", i !== index);
+			});
+
+			currentSlide = index;
+			updateModalSlide(index);
+		}
+
+		if (isCarousel) {
+			const prevBtn = document.getElementById("carouselPrev");
+			const nextBtn = document.getElementById("carouselNext");
+
+			prevBtn?.addEventListener("click", (e) => {
+				e.stopPropagation();
+				goToSlide(currentSlide - 1);
+			});
+			nextBtn?.addEventListener("click", (e) => {
+				e.stopPropagation();
+				goToSlide(currentSlide + 1);
+			});
+
+			dots.forEach((dot) => {
+				dot.addEventListener("click", () => {
+					const idx = parseInt(dot.dataset.dotIndex || "0", 10);
+					goToSlide(idx);
+				});
+			});
+
+			// Modal carousel navigation
+			const modalPrev = document.getElementById("modalPrev");
+			const modalNext = document.getElementById("modalNext");
+
+			modalPrev?.addEventListener("click", (e) => {
+				e.stopPropagation();
+				goToSlide(currentSlide - 1);
+			});
+			modalNext?.addEventListener("click", (e) => {
+				e.stopPropagation();
+				goToSlide(currentSlide + 1);
+			});
+
+			modalDots.forEach((dot) => {
+				dot.addEventListener("click", (e) => {
+					e.stopPropagation();
+					const idx = parseInt(dot.dataset.modalDotIndex || "0", 10);
+					goToSlide(idx);
+				});
+			});
+
+			// Keyboard navigation — works on both figure and modal
+			const handleKeyNav = (e: KeyboardEvent) => {
+				if (e.key === "ArrowLeft") { e.preventDefault(); goToSlide(currentSlide - 1); }
+				if (e.key === "ArrowRight") { e.preventDefault(); goToSlide(currentSlide + 1); }
+			};
+			figure.addEventListener("keydown", handleKeyNav);
+			dialog?.addEventListener("keydown", handleKeyNav);
+			figure.setAttribute("tabindex", "0");
+		}
+
+		// --- Zoom logic ---
 		if (expandBtn && dialog) {
 			expandBtn.addEventListener("click", (e) => {
 				e.stopPropagation();
+				// Sync modal to current carousel slide
+				updateModalSlide(currentSlide);
 				dialog.showModal();
-				document.body.style.overflow = "hidden"; // Prevent background scrolling
+				document.body.style.overflow = "hidden";
 			});
 
 			dialog.addEventListener("click", (e) => {
@@ -201,6 +412,7 @@ const shouldShowZoom = true;
 			});
 		}
 
+		// --- Visibility logic ---
 		const STORAGE_KEY = "showDiscourseImages";
 
 		const getPreference = (): boolean => {
@@ -212,21 +424,17 @@ const shouldShowZoom = true;
 
 		const updateVisibility = () => {
 			const show = !isOffline() && getPreference();
-			// Only toggle if we need to change state (to avoid interfering with inline script initial state if possible, though classList.toggle is safe)
 			figure.classList.toggle("hidden", !show);
 		};
 
-		// Initialize
 		updateVisibility();
 
-		// Listen for changes
 		window.addEventListener("online", updateVisibility);
 		window.addEventListener("offline", updateVisibility);
 		window.addEventListener("storage", (e) => {
 			if (e.key === STORAGE_KEY) updateVisibility();
 		});
 
-		// Listen for toggle events from ImageToggle
 		document.addEventListener("discourseImageToggled", updateVisibility);
 	}
 
@@ -255,5 +463,9 @@ const shouldShowZoom = true;
 
 	:global(.dark) .discourse-image img {
 		filter: brightness(0.92);
+	}
+
+	.carousel-slide {
+		transition: opacity 0.3s ease-in-out;
 	}
 </style>

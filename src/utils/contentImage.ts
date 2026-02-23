@@ -105,37 +105,84 @@ export function findContentImage(
 	frontmatter?: ContentImageFrontmatter,
 	title?: string,
 ): ContentImageData | undefined {
+	const images = findContentImages(id, frontmatter, title);
+	return images.length > 0 ? images[0] : undefined;
+}
+
+/**
+ * Finds all content images for a discourse by ID.
+ * Supports comma-separated values in frontmatter.image (e.g., "img1.svg, img2.svg").
+ * Falls back to convention-based discovery for all files matching {id}*.{ext}.
+ *
+ * @param id - Discourse ID (e.g., "an3.65", "sn56.11")
+ * @param frontmatter - Optional frontmatter data with image overrides
+ * @param title - Discourse title for default alt text
+ * @returns Array of ContentImageData (may be empty)
+ */
+export function findContentImages(
+	id: string,
+	frontmatter?: ContentImageFrontmatter,
+	title?: string,
+): ContentImageData[] {
 	// Normalize ID for file matching (lowercase, handle edge cases)
 	const normalizedId = id.toLowerCase();
 	const extensions = ["webp", "jpg", "jpeg", "png", "svg"];
 
-	// 1. Check for custom path in frontmatter
+	// 1. Check for custom path(s) in frontmatter — comma-separated support
 	if (frontmatter?.image) {
-		const resolved = resolveFrontmatterImage(frontmatter.image);
-		if (resolved) {
-			return {
-				image: resolved.image,
-				modulePath: resolved.modulePath,
-				caption: frontmatter.imageCaption,
-				alt: `Illustration for ${title || id}`,
-			};
+		const imageNames = frontmatter.image.split(",").map((s) => s.trim()).filter(Boolean);
+		const results: ContentImageData[] = [];
+
+		for (const imageName of imageNames) {
+			const resolved = resolveFrontmatterImage(imageName);
+			if (resolved) {
+				results.push({
+					image: resolved.image,
+					modulePath: resolved.modulePath,
+					caption: frontmatter.imageCaption,
+					alt: `Illustration for ${title || id}`,
+				});
+			}
 		}
+
+		if (results.length > 0) return results;
 	}
 
 	// 2. Try convention-based path: /src/assets/content-images/{id}.{ext}
+	//    Also discover additional images matching {id}-*.{ext}
+	const results: ContentImageData[] = [];
+
+	// Primary image: exact ID match
 	for (const ext of extensions) {
 		const path = `/src/assets/content-images/${normalizedId}.${ext}`;
 		if (imageModules[path]) {
-			return {
+			results.push({
 				image: imageModules[path].default,
 				modulePath: path,
 				caption: frontmatter?.imageCaption,
 				alt: `Illustration for ${title || id}`,
-			};
+			});
+			break; // Only one primary image per extension priority
 		}
 	}
 
-	return undefined;
+	// Additional images: {id}-*.{ext} (e.g., an10.61-vijjavimutti.svg)
+	const prefix = `/src/assets/content-images/${normalizedId}-`;
+	for (const [path, mod] of Object.entries(imageModules)) {
+		if (path.toLowerCase().startsWith(prefix)) {
+			// Avoid duplicates
+			if (!results.some((r) => r.modulePath === path)) {
+				results.push({
+					image: mod.default,
+					modulePath: path,
+					caption: frontmatter?.imageCaption,
+					alt: `Illustration for ${title || id}`,
+				});
+			}
+		}
+	}
+
+	return results;
 }
 
 /**
