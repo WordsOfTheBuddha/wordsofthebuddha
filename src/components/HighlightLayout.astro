@@ -86,12 +86,7 @@ const { title, description } = Astro.props;
 		</div>
 	</div>
 
-	<!-- Sign in prompt -->
-	<div id="highlight-signin" class="highlight-signin" style="display: none;">
-		<a href={`/signin?returnTo=${currentPath}`} class="signin-link"
-			>Sign in to highlight and add notes</a
-		>
-	</div>
+
 </div>
 
 <script>
@@ -261,7 +256,6 @@ const { title, description } = Astro.props;
 		}
 
 		menu.style.display = "none";
-		document.getElementById("highlight-signin")!.style.display = "none";
 
 		const target = e.target as HTMLElement;
 
@@ -294,21 +288,6 @@ const { title, description } = Astro.props;
 		// Show appropriate menu based on auth status
 		const isAuthenticated = rootElement?.dataset.authenticated === "true";
 
-		if (!isAuthenticated) {
-			const signinPrompt = document.getElementById("highlight-signin")!;
-			const { savedRange: newSavedRange } =
-				selectionHandler.updateMenuPosition(
-					selection,
-					signinPrompt,
-					rootElement,
-					currentRange,
-					menu,
-					highlighter
-				);
-			savedRange = newSavedRange;
-			return;
-		}
-
 		// Show menu and configure based on collapse intersection
 		menu.style.display = "block";
 		const { savedRange: newSavedRange } =
@@ -322,8 +301,17 @@ const { title, description } = Astro.props;
 			);
 		savedRange = newSavedRange;
 
-		// Show/hide highlight colors based on collapse intersection
-		updateHighlightingAvailability(intersectsCollapse);
+		if (!isAuthenticated) {
+			// Non-authenticated users can only copy
+			document.querySelectorAll(".color-swatch").forEach((swatch) => {
+				(swatch as HTMLElement).style.display = "none";
+			});
+			const eraserBtn = document.getElementById("highlight-eraser");
+			if (eraserBtn) eraserBtn.style.display = "none";
+		} else {
+			// Show/hide highlight colors based on collapse intersection
+			updateHighlightingAvailability(intersectsCollapse);
+		}
 
 		// Add outside click listener
 		setupOutsideClickListener();
