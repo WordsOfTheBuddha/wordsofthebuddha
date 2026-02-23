@@ -1,0 +1,400 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1000" width="920" height="1000">
+    <defs>
+        <!-- Background gradient (warm dark, getting luminous at bottom) -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="50%" stop-color="#101830" />
+            <stop offset="100%" stop-color="#121a28" />
+        </linearGradient>
+
+        <!-- Liberation radial glow (golden ocean of light) -->
+        <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.5" />
+            <stop offset="20%" stop-color="#daa520" stop-opacity="0.2" />
+            <stop offset="50%" stop-color="#c89420" stop-opacity="0.07" />
+            <stop offset="100%" stop-color="#b88820" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Golden ocean depth gradient -->
+        <linearGradient id="oceanGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#6a5020" stop-opacity="0.12" />
+            <stop offset="50%" stop-color="#504018" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#3a2c10" stop-opacity="0.28" />
+        </linearGradient>
+
+        <!-- Chain connection gradient (top to bottom, getting warmer) -->
+        <linearGradient id="chainDown" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#506070" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="#a08030" stop-opacity="0.6" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow3" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="14" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="warmHaze" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="18" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <!-- Stage node gradients (top=cooler → bottom=warmer golden) -->
+        <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1c2836" />
+            <stop offset="100%" stop-color="#1a2430" />
+        </linearGradient>
+        <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e2a34" />
+            <stop offset="100%" stop-color="#1c2630" />
+        </linearGradient>
+        <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#202c32" />
+            <stop offset="100%" stop-color="#1e282e" />
+        </linearGradient>
+        <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#242e30" />
+            <stop offset="100%" stop-color="#222a2c" />
+        </linearGradient>
+        <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#28302e" />
+            <stop offset="100%" stop-color="#262c2a" />
+        </linearGradient>
+        <linearGradient id="stg6" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2c302a" />
+            <stop offset="100%" stop-color="#2a2e28" />
+        </linearGradient>
+        <linearGradient id="stg7" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#303228" />
+            <stop offset="100%" stop-color="#2e3026" />
+        </linearGradient>
+        <linearGradient id="stg8" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#343426" />
+            <stop offset="100%" stop-color="#323224" />
+        </linearGradient>
+        <linearGradient id="stg9" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3a3624" />
+            <stop offset="100%" stop-color="#383422" />
+        </linearGradient>
+
+        <!-- Simile bar gradient -->
+        <linearGradient id="simGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#141820" stop-opacity="0" />
+            <stop offset="15%" stop-color="#141820" />
+            <stop offset="85%" stop-color="#141820" />
+            <stop offset="100%" stop-color="#141820" stop-opacity="0" />
+        </linearGradient>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1000" fill="url(#bg)" />
+
+    <!-- Subtle decorative circles (warm rings around the golden ocean) -->
+    <circle cx="460" cy="780" r="380" fill="none" stroke="#ffd700" stroke-opacity="0.01"
+        stroke-width="0.8" />
+    <circle cx="460" cy="780" r="320" fill="none" stroke="#ffd700" stroke-opacity="0.015"
+        stroke-width="0.6" />
+    <circle cx="460" cy="780" r="260" fill="none" stroke="#ffd700" stroke-opacity="0.02"
+        stroke-width="0.5" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="38" text-anchor="middle" fill="#d8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">AN 10.61 — AVIJJĀ SUTTA</text>
+    <text x="460" y="60" text-anchor="middle" fill="#a09070"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">Supporting Conditions for True Knowledge &amp; Liberation</text>
+
+    <!-- Thin decorative line under title -->
+    <line x1="280" y1="74" x2="640" y2="74" stroke="#a09070" stroke-opacity="0.3"
+        stroke-width="0.6" />
+
+    <!-- ============ DESCENDING CHAIN ============ -->
+    <!-- Vertical connecting line (behind nodes) -->
+    <line x1="460" y1="100" x2="460" y2="700" stroke="url(#chainDown)" stroke-width="2"
+        stroke-dasharray="none" opacity="0.35" />
+
+    <!-- ── 1. ASSOCIATION WITH PERSONS OF INTEGRITY (sappurisasaṁseva) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="100" width="300" height="48" rx="10" fill="url(#stg1)" stroke="#486878"
+            stroke-width="1" stroke-opacity="0.45" />
+    </g>
+    <text x="460" y="121" text-anchor="middle" fill="#b0c0d0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Association
+        with the Wise</text>
+    <text x="460" y="140" text-anchor="middle" fill="#7898a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">sappurisasaṁseva</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 156 L 460 167 L 471 156" stroke="#608088" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.40" />
+
+    <!-- ── 2. HEARING THE TRUE DHAMMA (saddhammasavana) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="173" width="300" height="48" rx="10" fill="url(#stg2)" stroke="#4a6878"
+            stroke-width="1" stroke-opacity="0.46" />
+    </g>
+    <text x="460" y="194" text-anchor="middle" fill="#b4c4d0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Hearing
+        the True Dhamma</text>
+    <text x="460" y="213" text-anchor="middle" fill="#7898a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">saddhammasavana</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 229 L 460 240 L 471 229" stroke="#608888" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.42" />
+
+    <!-- ── 3. FAITH (saddhā) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="246" width="300" height="48" rx="10" fill="url(#stg3)" stroke="#4c6878"
+            stroke-width="1" stroke-opacity="0.47" />
+    </g>
+    <text x="460" y="267" text-anchor="middle" fill="#b8c8cc"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Faith</text>
+    <text x="460" y="286" text-anchor="middle" fill="#80a0a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">saddhā</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 302 L 460 313 L 471 302" stroke="#609080" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.44" />
+
+    <!-- ── 4. WISE ATTENTION (yoniso manasikāra) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="319" width="300" height="48" rx="10" fill="url(#stg4)" stroke="#507060"
+            stroke-width="1" stroke-opacity="0.48" />
+    </g>
+    <text x="460" y="340" text-anchor="middle" fill="#bcccc0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Wise
+        Attention</text>
+    <text x="460" y="359" text-anchor="middle" fill="#88a898"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">yoniso manasikāra</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 375 L 460 386 L 471 375" stroke="#709878" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.46" />
+
+    <!-- ── 5. CLEAR PRESENT MOMENT AWARENESS (satisampajañña) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="392" width="300" height="48" rx="10" fill="url(#stg5)" stroke="#587858"
+            stroke-width="1" stroke-opacity="0.49" />
+    </g>
+    <text x="460" y="413" text-anchor="middle" fill="#c0ccb0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">Clear
+        Present Moment Awareness</text>
+    <text x="460" y="432" text-anchor="middle" fill="#90a888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">satisampajañña</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 448 L 460 459 L 471 448" stroke="#809868" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.48" />
+
+    <!-- ── 6. SENSE RESTRAINT (indriyasaṁvara) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="465" width="300" height="48" rx="10" fill="url(#stg6)" stroke="#607850"
+            stroke-width="1" stroke-opacity="0.50" />
+    </g>
+    <text x="460" y="486" text-anchor="middle" fill="#c4c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Sense
+        Restraint</text>
+    <text x="460" y="505" text-anchor="middle" fill="#98a880"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">indriyasaṁvara</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 521 L 460 532 L 471 521" stroke="#90a058" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.50" />
+
+    <!-- ── 7. THREE TYPES OF GOOD CONDUCT (sucarita) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="538" width="300" height="48" rx="10" fill="url(#stg7)" stroke="#687848"
+            stroke-width="1" stroke-opacity="0.52" />
+    </g>
+    <text x="460" y="559" text-anchor="middle" fill="#c8c898"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Three
+        Types of Good Conduct</text>
+    <text x="460" y="578" text-anchor="middle" fill="#a0a870"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">sucarita</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 594 L 460 605 L 471 594" stroke="#a0a850" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.52" />
+
+    <!-- ── 8. FOUR ESTABLISHMENTS OF MINDFULNESS (cattāro satipaṭṭhānā) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="611" width="300" height="48" rx="10" fill="url(#stg8)" stroke="#787840"
+            stroke-width="1" stroke-opacity="0.54" />
+    </g>
+    <text x="460" y="632" text-anchor="middle" fill="#ccc490"
+        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">Four
+        Establishments of Mindfulness</text>
+    <text x="460" y="651" text-anchor="middle" fill="#a8a068"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">cattāro satipaṭṭhānā</text>
+
+    <!-- Downward arrow -->
+    <path d="M 449 667 L 460 678 L 471 667" stroke="#b0a848" stroke-width="1.4" fill="none"
+        stroke-linejoin="round" opacity="0.54" />
+
+    <!-- ── 9. SEVEN FACTORS OF AWAKENING (satta bojjhaṅgā) ── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="684" width="300" height="48" rx="10" fill="url(#stg9)" stroke="#887840"
+            stroke-width="1.2" stroke-opacity="0.56" />
+    </g>
+    <text x="460" y="705" text-anchor="middle" fill="#d0c088"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">Seven
+        Factors of Awakening</text>
+    <text x="460" y="724" text-anchor="middle" fill="#b0a060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        font-style="italic">satta bojjhaṅgā</text>
+
+    <!-- Final downward arrow into the golden ocean -->
+    <path d="M 449 740 L 460 754 L 471 740" stroke="#c8a840" stroke-width="1.5" fill="none"
+        stroke-linejoin="round" opacity="0.58" />
+
+    <!-- ============ TRUE KNOWLEDGE & LIBERATION — THE GOLDEN OCEAN ============ -->
+    <g>
+        <!-- Very wide outer golden haze -->
+        <ellipse cx="460" cy="810" rx="340" ry="90" fill="url(#libGlow)" />
+
+        <!-- Ocean body (wide warm fill beneath the surface) -->
+        <rect x="120" y="775" width="680" height="80" rx="0" fill="url(#oceanGold)" opacity="0.6" />
+
+        <!-- Golden ocean surface shimmer lines -->
+        <g opacity="0.3">
+            <path
+                d="M 140 770 Q 200 762, 260 770 Q 320 778, 380 770 Q 440 762, 460 770 Q 480 778, 540 770 Q 600 762, 660 770 Q 720 778, 780 770"
+                stroke="#daa520" stroke-width="1" fill="none" />
+        </g>
+        <g opacity="0.22">
+            <path
+                d="M 160 777 Q 220 772, 280 777 Q 340 782, 400 777 Q 440 772, 500 777 Q 560 782, 620 777 Q 680 772, 740 777"
+                stroke="#c89420" stroke-width="0.8" fill="none" />
+        </g>
+        <g opacity="0.14">
+            <path
+                d="M 200 783 Q 260 779, 320 783 Q 380 787, 420 783 Q 460 779, 520 783 Q 580 787, 640 783 Q 700 779, 720 783"
+                stroke="#b08020" stroke-width="0.6" fill="none" />
+        </g>
+
+        <!-- Warm luminous wisps -->
+        <g opacity="0.14" filter="url(#warmHaze)">
+            <ellipse cx="460" cy="800" rx="100" ry="18" fill="#e0c060" />
+            <ellipse cx="380" cy="815" rx="70" ry="14" fill="#d0a840" />
+            <ellipse cx="540" cy="810" rx="75" ry="13" fill="#d8b050" />
+            <ellipse cx="440" cy="825" rx="85" ry="16" fill="#c89830" />
+            <ellipse cx="500" cy="795" rx="65" ry="13" fill="#d8b050" />
+            <ellipse cx="320" cy="818" rx="55" ry="12" fill="#c09030" />
+            <ellipse cx="600" cy="815" rx="60" ry="13" fill="#c89830" />
+            <ellipse cx="250" cy="800" rx="40" ry="10" fill="#b08028" />
+            <ellipse cx="670" cy="800" rx="40" ry="10" fill="#b08028" />
+        </g>
+
+        <!-- Far-reaching radiance -->
+        <g opacity="0.07" filter="url(#glow3)">
+            <ellipse cx="280" cy="805" rx="60" ry="20" fill="#e8c860" />
+            <ellipse cx="640" cy="805" rx="60" ry="20" fill="#e8c860" />
+            <ellipse cx="460" cy="835" rx="80" ry="18" fill="#dab848" />
+            <ellipse cx="360" cy="840" rx="50" ry="14" fill="#d0a840" />
+            <ellipse cx="560" cy="840" rx="50" ry="14" fill="#d0a840" />
+        </g>
+
+        <!-- Outer golden boundary -->
+        <ellipse cx="460" cy="805" rx="200" ry="48" fill="none" stroke="#daa520" stroke-width="1.5"
+            stroke-opacity="0.2" filter="url(#glow2)" />
+        <!-- Mid ring -->
+        <ellipse cx="460" cy="805" rx="150" ry="38" fill="none" stroke="#c8a020" stroke-width="1"
+            stroke-opacity="0.15" filter="url(#glow1)" />
+        <!-- Inner radiant core -->
+        <ellipse cx="460" cy="805" rx="110" ry="30" fill="#ffd700" fill-opacity="0.04"
+            stroke="#daa520" stroke-width="1.8" stroke-opacity="0.4" filter="url(#glow1)" />
+
+        <!-- Text -->
+        <text x="460" y="798" text-anchor="middle" fill="#ffd700"
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold"
+            letter-spacing="2" filter="url(#glow1)">TRUE KNOWLEDGE</text>
+        <text x="460" y="816" text-anchor="middle" fill="#e8c040"
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold"
+            letter-spacing="2" filter="url(#glow1)">&amp; LIBERATION</text>
+        <text x="460" y="835" text-anchor="middle" fill="#b8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="13"
+            font-style="italic">vijjāvimutti</text>
+    </g>
+
+    <!-- ============ SIMILE BAR ============ -->
+    <rect x="100" y="880" width="720" height="66" rx="8" fill="url(#simGrad)" stroke="#2a3838"
+        stroke-width="0.8" stroke-opacity="0.4" />
+    <text x="460" y="900" text-anchor="middle" fill="#708068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="2">WATER
+        CASCADE SIMILE</text>
+    <text x="460" y="920" text-anchor="middle" fill="#a0b898"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        "Like a great downpour atop a mountain, the cascading water</text>
+    <text x="460" y="938" text-anchor="middle" fill="#a0b898"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">fills
+        hollows, ponds, streams, and rivers — until it reaches the great ocean."</text>
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <text x="460" y="975" text-anchor="middle" fill="#485840"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">Aṅguttara
+        Nikāya 10.61</text>
+
+    <!-- ============ DECORATIVE SIDE ANNOTATIONS ============ -->
+    <text x="290" y="420" text-anchor="middle" fill="#6a9070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        transform="rotate(-90, 290, 420)">cascading clarity</text>
+
+    <text x="640" y="420" text-anchor="middle" fill="#6a9070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        transform="rotate(-90, 640, 420)">each nourishing the next</text>
+
+    <!-- ============ SIDE ACCENT DOTS ============ -->
+    <!-- Left side dots (top=cooler → bottom=warmer golden) -->
+    <circle cx="305" cy="124" r="3" fill="#508888" opacity="0.06" filter="url(#glow1)" />
+    <circle cx="305" cy="197" r="3" fill="#509880" opacity="0.07" filter="url(#glow1)" />
+    <circle cx="305" cy="270" r="3" fill="#60a078" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="305" cy="343" r="3" fill="#70a068" opacity="0.09" filter="url(#glow1)" />
+    <circle cx="305" cy="416" r="3" fill="#80a058" opacity="0.10" filter="url(#glow1)" />
+    <circle cx="305" cy="489" r="3" fill="#90a050" opacity="0.11" filter="url(#glow1)" />
+    <circle cx="305" cy="562" r="3" fill="#a0a048" opacity="0.12" filter="url(#glow1)" />
+    <circle cx="305" cy="635" r="3" fill="#b0a040" opacity="0.14" filter="url(#glow1)" />
+    <circle cx="305" cy="708" r="3" fill="#c0a038" opacity="0.16" filter="url(#glow1)" />
+
+    <!-- Right side dots -->
+    <circle cx="615" cy="124" r="3" fill="#508888" opacity="0.06" filter="url(#glow1)" />
+    <circle cx="615" cy="197" r="3" fill="#509880" opacity="0.07" filter="url(#glow1)" />
+    <circle cx="615" cy="270" r="3" fill="#60a078" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="615" cy="343" r="3" fill="#70a068" opacity="0.09" filter="url(#glow1)" />
+    <circle cx="615" cy="416" r="3" fill="#80a058" opacity="0.10" filter="url(#glow1)" />
+    <circle cx="615" cy="489" r="3" fill="#90a050" opacity="0.11" filter="url(#glow1)" />
+    <circle cx="615" cy="562" r="3" fill="#a0a048" opacity="0.12" filter="url(#glow1)" />
+    <circle cx="615" cy="635" r="3" fill="#b0a040" opacity="0.14" filter="url(#glow1)" />
+    <circle cx="615" cy="708" r="3" fill="#c0a038" opacity="0.16" filter="url(#glow1)" />
+</svg>
