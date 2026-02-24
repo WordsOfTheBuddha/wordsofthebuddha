@@ -7,7 +7,8 @@
 	height: 30vh;
 	background-color: var(--background-color);
 	border-top: 1px solid var(--popover-border);
-	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1),
+	box-shadow:
+		0 -4px 6px -1px rgba(0, 0, 0, 0.1),
 		0 -2px 4px -1px rgba(0, 0, 0, 0.06);
 	transform: translateY(100%);
 	transition: transform 0.3s ease-in-out;
@@ -17,7 +18,8 @@
 }
 
 html.dark .bottom-popover {
-	box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.3),
+	box-shadow:
+		0 -4px 6px -1px rgba(0, 0, 0, 0.3),
 		0 -2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
@@ -275,6 +277,13 @@ html.dark .tooltip-content .title {
 	padding-bottom: 1rem;
 }
 
+/* Single-word lookup: lemma groups stacked vertically */
+.lemma-groups {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
 /* Compound word styling */
 .compound-content {
 	display: flex;
@@ -307,6 +316,43 @@ html.dark .tooltip-content .title {
 	color: var(--primary-color);
 	margin-bottom: 0.25rem;
 	font-family: "Gentium Plus", serif;
+}
+
+.constituent-pos {
+	font-weight: 400;
+	font-size: 0.85rem;
+	color: var(--secondary-color);
+	font-family: inherit;
+	opacity: 0.85;
+}
+
+/* Collapsed secondary lemmas */
+.also-matched {
+	margin-top: 0.25rem;
+	border-top: 1px solid var(--auth-input-border);
+	padding-top: 0.75rem;
+}
+
+.also-matched summary {
+	cursor: pointer;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+	user-select: none;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin-bottom: 0.5rem;
+}
+
+.also-matched summary::before {
+	content: "›";
+	display: inline-block;
+	transition: transform 0.15s ease;
+}
+
+.also-matched[open] summary::before {
+	transform: rotate(90deg);
 }
 
 .constituent-meanings {

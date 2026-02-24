@@ -587,35 +587,114 @@ import "../styles/bottomDrawer.css";
 	function createUnifiedTooltipContent(word: string, data: any) {
 		const { definitions } = data;
 
+		// Group definitions by base lemma (e.g. "sakka 1" → "sakka", "vutta 1.1" → "vutta", "sakkāya" → "sakkāya")
+		const groupMap = new Map<string, any[]>();
+		definitions.forEach((def: any) => {
+			const baseLemma = def.lemma
+				? def.lemma.replace(/ \d+(\.\d+)*$/, "")
+				: word;
+			if (!groupMap.has(baseLemma)) groupMap.set(baseLemma, []);
+			groupMap.get(baseLemma)!.push(def);
+		});
+
+		// Helpers for prefix scoring
+		const normalize = (s: string) => s.toLowerCase().normalize("NFC");
+		// Strip Pali/Latin diacritics: NFD decompose then remove combining marks
+		const stripDiacritics = (s: string) =>
+			s
+				.normalize("NFD")
+				.replace(/[\u0300-\u036f]/g, "")
+				.toLowerCase();
+		const commonPrefixLen = (a: string, b: string) => {
+			let i = 0;
+			while (i < a.length && i < b.length && a[i] === b[i]) i++;
+			return i;
+		};
+		const normWord = normalize(word);
+		const strippedWord = stripDiacritics(word);
+
+		// Sort by: 1st key = diacritic-stripped prefix length (catches hoti≈hotīti),
+		//          2nd key = exact prefix length as tie-breaker (sakkāya > sakka for sakkāyañca)
+		const sortedGroups = Array.from(groupMap.entries()).sort(([a], [b]) => {
+			const strippedA = commonPrefixLen(stripDiacritics(a), strippedWord);
+			const strippedB = commonPrefixLen(stripDiacritics(b), strippedWord);
+			if (strippedB !== strippedA) return strippedB - strippedA;
+			return (
+				commonPrefixLen(normalize(b), normWord) -
+				commonPrefixLen(normalize(a), normWord)
+			);
+		});
+
+		// Split into primary (≥60% stripped prefix match) and secondary (<60%) groups.
+		// Always keep at least the best match in primary.
+		const primary: [string, any[]][] = [];
+		const secondary: [string, any[]][] = [];
+		for (const [lemma, defs] of sortedGroups) {
+			const prefixLen = commonPrefixLen(
+				stripDiacritics(lemma),
+				strippedWord,
+			);
+			const matchRatio =
+				strippedWord.length > 0 ? prefixLen / strippedWord.length : 1;
+			if (matchRatio >= 0.6 || primary.length === 0) {
+				primary.push([lemma, defs]);
+			} else {
+				secondary.push([lemma, defs]);
+			}
+		}
+
+		const isSingleGroup = primary.length === 1 && secondary.length === 0;
+		const topDef = (primary[0] ?? secondary[0])[1][0];
+
+		const renderGroup = (
+			[lemma, defs]: [string, any[]],
+			showPos: boolean,
+		) => `
+			<div class="constituent-group">
+				<div class="constituent-header">
+					${lemma}${defs[0].pos && showPos ? `<span class="constituent-pos"> ${defs[0].pos}</span>` : ""}:
+				</div>
+				<div class="constituent-meanings">
+					${defs
+						.map(
+							(def: any, idx: number) => `
+						<div class="meaning-item">${idx + 1}. ${def.meaning}${def.meaning_lit ? `; <em>lit. ${def.meaning_lit}</em>` : ""}</div>
+					`,
+						)
+						.join("")}
+				</div>
+			</div>
+		`;
+
+		const showPos = !isSingleGroup;
+
 		return `
 			<div class="tooltip-content">
 				<div class="title">
 					<span>${word}</span>
 					${
-						definitions[0].construction
-							? `
-						<span>
-							<span class="construction">${definitions[0].construction.replace(/\n/g, " ; ")}</span>
-						</span>`
+						isSingleGroup && topDef.construction
+							? `<span><span class="construction">${topDef.construction.replace(/\n/g, " ; ")}</span></span>`
 							: ""
 					}
-					<span>
-						${definitions[0].pos ? `<span class="grammar">${definitions[0].pos}</span>` : ""}
-					</span>
+					${
+						isSingleGroup && topDef.pos
+							? `<span><span class="grammar">${topDef.pos}</span></span>`
+							: ""
+					}
 				</div>
-				<div class="dpd-content compound-content">
-					<div class="constituent-group">
-						<div class="constituent-header">${definitions[0] ? definitions[0].lemma.replace(/ \d+$/, "") : word}:</div>
-						<div class="constituent-meanings">
-							${definitions
-								.map(
-									(def: any, idx: number) => `
-								<div class="meaning-item">${idx + 1}. ${def.meaning}${def.meaning_lit ? `; <em>lit. ${def.meaning_lit}</em>` : ""}</div>
-							`,
-								)
-								.join("")}
-						</div>
-					</div>
+				<div class="dpd-content lemma-groups">
+					${primary.map((g) => renderGroup(g, showPos)).join("")}
+					${
+						secondary.length > 0
+							? `
+					<details class="also-matched">
+						<summary>Also matched</summary>
+						${secondary.map((g) => renderGroup(g, true)).join("")}
+					</details>
+					`
+							: ""
+					}
 				</div>
 			</div>
 		`;
