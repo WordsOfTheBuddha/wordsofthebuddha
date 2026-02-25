@@ -1,6 +1,6 @@
 ---
 title: Aparalakuṇḍakabhaddiya sutta - Another Discourse with Lakuṇḍaka Bhaddiya
-description: Seeing the venerable Lakuṇḍaka Bhaddiya being treated with contempt by the bhikkhus for his stunted appearance, the Blessed One reveals his great supernormal power and attainment of Arahantship with an inspired verse.
+description: Seeing the venerable Lakuṇḍaka Bhaddiya being treated with contempt by the bhikkhus for his stunted appearance, the Blessed One reveals his great psychic power and attainment of Arahantship with an inspired verse.
 qualities: psychic power, imperturbable
 theme: inspiration
 slug: ud7.5
