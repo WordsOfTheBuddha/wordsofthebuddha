@@ -1,0 +1,272 @@
+---
+/**
+ * SacredMandala — A scroll-reactive SVG mandala for the home hero.
+ *
+ * Renders concentric sacred geometry (lotus petals, Dharmachakra spokes,
+ * radiating circles) that rotates gently as the user scrolls.
+ * Purely decorative; fully respects prefers-reduced-motion.
+ */
+---
+
+<div class="mandala-container" aria-hidden="true">
+	<svg
+		class="mandala-svg"
+		viewBox="-200 -200 400 400"
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+	>
+		{/* ── Outermost faint concentric rings ── */}
+		<circle cx="0" cy="0" r="190" class="mandala-ring ring-outer"></circle>
+		<circle cx="0" cy="0" r="170" class="mandala-ring ring-outer"></circle>
+		<circle cx="0" cy="0" r="150" class="mandala-ring ring-mid"></circle>
+
+		{/* ── Lotus petals — 8 petals for the Eightfold Path ── */}
+		<g class="mandala-petals">
+			{
+				[...Array(8)].map((_, i) => {
+					const angle = i * 45;
+					return (
+						<g transform={`rotate(${angle})`}>
+							<path
+								d="M0,-130 C25,-100 25,-60 0,-40 C-25,-60 -25,-100 0,-130Z"
+								class="mandala-petal"
+							/>
+						</g>
+					);
+				})
+			}
+		</g>
+
+		{/* ── Inner lotus — smaller, rotated 22.5° ── */}
+		<g class="mandala-inner-petals" transform="rotate(22.5)">
+			{
+				[...Array(8)].map((_, i) => {
+					const angle = i * 45;
+					return (
+						<g transform={`rotate(${angle})`}>
+							<path
+								d="M0,-85 C15,-68 15,-45 0,-30 C-15,-45 -15,-68 0,-85Z"
+								class="mandala-petal-inner"
+							/>
+						</g>
+					);
+				})
+			}
+		</g>
+
+		{/* ── Dharmachakra spokes — 8 radiating lines ── */}
+		<g class="mandala-spokes">
+			{
+				[...Array(8)].map((_, i) => {
+					const angle = i * 45;
+					const rad = (angle * Math.PI) / 180;
+					const x1 = Math.cos(rad) * 22;
+					const y1 = Math.sin(rad) * 22;
+					const x2 = Math.cos(rad) * 140;
+					const y2 = Math.sin(rad) * 140;
+					return (
+						<line
+							x1={x1}
+							y1={y1}
+							x2={x2}
+							y2={y2}
+							class="mandala-spoke"
+						/>
+					);
+				})
+			}
+		</g>
+
+		{/* ── Center hub circles ── */}
+		<circle cx="0" cy="0" r="22" class="mandala-ring ring-hub"></circle>
+		<circle cx="0" cy="0" r="12" class="mandala-ring ring-center"></circle>
+		<circle cx="0" cy="0" r="4" class="mandala-dot"></circle>
+
+		{/* ── Subtle dot accents at petal tips ── */}
+		<g class="mandala-dots">
+			{
+				[...Array(8)].map((_, i) => {
+					const angle = i * 45;
+					const rad = (angle * Math.PI) / 180;
+					const cx = Math.cos(rad - Math.PI / 2) * 140;
+					const cy = Math.sin(rad - Math.PI / 2) * 140;
+					return (
+						<circle
+							cx={cx}
+							cy={cy}
+							r="2.5"
+							class="mandala-accent-dot"
+						/>
+					);
+				})
+			}
+		</g>
+
+		{/* ── Fine decorative arcs between outer petals ── */}
+		<g class="mandala-arcs" transform="rotate(22.5)">
+			{
+				[...Array(8)].map((_, i) => {
+					const angle = i * 45;
+					const rad = (angle * Math.PI) / 180;
+					const startAngle = rad - 0.18;
+					const endAngle = rad + 0.18;
+					const r = 160;
+					const x1 = Math.cos(startAngle) * r;
+					const y1 = Math.sin(startAngle) * r;
+					const x2 = Math.cos(endAngle) * r;
+					const y2 = Math.sin(endAngle) * r;
+					return (
+						<path
+							d={`M${x1},${y1} A${r},${r} 0 0,1 ${x2},${y2}`}
+							class="mandala-arc"
+						/>
+					);
+				})
+			}
+		</g>
+	</svg>
+</div>
+
+<style>
+	.mandala-container {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: min(90vw, 560px);
+		height: min(90vw, 560px);
+		pointer-events: none;
+		z-index: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* Vertically center behind the hero text */
+		margin-top: 2rem;
+	}
+
+	.mandala-svg {
+		width: 100%;
+		height: 100%;
+		will-change: transform;
+		transition: transform 0.1s linear;
+	}
+
+	/* ── Stroke styles ── */
+
+	/* Light mode */
+	.mandala-ring {
+		stroke-width: 0.5;
+	}
+	.ring-outer {
+		stroke: rgba(44, 44, 44, 0.06);
+	}
+	.ring-mid {
+		stroke: rgba(44, 44, 44, 0.08);
+	}
+	.ring-hub {
+		stroke: rgba(44, 44, 44, 0.1);
+		stroke-width: 0.7;
+	}
+	.ring-center {
+		stroke: rgba(44, 44, 44, 0.08);
+		stroke-width: 0.5;
+	}
+	.mandala-dot {
+		fill: rgba(44, 44, 44, 0.07);
+	}
+	.mandala-petal {
+		stroke: rgba(44, 44, 44, 0.07);
+		stroke-width: 0.6;
+		fill: rgba(44, 44, 44, 0.015);
+	}
+	.mandala-petal-inner {
+		stroke: rgba(44, 44, 44, 0.06);
+		stroke-width: 0.5;
+		fill: rgba(44, 44, 44, 0.01);
+	}
+	.mandala-spoke {
+		stroke: rgba(44, 44, 44, 0.05);
+		stroke-width: 0.4;
+	}
+	.mandala-accent-dot {
+		fill: rgba(44, 44, 44, 0.08);
+	}
+	.mandala-arc {
+		stroke: rgba(44, 44, 44, 0.06);
+		stroke-width: 0.5;
+	}
+
+	/* Dark mode — warm golden tones */
+	:global(html.dark) .ring-outer {
+		stroke: rgba(231, 220, 196, 0.07);
+	}
+	:global(html.dark) .ring-mid {
+		stroke: rgba(231, 220, 196, 0.09);
+	}
+	:global(html.dark) .ring-hub {
+		stroke: rgba(212, 116, 69, 0.12);
+	}
+	:global(html.dark) .ring-center {
+		stroke: rgba(212, 116, 69, 0.1);
+	}
+	:global(html.dark) .mandala-dot {
+		fill: rgba(212, 116, 69, 0.1);
+	}
+	:global(html.dark) .mandala-petal {
+		stroke: rgba(231, 220, 196, 0.08);
+		fill: rgba(231, 220, 196, 0.015);
+	}
+	:global(html.dark) .mandala-petal-inner {
+		stroke: rgba(212, 116, 69, 0.07);
+		fill: rgba(212, 116, 69, 0.01);
+	}
+	:global(html.dark) .mandala-spoke {
+		stroke: rgba(231, 220, 196, 0.05);
+	}
+	:global(html.dark) .mandala-accent-dot {
+		fill: rgba(212, 116, 69, 0.1);
+	}
+	:global(html.dark) .mandala-arc {
+		stroke: rgba(231, 220, 196, 0.07);
+	}
+
+	/* Reduced motion — no scroll transformation */
+	@media (prefers-reduced-motion: reduce) {
+		.mandala-svg {
+			will-change: auto;
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	const svg = document.querySelector(".mandala-svg") as SVGSVGElement | null;
+	if (svg) {
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+
+		if (!prefersReducedMotion) {
+			let ticking = false;
+
+			const onScroll = () => {
+				if (!ticking) {
+					ticking = true;
+					requestAnimationFrame(() => {
+						const scrollY = window.scrollY;
+						// Gentle rotation: ~18° per 1000px of scroll
+						const rotation = scrollY * 0.018;
+						// Subtle scale pulse: oscillates between 1.0 and 1.03
+						const scale = 1 + Math.sin(scrollY * 0.002) * 0.03;
+						svg.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+						ticking = false;
+					});
+				}
+			};
+
+			window.addEventListener("scroll", onScroll, { passive: true });
+			// Set initial state
+			onScroll();
+		}
+	}
+</script>
