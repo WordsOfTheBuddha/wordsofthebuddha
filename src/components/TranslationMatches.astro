@@ -1697,11 +1697,14 @@
 
       // Only store up to MAX for diversity selection
       if (group.discourses.length < THRESHOLDS.MAX_DISCOURSES_TO_STORE) {
-        // Compute match quality: ratio of covered positions to total range
-        // Higher = more exact match (1.0 = every word in range is covered by n-grams)
-        const entryRangeLen = m.entryEndIndex - m.entryStartIndex + 1;
+        // Compute match quality: ratio of covered positions to TOTAL entry word count
+        // Using the full entry length as denominator means a match that covers the entire
+        // entry (short paragraph fully matched) scores higher than the same phrase matched
+        // within a much longer entry. This ensures e.g. SN12.46 ¶9 (full entry matched)
+        // ranks above MN27 ¶53 (same phrase in a 40-word entry).
+        const totalEntryWords = m.entry.wordCount > 0 ? m.entry.wordCount : (m.entryEndIndex - m.entryStartIndex + 1);
         const coveredCount = m.entryCoveredPositions instanceof Set ? m.entryCoveredPositions.size : 0;
-        const quality = entryRangeLen > 0 ? coveredCount / entryRangeLen : 0;
+        const quality = totalEntryWords > 0 ? coveredCount / totalEntryWords : 0;
 
         group.discourses.push({
           suttaId: m.entry.source.suttaId,
