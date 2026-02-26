@@ -1,5 +1,8 @@
 ---
-title: Piṇḍola sutta
+title: Piṇḍola sutta - Piṇḍola
+description: Seeing the venerable Piṇḍola Bhāradvāja sitting nearby, fully dedicated to strict ascetic practice and deep meditation, the Buddha delivers an inspired utterance summarizing the foundational conduct that forms the heart of the Buddhas' teachings.
+qualities: contentment
+theme: inspiration
 slug: ud4.6
 ---
 
