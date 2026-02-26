@@ -1,6 +1,6 @@
 ---
 title: Sāriputta sutta - Sāriputta
-description: Seeing Venerable Sāriputta sitting in a meditation posture, content, secluded, disentangled and with energy aroused for cultivation of the mind, the Buddha expresses an inspired utterance.
+description: Seeing venerable Sāriputta sitting in a meditation posture, content, secluded, disentangled and with energy aroused for cultivation of the mind, the Buddha expresses an inspired utterance.
 qualities: sorrow-free, mindfulness, tranquility, contentment, solitude, rousing of energy, cultivation
 theme: inspiration, wisdom
 slug: ud4.7
