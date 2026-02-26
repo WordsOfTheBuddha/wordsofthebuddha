@@ -1,0 +1,240 @@
+---
+/**
+ * CollectionExportButton.astro
+ *
+ * Renders a "Download as PDF" button for a collection or sub-collection page.
+ * On click it requests /api/export/<slug> and triggers a browser download.
+ *
+ * Props:
+ *   collectionSlug  – the collection identifier (e.g. "snp2", "sn1-11", "dhp")
+ *   label           – optional override for the button label
+ */
+
+interface Props {
+	collectionSlug: string;
+	label?: string;
+}
+
+const { collectionSlug, label = "Download as PDF" } = Astro.props;
+---
+
+<div class="export-wrapper" data-export-slug={collectionSlug}>
+	<button
+		type="button"
+		class="export-btn"
+		aria-label={`Download ${label} for ${collectionSlug.toUpperCase()}`}
+		title="Generate and download a PDF of this collection"
+	>
+		<!-- Download icon -->
+		<svg
+			class="export-icon"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+			></path>
+		</svg>
+		<span class="export-label">{label}</span>
+		<!-- Spinner (hidden by default) -->
+		<svg
+			class="export-spinner"
+			viewBox="0 0 24 24"
+			fill="none"
+			aria-hidden="true"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<circle
+				class="spinner-track"
+				cx="12"
+				cy="12"
+				r="10"
+				stroke="currentColor"
+				stroke-width="3"></circle>
+			<path
+				class="spinner-arc"
+				d="M12 2a10 10 0 0110 10"
+				stroke="currentColor"
+				stroke-width="3"
+				stroke-linecap="round"></path>
+		</svg>
+	</button>
+	<p class="export-status" aria-live="polite"></p>
+</div>
+
+<style>
+	.export-wrapper {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.25rem;
+		position: relative; /* so status can be absolutely positioned */
+	}
+
+	.export-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35em;
+		padding: 0.3rem 0.75rem;
+		font-size: 0.8rem;
+		font-family: inherit;
+		color: var(--text-muted, #666);
+		background: transparent;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.2));
+		border-radius: 9999px;
+		cursor: pointer;
+		transition:
+			color 0.15s,
+			border-color 0.15s,
+			background 0.15s;
+		white-space: nowrap;
+	}
+
+	.export-btn:hover:not(:disabled) {
+		color: var(--primary-color, #6b21a8);
+		border-color: var(--primary-color, #6b21a8);
+		background: var(--surface-paper, #faf9f6);
+	}
+
+	.export-btn:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.export-icon {
+		width: 1em;
+		height: 1em;
+		flex-shrink: 0;
+	}
+
+	/* Spinner — hidden until .is-loading state */
+	.export-spinner {
+		display: none;
+		width: 1em;
+		height: 1em;
+		flex-shrink: 0;
+		animation: spin 0.9s linear infinite;
+	}
+	.export-btn.is-loading .export-icon {
+		display: none;
+	}
+	.export-btn.is-loading .export-spinner {
+		display: block;
+	}
+	.export-btn.is-loading .export-label {
+		/* Keep label visible while loading so button doesn't shrink */
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.spinner-track {
+		opacity: 0.25;
+	}
+
+	.export-status {
+		position: absolute;
+		top: calc(100% + 0.2rem);
+		left: 0;
+		white-space: nowrap;
+		font-size: 0.72rem;
+		color: var(--text-muted, #888);
+		pointer-events: none;
+	}
+	.export-status.error {
+		color: #c0392b;
+	}
+</style>
+
+<script>
+	function initExportButton(wrapper: HTMLElement) {
+		const slug = wrapper.dataset.exportSlug;
+		if (!slug) return;
+
+		const btn = wrapper.querySelector<HTMLButtonElement>(".export-btn");
+		const labelEl = wrapper.querySelector<HTMLSpanElement>(".export-label");
+		const statusEl =
+			wrapper.querySelector<HTMLParagraphElement>(".export-status");
+
+		if (!btn || !labelEl || !statusEl) return;
+
+		const originalLabel = labelEl.textContent ?? "Download as PDF";
+
+		btn.addEventListener("click", async () => {
+			if (btn.disabled) return;
+
+			// ── Loading state ──────────────────────────────────────────────
+			btn.disabled = true;
+			btn.classList.add("is-loading");
+			labelEl.textContent = "Generating…";
+			statusEl.textContent = "";
+			statusEl.classList.remove("error");
+
+			try {
+				const response = await fetch(`/api/export/${slug}`);
+
+				if (!response.ok) {
+					let detail = response.statusText;
+					try {
+						const body = await response.json();
+						detail = body.error ?? detail;
+					} catch {}
+					throw new Error(detail);
+				}
+
+				// ── Stream the PDF blob and trigger download ───────────────
+				const blob = await response.blob();
+				const objectUrl = URL.createObjectURL(blob);
+
+				// Try to get filename from Content-Disposition header
+				const disposition =
+					response.headers.get("Content-Disposition") ?? "";
+				const nameMatch = /filename="([^"]+)"/.exec(disposition);
+				const filename = nameMatch?.[1] ?? `${slug}.pdf`;
+
+				const anchor = document.createElement("a");
+				anchor.href = objectUrl;
+				anchor.download = filename;
+				document.body.appendChild(anchor);
+				anchor.click();
+				document.body.removeChild(anchor);
+
+				// Clean up after a short delay
+				setTimeout(() => URL.revokeObjectURL(objectUrl), 5_000);
+
+				statusEl.textContent = "";
+			} catch (err) {
+				const msg = err instanceof Error ? err.message : String(err);
+				statusEl.textContent = `Error: ${msg}`;
+				statusEl.classList.add("error");
+			} finally {
+				// ── Restore button ─────────────────────────────────────────
+				btn.disabled = false;
+				btn.classList.remove("is-loading");
+				labelEl.textContent = originalLabel;
+			}
+		});
+	}
+
+	// Initialise all export buttons on the page (handles Astro's view transitions)
+	function initAll() {
+		document
+			.querySelectorAll<HTMLElement>("[data-export-slug]")
+			.forEach(initExportButton);
+	}
+
+	document.addEventListener("DOMContentLoaded", initAll);
+	document.addEventListener("astro:page-load", initAll);
+</script>

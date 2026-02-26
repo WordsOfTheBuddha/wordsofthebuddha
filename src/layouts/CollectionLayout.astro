@@ -6,6 +6,7 @@ import type { DirectoryStructure } from "../types/directory";
 import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import CollectionNavigation from "../components/CollectionNavigation.astro";
+import CollectionExportButton from "../components/CollectionExportButton.astro";
 
 interface Props {
 	title: string;
@@ -57,7 +58,8 @@ function getContentCount(slug: string): number {
 
 	if (pathParts.length === 1) {
 		const parentKey = Object.keys(directoryStructureWithCounts).find(
-			(key) => directoryStructureWithCounts[key]?.children?.[pathParts[0]]
+			(key) =>
+				directoryStructureWithCounts[key]?.children?.[pathParts[0]],
 		);
 
 		if (parentKey) {
@@ -95,12 +97,7 @@ function getContentCount(slug: string): number {
 }
 ---
 
-<Layout
-	title={title}
-	description={description}
-	showAuth={true}
-	showFilter={!hasChildren}
->
+<Layout title={title} description={description} showAuth={true}>
 	<main class="container">
 		{
 			hasChildren && (
@@ -131,21 +128,28 @@ function getContentCount(slug: string): number {
 							Discourses
 						</button>
 					</div>
-					<div
-						id="filter-wrap"
-						class={[
-							"flex items-center gap-3",
-							defaultShowCollections ? "hidden" : "",
-						].join(" ")}
-					>
-						<div class="relative">
-							<input
-								type="text"
-								id="client-filter"
-								class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
-								placeholder="Filter discourses..."
-							/>
+					<div class="flex items-center gap-3">
+						<div
+							id="filter-wrap"
+							class={[
+								"flex items-center gap-3",
+								defaultShowCollections ? "hidden" : "",
+							].join(" ")}
+						>
+							<div class="relative">
+								<input
+									type="text"
+									id="client-filter"
+									class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
+									placeholder="Filter discourses..."
+								/>
+							</div>
 						</div>
+						{collectionSlug && (
+							<CollectionExportButton
+								collectionSlug={collectionSlug}
+							/>
+						)}
 					</div>
 				</div>
 			)
@@ -175,6 +179,26 @@ function getContentCount(slug: string): number {
 							count={getContentCount(slug)}
 						/>
 					))}
+				</div>
+			)
+		}
+
+		{
+			!hasChildren && (
+				<div class="flex items-center justify-between mb-4">
+					<div class="relative">
+						<input
+							type="text"
+							id="client-filter"
+							class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
+							placeholder="Filter discourses..."
+						/>
+					</div>
+					{collectionSlug && (
+						<CollectionExportButton
+							collectionSlug={collectionSlug}
+						/>
+					)}
 				</div>
 			)
 		}
@@ -283,7 +307,7 @@ function getContentCount(slug: string): number {
 			const combinedContent = `${hrefValue} ${content}`;
 			post.classList.toggle(
 				"hidden",
-				!!filter && !combinedContent.includes(filter)
+				!!filter && !combinedContent.includes(filter),
 			);
 		});
 	});
