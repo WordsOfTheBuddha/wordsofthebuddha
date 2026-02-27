@@ -50,7 +50,7 @@ export function parseIncludeMeta(val: string | null): boolean {
 export function jsonResponse(
 	body: any,
 	status = 200,
-	extraHeaders: Record<string, string> = {}
+	extraHeaders: Record<string, string> = {},
 ) {
 	return new Response(JSON.stringify(body), {
 		status,
@@ -97,10 +97,8 @@ function toSegments(input: string): string[] {
 // Unknown collections are skipped safely at runtime.
 function candidateCollections(lang: string): string[] {
 	const l = normalize(lang);
-	if (l === "pli" || l === "pi" || l === "pali")
-		return ["pli", "pliAll", "pali", "paliAll"];
-	if (l === "en" || l === "eng" || l === "english")
-		return ["en", "enAll", "english", "all"]; // include "all" if you keep a merged collection
+	if (l === "pli" || l === "pi" || l === "pali") return ["pliAll"];
+	if (l === "en" || l === "eng" || l === "english") return ["all"];
 	return [l];
 }
 
@@ -122,7 +120,7 @@ async function tryGetCollectionEntries(name: string): Promise<Entry[]> {
 
 async function tryGetEntryBySlug(
 	name: string,
-	slug: string
+	slug: string,
 ): Promise<Entry | null> {
 	try {
 		const mod: any = await import("astro:content");
@@ -141,7 +139,7 @@ async function tryGetEntryBySlug(
 
 export async function findEntry(
 	lang: string,
-	opts: { slug?: string; id?: string }
+	opts: { slug?: string; id?: string },
 ): Promise<Entry | null> {
 	const wanted = normalize(opts.slug || opts.id);
 	if (!wanted) return null;
@@ -162,7 +160,7 @@ export async function findEntry(
 		const match = entries.find((e) => {
 			const cands = candidatesFor(e);
 			return cands.some(
-				(x) => x === wanted || (x && x.endsWith("/" + wanted))
+				(x) => x === wanted || (x && x.endsWith("/" + wanted)),
 			);
 		});
 		if (match) return match;
@@ -171,9 +169,43 @@ export async function findEntry(
 	return null;
 }
 
+/**
+ * Returns all entries for the given language whose slug starts with `prefix`.
+ * Uses the `all` content collection (covers src/content/en/**) so results are
+ * always up-to-date — independent of the search index.
+ * Prefix examples: "sn1." → [sn1.1, sn1.2, …], "ud" → [ud1.1, ud2.1, …]
+ */
+export async function findEntriesBySlugPrefix(
+	lang: string,
+	prefix: string,
+): Promise<Entry[]> {
+	const normalizedPrefix = normalize(prefix);
+	const collections = candidateCollections(lang);
+
+	for (const c of collections) {
+		const entries = await tryGetCollectionEntries(c);
+		if (!entries.length) continue;
+
+		const matches = entries.filter((e) => {
+			const cands = candidatesFor(e);
+			return cands.some((x) => x.startsWith(normalizedPrefix));
+		});
+
+		if (matches.length > 0) {
+			return matches.sort((a, b) => {
+				const slugA = normalize(candidatesFor(a)[0]) || "";
+				const slugB = normalize(candidatesFor(b)[0]) || "";
+				return slugA.localeCompare(slugB, undefined, { numeric: true });
+			});
+		}
+	}
+
+	return [];
+}
+
 export async function getRandomEntry(
 	lang: string,
-	maxSegments?: number
+	maxSegments?: number,
 ): Promise<Entry | null> {
 	const collections = candidateCollections(lang);
 	for (const c of collections) {
@@ -201,7 +233,7 @@ export function buildTextResponse(
 	lang: string,
 	entry: Entry,
 	format: TextFormat,
-	includeMeta: boolean
+	includeMeta: boolean,
 ) {
 	const md = entry.body;
 	const text = stripMarkdown(md);

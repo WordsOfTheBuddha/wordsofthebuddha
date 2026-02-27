@@ -25,12 +25,54 @@
 export const prerender = false;
 
 import type { APIRoute } from "astro";
-import { chromium } from "playwright";
 import {
 	fetchCollectionPdfData,
 	buildPdfHtml,
 } from "../../../utils/pdfRenderer";
 import { determineRouteType } from "../../../utils/routeHandler";
+import { directoryStructure } from "../../../data/directoryStructure";
+import type { Browser } from "playwright-core";
+
+// ── Chromium launcher ───────────────────────────────────────────────────────
+// On Vercel (and other serverless environments) the Playwright-bundled Chromium
+// is not available. We use @sparticuz/chromium-min + playwright-core instead.
+// Locally we fall back to the bundled Chromium that ships with playwright.
+//
+// Prerequisites (run once):
+//   npm install playwright-core @sparticuz/chromium-min
+//
+// The CHROMIUM_PACK_URL env var lets you pin a specific Sparticuz release:
+//   https://github.com/Sparticuz/chromium/releases
+const CHROMIUM_PACK_URL =
+	process.env.CHROMIUM_PACK_URL ??
+	"https://github.com/Sparticuz/chromium/releases/download/v137.0.0/chromium-v137.0.0-pack.tar";
+
+async function launchBrowser(): Promise<Browser> {
+	const isServerless =
+		!!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+	if (isServerless) {
+		const [{ default: chromiumMin }, { chromium: core }] =
+			await Promise.all([
+				import("@sparticuz/chromium-min"),
+				import("playwright-core"),
+			]);
+		return core.launch({
+			args: chromiumMin.args,
+			executablePath: await chromiumMin.executablePath(CHROMIUM_PACK_URL),
+			headless: true,
+		});
+	}
+	// Local / Node server: use playwright's bundled Chromium
+	const { chromium } = await import("playwright");
+	return chromium.launch({
+		args: ["--no-sandbox", "--disable-setuid-sandbox"],
+	});
+}
+
+// ── Concurrency gate ────────────────────────────────────────────────────────
+// Caps simultaneous Chromium instances to prevent memory exhaustion.
+const MAX_CONCURRENT = 2;
+let activeJobs = 0;
 
 export const GET: APIRoute = async ({ params, url }) => {
 	const slug = params.slug as string | undefined;
@@ -49,13 +91,53 @@ export const GET: APIRoute = async ({ params, url }) => {
 		);
 	}
 
+	if (activeJobs >= MAX_CONCURRENT) {
+		return errorResponse(
+			"PDF generation is busy — please try again in a moment.",
+			503,
+		);
+	}
+
 	// Optional footnote threshold
-	const threshold = parseInt(url.searchParams.get("threshold") ?? "40", 10);
+	// (kept for future use; threshold logic was removed from processFootnotes)
+
+	// Date string passed from the client's browser locale
+	const downloadDate =
+		url.searchParams.get("date") ??
+		new Date().toLocaleDateString("en-GB", {
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+		});
+
+	const collectionUrl = `www.wordsofthebuddha.org/${slug}`;
+
+	// Resolve parent collection title for sub-collections
+	let parentTitle: string | undefined;
+	for (const [topSlug, topMeta] of Object.entries(directoryStructure)) {
+		if (topSlug === slug) break; // top-level, no parent
+		if (topMeta.children) {
+			// Check direct children
+			if (topMeta.children[slug]) {
+				parentTitle = topMeta.title;
+				break;
+			}
+			// Check grandchildren (e.g. sn1-11 > sn1)
+			for (const [midSlug, midMeta] of Object.entries(topMeta.children)) {
+				if (midMeta.children?.[slug]) {
+					parentTitle = midMeta.title || topMeta.title;
+					break;
+				}
+			}
+			if (parentTitle) break;
+		}
+	}
 
 	console.log(`[PDF Export] Generating PDF for collection: ${slug}`);
 	const startMs = Date.now();
 
-	let browser;
+	activeJobs++;
+	let browser: Browser | undefined;
 	try {
 		// ── 1. Fetch all discourse content and render to HTML ──────────────
 		const collectionData = await fetchCollectionPdfData(
@@ -79,13 +161,14 @@ export const GET: APIRoute = async ({ params, url }) => {
 			`[PDF Export] ${totalDiscourses} discourses in ${collectionData.chapters.length} chapter(s). Building HTML…`,
 		);
 
-		const html = buildPdfHtml(collectionData);
+		const html = buildPdfHtml(collectionData, {
+			collectionUrl,
+			date: downloadDate,
+			parentTitle,
+		});
 
 		// ── 2. Render HTML → PDF via Playwright ────────────────────────────
-		browser = await chromium.launch({
-			// Suppress Chromium's sandbox for server environments
-			args: ["--no-sandbox", "--disable-setuid-sandbox"],
-		});
+		browser = await launchBrowser();
 
 		const page = await browser.newPage();
 
@@ -158,6 +241,8 @@ export const GET: APIRoute = async ({ params, url }) => {
 			await browser.close().catch(() => {});
 		}
 		return errorResponse(`PDF generation failed: ${msg}`, 500);
+	} finally {
+		activeJobs--;
 	}
 };
 

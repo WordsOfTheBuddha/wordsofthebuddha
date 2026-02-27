@@ -15,17 +15,18 @@ interface Props {
 	label?: string;
 }
 
-const { collectionSlug, label = "Download as PDF" } = Astro.props;
+const { collectionSlug, label = "Print PDF" } = Astro.props;
+import { transformId } from "../utils/transformId";
 ---
 
 <div class="export-wrapper" data-export-slug={collectionSlug}>
 	<button
 		type="button"
 		class="export-btn"
-		aria-label={`Download ${label} for ${collectionSlug.toUpperCase()}`}
-		title="Generate and download a PDF of this collection"
+		aria-label={`Download ${label} for ${transformId(collectionSlug)}`}
+		title={`Get a PDF version of ${transformId(collectionSlug)}`}
 	>
-		<!-- Download icon -->
+		<!-- Document icon -->
 		<svg
 			class="export-icon"
 			viewBox="0 0 24 24"
@@ -38,7 +39,7 @@ const { collectionSlug, label = "Download as PDF" } = Astro.props;
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path
-				d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+				d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
 			></path>
 		</svg>
 		<span class="export-label">{label}</span>
@@ -66,6 +67,12 @@ const { collectionSlug, label = "Download as PDF" } = Astro.props;
 		</svg>
 	</button>
 	<p class="export-status" aria-live="polite"></p>
+</div>
+
+<!-- Error toast (hidden by default, shown via JS) -->
+<div class="export-toast" role="alert" aria-live="assertive">
+	<span class="toast-msg"></span>
+	<button class="toast-close" aria-label="Dismiss">&times;</button>
 </div>
 
 <style>
@@ -145,16 +152,50 @@ const { collectionSlug, label = "Download as PDF" } = Astro.props;
 	}
 
 	.export-status {
-		position: absolute;
-		top: calc(100% + 0.2rem);
-		left: 0;
-		white-space: nowrap;
-		font-size: 0.72rem;
-		color: var(--text-muted, #888);
-		pointer-events: none;
+		display: none; /* hidden — errors now use the toast */
 	}
-	.export-status.error {
-		color: #c0392b;
+
+	/* ── Error toast ─────────────────────────────────── */
+	.export-toast {
+		position: fixed;
+		bottom: 1.5rem;
+		left: 50%;
+		transform: translateX(-50%) translateY(calc(100% + 2rem));
+		max-width: min(90vw, 480px);
+		padding: 0.7rem 1rem;
+		background: #c0392b;
+		color: #fff;
+		font-size: 0.82rem;
+		line-height: 1.4;
+		border-radius: 8px;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		z-index: 9999;
+		transition: transform 0.3s ease;
+		pointer-events: none;
+		opacity: 0;
+	}
+	.export-toast.visible {
+		transform: translateX(-50%) translateY(0);
+		pointer-events: auto;
+		opacity: 1;
+	}
+	.toast-msg {
+		flex: 1;
+	}
+	.toast-close {
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.1rem;
+		cursor: pointer;
+		padding: 0 0.2rem;
+		opacity: 0.8;
+	}
+	.toast-close:hover {
+		opacity: 1;
 	}
 </style>
 
@@ -165,12 +206,33 @@ const { collectionSlug, label = "Download as PDF" } = Astro.props;
 
 		const btn = wrapper.querySelector<HTMLButtonElement>(".export-btn");
 		const labelEl = wrapper.querySelector<HTMLSpanElement>(".export-label");
-		const statusEl =
-			wrapper.querySelector<HTMLParagraphElement>(".export-status");
 
-		if (!btn || !labelEl || !statusEl) return;
+		if (!btn || !labelEl) return;
 
 		const originalLabel = labelEl.textContent ?? "Download as PDF";
+
+		// Toast helper
+		const toast = document.querySelector<HTMLElement>(".export-toast");
+		const toastMsg = toast?.querySelector<HTMLElement>(".toast-msg");
+		const toastClose =
+			toast?.querySelector<HTMLButtonElement>(".toast-close");
+		let toastTimer: ReturnType<typeof setTimeout>;
+
+		function showToast(msg: string) {
+			if (!toast || !toastMsg) return;
+			clearTimeout(toastTimer);
+			toastMsg.textContent = msg;
+			toast.classList.add("visible");
+			toastTimer = setTimeout(
+				() => toast.classList.remove("visible"),
+				8000,
+			);
+		}
+
+		toastClose?.addEventListener("click", () => {
+			clearTimeout(toastTimer);
+			toast?.classList.remove("visible");
+		});
 
 		btn.addEventListener("click", async () => {
 			if (btn.disabled) return;
@@ -178,12 +240,27 @@ const { collectionSlug, label = "Download as PDF" } = Astro.props;
 			// ── Loading state ──────────────────────────────────────────────
 			btn.disabled = true;
 			btn.classList.add("is-loading");
-			labelEl.textContent = "Generating…";
-			statusEl.textContent = "";
-			statusEl.classList.remove("error");
+			labelEl.textContent = "Printing…";
 
 			try {
-				const response = await fetch(`/api/export/${slug}`);
+				// Include locale date so the cover page shows when this was downloaded
+				const d = new Date();
+				const day = d.getDate();
+				const suffix = [11, 12, 13].includes(day)
+					? "th"
+					: day % 10 === 1
+						? "st"
+						: day % 10 === 2
+							? "nd"
+							: day % 10 === 3
+								? "rd"
+								: "th";
+				const month = d.toLocaleDateString("en-GB", { month: "long" });
+				const year = d.getFullYear();
+				const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
+				const response = await fetch(
+					`/api/export/${slug}?date=${encodeURIComponent(date)}`,
+				);
 
 				if (!response.ok) {
 					let detail = response.statusText;
@@ -213,12 +290,9 @@ const { collectionSlug, label = "Download as PDF" } = Astro.props;
 
 				// Clean up after a short delay
 				setTimeout(() => URL.revokeObjectURL(objectUrl), 5_000);
-
-				statusEl.textContent = "";
 			} catch (err) {
 				const msg = err instanceof Error ? err.message : String(err);
-				statusEl.textContent = `Error: ${msg}`;
-				statusEl.classList.add("error");
+				showToast(`PDF generation failed: ${msg}`);
 			} finally {
 				// ── Restore button ─────────────────────────────────────────
 				btn.disabled = false;

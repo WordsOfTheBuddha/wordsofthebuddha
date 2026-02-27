@@ -15,9 +15,7 @@
 import { JSDOM } from "jsdom";
 import { Marked, Renderer } from "marked";
 import type { DirectoryStructure } from "../types/directory";
-import { createSearchPattern } from "./collectionPatterns";
-import { performSearch } from "../service/search/search";
-import { findEntry } from "./textApi";
+import { findEntry, findEntriesBySlugPrefix } from "./textApi";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -242,21 +240,53 @@ async function fetchDiscourseHtml(slug: string): Promise<string> {
 
 async function fetchChapterDiscourses(
 	chapterSlug: string,
+	range?: { start: number; end: number },
 ): Promise<DiscoursePdf[]> {
-	const pattern = createSearchPattern(chapterSlug);
-	if (!pattern) return [];
+	// Range-based chapters like mn1-50, iti28-49:
+	// extract the alphabetic base ("mn", "iti") and filter by number in range.
+	const rangeMatch = /^([a-z]+)(\d+)-(\d+)$/i.exec(chapterSlug);
 
-	const results = await performSearch(pattern, {});
-	const limited = results.slice(0, MAX_DISCOURSES);
+	let entries: Awaited<ReturnType<typeof findEntriesBySlugPrefix>>;
+	if (rangeMatch) {
+		const base = rangeMatch[1].toLowerCase();
+		const lo = range?.start ?? Number(rangeMatch[2]);
+		const hi = range?.end ?? Number(rangeMatch[3]);
+		// Fetch all entries that start with the base prefix
+		const all = await findEntriesBySlugPrefix("en", base);
+		entries = all.filter((e) => {
+			const slug = ((e.data as any)?.slug || (e as any).slug || "")
+				.trim()
+				.toLowerCase();
+			const numMatch = new RegExp(`^${base}(\\d+)$`).exec(slug);
+			if (!numMatch) return false;
+			const num = Number(numMatch[1]);
+			return num >= lo && num <= hi;
+		});
+	} else {
+		// Numbered chapters (sn1, ud5 …) have discourses like sn1.1, so append dot.
+		// Letter-only top-level collections (ud, kp, dhp …) match with no dot.
+		const prefix = /\d$/.test(chapterSlug)
+			? `${chapterSlug}.`
+			: chapterSlug;
+		entries = await findEntriesBySlugPrefix("en", prefix);
+	}
 
-	// Fetch body for each discourse (in parallel)
+	const limited = entries.slice(0, MAX_DISCOURSES);
+
+	// Render body for each discourse in parallel
 	const discourses = await Promise.all(
-		limited.map(async (r) => ({
-			slug: r.slug,
-			title: r.title,
-			description: r.description || "",
-			html: await fetchDiscourseHtml(r.slug),
-		})),
+		limited.map(async (entry) => {
+			const slug = (entry.data as any)?.slug || entry.slug || "";
+			const title = (entry.data as any)?.title || slug;
+			const description = (entry.data as any)?.description || "";
+			const html = await fetchDiscourseHtml(slug);
+			return { slug, title, description, html };
+		}),
+	);
+
+	// Natural sort so sn1.9 comes before sn1.10 etc.
+	discourses.sort((a, b) =>
+		a.slug.localeCompare(b.slug, undefined, { numeric: true }),
 	);
 
 	return discourses;
@@ -281,7 +311,10 @@ export async function fetchCollectionPdfData(
 	if (hasChapters) {
 		chapters = await Promise.all(
 			childEntries.map(async ([childSlug, childMeta]) => {
-				const discourses = await fetchChapterDiscourses(childSlug);
+				const discourses = await fetchChapterDiscourses(
+					childSlug,
+					childMeta.range,
+				);
 				return {
 					slug: childSlug,
 					title: childMeta.title,
@@ -338,6 +371,17 @@ function stripPaliPrefix(title: string): string {
 	return title.slice(idx + 3);
 }
 
+/**
+ * Extract just the Pali name from a discourse title, or "" if none.
+ * "Lobha sutta - Greed" → "Lobha sutta"
+ * "Greed"              → ""
+ */
+function extractPaliName(title: string): string {
+	const idx = title.indexOf(" - ");
+	if (idx === -1) return "";
+	return title.slice(0, idx).trim();
+}
+
 function buildToc(collection: CollectionPdf): string {
 	let html = "";
 
@@ -348,8 +392,12 @@ function buildToc(collection: CollectionPdf): string {
 		for (const d of ch.discourses) {
 			const id = formatSlugId(d.slug);
 			const displayTitle = stripPaliPrefix(d.title);
+			const paliName = extractPaliName(d.title);
+			const paliSpan = paliName
+				? `<span class="toc-pali">${paliName}</span>`
+				: "";
 			html += `<div class="toc-entry">
-  <a href="#d-${d.slug}" class="toc-link"><span class="toc-id">${id}</span>&ensp;${displayTitle}</a>
+  <a href="#d-${d.slug}" class="toc-link"><span class="toc-id">${id}</span>&ensp;${displayTitle}${paliSpan}</a>
   ${d.description ? `<div class="toc-desc">${d.description}</div>` : ""}
 </div>\n`;
 		}
@@ -387,8 +435,14 @@ function buildContent(collection: CollectionPdf): string {
 			const id = formatSlugId(d.slug);
 			const displayTitle = stripPaliPrefix(d.title);
 
+			const paliName = extractPaliName(d.title);
+			const paliLine = paliName
+				? `<p class="discourse-pali">${paliName}</p>`
+				: "";
+
 			html += `<section id="d-${d.slug}" class="discourse"${breakAttr}>
   <${hLevel} class="discourse-title">${id} ${displayTitle}</${hLevel}>
+  ${paliLine}
   ${d.description ? `<p class="discourse-desc">${d.description}</p>` : ""}
   <div class="discourse-body">${d.html}</div>
 </section>\n`;
@@ -399,9 +453,39 @@ function buildContent(collection: CollectionPdf): string {
 }
 
 /** Assemble the complete HTML document to feed to Playwright. */
-export function buildPdfHtml(collection: CollectionPdf): string {
+export function buildPdfHtml(
+	collection: CollectionPdf,
+	options: {
+		collectionUrl: string;
+		date: string;
+		parentTitle?: string;
+	},
+): string {
+	const { collectionUrl, date, parentTitle } = options;
 	const toc = buildToc(collection);
 	const content = buildContent(collection);
+
+	// Split title into Pali subtitle + English main title
+	const hasSeparator = collection.title.includes(" - ");
+	let paliName = "";
+	let englishTitle = collection.title;
+	if (hasSeparator) {
+		const idx = collection.title.indexOf(" - ");
+		paliName = collection.title.slice(0, idx).trim();
+		englishTitle = collection.title.slice(idx + 3).trim();
+	}
+
+	// Format the sub-title line: "Paliname · ID" or just "ID" when no Pali
+	const formattedId = formatSlugId(collection.slug);
+	const subtitleParts: string[] = [];
+	if (paliName) subtitleParts.push(paliName);
+	subtitleParts.push(formattedId);
+	const subtitleLine = subtitleParts.join(" \u00B7 ");
+
+	// "from Udāna — Inspired Utterances" context line for sub-collections
+	const fromLine = parentTitle
+		? `<p class="cover-from">from ${parentTitle}</p>`
+		: "";
 
 	return `<!DOCTYPE html>
 <html lang="en">
@@ -414,10 +498,17 @@ export function buildPdfHtml(collection: CollectionPdf): string {
 
 <!-- ── Cover page ─────────────────────────────────────────────────── -->
 <div class="cover-page">
-  <div class="cover-inner">
-    <h1 class="cover-title">${collection.title}</h1>
+  <p class="cover-brand">Words of the Buddha</p>
+  <div class="cover-main">
+    <h1 class="cover-title">${englishTitle}</h1>
+    <p class="cover-subtitle">${subtitleLine}</p>
+    ${fromLine}
+    <hr class="cover-rule" />
     ${collection.description ? `<p class="cover-desc">${collection.description}</p>` : ""}
-    <p class="cover-url">www.wordsofthebuddha.org</p>
+  </div>
+  <div class="cover-footer">
+    <p class="cover-url">${collectionUrl}</p>
+    <p class="cover-date">Downloaded on ${date}</p>
   </div>
 </div>
 
@@ -461,29 +552,75 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
 .cover-page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   min-height: 85vh;
   text-align: center;
   padding: 3em;
 }
+.cover-brand {
+  font-variant: small-caps;
+  font-size: 11pt;
+  letter-spacing: 0.12em;
+  color: #888;
+  margin-bottom: 1em;
+}
+.cover-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .cover-title {
   font-size: 20pt;
   font-weight: bold;
   line-height: 1.4;
-  margin-bottom: 1.2em;
+  margin-bottom: 0.4em;
+}
+.cover-pali {
+  font-size: 13pt;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 0.2em;
+}
+.cover-subtitle {
+  font-size: 12pt;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 0.2em;
+}
+.cover-from {
+  font-size: 10.5pt;
+  color: #777;
+  margin-bottom: 0.8em;
+}
+.cover-rule {
+  width: 80pt;
+  border: none;
+  border-top: 0.5pt solid #aaa;
+  margin: 0.8em 0 1.2em;
 }
 .cover-desc {
-  font-size: 11.5pt;
+  font-size: 11pt;
+  font-weight: normal;
   line-height: 1.8;
   max-width: 540pt;
-  color: #222;
+  color: #333;
+}
+.cover-footer {
+  text-align: center;
 }
 .cover-url {
-  margin-top: 2em;
   font-size: 10pt;
   letter-spacing: 0.04em;
-  color: #666;
+  color: #555;
+  margin-bottom: 0.3em;
+}
+.cover-date {
+  font-size: 9pt;
+  color: #888;
+  margin: 0;
 }
 
 /* ── Table of Contents ───────────────────────────────────── */
@@ -519,6 +656,12 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   margin: 0.1em 0 0.5em 0;
   line-height: 1.5;
 }
+.toc-pali {
+  font-style: italic;
+  color: #888;
+  margin-left: 0.5em;
+  font-size: 10pt;
+}
 
 /* ── Chapter section ─────────────────────────────────────── */
 .chapter-heading {
@@ -537,6 +680,12 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
 .discourse-title {
   font-size: 13pt;
   font-weight: bold;
+  margin-bottom: 0.15em;
+}
+.discourse-pali {
+  font-style: italic;
+  color: #777;
+  font-size: 10.5pt;
   margin-bottom: 0.3em;
 }
 .discourse-desc {
