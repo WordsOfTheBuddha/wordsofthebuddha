@@ -1,14 +1,43 @@
 ---
 /**
- * SacredMandala — A scroll-reactive SVG mandala for the home hero.
+ * SacredMandala — A scroll-reactive SVG mandala.
  *
  * Renders concentric sacred geometry (lotus petals, Dharmachakra spokes,
  * radiating circles) that rotates gently as the user scrolls.
  * Purely decorative; fully respects prefers-reduced-motion.
+ *
+ * Props:
+ * - variant: "hero" | "header"
+ *   "hero"   — large, sticky, fades out over first ~600px of scroll (home page)
+ *   "header" — smaller, subtle, positioned behind a page heading
+ * - rotationSpeed: degrees per 1000px of scroll (default: 36 for hero, 28 for header)
+ * - fadeOutAt: scroll px at which hero variant fully fades (default: 600)
  */
+interface Props {
+	variant?: "hero" | "header";
+	rotationSpeed?: number;
+	fadeOutAt?: number;
+}
+
+const {
+	variant = "hero",
+	rotationSpeed = variant === "hero" ? 36 : 28,
+	fadeOutAt = 600,
+} = Astro.props;
+
+const isHero = variant === "hero";
+const containerClass = isHero
+	? "mandala-container mandala-hero"
+	: "mandala-container mandala-header";
 ---
 
-<div class="mandala-container" aria-hidden="true">
+<div
+	class={containerClass}
+	aria-hidden="true"
+	data-variant={variant}
+	data-rotation-speed={rotationSpeed}
+	data-fade-out-at={fadeOutAt}
+>
 	<svg
 		class="mandala-svg"
 		viewBox="-200 -200 400 400"
@@ -129,19 +158,35 @@
 
 <style>
 	.mandala-container {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: min(90vw, 560px);
-		height: min(90vw, 560px);
 		pointer-events: none;
 		z-index: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		/* Vertically center behind the hero text */
-		margin-top: 2rem;
+	}
+
+	/* ── Hero variant: large, sticky, centered, fades on scroll ── */
+	.mandala-hero {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(90vw, 560px);
+		height: min(90vw, 560px);
+		/* starts visible, JS will fade it */
+		opacity: 1;
+		transition: opacity 0.05s linear;
+	}
+
+	/* ── Header variant: smaller, absolute, behind heading ── */
+	.mandala-header {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(70vw, 360px);
+		height: min(70vw, 360px);
+		opacity: 0.7;
 	}
 
 	.mandala-svg {
@@ -240,13 +285,26 @@
 </style>
 
 <script>
-	const svg = document.querySelector(".mandala-svg") as SVGSVGElement | null;
-	if (svg) {
-		const prefersReducedMotion = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
+	document
+		.querySelectorAll<HTMLDivElement>(".mandala-container")
+		.forEach((container) => {
+			const svg = container.querySelector(
+				".mandala-svg",
+			) as SVGSVGElement | null;
+			if (!svg) return;
 
-		if (!prefersReducedMotion) {
+			const prefersReducedMotion = window.matchMedia(
+				"(prefers-reduced-motion: reduce)",
+			).matches;
+			if (prefersReducedMotion) return;
+
+			const variant = container.dataset.variant || "hero";
+			const rotationSpeed = parseFloat(
+				container.dataset.rotationSpeed || "36",
+			);
+			const fadeOutAt = parseFloat(container.dataset.fadeOutAt || "600");
+			const isHero = variant === "hero";
+
 			let ticking = false;
 
 			const onScroll = () => {
@@ -254,19 +312,30 @@
 					ticking = true;
 					requestAnimationFrame(() => {
 						const scrollY = window.scrollY;
-						// Gentle rotation: ~18° per 1000px of scroll
-						const rotation = scrollY * 0.018;
-						// Subtle scale pulse: oscillates between 1.0 and 1.03
+						// Rotation: configurable degrees per 1000px
+						const rotation = scrollY * (rotationSpeed / 1000);
+						// Subtle scale pulse
 						const scale = 1 + Math.sin(scrollY * 0.002) * 0.03;
 						svg.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+
+						// Hero variant: fade out as user scrolls
+						if (isHero) {
+							const opacity = Math.max(
+								0,
+								1 - scrollY / fadeOutAt,
+							);
+							container.style.opacity = String(opacity);
+							// Hide completely once invisible (perf)
+							container.style.visibility =
+								opacity <= 0 ? "hidden" : "visible";
+						}
+
 						ticking = false;
 					});
 				}
 			};
 
 			window.addEventListener("scroll", onScroll, { passive: true });
-			// Set initial state
 			onScroll();
-		}
-	}
+		});
 </script>

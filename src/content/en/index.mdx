@@ -14,15 +14,15 @@ import SacredMandala from '../../components/SacredMandala.astro'
 import { routes } from '../../utils/routes';
 
 {/* ── Hero ── */}
-<section class="flex flex-col items-center text-center pt-16 pb-12 px-4" style="position:relative; overflow:visible;">
-  <SacredMandala />
-  <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-4 text-gradient-accent" style="font-family:'Spectral', serif; position:relative; z-index:1;">
+<SacredMandala variant="hero" />
+<section class="flex flex-col items-center text-center pt-16 pb-12 px-4" style="position:relative; z-index:1;">
+  <h1 class="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-4 text-gradient-accent" style="font-family:'Spectral', serif;">
     Words of the Buddha
   </h1>
-  <p class="text-lg sm:text-xl max-w-2xl mb-8" style="color:var(--text-muted); position:relative; z-index:1;">
+  <p class="text-lg sm:text-xl max-w-2xl mb-8" style="color:var(--text-muted);">
     Explore the Buddha's earliest teachings through his words. Access over {routes.length.toLocaleString()} texts with parallel Pāli-English translations and built-in study tools.
   </p>
-  <div class="flex flex-wrap gap-2 justify-center" style="position:relative; z-index:1;">
+  <div class="flex flex-wrap gap-2 justify-center">
     <a href="/discover" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-white text-sm font-medium shadow-sm transition-colors hover:opacity-95" style="background-color:var(--primary-color);">
       Start Exploring
     </a>
