@@ -4,7 +4,7 @@ description: Upon learning that he was not awakened, Bāhiya travels a great dis
 qualities: faith, ending, liberation, non-identification, non-proliferation
 theme: training guideline, inspiration
 fetter: desire for fine-material existence, desire for immaterial existence, conceit, restlessness, ignorance
-tags: arahant, path, Dhamma, Bāhiya, Suppāraka, Sāvatthi, Jeta’s grove, Anāthapiṇḍika’s park, alms, death, cremation, stupa, final Nibbāna, seen, heard, sensed, cognized, ud, ud1
+tags: arahant, path, Dhamma, Bāhiya, Suppāraka, Sāvatthi, Jeta’s Grove, Anāthapiṇḍika’s Park, alms, death, cremation, stupa, final Nibbāna, seen, heard, sensed, cognized, ud, ud1
 character: Bāhiya of the Bark Cloth
 slug: ud1.10
 ---
