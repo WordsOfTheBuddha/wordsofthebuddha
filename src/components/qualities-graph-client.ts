@@ -1749,7 +1749,7 @@ function transformId(id: string): string {
 		dhp: "The Path of Dhamma",
 		mn: "Middle Length Discourses",
 		ud: "Inspired Utterances",
-		sn: "Linked Discourses",
+		sn: "Connected Discourses",
 		snp: "The Buddha's Ancient Discourses",
 		an: "Numerical Discourses",
 		iti: "As It Was Said",

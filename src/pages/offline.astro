@@ -189,7 +189,7 @@ import Layout from "../layouts/Layout.astro";
 			},
 			{
 				keys: ["sn"],
-				label: "Linked Discourses",
+				label: "Connected Discourses",
 				pali: "Saṁyutta Nikāya",
 			},
 			{
@@ -258,7 +258,7 @@ import Layout from "../layouts/Layout.astro";
 		}
 		async function estimateForUrls(
 			urls: string[],
-			sample = 3
+			sample = 3,
 		): Promise<number> {
 			if (!urls || urls.length === 0) return 0;
 			const picks = urls.slice(0, Math.min(sample, urls.length));
@@ -283,7 +283,7 @@ import Layout from "../layouts/Layout.astro";
 			const total = keys.reduce(
 				(acc: number, k: string) =>
 					acc + ((STATE._estimates && STATE._estimates[k]) || 0),
-				0
+				0,
 			);
 			const el = document.getElementById("collections-all-estimate");
 			if (el) el.textContent = total ? `~ ${formatBytes(total)}` : "";
@@ -322,7 +322,7 @@ import Layout from "../layouts/Layout.astro";
 				`;
 				container.appendChild(row);
 				const cb = row.querySelector(
-					"input"
+					"input",
 				) as HTMLInputElement | null;
 				cb?.addEventListener("change", () => {
 					if (cb && cb.checked) STATE.selectedCollections.add(key);
@@ -341,14 +341,14 @@ import Layout from "../layouts/Layout.astro";
 				});
 			}
 			const allCb = document.getElementById(
-				"toggle-collections-all"
+				"toggle-collections-all",
 			) as HTMLInputElement | null;
 			allCb?.addEventListener("change", (e: Event) => {
 				const target = e.target as HTMLInputElement | null;
 				const on = !!target?.checked;
 				for (const key of effectiveKeys) {
 					const cb = document.getElementById(
-						`toggle-col-${key}`
+						`toggle-col-${key}`,
 					) as HTMLInputElement | null;
 					if (cb) cb.checked = on;
 					if (on) STATE.selectedCollections.add(key);
@@ -386,7 +386,7 @@ import Layout from "../layouts/Layout.astro";
 							(searchMod.default || searchMod.searchIndex)) ||
 						[];
 					const searchBytes = new TextEncoder().encode(
-						JSON.stringify(searchData)
+						JSON.stringify(searchData),
 					).length;
 
 					// Get topics/qualities/similes size by building unified content
@@ -396,7 +396,7 @@ import Layout from "../layouts/Layout.astro";
 						"similes",
 					]);
 					const categoryBytes = new TextEncoder().encode(
-						JSON.stringify(categoryData)
+						JSON.stringify(categoryData),
 					).length;
 
 					// Total estimate (with some overhead for Fuse.js and other bundled code)
@@ -424,13 +424,13 @@ import Layout from "../layouts/Layout.astro";
 				Object.keys(
 					(STATE.manifest &&
 						(STATE.manifest as any).discourseByCollection) ||
-						{}
+						{},
 				);
 			const allOn =
 				allKeys.length > 0 &&
 				allKeys.every((k: string) => STATE.selectedCollections.has(k));
 			const allCb = document.getElementById(
-				"toggle-collections-all"
+				"toggle-collections-all",
 			) as HTMLInputElement | null;
 			if (allCb) allCb.checked = allOn;
 		}
@@ -539,16 +539,16 @@ import Layout from "../layouts/Layout.astro";
 						// After a completed download, unselect all toggles
 						try {
 							const onEl = document.getElementById(
-								"toggle-on"
+								"toggle-on",
 							) as HTMLInputElement | null;
 							if (onEl) onEl.checked = false;
 							const searchEl = document.getElementById(
-								"toggle-search"
+								"toggle-search",
 							) as HTMLInputElement | null;
 							if (searchEl) searchEl.checked = false;
 							for (const key of STATE.effectiveKeys || []) {
 								const cb = document.getElementById(
-									`toggle-col-${key}`
+									`toggle-col-${key}`,
 								) as HTMLInputElement | null;
 								if (cb) cb.checked = false;
 							}
@@ -624,7 +624,7 @@ import Layout from "../layouts/Layout.astro";
 				navigator.serviceWorker?.addEventListener(
 					"controllerchange",
 					onChange,
-					{ once: true } as any
+					{ once: true } as any,
 				);
 			});
 		}
@@ -654,7 +654,7 @@ import Layout from "../layouts/Layout.astro";
 
 		function updateDownloadButton() {
 			const btn = document.getElementById(
-				"download"
+				"download",
 			) as HTMLButtonElement | null;
 			if (!btn) return;
 			const anySelected =
@@ -662,12 +662,12 @@ import Layout from "../layouts/Layout.astro";
 					STATE.selectedCollections.size > 0) ||
 				!!(
 					document.getElementById(
-						"toggle-on"
+						"toggle-on",
 					) as HTMLInputElement | null
 				)?.checked ||
 				!!(
 					document.getElementById(
-						"toggle-search"
+						"toggle-search",
 					) as HTMLInputElement | null
 				)?.checked;
 			const isOnline =
@@ -681,21 +681,21 @@ import Layout from "../layouts/Layout.astro";
 		}
 
 		const toggleOn = document.getElementById(
-			"toggle-on"
+			"toggle-on",
 		) as HTMLInputElement | null;
 		toggleOn?.addEventListener("change", () => updateDownloadButton());
 
 		// Ensure the Download button reflects the Search toggle state
 		const toggleSearch = document.getElementById(
-			"toggle-search"
+			"toggle-search",
 		) as HTMLInputElement | null;
 		toggleSearch?.addEventListener("change", () => updateDownloadButton());
 
 		const downloadBtn = document.getElementById(
-			"download"
+			"download",
 		) as HTMLButtonElement | null;
 		const pauseResumeBtn = document.getElementById(
-			"pause-resume"
+			"pause-resume",
 		) as HTMLButtonElement | null;
 		downloadBtn?.addEventListener("click", async () => {
 			// Bail if Cache API or SW aren’t available in this context
@@ -713,7 +713,7 @@ import Layout from "../layouts/Layout.astro";
 			await pingSW(1500);
 			// New job starting: re-enable Clear and clear any message
 			const cbBtn = document.getElementById(
-				"clear"
+				"clear",
 			) as HTMLButtonElement | null;
 			if (cbBtn) {
 				cbBtn.disabled = false;
@@ -726,7 +726,7 @@ import Layout from "../layouts/Layout.astro";
 			)?.checked;
 			const searchCheckedEarly = (
 				document.getElementById(
-					"toggle-search"
+					"toggle-search",
 				) as HTMLInputElement | null
 			)?.checked;
 			// Predictable prewarm of dynamic modules so offline pages work without first-run online
@@ -739,7 +739,7 @@ import Layout from "../layouts/Layout.astro";
 					"onToggled",
 					onToggled,
 					"searchCheckedEarly",
-					searchCheckedEarly
+					searchCheckedEarly,
 				);
 				if (anyCollectionsSelected || onToggled || searchCheckedEarly) {
 					console.debug("downloading - prewarming dynamic modules");
@@ -759,7 +759,7 @@ import Layout from "../layouts/Layout.astro";
 
 			// Build URLs lists guarded by manifest presence so Search-only works even before manifest loads
 			const selectedKeys = Array.from(
-				STATE.selectedCollections as Set<string>
+				STATE.selectedCollections as Set<string>,
 			);
 			const map: Record<string, string[]> =
 				((STATE.manifest &&
@@ -772,7 +772,7 @@ import Layout from "../layouts/Layout.astro";
 				[];
 			const urlsCollectionPages = selectedKeys.length
 				? allCollectionPages.filter((p) =>
-						selectedKeys.some((k) => belongsToCollectionPath(p, k))
+						selectedKeys.some((k) => belongsToCollectionPath(p, k)),
 					)
 				: [];
 			// onToggled already computed above
@@ -782,7 +782,7 @@ import Layout from "../layouts/Layout.astro";
 					: [];
 			const searchChecked = (
 				document.getElementById(
-					"toggle-search"
+					"toggle-search",
 				) as HTMLInputElement | null
 			)?.checked;
 			// Prewarm the search index by dynamically importing the search module,
@@ -855,7 +855,7 @@ import Layout from "../layouts/Layout.astro";
 			// Immediate visual cleared state
 			applyClearedUIState();
 			const cb = document.getElementById(
-				"clear"
+				"clear",
 			) as HTMLButtonElement | null;
 			if (cb) {
 				cb.disabled = true;
@@ -868,7 +868,7 @@ import Layout from "../layouts/Layout.astro";
 			el: HTMLElement | null,
 			status: "Installed" | "Partial" | "Not in Cache",
 			present?: number,
-			expected?: number
+			expected?: number,
 		) {
 			if (!el) return;
 			el.textContent = "";
@@ -879,7 +879,7 @@ import Layout from "../layouts/Layout.astro";
 					"bg-green-100",
 					"text-green-800",
 					"dark:bg-green-900",
-					"dark:text-green-200"
+					"dark:text-green-200",
 				);
 			} else if (status === "Partial") {
 				el.textContent =
@@ -890,7 +890,7 @@ import Layout from "../layouts/Layout.astro";
 					"bg-amber-100",
 					"text-amber-800",
 					"dark:bg-amber-900",
-					"dark:text-amber-200"
+					"dark:text-amber-200",
 				);
 			} else {
 				el.textContent = "Not in Cache";
@@ -898,7 +898,7 @@ import Layout from "../layouts/Layout.astro";
 					"bg-gray-200",
 					"text-gray-700",
 					"dark:bg-gray-700",
-					"dark:text-gray-300"
+					"dark:text-gray-300",
 				);
 			}
 		}
@@ -946,7 +946,7 @@ import Layout from "../layouts/Layout.astro";
 			if (!hasCacheAPI()) return new Set<string>();
 			const cacheNames = await caches.keys();
 			const consider = cacheNames.filter(
-				(n) => n.startsWith("navigations-") || n.startsWith("core-")
+				(n) => n.startsWith("navigations-") || n.startsWith("core-"),
 			);
 			const set: Set<string> = new Set<string>();
 			for (const n of consider) {
@@ -999,7 +999,7 @@ import Layout from "../layouts/Layout.astro";
 					setStatusPill(onStatusEl as HTMLElement, "Not in Cache");
 					for (const key of STATE.effectiveKeys || []) {
 						const pill = document.getElementById(
-							`status-col-${key}`
+							`status-col-${key}`,
 						) as HTMLElement | null;
 						setStatusPill(pill, "Not in Cache");
 					}
@@ -1014,7 +1014,7 @@ import Layout from "../layouts/Layout.astro";
 				const searchStatus = document.getElementById("search-status");
 				setStatusPill(
 					searchStatus,
-					hasSearch ? "Installed" : "Not in Cache"
+					hasSearch ? "Installed" : "Not in Cache",
 				);
 
 				// Discovery (/on) status, including the /discover page itself
@@ -1036,7 +1036,7 @@ import Layout from "../layouts/Layout.astro";
 					onStatusEl,
 					onStatus as any,
 					presentOn,
-					expectedOn.length
+					expectedOn.length,
 				);
 				// Don't auto-check discovery toggle
 
@@ -1052,7 +1052,7 @@ import Layout from "../layouts/Layout.astro";
 				for (const key of STATE.effectiveKeys || []) {
 					const discourses = map[key] || [];
 					const pages = allCollectionPages.filter((p) =>
-						belongsToCollectionPath(p, key)
+						belongsToCollectionPath(p, key),
 					);
 					const expected = [...new Set([...discourses, ...pages])];
 					let present = 0;
@@ -1088,7 +1088,7 @@ import Layout from "../layouts/Layout.astro";
 						pill,
 						status as any,
 						present,
-						expected.length
+						expected.length,
 					);
 				}
 				// Expose for quick inspection in DevTools
@@ -1106,37 +1106,37 @@ import Layout from "../layouts/Layout.astro";
 		function applyClearedUIState() {
 			try {
 				const onEl = document.getElementById(
-					"toggle-on"
+					"toggle-on",
 				) as HTMLInputElement | null;
 				if (onEl) onEl.checked = false;
 				const onPill = document.getElementById(
-					"on-status"
+					"on-status",
 				) as HTMLElement | null;
 				setStatusPill(onPill, "Not in Cache");
 				const searchEl = document.getElementById(
-					"toggle-search"
+					"toggle-search",
 				) as HTMLInputElement | null;
 				if (searchEl) searchEl.checked = false;
 				for (const key of STATE.effectiveKeys || []) {
 					const cb = document.getElementById(
-						`toggle-col-${key}`
+						`toggle-col-${key}`,
 					) as HTMLInputElement | null;
 					if (cb) cb.checked = false;
 					const pill = document.getElementById(
-						`status-col-${key}`
+						`status-col-${key}`,
 					) as HTMLElement | null;
 					setStatusPill(pill as HTMLElement, "Not in Cache");
 				}
 				// Also reset Search status pill
 				const searchPill = document.getElementById(
-					"search-status"
+					"search-status",
 				) as HTMLElement | null;
 				setStatusPill(searchPill, "Not in Cache");
 				STATE.selectedCollections.clear();
 				updateDownloadButton();
 				// no separate status span; button label shows state
 				const cbBtn = document.getElementById(
-					"clear"
+					"clear",
 				) as HTMLButtonElement | null;
 				if (cbBtn) cbBtn.disabled = true;
 			} catch {}
@@ -1161,7 +1161,7 @@ import Layout from "../layouts/Layout.astro";
 				const params = new URLSearchParams(location.search);
 				if (params.get("debug") !== "1") return;
 				const nukeBtn = document.getElementById(
-					"nuke"
+					"nuke",
 				) as HTMLButtonElement | null;
 				if (!nukeBtn) return;
 				nukeBtn.classList.remove("hidden");
@@ -1201,7 +1201,7 @@ import Layout from "../layouts/Layout.astro";
 											return new Promise<void>((res) => {
 												const req =
 													indexedDB.deleteDatabase(
-														d.name
+														d.name,
 													);
 												req.onsuccess =
 													req.onerror =
@@ -1211,7 +1211,7 @@ import Layout from "../layouts/Layout.astro";
 										} catch {
 											return Promise.resolve();
 										}
-									})
+									}),
 								);
 							}
 						}
@@ -1225,7 +1225,7 @@ import Layout from "../layouts/Layout.astro";
 		// Add to Home Screen (A2HS)
 		(async function setupA2HS() {
 			const btn = document.getElementById(
-				"a2hs"
+				"a2hs",
 			) as HTMLButtonElement | null;
 			const btnSection = document.getElementById("a2hs-section");
 			if (!btn) return;
@@ -1302,11 +1302,11 @@ import Layout from "../layouts/Layout.astro";
 			}
 			function isMac() {
 				return /Macintosh|MacIntel|MacPPC|Mac68K/.test(
-					navigator.platform
+					navigator.platform,
 				);
 			}
 			function showA2HSHelp(
-				kind: "safari-ios" | "safari-mac" | "chrome"
+				kind: "safari-ios" | "safari-mac" | "chrome",
 			) {
 				const help = document.getElementById("a2hs-fallback");
 				if (!help) return;

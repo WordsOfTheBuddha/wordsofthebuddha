@@ -39,7 +39,7 @@ const collections: Record<CollectionKey, Collection> = {
 	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
 	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
 	snp: { name: "The Buddha's Ancient Discourses (Sutta Nipāta)", items: [] },
-	sn: { name: "Linked Discourses (Saṃyutta Nikāya)", items: [] },
+	sn: { name: "Connected Discourses (Saṃyutta Nikāya)", items: [] },
 	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
 	ud: { name: "Inspired Utterances (Udāna)", items: [] },
 };
@@ -145,7 +145,7 @@ if (qualities.positive.includes(qualityName)) {
 									!term.startsWith("[") &&
 									!term.startsWith("Context:") &&
 									!term.startsWith("Related:") &&
-									!term.startsWith("Opposite:")
+									!term.startsWith("Opposite:"),
 							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 pr-4">
@@ -157,14 +157,14 @@ if (qualities.positive.includes(qualityName)) {
 												(term) =>
 													!term.startsWith("[") &&
 													!term.startsWith(
-														"Context:"
+														"Context:",
 													) &&
 													!term.startsWith(
-														"Related:"
+														"Related:",
 													) &&
 													!term.startsWith(
-														"Opposite:"
-													)
+														"Opposite:",
+													),
 											)
 											.join(", ")}
 									</span>
@@ -173,7 +173,7 @@ if (qualities.positive.includes(qualityName)) {
 
 							{/* Context information */}
 							{synonyms.some((term) =>
-								term.startsWith("Context:")
+								term.startsWith("Context:"),
 							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 pr-4">
@@ -182,7 +182,7 @@ if (qualities.positive.includes(qualityName)) {
 									<span class="text-text italic">
 										{synonyms
 											.find((term) =>
-												term.startsWith("Context:")
+												term.startsWith("Context:"),
 											)
 											?.replace("Context: ", "")}
 									</span>
@@ -198,10 +198,10 @@ if (qualities.positive.includes(qualityName)) {
 									<span class="pali-paragraph font-semibold text-text">
 										{synonyms
 											.filter((term) =>
-												term.startsWith("[")
+												term.startsWith("["),
 											)
 											.map((term) =>
-												term.replace(/[\[\]]/g, "")
+												term.replace(/[\[\]]/g, ""),
 											)
 											.join(", ")}
 									</span>
@@ -210,7 +210,7 @@ if (qualities.positive.includes(qualityName)) {
 
 							{/* Related qualities */}
 							{synonyms.some((term) =>
-								term.startsWith("Related:")
+								term.startsWith("Related:"),
 							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 self-center">
@@ -219,7 +219,7 @@ if (qualities.positive.includes(qualityName)) {
 									<div class="flex flex-wrap gap-2">
 										{synonyms
 											.find((term) =>
-												term.startsWith("Related:")
+												term.startsWith("Related:"),
 											)
 											?.replace("Related:", "")
 											.replace(/[{}]/g, "")
@@ -229,7 +229,7 @@ if (qualities.positive.includes(qualityName)) {
 											.map((quality) => {
 												const qualitySlug =
 													encodeURIComponent(
-														quality.toLowerCase()
+														quality.toLowerCase(),
 													);
 												const capitalizedQuality =
 													quality
@@ -240,11 +240,11 @@ if (qualities.positive.includes(qualityName)) {
 												// Determine quality type for styling
 												const isPositive =
 													qualities.positive.includes(
-														quality.toLowerCase()
+														quality.toLowerCase(),
 													);
 												const isNegative =
 													qualities.negative.includes(
-														quality.toLowerCase()
+														quality.toLowerCase(),
 													);
 
 												const tagClass = isPositive
@@ -268,7 +268,7 @@ if (qualities.positive.includes(qualityName)) {
 
 							{/* Opposite qualities */}
 							{synonyms.some((term) =>
-								term.startsWith("Opposite:")
+								term.startsWith("Opposite:"),
 							) && (
 								<>
 									<span class="text-gray-500 dark:text-gray-400 self-center">
@@ -277,7 +277,7 @@ if (qualities.positive.includes(qualityName)) {
 									<div class="flex flex-wrap gap-2">
 										{synonyms
 											.find((term) =>
-												term.startsWith("Opposite:")
+												term.startsWith("Opposite:"),
 											)
 											?.replace("Opposite:", "")
 											.replace(/[{}]/g, "")
@@ -287,7 +287,7 @@ if (qualities.positive.includes(qualityName)) {
 											.map((quality) => {
 												const qualitySlug =
 													encodeURIComponent(
-														quality.toLowerCase()
+														quality.toLowerCase(),
 													);
 												const capitalizedQuality =
 													quality
@@ -298,11 +298,11 @@ if (qualities.positive.includes(qualityName)) {
 												// Determine quality type for styling
 												const isPositive =
 													qualities.positive.includes(
-														quality.toLowerCase()
+														quality.toLowerCase(),
 													);
 												const isNegative =
 													qualities.negative.includes(
-														quality.toLowerCase()
+														quality.toLowerCase(),
 													);
 
 												const tagClass = isPositive

@@ -2,267 +2,267 @@ import type { DirectoryStructure } from "../types/directory";
 
 export const directoryStructure: Record<string, DirectoryStructure> = {
 	sn: {
-		title: "Saṃyutta Nikāya - Linked Discourses",
+		title: "Saṃyutta Nikāya - Connected Discourses",
 		description:
 			"A collection of discourses grouped by theme, offering rich explorations of core Buddhist concepts such as dependent origination, the five aggregates, and the path to liberation.",
 		children: {
 			"sn1-11": {
-				title: "The Group of Linked Discourses with Verses",
+				title: "The Group of Connected Discourses with Verses",
 				description:
-					'The "Group of Linked Discourses with Verses" forms the opening section of the Saṁyutta Nikāya. Distinguished by its frequent use of verse, often paired with prose, this collection presents the Buddha’s teachings through a poetic lens. The suttas feature a diverse cast of figures—deities, Brahmās (Gods), kings, and disciples—engaging in dialogues that address core elements of the Dhamma, such as suffering, liberation, and the law of kamma. Rich with vivid imagery and lyrical expression, this division weaves together profound insights and narrative depth, offering an evocative introduction to early Buddhist thought.',
+					'The "Group of Connected Discourses with Verses" forms the opening section of the Saṁyutta Nikāya. Distinguished by its frequent use of verse, often paired with prose, this collection presents the Buddha’s teachings through a poetic lens. The suttas feature a diverse cast of figures—deities, Brahmās (Gods), kings, and disciples—engaging in dialogues that address core elements of the Dhamma, such as suffering, liberation, and the law of kamma. Rich with vivid imagery and lyrical expression, this division weaves together profound insights and narrative depth, offering an evocative introduction to early Buddhist thought.',
 				range: { start: 1, end: 11 },
 				children: {
 					sn1: {
-						title: "Devatāsaṁyutta - Linked Discourses with Deities",
+						title: "Devatāsaṁyutta - Connected Discourses with Deities",
 						description:
-							'The "Linked Discourses With Deities" features dialogues between the Buddha and various deities, beings who visit, often at night, to engage in dialogues about the Dhamma. These suttas, frequently featuring verses, explore a wide range of topics, from the nature of suffering to the path of liberation. The devas, depicted as luminous and reverent, approach the Awakened One with questions or reflections, revealing their eagerness to deepen their understanding. This collection highlights the universal reach of the Buddha’s teachings, extending even to beings of higher realms seeking wisdom.',
+							'The "Connected Discourses With Deities" features dialogues between the Buddha and various deities, beings who visit, often at night, to engage in dialogues about the Dhamma. These suttas, frequently featuring verses, explore a wide range of topics, from the nature of suffering to the path of liberation. The devas, depicted as luminous and reverent, approach the Awakened One with questions or reflections, revealing their eagerness to deepen their understanding. This collection highlights the universal reach of the Buddha’s teachings, extending even to beings of higher realms seeking wisdom.',
 					},
 					sn2: {
-						title: "Devaputtasaṁyutta - Linked Discourses with Young Deities",
+						title: "Devaputtasaṁyutta - Connected Discourses with Young Deities",
 						description:
-							'The "Linked Discourses with Young Deities" features young celestial beings, often newly reborn from human lives, who come to the Buddha or his disciples to express their insights or seek further guidance. These suttas, rich with verse, delve into themes of kamma, rebirth, and the pursuit of wisdom, as the young devas reflect on their past actions and their current exalted state. Portrayed with a mix of awe and curiosity, these beings engage in poignant exchanges that underscore the continuity of the spiritual journey across realms. This collection offers a vivid exploration of how past deeds shape present existence, even among the divine.',
+							'The "Connected Discourses with Young Deities" features young celestial beings, often newly reborn from human lives, who come to the Buddha or his disciples to express their insights or seek further guidance. These suttas, rich with verse, delve into themes of kamma, rebirth, and the pursuit of wisdom, as the young devas reflect on their past actions and their current exalted state. Portrayed with a mix of awe and curiosity, these beings engage in poignant exchanges that underscore the continuity of the spiritual journey across realms. This collection offers a vivid exploration of how past deeds shape present existence, even among the divine.',
 					},
 					sn3: {
-						title: "Kosalasaṁyutta - Linked Discourses With King Pasenadi of Kosala",
+						title: "Kosalasaṁyutta - Connected Discourses With King Pasenadi of Kosala",
 						description:
-							"The \"Linked Discourses With King Pasenadi of Kosala\" centers on King Pasenadi of Kosala, a figure who emerges in the early texts as both complex and relatable. Pasenadi is portrayed with his flaws and follies, yet also with deep devotion and a capacity for growth. These discourses often involve substantial prose narratives, depicting the king's struggles to reconcile his royal duties—amidst spies, sacrifices, punishments, and wars—with his commitment to the Dhamma. Queen Mallikā, a key figure in Pasenadi's spiritual journey, also appears, notably in [SN 3.8](/sn3.8), where she boldly challenges the king. This collection provides a rich exploration of the challenges faced by a ruler striving to uphold the Dhamma in the complex world of royal life.",
+							"The \"Connected Discourses With King Pasenadi of Kosala\" centers on King Pasenadi of Kosala, a figure who emerges in the early texts as both complex and relatable. Pasenadi is portrayed with his flaws and follies, yet also with deep devotion and a capacity for growth. These discourses often involve substantial prose narratives, depicting the king's struggles to reconcile his royal duties—amidst spies, sacrifices, punishments, and wars—with his commitment to the Dhamma. Queen Mallikā, a key figure in Pasenadi's spiritual journey, also appears, notably in [SN 3.8](/sn3.8), where she boldly challenges the king. This collection provides a rich exploration of the challenges faced by a ruler striving to uphold the Dhamma in the complex world of royal life.",
 					},
 					sn4: {
-						title: "Mārasaṁyutta - Linked Discourses With Māra",
+						title: "Mārasaṁyutta - Connected Discourses With Māra",
 						description:
-							"The \"Linked Discourses With Māra\" features dialogues between the Buddha and Māra, the personification of evil and the tempter of beings. Māra is depicted as a powerful figure who seeks to obstruct the Buddha's path to awakening and enlightenment. These discourses often involve Māra's attempts to dissuade the Buddha from teaching or to distract him from his meditation. The Buddha responds with wisdom and compassion, skillfully countering Māra's deceptions and revealing the path to liberation.",
+							"The \"Connected Discourses With Māra\" features dialogues between the Buddha and Māra, the personification of evil and the tempter of beings. Māra is depicted as a powerful figure who seeks to obstruct the Buddha's path to awakening and enlightenment. These discourses often involve Māra's attempts to dissuade the Buddha from teaching or to distract him from his meditation. The Buddha responds with wisdom and compassion, skillfully countering Māra's deceptions and revealing the path to liberation.",
 					},
 					sn5: {
-						title: "Bhikkhunīsaṁyutta - Linked Discourses with Bhikkhunīs",
+						title: "Bhikkhunīsaṁyutta - Connected Discourses with Bhikkhunīs",
 						description:
-							'The "Linked Discourses with Bhikkhunīs" contains verses from ten awakened bhikkhunis who express their liberation through poetic reflections. Each sutta features a bhikkhunī confronting Māra or celebrating her mastery of the Dhamma, showcasing their insight into impermanence, suffering, and not-self. These discourses highlight the spiritual accomplishments of these women in the early Buddhist community.',
+							'The "Connected Discourses with Bhikkhunīs" contains verses from ten awakened bhikkhunis who express their liberation through poetic reflections. Each sutta features a bhikkhunī confronting Māra or celebrating her mastery of the Dhamma, showcasing their insight into impermanence, suffering, and not-self. These discourses highlight the spiritual accomplishments of these women in the early Buddhist community.',
 					},
 					sn6: {
-						title: "Brahmasaṁyutta - Linked Discourses with Brahmas",
+						title: "Brahmasaṁyutta - Connected Discourses with Brahmas",
 						description:
-							'The "Linked Discourses with Brahmas" recount interactions between the Buddha or his disciples and Brahmas, mighty celestial beings residing in exalted realms. In these suttas, Brahmas often approach the Buddha to seek clarification, offer praise, or discuss profound topics such as the nature of existence and the path to liberation. The dialogues explore themes like impermanence, the limitations of even the highest states of being, and the unparalleled depth of the Buddha’s wisdom. This saṁyutta illustrates the expansive reach of the Dhamma, demonstrating its relevance and authority even among the most elevated beings in the cosmos.',
+							'The "Connected Discourses with Brahmas" recount interactions between the Buddha or his disciples and Brahmas, mighty celestial beings residing in exalted realms. In these suttas, Brahmas often approach the Buddha to seek clarification, offer praise, or discuss profound topics such as the nature of existence and the path to liberation. The dialogues explore themes like impermanence, the limitations of even the highest states of being, and the unparalleled depth of the Buddha’s wisdom. This saṁyutta illustrates the expansive reach of the Dhamma, demonstrating its relevance and authority even among the most elevated beings in the cosmos.',
 					},
 					sn7: {
-						title: "Brāhmaṇasaṁyutta - Linked Discourses with Brahmins",
+						title: "Brāhmaṇasaṁyutta - Connected Discourses with Brahmins",
 						description:
-							"The \"Linked Discourses with Brahmins\" focuses on the Buddha's interactions with brahmins, the religious scholars and ritual practitioners of his time. In these dialogues, the Buddha challenges the brahmins' reliance on caste and rituals, emphasizing the importance of ethical actions and inner virtue over birth or societal status. These suttas often depict brahmins boasting about their superiority, only to be gently corrected by the Buddha, where he teaches that one's deeds —not birth— make one a true brahmin. This collection illustrates the Buddha's critique of rigid social hierarchies and his emphasis on a universal path of ethical conduct and wisdom for spiritual liberation.",
+							"The \"Connected Discourses with Brahmins\" focuses on the Buddha's interactions with brahmins, the religious scholars and ritual practitioners of his time. In these dialogues, the Buddha challenges the brahmins' reliance on caste and rituals, emphasizing the importance of ethical actions and inner virtue over birth or societal status. These suttas often depict brahmins boasting about their superiority, only to be gently corrected by the Buddha, where he teaches that one's deeds —not birth— make one a true brahmin. This collection illustrates the Buddha's critique of rigid social hierarchies and his emphasis on a universal path of ethical conduct and wisdom for spiritual liberation.",
 					},
 					sn8: {
-						title: "Vangīsasaṁyutta - Linked Discourses with Vangīsa",
+						title: "Vangīsasaṁyutta - Connected Discourses with Vangīsa",
 						description:
-							'The "Linked Discourses with Vangīsa" focus on venerable Vangīsa, a distinguished disciple of the Buddha celebrated for his exceptional poetic abilities. This collection features suttas where Vangīsa composes spontaneous verses to express his deep devotion to the Buddha, his admiration for the Dhamma, or his contemplations on the spiritual journey. Through his lyrical compositions, Vangīsa captures profound spiritual truths and emotions, blending artistry with insight. The discourses showcase the transformative power of poetry as a medium for conveying the essence of the Buddha’s teachings, making this saṁyutta a unique fusion of wisdom and beauty.',
+							'The "Connected Discourses with Vangīsa" focus on venerable Vangīsa, a distinguished disciple of the Buddha celebrated for his exceptional poetic abilities. This collection features suttas where Vangīsa composes spontaneous verses to express his deep devotion to the Buddha, his admiration for the Dhamma, or his contemplations on the spiritual journey. Through his lyrical compositions, Vangīsa captures profound spiritual truths and emotions, blending artistry with insight. The discourses showcase the transformative power of poetry as a medium for conveying the essence of the Buddha’s teachings, making this saṁyutta a unique fusion of wisdom and beauty.',
 					},
 					sn9: {
-						title: "Vanasaṁyutta - Linked Discourses in the Forest",
+						title: "Vanasaṁyutta - Connected Discourses in the Forest",
 						description:
-							'The "Linked Discourses in the Forest" centers on the bhikkhus who dwell in the wilderness. Typically, the bhikkhu is slack or negligent in some way, and a deity appears to call them out and encourages them to strive with greater diligence. These suttas emphasize the need for effort and mindfulness in solitary practice.',
+							'The "Connected Discourses in the Forest" centers on the bhikkhus who dwell in the wilderness. Typically, the bhikkhu is slack or negligent in some way, and a deity appears to call them out and encourages them to strive with greater diligence. These suttas emphasize the need for effort and mindfulness in solitary practice.',
 					},
 					sn10: {
-						title: "Yakkhasaṁyutta - Linked Discourses with Yakkhas",
+						title: "Yakkhasaṁyutta - Connected Discourses with Yakkhas",
 						description:
-							'The "Linked Discourses with Yakkhas" depicts encounters between the Buddha or his disciples and yakkhas, territorial spirits who often challenge or question them. In each sutta, the Buddha or a disciple responds with teachings on morality, impermanence, or the dangers of anger, subduing or instructing the yakkhas. These discourses illustrate the Dhamma’s power to transform even hostile beings.',
+							'The "Connected Discourses with Yakkhas" depicts encounters between the Buddha or his disciples and yakkhas, territorial spirits who often challenge or question them. In each sutta, the Buddha or a disciple responds with teachings on morality, impermanence, or the dangers of anger, subduing or instructing the yakkhas. These discourses illustrate the Dhamma’s power to transform even hostile beings.',
 					},
 					sn11: {
-						title: "Sakkasaṁyutta - Linked Discourses with Sakka",
+						title: "Sakkasaṁyutta - Connected Discourses with Sakka",
 						description:
-							'The "Linked Discourses with Sakka" features Sakka, the lord of the deities, in conversations with the Buddha. In these suttas, Sakka seeks clarification on ethical conduct, the benefits of giving, or the path to liberation, often prompted by challenges in his celestial rule. The discourses reveal his devotion to the Dhamma and its application to leadership.',
+							'The "Connected Discourses with Sakka" features Sakka, the lord of the deities, in conversations with the Buddha. In these suttas, Sakka seeks clarification on ethical conduct, the benefits of giving, or the path to liberation, often prompted by challenges in his celestial rule. The discourses reveal his devotion to the Dhamma and its application to leadership.',
 					},
 				},
 			},
 			"sn12-21": {
-				title: "The Group of Linked Discourses Beginning With Causation",
+				title: "The Group of Connected Discourses Beginning With Causation",
 				description:
 					'The "Book of Causation" is the second book in the Saṁyutta Nikāya. It is named after the first and longest saṁyutta, which explores causation through the Buddha\'s foundational teaching of dependent co-arising. The remaining nine saṁyuttas address various secondary themes, with some organized by subject matter and others by the individuals involved in the teachings. This book delves into the intricate web of cause and effect, offering insights into the nature of existence and the process of becoming.',
 				range: { start: 12, end: 21 },
 				children: {
 					sn12: {
-						title: "Nidānasaṁyutta - Linked Discourses on Causation",
+						title: "Nidānasaṁyutta - Connected Discourses on Causation",
 						description:
-							'The "Linked Discourses on Causation" contains discourses on dependent co-arising (paṭiccasamuppāda). Dependent co-arising presents a series of conditional links laying out the process of becoming and the arising of suffering. These teachings explore the interdependent nature of existence, illustrating how one condition leads to another in a chain of causation. By examining the causes and conditions that give rise to suffering, these discourses offer insights into the nature of reality and the conditions for liberation.',
+							'The "Connected Discourses on Causation" contains discourses on dependent co-arising (paṭiccasamuppāda). Dependent co-arising presents a series of conditional links laying out the process of becoming and the arising of suffering. These teachings explore the interdependent nature of existence, illustrating how one condition leads to another in a chain of causation. By examining the causes and conditions that give rise to suffering, these discourses offer insights into the nature of reality and the conditions for liberation.',
 					},
 					sn13: {
-						title: "Abhisamayasaṁyutta - Linked Discourses on Complete Comprehension",
+						title: "Abhisamayasaṁyutta - Connected Discourses on Complete Comprehension",
 						description:
-							'The "Linked Discourses on Complete Comprehension" contains discourses that use vivid similes to illustrate the value of realizing the Dhamma.',
+							'The "Connected Discourses on Complete Comprehension" contains discourses that use vivid similes to illustrate the value of realizing the Dhamma.',
 					},
 					sn14: {
-						title: "Dhātusaṁyutta - Linked Discourses on the Elements",
+						title: "Dhātusaṁyutta - Connected Discourses on the Elements",
 						description:
-							'The "Linked Discourses on the Elements" contains discourses exploring elements shaping experience, with a focus on the six sensory elements — eye, ear, nose, tongue, body, and mind. These elements are examined for their role in generating contact, perception, and feeling, showing how sensory experience drives attachment and aversion. Other discourses address mental elements (e.g., forgetful, reckless, mindful) and the four great elements—earth, water, fire, and air — representing the basic physical structure of existence.',
+							'The "Connected Discourses on the Elements" contains discourses exploring elements shaping experience, with a focus on the six sensory elements — eye, ear, nose, tongue, body, and mind. These elements are examined for their role in generating contact, perception, and feeling, showing how sensory experience drives attachment and aversion. Other discourses address mental elements (e.g., forgetful, reckless, mindful) and the four great elements—earth, water, fire, and air — representing the basic physical structure of existence.',
 					},
 					sn15: {
-						title: "Anamataggasaṁyutta - Linked Discourses on the Inconceivable Beginning",
+						title: "Anamataggasaṁyutta - Connected Discourses on the Inconceivable Beginning",
 						description:
-							'The "Linked Discourses on the Inconceivable Beginning" contains discourses exploring the beginningless nature of saṁsāra, the cycle of birth and death. These teachings challenge the idea of a first point in time, suggesting that saṁsāra has no discernible origin. By examining the endless cycle of rebirth and the causes of suffering, these discourses offer insights into the nature of existence and the conditions for liberation.',
+							'The "Connected Discourses on the Inconceivable Beginning" contains discourses exploring the beginningless nature of saṁsāra, the cycle of birth and death. These teachings challenge the idea of a first point in time, suggesting that saṁsāra has no discernible origin. By examining the endless cycle of rebirth and the causes of suffering, these discourses offer insights into the nature of existence and the conditions for liberation.',
 					},
 					sn16: {
-						title: "Kassapasaṁyutta - Linked Discourses with Kassapa",
+						title: "Kassapasaṁyutta - Connected Discourses with Kassapa",
 						description:
-							'The "Linked Discourses with Kassapa" features venerable Mahākassapa, one of the Buddha\'s foremost disciples, renowned for his strict adherence to ascetic practices and his profound meditative attainments. These discourses often highlight his exemplary conduct, his deep understanding of the Dhamma, and his role as a model for other monastics. The suttas in this collection underscore the value of contentment, fewness of wishes, and the rigorous training required for spiritual purification, offering a glimpse into the life of a monk fully dedicated to the ascetic ideal.',
+							'The "Connected Discourses with Kassapa" features venerable Mahākassapa, one of the Buddha\'s foremost disciples, renowned for his strict adherence to ascetic practices and his profound meditative attainments. These discourses often highlight his exemplary conduct, his deep understanding of the Dhamma, and his role as a model for other monastics. The suttas in this collection underscore the value of contentment, fewness of wishes, and the rigorous training required for spiritual purification, offering a glimpse into the life of a monk fully dedicated to the ascetic ideal.',
 					},
 					sn17: {
-						title: "Lābhasakkārasaṁyutta - Linked Discourses on Acquisitions and Respect",
+						title: "Lābhasakkārasaṁyutta - Connected Discourses on Acquisitions and Respect",
 						description:
-							'The "Linked Discourses on Acquisitions and Respect"  contain teachings on the danger of acqusitions, respect, and popularity for spiritual practitioners. The Buddha emphasizes how these worldly rewards are vicious, bitter, severe, and obstructive, leading to complacency, attachment, and spiritual downfall. Through vivid similes — such as comparing acquisitions and respect to a fisherman\'s baited hook — the discourses highlight how even accomplished practitioners can become ensnared if they relish praise and recognition.',
+							'The "Connected Discourses on Acquisitions and Respect"  contain teachings on the danger of acqusitions, respect, and popularity for spiritual practitioners. The Buddha emphasizes how these worldly rewards are vicious, bitter, severe, and obstructive, leading to complacency, attachment, and spiritual downfall. Through vivid similes — such as comparing acquisitions and respect to a fisherman\'s baited hook — the discourses highlight how even accomplished practitioners can become ensnared if they relish praise and recognition.',
 					},
 					sn18: {
-						title: "Rāhulasaṁyutta - Linked Discourses with Rāhula",
+						title: "Rāhulasaṁyutta - Connected Discourses with Rāhula",
 						description:
-							'The "Linked Discourses with Rāhula" focuses on the Buddha\'s teachings to his son, venerable Rāhula. These discourses emphasize the systematic contemplation of impermanence, suffering, and non-self across all aspects of sensory experience. Through these progressive instructions, the Buddha guides Rāhula towards a deep understanding of the nature of reality, culminating in his full awakening. This collection provides a clear, step-by-step framework for insight meditation.',
+							'The "Connected Discourses with Rāhula" focuses on the Buddha\'s teachings to his son, venerable Rāhula. These discourses emphasize the systematic contemplation of impermanence, suffering, and non-self across all aspects of sensory experience. Through these progressive instructions, the Buddha guides Rāhula towards a deep understanding of the nature of reality, culminating in his full awakening. This collection provides a clear, step-by-step framework for insight meditation.',
 					},
 					sn19: {
-						title: "Lakkhaṇasaṁyutta - Linked Discourses with Lakkhaṇa",
+						title: "Lakkhaṇasaṁyutta - Connected Discourses with Lakkhaṇa",
 						description:
-							'The "Linked Discourses with Lakkhaṇa" features venerable Mahāmoggallāna and venerable Lakkhaṇa. In these suttas, Moggallāna uses his clairvoyant vision to observe various spirits (petas) suffering due to their past unwholesome deeds. The Buddha confirms these visions, using them as teaching moments to illustrate the inescapable law of kamma and the severe consequences of unethical behavior. This collection serves as a stark reminder of the importance of moral conduct.',
+							'The "Connected Discourses with Lakkhaṇa" features venerable Mahāmoggallāna and venerable Lakkhaṇa. In these suttas, Moggallāna uses his clairvoyant vision to observe various spirits (petas) suffering due to their past unwholesome deeds. The Buddha confirms these visions, using them as teaching moments to illustrate the inescapable law of kamma and the severe consequences of unethical behavior. This collection serves as a stark reminder of the importance of moral conduct.',
 					},
 					sn20: {
-						title: "Opammavagga - Linked Discourses with Similes",
+						title: "Opammavagga - Connected Discourses with Similes",
 						description:
-							'The "Linked Discourses with Similes" contains discourses that use vivid similes to illustrate the Buddha\'s teachings. These similes draw on everyday experiences and natural phenomena to convey profound truths about the nature of reality, the path to liberation, and the qualities of an awakened being. By comparing spiritual principles to familiar objects and situations, these discourses offer accessible and memorable insights into the Dhamma.',
+							'The "Connected Discourses with Similes" contains discourses that use vivid similes to illustrate the Buddha\'s teachings. These similes draw on everyday experiences and natural phenomena to convey profound truths about the nature of reality, the path to liberation, and the qualities of an awakened being. By comparing spiritual principles to familiar objects and situations, these discourses offer accessible and memorable insights into the Dhamma.',
 					},
 					sn21: {
-						title: "Bhikkhusaṁyutta - Linked Discourses with Bhikkhus",
+						title: "Bhikkhusaṁyutta - Connected Discourses with Bhikkhus",
 						description:
-							'The "Linked Discourses with Bhikkhus" contains discourses addressed to or concerning various monks. These suttas cover a wide range of topics related to monastic life, including meditation practices, ethical conduct, the challenges of the spiritual path, and the qualities of exemplary monastics. By highlighting both the struggles and the successes of individual monks, this collection provides practical guidance and inspiration for those dedicated to the pursuit of liberation.',
+							'The "Connected Discourses with Bhikkhus" contains discourses addressed to or concerning various monks. These suttas cover a wide range of topics related to monastic life, including meditation practices, ethical conduct, the challenges of the spiritual path, and the qualities of exemplary monastics. By highlighting both the struggles and the successes of individual monks, this collection provides practical guidance and inspiration for those dedicated to the pursuit of liberation.',
 					},
 				},
 			},
 			"sn22-34": {
-				title: "The Group of Linked Discourses Beginning With the Aggregates",
+				title: "The Group of Connected Discourses Beginning With the Aggregates",
 				description:
 					'The "Book of the Aggregates" is the third book in the Saṁyutta Nikāya. It is named after the first and longest saṁyutta, which explores the Buddha\'s core teaching on the five aggregates. Of the remaining twelve saṁyuttas, three continue to delve into the theme of the aggregates, while the others address various secondary themes, with some organized by subject matter and others by the individuals involved in the teachings. This book provides profound insights into the components of existence and the nature of self.',
 				range: { start: 22, end: 34 },
 				children: {
 					sn22: {
-						title: "Khandhasaṁyutta - Linked Discourses on the Aggregates",
+						title: "Khandhasaṁyutta - Connected Discourses on the Aggregates",
 						description:
-							'The "Linked Discourses on the Aggregates" contains discourses focusing on the five aggregates that constitute personal experience: form, feeling, perception, intentional constructs, and consciousness. These teachings explore the nature of the aggregates, their arising and ceasing, and their relationship to suffering and liberation. By examining the components of experience, these discourses offer insights into the nature of self and the conditions for suffering and liberation.',
+							'The "Connected Discourses on the Aggregates" contains discourses focusing on the five aggregates that constitute personal experience: form, feeling, perception, intentional constructs, and consciousness. These teachings explore the nature of the aggregates, their arising and ceasing, and their relationship to suffering and liberation. By examining the components of experience, these discourses offer insights into the nature of self and the conditions for suffering and liberation.',
 					},
 					sn23: {
-						title: "Rādhasaṁyutta - Linked Discourses with Rādha",
+						title: "Rādhasaṁyutta - Connected Discourses with Rādha",
 						description:
-							"The \"Linked Discourses with Rādha\" centers on venerable Rādha, a disciple of the Buddha known for his sharp intellect and his role in asking profound questions that lead to deep teachings. These discourses often involve venerable Rādha approaching the Buddha with inquiries about the nature of reality, the self, and the path to liberation. The Buddha's responses are typically concise yet deeply insightful, using metaphors and analogies to illuminate complex concepts. This collection provides a glimpse into the dynamic between teacher and student, showcasing how the Buddha's wisdom unfolds through dialogue.",
+							"The \"Connected Discourses with Rādha\" centers on venerable Rādha, a disciple of the Buddha known for his sharp intellect and his role in asking profound questions that lead to deep teachings. These discourses often involve venerable Rādha approaching the Buddha with inquiries about the nature of reality, the self, and the path to liberation. The Buddha's responses are typically concise yet deeply insightful, using metaphors and analogies to illuminate complex concepts. This collection provides a glimpse into the dynamic between teacher and student, showcasing how the Buddha's wisdom unfolds through dialogue.",
 					},
 					sn25: {
-						title: "Okkantasaṁyutta - Linked Discourses on Arrival",
+						title: "Okkantasaṁyutta - Connected Discourses on Arrival",
 						description:
-							'The "Linked Discourses on Arrival" focuses on the theme of arrival or entry into the Dhamma, exploring the moment when one first comprehends the truth of the teachings. These suttas often feature the Buddha or his disciples explaining the significance of this pivotal moment, using vivid imagery and examples to convey the transformative power of understanding. The discourses in this collection emphasize the importance of direct experience and the sudden, profound shift that occurs when one truly sees the Dhamma. This saṁyutta offers a compelling look at the threshold of awakening.',
+							'The "Connected Discourses on Arrival" focuses on the theme of arrival or entry into the Dhamma, exploring the moment when one first comprehends the truth of the teachings. These suttas often feature the Buddha or his disciples explaining the significance of this pivotal moment, using vivid imagery and examples to convey the transformative power of understanding. The discourses in this collection emphasize the importance of direct experience and the sudden, profound shift that occurs when one truly sees the Dhamma. This saṁyutta offers a compelling look at the threshold of awakening.',
 					},
 					sn28: {
-						title: "Sāriputtasaṁyutta - Linked Discourses with Sāriputta",
+						title: "Sāriputtasaṁyutta - Connected Discourses with Sāriputta",
 						description:
-							"The \"Linked Discourses with Sāriputta\" features venerable Sāriputta, one of the Buddha's foremost disciples, renowned for his wisdom and analytical skills. These discourses often involve Sāriputta engaging in discussions with the Buddha or other bhikkhus, delving into intricate aspects of the Dhamma. The suttas in this collection are characterized by their depth and precision, as Sāriputta's questions and reflections lead to detailed expositions on topics such as dependent origination, the nature of consciousness, and the path to liberation. This saṁyutta highlights the intellectual rigor and clarity that Sāriputta brings to the teachings.",
+							"The \"Connected Discourses with Sāriputta\" features venerable Sāriputta, one of the Buddha's foremost disciples, renowned for his wisdom and analytical skills. These discourses often involve Sāriputta engaging in discussions with the Buddha or other bhikkhus, delving into intricate aspects of the Dhamma. The suttas in this collection are characterized by their depth and precision, as Sāriputta's questions and reflections lead to detailed expositions on topics such as dependent origination, the nature of consciousness, and the path to liberation. This saṁyutta highlights the intellectual rigor and clarity that Sāriputta brings to the teachings.",
 					},
 					sn33: {
-						title: "Vacchagottasaṁyutta - Linked Discourses with Vacchagotta",
+						title: "Vacchagottasaṁyutta - Connected Discourses with Vacchagotta",
 						description:
-							"The \"Linked Discourses with Vacchagotta\" features dialogues between the Buddha and Vacchagotta, a wanderer who engages the Buddha in philosophical debates. Vacchagotta is known for his skepticism and challenging questions, which the Buddha skillfully addresses with wisdom and compassion. These discourses explore a wide range of topics, including the nature of the self, the nature of the world, and the path to liberation. The Buddha's responses to Vacchagotta's inquiries offer profound insights into the core teachings of the Dhamma and the path to awakening.",
+							"The \"Connected Discourses with Vacchagotta\" features dialogues between the Buddha and Vacchagotta, a wanderer who engages the Buddha in philosophical debates. Vacchagotta is known for his skepticism and challenging questions, which the Buddha skillfully addresses with wisdom and compassion. These discourses explore a wide range of topics, including the nature of the self, the nature of the world, and the path to liberation. The Buddha's responses to Vacchagotta's inquiries offer profound insights into the core teachings of the Dhamma and the path to awakening.",
 					},
 					sn34: {
-						title: "Jhānasaṁyutta - Linked Discourses on Collectedness (jhāna)",
+						title: "Jhānasaṁyutta - Connected Discourses on Collectedness (jhāna)",
 						description:
-							'The "Linked Discourses on Collectedness" contains discourses dealing with the meditative skills required to perfect jhānas. Each discourse describes a meditator who is skilled in some aspects, but not in others, and holds the one skilled in all aspects to be the best.',
+							'The "Connected Discourses on Collectedness" contains discourses dealing with the meditative skills required to perfect jhānas. Each discourse describes a meditator who is skilled in some aspects, but not in others, and holds the one skilled in all aspects to be the best.',
 					},
 				},
 			},
 			"sn35-44": {
-				title: "The Group of Linked Discourses on the Six Sense Bases",
+				title: "The Group of Connected Discourses on the Six Sense Bases",
 				description:
 					'The "Book of the Six Sense Bases" is the fourth book in the Saṁyutta Nikāya. It is named after the first and longest saṁyutta, which focuses on the Buddha\'s core teaching concerning the six sense bases. The second saṁyutta on Feelings also addresses a significant doctrinal topic. The remaining eight saṁyuttas cover various secondary themes, with some organized by subject matter and others by the individuals involved in the teachings. This book offers deep insights into the interaction of senses, perception, and the experience of reality.',
 				range: { start: 35, end: 44 },
 				children: {
 					sn35: {
-						title: "Saḷāyatanasaṁyutta - Linked Discourses on the Six Sense Bases",
+						title: "Saḷāyatanasaṁyutta - Connected Discourses on the Six Sense Bases",
 						description:
-							'The "Linked Discourses on the Six Sense Bases" contains discourses focusing on the six sense bases and their corresponding objects. These teachings explore the nature of sensory experience, the arising of contact, and the role of consciousness in the process of perception. By examining the interplay between the senses and their objects, these discourses offer insights into the nature of reality and the conditions for suffering and liberation.',
+							'The "Connected Discourses on the Six Sense Bases" contains discourses focusing on the six sense bases and their corresponding objects. These teachings explore the nature of sensory experience, the arising of contact, and the role of consciousness in the process of perception. By examining the interplay between the senses and their objects, these discourses offer insights into the nature of reality and the conditions for suffering and liberation.',
 					},
 					sn36: {
-						title: "Vedanāsaṁyutta - Linked Discourses on Feelings",
+						title: "Vedanāsaṁyutta - Connected Discourses on Feelings",
 						description:
-							'The "Linked Discourses on Feeling" explores the nature of felt experiences—pleasant, painful, and neutral—as a fundamental aspect of experience. These teachings examine how feelings arise, their role in shaping perception, and the underlying tendencies that lead to attachment or aversion. By understanding the conditioned nature of feeling and its cessation, these discourses offer insight into the path to liberation and the end of suffering.',
+							'The "Connected Discourses on Feeling" explores the nature of felt experiences—pleasant, painful, and neutral—as a fundamental aspect of experience. These teachings examine how feelings arise, their role in shaping perception, and the underlying tendencies that lead to attachment or aversion. By understanding the conditioned nature of feeling and its cessation, these discourses offer insight into the path to liberation and the end of suffering.',
 					},
 					sn37: {
-						title: "Mātugāmasaṁyutta - Linked Discourses on Women",
+						title: "Mātugāmasaṁyutta - Connected Discourses on Women",
 						description:
-							'The "Linked Discourses on Women" contains discourses dealing with the specific circumstances and qualities of women. These suttas often discuss the five powers of a woman—beauty, wealth, relatives, sons, and virtue—and how these qualities influence her life and future rebirths. The teachings also address the social roles of women and the importance of ethical conduct. While reflecting the cultural context of ancient India, these discourses underscore the universal principle that spiritual progress depends on one\'s actions and wisdom.',
+							'The "Connected Discourses on Women" contains discourses dealing with the specific circumstances and qualities of women. These suttas often discuss the five powers of a woman—beauty, wealth, relatives, sons, and virtue—and how these qualities influence her life and future rebirths. The teachings also address the social roles of women and the importance of ethical conduct. While reflecting the cultural context of ancient India, these discourses underscore the universal principle that spiritual progress depends on one\'s actions and wisdom.',
 					},
 					sn38: {
-						title: "Jambukhādakasaṁyutta - Linked Discourses with Jambukhādaka",
+						title: "Jambukhādakasaṁyutta - Connected Discourses with Jambukhādaka",
 						description:
-							'The "Linked Discourses with Jambukhādaka" features a series of conversations between venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
+							'The "Connected Discourses with Jambukhādaka" features a series of conversations between venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
 					},
 					sn41: {
-						title: "Cittasaṁyutta - Linked Discourses with Citta the Householder",
+						title: "Cittasaṁyutta - Connected Discourses with Citta the Householder",
 						description:
-							'The "Linked Discourses with Citta the Householder" features Citta, the foremost lay disciple of the Buddha in giving Dhamma discourses. These discourses often involve Citta engaging in dialogues with elder bhikkhus. He skillfully discusses complex topics such as the nature of fetters, the diversity of elements, and the subtleties of meditative states. Citta\'s profound wisdom and clarity highlights that deep insight into the Dhamma is accessible to lay practitioners as well as monastics.',
+							'The "Connected Discourses with Citta the Householder" features Citta, the foremost lay disciple of the Buddha in giving Dhamma discourses. These discourses often involve Citta engaging in dialogues with elder bhikkhus. He skillfully discusses complex topics such as the nature of fetters, the diversity of elements, and the subtleties of meditative states. Citta\'s profound wisdom and clarity highlights that deep insight into the Dhamma is accessible to lay practitioners as well as monastics.',
 					},
 					sn42: {
-						title: "Gāmaṇisaṁyutta - Linked Discourses with Headman",
+						title: "Gāmaṇisaṁyutta - Connected Discourses with Headman",
 						description:
-							'The "Linked Discourses with Headman" contains dialogues between the Buddha and village leaders, focusing on ethical conduct, social harmony, and the application of Dhamma in daily life. These teachings offer guidance on virtuous living and wise leadership, illuminating the path to personal and communal well-being. Through these conversations, the Buddha addresses the headmen\'s concerns, emphasizing practical principles such as right action, generosity, and moral integrity, tailored to the responsibilities and spiritual development of lay practitioners.',
+							'The "Connected Discourses with Headman" contains dialogues between the Buddha and village leaders, focusing on ethical conduct, social harmony, and the application of Dhamma in daily life. These teachings offer guidance on virtuous living and wise leadership, illuminating the path to personal and communal well-being. Through these conversations, the Buddha addresses the headmen\'s concerns, emphasizing practical principles such as right action, generosity, and moral integrity, tailored to the responsibilities and spiritual development of lay practitioners.',
 					},
 					sn43: {
-						title: "Asaṅkhatasaṁyutta - Linked Discourses on the Unconditioned",
+						title: "Asaṅkhatasaṁyutta - Connected Discourses on the Unconditioned",
 						description:
-							'The "Linked Discourses on the Unconditioned" contains discourses focusing on the unconditioned, the ultimate reality beyond conditioned phenomena. These teachings explore the nature of the unconditioned, its relationship to the conditioned, and the path to realizing the unconditioned. By examining the nature of ultimate reality, these discourses offer insights into the nature of liberation and the conditions for spiritual awakening.',
+							'The "Connected Discourses on the Unconditioned" contains discourses focusing on the unconditioned, the ultimate reality beyond conditioned phenomena. These teachings explore the nature of the unconditioned, its relationship to the conditioned, and the path to realizing the unconditioned. By examining the nature of ultimate reality, these discourses offer insights into the nature of liberation and the conditions for spiritual awakening.',
 					},
 					sn44: {
-						title: "Abyākatasaṁyutta - Linked Discourses on the Undeclared",
+						title: "Abyākatasaṁyutta - Connected Discourses on the Undeclared",
 						description:
-							'The "Linked Discourses on the Undeclared" features dialogues concerning the "undeclared" (abyākata) points—questions the Buddha refused to answer, such as whether the world is eternal or infinite, and the status of an Awakened One after death. These discourses clarify why the Buddha set these questions aside: they are speculative, do not lead to liberation, and are often based on misconceptions about the self. This collection highlights the Buddha\'s pragmatic focus on suffering and its cessation.',
+							'The "Connected Discourses on the Undeclared" features dialogues concerning the "undeclared" (abyākata) points—questions the Buddha refused to answer, such as whether the world is eternal or infinite, and the status of an Awakened One after death. These discourses clarify why the Buddha set these questions aside: they are speculative, do not lead to liberation, and are often based on misconceptions about the self. This collection highlights the Buddha\'s pragmatic focus on suffering and its cessation.',
 					},
 				},
 			},
 			"sn45-56": {
-				title: "The Group of Linked Discourses on the Way Of Practice",
+				title: "The Group of Connected Discourses on the Way Of Practice",
 				description:
 					'The "Great Book" is the fifth and largest book in the Saṁyutta Nikāya, comprising twelve saṁyuttas centered on the Buddha\'s teachings on the way of practice leading to awakening. The first saṁyutta, the "Section on the Way of Practice" (Maggasaṁyutta), along with the following seven saṁyuttas, expounds on the bodhipakkhiyā dhammā, or "qualities leading to awakening", as taught by the Buddha. The remaining saṁyuttas offer various perspectives from the Buddha on the way of practice, concluding with teachings on stream-entry and the four noble truths. This book offers comprehensive insights into the Buddha\'s guidance on the way of practice to awakening.',
 				range: { start: 45, end: 56 },
 				children: {
 					sn45: {
-						title: "Maggasaṁyutta - Linked Discourses on the Eightfold Path",
+						title: "Maggasaṁyutta - Connected Discourses on the Eightfold Path",
 						description:
-							'The "Linked Discourses on the Eightfold Path" contains discourses focusing on the Noble Eightfold Path, the Buddha\'s core teaching on the way of practice leading to awakening. These teachings explore each factor of the path — right view, right intention, right speech, right action, right livelihood, right effort, right mindfulness, and right collectedness — offering guidance on how to cultivate these factors in daily life. By examining the path to awakening, these discourses provide insights into the conditions for spiritual growth and liberation.',
+							'The "Connected Discourses on the Eightfold Path" contains discourses focusing on the Noble Eightfold Path, the Buddha\'s core teaching on the way of practice leading to awakening. These teachings explore each factor of the path — right view, right intention, right speech, right action, right livelihood, right effort, right mindfulness, and right collectedness — offering guidance on how to cultivate these factors in daily life. By examining the path to awakening, these discourses provide insights into the conditions for spiritual growth and liberation.',
 					},
 					sn46: {
-						title: "Bojjhaṅgasaṁyutta - Linked Discourses on the Factors of Awakening",
+						title: "Bojjhaṅgasaṁyutta - Connected Discourses on the Factors of Awakening",
 						description:
-							'The "Linked Discourses on the Factors of Awakening" contains discourses focusing on the seven factors that lead to awakening when cultivated. These factors include mindfulness, investigation of mental qualities (principles, states), energy, joy, tranquility, collectedness, and equanimity (mental poise). These teachings explore the qualities that support spiritual growth and the development of insight. By examining the factors of awakening, these discourses offer insights into the conditions for spiritual progress and liberation.',
+							'The "Connected Discourses on the Factors of Awakening" contains discourses focusing on the seven factors that lead to awakening when cultivated. These factors include mindfulness, investigation of mental qualities (principles, states), energy, joy, tranquility, collectedness, and equanimity (mental poise). These teachings explore the qualities that support spiritual growth and the development of insight. By examining the factors of awakening, these discourses offer insights into the conditions for spiritual progress and liberation.',
 					},
 					sn47: {
-						title: "Satipaṭṭhānasaṁyutta - Linked Discourses on the Establishments of Mindfulness",
+						title: "Satipaṭṭhānasaṁyutta - Connected Discourses on the Establishments of Mindfulness",
 						description:
-							'The "Linked Discourses on the Establishments of Mindfulness" contains discourses focusing on the four foundations of mindfulness: clear comprehension and clear awareness of the body, felt experience, mind, and mental qualities. These teachings explore how to establish mindfulness as a means to develop right collectedness, insight and wisdom.',
+							'The "Connected Discourses on the Establishments of Mindfulness" contains discourses focusing on the four foundations of mindfulness: clear comprehension and clear awareness of the body, felt experience, mind, and mental qualities. These teachings explore how to establish mindfulness as a means to develop right collectedness, insight and wisdom.',
 					},
 					sn48: {
-						title: "Indriyasaṁyutta - Linked Discourses on the Faculties",
+						title: "Indriyasaṁyutta - Connected Discourses on the Faculties",
 						description:
-							'The "Linked Discourses on the Faculties" explores the five spiritual faculties: faith, energy, mindfulness, collectedness, and wisdom. These teachings examine how these faculties function as both the means to attain liberation and as qualities that become increasingly refined through practice. By developing these faculties in a balanced way, practitioners can progress on the path to awakening.',
+							'The "Connected Discourses on the Faculties" explores the five spiritual faculties: faith, energy, mindfulness, collectedness, and wisdom. These teachings examine how these faculties function as both the means to attain liberation and as qualities that become increasingly refined through practice. By developing these faculties in a balanced way, practitioners can progress on the path to awakening.',
 					},
 					sn51: {
-						title: "Iddhipādasaṁyutta - Linked Discourses on the Bases of Psychic Power",
+						title: "Iddhipādasaṁyutta - Connected Discourses on the Bases of Psychic Power",
 						description:
-							'The "Linked Discourses on the Bases of Psychic Power" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic power when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
+							'The "Connected Discourses on the Bases of Psychic Power" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic power when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
 					},
 					sn53: {
-						title: "Jhānasaṁyutta - Linked Discourses on Collectedness",
+						title: "Jhānasaṁyutta - Connected Discourses on Collectedness",
 						description:
-							'The "Linked Discourses on Collectedness" contains teachings on the four jhānas—states of mental composure where awareness is gathered and steady. These discourses emphasize how cultivating jhānas leads a practitioner to slant, slope, and incline towards Nibbāna. Through the progressive deepening of collectedness—from reflection and examination to equanimity and purification of mindfulness—these teachings reveal the transformative power of cultivating this stable, undistracted awareness on the path to liberation.',
+							'The "Connected Discourses on Collectedness" contains teachings on the four jhānas—states of mental composure where awareness is gathered and steady. These discourses emphasize how cultivating jhānas leads a practitioner to slant, slope, and incline towards Nibbāna. Through the progressive deepening of collectedness—from reflection and examination to equanimity and purification of mindfulness—these teachings reveal the transformative power of cultivating this stable, undistracted awareness on the path to liberation.',
 					},
 					sn54: {
-						title: "Ānāpānasaṁyutta - Linked Discourses on Mindfulness of Breathing",
+						title: "Ānāpānasaṁyutta - Connected Discourses on Mindfulness of Breathing",
 						description:
-							'The "Linked Discourses on Mindfulness of Breathing" contains discourses focusing on the practice of mindfulness of breathing (ānāpānasati). These teachings explore the sixteen steps of mindfulness of breathing, which fulfill the four foundations of mindfulness and lead to the seven factors of awakening. By cultivating this practice, one develops collectedness and insight, leading to liberation.',
+							'The "Connected Discourses on Mindfulness of Breathing" contains discourses focusing on the practice of mindfulness of breathing (ānāpānasati). These teachings explore the sixteen steps of mindfulness of breathing, which fulfill the four foundations of mindfulness and lead to the seven factors of awakening. By cultivating this practice, one develops collectedness and insight, leading to liberation.',
 					},
 					sn55: {
-						title: "Sotāpattisaṁyutta - Linked Discourses on Stream-Entry",
+						title: "Sotāpattisaṁyutta - Connected Discourses on Stream-Entry",
 						description:
-							'The "Linked Discourses on Stream-Entry" focuses on the qualities and practices leading to the attainment of stream-entry, the first stage of awakening. It explores two key sets of four qualities: one that defines a stream-enterer, centered on experiential confidence and ethical conduct, and another that leads to stream-entry, emphasizing hearing the teachings and practicing accordingly. These teachings highlight the crucial role of experiential confidence and ethical behavior in achieving this significant milestone on the path to liberation, while also acknowledging that other qualities are essential to fully understanding and realizing stream-entry.',
+							'The "Connected Discourses on Stream-Entry" focuses on the qualities and practices leading to the attainment of stream-entry, the first stage of awakening. It explores two key sets of four qualities: one that defines a stream-enterer, centered on experiential confidence and ethical conduct, and another that leads to stream-entry, emphasizing hearing the teachings and practicing accordingly. These teachings highlight the crucial role of experiential confidence and ethical behavior in achieving this significant milestone on the path to liberation, while also acknowledging that other qualities are essential to fully understanding and realizing stream-entry.',
 					},
 					sn56: {
-						title: "Saccasaṁyutta - Linked Discourses on the Truths",
+						title: "Saccasaṁyutta - Connected Discourses on the Truths",
 						description:
-							'The "Linked Discourses on the Truths" contains discourses centered on the four noble truths: suffering, its arising, its ending, and the way of practice for its ending. These fundamental teachings formed the core of the Buddha\'s first discourse, which is included here as [SN 56.11](/sn56.11). The Buddha taught that all his teachings are encompassed within these four truths. This chapter offers a comprehensive perspective on the other teachings, linking them to the understanding and realization of the four noble truths, which culminates in enlightenment.',
+							'The "Connected Discourses on the Truths" contains discourses centered on the four noble truths: suffering, its arising, its ending, and the way of practice for its ending. These fundamental teachings formed the core of the Buddha\'s first discourse, which is included here as [SN 56.11](/sn56.11). The Buddha taught that all his teachings are encompassed within these four truths. This chapter offers a comprehensive perspective on the other teachings, linking them to the understanding and realization of the four noble truths, which culminates in enlightenment.',
 					},
 				},
 			},
