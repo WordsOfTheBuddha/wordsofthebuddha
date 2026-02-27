@@ -43,9 +43,11 @@ import type { Browser } from "playwright-core";
 //
 // The CHROMIUM_PACK_URL env var lets you pin a specific Sparticuz release:
 //   https://github.com/Sparticuz/chromium/releases
+// ⚠️  Must match the installed @sparticuz/chromium-min version AND include
+//     the architecture suffix (.x64.tar or .arm64.tar) for v137+.
 const CHROMIUM_PACK_URL =
 	process.env.CHROMIUM_PACK_URL ??
-	"https://github.com/Sparticuz/chromium/releases/download/v137.0.0/chromium-v137.0.0-pack.tar";
+	"https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.x64.tar";
 
 async function launchBrowser(): Promise<Browser> {
 	const isServerless =
