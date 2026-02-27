@@ -443,12 +443,12 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			ud2: {
 				title: "Mucalindavagga - The Chapter with Mucalinda",
 				description:
-					"This chapter delves into the emotional dimension of enlightenment, as experienced by the Buddha after his awakening. Having discovered a spiritual happiness surpassing any worldly joy, the Buddha's discourses in this section emphasize the profound and enduring happiness that arises from true liberation. This collection offers insights into the depth of contentment and peace found in the enlightened mind.",
+					"This chapter delves into the emotional dimension of enlightenment, as experienced by the Buddha after his awakening. Having discovered a spiritual happiness surpassing any worldly joy, the Buddha's discourses in this section emphasize the profound and enduring happiness that arises from true liberation. This collection offers insights into the depth of contentment and peace found in the awakened mind.",
 			},
 			ud3: {
 				title: "Nandavagga - The Chapter with Nanda",
 				description:
-					"This chapter centers on the theme of equanimity in the face of pleasure and pain. The discourses provide several examples of monastic conduct marked by poise and balance, illustrating the Buddha's teachings on maintaining inner stability amidst the dualities of life. This collection offers valuable insights into the cultivation of equanimity and the serene, composed nature of the enlightened mind.",
+					"This chapter centers on the theme of equanimity in the face of pleasure and pain. The discourses provide several examples of monastic conduct marked by poise and balance, illustrating the Buddha's teachings on maintaining inner stability amidst the dualities of life. This collection offers valuable insights into the cultivation of equanimity and the serene, composed nature of the awakened mind.",
 			},
 			ud4: {
 				title: "Meghiyavagga - The Chapter with Meghiya",
