@@ -50,7 +50,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn8: {
 						title: "Vangīsasaṁyutta - Linked Discourses with Vangīsa",
 						description:
-							'The "Linked Discourses with Vangīsa" focus on Venerable Vangīsa, a distinguished disciple of the Buddha celebrated for his exceptional poetic abilities. This collection features suttas where Vangīsa composes spontaneous verses to express his deep devotion to the Buddha, his admiration for the Dhamma, or his contemplations on the spiritual journey. Through his lyrical compositions, Vangīsa captures profound spiritual truths and emotions, blending artistry with insight. The discourses showcase the transformative power of poetry as a medium for conveying the essence of the Buddha’s teachings, making this saṁyutta a unique fusion of wisdom and beauty.',
+							'The "Linked Discourses with Vangīsa" focus on venerable Vangīsa, a distinguished disciple of the Buddha celebrated for his exceptional poetic abilities. This collection features suttas where Vangīsa composes spontaneous verses to express his deep devotion to the Buddha, his admiration for the Dhamma, or his contemplations on the spiritual journey. Through his lyrical compositions, Vangīsa captures profound spiritual truths and emotions, blending artistry with insight. The discourses showcase the transformative power of poetry as a medium for conveying the essence of the Buddha’s teachings, making this saṁyutta a unique fusion of wisdom and beauty.',
 					},
 					sn9: {
 						title: "Vanasaṁyutta - Linked Discourses in the Forest",
@@ -95,15 +95,35 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Linked Discourses on the Inconceivable Beginning" contains discourses exploring the beginningless nature of saṁsāra, the cycle of birth and death. These teachings challenge the idea of a first point in time, suggesting that saṁsāra has no discernible origin. By examining the endless cycle of rebirth and the causes of suffering, these discourses offer insights into the nature of existence and the conditions for liberation.',
 					},
+					sn16: {
+						title: "Kassapasaṁyutta - Linked Discourses with Kassapa",
+						description:
+							'The "Linked Discourses with Kassapa" features venerable Mahākassapa, one of the Buddha\'s foremost disciples, renowned for his strict adherence to ascetic practices and his profound meditative attainments. These discourses often highlight his exemplary conduct, his deep understanding of the Dhamma, and his role as a model for other monastics. The suttas in this collection underscore the value of contentment, fewness of wishes, and the rigorous training required for spiritual purification, offering a glimpse into the life of a monk fully dedicated to the ascetic ideal.',
+					},
 					sn17: {
 						title: "Lābhasakkārasaṁyutta - Linked Discourses on Acquisitions and Respect",
 						description:
 							'The "Linked Discourses on Acquisitions and Respect"  contain teachings on the danger of acqusitions, respect, and popularity for spiritual practitioners. The Buddha emphasizes how these worldly rewards are vicious, bitter, severe, and obstructive, leading to complacency, attachment, and spiritual downfall. Through vivid similes — such as comparing acquisitions and respect to a fisherman\'s baited hook — the discourses highlight how even accomplished practitioners can become ensnared if they relish praise and recognition.',
 					},
+					sn18: {
+						title: "Rāhulasaṁyutta - Linked Discourses with Rāhula",
+						description:
+							'The "Linked Discourses with Rāhula" focuses on the Buddha\'s teachings to his son, venerable Rāhula. These discourses emphasize the systematic contemplation of impermanence, suffering, and non-self across all aspects of sensory experience. Through these progressive instructions, the Buddha guides Rāhula towards a deep understanding of the nature of reality, culminating in his full awakening. This collection provides a clear, step-by-step framework for insight meditation.',
+					},
+					sn19: {
+						title: "Lakkhaṇasaṁyutta - Linked Discourses with Lakkhaṇa",
+						description:
+							'The "Linked Discourses with Lakkhaṇa" features venerable Mahāmoggallāna and venerable Lakkhaṇa. In these suttas, Moggallāna uses his clairvoyant vision to observe various spirits (petas) suffering due to their past unwholesome deeds. The Buddha confirms these visions, using them as teaching moments to illustrate the inescapable law of kamma and the severe consequences of unethical behavior. This collection serves as a stark reminder of the importance of moral conduct.',
+					},
 					sn20: {
 						title: "Opammavagga - Linked Discourses with Similes",
 						description:
 							'The "Linked Discourses with Similes" contains discourses that use vivid similes to illustrate the Buddha\'s teachings. These similes draw on everyday experiences and natural phenomena to convey profound truths about the nature of reality, the path to liberation, and the qualities of an awakened being. By comparing spiritual principles to familiar objects and situations, these discourses offer accessible and memorable insights into the Dhamma.',
+					},
+					sn21: {
+						title: "Bhikkhusaṁyutta - Linked Discourses with Bhikkhus",
+						description:
+							'The "Linked Discourses with Bhikkhus" contains discourses addressed to or concerning various monks. These suttas cover a wide range of topics related to monastic life, including meditation practices, ethical conduct, the challenges of the spiritual path, and the qualities of exemplary monastics. By highlighting both the struggles and the successes of individual monks, this collection provides practical guidance and inspiration for those dedicated to the pursuit of liberation.',
 					},
 				},
 			},
@@ -121,7 +141,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn23: {
 						title: "Rādhasaṁyutta - Linked Discourses with Rādha",
 						description:
-							"The \"Linked Discourses with Rādha\" centers on Venerable Rādha, a disciple of the Buddha known for his sharp intellect and his role in asking profound questions that lead to deep teachings. These discourses often involve Venerable Rādha approaching the Buddha with inquiries about the nature of reality, the self, and the path to liberation. The Buddha's responses are typically concise yet deeply insightful, using metaphors and analogies to illuminate complex concepts. This collection provides a glimpse into the dynamic between teacher and student, showcasing how the Buddha's wisdom unfolds through dialogue.",
+							"The \"Linked Discourses with Rādha\" centers on venerable Rādha, a disciple of the Buddha known for his sharp intellect and his role in asking profound questions that lead to deep teachings. These discourses often involve venerable Rādha approaching the Buddha with inquiries about the nature of reality, the self, and the path to liberation. The Buddha's responses are typically concise yet deeply insightful, using metaphors and analogies to illuminate complex concepts. This collection provides a glimpse into the dynamic between teacher and student, showcasing how the Buddha's wisdom unfolds through dialogue.",
 					},
 					sn25: {
 						title: "Okkantasaṁyutta - Linked Discourses on Arrival",
@@ -131,7 +151,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn28: {
 						title: "Sāriputtasaṁyutta - Linked Discourses with Sāriputta",
 						description:
-							"The \"Linked Discourses with Sāriputta\" features Venerable Sāriputta, one of the Buddha's foremost disciples, renowned for his wisdom and analytical skills. These discourses often involve Sāriputta engaging in discussions with the Buddha or other bhikkhus, delving into intricate aspects of the Dhamma. The suttas in this collection are characterized by their depth and precision, as Sāriputta's questions and reflections lead to detailed expositions on topics such as dependent origination, the nature of consciousness, and the path to liberation. This saṁyutta highlights the intellectual rigor and clarity that Sāriputta brings to the teachings.",
+							"The \"Linked Discourses with Sāriputta\" features venerable Sāriputta, one of the Buddha's foremost disciples, renowned for his wisdom and analytical skills. These discourses often involve Sāriputta engaging in discussions with the Buddha or other bhikkhus, delving into intricate aspects of the Dhamma. The suttas in this collection are characterized by their depth and precision, as Sāriputta's questions and reflections lead to detailed expositions on topics such as dependent origination, the nature of consciousness, and the path to liberation. This saṁyutta highlights the intellectual rigor and clarity that Sāriputta brings to the teachings.",
 					},
 					sn33: {
 						title: "Vacchagottasaṁyutta - Linked Discourses with Vacchagotta",
@@ -169,7 +189,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn38: {
 						title: "Jambukhādakasaṁyutta - Linked Discourses with Jambukhādaka",
 						description:
-							'The "Linked Discourses with Jambukhādaka" features a series of conversations between Venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
+							'The "Linked Discourses with Jambukhādaka" features a series of conversations between venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
 					},
 					sn41: {
 						title: "Cittasaṁyutta - Linked Discourses with Citta the Householder",
