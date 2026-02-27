@@ -55,7 +55,7 @@ export function updateMenuPosition(
             : currentRange.getBoundingClientRect();
     }
 
-    if (finalRect) {
+    if (finalRect && finalRect.width > 0 && finalRect.height > 0) {
         calculateMenuPosition(element, finalRect, rootElement);
         element.style.display = "block";
 

@@ -267,12 +267,30 @@ const { title, description } = Astro.props;
 
 		const selection = window.rangy.getSelection();
 
+		// Also check if the selection range itself is inside the TM popover
+		if (selection.rangeCount) {
+			const rangeContainer = selection.getRangeAt(0).commonAncestorContainer;
+			const containerEl = rangeContainer.nodeType === Node.ELEMENT_NODE
+				? (rangeContainer as Element)
+				: rangeContainer.parentElement;
+			if (containerEl?.closest(".tm-popover-overlay")) {
+				return;
+			}
+		}
+
 		// Early validations
 		if (
 			selection.isCollapsed ||
 			!selection.rangeCount ||
 			!selectionHandler.isSelectionValid(selection)
 		) {
+			return;
+		}
+
+		// Guard against invisible/programmatic selections that have text content
+		// but no visible highlight on screen (e.g. extension activity, stale ranges)
+		const nativeSel = window.getSelection();
+		if (!nativeSel || nativeSel.isCollapsed || !nativeSel.toString().trim()) {
 			return;
 		}
 
