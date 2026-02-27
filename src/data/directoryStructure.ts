@@ -2,7 +2,7 @@ import type { DirectoryStructure } from "../types/directory";
 
 export const directoryStructure: Record<string, DirectoryStructure> = {
 	sn: {
-		title: "Saṃyutta Nikāya - Connected Discourses",
+		title: "Saṁyutta Nikāya - Connected Discourses",
 		description:
 			"A collection of discourses grouped by theme, offering rich explorations of core Buddhist concepts such as dependent origination, the five aggregates, and the path to liberation.",
 		children: {

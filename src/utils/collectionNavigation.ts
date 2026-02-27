@@ -133,7 +133,7 @@ function findCollectionLocation(slug: string): CollectionLocation | null {
  */
 function getCrossBoundaryNavigation(
 	slug: string,
-	parentKey: string
+	parentKey: string,
 ): CollectionNavigation {
 	const result: CollectionNavigation = {};
 
@@ -151,7 +151,7 @@ function getCrossBoundaryNavigation(
 	for (const [groupKey, groupValue] of Object.entries(snStructure.children)) {
 		if (!groupValue.children) continue;
 		for (const [childKey, childValue] of Object.entries(
-			groupValue.children
+			groupValue.children,
 		)) {
 			allSnLeafCollections.push({
 				slug: childKey,
@@ -192,7 +192,7 @@ function getCrossBoundaryNavigation(
  * e.g., "The Book of the Fives" -> "The Book of the Fives"
  */
 export function formatCollectionTitle(title: string): string {
-	// Remove the collection prefix if present (e.g., "Saṃyutta Nikāya - ")
+	// Remove the collection prefix if present (e.g., "Saṁyutta Nikāya - ")
 	const dashIndex = title.indexOf(" - ");
 	if (dashIndex !== -1) {
 		return title.substring(dashIndex + 3);
