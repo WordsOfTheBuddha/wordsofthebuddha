@@ -152,12 +152,12 @@ if (!firstImage) return;
 		{/* Zoom button */}
 		<button
 			id="expandImageBtn"
-			class="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10"
+			class="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10 focus:outline-none select-none"
 			title="View full image"
 			aria-label="View full image"
 		>
 			<span
-				class="w-5 h-5 flex items-center justify-center"
+				class="w-5 h-5 flex items-center justify-center pointer-events-none select-none"
 				set:html={ZoomIcon}
 			/>
 		</button>
