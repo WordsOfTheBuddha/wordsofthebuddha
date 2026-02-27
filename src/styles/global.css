@@ -22,6 +22,23 @@
 	src: url("/assets/fonts/Spectral-Bold.woff2") format("woff2");
 }
 
+/* Gentium Plus fallback for Pali diacritics that Spectral misrenders (ṁ/Ṁ) */
+@font-face {
+	font-family: "Spectral";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/assets/fonts/GentiumPlus-Regular.ttf") format("truetype");
+	unicode-range: U+1E41, U+1E40;
+}
+
+@font-face {
+	font-family: "Spectral";
+	font-style: normal;
+	font-weight: 700;
+	src: url("/assets/fonts/GentiumPlus-Bold.ttf") format("truetype");
+	unicode-range: U+1E41, U+1E40;
+}
+
 @font-face {
 	font-family: "Gentium Plus";
 	src: url("/assets/fonts/GentiumPlus-Regular.ttf") format("truetype");
