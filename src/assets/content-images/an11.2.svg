@@ -166,7 +166,8 @@
 
     <!-- ============ WAVY FLOW CONNECTORS (25px gaps, matching AN 10.61 spacing) ============ -->
     <!-- Wellspring bottom → Box 1 top -->
-    <path d="M 460 140 C 448 144, 472 151, 460 155" fill="none" stroke="#50a0b0" stroke-width="1.2" opacity="0.35" />
+    <path d="M 460 140 C 448 144, 472 151, 460 155" fill="none" stroke="#50a0b0" stroke-width="1.2"
+        opacity="0.35" />
     <!-- Box 1 bottom=203 → Box 2 top=228 -->
     <path d="M 460 203 C 448 210, 472 221, 460 228" fill="none" stroke="#5098a0" stroke-width="1.2"
         opacity="0.35" />
