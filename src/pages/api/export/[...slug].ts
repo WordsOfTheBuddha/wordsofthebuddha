@@ -41,13 +41,15 @@ import type { Browser } from "playwright-core";
 // Prerequisites (run once):
 //   npm install playwright-core @sparticuz/chromium-min
 //
-// The CHROMIUM_PACK_URL env var lets you pin a specific Sparticuz release:
-//   https://github.com/Sparticuz/chromium/releases
-// ⚠️  Must match the installed @sparticuz/chromium-min version AND include
-//     the architecture suffix (.x64.tar or .arm64.tar) for v137+.
-const CHROMIUM_PACK_URL =
-	process.env.CHROMIUM_PACK_URL ??
-	"https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.x64.tar";
+// The pack URL is derived from the installed @sparticuz/chromium-min version
+// so it stays in sync automatically. Override via CHROMIUM_PACK_URL env var.
+// Releases: https://github.com/Sparticuz/chromium/releases
+function getChromiumPackUrl(): string {
+	if (process.env.CHROMIUM_PACK_URL) return process.env.CHROMIUM_PACK_URL;
+	// Read version from the installed package at build time
+	const { version } = require("@sparticuz/chromium-min/package.json");
+	return `https://github.com/Sparticuz/chromium/releases/download/v${version}/chromium-v${version}-pack.x64.tar`;
+}
 
 async function launchBrowser(): Promise<Browser> {
 	const isServerless =
@@ -60,7 +62,8 @@ async function launchBrowser(): Promise<Browser> {
 			]);
 		return core.launch({
 			args: chromiumMin.args,
-			executablePath: await chromiumMin.executablePath(CHROMIUM_PACK_URL),
+			executablePath:
+				await chromiumMin.executablePath(getChromiumPackUrl()),
 			headless: true,
 		});
 	}

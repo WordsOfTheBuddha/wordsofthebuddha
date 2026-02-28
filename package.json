@@ -27,7 +27,7 @@
 		"@astrojs/tailwind": "6.0.2",
 		"@astrojs/vercel": "9.0.2",
 		"@sc-voice/ms-dpd": "^2.53.0",
-		"@sparticuz/chromium-min": "^143.0.4",
+		"@sparticuz/chromium-min": "143.0.4",
 		"@vercel/analytics": "^1.4.1",
 		"@vercel/speed-insights": "^1.1.0",
 		"astro": "5.16.3",
