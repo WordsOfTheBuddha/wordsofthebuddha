@@ -39,23 +39,26 @@ export function updateMenuPosition(
         ? endRects[endRects.length - 1]
         : null;
 
-    // --- MINIMAL FIX ---
-    // If the endpoint rectangle isn't found (can happen on first selection),
-    // fall back to the bounding rectangle of the entire selection.
-    // This ensures the menu always has a position without changing the logic.
+    // If the collapsed endpoint range didn't produce rects (browser inconsistency),
+    // fall back to the last rect of the selection's getClientRects() — this gives
+    // the last line of selected text, which is where the endpoint visually sits.
+    // Avoid getBoundingClientRect() here as it returns the bounding box of the
+    // entire selection, which misplaces the menu for multi-line selections.
     if (!finalRect) {
-        finalRect = range.getBoundingClientRect();
+        const selectionRects = range.getClientRects();
+        if (selectionRects.length > 0) {
+            finalRect = selectionRects[selectionRects.length - 1];
+        }
     }
-    // --- END FIX ---
 
     if (!finalRect && currentRange) {
         const rects = currentRange.getClientRects();
         finalRect = rects.length > 0
             ? rects[rects.length - 1]
-            : currentRange.getBoundingClientRect();
+            : null;
     }
 
-    if (finalRect && finalRect.width > 0 && finalRect.height > 0) {
+    if (finalRect && finalRect.height > 0) {
         calculateMenuPosition(element, finalRect, rootElement);
         element.style.display = "block";
 
