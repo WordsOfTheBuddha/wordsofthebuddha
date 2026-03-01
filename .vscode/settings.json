@@ -1,4 +1,11 @@
 {
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "editor.formatOnSave": false,
+    "[typescript]": {
+        "editor.formatOnSave": false,
+        "editor.defaultFormatter": null
+    },
     "cSpell.words": [
         "abidings",
         "Akaniṭṭha",
