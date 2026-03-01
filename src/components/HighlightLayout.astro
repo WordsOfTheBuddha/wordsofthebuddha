@@ -259,21 +259,21 @@ const { title, description } = Astro.props;
 
 		const target = e.target as HTMLElement;
 
-		// Skip if selection is inside Translation Memory popover
+		// Skip if selection is inside Translation Memory popover or Bottom Drawer
 		// SEARCH & FIND: Skip highlighting on components like Translation Memory popover
-		if (target.closest(".tm-popover-overlay")) {
+		if (target.closest(".tm-popover-overlay") || target.closest(".bottom-popover")) {
 			return;
 		}
 
 		const selection = window.rangy.getSelection();
 
-		// Also check if the selection range itself is inside the TM popover
+		// Also check if the selection range itself is inside the TM popover or Bottom Drawer
 		if (selection.rangeCount) {
 			const rangeContainer = selection.getRangeAt(0).commonAncestorContainer;
 			const containerEl = rangeContainer.nodeType === Node.ELEMENT_NODE
 				? (rangeContainer as Element)
 				: rangeContainer.parentElement;
-			if (containerEl?.closest(".tm-popover-overlay")) {
+			if (containerEl?.closest(".tm-popover-overlay") || containerEl?.closest(".bottom-popover")) {
 				return;
 			}
 		}
