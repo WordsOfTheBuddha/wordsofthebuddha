@@ -104,6 +104,7 @@ if ((qualityMappings as any)[actualSlug]) {
 
 // Group by collections
 const collections: Record<string, { name: string; items: any[] }> = {
+	dn: { name: "Long Discourses (Dīgha Nikāya)", items: [] },
 	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
 	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
 	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
@@ -111,9 +112,10 @@ const collections: Record<string, { name: string; items: any[] }> = {
 	sn: { name: "Connected Discourses (Saṁyutta Nikāya)", items: [] },
 	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
 	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+    kp: { name: "Minor Passages (Khuddakapāṭha)", items: [] },
 };
 
-const collectionOrder = ["dhp", "iti", "mn", "snp", "sn", "an", "ud"];
+const collectionOrder = ["dhp", "iti", "mn", "snp", "sn", "an", "dn", "ud", "kp"];
 
 allDiscourses.forEach((discourse) => {
 	const collection = discourse.collection;

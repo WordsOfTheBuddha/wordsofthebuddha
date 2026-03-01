@@ -38,6 +38,7 @@ function createCollection(
 	});
 }
 
+const dn = createCollection("src/content/en/dn/");
 const dhp = createCollection("src/content/en/dhp/");
 const mn = createCollection("src/content/en/mn/");
 const ud = createCollection("src/content/en/ud/");
@@ -45,6 +46,7 @@ const sn = createCollection("src/content/en/sn/");
 const an = createCollection("src/content/en/an/");
 const snp = createCollection("src/content/en/snp/");
 const iti = createCollection("src/content/en/iti/");
+const kp = createCollection("src/content/en/kp/");
 const anthologies = createCollection(
 	"src/content/en/anthologies/",
 	"*.mdx",
@@ -54,6 +56,7 @@ const all = createCollection("src/content/en/", "**/*.mdx");
 const pliAll = createCollection("src/content/pli/", "**/*.md");
 
 export const collections = {
+	dn,
 	dhp,
 	mn,
 	ud,
@@ -61,6 +64,7 @@ export const collections = {
 	snp,
 	an,
 	iti,
+    kp,
 	anthologies,
 	all,
 	pliAll,

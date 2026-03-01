@@ -46,7 +46,7 @@ function loadDiscourseData() {
 	> = {};
 
 	// Load from various collection directories
-	const collections = ["an", "dhp", "iti", "mn", "sn", "snp", "ud", "kp"];
+	const collections = ["an", "dhp", "dn", "iti", "mn", "sn", "snp", "ud", "kp"];
 
 	collections.forEach((collection) => {
 		const collectionDir = path.join(contentDir, "en", collection);

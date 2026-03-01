@@ -343,6 +343,31 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 			},
 		},
 	},
+	dn: {
+		title: "Dīgha Nikāya - Long Discourses",
+		description:
+			"A collection of 34 of the longest discourses attributed to the Buddha, offering detailed explorations of doctrine, meditation, ethics, and cosmology, including foundational teachings on dependent origination, the nature of the self, and the final days of the Buddha.",
+		children: {
+			"dn1-13": {
+				title: "Sīlakkhandhavagga - The Division on Morality",
+				description:
+					"The first division of the Dīgha Nikāya, containing thirteen discourses that explore the comprehensive training in morality. Opening with the Brahmajāla Sutta, which catalogues sixty-two philosophical views, this division addresses the Buddha's ethical framework, the fruits of the contemplative life, and critiques of rival teachings. These discourses establish the foundational role of moral conduct on the path to liberation.",
+				range: { start: 1, end: 13 },
+			},
+			"dn14-23": {
+				title: "Mahāvagga - The Great Division",
+				description:
+					"The second division of the Dīgha Nikāya, containing ten discourses that address grand themes in the Buddha's teachings. This division includes the Mahāpadāna Sutta on past Buddhas, the Mahānidāna Sutta on dependent origination, the Mahāparinibbāna Sutta recounting the Buddha's final days and passing, and the Mahāsatipaṭṭhāna Sutta on the four foundations of mindfulness. These are among the most celebrated and extensive discourses in the Pāli Canon.",
+				range: { start: 14, end: 23 },
+			},
+			"dn24-34": {
+				title: "Pāthikavagga - The Pāthika Division",
+				description:
+					"The third division of the Dīgha Nikāya, containing eleven discourses on a range of topics including cosmology, ethics, and the qualities of a universal monarch. Notable discourses include the Aggañña Sutta on the origins of society and the Saṅgīti Sutta and Dasuttara Sutta, which systematically catalogue the Buddha's teachings in numbered sets — serving as precursors to the Abhidhamma method of analysis.",
+				range: { start: 24, end: 34 },
+			},
+		},
+	},
 	mn: {
 		title: "Majjhima Nikāya - Middle Length Discourses",
 		description:

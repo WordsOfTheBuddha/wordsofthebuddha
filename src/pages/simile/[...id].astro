@@ -27,7 +27,7 @@ interface SimileMap {
 // Cast the imported data to the proper type
 const typedSimileMappings = simileMappings as unknown as SimileMap;
 
-type CollectionKey = "dhp" | "iti" | "mn" | "snp" | "sn" | "an" | "ud";
+type CollectionKey = "dhp" | "iti" | "mn" | "snp" | "sn" | "an" | "ud" | "dn" | "kp";
 
 // Extract simile parameters
 const { id } = Astro.params;
@@ -59,6 +59,7 @@ if (!simileMatch) {
 
 // Group by collection
 const collections: Record<CollectionKey, Collection> = {
+	dn: { name: "Long Discourses (Dīgha Nikāya)", items: [] },
 	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
 	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
 	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
@@ -66,10 +67,12 @@ const collections: Record<CollectionKey, Collection> = {
 	sn: { name: "Connected Discourses (Saṁyutta Nikāya)", items: [] },
 	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
 	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+    kp: {name: "Minor Passages (Khuddakapāṭha)", items: []},
 };
 
 // Define collection order
 const collectionOrder: CollectionKey[] = [
+	"dn",
 	"dhp",
 	"iti",
 	"mn",
@@ -77,6 +80,7 @@ const collectionOrder: CollectionKey[] = [
 	"sn",
 	"an",
 	"ud",
+    "kp",
 ];
 
 // Sort discourses into collections

@@ -26,6 +26,13 @@ const collections = [
 		status: "complete" as StatusType,
 	},
 	{
+		name: "ud",
+		count: directoryStructureWithCounts.ud?.contentCount || 0,
+		suffix: "utterances",
+		title: directoryStructureWithCounts.ud?.title || "Udāna",
+		total: 80,
+	},
+	{
 		name: "mn",
 		count: directoryStructureWithCounts.mn?.contentCount || 0,
 		suffix: "discourses",
@@ -54,11 +61,11 @@ const collections = [
 		total: 9557,
 	},
 	{
-		name: "ud",
-		count: directoryStructureWithCounts.ud?.contentCount || 0,
-		suffix: "utterances",
-		title: directoryStructureWithCounts.ud?.title || "Udāna",
-		total: 80,
+		name: "dn",
+		count: directoryStructureWithCounts.dn?.contentCount || 0,
+		suffix: "discourses",
+		title: directoryStructureWithCounts.dn?.title || "Dīgha Nikāya",
+		total: 34,
 	},
 	{
 		name: "kp",

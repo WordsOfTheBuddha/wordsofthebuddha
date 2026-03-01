@@ -1,5 +1,6 @@
 // src/utils/transformId.ts
 export const keyMap: { [key: string]: string } = {
+	dn: "Long Discourses",
 	dhp: "The Path of Dhamma",
 	mn: "Middle Length Discourses",
 	ud: "Inspired Utterances",

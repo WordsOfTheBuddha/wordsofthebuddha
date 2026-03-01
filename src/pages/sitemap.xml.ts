@@ -68,7 +68,7 @@ export const GET: APIRoute = async () => {
 	});
 
 	// Collection pages (medium priority)
-	const collections = ["mn", "sn", "an", "dhp", "iti", "snp", "ud"];
+	const collections = ["mn", "sn", "an", "dn", "dhp", "iti", "snp", "ud"];
 	collections.forEach((collection) => {
 		sitemap +=
 			"\n" + generateUrlElement(`/${collection}`, undefined, "0.8");

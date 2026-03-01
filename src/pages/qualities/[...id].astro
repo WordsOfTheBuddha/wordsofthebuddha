@@ -18,7 +18,7 @@ interface Collection {
 	items: Discourse[];
 }
 
-type CollectionKey = "dhp" | "iti" | "mn" | "snp" | "sn" | "an" | "ud";
+type CollectionKey = "dn" | "dhp" | "iti" | "mn" | "snp" | "sn" | "an" | "ud" | "kp";
 
 // Extract quality from params
 const { id } = Astro.params;
@@ -35,6 +35,7 @@ const synonyms: string[] = (qualities.qualities[
 
 // Group by collection
 const collections: Record<CollectionKey, Collection> = {
+	dn: { name: "Long Discourses (Dīgha Nikāya)", items: [] },
 	dhp: { name: "The Path of Dhamma (Dhammapada)", items: [] },
 	iti: { name: "As It Was Said (Itivuttaka)", items: [] },
 	mn: { name: "Middle Length Discourses (Majjhima Nikāya)", items: [] },
@@ -42,6 +43,7 @@ const collections: Record<CollectionKey, Collection> = {
 	sn: { name: "Connected Discourses (Saṁyutta Nikāya)", items: [] },
 	an: { name: "Numerical Discourses (Aṅguttara Nikāya)", items: [] },
 	ud: { name: "Inspired Utterances (Udāna)", items: [] },
+    kp: {name: "Minor Passages (Khuddakapāṭha)", items: []},
 };
 
 // Define collection order
@@ -52,7 +54,9 @@ const collectionOrder: CollectionKey[] = [
 	"snp",
 	"sn",
 	"an",
+    "dn",
 	"ud",
+    "kp",
 ];
 
 // Sort discourses into collections
