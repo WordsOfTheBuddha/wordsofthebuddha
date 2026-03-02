@@ -753,9 +753,9 @@ function wrapPaliWords(text: string): string {
 
 	return tokens
 		.map((token, index) => {
-			// If it's whitespace, wrap it in a span to preserve it
+			// If it's whitespace, return as plain text to preserve browser find-in-page
 			if (/^\s+$/.test(token)) {
-				return `<span class="word-space">${token}</span>`;
+				return token;
 			}
 
 			// Check if token contains Pali characters

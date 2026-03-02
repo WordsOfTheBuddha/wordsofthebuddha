@@ -200,11 +200,10 @@ html.dark .tooltip-content .title {
 	transition: background-color 0.2s ease;
 	margin: 0;
 	border-radius: 2px;
-	display: inline-block;
+	display: inline;
 	white-space: normal;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	max-width: 100%;
 }
 
 .pali-word:hover {
