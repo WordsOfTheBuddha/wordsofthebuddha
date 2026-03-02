@@ -1,9 +1,15 @@
 // Shared Pali lookup utility (server + client)
 // - Statically imports @sc-voice/ms-dpd dictionary and creates a singleton on first use
 // - Provides compound handling via paliSandhi.json
+// - Falls back to algorithmic sandhi splitting when manual lookup misses
 
 import paliSandhi from "../data/paliSandhi.json";
 import * as msdpd from "@sc-voice/ms-dpd/main.mjs";
+import {
+	trySandhiSplit,
+	tryCommonSuffixSplit,
+	type SandhiSplitResult,
+} from "./algorithmicSandhi";
 
 export interface DictionaryResult {
 	pos?: string;
@@ -87,6 +93,98 @@ export async function warmupPaliDictionary(): Promise<void> {
 			} catch {}
 		}
 	} catch {}
+}
+
+/**
+ * Build a LookupResponse from an algorithmic sandhi split result.
+ * Looks up each constituent in the dictionary and assembles definitions.
+ */
+async function buildResponseFromSplit(
+	word: string,
+	splitResult: SandhiSplitResult
+): Promise<LookupResponse | null> {
+	const dictionary = await getDictionary();
+	const definitions: WordDefinition[] = [];
+	let compoundPos: string = "Sandhi (joining of words)";
+
+	// Determine POS from the last constituent
+	const lastPart = splitResult.parts[splitResult.parts.length - 1];
+	try {
+		const lastResults = dictionary.find(lastPart);
+		if (lastResults?.data?.length) {
+			const rawPos = lastResults.data[0].pos;
+			compoundPos = rawPos
+				? (paliPosMap as any)[rawPos] || rawPos
+				: rawPos;
+		}
+	} catch {}
+
+	const compoundConstruction = splitResult.parts.join(" + ");
+	let isFirstDefinition = true;
+
+	for (const part of splitResult.parts) {
+		try {
+			const results = dictionary.find(part);
+			if (results?.data?.length) {
+				results.data.forEach(
+					(result: DictionaryResult, index: number) => {
+						definitions.push({
+							pos: compoundPos,
+							pattern: result.pattern,
+							construction: isFirstDefinition
+								? compoundConstruction
+								: undefined,
+							meaning: `${part} ${index + 1}. ${
+								result.meaning || result.meaning_1
+							}`,
+							meaning_lit: result.meaning_lit,
+							lemma: result.lemma_1,
+						});
+						isFirstDefinition = false;
+					}
+				);
+			}
+		} catch (error) {
+			console.error(
+				`Error looking up algorithmic constituent "${part}":`,
+				error
+			);
+		}
+	}
+
+	return definitions.length > 0 ? { word, definitions } : null;
+}
+
+/**
+ * Attempt algorithmic sandhi splitting when the word is not in
+ * paliSandhi.json and not found directly in the dictionary.
+ */
+async function lookupAlgorithmicSandhi(
+	word: string,
+	timeBudgetMs: number = 1300
+): Promise<LookupResponse | null> {
+	try {
+		const dictionary = await getDictionary();
+		const dictFind = (w: string) => dictionary.find(w);
+
+		// Fast path: try common suffix patterns first
+		const suffixResult = await tryCommonSuffixSplit(word, dictFind);
+		if (suffixResult) {
+			return buildResponseFromSplit(word, suffixResult);
+		}
+
+		// Full scan: try all reverse sandhi rules at every split point
+		const splitResult = await trySandhiSplit(word, dictFind, 3, timeBudgetMs);
+		if (splitResult) {
+			return buildResponseFromSplit(word, splitResult);
+		}
+	} catch (error) {
+		console.error(
+			`Error in algorithmic sandhi for "${word}":`,
+			error
+		);
+	}
+	return null;
 }
 
 async function lookupCompoundWord(
@@ -176,7 +274,8 @@ async function lookupCompoundWord(
 }
 
 export async function lookupSingleWord(
-	word: string
+	word: string,
+	timeBudgetMs: number = 1300
 ): Promise<LookupResponse | null> {
 	try {
 		// Normalize to NFC to handle composed/ decomposed diacritics from URLs
@@ -215,7 +314,12 @@ export async function lookupSingleWord(
 			}
 		}
 
-		if (!results?.data?.length) return null;
+		if (!results?.data?.length) {
+			// Algorithmic sandhi fallback
+			const algorithmicResult = await lookupAlgorithmicSandhi(word, timeBudgetMs);
+			if (algorithmicResult) return algorithmicResult;
+			return null;
+		}
 		return {
 			word,
 			definitions: results.data.map(
@@ -260,7 +364,12 @@ export async function batchLookup(
 	for (let i = 0; i < normalized.length; i += batchSize) {
 		const batch = normalized.slice(i, i + batchSize);
 		const lookups = batch.map(async (w) => {
-			const defs = await lookupSingleWord(w);
+			// Use a short per-word budget in batch mode: algorithmic sandhi can
+			// take up to timeBudgetMs per word on the single-threaded JS event
+			// loop, so 50 words × 1300ms would be unacceptable. 200ms gives a
+			// reasonable chance for common suffix patterns while keeping the
+			// batch response bounded.
+			const defs = await lookupSingleWord(w, 200);
 			if (defs?.definitions) results[w] = defs.definitions;
 			else results[w] = [];
 		});

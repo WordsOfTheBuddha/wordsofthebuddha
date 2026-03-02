@@ -29,7 +29,10 @@ export const POST: APIRoute = async ({ request }) => {
 		for (let i = 0; i < words.length; i += batchSize) {
 			const batch = words.slice(i, i + batchSize);
 			const lookupPromises = batch.map(async (word) => {
-				const result = await lookupSingleWord(word);
+				// Use a short per-word budget for algorithmic sandhi in batch
+				// context: the full 1300ms cap is for interactive single-word
+				// lookups. In a batch, 5 heavy scans × 1300ms = 6.5s blocked.
+				const result = await lookupSingleWord(word, 200);
 				if (result && result.definitions) {
 					results[word] = result.definitions;
 				}
