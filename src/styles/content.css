@@ -105,12 +105,12 @@ a:hover {
 }
 
 /* SVG diagrams: horizontal scroll on mobile */
-figure:has(svg) {
+figure:has(svg):not(.discourse-image) {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 }
 
-figure:has(svg) svg {
+figure:has(svg):not(.discourse-image) svg {
 	min-width: 600px;
 }
 
