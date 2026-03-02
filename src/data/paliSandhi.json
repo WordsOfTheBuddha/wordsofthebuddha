@@ -808,5 +808,22 @@
 	"vediyāmīti": ["vediyati"],
 	"samādhiyatūti": ["samādhiyati"],
 	"sacchikaromīti": ["sacchikaroti"],
-	"vibhajjavacanāparaṁ": ["vibhajjavacanā", "paraṁ"]
+	"vibhajjavacanāparaṁ": ["vibhajjavacanā", "paraṁ"],
+    "ekāyanvāyaṁ": ["ekāyano", "ayaṁ"],
+    "padaheyyanti": ["padahati"],
+    "pavedesīti": ["pavedesi"],
+    "ākiñcaññāyatanūpapattiyāti": ["ākiñcaññāyatanūpapatti"],
+    "caritunti": ["carituṁ"],
+    "pariharāmāti": ["pariharati"],
+    "rāmaputtoti": ["rāmaputto"],
+    "ājānissatīti": ["ājānāti"],
+    "ājāneyyāti": ["ājāneyya"],
+    "kālāmoti": ["kālāmo"],
+    "hupeyyapāvusoti": ["hupeyya", "api", "āvuso"],
+    "anantajinoti": ["anantajino"],
+    "tasmāhamupaka": ["tasmā", "ahaṁ", "upaka"],
+    "nisīdissatīti": ["nisīdati"],
+    "viharissathāti": ["viharati"],
+    "alamariyañāṇadassanavisesanti": ["alamariyañāṇadassanavisesa"],
+    "pabhāvitametanti": ["pabhāvitaṁ", "etaṁ"]
 }
