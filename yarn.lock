@@ -1391,10 +1391,10 @@
   resolved "https://registry.npmjs.org/@sc-voice/ms-dpd-ru/-/ms-dpd-ru-2.53.0.tgz"
   integrity sha512-WkPEKHLanFDA/Yqybmpi2IV4xCoexEwpsA1fdGD8Cx+ndpiFZ70TMiQ4fHyfv3AGKxbuy5D403foBVbfr37/MQ==
 
-"@sc-voice/ms-dpd@^2.53.0":
-  version "2.53.0"
-  resolved "https://registry.npmjs.org/@sc-voice/ms-dpd/-/ms-dpd-2.53.0.tgz"
-  integrity sha512-EFCF0unLtEp6rDCaq8CH28TxJjjkPK1TMcj+SsyqvEzoxLkLR/mcvNhjsdodyZsjpRC045o0Nr5CNfjGIkIxBg==
+"@sc-voice/ms-dpd@^2.54.0":
+  version "2.54.0"
+  resolved "https://registry.yarnpkg.com/@sc-voice/ms-dpd/-/ms-dpd-2.54.0.tgz#27c42d16062ff45a3fed29edccf0a4973618fae2"
+  integrity sha512-Rfm2FSVKrJFcA3yuV0x9raOmb1Zp+1wK9DjYCGu/ZQbMedUNohkGLAgZcbPAfEwNjtobcAfkCPoB5/ewoua+Yw==
   dependencies:
     "@sc-voice/ms-dpd-de" "^2.53.0"
     "@sc-voice/ms-dpd-en" "^2.53.0"
@@ -1458,7 +1458,7 @@
   resolved "https://registry.npmjs.org/@shikijs/vscode-textmate/-/vscode-textmate-10.0.2.tgz"
   integrity sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==
 
-"@sparticuz/chromium-min@^143.0.4":
+"@sparticuz/chromium-min@143.0.4":
   version "143.0.4"
   resolved "https://registry.yarnpkg.com/@sparticuz/chromium-min/-/chromium-min-143.0.4.tgz#e8dea3ac9e253778204a0fbe4da6fcdf1f31805c"
   integrity sha512-vAV731SUEVH0FUmMc+404ZoRq0glq7DlhEGpAX0C7/rXupZ0HasOIJHbrjNNNE+VElenkdmwBm8MVTzwYcFPyQ==
