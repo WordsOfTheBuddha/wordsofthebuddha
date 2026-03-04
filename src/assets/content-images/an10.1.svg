@@ -47,7 +47,7 @@
             <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
         </filter>
 
-        <!-- Step gradients: steel-blue (step 1) → warm amber (step 10) -->
+        <!-- Step gradients: steel-blue (step 1) → warm amber (step 9) -->
         <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#1c2840" />
             <stop offset="100%" stop-color="#162036" />
@@ -81,10 +81,6 @@
             <stop offset="100%" stop-color="#342612" />
         </linearGradient>
         <linearGradient id="stg9" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#432c18" />
-            <stop offset="100%" stop-color="#3a2410" />
-        </linearGradient>
-        <linearGradient id="stg10" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#4c2e1c" />
             <stop offset="100%" stop-color="#402214" />
         </linearGradient>
@@ -103,7 +99,11 @@
             <stop offset="100%" stop-color="#c8a040" stop-opacity="0.8" />
         </linearGradient>
 
-
+        <!-- Arrowhead marker for curved arrow to Liberation -->
+        <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="9" refY="5"
+            orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M 0,0 L 10,5 L 0,10 z" fill="#ffd700" fill-opacity="0.72" />
+        </marker>
     </defs>
 
     <!-- ============ BACKGROUND ============ -->
@@ -111,14 +111,14 @@
 
     <!-- Very faint diagonal staircase shadow in the background -->
     <g opacity="0.025" stroke="#ffffff" stroke-width="0.6">
-        <line x1="0" y1="1040" x2="900" y2="80" />
-        <line x1="60" y1="1060" x2="920" y2="100" />
+        <line x1="0" y1="1040" x2="820" y2="130" />
+        <line x1="60" y1="1060" x2="870" y2="145" />
     </g>
 
     <!-- ============ TITLE ============ -->
     <text x="460" y="40" text-anchor="middle" fill="#d8c8a0"
         font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
-        letter-spacing="3">AN 11.1 — KIMATTHIYA SUTTA</text>
+        letter-spacing="3">AN 10.1 — KIMATTHIYA SUTTA</text>
     <text x="460" y="64" text-anchor="middle" fill="#a09070"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
         letter-spacing="1">The Purpose of Wholesome Ethical Conduct</text>
@@ -133,12 +133,10 @@
     </text>
 
     <!-- ============ DIAGONAL ASCENT GUIDE ============ -->
-    <!-- Very subtle diagonal line suggesting the staircase path -->
-    <line x1="155" y1="960" x2="780" y2="190" stroke="url(#diagonalGuide)"
+    <line x1="155" y1="960" x2="703" y2="200" stroke="url(#diagonalGuide)"
         stroke-width="1.2" stroke-dasharray="3,8" opacity="0.3" />
 
     <!-- ============ STEP 1: Non-Regret ============ -->
-    <!-- x=50, y=941, w=210, h=52 -->
     <g filter="url(#shadowDrop)">
         <rect x="50" y="941" width="210" height="52" rx="9" fill="url(#stg1)" stroke="#3a5878"
             stroke-width="1" stroke-opacity="0.55" />
@@ -148,13 +146,11 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
     <text x="155" y="960" text-anchor="middle" fill="#a0b8d0"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Non-Regret</text>
-    <text x="155" y="979" text-anchor="middle" fill="#607890"
+    <text x="155" y="980" text-anchor="middle" fill="#607890"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">avippaṭisāra</text>
-    <!-- Glow dot -->
     <circle cx="46" cy="967" r="2.5" fill="#a0b8d0" opacity="0.12" filter="url(#glow1)" />
 
     <!-- ============ STEP 2: Joy ============ -->
-    <!-- x=115, y=861 -->
     <g filter="url(#shadowDrop)">
         <rect x="115" y="861" width="210" height="52" rx="9" fill="url(#stg2)" stroke="#3e5a78"
             stroke-width="1" stroke-opacity="0.55" />
@@ -164,12 +160,11 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">2</text>
     <text x="220" y="880" text-anchor="middle" fill="#a8bcc4"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Joy</text>
-    <text x="220" y="899" text-anchor="middle" fill="#688090"
+    <text x="220" y="900" text-anchor="middle" fill="#688090"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">pāmojja</text>
     <circle cx="111" cy="887" r="2.5" fill="#a8bcc4" opacity="0.13" filter="url(#glow1)" />
 
     <!-- ============ STEP 3: Uplifting Joy ============ -->
-    <!-- x=180, y=781 -->
     <g filter="url(#shadowDrop)">
         <rect x="180" y="781" width="210" height="52" rx="9" fill="url(#stg3)" stroke="#426070"
             stroke-width="1" stroke-opacity="0.55" />
@@ -179,12 +174,11 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
     <text x="285" y="800" text-anchor="middle" fill="#b0bcb8"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Uplifting Joy</text>
-    <text x="285" y="819" text-anchor="middle" fill="#708888"
+    <text x="285" y="820" text-anchor="middle" fill="#708888"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">pīti</text>
     <circle cx="176" cy="807" r="2.5" fill="#b0bcb8" opacity="0.14" filter="url(#glow1)" />
 
     <!-- ============ STEP 4: Tranquility ============ -->
-    <!-- x=245, y=701 -->
     <g filter="url(#shadowDrop)">
         <rect x="245" y="701" width="210" height="52" rx="9" fill="url(#stg4)" stroke="#487068"
             stroke-width="1" stroke-opacity="0.55" />
@@ -194,12 +188,11 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
     <text x="350" y="720" text-anchor="middle" fill="#b8bcac"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Tranquility</text>
-    <text x="350" y="739" text-anchor="middle" fill="#788880"
+    <text x="350" y="740" text-anchor="middle" fill="#788880"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">passaddhi</text>
     <circle cx="241" cy="727" r="2.5" fill="#b8bcac" opacity="0.15" filter="url(#glow1)" />
 
     <!-- ============ STEP 5: Ease ============ -->
-    <!-- x=310, y=621 -->
     <g filter="url(#shadowDrop)">
         <rect x="310" y="621" width="210" height="52" rx="9" fill="url(#stg5)" stroke="#4e7060"
             stroke-width="1" stroke-opacity="0.55" />
@@ -209,12 +202,11 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
     <text x="415" y="640" text-anchor="middle" fill="#bfc0a0"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Ease</text>
-    <text x="415" y="659" text-anchor="middle" fill="#808878"
+    <text x="415" y="660" text-anchor="middle" fill="#808878"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">sukha</text>
     <circle cx="306" cy="647" r="2.5" fill="#bfc0a0" opacity="0.15" filter="url(#glow1)" />
 
     <!-- ============ STEP 6: Collectedness ============ -->
-    <!-- x=375, y=541 -->
     <g filter="url(#shadowDrop)">
         <rect x="375" y="541" width="210" height="52" rx="9" fill="url(#stg6)" stroke="#567058"
             stroke-width="1" stroke-opacity="0.56" />
@@ -224,12 +216,11 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
     <text x="480" y="560" text-anchor="middle" fill="#c4be98"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Collectedness</text>
-    <text x="480" y="579" text-anchor="middle" fill="#888870"
+    <text x="480" y="580" text-anchor="middle" fill="#888870"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">samādhi</text>
     <circle cx="371" cy="567" r="2.5" fill="#c4be98" opacity="0.16" filter="url(#glow1)" />
 
     <!-- ============ STEP 7: Understanding & Insight ============ -->
-    <!-- x=440, y=461 -->
     <g filter="url(#shadowDrop)">
         <rect x="440" y="461" width="210" height="58" rx="9" fill="url(#stg7)" stroke="#606848"
             stroke-width="1" stroke-opacity="0.56" />
@@ -241,88 +232,137 @@
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Understanding</text>
     <text x="545" y="492" text-anchor="middle" fill="#c8b888"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">&amp; Insight</text>
-    <text x="545" y="507" text-anchor="middle" fill="#909068"
+    <text x="545" y="508" text-anchor="middle" fill="#909068"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">yathābhūta-ñāṇadassana</text>
     <circle cx="436" cy="490" r="2.5" fill="#c8b888" opacity="0.17" filter="url(#glow1)" />
 
-    <!-- ============ STEP 8: Disenchantment ============ -->
-    <!-- x=505, y=381 -->
+    <!-- ============ STEP 8: Disenchantment & Fading of Desire (MERGED) ============ -->
+    <!-- x=505, y=381, w=210, h=64 — two concepts joined in AN 10.1 -->
     <g filter="url(#shadowDrop)">
-        <rect x="505" y="381" width="210" height="52" rx="9" fill="url(#stg8)" stroke="#6a6040"
+        <rect x="505" y="381" width="210" height="64" rx="9" fill="url(#stg8)" stroke="#6a6040"
             stroke-width="1" stroke-opacity="0.57" />
     </g>
-    <circle cx="526" cy="404" r="10" fill="none" stroke="#7a7050" stroke-width="1" opacity="0.65" />
-    <text x="526" y="404" text-anchor="middle" dominant-baseline="central" fill="#8a8058"
+    <circle cx="526" cy="410" r="10" fill="none" stroke="#7a7050" stroke-width="1" opacity="0.65" />
+    <text x="526" y="410" text-anchor="middle" dominant-baseline="central" fill="#8a8058"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">8</text>
-    <text x="610" y="400" text-anchor="middle" fill="#ccb078"
-        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Disenchantment</text>
-    <text x="610" y="419" text-anchor="middle" fill="#989060"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">nibbidā</text>
-    <circle cx="501" cy="407" r="2.5" fill="#ccb078" opacity="0.18" filter="url(#glow1)" />
+    <text x="610" y="397" text-anchor="middle" fill="#ccb078"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Disenchantment &amp;</text>
+    <text x="610" y="413" text-anchor="middle" fill="#ccb078"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Fading of Desire</text>
+    <text x="610" y="432" text-anchor="middle" fill="#989060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">nibbidā · virāga</text>
+    <circle cx="501" cy="413" r="2.5" fill="#ccb078" opacity="0.18" filter="url(#glow1)" />
 
-    <!-- ============ STEP 9: Fading of Desire ============ -->
-    <!-- x=570, y=301 -->
+    <!-- ============ STEP 9: Knowledge & Vision of Liberation ============ -->
+    <!-- x=570, y=301, w=210, h=62 -->
     <g filter="url(#shadowDrop)">
-        <rect x="570" y="301" width="210" height="52" rx="9" fill="url(#stg9)" stroke="#745e38"
-            stroke-width="1" stroke-opacity="0.58" />
-    </g>
-    <circle cx="591" cy="324" r="10" fill="none" stroke="#846e48" stroke-width="1" opacity="0.65" />
-    <text x="591" y="322" text-anchor="middle" dominant-baseline="central" fill="#947858"
-        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">9</text>
-    <text x="675" y="320" text-anchor="middle" fill="#d4a868"
-        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Fading of Desire</text>
-    <text x="675" y="339" text-anchor="middle" fill="#a09050"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">virāga</text>
-    <circle cx="566" cy="327" r="2.5" fill="#d4a868" opacity="0.19" filter="url(#glow1)" />
-
-    <!-- ============ STEP 10: Knowledge & Vision of Liberation ============ -->
-    <!-- x=635, y=221 -->
-    <g filter="url(#shadowDrop)">
-        <rect x="635" y="221" width="210" height="58" rx="9" fill="url(#stg10)" stroke="#805838"
+        <rect x="570" y="301" width="210" height="62" rx="9" fill="url(#stg9)" stroke="#805838"
             stroke-width="1.2" stroke-opacity="0.6" />
     </g>
-    <circle cx="656" cy="247" r="10" fill="none" stroke="#906848" stroke-width="1.1" opacity="0.7" />
-    <text x="656" y="246" text-anchor="middle" dominant-baseline="central" fill="#a07858"
-        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
-    <text x="740" y="238" text-anchor="middle" fill="#e0b858"
+    <circle cx="591" cy="329" r="10" fill="none" stroke="#906848" stroke-width="1.1" opacity="0.7" />
+    <text x="591" y="328" text-anchor="middle" dominant-baseline="central" fill="#a07858"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">9</text>
+    <text x="675" y="318" text-anchor="middle" fill="#e0b858"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
         filter="url(#glow1)">Knowledge &amp; Vision</text>
-    <text x="740" y="254" text-anchor="middle" fill="#e0b858"
+    <text x="675" y="334" text-anchor="middle" fill="#e0b858"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
         filter="url(#glow1)">of Liberation</text>
-    <text x="740" y="270" text-anchor="middle" fill="#a89050"
+    <text x="675" y="352" text-anchor="middle" fill="#a89050"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">vimuttiñāṇadassana</text>
-    <circle cx="631" cy="250" r="2.5" fill="#e0b858" opacity="0.22" filter="url(#glow1)" />
+    <circle cx="566" cy="332" r="2.5" fill="#e0b858" opacity="0.21" filter="url(#glow1)" />
 
-    <!-- ============ LIBERATION APEX (cx=780, r×1.3) ============ -->
-    <!-- Outer radiance ellipse -->
-    <ellipse cx="780" cy="148" rx="169" ry="117" fill="url(#libGlow)" />
+    <!-- ============ SPARKLE TRAIL: Step 9 → Liberation ============ -->
+    <!-- Path: quadratic bezier M(675,301) Q(715,253) (750,263)                -->
+    <!-- Sparkles grow in size from step 9 upward to globe — conveys direction  -->
+
+    <!-- Faint dotted guide arc — subtle enough to feel like energy, not a line -->
+    <path d="M 675,301 Q 715,253 750,263"
+        stroke="#ffd700" stroke-width="0.6" fill="none"
+        stroke-dasharray="1.5,7" stroke-opacity="0.18" />
+
+    <!-- Tiny anchor dot at step 9 top edge -->
+    <circle cx="675" cy="301" r="1.5" fill="#ffd700" opacity="0.30" filter="url(#glow1)" />
+
+    <!-- sparkle 1 — t≈0.10  (687, 290)  arm=3.5  smallest -->
+    <g transform="translate(687,290)" opacity="0.42" filter="url(#glow1)">
+        <line x1="-3.5" y1="0"    x2="3.5"  y2="0"    stroke="#ffd700" stroke-width="0.7" />
+        <line x1="0"    y1="-3.5" x2="0"    y2="3.5"  stroke="#ffd700" stroke-width="0.7" />
+        <line x1="-2.1" y1="-2.1" x2="2.1"  y2="2.1"  stroke="#ffe680" stroke-width="0.4" />
+        <line x1="2.1"  y1="-2.1" x2="-2.1" y2="2.1"  stroke="#ffe680" stroke-width="0.4" />
+        <circle cx="0" cy="0" r="0.8" fill="#fffde8" />
+    </g>
+
+    <!-- sparkle 2 — t≈0.28  (698, 279)  arm=5 -->
+    <g transform="translate(698,279)" opacity="0.54" filter="url(#glow1)">
+        <line x1="-5"   y1="0"    x2="5"    y2="0"    stroke="#ffd700" stroke-width="0.8" />
+        <line x1="0"    y1="-5"   x2="0"    y2="5"    stroke="#ffd700" stroke-width="0.8" />
+        <line x1="-3"   y1="-3"   x2="3"    y2="3"    stroke="#ffe680" stroke-width="0.45" />
+        <line x1="3"    y1="-3"   x2="-3"   y2="3"    stroke="#ffe680" stroke-width="0.45" />
+        <circle cx="0" cy="0" r="1.0" fill="#fffde8" />
+    </g>
+
+    <!-- sparkle 3 — t≈0.47  (712, 269)  arm=6.5 -->
+    <g transform="translate(712,269)" opacity="0.64" filter="url(#glow1)">
+        <line x1="-6.5" y1="0"    x2="6.5"  y2="0"    stroke="#ffd700" stroke-width="0.85" />
+        <line x1="0"    y1="-6.5" x2="0"    y2="6.5"  stroke="#ffd700" stroke-width="0.85" />
+        <line x1="-3.9" y1="-3.9" x2="3.9"  y2="3.9"  stroke="#ffe680" stroke-width="0.48" />
+        <line x1="3.9"  y1="-3.9" x2="-3.9" y2="3.9"  stroke="#ffe680" stroke-width="0.48" />
+        <circle cx="0" cy="0" r="1.2" fill="#fffde8" />
+    </g>
+
+    <!-- sparkle 4 — t≈0.66  (726, 263)  arm=8 -->
+    <g transform="translate(726,263)" opacity="0.73" filter="url(#glow1)">
+        <line x1="-8"   y1="0"    x2="8"    y2="0"    stroke="#ffd700" stroke-width="0.9" />
+        <line x1="0"    y1="-8"   x2="0"    y2="8"    stroke="#ffd700" stroke-width="0.9" />
+        <line x1="-4.8" y1="-4.8" x2="4.8"  y2="4.8"  stroke="#ffe680" stroke-width="0.5" />
+        <line x1="4.8"  y1="-4.8" x2="-4.8" y2="4.8"  stroke="#ffe680" stroke-width="0.5" />
+        <circle cx="0" cy="0" r="1.5" fill="#fffde8" />
+    </g>
+
+    <!-- sparkle 5 — t≈0.84  (738, 261)  arm=9.5  largest -->
+    <g transform="translate(738,261)" opacity="0.82" filter="url(#glow1)">
+        <line x1="-9.5" y1="0"    x2="9.5"  y2="0"    stroke="#ffd700" stroke-width="1.0" />
+        <line x1="0"    y1="-9.5" x2="0"    y2="9.5"  stroke="#ffd700" stroke-width="1.0" />
+        <line x1="-5.7" y1="-5.7" x2="5.7"  y2="5.7"  stroke="#ffe680" stroke-width="0.55" />
+        <line x1="5.7"  y1="-5.7" x2="-5.7" y2="5.7"  stroke="#ffe680" stroke-width="0.55" />
+        <circle cx="0" cy="0" r="1.8" fill="#fffde8" />
+    </g>
+
+    <!-- tiny between-sparkle dots for visual continuity -->
+    <circle cx="693" cy="284" r="0.9" fill="#ffd700" opacity="0.22" filter="url(#glow1)" />
+    <circle cx="705" cy="274" r="0.8" fill="#ffe080" opacity="0.20" filter="url(#glow1)" />
+    <circle cx="719" cy="265" r="0.9" fill="#ffd700" opacity="0.22" filter="url(#glow1)" />
+    <circle cx="732" cy="262" r="0.8" fill="#ffe080" opacity="0.20" filter="url(#glow1)" />
+
+    <!-- ============ LIBERATION APEX  (cx=753, r×1.2 on top of ×1.3) ============ -->
+    <ellipse cx="753" cy="188" rx="203" ry="137" fill="url(#libGlow)" />
 
     <!-- Rays of light -->
     <g opacity="0.22" filter="url(#glow2)">
-        <line x1="780" y1="148" x2="780" y2="74"  stroke="#ffd700" stroke-width="1.2" />
-        <line x1="780" y1="148" x2="702" y2="96"  stroke="#ffd700" stroke-width="1" />
-        <line x1="780" y1="148" x2="858" y2="96"  stroke="#ffd700" stroke-width="1" />
-        <line x1="780" y1="148" x2="669" y2="122" stroke="#ffd700" stroke-width="0.8" />
-        <line x1="780" y1="148" x2="891" y2="122" stroke="#ffd700" stroke-width="0.8" />
-        <line x1="780" y1="148" x2="648" y2="148" stroke="#ffd700" stroke-width="0.7" />
-        <line x1="780" y1="148" x2="912" y2="148" stroke="#ffd700" stroke-width="0.7" />
-        <line x1="780" y1="148" x2="684" y2="104" stroke="#ffd700" stroke-width="0.6" />
-        <line x1="780" y1="148" x2="876" y2="104" stroke="#ffd700" stroke-width="0.6" />
+        <line x1="753" y1="188" x2="753" y2="98"  stroke="#ffd700" stroke-width="1.2" />
+        <line x1="753" y1="188" x2="674" y2="122" stroke="#ffd700" stroke-width="1" />
+        <line x1="753" y1="188" x2="832" y2="122" stroke="#ffd700" stroke-width="1" />
+        <line x1="753" y1="188" x2="626" y2="149" stroke="#ffd700" stroke-width="0.8" />
+        <line x1="753" y1="188" x2="880" y2="149" stroke="#ffd700" stroke-width="0.8" />
+        <line x1="753" y1="188" x2="610" y2="188" stroke="#ffd700" stroke-width="0.7" />
+        <line x1="753" y1="188" x2="896" y2="188" stroke="#ffd700" stroke-width="0.7" />
+        <line x1="753" y1="188" x2="656" y2="133" stroke="#ffd700" stroke-width="0.6" />
+        <line x1="753" y1="188" x2="850" y2="133" stroke="#ffd700" stroke-width="0.6" />
     </g>
 
-    <!-- Outer ring (r=62) -->
-    <circle cx="780" cy="148" r="62" fill="none" stroke="#ffd700" stroke-width="1.4"
+    <!-- Outer ring (r=74) -->
+    <circle cx="753" cy="188" r="74" fill="none" stroke="#ffd700" stroke-width="1.4"
         stroke-opacity="0.35" filter="url(#glow2)" />
-    <!-- Inner circle (r=47) -->
-    <circle cx="780" cy="148" r="47" fill="#ffd700" fill-opacity="0.07" stroke="#ffd700"
+    <!-- Inner circle (r=56) -->
+    <circle cx="753" cy="188" r="56" fill="#ffd700" fill-opacity="0.07" stroke="#ffd700"
         stroke-width="1.8" stroke-opacity="0.7" filter="url(#glow1)" />
 
     <!-- Liberation text — normal weight -->
-    <text x="780" y="144" text-anchor="middle" fill="#ffd700"
+    <text x="753" y="184" text-anchor="middle" fill="#ffd700"
         font-family="Georgia,'Times New Roman',serif" font-size="14"
         letter-spacing="2" filter="url(#glow1)">LIBERATION</text>
-    <text x="780" y="162" text-anchor="middle" fill="#c8a040"
+    <text x="753" y="202" text-anchor="middle" fill="#c8a040"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">vimutti</text>
 
     <!-- ============ FOUNDATION BAR ============ -->
@@ -356,7 +396,7 @@
             stroke-width="0.5" />
         <text x="130" y="551" text-anchor="middle" fill="#506070"
             font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">repeated
-            ten times</text>
+            nine times</text>
         <text x="130" y="567" text-anchor="middle" fill="#506070"
             font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">from
             sīla to vimutti</text>
@@ -393,8 +433,7 @@
             foremost (agga)</text>
     </g>
 
-
-    <!-- ============ GLOW ACCENT DOTS along diagonal ============ -->
+    <!-- ============ GLOW ACCENT DOTS along diagonal (9 steps, shifted +25 in X) ============ -->
     <circle cx="46"  cy="967" r="3" fill="#a0b8d0" opacity="0.10" filter="url(#glow1)" />
     <circle cx="111" cy="887" r="3" fill="#a8bcc4" opacity="0.11" filter="url(#glow1)" />
     <circle cx="176" cy="807" r="3" fill="#b0bcb8" opacity="0.12" filter="url(#glow1)" />
@@ -402,9 +441,8 @@
     <circle cx="306" cy="647" r="3" fill="#bfc0a0" opacity="0.14" filter="url(#glow1)" />
     <circle cx="371" cy="567" r="3" fill="#c4be98" opacity="0.15" filter="url(#glow1)" />
     <circle cx="436" cy="490" r="3" fill="#c8b888" opacity="0.16" filter="url(#glow1)" />
-    <circle cx="501" cy="407" r="3" fill="#ccb078" opacity="0.17" filter="url(#glow1)" />
-    <circle cx="566" cy="327" r="3" fill="#d4a868" opacity="0.19" filter="url(#glow1)" />
-    <circle cx="631" cy="250" r="3" fill="#e0b858" opacity="0.21" filter="url(#glow1)" />
+    <circle cx="501" cy="413" r="3" fill="#ccb078" opacity="0.18" filter="url(#glow1)" />
+    <circle cx="566" cy="332" r="3" fill="#e0b858" opacity="0.21" filter="url(#glow1)" />
 
     <!-- ============ BOTTOM DECORATIVE LINE ============ -->
     <line x1="280" y1="1075" x2="640" y2="1075" stroke="#304058" stroke-opacity="0.3"
