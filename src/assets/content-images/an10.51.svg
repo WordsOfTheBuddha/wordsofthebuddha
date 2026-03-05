@@ -1,0 +1,438 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1060" width="920" height="1060">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Mirror surface gradients -->
+        <linearGradient id="mirrorLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#18243a" />
+            <stop offset="100%" stop-color="#121c2e" />
+        </linearGradient>
+        <linearGradient id="mirrorRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1a2e3a" />
+            <stop offset="100%" stop-color="#162838" />
+        </linearGradient>
+
+        <!-- Mirror frame gradient (golden) -->
+        <linearGradient id="frameGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#c8a040" />
+            <stop offset="35%" stop-color="#dab850" />
+            <stop offset="65%" stop-color="#c49838" />
+            <stop offset="100%" stop-color="#a08030" />
+        </linearGradient>
+
+        <!-- Frame inner shadow -->
+        <linearGradient id="frameInner" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#8a6828" />
+            <stop offset="100%" stop-color="#6a5020" />
+        </linearGradient>
+
+        <!-- Flame gradient -->
+        <radialGradient id="flameGlow" cx="50%" cy="80%" r="50%">
+            <stop offset="0%" stop-color="#ff6600" stop-opacity="0.35" />
+            <stop offset="50%" stop-color="#ff4400" stop-opacity="0.12" />
+            <stop offset="100%" stop-color="#ff2200" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+
+        <!-- Cloudy overlay for left half -->
+        <filter id="cloudyMist" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="3" seed="5" result="noise" />
+            <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise" />
+            <feComponentTransfer in="grayNoise" result="faintNoise">
+                <feFuncA type="linear" slope="0.06" />
+            </feComponentTransfer>
+            <feComposite in="faintNoise" in2="SourceGraphic" operator="over" />
+        </filter>
+
+        <!-- Clip paths for mirror halves -->
+        <clipPath id="mirrorOvalClip">
+            <ellipse cx="460" cy="510" rx="330" ry="380" />
+        </clipPath>
+        <clipPath id="leftHalfClip">
+            <rect x="80" y="80" width="380" height="870" />
+        </clipPath>
+        <clipPath id="rightHalfClip">
+            <rect x="460" y="80" width="380" height="870" />
+        </clipPath>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1060" fill="url(#bg)" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="48" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        letter-spacing="1.5" opacity="0.7">paccavekkhaṇā</text>
+    <text x="460" y="74" text-anchor="middle" fill="#b0c0d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="bold"
+        letter-spacing="1">Reviewing One's Own Mind</text>
+    <text x="460" y="96" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        letter-spacing="0.5">Do I often dwell with ...</text>
+
+    <!-- ============ MIRROR FRAME (outer oval) ============ -->
+    <g filter="url(#shadowDrop)">
+        <!-- Outer frame ring -->
+        <ellipse cx="460" cy="510" rx="345" ry="395" fill="none" stroke="url(#frameGrad)"
+            stroke-width="7" opacity="0.65" />
+        <!-- Inner frame ring -->
+        <ellipse cx="460" cy="510" rx="337" ry="387" fill="none" stroke="url(#frameInner)"
+            stroke-width="2.5" opacity="0.5" />
+    </g>
+
+    <!-- Subtle frame glow -->
+    <ellipse cx="460" cy="510" rx="343" ry="393" fill="none" stroke="#dab850"
+        stroke-width="1" opacity="0.15" filter="url(#glow2)" />
+
+    <!-- ============ MIRROR SURFACE ============ -->
+    <!-- Left half (clouded) -->
+    <g clip-path="url(#mirrorOvalClip)">
+        <g clip-path="url(#leftHalfClip)">
+            <rect x="80" y="80" width="380" height="870" fill="url(#mirrorLeft)" />
+            <!-- Subtle cloudy mist overlay -->
+            <rect x="80" y="80" width="380" height="870" fill="#2a3040" opacity="0.15"
+                filter="url(#cloudyMist)" />
+        </g>
+    </g>
+
+    <!-- Right half (clear/luminous) -->
+    <g clip-path="url(#mirrorOvalClip)">
+        <g clip-path="url(#rightHalfClip)">
+            <rect x="460" y="80" width="380" height="870" fill="url(#mirrorRight)" />
+            <!-- Subtle luminous shimmer -->
+            <rect x="460" y="80" width="380" height="870" fill="#20384a" opacity="0.08" />
+        </g>
+    </g>
+
+    <!-- ============ CENTER DIVIDER ============ -->
+    <g clip-path="url(#mirrorOvalClip)">
+        <line x1="460" y1="175" x2="460" y2="925" stroke="#c8a040" stroke-width="1.2"
+            opacity="0.3" />
+    </g>
+
+    <!-- ============ COLUMN HEADERS ============ -->
+    <!-- Left: Clouded -->
+    <text x="310" y="240" text-anchor="middle" fill="#8090a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        letter-spacing="1.5" opacity="0.8">CLOUDED</text>
+    <text x="310" y="258" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">saṅkiliṭṭha</text>
+
+    <!-- Right: Clear -->
+    <text x="610" y="240" text-anchor="middle" fill="#90b8c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        letter-spacing="1.5" opacity="0.8">CLEAR</text>
+    <text x="610" y="258" text-anchor="middle" fill="#608080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">asamkiliṭṭha</text>
+
+    <!-- Separator lines under headers -->
+    <g clip-path="url(#mirrorOvalClip)">
+        <line x1="190" y1="272" x2="445" y2="272" stroke="#607890" stroke-width="0.5" opacity="0.3" />
+        <line x1="475" y1="272" x2="730" y2="272" stroke="#608890" stroke-width="0.5" opacity="0.3" />
+    </g>
+
+    <!-- ============ 10 QUALITY PAIRS ============ -->
+    <!-- Row spacing: starts y=301, each row +52px. All content shifted +35px for vertical centering. -->
+    <!-- Number text y offsets: 1,2,10 = cy-1; 3,4,5,7,9 = cy-2; 6,8 = cy (optically centered) -->
+
+    <!-- 1. Intense craving / Without intense craving -->
+    <g>
+        <circle cx="220" cy="301" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="300" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
+        <text x="325" y="297" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Intense Craving</text>
+        <text x="325" y="315" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">abhijjhālu</text>
+    </g>
+    <g>
+        <circle cx="490" cy="301" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="300" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
+        <text x="620" y="297" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Without Craving</text>
+        <text x="620" y="315" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">anabhijjhālu</text>
+    </g>
+
+    <!-- 2. Malicious mind / Kind mind -->
+    <g>
+        <circle cx="220" cy="353" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="352" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">2</text>
+        <text x="325" y="349" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Malicious Mind</text>
+        <text x="325" y="367" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">byāpannacitta</text>
+    </g>
+    <g>
+        <circle cx="490" cy="353" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="352" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">2</text>
+        <text x="620" y="349" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Kind Mind</text>
+        <text x="620" y="367" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">abyāpannacitta</text>
+    </g>
+
+    <!-- 3. Dullness & Drowsiness / Free from dullness -->
+    <g>
+        <circle cx="220" cy="405" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="403" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
+        <text x="325" y="397" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Dullness &amp;</text>
+        <text x="325" y="413" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Drowsiness</text>
+        <text x="325" y="429" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">thīnamiddha</text>
+    </g>
+    <g>
+        <circle cx="490" cy="405" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="403" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
+        <text x="620" y="397" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Free from</text>
+        <text x="620" y="413" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Dullness</text>
+        <text x="620" y="429" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vigatathinamiddha</text>
+    </g>
+
+    <!-- 4. Restlessness / Without restlessness -->
+    <g>
+        <circle cx="220" cy="457" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="455" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
+        <text x="325" y="453" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Restlessness</text>
+        <text x="325" y="471" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">uddhata</text>
+    </g>
+    <g>
+        <circle cx="490" cy="457" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="455" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
+        <text x="620" y="453" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Without Restlessness</text>
+        <text x="620" y="471" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">anuddhata</text>
+    </g>
+
+    <!-- 5. Doubt / Crossed over doubt -->
+    <g>
+        <circle cx="220" cy="509" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="507" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
+        <text x="325" y="505" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Doubt</text>
+        <text x="325" y="523" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vicikiccha</text>
+    </g>
+    <g>
+        <circle cx="490" cy="509" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="507" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
+        <text x="620" y="505" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Crossed over Doubt</text>
+        <text x="620" y="523" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">tiṇṇavicikiccha</text>
+    </g>
+
+    <!-- 6. Irritability / Not irritable -->
+    <g>
+        <circle cx="220" cy="561" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="561" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
+        <text x="325" y="557" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Irritability</text>
+        <text x="325" y="575" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">kodhana</text>
+    </g>
+    <g>
+        <circle cx="490" cy="561" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="561" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
+        <text x="620" y="557" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Not Irritable</text>
+        <text x="620" y="575" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">akkodhana</text>
+    </g>
+
+    <!-- 7. Defiled mind / Undefiled mind -->
+    <g>
+        <circle cx="220" cy="613" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="611" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
+        <text x="325" y="609" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Defiled Mind</text>
+        <text x="325" y="627" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">saṅkiliṭṭhacitta</text>
+    </g>
+    <g>
+        <circle cx="490" cy="613" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="611" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
+        <text x="620" y="609" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Undefiled Mind</text>
+        <text x="620" y="627" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">asaṅkiliṭṭhacitta</text>
+    </g>
+
+    <!-- 8. Agitated body / Physically relaxed -->
+    <g>
+        <circle cx="220" cy="665" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="665" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">8</text>
+        <text x="325" y="661" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Agitated Body</text>
+        <text x="325" y="679" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">sāraddha­kāya</text>
+    </g>
+    <g>
+        <circle cx="490" cy="665" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="665" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">8</text>
+        <text x="620" y="661" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Physically Relaxed</text>
+        <text x="620" y="679" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">passaddha­kāya</text>
+    </g>
+
+    <!-- 9. Laziness / Energy aroused -->
+    <g>
+        <circle cx="220" cy="717" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="715" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">9</text>
+        <text x="325" y="713" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Laziness</text>
+        <text x="325" y="731" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">kusīta</text>
+    </g>
+    <g>
+        <circle cx="490" cy="717" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="715" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">9</text>
+        <text x="620" y="713" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Energy Aroused</text>
+        <text x="620" y="731" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">āraddhavīriya</text>
+    </g>
+
+    <!-- 10. Distracted mind / Collected mind -->
+    <g>
+        <circle cx="220" cy="769" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="220" y="768" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
+        <text x="325" y="765" text-anchor="middle" fill="#9088a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Distracted Mind</text>
+        <text x="325" y="783" text-anchor="middle" fill="#706878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">asamāhita</text>
+    </g>
+    <g>
+        <circle cx="490" cy="769" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="490" y="768" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
+        <text x="620" y="765" text-anchor="middle" fill="#88b0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Collected Mind</text>
+        <text x="620" y="783" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">samāhita</text>
+    </g>
+
+    <!-- ============ SUBTLE ROW SEPARATORS ============ -->
+    <g clip-path="url(#mirrorOvalClip)" opacity="0.12">
+        <line x1="190" y1="327" x2="445" y2="327" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="327" x2="730" y2="327" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="379" x2="445" y2="379" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="379" x2="730" y2="379" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="431" x2="445" y2="431" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="431" x2="730" y2="431" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="483" x2="445" y2="483" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="483" x2="730" y2="483" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="535" x2="445" y2="535" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="535" x2="730" y2="535" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="587" x2="445" y2="587" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="587" x2="730" y2="587" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="639" x2="445" y2="639" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="639" x2="730" y2="639" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="691" x2="445" y2="691" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="691" x2="730" y2="691" stroke="#608890" stroke-width="0.4" />
+        <line x1="190" y1="743" x2="445" y2="743" stroke="#607890" stroke-width="0.4" />
+        <line x1="475" y1="743" x2="730" y2="743" stroke="#608890" stroke-width="0.4" />
+    </g>
+
+    <!-- ============ SMALL ORNAMENTAL DOTS (mirror corners) ============ -->
+    <circle cx="460" cy="135" r="2" fill="#c8a040" opacity="0.3" />
+    <circle cx="460" cy="885" r="2" fill="#c8a040" opacity="0.3" />
+    <circle cx="135" cy="510" r="2" fill="#c8a040" opacity="0.2" />
+    <circle cx="785" cy="510" r="2" fill="#c8a040" opacity="0.2" />
+
+    <!-- ============ MIRROR HANDLE (bottom) ============ -->
+    <rect x="446" y="902" width="28" height="55" rx="4" fill="none" stroke="url(#frameGrad)"
+        stroke-width="3" opacity="0.45" />
+    <line x1="460" y1="902" x2="460" y2="957" stroke="#c8a040" stroke-width="0.8" opacity="0.2" />
+
+    <!-- ============ FLAME MOTIF ============ -->
+    <!-- Radial glow behind flame -->
+    <ellipse cx="460" cy="995" rx="90" ry="40" fill="url(#flameGlow)" />
+
+    <!-- Flame shape -->
+    <g opacity="0.7" filter="url(#glow1)">
+        <!-- Centre flame -->
+        <path d="M460,968 Q453,988 448,1001 Q455,996 460,984 Q465,996 472,1001 Q467,988 460,968 Z"
+            fill="#e87020" opacity="0.7" />
+        <!-- Left flicker -->
+        <path d="M450,976 Q445,990 442,999 Q448,994 452,986 Z"
+            fill="#ff8830" opacity="0.5" />
+        <!-- Right flicker -->
+        <path d="M470,976 Q475,990 478,999 Q472,994 468,986 Z"
+            fill="#ff8830" opacity="0.5" />
+    </g>
+
+    <!-- Flame caption -->
+    <text x="460" y="1022" text-anchor="middle" fill="#c08040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        opacity="0.7">"As if one's head were on fire"</text>
+    <text x="460" y="1040" text-anchor="middle" fill="#887050"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.55">seyyathāpi… sīse āditte</text>
+
+    <!-- ============ DECORATIVE GLOW ACCENTS ============ -->
+    <!-- Gentle glow dots along mirror edge -->
+    <circle cx="270" cy="200" r="3" fill="#8090a8" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="650" cy="200" r="3" fill="#90b8c8" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="145" cy="420" r="3" fill="#8090a8" opacity="0.06" filter="url(#glow1)" />
+    <circle cx="775" cy="420" r="3" fill="#90b8c8" opacity="0.06" filter="url(#glow1)" />
+    <circle cx="145" cy="600" r="3" fill="#8090a8" opacity="0.06" filter="url(#glow1)" />
+    <circle cx="775" cy="600" r="3" fill="#90b8c8" opacity="0.06" filter="url(#glow1)" />
+    <circle cx="270" cy="820" r="3" fill="#8090a8" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="650" cy="820" r="3" fill="#90b8c8" opacity="0.08" filter="url(#glow1)" />
+
+    <!-- ============ SUTTA REFERENCE ============ -->
+    <text x="460" y="1055" text-anchor="middle" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5"
+        letter-spacing="0.5">AN 10.51 · Sacitta Sutta</text>
+</svg>
