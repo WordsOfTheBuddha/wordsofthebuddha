@@ -33,8 +33,10 @@ import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
 import type { Browser } from "playwright-core";
 import { createRequire } from "node:module";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 
-const require = createRequire(import.meta.url);
+const esmRequire = createRequire(import.meta.url);
 
 // ── Chromium launcher ───────────────────────────────────────────────────────
 // On Vercel (and other serverless environments) the Playwright-bundled Chromium
@@ -47,10 +49,27 @@ const require = createRequire(import.meta.url);
 // The pack URL is derived from the installed @sparticuz/chromium-min version
 // so it stays in sync automatically. Override via CHROMIUM_PACK_URL env var.
 // Releases: https://github.com/Sparticuz/chromium/releases
+function getChromiumMinVersion(): string {
+	// The package's "exports" field blocks direct require of package.json,
+	// so resolve the main entry and walk up to find the package root.
+	const entryPath = esmRequire.resolve("@sparticuz/chromium-min");
+	let dir = dirname(entryPath);
+	while (true) {
+		const pkgPath = join(dir, "package.json");
+		try {
+			const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+			if (pkg.name === "@sparticuz/chromium-min") return pkg.version;
+		} catch {}
+		const parent = dirname(dir);
+		if (parent === dir) break;
+		dir = parent;
+	}
+	throw new Error("Could not determine @sparticuz/chromium-min version");
+}
+
 function getChromiumPackUrl(): string {
 	if (process.env.CHROMIUM_PACK_URL) return process.env.CHROMIUM_PACK_URL;
-	// Read version from the installed package at build time
-	const { version } = require("@sparticuz/chromium-min/package.json");
+	const version = getChromiumMinVersion();
 	return `https://github.com/Sparticuz/chromium/releases/download/v${version}/chromium-v${version}-pack.x64.tar`;
 }
 
