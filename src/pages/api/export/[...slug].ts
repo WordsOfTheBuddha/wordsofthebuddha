@@ -32,6 +32,9 @@ import {
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
 import type { Browser } from "playwright-core";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 // ── Chromium launcher ───────────────────────────────────────────────────────
 // On Vercel (and other serverless environments) the Playwright-bundled Chromium
