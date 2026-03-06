@@ -96,7 +96,7 @@ function buildImportMap(blocks: string[]): Map<string, string> {
 			// Resolve asset paths to public URL (content-images convention)
 			const filenameMatch = importPath.match(/content-images\/(.+)$/);
 			if (filenameMatch) {
-				map.set(varName, `/assets/content-images/${filenameMatch[1]}`);
+				map.set(varName, `/content-images/${filenameMatch[1]}`);
 			}
 		}
 	}
