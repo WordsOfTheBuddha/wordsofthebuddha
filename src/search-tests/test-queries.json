@@ -198,6 +198,26 @@
 			]
 		},
 		{
+			"id": "pali-phrase-akuppa-cetovimutti",
+			"query": "akuppa cetovimutti",
+			"category": "pali-phrase",
+			"description": "Multi-word Pali phrase for unshakeable release of mind",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "liberation",
+					"maxPosition": 5,
+					"reason": "Liberation topic uses akuppā cetovimutti phrase"
+				},
+				{
+					"type": "has",
+					"slug": "mn29",
+					"maxPosition": 15,
+					"reason": "MN 29 has akuppā cetovimutti in Pali content"
+				}
+			]
+		},
+		{
 			"id": "short-self",
 			"query": "self",
 			"category": "short-query",
@@ -268,6 +288,46 @@
 			]
 		},
 		{
+			"id": "pali-content-pasannacitta",
+			"query": "pasannacitta",
+			"category": "pali-content",
+			"description": "Pali term in source text (contentPali) - settled/confident mind",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "iti21",
+					"maxPosition": 1,
+					"reason": "Iti 21 (Pasannacitta sutta) should be the top result"
+				},
+				{
+					"type": "has",
+					"slug": "mn31",
+					"maxPosition": 10,
+					"reason": "MN 31 has pasannacitta in Pali content"
+				}
+			]
+		},
+		{
+			"id": "pali-content-animitta",
+			"query": "animitta",
+			"category": "pali-content",
+			"description": "Pali term in source text - signless release",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn43",
+					"maxPosition": 10,
+					"reason": "MN 43 has animitta in Pali content"
+				},
+				{
+					"type": "has",
+					"slug": "sn47.9",
+					"maxPosition": 15,
+					"reason": "SN 47.9 has animitta in Pali content"
+				}
+			]
+		},
+		{
 			"id": "multi-ending-craving",
 			"query": "ending craving",
 			"category": "multi-term",
@@ -332,6 +392,26 @@
 					"slugA": "craving",
 					"slugB": "self-erasure",
 					"reason": "Craving (title match) should rank above Self Erasure (synonym match)"
+				}
+			]
+		},
+		{
+			"id": "pali-phrase-bhavitabahulikata",
+			"query": "bhavita bahulikata yanikata vatthukata",
+			"category": "pali-phrase",
+			"description": "Multi-word Pali stock phrase: bhāvitā bahulīkatā yānīkatā vatthukatā …",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "ud6.1",
+					"maxPosition": 15,
+					"reason": "Ud 6.1 has the full phrase in Pali content"
+				},
+				{
+					"type": "has",
+					"slug": "sn51.10",
+					"maxPosition": 15,
+					"reason": "SN 51.10 has the full phrase in Pali content"
 				}
 			]
 		},

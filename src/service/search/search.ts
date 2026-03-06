@@ -18,6 +18,7 @@ export interface SearchResult {
 	description: string;
 	contentSnippet: string | null;
 	maxScore?: number;
+	priority?: number;
 }
 
 export interface SearchData {
@@ -25,7 +26,9 @@ export interface SearchData {
 	title: string;
 	description: string;
 	content: string;
+	contentPali?: string; // Pali source text for Pali-only search (lower weight)
 	maxScore?: number; // Cap the maximum score for this doc
+	priority?: number; // Optional priority multiplier for discourses (from frontmatter/search index)
 	contentSearchable?: boolean; // If false, don't show content snippets
 }
 
@@ -45,6 +48,7 @@ async function getSearchIndex() {
 			{ name: "title", weight: 2 },
 			{ name: "description", weight: 1.5 },
 			{ name: "content", weight: 1 },
+			{ name: "contentPali", weight: 0.5 }, // Pali-only, lower weight so English ranks higher
 		],
 		includeScore: true, // Required for maxScore capping
 		sortFn: (a: any, b: any) => {
@@ -695,6 +699,7 @@ export async function performSearch(
 			description: item.description,
 			contentSnippet: null,
 			maxScore: item.maxScore,
+			priority: item.priority,
 			_score: effectiveScore,
 		};
 
@@ -703,16 +708,36 @@ export async function performSearch(
 
 		if (options.highlight && matches && showContentSnippet) {
 			const contentMatches = matches?.filter((m) => m.key === "content");
+			const contentPaliMatches = matches?.filter(
+				(m) => m.key === "contentPali",
+			);
 
+			// Prefer English snippet when match exists in English content
 			if (contentMatches?.length) {
 				const contentSnippet = findBestMatchingParagraph(
 					item.content,
 					contentMatches.flatMap((match) => match.indices),
 					highlightTerms,
 				);
-				// Only include snippet if it actually contains highlighted text
 				if (contentSnippet && contentSnippet.includes("<mark")) {
 					result.contentSnippet = contentSnippet;
+				}
+			}
+
+			// Fall back to Pali snippet only when English had no match
+			if (
+				!result.contentSnippet &&
+				contentPaliMatches?.length &&
+				item.contentPali &&
+				typeof item.contentPali === "string"
+			) {
+				const paliSnippet = findBestMatchingParagraph(
+					item.contentPali,
+					contentPaliMatches.flatMap((match) => match.indices),
+					highlightTerms,
+				);
+				if (paliSnippet && paliSnippet.includes("<mark")) {
+					result.contentSnippet = paliSnippet;
 				}
 			}
 		}
@@ -774,7 +799,11 @@ export function findContentWholeWordMatches(
 		.filter((item) => {
 			if (excludeSlugs.has(item.slug)) return false;
 			const content = item.content || "";
-			return wordBoundaryRegex.test(content);
+			const contentPali = item.contentPali || "";
+			return (
+				wordBoundaryRegex.test(content) ||
+				wordBoundaryRegex.test(contentPali)
+			);
 		})
 		.map((item) => ({
 			slug: item.slug,
@@ -805,4 +834,19 @@ export function getContentLookup(): (slug: string) => string | null {
 		contentMap.set(item.slug, item.content);
 	}
 	return (slug: string) => contentMap.get(slug) ?? null;
+}
+
+/**
+ * Create a map of slug -> Pali content for efficient lookups.
+ * Returns a function that retrieves Pali content by slug.
+ */
+export function getPaliContentLookup(): (slug: string) => string | null {
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+	const paliMap = new Map<string, string>();
+	for (const item of searchData) {
+		if (item.contentPali) {
+			paliMap.set(item.slug, item.contentPali);
+		}
+	}
+	return (slug: string) => paliMap.get(slug) ?? null;
 }
