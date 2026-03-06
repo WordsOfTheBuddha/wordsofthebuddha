@@ -1,6 +1,6 @@
 {
   "query": "wrong effort",
-  "timestamp": "2026-01-04T06:52:18.824Z",
+  "timestamp": "2026-03-06T14:45:40.472Z",
   "version": "1.0.0",
   "results": [
     {
@@ -28,7 +28,7 @@
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He",
       "contentSnippet": "In this matter, bhikkhus, right view comes first. And how does right view come first? For one possessing right view, wrong view is worn away. And the multitude of harmful, unwholesome qualities that a",
       "score": 109,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 3,
       "nonStopwordMatches": 2
     },
@@ -40,7 +40,7 @@
       "description": "With wrong view, all actions lead to suffering. With right view, all actions lead to happiness. The Buddha explains this with an example of seeds.",
       "contentSnippet": "Bhikkhus, for a person with |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, his |wrong intention::wrong notion, wrong idea [micchāsaṅkappa]|, |wrong speech::speech",
       "score": 103.6,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1.2,
       "nonStopwordMatches": 2
     },
@@ -76,7 +76,7 @@
       "description": "Emerging from seclusion, the Buddha describes dwelling in the meditative state he had experienced immediately after Awakening. He explains that all the mental factors—from wrong view to right collecte",
       "contentSnippet": "“Bhikkhus, I have been dwelling in the |meditation attainment::state of mind [vihāra]| in which I dwelt just after I |became fully awakened::attained perfect enlightenment [abhisambuddha]|. I have und",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
@@ -88,7 +88,7 @@
       "description": "The venerable Bhadda asks the venerable Ānanda about the wrong spiritual practice.",
       "contentSnippet": "“This, friend, is the wrong spiritual practice: the eightfold wrong way of practice, that is, wrong view, wrong intention, wrong speech, wrong action, wrong livelihood, <mark class=\"bg-yellow-100 dark",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
@@ -98,7 +98,7 @@
       "slug": "an10.106",
       "title": "Nijjara sutta - Wearing Away",
       "description": "The Buddha describes the ten bases for the wearing away of the multitude harmful, unwholesome qualities, and for the development of multitude wholesome qualities.",
-      "contentSnippet": "6.) For one with right effort, bhikkhus, <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">effort</mark> is worn away",
+      "contentSnippet": "6.) For one with right effort, bhikkhus, <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">wrong</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style",
       "score": 103,
       "matchType": "content-whole-word",
       "priority": 1,
@@ -107,24 +107,24 @@
     {
       "rank": 9,
       "type": "discourse",
-      "slug": "mn8",
-      "title": "Sallekha sutta - Effacement",
-      "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
-      "contentSnippet": "16.) ‘Others could be with <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">effort</mark>; we shall be with right ef",
+      "slug": "mn19",
+      "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
+      "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensual desire, ill will, and harm; and 2) thoughts of relinquishment, non-ill will, and non-harm. He explains how he ab",
+      "contentSnippet": "Bhikkhus, I have given this simile in order to convey a meaning. This is the meaning here: ‘The great low-lying marsh’ is a term for sensual pleasures. ‘The large herd of deer’ represents beings. ‘The",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
       "rank": 10,
       "type": "discourse",
-      "slug": "mn19",
-      "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
-      "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensual desire, ill will, and harm; and 2) thoughts of relinquishment, non-ill will, and non-harm. He explains how he ab",
-      "contentSnippet": "Bhikkhus, I have given this simile in order to convey a meaning. This is the meaning: ‘The great low-lying marsh’ is a term for sensual pleasures. ‘The large herd of deer’ represents beings. ‘The man ",
+      "slug": "mn8",
+      "title": "Sallekha sutta - Effacement",
+      "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
+      "contentSnippet": "16.) ‘Others could be with <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">wrong</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inli",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
@@ -136,7 +136,7 @@
       "description": "The Buddha distinguishes the wrong way of practice and the right way of practice and their outcomes.",
       "contentSnippet": "And what, bhikkhus, is the wrong way of practice? It is: |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
@@ -172,7 +172,7 @@
       "description": "Who is a person without integrity and who is a person of integrity.",
       "contentSnippet": "And who, bhikkhus, is a person without integrity? Here, bhikkhus, a certain person holds |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, has |wrong intention::wron",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
@@ -184,7 +184,7 @@
       "description": "The Buddha distinguishes the wrong way of practice and the right way of practice.",
       "contentSnippet": "And what, bhikkhus, is the wrong way of practice? It is: |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa",
       "score": 103,
-      "matchType": "multi-term-content",
+      "matchType": "content-whole-word",
       "priority": 1,
       "nonStopwordMatches": 2
     },
@@ -247,7 +247,7 @@
       "slug": "dhp306-319",
       "title": "Niraya vagga - Chapter 22 - Hell",
       "description": "Dhammapada verses 306–319 warn of the suffering that follows false speech, misconduct, and wrong view. The verses highlight the danger of negligence, hypocrisy, and slack effort in spiritual practice.",
-      "contentSnippet": "Just as |kusa grass::sharp-bladed grass used in the ancient India in ceremonies and symbolic contexts [kusa]|, if <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">wrong</mark>ly grasped,\ncu",
+      "contentSnippet": "Just as |kusa grass::sharp-bladed grass used in the ancient India in ceremonies and symbolic contexts [kusa]|, if <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">",
       "score": 70,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -256,10 +256,10 @@
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "iti99",
-      "title": "Tevijja sutta - Possessing the Threefold Knowledge",
-      "description": "The Buddha describes a brahmin possessing the threefold knowledge through the Dhamma, not through mere repetition of what is said. This includes the recollection of past lives, the divine eye seeing b",
-      "contentSnippet": "Again, bhikkhus, the bhikkhu with the |divine eye::the faculty of clairvoyance, the ability to see beyond the ordinary human range [dibbacakkhu]|, purified and surpassing human vision, sees beings pas",
+      "slug": "an10.73",
+      "title": "Iṭṭhadhamma sutta - Wished For",
+      "description": "The Buddha lists ten things, along with their nutriments and obstructions, that are desirable but rarely gained in the world, including wealth, health, wisdom, and heavens.",
+      "contentSnippet": "1.) |Laziness::A mental quality characterized by unwillingness, aversion, or lack of motivation to exert effort in wholesome activities. It reflects an inner resistance to energy and discipline, the s",
       "score": 70,
       "matchType": "multi-term-content",
       "priority": 1,

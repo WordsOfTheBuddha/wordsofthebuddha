@@ -1,6 +1,6 @@
 {
   "query": "craving experience",
-  "timestamp": "2026-01-04T06:52:32.622Z",
+  "timestamp": "2026-03-06T08:21:03.052Z",
   "version": "1.0.0",
   "results": [
     {
@@ -248,6 +248,25 @@
     {
       "rank": 17,
       "type": "topic-quality",
+      "slug": "delight",
+      "title": "Delight",
+      "description": "A mental quality of relishing and taking pleasure in what is experienced—especially in sensuality or the prospect of continued becoming. When it fastens onto gratification, it nourishes craving and ke",
+      "pali": [
+        "nandi"
+      ],
+      "synonyms": [
+        "relishing",
+        "enjoyment",
+        "taking pleasure"
+      ],
+      "score": 75,
+      "matchType": "cross-field-all",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 18,
+      "type": "topic-quality",
       "slug": "speculation",
       "title": "Speculation",
       "description": "A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often root",
@@ -269,7 +288,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "topic-quality",
       "slug": "direct knowledge",
       "title": "Direct knowledge",
@@ -286,29 +305,6 @@
       "priority": 1,
       "nonStopwordMatches": 1,
       "synonymMatchPosition": 1
-    },
-    {
-      "rank": 19,
-      "type": "topic-quality",
-      "slug": "immaturity",
-      "title": "Immaturity",
-      "description": "A childish lack of discernment that fails to see the results of actions clearly. It delights in surface pleasure and ignores consequence. Immaturity leads to poor choices and association with unwise c",
-      "pali": [
-        "bāla"
-      ],
-      "synonyms": [
-        "lacking in discernment",
-        "lacking in good sense",
-        "child-like in understanding",
-        "lack of wisdom",
-        "lack of experience",
-        "foolishness"
-      ],
-      "score": 75,
-      "matchType": "term-synonym-exact",
-      "priority": 1,
-      "nonStopwordMatches": 1,
-      "synonymMatchPosition": 4
     },
     {
       "rank": 20,

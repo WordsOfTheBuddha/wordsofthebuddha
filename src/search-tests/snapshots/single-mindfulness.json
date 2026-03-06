@@ -1,6 +1,6 @@
 {
   "query": "mindfulness",
-  "timestamp": "2026-01-03T22:43:25.455Z",
+  "timestamp": "2026-03-06T14:44:32.214Z",
   "version": "1.0.0",
   "results": [
     {
@@ -26,6 +26,42 @@
     },
     {
       "rank": 2,
+      "type": "discourse",
+      "slug": "mn119",
+      "title": "Kāyagatāsati sutta - Mindfulness of the Body",
+      "description": "The Buddha details a comprehensive training in mindfulness of the body—from breath and postures to anatomical reflection and charnel-ground contemplations. He explains how this cultivation steadies th",
+      "contentSnippet": "Here, bhikkhus, a bhikkhu, having gone to the forest, to the foot of a tree, or to an empty dwelling, sits down, folding his legs crosswise, setting his body upright, establishing <mark class=\"bg-yell",
+      "score": 99,
+      "matchType": "word-exact",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "mn10",
+      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
+      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
+      "contentSnippet": "Here, bhikkhus, when the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::the quality of mindfulness leading to full awake",
+      "score": 98.7,
+      "matchType": "word-exact",
+      "priority": 1.9,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "dn22",
+      "title": "Mahāsatipaṭṭhāna sutta - The Great Discourse on the Establishments of Mindfulness",
+      "description": "The Buddha's most detailed exposition of the four establishments of mindfulness. This extended version includes comprehensive definitions of the Four Noble Truths, the Noble Eightfold Path, and the fo",
+      "contentSnippet": "Here, bhikkhus, when the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::the quality of mindfulness leading to full awake",
+      "score": 98.45,
+      "matchType": "word-exact",
+      "priority": 1.9,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 5,
       "type": "topic-quality",
       "slug": "mindfulness-of-body",
       "title": "Mindfulness of Body",
@@ -47,7 +83,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 3,
+      "rank": 6,
       "type": "topic-quality",
       "slug": "breathing",
       "title": "Mindfulness of Breath",
@@ -67,42 +103,6 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 4,
-      "type": "discourse",
-      "slug": "mn119",
-      "title": "Kāyagatāsati sutta - Mindfulness of the Body",
-      "description": "The Buddha details a comprehensive training in mindfulness of the body—from breath and postures to anatomical reflection and charnel-ground contemplations. He explains how this cultivation steadies th",
-      "contentSnippet": "Here, bhikkhus, a bhikkhu, having gone to the forest, to the foot of a tree, or to an empty dwelling, sits down, folding his legs crosswise, setting his body upright, establishing <mark class=\"bg-yell",
-      "score": 97,
-      "matchType": "word-exact",
-      "priority": 2,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 5,
-      "type": "discourse",
-      "slug": "mn10",
-      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
-      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
-      "contentSnippet": "Here, bhikkhus, when the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulness</mark>::the quality of mindfulness leading to full awakening, remembering as a fac",
-      "score": 96.7,
-      "matchType": "word-exact",
-      "priority": 1.9,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 6,
-      "type": "discourse",
-      "slug": "sn47.2",
-      "title": "Sati sutta - Mindfulness",
-      "description": "The Buddha explains how a bhikkhu should live with mindfulness and full awareness.",
-      "contentSnippet": "“Bhikkhus, a bhikkhu should dwell with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulness</mark>::remembering to be present with continuous effort, observing the body in and of i",
-      "score": 94.5,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
       "rank": 7,
       "type": "topic-quality",
       "slug": "wrong mindfulness",
@@ -119,6 +119,42 @@
     },
     {
       "rank": 8,
+      "type": "discourse",
+      "slug": "sn47.2",
+      "title": "Sati sutta - Mindfulness",
+      "description": "The Buddha explains how a bhikkhu should live with mindfulness and clear awareness.",
+      "contentSnippet": "“Bhikkhus, a bhikkhu should dwell with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::remembering to be present with continuous effort, obse",
+      "score": 96.5,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "sn43.1",
+      "title": "Kāyagatāsati sutta - Mindfulness Directed to the Body",
+      "description": "The Buddha teaches about the unconditioned and the path leading to it.",
+      "contentSnippet": "And what, bhikkhus, is the path leading to the unconditioned? |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Mindfulness</mark> directed to the body::awareness ",
+      "score": 95.75,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "an1.575-615",
+      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
+      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
+      "contentSnippet": "“One factor, bhikkhus, when cultivated and frequently practiced, leads to great urgency ... great benefit ... great safety from bondage ... to <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" st",
+      "score": 95.6,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
       "type": "topic-quality",
       "slug": "recollection of death",
       "title": "Recollection of death",
@@ -136,7 +172,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 9,
+      "rank": 12,
       "type": "topic-quality",
       "slug": "recollection of the Buddha",
       "title": "Recollection of the Buddha",
@@ -154,42 +190,6 @@
       "priority": 1,
       "nonStopwordMatches": 1,
       "synonymMatchPosition": 1
-    },
-    {
-      "rank": 10,
-      "type": "discourse",
-      "slug": "sn43.1",
-      "title": "Kāyagatāsati sutta - Mindfulness Directed to the Body",
-      "description": "The Buddha teaches about the unconditioned and the path leading to it.",
-      "contentSnippet": "And what, bhikkhus, is the path leading to the unconditioned? |<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Mindfulness</mark> directed to the body::awareness immersed in the body, dwel",
-      "score": 93.75,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 11,
-      "type": "discourse",
-      "slug": "an1.575-615",
-      "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
-      "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
-      "contentSnippet": "“One factor, bhikkhus, when cultivated and frequently practiced, leads to great urgency ... great benefit ... great safety from bondage ... to <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounde",
-      "score": 93.6,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 12,
-      "type": "discourse",
-      "slug": "mn118",
-      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
-      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfuln",
-      "contentSnippet": "In this Saṅgha of bhikkhus, there are bhikkhus who are devoted to the cultivation of the |four establishments of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulness</mark>::four fo",
-      "score": 93.5,
-      "matchType": "word-exact",
-      "priority": 1,
-      "nonStopwordMatches": 0
     },
     {
       "rank": 13,
@@ -213,6 +213,42 @@
     },
     {
       "rank": 14,
+      "type": "discourse",
+      "slug": "mn118",
+      "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
+      "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfuln",
+      "contentSnippet": "Bhikkhus, on whatever occasion a bhikkhu dwells observing the body in and of itself, with continuous effort, clearly aware, mindful, having removed craving and distress with regard to the world, on th",
+      "score": 95.5,
+      "matchType": "word-exact",
+      "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types ",
+      "contentSnippet": "3.) Here, Udāyī, a certain person practices for the abandoning of attachment, for the relinquishing of attachment. And while that person is practicing for the abandoning of attachment, for the relinqu",
+      "score": 89.7,
+      "matchType": "description-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn47.19",
+      "title": "Sedaka sutta - At Sedaka",
+      "description": "Through a parable of an acrobat and his apprentice, the Buddha teaches that protecting oneself through mindfulness also protects others, and vice versa. Self-discipline through mindfulness leads to co",
+      "contentSnippet": "“This is the method here,” the Blessed One said. “It is just as the apprentice Medakathālikā said to the teacher. Thinking ‘I will protect myself,’ bhikkhus, one should cultivate the establishments of",
+      "score": 89.5,
+      "matchType": "description-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
       "type": "topic-quality",
       "slug": "recollection of the Sangha",
       "title": "Recollection of the Sangha",
@@ -232,61 +268,25 @@
       "synonymMatchPosition": 1
     },
     {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "mn66",
-      "title": "Laṭukikopama sutta - Simile of the Quail",
-      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types ",
-      "contentSnippet": "3.) Here, Udāyī, a certain person practices for the abandoning of attachment, for the relinquishing of attachment. And while that person is practicing for the abandoning of attachment, for the relinqu",
-      "score": 87.7,
-      "matchType": "description-whole-word",
-      "priority": 2,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 16,
-      "type": "discourse",
-      "slug": "sn47.19",
-      "title": "Sedaka sutta - At Sedaka",
-      "description": "Through a parable of an acrobat and his apprentice, the Buddha teaches that protecting oneself through mindfulness also protects others, and vice versa. Self-discipline through mindfulness leads to co",
-      "contentSnippet": "“This is the method here,” the Blessed One said. “It is just as the apprentice Medakathālikā said to the teacher. Thinking ‘I will protect myself,’ bhikkhus, one should cultivate the establishments of",
-      "score": 87.5,
-      "matchType": "description-whole-word",
-      "priority": 2,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 17,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
       "description": "The Buddha explains in detail each factor of the noble eightfold path—right view, right intention, right speech, right action, right livelihood, right effort, right mindfulness, and right collectednes",
-      "contentSnippet": "“And what, bhikkhus, is the noble eightfold path? It is right view, right intention, right speech, right action, right livelihood, right effort, right <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-",
-      "score": 85.60000000000001,
+      "contentSnippet": "“And what, bhikkhus, is the noble eightfold path? It is right view, right intention, right speech, right action, right livelihood, right effort, right <mark class=\"bg-yellow-100 dark:bg-yellow-900 rou",
+      "score": 87.60000000000001,
       "matchType": "description-whole-word",
       "priority": 1.4,
       "nonStopwordMatches": 0
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "discourse",
       "slug": "an1.616-627",
       "title": "Amata vagga - The Chapter on the Deathless",
       "description": "The Buddha explains the importance of mindfulness of the body in partaking in the deathless.",
-      "contentSnippet": "“Bhikkhus, those who do not partake in <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulness</mark> of the body do not partake in the |deathless::deathless state, epithet of Nibbāna ",
-      "score": 85,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "sn35.247",
-      "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
-      "description": "The Buddha explains how there is non-restraint and restraint with a simile of six animals with different domains and feeding grounds. He uses strong post or pillar as a designation for mindfulness dir",
-      "contentSnippet": "Here, a bhikkhu, having seen a form with the eye, |is drawn to::is inclined to, is resolved on [adhimuccati]| |agreeable forms::agreeable forms—cherished, delightful, or endearing appearances, objects",
-      "score": 85,
+      "contentSnippet": "“Bhikkhus, those who do not partake in <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark> of the body do not partake in the |deathless::deathless ",
+      "score": 87,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 0
@@ -294,11 +294,11 @@
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn54.13",
-      "title": "Paṭhama ānanda sutta - With Ānanda (First)",
-      "description": "The Buddha explains the development of mindfulness of breathing and its benefits in fulfilling the four establishments of mindfulness, the seven factors of awakening, and clear knowing and release.",
-      "contentSnippet": "“How, Ānanda, do the four foundations of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">mindfulness</mark> when frequently practiced fulfill the seven factors of awakening? When, Ānanda, ",
-      "score": 85,
+      "slug": "sn35.247",
+      "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
+      "description": "The Buddha explains how there is non-restraint and restraint with a simile of six animals with different domains and feeding grounds. He uses strong post or pillar as a designation for mindfulness dir",
+      "contentSnippet": "Here, a bhikkhu, having seen a form with the eye, |is drawn to::is inclined to, is resolved on [adhimuccati]| |agreeable forms::agreeable forms—cherished, delightful, or endearing appearances, objects",
+      "score": 87,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 0

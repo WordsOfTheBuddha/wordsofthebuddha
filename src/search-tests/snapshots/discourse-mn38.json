@@ -1,6 +1,6 @@
 {
   "query": "mn 38",
-  "timestamp": "2026-01-02T16:03:48.487Z",
+  "timestamp": "2026-03-06T08:20:14.402Z",
   "version": "1.0.0",
   "results": [
     {
@@ -21,10 +21,21 @@
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
       "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">38</mark>.) ‘Others could be |lacking sense of right and wrong::shamelessness, lacking conscience [ahirika]|; we shall be with a sense of ri",
-      "score": 73.4,
-      "matchType": "content-fuzzy",
+      "score": 60,
+      "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
+      "slug": "an1.394-574",
+      "title": "Aparaaccharāsaṅghāta vagga - The Chapter on the Finger Snap",
+      "description": "How much practice makes one a true practitioner? The Buddha declares that even a “finger snap” of cultivation fulfills the Teacher's instruction. A rapid-fire survey of the path's essential practices,",
+      "score": 29,
+      "matchType": "content-fuzzy",
+      "priority": 1,
+      "nonStopwordMatches": 1
     }
   ],
   "assertions": [

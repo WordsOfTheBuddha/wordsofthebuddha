@@ -1,6 +1,6 @@
 {
   "query": "fire simile",
-  "timestamp": "2026-01-03T22:44:22.910Z",
+  "timestamp": "2026-03-06T08:20:28.152Z",
   "version": "1.0.0",
   "results": [
     {
@@ -40,17 +40,29 @@
     {
       "rank": 4,
       "type": "discourse",
-      "slug": "mn72",
-      "title": "Aggivaccha sutta - Discourse on Fire with Vacchagotta",
-      "description": "The Buddha has gone beyond all speculative views. He states the spiritual goal with the simile of a fire and explains how the Tathāgata is freed from classification by the aggregates.",
-      "contentSnippet": "<strong><mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Simile</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Fire</mark></strong>\n\nWhat do you think, Vaccha, if a f",
-      "score": 70,
-      "matchType": "term-title-match",
-      "priority": 1,
+      "slug": "an10.51",
+      "title": "Sacitta sutta - One’s Own Mind",
+      "description": "The Buddha uses the simile of checking one’s reflection in a mirror to explain how to comprehend one’s own mind. He details how to constantly review mental states and apply urgent effort to abandon ha",
+      "contentSnippet": "If, bhikkhus, upon reviewing, a bhikkhu knows: ‘I often dwell with intense craving, I often dwell with a malicious mind, I often dwell overcome by dullness and drowsiness, I often dwell restless, I of",
+      "score": 73,
+      "matchType": "multi-term-content",
+      "priority": 2,
       "nonStopwordMatches": 2
     },
     {
       "rank": 5,
+      "type": "discourse",
+      "slug": "mn72",
+      "title": "Aggivaccha sutta - Discourse on Fire with Vacchagotta",
+      "description": "The wanderer Vacchagotta questions the Buddha about the eternity of the world, the life force, and the Tathāgata after death. The Buddha entirely avoids these speculative views, explaining that the Ta",
+      "contentSnippet": "<strong><mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Simile</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">Fire</mark></strong>\n\nWhat do you think, Vaccha, if a f",
+      "score": 70.9,
+      "matchType": "term-title-match",
+      "priority": 1.3,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 6,
       "type": "discourse",
       "slug": "sn12.55",
       "title": "Mahārukkha sutta - Great Tree",
@@ -62,19 +74,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "discourse",
       "slug": "sn22.95",
       "title": "Pheṇapiṇḍūpama sutta - The Simile Of The Lump Of Foam",
       "description": "The Buddha presents a series of similes for the five aggregates - physical form is akin to a lump of foam, feelings akin to water bubbles, perception like a mirage, intentional constructs are like a t",
-      "contentSnippet": "One should abandon all attachments,\nAnd make oneself one’s own refuge;\nLiving as if one’s head was on <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">fire</mark>,\nAiming for the imperishab",
+      "contentSnippet": "He should give up all bonds,\nand make himself his own refuge;\nLiving as if his head were on <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">fire</mark>,\naspiring for the |stable::epithet o",
       "score": 70,
       "matchType": "term-title-match",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "discourse",
       "slug": "sn35.246",
       "title": "Vīṇopama sutta - Simile of the Lute",
@@ -86,7 +98,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 8,
+      "rank": 9,
       "type": "discourse",
       "slug": "mn28",
       "title": "Mahāhatthipadopama sutta - The Greater Discourse on the Simile of the Elephant’s Footprint",
@@ -98,7 +110,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 9,
+      "rank": 10,
+      "type": "discourse",
+      "slug": "sn44.9",
+      "title": "Kutūhalasālā sutta - The Debating Hall",
+      "description": "What sustains the journey between lives? Using the vivid simile of a flame flung by the wind, the Buddha explains the transition of consciousness and the distinction between a being with fuel and one ",
+      "contentSnippet": "I declare |rebirth::re-arising, reappearance; lit. going near [upapatti]|, Vaccha, for one |with fuel::having firewood, with attachment, with clinging; lit. with taking near [saupādāna]|, not for one ",
+      "score": 70,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 11,
       "type": "discourse",
       "slug": "sn56.34",
       "title": "Cela sutta - Clothes",
@@ -109,7 +133,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 10,
+      "rank": 12,
       "type": "discourse",
       "slug": "mn36",
       "title": "Mahāsaccaka sutta - The Greater Discourse with Saccaka",
@@ -121,7 +145,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 11,
+      "rank": 13,
       "type": "discourse",
       "slug": "sn42.6",
       "title": "Asibandhakaputta sutta - Asibandhakaputta",
@@ -133,7 +157,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 12,
+      "rank": 14,
       "type": "discourse",
       "slug": "mn27",
       "title": "Cūḷahatthipadopama sutta - The Shorter Discourse on the Simile of the Elephant’s Footprint",
@@ -145,7 +169,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 13,
+      "rank": 15,
       "type": "discourse",
       "slug": "mn119",
       "title": "Kāyagatāsati sutta - Mindfulness of the Body",
@@ -157,18 +181,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 14,
+      "rank": 16,
       "type": "discourse",
       "slug": "sn35.245",
       "title": "Kiṁsukopama sutta - The Kiṁsuka Tree",
       "description": "The Buddha uses a simile of a kiṁsuka tree to explain the different perspectives of the bhikkhus on the purification of vision. He then shares a simile of a lord of the city to share the importance of",
+      "contentSnippet": "Bhikkhu, this <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">simile</mark> has been given by me to convey a meaning. And this is the meaning here:",
       "score": 64,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 15,
+      "rank": 17,
       "type": "discourse",
       "slug": "mn99",
       "title": "Subha sutta - With Subha",
@@ -180,7 +205,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 16,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn46.53",
       "title": "Aggi sutta - Fire",
@@ -192,7 +217,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 17,
+      "rank": 19,
       "type": "discourse",
       "slug": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
@@ -204,35 +229,12 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 18,
+      "rank": 20,
       "type": "discourse",
       "slug": "sn35.241",
       "title": "Paṭhama dārukkhandhopama sutta - Simile of the Wooden Log (First)",
       "description": "The Buddha uses the simile of a log of wood carried by a river to explain the eight obstacles to reaching Nibbāna.",
       "score": 29,
-      "matchType": "content-fuzzy",
-      "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "mn21",
-      "title": "Kakacūpama sutta - Simile of the Saw",
-      "description": "In this discourse, the Buddha advises cultivating the qualities of patience, loving-kindness and compassion. For true character is revealed only when tested by disagreeable words and deeds. Using vivi",
-      "contentSnippet": "Bhikkhus, if you keep this advise on the <mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">simile</mark> of the saw constantly in mind, do you see any course of speech, trivial or gross, tha",
-      "score": 28,
-      "matchType": "content-fuzzy",
-      "priority": 1.5,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "sn3.25",
-      "title": "Pabbatūpama sutta - Simile Of The Mountain",
-      "description": "The Buddha shares a simile of a mountain to illustrate the inevitability of old age and death, and the importance of living by the Dhamma.",
-      "score": 28,
       "matchType": "content-fuzzy",
       "priority": 1,
       "nonStopwordMatches": 1
