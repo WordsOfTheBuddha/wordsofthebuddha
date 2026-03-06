@@ -1402,6 +1402,101 @@ export function countWholeWordOccurrences(text: string, query: string): number {
 }
 
 /**
+ * Build a Pali-aware regex stem from a normalized, escaped query.
+ * Allows the final vowel to vary (a→o, e, i, u) to handle Pali declension:
+ *   animitta → animitto (nom. masc.), animitte (loc.), etc.
+ */
+function paliStemPattern(escaped: string): string {
+	if (/[aeiou]$/.test(escaped)) {
+		return escaped.slice(0, -1) + "[aeiou]";
+	}
+	return escaped;
+}
+
+/**
+ * Pali-aware whole-word check that allows:
+ * 1. Final stem vowel variation (a→o, e, i, u)
+ * 2. Inflectional suffixes (0-3 chars after stem)
+ * Word boundary on the left rejects compounds (e.g. "pubbanimitta" won't match "animitta").
+ */
+export function textContainsPaliWholeWord(
+	text: string,
+	query: string,
+): boolean {
+	const normalizedText = text
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+	const normalizedQuery = query
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+
+	const escaped = normalizedQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const stem = paliStemPattern(escaped);
+	const regex = new RegExp(`(^|[^\\w-])${stem}\\w{0,3}\\b`, "i");
+	return regex.test(normalizedText);
+}
+
+/**
+ * Count Pali whole-word occurrences with stem vowel flexibility and inflectional suffix tolerance.
+ */
+export function countPaliWholeWordOccurrences(
+	text: string,
+	query: string,
+): number {
+	const normalizedText = text
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+	const normalizedQuery = query
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+
+	const escaped = normalizedQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const stem = paliStemPattern(escaped);
+	const regex = new RegExp(`(^|[^\\w-])${stem}\\w{0,3}\\b`, "gi");
+	const matches = normalizedText.match(regex);
+	return matches ? matches.length : 0;
+}
+
+/**
+ * Classify how a query matches in Pali content: 'prefix' (start of word) vs 'infix' (inside compound).
+ * Returns null if no match at all. Used for scoring differentiation.
+ */
+export function getPaliMatchType(
+	text: string,
+	query: string,
+): "whole-word" | "prefix" | "infix" | null {
+	const normalizedText = text
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+	const normalizedQuery = query
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+
+	if (!normalizedText.includes(normalizedQuery)) return null;
+
+	const escaped = normalizedQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const stem = paliStemPattern(escaped);
+
+	// Whole-word: word boundary on left, short inflection on right
+	if (new RegExp(`(^|[^\\w-])${stem}\\w{0,3}\\b`, "i").test(normalizedText)) {
+		return "whole-word";
+	}
+
+	// Prefix: query at start of a word (but word continues beyond inflection range)
+	if (new RegExp(`(^|[^\\w-])${escaped}`, "i").test(normalizedText)) {
+		return "prefix";
+	}
+
+	return "infix";
+}
+
+/**
  * Normalize string for diacritic-insensitive comparison
  */
 export function normalizeForComparison(s: string): string {
@@ -1497,7 +1592,7 @@ export const SCORE = {
 	DISCOURSE_INFIX_WITH_CONTENT: 70,
 	DISCOURSE_INFIX_NO_CONTENT: 40,
 	DISCOURSE_CONTENT_WHOLE_WORD_BASE: 75, // Whole word match in content (lower than description)
-	DISCOURSE_CONTENT_WHOLE_WORD_MIN: 55,
+	DISCOURSE_CONTENT_WHOLE_WORD_MIN: 64,
 	DISCOURSE_CONTENT_EXACT_BASE: 60, // Substring match in content
 	DISCOURSE_CONTENT_EXACT_MIN: 40,
 	DISCOURSE_CONTENT_FUZZY_BASE: 30,

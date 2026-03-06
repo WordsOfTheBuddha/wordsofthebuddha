@@ -132,6 +132,75 @@ function processTermForHighlight(highlightTerm: HighlightTerm): string {
 // Minimum term length for infix (partial word) highlighting
 const MIN_LENGTH_FOR_INFIX_HIGHLIGHT = 4;
 
+const MARK_STYLE = 'style="padding-inline:0.05rem"';
+
+// Unicode-aware letter boundary (Pali diacritics like ṭ, ñ, ṇ, ṁ are \p{L} but NOT \w)
+const UL = "\\p{L}\\p{N}"; // Unicode letters + numbers
+const NOT_UL = `[^${UL}]`; // non-letter, non-number
+
+/**
+ * Replace the best occurrence of a term in text with a <mark> tag.
+ * Prefers whole-word matches (with Pali inflection tolerance) over infix matches.
+ * Uses \p{L} boundaries so Pali diacritic consonants (ṭ, ñ, ṇ…) are treated as letters.
+ */
+function highlightBestMatch(
+	text: string,
+	infixPattern: string,
+	markClass: string,
+	operation: HighlightTerm["operation"],
+	paliMode = false,
+): { result: string; matched: boolean } {
+	const markOpen = `<mark class="${markClass} rounded" ${MARK_STYLE}>`;
+
+	// For exact operations, use Unicode-aware word boundaries
+	if (operation === "exact") {
+		const regex = new RegExp(
+			`(?<=^|${NOT_UL})${infixPattern}(?=${NOT_UL}|$)`,
+			"u",
+		);
+		if (regex.test(text)) {
+			return {
+				result: text.replace(regex, (m) => `${markOpen}${m}</mark>`),
+				matched: true,
+			};
+		}
+		return { result: text, matched: false };
+	}
+
+	// For infix-capable patterns, prefer whole-word match using Unicode letter boundaries.
+	// In paliMode, also allow the last stem vowel to vary (a→o, etc.)
+	let stemPattern = infixPattern;
+	if (paliMode) {
+		stemPattern = infixPattern.replace(
+			/(\[[^\]]*\])$/,
+			ANY_VOWEL_PATTERN,
+		);
+	}
+	const wholeWordRegex = new RegExp(
+		`(^|${NOT_UL})(?=${stemPattern})(${stemPattern}[${UL}]{0,3})(?=${NOT_UL}|$)`,
+		"u",
+	);
+	if (wholeWordRegex.test(text)) {
+		return {
+			result: text.replace(
+				wholeWordRegex,
+				(_, pre, matched) => `${pre}${markOpen}${matched}</mark>`,
+			),
+			matched: true,
+		};
+	}
+
+	// Fall back to infix match (original pattern, no stem flexibility)
+	const regex = new RegExp(infixPattern, "u");
+	if (regex.test(text)) {
+		return {
+			result: text.replace(regex, (m) => `${markOpen}${m}</mark>`),
+			matched: true,
+		};
+	}
+	return { result: text, matched: false };
+}
+
 // Create diacritic-insensitive pattern for a vowel (both lower and upper case)
 function vowelPattern(vowel: string): string {
 	const patterns: Record<string, string> = {
@@ -144,9 +213,24 @@ function vowelPattern(vowel: string): string {
 	return patterns[vowel.toLowerCase()] || vowel;
 }
 
-// Create case-insensitive pattern for a consonant
+// Matches any vowel with diacritics (for Pali stem-final vowel flexibility: a→o, etc.)
+const ANY_VOWEL_PATTERN =
+	"[aAáÁàÀâÂäÄãÃåÅāĀăĂąĄeEéÉèÈêÊëËēĒĕĔėĖiIíÍìÌîÎïÏīĪĭĬįĮoOóÓòÒôÔöÖõÕōŌŏŎőŐuUúÚùÙûÛüÜūŪŭŬůŮ]";
+
+// Create case-insensitive pattern for a consonant, including Pali/Indic diacritic variants
 function consonantPattern(char: string): string {
+	const paliVariants: Record<string, string> = {
+		t: "[tTṭṬ]",
+		d: "[dDḍḌ]",
+		n: "[nNñÑṇṆṅṄ]",
+		m: "[mMṁṀṃṂ]",
+		l: "[lLḷḶ]",
+		s: "[sSśŚṣṢ]",
+		r: "[rRṛṚ]",
+		h: "[hHḥḤ]",
+	};
 	const lower = char.toLowerCase();
+	if (paliVariants[lower]) return paliVariants[lower];
 	const upper = char.toUpperCase();
 	if (lower === upper) return escapeRegExp(char);
 	return `[${lower}${upper}]`;
@@ -156,6 +240,7 @@ function createHighlightPattern(
 	term: string,
 	operation: HighlightTerm["operation"],
 	context: string = "", // For startsWith/endsWith checks
+	paliMode = false,
 ): string {
 	const normalized = normalizeText(term);
 
@@ -169,6 +254,15 @@ function createHighlightPattern(
 		} else {
 			diacriticPattern += escapeRegExp(char);
 		}
+	}
+
+	// In paliMode, allow the final stem vowel to match any vowel (a→o, e, i, u)
+	// so "animitta" matches "animitto", "animitte", etc.
+	if (paliMode) {
+		diacriticPattern = diacriticPattern.replace(
+			/(\[[^\]]*\])$/,
+			ANY_VOWEL_PATTERN,
+		);
 	}
 
 	switch (operation) {
@@ -197,6 +291,7 @@ function findBestMatchingParagraph(
 	text: string,
 	indices: [number, number][],
 	highlightTerms: HighlightTerm[],
+	paliMode = false,
 ): string | null {
 	const termsToHighlight = highlightTerms.filter(
 		(ht) =>
@@ -281,6 +376,7 @@ function findBestMatchingParagraph(
 					term,
 					highlightTerm.operation,
 					normalizedParagraph,
+					paliMode,
 				);
 				if (!pattern) return; // Skip negated terms
 
@@ -548,7 +644,7 @@ function findBestMatchingParagraph(
 				// Replace at the specific position
 				highlighted =
 					highlighted.substring(0, pos.startPos) +
-					`<mark class="${markClass} px-1 rounded">${actualText}</mark>` +
+					`<mark class="${markClass} rounded" style="padding-inline:0.05rem">${actualText}</mark>` +
 					highlighted.substring(pos.endPos);
 
 				console.log(
@@ -572,18 +668,19 @@ function findBestMatchingParagraph(
 				const pattern = createHighlightPattern(cleanTerm, ht.operation);
 				if (!pattern) return;
 
-				const regex = new RegExp(pattern, "u");
-				const match = highlighted.match(regex);
-				if (match) {
-					const matchMarkClass =
-						ht.operation === "exact"
-							? "bg-yellow-200 dark:bg-yellow-800"
-							: "bg-yellow-100 dark:bg-yellow-900";
-					highlighted = highlighted.replace(
-						regex,
-						(m) =>
-							`<mark class="${matchMarkClass} px-1 rounded">${m}</mark>`,
-					);
+				const matchMarkClass =
+					ht.operation === "exact"
+						? "bg-yellow-200 dark:bg-yellow-800"
+						: "bg-yellow-100 dark:bg-yellow-900";
+				const { result, matched } = highlightBestMatch(
+					highlighted,
+					pattern,
+					matchMarkClass,
+					ht.operation,
+					paliMode,
+				);
+				if (matched) {
+					highlighted = result;
 					highlightedTerms.add(termLower);
 				}
 			});
@@ -615,16 +712,16 @@ function findBestMatchingParagraph(
 				return;
 			}
 
-			const regex = new RegExp(pattern, "u"); // Single match only
-			const match = highlighted.match(regex);
-
-			if (match) {
+			const { result, matched } = highlightBestMatch(
+				highlighted,
+				pattern,
+				markClass,
+				ht.operation,
+				paliMode,
+			);
+			if (matched) {
+				highlighted = result;
 				highlightedTerms.add(termLower);
-				highlighted = highlighted.replace(
-					regex,
-					(m) =>
-						`<mark class="${markClass} px-1 rounded">${m}</mark>`,
-				);
 			}
 		});
 		return highlighted;
@@ -727,14 +824,17 @@ export async function performSearch(
 			// Fall back to Pali snippet only when English had no match
 			if (
 				!result.contentSnippet &&
-				contentPaliMatches?.length &&
 				item.contentPali &&
 				typeof item.contentPali === "string"
 			) {
+				const paliIndices = contentPaliMatches?.length
+					? contentPaliMatches.flatMap((match) => match.indices)
+					: [];
 				const paliSnippet = findBestMatchingParagraph(
 					item.contentPali,
-					contentPaliMatches.flatMap((match) => match.indices),
+					paliIndices,
 					highlightTerms,
+					true, // paliMode: flexible stem vowels, Unicode-aware boundaries
 				);
 				if (paliSnippet && paliSnippet.includes("<mark")) {
 					result.contentSnippet = paliSnippet;

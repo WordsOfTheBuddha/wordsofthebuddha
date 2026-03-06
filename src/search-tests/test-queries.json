@@ -324,6 +324,12 @@
 					"slug": "sn47.9",
 					"maxPosition": 15,
 					"reason": "SN 47.9 has animitta in Pali content"
+				},
+				{
+					"type": "hasBefore",
+					"slugA": "sn47.9",
+					"slugB": "sn45.49",
+					"reason": "SN 47.9 (whole-word animittaṁ) should rank above SN 45.49 (infix in pubbanimittaṁ)"
 				}
 			]
 		},

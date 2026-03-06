@@ -101,6 +101,12 @@ function stripHtml(text) {
 	return (text || "").replace(/<[^>]*>/g, "");
 }
 
+// Format a slug into a discourse ID for display (e.g. "mn29" → "MN 29", "sn47.9" → "SN 47.9")
+function formatSlug(slug) {
+	if (!slug || typeof slug !== "string") return slug || "";
+	return slug.replace(/^([a-zA-Z]+)(\d)/, (_, chars, digit) => `${chars.toUpperCase()} ${digit}`);
+}
+
 // ==================== ASCII CARD RENDERING ====================
 function renderCard(result, rank) {
 	const width = 72;
@@ -443,8 +449,9 @@ function renderDiff(current, previous, changes) {
 			`  ${c.green}+ ${changes.changes.newResults.length} new result(s) in top 20${c.reset}`,
 		);
 		for (const n of changes.changes.newResults.slice(0, 3)) {
+			const id = formatSlug(n.slug || n.id);
 			console.log(
-				`    ${c.green}+${c.reset} ${n.slug || n.id} - ${n.title?.substring(0, 40)} at #${n.rank}`,
+				`    ${c.green}+${c.reset} ${c.bold}${id}${c.reset} ${n.title?.substring(0, 40)} at #${n.rank}`,
 			);
 		}
 	}
@@ -453,8 +460,9 @@ function renderDiff(current, previous, changes) {
 			`  ${c.red}- ${changes.changes.missingResults.length} result(s) dropped from top 20${c.reset}`,
 		);
 		for (const m of changes.changes.missingResults.slice(0, 3)) {
+			const id = formatSlug(m.slug || m.id);
 			console.log(
-				`    ${c.red}-${c.reset} ${m.slug || m.id} - ${m.title?.substring(0, 40)} (was #${m.prevRank})`,
+				`    ${c.red}-${c.reset} ${c.bold}${id}${c.reset} ${m.title?.substring(0, 40)} (was #${m.prevRank})`,
 			);
 		}
 	}
@@ -470,8 +478,9 @@ function renderDiff(current, previous, changes) {
 				`  ${c.green}↑ ${improved.length} result(s) moved up${c.reset}`,
 			);
 			for (const ch of improved.slice(0, 3)) {
+				const id = formatSlug(ch.slug || ch.id);
 				console.log(
-					`    ${c.green}↑${c.reset} ${ch.slug || ch.id} #${ch.prevRank} → #${ch.currRank}`,
+					`    ${c.green}↑${c.reset} ${c.bold}${id}${c.reset} #${ch.prevRank} → #${ch.currRank}`,
 				);
 			}
 		}
@@ -480,8 +489,9 @@ function renderDiff(current, previous, changes) {
 				`  ${c.red}↓ ${declined.length} result(s) moved down${c.reset}`,
 			);
 			for (const ch of declined.slice(0, 3)) {
+				const id = formatSlug(ch.slug || ch.id);
 				console.log(
-					`    ${c.red}↓${c.reset} ${ch.slug || ch.id} #${ch.prevRank} → #${ch.currRank}`,
+					`    ${c.red}↓${c.reset} ${c.bold}${id}${c.reset} #${ch.prevRank} → #${ch.currRank}`,
 				);
 			}
 		}
@@ -694,8 +704,9 @@ async function runTests() {
 							ch.delta > 0
 								? `${c.green}↑${c.reset}`
 								: `${c.red}↓${c.reset}`;
+						const id = formatSlug(ch.slug);
 						console.log(
-							`    ${icon} ${ch.title?.substring(0, 30)}: #${ch.prevRank} → #${ch.currRank}`,
+							`    ${icon} ${c.bold}${id}${c.reset} ${ch.title?.substring(0, 30)}: #${ch.prevRank} → #${ch.currRank}`,
 						);
 					}
 				}

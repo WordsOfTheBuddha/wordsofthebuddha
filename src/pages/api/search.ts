@@ -24,7 +24,10 @@ import {
 	applyMultiTermBoost,
 	textContainsQuery,
 	textContainsWholeWord,
+	textContainsPaliWholeWord,
 	countWholeWordOccurrences,
+	countPaliWholeWordOccurrences,
+	getPaliMatchType,
 	slugMatchesQuery,
 	isStopword,
 	calculatePhraseProximityBoost,
@@ -676,25 +679,30 @@ export const GET: APIRoute = async ({ url }) => {
 					(doc) => doc.slug === itemSlug,
 				);
 				const fullContent = indexedDoc?.content || "";
+				const fullContentPali = indexedDoc?.contentPali || "";
 
-				// Check content for whole word match - use snippet if available, but also check full content
-				// This is important for supplementary results that don't have a snippet
-				const contentWholeWord = item.contentSnippet
-					? textContainsWholeWord(item.contentSnippet, queryLower)
-					: textContainsWholeWord(fullContent, queryLower);
+				// Check content for whole word match using the raw indexed text
+				// (not the snippet, which has <mark> HTML tags that create false word boundaries)
+				const contentWholeWord = textContainsWholeWord(
+					fullContent || item.contentSnippet?.replace(/<[^>]*>/g, "") || "",
+					queryLower,
+				);
+				const paliWholeWord = fullContentPali
+					? textContainsPaliWholeWord(fullContentPali, queryLower)
+					: false;
 				const hasWholeWordMatch =
-					descriptionWholeWord || contentWholeWord;
+					descriptionWholeWord || contentWholeWord || paliWholeWord;
 
 				// Count non-stopword term matches for multi-term queries
 				// Use FULL indexed content (from searchIndex), stripped of annotation text
-				// This ensures we count matches in the actual discourse text, not just tooltips
+				// Also include Pali content so Pali terms get counted for multi-term boost
 				let nonStopwordMatches = 0;
 				let visibleAreaMatches = 0; // Matches in title + description + snippet (what user sees)
 				let termMatchScore = 0; // Quality-weighted score (exact > prefix > infix)
 				let visibleTermMatchScore = 0;
 
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
-					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent}`;
+					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent} ${fullContentPali}`;
 					const visibleText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
 
 					// Use quality-aware term matching (exact > prefix > infix)
@@ -760,21 +768,29 @@ export const GET: APIRoute = async ({ url }) => {
 				) {
 					score = SCORE.DISCOURSE_TERM_TITLE_MATCH;
 					matchType = "term-title-match";
-				} else if (titleMatch === "infix" && canInfix) {
-					score = hasContentMatch
-						? SCORE.DISCOURSE_INFIX_WITH_CONTENT
-						: SCORE.DISCOURSE_INFIX_NO_CONTENT;
-					matchType = "infix";
+			} else if (titleMatch === "infix" && canInfix) {
+				score = hasContentMatch
+					? SCORE.DISCOURSE_INFIX_WITH_CONTENT
+					: SCORE.DISCOURSE_INFIX_NO_CONTENT;
+				matchType = "infix";
+				// Pali compound title infixes (e.g. "Pañcapubbanimitta" for query "animitta")
+				// without an English whole-word content match are low-quality matches —
+				// cap below content-whole-word-min so genuine whole-word matches rank higher
+				if (hasContentMatch && !contentWholeWord && !descriptionWholeWord) {
+					score = Math.min(score, SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN - 3);
+				}
 				} else if (descriptionContains && canInfix) {
 					// Description substring match
 					score = SCORE.DISCOURSE_DESCRIPTION_INFIX;
 					matchType = "description-infix";
-				} else if (contentWholeWord) {
-					// Content whole word match - count occurrences in FULL content for relevance boost
-					const occurrences = countWholeWordOccurrences(
-						fullContent,
-						queryLower,
-					);
+				} else if (contentWholeWord || paliWholeWord) {
+					// Content whole word match - count occurrences for relevance boost
+					// Use Pali-aware counting for contentPali (handles inflectional endings)
+					const englishOccurrences = countWholeWordOccurrences(fullContent, queryLower);
+					const paliOccurrences = fullContentPali
+						? countPaliWholeWordOccurrences(fullContentPali, queryLower)
+						: 0;
+					const occurrences = englishOccurrences + paliOccurrences;
 					// Tiered occurrence boost - high occurrence count indicates significant topic
 					// 1 occurrence: 0, 2-3: +3, 4-6: +8, 7-10: +15, 11+: +20
 					// NOTE: For multi-term queries, this boost will be reduced by scattered penalty
@@ -804,13 +820,24 @@ export const GET: APIRoute = async ({ url }) => {
 					// Base score depends on phrase proximity
 					score = SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE;
 					matchType = "multi-term-content";
-				} else if (contentContains) {
-					// Content substring match
-					score = Math.max(
-						SCORE.DISCOURSE_CONTENT_EXACT_MIN,
-						SCORE.DISCOURSE_CONTENT_EXACT_BASE - index * 0.5,
-					);
-					matchType = "content-substring";
+			} else if (contentContains) {
+				// Content substring match — differentiate Pali prefix vs infix
+				score = Math.max(
+					SCORE.DISCOURSE_CONTENT_EXACT_MIN,
+					SCORE.DISCOURSE_CONTENT_EXACT_BASE - index * 0.5,
+				);
+				matchType = "content-substring";
+
+				if (fullContentPali) {
+					const paliQuality = getPaliMatchType(fullContentPali, queryLower);
+					if (paliQuality === "prefix") {
+						score += 3;
+						matchType = "content-prefix";
+					} else if (paliQuality === "infix") {
+						score -= 3;
+						matchType = "content-infix";
+					}
+				}
 				} else {
 					if (maxEditDistance === 0) return;
 					score = Math.max(
@@ -824,10 +851,11 @@ export const GET: APIRoute = async ({ url }) => {
 				if (hasMultipleTerms) {
 					// Calculate phrase proximity boost - terms appearing close together in order
 					// helps queries like "exhaust craving" rank results with those words adjacent
+					// Include Pali content so Pali phrases like "akuppā cetovimutti" get proximity boost
 					const phraseBoost = calculatePhraseProximityBoost(
 						item.title,
 						item.description,
-						fullContent,
+						`${fullContent} ${fullContentPali}`,
 						nonStopwordTerms,
 					);
 
@@ -862,6 +890,17 @@ export const GET: APIRoute = async ({ url }) => {
 					);
 					// Add up to 3 points for high title coverage
 					score += titleCoverage * 3;
+				}
+
+				// Cross-field bonus: query found in multiple fields signals stronger relevance
+				{
+					let fieldHits = 0;
+					if (titleMatch !== "none") fieldHits++;
+					if (descriptionWholeWord || descriptionContains) fieldHits++;
+					if (contentWholeWord || paliWholeWord) fieldHits++;
+					if (fieldHits >= 2) {
+						score += 2;
+					}
 				}
 
 				// Apply priority as additive boost (not multiplicative)

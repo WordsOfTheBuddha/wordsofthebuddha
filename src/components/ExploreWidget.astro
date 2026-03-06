@@ -714,6 +714,9 @@ const isSearchOnly = mode === "search-only";
 		parseDiscourseSlug,
 		applyMultiTermBoost,
 		calculatePhraseProximityBoost,
+		textContainsPaliWholeWord,
+		countPaliWholeWordOccurrences,
+		getPaliMatchType,
 	} from "../utils/searchRanking";
 
 	async function performSearch(query: string) {
@@ -1114,10 +1117,11 @@ const isSearchOnly = mode === "search-only";
 
 			// Search discourses using existing Fuse.js search
 			// For filter-only queries, we need to get all matching discourses from the index
-			const { performSearch: searchDiscourses, getFilteredDiscourses, getContentLookup } = await import("../service/search/search");
-			
-			// Create content lookup for full content matching
+			const { performSearch: searchDiscourses, getFilteredDiscourses, getContentLookup, getPaliContentLookup } = await import("../service/search/search");
+
+			// Create content lookup for full content matching (English + Pali)
 			const getContentBySlug = getContentLookup();
+			const getPaliContentBySlug = getPaliContentLookup();
 			
 			let discourseResults: any[];
 			if (isFilterOnly) {
@@ -1177,24 +1181,30 @@ const isSearchOnly = mode === "search-only";
 				
 				// Get full content (used for multi-term matching and occurrence counting)
 				const fullContent = getContentBySlug(itemSlug) || "";
+				const fullContentPali = getPaliContentBySlug(itemSlug) || "";
 				
 				// Check for whole word matches (higher priority than substring)
-				// Use snippet if available, but also check full content for supplementary results
+				// Use snippet if available, but also check full content + Pali for supplementary results
 				const descriptionWholeWord = textContainsWholeWord(item.description || "", queryLower);
-				const contentWholeWord = item.contentSnippet 
-					? textContainsWholeWord(item.contentSnippet, queryLower)
-					: textContainsWholeWord(fullContent, queryLower);
-				const hasWholeWordMatch = descriptionWholeWord || contentWholeWord;
+				const contentWholeWord = textContainsWholeWord(
+					fullContent || item.contentSnippet?.replace(/<[^>]*>/g, "") || "",
+					queryLower,
+				);
+				const paliWholeWord = fullContentPali
+					? textContainsPaliWholeWord(fullContentPali, queryLower)
+					: false;
+				const hasWholeWordMatch = descriptionWholeWord || contentWholeWord || paliWholeWord;
 				
 				// Count non-stopword term matches for multi-term queries
 				// Use quality-aware matching (exact > prefix > infix)
+				// Include Pali content so Pali terms get counted for multi-term boost
 				let nonStopwordMatches = 0;
 				let visibleAreaMatches = 0;
 				let termMatchScore = 0; // Quality-weighted score
 				let visibleTermMatchScore = 0;
 				
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
-					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent}`;
+					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent} ${fullContentPali}`;
 					const visibleText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
 					
 					// Use quality-aware term matching (exact > prefix > infix)
@@ -1246,13 +1256,23 @@ const isSearchOnly = mode === "search-only";
 					// Title contains the query as infix
 					score = hasContentMatch ? SCORE.DISCOURSE_INFIX_WITH_CONTENT : SCORE.DISCOURSE_INFIX_NO_CONTENT;
 					matchType = "infix";
+					// Pali compound title infixes without English whole-word content match
+					// are low-quality — cap below content-whole-word-min
+					if (hasContentMatch && !contentWholeWord && !descriptionWholeWord) {
+						score = Math.min(score, SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN - 3);
+					}
 				} else if (descriptionContains) {
 					// Description contains query as substring - high priority
 					score = SCORE.DISCOURSE_DESCRIPTION_INFIX;
 					matchType = "description-infix";
-				} else if (contentWholeWord) {
-					// Content contains query as a whole word - count occurrences in FULL content for relevance boost
-					const occurrences = countWholeWordOccurrences(fullContent, queryLower);
+				} else if (contentWholeWord || paliWholeWord) {
+					// Content whole word match - count occurrences for relevance boost
+					// Use Pali-aware counting for contentPali (handles inflectional endings)
+					const englishOccurrences = countWholeWordOccurrences(fullContent, queryLower);
+					const paliOccurrences = fullContentPali
+						? countPaliWholeWordOccurrences(fullContentPali, queryLower)
+						: 0;
+					const occurrences = englishOccurrences + paliOccurrences;
 					// Tiered occurrence boost - high occurrence count indicates significant topic
 					// 1 occurrence: 0, 2-3: +3, 4-6: +8, 7-10: +15, 11+: +20
 					// NOTE: For multi-term queries, this boost will be reduced by scattered penalty
@@ -1280,6 +1300,17 @@ const isSearchOnly = mode === "search-only";
 					// Content contains query as substring - medium priority
 					score = Math.max(SCORE.DISCOURSE_CONTENT_EXACT_MIN, SCORE.DISCOURSE_CONTENT_EXACT_BASE - (index * 0.5));
 					matchType = "content-substring";
+
+					if (fullContentPali) {
+						const paliQuality = getPaliMatchType(fullContentPali, queryLower);
+						if (paliQuality === "prefix") {
+							score += 3;
+							matchType = "content-prefix";
+						} else if (paliQuality === "infix") {
+							score -= 3;
+							matchType = "content-infix";
+						}
+					}
 				} else {
 					// Fuzzy content match only - low priority, may not actually contain the term
 					// Only allow if query is long enough for fuzzy matching
@@ -1291,11 +1322,11 @@ const isSearchOnly = mode === "search-only";
 				// Apply multi-term boost using shared function
 				if (hasMultipleTerms) {
 					// Calculate phrase proximity boost - terms appearing close together in order
-					// helps queries like "exhaust craving" rank results with those words adjacent
+					// Include Pali content so Pali phrases like "akuppā cetovimutti" get proximity boost
 					const phraseBoost = calculatePhraseProximityBoost(
 						item.title,
 						item.description,
-						fullContent,
+						`${fullContent} ${fullContentPali}`,
 						nonStopwordTerms,
 					);
 
@@ -1324,6 +1355,17 @@ const isSearchOnly = mode === "search-only";
 					const titleCoverage = getTitleCoverageRatio(item.title || "", queryLower);
 					// Add up to 3 points for high title coverage
 					score += titleCoverage * 3;
+				}
+
+				// Cross-field bonus: query found in multiple fields signals stronger relevance
+				{
+					let fieldHits = 0;
+					if (titleMatch !== "none") fieldHits++;
+					if (descriptionWholeWord || descriptionContains) fieldHits++;
+					if (contentWholeWord || paliWholeWord) fieldHits++;
+					if (fieldHits >= 2) {
+						score += 2;
+					}
 				}
 
 				// Apply priority as additive boost (not multiplicative)

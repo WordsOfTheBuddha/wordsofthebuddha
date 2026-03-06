@@ -1,4 +1,4 @@
-export const SEARCH_FIELDS = ['slug', 'title', 'description', 'content'] as const;
+export const SEARCH_FIELDS = ['slug', 'title', 'description', 'content', 'contentPali'] as const;
 type SearchField = typeof SEARCH_FIELDS[number];
 
 interface FuseQueryTerm {
