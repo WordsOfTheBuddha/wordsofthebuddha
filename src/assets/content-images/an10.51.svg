@@ -319,7 +319,7 @@
         <text x="620" y="661" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Physically Relaxed</text>
         <text x="620" y="679" text-anchor="middle" fill="#608880"
-            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">passaddha­kāya</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">asāraddhakāya</text>
     </g>
 
     <!-- 9. Laziness / Energy aroused -->
@@ -348,7 +348,7 @@
         <text x="220" y="768" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
         <text x="325" y="765" text-anchor="middle" fill="#9088a0"
-            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Distracted Mind</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Distracted</text>
         <text x="325" y="783" text-anchor="middle" fill="#706878"
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">asamāhita</text>
     </g>
@@ -357,7 +357,7 @@
         <text x="490" y="768" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
         <text x="620" y="765" text-anchor="middle" fill="#88b0a8"
-            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Collected Mind</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Collected</text>
         <text x="620" y="783" text-anchor="middle" fill="#608880"
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">samāhita</text>
     </g>

@@ -1,6 +1,6 @@
 ---
 title: Mettābhāvanā sutta - Development Of Loving-kindness
-description: The Buddha uses similes to illustrate the benefits of developing loving-kindess. The liberation of mind by loving-kindness surpasses all other forms of merit-making associated with acquisitions by far.
+description: The Buddha uses similes to illustrate the benefits of developing loving-kindness. The liberation of mind by loving-kindness surpasses all other forms of merit-making associated with acquisitions by far.
 qualities: loving-kindness, greed, liberation, mindfulness, compassion, merit
 theme: inspiration, wisdom
 fetter: personal existence, ill will, conceit, adherence to rules and observances, doubt, ignorance
