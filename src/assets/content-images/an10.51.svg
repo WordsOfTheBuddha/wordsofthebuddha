@@ -135,10 +135,10 @@
 
     <!-- ============ COLUMN HEADERS ============ -->
     <!-- Left: Clouded -->
-    <text x="310" y="240" text-anchor="middle" fill="#8090a8"
+    <text x="330" y="240" text-anchor="middle" fill="#8090a8"
         font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
         letter-spacing="1.5" opacity="0.8">CLOUDED</text>
-    <text x="310" y="258" text-anchor="middle" fill="#607080"
+    <text x="330" y="258" text-anchor="middle" fill="#607080"
         font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">saṅkiliṭṭha</text>
 
     <!-- Right: Clear -->
@@ -160,8 +160,8 @@
 
     <!-- 1. Intense craving / Without intense craving -->
     <g>
-        <circle cx="220" cy="301" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="300" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="301" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="300" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
         <text x="325" y="297" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Intense Craving</text>
@@ -169,8 +169,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">abhijjhālu</text>
     </g>
     <g>
-        <circle cx="490" cy="301" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="300" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="301" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="300" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
         <text x="620" y="297" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Without Craving</text>
@@ -180,8 +180,8 @@
 
     <!-- 2. Malicious mind / Kind mind -->
     <g>
-        <circle cx="220" cy="353" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="352" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="353" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="352" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">2</text>
         <text x="325" y="349" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Malicious Mind</text>
@@ -189,8 +189,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">byāpannacitta</text>
     </g>
     <g>
-        <circle cx="490" cy="353" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="352" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="353" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="352" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">2</text>
         <text x="620" y="349" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Kind Mind</text>
@@ -200,8 +200,8 @@
 
     <!-- 3. Dullness & Drowsiness / Free from dullness -->
     <g>
-        <circle cx="220" cy="405" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="403" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="405" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="403" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
         <text x="325" y="397" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Dullness &amp;</text>
@@ -211,8 +211,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">thīnamiddha</text>
     </g>
     <g>
-        <circle cx="490" cy="405" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="403" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="405" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="403" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
         <text x="620" y="397" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Free from</text>
@@ -224,8 +224,8 @@
 
     <!-- 4. Restlessness / Without restlessness -->
     <g>
-        <circle cx="220" cy="457" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="455" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="457" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="455" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
         <text x="325" y="453" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Restlessness</text>
@@ -233,8 +233,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">uddhata</text>
     </g>
     <g>
-        <circle cx="490" cy="457" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="455" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="457" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="455" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
         <text x="620" y="453" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Without Restlessness</text>
@@ -244,8 +244,8 @@
 
     <!-- 5. Doubt / Crossed over doubt -->
     <g>
-        <circle cx="220" cy="509" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="507" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="509" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="507" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
         <text x="325" y="505" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Doubt</text>
@@ -253,8 +253,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vicikiccha</text>
     </g>
     <g>
-        <circle cx="490" cy="509" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="507" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="509" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="507" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
         <text x="620" y="505" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Crossed over Doubt</text>
@@ -264,8 +264,8 @@
 
     <!-- 6. Irritability / Not irritable -->
     <g>
-        <circle cx="220" cy="561" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="561" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="561" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="561" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
         <text x="325" y="557" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Irritability</text>
@@ -273,8 +273,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">kodhana</text>
     </g>
     <g>
-        <circle cx="490" cy="561" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="561" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="561" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="561" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
         <text x="620" y="557" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Not Irritable</text>
@@ -284,8 +284,8 @@
 
     <!-- 7. Defiled mind / Undefiled mind -->
     <g>
-        <circle cx="220" cy="613" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="611" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="613" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="611" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
         <text x="325" y="609" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Defiled Mind</text>
@@ -293,8 +293,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">saṅkiliṭṭhacitta</text>
     </g>
     <g>
-        <circle cx="490" cy="613" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="611" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="613" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="611" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
         <text x="620" y="609" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Undefiled Mind</text>
@@ -304,8 +304,8 @@
 
     <!-- 8. Agitated body / Physically relaxed -->
     <g>
-        <circle cx="220" cy="665" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="665" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="665" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="665" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">8</text>
         <text x="325" y="661" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Agitated Body</text>
@@ -313,8 +313,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">sāraddha­kāya</text>
     </g>
     <g>
-        <circle cx="490" cy="665" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="665" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="665" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="665" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">8</text>
         <text x="620" y="661" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Physically Relaxed</text>
@@ -324,8 +324,8 @@
 
     <!-- 9. Laziness / Energy aroused -->
     <g>
-        <circle cx="220" cy="717" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="715" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="717" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="715" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">9</text>
         <text x="325" y="713" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Laziness</text>
@@ -333,8 +333,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">kusīta</text>
     </g>
     <g>
-        <circle cx="490" cy="717" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="715" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="717" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="715" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">9</text>
         <text x="620" y="713" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Energy Aroused</text>
@@ -344,8 +344,8 @@
 
     <!-- 10. Distracted mind / Collected mind -->
     <g>
-        <circle cx="220" cy="769" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
-        <text x="220" y="768" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
+        <circle cx="240" cy="769" r="10" fill="none" stroke="#6a5050" stroke-width="0.9" opacity="0.6" />
+        <text x="240" y="768" text-anchor="middle" dominant-baseline="central" fill="#8a6060"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
         <text x="325" y="765" text-anchor="middle" fill="#9088a0"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Distracted</text>
@@ -353,8 +353,8 @@
             font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">asamāhita</text>
     </g>
     <g>
-        <circle cx="490" cy="769" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
-        <text x="490" y="768" text-anchor="middle" dominant-baseline="central" fill="#60a088"
+        <circle cx="520" cy="769" r="10" fill="none" stroke="#508070" stroke-width="0.9" opacity="0.6" />
+        <text x="520" y="768" text-anchor="middle" dominant-baseline="central" fill="#60a088"
             font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">10</text>
         <text x="620" y="765" text-anchor="middle" fill="#88b0a8"
             font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Collected</text>
