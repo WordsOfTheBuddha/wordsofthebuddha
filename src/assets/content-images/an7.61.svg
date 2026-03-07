@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 880" width="920" height="880">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#12091f" />
+            <stop offset="42%" stop-color="#0c1022" />
+            <stop offset="100%" stop-color="#101828" />
+        </linearGradient>
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.42" />
+        </filter>
+        <filter id="warmHaze" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="18" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <linearGradient id="restGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1e1c18" />
+            <stop offset="50%" stop-color="#28251a" />
+            <stop offset="100%" stop-color="#1e1c18" />
+        </linearGradient>
+    </defs>
+
+    <rect width="920" height="880" fill="url(#bg)" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="44" text-anchor="middle" fill="#d8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="2.3">AN 7.61 — PACALĀYAMĀNA · DOZING</text>
+    <line x1="250" y1="60" x2="670" y2="60" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+    <!-- ============ DROWSINESS ============ -->
+    <text x="460" y="98" text-anchor="middle" fill="#c4b2d6"
+        font-family="Georgia,'Times New Roman',serif" font-size="16" font-style="italic"
+        opacity="0.92">When drowsiness [middha] descends upon you…</text>
+
+    <!-- Drowsy mist -->
+    <g opacity="0.06">
+        <path d="M 40 135 Q 250 128, 460 135 Q 670 142, 880 135" stroke="#725b90" stroke-width="1" fill="none" />
+        <path d="M 80 150 Q 270 145, 460 150 Q 650 155, 880 150" stroke="#5c4a78" stroke-width="0.8" fill="none" />
+    </g>
+    <g opacity="0.04" filter="url(#warmHaze)">
+        <ellipse cx="340" cy="148" rx="120" ry="16" fill="#6b5a88" />
+        <ellipse cx="580" cy="150" rx="100" ry="14" fill="#5b4a78" />
+    </g>
+
+    <!--
+        SEVEN REMEDIES: 1 at top, 7 at bottom.
+        Arc lines at: 150, 215, 280, 345, 410, 475, 540, 605
+        That's 8 arcs forming 7 bands, each 65px tall.
+        Text centered in each band: English at band_center-6, Pali at band_center+14.
+        Arcs: very wide (x=0 to x=920), barely curved — almost parallel lines.
+    -->
+
+    <!-- ============ STRUCTURAL ARCS ============ -->
+    <g fill="none" stroke="#6a6880" stroke-linecap="round">
+        <path d="M 0 150 Q 460 144, 920 150" stroke-width="1.0" stroke-opacity="0.28" />
+        <path d="M 0 215 Q 460 210, 920 215" stroke-width="1.0" stroke-opacity="0.30" />
+        <path d="M 0 280 Q 460 275, 920 280" stroke-width="1.0" stroke-opacity="0.32" />
+        <path d="M 0 345 Q 460 340, 920 345" stroke-width="1.0" stroke-opacity="0.34" />
+        <path d="M 0 410 Q 460 405, 920 410" stroke-width="1.0" stroke-opacity="0.36" />
+        <path d="M 0 475 Q 460 470, 920 475" stroke-width="1.0" stroke-opacity="0.38" />
+        <path d="M 0 540 Q 460 535, 920 540" stroke-width="1.0" stroke-opacity="0.40" />
+        <path d="M 0 605 Q 460 600, 920 605" stroke-width="1.0" stroke-opacity="0.42" />
+    </g>
+
+    <!-- ============ SEVEN LABELS ============ -->
+
+    <!-- 1. Do Not Cultivate That Perception -->
+    <circle cx="286" cy="176" r="10" fill="none" stroke="#8e8aa6" stroke-width="0.9" opacity="0.60" />
+    <text x="286" y="175" text-anchor="middle" dominant-baseline="central" fill="#c4bfd8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
+    <text x="500" y="177" text-anchor="middle" fill="#d0cce0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Refrain from that Perception</text>
+    <text x="500" y="197" text-anchor="middle" fill="#a8a4c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        taṁ saññaṁ mā bahulamakāsi</text>
+
+    <!-- 2. Reflect on Dhamma -->
+    <circle cx="286" cy="241" r="10" fill="none" stroke="#908ca2" stroke-width="0.9" opacity="0.60" />
+    <text x="286" y="240" text-anchor="middle" dominant-baseline="central" fill="#c6c2d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">2</text>
+    <text x="500" y="242" text-anchor="middle" fill="#d0cce0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Reflect on the Dhamma</text>
+    <text x="500" y="262" text-anchor="middle" fill="#a8a4c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        anuvitakketi · anuvicāreti · anupekkhati</text>
+
+    <!-- 3. Recite the Dhamma -->
+    <circle cx="286" cy="306" r="10" fill="none" stroke="#928e9e" stroke-width="0.9" opacity="0.62" />
+    <text x="286" y="305" text-anchor="middle" dominant-baseline="central" fill="#c9c6d6"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
+    <text x="500" y="307" text-anchor="middle" fill="#d0d0dc"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Recite the Dhamma</text>
+    <text x="500" y="327" text-anchor="middle" fill="#a8a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        sajjhāyaṁ karoti</text>
+
+    <!-- 4. Pull Ears, Rub Limbs -->
+    <circle cx="286" cy="371" r="10" fill="none" stroke="#969292" stroke-width="0.9" opacity="0.64" />
+    <text x="286" y="370" text-anchor="middle" dominant-baseline="central" fill="#d0d0ce"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
+    <text x="500" y="372" text-anchor="middle" fill="#d2d4d0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Pull Ears · Rub Limbs</text>
+    <text x="500" y="392" text-anchor="middle" fill="#aaaca4"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        āviñchati · anumajjati</text>
+
+    <!-- 5. Wash Eyes, Look Up -->
+    <circle cx="286" cy="436" r="10" fill="none" stroke="#9a988a" stroke-width="0.9" opacity="0.66" />
+    <text x="286" y="435" text-anchor="middle" dominant-baseline="central" fill="#d4d6ca"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
+    <text x="500" y="437" text-anchor="middle" fill="#d4d8cc"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Rinse Eyes · Look Around · Look Up</text>
+    <text x="500" y="457" text-anchor="middle" fill="#acb0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        udake akkhīni anumajjati · anuviloketi · ulloketi</text>
+
+    <!-- 6. Perceive Light, Brighten Mind -->
+    <circle cx="286" cy="501" r="10" fill="none" stroke="#a09e84" stroke-width="0.9" opacity="0.68" />
+    <text x="286" y="501" text-anchor="middle" dominant-baseline="central" fill="#d8d8c4"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
+    <text x="500" y="502" text-anchor="middle" fill="#d8d8c4"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Perceive Brightness</text>
+    <text x="500" y="522" text-anchor="middle" fill="#b0b098"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        ālokasaññaṁ manasi karoti</text>
+
+    <!-- 7. Walking Meditation -->
+    <circle cx="286" cy="566" r="10" fill="none" stroke="#a4a27e" stroke-width="0.9" opacity="0.70" />
+    <text x="286" y="565" text-anchor="middle" dominant-baseline="central" fill="#dddcbc"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
+    <text x="500" y="567" text-anchor="middle" fill="#dcdcbc"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Resolve on Walking</text>
+    <text x="500" y="587" text-anchor="middle" fill="#b4b490"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        caṅkamaṁ adhiṭṭhahati</text>
+
+    <!-- ============ SEVEN REMEDIES ============ -->
+    <rect x="122" y="636" width="676" height="52" rx="8" fill="#131820" fill-opacity="0.72"
+        stroke="#2a3040" stroke-width="0.8" stroke-opacity="0.4" />
+    <text x="460" y="656" text-anchor="middle" fill="#988f74"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="2">
+        SEVEN REMEDIES</text>
+    <text x="460" y="676" text-anchor="middle" fill="#d6cfbf"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic">
+        Three Re's · Rub &amp; Rinse · Brighten &amp; Roam</text>
+
+    <!-- ============ FALLBACK: LION POSTURE ============ -->
+    <text x="218" y="742" text-anchor="end" fill="#706048"
+        font-family="Georgia,'Times New Roman',serif" font-size="9" letter-spacing="1.5"
+        opacity="0.7">FALLBACK</text>
+    <g filter="url(#shadowDrop)">
+        <rect x="228" y="710" width="464" height="58" rx="25" fill="url(#restGrad)"
+            stroke="#706048" stroke-width="1.0" stroke-opacity="0.34" stroke-dasharray="8,4" />
+    </g>
+    <text x="460" y="732" text-anchor="middle" fill="#8e876e"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">
+        Lie Down · Lion's Posture</text>
+    <text x="460" y="754" text-anchor="middle" fill="#7a725d"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+        note idea of rising up · get up swiftly</text>
+
+    <!-- ============ SOURCE ============ -->
+    <line x1="300" y1="800" x2="620" y2="800" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <text x="460" y="816" text-anchor="middle" fill="#6c7f60"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">
+        Aṅguttara Nikāya 7.61</text>
+</svg>

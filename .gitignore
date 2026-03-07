@@ -47,3 +47,6 @@ src/.debug/*
 
 # search-tests
 src/search-tests/snapshots/**
+
+# image-output
+public/content-images/*
