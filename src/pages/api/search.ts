@@ -2,7 +2,37 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { performSearch as searchDiscourses } from "../../service/search/search";
 import searchIndex from "../../data/searchIndex";
+
+// Pre-build slug→doc map for O(1) lookups (avoids O(n) .find() per discourse result)
+const searchIndexBySlug = new Map(
+	(searchIndex as any[]).map((doc) => [doc.slug, doc]),
+);
 import { buildUnifiedContent } from "../../utils/discover-data";
+
+// Cache category data and Fuse index at module level (data is static JSON)
+let cachedAllCategories: ReturnType<typeof buildUnifiedContent> | null = null;
+let cachedCategoryFuse: Fuse<ReturnType<typeof buildUnifiedContent>[number]> | null = null;
+
+function getCategoryFuse() {
+	if (!cachedCategoryFuse) {
+		cachedAllCategories = buildUnifiedContent({
+			include: ["topics", "qualities", "similes"],
+		});
+		cachedCategoryFuse = new Fuse(cachedAllCategories, {
+			keys: [
+				{ name: "title", weight: 2 },
+				{ name: "slug", weight: 1.5 },
+				{ name: "description", weight: 1 },
+				{ name: "pali", weight: 1.2 },
+				{ name: "synonyms", weight: 1.3 },
+			],
+			threshold: 0.4,
+			includeScore: true,
+			ignoreLocation: true,
+		});
+	}
+	return { allCategories: cachedAllCategories!, categoryFuse: cachedCategoryFuse };
+}
 import Fuse from "fuse.js";
 import {
 	getMatchType as getMatchTypeUtil,
@@ -98,6 +128,7 @@ function deduplicateByPali(results: ScoredResult[]): ScoredResult[] {
 
 export const GET: APIRoute = async ({ url }) => {
 	try {
+		const t0 = performance.now();
 		const query = url.searchParams.get("q") || "";
 		const limit = parseInt(url.searchParams.get("limit") || "50");
 		const includeCategories =
@@ -144,23 +175,11 @@ export const GET: APIRoute = async ({ url }) => {
 			return getMatchTypeUtil(text, q, DEFAULT_SEARCH_CONFIG);
 		}
 
+		const tParse = performance.now();
+
 		// Search categories (skip if slug filter is active - categories don't have discourse-style slugs)
 		if (includeCategories && !hasSlugFilter && effectiveQuery.trim()) {
-			const allCategories = buildUnifiedContent({
-				include: ["topics", "qualities", "similes"],
-			});
-			const categoryFuse = new Fuse(allCategories, {
-				keys: [
-					{ name: "title", weight: 2 },
-					{ name: "slug", weight: 1.5 },
-					{ name: "description", weight: 1 },
-					{ name: "pali", weight: 1.2 },
-					{ name: "synonyms", weight: 1.3 },
-				],
-				threshold: 0.4,
-				includeScore: true,
-				ignoreLocation: true,
-			});
+			const { allCategories, categoryFuse } = getCategoryFuse();
 
 			// For category search, use only non-stopword terms if there are stopwords in the query
 			// This ensures "craving that" still finds "Craving" (since "that" is a stopword)
@@ -583,7 +602,10 @@ export const GET: APIRoute = async ({ url }) => {
 			});
 		}
 
+		const tCategories = performance.now();
+
 		// Search discourses
+		let tDiscFuse = tCategories; // will be updated after Fuse search
 		if (includeDiscourses) {
 			// For filter-only queries (e.g., just "^SN12"), get all discourses from index
 			// For queries with search terms, use the search function
@@ -603,11 +625,13 @@ export const GET: APIRoute = async ({ url }) => {
 						priority: item.priority,
 					}));
 			} else {
-				// Normal search with query terms
+			// Normal search with query terms
 				discourseResults = await searchDiscourses(effectiveQuery, {
 					highlight: true,
 				});
 			}
+
+			tDiscFuse = performance.now();
 
 			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
 			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
@@ -675,9 +699,7 @@ export const GET: APIRoute = async ({ url }) => {
 				);
 
 				// Look up full content from search index (used for multi-term matching and occurrence counting)
-				const indexedDoc = (searchIndex as any[]).find(
-					(doc) => doc.slug === itemSlug,
-				);
+				const indexedDoc = searchIndexBySlug.get(itemSlug);
 				const fullContent = indexedDoc?.content || "";
 				const fullContentPali = indexedDoc?.contentPali || "";
 
@@ -702,12 +724,13 @@ export const GET: APIRoute = async ({ url }) => {
 				let visibleTermMatchScore = 0;
 
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
-					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent} ${fullContentPali}`;
+					// English text only — standard diacritic-normalised matching
+					const englishText = `${item.title || ""} ${item.description || ""} ${fullContent}`;
 					const visibleText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
 
 					// Use quality-aware term matching (exact > prefix > infix)
 					const fullMatch = countTermMatchesWithQuality(
-						fullText,
+						englishText,
 						nonStopwordTerms,
 					);
 					const visibleMatch = countTermMatchesWithQuality(
@@ -715,10 +738,43 @@ export const GET: APIRoute = async ({ url }) => {
 						nonStopwordTerms,
 					);
 
-					nonStopwordMatches = fullMatch.count;
-					visibleAreaMatches = visibleMatch.count;
-					termMatchScore = fullMatch.score;
-					visibleTermMatchScore = visibleMatch.score;
+					let adjustedCount = fullMatch.count;
+					let adjustedScore = fullMatch.score;
+					let visibleAdjustedCount = visibleMatch.count;
+					let visibleAdjustedScore = visibleMatch.score;
+
+					// Pali stem-aware fallback: for any term not matched in English text,
+					// check Pali content using textContainsPaliWholeWord which allows final
+					// vowel variation (a→o, i, u, e) to handle declension differences.
+					// This only touches fullContentPali, so English ranking is unaffected.
+					if (fullContentPali && adjustedCount < nonStopwordTerms.length) {
+						for (let ti = 0; ti < nonStopwordTerms.length; ti++) {
+							if (fullMatch.qualities[ti] !== "none") continue;
+							if (textContainsPaliWholeWord(fullContentPali, nonStopwordTerms[ti])) {
+								adjustedCount++;
+								adjustedScore += 0.8; // treat as prefix quality
+							}
+						}
+					}
+
+					// Same fallback for the visible-area count (snippet may be Pali)
+					if (visibleAdjustedCount < nonStopwordTerms.length) {
+						const snippetPali = item.contentSnippet?.replace(/<[^>]*>/g, "") || "";
+						if (snippetPali) {
+							for (let ti = 0; ti < nonStopwordTerms.length; ti++) {
+								if (visibleMatch.qualities[ti] !== "none") continue;
+								if (textContainsPaliWholeWord(snippetPali, nonStopwordTerms[ti])) {
+									visibleAdjustedCount++;
+									visibleAdjustedScore += 0.8;
+								}
+							}
+						}
+					}
+
+					nonStopwordMatches = adjustedCount;
+					visibleAreaMatches = visibleAdjustedCount;
+					termMatchScore = adjustedScore;
+					visibleTermMatchScore = visibleAdjustedScore;
 				}
 
 				const allNonStopTermsFound =
@@ -805,14 +861,16 @@ export const GET: APIRoute = async ({ url }) => {
 					} else if (occurrences >= 2) {
 						occurrenceBoost = 3;
 					}
-					// Reduce index decay for high-occurrence items (they're relevant regardless of Fuse order)
-					const indexPenalty =
-						occurrences >= 4 ? index * 0.2 : index * 0.5;
-					score = Math.max(
-						SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN,
-						SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE -
-							indexPenalty +
-							occurrenceBoost,
+					// Content-whole-word should never exceed description-whole-word base score.
+					// Occurrence boost differentiates within content results.
+					const contentCap = SCORE.DISCOURSE_DESCRIPTION_WHOLE_WORD - 1;
+					score = Math.min(
+						contentCap,
+						Math.max(
+							SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN,
+							SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE +
+								occurrenceBoost,
+						),
 					);
 					matchType = "content-whole-word";
 				} else if (hasMultipleTerms && allNonStopTermsFound) {
@@ -822,10 +880,7 @@ export const GET: APIRoute = async ({ url }) => {
 					matchType = "multi-term-content";
 			} else if (contentContains) {
 				// Content substring match — differentiate Pali prefix vs infix
-				score = Math.max(
-					SCORE.DISCOURSE_CONTENT_EXACT_MIN,
-					SCORE.DISCOURSE_CONTENT_EXACT_BASE - index * 0.5,
-				);
+				score = SCORE.DISCOURSE_CONTENT_EXACT_BASE;
 				matchType = "content-substring";
 
 				if (fullContentPali) {
@@ -840,10 +895,7 @@ export const GET: APIRoute = async ({ url }) => {
 				}
 				} else {
 					if (maxEditDistance === 0) return;
-					score = Math.max(
-						SCORE.DISCOURSE_CONTENT_FUZZY_MIN,
-						SCORE.DISCOURSE_CONTENT_FUZZY_BASE - index * 0.5,
-					);
+					score = SCORE.DISCOURSE_CONTENT_FUZZY_BASE;
 					matchType = "content-fuzzy";
 				}
 
@@ -893,20 +945,44 @@ export const GET: APIRoute = async ({ url }) => {
 				}
 
 				// Cross-field bonus: query found in multiple fields signals stronger relevance
+				let fieldHits = 0;
 				{
-					let fieldHits = 0;
 					if (titleMatch !== "none") fieldHits++;
 					if (descriptionWholeWord || descriptionContains) fieldHits++;
 					if (contentWholeWord || paliWholeWord) fieldHits++;
+					// For multi-term queries, also check per-term field presence.
+					// e.g. "dependent origination" — "dependent" appears in SN 12.1's title
+					// even though the full phrase doesn't.
+					if (hasMultipleTerms && fieldHits < 2) {
+						const titleStr = (item.title || "").toLowerCase();
+						const descStr = (item.description || "").toLowerCase();
+						let titleTermHit = fieldHits > 0 && titleMatch !== "none";
+						let descTermHit = fieldHits > 0 && (descriptionWholeWord || descriptionContains);
+						for (const term of nonStopwordTerms) {
+							if (!titleTermHit && textContainsWholeWord(titleStr, term)) titleTermHit = true;
+							if (!descTermHit && textContainsWholeWord(descStr, term)) descTermHit = true;
+							if (titleTermHit && descTermHit) break;
+						}
+						fieldHits = 0;
+						if (titleTermHit) fieldHits++;
+						if (descTermHit) fieldHits++;
+						if (contentWholeWord || paliWholeWord) fieldHits++;
+					}
 					if (fieldHits >= 2) {
-						score += 2;
+						// Multi-term queries get a larger bonus: per-term field presence
+						// is a strong relevance signal. Single-term gets +2 baseline since
+						// a title word naturally appears in description/content too.
+						score += hasMultipleTerms ? 4 : 2;
 					}
 				}
 
 				// Apply priority as additive boost (not multiplicative)
 				// Priority ranges from 1 to 3, so boost is 0 to 6 points
-				// This acts as a tie-breaker for close scores
-				score = score + (priority - 1) * 3;
+				// Content-only matches get half the priority boost — priority should
+				// differentiate within a match tier, not jump content above description
+				const isContentOnly = fieldHits === 1 && (contentWholeWord || paliWholeWord);
+				const priorityMultiplier = isContentOnly ? 1.5 : 3;
+				score = score + (priority - 1) * priorityMultiplier;
 
 				if (score < SCORE.MIN_SCORE) return;
 
@@ -925,6 +1001,12 @@ export const GET: APIRoute = async ({ url }) => {
 			});
 		}
 
+		const tDiscourses = performance.now();
+
+		// Discourse sub-phase timing
+		const discFuseMs = Math.round(tDiscFuse - tCategories);
+		const discScoringMs = Math.round(tDiscourses - tDiscFuse);
+
 		// Deduplicate topics/qualities that share the same primary pali term
 		// This handles cases like "Jhana" (topic) and "Collectedness" (quality)
 		// which both have "jhāna" as their primary pali term
@@ -935,6 +1017,8 @@ export const GET: APIRoute = async ({ url }) => {
 			deduplicatedResults,
 			undefined,
 		);
+
+		const tRanking = performance.now();
 
 		// Format response
 		const formattedResults = rankedResults.slice(0, limit).map((r, i) => ({
@@ -953,6 +1037,27 @@ export const GET: APIRoute = async ({ url }) => {
 			synonymMatchPosition: r.synonymMatchPosition,
 		}));
 
+		const tFormat = performance.now();
+
+		// Build timing data
+		const timing: Record<string, number> = {
+			parse: Math.round(tParse - t0),
+			categories: Math.round(tCategories - tParse),
+			discourses: Math.round(tDiscourses - tCategories),
+			discFuse: discFuseMs,
+			discScoring: discScoringMs,
+			ranking: Math.round(tRanking - tDiscourses),
+			format: Math.round(tFormat - tRanking),
+			total: Math.round(tFormat - t0),
+		};
+		console.log(
+			`[search-perf] q=${JSON.stringify(query)} | parse=${timing.parse}ms categories=${timing.categories}ms discourses=${timing.discourses}ms (fuse=${discFuseMs}ms scoring=${discScoringMs}ms) ranking=${timing.ranking}ms format=${timing.format}ms TOTAL=${timing.total}ms`,
+		);
+
+		const serverTiming = Object.entries(timing)
+			.map(([k, v]) => `${k};dur=${v}`)
+			.join(", ");
+
 		return new Response(
 			JSON.stringify({
 				success: true,
@@ -960,8 +1065,15 @@ export const GET: APIRoute = async ({ url }) => {
 				results: formattedResults,
 				counts,
 				total: rankedResults.length,
+				timing,
 			}),
-			{ status: 200, headers: { "Content-Type": "application/json" } },
+			{
+				status: 200,
+				headers: {
+					"Content-Type": "application/json",
+					"Server-Timing": serverTiming,
+				},
+			},
 		);
 	} catch (error) {
 		console.error("Error in /api/search:", error);

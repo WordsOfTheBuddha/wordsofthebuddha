@@ -1,6 +1,6 @@
 {
   "query": "ending craving",
-  "timestamp": "2026-03-06T14:45:59.232Z",
+  "timestamp": "2026-03-08T04:12:39.643Z",
   "version": "1.0.0",
   "results": [
     {
@@ -27,6 +27,18 @@
     {
       "rank": 2,
       "type": "discourse",
+      "slug": "mn38",
+      "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
+      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
+      "contentSnippet": "“Good, bhikkhus. It is well that you say this and I say this: ‘When this does not exist, that does not come to be; with the ending of this, that ceases. That is: With the complete fading away and endi",
+      "score": 102,
+      "matchType": "term-title-match",
+      "priority": 2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
       "slug": "an3.61",
       "title": "Titthāyatana sutta - Bases Of Sectarian Views",
       "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
@@ -37,7 +49,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 3,
+      "rank": 4,
+      "type": "discourse",
+      "slug": "dhp334-359",
+      "title": "Taṇhā vagga - Chapter 24 - Craving",
+      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
+      "contentSnippet": "Victorious over everything, all I have known,\nyet I remain |untainted::unstained, unsullied [anūpalitta]| by all things conquered and known;\nHaving abandoned all, liberated through the |complete <mark",
+      "score": 99,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
       "type": "discourse",
       "slug": "mn26",
       "title": "Pāsarāsi sutta - The Noble Quest",
@@ -49,19 +73,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 4,
-      "type": "discourse",
-      "slug": "mn38",
-      "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
-      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
-      "contentSnippet": "“Good, bhikkhus. It is well that you say this and I say this: ‘When this does not exist, that does not come to be; with the ending of this, that ceases. That is: With the complete fading away and endi",
-      "score": 98,
-      "matchType": "term-title-match",
-      "priority": 2,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 5,
+      "rank": 6,
       "type": "discourse",
       "slug": "mn43",
       "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
@@ -73,7 +85,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "discourse",
       "slug": "sn12.11",
       "title": "Āhāra sutta - Nutriment",
@@ -85,19 +97,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "discourse",
-      "slug": "an6.63",
-      "title": "Nibbedhika sutta - Penetrating",
-      "description": "The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.",
-      "contentSnippet": "And what, bhikkhus, is the end of suffering? The <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 ro",
+      "slug": "mn9",
+      "title": "Sammādiṭṭhi sutta - Right View",
+      "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of persp",
+      "contentSnippet": "“There might be, friends. When, friends, a noble disciple understands craving, the origin of craving, the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">ending</",
       "score": 95,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 8,
+      "rank": 9,
       "type": "discourse",
       "slug": "sn12.10",
       "title": "Gotama sutta - Gotama",
@@ -109,24 +121,12 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 9,
+      "rank": 10,
       "type": "discourse",
       "slug": "sn12.41",
       "title": "Pañcaverabhaya sutta - Five Perilous Animosities",
       "description": "The Buddha explains how one can verify that they are a stream-enterer by reflecting on the five perilous animosities, the four factors of stream-entry, and clearly seeing with wisdom the noble princip",
       "contentSnippet": "That is, |dependent on::contingent on, supported by, grounded on [paṭicca]| |ignorance::fundamental unawareness or misunderstanding of the true nature of reality, not experientially understanding the ",
-      "score": 95,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 10,
-      "type": "discourse",
-      "slug": "mn9",
-      "title": "Sammādiṭṭhi sutta - Right View",
-      "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of persp",
-      "contentSnippet": "“There might be, friends. When, friends, a noble disciple understands craving, the origin of craving, the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">ending</",
       "score": 95,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -183,6 +183,18 @@
     {
       "rank": 15,
       "type": "discourse",
+      "slug": "an6.63",
+      "title": "Nibbedhika sutta - Penetrating",
+      "description": "The Buddha shares a penetrative dhamma exposition on sensual pleasures, feelings, perceptions, taints, actions, and suffering.",
+      "contentSnippet": "And what, bhikkhus, is the end of suffering? The <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">ending</mark> of <mark class=\"bg-yellow-100 dark:bg-yellow-900 ro",
+      "score": 95,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
       "slug": "sn12.51",
       "title": "Parivīmaṁsana sutta - Thorough Investigation",
       "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
@@ -193,7 +205,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 16,
+      "rank": 17,
       "type": "topic-quality",
       "slug": "self-erasure",
       "title": "Self Erasure",
@@ -215,7 +227,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 17,
+      "rank": 18,
       "type": "topic-quality",
       "slug": "non-identification",
       "title": "Non Identification",
@@ -235,7 +247,7 @@
       "synonymMatchPosition": 1
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "discourse",
       "slug": "sn22.105",
       "title": "Sakkāya sutta - Personal Existence",
@@ -247,24 +259,12 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 19,
+      "rank": 20,
       "type": "discourse",
       "slug": "mn44",
       "title": "Cūḷavedalla sutta - The Shorter Series Of Questions And Answers",
       "description": "A series of questions and answers between the lay follower Visākha and bhikkhunī Dhammadinnā that clarify subtle yet important aspects of the teachings. Topics covered include personal existence, Nobl",
       "contentSnippet": "“Friend Visākha, the |complete fading away and <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">ending</mark>::remainderless dispassion and cessation [asesavirāgan",
-      "score": 91,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "sn22.22",
-      "title": "Bhāra sutta - Burden",
-      "description": "What is the burden and who bears it, what is the taking up of the burden and the putting down of it.",
-      "contentSnippet": "And what, bhikkhus, is the putting down of the burden? It is the |complete fading away and <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">ending</mark>::remainde",
       "score": 91,
       "matchType": "multi-term-content",
       "priority": 1,

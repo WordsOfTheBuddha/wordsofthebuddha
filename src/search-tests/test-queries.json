@@ -516,6 +516,26 @@
 					"reason": "sn53.1-12 only has 'jhana' in main content"
 				}
 			]
+		},
+		{
+			"id": "pali-content-dhammaja",
+			"query": "dhammaja dhammanimmita dhammadayada",
+			"category": "pali-content",
+			"description": "Multi-word Pali terms: dhamma-born, dhamma-created, dhamma-heir — found in Pali source text",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn111",
+					"maxPosition": 5,
+					"reason": "MN 111 has all three terms in Pali content"
+				},
+				{
+					"type": "has",
+					"slug": "iti100",
+					"maxPosition": 5,
+					"reason": "Iti 100 has all three terms in Pali content"
+				}
+			]
 		}
 	]
 }

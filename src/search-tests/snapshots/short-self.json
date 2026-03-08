@@ -1,6 +1,6 @@
 {
   "query": "self",
-  "timestamp": "2026-03-06T14:45:28.570Z",
+  "timestamp": "2026-03-08T04:12:36.860Z",
   "version": "1.0.0",
   "results": [
     {
@@ -179,24 +179,24 @@
     {
       "rank": 12,
       "type": "discourse",
-      "slug": "sn22.45",
-      "title": "Anicca sutta - Impermanence",
-      "description": "The Buddha describes on the impermanent, stressful and not-self nature of the five aggregates of form, feeling, perception, formations and consciousness.",
-      "contentSnippet": "“Form, bhikkhus, is impermanent. What is impermanent is |suffering::discontentment, stress|; what is suffering is not <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05r",
-      "score": 95,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 13,
-      "type": "discourse",
       "slug": "sn3.5",
       "title": "Attarakkhita sutta - Self-Protection",
       "description": "Even if protected by an entire army, one who engages in misconduct is unprotected. But one who engages in good conduct protects themselves, even without external protection.",
       "score": 94,
       "matchType": "word-exact",
       "priority": 1,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 13,
+      "type": "discourse",
+      "slug": "an4.200",
+      "title": "Pema sutta - Affection",
+      "description": "The Buddha explains how four modes of social partiality—affection and aversion arising in relation to others—bind beings to the world. He shows how a bhikkhu transcends these entanglements by means of",
+      "contentSnippet": "And how, bhikkhus, does a bhikkhu pile up? Here, bhikkhus, a bhikkhu perceives |form::materiality, material existence, experience of the material world, i.e. encompassing both one’s body and external ",
+      "score": 90,
+      "matchType": "description-whole-word",
+      "priority": 2,
       "nonStopwordMatches": 0
     },
     {
@@ -269,18 +269,6 @@
     {
       "rank": 17,
       "type": "discourse",
-      "slug": "an4.200",
-      "title": "Pema sutta - Affection",
-      "description": "The Buddha explains how four modes of social partiality—affection and aversion arising in relation to others—bind beings to the world. He shows how a bhikkhu transcends these entanglements by means of",
-      "contentSnippet": "And how, bhikkhus, does a bhikkhu pile up? Here, bhikkhus, a bhikkhu perceives |form::materiality, material existence, experience of the material world, i.e. encompassing both one’s body and external ",
-      "score": 90,
-      "matchType": "description-whole-word",
-      "priority": 2,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
       "slug": "mn131",
       "title": "Bhaddekaratta sutta - A Single Auspicious Night",
       "description": "The Buddha teaches about the person who has had “a single auspicious night”. One who neither revives the past nor places hope in the future, but diligently discerns present phenomena with insight—with",
@@ -291,7 +279,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 19,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn47.19",
       "title": "Sedaka sutta - At Sedaka",
@@ -300,6 +288,18 @@
       "score": 89.2,
       "matchType": "description-whole-word",
       "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 19,
+      "type": "discourse",
+      "slug": "mn22",
+      "title": "Alagaddūpama sutta - Simile of the Water Snake",
+      "description": "The Dhamma can be like a snake that bites if grasped wrongly. This discourse tackles the danger of misinterpretation, sparked by a bhikkhu who claimed sensual pleasures weren't obstructions. The Buddh",
+      "contentSnippet": "There are these six views, bhikkhus. What are the six? Here, bhikkhus, an |uninstructed::uninitiated, untaught, untrained [assutavant]| ordinary person, |who has no regard for::lit. who has not seen [",
+      "score": 88.5,
+      "matchType": "description-whole-word",
+      "priority": 1.5,
       "nonStopwordMatches": 0
     },
     {

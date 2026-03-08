@@ -1,6 +1,6 @@
 {
   "query": "mindfulnes",
-  "timestamp": "2026-03-06T14:46:03.906Z",
+  "timestamp": "2026-03-08T04:12:39.980Z",
   "version": "1.0.0",
   "results": [
     {
@@ -294,10 +294,10 @@
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn47.95",
-      "title": "Ogha sutta - Flood",
-      "description": "The four floods of sensual pleasures, continued existence, views, and ignorance are described in brief. The four establishments of mindfulness should be cultivated for directly knowing, full understan",
-      "contentSnippet": "Bhikkhus, for the |direct knowledge::experiential understanding [abhiññāya]|, |full understanding::complete comprehension [pariññāya]|, |complete exhaustion::gradual and complete wearing away [parikkh",
+      "slug": "sn20.10",
+      "title": "Biḷāra sutta - Cat",
+      "description": "The Buddha uses a simile of a cat and a mouse to illustrate how not setting up mindfulness and being unrestrained in the sense faculties can lead to death or deadly suffering.",
+      "contentSnippet": "So too, bhikkhus, here some bhikkhu dresses early in the morning and, taking alms bowl and outer robe, enters a village or town for alms with body |unguarded::unprotected [arakkhita]|, speech unguarde",
       "score": 78,
       "matchType": "description-infix",
       "priority": 1,

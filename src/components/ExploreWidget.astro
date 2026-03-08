@@ -1,7 +1,7 @@
 ---
 /**
  * ExploreWidget - A reusable component for browsing and searching content
- * 
+ *
  * Props:
  * - mode: "full" (Browse A-Z + Search) or "search-only" (Search only, no A-Z toggle)
  * - showProjectStatus: boolean - whether to show ProjectStatus component
@@ -23,8 +23,8 @@ interface Props {
 	description?: string;
 }
 
-const { 
-	mode = "full", 
+const {
+	mode = "full",
 	showProjectStatus = false,
 	title = "Explore the Teachings",
 	subTitle,
@@ -36,8 +36,8 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const isSearchOnly = mode === "search-only";
 ---
 
-<div 
-	class="explore-widget" 
+<div
+	class="explore-widget"
 	data-mode={mode}
 	data-search-only={isSearchOnly ? "true" : "false"}
 >
@@ -415,7 +415,7 @@ const isSearchOnly = mode === "search-only";
 	// Find the widget container and read configuration
 	const widget = document.querySelector(".explore-widget") as HTMLElement;
 	if (!widget) throw new Error("ExploreWidget container not found");
-	
+
 	const isSearchOnly = widget.dataset.searchOnly === "true";
 
 	// ==================== STATE ====================
@@ -458,11 +458,11 @@ const isSearchOnly = mode === "search-only";
 	async function init() {
 		setupEventListeners();
 		await loadData();
-		
+
 		// Check URL for initial state
 		const urlParams = new URLSearchParams(window.location.search);
 		const queryFromUrl = urlParams.get("q");
-		
+
 		if (queryFromUrl) {
 			// Start in search mode with query
 			if (!isSearchOnly) switchToSearchMode();
@@ -493,11 +493,11 @@ const isSearchOnly = mode === "search-only";
 	function initCategoryFuse() {
 		// Load all topics, qualities, and similes for Fuse.js search
 		allCategoryData = buildAllContent(["topics", "qualities", "similes"]);
-		
+
 		// Helper to normalize Pali terms (remove diacritics for comparison)
-		const normalizePali = (term: string) => 
+		const normalizePali = (term: string) =>
 			term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-		
+
 		// Helper to extract individual pali terms from an array (handles comma-separated strings)
 		const extractPaliTerms = (paliArray: string[] | undefined): string[] => {
 			if (!paliArray) return [];
@@ -512,24 +512,24 @@ const isSearchOnly = mode === "search-only";
 			});
 			return terms;
 		};
-		
+
 		// Build a set of normalized Pali terms from all topics
 		const topics = allCategoryData.filter(item => item.type === "topic");
 		const topicSlugs = new Set(topics.map(item => item.slug));
 		const topicPaliTerms = new Set<string>();
-		
+
 		topics.forEach(topic => {
 			extractPaliTerms(topic.pali).forEach(term => topicPaliTerms.add(term));
 		});
-		
+
 		// Deduplicate: remove qualities that share slug OR Pali terms with a topic
 		allCategoryData = allCategoryData.filter(item => {
 			// Keep all topics and similes
 			if (item.type === "topic" || item.type === "simile") return true;
-			
+
 			// For qualities, check slug match first
 			if (topicSlugs.has(item.slug)) return false;
-			
+
 			// Check if any Pali term overlaps with a topic's pali terms
 			const qualityPaliTerms = extractPaliTerms(item.pali);
 			for (const term of qualityPaliTerms) {
@@ -537,10 +537,10 @@ const isSearchOnly = mode === "search-only";
 					return false; // This quality shares a Pali term with a topic
 				}
 			}
-			
+
 			return true;
 		});
-		
+
 		categoryFuse = new Fuse(allCategoryData, {
 			// Weights match API for parity (api/search.ts)
 			keys: [
@@ -567,7 +567,7 @@ const isSearchOnly = mode === "search-only";
 		if (currentMode === "search" && searchQuery) {
 			params.set("q", searchQuery);
 		}
-		const newUrl = params.toString() 
+		const newUrl = params.toString()
 			? `${window.location.pathname}?${params.toString()}`
 			: window.location.pathname;
 		window.history.replaceState({}, "", newUrl);
@@ -576,7 +576,7 @@ const isSearchOnly = mode === "search-only";
 	// ==================== MODE SWITCHING ====================
 	function switchToSearchMode() {
 		if (isSearchOnly) return; // Already in search-only mode
-		
+
 		currentMode = "search";
 		browseMode?.classList.add("hidden");
 		searchMode?.classList.remove("hidden");
@@ -588,18 +588,18 @@ const isSearchOnly = mode === "search-only";
 
 	function switchToBrowseMode() {
 		if (isSearchOnly) return; // Can't switch to browse in search-only mode
-		
+
 		currentMode = "browse";
 		searchMode?.classList.add("hidden");
 		browseMode?.classList.remove("hidden");
 		searchResults?.classList.add("hidden");
 		browseResults?.classList.remove("hidden");
-		
+
 		// Clear search
 		if (searchInput) searchInput.value = "";
 		searchQuery = "";
 		updateURL();
-		
+
 		// Re-render browse results
 		renderBrowseResults();
 	}
@@ -633,11 +633,11 @@ const isSearchOnly = mode === "search-only";
 			html += `<div id="letter-${letter}" class="letter-group">`;
 			html += `<h2 class="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300 py-2">${letter}</h2>`;
 			html += `<div class="grid gap-4">`;
-			
+
 			items.forEach(item => {
 				html += renderer.renderSingleItem(item);
 			});
-			
+
 			html += `</div></div>`;
 		});
 
@@ -667,7 +667,7 @@ const isSearchOnly = mode === "search-only";
 		} else {
 			expandedItems.add(slug);
 		}
-		
+
 		if (currentMode === "browse") {
 			renderBrowseResults();
 		} else if (currentMode === "search" && searchQuery) {
@@ -723,7 +723,7 @@ const isSearchOnly = mode === "search-only";
 		// Always hide loading and show results container when searching
 		if (loadingEl) loadingEl.classList.add("hidden");
 		if (resultsContainer) resultsContainer.classList.remove("hidden");
-		
+
 		if (!query.trim()) {
 			if (searchResultsList) searchResultsList.innerHTML = "";
 			if (searchResultsCount) searchResultsCount.textContent = "";
@@ -739,24 +739,24 @@ const isSearchOnly = mode === "search-only";
 		try {
 			const results: ScoredResult[] = [];
 			const allCounts = { discourses: 0, topicsQualities: 0, similes: 0 };
-			
+
 			// Parse slug prefix filters (e.g., "^SN12 consciousness" → filter to sn12.* slugs)
 			const { prefixes: slugPrefixes, searchQuery: effectiveQuery } = parseSlugPrefixes(query);
 			const hasSlugFilter = slugPrefixes.length > 0;
 			const isFilterOnly = hasSlugFilter && !effectiveQuery.trim();
-			
+
 			const queryLower = (effectiveQuery || query).toLowerCase().trim();
 			const queryLength = queryLower.length;
-			
+
 			const maxEditDistance = getMaxAllowedEditDistance(queryLength);
 			const canPrefix = allowPrefixMatch(queryLength);
 			const canInfix = allowInfixMatch(queryLength);
-			
+
 			// Local match type helper that respects query length
 			function getMatchType(text: string, query: string): MatchType {
 				return getMatchTypeUtil(text, query, DEFAULT_SEARCH_CONFIG);
 			}
-			
+
 			// Search categories using Fuse.js - skip if slug filter is active
 			if (categoryFuse && !hasSlugFilter && effectiveQuery.trim()) {
 				// For category search, use only non-stopword terms if there are stopwords in the query
@@ -768,19 +768,19 @@ const isSearchOnly = mode === "search-only";
 						? categoryNonStopTerms.join(" ")
 						: effectiveQuery;
 				const categoryResults = categoryFuse.search(categorySearchQuery);
-				
+
 				// Helper to normalize for diacritic-insensitive comparison
 				const queryNormalized = normalizeForComparison(effectiveQuery);
-				
+
 				// For multi-word queries, split into terms for cross-field matching
 				const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 0);
 				const nonStopTerms = getNonStopwordTerms(effectiveQuery);
 				const isMultiWord = queryTerms.length > 1;
-				
+
 				categoryResults.forEach((result) => {
 					const item = result.item;
 					const fuseScore = result.score ?? 0.5;
-					
+
 					// Combine all searchable text for term counting
 					const searchableFields = [
 						item.title || "",
@@ -790,10 +790,10 @@ const isSearchOnly = mode === "search-only";
 						...(item.pali || [])
 					];
 					const combinedText = searchableFields.join(" ").toLowerCase();
-					
+
 					// Strip annotation text (|visible::tooltip|) before counting
 					const cleanedText = combinedText.replace(/\|(.+?)::[^|]+\|/g, "$1");
-					
+
 					// Count how many non-stopword terms match (for ALL queries)
 					let categoryNonStopMatches = 0;
 					const matchedNonStopTerms: string[] = [];
@@ -805,7 +805,7 @@ const isSearchOnly = mode === "search-only";
 							matchedNonStopTerms.push(termLower);
 						}
 					}
-					
+
 					// For multi-word queries, check if ANY non-stopword term matches title/slug exactly
 					// This handles "craving in" where "in" is stopword but "craving" should match title
 					let bestTermTitleMatch: MatchType = "none";
@@ -818,7 +818,7 @@ const isSearchOnly = mode === "search-only";
 					if (isMultiWord) {
 						const titleLower = (item.title || "").toLowerCase();
 						const slugLower = (item.slug || "").toLowerCase();
-						
+
 						for (const term of nonStopTerms) {
 							const termMatch = getMatchType(titleLower, term);
 							if (termMatch === "exact") {
@@ -832,7 +832,7 @@ const isSearchOnly = mode === "search-only";
 							} else if (termMatch === "prefix" || termMatch === "word-prefix") {
 								if (bestTermTitleMatch === "none") bestTermTitleMatch = "word-prefix";
 							}
-							
+
 							// Also check slug
 							const slugMatch = getMatchType(slugLower, term);
 							if (slugMatch === "exact") {
@@ -844,7 +844,7 @@ const isSearchOnly = mode === "search-only";
 								break;
 							}
 						}
-						
+
 						// Check synonyms for term matches
 						if (item.synonyms) {
 							for (let synIdx = 0; synIdx < item.synonyms.length; synIdx++) {
@@ -870,17 +870,17 @@ const isSearchOnly = mode === "search-only";
 							}
 						}
 					}
-					
+
 					// Check match types against FULL query (for single-word queries)
 					const titleMatch = getMatchType(item.title, queryLower);
 					const slugMatch = getMatchType(item.slug, queryLower);
-					
+
 					// Check if description contains the query (for single-word queries especially)
-					const descriptionMatch = item.description 
-						? (textContainsWholeWord(item.description, queryLower) ? "word-exact" 
+					const descriptionMatch = item.description
+						? (textContainsWholeWord(item.description, queryLower) ? "word-exact"
 						   : textContainsQuery(item.description, queryLower) ? "infix" : "none")
 						: "none";
-					
+
 					// Enhanced pali matching - check each term and handle multi-word pali phrases
 					const paliMatch = item.pali?.reduce((best: string, p: string) => {
 						const pNorm = normalizeForComparison(p);
@@ -902,7 +902,7 @@ const isSearchOnly = mode === "search-only";
 						}
 						return best;
 					}, "none") || "none";
-					
+
 					// Track synonym match and its position (index in the synonyms array)
 					let synonymMatch = "none";
 					let synonymMatchPosition: number | undefined = undefined;
@@ -930,7 +930,7 @@ const isSearchOnly = mode === "search-only";
 							}
 						}
 					}
-					
+
 					// Cross-field matching for multi-word queries
 					// Now includes single non-stopword term queries like "craving in"
 					let crossFieldScore = 0;
@@ -938,10 +938,10 @@ const isSearchOnly = mode === "search-only";
 					if (isMultiWord && categoryNonStopMatches >= 1) {
 						// Check if we have term-level title/synonym matches
 						const titleWords = (item.title || "").toLowerCase().split(/[\s\-_]+/);
-						const hasExactTitleTermMatch = matchedNonStopTerms.some(term => 
+						const hasExactTitleTermMatch = matchedNonStopTerms.some(term =>
 							titleWords.some(word => word === term)
 						);
-						
+
 						if (categoryNonStopMatches === nonStopTerms.length && nonStopTerms.length > 1) {
 							// All terms found - strong cross-field match
 							if (hasExactTitleTermMatch) {
@@ -961,11 +961,11 @@ const isSearchOnly = mode === "search-only";
 							crossFieldMatchType = "cross-field-partial";
 						}
 					}
-					
+
 					// Determine best match type and score accordingly
 					let score = 0;
 					let matchType = "fuzzy";
-					
+
 					if (titleMatch === "exact") {
 						score = SCORE.CATEGORY_EXACT_TITLE; matchType = "exact";
 					} else if (titleMatch === "word-exact") {
@@ -1014,22 +1014,22 @@ const isSearchOnly = mode === "search-only";
 					} else {
 						// Fuzzy match - only if query length permits
 						if (maxEditDistance === 0) return; // No fuzzy for short queries
-						
+
 						// Calculate edit distance against title, slug, and synonyms
 						let bestEditDist = Infinity;
-						
+
 						bestEditDist = Math.min(bestEditDist, minEditDistance(item.title, queryLower));
 						bestEditDist = Math.min(bestEditDist, minEditDistance(item.slug, queryLower));
-						
+
 						if (item.synonyms) {
 							for (const syn of item.synonyms) {
 								bestEditDist = Math.min(bestEditDist, minEditDistance(syn, queryLower));
 							}
 						}
-						
+
 						// Filter by max allowed edit distance based on query length
 						if (bestEditDist > maxEditDistance) return;
-						
+
 						// Score based on edit distance
 						// Edit distance 1: score 25 (decent fuzzy match)
 						// Edit distance 2: score 18 (weak fuzzy match, only for queries >= 8 chars)
@@ -1043,14 +1043,14 @@ const isSearchOnly = mode === "search-only";
 							return;
 						}
 					}
-					
+
 					// Boost score for multi-term queries when more non-stopword terms match
 					// Categories with both terms should rank higher
 					if (isMultiWord && nonStopTerms.length > 1 && categoryNonStopMatches > 1) {
 						const termBonus = (categoryNonStopMatches - 1) * 5;
 						score += termBonus;
 					}
-					
+
 					// Apply phrase proximity boost for multi-word queries
 					// This rewards categories where the query phrase appears intact in title/description/synonyms
 					if (isMultiWord && nonStopTerms.length >= 2) {
@@ -1068,7 +1068,7 @@ const isSearchOnly = mode === "search-only";
 								bestSynonymPhraseBoost = synBoost.boost;
 							}
 						}
-						
+
 						// Check title and description separately
 						const phraseBoost = calculatePhraseProximityBoost(
 							item.title || "",
@@ -1076,7 +1076,7 @@ const isSearchOnly = mode === "search-only";
 							"", // don't pass synonyms as content anymore
 							nonStopTerms
 						);
-						
+
 						// Use the best boost from synonyms or title/description
 						const totalPhraseBoost = Math.max(phraseBoost.boost, bestSynonymPhraseBoost);
 						if (totalPhraseBoost > 0) {
@@ -1091,25 +1091,25 @@ const isSearchOnly = mode === "search-only";
 							}
 						}
 					}
-					
+
 					// Only count and include items with reasonable score (>= 15)
 					if (score < SCORE.MIN_SCORE) return;
-					
+
 					// Determine type
 					const isSimile = item.type === "simile";
 					const type: "topic-quality" | "simile" = isSimile ? "simile" : "topic-quality";
-					
+
 					// Count all results with good scores regardless of filter
 					if (isSimile) {
 						allCounts.similes++;
 					} else {
 						allCounts.topicsQualities++;
 					}
-					
+
 					// Only add to results if filter is checked
 					if (isSimile && !searchFilters.similes) return;
 					if (!isSimile && !searchFilters.topicsQualities) return;
-					
+
 					// Use term-level synonym position if full-query synonym position not set
 					results.push({ type, score, item, matchType, nonStopwordMatches: categoryNonStopMatches, synonymMatchPosition: synonymMatchPosition ?? termSynonymMatchPosition });
 				});
@@ -1122,7 +1122,7 @@ const isSearchOnly = mode === "search-only";
 			// Create content lookup for full content matching (English + Pali)
 			const getContentBySlug = getContentLookup();
 			const getPaliContentBySlug = getPaliContentLookup();
-			
+
 			let discourseResults: any[];
 			if (isFilterOnly) {
 				// Filter-only: get all discourses matching the slug prefix
@@ -1131,31 +1131,31 @@ const isSearchOnly = mode === "search-only";
 				// Normal search with query terms
 				discourseResults = await searchDiscourses(effectiveQuery, { highlight: true });
 			}
-			
+
 			// Get non-stopword terms for multi-term query ranking
 			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
 			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
-			
+
 			// Process and count discourses - prioritize actual content matches
 			discourseResults.forEach((item, index) => {
 				const itemSlug = (item as any).slug || (item as any).id || "";
-				
+
 				// Apply slug prefix filter (for non-filter-only queries that may have both ^prefix and search terms)
 				if (hasSlugFilter && !isFilterOnly && !slugMatchesPrefixes(itemSlug, slugPrefixes)) {
 					return; // Skip items that don't match the prefix filter
 				}
-				
+
 				// Check if title contains the query (full query)
 				const titleMatch = getMatchType(item.title || "", queryLower);
 				// Check both raw slug match and normalized slug match (handles "mn 38" → "mn38")
 				const rawIdMatch = getMatchType(itemSlug, queryLower);
 				const normalizedSlugMatch = slugMatchesQuery(itemSlug, queryLower);
 				// Use the better of the two matches
-				const idMatch: MatchType = 
+				const idMatch: MatchType =
 					normalizedSlugMatch === "exact" ? "exact" :
 					normalizedSlugMatch === "prefix" ? "prefix" :
 					rawIdMatch;
-				
+
 				// For multi-term queries, also check if any non-stopword term matches title
 				let termTitleMatch: MatchType = "none";
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
@@ -1171,18 +1171,18 @@ const isSearchOnly = mode === "search-only";
 						}
 					}
 				}
-				
+
 				// Check if description or content actually contains the query
 				const descriptionContains = textContainsQuery(item.description || "", queryLower);
-				const contentContains = item.contentSnippet 
+				const contentContains = item.contentSnippet
 					? textContainsQuery(item.contentSnippet, queryLower)
 					: false;
 				const hasContentMatch = descriptionContains || contentContains;
-				
+
 				// Get full content (used for multi-term matching and occurrence counting)
 				const fullContent = getContentBySlug(itemSlug) || "";
 				const fullContentPali = getPaliContentBySlug(itemSlug) || "";
-				
+
 				// Check for whole word matches (higher priority than substring)
 				// Use snippet if available, but also check full content + Pali for supplementary results
 				const descriptionWholeWord = textContainsWholeWord(item.description || "", queryLower);
@@ -1194,7 +1194,7 @@ const isSearchOnly = mode === "search-only";
 					? textContainsPaliWholeWord(fullContentPali, queryLower)
 					: false;
 				const hasWholeWordMatch = descriptionWholeWord || contentWholeWord || paliWholeWord;
-				
+
 				// Count non-stopword term matches for multi-term queries
 				// Use quality-aware matching (exact > prefix > infix)
 				// Include Pali content so Pali terms get counted for multi-term boost
@@ -1202,32 +1202,65 @@ const isSearchOnly = mode === "search-only";
 				let visibleAreaMatches = 0;
 				let termMatchScore = 0; // Quality-weighted score
 				let visibleTermMatchScore = 0;
-				
+
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {
-					const fullText = `${item.title || ""} ${item.description || ""} ${fullContent} ${fullContentPali}`;
+					// English text only — standard diacritic-normalised matching
+					const englishText = `${item.title || ""} ${item.description || ""} ${fullContent}`;
 					const visibleText = `${item.title || ""} ${item.description || ""} ${item.contentSnippet || ""}`;
-					
+
 					// Use quality-aware term matching (exact > prefix > infix)
-					const fullMatch = countTermMatchesWithQuality(fullText, nonStopwordTerms);
+					const fullMatch = countTermMatchesWithQuality(englishText, nonStopwordTerms);
 					const visibleMatch = countTermMatchesWithQuality(visibleText, nonStopwordTerms);
-					
-					nonStopwordMatches = fullMatch.count;
-					visibleAreaMatches = visibleMatch.count;
-					termMatchScore = fullMatch.score;
-					visibleTermMatchScore = visibleMatch.score;
+
+					let adjustedCount = fullMatch.count;
+					let adjustedScore = fullMatch.score;
+					let visibleAdjustedCount = visibleMatch.count;
+					let visibleAdjustedScore = visibleMatch.score;
+
+					// Pali stem-aware fallback: for any term not matched in English text,
+					// check Pali content using textContainsPaliWholeWord which allows final
+					// vowel variation (a→o, i, u, e) to handle declension differences.
+					if (fullContentPali && adjustedCount < nonStopwordTerms.length) {
+						for (let ti = 0; ti < nonStopwordTerms.length; ti++) {
+							if (fullMatch.qualities[ti] !== "none") continue;
+							if (textContainsPaliWholeWord(fullContentPali, nonStopwordTerms[ti])) {
+								adjustedCount++;
+								adjustedScore += 0.8;
+							}
+						}
+					}
+
+					// Same fallback for the visible-area count (snippet may contain Pali)
+					if (visibleAdjustedCount < nonStopwordTerms.length) {
+						const snippetPali = item.contentSnippet?.replace(/<[^>]*>/g, "") || "";
+						if (snippetPali) {
+							for (let ti = 0; ti < nonStopwordTerms.length; ti++) {
+								if (visibleMatch.qualities[ti] !== "none") continue;
+								if (textContainsPaliWholeWord(snippetPali, nonStopwordTerms[ti])) {
+									visibleAdjustedCount++;
+									visibleAdjustedScore += 0.8;
+								}
+							}
+						}
+					}
+
+					nonStopwordMatches = adjustedCount;
+					visibleAreaMatches = visibleAdjustedCount;
+					termMatchScore = adjustedScore;
+					visibleTermMatchScore = visibleAdjustedScore;
 				}
-				
+
 				// For multi-term queries, require ALL non-stopword terms to be found somewhere
 				// to get term-title-match bonus. Otherwise it's misleading ranking.
 				const allNonStopTermsFound = nonStopwordMatches === nonStopwordTerms.length;
 				const allInVisibleArea = visibleAreaMatches === nonStopwordTerms.length;
-				
+
 				// Get priority from item if available (from search index)
 				const priority = (item as any).priority ?? 1;
-				
+
 				let score: number;
 				let matchType = "content";
-				
+
 				// For filter-only queries, assign a base score
 				if (isFilterOnly) {
 					score = SCORE.DISCOURSE_PREFIX_TITLE || 80;
@@ -1287,9 +1320,16 @@ const isSearchOnly = mode === "search-only";
 					} else if (occurrences >= 2) {
 						occurrenceBoost = 3;
 					}
-					// Reduce index decay for high-occurrence items (they're relevant regardless of Fuse order)
-					const indexPenalty = occurrences >= 4 ? index * 0.2 : index * 0.5;
-					score = Math.max(SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN, SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE - indexPenalty + occurrenceBoost);
+					// Content-whole-word should never exceed description-whole-word base score.
+					// Occurrence boost differentiates within content results.
+					const contentCap = SCORE.DISCOURSE_DESCRIPTION_WHOLE_WORD - 1;
+					score = Math.min(
+						contentCap,
+						Math.max(
+							SCORE.DISCOURSE_CONTENT_WHOLE_WORD_MIN,
+							SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE + occurrenceBoost,
+						),
+					);
 					matchType = "content-whole-word";
 				} else if (hasMultipleTerms && allNonStopTermsFound) {
 					// Multi-term query with all non-stopword terms found in content
@@ -1298,7 +1338,7 @@ const isSearchOnly = mode === "search-only";
 					matchType = "multi-term-content";
 				} else if (contentContains) {
 					// Content contains query as substring - medium priority
-					score = Math.max(SCORE.DISCOURSE_CONTENT_EXACT_MIN, SCORE.DISCOURSE_CONTENT_EXACT_BASE - (index * 0.5));
+					score = SCORE.DISCOURSE_CONTENT_EXACT_BASE;
 					matchType = "content-substring";
 
 					if (fullContentPali) {
@@ -1315,10 +1355,10 @@ const isSearchOnly = mode === "search-only";
 					// Fuzzy content match only - low priority, may not actually contain the term
 					// Only allow if query is long enough for fuzzy matching
 					if (maxEditDistance === 0) return; // Skip fuzzy for short queries
-					score = Math.max(SCORE.DISCOURSE_CONTENT_FUZZY_MIN, SCORE.DISCOURSE_CONTENT_FUZZY_BASE - (index * 0.5));
+					score = SCORE.DISCOURSE_CONTENT_FUZZY_BASE;
 					matchType = "content-fuzzy";
 				}
-				
+
 				// Apply multi-term boost using shared function
 				if (hasMultipleTerms) {
 					// Calculate phrase proximity boost - terms appearing close together in order
@@ -1348,7 +1388,7 @@ const isSearchOnly = mode === "search-only";
 						score -= 15; // Heavy penalty for stopword-only matches
 					}
 				}
-				
+
 				// Title coverage boost for title matches
 				// "Suffering" (100% coverage) should rank above "Destined for Suffering" (33%)
 				if (titleMatch !== "none" && titleMatch !== "infix") {
@@ -1358,36 +1398,60 @@ const isSearchOnly = mode === "search-only";
 				}
 
 				// Cross-field bonus: query found in multiple fields signals stronger relevance
+				let fieldHits = 0;
 				{
-					let fieldHits = 0;
 					if (titleMatch !== "none") fieldHits++;
 					if (descriptionWholeWord || descriptionContains) fieldHits++;
 					if (contentWholeWord || paliWholeWord) fieldHits++;
+					// For multi-term queries, also check per-term field presence.
+					// e.g. "dependent origination" — "dependent" appears in SN 12.1's title
+					// even though the full phrase doesn't.
+					if (hasMultipleTerms && fieldHits < 2) {
+						const titleStr = (item.title || "").toLowerCase();
+						const descStr = (item.description || "").toLowerCase();
+						let titleTermHit = fieldHits > 0 && titleMatch !== "none";
+						let descTermHit = fieldHits > 0 && (descriptionWholeWord || descriptionContains);
+						for (const term of nonStopwordTerms) {
+							if (!titleTermHit && textContainsWholeWord(titleStr, term)) titleTermHit = true;
+							if (!descTermHit && textContainsWholeWord(descStr, term)) descTermHit = true;
+							if (titleTermHit && descTermHit) break;
+						}
+						fieldHits = 0;
+						if (titleTermHit) fieldHits++;
+						if (descTermHit) fieldHits++;
+						if (contentWholeWord || paliWholeWord) fieldHits++;
+					}
 					if (fieldHits >= 2) {
-						score += 2;
+						// Multi-term queries get a larger bonus: per-term field presence
+						// is a strong relevance signal. Single-term gets +2 baseline since
+						// a title word naturally appears in description/content too.
+						score += hasMultipleTerms ? 4 : 2;
 					}
 				}
 
 				// Apply priority as additive boost (not multiplicative)
 				// Priority ranges from 1 to 3, so boost is 0 to 6 points
-				// This acts as a tie-breaker for close scores
-				score = score + (priority - 1) * 3;
-				
+				// Content-only matches get half the priority boost — priority should
+				// differentiate within a match tier, not jump content above description
+				const isContentOnly = fieldHits === 1 && (contentWholeWord || paliWholeWord);
+				const priorityMultiplier = isContentOnly ? 1.5 : 3;
+				score = score + (priority - 1) * priorityMultiplier;
+
 				// Only count items with reasonable score
 				if (score < SCORE.MIN_SCORE) return;
-				
+
 				allCounts.discourses++;
-				
+
 				// Only add to results if filter is checked
 				if (!searchFilters.discourses) return;
-				
-				results.push({ 
-					type: "discourse", 
-					score, 
-					item, 
+
+				results.push({
+					type: "discourse",
+					score,
+					item,
 					matchType,
 					priority,
-					nonStopwordMatches 
+					nonStopwordMatches
 				});
 			});
 
@@ -1428,11 +1492,11 @@ const isSearchOnly = mode === "search-only";
 
 	function updateResultCounts(discourses: number, topicsQualities: number, similes: number) {
 		resultCounts = { discourses, topicsQualities, similes };
-		
+
 		const countDiscourses = widget.querySelector("#count-discourses");
 		const countTopicsQualities = widget.querySelector("#count-topics-qualities");
 		const countSimiles = widget.querySelector("#count-similes");
-		
+
 		if (countDiscourses) {
 			countDiscourses.textContent = discourses > 0 ? `(${discourses})` : "";
 		}
@@ -1451,7 +1515,7 @@ const isSearchOnly = mode === "search-only";
 		// Deduplicate discourses by slug (keep highest scoring)
 		const discourseMap = new Map<string, ScoredResult>();
 		const allDiscourses = results.filter(r => r.type === "discourse");
-		
+
 		// Debug: Check for duplicates before deduplication
 		const slugCounts = new Map<string, number>();
 		for (const r of allDiscourses) {
@@ -1462,7 +1526,7 @@ const isSearchOnly = mode === "search-only";
 		if (duplicateSlugs.length > 0 && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
 			console.warn('⚠️ Duplicate slugs found before deduplication:', duplicateSlugs);
 		}
-		
+
 		for (const r of allDiscourses) {
 			const slug = r.item.slug || r.item.id || "";
 			const existing = discourseMap.get(slug);
@@ -1471,30 +1535,30 @@ const isSearchOnly = mode === "search-only";
 			}
 		}
 		const discourses = Array.from(discourseMap.values());
-		
+
 		const categories = results.filter(r => r.type === "topic-quality" || r.type === "simile");
-		
+
 		// Group categories by their first/primary pali term (normalized)
 		const paliGroups = new Map<string, ScoredResult[]>();
 		const noPaliItems: ScoredResult[] = [];
-		
+
 		for (const item of categories) {
 			const paliTerms = item.item.pali || [];
 			if (paliTerms.length === 0) {
 				noPaliItems.push(item);
 				continue;
 			}
-			
+
 			// Get the primary pali term (first one, normalized, split by comma)
 			const firstPali = paliTerms[0];
 			const primaryTerm = normalizeForComparison(firstPali.split(/[,\s]+/)[0]);
-			
+
 			if (!paliGroups.has(primaryTerm)) {
 				paliGroups.set(primaryTerm, []);
 			}
 			paliGroups.get(primaryTerm)!.push(item);
 		}
-		
+
 		// For each group, keep only the highest-scoring item
 		const dedupedCategories: ScoredResult[] = [];
 		for (const [_, group] of paliGroups) {
@@ -1506,10 +1570,10 @@ const isSearchOnly = mode === "search-only";
 				dedupedCategories.push(group[0]);
 			}
 		}
-		
+
 		// Add items with no pali terms
 		dedupedCategories.push(...noPaliItems);
-		
+
 		// Return discourses + deduplicated categories
 		return [...discourses, ...dedupedCategories];
 	}
@@ -1541,26 +1605,26 @@ const isSearchOnly = mode === "search-only";
 	// For multi-word queries, highlights the FIRST occurrence of each term only
 	function highlightText(text: string, query: string): string {
 		if (!text || !query || query.length < 2) return text;
-		
+
 		// Split query into terms, strip search operators, filter valid terms
 		const terms = query.toLowerCase().split(/\s+/)
 			.map(t => stripSearchOps(t))
 			.filter(t => t.length >= 2);
 		if (terms.length === 0) return text;
-		
+
 		// Sort terms: non-stopwords first (they're more important)
 		const sortedTerms = terms.sort((a, b) => {
 			const aStop = isStopword(a) ? 1 : 0;
 			const bStop = isStopword(b) ? 1 : 0;
 			return aStop - bStop;
 		});
-		
+
 		let result = text;
-		
+
 		// Highlight first occurrence of each term only
 		for (const term of sortedTerms) {
 			const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-			
+
 			// Build case-insensitive pattern with diacritic support
 			let pattern = "";
 			for (const char of escaped) {
@@ -1580,13 +1644,13 @@ const isSearchOnly = mode === "search-only";
 					pattern += char;
 				}
 			}
-			
+
 			try {
 				// Use word boundary for short terms, allow infix for longer terms
 				const boundaryPattern = term.length < 4 ? `\\b(${pattern})\\b` : `(${pattern})`;
 				const regex = new RegExp(boundaryPattern, "u"); // Note: removed 'g' flag for first match only
 				// Use different highlight color for stopwords (lighter)
-				const markClass = isStopword(term) 
+				const markClass = isStopword(term)
 					? "bg-yellow-50 dark:bg-yellow-950 px-0.5 rounded"
 					: "bg-yellow-100 dark:bg-yellow-900 px-0.5 rounded";
 				result = result.replace(regex, `<mark class="${markClass}">$1</mark>`);
@@ -1594,7 +1658,7 @@ const isSearchOnly = mode === "search-only";
 				// Skip invalid patterns
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -1613,7 +1677,7 @@ const isSearchOnly = mode === "search-only";
 		}
 
 		if (noResultsEl) noResultsEl.classList.add("hidden");
-		
+
 		const total = results.length;
 		searchResultsCount.textContent = `Found ${total} result${total !== 1 ? "s" : ""} for "${query}"`;
 
@@ -1621,16 +1685,16 @@ const isSearchOnly = mode === "search-only";
 		const highlightFn = (text: string) => highlightText(text, query);
 		const renderer = new DiscoverRenderer(expandedItems, toggleExpanded, highlightFn);
 		const PAGE_SIZE = getPageSize(isMobileViewport());
-		
+
 		// Dev mode flag for debug info
 		const isDevMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-		
+
 		// Track current display state
 		let currentlyDisplayed = PAGE_SIZE;
-		
+
 		function renderPage(upToIndex: number) {
 			let html = "";
-			
+
 			results.forEach((result, index) => {
 				const isHidden = index >= upToIndex;
 				const hiddenClass = isHidden ? "hidden" : "";
@@ -1640,17 +1704,17 @@ const isSearchOnly = mode === "search-only";
 					const slug = item.slug || item.id || "";
 					const title = item.title || "Untitled";
 					const idFormatted = transformId(slug);
-					
+
 					// Apply highlighting to displayed text
 					const highlightedId = highlightText(idFormatted, query);
 					const highlightedTitle = highlightText(title, query);
 					const highlightedDescription = item.description ? highlightText(item.description, query) : "";
-					
-					const descriptionHtml = highlightedDescription 
-						? `<p class="mt-2 text-text line-clamp-4 text-sm sm:text-base">${highlightedDescription}</p>` 
+
+					const descriptionHtml = highlightedDescription
+						? `<p class="mt-2 text-text line-clamp-4 text-sm sm:text-base">${highlightedDescription}</p>`
 						: "";
-					const snippetHtml = item.contentSnippet 
-						? `<p class="mt-2 text-gray-500 dark:text-gray-300 text-sm">${processSnippet(item.contentSnippet)}</p>` 
+					const snippetHtml = item.contentSnippet
+						? `<p class="mt-2 text-gray-500 dark:text-gray-300 text-sm">${processSnippet(item.contentSnippet)}</p>`
 						: "";
 
 					// Debug info for DEV mode
@@ -1686,7 +1750,7 @@ const isSearchOnly = mode === "search-only";
 					// Topic, Quality, or Simile - use DiscoverRenderer
 					const item = result.item as UnifiedContentItem;
 					const cardHtml = renderer.renderSingleItem(item);
-					
+
 					// Debug info for DEV mode
 					const debugHtml = isDevMode ? `
 						<div class="debug-score mt-2 text-xs font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded border border-gray-300 dark:border-gray-600">
@@ -1697,18 +1761,18 @@ const isSearchOnly = mode === "search-only";
 							<span class="text-orange-600 dark:text-orange-400">NonStop: ${result.nonStopwordMatches || 0}</span>
 						</div>
 					` : "";
-					
+
 					html += `<div class="${hiddenClass}" data-result-index="${index}" data-result-type="${result.type}">${cardHtml}${debugHtml}</div>`;
 				}
 			});
 
 			// Calculate remaining and format button text
 			const remaining = countRemainingByType(results, upToIndex);
-			
+
 			// Show More button if needed
 			if (remaining.total > 0) {
 				const remainingText = formatRemainingText(remaining);
-				
+
 				html += `
 					<div id="show-more-container" class="text-center mt-6">
 						<button id="show-more-btn" class="px-6 py-2 bg-[var(--primary-color)] text-white rounded-lg hover:opacity-90 transition-opacity">
@@ -1717,10 +1781,10 @@ const isSearchOnly = mode === "search-only";
 					</div>
 				`;
 			}
-			
+
 			return html;
 		}
-		
+
 		searchResultsList.innerHTML = renderPage(currentlyDisplayed);
 
 		// Setup Show More button with incremental loading
@@ -1730,7 +1794,7 @@ const isSearchOnly = mode === "search-only";
 				showMoreBtn.addEventListener("click", () => {
 					// Reveal next page of hidden items
 					const nextBatch = Math.min(currentlyDisplayed + PAGE_SIZE, total);
-					
+
 					// Reveal items from currentlyDisplayed to nextBatch
 					widget.querySelectorAll("[data-result-index]").forEach(el => {
 						const idx = parseInt(el.getAttribute("data-result-index") || "0", 10);
@@ -1738,13 +1802,13 @@ const isSearchOnly = mode === "search-only";
 							el.classList.remove("hidden");
 						}
 					});
-					
+
 					currentlyDisplayed = nextBatch;
-					
+
 					// Update or remove the Show More button
 					const remaining = countRemainingByType(results, currentlyDisplayed);
 					const container = widget.querySelector("#show-more-container");
-					
+
 					if (remaining.total <= 0) {
 						if (container) container.remove();
 					} else {
@@ -1757,7 +1821,7 @@ const isSearchOnly = mode === "search-only";
 				});
 			}
 		}
-		
+
 		setupShowMoreButton();
 	}
 
@@ -1905,12 +1969,12 @@ const isSearchOnly = mode === "search-only";
 	// ==================== SCROLL SPY ====================
 	function setupScrollSpy() {
 		if (isSearchOnly) return;
-		
+
 		// Disconnect existing observer if any
 		if ((window as any).letterObserver) {
 			(window as any).letterObserver.disconnect();
 		}
-		
+
 		const observerOptions: IntersectionObserverInit = {
 			root: null,
 			rootMargin: "-150px 0px -60% 0px",
@@ -1955,11 +2019,11 @@ const isSearchOnly = mode === "search-only";
 		// Manual test runner - run a single query and return formatted results
 		(window as any).testSearch = async (query: string) => {
 			console.log(`\n🧪 Testing: "${query}"`);
-			
+
 			// Trigger search
 			if (searchInput) searchInput.value = query;
 			await performSearch(query);
-			
+
 			console.log('Check console.table output above for results');
 			console.log('Use testSearch("query") to test more queries');
 		};
@@ -1967,24 +2031,24 @@ const isSearchOnly = mode === "search-only";
 		// Run all tests from searchTests.ts
 		(window as any).runSearchTests = async () => {
 			const { SEARCH_TESTS } = await import('../utils/searchTests');
-			
+
 			console.log('🧪 Running search test suite...\n');
-			
+
 			for (const test of SEARCH_TESTS) {
 				// Run the search
 				if (searchInput) searchInput.value = test.query;
-				
+
 				// Wait for search to complete
 				await new Promise<void>(resolve => setTimeout(resolve, 300));
 				await performSearch(test.query);
-				
+
 				// Show test info
 				console.log(`\n📋 Test: ${test.id} - "${test.query}"`);
 				console.log(`   ${test.description}`);
 				console.log(`   Checks: ${test.checks.join(', ')}`);
 				console.log(`   Priority: ${test.priority}`);
 			}
-			
+
 			console.log('\n✅ Test suite complete. Review results above.');
 		};
 

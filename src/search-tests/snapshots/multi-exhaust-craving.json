@@ -1,6 +1,6 @@
 {
   "query": "exhaust craving",
-  "timestamp": "2026-03-06T14:44:48.929Z",
+  "timestamp": "2026-03-08T04:12:34.273Z",
   "version": "1.0.0",
   "results": [
     {
@@ -10,7 +10,7 @@
       "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
       "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
       "contentSnippet": "These four nutriments, bhikkhus, have what as their |source::foundation, cause [nidāna]|, what as their |arising::appearance, origination [samudaya]|, what as their |characteristic::nature, quality, t",
-      "score": 114.8,
+      "score": 118.8,
       "matchType": "term-title-match",
       "priority": 2,
       "nonStopwordMatches": 2
@@ -42,6 +42,18 @@
     {
       "rank": 4,
       "type": "discourse",
+      "slug": "an7.61",
+      "title": "Pacalāyamāna sutta - Dozing",
+      "description": "When venerable Mahāmoggallāna was struggling with drowsiness, the Buddha gave him seven methods to overcome it. Moving beyond wakefulness, the discourse warns against pride and contentious talk, ultim",
+      "contentSnippet": "When this was said, venerable Mahāmoggallāna said to the Blessed One: “Briefly, venerable sir, in what way is a bhikkhu liberated by the |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"",
+      "score": 99.2,
+      "matchType": "multi-term-content",
+      "priority": 1.8,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
       "slug": "iti49",
       "title": "Diṭṭhigata sutta - Two Kinds Of Wrong Views",
       "description": "Overcome by two kinds of wrong views, some get stuck, while others overreach. But those with vision see.",
@@ -52,7 +64,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 5,
+      "rank": 6,
       "type": "discourse",
       "slug": "iti55",
       "title": "Dutiya esan sutta - Quest (Second)",
@@ -64,7 +76,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "topic-quality",
       "slug": "self-erasure",
       "title": "Self Erasure",
@@ -86,7 +98,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "discourse",
       "slug": "mn73",
       "title": "Mahāvaccha sutta - Greater Discourse With Vaccha",
@@ -98,7 +110,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 8,
+      "rank": 9,
       "type": "discourse",
       "slug": "mn1",
       "title": "Mūlapariyāya sutta - Root Of All Things",
@@ -107,18 +119,6 @@
       "score": 70,
       "matchType": "multi-term-content",
       "priority": 1.4,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 9,
-      "type": "discourse",
-      "slug": "sn12.19",
-      "title": "Bālapaṇḍita sutta - The Wise And The Immature",
-      "description": "The Buddha explains the similarities and the differences between the wise and the immature persons through dependent co-arising.",
-      "contentSnippet": "“Bhikkhus, for the immature person, obstructed by |ignorance::fundamental unawareness or misunderstanding of the true nature of reality, not experientially understanding the four noble truths [avijjā]",
-      "score": 68.8,
-      "matchType": "multi-term-content",
-      "priority": 1,
       "nonStopwordMatches": 2
     },
     {
@@ -136,10 +136,10 @@
     {
       "rank": 11,
       "type": "discourse",
-      "slug": "an4.1",
-      "title": "Anubuddha sutta - Understood",
-      "description": "The Buddha explains how misunderstanding and not penetrating four principles - 1) ethical conduct, 2) collectedness, 3) wisdom, and 4) liberation - has led to wandering on in cyclic existence for a lo",
-      "contentSnippet": "4.) Bhikkhus, it is because of misunderstanding and not penetrating noble |liberation::release, deliverance, freedom, emancipation [vimutti]| that both you and I have wandered and undergone this long ",
+      "slug": "mn112",
+      "title": "Chabbisodhana sutta - The Sixfold Purification",
+      "description": "How should one verify a claim of full awakening? The Buddha presents a rigorous examination covering six dimensions of experience, including the aggregates, elements, and sense bases. This discourse o",
+      "contentSnippet": "Bhikkhus, for a bhikkhu whose mental defilements have ended, who has fulfilled one’s training, who has done what needs to be done, who has put down the burden, having achieved the highest goal, having",
       "score": 68.8,
       "matchType": "multi-term-content",
       "priority": 1,
@@ -160,6 +160,30 @@
     {
       "rank": 13,
       "type": "discourse",
+      "slug": "sn12.19",
+      "title": "Bālapaṇḍita sutta - The Wise And The Immature",
+      "description": "The Buddha explains the similarities and the differences between the wise and the immature persons through dependent co-arising.",
+      "contentSnippet": "“Bhikkhus, for the immature person, obstructed by |ignorance::fundamental unawareness or misunderstanding of the true nature of reality, not experientially understanding the four noble truths [avijjā]",
+      "score": 68.8,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "an4.1",
+      "title": "Anubuddha sutta - Understood",
+      "description": "The Buddha explains how misunderstanding and not penetrating four principles - 1) ethical conduct, 2) collectedness, 3) wisdom, and 4) liberation - has led to wandering on in cyclic existence for a lo",
+      "contentSnippet": "4.) Bhikkhus, it is because of misunderstanding and not penetrating noble |liberation::release, deliverance, freedom, emancipation [vimutti]| that both you and I have wandered and undergone this long ",
+      "score": 68.8,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
       "slug": "an6.55",
       "title": "Soṇa sutta - To Soṇa",
       "description": "The Buddha advises Soṇa on the importance of balanced energy and breaking through to a balanced state of the faculties with the example of the lute strings.",
@@ -170,19 +194,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 14,
-      "type": "discourse",
-      "slug": "mn112",
-      "title": "Chabbisodhana sutta - The Sixfold Purification",
-      "description": "How should one verify a claim of full awakening? The Buddha presents a rigorous examination covering six dimensions of experience, including the aggregates, elements, and sense bases. This discourse o",
-      "contentSnippet": "Bhikkhus, for a bhikkhu whose mental defilements have ended, who has fulfilled one’s training, who has done what needs to be done, who has put down the burden, having achieved the highest goal, having",
-      "score": 68.8,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 15,
+      "rank": 16,
       "type": "discourse",
       "slug": "mn26",
       "title": "Pāsarāsi sutta - The Noble Quest",
@@ -194,7 +206,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 16,
+      "rank": 17,
       "type": "discourse",
       "slug": "mn107",
       "title": "Gaṇakamoggallāna sutta - with Accountant Moggallāna",
@@ -206,7 +218,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 17,
+      "rank": 18,
       "type": "discourse",
       "slug": "mn43",
       "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
@@ -218,7 +230,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "discourse",
       "slug": "mn22",
       "title": "Alagaddūpama sutta - Simile of the Water Snake",
@@ -230,24 +242,12 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "sn12.51",
-      "title": "Parivīmaṁsana sutta - Thorough Investigation",
-      "description": "The Buddha explains the process of thoroughly investigating the arising and cessation of suffering through dependent co-arising.",
-      "contentSnippet": "“Or further, when there is utterly no <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>, with the ending of craving, could clinging be discerned?”",
-      "score": 63.2,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn15.2",
-      "title": "Pathavī sutta - Earth",
-      "description": "The Buddha shares that cyclic existence is without a discoverable beginning using an analogy of clay balls made from the earth.",
-      "contentSnippet": "“Bhikkhus, this |cyclic existence::wandering from one state of existence to another, the cycle of birth and death, moving on continuously [saṁsāra]| is without a discoverable beginning. A first point ",
+      "slug": "mn18",
+      "title": "Madhupiṇḍika sutta - Honey Ball",
+      "description": "On being asked about his teaching and what he proclaims, the Buddha describes non-conflict as the goal of his teaching and proclaims a state where perceptions do not lead to preoccupation. Venerable M",
+      "contentSnippet": "“Friend, I teach and proclaim in such a way that in this world with its |deities::gods [devas]|, |Māras::demons, tempters, beings of delusion; lit. causing death [mārake]|, |Brahmas::Gods; celestial b",
       "score": 63.2,
       "matchType": "multi-term-content",
       "priority": 1,

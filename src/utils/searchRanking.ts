@@ -1890,7 +1890,14 @@ export function rankResultsWithDiversity(
 	// This protects important discourses (priority 2+) from being penalized for sharing formulaic passages
 	const SNIPPET_SIMILARITY_PRIORITY_THRESHOLD = 1;
 
-	while (finalOrder.length < sorted.length) {
+	// Cap diversity selection to top positions — the while-loop is O(n²) and
+	// diversity/snippet-similarity only matter for results the user can see.
+	// Beyond this limit, remaining items are appended in pre-sorted score order.
+	const DIVERSITY_LIMIT = 200;
+	// Only compute snippet n-gram similarity for the first N positions
+	const SNIPPET_SIMILARITY_LIMIT = 50;
+
+	while (finalOrder.length < sorted.length && finalOrder.length < DIVERSITY_LIMIT) {
 		// Find next best item considering diversity
 		let bestIdx = -1;
 		let bestScore = -1;
@@ -1965,6 +1972,7 @@ export function rankResultsWithDiversity(
 				item.contentSnippet || item.item?.contentSnippet;
 			if (
 				ENABLE_SNIPPET_SIMILARITY &&
+				finalOrder.length < SNIPPET_SIMILARITY_LIMIT &&
 				item.type === "discourse" &&
 				seenSnippetSignatures.size > 0 &&
 				itemStrata === currentStrata && // Only apply within same quality tier
@@ -2011,7 +2019,8 @@ export function rankResultsWithDiversity(
 		used.add(bestIdx);
 
 		// Track content snippet signatures for similarity detection
-		if (selected.type === "discourse") {
+		// Only collect signatures while we're still within the similarity window
+		if (selected.type === "discourse" && finalOrder.length <= SNIPPET_SIMILARITY_LIMIT) {
 			const snippet =
 				selected.contentSnippet || selected.item?.contentSnippet;
 			const signatures = extractSnippetSignatures(snippet);
@@ -2048,6 +2057,16 @@ export function rankResultsWithDiversity(
 			}
 			lastGroup = selectedGroup;
 			sameGroupCount = 1;
+		}
+	}
+
+	// Append remaining items beyond the diversity limit in their pre-sorted score order.
+	// These are already sorted by score from the initial sort above.
+	if (finalOrder.length < sorted.length) {
+		for (let i = 0; i < sorted.length; i++) {
+			if (!used.has(i)) {
+				finalOrder.push(sorted[i]);
+			}
 		}
 	}
 

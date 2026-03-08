@@ -34,6 +34,27 @@ export interface SearchData {
 
 let fuseIndex: Fuse<SearchData> | null = null;
 
+// Pre-normalized content for fast content scanning (built once, reused across searches)
+let normalizedContentMap: Map<
+	string,
+	{ content: string; contentPali: string }
+> | null = null;
+
+function getNormalizedContentMap() {
+	if (normalizedContentMap) return normalizedContentMap;
+	normalizedContentMap = new Map();
+	const data = searchIndex as unknown as SearchData[];
+	for (const doc of data) {
+		normalizedContentMap.set(doc.slug, {
+			content: normalizeText((doc.content || "").toLowerCase()),
+			contentPali: doc.contentPali
+				? normalizeText(doc.contentPali.toLowerCase())
+				: "",
+		});
+	}
+	return normalizedContentMap;
+}
+
 async function getSearchIndex() {
 	if (fuseIndex) {
 		return fuseIndex;
@@ -42,13 +63,13 @@ async function getSearchIndex() {
 	// The generated module exports an array of {slug,title,description,content}
 	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
 
+	// Only index lightweight metadata fields — content matching is done via direct text scan
+	// (content + contentPali are ~8 MB total; removing them makes Fuse ~30x faster)
 	fuseIndex = new Fuse(searchData, {
 		keys: [
 			{ name: "slug", weight: 3 },
 			{ name: "title", weight: 2 },
 			{ name: "description", weight: 1.5 },
-			{ name: "content", weight: 1 },
-			{ name: "contentPali", weight: 0.5 }, // Pali-only, lower weight so English ranks higher
 		],
 		includeScore: true, // Required for maxScore capping
 		sortFn: (a: any, b: any) => {
@@ -776,7 +797,76 @@ export async function performSearch(
 
 	if (!query) return [];
 
-	const searchResults = fuse.search(fuseQuery);
+	const t0 = performance.now();
+	const fuseResults = fuse.search(fuseQuery);
+	const tFuseSearch = performance.now();
+
+	// Content supplement: find documents that match query terms in content/contentPali
+	// but weren't found by metadata-only Fuse search
+	const foundSlugs = new Set(fuseResults.map((r) => r.item.slug));
+	const contentTerms = highlightTerms
+		.filter(
+			(ht) =>
+				!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
+					ht.operation,
+				),
+		)
+		.map((ht) => normalizeText(ht.term.toLowerCase()));
+
+	const contentSupplementResults: Array<{
+		item: SearchData;
+		matches: readonly never[];
+		score: number;
+		refIndex: number;
+	}> = [];
+
+	// Build Pali stem-aware regex for each term (final vowel variation: a→o, e, i, u)
+	const contentRegexes = contentTerms.map((term) => {
+		const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+		if (/[aeiou]$/.test(escaped)) {
+			return new RegExp(escaped.slice(0, -1) + "[aeiou]", "i");
+		}
+		return null; // plain includes() is sufficient for non-vowel-ending terms
+	});
+
+	if (contentTerms.length > 0) {
+		const normalizedMap = getNormalizedContentMap();
+		const allDocs = searchIndex as unknown as SearchData[];
+		for (const doc of allDocs) {
+			if (foundSlugs.has(doc.slug)) continue;
+			const normalized = normalizedMap.get(doc.slug);
+			if (!normalized) continue;
+			const matchesAll = contentTerms.every((term, i) => {
+				const regex = contentRegexes[i];
+				// Plain includes first (fast path), then Pali stem regex for vowel-ending terms
+				if (
+					normalized.content.includes(term) ||
+					normalized.contentPali.includes(term)
+				) {
+					return true;
+				}
+				if (regex) {
+					return (
+						regex.test(normalized.content) ||
+						regex.test(normalized.contentPali)
+					);
+				}
+				return false;
+			});
+			if (matchesAll) {
+				contentSupplementResults.push({
+					item: doc,
+					matches: [] as const,
+					score: 0.99,
+					refIndex: -1,
+				});
+			}
+		}
+	}
+
+	const tContentScan = performance.now();
+
+	const searchResults = [...fuseResults, ...contentSupplementResults];
 	if (import.meta.env?.DEV) {
 		console.log("[search] results:", searchResults.length);
 	}
@@ -803,17 +893,22 @@ export async function performSearch(
 		// Only show content snippets if contentSearchable is not false
 		const showContentSnippet = item.contentSearchable !== false;
 
-		if (options.highlight && matches && showContentSnippet) {
-			const contentMatches = matches?.filter((m) => m.key === "content");
-			const contentPaliMatches = matches?.filter(
-				(m) => m.key === "contentPali",
-			);
+		if (options.highlight && showContentSnippet) {
+			const contentMatches =
+				matches?.filter((m) => m.key === "content") || [];
+			const contentPaliMatches =
+				matches?.filter((m) => m.key === "contentPali") || [];
 
-			// Prefer English snippet when match exists in English content
-			if (contentMatches?.length) {
+			// Try English snippet (uses Fuse indices when available, regex fallback otherwise)
+			if (item.content) {
+				const indices = contentMatches.length
+					? contentMatches.flatMap(
+							(match) => match.indices as [number, number][],
+						)
+					: [];
 				const contentSnippet = findBestMatchingParagraph(
 					item.content,
-					contentMatches.flatMap((match) => match.indices),
+					indices,
 					highlightTerms,
 				);
 				if (contentSnippet && contentSnippet.includes("<mark")) {
@@ -827,8 +922,10 @@ export async function performSearch(
 				item.contentPali &&
 				typeof item.contentPali === "string"
 			) {
-				const paliIndices = contentPaliMatches?.length
-					? contentPaliMatches.flatMap((match) => match.indices)
+				const paliIndices = contentPaliMatches.length
+					? contentPaliMatches.flatMap(
+							(match) => match.indices as [number, number][],
+						)
 					: [];
 				const paliSnippet = findBestMatchingParagraph(
 					item.contentPali,
@@ -847,6 +944,11 @@ export async function performSearch(
 
 	// Re-sort by effective score (lower is better in Fuse.js)
 	mappedResults.sort((a, b) => a._score - b._score);
+
+	const tSnippets = performance.now();
+	console.log(
+		`[search-perf:performSearch] q=${JSON.stringify(query)} | fuseSearch=${Math.round(tFuseSearch - t0)}ms contentScan=${Math.round(tContentScan - tFuseSearch)}ms snippets=${Math.round(tSnippets - tContentScan)}ms results=${fuseResults.length}+${contentSupplementResults.length}`,
+	);
 
 	// Remove internal _score before returning
 	return mappedResults.map(({ _score, ...rest }) => rest);

@@ -523,7 +523,7 @@ async function performTestSearch(query) {
 			throw new Error(data.error || "API returned unsuccessful response");
 		}
 
-		return data.results;
+		return { results: data.results, timing: data.timing || null };
 	} catch (error) {
 		if (error.cause?.code === "ECONNREFUSED") {
 			console.log(
@@ -622,7 +622,28 @@ async function runTests() {
 		);
 
 		// Perform search
-		const results = await performTestSearch(testQuery.query);
+		const { results, timing } = await performTestSearch(testQuery.query);
+
+		// Display timing breakdown if available
+		if (timing) {
+			const parts = [];
+			if (timing.parse != null) parts.push(`parse ${timing.parse}ms`);
+			if (timing.categories != null) parts.push(`categories ${timing.categories}ms`);
+			if (timing.discourses != null) {
+				let discLabel = `discourses ${timing.discourses}ms`;
+				if (timing.discFuse != null || timing.discScoring != null) {
+					const sub = [];
+					if (timing.discFuse != null) sub.push(`fuse ${timing.discFuse}ms`);
+					if (timing.discScoring != null) sub.push(`scoring ${timing.discScoring}ms`);
+					discLabel += ` (${sub.join(", ")})`;
+				}
+				parts.push(discLabel);
+			}
+			if (timing.ranking != null) parts.push(`ranking ${timing.ranking}ms`);
+			if (timing.format != null) parts.push(`format ${timing.format}ms`);
+			if (timing.total != null) parts.push(`${c.bold}total ${timing.total}ms${c.reset}`);
+			console.log(`${c.dim}⏱  ${parts.join(" → ")}${c.reset}`);
+		}
 
 		// Add rank to results
 		const rankedResults = results.map((r, i) => ({ ...r, rank: i + 1 }));

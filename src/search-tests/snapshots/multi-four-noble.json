@@ -1,6 +1,6 @@
 {
   "query": "four noble truths",
-  "timestamp": "2026-03-06T14:45:03.721Z",
+  "timestamp": "2026-03-08T04:12:35.564Z",
   "version": "1.0.0",
   "results": [
     {
@@ -10,7 +10,7 @@
       "title": "Saccavibhaṅga sutta - Exposition of the Truths",
       "description": "The Buddha affirms the Four Noble Truths as the core of his teaching and praises venerable Sāriputta’s deep understanding of them, who then expounds the truths, detailing suffering in all its forms, t",
       "contentSnippet": "“At Varanasi, bhikkhus, in the Deer Park at Isipatana, the |Tathāgata::one who has arrived at the truth, an epithet of a perfectly Awakened One [tathāgata]|, the |Arahant::a worthy one, a fully awaken",
-      "score": 117.9,
+      "score": 119.9,
       "matchType": "description-whole-word",
       "priority": 2,
       "nonStopwordMatches": 3
@@ -22,7 +22,7 @@
       "title": "Mahāsatipaṭṭhāna sutta - The Great Discourse on the Establishments of Mindfulness",
       "description": "The Buddha's most detailed exposition of the four establishments of mindfulness. This extended version includes comprehensive definitions of the Four Noble Truths, the Noble Eightfold Path, and the fo",
       "contentSnippet": "<strong>4.5. Observing the Mental Qualities with regard to the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yell",
-      "score": 117.60000000000001,
+      "score": 119.60000000000001,
       "matchType": "description-whole-word",
       "priority": 1.9,
       "nonStopwordMatches": 3
@@ -34,7 +34,7 @@
       "title": "Dhammacakkappavattana sutta - Setting in Motion of the Wheel of Dhamma",
       "description": "The Buddha’s first discourse to the group of five bhikkhus at the Deer Park in Isipatana, near Varanasi. The discourse explains the Four Noble Truths and the Noble Eightfold Path in brief. It ends wit",
       "contentSnippet": "As long as my wisdom and vision regarding these <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\"",
-      "score": 115.2,
+      "score": 117.2,
       "matchType": "description-whole-word",
       "priority": 1.2,
       "nonStopwordMatches": 3
@@ -86,7 +86,7 @@
       "title": "Paṭhama samaṇabrāhmaṇa sutta - Ascetics And Brahmins (First)",
       "description": "Whether in the past, future, or present, all fully awakened to things as they truly are do so by fully awakening to the Four Noble Truths.",
       "contentSnippet": "What are the four? The Noble Truth of |suffering::discomfort, unpleasantness, discontentment, dissatisfaction, stress, pain, disease, i.e. mild or intense suffering [dukkha]|, the Noble Truth of the |",
-      "score": 115,
+      "score": 117,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -98,7 +98,7 @@
       "title": "Paṭhama koṭigāma sutta - At Koṭi Village (First)",
       "description": "The Buddha describes the wandering in samsara due to not fully understanding and penetrating the Four Noble Truths.",
       "contentSnippet": "At one time, the Blessed One was dwelling among the Vajji people, in the village of Koṭi. There, the Blessed One addressed the bhikkhus: “Bhikkhus, because of not fully understanding and penetrating t",
-      "score": 114.60000000000001,
+      "score": 116.60000000000001,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -106,11 +106,11 @@
     {
       "rank": 8,
       "type": "discourse",
-      "slug": "sn56.32",
-      "title": "Khadirapatta sutta - Acacia Leaf",
-      "description": "The Buddha explains the importance of understanding the Four Noble Truths to end suffering with a simile of making a container out of leaves.",
+      "slug": "sn56.44",
+      "title": "Kūṭāgāra sutta - Mansion",
+      "description": "The Buddha explains the importance of understanding the Four Noble Truths to end suffering with a simile of constructing a mansion.",
       "contentSnippet": "“Bhikkhus, if someone were to say: ‘Without |fully understanding::understanding the four noble truths in principle, then discerning them in each moment and then experientially penetrating them| the <m",
-      "score": 114.4,
+      "score": 116.4,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -118,11 +118,11 @@
     {
       "rank": 9,
       "type": "discourse",
-      "slug": "sn56.34",
-      "title": "Cela sutta - Clothes",
-      "description": "The Buddha explains the urgency of understanding the Four Noble Truths to end suffering with a simile of extinguishing a fire on one’s clothes or head.",
-      "contentSnippet": "Bhikkhus, even though one’s clothes or head were burning, one might look on equanimously, |paying no attention to it::disregarding it [amanasikaritvā]|. But as long as one has not made the breakthroug",
-      "score": 114.4,
+      "slug": "mn28",
+      "title": "Mahāhatthipadopama sutta - The Greater Discourse on the Simile of the Elephant’s Footprint",
+      "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and wind.",
+      "contentSnippet": "“Just as, friends, the footprints of all jungle creatures are encompassed by the elephant’s footprint, which is declared the largest due to its size; similarly, friends, all wholesome teachings are en",
+      "score": 116.4,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -130,11 +130,11 @@
     {
       "rank": 10,
       "type": "discourse",
-      "slug": "mn28",
-      "title": "Mahāhatthipadopama sutta - The Greater Discourse on the Simile of the Elephant’s Footprint",
-      "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and wind.",
-      "contentSnippet": "“Just as, friends, the footprints of all jungle creatures are encompassed by the elephant’s footprint, which is declared the largest due to its size; similarly, friends, all wholesome teachings are en",
-      "score": 114.4,
+      "slug": "sn56.34",
+      "title": "Cela sutta - Clothes",
+      "description": "The Buddha explains the urgency of understanding the Four Noble Truths to end suffering with a simile of extinguishing a fire on one’s clothes or head.",
+      "contentSnippet": "Bhikkhus, even though one’s clothes or head were burning, one might look on equanimously, |paying no attention to it::disregarding it [amanasikaritvā]|. But as long as one has not made the breakthroug",
+      "score": 116.4,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -146,7 +146,7 @@
       "title": "Paṭhama sūriya sutta - The Sun (First)",
       "description": "Just as dawn precedes and predicts the rising of the sun, so too, for a bhikkhu, right view precedes and predicts the breakthrough to the Four Noble Truths as they really are.",
       "contentSnippet": "“Bhikkhus, just as dawn precedes and predicts the rising of the sun, so too, bhikkhus, for a bhikkhu, right view precedes and predicts the breakthrough to the <mark class=\"bg-yellow-100 dark:bg-yellow",
-      "score": 114.4,
+      "score": 116.4,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -158,7 +158,7 @@
       "title": "Paṭhama sinerupabbatarāja sutta - Sineru, King Of Mountains (First)",
       "description": "For a noble disciple endowed with right view, who understands the Four Noble Truths, the suffering that has been eradicated and exhausted is far greater than what little remains.",
       "contentSnippet": "In the same way, bhikkhus, for a <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">noble</mark> disciple, one endowed with right view, who has attained |full unders",
-      "score": 114.4,
+      "score": 116.4,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3
@@ -233,25 +233,25 @@
     {
       "rank": 19,
       "type": "discourse",
-      "slug": "an3.61",
-      "title": "Titthāyatana sutta - Bases Of Sectarian Views",
-      "description": "The Buddha explains the three bases of sectarian views that when closely examined, culminate in inaction. He then shares the Dhamma that is irrefutable, undefiled, blameless, and not disapproved of by",
-      "contentSnippet": "Bhikkhus, this Dhamma taught by me—regarding the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">four</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded",
-      "score": 109,
-      "matchType": "content-whole-word",
-      "priority": 3,
+      "slug": "sn56.24",
+      "title": "Arahanta sutta - Arahants",
+      "description": "The Arahants of the past, present, and future have truly understood the Four Noble Truths.",
+      "contentSnippet": "“Whether in the past, present, or future, bhikkhus, all those arahants and Perfectly Awakened Ones have truly understood the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inlin",
+      "score": 116.4,
+      "matchType": "description-whole-word",
+      "priority": 1,
       "nonStopwordMatches": 3
     },
     {
       "rank": 20,
       "type": "discourse",
-      "slug": "sn56.24",
-      "title": "Arahanta sutta - Arahants",
-      "description": "The Arahants of the past, present, and future have truly understood the Four Noble Truths.",
-      "contentSnippet": "“Whether in the past, present, or future, bhikkhus, all those arahants and Perfectly Awakened Ones have truly understood the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inlin",
-      "score": 114.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
+      "slug": "mn10",
+      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
+      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
+      "contentSnippet": "<strong>4.5. Observing the Mental Qualities with regard to the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yell",
+      "score": 109.7,
+      "matchType": "content-whole-word",
+      "priority": 1.9,
       "nonStopwordMatches": 3
     }
   ],
