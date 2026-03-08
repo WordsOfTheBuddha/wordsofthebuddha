@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 920" width="920" height="920">
+    <defs>
+        <!-- Background gradient (dark, getting deeper at bottom) -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0c1020" />
+            <stop offset="50%" stop-color="#0e1428" />
+            <stop offset="100%" stop-color="#080c1a" />
+        </linearGradient>
+
+        <!-- Chain connection gradient (top to bottom) -->
+        <linearGradient id="chainDown" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a5868" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="#685070" stop-opacity="0.5" />
+        </linearGradient>
+
+        <!-- Golden radial glow for Nibbana destination -->
+        <radialGradient id="nibbanaGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.4" />
+            <stop offset="25%" stop-color="#daa520" stop-opacity="0.18" />
+            <stop offset="60%" stop-color="#c89420" stop-opacity="0.06" />
+            <stop offset="100%" stop-color="#b88820" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.45" />
+        </filter>
+
+        <!-- Stage node gradients (7 stages, blue-grey) -->
+        <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1c2836" />
+            <stop offset="100%" stop-color="#14202e" />
+        </linearGradient>
+        <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e2838" />
+            <stop offset="100%" stop-color="#162030" />
+        </linearGradient>
+        <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#20283a" />
+            <stop offset="100%" stop-color="#182232" />
+        </linearGradient>
+        <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#22283c" />
+            <stop offset="100%" stop-color="#1a2234" />
+        </linearGradient>
+        <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#24283e" />
+            <stop offset="100%" stop-color="#1c2236" />
+        </linearGradient>
+        <linearGradient id="stg6" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#262840" />
+            <stop offset="100%" stop-color="#1e2238" />
+        </linearGradient>
+        <linearGradient id="stg7" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2a2840" />
+            <stop offset="100%" stop-color="#222038" />
+        </linearGradient>
+
+        <!-- Simile bar gradient -->
+        <linearGradient id="simGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#141828" stop-opacity="0" />
+            <stop offset="15%" stop-color="#141828" />
+            <stop offset="85%" stop-color="#141828" />
+            <stop offset="100%" stop-color="#141828" stop-opacity="0" />
+        </linearGradient>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="920" fill="url(#bg)" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="38" text-anchor="middle" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">MN 24 &#8212; RATHAVIN&#299;TA SUTTA</text>
+    <text x="460" y="62" text-anchor="middle" fill="#b0c0d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold"
+        letter-spacing="1">Relay Chariots</text>
+    <text x="460" y="86" text-anchor="middle" fill="#708090"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        letter-spacing="0.5">Each purification for the sake of the next</text>
+    <text x="460" y="102" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">
+        satta rathavin&#299;t&#257;ni</text>
+
+    <!-- Thin decorative line under title -->
+    <line x1="280" y1="112" x2="640" y2="112" stroke="#708090" stroke-opacity="0.3"
+        stroke-width="0.6" />
+
+    <!-- ============ DESCENDING CHAIN ============ -->
+    <!-- Vertical connecting line (behind nodes) -->
+    <line x1="460" y1="128" x2="460" y2="638" stroke="url(#chainDown)" stroke-width="2"
+        opacity="0.35" />
+
+    <!--    1. Purity of ethical conduct (sīlavisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="118" width="300" height="52" rx="10" fill="url(#stg1)" stroke="#446878"
+            stroke-width="1" stroke-opacity="0.45" />
+    </g>
+    <text x="460" y="141" text-anchor="middle" fill="#a4b4c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold">
+        Purity of Ethical Conduct</text>
+    <text x="460" y="161" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">
+        sīlavisuddhi</text>
+    <path d="M 449 178 L 460 190 L 471 178" stroke="#588088" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.40" />
+
+    <!--    2. Mental purity (cittavisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="196" width="300" height="52" rx="10" fill="url(#stg2)" stroke="#486070"
+            stroke-width="1" stroke-opacity="0.43" />
+    </g>
+    <text x="460" y="219" text-anchor="middle" fill="#a0b0c4"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold">
+        Mental Purity</text>
+    <text x="460" y="239" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">
+        cittavisuddhi</text>
+    <path d="M 449 256 L 460 268 L 471 256" stroke="#587888" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.42" />
+
+    <!--    3. Purity of view (diṭṭhivisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="274" width="300" height="52" rx="10" fill="url(#stg3)" stroke="#4c6070"
+            stroke-width="1" stroke-opacity="0.44" />
+    </g>
+    <text x="460" y="297" text-anchor="middle" fill="#9cacc0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold">
+        Purity of View</text>
+    <text x="460" y="317" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">
+        diṭṭhivisuddhi</text>
+    <path d="M 449 334 L 460 346 L 471 334" stroke="#587080" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.44" />
+
+    <!--    4. Purification through overcoming doubt (kaṅkhāvitaraṇavisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="352" width="300" height="52" rx="10" fill="url(#stg4)" stroke="#506070"
+            stroke-width="1" stroke-opacity="0.46" />
+    </g>
+    <text x="460" y="372" text-anchor="middle" fill="#98a8bc"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">
+        Purification of overcoming Doubt</text>
+    <text x="460" y="392" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">
+        kaṅkhāvitaraṇavisuddhi</text>
+    <path d="M 449 412 L 460 424 L 471 412" stroke="#607080" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.46" />
+
+    <!--    5. Knowledge &amp; vision of path (maggāmaggañāṇadassanavisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="430" width="300" height="52" rx="10" fill="url(#stg5)" stroke="#546070"
+            stroke-width="1" stroke-opacity="0.48" />
+    </g>
+    <text x="460" y="450" text-anchor="middle" fill="#94a4b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">
+        Knowledge &amp; Vision of Path</text>
+    <text x="460" y="470" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">
+        maggāmaggañāṇadassanavisuddhi</text>
+    <path d="M 449 490 L 460 502 L 471 490" stroke="#607080" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.48" />
+
+    <!--    6. Knowledge &amp; vision of practice (paṭipadāñāṇadassanavisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="508" width="300" height="52" rx="10" fill="url(#stg6)" stroke="#586070"
+            stroke-width="1" stroke-opacity="0.50" />
+    </g>
+    <text x="460" y="528" text-anchor="middle" fill="#90a0b4"
+        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">
+        Knowledge &amp; Vision of Practice</text>
+    <text x="460" y="548" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">
+        paṭipadāñāṇadassanavisuddhi</text>
+    <path d="M 449 568 L 460 580 L 471 568" stroke="#687080" stroke-width="1.3" fill="none"
+        stroke-linejoin="round" opacity="0.50" />
+
+    <!--    7. Purification of knowledge and vision (ñāṇadassanavisuddhi)    -->
+    <g filter="url(#shadowDrop)">
+        <rect x="310" y="586" width="300" height="52" rx="10" fill="url(#stg7)" stroke="#606070"
+            stroke-width="1" stroke-opacity="0.52" />
+    </g>
+    <text x="460" y="606" text-anchor="middle" fill="#8c9cb0"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
+        Purification of Knowledge and Vision</text>
+    <text x="460" y="626" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">
+        ñāṇadassanavisuddhi</text>
+    <path d="M 449 646 L 460 660 L 471 646" stroke="#687080" stroke-width="1.4" fill="none"
+        stroke-linejoin="round" opacity="0.52" />
+
+    <!-- ============ DESTINATION: Final Nibbāna without Clinging ============ -->
+    <g>
+        <ellipse cx="460" cy="718" rx="320" ry="52" fill="url(#nibbanaGlow)" />
+        <g filter="url(#shadowDrop)">
+            <rect x="260" y="686" width="400" height="64" rx="12" fill="#1a1814" stroke="#b89830"
+                stroke-width="1.2" stroke-opacity="0.5" />
+        </g>
+        <ellipse cx="460" cy="718" rx="280" ry="36" fill="none" stroke="#daa520" stroke-width="1"
+            stroke-opacity="0.2" filter="url(#glow2)" />
+        <ellipse cx="460" cy="718" rx="220" ry="28" fill="none" stroke="#c8a020" stroke-width="0.8"
+            stroke-opacity="0.15" filter="url(#glow1)" />
+        <text x="460" y="708" text-anchor="middle" fill="#ffd700"
+            font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="bold"
+            letter-spacing="1.5" filter="url(#glow1)">Final Nibbāna without Clinging</text>
+        <text x="460" y="732" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
+            anupādāparinibbāna</text>
+    </g>
+
+    <!-- ============ SIMILE BAR ============ -->
+    <rect x="100" y="780" width="720" height="66" rx="8" fill="url(#simGrad)" stroke="#2a3848"
+        stroke-width="0.8" stroke-opacity="0.4" />
+    <text x="460" y="800" text-anchor="middle" fill="#607888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="2">
+        RELAY CHARIOTS SIMILE</text>
+    <text x="460" y="820" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">
+        Just as the king goes from S&#257;vatthi to S&#257;keta by seven relay chariots&#8212;</text>
+    <text x="460" y="838" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">
+        dismounting one, mounting the next&#8212;so each purification is for the sake of the next.</text>
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="862" x2="620" y2="862" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <text x="460" y="878" text-anchor="middle" fill="#384858"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">
+        Majjhima Nik&#257;ya 24</text>
+</svg>
