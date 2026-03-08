@@ -782,6 +782,32 @@ function findBestMatchingParagraph(
 	return result;
 }
 
+/**
+ * True if the Fuse query only constrains slug (e.g. slug:^an, slug:^an4.).
+ * For such queries we skip the content supplement so collection pages don't
+ * get unrelated discourses that merely mention "an", "an4.1", etc. in content.
+ */
+function isSlugOnlyQuery(fuseQuery: { $and?: unknown[] }): boolean {
+	const andClauses = fuseQuery.$and;
+	if (!Array.isArray(andClauses)) return false;
+	for (const clause of andClauses) {
+		if (clause === null || typeof clause !== "object") return false;
+		const c = clause as Record<string, unknown>;
+		if (c.$or !== undefined) {
+			if (!Array.isArray(c.$or)) return false;
+			for (const orItem of c.$or) {
+				if (orItem === null || typeof orItem !== "object") return false;
+				const keys = Object.keys(orItem as object);
+				if (keys.length !== 1 || keys[0] !== "slug") return false;
+			}
+		} else {
+			const keys = Object.keys(c);
+			if (keys.length !== 1 || keys[0] !== "slug") return false;
+		}
+	}
+	return true;
+}
+
 export async function performSearch(
 	query: string,
 	options: SearchOptions = {},
@@ -802,8 +828,12 @@ export async function performSearch(
 	const tFuseSearch = performance.now();
 
 	// Content supplement: find documents that match query terms in content/contentPali
-	// but weren't found by metadata-only Fuse search
+	// but weren't found by metadata-only Fuse search.
+	// Skip for slug-only queries (e.g. collection pages) so we don't add discourses
+	// that merely mention "an", "an4.1", etc. in their content.
 	const foundSlugs = new Set(fuseResults.map((r) => r.item.slug));
+	const runContentSupplement = !isSlugOnlyQuery(fuseQuery);
+
 	const contentTerms = highlightTerms
 		.filter(
 			(ht) =>
@@ -829,7 +859,7 @@ export async function performSearch(
 		return null; // plain includes() is sufficient for non-vowel-ending terms
 	});
 
-	if (contentTerms.length > 0) {
+	if (runContentSupplement && contentTerms.length > 0) {
 		const normalizedMap = getNormalizedContentMap();
 		const allDocs = searchIndex as unknown as SearchData[];
 		for (const doc of allDocs) {
