@@ -272,24 +272,28 @@ const isSearchOnly = mode === "search-only";
 			<!-- Search Help Panel -->
 			<div id="search-help" class="hidden bg-[var(--surface-elevated)] px-4 pb-4 rounded-b-lg">
 				<div class="max-w-[600px] p-4 rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] text-[var(--surface-ink)] shadow-sm text-sm max-h-[50vh] overflow-y-auto">
-					<h3 class="font-semibold mb-2">Search Syntax:</h3>
+					<h3 class="font-semibold mb-2">Simple search</h3>
 					<ul class="space-y-1">
-						<li><code class="not-prose">quest</code> - Relevance (including fuzzy) match on quest</li>
-						<li><code class="not-prose">'jhana</code> - Exact match on jhana</li>
-						<li><code class="not-prose">!wrong</code> - Discourses that do not have the term wrong are matched</li>
-						<li><code class="not-prose">^SN22</code> - Discourses that start with SN22</li>
-						<li><code class="not-prose">world$</code> - Ends with world</li>
-						<li><code class="not-prose">"perception consciousness jhana"</code> - Exact matches for perception, consciousness, and jhana</li>
-						<li><code class="not-prose">"letting go" !anger</code> - Exactly matches "letting go" and without anger</li>
-						<li><code class="not-prose">illusion | ignorance</code> - Matches either illusion or ignorance on any fields</li>
-					</ul>
-					<h3 class="font-semibold mb-2 mt-4">More Specific Examples:</h3>
-					<ul class="space-y-1 text-xs text-gray-500">
-						<li><code class="not-prose">!^DHP</code> matches all discourses except those starting with DHP</li>
-						<li><code class="not-prose">^SN content:'consciousness content:!perception</code> matches all SN discourses that have consciousness in content but do not have perception in content.</li>
-						<li><code class="not-prose">title:element (content:space | content:consciousness)</code> matches where title is element and content has either space or consciousness.</li>
-						<li><code class="not-prose">^AN (urgency | faith) !mindfulness !child</code> matches AN discourses that have urgency or faith in them, and do not have the words mindfulness or child in them.</li>
-					</ul>
+							<li><code class="not-prose">quest</code> — finds “quest” (fuzzy)</li>
+							<li><code class="not-prose">^SN</code> or <code class="not-prose">^AN</code> — only in that collection (e.g. SN, AN, MN, DHP)</li>
+							<li><code class="not-prose">!word</code> — exclude discourses containing <em>word</em></li>
+							<li><code class="not-prose">'jhana</code> — exact word “jhana”</li>
+							<li><code class="not-prose">"letting go"</code> — exact phrase</li>
+							<li><code class="not-prose">illusion | ignorance</code> — either word</li>
+							<li><code class="not-prose">akuppa cetovimutti</code> or <code class="not-prose">animmita</code> — Pali terms (fuzzy)</li>
+						</ul>
+					<h3 class="font-semibold mb-2 mt-4">Combining</h3>
+					<ul class="space-y-1">
+							<li><code class="not-prose">^SN consciousness</code> — SN discourses that mention consciousness</li>
+							<li><code class="not-prose">!^DHP</code> — all collections except DHP</li>
+							<li><code class="not-prose">^AN urgency !mindfulness</code> — AN discourses with “urgency” and without “mindfulness”</li>
+						</ul>
+					<h3 class="font-semibold mb-2 mt-4">By field (advanced)</h3>
+					<p class="mb-1">Restrict to title or body: <code class="not-prose">title:...</code>, <code class="not-prose">content:...</code></p>
+					<ul class="space-y-1">
+							<li><code class="not-prose">title:element content:consciousness</code> — title contains “element”, body contains “consciousness”</li>
+							<li><code class="not-prose">title:element (content:space | content:consciousness)</code> — title “element”, body has “space” or “consciousness”</li>
+						</ul>
 				</div>
 			</div>
 		</div>
@@ -370,12 +374,9 @@ const isSearchOnly = mode === "search-only";
 		background-color: #2563eb;
 	}
 
-	/* Code styling in help panel */
+	/* Code in help panel: original style — monospace dark chip */
 	.explore-widget #search-help code {
 		@apply bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono;
-	}
-	.explore-widget #search-help .text-gray-500 {
-		@apply dark:text-gray-300;
 	}
 
 	/* Discourse card in search results */
@@ -720,7 +721,9 @@ const isSearchOnly = mode === "search-only";
 	} from "../utils/searchRanking";
 
 	async function performSearch(query: string) {
-		// Always hide loading and show results container when searching
+		// Close help panel when a new search is performed
+		if (searchHelp) searchHelp.classList.add("hidden");
+		// Show results area
 		if (loadingEl) loadingEl.classList.add("hidden");
 		if (resultsContainer) resultsContainer.classList.remove("hidden");
 
@@ -798,7 +801,7 @@ const isSearchOnly = mode === "search-only";
 					let categoryNonStopMatches = 0;
 					const matchedNonStopTerms: string[] = [];
 					for (const term of nonStopTerms) {
-						const termLower = term.toLowerCase();
+						const termLower = term.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 						const wordBoundaryRegex = new RegExp(`\\b${termLower}`, 'i');
 						if (wordBoundaryRegex.test(cleanedText)) {
 							categoryNonStopMatches++;
@@ -1128,8 +1131,8 @@ const isSearchOnly = mode === "search-only";
 				// Filter-only: get all discourses matching the slug prefix
 				discourseResults = await getFilteredDiscourses(slugPrefixes);
 			} else {
-				// Normal search with query terms
-				discourseResults = await searchDiscourses(effectiveQuery, { highlight: true });
+				// Pass full query so slug prefix (e.g. ^AN) is in the Fuse query and OR counts are correct
+				discourseResults = await searchDiscourses(query.trim(), { highlight: true });
 			}
 
 			// Get non-stopword terms for multi-term query ranking
@@ -1483,6 +1486,9 @@ const isSearchOnly = mode === "search-only";
 			// Render results
 			const { transformId } = await import("../utils/transformId");
 			renderSearchResults(rankedResults, query, transformId);
+
+			// Scroll to the top of the page so search results are visible from the start
+			window.scrollTo({ top: 0, behavior: "smooth" });
 
 		} catch (error) {
 			console.error("Search error:", error);

@@ -1,6 +1,10 @@
 export const SEARCH_FIELDS = ['slug', 'title', 'description', 'content', 'contentPali'] as const;
 type SearchField = typeof SEARCH_FIELDS[number];
 
+/** Keys actually indexed by Fuse; content/contentPali are matched via post-filter only */
+export const FUSE_SEARCHABLE_KEYS = ['slug', 'title', 'description'] as const;
+type FuseSearchableField = typeof FUSE_SEARCHABLE_KEYS[number];
+
 interface FuseQueryTerm {
     $or?: Array<Record<SearchField, string> | FuseQueryTerm>;
     $and?: Array<Record<SearchField, string> | FuseQueryTerm>;
@@ -18,9 +22,20 @@ interface ParseResult {
     usedTerms: Set<string>;  // Track terms used in OR operations
 }
 
+/** Content/contentPali conditions applied as post-filter (Fuse only has slug/title/description) */
+export interface ContentConditions {
+    /** Each inner array is an OR group; doc must match at least one term per group */
+    include: string[][];
+    /** Doc must not contain any of these terms in content or contentPali */
+    exclude: string[];
+}
+
 export interface FuseQueryResult {
     query: FuseQueryTerm;
     highlightTerms: HighlightTerm[];
+    contentConditions: ContentConditions;
+    /** When set, run Fuse on this slug-prefix subset so OR/AND counts are correct */
+    slugPrefixFilter?: string[];
 }
 
 export type HighlightTerm = {
@@ -147,10 +162,10 @@ function parseQuery(query: string): ParseResult {
 }
 
 function expandGenericTerm(term: string): Array<Record<string, string> | FuseQueryTerm> {
-    // Check if term is a negation
+    // Only expand to Fuse-searchable keys; content/contentPali are applied as post-filter
     const isNegation = term.startsWith('!');
     const value = isNegation ? term : term;  // Keep ! for Fuse.js to handle
-    const fieldQueries = SEARCH_FIELDS.map(field => ({ [field]: value }));
+    const fieldQueries = FUSE_SEARCHABLE_KEYS.map(field => ({ [field]: value }));
 
     // For negations, wrap in $and to ensure all fields match the negation
     return isNegation ? [{ $and: fieldQueries }] : fieldQueries;
@@ -198,6 +213,16 @@ function simplifyQuery(query: string): string {
     return simplified;
 }
 
+/** Strip Fuse operators to get the plain term for content matching */
+function cleanValueForContent(value: string): string {
+    let v = value.trim();
+    if (v.startsWith('!')) v = v.slice(1);
+    if (v.startsWith('^')) v = v.slice(1);
+    if (v.startsWith("'")) v = v.slice(1);
+    if (v.endsWith('$')) v = v.slice(0, -1);
+    return v.trim().toLowerCase();
+}
+
 function extractHighlightTerm(term: string): HighlightTerm | null {
     const { field, value } = parseFieldPattern(term);
     let operation: HighlightTerm['operation'] = 'fuzzy';
@@ -230,13 +255,26 @@ function extractHighlightTerm(term: string): HighlightTerm | null {
     };
 }
 
+function isContentField(field: string): field is 'content' | 'contentPali' {
+    return field === 'content' || field === 'contentPali';
+}
+
+/** True if value looks like a collection prefix only (e.g. ^AN, ^SN), not ^an4. */
+function isCollectionPrefixOnly(value: string): boolean {
+    if (!value.startsWith('^') || value.length < 2) return false;
+    const rest = value.slice(1).toLowerCase();
+    return /^[a-z]+$/.test(rest); // letters only, no digits/dots
+}
+
 export function buildFuseQuery(rawQuery: string): FuseQueryResult {
     const query = simplifyQuery(rawQuery);
     const { terms: parsedTerms } = parseQuery(query);
     const andTerms: Array<Record<string, string> | FuseQueryTerm> = [];
     const highlightTerms: Set<HighlightTerm> = new Set();
+    const contentConditions: ContentConditions = { include: [], exclude: [] };
+    let slugPrefixFilter: string[] | undefined;
 
-    parsedTerms.forEach(term => {
+    parsedTerms.forEach((term, index) => {
         if (term.isOr) {
             // Handle OR groups
             const orTerms = term.value
@@ -250,34 +288,92 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
                 if (highlightTerm) highlightTerms.add(highlightTerm);
             });
 
-            // ...existing OR group query building...
-            const orGroup: FuseQueryTerm = {
-                $or: orTerms.flatMap(orTerm => {
-                    const { field, value } = parseFieldPattern(orTerm);
-                    return field
+            const fuseOrClauses: Array<Record<string, string> | FuseQueryTerm> = [];
+            const contentOrTerms: string[] = [];
+
+            orTerms.forEach(orTerm => {
+                const { field, value } = parseFieldPattern(orTerm);
+                if (field && isContentField(field)) {
+                    const clean = cleanValueForContent(value);
+                    if (value.startsWith('!')) {
+                        contentConditions.exclude.push(clean);
+                    } else {
+                        contentOrTerms.push(clean);
+                    }
+                } else {
+                    const clauses = field
                         ? [{ [field]: value }]
                         : expandGenericTerm(value);
-                })
-            };
-            andTerms.push(orGroup);
+                    clauses.forEach(c => fuseOrClauses.push(c));
+                }
+            });
+
+            if (contentOrTerms.length > 0) {
+                contentConditions.include.push(contentOrTerms);
+            }
+            if (fuseOrClauses.length > 0) {
+                andTerms.push(fuseOrClauses.length === 1 ? fuseOrClauses[0] : { $or: fuseOrClauses });
+            }
         } else {
             const highlightTerm = extractHighlightTerm(term.value);
             if (highlightTerm) highlightTerms.add(highlightTerm);
 
-            // ...existing term handling...
             if (term.isFieldSpecific && term.field) {
-                andTerms.push({ [term.field]: term.value });
+                if (isContentField(term.field)) {
+                    const clean = cleanValueForContent(term.value);
+                    if (term.value.startsWith('!')) {
+                        contentConditions.exclude.push(clean);
+                    } else {
+                        contentConditions.include.push([clean]);
+                    }
+                } else {
+                    andTerms.push({ [term.field]: term.value });
+                }
             } else {
-                const expanded = expandGenericTerm(term.value);
-                andTerms.push(expanded.length === 1 ? expanded[0] : { $or: expanded });
+                // Collection-only prefix (e.g. ^AN, ^SN): pre-filter index by slug instead of Fuse clause so OR counts are correct
+                if (isCollectionPrefixOnly(term.value)) {
+                    const prefix = term.value.slice(1).toLowerCase();
+                    slugPrefixFilter = slugPrefixFilter ?? [];
+                    if (!slugPrefixFilter.includes(prefix)) slugPrefixFilter.push(prefix);
+                } else {
+                    const expanded = expandGenericTerm(term.value);
+                    andTerms.push(expanded.length === 1 ? expanded[0] : { $or: expanded });
+                    // Only add generic negation to content exclude when it's a word, not slug-prefix/suffix
+                    if (term.value.startsWith('!') && !term.value.startsWith('!^') && !term.value.endsWith('$')) {
+                        contentConditions.exclude.push(cleanValueForContent(term.value));
+                    }
+                }
             }
         }
     });
 
+    const fuseQuery = { $and: andTerms };
+    normalizeSlugPrefixCase(fuseQuery);
     return {
-        query: { $and: andTerms },
-        highlightTerms: Array.from(highlightTerms)
+        query: fuseQuery,
+        highlightTerms: Array.from(highlightTerms),
+        contentConditions,
+        slugPrefixFilter: slugPrefixFilter?.length ? slugPrefixFilter : undefined
     };
+}
+
+/** Slugs in the index are lowercase (e.g. sn1.1); normalize ^SN → ^sn so Fuse matches */
+function normalizeSlugPrefixCase(obj: Record<string, unknown>): void {
+    if (obj.$and && Array.isArray(obj.$and)) {
+        obj.$and.forEach((c) => {
+            if (c && typeof c === "object") normalizeSlugPrefixCase(c as Record<string, unknown>);
+        });
+        return;
+    }
+    if (obj.$or && Array.isArray(obj.$or)) {
+        obj.$or.forEach((c) => {
+            if (c && typeof c === "object") normalizeSlugPrefixCase(c as Record<string, unknown>);
+        });
+        return;
+    }
+    if (typeof obj.slug === "string" && obj.slug.startsWith("^")) {
+        obj.slug = obj.slug.toLowerCase();
+    }
 }
 
 // Update test cases

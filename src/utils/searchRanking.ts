@@ -296,11 +296,12 @@ export type TermMatchQuality = "exact" | "prefix" | "infix" | "none";
 function hasExactWordMatch(text: string, term: string): boolean {
 	const normalizedText = prepareTextForMatching(text);
 	const normalizedTerm = normalizeDiacritics(term.toLowerCase());
+	const escapedTerm = escapeRegExpForSearch(normalizedTerm);
 
 	// Use regex that requires either start-of-string or whitespace before the word
 	// This excludes hyphen-prefixed words like "non-attention"
 	const exactRegex = new RegExp(
-		`(?:^|\\s)${normalizedTerm}(?:\\s|$|[.,;:!?)])/`,
+		`(?:^|\\s)${escapedTerm}(?:\\s|$|[.,;:!?)])`,
 		"i",
 	);
 	if (exactRegex.test(normalizedText)) {
@@ -310,7 +311,7 @@ function hasExactWordMatch(text: string, term: string): boolean {
 	// Also check for standard word boundary but exclude hyphen-prefixed
 	// Match word boundary but ensure it's not preceded by a hyphen
 	const matches = normalizedText.match(
-		new RegExp(`(^|.)\\b${normalizedTerm}\\b`, "gi"),
+		new RegExp(`(^|.)\\b${escapedTerm}\\b`, "gi"),
 	);
 	if (matches) {
 		for (const match of matches) {
@@ -336,10 +337,11 @@ function hasExactWordMatch(text: string, term: string): boolean {
 function hasPrefixMatch(text: string, term: string): boolean {
 	const normalizedText = prepareTextForMatching(text);
 	const normalizedTerm = normalizeDiacritics(term.toLowerCase());
+	const escapedTerm = escapeRegExpForSearch(normalizedTerm);
 
 	// Match word boundary at start, but exclude hyphen-prefixed
 	const matches = normalizedText.match(
-		new RegExp(`(^|.)\\b${normalizedTerm}`, "gi"),
+		new RegExp(`(^|.)\\b${escapedTerm}`, "gi"),
 	);
 	if (matches) {
 		for (const match of matches) {

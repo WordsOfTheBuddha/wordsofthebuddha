@@ -625,8 +625,8 @@ export const GET: APIRoute = async ({ url }) => {
 						priority: item.priority,
 					}));
 			} else {
-			// Normal search with query terms
-				discourseResults = await searchDiscourses(effectiveQuery, {
+				// Pass full query so slug prefix (e.g. ^AN) is in the search and OR counts are correct
+				discourseResults = await searchDiscourses(query.trim(), {
 					highlight: true,
 				});
 			}

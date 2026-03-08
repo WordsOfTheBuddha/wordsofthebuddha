@@ -3,6 +3,7 @@ import searchIndex from "../../data/searchIndex";
 import {
 	buildFuseQuery,
 	type HighlightTerm,
+	type ContentConditions,
 } from "../../utils/fuseQueryParser";
 import {
 	isStopword,
@@ -55,57 +56,58 @@ function getNormalizedContentMap() {
 	return normalizedContentMap;
 }
 
-async function getSearchIndex() {
-	if (fuseIndex) {
+const FUSE_OPTIONS = {
+	keys: [
+		{ name: "slug", weight: 3 },
+		{ name: "title", weight: 2 },
+		{ name: "description", weight: 1.5 },
+	],
+	includeScore: true,
+	sortFn: (a: any, b: any) => {
+		const scoreA = Math.round(a.score * 10e10) / 10e10;
+		const scoreB = Math.round(b.score * 10e10) / 10e10;
+		if (scoreA !== scoreB) return scoreA - scoreB;
+		const getSlug = (item: any) => {
+			if (!item?.item?.[0]) return "";
+			const slug = item.item[0];
+			return typeof slug === "object" && "v" in slug ? slug.v : "";
+		};
+		return String(getSlug(a)).localeCompare(String(getSlug(b)), undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	},
+	includeMatches: true,
+	threshold: 0.3,
+	ignoreLocation: true,
+	ignoreDiacritics: true,
+	useExtendedSearch: true,
+};
+
+async function getSearchIndex(slugPrefixFilter?: string[]): Promise<Fuse<SearchData>> {
+	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+
+	const useFilter = slugPrefixFilter && slugPrefixFilter.length > 0;
+	const dataToIndex = useFilter
+		? searchData.filter((doc) =>
+				slugPrefixFilter!.some((p) =>
+					doc.slug.toLowerCase().startsWith(p),
+				),
+			)
+		: searchData;
+	if (import.meta.env?.DEV && useFilter) {
+		console.log("[search] index filtered to prefix(es)", slugPrefixFilter, "→", dataToIndex.length, "docs");
+	}
+
+	if (!useFilter && fuseIndex) {
 		return fuseIndex;
 	}
 
-	// The generated module exports an array of {slug,title,description,content}
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
-
-	// Only index lightweight metadata fields — content matching is done via direct text scan
-	// (content + contentPali are ~8 MB total; removing them makes Fuse ~30x faster)
-	fuseIndex = new Fuse(searchData, {
-		keys: [
-			{ name: "slug", weight: 3 },
-			{ name: "title", weight: 2 },
-			{ name: "description", weight: 1.5 },
-		],
-		includeScore: true, // Required for maxScore capping
-		sortFn: (a: any, b: any) => {
-			// Round scores to 3 decimal points for comparison
-			const scoreA = Math.round(a.score * 10e10) / 10e10;
-			const scoreB = Math.round(b.score * 10e10) / 10e10;
-
-			// If scores are different, sort by score
-			if (scoreA !== scoreB) {
-				return scoreA - scoreB;
-			}
-
-			// Extract slugs with proper type checking
-			const getSlug = (item: any) => {
-				if (!item?.item?.[0]) return "";
-				const slug = item.item[0];
-				return typeof slug === "object" && "v" in slug ? slug.v : "";
-			};
-
-			const slugA = getSlug(a);
-			const slugB = getSlug(b);
-
-			// If scores are equal, use natural sort on slug
-			return String(slugA).localeCompare(String(slugB), undefined, {
-				numeric: true,
-				sensitivity: "base",
-			});
-		},
-		includeMatches: true,
-		threshold: 0.3,
-		ignoreLocation: true,
-		ignoreDiacritics: true,
-		useExtendedSearch: true,
-	});
-
-	return fuseIndex;
+	const fuse = new Fuse(dataToIndex, FUSE_OPTIONS);
+	if (!useFilter) {
+		fuseIndex = fuse;
+	}
+	return fuse;
 }
 
 export interface SearchOptions {
@@ -783,13 +785,48 @@ function findBestMatchingParagraph(
 }
 
 /**
+ * Whether a document's content satisfies contentConditions (include/exclude).
+ * Used when the query has content: or contentPali: terms or generic negations
+ * that are applied as a post-filter because Fuse only indexes slug/title/description.
+ */
+function docMatchesContentConditions(
+	slug: string,
+	contentConditions: ContentConditions,
+	normalizedMap: Map<string, { content: string; contentPali: string }>,
+): boolean {
+	if (
+		contentConditions.include.length === 0 &&
+		contentConditions.exclude.length === 0
+	) {
+		return true;
+	}
+	if (!slug || typeof slug !== "string") return false;
+	const norm = normalizedMap.get(slug);
+	if (!norm) return false;
+	const text = (norm.content || "") + " " + (norm.contentPali || "");
+	const normalizedText = text; // map already stores normalized content
+
+	for (const term of contentConditions.exclude) {
+		const t = normalizeText(term);
+		if (normalizedText.includes(t)) return false;
+	}
+	for (const group of contentConditions.include) {
+		const hasOne = group.some((term) =>
+			normalizedText.includes(normalizeText(term)),
+		);
+		if (!hasOne) return false;
+	}
+	return true;
+}
+
+/**
  * True if the Fuse query only constrains slug (e.g. slug:^an, slug:^an4.).
  * For such queries we skip the content supplement so collection pages don't
  * get unrelated discourses that merely mention "an", "an4.1", etc. in content.
  */
 function isSlugOnlyQuery(fuseQuery: { $and?: unknown[] }): boolean {
 	const andClauses = fuseQuery.$and;
-	if (!Array.isArray(andClauses)) return false;
+	if (!Array.isArray(andClauses) || andClauses.length === 0) return false;
 	for (const clause of andClauses) {
 		if (clause === null || typeof clause !== "object") return false;
 		const c = clause as Record<string, unknown>;
@@ -812,19 +849,127 @@ export async function performSearch(
 	query: string,
 	options: SearchOptions = {},
 ): Promise<SearchResult[]> {
+	if (!query?.trim()) return [];
+
+	try {
+		return await performSearchInner(query, options);
+	} catch (err) {
+		if (import.meta.env?.DEV) {
+			console.error("[search] performSearch error:", err);
+		}
+		return [];
+	}
+}
+
+async function performSearchInner(
+	query: string,
+	options: SearchOptions,
+): Promise<SearchResult[]> {
 	if (import.meta.env?.DEV) {
 		console.log("[search] query:", query);
 	}
-	const { query: fuseQuery, highlightTerms } = buildFuseQuery(query);
+	let fuseQuery: { $and?: unknown[] };
+	let highlightTerms: HighlightTerm[];
+	let contentConditions: ContentConditions;
+	let slugPrefixFilter: string[] | undefined;
+	try {
+		const built = buildFuseQuery(query);
+		fuseQuery = built.query;
+		highlightTerms = built.highlightTerms;
+		contentConditions = built.contentConditions;
+		slugPrefixFilter = built.slugPrefixFilter;
+	} catch (e) {
+		if (import.meta.env?.DEV) console.error("[search] buildFuseQuery error:", e);
+		return [];
+	}
 	if (import.meta.env?.DEV) {
 		console.log("[search] parsed:", JSON.stringify(fuseQuery));
+		if (slugPrefixFilter?.length) {
+			console.log("[search] slugPrefixFilter:", slugPrefixFilter);
+		}
 	}
-	const fuse = await getSearchIndex();
 
-	if (!query) return [];
-
+	const fuse = await getSearchIndex(slugPrefixFilter);
 	const t0 = performance.now();
-	const fuseResults = fuse.search(fuseQuery);
+	const andClauses = fuseQuery.$and;
+	const hasFuseClauses = Array.isArray(andClauses) && andClauses.length > 0;
+
+	let fuseResults: Array<{ item: SearchData; matches?: unknown; score: number; refIndex: number }>;
+
+	const useDirectOrFilter =
+		hasFuseClauses &&
+		slugPrefixFilter &&
+		slugPrefixFilter.length > 0 &&
+		andClauses!.length === 1 &&
+		typeof andClauses![0] === "object" &&
+		andClauses![0] !== null &&
+		Array.isArray((andClauses![0] as Record<string, unknown>).$or);
+
+	if (useDirectOrFilter) {
+		const orClauses = (andClauses![0] as { $or: Record<string, string>[] }).$or;
+		const terms = new Set<string>();
+		for (const c of orClauses) {
+			if (c && typeof c === "object") {
+				for (const v of Object.values(c)) {
+					if (typeof v === "string" && !v.startsWith("!")) {
+						terms.add(normalizeText(v.toLowerCase()));
+					}
+				}
+			}
+		}
+		const searchDataAll = searchIndex as unknown as SearchData[];
+		const subset = terms.size > 0
+			? searchDataAll.filter((doc) =>
+					slugPrefixFilter!.some((p) =>
+						doc.slug.toLowerCase().startsWith(p),
+					),
+				)
+			: [];
+
+		// Match docs where slug/title/description contains any OR term
+		const metadataMatches = subset.filter((doc) => {
+			const combined = normalizeText(
+				doc.slug.toLowerCase() + " " +
+				(doc.title || "").toLowerCase() + " " +
+				(doc.description || "").toLowerCase()
+			);
+			return [...terms].some((t) => combined.includes(t));
+		});
+		const metaSlugs = new Set(metadataMatches.map((d) => d.slug));
+
+		// Also match docs where content/contentPali contains any OR term (union with metadata)
+		const normalizedMap = getNormalizedContentMap();
+		const contentMatches = subset.filter((doc) => {
+			if (metaSlugs.has(doc.slug)) return false;
+			const norm = normalizedMap.get(doc.slug);
+			if (!norm) return false;
+			return [...terms].some((t) =>
+				norm.content.includes(t) || norm.contentPali.includes(t),
+			);
+		});
+
+		const allMatches = [...metadataMatches, ...contentMatches];
+		fuseResults = allMatches.map((item, refIndex) => ({
+			item,
+			matches: [],
+			score: 0,
+			refIndex,
+		}));
+		if (import.meta.env?.DEV) {
+			console.log("[search] direct OR filter:", terms.size, "terms →", metadataMatches.length, "meta +", contentMatches.length, "content =", allMatches.length, "docs");
+		}
+	} else {
+		const raw = hasFuseClauses
+			? fuse.search(fuseQuery as Parameters<Fuse<SearchData>["search"]>[0])
+			: [];
+		fuseResults = raw.map((r) => ({
+			item: r.item,
+			matches: r.matches,
+			score: r.score ?? 0,
+			refIndex: r.refIndex ?? -1,
+		}));
+	}
+
 	const tFuseSearch = performance.now();
 
 	// Content supplement: find documents that match query terms in content/contentPali
@@ -861,7 +1006,14 @@ export async function performSearch(
 
 	if (runContentSupplement && contentTerms.length > 0) {
 		const normalizedMap = getNormalizedContentMap();
-		const allDocs = searchIndex as unknown as SearchData[];
+		let allDocs = searchIndex as unknown as SearchData[];
+		if (slugPrefixFilter?.length) {
+			allDocs = allDocs.filter((doc) =>
+				slugPrefixFilter!.some((p) =>
+					doc.slug.toLowerCase().startsWith(p),
+				),
+			);
+		}
 		for (const doc of allDocs) {
 			if (foundSlugs.has(doc.slug)) continue;
 			const normalized = normalizedMap.get(doc.slug);
@@ -896,7 +1048,44 @@ export async function performSearch(
 
 	const tContentScan = performance.now();
 
-	const searchResults = [...fuseResults, ...contentSupplementResults];
+	const hasContentConditions =
+		contentConditions.include.length > 0 ||
+		contentConditions.exclude.length > 0;
+
+	let searchResults: Array<{ item: SearchData; matches?: unknown; score?: number; refIndex: number }>;
+
+	if (!hasFuseClauses && hasContentConditions) {
+		// Content-only query (e.g. "content:faith | content:urgency"): no Fuse clauses,
+		// so start from all docs and filter by content conditions (OR within groups).
+		const normalizedMap = getNormalizedContentMap();
+		let allDocs = searchIndex as unknown as SearchData[];
+		const prefixFilter = slugPrefixFilter;
+		if (prefixFilter && prefixFilter.length > 0) {
+			allDocs = allDocs.filter((doc) =>
+				prefixFilter.some((p) =>
+					doc.slug.toLowerCase().startsWith(p),
+				),
+			);
+		}
+		searchResults = allDocs
+			.filter((doc) =>
+				docMatchesContentConditions(doc.slug, contentConditions, normalizedMap),
+			)
+			.map((doc) => ({
+				item: doc,
+				matches: [] as const,
+				score: 0.99,
+				refIndex: -1,
+			}));
+	} else {
+		searchResults = [...fuseResults, ...contentSupplementResults];
+		if (hasContentConditions) {
+			const normalizedMap = getNormalizedContentMap();
+			searchResults = searchResults.filter((r) =>
+				docMatchesContentConditions(r.item.slug, contentConditions, normalizedMap),
+			);
+		}
+	}
 	if (import.meta.env?.DEV) {
 		console.log("[search] results:", searchResults.length);
 	}
@@ -924,17 +1113,14 @@ export async function performSearch(
 		const showContentSnippet = item.contentSearchable !== false;
 
 		if (options.highlight && showContentSnippet) {
-			const contentMatches =
-				matches?.filter((m) => m.key === "content") || [];
-			const contentPaliMatches =
-				matches?.filter((m) => m.key === "contentPali") || [];
+			const matchList = (matches as { key?: string; indices?: [number, number][] }[] | undefined) ?? [];
+			const contentMatches = matchList.filter((m) => m.key === "content");
+			const contentPaliMatches = matchList.filter((m) => m.key === "contentPali");
 
 			// Try English snippet (uses Fuse indices when available, regex fallback otherwise)
 			if (item.content) {
 				const indices = contentMatches.length
-					? contentMatches.flatMap(
-							(match) => match.indices as [number, number][],
-						)
+					? contentMatches.flatMap((match) => match.indices ?? [])
 					: [];
 				const contentSnippet = findBestMatchingParagraph(
 					item.content,
@@ -953,9 +1139,7 @@ export async function performSearch(
 				typeof item.contentPali === "string"
 			) {
 				const paliIndices = contentPaliMatches.length
-					? contentPaliMatches.flatMap(
-							(match) => match.indices as [number, number][],
-						)
+					? contentPaliMatches.flatMap((match) => match.indices ?? [])
 					: [];
 				const paliSnippet = findBestMatchingParagraph(
 					item.contentPali,
