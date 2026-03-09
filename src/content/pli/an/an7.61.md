@@ -1,7 +1,7 @@
 ---
 title: Pacalāyamāna sutta - Dozing
 description: When venerable Mahāmoggallāna was struggling with drowsiness, the Buddha gave him seven methods to overcome it. Moving beyond wakefulness, the discourse warns against pride and contentious talk, ultimately revealing how letting go leads to the exhaustion of craving and complete quenching.
-qualities: drowsiness, examination, learned, quenching, walking meditation, argumentativeness, anxiety, non-restraint, recognition of impermanence, free from attachment
+qualities: drowsiness, examination, learned, quenching, walking meditation, argumentativeness, anxiety, non-restraint, recognition of impermanence, free from attachment, wakefulness
 theme: training guideline, wisdom, inspiration, inquisitiveness
 slug: an7.61
 character: Venerable Mahāmoggallāna

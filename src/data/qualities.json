@@ -632,6 +632,7 @@
 			"Related:{dullness}",
 			"Supported by:{discontentment}",
 			"Leads to:{ignorance}",
+			"Opposite:{wakefulness}",
 			"[middha]"
 		],
 		"dullness": [
@@ -1920,7 +1921,7 @@
 			"Context: A bright alertness of mind that remains clear and attentive, unclouded by dullness or drowsiness. It guards the senses and supports continuous mindfulness.",
 			"Supported by:{sense restraint}",
 			"Leads to:{mindfulness}",
-			"Opposite:{dullness}",
+			"Opposite:{dullness, drowsiness}",
 			"[jāgariyā]"
 		],
 		"weak in effort": [
