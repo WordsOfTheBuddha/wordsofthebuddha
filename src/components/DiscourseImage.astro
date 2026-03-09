@@ -35,6 +35,8 @@ const IMAGE_WIDTH = 800;
 const processedImages = allImages.map((img) => {
 	const modulePath = img.modulePath;
 	const isSvg = modulePath.toLowerCase().endsWith(".svg");
+
+	// In dev, ensure the source file exists to avoid broken images
 	const devFileExists = (() => {
 		if (!import.meta.env.DEV) return true;
 		try {
@@ -45,6 +47,16 @@ const processedImages = allImages.map((img) => {
 		}
 	})();
 
+	// Derive a stable public permalink in /content-images/ based on the module path
+	// Example: /src/assets/content-images/an3.65.webp -> /content-images/an3.65.webp
+	let publicUrl: string | undefined;
+	const marker = "/content-images/";
+	const idx = modulePath.lastIndexOf(marker);
+	if (idx !== -1) {
+		const filename = modulePath.slice(idx + marker.length);
+		publicUrl = `/content-images/${filename}`;
+	}
+
 	const width = (img.image as any)?.width;
 	const height = (img.image as any)?.height;
 	const aspectRatio =
@@ -54,7 +66,7 @@ const processedImages = allImages.map((img) => {
 	const isWithinFitBand =
 		aspectRatio != null && aspectRatio >= 1.2 && aspectRatio <= 1.69;
 
-	return { ...img, isSvg, devFileExists, isWithinFitBand };
+	return { ...img, isSvg, devFileExists, isWithinFitBand, publicUrl };
 });
 
 // Filter to only existing images
@@ -91,10 +103,11 @@ if (!firstImage) return;
 						idx === 0 ? "" : "hidden",
 					]}
 					data-slide-index={idx}
+					data-permalink={img.publicUrl}
 				>
 					{img.isSvg ? (
 						<img
-							src={img.image.src}
+							src={img.publicUrl ?? img.image.src}
 							alt={img.alt}
 							width={IMAGE_WIDTH}
 							class:list={[
@@ -245,7 +258,7 @@ if (!firstImage) return;
 		<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center">
 			<img
 				id="fullImage"
-				src={firstImage.image.src}
+				src={firstImage.publicUrl ?? firstImage.image.src}
 				alt={firstImage.alt}
 				class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
 			/>
@@ -293,11 +306,17 @@ if (!firstImage) return;
 		const dots = figure.querySelectorAll<HTMLElement>(".carousel-dot");
 		const totalSlides = slides.length;
 
-		// Collect all image sources for modal navigation
+		// Collect all image sources for modal navigation, preferring stable public permalinks
 		const imageSources: { src: string; alt: string }[] = [];
 		slides.forEach((slide) => {
 			const img = slide.querySelector("img");
-			if (img) imageSources.push({ src: img.src, alt: img.alt });
+			if (img) {
+				const permalink = (slide as HTMLElement).dataset.permalink;
+				imageSources.push({
+					src: permalink || img.src,
+					alt: img.alt,
+				});
+			}
 		});
 
 		const modalDots = figure.querySelectorAll<HTMLElement>(".modal-dot");
