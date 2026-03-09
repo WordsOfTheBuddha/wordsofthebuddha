@@ -258,8 +258,26 @@ import { transformId } from "../utils/transformId";
 				const month = d.toLocaleDateString("en-GB", { month: "long" });
 				const year = d.getFullYear();
 				const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
+
+				// Respect global discourse image preference for collection PDFs.
+				const STORAGE_KEY = "showDiscourseImages";
+				let imagesQuery = "";
+				try {
+					const stored = localStorage.getItem(STORAGE_KEY);
+					const show =
+						stored === null ? true : stored === "true";
+					if (!show) {
+						imagesQuery = "&images=none";
+					}
+				} catch {
+					// If localStorage is unavailable, fall back to default (include images).
+					imagesQuery = "";
+				}
+
 				const response = await fetch(
-					`/api/export/${slug}?date=${encodeURIComponent(date)}`,
+					`/api/export/${slug}?date=${encodeURIComponent(
+						date,
+					)}${imagesQuery}`,
 				);
 
 				if (!response.ok) {

@@ -49,12 +49,33 @@ const processedImages = allImages.map((img) => {
 
 	// Derive a stable public permalink in /content-images/ based on the module path
 	// Example: /src/assets/content-images/an3.65.webp -> /content-images/an3.65.webp
+	// In dev, only use the public URL if the file actually exists; otherwise
+	// fall back to the bundled asset URL to avoid broken images.
 	let publicUrl: string | undefined;
 	const marker = "/content-images/";
 	const idx = modulePath.lastIndexOf(marker);
 	if (idx !== -1) {
 		const filename = modulePath.slice(idx + marker.length);
-		publicUrl = `/content-images/${filename}`;
+		if (filename) {
+			if (!import.meta.env.DEV) {
+				publicUrl = `/content-images/${filename}`;
+			} else {
+				try {
+					const absPublic = resolvePath(
+						process.cwd(),
+						"public",
+						"content-images",
+						filename,
+					);
+					if (existsSync(absPublic)) {
+						publicUrl = `/content-images/${filename}`;
+					}
+				} catch {
+					// If checking public fails, just skip the permalink in dev.
+					publicUrl = undefined;
+				}
+			}
+		}
 	}
 
 	const width = (img.image as any)?.width;
@@ -470,12 +491,6 @@ if (!firstImage) return;
 		display: none;
 	}
 
-	@media print {
-		.discourse-image {
-			display: none !important;
-		}
-	}
-
 	.discourse-image img {
 		filter: brightness(0.98);
 	}
@@ -486,5 +501,39 @@ if (!firstImage) return;
 
 	.carousel-slide {
 		transition: opacity 0.3s ease-in-out;
+	}
+
+	@media print {
+		/* Respect the global toggle: hidden means no image in print */
+		.discourse-image.hidden {
+			display: none !important;
+		}
+
+		/* For visible images, flatten the carousel and show all slides */
+		.discourse-image:not(.hidden) {
+			display: block !important;
+		}
+
+		.discourse-image:not(.hidden) .carousel-slide {
+			display: block !important;
+			opacity: 1 !important;
+		}
+
+		/* Hide interactive controls that don't make sense in PDFs */
+		#carouselPrev,
+		#carouselNext,
+		#carouselDots,
+		#expandImageBtn,
+		#imageModal {
+			display: none !important;
+		}
+
+		/* Let images use full content width with no height cap */
+		.discourse-image:not(.hidden) img {
+			max-width: 100% !important;
+			max-height: none !important;
+			width: 100% !important;
+			height: auto !important;
+		}
 	}
 </style>

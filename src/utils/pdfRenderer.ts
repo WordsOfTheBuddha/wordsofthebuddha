@@ -16,6 +16,9 @@ import { JSDOM } from "jsdom";
 import { Marked, Renderer } from "marked";
 import type { DirectoryStructure } from "../types/directory";
 import { findEntry, findEntriesBySlugPrefix } from "./textApi";
+import { findContentImages } from "./contentImage";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve as resolvePath } from "node:path";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -200,6 +203,8 @@ function processCommentaryNotes(
 // Data types
 // ---------------------------------------------------------------------------
 
+type PdfImageMode = "none" | "svgPrimaryOnly" | "svgAll";
+
 export interface DiscoursePdf {
 	slug: string;
 	title: string;
@@ -229,18 +234,120 @@ export interface CollectionPdf {
 
 const MAX_DISCOURSES = 150; // Guard against accidentally huge collections
 
-async function fetchDiscourseHtml(slug: string): Promise<string> {
+function escapeHtml(text: string): string {
+	return text
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#39;");
+}
+
+async function fetchDiscourseHtml(
+	slug: string,
+	imageMode: PdfImageMode,
+): Promise<string> {
 	const entry = await findEntry("en", { slug });
 	if (!entry?.body) return "<p><em>(Content not available)</em></p>";
+
+	// Optional discourse header image(s) for PDFs – SVG only by default.
+	let imageHtml = "";
+	if (imageMode !== "none") {
+		const data = entry.data as any;
+		const title = data?.title || slug;
+
+		try {
+			const images = findContentImages(slug, data, title);
+			if (images.length > 0) {
+				const svgImages = images.filter((img) =>
+					img.modulePath.toLowerCase().endsWith(".svg"),
+				);
+
+				let selected =
+					imageMode === "svgAll"
+						? svgImages.length > 0
+							? svgImages
+							: images
+						: svgImages.length > 0
+							? [svgImages[0]]
+							: [];
+
+				if (selected.length > 0) {
+					imageHtml = selected
+						.map((img) => {
+							const marker = "/content-images/";
+							const idx = img.modulePath.lastIndexOf(marker);
+							const filename =
+								idx !== -1
+									? img.modulePath.slice(idx + marker.length)
+									: "";
+
+							let figureInner = "";
+
+							// For SVGs, inline the markup directly from public/content-images.
+							if (filename.toLowerCase().endsWith(".svg")) {
+								try {
+									const abs = resolvePath(
+										process.cwd(),
+										"public",
+										"content-images",
+										filename,
+									);
+									if (existsSync(abs)) {
+										let svg = readFileSync(abs, "utf-8");
+										// Strip explicit width/height so the SVG scales
+										// via its viewBox to fit the container.
+										svg = svg.replace(
+											/(<svg[^>]*?)\s+width="[^"]*"/i,
+											"$1",
+										);
+										svg = svg.replace(
+											/(<svg[^>]*?)\s+height="[^"]*"/i,
+											"$1",
+										);
+										figureInner = svg;
+									}
+								} catch {
+									// Fall back to <img> below.
+								}
+							}
+
+							if (!figureInner) {
+								const src =
+									(img.image as any)?.src ||
+									(filename
+										? `/content-images/${filename}`
+										: "");
+								if (!src) return "";
+								const alt = escapeHtml(img.alt || title);
+								figureInner = `<img src="${src}" alt="${alt}" class="pdf-discourse-image-img" />`;
+							}
+
+							// No caption in PDFs – title is already present above.
+							return `<figure class="pdf-discourse-image">
+  ${figureInner}
+</figure>`;
+						})
+						.filter(Boolean)
+						.join("\n");
+				}
+			}
+		} catch {
+			// If image resolution fails for any reason, fall back to text-only.
+			imageHtml = "";
+		}
+	}
+
 	let html = mdxBodyToHtml(entry.body);
 	html = processFootnotes(html);
 	html = processCommentaryNotes(html, (entry.data as any)?.commentary);
-	return html;
+	return `${imageHtml}${html}`;
 }
 
 async function fetchChapterDiscourses(
 	chapterSlug: string,
-	range?: { start: number; end: number },
+	range: { start: number; end: number } | undefined,
+	imageMode: PdfImageMode,
 ): Promise<DiscoursePdf[]> {
 	// Range-based chapters like mn1-50, iti28-49:
 	// extract the alphabetic base ("mn", "iti") and filter by number in range.
@@ -279,7 +386,7 @@ async function fetchChapterDiscourses(
 			const slug = (entry.data as any)?.slug || entry.slug || "";
 			const title = (entry.data as any)?.title || slug;
 			const description = (entry.data as any)?.description || "";
-			const html = await fetchDiscourseHtml(slug);
+			const html = await fetchDiscourseHtml(slug, imageMode);
 			return { slug, title, description, html };
 		}),
 	);
@@ -300,6 +407,7 @@ async function fetchChapterDiscourses(
 export async function fetchCollectionPdfData(
 	slug: string,
 	metadata: DirectoryStructure,
+	imageMode: PdfImageMode = "svgPrimaryOnly",
 ): Promise<CollectionPdf> {
 	const childEntries = metadata.children
 		? Object.entries(metadata.children)
@@ -314,6 +422,7 @@ export async function fetchCollectionPdfData(
 				const discourses = await fetchChapterDiscourses(
 					childSlug,
 					childMeta.range,
+					imageMode,
 				);
 				return {
 					slug: childSlug,
@@ -325,7 +434,11 @@ export async function fetchCollectionPdfData(
 		);
 	} else {
 		// Flat collection (e.g. DhP chapters, SNP sections)
-		const discourses = await fetchChapterDiscourses(slug);
+		const discourses = await fetchChapterDiscourses(
+			slug,
+			undefined,
+			imageMode,
+		);
 		chapters = [
 			{
 				slug,
@@ -696,6 +809,27 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   font-style: italic;
 }
 .discourse-body > p { margin: 0.55em 0; }
+
+/* Discourse header images (SVG diagrams, etc.) */
+.pdf-discourse-image {
+  margin: 0 0 1.2em 0;
+  page-break-inside: avoid;
+  text-align: center;
+}
+.pdf-discourse-image img,
+.pdf-discourse-image-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.pdf-discourse-image svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 .verse-number {
   font-weight: bold;
   font-size: 10.5pt;

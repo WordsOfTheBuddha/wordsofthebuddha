@@ -160,7 +160,20 @@ export const GET: APIRoute = async ({ params, url }) => {
 		}
 	}
 
-	console.log(`[PDF Export] Generating PDF for collection: ${slug}`);
+	const imageModeParam = url.searchParams.get("images");
+
+	type PdfImageMode = "none" | "svgPrimaryOnly" | "svgAll";
+	const parseImageMode = (value: string | null): PdfImageMode => {
+		if (value === "none" || value === "svgAll" || value === "svgPrimaryOnly") {
+			return value;
+		}
+		return "svgPrimaryOnly";
+	};
+	const imageMode = parseImageMode(imageModeParam);
+
+	console.log(
+		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode})`,
+	);
 	const startMs = Date.now();
 
 	activeJobs++;
@@ -170,6 +183,7 @@ export const GET: APIRoute = async ({ params, url }) => {
 		const collectionData = await fetchCollectionPdfData(
 			slug,
 			route.metadata,
+			imageMode,
 		);
 
 		const totalDiscourses = collectionData.chapters.reduce(
