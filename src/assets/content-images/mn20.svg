@@ -483,13 +483,16 @@
         font-style="italic">ajjhattameva cittaṁ santiṭṭhati sannisīdati ekodi hoti samādhiyati</text>
 
     <!-- ============ SIMILE BAR ============ -->
-    <rect x="100" y="1000" width="720" height="60" rx="8" fill="url(#simGrad)" stroke="#2a3848"
+    <rect x="100" y="1000" width="720" height="80" rx="8" fill="url(#simGrad)" stroke="#2a3848"
         stroke-width="0.8" stroke-opacity="0.4" />
     <text x="460" y="1024" text-anchor="middle" fill="#607888"
         font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="2">MASTERY OF THE MIND</text>
     <text x="460" y="1044" text-anchor="middle" fill="#90a8c0"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">
-        whatever thought one wishes to think, that one thinks</text>
+        Whatever thought one wishes to think, one will think it.</text>
+    <text x="460" y="1064" text-anchor="middle" fill="#90a8c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">
+        Whatever thought one does not wish to think, one will leave it unthought.</text>
 
     <!-- ============ SOURCE REFERENCE ============ -->
     <line x1="300" y1="1080" x2="620" y2="1080" stroke="#304058" stroke-opacity="0.3"
