@@ -74,10 +74,10 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">1</text>
     <text x="500" y="177" text-anchor="middle" fill="#d0cce0"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
-        Refrain from that Perception</text>
-    <text x="500" y="197" text-anchor="middle" fill="#a8a4c0"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        taṁ saññaṁ mā bahulamakāsi</text>
+        Refrain from that perception</text>
+    <text x="500" y="201" text-anchor="middle" fill="#a8a4c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        taṁ saññaṁ mā manasākāsi (do not attend) · mā bahulamakāsi (do not cultivate)</text>
 
     <!-- 2. Reflect on Dhamma -->
     <circle cx="286" cy="241" r="10" fill="none" stroke="#908ca2" stroke-width="0.9" opacity="0.60" />
@@ -86,42 +86,42 @@
     <text x="500" y="242" text-anchor="middle" fill="#d0cce0"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
         Reflect on the Dhamma</text>
-    <text x="500" y="262" text-anchor="middle" fill="#a8a4c0"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        anuvitakketi · anuvicāreti · anupekkhati</text>
+    <text x="500" y="266" text-anchor="middle" fill="#a8a4c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        anuvitakkeyyāsi (reflect) · anuvicāreyyāsi (re-examine) · manasā anupekkheyyāsi (mentally investigate)</text>
 
     <!-- 3. Recite the Dhamma -->
     <circle cx="286" cy="306" r="10" fill="none" stroke="#928e9e" stroke-width="0.9" opacity="0.62" />
-    <text x="286" y="305" text-anchor="middle" dominant-baseline="central" fill="#c9c6d6"
+    <text x="286" y="304" text-anchor="middle" dominant-baseline="central" fill="#c9c6d6"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
     <text x="500" y="307" text-anchor="middle" fill="#d0d0dc"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
         Recite the Dhamma</text>
     <text x="500" y="327" text-anchor="middle" fill="#a8a8b8"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        sajjhāyaṁ karoti</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        dhammaṁ sajjhāyaṁ kareyyāsi</text>
 
     <!-- 4. Pull Ears, Rub Limbs -->
     <circle cx="286" cy="371" r="10" fill="none" stroke="#969292" stroke-width="0.9" opacity="0.64" />
-    <text x="286" y="370" text-anchor="middle" dominant-baseline="central" fill="#d0d0ce"
+    <text x="286" y="369" text-anchor="middle" dominant-baseline="central" fill="#d0d0ce"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">4</text>
     <text x="500" y="372" text-anchor="middle" fill="#d2d4d0"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
-        Pull Ears · Rub Limbs</text>
+        Pull both earlobes · Rub limbs</text>
     <text x="500" y="392" text-anchor="middle" fill="#aaaca4"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        āviñchati · anumajjati</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        ubho kaṇṇasotāni āviñcheyyāsi · gattāni anumajjeyyāsi</text>
 
     <!-- 5. Wash Eyes, Look Up -->
     <circle cx="286" cy="436" r="10" fill="none" stroke="#9a988a" stroke-width="0.9" opacity="0.66" />
-    <text x="286" y="435" text-anchor="middle" dominant-baseline="central" fill="#d4d6ca"
+    <text x="286" y="434" text-anchor="middle" dominant-baseline="central" fill="#d4d6ca"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">5</text>
     <text x="500" y="437" text-anchor="middle" fill="#d4d8cc"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
-        Rinse Eyes · Look Around · Look Up</text>
+        Rinse eyes · Look around · Look up</text>
     <text x="500" y="457" text-anchor="middle" fill="#acb0a0"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        udake akkhīni anumajjati · anuviloketi · ulloketi</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        udakena akkhīni anumajjitvā · anuvilokeyyāsi · ullokeyyāsi</text>
 
     <!-- 6. Perceive Light, Brighten Mind -->
     <circle cx="286" cy="501" r="10" fill="none" stroke="#a09e84" stroke-width="0.9" opacity="0.68" />
@@ -129,21 +129,21 @@
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">6</text>
     <text x="500" y="502" text-anchor="middle" fill="#d8d8c4"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
-        Perceive Brightness</text>
+        Perceive brightness</text>
     <text x="500" y="522" text-anchor="middle" fill="#b0b098"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        ālokasaññaṁ manasi karoti</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        ālokasaññaṁ manasi kareyyāsi</text>
 
     <!-- 7. Walking Meditation -->
     <circle cx="286" cy="566" r="10" fill="none" stroke="#a4a27e" stroke-width="0.9" opacity="0.70" />
-    <text x="286" y="565" text-anchor="middle" dominant-baseline="central" fill="#dddcbc"
+    <text x="286" y="564" text-anchor="middle" dominant-baseline="central" fill="#dddcbc"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
     <text x="500" y="567" text-anchor="middle" fill="#dcdcbc"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold">
-        Resolve on Walking</text>
+        Resolve on walking</text>
     <text x="500" y="587" text-anchor="middle" fill="#b4b490"
-        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
-        caṅkamaṁ adhiṭṭhahati</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">
+        caṅkamaṁ adhiṭṭhaheyyāsi</text>
 
     <!-- ============ SEVEN REMEDIES ============ -->
     <rect x="122" y="636" width="676" height="52" rx="8" fill="#131820" fill-opacity="0.72"
