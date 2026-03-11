@@ -130,7 +130,6 @@ if (!firstImage) return;
 						<img
 							src={img.publicUrl ?? img.image.src}
 							alt={img.alt}
-							width={IMAGE_WIDTH}
 							class:list={[
 								"w-full h-auto rounded-lg object-cover",
 								img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
@@ -281,6 +280,7 @@ if (!firstImage) return;
 				id="fullImage"
 				src={firstImage.publicUrl ?? firstImage.image.src}
 				alt={firstImage.alt}
+				width={firstImage.isSvg ? 2400 : undefined}
 				class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
 			/>
 			{firstImage.caption && (
@@ -348,6 +348,12 @@ if (!firstImage) return;
 			if (source) {
 				fullImage.src = source.src;
 				fullImage.alt = source.alt;
+				// Force high-res rasterization on iOS WebKit for SVGs
+				if (source.src.toLowerCase().endsWith('.svg')) {
+					fullImage.width = 2400;
+				} else {
+					fullImage.removeAttribute('width');
+				}
 			}
 			// Update modal dots
 			modalDots.forEach((dot, i) => {
