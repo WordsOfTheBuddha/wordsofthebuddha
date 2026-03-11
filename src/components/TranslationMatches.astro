@@ -1774,6 +1774,22 @@
       return startDiff >= -1 && endDiff >= -1 && (startDiff + endDiff >= 0);
     }
 
+    // Helper: compute how much of the SOURCE segment is covered by a discourse match.
+    // Score of 1.0 = every word in the matched source range has a counterpart in the entry
+    // (true exact match). Lower scores indicate diverging words (e.g. different location names).
+    // Falls back to matchQuality when source range fields are absent.
+    function computeExactnessScore(d: TMDiscourse): number {
+      if (
+        d.sourceCoveredPositions instanceof Set &&
+        d.sourceStartIndex !== undefined &&
+        d.sourceEndIndex !== undefined &&
+        d.sourceEndIndex >= d.sourceStartIndex
+      ) {
+        return d.sourceCoveredPositions.size / (d.sourceEndIndex - d.sourceStartIndex + 1);
+      }
+      return d.matchQuality ?? 0;
+    }
+
     // Helper: check if two phrase groups are highly similar (overlap by 1 word or 90%+ similar)
     // This helps deduplicate phrase groups that are essentially the same match
     function isHighlyOverlapping(
@@ -1902,8 +1918,12 @@
             overlappingGroup.discourses.push(d);
           }
         }
-        // Sort by match quality so exact matches are preferred during diversity selection
-        overlappingGroup.discourses.sort((a, b) => (b.matchQuality ?? 0) - (a.matchQuality ?? 0));
+        // Sort by exactness first, then match quality, so exact matches surface first
+        overlappingGroup.discourses.sort((a, b) => {
+          const exactDiff = computeExactnessScore(b) - computeExactnessScore(a);
+          if (exactDiff !== 0) return exactDiff;
+          return (b.matchQuality ?? 0) - (a.matchQuality ?? 0);
+        });
         overlappingGroup.diverseDiscourses = selectDiverseDiscourses(overlappingGroup.discourses, 3);
         continue;
       }
@@ -1925,16 +1945,24 @@
             existingMatch.discourses.push(d);
           }
         }
-        // Sort by match quality so exact matches are preferred during diversity selection
-        existingMatch.discourses.sort((a, b) => (b.matchQuality ?? 0) - (a.matchQuality ?? 0));
+        // Sort by exactness first, then match quality, so exact matches surface first
+        existingMatch.discourses.sort((a, b) => {
+          const exactDiff = computeExactnessScore(b) - computeExactnessScore(a);
+          if (exactDiff !== 0) return exactDiff;
+          return (b.matchQuality ?? 0) - (a.matchQuality ?? 0);
+        });
         // Update diverse discourses
         existingMatch.diverseDiscourses = selectDiverseDiscourses(existingMatch.discourses, 3);
         continue;
       }
 
       if (phraseGroups.length < THRESHOLDS.MAX_PHRASE_GROUPS) {
-        // Sort by match quality so exact matches are preferred during diversity selection
-        data.discourses.sort((a, b) => (b.matchQuality ?? 0) - (a.matchQuality ?? 0));
+        // Sort by exactness first, then match quality, so exact matches surface first
+        data.discourses.sort((a, b) => {
+          const exactDiff = computeExactnessScore(b) - computeExactnessScore(a);
+          if (exactDiff !== 0) return exactDiff;
+          return (b.matchQuality ?? 0) - (a.matchQuality ?? 0);
+        });
         // Apply diversity logic: prefer discourses from different collections
         const diverseDiscourses = selectDiverseDiscourses(data.discourses, 3);
 
