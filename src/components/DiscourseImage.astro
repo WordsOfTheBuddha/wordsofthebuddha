@@ -131,7 +131,7 @@ if (!firstImage) return;
 							src={img.publicUrl ?? img.image.src}
 							alt={img.alt}
 							class:list={[
-								"w-full h-auto rounded-lg object-cover",
+								"svg-image w-full h-auto rounded-lg object-cover",
 								img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
 							]}
 							loading={idx === 0 ? "eager" : "lazy"}
@@ -280,8 +280,22 @@ if (!firstImage) return;
 				id="fullImage"
 				src={firstImage.publicUrl ?? firstImage.image.src}
 				alt={firstImage.alt}
-				width={firstImage.isSvg ? 2400 : undefined}
-				class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+				width={firstImage.isSvg ? undefined : IMAGE_WIDTH}
+				class:list={[
+					"max-w-full max-h-[85vh] object-contain rounded-lg",
+					firstImage.isSvg ? "hidden" : "shadow-2xl",
+				]}
+			/>
+			<object
+				id="fullSvgObject"
+				data={firstImage.publicUrl ?? firstImage.image.src}
+				type="image/svg+xml"
+				role="img"
+				aria-label={firstImage.alt}
+				class:list={[
+					"max-w-full max-h-[85vh] w-[90vw] rounded-lg",
+					firstImage.isSvg ? "svg-image" : "hidden",
+				]}
 			/>
 			{firstImage.caption && (
 				<div class="mt-4 text-white/90 text-center bg-black/50 px-4 py-2 rounded-full">
@@ -317,6 +331,7 @@ if (!firstImage) return;
 		const expandBtn = document.getElementById("expandImageBtn");
 		const dialog = document.getElementById("imageModal") as HTMLDialogElement;
 		const fullImage = document.getElementById("fullImage") as HTMLImageElement;
+		const fullSvgObject = document.getElementById("fullSvgObject") as HTMLObjectElement;
 
 		if (!figure) return;
 
@@ -328,16 +343,19 @@ if (!firstImage) return;
 		const totalSlides = slides.length;
 
 		// Collect all image sources for modal navigation, preferring stable public permalinks
-		const imageSources: { src: string; alt: string }[] = [];
+		const imageSources: { src: string; alt: string; isSvg: boolean }[] = [];
 		slides.forEach((slide) => {
-			const img = slide.querySelector("img");
-			if (img) {
-				const permalink = (slide as HTMLElement).dataset.permalink;
-				imageSources.push({
-					src: permalink || img.src,
-					alt: img.alt,
-				});
-			}
+			const slideEl = slide as HTMLElement;
+			const img = slide.querySelector("img") as HTMLImageElement | null;
+			const permalink = slideEl.dataset.permalink;
+			const src = permalink || img?.src;
+			const alt = img?.alt || "Discourse image";
+			if (!src) return;
+			imageSources.push({
+				src,
+				alt,
+				isSvg: src.toLowerCase().endsWith(".svg"),
+			});
 		});
 
 		const modalDots = figure.querySelectorAll<HTMLElement>(".modal-dot");
@@ -346,13 +364,25 @@ if (!firstImage) return;
 			if (!fullImage) return;
 			const source = imageSources[index];
 			if (source) {
-				fullImage.src = source.src;
-				fullImage.alt = source.alt;
-				// Force high-res rasterization on iOS WebKit for SVGs
-				if (source.src.toLowerCase().endsWith('.svg')) {
-					fullImage.width = 2400;
+				if (source.isSvg) {
+					if (fullSvgObject) {
+						fullSvgObject.data = source.src;
+						fullSvgObject.setAttribute("aria-label", source.alt);
+						fullSvgObject.classList.remove("hidden");
+					}
+					if (fullImage) {
+						fullImage.classList.add("hidden");
+					}
 				} else {
-					fullImage.removeAttribute('width');
+					if (fullImage) {
+						fullImage.src = source.src;
+						fullImage.alt = source.alt;
+						fullImage.classList.remove("hidden");
+						fullImage.classList.add("shadow-2xl");
+					}
+					if (fullSvgObject) {
+						fullSvgObject.classList.add("hidden");
+					}
 				}
 			}
 			// Update modal dots
@@ -497,11 +527,11 @@ if (!firstImage) return;
 		display: none;
 	}
 
-	.discourse-image img {
+	.discourse-image img:not(.svg-image) {
 		filter: brightness(0.98);
 	}
 
-	:global(.dark) .discourse-image img {
+	:global(.dark) .discourse-image img:not(.svg-image) {
 		filter: brightness(0.92);
 	}
 
