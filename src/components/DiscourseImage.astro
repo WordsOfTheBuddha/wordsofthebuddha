@@ -131,7 +131,7 @@ if (!firstImage) return;
 							src={img.publicUrl ?? img.image.src}
 							alt={img.alt}
 							class:list={[
-								"svg-image w-full h-auto rounded-lg object-cover",
+								"svg-image w-full h-auto rounded-lg object-contain",
 								img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
 							]}
 							loading={idx === 0 ? "eager" : "lazy"}
