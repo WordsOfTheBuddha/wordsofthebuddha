@@ -1,0 +1,621 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1540" width="920" height="1540">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Ring gradients (warm outer → cool inner) -->
+        <radialGradient id="ring1Fill" cx="50%" cy="50%" r="50%">
+            <stop offset="60%" stop-color="#2a1c20" />
+            <stop offset="100%" stop-color="#221820" />
+        </radialGradient>
+        <radialGradient id="ring2Fill" cx="50%" cy="50%" r="50%">
+            <stop offset="60%" stop-color="#28201c" />
+            <stop offset="100%" stop-color="#201a1a" />
+        </radialGradient>
+        <radialGradient id="ring3Fill" cx="50%" cy="50%" r="50%">
+            <stop offset="60%" stop-color="#222030" />
+            <stop offset="100%" stop-color="#1c1c28" />
+        </radialGradient>
+        <radialGradient id="ring4Fill" cx="50%" cy="50%" r="50%">
+            <stop offset="60%" stop-color="#1a2828" />
+            <stop offset="100%" stop-color="#162424" />
+        </radialGradient>
+        <radialGradient id="heartwoodGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.35" />
+            <stop offset="40%" stop-color="#a08030" stop-opacity="0.2" />
+            <stop offset="100%" stop-color="#806020" stop-opacity="0.05" />
+        </radialGradient>
+        <radialGradient id="heartwoodFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#2e2818" />
+            <stop offset="100%" stop-color="#1e1c14" />
+        </radialGradient>
+
+        <!-- Tier label gradient -->
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Pattern box gradients -->
+        <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#221828" />
+            <stop offset="100%" stop-color="#1a1422" />
+        </linearGradient>
+        <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+
+        <!-- Culmination radial glow (gold &#x2014; heartwood) -->
+        <radialGradient id="resultGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.12" />
+            <stop offset="60%" stop-color="#a08030" stop-opacity="0.05" />
+            <stop offset="100%" stop-color="#806020" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Cessation radial glow (green) -->
+        <radialGradient id="cessationGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#306050" stop-opacity="0.18" />
+            <stop offset="60%" stop-color="#204838" stop-opacity="0.08" />
+            <stop offset="100%" stop-color="#183828" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow3" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="14" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="ringTexture" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="noise" />
+            <feColorMatrix type="saturate" values="0" in="noise" result="gray" />
+            <feComponentTransfer in="gray" result="faint">
+                <feFuncA type="linear" slope="0.04" />
+            </feComponentTransfer>
+            <feComposite in="faint" in2="SourceGraphic" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1540" fill="url(#bg)" />
+    <ellipse cx="280" cy="500" rx="320" ry="320" fill="#182838" opacity="0.08" />
+    <ellipse cx="460" cy="1440" rx="350" ry="120" fill="#204838" opacity="0.05" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">MN 30 &#8212; C&#x16A;&#x1E36;AS&#x100;ROPAMA SUTTA</text>
+    <text x="460" y="64" text-anchor="middle" fill="#708090"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">The Shorter Discourse on the Simile of the Heartwood</text>
+
+    <line x1="280" y1="78" x2="640" y2="78" stroke="#708090" stroke-opacity="0.3"
+        stroke-width="0.6" />
+
+    <text x="460" y="104" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic"
+        opacity="0.9">Setting aside debate, the Buddha points to the heartwood</text>
+    <text x="460" y="124" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        opacity="0.8">&#8212; what lies beyond knowledge and vision? &#8212;</text>
+
+    <line x1="100" y1="148" x2="820" y2="148" stroke="url(#tierGrad)" stroke-width="0.5"
+        opacity="0.4" />
+
+    <!-- ============ CONCENTRIC RINGS (center at 280, 420) ============ -->
+
+    <!-- Ring 1: Branches &amp; Leaves (outermost) -->
+    <circle cx="280" cy="420" r="230" fill="url(#ring1Fill)" stroke="#8a6060" stroke-width="1.2"
+        stroke-opacity="0.4" filter="url(#ringTexture)" />
+
+    <!-- Ring 2: Dry Outer Bark -->
+    <circle cx="280" cy="420" r="188" fill="url(#ring2Fill)" stroke="#a07858" stroke-width="1"
+        stroke-opacity="0.4" />
+
+    <!-- Ring 3: Bark -->
+    <circle cx="280" cy="420" r="146" fill="url(#ring3Fill)" stroke="#7a7898" stroke-width="1"
+        stroke-opacity="0.4" />
+
+    <!-- Ring 4: Sapwood -->
+    <circle cx="280" cy="420" r="104" fill="url(#ring4Fill)" stroke="#508070" stroke-width="1"
+        stroke-opacity="0.4" />
+
+    <!-- Ring 5: Heartwood (center) -->
+    <circle cx="280" cy="420" r="56" fill="url(#heartwoodFill)" stroke="#c8a040"
+        stroke-width="1.5" stroke-opacity="0.5" />
+    <circle cx="280" cy="420" r="56" fill="url(#heartwoodGlow)" />
+    <circle cx="280" cy="420" r="78" fill="#c8a040" opacity="0.04" filter="url(#glow3)" />
+
+    <!-- Ring separator glow lines -->
+    <circle cx="280" cy="420" r="230" fill="none" stroke="#8a6060" stroke-width="0.5"
+        stroke-opacity="0.2" filter="url(#glow1)" />
+    <circle cx="280" cy="420" r="188" fill="none" stroke="#907060" stroke-width="0.5"
+        stroke-opacity="0.2" filter="url(#glow1)" />
+    <circle cx="280" cy="420" r="146" fill="none" stroke="#7a7898" stroke-width="0.5"
+        stroke-opacity="0.2" filter="url(#glow1)" />
+    <circle cx="280" cy="420" r="104" fill="none" stroke="#508070" stroke-width="0.5"
+        stroke-opacity="0.2" filter="url(#glow1)" />
+    <circle cx="280" cy="420" r="56" fill="none" stroke="#c8a040" stroke-width="0.6"
+        stroke-opacity="0.3" filter="url(#glow2)" />
+
+    <!-- ============ IN-RING LABELS ============ -->
+
+    <!-- Ring 1: Branches &amp; Leaves -->
+    <text x="280" y="218" text-anchor="middle" fill="#c0a090" opacity="0.75"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        letter-spacing="1">Branches &amp; Leaves</text>
+    <text x="370" y="236" text-anchor="middle" fill="#9a7070" opacity="0.6"
+        font-family="Georgia,serif" font-size="12" font-style="italic"
+        letter-spacing="0.5">s&#x101;kh&#x101;pal&#x101;sa</text>
+
+    <!-- Ring 2: Dry Outer Bark -->
+    <text x="280" y="262" text-anchor="middle" fill="#c8a888" opacity="0.75"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="0.8">Dry Outer Bark</text>
+    <text x="360" y="276" text-anchor="middle" fill="#a07858" opacity="0.6"
+        font-family="Georgia,serif" font-size="12" font-style="italic">papa&#x1E6D;ik&#x101;</text>
+
+    <!-- Ring 3: Bark -->
+    <text x="280" y="306" text-anchor="middle" fill="#a8a0c0" opacity="0.75"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="0.8">Bark</text>
+    <text x="320" y="312" text-anchor="middle" fill="#7a7898" opacity="0.6"
+        font-family="Georgia,serif" font-size="12" font-style="italic">taca</text>
+
+    <!-- Ring 4: Sapwood -->
+    <text x="280" y="350" text-anchor="middle" fill="#88c0a8" opacity="0.75"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="0.8">Sapwood</text>
+    <text x="335" y="364" text-anchor="middle" fill="#508070" opacity="0.6"
+        font-family="Georgia,serif" font-size="12" font-style="italic">pheggu</text>
+
+    <!-- Ring 5: Heartwood (center) -->
+    <text x="280" y="416" text-anchor="middle" fill="#dab850" opacity="0.8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        filter="url(#glow1)">HEARTWOOD</text>
+    <text x="280" y="434" text-anchor="middle" fill="#c8a040" opacity="0.65"
+        font-family="Georgia,serif" font-size="12" font-style="italic">s&#x101;ra</text>
+
+    <!-- ============ CONNECTOR LINES ============ -->
+
+    <!-- Connector dots at ring intersection points -->
+    <circle cx="490" cy="327" r="2.5" fill="#8a6060" fill-opacity="0.5" />
+    <circle cx="465" cy="389" r="2.5" fill="#a07858" fill-opacity="0.5" />
+    <circle cx="426" cy="431" r="2.5" fill="#7a7898" fill-opacity="0.5" />
+    <circle cx="379" cy="452" r="2.5" fill="#508070" fill-opacity="0.5" />
+    <circle cx="329" cy="448" r="2.5" fill="#c8a040" fill-opacity="0.5" />
+
+    <!-- Connector lines (dashed, ring-colored) -->
+    <line x1="490" y1="327" x2="598" y2="279" stroke="#8a6060" stroke-width="0.7"
+        stroke-opacity="0.4" stroke-dasharray="4 3" />
+    <line x1="465" y1="389" x2="597" y2="367" stroke="#a07858" stroke-width="0.7"
+        stroke-opacity="0.4" stroke-dasharray="4 3" />
+    <line x1="426" y1="431" x2="597" y2="444" stroke="#7a7898" stroke-width="0.7"
+        stroke-opacity="0.4" stroke-dasharray="4 3" />
+    <line x1="379" y1="452" x2="598" y2="522" stroke="#508070" stroke-width="0.7"
+        stroke-opacity="0.4" stroke-dasharray="4 3" />
+    <line x1="329" y1="448" x2="598" y2="600" stroke="#c8a040" stroke-width="0.7"
+        stroke-opacity="0.4" stroke-dasharray="4 3" />
+
+    <!-- Leaf decoration near Ring 1 connector -->
+    <g opacity="0.35">
+        <ellipse cx="496" cy="322" rx="5" ry="2.5" transform="rotate(-35 496 322)"
+            fill="#7a9060" fill-opacity="0.4" />
+        <ellipse cx="488" cy="326" rx="4" ry="2" transform="rotate(-60 488 326)"
+            fill="#6a8050" fill-opacity="0.35" />
+        <ellipse cx="497" cy="330" rx="4" ry="2" transform="rotate(-10 497 330)"
+            fill="#7a9060" fill-opacity="0.3" />
+    </g>
+
+    <!-- ============ RHS: ACCOMPLISHMENT LABELS ============ -->
+
+    <text x="715" y="210" text-anchor="middle" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2.5" opacity="0.6">ACCOMPLISHMENTS</text>
+
+    <!-- Label 1: Acquisitions, Respect &amp; Popularity -->
+    <g>
+        <circle cx="607" cy="275" r="10" fill="none" stroke="#8a6060" stroke-width="1"
+            stroke-opacity="0.5" />
+        <text x="607" y="278" text-anchor="middle" fill="#8a6060"
+            font-family="Georgia,serif" font-size="11" font-weight="bold">1</text>
+        <text x="633" y="272" fill="#c0a090"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Acquisitions, Respect, &amp; Popularity</text>
+        <text x="633" y="291" fill="#8a6060"
+            font-family="Georgia,serif" font-size="12" font-style="italic"
+            >l&#x101;bhasakk&#x101;rasiloka</text>
+    </g>
+
+    <!-- Label 2: Ethical Conduct -->
+    <g>
+        <circle cx="607" cy="365" r="10" fill="none" stroke="#a07858" stroke-width="1"
+            stroke-opacity="0.5" />
+        <text x="607" y="368" text-anchor="middle" fill="#a07858"
+            font-family="Georgia,serif" font-size="11" font-weight="bold">2</text>
+        <text x="633" y="359" fill="#c8a888"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Ethical Conduct</text>
+        <text x="633" y="377" fill="#a07858"
+            font-family="Georgia,serif" font-size="12" font-style="italic"
+            >s&#x12B;lasampad&#x101;</text>
+    </g>
+
+    <!-- Label 3: Collectedness -->
+    <g>
+        <circle cx="607" cy="445" r="10" fill="none" stroke="#7a7898" stroke-width="1"
+            stroke-opacity="0.5" />
+        <text x="607" y="447" text-anchor="middle" fill="#7a7898"
+            font-family="Georgia,serif" font-size="11" font-weight="bold">3</text>
+        <text x="633" y="439" fill="#a8a0c0"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Collectedness</text>
+        <text x="633" y="457" fill="#7a7898"
+            font-family="Georgia,serif" font-size="12" font-style="italic"
+            >sam&#x101;dhisampad&#x101;</text>
+    </g>
+
+    <!-- Label 4: Knowledge &amp; Vision -->
+    <g>
+        <circle cx="607" cy="525" r="10" fill="none" stroke="#508070" stroke-width="1"
+            stroke-opacity="0.5" />
+        <text x="607" y="527" text-anchor="middle" fill="#508070"
+            font-family="Georgia,serif" font-size="11" font-weight="bold">4</text>
+        <text x="633" y="519" fill="#88c0a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Knowledge &amp; Vision</text>
+        <text x="633" y="537" fill="#508070"
+            font-family="Georgia,serif" font-size="12" font-style="italic"
+            >&#x00F1;&#x101;&#x1E47;adassana</text>
+    </g>
+
+    <!-- Label 5: Unshakeable Liberation (heartwood) -->
+    <g>
+        <circle cx="607" cy="605" r="11" fill="none" stroke="#c8a040" stroke-width="1.2"
+            stroke-opacity="0.6" />
+        <text x="607" y="607" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,serif" font-size="11" font-weight="bold">5</text>
+        <text x="633" y="597" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold"
+            >Unshakeable Liberation</text>
+        <text x="633" y="617" fill="#c8a040"
+            font-family="Georgia,serif" font-size="12" font-style="italic"
+            >akupp&#x101; cetovimutti</text>
+    </g>
+
+    <!-- ============ AT EACH LAYER ============ -->
+    <line x1="100" y1="680" x2="820" y2="680" stroke="url(#tierGrad)" stroke-width="0.5"
+        opacity="0.4" />
+
+    <g filter="url(#glow1)">
+        <text x="460" y="706" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            letter-spacing="2">AT EACH LAYER</text>
+    </g>
+    <text x="460" y="726" text-anchor="middle" fill="#b09838"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        opacity="0.8">After each accomplishment, the same choice arises</text>
+
+    <line x1="240" y1="738" x2="680" y2="738" stroke="url(#tierGrad)" stroke-width="0.4"
+        opacity="0.3" />
+
+    <!-- ============ TWO RESPONSES PATTERN BOXES ============ -->
+
+    <!-- Left: Stop Short (complacency pattern) -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="758" width="388" height="92" rx="8" fill="url(#patternLeft)"
+            stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+    <!-- Asappurisa icon -->
+    <g transform="translate(82, 774)" opacity="0.5" filter="url(#iconGlow)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#a06070" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#a06070" stroke-width="1" />
+        <path d="M 0 18 L 6 12" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 24" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 0 14 L 0 6 L -3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 0 6 L 3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 24 22 L 24 30 L 21 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 24 30 L 27 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+    </g>
+    <text x="120" y="782" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="1.5">STOP SHORT</text>
+    <text x="120" y="802" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        >Delighted and intention fulfilled</text>
+    <text x="120" y="820" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Does not generate desire or make effort</text>
+    <text x="120" y="838" fill="#806878"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >na chandaṁ janeti, na vāyamati</text>
+
+    <!-- Central dividing line -->
+    <line x1="460" y1="764" x2="460" y2="844" stroke="#c8a040" stroke-width="0.8"
+        opacity="0.2" />
+
+    <!-- Right: Press Inward (effort pattern) -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="758" width="388" height="92" rx="8" fill="url(#patternRight)"
+            stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+    <!-- Sappurisa icon -->
+    <g transform="translate(494, 774)" opacity="0.5" filter="url(#iconGlow)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#60a088" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#60a088" stroke-width="1" />
+        <path d="M 0 18 L 6 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <circle cx="12" cy="34" r="3" fill="none" stroke="#80c0a0" stroke-width="0.8" opacity="0.6" />
+    </g>
+    <text x="532" y="782" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="1.5">PRESS INWARD</text>
+    <text x="532" y="802" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        >Not delighted by it, nor fulfilled in intention</text>
+    <text x="532" y="820" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Generates desire and makes effort toward higher states</text>
+    <text x="532" y="838" fill="#607870"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >chandaṁ janeti, vāyamati</text>
+
+    <!-- Left: consequence of stopping -->
+    <text x="250" y="878" text-anchor="middle" fill="#a06868"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >&#8220;He becomes sluggish and careless&#8221;</text>
+    <text x="250" y="896" text-anchor="middle" fill="#806060"
+        font-family="Georgia,serif" font-size="12" font-style="italic"
+        >olīnavuttiko ca hoti sāthaliko</text>
+
+    <!-- Right: consequence of pressing inward -->
+    <text x="670" y="878" text-anchor="middle" fill="#60a090"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >&#8220;He does not become sluggish or careless&#8221;</text>
+    <text x="670" y="896" text-anchor="middle" fill="#508070"
+        font-family="Georgia,serif" font-size="12" font-style="italic"
+        >na s&#x101;thaliko hoti</text>
+
+    <!-- ============ DOWNWARD CHEVRON ============ -->
+    <path d="M 449 920 L 460 930 L 471 920" stroke="#506878" stroke-width="1.2" fill="none"
+        stroke-linejoin="round" opacity="0.3" />
+
+    <!-- ================================================================ -->
+    <!--    STATES HIGHER THAN KNOWLEDGE &amp; VISION                     -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="946" x2="820" y2="946" stroke="url(#tierGrad)" stroke-width="0.6"
+        opacity="0.5" />
+
+    <g filter="url(#glow1)">
+        <text x="460" y="972" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            letter-spacing="2">STATES HIGHER THAN KNOWLEDGE &amp; VISION</text>
+    </g>
+    <text x="460" y="992" text-anchor="middle" fill="#b09838"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        opacity="0.8">dhammā ñāṇadassanena uttaritarā ca paṇītatarā</text>
+
+    <line x1="240" y1="1006" x2="680" y2="1006" stroke="url(#tierGrad)" stroke-width="0.4"
+        opacity="0.3" />
+
+    <!-- Central divider for attainments -->
+    <line x1="460" y1="1018" x2="460" y2="1290" stroke="#c8a040" stroke-width="0.8"
+        opacity="0.12" />
+
+    <!-- === LEFT COLUMN: ATTAINMENTS LIST === -->
+    <text x="175" y="1032" text-anchor="middle" fill="#6888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.6">ATTAINMENT</text>
+
+    <!-- 1. First Jhāna -->
+    <g>
+        <circle cx="100" cy="1060" r="10" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+        <text x="100" y="1063" text-anchor="middle" fill="#90b0c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">1</text>
+        <text x="126" y="1060" fill="#b0c8d8"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >First Jh&#x101;na</text>
+        <text x="126" y="1077" fill="#607888"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >pa&#x1E6D;hama&#x1E41; jh&#x101;na&#x1E41;</text>
+    </g>
+
+    <!-- 2&#x2013;4. Second&#x2013;Fourth Jhāna -->
+    <g>
+        <circle cx="100" cy="1104" r="10" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.45" />
+        <text x="100" y="1107" text-anchor="middle" fill="#90b0c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">2</text>
+        <text x="126" y="1104" fill="#a8c0d0"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Second &#x2013; Fourth Jh&#x101;na</text>
+        <text x="126" y="1121" fill="#607888"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >dutiya&#x1E41; &#x2026; catuttha&#x1E41; jh&#x101;na&#x1E41;</text>
+    </g>
+
+    <!-- 3. Boundless Space -->
+    <g>
+        <circle cx="100" cy="1148" r="10" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.4" />
+        <text x="100" y="1151" text-anchor="middle" fill="#90b0c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">3</text>
+        <text x="126" y="1148" fill="#a0b8c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Boundless Space</text>
+        <text x="126" y="1165" fill="#607888"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >&#x101;k&#x101;s&#x101;na&#xF1;c&#x101;yatana</text>
+    </g>
+
+    <!-- 4. Boundless Consciousness -->
+    <g>
+        <circle cx="100" cy="1192" r="10" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.35" />
+        <text x="100" y="1195" text-anchor="middle" fill="#90b0c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">4</text>
+        <text x="126" y="1192" fill="#98b0c0"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Boundless Consciousness</text>
+        <text x="126" y="1209" fill="#607888"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >vi&#xF1;&#xF1;&#x101;&#x1E47;a&#xF1;c&#x101;yatana</text>
+    </g>
+
+    <!-- 5. Nothingness -->
+    <g>
+        <circle cx="100" cy="1236" r="10" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.3" />
+        <text x="100" y="1239" text-anchor="middle" fill="#90b0c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">5</text>
+        <text x="126" y="1236" fill="#90a8b8"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            >Nothingness</text>
+        <text x="126" y="1253" fill="#607888"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >&#x101;ki&#xF1;ca&#xF1;&#xF1;&#x101;yatana</text>
+    </g>
+
+    <!-- 6. Neither Perception nor Non-Perception -->
+    <g>
+        <circle cx="100" cy="1280" r="10" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.25" />
+        <text x="100" y="1283" text-anchor="middle" fill="#90b0c8"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">6</text>
+        <text x="126" y="1274" fill="#88a0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold"
+            >Neither Perception</text>
+        <text x="126" y="1291" fill="#88a0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold"
+            >nor Non-perception</text>
+        <text x="126" y="1308" fill="#607888"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >nevasa&#xF1;&#xF1;&#x101;n&#x101;sa&#xF1;&#xF1;&#x101;yatana</text>
+    </g>
+
+    <!-- === RIGHT COLUMN: REFRAIN QUOTE === -->
+    <text x="690" y="1032" text-anchor="middle" fill="#60988a"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.6">THE REFRAIN</text>
+
+    <g>
+        <rect x="498" y="1046" width="370" height="220" rx="10" fill="#0e1828" fill-opacity="0.5"
+            stroke="#40806a" stroke-width="0.8" stroke-opacity="0.35" />
+
+        <text x="683" y="1078" text-anchor="middle" fill="#d8c060"
+            font-family="Georgia,'Times New Roman',serif" font-size="15"
+            filter="url(#glow1)">&#8220;And what, brahmin, are the</text>
+        <text x="683" y="1098" text-anchor="middle" fill="#d8c060"
+            font-family="Georgia,'Times New Roman',serif" font-size="15"
+            filter="url(#glow1)">states higher and more sublime</text>
+        <text x="683" y="1118" text-anchor="middle" fill="#d8c060"
+            font-family="Georgia,'Times New Roman',serif" font-size="15"
+            filter="url(#glow1)">than knowledge and vision?&#8221;</text>
+
+        <!-- Separator -->
+        <line x1="560" y1="1136" x2="806" y2="1136" stroke="#40806a" stroke-width="0.5" opacity="0.25" />
+
+        <text x="683" y="1162" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+            >&#8220;This state too, brahmin,</text>
+        <text x="683" y="1182" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+            >is higher and more sublime</text>
+        <text x="683" y="1202" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+            >than knowledge and vision.&#8221;</text>
+
+        <text x="683" y="1230" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >idampi kho, br&#x101;hma&#x1E47;a,</text>
+        <text x="683" y="1244" text-anchor="middle" fill="#608880"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+            >uttaritara&#xF1;ca pa&#x1E47;&#x12B;tatara&#xF1;ca &#xF1;&#x101;&#x1E47;adassanena</text>
+    </g>
+
+    <!-- Connecting lines from attainments to box -->
+    <path d="M 456 1060 L 494 1090" stroke="#40806a" stroke-width="0.6" fill="none" opacity="0.2" />
+    <path d="M 456 1104 L 494 1110" stroke="#40806a" stroke-width="0.6" fill="none" opacity="0.18" />
+    <path d="M 456 1148 L 494 1140" stroke="#40806a" stroke-width="0.6" fill="none" opacity="0.16" />
+    <path d="M 456 1192 L 494 1180" stroke="#40806a" stroke-width="0.6" fill="none" opacity="0.14" />
+    <path d="M 456 1236 L 494 1210" stroke="#40806a" stroke-width="0.6" fill="none" opacity="0.12" />
+    <path d="M 456 1280 L 494 1240" stroke="#40806a" stroke-width="0.6" fill="none" opacity="0.10" />
+
+    <!-- ============ DOWNWARD CHEVRON ============ -->
+    <path d="M 449 1330 L 460 1340 L 471 1330" stroke="#506878" stroke-width="1.2" fill="none"
+        stroke-linejoin="round" opacity="0.3" />
+
+    <!-- ================================================================ -->
+    <!--              CULMINATION &#x2014; THE HEARTWOOD                  -->
+    <!-- ================================================================ -->
+
+    <ellipse cx="460" cy="1415" rx="300" ry="60" fill="url(#resultGlow)" />
+    <ellipse cx="460" cy="1390" rx="200" ry="40" fill="url(#cessationGlow)" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="110" y="1354" width="700" height="170" rx="10" fill="#0c1420" fill-opacity="0.8"
+            stroke="#c8a040" stroke-width="1" stroke-opacity="0.35" />
+    </g>
+
+    <!-- Part 1: Cessation -->
+    <text x="460" y="1380" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        filter="url(#glow1)">Cessation of Perception and What is Felt</text>
+    <text x="460" y="1398" text-anchor="middle" fill="#507860"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >sa&#xF1;&#xF1;&#x101;vedayitanirodha &#8212; pa&#xF1;&#xF1;&#x101;ya cassa disv&#x101; &#x101;sav&#x101; parikkhī&#x1E47;&#x101;</text>
+
+    <line x1="240" y1="1412" x2="680" y2="1412" stroke="#c8a040" stroke-width="0.4" opacity="0.2" />
+
+    <!-- Part 2: The Heartwood Statement -->
+    <text x="460" y="1436" text-anchor="middle" fill="#dab850"
+        font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="bold"
+        filter="url(#glow1)">&#8220;The Unshakeable Liberation of Mind&#8221;</text>
+    <text x="460" y="1458" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        >akupp&#x101; cetovimutti</text>
+
+    <line x1="240" y1="1470" x2="680" y2="1470" stroke="#c8a040" stroke-width="0.4" opacity="0.15" />
+
+    <text x="460" y="1490" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >the purpose of the spiritual life, its heartwood, and its end</text>
+    <text x="460" y="1510" text-anchor="middle" fill="#507860"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >etadattha&#x1E41; ida&#x1E41; brahmacariya&#x1E41;, eta&#x1E41; s&#x101;ra&#x1E41;, eta&#x1E41; pariyos&#x101;na&#x1E41;</text>
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1524" x2="620" y2="1524" stroke="#304058" stroke-opacity="0.3"
+        stroke-width="0.5" />
+    <text x="460" y="1536" text-anchor="middle" fill="#384858"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1"
+        >Majjhima Nik&#x101;ya 30</text>
+</svg>
