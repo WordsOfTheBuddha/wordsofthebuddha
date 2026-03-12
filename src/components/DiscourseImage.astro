@@ -424,15 +424,43 @@ if (!firstImage) return;
 				modalZoomContent.style.width = zoomWidth;
 			}
 			updateZoomButtons();
-			requestAnimationFrame(centerViewport);
 		};
 
 		const setZoom = (nextZoomPercent: number) => {
+			if (!modalViewport) {
+				zoomPercent = Math.max(
+					MIN_ZOOM_PERCENT,
+					Math.min(MAX_ZOOM_PERCENT, nextZoomPercent),
+				);
+				applyZoom();
+				return;
+			}
+
+			const prevZoomPercent = zoomPercent;
+			const prevScrollLeft = modalViewport.scrollLeft;
+			const prevScrollTop = modalViewport.scrollTop;
+			const viewportWidth = modalViewport.clientWidth;
+			const viewportHeight = modalViewport.clientHeight;
+
 			zoomPercent = Math.max(
 				MIN_ZOOM_PERCENT,
 				Math.min(MAX_ZOOM_PERCENT, nextZoomPercent),
 			);
+
+			if (zoomPercent === prevZoomPercent) {
+				applyZoom();
+				return;
+			}
+
 			applyZoom();
+
+			requestAnimationFrame(() => {
+				const scale = zoomPercent / prevZoomPercent;
+				const focusX = prevScrollLeft + viewportWidth / 2;
+				const focusY = prevScrollTop + viewportHeight / 2;
+				modalViewport.scrollLeft = Math.max(0, focusX * scale - viewportWidth / 2);
+				modalViewport.scrollTop = Math.max(0, focusY * scale - viewportHeight / 2);
+			});
 		};
 
 		const resetZoom = () => {
