@@ -1,0 +1,630 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1470" width="920" height="1470">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Pattern box gradients -->
+        <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#221828" />
+            <stop offset="100%" stop-color="#1a1422" />
+        </linearGradient>
+        <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+
+        <!-- Tier label gradient -->
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Panel gradients for grid cells -->
+        <linearGradient id="cellLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1a2236" />
+            <stop offset="100%" stop-color="#141c2e" />
+        </linearGradient>
+        <linearGradient id="cellRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1a2836" />
+            <stop offset="100%" stop-color="#14222e" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1520" fill="url(#bg)" />
+
+    <!-- Subtle ambient glow bottom-center -->
+    <ellipse cx="460" cy="1420" rx="380" ry="180" fill="#204838" opacity="0.06" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">MN 2 &#8212; SABB&#x100;SAVA SUTTA</text>
+    <text x="460" y="64" text-anchor="middle" fill="#708090"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">Overcoming Of All The Taints</text>
+
+    <!-- Decorative line -->
+    <line x1="280" y1="78" x2="640" y2="78" stroke="#708090" stroke-opacity="0.3"
+        stroke-width="0.6" />
+
+    <!-- Subtitle -->
+    <text x="460" y="104" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic"
+        opacity="0.9">For one who knows and sees</text>
+    <text x="460" y="124" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        opacity="0.8">j&#x101;nato passato</text>
+
+    <!-- ============ CORE CONTRAST PANEL ============ -->
+
+    <!-- Left: Unwise Attention -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="148" width="388" height="92" rx="8" fill="url(#patternLeft)"
+            stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+    <!-- Tangled lines icon -->
+    <g transform="translate(82, 162)" opacity="0.5" filter="url(#iconGlow)">
+        <path d="M 0 10 Q 8 0, 16 12 Q 24 24, 10 20 Q -2 16, 8 8 Q 18 0, 24 14" fill="none"
+            stroke="#a06070" stroke-width="1.2" />
+        <path d="M 4 22 Q 12 14, 20 22" fill="none" stroke="#a06070" stroke-width="0.8" opacity="0.6" />
+    </g>
+    <text x="120" y="172" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="1.5">UNWISE ATTENTION</text>
+    <text x="120" y="192" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >ayoniso manasik&#x101;ra</text>
+    <text x="120" y="212" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Unarisen taints arise and arisen taints increase</text>
+    <text x="120" y="230" fill="#806878"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >anuppannā āsavā uppajjanti, uppannā ca āsavā pavaḍḍhanti</text>
+
+    <!-- Central dividing line -->
+    <line x1="460" y1="154" x2="460" y2="230" stroke="#c8a040" stroke-width="0.8"
+        opacity="0.2" />
+
+    <!-- Right: Wise Attention -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="148" width="388" height="92" rx="8" fill="url(#patternRight)"
+            stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+    <!-- Clear lines icon -->
+    <g transform="translate(494, 162)" opacity="0.5" filter="url(#iconGlow)">
+        <line x1="0" y1="12" x2="24" y2="12" stroke="#60a088" stroke-width="1.2" />
+        <line x1="4" y1="18" x2="20" y2="18" stroke="#60a088" stroke-width="0.9" />
+        <circle cx="12" cy="6" r="4" fill="none" stroke="#80c0a0" stroke-width="0.9" opacity="0.7" />
+    </g>
+    <text x="532" y="172" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="1.5">WISE ATTENTION</text>
+    <text x="532" y="192" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >yoniso manasik&#x101;ra</text>
+    <text x="532" y="212" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Unarisen taints do not arise; arisen taints are abandoned</text>
+    <text x="532" y="230" fill="#607870"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >anuppannā āsavā na uppajjanti, uppannā ca āsavā pahīyanti</text>
+
+    <!-- ================================================================ -->
+    <!--              OVERARCHING TITLE                                    -->
+    <!-- ================================================================ -->
+
+    <!-- Main section title -->
+    <line x1="100" y1="258" x2="820" y2="258" stroke="url(#tierGrad)" stroke-width="0.5"
+        opacity="0.4" />
+    <text x="460" y="280" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">SEVEN METHODS FOR THE ABANDONING OF TAINTS</text>
+    <text x="460" y="298" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        letter-spacing="1" opacity="0.6">satta āsavānaṁ pahāna-pariyāyā</text>
+    <line x1="100" y1="310" x2="820" y2="310" stroke="url(#tierGrad)" stroke-width="0.4"
+        opacity="0.25" />
+
+    <!-- ================================================================ -->
+    <!--              METHOD 1 &#x2014; SEEING (DASSAN&#x100;)             -->
+    <!-- ================================================================ -->
+
+    <!-- Method 1 label -->
+    <text x="460" y="338" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        letter-spacing="3" opacity="0.8">1. SEEING</text>
+    <text x="460" y="356" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        letter-spacing="1" opacity="0.6">dassan&#x101;</text>
+
+    <!-- Central divider for Method 1 -->
+    <line x1="460" y1="368" x2="460" y2="600" stroke="#c8a040" stroke-width="0.8"
+        opacity="0.12" />
+
+    <!-- === LEFT: The Six Wrong Views === -->
+    <text x="250" y="386" text-anchor="middle" fill="#8a6878"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.6">UNWISE SPECULATION</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="398" width="388" height="210" rx="8" fill="#0e1828" fill-opacity="0.5"
+            stroke="#5a3848" stroke-width="0.7" stroke-opacity="0.35" />
+    </g>
+
+    <!-- Speculative questions -->
+    <text x="80" y="424" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >&#8216;Was I or was I not in the past? How was I in the past?&#8217;</text>
+    <text x="80" y="444" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >&#8216;Will I or will I not be in the future? What and how will I be?&#8217;</text>
+    <text x="80" y="464" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >&#8216;Am I? Am I not? What am I? How am I?&#8217;</text>
+
+    <!-- Separator -->
+    <line x1="100" y1="478" x2="410" y2="478" stroke="#5a3848" stroke-width="0.4" opacity="0.3" />
+
+    <!-- Fetter of Views label -->
+    <text x="254" y="498" text-anchor="middle" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >Fetter of Views Arises and Increases</text>
+
+    <text x="254" y="518" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic" text-anchor="middle"
+        >1. &#8216;I have a self&#8217;   2. &#8216;I do not have a self&#8217;</text>
+    <text x="254" y="536" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic" text-anchor="middle"
+        >3. &#8216;I perceive the self in itself&#8217;   4. &#8216;I perceive the self in what is not-self&#8217;</text>
+    <text x="254" y="554" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic" text-anchor="middle"
+        >5. &#8216;I perceive what is not-self as the self&#8217;   6. &#8216;My self is everlasting&#8217;</text>
+
+    <!-- Pali summary -->
+    <text x="254" y="578" text-anchor="middle" fill="#706070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >diṭṭhigataṁ diṭṭhigahanaṁ diṭṭhikantāraṁ</text>
+    <text x="254" y="594" text-anchor="middle" fill="#706070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >diṭṭhivisūkaṁ diṭṭvipphanditaṁ diṭṭhisaṁyojanaṁ</text>
+
+    <!-- === RIGHT: Four Noble Truths + Three Fetters === -->
+    <text x="690" y="386" text-anchor="middle" fill="#60988a"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.6">WISE ATTENTION</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="398" width="388" height="210" rx="8" fill="#0e1828" fill-opacity="0.5"
+            stroke="#2a5060" stroke-width="0.7" stroke-opacity="0.35" />
+    </g>
+
+    <!-- Four Noble Truths -->
+    <text x="666" y="424" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic" text-anchor="middle"
+        >&#8216;This is suffering&#8217;</text>
+    <text x="666" y="444" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic" text-anchor="middle"
+        >&#8216;This is the arising of suffering&#8217;</text>
+    <text x="666" y="464" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic" text-anchor="middle"
+        >&#8216;This is the end of suffering&#8217;</text>
+    <text x="666" y="484" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic" text-anchor="middle"
+        >&#8216;This is the way of practice leading to the end of suffering&#8217;</text>
+
+    <!-- Arrow to fetters -->
+    <path d="M 658 494 L 666 504 L 674 494" stroke="#508070" stroke-width="1" fill="none"
+        opacity="0.4" />
+
+    <!-- Three fetters abandoned -->
+    <text x="666" y="522" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >Three Fetters Abandoned</text>
+
+    <!-- Broken chain icon + first fetter (centered for symmetry) -->
+    <g transform="translate(582, 532)" opacity="0.55" filter="url(#iconGlow)">
+        <!-- Left link -->
+        <rect x="0" y="2" width="16" height="10" rx="5" fill="none" stroke="#60a088"
+            stroke-width="1" transform="rotate(-16 8 7)" />
+        <!-- Right link -->
+        <rect x="20" y="2" width="16" height="10" rx="5" fill="none" stroke="#60a088"
+            stroke-width="1" transform="rotate(16 28 7)" />
+        <!-- Fracture marks -->
+        <path d="M 16 8 L 19 5 L 20 8 L 23 5" fill="none" stroke="#80c0a0" stroke-width="1.2"
+            stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+    </g>
+
+    <text x="666" y="546" text-anchor="middle" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >sakk&#x101;yadi&#x1E6D;&#x1E6D;hi</text>
+    <text x="666" y="562" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >personal existence view</text>
+
+    <!-- Broken chain icon + second/third fetters -->
+    <g transform="translate(535, 568)" opacity="0.55" filter="url(#iconGlow)">
+        <!-- Left link -->
+        <rect x="0" y="2" width="16" height="10" rx="5" fill="none" stroke="#60a088"
+            stroke-width="1" transform="rotate(-16 8 7)" />
+        <!-- Right link -->
+        <rect x="20" y="2" width="16" height="10" rx="5" fill="none" stroke="#60a088"
+            stroke-width="1" transform="rotate(16 28 7)" />
+        <!-- Fracture marks -->
+        <path d="M 16 8 L 19 5 L 20 8 L 23 5" fill="none" stroke="#80c0a0" stroke-width="1.2"
+            stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+    </g>
+
+    <text x="666" y="582" text-anchor="middle" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >vicikicch&#x101; &#xB7; s&#x12B;labbatapar&#x101;m&#x101;sa</text>
+    <text x="666" y="598" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >doubt &#xB7; clinging to rules and observances</text>
+
+    <!-- ================================================================ -->
+    <!--              METHODS 2&#x2013;7: CONTINUATION LABEL               -->
+    <!-- ================================================================ -->
+
+    <!-- Compact continuation label -->
+    <line x1="200" y1="628" x2="720" y2="628" stroke="url(#tierGrad)" stroke-width="0.4"
+        opacity="0.3" />
+    <text x="460" y="650" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="2.5" opacity="0.6">+ SIX METHODS</text>
+
+    <g transform="translate(0, 10)">
+    <!-- ================================================================ -->
+    <!--   ROW 1: Restraint (left) + Proper Use (right)                   -->
+    <!-- ================================================================ -->
+
+    <!-- 2. Restraint -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="660" width="388" height="130" rx="10" fill="url(#cellLeft)"
+            stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+    <!-- Step number -->
+    <circle cx="86" cy="700" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+    <text x="86" y="704" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
+    <!-- Title -->
+    <text x="110" y="690" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
+        >Restraint</text>
+    <text x="110" y="710" fill="#8898b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >sa&#x1E41;var&#x101;</text>
+    <!-- Description -->
+    <text x="110" y="734" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Wisely reflecting to guard the six sense faculties</text>
+    <text x="110" y="752" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >paṭisaṅkhā yoniso indriyasaṁvara</text>
+    <!-- Eye with shield icon -->
+    <g transform="translate(380, 679)" opacity="0.45" filter="url(#iconGlow)">
+        <!-- Eye -->
+        <path d="M 0 16 Q 16 4, 32 16" fill="none" stroke="#6888a0" stroke-width="1.2" />
+        <path d="M 0 16 Q 16 28, 32 16" fill="none" stroke="#6888a0" stroke-width="1.2" />
+        <circle cx="16" cy="16" r="4" fill="none" stroke="#6888a0" stroke-width="1" />
+        <!-- Shield lines over eye -->
+        <line x1="6" y1="4" x2="6" y2="28" stroke="#80a0b0" stroke-width="0.7" opacity="0.5" />
+        <line x1="26" y1="4" x2="26" y2="28" stroke="#80a0b0" stroke-width="0.7" opacity="0.5" />
+    </g>
+
+    <!-- 3. Proper Use -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="660" width="388" height="130" rx="10" fill="url(#cellRight)"
+            stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+    <!-- Step number -->
+    <circle cx="498" cy="700" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+    <text x="498" y="703" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+    <!-- Title -->
+    <text x="522" y="690" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
+        >Proper Use</text>
+    <text x="522" y="710" fill="#8898b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >pa&#x1E6D;isevan&#x101;</text>
+    <!-- Description -->
+    <text x="522" y="734" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Using robes, food, shelter, and medicine wisely</text>
+    <text x="522" y="752" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >paṭisaṅkhā yoniso cīvaraṁ piṇḍapātaṁ</text>
+    <text x="522" y="770" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >senāsanaṁ bhesajjaṁ paṭisevati</text>
+    <!-- Robe + bowl icon -->
+    <g transform="translate(796, 681)" opacity="0.45" filter="url(#iconGlow)">
+        <!-- Bowl shape -->
+        <path d="M 0 18 Q 14 28, 28 18" fill="none" stroke="#6888a0" stroke-width="1.2" />
+        <line x1="0" y1="18" x2="28" y2="18" stroke="#6888a0" stroke-width="0.8" />
+        <!-- Robe shape above -->
+        <path d="M 6 4 L 14 0 L 22 4 L 18 14 L 10 14 Z" fill="none" stroke="#80a0b0"
+            stroke-width="0.8" opacity="0.6" />
+    </g>
+
+    <!-- ================================================================ -->
+    <!--   ROW 2: Enduring (left) + Avoiding (right)                      -->
+    <!-- ================================================================ -->
+
+    <!-- 4. Enduring -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="810" width="388" height="130" rx="10" fill="url(#cellLeft)"
+            stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+    <!-- Step number -->
+    <circle cx="86" cy="850" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+    <text x="86" y="853" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
+    <!-- Title -->
+    <text x="110" y="840" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
+        >Enduring</text>
+    <text x="110" y="860" fill="#8898b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >adhiv&#x101;san&#x101;</text>
+    <!-- Description -->
+    <text x="110" y="884" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Enduring cold, heat, hunger, thirst, harsh words</text>
+    <text x="110" y="902" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >khamo hoti sītassa uṇhassa, jighacchāya pipāsāya</text>
+    <!-- Figure standing firm icon -->
+    <g transform="translate(382, 828)" opacity="0.45" filter="url(#iconGlow)">
+        <!-- Person -->
+        <circle cx="14" cy="6" r="5" fill="none" stroke="#6888a0" stroke-width="1" />
+        <line x1="14" y1="11" x2="14" y2="26" stroke="#6888a0" stroke-width="1" />
+        <line x1="14" y1="26" x2="10" y2="34" stroke="#6888a0" stroke-width="0.9" />
+        <line x1="14" y1="26" x2="18" y2="34" stroke="#6888a0" stroke-width="0.9" />
+        <line x1="14" y1="16" x2="6" y2="20" stroke="#6888a0" stroke-width="0.9" />
+        <line x1="14" y1="16" x2="22" y2="20" stroke="#6888a0" stroke-width="0.9" />
+        <!-- Wind/heat lines -->
+        <path d="M 28 10 Q 34 12, 28 16" stroke="#a08070" stroke-width="0.7" fill="none" opacity="0.5" />
+        <path d="M 30 18 Q 36 20, 30 24" stroke="#a08070" stroke-width="0.7" fill="none" opacity="0.5" />
+        <path d="M 29 26 Q 35 28, 29 32" stroke="#a08070" stroke-width="0.7" fill="none" opacity="0.5" />
+    </g>
+
+    <!-- 5. Avoiding -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="810" width="388" height="130" rx="10" fill="url(#cellRight)"
+            stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+    <!-- Step number -->
+    <circle cx="498" cy="850" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+    <text x="498" y="853" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">5</text>
+    <!-- Title -->
+    <text x="522" y="840" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
+        >Avoiding</text>
+    <text x="522" y="860" fill="#8898b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >parivajjan&#x101;</text>
+    <!-- Description -->
+    <text x="522" y="884" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Avoiding wild elephants, bad places, and bad companions</text>
+    <text x="522" y="902" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >caṇḍaṁ hatthiṁ … agocaraṁ … pāpake mitte parivajjeti</text>
+    <!-- Diverging path icon: fork with clearly separated indicator nodes -->
+    <g transform="translate(794, 826)" opacity="0.5" filter="url(#iconGlow)">
+        <!-- Main stem -->
+        <line x1="16" y1="38" x2="16" y2="24" stroke="#6888a0" stroke-width="1.2" />
+        <!-- Left fork to danger node -->
+        <line x1="16" y1="24" x2="6" y2="15" stroke="#a08070" stroke-width="0.9" opacity="0.55" />
+        <!-- Right fork to safe node -->
+        <line x1="16" y1="24" x2="26" y2="15" stroke="#60a088" stroke-width="1.1" />
+        <!-- Danger node (left): circle with X inside -->
+        <circle cx="6" cy="7" r="7" fill="none" stroke="#a06070" stroke-width="0.9" opacity="0.65" />
+        <line x1="3" y1="4" x2="9" y2="10" stroke="#a06070" stroke-width="1" opacity="0.75" />
+        <line x1="9" y1="4" x2="3" y2="10" stroke="#a06070" stroke-width="1" opacity="0.75" />
+        <!-- Safe node (right): circle with tick inside -->
+        <circle cx="26" cy="7" r="7" fill="none" stroke="#60a088" stroke-width="0.9" opacity="0.75" />
+        <path d="M 23 7 L 25 10 L 30 3" fill="none" stroke="#60a088" stroke-width="1" opacity="0.85" />
+    </g>
+
+    <!-- ================================================================ -->
+    <!--   ROW 3: Removing (left) + Cultivation (right)                   -->
+    <!-- ================================================================ -->
+
+    <!-- 6. Removing -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="960" width="388" height="130" rx="10" fill="url(#cellLeft)"
+            stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+    <!-- Step number -->
+    <circle cx="86" cy="1000" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+    <text x="86" y="1004" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">6</text>
+    <!-- Title -->
+    <text x="110" y="990" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
+        >Removing</text>
+    <text x="110" y="1010" fill="#8898b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >vinodan&#x101;</text>
+    <!-- Description -->
+    <text x="110" y="1030" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Not tolerating though of sensuality, ill will, or harming</text>
+    <text x="110" y="1048" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >kāmavitakkaṁ · byāpādavitakkaṁ · vihiṁsāvitakkaṁ</text>
+    <text x="110" y="1065" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >pajahati vinodeti byantīkaroti</text>
+    <!-- Three thought-type icons: heart / lightning / impact — swept away -->
+    <g transform="translate(365, 973)" opacity="0.5" filter="url(#iconGlow)">
+        <!-- Sweeping removal arc behind all three -->
+        <path d="M 8 38 Q 34 -4, 72 30" fill="none" stroke="#607888" stroke-width="0.6"
+            stroke-dasharray="3,3" opacity="0.35" />
+        <!-- 1. Heart = sensual thought (kāmavitakka) -->
+        <g transform="translate(20, 0)">
+            <path d="M 10 5 C 10 1, 3 -1, 3 5 C 3 10, 10 16, 10 16 C 10 16, 17 10, 17 5 C 17 -1, 10 1, 10 5 Z"
+                fill="none" stroke="#c89858" stroke-width="1.2" />
+        </g>
+        <!-- 2. Lightning bolt = ill-will thought (byāpādavitakka) -->
+        <g transform="translate(0, 18)">
+            <path d="M 12 0 L 6 10 L 11 10 L 5 20 L 8 20 L 16 8 L 10 8 Z"
+                fill="none" stroke="#a08060" stroke-width="1" stroke-linejoin="round" />
+        </g>
+        <!-- 3. Impact / strike mark = harmful thought (vihiṁsāvitakka) -->
+        <g transform="translate(42, 14)">
+            <path d="M 10 0 L 12 7 L 20 5 L 14 10 L 20 16 L 12 13 L 10 20 L 8 13 L 0 16 L 6 10 L 0 5 L 8 7 Z"
+                fill="none" stroke="#907868" stroke-width="0.9" stroke-linejoin="round" />
+        </g>
+    </g>
+
+    <!-- 7. Cultivation -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="960" width="388" height="130" rx="10" fill="url(#cellRight)"
+            stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+    <!-- Step number -->
+    <circle cx="498" cy="1000" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.5" />
+    <text x="498" y="1003" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">7</text>
+    <!-- Title -->
+    <text x="522" y="990" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
+        >Cultivation</text>
+    <text x="522" y="1010" fill="#8898b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >bh&#x101;van&#x101;</text>
+    <!-- Description -->
+    <text x="522" y="1034" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >Cultivating the seven factors of awakening</text>
+    <text x="522" y="1052" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >satta bojjhaṅge bhāveti</text>
+    <!-- Seven dots arc icon (seven awakening factors) -->
+    <g transform="translate(782, 979)" opacity="0.55" filter="url(#iconGlow)">
+        <circle cx="4" cy="24" r="2.5" fill="#60a088" opacity="0.6" />
+        <circle cx="10" cy="16" r="2.5" fill="#60a088" opacity="0.65" />
+        <circle cx="18" cy="10" r="2.5" fill="#60a088" opacity="0.7" />
+        <circle cx="28" cy="8" r="2.5" fill="#80c0a0" opacity="0.75" />
+        <circle cx="38" cy="10" r="2.5" fill="#60a088" opacity="0.7" />
+        <circle cx="46" cy="16" r="2.5" fill="#60a088" opacity="0.65" />
+        <circle cx="52" cy="24" r="2.5" fill="#60a088" opacity="0.6" />
+    </g>
+
+    <!-- ================================================================ -->
+    <!--   SEVEN AWAKENING FACTORS DETAIL                                  -->
+    <!-- ================================================================ -->
+
+    <g>
+        <rect x="140" y="1118" width="640" height="100" rx="8" fill="#0e1828" fill-opacity="0.4"
+            stroke="#2a4048" stroke-width="0.6" stroke-opacity="0.3" />
+
+        <text x="460" y="1140" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            letter-spacing="2" opacity="0.7">SEVEN FACTORS OF AWAKENING</text>
+
+        <text x="460" y="1162" text-anchor="middle" fill="#80b8a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12"
+            >mindfulness <tspan font-style="italic" opacity="0.8" fill="#507868">(sati)</tspan> · investigation <tspan font-style="italic" opacity="0.8" fill="#507868">(dhammavicaya)</tspan> · energy <tspan font-style="italic" opacity="0.8" fill="#507868">(vīriya)</tspan> · uplifting joy <tspan font-style="italic" opacity="0.8" fill="#507868">(pīti)</tspan></text>
+
+        <text x="460" y="1184" text-anchor="middle" fill="#80b8a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5"
+            >tranquility <tspan font-style="italic" opacity="0.8" fill="#507868">(passaddhi)</tspan> · collectedness <tspan font-style="italic" opacity="0.8" fill="#507868">(samādhi)</tspan> · equanimity <tspan font-style="italic" opacity="0.8" fill="#507868">(upekkhā)</tspan></text>
+
+        <text x="460" y="1206" text-anchor="middle" fill="#80b8a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+            opacity="0.8">Supported by seclusion, dispassion, based on ending, culminating in complete relinquishment.</text>
+    </g>
+
+    <!-- ================================================================ -->
+    <!--              CONCLUSION                                           -->
+    <!-- ================================================================ -->
+
+    <!-- Transition line -->
+    <line x1="100" y1="1232" x2="820" y2="1232" stroke="url(#tierGrad)" stroke-width="0.6"
+        opacity="0.5" />
+
+    <!-- Downward arrow -->
+    <path d="M 449 1240 L 460 1252 L 471 1240" stroke="#508070" stroke-width="1.2" fill="none"
+        stroke-linejoin="round" opacity="0.4" />
+
+    <!-- Culmination radial glow -->
+    <ellipse cx="460" cy="1340" rx="340" ry="80" fill="#204838" opacity="0.08" />
+
+    <!-- Result bar -->
+    <g filter="url(#shadowDrop)">
+        <rect x="100" y="1280" width="720" height="124" rx="10" fill="#0e1828" fill-opacity="0.6"
+            stroke="#40806a" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+
+    <!-- Title -->
+    <g filter="url(#glow1)">
+        <text x="460" y="1308" text-anchor="middle" fill="#d8c060"
+            font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold"
+            letter-spacing="2">MAKING AN END OF SUFFERING</text>
+    </g>
+
+    <text x="460" y="1330" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        >&#8220;This bhikkhu dwells restrained with regard to all the taints,</text>
+    <text x="460" y="1350" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        >has completely cut out craving, unraveled the fetters,</text>
+    <text x="460" y="1370" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        >and through full understanding of conceit, has made an end of suffering.&#8221;</text>
+
+    <!-- Pali conclusion -->
+    <text x="460" y="1392" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >sabbāsavasaṁvarasaṁvuto viharati, acchecchi taṇhaṁ, vivattayi saṁyojanaṁ, sammā mānābhisamayā antamakāsi dukkhassā</text>
+
+    <!-- ============ DECORATIVE GLOW ACCENTS ============ -->
+    <circle cx="130" cy="1340" r="3" fill="#60a088" opacity="0.06" filter="url(#glow2)" />
+    <circle cx="790" cy="1340" r="3" fill="#60a088" opacity="0.06" filter="url(#glow2)" />
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1430" x2="620" y2="1430" stroke="#304058" stroke-opacity="0.3"
+        stroke-width="0.5" />
+    <text x="460" y="1450" text-anchor="middle" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5"
+        letter-spacing="0.5">Majjhima Nik&#x101;ya 2</text>
+    </g>
+</svg>
