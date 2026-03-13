@@ -1,0 +1,883 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1750" width="920" height="1750">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Pattern box gradients -->
+        <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#221828" />
+            <stop offset="100%" stop-color="#1a1422" />
+        </linearGradient>
+        <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+
+        <!-- Tier label gradient -->
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Level panel gradients -->
+        <linearGradient id="levelBurgundy" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#201020" />
+            <stop offset="100%" stop-color="#181018" />
+        </linearGradient>
+        <linearGradient id="levelTransition" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#162030" />
+            <stop offset="100%" stop-color="#101828" />
+        </linearGradient>
+        <linearGradient id="levelTeal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+        <linearGradient id="levelGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e1c14" />
+            <stop offset="100%" stop-color="#161410" />
+        </linearGradient>
+
+        <!-- Conclusion radial glow -->
+        <radialGradient id="conclusionGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.12" />
+            <stop offset="60%" stop-color="#906820" stop-opacity="0.05" />
+            <stop offset="100%" stop-color="#604010" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Phenomena cell gradient -->
+        <linearGradient id="cellGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#141e30" />
+            <stop offset="100%" stop-color="#101828" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow3" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="14" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="b" />
+            <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1750" fill="url(#bg)" />
+
+    <!-- Subtle ambient glow bottom-center -->
+    <ellipse cx="460" cy="1610" rx="380" ry="180" fill="#806020" opacity="0.04" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">MN 1 — MŪLAPARIYĀYA SUTTA</text>
+    <text x="460" y="64" text-anchor="middle" fill="#708090"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">Root Of All Things</text>
+
+    <!-- Decorative line -->
+    <line x1="280" y1="78" x2="640" y2="78" stroke="#708090" stroke-opacity="0.3"
+        stroke-width="0.6" />
+
+    <!-- English gloss first -->
+    <text x="460" y="100" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic"
+        opacity="0.9">"I will teach you a discourse on the root of all things"</text>
+    <!-- Pali quote second -->
+    <text x="460" y="120" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        opacity="0.8">sabbadhammamūlapariyāyaṁ vo, bhikkhave, desessāmi</text>
+
+
+    <!-- ================================================================ -->
+    <!--     SENSE EXPERIENCE — 4-column icon/label row                   -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="148" x2="820" y2="148" stroke="url(#tierGrad)" stroke-width="0.5"
+        opacity="0.4" />
+    <text x="460" y="160" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="2" opacity="0.7">SENSE EXPERIENCE</text>
+
+    <!-- Col 1: Seen / diṭṭha — HIGHLIGHTED as active example (gold tint) -->
+    <g>
+        <g opacity="0.65" transform="translate(72, 184)" filter="url(#iconGlow)">
+            <path d="M 0 8 Q 8 0, 16 8" fill="none" stroke="#c8a040" stroke-width="1" />
+            <path d="M 0 8 Q 8 16, 16 8" fill="none" stroke="#c8a040" stroke-width="1" />
+            <circle cx="8" cy="8" r="2.5" fill="none" stroke="#c8a040" stroke-width="0.8" />
+        </g>
+        <text x="100" y="190" fill="#d0b060"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Seen</text>
+        <text x="100" y="204" fill="#a08838"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">diṭṭha</text>
+        <!-- Active indicator: small downward arrow -->
+        <path d="M 112 216 L 116 222 L 120 216" stroke="#c8a040" stroke-width="0.8" fill="none" opacity="0.4" />
+    </g>
+
+    <!-- Col 2: Heard / suta -->
+    <g>
+        <g opacity="0.45" transform="translate(274, 184)" filter="url(#iconGlow)">
+            <path d="M 12 2 Q 4 2, 4 10 Q 4 16, 8 16" fill="none" stroke="#7888a0" stroke-width="1" />
+            <path d="M 8 10 Q 10 8, 10 12" fill="none" stroke="#7888a0" stroke-width="0.7" />
+        </g>
+        <text x="300" y="190" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Heard</text>
+        <text x="300" y="204" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">suta</text>
+    </g>
+
+    <!-- Col 3: Sensed / muta -->
+    <g>
+        <g opacity="0.45" transform="translate(472, 184)" filter="url(#iconGlow)">
+            <path d="M 4 16 L 4 6 Q 4 2, 8 2 Q 12 2, 12 6 L 12 10" fill="none" stroke="#7888a0" stroke-width="1" />
+            <path d="M 12 8 Q 12 5, 15 5 Q 18 5, 18 8 L 18 12" fill="none" stroke="#7888a0" stroke-width="0.7" />
+            <line x1="4" y1="16" x2="18" y2="16" stroke="#7888a0" stroke-width="0.7" />
+        </g>
+        <text x="500" y="190" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Sensed</text>
+        <text x="500" y="204" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">muta</text>
+    </g>
+
+    <!-- Col 4: Cognized / viññāta -->
+    <g>
+        <g opacity="0.45" transform="translate(672, 184)" filter="url(#iconGlow)">
+            <circle cx="8" cy="10" r="6" fill="none" stroke="#7888a0" stroke-width="0.8" />
+            <circle cx="8" cy="10" r="2" fill="#7888a0" fill-opacity="0.3" stroke="none" />
+            <path d="M 2 4 Q 8 0, 14 4" fill="none" stroke="#7888a0" stroke-width="0.6" opacity="0.5" />
+        </g>
+        <text x="700" y="190" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Cognized</text>
+        <text x="700" y="204" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">viññāta</text>
+    </g>
+
+
+    <!-- ================================================================ -->
+    <!--     WORKED EXAMPLE PANELS (using "the seen" / diṭṭha)           -->
+    <!-- ================================================================ -->
+
+    <!-- Central gold divider between panels -->
+    <line x1="460" y1="236" x2="460" y2="516" stroke="#c8a040" stroke-width="0.8"
+        opacity="0.12" />
+
+    <!-- ======== LEFT PANEL: PUTHUJJANA (center x=244) ======== -->
+    <g filter="url(#shadowDrop)">
+        <rect x="40" y="236" width="408" height="280" rx="8" fill="url(#patternLeft)"
+            stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <!-- Header row — left-aligned -->
+    <g transform="translate(62, 248)" opacity="0.5" filter="url(#iconGlow)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#a06070" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#a06070" stroke-width="1" />
+        <path d="M 0 18 L 6 12" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 24" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 0 14 L 0 6 L -3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 0 6 L 3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 24 22 L 24 30 L 21 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 24 30 L 27 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+    </g>
+    <text x="100" y="262" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="1.5">PUTHUJJANA</text>
+    <text x="100" y="276" fill="#806878"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >uninstructed ordinary person — assutavā puthujjano</text>
+
+    <!-- Perceives — centered -->
+    <text x="244" y="298" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" font-style="italic"
+        >perceives the seen as the seen</text>
+    <text x="244" y="314" text-anchor="middle" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >diṭṭhaṁ diṭṭhato sañjānāti</text>
+
+    <!-- Down arrow centered in panel -->
+    <path d="M 240 322 L 248 330 L 256 322" stroke="#8a6878" stroke-width="1" fill="none" opacity="0.5" />
+
+    <!-- Conceives heading — centered -->
+    <text x="244" y="348" text-anchor="middle" fill="#d0b0c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" font-style="italic"
+        >conceives — maññati</text>
+
+    <!-- 4 modes: English left, Pali right -->
+    <text x="72" y="368" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >conceives the seen</text>
+    <text x="280" y="368" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhaṁ maññati</text>
+
+    <text x="72" y="386" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >conceives [himself] in the seen</text>
+    <text x="280" y="386" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhasmiṁ maññati</text>
+
+    <text x="72" y="404" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >conceives [himself] apart from it</text>
+    <text x="280" y="404" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhato maññati</text>
+
+    <text x="72" y="422" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >conceives the seen to be "mine"</text>
+    <text x="280" y="422" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhaṁ me ti maññati</text>
+
+    <!-- Down arrow centered -->
+    <path d="M 240 432 L 248 440 L 256 432" stroke="#8a6878" stroke-width="1" fill="none" opacity="0.5" />
+
+    <!-- Delights — centered -->
+    <text x="244" y="458" text-anchor="middle" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        >[he] <tspan font-weight="bold" font-size="13">delights</tspan> in the seen</text>
+    <text x="244" y="474" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhaṁ abhinandati</text>
+
+    <!-- Separator -->
+    <line x1="60" y1="484" x2="430" y2="484" stroke="#5a3848" stroke-width="0.5" opacity="0.4" />
+
+    <!-- Reason — centered -->
+    <text x="244" y="502" text-anchor="middle" fill="#c07878"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >Because he has not fully understood it — apariññātaṁ tassā</text>
+
+
+    <!-- ======== RIGHT PANEL: AWAKENED (center x=676) ======== -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="236" width="408" height="280" rx="8" fill="url(#patternRight)"
+            stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <!-- Header row — left-aligned within panel -->
+    <g transform="translate(494, 248)" opacity="0.5" filter="url(#iconGlow)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#60a088" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#60a088" stroke-width="1" />
+        <path d="M 0 18 L 6 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <circle cx="12" cy="34" r="3" fill="none" stroke="#80c0a0" stroke-width="0.8" opacity="0.6" />
+    </g>
+    <text x="532" y="262" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="1.5">AWAKENED</text>
+    <text x="532" y="276" fill="#608880"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >One who is liberated — arahaṁ / tathāgato</text>
+
+    <!-- Directly knows — centered at panel center -->
+    <text x="680" y="298" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" font-style="italic"
+        >directly knows the seen as the seen</text>
+    <text x="680" y="314" text-anchor="middle" fill="#609880"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >diṭṭhaṁ diṭṭhato abhijānāti</text>
+
+    <!-- Down arrow centered in panel -->
+    <path d="M 672 322 L 680 330 L 688 322" stroke="#4a8878" stroke-width="1" fill="none" opacity="0.5" />
+
+    <!-- Does not conceive heading — centered -->
+    <text x="680" y="348" text-anchor="middle" fill="#90d0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" font-style="italic"
+        >does not conceive — na maññati</text>
+
+    <!-- 4 negated modes: English left, Pali right within panel -->
+    <text x="504" y="368" fill="#608880"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >does not conceive the seen</text>
+    <text x="720" y="368" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhaṁ na maññati</text>
+
+    <text x="504" y="386" fill="#608880"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >does not conceive [himself] in the seen</text>
+    <text x="720" y="386" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhasmiṁ na maññati</text>
+
+    <text x="504" y="404" fill="#608880"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >does not conceive [himself] apart from it</text>
+    <text x="720" y="404" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhato na maññati</text>
+
+    <text x="504" y="422" fill="#608880"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >does not conceive the seen to be "mine"</text>
+    <text x="720" y="422" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhaṁ me ti na maññati</text>
+
+    <!-- Down arrow centered -->
+    <path d="M 672 432 L 680 440 L 688 432" stroke="#4a8878" stroke-width="1" fill="none" opacity="0.5" />
+
+    <!-- Does not delight — centered -->
+    <text x="676" y="458" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        >[he] <tspan font-weight="bold" font-size="13">does not delight</tspan> in the seen</text>
+    <text x="676" y="474" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >diṭṭhaṁ nābhinandati</text>
+
+    <!-- Separator -->
+    <line x1="492" y1="484" x2="862" y2="484" stroke="#2a5868" stroke-width="0.5" opacity="0.4" />
+
+    <!-- Reason — centered -->
+    <text x="680" y="502" text-anchor="middle" fill="#60a888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >Because he has fully understood it — pariññātaṁ tassā</text>
+
+
+    <!-- ================================================================ -->
+    <!--     APPLIED ACROSS 20 MORE PHENOMENA                             -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="530" x2="820" y2="530" stroke="url(#tierGrad)" stroke-width="0.5"
+        opacity="0.4" />
+    <text x="460" y="552" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">+ 20 MORE PHENOMENA</text>
+    <text x="460" y="570" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.65">The same pattern of conceiving applies across all phenomena…</text>
+
+
+    <!-- ──── ROW 1: FOUR ELEMENTS ──── -->
+    <text x="60" y="600" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        letter-spacing="1.5" opacity="0.65">FOUR ELEMENTS</text>
+
+    <!-- Earth / pathavī -->
+    <g>
+        <g opacity="0.45" transform="translate(72, 614)">
+            <line x1="0" y1="10" x2="20" y2="10" stroke="#7888a0" stroke-width="0.8" />
+            <line x1="2" y1="14" x2="18" y2="14" stroke="#7888a0" stroke-width="0.6" />
+            <line x1="4" y1="18" x2="16" y2="18" stroke="#7888a0" stroke-width="0.4" />
+        </g>
+        <text x="100" y="626" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Earth</text>
+        <text x="100" y="640" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">pathavī</text>
+    </g>
+
+    <!-- Water / āpo -->
+    <g>
+        <g opacity="0.45" transform="translate(272, 614)">
+            <path d="M 0 14 Q 5 8, 10 14 Q 15 20, 20 14" stroke="#7888a0" stroke-width="0.8" fill="none" />
+            <path d="M 2 18 Q 7 12, 12 18 Q 17 24, 20 18" stroke="#7888a0" stroke-width="0.5" fill="none" />
+        </g>
+        <text x="300" y="626" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Water</text>
+        <text x="300" y="640" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">āpo</text>
+    </g>
+
+    <!-- Fire / tejo — proper upward teardrop flame -->
+    <g>
+        <g opacity="0.45" transform="translate(472, 612)">
+            <path d="M 10 0 C 10 0, 2 10, 2 14 C 2 18, 6 22, 10 22 C 14 22, 18 18, 18 14 C 18 10, 10 0, 10 0 Z"
+                fill="none" stroke="#c07060" stroke-width="0.9" />
+            <path d="M 10 6 C 10 6, 6 12, 6 15 C 6 17.5, 8 19, 10 19 C 12 19, 14 17.5, 14 15 C 14 12, 10 6, 10 6 Z"
+                fill="#c0706018" stroke="#c07060" stroke-width="0.5" opacity="0.6" />
+        </g>
+        <text x="500" y="626" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Fire</text>
+        <text x="500" y="640" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">tejo</text>
+    </g>
+
+    <!-- Air / vāyo -->
+    <g>
+        <g opacity="0.45" transform="translate(672, 614)">
+            <path d="M 0 10 Q 8 4, 16 10" stroke="#7888a0" stroke-width="0.8" fill="none" />
+            <path d="M 2 16 Q 10 10, 18 16" stroke="#7888a0" stroke-width="0.6" fill="none" />
+        </g>
+        <text x="700" y="626" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Air</text>
+        <text x="700" y="640" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vāyo</text>
+    </g>
+
+
+    <!-- ──── ROW 2: BEINGS &amp; DEITIES ──── -->
+    <text x="60" y="674" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        letter-spacing="1.5" opacity="0.65">BEINGS &amp; DEITIES</text>
+
+    <!-- Beings / bhūtā -->
+    <g>
+        <g opacity="0.45" transform="translate(72, 688)">
+            <circle cx="6" cy="4" r="3" fill="none" stroke="#7888a0" stroke-width="0.7" />
+            <line x1="6" y1="8" x2="6" y2="18" stroke="#7888a0" stroke-width="0.7" />
+            <circle cx="16" cy="4" r="3" fill="none" stroke="#7888a0" stroke-width="0.7" />
+            <line x1="16" y1="8" x2="16" y2="18" stroke="#7888a0" stroke-width="0.7" />
+        </g>
+        <text x="100" y="700" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Beings</text>
+        <text x="100" y="714" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">bhūtā</text>
+    </g>
+
+    <!-- Deities / devā -->
+    <g>
+        <g opacity="0.45" transform="translate(274, 688)">
+            <circle cx="10" cy="5" r="3" fill="none" stroke="#7888a0" stroke-width="0.7" />
+            <line x1="10" y1="9" x2="10" y2="18" stroke="#7888a0" stroke-width="0.7" />
+            <path d="M 4 0 Q 10 -3, 16 0" stroke="#c8a040" stroke-width="0.5" fill="none" opacity="0.6" />
+        </g>
+        <text x="300" y="700" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Deities</text>
+        <text x="300" y="714" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">devā</text>
+    </g>
+
+    <!-- Creator God / pajāpati -->
+    <g>
+        <g opacity="0.45" transform="translate(472, 688)">
+            <path d="M 4 6 L 10 0 L 16 6" stroke="#7888a0" stroke-width="0.8" fill="none" />
+            <line x1="10" y1="6" x2="10" y2="18" stroke="#7888a0" stroke-width="0.7" />
+        </g>
+        <text x="500" y="700" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Creator God</text>
+        <text x="500" y="714" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">pajāpati</text>
+    </g>
+
+    <!-- Brahmā / brahmā -->
+    <g>
+        <g opacity="0.45" transform="translate(674, 688)">
+            <circle cx="10" cy="5" r="3" fill="none" stroke="#7888a0" stroke-width="0.7" />
+            <line x1="10" y1="9" x2="10" y2="18" stroke="#7888a0" stroke-width="0.7" />
+            <circle cx="10" cy="5" r="8" fill="none" stroke="#c8a040" stroke-width="0.4" opacity="0.4" />
+        </g>
+        <text x="700" y="700" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Brahmā</text>
+        <text x="700" y="714" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">brahmā</text>
+    </g>
+
+
+    <!-- ──── ROW 3: FORM-SPHERE GODS ──── -->
+    <text x="60" y="748" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        letter-spacing="1.5" opacity="0.65">FORM-SPHERE GODS</text>
+
+    <!-- Streaming Radiance / ābhassarā -->
+    <g>
+        <g opacity="0.45" transform="translate(72, 762)">
+            <circle cx="10" cy="10" r="4" fill="none" stroke="#7888a0" stroke-width="0.6" />
+            <line x1="10" y1="2" x2="10" y2="-2" stroke="#80b0c0" stroke-width="0.5" />
+            <line x1="16" y1="5" x2="19" y2="2" stroke="#80b0c0" stroke-width="0.5" />
+            <line x1="16" y1="15" x2="19" y2="18" stroke="#80b0c0" stroke-width="0.5" />
+            <line x1="4" y1="5" x2="1" y2="2" stroke="#80b0c0" stroke-width="0.5" />
+            <line x1="4" y1="15" x2="1" y2="18" stroke="#80b0c0" stroke-width="0.5" />
+        </g>
+        <text x="100" y="774" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Streaming Radiance</text>
+        <text x="100" y="788" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">ābhassarā</text>
+    </g>
+
+    <!-- Refulgent Glory / subhakiṇhā -->
+    <g>
+        <g opacity="0.45" transform="translate(272, 762)">
+            <circle cx="10" cy="10" r="6" fill="#7888a0" fill-opacity="0.15" stroke="#7888a0" stroke-width="0.6" />
+            <circle cx="10" cy="10" r="3" fill="#7888a0" fill-opacity="0.25" stroke="none" />
+        </g>
+        <text x="300" y="774" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Refulgent Glory</text>
+        <text x="300" y="788" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">subhakiṇhā</text>
+    </g>
+
+    <!-- Great Fruit / vehapphalā — orb with radiating abundance -->
+    <g>
+        <g opacity="0.45" transform="translate(472, 762)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.6" />
+            <circle cx="7" cy="8" r="1.5" fill="#7888a0" fill-opacity="0.35" stroke="none" />
+            <circle cx="13" cy="8" r="1.5" fill="#7888a0" fill-opacity="0.35" stroke="none" />
+            <circle cx="10" cy="13" r="1.5" fill="#7888a0" fill-opacity="0.35" stroke="none" />
+        </g>
+        <text x="500" y="774" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Great Fruit</text>
+        <text x="500" y="788" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vehapphalā</text>
+    </g>
+
+    <!-- Overlord / abhibhū — crowned circle -->
+    <g>
+        <g opacity="0.45" transform="translate(672, 762)">
+            <circle cx="10" cy="12" r="6" fill="none" stroke="#7888a0" stroke-width="0.6" />
+            <path d="M 2 6 L 6 2 L 10 5 L 14 2 L 18 6" stroke="#c8a040" stroke-width="0.6" fill="none" opacity="0.5" />
+        </g>
+        <text x="700" y="774" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Overlord</text>
+        <text x="700" y="788" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">abhibhū</text>
+    </g>
+
+
+    <!-- ──── ROW 4: FORMLESS BASES (2×2) ──── -->
+    <text x="60" y="822" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        letter-spacing="1.5" opacity="0.65">FORMLESS BASES</text>
+
+    <!-- Boundless Space / ākāsānañcāyatana — col 1 -->
+    <g>
+        <g opacity="0.4" transform="translate(72, 836)">
+            <circle cx="10" cy="10" r="8" fill="none" stroke="#7888a0" stroke-width="0.5" stroke-dasharray="2,2" />
+            <circle cx="10" cy="10" r="4" fill="none" stroke="#7888a0" stroke-width="0.4" />
+        </g>
+        <text x="100" y="846" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Boundless Space</text>
+        <text x="100" y="860" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">ākāsānañcāyatana</text>
+    </g>
+
+    <!-- Boundless Consciousness / viññāṇañcāyatana — col 3 (x=500) -->
+    <g>
+        <g opacity="0.4" transform="translate(472, 836)">
+            <circle cx="10" cy="10" r="8" fill="none" stroke="#7888a0" stroke-width="0.5" />
+            <circle cx="10" cy="10" r="5" fill="none" stroke="#7888a0" stroke-width="0.4" />
+            <circle cx="10" cy="10" r="2" fill="none" stroke="#7888a0" stroke-width="0.3" />
+        </g>
+        <text x="500" y="846" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Boundless Consciousness</text>
+        <text x="500" y="860" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">viññāṇañcāyatana</text>
+    </g>
+
+    <!-- Nothingness / ākiñcaññāyatana — col 1 -->
+    <g>
+        <g opacity="0.4" transform="translate(72, 872)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" stroke-dasharray="4,3" />
+        </g>
+        <text x="100" y="882" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Nothingness</text>
+        <text x="100" y="896" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">ākiñcaññāyatana</text>
+    </g>
+
+    <!-- Neither Perception Nor Non-Perception — col 3 (x=500) -->
+    <g>
+        <g opacity="0.4" transform="translate(472, 872)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" opacity="0.5" />
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.3" stroke-dasharray="1,3" />
+        </g>
+        <text x="500" y="882" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Neither Perception Nor Non-Perception</text>
+        <text x="500" y="896" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">nevasaññānāsaññāyatana</text>
+    </g>
+
+
+    <!-- ──── ROW 5: UNITIES & THE ULTIMATE ──── -->
+    <text x="60" y="930" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        letter-spacing="1.5" opacity="0.65">UNITIES &amp; THE ULTIMATE</text>
+
+    <!-- Oneness / ekatta -->
+    <g>
+        <g opacity="0.45" transform="translate(72, 944)">
+            <circle cx="10" cy="10" r="2.5" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+        </g>
+        <text x="100" y="956" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Oneness</text>
+        <text x="100" y="970" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">ekatta</text>
+    </g>
+
+    <!-- Diversity / nānatta -->
+    <g>
+        <g opacity="0.45" transform="translate(270, 944)">
+            <circle cx="4" cy="6" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+            <circle cx="14" cy="4" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+            <circle cx="10" cy="14" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+            <circle cx="18" cy="12" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+        </g>
+        <text x="300" y="956" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Diversity</text>
+        <text x="300" y="970" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">nānatta</text>
+    </g>
+
+    <!-- All / sabba -->
+    <g>
+        <g opacity="0.45" transform="translate(472, 944)">
+            <circle cx="10" cy="10" r="8" fill="none" stroke="#7888a0" stroke-width="0.6" />
+            <circle cx="6" cy="8" r="1.5" fill="#7888a0" fill-opacity="0.3" stroke="none" />
+            <circle cx="14" cy="8" r="1.5" fill="#7888a0" fill-opacity="0.3" stroke="none" />
+            <circle cx="10" cy="14" r="1.5" fill="#7888a0" fill-opacity="0.3" stroke="none" />
+        </g>
+        <text x="500" y="956" fill="#b098b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">All</text>
+        <text x="500" y="970" fill="#908098"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">sabba</text>
+    </g>
+
+    <!-- Nibbāna / nibbāna (gold accent, no icon per feedback) -->
+    <g>
+        <text x="700" y="956" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Nibbāna</text>
+        <text x="700" y="970" fill="#a08838"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">nibbāna</text>
+    </g>
+
+
+    <!-- ================================================================ -->
+    <!--     EIGHT LEVELS OF UNDERSTANDING                                -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="1000" x2="820" y2="1000" stroke="url(#tierGrad)" stroke-width="0.5"
+        opacity="0.4" />
+    <text x="460" y="1022" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">EIGHT LEVELS OF UNDERSTANDING</text>
+    <text x="460" y="1040" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        letter-spacing="1" opacity="0.6">aṭṭha naya-bhūmi</text>
+
+    <!-- Grammatical arc — English first -->
+    <text x="460" y="1060" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.6">conceives → should not conceive → does not conceive</text>
+    <text x="460" y="1076" text-anchor="middle" fill="#708090"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        opacity="0.5">maññati → mā maññi → na maññati</text>
+
+
+    <!-- ──── LEVEL ① PUTHUJJANA ──── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="1094" width="800" height="82" rx="8" fill="url(#levelBurgundy)"
+            stroke="#5a3848" stroke-width="0.7" stroke-opacity="0.4" />
+    </g>
+
+    <circle cx="90" cy="1122" r="12" fill="none" stroke="#8a6878" stroke-width="0.8" opacity="0.6" />
+    <text x="90" y="1125" text-anchor="middle" fill="#c0a0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
+
+    <!-- Line 1: English name + Pali description (centered) -->
+    <text x="460" y="1112" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold" text-anchor="middle"
+        >Uninstructed ordinary Person <tspan fill="#907888" font-style="italic" font-size="11" font-weight="normal">(assutavā puthujjano)</tspan></text>
+
+    <!-- Line 2: English verbs + Pali verbs (centered) -->
+    <text x="460" y="1138" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic" font-weight="bold" text-anchor="middle"
+        >perceives <tspan font-weight="normal" font-size="11" fill="#907888">(sañjānāti)</tspan> → conceives <tspan font-weight="normal" font-size="11" fill="#907888">(maññati)</tspan> → delights <tspan font-weight="normal" font-size="11" fill="#907888">(abhinandati)</tspan></text>
+
+    <!-- Line 3: English reason + Pali reason (centered) -->
+    <text x="460" y="1162" fill="#c07878"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" text-anchor="middle"
+        >Because he has not fully understood the phenomena <tspan fill="#907888" font-style="italic" font-size="12" font-weight="normal">(apariññātaṁ tassā)</tspan></text>
+
+    <!-- Downward chevron -->
+    <path d="M 449 1184 L 460 1194 L 471 1184" stroke="#506878" stroke-width="1" fill="none"
+        stroke-linejoin="round" opacity="0.3" />
+
+
+    <!-- ──── LEVEL ② SEKHA ──── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="1202" width="800" height="82" rx="8" fill="url(#levelTransition)"
+            stroke="#385068" stroke-width="0.7" stroke-opacity="0.4" />
+    </g>
+
+    <circle cx="90" cy="1230" r="12" fill="none" stroke="#607890" stroke-width="0.8" opacity="0.6" />
+    <text x="90" y="1233" text-anchor="middle" fill="#a0b8d0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
+
+    <!-- Line 1: English name + Pali description (centered) -->
+    <text x="460" y="1222" fill="#a0b8d0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold" text-anchor="middle"
+        >Trainee <tspan fill="#708898" font-style="italic" font-size="11" font-weight="normal">(sekkho appattamānaso)</tspan></text>
+
+    <!-- Line 2: English verbs + Pali verbs (centered) -->
+    <text x="460" y="1242" fill="#a0b8d0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic" font-weight="bold" text-anchor="middle"
+        >directly knows <tspan font-weight="normal" font-size="11" fill="#708898">(abhijānāti)</tspan> → should not conceive <tspan font-weight="normal" font-size="11" fill="#708898">(mā maññi)</tspan> → should not delight <tspan font-weight="normal" font-size="11" fill="#708898">(mābhinandi)</tspan></text>
+
+    <!-- Line 3: English reason + Pali reason (centered) -->
+    <text x="460" y="1268" fill="#6090a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" text-anchor="middle"
+        >Because he must fully understand it <tspan fill="#708898" font-style="italic" font-size="12" font-weight="normal">(pariññeyyaṁ tassā)</tspan></text>
+
+    <!-- Downward chevron -->
+    <path d="M 449 1292 L 460 1302 L 471 1292" stroke="#506878" stroke-width="1" fill="none"
+        stroke-linejoin="round" opacity="0.3" />
+
+
+    <!-- ──── LEVELS ③–⑥ ARAHANT (2×2 grid) ──── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="1310" width="800" height="150" rx="8" fill="url(#levelTeal)"
+            stroke="#2a5868" stroke-width="0.7" stroke-opacity="0.4" />
+    </g>
+
+    <!-- Line 1: English name + Pali description (centered) -->
+    <text x="460" y="1332" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold" text-anchor="middle"
+        >Arahant <tspan fill="#608880" font-style="italic" font-size="11" font-weight="normal">(arahaṁ khīṇāsavo)</tspan></text>
+
+    <!-- Line 2: English verbs + Pali verbs (centered) -->
+    <text x="460" y="1352" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic" font-weight="bold" text-anchor="middle"
+        >directly knows <tspan font-weight="normal" font-size="11" fill="#608880">(abhijānāti)</tspan> → does not conceive <tspan font-weight="normal" font-size="11" fill="#608880">(na maññati)</tspan> → does not delight <tspan font-weight="normal" font-size="11" fill="#608880">(nābhinandati)</tspan></text>
+
+    <!-- 2×2 reason grid: English (light) left, Pali (bold) right-aligned in each half -->
+
+    <!-- ③ top-left -->
+    <circle cx="90" cy="1382" r="10" fill="none" stroke="#4a8878" stroke-width="0.7" opacity="0.5" />
+    <text x="90" y="1384" text-anchor="middle" fill="#80c0a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">3</text>
+    <text x="110" y="1380" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >Because he has fully understood it</text>
+    <text x="110" y="1394" fill="#608880" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >(pariññātaṁ tassā)</text>
+
+    <!-- ④ top-right -->
+    <circle cx="490" cy="1382" r="10" fill="none" stroke="#4a8878" stroke-width="0.7" opacity="0.5" />
+    <text x="490" y="1384" text-anchor="middle" fill="#80c0a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">4</text>
+    <text x="510" y="1380" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >Because of the wearing away of passion, he is free from passion</text>
+    <text x="510" y="1394" fill="#608880" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >(khayā rāgassa, vītarāgattā)</text>
+
+    <!-- ⑤ bottom-left -->
+    <circle cx="90" cy="1432" r="10" fill="none" stroke="#4a8878" stroke-width="0.7" opacity="0.5" />
+    <text x="90" y="1434" text-anchor="middle" fill="#80c0a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">5</text>
+    <text x="110" y="1430" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >Because of the wearing away of averison, he is free from aversion</text>
+    <text x="110" y="1444" fill="#608880" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >(khayā dosassa, vītadosattā)</text>
+
+    <!-- ⑥ bottom-right -->
+    <circle cx="490" cy="1432" r="10" fill="none" stroke="#4a8878" stroke-width="0.7" opacity="0.5" />
+    <text x="490" y="1436" text-anchor="middle" fill="#80c0a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">6</text>
+    <text x="510" y="1430" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >Because of the wearing away of delusion, he is free from delusion</text>
+    <text x="510" y="1444" fill="#608880" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >(khayā mohassa, vītamohattā)</text>
+
+    <!-- Faint vertical divider in 2×2 -->
+    <line x1="460" y1="1366" x2="460" y2="1430" stroke="#4a8878" stroke-width="0.5" opacity="0.15" />
+    <!-- Faint horizontal divider -->
+    <line x1="80" y1="1406" x2="840" y2="1406" stroke="#4a8878" stroke-width="0.5" opacity="0.1" />
+
+
+    <!-- Downward chevron -->
+    <path d="M 449 1468 L 460 1478 L 471 1468" stroke="#806830" stroke-width="1" fill="none"
+        stroke-linejoin="round" opacity="0.3" />
+
+
+    <!-- ──── LEVELS ⑦–⑧ TATHĀGATA ──── -->
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="1486" width="800" height="130" rx="8" fill="url(#levelGold)"
+            stroke="#806830" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+
+    <!-- Subtle radial glow behind -->
+    <ellipse cx="460" cy="1548" rx="300" ry="50" fill="url(#conclusionGlow)" />
+
+    <!-- Line 1: name + Pali description (centered) -->
+    <text x="460" y="1510" fill="#d0b060"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold" text-anchor="middle"
+        filter="url(#glow1)">Tathāgata <tspan fill="#a08838" font-style="italic" font-size="11" font-weight="normal">(tathāgato arahaṁ sammāsambuddho)</tspan></text>
+
+    <!-- Line 2: English verbs + Pali verbs (centered) -->
+    <text x="460" y="1530" fill="#d0b060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic" font-weight="bold" text-anchor="middle"
+        >directly knows <tspan font-weight="normal" font-size="11" fill="#a08838">(abhijānāti)</tspan> → does not conceive <tspan font-weight="normal" font-size="11" fill="#a08838">(na maññati)</tspan> → does not delight <tspan font-weight="normal" font-size="11" fill="#a08838">(nābhinandati)</tspan></text>
+
+    <!-- ⑦ English reason left, Pali bold right -->
+    <circle cx="90" cy="1554" r="10" fill="none" stroke="#a08838" stroke-width="0.7" opacity="0.5" />
+    <text x="90" y="1557" text-anchor="middle" fill="#d0b060"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">7</text>
+    <text x="110" y="1558" fill="#c0a850"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >Because the Tathāgata has fully understood it to the end <tspan fill="#a08838">(pariññātantaṁ tathāgatassa)</tspan></text>
+
+    <!-- ⑧ English reason left, Pali bold right -->
+    <circle cx="90" cy="1586" r="10" fill="none" stroke="#a08838" stroke-width="0.7" opacity="0.5" />
+    <text x="90" y="1590" text-anchor="middle" fill="#d0b060"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">8</text>
+    <text x="110" y="1586" fill="#d0b060"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >Through the complete exhaustion, fading away, cessation, giving up, and relinquishing of craving, the Tathāgata has awakened to the</text>
+         <text x="100" y="1602" fill="#d0b060" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">unsurpassed full awakening <tspan fill="#a08838">(tathāgato sabbaso taṇhānaṁ khayā virāgā nirodhā cāgā paṭinissaggā anuttaraṁ sammāsambodhiṁ abhisambuddho)</tspan></text>
+
+    <!-- ================================================================ -->
+    <!--     CONCLUSION                                                   -->
+    <!-- ================================================================ -->
+
+    <line x1="200" y1="1628" x2="720" y2="1628" stroke="#c8a040" stroke-opacity="0.15"
+        stroke-width="0.5" />
+
+    <!-- Conclusion glow -->
+    <ellipse cx="460" cy="1660" rx="280" ry="40" fill="url(#conclusionGlow)" />
+
+    <!-- Key phrase -->
+    <text x="460" y="1652" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold"
+        filter="url(#glow2)">“ Delight is the root of suffering ”</text>
+    <text x="460" y="1672" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic"
+        >nandī dukkhassa mūlaṁ</text>
+
+    <!-- Famous ending -->
+    <text x="460" y="1696" text-anchor="middle" fill="#506068"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >that with being [as condition], there is birth, and for one who has come into being, there is aging and death</text>
+    <text x="460" y="1712" text-anchor="middle" fill="#506068"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        opacity="0.7">bhavā jāti bhūtassa jarāmaraṇa</text>
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1728" x2="620" y2="1728" stroke="#304058" stroke-opacity="0.3"
+        stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn1" target="_blank"><text x="460" y="1742" text-anchor="middle" fill="#384858"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1"
+        >wordsofthebuddha.org/mn1</text></a>
+</svg>
