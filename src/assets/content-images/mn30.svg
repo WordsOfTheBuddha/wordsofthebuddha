@@ -356,7 +356,7 @@
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
         >Delighted and intention fulfilled</text>
     <text x="120" y="820" fill="#907888"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5"
         >Does not generate desire or make effort</text>
     <text x="120" y="838" fill="#806878"
         font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
@@ -386,7 +386,7 @@
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
         >Not delighted by it, nor fulfilled in intention</text>
     <text x="532" y="820" fill="#6898a0"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5"
         >Generates desire and makes effort toward higher states</text>
     <text x="532" y="838" fill="#607870"
         font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
@@ -394,19 +394,19 @@
 
     <!-- Left: consequence of stopping -->
     <text x="250" y="878" text-anchor="middle" fill="#a06868"
-        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
-        >&#8220;He becomes sluggish and careless&#8221;</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13"
+        >He is sluggish in practice and lax</text>
     <text x="250" y="896" text-anchor="middle" fill="#806060"
         font-family="Georgia,serif" font-size="12" font-style="italic"
         >olīnavuttiko ca hoti sāthaliko</text>
 
     <!-- Right: consequence of pressing inward -->
     <text x="670" y="878" text-anchor="middle" fill="#60a090"
-        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
-        >&#8220;He does not become sluggish or careless&#8221;</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="13"
+        >He is diligent in practice and not lax</text>
     <text x="670" y="896" text-anchor="middle" fill="#508070"
         font-family="Georgia,serif" font-size="12" font-style="italic"
-        >na s&#x101;thaliko hoti</text>
+        >anolīnavuttiko ca hoti asāthaliko</text>
 
     <!-- ============ DOWNWARD CHEVRON ============ -->
     <path d="M 449 920 L 460 930 L 471 920" stroke="#506878" stroke-width="1.2" fill="none"
