@@ -275,7 +275,7 @@ if (!firstImage) return;
 			</>
 		)}
 
-		<div id="modalViewport" class="relative w-[90vw] h-[85vh] max-w-[90vw] max-h-[85vh] overflow-auto rounded-lg">
+		<div id="modalViewport" class="relative w-[90vw] h-[85vh] max-w-[90vw] max-h-[85vh] overflow-auto overscroll-contain rounded-lg">
 			<div id="modalZoomContent" class="w-full min-w-full min-h-full flex items-center justify-center p-2">
 				<img
 					id="fullImage"
@@ -313,7 +313,7 @@ if (!firstImage) return;
 				<button
 					id="zoomResetBtn"
 					type="button"
-					class="h-9 rounded-full bg-white/15 hover:bg-white/30 text-white text-xs px-3"
+					class="h-9 rounded-full bg-white/15 hover:bg-white/30 text-white text-xs px-3 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white/15"
 					aria-label="Reset zoom"
 					title="Reset zoom"
 				>
@@ -369,6 +369,7 @@ if (!firstImage) return;
 		const zoomInBtn = document.getElementById("zoomInBtn") as HTMLButtonElement;
 		const zoomOutBtn = document.getElementById("zoomOutBtn") as HTMLButtonElement;
 		const zoomResetBtn = document.getElementById("zoomResetBtn") as HTMLButtonElement;
+		let lockedScrollY = 0;
 
 		if (!figure) return;
 
@@ -409,6 +410,9 @@ if (!firstImage) return;
 			}
 			if (zoomInBtn) {
 				zoomInBtn.disabled = zoomPercent >= MAX_ZOOM_PERCENT;
+			}
+			if (zoomResetBtn) {
+				zoomResetBtn.disabled = zoomPercent <= MIN_ZOOM_PERCENT;
 			}
 		};
 
@@ -506,6 +510,30 @@ if (!firstImage) return;
 			history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
 		};
 
+		const lockPageScroll = () => {
+			if (document.body.dataset.discourseImageScrollLock === "true") return;
+			lockedScrollY = window.scrollY;
+			document.body.dataset.discourseImageScrollLock = "true";
+			document.body.style.overflow = "hidden";
+			document.body.style.position = "fixed";
+			document.body.style.top = `-${lockedScrollY}px`;
+			document.body.style.left = "0";
+			document.body.style.right = "0";
+			document.body.style.width = "100%";
+		};
+
+		const unlockPageScroll = () => {
+			if (document.body.dataset.discourseImageScrollLock !== "true") return;
+			document.body.dataset.discourseImageScrollLock = "false";
+			document.body.style.overflow = "";
+			document.body.style.position = "";
+			document.body.style.top = "";
+			document.body.style.left = "";
+			document.body.style.right = "";
+			document.body.style.width = "";
+			window.scrollTo(0, lockedScrollY);
+		};
+
 		function updateModalSlide(index: number) {
 			if (!fullImage || !fullSvgObject) return;
 			const source = imageSources[index];
@@ -540,7 +568,7 @@ if (!firstImage) return;
 
 			if (dialog && !dialog.open) {
 				dialog.showModal();
-				document.body.style.overflow = "hidden";
+				lockPageScroll();
 			}
 
 			if (updateRoute) {
@@ -635,9 +663,20 @@ if (!firstImage) return;
 
 			dialog.addEventListener("close", () => {
 				resetZoom();
-				document.body.style.overflow = "";
+				unlockPageScroll();
 				clearImageRoute();
 			});
+
+			dialog.addEventListener(
+				"touchmove",
+				(e) => {
+					if (!modalViewport) return;
+					if (!modalViewport.contains(e.target as Node)) {
+						e.preventDefault();
+					}
+				},
+				{ passive: false },
+			);
 		}
 
 		if (zoomInBtn) {
