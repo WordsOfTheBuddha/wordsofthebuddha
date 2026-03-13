@@ -12,17 +12,76 @@
  * Toggle button is separate (ImageToggle.astro) and placed in icon row.
  */
 import { Image } from "astro:assets";
-import type { ContentImageData } from "../utils/contentImage";
+import { getEntry } from "astro:content";
+import { hasContentImage, type ContentImageData } from "../utils/contentImage";
+import { routes } from "../utils/routes";
 import ZoomIcon from "../assets/magnifying-glass-plus.svg?raw";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
 
 interface Props {
 	/** Single image or array of images from findContentImages() */
 	imageData: ContentImageData | ContentImageData[];
+	/** Previous discourse with a viz in same collection, if available */
+	prevViz?: { slug: string; title: string } | null;
+	/** Next discourse with a viz in same collection, if available */
+	nextViz?: { slug: string; title: string } | null;
 }
 
-const { imageData: rawImageData } = Astro.props;
+const { imageData: rawImageData, prevViz = null, nextViz = null } = Astro.props;
+
+const formatVizSlug = (slug: string) =>
+	slug.replace(/^([a-z]+)(.+)$/i, (_, prefix, rest) => `${prefix.toUpperCase()} ${rest}`);
+
+const formatVizLabel = (viz: { slug: string; title: string }) =>
+	`${formatVizSlug(viz.slug)} - ${viz.title}`;
+
+const currentSlug = Astro.url.pathname
+	.replace(/^\//, "")
+	.replace(/\/$/, "")
+	.split("/")
+	.filter(Boolean)
+	.at(-1) || "";
+
+const fallbackCollectionPrefix = (currentSlug.match(/^[a-z]+/i)?.[0] || "").toLowerCase();
+
+const computeFallbackVizNeighbor = async (direction: -1 | 1) => {
+	if (!currentSlug || !fallbackCollectionPrefix) return null;
+	const currentIndex = routes.findIndex((route) => route === currentSlug);
+	if (currentIndex === -1) return null;
+
+	for (
+		let index = currentIndex + direction;
+		direction < 0 ? index >= 0 : index < routes.length;
+		index += direction
+	) {
+		const candidateSlug = routes[index];
+		const candidatePrefix = (candidateSlug.match(/^[a-z]+/i)?.[0] || "").toLowerCase();
+		if (candidatePrefix !== fallbackCollectionPrefix) continue;
+		if (!hasContentImage(candidateSlug)) continue;
+		const candidateEntry = await getEntry("all", candidateSlug);
+
+		return {
+			slug: candidateSlug,
+			title: candidateEntry?.data.title || formatVizSlug(candidateSlug),
+		};
+	}
+
+	return null;
+};
+
+const resolvedPrevViz = prevViz ?? (await computeFallbackVizNeighbor(-1));
+const resolvedNextViz = nextViz ?? (await computeFallbackVizNeighbor(1));
+
+const buildVizHref = (slug: string) => {
+	const params = new URLSearchParams(Astro.url.search);
+	params.delete("image");
+	params.set("viz", "1");
+	return `/${slug}?${params.toString()}`;
+};
+
+const prevVizHref = resolvedPrevViz ? buildVizHref(resolvedPrevViz.slug) : null;
+const nextVizHref = resolvedNextViz ? buildVizHref(resolvedNextViz.slug) : null;
 
 // Normalize to array
 const allImages = Array.isArray(rawImageData) ? rawImageData : [rawImageData];
@@ -86,14 +145,54 @@ const processedImages = allImages.map((img) => {
 			: null;
 	const isWithinFitBand =
 		aspectRatio != null && aspectRatio >= 1.2 && aspectRatio <= 1.69;
+	const isPortrait =
+		aspectRatio != null && aspectRatio < 0.9;
+	const svgMarkup = (() => {
+		if (!isSvg) return undefined;
+		try {
+			const abs = resolvePath(process.cwd(), modulePath.replace(/^\//, ""));
+			if (!existsSync(abs)) return undefined;
+			return readFileSync(abs, "utf-8")
+				.replace(/(<svg[^>]*?)\s+width="[^"]*"/i, "$1")
+				.replace(/(<svg[^>]*?)\s+height="[^"]*"/i, "$1");
+		} catch {
+			return undefined;
+		}
+	})();
 
-	return { ...img, isSvg, devFileExists, isWithinFitBand, publicUrl };
+	return {
+		...img,
+		isSvg,
+		devFileExists,
+		isWithinFitBand,
+		isPortrait,
+		publicUrl,
+		svgMarkup,
+	};
 });
 
 // Filter to only existing images
 const images = processedImages.filter((img) => img.devFileExists);
-const firstImage = images[0];
-if (!firstImage) return;
+
+const parseInitialVizIndex = () => {
+	const vizParam =
+		Astro.url.searchParams.get("viz") ??
+		Astro.url.searchParams.get("image");
+	if (vizParam == null) return null;
+	if (vizParam === "" || vizParam === "true") return 0;
+	const parsed = parseInt(vizParam, 10);
+	if (!Number.isNaN(parsed) && parsed >= 1) return parsed - 1;
+	return 0;
+};
+
+const initialVizIndexRaw = parseInitialVizIndex();
+const initialVizIndex =
+	initialVizIndexRaw == null
+		? 0
+		: Math.max(0, Math.min(images.length - 1, initialVizIndexRaw));
+const initialVizOpen = initialVizIndexRaw != null;
+const initialImage = images[initialVizIndex];
+if (!initialImage) return;
 ---
 
 {images.length > 0 && (
@@ -106,37 +205,57 @@ if (!firstImage) return;
 		try {
 			const stored = localStorage.getItem("showDiscourseImages");
 			const show = stored === null ? true : stored === "true";
-			if (show && navigator.onLine) {
-				document
-					.getElementById("discourseImageFigure")
-					.classList.remove("hidden");
+			const hasViz = /[?&](viz|image)=/.test(window.location.search);
+			const fig = document.getElementById("discourseImageFigure");
+			if (hasViz) {
+				fig.classList.remove("hidden");
+			} else if (show && navigator.onLine) {
+				fig.classList.remove("hidden");
 			}
 		} catch (e) {}
 	</script>
 
-	<div class="relative rounded-lg overflow-hidden">
+	<div class="image-frame relative rounded-lg overflow-hidden">
 		{/* Carousel wrapper */}
 		<div id="carouselTrack" class="relative w-full">
 			{images.map((img, idx) => (
 				<div
 					class:list={[
 						"carousel-slide w-full",
-						idx === 0 ? "" : "hidden",
+						idx === initialVizIndex ? "" : "hidden",
 					]}
 					data-slide-index={idx}
 					data-permalink={img.publicUrl}
 				>
 					{img.isSvg ? (
-						<img
-							src={img.publicUrl ?? img.image.src}
-							alt={img.alt}
-							class:list={[
-								"svg-image w-full h-auto rounded-lg object-contain",
-								img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
-							]}
-							loading={idx === 0 ? "eager" : "lazy"}
-							decoding="async"
-						/>
+						img.svgMarkup ? (
+							<>
+								<img
+									src={img.publicUrl ?? img.image.src}
+									alt={img.alt}
+									class:list={[
+										"svg-image svg-screen w-full h-auto rounded-lg object-contain",
+										img.isPortrait && "svg-portrait",
+										img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
+									]}
+									loading={idx === 0 ? "eager" : "lazy"}
+									decoding="async"
+								/>
+								<div class:list={["svg-print", img.isPortrait && "svg-portrait"]} set:html={img.svgMarkup} />
+							</>
+						) : (
+							<img
+								src={img.publicUrl ?? img.image.src}
+								alt={img.alt}
+								class:list={[
+									"svg-image w-full h-auto rounded-lg object-contain",
+									img.isPortrait && "svg-portrait",
+									img.isWithinFitBand ? "max-h-[440px]" : "max-h-[320px]",
+								]}
+								loading={idx === 0 ? "eager" : "lazy"}
+								decoding="async"
+							/>
+						)
 					) : (
 						<Image
 							src={img.image}
@@ -203,7 +322,7 @@ if (!firstImage) return;
 				<button
 					class:list={[
 						"carousel-dot w-2 h-2 rounded-full transition-all duration-200",
-						idx === 0
+						idx === initialVizIndex
 							? "bg-amber-500 dark:bg-amber-400 w-4"
 							: "bg-gray-400 dark:bg-gray-600 hover:bg-gray-500",
 					]}
@@ -215,9 +334,9 @@ if (!firstImage) return;
 	)}
 
 	{
-		firstImage.caption && (
+		initialImage.caption && (
 			<figcaption class="mt-0.5 text-sm text-gray-600 dark:text-gray-400 text-center">
-				{firstImage.caption}
+				{initialImage.caption}
 			</figcaption>
 		)
 	}
@@ -225,7 +344,11 @@ if (!firstImage) return;
 	{/* Zoom modal — shows current slide's image with carousel nav */}
 	<dialog
 		id="imageModal"
-		class="p-0 bg-transparent backdrop:bg-black/80 max-w-none max-h-none w-full h-full m-0 open:flex items-center justify-center pointer-events-none open:pointer-events-auto"
+		open={initialVizOpen ? true : undefined}
+		class:list={[
+			"p-0 bg-transparent backdrop:bg-black/80 max-w-none max-h-none w-full h-full m-0 open:flex items-center justify-center pointer-events-none open:pointer-events-auto",
+			initialVizOpen && "viz-initial-open fixed inset-0 bg-black/80 flex items-center justify-center pointer-events-auto",
+		]}
 	>
 		<form method="dialog" class="fixed top-4 right-4 z-10">
 			<button
@@ -249,8 +372,8 @@ if (!firstImage) return;
 			</button>
 		</form>
 
-		{/* Modal carousel arrows */}
-		{isCarousel && (
+		{/* Modal carousel arrows (retained only when no discourse viz nav exists) */}
+		{isCarousel && !resolvedPrevViz && !resolvedNextViz && (
 			<>
 				<button
 					id="modalPrev"
@@ -279,26 +402,47 @@ if (!firstImage) return;
 			<div id="modalZoomContent" class="w-full min-w-full min-h-full flex items-center justify-center p-2">
 				<img
 					id="fullImage"
-					src={firstImage.publicUrl ?? firstImage.image.src}
-					alt={firstImage.alt}
-					width={firstImage.isSvg ? undefined : IMAGE_WIDTH}
+					src={initialImage.publicUrl ?? initialImage.image.src}
+					alt={initialImage.alt}
+					width={initialImage.isSvg ? undefined : IMAGE_WIDTH}
 					class:list={[
 						"w-full h-auto object-contain rounded-lg",
-						firstImage.isSvg ? "hidden" : "shadow-2xl",
+						initialImage.isSvg ? "hidden" : "shadow-2xl",
 					]}
 				/>
 				<object
 					id="fullSvgObject"
-					data={firstImage.publicUrl ?? firstImage.image.src}
+					data={initialImage.publicUrl ?? initialImage.image.src}
 					type="image/svg+xml"
 					role="img"
-					aria-label={firstImage.alt}
+					aria-label={initialImage.alt}
 					class:list={[
 						"w-full h-auto rounded-lg",
-						firstImage.isSvg ? "svg-image" : "hidden",
+						initialImage.isSvg ? "svg-image" : "hidden",
 					]}
 				/>
 			</div>
+
+			{resolvedPrevViz && prevVizHref && (
+					<a
+						href={prevVizHref}
+						class="viz-nav-link fixed bottom-5 left-5 z-20 text-white/40 hover:text-white/90 text-[11px] transition-colors duration-300 no-underline"
+						title={formatVizLabel(resolvedPrevViz)}
+						aria-label={`Previous Viz: ${formatVizLabel(resolvedPrevViz)}`}
+					>
+						← {formatVizSlug(resolvedPrevViz.slug)}
+					</a>
+				)}
+				{resolvedNextViz && nextVizHref && (
+					<a
+						href={nextVizHref}
+						class="viz-nav-link fixed bottom-5 right-5 z-20 text-white/40 hover:text-white/90 text-[11px] transition-colors duration-300 no-underline"
+						title={formatVizLabel(resolvedNextViz)}
+						aria-label={`Next Viz: ${formatVizLabel(resolvedNextViz)}`}
+					>
+						{formatVizSlug(resolvedNextViz.slug)} →
+					</a>
+				)}
 
 			<div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-black/50 px-3 py-2 backdrop-blur-sm">
 				<button
@@ -329,9 +473,9 @@ if (!firstImage) return;
 					+
 				</button>
 			</div>
-			{firstImage.caption && (
+			{initialImage.caption && (
 				<div class="mt-4 text-white/90 text-center bg-black/50 px-4 py-2 rounded-full z-20 relative">
-					{firstImage.caption}
+					{initialImage.caption}
 				</div>
 			)}
 
@@ -531,6 +675,9 @@ if (!firstImage) return;
 			document.body.style.left = "";
 			document.body.style.right = "";
 			document.body.style.width = "";
+			// Also clear any <html>-level overflow set by early viz-preload script
+			document.documentElement.style.overflow = "";
+			document.documentElement.style.removeProperty('--viz-preload');
 			window.scrollTo(0, lockedScrollY);
 		};
 
@@ -617,7 +764,6 @@ if (!firstImage) return;
 				});
 			});
 
-			// Modal carousel navigation
 			const modalPrev = document.getElementById("modalPrev");
 			const modalNext = document.getElementById("modalNext");
 
@@ -665,6 +811,9 @@ if (!firstImage) return;
 				resetZoom();
 				unlockPageScroll();
 				clearImageRoute();
+				// Re-trigger paragraph alignment for split Pali layout —
+				// it skips alignment at load when viz-preload hides the body.
+				window.dispatchEvent(new Event('resize'));
 			});
 
 			dialog.addEventListener(
@@ -766,7 +915,19 @@ if (!firstImage) return;
 
 		document.addEventListener("discourseImageToggled", updateVisibility);
 		resetZoom();
-		syncModalWithRoute();
+
+		// Transition from server-side <dialog open> to a proper showModal().
+		// The server renders with `open` + `viz-initial-open` so the dialog
+		// is visible before JS loads, but we need showModal() for proper
+		// backdrop, focus-trap, and top-layer stacking.
+		if (dialog && dialog.classList.contains('viz-initial-open')) {
+			dialog.close();
+			dialog.classList.remove('viz-initial-open');
+			dialog.showModal();
+			lockPageScroll();
+		} else {
+			syncModalWithRoute();
+		}
 	}
 
 	initDiscourseImage();
@@ -782,6 +943,10 @@ if (!firstImage) return;
 		display: none;
 	}
 
+	.svg-print {
+		display: none;
+	}
+
 	.discourse-image img:not(.svg-image) {
 		filter: brightness(0.98);
 	}
@@ -794,7 +959,24 @@ if (!firstImage) return;
 		transition: opacity 0.3s ease-in-out;
 	}
 
+	.viz-nav-link,
+	.viz-nav-link:visited,
+	.viz-nav-link:hover,
+	.viz-nav-link:active {
+		color: inherit !important;
+		text-decoration: none !important;
+	}
+
 	@media print {
+		:global(.discourse-image-block) {
+			break-before: auto !important;
+			page-break-before: auto !important;
+			break-after: auto !important;
+			page-break-after: auto !important;
+			break-inside: auto !important;
+			page-break-inside: auto !important;
+		}
+
 		/* Respect the global toggle: hidden means no image in print */
 		.discourse-image.hidden {
 			display: none !important;
@@ -803,11 +985,24 @@ if (!firstImage) return;
 		/* For visible images, flatten the carousel and show all slides */
 		.discourse-image:not(.hidden) {
 			display: block !important;
+			break-before: auto !important;
+			page-break-before: auto !important;
+			break-after: auto !important;
+			page-break-after: auto !important;
+			break-inside: auto !important;
+			page-break-inside: auto !important;
 		}
 
 		.discourse-image:not(.hidden) .carousel-slide {
 			display: block !important;
 			opacity: 1 !important;
+			break-inside: auto;
+			page-break-inside: auto;
+		}
+
+		.discourse-image:not(.hidden) .image-frame {
+			overflow: visible !important;
+			border-radius: 0 !important;
 		}
 
 		/* Hide interactive controls that don't make sense in PDFs */
@@ -819,12 +1014,53 @@ if (!firstImage) return;
 			display: none !important;
 		}
 
-		/* Let images use full content width with no height cap */
+		/* Let images use full content width */
 		.discourse-image:not(.hidden) img {
 			max-width: 100% !important;
-			max-height: none !important;
-			width: 100% !important;
+			max-height: 450px !important;
+			width: auto !important;
 			height: auto !important;
+			break-inside: auto;
+			page-break-inside: auto;
+		}
+
+		.discourse-image:not(.hidden) .svg-screen {
+			display: none !important;
+		}
+
+		.discourse-image:not(.hidden) .svg-print {
+			display: block !important;
+			break-inside: auto;
+			page-break-inside: auto;
+		}
+
+		.discourse-image:not(.hidden) .svg-print svg {
+			display: block;
+			width: auto !important;
+			max-width: 100% !important;
+			max-height: 450px !important;
+			height: auto !important;
+			margin: 0 auto;
+			break-inside: auto;
+			page-break-inside: auto;
+		}
+
+		/* Very tall portrait SVGs (e.g. mn1.svg) need a tighter cap to stay on-page. */
+		.discourse-image:not(.hidden) .svg-print.svg-portrait svg {
+			max-height: 380px !important;
+		}
+
+		/* If inline SVG markup is unavailable, constrain svg fallback <img> similarly. */
+		.discourse-image:not(.hidden) img.svg-image {
+			width: auto !important;
+			max-width: 100% !important;
+			max-height: 450px !important;
+			height: auto !important;
+			margin: 0 auto !important;
+		}
+
+		.discourse-image:not(.hidden) img.svg-image.svg-portrait {
+			max-height: 380px !important;
 		}
 	}
 </style>

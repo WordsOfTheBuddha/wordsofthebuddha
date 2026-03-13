@@ -388,6 +388,69 @@ const layout: "split" | "interleaved" = "interleaved";
 	const prev =
 		prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
 
+	// Find previous/next discourse in the same collection that has at least one viz image
+	const collectionPrefix = (id.match(/^[a-z]+/i)?.[0] || "").toLowerCase();
+	let prevViz: { slug: string; title: string } | null = null;
+	let nextViz: { slug: string; title: string } | null = null;
+
+	if (collectionPrefix) {
+		for (let i = currentIndex - 1; i >= 0; i--) {
+			const candidateId = routes[i];
+			const candidatePrefix = (
+				candidateId.match(/^[a-z]+/i)?.[0] || ""
+			).toLowerCase();
+			if (candidatePrefix !== collectionPrefix) continue;
+
+			const candidateEntry = await getEntry("all", candidateId);
+			if (!candidateEntry) continue;
+
+			const candidateImages = findContentImages(
+				candidateId,
+				{
+					image: candidateEntry.data.image,
+					imageCaption: candidateEntry.data.imageCaption,
+				},
+				candidateEntry.data.title
+			);
+
+			if (candidateImages.length > 0) {
+				prevViz = {
+					slug: candidateId,
+					title: candidateEntry.data.title || candidateId.toUpperCase(),
+				};
+				break;
+			}
+		}
+
+		for (let i = currentIndex + 1; i < routes.length; i++) {
+			const candidateId = routes[i];
+			const candidatePrefix = (
+				candidateId.match(/^[a-z]+/i)?.[0] || ""
+			).toLowerCase();
+			if (candidatePrefix !== collectionPrefix) continue;
+
+			const candidateEntry = await getEntry("all", candidateId);
+			if (!candidateEntry) continue;
+
+			const candidateImages = findContentImages(
+				candidateId,
+				{
+					image: candidateEntry.data.image,
+					imageCaption: candidateEntry.data.imageCaption,
+				},
+				candidateEntry.data.title
+			);
+
+			if (candidateImages.length > 0) {
+				nextViz = {
+					slug: candidateId,
+					title: candidateEntry.data.title || candidateId.toUpperCase(),
+				};
+				break;
+			}
+		}
+	}
+
 	// Get the file's last modified time
 	const filePath = contentItem.filePath || "";
 	const lastUpdated = getLastModified(filePath);
@@ -422,6 +485,8 @@ const layout: "split" | "interleaved" = "interleaved";
 		paragraphRequest,
 		commentary: contentItem.data.commentary,
 		contentImage,
+		vizPrev: prevViz,
+		vizNext: nextViz,
 	};
 }
 ---
