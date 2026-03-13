@@ -238,7 +238,15 @@
 
     <!-- ============ SOURCE REFERENCE ============ -->
     <line x1="300" y1="872" x2="620" y2="872" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
-    <a href="https://wordsofthebuddha.org/mn24" target="_blank"><text x="460" y="900" text-anchor="middle" fill="#384858"
+    <a href="https://wordsofthebuddha.org/mn24" target="_blank"><text x="460" y="886" text-anchor="middle" fill="#384858"
         font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">
         wordsofthebuddha.org/mn24</text></a>
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 902) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
 </svg>

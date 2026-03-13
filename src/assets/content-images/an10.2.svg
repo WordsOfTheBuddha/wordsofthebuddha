@@ -432,16 +432,18 @@
     <line x1="280" y1="950" x2="640" y2="950" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
 
     <!-- ============ SOURCE REFERENCE ============ -->
-    <text x="460" y="966" text-anchor="middle" fill="#485840"
-        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">
-        Aṅguttara Nikāya 10.2</text>
+    <a href="https://wordsofthebuddha.org/an10.2" target="_blank" rel="noopener noreferrer">
+        <text x="460" y="966" text-anchor="middle" fill="#485840"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">
+            wordsofthebuddha.org/an10.2</text>
+    </a>
 
     <!-- ============ TINY LOTUS MOTIF ============ -->
-    <g transform="translate(460, 982)" opacity="0.18">
-        <ellipse cx="0" cy="-3" rx="6" ry="8" fill="none" stroke="#8a9ab0" stroke-width="0.7" />
-        <ellipse cx="-7" cy="0" rx="5" ry="7" fill="none" stroke="#8a9ab0" stroke-width="0.6" transform="rotate(-25)" />
-        <ellipse cx="7" cy="0" rx="5" ry="7" fill="none" stroke="#8a9ab0" stroke-width="0.6" transform="rotate(25)" />
-        <ellipse cx="-12" cy="3" rx="4" ry="6" fill="none" stroke="#8a9ab0" stroke-width="0.5" transform="rotate(-45)" />
-        <ellipse cx="12" cy="3" rx="4" ry="6" fill="none" stroke="#8a9ab0" stroke-width="0.5" transform="rotate(45)" />
+    <g transform="translate(460, 984) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
     </g>
 </svg>

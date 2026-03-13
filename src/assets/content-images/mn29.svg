@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1120" width="920" height="1120">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1140" width="920" height="1140">
     <defs>
         <!-- Background gradient -->
         <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
@@ -111,7 +111,7 @@
     </defs>
 
     <!-- ============ BACKGROUND ============ -->
-    <rect width="920" height="1120" fill="url(#bg)" />
+    <rect width="920" height="1140" fill="url(#bg)" />
     <ellipse cx="280" cy="500" rx="320" ry="320" fill="#182838" opacity="0.08" />
     <ellipse cx="460" cy="1020" rx="350" ry="120" fill="#204838" opacity="0.05" />
 
@@ -442,7 +442,18 @@
     <!-- ============ SOURCE REFERENCE ============ -->
     <line x1="300" y1="1086" x2="620" y2="1086" stroke="#304058" stroke-opacity="0.3"
         stroke-width="0.5" />
-    <a href="https://wordsofthebuddha.org/mn29" target="_blank"><text x="460" y="1106" text-anchor="middle" fill="#384858"
+    <a href="https://wordsofthebuddha.org/mn29" target="_blank">
+        <text x="460" y="1102" text-anchor="middle" fill="#384858"
         font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1"
-        >wordsofthebuddha.org/mn29</text></a>
+        >wordsofthebuddha.org/mn29</text>
+    </a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1120) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
 </svg>

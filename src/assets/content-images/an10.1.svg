@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1060" width="920" height="1060">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1120" width="920" height="1120">
     <defs>
         <!-- Background gradient -->
         <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
@@ -107,7 +107,7 @@
     </defs>
 
     <!-- ============ BACKGROUND ============ -->
-    <rect width="920" height="1060" fill="url(#bg)" />
+    <rect width="920" height="1120" fill="url(#bg)" />
 
     <!-- Very faint diagonal staircase shadow in the background -->
     <g opacity="0.025" stroke="#ffffff" stroke-width="0.6">
@@ -445,19 +445,21 @@
     <circle cx="566" cy="332" r="3" fill="#e0b858" opacity="0.21" filter="url(#glow1)" />
 
     <!-- ============ BOTTOM DECORATIVE LINE ============ -->
-    <line x1="280" y1="1075" x2="640" y2="1075" stroke="#304058" stroke-opacity="0.3"
+    <line x1="280" y1="1065" x2="640" y2="1065" stroke="#304058" stroke-opacity="0.3"
         stroke-width="0.5" />
 
-    <!-- ============ TINY LOTUS MOTIF AT BOTTOM ============ -->
-    <g transform="translate(460, 1087)" opacity="0.18">
-        <ellipse cx="0" cy="-3" rx="6" ry="8" fill="none" stroke="#8a9ab0" stroke-width="0.7" />
-        <ellipse cx="-7" cy="0" rx="5" ry="7" fill="none" stroke="#8a9ab0" stroke-width="0.6"
-            transform="rotate(-25)" />
-        <ellipse cx="7" cy="0" rx="5" ry="7" fill="none" stroke="#8a9ab0" stroke-width="0.6"
-            transform="rotate(25)" />
-        <ellipse cx="-12" cy="3" rx="4" ry="6" fill="none" stroke="#8a9ab0" stroke-width="0.5"
-            transform="rotate(-45)" />
-        <ellipse cx="12" cy="3" rx="4" ry="6" fill="none" stroke="#8a9ab0" stroke-width="0.5"
-            transform="rotate(45)" />
+    <a href="https://wordsofthebuddha.org/an10.1" target="_blank">
+         <text x="460" y="1079" text-anchor="middle" fill="#406080"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5"
+            letter-spacing="1">wordsofthebuddha.org/an10.1</text>
+    </a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1100) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
     </g>
 </svg>

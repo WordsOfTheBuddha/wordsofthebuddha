@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1080" width="920" height="1080">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1110" width="920" height="1110">
     <defs>
         <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#0b1528" />
@@ -49,7 +49,7 @@
         </linearGradient>
     </defs>
 
-    <rect width="920" height="1080" fill="url(#bg)" />
+    <rect width="920" height="1110" fill="url(#bg)" />
 
     <g opacity="0.025" stroke="#ffffff" stroke-width="0.6">
         <line x1="0" y1="1040" x2="900" y2="80" />
@@ -172,5 +172,16 @@
     <circle cx="564" cy="284" r="3" fill="#ccb078" opacity="0.17" filter="url(#glow1)" />
 
     <line x1="280" y1="1056" x2="640" y2="1056" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
-    <a href="https://wordsofthebuddha.org/mn107" target="_blank"><text x="460" y="1072" text-anchor="middle" fill="#384858" font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">wordsofthebuddha.org/mn107</text></a>
+    <a href="https://wordsofthebuddha.org/mn107" target="_blank">
+        <text x="460" y="1072" text-anchor="middle" fill="#384858" font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">wordsofthebuddha.org/mn107</text>
+    </a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1090) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
 </svg>
