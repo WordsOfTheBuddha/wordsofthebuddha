@@ -442,7 +442,7 @@
     <!-- ============ SOURCE REFERENCE ============ -->
     <line x1="300" y1="1086" x2="620" y2="1086" stroke="#304058" stroke-opacity="0.3"
         stroke-width="0.5" />
-    <text x="460" y="1106" text-anchor="middle" fill="#384858"
+    <a href="https://wordsofthebuddha.org/mn29" target="_blank"><text x="460" y="1106" text-anchor="middle" fill="#384858"
         font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1"
-        >Majjhima Nik&#x101;ya 29</text>
+        >wordsofthebuddha.org/mn29</text></a>
 </svg>

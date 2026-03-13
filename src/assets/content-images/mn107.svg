@@ -172,5 +172,5 @@
     <circle cx="564" cy="284" r="3" fill="#ccb078" opacity="0.17" filter="url(#glow1)" />
 
     <line x1="280" y1="1056" x2="640" y2="1056" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
-    <text x="460" y="1072" text-anchor="middle" fill="#384858" font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">Majjhima Nikāya 107</text>
+    <a href="https://wordsofthebuddha.org/mn107" target="_blank"><text x="460" y="1072" text-anchor="middle" fill="#384858" font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">wordsofthebuddha.org/mn107</text></a>
 </svg>

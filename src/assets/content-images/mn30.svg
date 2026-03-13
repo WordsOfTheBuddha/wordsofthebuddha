@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1540" width="920" height="1540">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1550" width="920" height="1550">
     <defs>
         <!-- Background gradient -->
         <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
@@ -109,7 +109,7 @@
     </defs>
 
     <!-- ============ BACKGROUND ============ -->
-    <rect width="920" height="1540" fill="url(#bg)" />
+    <rect width="920" height="1550" fill="url(#bg)" />
     <ellipse cx="280" cy="500" rx="320" ry="320" fill="#182838" opacity="0.08" />
     <ellipse cx="460" cy="1440" rx="350" ry="120" fill="#204838" opacity="0.05" />
 
@@ -613,9 +613,9 @@
         >etadattha&#x1E41; ida&#x1E41; brahmacariya&#x1E41;, eta&#x1E41; s&#x101;ra&#x1E41;, eta&#x1E41; pariyos&#x101;na&#x1E41;</text>
 
     <!-- ============ SOURCE REFERENCE ============ -->
-    <line x1="300" y1="1524" x2="620" y2="1524" stroke="#304058" stroke-opacity="0.3"
+    <line x1="300" y1="1530" x2="620" y2="1530" stroke="#304058" stroke-opacity="0.3"
         stroke-width="0.5" />
-    <text x="460" y="1536" text-anchor="middle" fill="#384858"
+    <a href="https://wordsofthebuddha.org/mn30" target="_blank"><text x="460" y="1544" text-anchor="middle" fill="#384858"
         font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1"
-        >Majjhima Nik&#x101;ya 30</text>
+        >wordsofthebuddha.org/mn30</text></a>
 </svg>
