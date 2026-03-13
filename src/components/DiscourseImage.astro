@@ -399,6 +399,8 @@ if (!firstImage) return;
 		const MIN_ZOOM_PERCENT = 100;
 		const MAX_ZOOM_PERCENT = 300;
 		const ZOOM_STEP_PERCENT = 25;
+		const IMAGE_QUERY_PARAM = "viz";
+		const IMAGE_QUERY_PARAM_FALLBACK = "image";
 		let zoomPercent = 100;
 
 		const updateZoomButtons = () => {
@@ -468,6 +470,42 @@ if (!firstImage) return;
 			applyZoom();
 		};
 
+		const parseImageRouteIndex = (): number | null => {
+			const url = new URL(window.location.href);
+			const imageParam =
+				url.searchParams.get(IMAGE_QUERY_PARAM) ??
+				url.searchParams.get(IMAGE_QUERY_PARAM_FALLBACK);
+
+			if (imageParam != null) {
+				if (imageParam === "" || imageParam === "true") return 0;
+				const parsed = parseInt(imageParam, 10);
+				if (!Number.isNaN(parsed) && parsed >= 1) return parsed - 1;
+				return 0;
+			}
+
+			return null;
+		};
+
+		const setImageRoute = (index: number) => {
+			const url = new URL(window.location.href);
+			url.searchParams.set(IMAGE_QUERY_PARAM, `${index + 1}`);
+			history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+		};
+
+		const clearImageRoute = () => {
+			const url = new URL(window.location.href);
+			if (
+				!url.searchParams.has(IMAGE_QUERY_PARAM) &&
+				!url.searchParams.has(IMAGE_QUERY_PARAM_FALLBACK)
+			) {
+				return;
+			}
+
+			url.searchParams.delete(IMAGE_QUERY_PARAM);
+			url.searchParams.delete(IMAGE_QUERY_PARAM_FALLBACK);
+			history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+		};
+
 		function updateModalSlide(index: number) {
 			if (!fullImage || !fullSvgObject) return;
 			const source = imageSources[index];
@@ -495,6 +533,20 @@ if (!firstImage) return;
 			});
 			resetZoom();
 		}
+
+		const openModalAt = (index: number, updateRoute: boolean) => {
+			const clampedIndex = Math.max(0, Math.min(totalSlides - 1, index));
+			goToSlide(clampedIndex);
+
+			if (dialog && !dialog.open) {
+				dialog.showModal();
+				document.body.style.overflow = "hidden";
+			}
+
+			if (updateRoute) {
+				setImageRoute(clampedIndex);
+			}
+		};
 
 		function goToSlide(index: number) {
 			if (index < 0) index = totalSlides - 1;
@@ -572,11 +624,7 @@ if (!firstImage) return;
 		if (expandBtn && dialog) {
 			expandBtn.addEventListener("click", (e) => {
 				e.stopPropagation();
-				// Sync modal to current carousel slide
-				updateModalSlide(currentSlide);
-				dialog.showModal();
-				resetZoom();
-				document.body.style.overflow = "hidden";
+				openModalAt(currentSlide, true);
 			});
 
 			dialog.addEventListener("click", (e) => {
@@ -588,6 +636,7 @@ if (!firstImage) return;
 			dialog.addEventListener("close", () => {
 				resetZoom();
 				document.body.style.overflow = "";
+				clearImageRoute();
 			});
 		}
 
@@ -640,6 +689,18 @@ if (!firstImage) return;
 			}
 		});
 
+		const syncModalWithRoute = () => {
+			const requestedIndex = parseImageRouteIndex();
+			if (requestedIndex == null) {
+				if (dialog?.open) {
+					dialog.close();
+				}
+				return;
+			}
+
+			openModalAt(requestedIndex, false);
+		};
+
 		// --- Visibility logic ---
 		const STORAGE_KEY = "showDiscourseImages";
 
@@ -662,9 +723,11 @@ if (!firstImage) return;
 		window.addEventListener("storage", (e) => {
 			if (e.key === STORAGE_KEY) updateVisibility();
 		});
+		window.addEventListener("popstate", syncModalWithRoute);
 
 		document.addEventListener("discourseImageToggled", updateVisibility);
 		resetZoom();
+		syncModalWithRoute();
 	}
 
 	initDiscourseImage();
