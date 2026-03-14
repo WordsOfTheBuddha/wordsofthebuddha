@@ -72,17 +72,23 @@ let isPaliMode = url.searchParams.get("pli") === "true";
 	}
 
 	// Initialize from localStorage if available
-	const storedPaliMode = localStorage.getItem("paliMode") === "true";
-	document.documentElement.classList.toggle("pali-on", storedPaliMode);
+	const initialParams = new URLSearchParams(window.location.search);
+	const pliParam = initialParams.get("pli");
+	const initialPaliMode =
+		pliParam !== null
+			? pliParam === "true"
+			: localStorage.getItem("paliMode") === "true";
+	localStorage.setItem("paliMode", String(initialPaliMode));
+	document.documentElement.classList.toggle("pali-on", initialPaliMode);
 	const icon = document.getElementById("paliIcon");
 	const eye = document.getElementById("paliEyeIcon");
 	if (icon && eye) {
-		icon.classList.toggle("hidden", storedPaliMode);
-		eye.classList.toggle("hidden", !storedPaliMode);
+		icon.classList.toggle("hidden", initialPaliMode);
+		eye.classList.toggle("hidden", !initialPaliMode);
 	}
 	if (btn) {
-		btn.setAttribute("aria-pressed", String(storedPaliMode));
-		btn.title = storedPaliMode
+		btn.setAttribute("aria-pressed", String(initialPaliMode));
+		btn.title = initialPaliMode
 			? "Hide Pāli text"
 			: "Show Pāli text alongside English";
 	}

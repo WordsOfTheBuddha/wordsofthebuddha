@@ -109,6 +109,13 @@ export function synchronizePreferences(preferences: Partial<UserPreferences>) {
 		localStorage.setItem("paliMode", preferences.showPali.toString());
 	}
 
+	if (preferences.showPali !== undefined) {
+		document.documentElement.classList.toggle(
+			"pali-on",
+			preferences.showPali,
+		);
+	}
+
 	if (preferences.theme && localStorage.theme !== preferences.theme) {
 		localStorage.theme = preferences.theme;
 	}
