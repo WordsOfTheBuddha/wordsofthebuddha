@@ -833,7 +833,7 @@
         font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">7</text>
     <text x="110" y="1558" fill="#c0a850"
         font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
-        >Because the Tathāgata has fully understood it to the end <tspan fill="#a08838">(pariññātantaṁ tathāgatassa)</tspan></text>
+        >Because the Tathāgata has fully understood the phenomenon to the end <tspan fill="#a08838">(pariññātantaṁ tathāgatassa)</tspan></text>
 
     <!-- ⑧ English reason left, Pali bold right -->
     <circle cx="90" cy="1586" r="10" fill="none" stroke="#a08838" stroke-width="0.7" opacity="0.5" />

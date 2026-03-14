@@ -1,6 +1,6 @@
 ---
-title: Bandhana sutta - Bondage
-description: By what is the world held in bondage? What is its means of locomotion? By the abandoning of what, is every bond cut?
+title: Bandhana sutta - Bound
+description: By what is the world held bound? What is its means of locomotion? By the abandoning of what, is every bond cut?
 qualities: delight, craving
 theme: wisdom, inspiration
 slug: sn1.65
