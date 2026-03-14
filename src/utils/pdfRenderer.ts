@@ -19,6 +19,7 @@ import { findEntry, findEntriesBySlugPrefix } from "./textApi";
 import { findContentImages } from "./contentImage";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
+import { findSvgSafeCuts, cutsToSlices } from "./svgSafeCuts";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -33,7 +34,12 @@ renderer.heading = function (token) {
 	if (level === 4) {
 		return `<p class="verse-number">${text}</p>`;
 	}
-	return `<h${level} class="content-h${level}">${text}</h${level}>\n`;
+	// Shift body headings down 2 levels in the actual tag so they nest
+	// below chapter headings (h2) and discourse titles (h3) in the PDF
+	// bookmark outline.  The CSS class stays based on original level so
+	// visual sizing is unchanged.
+	const tagLevel = Math.min(level + 2, 6);
+	return `<h${tagLevel} class="content-h${level}">${text}</h${tagLevel}>\n`;
 };
 
 export const pdfMarked = new Marked({
@@ -305,7 +311,54 @@ async function fetchDiscourseHtml(
 											/(<svg[^>]*?)\s+height="[^"]*"/i,
 											"$1",
 										);
-										figureInner = svg;
+
+										// Slice SVGs at content-aware safe cut points
+										// to avoid cutting through text/shapes.
+										const vbMatch = svg.match(
+											/viewBox="([\d.\s,]+)"/i,
+										);
+										if (vbMatch) {
+											const [vbX, , vbW] =
+												vbMatch[1]
+													.split(/[\s,]+/)
+													.map(Number);
+
+											const safeCuts = findSvgSafeCuts(svg);
+											const slices = safeCuts
+												? cutsToSlices(safeCuts)
+												: (() => {
+														const [, vbY, , vbH] = vbMatch[1].split(/[\s,]+/).map(Number);
+														const STRIP_H = 100;
+														const s: { y: number; h: number }[] = [];
+														let curY = vbY;
+														let rem = vbH;
+														while (rem > 0) {
+															const h = Math.min(STRIP_H, rem);
+															s.push({ y: curY, h });
+															curY += h;
+															rem -= h;
+														}
+														return s;
+													})();
+
+											// Extract background colour from first gradient stop
+											const bgMatch = svg.match(
+												/stop-color="(#[0-9a-fA-F]{3,8})"/,
+											);
+											const bgColor =
+												bgMatch?.[1] || "#0b1528";
+											const strips = slices
+												.map((slice) =>
+													svg.replace(
+														/viewBox="[^"]*"/i,
+														`viewBox="${vbX} ${slice.y} ${vbW} ${slice.h}"`,
+													),
+												)
+												.join("\n");
+											figureInner = `<div style="background:${bgColor};line-height:0;font-size:0;margin-bottom:2em;">${strips}</div>`;
+										} else {
+											figureInner = svg;
+										}
 									}
 								} catch {
 									// Fall back to <img> below.
@@ -812,22 +865,30 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
 
 /* Discourse header images (SVG diagrams, etc.) */
 .pdf-discourse-image {
-  margin: 0 0 1.2em 0;
-  page-break-inside: avoid;
+  margin: 0 0 2.5em 0;
   text-align: center;
+	break-inside: auto;
+	page-break-inside: auto;
+	overflow: visible;
 }
 .pdf-discourse-image img,
 .pdf-discourse-image-img {
   max-width: 100%;
+  width: 100%;
   height: auto;
   display: block;
   margin: 0 auto;
+	break-inside: auto;
+	page-break-inside: auto;
 }
 .pdf-discourse-image svg {
-  max-width: 100%;
+	width: 100%;
+	max-width: 100%;
   height: auto;
   display: block;
-  margin: 0 auto;
+  margin: 0;
+	break-inside: auto;
+	page-break-inside: auto;
 }
 
 .verse-number {

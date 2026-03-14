@@ -18,6 +18,7 @@ import { routes } from "../utils/routes";
 import ZoomIcon from "../assets/magnifying-glass-plus.svg?raw";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
+import { findSvgSafeCuts } from "../utils/svgSafeCuts";
 
 interface Props {
 	/** Single image or array of images from findContentImages() */
@@ -152,13 +153,23 @@ const processedImages = allImages.map((img) => {
 		try {
 			const abs = resolvePath(process.cwd(), modulePath.replace(/^\//, ""));
 			if (!existsSync(abs)) return undefined;
-			return readFileSync(abs, "utf-8")
+			let raw = readFileSync(abs, "utf-8")
 				.replace(/(<svg[^>]*?)\s+width="[^"]*"/i, "$1")
 				.replace(/(<svg[^>]*?)\s+height="[^"]*"/i, "$1");
+			// Set width:100% so the SVG fills the content column and is readable.
+			// No max-height — tall images flow across page breaks in print.
+			raw = raw.replace(
+				/(<svg\b[^>]*?)(\s*>)/i,
+				`$1 style="width:100%;height:auto"$2`
+			);
+			return raw;
 		} catch {
 			return undefined;
 		}
 	})();
+
+	// Compute safe Y-cut positions for print slicing (avoids cutting through text/shapes)
+	const safeCuts = svgMarkup ? findSvgSafeCuts(svgMarkup) : null;
 
 	return {
 		...img,
@@ -168,6 +179,7 @@ const processedImages = allImages.map((img) => {
 		isPortrait,
 		publicUrl,
 		svgMarkup,
+		safeCuts,
 	};
 });
 
@@ -241,7 +253,11 @@ if (!initialImage) return;
 									loading={idx === 0 ? "eager" : "lazy"}
 									decoding="async"
 								/>
-								<div class:list={["svg-print", img.isPortrait && "svg-portrait"]} set:html={img.svgMarkup} />
+								<div
+									class:list={["svg-print", img.isPortrait && "svg-portrait"]}
+									data-safe-cuts={img.safeCuts ? img.safeCuts.join(",") : undefined}
+									set:html={img.svgMarkup}
+								/>
 							</>
 						) : (
 							<img
@@ -1014,11 +1030,10 @@ if (!initialImage) return;
 			display: none !important;
 		}
 
-		/* Let images use full content width */
+		/* Let images use full content width — no height cap so they stay readable */
 		.discourse-image:not(.hidden) img {
 			max-width: 100% !important;
-			max-height: 450px !important;
-			width: auto !important;
+			width: 100% !important;
 			height: auto !important;
 			break-inside: auto;
 			page-break-inside: auto;
@@ -1030,37 +1045,24 @@ if (!initialImage) return;
 
 		.discourse-image:not(.hidden) .svg-print {
 			display: block !important;
+			overflow: visible;
 			break-inside: auto;
 			page-break-inside: auto;
 		}
 
-		.discourse-image:not(.hidden) .svg-print svg {
+		/* :global(svg) needed because set:html content lacks Astro scoping attributes */
+		.discourse-image:not(.hidden) .svg-print :global(svg) {
 			display: block;
-			width: auto !important;
-			max-width: 100% !important;
-			max-height: 450px !important;
+			width: 100% !important;
 			height: auto !important;
 			margin: 0 auto;
-			break-inside: auto;
-			page-break-inside: auto;
 		}
 
-		/* Very tall portrait SVGs (e.g. mn1.svg) need a tighter cap to stay on-page. */
-		.discourse-image:not(.hidden) .svg-print.svg-portrait svg {
-			max-height: 380px !important;
-		}
-
-		/* If inline SVG markup is unavailable, constrain svg fallback <img> similarly. */
+		/* If inline SVG markup is unavailable, render at full width */
 		.discourse-image:not(.hidden) img.svg-image {
-			width: auto !important;
-			max-width: 100% !important;
-			max-height: 450px !important;
+			width: 100% !important;
 			height: auto !important;
 			margin: 0 auto !important;
-		}
-
-		.discourse-image:not(.hidden) img.svg-image.svg-portrait {
-			max-height: 380px !important;
 		}
 	}
 </style>

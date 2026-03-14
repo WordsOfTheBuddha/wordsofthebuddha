@@ -4,6 +4,9 @@
 
 	function setupPrintFormatting() {
 		let originalContent: string | null = null;
+		let originalImageParent: HTMLElement | null = null;
+		let originalImageNode: Element | null = null; // actual DOM node — preserves event listeners
+		let imageSliceElements: Element[] = [];
 
 		window.addEventListener("beforeprint", () => {
 			// Find the main content area (prefer the currently visible layout)
@@ -37,6 +40,128 @@
 			contentArea.innerHTML = formattedContainer.innerHTML;
 			contentArea.classList.add("print-formatted");
 
+			// Prepare discourse images for print.
+			// The figure lives in the PostLayout article as a sibling of the
+			// interleaved-article (contentArea), NOT inside it.  So we must
+			// search the whole document.
+			// Chrome cannot split <svg>/<img> across pages, so we slice tall
+			// SVGs into viewBox chunks and replace the figure in-place.
+			const imageBlock = document.querySelector(
+				".discourse-image-block"
+			) as HTMLElement | null;
+			const figure = (
+				imageBlock
+					? imageBlock.querySelector(".discourse-image:not(.hidden)")
+					: document.querySelector(".discourse-image:not(.hidden)")
+			) as HTMLElement | null;
+
+			// Reset image state
+			imageSliceElements = [];
+			originalImageParent = null;
+			originalImageNode = null;
+
+			if (figure) {
+				const svgPrint = figure.querySelector(".svg-print") as HTMLElement | null;
+				const svg = svgPrint?.querySelector("svg");
+				const insertionAnchor = (imageBlock || figure) as HTMLElement;
+				// Save for afterprint restoration
+				originalImageParent = insertionAnchor.parentNode as HTMLElement;
+				originalImageNode = insertionAnchor; // keep the live DOM node
+
+				if (svg) {
+					const vb = svg.getAttribute("viewBox");
+					const parts = vb
+						? vb.split(/[\s,]+/).map(Number)
+						: [];
+
+					if (parts.length === 4) {
+						const [vbX, vbY, vbW, vbH] = parts;
+
+						const parent = insertionAnchor.parentNode!;
+
+						// Extract background color from the SVG's first
+						// gradient stop so we can paint the container behind
+						// the strips. Sub-pixel gaps between strips then
+						// show this colour instead of the white page.
+						const firstStop = svg.querySelector(
+							"defs linearGradient:first-of-type stop"
+						);
+						const bgColor =
+							firstStop?.getAttribute("stop-color") ||
+							"#0b1528";
+
+						// Build strip slices — prefer content-aware safe
+						// cuts (embedded at build time by DiscourseImage)
+						// to avoid cutting through text/shapes. Fall back
+						// to fixed-interval strips if no data available.
+						let slices: { y: number; h: number }[] = [];
+						const safeCutsAttr = svgPrint?.getAttribute("data-safe-cuts");
+						if (safeCutsAttr) {
+							const cuts = safeCutsAttr.split(",").map(Number);
+							for (let i = 0; i < cuts.length - 1; i++) {
+								slices.push({ y: cuts[i], h: cuts[i + 1] - cuts[i] });
+							}
+						}
+						if (slices.length === 0) {
+							// Fallback: fixed-interval strips
+							const STRIP_H = 100;
+							let curY = vbY;
+							let rem = vbH;
+							while (rem > 0) {
+								const h = Math.min(STRIP_H, rem);
+								slices.push({ y: curY, h });
+								curY += h;
+								rem -= h;
+							}
+						}
+
+						// Wrap strips in a container whose background
+						// matches the SVG, hiding sub-pixel gaps.
+						const wrapper = document.createElement("div");
+						wrapper.style.cssText = `background:${bgColor};line-height:0;font-size:0;`;
+
+						for (const slice of slices) {
+							const clone = svg.cloneNode(
+								true
+							) as SVGElement;
+							clone.setAttribute(
+								"viewBox",
+								`${vbX} ${slice.y} ${vbW} ${slice.h}`
+							);
+							clone.removeAttribute("width");
+							clone.removeAttribute("height");
+							clone.style.cssText =
+								"display:block;width:100%;height:auto;max-width:100%;margin:0;padding:0;";
+							wrapper.appendChild(clone);
+						}
+
+						// Spacer after image — separate element so font-size:0
+						// on the wrapper doesn't collapse an em-based margin.
+						const spacer = document.createElement("div");
+						spacer.style.cssText = "height:2em;";
+
+						parent.insertBefore(wrapper, insertionAnchor);
+						parent.insertBefore(spacer, insertionAnchor);
+						imageSliceElements.push(wrapper, spacer);
+						insertionAnchor.remove();
+					}
+				} else {
+					// Non-SVG raster image
+					const img = figure.querySelector("img");
+					if (img) {
+						const clone = img.cloneNode(true) as HTMLImageElement;
+						clone.style.cssText =
+							"display:block;width:100%;height:auto;max-width:100%;max-height:600px;margin:0 0 1em;padding:0;";
+						insertionAnchor.parentNode!.insertBefore(
+							clone,
+							insertionAnchor
+						);
+						imageSliceElements.push(clone);
+					}
+					insertionAnchor.remove();
+				}
+			}
+
 			// Notify that tooltip formatting is complete
 			setTimeout(() => {
 				const alignmentEvent = new Event("print-formatting-complete");
@@ -45,12 +170,30 @@
 		});
 
 		window.addEventListener("afterprint", () => {
-			// Restore original content
+			// Restore original content area
 			const contentArea = document.querySelector(".print-formatted");
 			if (originalContent && contentArea) {
 				contentArea.innerHTML = originalContent;
 				contentArea.classList.remove("print-formatted");
 				originalContent = null;
+			}
+			// Restore discourse image (it lives outside contentArea)
+			if (originalImageNode && originalImageParent) {
+				// Remove injected slices
+				for (const el of imageSliceElements) {
+					el.remove();
+				}
+				imageSliceElements = [];
+				// Re-insert the original DOM node (preserves all event listeners)
+				const interleavedArticle =
+					originalImageParent.querySelector(".interleaved-article");
+				if (interleavedArticle) {
+					originalImageParent.insertBefore(originalImageNode, interleavedArticle);
+				} else {
+					originalImageParent.appendChild(originalImageNode);
+				}
+				originalImageParent = null;
+				originalImageNode = null;
 			}
 		});
 	}
