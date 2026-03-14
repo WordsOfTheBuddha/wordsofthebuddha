@@ -10,6 +10,36 @@ export interface UserPreferences {
 	layout?: Layout;
 }
 
+const LIGHT_THEME_COLOR = "#faf8f3";
+const DARK_THEME_COLOR = "#1f1c17";
+
+function syncThemeChrome(theme: Theme): void {
+	document.documentElement.style.colorScheme = theme;
+
+	const lightMeta = document.querySelector<HTMLMetaElement>(
+		'meta[name="theme-color"][data-theme="light"]',
+	);
+	const darkMeta = document.querySelector<HTMLMetaElement>(
+		'meta[name="theme-color"][data-theme="dark"]',
+	);
+
+	if (!lightMeta || !darkMeta) {
+		return;
+	}
+
+	lightMeta.content = LIGHT_THEME_COLOR;
+	darkMeta.content = DARK_THEME_COLOR;
+
+	if (theme === "dark") {
+		darkMeta.removeAttribute("media");
+		lightMeta.setAttribute("media", "not all");
+		return;
+	}
+
+	lightMeta.removeAttribute("media");
+	darkMeta.setAttribute("media", "not all");
+}
+
 let preferencesLoaded = false;
 
 // Update setPaliState to only handle UI and localStorage
@@ -46,6 +76,7 @@ export function setUIState(preferences: Partial<UserPreferences>): void {
 		document.documentElement.classList.remove("light", "dark");
 		document.documentElement.classList.add(preferences.theme);
 		localStorage.theme = preferences.theme;
+		syncThemeChrome(preferences.theme);
 	}
 
 	if (preferences.showPali !== undefined) {

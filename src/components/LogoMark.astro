@@ -1,0 +1,54 @@
+---
+interface Props {
+	size?: string;
+}
+const { size = "1em" } = Astro.props;
+
+// Petal path inlined 4× to avoid duplicate SVG id issues when multiple instances are on one page
+const petal = "M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z";
+---
+
+<svg
+	class="logo-mark"
+	style={`width: ${size}; height: ${size};`}
+	viewBox="0 0 120 120"
+	xmlns="http://www.w3.org/2000/svg"
+	fill="none"
+	aria-hidden="true"
+>
+	<g transform="translate(60,62) scale(1.48)" class="lm-group" stroke-width="3.5" stroke-linejoin="round">
+		<path d={petal} transform="translate(-14, 16) rotate(-65)" class="lm-outer" />
+		<path d={petal} transform="translate(14, 16) rotate(65)" class="lm-outer" />
+		<path d={petal} transform="translate(-9, 0) rotate(-25)" class="lm-inner" />
+		<path d={petal} transform="translate(9, 0) rotate(25)" class="lm-inner" />
+		<circle cx="0" cy="-26" r="9" class="lm-jewel" />
+	</g>
+</svg>
+
+<style>
+	.logo-mark {
+		flex-shrink: 0;
+	}
+
+	.lm-group {
+		stroke: #faf8f3;
+	}
+
+	.lm-outer { fill: #d47445; }
+	.lm-inner { fill: #fbbf24; }
+	.lm-jewel {
+		fill: #9B2C2C;
+		stroke: none;
+	}
+
+	:global(html.dark) .lm-group {
+		stroke: #1f1c17;
+	}
+
+	:global(html.dark) .lm-outer { fill: #e18a5f; }
+	:global(html.dark) .lm-inner { fill: #f5cb5c; }
+	:global(html.dark) .lm-jewel {
+		fill: #f2e8cf;
+		stroke: #2a2318;
+	}
+</style>

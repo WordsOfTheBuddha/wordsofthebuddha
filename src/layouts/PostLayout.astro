@@ -154,12 +154,42 @@ const serverTheme = "dark";
 			)
 		}
 
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link rel="manifest" href="/manifest.webmanifest" />
-		<meta name="theme-color" content="#111827" />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="theme-color" content="#faf8f3" data-theme="light" />
+		<meta
+			name="theme-color"
+			content="#1f1c17"
+			data-theme="dark"
+			media="not all"
+		/>
 
 		<script is:inline>
 			(function () {
+				function syncThemeChrome(theme) {
+					var lightMeta = document.querySelector(
+						'meta[name="theme-color"][data-theme="light"]',
+					);
+					var darkMeta = document.querySelector(
+						'meta[name="theme-color"][data-theme="dark"]',
+					);
+
+					if (lightMeta && darkMeta) {
+						if (theme === "dark") {
+							darkMeta.removeAttribute("media");
+							lightMeta.setAttribute("media", "not all");
+						} else {
+							lightMeta.removeAttribute("media");
+							darkMeta.setAttribute("media", "not all");
+						}
+					}
+
+					document.documentElement.style.colorScheme = theme;
+				}
+
 				var stored = localStorage.getItem("theme");
 				var param = new URLSearchParams(window.location.search).get(
 					"theme",
@@ -176,6 +206,15 @@ const serverTheme = "dark";
 				document.documentElement.classList.remove("light", "dark");
 				document.documentElement.classList.add(theme);
 				localStorage.setItem("theme", theme);
+				syncThemeChrome(theme);
+
+				document.addEventListener("themeChanged", function () {
+					syncThemeChrome(
+						document.documentElement.classList.contains("dark")
+							? "dark"
+							: "light",
+					);
+				});
 			})();
 		</script>
 	</head>
@@ -227,7 +266,7 @@ const serverTheme = "dark";
 						}
 						{
 							showHeader && contentImage && (
-								<div class="not-prose m-0 mt-4 mb-6 w-full">
+								<div class="not-prose discourse-image-block m-0 mt-4 mb-6 w-full">
 									<DiscourseImage imageData={contentImage} />
 								</div>
 							)

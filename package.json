@@ -9,6 +9,7 @@
 		"gen:qualities": "npx tsx src/utils/generateQualityMappings.ts",
 		"gen:similes": "npx tsx src/utils/generateSimileMappings.ts",
 		"gen:topics": "npx tsx src/utils/generateTopicMappings.ts",
+		"gen:favicons": "node src/utils/generate-favicons.mjs",
 		"gen:offline": "npx tsx src/utils/generateOfflineManifest.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"yarn run watch:images\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
 		"prebuild": "node src/utils/copyContentImages.mjs && npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts",
@@ -49,6 +50,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/node": "9.5.1",
+		"@resvg/resvg-js": "^2.6.2",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/js-yaml": "^4.0.9",
 		"@types/jsdom": "^21.1.7",
@@ -56,6 +58,7 @@
 		"@types/rangy": "^0.0.38",
 		"concurrently": "^9.1.2",
 		"glob": "^11.0.1",
+		"png-to-ico": "^3.0.1",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.19.4"
 	}
