@@ -1,0 +1,846 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1620" width="920" height="1620">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Left panel (burgundy) — material / blame -->
+        <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#221828" />
+            <stop offset="100%" stop-color="#1a1422" />
+        </linearGradient>
+        <!-- Right panel (teal) — Dhamma / praise -->
+        <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+
+        <!-- Tier / section label gradient (gold fade) -->
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Dyad cell gradient (dark warm) -->
+        <linearGradient id="dyadGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#201420" />
+            <stop offset="100%" stop-color="#181018" />
+        </linearGradient>
+
+        <!-- Middle Way gold band gradient -->
+        <linearGradient id="goldBand" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e1c14" />
+            <stop offset="100%" stop-color="#161410" />
+        </linearGradient>
+
+        <!-- Virtue row cell -->
+        <linearGradient id="virtueGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#162030" />
+            <stop offset="100%" stop-color="#101828" />
+        </linearGradient>
+
+        <!-- Nibbāna radial glow -->
+        <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.25" />
+            <stop offset="50%" stop-color="#c8a040" stop-opacity="0.10" />
+            <stop offset="100%" stop-color="#604010" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Funnel convergence gradient -->
+        <linearGradient id="funnelGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#a06070" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0.5" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow3" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="14" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1620" fill="url(#bg)" />
+
+    <!-- Ambient light spots -->
+    <ellipse cx="460" cy="200" rx="320" ry="180" fill="#182838" opacity="0.06" />
+    <ellipse cx="460" cy="900" rx="350" ry="250" fill="#1c2030" opacity="0.05" />
+
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║          PHASE 1 — TITLE BLOCK (y: 0–90)        ║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <text x="460" y="42" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">MN 3 — DHAMMADĀYĀDA SUTTA</text>
+    <text x="460" y="64" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15">Heirs in the Dhamma</text>
+    <text x="460" y="84" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >"dhammadāyādā me, bhikkhave, bhavatha, mā āmisadāyādā"</text>
+
+    <!-- Tier separator -->
+    <line x1="200" y1="98" x2="720" y2="98" stroke="url(#tierGrad)" stroke-width="0.5" />
+
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║    PHASE 2 — INHERITANCE CONTRAST (y: 108–380)  ║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <text x="460" y="122" text-anchor="middle" fill="#a0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="2">THE TWO INHERITANCES: THE PARABLE OF THE LEFTOVER FOOD</text>
+
+    <!-- Left Panel — Material Heirs (burgundy) -->
+    <rect x="48" y="136" width="400" height="150" rx="6" fill="url(#patternLeft)"
+        stroke="#a06070" stroke-opacity="0.25" stroke-width="0.8" filter="url(#shadowDrop)" />
+
+    <text x="248" y="160" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        >Heir of Material Things</text>
+    <text x="248" y="176" text-anchor="middle" fill="#908098"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >āmisadāyādo</text>
+
+    <!-- Alms bowl overflowing with food (excess) -->
+    <g transform="translate(120, 214)" opacity="0.6">
+        <!-- Bowl rim (opening at top) -->
+        <ellipse cx="0" cy="0" rx="22" ry="8" fill="none" stroke="#c07060" stroke-width="1.5" />
+        <!-- Bowl body curving downward -->
+        <path d="M -22 0 C -22 6 -16 20 0 22 C 16 20 22 6 22 0" fill="none" stroke="#c07060" stroke-width="1.5" />
+        <!-- Food mounds heaping above rim (excess) -->
+        <circle cx="-10" cy="-8" r="4" fill="#c07060" opacity="0.5" />
+        <circle cx="3" cy="-10" r="3.5" fill="#c07060" opacity="0.45" />
+        <circle cx="-3" cy="-4" r="3" fill="#c07060" opacity="0.4" />
+        <circle cx="12" cy="-6" r="3" fill="#c07060" opacity="0.35" />
+        <circle cx="-14" cy="-3" r="2.5" fill="#c07060" opacity="0.3" />
+        <circle cx="7" cy="-3" r="2.5" fill="#c07060" opacity="0.3" />
+        <circle cx="-5" cy="-13" r="2.8" fill="#c07060" opacity="0.4" />
+        <circle cx="8" cy="-12" r="2.2" fill="#c07060" opacity="0.35" />
+    </g>
+
+    <text x="248" y="226" text-anchor="middle" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        >When offered, eats the leftover food,</text>
+    <text x="268" y="242" text-anchor="middle" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        >and passes the day and night neither hungry nor weak</text>
+
+    <!-- Right Panel — Dhamma Heirs (teal) -->
+    <rect x="472" y="136" width="400" height="150" rx="6" fill="url(#patternRight)"
+        stroke="#60a088" stroke-opacity="0.25" stroke-width="0.8" filter="url(#shadowDrop)" />
+
+    <text x="672" y="160" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+        >Heir in the Dhamma</text>
+    <text x="672" y="176" text-anchor="middle" fill="#709888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >dhammadāyādo</text>
+
+    <!-- Empty alms bowl (renunciation) -->
+    <g transform="translate(554, 218)" opacity="0.6">
+        <!-- Bowl rim (opening at top) -->
+        <ellipse cx="0" cy="0" rx="22" ry="8" fill="none" stroke="#60a088" stroke-width="1.5" />
+        <!-- Bowl body curving downward -->
+        <path d="M -22 0 C -22 6 -16 20 0 22 C 16 20 22 6 22 0" fill="none" stroke="#60a088" stroke-width="1.5" />
+        <!-- Subtle emanating lines above rim (renunciation) -->
+        <line x1="0" y1="-6" x2="0" y2="-18" stroke="#60a088" stroke-width="0.8" opacity="0.4" />
+        <line x1="-9" y1="-4" x2="-14" y2="-16" stroke="#60a088" stroke-width="0.8" opacity="0.3" />
+        <line x1="9" y1="-4" x2="14" y2="-16" stroke="#60a088" stroke-width="0.8" opacity="0.3" />
+    </g>
+
+    <text x="672" y="210" text-anchor="middle" fill="#90b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        >"Endures hunger and weakness,</text>
+    <text x="672" y="226" text-anchor="middle" fill="#90b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12"
+        >does not eat the leftover food</text>
+
+    <text x="672" y="255" text-anchor="middle" fill="#60a088"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5"
+        >More respected and commended</text>
+    <text x="672" y="268" text-anchor="middle" fill="#709888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >pujjataro ca pāsaṁsataro ca</text>
+
+
+    <!-- ── Virtue Row: 5 qualities of the first bhikkhu ── -->
+    <text x="460" y="308" text-anchor="middle" fill="#709888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >this choice leads for a long time to …</text>
+
+    <!-- Virtue 1: Few Wishes -->
+    <rect x="60" y="320" width="152" height="46" rx="4" fill="url(#virtueGrad)"
+        stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+    <text x="136" y="338" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        >Having Few Wishes</text>
+    <text x="136" y="354" text-anchor="middle" fill="#608878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >appicchatā</text>
+
+    <!-- Virtue 2: Contentment -->
+    <rect x="224" y="320" width="152" height="46" rx="4" fill="url(#virtueGrad)"
+        stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+    <text x="300" y="338" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        >Contentment</text>
+    <text x="300" y="354" text-anchor="middle" fill="#608878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >santuṭṭhi</text>
+
+    <!-- Virtue 3: Effacement -->
+    <rect x="388" y="320" width="140" height="46" rx="4" fill="url(#virtueGrad)"
+        stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+    <text x="458" y="338" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        >Effacement</text>
+    <text x="458" y="354" text-anchor="middle" fill="#608878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sallekha</text>
+
+    <!-- Virtue 4: Easy to Support -->
+    <rect x="540" y="320" width="160" height="46" rx="4" fill="url(#virtueGrad)"
+        stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+    <text x="620" y="338" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        >Being easy to Support</text>
+    <text x="620" y="354" text-anchor="middle" fill="#608878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >subharatā</text>
+
+    <!-- Virtue 5: Rousing of Energy -->
+    <rect x="712" y="320" width="160" height="46" rx="4" fill="url(#virtueGrad)"
+        stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+    <text x="792" y="338" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+        >Rousing of Energy</text>
+    <text x="792" y="354" text-anchor="middle" fill="#608878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >vīriyārambha</text>
+
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║    PHASE 3 — SĀRIPUTTA ON SECLUSION (y: 386–604)║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <!-- Tier separator -->
+    <line x1="200" y1="386" x2="720" y2="386" stroke="url(#tierGrad)" stroke-width="0.5" />
+
+    <text x="460" y="408" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="2">VENERABLE SĀRIPUTTA ON SECLUSION</text>
+    <text x="460" y="424" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >When the Teacher lives in seclusion, how should the disciple dwell?</text>
+    <text x="460" y="438" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >satthu pavivittassa viharato</text>
+
+    <!-- Left: Blameworthy Disciples -->
+    <rect x="48" y="452" width="400" height="138" rx="6" fill="url(#patternLeft)"
+        stroke="#a06070" stroke-opacity="0.2" stroke-width="0.8" filter="url(#shadowDrop)" />
+
+    <text x="248" y="472" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+        >A Blameworthy Disciple</text>
+    <text x="248" y="488" text-anchor="middle" fill="#908098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >gārayho</text>
+
+    <text x="76" y="510" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >① Does not train in seclusion <tspan font-size="10" font-style="italic">(vivekaṁ nānusikkhati)</tspan></text>
+    <text x="76" y="528" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >② Does not abandon the mental qualities that the Teacher</text>
+    <text x="76" y="544" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >tells them to abandon</text>
+    <text x="76" y="562" fill="#b098b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >③ Indulgent and lax, leader in backsliding, neglectful of seclusion</text>
+    <text x="90" y="578" fill="#908098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >bāhuliko ca, sāthaliko, okkamane pubbaṅgamo, paviveke nikkhittadhuro</text>
+
+    <!-- Right: A Praiseworthy Disciple -->
+    <rect x="472" y="452" width="400" height="138" rx="6" fill="url(#patternRight)"
+        stroke="#60a088" stroke-opacity="0.2" stroke-width="0.8" filter="url(#shadowDrop)" />
+
+    <text x="672" y="472" text-anchor="middle" fill="#80c0a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+        >A Praiseworthy Disciple</text>
+    <text x="672" y="488" text-anchor="middle" fill="#709888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >pāsaṁso</text>
+
+    <text x="500" y="510" fill="#90b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >① Trains in seclusion <tspan font-size="10" font-style="italic">(vivekaṁ anusikkhati)</tspan></text>
+    <text x="500" y="528" fill="#90b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >② Abandons the mental qualities that the Teacher tells them to abandon</text>
+    <text x="500" y="546" fill="#90b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >③ Not indulgent, not lax, not a backslider, leading in seclusion</text>
+    <text x="490" y="562" fill="#709888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >na ca bāhuliko hoti, na sāthaliko okkamane nikkhittadhuro paviveke pubbaṅgamo</text>
+
+    <!-- Three levels indicator -->
+    <text x="460" y="620" text-anchor="middle" fill="#708090"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5"
+        >A standard for all disciples: elder <tspan font-size="10" font-style="italic">(thero)</tspan> · intermediate <tspan font-size="10" font-style="italic">(majjhimo)</tspan> · novice <tspan font-size="10" font-style="italic">(navo)</tspan></text>
+
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║   PHASE 4 — 16 HARMFUL QUALITIES: 8 DYADS      ║ -->
+    <!-- ║   (y: 636–1070) ★ VISUAL CENTERPIECE            ║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <!-- Tier separator -->
+    <line x1="200" y1="636" x2="720" y2="636" stroke="url(#tierGrad)" stroke-width="0.5" />
+
+    <text x="460" y="678" text-anchor="middle"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="2" fill="#c8a040">16 HARMFUL QUALITIES <tspan fill="#807060" font-size="11" font-style="italic" font-weight="normal" letter-spacing="0">· pāpakā dhammā</tspan></text>
+
+    <!-- ── Row 1 ── -->
+    <!-- Dyad 1: Greed & Aversion -->
+    <rect x="48" y="706" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="72" cy="734" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="72" y="737" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >1</text>
+
+    <text x="170" y="734" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Greed</text>
+    <text x="170" y="750" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >lobha</text>
+
+    <text x="248" y="736" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="340" y="734" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Aversion</text>
+    <text x="340" y="750" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >dosa</text>
+
+    <text x="248" y="776" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >lobho ca pāpako doso ca pāpako</text>
+
+    <!-- Dyad 2: Anger & Resentment -->
+    <rect x="472" y="706" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="496" cy="734" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="496" y="737" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >2</text>
+
+    <text x="588" y="734" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Anger</text>
+    <text x="588" y="750" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >kodha</text>
+
+    <text x="672" y="736" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="760" y="734" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Resentment</text>
+    <text x="760" y="750" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >upanāha</text>
+
+    <text x="672" y="776" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >kodho ca pāpako upanāho ca pāpako</text>
+
+
+    <!-- ── Row 2 ── -->
+    <!-- Dyad 3: Contempt & Feuding -->
+    <rect x="48" y="802" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="72" cy="830" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="72" y="832" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >3</text>
+
+    <text x="170" y="830" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Contempt</text>
+    <text x="170" y="846" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >makkha</text>
+
+    <text x="248" y="832" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="340" y="830" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Feuding</text>
+    <text x="340" y="846" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >paḷāsa</text>
+
+    <text x="248" y="872" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >makkho ca pāpako paḷāso ca pāpako</text>
+
+    <!-- Dyad 4: Jealousy & Stinginess -->
+    <rect x="472" y="802" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="496" cy="830" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="496" y="832" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >4</text>
+
+    <text x="588" y="830" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Jealousy</text>
+    <text x="588" y="846" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >issā</text>
+
+    <text x="672" y="832" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="760" y="830" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Stinginess</text>
+    <text x="760" y="846" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >macchera</text>
+
+    <text x="672" y="872" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >issā ca pāpikā maccherañca pāpakaṁ</text>
+
+
+    <!-- ── Row 3 ── -->
+    <!-- Dyad 5: Hypocrisy & Treachery -->
+    <rect x="48" y="898" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="72" cy="926" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="72" y="928" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >5</text>
+
+    <text x="170" y="926" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Hypocrisy</text>
+    <text x="170" y="942" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >māyā</text>
+
+    <text x="248" y="928" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="340" y="926" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Treachery</text>
+    <text x="340" y="942" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >sāṭheyya</text>
+
+    <text x="248" y="968" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >māyā ca pāpikā sāṭheyyañca pāpakaṁ</text>
+
+    <!-- Dyad 6: Stubbornness & Aggressiveness -->
+    <rect x="472" y="898" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="496" cy="926" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="496" y="930" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >6</text>
+
+    <text x="584" y="926" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Stubbornness</text>
+    <text x="584" y="942" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >thambha</text>
+
+    <text x="672" y="928" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="764" y="926" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Aggressiveness</text>
+    <text x="764" y="942" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >sārambha</text>
+
+    <text x="672" y="968" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >thambho ca pāpako sārambho ca pāpako</text>
+
+
+    <!-- ── Row 4 ── -->
+    <!-- Dyad 7: Conceit & Arrogance -->
+    <rect x="48" y="994" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="72" cy="1022" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="72" y="1025" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >7</text>
+
+    <text x="170" y="1022" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Conceit</text>
+    <text x="170" y="1038" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >māna</text>
+
+    <text x="248" y="1024" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="340" y="1022" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Arrogance</text>
+    <text x="340" y="1038" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >atimāna</text>
+
+    <text x="248" y="1064" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >māno ca pāpako atimāno ca pāpako</text>
+
+    <!-- Dyad 8: Vanity & Negligence -->
+    <rect x="472" y="994" width="400" height="82" rx="5" fill="url(#dyadGrad)"
+        stroke="#a06070" stroke-opacity="0.18" stroke-width="0.7" />
+    <circle cx="496" cy="1022" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+    <text x="496" y="1025" text-anchor="middle" fill="#c07060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >8</text>
+
+    <text x="588" y="1022" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Vanity</text>
+    <text x="588" y="1038" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >mada</text>
+
+    <text x="672" y="1024" text-anchor="middle" fill="#504048"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">&amp;</text>
+
+    <text x="760" y="1022" text-anchor="middle" fill="#d0c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >Negligence</text>
+    <text x="760" y="1038" text-anchor="middle" fill="#908078"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >pamāda</text>
+
+    <text x="672" y="1064" text-anchor="middle" fill="#706068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >mado ca pāpako pamādo ca pāpako</text>
+
+
+    <!-- ── Funnel convergence lines: all 8 dyads → Middle Way ── -->
+    <g opacity="0.35">
+        <!-- Left column dyads converge -->
+        <line x1="248" y1="788" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <line x1="248" y1="884" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <line x1="248" y1="980" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <line x1="248" y1="1076" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <!-- Right column dyads converge -->
+        <line x1="672" y1="788" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <line x1="672" y1="884" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <line x1="672" y1="980" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+        <line x1="672" y1="1076" x2="460" y2="1120" stroke="url(#funnelGrad)" stroke-width="0.6" />
+    </g>
+
+    <!-- Small glow dot at convergence point -->
+    <circle cx="460" cy="1120" r="4" fill="#c8a040" opacity="0.4" filter="url(#glow2)" />
+
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║   PHASE 5 — MIDDLE WAY & NOBLE EIGHTFOLD PATH   ║ -->
+    <!-- ║   (y: 1100–1380) — 3 LOGICAL GROUPS, INLINE     ║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <!-- Tier separator -->
+    <line x1="200" y1="1100" x2="720" y2="1100" stroke="url(#tierGrad)" stroke-width="0.5" />
+
+    <text x="460" y="1128" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold"
+        letter-spacing="3">THE MIDDLE WAY</text>
+    <text x="460" y="1148" text-anchor="middle" fill="#a08838"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
+        >majjhimā paṭipadā</text>
+
+    <!-- Gold band background -->
+    <rect x="48" y="1160" width="824" height="224" rx="6" fill="url(#goldBand)"
+        stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.8" />
+
+    <text x="460" y="1182" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5"
+        >Producing vision, producing insight</text>
+    <text x="460" y="1196" text-anchor="middle" fill="#807060"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >cakkhukaraṇī ñāṇakaraṇī</text>
+
+    <!-- ── GROUP 1: WISDOM (paññā) — 2 factors ── -->
+    <line x1="120" y1="1214" x2="340" y2="1214" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+    <text x="460" y="1218" text-anchor="middle" fill="#dab850"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2">WISDOM · paññā</text>
+    <line x1="580" y1="1214" x2="800" y2="1214" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+
+    <!-- Factor 1: Right View (circle left, labels right) -->
+    <g transform="translate(220, 1244)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="3" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">1</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right View</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammādiṭṭhi</text>
+    </g>
+
+    <!-- Factor 2: Right Intention -->
+    <g transform="translate(530, 1244)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="3" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">2</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Intention</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammāsaṅkappo</text>
+    </g>
+
+    <!-- ── GROUP 2: VIRTUE (sīla) — 3 factors ── -->
+    <line x1="120" y1="1272" x2="340" y2="1272" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+    <text x="460" y="1276" text-anchor="middle" fill="#dab850"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2">VIRTUE · sīla</text>
+    <line x1="580" y1="1272" x2="800" y2="1272" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+
+    <!-- Factor 3: Right Speech -->
+    <g transform="translate(100, 1302)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="2" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">3</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Speech</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammāvācā</text>
+    </g>
+
+    <!-- Factor 4: Right Action -->
+    <g transform="translate(370, 1302)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="2" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">4</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Action</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammākammanto</text>
+    </g>
+
+    <!-- Factor 5: Right Livelihood -->
+    <g transform="translate(640, 1302)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="2" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">5</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Livelihood</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammāājīva</text>
+    </g>
+
+    <!-- ── GROUP 3: COLLECTEDNESS (samādhi) — 3 factors ── -->
+    <line x1="120" y1="1330" x2="300" y2="1330" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+    <text x="460" y="1334" text-anchor="middle" fill="#dab850"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2">COLLECTEDNESS · samādhi</text>
+    <line x1="620" y1="1330" x2="800" y2="1330" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+
+    <!-- Factor 6: Right Effort -->
+    <g transform="translate(100, 1360)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="4" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">6</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Effort</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammāvāyāmo</text>
+    </g>
+
+    <!-- Factor 7: Right Mindfulness -->
+    <g transform="translate(370, 1360)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="3" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">7</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Mindfulness</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammāsati</text>
+    </g>
+
+    <!-- Factor 8: Right Collectedness -->
+    <g transform="translate(640, 1360)">
+        <circle cx="0" cy="0" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.45" stroke-width="1" />
+        <text x="0" y="4" text-anchor="middle" fill="#dab850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">8</text>
+        <text x="22" y="-3" text-anchor="start" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5">Right Collectedness</text>
+        <text x="22" y="11" text-anchor="start" fill="#807060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sammāsamādhi</text>
+    </g>
+
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║   PHASE 6 — OUTCOME CHAIN (y: 1400–1560)        ║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <text x="460" y="1410" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >which leads to …</text>
+
+    <!-- Outcome chain: 6 stages flowing left → right -->
+    <!-- 1. Vision -->
+    <g transform="translate(108, 1442)">
+        <rect x="-50" y="-16" width="100" height="38" rx="4" fill="url(#patternRight)"
+            stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+        <text x="0" y="0" text-anchor="middle" fill="#80c0a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            >Vision</text>
+        <text x="0" y="14" text-anchor="middle" fill="#608878"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >cakkhukaraṇī</text>
+    </g>
+    <text x="176" y="1444" text-anchor="middle" fill="#406058" opacity="0.6"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">→</text>
+
+    <!-- 2. Insight -->
+    <g transform="translate(246, 1442)">
+        <rect x="-54" y="-16" width="108" height="38" rx="4" fill="url(#patternRight)"
+            stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+        <text x="0" y="0" text-anchor="middle" fill="#80c0a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            >Insight</text>
+        <text x="0" y="14" text-anchor="middle" fill="#608878"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >ñāṇakaraṇī</text>
+    </g>
+    <text x="318" y="1444" text-anchor="middle" fill="#406058" opacity="0.6"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">→</text>
+
+    <!-- 3. Tranquility -->
+    <g transform="translate(388, 1442)">
+        <rect x="-54" y="-16" width="108" height="38" rx="4" fill="url(#patternRight)"
+            stroke="#60a088" stroke-opacity="0.25" stroke-width="0.6" />
+        <text x="0" y="0" text-anchor="middle" fill="#80c0a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            >Tranquility</text>
+        <text x="0" y="14" text-anchor="middle" fill="#608878"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >upasama</text>
+    </g>
+    <text x="460" y="1444" text-anchor="middle" fill="#406058" opacity="0.6"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">→</text>
+
+    <!-- 4. Direct Knowledge -->
+    <g transform="translate(540, 1442)">
+        <rect x="-58" y="-16" width="116" height="38" rx="4" fill="url(#patternRight)"
+            stroke="#60a088" stroke-opacity="0.3" stroke-width="0.6" />
+        <text x="0" y="0" text-anchor="middle" fill="#80c0a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            >Direct Knowledge</text>
+        <text x="0" y="14" text-anchor="middle" fill="#608878"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >abhiññā</text>
+    </g>
+    <text x="616" y="1444" text-anchor="middle" fill="#406058" opacity="0.6"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">→</text>
+
+    <!-- 5. Full Awakening -->
+    <g transform="translate(690, 1442)">
+        <rect x="-56" y="-16" width="112" height="38" rx="4" fill="url(#patternRight)"
+            stroke="#60a088" stroke-opacity="0.35" stroke-width="0.6" />
+        <text x="0" y="0" text-anchor="middle" fill="#90d0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            >Full Awakening</text>
+        <text x="0" y="14" text-anchor="middle" fill="#608878"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >sambodha</text>
+    </g>
+    <text x="764" y="1444" text-anchor="middle" fill="#907840" opacity="0.6"
+        font-family="Georgia,'Times New Roman',serif" font-size="14">→</text>
+
+    <!-- 6. Nibbāna (gold glow) -->
+    <g transform="translate(830, 1442)">
+        <circle cx="0" cy="2" r="36" fill="url(#libGlow)" />
+        <rect x="-44" y="-16" width="88" height="38" rx="4" fill="url(#goldBand)"
+            stroke="#c8a040" stroke-opacity="0.3" stroke-width="0.8" />
+        <text x="0" y="1" text-anchor="middle" fill="#ffd700" filter="url(#glow1)"
+            font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+            >Nibbāna</text>
+        <text x="0" y="15" text-anchor="middle" fill="#a08838"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >nibbāna</text>
+    </g>
+
+    <!-- Conclusion quote -->
+    <text x="460" y="1504" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >"There is a Middle Way for the abandoning of greed and aversion … vanity and negligence,</text>
+    <text x="460" y="1522" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >which leads to tranquility, to direct knowledge, to full awakening, to Nibbāna."</text>
+
+    <!-- Pali conclusion -->
+    <text x="460" y="1544" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >upasamāya abhiññāya sambodhāya nibbānāya saṁvattati</text>
+
+    <!-- ╔══════════════════════════════════════════════════╗ -->
+    <!-- ║   PHASE 7 — FOOTER: DISCOURSE + LOTUS           ║ -->
+    <!-- ╚══════════════════════════════════════════════════╝ -->
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1572" x2="620" y2="1572" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn3" target="_blank">
+        <text x="460" y="1586" text-anchor="middle" fill="#384858"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1"
+            >wordsofthebuddha.org/mn3</text>
+    </a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1602) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
+
+</svg>
