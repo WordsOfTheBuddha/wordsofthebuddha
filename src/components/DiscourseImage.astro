@@ -218,10 +218,18 @@ if (!initialImage) return;
 			const stored = localStorage.getItem("showDiscourseImages");
 			const show = stored === null ? true : stored === "true";
 			const hasViz = /[?&](viz|image)=/.test(window.location.search);
+			const canShowImages = show && navigator.onLine;
 			const fig = document.getElementById("discourseImageFigure");
-			if (hasViz) {
+			if (hasViz && !canShowImages) {
+				const url = new URL(window.location.href);
+				url.searchParams.delete("viz");
+				url.searchParams.delete("image");
+				history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+				document.documentElement.style.removeProperty("--viz-preload");
+				fig.classList.add("hidden");
+			} else if (hasViz) {
 				fig.classList.remove("hidden");
-			} else if (show && navigator.onLine) {
+			} else if (canShowImages) {
 				fig.classList.remove("hidden");
 			}
 		} catch (e) {}
@@ -893,11 +901,27 @@ if (!initialImage) return;
 			}
 		});
 
+		// Viz mode requires images to be enabled and online; otherwise fallback to normal page view.
+		const closeVizAndFallback = () => {
+			if (dialog?.open) {
+				dialog.close();
+				unlockPageScroll();
+			}
+			clearImageRoute();
+			document.documentElement.style.removeProperty("--viz-preload");
+		};
+
 		const syncModalWithRoute = () => {
+			if (!canShowImages()) {
+				closeVizAndFallback();
+				return;
+			}
+
 			const requestedIndex = parseImageRouteIndex();
 			if (requestedIndex == null) {
 				if (dialog?.open) {
 					dialog.close();
+					unlockPageScroll();
 				}
 				return;
 			}
@@ -914,10 +938,15 @@ if (!initialImage) return;
 		};
 
 		const isOffline = (): boolean => !navigator.onLine;
+		const canShowImages = (): boolean => !isOffline() && getPreference();
 
 		const updateVisibility = () => {
-			const show = !isOffline() && getPreference();
+			const show = canShowImages();
 			figure.classList.toggle("hidden", !show);
+
+			if (!show) {
+				closeVizAndFallback();
+			}
 		};
 
 		updateVisibility();

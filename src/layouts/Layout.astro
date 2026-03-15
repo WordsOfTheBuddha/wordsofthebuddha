@@ -110,7 +110,12 @@ if (!SEOTitle) {
 }
 ---
 
-<html lang="en" class={serverTheme} dir="ltr">
+<html
+	lang="en"
+	class={serverTheme}
+	dir="ltr"
+	data-has-viz={contentImage ? "true" : "false"}
+>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -268,7 +273,22 @@ if (!SEOTitle) {
 
 			/* Detect ?viz= before <body> renders to prevent page flash behind modal */
 			if (/[?&](viz|image)=/.test(window.location.search)) {
-				document.documentElement.style.setProperty('--viz-preload', '1');
+				const pageHasViz = document.documentElement.dataset.hasViz === "true";
+				const stored = localStorage.getItem("showDiscourseImages");
+				const show = stored === null ? true : stored === "true";
+				if (pageHasViz && show && navigator.onLine) {
+					document.documentElement.style.setProperty("--viz-preload", "1");
+
+					// Failsafe: if no viz UI mounts on this page, drop preload and show normal content.
+					requestAnimationFrame(() => {
+						if (
+							!document.getElementById("imageModal") &&
+							!document.getElementById("discourseImageFigure")
+						) {
+							document.documentElement.style.removeProperty("--viz-preload");
+						}
+					});
+				}
 			}
 		</script>
 		<!-- When navigating to a ?viz= URL, hide page content to prevent flash behind the modal -->
@@ -485,6 +505,11 @@ if (!SEOTitle) {
 		// Load preferences once when the page loads
 		document.addEventListener("DOMContentLoaded", async () => {
 			const urlParams = new URLSearchParams(window.location.search);
+			const pliParam = urlParams.get("pli");
+			const resolvedShowPali =
+				pliParam !== null
+					? pliParam === "true"
+					: localStorage.getItem("paliMode") === "true";
 			// Client-side safety net: if width < 768 and layout=split is present, drop it and clean the URL
 			if (
 				window.innerWidth < 768 &&
@@ -500,7 +525,7 @@ if (!SEOTitle) {
 					(urlParams.get("theme") as Theme) ??
 					localStorage.theme ??
 					"dark",
-				showPali: urlParams.get("pli") === "true",
+				showPali: resolvedShowPali,
 				enablePaliLookup:
 					urlParams.get("enablePaliLookup") ??
 					localStorage.paliLookup ??
