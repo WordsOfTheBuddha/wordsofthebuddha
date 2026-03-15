@@ -30,7 +30,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 	class="flex items-center justify-between border-b border-[color:var(--surface-border)]
          px-4 py-3 text-[var(--surface-ink)] min-h-[4rem]"
 >
-	<div class="text-lg md:text-xl font-bold">
+	<div class="text-lg md:text-xl font-bold flex items-center min-h-[2.25rem]">
 		<a href="/" class="brand-link" aria-label="Words of the Buddha home">
 			<LogoMark size="1.15em" />
 			<span class="brand-text text-gradient-accent">Words of the Buddha</span>
@@ -120,7 +120,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 					<div id="nav-auth-slot" data-state="signed-out">
 						<a
 							href={`/signin?returnTo=${encodeURIComponent(currentPath)}`}
-							class="px-3 my-1 py-1 text-sm border rounded-md font-medium text-[var(--auth-button-bg)] border-[var(--auth-button-bg)] hover:bg-[var(--auth-button-bg)] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
+							class="px-3 py-1 text-sm border rounded-md font-medium text-[var(--auth-button-bg)] border-[var(--auth-button-bg)] hover:bg-[var(--auth-button-bg)] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
 						>
 							Sign in
 						</a>
@@ -133,8 +133,9 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 <style>
 	.brand-link {
 		display: inline-flex;
-		align-items: center;
+		align-items: flex-end;
 		gap: 0.6rem;
+		line-height: 1;
 	}
 
 	.brand-link:hover .brand-text {
@@ -143,6 +144,12 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 
 	.brand-text {
 		font-size: inherit;
+		display: inline-block;
+		line-height: 1;
+	}
+
+	.brand-link :global(.logo-mark) {
+		transform: translateY(0.02em);
 	}
 </style>
 
