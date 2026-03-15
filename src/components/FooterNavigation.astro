@@ -50,15 +50,18 @@ const { prev, next } = Astro.props;
 
 		links.forEach((link) => {
 			const baseHref = link.getAttribute("data-base-href");
+			if (!baseHref) return;
 			const params = new URLSearchParams();
 			if (paliMode) params.set("pli", "true");
-			if (layout === "split") params.set("layout", layout);
-			if (params.toString()) {
-				(link as HTMLAnchorElement).href =
-					`${baseHref}?${params.toString()}`;
-			}
+			if (paliMode && layout === "split") params.set("layout", layout);
+			(link as HTMLAnchorElement).href = params.toString()
+				? `${baseHref}?${params.toString()}`
+				: baseHref;
 		});
 	}
 
 	document.addEventListener("DOMContentLoaded", updateLinks);
+	document.addEventListener("astro:page-load", updateLinks);
+	document.addEventListener("paliModeChanged", updateLinks as EventListener);
+	document.addEventListener("layoutChanged", updateLinks as EventListener);
 </script>
