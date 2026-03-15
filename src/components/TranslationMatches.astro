@@ -1261,6 +1261,40 @@
 
     const MIN_RUN_COVERAGE = 0.60;
 
+    // Re-split merged runs whose coverage is below the 80% match threshold.
+    // When two n-gram clusters (e.g. opening and closing of a stock approach-formula) are
+    // just close enough to merge (gap ≤ ngramSize+2), the merged run has a large uncovered
+    // middle, pulling coverage below 0.8. Splitting at the largest internal gap yields two
+    // clean high-coverage sub-runs that each pass the threshold independently.
+    // Example: source has …pe… abbreviation → entry clusters {0-2} + {12-14} merge into
+    // {0-18} with coverage 13/19 = 0.68. After split: {0-6} and {12-18} each at 1.0.
+    const SPLIT_BELOW = 0.80;
+    const splitRuns: typeof runs = [];
+    for (const run of runs) {
+      const { coverage: runCoverage } = calculateRunCoverage(run);
+      if (runCoverage >= SPLIT_BELOW) { splitRuns.push(run); continue; }
+      const runPs = matchPositions.filter(p => p >= run.start && p + ngramSize - 1 <= run.end);
+      if (runPs.length < 2) { splitRuns.push(run); continue; }
+      // Find the largest gap between the end of one n-gram and the start of the next
+      let splitIdx = -1, maxGap = 0;
+      for (let i = 1; i < runPs.length; i++) {
+        const gap = runPs[i] - (runPs[i - 1] + ngramSize);
+        if (gap > maxGap) { maxGap = gap; splitIdx = i; }
+      }
+      if (splitIdx < 0 || maxGap <= 0) { splitRuns.push(run); continue; }
+      const sub1 = { start: runPs[0], end: runPs[splitIdx - 1] + ngramSize - 1 };
+      const sub2 = { start: runPs[splitIdx], end: runPs[runPs.length - 1] + ngramSize - 1 };
+      const { coverage: cov1 } = calculateRunCoverage(sub1);
+      const { coverage: cov2 } = calculateRunCoverage(sub2);
+      // Only split if both halves are strictly better than the merged run
+      if (cov1 > runCoverage && cov2 > runCoverage) {
+        splitRuns.push(sub1, sub2);
+      } else {
+        splitRuns.push(run);
+      }
+    }
+    runs.splice(0, runs.length, ...splitRuns);
+
     // Evaluate each run
     const runEvaluations = runs.map((run, idx) => {
       const { covered, coverage, contentCount, words } = calculateRunCoverage(run);
