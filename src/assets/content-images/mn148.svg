@@ -1,0 +1,763 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1920" width="920" height="1920">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Pattern box gradients (burgundy left, teal right) -->
+        <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#221828" />
+            <stop offset="100%" stop-color="#1a1422" />
+        </linearGradient>
+        <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+
+        <!-- Tier label gradient -->
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Panel gradients -->
+        <linearGradient id="cellLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1a2236" />
+            <stop offset="100%" stop-color="#141c2e" />
+        </linearGradient>
+        <linearGradient id="cellRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1a2836" />
+            <stop offset="100%" stop-color="#14222e" />
+        </linearGradient>
+
+        <!-- Tendency panel gradients -->
+        <linearGradient id="panelAmber" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e1a14" />
+            <stop offset="100%" stop-color="#181610" />
+        </linearGradient>
+        <linearGradient id="panelRed" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e1418" />
+            <stop offset="100%" stop-color="#181014" />
+        </linearGradient>
+        <linearGradient id="panelBlue" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#141a22" />
+            <stop offset="100%" stop-color="#10161e" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1920" fill="url(#bg)" />
+    <ellipse cx="460" cy="1750" rx="380" ry="180" fill="#204838" opacity="0.06" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#d8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">MN 148 &#8212; CHACHAKKA SUTTA</text>
+    <text x="460" y="64" text-anchor="middle" fill="#a09070"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">Six Sets of Six</text>
+
+    <line x1="280" y1="78" x2="640" y2="78" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+    <text x="460" y="122" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
+        opacity="0.9">The Dhamma that is beneficial in the beginning, in the middle, and in the end</text>
+    <text x="460" y="142" text-anchor="middle" fill="#7888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        opacity="0.8">dhammaṁ ādikalyāṇaṁ majjhekalyāṇaṁ pariyosānakalyāṇaṁ</text>
+
+    <!-- ============ VERTICAL GUIDE LINES (6 sense-door columns) ============ -->
+    <!-- x positions: 118, 248, 378, 508, 638, 778 — spans sets 1–6 -->
+    <line x1="118" y1="270" x2="118" y2="760" stroke="#304058" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.15" />
+    <line x1="248" y1="270" x2="248" y2="760" stroke="#304058" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.15" />
+    <line x1="378" y1="270" x2="378" y2="760" stroke="#304058" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.15" />
+    <line x1="508" y1="270" x2="508" y2="760" stroke="#304058" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.15" />
+    <line x1="648" y1="270" x2="648" y2="760" stroke="#304058" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.15" />
+    <line x1="788" y1="270" x2="788" y2="760" stroke="#304058" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.15" />
+
+    <!-- ============ SET 1: INTERNAL SENSE BASES ============ -->
+    <text x="460" y="202" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.65">SIX INTERNAL SENSE BASES</text>
+    <text x="460" y="216" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.5">cha ajjhattikāni āyatanāni</text>
+
+    <!-- Eye: icon-left layout -->
+    <g transform="translate(118, 240)">
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(-34, 2)">
+            <path d="M -10 6 Q 0 -2, 10 6" fill="none" stroke="#6888a0" stroke-width="1.1" />
+            <path d="M -10 6 Q 0 14, 10 6" fill="none" stroke="#6888a0" stroke-width="1.1" />
+            <circle cx="0" cy="6" r="2.5" fill="none" stroke="#6888a0" stroke-width="0.9" />
+        </g>
+        <text x="0" y="8" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">eye</text>
+        <text x="0" y="21" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">cakkhu</text>
+    </g>
+
+    <!-- Ear: icon-left layout -->
+    <g transform="translate(248, 240)">
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(-25, 0)">
+            <path d="M 4 0 Q -6 6, -4 14 Q -2 18, 4 16" fill="none" stroke="#6888a0" stroke-width="1.1" />
+            <path d="M 2 4 Q -2 8, 0 12" fill="none" stroke="#6888a0" stroke-width="0.8" />
+        </g>
+        <text x="0" y="8" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">ear</text>
+        <text x="0" y="21" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sota</text>
+    </g>
+
+    <!-- Nose: icon-left layout -->
+    <g transform="translate(378, 240)">
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(-30, 0)">
+            <path d="M 0 0 L 0 12 Q -5 16, -3 12" fill="none" stroke="#6888a0" stroke-width="1.1" />
+            <path d="M 0 12 Q 5 16, 3 12" fill="none" stroke="#6888a0" stroke-width="1.1" />
+        </g>
+        <text x="0" y="8" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">nose</text>
+        <text x="0" y="21" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">ghāna</text>
+    </g>
+
+    <!-- Tongue: icon-left layout -->
+    <g transform="translate(508, 240)">
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(-34, 1)">
+            <path d="M -5 2 Q 0 -2, 5 2 Q 7 8, 0 14 Q -7 8, -5 2 Z" fill="none" stroke="#6888a0" stroke-width="1.1" />
+            <line x1="-2" y1="7" x2="2" y2="7" stroke="#6888a0" stroke-width="0.7" />
+        </g>
+        <text x="0" y="8" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">tongue</text>
+        <text x="0" y="21" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">jivhā</text>
+    </g>
+
+    <!-- Body: icon-left layout -->
+    <g transform="translate(648, 240)">
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(-30, 0)">
+            <circle cx="0" cy="3" r="3" fill="none" stroke="#6888a0" stroke-width="1" />
+            <line x1="0" y1="6" x2="0" y2="14" stroke="#6888a0" stroke-width="1" />
+            <line x1="-5" y1="9" x2="5" y2="9" stroke="#6888a0" stroke-width="0.9" />
+        </g>
+        <text x="0" y="8" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">body</text>
+        <text x="0" y="21" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">kāya</text>
+    </g>
+
+    <!-- Mind: icon-left layout -->
+    <g transform="translate(788, 240)">
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(-34, 1)">
+            <circle cx="0" cy="6" r="7" fill="none" stroke="#6888a0" stroke-width="1" />
+            <circle cx="0" cy="6" r="2.5" fill="none" stroke="#6888a0" stroke-width="0.7" opacity="0.6" />
+        </g>
+        <text x="0" y="8" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">mind</text>
+        <text x="0" y="21" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">mano</text>
+    </g>
+
+    <!-- ============ SET 2: EXTERNAL SENSE BASES ============ -->
+    <text x="460" y="300" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.65">SIX EXTERNAL SENSE BASES</text>
+    <text x="460" y="314" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.5">cha bāhirāni āyatanāni</text>
+
+    <!-- External bases: text only (no icons for simplicity) -->
+    <g transform="translate(0, 334)" text-anchor="middle">
+        <text x="118" y="10" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">forms</text>
+        <text x="118" y="23" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">rūpā</text>
+
+        <text x="248" y="10" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">sounds</text>
+        <text x="248" y="23" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">saddā</text>
+
+        <text x="378" y="10" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">smells</text>
+        <text x="378" y="23" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">gandhā</text>
+
+        <text x="508" y="10" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">tastes</text>
+        <text x="508" y="23" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">rasā</text>
+
+        <text x="648" y="10" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">touches</text>
+        <text x="648" y="23" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">phoṭṭhabbā</text>
+
+        <text x="788" y="10" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">mental objects</text>
+        <text x="788" y="23" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">dhammā</text>
+    </g>
+
+    <!-- ============ CONVERGING LINES: Sets 1+2 → Set 3 (club of three) ============ -->
+    <!-- For each column: line from internal base (y~264) and external base (y~340) converge to consciousness (y~400) -->
+    <g stroke="#506878" stroke-width="0.6" opacity="0.25">
+        <!-- Column 1: eye + forms → eye-consciousness → eye-contact -->
+        <line x1="118" y1="264" x2="118" y2="354" />
+        <line x1="118" y1="340" x2="118" y2="354" />
+        <line x1="118" y1="354" x2="118" y2="571" />
+        <!-- Column 2 -->
+        <line x1="248" y1="264" x2="248" y2="354" />
+        <line x1="248" y1="340" x2="248" y2="354" />
+        <line x1="248" y1="354" x2="248" y2="571" />
+        <!-- Column 3 -->
+        <line x1="378" y1="264" x2="378" y2="354" />
+        <line x1="378" y1="340" x2="378" y2="354" />
+        <line x1="378" y1="354" x2="378" y2="571" />
+        <!-- Column 4 -->
+        <line x1="508" y1="264" x2="508" y2="354" />
+        <line x1="508" y1="340" x2="508" y2="354" />
+        <line x1="508" y1="354" x2="508" y2="571" />
+        <!-- Column 5 -->
+        <line x1="648" y1="264" x2="648" y2="354" />
+        <line x1="648" y1="340" x2="648" y2="354" />
+        <line x1="648" y1="354" x2="648" y2="571" />
+        <!-- Column 6 -->
+        <line x1="788" y1="264" x2="788" y2="354" />
+        <line x1="788" y1="340" x2="788" y2="354" />
+        <line x1="788" y1="354" x2="788" y2="571" />
+    </g>
+
+    <!-- Merge dots at convergence point -->
+    <g fill="#506878" opacity="0.3">
+        <circle cx="118" cy="354" r="2" />
+        <circle cx="248" cy="354" r="2" />
+        <circle cx="378" cy="354" r="2" />
+        <circle cx="508" cy="354" r="2" />
+        <circle cx="648" cy="354" r="2" />
+        <circle cx="788" cy="354" r="2" />
+    </g>
+
+    <!-- Terminal dots at contact level -->
+    <g fill="#506878" opacity="0.2">
+        <circle cx="118" cy="571" r="1.5" />
+        <circle cx="248" cy="571" r="1.5" />
+        <circle cx="378" cy="571" r="1.5" />
+        <circle cx="508" cy="571" r="1.5" />
+        <circle cx="648" cy="571" r="1.5" />
+        <circle cx="788" cy="571" r="1.5" />
+    </g>
+
+    <!-- ============ CONNECTOR: Sets 1+2→3 (left annotation) ============ -->
+    <text x="84" y="398" text-anchor="start" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        opacity="0.8">dependent on both,</text>
+    <text x="84" y="410" text-anchor="start" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        opacity="0.8">there arises</text>
+
+    <!-- ============ SET 3: CONSCIOUSNESS ============ -->
+    <text x="460" y="402" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.65">SIX CLASSES OF CONSCIOUSNESS</text>
+    <text x="460" y="416" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.5">cha viññāṇakāyā</text>
+
+    <g transform="translate(0, 436)" text-anchor="middle">
+        <text x="118" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">eye-consciousness</text>
+        <text x="118" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">cakkhu·viññāṇa</text>
+        <text x="248" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">ear-consciousness</text>
+        <text x="248" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sota·viññāṇa</text>
+        <text x="378" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">nose-consciousness</text>
+        <text x="378" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">ghāna·viññāṇa</text>
+        <text x="508" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">tongue-consciousness</text>
+        <text x="508" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">jivhā·viññāṇa</text>
+        <text x="648" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">body-consciousness</text>
+        <text x="648" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">kāya·viññāṇa</text>
+        <text x="788" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">mind-consciousness</text>
+        <text x="788" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">mano·viññāṇa</text>
+    </g>
+
+    <!-- ============ CONNECTOR: Sets 3→4 (left annotation) ============ -->
+    <text x="84" y="506" text-anchor="start" fill="#90a068"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        opacity="0.8">the meeting of the three is contact</text>
+    <text x="84" y="519" text-anchor="start" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        opacity="0.7">tiṇṇaṁ saṅgati phasso</text>
+
+    <!-- ============ SET 4: CONTACT ============ -->
+    <text x="460" y="510" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.65">SIX CLASSES OF CONTACT</text>
+    <text x="460" y="524" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.5">cha phassakāyā</text>
+
+    <g transform="translate(0, 546)" text-anchor="middle">
+        <text x="118" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">eye-contact</text>
+        <text x="118" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">cakkhu·samphassa</text>
+        <text x="248" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">ear-contact</text>
+        <text x="248" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sota·samphassa</text>
+        <text x="378" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">nose-contact</text>
+        <text x="378" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">ghāna·samphassa</text>
+        <text x="508" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">tongue-contact</text>
+        <text x="508" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">jivhā·samphassa</text>
+        <text x="648" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">body-contact</text>
+        <text x="648" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">kāya·samphassa</text>
+        <text x="788" y="12" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="9.5">mind-contact</text>
+        <text x="788" y="25" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">mano·samphassa</text>
+    </g>
+
+    <!-- ============ CONNECTOR: Sets 4→5 ============ -->
+    <path d="M 449 584 L 460 592 L 471 584" stroke="#607080" stroke-width="0.8" fill="none" opacity="0.35" />
+    <text x="460" y="610" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        opacity="0.6">with contact as condition · <tspan fill="#806828" opacity="0.6">phassapaccay&#x101; vedan&#x101;</tspan></text>
+
+    <!-- ============ SET 5: FELT EXPERIENCE ============ -->
+    <text x="460" y="634" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.65">SIX CLASSES OF FELT EXPERIENCE</text>
+    <text x="460" y="648" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.5">cha vedanākāyā</text>
+
+    <text x="460" y="670" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >each being pleasant, painful, or neither-painful-nor-pleasant</text>
+    <text x="460" y="684" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.6">sukhaṁ vā dukkhaṁ vā adukkhamasukhaṁ vā</text>
+
+    <!-- ============ CONNECTOR: Sets 5→6 ============ -->
+    <path d="M 449 698 L 460 706 L 471 698" stroke="#607080" stroke-width="0.8" fill="none" opacity="0.35" />
+    <text x="460" y="724" text-anchor="middle" fill="#607080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        opacity="0.6">with felt experience as condition · <tspan fill="#806828" opacity="0.6">vedanāpaccayā taṇhā</tspan></text>
+
+    <!-- ============ SET 6: CRAVING ============ -->
+    <text x="460" y="748" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="2" opacity="0.65">SIX CLASSES OF CRAVING</text>
+    <text x="460" y="762" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.5">cha taṇhākāyā</text>
+
+    <text x="460" y="782" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >arise with felt experience as condition</text>
+
+    <!-- ================================================================ -->
+    <!--                        NOT-SELF                                   -->
+    <!-- ================================================================ -->
+
+    <!-- Containing rect for visual separation -->
+    <g filter="url(#shadowDrop)">
+        <rect x="50" y="800" width="820" height="284" rx="10" fill="#0c1424" fill-opacity="0.6"
+            stroke="#2a5060" stroke-width="0.8" stroke-opacity="0.3" />
+    </g>
+
+    <text x="460" y="824" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">NOT-SELF</text>
+    <text x="460" y="841" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        letter-spacing="1" opacity="0.6">anattā</text>
+
+    <!-- TWO EXAMPLE COLUMNS: eye (1st door) + mind (6th door) -->
+
+    <!-- Left column: EYE -->
+    <g transform="translate(100, 854)">
+        <!-- Column header -->
+        <text x="155" y="14" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+            >&#8220;The arising and passing away of the</text>
+        <text x="155" y="30" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+            ><tspan font-weight="bold" fill="#b0d8c8">eye</tspan> can be discerned&#8221;</text>
+        <text x="155" y="46" text-anchor="middle" fill="#607080"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >cakkhussa uppādopi paññāyati, vayopi paññāyati</text>
+
+        <!-- Chain items: vertical list -->
+        <g transform="translate(80, 58)" text-anchor="start">
+            <text x="0" y="12" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">eye &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">cakkhu</tspan></text>
+            <text x="0" y="26" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">forms &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">rūpā</tspan></text>
+            <text x="0" y="40" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">eye-consciousness &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">cakkhu·viññāṇa</tspan></text>
+            <text x="0" y="54" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">eye-contact &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">cakkhu·samphassa</tspan></text>
+            <text x="0" y="68" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">felt experience &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">vedanā</tspan></text>
+            <text x="0" y="82" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">craving &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">taṇhā</tspan></text>
+        </g>
+    </g>
+
+    <!-- Central divider (thin, between columns) -->
+    <line x1="460" y1="858" x2="460" y2="1000" stroke="#2a5060" stroke-width="0.5" stroke-opacity="0.25" />
+
+    <!-- Right column: MIND -->
+    <g transform="translate(490, 854)">
+        <!-- Column header -->
+        <text x="155" y="14" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+            >&#8220;The arising and passing away of the</text>
+        <text x="155" y="30" text-anchor="middle" fill="#90c0b0"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+            ><tspan font-weight="bold" fill="#b0d8c8">mind</tspan> can be discerned&#8221;</text>
+        <text x="155" y="46" text-anchor="middle" fill="#607080"
+            font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+            >manassa uppādopi paññāyati, vayopi paññāyati</text>
+
+        <!-- Chain items: vertical list -->
+        <g transform="translate(70, 58)" text-anchor="start">
+            <text x="0" y="12" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">mind &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">mano</tspan></text>
+            <text x="0" y="26" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">mental objects &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">dhammā</tspan></text>
+            <text x="0" y="40" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">mind-consciousness &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">mano·viññāṇa</tspan></text>
+            <text x="0" y="54" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">mind-contact &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">mano·samphassa</tspan></text>
+            <text x="0" y="68" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">felt experience &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">vedanā</tspan></text>
+            <text x="0" y="82" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10">craving &#xB7; <tspan fill="#506878" font-size="9" font-style="italic">taṇhā</tspan></text>
+        </g>
+    </g>
+
+    <!-- Shared conclusion (below both columns) -->
+    <text x="460" y="1020" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >&#8220;Positing a self in any of these six sets of six is not tenable,</text>
+    <text x="460" y="1036" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >as otherwise, one would have to conclude: &#8216;My self arises and passes away.&#8217;&#8221;</text>
+
+    <text x="460" y="1065" text-anchor="middle" fill="#60b8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        >∴ not-self · anattā</text>
+
+    <!-- ================================================================ -->
+    <!--                     PERSONAL EXISTENCE                            -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="1082" x2="820" y2="1082" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="1108" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">PERSONAL EXISTENCE</text>
+    <text x="460" y="1125" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        letter-spacing="1" opacity="0.6">sakkāya</text>
+    <line x1="100" y1="1130" x2="820" y2="1130" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Central divider -->
+    <line x1="460" y1="1140" x2="460" y2="1280" stroke="#c8a040" stroke-width="0.8" opacity="0.12" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="60" y="1140" width="388" height="138" rx="8" fill="url(#patternLeft)"
+            stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <g transform="translate(76, 1148)" opacity="0.5" filter="url(#iconGlow)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#a06070" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#a06070" stroke-width="1" />
+        <path d="M 0 18 L 6 12" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 24" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 0 14 L 0 6 L -3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 0 6 L 3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 24 22 L 24 30 L 21 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+        <path d="M 24 30 L 27 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" />
+    </g>
+
+    <text x="254" y="1158" text-anchor="middle" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1.5">WAY TO ORIGINATION</text>
+    <text x="254" y="1172" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sakkāyasamudayāgāminī paṭipadā</text>
+
+    <text x="254" y="1192" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >one regards · <tspan fill="#907888" font-size="10.5">samanupassati</tspan></text>
+
+    <path d="M 254 1196 C 254 1210, 144 1205, 144 1220" stroke="#a06070" stroke-width="0.8" fill="none" opacity="0.4" />
+    <path d="M 254 1196 L 254 1220" stroke="#a06070" stroke-width="0.8" fill="none" opacity="0.4" />
+    <path d="M 254 1196 C 254 1210, 364 1205, 364 1220" stroke="#a06070" stroke-width="0.8" fill="none" opacity="0.4" />
+
+    <text x="144" y="1236" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >“this is mine”</text>
+    <text x="144" y="1252" text-anchor="middle" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >etaṁ mama</text>
+
+    <text x="254" y="1236" text-anchor="middle" fill="#d0b8c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >“this I am”</text>
+    <text x="254" y="1252" text-anchor="middle" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >esohamasmi</text>
+
+    <text x="364" y="1236" text-anchor="middle" fill="#e8cadd"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >“this is my self”</text>
+    <text x="364" y="1252" text-anchor="middle" fill="#907888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >eso me attā</text>
+
+
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="1140" width="388" height="138" rx="8" fill="url(#patternRight)"
+            stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <g transform="translate(488, 1148)" opacity="0.5" filter="url(#iconGlow)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#60a088" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#60a088" stroke-width="1" />
+        <path d="M 0 18 L 6 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <circle cx="12" cy="34" r="3" fill="none" stroke="#80c0a0" stroke-width="0.8" opacity="0.6" />
+    </g>
+
+    <text x="666" y="1158" text-anchor="middle" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1.5">WAY TO ENDING</text>
+    <text x="666" y="1172" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sakkāyanirodhagāminī paṭipadā</text>
+
+    <text x="666" y="1192" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >one regards ·
+ <tspan fill="#507868" font-size="10.5">samanupassati</tspan></text>
+
+    <path d="M 666 1196 C 666 1210, 556 1205, 556 1220" stroke="#60a088" stroke-width="0.8" fill="none" opacity="0.4" />
+    <path d="M 666 1196 L 666 1220" stroke="#60a088" stroke-width="0.8" fill="none" opacity="0.4" />
+    <path d="M 666 1196 C 666 1210, 776 1205, 776 1220" stroke="#60a088" stroke-width="0.8" fill="none" opacity="0.4" />
+
+    <text x="556" y="1236" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >“this is not mine”</text>
+    <text x="556" y="1252" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >netaṁ mama</text>
+
+    <text x="666" y="1236" text-anchor="middle" fill="#a8d0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >“this I am not”</text>
+    <text x="666" y="1252" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >nesohamasmi</text>
+
+    <text x="776" y="1236" text-anchor="middle" fill="#c0e8dd"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic"
+        >“this is not my self”</text>
+    <text x="776" y="1252" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >na me so attā</text>
+
+    <!-- ================================================================ -->
+    <!--               THREE UNDERLYING TENDENCIES                         -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="1292" x2="820" y2="1292" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="1312" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="3" opacity="0.7">THREE UNDERLYING TENDENCIES</text>
+    <text x="460" y="1328" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        letter-spacing="1" opacity="0.6">tayo anusayā</text>
+    <line x1="100" y1="1336" x2="820" y2="1336" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Column 1: Pleasant → Desire -->
+    <g filter="url(#shadowDrop)">
+        <rect x="30" y="1346" width="280" height="148" rx="8" fill="url(#panelAmber)"
+            stroke="#c8a040" stroke-width="0.6" stroke-opacity="0.3" />
+    </g>
+
+    <text x="170" y="1366" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold"
+        letter-spacing="1"><tspan font-family="Georgia,'Times New Roman',serif" font-size="9" fill="#90886a" letter-spacing="0" font-weight="normal">When touched by a</tspan> PLEASANT <tspan font-size="10.5" fill="#90886a" font-weight="normal" letter-spacing="0">felt experience</tspan></text>
+    <text x="170" y="1379" text-anchor="middle" fill="#706848"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sukhāya vedanāya phuṭṭho samāno</text>
+
+    <path d="M 164 1392 L 170 1400 L 176 1392" stroke="#c8a040" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <text x="170" y="1418" text-anchor="middle" fill="#90886a"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >one delights in it <tspan fill="#706848"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">(abhinandati)</tspan> · welcomes it <tspan fill="#706848"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">(abhivadati)</tspan></text>
+    <text x="170" y="1431" text-anchor="middle" fill="#90886a"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >· remains holding tightly to it <tspan fill="#706848"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">(ajjhosāya tiṭṭhati)</tspan></text>
+
+    <path d="M 164 1444 L 170 1452 L 176 1444" stroke="#c8a040" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <text x="170" y="1470" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >underlying tendency to desire lies dormant <tspan fill="#90886a" font-size="10">in them</tspan></text>
+    <text x="170" y="1483" text-anchor="middle" fill="#90803a"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >rāgānusayo anuseti</text>
+
+    <!-- Column 2: Painful → Aversion -->
+    <g filter="url(#shadowDrop)">
+        <rect x="320" y="1346" width="280" height="148" rx="8" fill="url(#panelRed)"
+            stroke="#a06070" stroke-width="0.6" stroke-opacity="0.3" />
+    </g>
+
+    <text x="460" y="1366" text-anchor="middle" fill="#a06070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold"
+        letter-spacing="1"><tspan font-family="Georgia,'Times New Roman',serif" font-size="9" fill="#886070" letter-spacing="0" font-weight="normal">When touched by a </tspan>PAINFUL <tspan font-size="10.5" fill="#886070" font-weight="normal" letter-spacing="0">felt experience</tspan></text>
+    <text x="460" y="1379" text-anchor="middle" fill="#684858"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >dukkhāya vedanāya phuṭṭho samāno</text>
+
+    <path d="M 454 1392 L 460 1400 L 466 1392" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <text x="460" y="1413" text-anchor="middle" fill="#886070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >one grieves <tspan fill="#684858" font-size="9.5" font-style="italic">(socati)</tspan> · grows weary <tspan fill="#684858" font-size="9.5" font-style="italic">(kilamati)</tspan></text>
+    <text x="460" y="1425" text-anchor="middle" fill="#886070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >· laments <tspan fill="#684858" font-size="9.5" font-style="italic">(paridevati)</tspan> · beats breast <tspan fill="#684858" font-size="9.5" font-style="italic">(urattāḷiṁ kandati)</tspan></text>
+    <text x="460" y="1437" text-anchor="middle" fill="#886070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >· experiences delusion <tspan fill="#684858" font-size="9.5" font-style="italic">(sammohaṁ āpajjati)</tspan></text>
+
+    <path d="M 454 1446 L 460 1454 L 466 1446" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <text x="460" y="1470" text-anchor="middle" fill="#a06070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >underlying tendency to aversion lies dormant <tspan fill="#886070" font-size="10">in them</tspan></text>
+    <text x="460" y="1483" text-anchor="middle" fill="#804858"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >paṭighānusayo anuseti</text>
+
+    <!-- Column 3: Neutral → Ignorance -->
+    <g filter="url(#shadowDrop)">
+        <rect x="610" y="1346" width="280" height="148" rx="8" fill="url(#panelBlue)"
+            stroke="#6888a0" stroke-width="0.6" stroke-opacity="0.3" />
+    </g>
+
+    <text x="750" y="1366" text-anchor="middle" fill="#6888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold"
+        letter-spacing="1"><tspan font-family="Georgia,'Times New Roman',serif" font-size="9" fill="#607888" letter-spacing="0" font-weight="normal">When touched by a </tspan>NEUTRAL <tspan font-size="10.5" fill="#607888" font-weight="normal" letter-spacing="0">felt experience</tspan></text>
+    <text x="750" y="1379" text-anchor="middle" fill="#486068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >adukkhamasukhāya vedanāya phuṭṭho samāno</text>
+
+    <path d="M 744 1392 L 750 1400 L 756 1392" stroke="#6888a0" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <text x="750" y="1413" text-anchor="middle" fill="#607888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >one does not truly understand <tspan fill="#486068" font-size="9.5" font-style="italic">(yathābhūtaṁ nappajānāti)</tspan></text>
+    <text x="750" y="1425" text-anchor="middle" fill="#607888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >the arising, passing away, gratification, drawback,</text>
+    <text x="750" y="1437" text-anchor="middle" fill="#607888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >and escape <tspan fill="#486068" font-size="9.5" font-style="italic">(samudayañca... nissaraṇañca)</tspan></text>
+
+    <path d="M 744 1446 L 750 1454 L 756 1446" stroke="#6888a0" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <text x="750" y="1470" text-anchor="middle" fill="#6888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >underlying tendency to ignorance lies dormant <tspan fill="#607888" font-size="10">in them</tspan></text>
+    <text x="750" y="1483" text-anchor="middle" fill="#486878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >avijjānusayo anuseti</text>
+
+    <!-- ================================================================ -->
+    <!--               CONDITIONED PROCESS — PATH TO LIBERATION            -->
+    <!-- ================================================================ -->
+
+    <!-- Three merging lines from tendency columns -->
+    <line x1="190" y1="1498" x2="190" y2="1516" stroke="#c8a040" stroke-width="0.6" opacity="0.3" />
+    <line x1="460" y1="1498" x2="460" y2="1516" stroke="#a06070" stroke-width="0.6" opacity="0.3" />
+    <line x1="730" y1="1498" x2="730" y2="1516" stroke="#6888a0" stroke-width="0.6" opacity="0.3" />
+
+    <!-- Merge lines converging -->
+    <line x1="190" y1="1516" x2="460" y2="1536" stroke="#c8a040" stroke-width="0.5" opacity="0.2" />
+    <line x1="460" y1="1516" x2="460" y2="1536" stroke="#a06070" stroke-width="0.5" opacity="0.2" />
+    <line x1="730" y1="1516" x2="460" y2="1536" stroke="#6888a0" stroke-width="0.5" opacity="0.2" />
+
+    <!-- Abandoning ignorance, arousing true knowledge -->
+    <rect x="340" y="1536" width="240" height="56" rx="7" fill="#0e1828" fill-opacity="0.5"
+        stroke="#508070" stroke-width="0.6" stroke-opacity="0.35" />
+    <text x="460" y="1552" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >abandoning ignorance,</text>
+    <text x="460" y="1568" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        >arousing true knowledge</text>
+    <text x="460" y="1584" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >avijja&#x1E41; pah&#x101;ya, vijja&#x1E41; upp&#x101;detv&#x101;</text>
+
+    <!-- Arrow down -->
+    <path d="M 454 1598 L 460 1604 L 466 1598" stroke="#508070" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <!-- Disenchantment -->
+    <rect x="370" y="1608" width="180" height="40" rx="5" fill="#0e1828" fill-opacity="0.4"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.3" />
+    <text x="460" y="1625" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >disenchantment</text>
+    <text x="460" y="1641" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >nibbid&#x101;</text>
+
+    <!-- Arrow down -->
+    <path d="M 454 1652 L 460 1658 L 466 1652" stroke="#508070" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <!-- Dispassion -->
+    <rect x="370" y="1662" width="180" height="40" rx="5" fill="#0e1828" fill-opacity="0.4"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.3" />
+    <text x="460" y="1679" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >dispassion</text>
+    <text x="460" y="1695" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >vir&#x101;ga</text>
+
+    <!-- Arrow down -->
+    <path d="M 454 1706 L 460 1712 L 466 1706" stroke="#c8a040" stroke-width="0.8" fill="none" opacity="0.4" />
+
+    <!-- LIBERATION box -->
+    <g filter="url(#shadowDrop)">
+        <rect x="330" y="1716" width="260" height="48" rx="8" fill="#0e1828" fill-opacity="0.6"
+            stroke="#40806a" stroke-width="0.8" stroke-opacity="0.45" />
+    </g>
+    <g filter="url(#glow1)">
+        <text x="460" y="1738" text-anchor="middle" fill="#d8c060"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            letter-spacing="2">&#x2726; LIBERATION &#x2726;</text>
+        <text x="460" y="1754" text-anchor="middle" fill="#a89030"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+            letter-spacing="1">vimutti</text>
+    </g>
+
+    <!-- Culmination radial glow -->
+    <ellipse cx="460" cy="1740" rx="180" ry="35" fill="#204838" opacity="0.06" />
+
+    <!-- ============ CONCLUSION QUOTE ============ -->
+    <text x="460" y="1810" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >&#8220;By abandoning ignorance and arousing true knowledge,</text>
+    <text x="460" y="1828" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
+        >that one shall make an end of suffering in the here and now &#8212; this is possible.&#8221;</text>
+    <text x="460" y="1848" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        >avijjaṁ pahāya vijjaṁ uppādetvā diṭṭheva dhamme dukkhassantakaro bhavissatīti — ṭhānametaṁ vijjati</text>
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1866" x2="620" y2="1866" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn148" target="_blank"><text x="460" y="1886" text-anchor="middle" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5"
+        letter-spacing="1">wordsofthebuddha.org/mn148</text></a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1902) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
+</svg>
