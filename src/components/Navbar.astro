@@ -2,7 +2,6 @@
 export const prerender = true; // Allow use in static pages; we'll hydrate auth on the client
 import { verifyUser } from "../middleware/auth";
 import SearchIcon from "../assets/search.svg?raw"; // Add this import
-import LogoMark from "./LogoMark.astro";
 
 interface Props {
 	showAuth?: boolean;
@@ -32,7 +31,6 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 >
 	<div class="text-lg md:text-xl font-bold flex items-center min-h-[2.25rem]">
 		<a href="/" class="brand-link" aria-label="Words of the Buddha home">
-			<LogoMark size="1.15em" />
 			<span class="brand-text text-gradient-accent">Words of the Buddha</span>
 		</a>
 	</div>
@@ -139,7 +137,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 	}
 
 	.brand-link:hover .brand-text {
-		text-decoration: underline;
+		text-decoration: none;
 	}
 
 	.brand-text {
