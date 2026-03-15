@@ -1,6 +1,11 @@
 ---
 title: Siva sutta - Siva
+description: The young deity Siva recites a verse to the Buddha about the importance of associating with the wise and the good.
+qualities: wisdom, sorrow-free
+theme: inspiration, wisdom
 slug: sn2.21
+character: Deity Siva
+similar: sn1.31
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
