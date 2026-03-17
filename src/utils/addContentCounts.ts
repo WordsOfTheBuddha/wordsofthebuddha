@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { directoryStructure } from "../data/directoryStructure";
+import { directoryStructure } from "../data/directoryStructure.ts";
 import type { DirectoryStructure } from "../types/directory";
 
 const BASE_CONTENT_PATH = path.join(process.cwd(), "src/content/en");

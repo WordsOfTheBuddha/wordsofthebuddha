@@ -1,4 +1,4 @@
-import { getAllTopics, getCollection } from "./loadTopics.js";
+import { getAllTopics, getCollection } from "./loadTopics.ts";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
