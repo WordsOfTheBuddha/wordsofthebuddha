@@ -1,7 +1,7 @@
 ---
 title: Mogharājamāṇavapucchā - Mogharāja’s Question
 description: The venerable Mogharāja asks the Buddha how to look upon the world so that the King of Death does not see one. The Buddha advises to look upon the world as empty, being ever mindful, and to uproot the sense of self.
-qualities: right view, mindfulness, personal existence
+qualities: right view, mindfulness, personal existence view
 theme: directly knowing, wisdom
 slug: snp5.15
 character: Venerable Mogharāja

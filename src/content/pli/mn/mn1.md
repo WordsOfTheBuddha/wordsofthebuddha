@@ -1,7 +1,7 @@
 ---
 title: Mūlapariyāya sutta - Root of All Things
 description: The Buddha explains how the notion of a personal existence emerges from the process of perception. A wide range of phenomena are considered, embracing naturalistic, cosmological and sense experiences. An uninstructed ordinary person interprets experience in terms of a self, while those who have understood the Dhamma have the same experiences without attachment.
-qualities: perception, attachment, unwise attention, perceiving gratification, free from attachment, complete comprehension, personal existence
+qualities: perception, attachment, unwise attention, perceiving gratification, free from attachment, complete comprehension, personal existence view
 theme: wisdom, cultivating discernment
 slug: mn1
 priority: 1.4

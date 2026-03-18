@@ -1,7 +1,7 @@
 ---
 title: Sabbāsava sutta - Overcoming Of All The Taints
 description: The Buddha explains the cause for the restraint of all the taints and how there is abandoning of all the taints through the seven methods of seeing, restraint, proper use, enduring, avoiding, removing, and cultivation.
-qualities: wise attention, unwise attention, sensual desire, self-making, ignorance, speculation, personal existence, doubt, clinging to rules and observances, examination, spiritual life, ill will, cultivation, ending
+qualities: wise attention, unwise attention, sensual desire, self-making, ignorance, speculation, personal existence view, doubt, clinging to rules and observances, examination, spiritual life, ill will, cultivation, ending
 theme: wisdom, training guideline
 slug: mn2
 priority: 1.5

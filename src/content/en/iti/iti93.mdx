@@ -1,7 +1,7 @@
 ---
 title: Aggi sutta - Fires
 description: The Buddha describes the fires of passion, hatred, and delusion which consume beings who cling to a self. The wise cool these flames with wisdom, loving-kindness, and perceiving unattractiveness.
-qualities: passion, aversion, anger, delusion, personal existence, recognition of unattractiveness, loving-kindness, wisdom, continuous effort
+qualities: passion, aversion, anger, delusion, personal existence view, recognition of unattractiveness, loving-kindness, wisdom, continuous effort
 theme: inspiration, wisdom
 slug: iti93
 ---

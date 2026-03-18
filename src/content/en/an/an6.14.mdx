@@ -2,7 +2,7 @@
 title: Bhaddaka sutta - Auspicious
 description: One who delights in personal existence does not have an auspicious death. One who delights in Nibbāna and gives up personal existence has an auspicious death.
 fetter: personal existence, ignorance
-qualities: personal existence, mental proliferation, suffering
+qualities: personal existence view, mental proliferation, suffering
 tags: personal existence, delight, work, talk, sleep, company, bonding, mental proliferation, Nibbāna, auspicious, suffering, death, an, an6
 character: Venerable Sāriputta
 slug: an6.14
