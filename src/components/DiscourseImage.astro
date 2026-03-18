@@ -236,8 +236,14 @@ if (!initialImage) return;
 	</script>
 
 	<div class="image-frame relative rounded-lg overflow-hidden">
+		<button
+			id="openImageOverlay"
+			type="button"
+			class="absolute inset-0 z-[5] w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/90 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900"
+			aria-label="View full image"
+		/>
 		{/* Carousel wrapper */}
-		<div id="carouselTrack" class="relative w-full">
+		<div id="carouselTrack" class="relative w-full z-0">
 			{images.map((img, idx) => (
 				<div
 					class:list={[
@@ -505,7 +511,10 @@ if (!initialImage) return;
 
 			{/* Modal dots */}
 			{isCarousel && (
-				<div id="modalDots" class="flex justify-center gap-2.5 mt-4">
+				<div
+					id="modalDots"
+					class="fixed bottom-[4.75rem] left-1/2 -translate-x-1/2 z-20 flex justify-center gap-2.5"
+				>
 					{images.map((_, idx) => (
 						<button
 							class:list={[
@@ -529,6 +538,7 @@ if (!initialImage) return;
 	function initDiscourseImage() {
 		const figure = document.getElementById("discourseImageFigure");
 		const expandBtn = document.getElementById("expandImageBtn");
+		const overlayBtn = document.getElementById("openImageOverlay");
 		const dialog = document.getElementById("imageModal") as HTMLDialogElement;
 		const fullImage = document.getElementById("fullImage") as HTMLImageElement;
 		const fullSvgObject = document.getElementById("fullSvgObject") as HTMLObjectElement;
@@ -747,6 +757,13 @@ if (!initialImage) return;
 			}
 		};
 
+		const shouldIgnoreOpenClick = (evtTarget: EventTarget | null) => {
+			const el = evtTarget as Element | null;
+			if (!el) return false;
+			// Don't hijack clicks meant for controls/links inside the frame.
+			return Boolean(el.closest("button, a, input, textarea, select, summary, details"));
+		};
+
 		function goToSlide(index: number) {
 			if (index < 0) index = totalSlides - 1;
 			if (index >= totalSlides) index = 0;
@@ -851,6 +868,12 @@ if (!initialImage) return;
 				{ passive: false },
 			);
 		}
+
+		// Click anywhere on the image frame to open the modal.
+		// The overlay is an empty <button> — e.target is always the overlay itself, no guard needed.
+		overlayBtn?.addEventListener("click", () => {
+			openModalAt(currentSlide, true);
+		});
 
 		if (zoomInBtn) {
 			zoomInBtn.addEventListener("click", (e) => {
@@ -998,6 +1021,20 @@ if (!initialImage) return;
 
 	:global(.dark) .discourse-image img:not(.svg-image) {
 		filter: brightness(0.92);
+	}
+
+	.image-frame,
+	.image-frame img,
+	.image-frame object {
+		cursor: zoom-in;
+	}
+
+	/* Keep normal cursors for controls */
+	#expandImageBtn,
+	#carouselPrev,
+	#carouselNext,
+	.carousel-dot {
+		cursor: pointer;
 	}
 
 	.carousel-slide {
