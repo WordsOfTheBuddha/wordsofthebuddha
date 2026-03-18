@@ -101,54 +101,65 @@ function getContentCount(slug: string): number {
 	<main class="container">
 		{
 			hasChildren && (
-				<div class="flex justify-between items-center mb-6">
-					<div class="inline-flex rounded-full border border-[var(--border-color)] p-1 bg-[var(--surface-paper)]">
-						<button
-							type="button"
-							id="view-collections"
-							class={[
-								"px-4 py-1 text-sm rounded-full transition-colors",
-								defaultShowCollections
-									? "bg-primary text-white dark:text-gray-100"
-									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-							].join(" ")}
-						>
-							Collections
-						</button>
-						<button
-							type="button"
-							id="view-discourses"
-							class={[
-								"px-4 py-1 text-sm rounded-full transition-colors",
-								!defaultShowCollections
-									? "bg-primary text-white dark:text-gray-100"
-									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-							].join(" ")}
-						>
-							Discourses
-						</button>
+				<div class="mb-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div class="flex w-full items-center justify-between sm:w-auto sm:justify-start">
+						<div class="inline-flex w-fit rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
+							<button
+								type="button"
+								id="view-collections"
+								class={[
+									"px-4 py-1 text-sm rounded-full transition-colors",
+									defaultShowCollections
+										? "bg-primary text-white dark:text-gray-100"
+										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+								].join(" ")}
+							>
+								Collections
+							</button>
+							<button
+								type="button"
+								id="view-discourses"
+								class={[
+									"px-4 py-1 text-sm rounded-full transition-colors",
+									!defaultShowCollections
+										? "bg-primary text-white dark:text-gray-100"
+										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+								].join(" ")}
+							>
+								Discourses
+							</button>
+						</div>
+						{collectionSlug && (
+							<div class="sm:hidden">
+								<CollectionExportButton
+									collectionSlug={collectionSlug}
+								/>
+							</div>
+						)}
 					</div>
-					<div class="flex items-center gap-3">
+					<div class="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end sm:gap-3">
 						<div
 							id="filter-wrap"
 							class={[
-								"flex items-center gap-3",
+								"flex min-w-0 flex-1 items-center sm:flex-none",
 								defaultShowCollections ? "hidden" : "",
 							].join(" ")}
 						>
-							<div class="relative">
+							<div class="relative w-full sm:w-auto">
 								<input
 									type="text"
 									id="client-filter"
-									class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
+									class="w-full sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
 									placeholder="Filter discourses..."
 								/>
 							</div>
 						</div>
 						{collectionSlug && (
-							<CollectionExportButton
-								collectionSlug={collectionSlug}
-							/>
+							<div class="hidden sm:block">
+								<CollectionExportButton
+									collectionSlug={collectionSlug}
+								/>
+							</div>
 						)}
 					</div>
 				</div>
