@@ -1,0 +1,370 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1550" width="920" height="1550">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="50%" stop-color="#0e1830" />
+      <stop offset="100%" stop-color="#0a1020" />
+    </linearGradient>
+
+    <!-- Gold crown radial glow -->
+    <radialGradient id="crownGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.45" />
+      <stop offset="20%" stop-color="#daa520" stop-opacity="0.18" />
+      <stop offset="50%" stop-color="#c89420" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#b88820" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Foundation mire radial glow -->
+    <radialGradient id="mireGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7060a0" stop-opacity="0.4" />
+      <stop offset="20%" stop-color="#604888" stop-opacity="0.18" />
+      <stop offset="50%" stop-color="#503870" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#402858" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Tier divider gradient (gold fade from edges) -->
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Central chain gradient (gold top → indigo bottom) -->
+    <linearGradient id="chainUp" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#685070" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0.35" />
+    </linearGradient>
+
+    <!-- Cosmic frame gradient -->
+    <linearGradient id="frameFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow3" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="fogHaze" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="18" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+
+    <!-- Node fill gradients: bottom (indigo/purple) → top (warm gold) -->
+    <!-- Foundation (darkest) -->
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2e2840" />
+      <stop offset="100%" stop-color="#241e36" />
+    </linearGradient>
+    <!-- Level 2 -->
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#282640" />
+      <stop offset="100%" stop-color="#201e38" />
+    </linearGradient>
+    <!-- Level 3 -->
+    <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#24283e" />
+      <stop offset="100%" stop-color="#1c2236" />
+    </linearGradient>
+    <!-- Level 4 -->
+    <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22283c" />
+      <stop offset="100%" stop-color="#1a2234" />
+    </linearGradient>
+    <!-- Level 5 -->
+    <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2c3c" />
+      <stop offset="100%" stop-color="#182836" />
+    </linearGradient>
+    <!-- Level 6 -->
+    <linearGradient id="stg6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2e3a" />
+      <stop offset="100%" stop-color="#182a34" />
+    </linearGradient>
+    <!-- Level 7 -->
+    <linearGradient id="stg7" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#202e38" />
+      <stop offset="100%" stop-color="#1a2c32" />
+    </linearGradient>
+    <!-- Level 8 (Three Fetters) -->
+    <linearGradient id="stg8" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#243030" />
+      <stop offset="100%" stop-color="#1e2c2a" />
+    </linearGradient>
+    <!-- Level 9 (Three Roots — warm) -->
+    <linearGradient id="stg9" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a3028" />
+      <stop offset="100%" stop-color="#242c24" />
+    </linearGradient>
+    <!-- Goal crown fill -->
+    <linearGradient id="stg10" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#302e1e" />
+      <stop offset="100%" stop-color="#28281a" />
+    </linearGradient>
+  </defs>
+
+  <!-- ============ BACKGROUND ============ -->
+  <rect width="920" height="1550" fill="url(#bg)" />
+
+  <!-- Subtle atmospheric depth ellipses -->
+  <ellipse cx="460" cy="370" rx="320" ry="140" fill="#504020" opacity="0.04" />
+  <ellipse cx="460" cy="810" rx="300" ry="160" fill="#304050" opacity="0.04" />
+  <ellipse cx="460" cy="1240" rx="340" ry="160" fill="#402850" opacity="0.05" />
+
+  <!-- ============ TITLE ============ -->
+  <text x="460" y="40" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold" letter-spacing="3">AN 10.76 — TAYODHAMMA SUTTA</text>
+  <text x="460" y="68" text-anchor="middle" fill="#90a0b8" font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic" letter-spacing="1">Three Things</text>
+  <line x1="300" y1="82" x2="620" y2="82" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+  <!-- ============ COSMIC FRAME ============ -->
+  <g filter="url(#shadowDrop)">
+    <rect x="90" y="102" width="740" height="124" rx="8" fill="url(#frameFill)" stroke="#c8a040" stroke-width="0.8" stroke-opacity="0.35" />
+  </g>
+  <text x="460" y="128" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold" letter-spacing="1.8">WHY THE TATHĀGATA ARISES</text>
+  <text x="460" y="150" text-anchor="middle" fill="#90a8c0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">"If these three things were not found in the world,</text>
+  <text x="460" y="166" text-anchor="middle" fill="#90a8c0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">the Tathāgata would not arise, nor would the Dhamma shine in the world."</text>
+  <text x="460" y="188" text-anchor="middle" fill="#d8c8a0" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Birth, Aging, and Death <tspan fill="#a09060" font-size="11.5" font-style="italic" font-weight="normal">(jāti · jarā · maraṇa)</tspan></text>
+  <text x="460" y="210" text-anchor="middle" fill="#708898" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">But because these three exist, the Tathāgata arises and the Dhamma shines in the world.</text>
+
+  <!-- Gold tier divider -->
+  <rect x="100" y="244" width="720" height="1" fill="url(#tierGrad)" />
+
+  <!-- ============ GOAL CROWN ============ -->
+  <!-- Radiant glow -->
+  <ellipse cx="460" cy="310" rx="280" ry="60" fill="url(#crownGlow)" />
+
+  <!-- Concentric glow rings -->
+  <ellipse cx="460" cy="310" rx="200" ry="44" fill="none" stroke="#c8a040" stroke-width="1.2" stroke-opacity="0.15" filter="url(#glow2)" />
+  <ellipse cx="460" cy="310" rx="150" ry="36" fill="none" stroke="#daa520" stroke-width="0.8" stroke-opacity="0.1" filter="url(#glow1)" />
+
+  <g filter="url(#shadowDrop)">
+    <rect x="130" y="275" width="660" height="68" rx="10" fill="url(#stg10)" stroke="#c8a040" stroke-width="1.4" stroke-opacity="0.55" />
+  </g>
+  <text x="460" y="300" text-anchor="middle" fill="#ffd700" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold" letter-spacing="2" filter="url(#glow1)">BIRTH, AGING, AND DEATH <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="460" y="324" text-anchor="middle" fill="#b8a040" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">(jātiṁ pahātuṁ · jaraṁ pahātuṁ · maraṇaṁ pahātuṁ)</text>
+
+  <!-- ============ CENTRAL CHAIN LINE ============ -->
+  <line x1="460" y1="340" x2="460" y2="1279" stroke="url(#chainUp)" stroke-width="2" opacity="0.3" />
+
+  <!-- ============ SIDE ANNOTATIONS ============ -->
+  <!-- Left: cascading inability (downward) >
+  <text x="56" y="820" text-anchor="middle" fill="#a07060" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.45" transform="rotate(-90, 56, 820)">cascading inability · without giving up (appahāya)</text>
+
+  <text x="876" y="820" text-anchor="middle" fill="#60a090" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.45" transform="rotate(90, 876, 820)">progressive capability · by giving up (pahāya)</text> -->
+
+  <!-- ============ LEVEL 9: THREE ROOTS ============ -->
+  <!-- Upward arrow from Level 9 to Goal -->
+  <path d="M 449 358 L 460 350 L 471 358" stroke="#a09040" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.45" />
+  <!-- Bridge label (Lv9 → Goal) -->
+  <text x="460" y="372" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.75">When passion, aversion, and delusion are given up</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="389" width="700" height="56" rx="8" fill="url(#stg9)" stroke="#887840" stroke-width="1.2" stroke-opacity="0.5" />
+  </g>
+  <text x="460" y="405" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.5" opacity="0.7">THREE ROOTS · TAYO AKUSALAMŪLĀ <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="430" text-anchor="middle" fill="#d0c090" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Passion <tspan fill="#b0a060" font-size="10.5" font-style="italic" font-weight="normal">(rāga)</tspan></text>
+  <text x="460" y="430" text-anchor="middle" fill="#d0c090" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Aversion <tspan fill="#b0a060" font-size="10.5" font-style="italic" font-weight="normal">(dosa)</tspan></text>
+  <text x="693" y="430" text-anchor="middle" fill="#d0c090" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Delusion <tspan fill="#b0a060" font-size="10.5" font-style="italic" font-weight="normal">(moha)</tspan></text>
+
+  <!-- Upward arrow from Level 8 to Level 9 -->
+  <path d="M 449 463 L 460 455 L 471 463" stroke="#809060" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.42" />
+
+  <!-- ============ LEVEL 8: THREE FETTERS ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="477" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">Being without doubt (avicikiccho)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="491" width="700" height="56" rx="8" fill="url(#stg8)" stroke="#607848" stroke-width="1" stroke-opacity="0.48" />
+  </g>
+  <text x="460" y="507" text-anchor="middle" fill="#a0b8a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.5" opacity="0.65">THREE FETTERS · TAYO SAṀYOJANĀ <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="533" text-anchor="middle" fill="#b8c8b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">Personal Existence View <tspan fill="#90a880" font-size="9.5" font-style="italic" font-weight="normal">(sakkāyadiṭṭhi)</tspan></text>
+  <text x="435" y="533" text-anchor="middle" fill="#b8c8b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">Doubt <tspan fill="#90a880" font-size="9.5" font-style="italic" font-weight="normal">(vicikicchā)</tspan></text>
+  <text x="666" y="533" text-anchor="middle" fill="#b8c8b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">Clinging to Rules and Observances <tspan fill="#90a880" font-size="9.5" font-style="italic" font-weight="normal">(sīlabbataparāmāsa)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 563 L 460 555 L 471 563" stroke="#709070" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.40" />
+
+  <!-- ============ LEVEL 7: ATTENTION TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="577" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">With an uplifted mind (alīnacitto)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="593" width="700" height="56" rx="8" fill="url(#stg7)" stroke="#507060" stroke-width="1" stroke-opacity="0.46" />
+  </g>
+  <text x="460" y="609" text-anchor="middle" fill="#a0b0b8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.2" opacity="0.6">UNWISE ATTENTION AND MISDIRECTION <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="634" text-anchor="middle" fill="#a0b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Unwise Attention <tspan fill="#80a0a0" font-size="9.5" font-style="italic" font-weight="normal">(ayonisomanasikāra)</tspan></text>
+  <text x="460" y="634" text-anchor="middle" fill="#a0b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Following of Wrong Path <tspan fill="#80a0a0" font-size="9.5" font-style="italic" font-weight="normal">(kummaggasevanā)</tspan></text>
+  <text x="693" y="634" text-anchor="middle" fill="#a0b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Sluggishness of Mind <tspan fill="#80a0a0" font-size="9.5" font-style="italic" font-weight="normal">(cetaso līnatta)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 665 L 460 657 L 471 665" stroke="#609080" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.38" />
+
+  <!-- ============ LEVEL 6: AWARENESS TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="679" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">With a settled mind (avikkhittacitto)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="695" width="700" height="56" rx="8" fill="url(#stg6)" stroke="#486878" stroke-width="1" stroke-opacity="0.44" />
+  </g>
+  <text x="460" y="711" text-anchor="middle" fill="#98b0b8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.2" opacity="0.6">FORGETFULNESS AND SCATTERED AWARENESS <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="736" text-anchor="middle" fill="#98b4c4" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Forgetfulness <tspan fill="#7898a8" font-size="9.5" font-style="italic" font-weight="normal">(muṭṭhassacca)</tspan></text>
+  <text x="460" y="736" text-anchor="middle" fill="#98b4c4" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Lack of Clear Awareness <tspan fill="#7898a8" font-size="9.5" font-style="italic" font-weight="normal">(asampajañña)</tspan></text>
+  <text x="693" y="736" text-anchor="middle" fill="#98b4c4" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Scattering of Mind <tspan fill="#7898a8" font-size="9.5" font-style="italic" font-weight="normal">(cetaso vikkhepa)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 767 L 460 759 L 471 767" stroke="#588888" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.38" />
+
+  <!-- ============ LEVEL 5: ORIENTATION TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="781" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">Without a fault-finding attitude (anupārambhacitto)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="797" width="700" height="64" rx="8" fill="url(#stg5)" stroke="#486878" stroke-width="1" stroke-opacity="0.42" />
+  </g>
+  <text x="460" y="813" text-anchor="middle" fill="#94aab4" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.2" opacity="0.6">DISREGARD FOR THE NOBLE ONES <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="838" text-anchor="middle" fill="#94b0c0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Not Seeing Noble Ones <tspan fill="#7898a8" font-size="9" font-style="italic" font-weight="normal">(adassanakamyatā)</tspan></text>
+  <text x="460" y="838" text-anchor="middle" fill="#94b0c0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Not Hearing Noble Dhamma <tspan fill="#7898a8" font-size="9" font-style="italic" font-weight="normal">(asotukamyatā)</tspan></text>
+  <text x="693" y="838" text-anchor="middle" fill="#94b0c0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Fault-finding Attitude <tspan fill="#7898a8" font-size="9" font-style="italic" font-weight="normal">(upārambhacittatā)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 877 L 460 869 L 471 877" stroke="#588088" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.36" />
+
+  <!-- ============ LEVEL 4: CONDUCT TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="891" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">Endowed with virtuous conduct (sīlavā)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="907" width="700" height="56" rx="8" fill="url(#stg4)" stroke="#506070" stroke-width="1" stroke-opacity="0.42" />
+  </g>
+  <text x="460" y="923" text-anchor="middle" fill="#90a4b4" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.2" opacity="0.6">MISCONDUCT AND NON-RESTRAINT <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="948" text-anchor="middle" fill="#90a8bc" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Restlessness <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(uddhacca)</tspan></text>
+  <text x="460" y="948" text-anchor="middle" fill="#90a8bc" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Lack of Restraint <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(asaṁvara)</tspan></text>
+  <text x="693" y="948" text-anchor="middle" fill="#90a8bc" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Unprincipled Behavior <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(dussilya)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 979 L 460 971 L 471 979" stroke="#587888" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.36" />
+
+  <!-- ============ LEVEL 3: ENGAGEMENT TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="993" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">Being Energetic (āraddhavīriyo)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="1009" width="700" height="56" rx="8" fill="url(#stg3)" stroke="#546070" stroke-width="1" stroke-opacity="0.42" />
+  </g>
+  <text x="460" y="1025" text-anchor="middle" fill="#8ca0b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.2" opacity="0.6">LACK OF COMMITMENT AND EFFORT <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="1050" text-anchor="middle" fill="#8ca4b8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Disbelief <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(assaddhiya)</tspan></text>
+  <text x="460" y="1050" text-anchor="middle" fill="#8ca4b8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Uncharitableness <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(avadaññutā)</tspan></text>
+  <text x="693" y="1050" text-anchor="middle" fill="#8ca4b8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Idleness <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(kosajja)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 1081 L 460 1073 L 471 1081" stroke="#587080" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.35" />
+
+  <!-- ============ LEVEL 2: SOCIAL TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="1095" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">Having good friends (kalyāṇamitto)</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="1111" width="700" height="56" rx="8" fill="url(#stg2)" stroke="#585878" stroke-width="1" stroke-opacity="0.42" />
+  </g>
+  <text x="460" y="1127" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.2" opacity="0.6">DISRESPECT AND BAD ASSOCIATION <tspan fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.6">can be given up</tspan></text>
+  <text x="227" y="1152" text-anchor="middle" fill="#889cac" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Disrespect <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(anādariya)</tspan></text>
+  <text x="460" y="1152" text-anchor="middle" fill="#889cac" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Unruliness <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(dovacassatā)</tspan></text>
+  <text x="693" y="1152" text-anchor="middle" fill="#889cac" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Bad Friendship <tspan fill="#7888a0" font-size="9.5" font-style="italic" font-weight="normal">(pāpamittatā)</tspan></text>
+
+  <!-- Upward arrow -->
+  <path d="M 449 1183 L 460 1175 L 471 1183" stroke="#606080" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.35" />
+
+  <!-- ============ FOUNDATION: SHAMELESSNESS TRIAD ============ -->
+  <!-- Bridge label -->
+  <text x="460" y="1197" text-anchor="middle" fill="#70a098" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">With diligence (appamatto)</text>
+
+  <!-- Mire glow -->
+  <ellipse cx="460" cy="1246" rx="280" ry="70" fill="url(#mireGlow)" />
+
+  <!-- Fog wisps -->
+  <g opacity="0.08" filter="url(#fogHaze)">
+    <ellipse cx="460" cy="1270" rx="100" ry="20" fill="#8070a0" />
+    <ellipse cx="350" cy="1280" rx="70" ry="16" fill="#7060a0" />
+    <ellipse cx="570" cy="1275" rx="75" ry="14" fill="#7868a0" />
+    <ellipse cx="300" cy="1290" rx="50" ry="12" fill="#6858a0" />
+    <ellipse cx="620" cy="1290" rx="50" ry="12" fill="#6858a0" />
+  </g>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="1213" width="700" height="66" rx="8" fill="url(#stg1)" stroke="#685070" stroke-width="1.3" stroke-opacity="0.55" />
+  </g>
+  <text x="460" y="1231" text-anchor="middle" fill="#a090c0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.5" opacity="0.7">THE ROOT OF STAGNATION</text>
+  <text x="227" y="1260" text-anchor="middle" fill="#a898b8" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Shamelessness <tspan fill="#8878a0" font-size="10" font-style="italic" font-weight="normal">(ahirika)</tspan></text>
+  <text x="460" y="1260" text-anchor="middle" fill="#a898b8" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Moral Recklessness <tspan fill="#8878a0" font-size="10" font-style="italic" font-weight="normal">(anottappa)</tspan></text>
+  <text x="693" y="1260" text-anchor="middle" fill="#a898b8" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Negligence <tspan fill="#8878a0" font-size="10" font-style="italic" font-weight="normal">(pamāda)</tspan></text>
+
+  <!-- ============ PROSE SUMMARY BAND ============ -->
+  <rect x="100" y="1320" width="720" height="1" fill="url(#tierGrad)" />
+
+  <rect x="90" y="1340" width="740" height="130" rx="8" fill="url(#frameFill)" stroke="#506878" stroke-width="0.6" stroke-opacity="0.3" />
+  <text x="460" y="1362" text-anchor="middle" fill="#90a8c0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" letter-spacing="1.5" opacity="0.6">THE ASCENDING CHAIN · PAHĀYA</text>
+
+  <text x="460" y="1388" text-anchor="middle" fill="#70b8a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5">Sense of Right and Wrong <tspan font-style="italic" fill="#708888">(hirīmā)</tspan> → Concern <tspan font-style="italic" fill="#708888">(ottāpī)</tspan> → Diligence <tspan font-style="italic" fill="#708888">(appamatto)</tspan> →</text>
+  <text x="460" y="1406" text-anchor="middle" fill="#70b8a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5">Having Good Friends <tspan font-style="italic" fill="#708888">(kalyāṇamitto)</tspan> → Being Energetic <tspan font-style="italic" fill="#708888">(āraddhavīriyo)</tspan> → Virtuous Conduct <tspan font-style="italic" fill="#708888">(sīlavā)</tspan> →</text>
+  <text x="460" y="1424" text-anchor="middle" fill="#70b8a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5">Without a fault-finding attitude <tspan font-style="italic" fill="#708888">(anupārambhacitto)</tspan> → Settled Mind <tspan font-style="italic" fill="#708888">(avikkhittacitto)</tspan> →</text>
+  <text x="460" y="1442" text-anchor="middle" fill="#70b8a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5">Uplifted Mind <tspan font-style="italic" fill="#708888">(alīnacitto)</tspan> → Being without Doubt <tspan font-style="italic" fill="#708888">(avicikiccho)</tspan> →</text>
+  <text x="460" y="1460" text-anchor="middle" fill="#70b8a0" font-family="Georgia,'Times New Roman',serif" font-size="10">→ Freed from Passion <tspan font-style="italic" fill="#708888">(rāga)</tspan> · Aversion <tspan font-style="italic" fill="#708888">(dosa)</tspan> · Delusion <tspan font-style="italic" fill="#708888">(moha)</tspan> → Capable of giving up birth, aging, and death</text>
+
+  <!-- ============ LEFT SIDE ACCENT DOTS ============ -->
+  <circle cx="100" cy="414" r="2.5" fill="#a0a050" opacity="0.10" filter="url(#glow1)" />
+  <circle cx="100" cy="516" r="2.5" fill="#80a868" opacity="0.09" filter="url(#glow1)" />
+  <circle cx="100" cy="618" r="2.5" fill="#70a080" opacity="0.08" filter="url(#glow1)" />
+  <circle cx="100" cy="720" r="2.5" fill="#6098a0" opacity="0.08" filter="url(#glow1)" />
+  <circle cx="100" cy="822" r="2.5" fill="#5890a0" opacity="0.07" filter="url(#glow1)" />
+  <circle cx="100" cy="924" r="2.5" fill="#5888a0" opacity="0.07" filter="url(#glow1)" />
+  <circle cx="100" cy="1026" r="2.5" fill="#5880a0" opacity="0.06" filter="url(#glow1)" />
+  <circle cx="100" cy="1128" r="2.5" fill="#5878a0" opacity="0.06" filter="url(#glow1)" />
+  <circle cx="100" cy="1241" r="2.5" fill="#6868a0" opacity="0.08" filter="url(#glow1)" />
+
+  <!-- Right side accent dots -->
+  <circle cx="820" cy="414" r="2.5" fill="#a0a050" opacity="0.10" filter="url(#glow1)" />
+  <circle cx="820" cy="516" r="2.5" fill="#80a868" opacity="0.09" filter="url(#glow1)" />
+  <circle cx="820" cy="618" r="2.5" fill="#70a080" opacity="0.08" filter="url(#glow1)" />
+  <circle cx="820" cy="720" r="2.5" fill="#6098a0" opacity="0.08" filter="url(#glow1)" />
+  <circle cx="820" cy="822" r="2.5" fill="#5890a0" opacity="0.07" filter="url(#glow1)" />
+  <circle cx="820" cy="924" r="2.5" fill="#5888a0" opacity="0.07" filter="url(#glow1)" />
+  <circle cx="820" cy="1026" r="2.5" fill="#5880a0" opacity="0.06" filter="url(#glow1)" />
+  <circle cx="820" cy="1128" r="2.5" fill="#5878a0" opacity="0.06" filter="url(#glow1)" />
+  <circle cx="820" cy="1241" r="2.5" fill="#6868a0" opacity="0.08" filter="url(#glow1)" />
+
+  <!-- ============ COLUMN DIVIDERS (very subtle) ============ -->
+  <!-- Vertical faint lines inside each node to separate 3 columns -->
+  <!-- These are drawn once and span the chain area -->
+  <line x1="343" y1="390" x2="343" y2="1278" stroke="#506070" stroke-width="0.4" stroke-opacity="0.1" stroke-dasharray="3 5" />
+  <line x1="577" y1="390" x2="577" y2="1278" stroke="#506070" stroke-width="0.4" stroke-opacity="0.1" stroke-dasharray="3 5" />
+
+  <!-- ============ CLOSING ============ -->
+  <!-- Ascending chain rect bottom is y=1470 (1340+130); tier divider starts 25px below -->
+  <rect x="100" y="1495" width="720" height="1" fill="url(#tierGrad)" />
+
+  <a href="https://wordsofthebuddha.org/an10.76" target="_blank" rel="noopener noreferrer"><text x="460" y="1515" text-anchor="middle" fill="#405060" font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/an10.76</text></a>
+
+  <!-- Lotus motif -->
+  <g transform="translate(460, 1532) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+    <circle cx="0" cy="-28" r="9" />
+  </g>
+
+</svg>

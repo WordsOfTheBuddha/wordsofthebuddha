@@ -51,7 +51,7 @@
 		"non-restraint",
 		"passion",
 		"perceiving gratification",
-		"personal existence",
+		"personal existence view",
 		"perturbation",
 		"recognition of diversity",
 		"regret",
@@ -313,7 +313,7 @@
 			"self-promotion",
 			"self-praising",
 			"Context: A puffed-up self-display that advertises one's virtues, attainments, or status to win admiration. It springs from conceit and the craving for recognition, crowding out humility and genuine connection.",
-			"Supported by:{conceit, personal existence}",
+			"Supported by:{conceit, personal existence view}",
 			"Leads to:{argumentativeness}",
 			"Opposite:{unassuming}",
 			"[attukkaṁsaka]"
@@ -392,7 +392,7 @@
 			"tendency of self-comparison",
 			"Context: Self-view expressed as comparison—seeing oneself as superior, inferior, or equal; the persistent “I am” conceit (asmimāna) that underlies identification and fuels rebirth",
 			"Supported by:{ignorance}",
-			"Leads to:{argumentativeness, boastfulness, feuding, mental proliferation, personal existence, recognition of diversity, stubbornness, vanity}",
+			"Leads to:{argumentativeness, boastfulness, feuding, mental proliferation, personal existence view, recognition of diversity, stubbornness, vanity}",
 			"Opposite:{humility, non-identification, non-proliferation}",
 			"[māna, atimāna, unnaḷa]"
 		],
@@ -669,7 +669,7 @@
 			"ungratefulness",
 			"thanklessness",
 			"Context: A mindset of deservingness that expects special treatment or privileges without appreciation. It fosters resentment and dissatisfaction when expectations are unmet.",
-			"Supported by:{conceit, personal existence}",
+			"Supported by:{conceit, personal existence view}",
 			"Leads to:{contempt, resentment}",
 			"Opposite:{gratefulness}",
 			"[akataññutā]"
@@ -1331,7 +1331,7 @@
 			"Opposite:{perceiving gratification}",
 			"[nissaraṇānupassī, nissaraṇaṁ yathābhūtaṁ pajānāti]"
 		],
-		"personal existence": [
+		"personal existence view": [
 			"identity view",
 			"self-view",
 			"self-identification",
@@ -1595,7 +1595,7 @@
 			"annihilation drive",
 			"Context: A craving to end suffering through erasure of current experience or identity, e.g. “This self is unbearable; I want out.”",
 			"Supported by:{wrong view}",
-			"Leads to:{personal existence}",
+			"Leads to:{personal existence view}",
 			"[vibhavataṇhā]"
 		],
 		"self-making": [
@@ -1605,7 +1605,7 @@
 			"romanticizing some better self or future state",
 			"Context: Spiritual or worldly striving to “be someone,” the “I must become something” energy",
 			"Supported by:{mental proliferation}",
-			"Leads to:{personal existence}",
+			"Leads to:{personal existence view}",
 			"[bhavataṇhā, bhavesanā]"
 		],
 		"sense restraint": [
@@ -1885,7 +1885,7 @@
 			"intoxication",
 			"being misguided",
 			"Context: A swelling intoxication arising from youth, health, life, beauty, or possessions that blinds one to impermanence and breeds negligence. Like a soiled cloth, it stains the mind with conceit and craving, obstructing clear seeing.",
-			"Supported by:{personal existence}",
+			"Supported by:{personal existence view}",
 			"Leads to:{craving, negligence}",
 			"[mada, mogha]"
 		],
