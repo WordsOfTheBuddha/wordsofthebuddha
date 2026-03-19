@@ -2,6 +2,7 @@
 title: Sutavā sutta - To Sutavā
 description: The Buddha explains to Sutavā, the wanderer, that an arahant is incapable of transgressing in nine ways.
 fetter: doubt
+qualities: arahant
 tags: arahant, transgression, killing, stealing, sexual misconduct, lying, using stored-up goods, impulse, aversion, delusion, fear, an, an9
 slug: an9.7
 ---
