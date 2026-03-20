@@ -1,6 +1,6 @@
 ---
 title: Anaṅgaṇa sutta - Blemish Free
-description: Venerable Sāriputta explains the four kinds of persons based on their understanding of blemishes and blemish-free qualities. He uses the simile of a bronze bowl to illustrate the importance of understanding one's blemishes and blemish-free qualities.
+description: Venerable Sāriputta describes four types of persons based on their awareness of inner blemishes—harmful, unwholesome mental qualities. Using the simile of a bronze bowl, he shows that recognizing one's own faults is essential to attaining an undefiled mind.
 qualities: anger, displeasure, conceit, discernment
 theme: cultivating discernment
 slug: mn5

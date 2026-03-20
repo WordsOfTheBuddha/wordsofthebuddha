@@ -1,0 +1,625 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1660" width="920" height="1660">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="45%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#201420" />
+      <stop offset="100%" stop-color="#181018" />
+    </linearGradient>
+    <linearGradient id="cardRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#162836" />
+      <stop offset="100%" stop-color="#101e2c" />
+    </linearGradient>
+    <linearGradient id="cardNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+    <radialGradient id="conclusionGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="bowlShine" cx="40%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ============ BACKGROUND ============ -->
+  <rect width="920" height="1660" fill="url(#bg)" />
+  <ellipse cx="460" cy="350" rx="320" ry="180" fill="#182838" opacity="0.06" />
+  <ellipse cx="460" cy="1000" rx="350" ry="250" fill="#1c2030" opacity="0.05" />
+  <ellipse cx="460" cy="1500" rx="340" ry="140" fill="#204838" opacity="0.06" />
+
+  <!-- ╔══════════════════════════════════════════════════╗ -->
+  <!-- ║           TITLE BLOCK (y: 0–100)                ║ -->
+  <!-- ╚══════════════════════════════════════════════════╝ -->
+
+  <text x="460" y="42" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+    letter-spacing="3">MN 5 — ANAṄGAṆA SUTTA</text>
+  <text x="460" y="64" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic">Blemish Free</text>
+  <line x1="280" y1="78" x2="640" y2="78" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+  <!-- ╔══════════════════════════════════════════════════╗ -->
+  <!-- ║  FOUR KINDS OF PERSONS + BRONZE BOWL (y: 110–600) ║ -->
+  <!-- ╚══════════════════════════════════════════════════╝ -->
+
+  <line x1="100" y1="114" x2="820" y2="114" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+  <text x="460" y="116" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+    letter-spacing="2" opacity="0.75">FOUR KINDS OF PERSONS · CATTĀRO PUGGALĀ</text>
+
+  <!-- Column headers -->
+  <text x="260" y="160" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Doesn't Clearly Understand · <tspan fill="#8f7898"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">nappajānāti</tspan></text>
+  <text x="660" y="160" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Clearly Understands · <tspan fill="#689888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">yathābhūtaṁ pajānāti</tspan></text>
+
+  <!-- Row headers -->
+  <text x="42" y="290" text-anchor="middle" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    transform="rotate(-90 42 290)">With Blemish · <tspan font-size="10" font-style="italic">sāṅgaṇa</tspan></text>
+  <text x="42" y="520" text-anchor="middle" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    transform="rotate(-90 42 520)">Blemish-Free · <tspan font-size="10" font-style="italic">anaṅgaṇa</tspan></text>
+
+  <!-- ═══ CARD ① — With Blemish, Doesn't Know (top-left, burgundy) ═══ -->
+  <g filter="url(#shadowDrop)">
+    <rect x="68" y="180" width="384" height="200" rx="8" fill="url(#cardLeft)"
+      stroke="#a06070" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Number circle -->
+  <circle cx="88" cy="201" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+  <text x="88" y="204" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
+
+  <text x="276" y="204" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">A Person Who Doesn't Recognize Their Blemish</text>
+
+  <!-- Bowl icon — dirty, neglected -->
+  <g transform="translate(150, 230)" opacity="0.65" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <path d="M -28 0 C -28 8 -20 26 0 28 C 20 26 28 8 28 0" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <!-- Stain dots -->
+    <circle cx="-10" cy="8" r="2" fill="#a06070" opacity="0.5" />
+    <circle cx="6" cy="12" r="1.8" fill="#a06070" opacity="0.45" />
+    <circle cx="-4" cy="16" r="1.5" fill="#a06070" opacity="0.4" />
+    <circle cx="14" cy="6" r="1.5" fill="#a06070" opacity="0.35" />
+    <circle cx="-16" cy="4" r="1.2" fill="#a06070" opacity="0.3" />
+    <!-- Dust motes below -->
+    <circle cx="-12" cy="32" r="1" fill="#706060" opacity="0.3" />
+    <circle cx="4" cy="34" r="0.8" fill="#706060" opacity="0.25" />
+    <circle cx="14" cy="31" r="1" fill="#706060" opacity="0.2" />
+  </g>
+
+  <text x="310" y="235" text-anchor="middle" fill="#a06070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a dirty bronze bowl hidden in a dusty corner,</text>
+  <text x="310" y="251" text-anchor="middle" fill="#a06070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">left to gather more stains.</text>
+
+  <line x1="90" y1="275" x2="430" y2="275" stroke="#556070" stroke-opacity="0.3" />
+
+  <text x="260" y="300" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">They will not generate the aspiration or exert effort to abandon that blemish</text>
+  <text x="260" y="314" text-anchor="middle" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">na chandaṁ janessati na vāyamissati tassaṅgaṇassa pahānāya</text>
+
+  <text x="260" y="344" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">As a result, they will die with passion, aversion, and delusion—a defiled mind</text>
+  <text x="260" y="358" text-anchor="middle" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sarāgo sadoso samoho saṅkiliṭṭhacitto kālaṁ karissati</text>
+
+
+  <!-- ═══ CARD ② — With Blemish, Knows (top-right, teal) ═══ -->
+  <g filter="url(#shadowDrop)">
+    <rect x="468" y="180" width="384" height="200" rx="8" fill="url(#cardRight)"
+      stroke="#60a088" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Number circle -->
+  <circle cx="488" cy="201" r="10" fill="none" stroke="#80c0a0" stroke-opacity="0.5" stroke-width="1.2" />
+  <text x="488" y="204" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
+
+  <text x="676" y="204" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">A Person Who Recognizes Their Blemish</text>
+
+  <!-- Bowl icon — dirty but polished, shining -->
+  <g transform="translate(550, 235)" opacity="0.65" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <path d="M -28 0 C -28 8 -20 26 0 28 C 20 26 28 8 28 0" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <ellipse cx="0" cy="10" rx="20" ry="12" fill="url(#bowlShine)" />
+    <!-- Fading stain dots (residual marks) -->
+    <circle cx="-8" cy="10" r="1.2" fill="#a06070" opacity="0.25" />
+    <circle cx="10" cy="14" r="1" fill="#a06070" opacity="0.2" />
+    <!-- Shine lines -->
+    <line x1="-32" y1="-6" x2="-38" y2="-12" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+    <line x1="32" y1="-6" x2="38" y2="-12" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+    <line x1="0" y1="-14" x2="0" y2="-20" stroke="#c8a040" stroke-width="0.8" opacity="0.5" />
+  </g>
+
+  <text x="710" y="235" text-anchor="middle" fill="#60a088"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a dirty bronze bowl that is used,</text>
+  <text x="710" y="251" text-anchor="middle" fill="#60a088"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">washed, and polished clean.</text>
+
+  <line x1="490" y1="275" x2="830" y2="275" stroke="#556070" stroke-opacity="0.3" />
+
+  <text x="660" y="300" text-anchor="middle" fill="#90b8a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">They will generate the aspiration and exert effort to abandon that blemish</text>
+  <text x="660" y="314" text-anchor="middle" fill="#6a9888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">chandaṁ janessati vāyamissati tassaṅgaṇassa pahānāya</text>
+
+  <text x="660" y="344" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">They will die without passion, aversion, and delusion—with an undefiled mind</text>
+  <text x="660" y="358" text-anchor="middle" fill="#6a9888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">arāgo adoso amoho asaṅkiliṭṭhacitto kālaṁ karissati</text>
+
+  <!-- ═══ CARD ③ — Blemish-Free, Doesn't Know (bottom-left, burgundy) ═══ -->
+  <g filter="url(#shadowDrop)">
+    <rect x="68" y="414" width="384" height="196" rx="8" fill="url(#cardLeft)"
+      stroke="#a06070" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Number circle -->
+  <circle cx="88" cy="435" r="10" fill="none" stroke="#c07060" stroke-opacity="0.5" stroke-width="1.2" />
+  <text x="88" y="438" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+
+  <text x="276" y="438" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">A Blemish-Free Person Who Doesn't Recognize It</text>
+
+  <!-- Bowl icon — clean but neglected, accumulating dust -->
+  <g transform="translate(150, 469)" opacity="0.65" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <path d="M -28 0 C -28 8 -20 26 0 28 C 20 26 28 8 28 0" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <!-- Dust accumulating around -->
+    <circle cx="-20" cy="28" r="1.2" fill="#706060" opacity="0.3" />
+    <circle cx="-8" cy="30" r="1" fill="#706060" opacity="0.25" />
+    <circle cx="6" cy="32" r="0.8" fill="#706060" opacity="0.25" />
+    <circle cx="16" cy="29" r="1" fill="#706060" opacity="0.2" />
+    <circle cx="-14" cy="32" r="0.7" fill="#706060" opacity="0.2" />
+    <circle cx="24" cy="30" r="0.9" fill="#706060" opacity="0.2" />
+  </g>
+
+  <text x="310" y="469" text-anchor="middle" fill="#a06070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a clean bronze bowl hidden in a dusty corner,</text>
+  <text x="310" y="485" text-anchor="middle" fill="#a06070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">left to gather stains and become defiled.</text>
+
+  <line x1="90" y1="509" x2="430" y2="509" stroke="#556070" stroke-opacity="0.3" />
+
+  <text x="260" y="534" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Attending to the sign of the beautiful, passion will invade their mind</text>
+  <text x="260" y="548" text-anchor="middle" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">subhanimittaṁ manasi karissati rāgo cittaṁ anuddhaṁsessati</text>
+
+  <text x="260" y="578" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">They will die with passion, aversion, and delusion—with a defiled mind</text>
+  <text x="260" y="592" text-anchor="middle" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sarāgo sadoso samoho saṅkiliṭṭhacitto kālaṁ karissati</text>
+
+  <!-- ═══ CARD ④ — Blemish-Free, Knows (bottom-right, teal) ═══ -->
+  <g filter="url(#shadowDrop)">
+    <rect x="468" y="414" width="384" height="200" rx="8" fill="url(#cardRight)"
+      stroke="#60a088" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Number circle -->
+  <circle cx="488" cy="435" r="10" fill="none" stroke="#80c0a0" stroke-opacity="0.5" stroke-width="1.2" />
+  <text x="488" y="438" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
+
+  <text x="676" y="438" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">A Blemish-Free Person Who Recognizes It</text>
+
+  <!-- Bowl icon — clean, polished, gleaming -->
+  <g transform="translate(550, 469)" opacity="0.7" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <path d="M -28 0 C -28 8 -20 26 0 28 C 20 26 28 8 28 0" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <ellipse cx="0" cy="10" rx="22" ry="13" fill="url(#bowlShine)" />
+    <line x1="-34" y1="-8" x2="-42" y2="-16" stroke="#c8a040" stroke-width="0.8" opacity="0.5" />
+    <line x1="34" y1="-8" x2="42" y2="-16" stroke="#c8a040" stroke-width="0.8" opacity="0.5" />
+    <line x1="0" y1="-14" x2="0" y2="-24" stroke="#c8a040" stroke-width="0.8" opacity="0.6" />
+    <line x1="-20" y1="-12" x2="-26" y2="-20" stroke="#c8a040" stroke-width="0.6" opacity="0.35" />
+    <line x1="20" y1="-12" x2="26" y2="-20" stroke="#c8a040" stroke-width="0.6" opacity="0.35" />
+  </g>
+
+  <text x="710" y="469" text-anchor="middle" fill="#60a088"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a clean bronze bowl that is used,</text>
+  <text x="710" y="485" text-anchor="middle" fill="#60a088"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">washed, and kept perfectly pure.</text>
+
+  <line x1="490" y1="509" x2="830" y2="509" stroke="#556070" stroke-opacity="0.3" />
+
+  <text x="660" y="534" text-anchor="middle" fill="#90b8a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Not attending to the sign of the beautiful, passion will not invade their mind</text>
+  <text x="660" y="548" text-anchor="middle" fill="#6a9888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">subhanimittaṁ na manasi karissati rāgo cittaṁ nānuddhaṁsessati</text>
+
+  <text x="660" y="578" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">They will die without passion, aversion, and delusion—with an undefiled mind</text>
+  <text x="660" y="592" text-anchor="middle" fill="#6a9888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">arāgo adoso amoho asaṅkiliṭṭhacitto kālaṁ karissati</text>
+
+
+  <!-- ╔══════════════════════════════════════════════════╗ -->
+  <!-- ║     WHAT IS A BLEMISH? (y: 630–780)             ║ -->
+  <!-- ╚══════════════════════════════════════════════════╝ -->
+
+  <line x1="100" y1="630" x2="820" y2="630" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+  <text x="460" y="656" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+    letter-spacing="2" opacity="0.75">WHAT IS A BLEMISH?</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="100" y="670" width="720" height="124" rx="8" fill="url(#cardNeutral)"
+      stroke="#5f7890" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Gold definition -->
+  <text x="460" y="698" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Blemish · <tspan font-style="italic" font-weight="normal">aṅgaṇa</tspan></text>
+
+  <text x="460" y="718" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5">Harmful, unwholesome [qualities] within the realm of desire</text>
+  <text x="460" y="734" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">pāpakānaṁ akusalānaṁ icchāvacarānaṁ adhivacanaṁ</text>
+
+  <!-- Flow: Wish → Opposite → Anger + Displeasure = Blemish -->
+  <text x="160" y="764" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Wish arises</text>
+  <text x="160" y="776" text-anchor="middle" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">icchā uppajjeyya</text>
+
+  <path d="M 220 768 L 262 768" stroke="#708090" stroke-width="0.8" fill="none" marker-end="url(#arrowHead)" />
+  <line x1="220" y1="768" x2="262" y2="768" stroke="#708090" stroke-width="0.8" />
+  <path d="M 254 764 L 262 768 L 254 772" stroke="#708090" stroke-width="0.8" fill="none" />
+
+  <text x="328" y="770" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Opposite occurs</text>
+
+  <line x1="388" y1="768" x2="428" y2="768" stroke="#708090" stroke-width="0.8" />
+  <path d="M 420 764 L 428 768 L 420 772" stroke="#708090" stroke-width="0.8" fill="none" />
+
+  <text x="516" y="758" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Becomes angry and displeased</text>
+  <text x="516" y="776" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5"><tspan font-style="italic"> kupito hoti appatīto</tspan></text>
+
+  <line x1="594" y1="768" x2="636" y2="768" stroke="#708090" stroke-width="0.8" />
+  <path d="M 630 764 L 636 768 L 630 772" stroke="#708090" stroke-width="0.8" fill="none" />
+
+  <text x="724" y="764" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">Both that anger and displeasure</text>
+  <text x="724" y="776" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">are a blemish <tspan font-style="italic" font-size="10">(aṅgaṇa)</tspan></text>
+
+
+  <!-- ╔══════════════════════════════════════════════════╗ -->
+  <!-- ║     UNWHOLESOME WISHES (y: 800–1180)            ║ -->
+  <!-- ╚══════════════════════════════════════════════════╝ -->
+
+  <line x1="100" y1="800" x2="820" y2="800" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+  <text x="460" y="824" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2" opacity="0.75">UNWHOLESOME WISHES · PĀPAKĀ AKUSALĀ ICCHĀVACARĀ</text>
+
+  <!-- ═══ LEFT CURLY BRACE — "Wish arises" spanning all cards ═══ -->
+  <path d="M 52 840 Q 44 840 44 854 L 44 968 Q 44 978 36 978 Q 44 978 44 988 L 44 1106 Q 44 1120 52 1120"
+    fill="none" stroke="#90a0b8" stroke-width="0.9" opacity="0.4" />
+  <text x="26" y="978" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5"
+    transform="rotate(-90 26 978)">Wish arises · <tspan font-style="italic" fill="#8f7898">icchā uppajjeyya</tspan></text>
+
+  <!-- Cell A — Concealing Wrongdoing -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="840" width="392" height="108" rx="6" fill="url(#cardNeutral)"
+      stroke="#5f7890" stroke-opacity="0.25" stroke-width="0.7" />
+  </g>
+
+  <!-- Eye with slash icon -->
+  <g transform="translate(84, 858)" opacity="0.5" filter="url(#iconGlow)">
+    <path d="M 0 8 Q 10 0 20 8" fill="none" stroke="#b098b0" stroke-width="1" />
+    <path d="M 0 8 Q 10 16 20 8" fill="none" stroke="#b098b0" stroke-width="1" />
+    <circle cx="10" cy="8" r="3" fill="none" stroke="#b098b0" stroke-width="0.8" />
+    <line x1="2" y1="16" x2="18" y2="0" stroke="#b098b0" stroke-width="1" />
+  </g>
+
+  <text x="120" y="862" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Concealing Wrongdoing</text>
+  <text x="120" y="884" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May others not know of my offense <tspan font-style="italic" font-size="10" font-weight="normal">(āpatti)</tspan>"</text>
+  <text x="120" y="904" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I be admonished privately <tspan font-style="italic" font-size="10" font-weight="normal">(anuraho)</tspan>, not amidst the Saṅgha"</text>
+  <text x="120" y="924" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May only a peer <tspan font-style="italic" font-size="10" font-weight="normal">(sappaṭipuggalo)</tspan> correct me, not a lesser"</text>
+
+  <!-- Cell B — Desire for Status -->
+  <g filter="url(#shadowDrop)">
+    <rect x="468" y="840" width="392" height="108" rx="6" fill="url(#cardNeutral)"
+      stroke="#5f7890" stroke-opacity="0.25" stroke-width="0.7" />
+  </g>
+
+  <!-- Seat icon -->
+  <g transform="translate(492, 856)" opacity="0.5" filter="url(#iconGlow)">
+    <line x1="0" y1="16" x2="0" y2="0" stroke="#b098b0" stroke-width="1" />
+    <line x1="0" y1="0" x2="16" y2="0" stroke="#b098b0" stroke-width="1" />
+    <line x1="16" y1="0" x2="16" y2="8" stroke="#b098b0" stroke-width="1" />
+    <line x1="0" y1="16" x2="0" y2="16" stroke="#b098b0" stroke-width="1" />
+  </g>
+
+  <text x="528" y="862" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire for Status</text>
+  <text x="528" y="884" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May the teacher question me before others"</text>
+  <text x="528" y="902" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I lead the alms procession to the village"</text>
+  <text x="528" y="920" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I receive the best seat, water, and food"</text>
+  <text x="528" y="938" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I give the blessing after meals"</text>
+
+  <!-- Cell C — Desire to Teach -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="962" width="392" height="76" rx="6" fill="url(#cardNeutral)"
+      stroke="#5f7890" stroke-opacity="0.25" stroke-width="0.7" />
+  </g>
+
+  <!-- Speaking figure icon -->
+  <g transform="translate(84, 978)" opacity="0.5" filter="url(#iconGlow)">
+    <circle cx="6" cy="4" r="4" fill="none" stroke="#b098b0" stroke-width="1" />
+    <path d="M 14 2 Q 20 0 22 6" fill="none" stroke="#b098b0" stroke-width="0.8" />
+    <path d="M 14 6 Q 20 5 22 10" fill="none" stroke="#b098b0" stroke-width="0.8" />
+  </g>
+
+  <text x="120" y="986" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire to Teach</text>
+  <text x="120" y="1010" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I be the one to teach the Dhamma"</text>
+  <text x="130" y="1024" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">To monks · nuns · laymen · laywomen</text>
+
+  <!-- Cell D — Desire for Honor -->
+  <g filter="url(#shadowDrop)">
+    <rect x="468" y="962" width="392" height="76" rx="6" fill="url(#cardNeutral)"
+      stroke="#5f7890" stroke-opacity="0.25" stroke-width="0.7" />
+  </g>
+
+  <!-- Bowing figure icon -->
+  <g transform="translate(492, 976)" opacity="0.5" filter="url(#iconGlow)">
+    <circle cx="6" cy="2" r="3" fill="none" stroke="#b098b0" stroke-width="0.8" />
+    <line x1="6" y1="5" x2="6" y2="14" stroke="#b098b0" stroke-width="0.8" />
+    <line x1="6" y1="14" x2="2" y2="20" stroke="#b098b0" stroke-width="0.8" />
+    <line x1="6" y1="14" x2="10" y2="20" stroke="#b098b0" stroke-width="0.8" />
+    <circle cx="18" cy="6" r="3" fill="none" stroke="#b098b0" stroke-width="0.8" />
+    <path d="M 18 9 Q 18 14 14 18" fill="none" stroke="#b098b0" stroke-width="0.8" />
+  </g>
+
+  <text x="528" y="986" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire for Honor</text>
+  <text x="528" y="1010" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">"May others honor, respect, revere, and venerate me"</text>
+  <text x="538" y="1024" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">From monks · nuns · laymen · laywomen</text>
+
+  <!-- Wide bottom row — Desire for Finest Requisites -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="1052" width="800" height="60" rx="6" fill="url(#cardNeutral)"
+      stroke="#5f7890" stroke-opacity="0.25" stroke-width="0.7" />
+  </g>
+
+  <text x="460" y="1072" text-anchor="middle" fill="#a0a8b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire for the Finest Requisites · <tspan font-style="italic" font-weight="normal" fill="#708090">paṇītā paccayā</tspan></text>
+
+  <!-- 4 requisites inline — icons at consistent y, text aligned -->
+  <!-- Robe icon -->
+  <g transform="translate(130, 1086)" opacity="0.45">
+    <path d="M 0 0 L 4 12 L -4 12 Z" fill="none" stroke="#b098b0" stroke-width="0.8" />
+    <line x1="0" y1="0" x2="6" y2="4" stroke="#b098b0" stroke-width="0.6" />
+    <line x1="0" y1="0" x2="-6" y2="4" stroke="#b098b0" stroke-width="0.6" />
+  </g>
+  <text x="148" y="1098" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Robes · <tspan font-style="italic" fill="#708090">cīvara</tspan></text>
+
+  <!-- Bowl icon -->
+  <g transform="translate(290, 1090)" opacity="0.45">
+    <ellipse cx="0" cy="0" rx="8" ry="3" fill="none" stroke="#b098b0" stroke-width="0.7" />
+    <path d="M -8 0 C -8 2 -6 8 0 9 C 6 8 8 2 8 0" fill="none" stroke="#b098b0" stroke-width="0.7" />
+  </g>
+  <text x="312" y="1098" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Alms food · <tspan font-style="italic" fill="#708090">piṇḍapāta</tspan></text>
+
+  <!-- Shelter icon -->
+  <g transform="translate(460, 1084)" opacity="0.45">
+    <path d="M -8 8 L 0 0 L 8 8" fill="none" stroke="#b098b0" stroke-width="0.8" />
+    <line x1="-6" y1="8" x2="-6" y2="14" stroke="#b098b0" stroke-width="0.6" />
+    <line x1="6" y1="8" x2="6" y2="14" stroke="#b098b0" stroke-width="0.6" />
+  </g>
+  <text x="480" y="1098" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Lodging · <tspan font-style="italic" fill="#708090">senāsana</tspan></text>
+
+  <!-- Medicine icon -->
+  <g transform="translate(636, 1094)" opacity="0.45">
+    <circle cx="0" cy="0" r="5" fill="none" stroke="#b098b0" stroke-width="0.7" />
+    <line x1="-2.5" y1="0" x2="2.5" y2="0" stroke="#b098b0" stroke-width="0.7" />
+    <line x1="0" y1="-2.5" x2="0" y2="2.5" stroke="#b098b0" stroke-width="0.7" />
+  </g>
+  <text x="654" y="1098" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Medicine · <tspan font-style="italic" fill="#708090">bhesajja</tspan></text>
+
+  <!-- ═══ Mechanism flow: Opposite occurs → Angry → = Blemish ═══ -->
+  <text x="168" y="1150" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Opposite occurs</text>
+
+  <line x1="232" y1="1148" x2="272" y2="1148" stroke="#708090" stroke-width="0.8" />
+  <path d="M 264 1144 L 272 1148 L 264 1152" stroke="#708090" stroke-width="0.8" fill="none" />
+
+  <text x="396" y="1142" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Becomes angry and displeased</text>
+  <text x="396" y="1158" text-anchor="middle" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">kupito hoti appatīto</text>
+
+  <line x1="500" y1="1148" x2="540" y2="1148" stroke="#708090" stroke-width="0.8" />
+  <path d="M 532 1144 L 540 1148 L 532 1152" stroke="#708090" stroke-width="0.8" fill="none" />
+
+  <text x="668" y="1142" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Both that anger and displeasure</text>
+  <text x="668" y="1158" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">are a blemish · <tspan font-style="italic" font-weight="normal" fill="#a08838">aṅgaṇaṁ</tspan></text>
+
+
+  <!-- ╔══════════════════════════════════════════════════╗ -->
+  <!-- ║  APPEARANCE vs REALITY — 2ND BOWL (y: 1200–1400) ║ -->
+  <!-- ╚══════════════════════════════════════════════════╝ -->
+
+  <line x1="100" y1="1200" x2="820" y2="1200" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+  <text x="460" y="1224" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2" opacity="0.75">APPEARANCE VS REALITY — ANOTHER BRONZE BOWL SIMILE</text>
+
+  <!-- Left panel — Bowl with carcass (burgundy) -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="1242" width="392" height="168" rx="8" fill="url(#cardLeft)"
+      stroke="#a06070" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Bowl with carcass inside -->
+  <g transform="translate(130, 1295)" opacity="0.6" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <path d="M -28 0 C -28 8 -20 26 0 28 C 20 26 28 8 28 0" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <!-- Wavy dark interior (carcass/rot) -->
+    <path d="M -14 6 Q -8 3 -2 8 Q 4 12 10 6 Q 14 2 18 8" fill="none" stroke="#a06070" stroke-width="1" opacity="0.6" />
+    <path d="M -12 12 Q -6 9 0 14 Q 6 18 12 12" fill="none" stroke="#a06070" stroke-width="0.8" opacity="0.4" />
+    <path d="M -8 18 Q -2 15 4 20 Q 8 22 14 18" fill="none" stroke="#a06070" stroke-width="0.7" opacity="0.3" />
+  </g>
+
+  <text x="256" y="1264" fill="#c07060" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">A forest dweller with harmful &amp; unwholesome qualities not given up</text>
+  <text x="184" y="1284" fill="#a08088"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">āraññiko … pāpakā akusalā icchāvacarā appahīnā</text>
+
+  <text x="184" y="1312" fill="#907888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">is like a carcass that is carefully covered in a bowl</text>
+  <text x="256" y="1346" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Just the sight of it inspires such</text>
+  <text x="256" y="1362" text-anchor="middle" fill="#b098b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">loathing <tspan font-size="10" font-style="italic" fill="#907888">(amanāpatā)</tspan>, revulsion <tspan font-size="10" font-style="italic" fill="#907888">(pāṭikulyatā)</tspan>, and repulsion  <tspan font-size="10" font-style="italic" fill="#907888">(jegucchatā)</tspan></text>
+
+  <text x="256" y="1390" text-anchor="middle" fill="#c07060"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">They are neither honored nor respected · <tspan font-style="italic" font-weight="normal" font-size="10">na sakkaronti na garuṁ karonti</tspan></text>
+
+  <!-- Central divider -->
+  <line x1="460" y1="1248" x2="460" y2="1404" stroke="#c8a040" stroke-width="0.8" opacity="0.12" />
+
+  <!-- Right panel — Bowl with fine food (teal) -->
+  <g filter="url(#shadowDrop)">
+    <rect x="468" y="1242" width="392" height="168" rx="8" fill="url(#cardRight)"
+      stroke="#60a088" stroke-opacity="0.25" stroke-width="0.8" />
+  </g>
+
+  <!-- Bowl with fine food inside -->
+  <g transform="translate(538, 1295)" opacity="0.6" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="0" rx="28" ry="10" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <path d="M -28 0 C -28 8 -20 26 0 28 C 20 26 28 8 28 0" fill="none" stroke="#c8a040" stroke-width="1.2" />
+    <!-- Food mound inside -->
+    <path d="M -14 2 Q -8 -4 0 -2 Q 8 -4 14 2" fill="none" stroke="#80c0a0" stroke-width="1" opacity="0.5" />
+    <!-- Steam/warmth lines -->
+    <path d="M -6 -6 Q -4 -12 -6 -18" fill="none" stroke="#80c0a0" stroke-width="0.6" opacity="0.35" />
+    <path d="M 2 -4 Q 4 -10 2 -16" fill="none" stroke="#80c0a0" stroke-width="0.6" opacity="0.35" />
+    <path d="M 10 -6 Q 12 -12 10 -18" fill="none" stroke="#80c0a0" stroke-width="0.6" opacity="0.3" />
+  </g>
+
+  <text x="664" y="1264" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">A village dweller with harmful &amp; unwholesome qualities abandoned</text>
+  <text x="590" y="1284" fill="#689888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">gāmantavihārī … pāpakā akusalā icchāvacarā pahīnā</text>
+
+  <text x="590" y="1312" fill="#6a9888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">is like fine food that is carefully covered in a bowl</text>
+  <text x="664" y="1346" text-anchor="middle" fill="#90b8a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Just the sight of it inspires such</text>
+  <text x="664" y="1362" text-anchor="middle" fill="#90b8a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">pleasantness <tspan font-size="10" font-style="italic" fill="#6a9888">(manāpatā)</tspan>, appetite <tspan font-size="10" font-style="italic" fill="#6a9888">(appāṭikulyatā)</tspan>, and relish  <tspan font-size="10" font-style="italic" fill="#6a9888">(ajegucchatā)</tspan></text>
+
+  <text x="664" y="1390" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">They are honored and respected · <tspan font-style="italic" font-weight="normal" font-size="10">sakkaronti garuṁ karonti</tspan></text>
+
+
+  <!-- ╔══════════════════════════════════════════════════╗ -->
+  <!-- ║          CLOSING (y: 1430–1600)                  ║ -->
+  <!-- ╚══════════════════════════════════════════════════╝ -->
+
+  <line x1="200" y1="1430" x2="720" y2="1430" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+  <ellipse cx="460" cy="1510" rx="340" ry="80" fill="url(#conclusionGlow)" />
+
+  <g filter="url(#shadowDrop)">
+    <rect x="80" y="1440" width="760" height="160" rx="10" fill="#0e1828" fill-opacity="0.6"
+      stroke="#40806a" stroke-width="0.8" stroke-opacity="0.35" />
+  </g>
+
+  <g filter="url(#glow1)">
+    <text x="460" y="1468" text-anchor="middle" fill="#c8a040"
+      font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+      letter-spacing="1">MENTAL QUALITIES MATTER</text>
+  </g>
+
+  <text x="460" y="1492" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">"If these harmful and unwholesome mental qualities within the realm of desire</text>
+  <text x="460" y="1508" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">are seen and heard to be abandoned in any one …</text>
+  <text x="460" y="1524" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">his fellows in the spiritual life honor, respect, revere, and venerate him."</text>
+
+  <text x="460" y="1548" text-anchor="middle" fill="#507868"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">yassa kassaci bhikkhuno ime pāpakā akusalā icchāvacarā pahīnā dissanti ceva sūyanti ca …</text>
+  <text x="460" y="1564" text-anchor="middle" fill="#507868"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">sabrahmacārī sakkaronti garuṁ karonti mānenti pūjenti</text>
+
+  <text x="460" y="1584" text-anchor="middle" fill="#607868"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">Te hi tassa āyasmato pāpakā akusalā icchāvacarā pahīnā dissanti ceva sūyanti cā</text>
+
+  <!-- ============ SOURCE REFERENCE ============ -->
+  <line x1="300" y1="1610" x2="620" y2="1610" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+  <a href="https://wordsofthebuddha.org/mn5" target="_blank" rel="noopener noreferrer">
+    <text x="460" y="1626" text-anchor="middle" fill="#405060"
+      font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn5</text>
+  </a>
+
+  <!-- ============ LOTUS MOTIF ============ -->
+  <g transform="translate(460, 1648) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+    <circle cx="0" cy="-28" r="9" />
+  </g>
+</svg>
