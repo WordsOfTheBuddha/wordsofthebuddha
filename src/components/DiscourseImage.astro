@@ -380,7 +380,10 @@ if (!initialImage) return;
 			initialVizOpen && "viz-initial-open fixed inset-0 bg-black/80 flex items-center justify-center pointer-events-auto",
 		]}
 	>
-		<form method="dialog" class="fixed top-4 right-4 z-10">
+		<form
+			method="dialog"
+			class="fixed z-10 top-[max(1rem,env(safe-area-inset-top))] right-[max(1rem,env(safe-area-inset-right))]"
+		>
 			<button
 				class="w-12 h-12 inline-flex items-center justify-center text-white hover:text-gray-300 focus:outline-none"
 				aria-label="Close"
@@ -407,7 +410,7 @@ if (!initialImage) return;
 			<>
 				<button
 					id="modalPrev"
-					class="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/15 hover:bg-white/30 text-white rounded-full flex items-center justify-center p-0 z-10 transition-colors duration-200"
+					class="fixed top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 p-0 text-white transition-colors duration-200 hover:bg-white/30 left-[max(1rem,env(safe-area-inset-left))]"
 					title="Previous image"
 					aria-label="Previous image"
 				>
@@ -417,7 +420,7 @@ if (!initialImage) return;
 				</button>
 				<button
 					id="modalNext"
-					class="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/15 hover:bg-white/30 text-white rounded-full flex items-center justify-center p-0 z-10 transition-colors duration-200"
+					class="fixed top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 p-0 text-white transition-colors duration-200 hover:bg-white/30 right-[max(1rem,env(safe-area-inset-right))]"
 					title="Next image"
 					aria-label="Next image"
 				>
@@ -428,35 +431,50 @@ if (!initialImage) return;
 			</>
 		)}
 
-		<div id="modalViewport" class="relative w-[90vw] h-[85vh] max-w-[90vw] max-h-[85vh] overflow-auto overscroll-contain rounded-lg">
-			<div id="modalZoomContent" class="w-full min-w-full min-h-full flex items-center justify-center p-2">
-				<img
-					id="fullImage"
-					src={initialImage.publicUrl ?? initialImage.image.src}
-					alt={initialImage.alt}
-					width={initialImage.isSvg ? undefined : IMAGE_WIDTH}
-					class:list={[
-						"w-full h-auto object-contain rounded-lg",
-						initialImage.isSvg ? "hidden" : "shadow-2xl",
-					]}
-				/>
-				<object
-					id="fullSvgObject"
-					data={initialImage.publicUrl ?? initialImage.image.src}
-					type="image/svg+xml"
-					role="img"
-					aria-label={initialImage.alt}
-					class:list={[
-						"w-full h-auto rounded-lg",
-						initialImage.isSvg ? "svg-image" : "hidden",
-					]}
-				/>
+		<div
+			id="modalViewport"
+			class="fixed inset-0 z-0 h-dvh w-full overflow-auto overscroll-contain rounded-none pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)]"
+		>
+			<div
+				id="modalZoomContent"
+				class="box-border flex min-h-full min-w-full w-full flex-col px-0 pt-0 pb-[calc(5.25rem+env(safe-area-inset-bottom,0px))]"
+			>
+				<div class="flex w-full flex-1 items-center justify-center">
+					<img
+						id="fullImage"
+						src={initialImage.publicUrl ?? initialImage.image.src}
+						alt={initialImage.alt}
+						width={initialImage.isSvg ? undefined : IMAGE_WIDTH}
+						class:list={[
+							"w-full h-auto object-contain rounded-lg",
+							initialImage.isSvg ? "hidden" : "shadow-2xl",
+						]}
+					/>
+					<object
+						id="fullSvgObject"
+						data={initialImage.publicUrl ?? initialImage.image.src}
+						type="image/svg+xml"
+						role="img"
+						aria-label={initialImage.alt}
+						class:list={[
+							"w-full h-auto rounded-lg",
+							initialImage.isSvg ? "svg-image" : "hidden",
+						]}
+					/>
+				</div>
+				{initialImage.caption && (
+					<p
+						class="viz-modal-caption mx-auto mt-2 max-w-[min(42rem,calc(100%-2rem))] shrink-0 rounded-lg bg-black/55 px-3 py-1.5 text-center text-[13px] leading-snug text-white/95 ring-1 ring-white/15 backdrop-blur-md"
+					>
+						{initialImage.caption}
+					</p>
+				)}
 			</div>
 
 			{resolvedPrevViz && prevVizHref && (
 					<a
 						href={prevVizHref}
-						class="viz-nav-link fixed bottom-5 left-5 z-20 text-white/40 hover:text-white/90 text-[11px] transition-colors duration-300 no-underline"
+						class="viz-nav-link fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-[max(1.25rem,env(safe-area-inset-left))] z-20 rounded-md bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white/95 shadow-lg ring-1 ring-white/20 backdrop-blur-md transition-colors duration-200 hover:bg-black/85 hover:text-white"
 						title={formatVizLabel(resolvedPrevViz)}
 						aria-label={`Previous Viz: ${formatVizLabel(resolvedPrevViz)}`}
 					>
@@ -466,7 +484,7 @@ if (!initialImage) return;
 				{resolvedNextViz && nextVizHref && (
 					<a
 						href={nextVizHref}
-						class="viz-nav-link fixed bottom-5 right-5 z-20 text-white/40 hover:text-white/90 text-[11px] transition-colors duration-300 no-underline"
+						class="viz-nav-link fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-20 rounded-md bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white/95 shadow-lg ring-1 ring-white/20 backdrop-blur-md transition-colors duration-200 hover:bg-black/85 hover:text-white"
 						title={formatVizLabel(resolvedNextViz)}
 						aria-label={`Next Viz: ${formatVizLabel(resolvedNextViz)}`}
 					>
@@ -474,7 +492,7 @@ if (!initialImage) return;
 					</a>
 				)}
 
-			<div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-black/50 px-3 py-2 backdrop-blur-sm">
+			<div class="fixed left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-3 py-2 backdrop-blur-sm bottom-[max(1rem,env(safe-area-inset-bottom))]">
 				<button
 					id="zoomOutBtn"
 					type="button"
@@ -503,12 +521,6 @@ if (!initialImage) return;
 					+
 				</button>
 			</div>
-			{initialImage.caption && (
-				<div class="mt-4 text-white/90 text-center bg-black/50 px-4 py-2 rounded-full z-20 relative">
-					{initialImage.caption}
-				</div>
-			)}
-
 			{/* Modal dots */}
 			{isCarousel && (
 				<div
@@ -1045,8 +1057,17 @@ if (!initialImage) return;
 	.viz-nav-link:visited,
 	.viz-nav-link:hover,
 	.viz-nav-link:active {
-		color: inherit !important;
 		text-decoration: none !important;
+	}
+
+	/* Readable on any image (overrides prose / theme link colors) */
+	.viz-nav-link {
+		color: rgba(255, 255, 255, 0.95) !important;
+	}
+
+	.viz-nav-link:hover,
+	.viz-nav-link:active {
+		color: rgb(255, 255, 255) !important;
 	}
 
 	@media print {
