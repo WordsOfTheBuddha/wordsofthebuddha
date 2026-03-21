@@ -560,6 +560,8 @@ if (!initialImage) return;
 		const zoomOutBtn = document.getElementById("zoomOutBtn") as HTMLButtonElement;
 		const zoomResetBtn = document.getElementById("zoomResetBtn") as HTMLButtonElement;
 		let lockedScrollY = 0;
+		/** Saved viewport meta while viz modal is open — restored on unlock (see lockPageScroll). */
+		let savedViewportContent: string | null = null;
 
 		if (!figure) return;
 
@@ -614,10 +616,30 @@ if (!initialImage) return;
 			modalViewport.scrollTop = maxTop / 2;
 		};
 
+		/** Keeps scroll offset valid after zoom / browser visual-viewport changes (mobile pinch vs in-modal zoom). */
+		const clampModalScroll = () => {
+			if (!modalViewport) return;
+			const maxL = Math.max(0, modalViewport.scrollWidth - modalViewport.clientWidth);
+			const maxT = Math.max(0, modalViewport.scrollHeight - modalViewport.clientHeight);
+			modalViewport.scrollLeft = Math.min(Math.max(0, modalViewport.scrollLeft), maxL);
+			modalViewport.scrollTop = Math.min(Math.max(0, modalViewport.scrollTop), maxT);
+		};
+
+		const scheduleClampModalScroll = () => {
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					clampModalScroll();
+				});
+			});
+		};
+
 		const applyZoom = () => {
-			const zoomWidth = `${zoomPercent}%`;
 			if (modalZoomContent) {
-				modalZoomContent.style.width = zoomWidth;
+				if (zoomPercent === 100) {
+					modalZoomContent.style.removeProperty("width");
+				} else {
+					modalZoomContent.style.width = `${zoomPercent}%`;
+				}
 			}
 			updateZoomButtons();
 		};
@@ -656,12 +678,16 @@ if (!initialImage) return;
 				const focusY = prevScrollTop + viewportHeight / 2;
 				modalViewport.scrollLeft = Math.max(0, focusX * scale - viewportWidth / 2);
 				modalViewport.scrollTop = Math.max(0, focusY * scale - viewportHeight / 2);
+				requestAnimationFrame(() => {
+					clampModalScroll();
+				});
 			});
 		};
 
 		const resetZoom = () => {
 			zoomPercent = 100;
 			applyZoom();
+			scheduleClampModalScroll();
 		};
 
 		const parseImageRouteIndex = (): number | null => {
@@ -710,6 +736,17 @@ if (!initialImage) return;
 			document.body.style.left = "0";
 			document.body.style.right = "0";
 			document.body.style.width = "100%";
+
+			// Prevent browser pinch-zoom from stacking with in-modal zoom (Safari / Chrome).
+			// Restored in unlockPageScroll. Pinch is handled via two-finger touch → setZoom below.
+			const meta = document.querySelector('meta[name="viewport"]');
+			if (meta && savedViewportContent === null) {
+				savedViewportContent = meta.getAttribute("content");
+				meta.setAttribute(
+					"content",
+					"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover",
+				);
+			}
 		};
 
 		const unlockPageScroll = () => {
@@ -725,6 +762,12 @@ if (!initialImage) return;
 			document.documentElement.style.overflow = "";
 			document.documentElement.style.removeProperty('--viz-preload');
 			window.scrollTo(0, lockedScrollY);
+
+			const meta = document.querySelector('meta[name="viewport"]');
+			if (meta && savedViewportContent !== null) {
+				meta.setAttribute("content", savedViewportContent);
+				savedViewportContent = null;
+			}
 		};
 
 		function updateModalSlide(index: number) {
@@ -762,6 +805,7 @@ if (!initialImage) return;
 			if (dialog && !dialog.open) {
 				dialog.showModal();
 				lockPageScroll();
+				scheduleClampModalScroll();
 			}
 
 			if (updateRoute) {
@@ -921,6 +965,63 @@ if (!initialImage) return;
 			);
 		}
 
+		// Mobile: browser pinch-zoom stacks badly with in-modal width zoom; viewport is locked in lockPageScroll.
+		// Two-finger pinch on the image area drives the same setZoom as the +/- buttons.
+		let pinchStartDist = 0;
+		let pinchStartZoom = 100;
+		const touchDistance = (touches: TouchList) =>
+			Math.hypot(
+				touches[0].clientX - touches[1].clientX,
+				touches[0].clientY - touches[1].clientY,
+			);
+
+		if (!(figure as HTMLElement).dataset.vizModalGesturesAttached) {
+			(figure as HTMLElement).dataset.vizModalGesturesAttached = "true";
+
+			const vv = window.visualViewport;
+			if (vv) {
+				const onViewportChange = () => {
+					const d = document.getElementById("imageModal") as HTMLDialogElement | null;
+					if (!d?.open) return;
+					clampModalScroll();
+				};
+				vv.addEventListener("resize", onViewportChange);
+				vv.addEventListener("scroll", onViewportChange);
+			}
+
+			if (modalViewport) {
+				modalViewport.addEventListener(
+					"touchstart",
+					(e) => {
+						if (e.touches.length === 2) {
+							pinchStartDist = touchDistance(e.touches);
+							pinchStartZoom = zoomPercent;
+						}
+					},
+					{ passive: true },
+				);
+
+				const endPinch = () => {
+					pinchStartDist = 0;
+				};
+				modalViewport.addEventListener("touchend", endPinch, { passive: true });
+				modalViewport.addEventListener("touchcancel", endPinch, { passive: true });
+
+				modalViewport.addEventListener(
+					"touchmove",
+					(e) => {
+						if (e.touches.length !== 2 || pinchStartDist < 8) return;
+						e.preventDefault();
+						const dist = touchDistance(e.touches);
+						const ratio = dist / pinchStartDist;
+						const next = Math.round(pinchStartZoom * ratio);
+						setZoom(Math.max(MIN_ZOOM_PERCENT, Math.min(MAX_ZOOM_PERCENT, next)));
+					},
+					{ passive: false },
+				);
+			}
+		}
+
 		dialog?.addEventListener("keydown", (e) => {
 			if (e.key === "+" || e.key === "=") {
 				e.preventDefault();
@@ -1005,6 +1106,7 @@ if (!initialImage) return;
 			dialog.classList.remove('viz-initial-open');
 			dialog.showModal();
 			lockPageScroll();
+			scheduleClampModalScroll();
 		} else {
 			syncModalWithRoute();
 		}
