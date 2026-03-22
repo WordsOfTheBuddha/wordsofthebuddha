@@ -120,7 +120,7 @@
         >āmisadāyādo</text>
 
     <!-- Alms bowl overflowing with food (excess) -->
-    <g transform="translate(120, 214)" opacity="0.6">
+    <g transform="translate(110, 214)" opacity="0.6">
         <!-- Bowl rim (opening at top) -->
         <ellipse cx="0" cy="0" rx="22" ry="8" fill="none" stroke="#c07060" stroke-width="1.5" />
         <!-- Bowl body curving downward -->
@@ -136,10 +136,10 @@
         <circle cx="8" cy="-12" r="2.2" fill="#c07060" opacity="0.35" />
     </g>
 
-    <text x="248" y="226" text-anchor="middle" fill="#b098b0"
+    <text x="278" y="216" text-anchor="middle" fill="#b098b0"
         font-family="Georgia,'Times New Roman',serif" font-size="12"
         >When offered, eats the leftover food,</text>
-    <text x="268" y="242" text-anchor="middle" fill="#b098b0"
+    <text x="278" y="232" text-anchor="middle" fill="#b098b0"
         font-family="Georgia,'Times New Roman',serif" font-size="12"
         >and passes the day and night neither hungry nor weak</text>
 
@@ -155,7 +155,7 @@
         >dhammadāyādo</text>
 
     <!-- Empty alms bowl (renunciation) -->
-    <g transform="translate(554, 218)" opacity="0.6">
+    <g transform="translate(554, 214)" opacity="0.6">
         <!-- Bowl rim (opening at top) -->
         <ellipse cx="0" cy="0" rx="22" ry="8" fill="none" stroke="#60a088" stroke-width="1.5" />
         <!-- Bowl body curving downward -->
@@ -166,17 +166,17 @@
         <line x1="9" y1="-4" x2="14" y2="-16" stroke="#60a088" stroke-width="0.8" opacity="0.3" />
     </g>
 
-    <text x="672" y="210" text-anchor="middle" fill="#90b8a8"
+    <text x="672" y="216" text-anchor="middle" fill="#90b8a8"
         font-family="Georgia,'Times New Roman',serif" font-size="12"
-        >"Endures hunger and weakness,</text>
-    <text x="672" y="226" text-anchor="middle" fill="#90b8a8"
+        >Endures hunger and weakness,</text>
+    <text x="672" y="232" text-anchor="middle" fill="#90b8a8"
         font-family="Georgia,'Times New Roman',serif" font-size="12"
         >does not eat the leftover food</text>
 
-    <text x="672" y="255" text-anchor="middle" fill="#60a088"
+    <text x="672" y="261" text-anchor="middle" fill="#60a088"
         font-family="Georgia,'Times New Roman',serif" font-size="11.5"
         >More respected and commended</text>
-    <text x="672" y="268" text-anchor="middle" fill="#709888"
+    <text x="672" y="274" text-anchor="middle" fill="#709888"
         font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
         >pujjataro ca pāsaṁsataro ca</text>
 

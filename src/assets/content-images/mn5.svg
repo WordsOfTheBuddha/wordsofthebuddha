@@ -167,9 +167,9 @@
   </g>
 
   <text x="710" y="235" text-anchor="middle" fill="#60a088"
-    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a dirty bronze bowl that is used,</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a dirty bronze bowl that gets used, polished,</text>
   <text x="710" y="251" text-anchor="middle" fill="#60a088"
-    font-family="Georgia,'Times New Roman',serif" font-size="10.5">washed, and polished clean.</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">and is not put back in a dusty corner.</text>
 
   <line x1="490" y1="275" x2="830" y2="275" stroke="#556070" stroke-opacity="0.3" />
 
@@ -254,9 +254,9 @@
   </g>
 
   <text x="710" y="469" text-anchor="middle" fill="#60a088"
-    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a clean bronze bowl that is used,</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">is like a clean bronze bowl that gets used, polished,</text>
   <text x="710" y="485" text-anchor="middle" fill="#60a088"
-    font-family="Georgia,'Times New Roman',serif" font-size="10.5">washed, and kept perfectly pure.</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">and is not put back in a dusty corner.</text>
 
   <line x1="490" y1="509" x2="830" y2="509" stroke="#556070" stroke-opacity="0.3" />
 
@@ -357,11 +357,11 @@
   <text x="120" y="862" fill="#a0a8b8"
     font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Concealing Wrongdoing</text>
   <text x="120" y="884" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May others not know of my offense <tspan font-style="italic" font-size="10" font-weight="normal">(āpatti)</tspan>"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May others not know of my offense <tspan font-style="italic" font-size="10" font-weight="normal">(āpatti)</tspan></text>
   <text x="120" y="904" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I be admonished privately <tspan font-style="italic" font-size="10" font-weight="normal">(anuraho)</tspan>, not amidst the Saṅgha"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May I be admonished privately <tspan font-style="italic" font-size="10" font-weight="normal">(anuraho)</tspan>, not amidst the Saṅgha</text>
   <text x="120" y="924" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May only a peer <tspan font-style="italic" font-size="10" font-weight="normal">(sappaṭipuggalo)</tspan> correct me, not a lesser"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May only a peer <tspan font-style="italic" font-size="10" font-weight="normal">(sappaṭipuggalo)</tspan> correct me, not a lesser</text>
 
   <!-- Cell B — Desire for Status -->
   <g filter="url(#shadowDrop)">
@@ -380,13 +380,13 @@
   <text x="528" y="862" fill="#a0a8b8"
     font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire for Status</text>
   <text x="528" y="884" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May the teacher question me before others"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May the teacher question me before others</text>
   <text x="528" y="902" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I lead the alms procession to the village"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May I lead the alms procession to the village</text>
   <text x="528" y="920" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I receive the best seat, water, and food"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May I receive the best seat, water, and food</text>
   <text x="528" y="938" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I give the blessing after meals"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May I give the blessing after meals</text>
 
   <!-- Cell C — Desire to Teach -->
   <g filter="url(#shadowDrop)">
@@ -404,7 +404,7 @@
   <text x="120" y="986" fill="#a0a8b8"
     font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire to Teach</text>
   <text x="120" y="1010" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May I be the one to teach the Dhamma"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May I be the one to teach the Dhamma</text>
   <text x="130" y="1024" fill="#90a0b8"
     font-family="Georgia,'Times New Roman',serif" font-size="10">To monks · nuns · laymen · laywomen</text>
 
@@ -427,7 +427,7 @@
   <text x="528" y="986" fill="#a0a8b8"
     font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Desire for Honor</text>
   <text x="528" y="1010" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11">"May others honor, respect, revere, and venerate me"</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11">“ May others honor, respect, revere, and venerate me</text>
   <text x="538" y="1024" fill="#90a0b8"
     font-family="Georgia,'Times New Roman',serif" font-size="10">From monks · nuns · laymen · laywomen</text>
 
