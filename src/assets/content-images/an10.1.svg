@@ -220,7 +220,7 @@
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">samādhi</text>
     <circle cx="371" cy="567" r="2.5" fill="#c4be98" opacity="0.16" filter="url(#glow1)" />
 
-    <!-- ============ STEP 7: Understanding & Insight ============ -->
+    <!-- ============ STEP 7: Knowledge & Vision ============ -->
     <g filter="url(#shadowDrop)">
         <rect x="440" y="461" width="210" height="58" rx="9" fill="url(#stg7)" stroke="#606848"
             stroke-width="1" stroke-opacity="0.56" />
@@ -228,11 +228,11 @@
     <circle cx="461" cy="487" r="10" fill="none" stroke="#707858" stroke-width="1" opacity="0.65" />
     <text x="461" y="486" text-anchor="middle" dominant-baseline="central" fill="#808860"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">7</text>
-    <text x="545" y="477" text-anchor="middle" fill="#c8b888"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Understanding</text>
-    <text x="545" y="492" text-anchor="middle" fill="#c8b888"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">&amp; Insight</text>
-    <text x="545" y="508" text-anchor="middle" fill="#909068"
+    <text x="555" y="477" text-anchor="middle" fill="#c8b888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">Knowledge &amp; Vision</text>
+    <text x="555" y="492" text-anchor="middle" fill="#c8b888"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold">of things as they truly are</text>
+    <text x="555" y="508" text-anchor="middle" fill="#909068"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">yathābhūta-ñāṇadassana</text>
     <circle cx="436" cy="490" r="2.5" fill="#c8b888" opacity="0.17" filter="url(#glow1)" />
 

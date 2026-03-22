@@ -258,14 +258,13 @@
     <text x="460" y="560" text-anchor="middle" fill="#98a880"
         font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">samādhi</text>
 
-    <!-- ============ BOX 7: Understanding & Insight (y=593) ============ -->
+    <!-- ============ BOX 7: Knowledge & Vision (y=593) ============ -->
     <g filter="url(#shadowDrop)">
         <rect x="310" y="593" width="300" height="48" rx="10" fill="url(#stg7)" stroke="#687848"
             stroke-width="1" stroke-opacity="0.52" />
     </g>
     <text x="460" y="613" text-anchor="middle" fill="#c8c898"
-        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">Understanding
-        &amp; Insight</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="14.5" font-weight="bold">Knowledge &amp; Vision</text>
     <text x="460" y="633" text-anchor="middle" fill="#a0a870"
         font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">
         yathābhūta-ñāṇadassana</text>
