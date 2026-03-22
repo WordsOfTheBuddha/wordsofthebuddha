@@ -1,0 +1,400 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1350" width="920" height="1350">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.45" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.45" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+        <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.5" />
+            <stop offset="25%" stop-color="#daa520" stop-opacity="0.18" />
+            <stop offset="55%" stop-color="#c89420" stop-opacity="0.06" />
+            <stop offset="100%" stop-color="#ffd700" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="rootGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7060a0" stop-opacity="0.35" />
+            <stop offset="25%" stop-color="#604888" stop-opacity="0.15" />
+            <stop offset="55%" stop-color="#503870" stop-opacity="0.05" />
+            <stop offset="100%" stop-color="#402858" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="canopyGlow" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#40a060" stop-opacity="0.25" />
+            <stop offset="40%" stop-color="#308848" stop-opacity="0.1" />
+            <stop offset="100%" stop-color="#207030" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="chainUp" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#685070" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0.35" />
+        </linearGradient>
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow3" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="14" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="treeHaze" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="12" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <linearGradient id="frameFill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#182234" />
+            <stop offset="100%" stop-color="#121a2a" />
+        </linearGradient>
+        <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2e2840" />
+            <stop offset="100%" stop-color="#241e36" />
+        </linearGradient>
+        <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#242840" />
+            <stop offset="100%" stop-color="#1e2238" />
+        </linearGradient>
+        <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e2c3c" />
+            <stop offset="100%" stop-color="#182836" />
+        </linearGradient>
+        <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e2e3a" />
+            <stop offset="100%" stop-color="#182a34" />
+        </linearGradient>
+        <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#242e30" />
+            <stop offset="100%" stop-color="#1e2a2a" />
+        </linearGradient>
+        <linearGradient id="stg6" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2e3024" />
+            <stop offset="100%" stop-color="#282c20" />
+        </linearGradient>
+        <linearGradient id="stg7" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#302e1e" />
+            <stop offset="100%" stop-color="#28281a" />
+        </linearGradient>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1350" fill="url(#bg)" />
+    <ellipse cx="230" cy="360" rx="220" ry="180" fill="#402850" opacity="0.04" />
+    <ellipse cx="690" cy="340" rx="220" ry="180" fill="#204838" opacity="0.04" />
+    <ellipse cx="460" cy="1000" rx="340" ry="200" fill="#304050" opacity="0.04" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">AN 7.65 &#x2014; HIRĪOTTAPPA SUTTA</text>
+    <text x="460" y="66" text-anchor="middle" fill="#90a0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">Sense of Right and Wrong and Fear of Wrongdoing</text>
+    <line x1="280" y1="82" x2="640" y2="82" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+    <line x1="100" y1="100" x2="820" y2="100" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+
+    <!-- ============ THE SIMILE OF THE TREE ============ -->
+    <g filter="url(#glow1)">
+        <text x="460" y="128" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            letter-spacing="2">THE SIMILE OF THE TREE</text>
+    </g>
+    <text x="460" y="148" text-anchor="middle" fill="#b09838"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.8">rukkh&#x16B;pama &#x2014; the tree comparison</text>
+
+    <!-- ============ LEFT TREE: BARREN ============ -->
+    <g opacity="0.75">
+        <ellipse cx="230" cy="268" rx="120" ry="80" fill="#382838" opacity="0.08" filter="url(#treeHaze)" />
+        <line x1="140" y1="450" x2="320" y2="450" stroke="#483848" stroke-width="1" stroke-opacity="0.4" />
+        <!-- Roots -->
+        <path d="M 215 450 C 200 465, 175 470, 155 468" stroke="#3a2838" stroke-width="1.5" fill="none" stroke-opacity="0.5" />
+        <path d="M 245 450 C 260 462, 280 468, 300 465" stroke="#3a2838" stroke-width="1.5" fill="none" stroke-opacity="0.5" />
+        <path d="M 230 450 C 230 462, 225 470, 218 475" stroke="#3a2838" stroke-width="1.2" fill="none" stroke-opacity="0.4" />
+        <!-- Trunk -->
+        <path d="M 222 450 L 220 370 C 219 355, 220 340, 222 325" stroke="#483848" stroke-width="5" fill="none" stroke-linecap="round" />
+        <path d="M 238 450 L 240 370 C 241 355, 240 340, 238 325" stroke="#483848" stroke-width="5" fill="none" stroke-linecap="round" />
+        <!-- Bare branches -->
+        <path d="M 222 360 C 205 345, 185 335, 168 340" stroke="#483848" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <path d="M 168 340 C 158 335, 150 338, 148 342" stroke="#3a3040" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <path d="M 238 355 C 258 340, 278 330, 295 334" stroke="#483848" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <path d="M 295 334 C 305 330, 310 332, 315 338" stroke="#3a3040" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <path d="M 225 340 C 210 320, 195 305, 182 300" stroke="#483848" stroke-width="2" fill="none" stroke-linecap="round" />
+        <path d="M 235 335 C 250 315, 265 300, 278 295" stroke="#483848" stroke-width="2" fill="none" stroke-linecap="round" />
+        <path d="M 228 325 C 220 305, 215 285, 218 270" stroke="#483848" stroke-width="2" fill="none" stroke-linecap="round" />
+        <path d="M 232 325 C 240 305, 245 285, 242 270" stroke="#483848" stroke-width="2" fill="none" stroke-linecap="round" />
+        <!-- Dead twigs -->
+        <path d="M 218 270 C 210 262, 205 258, 208 252" stroke="#3a3040" stroke-width="1.2" fill="none" stroke-linecap="round" />
+        <path d="M 242 270 C 250 262, 255 258, 252 252" stroke="#3a3040" stroke-width="1.2" fill="none" stroke-linecap="round" />
+        <path d="M 182 300 C 175 292, 170 288, 172 282" stroke="#3a3040" stroke-width="1" fill="none" stroke-linecap="round" />
+        <path d="M 278 295 C 285 287, 290 284, 288 278" stroke="#3a3040" stroke-width="1" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- Barren tree label with background box -->
+    <rect x="155" y="185" width="150" height="58" rx="6" fill="#1a1a24" opacity="0.5" stroke="#6a5a6a" stroke-width="0.8" stroke-opacity="0.3" />
+    <text x="230" y="206" text-anchor="middle" fill="#a08898"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1" opacity="0.85">WITHOUT</text>
+    <text x="230" y="222" text-anchor="middle" fill="#7a6a78"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">s&#x101;kh&#x101;pal&#x101;savipanno</text>
+    <!-- Cross mark -->
+    <g opacity="0.30">
+        <line x1="215" y1="162" x2="233" y2="180" stroke="#a06878" stroke-width="1.5" />
+        <line x1="233" y1="162" x2="215" y2="180" stroke="#a06878" stroke-width="1.5" />
+    </g>
+
+    <!-- ============ RIGHT TREE: FLOURISHING ============ -->
+    <g>
+        <ellipse cx="690" cy="310" rx="130" ry="95" fill="url(#canopyGlow)" />
+        <line x1="600" y1="450" x2="780" y2="450" stroke="#305838" stroke-width="1" stroke-opacity="0.5" />
+        <!-- Roots -->
+        <path d="M 675 450 C 655 468, 628 478, 600 475" stroke="#4a5838" stroke-width="2" fill="none" stroke-opacity="0.6" />
+        <path d="M 705 450 C 725 468, 752 478, 780 475" stroke="#4a5838" stroke-width="2" fill="none" stroke-opacity="0.6" />
+        <path d="M 685 450 C 680 468, 672 478, 660 482" stroke="#445230" stroke-width="1.5" fill="none" stroke-opacity="0.5" />
+        <path d="M 695 450 C 700 468, 708 478, 720 482" stroke="#445230" stroke-width="1.5" fill="none" stroke-opacity="0.5" />
+        <!-- Trunk -->
+        <path d="M 678 450 L 676 370 C 674 350, 676 335, 680 320" stroke="#506840" stroke-width="7" fill="none" stroke-linecap="round" />
+        <path d="M 702 450 L 704 370 C 706 350, 704 335, 700 320" stroke="#506840" stroke-width="7" fill="none" stroke-linecap="round" />
+        <!-- Branches -->
+        <path d="M 678 365 C 655 348, 628 338, 608 342" stroke="#506840" stroke-width="3.5" fill="none" stroke-linecap="round" />
+        <path d="M 702 360 C 725 343, 752 333, 772 338" stroke="#506840" stroke-width="3.5" fill="none" stroke-linecap="round" />
+        <path d="M 682 340 C 662 318, 642 302, 625 296" stroke="#50683a" stroke-width="2.8" fill="none" stroke-linecap="round" />
+        <path d="M 698 340 C 718 318, 738 302, 755 296" stroke="#50683a" stroke-width="2.8" fill="none" stroke-linecap="round" />
+        <path d="M 688 320 C 680 298, 676 278, 680 260" stroke="#506838" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <path d="M 692 320 C 700 298, 704 278, 700 260" stroke="#506838" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <!-- Canopy -->
+        <ellipse cx="608" cy="338" rx="32" ry="22" fill="#2a5030" fill-opacity="0.5" />
+        <ellipse cx="772" cy="334" rx="32" ry="22" fill="#2a5030" fill-opacity="0.5" />
+        <ellipse cx="625" cy="292" rx="38" ry="26" fill="#2a5830" fill-opacity="0.55" />
+        <ellipse cx="755" cy="292" rx="38" ry="26" fill="#2a5830" fill-opacity="0.55" />
+        <ellipse cx="660" cy="270" rx="40" ry="28" fill="#285830" fill-opacity="0.6" />
+        <ellipse cx="720" cy="270" rx="40" ry="28" fill="#285830" fill-opacity="0.6" />
+        <ellipse cx="690" cy="255" rx="45" ry="30" fill="#286030" fill-opacity="0.65" />
+        <ellipse cx="690" cy="280" rx="55" ry="32" fill="#285830" fill-opacity="0.5" />
+        <ellipse cx="690" cy="290" rx="90" ry="65" fill="#40a060" fill-opacity="0.06" filter="url(#glow2)" />
+        <!-- Leaf sparkle -->
+        <circle cx="650" cy="268" r="1.5" fill="#80c880" opacity="0.4" filter="url(#glow1)" />
+        <circle cx="710" cy="258" r="1.5" fill="#80c880" opacity="0.35" filter="url(#glow1)" />
+        <circle cx="680" cy="248" r="1.5" fill="#90d890" opacity="0.4" filter="url(#glow1)" />
+        <circle cx="730" cy="278" r="1.5" fill="#80c880" opacity="0.3" filter="url(#glow1)" />
+        <circle cx="625" cy="290" r="1.5" fill="#70b870" opacity="0.3" filter="url(#glow1)" />
+        <circle cx="755" cy="286" r="1.5" fill="#70b870" opacity="0.3" filter="url(#glow1)" />
+    </g>
+
+    <!-- Flourishing tree label with background box -->
+    <rect x="615" y="185" width="150" height="58" rx="6" fill="#1a2418" opacity="0.5" stroke="#3a6a4a" stroke-width="0.8" stroke-opacity="0.3" />
+    <text x="690" y="206" text-anchor="middle" fill="#88c898"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1" opacity="0.9">ABUNDANT</text>
+    <text x="690" y="222" text-anchor="middle" fill="#6a9878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.75">s&#x101;kh&#x101;pal&#x101;sasampanno</text>
+    <!-- Check mark -->
+    <g opacity="0.40">
+        <path d="M 681 170 L 689 180 L 703 164" stroke="#88c898" stroke-width="1.8" fill="none"
+            stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- ============ CENTER: TREE PARTS LABELS ============ -->
+    <g opacity="0.65">
+        <text x="460" y="234" text-anchor="middle" fill="#b0a880"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Branches &amp; Leaves</text>
+        <text x="460" y="248" text-anchor="middle" fill="#908860"
+            font-family="Georgia,serif" font-size="10" font-style="italic">s&#x101;kh&#x101;pal&#x101;sa</text>
+        <text x="460" y="298" text-anchor="middle" fill="#a8a078"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Shoots</text>
+        <text x="460" y="310" text-anchor="middle" fill="#888060"
+            font-family="Georgia,serif" font-size="10" font-style="italic">papa&#x1E6D;ik&#x101;</text>
+        <text x="460" y="336" text-anchor="middle" fill="#a09878"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Bark</text>
+        <text x="460" y="348" text-anchor="middle" fill="#808058"
+            font-family="Georgia,serif" font-size="10" font-style="italic">taca</text>
+        <text x="460" y="372" text-anchor="middle" fill="#98a078"
+            font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Sapwood</text>
+        <text x="460" y="384" text-anchor="middle" fill="#788858"
+            font-family="Georgia,serif" font-size="10" font-style="italic">pheggu</text>
+        <text x="460" y="410" text-anchor="middle" fill="#c8a850"
+            font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold"
+            filter="url(#glow1)">Heartwood</text>
+        <text x="460" y="422" text-anchor="middle" fill="#a08840"
+            font-family="Georgia,serif" font-size="10" font-style="italic">s&#x101;ra</text>
+    </g>
+
+    <!-- Connector dashes to WITHOUT/ABUNDANT -->
+    <line x1="380" y1="234" x2="305" y2="234" stroke="#706858" stroke-width="0.5" stroke-opacity="0.3" stroke-dasharray="3 3" />
+    <line x1="540" y1="234" x2="615" y2="234" stroke="#506848" stroke-width="0.5" stroke-opacity="0.3" stroke-dasharray="3 3" />
+    <line x1="400" y1="410" x2="300" y2="410" stroke="#706858" stroke-width="0.5" stroke-opacity="0.3" stroke-dasharray="3 3" />
+    <line x1="520" y1="410" x2="620" y2="410" stroke="#506848" stroke-width="0.5" stroke-opacity="0.3" stroke-dasharray="3 3" />
+
+    <!-- ============ SIMILE ANNOTATIONS ============ -->
+    <g filter="url(#shadowDrop)">
+        <rect x="110" y="441" width="290" height="48" rx="6" fill="#1a1424" stroke="#5a3848" stroke-width="0.7" stroke-opacity="0.4" />
+    </g>
+    <text x="255" y="461" text-anchor="middle" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">&#x201C;Bark, sapwood, heartwood &#x2014;</text>
+    <text x="255" y="478" text-anchor="middle" fill="#806878"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">none grow to fullness&#x201D;</text>
+    <g filter="url(#shadowDrop)">
+        <rect x="520" y="441" width="290" height="48" rx="6" fill="#121e28" stroke="#2a5848" stroke-width="0.7" stroke-opacity="0.4" />
+    </g>
+    <text x="665" y="461" text-anchor="middle" fill="#70a888"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">&#x201C;Bark, sapwood, heartwood &#x2014;</text>
+    <text x="665" y="478" text-anchor="middle" fill="#508868"
+        font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">all grow to fullness&#x201D;</text>
+
+    <!-- ============ TIER DIVIDER ============ -->
+    <line x1="100" y1="512" x2="820" y2="512" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.5" />
+    <g filter="url(#glow1)">
+        <text x="460" y="538" text-anchor="middle" fill="#c8a040"
+            font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+            letter-spacing="2">THE CHAIN OF VITAL CONDITIONS</text>
+    </g>
+    <text x="460" y="558" text-anchor="middle" fill="#b09838"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.8">upanisa &#x2014; each quality is the vital condition for the next</text>
+    <line x1="240" y1="572" x2="680" y2="572" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.3" />
+
+    <!-- ============ CENTRAL CHAIN LINE ============ -->
+    <line x1="460" y1="593" x2="460" y2="1173" stroke="url(#chainUp)" stroke-width="2" opacity="0.25" />
+
+    <!-- ============ NODE 7 (APEX): Knowledge &amp; Vision of Liberation ============ -->
+    <ellipse cx="460" cy="628" rx="280" ry="55" fill="url(#libGlow)" />
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="598" width="660" height="62" rx="10" fill="url(#stg7)" stroke="#c8a040" stroke-width="1.3" stroke-opacity="0.5" />
+    </g>
+    <text x="460" y="618" text-anchor="middle" fill="#ffd700"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold"
+        letter-spacing="1">Knowledge &amp; Vision of Liberation</text>
+    <text x="460" y="638" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">vimutti&#xF1;&#x101;&#x1E47;adassana</text>
+    <text x="460" y="654" text-anchor="middle" fill="#a09040"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" opacity="0.7">&#x2015; the heartwood, s&#x101;ra &#x2015;</text>
+
+    <!-- Upward chevron 6 to 7 -->
+    <path d="M 449 680 L 460 672 L 471 680" stroke="#b0a040" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.45" />
+    <text x="460" y="693" text-anchor="middle" fill="#70a098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">vital condition fulfilled</text>
+
+    <!-- ============ NODE 6: Disenchantment &amp; Fading of Desire ============ -->
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="708" width="660" height="56" rx="8" fill="url(#stg6)" stroke="#887840" stroke-width="1" stroke-opacity="0.48" />
+    </g>
+    <text x="460" y="730" text-anchor="middle" fill="#d0c088"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Disenchantment &amp; Fading of Desire</text>
+    <text x="460" y="753" text-anchor="middle" fill="#a09848"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">nibbid&#x101;vir&#x101;ga</text>
+
+    <!-- Upward chevron 5 to 6 -->
+    <path d="M 449 784 L 460 776 L 471 784" stroke="#90a048" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.42" />
+    <text x="460" y="797" text-anchor="middle" fill="#70a098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">vital condition fulfilled</text>
+
+    <!-- ============ NODE 5: Knowledge &amp; Vision of Things As They Truly Are ============ -->
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="810" width="660" height="62" rx="8" fill="url(#stg5)" stroke="#607848" stroke-width="1" stroke-opacity="0.46" />
+    </g>
+    <text x="460" y="832" text-anchor="middle" fill="#b8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Knowledge &amp; Vision of Things As They Truly Are</text>
+    <text x="460" y="859" text-anchor="middle" fill="#80a060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">yath&#x101;bh&#x16B;ta&#xF1;&#x101;&#x1E47;adassana</text>
+
+    <!-- Upward chevron 4 to 5 -->
+    <path d="M 449 890 L 460 882 L 471 890" stroke="#70a068" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.40" />
+    <text x="460" y="903" text-anchor="middle" fill="#70a098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">vital condition fulfilled</text>
+
+    <!-- ============ NODE 4: Right Collectedness ============ -->
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="916" width="660" height="56" rx="8" fill="url(#stg4)" stroke="#407868" stroke-width="1" stroke-opacity="0.44" />
+    </g>
+    <text x="460" y="938" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Right Collectedness</text>
+    <text x="460" y="961" text-anchor="middle" fill="#608880"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">samm&#x101;sam&#x101;dhi</text>
+
+    <!-- Upward chevron 3 to 4 -->
+    <path d="M 449 990 L 460 982 L 471 990" stroke="#609880" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.38" />
+    <text x="460" y="1003" text-anchor="middle" fill="#70a098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">vital condition fulfilled</text>
+
+    <!-- ============ NODE 3: Ethical Conduct ============ -->
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="1016" width="660" height="56" rx="8" fill="url(#stg3)" stroke="#406878" stroke-width="1" stroke-opacity="0.42" />
+    </g>
+    <text x="460" y="1038" text-anchor="middle" fill="#90b0c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Ethical Conduct</text>
+    <text x="460" y="1061" text-anchor="middle" fill="#607890"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">s&#x12B;la</text>
+
+    <!-- Upward chevron 2 to 3 -->
+    <path d="M 449 1090 L 460 1082 L 471 1090" stroke="#587888" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.36" />
+    <text x="460" y="1103" text-anchor="middle" fill="#70a098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">vital condition fulfilled</text>
+
+    <!-- ============ NODE 2: Sense Restraint ============ -->
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="1116" width="660" height="56" rx="8" fill="url(#stg2)" stroke="#4a5878" stroke-width="1" stroke-opacity="0.42" />
+    </g>
+    <text x="460" y="1138" text-anchor="middle" fill="#90a0c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Sense Restraint</text>
+    <text x="460" y="1161" text-anchor="middle" fill="#6070a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">indriyasa&#x1E41;vara</text>
+
+    <!-- Upward chevron 1 to 2 -->
+    <path d="M 449 1190 L 460 1182 L 471 1190" stroke="#606080" stroke-width="1.3" fill="none" stroke-linejoin="round" opacity="0.35" />
+    <text x="460" y="1203" text-anchor="middle" fill="#70a098"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">vital condition fulfilled</text>
+
+    <!-- ============ NODE 1 (FOUNDATION): Sense of Right &amp; Wrong ============ -->
+    <ellipse cx="460" cy="1243" rx="280" ry="50" fill="url(#rootGlow)" />
+    <g filter="url(#shadowDrop)">
+        <rect x="130" y="1216" width="660" height="70" rx="10" fill="url(#stg1)" stroke="#685070" stroke-width="1.3" stroke-opacity="0.5" />
+    </g>
+    <text x="460" y="1232" text-anchor="middle" fill="#a090c0"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold"
+        letter-spacing="1.5" opacity="0.7">THE ROOT &#x2014; FOUNDATION</text>
+    <text x="460" y="1253" text-anchor="middle" fill="#c0b0d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Sense of Right and Wrong &amp; Fear of Wrongdoing</text>
+    <text x="460" y="1273" text-anchor="middle" fill="#8878a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">hir&#x12B;ottappa</text>
+
+    <!-- ============ SIDE ACCENT DOTS ============ -->
+    <circle cx="120" cy="628" r="2.5" fill="#c8a040" opacity="0.12" filter="url(#glow1)" />
+    <circle cx="120" cy="736" r="2.5" fill="#a09838" opacity="0.10" filter="url(#glow1)" />
+    <circle cx="120" cy="841" r="2.5" fill="#80a060" opacity="0.09" filter="url(#glow1)" />
+    <circle cx="120" cy="944" r="2.5" fill="#608880" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="120" cy="1044" r="2.5" fill="#507888" opacity="0.07" filter="url(#glow1)" />
+    <circle cx="120" cy="1144" r="2.5" fill="#506888" opacity="0.07" filter="url(#glow1)" />
+    <circle cx="120" cy="1247" r="2.5" fill="#6858a0" opacity="0.09" filter="url(#glow1)" />
+    <circle cx="800" cy="628" r="2.5" fill="#c8a040" opacity="0.12" filter="url(#glow1)" />
+    <circle cx="800" cy="736" r="2.5" fill="#a09838" opacity="0.10" filter="url(#glow1)" />
+    <circle cx="800" cy="841" r="2.5" fill="#80a060" opacity="0.09" filter="url(#glow1)" />
+    <circle cx="800" cy="944" r="2.5" fill="#608880" opacity="0.08" filter="url(#glow1)" />
+    <circle cx="800" cy="1044" r="2.5" fill="#507888" opacity="0.07" filter="url(#glow1)" />
+    <circle cx="800" cy="1144" r="2.5" fill="#506888" opacity="0.07" filter="url(#glow1)" />
+    <circle cx="800" cy="1247" r="2.5" fill="#6858a0" opacity="0.09" filter="url(#glow1)" />
+
+    <!-- ============ FOOTER ============ -->
+    <line x1="300" y1="1298" x2="620" y2="1298" stroke="#304058" stroke-width="0.5" opacity="0.3" />
+    <a href="https://wordsofthebuddha.org/an7.65" target="_blank" rel="noopener noreferrer">
+        <text x="460" y="1316" text-anchor="middle" fill="#405060"
+            font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/an7.65</text>
+    </a>
+    <!-- Lotus motif -->
+    <g transform="translate(460, 1332) scale(0.22)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
+</svg>
