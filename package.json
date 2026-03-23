@@ -10,6 +10,7 @@
 		"gen:similes": "npx tsx src/utils/generateSimileMappings.ts",
 		"gen:topics": "npx tsx src/utils/generateTopicMappings.ts",
 		"gen:favicons": "node src/utils/generate-favicons.mjs",
+		"thermal:svg": "tsx src/utils/thermalPrintSvg.ts",
 		"gen:offline": "npx tsx src/utils/generateOfflineManifest.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"yarn run watch:images\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
 		"prebuild": "node src/utils/copyContentImages.mjs && npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts",
