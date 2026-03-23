@@ -7,11 +7,11 @@
             <stop offset="100%" stop-color="#121a28" />
         </linearGradient>
 
-        <!-- Liberation radial glow (golden ocean) -->
+        <!-- Liberation radial glow (golden ocean) — soft for light-mode filter -->
         <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.5" />
-            <stop offset="20%" stop-color="#daa520" stop-opacity="0.2" />
-            <stop offset="50%" stop-color="#c89420" stop-opacity="0.07" />
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.22" />
+            <stop offset="20%" stop-color="#daa520" stop-opacity="0.09" />
+            <stop offset="50%" stop-color="#c89420" stop-opacity="0.04" />
             <stop offset="100%" stop-color="#b88820" stop-opacity="0" />
         </radialGradient>
 
@@ -24,8 +24,8 @@
 
         <!-- Wellspring radial glow -->
         <radialGradient id="springGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#60b0c0" stop-opacity="0.3" />
-            <stop offset="40%" stop-color="#4090a0" stop-opacity="0.12" />
+            <stop offset="0%" stop-color="#60b0c0" stop-opacity="0.16" />
+            <stop offset="40%" stop-color="#4090a0" stop-opacity="0.07" />
             <stop offset="100%" stop-color="#307080" stop-opacity="0" />
         </radialGradient>
 
@@ -318,7 +318,7 @@
     <!-- ============ GOLDEN OCEAN: Knowledge & Vision of Liberation (cx=760, cy=750) ============ -->
     <g>
         <!-- Wide outer golden haze (full-width) -->
-        <ellipse cx="760" cy="750" rx="280" ry="80" fill="url(#libGlow)" />
+        <ellipse cx="760" cy="750" rx="280" ry="80" fill="url(#libGlow)" opacity="0.85" />
 
         <!-- Ocean body (extends across full width) -->
         <rect x="60" y="715" width="820" height="78" rx="0" fill="url(#oceanGold)" opacity="0.6" />
@@ -364,21 +364,21 @@
 
         <!-- Outer golden boundary -->
         <ellipse cx="760" cy="750" rx="200" ry="46" fill="none" stroke="#daa520" stroke-width="1.5"
-            stroke-opacity="0.2" filter="url(#glow2)" />
+            stroke-opacity="0.12" />
         <!-- Mid ring -->
         <ellipse cx="760" cy="750" rx="150" ry="36" fill="none" stroke="#c8a020" stroke-width="1"
-            stroke-opacity="0.15" filter="url(#glow1)" />
+            stroke-opacity="0.09" />
         <!-- Inner radiant core -->
-        <ellipse cx="760" cy="750" rx="110" ry="28" fill="#ffd700" fill-opacity="0.04"
-            stroke="#daa520" stroke-width="1.8" stroke-opacity="0.4" filter="url(#glow1)" />
+        <ellipse cx="760" cy="750" rx="110" ry="28" fill="#ffd700" fill-opacity="0.03"
+            stroke="#daa520" stroke-width="1.8" stroke-opacity="0.28" />
 
         <!-- Text -->
         <text x="760" y="741" text-anchor="middle" fill="#ffd700"
             font-family="Georgia,'Times New Roman',serif" font-size="16"
-            letter-spacing="2" filter="url(#glow1)">KNOWLEDGE &amp; VISION</text>
+            letter-spacing="2">KNOWLEDGE &amp; VISION</text>
         <text x="760" y="759" text-anchor="middle" fill="#e8c040"
             font-family="Georgia,'Times New Roman',serif" font-size="16"
-            letter-spacing="2" filter="url(#glow1)">OF LIBERATION</text>
+            letter-spacing="2">OF LIBERATION</text>
         <text x="760" y="789" text-anchor="middle" fill="#b8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">vimuttiñāṇadassana</text>
     </g>

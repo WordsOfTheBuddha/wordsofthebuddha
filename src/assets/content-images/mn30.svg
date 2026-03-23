@@ -25,9 +25,9 @@
             <stop offset="100%" stop-color="#162424" />
         </radialGradient>
         <radialGradient id="heartwoodGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.35" />
-            <stop offset="40%" stop-color="#a08030" stop-opacity="0.2" />
-            <stop offset="100%" stop-color="#806020" stop-opacity="0.05" />
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.18" />
+            <stop offset="40%" stop-color="#a08030" stop-opacity="0.09" />
+            <stop offset="100%" stop-color="#806020" stop-opacity="0.03" />
         </radialGradient>
         <radialGradient id="heartwoodFill" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#2e2818" />
@@ -52,17 +52,17 @@
             <stop offset="100%" stop-color="#10242c" />
         </linearGradient>
 
-        <!-- Culmination radial glow (gold &#x2014; heartwood) -->
+        <!-- Culmination radial glow (gold &#x2014; heartwood) — soft for light-mode filter -->
         <radialGradient id="resultGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.12" />
-            <stop offset="60%" stop-color="#a08030" stop-opacity="0.05" />
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0.06" />
+            <stop offset="60%" stop-color="#a08030" stop-opacity="0.03" />
             <stop offset="100%" stop-color="#806020" stop-opacity="0" />
         </radialGradient>
 
         <!-- Cessation radial glow (green) -->
         <radialGradient id="cessationGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#306050" stop-opacity="0.18" />
-            <stop offset="60%" stop-color="#204838" stop-opacity="0.08" />
+            <stop offset="0%" stop-color="#306050" stop-opacity="0.08" />
+            <stop offset="60%" stop-color="#204838" stop-opacity="0.04" />
             <stop offset="100%" stop-color="#183828" stop-opacity="0" />
         </radialGradient>
 
@@ -156,7 +156,7 @@
     <circle cx="280" cy="420" r="56" fill="url(#heartwoodFill)" stroke="#c8a040"
         stroke-width="1.5" stroke-opacity="0.5" />
     <circle cx="280" cy="420" r="56" fill="url(#heartwoodGlow)" />
-    <circle cx="280" cy="420" r="78" fill="#c8a040" opacity="0.04" filter="url(#glow3)" />
+    <circle cx="280" cy="420" r="78" fill="#c8a040" opacity="0.025" />
 
     <!-- Ring separator glow lines -->
     <circle cx="280" cy="420" r="230" fill="none" stroke="#8a6060" stroke-width="0.5"
@@ -168,7 +168,7 @@
     <circle cx="280" cy="420" r="104" fill="none" stroke="#508070" stroke-width="0.5"
         stroke-opacity="0.2" filter="url(#glow1)" />
     <circle cx="280" cy="420" r="56" fill="none" stroke="#c8a040" stroke-width="0.6"
-        stroke-opacity="0.3" filter="url(#glow2)" />
+        stroke-opacity="0.2" />
 
     <!-- ============ IN-RING LABELS ============ -->
 
@@ -204,7 +204,7 @@
     <!-- Ring 5: Heartwood (center) -->
     <text x="280" y="416" text-anchor="middle" fill="#dab850" opacity="0.8"
         font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
-        filter="url(#glow1)">HEARTWOOD</text>
+        >HEARTWOOD</text>
     <text x="280" y="434" text-anchor="middle" fill="#c8a040" opacity="0.65"
         font-family="Georgia,serif" font-size="12" font-style="italic">s&#x101;ra</text>
 
@@ -319,7 +319,7 @@
     <line x1="100" y1="680" x2="820" y2="680" stroke="url(#tierGrad)" stroke-width="0.5"
         opacity="0.4" />
 
-    <g filter="url(#glow1)">
+    <g>
         <text x="460" y="706" text-anchor="middle" fill="#c8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
             letter-spacing="2">AT EACH LAYER</text>
@@ -419,7 +419,7 @@
     <line x1="100" y1="946" x2="820" y2="946" stroke="url(#tierGrad)" stroke-width="0.6"
         opacity="0.5" />
 
-    <g filter="url(#glow1)">
+    <g>
         <text x="460" y="972" text-anchor="middle" fill="#c8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
             letter-spacing="2">STATES HIGHER THAN KNOWLEDGE &amp; VISION</text>
@@ -532,13 +532,13 @@
 
         <text x="683" y="1078" text-anchor="middle" fill="#d8c060"
             font-family="Georgia,'Times New Roman',serif" font-size="15"
-            filter="url(#glow1)">&#8220;And what, brahmin, are the</text>
+            >&#8220;And what, brahmin, are the</text>
         <text x="683" y="1098" text-anchor="middle" fill="#d8c060"
             font-family="Georgia,'Times New Roman',serif" font-size="15"
-            filter="url(#glow1)">states higher and more sublime</text>
+            >states higher and more sublime</text>
         <text x="683" y="1118" text-anchor="middle" fill="#d8c060"
             font-family="Georgia,'Times New Roman',serif" font-size="15"
-            filter="url(#glow1)">than knowledge and vision?&#8221;</text>
+            >than knowledge and vision?&#8221;</text>
 
         <!-- Separator -->
         <line x1="560" y1="1136" x2="806" y2="1136" stroke="#40806a" stroke-width="0.5" opacity="0.25" />
@@ -577,8 +577,8 @@
     <!--              CULMINATION &#x2014; THE HEARTWOOD                  -->
     <!-- ================================================================ -->
 
-    <ellipse cx="460" cy="1415" rx="300" ry="60" fill="url(#resultGlow)" />
-    <ellipse cx="460" cy="1390" rx="200" ry="40" fill="url(#cessationGlow)" />
+    <ellipse cx="460" cy="1415" rx="300" ry="60" fill="url(#resultGlow)" opacity="0.85" />
+    <ellipse cx="460" cy="1390" rx="200" ry="40" fill="url(#cessationGlow)" opacity="0.85" />
 
     <g filter="url(#shadowDrop)">
         <rect x="110" y="1354" width="700" height="170" rx="10" fill="#0c1420" fill-opacity="0.8"
@@ -588,7 +588,7 @@
     <!-- Part 1: Cessation -->
     <text x="460" y="1380" text-anchor="middle" fill="#80c0a0"
         font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
-        filter="url(#glow1)">Cessation of Perception and What is Felt</text>
+        >Cessation of Perception and What is Felt</text>
     <text x="460" y="1398" text-anchor="middle" fill="#507860"
         font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
         >sa&#xF1;&#xF1;&#x101;vedayitanirodha &#8212; pa&#xF1;&#xF1;&#x101;ya cassa disv&#x101; &#x101;sav&#x101; parikkhī&#x1E47;&#x101;</text>
@@ -598,7 +598,7 @@
     <!-- Part 2: The Heartwood Statement -->
     <text x="460" y="1436" text-anchor="middle" fill="#dab850"
         font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="bold"
-        filter="url(#glow1)">&#8220;The Unshakeable Liberation of Mind&#8221;</text>
+        >&#8220;The Unshakeable Liberation of Mind&#8221;</text>
     <text x="460" y="1458" text-anchor="middle" fill="#c8a040"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
         >akupp&#x101; cetovimutti</text>

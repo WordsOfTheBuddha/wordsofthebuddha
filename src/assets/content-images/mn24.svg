@@ -14,11 +14,11 @@
             <stop offset="100%" stop-color="#685070" stop-opacity="0.5" />
         </linearGradient>
 
-        <!-- Golden radial glow for Nibbana destination -->
+        <!-- Golden radial glow for Nibbana destination (soft: reads calmer under light-mode CSS filter) -->
         <radialGradient id="nibbanaGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.4" />
-            <stop offset="25%" stop-color="#daa520" stop-opacity="0.18" />
-            <stop offset="60%" stop-color="#c89420" stop-opacity="0.06" />
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.2" />
+            <stop offset="25%" stop-color="#daa520" stop-opacity="0.09" />
+            <stop offset="60%" stop-color="#c89420" stop-opacity="0.03" />
             <stop offset="100%" stop-color="#b88820" stop-opacity="0" />
         </radialGradient>
 
@@ -206,18 +206,18 @@
 
     <!-- ============ DESTINATION: Final Nibbāna without Clinging ============ -->
     <g>
-        <ellipse cx="460" cy="718" rx="320" ry="52" fill="url(#nibbanaGlow)" />
+        <ellipse cx="460" cy="718" rx="320" ry="52" fill="url(#nibbanaGlow)" opacity="0.85" />
         <g filter="url(#shadowDrop)">
             <rect x="260" y="686" width="400" height="64" rx="12" fill="#1a1814" stroke="#b89830"
                 stroke-width="1.2" stroke-opacity="0.5" />
         </g>
         <ellipse cx="460" cy="718" rx="280" ry="36" fill="none" stroke="#daa520" stroke-width="1"
-            stroke-opacity="0.2" filter="url(#glow2)" />
+            stroke-opacity="0.12" />
         <ellipse cx="460" cy="718" rx="220" ry="28" fill="none" stroke="#c8a020" stroke-width="0.8"
-            stroke-opacity="0.15" filter="url(#glow1)" />
+            stroke-opacity="0.09" />
         <text x="460" y="708" text-anchor="middle" fill="#ffd700"
             font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="bold"
-            letter-spacing="1.5" filter="url(#glow1)">Final Nibbāna without Clinging</text>
+            letter-spacing="1.5">Final Nibbāna without Clinging</text>
         <text x="460" y="732" text-anchor="middle" fill="#c8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="14" font-style="italic">
             anupādāparinibbāna</text>

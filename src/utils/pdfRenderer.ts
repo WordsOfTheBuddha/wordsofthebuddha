@@ -619,15 +619,25 @@ function buildContent(collection: CollectionPdf): string {
 }
 
 /** Assemble the complete HTML document to feed to Playwright. */
+export type PdfVizImageMode = "light" | "dark" | "thermal";
+
 export function buildPdfHtml(
 	collection: CollectionPdf,
 	options: {
 		collectionUrl: string;
 		date: string;
 		parentTitle?: string;
+		/** Matches browser `data-viz-image-mode` / localStorage `vizImageMode` for diagram filters */
+		vizImageMode?: PdfVizImageMode;
 	},
 ): string {
 	const { collectionUrl, date, parentTitle } = options;
+	const vizImageMode: PdfVizImageMode =
+		options.vizImageMode === "light" ||
+		options.vizImageMode === "dark" ||
+		options.vizImageMode === "thermal"
+			? options.vizImageMode
+			: "dark";
 	const toc = buildToc(collection);
 	const content = buildContent(collection);
 
@@ -654,7 +664,7 @@ export function buildPdfHtml(
 		: "";
 
 	return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-viz-image-mode="${vizImageMode}">
 <head>
   <meta charset="utf-8">
   <title>${collection.title}</title>
@@ -699,6 +709,31 @@ export function buildPdfHtml(
 
 const PDF_CSS = `
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  --discourse-viz-filter-light: invert(1) hue-rotate(180deg) saturate(0.88) contrast(1.06);
+  --discourse-viz-filter-thermal: invert(1) grayscale(1) contrast(1.2) brightness(1.14);
+}
+
+/* Match site discourse diagram modes (same filters as DiscourseImage.astro) */
+html[data-viz-image-mode="light"] .pdf-discourse-image-img,
+html[data-viz-image-mode="light"] .pdf-discourse-image svg {
+  filter: var(--discourse-viz-filter-light) !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+html[data-viz-image-mode="thermal"] .pdf-discourse-image-img,
+html[data-viz-image-mode="thermal"] .pdf-discourse-image svg,
+html[data-viz-image-mode="print"] .pdf-discourse-image-img,
+html[data-viz-image-mode="print"] .pdf-discourse-image svg {
+  filter: var(--discourse-viz-filter-thermal) !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+html[data-viz-image-mode="dark"] .pdf-discourse-image-img,
+html[data-viz-image-mode="dark"] .pdf-discourse-image svg {
+  filter: none !important;
+}
 
 body {
   font-family: "Times New Roman", Times, Georgia, serif;

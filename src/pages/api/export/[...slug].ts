@@ -28,6 +28,7 @@ import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
 	buildPdfHtml,
+	type PdfVizImageMode,
 } from "../../../utils/pdfRenderer";
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
@@ -171,8 +172,16 @@ export const GET: APIRoute = async ({ params, url }) => {
 	};
 	const imageMode = parseImageMode(imageModeParam);
 
+	const vizParam = url.searchParams.get("viz");
+	const vizImageMode: PdfVizImageMode | undefined =
+		vizParam === "light" || vizParam === "dark" || vizParam === "thermal"
+			? vizParam
+			: vizParam === "print"
+				? "thermal"
+				: undefined;
+
 	console.log(
-		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode})`,
+		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"})`,
 	);
 	const startMs = Date.now();
 
@@ -206,6 +215,7 @@ export const GET: APIRoute = async ({ params, url }) => {
 			collectionUrl,
 			date: downloadDate,
 			parentTitle,
+			vizImageMode,
 		});
 
 		// ── 2. Render HTML → PDF via Playwright ────────────────────────────

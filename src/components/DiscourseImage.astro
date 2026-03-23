@@ -205,6 +205,8 @@ const initialVizIndex =
 const initialVizOpen = initialVizIndexRaw != null;
 const initialImage = images[initialVizIndex];
 if (!initialImage) return;
+
+const hasSvg = images.some((img) => img.isSvg);
 ---
 
 {images.length > 0 && (
@@ -214,7 +216,24 @@ if (!initialImage) return;
 		data-carousel={isCarousel ? "true" : undefined}
 	>
 	<script is:inline>
-		try {
+			try {
+			/* SVG diagram color mode: light / dark / thermal (B&W). Pinned in localStorage when user picks. */
+			(function syncVizImageModeAttr() {
+				var k = "vizImageMode";
+				var s = localStorage.getItem(k);
+				if (s === "print") {
+					localStorage.setItem(k, "thermal");
+					s = "thermal";
+				}
+				var mode =
+					s === "light" || s === "dark" || s === "thermal"
+						? s
+						: document.documentElement.classList.contains("dark")
+							? "dark"
+							: "light";
+				document.documentElement.setAttribute("data-viz-image-mode", mode);
+			})();
+
 			const stored = localStorage.getItem("showDiscourseImages");
 			const show = stored === null ? true : stored === "true";
 			const hasViz = /[?&](viz|image)=/.test(window.location.search);
@@ -310,7 +329,7 @@ if (!initialImage) return;
 			<>
 				<button
 					id="carouselPrev"
-					class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10"
+					class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10 bg-white/90 text-gray-900 shadow-md ring-1 ring-black/10 hover:bg-white hover:text-gray-950 dark:bg-black/50 dark:text-white dark:ring-transparent dark:hover:bg-black/70 dark:hover:text-white"
 					title="Previous image"
 					aria-label="Previous image"
 				>
@@ -320,7 +339,7 @@ if (!initialImage) return;
 				</button>
 				<button
 					id="carouselNext"
-					class="absolute right-12 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10"
+					class="absolute right-12 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10 bg-white/90 text-gray-900 shadow-md ring-1 ring-black/10 hover:bg-white hover:text-gray-950 dark:bg-black/50 dark:text-white dark:ring-transparent dark:hover:bg-black/70 dark:hover:text-white"
 					title="Next image"
 					aria-label="Next image"
 				>
@@ -334,7 +353,7 @@ if (!initialImage) return;
 		{/* Zoom button */}
 		<button
 			id="expandImageBtn"
-			class="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10 focus:outline-none select-none"
+			class="absolute top-2 right-2 w-8 h-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-0 z-10 focus:outline-none select-none bg-white/90 text-gray-900 shadow-md ring-1 ring-black/10 hover:bg-white hover:text-gray-950 dark:bg-black/50 dark:text-white dark:ring-transparent dark:hover:bg-black/70 dark:hover:text-white [&_svg]:text-current"
 			title="View full image"
 			aria-label="View full image"
 		>
@@ -354,7 +373,7 @@ if (!initialImage) return;
 						"carousel-dot w-2 h-2 rounded-full transition-all duration-200",
 						idx === initialVizIndex
 							? "bg-amber-500 dark:bg-amber-400 w-4"
-							: "bg-gray-400 dark:bg-gray-600 hover:bg-gray-500",
+							: "bg-neutral-800/85 hover:bg-neutral-700 dark:bg-gray-600 dark:hover:bg-gray-500",
 					]}
 					data-dot-index={idx}
 					aria-label={`Go to image ${idx + 1}`}
@@ -385,12 +404,12 @@ if (!initialImage) return;
 			class="fixed z-10 top-[max(1rem,env(safe-area-inset-top))] right-[max(1rem,env(safe-area-inset-right))]"
 		>
 			<button
-				class="w-12 h-12 inline-flex items-center justify-center text-white hover:text-gray-300 focus:outline-none"
+				class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-md ring-1 ring-black/10 hover:bg-white hover:text-gray-950 focus:outline-none sm:h-12 sm:w-12 dark:bg-black/45 dark:text-white dark:ring-white/15 dark:hover:bg-black/60 dark:hover:text-white"
 				aria-label="Close"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-8 w-8"
+					class="h-6 w-6 sm:h-8 sm:w-8"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -410,7 +429,7 @@ if (!initialImage) return;
 			<>
 				<button
 					id="modalPrev"
-					class="fixed top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 p-0 text-white transition-colors duration-200 hover:bg-white/30 left-[max(1rem,env(safe-area-inset-left))]"
+					class="fixed top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 p-0 text-gray-900 shadow-md ring-1 ring-black/10 transition-colors duration-200 hover:bg-white hover:text-gray-950 sm:h-12 sm:w-12 dark:bg-white/15 dark:text-white dark:ring-transparent dark:hover:bg-white/30 left-[max(1rem,env(safe-area-inset-left))]"
 					title="Previous image"
 					aria-label="Previous image"
 				>
@@ -420,7 +439,7 @@ if (!initialImage) return;
 				</button>
 				<button
 					id="modalNext"
-					class="fixed top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 p-0 text-white transition-colors duration-200 hover:bg-white/30 right-[max(1rem,env(safe-area-inset-right))]"
+					class="fixed top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 p-0 text-gray-900 shadow-md ring-1 ring-black/10 transition-colors duration-200 hover:bg-white hover:text-gray-950 sm:h-12 sm:w-12 dark:bg-white/15 dark:text-white dark:ring-transparent dark:hover:bg-white/30 right-[max(1rem,env(safe-area-inset-right))]"
 					title="Next image"
 					aria-label="Next image"
 				>
@@ -492,48 +511,56 @@ if (!initialImage) return;
 					</a>
 				)}
 
-			<div class="fixed left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-3 py-2 backdrop-blur-sm bottom-[max(1rem,env(safe-area-inset-bottom))]">
-				<button
-					id="zoomOutBtn"
-					type="button"
-					class="h-9 w-9 rounded-full bg-white/15 hover:bg-white/30 text-white text-xl leading-none disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white/15"
-					aria-label="Zoom out"
-					title="Zoom out"
-				>
-					-
-				</button>
-				<button
-					id="zoomResetBtn"
-					type="button"
-					class="h-9 rounded-full bg-white/15 hover:bg-white/30 text-white text-xs px-3 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white/15"
-					aria-label="Reset zoom"
-					title="Reset zoom"
-				>
-					Reset
-				</button>
-				<button
-					id="zoomInBtn"
-					type="button"
-					class="h-9 w-9 rounded-full bg-white/15 hover:bg-white/30 text-white text-xl leading-none disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white/15"
-					aria-label="Zoom in"
-					title="Zoom in"
-				>
-					+
-				</button>
+			<div
+				id="vizModalBottomDock"
+				class="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1.5 sm:gap-2"
+			>
+				<div class="flex items-center gap-2 rounded-full bg-white/90 px-3 py-2 shadow-md ring-1 ring-black/10 backdrop-blur-sm dark:bg-black/50 dark:ring-transparent">
+					<button
+						id="zoomOutBtn"
+						type="button"
+						class="h-9 w-9 rounded-full bg-black/10 text-gray-900 text-xl leading-none hover:bg-black/15 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-black/10 dark:bg-white/15 dark:text-white dark:hover:bg-white/30 dark:disabled:hover:bg-white/15"
+						aria-label="Zoom out"
+						title="Zoom out"
+					>
+						-
+					</button>
+					<button
+						id="zoomResetBtn"
+						type="button"
+						class="h-9 rounded-full bg-black/10 text-gray-900 text-xs px-3 hover:bg-black/15 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-black/10 dark:bg-white/15 dark:text-white dark:hover:bg-white/30 dark:disabled:hover:bg-white/15"
+						aria-label="Reset zoom"
+						title="Reset zoom"
+					>
+						Reset
+					</button>
+					<button
+						id="zoomInBtn"
+						type="button"
+						class="h-9 w-9 rounded-full bg-black/10 text-gray-900 text-xl leading-none hover:bg-black/15 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-black/10 dark:bg-white/15 dark:text-white dark:hover:bg-white/30 dark:disabled:hover:bg-white/15"
+						aria-label="Zoom in"
+						title="Zoom in"
+					>
+						+
+					</button>
+				</div>
 			</div>
 			{/* Modal dots */}
 			{isCarousel && (
 				<div
 					id="modalDots"
-					class="fixed bottom-[4.75rem] left-1/2 -translate-x-1/2 z-20 flex justify-center gap-2.5"
+					class:list={[
+						"fixed left-1/2 -translate-x-1/2 z-20 flex justify-center gap-2.5",
+						hasSvg ? "viz-modal-dots" : "bottom-[4.75rem]",
+					]}
 				>
 					{images.map((_, idx) => (
 						<button
 							class:list={[
 								"modal-dot w-2.5 h-2.5 rounded-full transition-all duration-200",
 								idx === 0
-									? "bg-amber-400 w-5"
-									: "bg-white/40 hover:bg-white/60",
+									? "bg-amber-500 dark:bg-amber-400 w-5"
+									: "bg-neutral-800/85 hover:bg-neutral-700 dark:bg-white/40 dark:hover:bg-white/60",
 							]}
 							data-modal-dot-index={idx}
 							aria-label={`Go to image ${idx + 1}`}
@@ -542,6 +569,131 @@ if (!initialImage) return;
 				</div>
 			)}
 		</div>
+
+		{/* Diagram appearance: top-left, after modal viewport so it stacks above the full-screen layer; visible whenever viz modal is open */}
+		{hasSvg && (
+			<div
+				id="vizImageModeHost"
+				class="fixed z-[100] top-[max(1rem,env(safe-area-inset-top))] left-[max(1rem,env(safe-area-inset-left))] pointer-events-none"
+			>
+				<div class="pointer-events-auto relative">
+					<button
+						id="vizImageModeTrigger"
+						type="button"
+						class="viz-mode-trigger flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-md ring-1 ring-black/10 hover:bg-white hover:text-gray-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/90 sm:h-12 sm:w-12 dark:bg-black/45 dark:text-white dark:ring-white/15 dark:hover:bg-black/60 dark:hover:text-white"
+						aria-haspopup="listbox"
+						aria-expanded="false"
+						aria-controls="vizImageModePopover"
+						title="Diagram appearance"
+					>
+						<span class="sr-only">Diagram appearance</span>
+						<svg
+							data-viz-icon="light"
+							class="viz-mode-trigger-icon h-5 w-5 sm:h-7 sm:w-7"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+							/>
+						</svg>
+						<svg
+							data-viz-icon="dark"
+							class="viz-mode-trigger-icon hidden h-5 w-5 sm:h-7 sm:w-7"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+							/>
+						</svg>
+						<svg
+							data-viz-icon="thermal"
+							class="viz-mode-trigger-icon hidden h-5 w-5 sm:h-7 sm:w-7"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M8 5h8M6 9h12M6 13h12M6 17h12M6 21h12" />
+						</svg>
+					</button>
+					<div
+						id="vizImageModePopover"
+						class="viz-mode-popover absolute left-0 top-[calc(100%+0.35rem)] z-[110] flex w-[min(12.5rem,calc(100vw-1.25rem))] flex-col gap-0.5 rounded-lg border border-gray-200 bg-white/95 p-0.5 shadow-lg ring-1 ring-black/5 sm:w-[min(15rem,calc(100vw-1.5rem))] sm:p-1 dark:border-gray-600 dark:bg-gray-900/95 dark:ring-white/10"
+						role="listbox"
+						aria-label="Diagram appearance"
+						hidden
+					>
+						<button
+							type="button"
+							role="option"
+							data-viz-mode="light"
+							class="viz-mode-btn flex w-full items-start gap-1.5 rounded-md px-1.5 py-1.5 text-left text-gray-800 transition-colors hover:bg-gray-100 sm:gap-2 sm:px-2 sm:py-2 dark:text-gray-100 dark:hover:bg-gray-800"
+							aria-selected="false"
+						>
+							<span class="mt-0.5 shrink-0 text-gray-600 dark:text-gray-400" aria-hidden="true">
+								<svg class="h-4 w-4 sm:h-5 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+								</svg>
+							</span>
+							<span class="min-w-0 flex flex-col gap-0.5">
+								<span class="text-[11px] font-semibold leading-tight sm:text-xs">Light</span>
+								<span class="text-[9px] font-normal leading-snug text-gray-600 dark:text-gray-400 sm:text-[10px]">Light background</span>
+							</span>
+						</button>
+						<button
+							type="button"
+							role="option"
+							data-viz-mode="dark"
+							class="viz-mode-btn flex w-full items-start gap-1.5 rounded-md px-1.5 py-1.5 text-left text-gray-800 transition-colors hover:bg-gray-100 sm:gap-2 sm:px-2 sm:py-2 dark:text-gray-100 dark:hover:bg-gray-800"
+							aria-selected="false"
+						>
+							<span class="mt-0.5 shrink-0 text-gray-600 dark:text-gray-400" aria-hidden="true">
+								<svg class="h-4 w-4 sm:h-5 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+								</svg>
+							</span>
+							<span class="min-w-0 flex flex-col gap-0.5">
+								<span class="text-[11px] font-semibold leading-tight sm:text-xs">Dark</span>
+								<span class="text-[9px] font-normal leading-snug text-gray-600 dark:text-gray-400 sm:text-[10px]">Original colors</span>
+							</span>
+						</button>
+						<button
+							type="button"
+							role="option"
+							data-viz-mode="thermal"
+							class="viz-mode-btn flex w-full items-start gap-1.5 rounded-md px-1.5 py-1.5 text-left text-gray-800 transition-colors hover:bg-gray-100 sm:gap-2 sm:px-2 sm:py-2 dark:text-gray-100 dark:hover:bg-gray-800"
+							aria-selected="false"
+						>
+							<span class="mt-0.5 shrink-0 text-gray-600 dark:text-gray-400" aria-hidden="true">
+								<svg class="h-4 w-4 sm:h-5 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M8 5h8M6 9h12M6 13h12M6 17h12M6 21h12" />
+								</svg>
+							</span>
+							<span class="min-w-0 flex flex-col gap-0.5">
+								<span class="text-[11px] font-semibold leading-tight sm:text-xs">Thermal</span>
+								<span class="text-[9px] font-normal leading-snug text-gray-600 dark:text-gray-400 sm:text-[10px]">B&amp;W print</span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		)}
 	</dialog>
 	</figure>
 )}
@@ -564,6 +716,167 @@ if (!initialImage) return;
 		let savedViewportContent: string | null = null;
 
 		if (!figure) return;
+
+		// --- SVG diagram color mode (Light / Dark / Thermal) — persisted in localStorage when user picks ---
+		const VIZ_MODE_KEY = "vizImageMode";
+		const vizModeHost = document.getElementById("vizImageModeHost");
+		const vizModeTrigger = document.getElementById("vizImageModeTrigger");
+		const vizModePopover = document.getElementById("vizImageModePopover");
+
+		const setVizModePopoverOpen = (open: boolean) => {
+			if (vizModePopover) {
+				vizModePopover.hidden = !open;
+			}
+			if (vizModeTrigger) {
+				vizModeTrigger.setAttribute("aria-expanded", open ? "true" : "false");
+			}
+		};
+
+		const syncVizModeUI = () => {
+			const mode =
+				document.documentElement.getAttribute("data-viz-image-mode") || "dark";
+			vizModePopover?.querySelectorAll<HTMLButtonElement>("[data-viz-mode]").forEach((btn) => {
+				const active = btn.dataset.vizMode === mode;
+				btn.setAttribute("aria-selected", active ? "true" : "false");
+			});
+			vizModeTrigger
+				?.querySelectorAll("[data-viz-icon]")
+				.forEach((icon) => {
+					icon.classList.toggle("hidden", icon.getAttribute("data-viz-icon") !== mode);
+				});
+		};
+
+		const applyVizModeFromStorageOrTheme = () => {
+			let s = localStorage.getItem(VIZ_MODE_KEY);
+			if (s === "print") {
+				localStorage.setItem(VIZ_MODE_KEY, "thermal");
+				s = "thermal";
+			}
+			if (s === "light" || s === "dark" || s === "thermal") {
+				document.documentElement.setAttribute("data-viz-image-mode", s);
+			} else {
+				const themeMode = document.documentElement.classList.contains("dark")
+					? "dark"
+					: "light";
+				document.documentElement.setAttribute("data-viz-image-mode", themeMode);
+			}
+			syncVizModeUI();
+		};
+
+		applyVizModeFromStorageOrTheme();
+
+		const gvPrint = globalThis as typeof globalThis & {
+			__discourseVizPrintSync?: boolean;
+		};
+		if (!gvPrint.__discourseVizPrintSync) {
+			gvPrint.__discourseVizPrintSync = true;
+			window.addEventListener("beforeprint", () => {
+				try {
+					let s = localStorage.getItem(VIZ_MODE_KEY);
+					if (s === "print") {
+						localStorage.setItem(VIZ_MODE_KEY, "thermal");
+						s = "thermal";
+					}
+					if (s === "light" || s === "dark" || s === "thermal") {
+						document.documentElement.setAttribute("data-viz-image-mode", s);
+					} else {
+						const themeMode = document.documentElement.classList.contains("dark")
+							? "dark"
+							: "light";
+						document.documentElement.setAttribute("data-viz-image-mode", themeMode);
+					}
+				} catch {
+					/* localStorage unavailable */
+				}
+			});
+		}
+
+		if (vizModeHost && vizModeTrigger && vizModePopover) {
+			if (!figure.dataset.vizModeDelegateBound) {
+				figure.dataset.vizModeDelegateBound = "1";
+				figure.addEventListener("click", (e) => {
+					const t = (e.target as Element | null)?.closest?.("[data-viz-mode]");
+					if (!t || !figure.contains(t)) return;
+					const m = t.getAttribute("data-viz-mode");
+					if (m === "light" || m === "dark" || m === "thermal") {
+						localStorage.setItem(VIZ_MODE_KEY, m);
+						document.documentElement.setAttribute("data-viz-image-mode", m);
+						syncVizModeUI();
+						setVizModePopoverOpen(false);
+					}
+				});
+			}
+			if (!figure.dataset.vizModePopoverBound) {
+				figure.dataset.vizModePopoverBound = "1";
+				vizModeTrigger.addEventListener("click", (e) => {
+					e.stopPropagation();
+					const isOpen = vizModePopover && !vizModePopover.hidden;
+					setVizModePopoverOpen(!isOpen);
+				});
+			}
+		}
+
+		const gPopover = globalThis as typeof globalThis & {
+			__discourseVizModePopoverDoc?: boolean;
+		};
+		if (!gPopover.__discourseVizModePopoverDoc) {
+			gPopover.__discourseVizModePopoverDoc = true;
+			const closeVizModePopoverFromDoc = () => {
+				const pop = document.getElementById("vizImageModePopover");
+				const tr = document.getElementById("vizImageModeTrigger");
+				if (pop) pop.hidden = true;
+				tr?.setAttribute("aria-expanded", "false");
+			};
+			/* Capture + pointerdown: closes before bubble handlers; fixes menu sticking open */
+			document.addEventListener(
+				"pointerdown",
+				(e) => {
+					const pop = document.getElementById("vizImageModePopover");
+					if (!pop || pop.hidden) return;
+					const host = document.getElementById("vizImageModeHost");
+					if (host?.contains(e.target as Node)) return;
+					closeVizModePopoverFromDoc();
+				},
+				true,
+			);
+			document.addEventListener("keydown", (e) => {
+				if (e.key !== "Escape") return;
+				const pop = document.getElementById("vizImageModePopover");
+				if (!pop || pop.hidden) return;
+				closeVizModePopoverFromDoc();
+			});
+		}
+
+		const g = globalThis as typeof globalThis & {
+			__discourseVizThemeHook?: boolean;
+		};
+		if (!g.__discourseVizThemeHook) {
+			g.__discourseVizThemeHook = true;
+			document.addEventListener("themeChanged", () => {
+				let pinned = localStorage.getItem(VIZ_MODE_KEY);
+				if (pinned === "print") {
+					localStorage.setItem(VIZ_MODE_KEY, "thermal");
+					pinned = "thermal";
+				}
+				if (pinned === "light" || pinned === "dark" || pinned === "thermal") return;
+				const themeMode = document.documentElement.classList.contains("dark")
+					? "dark"
+					: "light";
+				document.documentElement.setAttribute("data-viz-image-mode", themeMode);
+				syncVizModeUI();
+			});
+			window.addEventListener("storage", (e: StorageEvent) => {
+				if (e.key !== VIZ_MODE_KEY) return;
+				let v = localStorage.getItem(VIZ_MODE_KEY);
+				if (v === "print") {
+					localStorage.setItem(VIZ_MODE_KEY, "thermal");
+					v = "thermal";
+				}
+				if (v !== "light" && v !== "dark" && v !== "thermal") return;
+				document.documentElement.setAttribute("data-viz-image-mode", v);
+				syncVizModeUI();
+			});
+		}
 
 		// --- Carousel logic ---
 		const isCarousel = figure.dataset.carousel === "true";
@@ -789,11 +1102,15 @@ if (!initialImage) return;
 			}
 			// Update modal dots
 			modalDots.forEach((dot, i) => {
-				dot.classList.toggle("bg-amber-400", i === index);
-				dot.classList.toggle("w-5", i === index);
-				dot.classList.toggle("bg-white/40", i !== index);
-				dot.classList.toggle("hover:bg-white/60", i !== index);
-				dot.classList.toggle("w-2.5", i !== index);
+				const active = i === index;
+				dot.classList.toggle("bg-amber-500", active);
+				dot.classList.toggle("dark:bg-amber-400", active);
+				dot.classList.toggle("w-5", active);
+				dot.classList.toggle("bg-neutral-800/85", !active);
+				dot.classList.toggle("dark:bg-white/40", !active);
+				dot.classList.toggle("hover:bg-neutral-700", !active);
+				dot.classList.toggle("dark:hover:bg-white/60", !active);
+				dot.classList.toggle("w-2.5", !active);
 			});
 			resetZoom();
 		}
@@ -831,9 +1148,10 @@ if (!initialImage) return;
 				dot.classList.toggle("bg-amber-500", i === index);
 				dot.classList.toggle("dark:bg-amber-400", i === index);
 				dot.classList.toggle("w-4", i === index);
-				dot.classList.toggle("bg-gray-400", i !== index);
+				dot.classList.toggle("bg-neutral-800/85", i !== index);
 				dot.classList.toggle("dark:bg-gray-600", i !== index);
-				dot.classList.toggle("hover:bg-gray-500", i !== index);
+				dot.classList.toggle("hover:bg-neutral-700", i !== index);
+				dot.classList.toggle("dark:hover:bg-gray-500", i !== index);
 				dot.classList.toggle("w-2", i !== index);
 			});
 
@@ -1137,6 +1455,49 @@ if (!initialImage) return;
 		filter: brightness(0.92);
 	}
 
+	/*
+	 * SVG diagram colors: data-viz-image-mode on <html> (set by inline script + switcher).
+	 * light / dark follow site theme by default until user sets vizImageMode in localStorage.
+	 * thermal = invert + grayscale + punch (near-white paper, strong ink for labels).
+	 */
+	:global(html) {
+		--discourse-viz-filter-light: invert(1) hue-rotate(180deg) saturate(0.88) contrast(1.06);
+		--discourse-viz-filter-thermal: invert(1) grayscale(1) contrast(1.2) brightness(1.14);
+	}
+
+	:global(html[data-viz-image-mode="light"]) #discourseImageFigure img.svg-image,
+	:global(html[data-viz-image-mode="light"]) #fullSvgObject {
+		filter: var(--discourse-viz-filter-light);
+	}
+
+	:global(html[data-viz-image-mode="dark"]) #discourseImageFigure img.svg-image,
+	:global(html[data-viz-image-mode="dark"]) #fullSvgObject {
+		filter: none;
+	}
+
+	:global(html[data-viz-image-mode="thermal"]) #discourseImageFigure img.svg-image,
+	:global(html[data-viz-image-mode="thermal"]) #fullSvgObject,
+	:global(html[data-viz-image-mode="print"]) #discourseImageFigure img.svg-image,
+	:global(html[data-viz-image-mode="print"]) #fullSvgObject {
+		filter: var(--discourse-viz-filter-thermal);
+	}
+
+	.viz-mode-btn[aria-selected="true"] {
+		background-color: rgb(251 191 36 / 0.22);
+		color: rgb(120 53 15);
+		box-shadow: 0 0 0 1px rgb(245 158 11 / 0.45);
+	}
+	:global(.dark) .viz-mode-btn[aria-selected="true"] {
+		background-color: rgb(251 191 36 / 0.18);
+		color: rgb(254 243 199);
+		box-shadow: 0 0 0 1px rgb(251 191 36 / 0.35);
+	}
+
+	/* Tailwind `flex` can fight the native [hidden] box; force dismiss when closed */
+	#vizImageModePopover[hidden] {
+		display: none !important;
+	}
+
 	.image-frame,
 	.image-frame img,
 	.image-frame object {
@@ -1147,7 +1508,8 @@ if (!initialImage) return;
 	#expandImageBtn,
 	#carouselPrev,
 	#carouselNext,
-	.carousel-dot {
+	.carousel-dot,
+	.viz-mode-trigger {
 		cursor: pointer;
 	}
 
@@ -1172,7 +1534,20 @@ if (!initialImage) return;
 		color: rgb(255, 255, 255) !important;
 	}
 
+	/* Carousel dots above zoom dock (diagram mode moved to top-left) */
+	#modalDots.viz-modal-dots {
+		bottom: max(5.75rem, env(safe-area-inset-bottom, 0px));
+	}
+	@media (min-width: 640px) {
+		#modalDots.viz-modal-dots {
+			bottom: max(5rem, env(safe-area-inset-bottom, 0px));
+		}
+	}
+
 	@media print {
+		/* Do not set print-color-adjust on <html> — it forces the whole page to print like the web UI.
+		   Viz filters + exact color are scoped to .discourse-image / PrintFormatter slices only. */
+
 		:global(.discourse-image-block) {
 			break-before: auto !important;
 			page-break-before: auto !important;
@@ -1245,6 +1620,38 @@ if (!initialImage) return;
 			width: 100% !important;
 			height: auto !important;
 			margin: 0 auto;
+		}
+
+		/* Match on-screen diagram mode when printing inline SVG (browser support varies) */
+		:global(html[data-viz-image-mode="light"]) .discourse-image:not(.hidden) .svg-print :global(svg) {
+			filter: var(--discourse-viz-filter-light) !important;
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+		:global(html[data-viz-image-mode="thermal"]) .discourse-image:not(.hidden) .svg-print :global(svg),
+		:global(html[data-viz-image-mode="print"]) .discourse-image:not(.hidden) .svg-print :global(svg) {
+			filter: var(--discourse-viz-filter-thermal) !important;
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+		:global(html[data-viz-image-mode="dark"]) .discourse-image:not(.hidden) .svg-print :global(svg) {
+			filter: none !important;
+		}
+
+		/* Screen raster path: <img class="svg-image"> — same filters as on screen */
+		:global(html[data-viz-image-mode="light"]) .discourse-image:not(.hidden) img.svg-image {
+			filter: var(--discourse-viz-filter-light) !important;
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+		:global(html[data-viz-image-mode="thermal"]) .discourse-image:not(.hidden) img.svg-image,
+		:global(html[data-viz-image-mode="print"]) .discourse-image:not(.hidden) img.svg-image {
+			filter: var(--discourse-viz-filter-thermal) !important;
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+		:global(html[data-viz-image-mode="dark"]) .discourse-image:not(.hidden) img.svg-image {
+			filter: none !important;
 		}
 
 		/* If inline SVG markup is unavailable, render at full width */

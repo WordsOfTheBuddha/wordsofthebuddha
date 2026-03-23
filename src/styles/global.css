@@ -354,3 +354,26 @@ p.paragraph-highlight {
 	font-size: 1.3rem;
 	line-height: 1.85;
 }
+
+/* Paper-style print: override web theme bg (incl. dark/cream) and decorative body::before */
+@media print {
+	html,
+	body {
+		background: #fff !important;
+		background-color: #fff !important;
+		color: #000 !important;
+	}
+	body::before {
+		display: none !important;
+		content: none !important;
+	}
+	body {
+		font-family:
+			"Times New Roman",
+			Times,
+			Georgia,
+			"Liberation Serif",
+			serif !important;
+		min-height: 0 !important;
+	}
+}

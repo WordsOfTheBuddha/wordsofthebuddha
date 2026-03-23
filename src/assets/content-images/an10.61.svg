@@ -7,11 +7,11 @@
             <stop offset="100%" stop-color="#080c1a" />
         </linearGradient>
 
-        <!-- Ignorance radial glow (deep ocean) -->
+        <!-- Ignorance radial glow (deep ocean) — soft for light-mode filter -->
         <radialGradient id="ignGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#7060a0" stop-opacity="0.5" />
-            <stop offset="20%" stop-color="#604888" stop-opacity="0.22" />
-            <stop offset="50%" stop-color="#503870" stop-opacity="0.08" />
+            <stop offset="0%" stop-color="#7060a0" stop-opacity="0.25" />
+            <stop offset="20%" stop-color="#604888" stop-opacity="0.11" />
+            <stop offset="50%" stop-color="#503870" stop-opacity="0.04" />
             <stop offset="100%" stop-color="#402858" stop-opacity="0" />
         </radialGradient>
 
@@ -265,7 +265,7 @@
     <!-- ============ IGNORANCE — THE GREAT OCEAN ============ -->
     <g>
         <!-- Very wide outer fog haze (ocean vastness) -->
-        <ellipse cx="460" cy="800" rx="340" ry="100" fill="url(#ignGlow)" />
+        <ellipse cx="460" cy="800" rx="340" ry="100" fill="url(#ignGlow)" opacity="0.85" />
 
         <!-- Ocean body (wide dark fill beneath the surface) -->
         <rect x="120" y="760" width="680" height="90" rx="0" fill="url(#oceanDepth)" opacity="0.6" />
@@ -301,7 +301,7 @@
         </g>
 
         <!-- Far-reaching mist (abyss feel) -->
-        <g opacity="0.08" filter="url(#glow3)">
+        <g opacity="0.05">
             <ellipse cx="280" cy="800" rx="60" ry="22" fill="#9080b0" />
             <ellipse cx="640" cy="800" rx="60" ry="22" fill="#9080b0" />
             <ellipse cx="460" cy="830" rx="80" ry="20" fill="#8878a8" />
@@ -311,18 +311,18 @@
 
         <!-- Outer ocean boundary (wide ellipse) -->
         <ellipse cx="460" cy="795" rx="200" ry="52" fill="none" stroke="#8070a0" stroke-width="1.5"
-            stroke-opacity="0.2" filter="url(#glow2)" />
+            stroke-opacity="0.12" />
         <!-- Mid ocean ring -->
         <ellipse cx="460" cy="795" rx="150" ry="42" fill="none" stroke="#7060a0" stroke-width="1"
-            stroke-opacity="0.15" filter="url(#glow1)" />
+            stroke-opacity="0.09" />
         <!-- Inner deep ocean -->
         <ellipse cx="460" cy="795" rx="110" ry="34" fill="#5040a0" fill-opacity="0.05"
-            stroke="#8070a0" stroke-width="1.8" stroke-opacity="0.4" filter="url(#glow1)" />
+            stroke="#8070a0" stroke-width="1.8" stroke-opacity="0.28" />
 
         <!-- Text -->
         <text x="460" y="790" text-anchor="middle" fill="#a090c0"
             font-family="Georgia,'Times New Roman',serif" font-size="18" font-weight="bold"
-            letter-spacing="3" filter="url(#glow1)">IGNORANCE</text>
+            letter-spacing="3">IGNORANCE</text>
         <text x="460" y="812" text-anchor="middle" fill="#8070a0"
             font-family="Georgia,'Times New Roman',serif" font-size="13"
             font-style="italic">avijjā</text>

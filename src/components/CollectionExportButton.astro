@@ -274,10 +274,22 @@ import { transformId } from "../utils/transformId";
 					imagesQuery = "";
 				}
 
+				// Match diagram color mode from discourse viz (localStorage `vizImageMode`)
+				let vizQuery = "";
+				try {
+					let v = localStorage.getItem("vizImageMode");
+					if (v === "print") v = "thermal";
+					if (v === "light" || v === "dark" || v === "thermal") {
+						vizQuery = `&viz=${encodeURIComponent(v)}`;
+					}
+				} catch {
+					vizQuery = "";
+				}
+
 				const response = await fetch(
 					`/api/export/${slug}?date=${encodeURIComponent(
 						date,
-					)}${imagesQuery}`,
+					)}${imagesQuery}${vizQuery}`,
 				);
 
 				if (!response.ok) {

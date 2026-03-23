@@ -7,11 +7,11 @@
             <stop offset="100%" stop-color="#121a28" />
         </linearGradient>
 
-        <!-- Liberation radial glow (golden ocean of light) -->
+        <!-- Liberation radial glow (golden ocean of light) — soft for light-mode filter -->
         <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.5" />
-            <stop offset="20%" stop-color="#daa520" stop-opacity="0.2" />
-            <stop offset="50%" stop-color="#c89420" stop-opacity="0.07" />
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.22" />
+            <stop offset="20%" stop-color="#daa520" stop-opacity="0.09" />
+            <stop offset="50%" stop-color="#c89420" stop-opacity="0.04" />
             <stop offset="100%" stop-color="#b88820" stop-opacity="0" />
         </radialGradient>
 
@@ -282,7 +282,7 @@
     <!-- ============ TRUE KNOWLEDGE & LIBERATION — THE GOLDEN OCEAN ============ -->
     <g>
         <!-- Very wide outer golden haze -->
-        <ellipse cx="460" cy="810" rx="340" ry="90" fill="url(#libGlow)" />
+        <ellipse cx="460" cy="810" rx="340" ry="90" fill="url(#libGlow)" opacity="0.85" />
 
         <!-- Ocean body (wide warm fill beneath the surface) -->
         <rect x="120" y="775" width="680" height="80" rx="0" fill="url(#oceanGold)" opacity="0.6" />
@@ -328,21 +328,21 @@
 
         <!-- Outer golden boundary -->
         <ellipse cx="460" cy="805" rx="200" ry="48" fill="none" stroke="#daa520" stroke-width="1.5"
-            stroke-opacity="0.2" filter="url(#glow2)" />
+            stroke-opacity="0.12" />
         <!-- Mid ring -->
         <ellipse cx="460" cy="805" rx="150" ry="38" fill="none" stroke="#c8a020" stroke-width="1"
-            stroke-opacity="0.15" filter="url(#glow1)" />
+            stroke-opacity="0.09" />
         <!-- Inner radiant core -->
-        <ellipse cx="460" cy="805" rx="110" ry="30" fill="#ffd700" fill-opacity="0.04"
-            stroke="#daa520" stroke-width="1.8" stroke-opacity="0.4" filter="url(#glow1)" />
+        <ellipse cx="460" cy="805" rx="110" ry="30" fill="#ffd700" fill-opacity="0.03"
+            stroke="#daa520" stroke-width="1.8" stroke-opacity="0.28" />
 
         <!-- Text -->
         <text x="460" y="798" text-anchor="middle" fill="#ffd700"
             font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold"
-            letter-spacing="2" filter="url(#glow1)">TRUE KNOWLEDGE</text>
+            letter-spacing="2">TRUE KNOWLEDGE</text>
         <text x="460" y="816" text-anchor="middle" fill="#e8c040"
             font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold"
-            letter-spacing="2" filter="url(#glow1)">&amp; LIBERATION</text>
+            letter-spacing="2">&amp; LIBERATION</text>
         <text x="460" y="835" text-anchor="middle" fill="#b8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="13"
             font-style="italic">vijjāvimutti</text>

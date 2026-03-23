@@ -25,10 +25,10 @@
             <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
         </linearGradient>
 
-        <!-- Culmination radial glow -->
+        <!-- Culmination radial glow (soft green halo; calmer under light-mode filter) -->
         <radialGradient id="cessationGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#306050" stop-opacity="0.18" />
-            <stop offset="60%" stop-color="#204838" stop-opacity="0.08" />
+            <stop offset="0%" stop-color="#306050" stop-opacity="0.08" />
+            <stop offset="60%" stop-color="#204838" stop-opacity="0.04" />
             <stop offset="100%" stop-color="#183828" stop-opacity="0" />
         </radialGradient>
 
@@ -454,7 +454,7 @@
     <line x1="100" y1="956" x2="820" y2="956" stroke="url(#tierGrad)" stroke-width="0.6"
         opacity="0.5" />
 
-    <g filter="url(#glow1)">
+    <g>
         <text x="460" y="980" text-anchor="middle" fill="#c8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
             letter-spacing="2">THE DEEPER REFLECTION</text>
@@ -579,7 +579,7 @@
         <!-- atammayatā title -->
         <text x="683" y="1122" text-anchor="middle" fill="#d8c060"
             font-family="Georgia,'Times New Roman',serif" font-size="17" font-weight="bold"
-            filter="url(#glow1)">non-identification</text>
+            >non-identification</text>
         <text x="683" y="1144" text-anchor="middle" fill="#a0d0b8"
             font-family="Georgia,'Times New Roman',serif" font-size="14.5"
             >atammayatā</text>
@@ -625,7 +625,7 @@
         stroke-linejoin="round" opacity="0.3" />
 
     <!-- Cessation glow -->
-    <ellipse cx="460" cy="1420" rx="300" ry="60" fill="url(#cessationGlow)" />
+    <ellipse cx="460" cy="1420" rx="300" ry="60" fill="url(#cessationGlow)" opacity="0.85" />
 
     <!-- Cessation box -->
     <g filter="url(#shadowDrop)">
@@ -636,13 +636,10 @@
     <!-- Cessation title -->
     <text x="460" y="1398" text-anchor="middle" fill="#80c0a0"
         font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold"
-        filter="url(#glow1)">Cessation of Perception and What is Felt</text>
+        >Cessation of Perception and What is Felt</text>
     <text x="460" y="1418" text-anchor="middle" fill="#90c0b0"
         font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-style="italic"
         >And having seen with wisdom, mental defilements are completely exhausted</text>
-    <text x="460" y="1436" text-anchor="middle" fill="#507860"
-        font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
-        >saññāvedayitanirodha &#8212; paññāya cassa disvā āsavā parikkhīṇā</text>
     <text x="460" y="1436" text-anchor="middle" fill="#507860"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
         >saññāvedayitanirodha &#8212; paññāya cassa disvā āsavā parikkhīṇā</text>
