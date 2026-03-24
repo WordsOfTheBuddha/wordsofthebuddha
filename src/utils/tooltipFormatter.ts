@@ -6,6 +6,17 @@
  * Includes duplicate term tracking to avoid redundant annotations.
  */
 
+/** Replace heading tags with a normal paragraph whose text is bold (better paste targets). */
+function flattenHeadingsToBoldParagraphs(container: HTMLElement): void {
+	for (const heading of container.querySelectorAll("h1, h2, h3, h4, h5, h6")) {
+		const p = document.createElement("p");
+		const strong = document.createElement("strong");
+		strong.innerHTML = heading.innerHTML;
+		p.appendChild(strong);
+		heading.parentNode?.replaceChild(p, heading);
+	}
+}
+
 export function getFormattedContainer(
 	range: Range,
 	threshold?: number
@@ -134,6 +145,8 @@ export function getFormattedContainer(
 
 		container.appendChild(footnotesDiv);
 	}
+
+	flattenHeadingsToBoldParagraphs(container);
 
 	return container;
 }

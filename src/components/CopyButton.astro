@@ -75,8 +75,9 @@
 		const range = selection.getRangeAt(0);
 		const threshold = getTooltipThreshold();
 		const container = getFormattedContainer(range, threshold);
-		// Wrap the HTML in a div with white-space: pre-wrap so line breaks are preserved.
-		const richText = `<div style="white-space: pre-wrap;">${container.innerHTML}</div>`;
+		// Root div for clipboard HTML; avoid white-space: pre-wrap so paste targets (e.g. Reddit)
+		// do not double spacing with block elements (<p>, etc.).
+		const richText = `<div>${container.innerHTML}</div>`;
 
 		// NEW: Use helper function to generate plain text with extra newlines after paragraphs.
 		let plainText = getPlainTextFromContainer(container);
