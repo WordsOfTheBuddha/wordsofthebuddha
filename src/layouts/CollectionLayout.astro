@@ -7,6 +7,13 @@ import { directoryStructureWithCounts } from "../data/directoryStructureWithCoun
 import ScrollToTop from "../components/ScrollToTop.astro";
 import CollectionNavigation from "../components/CollectionNavigation.astro";
 import CollectionExportButton from "../components/CollectionExportButton.astro";
+import CollectionPdfExportModal from "../components/CollectionPdfExportModal.astro";
+import { getCollectionPdfPreviewMeta } from "../utils/collectionPdfPreviewMeta";
+import {
+	collectionExportHasSvgViz,
+	collectionExportTextFileCount,
+} from "../utils/collectionPdfExportScope";
+import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
 
 interface Props {
 	title: string;
@@ -29,6 +36,22 @@ const {
 const pagePosts: SearchResult[] = await performSearch(searchPattern, {
 	highlight: true,
 });
+
+const pdfPreviewMeta = collectionSlug
+	? getCollectionPdfPreviewMeta(collectionSlug)
+	: null;
+
+const previewHasSvgViz = collectionSlug
+	? await collectionExportHasSvgViz(collectionSlug)
+	: false;
+
+const previewTextFileCount = collectionSlug
+	? await collectionExportTextFileCount(collectionSlug)
+	: 0;
+
+const pdfExportSelectionTree = collectionSlug
+	? await buildPdfExportSelectionTree(collectionSlug)
+	: null;
 
 const hasChildren = children && Object.keys(children).length > 0;
 // Build-time default; client JS will honor ?view=…
@@ -53,7 +76,7 @@ function getContentCount(slug: string): number {
 	const pathParts = currentPath.split("/").filter(Boolean);
 
 	if (directoryStructureWithCounts[slug]?.contentCount !== undefined) {
-		return directoryStructureWithCounts[slug].contentCount;
+		return directoryStructureWithCounts[slug].contentCount ?? 0;
 	}
 
 	if (pathParts.length === 1) {
@@ -71,7 +94,7 @@ function getContentCount(slug: string): number {
 				currentPathCollection?.children?.[slug]?.contentCount !==
 				undefined
 			) {
-				return currentPathCollection.children[slug].contentCount;
+				return currentPathCollection.children[slug].contentCount ?? 0;
 			}
 		}
 	}
@@ -85,7 +108,7 @@ function getContentCount(slug: string): number {
 			parent.children &&
 			parent.children[slug]?.contentCount !== undefined
 		) {
-			return parent.children[slug].contentCount;
+			return parent.children[slug].contentCount ?? 0;
 		}
 	}
 
@@ -101,66 +124,57 @@ function getContentCount(slug: string): number {
 	<main class="container">
 		{
 			hasChildren && (
-				<div class="mb-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
-					<div class="flex w-full items-center justify-between sm:w-auto sm:justify-start">
-						<div class="inline-flex w-fit rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
-							<button
-								type="button"
-								id="view-collections"
-								class={[
-									"px-4 py-1 text-sm rounded-full transition-colors",
-									defaultShowCollections
-										? "bg-primary text-white dark:text-gray-100"
-										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-								].join(" ")}
-							>
-								Collections
-							</button>
-							<button
-								type="button"
-								id="view-discourses"
-								class={[
-									"px-4 py-1 text-sm rounded-full transition-colors",
-									!defaultShowCollections
-										? "bg-primary text-white dark:text-gray-100"
-										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-								].join(" ")}
-							>
-								Discourses
-							</button>
-						</div>
-						{collectionSlug && (
-							<div class="sm:hidden">
-								<CollectionExportButton
-									collectionSlug={collectionSlug}
-								/>
-							</div>
-						)}
-					</div>
-					<div class="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end sm:gap-3">
-						<div
-							id="filter-wrap"
+				<div class="mb-6 grid grid-cols-[minmax(0,1fr)_auto] grid-rows-[auto_auto] gap-x-2 gap-y-2 print:hidden sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:grid-rows-1 sm:items-center sm:gap-x-3 sm:gap-y-0">
+					<div class="col-start-1 row-start-1 inline-flex w-fit shrink-0 rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
+						<button
+							type="button"
+							id="view-collections"
 							class={[
-								"flex min-w-0 flex-1 items-center sm:flex-none",
-								defaultShowCollections ? "hidden" : "",
+								"px-4 py-1 text-sm rounded-full transition-colors",
+								defaultShowCollections
+									? "bg-primary text-white dark:text-gray-100"
+									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
 							].join(" ")}
 						>
-							<div class="relative w-full sm:w-auto">
-								<input
-									type="text"
-									id="client-filter"
-									class="w-full sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
-									placeholder="Filter discourses..."
-								/>
-							</div>
-						</div>
-						{collectionSlug && (
-							<div class="hidden sm:block">
+							Collections
+						</button>
+						<button
+							type="button"
+							id="view-discourses"
+							class={[
+								"px-4 py-1 text-sm rounded-full transition-colors",
+								!defaultShowCollections
+									? "bg-primary text-white dark:text-gray-100"
+									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+							].join(" ")}
+						>
+							Discourses
+						</button>
+					</div>
+					{
+						collectionSlug && (
+							<div class="col-start-2 row-start-1 justify-self-end sm:col-start-3 sm:justify-self-end">
 								<CollectionExportButton
 									collectionSlug={collectionSlug}
 								/>
 							</div>
-						)}
+						)
+					}
+					<div
+						id="filter-wrap"
+						class={[
+							"col-span-2 row-start-2 w-full min-w-0 sm:col-span-1 sm:row-start-1 sm:col-start-2 sm:w-full sm:max-w-none",
+							defaultShowCollections ? "hidden" : "",
+						].join(" ")}
+					>
+						<div class="relative w-full min-w-0">
+							<input
+								type="text"
+								id="client-filter"
+								class="w-full min-w-0 sm:w-full sm:max-w-md px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
+								placeholder="Filter discourses..."
+							/>
+						</div>
 					</div>
 				</div>
 			)
@@ -196,20 +210,24 @@ function getContentCount(slug: string): number {
 
 		{
 			!hasChildren && (
-				<div class="flex items-center justify-between mb-4">
-					<div class="relative">
+				<div class="mb-4 flex flex-wrap items-center justify-between gap-2 print:hidden">
+					<div class="relative min-w-0 flex-1 sm:max-w-xs">
 						<input
 							type="text"
 							id="client-filter"
-							class="w-28 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
+							class="w-full min-w-0 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
 							placeholder="Filter discourses..."
 						/>
 					</div>
-					{collectionSlug && (
-						<CollectionExportButton
-							collectionSlug={collectionSlug}
-						/>
-					)}
+					{
+						collectionSlug && (
+							<div class="shrink-0">
+								<CollectionExportButton
+									collectionSlug={collectionSlug}
+								/>
+							</div>
+						)
+					}
 				</div>
 			)
 		}
@@ -235,6 +253,24 @@ function getContentCount(slug: string): number {
 
 		{collectionSlug && <CollectionNavigation collection={collectionSlug} />}
 	</main>
+
+	{
+		collectionSlug && (
+			<CollectionPdfExportModal
+				collectionSlug={collectionSlug}
+				previewTitle={pdfPreviewMeta?.title ?? title}
+				previewScopeSummary={
+					pdfPreviewMeta?.scopeSummary ??
+					`This export includes ${pagePosts.length} discourses.`
+				}
+				previewTotalTextFiles={previewTextFileCount}
+				previewHasChapters={pdfPreviewMeta?.hasChapters ?? false}
+				previewChapters={pdfPreviewMeta?.chapters ?? []}
+				previewHasSvgViz={previewHasSvgViz}
+				exportSelectionTree={pdfExportSelectionTree}
+			/>
+		)
+	}
 
 	<ScrollToTop />
 </Layout>

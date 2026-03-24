@@ -14,12 +14,21 @@
 
 import { JSDOM } from "jsdom";
 import { Marked, Renderer } from "marked";
+import type { Tokens } from "marked";
 import type { DirectoryStructure } from "../types/directory";
 import { findEntry, findEntriesBySlugPrefix } from "./textApi";
 import { findContentImages } from "./contentImage";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
 import { findSvgSafeCuts, cutsToSlices } from "./svgSafeCuts";
+import {
+	createCombinedMarkdown,
+	formatBlock,
+	parseContent,
+	type ContentPair,
+} from "./contentParser";
+import { getChapterEntryListForPdf } from "./collectionPdfChapterEntries";
+import { discourseSlugFromEntry } from "./collectionPdfExportTree";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -40,6 +49,21 @@ renderer.heading = function (token) {
 	// visual sizing is unchanged.
 	const tagLevel = Math.min(level + 2, 6);
 	return `<h${tagLevel} class="content-h${level}">${text}</h${tagLevel}>\n`;
+};
+
+// Avoid wrapping pre-built polytext paragraphs (same structure as MDContent / mdParser)
+renderer.paragraph = function (this: any, token: Tokens.Paragraph) {
+	const html: string = this.parser?.parseInline
+		? this.parser.parseInline(token.tokens)
+		: ((token as { text?: string }).text ?? "");
+	const t = html.trimStart();
+	if (
+		t.startsWith('<p class="pali-paragraph"') ||
+		t.startsWith('<p class="english-paragraph"')
+	) {
+		return html;
+	}
+	return `<p>${html}</p>`;
 };
 
 export const pdfMarked = new Marked({
@@ -90,6 +114,84 @@ export function mdxBodyToHtml(body: string): string {
 	return pdfMarked.parse(withSpans) as string;
 }
 
+/** Marked HTML for combined Pali+English markdown (same pairing as discourse pages). */
+function polytextMarkdownToHtml(markdown: string): string {
+	const withSpans = convertGlossToSpans(markdown);
+	return pdfMarked.parse(withSpans) as string;
+}
+
+/**
+ * Split layout: one grid row per content pair so English and Pāli stay aligned
+ * (same logical pairing as `data-pair-id` in MDContent — not two independent columns).
+ */
+function buildSplitPdfHtmlFromPairs(pairs: ContentPair[]): string {
+	let pairIndex = 0;
+	const rows: string[] = [];
+
+	for (const pair of pairs) {
+		if (pair.type === "other") {
+			rows.push(
+				`<div class="pdf-poly-row pdf-poly-row-full"><div class="pdf-poly-full">${pair.english}</div></div>`,
+			);
+			continue;
+		}
+
+		if (pair.english.startsWith("#")) {
+			const enRaw = formatBlock(
+				pair.english,
+				false,
+				undefined,
+				undefined,
+				pair.actualParagraphNumber,
+			);
+			const piRaw = pair.pali
+				? formatBlock(
+						pair.pali,
+						true,
+						undefined,
+						undefined,
+						pair.actualParagraphNumber,
+					)
+				: "";
+			rows.push(
+				`<div class="pdf-poly-row pdf-poly-row-heading">
+  <div class="pdf-poly-cell pdf-poly-en">${polytextMarkdownToHtml(enRaw)}</div>
+  <div class="pdf-poly-cell pdf-poly-pi">${piRaw ? polytextMarkdownToHtml(piRaw) : '<div class="pdf-poly-cell-empty"></div>'}</div>
+</div>`,
+			);
+			continue;
+		}
+
+		const idx = pairIndex++;
+		const enRaw = formatBlock(
+			pair.english,
+			false,
+			idx,
+			undefined,
+			pair.actualParagraphNumber,
+		);
+		const piRaw =
+			pair.pali !== undefined
+				? formatBlock(
+						pair.pali,
+						true,
+						idx,
+						undefined,
+						pair.actualParagraphNumber,
+					)
+				: "";
+
+		rows.push(
+			`<div class="pdf-poly-row">
+  <div class="pdf-poly-cell pdf-poly-en">${polytextMarkdownToHtml(enRaw)}</div>
+  <div class="pdf-poly-cell pdf-poly-pi">${piRaw ? polytextMarkdownToHtml(piRaw) : '<div class="pdf-poly-cell-empty"></div>'}</div>
+</div>`,
+		);
+	}
+
+	return `<div class="pdf-poly-split">${rows.join("\n")}</div>`;
+}
+
 // ---------------------------------------------------------------------------
 // Step 4: Server-side tooltip → footnote transformation (jsdom)
 // ---------------------------------------------------------------------------
@@ -99,7 +201,12 @@ export function mdxBodyToHtml(body: string): string {
  * Appends a <section class="footnotes"> at the end of the HTML.
  * Duplicate terms (by text) are de-annotated after first occurrence.
  */
-export function processFootnotes(html: string): string {
+export function processFootnotes(
+	html: string,
+	options?: { includeKeyTermsSection?: boolean },
+): string {
+	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
+
 	const dom = new JSDOM(`<div id="root">${html}</div>`);
 	const { document } = dom.window;
 	const root = document.getElementById("root")!;
@@ -129,7 +236,7 @@ export function processFootnotes(html: string): string {
 	}
 
 	// Append footnote section if there are any long definitions
-	if (notes.length > 0) {
+	if (notes.length > 0 && includeKeyTermsSection) {
 		const section = document.createElement("section");
 		section.className = "footnotes";
 
@@ -234,11 +341,22 @@ export interface CollectionPdf {
 	hasChapters: boolean;
 }
 
+/** When Pali mode is on in the client, collection PDFs mirror interleaved vs split layout. */
+export type PdfPaliOptions = {
+	enabled: boolean;
+	layout: "interleaved" | "split";
+};
+
+/** Options for collection PDF body rendering (passed through fetchCollectionPdfData). */
+export type PdfExportContentOptions = {
+	paliOptions?: PdfPaliOptions;
+	/** When false, glossed terms stay bold in the body but the Key Terms appendix is omitted. Default true. */
+	includeKeyTermsSection?: boolean;
+};
+
 // ---------------------------------------------------------------------------
 // Data fetching
 // ---------------------------------------------------------------------------
-
-const MAX_DISCOURSES = 150; // Guard against accidentally huge collections
 
 function escapeHtml(text: string): string {
 	return text
@@ -252,6 +370,8 @@ function escapeHtml(text: string): string {
 async function fetchDiscourseHtml(
 	slug: string,
 	imageMode: PdfImageMode,
+	paliOptions?: PdfPaliOptions,
+	includeKeyTermsSection = true,
 ): Promise<string> {
 	const entry = await findEntry("en", { slug });
 	if (!entry?.body) return "<p><em>(Content not available)</em></p>";
@@ -391,8 +511,30 @@ async function fetchDiscourseHtml(
 		}
 	}
 
-	let html = mdxBodyToHtml(entry.body);
-	html = processFootnotes(html);
+	let html: string;
+	if (paliOptions?.enabled) {
+		const paliEntry = await findEntry("pli", { slug });
+		const pairs = parseContent(
+			{ body: paliEntry?.body ?? "" },
+			entry,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+		);
+		const layout = paliOptions.layout === "split" ? "split" : "interleaved";
+
+		if (layout === "split") {
+			html = buildSplitPdfHtmlFromPairs(pairs);
+		} else {
+			const combined = createCombinedMarkdown(pairs, true, "interleaved");
+			html = polytextMarkdownToHtml(combined as string);
+		}
+	} else {
+		html = mdxBodyToHtml(entry.body);
+	}
+
+	html = processFootnotes(html, { includeKeyTermsSection });
 	html = processCommentaryNotes(html, (entry.data as any)?.commentary);
 	return `${imageHtml}${html}`;
 }
@@ -401,52 +543,32 @@ async function fetchChapterDiscourses(
 	chapterSlug: string,
 	range: { start: number; end: number } | undefined,
 	imageMode: PdfImageMode,
+	paliOptions?: PdfPaliOptions,
+	includeKeyTermsSection = true,
+	selectedDiscourseSlugs?: Set<string> | null,
 ): Promise<DiscoursePdf[]> {
-	// Range-based chapters like mn1-50, iti28-49:
-	// extract the alphabetic base ("mn", "iti") and filter by number in range.
-	const rangeMatch = /^([a-z]+)(\d+)-(\d+)$/i.exec(chapterSlug);
-
-	let entries: Awaited<ReturnType<typeof findEntriesBySlugPrefix>>;
-	if (rangeMatch) {
-		const base = rangeMatch[1].toLowerCase();
-		const lo = range?.start ?? Number(rangeMatch[2]);
-		const hi = range?.end ?? Number(rangeMatch[3]);
-		// Fetch all entries that start with the base prefix
-		const all = await findEntriesBySlugPrefix("en", base);
-		entries = all.filter((e) => {
-			const slug = ((e.data as any)?.slug || (e as any).slug || "")
-				.trim()
-				.toLowerCase();
-			const numMatch = new RegExp(`^${base}(\\d+)$`).exec(slug);
-			if (!numMatch) return false;
-			const num = Number(numMatch[1]);
-			return num >= lo && num <= hi;
-		});
-	} else {
-		// Numbered chapters (sn1, ud5 …) have discourses like sn1.1, so append dot.
-		// Letter-only top-level collections (ud, kp, dhp …) match with no dot.
-		const prefix = /\d$/.test(chapterSlug)
-			? `${chapterSlug}.`
-			: chapterSlug;
-		entries = await findEntriesBySlugPrefix("en", prefix);
-	}
-
-	const limited = entries.slice(0, MAX_DISCOURSES);
+	const limited = await getChapterEntryListForPdf(chapterSlug, range);
+	const filtered =
+		selectedDiscourseSlugs && selectedDiscourseSlugs.size > 0
+			? limited.filter((entry) =>
+					selectedDiscourseSlugs.has(discourseSlugFromEntry(entry)),
+				)
+			: limited;
 
 	// Render body for each discourse in parallel
 	const discourses = await Promise.all(
-		limited.map(async (entry) => {
+		filtered.map(async (entry) => {
 			const slug = (entry.data as any)?.slug || entry.slug || "";
 			const title = (entry.data as any)?.title || slug;
 			const description = (entry.data as any)?.description || "";
-			const html = await fetchDiscourseHtml(slug, imageMode);
+			const html = await fetchDiscourseHtml(
+				slug,
+				imageMode,
+				paliOptions,
+				includeKeyTermsSection,
+			);
 			return { slug, title, description, html };
 		}),
-	);
-
-	// Natural sort so sn1.9 comes before sn1.10 etc.
-	discourses.sort((a, b) =>
-		a.slug.localeCompare(b.slug, undefined, { numeric: true }),
 	);
 
 	return discourses;
@@ -461,7 +583,12 @@ export async function fetchCollectionPdfData(
 	slug: string,
 	metadata: DirectoryStructure,
 	imageMode: PdfImageMode = "svgPrimaryOnly",
+	options?: PdfExportContentOptions,
+	selectedDiscourseSlugs?: Set<string> | null,
 ): Promise<CollectionPdf> {
+	const paliOptions = options?.paliOptions;
+	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
+
 	const childEntries = metadata.children
 		? Object.entries(metadata.children)
 		: [];
@@ -476,6 +603,9 @@ export async function fetchCollectionPdfData(
 					childSlug,
 					childMeta.range,
 					imageMode,
+					paliOptions,
+					includeKeyTermsSection,
+					selectedDiscourseSlugs,
 				);
 				return {
 					slug: childSlug,
@@ -491,6 +621,9 @@ export async function fetchCollectionPdfData(
 			slug,
 			undefined,
 			imageMode,
+			paliOptions,
+			includeKeyTermsSection,
+			selectedDiscourseSlugs,
 		);
 		chapters = [
 			{
@@ -897,6 +1030,78 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   font-style: italic;
 }
 .discourse-body > p { margin: 0.55em 0; }
+
+/* Pāli + English polytext — match web (MDContent) + verse quote bar (global .verse) */
+.discourse-body .pali-paragraph {
+  font-family: "Gentium Plus", "Times New Roman", Times, Georgia, serif;
+  color: #333;
+  opacity: 0.82;
+  margin-bottom: 0.15em;
+}
+.discourse-body .english-paragraph {
+  font-family: "Times New Roman", Times, Georgia, serif;
+  color: #000;
+  opacity: 1;
+  margin-top: 0.35em;
+  margin-bottom: 0.55em;
+}
+.discourse-body .pali-paragraph + .english-paragraph {
+  margin-top: 0.18em;
+}
+/* English verse: left rule like .verse on the web */
+.discourse-body .english-paragraph.verse {
+  margin: 0.55em 0 0.65em 0;
+  padding-left: 0.55em;
+  border-left: 3pt solid #c5c5c5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+/* Pāli verse: lighter tone, subtle indent (web .verse-basic; no rule) */
+.discourse-body .pali-paragraph.verse-basic {
+  padding-left: 0.2em;
+  margin-bottom: 0.25em;
+}
+.discourse-body .pali-paragraph strong,
+.discourse-body .pali-paragraph b {
+  color: #333;
+  opacity: inherit;
+}
+/* Split: one row per EN/Pāli pair (aligns with web split + data-pair-id) */
+.pdf-poly-split {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+}
+.pdf-poly-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 14pt;
+  align-items: start;
+}
+.pdf-poly-row-full {
+  display: block;
+}
+.pdf-poly-row-full .pdf-poly-full {
+  width: 100%;
+}
+.pdf-poly-cell {
+  min-width: 0;
+}
+.pdf-poly-cell .english-paragraph,
+.pdf-poly-cell .pali-paragraph {
+  margin-top: 0;
+  margin-bottom: 0.35em;
+}
+.pdf-poly-cell .english-paragraph.verse {
+  margin-top: 0.25em;
+  margin-bottom: 0.45em;
+}
+.pdf-poly-cell-empty {
+  min-height: 0.5em;
+}
+.pdf-poly-row-heading .pdf-poly-cell {
+  margin-bottom: 0.2em;
+}
 
 /* Discourse header images (SVG diagrams, etc.) */
 .pdf-discourse-image {

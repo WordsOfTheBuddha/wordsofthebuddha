@@ -7,8 +7,7 @@
  * Usage:
  *   GET /api/export/snp2
  *   GET /api/export/sn1-11
- *   GET /api/export/dhp
- *   GET /api/export/mn1-50
+ *   POST /api/export/sn1-11  (JSON body — subset export; see POST handler)
  *
  * Query params (optional):
  *   threshold  – integer, max tooltip def length before footnoting (default: 40)
@@ -28,10 +27,19 @@ import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
 	buildPdfHtml,
+	type PdfExportContentOptions,
+	type PdfPaliOptions,
 	type PdfVizImageMode,
 } from "../../../utils/pdfRenderer";
+
+import {
+	buildPdfExportSelectionTree,
+	flattenExportTreeSlugs,
+} from "../../../utils/collectionPdfExportTree";
+import { normalizeDiscourseIdForContentImages } from "../../../utils/contentImage";
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
+import type { DirectoryStructure } from "../../../types/directory";
 import type { Browser } from "playwright-core";
 import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
@@ -102,56 +110,108 @@ async function launchBrowser(): Promise<Browser> {
 const MAX_CONCURRENT = 2;
 let activeJobs = 0;
 
-export const GET: APIRoute = async ({ params, url }) => {
-	const slug = params.slug as string | undefined;
+type PdfImageMode = "none" | "svgPrimaryOnly" | "svgAll";
 
-	if (!slug) {
-		return errorResponse("Missing collection slug", 400);
+type PdfExportParams = {
+	downloadDate: string;
+	imageMode: PdfImageMode;
+	vizImageMode: PdfVizImageMode | undefined;
+	pdfContentOptions: PdfExportContentOptions;
+};
+
+function defaultDownloadDate(): string {
+	return new Date().toLocaleDateString("en-GB", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+}
+
+function parseImageMode(value: string | null): PdfImageMode {
+	if (value === "none" || value === "svgAll" || value === "svgPrimaryOnly") {
+		return value;
 	}
+	return "svgPrimaryOnly";
+}
 
-	// Resolve the collection from directoryStructure
-	const route = determineRouteType(slug);
-
-	if (route.type !== "collection" || !route.metadata) {
-		return errorResponse(
-			`'${slug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
-			404,
-		);
+function parseVizParam(vizParam: string | null): PdfVizImageMode | undefined {
+	if (
+		vizParam === "light" ||
+		vizParam === "dark" ||
+		vizParam === "thermal"
+	) {
+		return vizParam;
 	}
+	if (vizParam === "print") return "thermal";
+	return undefined;
+}
 
-	if (activeJobs >= MAX_CONCURRENT) {
-		return errorResponse(
-			"PDF generation is busy — please try again in a moment.",
-			503,
-		);
-	}
+function paramsFromSearchParams(url: URL): PdfExportParams {
+	const downloadDate = url.searchParams.get("date") ?? defaultDownloadDate();
+	const imageMode = parseImageMode(url.searchParams.get("images"));
+	const vizImageMode = parseVizParam(url.searchParams.get("viz"));
+	const pliParam = url.searchParams.get("pli");
+	const layoutParam = url.searchParams.get("layout");
+	const paliOptions: PdfPaliOptions | undefined =
+		pliParam === "true" || pliParam === "1"
+			? {
+					enabled: true,
+					layout:
+						layoutParam === "split" ? "split" : "interleaved",
+				}
+			: undefined;
+	const keyTermsParam = url.searchParams.get("keyTerms");
+	const includeKeyTermsSection =
+		keyTermsParam !== "0" && keyTermsParam !== "false";
+	return {
+		downloadDate,
+		imageMode,
+		vizImageMode,
+		pdfContentOptions: { paliOptions, includeKeyTermsSection },
+	};
+}
 
-	// Optional footnote threshold
-	// (kept for future use; threshold logic was removed from processFootnotes)
-
-	// Date string passed from the client's browser locale
+function paramsFromJsonBody(body: Record<string, unknown>): PdfExportParams {
 	const downloadDate =
-		url.searchParams.get("date") ??
-		new Date().toLocaleDateString("en-GB", {
-			day: "numeric",
-			month: "long",
-			year: "numeric",
-		});
+		typeof body.date === "string" && body.date.trim().length > 0
+			? body.date.trim()
+			: defaultDownloadDate();
+	const imageMode = parseImageMode(
+		typeof body.images === "string" ? body.images : null,
+	);
+	const vizImageMode = parseVizParam(
+		typeof body.viz === "string" ? body.viz : null,
+	);
+	const pli = body.pli === true || body.pli === "true";
+	const layoutParam = typeof body.layout === "string" ? body.layout : "";
+	const paliOptions: PdfPaliOptions | undefined = pli
+		? {
+				enabled: true,
+				layout:
+					layoutParam === "split" ? "split" : "interleaved",
+			}
+		: undefined;
+	const kt = body.keyTerms;
+	const includeKeyTermsSection =
+		kt !== false && kt !== "false" && kt !== 0 && kt !== "0";
+	return {
+		downloadDate,
+		imageMode,
+		vizImageMode,
+		pdfContentOptions: { paliOptions, includeKeyTermsSection },
+	};
+}
 
-	const collectionUrl = `www.wordsofthebuddha.org/${slug}`;
-
-	// Resolve parent collection title for sub-collections
+function resolveParentTitle(slug: string): string | undefined {
 	let parentTitle: string | undefined;
 	for (const [topSlug, topMeta] of Object.entries(directoryStructure)) {
-		if (topSlug === slug) break; // top-level, no parent
+		if (topSlug === slug) break;
 		if (topMeta.children) {
-			// Check direct children
 			if (topMeta.children[slug]) {
 				parentTitle = topMeta.title;
 				break;
 			}
-			// Check grandchildren (e.g. sn1-11 > sn1)
-			for (const [midSlug, midMeta] of Object.entries(topMeta.children)) {
+			for (const [, midMeta] of Object.entries(topMeta.children)) {
 				if (midMeta.children?.[slug]) {
 					parentTitle = midMeta.title || topMeta.title;
 					break;
@@ -160,39 +220,88 @@ export const GET: APIRoute = async ({ params, url }) => {
 			if (parentTitle) break;
 		}
 	}
+	return parentTitle;
+}
 
-	const imageModeParam = url.searchParams.get("images");
-
-	type PdfImageMode = "none" | "svgPrimaryOnly" | "svgAll";
-	const parseImageMode = (value: string | null): PdfImageMode => {
-		if (value === "none" || value === "svgAll" || value === "svgPrimaryOnly") {
-			return value;
+async function validateSelectedDiscourseSlugs(
+	collectionSlug: string,
+	raw: unknown,
+): Promise<{ ok: true; set: Set<string> } | { ok: false; response: Response }> {
+	if (!Array.isArray(raw) || raw.length === 0) {
+		return {
+			ok: false,
+			response: errorResponse(
+				"selectedDiscourseSlugs must be a non-empty array.",
+				400,
+			),
+		};
+	}
+	const tree = await buildPdfExportSelectionTree(collectionSlug);
+	if (!tree) {
+		return {
+			ok: false,
+			response: errorResponse(
+				"This collection has no exportable discourses.",
+				404,
+			),
+		};
+	}
+	const allowed = new Set(flattenExportTreeSlugs(tree));
+	const normalized = [
+		...new Set(
+			raw.map((s) =>
+				normalizeDiscourseIdForContentImages(String(s).trim()),
+			),
+		),
+	].filter(Boolean);
+	if (normalized.length === 0) {
+		return {
+			ok: false,
+			response: errorResponse("Select at least one discourse.", 400),
+		};
+	}
+	for (const s of normalized) {
+		if (!allowed.has(s)) {
+			return {
+				ok: false,
+				response: errorResponse(
+					`Discourse not in this collection: ${s}`,
+					400,
+				),
+			};
 		}
-		return "svgPrimaryOnly";
-	};
-	const imageMode = parseImageMode(imageModeParam);
+	}
+	return { ok: true, set: new Set(normalized) };
+}
 
-	const vizParam = url.searchParams.get("viz");
-	const vizImageMode: PdfVizImageMode | undefined =
-		vizParam === "light" || vizParam === "dark" || vizParam === "thermal"
-			? vizParam
-			: vizParam === "print"
-				? "thermal"
-				: undefined;
+async function runPdfGeneration(
+	slug: string,
+	metadata: DirectoryStructure,
+	params: PdfExportParams,
+	selectedDiscourseSlugs: Set<string> | null,
+): Promise<Response> {
+	const collectionUrl = `www.wordsofthebuddha.org/${slug}`;
+	const parentTitle = resolveParentTitle(slug);
+	const { downloadDate, imageMode, vizImageMode, pdfContentOptions } =
+		params;
+	const paliOptions = pdfContentOptions.paliOptions;
+	const includeKeyTermsSection =
+		pdfContentOptions.includeKeyTermsSection !== false;
 
 	console.log(
-		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"})`,
+		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"}, pali: ${paliOptions?.enabled ? paliOptions.layout : "off"}, keyTerms: ${includeKeyTermsSection ? "yes" : "no"}, subset: ${selectedDiscourseSlugs ? selectedDiscourseSlugs.size + " discourses" : "full"})`,
 	);
 	const startMs = Date.now();
 
 	activeJobs++;
 	let browser: Browser | undefined;
 	try {
-		// ── 1. Fetch all discourse content and render to HTML ──────────────
 		const collectionData = await fetchCollectionPdfData(
 			slug,
-			route.metadata,
+			metadata,
 			imageMode,
+			pdfContentOptions,
+			selectedDiscourseSlugs,
 		);
 
 		const totalDiscourses = collectionData.chapters.reduce(
@@ -218,13 +327,11 @@ export const GET: APIRoute = async ({ params, url }) => {
 			vizImageMode,
 		});
 
-		// ── 2. Render HTML → PDF via Playwright ────────────────────────────
 		browser = await launchBrowser();
 
 		const page = await browser.newPage();
 
-		// Set A4 viewport so %vh values etc. are sensible during page.setContent
-		await page.setViewportSize({ width: 794, height: 1123 }); // A4 at 96 dpi
+		await page.setViewportSize({ width: 794, height: 1123 });
 
 		await page.setContent(html, {
 			waitUntil: "domcontentloaded",
@@ -236,13 +343,12 @@ export const GET: APIRoute = async ({ params, url }) => {
 			margin: {
 				top: "22mm",
 				right: "22mm",
-				bottom: "28mm", // slightly larger to fit footer
+				bottom: "28mm",
 				left: "22mm",
 			},
 			printBackground: false,
-			// ── Page numbers in footer ─────────────────────────────────────
 			displayHeaderFooter: true,
-			headerTemplate: "<span></span>", // empty – required when displayHeaderFooter is true
+			headerTemplate: "<span></span>",
 			footerTemplate: `
 				<div style="
 					font-family: 'Times New Roman', Times, serif;
@@ -255,9 +361,7 @@ export const GET: APIRoute = async ({ params, url }) => {
 				">
 					<span class="pageNumber"></span>
 				</div>`,
-			// ── PDF outline → sidebar bookmarks ───────────────────────────
 			outline: true,
-			// Tagged PDF for accessibility
 			tagged: true,
 		});
 
@@ -269,12 +373,11 @@ export const GET: APIRoute = async ({ params, url }) => {
 			`[PDF Export] Done in ${elapsed}s — ${pdfBuffer.length} bytes`,
 		);
 
-		// ── 3. Return PDF ──────────────────────────────────────────────────
-		const safeName = `${route.metadata.title
-			.normalize("NFD") // decompose diacritics (ā → a + combining)
-			.replace(/[\u0300-\u036f]/g, "") // strip combining marks → "Udana"
-			.replace(/[^a-z0-9]+/gi, "-") // non-alphanumeric → hyphen
-			.replace(/^-+|-+$/g, "") // trim leading/trailing hyphens
+		const safeName = `${metadata.title
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.replace(/[^a-z0-9]+/gi, "-")
+			.replace(/^-+|-+$/g, "")
 			.toLowerCase()}.pdf`;
 
 		return new Response(new Uint8Array(pdfBuffer), {
@@ -295,6 +398,84 @@ export const GET: APIRoute = async ({ params, url }) => {
 	} finally {
 		activeJobs--;
 	}
+}
+
+export const GET: APIRoute = async ({ params, url }) => {
+	const slug = params.slug as string | undefined;
+
+	if (!slug) {
+		return errorResponse("Missing collection slug", 400);
+	}
+
+	const route = determineRouteType(slug);
+
+	if (route.type !== "collection" || !route.metadata) {
+		return errorResponse(
+			`'${slug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
+			404,
+		);
+	}
+
+	if (activeJobs >= MAX_CONCURRENT) {
+		return errorResponse(
+			"PDF generation is busy — please try again in a moment.",
+			503,
+		);
+	}
+
+	const p = paramsFromSearchParams(url);
+	return runPdfGeneration(slug, route.metadata, p, null);
+};
+
+/**
+ * Subset export: JSON body with `selectedDiscourseSlugs` (non-empty) plus the
+ * same option fields as GET query params (`date`, `images`, `viz`, `pli`,
+ * `layout`, `keyTerms`).
+ */
+export const POST: APIRoute = async ({ params, request }) => {
+	const slug = params.slug as string | undefined;
+
+	if (!slug) {
+		return errorResponse("Missing collection slug", 400);
+	}
+
+	const route = determineRouteType(slug);
+
+	if (route.type !== "collection" || !route.metadata) {
+		return errorResponse(
+			`'${slug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
+			404,
+		);
+	}
+
+	if (activeJobs >= MAX_CONCURRENT) {
+		return errorResponse(
+			"PDF generation is busy — please try again in a moment.",
+			503,
+		);
+	}
+
+	let json: unknown;
+	try {
+		json = await request.json();
+	} catch {
+		return errorResponse("Expected a JSON body.", 400);
+	}
+
+	if (!json || typeof json !== "object") {
+		return errorResponse("Invalid JSON body.", 400);
+	}
+
+	const body = json as Record<string, unknown>;
+	const parsed = paramsFromJsonBody(body);
+
+	const sel = await validateSelectedDiscourseSlugs(
+		slug,
+		body.selectedDiscourseSlugs,
+	);
+	if (!sel.ok) return sel.response;
+
+	return runPdfGeneration(slug, route.metadata, parsed, sel.set);
 };
 
 function errorResponse(message: string, status: number): Response {
