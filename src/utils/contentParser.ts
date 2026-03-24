@@ -11,7 +11,7 @@ type Heading = {
 	text: string;
 };
 
-type ContentPair = {
+export type ContentPair = {
 	type: "paragraph" | "other";
 	english: string;
 	pali?: string;
@@ -808,7 +808,8 @@ function wrapPaliWords(text: string): string {
 		.join("");
 }
 
-function formatBlock(
+/** Exported for collection PDF split layout (paired EN / Pāli rows). */
+export function formatBlock(
 	text: string,
 	isPali: boolean = false,
 	index?: number,

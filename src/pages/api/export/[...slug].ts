@@ -28,6 +28,7 @@ import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
 	buildPdfHtml,
+	type PdfPaliOptions,
 	type PdfVizImageMode,
 } from "../../../utils/pdfRenderer";
 import { determineRouteType } from "../../../utils/routeHandler";
@@ -180,8 +181,19 @@ export const GET: APIRoute = async ({ params, url }) => {
 				? "thermal"
 				: undefined;
 
+	const pliParam = url.searchParams.get("pli");
+	const layoutParam = url.searchParams.get("layout");
+	const paliOptions: PdfPaliOptions | undefined =
+		pliParam === "true" || pliParam === "1"
+			? {
+					enabled: true,
+					layout:
+						layoutParam === "split" ? "split" : "interleaved",
+				}
+			: undefined;
+
 	console.log(
-		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"})`,
+		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"}, pali: ${paliOptions?.enabled ? paliOptions.layout : "off"})`,
 	);
 	const startMs = Date.now();
 
@@ -193,6 +205,7 @@ export const GET: APIRoute = async ({ params, url }) => {
 			slug,
 			route.metadata,
 			imageMode,
+			paliOptions,
 		);
 
 		const totalDiscourses = collectionData.chapters.reduce(

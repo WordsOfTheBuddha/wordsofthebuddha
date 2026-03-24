@@ -286,10 +286,32 @@ import { transformId } from "../utils/transformId";
 					vizQuery = "";
 				}
 
+				// Match Pali mode + layout — use the same signals as the visible UI
+				// (Layout.astro sets `html.pali-on` / `html.split` from URL + localStorage;
+				// relying on localStorage alone can miss `?pli=true` or a stale value.)
+				let paliQuery = "";
+				try {
+					const params = new URLSearchParams(window.location.search);
+					const showPali =
+						document.documentElement.classList.contains("pali-on") ||
+						localStorage.getItem("paliMode") === "true" ||
+						params.get("pli") === "true";
+					if (showPali) {
+						const layout =
+							document.documentElement.classList.contains("split") ||
+							localStorage.getItem("layout") === "split"
+								? "split"
+								: "interleaved";
+						paliQuery = `&pli=true&layout=${encodeURIComponent(layout)}`;
+					}
+				} catch {
+					paliQuery = "";
+				}
+
 				const response = await fetch(
 					`/api/export/${slug}?date=${encodeURIComponent(
 						date,
-					)}${imagesQuery}${vizQuery}`,
+					)}${imagesQuery}${vizQuery}${paliQuery}`,
 				);
 
 				if (!response.ok) {
