@@ -28,6 +28,7 @@ import {
 	type ContentPair,
 } from "./contentParser";
 import { getChapterEntryListForPdf } from "./collectionPdfChapterEntries";
+import { discourseSlugFromEntry } from "./collectionPdfExportTree";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -544,12 +545,19 @@ async function fetchChapterDiscourses(
 	imageMode: PdfImageMode,
 	paliOptions?: PdfPaliOptions,
 	includeKeyTermsSection = true,
+	selectedDiscourseSlugs?: Set<string> | null,
 ): Promise<DiscoursePdf[]> {
 	const limited = await getChapterEntryListForPdf(chapterSlug, range);
+	const filtered =
+		selectedDiscourseSlugs && selectedDiscourseSlugs.size > 0
+			? limited.filter((entry) =>
+					selectedDiscourseSlugs.has(discourseSlugFromEntry(entry)),
+				)
+			: limited;
 
 	// Render body for each discourse in parallel
 	const discourses = await Promise.all(
-		limited.map(async (entry) => {
+		filtered.map(async (entry) => {
 			const slug = (entry.data as any)?.slug || entry.slug || "";
 			const title = (entry.data as any)?.title || slug;
 			const description = (entry.data as any)?.description || "";
@@ -576,6 +584,7 @@ export async function fetchCollectionPdfData(
 	metadata: DirectoryStructure,
 	imageMode: PdfImageMode = "svgPrimaryOnly",
 	options?: PdfExportContentOptions,
+	selectedDiscourseSlugs?: Set<string> | null,
 ): Promise<CollectionPdf> {
 	const paliOptions = options?.paliOptions;
 	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
@@ -596,6 +605,7 @@ export async function fetchCollectionPdfData(
 					imageMode,
 					paliOptions,
 					includeKeyTermsSection,
+					selectedDiscourseSlugs,
 				);
 				return {
 					slug: childSlug,
@@ -613,6 +623,7 @@ export async function fetchCollectionPdfData(
 			imageMode,
 			paliOptions,
 			includeKeyTermsSection,
+			selectedDiscourseSlugs,
 		);
 		chapters = [
 			{

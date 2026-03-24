@@ -1,0 +1,1110 @@
+---
+/**
+ * Single collection PDF export preview (modal). Opened via [data-open-collection-pdf-modal].
+ * One instance per collection page (see CollectionLayout).
+ */
+import type { CollectionPdfPreviewChapter } from "../utils/collectionPdfPreviewMeta";
+import type { PdfExportSelectionTree } from "../utils/collectionPdfExportTree";
+import { transformId } from "../utils/transformId";
+
+interface Props {
+	collectionSlug: string;
+	previewTitle: string;
+	previewScopeSummary: string;
+	/** MDX source files in export scope (for “large export” note). */
+	previewTotalTextFiles: number;
+	previewHasChapters: boolean;
+	previewChapters: CollectionPdfPreviewChapter[];
+	/** At least one discourse in this export has an SVG diagram (PDF viz path). */
+	previewHasSvgViz: boolean;
+	/** When set, modal shows a checkbox tree and uses POST JSON for subset export. */
+	exportSelectionTree?: PdfExportSelectionTree | null;
+}
+
+const {
+	collectionSlug,
+	previewTitle,
+	previewScopeSummary,
+	previewTotalTextFiles,
+	previewHasChapters,
+	previewChapters,
+	previewHasSvgViz,
+	exportSelectionTree = null,
+} = Astro.props;
+
+const showLargeExportNote = previewTotalTextFiles > 100;
+
+const hasExportTree =
+	!!exportSelectionTree &&
+	exportSelectionTree.chapters.length > 0 &&
+	exportSelectionTree.chapters.some((ch) => ch.discourses.length > 0);
+
+const exportTreeDiscourseTotal = hasExportTree
+	? exportSelectionTree!.chapters.reduce(
+			(acc, ch) => acc + ch.discourses.length,
+			0,
+		)
+	: 0;
+---
+
+<dialog
+	id="collection-pdf-export-dialog"
+	class="collection-pdf-dialog"
+	aria-labelledby="collection-pdf-export-title"
+>
+	<div class="collection-pdf-dialog-inner">
+		<header class="collection-pdf-dialog-header">
+			<h2 id="collection-pdf-export-title" class="collection-pdf-dialog-title">
+				Print collection PDF
+			</h2>
+			<button
+				type="button"
+				class="collection-pdf-dialog-close"
+				aria-label="Close"
+				data-collection-pdf-close
+			>
+				&times;
+			</button>
+		</header>
+
+		<div class="collection-pdf-dialog-body">
+			<p class="collection-pdf-scope-intro">
+				<strong>{previewTitle}</strong>
+			</p>
+
+			{
+				hasExportTree ? (
+					<section
+						id="collection-pdf-contents"
+						class="collection-pdf-contents-select"
+						aria-label="Choose discourses"
+					>
+						<div class="collection-pdf-contents-head">
+							<h3 class="collection-pdf-section-label">Discourses to include</h3>
+							<div class="collection-pdf-contents-toolbar">
+								<span
+									class="collection-pdf-selection-count"
+									id="pdf-selection-count"
+								>
+									{exportTreeDiscourseTotal} of {exportTreeDiscourseTotal} selected
+								</span>
+								<button
+									type="button"
+									class="collection-pdf-btn-tertiary"
+									id="pdf-select-all"
+								>
+									Select all
+								</button>
+								<button
+									type="button"
+									class="collection-pdf-btn-tertiary"
+									id="pdf-clear-all"
+								>
+									Clear all
+								</button>
+							</div>
+						</div>
+						<div
+							class="collection-pdf-tree-scroll"
+							id="collection-pdf-tree-scroll"
+							tabindex="0"
+						>
+							{exportSelectionTree!.chapters.map((ch) => (
+								<div class="pdf-tree-chapter" data-chapter-id={ch.id}>
+									<div class="pdf-tree-chapter-row">
+										<label class="pdf-tree-chapter-label">
+											<input type="checkbox" class="pdf-chapter-cb" checked />
+											<span class="pdf-tree-chapter-title">
+												<span class="pdf-tree-id">{transformId(ch.id)}</span>
+												{ch.title && ch.title.trim() !== ch.id ? (
+													<>
+														{" "}
+														<span>{ch.title}</span>
+													</>
+												) : null}
+											</span>
+										</label>
+									</div>
+									<ul class="pdf-tree-discourses">
+										{ch.discourses.map((d) => (
+											<li>
+												<label class="pdf-tree-discourse-label">
+													<input
+														type="checkbox"
+														class="pdf-discourse-cb"
+														data-slug={d.slug}
+														checked
+													/>
+													<span class="pdf-tree-discourse-title">
+														<span class="pdf-tree-id">{transformId(d.slug)}</span>
+														{d.title && d.title.trim() !== d.slug ? (
+															<>
+																{" "}
+																<span>{d.title}</span>
+															</>
+														) : null}
+													</span>
+												</label>
+											</li>
+										))}
+									</ul>
+								</div>
+							))}
+						</div>
+						{showLargeExportNote && (
+							<p class="collection-pdf-large-export-note text-xs text-[var(--text-muted)] mt-2">
+								Large exports may take a minute or two.
+							</p>
+						)}
+					</section>
+				) : (
+					<section class="collection-pdf-scope" aria-label="Export scope">
+						<h3 class="collection-pdf-section-label">
+							{previewHasChapters && previewChapters.length > 0
+								? "Contents"
+								: "Scope"}
+						</h3>
+						<p class="collection-pdf-count">{previewScopeSummary}</p>
+						{previewHasChapters && previewChapters.length > 0 && (
+							<div class="collection-pdf-toc-wrap">
+								<ul class="collection-pdf-chapter-list">
+									{previewChapters.map((ch) => (
+										<li data-chapter-slug={ch.slug}>
+											<span class="collection-pdf-chapter-title">{ch.title}</span>
+											<span class="collection-pdf-chapter-count">
+												{ch.count} discourse{ch.count === 1 ? "" : "s"}
+											</span>
+										</li>
+									))}
+								</ul>
+							</div>
+						)}
+						{showLargeExportNote && (
+							<p class="collection-pdf-large-export-note text-xs text-[var(--text-muted)] mt-2">
+								Large exports may take a minute or two.
+							</p>
+						)}
+					</section>
+				)
+			}
+
+			<p class="collection-pdf-hint text-sm text-[var(--text-muted)] border-t border-[var(--border-color)] pt-3 mt-3">
+				These choices apply only to this PDF download. They do not change how you read on the site.
+			</p>
+
+			<section
+				id="collection-pdf-options"
+				class="collection-pdf-options"
+				aria-label="PDF options"
+			>
+				<h3 class="collection-pdf-section-label">Options</h3>
+
+				<label class="collection-pdf-field">
+					<input type="checkbox" id="pdf-opt-pli" name="pli" class="mr-2" />
+					<span>Include Pāli text</span>
+				</label>
+
+				<fieldset class="collection-pdf-fieldset ml-6 mt-1" id="pdf-fieldset-layout" disabled>
+					<legend class="sr-only">Pāli layout</legend>
+					<label class="block">
+						<input type="radio" name="layout" value="interleaved" class="mr-2" checked />
+						Interleaved (Pāli then English per paragraph)
+					</label>
+					<label class="block mt-1">
+						<input type="radio" name="layout" value="split" class="mr-2" />
+						Split columns (English left, Pāli right)
+					</label>
+				</fieldset>
+
+				{
+					previewHasSvgViz && (
+						<div class="collection-pdf-viz-group">
+							<label class="collection-pdf-field block mt-3">
+								<input
+									type="checkbox"
+									id="pdf-opt-viz-show"
+									name="vizShow"
+									class="mr-2"
+								/>
+								<span>Show Discourse Viz</span>
+							</label>
+
+							<fieldset
+								class="collection-pdf-fieldset ml-6 mt-1"
+								id="pdf-fieldset-viz-colors"
+								disabled
+							>
+								<legend class="sr-only">Diagram colors</legend>
+								<label class="block">
+									<input
+										type="radio"
+										name="viz-mode"
+										value="light"
+										class="mr-2"
+										checked
+									/>
+									Light
+								</label>
+								<label class="block mt-1">
+									<input
+										type="radio"
+										name="viz-mode"
+										value="dark"
+										class="mr-2"
+									/>
+									Dark
+								</label>
+								<label class="block mt-1">
+									<input
+										type="radio"
+										name="viz-mode"
+										value="thermal"
+										class="mr-2"
+									/>
+									Thermal
+								</label>
+							</fieldset>
+						</div>
+					)
+				}
+
+				<label class="collection-pdf-field block mt-3">
+					<input type="checkbox" id="pdf-opt-keyterms" name="keyterms" class="mr-2" checked />
+					<span>Include Key Terms glossary at the end of each discourse</span>
+				</label>
+			</section>
+		</div>
+
+		<footer class="collection-pdf-dialog-footer">
+			<button type="button" class="collection-pdf-btn-secondary" data-collection-pdf-close>
+				Cancel
+			</button>
+			<button
+				type="button"
+				class="collection-pdf-btn-primary"
+				id="collection-pdf-generate"
+				data-collection-slug={collectionSlug}
+			>
+				Print PDF
+			</button>
+		</footer>
+	</div>
+</dialog>
+
+<div class="collection-pdf-toast export-toast" role="alert" aria-live="assertive">
+	<span class="toast-msg"></span>
+	<button type="button" class="toast-close" aria-label="Dismiss">&times;</button>
+</div>
+
+<style is:global>
+	/**
+	 * Custom `display` on `<dialog>` overrides the UA rule that hides `dialog:not([open])`.
+	 * Without this, `close()` removes `[open]` but the panel stays painted (zombie modal).
+	 */
+	.collection-pdf-dialog:not([open]) {
+		display: none;
+	}
+	.collection-pdf-dialog {
+		display: flex;
+		flex-direction: column;
+		max-width: min(100vw - 1.5rem, 28rem);
+		width: 100%;
+		max-height: min(92vh, 720px);
+		height: fit-content;
+		padding: 0;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.2));
+		border-radius: 12px;
+		background: var(--surface-paper, #faf9f6);
+		color: var(--text-color, #1a1a1a);
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+		overflow: hidden;
+	}
+	.collection-pdf-dialog::backdrop {
+		background: rgba(0, 0, 0, 0.45);
+	}
+	@media (min-width: 640px) {
+		.collection-pdf-dialog {
+			max-width: min(100vw - 1.5rem, 36rem);
+			max-height: min(94vh, 920px);
+		}
+	}
+	@media (max-width: 639px) {
+		.collection-pdf-dialog {
+			max-width: 100vw;
+			max-height: 100vh;
+			height: 100%;
+			min-height: 100%;
+			width: 100%;
+			border-radius: 0;
+			margin: 0;
+		}
+	}
+	.collection-pdf-dialog-inner {
+		display: flex;
+		flex-direction: column;
+		flex: 0 1 auto;
+		min-height: 0;
+		max-height: inherit;
+		overflow: hidden;
+	}
+	@media (max-width: 639px) {
+		.collection-pdf-dialog-inner {
+			flex: 1 1 auto;
+			height: 100%;
+			max-height: none;
+			min-height: 0;
+		}
+	}
+	.collection-pdf-dialog-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.85rem 1rem;
+		border-bottom: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
+		flex-shrink: 0;
+	}
+	.collection-pdf-dialog-title {
+		font-size: 1.05rem;
+		font-weight: 600;
+		margin: 0;
+	}
+	.collection-pdf-dialog-close {
+		background: none;
+		border: none;
+		font-size: 1.5rem;
+		line-height: 1;
+		cursor: pointer;
+		color: var(--text-muted);
+		padding: 0.2rem 0.4rem;
+	}
+	.collection-pdf-dialog-body {
+		overflow-y: auto;
+		padding: 0.85rem 1rem 1rem;
+		flex: 0 1 auto;
+		min-height: 0;
+		max-height: min(58vh, 520px);
+	}
+	@media (min-width: 640px) {
+		.collection-pdf-dialog-body {
+			max-height: min(78vh, 780px);
+		}
+	}
+	@media (max-width: 639px) {
+		.collection-pdf-dialog-body {
+			flex: 1 1 auto;
+			max-height: none;
+			min-height: 0;
+		}
+	}
+	.collection-pdf-section-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+		margin: 0 0 0.35rem;
+	}
+	.collection-pdf-toc-wrap {
+		margin-top: 0.5rem;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
+		border-radius: 8px;
+		background: rgba(44, 44, 44, 0.02);
+		overflow: hidden;
+	}
+	.collection-pdf-chapter-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: 0.85rem;
+	}
+	.collection-pdf-chapter-list li {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.75rem;
+		padding: 0.4rem 0.65rem;
+		border-bottom: 1px solid rgba(44, 44, 44, 0.06);
+	}
+	.collection-pdf-chapter-list li:last-child {
+		border-bottom: none;
+	}
+	.collection-pdf-chapter-title {
+		flex: 1;
+		min-width: 0;
+	}
+	.collection-pdf-chapter-count {
+		font-variant-numeric: tabular-nums;
+		color: var(--text-muted);
+	}
+	.collection-pdf-contents-head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		margin-bottom: 0.45rem;
+	}
+	.collection-pdf-contents-toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.35rem 0.5rem;
+	}
+	.collection-pdf-selection-count {
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		font-variant-numeric: tabular-nums;
+		margin-right: 0.25rem;
+	}
+	.collection-pdf-btn-tertiary {
+		font-size: 0.78rem;
+		padding: 0.15rem 0.5rem;
+		border-radius: 6px;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.25));
+		background: transparent;
+		cursor: pointer;
+		color: var(--text-color);
+	}
+	.collection-pdf-tree-scroll {
+		max-height: min(40vh, 280px);
+		overflow-y: auto;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
+		border-radius: 8px;
+		padding: 0.5rem 0.6rem;
+		background: rgba(44, 44, 44, 0.02);
+	}
+	@media (min-width: 640px) {
+		.collection-pdf-tree-scroll {
+			max-height: min(36vh, 340px);
+		}
+	}
+	.pdf-tree-chapter + .pdf-tree-chapter {
+		margin-top: 0.65rem;
+		padding-top: 0.55rem;
+		border-top: 1px solid rgba(44, 44, 44, 0.06);
+	}
+	.pdf-tree-chapter-row {
+		margin-bottom: 0.15rem;
+	}
+	.pdf-tree-chapter-label,
+	.pdf-tree-discourse-label {
+		display: flex;
+		gap: 0.4rem;
+		align-items: flex-start;
+		font-size: 0.84rem;
+		line-height: 1.35;
+		cursor: pointer;
+	}
+	.pdf-tree-chapter-title {
+		font-weight: 600;
+		margin: 0;
+	}
+	.pdf-tree-id {
+		font-variant-numeric: tabular-nums;
+		color: var(--text-muted);
+		font-weight: 500;
+	}
+	.pdf-tree-chapter-title .pdf-tree-id {
+		font-weight: 600;
+		color: var(--text-color);
+	}
+	.pdf-tree-discourse-title {
+		word-break: break-word;
+		margin: 0;
+	}
+	.pdf-tree-discourses {
+		list-style: none;
+		margin: 0.35rem 0 0;
+		padding: 0 0 0 0.85rem;
+		border-left: 1px solid rgba(44, 44, 44, 0.1);
+	}
+	.pdf-tree-discourses li {
+		margin: 0.2rem 0;
+	}
+	.collection-pdf-dialog-footer {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.5rem;
+		padding: 0.75rem 1rem;
+		border-top: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
+		flex-shrink: 0;
+	}
+	@media (max-width: 639px) {
+		.collection-pdf-dialog-footer {
+			margin-top: auto;
+			padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+		}
+	}
+	.collection-pdf-btn-secondary {
+		padding: 0.45rem 0.9rem;
+		font-size: 0.88rem;
+		border-radius: 8px;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.25));
+		background: transparent;
+		cursor: pointer;
+		color: var(--text-color);
+	}
+	.collection-pdf-btn-primary {
+		padding: 0.45rem 1rem;
+		font-size: 0.88rem;
+		border-radius: 8px;
+		border: none;
+		background: var(--primary-color, #6b21a8);
+		color: #fff;
+		cursor: pointer;
+	}
+	.collection-pdf-btn-primary:disabled {
+		opacity: 0.65;
+		cursor: not-allowed;
+	}
+	.collection-pdf-field,
+	.collection-pdf-fieldset label {
+		font-size: 0.88rem;
+		line-height: 1.35;
+	}
+	.collection-pdf-fieldset[disabled] {
+		opacity: 0.45;
+		pointer-events: none;
+	}
+	/* Toast — match CollectionExportButton */
+	.collection-pdf-toast {
+		position: fixed;
+		bottom: 1.5rem;
+		left: 50%;
+		transform: translateX(-50%) translateY(calc(100% + 2rem));
+		max-width: min(90vw, 480px);
+		padding: 0.7rem 1rem;
+		background: #c0392b;
+		color: #fff;
+		font-size: 0.82rem;
+		line-height: 1.4;
+		border-radius: 8px;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		z-index: 10000;
+		transition: transform 0.3s ease, opacity 0.3s ease;
+		pointer-events: none;
+		opacity: 0;
+	}
+	.collection-pdf-toast.visible {
+		transform: translateX(-50%) translateY(0);
+		pointer-events: auto;
+		opacity: 1;
+	}
+	.collection-pdf-toast .toast-msg {
+		flex: 1;
+	}
+	.collection-pdf-toast .toast-close {
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.1rem;
+		cursor: pointer;
+		padding: 0 0.2rem;
+		opacity: 0.8;
+	}
+</style>
+
+<script>
+	let toastTimer: ReturnType<typeof setTimeout>;
+	let keydownHandlerWired = false;
+
+	function getCollectionPdfDialogs(): HTMLDialogElement[] {
+		return Array.from(
+			document.querySelectorAll<HTMLDialogElement>(
+				"#collection-pdf-export-dialog",
+			),
+		);
+	}
+
+	function getTargetCollectionPdfDialog(): HTMLDialogElement | null {
+		const all = getCollectionPdfDialogs();
+		for (let i = all.length - 1; i >= 0; i--) {
+			if (all[i].open) return all[i];
+		}
+		return all.length ? all[all.length - 1] : null;
+	}
+
+	function dedupeCollectionPdfDialogs(): HTMLDialogElement | null {
+		let all = getCollectionPdfDialogs();
+		while (all.length > 1) {
+			all[0].remove();
+			all = getCollectionPdfDialogs();
+		}
+		return all[0] ?? null;
+	}
+
+	function closeCollectionPdfDialogs(): void {
+		const before = getCollectionPdfDialogs();
+		for (const d of before) {
+			if (d.open) {
+				try {
+					d.close();
+				} catch (err) {
+					console.error("[collection-pdf-modal] close() threw", err);
+				}
+			}
+		}
+	}
+
+	function showToast(msg: string) {
+		const toast = document.querySelector<HTMLElement>(".collection-pdf-toast");
+		const toastMsg = toast?.querySelector<HTMLElement>(".toast-msg");
+		if (!toast || !toastMsg) return;
+		clearTimeout(toastTimer);
+		toastMsg.textContent = msg;
+		toast.classList.add("visible");
+		toastTimer = setTimeout(() => toast.classList.remove("visible"), 8000);
+	}
+
+	function applyDefaultsFromPage(dlg: HTMLDialogElement) {
+		const pliInput = dlg.querySelector(
+			"#pdf-opt-pli",
+		) as HTMLInputElement | null;
+		const layoutFieldset = dlg.querySelector(
+			"#pdf-fieldset-layout",
+		) as HTMLFieldSetElement | null;
+		const vizShowInput = dlg.querySelector(
+			"#pdf-opt-viz-show",
+		) as HTMLInputElement | null;
+		const vizColorsFieldset = dlg.querySelector(
+			"#pdf-fieldset-viz-colors",
+		) as HTMLFieldSetElement | null;
+		const keyTermsInput = dlg.querySelector(
+			"#pdf-opt-keyterms",
+		) as HTMLInputElement | null;
+
+		if (!pliInput || !layoutFieldset || !keyTermsInput) {
+			resetExportTreeToAll(dlg);
+			return;
+		}
+
+		const hasVizControls = !!(vizShowInput && vizColorsFieldset);
+
+		try {
+			const params = new URLSearchParams(window.location.search);
+			const showPali =
+				document.documentElement.classList.contains("pali-on") ||
+				localStorage.getItem("paliMode") === "true" ||
+				params.get("pli") === "true";
+			pliInput.checked = showPali;
+			const split =
+				document.documentElement.classList.contains("split") ||
+				localStorage.getItem("layout") === "split";
+			const interleaved = dlg.querySelector<HTMLInputElement>(
+				'input[name="layout"][value="interleaved"]',
+			);
+			const splitR = dlg.querySelector<HTMLInputElement>(
+				'input[name="layout"][value="split"]',
+			);
+			if (splitR && interleaved) {
+				if (split) {
+					splitR.checked = true;
+				} else {
+					interleaved.checked = true;
+				}
+			}
+			layoutFieldset.disabled = !showPali;
+
+			if (hasVizControls) {
+				const imgStored = localStorage.getItem("showDiscourseImages");
+				const showImg = imgStored === null || imgStored === "true";
+				vizShowInput.checked = showImg;
+				vizColorsFieldset.disabled = !showImg;
+
+				let v = localStorage.getItem("vizImageMode");
+				if (v === "print") v = "thermal";
+				const lightR = dlg.querySelector<HTMLInputElement>(
+					'input[name="viz-mode"][value="light"]',
+				);
+				const darkR = dlg.querySelector<HTMLInputElement>(
+					'input[name="viz-mode"][value="dark"]',
+				);
+				const thermalR = dlg.querySelector<HTMLInputElement>(
+					'input[name="viz-mode"][value="thermal"]',
+				);
+				if (v === "light" && lightR) lightR.checked = true;
+				else if (v === "dark" && darkR) darkR.checked = true;
+				else if (v === "thermal" && thermalR) thermalR.checked = true;
+				else if (lightR) lightR.checked = true;
+			}
+
+			keyTermsInput.checked = true;
+		} catch {
+			pliInput.checked = false;
+			layoutFieldset.disabled = true;
+			if (hasVizControls) {
+				vizShowInput!.checked = false;
+				vizColorsFieldset!.disabled = true;
+			}
+		}
+
+		resetExportTreeToAll(dlg);
+	}
+
+	function updateExportTreeSelectionUi(dlg: HTMLDialogElement) {
+		const total = dlg.querySelectorAll(".pdf-discourse-cb").length;
+		if (total === 0) return;
+		const sel = dlg.querySelectorAll(".pdf-discourse-cb:checked").length;
+		const countEl = dlg.querySelector("#pdf-selection-count");
+		if (countEl) countEl.textContent = `${sel} of ${total} selected`;
+		const gen = dlg.querySelector(
+			"#collection-pdf-generate",
+		) as HTMLButtonElement | null;
+		if (gen) gen.disabled = sel === 0;
+	}
+
+	function syncChapterFromChildren(chapterEl: Element) {
+		const chapterCb = chapterEl.querySelector(
+			".pdf-chapter-cb",
+		) as HTMLInputElement | null;
+		const discs = chapterEl.querySelectorAll<HTMLInputElement>(
+			".pdf-discourse-cb",
+		);
+		if (!chapterCb) return;
+		let n = 0;
+		let c = 0;
+		discs.forEach((d) => {
+			n++;
+			if (d.checked) c++;
+		});
+		chapterCb.checked = c === n && n > 0;
+		chapterCb.indeterminate = c > 0 && c < n;
+	}
+
+	function applyChapterToDiscourses(chapterCb: HTMLInputElement) {
+		const chapterEl = chapterCb.closest(".pdf-tree-chapter");
+		if (!chapterEl) return;
+		chapterEl
+			.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb")
+			.forEach((d) => {
+				d.checked = chapterCb.checked;
+			});
+		chapterCb.indeterminate = false;
+	}
+
+	function resetExportTreeToAll(dlg: HTMLDialogElement) {
+		if (dlg.querySelectorAll(".pdf-discourse-cb").length === 0) return;
+		dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb").forEach((d) => {
+			d.checked = true;
+		});
+		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
+			const cb = ch.querySelector(".pdf-chapter-cb") as HTMLInputElement | null;
+			if (cb) {
+				cb.checked = true;
+				cb.indeterminate = false;
+			}
+		});
+		updateExportTreeSelectionUi(dlg);
+	}
+
+	function clearAllDiscourses(dlg: HTMLDialogElement) {
+		dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb").forEach((d) => {
+			d.checked = false;
+		});
+		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
+			const cb = ch.querySelector(".pdf-chapter-cb") as HTMLInputElement | null;
+			if (cb) {
+				cb.checked = false;
+				cb.indeterminate = false;
+			}
+		});
+		updateExportTreeSelectionUi(dlg);
+	}
+
+	async function handleGenerate() {
+		const dlg = getTargetCollectionPdfDialog();
+		if (!dlg?.open) return;
+
+		const generateBtn = dlg.querySelector(
+			"#collection-pdf-generate",
+		) as HTMLButtonElement | null;
+		if (!generateBtn || generateBtn.disabled) return;
+
+		const slug = generateBtn.dataset.collectionSlug;
+		if (!slug) return;
+
+		const pliInput = dlg.querySelector(
+			"#pdf-opt-pli",
+		) as HTMLInputElement | null;
+		const keyTermsInput = dlg.querySelector(
+			"#pdf-opt-keyterms",
+		) as HTMLInputElement | null;
+		const vizShowInput = dlg.querySelector(
+			"#pdf-opt-viz-show",
+		) as HTMLInputElement | null;
+		const vizColorsFieldset = dlg.querySelector(
+			"#pdf-fieldset-viz-colors",
+		) as HTMLFieldSetElement | null;
+
+		if (!pliInput || !keyTermsInput) return;
+
+		const hasVizControls = !!(vizShowInput && vizColorsFieldset);
+
+		generateBtn.disabled = true;
+		const orig = generateBtn.textContent;
+		generateBtn.textContent = "Printing…";
+
+		try {
+			const d = new Date();
+			const day = d.getDate();
+			const suffix = [11, 12, 13].includes(day)
+				? "th"
+				: day % 10 === 1
+					? "st"
+					: day % 10 === 2
+						? "nd"
+						: day % 10 === 3
+							? "rd"
+							: "th";
+			const month = d.toLocaleDateString("en-GB", { month: "long" });
+			const year = d.getFullYear();
+			const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
+
+			const qs = new URLSearchParams();
+			qs.set("date", date);
+
+			if (hasVizControls && vizShowInput!.checked) {
+				qs.set("images", "svgPrimaryOnly");
+				const mode = dlg.querySelector<HTMLInputElement>(
+					'input[name="viz-mode"]:checked',
+				);
+				const vz = mode?.value;
+				if (vz === "light" || vz === "dark" || vz === "thermal") {
+					qs.set("viz", vz);
+				}
+			} else {
+				qs.set("images", "none");
+			}
+
+			if (pliInput.checked) {
+				qs.set("pli", "true");
+				const layout = dlg.querySelector<HTMLInputElement>(
+					'input[name="layout"]:checked',
+				);
+				const lay = layout?.value === "split" ? "split" : "interleaved";
+				qs.set("layout", lay);
+			}
+
+			if (!keyTermsInput.checked) {
+				qs.set("keyTerms", "0");
+			}
+
+			const usePostExport = !!dlg.querySelector(".pdf-discourse-cb");
+			let response: Response;
+			if (usePostExport) {
+				const selectedDiscourseSlugs = Array.from(
+					dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb:checked"),
+				)
+					.map((el) => el.dataset.slug)
+					.filter((s): s is string => !!s && s.length > 0);
+				if (selectedDiscourseSlugs.length === 0) {
+					showToast("Select at least one discourse.");
+					return;
+				}
+				const layout = dlg.querySelector<HTMLInputElement>(
+					'input[name="layout"]:checked',
+				);
+				const lay =
+					layout?.value === "split" ? "split" : "interleaved";
+				const postBody: Record<string, unknown> = {
+					selectedDiscourseSlugs,
+					date,
+					images: hasVizControls && vizShowInput!.checked
+						? "svgPrimaryOnly"
+						: "none",
+					pli: pliInput.checked,
+					layout: lay,
+					keyTerms: keyTermsInput.checked,
+				};
+				if (hasVizControls && vizShowInput!.checked) {
+					const mode = dlg.querySelector<HTMLInputElement>(
+						'input[name="viz-mode"]:checked',
+					);
+					const vz = mode?.value;
+					if (vz === "light" || vz === "dark" || vz === "thermal") {
+						postBody.viz = vz;
+					}
+				}
+				response = await fetch(`/api/export/${slug}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(postBody),
+				});
+			} else {
+				response = await fetch(`/api/export/${slug}?${qs.toString()}`);
+			}
+
+			if (!response.ok) {
+				let detail = response.statusText;
+				try {
+					const body = await response.json();
+					detail = (body as { error?: string }).error ?? detail;
+				} catch {}
+				throw new Error(detail);
+			}
+
+			const blob = await response.blob();
+			const objectUrl = URL.createObjectURL(blob);
+			const disposition = response.headers.get("Content-Disposition") ?? "";
+			const nameMatch = /filename="([^"]+)"/.exec(disposition);
+			const filename = nameMatch?.[1] ?? `${slug}.pdf`;
+
+			const anchor = document.createElement("a");
+			anchor.href = objectUrl;
+			anchor.download = filename;
+			document.body.appendChild(anchor);
+			anchor.click();
+			document.body.removeChild(anchor);
+			setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
+			closeCollectionPdfDialogs();
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : String(err);
+			showToast(`PDF generation failed: ${msg}`);
+		} finally {
+			generateBtn.textContent = orig ?? "Print PDF";
+			if (dlg.querySelector(".pdf-discourse-cb")) {
+				updateExportTreeSelectionUi(dlg);
+			} else {
+				generateBtn.disabled = false;
+			}
+		}
+	}
+
+	/** Rebind listeners directly on the live nodes after each navigation. */
+	function wirePdfModalUi() {
+		const dlg = dedupeCollectionPdfDialogs();
+		if (!dlg) {
+			return;
+		}
+
+		dlg.querySelectorAll("[data-collection-pdf-close]").forEach((btn) => {
+			(btn as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				try {
+					// Close every matching dialog — duplicate IDs can leave a second
+					// `<dialog>` still open while the wired `dlg` reference is already closed.
+					closeCollectionPdfDialogs();
+				} catch (err) {
+					console.error("[collection-pdf-modal] close threw", err);
+				}
+			};
+		});
+
+		dlg.onclick = (e) => {
+			if (e.target === dlg) {
+				closeCollectionPdfDialogs();
+			}
+		};
+
+		const gen = dlg.querySelector("#collection-pdf-generate");
+		if (gen) {
+			(gen as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				void handleGenerate();
+			};
+		}
+
+		const selAllBtn = dlg.querySelector("#pdf-select-all");
+		if (selAllBtn) {
+			(selAllBtn as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				resetExportTreeToAll(dlg);
+			};
+		}
+		const clrBtn = dlg.querySelector("#pdf-clear-all");
+		if (clrBtn) {
+			(clrBtn as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				clearAllDiscourses(dlg);
+			};
+		}
+
+		dlg.onchange = (e) => {
+			const el = e.target as HTMLElement | null;
+			if (!el) return;
+			if (el.classList.contains("pdf-chapter-cb")) {
+				applyChapterToDiscourses(el as HTMLInputElement);
+				updateExportTreeSelectionUi(dlg);
+				return;
+			}
+			if (el.classList.contains("pdf-discourse-cb")) {
+				const ch = el.closest(".pdf-tree-chapter");
+				if (ch) syncChapterFromChildren(ch);
+				updateExportTreeSelectionUi(dlg);
+				return;
+			}
+			if (el.id === "pdf-opt-pli") {
+				const layoutFs = dlg.querySelector(
+					"#pdf-fieldset-layout",
+				) as HTMLFieldSetElement | null;
+				if (layoutFs)
+					layoutFs.disabled = !(el as HTMLInputElement).checked;
+			}
+			if (el.id === "pdf-opt-viz-show") {
+				const vizFs = dlg.querySelector(
+					"#pdf-fieldset-viz-colors",
+				) as HTMLFieldSetElement | null;
+				if (vizFs) vizFs.disabled = !(el as HTMLInputElement).checked;
+			}
+		};
+
+		const openTriggers = document.querySelectorAll(
+			"[data-open-collection-pdf-modal]",
+		);
+		openTriggers.forEach((btn) => {
+			(btn as HTMLElement).onclick = (e) => {
+				e.preventDefault();
+				const d = dedupeCollectionPdfDialogs();
+				if (!d) return;
+				applyDefaultsFromPage(d);
+				d.showModal();
+			};
+		});
+
+		if (!keydownHandlerWired) {
+			keydownHandlerWired = true;
+			window.addEventListener(
+				"keydown",
+				(e) => {
+					if (e.key !== "Escape") return;
+					if (!getCollectionPdfDialogs().some((d) => d.open)) return;
+					closeCollectionPdfDialogs();
+					e.preventDefault();
+				},
+				true,
+			);
+		}
+	}
+
+	function bindToastDismissOnce() {
+		if (document.documentElement.dataset.pdfModalToastDismiss === "1") return;
+		document.documentElement.dataset.pdfModalToastDismiss = "1";
+		document.addEventListener(
+			"click",
+			(e) => {
+				const t = e.target as HTMLElement | null;
+				if (!t) return;
+				if (!t.closest(".collection-pdf-toast .toast-close")) return;
+				e.preventDefault();
+				clearTimeout(toastTimer);
+				document
+					.querySelector(".collection-pdf-toast")
+					?.classList.remove("visible");
+			},
+			true,
+		);
+	}
+
+	function initCollectionPdfModal() {
+		bindToastDismissOnce();
+		// Defer one tick so Astro’s DOM swap has committed (avoids dlg === null races).
+		queueMicrotask(() => {
+			wirePdfModalUi();
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", initCollectionPdfModal);
+	document.addEventListener("astro:page-load", initCollectionPdfModal);
+	initCollectionPdfModal();
+</script>

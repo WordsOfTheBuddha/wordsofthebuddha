@@ -13,6 +13,7 @@ import {
 	collectionExportHasSvgViz,
 	collectionExportTextFileCount,
 } from "../utils/collectionPdfExportScope";
+import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
 
 interface Props {
 	title: string;
@@ -47,6 +48,10 @@ const previewHasSvgViz = collectionSlug
 const previewTextFileCount = collectionSlug
 	? await collectionExportTextFileCount(collectionSlug)
 	: 0;
+
+const pdfExportSelectionTree = collectionSlug
+	? await buildPdfExportSelectionTree(collectionSlug)
+	: null;
 
 const hasChildren = children && Object.keys(children).length > 0;
 // Build-time default; client JS will honor ?view=…
@@ -262,6 +267,7 @@ function getContentCount(slug: string): number {
 				previewHasChapters={pdfPreviewMeta?.hasChapters ?? false}
 				previewChapters={pdfPreviewMeta?.chapters ?? []}
 				previewHasSvgViz={previewHasSvgViz}
+				exportSelectionTree={pdfExportSelectionTree}
 			/>
 		)
 	}
