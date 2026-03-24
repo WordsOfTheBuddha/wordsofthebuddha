@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2300" width="920" height="2300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528"/>
+      <stop offset="45%" stop-color="#0e1a30"/>
+      <stop offset="100%" stop-color="#101e36"/>
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5"/>
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tet1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2438"/>
+      <stop offset="100%" stop-color="#141d30"/>
+    </linearGradient>
+    <linearGradient id="tet2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2838"/>
+      <stop offset="100%" stop-color="#152231"/>
+    </linearGradient>
+    <linearGradient id="tet3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2a34"/>
+      <stop offset="100%" stop-color="#15212c"/>
+    </linearGradient>
+    <linearGradient id="tet4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d2c30"/>
+      <stop offset="100%" stop-color="#182326"/>
+    </linearGradient>
+    <linearGradient id="chainFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#162234"/>
+      <stop offset="100%" stop-color="#111a29"/>
+    </linearGradient>
+    <linearGradient id="factorFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1b2938"/>
+      <stop offset="100%" stop-color="#14202d"/>
+    </linearGradient>
+    <linearGradient id="supportFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#19282a"/>
+      <stop offset="100%" stop-color="#152224"/>
+    </linearGradient>
+    <radialGradient id="conclusionGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#906820" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#604010" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="2300" fill="url(#bg)"/>
+  <ellipse cx="260" cy="400" rx="260" ry="180" fill="#204050" opacity="0.045"/>
+  <ellipse cx="660" cy="900" rx="280" ry="160" fill="#204838" opacity="0.045"/>
+  <ellipse cx="460" cy="2260" rx="360" ry="110" fill="#204838" opacity="0.065"/>
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <text x="460" y="40" text-anchor="middle" fill="#a0b0c8"
+    font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+    letter-spacing="3">MN 118 — ĀNĀPĀNASSATI SUTTA</text>
+  <text x="460" y="64" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+    letter-spacing="1">Mindfulness while Breathing In and Out</text>
+  <line x1="280" y1="78" x2="640" y2="78" stroke="#708090" stroke-opacity="0.3" stroke-width="0.6"/>
+
+  <text x="460" y="112" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">Mindfulness while breathing in and out, when cultivated and frequently practiced, is of great fruit and great benefit</text>
+  <text x="460" y="132" text-anchor="middle" fill="#708878"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.8">ānāpānassati bhāvitā bahulīkatā mahapphalā hoti mahānisaṁsā</text>
+
+  <!-- ═══════════════ FULFILLMENT CHAIN ═══════════════ -->
+  <line x1="100" y1="174" x2="820" y2="174" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45"/>
+  <text x="460" y="184" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5" opacity="0.75">FULFILLMENT CHAIN · paripūri</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="202" width="800" height="88" rx="10" fill="url(#chainFill)" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.8"/>
+  </g>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="78" y="221" width="170" height="48" rx="8" fill="#18283a" stroke="#4e7086" stroke-opacity="0.35"/>
+    <rect x="282" y="221" width="170" height="48" rx="8" fill="#182b39" stroke="#4e7086" stroke-opacity="0.35"/>
+    <rect x="486" y="221" width="170" height="48" rx="8" fill="#182e37" stroke="#4e7086" stroke-opacity="0.35"/>
+    <rect x="684" y="217" width="162" height="56" rx="8" fill="#1e241d" stroke="#c8a040" stroke-opacity="0.4"/>
+  </g>
+  <text x="163" y="240" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Breathing Mindfulness</text>
+  <text x="163" y="256" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">ānāpānassati</text>
+  <text x="367" y="240" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">4 Establishments</text>
+  <text x="367" y="256" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">cattāro satipaṭṭhānā</text>
+  <text x="571" y="240" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">7 Awakening Factors</text>
+  <text x="571" y="256" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">satta bojjhaṅgā</text>
+  <text x="765" y="236" text-anchor="middle" fill="#d0b060" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">True Knowledge</text>
+  <text x="765" y="248" text-anchor="middle" fill="#d0b060" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">and Liberation</text>
+  <text x="765" y="263" text-anchor="middle" fill="#a08838" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">vijjāvimutti</text>
+  <path d="M 252 245 L 268 245" stroke="#c8a040" stroke-width="1"/>
+  <path d="M 264 240 L 272 245 L 264 250" stroke="#c8a040" stroke-width="1" fill="none"/>
+  <path d="M 456 245 L 472 245" stroke="#c8a040" stroke-width="1"/>
+  <path d="M 468 240 L 476 245 L 468 250" stroke="#c8a040" stroke-width="1" fill="none"/>
+  <path d="M 660 245 L 676 245" stroke="#c8a040" stroke-width="1"/>
+  <path d="M 672 240 L 680 245 L 672 250" stroke="#c8a040" stroke-width="1" fill="none"/>
+
+  <!-- ═══════════════ SIXTEEN STEPS ═══════════════ -->
+  <line x1="100" y1="328" x2="820" y2="328" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.42"/>
+  <text x="460" y="346" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+    letter-spacing="2.5" opacity="0.8">CULTIVATION OF MINDFULNESS WHILE BREATHING IN AND OUT</text>
+  <text x="460" y="364" text-anchor="middle" fill="#806828"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+    opacity="0.68">ānāpānassati bhāvanā</text>
+
+  <text x="460" y="400" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">Ever mindful, he breathes in; ever mindful, he breathes out</text>
+  <text x="460" y="414" text-anchor="middle" fill="#507868" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">So satova assasati, satova passasati</text>
+
+  <!-- Tetrad Grid (2&#xD7;2) -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="440" width="388" height="290" rx="10" fill="url(#tet1)" stroke="#4a6a82" stroke-opacity="0.35" stroke-width="0.8"/>
+    <rect x="472" y="440" width="388" height="290" rx="10" fill="url(#tet2)" stroke="#4a6a82" stroke-opacity="0.35" stroke-width="0.8"/>
+    <rect x="60" y="742" width="388" height="290" rx="10" fill="url(#tet3)" stroke="#4a6a82" stroke-opacity="0.35" stroke-width="0.8"/>
+    <rect x="472" y="742" width="388" height="290" rx="10" fill="url(#tet4)" stroke="#4a6a82" stroke-opacity="0.35" stroke-width="0.8"/>
+  </g>
+
+  <!-- I. Observing body in and of itself (top-left) -->
+  <g transform="translate(80, 472)" opacity="0.5" stroke="#80a0b0" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" filter="url(#iconGlow)">
+    <circle cx="0" cy="-7" r="3.5"/>
+    <path d="M -6 -1 L 6 -1"/>
+    <path d="M 0 -3 L 0 6"/>
+    <path d="M -5 5 L 0 9 L 5 5"/>
+  </g>
+  <text x="100" y="470" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">I. OBSERVING THE BODY IN AND OF ITSELF</text>
+  <text x="100" y="486" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">kāye kāyānupassī</text>
+
+  <circle cx="80" cy="524" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="527" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
+  <text x="104" y="524" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Breathing in long, breathing out long</text>
+  <text x="104" y="540" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">dīghaṁ vā assasanto, dīghaṁ vā passasanto</text>
+
+  <circle cx="80" cy="580" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="583" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
+  <text x="104" y="580" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Breathing in short, breathing out short</text>
+  <text x="104" y="596" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">rassaṁ vā assasanto, rassaṁ vā passasanto</text>
+
+  <circle cx="80" cy="636" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="638" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+  <text x="104" y="636" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience the whole body</text>
+  <text x="104" y="652" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">sabbakāyapaṭisaṁvedī</text>
+
+  <circle cx="80" cy="692" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="694" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
+  <text x="104" y="692" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Settle the bodily constructs</text>
+  <text x="104" y="708" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">passambhayaṁ kāyasaṅkhāraṁ</text>
+
+  <path d="M 320 514 Q 330 514 330 524 L 330 546 Q 330 556 340 556 Q 330 556 330 566 L 330 588 Q 330 598 320 598" fill="none" stroke="#6888a0" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+  <text x="350" y="552" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">discerns · <tspan fill="#8898b0" font-size="10.5" font-style="italic">pajānāti</tspan></text>
+  <text x="350" y="568" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10.5" opacity="0.8">(knows clearly)</text>
+
+  <path d="M 320 626 Q 330 626 330 636 L 330 658 Q 330 668 340 668 Q 330 668 330 678 L 330 700 Q 330 710 320 710" fill="none" stroke="#6888a0" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+  <text x="350" y="664" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">trains · <tspan fill="#8898b0" font-size="10.5" font-style="italic">sikkhati</tspan></text>
+  <text x="350" y="680" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">while breathing in</text>
+  <text x="350" y="696" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">and breathing out</text>
+
+  <!-- II. Felt Experience (top-right) -->
+  <g transform="translate(492, 470)" opacity="0.5" stroke="#80a0b0" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" filter="url(#iconGlow)">
+    <path d="M 0 7 C -8 -3 -9 -7 -4 -8 C -1.5 -8.5 0 -7 0 -7 C 0 -7 1.5 -8.5 4 -8 C 9 -7 8 -3 0 7 Z"/>
+  </g>
+  <text x="512" y="470" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">II. OBSERVING FELT EXPERIENCE IN AND OF ITSELF</text>
+  <text x="512" y="486" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vedanāsu vedanānupassī</text>
+
+  <circle cx="492" cy="524" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="527" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">5</text>
+  <text x="514" y="524" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience joy</text>
+  <text x="514" y="540" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">pītipaṭisaṁvedī</text>
+
+  <circle cx="492" cy="580" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="584" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">6</text>
+  <text x="514" y="580" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience ease</text>
+  <text x="514" y="596" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">sukhapaṭisaṁvedī</text>
+
+  <circle cx="492" cy="636" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="639" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">7</text>
+  <text x="514" y="636" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience mental activity</text>
+  <text x="514" y="652" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">cittasaṅkhārapaṭisaṁvedī</text>
+
+  <circle cx="492" cy="692" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="696" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">8</text>
+  <text x="514" y="692" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Settle the mental activity</text>
+  <text x="514" y="708" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">passambhayaṁ cittasaṅkhāraṁ</text>
+
+  <path d="M 740 514 Q 750 514 750 524 L 750 602 Q 750 612 760 612 Q 750 612 750 622 L 750 700 Q 750 710 740 710" fill="none" stroke="#6888a0" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+  <text x="770" y="608" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">trains · <tspan fill="#8898b0" font-size="10.5" font-style="italic">sikkhati</tspan></text>
+  <text x="770" y="624" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">while breathing in</text>
+  <text x="770" y="640" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">and breathing out</text>
+
+  <!-- III. Mind Contemplation (bottom-left) -->
+  <g transform="translate(80, 772)" opacity="0.5" stroke="#80a0b0" fill="none" stroke-width="1" stroke-linecap="round" filter="url(#iconGlow)">
+    <circle cx="0" cy="0" r="9"/>
+    <circle cx="0" cy="0" r="3"/>
+  </g>
+  <text x="100" y="772" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">III. OBSERVING THE MIND IN AND OF ITSELF</text>
+  <text x="100" y="788" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">citte cittānupassī</text>
+
+  <circle cx="80" cy="828" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="830" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">9</text>
+  <text x="104" y="828" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience the mind</text>
+  <text x="104" y="844" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">cittapaṭisaṁvedī</text>
+
+  <circle cx="80" cy="884" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="887" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">10</text>
+  <text x="104" y="884" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Gladden the mind</text>
+  <text x="104" y="900" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">abhippamodayaṁ cittaṁ</text>
+
+  <circle cx="80" cy="940" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="943" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">11</text>
+  <text x="104" y="940" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Stabilize the mind</text>
+  <text x="104" y="956" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">samādahaṁ cittaṁ</text>
+
+  <circle cx="80" cy="996" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="80" y="999" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">12</text>
+  <text x="104" y="996" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Disengage the mind</text>
+  <text x="104" y="1012" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">vimocayaṁ cittaṁ</text>
+
+  <path d="M 320 818 Q 330 818 330 828 L 330 906 Q 330 916 340 916 Q 330 916 330 926 L 330 1004 Q 330 1014 320 1014" fill="none" stroke="#6888a0" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+  <text x="350" y="912" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">trains · <tspan fill="#8898b0" font-size="10.5" font-style="italic">sikkhati</tspan></text>
+  <text x="350" y="928" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">while breathing in</text>
+  <text x="350" y="944" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">and breathing out</text>
+
+  <!-- IV. Mental Qualities (bottom-right) -->
+  <g transform="translate(492, 772)" opacity="0.5" stroke="#80a0b0" fill="none" stroke-width="0.9" stroke-linecap="round" filter="url(#iconGlow)">
+    <circle cx="0" cy="0" r="9"/>
+    <circle cx="0" cy="0" r="2"/>
+    <path d="M 0 -9 L 0 -3 M 0 3 L 0 9 M -9 0 L -3 0 M 3 0 L 9 0"/>
+    <path d="M -6.4 -6.4 L -2.1 -2.1 M 2.1 2.1 L 6.4 6.4 M 6.4 -6.4 L 2.1 -2.1 M -2.1 2.1 L -6.4 6.4"/>
+  </g>
+  <text x="512" y="772" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">IV. OBSERVING MENTAL QUALITIES IN AND OF THEMSELVES</text>
+  <text x="512" y="788" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">dhammesu dhammānupassī</text>
+
+  <circle cx="492" cy="828" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="831" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1<tspan dy="-1">3</tspan></text>
+  <text x="514" y="828" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe impermanence</text>
+  <text x="514" y="844" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">aniccānupassī</text>
+
+  <circle cx="492" cy="884" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="887" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1<tspan dy="-1">4</tspan></text>
+  <text x="514" y="884" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe the fading of desire</text>
+  <text x="514" y="900" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">virāgānupassī</text>
+
+  <circle cx="492" cy="940" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="943" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1<tspan dy="-1">5</tspan></text>
+  <text x="514" y="940" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe cessation</text>
+  <text x="514" y="956" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">nirodhānupassī</text>
+
+  <circle cx="492" cy="996" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
+  <text x="492" y="1000" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">16</text>
+  <text x="514" y="996" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe relinquishment</text>
+  <text x="514" y="1012" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">paṭinissaggānupassī</text>
+
+  <path d="M 740 818 Q 750 818 750 828 L 750 906 Q 750 916 760 916 Q 750 916 750 926 L 750 1004 Q 750 1014 740 1014" fill="none" stroke="#6888a0" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+  <text x="770" y="912" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">trains · <tspan fill="#8898b0" font-size="10.5" font-style="italic">sikkhati</tspan></text>
+  <text x="770" y="928" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">while breathing in</text>
+  <text x="770" y="944" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">and breathing out</text>
+
+
+  <!-- Center 4-establishments icon -->
+  <g transform="translate(460, 736)" opacity="0.4" stroke="#90b0c8" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" filter="url(#iconGlow)">
+    <path d="M 0 -10 L 0 10" opacity="0.35"/>
+    <path d="M -10 0 L 10 0" opacity="0.35"/>
+    <circle cx="0" cy="0" r="3"/>
+    <circle cx="0" cy="-12" r="4"/>
+    <circle cx="12" cy="0" r="4"/>
+    <circle cx="0" cy="12" r="4"/>
+    <circle cx="-12" cy="0" r="4"/>
+  </g>
+
+  <!-- ═══════════════ TRANSITION: 4 Establishments → 7 Factors ═══════════════ -->
+  <line x1="100" y1="1050" x2="820" y2="1050" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.32"/>
+  <text x="460" y="1074" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">The four establishments of mindfulness fulfill the seven factors of awakening</text>
+  <text x="460" y="1092" text-anchor="middle" fill="#507868" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">evaṁ bhāvitā cattāro satipaṭṭhānā satta sambojjhaṅge paripūrenti</text>
+  <path d="M 450 1116 L 460 1128 L 470 1116" stroke="#508070" stroke-width="1" fill="none" opacity="0.45"/>
+
+  <!-- ═══════════════ SEVEN FACTORS OF AWAKENING ═══════════════ -->
+  <line x1="100" y1="1138" x2="820" y2="1138" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45"/>
+  <text x="460" y="1160" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" letter-spacing="2.5">SEVEN FACTORS OF AWAKENING</text>
+  <text x="460" y="1178" text-anchor="middle" fill="#806828" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.68">satta bojjhaṅgā</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="1210" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+    <rect x="110" y="1314" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+    <rect x="110" y="1418" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+    <rect x="110" y="1522" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+    <rect x="110" y="1626" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+    <rect x="110" y="1730" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+    <rect x="110" y="1834" width="700" height="72" rx="8" fill="url(#factorFill)" stroke="#4a6c78" stroke-opacity="0.32"/>
+  </g>
+
+  <!-- Factor 1: Mindfulness -->
+  <circle cx="142" cy="1246" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1250" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
+  <g transform="translate(178, 1246)" stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="-8" r="3"/>
+    <path d="M -6 -1 L 6 -1"/>
+    <path d="M 0 -4 L 0 6"/>
+    <path d="M -5 5 L 0 9 L 5 5"/>
+  </g>
+  <text x="214" y="1240" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Mindfulness</text>
+  <text x="214" y="1258" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">satisambojjhaṅgo</text>
+  <text x="520" y="1240" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">Mindfulness is established and unmuddled</text>
+  <text x="520" y="1258" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">upaṭṭhitā sati hoti asammuṭṭhā</text>
+
+  <!-- Transition 1&#x2192;2 -->
+  <path d="M 460 1284 L 460 1296" stroke="#508070" stroke-width="1"/>
+  <path d="M 455 1291 L 460 1296 L 465 1291" stroke="#508070" stroke-width="1" fill="none"/>
+  <text x="460" y="1308" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">Dwelling thus mindful, he investigates with wisdom</text>
+
+  <!-- Factor 2: Investigation of States -->
+  <circle cx="142" cy="1350" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1353" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
+  <g transform="translate(178, 1350)" stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round">
+    <circle cx="0" cy="-2" r="6"/>
+    <line x1="4" y1="2" x2="10" y2="8"/>
+  </g>
+  <text x="214" y="1344" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Investigation of States</text>
+  <text x="214" y="1362" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">dhammavicayasambojjhaṅgo</text>
+  <text x="520" y="1344" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">Investigates and examines that state with wisdom</text>
+  <text x="520" y="1362" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">taṁ dhammaṁ paññāya pavicinati pavicayati</text>
+
+  <!-- Transition 2&#x2192;3 -->
+  <path d="M 460 1388 L 460 1400" stroke="#508070" stroke-width="1"/>
+  <path d="M 455 1395 L 460 1400 L 465 1395" stroke="#508070" stroke-width="1" fill="none"/>
+  <text x="460" y="1412" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">Investigating with wisdom, unflagging energy is aroused</text>
+
+  <!-- Factor 3: Energy -->
+  <circle cx="142" cy="1454" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1456" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+  <g transform="translate(178, 1454)" stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 0 -12 C 0 -12, -7 -2, -7 4 C -7 9, -3 13, 0 13 C 3 13, 7 9, 7 4 C 7 -2, 0 -12, 0 -12 Z"/>
+    <path d="M 0 -3 C 0 -3, -2 2, -2 5 C -2 7, -1 8.5, 0 8.5 C 1 8.5, 2 7, 2 5 C 2 2, 0 -3, 0 -3 Z" opacity="0.7"/>
+    <path d="M -10 4 Q -13 1 -10 -2" opacity="0.5"/>
+    <path d="M 10 4 Q 13 1 10 -2" opacity="0.5"/>
+  </g>
+  <text x="214" y="1448" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Energy</text>
+  <text x="214" y="1466" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">vīriyasambojjhaṅgo</text>
+  <text x="520" y="1448" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">Unflagging energy is aroused</text>
+  <text x="520" y="1466" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">āraddhaṁ hoti vīriyaṁ asallīnaṁ</text>
+
+  <!-- Transition 3&#x2192;4 -->
+  <path d="M 460 1492 L 460 1504" stroke="#508070" stroke-width="1"/>
+  <path d="M 455 1499 L 460 1504 L 465 1499" stroke="#508070" stroke-width="1" fill="none"/>
+  <text x="460" y="1516" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">In one who has aroused energy, joy arises</text>
+
+  <!-- Factor 4: Joy -->
+  <circle cx="142" cy="1558" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1560" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
+  <g transform="translate(178, 1558)" stroke="#60a088" fill="none" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 0 -9 L 2.4 -2.5 L 9 -2.5 L 3.8 1.7 L 5.8 8 L 0 4.7 L -5.8 8 L -3.8 1.7 L -9 -2.5 L -2.4 -2.5 Z"/>
+  </g>
+  <text x="214" y="1552" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Joy</text>
+  <text x="214" y="1570" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">pītisambojjhaṅgo</text>
+  <text x="520" y="1552" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">Joy free from worldly ties arises</text>
+  <text x="520" y="1570" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">uppajjati pīti nirāmisā</text>
+
+  <!-- Transition 4&#x2192;5 -->
+  <path d="M 460 1596 L 460 1608" stroke="#508070" stroke-width="1"/>
+  <path d="M 455 1603 L 460 1608 L 465 1603" stroke="#508070" stroke-width="1" fill="none"/>
+  <text x="460" y="1622" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">In one uplifted with joy, body and mind become tranquil</text>
+
+  <!-- Factor 5: Tranquility -->
+  <circle cx="142" cy="1662" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1664" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">5</text>
+  <g transform="translate(178, 1662)" stroke="#60a088" fill="none" stroke-width="0.9" stroke-linecap="round">
+    <path d="M -10 -2 Q -5 -4 0 -2 T 10 -2"/>
+    <path d="M -10 4 Q -5 2 0 4 T 10 4" opacity="0.8"/>
+  </g>
+  <text x="214" y="1656" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Tranquility</text>
+  <text x="214" y="1674" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">passaddhisambojjhaṅgo</text>
+  <text x="520" y="1656" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">Body becomes tranquil and mind becomes tranquil</text>
+  <text x="520" y="1674" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">kāyopi passambhati cittampi passambhati</text>
+
+  <!-- Transition 5&#x2192;6 -->
+  <path d="M 460 1700 L 460 1712" stroke="#508070" stroke-width="1"/>
+  <path d="M 455 1707 L 460 1712 L 465 1707" stroke="#508070" stroke-width="1" fill="none"/>
+  <text x="460" y="1724" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">In one whose body is tranquil, the mind becomes collected</text>
+
+  <!-- Factor 6: Collectedness -->
+  <circle cx="142" cy="1766" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1770" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">6</text>
+  <g transform="translate(178, 1766)" stroke="#60a088" fill="none" stroke-width="0.8">
+    <circle cx="0" cy="0" r="8"/>
+    <circle cx="0" cy="0" r="5"/>
+    <circle cx="0" cy="0" r="2"/>
+    <circle cx="0" cy="0" r="1.2" fill="#60a088" stroke="none"/>
+  </g>
+  <text x="214" y="1760" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Collectedness</text>
+  <text x="214" y="1778" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">samādhisambojjhaṅgo</text>
+  <text x="520" y="1760" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">The mind becomes collected</text>
+  <text x="520" y="1778" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">cittaṁ samādhiyati</text>
+
+  <!-- Transition 6&#x2192;7 -->
+  <path d="M 460 1804 L 460 1816" stroke="#508070" stroke-width="1"/>
+  <path d="M 455 1811 L 460 1816 L 465 1811" stroke="#508070" stroke-width="1" fill="none"/>
+  <text x="460" y="1828" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">Having collected the mind, he observes with equanimity</text>
+
+  <!-- Factor 7: Equanimity -->
+  <circle cx="142" cy="1870" r="11" fill="none" stroke="#60a088" stroke-width="0.8" opacity="0.75"/>
+  <text x="142" y="1873" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">7</text>
+  <g transform="translate(178, 1870)" stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="-10" y1="0" x2="10" y2="0"/>
+    <path d="M 0 -3 L 3 0 L 0 3 L -3 0 Z"/>
+    <line x1="-10" y1="-4" x2="-10" y2="4"/>
+    <line x1="10" y1="-4" x2="10" y2="4"/>
+  </g>
+  <text x="214" y="1864" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Awakening Factor of Equanimity</text>
+  <text x="214" y="1882" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">upekkhāsambojjhaṅgo</text>
+  <text x="520" y="1864" fill="#90b8c0" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">Thoroughly observes with equanimity</text>
+  <text x="520" y="1882" fill="#607080" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">cittaṁ sādhukaṁ ajjhupekkhitā hoti</text>
+
+  <!-- ═══════════════ FOUR SUPPORTS (moved above vijjāvimutti transition) ═══════════════ -->
+  <line x1="100" y1="1932" x2="820" y2="1932" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.32"/>
+  <text x="460" y="1952" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold" letter-spacing="2">FOUR SUPPORTS FOR THE CULTIVATION OF AWAKENING FACTORS · catu nissaya</text>
+  <g filter="url(#shadowDrop)">
+    <rect x="110" y="1970" width="160" height="84" rx="9" fill="url(#supportFill)" stroke="#4b6b66" stroke-opacity="0.55" stroke-width="1"/>
+    <rect x="290" y="1970" width="160" height="84" rx="9" fill="url(#supportFill)" stroke="#4b6b66" stroke-opacity="0.55" stroke-width="1"/>
+    <rect x="470" y="1970" width="160" height="84" rx="9" fill="url(#supportFill)" stroke="#4b6b66" stroke-opacity="0.55" stroke-width="1"/>
+    <rect x="650" y="1970" width="160" height="84" rx="9" fill="url(#supportFill)" stroke="#4b6b66" stroke-opacity="0.55" stroke-width="1"/>
+  </g>
+  <text x="190" y="2006" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10.8" font-weight="bold">Seclusion</text>
+  <text x="190" y="2026" text-anchor="middle" fill="#6f8790" font-family="Georgia,'Times New Roman',serif" font-size="9.8" font-style="italic">viveka</text>
+  <text x="370" y="2006" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10.8" font-weight="bold">Dispassion</text>
+  <text x="370" y="2026" text-anchor="middle" fill="#6f8790" font-family="Georgia,'Times New Roman',serif" font-size="9.8" font-style="italic">virāga</text>
+  <text x="550" y="2006" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10.8" font-weight="bold">Ending</text>
+  <text x="550" y="2026" text-anchor="middle" fill="#6f8790" font-family="Georgia,'Times New Roman',serif" font-size="9.8" font-style="italic">nirodha</text>
+  <text x="730" y="2006" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10.6" font-weight="bold">Complete Relinquishment</text>
+  <text x="730" y="2026" text-anchor="middle" fill="#6f8790" font-family="Georgia,'Times New Roman',serif" font-size="9.8" font-style="italic">vossagga</text>
+
+  <!-- ═══════════════ TRANSITION: 7 Factors → vijjāvimutti ═══════════════ -->
+  <line x1="100" y1="2078" x2="820" y2="2078" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4"/>
+  <text x="460" y="2102" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">The seven factors of awakening, when cultivated and frequently practiced, fulfill true knowledge and liberation</text>
+  <text x="460" y="2120" text-anchor="middle" fill="#507868" font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-style="italic">evaṁ bhāvitā satta bojjhaṅgā evaṁ bahulīkatā vijjāvimuttiṁ paripūrenti</text>
+  <path d="M 450 2144 L 460 2156 L 470 2144" stroke="#508070" stroke-width="1" fill="none" opacity="0.45"/>
+
+  <!-- ═══════════════ TRUE KNOWLEDGE AND LIBERATION ═══════════════ -->
+  <line x1="100" y1="2166" x2="820" y2="2166" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45"/>
+  <g transform="translate(238, 2190)" opacity="0.55" stroke="#c8a040" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" filter="url(#iconGlow)">
+    <rect x="-18" y="-5" width="16" height="10" rx="5" transform="rotate(-16 -10 0)"/>
+    <rect x="2" y="-5" width="16" height="10" rx="5" transform="rotate(16 10 0)"/>
+    <path d="M -2 1 L 1 -2 L 2 1 L 5 -2"/>
+  </g>
+  <text x="460" y="2194" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" letter-spacing="2.5">TRUE KNOWLEDGE AND LIBERATION</text>
+  <text x="460" y="2212" text-anchor="middle" fill="#806828" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.68">vijjāvimutti</text>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <line x1="300" y1="2250" x2="620" y2="2250" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5"/>
+  <a href="https://wordsofthebuddha.org/mn118" target="_blank" rel="noopener noreferrer">
+    <text x="460" y="2264" text-anchor="middle" fill="#405060"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5"
+      letter-spacing="1">wordsofthebuddha.org/mn118</text>
+  </a>
+
+  <g transform="translate(460, 2282) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)"/>
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)"/>
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)"/>
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)"/>
+    <circle cx="0" cy="-28" r="9"/>
+  </g>
+</svg>
