@@ -12,6 +12,8 @@
  * - imageCaption: caption with optional credit (e.g., "A lotus · Generated with ChatGPT")
  */
 
+import { determineRouteType } from "./routeHandler";
+
 // Import all images from content-images directory at build time
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	"/src/assets/content-images/*.{webp,jpg,jpeg,png,svg}",
@@ -119,13 +121,92 @@ export function findContentImage(
  * @param title - Discourse title for default alt text
  * @returns Array of ContentImageData (may be empty)
  */
+/** e.g. `en/sn/sn36.6` or `sn/sn36.6` → `sn36.6` for asset file names */
+export function normalizeDiscourseIdForContentImages(id: string): string {
+	const t = id.trim().toLowerCase();
+	if (!t.includes("/")) return t;
+	return t.split("/").filter(Boolean).pop() ?? t;
+}
+
+/** Lowercased SVG basenames (no extension) from src/assets/content-images */
+const svgBasenamesLower: string[] = (() => {
+	const out: string[] = [];
+	for (const path of Object.keys(imageModules)) {
+		if (!path.toLowerCase().endsWith(".svg")) continue;
+		const base =
+			path.split("/").pop()?.replace(/\.svg$/i, "").toLowerCase() ?? "";
+		if (base) out.push(base);
+	}
+	return out;
+})();
+
+/**
+ * True if `basenameNoExt` (e.g. mn118-alt, sn36.6) belongs to this discourse id
+ * (mn118, sn36.6). Avoids sn36.6 matching sn36.66 (next char must be delimiter or end).
+ */
+export function discourseSvgBasenameMatchesDiscourseId(
+	basenameNoExtLower: string,
+	discourseId: string,
+): boolean {
+	const fn = basenameNoExtLower;
+	const d = normalizeDiscourseIdForContentImages(discourseId);
+	if (fn === d) return true;
+	if (!fn.startsWith(d)) return false;
+	if (fn.length === d.length) return true;
+	const next = fn[d.length];
+	return next === "-" || next === "_" || next === ".";
+}
+
+/** Any SVG in content-images whose basename matches the discourse id (prefix-safe). */
+export function discourseHasSvgAssetForExport(discourseId: string): boolean {
+	for (const fn of svgBasenamesLower) {
+		if (discourseSvgBasenameMatchesDiscourseId(fn, discourseId)) return true;
+	}
+	return false;
+}
+
+/**
+ * True if basename looks like a discourse file for a top-level collection root
+ * (e.g. root `sn` → sn36.6, sn56.11, sn36-alt; root `mn` → mn118).
+ */
+function svgBasenameLooksLikeDiscourseInRoot(fn: string, root: string): boolean {
+	const f = fn.toLowerCase();
+	const r = root.toLowerCase();
+	if (!f.startsWith(r)) return false;
+	const tail = f.slice(r.length);
+	// Plain chapter number (mn118), dotted sutta id (sn36.6), or hyphen suffix (sn36-alt)
+	return (
+		/^\d+$/.test(tail) ||
+		/^\d+\./.test(tail) ||
+		/^\d+[-_]/.test(tail)
+	);
+}
+
+/**
+ * When MDX entry lists are empty at build time, detect whether this collection’s export
+ * scope could include any discourse SVG. Preview chapters are often range keys (sn35-44),
+ * not leaf keys (sn36), so entry-based checks alone miss sn36.6.svg for /sn.
+ */
+export function collectionHasSvgVizAssetByRootPrefix(
+	collectionSlug: string,
+): boolean {
+	const route = determineRouteType(collectionSlug);
+	if (route.type !== "collection" || !route.metadata) return false;
+	const root = collectionSlug.toLowerCase().split(/[-/]/)[0];
+	if (!/^[a-z]{1,8}$/.test(root)) return false;
+	for (const fn of svgBasenamesLower) {
+		if (svgBasenameLooksLikeDiscourseInRoot(fn, root)) return true;
+	}
+	return false;
+}
+
 export function findContentImages(
 	id: string,
 	frontmatter?: ContentImageFrontmatter,
 	title?: string,
 ): ContentImageData[] {
-	// Normalize ID for file matching (lowercase, handle edge cases)
-	const normalizedId = id.toLowerCase();
+	// Normalize ID for file matching (lowercase, path-shaped slugs from content collections)
+	const normalizedId = normalizeDiscourseIdForContentImages(id);
 	const extensions = ["webp", "jpg", "jpeg", "png", "svg"];
 
 	// 1. Check for custom path(s) in frontmatter — comma-separated support
@@ -193,6 +274,21 @@ export function findContentImages(
  * @param frontmatter - Optional frontmatter with custom image path
  * @returns true if image exists
  */
+/**
+ * True if the discourse has at least one SVG in the PDF/site “discourse viz” pipeline
+ * (same discovery rules as {@link findContentImages}).
+ */
+export function discourseHasSvgViz(
+	id: string,
+	frontmatter?: ContentImageFrontmatter,
+	title?: string,
+): boolean {
+	const images = findContentImages(id, frontmatter, title);
+	return images.some((img) =>
+		img.modulePath.toLowerCase().endsWith(".svg"),
+	);
+}
+
 export function hasContentImage(
 	id: string,
 	frontmatter?: ContentImageFrontmatter,
@@ -203,7 +299,7 @@ export function hasContentImage(
 	}
 
 	// Check convention-based path
-	const normalizedId = id.toLowerCase();
+	const normalizedId = normalizeDiscourseIdForContentImages(id);
 	const extensions = ["webp", "jpg", "jpeg", "png", "svg"];
 
 	for (const ext of extensions) {

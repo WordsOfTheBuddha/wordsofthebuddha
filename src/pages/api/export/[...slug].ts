@@ -28,9 +28,12 @@ import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
 	buildPdfHtml,
+	type PdfExportContentOptions,
 	type PdfPaliOptions,
 	type PdfVizImageMode,
 } from "../../../utils/pdfRenderer";
+
+// Future: subset export should use POST JSON (selectedDiscourseSlugs[]) — avoid huge query strings.
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
 import type { Browser } from "playwright-core";
@@ -192,8 +195,17 @@ export const GET: APIRoute = async ({ params, url }) => {
 				}
 			: undefined;
 
+	const keyTermsParam = url.searchParams.get("keyTerms");
+	const includeKeyTermsSection =
+		keyTermsParam !== "0" && keyTermsParam !== "false";
+
+	const pdfContentOptions: PdfExportContentOptions = {
+		paliOptions,
+		includeKeyTermsSection,
+	};
+
 	console.log(
-		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"}, pali: ${paliOptions?.enabled ? paliOptions.layout : "off"})`,
+		`[PDF Export] Generating PDF for collection: ${slug} (images: ${imageMode}, viz: ${vizImageMode ?? "default"}, pali: ${paliOptions?.enabled ? paliOptions.layout : "off"}, keyTerms: ${includeKeyTermsSection ? "yes" : "no"})`,
 	);
 	const startMs = Date.now();
 
@@ -205,7 +217,7 @@ export const GET: APIRoute = async ({ params, url }) => {
 			slug,
 			route.metadata,
 			imageMode,
-			paliOptions,
+			pdfContentOptions,
 		);
 
 		const totalDiscourses = collectionData.chapters.reduce(

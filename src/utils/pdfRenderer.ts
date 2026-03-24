@@ -27,6 +27,7 @@ import {
 	parseContent,
 	type ContentPair,
 } from "./contentParser";
+import { getChapterEntryListForPdf } from "./collectionPdfChapterEntries";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -199,7 +200,12 @@ function buildSplitPdfHtmlFromPairs(pairs: ContentPair[]): string {
  * Appends a <section class="footnotes"> at the end of the HTML.
  * Duplicate terms (by text) are de-annotated after first occurrence.
  */
-export function processFootnotes(html: string): string {
+export function processFootnotes(
+	html: string,
+	options?: { includeKeyTermsSection?: boolean },
+): string {
+	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
+
 	const dom = new JSDOM(`<div id="root">${html}</div>`);
 	const { document } = dom.window;
 	const root = document.getElementById("root")!;
@@ -229,7 +235,7 @@ export function processFootnotes(html: string): string {
 	}
 
 	// Append footnote section if there are any long definitions
-	if (notes.length > 0) {
+	if (notes.length > 0 && includeKeyTermsSection) {
 		const section = document.createElement("section");
 		section.className = "footnotes";
 
@@ -340,11 +346,16 @@ export type PdfPaliOptions = {
 	layout: "interleaved" | "split";
 };
 
+/** Options for collection PDF body rendering (passed through fetchCollectionPdfData). */
+export type PdfExportContentOptions = {
+	paliOptions?: PdfPaliOptions;
+	/** When false, glossed terms stay bold in the body but the Key Terms appendix is omitted. Default true. */
+	includeKeyTermsSection?: boolean;
+};
+
 // ---------------------------------------------------------------------------
 // Data fetching
 // ---------------------------------------------------------------------------
-
-const MAX_DISCOURSES = 150; // Guard against accidentally huge collections
 
 function escapeHtml(text: string): string {
 	return text
@@ -359,6 +370,7 @@ async function fetchDiscourseHtml(
 	slug: string,
 	imageMode: PdfImageMode,
 	paliOptions?: PdfPaliOptions,
+	includeKeyTermsSection = true,
 ): Promise<string> {
 	const entry = await findEntry("en", { slug });
 	if (!entry?.body) return "<p><em>(Content not available)</em></p>";
@@ -521,7 +533,7 @@ async function fetchDiscourseHtml(
 		html = mdxBodyToHtml(entry.body);
 	}
 
-	html = processFootnotes(html);
+	html = processFootnotes(html, { includeKeyTermsSection });
 	html = processCommentaryNotes(html, (entry.data as any)?.commentary);
 	return `${imageHtml}${html}`;
 }
@@ -531,37 +543,9 @@ async function fetchChapterDiscourses(
 	range: { start: number; end: number } | undefined,
 	imageMode: PdfImageMode,
 	paliOptions?: PdfPaliOptions,
+	includeKeyTermsSection = true,
 ): Promise<DiscoursePdf[]> {
-	// Range-based chapters like mn1-50, iti28-49:
-	// extract the alphabetic base ("mn", "iti") and filter by number in range.
-	const rangeMatch = /^([a-z]+)(\d+)-(\d+)$/i.exec(chapterSlug);
-
-	let entries: Awaited<ReturnType<typeof findEntriesBySlugPrefix>>;
-	if (rangeMatch) {
-		const base = rangeMatch[1].toLowerCase();
-		const lo = range?.start ?? Number(rangeMatch[2]);
-		const hi = range?.end ?? Number(rangeMatch[3]);
-		// Fetch all entries that start with the base prefix
-		const all = await findEntriesBySlugPrefix("en", base);
-		entries = all.filter((e) => {
-			const slug = ((e.data as any)?.slug || (e as any).slug || "")
-				.trim()
-				.toLowerCase();
-			const numMatch = new RegExp(`^${base}(\\d+)$`).exec(slug);
-			if (!numMatch) return false;
-			const num = Number(numMatch[1]);
-			return num >= lo && num <= hi;
-		});
-	} else {
-		// Numbered chapters (sn1, ud5 …) have discourses like sn1.1, so append dot.
-		// Letter-only top-level collections (ud, kp, dhp …) match with no dot.
-		const prefix = /\d$/.test(chapterSlug)
-			? `${chapterSlug}.`
-			: chapterSlug;
-		entries = await findEntriesBySlugPrefix("en", prefix);
-	}
-
-	const limited = entries.slice(0, MAX_DISCOURSES);
+	const limited = await getChapterEntryListForPdf(chapterSlug, range);
 
 	// Render body for each discourse in parallel
 	const discourses = await Promise.all(
@@ -569,14 +553,14 @@ async function fetchChapterDiscourses(
 			const slug = (entry.data as any)?.slug || entry.slug || "";
 			const title = (entry.data as any)?.title || slug;
 			const description = (entry.data as any)?.description || "";
-			const html = await fetchDiscourseHtml(slug, imageMode, paliOptions);
+			const html = await fetchDiscourseHtml(
+				slug,
+				imageMode,
+				paliOptions,
+				includeKeyTermsSection,
+			);
 			return { slug, title, description, html };
 		}),
-	);
-
-	// Natural sort so sn1.9 comes before sn1.10 etc.
-	discourses.sort((a, b) =>
-		a.slug.localeCompare(b.slug, undefined, { numeric: true }),
 	);
 
 	return discourses;
@@ -591,8 +575,11 @@ export async function fetchCollectionPdfData(
 	slug: string,
 	metadata: DirectoryStructure,
 	imageMode: PdfImageMode = "svgPrimaryOnly",
-	paliOptions?: PdfPaliOptions,
+	options?: PdfExportContentOptions,
 ): Promise<CollectionPdf> {
+	const paliOptions = options?.paliOptions;
+	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
+
 	const childEntries = metadata.children
 		? Object.entries(metadata.children)
 		: [];
@@ -608,6 +595,7 @@ export async function fetchCollectionPdfData(
 					childMeta.range,
 					imageMode,
 					paliOptions,
+					includeKeyTermsSection,
 				);
 				return {
 					slug: childSlug,
@@ -624,6 +612,7 @@ export async function fetchCollectionPdfData(
 			undefined,
 			imageMode,
 			paliOptions,
+			includeKeyTermsSection,
 		);
 		chapters = [
 			{
