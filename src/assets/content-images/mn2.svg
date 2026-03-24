@@ -607,7 +607,7 @@
 
     <!-- Title -->
     <g filter="url(#glow1)">
-        <text x="460" y="1308" text-anchor="middle" fill="#d8c060"
+        <text x="460" y="1308" text-anchor="middle" fill="#c8a040"
             font-family="Georgia,'Times New Roman',serif" font-size="15" font-weight="bold"
             letter-spacing="2">MAKING AN END OF SUFFERING</text>
     </g>

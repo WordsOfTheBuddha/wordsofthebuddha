@@ -1,0 +1,707 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1680" width="920" height="1680">
+    <defs>
+        <!-- Background gradient -->
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <!-- Pattern box gradients (burgundy left, teal right) -->
+        <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#221828" />
+            <stop offset="100%" stop-color="#1a1422" />
+        </linearGradient>
+        <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#142a32" />
+            <stop offset="100%" stop-color="#10242c" />
+        </linearGradient>
+
+        <!-- Tier label gradient -->
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Tendency panel gradients -->
+        <linearGradient id="panelAmber" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e1a14" />
+            <stop offset="100%" stop-color="#181610" />
+        </linearGradient>
+        <linearGradient id="panelRed" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e1418" />
+            <stop offset="100%" stop-color="#181014" />
+        </linearGradient>
+        <linearGradient id="panelBlue" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#141a22" />
+            <stop offset="100%" stop-color="#10161e" />
+        </linearGradient>
+
+        <!-- Glow filters -->
+        <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+    </defs>
+
+    <!-- ============ BACKGROUND ============ -->
+    <rect width="920" height="1680" fill="url(#bg)" />
+    <ellipse cx="460" cy="1580" rx="380" ry="180" fill="#204838" opacity="0.06" />
+
+    <!-- ============ TITLE ============ -->
+    <text x="460" y="40" text-anchor="middle" fill="#d8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">SN 36.6 &#8212; SALLA SUTTA</text>
+    <text x="470" y="64" text-anchor="middle" fill="#a09070"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">The Dart</text>
+
+    <line x1="310" y1="78" x2="610" y2="78" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+    <text x="460" y="100" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">&#8220;What is the distinction, the disparity, the difference</text>
+    <text x="460" y="116" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">between a learned disciple of the Noble Ones and an uninstructed ordinary person?&#8221;</text>
+    <text x="460" y="136" text-anchor="middle" fill="#506878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.8">ko viseso ko adhippayāso kiṁ nānākaraṇaṁ sutavato ariyasāvakassa assutavatā puthujjanenā</text>
+
+    <!-- ================================================================ -->
+    <!--               THE TWO DARTS — CENTRAL METAPHOR                    -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="156" x2="820" y2="156" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="190" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">THE TWO DARTS</text>
+    <line x1="100" y1="204" x2="820" y2="204" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Central divider -->
+    <line x1="460" y1="214" x2="460" y2="450" stroke="#c8a040" stroke-width="0.8" opacity="0.12" />
+
+    <!-- ===== LEFT PANEL: Uninstructed ordinary person — TWO DARTS ===== -->
+    <g filter="url(#shadowDrop)">
+        <rect x="40" y="214" width="408" height="236" rx="8" fill="url(#patternLeft)"
+            stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <!-- Panel header -->
+    <text x="244" y="234" text-anchor="middle" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1.5">UNINSTRUCTED ORDINARY PERSON</text>
+    <text x="244" y="248" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >assutav&#x101; puthujjano</text>
+
+    <!-- Human figure: bodily dart + mental loop -->
+    <g transform="translate(140, 278)" opacity="0.65" filter="url(#iconGlow)">
+        <!-- Stick figure -->
+        <circle cx="0" cy="0" r="8" fill="none" stroke="#a06070" stroke-width="1.2" />
+        <line x1="0" y1="8" x2="0" y2="38" stroke="#a06070" stroke-width="1.2" />
+        <line x1="-14" y1="20" x2="14" y2="20" stroke="#a06070" stroke-width="1" />
+        <line x1="0" y1="38" x2="-10" y2="52" stroke="#a06070" stroke-width="1" />
+        <line x1="0" y1="38" x2="10" y2="52" stroke="#a06070" stroke-width="1" />
+        <!-- Dart (bodily) — proper dart: fins → barrel → tip -->
+        <!-- Spread leaf fins at back -->
+        <path d="M -46 20 L -56 12 L -50 20 Z" fill="#c07060" opacity="0.78"/>
+        <path d="M -46 20 L -56 28 L -50 20 Z" fill="#c07060" opacity="0.78"/>
+        <!-- Barrel/shaft -->
+        <line x1="-50" y1="20" x2="-20" y2="20" stroke="#c07060" stroke-width="1.9"/>
+        <!-- Tip: sharp forward triangle -->
+        <path d="M -14 20 L -23 16 L -23 24 Z" fill="#c07060"/>
+        <!-- Mental loop — dashed circular arrow beside head, shows cycling -->
+        <!-- Arc: 270° clockwise circle, centre (22,−8), radius 10 -->
+        <path d="M 22 -18 A 10 10 0 0 1 32 -8 A 10 10 0 0 1 22 2 A 10 10 0 0 1 12 -8"
+              stroke="#c07060" stroke-width="1.1" fill="none"
+              stroke-dasharray="3,2" opacity="0.85"/>
+        <!-- Arrowhead completing the loop, pointing back up -->
+        <path d="M 12 -8 L 8 -14 L 16 -13 Z"
+              fill="#c07060"
+              opacity="1"
+              transform="rotate(80 12 -11)"/>
+    </g>
+
+    <!-- Dart count label -->
+    <text x="244" y="280" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >gets hit by two darts</text>
+    <text x="244" y="294" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >dvisallena vedanaṁ vedayati</text>
+
+    <!-- Feeling types -->
+    <text x="244" y="316" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >bodily · mental <tspan font-size="10" opacity="0.72">(repeating)</tspan></text>
+    <text x="244" y="330" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >k&#x101;yika&#xF1;ca, cetasika&#xF1;ca</text>
+
+    <line x1="76" y1="342" x2="412" y2="342" stroke="#5a3848" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Reactions list -->
+    <text x="244" y="360" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >grieves · grows weary · laments</text>
+    <text x="244" y="376" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >weeps beating their breast · experiences delusion</text>
+    <text x="244" y="394" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >socati · kilamati · paridevati</text>
+    <text x="244" y="408" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >uratt&#x101;&#x1E37;i&#x1E41; kandati · sammoha&#x1E41; &#x101;pajjati</text>
+
+    <!-- Result -->
+    <text x="244" y="436" text-anchor="middle" fill="#a06070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        opacity="0.9">bound to suffering</text>
+
+    <!-- ===== RIGHT PANEL: Learned noble disciple — ONE DART ===== -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="214" width="408" height="236" rx="8" fill="url(#patternRight)"
+            stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <!-- Panel header -->
+    <text x="676" y="234" text-anchor="middle" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1.5">LEARNED DISCIPLE OF THE NOBLE ONES</text>
+    <text x="676" y="248" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sutav&#x101; ariyasāvako</text>
+
+    <!-- Human figure: single bodily dart only, no mental loop -->
+    <g transform="translate(572, 278)" opacity="0.65" filter="url(#iconGlow)">
+        <!-- Stick figure -->
+        <circle cx="0" cy="0" r="8" fill="none" stroke="#60a088" stroke-width="1.2" />
+        <line x1="0" y1="8" x2="0" y2="38" stroke="#60a088" stroke-width="1.2" />
+        <line x1="-14" y1="20" x2="14" y2="20" stroke="#60a088" stroke-width="1" />
+        <line x1="0" y1="38" x2="-10" y2="52" stroke="#60a088" stroke-width="1" />
+        <line x1="0" y1="38" x2="10" y2="52" stroke="#60a088" stroke-width="1" />
+        <!-- Dart (bodily only) — same dart anatomy, no loop -->
+        <!-- Spread leaf fins at back -->
+        <path d="M -46 20 L -56 12 L -50 20 Z" fill="#80a090" opacity="0.78"/>
+        <path d="M -46 20 L -56 28 L -50 20 Z" fill="#80a090" opacity="0.78"/>
+        <!-- Barrel/shaft -->
+        <line x1="-50" y1="20" x2="-20" y2="20" stroke="#80a090" stroke-width="1.9"/>
+        <!-- Tip: sharp forward triangle -->
+        <path d="M -14 20 L -23 16 L -23 24 Z" fill="#80a090"/>
+    </g>
+
+    <!-- Dart count label -->
+    <text x="676" y="280" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        >gets hit by one dart</text>
+    <text x="676" y="294" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >ekasallena vedanaṁ vedayati</text>
+
+    <!-- Feeling types -->
+    <text x="676" y="316" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >bodily, but not mental</text>
+    <text x="676" y="330" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >k&#x101;yika&#x1E41;, na cetasika&#x1E41;</text>
+
+    <line x1="508" y1="342" x2="844" y2="342" stroke="#2a5868" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Non-reactions list -->
+    <text x="676" y="360" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >does not grieve · does not grow weary · does not lament</text>
+    <text x="676" y="376" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11"
+        >does not weep beating their breast · does not experience delusion</text>
+    <text x="676" y="394" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >na socati · na kilamati · na paridevati</text>
+    <text x="676" y="408" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >na uratt&#x101;&#x1E37;i&#x1E41; kandati · na sammoha&#x1E41; &#x101;pajjati</text>
+
+    <!-- Result -->
+    <text x="676" y="436" text-anchor="middle" fill="#60a088"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        opacity="0.9">freed from suffering</text>
+
+    <!-- ================================================================ -->
+    <!--            THREE UNDERLYING TENDENCIES                            -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="468" x2="820" y2="468" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="492" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">THREE UNDERLYING TENDENCIES</text>
+    <text x="460" y="508" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        letter-spacing="1" opacity="0.6">tayo anusayā</text>
+    <line x1="100" y1="516" x2="820" y2="516" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- ===== Column 1: PLEASANT → Desire tendency ===== -->
+    <!-- Pleasant accent: warm mauve-rose (gold #c8a040 reserved for positive outcomes / tier labels) -->
+    <!-- panel: x=30 w=280 center=170 | left-branch cx=95 right-branch cx=245 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="30" y="528" width="280" height="223" rx="8" fill="url(#panelAmber)"
+            stroke="#b898a8" stroke-width="0.6" stroke-opacity="0.35" />
+    </g>
+    <!-- Shared top: feeling type -->
+    <text x="170" y="548" text-anchor="middle" fill="#b898a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1">PLEASANT</text>
+    <text x="170" y="564" text-anchor="middle" fill="#b898a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >pleasant felt experience</text>
+    <text x="170" y="578" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sukhā vedanā</text>
+    <path d="M 164 588 L 170 596 L 176 588" stroke="#b898a8" stroke-width="0.7" fill="none" opacity="0.35" />
+    <!-- Branch lines: left=burgundy, right=teal -->
+    <path d="M 170 596 C 170 608, 95 606, 95 618" stroke="#b07088" stroke-width="0.7" fill="none" opacity="0.45" />
+    <path d="M 170 596 C 170 608, 245 606, 245 618" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.45" />
+    <!-- LEFT branch: ordinary person (cx=95) -->
+    <text x="95" y="633" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >delights in</text>
+    <text x="95" y="647" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >sensual pleasure</text>
+    <text x="95" y="661" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >kāmasukhaṁ abhinandati</text>
+    <path d="M 89 675 L 95 683 L 101 675" stroke="#b07088" stroke-width="0.7" fill="none" opacity="0.35" />
+    <g filter="url(#glow1)">
+        <text x="95" y="705" text-anchor="middle" fill="#b898a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold"
+            >desire tendency</text>
+            <text x="95" y="717" text-anchor="middle" fill="#b898a8"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="normal"
+            >gets reinforced</text>
+    </g>
+    <text x="95" y="731" text-anchor="middle" fill="#804858"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >rāgānusayo so anuseti</text>
+    <!-- RIGHT branch: noble disciple (cx=245) -->
+    <text x="245" y="633" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >does not delight in</text>
+    <text x="245" y="647" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >pleasure</text>
+    <text x="245" y="661" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >kāmasukhaṁ nābhinandati</text>
+
+    <path d="M 239 675 L 245 683 L 251 675" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.35" />
+    <text x="245" y="705" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="normal"
+        >desire tendency</text>
+    <text x="245" y="717" text-anchor="middle" fill="#60a088"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="normal"
+        >is not reinforced</text>
+    <text x="245" y="731" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >rāgānusayo so nānuseti</text>
+
+    <!-- ===== Column 2: PAINFUL → Aversion tendency ===== -->
+    <!-- panel: x=320 w=280 center=460 | left-branch cx=385 right-branch cx=535 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="320" y="528" width="280" height="223" rx="8" fill="url(#panelRed)"
+            stroke="#a06070" stroke-width="0.6" stroke-opacity="0.3" />
+    </g>
+    <!-- Shared top: feeling type -->
+    <text x="460" y="548" text-anchor="middle" fill="#a06070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1">PAINFUL</text>
+    <text x="460" y="564" text-anchor="middle" fill="#886070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >painful felt experience</text>
+    <text x="460" y="578" text-anchor="middle" fill="#684858"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >dukkh&#x101; vedan&#x101;</text>
+    <path d="M 454 588 L 460 596 L 466 588" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.35" />
+    <!-- Branch lines -->
+    <path d="M 460 596 C 460 608, 385 606, 385 618" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.45" />
+    <path d="M 460 596 C 460 608, 535 606, 535 618" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.45" />
+    <!-- LEFT branch: ordinary person (cx=385) — y positions match column 1 -->
+    <text x="385" y="633" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >becomes</text>
+    <text x="385" y="647" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >resistant</text>
+    <text x="385" y="661" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >paṭighavā hoti</text>
+    <path d="M 379 675 L 385 683 L 391 675" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.35" />
+    <g filter="url(#glow1)">
+        <text x="385" y="705" text-anchor="middle" fill="#a06070"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold"
+            >aversion tendency</text>
+        <text x="385" y="717" text-anchor="middle" fill="#a06070"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="normal"
+            >gets reinforced</text>
+    </g>
+    <text x="385" y="731" text-anchor="middle" fill="#804858"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >paṭighānusayo so anuseti</text>
+    <!-- RIGHT branch: noble disciple (cx=535) -->
+    <text x="535" y="633" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >is not</text>
+    <text x="535" y="647" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >resistant</text>
+    <text x="535" y="661" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >paṭighavā na hoti</text>
+    <path d="M 529 675 L 535 683 L 541 675" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.35" />
+    <text x="535" y="705" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="normal"
+        >aversion tendency</text>
+    <text x="535" y="717" text-anchor="middle" fill="#60a088"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="normal"
+        >is not reinforced</text>
+    <text x="535" y="731" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >paṭighānusayo so nānuseti</text>
+
+    <!-- ===== Column 3: NEUTRAL → Ignorance tendency ===== -->
+    <!-- panel: x=610 w=280 center=750 | left-branch cx=675 right-branch cx=825 -->
+    <g filter="url(#shadowDrop)">
+        <rect x="610" y="528" width="280" height="223" rx="8" fill="url(#panelBlue)"
+            stroke="#6888a0" stroke-width="0.6" stroke-opacity="0.3" />
+    </g>
+    <!-- Shared top: feeling type -->
+    <text x="750" y="548" text-anchor="middle" fill="#6888a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        letter-spacing="1">NEITHER</text>
+    <text x="750" y="564" text-anchor="middle" fill="#607888"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >neither-painful-nor-pleasant felt experience</text>
+    <text x="750" y="578" text-anchor="middle" fill="#486068"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >adukkhamasukh&#x101; vedan&#x101;</text>
+    <path d="M 744 588 L 750 596 L 756 588" stroke="#6888a0" stroke-width="0.7" fill="none" opacity="0.35" />
+    <!-- Branch lines -->
+    <path d="M 750 596 C 750 608, 675 606, 675 618" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.45" />
+    <path d="M 750 596 C 750 608, 825 606, 825 618" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.45" />
+    <!-- LEFT branch: ordinary person (cx=675) — y positions match column 1 -->
+    <text x="675" y="633" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >does not understand</text>
+    <text x="675" y="647" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >as it truly is</text>
+    <text x="675" y="661" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        >yath&#x101;bh&#x16B;ta&#x1E41; nappaj&#x101;n&#x101;ti</text>
+    <path d="M 669 675 L 675 683 L 681 675" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.35" />
+    <g filter="url(#glow1)">
+        <text x="675" y="705" text-anchor="middle" fill="#6888a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold"
+            >ignorance tendency</text>
+        <text x="675" y="717" text-anchor="middle" fill="#6888a0"
+            font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="normal"
+            >gets reinforced</text>
+    </g>
+    <text x="675" y="731" text-anchor="middle" fill="#486878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >avijjānusayo so anuseti</text>
+    <!-- RIGHT branch: noble disciple (cx=825) -->
+    <text x="825" y="633" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >understands</text>
+    <text x="825" y="647" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >as it truly is</text>
+    <text x="825" y="661" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic"
+        >yathābhūtaṁ pajānāti</text>
+    <path d="M 819 675 L 825 683 L 831 675" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.35" />
+    <text x="825" y="705" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="normal"
+        >ignorance tendency</text>
+    <text x="825" y="717" text-anchor="middle" fill="#60a088"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="normal"
+        >is not reinforced</text>
+    <text x="825" y="731" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >avijjānusayo so nānuseti</text>
+
+    <!-- ================================================================ -->
+    <!--           FIVE ASPECTS OF UNDERSTANDING                           -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="798" x2="820" y2="798" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="822" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">FIVE ASPECTS</text>
+    <text x="460" y="838" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        letter-spacing="1" opacity="0.6">understanding feelings as they truly are</text>
+    <line x1="100" y1="846" x2="820" y2="846" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Five independent aspects (numbered like mn2.svg — no sequence arrows) -->
+    <!-- Box 1: Arising -->
+    <rect x="56" y="862" width="140" height="52" rx="6" fill="#0e1828" fill-opacity="0.5"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.35" />
+    <circle cx="72" cy="888" r="10" fill="none" stroke="#508070" stroke-width="0.7" stroke-opacity="0.45" />
+    <text x="72" y="891" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="normal">1</text>
+    <text x="126" y="884" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >arising</text>
+    <text x="126" y="900" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >samudaya</text>
+
+    <!-- Box 2: Passing away -->
+    <rect x="218" y="862" width="140" height="52" rx="6" fill="#0e1828" fill-opacity="0.5"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.35" />
+    <circle cx="234" cy="888" r="10" fill="none" stroke="#508070" stroke-width="0.7" stroke-opacity="0.45" />
+    <text x="234" y="891" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="normal">2</text>
+    <text x="288" y="884" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >passing away</text>
+    <text x="288" y="900" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >atthaṅgama</text>
+
+    <!-- Box 3: Gratification -->
+    <rect x="380" y="862" width="140" height="52" rx="6" fill="#0e1828" fill-opacity="0.5"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.35" />
+    <circle cx="396" cy="888" r="10" fill="none" stroke="#508070" stroke-width="0.7" stroke-opacity="0.45" />
+    <text x="396" y="890" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="normal">3</text>
+    <text x="450" y="884" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >gratification</text>
+    <text x="450" y="900" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >assāda</text>
+
+    <!-- Box 4: Drawback -->
+    <rect x="542" y="862" width="140" height="52" rx="6" fill="#0e1828" fill-opacity="0.5"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.35" />
+    <circle cx="558" cy="888" r="10" fill="none" stroke="#508070" stroke-width="0.7" stroke-opacity="0.45" />
+    <text x="558" y="890" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="normal">4</text>
+    <text x="612" y="884" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >drawback</text>
+    <text x="612" y="900" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >ādīnava</text>
+
+    <!-- Box 5: Escape -->
+    <rect x="704" y="862" width="140" height="52" rx="6" fill="#0e1828" fill-opacity="0.5"
+        stroke="#508070" stroke-width="0.5" stroke-opacity="0.35" />
+    <circle cx="720" cy="888" r="10" fill="none" stroke="#508070" stroke-width="0.7" stroke-opacity="0.45" />
+    <text x="720" y="891" text-anchor="middle" fill="#90b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="normal">5</text>
+    <text x="774" y="884" text-anchor="middle" fill="#80b8a8"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic"
+        >escape</text>
+    <text x="774" y="900" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >nissaraṇa</text>
+
+    <!-- ================================================================ -->
+    <!--             ENTANGLED vs DISENTANGLED                             -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="960" x2="820" y2="960" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="984" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">THE RESULT</text>
+    <text x="460" y="1000" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        letter-spacing="1" opacity="0.6">sa&#xF1;&#xF1;utto vs visa&#xF1;&#xF1;utto</text>
+    <line x1="100" y1="1008" x2="820" y2="1008" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Central divider -->
+    <line x1="460" y1="1018" x2="460" y2="1240" stroke="#c8a040" stroke-width="0.8" opacity="0.12" />
+
+    <!-- ===== LEFT PANEL: Entangled ===== -->
+    <g filter="url(#shadowDrop)">
+        <rect x="40" y="1018" width="408" height="222" rx="8" fill="url(#patternLeft)"
+            stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <text x="244" y="1040" text-anchor="middle" fill="#a08090"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="2">ENTANGLED</text>
+    <text x="244" y="1056" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >saññutto</text>
+
+    <!-- Three feeling rows -->
+    <text x="244" y="1080" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >pleasant feeling &#8594; experiences entangled with it</text>
+    <text x="244" y="1096" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >painful feeling &#8594; experiences entangled with it</text>
+    <text x="244" y="1112" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >neutral feeling &#8594; experiences entangled with it</text>
+    <text x="244" y="1128" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >saññutto naṁ vedayati</text>
+
+    <path d="M 238 1138 L 244 1146 L 250 1138" stroke="#a06070" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <!-- Bound to -->
+    <text x="244" y="1164" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >bound to birth, aging, death,</text>
+    <text x="244" y="1178" text-anchor="middle" fill="#c0a8b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sorrow, lamentation, pain, displeasure, and despair</text>
+    <text x="244" y="1194" text-anchor="middle" fill="#806070"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >saññutto jātiyā jarāya maraṇena</text>
+
+    <!-- Result: bound to suffering -->
+    <g filter="url(#glow1)">
+        <text x="244" y="1224" text-anchor="middle" fill="#a06070"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        opacity="0.9">remains bound to suffering</text>
+    </g>
+
+    <!-- ===== RIGHT PANEL: Disentangled ===== -->
+    <g filter="url(#shadowDrop)">
+        <rect x="472" y="1018" width="408" height="222" rx="8" fill="url(#patternRight)"
+            stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
+    </g>
+
+    <text x="676" y="1040" text-anchor="middle" fill="#6898a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+        letter-spacing="2">DISENTANGLED</text>
+    <text x="676" y="1056" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >visaññutta</text>
+
+    <!-- Three feeling rows -->
+    <text x="676" y="1080" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >pleasant feeling &#8594; experiences disentangled from it</text>
+    <text x="676" y="1096" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >painful feeling &#8594; experiences disentangled from it</text>
+    <text x="676" y="1112" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        >neutral feeling &#8594; experiences disentangled from it</text>
+    <text x="676" y="1128" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >visaññutto naṁ vedayati</text>
+
+    <path d="M 670 1138 L 676 1146 L 682 1138" stroke="#60a088" stroke-width="0.7" fill="none" opacity="0.35" />
+
+    <!-- Freed from -->
+    <text x="676" y="1164" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >freed from birth, aging, death,</text>
+    <text x="676" y="1178" text-anchor="middle" fill="#90c0b8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >sorrow, lamentation, pain, displeasure, and despair</text>
+    <text x="676" y="1194" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        >visaññutto jātiyā jarāya maraṇena</text>
+
+    <!-- Result: freed from suffering -->
+    <g filter="url(#glow2)">
+        <text x="676" y="1224" text-anchor="middle" fill="#60a088"
+        font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+        opacity="0.9">is freed from suffering</text>
+    </g>
+
+    <!-- ================================================================ -->
+    <!--               CONCLUDING VERSE                                    -->
+    <!-- ================================================================ -->
+
+    <line x1="100" y1="1284" x2="820" y2="1284" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="1308" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+        letter-spacing="3" opacity="0.7">THE DISTINCTION</text>
+    <text x="460" y="1324" text-anchor="middle" fill="#806828"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        letter-spacing="1" opacity="0.6">viseso</text>
+    <line x1="100" y1="1332" x2="820" y2="1332" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <!-- Stanza 1 -->
+    <text x="460" y="1358" text-anchor="middle" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">A wise and learned person is not affected by feelings of pleasure and pain;</text>
+    <text x="460" y="1376" text-anchor="middle" fill="#506878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">na vedanaṁ vedayati sapañño · sukhampi dukkhampi bahussutopi</text>
+    <text x="460" y="1394" text-anchor="middle" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.85">This is the great distinction in skill, between the wise and the ordinary.</text>
+    <text x="460" y="1412" text-anchor="middle" fill="#506878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">ayañca dhīrassa puthujjanena · mahā viseso kusalassa hoti.</text>
+
+    <!-- Stanza 2 -->
+    <text x="460" y="1450" text-anchor="middle" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.85">For one who has realized the truth, who is learned, who sees clearly this world and the next;</text>
+    <text x="460" y="1468" text-anchor="middle" fill="#506878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">saṅkhātadhammassa bahussutassa · vipassato lokamimaṁ parañca</text>
+    <text x="460" y="1486" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">pleasing things do not stir their mind, nor does the unpleasant cause repulsion.</text>
+    <text x="460" y="1504" text-anchor="middle" fill="#507868"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">iṭṭhassa dhammā na mathenti cittaṁ · aniṭṭhato no paṭighātameti</text>
+
+    <!-- Stanza 3 -->
+    <text x="460" y="1542" text-anchor="middle" fill="#c8d8e8"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.85">They have dispelled alignment and opposition, these are gone and no longer present;</text>
+    <text x="460" y="1560" text-anchor="middle" fill="#506878"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">tassānurodhā athavā virodhā · vidhūpitā atthagatā na santi</text>
+    <text x="460" y="1578" text-anchor="middle" fill="#d8c060"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">having understood the unblemished, sorrowless state, the one who has crossed beyond existence comprehends rightly.</text>
+    <text x="460" y="1596" text-anchor="middle" fill="#a08838"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic"
+        opacity="0.7">padañca ñatvā virajaṁ asokaṁ · sammā pajānāti bhavassa pāragū</text>
+
+    <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1620" x2="620" y2="1620" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/sn36.6" target="_blank" rel="noopener noreferrer"><text x="460" y="1640" text-anchor="middle" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        letter-spacing="1">wordsofthebuddha.org/sn36.6</text></a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1662) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
+</svg>
