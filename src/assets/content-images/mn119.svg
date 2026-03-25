@@ -1,0 +1,592 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2420" width="920" height="2420">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="45%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c2840" /><stop offset="100%" stop-color="#1a2436" />
+    </linearGradient>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2c3c" /><stop offset="100%" stop-color="#1c2838" />
+    </linearGradient>
+    <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2e38" /><stop offset="100%" stop-color="#1c2a34" />
+    </linearGradient>
+    <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#20302e" /><stop offset="100%" stop-color="#1e2c2c" />
+    </linearGradient>
+    <linearGradient id="stg5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#233028" /><stop offset="100%" stop-color="#202c26" />
+    </linearGradient>
+    <linearGradient id="stg6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#252a2a" /><stop offset="100%" stop-color="#202626" />
+    </linearGradient>
+    <linearGradient id="jhana1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" /><stop offset="100%" stop-color="#141e2c" />
+    </linearGradient>
+    <linearGradient id="cultL" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#221828" /><stop offset="100%" stop-color="#1a1422" />
+    </linearGradient>
+    <linearGradient id="cultR" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142a32" /><stop offset="100%" stop-color="#10242c" />
+    </linearGradient>
+    <radialGradient id="conclusionGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="orbGlow" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#e8f0f8" stop-opacity="0.25" />
+      <stop offset="50%" stop-color="#c0d0e0" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#8090a0" stop-opacity="0.04" />
+    </radialGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <!-- BACKGROUND -->
+  <rect width="920" height="2420" fill="url(#bg)" />
+  <ellipse cx="280" cy="400" rx="300" ry="200" fill="#204050" opacity="0.04" />
+  <ellipse cx="640" cy="1300" rx="280" ry="100" fill="#503820" opacity="0.04" />
+  <ellipse cx="460" cy="2500" rx="300" ry="100" fill="#504020" opacity="0.04" />
+
+  <!-- ══════ PHASE 1: TITLE (y 0–130) ══════ -->
+  <text x="460" y="38" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+    letter-spacing="3">MN 119 — KĀYAGATĀSATI SUTTA</text>
+  <text x="460" y="60" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+    letter-spacing="1">Mindfulness of the Body</text>
+  <line x1="260" y1="74" x2="660" y2="74" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+  <text x="460" y="112" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">Mindfulness of the body, when cultivated and frequently practiced, is of great fruit and great benefit</text>
+  <text x="460" y="132" text-anchor="middle" fill="#708878"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.8">kāyagatāsati bhāvitā bahulīkatā mahapphalā hoti mahānisaṁsā</text>
+
+  <!-- ══════ PHASE 2: SIX BODY PRACTICES (y 150–930) ══════ -->
+  <line x1="90" y1="158" x2="830" y2="158" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45" />
+  <text x="460" y="176" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5" opacity="0.75">BODY CONTEMPLATION PRACTICES · kāyagatāsati bhāvanā</text>
+
+  <line x1="80" y1="195" x2="350" y2="830" stroke="#4a8898" stroke-width="1.5" opacity="0.07" />
+  <path d="M 138 296 C 148 308, 163 318, 178 324" fill="none" stroke="#4c7888" stroke-width="1.3" opacity="0.30" />
+  <path d="M 173 411 C 183 423, 198 433, 213 439" fill="none" stroke="#4c8878" stroke-width="1.3" opacity="0.30" />
+  <path d="M 208 526 C 218 538, 233 548, 248 554" fill="none" stroke="#508868" stroke-width="1.3" opacity="0.30" />
+  <path d="M 243 641 C 253 653, 268 663, 283 669" fill="none" stroke="#508870" stroke-width="1.3" opacity="0.30" />
+  <path d="M 278 756 C 288 768, 303 778, 318 784" fill="none" stroke="#508870" stroke-width="1.3" opacity="0.28" />
+
+  <!-- STEP 1: Breathing -->
+  <g filter="url(#shadowDrop)">
+    <rect x="38" y="197" width="380" height="100" rx="10" fill="url(#stg1)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
+  </g>
+  <circle cx="62" cy="222" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.6" />
+  <text x="62" y="225" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">1</text>
+  <text x="88" y="222" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Mindfulness while breathing in and out</text>
+  <text x="88" y="238" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">ānāpānassati bhāvanā</text>
+  <text x="88" y="258" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Breathes mindfully; discerns long and short breaths;</text>
+  <text x="88" y="273" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">trains to experience the whole body and settle bodily constructs.</text>
+  <g transform="translate(380,230)" opacity="0.60" filter="url(#iconGlow)">
+    <g stroke="#78a0a0" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="0" cy="-14" r="3.2" stroke-width="1.3" />
+        <path d="M -12 5 C -14 -4, -7 -7, 0 -7 C 7 -7, 14 -4, 12 5" stroke-width="1.3" />
+        <path d="M -15 4 Q 0 13, 15 4" stroke-width="1.3" />
+        <path d="M -4.5 0 C -4.5 -3.5, 0 -3.5, 0 0 C 0 3.5, 4.5 3.5, 4.5 0 C 4.5 -3.5, 0 -3.5, 0 0 C 0 3.5, -4.5 3.5, -4.5 0 Z" stroke-width="1" />
+    </g>
+  </g>
+
+  <!-- STEP 2: Postures -->
+  <g filter="url(#shadowDrop)">
+    <rect x="73" y="312" width="380" height="100" rx="10" fill="url(#stg2)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
+  </g>
+  <circle cx="97" cy="337" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.6" />
+  <text x="97" y="340" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">2</text>
+  <text x="123" y="337" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Postures</text>
+  <text x="123" y="353" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">iriyāpatha</text>
+  <text x="123" y="373" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Is aware of posture while walking, standing, sitting, or lying down.</text>
+  <text x="123" y="388" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">In whatever way the body is oriented, he discerns it accordingly.</text>
+  <g transform="translate(348,324)" opacity="0.50" filter="url(#iconGlow)">
+    <g transform="translate(0,4)">
+      <circle cx="5" cy="2" r="2.5" fill="none" stroke="#8090a0" stroke-width="0.8" />
+      <line x1="5" y1="5" x2="5" y2="16" stroke="#8090a0" stroke-width="0.8" />
+      <line x1="5" y1="16" x2="1" y2="24" stroke="#8090a0" stroke-width="0.8" />
+      <line x1="5" y1="16" x2="9" y2="24" stroke="#8090a0" stroke-width="0.8" />
+      <line x1="5" y1="10" x2="0" y2="14" stroke="#8090a0" stroke-width="0.8" />
+      <line x1="5" y1="10" x2="10" y2="8" stroke="#8090a0" stroke-width="0.8" />
+    </g>
+    <text x="15" y="20" fill="#506878" font-family="Georgia,'Times New Roman',serif" font-size="10" opacity="0.5">›</text>
+    <g transform="translate(22,4)">
+      <circle cx="5" cy="2" r="2.5" fill="none" stroke="#7888a0" stroke-width="0.8" />
+      <line x1="5" y1="5" x2="5" y2="16" stroke="#7888a0" stroke-width="0.8" />
+      <line x1="5" y1="16" x2="3" y2="24" stroke="#7888a0" stroke-width="0.8" />
+      <line x1="5" y1="16" x2="7" y2="24" stroke="#7888a0" stroke-width="0.8" />
+      <line x1="5" y1="10" x2="1" y2="14" stroke="#7888a0" stroke-width="0.8" />
+      <line x1="5" y1="10" x2="9" y2="14" stroke="#7888a0" stroke-width="0.8" />
+    </g>
+    <text x="37" y="20" fill="#506878" font-family="Georgia,'Times New Roman',serif" font-size="10" opacity="0.5">›</text>
+    <g transform="translate(44,8)">
+      <circle cx="5" cy="2" r="2.5" fill="none" stroke="#6880a0" stroke-width="0.8" />
+      <line x1="5" y1="5" x2="5" y2="12" stroke="#6880a0" stroke-width="0.8" />
+      <line x1="5" y1="12" x2="10" y2="12" stroke="#6880a0" stroke-width="0.8" />
+      <line x1="10" y1="12" x2="10" y2="20" stroke="#6880a0" stroke-width="0.8" />
+      <line x1="5" y1="8" x2="1" y2="12" stroke="#6880a0" stroke-width="0.8" />
+      <line x1="5" y1="8" x2="9" y2="6" stroke="#6880a0" stroke-width="0.8" />
+    </g>
+    <text x="59" y="20" fill="#506878" font-family="Georgia,'Times New Roman',serif" font-size="10" opacity="0.5">›</text>
+    <g transform="translate(66,18)">
+      <circle cx="4" cy="2" r="2.5" fill="none" stroke="#5878a0" stroke-width="0.8" />
+      <line x1="7" y1="2" x2="20" y2="2" stroke="#5878a0" stroke-width="0.8" />
+      <line x1="14" y1="2" x2="18" y2="6" stroke="#5878a0" stroke-width="0.8" />
+      <line x1="14" y1="2" x2="20" y2="4" stroke="#5878a0" stroke-width="0.8" />
+    </g>
+  </g>
+
+  <!-- STEP 3: Clear Awareness -->
+  <g filter="url(#shadowDrop)">
+    <rect x="108" y="427" width="380" height="100" rx="10" fill="url(#stg3)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
+  </g>
+  <circle cx="132" cy="452" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.6" />
+  <text x="132" y="454" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">3</text>
+  <text x="158" y="452" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Acting with clear awareness</text>
+  <text x="158" y="468" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">sampajānakārī</text>
+  <text x="158" y="488" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Acts with clear awareness in all activities:</text>
+  <text x="158" y="503" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">going, returning, looking, bending, eating, dressing,</text>
+  <text x="158" y="518" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">drinking, defecating, urinating, speaking, and keeping silent.</text>
+    <g transform="translate(426, 442)">
+
+        <g opacity="0.65" filter="url(#iconGlow)" transform="translate(0, 0)">
+            <path d="M 0 8 Q 8 0, 16 8" fill="none" stroke="#c8a040" stroke-width="1" />
+            <path d="M 0 8 Q 8 16, 16 8" fill="none" stroke="#c8a040" stroke-width="1" />
+            <circle cx="8" cy="8" r="2.5" fill="none" stroke="#c8a040" stroke-width="0.8" />
+        </g>
+
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(30, 0)">
+            <path d="M 12 2 Q 4 2, 4 10 Q 4 16, 8 16" fill="none" stroke="#7888a0" stroke-width="1" />
+            <path d="M 8 10 Q 10 8, 10 12" fill="none" stroke="#7888a0" stroke-width="0.7" />
+        </g>
+
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(0, 30)">
+            <path d="M 4 16 L 4 6 Q 4 2, 8 2 Q 12 2, 12 6 L 12 10" fill="none" stroke="#7888a0" stroke-width="1" />
+            <path d="M 12 8 Q 12 5, 15 5 Q 18 5, 18 8 L 18 12" fill="none" stroke="#7888a0" stroke-width="0.7" />
+            <line x1="4" y1="16" x2="18" y2="16" stroke="#7888a0" stroke-width="0.7" />
+        </g>
+
+        <g opacity="0.45" filter="url(#iconGlow)" transform="translate(30, 30)">
+            <circle cx="8" cy="10" r="6" fill="none" stroke="#7888a0" stroke-width="0.8" />
+            <circle cx="8" cy="10" r="2" fill="#7888a0" fill-opacity="0.3" stroke="none" />
+            <path d="M 2 4 Q 8 0, 14 4" fill="none" stroke="#7888a0" stroke-width="0.6" opacity="0.5" />
+        </g>
+
+    </g>
+
+  <!-- STEP 4: Disagreeable Parts -->
+  <g filter="url(#shadowDrop)">
+    <rect x="143" y="542" width="380" height="100" rx="10" fill="url(#stg4)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
+  </g>
+  <circle cx="167" cy="567" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.6" />
+  <text x="167" y="569" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">4</text>
+  <text x="193" y="567" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Reviewing impurities in the body</text>
+  <text x="193" y="583" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">kāye asuci paccavekkhana</text>
+  <text x="193" y="603" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Reviews the body from the soles upwards and</text>
+  <text x="193" y="618" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">hair downwards as full of various impurities: skin, flesh,</text>
+  <text x="193" y="633" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">sinews, bones, organs, stomach contents, fat, grease, and fluids.</text>
+  <g transform="translate(486,572)" opacity="0.55" filter="url(#iconGlow)">
+    <path d="M -10 -12 L -14 10 L 14 10 L 10 -12 Z" fill="none" stroke="#78a0a0" stroke-width="1" />
+    <path d="M -8 -12 Q 0 -16, 8 -12" fill="none" stroke="#78a0a0" stroke-width="0.8" />
+    <circle cx="-4" cy="0" r="1.2" fill="#78a0a0" opacity="0.5" />
+    <circle cx="3" cy="-3" r="1.2" fill="#78a0a0" opacity="0.5" />
+    <circle cx="0" cy="4" r="1.2" fill="#78a0a0" opacity="0.5" />
+    <circle cx="6" cy="2" r="1.2" fill="#78a0a0" opacity="0.5" />
+    <circle cx="10" cy="-8" r="6" fill="none" stroke="#78a0a0" stroke-width="0.8" />
+    <line x1="14" y1="-4" x2="17" y2="-1" stroke="#78a0a0" stroke-width="0.8" />
+    <circle cx="8" cy="-9" r="1" fill="#78a0a0" opacity="0.6" />
+    <circle cx="12" cy="-8" r="1" fill="#78a0a0" opacity="0.6" />
+  </g>
+
+  <!-- STEP 5: Reviewing the elements in the body -->
+  <g filter="url(#shadowDrop)">
+    <rect x="178" y="657" width="380" height="100" rx="10" fill="url(#stg5)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
+  </g>
+  <circle cx="202" cy="682" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.6" />
+  <text x="202" y="685" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">5</text>
+  <text x="228" y="682" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Reviewing the elements in the body</text>
+  <text x="228" y="698" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">kāye dhātu paccavekkhana</text>
+  <text x="228" y="718" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Reviews the body, however positioned,</text>
+  <text x="228" y="733" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">in terms of the four elements: earth, water, fire, and wind —</text>
+  <text x="228" y="748" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">like a butcher dividing a cow at a crossroads.</text>
+  <g transform="translate(496,676)" opacity="0.45" filter="url(#iconGlow)">
+    <g transform="translate(-22,0)">
+      <line x1="0" y1="0" x2="12" y2="0" stroke="#7888a0" stroke-width="0.8" />
+      <line x1="1" y1="4" x2="11" y2="4" stroke="#7888a0" stroke-width="0.6" />
+      <line x1="2" y1="8" x2="10" y2="8" stroke="#7888a0" stroke-width="0.4" />
+    </g>
+    <g transform="translate(-4,0)">
+      <path d="M 0 2 Q 3 -2, 6 2 Q 9 6, 12 2" stroke="#7888a0" stroke-width="0.8" fill="none" />
+      <path d="M 1 6 Q 4 2, 7 6 Q 10 10, 12 6" stroke="#7888a0" stroke-width="0.5" fill="none" />
+    </g>
+    <g transform="translate(16,-2)">
+      <path d="M 5 0 C 5 0, 1 5, 1 7 C 1 9, 3 11, 5 11 C 7 11, 9 9, 9 7 C 9 5, 5 0, 5 0 Z" fill="none" stroke="#c07060" stroke-width="0.9" />
+      <path d="M 5 3 C 5 3, 3 6, 3 7.5 C 3 8.5, 4 9.5, 5 9.5 C 6 9.5, 7 8.5, 7 7.5 C 7 6, 5 3, 5 3 Z" fill="none" stroke="#c07060" stroke-width="0.5" opacity="0.6" />
+    </g>
+    <g transform="translate(32,0)">
+      <path d="M 0 2 Q 5 -2, 10 2" stroke="#7888a0" stroke-width="0.8" fill="none" />
+      <path d="M 1 7 Q 6 3, 11 7" stroke="#7888a0" stroke-width="0.6" fill="none" />
+    </g>
+  </g>
+
+  <!-- STEP 6: Charnel Grounds -->
+  <g filter="url(#shadowDrop)">
+    <rect x="213" y="772" width="380" height="90" rx="10" fill="url(#stg6)" stroke="#486878" stroke-width="1" stroke-opacity="0.38" />
+  </g>
+  <circle cx="237" cy="796" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.5" />
+  <text x="237" y="800" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">6</text>
+  <text x="263" y="796" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Nine Charnel Grounds</text>
+  <text x="263" y="812" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">nava sivathikā</text>
+  <text x="263" y="832" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="10">Compares the body to corpses in progressive decomposition, discerning:</text>
+  <text x="263" y="848" fill="#506878" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">‘This body too is of the same nature; it will become like that.’</text>
+  <!-- Skull + crossed bones icon -->
+  <g transform="translate(548,782)" opacity="0.45" filter="url(#iconGlow)">
+    <g stroke="#78a0a0" stroke-width="1" fill="none" transform="scale(0.55)">
+      <path d="M 10 15 C 5 0, 45 0, 40 15 C 45 25, 35 40, 25 40 C 15 40, 5 25, 10 15 Z" />
+      <circle cx="18" cy="18" r="3" />
+      <circle cx="32" cy="18" r="3" />
+      <path d="M 25 26 L 25 30" />
+      <!-- Crossed bones -->
+      <path d="M 8 42 L 42 58 M 42 42 L 8 58" stroke-width="1.4" />
+      <circle cx="8" cy="42" r="2.5" /><circle cx="42" cy="42" r="2.5" />
+      <circle cx="8" cy="58" r="2.5" /><circle cx="42" cy="58" r="2.5" />
+    </g>
+  </g>
+
+  <!-- Refrain Band (aligned with First Jhāna outer rect: x=70, w=780) -->
+  <rect x="70" y="878" width="780" height="48" rx="6" fill="#141c2e" fill-opacity="0.6"
+    stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.2" />
+  <text x="460" y="895" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">Diligent, resolute, with continuous effort — worldly thoughts abandoned — mind internally steadied, calmed, unified, and collected</text>
+  <text x="460" y="913" text-anchor="middle" fill="#7888a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">appamatta · ātāpī · pahitatta — gehasita sarasaṅkappā pahīyanti — ajjhattameva cittaṁ santiṭṭhati ekodi hoti samādhiyati</text>
+
+  <!-- ══════ PHASE 3: FOUR JHĀNAS (y 945–1440) ══════ -->
+  <line x1="90" y1="945" x2="830" y2="945" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45" />
+  <text x="460" y="965" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5" opacity="0.75">FOUR JHĀNAS · cattāro jhānā</text>
+
+  <!-- 1st Jhāna (outer, filled) — encompasses all -->
+  <rect x="70" y="985" width="780" height="430" rx="8" fill="url(#jhana1)"
+    stroke="#c8a040" stroke-opacity="0.42" stroke-width="1" />
+  <!-- 1st text -->
+  <text x="108" y="1010" fill="#d8c890" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">First Jhāna<tspan dx="8" font-size="12" font-style="italic" font-weight="normal" fill="#8898b0">· paṭhama jhāna</tspan></text>
+  <text x="108" y="1030" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Accompanied by reflection <tspan fill="#6888a0" font-style="italic">(savitakka)</tspan> · Examination <tspan fill="#6888a0" font-style="italic">(savicāra)</tspan></text>
+  <text x="108" y="1048" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Born of seclusion <tspan fill="#6888a0" font-style="italic">(vivekaja)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#6888a0" font-style="italic">(pītisukha)</tspan></text>
+  <!-- 1st icon: Bathtub with bubbles — right side -->
+  <g transform="translate(790,1012)" opacity="0.65" filter="url(#iconGlow)">
+    <g stroke="#d8c890" stroke-width="1.2" fill="none">
+      <path d="M -22 -4 L -22 14 Q -22 24, 0 24 Q 22 24, 22 14 L 22 -4" />
+      <path d="M -18 4 Q -9 0, 0 4 Q 9 8, 18 4" opacity="0.5" />
+    </g>
+    <circle cx="-8" cy="-6" r="3" fill="none" stroke="#d8c890" stroke-width="0.8" opacity="0.6" />
+    <circle cx="6" cy="-10" r="2.5" fill="none" stroke="#d8c890" stroke-width="0.7" opacity="0.5" />
+    <circle cx="12" cy="-4" r="2" fill="none" stroke="#d8c890" stroke-width="0.6" opacity="0.45" />
+    <circle cx="-2" cy="-14" r="2" fill="none" stroke="#d8c890" stroke-width="0.6" opacity="0.4" />
+    <circle cx="0" cy="-4" r="1.5" fill="none" stroke="#d8c890" stroke-width="0.5" opacity="0.35" />
+  </g>
+  <text x="790" y="1052" text-anchor="middle" fill="#d8c890" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">kneading powder</text>
+
+  <!-- 2nd Jhāna — encompasses 3rd and 4th -->
+  <rect x="100" y="1068" width="720" height="332" rx="8" fill="none"
+    stroke="#78a890" stroke-opacity="0.55" stroke-width="1" />
+  <!-- 2nd text -->
+  <text x="136" y="1094" fill="#b8d0b8" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Second Jhāna<tspan dx="8" font-size="12" font-style="italic" font-weight="normal" fill="#8898b0">· dutiya jhāna</tspan></text>
+  <text x="136" y="1114" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Internal tranquility <tspan fill="#6888a0" font-style="italic">(sampasādana)</tspan> · Unification of mind <tspan fill="#6888a0" font-style="italic">(ekodibhāva)</tspan></text>
+  <text x="136" y="1132" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Free from reflection and examination <tspan fill="#6888a0" font-style="italic">(avitakka · avicāra)</tspan></text>
+  <text x="136" y="1150" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Born of collectedness <tspan fill="#6888a0" font-style="italic">(samādhija)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#6888a0" font-style="italic">(pītisukha)</tspan></text>
+  <!-- 2nd icon: Lake with underwater bubbles — some color -->
+  <g transform="translate(750,1100)" opacity="0.65" filter="url(#iconGlow)">
+    <!-- Water surface -->
+    <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0" fill="none" stroke="#78b8a8" stroke-width="1.2" />
+    <!-- Water body -->
+    <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0 L 24 22 Q 12 25, 0 22 Q -12 19, -24 22 Z"
+      fill="#305060" fill-opacity="0.25" stroke="none" />
+    <!-- Underwater bubbles -->
+    <circle cx="-6" cy="14" r="2.5" fill="#78b8a8" fill-opacity="0.25" stroke="#78b8a8" stroke-width="0.6" />
+    <circle cx="5" cy="9" r="3" fill="#78b8a8" fill-opacity="0.2" stroke="#78b8a8" stroke-width="0.6" />
+    <circle cx="-10" cy="7" r="1.8" fill="#78b8a8" fill-opacity="0.18" stroke="#78b8a8" stroke-width="0.5" />
+    <circle cx="10" cy="17" r="2" fill="#78b8a8" fill-opacity="0.3" stroke="#78b8a8" stroke-width="0.5" />
+    <circle cx="0" cy="4" r="1.5" fill="#78b8a8" fill-opacity="0.15" stroke="#78b8a8" stroke-width="0.5" />
+    <!-- Underground spring -->
+    <path d="M 0 24 C -3 27, 3 30, 0 33" stroke="#78b8a8" stroke-width="0.8" fill="none" opacity="0.35" />
+  </g>
+  <text x="750" y="1144" text-anchor="middle" fill="#b8d0b8" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">underground spring</text>
+
+  <!-- 3rd Jhāna — encompasses 4th -->
+  <rect x="130" y="1170" width="660" height="215" rx="8" fill="none"
+    stroke="#aab8c8" stroke-opacity="0.55" stroke-width="1" />
+  <!-- 3rd text -->
+  <text x="166" y="1196" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Third Jhāna<tspan dx="8" font-size="12" font-style="italic" font-weight="normal" fill="#8898b0">· tatiya jhāna</tspan></text>
+  <text x="166" y="1216" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">With the fading of desire for uplifting joy <tspan fill="#6888a0" font-style="italic">(pītiyā ca virāgā)</tspan></text>
+  <text x="166" y="1234" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Equanimous <tspan fill="#6888a0" font-style="italic">(upekkhaka)</tspan> · Mindful <tspan fill="#6888a0" font-style="italic">(sato)</tspan> · Clearly aware <tspan fill="#6888a0" font-style="italic">(sampajāno)</tspan></text>
+  <text x="166" y="1252" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Experiencing pleasure with the body <tspan fill="#6888a0" font-style="italic">(sukha kāyena)</tspan></text>
+  <!-- 3rd icon: Submerged lotus -->
+  <g transform="translate(730,1215)" opacity="0.60" filter="url(#iconGlow)">
+    <!-- Water surface ripples -->
+    <path d="M -22 -8 Q -11 -11, 0 -8 Q 11 -5, 22 -8" fill="none" stroke="#90a8b8" stroke-width="0.9" />
+    <path d="M -18 -5 Q -9 -8, 0 -5 Q 9 -2, 18 -5" fill="none" stroke="#90a8b8" stroke-width="0.5" opacity="0.4" />
+    <!-- Submerged lotus petals -->
+    <path d="M 0 10 C -10 10, -18 2, -14 -4 C -10 -8, 0 -2, 0 10 Z" fill="#90a8b8" fill-opacity="0.12" stroke="#90a8b8" stroke-width="0.9" />
+    <path d="M 0 10 C 10 10, 18 2, 14 -4 C 10 -8, 0 -2, 0 10 Z" fill="#90a8b8" fill-opacity="0.12" stroke="#90a8b8" stroke-width="0.9" />
+    <path d="M 0 10 C -5 10, -11 4, -7 -3 C -3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" fill-opacity="0.08" stroke="#90a8b8" stroke-width="0.6" />
+    <path d="M 0 10 C 5 10, 11 4, 7 -3 C 3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" fill-opacity="0.08" stroke="#90a8b8" stroke-width="0.6" />
+    <!-- Lotus center -->
+    <circle cx="0" cy="4" r="3.5" fill="#90a8b8" fill-opacity="0.15" stroke="#90a8b8" stroke-width="0.7" />
+  </g>
+  <text x="730" y="1244" text-anchor="middle" fill="#d0d8e0" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">submerged lotus</text>
+
+  <!-- 4th Jhāna (innermost) -->
+  <rect x="160" y="1270" width="600" height="100" rx="8" fill="none"
+    stroke="#d0d8e0" stroke-opacity="0.65" stroke-width="1" />
+  <!-- 4th text -->
+  <text x="196" y="1294" fill="#e0e8f0" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Fourth Jhāna<tspan dx="8" font-size="12" font-style="italic" font-weight="normal" fill="#8898b0">· catuttha jhāna</tspan></text>
+  <text x="196" y="1312" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Abandoning bodily pleasure and pain <tspan fill="#6888a0" font-style="italic">(sukhassa ca pahānā dukkhassa ca pahānā)</tspan></text>
+  <text x="196" y="1328" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Settling of mental pleasure and displeasure <tspan fill="#6888a0" font-style="italic">(somanassadomanassānaṁ atthaṅgamā)</tspan></text>
+  <text x="196" y="1344" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Purification of mindfulness through equanimity <tspan fill="#6888a0" font-style="italic">(upekkhāsatipārisuddhi)</tspan></text>
+  <text x="196" y="1360" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Experiencing neither-painful-nor-pleasant <tspan fill="#6888a0" font-style="italic">(adukkhamasukha)</tspan></text>
+  <!-- 4th icon: Shiny orb -->
+  <g transform="translate(700,1310)" opacity="0.70" filter="url(#glow1)">
+    <circle cx="0" cy="0" r="20" fill="url(#orbGlow)" stroke="#d0d8e0" stroke-width="1" />
+    <circle cx="-6" cy="-7" r="7" fill="#e0e8f0" fill-opacity="0.12" />
+    <circle cx="-4" cy="-5" r="3" fill="#f0f4f8" fill-opacity="0.08" />
+  </g>
+  <text x="700" y="1344" text-anchor="middle" fill="#e0e8f0" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">covered from head to toe</text>
+  <text x="700" y="1360" text-anchor="middle" fill="#c8d8e8" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">in a spotless white cloth</text>
+
+  <!-- ══════ PHASE 4: CULTIVATED vs UNCULTIVATED (y 1440–1780) ══════ -->
+  <line x1="90" y1="1445" x2="830" y2="1445" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45" />
+  <text x="460" y="1468" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5" opacity="0.75">UNCULTIVATED <tspan font-size="11" font-weight="normal" letter-spacing="1.5">(abhāvitā)</tspan> vs CULTIVATED <tspan font-size="11" font-weight="normal" letter-spacing="1.5">(bhāvitā)</tspan></text>
+
+  <!-- Left: Uncultivated -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="1486" width="385" height="178" rx="8" fill="url(#cultL)" stroke="#a08090" stroke-width="0.8" stroke-opacity="0.35" />
+  </g>
+  <text x="252" y="1511" text-anchor="middle" fill="#c0a8b8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold" letter-spacing="1.5">UNCULTIVATED</text>
+  <text x="252" y="1527" text-anchor="middle" fill="#a08090" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">Māra finds an opening</text>
+  <g transform="translate(88,1557)" opacity="0.55" filter="url(#iconGlow)">
+    <ellipse cx="0" cy="-4" rx="7" ry="5" fill="none" stroke="#a08090" stroke-width="1" />
+    <path d="M -14 4 C -10 2, -4 6, 0 4 C 4 2, 10 6, 14 4" fill="none" stroke="#a08090" stroke-width="0.8" />
+    <line x1="0" y1="1" x2="0" y2="4" stroke="#a08090" stroke-width="0.6" opacity="0.5" />
+  </g>
+  <text x="110" y="1554" fill="#c0b0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Heavy rock thrown on wet clay — sinks in</text>
+  <text x="110" y="1569" fill="#887078" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">(The unguarded mind is easily penetrated by distractions)</text>
+  <g transform="translate(88,1597)" opacity="0.55" filter="url(#iconGlow)">
+    <rect x="-8" y="-2" width="16" height="6" rx="1" fill="none" stroke="#a08090" stroke-width="0.9" />
+
+    <path d="M 0 -2 C -2.5 -7, -3.5 -10, 0 -17 C 3.5 -10, 2.5 -7, 0 -2 Z" fill="none" stroke="#a08090" stroke-width="1.2" stroke-linecap="round" />
+
+    <circle cx="-2.5" cy="-5" r="0.8" fill="#a08090" />
+    <circle cx="2.5" cy="-5" r="0.8" fill="#a08090" />
+  </g>
+  <text x="110" y="1594" fill="#c0b0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Dry sapless wood — fire lights easily</text>
+  <text x="110" y="1609" fill="#887078" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">(Passions quickly ignite in a mind lacking awareness)</text>
+  <g transform="translate(88,1640)" opacity="0.55" filter="url(#iconGlow)">
+    <path d="M -6 -8 L -8 6 C -8 9, 8 9, 8 6 L 6 -8 Z" fill="none" stroke="#a08090" stroke-width="0.9" />
+    <line x1="0" y1="-14" x2="0" y2="-8" stroke="#a08090" stroke-width="0.7" />
+    <path d="M -2 -14 L 0 -11 L 2 -14" fill="none" stroke="#a08090" stroke-width="0.6" />
+  </g>
+  <text x="110" y="1636" fill="#c0b0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Empty water jar — fills readily</text>
+  <text x="110" y="1651" fill="#887078" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">(A vacant mind easily absorbs unwholesome states)</text>
+
+  <!-- Right: Cultivated -->
+  <g filter="url(#shadowDrop)">
+    <rect x="475" y="1486" width="385" height="178" rx="8" fill="url(#cultR)" stroke="#60a088" stroke-width="0.8" stroke-opacity="0.35" />
+  </g>
+  <text x="667" y="1511" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold" letter-spacing="1.5">CULTIVATED</text>
+  <text x="667" y="1527" text-anchor="middle" fill="#60a088" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">Māra finds no opening</text>
+  <g transform="translate(503,1557)" opacity="0.55" filter="url(#iconGlow)">
+    <circle cx="-4" cy="0" r="4" fill="none" stroke="#80c0a0" stroke-width="0.9" />
+    <rect x="4" y="-8" width="8" height="16" rx="1" fill="none" stroke="#80c0a0" stroke-width="0.9" />
+    <path d="M 0 0 C 2 -6, 6 -8, 4 -4" fill="none" stroke="#80c0a0" stroke-width="0.7" />
+  </g>
+  <text x="525" y="1554" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Light string ball on solid heartwood — bounces off</text>
+  <text x="525" y="1569" fill="#507868" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">(Distractions cannot penetrate a solid, grounded mind)</text>
+  <g transform="translate(503,1597)" opacity="0.55" filter="url(#iconGlow)">
+    <rect x="-8" y="-2" width="16" height="6" rx="1" fill="none" stroke="#80c0a0" stroke-width="0.9" />
+    <circle cx="-4" cy="-6" r="1.5" fill="#80c0a0" opacity="0.35" />
+    <circle cx="2" cy="-7" r="1.5" fill="#80c0a0" opacity="0.35" />
+    <circle cx="6" cy="-5" r="1.5" fill="#80c0a0" opacity="0.35" />
+  </g>
+  <text x="525" y="1594" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Wet sappy wood — fire cannot light</text>
+  <text x="525" y="1609" fill="#507868" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">(A mindful state is resistant to the flames of passion)</text>
+  <g transform="translate(503,1640)" opacity="0.55" filter="url(#iconGlow)">
+    <path d="M -6 -8 L -8 6 C -8 9, 8 9, 8 6 L 6 -8 Z" fill="none" stroke="#80c0a0" stroke-width="0.9" />
+    <line x1="-5" y1="0" x2="5" y2="0" stroke="#80c0a0" stroke-width="0.6" opacity="0.4" />
+    <line x1="-5" y1="3" x2="5" y2="3" stroke="#80c0a0" stroke-width="0.6" opacity="0.4" />
+    <line x1="-4" y1="-3" x2="4" y2="-3" stroke="#80c0a0" stroke-width="0.6" opacity="0.4" />
+    <path d="M 0 -12 C 3 -14, 5 -12, 3 -10" fill="none" stroke="#80c0a0" stroke-width="0.7" />
+  </g>
+  <text x="525" y="1636" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Full water jar — nothing enters</text>
+  <text x="525" y="1651" fill="#507868" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">(A mind full of awareness has no room for unwholesome states)</text>
+
+  <!-- Charioteer simile card -->
+  <g filter="url(#shadowDrop)">
+    <rect x="120" y="1696" width="680" height="70" rx="8" fill="#141c2e" fill-opacity="0.7"
+      stroke="#4a8898" stroke-opacity="0.3" stroke-width="1" />
+  </g>
+  <!-- Chariot wheel icon (spoked wheel) -->
+  <g transform="translate(146,1731)" opacity="0.60" filter="url(#iconGlow)">
+    <g stroke="#80c0a0" stroke-width="1.3" fill="none">
+      <circle cx="0" cy="0" r="15" />
+      <circle cx="0" cy="0" r="4" />
+      <line x1="0" y1="-4" x2="0" y2="-15" />
+      <line x1="0" y1="4" x2="0" y2="15" />
+      <line x1="-3.5" y1="-2" x2="-13" y2="-7.5" />
+      <line x1="3.5" y1="2" x2="13" y2="7.5" />
+      <line x1="-3.5" y1="2" x2="-13" y2="7.5" />
+      <line x1="3.5" y1="-2" x2="13" y2="-7.5" />
+    </g>
+  </g>
+  <text x="460" y="1722" fill="#90c0b8" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">The Skilled Charioteer</text>
+  <text x="470" y="1739" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Like a charioteer driving wherever he wishes, he directs his cultivated mind to realize any phenomenon by direct knowledge</text>
+  <text x="460" y="1756" text-anchor="middle" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">yenicchakaṁ yadicchakaṁ — abhiññāsacchikiriyāya cittaṁ abhininnāmeti</text>
+
+  <!-- ══════ PHASE 5: TEN BENEFITS (y 1790–2400) ══════ -->
+  <line x1="90" y1="1790" x2="830" y2="1790" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45" />
+  <text x="460" y="1813" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5" opacity="0.75">TEN BENEFITS · dasa ānisaṁsā</text>
+
+  <!-- Benefits 1-8: 2-column grid, 60px row spacing -->
+  <g transform="translate(60,1835)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Conqueror of discontent and delight</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">aratiratisaho</text>
+  </g>
+  <g transform="translate(480,1835)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Conqueror of fear and terror</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">bhayabheravasaho</text>
+  </g>
+
+  <g transform="translate(60,1895)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Patient endurance of physical hardship and pain</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">khamo hoti sītassa uṇhassa ... adhivāsakajātiko hoti</text>
+  </g>
+  <g transform="translate(480,1895)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Effortless attainment of the four jhānas</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">catunnaṁ jhānānaṁ nikāmalābhī</text>
+  </g>
+
+  <g transform="translate(60,1955)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">5</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Wields the manifold psychic powers</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">anekavihitaṁ iddhividhaṁ</text>
+  </g>
+  <g transform="translate(480,1955)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">6</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Divine ear: hears divine and human sounds</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">dibbāya sotadhātuyā</text>
+  </g>
+
+  <g transform="translate(60,2015)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">7</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Discerns the minds of other beings</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">cetasā ceto paricca pajānāti</text>
+  </g>
+  <g transform="translate(480,2015)">
+    <rect width="380" height="48" rx="4" fill="none" stroke="#607888" stroke-dasharray="2,2" stroke-opacity="0.5" />
+    <text x="20" y="20" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">8</text>
+    <text x="40" y="20" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="12">Recollects manifold past lives</text>
+    <text x="40" y="38" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">pubbenivāsaṁ anussarati</text>
+  </g>
+
+  <!-- Benefit 9: Divine Eye — icon on rhs, wider rect -->
+  <g transform="translate(260,2087)">
+    <rect width="400" height="100" rx="6" fill="none" stroke="#60a088" stroke-dasharray="2,2" stroke-opacity="0.6" />
+    <!-- Number -->
+    <text x="28" y="22" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">9</text>
+    <!-- Eye icon on rhs -->
+    <g transform="translate(360,28)" opacity="0.6" filter="url(#iconGlow)">
+        <path d="M -14 0 Q 0 -11, 14 0" fill="none" stroke="#80c0a8" stroke-width="1.3" />
+        <path d="M -14 0 Q 0 11, 14 0" fill="none" stroke="#80c0a8" stroke-width="1.3" />
+        <circle cx="0" cy="0" r="4" fill="none" stroke="#80c0a8" stroke-width="1" />
+        <circle cx="0" cy="0" r="1.2" fill="#80c0a8" />
+        <line x1="0" y1="-14" x2="0" y2="-19" stroke="#80c0a8" stroke-width="0.8" stroke-linecap="round" />
+        <line x1="12" y1="-9" x2="16" y2="-14" stroke="#80c0a8" stroke-width="0.8" stroke-linecap="round" />
+        <line x1="-12" y1="-9" x2="-16" y2="-14" stroke="#80c0a8" stroke-width="0.8" stroke-linecap="round" />
+        <line x1="16" y1="0" x2="21" y2="0" stroke="#80c0a8" stroke-width="0.8" stroke-linecap="round" />
+        <line x1="12" y1="9" x2="16" y2="14" stroke="#80c0a8" stroke-width="0.8" stroke-linecap="round" />
+    </g>
+    <!-- Text -->
+    <text x="48" y="22" fill="#d0d8e0" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Divine Eye</text>
+    <text x="125" y="22" fill="#80c0a0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">dibbacakkhu</text>
+    <text x="48" y="42" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Sees beings passing away and being reborn,</text>
+    <text x="48" y="58" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">faring according to their actions</text>
+    <text x="48" y="80" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">dibbena cakkhunā satte passati cavamāne upapajjamāne yathākammūpage</text>
+  </g>
+
+  <!-- Benefit 10: Liberation — full-width, no circle around number -->
+  <ellipse cx="460" cy="2290" rx="380" ry="60" fill="url(#conclusionGlow)" />
+  <g filter="url(#glow2)">
+    <rect x="80" y="2215" width="760" height="140" rx="10" fill="#131820" fill-opacity="0.85"
+      stroke="#c8a040" stroke-width="1" stroke-opacity="0.6" />
+  </g>
+  <!-- Number (no circle) -->
+  <text x="118" y="2250" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">10</text>
+  <!-- Liberation icon on rhs -->
+  <g transform="translate(800,2246)" opacity="0.6" filter="url(#glow1)">
+    <ellipse cx="-7" cy="0" rx="7" ry="9" fill="none" stroke="#c0a860" stroke-width="1.2" />
+    <ellipse cx="11" cy="0" rx="7" ry="9" fill="none" stroke="#c0a860" stroke-width="1.2" />
+    <line x1="0" y1="-5" x2="4" y2="-9" stroke="#c0a860" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="0" y1="5" x2="4" y2="9" stroke="#c0a860" stroke-width="0.9" stroke-linecap="round" />
+  </g>
+  <!-- Text -->
+  <text x="148" y="2250" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Ending of Mental Defilements</text>
+  <text x="370" y="2250" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">āsavakkhaya</text>
+  <text x="148" y="2284" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">“ Through the wearing away of mental defilements, one realizes for oneself through direct knowledge,</text>
+  <text x="148" y="2304" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic">the taintless liberation of mind and liberation by wisdom, and having attained it, one abides in it ”</text>
+  <text x="148" y="2330" fill="#907840" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.7">āsavānaṁ khayā anāsavaṁ <tspan fill="#b0a870">cetovimuttiṁ paññāvimuttiṁ</tspan> diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharati</text>
+
+  <!-- ══════ PHASE 6: FOOTER ══════ -->
+  <line x1="300" y1="2370" x2="620" y2="2370" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+  <a href="https://wordsofthebuddha.org/mn119" target="_blank" rel="noopener noreferrer">
+    <text x="460" y="2386" text-anchor="middle" fill="#485840" font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn119</text>
+  </a>
+  <g transform="translate(460, 2402) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+    <circle cx="0" cy="-28" r="9" />
+  </g>
+
+</svg>
