@@ -1,5 +1,5 @@
 ---
-title: Cūḷabyūha sutta - The Shorter Discourse on the Array of Views
+title: Cūḷabyūha sutta - The Lesser Discourse on the Array of Views
 description: The Buddha describes that disputes arise not from many truths, but from people clinging to their own views out of conceit. By labeling others "fools" to affirm their own skill, they create conflict. The path to peace lies not in proving one's view, but in abandoning all judgments.
 qualities: argumentativeness, clinging to rules and observances, feuding, conceit, wrong view, speculation, passion, wisdom, immaturity, lack of discernment, stubbornness
 theme: inspiration, cultivating discernment, wisdom, inquisitiveness

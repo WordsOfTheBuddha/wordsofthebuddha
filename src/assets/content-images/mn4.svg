@@ -327,28 +327,28 @@
 
   <!-- 1st Jhāna (outer) -->
   <rect x="86" y="1318" width="748" height="274" rx="8" fill="url(#cardNeutral)" stroke="#c8a040" stroke-opacity="0.42" stroke-width="1" />
-  <text x="108" y="1338" fill="#d8c890" font-family="Georgia,Times New Roman,serif" font-size="12" font-weight="bold">First Jhāna · <tspan font-size="11" font-style="italic">paṭhama jhāna</tspan></text>
-  <text x="108" y="1354" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="11">Accompanied by reflection <tspan fill="#486068" font-size="10" font-style="italic">(savitakka)</tspan> · examination <tspan fill="#486068" font-size="10" font-style="italic">(savicāra)</tspan></text>
-  <text x="108" y="1370" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="11">born of seclusion <tspan fill="#486068" font-size="10" font-style="italic">(vivekaja)</tspan> · imbued with uplifting joy and pleasure <tspan fill="#486068" font-size="10" font-style="italic">(pītisukha)</tspan></text>
+  <text x="108" y="1338" fill="#d8c890" font-family="Georgia,Times New Roman,serif" font-size="12" font-weight="bold">First Jhāna · <tspan font-size="10" font-style="italic">paṭhama jhāna</tspan></text>
+  <text x="108" y="1354" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="11">Accompanied by reflection <tspan fill="#486068" font-size="10" font-style="italic">(savitakka)</tspan> · Examination <tspan fill="#486068" font-size="10" font-style="italic">(savicāra)</tspan></text>
+  <text x="108" y="1370" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">Born of seclusion <tspan fill="#486068" font-size="10" font-style="italic">(vivekaja)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#486068" font-size="10" font-style="italic">(pītisukha)</tspan></text>
 
   <!-- 2nd Jhāna -->
   <rect x="116" y="1380" width="688" height="204" rx="8" fill="none" stroke="#78a890" stroke-opacity="0.55" stroke-width="1" />
   <text x="136" y="1400" fill="#b8d0b8" font-family="Georgia,Times New Roman,serif" font-size="12" font-weight="bold">Second Jhāna · <tspan font-size="11" font-style="italic">dutiya jhāna</tspan></text>
-  <text x="136" y="1416" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="11">Internal tranquility <tspan fill="#486068" font-size="10" font-style="italic">(sampasādana)</tspan> · unification of mind <tspan fill="#486068" font-size="10" font-style="italic">(ekodibhāva)</tspan></text>
-  <text x="136" y="1432" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10.5">free from reflection and examination <tspan fill="#486068" font-size="10" font-style="italic">(avitakka · avicāra)</tspan> · born of collectedness <tspan fill="#486068" font-size="10" font-style="italic">(samādhija)</tspan> · joy and pleasure <tspan fill="#486068" font-size="10" font-style="italic">(pītisukha)</tspan></text>
+  <text x="136" y="1416" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">Internal tranquility <tspan fill="#486068" font-size="10" font-style="italic">(sampasādana)</tspan> · Unification of mind <tspan fill="#486068" font-size="10" font-style="italic">(ekodibhāva)</tspan></text>
+  <text x="136" y="1432" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">Free from reflection and examination <tspan fill="#486068" font-size="10" font-style="italic">(avitakka · avicāra)</tspan> · Born of collectedness <tspan fill="#486068" font-size="10" font-style="italic">(samādhija)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#486068" font-size="10" font-style="italic">(pītisukha)</tspan></text>
 
   <!-- 3rd Jhāna -->
   <rect x="146" y="1442" width="628" height="136" rx="8" fill="none" stroke="#aab8c8" stroke-opacity="0.55" stroke-width="1" />
   <text x="166" y="1462" fill="#d0d8e0" font-family="Georgia,Times New Roman,serif" font-size="12" font-weight="bold">Third Jhāna · <tspan font-size="11" font-style="italic">tatiya jhāna</tspan></text>
-  <text x="166" y="1478" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="11">With the fading of desire for uplifting joy <tspan fill="#486068" font-size="10" font-style="italic">(pītiyā ca virāgā)</tspan> · Equanimous <tspan fill="#486068" font-size="10" font-style="italic">(upekkhaka)</tspan> · mindful <tspan fill="#486068" font-size="10" font-style="italic">(sato)</tspan></text>
-  <text x="166" y="1494" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="11">clearly aware <tspan fill="#486068" font-size="10" font-style="italic">(sampajāno)</tspan> · experiencing pleasure with the body <tspan fill="#486068" font-size="10" font-style="italic">(sukha kāyena)</tspan></text>
+  <text x="166" y="1478" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">With the fading of desire for uplifting joy <tspan fill="#486068" font-size="10" font-style="italic">(pītiyā ca virāgā)</tspan> · Equanimous <tspan fill="#486068" font-size="10" font-style="italic">(upekkhaka)</tspan> · Mindful <tspan fill="#486068" font-size="10" font-style="italic">(sato)</tspan></text>
+  <text x="166" y="1494" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">Clearly aware <tspan fill="#486068" font-size="10" font-style="italic">(sampajāno)</tspan> · Experiencing pleasure with the body <tspan fill="#486068" font-size="10" font-style="italic">(sukha kāyena)</tspan></text>
 
   <!-- 4th Jhāna (innermost) -->
-  <rect x="176" y="1500" width="568" height="68" rx="8" fill="none" stroke="#d0d8e0" stroke-opacity="0.65" stroke-width="1" />
+  <rect x="176" y="1500" width="568" height="72" rx="8" fill="none" stroke="#d0d8e0" stroke-opacity="0.65" stroke-width="1" />
   <text x="196" y="1516" fill="#e0e8f0" font-family="Georgia,Times New Roman,serif" font-size="12" font-weight="bold">Fourth Jhāna · <tspan font-size="11" font-style="italic">catuttha jhāna</tspan></text>
-  <text x="196" y="1530" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">Abandoning bodily pleasure and pain <tspan fill="#486068" font-size="10" font-style="italic">(sukhassa ca pahānā dukkhassa ca pahānā)</tspan> · settling down of mental pleasure</text>
-  <text x="196" y="1546" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10"> and displeasure <tspan fill="#486068" font-size="10" font-style="italic">(somanassadomanassānaṁ atthaṅgamā)</tspan> · purification of mindfulness through equanimity</text>
-  <text x="196" y="1562" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10"><tspan fill="#486068" font-size="10" font-style="italic">(upekkhāsatipārisuddhi)</tspan> · experiencing neither-painful-nor-pleasant feeling <tspan fill="#486068" font-size="10" font-style="italic">(adukkhamasukha)</tspan></text>
+  <text x="196" y="1532" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10">Abandoning bodily pleasure and pain <tspan fill="#486068" font-size="10" font-style="italic">(sukhassa ca pahānā dukkhassa ca pahānā)</tspan> · Settling of mental pleasure</text>
+  <text x="196" y="1548" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10"> and displeasure <tspan fill="#486068" font-size="10" font-style="italic">(somanassadomanassānaṁ atthaṅgamā)</tspan> · Purification of mindfulness through equanimity</text>
+  <text x="196" y="1564" fill="#c8d8e8" font-family="Georgia,Times New Roman,serif" font-size="10"><tspan fill="#486068" font-size="10" font-style="italic">(upekkhāsatipārisuddhi)</tspan> · Experiencing neither-painful-nor-pleasant feeling <tspan fill="#486068" font-size="10" font-style="italic">(adukkhamasukha)</tspan></text>
 
   <!-- ═══ THREE TRUE KNOWLEDGES ═══ -->
   <line x1="90" y1="1612" x2="830" y2="1612" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45" />
