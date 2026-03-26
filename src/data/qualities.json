@@ -404,7 +404,7 @@
 			"Context: An inner moral sensitivity that shrinks from wrongdoing out of self-respect and personal integrity. It is the voice within that knows what is beneath one's dignity, guarding conduct through an inward standard of honor.",
 			"Related:{fear of wrongdoing}",
 			"Supported by:{respect, truth}",
-			"Leads to:{ethical conduct}",
+			"Leads to:{ethical conduct, sense restraint}",
 			"Opposite:{shamelessness}",
 			"[hirī]"
 		],
@@ -691,7 +691,7 @@
 			"right action",
 			"virtue",
 			"Context: A disciplined way of living grounded in harmlessness and integrity. Ethical conduct restrains the body and speech from harm, purifies behavior, and forms the foundation for collectedness and wisdom.",
-			"Supported by:{conscience, fear of wrongdoing}",
+			"Supported by:{conscience, fear of wrongdoing, sense restraint}",
 			"Leads to:{gratefulness, non-regret}",
 			"Opposite:{unprincipled conduct}",
 			"[sīla, sammākammanta]"
@@ -756,7 +756,7 @@
 			"Context: A wholesome dread of misconduct that considers consequences and the censure of the wise. It looks outward—aware of blame, loss of reputation, and the suffering that follows unskillful action—and holds the mind back from crossing ethical boundaries.",
 			"Related:{conscience}",
 			"Supported by:{respect}",
-			"Leads to:{ethical conduct}",
+			"Leads to:{ethical conduct, sense restraint}",
 			"Opposite:{moral recklessness}",
 			"[ottappa]"
 		],
@@ -1615,8 +1615,8 @@
 			"moderation in eating",
 			"Context: A practice of guarding the sense doors by not grasping at the general features or details of sense objects when seeing, hearing, sensing, and cognizing.",
 			"Related:{self-control}",
-			"Supported by:{diligence}",
-			"Leads to:{contentment, wakefulness}",
+			"Supported by:{conscience, diligence, fear of wrongdoing}",
+			"Leads to:{contentment, ethical conduct, wakefulness}",
 			"Opposite:{non-restraint}",
 			"[indriya saṁvara]"
 		],
