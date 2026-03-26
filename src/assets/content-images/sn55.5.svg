@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1550" width="920" height="1550">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1528" />
+            <stop offset="45%" stop-color="#0e1a30" />
+            <stop offset="100%" stop-color="#101e36" />
+        </linearGradient>
+
+        <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+            <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+        </linearGradient>
+
+        <linearGradient id="panelStep" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#182232" />
+            <stop offset="100%" stop-color="#121a28" />
+        </linearGradient>
+
+        <linearGradient id="panelPath" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#182a28" />
+            <stop offset="100%" stop-color="#121e1a" />
+        </linearGradient>
+
+        <linearGradient id="panelGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a2012" />
+            <stop offset="100%" stop-color="#181308" />
+        </linearGradient>
+
+        <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+        </filter>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+    </defs>
+
+    <rect width="920" height="1550" fill="url(#bg)" />
+
+    <circle cx="460" cy="930" r="160" fill="none" stroke="#2a4858" stroke-width="0.5" stroke-dasharray="8 8" opacity="0.4" />
+    <circle cx="460" cy="930" r="240" fill="none" stroke="#2a4858" stroke-width="0.3" stroke-dasharray="4 6" opacity="0.3" />
+    <circle cx="460" cy="930" r="320" fill="none" stroke="#2a4858" stroke-width="0.2" stroke-dasharray="2 4" opacity="0.2" />
+
+    <text x="460" y="38" text-anchor="middle" fill="#d8c8a0"
+        font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+        letter-spacing="3">SN 55.5 &#8212; DUTIYA SĀRIPUTTA SUTTA</text>
+    <text x="460" y="60" text-anchor="middle" fill="#a09070"
+        font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+        letter-spacing="1">With Sāriputta (Second)</text>
+
+    <line x1="310" y1="74" x2="610" y2="74" stroke="#a09070" stroke-opacity="0.3" stroke-width="0.6" />
+
+    <text x="460" y="124" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">&#8220;What, Sāriputta, is the factor of stream-entry?&#8221;</text>
+    <text x="460" y="144" text-anchor="middle" fill="#90c0b0"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+        opacity="0.9">&#8220;What is the stream? Who is the stream-enterer?&#8221;</text>
+
+
+    <line x1="100" y1="180" x2="820" y2="180" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="206" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" letter-spacing="3" opacity="0.7">THE FACTORS OF STREAM-ENTRY</text>
+    <text x="460" y="222" text-anchor="middle" fill="#806828" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" letter-spacing="1" opacity="0.6">sotāpattiyaṅgāni</text>
+    <line x1="100" y1="232" x2="820" y2="232" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="230" y="250" width="460" height="64" rx="8" fill="url(#panelStep)" stroke="#3a5068" stroke-width="1" stroke-opacity="0.8" />
+    </g>
+    <circle cx="270" cy="282" r="14" fill="#0b1528" stroke="#3a5068" stroke-width="1" />
+    <text x="270" y="285" text-anchor="middle" fill="#80a0b0" font-family="Georgia,'Times New Roman',serif" font-size="11">1</text>
+    <text x="460" y="277" text-anchor="middle" fill="#b8d0e8" font-family="Georgia,'Times New Roman',serif" font-size="12" letter-spacing="0.5">Association with persons of integrity</text>
+    <text x="460" y="293" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sappurisasaṁsevo</text>
+
+    <path d="M 449 317 L 460 327 L 471 317" stroke="#80a0b0" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="230" y="330" width="460" height="64" rx="8" fill="url(#panelStep)" stroke="#3a5068" stroke-width="1" stroke-opacity="0.8" />
+    </g>
+    <circle cx="270" cy="362" r="14" fill="#0b1528" stroke="#3a5068" stroke-width="1" />
+    <text x="270" y="365" text-anchor="middle" fill="#80a0b0" font-family="Georgia,'Times New Roman',serif" font-size="11">2</text>
+    <text x="460" y="357" text-anchor="middle" fill="#b8d0e8" font-family="Georgia,'Times New Roman',serif" font-size="12" letter-spacing="0.5">Hearing the true teaching</text>
+    <text x="460" y="373" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">saddhammassavanaṁ</text>
+
+    <path d="M 449 397 L 460 407 L 471 397" stroke="#80a0b0" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="230" y="410" width="460" height="64" rx="8" fill="url(#panelStep)" stroke="#3a5068" stroke-width="1" stroke-opacity="0.8" />
+    </g>
+    <circle cx="270" cy="442" r="14" fill="#0b1528" stroke="#3a5068" stroke-width="1" />
+    <text x="270" y="444" text-anchor="middle" fill="#80a0b0" font-family="Georgia,'Times New Roman',serif" font-size="11">3</text>
+    <text x="460" y="437" text-anchor="middle" fill="#b8d0e8" font-family="Georgia,'Times New Roman',serif" font-size="12" letter-spacing="0.5">Wise attention</text>
+    <text x="460" y="453" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">yonisomanasikāro</text>
+
+    <path d="M 449 477 L 460 487 L 471 477" stroke="#80a0b0" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="230" y="490" width="460" height="64" rx="8" fill="url(#panelStep)" stroke="#3a5068" stroke-width="1" stroke-opacity="0.8" />
+    </g>
+    <circle cx="270" cy="522" r="14" fill="#0b1528" stroke="#3a5068" stroke-width="1" />
+    <text x="270" y="524" text-anchor="middle" fill="#80a0b0" font-family="Georgia,'Times New Roman',serif" font-size="11">4</text>
+    <text x="460" y="517" text-anchor="middle" fill="#b8d0e8" font-family="Georgia,'Times New Roman',serif" font-size="12" letter-spacing="0.5">Practice in accordance with the Dhamma</text>
+    <text x="460" y="533" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">dhammānudhammapaṭipatti</text>
+
+    <path d="M 449 575 L 460 585 L 471 575" stroke="#c8a040" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.8" />
+
+
+    <line x1="100" y1="590" x2="820" y2="590" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="618" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" letter-spacing="3" opacity="0.7">THE STREAM</text>
+    <text x="460" y="634" text-anchor="middle" fill="#806828" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" letter-spacing="1" opacity="0.6">soto • ariyo aṭṭhaṅgiko maggo</text>
+    <line x1="100" y1="644" x2="820" y2="644" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <g transform="translate(340,610)" opacity="0.5" filter="url(#glow)">
+        <path d="M -26 6 C -18 0, -10 0, -2 6 C 6 12, 14 12, 22 6" fill="none" stroke="#c8a040" stroke-width="1" />
+        <path d="M -26 14 C -18 8, -10 8, -2 14 C 6 20, 14 20, 22 14" fill="none" stroke="#c8a040" stroke-width="1" opacity="0.8" />
+        <path d="M 18 3 L 24 6 L 18 9" fill="none" stroke="#c8a040" stroke-width="0.9" stroke-linejoin="round" />
+    </g>
+
+    <g opacity="0.4" stroke="#60a088" stroke-width="1.5">
+        <line x1="460" y1="930" x2="460" y2="698" />
+        <line x1="460" y1="930" x2="624" y2="766" />
+        <line x1="460" y1="930" x2="692" y2="930" />
+        <line x1="460" y1="930" x2="624" y2="1094" />
+        <line x1="460" y1="930" x2="460" y2="1162" />
+        <line x1="460" y1="930" x2="296" y2="1094" />
+        <line x1="460" y1="930" x2="228" y2="930" />
+        <line x1="460" y1="930" x2="296" y2="766" />
+    </g>
+
+    <circle cx="460" cy="930" r="54" fill="#0b1528" filter="url(#shadowDrop)" />
+    <circle cx="460" cy="930" r="54" fill="none" stroke="#80b8a8" stroke-width="1.5" />
+    <circle cx="460" cy="930" r="46" fill="none" stroke="#80b8a8" stroke-width="1" opacity="0.6"/>
+    <g stroke="#80b8a8" stroke-width="1.5" opacity="0.6">
+        <line x1="460" y1="884" x2="460" y2="976" />
+        <line x1="414" y1="930" x2="506" y2="930" />
+        <line x1="427" y1="897" x2="493" y2="963" />
+        <line x1="427" y1="963" x2="493" y2="897" />
+    </g>
+    <circle cx="460" cy="930" r="14" fill="#142a32" stroke="#80b8a8" stroke-width="1.5" />
+    <circle cx="460" cy="930" r="6" fill="#80b8a8" filter="url(#glow)"/>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="360" y="674" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="460" y="693" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right view</text>
+    <text x="460" y="708" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammādiṭṭhi</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="524" y="742" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="624" y="761" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right intention</text>
+    <text x="624" y="776" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammāsaṅkappa</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="592" y="906" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="692" y="925" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right speech</text>
+    <text x="692" y="940" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammāvācā</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="524" y="1070" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="624" y="1089" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right action</text>
+    <text x="624" y="1104" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammākammanta</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="360" y="1138" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="460" y="1157" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right livelihood</text>
+    <text x="460" y="1172" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammāājīva</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="196" y="1070" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="296" y="1089" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right effort</text>
+    <text x="296" y="1104" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammāvāyāma</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="128" y="906" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="228" y="925" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right mindfulness</text>
+    <text x="228" y="940" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammāsati</text>
+
+    <g filter="url(#shadowDrop)">
+        <rect x="196" y="742" width="200" height="48" rx="6" fill="url(#panelPath)" stroke="#60a088" stroke-width="1" stroke-opacity="0.6" />
+    </g>
+    <text x="296" y="761" text-anchor="middle" fill="#90c0b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Right collectedness</text>
+    <text x="296" y="776" text-anchor="middle" fill="#508070" font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">sammāsamādhi</text>
+
+
+    <path d="M 449 1212 L 460 1222 L 471 1212" stroke="#c8a040" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.8" />
+
+    <line x1="100" y1="1226" x2="820" y2="1226" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="1256" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold" letter-spacing="3" opacity="0.7">THE STREAM-ENTERER</text>
+    <text x="460" y="1272" text-anchor="middle" fill="#806828" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" letter-spacing="1" opacity="0.6">sotāpanno</text>
+    <line x1="100" y1="1282" x2="820" y2="1282" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.25" />
+
+    <g filter="url(#shadowDrop)">
+        <rect x="210" y="1306" width="500" height="140" rx="12" fill="url(#panelGold)" stroke="#806830" stroke-width="1.5" stroke-opacity="0.8" />
+    </g>
+
+    <g transform="translate(460,1378)" opacity="0.2" filter="url(#glow)">
+        <path d="M -120 18 C -88 0, -56 0, -24 18 C 8 36, 40 36, 72 18" fill="none" stroke="#c8a040" stroke-width="1.2" />
+        <path d="M -120 32 C -88 14, -56 14, -24 32 C 8 50, 40 50, 72 32" fill="none" stroke="#c8a040" stroke-width="1.1" opacity="0.85" />
+        <path d="M -28 -8 C -34 -16, -42 -10, -40 -2 C -38 8, -26 10, -23 2 C -21 -2, -23 -5, -28 -8 Z" fill="none" stroke="#d8c8a0" stroke-width="1" />
+        <path d="M 2 -18 C -4 -26, -12 -20, -10 -12 C -8 -2, 4 0, 7 -8 C 9 -12, 7 -15, 2 -18 Z" fill="none" stroke="#d8c8a0" stroke-width="1" />
+    </g>
+
+    <text x="460" y="1336" text-anchor="middle" fill="#d8c8a0" font-family="Georgia,'Times New Roman',serif" font-size="13" opacity="0.9">He who is endowed with this Noble Eightfold Path</text>
+    <text x="460" y="1358" text-anchor="middle" fill="#e8d8b0" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold" letter-spacing="0.5">is called a stream-enterer,</text>
+    <text x="460" y="1380" text-anchor="middle" fill="#b09870" font-family="Georgia,'Times New Roman',serif" font-size="11">this venerable one of such name and such family lineage.</text>
+    <text x="460" y="1410" text-anchor="middle" fill="#806840" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">yo iminā ariyena aṭṭhaṅgikena maggena samannāgato ayaṁ vuccati sotāpanno,</text>
+    <text x="460" y="1426" text-anchor="middle" fill="#806840" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">svāyaṁ āyasmā evaṁnāmo evaṅgotto.</text>
+
+
+    <line x1="300" y1="1496" x2="620" y2="1496" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/sn55.5" target="_blank" rel="noopener noreferrer">
+        <text x="460" y="1520" text-anchor="middle" fill="#405060" font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/sn55.5</text>
+    </a>
+
+    <g transform="translate(460, 1534) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
+</svg>

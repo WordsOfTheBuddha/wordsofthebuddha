@@ -18,6 +18,8 @@ leadsTo:
 discourses:
   - id: mn110
   - id: an4.73
+  - id: sn55.5
+    note: Factor of stream-entry
   - id: mn113
     note: Distinguishing qualities
   - id: sn45.25
