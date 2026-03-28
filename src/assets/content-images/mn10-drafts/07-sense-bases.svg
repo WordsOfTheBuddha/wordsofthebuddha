@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 280" width="920" height="280">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="45%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="senseFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c2a34" /><stop offset="100%" stop-color="#162228" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="280" fill="url(#bg)" />
+
+  <!-- TIER LABEL -->
+  <line x1="140" y1="14" x2="780" y2="14" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.3" />
+  <text x="460" y="30" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    letter-spacing="2" opacity="0.7">4c. SIX INTERNAL AND EXTERNAL SENSE BASES · saḷāyatana</text>
+
+  <!-- Discernment pattern -->
+  <text x="460" y="52" text-anchor="middle" fill="#806828"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">
+    Dwells discerning the internal and external sense base and:
+  </text>
+
+  <text x="460" y="68" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">
+
+    <tspan fill="#a0a0b8" dx="10">
+      ① the fetter that arises dependent on both
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · tadubhayaṁ paṭicca saṁyojanaṁ
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      ② how unarisen fetter arises
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · anuppannassa saṁyojanassa uppādo hoti
+    </tspan>
+
+    <tspan x="460" dy="16" fill="#a0a0b8">
+      ③ how arisen fetter is abandoned
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · uppannassa saṁyojanassa pahānaṁ hoti
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      ④ how it does not arise again
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · pahīnassa saṁyojanassa āyatiṁ anuppādo hoti
+    </tspan>
+
+  </text>
+
+  <!-- Row 1: Eye, Ear, Nose -->
+
+  <!-- 1. Eye ↔ Forms -->
+  <g filter="url(#shadowDrop)">
+    <rect x="66" y="104" width="254" height="72" rx="6" fill="url(#senseFill)" stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <g transform="translate(88, 132) scale(0.994) translate(-10, -10)" opacity="0.6">
+    <path d="M 2 10 Q 10 2, 18 10" fill="none" stroke="#7888a0" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 2 10 Q 10 18, 18 10" fill="none" stroke="#7888a0" stroke-width="1" stroke-linecap="round"/>
+    <circle cx="10" cy="10" r="2.5" fill="none" stroke="#7888a0" stroke-width="0.8"/>
+  </g>
+  <text x="104" y="132" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Eye</text>
+  <text x="104" y="148" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">cakkhu</text>
+  <!-- Emergent fetter node -->
+  <circle cx="193" cy="138" r="14" fill="#5a3848" opacity="0.08" />
+  <circle cx="193" cy="138" r="8" fill="none" stroke="#5a3848" stroke-width="0.8" opacity="0.4" />
+  <text x="201" y="140" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Fetter · <tspan font-size="9" font-style="italic">saṁyojana</tspan></text>
+  <!-- curved dependency connectors -->
+  <path d="M 130 138 Q 160 118, 185 138" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <path d="M 256 138 Q 226 118, 201 138" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+
+  <text x="300" y="132" text-anchor="end" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Forms</text>
+  <text x="300" y="148" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">rūpa</text>
+
+  <!-- 2. Ear ↔ Sounds -->
+  <g filter="url(#shadowDrop)">
+    <rect x="332" y="104" width="254" height="72" rx="6" fill="url(#senseFill)" stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <g transform="translate(354, 132) scale(1.126) translate(-10, -9)" opacity="0.6">
+    <path d="M 14 2 Q 6 2, 6 10 Q 6 16, 10 16" fill="none" stroke="#7888a0" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 10 10 Q 12 8, 12 12" fill="none" stroke="#7888a0" stroke-width="0.7" stroke-linecap="round"/>
+  </g>
+  <text x="380" y="132" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Ear</text>
+  <text x="380" y="148" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sota</text>
+  <!-- Emergent fetter node -->
+  <circle cx="459" cy="138" r="14" fill="#5a3848" opacity="0.08" />
+  <circle cx="459" cy="138" r="8" fill="none" stroke="#5a3848" stroke-width="0.8" opacity="0.4" />
+  <text x="467" y="140" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Fetter · <tspan font-size="9" font-style="italic">saṁyojana</tspan></text>
+
+  <!-- curved dependency connectors -->
+  <path d="M 396 138 Q 426 118, 451 138" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <path d="M 522 138 Q 492 118, 467 138" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <text x="572" y="132" text-anchor="end" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Sounds</text>
+  <text x="572" y="148" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sadda</text>
+
+  <!-- 3. Nose ↔ Odors -->
+  <g filter="url(#shadowDrop)">
+    <rect x="598" y="104" width="254" height="72" rx="6" fill="url(#senseFill)" stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <g transform="translate(620, 132) scale(1.049) translate(0, -7.5)" opacity="0.6">
+    <g fill="none" stroke="#6888a0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
+      <path d="M 0 0 L 0 12 Q -5 16, -3 12"/>
+      <path d="M 0 12 Q 5 16, 3 12"/>
+    </g>
+  </g>
+  <text x="646" y="132" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Nose</text>
+  <text x="646" y="148" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">ghāna</text>
+  <!-- Emergent fetter node -->
+  <circle cx="725" cy="138" r="14" fill="#5a3848" opacity="0.08" />
+  <circle cx="725" cy="138" r="8" fill="none" stroke="#5a3848" stroke-width="0.8" opacity="0.4" />
+  <text x="733" y="140" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Fetter · <tspan font-size="9" font-style="italic">saṁyojana</tspan></text>
+
+  <!-- curved dependency connectors -->
+  <path d="M 662 138 Q 692 118, 717 138" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <path d="M 788 138 Q 758 118, 733 138" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <text x="838" y="132" text-anchor="end" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Odors</text>
+  <text x="838" y="148" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">gandha</text>
+
+  <!-- Row 2: Tongue, Body, Mind -->
+
+  <!-- 4. Tongue ↔ Tastes -->
+  <g filter="url(#shadowDrop)">
+    <rect x="66" y="186" width="254" height="72" rx="6" fill="url(#senseFill)" stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <g transform="translate(88, 214) scale(1.049) translate(0, -6.5)" opacity="0.6">
+    <g fill="none" stroke="#6888a0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
+      <path d="M -5 2 Q 0 -2, 5 2 Q 7 8, 0 14 Q -7 8, -5 2 Z"/>
+      <line x1="-2" y1="7" x2="2" y2="7" stroke-width="0.7"/>
+    </g>
+  </g>
+  <text x="114" y="214" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Tongue</text>
+  <text x="114" y="230" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">jivhā</text>
+  <!-- Emergent fetter node -->
+  <circle cx="193" cy="220" r="14" fill="#5a3848" opacity="0.08" />
+  <circle cx="193" cy="220" r="8" fill="none" stroke="#5a3848" stroke-width="0.8" opacity="0.4" />
+  <text x="201" y="222" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Fetter · <tspan font-size="9" font-style="italic">saṁyojana</tspan></text>
+
+  <!-- curved dependency connectors -->
+  <path d="M 130 220 Q 160 200, 185 220" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <path d="M 256 220 Q 226 200, 201 220" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <text x="306" y="214" text-anchor="end" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Tastes</text>
+  <text x="306" y="230" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">rasa</text>
+
+  <!-- 5. Body ↔ Tangibles -->
+  <g filter="url(#shadowDrop)">
+    <rect x="332" y="186" width="254" height="72" rx="6" fill="url(#senseFill)" stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <g transform="translate(354, 214) scale(0.824) translate(0, 0.75)" opacity="0.6">
+    <g stroke="#80a0b0" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="-7" r="3.5"/>
+      <path d="M -6 -1 L 6 -1"/>
+      <path d="M 0 -3 L 0 6"/>
+      <path d="M -5 5 L 0 9 L 5 5"/>
+    </g>
+  </g>
+  <text x="380" y="214" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Body</text>
+  <text x="380" y="230" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">kāya</text>
+  <!-- Emergent fetter node -->
+  <circle cx="459" cy="220" r="14" fill="#5a3848" opacity="0.08" />
+  <circle cx="459" cy="220" r="8" fill="none" stroke="#5a3848" stroke-width="0.8" opacity="0.4" />
+  <text x="467" y="222" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Fetter · <tspan font-size="9" font-style="italic">saṁyojana</tspan></text>
+
+  <!-- curved dependency connectors -->
+  <path d="M 396 220 Q 426 200, 451 220" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <path d="M 522 220 Q 492 200, 467 220" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <text x="572" y="214" text-anchor="end" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Tangibles</text>
+  <text x="572" y="230" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">phoṭṭhabba</text>
+
+  <!-- 6. Mind ↔ Mental objects -->
+  <g filter="url(#shadowDrop)">
+    <rect x="598" y="186" width="254" height="72" rx="6" fill="url(#senseFill)" stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <g transform="translate(620, 214) scale(1.076) translate(-10, -10.55)" opacity="0.6">
+    <circle cx="10" cy="12" r="6" fill="none" stroke="#7888a0" stroke-width="0.8"/>
+    <circle cx="10" cy="12" r="2" fill="#7888a0" fill-opacity="0.3" stroke="none"/>
+    <path d="M 4 6 Q 10 2, 16 6" fill="none" stroke="#7888a0" stroke-width="0.6" opacity="0.5" stroke-linecap="round"/>
+  </g>
+  <text x="646" y="214" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Mind</text>
+  <text x="646" y="230" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">mano</text>
+  <!-- Emergent fetter node -->
+  <circle cx="725" cy="220" r="14" fill="#5a3848" opacity="0.08" />
+  <circle cx="725" cy="220" r="8" fill="none" stroke="#5a3848" stroke-width="0.8" opacity="0.4" />
+  <text x="733" y="222" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Fetter · <tspan font-size="9" font-style="italic">saṁyojana</tspan></text>
+
+  <!-- curved dependency connectors -->
+  <path d="M 662 220 Q 692 200, 717 220" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <path d="M 788 220 Q 758 200, 733 220" fill="none" stroke="#7888a0" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <text x="838" y="214" text-anchor="end" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Mental objects</text>
+  <text x="838" y="230" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">dhamma</text>
+
+</svg>

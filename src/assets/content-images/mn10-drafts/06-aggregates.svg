@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 170" width="920" height="170">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="45%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="aggregateFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2638" /><stop offset="100%" stop-color="#152030" />
+    </linearGradient>
+
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="170" fill="url(#bg)" />
+
+  <!-- TIER LABEL -->
+  <line x1="140" y1="14" x2="780" y2="14" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.3" />
+  <text x="460" y="30" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    letter-spacing="2" opacity="0.7">4b. FIVE AGGREGATES SUBJECT TO CLINGING · pañcupādānakkhandhā</text>
+
+  <text x="460" y="52" text-anchor="middle" fill="#806828"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">
+    Discerns with regard to the aggregate:
+  </text>
+
+  <text x="460" y="70" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">
+
+    <tspan fill="#a0a0b8" dx="10">
+      Such is its nature
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · iti khandho
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      Such is its arising
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · khandhassa samudayo
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      Such is its passing away
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · khandhassa atthaṅgamo
+    </tspan>
+
+  </text>
+
+  <!-- Five aggregates in a row -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="90" width="152" height="52" rx="7" fill="url(#aggregateFill)" stroke="#5a7898" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <circle cx="82" cy="112" r="8" fill="none" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+  <text x="82" y="115" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="10">1</text>
+  <text x="136" y="112" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Form</text>
+  <text x="136" y="128" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">rūpa</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="222" y="90" width="152" height="52" rx="7" fill="url(#aggregateFill)" stroke="#5a7898" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <circle cx="240" cy="112" r="8" fill="none" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+  <text x="240" y="115" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="10">2</text>
+  <text x="298" y="112" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Feeling</text>
+  <text x="298" y="128" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">vedanā</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="384" y="90" width="152" height="52" rx="7" fill="url(#aggregateFill)" stroke="#5a7898" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <circle cx="402" cy="112" r="8" fill="none" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+  <text x="402" y="114" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="10">3</text>
+  <text x="460" y="112" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Perception</text>
+  <text x="460" y="128" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">saññā</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="546" y="90" width="152" height="52" rx="7" fill="url(#aggregateFill)" stroke="#5a7898" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <circle cx="564" cy="112" r="8" fill="none" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+  <text x="564" y="114" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="10">4</text>
+  <text x="622" y="108" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Intentional</text>
+  <text x="622" y="122" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Constructs</text>
+  <text x="622" y="138" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">saṅkhāra</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="708" y="90" width="152" height="52" rx="7" fill="url(#aggregateFill)" stroke="#5a7898" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <circle cx="726" cy="112" r="8" fill="none" stroke="#c8a040" stroke-width="0.8" opacity="0.4" />
+  <text x="726" y="114" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="10">5</text>
+  <text x="784" y="112" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Consciousness</text>
+  <text x="784" y="128" text-anchor="middle" fill="#7888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">viññāṇa</text>
+
+</svg>

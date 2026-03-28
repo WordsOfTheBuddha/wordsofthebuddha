@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 270" width="920" height="270">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="45%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="feelPleasant" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142a32" /><stop offset="100%" stop-color="#10242c" />
+    </linearGradient>
+    <linearGradient id="feelPainful" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#221828" /><stop offset="100%" stop-color="#1a1422" />
+    </linearGradient>
+    <linearGradient id="feelNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c2030" /><stop offset="100%" stop-color="#181c28" />
+    </linearGradient>
+
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="270" fill="url(#bg)" />
+
+  <!-- TIER LABEL -->
+  <line x1="90" y1="14" x2="830" y2="14" stroke="url(#tierGrad)" stroke-width="0.6" opacity="0.45" />
+  <text x="460" y="32" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold"
+    letter-spacing="2.5">2. OBSERVING THE FELT EXPERIENCE · vedanānupassanā</text>
+  <text x="460" y="54" text-anchor="middle" fill="#806828"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">
+    Dwells observing the felt experience in and of itself
+  </text>
+  <!--text x="460" y="48" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.65">9 types of feeling: 3 base feelings × worldly and non-worldly</text-->
+
+  <!-- Column headers -->
+  <text x="270" y="86" text-anchor="middle" fill="#80c0a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Pleasant</text>
+  <text x="270" y="98" text-anchor="middle" fill="#6888a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sukha vedanā</text>
+  <text x="470" y="86" text-anchor="middle" fill="#a08080"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Painful</text>
+  <text x="470" y="98" text-anchor="middle" fill="#6888a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">dukkha vedanā</text>
+  <text x="670" y="86" text-anchor="middle" fill="#8898b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Neither-painful-nor-pleasant</text>
+  <text x="670" y="98" text-anchor="middle" fill="#6888a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">adukkhamasukha vedanā</text>
+
+  <text x="132" y="126" text-anchor="end" fill="#a0b0c8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Discerns</text>
+  <text x="132" y="138" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">pajānāti</text>
+  <g filter="url(#shadowDrop)">
+    <rect x="140" y="110" width="250" height="36" rx="6" fill="url(#feelPleasant)" stroke="#60a088" stroke-width="0.7" stroke-opacity="0.4" />
+  </g>
+  <text x="265" y="132" text-anchor="middle" fill="#a0d0b8" font-family="Georgia,'Times New Roman',serif" font-size="10">Pleasant feeling · <tspan fill="#6888a0" font-style="italic">sukhaṁ vedanaṁ</tspan></text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="400" y="110" width="150" height="36" rx="6" fill="url(#feelPainful)" stroke="#a08090" stroke-width="0.7" stroke-opacity="0.4" />
+  </g>
+  <text x="475" y="132" text-anchor="middle" fill="#c0a0a8" font-family="Georgia,'Times New Roman',serif" font-size="10">Painful feeling · <tspan fill="#6888a0" font-style="italic">dukkhaṁ</tspan></text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="560" y="110" width="230" height="36" rx="6" fill="url(#feelNeutral)" stroke="#7888a0" stroke-width="0.7" stroke-opacity="0.35" />
+  </g>
+  <text x="675" y="124" text-anchor="middle" fill="#a0b0c0" font-family="Georgia,'Times New Roman',serif" font-size="10">Neither-painful-nor-pleasant feeling</text>
+  <text x="675" y="140" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">adukkhamasukhaṁ vedanaṁ</text>
+
+  <!-- Row 2: Worldly -->
+  <text x="132" y="176" text-anchor="end" fill="#a0b0c8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Discerns as worldly</text>
+  <text x="132" y="188" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sāmisa</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="140" y="160" width="250" height="36" rx="6" fill="url(#feelPleasant)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <text x="265" y="182" text-anchor="middle" fill="#80b0a0" font-family="Georgia,'Times New Roman',serif" font-size="10">Worldly pleasant feeling</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="400" y="160" width="150" height="36" rx="6" fill="url(#feelPainful)" stroke="#a08090" stroke-width="0.6" stroke-opacity="0.3" />
+  </g>
+  <text x="475" y="182" text-anchor="middle" fill="#b09098" font-family="Georgia,'Times New Roman',serif" font-size="10">Worldly painful feeling</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="560" y="160" width="230" height="36" rx="6" fill="url(#feelNeutral)" stroke="#7888a0" stroke-width="0.6" stroke-opacity="0.25" />
+  </g>
+  <text x="675" y="182" text-anchor="middle" fill="#8898a8" font-family="Georgia,'Times New Roman',serif" font-size="10">Worldly neither-painful-nor-pleasant feeling</text>
+
+  <!-- Row 3: Non-worldly -->
+  <text x="132" y="226" text-anchor="end" fill="#a0b0c8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Discerns as non-worldly</text>
+  <text x="132" y="238" text-anchor="end" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">nirāmisa</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="140" y="210" width="250" height="36" rx="6" fill="url(#feelPleasant)" stroke="#60a088" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+  <text x="265" y="224" text-anchor="middle" fill="#a0d8c0" font-family="Georgia,'Times New Roman',serif" font-size="10">Pleasant feeling</text>
+  <text x="265" y="240" text-anchor="middle" fill="#80a890" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" font-weight="normal">free from worldly ties</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="400" y="210" width="150" height="36" rx="6" fill="url(#feelPainful)" stroke="#a08090" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+  <text x="475" y="224" text-anchor="middle" fill="#c0a8b0" font-family="Georgia,'Times New Roman',serif" font-size="10">Painful feeling </text>
+  <text x="475" y="240" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">free from worldly ties</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="560" y="210" width="230" height="36" rx="6" fill="url(#feelNeutral)" stroke="#7888a0" stroke-width="0.8" stroke-opacity="0.45" />
+  </g>
+  <text x="675" y="224" text-anchor="middle" fill="#b0c0d0" font-family="Georgia,'Times New Roman',serif" font-size="10">Neither-painful-nor-pleasant feeling</text>
+  <text x="675" y="240" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">free from worldly ties</text>
+
+</svg>

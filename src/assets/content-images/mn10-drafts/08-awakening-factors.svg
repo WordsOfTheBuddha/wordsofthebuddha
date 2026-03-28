@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 180" width="920" height="180">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="45%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="bojjhangaFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182e34" /><stop offset="100%" stop-color="#14262c" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="180" fill="url(#bg)" />
+
+  <!-- TIER LABEL -->
+  <line x1="140" y1="14" x2="780" y2="14" stroke="url(#tierGrad)" stroke-width="0.4" opacity="0.3" />
+  <text x="460" y="30" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    letter-spacing="2" opacity="0.7">4d. SEVEN AWAKENING FACTORS · satta bojjhaṅgā</text>
+
+    <!-- Discernment pattern -->
+  <text x="460" y="56" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">
+
+    <tspan fill="#806828">
+      Discerns when an Awakening Factor (A.F.) is:
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      ① present
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · atthi
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      ② absent
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · natthi
+    </tspan>
+
+    <tspan fill="#a0a0b8" dx="10">
+      ③ how unarisen A.F. arises
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · yathā ca anuppannassa bojjhaṅgassa uppādo hoti
+    </tspan>
+
+    <tspan x="460" dy="16" fill="#a0a0b8">
+      ④ how arisen A.F. reaches fulfillment through cultivation
+    </tspan>
+    <tspan fill="#7888a0" font-style="italic">
+      · yathā ca uppannassa bojjhaṅgassa bhāvanāya pāripūrī hoti
+    </tspan>
+  </text>
+
+
+  <!-- 7 equal-width cards: 106×58, gap 10, start x=60 -->
+
+  <!-- Factor 1: Mindfulness -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(72, 112) scale(0.683) translate(0, 0.75)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="-7" r="3.5" />
+      <path d="M -6 -1 L 6 -1" />
+      <path d="M 0 -3 L 0 6" />
+      <path d="M -5 5 L 0 9 L 5 5" />
+    </g>
+  </g>
+  <text x="113" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Mindfulness</text>
+  <text x="113" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">sati</text>
+
+  <!-- Factor 2: Investigation -->
+  <g filter="url(#shadowDrop)">
+    <rect x="176" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(188, 112) scale(0.683) translate(-2, 0)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="-2" r="6" />
+      <line x1="4" y1="2" x2="10" y2="8" />
+    </g>
+  </g>
+  <text x="229" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Investigation</text>
+  <text x="229" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">dhammavicaya</text>
+
+  <!-- Factor 3: Energy -->
+  <g filter="url(#shadowDrop)">
+    <rect x="292" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(304, 112) scale(0.683) translate(0, -0.5)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 0 -12 C 0 -12, -7 -2, -7 4 C -7 9, -3 13, 0 13 C 3 13, 7 9, 7 4 C 7 -2, 0 -12, 0 -12 Z" />
+      <path d="M 0 -3 C 0 -3, -2 2, -2 5 C -2 7, -1 8.5, 0 8.5 C 1 8.5, 2 7, 2 5 C 2 2, 0 -3, 0 -3 Z" opacity="0.7" />
+      <path d="M -10 4 Q -13 1 -10 -2" opacity="0.5" />
+      <path d="M 10 4 Q 13 1 10 -2" opacity="0.5" />
+    </g>
+  </g>
+  <text x="345" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Energy</text>
+  <text x="345" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">vīriya</text>
+
+  <!-- Factor 4: Joy -->
+  <g filter="url(#shadowDrop)">
+    <rect x="408" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(420, 112) scale(0.683) translate(0, 0.5)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 0 -9 L 2.4 -2.5 L 9 -2.5 L 3.8 1.7 L 5.8 8 L 0 4.7 L -5.8 8 L -3.8 1.7 L -9 -2.5 L -2.4 -2.5 Z" />
+    </g>
+  </g>
+  <text x="461" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Uplifting Joy</text>
+  <text x="461" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">pīti</text>
+
+  <!-- Factor 5: Tranquility -->
+  <g filter="url(#shadowDrop)">
+    <rect x="524" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(536, 112) scale(0.683) translate(0, -1)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="0.9" stroke-linecap="round">
+      <path d="M -10 -2 Q -5 -4 0 -2 T 10 -2" />
+      <path d="M -10 4 Q -5 2 0 4 T 10 4" opacity="0.8" />
+    </g>
+  </g>
+  <text x="577" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Tranquility</text>
+  <text x="577" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">passaddhi</text>
+
+  <!-- Factor 6: Collectedness -->
+  <g filter="url(#shadowDrop)">
+    <rect x="640" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(650, 112) scale(0.683) translate(0, 0)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="0.8">
+      <circle cx="0" cy="0" r="8" />
+      <circle cx="0" cy="0" r="5" />
+      <circle cx="0" cy="0" r="2" />
+      <circle cx="0" cy="0" r="1.2" fill="#60a088" stroke="none" />
+    </g>
+  </g>
+  <text x="695" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Collectedness</text>
+  <text x="693" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">samādhi</text>
+
+  <!-- Factor 7: Equanimity -->
+  <g filter="url(#shadowDrop)">
+    <rect x="756" y="96" width="106" height="52" rx="6" fill="url(#bojjhangaFill)" stroke="#60a088" stroke-width="0.6" stroke-opacity="0.35" />
+  </g>
+  <g transform="translate(768, 112) scale(0.683) translate(0, 0)" opacity="0.55" filter="url(#iconGlow)">
+    <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="-10" y1="0" x2="10" y2="0" />
+      <path d="M 0 -3 L 3 0 L 0 3 L -3 0 Z" />
+      <line x1="-10" y1="-4" x2="-10" y2="4" />
+      <line x1="10" y1="-4" x2="10" y2="4" />
+    </g>
+  </g>
+  <text x="809" y="116" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold">Equanimity</text>
+  <text x="809" y="132" text-anchor="middle" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">upekkhā</text>
+
+</svg>
