@@ -17,7 +17,7 @@
 				"mn148"
 			],
 			"labels": [
-				"phenomenology",
+				"phenomena",
 				"sense bases"
 			],
 			"svg": "icons/seen.svg"
@@ -37,7 +37,7 @@
 				"mn148"
 			],
 			"labels": [
-				"phenomenology",
+				"phenomena",
 				"sense bases"
 			],
 			"svg": "icons/heard.svg"
@@ -56,7 +56,7 @@
 				"mn148"
 			],
 			"labels": [
-				"phenomenology",
+				"phenomena",
 				"sense bases"
 			],
 			"svg": "icons/sensed.svg"
@@ -76,7 +76,7 @@
 				"mn148"
 			],
 			"labels": [
-				"phenomenology",
+				"phenomena",
 				"sense bases"
 			],
 			"svg": "icons/cognized.svg"
@@ -99,8 +99,10 @@
 			],
 			"labels": [
 				"path",
-				"phenomenology"
+				"phenomena",
+				"unprincipled conduct"
 			],
+			"valence": "-ve",
 			"svg": "icons/puthujjana-header.svg"
 		},
 		{
@@ -122,7 +124,7 @@
 			"labels": [
 				"path",
 				"person of integrity",
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/ariya-header.svg"
 		},
@@ -138,7 +140,7 @@
 			"discourse": "mn1",
 			"labels": [
 				"elements",
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/earth.svg"
 		},
@@ -154,7 +156,7 @@
 			"discourse": "mn1",
 			"labels": [
 				"elements",
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/water.svg"
 		},
@@ -171,7 +173,7 @@
 			"discourse": "mn1",
 			"labels": [
 				"elements",
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/fire.svg"
 		},
@@ -187,7 +189,7 @@
 			"discourse": "mn1",
 			"labels": [
 				"elements",
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/air.svg"
 		},
@@ -201,7 +203,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/beings.svg"
 		},
@@ -216,7 +218,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/deities.svg"
 		},
@@ -230,7 +232,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/creator.svg"
 		},
@@ -245,7 +247,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/brahma.svg"
 		},
@@ -259,7 +261,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/streaming-radiance.svg"
 		},
@@ -273,7 +275,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/refulgent.svg"
 		},
@@ -287,7 +289,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/great-fruit.svg"
 		},
@@ -302,7 +304,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/overlord.svg"
 		},
@@ -317,7 +319,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/space-base.svg"
 		},
@@ -331,7 +333,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/consciousness-base.svg"
 		},
@@ -346,7 +348,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/nothingness-base.svg"
 		},
@@ -360,7 +362,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/neither-base.svg"
 		},
@@ -374,7 +376,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/oneness.svg"
 		},
@@ -388,7 +390,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/diversity.svg"
 		},
@@ -402,7 +404,7 @@
 			],
 			"discourse": "mn1",
 			"labels": [
-				"phenomenology"
+				"phenomena"
 			],
 			"svg": "icons/all.svg"
 		},
@@ -517,7 +519,6 @@
 			"labels": [
 				"five hindrances",
 				"harm",
-				"sensual desire",
 				"unwholesome"
 			],
 			"valence": "-ve",
@@ -535,7 +536,6 @@
 			"labels": [
 				"five hindrances",
 				"harm",
-				"ill will",
 				"unwholesome"
 			],
 			"valence": "-ve",
@@ -756,6 +756,7 @@
 			],
 			"discourse": "mn5",
 			"labels": [
+				"unprincipled conduct",
 				"unwholesome"
 			],
 			"valence": "-ve",
@@ -772,6 +773,7 @@
 			],
 			"discourse": "mn5",
 			"labels": [
+				"unprincipled conduct",
 				"unwholesome"
 			],
 			"valence": "-ve",
@@ -788,6 +790,7 @@
 			],
 			"discourse": "mn5",
 			"labels": [
+				"unprincipled conduct",
 				"unwholesome"
 			],
 			"valence": "-ve",
@@ -804,6 +807,7 @@
 			],
 			"discourse": "mn5",
 			"labels": [
+				"unprincipled conduct",
 				"unwholesome"
 			],
 			"valence": "-ve",
@@ -1435,7 +1439,9 @@
 			"discourse": "mn119",
 			"labels": [
 				"awakening",
-				"collectedness"
+				"collectedness",
+				"non harm",
+				"renunciation"
 			],
 			"valence": "+ve",
 			"svg": "icons/jhana-first.svg"
@@ -1452,7 +1458,9 @@
 			"discourse": "mn119",
 			"labels": [
 				"awakening",
-				"collectedness"
+				"collectedness",
+				"non harm",
+				"renunciation"
 			],
 			"valence": "+ve",
 			"svg": "icons/jhana-second.svg"
@@ -1471,7 +1479,9 @@
 				"awakening",
 				"collectedness",
 				"equanimity",
-				"mindfulness"
+				"mindfulness",
+				"non harm",
+				"renunciation"
 			],
 			"valence": "+ve",
 			"svg": "icons/jhana-third.svg"
@@ -1493,7 +1503,9 @@
 				"direct knowledge",
 				"dispassion",
 				"equanimity",
-				"mindfulness"
+				"mindfulness",
+				"non harm",
+				"renunciation"
 			],
 			"valence": "+ve",
 			"svg": "icons/jhana-fourth.svg"
@@ -2138,7 +2150,7 @@
 				"mn10"
 			],
 			"labels": [
-				"phenomenology",
+				"phenomena",
 				"sense bases"
 			],
 			"svg": "icons/sense-nose.svg"
@@ -2158,7 +2170,7 @@
 				"mn10"
 			],
 			"labels": [
-				"phenomenology",
+				"phenomena",
 				"sense bases"
 			],
 			"svg": "icons/sense-tongue.svg"

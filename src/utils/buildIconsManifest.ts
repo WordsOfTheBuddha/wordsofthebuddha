@@ -161,7 +161,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn1", "mn148", "mn10"],
 		sourceGraphic: "mn1.svg",
 		tags: ["gold", "line-art", "sense"],
-		themes: ["sense bases", "phenomenology"],
+		themes: ["sense bases", "phenomena"],
 	},
 	{
 		id: "heard",
@@ -170,7 +170,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn1", "mn148", "mn10"],
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "sense"],
-		themes: ["sense bases", "phenomenology"],
+		themes: ["sense bases", "phenomena"],
 	},
 	{
 		id: "sensed",
@@ -179,7 +179,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn1", "mn148"],
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "sense"],
-		themes: ["sense bases", "phenomenology"],
+		themes: ["sense bases", "phenomena"],
 	},
 	{
 		id: "cognized",
@@ -188,7 +188,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn1", "mn148", "mn10"],
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "sense"],
-		themes: ["sense bases", "phenomenology"],
+		themes: ["sense bases", "phenomena"],
 	},
 	{
 		id: "puthujjana-header",
@@ -197,7 +197,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn1", "mn113", "mn29", "mn30", "mn148"],
 		sourceGraphic: "mn1.svg",
 		tags: ["burgundy", "line-art"],
-		themes: ["path", "phenomenology"],
+		themes: ["path", "phenomena", "unprincipled conduct"],
 	},
 	{
 		id: "ariya-header",
@@ -206,7 +206,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn1", "mn113", "mn29", "mn30", "mn148"],
 		sourceGraphic: "mn1.svg",
 		tags: ["teal", "line-art"],
-		themes: ["path", "person of integrity", "phenomenology"],
+		themes: ["path", "person of integrity", "phenomena"],
 	},
 	{
 		id: "earth",
@@ -215,7 +215,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements"],
-		themes: ["elements", "phenomenology"],
+		themes: ["elements", "phenomena"],
 	},
 	{
 		id: "water",
@@ -224,7 +224,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements"],
-		themes: ["elements", "phenomenology"],
+		themes: ["elements", "phenomena"],
 	},
 	{
 		id: "fire",
@@ -233,7 +233,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements", "fire"],
-		themes: ["elements", "phenomenology"],
+		themes: ["elements", "phenomena"],
 	},
 	{
 		id: "air",
@@ -242,7 +242,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements"],
-		themes: ["elements", "phenomenology"],
+		themes: ["elements", "phenomena"],
 	},
 	{
 		id: "beings",
@@ -251,7 +251,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "deities",
@@ -260,7 +260,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "gold"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "creator",
@@ -269,7 +269,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "brahma",
@@ -278,7 +278,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "gold"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "streaming-radiance",
@@ -287,7 +287,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "refulgent",
@@ -296,7 +296,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "great-fruit",
@@ -305,7 +305,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "overlord",
@@ -314,7 +314,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "gold"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "space-base",
@@ -323,7 +323,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "dashed"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "consciousness-base",
@@ -332,7 +332,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "nothingness-base",
@@ -341,7 +341,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "dashed"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "neither-base",
@@ -350,7 +350,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "oneness",
@@ -359,7 +359,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "diversity",
@@ -368,7 +368,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	{
 		id: "all",
@@ -377,7 +377,7 @@ const icons: IconEntry[] = [
 		discourse: "mn1",
 		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
-		themes: ["phenomenology"],
+		themes: ["phenomena"],
 	},
 	// MN 2
 	{
@@ -441,7 +441,7 @@ const icons: IconEntry[] = [
 		discourse: "mn2",
 		sourceGraphic: "mn2.svg",
 		tags: ["line-art", "flame"],
-		themes: ["sensual desire", "five hindrances", "unwholesome", "harm"]
+		themes: ["five hindrances", "unwholesome", "harm"]
 	},
 	{
 		id: "thorn-vine",
@@ -450,7 +450,7 @@ const icons: IconEntry[] = [
 		discourse: "mn2",
 		sourceGraphic: "mn2.svg",
 		tags: ["line-art"],
-		themes: ["ill will", "five hindrances", "unwholesome", "harm"]
+		themes: ["five hindrances", "unwholesome", "harm"]
 	},
 	{
 		id: "impact-star",
@@ -576,7 +576,7 @@ const icons: IconEntry[] = [
 		discourse: "mn5",
 		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
-		themes: ["unwholesome"]
+		themes: ["unwholesome", "unprincipled conduct"]
 	},
 	{
 		id: "wish-status-seat",
@@ -585,7 +585,7 @@ const icons: IconEntry[] = [
 		discourse: "mn5",
 		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
-		themes: ["unwholesome"]
+		themes: ["unwholesome", "unprincipled conduct"]
 	},
 	{
 		id: "wish-teach-speaker",
@@ -594,7 +594,7 @@ const icons: IconEntry[] = [
 		discourse: "mn5",
 		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
-		themes: ["unwholesome"]
+		themes: ["unwholesome", "unprincipled conduct"]
 	},
 	{
 		id: "wish-honor-bow",
@@ -603,7 +603,7 @@ const icons: IconEntry[] = [
 		discourse: "mn5",
 		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
-		themes: ["unwholesome"]
+		themes: ["unwholesome", "unprincipled conduct"]
 	},
 	{
 		id: "wish-requisite-robe",
@@ -944,7 +944,7 @@ const icons: IconEntry[] = [
 		discourse: "mn119",
 		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
-		themes: ["collectedness", "awakening"]
+		themes: ["collectedness", "awakening", "renunciation", "non-harm"]
 	},
 	{
 		id: "jhana-second",
@@ -953,7 +953,7 @@ const icons: IconEntry[] = [
 		discourse: "mn119",
 		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
-		themes: ["collectedness", "awakening"]
+		themes: ["collectedness", "awakening", "renunciation", "non-harm"]
 	},
 	{
 		id: "jhana-third",
@@ -962,7 +962,7 @@ const icons: IconEntry[] = [
 		discourse: "mn119",
 		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
-		themes: ["collectedness", "awakening", "mindfulness", "equanimity"]
+		themes: ["collectedness", "awakening", "renunciation", "non-harm", "mindfulness", "equanimity"]
 	},
 	{
 		id: "jhana-fourth",
@@ -971,7 +971,7 @@ const icons: IconEntry[] = [
 		discourse: "mn119",
 		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
-		themes: ["collectedness", "direct knowledge", "awakening", "clear awareness", "mindfulness", "equanimity", "dispassion"]
+		themes: ["collectedness", "direct knowledge", "awakening", "renunciation", "non-harm", "clear awareness", "mindfulness", "equanimity", "dispassion"]
 	},
 	{
 		id: "simile-uncultivated-clay",
@@ -1297,7 +1297,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn148", "mn10"],
 		sourceGraphic: "mn148.svg",
 		tags: ["line-art", "mn148", "sense"],
-		themes: ["sense bases", "phenomenology"],
+		themes: ["sense bases", "phenomena"],
 	},
 	{
 		id: "sense-tongue",
@@ -1307,7 +1307,7 @@ const icons: IconEntry[] = [
 		discourse: ["mn148", "mn10"],
 		sourceGraphic: "mn148.svg",
 		tags: ["line-art", "mn148", "sense"],
-		themes: ["sense bases", "phenomenology"],
+		themes: ["sense bases", "phenomena"],
 	},
 	// MN 20 Vitakkasaṇṭhāna — similes (postures: shared-postures-four)
 	{
