@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.23851) translate(11.725, -16.975)">
+    <g opacity="0.75" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="0" cy="0" r="8" stroke="#a06070" stroke-width="1.2" />
+        <line x1="0" y1="8" x2="0" y2="38" stroke="#a06070" stroke-width="1.2" />
+        <line x1="-14" y1="20" x2="14" y2="20" stroke="#a06070" stroke-width="1" />
+        <line x1="0" y1="38" x2="-10" y2="52" stroke="#a06070" stroke-width="1" />
+        <line x1="0" y1="38" x2="10" y2="52" stroke="#a06070" stroke-width="1" />
+        <path d="M -46 20 L -56 12 L -50 20 Z" fill="#c07060" opacity="0.78" stroke="none" />
+        <path d="M -46 20 L -56 28 L -50 20 Z" fill="#c07060" opacity="0.78" stroke="none" />
+        <line x1="-50" y1="20" x2="-20" y2="20" stroke="#c07060" stroke-width="1.9" />
+        <path d="M -14 20 L -23 16 L -23 24 Z" fill="#c07060" stroke="none" />
+        <path d="M 22 -18 A 10 10 0 0 1 32 -8 A 10 10 0 0 1 22 2 A 10 10 0 0 1 12 -8" stroke="#c07060" stroke-width="1.1" stroke-dasharray="3,2" opacity="0.85" />
+        <path d="M 12 -8 L 8 -14 L 16 -13 Z" fill="#c07060" opacity="1" transform="rotate(80 12 -11)" stroke="none" />
+        </g>
+  </g>
+</svg>

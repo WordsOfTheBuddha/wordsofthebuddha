@@ -1,0 +1,882 @@
+---
+export const prerender = true;
+import Layout from "../../layouts/Layout.astro";
+import manifest from "../../assets/content-images/design-system/icons-manifest.json";
+import {
+	formatDiscourseTitle,
+	sortDiscourseIds,
+} from "../../utils/discourseSort";
+
+const modules = import.meta.glob<string>(
+	"/src/assets/content-images/design-system/icons/*.svg",
+	{ eager: true, query: "?url", import: "default" },
+);
+
+function urlForSvg(svgPath: string): string {
+	const hit = Object.entries(modules).find(([k]) => k.endsWith(svgPath));
+	return hit ? hit[1] : "";
+}
+
+/** File name without `icons/` and without `.svg` (shown as ID). */
+function svgFileId(svgPath: string): string {
+	return svgPath
+		.replace(/^icons\//, "")
+		.replace(/\.svg$/i, "");
+}
+
+function discourseSlugList(d: string | string[]): string[] {
+	const raw = Array.isArray(d) ? d : [d];
+	return raw.map((x) => x.trim()).filter((x) => x.length > 0);
+}
+
+function discourseVizLinks(d: string | string[]) {
+	return discourseSlugList(d).map((slug) => ({
+		slug,
+		href: `/${slug}?viz=1`,
+		label: formatDiscourseTitle(slug),
+	}));
+}
+
+const iconsWithUrls = manifest.icons.map((icon) => {
+	const labels = icon.labels ?? [];
+	const discourseLinks = discourseVizLinks(icon.discourse);
+	const valence = icon.valence;
+	return {
+		...icon,
+		discourseStr: Array.isArray(icon.discourse)
+			? icon.discourse.join(", ")
+			: icon.discourse,
+		discourseLinks,
+		labelsStr: labels.join(", "),
+		fileId: svgFileId(icon.svg),
+		valenceStr: valence ?? "",
+		url: urlForSvg(icon.svg),
+	};
+});
+
+/** One checkbox per distinct label (quality keys + topic-style buckets). */
+const facetLabelsMerged = [...new Set(manifest.icons.flatMap((i) => i.labels ?? []))]
+	.filter(Boolean)
+	.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+const facetDiscourses = sortDiscourseIds([
+	...new Set(
+		manifest.icons.flatMap((i) =>
+			Array.isArray(i.discourse) ? i.discourse : [i.discourse],
+		),
+	),
+]);
+
+const valenceOrder = ["-ve", "", "+ve"] as const;
+const facetValences = valenceOrder.filter((v) =>
+	manifest.icons.some((i) => i.valence === v),
+);
+
+const manifestEntryCount = manifest.icons.length;
+const pageDescription =
+	`Searchable SVG motifs from discourse header diagrams. <strong class=\"text-[var(--text-color)]\">${manifestEntryCount} entries</strong>.`;
+---
+
+<Layout
+	seoTitle="Design system"
+	title="Design system"
+	fp="/design-system"
+	showAuth={false}
+	showSearch={true}
+	fullWidthSlot
+>
+	<meta slot="head" name="robots" content="noindex, nofollow" />
+	<div class="ds-icons-root flex flex-1 flex-col text-[var(--text-color)] pb-8">
+		<p
+			class="text-sm text-[var(--text-muted)] mb-6 w-full max-w-none leading-relaxed [&_.ds-code]:rounded [&_.ds-code]:px-1 [&_.ds-code]:py-0.5 [&_.ds-code]:text-[0.85em] [&_.ds-code]:bg-[var(--surface-elevated)] [&_.ds-code]:border [&_.ds-code]:border-[color:var(--surface-border)] [&_em]:text-[var(--text-muted)] [&_em]:not-italic"
+			set:html={pageDescription}
+		/>
+
+		<!-- Mobile backdrop -->
+		<div
+			id="ds-filter-backdrop"
+			class="fixed inset-0 z-40 bg-black/40 opacity-0 pointer-events-none transition-opacity lg:hidden [&.is-open]:pointer-events-auto [&.is-open]:opacity-100"
+			aria-hidden="true"
+		>
+		</div>
+
+		<div class="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-6">
+			<!-- Filter sidebar: drawer on mobile, column on lg -->
+			<aside
+				id="ds-filter-sidebar"
+				class="fixed inset-y-0 left-0 z-50 flex w-[min(22rem,92vw)] max-w-sm flex-col gap-4 overflow-y-auto border-r border-[color:var(--surface-border)] bg-[var(--background-color)] p-4 shadow-xl transition-transform duration-200 ease-out -translate-x-full lg:sticky lg:inset-auto lg:top-6 lg:z-auto lg:max-h-[calc(100dvh-2rem)] lg:max-w-[16rem] lg:shrink-0 lg:translate-x-0 lg:self-start lg:border lg:rounded-xl lg:bg-[var(--surface-elevated)] lg:p-4 lg:shadow-none"
+				aria-label="Filter icons"
+			>
+				<div class="flex items-center justify-between gap-2 lg:hidden">
+					<h2 class="text-base font-semibold text-[var(--text-color)] m-0">
+						Filters
+					</h2>
+					<button
+						type="button"
+						id="ds-filter-close"
+						class="rounded-lg p-2 text-[var(--text-muted)] hover:bg-[color:var(--surface-border)] hover:text-[var(--text-color)]"
+						aria-label="Close filters"
+					>
+						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+
+				<fieldset class="flex flex-col gap-1 border-0 p-0 m-0">
+					<legend class="text-xs font-medium uppercase tracking-wide text-[var(--text-muted)] mb-1">Combine groups</legend>
+					<div class="flex flex-col gap-2 rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] p-2 text-xs text-[var(--text-muted)]">
+						<label class="flex cursor-pointer items-start gap-2">
+							<input type="radio" name="facet-combine" value="and" class="facet-combine mt-0.5" checked />
+							<span><strong class="text-[var(--text-color)]">All groups</strong> — match each facet group that has selections</span>
+						</label>
+						<label class="flex cursor-pointer items-start gap-2">
+							<input type="radio" name="facet-combine" value="or" class="facet-combine mt-0.5" />
+							<span><strong class="text-[var(--text-color)]">Any group</strong> — match if <em>any</em> selected group matches</span>
+						</label>
+					</div>
+				</fieldset>
+				<p class="text-[10px] leading-snug text-[var(--text-muted)] -mt-1">
+					Within <strong class="text-[var(--text-color)]">Labels</strong>, checks combine with <strong class="text-[var(--text-color)]">OR</strong>.
+				</p>
+
+				{facetValences.length > 0 && (
+					<div class="flex flex-col gap-1">
+						<span class="text-xs font-medium uppercase tracking-wide text-[var(--text-muted)]">Valence</span>
+						<div class="rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] p-2 space-y-1.5">
+							{facetValences.map((v) => (
+								<label class="flex cursor-pointer items-center gap-2 text-sm text-[var(--text-color)]">
+									<input
+										type="checkbox"
+										name="facet-valence"
+										value={v}
+										class="facet-cb rounded border-[color:var(--surface-border)]"
+									/>
+									<span class="text-xs">{v}</span>
+								</label>
+							))}
+						</div>
+					</div>
+				)}
+
+				<div class="flex flex-col gap-1">
+					<span class="text-xs font-medium uppercase tracking-wide text-[var(--text-muted)]">Discourse</span>
+					<div class="max-h-32 overflow-y-auto rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] p-2 space-y-1.5">
+						{facetDiscourses.map((d) => (
+							<label class="flex cursor-pointer items-center gap-2 text-sm text-[var(--text-color)]">
+								<input type="checkbox" name="facet-discourse" value={d} class="facet-cb rounded border-[color:var(--surface-border)]" />
+								<span class="text-xs">{formatDiscourseTitle(d)}</span>
+							</label>
+						))}
+					</div>
+				</div>
+
+				<div class="flex flex-col gap-1">
+					<span class="text-xs font-medium uppercase tracking-wide text-[var(--text-muted)]">Labels</span>
+					{facetLabelsMerged.length === 0 ? (
+						<p class="m-0 rounded-lg border border-dashed border-[color:var(--surface-border)] p-2 text-[10px] text-[var(--text-muted)]">
+							No labels in the manifest yet.
+						</p>
+					) : (
+						<div class="max-h-48 overflow-y-auto rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] p-2 space-y-1.5">
+							{facetLabelsMerged.map((value) => (
+								<label class="flex cursor-pointer items-center gap-2 text-sm text-[var(--text-color)]">
+									<input
+										type="checkbox"
+										name="facet-qt"
+										class="facet-cb rounded border-[color:var(--surface-border)]"
+										value={`qt:${encodeURIComponent(value)}`}
+									/>
+									<span class="text-xs leading-snug">{value}</span>
+								</label>
+							))}
+						</div>
+					)}
+				</div>
+				<button
+					type="button"
+					id="ds-clear-filters"
+					class="mt-1 rounded-lg border border-[color:var(--surface-border)] px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[color:var(--surface-border)] hover:text-[var(--text-color)] lg:mt-2"
+				>
+					Clear filters
+				</button>
+			</aside>
+
+			<!-- Main column -->
+			<div class="min-w-0 flex-1 flex flex-col gap-3">
+				<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3">
+					<div class="flex min-w-0 flex-1 flex-col gap-1">
+						<div class="flex flex-1 gap-2">
+						<label class="sr-only" for="icon-search">Search icons</label>
+						<input
+							id="icon-search"
+							type="search"
+							placeholder="Search title, description, labels, tags, id…"
+							class="ds-search flex-1 rounded-lg border border-[color:var(--surface-border)] bg-[var(--background-color)] px-3 py-2.5 text-sm text-[var(--text-color)] placeholder:text-[var(--text-muted)] shadow-sm focus:border-[var(--primary-color)] focus:outline-none focus:ring-1 focus:ring-[var(--primary-color)]"
+						/>
+						<button
+							type="button"
+							id="ds-filter-open"
+							class="flex shrink-0 items-center justify-center rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] p-2.5 text-[var(--text-color)] shadow-sm hover:bg-[color:var(--surface-border)] lg:hidden"
+							aria-label="Open filters"
+							aria-expanded="false"
+							aria-controls="ds-filter-sidebar"
+						>
+							<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+							</svg>
+						</button>
+						</div>
+						<p class="text-[10px] leading-snug text-[var(--text-muted)] sm:text-xs">
+							Fuzzy match on id, title, description; cards that contain your text as a substring are listed first.
+						</p>
+					</div>
+					<p id="icon-count" class="shrink-0 text-sm text-[var(--text-muted)] sm:text-right">
+						{manifestEntryCount} entries
+					</p>
+				</div>
+
+				<div
+					id="applied-filters"
+					class="hidden flex flex-wrap items-center gap-2 min-h-[2rem]"
+					aria-live="polite"
+				>
+				</div>
+
+				<div
+					id="icon-grid"
+					class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-1.5 sm:gap-3 lg:gap-4"
+				>
+					{
+						iconsWithUrls.map((icon) => (
+							<article
+								class="icon-card group flex h-full min-h-0 flex-col gap-1 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] p-1.5 sm:p-3 lg:p-4 shadow-sm max-md:cursor-pointer max-md:active:opacity-90"
+								data-id={icon.id}
+								data-title={icon.title}
+								data-description={icon.description}
+								data-svg-path={icon.svg}
+								data-discourse={icon.discourseStr}
+								data-file-id={icon.fileId}
+								data-labels={icon.labelsStr}
+								data-valence={icon.valenceStr}
+								data-tags={icon.tags.join(",")}
+								data-img-url={icon.url}
+								data-search={`${icon.id} ${icon.title} ${icon.description} ${icon.discourseStr} ${icon.tags.join(" ")} ${icon.labelsStr} ${icon.valenceStr}`}
+								tabindex="0"
+								role="button"
+								aria-label={`Open details for ${icon.title}`}
+							>
+								<div class="aspect-square flex items-center justify-center rounded-md bg-[var(--background-color)] p-1 sm:p-3 border border-[color:var(--surface-border)]">
+									{icon.url ? (
+										<img
+											src={icon.url}
+											alt=""
+											class="max-h-full max-w-full object-contain"
+											loading="lazy"
+										/>
+									) : (
+										<span class="text-[10px] text-red-600 dark:text-red-400/90">Missing</span>
+									)}
+								</div>
+								<h2 class="text-[11px] font-medium leading-tight text-[var(--text-color)] line-clamp-2 sm:text-sm">
+									{icon.title}
+								</h2>
+								<p class="hidden sm:block text-xs text-[var(--text-muted)] line-clamp-2">
+									{icon.description}
+								</p>
+								<dl class="hidden sm:block text-[10px] space-y-0.5 text-[var(--text-muted)] sm:text-xs">
+									{(icon.labelsStr.length > 0 || icon.valenceStr) && (
+										<div class="min-w-0">
+											<dt class="inline opacity-80">Labels:</dt>{" "}
+											<dd class="inline">
+												{icon.labelsStr.length > 0 ? icon.labelsStr : ""}
+												{icon.valenceStr && (
+													<span
+														class="whitespace-nowrap text-[12px] gray-300 code"
+														title={`Valence: ${icon.valenceStr}`}
+													>
+														{icon.labelsStr.length > 0 ? " · " : ""}
+														{icon.valenceStr}
+													</span>
+												)}
+											</dd>
+										</div>
+									)}
+									<div>
+										<dt class="inline opacity-80">ID:</dt>{" "}
+										<dd class="inline font-mono text-[0.7rem] sm:text-xs">{icon.fileId}</dd>
+									</div>
+								</dl>
+								{icon.discourseLinks.length > 0 && (
+									<div
+										class="max-md:hidden mt-auto w-full min-w-0 shrink-0 border-t border-[color:var(--surface-border)] pt-2"
+										aria-label="Open discourse visualizations"
+									>
+										<div class="flex max-h-[1.75rem] flex-nowrap gap-1 overflow-x-auto pb-0.5 [scrollbar-width:thin]">
+											{icon.discourseLinks.map((L) => (
+												<a
+													href={L.href}
+													target="_blank"
+													rel="noopener noreferrer"
+													class="ds-viz-link inline-flex shrink-0 items-center gap-0.5 rounded border border-[color:var(--surface-border)] bg-[var(--background-color)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--primary-color)] hover:bg-[color:var(--surface-border)] hover:underline sm:text-[11px]"
+												>
+													{L.label}
+													<svg
+														class="h-2.5 w-2.5 shrink-0 opacity-70"
+														fill="none"
+														stroke="currentColor"
+														viewBox="0 0 24 24"
+														aria-hidden="true"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="2"
+															d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+														/>
+													</svg>
+												</a>
+											))}
+										</div>
+									</div>
+								)}
+							</article>
+						))
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- Mobile / narrow: full detail modal -->
+		<div
+			id="ds-detail-backdrop"
+			class="fixed inset-0 z-[60] hidden items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4 md:hidden"
+			aria-hidden="true"
+		>
+			<div
+				id="ds-detail-panel"
+				class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-[color:var(--surface-border)] bg-[var(--background-color)] p-4 shadow-xl sm:rounded-2xl"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="ds-detail-title"
+			>
+				<div class="flex justify-between gap-2 border-b border-[color:var(--surface-border)] pb-3 mb-3">
+					<h2 id="ds-detail-title" class="text-lg font-semibold text-[var(--text-color)] m-0 pr-2">
+					</h2>
+					<button
+						type="button"
+						id="ds-detail-close"
+						class="shrink-0 rounded-lg p-2 text-[var(--text-muted)] hover:bg-[color:var(--surface-border)]"
+						aria-label="Close details"
+					>
+						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+					</button>
+				</div>
+				<div id="ds-detail-preview" class="mb-4 flex min-h-[12rem] items-center justify-center rounded-xl border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] p-6">
+				</div>
+				<p id="ds-detail-desc" class="text-sm text-[var(--text-muted)] leading-relaxed mb-4"></p>
+				<dl id="ds-detail-meta" class="text-xs space-y-1.5 text-[var(--text-muted)] font-mono"></dl>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	import Fuse from "fuse.js";
+
+	const cards = Array.from(document.querySelectorAll<HTMLElement>(".icon-card"));
+	const searchEl = document.getElementById("icon-search") as HTMLInputElement | null;
+	const countEl = document.getElementById("icon-count");
+	const appliedEl = document.getElementById("applied-filters");
+	const backdrop = document.getElementById("ds-filter-backdrop");
+	const sidebar = document.getElementById("ds-filter-sidebar");
+	const openBtn = document.getElementById("ds-filter-open");
+	const closeBtn = document.getElementById("ds-filter-close");
+	const clearBtn = document.getElementById("ds-clear-filters");
+
+	const detailBackdrop = document.getElementById("ds-detail-backdrop");
+	const detailClose = document.getElementById("ds-detail-close");
+	const detailTitle = document.getElementById("ds-detail-title");
+	const detailDesc = document.getElementById("ds-detail-desc");
+	const detailMeta = document.getElementById("ds-detail-meta");
+	const detailPreview = document.getElementById("ds-detail-preview");
+	const iconGrid = document.getElementById("icon-grid");
+
+	const mq = window.matchMedia("(min-width: 1024px)");
+	const mqMobileDetail = window.matchMedia("(max-width: 767px)");
+
+	type Row = {
+		el: HTMLElement;
+		id: string;
+		title: string;
+		description: string;
+		search: string;
+		discourse: string;
+		tags: string;
+		labels: string;
+		valence: string;
+	};
+
+	const items: Row[] = cards.map((el) => ({
+		el,
+		id: el.dataset.id ?? "",
+		title: el.dataset.title ?? "",
+		description: el.dataset.description ?? "",
+		search: el.dataset.search ?? "",
+		discourse: el.dataset.discourse ?? "",
+		tags: el.dataset.tags ?? "",
+		labels: el.dataset.labels ?? "",
+		valence: el.dataset.valence ?? "",
+	}));
+
+	const originalOrder = items.map((i) => i.el);
+
+	function restoreGridOrder() {
+		if (!iconGrid) return;
+		for (const el of originalOrder) {
+			iconGrid.appendChild(el);
+		}
+	}
+
+	/** Fuse.js: lower score = better match. Weighted fields beat one long blob. */
+	const fuse = new Fuse(items, {
+		keys: [
+			{ name: "id", weight: 0.28 },
+			{ name: "title", weight: 0.22 },
+			{ name: "description", weight: 0.16 },
+			{ name: "labels", weight: 0.18 },
+			{ name: "valence", weight: 0.06 },
+			{ name: "tags", weight: 0.06 },
+			{ name: "search", weight: 0.04 },
+		],
+		threshold: 0.32,
+		ignoreLocation: true,
+		minMatchCharLength: 1,
+		distance: 120,
+	});
+
+	/** Move substring hits (e.g. “vine” in id mn2-thorn-vine) ahead of weak fuzzy matches. */
+	function orderSearchResults(q: string, fuseItems: Row[]): Row[] {
+		const ql = q.trim().toLowerCase();
+		if (!ql) return fuseItems;
+		const hasSubstring = (r: Row) => {
+			const id = r.id.toLowerCase();
+			const t = r.title.toLowerCase();
+			const d = r.description.toLowerCase();
+			const g = r.tags.toLowerCase();
+			const lb = r.labels.toLowerCase();
+			const va = r.valence.toLowerCase();
+			return (
+				id.includes(ql) ||
+				t.includes(ql) ||
+				d.includes(ql) ||
+				g.includes(ql) ||
+				lb.includes(ql) ||
+				va.includes(ql)
+			);
+		};
+		const strong = fuseItems.filter(hasSubstring);
+		const weak = fuseItems.filter((r) => !hasSubstring(r));
+		return [...strong, ...weak];
+	}
+
+	function checkedValues(name: string): Set<string> {
+		const out = new Set<string>();
+		for (const el of document.querySelectorAll<HTMLInputElement>(
+			`input[name="${name}"]:checked`,
+		)) {
+			if (el.value) out.add(el.value);
+		}
+		return out;
+	}
+
+	function combineMode(): "and" | "or" {
+		const el = document.querySelector<HTMLInputElement>(
+			'input[name="facet-combine"]:checked',
+		);
+		return el?.value === "or" ? "or" : "and";
+	}
+
+	function discourseMatch(row: Row, selected: Set<string>): boolean {
+		if (selected.size === 0) return true;
+		const rowDisc = row.discourse.split(",").map((s) => s.trim());
+		for (const s of selected) {
+			if (rowDisc.includes(s)) return true;
+		}
+		return false;
+	}
+
+	function checkedQtLabels(): Set<string> {
+		const out = new Set<string>();
+		for (const el of document.querySelectorAll<HTMLInputElement>(
+			'input[name="facet-qt"]:checked',
+		)) {
+			const v = el.value;
+			if (v.startsWith("qt:"))
+				out.add(decodeURIComponent(v.slice(3)));
+		}
+		return out;
+	}
+
+	/** OR across the label facet: selected value matches a manifest label on the row. */
+	function mergedLabelFacetMatch(row: Row, selected: Set<string>): boolean {
+		if (selected.size === 0) return true;
+		const rowLabels = new Set(
+			row.labels
+				.split(",")
+				.map((s) => s.trim())
+				.filter(Boolean),
+		);
+		for (const s of selected) {
+			if (rowLabels.has(s)) return true;
+		}
+		return false;
+	}
+
+	function facetState() {
+		const qtLabels = checkedQtLabels();
+		return {
+			q: (searchEl?.value ?? "").trim(),
+			disc: checkedValues("facet-discourse"),
+			val: checkedValues("facet-valence"),
+			qtLabels,
+		};
+	}
+
+	function formatDiscourseChip(slug: string): string {
+		const m = /^([a-z]+)([\d.].*)$/i.exec(slug);
+		if (m) return `${m[1].toUpperCase()} ${m[2]}`;
+		return slug;
+	}
+
+	function valenceMatch(row: Row, selected: Set<string>): boolean {
+		if (selected.size === 0) return true;
+		const v = row.valence.trim();
+		if (!v) return false;
+		return selected.has(v);
+	}
+
+	function groupMatches(row: Row): boolean {
+		const { disc, qtLabels, val } = facetState();
+		if (!discourseMatch(row, disc)) return false;
+		if (!valenceMatch(row, val)) return false;
+		return mergedLabelFacetMatch(row, qtLabels);
+	}
+
+	function groupMatchesOr(row: Row): boolean {
+		const { disc, qtLabels, val } = facetState();
+		const checks: boolean[] = [];
+		if (disc.size) checks.push(discourseMatch(row, disc));
+		if (qtLabels.size > 0) checks.push(mergedLabelFacetMatch(row, qtLabels));
+		if (val.size) checks.push(valenceMatch(row, val));
+		if (checks.length === 0) return true;
+		return checks.some(Boolean);
+	}
+
+	function renderAppliedFilters() {
+		if (!appliedEl) return;
+		const { q, disc, qtLabels, val } = facetState();
+		const chips: { label: string; clear: () => void }[] = [];
+		if (q)
+			chips.push({
+				label: `Search: ${q.length > 48 ? q.slice(0, 45) + "…" : q}`,
+				clear: () => {
+					if (searchEl) searchEl.value = "";
+				},
+			});
+		const mode = combineMode();
+		if (mode === "or") {
+			chips.push({
+				label: "Combine: any group (OR)",
+				clear: () => {
+					const andEl = document.querySelector<HTMLInputElement>(
+						'input[name="facet-combine"][value="and"]',
+					);
+					if (andEl) andEl.checked = true;
+				},
+			});
+		}
+		for (const d of disc)
+			chips.push({
+				label: `Discourse: ${formatDiscourseChip(d)}`,
+				clear: () => {
+					for (const x of document.querySelectorAll<HTMLInputElement>(
+						`input[name="facet-discourse"]`,
+					)) {
+						if (x.value === d) x.checked = false;
+					}
+				},
+			});
+		for (const v of val)
+			chips.push({
+				label: `Valence: ${v}`,
+				clear: () => {
+					for (const x of document.querySelectorAll<HTMLInputElement>(
+						`input[name="facet-valence"]`,
+					)) {
+						if (x.value === v) x.checked = false;
+					}
+				},
+			});
+		for (const lab of qtLabels)
+			chips.push({
+				label: `Label: ${lab}`,
+				clear: () => {
+					const want = `qt:${encodeURIComponent(lab)}`;
+					for (const x of document.querySelectorAll<HTMLInputElement>(
+						`input[name="facet-qt"]`,
+					)) {
+						if (x.value === want) x.checked = false;
+					}
+				},
+			});
+
+		appliedEl.innerHTML = "";
+		if (chips.length === 0) {
+			appliedEl.classList.add("hidden");
+			return;
+		}
+		appliedEl.classList.remove("hidden");
+
+		const row = document.createElement("div");
+		row.className = "flex flex-wrap items-center gap-2 w-full";
+		const prefix = document.createElement("span");
+		prefix.className = "text-xs font-medium text-[var(--text-muted)] shrink-0";
+		prefix.textContent = "Active:";
+		row.appendChild(prefix);
+
+		for (const c of chips) {
+			const btn = document.createElement("button");
+			btn.type = "button";
+			btn.className =
+				"inline-flex items-center gap-1 rounded-full border border-[color:var(--surface-border)] bg-[var(--background-color)] px-2.5 py-1 text-xs text-[var(--text-color)] hover:bg-[color:var(--surface-border)]";
+			btn.setAttribute("aria-label", `Remove ${c.label}`);
+			btn.innerHTML = `${escapeHtml(c.label)} <span aria-hidden="true" class="opacity-60">×</span>`;
+			btn.addEventListener("click", () => {
+				c.clear();
+				apply();
+			});
+			row.appendChild(btn);
+		}
+
+		const clearAll = document.createElement("button");
+		clearAll.type = "button";
+		clearAll.className = "text-xs text-[var(--primary-color)] underline underline-offset-2 hover:opacity-90";
+		clearAll.textContent = "Clear all";
+		clearAll.addEventListener("click", () => clearAllFilters());
+		row.appendChild(clearAll);
+
+		appliedEl.appendChild(row);
+	}
+
+	function escapeHtml(s: string): string {
+		const d = document.createElement("div");
+		d.textContent = s;
+		return d.innerHTML;
+	}
+
+	function clearAllFilters() {
+		for (const el of document.querySelectorAll<HTMLInputElement>(
+			".facet-cb",
+		)) {
+			el.checked = false;
+		}
+		const andEl = document.querySelector<HTMLInputElement>(
+			'input[name="facet-combine"][value="and"]',
+		);
+		if (andEl) andEl.checked = true;
+		if (searchEl) searchEl.value = "";
+		apply();
+	}
+
+	function setDrawerOpen(open: boolean) {
+		if (!sidebar || !backdrop) return;
+		if (mq.matches) return;
+		if (open) {
+			sidebar.classList.remove("-translate-x-full");
+			sidebar.classList.add("translate-x-0");
+			backdrop.classList.remove("opacity-0", "pointer-events-none");
+			backdrop.classList.add("opacity-100", "is-open");
+			document.body.style.overflow = "hidden";
+			openBtn?.setAttribute("aria-expanded", "true");
+		} else {
+			sidebar.classList.add("-translate-x-full");
+			sidebar.classList.remove("translate-x-0");
+			backdrop.classList.add("opacity-0", "pointer-events-none");
+			backdrop.classList.remove("opacity-100", "is-open");
+			document.body.style.overflow = "";
+			openBtn?.setAttribute("aria-expanded", "false");
+		}
+	}
+
+	function setDetailOpen(open: boolean) {
+		if (!detailBackdrop) return;
+		if (open) {
+			detailBackdrop.classList.remove("hidden");
+			detailBackdrop.classList.add("flex");
+			document.body.style.overflow = "hidden";
+		} else {
+			detailBackdrop.classList.add("hidden");
+			detailBackdrop.classList.remove("flex");
+			document.body.style.overflow = "";
+		}
+	}
+
+	function openDetail(card: HTMLElement) {
+		if (!detailTitle || !detailDesc || !detailMeta || !detailPreview) return;
+		detailTitle.textContent = card.dataset.title ?? "";
+		detailDesc.textContent = card.dataset.description ?? "";
+		detailPreview.innerHTML = "";
+		const url = card.dataset.imgUrl ?? "";
+		if (url) {
+			const img = document.createElement("img");
+			img.src = url;
+			img.alt = "";
+			img.className = "max-h-56 w-full max-w-sm object-contain";
+			detailPreview.appendChild(img);
+		}
+		const labels = card.dataset.labels ?? "";
+		const valence = card.dataset.valence ?? "";
+		const fileId = card.dataset.fileId ?? "";
+		const disc = (card.dataset.discourse ?? "")
+			.split(",")
+			.map((s) => s.trim())
+			.filter(Boolean);
+		const parts: string[] = [];
+		if (labels.trim() || valence.trim()) {
+			let row = '<div class="font-sans text-xs">';
+			if (labels.trim()) {
+				row += `<span class="opacity-80">Labels:</span> ${escapeHtml(labels)}`;
+			}
+			if (valence.trim()) {
+				row += `${labels.trim() ? " " : ""}<span class="whitespace-nowrap text-[9px] opacity-40 capitalize" title="Valence">${labels.trim() ? "· " : ""}${escapeHtml(valence)}</span>`;
+			}
+			row += "</div>";
+			parts.push(row);
+		}
+		parts.push(
+			`<div class="text-xs"><span class="opacity-80">ID:</span> <span class="font-mono">${escapeHtml(fileId)}</span></div>`,
+		);
+		if (disc.length) {
+			const chips = disc
+				.map((slug) => {
+					const href = `/${slug}?viz=1`;
+					const label = formatDiscourseChip(slug);
+					return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center gap-0.5 rounded border border-[color:var(--surface-border)] px-1.5 py-0.5 text-[var(--primary-color)]">${escapeHtml(label)}</a>`;
+				})
+				.join("");
+			parts.push(
+				`<div class="font-sans text-xs"><span class="opacity-80">Discourses:</span><div class="mt-1 flex max-h-[2rem] flex-nowrap gap-1 overflow-x-auto pb-0.5">${chips}</div></div>`,
+			);
+		}
+		detailMeta.innerHTML = parts.join("");
+		setDetailOpen(true);
+	}
+
+	function apply() {
+		const { q } = facetState();
+		const mode = combineMode();
+		const qTrim = q.trim();
+
+		let afterSearch: Row[];
+
+		if (!qTrim) {
+			restoreGridOrder();
+			afterSearch = items;
+		} else {
+			const results = fuse.search(qTrim);
+			const fuseItems = results.length ? results.map((h) => h.item) : [];
+			afterSearch = orderSearchResults(qTrim, fuseItems);
+			if (iconGrid) {
+				for (const row of afterSearch) {
+					iconGrid.appendChild(row.el);
+				}
+			}
+		}
+
+		const searchSet = new Set(afterSearch);
+
+		let n = 0;
+		for (const it of items) {
+			let show = searchSet.has(it);
+			if (!show) {
+				it.el.style.display = "none";
+				continue;
+			}
+			if (mode === "and") {
+				if (!groupMatches(it)) show = false;
+			} else {
+				if (!groupMatchesOr(it)) show = false;
+			}
+			it.el.style.display = show ? "" : "none";
+			if (show) n++;
+		}
+
+		if (countEl) countEl.textContent = `${n} shown`;
+		renderAppliedFilters();
+	}
+
+	function onFacetChange() {
+		apply();
+	}
+
+	searchEl?.addEventListener("input", apply);
+	for (const el of document.querySelectorAll<HTMLInputElement>(".facet-cb")) {
+		el.addEventListener("change", onFacetChange);
+	}
+	for (const el of document.querySelectorAll<HTMLInputElement>(".facet-combine")) {
+		el.addEventListener("change", apply);
+	}
+	clearBtn?.addEventListener("click", () => {
+		clearAllFilters();
+		setDrawerOpen(false);
+	});
+
+	openBtn?.addEventListener("click", () => setDrawerOpen(true));
+	closeBtn?.addEventListener("click", () => setDrawerOpen(false));
+	backdrop?.addEventListener("click", () => setDrawerOpen(false));
+
+	mq.addEventListener("change", () => {
+		if (mq.matches) setDrawerOpen(false);
+	});
+
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			setDrawerOpen(false);
+			setDetailOpen(false);
+		}
+	});
+
+	detailClose?.addEventListener("click", () => setDetailOpen(false));
+	detailBackdrop?.addEventListener("click", (e) => {
+		if (e.target === detailBackdrop) setDetailOpen(false);
+	});
+
+	for (const card of cards) {
+		card.addEventListener("click", (e) => {
+			if (!mqMobileDetail.matches) return;
+			e.preventDefault();
+			openDetail(card);
+		});
+		card.addEventListener("keydown", (e) => {
+			if (!mqMobileDetail.matches) return;
+			if (e.key === "Enter" || e.key === " ") {
+				e.preventDefault();
+				openDetail(card);
+			}
+		});
+	}
+
+	function updateCardFocusability() {
+		for (const card of cards) {
+			card.setAttribute("tabindex", mqMobileDetail.matches ? "0" : "-1");
+		}
+	}
+	updateCardFocusability();
+	mqMobileDetail.addEventListener("change", updateCardFocusability);
+
+	for (const a of document.querySelectorAll<HTMLAnchorElement>(".ds-viz-link")) {
+		a.addEventListener("click", (e) => e.stopPropagation());
+	}
+
+	apply();
+</script>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(1.01538) translate(-10, -15.925)">
+    <path d="M 0 14 Q 5 8, 10 14 Q 15 20, 20 14" stroke="#7888a0" stroke-width="0.8" fill="none" />
+        <path d="M 2 18 Q 7 12, 12 18 Q 17 24, 20 18" stroke="#7888a0" stroke-width="0.5" fill="none" />
+  </g>
+</svg>

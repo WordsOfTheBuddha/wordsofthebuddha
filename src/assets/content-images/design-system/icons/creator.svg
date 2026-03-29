@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(1.1264) translate(-10, -8.975)">
+    <path d="M 4 6 L 10 0 L 16 6" stroke="#7888a0" stroke-width="0.8" fill="none" />
+        <line x1="10" y1="6" x2="10" y2="18" stroke="#7888a0" stroke-width="0.7" />
+  </g>
+</svg>

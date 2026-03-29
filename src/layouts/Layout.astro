@@ -28,6 +28,7 @@ import Commentary from "../components/Commentary.astro";
 import DiscourseImage from "../components/DiscourseImage.astro";
 import ImageToggle from "../components/ImageToggle.astro";
 import type { ContentImageData } from "../utils/contentImage";
+import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { debug } from "../utils/contentParser";
 
 const paramTheme = Astro.url.searchParams.get("theme");
@@ -58,6 +59,7 @@ const {
 	contentImage = null, // Optional discourse header image
 	vizPrev = null,
 	vizNext = null,
+	fullWidthSlot = false,
 } = Astro.props as {
 	id?: string;
 	fp?: string;
@@ -82,12 +84,19 @@ const {
 	contentImage?: ContentImageData | ContentImageData[] | null;
 	vizPrev?: { slug: string; title: string } | null;
 	vizNext?: { slug: string; title: string } | null;
+	/** Skip prose + max-w-4xl so pages can use full-width layouts (e.g. design system). */
+	fullWidthSlot?: boolean;
 };
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);
 debug("qualities are: ", qualities);
 debug("commentary is: ", commentary);
+
+/** Extra space before the page title when there is no breadcrumb strip and no layout description box. */
+const sparseLayoutTitleTop =
+	hideBreadcrumbsForPath(fp || Astro.url.pathname) &&
+	!String(description ?? "").trim();
 
 // Extract first image for SEO meta tags (works with single or array)
 const firstContentImage = contentImage
@@ -318,8 +327,14 @@ if (!SEOTitle) {
 		<BottomDrawer />
 		<TranslationMatches />
 		<PrintFormatter />
-		<main class="flex-1 p-4">
-			<div class="max-w-4xl mx-auto prose prose-lg dark:prose-invert">
+		<main class="flex-1 flex flex-col p-4">
+			<div
+				class:list={[
+					fullWidthSlot
+						? "max-w-7xl mx-auto flex w-full flex-1 flex-col min-h-0"
+						: "max-w-4xl mx-auto flex w-full flex-1 flex-col min-h-0 prose prose-lg dark:prose-invert",
+				]}
+			>
 				<HighlightLayout
 					currentPath={fp}
 					title={title}
@@ -362,7 +377,12 @@ if (!SEOTitle) {
 							</>
 						)
 					}
-					<div class="flex items-start justify-between">
+					<div
+						class:list={[
+							"flex items-start justify-between",
+							sparseLayoutTitleTop && "pt-2 sm:pt-4",
+						]}
+					>
 						<Title
 							id={id}
 							title={title || ""}

@@ -5,24 +5,29 @@ import CC0Button from "../assets/CC0_button.svg";
 ---
 
 <footer
-	class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center border-t dark:border-gray-700 py-4"
+	class="mt-auto flex flex-row flex-nowrap items-center justify-between gap-2 border-t border-[var(--border-color)] py-3 sm:py-4"
 >
-	<div class="flex-none text-lg font-bold"><ThemeToggle /></div>
-	<div class="flex items-center gap-4 ml-auto">
+	<div class="flex shrink-0 items-center justify-center leading-none">
+		<ThemeToggle />
+	</div>
+	<nav
+		class="flex min-w-0 flex-1 flex-nowrap items-center justify-end gap-x-3 gap-y-0 overflow-x-auto whitespace-nowrap pl-2 sm:gap-x-4"
+		aria-label="Footer links"
+	>
 		<a
 			href="/offline"
-			class="text-sm text-gray-600 dark:text-gray-300 hover:underline"
+			class="shrink-0 text-xs text-gray-600 dark:text-gray-300 hover:underline sm:text-sm"
 			>Use Offline</a
 		>
 		<a
 			href="/public-domain"
-			class="text-sm text-gray-600 dark:text-gray-300 hover:underline"
+			class="shrink-0 text-xs text-gray-600 dark:text-gray-300 hover:underline sm:text-sm"
 			>Public Domain</a
 		>
 		<a
 			href="/privacy"
-			class="text-sm text-gray-600 dark:text-gray-300 hover:underline"
+			class="shrink-0 text-xs text-gray-600 dark:text-gray-300 hover:underline sm:text-sm"
 			>Privacy</a
 		>
-	</div>
+	</nav>
 </footer>

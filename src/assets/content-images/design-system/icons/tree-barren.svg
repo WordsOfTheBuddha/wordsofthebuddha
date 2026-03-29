@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.0942) translate(-230, -363.5)">
+    <g opacity="0.85" fill="none" stroke-linecap="round">
+        <line x1="140" y1="450" x2="320" y2="450" stroke="#483848" stroke-width="1" stroke-opacity="0.4" />
+        <path d="M 215 450 C 200 465, 175 470, 155 468" stroke="#3a2838" stroke-width="1.5" stroke-opacity="0.5" />
+        <path d="M 245 450 C 260 462, 280 468, 300 465" stroke="#3a2838" stroke-width="1.5" stroke-opacity="0.5" />
+        <path d="M 230 450 C 230 462, 225 470, 218 475" stroke="#3a2838" stroke-width="1.2" stroke-opacity="0.4" />
+        <path d="M 222 450 L 220 370 C 219 355, 220 340, 222 325" stroke="#483848" stroke-width="5" />
+        <path d="M 238 450 L 240 370 C 241 355, 240 340, 238 325" stroke="#483848" stroke-width="5" />
+        <path d="M 222 360 C 205 345, 185 335, 168 340" stroke="#483848" stroke-width="2.5" />
+        <path d="M 168 340 C 158 335, 150 338, 148 342" stroke="#3a3040" stroke-width="1.5" />
+        <path d="M 238 355 C 258 340, 278 330, 295 334" stroke="#483848" stroke-width="2.5" />
+        <path d="M 295 334 C 305 330, 310 332, 315 338" stroke="#3a3040" stroke-width="1.5" />
+        <path d="M 225 340 C 210 320, 195 305, 182 300" stroke="#483848" stroke-width="2" />
+        <path d="M 235 335 C 250 315, 265 300, 278 295" stroke="#483848" stroke-width="2" />
+        <path d="M 228 325 C 220 305, 215 285, 218 270" stroke="#483848" stroke-width="2" />
+        <path d="M 232 325 C 240 305, 245 285, 242 270" stroke="#483848" stroke-width="2" />
+        <path d="M 218 270 C 210 262, 205 258, 208 252" stroke="#3a3040" stroke-width="1.2" />
+        <path d="M 242 270 C 250 262, 255 258, 252 252" stroke="#3a3040" stroke-width="1.2" />
+        <path d="M 182 300 C 175 292, 170 288, 172 282" stroke="#3a3040" stroke-width="1" />
+        <path d="M 278 295 C 285 287, 290 284, 288 278" stroke="#3a3040" stroke-width="1" />
+        </g>
+  </g>
+</svg>

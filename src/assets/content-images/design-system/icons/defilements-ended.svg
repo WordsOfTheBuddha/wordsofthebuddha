@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.63614) translate(-2, 0)">
+    <g opacity="0.85" stroke="#c0a860" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+        <ellipse cx="-7" cy="0" rx="7" ry="9" />
+        <ellipse cx="11" cy="0" rx="7" ry="9" />
+        <line x1="0" y1="-5" x2="4" y2="-9" stroke-width="0.9" />
+        <line x1="0" y1="5" x2="4" y2="9" stroke-width="0.9" />
+        </g>
+  </g>
+</svg>

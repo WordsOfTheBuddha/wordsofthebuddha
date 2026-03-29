@@ -1,0 +1,62 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://suttas-basics.local/schemas/icons-manifest.json",
+	"title": "Design system icons manifest",
+	"type": "object",
+	"required": ["version", "icons"],
+	"properties": {
+		"version": { "type": "integer", "minimum": 1 },
+		"icons": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"id",
+					"title",
+					"description",
+					"discourse",
+					"sourceGraphic",
+					"tags",
+					"labels",
+					"svg"
+				],
+				"properties": {
+					"id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+					"title": { "type": "string", "minLength": 1 },
+					"description": { "type": "string" },
+					"discourse": {
+						"oneOf": [
+							{ "type": "string", "minLength": 1 },
+							{
+								"type": "array",
+								"items": { "type": "string", "minLength": 1 },
+								"minItems": 1
+							}
+						]
+					},
+					"sourceGraphic": { "type": "string", "pattern": "\\.svg$" },
+					"tags": {
+						"type": "array",
+						"items": { "type": "string" }
+					},
+					"labels": {
+						"type": "array",
+						"items": { "type": "string" },
+						"description": "Facet labels: quality keys from qualities.json and/or topic-style buckets (deduped, normalized)"
+					},
+					"valence": {
+						"type": "string",
+						"enum": ["-ve", "+ve", ""],
+						"description": "Derived from labels vs qualities.json polarity lists, or manual override"
+					},
+					"svg": {
+						"type": "string",
+						"description": "Path under design-system/, e.g. icons/seen.svg (flat; id-based filename)"
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

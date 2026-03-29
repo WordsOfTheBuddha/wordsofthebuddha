@@ -1,42 +1,14 @@
 ---
 import { getBreadcrumbPath } from "../utils/getBreadcrumbPath";
-import { getSlugId, transformId } from "../utils/transformId";
+import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
+import { transformId } from "../utils/transformId";
 
 const { path } = Astro.props;
 
 const urlPathSegments = Astro.url.pathname.split("/");
 const urlPath = urlPathSegments[urlPathSegments.length - 1];
 
-// Pages to exclude breadcrumbs from
-function normalizePath(p: string) {
-	if (!p) return p;
-	let out = p;
-	// Remove trailing slash (except for root)
-	if (out.length > 1) out = out.replace(/\/$/, "");
-	// Collapse /index.html to its parent route
-	out = out.replace(/\/index\.html$/, "");
-	return out || "/";
-}
-const normalizedPath = normalizePath(path);
-const hideBreadcrumbs = [
-	"/",
-	"/search",
-	"/read-later",
-	"/saves",
-	"/register",
-	"/signin",
-	"/review-room",
-	"/profile",
-	"/qualities",
-	"/simile",
-	"/topic",
-	"/discover",
-	"/explorer",
-	"/offline",
-	"/privacy",
-	"/public-domain",
-	"/buddha-quotes",
-].includes(normalizedPath);
+const hideBreadcrumbs = hideBreadcrumbsForPath(path);
 
 const segments = path.split("/").filter(Boolean);
 const lastSegment = segments[segments.length - 1];

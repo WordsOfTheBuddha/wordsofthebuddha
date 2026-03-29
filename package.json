@@ -23,7 +23,12 @@
 		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host",
 		"test:search": "cd src/search-tests && node search-test-cli.js",
 		"test:search:update": "cd src/search-tests && node search-test-cli.js --update",
-		"test:search:ai": "cd src/search-tests && node search-test-cli.js --ai-eval"
+		"test:search:ai": "cd src/search-tests && node search-test-cli.js --ai-eval",
+		"gen:icons-manifest": "npx tsx src/utils/buildIconsManifest.ts",
+		"validate:icons": "npx tsx src/utils/validateIconManifest.ts",
+		"gen:icons-index": "npx tsx src/utils/generateIconsIndex.ts",
+		"normalize:design-icons": "npx tsx src/utils/normalizeDesignSystemIcons.ts",
+		"refresh:design-icons": "npx tsx src/utils/normalizeDesignSystemIcons.ts --glob \"icons/*.svg\""
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.6",
@@ -61,8 +66,8 @@
 		"concurrently": "^9.1.2",
 		"glob": "^11.0.1",
 		"png-to-ico": "^3.0.1",
+		"svg-path-bounds": "^1.0.2",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.19.4"
 	}
 }
-

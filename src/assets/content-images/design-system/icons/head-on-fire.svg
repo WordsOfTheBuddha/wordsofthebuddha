@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.11733) translate(-460, -995)">
+    <ellipse cx="460" cy="995" rx="90" ry="40" fill="#ff6600" opacity="0.22" />
+        <g opacity="0.85">
+        <path d="M460,968 Q453,988 448,1001 Q455,996 460,984 Q465,996 472,1001 Q467,988 460,968 Z" fill="#e87020" opacity="0.8" />
+        <path d="M450,976 Q445,990 442,999 Q448,994 452,986 Z" fill="#ff8830" opacity="0.55" />
+        <path d="M470,976 Q475,990 478,999 Q472,994 468,986 Z" fill="#ff8830" opacity="0.55" />
+        </g>
+  </g>
+</svg>

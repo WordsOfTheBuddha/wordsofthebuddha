@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+	<title>Dullness and drowsiness hindrance</title>
+	<g transform="translate(12, 12)" fill="none" stroke="#7888a0" stroke-linecap="round">
+		<path
+			d="M -8 2 Q -8 -4, -3 -4 Q -1 -8, 4 -6 Q 9 -6, 9 -1 Q 9 3, 4 3 Z"
+			stroke-width="1"
+		/>
+		<line x1="-4" y1="6" x2="6" y2="6" stroke-width="0.7" opacity="0.5" />
+	</g>
+</svg>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.32146) translate(-10.45, -3.5)">
+    <g opacity="0.75" stroke-linecap="round" stroke-linejoin="round">
+        <g transform="translate(-22,0)" stroke="#7888a0" fill="none" stroke-width="0.8">
+        <line x1="0" y1="0" x2="12" y2="0" />
+        <line x1="1" y1="4" x2="11" y2="4" stroke-width="0.6" />
+        <line x1="2" y1="8" x2="10" y2="8" stroke-width="0.4" />
+        </g>
+        <g transform="translate(-4,0)" stroke="#7888a0" fill="none">
+        <path d="M 0 2 Q 3 -2 6 2 Q 9 6 12 2" stroke-width="0.8" />
+        <path d="M 1 6 Q 4 2 7 6 Q 10 10 12 6" stroke-width="0.5" />
+        </g>
+        <g transform="translate(16,-2)" stroke="#c07060" fill="none" stroke-width="0.9">
+        <path d="M 5 0 C 5 0, 1 5, 1 7 C 1 9, 3 11, 5 11 C 7 11, 9 9, 9 7 C 9 5, 5 0, 5 0 Z" />
+        <path d="M 5 3 C 5 3, 3 6, 3 7.5 C 3 8.5, 4 9.5, 5 9.5 C 6 9.5, 7 8.5, 7 7.5 C 7 6, 5 3, 5 3 Z" stroke-width="0.5" opacity="0.6" />
+        </g>
+        <g transform="translate(32,0)" stroke="#7888a0" fill="none">
+        <path d="M 0 2 Q 5 -2 10 2" stroke-width="0.8" />
+        <path d="M 1 7 Q 6 3 11 7" stroke-width="0.6" />
+        </g>
+        </g>
+  </g>
+</svg>

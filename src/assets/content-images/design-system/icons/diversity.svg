@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(1.2) translate(-11, -9)">
+    <circle cx="4" cy="6" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+        <circle cx="14" cy="4" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+        <circle cx="10" cy="14" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+        <circle cx="18" cy="12" r="1.8" fill="#7888a0" fill-opacity="0.4" stroke="none" />
+  </g>
+</svg>

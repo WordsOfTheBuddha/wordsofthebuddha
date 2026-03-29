@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.46726) translate(0, -4.15)">
+    <g opacity="0.8" stroke="#d8c890" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+        <path d="M -22 -4 L -22 14 Q -22 24, 0 24 Q 22 24, 22 14 L 22 -4" />
+        <path d="M -18 4 Q -9 0, 0 4 Q 9 8, 18 4" opacity="0.5" />
+        <circle cx="-8" cy="-6" r="3" stroke-width="0.8" opacity="0.6" />
+        <circle cx="6" cy="-10" r="2.5" stroke-width="0.7" opacity="0.5" />
+        <circle cx="12" cy="-4" r="2" stroke-width="0.6" opacity="0.45" />
+        <circle cx="-2" cy="-14" r="2" stroke-width="0.6" opacity="0.4" />
+        <circle cx="0" cy="-4" r="1.5" stroke-width="0.5" opacity="0.35" />
+        </g>
+  </g>
+</svg>

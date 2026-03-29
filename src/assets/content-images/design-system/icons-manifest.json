@@ -1,0 +1,2279 @@
+{
+	"version": 1,
+	"icons": [
+		{
+			"id": "seen",
+			"title": "Sense: seen",
+			"description": "Eye motif for diṭṭha",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"gold",
+				"line-art",
+				"sense"
+			],
+			"discourse": [
+				"mn1",
+				"mn10",
+				"mn148"
+			],
+			"labels": [
+				"phenomenology",
+				"sense bases"
+			],
+			"svg": "icons/seen.svg"
+		},
+		{
+			"id": "heard",
+			"title": "Sense: heard",
+			"description": "Ear motif for suta",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"sense"
+			],
+			"discourse": [
+				"mn1",
+				"mn10",
+				"mn148"
+			],
+			"labels": [
+				"phenomenology",
+				"sense bases"
+			],
+			"svg": "icons/heard.svg"
+		},
+		{
+			"id": "sensed",
+			"title": "Sense: sensed",
+			"description": "Touch/nose motif for muta",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"sense"
+			],
+			"discourse": [
+				"mn1",
+				"mn148"
+			],
+			"labels": [
+				"phenomenology",
+				"sense bases"
+			],
+			"svg": "icons/sensed.svg"
+		},
+		{
+			"id": "cognized",
+			"title": "Sense: cognized",
+			"description": "Mind/consciousness motif for viññāta",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"sense"
+			],
+			"discourse": [
+				"mn1",
+				"mn10",
+				"mn148"
+			],
+			"labels": [
+				"phenomenology",
+				"sense bases"
+			],
+			"svg": "icons/cognized.svg"
+		},
+		{
+			"id": "puthujjana-header",
+			"title": "Uninstructed ordinary person",
+			"description": "Depiction of a puthujjana, asappurisa",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"burgundy",
+				"line-art"
+			],
+			"discourse": [
+				"mn1",
+				"mn29",
+				"mn30",
+				"mn113",
+				"mn148"
+			],
+			"labels": [
+				"path",
+				"phenomenology"
+			],
+			"svg": "icons/puthujjana-header.svg"
+		},
+		{
+			"id": "ariya-header",
+			"title": "Noble disciple",
+			"description": "Straight path with grounded node (sappurisa)",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"teal",
+				"line-art"
+			],
+			"discourse": [
+				"mn1",
+				"mn29",
+				"mn30",
+				"mn113",
+				"mn148"
+			],
+			"labels": [
+				"path",
+				"person of integrity",
+				"phenomenology"
+			],
+			"svg": "icons/ariya-header.svg"
+		},
+		{
+			"id": "earth",
+			"title": "Earth element",
+			"description": "Strata lines for pathavī",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"elements"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"elements",
+				"phenomenology"
+			],
+			"svg": "icons/earth.svg"
+		},
+		{
+			"id": "water",
+			"title": "Water element",
+			"description": "Waves for āpo",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"elements"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"elements",
+				"phenomenology"
+			],
+			"svg": "icons/water.svg"
+		},
+		{
+			"id": "fire",
+			"title": "Fire element",
+			"description": "Flame for tejo",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"elements",
+				"fire"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"elements",
+				"phenomenology"
+			],
+			"svg": "icons/fire.svg"
+		},
+		{
+			"id": "air",
+			"title": "Air element",
+			"description": "Wind curves for vāyo",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"elements"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"elements",
+				"phenomenology"
+			],
+			"svg": "icons/air.svg"
+		},
+		{
+			"id": "beings",
+			"title": "Beings",
+			"description": "Twin stick figures for beings (bhūtā)",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/beings.svg"
+		},
+		{
+			"id": "deities",
+			"title": "Deities",
+			"description": "Figure with halo arc for devas",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/deities.svg"
+		},
+		{
+			"id": "creator",
+			"title": "Creator god",
+			"description": "Triangle crown for pajāpati",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/creator.svg"
+		},
+		{
+			"id": "brahma",
+			"title": "Brahmā",
+			"description": "Figure with outer ring",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/brahma.svg"
+		},
+		{
+			"id": "streaming-radiance",
+			"title": "Streaming radiance",
+			"description": "ābhassarā — radiating circle",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/streaming-radiance.svg"
+		},
+		{
+			"id": "refulgent",
+			"title": "Refulgent glory",
+			"description": "subhakiṇhā — nested circles",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/refulgent.svg"
+		},
+		{
+			"id": "great-fruit",
+			"title": "Great fruit",
+			"description": "vehapphalā — orb with three dots",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/great-fruit.svg"
+		},
+		{
+			"id": "overlord",
+			"title": "Overlord",
+			"description": "abhibhū — circle with crown",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/overlord.svg"
+		},
+		{
+			"id": "space-base",
+			"title": "Boundless space",
+			"description": "ākāsānañcāyatana — dashed circles",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"dashed"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/space-base.svg"
+		},
+		{
+			"id": "consciousness-base",
+			"title": "Boundless consciousness",
+			"description": "viññāṇañcāyatana — concentric rings",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/consciousness-base.svg"
+		},
+		{
+			"id": "nothingness-base",
+			"title": "Nothingness",
+			"description": "ākiñcaññāyatana — dashed ring",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art",
+				"dashed"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/nothingness-base.svg"
+		},
+		{
+			"id": "neither-base",
+			"title": "Neither perception nor non-perception",
+			"description": "nevasaññānāsaññāyatana — dual stroke rings",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/neither-base.svg"
+		},
+		{
+			"id": "oneness",
+			"title": "Oneness",
+			"description": "ekatta — single dot",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/oneness.svg"
+		},
+		{
+			"id": "diversity",
+			"title": "Diversity",
+			"description": "nānatta — scattered dots",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/diversity.svg"
+		},
+		{
+			"id": "all",
+			"title": "All",
+			"description": "sabba — ring with three inner dots",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn1",
+			"labels": [
+				"phenomenology"
+			],
+			"svg": "icons/all.svg"
+		},
+		{
+			"id": "tangle-unwise-attention",
+			"title": "Unwise attention",
+			"description": "Tangled lines for ayoniso, āsava, uddhaccakukkucca",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"burgundy",
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"wisdom"
+			],
+			"svg": "icons/tangle-unwise-attention.svg"
+		},
+		{
+			"id": "wise-attention",
+			"title": "Wise attention",
+			"description": "Clear lines and horizon circle for yoniso",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"teal",
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"safety",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/wise-attention.svg"
+		},
+		{
+			"id": "eye-shield",
+			"title": "Restraint (eye + gates)",
+			"description": "Saṃvara — eye with vertical bars.",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"sense restraint",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/eye-shield.svg"
+		},
+		{
+			"id": "bowl-robe",
+			"title": "Proper use (bowl + robe)",
+			"description": "Paṭisevanā requisites.",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/bowl-robe.svg"
+		},
+		{
+			"id": "endure",
+			"title": "Enduring",
+			"description": "Adhivāsanā — figure with stress lines.",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/endure.svg"
+		},
+		{
+			"id": "avoid-fork",
+			"title": "Avoiding (fork)",
+			"description": "Parivajjanā — path to danger vs safety.",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art",
+				"fork"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"non harm",
+				"safety",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/avoid-fork.svg"
+		},
+		{
+			"id": "flame-thought",
+			"title": "Flame",
+			"description": "Flame representative of thought of sensual desire (kāmavitakka)",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art",
+				"flame"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"sensual desire",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/flame-thought.svg"
+		},
+		{
+			"id": "thorn-vine",
+			"title": "Thorn vine",
+			"description": "Thorn vine representative of thought of ill will (byāpādavitakka)",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"ill will",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/thorn-vine.svg"
+		},
+		{
+			"id": "impact-star",
+			"title": "Remove: harmful thought",
+			"description": "Vihiṁsāvitakka — impact star.",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/impact-star.svg"
+		},
+		{
+			"id": "seven-factors",
+			"title": "Seven awakening factors",
+			"description": "Bojjhaṅga arc — seven dots",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"line-art",
+				"dots"
+			],
+			"discourse": "mn2",
+			"labels": [
+				"awakening"
+			],
+			"svg": "icons/seven-factors.svg"
+		},
+		{
+			"id": "bowl-overflow",
+			"title": "Heir of material things (bowl with excess)",
+			"description": "Heaped bowl — āmisadāyāda",
+			"sourceGraphic": "mn3.svg",
+			"tags": [
+				"line-art",
+				"bowl",
+				"burgundy"
+			],
+			"discourse": "mn3",
+			"labels": [],
+			"svg": "icons/bowl-overflow.svg"
+		},
+		{
+			"id": "bowl-empty",
+			"title": "Heir in the Dhamma (empty bowl)",
+			"description": "Empty bowl — dhammadāyāda",
+			"sourceGraphic": "mn3.svg",
+			"tags": [
+				"line-art",
+				"bowl",
+				"teal"
+			],
+			"discourse": "mn3",
+			"labels": [],
+			"svg": "icons/bowl-empty.svg"
+		},
+		{
+			"id": "lunar-phases",
+			"title": "Lunar fortnight (four phases)",
+			"description": "Four lunar phases — auspicious nights row",
+			"sourceGraphic": "mn4.svg",
+			"tags": [
+				"line-art",
+				"moon",
+				"lunar"
+			],
+			"discourse": "mn4",
+			"labels": [],
+			"svg": "icons/lunar-phases.svg"
+		},
+		{
+			"id": "posture-walking",
+			"title": "Posture: walking",
+			"description": "Walking figure — postures",
+			"sourceGraphic": "mn4.svg",
+			"tags": [
+				"line-art",
+				"figure"
+			],
+			"discourse": "mn4",
+			"labels": [
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/posture-walking.svg"
+		},
+		{
+			"id": "posture-standing",
+			"title": "Posture: standing",
+			"description": "Standing figure — postures",
+			"sourceGraphic": "mn4.svg",
+			"tags": [
+				"line-art",
+				"figure"
+			],
+			"discourse": "mn4",
+			"labels": [
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/posture-standing.svg"
+		},
+		{
+			"id": "posture-sitting",
+			"title": "Posture: sitting",
+			"description": "Seated figure — postures",
+			"sourceGraphic": "mn4.svg",
+			"tags": [
+				"line-art",
+				"figure"
+			],
+			"discourse": "mn4",
+			"labels": [
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/posture-sitting.svg"
+		},
+		{
+			"id": "posture-lying",
+			"title": "Posture: lying down",
+			"description": "Reclining figure — postures",
+			"sourceGraphic": "mn4.svg",
+			"tags": [
+				"line-art",
+				"figure"
+			],
+			"discourse": "mn4",
+			"labels": [
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/posture-lying.svg"
+		},
+		{
+			"id": "bowl-stained",
+			"title": "Stained bronze bowl",
+			"description": "Stained bowl (neglected) — not seeing one’s blemish",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"bowl",
+				"burgundy"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"negligence"
+			],
+			"valence": "-ve",
+			"svg": "icons/bowl-stained.svg"
+		},
+		{
+			"id": "bowl-polished",
+			"title": "Polished bronze bowl",
+			"description": "Polished bowl (cared for) — knowing one’s blemish",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"bowl",
+				"gold"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"diligence"
+			],
+			"valence": "+ve",
+			"svg": "icons/bowl-polished.svg"
+		},
+		{
+			"id": "bowl-dusty-clean",
+			"title": "Bowl gathering dust",
+			"description": "Clean bowl gathering dust",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"bowl"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"negligence"
+			],
+			"valence": "-ve",
+			"svg": "icons/bowl-dusty-clean.svg"
+		},
+		{
+			"id": "bowl-gleaming",
+			"title": "Clean gleaming bowl",
+			"description": "Shining clean bowl",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"bowl",
+				"gold"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"diligence"
+			],
+			"valence": "+ve",
+			"svg": "icons/bowl-gleaming.svg"
+		},
+		{
+			"id": "wish-eye-slash",
+			"title": "Unwholesome wish: concealing wrongdoing",
+			"description": "Eye with slash — wish for hiding faults",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-eye-slash.svg"
+		},
+		{
+			"id": "wish-status-seat",
+			"title": "Unwholesome wish: status",
+			"description": "Seat motif — desire for precedence and honor",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-status-seat.svg"
+		},
+		{
+			"id": "wish-teach-speaker",
+			"title": "Unwholesome wish: to teach",
+			"description": "Speaking figure — wish to instruct others",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-teach-speaker.svg"
+		},
+		{
+			"id": "wish-honor-bow",
+			"title": "Unwholesome wish: honor",
+			"description": "Bow and second figure — wish to be revered",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-honor-bow.svg"
+		},
+		{
+			"id": "wish-requisite-robe",
+			"title": "Requisite: robes",
+			"description": "Robe triangle — finest requisites",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-requisite-robe.svg"
+		},
+		{
+			"id": "wish-requisite-bowl",
+			"title": "Requisite: alms bowl",
+			"description": "Small bowl — piṇḍapāta",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish",
+				"bowl"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-requisite-bowl.svg"
+		},
+		{
+			"id": "wish-requisite-lodging",
+			"title": "Requisite: lodging",
+			"description": "Shelter outline — senāsana",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-requisite-lodging.svg"
+		},
+		{
+			"id": "wish-requisite-medicine",
+			"title": "Requisite: medicine",
+			"description": "Cross in circle — bhesajja",
+			"sourceGraphic": "mn5.svg",
+			"tags": [
+				"line-art",
+				"wish"
+			],
+			"discourse": "mn5",
+			"labels": [
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/wish-requisite-medicine.svg"
+		},
+		{
+			"id": "body-observer",
+			"title": "Body contemplation",
+			"description": "Small seated figure — kāyānupassī",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"figure",
+				"body"
+			],
+			"discourse": [
+				"mn118",
+				"mn10",
+				"mn148"
+			],
+			"labels": [
+				"mindfulness",
+				"sense bases",
+				"sense restraint",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/body-observer.svg"
+		},
+		{
+			"id": "feeling-droplet",
+			"title": "Feeling contemplation",
+			"description": "Droplet or flame — vedanānupassī",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"feeling"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"mindfulness",
+				"sense restraint",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/feeling-droplet.svg"
+		},
+		{
+			"id": "elbow-bracket",
+			"title": "Elbow bracket",
+			"description": "Orthogonal connector with rounded elbow",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"connector"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/elbow-bracket.svg"
+		},
+		{
+			"id": "number-badge-r10",
+			"title": "Number badge (r=10)",
+			"description": "Template circle + digit for stepped lists",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-r10.svg"
+		},
+		{
+			"id": "number-badge-02",
+			"title": "Step badge: 2",
+			"description": "number display: 2",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-02.svg"
+		},
+		{
+			"id": "number-badge-03",
+			"title": "Step badge: 3",
+			"description": "number display: 3",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-03.svg"
+		},
+		{
+			"id": "number-badge-04",
+			"title": "Step badge: 4",
+			"description": "number display: 4",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-04.svg"
+		},
+		{
+			"id": "number-badge-05",
+			"title": "Step badge: 5",
+			"description": "number display: 5",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-05.svg"
+		},
+		{
+			"id": "number-badge-06",
+			"title": "Step badge: 6",
+			"description": "number display: 6",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-06.svg"
+		},
+		{
+			"id": "number-badge-07",
+			"title": "Step badge: 7",
+			"description": "number display: 7",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-07.svg"
+		},
+		{
+			"id": "number-badge-08",
+			"title": "Step badge: 8",
+			"description": "number display: 8",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-08.svg"
+		},
+		{
+			"id": "number-badge-09",
+			"title": "Step badge: 9",
+			"description": "number display: 9",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-09.svg"
+		},
+		{
+			"id": "number-badge-10",
+			"title": "Step badge: 10",
+			"description": "number display: 10",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-10.svg"
+		},
+		{
+			"id": "number-badge-11",
+			"title": "Step badge: 11",
+			"description": "number display: 11",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-11.svg"
+		},
+		{
+			"id": "number-badge-12",
+			"title": "Step badge: 12",
+			"description": "number display: 12",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-12.svg"
+		},
+		{
+			"id": "number-badge-13",
+			"title": "Step badge: 13",
+			"description": "number display: 13",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-13.svg"
+		},
+		{
+			"id": "number-badge-14",
+			"title": "Step badge: 14",
+			"description": "number display: 14",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-14.svg"
+		},
+		{
+			"id": "number-badge-15",
+			"title": "Step badge: 15",
+			"description": "number display: 15",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-15.svg"
+		},
+		{
+			"id": "number-badge-16",
+			"title": "Step badge: 16",
+			"description": "number display: 16",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"badge",
+				"number"
+			],
+			"discourse": "mn118",
+			"labels": [],
+			"svg": "icons/number-badge-16.svg"
+		},
+		{
+			"id": "mind-contemplation",
+			"title": "Mind contemplation",
+			"description": "Concentric circles — citte cittānupassī",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"mind"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"mindfulness",
+				"sense restraint",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/mind-contemplation.svg"
+		},
+		{
+			"id": "mental-qualities",
+			"title": "Mental qualities",
+			"description": "dhammesu dhammānupassī",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"dhamma"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"mindfulness",
+				"sense restraint",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/mental-qualities.svg"
+		},
+		{
+			"id": "bojjhanga-investigation",
+			"title": "Bojjhaṅga: investigation of states",
+			"description": "dhammavicayasambojjhaṅga glyph",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"bojjhanga"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/bojjhanga-investigation.svg"
+		},
+		{
+			"id": "bojjhanga-energy",
+			"title": "Bojjhaṅga: energy",
+			"description": "vīriyasambojjhaṅga glyph",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"bojjhanga"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"diligence",
+				"effort"
+			],
+			"valence": "+ve",
+			"svg": "icons/bojjhanga-energy.svg"
+		},
+		{
+			"id": "bojjhanga-joy",
+			"title": "Bojjhaṅga: joy",
+			"description": "pītisambojjhaṅga glyph",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"bojjhanga"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"collectedness"
+			],
+			"valence": "+ve",
+			"svg": "icons/bojjhanga-joy.svg"
+		},
+		{
+			"id": "bojjhanga-tranquility",
+			"title": "Bojjhaṅga: tranquility",
+			"description": "passaddhisambojjhaṅga glyph",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"bojjhanga"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"collectedness"
+			],
+			"valence": "+ve",
+			"svg": "icons/bojjhanga-tranquility.svg"
+		},
+		{
+			"id": "bojjhanga-collectedness",
+			"title": "Bojjhaṅga: collectedness",
+			"description": "samādhisambojjhaṅga glyph",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"bojjhanga"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"collectedness"
+			],
+			"valence": "+ve",
+			"svg": "icons/bojjhanga-collectedness.svg"
+		},
+		{
+			"id": "bojjhanga-equanimity",
+			"title": "Bojjhaṅga: equanimity",
+			"description": "upekkhāsambojjhaṅgo glyph",
+			"sourceGraphic": "mn118.svg",
+			"tags": [
+				"line-art",
+				"bojjhanga"
+			],
+			"discourse": [
+				"mn118",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"equanimity"
+			],
+			"valence": "+ve",
+			"svg": "icons/bojjhanga-equanimity.svg"
+		},
+		{
+			"id": "breath-torso",
+			"title": "Mindfulness of breathing (torso icon)",
+			"description": "Breath and torso line-art",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"breath",
+				"body"
+			],
+			"discourse": [
+				"mn119",
+				"mn10"
+			],
+			"labels": [
+				"awakening",
+				"clear awareness",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/breath-torso.svg"
+		},
+		{
+			"id": "shared-postures-four",
+			"title": "Four postures",
+			"description": "Four postures: walk → stand → sit → lie",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"figure"
+			],
+			"discourse": [
+				"mn119",
+				"mn10",
+				"mn20"
+			],
+			"labels": [
+				"mindfulness",
+				"skillful means"
+			],
+			"valence": "+ve",
+			"svg": "icons/shared-postures-four.svg"
+		},
+		{
+			"id": "clear-awareness-fourfold",
+			"title": "Clear awareness — four sense domains",
+			"description": "2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": [
+				"mn119",
+				"mn10"
+			],
+			"labels": [
+				"clear awareness",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/clear-awareness-fourfold.svg"
+		},
+		{
+			"id": "body-impurities",
+			"title": "Body impurities review",
+			"description": "Asuci paccavekkhana motif, kāyānupassanā",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"body"
+			],
+			"discourse": [
+				"mn119",
+				"mn10"
+			],
+			"labels": [
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/body-impurities.svg"
+		},
+		{
+			"id": "four-elements",
+			"title": "Four elements in the body",
+			"description": "Earth, water, fire, wind motifs",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": [
+				"mn119",
+				"mn10"
+			],
+			"labels": [
+				"elements",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/four-elements.svg"
+		},
+		{
+			"id": "charnel-skull",
+			"title": "Nine charnel grounds",
+			"description": "Skull and bones — sivathikā",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"death"
+			],
+			"discourse": [
+				"mn119",
+				"mn10"
+			],
+			"labels": [
+				"mindfulness",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/charnel-skull.svg"
+		},
+		{
+			"id": "jhana-first",
+			"title": "First jhāna simile",
+			"description": "Kneading bath with bubbles — jhāna band",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"jhana"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"awakening",
+				"collectedness"
+			],
+			"valence": "+ve",
+			"svg": "icons/jhana-first.svg"
+		},
+		{
+			"id": "jhana-second",
+			"title": "Second jhāna simile",
+			"description": "Lake and spring — jhāna band",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"jhana"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"awakening",
+				"collectedness"
+			],
+			"valence": "+ve",
+			"svg": "icons/jhana-second.svg"
+		},
+		{
+			"id": "jhana-third",
+			"title": "Third jhāna simile",
+			"description": "Submerged lotus — jhāna band",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"jhana"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"awakening",
+				"collectedness",
+				"equanimity",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/jhana-third.svg"
+		},
+		{
+			"id": "jhana-fourth",
+			"title": "Fourth jhāna simile",
+			"description": "Bright orb — jhāna band",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"jhana"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"awakening",
+				"clear awareness",
+				"collectedness",
+				"direct knowledge",
+				"dispassion",
+				"equanimity",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/jhana-fourth.svg"
+		},
+		{
+			"id": "simile-uncultivated-clay",
+			"title": "Uncultivated: clay and rock",
+			"description": "abhāvitā simile — wet clay",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"harm",
+				"uncultivated",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-uncultivated-clay.svg"
+		},
+		{
+			"id": "simile-uncultivated-wood",
+			"title": "Uncultivated: dry wood",
+			"description": "abhāvitā simile — dry sapless wood",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"harm",
+				"uncultivated",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-uncultivated-wood.svg"
+		},
+		{
+			"id": "simile-uncultivated-jar",
+			"title": "Uncultivated: empty jar",
+			"description": "abhāvitā simile — empty water jar",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"harm",
+				"uncultivated",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-uncultivated-jar.svg"
+		},
+		{
+			"id": "simile-cultivated-string",
+			"title": "Cultivated: string on heartwood",
+			"description": "bhāvitā simile — light ball on solid wood",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"cultivation",
+				"non harm",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-cultivated-string.svg"
+		},
+		{
+			"id": "simile-cultivated-wet-wood",
+			"title": "Cultivated: wet sappy wood",
+			"description": "bhāvitā simile — fire cannot take",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"cultivation",
+				"non harm",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-cultivated-wet-wood.svg"
+		},
+		{
+			"id": "simile-cultivated-full-jar",
+			"title": "Cultivated: full jar",
+			"description": "bhāvitā simile — full water jar",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"cultivation",
+				"non harm",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-cultivated-full-jar.svg"
+		},
+		{
+			"id": "chariot-wheel",
+			"title": "Skilled charioteer",
+			"description": "Spoked wheel — charioteer simile",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"direct knowledge"
+			],
+			"valence": "+ve",
+			"svg": "icons/chariot-wheel.svg"
+		},
+		{
+			"id": "defilements-ended",
+			"title": "Ending of mental defilements",
+			"description": "Twin liberation orbs — āsavakkhaya, cetovimutti",
+			"sourceGraphic": "mn119.svg",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn119",
+			"labels": [
+				"awakening",
+				"ending",
+				"liberation",
+				"safety"
+			],
+			"valence": "+ve",
+			"svg": "icons/defilements-ended.svg"
+		},
+		{
+			"id": "conceit-noble-birth",
+			"title": "Conceit motif: noble birth",
+			"description": "Crown zigzag — worldly status",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-noble-birth.svg"
+		},
+		{
+			"id": "conceit-wealth",
+			"title": "Conceit motif: abundant wealth",
+			"description": "Twin orbs",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-wealth.svg"
+		},
+		{
+			"id": "conceit-fame",
+			"title": "Conceit motif: recognition and fame",
+			"description": "Star",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-fame.svg"
+		},
+		{
+			"id": "conceit-material-gains",
+			"title": "Conceit motif: material gains",
+			"description": "Dish / gains curve",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-material-gains.svg"
+		},
+		{
+			"id": "conceit-great-learning",
+			"title": "Conceit motif: great learning",
+			"description": "Open book",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-great-learning.svg"
+		},
+		{
+			"id": "conceit-vinaya",
+			"title": "Conceit motif: Vinaya expert",
+			"description": "Scroll / basket",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-vinaya.svg"
+		},
+		{
+			"id": "conceit-dhamma-teacher",
+			"title": "Conceit motif: Dhamma teacher",
+			"description": "Head with speech arc",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-dhamma-teacher.svg"
+		},
+		{
+			"id": "conceit-forest",
+			"title": "Conceit motif: forest dweller",
+			"description": "Tree",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-forest.svg"
+		},
+		{
+			"id": "conceit-rag-robe",
+			"title": "Conceit motif: rag-robe wearer",
+			"description": "Folded cloth",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-rag-robe.svg"
+		},
+		{
+			"id": "conceit-alms",
+			"title": "Conceit motif: alms collector",
+			"description": "Alms bowl curve",
+			"sourceGraphic": "mn113.svg",
+			"tags": [
+				"line-art",
+				"mn113"
+			],
+			"discourse": "mn113",
+			"labels": [
+				"conceit"
+			],
+			"valence": "-ve",
+			"svg": "icons/conceit-alms.svg"
+		},
+		{
+			"id": "ui-chevron-down",
+			"title": "Chevron down",
+			"description": "Small downward chevron",
+			"sourceGraphic": "mn1.svg",
+			"tags": [
+				"ui",
+				"chevron"
+			],
+			"discourse": [
+				"mn1",
+				"mn2"
+			],
+			"labels": [],
+			"svg": "icons/ui-chevron-down.svg"
+		},
+		{
+			"id": "ui-arrow-down",
+			"title": "Arrow down",
+			"description": "Conclusion / transition arrow",
+			"sourceGraphic": "mn2.svg",
+			"tags": [
+				"ui",
+				"arrow"
+			],
+			"discourse": "mn2",
+			"labels": [],
+			"svg": "icons/ui-arrow-down.svg"
+		},
+		{
+			"id": "liberation-sparkle",
+			"title": "Liberation sparkle",
+			"description": "Gold sparkle on path to liberation",
+			"sourceGraphic": "an10.1.svg",
+			"tags": [
+				"gold",
+				"line-art",
+				"sparkle"
+			],
+			"discourse": "an10.1",
+			"labels": [
+				"liberation"
+			],
+			"valence": "+ve",
+			"svg": "icons/liberation-sparkle.svg"
+		},
+		{
+			"id": "wide-arc",
+			"title": "Wide structural arc",
+			"description": "Horizontal quadratic rail",
+			"sourceGraphic": "an7.61.svg",
+			"tags": [
+				"line-art",
+				"arc"
+			],
+			"discourse": "an7.61",
+			"labels": [],
+			"svg": "icons/wide-arc.svg"
+		},
+		{
+			"id": "branch-split",
+			"title": "Branch split",
+			"description": "Chevron with two curved branches",
+			"sourceGraphic": "sn36.6.svg",
+			"tags": [
+				"line-art",
+				"fork"
+			],
+			"discourse": "sn36.6",
+			"labels": [],
+			"svg": "icons/branch-split.svg"
+		},
+		{
+			"id": "tree-barren",
+			"title": "Tree simile: without branches and leaves",
+			"description": "Barren twin-trunk tree",
+			"sourceGraphic": "an7.65.svg",
+			"tags": [
+				"line-art",
+				"an7",
+				"tree"
+			],
+			"discourse": "an7.65",
+			"labels": [
+				"path",
+				"unprincipled conduct",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/tree-barren.svg"
+		},
+		{
+			"id": "tree-flourishing",
+			"title": "Tree simile: abundant branches and leaves",
+			"description": "Flourishing tree with canopy",
+			"sourceGraphic": "an7.65.svg",
+			"tags": [
+				"line-art",
+				"an7",
+				"tree"
+			],
+			"discourse": "an7.65",
+			"labels": [
+				"ethical conduct",
+				"path",
+				"person of integrity",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/tree-flourishing.svg"
+		},
+		{
+			"id": "head-on-fire",
+			"title": "Simile: head on fire",
+			"description": "Flame motif",
+			"sourceGraphic": "an10.51.svg",
+			"tags": [
+				"line-art",
+				"an10",
+				"urgency"
+			],
+			"discourse": "an10.51",
+			"labels": [
+				"effort",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/head-on-fire.svg"
+		},
+		{
+			"id": "two-darts",
+			"title": "Two darts",
+			"description": "Figure with bodily dart and mental loop",
+			"sourceGraphic": "sn36.6.svg",
+			"tags": [
+				"line-art",
+				"sn36",
+				"vedana",
+				"dart"
+			],
+			"discourse": "sn36.6",
+			"labels": [
+				"insight",
+				"suffering"
+			],
+			"svg": "icons/two-darts.svg"
+		},
+		{
+			"id": "one-dart",
+			"title": "One dart",
+			"description": "Figure with bodily dart only",
+			"sourceGraphic": "sn36.6.svg",
+			"tags": [
+				"line-art",
+				"sn36",
+				"vedana",
+				"dart"
+			],
+			"discourse": "sn36.6",
+			"labels": [
+				"insight",
+				"liberation"
+			],
+			"valence": "+ve",
+			"svg": "icons/one-dart.svg"
+		},
+		{
+			"id": "virtue-tablet",
+			"title": "Accomplishment in virtue",
+			"description": "Tablet with precepts and checkmark",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha",
+				"sila"
+			],
+			"discourse": "mn53",
+			"labels": [
+				"ethical conduct"
+			],
+			"valence": "+ve",
+			"svg": "icons/virtue-tablet.svg"
+		},
+		{
+			"id": "sense-restraint",
+			"title": "Sense restraint",
+			"description": "Eye with shield",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha",
+				"sense"
+			],
+			"discourse": "mn53",
+			"labels": [
+				"sense restraint",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/eye-shield.svg"
+		},
+		{
+			"id": "moderation-bowl",
+			"title": "Moderation in eating",
+			"description": "Alms bowl",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha",
+				"bowl"
+			],
+			"discourse": "mn53",
+			"labels": [
+				"ethical conduct",
+				"renunciation",
+				"sense restraint"
+			],
+			"valence": "+ve",
+			"svg": "icons/moderation-bowl.svg"
+		},
+		{
+			"id": "wakefulness-moon",
+			"title": "Devotion to wakefulness",
+			"description": "Moon with watch marks",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha"
+			],
+			"discourse": "mn53",
+			"labels": [
+				"clear awareness",
+				"effort",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/wakefulness-moon.svg"
+		},
+		{
+			"id": "hen-egg-simile",
+			"title": "Hen and egg simile",
+			"description": "Cracked egg",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha"
+			],
+			"discourse": "mn53",
+			"labels": [
+				"awakening",
+				"insight",
+				"liberation"
+			],
+			"valence": "+ve",
+			"svg": "icons/hen-egg-simile.svg"
+		},
+		{
+			"id": "past-lives-eye",
+			"title": "Recollection of past lives",
+			"description": "Eye glancing backward — first breakthrough (pubbenivāsānussati)",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha"
+			],
+			"discourse": "mn53",
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"liberation",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/past-lives-eye.svg"
+		},
+		{
+			"id": "breakthrough-divine-eye",
+			"title": "Divine eye",
+			"description": "Radiant eye — second breakthrough (dibbacakkhu)",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha"
+			],
+			"discourse": [
+				"mn53",
+				"mn119"
+			],
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"liberation",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/divine-eye.svg"
+		},
+		{
+			"id": "broken-chain",
+			"title": "breaking of fetters",
+			"description": "Fetters abandoned — broken chain",
+			"sourceGraphic": "mn53.svg",
+			"tags": [
+				"line-art",
+				"mn53",
+				"sekha"
+			],
+			"discourse": [
+				"mn2",
+				"mn53",
+				"mn119"
+			],
+			"labels": [
+				"direct knowledge",
+				"ending",
+				"insight",
+				"liberation",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/broken-chain.svg"
+		},
+		{
+			"id": "sense-nose",
+			"title": "Internal sense base: nose",
+			"description": "Nose outline — ghāna",
+			"sourceGraphic": "mn148.svg",
+			"tags": [
+				"line-art",
+				"mn148",
+				"sense"
+			],
+			"discourse": [
+				"mn148",
+				"mn10"
+			],
+			"labels": [
+				"phenomenology",
+				"sense bases"
+			],
+			"svg": "icons/sense-nose.svg"
+		},
+		{
+			"id": "sense-tongue",
+			"title": "Internal sense base: tongue",
+			"description": "Tongue outline — jivhā",
+			"sourceGraphic": "mn148.svg",
+			"tags": [
+				"line-art",
+				"mn148",
+				"sense"
+			],
+			"discourse": [
+				"mn148",
+				"mn10"
+			],
+			"labels": [
+				"phenomenology",
+				"sense bases"
+			],
+			"svg": "icons/sense-tongue.svg"
+		},
+		{
+			"id": "simile-carpenter-pegs",
+			"title": "Fine peg replaces coarse peg",
+			"description": "Two pegs and replacement arrow (aññaṁ nimittaṁ…)",
+			"sourceGraphic": "mn20.svg",
+			"tags": [
+				"line-art",
+				"mn20",
+				"vitakka"
+			],
+			"discourse": "mn20",
+			"labels": [
+				"skillful means",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-carpenter-pegs.svg"
+		},
+		{
+			"id": "simile-carcass-necklace",
+			"title": "Carcass hung around the neck",
+			"description": "Figure recoiling from necklace (drawbacks)",
+			"sourceGraphic": "mn20.svg",
+			"tags": [
+				"line-art",
+				"mn20",
+				"vitakka"
+			],
+			"discourse": "mn20",
+			"labels": [
+				"dispassion",
+				"insight",
+				"skillful means"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-carcass-necklace.svg"
+		},
+		{
+			"id": "simile-look-away",
+			"title": "Closing the eyes / looking away",
+			"description": "Struck-through eye — (asati amanasikāra)",
+			"sourceGraphic": "mn20.svg",
+			"tags": [
+				"line-art",
+				"mn20",
+				"vitakka"
+			],
+			"discourse": "mn20",
+			"labels": [
+				"sense restraint",
+				"skillful means"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-look-away.svg"
+		},
+		{
+			"id": "simile-subdue-figures",
+			"title": "Strong person subdues a weaker one",
+			"description": "Two figures — (forceful mind training)",
+			"sourceGraphic": "mn20.svg",
+			"tags": [
+				"line-art",
+				"mn20",
+				"vitakka"
+			],
+			"discourse": "mn20",
+			"labels": [
+				"effort",
+				"skillful means",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-subdue-figures.svg"
+		},
+		{
+			"id": "hindrance-dullness",
+			"title": "Hindrance: dullness and drowsiness",
+			"description": "Thinamiddha motif — cloud and drooping line.",
+			"sourceGraphic": "mn10.svg",
+			"tags": [
+				"line-art",
+				"mn10",
+				"hindrances"
+			],
+			"discourse": "mn10",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/hindrance-dullness.svg"
+		},
+		{
+			"id": "hindrance-doubt",
+			"title": "Hindrance: doubt",
+			"description": "Vicikicchā motif — question-mark curve.",
+			"sourceGraphic": "mn10.svg",
+			"tags": [
+				"line-art",
+				"mn10",
+				"hindrances"
+			],
+			"discourse": "mn10",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/hindrance-doubt.svg"
+		}
+	]
+}

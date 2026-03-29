@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.20911) translate(-50, -2.5)">
+    <title>Wide structural arc (AN 7.61)</title>
+          <path d="M 0 4 Q 50 0 100 4" fill="none" stroke="#6a6880" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+  </g>
+</svg>

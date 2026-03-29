@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(1.00571) translate(-10, -8)">
+    <g opacity="0.75" stroke="#b098b0" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 8 Q 10 0 20 8" stroke-width="1" />
+        <path d="M 0 8 Q 10 16 20 8" stroke-width="1" />
+        <circle cx="10" cy="8" r="3" stroke-width="0.8" />
+        <line x1="2" y1="16" x2="18" y2="0" stroke-width="1" />
+        </g>
+  </g>
+</svg>

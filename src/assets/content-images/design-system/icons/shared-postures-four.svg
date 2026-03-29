@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.24332) translate(-43, -15.75)">
+    <g opacity="0.75" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <g transform="translate(0,4)" stroke="#8090a0" stroke-width="0.8">
+        <circle cx="5" cy="2" r="2.5" />
+        <line x1="5" y1="5" x2="5" y2="16" />
+        <line x1="5" y1="16" x2="1" y2="24" />
+        <line x1="5" y1="16" x2="9" y2="24" />
+        <line x1="5" y1="10" x2="0" y2="14" />
+        <line x1="5" y1="10" x2="10" y2="8" />
+        </g>
+        <text x="16" y="20" fill="#506878" font-family="Georgia, Times New Roman, serif" font-size="10" opacity="0.5">&#x203A;</text>
+        <g transform="translate(22,4)" stroke="#7888a0" stroke-width="0.8">
+        <circle cx="5" cy="2" r="2.5" />
+        <line x1="5" y1="5" x2="5" y2="16" />
+        <line x1="5" y1="16" x2="3" y2="24" />
+        <line x1="5" y1="16" x2="7" y2="24" />
+        <line x1="5" y1="10" x2="1" y2="14" />
+        <line x1="5" y1="10" x2="9" y2="14" />
+        </g>
+        <text x="37" y="20" fill="#506878" font-family="Georgia, Times New Roman, serif" font-size="10" opacity="0.5">&#x203A;</text>
+        <g transform="translate(44,8)" stroke="#6880a0" stroke-width="0.8">
+        <circle cx="5" cy="2" r="2.5" />
+        <line x1="5" y1="5" x2="5" y2="12" />
+        <line x1="5" y1="12" x2="10" y2="12" />
+        <line x1="10" y1="12" x2="10" y2="20" />
+        <line x1="5" y1="8" x2="1" y2="12" />
+        <line x1="5" y1="8" x2="9" y2="6" />
+        </g>
+        <text x="59" y="20" fill="#506878" font-family="Georgia, Times New Roman, serif" font-size="10" opacity="0.5">&#x203A;</text>
+        <g transform="translate(66,18)" stroke="#5878a0" stroke-width="0.8">
+        <circle cx="4" cy="2" r="2.5" />
+        <line x1="7" y1="2" x2="20" y2="2" />
+        <line x1="14" y1="2" x2="18" y2="6" />
+        <line x1="14" y1="2" x2="20" y2="4" />
+        </g>
+        </g>
+  </g>
+</svg>
