@@ -1,7 +1,7 @@
 ---
 title: Ajitamāṇavapucchā - Ajita’s Questions
 description: The venerable Ajita asks the Buddha a series of questions about the nature of the world, the currents of defilements, how to overcome name and form and the conduct of those who have comprehended the Dhamma.
-qualities: learned, wisdom, craving, ignorance, mindfulness
+qualities: learned, wisdom, craving, ignorance, mindfulness, name
 theme: inspiration, wisdom
 slug: snp5.1
 character: Venerable Ajita

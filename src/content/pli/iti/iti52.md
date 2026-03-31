@@ -1,5 +1,5 @@
 ---
-title: Paṭhama vedan sutta - Felt Experiences (First)
+title: Paṭhama vedanā sutta - Felt Experiences (First)
 description: The Buddha describes the three felt experiences that are experienced on contact through the sense doors - pleasant, painful, and neither-painful-nor-pleasant.
 qualities: collectedness, clear awareness, mindfulness, discernment, quenching, felt experience, felt-experience
 theme: cultivating discernment
