@@ -20,7 +20,6 @@ type Icon = {
 	title: string;
 	description: string;
 	discourse: string | string[];
-	sourceGraphic: string;
 	tags: string[];
 	labels: string[];
 	svg: string;
@@ -35,8 +34,8 @@ function main() {
 		"",
 		`Generated from \`icons-manifest.json\` (version ${raw.version}).`,
 		"",
-		"| id | title | discourse | sourceGraphic | labels | tags | svg |",
-		"|----|-------|-------------|---------------|--------|------|-----|",
+		"| id | title | discourse | labels | tags | svg |",
+		"|----|-------|-----------|--------|------|-----|",
 	];
 	for (const i of raw.icons) {
 		const d = Array.isArray(i.discourse) ? i.discourse.join(", ") : i.discourse;
@@ -44,7 +43,7 @@ function main() {
 		const lab = (i.labels ?? []).join(", ");
 		const tg = (i.tags ?? []).join(", ");
 		lines.push(
-			`| ${esc(i.id)} | ${esc(i.title)} | ${esc(d)} | ${esc(i.sourceGraphic)} | ${esc(lab)} | ${esc(tg)} | \`${esc(i.svg)}\` |`,
+			`| ${esc(i.id)} | ${esc(i.title)} | ${esc(d)} | ${esc(lab)} | ${esc(tg)} | \`${esc(i.svg)}\` |`,
 		);
 	}
 	lines.push("");

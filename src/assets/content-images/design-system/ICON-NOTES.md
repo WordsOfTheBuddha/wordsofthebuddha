@@ -59,7 +59,7 @@ Source geometry is a tall path (~84 units high). A compact symbol may use `viewB
 
 ## Discourse coverage vs. 26 header SVGs
 
-Header illustrations live as top-level `*.svg` under `content-images/` (26 discourse graphics). The manifest’s **`sourceGraphic`** field ties an icon to one of those files.
+Header illustrations live as top-level `*.svg` under `content-images/` (26 discourse graphics). Each manifest entry’s **`discourse`** slug(s) identify which discourse diagram the motif comes from.
 
 **Currently represented in `icons-manifest.json` (sample):** `mn1.svg`, `mn2.svg`, `mn118.svg`, `an10.1.svg`, `an7.61.svg`, `sn36.6.svg`, plus shared **`ui/`** chevrons used in multiple layouts.
 

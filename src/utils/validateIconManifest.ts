@@ -17,7 +17,6 @@ type Icon = {
 	title: string;
 	description: string;
 	discourse: string | string[];
-	sourceGraphic: string;
 	tags: string[];
 	svg: string;
 	labels: string[];
@@ -60,9 +59,6 @@ function main() {
 
 		const abs = join(DS, icon.svg);
 		if (!existsSync(abs)) errors.push(`missing file for ${icon.id}: ${icon.svg}`);
-
-		if (!icon.sourceGraphic?.endsWith(".svg"))
-			errors.push(`${icon.id}: sourceGraphic should end with .svg`);
 	}
 
 	const manifestPaths = new Set(raw.icons.map((i) => i.svg.replace(/^\//, "")));

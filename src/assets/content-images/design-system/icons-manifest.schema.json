@@ -15,7 +15,6 @@
 					"title",
 					"description",
 					"discourse",
-					"sourceGraphic",
 					"tags",
 					"labels",
 					"svg"
@@ -34,7 +33,6 @@
 							}
 						]
 					},
-					"sourceGraphic": { "type": "string", "pattern": "\\.svg$" },
 					"tags": {
 						"type": "array",
 						"items": { "type": "string" }

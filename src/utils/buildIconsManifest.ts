@@ -25,7 +25,6 @@ type IconEntry = {
 	description: string;
 	/** One or more sutta slugs; first is primary (viz / Source). Merge when reusing across discourses. */
 	discourse: string | string[];
-	sourceGraphic: string;
 	tags: string[];
 	/** Facet labels (preferred). Merged with legacy `themes` / `qualities` / `topics` if present. */
 	labels?: string[];
@@ -159,7 +158,6 @@ const icons: IconEntry[] = [
 		title: "Sense: seen",
 		description: "Eye motif for diṭṭha",
 		discourse: ["mn1", "mn148", "mn10"],
-		sourceGraphic: "mn1.svg",
 		tags: ["gold", "line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -168,7 +166,6 @@ const icons: IconEntry[] = [
 		title: "Sense: heard",
 		description: "Ear motif for suta",
 		discourse: ["mn1", "mn148", "mn10"],
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -177,7 +174,6 @@ const icons: IconEntry[] = [
 		title: "Sense: sensed",
 		description: "Touch/nose motif for muta",
 		discourse: ["mn1", "mn148"],
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -186,7 +182,6 @@ const icons: IconEntry[] = [
 		title: "Sense: cognized",
 		description: "Mind/consciousness motif for viññāta",
 		discourse: ["mn1", "mn148", "mn10"],
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -195,7 +190,6 @@ const icons: IconEntry[] = [
 		title: "Uninstructed ordinary person",
 		description: "Depiction of a puthujjana, asappurisa",
 		discourse: ["mn1", "mn113", "mn29", "mn30", "mn148"],
-		sourceGraphic: "mn1.svg",
 		tags: ["burgundy", "line-art"],
 		themes: ["path", "phenomena", "unprincipled conduct"],
 	},
@@ -204,7 +198,6 @@ const icons: IconEntry[] = [
 		title: "Noble disciple",
 		description: "Straight path with grounded node (sappurisa)",
 		discourse: ["mn1", "mn113", "mn29", "mn30", "mn148"],
-		sourceGraphic: "mn1.svg",
 		tags: ["teal", "line-art"],
 		themes: ["path", "person of integrity", "phenomena"],
 	},
@@ -213,7 +206,6 @@ const icons: IconEntry[] = [
 		title: "Earth element",
 		description: "Strata lines for pathavī",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements"],
 		themes: ["elements", "phenomena"],
 	},
@@ -222,7 +214,6 @@ const icons: IconEntry[] = [
 		title: "Water element",
 		description: "Waves for āpo",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements"],
 		themes: ["elements", "phenomena"],
 	},
@@ -231,7 +222,6 @@ const icons: IconEntry[] = [
 		title: "Fire element",
 		description: "Flame for tejo",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements", "fire"],
 		themes: ["elements", "phenomena"],
 	},
@@ -240,7 +230,6 @@ const icons: IconEntry[] = [
 		title: "Air element",
 		description: "Wind curves for vāyo",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "elements"],
 		themes: ["elements", "phenomena"],
 	},
@@ -249,7 +238,6 @@ const icons: IconEntry[] = [
 		title: "Beings",
 		description: "Twin stick figures for beings (bhūtā)",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -258,7 +246,6 @@ const icons: IconEntry[] = [
 		title: "Deities",
 		description: "Figure with halo arc for devas",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "gold"],
 		themes: ["phenomena"],
 	},
@@ -267,7 +254,6 @@ const icons: IconEntry[] = [
 		title: "Creator god",
 		description: "Triangle crown for pajāpati",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -276,7 +262,6 @@ const icons: IconEntry[] = [
 		title: "Brahmā",
 		description: "Figure with outer ring",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "gold"],
 		themes: ["phenomena"],
 	},
@@ -285,7 +270,6 @@ const icons: IconEntry[] = [
 		title: "Streaming radiance",
 		description: "ābhassarā — radiating circle",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -294,7 +278,6 @@ const icons: IconEntry[] = [
 		title: "Refulgent glory",
 		description: "subhakiṇhā — nested circles",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -303,7 +286,6 @@ const icons: IconEntry[] = [
 		title: "Great fruit",
 		description: "vehapphalā — orb with three dots",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -312,7 +294,6 @@ const icons: IconEntry[] = [
 		title: "Overlord",
 		description: "abhibhū — circle with crown",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "gold"],
 		themes: ["phenomena"],
 	},
@@ -321,7 +302,6 @@ const icons: IconEntry[] = [
 		title: "Boundless space",
 		description: "ākāsānañcāyatana — dashed circles",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "dashed"],
 		themes: ["phenomena", "formless"],
 	},
@@ -330,7 +310,6 @@ const icons: IconEntry[] = [
 		title: "Boundless consciousness",
 		description: "viññāṇañcāyatana — concentric rings",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena", "formless"],
 	},
@@ -339,7 +318,6 @@ const icons: IconEntry[] = [
 		title: "Nothingness",
 		description: "ākiñcaññāyatana — dashed ring",
 		discourse: ["mn1", "mn106"],
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art", "dashed"],
 		themes: ["phenomena", "formless"],
 	},
@@ -348,7 +326,6 @@ const icons: IconEntry[] = [
 		title: "Neither perception nor non-perception",
 		description: "nevasaññānāsaññāyatana — dual stroke rings",
 		discourse: ["mn1", "mn106"],
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena", "formless"],
 	},
@@ -357,7 +334,6 @@ const icons: IconEntry[] = [
 		title: "Oneness",
 		description: "ekatta — single dot",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -366,7 +342,6 @@ const icons: IconEntry[] = [
 		title: "Diversity",
 		description: "nānatta — scattered dots",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -375,7 +350,6 @@ const icons: IconEntry[] = [
 		title: "All",
 		description: "sabba — ring with three inner dots",
 		discourse: "mn1",
-		sourceGraphic: "mn1.svg",
 		tags: ["line-art"],
 		themes: ["phenomena"],
 	},
@@ -385,7 +359,6 @@ const icons: IconEntry[] = [
 		title: "Unwise attention",
 		description: "Tangled lines for ayoniso, āsava, uddhaccakukkucca",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["burgundy", "line-art"],
 		themes: ["wisdom", "five hindrances", "harm"]
 	},
@@ -394,7 +367,6 @@ const icons: IconEntry[] = [
 		title: "Wise attention",
 		description: "Clear lines and horizon circle for yoniso",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["teal", "line-art"],
 		themes: ["wisdom", "safety"]
 	},
@@ -403,7 +375,6 @@ const icons: IconEntry[] = [
 		title: "Restraint (eye + gates)",
 		description: "Saṃvara — eye with vertical bars.",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art"],
 		themes: ["wholesome", "sense restraint"]
 	},
@@ -412,7 +383,6 @@ const icons: IconEntry[] = [
 		title: "Proper use (bowl + robe)",
 		description: "Paṭisevanā requisites.",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art"],
 		themes: ["wholesome"]
 	},
@@ -421,7 +391,6 @@ const icons: IconEntry[] = [
 		title: "Enduring",
 		description: "Adhivāsanā — figure with stress lines.",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art"],
 		themes: ["wholesome"]
 	},
@@ -430,7 +399,6 @@ const icons: IconEntry[] = [
 		title: "Avoiding (fork)",
 		description: "Parivajjanā — path to danger vs safety.",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art", "fork"],
 		themes: ["safety", "wholesome", "non-harm"]
 	},
@@ -439,7 +407,6 @@ const icons: IconEntry[] = [
 		title: "Flame",
 		description: "Flame representative of thought of sensual desire (kāmavitakka)",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art", "flame"],
 		themes: ["five hindrances", "unwholesome", "harm"]
 	},
@@ -448,7 +415,6 @@ const icons: IconEntry[] = [
 		title: "Thorn vine",
 		description: "Thorn vine representative of thought of ill will (byāpādavitakka)",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art"],
 		themes: ["five hindrances", "unwholesome", "harm"]
 	},
@@ -457,7 +423,6 @@ const icons: IconEntry[] = [
 		title: "Remove: harmful thought",
 		description: "Vihiṁsāvitakka — impact star.",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art"],
 		themes: ["harm", "unwholesome"]
 	},
@@ -466,7 +431,6 @@ const icons: IconEntry[] = [
 		title: "Seven awakening factors",
 		description: "Bojjhaṅga arc — seven dots",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["line-art", "dots"],
 		themes: ["awakening"]
 	},
@@ -476,7 +440,6 @@ const icons: IconEntry[] = [
 		title: "Heir of material things (bowl with excess)",
 		description: "Heaped bowl — āmisadāyāda",
 		discourse: "mn3",
-		sourceGraphic: "mn3.svg",
 		tags: ["line-art", "bowl", "burgundy"],
 	},
 	{
@@ -484,7 +447,6 @@ const icons: IconEntry[] = [
 		title: "Heir in the Dhamma (empty bowl)",
 		description: "Empty bowl — dhammadāyāda",
 		discourse: "mn3",
-		sourceGraphic: "mn3.svg",
 		tags: ["line-art", "bowl", "teal"],
 	},
 	// MN 4
@@ -493,7 +455,6 @@ const icons: IconEntry[] = [
 		title: "Lunar fortnight (four phases)",
 		description: "Four lunar phases — auspicious nights row",
 		discourse: "mn4",
-		sourceGraphic: "mn4.svg",
 		tags: ["line-art", "moon", "lunar"],
 	},
 	{
@@ -501,7 +462,6 @@ const icons: IconEntry[] = [
 		title: "Posture: walking",
 		description: "Walking figure — postures",
 		discourse: "mn4",
-		sourceGraphic: "mn4.svg",
 		tags: ["line-art", "figure"],
 		themes: ["mindfulness"]
 	},
@@ -510,7 +470,6 @@ const icons: IconEntry[] = [
 		title: "Posture: standing",
 		description: "Standing figure — postures",
 		discourse: "mn4",
-		sourceGraphic: "mn4.svg",
 		tags: ["line-art", "figure"],
 		themes: ["mindfulness"]
 	},
@@ -519,7 +478,6 @@ const icons: IconEntry[] = [
 		title: "Posture: sitting",
 		description: "Seated figure — postures",
 		discourse: "mn4",
-		sourceGraphic: "mn4.svg",
 		tags: ["line-art", "figure"],
 		themes: ["mindfulness"]
 	},
@@ -528,7 +486,6 @@ const icons: IconEntry[] = [
 		title: "Posture: lying down",
 		description: "Reclining figure — postures",
 		discourse: "mn4",
-		sourceGraphic: "mn4.svg",
 		tags: ["line-art", "figure"],
 		themes: ["mindfulness"]
 	},
@@ -538,7 +495,6 @@ const icons: IconEntry[] = [
 		title: "Stained bronze bowl",
 		description: "Stained bowl (neglected) — not seeing one’s blemish",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "bowl", "burgundy"],
 		qualities: ["negligence"]
 	},
@@ -547,7 +503,6 @@ const icons: IconEntry[] = [
 		title: "Polished bronze bowl",
 		description: "Polished bowl (cared for) — knowing one’s blemish",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "bowl", "gold"],
 		qualities: ["diligence"]
 	},
@@ -556,7 +511,6 @@ const icons: IconEntry[] = [
 		title: "Bowl gathering dust",
 		description: "Clean bowl gathering dust",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "bowl"],
 		qualities: ["negligence"]
 	},
@@ -565,7 +519,6 @@ const icons: IconEntry[] = [
 		title: "Clean gleaming bowl",
 		description: "Shining clean bowl",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "bowl", "gold"],
 		qualities: ["diligence"],
 	},
@@ -574,7 +527,6 @@ const icons: IconEntry[] = [
 		title: "Unwholesome wish: concealing wrongdoing",
 		description: "Eye with slash — wish for hiding faults",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome", "unprincipled conduct"]
 	},
@@ -583,7 +535,6 @@ const icons: IconEntry[] = [
 		title: "Unwholesome wish: status",
 		description: "Seat motif — desire for precedence and honor",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome", "unprincipled conduct"]
 	},
@@ -592,7 +543,6 @@ const icons: IconEntry[] = [
 		title: "Unwholesome wish: to teach",
 		description: "Speaking figure — wish to instruct others",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome", "unprincipled conduct"]
 	},
@@ -601,7 +551,6 @@ const icons: IconEntry[] = [
 		title: "Unwholesome wish: honor",
 		description: "Bow and second figure — wish to be revered",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome", "unprincipled conduct"]
 	},
@@ -610,7 +559,6 @@ const icons: IconEntry[] = [
 		title: "Requisite: robes",
 		description: "Robe triangle — finest requisites",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome"]
 	},
@@ -619,7 +567,6 @@ const icons: IconEntry[] = [
 		title: "Requisite: alms bowl",
 		description: "Small bowl — piṇḍapāta",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish", "bowl"],
 		themes: ["unwholesome"]
 	},
@@ -628,7 +575,6 @@ const icons: IconEntry[] = [
 		title: "Requisite: lodging",
 		description: "Shelter outline — senāsana",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome"]
 	},
@@ -637,7 +583,6 @@ const icons: IconEntry[] = [
 		title: "Requisite: medicine",
 		description: "Cross in circle — bhesajja",
 		discourse: "mn5",
-		sourceGraphic: "mn5.svg",
 		tags: ["line-art", "wish"],
 		themes: ["unwholesome"]
 	},
@@ -647,7 +592,6 @@ const icons: IconEntry[] = [
 		title: "Body contemplation",
 		description: "Small seated figure — kāyānupassī",
 		discourse: ["mn118", "mn148", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "figure", "body"],
 		themes: ["mindfulness", "sense bases", "sense restraint", "wholesome"],
 	},
@@ -656,7 +600,6 @@ const icons: IconEntry[] = [
 		title: "Feeling contemplation",
 		description: "Droplet or flame — vedanānupassī",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "feeling"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -665,7 +608,6 @@ const icons: IconEntry[] = [
 		title: "Elbow bracket",
 		description: "Orthogonal connector with rounded elbow",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "connector"],
 	},
 	{
@@ -673,7 +615,6 @@ const icons: IconEntry[] = [
 		title: "Number badge (r=10)",
 		description: "Template circle + digit for stepped lists",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -681,7 +622,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 2",
 		description: "number display: 2",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -689,7 +629,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 3",
 		description: "number display: 3",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -697,7 +636,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 4",
 		description: "number display: 4",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -705,7 +643,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 5",
 		description: "number display: 5",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -713,7 +650,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 6",
 		description: "number display: 6",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -721,7 +657,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 7",
 		description: "number display: 7",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -729,7 +664,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 8",
 		description: "number display: 8",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -737,7 +671,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 9",
 		description: "number display: 9",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -745,7 +678,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 10",
 		description: "number display: 10",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -753,7 +685,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 11",
 		description: "number display: 11",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -761,7 +692,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 12",
 		description: "number display: 12",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -769,7 +699,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 13",
 		description: "number display: 13",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -777,7 +706,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 14",
 		description: "number display: 14",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -785,7 +713,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 15",
 		description: "number display: 15",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -793,7 +720,6 @@ const icons: IconEntry[] = [
 		title: "Step badge: 16",
 		description: "number display: 16",
 		discourse: "mn118",
-		sourceGraphic: "mn118.svg",
 		tags: ["badge", "number"],
 	},
 	{
@@ -802,7 +728,6 @@ const icons: IconEntry[] = [
 		description:
 			"Concentric circles — citte cittānupassī",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "mind"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -812,7 +737,6 @@ const icons: IconEntry[] = [
 		description:
 			"dhammesu dhammānupassī",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "dhamma"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -822,7 +746,6 @@ const icons: IconEntry[] = [
 		description:
 			"dhammavicayasambojjhaṅga glyph",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "wisdom"]
 	},
@@ -832,7 +755,6 @@ const icons: IconEntry[] = [
 		description:
 			"vīriyasambojjhaṅga glyph",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "diligence", "effort"]
 	},
@@ -842,7 +764,6 @@ const icons: IconEntry[] = [
 		description:
 			"pītisambojjhaṅga glyph",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -852,7 +773,6 @@ const icons: IconEntry[] = [
 		description:
 			"passaddhisambojjhaṅga glyph",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -862,7 +782,6 @@ const icons: IconEntry[] = [
 		description:
 			"samādhisambojjhaṅga glyph",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -872,7 +791,6 @@ const icons: IconEntry[] = [
 		description:
 			"upekkhāsambojjhaṅgo glyph",
 		discourse: ["mn118", "mn10"],
-		sourceGraphic: "mn118.svg",
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "equanimity"]
 	},
@@ -883,7 +801,6 @@ const icons: IconEntry[] = [
 		description:
 			"Breath and torso line-art",
 		discourse: ["mn119", "mn10"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "breath", "body"],
 		themes: ["mindfulness", "awakening", "clear awareness"],
 	},
@@ -893,7 +810,6 @@ const icons: IconEntry[] = [
 		description:
 			"Four postures: walk → stand → sit → lie",
 		discourse: ["mn119", "mn20", "mn10"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "figure"],
 		themes: ["skillful means", "mindfulness"],
 	},
@@ -903,7 +819,6 @@ const icons: IconEntry[] = [
 		description:
 			"2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī",
 		discourse: ["mn119", "mn10"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["clear awareness", "mindfulness"],
 	},
@@ -913,7 +828,6 @@ const icons: IconEntry[] = [
 		description:
 			"Asuci paccavekkhana motif, kāyānupassanā",
 		discourse: ["mn119", "mn10"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "body"],
 		themes: ["mindfulness"],
 	},
@@ -923,7 +837,6 @@ const icons: IconEntry[] = [
 		description:
 			"Earth, water, fire, wind motifs",
 		discourse: ["mn119", "mn10", "mn106"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["elements", "mindfulness"],
 	},
@@ -933,7 +846,6 @@ const icons: IconEntry[] = [
 		description:
 			"Skull and bones — sivathikā",
 		discourse: ["mn119", "mn10"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "death"],
 		themes: ["mindfulness", "wholesome"],
 	},
@@ -942,7 +854,6 @@ const icons: IconEntry[] = [
 		title: "First jhāna simile",
 		description: "Kneading bath with bubbles — jhāna band",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "awakening", "renunciation", "non-harm"]
 	},
@@ -951,7 +862,6 @@ const icons: IconEntry[] = [
 		title: "Second jhāna simile",
 		description: "Lake and spring — jhāna band",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "awakening", "renunciation", "non-harm"]
 	},
@@ -960,7 +870,6 @@ const icons: IconEntry[] = [
 		title: "Third jhāna simile",
 		description: "Submerged lotus — jhāna band",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "awakening", "renunciation", "non-harm", "mindfulness", "equanimity"]
 	},
@@ -969,7 +878,6 @@ const icons: IconEntry[] = [
 		title: "Fourth jhāna simile",
 		description: "Bright orb — jhāna band",
 		discourse: ["mn119", "mn106"],
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "jhana"],
 		themes: ["collectedness", "direct knowledge", "awakening", "renunciation", "non-harm", "clear awareness", "mindfulness", "equanimity", "dispassion"]
 	},
@@ -978,7 +886,6 @@ const icons: IconEntry[] = [
 		title: "Uncultivated: clay and rock",
 		description: "abhāvitā simile — wet clay",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["unwholesome", "uncultivated", "harm"]
 	},
@@ -987,7 +894,6 @@ const icons: IconEntry[] = [
 		title: "Uncultivated: dry wood",
 		description: "abhāvitā simile — dry sapless wood",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["unwholesome", "uncultivated", "harm"]
 	},
@@ -996,7 +902,6 @@ const icons: IconEntry[] = [
 		title: "Uncultivated: empty jar",
 		description: "abhāvitā simile — empty water jar",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["unwholesome", "uncultivated", "harm"]
 	},
@@ -1005,7 +910,6 @@ const icons: IconEntry[] = [
 		title: "Cultivated: string on heartwood",
 		description: "bhāvitā simile — light ball on solid wood",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["wholesome", "cultivation", "non-harm"]
 	},
@@ -1014,7 +918,6 @@ const icons: IconEntry[] = [
 		title: "Cultivated: wet sappy wood",
 		description: "bhāvitā simile — fire cannot take",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["wholesome", "cultivation", "non-harm"]
 	},
@@ -1023,7 +926,6 @@ const icons: IconEntry[] = [
 		title: "Cultivated: full jar",
 		description: "bhāvitā simile — full water jar",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["wholesome", "cultivation", "non-harm"]
 	},
@@ -1032,7 +934,6 @@ const icons: IconEntry[] = [
 		title: "Skilled charioteer",
 		description: "Spoked wheel — charioteer simile",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art"],
 		themes: ["direct knowledge"]
 	},
@@ -1041,7 +942,6 @@ const icons: IconEntry[] = [
 		title: "Ending of mental defilements",
 		description: "Twin liberation orbs — āsavakkhaya, cetovimutti",
 		discourse: "mn119",
-		sourceGraphic: "mn119.svg",
 		tags: ["line-art", "gold"],
 		themes: ["awakening", "liberation", "ending", "safety"]
 	},
@@ -1051,7 +951,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: noble birth",
 		description: "Crown zigzag — worldly status",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1059,7 +958,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: abundant wealth",
 		description: "Twin orbs",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1067,7 +965,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: recognition and fame",
 		description: "Star",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1075,7 +972,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: material gains",
 		description: "Dish / gains curve",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1083,7 +979,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: great learning",
 		description: "Open book",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1091,7 +986,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: Vinaya expert",
 		description: "Scroll / basket",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1099,7 +993,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: Dhamma teacher",
 		description: "Head with speech arc",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1107,7 +1000,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: forest dweller",
 		description: "Tree",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1115,7 +1007,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: rag-robe wearer",
 		description: "Folded cloth",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	{
@@ -1123,7 +1014,6 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: alms collector",
 		description: "Alms bowl curve",
 		discourse: "mn113",
-		sourceGraphic: "mn113.svg",
 		tags: ["line-art", "mn113"],
 	},
 	// UI (shared)
@@ -1132,7 +1022,6 @@ const icons: IconEntry[] = [
 		title: "Chevron down",
 		description: "Small downward chevron",
 		discourse: ["mn1", "mn2"],
-		sourceGraphic: "mn1.svg",
 		tags: ["ui", "chevron"],
 	},
 	{
@@ -1140,7 +1029,6 @@ const icons: IconEntry[] = [
 		title: "Arrow down",
 		description: "Conclusion / transition arrow",
 		discourse: "mn2",
-		sourceGraphic: "mn2.svg",
 		tags: ["ui", "arrow"],
 	},
 	// Other discourses (sweep)
@@ -1149,7 +1037,6 @@ const icons: IconEntry[] = [
 		title: "Liberation sparkle",
 		description: "Gold sparkle on path to liberation",
 		discourse: "an10.1",
-		sourceGraphic: "an10.1.svg",
 		tags: ["gold", "line-art", "sparkle"],
 	},
 	{
@@ -1157,7 +1044,6 @@ const icons: IconEntry[] = [
 		title: "Wide structural arc",
 		description: "Horizontal quadratic rail",
 		discourse: "an7.61",
-		sourceGraphic: "an7.61.svg",
 		tags: ["line-art", "arc"],
 	},
 	{
@@ -1165,7 +1051,6 @@ const icons: IconEntry[] = [
 		title: "Branch split",
 		description: "Chevron with two curved branches",
 		discourse: "sn36.6",
-		sourceGraphic: "sn36.6.svg",
 		tags: ["line-art", "fork"],
 	},
 	{
@@ -1173,7 +1058,6 @@ const icons: IconEntry[] = [
 		title: "Tree simile: without branches and leaves",
 		description: "Barren twin-trunk tree",
 		discourse: "an7.65",
-		sourceGraphic: "an7.65.svg",
 		tags: ["line-art", "an7", "tree"],
 		themes: ["path", "unprincipled conduct", "unwholesome"],
 	},
@@ -1182,7 +1066,6 @@ const icons: IconEntry[] = [
 		title: "Tree simile: abundant branches and leaves",
 		description: "Flourishing tree with canopy",
 		discourse: "an7.65",
-		sourceGraphic: "an7.65.svg",
 		tags: ["line-art", "an7", "tree"],
 		themes: ["ethical conduct", "path", "person of integrity", "wholesome"],
 	},
@@ -1191,7 +1074,6 @@ const icons: IconEntry[] = [
 		title: "Simile: head on fire",
 		description: "Flame motif",
 		discourse: "an10.51",
-		sourceGraphic: "an10.51.svg",
 		tags: ["line-art", "an10", "urgency"],
 		themes: ["effort", "mindfulness"],
 	},
@@ -1200,7 +1082,6 @@ const icons: IconEntry[] = [
 		title: "Two darts",
 		description: "Figure with bodily dart and mental loop",
 		discourse: "sn36.6",
-		sourceGraphic: "sn36.6.svg",
 		tags: ["line-art", "sn36", "vedana", "dart"],
 		themes: ["suffering", "insight"],
 	},
@@ -1209,7 +1090,6 @@ const icons: IconEntry[] = [
 		title: "One dart",
 		description: "Figure with bodily dart only",
 		discourse: "sn36.6",
-		sourceGraphic: "sn36.6.svg",
 		tags: ["line-art", "sn36", "vedana", "dart"],
 		themes: ["liberation", "insight"],
 	},
@@ -1219,7 +1099,6 @@ const icons: IconEntry[] = [
 		title: "Accomplishment in virtue",
 		description: "Tablet with precepts and checkmark",
 		discourse: "mn53",
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha", "sila"],
 		themes: ["ethics", "conduct"],
 	},
@@ -1228,7 +1107,6 @@ const icons: IconEntry[] = [
 		title: "Sense restraint",
 		description: "Eye with shield",
 		discourse: "mn53",
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha", "sense"],
 		themes: ["sense restraint", "wholesome"],
 	},
@@ -1237,7 +1115,6 @@ const icons: IconEntry[] = [
 		title: "Moderation in eating",
 		description: "Alms bowl",
 		discourse: "mn53",
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha", "bowl"],
 		themes: ["conduct", "renunciation", "sense restraint"],
 	},
@@ -1246,7 +1123,6 @@ const icons: IconEntry[] = [
 		title: "Devotion to wakefulness",
 		description: "Moon with watch marks",
 		discourse: "mn53",
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha"],
 		themes: ["effort", "mindfulness", "clear awareness"],
 	},
@@ -1255,7 +1131,6 @@ const icons: IconEntry[] = [
 		title: "Hen and egg simile",
 		description: "Cracked egg",
 		discourse: "mn53",
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha"],
 		themes: ["insight", "liberation", "awakening"],
 	},
@@ -1264,7 +1139,6 @@ const icons: IconEntry[] = [
 		title: "Recollection of past lives",
 		description: "Eye glancing backward — first breakthrough (pubbenivāsānussati)",
 		discourse: "mn53",
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha"],
 		themes: ["insight", "liberation", "psychic power", "direct knowledge"],
 	},
@@ -1274,7 +1148,6 @@ const icons: IconEntry[] = [
 		description:
 			"Radiant eye — second breakthrough (dibbacakkhu)",
 		discourse: ["mn53", "mn119"],
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha"],
 		themes: ["insight", "liberation", "psychic power", "direct knowledge"],
 		qualities: ["psychic power"],
@@ -1284,7 +1157,6 @@ const icons: IconEntry[] = [
 		title: "breaking of fetters",
 		description: "Fetters abandoned — broken chain",
 		discourse: ["mn2", "mn53", "mn119"],
-		sourceGraphic: "mn53.svg",
 		tags: ["line-art", "mn53", "sekha"],
 		themes: ["liberation", "insight", "psychic power", "direct knowledge", "ending"],
 	},
@@ -1295,7 +1167,6 @@ const icons: IconEntry[] = [
 		description:
 			"Nose outline — ghāna",
 		discourse: ["mn148", "mn10"],
-		sourceGraphic: "mn148.svg",
 		tags: ["line-art", "mn148", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -1305,7 +1176,6 @@ const icons: IconEntry[] = [
 		description:
 			"Tongue outline — jivhā",
 		discourse: ["mn148", "mn10"],
-		sourceGraphic: "mn148.svg",
 		tags: ["line-art", "mn148", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -1315,7 +1185,6 @@ const icons: IconEntry[] = [
 		title: "Fine peg replaces coarse peg",
 		description: "Two pegs and replacement arrow (aññaṁ nimittaṁ…)",
 		discourse: "mn20",
-		sourceGraphic: "mn20.svg",
 		tags: ["line-art", "mn20", "vitakka"],
 		themes: ["skillful means", "wholesome"],
 	},
@@ -1324,7 +1193,6 @@ const icons: IconEntry[] = [
 		title: "Carcass hung around the neck",
 		description: "Figure recoiling from necklace (drawbacks)",
 		discourse: "mn20",
-		sourceGraphic: "mn20.svg",
 		tags: ["line-art", "mn20", "vitakka"],
 		themes: ["dispassion", "insight", "skillful means"],
 	},
@@ -1333,7 +1201,6 @@ const icons: IconEntry[] = [
 		title: "Closing the eyes / looking away",
 		description: "Struck-through eye — (asati amanasikāra)",
 		discourse: "mn20",
-		sourceGraphic: "mn20.svg",
 		tags: ["line-art", "mn20", "vitakka"],
 		themes: ["sense restraint", "skillful means"],
 	},
@@ -1342,7 +1209,6 @@ const icons: IconEntry[] = [
 		title: "Strong person subdues a weaker one",
 		description: "Two figures — (forceful mind training)",
 		discourse: "mn20",
-		sourceGraphic: "mn20.svg",
 		tags: ["line-art", "mn20", "vitakka"],
 		themes: ["wholesome", "effort", "skillful means"],
 	},
@@ -1352,7 +1218,6 @@ const icons: IconEntry[] = [
 		title: "Hindrance: dullness and drowsiness",
 		description: "Thinamiddha motif — cloud and drooping line.",
 		discourse: "mn10",
-		sourceGraphic: "mn10.svg",
 		tags: ["line-art", "mn10", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
@@ -1361,7 +1226,6 @@ const icons: IconEntry[] = [
 		title: "Hindrance: doubt",
 		description: "Vicikicchā motif — question-mark curve.",
 		discourse: "mn10",
-		sourceGraphic: "mn10.svg",
 		tags: ["line-art", "mn10", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
@@ -1371,7 +1235,6 @@ const icons: IconEntry[] = [
 		title: "Recognition of impermanence",
 		description: "Half-arc dissolving into particles — aniccasaññā",
 		discourse: "mn106",
-		sourceGraphic: "mn106.svg",
 		tags: ["line-art", "mn106"],
 		labels: ["recognition of impermanence", "dispassion", "wisdom"],
 	},
@@ -1380,7 +1243,6 @@ const icons: IconEntry[] = [
 		title: "Emptiness of perceptions",
 		description: "Hollow ring with dashed void — suññato",
 		discourse: "mn106",
-		sourceGraphic: "mn106.svg",
 		tags: ["line-art", "mn106"],
 		labels: ["with nothing", "perceiving escape", "formless"],
 	},
@@ -1389,9 +1251,17 @@ const icons: IconEntry[] = [
 		title: "Non-belonging",
 		description: "Unconnected dot with dispersed lines — netaṁ mama",
 		discourse: "mn106",
-		sourceGraphic: "mn106.svg",
 		tags: ["line-art", "mn106"],
 		labels: ["recognition of not-self", "free from attachment", "non-identification", "formless"],
+	},
+	{
+		id: "dwell-loop",
+		title: "Return loop (repeat often)",
+		description:
+			"U-shaped track with arrow — dwell thus often · tabbahulavihārī",
+		discourse: "mn106",
+		tags: ["line-art", "mn106", "arrow"],
+		labels: ["skillful means", "diligence", "effort"],
 	},
 ];
 

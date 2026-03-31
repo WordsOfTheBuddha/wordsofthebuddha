@@ -94,7 +94,7 @@ For **LLM-friendly lookup** and maintenance, canonical assets live under **`desi
 
 | Artifact | Purpose |
 |----------|---------|
-| **`icons-manifest.json`** | Machine-readable index: `id`, `title`, `description`, `discourse`, `sourceGraphic` (header SVG basename), `category`, `tags`, `svg` path |
+| **`icons-manifest.json`** | Machine-readable index: `id`, `title`, `description`, `discourse`, `labels`, `tags`, `svg` path |
 | **`icons-index.md`** | Flat table (run `npm run gen:icons-index`) for paste-into-chat search |
 | **`/design-system`** | Browser UI: search (Fuse.js) + facets (discourse, category, tag); `noindex` (legacy **`/design-system/icons`** redirects here) |
 

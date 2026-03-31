@@ -5,7 +5,6 @@
 			"id": "seen",
 			"title": "Sense: seen",
 			"description": "Eye motif for diṭṭha",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"gold",
 				"line-art",
@@ -26,7 +25,6 @@
 			"id": "heard",
 			"title": "Sense: heard",
 			"description": "Ear motif for suta",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"sense"
@@ -46,7 +44,6 @@
 			"id": "sensed",
 			"title": "Sense: sensed",
 			"description": "Touch/nose motif for muta",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"sense"
@@ -65,7 +62,6 @@
 			"id": "cognized",
 			"title": "Sense: cognized",
 			"description": "Mind/consciousness motif for viññāta",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"sense"
@@ -85,7 +81,6 @@
 			"id": "puthujjana-header",
 			"title": "Uninstructed ordinary person",
 			"description": "Depiction of a puthujjana, asappurisa",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"burgundy",
 				"line-art"
@@ -109,7 +104,6 @@
 			"id": "ariya-header",
 			"title": "Noble disciple",
 			"description": "Straight path with grounded node (sappurisa)",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"teal",
 				"line-art"
@@ -132,7 +126,6 @@
 			"id": "earth",
 			"title": "Earth element",
 			"description": "Strata lines for pathavī",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"elements"
@@ -148,7 +141,6 @@
 			"id": "water",
 			"title": "Water element",
 			"description": "Waves for āpo",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"elements"
@@ -164,7 +156,6 @@
 			"id": "fire",
 			"title": "Fire element",
 			"description": "Flame for tejo",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"elements",
@@ -181,7 +172,6 @@
 			"id": "air",
 			"title": "Air element",
 			"description": "Wind curves for vāyo",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"elements"
@@ -197,7 +187,6 @@
 			"id": "beings",
 			"title": "Beings",
 			"description": "Twin stick figures for beings (bhūtā)",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -211,7 +200,6 @@
 			"id": "deities",
 			"title": "Deities",
 			"description": "Figure with halo arc for devas",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"gold"
@@ -226,7 +214,6 @@
 			"id": "creator",
 			"title": "Creator god",
 			"description": "Triangle crown for pajāpati",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -240,7 +227,6 @@
 			"id": "brahma",
 			"title": "Brahmā",
 			"description": "Figure with outer ring",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"gold"
@@ -255,7 +241,6 @@
 			"id": "streaming-radiance",
 			"title": "Streaming radiance",
 			"description": "ābhassarā — radiating circle",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -269,7 +254,6 @@
 			"id": "refulgent",
 			"title": "Refulgent glory",
 			"description": "subhakiṇhā — nested circles",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -283,7 +267,6 @@
 			"id": "great-fruit",
 			"title": "Great fruit",
 			"description": "vehapphalā — orb with three dots",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -297,7 +280,6 @@
 			"id": "overlord",
 			"title": "Overlord",
 			"description": "abhibhū — circle with crown",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"gold"
@@ -312,7 +294,6 @@
 			"id": "space-base",
 			"title": "Boundless space",
 			"description": "ākāsānañcāyatana — dashed circles",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"dashed"
@@ -329,7 +310,6 @@
 			"id": "consciousness-base",
 			"title": "Boundless consciousness",
 			"description": "viññāṇañcāyatana — concentric rings",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -345,7 +325,6 @@
 			"id": "nothingness-base",
 			"title": "Nothingness",
 			"description": "ākiñcaññāyatana — dashed ring",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art",
 				"dashed"
@@ -365,7 +344,6 @@
 			"id": "neither-base",
 			"title": "Neither perception nor non-perception",
 			"description": "nevasaññānāsaññāyatana — dual stroke rings",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -384,7 +362,6 @@
 			"id": "oneness",
 			"title": "Oneness",
 			"description": "ekatta — single dot",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -398,7 +375,6 @@
 			"id": "diversity",
 			"title": "Diversity",
 			"description": "nānatta — scattered dots",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -412,7 +388,6 @@
 			"id": "all",
 			"title": "All",
 			"description": "sabba — ring with three inner dots",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"line-art"
 			],
@@ -426,7 +401,6 @@
 			"id": "tangle-unwise-attention",
 			"title": "Unwise attention",
 			"description": "Tangled lines for ayoniso, āsava, uddhaccakukkucca",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"burgundy",
 				"line-art"
@@ -443,7 +417,6 @@
 			"id": "wise-attention",
 			"title": "Wise attention",
 			"description": "Clear lines and horizon circle for yoniso",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"teal",
 				"line-art"
@@ -460,7 +433,6 @@
 			"id": "eye-shield",
 			"title": "Restraint (eye + gates)",
 			"description": "Saṃvara — eye with vertical bars.",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art"
 			],
@@ -476,7 +448,6 @@
 			"id": "bowl-robe",
 			"title": "Proper use (bowl + robe)",
 			"description": "Paṭisevanā requisites.",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art"
 			],
@@ -491,7 +462,6 @@
 			"id": "endure",
 			"title": "Enduring",
 			"description": "Adhivāsanā — figure with stress lines.",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art"
 			],
@@ -506,7 +476,6 @@
 			"id": "avoid-fork",
 			"title": "Avoiding (fork)",
 			"description": "Parivajjanā — path to danger vs safety.",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art",
 				"fork"
@@ -524,7 +493,6 @@
 			"id": "flame-thought",
 			"title": "Flame",
 			"description": "Flame representative of thought of sensual desire (kāmavitakka)",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art",
 				"flame"
@@ -542,7 +510,6 @@
 			"id": "thorn-vine",
 			"title": "Thorn vine",
 			"description": "Thorn vine representative of thought of ill will (byāpādavitakka)",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art"
 			],
@@ -559,7 +526,6 @@
 			"id": "impact-star",
 			"title": "Remove: harmful thought",
 			"description": "Vihiṁsāvitakka — impact star.",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art"
 			],
@@ -575,7 +541,6 @@
 			"id": "seven-factors",
 			"title": "Seven awakening factors",
 			"description": "Bojjhaṅga arc — seven dots",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"line-art",
 				"dots"
@@ -590,7 +555,6 @@
 			"id": "bowl-overflow",
 			"title": "Heir of material things (bowl with excess)",
 			"description": "Heaped bowl — āmisadāyāda",
-			"sourceGraphic": "mn3.svg",
 			"tags": [
 				"line-art",
 				"bowl",
@@ -604,7 +568,6 @@
 			"id": "bowl-empty",
 			"title": "Heir in the Dhamma (empty bowl)",
 			"description": "Empty bowl — dhammadāyāda",
-			"sourceGraphic": "mn3.svg",
 			"tags": [
 				"line-art",
 				"bowl",
@@ -618,7 +581,6 @@
 			"id": "lunar-phases",
 			"title": "Lunar fortnight (four phases)",
 			"description": "Four lunar phases — auspicious nights row",
-			"sourceGraphic": "mn4.svg",
 			"tags": [
 				"line-art",
 				"moon",
@@ -632,7 +594,6 @@
 			"id": "posture-walking",
 			"title": "Posture: walking",
 			"description": "Walking figure — postures",
-			"sourceGraphic": "mn4.svg",
 			"tags": [
 				"line-art",
 				"figure"
@@ -648,7 +609,6 @@
 			"id": "posture-standing",
 			"title": "Posture: standing",
 			"description": "Standing figure — postures",
-			"sourceGraphic": "mn4.svg",
 			"tags": [
 				"line-art",
 				"figure"
@@ -664,7 +624,6 @@
 			"id": "posture-sitting",
 			"title": "Posture: sitting",
 			"description": "Seated figure — postures",
-			"sourceGraphic": "mn4.svg",
 			"tags": [
 				"line-art",
 				"figure"
@@ -680,7 +639,6 @@
 			"id": "posture-lying",
 			"title": "Posture: lying down",
 			"description": "Reclining figure — postures",
-			"sourceGraphic": "mn4.svg",
 			"tags": [
 				"line-art",
 				"figure"
@@ -696,7 +654,6 @@
 			"id": "bowl-stained",
 			"title": "Stained bronze bowl",
 			"description": "Stained bowl (neglected) — not seeing one’s blemish",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"bowl",
@@ -713,7 +670,6 @@
 			"id": "bowl-polished",
 			"title": "Polished bronze bowl",
 			"description": "Polished bowl (cared for) — knowing one’s blemish",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"bowl",
@@ -730,7 +686,6 @@
 			"id": "bowl-dusty-clean",
 			"title": "Bowl gathering dust",
 			"description": "Clean bowl gathering dust",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"bowl"
@@ -746,7 +701,6 @@
 			"id": "bowl-gleaming",
 			"title": "Clean gleaming bowl",
 			"description": "Shining clean bowl",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"bowl",
@@ -763,7 +717,6 @@
 			"id": "wish-eye-slash",
 			"title": "Unwholesome wish: concealing wrongdoing",
 			"description": "Eye with slash — wish for hiding faults",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -780,7 +733,6 @@
 			"id": "wish-status-seat",
 			"title": "Unwholesome wish: status",
 			"description": "Seat motif — desire for precedence and honor",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -797,7 +749,6 @@
 			"id": "wish-teach-speaker",
 			"title": "Unwholesome wish: to teach",
 			"description": "Speaking figure — wish to instruct others",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -814,7 +765,6 @@
 			"id": "wish-honor-bow",
 			"title": "Unwholesome wish: honor",
 			"description": "Bow and second figure — wish to be revered",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -831,7 +781,6 @@
 			"id": "wish-requisite-robe",
 			"title": "Requisite: robes",
 			"description": "Robe triangle — finest requisites",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -847,7 +796,6 @@
 			"id": "wish-requisite-bowl",
 			"title": "Requisite: alms bowl",
 			"description": "Small bowl — piṇḍapāta",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish",
@@ -864,7 +812,6 @@
 			"id": "wish-requisite-lodging",
 			"title": "Requisite: lodging",
 			"description": "Shelter outline — senāsana",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -880,7 +827,6 @@
 			"id": "wish-requisite-medicine",
 			"title": "Requisite: medicine",
 			"description": "Cross in circle — bhesajja",
-			"sourceGraphic": "mn5.svg",
 			"tags": [
 				"line-art",
 				"wish"
@@ -896,7 +842,6 @@
 			"id": "body-observer",
 			"title": "Body contemplation",
 			"description": "Small seated figure — kāyānupassī",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"figure",
@@ -920,7 +865,6 @@
 			"id": "feeling-droplet",
 			"title": "Feeling contemplation",
 			"description": "Droplet or flame — vedanānupassī",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"feeling"
@@ -941,7 +885,6 @@
 			"id": "elbow-bracket",
 			"title": "Elbow bracket",
 			"description": "Orthogonal connector with rounded elbow",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"connector"
@@ -954,7 +897,6 @@
 			"id": "number-badge-r10",
 			"title": "Number badge (r=10)",
 			"description": "Template circle + digit for stepped lists",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -967,7 +909,6 @@
 			"id": "number-badge-02",
 			"title": "Step badge: 2",
 			"description": "number display: 2",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -980,7 +921,6 @@
 			"id": "number-badge-03",
 			"title": "Step badge: 3",
 			"description": "number display: 3",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -993,7 +933,6 @@
 			"id": "number-badge-04",
 			"title": "Step badge: 4",
 			"description": "number display: 4",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1006,7 +945,6 @@
 			"id": "number-badge-05",
 			"title": "Step badge: 5",
 			"description": "number display: 5",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1019,7 +957,6 @@
 			"id": "number-badge-06",
 			"title": "Step badge: 6",
 			"description": "number display: 6",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1032,7 +969,6 @@
 			"id": "number-badge-07",
 			"title": "Step badge: 7",
 			"description": "number display: 7",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1045,7 +981,6 @@
 			"id": "number-badge-08",
 			"title": "Step badge: 8",
 			"description": "number display: 8",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1058,7 +993,6 @@
 			"id": "number-badge-09",
 			"title": "Step badge: 9",
 			"description": "number display: 9",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1071,7 +1005,6 @@
 			"id": "number-badge-10",
 			"title": "Step badge: 10",
 			"description": "number display: 10",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1084,7 +1017,6 @@
 			"id": "number-badge-11",
 			"title": "Step badge: 11",
 			"description": "number display: 11",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1097,7 +1029,6 @@
 			"id": "number-badge-12",
 			"title": "Step badge: 12",
 			"description": "number display: 12",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1110,7 +1041,6 @@
 			"id": "number-badge-13",
 			"title": "Step badge: 13",
 			"description": "number display: 13",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1123,7 +1053,6 @@
 			"id": "number-badge-14",
 			"title": "Step badge: 14",
 			"description": "number display: 14",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1136,7 +1065,6 @@
 			"id": "number-badge-15",
 			"title": "Step badge: 15",
 			"description": "number display: 15",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1149,7 +1077,6 @@
 			"id": "number-badge-16",
 			"title": "Step badge: 16",
 			"description": "number display: 16",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"badge",
 				"number"
@@ -1162,7 +1089,6 @@
 			"id": "mind-contemplation",
 			"title": "Mind contemplation",
 			"description": "Concentric circles — citte cittānupassī",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"mind"
@@ -1183,7 +1109,6 @@
 			"id": "mental-qualities",
 			"title": "Mental qualities",
 			"description": "dhammesu dhammānupassī",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"dhamma"
@@ -1204,7 +1129,6 @@
 			"id": "bojjhanga-investigation",
 			"title": "Bojjhaṅga: investigation of states",
 			"description": "dhammavicayasambojjhaṅga glyph",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"bojjhanga"
@@ -1224,7 +1148,6 @@
 			"id": "bojjhanga-energy",
 			"title": "Bojjhaṅga: energy",
 			"description": "vīriyasambojjhaṅga glyph",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"bojjhanga"
@@ -1245,7 +1168,6 @@
 			"id": "bojjhanga-joy",
 			"title": "Bojjhaṅga: joy",
 			"description": "pītisambojjhaṅga glyph",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"bojjhanga"
@@ -1265,7 +1187,6 @@
 			"id": "bojjhanga-tranquility",
 			"title": "Bojjhaṅga: tranquility",
 			"description": "passaddhisambojjhaṅga glyph",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"bojjhanga"
@@ -1285,7 +1206,6 @@
 			"id": "bojjhanga-collectedness",
 			"title": "Bojjhaṅga: collectedness",
 			"description": "samādhisambojjhaṅga glyph",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"bojjhanga"
@@ -1305,7 +1225,6 @@
 			"id": "bojjhanga-equanimity",
 			"title": "Bojjhaṅga: equanimity",
 			"description": "upekkhāsambojjhaṅgo glyph",
-			"sourceGraphic": "mn118.svg",
 			"tags": [
 				"line-art",
 				"bojjhanga"
@@ -1325,7 +1244,6 @@
 			"id": "breath-torso",
 			"title": "Mindfulness of breathing (torso icon)",
 			"description": "Breath and torso line-art",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"breath",
@@ -1347,7 +1265,6 @@
 			"id": "shared-postures-four",
 			"title": "Four postures",
 			"description": "Four postures: walk → stand → sit → lie",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"figure"
@@ -1368,7 +1285,6 @@
 			"id": "clear-awareness-fourfold",
 			"title": "Clear awareness — four sense domains",
 			"description": "2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1387,7 +1303,6 @@
 			"id": "body-impurities",
 			"title": "Body impurities review",
 			"description": "Asuci paccavekkhana motif, kāyānupassanā",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"body"
@@ -1406,7 +1321,6 @@
 			"id": "four-elements",
 			"title": "Four elements in the body",
 			"description": "Earth, water, fire, wind motifs",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1426,7 +1340,6 @@
 			"id": "charnel-skull",
 			"title": "Nine charnel grounds",
 			"description": "Skull and bones — sivathikā",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"death"
@@ -1446,7 +1359,6 @@
 			"id": "jhana-first",
 			"title": "First jhāna simile",
 			"description": "Kneading bath with bubbles — jhāna band",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"jhana"
@@ -1465,7 +1377,6 @@
 			"id": "jhana-second",
 			"title": "Second jhāna simile",
 			"description": "Lake and spring — jhāna band",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"jhana"
@@ -1484,7 +1395,6 @@
 			"id": "jhana-third",
 			"title": "Third jhāna simile",
 			"description": "Submerged lotus — jhāna band",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"jhana"
@@ -1505,7 +1415,6 @@
 			"id": "jhana-fourth",
 			"title": "Fourth jhāna simile",
 			"description": "Bright orb — jhāna band",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"jhana"
@@ -1532,7 +1441,6 @@
 			"id": "simile-uncultivated-clay",
 			"title": "Uncultivated: clay and rock",
 			"description": "abhāvitā simile — wet clay",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1549,7 +1457,6 @@
 			"id": "simile-uncultivated-wood",
 			"title": "Uncultivated: dry wood",
 			"description": "abhāvitā simile — dry sapless wood",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1566,7 +1473,6 @@
 			"id": "simile-uncultivated-jar",
 			"title": "Uncultivated: empty jar",
 			"description": "abhāvitā simile — empty water jar",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1583,7 +1489,6 @@
 			"id": "simile-cultivated-string",
 			"title": "Cultivated: string on heartwood",
 			"description": "bhāvitā simile — light ball on solid wood",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1600,7 +1505,6 @@
 			"id": "simile-cultivated-wet-wood",
 			"title": "Cultivated: wet sappy wood",
 			"description": "bhāvitā simile — fire cannot take",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1617,7 +1521,6 @@
 			"id": "simile-cultivated-full-jar",
 			"title": "Cultivated: full jar",
 			"description": "bhāvitā simile — full water jar",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1634,7 +1537,6 @@
 			"id": "chariot-wheel",
 			"title": "Skilled charioteer",
 			"description": "Spoked wheel — charioteer simile",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art"
 			],
@@ -1649,7 +1551,6 @@
 			"id": "defilements-ended",
 			"title": "Ending of mental defilements",
 			"description": "Twin liberation orbs — āsavakkhaya, cetovimutti",
-			"sourceGraphic": "mn119.svg",
 			"tags": [
 				"line-art",
 				"gold"
@@ -1668,7 +1569,6 @@
 			"id": "conceit-noble-birth",
 			"title": "Conceit motif: noble birth",
 			"description": "Crown zigzag — worldly status",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1684,7 +1584,6 @@
 			"id": "conceit-wealth",
 			"title": "Conceit motif: abundant wealth",
 			"description": "Twin orbs",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1700,7 +1599,6 @@
 			"id": "conceit-fame",
 			"title": "Conceit motif: recognition and fame",
 			"description": "Star",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1716,7 +1614,6 @@
 			"id": "conceit-material-gains",
 			"title": "Conceit motif: material gains",
 			"description": "Dish / gains curve",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1732,7 +1629,6 @@
 			"id": "conceit-great-learning",
 			"title": "Conceit motif: great learning",
 			"description": "Open book",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1748,7 +1644,6 @@
 			"id": "conceit-vinaya",
 			"title": "Conceit motif: Vinaya expert",
 			"description": "Scroll / basket",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1764,7 +1659,6 @@
 			"id": "conceit-dhamma-teacher",
 			"title": "Conceit motif: Dhamma teacher",
 			"description": "Head with speech arc",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1780,7 +1674,6 @@
 			"id": "conceit-forest",
 			"title": "Conceit motif: forest dweller",
 			"description": "Tree",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1796,7 +1689,6 @@
 			"id": "conceit-rag-robe",
 			"title": "Conceit motif: rag-robe wearer",
 			"description": "Folded cloth",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1812,7 +1704,6 @@
 			"id": "conceit-alms",
 			"title": "Conceit motif: alms collector",
 			"description": "Alms bowl curve",
-			"sourceGraphic": "mn113.svg",
 			"tags": [
 				"line-art",
 				"mn113"
@@ -1828,7 +1719,6 @@
 			"id": "ui-chevron-down",
 			"title": "Chevron down",
 			"description": "Small downward chevron",
-			"sourceGraphic": "mn1.svg",
 			"tags": [
 				"ui",
 				"chevron"
@@ -1844,7 +1734,6 @@
 			"id": "ui-arrow-down",
 			"title": "Arrow down",
 			"description": "Conclusion / transition arrow",
-			"sourceGraphic": "mn2.svg",
 			"tags": [
 				"ui",
 				"arrow"
@@ -1857,7 +1746,6 @@
 			"id": "liberation-sparkle",
 			"title": "Liberation sparkle",
 			"description": "Gold sparkle on path to liberation",
-			"sourceGraphic": "an10.1.svg",
 			"tags": [
 				"gold",
 				"line-art",
@@ -1874,7 +1762,6 @@
 			"id": "wide-arc",
 			"title": "Wide structural arc",
 			"description": "Horizontal quadratic rail",
-			"sourceGraphic": "an7.61.svg",
 			"tags": [
 				"line-art",
 				"arc"
@@ -1887,7 +1774,6 @@
 			"id": "branch-split",
 			"title": "Branch split",
 			"description": "Chevron with two curved branches",
-			"sourceGraphic": "sn36.6.svg",
 			"tags": [
 				"line-art",
 				"fork"
@@ -1900,7 +1786,6 @@
 			"id": "tree-barren",
 			"title": "Tree simile: without branches and leaves",
 			"description": "Barren twin-trunk tree",
-			"sourceGraphic": "an7.65.svg",
 			"tags": [
 				"line-art",
 				"an7",
@@ -1919,7 +1804,6 @@
 			"id": "tree-flourishing",
 			"title": "Tree simile: abundant branches and leaves",
 			"description": "Flourishing tree with canopy",
-			"sourceGraphic": "an7.65.svg",
 			"tags": [
 				"line-art",
 				"an7",
@@ -1939,7 +1823,6 @@
 			"id": "head-on-fire",
 			"title": "Simile: head on fire",
 			"description": "Flame motif",
-			"sourceGraphic": "an10.51.svg",
 			"tags": [
 				"line-art",
 				"an10",
@@ -1957,7 +1840,6 @@
 			"id": "two-darts",
 			"title": "Two darts",
 			"description": "Figure with bodily dart and mental loop",
-			"sourceGraphic": "sn36.6.svg",
 			"tags": [
 				"line-art",
 				"sn36",
@@ -1975,7 +1857,6 @@
 			"id": "one-dart",
 			"title": "One dart",
 			"description": "Figure with bodily dart only",
-			"sourceGraphic": "sn36.6.svg",
 			"tags": [
 				"line-art",
 				"sn36",
@@ -1994,7 +1875,6 @@
 			"id": "virtue-tablet",
 			"title": "Accomplishment in virtue",
 			"description": "Tablet with precepts and checkmark",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2012,7 +1892,6 @@
 			"id": "sense-restraint",
 			"title": "Sense restraint",
 			"description": "Eye with shield",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2031,7 +1910,6 @@
 			"id": "moderation-bowl",
 			"title": "Moderation in eating",
 			"description": "Alms bowl",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2051,7 +1929,6 @@
 			"id": "wakefulness-moon",
 			"title": "Devotion to wakefulness",
 			"description": "Moon with watch marks",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2070,7 +1947,6 @@
 			"id": "hen-egg-simile",
 			"title": "Hen and egg simile",
 			"description": "Cracked egg",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2089,7 +1965,6 @@
 			"id": "past-lives-eye",
 			"title": "Recollection of past lives",
 			"description": "Eye glancing backward — first breakthrough (pubbenivāsānussati)",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2109,7 +1984,6 @@
 			"id": "breakthrough-divine-eye",
 			"title": "Divine eye",
 			"description": "Radiant eye — second breakthrough (dibbacakkhu)",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2132,7 +2006,6 @@
 			"id": "broken-chain",
 			"title": "breaking of fetters",
 			"description": "Fetters abandoned — broken chain",
-			"sourceGraphic": "mn53.svg",
 			"tags": [
 				"line-art",
 				"mn53",
@@ -2157,7 +2030,6 @@
 			"id": "sense-nose",
 			"title": "Internal sense base: nose",
 			"description": "Nose outline — ghāna",
-			"sourceGraphic": "mn148.svg",
 			"tags": [
 				"line-art",
 				"mn148",
@@ -2177,7 +2049,6 @@
 			"id": "sense-tongue",
 			"title": "Internal sense base: tongue",
 			"description": "Tongue outline — jivhā",
-			"sourceGraphic": "mn148.svg",
 			"tags": [
 				"line-art",
 				"mn148",
@@ -2197,7 +2068,6 @@
 			"id": "simile-carpenter-pegs",
 			"title": "Fine peg replaces coarse peg",
 			"description": "Two pegs and replacement arrow (aññaṁ nimittaṁ…)",
-			"sourceGraphic": "mn20.svg",
 			"tags": [
 				"line-art",
 				"mn20",
@@ -2215,7 +2085,6 @@
 			"id": "simile-carcass-necklace",
 			"title": "Carcass hung around the neck",
 			"description": "Figure recoiling from necklace (drawbacks)",
-			"sourceGraphic": "mn20.svg",
 			"tags": [
 				"line-art",
 				"mn20",
@@ -2234,7 +2103,6 @@
 			"id": "simile-look-away",
 			"title": "Closing the eyes / looking away",
 			"description": "Struck-through eye — (asati amanasikāra)",
-			"sourceGraphic": "mn20.svg",
 			"tags": [
 				"line-art",
 				"mn20",
@@ -2252,7 +2120,6 @@
 			"id": "simile-subdue-figures",
 			"title": "Strong person subdues a weaker one",
 			"description": "Two figures — (forceful mind training)",
-			"sourceGraphic": "mn20.svg",
 			"tags": [
 				"line-art",
 				"mn20",
@@ -2271,7 +2138,6 @@
 			"id": "hindrance-dullness",
 			"title": "Hindrance: dullness and drowsiness",
 			"description": "Thinamiddha motif — cloud and drooping line.",
-			"sourceGraphic": "mn10.svg",
 			"tags": [
 				"line-art",
 				"mn10",
@@ -2290,7 +2156,6 @@
 			"id": "hindrance-doubt",
 			"title": "Hindrance: doubt",
 			"description": "Vicikicchā motif — question-mark curve.",
-			"sourceGraphic": "mn10.svg",
 			"tags": [
 				"line-art",
 				"mn10",
@@ -2309,7 +2174,6 @@
 			"id": "impermanence-dissolve",
 			"title": "Recognition of impermanence",
 			"description": "Half-arc dissolving into particles — aniccasaññā",
-			"sourceGraphic": "mn106.svg",
 			"tags": [
 				"line-art",
 				"mn106"
@@ -2327,7 +2191,6 @@
 			"id": "emptiness-void",
 			"title": "Emptiness of perceptions",
 			"description": "Hollow ring with dashed void — suññato",
-			"sourceGraphic": "mn106.svg",
 			"tags": [
 				"line-art",
 				"mn106"
@@ -2345,7 +2208,6 @@
 			"id": "non-belonging-scatter",
 			"title": "Non-belonging",
 			"description": "Unconnected dot with dispersed lines — netaṁ mama",
-			"sourceGraphic": "mn106.svg",
 			"tags": [
 				"line-art",
 				"mn106"
@@ -2359,6 +2221,24 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/non-belonging-scatter.svg"
+		},
+		{
+			"id": "dwell-loop",
+			"title": "Abundant dwelling (return loop)",
+			"description": "U-shaped track with arrow — dwell thus often · tabbahulavihārī",
+			"tags": [
+				"line-art",
+				"mn106",
+				"arrow"
+			],
+			"discourse": "mn106",
+			"labels": [
+				"diligence",
+				"effort",
+				"skillful means"
+			],
+			"valence": "+ve",
+			"svg": "icons/dwell-loop.svg"
 		}
 	]
 }
