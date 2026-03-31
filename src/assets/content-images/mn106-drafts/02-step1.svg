@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 369" width="920" height="369">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c2840" /><stop offset="100%" stop-color="#182236" />
+    </linearGradient>
+    <linearGradient id="maraPanel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#221828" />
+      <stop offset="100%" stop-color="#1e1420" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="369" fill="url(#bg)" />
+
+  <!-- Tier heading -->
+  <line x1="200" y1="14" x2="720" y2="14" stroke="url(#tierGrad)" stroke-width="0.5" />
+  <text x="460" y="34" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5">CONDUCIVE TO THE IMPERTURBABLE · āneñjasappāyā paṭipadā</text>
+
+  <!-- MĀRA'S REALM PANEL -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="50" width="800" height="136" rx="10" fill="url(#maraPanel)" stroke="#a06070" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Vertical REFLECTION label -->
+  <text x="90" y="118" fill="#e86040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" letter-spacing="2"
+    transform="rotate(-90 90 118)" text-anchor="middle" opacity="0.85">REFLECTION</text>
+
+  <text x="460" y="75" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    letter-spacing="2">MĀRA'S BAIT · mārassesa nivāpo<tspan font-size="42" dx="10" dy="8">·</tspan><tspan dx="10" dy="-8">MĀRA'S HUNTING GROUND · mārassesa gocaro</tspan></text>
+
+  <text x="460" y="96" text-anchor="middle" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">"Sensual pleasures are impermanent, hollow, false, deceptive — they are created by illusion, the prattle of fools"</text>
+
+  <text x="460" y="112" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">aniccā kāmā tucchā musā mosadhammā — māyākatametaṁ bālalāpanaṁ</text>
+
+  <text x="460" y="132" text-anchor="middle" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">On account of them, these harmful <tspan font-size="10" opacity="0.85" font-style="italic">(pāpakā)</tspan> and unwholesome <tspan font-size="10" opacity="0.85" font-style="italic">(akusalā)</tspan> states arise:</text>
+
+  <!-- Intense longing icon -->
+  <g transform="translate(140, 145)" opacity="0.5" filter="url(#iconGlow)">
+    <g transform="scale(1.1)">
+      <g transform="translate(12, 12) scale(0.77363) translate(-10, -11)">
+        <path d="M 10 -2 C 10 -2, 2 8, 2 14 C 2 19, 6 24, 10 24 C 14 24, 18 19, 18 14 C 18 8, 10 -2, 10 -2 Z" fill="#e8604018" stroke="#e86040" stroke-width="1.3" stroke-linejoin="round" />
+        <path d="M 10 8 C 10 8, 6 13, 6 16 C 6 18.5, 8 20, 10 20 C 12 20, 14 18.5, 14 16 C 14 13, 10 8, 10 8 Z" fill="#e8604028" stroke="#e86040" stroke-width="0.9" opacity="0.7" stroke-linejoin="round" />
+      </g>
+    </g>
+  </g>
+  <!-- Intense longing -->
+  <text x="175" y="155" text-anchor="start" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">Intense longing</text>
+  <text x="175" y="169" text-anchor="start" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">abhijjhā</text>
+
+  <!-- Ill will icon -->
+  <g transform="translate(410, 145)" opacity="0.5" filter="url(#iconGlow)">
+    <g transform="scale(1.4)">
+      <g transform="translate(12, 12) scale(0.46726) translate(-22, -10)">
+        <path d="M 0 10 C 8 3, 16 17, 24 6 C 32 -2, 38 12, 44 8" fill="none" stroke="#a07058" stroke-width="1.2" stroke-linecap="round" />
+        <path d="M 6 6 L 4 1 L 8 4" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+        <path d="M 14 14 L 12 19 L 16 16" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+        <path d="M 22 6 L 20 1 L 24 4" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+        <path d="M 30 6 L 28 11 L 32 8" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+        <path d="M 44 8 L 42 3 L 46 6" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+      </g>
+    </g>
+  </g>
+  <!-- Ill will -->
+  <text x="445" y="155" text-anchor="start" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">Ill will</text>
+  <text x="445" y="169" text-anchor="start" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">byāpāda</text>
+
+  <!-- Aggressiveness icon -->
+  <g transform="translate(670, 145)" opacity="0.5" filter="url(#iconGlow)">
+    <g transform="scale(1.1)">
+      <g transform="translate(12, 12) scale(1.00571) translate(-10, -10)">
+        <path d="M 10 0 L 12 7 L 20 5 L 14 10 L 20 16 L 12 13 L 10 20 L 8 13 L 0 16 L 6 10 L 0 5 L 8 7 Z" fill="#70788820" stroke="#808898" stroke-width="1" stroke-linejoin="round" />
+      </g>
+    </g>
+  </g>
+  <!-- Aggressiveness -->
+  <text x="705" y="155" text-anchor="start" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">Aggressiveness</text>
+  <text x="705" y="169" text-anchor="start" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sārambha</text>
+
+  <!-- 1ST WAY sub-label -->
+  <text x="460" y="216" text-anchor="middle" fill="#5a7898" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1.5">1ST WAY</text>
+
+  <!-- Card 1 -->
+  <g filter="url(#shadowDrop)">
+    <rect x="160" y="230" width="600" height="130" rx="8" fill="url(#stg1)" stroke="#5a7898" stroke-width="0.8" stroke-opacity="0.4" />
+  </g>
+
+  <!-- Loop arc: dwell thus often / tabbahulavihārī -->
+  <path d="M 178 251 L 178 346 A 9 9 0 0 0 196 346 L 196 244 A 9 9 0 0 0 178 244 Z"
+    fill="none" stroke="#5a7898" stroke-width="0.5" opacity="0.25" />
+  <polygon points="174,251 182,251 178,243" fill="#5a7898" opacity="0.25" />
+  <text x="176" y="297" fill="#5a7898" opacity="0.8"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="1.2"
+    transform="rotate(-90 176 297)" text-anchor="middle">dwell thus often</text>
+  <text x="198" y="297" fill="#5a7898" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="0.8" font-style="italic"
+    transform="rotate(-90 194 297)" text-anchor="middle">tabbahulavihārī</text>
+
+  <!-- Contemplation -->
+  <text x="460" y="250" text-anchor="middle" fill="#b0c0d0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Having surpassed the world, dwell with an abundant and exalted mind</text>
+  <text x="460" y="266" text-anchor="middle" fill="#7898a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">vipulena mahaggatena cetasā abhibhuyya lokaṁ adhiṭṭhāya manasā</text>
+  <text x="460" y="286" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">By abandoning harmful states, the mind becomes vast, boundless, and well cultivated</text>
+  <text x="460" y="302" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">aparittaṁ appamāṇaṁ subhāvitaṁ</text>
+
+  <!-- Divider -->
+  <line x1="220" y1="316" x2="700" y2="316" stroke="#5a7898" stroke-width="0.3" stroke-dasharray="3,4" opacity="0.25" />
+
+  <!-- Confidence -->
+  <text x="460" y="334" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">When the mind acquires confidence · he attains to the imperturbable</text>
+  <text x="460" y="350" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">āyatane cittaṁ pasīdati · āneñjaṁ samāpajjati</text>
+
+  <!-- jhana-fourth icon (bright orb) -->
+  <g transform="translate(700, 238)" opacity="0.6" filter="url(#iconGlow)">
+    <g transform="scale(2)">
+      <g transform="translate(12, 12) scale(0.51512) translate(0, 0)">
+        <g opacity="0.85" stroke="#d0d8e0" fill="none" stroke-linecap="round">
+          <circle cx="0" cy="0" r="20" fill="#e0e8f0" fill-opacity="0.2" stroke-width="1" />
+          <circle cx="-6" cy="-7" r="7" fill="#e0e8f0" fill-opacity="0.12" stroke="none" />
+          <circle cx="-4" cy="-5" r="3" fill="#f0f4f8" fill-opacity="0.08" stroke="none" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

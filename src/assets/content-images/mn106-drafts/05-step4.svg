@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 209" width="920" height="209">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2e30" /><stop offset="100%" stop-color="#1a282c" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="209" fill="url(#bg)" />
+
+  <!-- Tier heading -->
+  <line x1="200" y1="14" x2="720" y2="14" stroke="url(#tierGrad)" stroke-width="0.5" />
+  <text x="460" y="34" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5">CONDUCIVE TO THE BASE OF NOTHINGNESS · ākiñcaññāyatanasappāyā paṭipadā</text>
+
+  <!-- 1ST WAY sub-label -->
+  <text x="460" y="62" text-anchor="middle" fill="#5a8878" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1.5">1ST WAY</text>
+
+  <!-- Card 4 -->
+  <g filter="url(#shadowDrop)">
+    <rect x="190" y="72" width="540" height="130" rx="8" fill="url(#stg2)" stroke="#5a8878" stroke-width="0.8" stroke-opacity="0.4" />
+  </g>
+
+  <!-- Loop arc: dwell thus often -->
+  <path d="M 208 93 L 208 188 A 9 9 0 0 0 226 188 L 226 86 A 9 9 0 0 0 208 86 Z"
+    fill="none" stroke="#5a8878" stroke-width="0.5" opacity="0.25" />
+  <polygon points="204,93 212,93 208,85" fill="#5a8878" opacity="0.25" />
+  <text x="206" y="139" fill="#5a8878" opacity="0.8"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="1.2"
+    transform="rotate(-90 206 139)" text-anchor="middle">dwell thus often</text>
+  <text x="228" y="139" fill="#5a8878" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="0.8" font-style="italic"
+    transform="rotate(-90 224 139)" text-anchor="middle">tabbahulavihārī</text>
+
+  <!-- Contemplation -->
+  <text x="460" y="94" text-anchor="middle" fill="#b0c0d0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">... and the perception of the imperturbable — all these are perceptions</text>
+  <text x="460" y="110" text-anchor="middle" fill="#7898a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">kāmā, rūpā, yā ca āneñjasaññā — sabbā saññā</text>
+  <text x="460" y="128" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Where they cease without remainder, that is peaceful, that is sublime</text>
+  <text x="460" y="144" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">aparisesā nirujjhanti etaṁ santaṁ etaṁ paṇītaṁ</text>
+
+  <!-- Divider -->
+  <line x1="250" y1="158" x2="670" y2="158" stroke="#5a8878" stroke-width="0.3" stroke-dasharray="3,4" opacity="0.25" />
+
+  <!-- Confidence -->
+  <text x="460" y="174" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">When the mind acquires confidence · he attains to the base of nothingness</text>
+  <text x="460" y="190" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">āyatane cittaṁ pasīdati · ākiñcaññāyatanaṁ samāpajjati</text>
+
+  <!-- Nothingness-base icon (dashed ring) -->
+  <g transform="translate(672, 84)" opacity="0.6" filter="url(#iconGlow)">
+    <g transform="scale(2)">
+      <g transform="translate(12, 12) scale(1.45655) translate(-10, -10)">
+        <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" stroke-dasharray="4,3" />
+      </g>
+    </g>
+  </g>
+</svg>

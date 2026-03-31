@@ -319,8 +319,10 @@
 			],
 			"discourse": "mn1",
 			"labels": [
+				"formless",
 				"phenomena"
 			],
+			"valence": "+ve",
 			"svg": "icons/space-base.svg"
 		},
 		{
@@ -333,8 +335,10 @@
 			],
 			"discourse": "mn1",
 			"labels": [
+				"formless",
 				"phenomena"
 			],
+			"valence": "+ve",
 			"svg": "icons/consciousness-base.svg"
 		},
 		{
@@ -346,10 +350,15 @@
 				"line-art",
 				"dashed"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn106"
+			],
 			"labels": [
+				"formless",
 				"phenomena"
 			],
+			"valence": "+ve",
 			"svg": "icons/nothingness-base.svg"
 		},
 		{
@@ -360,10 +369,15 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn106"
+			],
 			"labels": [
+				"formless",
 				"phenomena"
 			],
+			"valence": "+ve",
 			"svg": "icons/neither-base.svg"
 		},
 		{
@@ -1398,7 +1412,8 @@
 			],
 			"discourse": [
 				"mn119",
-				"mn10"
+				"mn10",
+				"mn106"
 			],
 			"labels": [
 				"elements",
@@ -1495,7 +1510,10 @@
 				"line-art",
 				"jhana"
 			],
-			"discourse": "mn119",
+			"discourse": [
+				"mn119",
+				"mn106"
+			],
 			"labels": [
 				"awakening",
 				"clear awareness",
@@ -2286,6 +2304,61 @@
 			],
 			"valence": "-ve",
 			"svg": "icons/hindrance-doubt.svg"
+		},
+		{
+			"id": "impermanence-dissolve",
+			"title": "Recognition of impermanence",
+			"description": "Half-arc dissolving into particles — aniccasaññā",
+			"sourceGraphic": "mn106.svg",
+			"tags": [
+				"line-art",
+				"mn106"
+			],
+			"discourse": "mn106",
+			"labels": [
+				"dispassion",
+				"recognition of impermanence",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/impermanence-dissolve.svg"
+		},
+		{
+			"id": "emptiness-void",
+			"title": "Emptiness of perceptions",
+			"description": "Hollow ring with dashed void — suññato",
+			"sourceGraphic": "mn106.svg",
+			"tags": [
+				"line-art",
+				"mn106"
+			],
+			"discourse": "mn106",
+			"labels": [
+				"formless",
+				"perceiving escape",
+				"with nothing"
+			],
+			"valence": "+ve",
+			"svg": "icons/emptiness-void.svg"
+		},
+		{
+			"id": "non-belonging-scatter",
+			"title": "Non-belonging",
+			"description": "Unconnected dot with dispersed lines — netaṁ mama",
+			"sourceGraphic": "mn106.svg",
+			"tags": [
+				"line-art",
+				"mn106"
+			],
+			"discourse": "mn106",
+			"labels": [
+				"formless",
+				"free from attachment",
+				"non identification",
+				"recognition of not self"
+			],
+			"valence": "+ve",
+			"svg": "icons/non-belonging-scatter.svg"
 		}
 	]
 }

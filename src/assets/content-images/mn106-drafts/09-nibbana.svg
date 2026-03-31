@@ -1,0 +1,250 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 660" width="920" height="660">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" /><stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" /><stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="bridgeFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2230" /><stop offset="100%" stop-color="#161e2a" />
+    </linearGradient>
+    <linearGradient id="cultL" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#221828" /><stop offset="100%" stop-color="#1a1422" />
+    </linearGradient>
+    <linearGradient id="cultR" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142a32" /><stop offset="100%" stop-color="#10242c" />
+    </linearGradient>
+    <linearGradient id="identityFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#281820" /><stop offset="100%" stop-color="#201018" />
+    </linearGradient>
+    <linearGradient id="deathlessFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2e2818" /><stop offset="100%" stop-color="#242014" />
+    </linearGradient>
+    <radialGradient id="conclusionGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="660" fill="url(#bg)" />
+
+  <!-- ═══ NIBBĀNA TIER HEADING ═══ -->
+  <line x1="200" y1="14" x2="720" y2="14" stroke="url(#tierGrad)" stroke-width="0.5" />
+  <text x="460" y="34" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5">NIBBĀNA</text>
+
+  <!-- ═══ EQUANIMITY CARD (expanded, like other step cards) ═══ -->
+  <g filter="url(#shadowDrop)">
+    <rect x="180" y="48" width="560" height="155" rx="8" fill="url(#bridgeFill)" stroke="#c8a040" stroke-width="0.6" stroke-opacity="0.4" />
+  </g>
+
+  <!-- Loop arc: dwell thus often / tabbahulavihārī -->
+  <path d="M 198 69 L 198 189 A 9 9 0 0 0 216 189 L 216 62 A 9 9 0 0 0 198 62 Z"
+    fill="none" stroke="#c8a040" stroke-width="0.5" opacity="0.25" />
+  <polygon points="194,69 202,69 198,61" fill="#c8a040" opacity="0.25" />
+  <text x="196" y="128" fill="#c8a040" opacity="0.8"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="1.2"
+    transform="rotate(-90 196 128)" text-anchor="middle">dwell thus often</text>
+  <text x="218" y="128" fill="#c8a040" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="0.8" font-style="italic"
+    transform="rotate(-90 214 128)" text-anchor="middle">tabbahulavihārī</text>
+
+  <!-- Title -->
+  <text x="460" y="70" text-anchor="middle" fill="#b0c0d0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Would such a bhikkhu attain Nibbāna or not?</text>
+
+  <!-- Reflection -->
+  <text x="460" y="92" text-anchor="middle" fill="#c8d8e8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">"It might not be, and it might not be mine. It will not be, and it will not be mine</text>
+  <text x="460" y="108" text-anchor="middle" fill="#c8d8e8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">What there is, what has come to be—that I abandon"</text>
+  <text x="460" y="124" text-anchor="middle" fill="#6888a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">no cassa, no ca me siyā; na bhavissati, na me bhavissati</text>
+  <text x="460" y="140" text-anchor="middle" fill="#6888a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">yadatthi yaṁ bhūtaṁ—taṁ pajahāmī</text>
+
+  <!-- Divider -->
+  <line x1="240" y1="154" x2="680" y2="154" stroke="#c8a040" stroke-width="0.3" stroke-dasharray="3,4" opacity="0.25" />
+
+  <!-- Confidence / Equanimity -->
+  <text x="460" y="180" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Thus he acquires equanimity · so upekkhaṁ paṭilabhati</text>
+  <!--text x="460" y="188" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">Ānanda: "Would that bhikkhu attain Nibbāna, or would he not?"</text-->
+
+  <!-- Equanimity icon (right side) -->
+  <g transform="translate(680, 56)" opacity="0.55" filter="url(#iconGlow)">
+    <g transform="scale(2)">
+      <g transform="translate(12, 12) scale(1.00571) translate(0, 0)">
+        <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="-10" y1="0" x2="10" y2="0" />
+          <path d="M 0 -3 L 3 0 L 0 3 L -3 0 Z" />
+          <line x1="-10" y1="-4" x2="-10" y2="4" />
+          <line x1="10" y1="-4" x2="10" y2="4" />
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- ═══ BRANCH SPLIT ═══ -->
+  <g transform="translate(460, 210)">
+    <path d="M -6 0 L 0 8 L 6 0" stroke="#c8a040" stroke-width="0.8" fill="none" opacity="0.45" stroke-linecap="round" />
+    <path d="M 0 8 C 0 22, -195 20, -195 38" stroke="#b07088" stroke-width="0.8" fill="none" opacity="0.45" stroke-linecap="round" />
+    <path d="M 0 8 C 0 22, 205 20, 205 38" stroke="#60a088" stroke-width="0.8" fill="none" opacity="0.45" stroke-linecap="round" />
+  </g>
+
+  <!-- ═══ CLINGING vs NON-CLINGING SPLIT ═══ -->
+
+  <!-- Left panel: CLINGING -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="252" width="390" height="200" rx="10" fill="url(#cultL)" stroke="#a08090" stroke-width="0.8" stroke-opacity="0.35" />
+  </g>
+  <!-- Right panel: NON-CLINGING -->
+  <g filter="url(#shadowDrop)">
+    <rect x="470" y="252" width="390" height="200" rx="10" fill="url(#cultR)" stroke="#60a088" stroke-width="0.8" stroke-opacity="0.35" />
+  </g>
+  <!-- Gold vertical divider -->
+  <line x1="460" y1="252" x2="460" y2="452" stroke="#c8a040" stroke-width="0.5" stroke-opacity="0.2" />
+
+  <!-- Clinging icon + heading -->
+  <g transform="translate(195, 274)" opacity="0.5" filter="url(#iconGlow)">
+    <g transform="scale(1.2)">
+      <g transform="translate(12, 12) scale(0.72329) translate(-14, -14.2768)">
+        <path d="M 0 12 Q 10 0, 20 14 Q 28 28, 12 22 Q -2 18, 10 8 Q 22 0, 28 16" fill="none" stroke="#a06070" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M 4 24 Q 14 16, 24 24" fill="none" stroke="#a06070" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+  <text x="280" y="285" text-anchor="middle" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2">CLINGING</text>
+  <text x="280" y="301" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">saupādāna</text>
+
+  <text x="255" y="330" text-anchor="middle" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">He delights in that equanimity, welcomes it, and holds tightly to it</text>
+  <text x="255" y="348" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">So taṁ upekkhaṁ abhinandati, abhivadati, ajjhosāya tiṭṭhati</text>
+
+  <text x="255" y="380" text-anchor="middle" fill="#8a7888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">His consciousness becomes dependent on it and clings to it</text>
+  <text x="255" y="394" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">tannissitaṁ hoti viññāṇaṁ tadupādānaṁ</text>
+
+  <text x="255" y="424" text-anchor="middle" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">A bhikkhu with clinging does not attain Nibbāna</text>
+  <text x="255" y="438" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">Saupādāno bhikkhu na parinibbāyati</text>
+
+  <!-- Non-clinging icon + heading -->
+  <g transform="translate(584, 274)" opacity="0.7" filter="url(#iconGlow)">
+    <g transform="scale(1.2)">
+      <g transform="translate(12, 12) scale(0.8381) translate(-14, -12)">
+        <line x1="2" y1="14" x2="26" y2="14" stroke="#60a088" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="6" y1="20" x2="22" y2="20" stroke="#60a088" stroke-width="0.9" stroke-linecap="round"/>
+        <circle cx="14" cy="8" r="4" fill="none" stroke="#80c0a0" stroke-width="0.9" opacity="0.7"/>
+      </g>
+    </g>
+  </g>
+  <text x="690" y="285" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2">NON-CLINGING</text>
+  <text x="690" y="301" text-anchor="middle" fill="#508070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">anupādāna</text>
+
+  <text x="665" y="330" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">He does not delight in that, does not welcome it, does not hold tightly to it</text>
+  <text x="665" y="348" text-anchor="middle" fill="#508070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">So taṁ upekkhaṁ nābhinandati, nābhivadati, na ajjhosāya tiṭṭhati</text>
+
+  <text x="665" y="380" text-anchor="middle" fill="#80a898"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">His consciousness does not become dependent on it and does not cling to it</text>
+  <text x="665" y="394" text-anchor="middle" fill="#508070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">na tannissitaṁ hoti viññāṇaṁ na tadupādānaṁ</text>
+
+  <text x="665" y="424" text-anchor="middle" fill="#c8a040" filter="url(#glow1)"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">A bhikkhu without clinging attains Nibbāna</text>
+  <text x="665" y="438" text-anchor="middle" fill="#508070"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">anupādāno bhikkhu parinibbāyati</text>
+
+  <!-- ═══ CROSSING THE FLOOD ═══ -->
+  <text x="460" y="494" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">"The Blessed One has declared the crossing of the flood</text>
+  <text x="460" y="510" text-anchor="middle" fill="#90a0b8"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">by relying on one support after another"</text>
+  <text x="460" y="526" text-anchor="middle" fill="#708878"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">nissāya nissāya kira bhagavatā oghassa nittharaṇā akkhātā</text>
+
+  <!-- ═══ IDENTITY vs DEATHLESS SPLIT ═══ -->
+
+  <!-- Left panel: IDENTITY -->
+  <g filter="url(#shadowDrop)">
+    <rect x="60" y="546" width="390" height="110" rx="10" fill="url(#identityFill)" stroke="#a06070" stroke-width="0.8" stroke-opacity="0.4" />
+  </g>
+  <!-- Right panel: DEATHLESS -->
+  <g filter="url(#shadowDrop)">
+    <rect x="470" y="546" width="390" height="110" rx="10" fill="url(#deathlessFill)" stroke="#887848" stroke-width="0.8" stroke-opacity="0.4" />
+  </g>
+  <!-- Gold vertical divider -->
+  <line x1="460" y1="546" x2="460" y2="656" stroke="#c8a040" stroke-width="0.5" stroke-opacity="0.2" />
+
+  <!-- Identity heading -->
+  <text x="255" y="570" text-anchor="middle" fill="#c0a0a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
+    letter-spacing="1.5">AS FAR AS IDENTITY EXTENDS</text>
+  <text x="255" y="586" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sakkāyapariyāpannaṁ</text>
+
+  <!-- Tag: Perceptions of -->
+  <g transform="translate(70, 607)">
+    <rect x="0" y="-10" width="80" height="18" rx="4" fill="#2a2230" stroke="#e86040" stroke-width="0.5" opacity="0.9"/>
+    <text x="40" y="2" text-anchor="middle" fill="#c0a0a8"
+      font-family="Georgia,'Times New Roman',serif" font-size="9">Perceptions of</text>
+  </g>
+  <text x="255" y="610" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Sensual pleasures · form · the imperturbable</text>
+  <text x="255" y="626" text-anchor="middle" fill="#a08090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">the base of nothingness · neither perception nor non-perception</text>
+  <text x="255" y="642" text-anchor="middle" fill="#907080"
+    font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">kāmā · rūpā · āneñjaṁ · ākiñcaññāyatanaṁ · nevasaññānāsaññāyatanaṁ</text>
+
+  <!-- Deathless heading -->
+  <text x="665" y="570" text-anchor="middle" fill="#c0a860"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2">DEATHLESS · amata</text>
+  <text x="665" y="586" text-anchor="middle" fill="#907840"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">anupādā cittassa vimokkho</text>
+
+  <!-- Broken chain / liberation icon -->
+  <g transform="translate(550, 572)" opacity="0.5" filter="url(#iconGlow)">
+    <ellipse cx="-6" cy="0" rx="6" ry="8" fill="none" stroke="#c0a860" stroke-width="1.1" />
+    <ellipse cx="10" cy="0" rx="6" ry="8" fill="none" stroke="#c0a860" stroke-width="1.1" />
+    <line x1="0" y1="-4" x2="4" y2="-8" stroke="#c0a860" stroke-width="0.8" stroke-linecap="round" />
+    <line x1="0" y1="4" x2="4" y2="8" stroke="#c0a860" stroke-width="0.8" stroke-linecap="round" />
+  </g>
+
+  <text x="665" y="614" text-anchor="middle" fill="#c8d8e8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">Deliverance of the mind through not clinging</text>
+  <text x="665" y="630" text-anchor="middle" fill="#c0a860"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">The ending of craving · the fading away · cessation</text>
+  <text x="665" y="646" text-anchor="middle" fill="#907840"
+    font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">taṇhākkhayo · virāgo · nirodho</text>
+</svg>

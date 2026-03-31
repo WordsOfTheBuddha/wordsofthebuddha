@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 150" width="920" height="150">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="300" fill="url(#bg)" />
+  <ellipse cx="280" cy="150" rx="300" ry="120" fill="#204050" opacity="0.04" />
+
+  <!-- TITLE BLOCK -->
+  <text x="460" y="38" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+    letter-spacing="3">MN 106 — ĀNEÑJASAPPĀYA SUTTA</text>
+  <text x="476" y="60" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+    letter-spacing="1">Conducive to the Imperturbable</text>
+  <line x1="280" y1="74" x2="640" y2="74" stroke="#a09070" stroke-width="0.5" stroke-opacity="0.3" />
+  <text x="460" y="108" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">"The crossing of the flood by relying on one support after another"</text>
+  <text x="460" y="126" text-anchor="middle" fill="#708878" opacity="0.8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">nissāya nissāya oghassa nittharaṇā</text>
+</svg>

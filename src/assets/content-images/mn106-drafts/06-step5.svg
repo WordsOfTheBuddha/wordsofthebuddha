@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 160" width="920" height="160">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2e30" /><stop offset="100%" stop-color="#1a282c" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="160" fill="url(#bg)" />
+
+  <!-- Sub-tier label -->
+  <text x="460" y="14" text-anchor="middle" fill="#5a8878" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1.5">2ND WAY</text>
+
+  <!-- Card 5 -->
+  <g filter="url(#shadowDrop)">
+    <rect x="190" y="24" width="540" height="130" rx="8" fill="url(#stg2)" stroke="#5a8878" stroke-width="0.8" stroke-opacity="0.4" />
+  </g>
+
+  <!-- Loop arc: dwell thus often -->
+  <path d="M 208 45 L 208 140 A 9 9 0 0 0 226 140 L 226 38 A 9 9 0 0 0 208 38 Z"
+    fill="none" stroke="#5a8878" stroke-width="0.5" opacity="0.25" />
+  <polygon points="204,45 212,45 208,37" fill="#5a8878" opacity="0.25" />
+  <text x="206" y="91" fill="#5a8878" opacity="0.8"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="1.2"
+    transform="rotate(-90 206 91)" text-anchor="middle">dwell thus often</text>
+  <text x="228" y="91" fill="#5a8878" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="0.8" font-style="italic"
+    transform="rotate(-90 224 91)" text-anchor="middle">tabbahulavihārī</text>
+
+  <!-- Setting (unique to this step) -->
+  <text x="460" y="46" text-anchor="middle" fill="#607888" opacity="0.7"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">When gone to the forest, root of a tree, or an empty hut — one reflects:</text>
+
+  <!-- Contemplation -->
+  <text x="460" y="70" text-anchor="middle" fill="#b0c0d0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">"This is empty of a self or of what belongs to a self"</text>
+  <text x="460" y="90" text-anchor="middle" fill="#7898a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">suññamidaṁ attena vā attaniyena vā</text>
+
+  <!-- Divider -->
+  <line x1="250" y1="106" x2="670" y2="106" stroke="#5a8878" stroke-width="0.3" stroke-dasharray="3,4" opacity="0.25" />
+
+  <!-- Confidence -->
+  <text x="460" y="122" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">When the mind acquires confidence · he attains to the base of nothingness</text>
+  <text x="460" y="138" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">āyatane cittaṁ pasīdati · ākiñcaññāyatanaṁ samāpajjati</text>
+
+  <!-- Emptiness icon: hollow ring with void center -->
+  <g transform="translate(672, 32)" opacity="0.6" filter="url(#iconGlow)">
+    <g transform="scale(2)">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#60a088" stroke-width="0.6" />
+      <circle cx="12" cy="12" r="4" fill="none" stroke="#60a088" stroke-width="0.3" stroke-dasharray="1.5,2" opacity="0.4" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.94286) translate(-12, -12)">
+    <circle cx="12" cy="12" r="2.5" fill="#60a088" fill-opacity="0.15" stroke="#60a088" stroke-width="0.6" />
+      <!-- Dispersed lines radiating outward, unconnected -->
+      <line x1="4" y1="4" x2="1" y2="1" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+      <line x1="20" y1="4" x2="23" y2="1" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+      <line x1="4" y1="20" x2="1" y2="23" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+      <line x1="20" y1="20" x2="23" y2="23" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+  </g>
+</svg>

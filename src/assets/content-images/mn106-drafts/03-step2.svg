@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 155" width="920" height="155">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c2840" /><stop offset="100%" stop-color="#182236" />
+    </linearGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="155" fill="url(#bg)" />
+
+  <!-- Sub-tier label -->
+  <text x="460" y="14" text-anchor="middle" fill="#5a7898" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1.5">2ND WAY</text>
+
+  <!-- Card 2 -->
+  <g filter="url(#shadowDrop)">
+    <rect x="160" y="24" width="600" height="125" rx="8" fill="url(#stg1)" stroke="#5a7898" stroke-width="0.8" stroke-opacity="0.4" />
+  </g>
+
+  <!-- Loop arc: dwell thus often / tabbahulavihārī -->
+  <path d="M 178 45 L 178 135 A 9 9 0 0 0 196 135 L 196 38 A 9 9 0 0 0 178 38 Z"
+    fill="none" stroke="#5a7898" stroke-width="0.5" opacity="0.25" />
+  <polygon points="174,45 182,45 178,37" fill="#5a7898" opacity="0.25" />
+  <text x="176" y="88" fill="#5a7898" opacity="0.8"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="1.2"
+    transform="rotate(-90 176 88)" text-anchor="middle">dwell thus often</text>
+  <text x="198" y="88" fill="#5a7898" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="0.8" font-style="italic"
+    transform="rotate(-90 194 88)" text-anchor="middle">tabbahulavihārī</text>
+
+  <!-- Contemplation -->
+  <text x="460" y="44" text-anchor="middle" fill="#b0c0d0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Whatever form there is, all form is the four great elements</text>
+  <text x="460" y="60" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">and form derived from the four great elements</text>
+  <text x="460" y="80" text-anchor="middle" fill="#7898a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">yaṁ kiñci rūpaṁ sabbaṁ rūpaṁ cattāri ca mahābhūtāni, catunnañca mahābhūtānaṁ upādāyarūpa</text>
+
+  <!-- Divider -->
+  <line x1="220" y1="94" x2="700" y2="94" stroke="#5a7898" stroke-width="0.3" stroke-dasharray="3,4" opacity="0.25" />
+
+  <!-- Confidence -->
+  <text x="460" y="112" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10">When the mind acquires confidence · he attains to the imperturbable</text>
+  <text x="460" y="128" text-anchor="middle" fill="#607888"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">āyatane cittaṁ pasīdati · āneñjaṁ samāpajjati</text>
+
+  <!-- Four-elements icon -->
+  <g transform="translate(670, 10)" filter="url(#iconGlow)">
+    <g transform="scale(3)">
+      <g transform="translate(12, 12) scale(0.32146) translate(-10.45, -3.5)">
+        <g opacity="0.75" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(-22,0)" stroke="#7888a0" fill="none" stroke-width="0.8">
+            <line x1="0" y1="0" x2="12" y2="0" />
+            <line x1="1" y1="4" x2="11" y2="4" stroke-width="0.6" />
+            <line x1="2" y1="8" x2="10" y2="8" stroke-width="0.4" />
+          </g>
+          <g transform="translate(-4,0)" stroke="#7888a0" fill="none">
+            <path d="M 0 2 Q 3 -2 6 2 Q 9 6 12 2" stroke-width="0.8" />
+            <path d="M 1 6 Q 4 2 7 6 Q 10 10 12 6" stroke-width="0.5" />
+          </g>
+          <g transform="translate(16,-2)" stroke="#c07060" fill="none" stroke-width="0.9">
+            <path d="M 5 0 C 5 0, 1 5, 1 7 C 1 9, 3 11, 5 11 C 7 11, 9 9, 9 7 C 9 5, 5 0, 5 0 Z" />
+            <path d="M 5 3 C 5 3, 3 6, 3 7.5 C 3 8.5, 4 9.5, 5 9.5 C 6 9.5, 7 8.5, 7 7.5 C 7 6, 5 3, 5 3 Z" stroke-width="0.5" opacity="0.6" />
+          </g>
+          <g transform="translate(32,0)" stroke="#7888a0" fill="none">
+            <path d="M 0 2 Q 5 -2 10 2" stroke-width="0.8" />
+            <path d="M 1 7 Q 6 3 11 7" stroke-width="0.6" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
