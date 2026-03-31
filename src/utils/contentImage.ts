@@ -26,6 +26,20 @@ function assetFileExists(modulePath: string): boolean {
 	}
 }
 
+/**
+ * In serverless bundles (e.g. Vercel functions), source asset paths under
+ * /src/assets are often not present on disk at runtime. In that environment,
+ * rely on import.meta.glob() output instead of fs existence checks.
+ */
+function shouldTrustBundledImageModulePath(): boolean {
+	return !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+}
+
+function imageModulePathUsable(modulePath: string): boolean {
+	if (shouldTrustBundledImageModulePath()) return true;
+	return assetFileExists(modulePath);
+}
+
 // Import all images from content-images directory at build time
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	"/src/assets/content-images/*.{webp,jpg,jpeg,png,svg}",
@@ -41,7 +55,7 @@ const imageByBasenameLower = new Map<string, ResolvedImage>();
 
 for (const [path, mod] of Object.entries(imageModules)) {
 	// Skip entries whose file was removed/renamed while Vite’s glob cache is stale (avoids ImageNotFound in dev).
-	if (!assetFileExists(path)) continue;
+	if (!imageModulePathUsable(path)) continue;
 	const metadata = mod.default;
 	imageByPathLower.set(path.toLowerCase(), {
 		image: metadata,
@@ -80,14 +94,14 @@ function resolveFrontmatterImage(
 
 	for (const candidate of candidates) {
 		const found = imageByPathLower.get(candidate.toLowerCase());
-		if (found && assetFileExists(found.modulePath)) return found;
+		if (found && imageModulePathUsable(found.modulePath)) return found;
 	}
 
 	// 4) Final fallback: match by basename only (handles arbitrary relative paths)
 	const basename = raw.split("/").pop();
 	if (!basename) return undefined;
 	const byBase = imageByBasenameLower.get(basename.toLowerCase());
-	if (byBase && assetFileExists(byBase.modulePath)) return byBase;
+	if (byBase && imageModulePathUsable(byBase.modulePath)) return byBase;
 	return undefined;
 }
 
@@ -252,7 +266,7 @@ export function findContentImages(
 	// Primary image: exact ID match
 	for (const ext of extensions) {
 		const path = `/src/assets/content-images/${normalizedId}.${ext}`;
-		if (imageModules[path] && assetFileExists(path)) {
+		if (imageModules[path] && imageModulePathUsable(path)) {
 			results.push({
 				image: imageModules[path].default,
 				modulePath: path,
@@ -266,7 +280,7 @@ export function findContentImages(
 	// Additional images: {id}-*.{ext} (e.g., an10.61-vijjavimutti.svg)
 	const prefix = `/src/assets/content-images/${normalizedId}-`;
 	for (const [path, mod] of Object.entries(imageModules)) {
-		if (!path.toLowerCase().startsWith(prefix) || !assetFileExists(path)) continue;
+		if (!path.toLowerCase().startsWith(prefix) || !imageModulePathUsable(path)) continue;
 		// Avoid duplicates
 		if (!results.some((r) => r.modulePath === path)) {
 			results.push({
@@ -319,7 +333,7 @@ export function hasContentImage(
 
 	for (const ext of extensions) {
 		const path = `/src/assets/content-images/${normalizedId}.${ext}`;
-		if (imageModules[path] && assetFileExists(path)) {
+		if (imageModules[path] && imageModulePathUsable(path)) {
 			return true;
 		}
 	}
@@ -335,7 +349,7 @@ export function getAllContentImageIds(): string[] {
 	const ids: string[] = [];
 
 	for (const path of Object.keys(imageModules)) {
-		if (!assetFileExists(path)) continue;
+		if (!imageModulePathUsable(path)) continue;
 		// Extract ID from path: /src/assets/content-images/an3.65.webp -> an3.65
 		const match = path.match(/\/content-images\/([^.]+)\./);
 		if (match) {
