@@ -672,8 +672,8 @@ const isSearchOnly = mode === "search-only";
 		if (currentMode === "browse") {
 			renderBrowseResults();
 		} else if (currentMode === "search" && searchQuery) {
-			// Re-render search results to update expanded state
-			performSearch(searchQuery);
+			// Re-render search results to update expanded state (do not scroll to top)
+			performSearch(searchQuery, { scrollToTop: false });
 		}
 	}
 
@@ -720,7 +720,10 @@ const isSearchOnly = mode === "search-only";
 		getPaliMatchType,
 	} from "../utils/searchRanking";
 
-	async function performSearch(query: string) {
+	async function performSearch(
+		query: string,
+		options?: { scrollToTop?: boolean },
+	) {
 		// Close help panel when a new search is performed
 		if (searchHelp) searchHelp.classList.add("hidden");
 		// Show results area
@@ -1487,8 +1490,10 @@ const isSearchOnly = mode === "search-only";
 			const { transformId } = await import("../utils/transformId");
 			renderSearchResults(rankedResults, query, transformId);
 
-			// Scroll to the top of the page so search results are visible from the start
-			window.scrollTo({ top: 0, behavior: "smooth" });
+			// Scroll to top on new searches (not when re-rendering e.g. topic expand/collapse)
+			if (options?.scrollToTop !== false) {
+				window.scrollTo({ top: 0, behavior: "smooth" });
+			}
 
 		} catch (error) {
 			console.error("Search error:", error);
