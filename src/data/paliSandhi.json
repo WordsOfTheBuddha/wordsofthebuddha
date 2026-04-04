@@ -854,5 +854,7 @@
 	"buddhamanantagocaraṁ": ["buddha", "anantagocara"],
 	"vaṇṇagandhamaheṭhayaṁ": ["vaṇṇagandha", "aheṭhayaṁ"],
 	"sammadaññāvimuttānaṁ": ["sammadaññāvimutta"],
-	"yasobhivaḍḍhati": ["yaso", "abhivaḍḍhati"]
+	"yasobhivaḍḍhati": ["yaso", "abhivaḍḍhati"],
+	"anāsañcepi": ["anāsa", "ce", "api"],
+	"nānāsañcepi": ["na", "anāsa", "ce", "api"]
 }
