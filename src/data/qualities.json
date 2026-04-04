@@ -692,7 +692,7 @@
 			"virtue",
 			"Context: A disciplined way of living grounded in harmlessness and integrity. Ethical conduct restrains the body and speech from harm, purifies behavior, and forms the foundation for collectedness and wisdom.",
 			"Supported by:{conscience, fear of wrongdoing, sense restraint}",
-			"Leads to:{gratefulness, non-regret}",
+			"Leads to:{gratefulness, non-regret, stream-entry}",
 			"Opposite:{unprincipled conduct}",
 			"[sīla, sammākammanta]"
 		],
@@ -719,7 +719,7 @@
 			"conviction",
 			"Context: Confidence in the Buddha's awakening and the efficacy of the path. It brightens and steadies the mind, removing doubt and inspiring energy toward wholesome practice. True faith rests on clarity and direct experience rather than mere belief.",
 			"Supported by:{suffering}",
-			"Leads to:{joy, recollection of the Buddha, recollection of the Dhamma, recollection of the Sangha, rousing of energy}",
+			"Leads to:{joy, recollection of the Buddha, recollection of the Dhamma, recollection of the Sangha, rousing of energy, stream-entry}",
 			"Opposite:{faithlessness}",
 			"[saddha, pasanna]"
 		],
@@ -1552,7 +1552,7 @@
 			"Context: View that is in line with the Dhamma — teachings of the Buddha that point to the nature of reality, the ultimate truth.",
 			"Supported by:{wise attention}",
 			"Guarded by:{right effort, mindfulness}",
-			"Leads to:{cultivation, loving-kindness, non-harm}",
+			"Leads to:{cultivation, loving-kindness, non-harm, stream-entry}",
 			"[sammādiṭṭhi]"
 		],
 		"rousing of energy": [
@@ -1789,7 +1789,7 @@
 			"serenity",
 			"Context: A mental quality of calm and stillness that arises when the body and mind are unburdened by agitation.",
 			"Supported by:{uplifting joy, unification}",
-			"Leads to:{happiness}",
+			"Leads to:{happiness, stream-entry}",
 			"[passaddhi, santi, upasama, upasanta]"
 		],
 		"treachery": [
