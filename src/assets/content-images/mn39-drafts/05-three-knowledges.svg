@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" width="920" height="300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="bk1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2838" /><stop offset="100%" stop-color="#141e2e" />
+    </linearGradient>
+    <linearGradient id="bk2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2828" /><stop offset="100%" stop-color="#142224" />
+    </linearGradient>
+    <linearGradient id="bk3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2e2818" /><stop offset="100%" stop-color="#242014" />
+    </linearGradient>
+    <linearGradient id="lakeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a7898" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#2a4868" stop-opacity="0.5" />
+    </linearGradient>
+    <radialGradient id="conclusionGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="300" fill="url(#bg)" />
+
+  <text x="460" y="18" text-anchor="middle" fill="#8898b0" opacity="0.55"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">With mind collected, purified, clarified, blemish-free, flexible, stable, and unshakeable</text>
+  <text x="460" y="32" text-anchor="middle" fill="#6888a0" opacity="0.5"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese mudubhūte kammaniye ṭhite āneñjappatte</text>
+
+  <line x1="100" y1="48" x2="820" y2="48" stroke="url(#tierGrad)" stroke-width="0.5" />
+  <circle cx="280" cy="66" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" opacity="0.7" />
+  <text x="280" y="69" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">10</text>
+  <text x="460" y="68" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5">THREE KNOWLEDGES · TISSO VIJJĀ</text>
+
+  <!-- Card 1: Past Lives -->
+  <g transform="translate(50, 84)">
+    <rect width="260" height="196" rx="8" fill="url(#bk1)" stroke="#4a6888" stroke-width="0.8" stroke-opacity="0.4" filter="url(#shadowDrop)" />
+    <text x="20" y="22" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">1<tspan font-size="8" dy="-4">st</tspan></text>
+    <text x="44" y="22" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Recollection of Past Lives</text>
+    <text x="20" y="44" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">pubbenivāsānussatiñāṇa</text>
+    <text x="20" y="62" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10">He recollects manifold past lives</text>
+    <text x="80" y="78" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="10">with their aspects and particulars</text>
+    <text x="130" y="180" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">Simile · traveler recollecting villages passed by</text>
+    <!-- Simile: man travelling between villages, recollecting journey -->
+    <g transform="translate(14, 70)" opacity="0.72">
+      <g fill="none" stroke="#7ca0b8" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.85">
+        <!-- Winding road -->
+        <path d="M 10 58 Q 50 48, 80 52 Q 120 56, 160 50 Q 195 44, 228 54" stroke="#5a7898" stroke-width="1.1" opacity="0.55" />
+        <path d="M 10 64 Q 50 54, 80 58 Q 120 62, 160 56 Q 195 50, 228 60" stroke="#5a7898" stroke-width="0.6" opacity="0.3" />
+        <!-- Village 1: small hut with peaked roof -->
+        <path d="M 14 40 L 24 30 L 34 40" stroke-width="1" />
+        <line x1="16" y1="40" x2="16" y2="52" stroke-width="0.8" />
+        <line x1="32" y1="40" x2="32" y2="52" stroke-width="0.8" />
+        <line x1="16" y1="52" x2="32" y2="52" stroke-width="0.7" />
+        <rect x="21" y="44" width="6" height="8" rx="0.5" stroke-width="0.6" opacity="0.6" />
+        <!-- Village 2: small hut -->
+        <path d="M 104 36 L 114 26 L 124 36" stroke-width="1" />
+        <line x1="106" y1="36" x2="106" y2="48" stroke-width="0.8" />
+        <line x1="122" y1="36" x2="122" y2="48" stroke-width="0.8" />
+        <line x1="106" y1="48" x2="122" y2="48" stroke-width="0.7" />
+        <!-- Village 3: small hut -->
+        <path d="M 192 34 L 202 24 L 212 34" stroke-width="1" />
+        <line x1="194" y1="34" x2="194" y2="46" stroke-width="0.8" />
+        <line x1="210" y1="34" x2="210" y2="46" stroke-width="0.8" />
+        <line x1="194" y1="46" x2="210" y2="46" stroke-width="0.7" />
+        <!-- Traveler walking between village 1 and 2 -->
+        <circle cx="68" cy="46" r="2.8" stroke-width="0.9" />
+        <line x1="68" y1="48.8" x2="68" y2="58" stroke-width="0.9" />
+        <line x1="68" y1="53" x2="63" y2="56" stroke-width="0.75" />
+        <line x1="68" y1="53" x2="73" y2="56" stroke-width="0.75" />
+        <line x1="68" y1="58" x2="65" y2="64" stroke-width="0.75" />
+        <line x1="68" y1="58" x2="71" y2="64" stroke-width="0.75" />
+        <!-- Recollection arrow (going back) -->
+        <path d="M 190 68 Q 140 76, 50 70" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.4" />
+        <path d="M 50 70 L 54 67 M 50 70 L 54 73" stroke-width="0.6" opacity="0.4" />
+      </g>
+    </g>
+    <!-- Icon: past-lives-eye (50% larger, top-right aligned) -->
+    <g transform="translate(236, 18)" opacity="0.5" filter="url(#iconGlow)">
+      <g transform="scale(0.81) translate(6.95, 0)">
+        <g fill="none" stroke="#90a8c0" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M -12 0 Q 0 -9, 12 0" stroke-width="1.2" />
+          <path d="M -12 0 Q 0 9, 12 0" stroke-width="1.2" />
+          <circle cx="0" cy="0" r="3" fill="#90a8c0" fill-opacity="0.6" stroke-width="0.8" />
+          <path d="M -14 0 Q -22 -6 -26 -2" stroke-width="1" />
+          <path d="M -26 -2 L -22 -4 M -26 -2 L -24 2" stroke-width="0.8" />
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- Card 2: Divine Eye -->
+  <g transform="translate(330, 84)">
+    <rect width="260" height="196" rx="8" fill="url(#bk2)" stroke="#4a7868" stroke-width="0.8" stroke-opacity="0.4" filter="url(#shadowDrop)" />
+    <text x="20" y="22" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">2<tspan font-size="8" dy="-4">nd</tspan></text>
+    <text x="46" y="22" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Divine Eye</text>
+    <text x="20" y="44" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">cutūpapātañāṇa</text>
+    <text x="20" y="62" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10">Sees beings passing away and reappearing</text>
+    <text x="120" y="78" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="10">according to their kamma</text>
+    <text x="20" y="180" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">Simile · seeing comings and goings between two houses</text>
+    <!-- Simile: man with good eyesight between two houses, seeing people enter/exit -->
+    <g transform="translate(14, 80)" opacity="0.72">
+      <g fill="none" stroke="#78a890" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.85">
+        <!-- Left house with door and roof -->
+        <rect x="8" y="28" width="46" height="36" rx="2" />
+        <path d="M 6 28 L 31 14 L 56 28" stroke-width="1" />
+        <rect x="24" y="42" width="10" height="16" rx="1" stroke-width="0.7" opacity="0.7" />
+        <!-- Right house with door and roof -->
+        <rect x="178" y="28" width="46" height="36" rx="2" />
+        <path d="M 176 28 L 201 14 L 226 28" stroke-width="1" />
+        <rect x="194" y="42" width="10" height="16" rx="1" stroke-width="0.7" opacity="0.7" />
+        <!-- Observer in the middle — standing tall, clear figure -->
+        <g stroke="#80c0a8" stroke-width="1">
+          <circle cx="118" cy="32" r="4" />
+          <line x1="118" y1="36" x2="118" y2="54" />
+          <line x1="118" y1="43" x2="110" y2="48" />
+          <line x1="118" y1="43" x2="126" y2="48" />
+          <line x1="118" y1="54" x2="114" y2="64" />
+          <line x1="118" y1="54" x2="122" y2="64" />
+        </g>
+        <!-- Sight lines from observer -->
+        <path d="M 113 34 L 56 38" stroke="#80c0a8" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.4" />
+        <path d="M 123 34 L 178 38" stroke="#80c0a8" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.4" />
+        <!-- Small figure exiting left house -->
+        <circle cx="64" cy="50" r="2" opacity="0.55" />
+        <line x1="64" y1="52" x2="64" y2="58" stroke-width="0.65" opacity="0.55" />
+        <path d="M 68 52 L 80 48" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.35" />
+        <!-- Small figure entering right house -->
+        <circle cx="168" cy="48" r="2" opacity="0.55" />
+        <line x1="168" y1="50" x2="168" y2="56" stroke-width="0.65" opacity="0.55" />
+        <path d="M 164 50 L 152 52" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.35" />
+      </g>
+    </g>
+    <!-- Icon: divine-eye (50% larger, top-right aligned) -->
+    <g transform="translate(236, 18)" opacity="0.5" filter="url(#iconGlow)">
+      <g transform="scale(0.84) translate(-2.5, 2.5)">
+        <g opacity="0.85" stroke="#80c0a8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+          <path d="M -14 0 Q 0 -11, 14 0" stroke-width="1.3" />
+          <path d="M -14 0 Q 0 11, 14 0" stroke-width="1.3" />
+          <circle cx="0" cy="0" r="4" stroke-width="1" />
+          <circle cx="0" cy="0" r="1.2" fill="#80c0a8" stroke="none" />
+          <line x1="0" y1="-14" x2="0" y2="-19" stroke-width="0.8" />
+          <line x1="12" y1="-9" x2="16" y2="-14" stroke-width="0.8" />
+          <line x1="-12" y1="-9" x2="-16" y2="-14" stroke-width="0.8" />
+          <line x1="16" y1="0" x2="21" y2="0" stroke-width="0.8" />
+          <line x1="12" y1="9" x2="16" y2="14" stroke-width="0.8" />
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- Card 3: Ending of Taints -->
+  <g transform="translate(610, 84)">
+    <rect width="260" height="196" rx="8" fill="url(#bk3)" stroke="#a09060" stroke-width="0.8" stroke-opacity="0.4" filter="url(#shadowDrop)" />
+    <text x="20" y="22" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">3<tspan font-size="8" dy="-4">rd</tspan></text>
+    <text x="46" y="22" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Ending of Taints</text>
+    <text x="20" y="44" fill="#6888a0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">āsavakkhayañāṇa</text>
+    <text x="20" y="62" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10">Understands suffering, its arising,</text>
+    <text x="20" y="78" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="10">its ending, and the way of practice</text>
+    <text x="130" y="180" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">Simile · clear undisturbed mountain lake — contents visible</text>
+    <!-- Simile: deep clear mountain lake — observer on shore sees shells, gravel, pebbles, fish -->
+    <g transform="translate(14, 88)" opacity="0.72">
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.85">
+        <!-- Mountain ridges behind lake -->
+        <path d="M 20 22 L 52 6 L 84 22" stroke="#a09060" stroke-width="0.8" opacity="0.45" />
+        <path d="M 70 22 L 110 2 L 150 22" stroke="#a09060" stroke-width="0.9" opacity="0.5" />
+        <path d="M 140 22 L 174 8 L 210 22" stroke="#a09060" stroke-width="0.8" opacity="0.45" />
+        <!-- Lake surface — smooth undisturbed ellipse -->
+        <ellipse cx="118" cy="36" rx="102" ry="14" fill="url(#lakeGrad)" stroke="#6a98b8" stroke-width="0.9" />
+        <!-- Lake depth below surface -->
+        <path d="M 16 36 Q 16 68, 118 72 Q 220 68, 220 36" stroke="#6a98b8" stroke-width="0.7" opacity="0.5" />
+        <!-- Visible bottom contents — shells, gravel, pebbles -->
+        <circle cx="60" cy="56" r="2" stroke="#8898a8" stroke-width="0.6" opacity="0.55" />
+        <circle cx="80" cy="52" r="1.3" stroke="#8898a8" stroke-width="0.5" opacity="0.45" />
+        <circle cx="100" cy="58" r="1.6" stroke="#8898a8" stroke-width="0.55" opacity="0.5" />
+        <circle cx="140" cy="55" r="2.2" stroke="#8898a8" stroke-width="0.6" opacity="0.55" />
+        <circle cx="160" cy="60" r="1.1" stroke="#8898a8" stroke-width="0.5" opacity="0.4" />
+        <circle cx="118" cy="62" r="1.4" stroke="#8898a8" stroke-width="0.5" opacity="0.45" />
+        <ellipse cx="178" cy="56" rx="3" ry="1.2" stroke="#78a090" stroke-width="0.5" opacity="0.5" />
+        <!-- Small fish swimming -->
+        <g stroke="#78a090" stroke-width="0.55" opacity="0.5">
+          <path d="M 72 58 Q 76 56, 80 58 Q 76 60, 72 58 Z" />
+          <line x1="80" y1="58" x2="82" y2="57" />
+          <line x1="80" y1="58" x2="82" y2="59" />
+        </g>
+        <g stroke="#78a090" stroke-width="0.5" opacity="0.4">
+          <path d="M 148 54 Q 152 52, 156 54 Q 152 56, 148 54 Z" />
+          <line x1="156" y1="54" x2="158" y2="53" />
+          <line x1="156" y1="54" x2="158" y2="55" />
+        </g>
+        <!-- Observer on shore -->
+        <g stroke="#c0a860" stroke-width="0.75" opacity="0.55">
+          <circle cx="26" cy="20" r="2.5" />
+          <line x1="26" y1="22.5" x2="26" y2="32" />
+          <line x1="26" y1="27" x2="22" y2="30" />
+          <path d="M 30 24 L 60 44" stroke-dasharray="2 2.5" opacity="0.4" />
+        </g>
+      </g>
+    </g>
+    <!-- Icon: defilements-ended (50% larger, top-right aligned) -->
+    <g transform="translate(236, 18)" opacity="0.5" filter="url(#iconGlow)">
+      <g transform="scale(0.95) translate(-2, 0)">
+        <g opacity="0.85" stroke="#c0a860" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+          <ellipse cx="-7" cy="0" rx="7" ry="9" />
+          <ellipse cx="11" cy="0" rx="7" ry="9" />
+          <line x1="0" y1="-5" x2="4" y2="-9" stroke-width="0.9" />
+          <line x1="0" y1="5" x2="4" y2="9" stroke-width="0.9" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.6) translate(-0.825, 1.925)">
+    <g opacity="0.85" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Faded hunched ghost (was ill) — dotted -->
+          <g stroke="#a08090" stroke-width="0.55" stroke-dasharray="1.2 1.8" opacity="0.35">
+            <circle cx="-14" cy="-2" r="2.5" />
+            <path d="M -14 0.5 Q -12 4, -13 8" />
+          </g>
+          <!-- Strong upright figure + bowl (nourished) -->
+          <g stroke="#60a088" stroke-width="1.05">
+            <circle cx="2" cy="-8" r="3.5" />
+            <line x1="2" y1="-4.5" x2="2" y2="5" />
+            <line x1="2" y1="0" x2="-5" y2="-2" />
+            <line x1="2" y1="0" x2="7" y2="-2" />
+            <line x1="2" y1="5" x2="-3" y2="12" />
+            <line x1="2" y1="5" x2="7" y2="12" />
+            <!-- vitality ticks -->
+            <path d="M -2 -14 L -2 -11 M 6 -14 L 6 -11 M 2 -16 L 2 -13" stroke="#80c0a0" stroke-width="0.75" opacity="0.7" />
+          </g>
+          <!-- bowl with fill line -->
+          <g stroke="#80c0a0" stroke-width="0.85" opacity="0.75">
+            <path d="M 10 6 Q 10 11, 14 12 Q 18 11, 18 6 Z" />
+            <line x1="10" y1="6" x2="18" y2="6" />
+            <line x1="12" y1="9" x2="16" y2="9" stroke-width="0.6" />
+          </g>
+        </g>
+  </g>
+</svg>

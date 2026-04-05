@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.51138) translate(0.2, -0.875)">
+    <g opacity="0.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Winding wilderness path — running top-right to bottom-left -->
+          <path d="M 16 -14 C 12 -10, 6 -6, 0 -2 C -6 2, -10 8, -16 14" stroke="#a08090" stroke-width="1.4" />
+          <path d="M 20 -12 C 16 -8, 10 -4, 4 0 C -2 4, -6 10, -12 16" stroke="#a08090" stroke-width="0.9" opacity="0.5" />
+          <!-- Thorn hazards along path edges -->
+          <path d="M 10 -8 L 12 -12 L 14 -9 Z" stroke="#a06070" stroke-width="0.7" fill="#a06070" fill-opacity="0.18" />
+          <path d="M 2 -2 L 5 -6 L 6 -2 Z" stroke="#a06070" stroke-width="0.7" fill="#a06070" fill-opacity="0.18" />
+          <path d="M -6 6 L -4 2 L -2 5 Z" stroke="#a06070" stroke-width="0.65" fill="#a06070" fill-opacity="0.15" />
+          <path d="M -12 10 L -10 6 L -8 9 Z" stroke="#a06070" stroke-width="0.6" fill="#a06070" fill-opacity="0.12" />
+          <!-- Traveler — positioned clearly to the left, off the path -->
+          <g stroke="#a08090" stroke-width="0.9" transform="translate(-16, -4)">
+            <circle cx="0" cy="-3" r="2.2" />
+            <line x1="0" y1="-0.8" x2="0" y2="6" />
+            <line x1="0" y1="2.5" x2="-3.5" y2="4.5" />
+            <line x1="0" y1="2.5" x2="3.5" y2="4.5" />
+            <line x1="0" y1="6" x2="-2" y2="10" stroke-width="0.85" />
+            <line x1="0" y1="6" x2="2" y2="10" stroke-width="0.85" />
+            <!-- Bundle on back -->
+            <path d="M -3 -5 Q -5 -2, -3 0 Q -1 1, 0 -1" stroke-width="0.7" opacity="0.7" />
+          </g>
+        </g>
+  </g>
+</svg>

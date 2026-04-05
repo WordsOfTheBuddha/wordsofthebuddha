@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 486" width="920" height="486">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <radialGradient id="liberationGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="486" fill="url(#bg)" />
+
+  <!-- Liberation Section -->
+  <ellipse cx="460" cy="78" rx="380" ry="70" fill="url(#liberationGlow)" />
+  <rect x="80" y="14" width="760" height="130" rx="10" fill="none" stroke="#c8a040" stroke-width="0.8" stroke-opacity="0.35" filter="url(#glow2)" />
+  <text x="460" y="40" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Liberation</text>
+  <text x="460" y="70" text-anchor="middle" fill="#c8d8e8"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">Mind is liberated from the taint of sensual desire, the taint of becoming, and the taint of ignorance.</text>
+  <text x="460" y="100" text-anchor="middle" fill="#c8d8e8"
+    font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">“Birth is ended, the spiritual life has been lived, what was to be done has been done.”</text>
+  <text x="460" y="128" text-anchor="middle" fill="#b0a870"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyā</text>
+
+  <!-- Seven Epithets: one centered text per row (tspans); x=460 middle of canvas -->
+  <line x1="80" y1="176" x2="840" y2="176" stroke="url(#tierGrad)" stroke-width="0.5" />
+  <text x="460" y="196" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5">SEVEN EPITHETS · satta nāmā</text>
+  <text x="460" y="216" text-anchor="middle" fill="#8898b0" opacity="0.6"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">When harmful, unwholesome states are abandoned, one is called:</text>
+
+  <line x1="80" y1="244" x2="840" y2="244" stroke="#4a6080" stroke-width="0.4" opacity="0.25" />
+
+  <g transform="translate(0, 254)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold">An Ascetic</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#c8a040" font-style="italic">samaṇa</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who has </tspan><tspan fill="#c8a040" font-weight="bold">calmed</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">samita pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.3" opacity="0.15" />
+  </g>
+
+  <g transform="translate(0, 278)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold">A Brahmin</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#c8a040" font-style="italic">brāhmaṇa</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who has </tspan><tspan fill="#c8a040" font-weight="bold">expelled</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">bāhita pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.3" opacity="0.15" />
+  </g>
+
+  <g transform="translate(0, 302)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold">A Bathed One</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#c8a040" font-style="italic">nhātaka</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who has </tspan><tspan fill="#c8a040" font-weight="bold">bathed away</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">nhāta pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.3" opacity="0.15" />
+  </g>
+
+  <g transform="translate(0, 326)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold" font-size="9.5">A Knower of the Vedas</tspan><tspan fill="#506880" font-size="8.5"> · </tspan><tspan fill="#c8a040" font-style="italic">vedagū</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who has </tspan><tspan fill="#c8a040" font-weight="bold">understood</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">vidita pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.3" opacity="0.15" />
+  </g>
+
+  <g transform="translate(0, 350)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold">Well-Learned</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#c8a040" font-style="italic">sottiyo</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who has </tspan><tspan fill="#c8a040" font-weight="bold">washed away</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">nissuta pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.3" opacity="0.15" />
+  </g>
+
+  <g transform="translate(0, 374)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold">A Noble One</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#c8a040" font-style="italic">ariyo</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who is </tspan><tspan fill="#c8a040" font-weight="bold">far from</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">āraka pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.3" opacity="0.15" />
+  </g>
+
+  <g transform="translate(0, 398)">
+    <text x="460" y="7" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#8898b0">
+      <tspan fill="#c8d8e8" font-weight="bold">An Arahant</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#c8a040" font-style="italic">arahaṃ</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan>One who has </tspan><tspan fill="#c8a040" font-weight="bold">completely purified</tspan><tspan> harmful states</tspan><tspan fill="#506880" font-size="9"> · </tspan><tspan fill="#6888a0" font-size="9.5" font-style="italic">āraka pāpakehi akusalehi dhammehi</tspan></text>
+    <line x1="80" y1="16" x2="840" y2="16" stroke="#4a6080" stroke-width="0.4" opacity="0.25" />
+  </g>
+
+  <!-- Footer -->
+  <line x1="300" y1="434" x2="620" y2="434" stroke="#304058" stroke-width="0.5" stroke-opacity="0.3" />
+  <a href="https://wordsofthebuddha.org/mn39" target="_blank" rel="noopener noreferrer">
+    <text x="460" y="448" text-anchor="middle" fill="#485840"
+      font-family="Georgia,'Times New Roman',serif" font-size="10">wordsofthebuddha.org/mn39</text>
+  </a>
+
+  <!-- Lotus motif -->
+  <g transform="translate(460, 464) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+    <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+    <circle cx="0" cy="-28" r="9" />
+  </g>
+</svg>

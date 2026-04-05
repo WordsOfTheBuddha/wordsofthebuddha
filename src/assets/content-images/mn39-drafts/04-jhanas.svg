@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" width="920" height="480">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" /><stop offset="50%" stop-color="#0e1a30" /><stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="jhana1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" /><stop offset="100%" stop-color="#141e2c" />
+    </linearGradient>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="480" fill="url(#bg)" />
+
+  <!-- Tier label -->
+  <line x1="100" y1="14" x2="820" y2="14" stroke="url(#tierGrad)" stroke-width="0.5" />
+  <circle cx="294" cy="32" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" opacity="0.7" />
+  <text x="294" y="34" text-anchor="middle" fill="#c8a040" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">9</text>
+  <text x="460" y="34" text-anchor="middle" fill="#c8a040" opacity="0.75"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
+    letter-spacing="2.5">FOUR JHĀNAS · CATTĀRO JHĀNĀ</text>
+
+  <!-- 1st Jhāna (outer) -->
+  <rect x="70" y="52" width="780" height="416" rx="10" fill="url(#jhana1)" stroke="#c8a040" stroke-width="0.8" stroke-opacity="0.42" />
+  <text x="90" y="76" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">First Jhāna
+    <tspan fill="#6888a0" font-size="11" font-style="italic" font-weight="normal"> · paṭhamaṁ jhānaṁ</tspan></text>
+  <text x="90" y="94" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Accompanied by reflection <tspan fill="#6888a0" font-style="italic">(savitakka)</tspan> · Examination <tspan fill="#6888a0" font-style="italic">(savicāra)</tspan></text>
+  <text x="90" y="110" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Born of seclusion <tspan fill="#6888a0" font-style="italic">(vivekaja)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#6888a0" font-style="italic">(pītisukha)</tspan></text>
+  <!-- 1st jhāna simile icon: jhana-first -->
+  <g transform="translate(830, 76)" opacity="0.55" filter="url(#iconGlow)">
+    <g transform="scale(0.70) translate(0, -4.15)">
+      <g opacity="0.8" stroke="#d8c890" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+        <path d="M -22 -4 L -22 14 Q -22 24, 0 24 Q 22 24, 22 14 L 22 -4" />
+        <path d="M -18 4 Q -9 0, 0 4 Q 9 8, 18 4" opacity="0.5" />
+        <circle cx="-8" cy="-6" r="3" stroke-width="0.8" opacity="0.6" />
+        <circle cx="6" cy="-10" r="2.5" stroke-width="0.7" opacity="0.5" />
+        <circle cx="12" cy="-4" r="2" stroke-width="0.6" opacity="0.45" />
+        <circle cx="-2" cy="-14" r="2" stroke-width="0.6" opacity="0.4" />
+        <circle cx="0" cy="-4" r="1.5" stroke-width="0.5" opacity="0.35" />
+      </g>
+    </g>
+  </g>
+  <text x="824" y="108" text-anchor="middle" fill="#d8c890" opacity="0.5" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">kneading</text>
+  <text x="824" y="122" text-anchor="middle" fill="#d8c890" opacity="0.4" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">powder</text>
+
+  <!-- 2nd Jhāna -->
+  <rect x="100" y="130" width="720" height="326" rx="10" fill="none" stroke="#78a890" stroke-width="0.8" stroke-opacity="0.5" />
+  <text x="120" y="154" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Second Jhāna
+    <tspan fill="#6888a0" font-size="11" font-style="italic" font-weight="normal"> · dutiyaṁ jhānaṁ</tspan></text>
+  <text x="120" y="172" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Internal tranquility <tspan fill="#6888a0" font-style="italic">(sampasādana)</tspan> · Unification of mind <tspan fill="#6888a0" font-style="italic">(ekodibhāva)</tspan></text>
+  <text x="120" y="188" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Free from reflection and examination <tspan fill="#6888a0" font-style="italic">(avitakka · avicāra)</tspan></text>
+  <text x="120" y="204" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Born of collectedness <tspan fill="#6888a0" font-style="italic">(samādhija)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#6888a0" font-style="italic">(pītisukha)</tspan></text>
+  <!-- 2nd jhāna simile icon: jhana-second -->
+  <g transform="translate(795, 154)" opacity="0.55" filter="url(#iconGlow)">
+    <g transform="scale(0.64) translate(0, -14.525)">
+      <g opacity="0.85" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0" fill="none" stroke="#78b8a8" stroke-width="1.2" />
+        <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0 L 24 22 Q 12 25, 0 22 Q -12 19, -24 22 Z" fill="#305060" fill-opacity="0.25" stroke="none" />
+        <circle cx="-6" cy="14" r="2.5" fill="#78b8a8" fill-opacity="0.25" stroke="#78b8a8" stroke-width="0.6" />
+        <circle cx="5" cy="9" r="3" fill="#78b8a8" fill-opacity="0.2" stroke="#78b8a8" stroke-width="0.6" />
+        <circle cx="-10" cy="7" r="1.8" fill="#78b8a8" fill-opacity="0.18" stroke="#78b8a8" stroke-width="0.5" />
+        <circle cx="10" cy="17" r="2" fill="#78b8a8" fill-opacity="0.3" stroke="#78b8a8" stroke-width="0.5" />
+        <circle cx="0" cy="4" r="1.5" fill="#78b8a8" fill-opacity="0.15" stroke="#78b8a8" stroke-width="0.5" />
+        <path d="M 0 24 C -3 27, 3 30, 0 33" stroke="#78b8a8" stroke-width="0.8" fill="none" opacity="0.35" />
+      </g>
+    </g>
+  </g>
+  <text x="784" y="186" text-anchor="middle" fill="#78a890" opacity="0.5" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">underground</text>
+  <text x="790" y="200" text-anchor="middle" fill="#78a890" opacity="0.4" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">spring</text>
+
+  <!-- 3rd Jhāna -->
+  <rect x="130" y="226" width="660" height="218" rx="10" fill="none" stroke="#aab8c8" stroke-width="0.8" stroke-opacity="0.5" />
+  <text x="150" y="250" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Third Jhāna
+    <tspan fill="#6888a0" font-size="11" font-style="italic" font-weight="normal"> · tatiyaṁ jhānaṁ</tspan></text>
+  <text x="150" y="268" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">With the fading of desire for uplifting joy <tspan fill="#6888a0" font-style="italic">(pītiyā ca virāgā)</tspan></text>
+  <text x="150" y="284" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Equanimous <tspan fill="#6888a0" font-style="italic">(upekkhaka)</tspan> · Mindful <tspan fill="#6888a0" font-style="italic">(sato)</tspan> · Clearly aware <tspan fill="#6888a0" font-style="italic">(sampajāno)</tspan></text>
+  <text x="150" y="300" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Experiencing pleasure with the body <tspan fill="#6888a0" font-style="italic">(sukha kāyena)</tspan></text>
+  <!-- 3rd jhāna simile icon: jhana-third -->
+  <g transform="translate(765, 250)" opacity="0.55" filter="url(#iconGlow)">
+    <g transform="scale(0.71) translate(0, 0.125)">
+      <g opacity="0.85" stroke="#90a8b8" fill-opacity="0.12" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M -22 -8 Q -11 -11, 0 -8 Q 11 -5, 22 -8" fill="none" stroke-width="0.9" />
+        <path d="M -18 -5 Q -9 -8, 0 -5 Q 9 -2, 18 -5" fill="none" stroke-width="0.5" opacity="0.4" />
+        <path d="M 0 10 C -10 10, -18 2, -14 -4 C -10 -8, 0 -2, 0 10 Z" fill="#90a8b8" stroke-width="0.9" />
+        <path d="M 0 10 C 10 10, 18 2, 14 -4 C 10 -8, 0 -2, 0 10 Z" fill="#90a8b8" stroke-width="0.9" />
+        <path d="M 0 10 C -5 10, -11 4, -7 -3 C -3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" stroke-width="0.6" />
+        <path d="M 0 10 C 5 10, 11 4, 7 -3 C 3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" stroke-width="0.6" />
+        <circle cx="0" cy="4" r="3.5" fill="#90a8b8" fill-opacity="0.15" stroke-width="0.7" />
+      </g>
+    </g>
+  </g>
+  <text x="760" y="282" text-anchor="middle" fill="#aab8c8" opacity="0.5" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">submerged</text>
+  <text x="760" y="296" text-anchor="middle" fill="#aab8c8" opacity="0.4" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">lotus</text>
+
+  <!-- 4th Jhāna -->
+  <rect x="160" y="322" width="600" height="110" rx="10" fill="none" stroke="#d0d8e0" stroke-width="0.8" stroke-opacity="0.5" />
+  <text x="180" y="346" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="14" font-weight="bold">Fourth Jhāna
+    <tspan fill="#6888a0" font-size="11" font-style="italic" font-weight="normal"> · catutthaṁ jhānaṁ</tspan></text>
+  <text x="180" y="364" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Abandoning bodily pleasure and pain <tspan fill="#6888a0" font-style="italic">(sukhassa ca pahānā dukkhassa ca pahānā)</tspan></text>
+  <text x="180" y="380" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Settling of mental pleasure and displeasure <tspan fill="#6888a0" font-style="italic">(somanassadomanassānaṁ atthaṅgamā)</tspan></text>
+  <text x="180" y="396" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Purification of mindfulness through equanimity <tspan fill="#6888a0" font-style="italic">(upekkhāsatipārisuddhi)</tspan></text>
+  <text x="180" y="412" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Experiencing neither-painful-nor-pleasant <tspan fill="#6888a0" font-style="italic">(adukkhamasukha)</tspan></text>
+  <!-- 4th jhāna simile icon: jhana-fourth -->
+  <g transform="translate(730, 346)" opacity="0.55" filter="url(#iconGlow)">
+    <g transform="scale(0.77)">
+      <g opacity="0.85" stroke="#d0d8e0" fill="none" stroke-linecap="round">
+        <circle cx="0" cy="0" r="20" fill="#e0e8f0" fill-opacity="0.2" stroke-width="1" />
+        <circle cx="-6" cy="-7" r="7" fill="#e0e8f0" fill-opacity="0.12" stroke="none" />
+        <circle cx="-4" cy="-5" r="3" fill="#f0f4f8" fill-opacity="0.08" stroke="none" />
+      </g>
+    </g>
+  </g>
+  <text x="730" y="380" text-anchor="middle" fill="#d0d8e0" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">white cloth</text>
+  <text x="730" y="392" text-anchor="middle" fill="#d0d8e0" opacity="0.35" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">head to toe</text>
+</svg>

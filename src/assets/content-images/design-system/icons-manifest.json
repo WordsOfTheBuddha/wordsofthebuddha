@@ -451,8 +451,12 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"mn39"
+			],
 			"labels": [
+				"ethical conduct",
 				"wholesome"
 			],
 			"valence": "+ve",
@@ -1289,8 +1293,9 @@
 				"line-art"
 			],
 			"discourse": [
-				"mn119",
-				"mn10"
+				"mn39",
+				"mn10",
+				"mn119"
 			],
 			"labels": [
 				"clear awareness",
@@ -1363,7 +1368,10 @@
 				"line-art",
 				"jhana"
 			],
-			"discourse": "mn119",
+			"discourse": [
+				"mn39",
+				"mn119"
+			],
 			"labels": [
 				"awakening",
 				"collectedness",
@@ -1381,7 +1389,10 @@
 				"line-art",
 				"jhana"
 			],
-			"discourse": "mn119",
+			"discourse": [
+				"mn39",
+				"mn119"
+			],
 			"labels": [
 				"awakening",
 				"collectedness",
@@ -1399,7 +1410,10 @@
 				"line-art",
 				"jhana"
 			],
-			"discourse": "mn119",
+			"discourse": [
+				"mn39",
+				"mn119"
+			],
 			"labels": [
 				"awakening",
 				"collectedness",
@@ -1420,8 +1434,9 @@
 				"jhana"
 			],
 			"discourse": [
-				"mn119",
-				"mn106"
+				"mn39",
+				"mn106",
+				"mn119"
 			],
 			"labels": [
 				"awakening",
@@ -1553,13 +1568,18 @@
 			"description": "Twin liberation orbs — āsavakkhaya, cetovimutti",
 			"tags": [
 				"line-art",
-				"gold"
+				"gold",
+				"mn39"
 			],
-			"discourse": "mn119",
+			"discourse": [
+				"mn39",
+				"mn119"
+			],
 			"labels": [
 				"awakening",
 				"ending",
 				"liberation",
+				"psychic power",
 				"safety"
 			],
 			"valence": "+ve",
@@ -1881,7 +1901,10 @@
 				"sekha",
 				"sila"
 			],
-			"discourse": "mn53",
+			"discourse": [
+				"mn39",
+				"mn53"
+			],
 			"labels": [
 				"ethical conduct"
 			],
@@ -1898,7 +1921,10 @@
 				"sekha",
 				"sense"
 			],
-			"discourse": "mn53",
+			"discourse": [
+				"mn39",
+				"mn53"
+			],
 			"labels": [
 				"sense restraint",
 				"wholesome"
@@ -1916,7 +1942,10 @@
 				"sekha",
 				"bowl"
 			],
-			"discourse": "mn53",
+			"discourse": [
+				"mn39",
+				"mn53"
+			],
 			"labels": [
 				"ethical conduct",
 				"renunciation",
@@ -1934,7 +1963,10 @@
 				"mn53",
 				"sekha"
 			],
-			"discourse": "mn53",
+			"discourse": [
+				"mn39",
+				"mn53"
+			],
 			"labels": [
 				"clear awareness",
 				"effort",
@@ -1967,10 +1999,14 @@
 			"description": "Eye glancing backward — first breakthrough (pubbenivāsānussati)",
 			"tags": [
 				"line-art",
+				"mn39",
 				"mn53",
 				"sekha"
 			],
-			"discourse": "mn53",
+			"discourse": [
+				"mn39",
+				"mn53"
+			],
 			"labels": [
 				"direct knowledge",
 				"insight",
@@ -1986,10 +2022,12 @@
 			"description": "Radiant eye — second breakthrough (dibbacakkhu)",
 			"tags": [
 				"line-art",
+				"mn39",
 				"mn53",
 				"sekha"
 			],
 			"discourse": [
+				"mn39",
 				"mn53",
 				"mn119"
 			],
@@ -2171,6 +2209,242 @@
 			"svg": "icons/hindrance-doubt.svg"
 		},
 		{
+			"id": "simile-debt",
+			"title": "Simile: debt (craving)",
+			"description": "Figure burdened with money sack — abhijjhā like iṇa",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-debt.svg"
+		},
+		{
+			"id": "simile-debt-free",
+			"title": "Simile: free from debt (craving abandoned)",
+			"description": "Upright figure, coins scattered — abhijjhā pahāya",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"non harm",
+				"renunciation",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-debt-free.svg"
+		},
+		{
+			"id": "simile-disease",
+			"title": "Simile: disease (ill will)",
+			"description": "Aching figure with pain marks — byāpāda like roga",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-disease.svg"
+		},
+		{
+			"id": "simile-healthy",
+			"title": "Simile: regaining health (ill will abandoned)",
+			"description": "Strong figure and bowl — byāpāda pahāya",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"non harm",
+				"renunciation",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-healthy.svg"
+		},
+		{
+			"id": "simile-prison",
+			"title": "Simile: prison (dullness and drowsiness)",
+			"description": "Figure behind bars — thīnamiddha like bandhanāgāra",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-prison.svg"
+		},
+		{
+			"id": "simile-released",
+			"title": "Simile: released from prison (dullness abandoned)",
+			"description": "Open gate and free figure — thīnamiddha pahāya",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"non harm",
+				"renunciation",
+				"safety",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-released.svg"
+		},
+		{
+			"id": "simile-slavery",
+			"title": "Simile: slavery (restlessness and worry)",
+			"description": "Figure in shackles — uddhaccakukkucca like dāsabya",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-slavery.svg"
+		},
+		{
+			"id": "simile-freedom",
+			"title": "Simile: freed from slavery (restlessness abandoned)",
+			"description": "Unshackled, arms raised — uddhaccakukkucca pahāya",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"non harm",
+				"renunciation",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-freedom.svg"
+		},
+		{
+			"id": "simile-dangerous-path",
+			"title": "Simile: dangerous wilderness path (doubt)",
+			"description": "Thorny track and wary traveler — vicikicchā like kantāraddhānamagga",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-dangerous-path.svg"
+		},
+		{
+			"id": "simile-safe-arrival",
+			"title": "Simile: place of safety (doubt abandoned)",
+			"description": "Figure on sheltered ground — vicikicchā pahāya",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"five hindrances",
+				"non harm",
+				"renunciation",
+				"safety",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-safe-arrival.svg"
+		},
+		{
+			"id": "triple-purity",
+			"title": "Pure conduct: body, speech, and mind",
+			"description": "Triangle of figure, speech bubble, and radiant mind — kāya · vacī · mano",
+			"tags": [
+				"line-art",
+				"mn39",
+				"conduct"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"ethical conduct",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/triple-purity.svg"
+		},
+		{
+			"id": "simile-villages-traveler",
+			"title": "Simile: traveler among villages (past lives)",
+			"description": "Road, huts, and walking figure — pubbenivāsānussatiñāṇa",
+			"tags": [
+				"line-art",
+				"mn39",
+				"vijja"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-villages-traveler.svg"
+		},
+		{
+			"id": "simile-two-houses",
+			"title": "Simile: seeing between two houses (divine eye)",
+			"description": "Observer between dwellings — cutūpapātañāṇa",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-two-houses.svg"
+		},
+		{
+			"id": "simile-mountain-lake",
+			"title": "Simile: clear mountain lake (ending of taints)",
+			"description": "Still water, visible bottom, observer — āsavakkhayañāṇa",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn39",
+			"labels": [
+				"direct knowledge",
+				"ending",
+				"insight",
+				"liberation",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/simile-mountain-lake.svg"
+		},
+		{
 			"id": "impermanence-dissolve",
 			"title": "Recognition of impermanence",
 			"description": "Half-arc dissolving into particles — aniccasaññā",
@@ -2224,7 +2498,7 @@
 		},
 		{
 			"id": "dwell-loop",
-			"title": "Abundant dwelling (return loop)",
+			"title": "Return loop (repeat often)",
 			"description": "U-shaped track with arrow — dwell thus often · tabbahulavihārī",
 			"tags": [
 				"line-art",
