@@ -123,6 +123,8 @@ Generated from `icons-manifest.json` (version 1).
 | head-on-fire | Simile: head on fire | an10.51 | effort, mindfulness | line-art, an10, urgency | `icons/head-on-fire.svg` |
 | two-darts | Two darts | sn36.6 | insight, suffering | line-art, sn36, vedana, dart | `icons/two-darts.svg` |
 | one-dart | One dart | sn36.6 | insight, liberation | line-art, sn36, vedana, dart | `icons/one-dart.svg` |
+| friction-sticks-heat | SN 36.10 simile: friction and heat | sn36.10 | insight, suffering | line-art, sn36, vedana, fire, simile | `icons/friction-sticks-heat.svg` |
+| sticks-separated-heat | SN 36.10 simile: separation, heat fades | sn36.10 | insight, liberation | line-art, sn36, vedana, fire, simile | `icons/sticks-separated-heat.svg` |
 | virtue-tablet | Accomplishment in virtue | mn53 | ethical conduct | line-art, mn53, sekha, sila | `icons/virtue-tablet.svg` |
 | sense-restraint | Sense restraint | mn53 | sense restraint, wholesome | line-art, mn53, sekha, sense | `icons/eye-shield.svg` |
 | moderation-bowl | Moderation in eating | mn53 | ethical conduct, renunciation, sense restraint | line-art, mn53, sekha, bowl | `icons/moderation-bowl.svg` |
@@ -142,4 +144,4 @@ Generated from `icons-manifest.json` (version 1).
 | impermanence-dissolve | Recognition of impermanence | mn106 | dispassion, recognition of impermanence, wisdom | line-art, mn106 | `icons/impermanence-dissolve.svg` |
 | emptiness-void | Emptiness of perceptions | mn106 | formless, perceiving escape, with nothing | line-art, mn106 | `icons/emptiness-void.svg` |
 | non-belonging-scatter | Non-belonging | mn106 | formless, free from attachment, non identification, recognition of not self | line-art, mn106 | `icons/non-belonging-scatter.svg` |
-| dwell-loop | Abundant dwelling (return loop) | mn106 | collectedness, effort, skillful means | line-art, mn106, arrow | `icons/dwell-loop.svg` |
+| dwell-loop | Return loop (repeat often) | mn106 | diligence, effort, skillful means | line-art, mn106, arrow | `icons/dwell-loop.svg` |

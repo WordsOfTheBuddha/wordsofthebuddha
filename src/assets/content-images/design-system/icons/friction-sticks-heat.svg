@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.10624) translate(-55, -10.7)">
+    <defs>
+        <radialGradient id="heatGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f0c060" stop-opacity="0.32"/>
+          <stop offset="55%" stop-color="#d09028" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#d09028" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g stroke-linecap="round" stroke-linejoin="round">
+        <path d="M -44 24 L 48 0 L 52 11 L -40 35 Z" fill="#68533b" stroke="#9a8263" stroke-width="0.8"/>
+        <path d="M 62 0 L 154 24 L 150 35 L 58 11 Z" fill="#554431" stroke="#9a8263" stroke-width="0.8"/>
+        <circle cx="55" cy="10" r="24" fill="url(#heatGlow)"/>
+        <path d="M 43 18 C 48 5, 60 0, 67 10 C 72 18, 66 28, 56 30 C 48 28, 42 24, 43 18 Z" fill="#e0a040" opacity="0.88"/>
+        <path d="M 54 24 C 57 16, 62 13, 65 19 C 67 24, 63 29, 57 30 C 53 29, 52 27, 54 24 Z" fill="#ffd070" opacity="0.9"/>
+      </g>
+  </g>
+</svg>

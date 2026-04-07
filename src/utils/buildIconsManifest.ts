@@ -1093,6 +1093,24 @@ const icons: IconEntry[] = [
 		tags: ["line-art", "sn36", "vedana", "dart"],
 		themes: ["liberation", "insight"],
 	},
+	{
+		id: "friction-sticks-heat",
+		title: "rubbing wood: friction and heat",
+		description:
+			"Rubbing two dry wood pieces produces flame-like heat. Simile for sustained contact (phassa) that produces feeling.",
+		discourse: "sn36.10",
+		tags: ["line-art", "simile"],
+		themes: ["insight", "simile"],
+	},
+	{
+		id: "sticks-separated-heat",
+		title: "separating wood: heat fades",
+		description:
+			"Separating two dry wood pieces extinguishes the flame-like heat. Simile for ceasing contact (phassa) that ceases feeling.",
+		discourse: "sn36.10",
+		tags: ["line-art", "simile"],
+		themes: ["insight", "simile"],
+	},
 	// MN 53 Sekha — training path (reuses MN2 eye-shield, MN119 divine eye, MN2 broken chain where noted)
 	{
 		id: "virtue-tablet",

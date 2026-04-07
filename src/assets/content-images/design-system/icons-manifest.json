@@ -1872,6 +1872,38 @@
 			"svg": "icons/one-dart.svg"
 		},
 		{
+			"id": "friction-sticks-heat",
+			"title": "rubbing wood: friction and heat",
+			"description": "Two sticks rubbing with flame-like heat — contact sustained (phassa)",
+			"tags": [
+				"line-art",
+				"simile"
+			],
+			"discourse": "sn36.10",
+			"labels": [
+				"insight",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/friction-sticks-heat.svg"
+		},
+		{
+			"id": "sticks-separated-heat",
+			"title": "separating wood: heat fades",
+			"description": "Two sticks laid apart with fading heat — contact ceases, heat subsides",
+			"tags": [
+				"line-art",
+				"simile"
+			],
+			"discourse": "sn36.10",
+			"labels": [
+				"insight",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/sticks-separated-heat.svg"
+		},
+		{
 			"id": "virtue-tablet",
 			"title": "Accomplishment in virtue",
 			"description": "Tablet with precepts and checkmark",
@@ -2224,7 +2256,7 @@
 		},
 		{
 			"id": "dwell-loop",
-			"title": "Abundant dwelling (return loop)",
+			"title": "Return loop (repeat often)",
 			"description": "U-shaped track with arrow — dwell thus often · tabbahulavihārī",
 			"tags": [
 				"line-art",
