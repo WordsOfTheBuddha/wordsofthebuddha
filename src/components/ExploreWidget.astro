@@ -88,6 +88,16 @@ const isSearchOnly = mode === "search-only";
 								<label class="flex items-center gap-2 cursor-pointer">
 									<input
 										type="checkbox"
+										id="browse-filter-persons"
+										value="persons"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Persons</span>
+								</label>
+								<label class="flex items-center gap-2 cursor-pointer">
+									<input
+										type="checkbox"
 										id="browse-filter-similes"
 										value="similes"
 										checked
@@ -131,6 +141,16 @@ const isSearchOnly = mode === "search-only";
 										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 									/>
 									<span class="text-sm">Topics & Qualities</span>
+								</label>
+								<label class="flex items-center gap-2 cursor-pointer">
+									<input
+										type="checkbox"
+										id="browse-filter-persons-desktop"
+										value="persons"
+										checked
+										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+									/>
+									<span class="text-sm">Persons</span>
 								</label>
 								<label class="flex items-center gap-2 cursor-pointer">
 									<input
@@ -214,6 +234,18 @@ const isSearchOnly = mode === "search-only";
 								<span class="hidden md:inline">Topics & Qualities</span>
 								<span class="md:hidden">Topics</span>
 								<span id="count-topics-qualities" class="text-gray-500 dark:text-gray-400"></span>
+							</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								type="checkbox"
+								id="search-filter-persons"
+								value="persons"
+								checked
+								class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
+							/>
+							<span class="text-sm">
+								Persons <span id="count-persons" class="text-gray-500 dark:text-gray-400"></span>
 							</span>
 						</label>
 						<label class="flex items-center gap-2 cursor-pointer">
@@ -426,20 +458,33 @@ const isSearchOnly = mode === "search-only";
 	// Browse state
 	let browseData: UnifiedContentItem[] = [];
 	let allCategoryData: UnifiedContentItem[] = [];
-	let browseFilters = { topicsQualities: true, similes: true };
+	let browseFilters = { topicsQualities: true, similes: true, persons: true };
 	let expandedItems = new Set<string>();
 
 	// Search state
-	let searchFilters = { discourses: true, topicsQualities: true, similes: true };
+	let searchFilters = {
+		discourses: true,
+		topicsQualities: true,
+		similes: true,
+		persons: true,
+	};
 	let searchQuery = "";
 	let searchTimeout: NodeJS.Timeout | null = null;
 	const DEBOUNCE_MS = 300;
+
+	/** Browse + search filter prefs; matches Layout.astro pattern (localStorage for durable UI state). */
+	const DISCOVER_FILTERS_KEY = "discoverExploreFilters";
 
 	// Fuse.js index for categories
 	let categoryFuse: Fuse<UnifiedContentItem> | null = null;
 
 	// Result counts for display
-	let resultCounts = { discourses: 0, topicsQualities: 0, similes: 0 };
+	let resultCounts = {
+		discourses: 0,
+		topicsQualities: 0,
+		similes: 0,
+		persons: 0,
+	};
 
 	// ==================== DOM ELEMENTS ====================
 	const browseMode = widget.querySelector("#browse-mode") as HTMLElement;
@@ -459,6 +504,7 @@ const isSearchOnly = mode === "search-only";
 	async function init() {
 		setupEventListeners();
 		await loadData();
+		loadPersistedFiltersIntoState();
 
 		// Check URL for initial state
 		const urlParams = new URLSearchParams(window.location.search);
@@ -493,7 +539,12 @@ const isSearchOnly = mode === "search-only";
 
 	function initCategoryFuse() {
 		// Load all topics, qualities, and similes for Fuse.js search
-		allCategoryData = buildAllContent(["topics", "qualities", "similes"]);
+		allCategoryData = buildAllContent([
+			"topics",
+			"qualities",
+			"similes",
+			"persons",
+		]);
 
 		// Helper to normalize Pali terms (remove diacritics for comparison)
 		const normalizePali = (term: string) =>
@@ -525,8 +576,13 @@ const isSearchOnly = mode === "search-only";
 
 		// Deduplicate: remove qualities that share slug OR Pali terms with a topic
 		allCategoryData = allCategoryData.filter(item => {
-			// Keep all topics and similes
-			if (item.type === "topic" || item.type === "simile") return true;
+			// Keep all topics, similes, and persons
+			if (
+				item.type === "topic" ||
+				item.type === "simile" ||
+				item.type === "person"
+			)
+				return true;
 
 			// For qualities, check slug match first
 			if (topicSlugs.has(item.slug)) return false;
@@ -612,13 +668,14 @@ const isSearchOnly = mode === "search-only";
 		// Filter data based on checkboxes
 		const filtered = browseData.filter(item => {
 			if (item.type === "simile") return browseFilters.similes;
+			if (item.type === "person") return browseFilters.persons;
 			return browseFilters.topicsQualities;
 		});
 
 		// Group by first letter
 		const grouped = new Map<string, UnifiedContentItem[]>();
 		filtered.forEach(item => {
-			const letter = item.title.charAt(0).toUpperCase();
+			const letter = (item.browseLetter || item.title.charAt(0)).toUpperCase();
 			if (!grouped.has(letter)) grouped.set(letter, []);
 			grouped.get(letter)!.push(item);
 		});
@@ -687,6 +744,7 @@ const isSearchOnly = mode === "search-only";
 		type SearchConfig,
 		type MatchType,
 		DEFAULT_SEARCH_CONFIG,
+		PERSON_SEARCH_CONFIG,
 		getMaxAllowedEditDistance,
 		allowPrefixMatch,
 		allowInfixMatch,
@@ -733,7 +791,7 @@ const isSearchOnly = mode === "search-only";
 		if (!query.trim()) {
 			if (searchResultsList) searchResultsList.innerHTML = "";
 			if (searchResultsCount) searchResultsCount.textContent = "";
-			updateResultCounts(0, 0, 0);
+			updateResultCounts(0, 0, 0, 0);
 			searchQuery = "";
 			updateURL(); // Clear q parameter from URL
 			return;
@@ -744,7 +802,12 @@ const isSearchOnly = mode === "search-only";
 
 		try {
 			const results: ScoredResult[] = [];
-			const allCounts = { discourses: 0, topicsQualities: 0, similes: 0 };
+			const allCounts = {
+				discourses: 0,
+				topicsQualities: 0,
+				similes: 0,
+				persons: 0,
+			};
 
 			// Parse slug prefix filters (e.g., "^SN12 consciousness" → filter to sn12.* slugs)
 			const { prefixes: slugPrefixes, searchQuery: effectiveQuery } = parseSlugPrefixes(query);
@@ -758,7 +821,7 @@ const isSearchOnly = mode === "search-only";
 			const canPrefix = allowPrefixMatch(queryLength);
 			const canInfix = allowInfixMatch(queryLength);
 
-			// Local match type helper that respects query length
+			// Discourse path uses default prefix/infix gates only
 			function getMatchType(text: string, query: string): MatchType {
 				return getMatchTypeUtil(text, query, DEFAULT_SEARCH_CONFIG);
 			}
@@ -786,6 +849,14 @@ const isSearchOnly = mode === "search-only";
 				categoryResults.forEach((result) => {
 					const item = result.item;
 					const fuseScore = result.score ?? 0.5;
+					const searchCfg =
+						item.type === "person"
+							? PERSON_SEARCH_CONFIG
+							: DEFAULT_SEARCH_CONFIG;
+					const infixOk = allowInfixMatch(queryLength, searchCfg);
+					function mt(text: string, query: string): MatchType {
+						return getMatchTypeUtil(text, query, searchCfg);
+					}
 
 					// Combine all searchable text for term counting
 					const searchableFields = [
@@ -826,7 +897,7 @@ const isSearchOnly = mode === "search-only";
 						const slugLower = (item.slug || "").toLowerCase();
 
 						for (const term of nonStopTerms) {
-							const termMatch = getMatchType(titleLower, term);
+							const termMatch = mt(titleLower, term);
 							if (termMatch === "exact") {
 								// Term exactly matches the entire title
 								hasTermExactTitleMatch = true;
@@ -840,7 +911,7 @@ const isSearchOnly = mode === "search-only";
 							}
 
 							// Also check slug
-							const slugMatch = getMatchType(slugLower, term);
+							const slugMatch = mt(slugLower, term);
 							if (slugMatch === "exact") {
 								hasTermExactTitleMatch = true;
 								bestTermTitleMatch = "word-exact";
@@ -856,7 +927,7 @@ const isSearchOnly = mode === "search-only";
 							for (let synIdx = 0; synIdx < item.synonyms.length; synIdx++) {
 								const syn = item.synonyms[synIdx];
 								for (const term of nonStopTerms) {
-									const match = getMatchType(syn, term);
+									const match = mt(syn, term);
 									if (match === "exact" || match === "word-exact") {
 										bestTermSynonymMatch = "exact";
 										// Track synonym position for term-level matches (for tie-breaking)
@@ -878,8 +949,8 @@ const isSearchOnly = mode === "search-only";
 					}
 
 					// Check match types against FULL query (for single-word queries)
-					const titleMatch = getMatchType(item.title, queryLower);
-					const slugMatch = getMatchType(item.slug, queryLower);
+					const titleMatch = mt(item.title, queryLower);
+					const slugMatch = mt(item.slug, queryLower);
 
 					// Check if description contains the query (for single-word queries especially)
 					const descriptionMatch = item.description
@@ -915,7 +986,7 @@ const isSearchOnly = mode === "search-only";
 					if (item.synonyms) {
 						for (let i = 0; i < item.synonyms.length; i++) {
 							const s = item.synonyms[i];
-							const match = getMatchType(s, queryLower);
+							const match = mt(s, queryLower);
 							if (match === "exact" || match === "word-exact") {
 								synonymMatch = "exact";
 								synonymMatchPosition = i;
@@ -932,6 +1003,17 @@ const isSearchOnly = mode === "search-only";
 								canPrefix
 							) {
 								synonymMatch = "word-prefix";
+								if (synonymMatchPosition === undefined) synonymMatchPosition = i;
+							}
+							if (
+								match === "infix" &&
+								synonymMatch !== "exact" &&
+								synonymMatch !== "word-exact" &&
+								synonymMatch !== "prefix" &&
+								synonymMatch !== "word-prefix" &&
+								infixOk
+							) {
+								synonymMatch = "infix";
 								if (synonymMatchPosition === undefined) synonymMatchPosition = i;
 							}
 						}
@@ -1009,14 +1091,31 @@ const isSearchOnly = mode === "search-only";
 						score = crossFieldScore; matchType = crossFieldMatchType;
 					} else if ((titleMatch === "word-prefix" || synonymMatch === "word-prefix") && canPrefix) {
 						score = SCORE.CATEGORY_WORD_PREFIX; matchType = "word-prefix";
-					} else if ((titleMatch === "infix" || slugMatch === "infix") && canInfix) {
-						score = SCORE.CATEGORY_INFIX; matchType = "infix";
+					} else if (
+						(titleMatch === "infix" || slugMatch === "infix" || synonymMatch === "infix") &&
+						infixOk
+					) {
+						const personShortInfix =
+							item.type === "person" &&
+							queryLength >= 3 &&
+							queryLength < DEFAULT_SEARCH_CONFIG.minLengthForInfix;
+						score = personShortInfix
+							? SCORE.CATEGORY_PERSON_SHORT_INFIX
+							: SCORE.CATEGORY_INFIX;
+						matchType = "infix";
 					} else if (descriptionMatch === "word-exact") {
 						// Description contains the query as a whole word - medium priority
 						score = SCORE.CATEGORY_DESCRIPTION_WORD || 40; matchType = "description-word";
-					} else if (descriptionMatch === "infix" && canInfix) {
+					} else if (descriptionMatch === "infix" && infixOk) {
 						// Description contains the query as substring
-						score = SCORE.CATEGORY_DESCRIPTION_INFIX || 28; matchType = "description-infix";
+						const personShortDescInfix =
+							item.type === "person" &&
+							queryLength >= 3 &&
+							queryLength < DEFAULT_SEARCH_CONFIG.minLengthForInfix;
+						score = personShortDescInfix
+							? SCORE.CATEGORY_PERSON_SHORT_INFIX
+							: SCORE.CATEGORY_DESCRIPTION_INFIX || 28;
+						matchType = "description-infix";
 					} else {
 						// Fuzzy match - only if query length permits
 						if (maxEditDistance === 0) return; // No fuzzy for short queries
@@ -1103,18 +1202,27 @@ const isSearchOnly = mode === "search-only";
 
 					// Determine type
 					const isSimile = item.type === "simile";
-					const type: "topic-quality" | "simile" = isSimile ? "simile" : "topic-quality";
+					const isPerson = item.type === "person";
+					const type: "topic-quality" | "simile" | "person" = isSimile
+						? "simile"
+						: isPerson
+							? "person"
+							: "topic-quality";
 
 					// Count all results with good scores regardless of filter
 					if (isSimile) {
 						allCounts.similes++;
+					} else if (isPerson) {
+						allCounts.persons++;
 					} else {
 						allCounts.topicsQualities++;
 					}
 
 					// Only add to results if filter is checked
 					if (isSimile && !searchFilters.similes) return;
-					if (!isSimile && !searchFilters.topicsQualities) return;
+					if (isPerson && !searchFilters.persons) return;
+					if (!isSimile && !isPerson && !searchFilters.topicsQualities)
+						return;
 
 					// Use term-level synonym position if full-query synonym position not set
 					results.push({ type, score, item, matchType, nonStopwordMatches: categoryNonStopMatches, synonymMatchPosition: synonymMatchPosition ?? termSynonymMatchPosition });
@@ -1462,7 +1570,12 @@ const isSearchOnly = mode === "search-only";
 			});
 
 			// Update counts
-			updateResultCounts(allCounts.discourses, allCounts.topicsQualities, allCounts.similes);
+			updateResultCounts(
+				allCounts.discourses,
+				allCounts.topicsQualities,
+				allCounts.similes,
+				allCounts.persons,
+			);
 
 			// Deduplicate topics/qualities that share the same primary pali term
 			// This handles cases like "Jhana" (topic) and "Collectedness" (quality)
@@ -1501,12 +1614,18 @@ const isSearchOnly = mode === "search-only";
 		}
 	}
 
-	function updateResultCounts(discourses: number, topicsQualities: number, similes: number) {
-		resultCounts = { discourses, topicsQualities, similes };
+	function updateResultCounts(
+		discourses: number,
+		topicsQualities: number,
+		similes: number,
+		persons: number,
+	) {
+		resultCounts = { discourses, topicsQualities, similes, persons };
 
 		const countDiscourses = widget.querySelector("#count-discourses");
 		const countTopicsQualities = widget.querySelector("#count-topics-qualities");
 		const countSimiles = widget.querySelector("#count-similes");
+		const countPersons = widget.querySelector("#count-persons");
 
 		if (countDiscourses) {
 			countDiscourses.textContent = discourses > 0 ? `(${discourses})` : "";
@@ -1516,6 +1635,9 @@ const isSearchOnly = mode === "search-only";
 		}
 		if (countSimiles) {
 			countSimiles.textContent = similes > 0 ? `(${similes})` : "";
+		}
+		if (countPersons) {
+			countPersons.textContent = persons > 0 ? `(${persons})` : "";
 		}
 	}
 
@@ -1547,7 +1669,12 @@ const isSearchOnly = mode === "search-only";
 		}
 		const discourses = Array.from(discourseMap.values());
 
-		const categories = results.filter(r => r.type === "topic-quality" || r.type === "simile");
+		const categories = results.filter(
+			r =>
+				r.type === "topic-quality" ||
+				r.type === "simile" ||
+				r.type === "person",
+		);
 
 		// Group categories by their first/primary pali term (normalized)
 		const paliGroups = new Map<string, ScoredResult[]>();
@@ -1741,20 +1868,20 @@ const isSearchOnly = mode === "search-only";
 
 					html += `
 						<div class="${hiddenClass}" data-result-index="${index}" data-result-type="discourse">
-							<div class="search-discourse-card" data-search-result>
+							<a href="/${slug}" class="search-discourse-card block no-underline text-inherit" data-search-result>
 								<div class="flex items-start">
 									<div class="min-w-0 pr-4">
 										<h2 class="text-base sm:text-lg font-semibold text-text">
-											<a class="hover:text-link-color id mr-2 font-normal" href="/${slug}">
+											<span class="id mr-2 font-normal text-[var(--link-color)]">
 												${highlightedId}&nbsp; <span style="color:var(--text-color)">${highlightedTitle}</span>
-											</a>
+											</span>
 										</h2>
 									</div>
 								</div>
 								${descriptionHtml}
 								${snippetHtml}
-								${debugHtml}
-							</div>
+							</a>
+							${debugHtml}
 						</div>
 					`;
 				} else {
@@ -1856,6 +1983,7 @@ const isSearchOnly = mode === "search-only";
 				widget.querySelector(`#${id}`)?.addEventListener("change", (e) => {
 					browseFilters.topicsQualities = (e.target as HTMLInputElement).checked;
 					syncBrowseCheckboxes("topics-qualities", browseFilters.topicsQualities);
+					persistExploreFilters();
 					renderBrowseResults();
 				});
 			});
@@ -1864,6 +1992,16 @@ const isSearchOnly = mode === "search-only";
 				widget.querySelector(`#${id}`)?.addEventListener("change", (e) => {
 					browseFilters.similes = (e.target as HTMLInputElement).checked;
 					syncBrowseCheckboxes("similes", browseFilters.similes);
+					persistExploreFilters();
+					renderBrowseResults();
+				});
+			});
+
+			["browse-filter-persons", "browse-filter-persons-desktop"].forEach(id => {
+				widget.querySelector(`#${id}`)?.addEventListener("change", (e) => {
+					browseFilters.persons = (e.target as HTMLInputElement).checked;
+					syncBrowseCheckboxes("persons", browseFilters.persons);
+					persistExploreFilters();
 					renderBrowseResults();
 				});
 			});
@@ -1872,16 +2010,25 @@ const isSearchOnly = mode === "search-only";
 		// Search filters
 		widget.querySelector("#search-filter-discourses")?.addEventListener("change", (e) => {
 			searchFilters.discourses = (e.target as HTMLInputElement).checked;
+			persistExploreFilters();
 			if (searchQuery) performSearch(searchQuery);
 		});
 
 		widget.querySelector("#search-filter-topics-qualities")?.addEventListener("change", (e) => {
 			searchFilters.topicsQualities = (e.target as HTMLInputElement).checked;
+			persistExploreFilters();
 			if (searchQuery) performSearch(searchQuery);
 		});
 
 		widget.querySelector("#search-filter-similes")?.addEventListener("change", (e) => {
 			searchFilters.similes = (e.target as HTMLInputElement).checked;
+			persistExploreFilters();
+			if (searchQuery) performSearch(searchQuery);
+		});
+
+		widget.querySelector("#search-filter-persons")?.addEventListener("change", (e) => {
+			searchFilters.persons = (e.target as HTMLInputElement).checked;
+			persistExploreFilters();
 			if (searchQuery) performSearch(searchQuery);
 		});
 
@@ -1926,6 +2073,70 @@ const isSearchOnly = mode === "search-only";
 			const el = widget.querySelector(`#${id}`) as HTMLInputElement;
 			if (el) el.checked = checked;
 		});
+	}
+
+	function syncBrowseCheckboxDomFromState() {
+		syncBrowseCheckboxes("topics-qualities", browseFilters.topicsQualities);
+		syncBrowseCheckboxes("similes", browseFilters.similes);
+		syncBrowseCheckboxes("persons", browseFilters.persons);
+	}
+
+	function syncSearchCheckboxDomFromState() {
+		const pairs: [string, keyof typeof searchFilters][] = [
+			["search-filter-discourses", "discourses"],
+			["search-filter-topics-qualities", "topicsQualities"],
+			["search-filter-similes", "similes"],
+			["search-filter-persons", "persons"],
+		];
+		for (const [id, key] of pairs) {
+			const el = widget.querySelector(`#${id}`) as HTMLInputElement;
+			if (el) el.checked = searchFilters[key];
+		}
+	}
+
+	function persistExploreFilters() {
+		try {
+			localStorage.setItem(
+				DISCOVER_FILTERS_KEY,
+				JSON.stringify({
+					v: 1,
+					browse: { ...browseFilters },
+					search: { ...searchFilters },
+				}),
+			);
+		} catch {
+			// ignore quota / private mode
+		}
+	}
+
+	function loadPersistedFiltersIntoState() {
+		try {
+			const raw = localStorage.getItem(DISCOVER_FILTERS_KEY);
+			if (!raw) return;
+			const o = JSON.parse(raw) as {
+				v?: number;
+				browse?: Partial<typeof browseFilters>;
+				search?: Partial<typeof searchFilters>;
+			};
+			if (o.v !== 1) return;
+			if (o.browse) {
+				const b = o.browse;
+				if (typeof b.topicsQualities === "boolean") browseFilters.topicsQualities = b.topicsQualities;
+				if (typeof b.similes === "boolean") browseFilters.similes = b.similes;
+				if (typeof b.persons === "boolean") browseFilters.persons = b.persons;
+			}
+			if (o.search) {
+				const s = o.search;
+				if (typeof s.discourses === "boolean") searchFilters.discourses = s.discourses;
+				if (typeof s.topicsQualities === "boolean") searchFilters.topicsQualities = s.topicsQualities;
+				if (typeof s.similes === "boolean") searchFilters.similes = s.similes;
+				if (typeof s.persons === "boolean") searchFilters.persons = s.persons;
+			}
+		} catch {
+			return;
+		}
+		syncBrowseCheckboxDomFromState();
+		syncSearchCheckboxDomFromState();
 	}
 
 	function handleSearchInput(event: Event) {
@@ -2069,6 +2280,18 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	// ==================== START ====================
+	// bfcache: browser may restore checkbox DOM without re-running init; re-sync from storage + re-render.
+	window.addEventListener("pageshow", (ev) => {
+		const e = ev as PageTransitionEvent;
+		if (!e.persisted) return;
+		loadPersistedFiltersIntoState();
+		if (currentMode === "browse") {
+			renderBrowseResults();
+		} else if (currentMode === "search" && searchQuery) {
+			void performSearch(searchQuery);
+		}
+	});
+
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", init, { once: true });
 	} else {

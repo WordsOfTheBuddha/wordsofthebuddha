@@ -394,11 +394,12 @@ import Layout from "../layouts/Layout.astro";
 						JSON.stringify(searchData),
 					).length;
 
-					// Get topics/qualities/similes size by building unified content
+					// Get topics/qualities/similes/persons size by building unified content
 					const categoryData = discoverMod.buildAllContent([
 						"topics",
 						"qualities",
 						"similes",
+						"persons",
 					]);
 					const categoryBytes = new TextEncoder().encode(
 						JSON.stringify(categoryData),

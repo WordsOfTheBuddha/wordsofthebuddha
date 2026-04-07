@@ -4,6 +4,7 @@ import { routes } from "../utils/routes";
 import topicMappings from "../data/topicMappings.json";
 import qualityMappings from "../data/qualityMappings.json";
 import simileMappings from "../data/simileMappings.json";
+import personMappings from "../data/personMappings.json";
 
 const SITE_URL = "https://wordsofthebuddha.org";
 
@@ -64,6 +65,15 @@ export const GET: APIRoute = async () => {
 			sitemap +=
 				"\n" +
 				generateUrlElement(`/on/${simileSlug}`, undefined, "0.5");
+		});
+	});
+
+	// Person pages (/on/:slug from `character` front matter)
+	Object.values(personMappings as any).forEach((group: any) => {
+		Object.keys(group).forEach((slug) => {
+			sitemap +=
+				"\n" +
+				generateUrlElement(`/on/${slug}`, undefined, "0.5");
 		});
 	});
 

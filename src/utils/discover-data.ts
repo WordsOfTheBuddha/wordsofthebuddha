@@ -1,11 +1,12 @@
 import topicMappings from "../data/topicMappings.json";
 import qualityMappings from "../data/qualityMappings.json";
 import simileMappings from "../data/simileMappings.json";
+import personMappings from "../data/personMappings.json";
 import qualities from "../data/qualities.json";
 import { toChicagoTitleCase } from "./toChicagoTitleCase";
 import type { UnifiedContentItem } from "../types/discover";
 
-type Kind = "topics" | "qualities" | "similes";
+type Kind = "topics" | "qualities" | "similes" | "persons";
 
 export interface BuildOptions {
 	include?: Kind[]; // defaults to all
@@ -138,7 +139,7 @@ function sortDiscoursesInPlace(arr: any[]) {
  * Build the unified content list without search filtering.
  */
 export function buildAllContent(
-	include: Kind[] = ["topics", "qualities", "similes"],
+	include: Kind[] = ["topics", "qualities", "similes", "persons"],
 ): UnifiedContentItem[] {
 	const priorityMap = buildPriorityMap();
 	const items: UnifiedContentItem[] = [];
@@ -350,6 +351,7 @@ export function buildAllContent(
 								slug,
 								type: "simile",
 								title,
+								browseLetter: String(letter).toUpperCase(),
 								discourses: list.map((d) => ({
 									id: d.id,
 									title: d.title,
@@ -359,6 +361,44 @@ export function buildAllContent(
 									priority: undefined,
 								})),
 							}),
+						);
+					},
+				);
+			},
+		);
+	}
+
+	if (include.includes("persons")) {
+		Object.entries(personMappings as any).forEach(
+			([letter, group]: any) => {
+				Object.entries(group as any).forEach(
+					([slug, data]: any) => {
+						const d = data as {
+							title: string;
+							description?: string;
+							discourses: any[];
+						};
+						items.push(
+							createContentItem(
+								{
+									id: slug,
+									slug,
+									type: "person",
+									title: d.title,
+									browseLetter: String(letter).toUpperCase(),
+									discourses: (d.discourses || []).map(
+										(x: any) => ({
+											id: x.id,
+											title: x.title,
+											description: x.description,
+											collection: x.collection,
+											isFeatured: false,
+											priority: undefined,
+										}),
+									),
+								},
+								d.description,
+							),
 						);
 					},
 				);
@@ -378,6 +418,15 @@ export function buildAllContent(
 		}
 	});
 
+	// Default browse letter from title when not set (topics, qualities)
+	items.forEach((it) => {
+		if (!it.browseLetter && it.title) {
+			(it as UnifiedContentItem).browseLetter = it.title
+				.charAt(0)
+				.toUpperCase();
+		}
+	});
+
 	// Sort items alphabetically by title
 	items.sort((a, b) => a.title.localeCompare(b.title));
 	return items;
@@ -389,7 +438,12 @@ export function buildAllContent(
 export function buildUnifiedContent(
 	options: BuildOptions = {},
 ): UnifiedContentItem[] {
-	const include = options.include ?? ["topics", "qualities", "similes"];
+	const include = options.include ?? [
+		"topics",
+		"qualities",
+		"similes",
+		"persons",
+	];
 	const filterParam = options.filter?.trim() ?? "";
 
 	let allContent = buildAllContent(include);
@@ -477,7 +531,7 @@ function matchesSlugArray(
 
 /**
  * Helper for /on/[...slug].astro: find an item by slug with priority
- * Topic slug -> topic redirects -> quality -> simile.
+ * Topic slug -> topic redirects -> quality -> person -> simile.
  */
 export function findContentBySlug(
 	slug: string,
@@ -504,6 +558,11 @@ export function findContentBySlug(
 
 	content = all.find(
 		(i) => i.type === "quality" && matchesSlugValue(i.slug, slugVariants),
+	);
+	if (content) return { item: content, type: content.type };
+
+	content = all.find(
+		(i) => i.type === "person" && matchesSlugValue(i.slug, slugVariants),
 	);
 	if (content) return { item: content, type: content.type };
 
@@ -535,6 +594,9 @@ export function getStaticOnSlugs(): string[] {
 				.replace(/[^a-z0-9-]/g, "");
 			paths.add(slug);
 		});
+	});
+	Object.values(personMappings as any).forEach((group: any) => {
+		Object.keys(group as object).forEach((slug) => paths.add(slug));
 	});
 	return Array.from(paths);
 }

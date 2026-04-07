@@ -1,8 +1,10 @@
 export interface UnifiedContentItem {
 	id: string;
 	slug: string;
-	type: "topic" | "quality" | "simile";
+	type: "topic" | "quality" | "simile" | "person";
 	title: string;
+	/** A–Z bucket for browse (persons use curated/rules; others default from title) */
+	browseLetter?: string;
 	description?: string;
 	synonyms?: string[];
 	supportedBy?: string[];

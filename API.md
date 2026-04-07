@@ -189,11 +189,11 @@ Notes:
 
 ## GET /api/discover
 
-Explore curated content by topics, qualities, and similes, with optional filtering.
+Explore curated content by topics, qualities, similes, and persons (people in discourses), with optional filtering.
 
 Query params:
 
--   by: comma-separated list of kinds to include. Valid values: `topics`, `qualities`, `similes`. Defaults to `topics,qualities,similes`.
+-   by: comma-separated list of kinds to include. Valid values: `topics`, `qualities`, `similes`, `persons`. Defaults to `topics,qualities,similes,persons`.
 -   filter: string (optional). Case-insensitive match against item titles, descriptions, synonyms, Pāli, redirects, related, and per-item discourse fields (id, collection, title, description). Hyphens are treated like spaces during matching.
 
 Response 200:
@@ -205,7 +205,8 @@ Response 200:
     {
       "id": "four-noble-truths",
       "slug": "four-noble-truths",
-      "type": "topic",            // or "quality" | "simile"
+      "type": "topic",            // or "quality" | "simile" | "person"
+      "browseLetter": "A",        // optional; A–Z bucket for browse (persons, similes)
       "title": "Four Noble Truths",
       "description": "...",       // optional
       "synonyms": ["..."],        // optional (topics/qualities)
@@ -239,7 +240,7 @@ Errors:
 
 Notes:
 
--   Data is built from JSON mappings in `src/data`: `topicMappings.json`, `qualityMappings.json`, `simileMappings.json`, and `qualities.json`.
+-   Data is built from JSON mappings in `src/data`: `topicMappings.json`, `qualityMappings.json`, `simileMappings.json`, `personMappings.json` (generated from `character` front matter in English MDX; optional overrides in `personCurations.json`), and `qualities.json`.
 -   Ordering: featured items first within each item’s discourses, then by numeric priority (higher first), then stable collection ordering, then alphanumeric id. Items themselves are sorted alphabetically by title.
 
 ---

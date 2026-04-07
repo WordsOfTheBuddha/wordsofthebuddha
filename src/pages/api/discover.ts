@@ -5,7 +5,8 @@ import { buildUnifiedContent } from "../../utils/discover-data";
 export const GET: APIRoute = async ({ url }) => {
 	try {
 		const byParam =
-			url.searchParams.get("by") || "topics,qualities,similes";
+			url.searchParams.get("by") ||
+			"topics,qualities,similes,persons";
 		const filterParam = url.searchParams.get("filter") || "";
 		const requestedTypes = byParam.split(",").map((t) => t.trim()) as any;
 		const allContent = buildUnifiedContent({

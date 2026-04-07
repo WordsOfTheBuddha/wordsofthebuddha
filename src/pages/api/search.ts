@@ -16,7 +16,7 @@ let cachedCategoryFuse: Fuse<ReturnType<typeof buildUnifiedContent>[number]> | n
 function getCategoryFuse() {
 	if (!cachedCategoryFuse) {
 		cachedAllCategories = buildUnifiedContent({
-			include: ["topics", "qualities", "similes"],
+			include: ["topics", "qualities", "similes", "persons"],
 		});
 		cachedCategoryFuse = new Fuse(cachedAllCategories, {
 			keys: [
@@ -29,6 +29,7 @@ function getCategoryFuse() {
 			threshold: 0.4,
 			includeScore: true,
 			ignoreLocation: true,
+			ignoreDiacritics: true,
 		});
 	}
 	return { allCategories: cachedAllCategories!, categoryFuse: cachedCategoryFuse };
@@ -37,6 +38,7 @@ import Fuse from "fuse.js";
 import {
 	getMatchType as getMatchTypeUtil,
 	DEFAULT_SEARCH_CONFIG,
+	PERSON_SEARCH_CONFIG,
 	SCORE,
 	rankResultsWithDiversity,
 	getNonStopwordTerms,
@@ -81,7 +83,10 @@ function deduplicateByPali(results: ScoredResult[]): ScoredResult[] {
 	const discourses = Array.from(discourseMap.values());
 
 	const categories = results.filter(
-		(r) => r.type === "topic-quality" || r.type === "simile",
+		(r) =>
+			r.type === "topic-quality" ||
+			r.type === "simile" ||
+			r.type === "person",
 	);
 
 	// Group categories by their first/primary pali term (normalized)
@@ -142,7 +147,12 @@ export const GET: APIRoute = async ({ url }) => {
 					success: true,
 					query: "",
 					results: [],
-					counts: { discourses: 0, topicsQualities: 0, similes: 0 },
+					counts: {
+						discourses: 0,
+						topicsQualities: 0,
+						similes: 0,
+						persons: 0,
+					},
 				}),
 				{
 					status: 200,
@@ -162,7 +172,12 @@ export const GET: APIRoute = async ({ url }) => {
 		const queryLength = queryLower.length;
 
 		const results: ScoredResult[] = [];
-		const counts = { discourses: 0, topicsQualities: 0, similes: 0 };
+		const counts = {
+			discourses: 0,
+			topicsQualities: 0,
+			similes: 0,
+			persons: 0,
+		};
 
 		// If query is only slug prefixes with no search terms, we still need to return filtered results
 		const isFilterOnly = hasSlugFilter && !searchQuery.trim();
@@ -200,6 +215,14 @@ export const GET: APIRoute = async ({ url }) => {
 
 			categoryResults.forEach((result) => {
 				const item = result.item;
+				const searchCfg =
+					item.type === "person"
+						? PERSON_SEARCH_CONFIG
+						: DEFAULT_SEARCH_CONFIG;
+				const infixOk = allowInfixMatch(queryLength, searchCfg);
+				function mt(text: string, q: string): MatchType {
+					return getMatchTypeUtil(text, q, searchCfg);
+				}
 
 				const searchableFields = [
 					item.title || "",
@@ -238,7 +261,7 @@ export const GET: APIRoute = async ({ url }) => {
 					const slugLower = (item.slug || "").toLowerCase();
 
 					for (const term of nonStopTerms) {
-						const termMatch = getMatchType(titleLower, term);
+						const termMatch = mt(titleLower, term);
 						if (termMatch === "exact") {
 							// Term exactly matches the entire title
 							hasTermExactTitleMatch = true;
@@ -255,7 +278,7 @@ export const GET: APIRoute = async ({ url }) => {
 								bestTermTitleMatch = "word-prefix";
 						}
 
-						const slugMatch = getMatchType(slugLower, term);
+						const slugMatch = mt(slugLower, term);
 						if (slugMatch === "exact") {
 							hasTermExactTitleMatch = true;
 							bestTermTitleMatch = "word-exact";
@@ -267,10 +290,6 @@ export const GET: APIRoute = async ({ url }) => {
 					}
 
 					if (item.synonyms) {
-						console.log(
-							`[DEBUG] Checking ${item.title} synonyms, nonStopTerms:`,
-							nonStopTerms,
-						);
 						for (
 							let synIdx = 0;
 							synIdx < item.synonyms.length;
@@ -278,7 +297,7 @@ export const GET: APIRoute = async ({ url }) => {
 						) {
 							const syn = item.synonyms[synIdx];
 							for (const term of nonStopTerms) {
-								const match = getMatchType(syn, term);
+								const match = mt(syn, term);
 								if (
 									match === "exact" ||
 									match === "word-exact"
@@ -310,8 +329,8 @@ export const GET: APIRoute = async ({ url }) => {
 					}
 				}
 
-				const titleMatch = getMatchType(item.title, queryLower);
-				const slugMatch = getMatchType(item.slug, queryLower);
+				const titleMatch = mt(item.title, queryLower);
+				const slugMatch = mt(item.slug, queryLower);
 
 				const descriptionMatch = item.description
 					? textContainsWholeWord(item.description, queryLower)
@@ -358,7 +377,7 @@ export const GET: APIRoute = async ({ url }) => {
 				if (item.synonyms) {
 					for (let i = 0; i < item.synonyms.length; i++) {
 						const s = item.synonyms[i];
-						const match = getMatchType(s, queryLower);
+						const match = mt(s, queryLower);
 						if (match === "exact" || match === "word-exact") {
 							synonymMatch = "exact";
 							synonymMatchPosition = i;
@@ -380,6 +399,18 @@ export const GET: APIRoute = async ({ url }) => {
 							canPrefix
 						) {
 							synonymMatch = "word-prefix";
+							if (synonymMatchPosition === undefined)
+								synonymMatchPosition = i;
+						}
+						if (
+							match === "infix" &&
+							synonymMatch !== "exact" &&
+							synonymMatch !== "word-exact" &&
+							synonymMatch !== "prefix" &&
+							synonymMatch !== "word-prefix" &&
+							infixOk
+						) {
+							synonymMatch = "infix";
 							if (synonymMatchPosition === undefined)
 								synonymMatchPosition = i;
 						}
@@ -481,16 +512,30 @@ export const GET: APIRoute = async ({ url }) => {
 					score = SCORE.CATEGORY_WORD_PREFIX;
 					matchType = "word-prefix";
 				} else if (
-					(titleMatch === "infix" || slugMatch === "infix") &&
-					canInfix
+					(titleMatch === "infix" ||
+						slugMatch === "infix" ||
+						synonymMatch === "infix") &&
+					infixOk
 				) {
-					score = SCORE.CATEGORY_INFIX;
+					const personShortInfix =
+						item.type === "person" &&
+						queryLength >= 3 &&
+						queryLength < DEFAULT_SEARCH_CONFIG.minLengthForInfix;
+					score = personShortInfix
+						? SCORE.CATEGORY_PERSON_SHORT_INFIX
+						: SCORE.CATEGORY_INFIX;
 					matchType = "infix";
 				} else if (descriptionMatch === "word-exact") {
 					score = SCORE.CATEGORY_DESCRIPTION_WORD || 40;
 					matchType = "description-word";
-				} else if (descriptionMatch === "infix" && canInfix) {
-					score = SCORE.CATEGORY_DESCRIPTION_INFIX || 28;
+				} else if (descriptionMatch === "infix" && infixOk) {
+					const personShortDescInfix =
+						item.type === "person" &&
+						queryLength >= 3 &&
+						queryLength < DEFAULT_SEARCH_CONFIG.minLengthForInfix;
+					score = personShortDescInfix
+						? SCORE.CATEGORY_PERSON_SHORT_INFIX
+						: SCORE.CATEGORY_DESCRIPTION_INFIX || 28;
 					matchType = "description-infix";
 				} else {
 					if (maxEditDistance === 0) return;
@@ -579,12 +624,17 @@ export const GET: APIRoute = async ({ url }) => {
 				if (score < SCORE.MIN_SCORE) return;
 
 				const isSimile = item.type === "simile";
-				const type: "topic-quality" | "simile" = isSimile
+				const isPerson = item.type === "person";
+				const type: "topic-quality" | "simile" | "person" = isSimile
 					? "simile"
-					: "topic-quality";
+					: isPerson
+						? "person"
+						: "topic-quality";
 
 				if (isSimile) {
 					counts.similes++;
+				} else if (isPerson) {
+					counts.persons++;
 				} else {
 					counts.topicsQualities++;
 				}

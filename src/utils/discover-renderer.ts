@@ -38,7 +38,9 @@ export class DiscoverRenderer {
 		// Group by first letter
 		const groupedData = new Map<string, UnifiedContentItem[]>();
 		filteredData.forEach((item) => {
-			const firstLetter = item.title.charAt(0).toUpperCase();
+			const firstLetter = (
+				item.browseLetter || item.title.charAt(0)
+			).toUpperCase();
 			if (!groupedData.has(firstLetter)) {
 				groupedData.set(firstLetter, []);
 			}
@@ -137,7 +139,7 @@ export class DiscoverRenderer {
 			</div>
 
             ${
-				item.type !== "simile"
+				item.type === "topic" || item.type === "quality"
 					? `
 				<div class="mt-2 ml-2 space-y-2 text-sm">
 					${
@@ -358,7 +360,19 @@ export class DiscoverRenderer {
 					}
 				</div>
 			`
-					: `
+					: item.type === "person"
+						? `
+				<div class="mt-2 ml-2 space-y-2 text-sm">
+					${
+						item.description
+							? `
+						<div class="text-text">${this.highlight(item.description)}</div>
+					`
+							: ""
+					}
+				</div>
+			`
+						: `
 				<!-- Simile Description (only when expanded) -->
 				${
 					item.description && isExpanded
@@ -425,40 +439,42 @@ export class DiscoverRenderer {
 	private renderSingleDiscourse(
 		discourse: any,
 		showDescription: boolean,
-		contentType: string,
+		_contentType: string,
 	): string {
+		const href = `/${discourse.id}`;
+		const idLabel = discourse.id.replace(
+			/([a-zA-Z]+)(\d+)/,
+			(_: string, chars: string, digits: string) => {
+				return `${chars.toUpperCase()} ${digits}`;
+			},
+		);
+
+		const noteBlock = discourse.note
+			? `
+			<div class="mb-2 inline-block ml-1">
+				<span class="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">
+					${discourse.note}
+				</span>
+			</div>
+		`
+			: "";
+
+		const descriptionBlock =
+			showDescription && discourse.description
+				? `<p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed my-1">${discourse.description}</p>`
+				: "";
+
+		/* One block link so ID, title, note, and description all go to the discourse (not the card’s /on/… target). */
 		return `
-		<div class="text-sm rounded-lg px-2 mt-1 w-[fit-content]">
-			<a href="/${
-				discourse.id
-			}" class="text-[var(--link-color)] hover:text-[var(--link-hover-color)] font-medium inline-block mb-1">
-				${discourse.id.replace(
-					/([a-zA-Z]+)(\d+)/,
-					(_: string, chars: string, digits: string) => {
-						return `${chars.toUpperCase()} ${digits}`;
-					},
-				)}
-            </a>
-            <span>
-                ${discourse.title}
-            </span>
-			${
-				discourse.note
-					? `
-				<div class="mb-2 inline-block ml-1">
-					<span class="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">
-						${discourse.note}
-					</span>
-				</div>
-			`
-					: ""
-			}
-			${
-				showDescription && discourse.description
-					? `<p class="text-gray-600 dark:text-gray-400 text-xs leading-relaxed my-1">${discourse.description}</p>`
-					: ""
-			}
-		</div>
+		<a
+			href="${href}"
+			class="discourse-row-link block text-sm rounded-lg px-2 py-1 mt-1 w-full text-left border border-transparent hover:border-[color:var(--surface-border)] hover:bg-[var(--surface-elevated)]/80 transition-colors"
+		>
+			<span class="text-[var(--link-color)] hover:text-[var(--link-hover-color)] font-medium">${idLabel}</span>
+			<span class="text-[var(--text-color)]"> ${discourse.title}</span>
+			${noteBlock}
+			${descriptionBlock}
+		</a>
 	`;
 	}
 

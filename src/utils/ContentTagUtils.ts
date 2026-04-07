@@ -72,6 +72,9 @@ export function getContentTypeFromApiData(
 	if (item.type === "quality") {
 		return getQualityContentType(item.slug);
 	}
+	if (item.type === "person") {
+		return "person";
+	}
 	return item.type as "simile" | "topic" | "person";
 }
 

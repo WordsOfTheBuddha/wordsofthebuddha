@@ -1147,7 +1147,7 @@ export type MatchType =
 	| "infix"
 	| "none";
 
-export type ResultType = "discourse" | "topic-quality" | "simile";
+export type ResultType = "discourse" | "topic-quality" | "simile" | "person";
 
 export interface ScoredResult {
 	type: ResultType;
@@ -1189,6 +1189,12 @@ export const DEFAULT_SEARCH_CONFIG: SearchConfig = {
 	diversityTolerance: 25,
 	maxSameTypeInRow: 3,
 	strataBoundaries: [76, 51, 26, 0], // 100-76, 75-51, 50-26, 25-0
+};
+
+/** Person names are often long; allow substring (infix) matches from 3 chars (e.g. "mog" → Mahāmoggallāna). */
+export const PERSON_SEARCH_CONFIG: SearchConfig = {
+	...DEFAULT_SEARCH_CONFIG,
+	minLengthForInfix: 3,
 };
 
 // ==================== QUERY PREPROCESSING ====================
@@ -1577,6 +1583,8 @@ export const SCORE = {
 	CATEGORY_CROSS_FIELD_WITH_TITLE_MATCH: 75, // Cross-field + one term exact in title
 	CATEGORY_DESCRIPTION_WORD: 40, // Query found as whole word in description
 	CATEGORY_INFIX: 35,
+	/** Person title/slug/synonym substring at 3–4 chars (below full infix; prefix/exact still rank higher). */
+	CATEGORY_PERSON_SHORT_INFIX: 32,
 	CATEGORY_CROSS_FIELD_PARTIAL: 30, // At least one query term found across fields
 	CATEGORY_DESCRIPTION_INFIX: 28, // Query found as substring in description
 	CATEGORY_FUZZY_1: 25,
@@ -2123,11 +2131,11 @@ export function formatRemainingText(remaining: {
 	categories: number;
 }): string {
 	if (remaining.discourses > 0 && remaining.categories > 0) {
-		return `${remaining.total} remaining (${remaining.discourses} discourses, ${remaining.categories} topics/similes)`;
+		return `${remaining.total} remaining (${remaining.discourses} discourses, ${remaining.categories} topics/similes/persons)`;
 	} else if (remaining.discourses > 0) {
 		return `${remaining.discourses} discourses remaining`;
 	} else if (remaining.categories > 0) {
-		return `${remaining.categories} topics/similes remaining`;
+		return `${remaining.categories} topics/similes/persons remaining`;
 	}
 	return `${remaining.total} remaining`;
 }
