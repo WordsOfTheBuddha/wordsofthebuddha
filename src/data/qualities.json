@@ -61,6 +61,7 @@
 		"sensual desire",
 		"sexual misconduct",
 		"shamelessness",
+		"shyness",
 		"slaughtering",
 		"sorrow",
 		"speculation",
@@ -236,7 +237,7 @@
 			"worry",
 			"Context: A fluttering, unsettled state of mind, worried about past or future and unsure what is right to do. It keeps the mind circling around concerns without resolution, weakening confidence and obscuring calm discernment.",
 			"Related:{impatience}",
-			"Supported by:{perturbation}",
+			"Supported by:{perturbation, shyness}",
 			"Leads to:{ignorance}",
 			"[kukkucca, uddhacca, darathaja]"
 		],
@@ -607,7 +608,7 @@
 			"with a wandering mind",
 			"with runaway thoughts",
 			"Context: A scattered, unfocused state of mind where attention flits from object to object without settling. A distracted mind lacks the composure needed for clear seeing and is easily pulled by whatever arises.",
-			"Supported by:{displeasure, perturbation}",
+			"Supported by:{displeasure, perturbation, shyness}",
 			"Leads to:{perceiving gratification, muddle-mindedness}",
 			"Opposite:{collectedness}",
 			"[asamāhita, asamādhi, amanasikāra]"
@@ -661,7 +662,7 @@
 			"gradual ending",
 			"wearing away",
 			"Context: The complete exhaustion and ending of craving, aversion, and delusion—the three roots of suffering. It refers to both the gradual wearing away of defilements through practice and the final cessation that constitutes Nibbāna.",
-			"Supported by:{complete comprehension, free from attachment, perceiving escape}",
+			"Supported by:{complete comprehension, free from attachment, perceiving escape, stream-entry}",
 			"Leads to:{liberation}",
 			"[khaya, khīṇa, nirodha]"
 		],
@@ -717,10 +718,11 @@
 			"trust",
 			"belief",
 			"conviction",
+			"self-assurance",
 			"Context: Confidence in the Buddha's awakening and the efficacy of the path. It brightens and steadies the mind, removing doubt and inspiring energy toward wholesome practice. True faith rests on clarity and direct experience rather than mere belief.",
 			"Supported by:{suffering}",
 			"Leads to:{joy, recollection of the Buddha, recollection of the Dhamma, recollection of the Sangha, rousing of energy, stream-entry}",
-			"Opposite:{faithlessness}",
+			"Opposite:{faithlessness, shyness}",
 			"[saddha, pasanna]"
 		],
 		"faithlessness": [
@@ -730,6 +732,7 @@
 			"cynicism",
 			"Context: An absence of confidence in the path and its fruits. The mind remains unconvinced, unable to commit energy or trust to practice. This inner hesitancy stalls progress and leaves one adrift without direction.",
 			"Supported by:{doubt}",
+			"Related:{shyness}",
 			"Leads to:{suffering}",
 			"Opposite:{faith}",
 			"[assadha]"
@@ -933,7 +936,7 @@
 			"putting on a false front",
 			"fraudulent",
 			"Supported by:{having many desires, shamelessness}",
-			"Leads to:{treachery}",
+			"Leads to:{shyness, treachery}",
 			"Opposite:{sincerity}",
 			"Context: A counterfeit display of virtue or attainment—concealing faults and projecting qualities one lacks—often to secure material support, status, or admiration; it thrives on craving for recognition and collapses with honesty, modesty, and accountability.",
 			"[māyāvī]"
@@ -1349,7 +1352,7 @@
 			"being stirred up",
 			"lit. shaking",
 			"Context: The shaking or agitation of the mind caused by defilements. It is the loss of stillness when the mind is stirred by gain or loss, praise or blame, pleasure or pain.",
-			"Supported by:{feuding}",
+			"Supported by:{feuding, shyness}",
 			"Leads to:{anxiety, distraction}",
 			"Opposite:{imperturbable}",
 			"[kopa, uddhacca, āvila, paritassati]"
@@ -1653,6 +1656,20 @@
 			"Opposite: {conscience}",
 			"[ahirika]"
 		],
+		"shyness": [
+			"embarrassed",
+			"humiliated",
+			"sheepish",
+			"self-conscious",
+			"dumbstruck",
+			"despondent",
+			"Context: A shrinking, exposed unease in the company of others—often tied to dishonor, misconduct, or a bad conscience. It is a fear of being seen as wrong or unworthy, and can lead to withdrawal or agitation.",
+			"Related:{fear, regret}",
+			"Supported by:{hypocrisy, regret, unprincipled conduct}",
+			"Leads to:{anxiety, distraction, perturbation}",
+			"Opposite:{faith}",
+			"[maṅku, maṅkubhūta]"
+		],
 		"sincerity": [
 			"genuineness",
 			"honesty",
@@ -1852,7 +1869,7 @@
 			"wrong action",
 			"Context: Conduct that disregards moral restraint and ignores the consequences of harm done to oneself or others through body or speech. Such behavior clouds the mind and leads to regret and further decline.",
 			"Supported by:{moral recklessness, shamelessness, wrong intention}",
-			"Leads to:{brashness, treachery, regret}",
+			"Leads to:{brashness, regret, shyness, treachery}",
 			"Opposite:{ethical conduct}",
 			"[dussīlya, micchākammanta]"
 		],
@@ -1956,7 +1973,7 @@
 			"Context: Lived understanding and sound judgment that steers the mind away from suffering, distinct from mere accumulation of facts.",
 			"Leads to:{good friendship, good habits, insight, patience}",
 			"Opposite:{delusion, immaturity, lack of discernment}",
-			"[paññā, vijjā, medhā, dhīra, paṇḍita]"
+			"[paññā, vijjā, medhā, dhīra, paṇḍita, asammūḷha]"
 		],
 		"wise attention": [
 			"proper attention",
