@@ -1,0 +1,45 @@
+title: "Contact"
+description: "The meeting of sense faculty, sense object, and the corresponding consciousness—the convergence of three. Contact is where experience actually touches: from it arise feeling, intention, and perception, and it is the pivotal link between the sense bases and the rest of mental life. It is one of the factors of name (mentality) and a central node in dependent origination."
+pali:
+    - phassa
+synonyms:
+    - sense impingement
+    - sense impression
+redirects:
+    - phassa
+    - sense contact
+    - sense-contact
+    - sense-impingement
+    - sense-impression
+post:
+    url: /fire
+    title: "Fire: Investigating Recurrent Experience"
+    description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
+supportedBy:
+    - ignorance
+    - wisdom
+leadsTo:
+    - felt experience
+discourses:
+    - id: sn14.2
+      note: "Elements -> Contacts"
+    - id: sn36.10
+      note: "Contact -> Feelings"
+    - id: sn14.3
+      note: "Clarifying causality"
+    - id: sn35.93
+      note: "Meeting of three things is contact"
+    - id: mn148
+      note: "Systematic treatment"
+    - id: sn14.9
+      note: "A map of mind"
+    - id: sn12.6
+      note: "fire-stick simile"
+    - id: sn36.2
+      note: "Seeing vanishing with each contact leads to dispassion"
+    - id: mn140
+      note: "Six elements and six fields of contact"
+    - id: snp4.10
+      note: "Verse on contact"
+    - id: mn111
+      note: "Contact in jhānas"

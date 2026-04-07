@@ -20,6 +20,9 @@ supportedBy:
 related:
     - person-of-integrity
     - good friendship
+leadsTo:
+    - arahant
+    - ending
 discourses:
     - id: "sn55.5"
       note: "Concise summary"
