@@ -82,7 +82,7 @@
     <circle cx="209" cy="731" r="10" fill="none" stroke="#527880" stroke-width="1" opacity="0.65" />
     <text x="209" y="730" text-anchor="middle" dominant-baseline="central" fill="#628898" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold">3</text>
     <text x="298" y="727" text-anchor="middle" fill="#b0bcb8" font-family="Georgia,'Times New Roman',serif" font-size="13.5" font-weight="bold">Moderation in Eating</text>
-    <text x="298" y="746" text-anchor="middle" fill="#708888" font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">bhojane mattaññū</text>
+    <text x="298" y="746" text-anchor="middle" fill="#708888" font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic">bhojane mattaññutā</text>
     <circle cx="184" cy="734" r="2.5" fill="#b0bcb8" opacity="0.14" filter="url(#glow1)" />
 
     <g filter="url(#shadowDrop)"><rect x="264" y="614" width="220" height="58" rx="9" fill="url(#stg4)" stroke="#487068" stroke-width="1" stroke-opacity="0.55" /></g>
