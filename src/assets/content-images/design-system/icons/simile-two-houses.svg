@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.44936) translate(0, -1.475)">
+    <g opacity="0.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Left house -->
+          <g stroke="#78a890" stroke-width="0.9">
+            <rect x="-22" y="-4" width="12" height="12" rx="1" />
+            <path d="M -23 -4 L -16 -10 L -9 -4" stroke-width="1" />
+            <rect x="-19" y="1" width="3" height="5" rx="0.3" opacity="0.6" />
+          </g>
+          <!-- Right house -->
+          <g stroke="#78a890" stroke-width="0.9">
+            <rect x="10" y="-4" width="12" height="12" rx="1" />
+            <path d="M 9 -4 L 16 -10 L 23 -4" stroke-width="1" />
+            <rect x="13" y="1" width="3" height="5" rx="0.3" opacity="0.6" />
+          </g>
+          <!-- Observer in the middle — standing with good eyesight -->
+          <g stroke="#80c0a8" stroke-width="0.9">
+            <circle cx="0" cy="-4" r="2.5" />
+            <line x1="0" y1="-1.5" x2="0" y2="8" />
+            <line x1="0" y1="3" x2="-4" y2="5.5" />
+            <line x1="0" y1="3" x2="4" y2="5.5" />
+            <line x1="0" y1="8" x2="-2.5" y2="13" />
+            <line x1="0" y1="8" x2="2.5" y2="13" />
+          </g>
+          <!-- Sight lines from observer to houses -->
+          <path d="M -3 -4 L -10 -2" stroke="#80c0a8" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.45" />
+          <path d="M 3 -4 L 10 -2" stroke="#80c0a8" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.45" />
+          <!-- Small figures walking between houses -->
+          <g stroke="#78a890" stroke-width="0.55" opacity="0.5">
+            <circle cx="-7" cy="6" r="1.3" />
+            <line x1="-7" y1="7.3" x2="-7" y2="11" />
+            <circle cx="7" cy="4" r="1.3" />
+            <line x1="7" y1="5.3" x2="7" y2="9" />
+          </g>
+          <!-- Movement arrows -->
+          <path d="M -5 7 L -2 6" stroke="#78a890" stroke-width="0.45" opacity="0.35" />
+          <path d="M 5 5 L 2 6" stroke="#78a890" stroke-width="0.45" opacity="0.35" />
+        </g>
+  </g>
+</svg>

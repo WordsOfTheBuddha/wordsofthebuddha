@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.79548) translate(0, 0.775)">
+    <g opacity="0.75" stroke="#60a088" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="0" cy="-10" r="3.5" stroke-width="1.1" />
+          <line x1="0" y1="-6.5" x2="0" y2="4" stroke-width="1.1" />
+          <line x1="0" y1="4" x2="-5" y2="12" stroke-width="1" />
+          <line x1="0" y1="4" x2="5" y2="12" stroke-width="1" />
+          <line x1="0" y1="-2" x2="-7" y2="-5" stroke-width="1" />
+          <line x1="0" y1="-2" x2="7" y2="-5" stroke-width="1" />
+          <path d="M -6 0 Q -9 -2, -7 1" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+          <path d="M -8 3 Q -11 1, -9 4" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+          <path d="M 6 0 Q 9 -2, 7 1" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+          <path d="M 8 3 Q 11 1, 9 4" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+        </g>
+  </g>
+</svg>

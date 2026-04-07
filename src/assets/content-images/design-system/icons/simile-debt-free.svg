@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.78513) translate(-4.45, 0.95)">
+    <g opacity="0.75" stroke="#60a088" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="0" cy="-10" r="3.5" stroke-width="1.1" />
+          <line x1="0" y1="-6.5" x2="0" y2="4" stroke-width="1.1" />
+          <line x1="0" y1="4" x2="-4" y2="12" stroke-width="1" />
+          <line x1="0" y1="4" x2="4" y2="12" stroke-width="1" />
+          <line x1="0" y1="-2" x2="-6" y2="0" stroke-width="1" />
+          <line x1="0" y1="-2" x2="6" y2="-5" stroke-width="1" />
+          <path d="M 6 -5 L 8 -7" stroke-width="0.9" />
+          <line x1="8" y1="-12" x2="10" y2="-14" stroke="#80c0a0" stroke-width="0.8" opacity="0.7" />
+          <line x1="7" y1="-14" x2="11" y2="-12" stroke="#80c0a0" stroke-width="0.8" opacity="0.7" />
+          <line x1="12" y1="-10" x2="14" y2="-12" stroke="#80c0a0" stroke-width="0.8" opacity="0.5" />
+          <line x1="11" y1="-12" x2="15" y2="-10" stroke="#80c0a0" stroke-width="0.8" opacity="0.5" />
+        </g>
+  </g>
+</svg>

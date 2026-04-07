@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.73461) translate(0, -1.375)">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Calm ground line -->
+          <path d="M -14 8 Q 0 6, 14 8" stroke="#60a088" stroke-width="0.75" opacity="0.45" />
+          <!-- Distant soft ridge (no alert dots) -->
+          <path d="M -12 -2 Q -4 -6, 4 -5 Q 10 -4, 14 -6" stroke="#80c0a0" stroke-width="0.65" opacity="0.4" />
+          <!-- Open sky suggestion -->
+          <path d="M -10 -10 Q 0 -12, 10 -10" stroke="#78a890" stroke-width="0.5" opacity="0.25" />
+          <!-- Traveler arrived, upright, pack lowered -->
+          <g stroke="#60a088" stroke-width="1">
+            <circle cx="0" cy="-2" r="3" />
+            <line x1="0" y1="1" x2="0" y2="9" />
+            <line x1="0" y1="4" x2="-6" y2="2" />
+            <line x1="0" y1="4" x2="6" y2="2" />
+            <line x1="0" y1="9" x2="-4" y2="14" />
+            <line x1="0" y1="9" x2="4" y2="14" />
+          </g>
+          <!-- Small settled bundle at feet -->
+          <rect x="5" y="10" width="5" height="3" rx="0.5" stroke="#80c0a0" stroke-width="0.65" opacity="0.55" />
+        </g>
+  </g>
+</svg>
