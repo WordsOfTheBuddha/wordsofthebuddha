@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1160" width="920" height="1160">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528"/>
+      <stop offset="46%" stop-color="#0e1a30"/>
+      <stop offset="100%" stop-color="#101e36"/>
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#c8a040" stop-opacity="0.5"/>
+      <stop offset="80%" stop-color="#c8a040" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="panelFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171b2c"/>
+      <stop offset="100%" stop-color="#151826"/>
+    </linearGradient>
+    <linearGradient id="panelLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171c2d"/>
+      <stop offset="100%" stop-color="#141825"/>
+    </linearGradient>
+    <linearGradient id="panelRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171c27"/>
+      <stop offset="100%" stop-color="#141821"/>
+    </linearGradient>
+    <linearGradient id="pleasantFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#316a55"/>
+      <stop offset="100%" stop-color="#214837"/>
+    </linearGradient>
+    <linearGradient id="painfulFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a3943"/>
+      <stop offset="100%" stop-color="#4b232a"/>
+    </linearGradient>
+    <linearGradient id="neutralFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#495875"/>
+      <stop offset="100%" stop-color="#303a4d"/>
+    </linearGradient>
+    <radialGradient id="heatGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0c060" stop-opacity="0.32"/>
+      <stop offset="55%" stop-color="#d09028" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#d09028" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.42"/>
+    </filter>
+    <marker id="arrowGold" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#c8a040"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="1160" fill="url(#bg)"/>
+  <ellipse cx="260" cy="232" rx="240" ry="120" fill="#204050" opacity="0.04"/>
+  <ellipse cx="675" cy="905" rx="270" ry="150" fill="#204838" opacity="0.05"/>
+
+  <text x="460" y="42" text-anchor="middle" fill="#d8c8a0"
+    font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+    letter-spacing="2.6">SN 36.10 &#8212; PHASSAM&#x16A;LAKA SUTTA</text>
+  <text x="460" y="66" text-anchor="middle" fill="#a09070"
+    font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+    letter-spacing="0.8">Rooted in Contact</text>
+  <line x1="258" y1="80" x2="662" y2="80" stroke="#708090" stroke-opacity="0.3" stroke-width="0.6"/>
+
+  <text x="460" y="116" text-anchor="middle" fill="#90c0b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic">Dependent on the corresponding contact, the corresponding feeling arises; with the cessation of that contact, that feeling ceases and subsides</text>
+  <text x="460" y="136" text-anchor="middle" fill="#5e7e74"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">Phassaṁ paṭicca vedanā uppajjati; phassassa nirodhā vedanā nirujjhati</text>
+
+  <line x1="100" y1="156" x2="820" y2="156" stroke="url(#tierGrad)" stroke-width="0.55" opacity="0.5"/>
+  <text x="460" y="178" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+    letter-spacing="2.3" opacity="0.82">CORRESPONDING CONTACT, CORRESPONDING FEELING</text>
+  <text x="460" y="198" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">Illustrative slices of experience: the tone of feeling tracks the tone of contact, and ends with it</text>
+
+  <g transform="translate(240, 222)">
+    <rect x="-8" y="0" width="16" height="16" rx="3" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.55"/>
+    <text x="0" y="34" text-anchor="middle" fill="#a8c8b8" font-family="Georgia,'Times New Roman',serif" font-size="11">Pleasant</text>
+    <text x="0" y="49" text-anchor="middle" fill="#889e94" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">sukhā</text>
+  </g>
+  <g transform="translate(460, 222)">
+    <rect x="-8" y="0" width="16" height="16" rx="3" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.5"/>
+    <text x="0" y="34" text-anchor="middle" fill="#d0a8a8" font-family="Georgia,'Times New Roman',serif" font-size="11">Painful</text>
+    <text x="0" y="49" text-anchor="middle" fill="#9a7e84" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">dukkhā</text>
+  </g>
+  <g transform="translate(680, 222)">
+    <rect x="-8" y="0" width="16" height="16" rx="3" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.55"/>
+    <text x="0" y="34" text-anchor="middle" fill="#b0bcd0" font-family="Georgia,'Times New Roman',serif" font-size="11">Neither-painful-nor-pleasant</text>
+    <text x="0" y="49" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">adukkhamasukhā</text>
+  </g>
+
+  <g font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#708090">
+    <text x="190" y="298" text-anchor="middle">t1</text>
+    <text x="298" y="298" text-anchor="middle">t2</text>
+    <text x="406" y="298" text-anchor="middle">t3</text>
+    <text x="514" y="298" text-anchor="middle">t4</text>
+    <text x="622" y="298" text-anchor="middle">t5</text>
+    <text x="730" y="298" text-anchor="middle">t6</text>
+  </g>
+
+  <g transform="translate(0, 0)" filter="url(#shadowDrop)">
+    <rect x="96" y="314" width="728" height="230" rx="10" fill="url(#panelFill)" stroke="#3f5f79" stroke-opacity="0.42" stroke-width="0.8"/>
+  </g>
+
+  <g text-anchor="end" font-family="Georgia,'Times New Roman',serif">
+    <text x="82" y="360" fill="#c8d8e8" font-size="12" font-weight="bold">Contact</text>
+    <text x="82" y="378" fill="#8898b0" font-size="10.5" font-style="italic">phassa</text>
+    <text x="82" y="442" fill="#c8d8e8" font-size="12" font-weight="bold">Feeling</text>
+    <text x="82" y="460" fill="#8898b0" font-size="10.5" font-style="italic">vedanā</text>
+  </g>
+
+  <g stroke-width="0.7">
+    <rect x="145" y="336" width="90" height="44" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+    <rect x="253" y="336" width="90" height="44" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+    <rect x="361" y="336" width="90" height="44" rx="5" fill="#161d2b" stroke="#435062" stroke-dasharray="4 3" stroke-opacity="0.62"/>
+    <rect x="469" y="336" width="90" height="44" rx="5" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.56"/>
+    <rect x="577" y="336" width="90" height="44" rx="5" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.56"/>
+    <rect x="685" y="336" width="90" height="44" rx="5" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.56"/>
+
+    <rect x="145" y="418" width="90" height="44" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+    <rect x="253" y="418" width="90" height="44" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+    <rect x="361" y="418" width="90" height="44" rx="5" fill="#161d2b" stroke="#435062" stroke-dasharray="4 3" stroke-opacity="0.62"/>
+    <rect x="469" y="418" width="90" height="44" rx="5" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.56"/>
+    <rect x="577" y="418" width="90" height="44" rx="5" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.56"/>
+    <rect x="685" y="418" width="90" height="44" rx="5" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.56"/>
+  </g>
+
+  <g stroke-width="0.7" stroke-opacity="0.28">
+    <line x1="190" y1="380" x2="190" y2="418" stroke="#c8a040"/>
+    <line x1="298" y1="380" x2="298" y2="418" stroke="#c8a040"/>
+    <line x1="406" y1="380" x2="406" y2="418" stroke="#c8a040"/>
+    <line x1="514" y1="380" x2="514" y2="418" stroke="#c8a040"/>
+    <line x1="622" y1="380" x2="622" y2="418" stroke="#c8a040"/>
+    <line x1="730" y1="380" x2="730" y2="418" stroke="#c8a040"/>
+  </g>
+
+  <line x1="406" y1="324" x2="406" y2="474" stroke="#c8a040" stroke-width="0.9" opacity="0.18"/>
+  <text x="406" y="363" text-anchor="middle" fill="#607080"
+    font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">no contact</text>
+  <text x="406" y="445" text-anchor="middle" fill="#607080"
+    font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic">feeling subsides</text>
+
+  <text x="460" y="505" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">When the pleasant contact ceases, the pleasant feeling dependent on it ceases and subsides.</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="118" y="556" width="684" height="74" rx="10" fill="#1a2230" stroke="#c8a040" stroke-opacity="0.22" stroke-width="0.8"/>
+  </g>
+  <text x="460" y="586" text-anchor="middle" fill="#c8d8e8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11">The same pattern applies in all three cases: pleasant contact, painful contact, and neither-painful-nor-pleasant contact.</text>
+  <text x="460" y="608" text-anchor="middle" fill="#8898b0"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">sukhā vedanā · dukkhā vedanā · adukkhamasukhā vedanā</text>
+
+  <line x1="100" y1="664" x2="820" y2="664" stroke="url(#tierGrad)" stroke-width="0.55" opacity="0.5"/>
+  <text x="460" y="686" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+    letter-spacing="2.3" opacity="0.82">SIMILE: FRICTION AND FIRE</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="94" y="706" width="732" height="230" rx="10" fill="url(#panelFill)" stroke="#3f5f79" stroke-opacity="0.4" stroke-width="0.8"/>
+  </g>
+  <line x1="460" y1="720" x2="460" y2="904" stroke="#c8a040" stroke-width="0.8" opacity="0.14"/>
+
+  <text x="277" y="738" text-anchor="middle" fill="#a0b0c8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Contact sustained</text>
+  <text x="277" y="754" text-anchor="middle" fill="#708898"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">rubbing and friction</text>
+
+  <g transform="translate(222, 790)">
+    <path d="M -44 24 L 48 0 L 52 11 L -40 35 Z" fill="#68533b" stroke="#9a8263" stroke-width="0.8"/>
+    <path d="M 62 0 L 154 24 L 150 35 L 58 11 Z" fill="#554431" stroke="#9a8263" stroke-width="0.8"/>
+    <circle cx="55" cy="10" r="24" fill="url(#heatGlow)"/>
+    <path d="M 43 18 C 48 5, 60 0, 67 10 C 72 18, 66 28, 56 30 C 48 28, 42 24, 43 18 Z" fill="#e0a040" opacity="0.88"/>
+    <path d="M 54 24 C 57 16, 62 13, 65 19 C 67 24, 63 29, 57 30 C 53 29, 52 27, 54 24 Z" fill="#ffd070" opacity="0.9"/>
+    <text x="56" y="22" text-anchor="middle" fill="#1a1008" stroke="#f5e6c8" stroke-width="0.75" paint-order="stroke fill"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-weight="bold">heat</text>
+  </g>
+  <text x="277" y="872" text-anchor="middle" fill="#8898a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">From rubbing: heat is generated</text>
+
+  <path d="M 438 820 L 482 820" stroke="#c8a040" stroke-width="1.2" fill="none" marker-end="url(#arrowGold)"/>
+
+  <text x="643" y="738" text-anchor="middle" fill="#a0b0c8"
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Contact ceases</text>
+  <text x="643" y="754" text-anchor="middle" fill="#708898"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">separated and laid aside</text>
+
+  <g transform="translate(625, 792)">
+    <path d="M -82 28 L -6 4 L -2 15 L -78 39 Z" fill="#68533b" stroke="#9a8263" stroke-width="0.8"/>
+    <path d="M 42 4 L 118 28 L 114 39 L 38 15 Z" fill="#554431" stroke="#9a8263" stroke-width="0.8"/>
+    <circle cx="18" cy="18" r="26" fill="url(#heatGlow)" opacity="0.18"/>
+    <path d="M 7 24 C 12 15, 21 12, 26 18 C 29 24, 24 29, 18 31 C 12 30, 8 28, 7 24 Z" fill="#e0a040" opacity="0.24"/>
+  </g>
+  <text x="643" y="872" text-anchor="middle" fill="#8898a8"
+    font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">When the wood separates, the heat fades</text>
+
+  <text x="460" y="920" text-anchor="middle" fill="#708090"
+    font-family="Georgia,'Times New Roman',serif" font-size="10.5">So too, with the cessation of the corresponding contact, the corresponding feeling ceases</text>
+
+  <line x1="100" y1="966" x2="820" y2="966" stroke="url(#tierGrad)" stroke-width="0.55" opacity="0.5"/>
+  <text x="460" y="988" text-anchor="middle" fill="#c8a040"
+    font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+    letter-spacing="2.3" opacity="0.82">ONE CONDITIONAL FORMULA</text>
+
+  <g filter="url(#shadowDrop)">
+    <rect x="122" y="1010" width="190" height="64" rx="9" fill="url(#panelLeft)" stroke="#4e7086" stroke-opacity="0.42"/>
+    <rect x="365" y="1010" width="190" height="64" rx="9" fill="#18302c" stroke="#60a088" stroke-opacity="0.38"/>
+    <rect x="608" y="1010" width="190" height="64" rx="9" fill="url(#panelRight)" stroke="#c8a040" stroke-opacity="0.34"/>
+  </g>
+  <text x="217" y="1036" text-anchor="middle" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Corresponding contact</text>
+  <text x="217" y="1054" text-anchor="middle" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">phassa</text>
+
+  <text x="460" y="1036" text-anchor="middle" fill="#90c0b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">Corresponding feeling arises</text>
+  <text x="460" y="1054" text-anchor="middle" fill="#6ea088" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">vedan&#x101; uppajjati</text>
+
+  <text x="703" y="1036" text-anchor="middle" fill="#d0b060" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold">With cessation, it subsides</text>
+  <text x="703" y="1054" text-anchor="middle" fill="#a08838" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">nirujjhati</text>
+
+  <path d="M 322 1042 L 355 1042" stroke="#c8a040" stroke-width="1.1" fill="none" marker-end="url(#arrowGold)"/>
+  <path d="M 565 1042 L 598 1042" stroke="#c8a040" stroke-width="1.1" fill="none" marker-end="url(#arrowGold)"/>
+      <!-- ============ SOURCE REFERENCE ============ -->
+    <line x1="300" y1="1110" x2="620" y2="1110" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/sn36.10" target="_blank" rel="noopener noreferrer"><text x="460" y="1126" text-anchor="middle" fill="#405060"
+        font-family="Georgia,'Times New Roman',serif" font-size="10"
+        letter-spacing="1">wordsofthebuddha.org/sn36.10</text></a>
+
+    <!-- ============ TINY LOTUS MOTIF ============ -->
+    <g transform="translate(460, 1142) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+        <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+        <circle cx="0" cy="-28" r="9" />
+    </g>
+</svg>
