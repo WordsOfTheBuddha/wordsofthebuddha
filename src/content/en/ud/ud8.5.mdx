@@ -1,9 +1,14 @@
 ---
 title: Cunda sutta - With Cunda
-description: After eating his final meal from Cunda the smith and enduring severe illness, the Buddha instructs Ānanda to console the donor regarding the supreme merit of the offering.
-qualities: recollection of the Buddha, merit, regret, non-regret, quenching
-theme: recollection of the Buddha, inspiration
-character: Cunda the smith, Venerable Ānanda
+description: >-
+  After eating his final meal from Cunda the smith and enduring severe illness,
+  the Buddha instructs Ānanda to console the donor regarding the supreme merit
+  of the offering.
+qualities: 'recollection of the Buddha, merit, regret, non-regret, quenching'
+theme: 'recollection of the Buddha, inspiration'
+character:
+  - Cunda the smith
+  - Venerable Ānanda
 slug: ud8.5
 ---
 

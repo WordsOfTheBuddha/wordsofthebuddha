@@ -1,11 +1,17 @@
 ---
 title: Anaṅgaṇa sutta - Blemish Free
-description: Venerable Sāriputta describes four types of persons based on their awareness of inner blemishes—harmful, unwholesome mental qualities. Using the simile of a bronze bowl, he shows that recognizing one's own faults is essential to attaining an undefiled mind.
-qualities: anger, displeasure, conceit, discernment
+description: >-
+  Venerable Sāriputta describes four types of persons based on their awareness
+  of inner blemishes—harmful, unwholesome mental qualities. Using the simile of
+  a bronze bowl, he shows that recognizing one's own faults is essential to
+  attaining an undefiled mind.
+qualities: 'anger, displeasure, conceit, discernment'
 theme: cultivating discernment
 slug: mn5
 simile: bronze bowl covered with dirt and stains
-character: Venerable Sāriputta, Venerable Mahāmoggallāna
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.

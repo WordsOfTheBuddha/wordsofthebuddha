@@ -4,7 +4,9 @@ description: Emerging from collectedness, venerable Mahākassapa goes for an alm
 qualities: merit, giving, tranquility, jealousy
 theme: inspiration, wisdom
 slug: ud3.7
-character: Venerable Mahākassapa, "Sakka, lord of the gods"
+character:
+  - Venerable Mahākassapa
+  - Sakka, lord of the gods
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tena kho pana samayena āyasmā mahākassapo pippaliguhāyaṁ viharati, sattāhaṁ ekapallaṅkena nisinno hoti aññataraṁ samādhiṁ samāpajjitvā. Atha kho āyasmā mahākassapo tassa sattāhassa accayena tamhā samādhimhā vuṭṭhāsi. Atha kho āyasmato mahākassapassa tamhā samādhimhā vuṭṭhitassa etadahosi: “yannūnāhaṁ rājagahaṁ piṇḍāya paviseyyan”ti.

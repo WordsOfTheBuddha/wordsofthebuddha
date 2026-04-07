@@ -5,6 +5,7 @@ qualities: patience, impatience, sensual desire
 theme: cultivating discernment, inspiration
 slug: an5.139
 simile: king's elephant
+priority: 1.4
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño nāgo na rājāraho hoti na rājabhoggo, na rañño aṅgaṁtveva saṅkhaṁ gacchati. Katamehi pañcahi? Idha, bhikkhave, rañño nāgo akkhamo hoti rūpānaṁ, akkhamo saddānaṁ, akkhamo gandhānaṁ, akkhamo rasānaṁ, akkhamo phoṭṭhabbānaṁ.

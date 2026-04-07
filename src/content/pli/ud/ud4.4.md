@@ -1,10 +1,15 @@
 ---
 title: Yakkhapahāra sutta - The Spirit’s Blow
-description: When a reckless spirit strikes the venerable Sāriputta with a blow powerful enough to split a mountain, the elder remains in deep collectedness, feeling only a “little pain.”
-qualities: collectedness, imperturbable
-theme: inspiration, wisdom
+description: >-
+  When a reckless spirit strikes the venerable Sāriputta with a blow powerful
+  enough to split a mountain, the elder remains in deep collectedness, feeling
+  only a “little pain.”
+qualities: 'collectedness, imperturbable'
+theme: 'inspiration, wisdom'
 slug: ud4.4
-character: Venerable Sāriputta, Venerable Mahāmoggallāna
+character:
+  - Venerable Sāriputta
+  - Venerable Mahāmoggallāna
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tena kho pana samayena āyasmā ca sāriputto āyasmā ca mahāmoggallāno kapotakandarāyaṁ viharanti. Tena kho pana samayena āyasmā sāriputto juṇhāya rattiyā navoropitehi kesehi abbhokāse nisinno hoti aññataraṁ samādhiṁ samāpajjitvā.

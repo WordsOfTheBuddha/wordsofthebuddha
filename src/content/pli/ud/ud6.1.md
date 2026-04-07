@@ -1,12 +1,18 @@
 ---
 title: Āyusaṅkhārossajjana sutta - Relinquishing the Life Force
-description: After Ānanda misses the sign to request the Buddha to remain, Māra reminds the Buddha of his promise to pass away now that the Dhamma and spiritual life are well established. The Buddha relinquishes the life force after weighing the incomparable and continued existence.
-qualities: ending, psychic power
-theme: inspiration, recollection of the Buddha
+description: >-
+  After Ānanda misses the sign to request the Buddha to remain, Māra reminds the
+  Buddha of his promise to pass away now that the Dhamma and spiritual life are
+  well established. The Buddha relinquishes the life force after weighing the
+  incomparable and continued existence.
+qualities: 'ending, psychic power'
+theme: 'inspiration, recollection of the Buddha'
 slug: ud6.1
-character: Venerable Ānanda, Māra the Evil One
+character:
+  - Venerable Ānanda
+  - Māra the Evil One
 priority: 1.2
-commentary: Similar to [SN 51.10](/sn51.10).
+commentary: 'Similar to [SN 51.10](/sn51.10).'
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya vesāliṁ piṇḍāya pāvisi. Vesāliyaṁ piṇḍāya caritvā pacchābhattaṁ piṇḍapātapaṭikkanto āyasmantaṁ ānandaṁ āmantesi: “gaṇhāhi, ānanda, nisīdanaṁ. Yena cāpālaṁ cetiyaṁ tenupasaṅkamissāma divāvihārāyā”ti.

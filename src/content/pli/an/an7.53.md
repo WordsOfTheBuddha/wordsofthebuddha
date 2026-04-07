@@ -1,11 +1,21 @@
 ---
 title: Nandamātā sutta - Nanda’s Mother
-description: After the lay disciple Nandamātā is visited by the deity Vessavaṇa, she recounts the event to the venerable Sāriputta. She then lists her seven wonderful and marvelous qualities, including profound equanimity in the face of tragedy, her attainment of the four jhānas, and her attainment of non-returning.
-qualities: giving, collectedness, merit, uplifting joy, unification, tranquility, happiness, equanimity, mindfulness, clear awareness, giving up
+description: >-
+  After the lay disciple Nandamātā is visited by the deity Vessavaṇa, she
+  recounts the event to the venerable Sāriputta. She then lists her seven
+  wonderful and marvelous qualities, including profound equanimity in the face
+  of tragedy, her attainment of the four jhānas, and her attainment of
+  non-returning.
+qualities: >-
+  giving, collectedness, merit, uplifting joy, unification, tranquility,
+  happiness, equanimity, mindfulness, clear awareness, giving up
 theme: inspiration
 slug: an7.53
 priority: 1.1
-character: Nandamātā, King Vessavaṇa, Venerable Sāriputta
+character:
+  - Nandamātā
+  - King Vessavaṇa
+  - Venerable Sāriputta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā ca sāriputto āyasmā ca mahāmoggallāno dakkhiṇāgirismiṁ cārikaṁ caranti mahatā bhikkhusaṅghena saddhiṁ. Tena kho pana samayena veḷukaṇḍakī nandamātā upāsikā rattiyā paccūsasamayaṁ paccuṭṭhāya pārāyanaṁ sarena bhāsati.

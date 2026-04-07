@@ -3,10 +3,11 @@ export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import BottomDrawer from "../../components/BottomDrawer.astro";
 import ExploreWidget from "../../components/ExploreWidget.astro";
+import { routes } from "../../utils/routes";
 
 const seoTitle = "Discover the Words of the Buddha";
 const subTitle =
-	"Access over 2,100 discourses with parallel Pāli-English translations";
+	`Access over 2,200 discourses, verses, sayings, passages, and utterances from ${routes.length.toLocaleString()} texts with parallel Pāli-English translations`;
 const description = "Explore";
 ---
 
