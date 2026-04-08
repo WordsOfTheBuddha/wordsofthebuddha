@@ -4,6 +4,8 @@ description: The young deity Māgha asks the Buddha in a verse on what to cut of
 qualities: anger
 theme: wisdom
 slug: sn2.3
+character:
+  - Sakka, lord of the gods
 ---
 
 Sāvatthinidānaṁ.
