@@ -12,6 +12,11 @@ export interface DirectoryMetaData {
 	description?: string;
 }
 
+// Audio slugs injected by Layout.astro for client-rendered listen icons
+interface Window {
+	__audioSlugs?: Set<string>;
+}
+
 // Allow importing raw SVGs via Vite query
 declare module "*.svg?raw" {
 	const content: string;

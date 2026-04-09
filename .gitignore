@@ -7,6 +7,10 @@ dist/
 # dependencies
 node_modules/
 
+# python cache
+__pycache__/
+*.pyc
+
 # logs
 npm-debug.log*
 yarn-debug.log*
@@ -16,6 +20,14 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+
+# TTS / voice (local credentials, venv, whisper cache, audio assets)
+project-208b2b47-e2f3-4390-82f-17a86b1153e0.json
+*.service-account.json
+.venv-voice/
+.cache/
+public/audio/*.opus
+public/audio/*.manifest.json
 
 # generated scripts
 public/offline-manifest.json

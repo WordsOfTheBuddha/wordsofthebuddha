@@ -3,6 +3,7 @@ import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 // Add content styling with CSS classes
 import "../styles/global.css";
+import "../styles/voice-mode.css";
 import Navbar from "../components/Navbar.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import LastUpdated from "../components/LastUpdated.astro";
@@ -22,6 +23,7 @@ import ReadButton from "../components/ReadButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
 import ParagraphToggle from "../components/ParagraphToggle.astro";
+import VoiceMode from "../components/VoiceMode.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
 import Commentary from "../components/Commentary.astro";
@@ -87,6 +89,10 @@ const {
 	/** Skip prose + max-w-4xl so pages can use full-width layouts (e.g. design system). */
 	fullWidthSlot?: boolean;
 };
+
+/** When set, show read-aloud voice controls. Only for discourses in audioSlugs whitelist. */
+import { audioSlugs } from "../data/audioStatus";
+const voiceDiscourseId = showPali && id && audioSlugs.has(id) ? id : undefined;
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);
@@ -316,6 +322,10 @@ if (!SEOTitle) {
 				visibility: visible !important;
 			}
 		</style>
+		<!-- Audio slugs for voice listen icons in client-rendered cards -->
+		<script is:inline define:vars={{ _audioSlugs: [...audioSlugs] }}>
+			window.__audioSlugs = new Set(_audioSlugs);
+		</script>
 		<!-- Optional per-page head slot (e.g., to inject pre-hydration scripts) -->
 		<slot name="head" />
 	</head>
@@ -368,6 +378,9 @@ if (!SEOTitle) {
 										<ParagraphToggle
 											paragraphRequest={paragraphRequest}
 										/>
+										{voiceDiscourseId && (
+											<VoiceMode discourseId={voiceDiscourseId} />
+										)}
 									</div>
 									<div class="flex items-center gap-1">
 										{showReadLater && <ReadLaterButton />}

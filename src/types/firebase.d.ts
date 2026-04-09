@@ -1,4 +1,6 @@
 interface ImportMetaEnv {
+    /** Optional: R2 public origin for voice assets (e.g. https://hear.wordsofthebuddha.org). Omit for local /audio/… */
+    readonly PUBLIC_AUDIO_BASE_URL?: string;
     readonly FIREBASE_PRIVATE_KEY_ID: string;
     readonly FIREBASE_PRIVATE_KEY: string;
     readonly FIREBASE_PROJECT_ID: string;
