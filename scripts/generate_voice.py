@@ -213,22 +213,34 @@ def _cap_like(replacement: str, original: str) -> str:
 
 
 def apply_tts_phonetic_spellings(text: str) -> str:
-    """Rewrite selected loanwords for English Chirp TTS before synthesis (e.g. bhikkhu → bikkoo).
+    """Rewrite selected loanwords for English Chirp TTS before synthesis (e.g. bhikkhu → bickkoo).
 
     Canonical MDX text is unchanged in `paragraph_specs`; alignment uses this text, then
     `restore_manifest_display_words` maps manifest tokens back to real spellings.
     """
 
-    # Longer token first (bhikkhus ⊃ bhikkhu as substring but distinct words)
+    # Longer token first (plurals / compounds before singular where relevant)
+    text = re.sub(
+        r"\barahants\b",
+        lambda m: _cap_like("ara-hants", m.group(0)),
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"\barahant\b",
+        lambda m: _cap_like("ara-hant", m.group(0)),
+        text,
+        flags=re.IGNORECASE,
+    )
     text = re.sub(
         r"\bbhikkhus\b",
-        lambda m: _cap_like("bikkooz", m.group(0)),
+        lambda m: _cap_like("bickkoos", m.group(0)),
         text,
         flags=re.IGNORECASE,
     )
     text = re.sub(
         r"\bbhikkhu\b",
-        lambda m: _cap_like("bikkoo", m.group(0)),
+        lambda m: _cap_like("bickkoo", m.group(0)),
         text,
         flags=re.IGNORECASE,
     )
@@ -237,8 +249,10 @@ def apply_tts_phonetic_spellings(text: str) -> str:
 
 # Lowercase cores of phonetic tokens → canonical (for manifest restore fallback)
 _PHONETIC_CORE_TO_CANONICAL = {
-    "bikkoo": "bhikkhu",
-    "bikkooz": "bhikkhus",
+    "ara-hant": "arahant",
+    "ara-hants": "arahants",
+    "bickkoo": "bhikkhu",
+    "bickkoos": "bhikkhus",
 }
 
 
