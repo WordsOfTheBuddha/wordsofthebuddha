@@ -20,6 +20,9 @@ const { prev, next } = Astro.props;
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-left"
 					style="color: var(--link-color)"
 					data-base-href={`/${prev.id}`}
+					data-footer-nav="prev"
+					title="Previous discourse — press ["
+					aria-keyshortcuts="["
 				>
 					← {transformId(prev.id)} {prev.data.title}
 				</a>
@@ -34,6 +37,9 @@ const { prev, next } = Astro.props;
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-right"
 					style="color: var(--link-color)"
 					data-base-href={`/${next.id}`}
+					data-footer-nav="next"
+					title="Next discourse — press ]"
+					aria-keyshortcuts="]"
 				>
 					{transformId(next.id)} {next.data.title} →
 				</a>
@@ -43,6 +49,19 @@ const { prev, next } = Astro.props;
 </nav>
 
 <script>
+	function isEditableTarget(el: Element | null): boolean {
+		if (!el || !(el instanceof HTMLElement)) return false;
+		const tag = el.tagName.toLowerCase();
+		if (el.isContentEditable) return true;
+		if (tag === "textarea" || tag === "select") return true;
+		if (tag === "input") {
+			const type = (el as HTMLInputElement).type?.toLowerCase() ?? "text";
+			if (type === "range") return false;
+			return true;
+		}
+		return false;
+	}
+
 	function updateLinks() {
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
@@ -68,4 +87,32 @@ const { prev, next } = Astro.props;
 	document.addEventListener("paliModeChanged", updateLinks as EventListener);
 	document.addEventListener("layoutChanged", updateLinks as EventListener);
 	document.addEventListener("voiceParamChanged", updateLinks as EventListener);
+
+	if (!(window as unknown as { __footerNavBracketKeys?: boolean })
+		.__footerNavBracketKeys) {
+		(window as unknown as { __footerNavBracketKeys: boolean }).__footerNavBracketKeys =
+			true;
+		document.addEventListener("keydown", (e: KeyboardEvent) => {
+			if (e.ctrlKey || e.metaKey || e.altKey) return;
+			if (isEditableTarget(document.activeElement)) return;
+
+			if (e.key === "[") {
+				const link = document.querySelector(
+					'a.nav-link[data-footer-nav="prev"]',
+				) as HTMLAnchorElement | null;
+				if (!link) return;
+				e.preventDefault();
+				window.location.assign(link.href);
+				return;
+			}
+			if (e.key === "]") {
+				const link = document.querySelector(
+					'a.nav-link[data-footer-nav="next"]',
+				) as HTMLAnchorElement | null;
+				if (!link) return;
+				e.preventDefault();
+				window.location.assign(link.href);
+			}
+		});
+	}
 </script>
