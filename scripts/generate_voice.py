@@ -197,6 +197,89 @@ def strip_html_jsx_tags(text: str) -> str:
     return re.sub(r"</?[a-zA-Z][^>]*>", "", text)
 
 
+def _cap_like(replacement: str, original: str) -> str:
+    """Match casing of `original` when substituting `replacement`."""
+    if original.isupper():
+        return replacement.upper()
+    if (
+        len(original) > 1
+        and original[0].isupper()
+        and original[1:].islower()
+    ):
+        return replacement[0].upper() + replacement[1:]
+    if original[:1].isupper():
+        return replacement[0].upper() + replacement[1:]
+    return replacement
+
+
+def apply_tts_phonetic_spellings(text: str) -> str:
+    """Rewrite selected loanwords for English Chirp TTS before synthesis (e.g. bhikkhu → bikkoo).
+
+    Canonical MDX text is unchanged in `paragraph_specs`; alignment uses this text, then
+    `restore_manifest_display_words` maps manifest tokens back to real spellings.
+    """
+
+    # Longer token first (bhikkhus ⊃ bhikkhu as substring but distinct words)
+    text = re.sub(
+        r"\bbhikkhus\b",
+        lambda m: _cap_like("bikkooz", m.group(0)),
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"\bbhikkhu\b",
+        lambda m: _cap_like("bikkoo", m.group(0)),
+        text,
+        flags=re.IGNORECASE,
+    )
+    return text
+
+
+# Lowercase cores of phonetic tokens → canonical (for manifest restore fallback)
+_PHONETIC_CORE_TO_CANONICAL = {
+    "bikkoo": "bhikkhu",
+    "bikkooz": "bhikkhus",
+}
+
+
+def _phonetic_token_norm(tok: str) -> str:
+    """Strip leading/trailing non-word chars for comparing TTS vs alignment tokens."""
+    return re.sub(r"^[^\w]+|[^\w]+$", "", tok).lower()
+
+
+def restore_manifest_display_words(
+    paragraphs_out: list[dict],
+    paragraph_specs_canonical: list[tuple[int, str, bool]],
+) -> None:
+    """After alignment on phonetic text, rewrite word `w` fields to canonical spellings.
+
+    Forced alignment must use a transcript that matches what was spoken; phonetic
+    rewrites therefore flow into Whisper. This step maps those tokens back to the
+    real words from the MDX for the published manifest (and UI highlights).
+    """
+
+    for pdict, (_pid, can_text, _brk) in zip(paragraphs_out, paragraph_specs_canonical):
+        ph_text = apply_tts_phonetic_spellings(can_text)
+        can_words = can_text.split()
+        ph_words = ph_text.split()
+        words_out = pdict.get("words") or []
+
+        if len(words_out) == len(can_words) == len(ph_words):
+            for j, w in enumerate(words_out):
+                if _phonetic_token_norm(w["w"]) == _phonetic_token_norm(ph_words[j]):
+                    w["w"] = can_words[j]
+            continue
+
+        sys.stderr.write(
+            "  Warning: word token count mismatch; restoring loanwords by lookup only.\n"
+        )
+        for w in words_out:
+            core = _phonetic_token_norm(w["w"])
+            if core in _PHONETIC_CORE_TO_CANONICAL:
+                canon = _PHONETIC_CORE_TO_CANONICAL[core]
+                w["w"] = _cap_like(canon, w["w"])
+
+
 def normalize_paragraph_body(text: str) -> str:
     text = text.strip()
     text = strip_heading_lines_for_tts(text)
@@ -1091,6 +1174,11 @@ def process_one_discourse(
         )
         return 1
 
+    paragraphs_tts = [apply_tts_phonetic_spellings(p) for _, p, _ in paragraph_specs]
+    paragraph_specs_align = [
+        (pid, apply_tts_phonetic_spellings(p), brk)
+        for pid, p, brk in paragraph_specs
+    ]
     paragraphs_text = [p for _, p, _ in paragraph_specs]
     full_plain = "\n\n".join(paragraphs_text)
     th = text_hash(full_plain)
@@ -1140,17 +1228,19 @@ def process_one_discourse(
         print(f"  Breaks: {n_long} × {break_ms}ms (verse/quote), {n_short} × {consecutive_break_ms}ms (continuing)")
 
         paragraph_boundaries = synthesize_opus(
-            paragraphs_text, breaks, voice_name, language_code, out_audio
+            paragraphs_tts, breaks, voice_name, language_code, out_audio
         )
 
     manifest = align_to_manifest(
         out_audio,
-        paragraph_specs,
+        paragraph_specs_align,
         voice_name,
         th,
         skip_align=skip_align,
         paragraph_boundaries=paragraph_boundaries,
     )
+    if not skip_align:
+        restore_manifest_display_words(manifest["paragraphs"], paragraph_specs)
 
     out_manifest.write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
