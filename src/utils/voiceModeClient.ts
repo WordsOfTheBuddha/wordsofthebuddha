@@ -80,19 +80,18 @@ function wrapVoiceWords(root: Element): void {
 			tt.classList.add("voice-word");
 			continue;
 		}
+		// Keep tooltip wrapper intact for continuous underline;
+		// insert voice-word spans inside it.
 		const frag = document.createDocumentFragment();
 		words.forEach((w, i) => {
 			if (i > 0) frag.appendChild(document.createTextNode(" "));
 			const s = document.createElement("span");
-			s.className = "voice-word tooltip-text";
-			s.setAttribute(
-				"data-tooltip-content",
-				tt.getAttribute("data-tooltip-content") || "",
-			);
+			s.className = "voice-word";
 			s.textContent = w;
 			frag.appendChild(s);
 		});
-		tt.parentNode?.replaceChild(frag, tt);
+		tt.textContent = "";
+		tt.appendChild(frag);
 	}
 
 	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -315,7 +314,9 @@ export function initVoiceMode(
 		"voice-seek",
 	) as HTMLInputElement | null;
 	const timeEl = document.getElementById("voice-time");
-	const segEl = document.getElementById("voice-segment");
+	const speedToggle = document.getElementById(
+		"voice-speed-toggle",
+	) as HTMLButtonElement | null;
 	const exitBtn = document.getElementById("voice-exit");
 	const focusToggle = document.getElementById(
 		"voice-focus-toggle",
@@ -347,14 +348,25 @@ export function initVoiceMode(
 		: `/audio/${encodeURIComponent(discourseId)}`;
 	const lsKey = `${LS_PREFIX}${discourseId}`;
 
-	function readLs(): { position?: number; rate?: number } {
+	function readLs(): { position?: number; rate?: number; speed?: number } {
 		try {
 			const raw = localStorage.getItem(lsKey);
 			if (!raw) return {};
-			return JSON.parse(raw) as { position?: number; rate?: number };
+			return JSON.parse(raw) as {
+				position?: number;
+				rate?: number;
+				speed?: number;
+			};
 		} catch {
 			return {};
 		}
+	}
+
+	function updateSpeedToggleLabel(): void {
+		if (!speedToggle) return;
+		speedToggle.textContent = `${audio.playbackRate.toFixed(2).replace(/\.00$/, "").replace(/\.50$/, ".5")}×`;
+		speedToggle.setAttribute("aria-label", `Playback speed ${speedToggle.textContent}`);
+		speedToggle.setAttribute("title", "Playback speed (tap to change)");
 	}
 
 	function writeLs(): void {
@@ -491,9 +503,6 @@ export function initVoiceMode(
 		const t = audio.currentTime;
 		timeEl.textContent = `${formatTime(t)} / ${formatTime(d)}`;
 		if (d > 0) seek.value = String((t / d) * 100);
-		const pi = findParagraphIndexAtTime(manifest, t);
-		if (segEl)
-			segEl.textContent = `¶ ${pi + 1} / ${manifest.paragraphs.length}`;
 		updateHighlight(t);
 	}
 
@@ -561,6 +570,7 @@ export function initVoiceMode(
 				? "Focus on: dim surrounding text"
 				: "Focus off: show full page",
 		);
+		focusToggle.setAttribute("aria-label", focusAllowed ? "Focus on" : "Focus off");
 		focusToggle.classList.toggle("voice-rate-active", focusAllowed);
 	}
 
@@ -616,21 +626,19 @@ export function initVoiceMode(
 		ready = true;
 		const saved = readLs();
 		const allowedRates = [0.75, 1, 1.25];
-		if (typeof saved.rate === "number" && saved.rate > 0) {
+		const savedRate =
+			typeof saved.rate === "number"
+				? saved.rate
+				: typeof saved.speed === "number"
+					? saved.speed
+					: undefined;
+		if (typeof savedRate === "number" && savedRate > 0) {
 			const nearest = allowedRates.reduce((best, x) =>
-				Math.abs(x - saved.rate!) < Math.abs(best - saved.rate!) ? x : best,
+				Math.abs(x - savedRate) < Math.abs(best - savedRate) ? x : best,
 			);
 			audio.playbackRate = nearest;
 		}
-		document
-			.querySelectorAll(".voice-speed button[data-rate]")
-			.forEach((b) => {
-				const r = Number((b as HTMLButtonElement).dataset.rate);
-				b.classList.toggle(
-					"voice-rate-active",
-					Math.abs(r - audio.playbackRate) < 0.01,
-				);
-			});
+		updateSpeedToggleLabel();
 		if (typeof saved.position === "number" && saved.position > 0) {
 			audio.addEventListener(
 				"loadedmetadata",
@@ -730,19 +738,17 @@ export function initVoiceMode(
 		syncUi();
 	});
 
-	document.querySelectorAll(".voice-speed button[data-rate]").forEach((b) => {
-		b.addEventListener("click", () => {
-			const r = Number((b as HTMLButtonElement).dataset.rate);
-			if (!Number.isFinite(r)) return;
-			audio.playbackRate = r;
-			document
-				.querySelectorAll(".voice-speed button[data-rate]")
-				.forEach((x) => x.classList.remove("voice-rate-active"));
-			b.classList.add("voice-rate-active");
+	if (speedToggle) {
+		speedToggle.addEventListener("click", () => {
+			const rates = [0.75, 1, 1.25];
+			const current = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
+			const next = rates[(current + 1) % rates.length];
+			audio.playbackRate = next;
+			updateSpeedToggleLabel();
 			writeLs();
-			(b as HTMLElement).blur();
+			speedToggle.blur();
 		});
-	});
+	}
 
 	if (focusToggle) {
 		updateFocusToggleLabel();

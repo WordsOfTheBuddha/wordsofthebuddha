@@ -586,6 +586,12 @@ function processBlocks(
 	}
 
 	englishBlocks.forEach((block: string, blockIndex: number) => {
+		// If heading has a number (DHP-style #### N), use it for the next paragraph
+		const headingNumMatch = block.match(/^####\s+(\d+)/);
+		if (headingNumMatch) {
+			actualParagraphNumber = parseInt(headingNumMatch[1], 10);
+		}
+
 		// Skip MDX import statements entirely (they have no visual output)
 		if (block.startsWith("import ")) {
 			return; // Don't advance paliIndex or paragraph numbering

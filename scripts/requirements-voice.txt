@@ -1,5 +1,6 @@
 # PoC: TTS + forced alignment (install in a venv: python3 -m venv .venv-voice && source .venv-voice/bin/activate)
 google-cloud-texttospeech>=2.16.0
 stable-ts>=2.19.0
+whisperx>=3.8.0
 python-dotenv>=1.0.0
 boto3>=1.35.0

@@ -444,65 +444,97 @@ def synthesize_opus(
     language_code: str,
     out_path: Path,
     parallel: bool = True,
-) -> None:
-    import tempfile
+) -> list[tuple[float, float]]:
+    """Synthesize each paragraph independently and concatenate with silence gaps.
+
+    Returns a list of (start_seconds, end_seconds) ground-truth boundaries for
+    each paragraph, derived from the actual per-paragraph audio durations.
+    """
+    import io
     import wave
+
+    from concurrent.futures import ThreadPoolExecutor, as_completed
 
     from google.cloud import texttospeech
 
     client = texttospeech.TextToSpeechClient()
-    full_ssml = build_ssml(paragraphs, breaks)
+    n = len(paragraphs)
 
-    if len(full_ssml.encode("utf-8")) <= MAX_SSML_BYTES:
-        synthesis_input = texttospeech.SynthesisInput(ssml=full_ssml)
-        voice = texttospeech.VoiceSelectionParams(
-            language_code=language_code, name=voice_name
-        )
-        audio_config = texttospeech.AudioConfig(
-            audio_encoding=texttospeech.AudioEncoding.OGG_OPUS, speaking_rate=1.0
-        )
-        response = client.synthesize_speech(
-            input=synthesis_input, voice=voice, audio_config=audio_config
-        )
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_bytes(response.audio_content)
-        return
-
-    chunks = _chunk_paragraphs(paragraphs, breaks)
-    print(f"  Long text → {len(chunks)} TTS chunks")
-
-    if parallel and len(chunks) > 1:
-        wav_chunks = _synthesize_chunks_parallel(chunks, voice_name, language_code, client)
-    else:
-        wav_chunks: list[bytes] = []
-        for i, (chunk_texts, chunk_breaks) in enumerate(chunks):
-            ssml = build_ssml(chunk_texts, chunk_breaks)
-            print(f"  Synthesizing chunk {i + 1}/{len(chunks)} ({len(ssml)} bytes SSML)")
-            wav_chunks.append(
-                _synthesize_wav_chunk(ssml, voice_name, language_code, client)
+    # Build single-paragraph SSML for each paragraph
+    ssmls = [build_ssml([p], [0]) for p in paragraphs]
+    for i, ssml in enumerate(ssmls):
+        size = len(ssml.encode("utf-8"))
+        if size > MAX_SSML_BYTES:
+            sys.stderr.write(
+                f"Warning: paragraph {i + 1} SSML is {size} bytes "
+                f"(limit {MAX_SSML_BYTES}). Synthesis may fail.\n"
             )
 
+    # Synthesize paragraphs in parallel
+    max_workers = min(n, 4) if parallel else 1
+    results: dict[int, bytes] = {}
+
+    def synth(idx: int) -> tuple[int, bytes]:
+        wav = _synthesize_wav_chunk(ssmls[idx], voice_name, language_code, client)
+        return idx, wav
+
+    print(f"  Synthesizing {n} paragraphs individually ({max_workers} workers)…")
+    done_count = 0
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {pool.submit(synth, i): i for i in range(n)}
+        for future in as_completed(futures):
+            idx, wav = future.result()
+            results[idx] = wav
+            done_count += 1
+            print(f"  ✓ Paragraph {idx + 1} done ({done_count}/{n})")
+
+    wav_chunks = [results[i] for i in range(n)]
+
+    # Concatenate with silence gaps and compute exact boundaries
     out_path.parent.mkdir(parents=True, exist_ok=True)
     combined_wav = out_path.with_suffix(".tmp.wav")
+    boundaries: list[tuple[float, float]] = []
+
     try:
         params = None
+        cursor = 0.0
         with wave.open(str(combined_wav), "wb") as wout:
-            for raw in wav_chunks:
-                tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
-                tmp.write(raw)
-                tmp.close()
-                with wave.open(tmp.name, "rb") as win:
+            for i, raw_wav in enumerate(wav_chunks):
+                buf = io.BytesIO(raw_wav)
+                with wave.open(buf, "rb") as win:
                     if params is None:
                         params = win.getparams()
                         wout.setparams(params)
-                    wout.writeframes(win.readframes(win.getnframes()))
-                os.unlink(tmp.name)
-        cmd = f'ffmpeg -y -i "{combined_wav}" -c:a libopus -b:a 32k -vbr on -application voip "{out_path}" -loglevel error 2>&1'
+
+                    # Insert silence gap before this paragraph (except first)
+                    if i > 0 and breaks[i] > 0:
+                        silence_sec = breaks[i] / 1000.0
+                        n_silence = int(silence_sec * params.framerate)
+                        wout.writeframes(
+                            b"\x00" * (n_silence * params.sampwidth * params.nchannels)
+                        )
+                        cursor += n_silence / params.framerate
+
+                    # Record paragraph boundary and write audio
+                    n_frames = win.getnframes()
+                    dur = n_frames / params.framerate
+                    boundaries.append((round(cursor, 4), round(cursor + dur, 4)))
+                    wout.writeframes(win.readframes(n_frames))
+                    cursor += dur
+
+        cmd = (
+            f'ffmpeg -y -i "{combined_wav}" -c:a libopus -b:a 32k '
+            f'-vbr on -application voip "{out_path}" -loglevel error 2>&1'
+        )
         ret = os.system(cmd)
         if ret != 0:
-            raise RuntimeError(f"ffmpeg exited with code {ret}")
+            raise RuntimeError(f"ffmpeg Opus encoding exited with code {ret}")
     finally:
         combined_wav.unlink(missing_ok=True)
+
+    total_dur = boundaries[-1][1] if boundaries else 0
+    print(f"  {n} paragraphs → {total_dur:.1f}s total audio")
+    return boundaries
 
 
 def _fix_degenerate_word_times(paragraphs: list[dict], duration: float | None) -> None:
@@ -563,7 +595,7 @@ def _fix_degenerate_word_times(paragraphs: list[dict], duration: float | None) -
             else:
                 i += 1
 
-        if words:
+        if words and not p.get("_tts_boundaries"):
             p["start"] = min(p_start, words[0]["s"])
             p["end"] = max(p_end, words[-1]["e"])
 
@@ -777,12 +809,111 @@ def _retry_sentence_split_segments(
         print(f"  Sentence-level re-alignment improved {retried} paragraph(s)")
 
 
+def _align_with_whisperx(
+    audio_path: Path,
+    paragraph_specs: list[tuple[int, str, bool]],
+    paragraph_boundaries: list[tuple[float, float]],
+) -> tuple[list[dict], float]:
+    """Word-level alignment using WhisperX with known paragraph boundaries.
+
+    Aligns each paragraph independently by cropping the audio to the known
+    TTS boundary, then offsetting word timestamps to absolute time. This
+    avoids WhisperX ignoring segment boundaries when given the full file.
+
+    Returns (paragraphs_out, duration).
+    """
+    import whisperx
+
+    SAMPLE_RATE = 16000
+    device = "cpu"
+    audio = whisperx.load_audio(str(audio_path))
+    duration = len(audio) / SAMPLE_RATE
+
+    print("  Loading WhisperX alignment model…")
+    model_a, metadata = whisperx.load_align_model(language_code="en", device=device)
+
+    print(f"  Aligning {len(paragraph_specs)} paragraphs with WhisperX (per-paragraph)…")
+
+    paragraphs_out: list[dict] = []
+    for i, (pid, text, _brk) in enumerate(paragraph_specs):
+        p_start, p_end = paragraph_boundaries[i]
+        words_out: list[dict] = []
+
+        # Crop audio to this paragraph's boundaries
+        s_sample = int(p_start * SAMPLE_RATE)
+        e_sample = int(p_end * SAMPLE_RATE)
+        chunk = audio[s_sample:e_sample]
+        chunk_dur = len(chunk) / SAMPLE_RATE
+
+        # Single segment covering full chunk (relative times 0..chunk_dur)
+        seg = [{"text": text, "start": 0.0, "end": chunk_dur}]
+
+        try:
+            result = whisperx.align(
+                seg, model_a, metadata, chunk, device,
+                return_char_alignments=False,
+            )
+            aligned = result.get("segments", [])
+            if aligned:
+                for aseg in aligned:
+                    for w in aseg.get("words", []):
+                        w_start = w.get("start")
+                        w_end = w.get("end")
+                        w_text = w.get("word", "").strip()
+                        if w_start is not None and w_end is not None:
+                            # Offset from chunk-relative to absolute time
+                            words_out.append({
+                                "w": w_text,
+                                "s": round(p_start + float(w_start), 4),
+                                "e": round(p_start + float(w_end), 4),
+                            })
+                        else:
+                            words_out.append({
+                                "w": w_text,
+                                "s": round(p_start + float(w_start or 0), 4),
+                                "e": round(p_start + float(w_end or 0), 4),
+                            })
+        except Exception as e:
+            sys.stderr.write(f"  Warning: WhisperX failed on ¶{pid}: {e}\n")
+
+        if not words_out:
+            # Fallback: proportional distribution by character count
+            word_list = text.split()
+            total_chars = sum(max(len(w), 1) for w in word_list)
+            p_dur = p_end - p_start
+            cur = p_start
+            for w in word_list:
+                frac = max(len(w), 1) / total_chars
+                w_dur = p_dur * frac
+                words_out.append(
+                    {"w": w, "s": round(cur, 4), "e": round(cur + w_dur, 4)}
+                )
+                cur += w_dur
+            sys.stderr.write(f"  Warning: ¶{pid} fell back to proportional word timing\n")
+
+        paragraphs_out.append(
+            {"id": pid, "start": p_start, "end": p_end, "words": words_out,
+             "_tts_boundaries": True}
+        )
+
+    print("  WhisperX alignment complete")
+
+    # Free alignment model
+    del model_a
+    import gc
+
+    gc.collect()
+
+    return paragraphs_out, duration
+
+
 def align_to_manifest(
     audio_path: Path,
     paragraph_specs: list[tuple[int, str, bool]],
     voice_name: str,
     text_hash_hex: str,
     skip_align: bool,
+    paragraph_boundaries: list[tuple[float, float]] | None = None,
 ) -> dict:
     if skip_align:
         return {
@@ -803,95 +934,131 @@ def align_to_manifest(
             "note": "Alignment skipped (--skip-align).",
         }
 
-    import stable_whisper
+    paragraphs_out: list[dict] | None = None
+    duration: float | None = None
 
-    model_name = os.environ.get("WHISPER_MODEL", "base")
-    model = stable_whisper.load_model(model_name)
-
-    transcript_for_align = "\n\n".join(p for _, p, _brk in paragraph_specs)
-
-    result = model.align(
-        str(audio_path),
-        transcript_for_align,
-        "en",
-        original_split=True,
-        fast_mode=True,
-    )
-
-    duration = getattr(result, "duration", None)
-    if duration is None and result.segments:
-        duration = max(s.end for s in result.segments)
-
-    paragraphs_out: list[dict] = []
-
-    segs = list(result.segments) if result.segments else []
-    if len(segs) == len(paragraph_specs):
-        for (pid, _, _brk), seg in zip(paragraph_specs, segs):
-            words_out: list[dict] = []
-            if seg.words:
-                for w in seg.words:
-                    words_out.append(
-                        {
-                            "w": w.word.strip(),
-                            "s": round(float(w.start), 4),
-                            "e": round(float(w.end), 4),
-                        }
-                    )
-            paragraphs_out.append(
-                {
-                    "id": pid,
-                    "start": round(float(seg.start), 4),
-                    "end": round(float(seg.end), 4),
-                    "words": words_out,
-                }
+    # ── New path: WhisperX with ground-truth paragraph boundaries ──
+    if paragraph_boundaries:
+        try:
+            paragraphs_out, duration = _align_with_whisperx(
+                audio_path, paragraph_specs, paragraph_boundaries
             )
-    else:
-        flat: list = []
-        for seg in segs:
-            if seg.words:
-                flat.extend(seg.words)
-        expected_counts = [len(p.split()) for _, p, _brk in paragraph_specs]
-        idx = 0
-        for (pid, _, _brk), exp_n in zip(paragraph_specs, expected_counts):
-            slice_words = flat[idx : idx + exp_n]
-            idx += exp_n
-            words_out = [
-                {
-                    "w": w.word.strip(),
-                    "s": round(float(w.start), 4),
-                    "e": round(float(w.end), 4),
-                }
-                for w in slice_words
-            ]
-            start = words_out[0]["s"] if words_out else None
-            end = words_out[-1]["e"] if words_out else None
-            paragraphs_out.append(
-                {
-                    "id": pid,
-                    "start": start,
-                    "end": end,
-                    "words": words_out,
-                }
-            )
-        if idx != len(flat):
+        except ImportError:
             sys.stderr.write(
-                f"Warning: word count mismatch after assign (used {idx} of {len(flat)} aligned words).\n"
+                "  Warning: whisperx not installed, falling back to stable_whisper\n"
+            )
+        except Exception as e:
+            sys.stderr.write(
+                f"  Warning: WhisperX alignment failed ({e}), "
+                f"falling back to stable_whisper\n"
             )
 
-    _retry_failed_segments(paragraphs_out, audio_path, paragraph_specs, model)
-    _retry_sentence_split_segments(paragraphs_out, audio_path, paragraph_specs, model)
+    # ── Legacy path: full-file stable_whisper alignment ──
+    if paragraphs_out is None:
+        import stable_whisper
+
+        model_name = os.environ.get("WHISPER_MODEL", "base")
+        model = stable_whisper.load_model(model_name)
+
+        transcript_for_align = "\n\n".join(p for _, p, _brk in paragraph_specs)
+
+        result = model.align(
+            str(audio_path),
+            transcript_for_align,
+            "en",
+            original_split=True,
+            fast_mode=True,
+        )
+
+        duration = getattr(result, "duration", None)
+        if duration is None and result.segments:
+            duration = max(s.end for s in result.segments)
+
+        paragraphs_out = []
+
+        segs = list(result.segments) if result.segments else []
+        if len(segs) == len(paragraph_specs):
+            for (pid, _, _brk), seg in zip(paragraph_specs, segs):
+                words_out: list[dict] = []
+                if seg.words:
+                    for w in seg.words:
+                        words_out.append(
+                            {
+                                "w": w.word.strip(),
+                                "s": round(float(w.start), 4),
+                                "e": round(float(w.end), 4),
+                            }
+                        )
+                paragraphs_out.append(
+                    {
+                        "id": pid,
+                        "start": round(float(seg.start), 4),
+                        "end": round(float(seg.end), 4),
+                        "words": words_out,
+                    }
+                )
+        else:
+            flat: list = []
+            for seg in segs:
+                if seg.words:
+                    flat.extend(seg.words)
+            expected_counts = [len(p.split()) for _, p, _brk in paragraph_specs]
+            idx = 0
+            for (pid, _, _brk), exp_n in zip(paragraph_specs, expected_counts):
+                slice_words = flat[idx : idx + exp_n]
+                idx += exp_n
+                words_out = [
+                    {
+                        "w": w.word.strip(),
+                        "s": round(float(w.start), 4),
+                        "e": round(float(w.end), 4),
+                    }
+                    for w in slice_words
+                ]
+                start = words_out[0]["s"] if words_out else None
+                end = words_out[-1]["e"] if words_out else None
+                paragraphs_out.append(
+                    {
+                        "id": pid,
+                        "start": start,
+                        "end": end,
+                        "words": words_out,
+                    }
+                )
+            if idx != len(flat):
+                sys.stderr.write(
+                    f"Warning: word count mismatch after assign "
+                    f"(used {idx} of {len(flat)} aligned words).\n"
+                )
+
+        _retry_failed_segments(paragraphs_out, audio_path, paragraph_specs, model)
+        _retry_sentence_split_segments(
+            paragraphs_out, audio_path, paragraph_specs, model
+        )
+
     _fix_degenerate_word_times(paragraphs_out, duration)
 
     from datetime import datetime, timezone
 
-    return {
-        "version": 1,
+    manifest: dict = {
+        "version": 2 if paragraph_boundaries else 1,
         "textHash": text_hash_hex,
         "voice": voice_name,
         "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "duration": round(float(duration), 4) if duration is not None else None,
         "paragraphs": paragraphs_out,
     }
+
+    if paragraph_boundaries:
+        manifest["ttsBoundaries"] = [
+            {"start": s, "end": e} for s, e in paragraph_boundaries
+        ]
+
+    # Strip internal flags before serialisation
+    for p in paragraphs_out:
+        p.pop("_tts_boundaries", None)
+
+    return manifest
 
 
 def resolve_mdx_path(slug: str) -> Path:
@@ -935,11 +1102,28 @@ def process_one_discourse(
     print(f"Paragraphs: {len(paragraph_specs)}")
     print(f"Output: {out_audio.relative_to(REPO_ROOT)}")
 
+    paragraph_boundaries: list[tuple[float, float]] | None = None
+
     if align_only:
         if not out_audio.exists():
             print(f"[skip] {slug}: no existing .opus file for --align-only.", file=sys.stderr)
             return 1
         print(f"  --align-only: skipping TTS, re-aligning existing {out_audio.name}")
+        # Try to read TTS boundaries from existing manifest
+        if out_manifest.exists():
+            try:
+                existing = json.loads(out_manifest.read_text(encoding="utf-8"))
+                tts_b = existing.get("ttsBoundaries")
+                if tts_b and len(tts_b) == len(paragraph_specs):
+                    paragraph_boundaries = [
+                        (b["start"], b["end"]) for b in tts_b
+                    ]
+                    print(
+                        f"  Using {len(paragraph_boundaries)} TTS paragraph "
+                        f"boundaries from existing manifest"
+                    )
+            except Exception:
+                pass
     else:
         # Per-paragraph break duration
         breaks: list[int] = []
@@ -955,7 +1139,9 @@ def process_one_discourse(
         n_short = sum(1 for b in breaks if b == consecutive_break_ms)
         print(f"  Breaks: {n_long} × {break_ms}ms (verse/quote), {n_short} × {consecutive_break_ms}ms (continuing)")
 
-        synthesize_opus(paragraphs_text, breaks, voice_name, language_code, out_audio)
+        paragraph_boundaries = synthesize_opus(
+            paragraphs_text, breaks, voice_name, language_code, out_audio
+        )
 
     manifest = align_to_manifest(
         out_audio,
@@ -963,6 +1149,7 @@ def process_one_discourse(
         voice_name,
         th,
         skip_align=skip_align,
+        paragraph_boundaries=paragraph_boundaries,
     )
 
     out_manifest.write_text(
