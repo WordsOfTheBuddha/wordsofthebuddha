@@ -1,10 +1,8 @@
 ---
 title: Makkhapariññā sutta - Completely Comprehending Contempt
 description: One is incapable of ending suffering without directly knowing and completely comprehending contempt, with the mind detaching from it and without abandoning it. One is capable of ending suffering by directly knowing, by completely comprehending contempt, with the mind detaching from it, and by abandoning it.
-qualities: contempt, complete comprehension, dispassion, suffering, ending, direct knowledge
+qualities: contempt, complete comprehension, dispassion, giving up, ending, direct knowledge
 theme: principle
-fetter: ill will
-tags: suffering, contempt, ungratefulness, wisdom, detachment, abandoning, iti
 slug: iti13
 ---
 
