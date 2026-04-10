@@ -361,9 +361,7 @@ export function initVoiceMode(
 	discourseId: string,
 	triggerBtn: HTMLElement,
 ): void {
-	const audio = document.getElementById(
-		"voice-audio",
-	) as HTMLAudioElement | null;
+	const audioEl = document.getElementById("voice-audio");
 	const bar = document.getElementById("voice-bar");
 	const playBtn = document.getElementById("voice-play");
 	const prevBtn = document.getElementById("voice-prev");
@@ -382,17 +380,20 @@ export function initVoiceMode(
 	const focusToggle = document.getElementById(
 		"voice-focus-toggle",
 	) as HTMLButtonElement | null;
-	if (
-		!audio ||
-		!bar ||
-		!playBtn ||
-		!prevBtn ||
-		!nextBtn ||
-		!seek ||
-		!timeEl ||
-		!exitBtn
-	)
-		return;
+	// Sequential guards; instanceof narrows for closure bodies (not only linear code).
+	if (!(audioEl instanceof HTMLAudioElement)) return;
+	const audio = audioEl;
+	if (!bar) return;
+	if (!playBtn) return;
+	if (!prevBtn) return;
+	if (!nextBtn) return;
+	if (!seek) return;
+	if (!timeEl) return;
+	if (!exitBtn) return;
+
+	const voiceBar = bar;
+	const voiceSeek = seek;
+	const voiceTimeEl = timeEl;
 
 	let manifest: VoiceManifest | null = null;
 	let article: Element | null = null;
@@ -488,7 +489,7 @@ export function initVoiceMode(
 	function setVoiceMode(on: boolean): void {
 		document.documentElement.classList.toggle("voice-mode", on);
 		triggerBtn.setAttribute("aria-pressed", on ? "true" : "false");
-		bar.classList.toggle("hidden", !on);
+		voiceBar.classList.toggle("hidden", !on);
 		if (on) {
 			updateUrlParam("voice", "1");
 			updateUrlParam("viz", null);
@@ -524,14 +525,14 @@ export function initVoiceMode(
 	}
 
 	function scrollToCurrent(): void {
-		if (!manifest || !article || !bar) return;
+		if (!manifest || !article) return;
 		const idx = findParagraphIndexAtTime(manifest, audio.currentTime);
 		const block = manifest.paragraphs[idx];
 		if (!block) return;
 		const pEl = article.querySelector(
 			`p.english-paragraph[data-paragraph-number="${block.id}"]`,
 		);
-		if (pEl) scrollIntoViewIfNeeded(pEl, bar);
+		if (pEl) scrollIntoViewIfNeeded(pEl, voiceBar);
 	}
 
 	function updateHighlight(t: number): void {
@@ -561,9 +562,9 @@ export function initVoiceMode(
 		const wordEl = spanIndex >= 0 && spans[spanIndex] ? spans[spanIndex] : null;
 		if (wordEl) wordEl.classList.add("voice-word-active");
 
-		if (!audio.paused && bar) {
+		if (!audio.paused) {
 			// If user scrolled away but then scrolled back to see the active paragraph, resume
-			if (userScrolledAway && pEl && isInViewport(pEl, bar)) {
+			if (userScrolledAway && pEl && isInViewport(pEl, voiceBar)) {
 				userScrolledAway = false;
 			}
 
@@ -571,12 +572,12 @@ export function initVoiceMode(
 				const paragraphChanged = idx !== lastParagraphIdx;
 				lastParagraphIdx = idx;
 				if (paragraphChanged) {
-					scrollIntoViewIfNeeded(wordEl || pEl, bar);
+					scrollIntoViewIfNeeded(wordEl || pEl, voiceBar);
 				} else if (wordEl) {
 					const rect = wordEl.getBoundingClientRect();
-					const barTop = bar.getBoundingClientRect().top;
+					const barTop = voiceBar.getBoundingClientRect().top;
 					if (rect.bottom > barTop - 40 || rect.top < 40)
-						scrollIntoViewIfNeeded(wordEl, bar);
+						scrollIntoViewIfNeeded(wordEl, voiceBar);
 				}
 			} else {
 				lastParagraphIdx = idx;
@@ -590,8 +591,8 @@ export function initVoiceMode(
 		if (!manifest) return;
 		const d = audio.duration || manifest.duration || 0;
 		const t = audio.currentTime;
-		timeEl.textContent = `${formatTime(t)} / ${formatTime(d)}`;
-		if (d > 0) seek.value = String((t / d) * 100);
+		voiceTimeEl.textContent = `${formatTime(t)} / ${formatTime(d)}`;
+		if (d > 0) voiceSeek.value = String((t / d) * 100);
 		updateHighlight(t);
 	}
 
@@ -880,10 +881,10 @@ export function initVoiceMode(
 		nextBtn.blur();
 	});
 
-	seek.addEventListener("input", () => {
+	voiceSeek.addEventListener("input", () => {
 		if (!manifest?.duration && !audio.duration) return;
 		const d = audio.duration || manifest!.duration || 0;
-		audio.currentTime = (Number(seek.value) / 100) * d;
+		audio.currentTime = (Number(voiceSeek.value) / 100) * d;
 		lastParagraphIdx = -1;
 		pauseAfterParagraphIdx = -1;
 		resetUserScroll();
