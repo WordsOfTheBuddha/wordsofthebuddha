@@ -30,11 +30,11 @@ const { discourseId } = Astro.props;
 	<div id="voice-bar" class="voice-bar hidden" role="region" aria-label="Voice playback">
 		<div class="voice-bar-row voice-bar-main">
 			<div class="voice-transport" aria-hidden="false">
-				<button type="button" id="voice-prev" class="voice-nav-btn" aria-label="Play previous paragraph" title="Play previous paragraph (stops at end)">
+				<button type="button" id="voice-prev" class="voice-nav-btn" aria-label="Play previous paragraph" title="Play previous paragraph (stops at end) — ←">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M15.79 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L11.832 10l3.938 3.71a.75.75 0 0 1 .02 1.06ZM8.284 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L4.831 10l3.938 3.71a.75.75 0 0 1 .015 1.06Z" /></svg>
 				</button>
 				<button type="button" id="voice-play" class="voice-play-btn" aria-label="Play" title="Play">▶</button>
-				<button type="button" id="voice-next" class="voice-nav-btn" aria-label="Play next paragraph" title="Play next paragraph (stops at end)">
+				<button type="button" id="voice-next" class="voice-nav-btn" aria-label="Play next paragraph" title="Play next paragraph (stops at end) — →">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M4.21 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L8.168 10 4.23 6.29a.75.75 0 0 1-.02-1.06ZM11.716 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L15.169 10l-3.94-3.71a.75.75 0 0 1-.014-1.06Z" /></svg>
 				</button>
 			</div>
@@ -48,7 +48,25 @@ const { discourseId } = Astro.props;
 				value="0"
 				aria-label="Seek"
 			/>
-			<span id="voice-time" class="voice-time">0:00 / 0:00</span>
+			<div class="voice-bar-time-help">
+				<span id="voice-time" class="voice-time">0:00 / 0:00</span>
+				<details class="voice-shortcuts-details">
+					<summary class="voice-shortcuts-summary">
+						<span class="sr-only">Keyboard shortcuts for voice mode</span>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="voice-shortcuts-icon" aria-hidden="true">
+							<path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM8.94 6.94a.75.75 0 1 1-1.061-1.061 3 3 0 1 1 2.871 5.026v.345a.75.75 0 0 1-1.5 0v-.5c0-.734.851-1.121 1.4-1.4a1.5 1.5 0 1 0-1.71-2.461.75.75 0 1 1-1.04-1.085Z" clip-rule="evenodd" />
+						</svg>
+					</summary>
+					<div class="voice-shortcuts-panel">
+						<ul class="voice-shortcuts-list">
+							<li><kbd class="voice-shortcuts-kbd">V</kbd> Open or close voice mode</li>
+							<li><kbd class="voice-shortcuts-kbd">Space</kbd> Play or pause</li>
+							<li><kbd class="voice-shortcuts-kbd">←</kbd> <kbd class="voice-shortcuts-kbd">→</kbd> Previous or next paragraph</li>
+							<li><kbd class="voice-shortcuts-kbd">Esc</kbd> Close voice mode</li>
+						</ul>
+					</div>
+				</details>
+			</div>
 		</div>
 		<div class="voice-bar-row voice-bar-controls">
 			<div class="voice-speed-slot">

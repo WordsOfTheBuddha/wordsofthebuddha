@@ -497,6 +497,9 @@ export function initVoiceMode(
 			ensureArticle();
 			injectButtons();
 		} else {
+			voiceBar
+				.querySelector("details.voice-shortcuts-details")
+				?.removeAttribute("open");
 			updateUrlParam("voice", null);
 			document.dispatchEvent(new CustomEvent("voiceParamChanged"));
 			document.documentElement.classList.remove("voice-immersive");
@@ -998,6 +1001,16 @@ export function initVoiceMode(
 		}
 
 		if (!inVoice) return;
+
+		const seekFocused = active?.id === "voice-seek";
+		if (
+			(e.key === "ArrowLeft" || e.key === "ArrowRight") &&
+			!seekFocused
+		) {
+			e.preventDefault();
+			seekToParagraph(e.key === "ArrowLeft" ? -1 : 1);
+			return;
+		}
 
 		if (e.key === " ") {
 			e.preventDefault();

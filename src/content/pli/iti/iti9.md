@@ -1,10 +1,8 @@
 ---
 title: Lobhapariññā sutta - Completely Comprehending Greed
 description: One is incapable of ending suffering without directly knowing and completely comprehending greed, without the mind detaching from it and without abandoning it. One is capable of ending suffering by directly knowing and completely comprehending greed, with the mind detaching from it, and by abandoning it.
-qualities: greed, complete comprehension, dispassion, suffering, ending, direct knowledge
+qualities: greed, complete comprehension, dispassion, giving up, ending, direct knowledge
 theme: principle
-fetter: sensual desire, greed
-tags: suffering, greed, wisdom, detachment, abandoning, iti
 slug: iti9
 ---
 
