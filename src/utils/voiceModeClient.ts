@@ -304,39 +304,6 @@ function stripVoiceUrlIfNoAudio(): void {
 	}
 }
 
-function getFullscreenElement(): Element | null {
-	const doc = document as Document & {
-		webkitFullscreenElement?: Element | null;
-	};
-	return document.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
-}
-
-function isDocumentFullscreenSupported(): boolean {
-	const el = document.documentElement as HTMLElement & {
-		webkitRequestFullscreen?: () => void;
-	};
-	return (
-		typeof el.requestFullscreen === "function" ||
-		typeof el.webkitRequestFullscreen === "function"
-	);
-}
-
-async function exitDocumentFullscreen(): Promise<void> {
-	const doc = document as Document & {
-		webkitExitFullscreen?: () => Promise<void> | void;
-	};
-	if (document.exitFullscreen) await document.exitFullscreen();
-	else if (doc.webkitExitFullscreen) await doc.webkitExitFullscreen();
-}
-
-async function requestDocumentFullscreen(): Promise<void> {
-	const el = document.documentElement as HTMLElement & {
-		webkitRequestFullscreen?: () => void;
-	};
-	if (el.requestFullscreen) await el.requestFullscreen();
-	else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-}
-
 const PLAY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"/></svg>`;
 const PLAY_PAUSE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811Z"/></svg>`;
 
@@ -411,9 +378,6 @@ export function initVoiceMode(
 	const exitBtn = document.getElementById("voice-exit");
 	const minimizeBtn = document.getElementById(
 		"voice-minimize",
-	) as HTMLButtonElement | null;
-	const fullscreenBtn = document.getElementById(
-		"voice-fullscreen",
 	) as HTMLButtonElement | null;
 	const focusToggle = document.getElementById(
 		"voice-focus-toggle",
@@ -536,9 +500,6 @@ export function initVoiceMode(
 			document.dispatchEvent(new CustomEvent("voiceParamChanged"));
 			document.documentElement.classList.remove("voice-immersive");
 			document.documentElement.classList.remove("voice-bar-minimized");
-			void exitDocumentFullscreen()
-				.catch(() => {})
-				.finally(() => syncFullscreenUi());
 			minimizeBtn?.setAttribute("aria-expanded", "true");
 			minimizeBtn?.setAttribute("aria-label", "Minimize player");
 			minimizeBtn?.setAttribute("title", "Minimize player");
@@ -556,24 +517,6 @@ export function initVoiceMode(
 		minimizeBtn?.setAttribute("aria-expanded", min ? "false" : "true");
 		minimizeBtn?.setAttribute("aria-label", min ? "Expand player" : "Minimize player");
 		minimizeBtn?.setAttribute("title", min ? "Expand player" : "Minimize player");
-	}
-
-	function syncFullscreenUi(): void {
-		const on = Boolean(getFullscreenElement());
-		document.documentElement.classList.toggle("voice-fullscreen-active", on);
-		if (fullscreenBtn) {
-			fullscreenBtn.setAttribute("aria-pressed", on ? "true" : "false");
-			fullscreenBtn.setAttribute(
-				"aria-label",
-				on ? "Exit fullscreen" : "Enter fullscreen",
-			);
-			fullscreenBtn.setAttribute(
-				"title",
-				on
-					? "Exit fullscreen"
-					: "Fullscreen — hides browser UI on supported devices (often Android/desktop; iOS is limited)",
-			);
-		}
 	}
 
 	function resetUserScroll(): void {
@@ -1006,24 +949,6 @@ export function initVoiceMode(
 		setBarMinimized(min);
 		minimizeBtn.blur();
 	});
-
-	if (fullscreenBtn && isDocumentFullscreenSupported()) {
-		fullscreenBtn.classList.remove("hidden");
-		syncFullscreenUi();
-		fullscreenBtn.addEventListener("click", () => {
-			if (getFullscreenElement()) {
-				void exitDocumentFullscreen().catch(() => {});
-			} else {
-				void requestDocumentFullscreen().catch(() => {});
-			}
-			fullscreenBtn.blur();
-		});
-	}
-	document.addEventListener("fullscreenchange", syncFullscreenUi);
-	document.addEventListener(
-		"webkitfullscreenchange",
-		syncFullscreenUi as EventListener,
-	);
 
 	exitBtn.addEventListener("click", () => {
 		setVoiceMode(false);

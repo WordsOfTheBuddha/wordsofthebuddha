@@ -243,8 +243,7 @@ html.dark .voice-mode-trigger:hover {
 }
 
 .voice-minimize-btn,
-.voice-exit-btn,
-.voice-fullscreen-btn {
+.voice-exit-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -254,21 +253,8 @@ html.dark .voice-mode-trigger:hover {
 }
 
 .voice-minimize-btn:hover,
-.voice-exit-btn:hover,
-.voice-fullscreen-btn:hover {
+.voice-exit-btn:hover {
 	opacity: 0.8;
-}
-
-.voice-fullscreen-icon-exit {
-	display: none;
-}
-
-html.voice-fullscreen-active .voice-fullscreen-icon-enter {
-	display: none;
-}
-
-html.voice-fullscreen-active .voice-fullscreen-icon-exit {
-	display: block;
 }
 
 /* Minimized: single short row — play only + actions (same baseline) */
