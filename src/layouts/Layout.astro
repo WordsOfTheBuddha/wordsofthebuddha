@@ -340,12 +340,13 @@ if (!SEOTitle) {
 		<main class="flex-1 flex flex-col p-4">
 			<div
 				class:list={[
+					"relative mx-auto flex w-full flex-1 flex-col min-h-0",
 					fullWidthSlot
-						? "max-w-7xl mx-auto flex w-full flex-1 flex-col min-h-0"
-						: "max-w-4xl mx-auto flex w-full flex-1 flex-col min-h-0 prose prose-lg dark:prose-invert",
+						? "max-w-7xl"
+						: "max-w-4xl max-w-none prose prose-lg dark:prose-invert",
 				]}
 			>
-				<HighlightLayout
+					<HighlightLayout
 					currentPath={fp}
 					title={title}
 					description={description}

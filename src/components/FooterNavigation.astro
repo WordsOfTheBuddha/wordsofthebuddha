@@ -20,6 +20,9 @@ const { prev, next } = Astro.props;
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-left"
 					style="color: var(--link-color)"
 					data-base-href={`/${prev.id}`}
+					data-discourse-nav="prev"
+					data-nav-label={`${transformId(prev.id)} · ${prev.data.title}`}
+					title="Previous discourse — keyboard ["
 				>
 					← {transformId(prev.id)} {prev.data.title}
 				</a>
@@ -34,6 +37,9 @@ const { prev, next } = Astro.props;
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-right"
 					style="color: var(--link-color)"
 					data-base-href={`/${next.id}`}
+					data-discourse-nav="next"
+					data-nav-label={`${transformId(next.id)} · ${next.data.title}`}
+					title="Next discourse — keyboard ]"
 				>
 					{transformId(next.id)} {next.data.title} →
 				</a>
@@ -63,9 +69,75 @@ const { prev, next } = Astro.props;
 		});
 	}
 
-	document.addEventListener("DOMContentLoaded", updateLinks);
-	document.addEventListener("astro:page-load", updateLinks);
+	function isTypingContext(): boolean {
+		const el = document.activeElement as HTMLElement | null;
+		if (!el) return false;
+		const tag = el.tagName.toLowerCase();
+		if (tag === "textarea" || tag === "select") return true;
+		if (tag === "input") {
+			const t = (el as HTMLInputElement).type;
+			if (
+				t === "range" ||
+				t === "button" ||
+				t === "checkbox" ||
+				t === "radio"
+			)
+				return false;
+			return true;
+		}
+		return el.isContentEditable === true;
+	}
+
+	function getDiscourseNavLink(
+		role: "prev" | "next",
+	): HTMLAnchorElement | null {
+		return document.querySelector(
+			`a[data-discourse-nav="${role}"]`,
+		) as HTMLAnchorElement | null;
+	}
+
+	let navCooldownUntil = 0;
+	const NAV_KB_COOLDOWN_MS = 450;
+
+	function goDiscourseNavKeyboard(role: "prev" | "next"): void {
+		const now = Date.now();
+		if (now < navCooldownUntil) return;
+		const link = getDiscourseNavLink(role);
+		if (!link?.href) return;
+		navCooldownUntil = now + NAV_KB_COOLDOWN_MS;
+		window.location.assign(link.href);
+	}
+
+	function onKeydown(e: KeyboardEvent): void {
+		if (e.defaultPrevented) return;
+		if (e.ctrlKey || e.metaKey || e.altKey) return;
+		if (isTypingContext()) return;
+		if (document.querySelector("dialog[open]")) return;
+
+		if (e.code === "BracketLeft") {
+			const prev = getDiscourseNavLink("prev");
+			if (!prev) return;
+			e.preventDefault();
+			goDiscourseNavKeyboard("prev");
+			return;
+		}
+		if (e.code === "BracketRight") {
+			const next = getDiscourseNavLink("next");
+			if (!next) return;
+			e.preventDefault();
+			goDiscourseNavKeyboard("next");
+			return;
+		}
+	}
+
+	function wireNav(): void {
+		updateLinks();
+	}
+
+	document.addEventListener("DOMContentLoaded", wireNav);
+	document.addEventListener("astro:page-load", wireNav);
 	document.addEventListener("paliModeChanged", updateLinks as EventListener);
 	document.addEventListener("layoutChanged", updateLinks as EventListener);
 	document.addEventListener("voiceParamChanged", updateLinks as EventListener);
+	document.addEventListener("keydown", onKeydown, { capture: false });
 </script>
