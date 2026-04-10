@@ -109,6 +109,7 @@ html.dark .voice-mode-trigger:hover {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	gap: 0.2rem;
 }
 
 .voice-controls-track {
@@ -202,10 +203,24 @@ html.dark .voice-mode-trigger:hover {
 	transition: opacity 0.15s, outline-color 0.15s;
 }
 
-#voice-speed-toggle {
-	min-width: 1.4rem;
+.voice-speed-label {
+	font-size: 0.6875rem;
+	font-variant-numeric: tabular-nums;
+	min-width: 1.6rem;
 	text-align: center;
-	padding: 0.1rem;
+	opacity: 0.8;
+	color: var(--text-color);
+	user-select: none;
+}
+
+.voice-speed-adj {
+	padding: 0.1rem 0.3rem;
+	min-width: 1.2rem;
+}
+
+.voice-speed-adj--hidden {
+	visibility: hidden;
+	pointer-events: none;
 }
 
 .voice-speed button:hover,

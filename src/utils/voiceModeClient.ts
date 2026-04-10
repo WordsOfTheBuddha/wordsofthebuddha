@@ -314,9 +314,9 @@ export function initVoiceMode(
 		"voice-seek",
 	) as HTMLInputElement | null;
 	const timeEl = document.getElementById("voice-time");
-	const speedToggle = document.getElementById(
-		"voice-speed-toggle",
-	) as HTMLButtonElement | null;
+	const speedDown = document.getElementById("voice-speed-down") as HTMLButtonElement | null;
+	const speedLabel = document.getElementById("voice-speed-label") as HTMLSpanElement | null;
+	const speedUp = document.getElementById("voice-speed-up") as HTMLButtonElement | null;
 	const exitBtn = document.getElementById("voice-exit");
 	const focusToggle = document.getElementById(
 		"voice-focus-toggle",
@@ -362,11 +362,13 @@ export function initVoiceMode(
 		}
 	}
 
-	function updateSpeedToggleLabel(): void {
-		if (!speedToggle) return;
-		speedToggle.textContent = `${audio.playbackRate.toFixed(2).replace(/\.00$/, "").replace(/\.50$/, ".5")}×`;
-		speedToggle.setAttribute("aria-label", `Playback speed ${speedToggle.textContent}`);
-		speedToggle.setAttribute("title", "Playback speed (tap to change)");
+	function updateSpeedButtons(): void {
+		if (!speedLabel) return;
+		const rates = [0.75, 1, 1.25];
+		speedLabel.textContent = `${audio.playbackRate.toFixed(2).replace(/\.00$/, "").replace(/\.50$/, ".5")}×`;
+		const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
+		speedDown?.classList.toggle("voice-speed-adj--hidden", idx <= 0);
+		speedUp?.classList.toggle("voice-speed-adj--hidden", idx >= rates.length - 1);
 	}
 
 	function writeLs(): void {
@@ -638,7 +640,7 @@ export function initVoiceMode(
 			);
 			audio.playbackRate = nearest;
 		}
-		updateSpeedToggleLabel();
+		updateSpeedButtons();
 		if (typeof saved.position === "number" && saved.position > 0) {
 			audio.addEventListener(
 				"loadedmetadata",
@@ -738,15 +740,29 @@ export function initVoiceMode(
 		syncUi();
 	});
 
-	if (speedToggle) {
-		speedToggle.addEventListener("click", () => {
+	if (speedDown) {
+		speedDown.addEventListener("click", () => {
 			const rates = [0.75, 1, 1.25];
-			const current = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
-			const next = rates[(current + 1) % rates.length];
-			audio.playbackRate = next;
-			updateSpeedToggleLabel();
-			writeLs();
-			speedToggle.blur();
+			const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
+			if (idx > 0) {
+				audio.playbackRate = rates[idx - 1];
+				updateSpeedButtons();
+				writeLs();
+			}
+			speedDown.blur();
+		});
+	}
+
+	if (speedUp) {
+		speedUp.addEventListener("click", () => {
+			const rates = [0.75, 1, 1.25];
+			const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
+			if (idx < rates.length - 1) {
+				audio.playbackRate = rates[idx + 1];
+				updateSpeedButtons();
+				writeLs();
+			}
+			speedUp.blur();
 		});
 	}
 

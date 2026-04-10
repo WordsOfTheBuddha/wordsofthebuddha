@@ -52,7 +52,9 @@ const { discourseId } = Astro.props;
 		</div>
 		<div class="voice-bar-row voice-bar-controls">
 			<div class="voice-speed-slot">
-				<button type="button" id="voice-speed-toggle" class="voice-ctrl-btn voice-rate-active" aria-label="Playback speed" title="Playback speed (tap to change)">1×</button>
+				<button type="button" id="voice-speed-down" class="voice-ctrl-btn voice-speed-adj voice-speed-adj--hidden" aria-label="Decrease speed" title="Slower">−</button>
+				<span id="voice-speed-label" class="voice-speed-label" aria-live="polite" aria-atomic="true">1×</span>
+				<button type="button" id="voice-speed-up" class="voice-ctrl-btn voice-speed-adj" aria-label="Increase speed" title="Faster">+</button>
 			</div>
 			<div class="voice-controls-track">
 				<button type="button" id="voice-focus-toggle" class="voice-ctrl-btn voice-rate-active" aria-label="Toggle focus" title="Toggle focus (dim surrounding text)">Focus: On</button>
