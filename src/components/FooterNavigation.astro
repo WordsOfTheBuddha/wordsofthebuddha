@@ -46,6 +46,8 @@ const { prev, next } = Astro.props;
 	function updateLinks() {
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
+		const voiceParam = new URLSearchParams(location.search).get("voice");
+		const voiceOn = voiceParam === "1" || voiceParam === "true";
 		const links = document.querySelectorAll("a.nav-link");
 
 		links.forEach((link) => {
@@ -54,6 +56,7 @@ const { prev, next } = Astro.props;
 			const params = new URLSearchParams();
 			if (paliMode) params.set("pli", "true");
 			if (paliMode && layout === "split") params.set("layout", layout);
+			if (voiceOn) params.set("voice", "1");
 			(link as HTMLAnchorElement).href = params.toString()
 				? `${baseHref}?${params.toString()}`
 				: baseHref;
@@ -64,4 +67,5 @@ const { prev, next } = Astro.props;
 	document.addEventListener("astro:page-load", updateLinks);
 	document.addEventListener("paliModeChanged", updateLinks as EventListener);
 	document.addEventListener("layoutChanged", updateLinks as EventListener);
+	document.addEventListener("voiceParamChanged", updateLinks as EventListener);
 </script>

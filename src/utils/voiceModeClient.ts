@@ -113,7 +113,7 @@ function wrapVoiceWords(root: Element): void {
 		const text = node.textContent;
 		if (!text) continue;
 		const frag = document.createDocumentFragment();
-		const parts = text.split(/(\s+|—|\.{3}|…)/);
+		const parts = text.split(/(\s+|—)/);
 		for (const part of parts) {
 			if (!part) continue;
 			if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
@@ -136,7 +136,7 @@ function mergePunctuation(root: Element): void {
 		const el = words[i];
 		const txt = el.textContent || "";
 		if (!txt.trim()) continue;
-		if (PUNCT_ONLY.test(txt) && !/^\.{3}$/.test(txt) && txt !== "…") {
+		if (PUNCT_ONLY.test(txt)) {
 			const prev = i > 0 ? words[i - 1] : null;
 			if (prev) {
 				prev.textContent = (prev.textContent || "") + txt;
@@ -243,7 +243,43 @@ function updateUrlParam(key: string, value: string | null): void {
 
 function stripVoiceUrlIfNoAudio(): void {
 	const v = new URLSearchParams(location.search).get("voice");
-	if (v === "1" || v === "true") updateUrlParam("voice", null);
+	if (v === "1" || v === "true") {
+		updateUrlParam("voice", null);
+		document.dispatchEvent(new CustomEvent("voiceParamChanged"));
+	}
+}
+
+function getFullscreenElement(): Element | null {
+	const doc = document as Document & {
+		webkitFullscreenElement?: Element | null;
+	};
+	return document.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+}
+
+function isDocumentFullscreenSupported(): boolean {
+	const el = document.documentElement as HTMLElement & {
+		webkitRequestFullscreen?: () => void;
+	};
+	return (
+		typeof el.requestFullscreen === "function" ||
+		typeof el.webkitRequestFullscreen === "function"
+	);
+}
+
+async function exitDocumentFullscreen(): Promise<void> {
+	const doc = document as Document & {
+		webkitExitFullscreen?: () => Promise<void> | void;
+	};
+	if (document.exitFullscreen) await document.exitFullscreen();
+	else if (doc.webkitExitFullscreen) await doc.webkitExitFullscreen();
+}
+
+async function requestDocumentFullscreen(): Promise<void> {
+	const el = document.documentElement as HTMLElement & {
+		webkitRequestFullscreen?: () => void;
+	};
+	if (el.requestFullscreen) await el.requestFullscreen();
+	else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
 }
 
 const PLAY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"/></svg>`;
@@ -318,6 +354,12 @@ export function initVoiceMode(
 	const speedLabel = document.getElementById("voice-speed-label") as HTMLSpanElement | null;
 	const speedUp = document.getElementById("voice-speed-up") as HTMLButtonElement | null;
 	const exitBtn = document.getElementById("voice-exit");
+	const minimizeBtn = document.getElementById(
+		"voice-minimize",
+	) as HTMLButtonElement | null;
+	const fullscreenBtn = document.getElementById(
+		"voice-fullscreen",
+	) as HTMLButtonElement | null;
 	const focusToggle = document.getElementById(
 		"voice-focus-toggle",
 	) as HTMLButtonElement | null;
@@ -428,17 +470,51 @@ export function initVoiceMode(
 		if (on) {
 			updateUrlParam("voice", "1");
 			updateUrlParam("viz", null);
+			document.dispatchEvent(new CustomEvent("voiceParamChanged"));
 			ensureArticle();
 			injectButtons();
 		} else {
 			updateUrlParam("voice", null);
+			document.dispatchEvent(new CustomEvent("voiceParamChanged"));
 			document.documentElement.classList.remove("voice-immersive");
+			document.documentElement.classList.remove("voice-bar-minimized");
+			void exitDocumentFullscreen()
+				.catch(() => {})
+				.finally(() => syncFullscreenUi());
+			minimizeBtn?.setAttribute("aria-expanded", "true");
+			minimizeBtn?.setAttribute("aria-label", "Minimize player");
+			minimizeBtn?.setAttribute("title", "Minimize player");
 			clearWordHighlights(article);
 			clearParagraphHighlights(article);
 			removeParagraphPlayButtons(article);
 			lastParagraphIdx = -1;
 			pauseAfterParagraphIdx = -1;
 			userScrolledAway = false;
+		}
+	}
+
+	function setBarMinimized(min: boolean): void {
+		document.documentElement.classList.toggle("voice-bar-minimized", min);
+		minimizeBtn?.setAttribute("aria-expanded", min ? "false" : "true");
+		minimizeBtn?.setAttribute("aria-label", min ? "Expand player" : "Minimize player");
+		minimizeBtn?.setAttribute("title", min ? "Expand player" : "Minimize player");
+	}
+
+	function syncFullscreenUi(): void {
+		const on = Boolean(getFullscreenElement());
+		document.documentElement.classList.toggle("voice-fullscreen-active", on);
+		if (fullscreenBtn) {
+			fullscreenBtn.setAttribute("aria-pressed", on ? "true" : "false");
+			fullscreenBtn.setAttribute(
+				"aria-label",
+				on ? "Exit fullscreen" : "Enter fullscreen",
+			);
+			fullscreenBtn.setAttribute(
+				"title",
+				on
+					? "Exit fullscreen"
+					: "Fullscreen — hides browser UI on supported devices (often Android/desktop; iOS is limited)",
+			);
 		}
 	}
 
@@ -741,6 +817,16 @@ export function initVoiceMode(
 		syncUi();
 	});
 
+	audio.addEventListener("ended", () => {
+		if (!document.documentElement.classList.contains("voice-mode")) return;
+		document.dispatchEvent(
+			new CustomEvent("voicePlaybackComplete", {
+				bubbles: true,
+				detail: { slug: discourseId },
+			}),
+		);
+	});
+
 	function onUserScroll(): void {
 		if (
 			!audio.paused &&
@@ -857,6 +943,32 @@ export function initVoiceMode(
 			focusToggle.blur();
 		});
 	}
+
+	minimizeBtn?.addEventListener("click", () => {
+		const min = !document.documentElement.classList.contains(
+			"voice-bar-minimized",
+		);
+		setBarMinimized(min);
+		minimizeBtn.blur();
+	});
+
+	if (fullscreenBtn && isDocumentFullscreenSupported()) {
+		fullscreenBtn.classList.remove("hidden");
+		syncFullscreenUi();
+		fullscreenBtn.addEventListener("click", () => {
+			if (getFullscreenElement()) {
+				void exitDocumentFullscreen().catch(() => {});
+			} else {
+				void requestDocumentFullscreen().catch(() => {});
+			}
+			fullscreenBtn.blur();
+		});
+	}
+	document.addEventListener("fullscreenchange", syncFullscreenUi);
+	document.addEventListener(
+		"webkitfullscreenchange",
+		syncFullscreenUi as EventListener,
+	);
 
 	exitBtn.addEventListener("click", () => {
 		setVoiceMode(false);

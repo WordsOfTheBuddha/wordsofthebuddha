@@ -62,21 +62,25 @@ const userId = null;
 	let userInteractedWithReadButton = false; // New flag
 
 	function updateState(isRead: boolean) {
+		const b = document.getElementById("readButton");
+		const chk = document.getElementById("readCheckIcon");
+		const dashed = document.getElementById("readCheckDashedIcon");
+		const label = document.getElementById("readLabel");
+		const ping = document.getElementById("pingIndicator");
 		if (isRead) {
-			btn?.setAttribute(
+			b?.setAttribute(
 				"style",
 				"color: var(--layout-active-color); border-color: var(--layout-active-color)"
 			);
-			dashedCheck?.classList.add("hidden");
-			check?.classList.remove("hidden");
-			if (readLabel) readLabel.innerText = "Read";
-			// Hide ping animation and reset flag when marked as read
-			if (pingIndicator) pingIndicator.style.display = "none";
+			dashed?.classList.add("hidden");
+			chk?.classList.remove("hidden");
+			if (label) label.innerText = "Read";
+			if (ping) ping.style.display = "none";
 		} else {
-			btn?.removeAttribute("style");
-			dashedCheck?.classList.remove("hidden");
-			check?.classList.add("hidden");
-			if (readLabel) readLabel.innerText = "Mark as read";
+			b?.removeAttribute("style");
+			dashed?.classList.remove("hidden");
+			chk?.classList.add("hidden");
+			if (label) label.innerText = "Mark as read";
 		}
 	}
 
@@ -93,7 +97,8 @@ const userId = null;
 	}
 
 	// Update local storage for offline mode
-	function updateOfflineReadState(isRead: boolean) {
+	function updateOfflineReadState(isRead: boolean, pageSlug?: string) {
+		const key = pageSlug ?? slug;
 		try {
 			let items = JSON.parse(
 				localStorage.getItem(READ_ITEMS_KEY) || '{"pages":{}}'
@@ -101,9 +106,9 @@ const userId = null;
 
 			if (isRead) {
 				// Store timestamp with minute precision
-				items.pages[slug] = Math.floor(Date.now() / 60000);
+				items.pages[key] = Math.floor(Date.now() / 60000);
 			} else {
-				delete items.pages[slug];
+				delete items.pages[key];
 			}
 
 			localStorage.setItem(READ_ITEMS_KEY, JSON.stringify(items));
@@ -184,6 +189,55 @@ const userId = null;
 		} else {
 			console.error("Ping indicator element not found");
 		}
+	}
+
+	async function markAsReadFromVoicePlayback() {
+		const pageSlug = window.location.pathname.replace(/^\/+/, "");
+		const readBtn = document.getElementById("readButton");
+		const checkEl = document.getElementById("readCheckIcon");
+		if (!readBtn || !checkEl) return;
+		let retries = 0;
+		while (readBtn.dataset.loading === "true" && retries < 40) {
+			await new Promise((r) => setTimeout(r, 100));
+			retries += 1;
+		}
+		if (readBtn.dataset.authenticated !== "true") return;
+		if (!checkEl.classList.contains("hidden")) return;
+
+		readBtn.classList.add("animate-pulse");
+		try {
+			try {
+				const response = await fetch(`/api/read/${pageSlug}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ isRead: true }),
+				});
+				if (response.ok) {
+					updateState(true);
+					updateOfflineReadState(true, pageSlug);
+				}
+			} catch {
+				updateState(true);
+				updateOfflineReadState(true, pageSlug);
+			}
+		} finally {
+			readBtn.classList.remove("animate-pulse");
+		}
+	}
+
+	function handleVoicePlaybackComplete(e) {
+		const slugFromEvent = e.detail && e.detail.slug;
+		const pathSlug = window.location.pathname.replace(/^\/+/, "");
+		if (slugFromEvent !== pathSlug) return;
+		void markAsReadFromVoicePlayback();
+	}
+
+	if (!globalThis.__voicePlaybackReadListener) {
+		globalThis.__voicePlaybackReadListener = true;
+		document.addEventListener(
+			"voicePlaybackComplete",
+			handleVoicePlaybackComplete,
+		);
 	}
 
 	function checkScrollPosition() {
