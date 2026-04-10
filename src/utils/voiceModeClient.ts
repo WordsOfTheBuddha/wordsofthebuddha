@@ -45,6 +45,61 @@ const PUNCT_ONLY = /^[.,;:!?'"''""\-–—)\]]+$/;
 const LEADING_PUNCT = /^['"''"([\-–—]+$/;
 const WRAPPED_ATTR = "data-voice-wrapped";
 
+function normalizeForWordAlignment(text: string): string {
+	return text
+		.trim()
+		.toLowerCase()
+		.replace(/…/g, "...")
+		.replace(/[‘’]/g, "'")
+		.replace(/[“”]/g, '"');
+}
+
+function buildWordIndexMap(
+	block: VoiceParagraph,
+	spans: Element[],
+): number[] {
+	const map: number[] = new Array(block.words.length).fill(-1);
+	const spanWords = spans.map((s) => normalizeForWordAlignment(s.textContent || ""));
+	let j = 0;
+
+	for (let i = 0; i < block.words.length; i++) {
+		const target = normalizeForWordAlignment(block.words[i]?.w || "");
+		if (!target) {
+			map[i] = j < spanWords.length ? j : -1;
+			continue;
+		}
+
+		while (j < spanWords.length && !spanWords[j]) j++;
+		if (j >= spanWords.length) break;
+
+		const cur = spanWords[j];
+		if (cur === target) {
+			map[i] = j;
+			j += 1;
+			continue;
+		}
+
+		const next = j + 1 < spanWords.length ? spanWords[j + 1] : "";
+		if (next && `${cur}${next}` === target) {
+			// Manifest has one token, DOM has split token (e.g. "restrained" + "...").
+			map[i] = j;
+			j += 2;
+			continue;
+		}
+
+		// Fallback: keep progress moving to avoid freezing highlight on hard mismatches.
+		map[i] = j;
+		j += 1;
+	}
+
+	for (let i = 1; i < map.length; i++) {
+		if (map[i] < 0) map[i] = map[i - 1];
+	}
+	if (map.length > 0 && map[0] < 0) map[0] = 0;
+
+	return map;
+}
+
 function formatTime(sec: number): string {
 	if (!Number.isFinite(sec) || sec < 0) return "0:00";
 	const m = Math.floor(sec / 60);
@@ -113,7 +168,7 @@ function wrapVoiceWords(root: Element): void {
 		const text = node.textContent;
 		if (!text) continue;
 		const frag = document.createDocumentFragment();
-		const parts = text.split(/(\s+|—)/);
+		const parts = text.split(/(\s+|—|\.{3}|…)/);
 		for (const part of parts) {
 			if (!part) continue;
 			if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
@@ -136,7 +191,7 @@ function mergePunctuation(root: Element): void {
 		const el = words[i];
 		const txt = el.textContent || "";
 		if (!txt.trim()) continue;
-		if (PUNCT_ONLY.test(txt)) {
+		if (PUNCT_ONLY.test(txt) && txt !== "..." && txt !== "…") {
 			const prev = i > 0 ? words[i - 1] : null;
 			if (prev) {
 				prev.textContent = (prev.textContent || "") + txt;
@@ -383,6 +438,7 @@ export function initVoiceMode(
 	let pauseAfterParagraphIdx = -1;
 	let userScrolledAway = false;
 	let rafId = 0;
+	const paragraphWordIndexMap = new Map<number, number[]>();
 
 	/** Same-origin /audio/{slug} in dev; prod uses PUBLIC_AUDIO_BASE_URL (no trailing slash), e.g. https://hear.wordsofthebuddha.org */
 	const audioRoot = import.meta.env.PUBLIC_AUDIO_BASE_URL as string | undefined;
@@ -443,6 +499,7 @@ export function initVoiceMode(
 				clearParagraphHighlights(article);
 			}
 			article = current;
+			paragraphWordIndexMap.clear();
 		}
 		if (!article.hasAttribute(WRAPPED_ATTR)) {
 			article
@@ -451,6 +508,7 @@ export function initVoiceMode(
 				)
 				.forEach((p) => wrapVoiceWords(p));
 			article.setAttribute(WRAPPED_ATTR, "1");
+			paragraphWordIndexMap.clear();
 		}
 	}
 
@@ -548,7 +606,16 @@ export function initVoiceMode(
 		pEl.classList.add("voice-paragraph-active");
 		const wi = findWordIndexInParagraph(block, t);
 		const spans = pEl.querySelectorAll(".voice-word");
-		const wordEl = wi >= 0 && spans[wi] ? spans[wi] : null;
+		let spanIndex = wi;
+		let indexMap = paragraphWordIndexMap.get(block.id);
+		if (!indexMap) {
+			indexMap = buildWordIndexMap(block, Array.from(spans));
+			paragraphWordIndexMap.set(block.id, indexMap);
+		}
+		if (wi >= 0 && indexMap[wi] !== undefined && indexMap[wi] >= 0) {
+			spanIndex = indexMap[wi];
+		}
+		const wordEl = spanIndex >= 0 && spans[spanIndex] ? spans[spanIndex] : null;
 		if (wordEl) wordEl.classList.add("voice-word-active");
 
 		if (!audio.paused && bar) {
@@ -633,24 +700,12 @@ export function initVoiceMode(
 
 	function seekToParagraph(delta: number): void {
 		if (!manifest) return;
-		pauseAfterParagraphIdx = -1;
-		resetUserScroll();
 		const idx = findParagraphIndexAtTime(manifest, audio.currentTime);
-		const next = Math.max(
+		const targetIdx = Math.max(
 			0,
 			Math.min(manifest.paragraphs.length - 1, idx + delta),
 		);
-		const targetTime = manifest.paragraphs[next].start;
-		audio.currentTime = targetTime;
-		lastParagraphIdx = -1;
-
-		// After seek settles, verify position (mobile OGG granule rounding)
-		audio.addEventListener("seeked", () => {
-			if (Math.abs(audio.currentTime - targetTime) > 0.15) {
-				audio.currentTime = targetTime;
-			}
-			syncUi();
-		}, { once: true });
+		seekToParagraphById(manifest.paragraphs[targetIdx].id, true);
 	}
 
 	function seekToParagraphById(

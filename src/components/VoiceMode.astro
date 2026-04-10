@@ -30,11 +30,11 @@ const { discourseId } = Astro.props;
 	<div id="voice-bar" class="voice-bar hidden" role="region" aria-label="Voice playback">
 		<div class="voice-bar-row voice-bar-main">
 			<div class="voice-transport" aria-hidden="false">
-				<button type="button" id="voice-prev" class="voice-nav-btn" aria-label="Previous paragraph" title="Previous paragraph">
+				<button type="button" id="voice-prev" class="voice-nav-btn" aria-label="Play previous paragraph" title="Play previous paragraph (stops at end)">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M15.79 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L11.832 10l3.938 3.71a.75.75 0 0 1 .02 1.06ZM8.284 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L4.831 10l3.938 3.71a.75.75 0 0 1 .015 1.06Z" /></svg>
 				</button>
 				<button type="button" id="voice-play" class="voice-play-btn" aria-label="Play" title="Play">▶</button>
-				<button type="button" id="voice-next" class="voice-nav-btn" aria-label="Next paragraph" title="Next paragraph">
+				<button type="button" id="voice-next" class="voice-nav-btn" aria-label="Play next paragraph" title="Play next paragraph (stops at end)">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path d="M4.21 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L8.168 10 4.23 6.29a.75.75 0 0 1-.02-1.06ZM11.716 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L15.169 10l-3.94-3.71a.75.75 0 0 1-.014-1.06Z" /></svg>
 				</button>
 			</div>
