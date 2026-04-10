@@ -28,6 +28,9 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 AUDIO_DIR = REPO_ROOT / "public" / "audio"
 DEFAULT_BUCKET = "dhamma-audio"
+# Boto3 defaults to multipart above 8 MiB; multipart ETag is not the file MD5, so
+# local MD5 vs remote ETag would always disagree. Keep uploads single-part up to 32 MiB.
+UPLOAD_MULTIPART_THRESHOLD_BYTES = 32 * 1024 * 1024
 
 
 def load_dotenv() -> None:
@@ -96,6 +99,9 @@ def _remote_etag(s3, bucket: str, key: str) -> str | None:
 
 
 def push(s3, bucket: str, slug: str | None) -> None:
+    from boto3.s3.transfer import TransferConfig
+
+    upload_config = TransferConfig(multipart_threshold=UPLOAD_MULTIPART_THRESHOLD_BYTES)
     files = local_audio_files(slug)
     if not files:
         print("No audio files to push.")
@@ -121,6 +127,7 @@ def push(s3, bucket: str, slug: str | None) -> None:
             bucket,
             key,
             ExtraArgs={"ContentType": content_type, "CacheControl": cache},
+            Config=upload_config,
         )
         uploaded += 1
     print(f"Pushed {uploaded} file(s), {skipped} unchanged.")
