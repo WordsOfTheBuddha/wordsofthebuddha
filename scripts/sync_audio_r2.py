@@ -2,8 +2,8 @@
 """
 Sync local audio files (Opus + manifests) with Cloudflare R2.
 
-Objects are stored at the bucket root (e.g. mn10.opus, mn10.manifest.json) so the
-public URL is https://<custom-domain>/mn10.opus — no /audio/ path segment.
+Objects are stored at the bucket root (e.g. mn10.webm, mn10.manifest.json) so the
+public URL is https://<custom-domain>/mn10.webm — no /audio/ path segment.
 
 Usage:
   python scripts/sync_audio_r2.py push              # upload all local → R2
@@ -62,15 +62,15 @@ def get_s3_client():
 
 
 def local_audio_files(slug: str | None = None) -> list[Path]:
-    """List .opus and .manifest.json files in public/audio/."""
+    """List .webm and .manifest.json files in public/audio/."""
     if not AUDIO_DIR.is_dir():
         return []
     files: list[Path] = []
     allowed: set[str] | None = None
     if slug:
-        allowed = {f"{slug}.opus", f"{slug}.manifest.json"}
+        allowed = {f"{slug}.webm", f"{slug}.manifest.json"}
     for f in sorted(AUDIO_DIR.iterdir()):
-        if f.suffix not in (".opus", ".json"):
+        if f.suffix not in (".webm", ".json"):
             continue
         if allowed is not None and f.name not in allowed:
             continue
@@ -109,10 +109,10 @@ def push(s3, bucket: str, slug: str | None) -> None:
         if local_hash == remote_hash:
             skipped += 1
             continue
-        content_type = "audio/opus" if f.suffix == ".opus" else "application/json"
+        content_type = "audio/webm" if f.suffix == ".webm" else "application/json"
         cache = (
             "public, max-age=31536000, immutable"
-            if f.suffix == ".opus"
+            if f.suffix == ".webm"
             else "public, max-age=3600, stale-while-revalidate=86400"
         )
         print(f"  ↑ {f.name} → s3://{bucket}/{key}")
@@ -132,7 +132,7 @@ def pull(s3, bucket: str, slug: str | None) -> None:
     paginator = s3.get_paginator("list_objects_v2")
     allowed: set[str] | None = None
     if slug:
-        allowed = {f"{slug}.opus", f"{slug}.manifest.json"}
+        allowed = {f"{slug}.webm", f"{slug}.manifest.json"}
     for page in paginator.paginate(
         Bucket=bucket,
         Prefix=f"{slug}." if slug else "",
@@ -143,7 +143,7 @@ def pull(s3, bucket: str, slug: str | None) -> None:
                 continue
             if allowed is not None and key not in allowed:
                 continue
-            if not (key.endswith(".opus") or key.endswith(".manifest.json")):
+            if not (key.endswith(".webm") or key.endswith(".manifest.json")):
                 continue
             local = AUDIO_DIR / key
             print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)}")

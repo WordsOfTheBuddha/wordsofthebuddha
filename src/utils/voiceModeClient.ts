@@ -26,12 +26,12 @@ function isValidVoiceManifest(v: unknown): v is VoiceManifest {
 	return true;
 }
 
-/** Ensure the Opus file exists (manifest alone is not enough). */
-async function opusAssetExists(opusUrl: string): Promise<boolean> {
-	let res = await fetch(opusUrl, { method: "HEAD", cache: "no-cache" });
+/** Ensure the audio file exists (manifest alone is not enough). */
+async function audioAssetExists(url: string): Promise<boolean> {
+	let res = await fetch(url, { method: "HEAD", cache: "no-cache" });
 	if (res.ok) return true;
 	if (res.status === 405) {
-		res = await fetch(opusUrl, {
+		res = await fetch(url, {
 			headers: { Range: "bytes=0-0" },
 			cache: "no-cache",
 		});
@@ -113,7 +113,7 @@ function wrapVoiceWords(root: Element): void {
 		const text = node.textContent;
 		if (!text) continue;
 		const frag = document.createDocumentFragment();
-		const parts = text.split(/(\s+|—)/);
+		const parts = text.split(/(\s+|—|\.{3}|…)/);
 		for (const part of parts) {
 			if (!part) continue;
 			if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
@@ -136,7 +136,7 @@ function mergePunctuation(root: Element): void {
 		const el = words[i];
 		const txt = el.textContent || "";
 		if (!txt.trim()) continue;
-		if (PUNCT_ONLY.test(txt)) {
+		if (PUNCT_ONLY.test(txt) && !/^\.{3}$/.test(txt) && txt !== "…") {
 			const prev = i > 0 ? words[i - 1] : null;
 			if (prev) {
 				prev.textContent = (prev.textContent || "") + txt;
@@ -340,6 +340,7 @@ export function initVoiceMode(
 	let ready = false;
 	let pauseAfterParagraphIdx = -1;
 	let userScrolledAway = false;
+	let rafId = 0;
 
 	/** Same-origin /audio/{slug} in dev; prod uses PUBLIC_AUDIO_BASE_URL (no trailing slash), e.g. https://hear.wordsofthebuddha.org */
 	const audioRoot = import.meta.env.PUBLIC_AUDIO_BASE_URL as string | undefined;
@@ -519,9 +520,29 @@ export function initVoiceMode(
 		}
 	}
 
+	/* ——— rAF-based sync loop: runs at display refresh rate during playback ——— */
+	function startRafLoop(): void {
+		if (rafId) return;
+		const tick = (): void => {
+			checkSingleParaPause();
+			syncUi();
+			if (!audio.paused) rafId = requestAnimationFrame(tick);
+			else rafId = 0;
+		};
+		rafId = requestAnimationFrame(tick);
+	}
+
+	function stopRafLoop(): void {
+		if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+	}
+
 	function onTimeUpdate(): void {
-		checkSingleParaPause();
-		syncUi();
+		// rAF loop handles visual sync during playback; timeupdate handles
+		// persistence and immersive-mode gating so it still fires at low frequency.
+		if (audio.paused) {
+			checkSingleParaPause();
+			syncUi();
+		}
 		writeLs();
 		if (
 			focusAllowed &&
@@ -543,9 +564,17 @@ export function initVoiceMode(
 			0,
 			Math.min(manifest.paragraphs.length - 1, idx + delta),
 		);
-		audio.currentTime = manifest.paragraphs[next].start;
+		const targetTime = manifest.paragraphs[next].start;
+		audio.currentTime = targetTime;
 		lastParagraphIdx = -1;
-		syncUi();
+
+		// After seek settles, verify position (mobile OGG granule rounding)
+		audio.addEventListener("seeked", () => {
+			if (Math.abs(audio.currentTime - targetTime) > 0.15) {
+				audio.currentTime = targetTime;
+			}
+			syncUi();
+		}, { once: true });
 	}
 
 	function seekToParagraphById(
@@ -555,12 +584,46 @@ export function initVoiceMode(
 		if (!manifest) return;
 		const idx = manifest.paragraphs.findIndex((p) => p.id === paragraphId);
 		if (idx < 0) return;
+		const targetTime = manifest.paragraphs[idx].start;
 		resetUserScroll();
-		audio.currentTime = manifest.paragraphs[idx].start;
 		lastParagraphIdx = -1;
 		pauseAfterParagraphIdx = singleOnly ? idx : -1;
-		syncUi();
-		if (audio.paused) audio.play().catch(() => {});
+
+		// On mobile browsers, playing immediately after setting currentTime can race
+		// with seek resolution and mangle the first syllables of the target paragraph.
+		const settleSeekThenPlay = (): void => {
+			// After seek settles, verify the browser actually landed close to the target.
+			// Mobile OGG decoders may land at a nearby granule boundary instead of the
+			// exact time requested.  If off by > 150 ms, try one corrective re-seek.
+			const drift = audio.currentTime - targetTime;
+			if (Math.abs(drift) > 0.15) {
+				audio.addEventListener("seeked", () => {
+					syncUi();
+					if (audio.paused) audio.play().catch(() => {});
+				}, { once: true });
+				audio.currentTime = targetTime;
+				return;
+			}
+			syncUi();
+			if (audio.paused) audio.play().catch(() => {});
+		};
+
+		if (Math.abs(audio.currentTime - targetTime) < 0.02) {
+			settleSeekThenPlay();
+			return;
+		}
+
+		audio.pause();
+		let settled = false;
+		const onSettled = (): void => {
+			if (settled) return;
+			settled = true;
+			settleSeekThenPlay();
+		};
+
+		audio.addEventListener("seeked", onSettled, { once: true });
+		audio.currentTime = targetTime;
+		window.setTimeout(onSettled, 300);
 	}
 
 	function updateFocusToggleLabel(): void {
@@ -614,8 +677,8 @@ export function initVoiceMode(
 				fail();
 				return;
 			}
-			const opusUrl = `${base}.opus`;
-			if (!(await opusAssetExists(opusUrl))) {
+			const audioUrl = `${base}.webm`;
+			if (!(await audioAssetExists(audioUrl))) {
 				fail();
 				return;
 			}
@@ -624,7 +687,7 @@ export function initVoiceMode(
 			fail();
 			return;
 		}
-		audio.src = `${base}.opus`;
+		audio.src = `${base}.webm`;
 		ready = true;
 		const saved = readLs();
 		const allowedRates = [0.75, 1, 1.25];
@@ -668,11 +731,14 @@ export function initVoiceMode(
 		playBtn.textContent = "❚❚";
 		playBtn.setAttribute("aria-label", "Pause");
 		playBtn.setAttribute("title", "Pause");
+		startRafLoop();
 	});
 	audio.addEventListener("pause", () => {
 		playBtn.textContent = "▶";
 		playBtn.setAttribute("aria-label", "Play");
 		playBtn.setAttribute("title", "Play");
+		stopRafLoop();
+		syncUi();
 	});
 
 	function onUserScroll(): void {
@@ -740,14 +806,30 @@ export function initVoiceMode(
 		syncUi();
 	});
 
+	/** After playbackRate change on mobile, the browser may internally re-seek
+	 *  to a nearby OGG granule boundary, shifting audio.currentTime. This
+	 *  restores the position to what it should be. */
+	function reAnchorAfterRateChange(savedTime: number): void {
+		const check = (): void => {
+			const drift = audio.currentTime - savedTime;
+			if (Math.abs(drift) > 0.15) {
+				audio.currentTime = savedTime;
+			}
+		};
+		// Small delay to let the browser process the rate change internally
+		window.setTimeout(check, 80);
+	}
+
 	if (speedDown) {
 		speedDown.addEventListener("click", () => {
 			const rates = [0.75, 1, 1.25];
 			const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
 			if (idx > 0) {
+				const savedTime = audio.currentTime;
 				audio.playbackRate = rates[idx - 1];
 				updateSpeedButtons();
 				writeLs();
+				reAnchorAfterRateChange(savedTime);
 			}
 			speedDown.blur();
 		});
@@ -758,9 +840,11 @@ export function initVoiceMode(
 			const rates = [0.75, 1, 1.25];
 			const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
 			if (idx < rates.length - 1) {
+				const savedTime = audio.currentTime;
 				audio.playbackRate = rates[idx + 1];
 				updateSpeedButtons();
 				writeLs();
+				reAnchorAfterRateChange(savedTime);
 			}
 			speedUp.blur();
 		});

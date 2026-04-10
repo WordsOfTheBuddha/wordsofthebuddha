@@ -20,7 +20,7 @@ Targets:
   - Mixed: sn36 mn1 → union of sn36.* and mn1
 
 Outputs:
-  public/audio/<slug>.opus
+  public/audio/<slug>.webm
   public/audio/<slug>.manifest.json
 
 See scripts/README-voice.md
@@ -524,7 +524,7 @@ def synthesize_opus(
 
         cmd = (
             f'ffmpeg -y -i "{combined_wav}" -c:a libopus -b:a 32k '
-            f'-vbr on -application voip "{out_path}" -loglevel error 2>&1'
+            f'-vbr on -application voip -f webm "{out_path}" -loglevel error 2>&1'
         )
         ret = os.system(cmd)
         if ret != 0:
@@ -1095,7 +1095,7 @@ def process_one_discourse(
     full_plain = "\n\n".join(paragraphs_text)
     th = text_hash(full_plain)
 
-    out_audio = REPO_ROOT / "public" / "audio" / f"{slug}.opus"
+    out_audio = REPO_ROOT / "public" / "audio" / f"{slug}.webm"
     out_manifest = REPO_ROOT / "public" / "audio" / f"{slug}.manifest.json"
 
     print(f"\nMDX: {mdx_path.relative_to(REPO_ROOT)}")
@@ -1106,7 +1106,7 @@ def process_one_discourse(
 
     if align_only:
         if not out_audio.exists():
-            print(f"[skip] {slug}: no existing .opus file for --align-only.", file=sys.stderr)
+            print(f"[skip] {slug}: no existing .webm file for --align-only.", file=sys.stderr)
             return 1
         print(f"  --align-only: skipping TTS, re-aligning existing {out_audio.name}")
         # Try to read TTS boundaries from existing manifest
@@ -1180,7 +1180,7 @@ def main() -> int:
     parser.add_argument(
         "--align-only",
         action="store_true",
-        help="Re-run Whisper alignment on existing .opus; skip TTS synthesis.",
+        help="Re-run Whisper alignment on existing .webm; skip TTS synthesis.",
     )
     args = parser.parse_args()
 

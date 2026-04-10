@@ -26,7 +26,7 @@ project-208b2b47-e2f3-4390-82f-17a86b1153e0.json
 *.service-account.json
 .venv-voice/
 .cache/
-public/audio/*.opus
+public/audio/*.webm
 public/audio/*.manifest.json
 
 # generated scripts

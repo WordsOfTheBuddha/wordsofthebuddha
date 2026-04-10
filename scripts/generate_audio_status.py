@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate src/data/audioStatus.ts — a whitelist of discourse slugs that have
-both a valid .manifest.json and a .opus file in public/audio/.
+both a valid .manifest.json and a .webm file in public/audio/.
 
 Run after audio generation + R2 sync to update the static whitelist used by
 the frontend to show Listen buttons without fetching from R2 at page load.
@@ -33,10 +33,10 @@ def load_dotenv() -> None:
 
 
 def slugs_from_local() -> list[str]:
-    """Find slugs that have both .opus and .manifest.json locally."""
+    """Find slugs that have both .webm and .manifest.json locally."""
     if not AUDIO_DIR.is_dir():
         return []
-    opus = {f.stem for f in AUDIO_DIR.iterdir() if f.suffix == ".opus"}
+    opus = {f.stem for f in AUDIO_DIR.iterdir() if f.suffix == ".webm"}
     manifests = set()
     for f in AUDIO_DIR.iterdir():
         if f.name.endswith(".manifest.json"):
@@ -75,8 +75,8 @@ def slugs_from_r2() -> list[str]:
             key = obj["Key"]
             if "/" in key:
                 continue
-            if key.endswith(".opus"):
-                opus.add(key.removesuffix(".opus"))
+            if key.endswith(".webm"):
+                opus.add(key.removesuffix(".webm"))
             elif key.endswith(".manifest.json"):
                 manifests.add(key.removesuffix(".manifest.json"))
     return sorted(opus & manifests)
