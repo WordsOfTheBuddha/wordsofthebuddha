@@ -273,7 +273,7 @@ html.voice-fullscreen-active .voice-fullscreen-icon-exit {
 
 /* Minimized: single short row — play only + actions (same baseline) */
 html.voice-bar-minimized .voice-bar {
-	padding: 0.28rem 0.65rem calc(0.28rem + env(safe-area-inset-bottom, 0));
+	padding: 0.2rem 0.6rem calc(0.2rem + env(safe-area-inset-bottom, 0));
 }
 
 html.voice-bar-minimized #voice-bar {
@@ -316,9 +316,13 @@ html.voice-bar-minimized .voice-transport {
 }
 
 html.voice-bar-minimized .voice-play-btn {
-	width: 2.25rem;
-	height: 2.25rem;
-	font-size: 0.8125rem;
+	width: 1.75rem;
+	height: 1.75rem;
+	min-width: 1.75rem;
+	min-height: 1.75rem;
+	font-size: 0.625rem;
+	line-height: 1;
+	padding: 0;
 }
 
 html.voice-bar-minimized .voice-speed-slot,
@@ -350,7 +354,7 @@ html.voice-bar-minimized .voice-minimize-btn svg {
 
 @media (max-width: 480px) {
 	html.voice-bar-minimized .voice-bar {
-		padding: 0.22rem 0.5rem calc(0.22rem + env(safe-area-inset-bottom, 0));
+		padding: 0.18rem 0.5rem calc(0.18rem + env(safe-area-inset-bottom, 0));
 	}
 }
 
