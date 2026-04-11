@@ -8,7 +8,7 @@ description: >-
 qualities: 'anger, displeasure, conceit, discernment'
 theme: cultivating discernment
 slug: mn5
-simile: bronze bowl covered with dirt and stains
+simile: bronze bowl brought from a shop or a smithy, garland of flowers
 character:
   - Venerable Sāriputta
   - Venerable Mahāmoggallāna

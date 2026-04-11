@@ -117,14 +117,14 @@
 
   <!-- STEP 2: Postures -->
   <g filter="url(#shadowDrop)">
-    <rect x="73" y="312" width="380" height="100" rx="10" fill="url(#stg2)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
+    <rect x="73" y="312" width="400" height="100" rx="10" fill="url(#stg2)" stroke="#486878" stroke-width="1" stroke-opacity="0.45" />
   </g>
   <circle cx="97" cy="337" r="10" fill="none" stroke="#5a7898" stroke-width="1" opacity="0.6" />
   <text x="97" y="340" text-anchor="middle" fill="#7898b0" font-family="Georgia,'Times New Roman',serif" font-size="11">2</text>
   <text x="123" y="337" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Postures</text>
   <text x="123" y="353" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">iriyāpatha</text>
-  <text x="123" y="373" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Is aware of posture while walking, standing, sitting, or lying down.</text>
-  <text x="123" y="388" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">In whatever way the body is oriented, he discerns it accordingly.</text>
+  <text x="123" y="373" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Being aware of posture while walking, standing, sitting, or lying down.</text>
+  <text x="123" y="388" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">In whatever way the body is oriented, one discerns it accordingly.</text>
   <g transform="translate(348,324)" opacity="0.50" filter="url(#iconGlow)">
     <g transform="translate(0,4)">
       <circle cx="5" cy="2" r="2.5" fill="none" stroke="#8090a0" stroke-width="0.8" />
@@ -170,7 +170,7 @@
   <text x="158" y="452" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Acting with clear awareness</text>
   <text x="158" y="468" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" opacity="0.75">sampajānakārī</text>
   <text x="158" y="488" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">Acts with clear awareness in all activities:</text>
-  <text x="158" y="503" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">going, returning, looking, bending, eating, dressing,</text>
+  <text x="158" y="503" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">when going forward, returning, looking, bending, eating, dressing,</text>
   <text x="158" y="518" fill="#607888" font-family="Georgia,'Times New Roman',serif" font-size="11">drinking, defecating, urinating, speaking, and keeping silent.</text>
     <g transform="translate(426, 442)">
 
@@ -282,7 +282,7 @@
   <rect x="70" y="878" width="780" height="48" rx="6" fill="#141c2e" fill-opacity="0.6"
     stroke="#4a8898" stroke-width="0.6" stroke-opacity="0.2" />
   <text x="460" y="895" text-anchor="middle" fill="#90a0b8"
-    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">Diligent, resolute, with continuous effort — worldly thoughts abandoned — mind internally steadied, calmed, unified, and collected</text>
+    font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">Diligent, with continuous effort, resolute — worldly thoughts abandoned — mind internally steadied, calmed, unified, and collected</text>
   <text x="460" y="913" text-anchor="middle" fill="#7888a0"
     font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic" opacity="0.7">appamatta · ātāpī · pahitatta — gehasita sarasaṅkappā pahīyanti — ajjhattameva cittaṁ santiṭṭhati ekodi hoti samādhiyati</text>
 
@@ -370,7 +370,7 @@
   <text x="196" y="1312" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Abandoning bodily pleasure and pain <tspan fill="#6888a0" font-style="italic">(sukhassa ca pahānā dukkhassa ca pahānā)</tspan></text>
   <text x="196" y="1328" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Settling of mental pleasure and displeasure <tspan fill="#6888a0" font-style="italic">(somanassadomanassānaṁ atthaṅgamā)</tspan></text>
   <text x="196" y="1344" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Purification of mindfulness through equanimity <tspan fill="#6888a0" font-style="italic">(upekkhāsatipārisuddhi)</tspan></text>
-  <text x="196" y="1360" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Experiencing neither-painful-nor-pleasant <tspan fill="#6888a0" font-style="italic">(adukkhamasukha)</tspan></text>
+  <text x="196" y="1360" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="11">Experiencing a neither-painful-nor-pleasant feeling <tspan fill="#6888a0" font-style="italic">(adukkhamasukhaṁ)</tspan></text>
   <!-- 4th icon: Shiny orb -->
   <g transform="translate(700,1310)" opacity="0.70" filter="url(#glow1)">
     <circle cx="0" cy="0" r="20" fill="url(#orbGlow)" stroke="#d0d8e0" stroke-width="1" />
