@@ -41,6 +41,8 @@ async function audioAssetExists(url: string): Promise<boolean> {
 }
 
 const LS_PREFIX = "voice:";
+/** Discrete speeds for the voice bar (+/−); browsers clamp `playbackRate` if unsupported. */
+const VOICE_PLAYBACK_RATES = [0.75, 1, 1.25, 1.5] as const;
 const PUNCT_ONLY = /^[.,;:!?'"''""\-–—)\]]+$/;
 const LEADING_PUNCT = /^['"''"([\-–—]+$/;
 const WRAPPED_ATTR = "data-voice-wrapped";
@@ -432,7 +434,7 @@ export function initVoiceMode(
 
 	function updateSpeedButtons(): void {
 		if (!speedLabel) return;
-		const rates = [0.75, 1, 1.25];
+		const rates = VOICE_PLAYBACK_RATES;
 		speedLabel.textContent = `${audio.playbackRate.toFixed(2).replace(/\.00$/, "").replace(/\.50$/, ".5")}×`;
 		const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
 		speedDown?.classList.toggle("voice-speed-adj--hidden", idx <= 0);
@@ -794,7 +796,7 @@ export function initVoiceMode(
 		audio.src = `${base}.webm`;
 		ready = true;
 		const saved = readLs();
-		const allowedRates = [0.75, 1, 1.25];
+		const allowedRates = VOICE_PLAYBACK_RATES;
 		const savedRate =
 			typeof saved.rate === "number"
 				? saved.rate
@@ -954,7 +956,7 @@ export function initVoiceMode(
 
 	if (speedDown) {
 		speedDown.addEventListener("click", () => {
-			const rates = [0.75, 1, 1.25];
+			const rates = VOICE_PLAYBACK_RATES;
 			const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
 			if (idx > 0) {
 				const savedTime = audio.currentTime;
@@ -969,7 +971,7 @@ export function initVoiceMode(
 
 	if (speedUp) {
 		speedUp.addEventListener("click", () => {
-			const rates = [0.75, 1, 1.25];
+			const rates = VOICE_PLAYBACK_RATES;
 			const idx = rates.findIndex((r) => Math.abs(r - audio.playbackRate) < 0.01);
 			if (idx < rates.length - 1) {
 				const savedTime = audio.currentTime;
