@@ -260,8 +260,9 @@ self.addEventListener("fetch", (event) => {
 		url.origin === self.location.origin &&
 		url.pathname.startsWith("/_astro/")
 	) {
-		// Check if this is an image file - don't cache for offline to save space
-		const isImage = /\.(webp|jpg|jpeg|png|avif)$/i.test(url.pathname);
+		// Raster images + SVG emitted as static URLs: don't CacheFirst so updated
+		// icons/illustrations (e.g. design-system) aren't stuck after deploy.
+		const isImage = /\.(webp|jpg|jpeg|png|avif|svg)$/i.test(url.pathname);
 		if (isImage) {
 			// Use network-first without persistent caching for discourse images
 			event.respondWith(fetch(req).catch(() => Response.error()));

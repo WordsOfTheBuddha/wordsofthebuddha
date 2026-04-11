@@ -298,7 +298,10 @@
 				"line-art",
 				"dashed"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn25"
+			],
 			"labels": [
 				"formless",
 				"phenomena"
@@ -313,7 +316,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn25"
+			],
 			"labels": [
 				"formless",
 				"phenomena"
@@ -331,6 +337,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn25",
 				"mn106"
 			],
 			"labels": [
@@ -349,6 +356,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn25",
 				"mn106"
 			],
 			"labels": [
@@ -1370,6 +1378,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn25",
 				"mn119"
 			],
 			"labels": [
@@ -1391,6 +1400,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn25",
 				"mn119"
 			],
 			"labels": [
@@ -1412,6 +1422,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn25",
 				"mn119"
 			],
 			"labels": [
@@ -1435,6 +1446,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn25",
 				"mn106",
 				"mn119"
 			],
@@ -1573,6 +1585,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn25",
 				"mn119"
 			],
 			"labels": [
@@ -1894,7 +1907,7 @@
 		{
 			"id": "friction-sticks-heat",
 			"title": "rubbing wood: friction and heat",
-			"description": "Two sticks rubbing with flame-like heat — contact sustained (phassa)",
+			"description": "Rubbing two dry wood pieces produces flame-like heat. Simile for sustained contact (phassa) that produces feeling.",
 			"tags": [
 				"line-art",
 				"simile"
@@ -1910,7 +1923,7 @@
 		{
 			"id": "sticks-separated-heat",
 			"title": "separating wood: heat fades",
-			"description": "Two sticks laid apart with fading heat — contact ceases, heat subsides",
+			"description": "Separating two dry wood pieces extinguishes the flame-like heat. Simile for ceasing contact (phassa) that ceases feeling.",
 			"tags": [
 				"line-art",
 				"simile"
@@ -2429,15 +2442,14 @@
 			"title": "Simile: traveler among villages (past lives)",
 			"description": "Road, huts, and walking figure — pubbenivāsānussatiñāṇa",
 			"tags": [
-				"line-art",
-				"mn39",
-				"vijja"
+				"line-art"
 			],
 			"discourse": "mn39",
 			"labels": [
 				"direct knowledge",
 				"insight",
-				"psychic power"
+				"psychic power",
+				"simile"
 			],
 			"valence": "+ve",
 			"svg": "icons/simile-villages-traveler.svg"
@@ -2453,7 +2465,8 @@
 			"labels": [
 				"direct knowledge",
 				"insight",
-				"psychic power"
+				"psychic power",
+				"simile"
 			],
 			"valence": "+ve",
 			"svg": "icons/simile-two-houses.svg"
@@ -2471,7 +2484,8 @@
 				"ending",
 				"insight",
 				"liberation",
-				"psychic power"
+				"psychic power",
+				"simile"
 			],
 			"valence": "+ve",
 			"svg": "icons/simile-mountain-lake.svg"
@@ -2545,6 +2559,104 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/dwell-loop.svg"
+		},
+		{
+			"id": "bait-five-cords",
+			"title": "Bait: five cords of sensual pleasure",
+			"description": "Five radiating lines from a central dot — pañcannaṁ kāmaguṇānaṁ nivāpa",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn25",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"simile"
+			],
+			"valence": "-ve",
+			"svg": "icons/bait-five-cords.svg"
+		},
+		{
+			"id": "herd-rushing-in",
+			"title": "Herd rushing in",
+			"description": "Vortex spiral — anupakhajja, herd consumed by infatuation",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn25",
+			"labels": [
+				"five hindrances",
+				"harm",
+				"simile"
+			],
+			"valence": "-ve",
+			"svg": "icons/herd-rushing-in.svg"
+		},
+		{
+			"id": "herd-barren-tree",
+			"title": "Herd: barren tree",
+			"description": "Bare tree — extreme abstinence, strength failed",
+			"tags": [
+				"line-art",
+				"mn25"
+			],
+			"discourse": "mn25",
+			"labels": [
+				"harm",
+				"simile"
+			],
+			"valence": "-ve",
+			"svg": "icons/herd-barren-tree.svg"
+		},
+		{
+			"id": "herd-visible-lair",
+			"title": "Herd: visible lair",
+			"description": "Shelter glyph inside dashed net — āsayaṁ kappayiṁsu, found by stake-nets",
+			"tags": [
+				"line-art",
+				"dashed"
+			],
+			"discourse": "mn25",
+			"labels": [
+				"harm",
+				"simile",
+				"wrong view"
+			],
+			"valence": "-ve",
+			"svg": "icons/herd-visible-lair.svg"
+		},
+		{
+			"id": "herd-beyond-reach",
+			"title": "Herd: beyond reach",
+			"description": "Circle past dashed barrier with gold rays — yattha agati nevāpikassa",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn25",
+			"labels": [
+				"liberation",
+				"safety",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/herd-beyond-reach.svg"
+		},
+		{
+			"id": "cessation-vessel",
+			"title": "Cessation of perception and feeling",
+			"description": "Hollow vessel with dashed lines — saññāvedayitanirodha, intact body with no inner activity",
+			"tags": [
+				"line-art",
+				"gold",
+				"dashed"
+			],
+			"discourse": "mn25",
+			"labels": [
+				"ending"
+			],
+			"valence": "+ve",
+			"svg": "icons/cessation-vessel.svg"
 		}
 	]
 }
