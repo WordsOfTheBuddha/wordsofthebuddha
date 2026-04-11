@@ -21,6 +21,25 @@ const { class: className, paragraphRequest } = Astro.props;
 </button>
 
 <script>
+	const SHOW_PARAGRAPH_NUMBERS_KEY = "showParagraphNumbers";
+
+	function readShowParagraphNumbers(): string | null {
+		let v = localStorage.getItem(SHOW_PARAGRAPH_NUMBERS_KEY);
+		if (v !== null) return v;
+		// One-time read from legacy sessionStorage (older builds used session only)
+		const legacy = sessionStorage.getItem(SHOW_PARAGRAPH_NUMBERS_KEY);
+		if (legacy !== null) {
+			localStorage.setItem(SHOW_PARAGRAPH_NUMBERS_KEY, legacy);
+			sessionStorage.removeItem(SHOW_PARAGRAPH_NUMBERS_KEY);
+			return legacy;
+		}
+		return null;
+	}
+
+	function writeShowParagraphNumbers(value: string) {
+		localStorage.setItem(SHOW_PARAGRAPH_NUMBERS_KEY, value);
+	}
+
 	function initializeParagraphToggle() {
 		const toggle = document.getElementById("paragraphToggle");
 		if (!toggle) return;
@@ -32,8 +51,8 @@ const { class: className, paragraphRequest } = Astro.props;
 
 		const shouldAutoEnable = !!(paragraphRequest || hasUrlHash);
 
-		// Get initial state from sessionStorage, but override if we should auto-enable
-		const storedState = sessionStorage.getItem("showParagraphNumbers");
+		// Get initial state from localStorage, but override if we should auto-enable
+		const storedState = readShowParagraphNumbers();
 		const showParagraphs =
 			shouldAutoEnable ||
 			(storedState === null ? false : storedState === "true");
@@ -84,19 +103,16 @@ const { class: className, paragraphRequest } = Astro.props;
 
 		// Store the auto-enabled state if it was triggered
 		if (shouldAutoEnable && storedState !== "true") {
-			sessionStorage.setItem("showParagraphNumbers", "true");
+			writeShowParagraphNumbers("true");
 		}
 
 		// Add click handler
 		toggle.addEventListener("click", () => {
-			// Get current state from sessionStorage directly
-			const currentStoredState = sessionStorage.getItem(
-				"showParagraphNumbers"
-			);
+			const currentStoredState = readShowParagraphNumbers();
 			const currentState = currentStoredState === "true";
 			const newState = !currentState;
 
-			sessionStorage.setItem("showParagraphNumbers", newState.toString());
+			writeShowParagraphNumbers(newState.toString());
 			applyParagraphState(newState);
 			updateToggleState(newState);
 		});
