@@ -31,6 +31,7 @@
 		"normalize:design-icons": "npx tsx src/utils/normalizeDesignSystemIcons.ts",
 		"refresh:design-icons": "npx tsx src/utils/normalizeDesignSystemIcons.ts --glob \"icons/*.svg\"",
 		"voice:push": ".venv-voice/bin/python scripts/sync_audio_r2.py push",
+		"voice:push:purge": ".venv-voice/bin/python scripts/sync_audio_r2.py push --purge-cdn",
 		"voice:pull": ".venv-voice/bin/python scripts/sync_audio_r2.py pull",
 		"voice:status": ".venv-voice/bin/python scripts/generate_audio_status.py",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py"
