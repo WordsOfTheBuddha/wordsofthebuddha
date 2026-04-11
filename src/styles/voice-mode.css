@@ -413,6 +413,14 @@ html.voice-bar-minimized .voice-bar-main {
 	grid-template-columns: unset;
 }
 
+/* Help panel defaults to `right: 0` (grows left) so it stays on-screen when the
+   trigger sits on the right of the full bar. In minimized mode the trigger is
+   next to play on the left — same anchoring clips the panel off the viewport. */
+html.voice-bar-minimized .voice-shortcuts-panel {
+	left: 0;
+	right: auto;
+}
+
 html.voice-bar-minimized #voice-prev,
 html.voice-bar-minimized #voice-next {
 	display: none !important;
