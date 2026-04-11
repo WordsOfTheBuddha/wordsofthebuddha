@@ -130,6 +130,7 @@ function wrapVoiceWords(root: Element): void {
 
 	const tooltips = root.querySelectorAll<HTMLElement>(".tooltip-text");
 	for (const tt of tooltips) {
+		if (tt.closest(".collapse-toggle")) continue;
 		const words = tt.textContent?.trim().split(/\s+/) || [];
 		if (words.length <= 1) {
 			tt.classList.add("voice-word");
@@ -155,6 +156,8 @@ function wrapVoiceWords(root: Element): void {
 			if (node.parentElement?.classList.contains("voice-word"))
 				return NodeFilter.FILTER_REJECT;
 			if (node.parentElement?.closest(".voice-skip"))
+				return NodeFilter.FILTER_REJECT;
+			if (node.parentElement?.closest(".collapse-toggle"))
 				return NodeFilter.FILTER_REJECT;
 			return NodeFilter.FILTER_ACCEPT;
 		},
@@ -403,6 +406,7 @@ export function initVoiceMode(
 	let pauseAfterParagraphIdx = -1;
 	let userScrolledAway = false;
 	let rafId = 0;
+	let isBuffering = false;
 	const paragraphWordIndexMap = new Map<number, number[]>();
 
 	/** Same-origin /audio/{slug} in dev; prod uses PUBLIC_AUDIO_BASE_URL (no trailing slash), e.g. https://hear.wordsofthebuddha.org */
@@ -610,13 +614,35 @@ export function initVoiceMode(
 		}
 	}
 
+	/* ——— Buffering indicator ——— */
+	function setBuffering(on: boolean): void {
+		if (!playBtn) return;
+		isBuffering = on;
+		if (on) {
+			playBtn.classList.add("voice-play-buffering");
+			playBtn.setAttribute("aria-label", "Buffering…");
+		} else {
+			playBtn.classList.remove("voice-play-buffering");
+			// Restore correct label based on paused state
+			if (audio.paused) {
+				playBtn.textContent = "▶";
+				playBtn.setAttribute("aria-label", "Play");
+				playBtn.setAttribute("title", "Play");
+			} else {
+				playBtn.textContent = "❚❚";
+				playBtn.setAttribute("aria-label", "Pause");
+				playBtn.setAttribute("title", "Pause");
+			}
+		}
+	}
+
 	/* ——— rAF-based sync loop: runs at display refresh rate during playback ——— */
 	function startRafLoop(): void {
 		if (rafId) return;
 		const tick = (): void => {
 			checkSingleParaPause();
 			syncUi();
-			if (!audio.paused) rafId = requestAnimationFrame(tick);
+			if (!audio.paused && !isBuffering) rafId = requestAnimationFrame(tick);
 			else rafId = 0;
 		};
 		rafId = requestAnimationFrame(tick);
@@ -806,12 +832,30 @@ export function initVoiceMode(
 
 	audio.addEventListener("timeupdate", onTimeUpdate);
 	audio.addEventListener("play", () => {
+		// Update button icon immediately on user gesture, but rAF loop starts on
+		// "playing" (when data is actually flowing) to avoid advancing highlights
+		// during a buffering stall on mobile data connections.
 		playBtn.textContent = "❚❚";
 		playBtn.setAttribute("aria-label", "Pause");
 		playBtn.setAttribute("title", "Pause");
+	});
+	audio.addEventListener("playing", () => {
+		// Actual audio data is flowing — clear any buffering state and run loop.
+		setBuffering(false);
 		startRafLoop();
 	});
+	audio.addEventListener("waiting", () => {
+		// Browser is stalled waiting for more data (common on mobile data connections).
+		stopRafLoop();
+		setBuffering(true);
+	});
+	audio.addEventListener("stalled", () => {
+		// Download has stalled; treat same as waiting.
+		stopRafLoop();
+		setBuffering(true);
+	});
 	audio.addEventListener("pause", () => {
+		setBuffering(false);
 		playBtn.textContent = "▶";
 		playBtn.setAttribute("aria-label", "Play");
 		playBtn.setAttribute("title", "Play");

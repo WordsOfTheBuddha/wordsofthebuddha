@@ -165,6 +165,27 @@ html.dark .voice-mode-trigger:hover {
 	background: color-mix(in srgb, var(--layout-active-color, #c9a227) 38%, transparent);
 }
 
+/* Buffering spinner — replaces button text with an animated ring */
+.voice-play-btn.voice-play-buffering {
+	color: transparent;
+	pointer-events: none;
+	position: relative;
+}
+
+.voice-play-btn.voice-play-buffering::after {
+	content: "";
+	position: absolute;
+	inset: 6px;
+	border-radius: 9999px;
+	border: 2px solid color-mix(in srgb, var(--layout-active-color, #c9a227) 60%, transparent);
+	border-top-color: var(--layout-active-color, #c9a227);
+	animation: voice-spin 0.75s linear infinite;
+}
+
+@keyframes voice-spin {
+	to { transform: rotate(360deg); }
+}
+
 /* ——— Seek slider ——— */
 .voice-seek {
 	flex: 1 1 80px;
