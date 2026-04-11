@@ -22,7 +22,6 @@ Env vars (set in .env or export):
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import sys
 from pathlib import Path
@@ -100,45 +99,7 @@ def _remote_etag(s3, bucket: str, key: str) -> str | None:
         return None
 
 
-def _purge_cloudflare_cache(urls: list[str]) -> None:
-    """Purge Cloudflare CDN edge cache for the given public URLs.
-
-    Requires CF_ZONE_ID and CF_API_TOKEN env vars. Silently skips if not set.
-    """
-    import urllib.request
-
-    zone_id = os.environ.get("CF_ZONE_ID", "")
-    api_token = os.environ.get("CF_API_TOKEN", "")
-    if not zone_id or not api_token:
-        print(
-            "  (skipping CDN purge — CF_ZONE_ID or CF_API_TOKEN not set)",
-            file=sys.stderr,
-        )
-        return
-
-    endpoint = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache"
-    payload = json.dumps({"files": urls}).encode()
-    req = urllib.request.Request(
-        endpoint,
-        data=payload,
-        headers={
-            "Authorization": f"Bearer {api_token}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            result = json.loads(resp.read())
-            if result.get("success"):
-                print(f"  ✓ CDN cache purged for {len(urls)} URL(s)")
-            else:
-                print(f"  ✗ CDN purge failed: {result.get('errors')}", file=sys.stderr)
-    except Exception as exc:
-        print(f"  ✗ CDN purge error: {exc}", file=sys.stderr)
-
-
-def push(s3, bucket: str, slug: str | None, force: bool = False, purge_cdn: bool = False) -> None:
+def push(s3, bucket: str, slug: str | None, force: bool = False) -> None:
     from boto3.s3.transfer import TransferConfig
 
     upload_config = TransferConfig(multipart_threshold=UPLOAD_MULTIPART_THRESHOLD_BYTES)
@@ -147,19 +108,14 @@ def push(s3, bucket: str, slug: str | None, force: bool = False, purge_cdn: bool
         print("No audio files to push.")
         return
 
-    public_origin = os.environ.get("PUBLIC_AUDIO_BASE_URL", "").rstrip("/")
     uploaded = 0
     skipped = 0
-    purge_urls: list[str] = []
 
     for f in files:
         key = f.name
         local_hash = _local_md5(f)
         remote_hash = _remote_etag(s3, bucket, key)
         if not force and local_hash == remote_hash:
-            if purge_cdn and public_origin:
-                # R2 already has the latest content but CDN may be stale — queue for purge
-                purge_urls.append(f"{public_origin}/{key}")
             skipped += 1
             continue
         content_type = "audio/webm" if f.suffix == ".webm" else "application/json"
@@ -177,21 +133,8 @@ def push(s3, bucket: str, slug: str | None, force: bool = False, purge_cdn: bool
             Config=upload_config,
         )
         uploaded += 1
-        if public_origin:
-            purge_urls.append(f"{public_origin}/{key}")
 
     print(f"Pushed {uploaded} file(s), {skipped} unchanged.")
-
-    if purge_cdn and purge_urls:
-        print(f"  Purging CDN cache for {len(purge_urls)} URL(s)…")
-        _purge_cloudflare_cache(purge_urls)
-    elif purge_cdn and not purge_urls:
-        print("  No URLs to purge from CDN.")
-    elif purge_cdn and not public_origin:
-        print(
-            "  (skipping CDN purge — PUBLIC_AUDIO_BASE_URL not set)",
-            file=sys.stderr,
-        )
 
 
 def pull(s3, bucket: str, slug: str | None, force: bool = False) -> None:
@@ -242,21 +185,13 @@ def main() -> int:
             "Pull: download even when local MD5 already matches remote ETag."
         ),
     )
-    parser.add_argument(
-        "--purge-cdn",
-        action="store_true",
-        help=(
-            "Push: purge Cloudflare CDN edge cache for uploaded files + any unchanged slug-matched files "
-            "(needs CF_ZONE_ID, CF_API_TOKEN, and PUBLIC_AUDIO_BASE_URL in env)"
-        ),
-    )
     args = parser.parse_args()
 
     bucket = args.bucket or os.environ.get("R2_BUCKET", DEFAULT_BUCKET)
     s3 = get_s3_client()
 
     if args.action == "push":
-        push(s3, bucket, args.slug, force=args.force, purge_cdn=args.purge_cdn)
+        push(s3, bucket, args.slug, force=args.force)
     else:
         pull(s3, bucket, args.slug, force=args.force)
 
