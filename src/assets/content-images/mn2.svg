@@ -463,10 +463,10 @@
     </g>
 
     <!-- ================================================================ -->
-    <!--   ROW 3: Removing (left) + Cultivation (right)                   -->
+    <!--   ROW 3: Dispelling (left) + Cultivation (right)                   -->
     <!-- ================================================================ -->
 
-    <!-- 6. Removing -->
+    <!-- 6. Dispelling -->
     <g filter="url(#shadowDrop)">
         <rect x="60" y="960" width="388" height="130" rx="10" fill="url(#cellLeft)"
             stroke="#446878" stroke-width="0.8" stroke-opacity="0.35" />
@@ -478,7 +478,7 @@
     <!-- Title -->
     <text x="110" y="990" fill="#c8d8e8"
         font-family="Georgia,'Times New Roman',serif" font-size="15.5" font-weight="bold"
-        >Removing</text>
+        >Dispelling</text>
     <text x="110" y="1010" fill="#8898b0"
         font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
         >vinodan&#x101;</text>
