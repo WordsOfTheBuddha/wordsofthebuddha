@@ -177,10 +177,17 @@ import "../styles/bottomDrawer.css";
 				if (!/\|[^|:]+::[^|]+\|/.test(text)) {
 					continue; // No tooltip pattern, leave text node as-is
 				}
-				// Replace |text::tooltip| pattern
+				// Replace |text::tooltip| and |text::tooltip::tts-override| patterns.
+				// The optional third ::tts segment is for TTS generation only — strip it from the tooltip.
+				// When the tooltip is empty (|text::::tts| pure TTS form), render plain text with no span.
 				text = text.replace(
 					/\|([^|:]+)::([^|]+)\|/g,
-					(_, textPart, tooltip) => {
+					(_, textPart, rest) => {
+						// Strip TTS override (third segment) from tooltip if present
+						const ttsSep = rest.indexOf("::");
+						const tooltip = ttsSep >= 0 ? rest.slice(0, ttsSep) : rest;
+						// Pure TTS-override (empty tooltip) — no span, no underline, no drawer
+						if (!tooltip.trim()) return textPart;
 						// Parse any Markdown links in the tooltip content
 						const parsedTooltip = parseMarkdownLinks(tooltip);
 						// Store original content for popover

@@ -98,8 +98,14 @@ export function stripMdxSyntax(body: string): string {
 export function convertGlossToSpans(text: string): string {
 	return text.replace(
 		/\|([^|:]+)::([^|]+)\|/g,
-		(_, term, def) =>
-			`<span class="tt" data-def="${def.trim().replace(/"/g, "&quot;").replace(/'/g, "&#39;")}">${term.trim()}</span>`,
+		(_, term, rest) => {
+			// Strip TTS override (third ::segment) from definition if present
+			const ttsSep = rest.indexOf("::");
+			const def = ttsSep >= 0 ? rest.slice(0, ttsSep) : rest;
+			// Pure TTS-override (empty def) — render term as plain text, no footnote span
+			if (!def.trim()) return term.trim();
+			return `<span class="tt" data-def="${def.trim().replace(/"/g, "&quot;").replace(/'/g, "&#39;")}">${term.trim()}</span>`;
+		},
 	);
 }
 

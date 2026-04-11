@@ -154,9 +154,35 @@ def strip_frontmatter(raw: str) -> str:
     return raw
 
 
-def strip_glosses(text: str) -> str:
-    """Match stripAnnotations in src/utils/searchRanking.ts: |visible::tooltip| -> visible."""
-    return re.sub(r"\|(.+?)::[^|]+\|", r"\1", text)
+def strip_glosses_display(text: str) -> str:
+    """Extract display text (first segment) — used for word-level alignment and DOM highlighting.
+
+    |visible::tooltip|         -> visible
+    |visible::tooltip::tts|    -> visible  (TTS override is silently ignored)
+    |visible::::tts|           -> visible
+    """
+    return re.sub(r"\|(.+?)::([^|]*)\|", lambda m: m.group(1), text)
+
+
+def strip_glosses_tts(text: str) -> str:
+    """Extract TTS text — use override (3rd segment) if present, else display text.
+
+    |visible::tooltip|         -> visible  (standard two-part gloss)
+    |visible::tooltip::tts|    -> tts      (three-part: use TTS override for synthesis)
+    |visible::::tts|           -> tts      (empty tooltip, TTS override only)
+    """
+    def _replace(m: re.Match) -> str:
+        display = m.group(1)
+        rest = m.group(2)  # "tooltip" or "tooltip::tts-override"
+        parts = rest.split("::")
+        if len(parts) >= 2 and parts[1].strip():
+            return parts[1].strip()
+        return display
+    return re.sub(r"\|(.+?)::([^|]*)\|", _replace, text)
+
+
+# Backward-compat alias: outside the TTS pipeline, display text is always correct.
+strip_glosses = strip_glosses_display
 
 
 def normalize_inline_markdown(text: str) -> str:
@@ -294,12 +320,17 @@ def restore_manifest_display_words(
                 w["w"] = _cap_like(canon, w["w"])
 
 
-def normalize_paragraph_body(text: str) -> str:
+def normalize_paragraph_body(text: str, for_tts: bool = False) -> str:
+    """Normalize raw MDX paragraph body for TTS synthesis or word-level alignment.
+
+    for_tts=False (default): uses display text for alignment/manifest (matches DOM).
+    for_tts=True:            uses TTS overrides for synthesis only.
+    """
     text = text.strip()
     text = strip_heading_lines_for_tts(text)
     text = strip_collapse_blocks(text)
     text = strip_html_jsx_tags(text)
-    text = strip_glosses(text)
+    text = strip_glosses_tts(text) if for_tts else strip_glosses_display(text)
     text = normalize_inline_markdown(text)
     text = re.sub(r"—", ", ", text)
     text = re.sub(r"\s+", " ", text)
@@ -321,7 +352,7 @@ def _starts_with_quote(text: str) -> bool:
     return bool(re.match(r"""^[\u2018\u2019\u201c\u201d"']""", text.strip()))
 
 
-def extract_paragraphs_heading_style(body: str) -> list[tuple[int, str, bool]]:
+def extract_paragraphs_heading_style(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
     """Split on #### N headings (DHP-style).
     Returns (paragraph_number, normalized_text, is_verse_or_quote)."""
     pattern = re.compile(r"^####\s+(\d+)\s*$", re.MULTILINE)
@@ -332,21 +363,21 @@ def extract_paragraphs_heading_style(body: str) -> list[tuple[int, str, bool]]:
         end = matches[i + 1].start() if i + 1 < len(matches) else len(body)
         num = int(m.group(1))
         chunk = body[start:end]
-        plain = normalize_paragraph_body(chunk)
+        plain = normalize_paragraph_body(chunk, for_tts=for_tts)
         if plain:
             is_break = _is_verse(chunk) or _starts_with_quote(plain)
             out.append((num, plain, is_break))
     return out
 
 
-def extract_paragraphs_prose(body: str) -> list[tuple[int, str, bool]]:
+def extract_paragraphs_prose(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
     """Prose / MN-style: split on blank lines into blocks; paragraph numbers 1..n.
     Returns (paragraph_number, normalized_text, is_verse_or_quote)."""
     chunks = re.split(r"\n\s*\n+", body.strip())
     out: list[tuple[int, str, bool]] = []
     n = 1
     for ch in chunks:
-        plain = normalize_paragraph_body(ch)
+        plain = normalize_paragraph_body(ch, for_tts=for_tts)
         if plain:
             is_break = _is_verse(ch) or _starts_with_quote(plain)
             out.append((n, plain, is_break))
@@ -354,11 +385,11 @@ def extract_paragraphs_prose(body: str) -> list[tuple[int, str, bool]]:
     return out
 
 
-def extract_paragraphs_auto(body: str) -> list[tuple[int, str, bool]]:
-    h = extract_paragraphs_heading_style(body)
+def extract_paragraphs_auto(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
+    h = extract_paragraphs_heading_style(body, for_tts=for_tts)
     if h:
         return h
-    return extract_paragraphs_prose(body)
+    return extract_paragraphs_prose(body, for_tts=for_tts)
 
 
 MAX_SENTENCE_CHARS = 350
@@ -1180,6 +1211,7 @@ def process_one_discourse(
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
     body = strip_frontmatter(raw)
+    # Display text: used for forced alignment and manifest word tokens (matches DOM).
     paragraph_specs = extract_paragraphs_auto(body)
     if not paragraph_specs:
         print(
@@ -1188,10 +1220,14 @@ def process_one_discourse(
         )
         return 1
 
-    paragraphs_tts = [apply_tts_phonetic_spellings(p) for _, p, _ in paragraph_specs]
+    # TTS text: built from the same raw body with TTS overrides applied.
+    # Used ONLY for synthesis — never for alignment or manifest tokens.
+    paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
+
+    paragraphs_tts = [apply_tts_phonetic_spellings(p) for _, p, _ in paragraph_specs_for_tts]
     paragraph_specs_align = [
         (pid, apply_tts_phonetic_spellings(p), brk)
-        for pid, p, brk in paragraph_specs
+        for pid, p, brk in paragraph_specs  # display text → alignment transcript matches DOM
     ]
     paragraphs_text = [p for _, p, _ in paragraph_specs]
     full_plain = "\n\n".join(paragraphs_text)

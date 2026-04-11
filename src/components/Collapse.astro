@@ -95,7 +95,12 @@ const { defaultState = "collapse" } = Astro.props;
 	function processTooltipsInText(text) {
 		return text.replace(
 			/\|([^|:]+)::([^|]+)\|/g,
-			(_, textPart, tooltip) => {
+			(_, textPart, rest) => {
+				// Strip TTS override (third ::segment) from tooltip if present
+				const ttsSep = rest.indexOf("::");
+				const tooltip = ttsSep >= 0 ? rest.slice(0, ttsSep) : rest;
+				// Pure TTS-override (empty tooltip) — no span, no underline
+				if (!tooltip.trim()) return textPart;
 				// Parse any Markdown links in the tooltip content
 				const parsedTooltip = tooltip.replace(
 					/\[([^\]]+)\]\(([^)]+)\)/g,
