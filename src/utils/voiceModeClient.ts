@@ -12,6 +12,7 @@ export type VoiceParagraph = {
 export type VoiceManifest = {
 	version: number;
 	textHash: string;
+	audioHash?: string | null;
 	voice: string;
 	generatedAt: string | null;
 	duration: number | null;
@@ -38,6 +39,22 @@ async function audioAssetExists(url: string): Promise<boolean> {
 		return res.ok || res.status === 206;
 	}
 	return false;
+}
+
+/**
+ * Stable slug URLs on R2 use long-lived immutable caching; regenerated audio must
+ * not reuse the same cache entry as an older file. Query string busts CDN/browser
+ * caches while the origin still serves `/{slug}.webm`.
+ */
+function voiceWebmUrl(base: string, m: VoiceManifest): string {
+	// Prefer audioHash so immutable audio refreshes when the actual audio bytes change.
+	// Fall back for older manifests that do not include audioHash.
+	const h =
+		(typeof m.audioHash === "string" && m.audioHash) ||
+		(typeof m.textHash === "string" && m.textHash) ||
+		(typeof m.generatedAt === "string" && m.generatedAt) ||
+		`v${m.version}`;
+	return `${base}.webm?h=${encodeURIComponent(h)}`;
 }
 
 const LS_PREFIX = "voice:";
@@ -829,7 +846,7 @@ export function initVoiceMode(
 			fail();
 			return;
 		}
-		audio.src = `${base}.webm`;
+		audio.src = voiceWebmUrl(base, manifest);
 		// Hint to the browser to start buffering now that we've confirmed audio exists.
 		// audio.load() does not require a user gesture; play() does.
 		audio.preload = "auto";

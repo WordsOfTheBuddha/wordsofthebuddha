@@ -516,6 +516,17 @@ def text_hash(full_text: str) -> str:
     return hashlib.sha256(full_text.encode("utf-8")).hexdigest()
 
 
+def file_hash(path: Path) -> str | None:
+    try:
+        h = hashlib.sha256()
+        with open(path, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+        return h.hexdigest()
+    except Exception:
+        return None
+
+
 MAX_SSML_BYTES = 4800  # Google TTS limit is 5000; leave margin
 MIN_MERGE_CHARS = 120  # Short paragraphs absorbed into neighboring group (smart mode)
 TARGET_GROUP_SIZE = 3  # Aim for this many paragraphs per TTS call (smart mode)
@@ -1570,10 +1581,13 @@ def align_to_manifest(
     paragraph_boundaries: list[tuple[float, float]] | None = None,
     tts_groups: list[tuple[float, float, list[int]]] | None = None,
 ) -> dict:
+    audio_hash = file_hash(audio_path)
+
     if skip_align:
         return {
             "version": 1,
             "textHash": text_hash_hex,
+            "audioHash": audio_hash,
             "voice": voice_name,
             "generatedAt": None,
             "duration": None,
@@ -1699,6 +1713,7 @@ def align_to_manifest(
     manifest: dict = {
         "version": 2 if paragraph_boundaries else 1,
         "textHash": text_hash_hex,
+        "audioHash": audio_hash,
         "voice": voice_name,
         "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "duration": round(float(duration), 4) if duration is not None else None,
