@@ -63,3 +63,6 @@ src/search-tests/snapshots/**
 
 # image-output
 public/content-images/*
+
+# audio-output
+public/audio/*
