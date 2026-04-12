@@ -586,8 +586,10 @@ function processBlocks(
 	}
 
 	englishBlocks.forEach((block: string, blockIndex: number) => {
-		// If heading has a number (DHP-style #### N), use it for the next paragraph
-		const headingNumMatch = block.match(/^####\s+(\d+)/);
+		// Dhammapada-style headings are a bare verse number (#### 129). Do not treat
+		// numbered section titles (#### 1. Forms, #### 1.170) as paragraph anchors —
+		// those would only match the first digit and reset the counter incorrectly.
+		const headingNumMatch = block.match(/^####\s+(\d+)\s*$/);
 		if (headingNumMatch) {
 			actualParagraphNumber = parseInt(headingNumMatch[1], 10);
 		}
