@@ -97,7 +97,7 @@ export function stripMdxSyntax(body: string): string {
 
 export function convertGlossToSpans(text: string): string {
 	return text.replace(
-		/\|([^|:]+)::([^|]+)\|/g,
+		/\|(.+?)::(.+?)\|/g,
 		(_, term, rest) => {
 			// Strip TTS override (third ::segment) from definition if present
 			const ttsSep = rest.indexOf("::");

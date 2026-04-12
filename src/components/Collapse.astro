@@ -94,7 +94,7 @@ const { defaultState = "collapse" } = Astro.props;
 	// Helper function to process tooltips in text
 	function processTooltipsInText(text) {
 		return text.replace(
-			/\|([^|:]+)::([^|]+)\|/g,
+			/\|(.+?)::(.+?)\|/g,
 			(_, textPart, rest) => {
 				// Strip TTS override (third ::segment) from tooltip if present
 				const ttsSep = rest.indexOf("::");

@@ -2751,7 +2751,7 @@ function getCurrentSuttaId(): string {
       let rawStart = 0;
       let rawEnd = rawEnglish.length;
 
-      const glossPattern = /\|([^|:]+)::([^|]+)\|/g;
+      const glossPattern = /\|(.+?)::(.+?)\|/g;
       let lastEnd = 0;
       let match;
 
@@ -3092,7 +3092,7 @@ function getCurrentSuttaId(): string {
 
     // Pattern: |term::definition [paliterm]| or |term::definition|
     return escaped.replace(
-      /\|([^|:]+)::([^|]+)\|/g,
+      /\|(.+?)::(.+?)\|/g,
       (_, term, definition) => {
         const escapedDef = definition.replace(/"/g, '&quot;');
         return `<span class="tooltip-text tm-gloss" data-tooltip-content="${escapedDef}">${term}</span>`;

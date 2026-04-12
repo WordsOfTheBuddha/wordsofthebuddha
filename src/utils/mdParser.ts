@@ -202,7 +202,7 @@ function parseTableRow(rowText: string): string[] {
 
 			// Look ahead to see if this could be a gloss pattern |text::definition|
 			const remainingText = rowText.slice(i);
-			const glossMatch = remainingText.match(/^\|([^|:]+)::([^|]+)\|/);
+			const glossMatch = remainingText.match(/^\|(.+?)::(.+?)\|/);
 
 			if (glossMatch) {
 				// This is a gloss, add it entirely to current cell
