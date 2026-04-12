@@ -360,11 +360,6 @@ def _is_verse(raw_text: str) -> bool:
     return last_ok and others_ok
 
 
-def _starts_with_quote(text: str) -> bool:
-    """True if the normalized text begins with a quotation mark."""
-    return bool(re.match(r"""^[\u2018\u2019\u201c\u201d"']""", text.strip()))
-
-
 def extract_paragraph_chunks_heading_style(body: str) -> list[tuple[int, str, bool]]:
     """Split on #### N headings (DHP-style), preserving raw paragraph chunks."""
     pattern = re.compile(r"^####\s+(\d+)\s*$", re.MULTILINE)
@@ -377,7 +372,7 @@ def extract_paragraph_chunks_heading_style(body: str) -> list[tuple[int, str, bo
         chunk = body[start:end]
         plain = normalize_paragraph_body(chunk)
         if plain:
-            is_break = _is_verse(chunk) or _starts_with_quote(plain)
+            is_break = _is_verse(chunk)
             out.append((num, chunk, is_break))
     return out
 
@@ -390,7 +385,7 @@ def extract_paragraph_chunks_prose(body: str) -> list[tuple[int, str, bool]]:
     for chunk in chunks:
         plain = normalize_paragraph_body(chunk)
         if plain:
-            is_break = _is_verse(chunk) or _starts_with_quote(plain)
+            is_break = _is_verse(chunk)
             out.append((n, chunk, is_break))
             n += 1
     return out
@@ -405,7 +400,7 @@ def extract_paragraph_chunks_auto(body: str) -> list[tuple[int, str, bool]]:
 
 def extract_paragraphs_heading_style(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
     """Split on #### N headings (DHP-style).
-    Returns (paragraph_number, normalized_text, is_verse_or_quote)."""
+    Returns (paragraph_number, normalized_text, is_verse_long_break)."""
     out: list[tuple[int, str, bool]] = []
     for num, chunk, is_break in extract_paragraph_chunks_heading_style(body):
         plain = normalize_paragraph_body(chunk, for_tts=for_tts)
@@ -416,7 +411,7 @@ def extract_paragraphs_heading_style(body: str, for_tts: bool = False) -> list[t
 
 def extract_paragraphs_prose(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
     """Prose / MN-style: split on blank lines into blocks; paragraph numbers 1..n.
-    Returns (paragraph_number, normalized_text, is_verse_or_quote)."""
+    Returns (paragraph_number, normalized_text, is_verse_long_break)."""
     out: list[tuple[int, str, bool]] = []
     for num, chunk, is_break in extract_paragraph_chunks_prose(body):
         plain = normalize_paragraph_body(chunk, for_tts=for_tts)
@@ -1860,7 +1855,7 @@ def process_one_discourse(
     else:
         n_long = sum(1 for b in breaks if b == break_ms)
         n_short = sum(1 for b in breaks if b == consecutive_break_ms)
-        print(f"  Breaks: {n_long} × {break_ms}ms (verse/quote), {n_short} × {consecutive_break_ms}ms (continuing)")
+        print(f"  Breaks: {n_long} × {break_ms}ms (verse), {n_short} × {consecutive_break_ms}ms (prose)")
         print(f"  Chunking: {chunking}")
 
         if chunking == "smart":
@@ -1966,7 +1961,7 @@ def main() -> int:
 
     print(f"Resolved {len(slugs)} discourse(s): {', '.join(slugs[:12])}{' …' if len(slugs) > 12 else ''}")
     chunking = args.chunking
-    print(f"Voice: {voice_name} | breaks: {break_ms}ms (verse/quote) / {consecutive_break_ms}ms (continuing) | chunking: {chunking}")
+    print(f"Voice: {voice_name} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose) | chunking: {chunking}")
 
     failed = 0
     for slug in slugs:
