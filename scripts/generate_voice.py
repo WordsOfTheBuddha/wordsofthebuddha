@@ -361,19 +361,24 @@ def _is_verse(raw_text: str) -> bool:
 
 
 def extract_paragraph_chunks_heading_style(body: str) -> list[tuple[int, str, bool]]:
-    """Split on #### N headings (DHP-style), preserving raw paragraph chunks."""
+    """Split on bare #### N verse headings (Dhammapada-style), preserving raw chunks.
+
+    Paragraph ids are 1..k in document order (same as the site's data-paragraph-number),
+    not the verse numbers in the headings.
+    """
     pattern = re.compile(r"^####\s+(\d+)\s*$", re.MULTILINE)
     matches = list(pattern.finditer(body))
     out: list[tuple[int, str, bool]] = []
+    para_id = 1
     for i, m in enumerate(matches):
         start = m.end()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(body)
-        num = int(m.group(1))
         chunk = body[start:end]
         plain = normalize_paragraph_body(chunk)
         if plain:
             is_break = _is_verse(chunk)
-            out.append((num, chunk, is_break))
+            out.append((para_id, chunk, is_break))
+            para_id += 1
     return out
 
 
@@ -399,8 +404,9 @@ def extract_paragraph_chunks_auto(body: str) -> list[tuple[int, str, bool]]:
 
 
 def extract_paragraphs_heading_style(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
-    """Split on #### N headings (DHP-style).
-    Returns (paragraph_number, normalized_text, is_verse_long_break)."""
+    """Split on bare #### N verse headings (Dhammapada-style).
+
+    Returns (paragraph_id_1_based, normalized_text, is_verse_long_break)."""
     out: list[tuple[int, str, bool]] = []
     for num, chunk, is_break in extract_paragraph_chunks_heading_style(body):
         plain = normalize_paragraph_body(chunk, for_tts=for_tts)
@@ -1423,6 +1429,7 @@ def _align_with_whisperx(
             if len(indices) == 1:
                 # Solo paragraph: align directly
                 pid, text, _brk = paragraph_specs[indices[0]]
+                pb_start, pb_end = paragraph_boundaries[indices[0]]
                 seg = [{"text": text, "start": 0.0, "end": chunk_dur}]
                 words_out = _whisperx_align_chunk(
                     seg, model_a, metadata, chunk, device, g_start
@@ -1432,8 +1439,8 @@ def _align_with_whisperx(
                     sys.stderr.write(f"  Warning: ¶{pid} fell back to proportional word timing\n")
                 paragraphs_out[indices[0]] = {
                     "id": pid,
-                    "start": words_out[0]["s"] if words_out else g_start,
-                    "end": words_out[-1]["e"] if words_out else g_end,
+                    "start": pb_start,
+                    "end": pb_end,
                     "words": words_out,
                     "_tts_boundaries": True,
                 }
@@ -1453,12 +1460,11 @@ def _align_with_whisperx(
                         exp_n = expected_word_counts[j]
                         para_words = all_words[widx:widx + exp_n]
                         widx += exp_n
-                        p_start = para_words[0]["s"] if para_words else g_start
-                        p_end = para_words[-1]["e"] if para_words else g_end
+                        pb_start, pb_end = paragraph_boundaries[pi]
                         paragraphs_out[pi] = {
                             "id": pid,
-                            "start": p_start,
-                            "end": p_end,
+                            "start": pb_start,
+                            "end": pb_end,
                             "words": para_words,
                             "_tts_boundaries": True,
                         }
@@ -1648,7 +1654,7 @@ def align_to_manifest(
 
         segs = list(result.segments) if result.segments else []
         if len(segs) == len(paragraph_specs):
-            for (pid, _, _brk), seg in zip(paragraph_specs, segs):
+            for i_seg, ((pid, _, _brk), seg) in enumerate(zip(paragraph_specs, segs)):
                 words_out: list[dict] = []
                 if seg.words:
                     for w in seg.words:
@@ -1659,11 +1665,16 @@ def align_to_manifest(
                                 "e": round(float(w.end), 4),
                             }
                         )
+                if paragraph_boundaries and i_seg < len(paragraph_boundaries):
+                    pb_start, pb_end = paragraph_boundaries[i_seg]
+                else:
+                    pb_start = round(float(seg.start), 4)
+                    pb_end = round(float(seg.end), 4)
                 paragraphs_out.append(
                     {
                         "id": pid,
-                        "start": round(float(seg.start), 4),
-                        "end": round(float(seg.end), 4),
+                        "start": pb_start,
+                        "end": pb_end,
                         "words": words_out,
                     }
                 )
@@ -1674,7 +1685,7 @@ def align_to_manifest(
                     flat.extend(seg.words)
             expected_counts = [len(p.split()) for _, p, _brk in paragraph_specs]
             idx = 0
-            for (pid, _, _brk), exp_n in zip(paragraph_specs, expected_counts):
+            for i_seg, ((pid, _, _brk), exp_n) in enumerate(zip(paragraph_specs, expected_counts)):
                 slice_words = flat[idx : idx + exp_n]
                 idx += exp_n
                 words_out = [
@@ -1685,13 +1696,16 @@ def align_to_manifest(
                     }
                     for w in slice_words
                 ]
-                start = words_out[0]["s"] if words_out else None
-                end = words_out[-1]["e"] if words_out else None
+                if paragraph_boundaries and i_seg < len(paragraph_boundaries):
+                    pb_start, pb_end = paragraph_boundaries[i_seg]
+                else:
+                    pb_start = words_out[0]["s"] if words_out else None
+                    pb_end = words_out[-1]["e"] if words_out else None
                 paragraphs_out.append(
                     {
                         "id": pid,
-                        "start": start,
-                        "end": end,
+                        "start": pb_start,
+                        "end": pb_end,
                         "words": words_out,
                     }
                 )
@@ -1707,6 +1721,33 @@ def align_to_manifest(
         )
 
     _fix_degenerate_word_times(paragraphs_out, duration)
+
+    # ── Clamp first/last paragraph to [0, duration] ──────────────────────
+    # Paragraph boundaries derive from raw WAV cursor positions, but the
+    # manifest duration comes from the encoded opus/webm file which may be
+    # slightly longer due to codec padding.  Ensure the first paragraph
+    # starts at 0.0 and the last paragraph ends at the true audio duration
+    # so playback never clips the beginning/end.
+    if duration is not None and paragraphs_out:
+        dur_rounded = round(float(duration), 4)
+        if paragraphs_out[0]["start"] > 0.0:
+            paragraphs_out[0]["start"] = 0.0
+        if paragraphs_out[-1]["end"] < dur_rounded:
+            paragraphs_out[-1]["end"] = dur_rounded
+        if paragraph_boundaries:
+            s0, e0 = paragraph_boundaries[0]
+            if s0 > 0.0:
+                paragraph_boundaries[0] = (0.0, e0)
+            sN, eN = paragraph_boundaries[-1]
+            if eN < dur_rounded:
+                paragraph_boundaries[-1] = (sN, dur_rounded)
+        if tts_groups:
+            gs0, ge0, gi0 = tts_groups[0]
+            if gs0 > 0.0:
+                tts_groups[0] = (0.0, ge0, gi0)
+            gsN, geN, giN = tts_groups[-1]
+            if geN < dur_rounded:
+                tts_groups[-1] = (gsN, dur_rounded, giN)
 
     from datetime import datetime, timezone
 
@@ -1832,7 +1873,15 @@ def process_one_discourse(
             try:
                 existing = json.loads(out_manifest.read_text(encoding="utf-8"))
                 tts_b = existing.get("ttsBoundaries")
-                if tts_b and len(tts_b) == len(paragraph_specs):
+                # Real TTS boundaries always start at 0.0 (the audio cursor
+                # begins there).  If the first boundary start > 0, these were
+                # likely carried over from tight word alignment, not actual TTS
+                # synthesis — treat as if missing.
+                if (
+                    tts_b
+                    and len(tts_b) == len(paragraph_specs)
+                    and tts_b[0].get("start", 1) == 0
+                ):
                     paragraph_boundaries = [
                         (b["start"], b["end"]) for b in tts_b
                     ]
@@ -1840,6 +1889,40 @@ def process_one_discourse(
                         f"  Using {len(paragraph_boundaries)} TTS paragraph "
                         f"boundaries from existing manifest"
                     )
+                elif not tts_b or (tts_b and tts_b[0].get("start", 1) > 0):
+                    # v1 manifests lack ttsBoundaries; recover from paragraph
+                    # start/end but extend into silence gaps so each paragraph
+                    # owns the natural TTS breath room around its speech.
+                    existing_paras = existing.get("paragraphs", [])
+                    ex_dur = existing.get("duration")
+                    if len(existing_paras) == len(paragraph_specs):
+                        tight = []
+                        for ep in existing_paras:
+                            s = ep.get("start")
+                            e = ep.get("end")
+                            if s is not None and e is not None:
+                                tight.append((float(s), float(e)))
+                        if len(tight) == len(paragraph_specs):
+                            recovered = []
+                            for i, (s, e) in enumerate(tight):
+                                # Extend start: midpoint of gap to previous paragraph
+                                if i == 0:
+                                    new_s = 0.0
+                                else:
+                                    prev_end = tight[i - 1][1]
+                                    new_s = round((prev_end + s) / 2, 4)
+                                # Extend end: midpoint of gap to next paragraph
+                                if i == len(tight) - 1:
+                                    new_e = round(float(ex_dur), 4) if ex_dur else e
+                                else:
+                                    next_start = tight[i + 1][0]
+                                    new_e = round((e + next_start) / 2, 4)
+                                recovered.append((new_s, new_e))
+                            paragraph_boundaries = recovered
+                            print(
+                                f"  Recovered {len(paragraph_boundaries)} paragraph "
+                                f"boundaries from v1 manifest (gap-split)"
+                            )
                 tts_g = existing.get("ttsGroups")
                 if tts_g:
                     tts_groups = [
