@@ -409,6 +409,7 @@ export function initVoiceMode(
 	let userScrolledAway = false;
 	let rafId = 0;
 	let isBuffering = false;
+	let bufferPollId: number | null = null;
 	const paragraphWordIndexMap = new Map<number, number[]>();
 
 	/** Same-origin /audio/{slug} in dev; prod uses PUBLIC_AUDIO_BASE_URL (no trailing slash), e.g. https://hear.wordsofthebuddha.org */
@@ -654,6 +655,40 @@ export function initVoiceMode(
 		if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
 	}
 
+	/** Minimum seconds buffered ahead before trusting 'playing' on iOS/WKWebView. */
+	const MIN_BUFFER_AHEAD = 8;
+
+	function hasEnoughBuffer(): boolean {
+		const b = audio.buffered;
+		const t = audio.currentTime;
+		// Near end of track — any buffer is fine
+		if (audio.duration > 0 && audio.duration - t < MIN_BUFFER_AHEAD) return true;
+		for (let i = 0; i < b.length; i++) {
+			if (b.start(i) <= t + 0.5 && b.end(i) >= t + MIN_BUFFER_AHEAD) return true;
+		}
+		return false;
+	}
+
+	/** Poll buffered ranges every 500 ms; start loop only when data is confirmed. */
+	function startBufferPoll(): void {
+		if (bufferPollId !== null) return;
+		bufferPollId = window.setInterval(() => {
+			if (audio.paused) { stopBufferPoll(); return; }
+			if (hasEnoughBuffer()) {
+				stopBufferPoll();
+				setBuffering(false);
+				startRafLoop();
+			}
+		}, 500);
+	}
+
+	function stopBufferPoll(): void {
+		if (bufferPollId !== null) {
+			clearInterval(bufferPollId);
+			bufferPollId = null;
+		}
+	}
+
 	function onTimeUpdate(): void {
 		// rAF loop handles visual sync during playback; timeupdate handles
 		// persistence and immersive-mode gating so it still fires at low frequency.
@@ -661,7 +696,8 @@ export function initVoiceMode(
 			checkSingleParaPause();
 			syncUi();
 		}
-		writeLs();
+		// Don't save a phantom position while iOS is silently buffering
+		if (!isBuffering) writeLs();
 		if (
 			focusAllowed &&
 			!audio.paused &&
@@ -794,6 +830,9 @@ export function initVoiceMode(
 			return;
 		}
 		audio.src = `${base}.webm`;
+		// Hint to the browser to start buffering now that we've confirmed audio exists.
+		// audio.load() does not require a user gesture; play() does.
+		audio.preload = "auto";
 		ready = true;
 		const saved = readLs();
 		const allowedRates = VOICE_PLAYBACK_RATES;
@@ -842,21 +881,29 @@ export function initVoiceMode(
 		playBtn.setAttribute("title", "Pause");
 	});
 	audio.addEventListener("playing", () => {
-		// Actual audio data is flowing — clear any buffering state and run loop.
-		setBuffering(false);
-		startRafLoop();
+		// On iOS Chrome (WKWebView), 'playing' fires when the browser state machine
+		// transitions — but the WebM/Opus hardware pipeline may need significantly
+		// more data before producing audible output. Verify buffer level directly.
+		if (hasEnoughBuffer()) {
+			setBuffering(false);
+			startRafLoop();
+		} else {
+			setBuffering(true);
+			startBufferPoll();
+		}
 	});
 	audio.addEventListener("waiting", () => {
-		// Browser is stalled waiting for more data (common on mobile data connections).
 		stopRafLoop();
+		stopBufferPoll();
 		setBuffering(true);
 	});
 	audio.addEventListener("stalled", () => {
-		// Download has stalled; treat same as waiting.
 		stopRafLoop();
+		stopBufferPoll();
 		setBuffering(true);
 	});
 	audio.addEventListener("pause", () => {
+		stopBufferPoll();
 		setBuffering(false);
 		playBtn.textContent = "▶";
 		playBtn.setAttribute("aria-label", "Play");
