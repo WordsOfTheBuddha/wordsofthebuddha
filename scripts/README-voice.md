@@ -88,7 +88,7 @@ python scripts/generate_voice.py dhp1-20 --skip-align
 
 ## MDX parsing
 
-- **Verses** with `#### N` headings (e.g. Dhammapada): one “paragraph” per heading.
+- **Verses** with bare `#### N` headings (e.g. Dhammapada): one “paragraph” per verse block; manifest / alignment **ids** are still `1..n` in reading order (verse numbers stay only in the heading text).
 - **Everything else**: split on blank lines into blocks; paragraph ids are `1..n`. Heading lines (`###` …) are stripped from the spoken text. This is a best-effort match to prose layout; refine later if needed.
 
 ## FFmpeg
