@@ -426,7 +426,9 @@ export function initVoiceMode(
 	let userScrolledAway = false;
 	let rafId = 0;
 	let isBuffering = false;
-	let bufferPollId: number | null = null;
+	let pausedForBuffering = false;
+	let bufferResumeTime = 0;
+	let bufferTimeoutId: number | null = null;
 	const paragraphWordIndexMap = new Map<number, number[]>();
 
 	/** Same-origin /audio/{slug} in dev; prod uses PUBLIC_AUDIO_BASE_URL (no trailing slash), e.g. https://hear.wordsofthebuddha.org */
@@ -656,13 +658,48 @@ export function initVoiceMode(
 		}
 	}
 
+	/** Pause the audio to prevent phantom currentTime advance while buffering.
+	 *  Records position so we can resume from the right spot. */
+	function enterBufferingPause(): void {
+		if (pausedForBuffering) return;
+		bufferResumeTime = audio.currentTime;
+		pausedForBuffering = true;
+		audio.pause(); // will fire 'pause' event — guarded by pausedForBuffering flag
+		setBuffering(true);
+		// Safety timeout: if the browser never fires canplaythrough/playing,
+		// resume anyway after 15 s (by then, most of the file should be downloaded).
+		if (bufferTimeoutId !== null) clearTimeout(bufferTimeoutId);
+		bufferTimeoutId = window.setTimeout(() => {
+			bufferTimeoutId = null;
+			if (pausedForBuffering) exitBufferingPause();
+		}, 15_000);
+	}
+
+	/** Resume from a buffering pause — seek back to saved position and play. */
+	function exitBufferingPause(): void {
+		if (!pausedForBuffering) return;
+		pausedForBuffering = false;
+		if (bufferTimeoutId !== null) { clearTimeout(bufferTimeoutId); bufferTimeoutId = null; }
+		setBuffering(false);
+		// Seek back to where we were when buffering started (currentTime may have
+		// drifted during the phantom-play window before we paused).
+		audio.currentTime = bufferResumeTime;
+		audio.play().catch(() => {});
+	}
+
+	function clearBufferingState(): void {
+		pausedForBuffering = false;
+		if (bufferTimeoutId !== null) { clearTimeout(bufferTimeoutId); bufferTimeoutId = null; }
+		setBuffering(false);
+	}
+
 	/* ——— rAF-based sync loop: runs at display refresh rate during playback ——— */
 	function startRafLoop(): void {
 		if (rafId) return;
 		const tick = (): void => {
 			checkSingleParaPause();
 			syncUi();
-			if (!audio.paused && !isBuffering) rafId = requestAnimationFrame(tick);
+			if (!audio.paused) rafId = requestAnimationFrame(tick);
 			else rafId = 0;
 		};
 		rafId = requestAnimationFrame(tick);
@@ -670,40 +707,6 @@ export function initVoiceMode(
 
 	function stopRafLoop(): void {
 		if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
-	}
-
-	/** Minimum seconds buffered ahead before trusting 'playing' on iOS/WKWebView. */
-	const MIN_BUFFER_AHEAD = 8;
-
-	function hasEnoughBuffer(): boolean {
-		const b = audio.buffered;
-		const t = audio.currentTime;
-		// Near end of track — any buffer is fine
-		if (audio.duration > 0 && audio.duration - t < MIN_BUFFER_AHEAD) return true;
-		for (let i = 0; i < b.length; i++) {
-			if (b.start(i) <= t + 0.5 && b.end(i) >= t + MIN_BUFFER_AHEAD) return true;
-		}
-		return false;
-	}
-
-	/** Poll buffered ranges every 500 ms; start loop only when data is confirmed. */
-	function startBufferPoll(): void {
-		if (bufferPollId !== null) return;
-		bufferPollId = window.setInterval(() => {
-			if (audio.paused) { stopBufferPoll(); return; }
-			if (hasEnoughBuffer()) {
-				stopBufferPoll();
-				setBuffering(false);
-				startRafLoop();
-			}
-		}, 500);
-	}
-
-	function stopBufferPoll(): void {
-		if (bufferPollId !== null) {
-			clearInterval(bufferPollId);
-			bufferPollId = null;
-		}
 	}
 
 	function onTimeUpdate(): void {
@@ -745,6 +748,7 @@ export function initVoiceMode(
 		if (idx < 0) return;
 		const targetTime = manifest.paragraphs[idx].start;
 		resetUserScroll();
+		clearBufferingState();
 		lastParagraphIdx = -1;
 		pauseAfterParagraphIdx = singleOnly ? idx : -1;
 
@@ -810,6 +814,13 @@ export function initVoiceMode(
 
 	function togglePlayPause(): void {
 		pauseAfterParagraphIdx = -1;
+		if (pausedForBuffering) {
+			// Cancel buffering wait and stay paused
+			clearBufferingState();
+			audio.currentTime = bufferResumeTime;
+			syncUi();
+			return;
+		}
 		if (audio.paused) {
 			resetUserScroll();
 			audio.play().catch(() => {});
@@ -898,35 +909,48 @@ export function initVoiceMode(
 		playBtn.setAttribute("title", "Pause");
 	});
 	audio.addEventListener("playing", () => {
-		// On iOS Chrome (WKWebView), 'playing' fires when the browser state machine
-		// transitions — but the WebM/Opus hardware pipeline may need significantly
-		// more data before producing audible output. Verify buffer level directly.
-		if (hasEnoughBuffer()) {
-			setBuffering(false);
-			startRafLoop();
-		} else {
-			setBuffering(true);
-			startBufferPoll();
-		}
+		// 'playing' fires when the browser's media pipeline is actively producing
+		// output. Trust it and start the highlight loop.
+		clearBufferingState();
+		startRafLoop();
 	});
 	audio.addEventListener("waiting", () => {
+		// Browser is stalled waiting for more data. On iOS WKWebView with WebM,
+		// currentTime can keep advancing silently during this state.
+		// Pause the audio to freeze the position and prevent phantom advancement.
 		stopRafLoop();
-		stopBufferPoll();
-		setBuffering(true);
+		enterBufferingPause();
 	});
 	audio.addEventListener("stalled", () => {
-		stopRafLoop();
-		stopBufferPoll();
-		setBuffering(true);
+		// Download stalled — only enter buffering pause if audio hasn't actually
+		// started producing output (stalled can fire during normal streaming).
+		if (audio.readyState < 3) {
+			stopRafLoop();
+			enterBufferingPause();
+		}
+	});
+	audio.addEventListener("canplaythrough", () => {
+		// Browser estimates it can play through without interruption.
+		// If we paused for buffering, this is our cue to resume.
+		if (pausedForBuffering) exitBufferingPause();
 	});
 	audio.addEventListener("pause", () => {
-		stopBufferPoll();
-		setBuffering(false);
+		// If we paused internally for buffering, keep the spinner visible.
+		if (pausedForBuffering) return;
+		clearBufferingState();
 		playBtn.textContent = "▶";
 		playBtn.setAttribute("aria-label", "Play");
 		playBtn.setAttribute("title", "Play");
 		stopRafLoop();
 		syncUi();
+	});
+
+	// User-initiated exits (exit button, Escape, 'V' toggle) call setVoiceMode(false)
+	// + audio.pause(). Make sure our buffering state is always fully cleared on exit.
+	exitBtn.addEventListener("click", () => {
+		clearBufferingState();
+		setVoiceMode(false);
+		audio.pause();
 	});
 
 	audio.addEventListener("ended", () => {
@@ -970,6 +994,7 @@ export function initVoiceMode(
 	triggerBtn.addEventListener("click", () => {
 		if (!ready || !manifest) return;
 		const on = !document.documentElement.classList.contains("voice-mode");
+		if (!on) clearBufferingState();
 		setVoiceMode(on);
 		if (on) {
 			syncUi();
@@ -1064,11 +1089,6 @@ export function initVoiceMode(
 		minimizeBtn.blur();
 	});
 
-	exitBtn.addEventListener("click", () => {
-		setVoiceMode(false);
-		audio.pause();
-	});
-
 	document.addEventListener("keydown", (e) => {
 		const active = document.activeElement as HTMLElement | null;
 		const activeTag = active?.tagName.toLowerCase();
@@ -1100,6 +1120,7 @@ export function initVoiceMode(
 		) {
 			e.preventDefault();
 			if (inVoice) {
+				clearBufferingState();
 				audio.pause();
 				setVoiceMode(false);
 			} else {
