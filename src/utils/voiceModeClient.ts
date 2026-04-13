@@ -27,14 +27,51 @@ function isValidVoiceManifest(v: unknown): v is VoiceManifest {
 	return true;
 }
 
+/** Base URL for `{base}.manifest.json` and `{base}.webm` (no file suffix). */
+function voiceAudioBase(discourseId: string): string {
+	const audioRoot = import.meta.env.PUBLIC_AUDIO_BASE_URL as string | undefined;
+	return audioRoot
+		? `${audioRoot.replace(/\/$/, "")}/${encodeURIComponent(discourseId)}`
+		: `/audio/${encodeURIComponent(discourseId)}`;
+}
+
+/**
+ * Single GET manifest + validate + HEAD .webm. Deduplicates concurrent callers
+ * (e.g. safety-net probe shares work with voice init).
+ */
+const voiceManifestLoadBySlug = new Map<string, Promise<VoiceManifest | null>>();
+
+export function loadVoiceManifestForDiscourse(
+	discourseId: string,
+): Promise<VoiceManifest | null> {
+	const hit = voiceManifestLoadBySlug.get(discourseId);
+	if (hit) return hit;
+	const base = voiceAudioBase(discourseId);
+	const p = (async (): Promise<VoiceManifest | null> => {
+		try {
+			// Default cache: manifest path is stable per slug; .webm uses ?h= cache bust.
+			const res = await fetch(`${base}.manifest.json`);
+			if (!res.ok) return null;
+			const data: unknown = await res.json();
+			if (!isValidVoiceManifest(data)) return null;
+			const audioUrl = `${base}.webm`;
+			if (!(await audioAssetExists(audioUrl))) return null;
+			return data;
+		} catch {
+			return null;
+		}
+	})();
+	voiceManifestLoadBySlug.set(discourseId, p);
+	return p;
+}
+
 /** Ensure the audio file exists (manifest alone is not enough). */
 async function audioAssetExists(url: string): Promise<boolean> {
-	let res = await fetch(url, { method: "HEAD", cache: "no-cache" });
+	let res = await fetch(url, { method: "HEAD" });
 	if (res.ok) return true;
 	if (res.status === 405) {
 		res = await fetch(url, {
 			headers: { Range: "bytes=0-0" },
-			cache: "no-cache",
 		});
 		return res.ok || res.status === 206;
 	}
@@ -431,11 +468,7 @@ export function initVoiceMode(
 	let bufferTimeoutId: number | null = null;
 	const paragraphWordIndexMap = new Map<number, number[]>();
 
-	/** Same-origin /audio/{slug} in dev; prod uses PUBLIC_AUDIO_BASE_URL (no trailing slash), e.g. https://hear.wordsofthebuddha.org */
-	const audioRoot = import.meta.env.PUBLIC_AUDIO_BASE_URL as string | undefined;
-	const base = audioRoot
-		? `${audioRoot.replace(/\/$/, "")}/${encodeURIComponent(discourseId)}`
-		: `/audio/${encodeURIComponent(discourseId)}`;
+	const base = voiceAudioBase(discourseId);
 	const lsKey = `${LS_PREFIX}${discourseId}`;
 
 	function readLs(): { position?: number; rate?: number; speed?: number } {
@@ -829,34 +862,17 @@ export function initVoiceMode(
 		}
 	}
 
-	// bootstrap — show Listen only when manifest + opus both exist and manifest is usable
+	// bootstrap — show Listen only when manifest + webm both exist (shared single GET per slug)
 	void (async () => {
 		const fail = (): void => {
 			stripVoiceUrlIfNoAudio();
 		};
-		try {
-			const res = await fetch(`${base}.manifest.json`, {
-				cache: "no-cache",
-			});
-			if (!res.ok) {
-				fail();
-				return;
-			}
-			const data: unknown = await res.json();
-			if (!isValidVoiceManifest(data)) {
-				fail();
-				return;
-			}
-			const audioUrl = `${base}.webm`;
-			if (!(await audioAssetExists(audioUrl))) {
-				fail();
-				return;
-			}
-			manifest = data;
-		} catch {
+		const data = await loadVoiceManifestForDiscourse(discourseId);
+		if (!data) {
 			fail();
 			return;
 		}
+		manifest = data;
 		audio.src = voiceWebmUrl(base, manifest);
 		// Hint to the browser to start buffering now that we've confirmed audio exists.
 		// audio.load() does not require a user gesture; play() does.

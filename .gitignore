@@ -45,6 +45,7 @@ src/utils/routes.ts
 .timestamp-cache.json
 
 # data auto generation
+src/data/audioStatus.ts
 src/data/directoryStructureWithCounts.ts
 src/data/qualityMappings.json
 src/data/simileMappings.json

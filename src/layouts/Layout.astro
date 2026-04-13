@@ -90,9 +90,14 @@ const {
 	fullWidthSlot?: boolean;
 };
 
-/** When set, show read-aloud voice controls. Only for discourses in audioSlugs whitelist. */
+/**
+ * When set, mount read-aloud voice controls for this discourse (Pāli layout).
+ * Build-time `audioSlugs` speeds up list badges; availability on the page is
+ * confirmed asynchronously (single manifest GET + webm HEAD) so new audio
+ * works without committing `audioStatus.ts`.
+ */
 import { audioSlugs } from "../data/audioStatus";
-const voiceDiscourseId = showPali && id && audioSlugs.has(id) ? id : undefined;
+const voiceDiscourseId = showPali && id ? id : undefined;
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);

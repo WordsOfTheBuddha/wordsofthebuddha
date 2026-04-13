@@ -3,10 +3,14 @@
 Generate src/data/audioStatus.ts — a whitelist of discourse slugs that have
 both a valid .manifest.json and a .webm file in public/audio/.
 
-Run after audio generation + R2 sync to update the static whitelist used by
-the frontend to show Listen buttons without fetching from R2 at page load.
+Primary entry for the repo is `yarn voice:status` → `node scripts/generate-audio-status.mjs`,
+which lists R2 via Node (`@aws-sdk/client-s3`) when `R2_ACCOUNT_ID` + access keys are set,
+else scans local `public/audio/`, else may delegate here if `.venv-voice` exists (local only).
+
+Run after audio generation + R2 sync to refresh the static whitelist (list/explore badges).
 
 Usage:
+  yarn voice:status                               # Node: R2 ListObjects if keys set, else local scan / venv fallback
   python scripts/generate_audio_status.py          # from local public/audio/
   python scripts/generate_audio_status.py --from-r2 # scan R2 bucket instead
 """

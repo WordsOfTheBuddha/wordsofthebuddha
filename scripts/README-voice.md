@@ -97,4 +97,8 @@ stable-ts loads audio via ffmpeg; ensure `ffmpeg` is installed (`brew install ff
 
 ## Phase 0b (site UI)
 
-On discourse pages with Pāli toolbar, a **Listen** control appears for discourses listed in `src/data/audioStatus.ts` (regenerate with `python scripts/generate_audio_status.py`). In production, set `PUBLIC_AUDIO_BASE_URL` to the R2 public origin so assets load from `https://…/<discourseId>.opus` (bucket root, no `/audio/` path). Locally, files are served from `/audio/`. Open with **Listen** or `?voice=1`. Playback state is stored under `localStorage` key `voice:<discourseId>`.
+On discourse pages with Pāli toolbar, a **Listen** control appears after a quick async check (one manifest `GET` plus a `.webm` existence check). `src/data/audioStatus.ts` is **generated** (gitignored): run `yarn voice:status` (runs automatically in `predev` / `prebuild`).
+
+**Build-time list (CI / Vercel):** set `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, and optionally `R2_BUCKET` (default `dhamma-audio`). The script uses **Node** (`@aws-sdk/client-s3` ListObjectsV2, declared in `dependencies` so production installs include it) against the R2 S3 API—no `.venv-voice` or Python required on the host. If those three vars are missing, it falls back to scanning `public/audio/`, or—only for local machines with `.venv-voice`—`python scripts/generate_audio_status.py --from-r2` when `R2_ACCOUNT_ID` is set but the Node path failed.
+
+The static set speeds up list/explore “has listen” hints; discourse pages still pick up new R2 audio without committing that file. In production, set `PUBLIC_AUDIO_BASE_URL` to the R2 public origin so assets load from `https://…/<discourseId>.webm` (bucket root, no `/audio/` path). Locally, files are served from `/audio/`. Open with **Listen** or `?voice=1`. Playback state is stored under `localStorage` key `voice:<discourseId>`.
