@@ -252,13 +252,13 @@ def apply_tts_phonetic_spellings(text: str) -> str:
     # Longer token first (plurals / compounds before singular where relevant)
     text = re.sub(
         r"\barahants\b",
-        lambda m: _cap_like("ara-hants", m.group(0)),
+        lambda m: _cap_like("uh-rahhnts", m.group(0)),
         text,
         flags=re.IGNORECASE,
     )
     text = re.sub(
         r"\barahant\b",
-        lambda m: _cap_like("ara-hant", m.group(0)),
+        lambda m: _cap_like("uh-rahhnt", m.group(0)),
         text,
         flags=re.IGNORECASE,
     )
@@ -288,8 +288,8 @@ def apply_tts_long_a_macron_hint(text: str) -> str:
 
 # Lowercase cores of phonetic tokens → canonical (for manifest restore fallback)
 _PHONETIC_CORE_TO_CANONICAL = {
-    "ara-hant": "arahant",
-    "ara-hants": "arahants",
+    "aruhunt": "arahant",
+    "aruhunts": "arahants",
     "bickkoo": "bhikkhu",
     "bickkoos": "bhikkhus",
 }
@@ -345,7 +345,8 @@ def normalize_paragraph_body(text: str, for_tts: bool = False) -> str:
     text = strip_html_jsx_tags(text)
     text = strip_glosses_tts(text) if for_tts else strip_glosses_display(text)
     text = normalize_inline_markdown(text)
-    text = re.sub(r"—", ", ", text)
+    # Em dash: same clause boundary as semicolon for TTS and alignment (must match spoken SSML).
+    text = text.replace("—", ";")
     text = re.sub(r"\s+", " ", text)
     return text.strip()
 

@@ -106,6 +106,8 @@ function normalizeForWordAlignment(text: string): string {
 		.trim()
 		.toLowerCase()
 		.replace(/…/g, "...")
+		// MDX keeps U+2014; manifests normalize em dash to ";" for TTS (generate_voice.py).
+		.replace(/\u2014/g, ";")
 		.replace(/[‘’]/g, "'")
 		.replace(/[“”]/g, '"');
 }
