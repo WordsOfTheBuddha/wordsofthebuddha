@@ -330,7 +330,9 @@ function scrollIntoViewIfNeeded(target: Element, barEl: Element): void {
 	const viewBottom = barRect.top;
 	const margin = 80;
 	if (rect.top < margin || rect.bottom > viewBottom - margin) {
-		target.scrollIntoView({ behavior: "smooth", block: "center" });
+		// Avoid `smooth`: over long distances browsers can spend 10s+ animating one jump,
+		// which matches toggling Focus or seeking deep into a discourse.
+		target.scrollIntoView({ behavior: "auto", block: "center" });
 	}
 }
 
@@ -454,6 +456,51 @@ export function initVoiceMode(
 	const voiceSeek = seek;
 	const voiceTimeEl = timeEl;
 
+	/* ——— Debug overlay (activated via ?voicedebug=1) ——— */
+	const VOICE_DEBUG = new URLSearchParams(location.search).get("voicedebug") === "1";
+	let debugEl: HTMLElement | null = null;
+	const debugLog: string[] = [];
+
+	function initDebugOverlay(): void {
+		if (!VOICE_DEBUG) return;
+		debugEl = document.createElement("div");
+		debugEl.id = "voice-debug-overlay";
+		debugEl.style.cssText =
+			"position:fixed;top:0;left:0;right:0;z-index:9999;max-height:45vh;" +
+			"overflow-y:auto;background:rgba(0,0,0,0.88);color:#0f0;font:11px/1.4 monospace;" +
+			"padding:6px 8px;pointer-events:auto;-webkit-overflow-scrolling:touch;" +
+			"white-space:pre-wrap;word-break:break-all;";
+		document.body.appendChild(debugEl);
+	}
+
+	function dbg(msg: string): void {
+		if (!VOICE_DEBUG) return;
+		const ts = (performance.now() / 1000).toFixed(2);
+		const line = `[${ts}] ${msg}`;
+		debugLog.push(line);
+		if (debugLog.length > 80) debugLog.shift();
+		if (debugEl) debugEl.textContent = debugLog.join("\n");
+	}
+
+	function dbgState(label: string): void {
+		if (!VOICE_DEBUG) return;
+		const b = audio.buffered;
+		const ranges: string[] = [];
+		for (let i = 0; i < b.length; i++) {
+			ranges.push(`${b.start(i).toFixed(1)}-${b.end(i).toFixed(1)}`);
+		}
+		dbg(
+			`${label} | t=${audio.currentTime.toFixed(2)} dur=${(audio.duration || 0).toFixed(1)}` +
+			` ready=${audio.readyState} net=${audio.networkState}` +
+			` paused=${audio.paused} bufRanges=[${ranges.join(",")}]` +
+			` pFB=${pausedForBuffering} isBuf=${isBuffering}` +
+			` actx=${audioCtx?.state ?? "none"}`,
+		);
+	}
+
+	initDebugOverlay();
+	/* ——— end debug overlay ——— */
+
 	let manifest: VoiceManifest | null = null;
 	let article: Element | null = null;
 	let focusAllowed = true;
@@ -466,7 +513,62 @@ export function initVoiceMode(
 	let pausedForBuffering = false;
 	let bufferResumeTime = 0;
 	let bufferTimeoutId: number | null = null;
+	let lastPausePosition = 0; // For detecting browser-initiated position resets
 	const paragraphWordIndexMap = new Map<number, number[]>();
+
+	/* ——— iOS Audio Session activation via Web Audio API ——— */
+	// On iOS (Safari & Chrome/WKWebView), the <audio> element can report
+	// readyState=4, fire 'playing', and advance currentTime — yet produce no
+	// audible output because the hardware audio session hasn't been activated.
+	// Routing the element through an AudioContext via createMediaElementSource()
+	// forces the audio session active. The source node MUST be created after
+	// AudioContext is running — creating it while suspended routes audio to a
+	// dead output that stays dead even after a later resume.
+	// Requires crossorigin="anonymous" on the <audio> element for cross-origin
+	// audio (R2 CDN must have proper CORS headers).
+	let audioCtx: AudioContext | null = null;
+	let audioSourceNode: MediaElementAudioSourceNode | null = null;
+
+	function ensureAudioContext(): Promise<void> {
+		// Already wired up — nothing to do.
+		if (audioSourceNode) return Promise.resolve();
+		const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+		if (!Ctx) return Promise.resolve();
+		if (!audioCtx) {
+			try {
+				audioCtx = new Ctx();
+				dbg(`AudioContext created, state=${audioCtx.state}`);
+			} catch (e) {
+				dbg(`AudioContext error: ${e}`);
+				return Promise.resolve();
+			}
+		}
+		const resumeP = audioCtx.state === "suspended"
+			? audioCtx.resume()
+			: Promise.resolve();
+		return resumeP.then(() => {
+			// Now that AudioContext is running, wire the <audio> element through it.
+			if (audioCtx && !audioSourceNode) {
+				try {
+					audioSourceNode = audioCtx.createMediaElementSource(audio);
+					audioSourceNode.connect(audioCtx.destination);
+					// On iOS, playing from t=0 after connecting MediaElementSource
+					// is always silent — the decode pipeline isn't re-initialized
+					// through the new AudioContext route. A micro-seek forces iOS
+					// to re-init the pipeline so audio is audible immediately.
+					if (audio.currentTime < 0.01) {
+						audio.currentTime = 0.001;
+					} else {
+						audio.currentTime = audio.currentTime;
+					}
+					dbg(`MediaElementSource connected (actx=${audioCtx.state}), nudged t=${audio.currentTime.toFixed(3)}`);
+				} catch (e) {
+					dbg(`MediaElementSource error: ${e}`);
+				}
+			}
+		}).catch(() => {});
+	}
+	/* ——— end iOS Audio Session ——— */
 
 	const base = voiceAudioBase(discourseId);
 	const lsKey = `${LS_PREFIX}${discourseId}`;
@@ -694,16 +796,18 @@ export function initVoiceMode(
 	/** Pause the audio to prevent phantom currentTime advance while buffering.
 	 *  Records position so we can resume from the right spot. */
 	function enterBufferingPause(): void {
-		if (pausedForBuffering) return;
+		if (pausedForBuffering || audio.paused) return;
 		bufferResumeTime = audio.currentTime;
 		pausedForBuffering = true;
 		audio.pause(); // will fire 'pause' event — guarded by pausedForBuffering flag
 		setBuffering(true);
+		dbgState("enterBufferingPause");
 		// Safety timeout: if the browser never fires canplaythrough/playing,
 		// resume anyway after 15 s (by then, most of the file should be downloaded).
 		if (bufferTimeoutId !== null) clearTimeout(bufferTimeoutId);
 		bufferTimeoutId = window.setTimeout(() => {
 			bufferTimeoutId = null;
+			dbg("bufferTimeout fired");
 			if (pausedForBuffering) exitBufferingPause();
 		}, 15_000);
 	}
@@ -717,7 +821,7 @@ export function initVoiceMode(
 		// Seek back to where we were when buffering started (currentTime may have
 		// drifted during the phantom-play window before we paused).
 		audio.currentTime = bufferResumeTime;
-		audio.play().catch(() => {});
+		ensureAudioContext().then(() => audio.play().catch(() => {}));
 	}
 
 	function clearBufferingState(): void {
@@ -783,6 +887,7 @@ export function initVoiceMode(
 		resetUserScroll();
 		clearBufferingState();
 		lastParagraphIdx = -1;
+		lastPausePosition = 0; // Clear to prevent false reset detection during seeks
 		pauseAfterParagraphIdx = singleOnly ? idx : -1;
 
 		// On mobile browsers, playing immediately after setting currentTime can race
@@ -795,13 +900,13 @@ export function initVoiceMode(
 			if (Math.abs(drift) > 0.15) {
 				audio.addEventListener("seeked", () => {
 					syncUi();
-					if (audio.paused) audio.play().catch(() => {});
+					if (audio.paused) { ensureAudioContext().then(() => audio.play().catch(() => {})); }
 				}, { once: true });
 				audio.currentTime = targetTime;
 				return;
 			}
 			syncUi();
-			if (audio.paused) audio.play().catch(() => {});
+			if (audio.paused) { ensureAudioContext().then(() => audio.play().catch(() => {})); }
 		};
 
 		if (Math.abs(audio.currentTime - targetTime) < 0.02) {
@@ -847,6 +952,7 @@ export function initVoiceMode(
 
 	function togglePlayPause(): void {
 		pauseAfterParagraphIdx = -1;
+		dbgState("togglePlayPause");
 		if (pausedForBuffering) {
 			// Cancel buffering wait and stay paused
 			clearBufferingState();
@@ -856,7 +962,7 @@ export function initVoiceMode(
 		}
 		if (audio.paused) {
 			resetUserScroll();
-			audio.play().catch(() => {});
+			ensureAudioContext().then(() => audio.play().catch(() => {}));
 		} else {
 			audio.pause();
 		}
@@ -878,6 +984,7 @@ export function initVoiceMode(
 		// audio.load() does not require a user gesture; play() does.
 		audio.preload = "auto";
 		ready = true;
+		dbg(`bootstrap: src=${audio.src.slice(-40)} preload=auto`);
 		const saved = readLs();
 		const allowedRates = VOICE_PLAYBACK_RATES;
 		const savedRate =
@@ -917,42 +1024,63 @@ export function initVoiceMode(
 
 	audio.addEventListener("timeupdate", onTimeUpdate);
 	audio.addEventListener("play", () => {
-		// Update button icon immediately on user gesture, but rAF loop starts on
-		// "playing" (when data is actually flowing) to avoid advancing highlights
-		// during a buffering stall on mobile data connections.
+		dbgState("EVENT:play");
 		playBtn.textContent = "❚❚";
 		playBtn.setAttribute("aria-label", "Pause");
 		playBtn.setAttribute("title", "Pause");
 	});
 	audio.addEventListener("playing", () => {
-		// 'playing' fires when the browser's media pipeline is actively producing
-		// output. Trust it and start the highlight loop.
+		dbgState("EVENT:playing");
+		// Detect CORS re-validation position reset on iOS: after pause at t=7.47,
+		// iOS may re-fetch crossorigin audio and auto-resume from t=0.
+		// Restore the position the user was at.
+		if (lastPausePosition > 1 && audio.currentTime < 0.5) {
+			dbg(`Position reset detected, restoring to ${lastPausePosition.toFixed(2)}`);
+			audio.currentTime = lastPausePosition;
+			lastPausePosition = 0;
+		}
 		clearBufferingState();
 		startRafLoop();
 	});
 	audio.addEventListener("waiting", () => {
-		// Browser is stalled waiting for more data. On iOS WKWebView with WebM,
-		// currentTime can keep advancing silently during this state.
-		// Pause the audio to freeze the position and prevent phantom advancement.
+		dbgState("EVENT:waiting");
 		stopRafLoop();
 		enterBufferingPause();
 	});
 	audio.addEventListener("stalled", () => {
-		// Download stalled — only enter buffering pause if audio hasn't actually
-		// started producing output (stalled can fire during normal streaming).
+		dbgState("EVENT:stalled");
 		if (audio.readyState < 3) {
 			stopRafLoop();
 			enterBufferingPause();
 		}
 	});
 	audio.addEventListener("canplaythrough", () => {
-		// Browser estimates it can play through without interruption.
-		// If we paused for buffering, this is our cue to resume.
+		dbgState("EVENT:canplaythrough");
 		if (pausedForBuffering) exitBufferingPause();
 	});
+	audio.addEventListener("canplay", () => {
+		dbgState("EVENT:canplay");
+	});
+	audio.addEventListener("loadeddata", () => {
+		dbgState("EVENT:loadeddata");
+	});
+	audio.addEventListener("loadedmetadata", () => {
+		dbgState("EVENT:loadedmetadata");
+	});
+	audio.addEventListener("suspend", () => {
+		dbgState("EVENT:suspend");
+	});
+	audio.addEventListener("error", () => {
+		const e = audio.error;
+		dbg(`EVENT:error code=${e?.code} msg=${e?.message}`);
+		if (e?.code === 4 && audio.crossOrigin) {
+			dbg(`CORS/format error — check R2 AllowedHeaders includes Range`);
+		}
+	});
 	audio.addEventListener("pause", () => {
-		// If we paused internally for buffering, keep the spinner visible.
+		dbgState("EVENT:pause");
 		if (pausedForBuffering) return;
+		if (audio.currentTime > 0) lastPausePosition = audio.currentTime;
 		clearBufferingState();
 		playBtn.textContent = "▶";
 		playBtn.setAttribute("aria-label", "Play");
@@ -1010,11 +1138,12 @@ export function initVoiceMode(
 	triggerBtn.addEventListener("click", () => {
 		if (!ready || !manifest) return;
 		const on = !document.documentElement.classList.contains("voice-mode");
+		dbgState(`triggerBtn: turning ${on ? "ON" : "OFF"}`);
 		if (!on) clearBufferingState();
 		setVoiceMode(on);
 		if (on) {
 			syncUi();
-			audio.play().catch(() => {});
+			ensureAudioContext().then(() => audio.play().catch(() => {}));
 		} else {
 			audio.pause();
 		}
@@ -1142,7 +1271,7 @@ export function initVoiceMode(
 			} else {
 				setVoiceMode(true);
 				syncUi();
-				audio.play().catch(() => {});
+				ensureAudioContext().then(() => audio.play().catch(() => {}));
 			}
 			return;
 		}
