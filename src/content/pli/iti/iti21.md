@@ -1,10 +1,8 @@
 ---
 title: Pasannacitta sutta - Settled Mind
-description: The Buddha shares the benefits for a person acting with a settled mind based on his direct knowledge.
-qualities: faith
-theme: directly knowing, principle
-fetter: doubt, ignorance
-tags: iti, pure, clarity, heaven, happiness, iti1-27
+description: The Buddha shares the consequences for a person acting with a settled mind.
+qualities: faith, good habits
+theme: inspiration, principle
 slug: iti21
 ---
 
