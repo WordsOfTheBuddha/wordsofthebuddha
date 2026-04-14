@@ -1,7 +1,7 @@
 ---
 title: Indriya sutta - Mental Faculties
 description: The Buddha describes the three mental faculties - 1) the faculty that senses ‘I will know the unknown,’ 2) the faculty of awakening, and 3) the faculty of one who is awakened.
-qualities: tranquility, liberation
+qualities: tranquility, liberation, trainee
 theme: inspiration, principle
 slug: iti62
 ---

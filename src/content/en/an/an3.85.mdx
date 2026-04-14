@@ -1,7 +1,7 @@
 ---
 title: Sekkha sutta - Trainee
 description: The Buddha defines a trainee as one who trains in higher virtue, higher mind, and higher wisdom.
-qualities: ending
+qualities: ending, trainee
 theme: principle, wisdom
 slug: an3.85
 ---

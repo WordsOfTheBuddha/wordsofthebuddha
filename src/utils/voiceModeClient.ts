@@ -524,10 +524,35 @@ export function initVoiceMode(
 	// forces the audio session active. The source node MUST be created after
 	// AudioContext is running — creating it while suspended routes audio to a
 	// dead output that stays dead even after a later resume.
-	// Requires crossorigin="anonymous" on the <audio> element for cross-origin
-	// audio (R2 CDN must have proper CORS headers).
+	// Audio is fetched as a blob: URL (same-origin) to avoid iOS CORS Range
+	// request issues that silently break MediaElementSource at buffer boundaries.
 	let audioCtx: AudioContext | null = null;
 	let audioSourceNode: MediaElementAudioSourceNode | null = null;
+	let analyserNode: AnalyserNode | null = null;
+
+	/** Periodically check AnalyserNode for silence while audio is supposedly playing. */
+	let silenceCheckId: number | null = null;
+	function startSilenceMonitor(): void {
+		if (!VOICE_DEBUG || !analyserNode || silenceCheckId !== null) return;
+		const buf = new Uint8Array(analyserNode.frequencyBinCount);
+		silenceCheckId = window.setInterval(() => {
+			if (audio.paused || !analyserNode) {
+				stopSilenceMonitor();
+				return;
+			}
+			analyserNode.getByteFrequencyData(buf);
+			const max = buf.reduce((a, b) => Math.max(a, b), 0);
+			if (max === 0 && audio.currentTime > 0.1) {
+				dbg(`⚠ SILENCE detected at t=${audio.currentTime.toFixed(2)} (analyser max=0)`);
+			}
+		}, 1000);
+	}
+	function stopSilenceMonitor(): void {
+		if (silenceCheckId !== null) {
+			clearInterval(silenceCheckId);
+			silenceCheckId = null;
+		}
+	}
 
 	function ensureAudioContext(): Promise<void> {
 		// Already wired up — nothing to do.
@@ -551,7 +576,15 @@ export function initVoiceMode(
 			if (audioCtx && !audioSourceNode) {
 				try {
 					audioSourceNode = audioCtx.createMediaElementSource(audio);
-					audioSourceNode.connect(audioCtx.destination);
+					// Route: source → analyser → destination
+					if (VOICE_DEBUG) {
+						analyserNode = audioCtx.createAnalyser();
+						analyserNode.fftSize = 256;
+						audioSourceNode.connect(analyserNode);
+						analyserNode.connect(audioCtx.destination);
+					} else {
+						audioSourceNode.connect(audioCtx.destination);
+					}
 					// On iOS, playing from t=0 after connecting MediaElementSource
 					// is always silent — the decode pipeline isn't re-initialized
 					// through the new AudioContext route. A micro-seek forces iOS
@@ -561,7 +594,7 @@ export function initVoiceMode(
 					} else {
 						audio.currentTime = audio.currentTime;
 					}
-					dbg(`MediaElementSource connected (actx=${audioCtx.state}), nudged t=${audio.currentTime.toFixed(3)}`);
+					dbg(`MediaElementSource connected (actx=${audioCtx.state}), nudged t=${audio.currentTime.toFixed(3)}, blob=${!audio.hasAttribute("crossorigin")}`);
 				} catch (e) {
 					dbg(`MediaElementSource error: ${e}`);
 				}
@@ -979,12 +1012,28 @@ export function initVoiceMode(
 			return;
 		}
 		manifest = data;
-		audio.src = voiceWebmUrl(base, manifest);
-		// Hint to the browser to start buffering now that we've confirmed audio exists.
-		// audio.load() does not require a user gesture; play() does.
-		audio.preload = "auto";
+		const webmUrl = voiceWebmUrl(base, manifest);
+		// Fetch entire audio as blob for same-origin playback.
+		// On iOS WKWebView, crossorigin + createMediaElementSource() causes audio
+		// to go silent at buffer boundaries when the browser issues new CORS Range
+		// requests. A blob: URL is same-origin, eliminating CORS during playback.
+		let usedBlob = false;
+		try {
+			const res = await fetch(webmUrl);
+			if (res.ok) {
+				const blob = await res.blob();
+				audio.src = URL.createObjectURL(blob);
+				audio.removeAttribute("crossorigin");
+				usedBlob = true;
+				dbg(`bootstrap: blob ready ${(blob.size / 1024).toFixed(0)}KB`);
+			}
+		} catch { /* fall through to CDN URL */ }
+		if (!usedBlob) {
+			audio.src = webmUrl;
+			audio.preload = "auto";
+			dbg(`bootstrap: CDN fallback src=${webmUrl.slice(-40)} preload=auto`);
+		}
 		ready = true;
-		dbg(`bootstrap: src=${audio.src.slice(-40)} preload=auto`);
 		const saved = readLs();
 		const allowedRates = VOICE_PLAYBACK_RATES;
 		const savedRate =
@@ -1041,6 +1090,7 @@ export function initVoiceMode(
 		}
 		clearBufferingState();
 		startRafLoop();
+		startSilenceMonitor();
 	});
 	audio.addEventListener("waiting", () => {
 		dbgState("EVENT:waiting");
@@ -1079,6 +1129,7 @@ export function initVoiceMode(
 	});
 	audio.addEventListener("pause", () => {
 		dbgState("EVENT:pause");
+		stopSilenceMonitor();
 		if (pausedForBuffering) return;
 		if (audio.currentTime > 0) lastPausePosition = audio.currentTime;
 		clearBufferingState();

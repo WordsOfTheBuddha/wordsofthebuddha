@@ -5,7 +5,7 @@ description: >-
   considering him to be a trainee despite his mind having already been
   liberated, the Blessed One expresses an inspired utterance about the cutting
   of the round and the end of suffering.
-qualities: 'suffering, quenching'
+qualities: 'suffering, quenching, trainee'
 theme: inspiration
 slug: ud7.2
 character:

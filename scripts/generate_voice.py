@@ -1454,25 +1454,52 @@ def _align_with_whisperx(
 
                 if all_words:
                     # Split aligned words across paragraphs by expected word count
+                    per_para_words: list[list[dict]] = []
                     widx = 0
                     for j, pi in enumerate(indices):
-                        pid = paragraph_specs[pi][0]
                         exp_n = expected_word_counts[j]
                         para_words = all_words[widx:widx + exp_n]
                         widx += exp_n
-                        pb_start, pb_end = paragraph_boundaries[pi]
-                        paragraphs_out[pi] = {
-                            "id": pid,
-                            "start": pb_start,
-                            "end": pb_end,
-                            "words": para_words,
-                            "_tts_boundaries": True,
-                        }
+                        per_para_words.append(para_words)
                     if widx != len(all_words):
                         sys.stderr.write(
                             f"  Warning: group {gi+1} word split mismatch: "
                             f"used {widx} of {len(all_words)} aligned words\n"
                         )
+
+                    # Recalculate inner boundaries from actual word
+                    # timestamps instead of char-count proportional
+                    # estimates.  First/last paragraphs keep the group's
+                    # TTS boundary; inner splits use the midpoint of the
+                    # silence gap between adjacent paragraphs' words.
+                    for j, pi in enumerate(indices):
+                        pw = per_para_words[j]
+                        if j == 0:
+                            new_start = paragraph_boundaries[indices[0]][0]
+                        else:
+                            prev_pw = per_para_words[j - 1]
+                            prev_last_e = prev_pw[-1]["e"] if prev_pw else paragraph_boundaries[pi][0]
+                            cur_first_s = pw[0]["s"] if pw else paragraph_boundaries[pi][0]
+                            new_start = round((prev_last_e + cur_first_s) / 2, 4)
+                        if j == len(indices) - 1:
+                            new_end = paragraph_boundaries[indices[-1]][1]
+                        else:
+                            next_pw = per_para_words[j + 1]
+                            cur_last_e = pw[-1]["e"] if pw else paragraph_boundaries[pi][1]
+                            next_first_s = next_pw[0]["s"] if next_pw else paragraph_boundaries[pi][1]
+                            new_end = round((cur_last_e + next_first_s) / 2, 4)
+                        paragraph_boundaries[pi] = (new_start, new_end)
+
+                    for j, pi in enumerate(indices):
+                        pid = paragraph_specs[pi][0]
+                        pb_start, pb_end = paragraph_boundaries[pi]
+                        paragraphs_out[pi] = {
+                            "id": pid,
+                            "start": pb_start,
+                            "end": pb_end,
+                            "words": per_para_words[j],
+                            "_tts_boundaries": True,
+                        }
                 else:
                     # Fallback: proportional per paragraph
                     for pi in indices:
