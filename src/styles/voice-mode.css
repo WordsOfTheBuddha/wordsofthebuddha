@@ -1,5 +1,12 @@
 /* Voice mode (read-aloud) */
 
+/* `global.css` sets `html { scroll-behavior: smooth }` for hash links. For
+ * scrollIntoView, `behavior: "auto"` follows that CSS on the root scroller, so
+ * voice follow-scroll was animating smoothly anyway. Force instant jumps here. */
+html.voice-mode {
+	scroll-behavior: auto;
+}
+
 /* ——— Listen icon in discourse cards (search, discover, explorer, /on/) ——— */
 /* Parent headings use flex + items-center so the icon centers with the title line */
 .voice-listen-icon {
