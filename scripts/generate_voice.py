@@ -252,13 +252,13 @@ def apply_tts_phonetic_spellings(text: str) -> str:
     # Longer token first (plurals / compounds before singular where relevant)
     text = re.sub(
         r"\barahants\b",
-        lambda m: _cap_like("uh-rahhnts", m.group(0)),
+        lambda m: _cap_like("ara-hants", m.group(0)),
         text,
         flags=re.IGNORECASE,
     )
     text = re.sub(
         r"\barahant\b",
-        lambda m: _cap_like("uh-rahhnt", m.group(0)),
+        lambda m: _cap_like("ara-hant", m.group(0)),
         text,
         flags=re.IGNORECASE,
     )
@@ -288,6 +288,9 @@ def apply_tts_long_a_macron_hint(text: str) -> str:
 
 # Lowercase cores of phonetic tokens → canonical (for manifest restore fallback)
 _PHONETIC_CORE_TO_CANONICAL = {
+    "ara-hant": "arahant",
+    "ara-hants": "arahants",
+    # Legacy aliases from an older pronunciation variant.
     "aruhunt": "arahant",
     "aruhunts": "arahants",
     "bickkoo": "bhikkhu",
@@ -579,6 +582,97 @@ def _grouped_chunk_indices(
     return out
 
 
+def parse_grouping_preference(
+    spec: str,
+    paragraph_count: int,
+) -> list[list[int]]:
+    """Parse user grouping like "1-3,4-5,6" into zero-based paragraph groups.
+
+    The spec must partition all paragraphs exactly once, in ascending order.
+    """
+    cleaned = (spec or "").strip()
+    if not cleaned:
+        raise ValueError("Grouping preference is empty.")
+
+    groups: list[list[int]] = []
+    used: set[int] = set()
+    tokens = [tok.strip() for tok in cleaned.split(",") if tok.strip()]
+    if not tokens:
+        raise ValueError(
+            "Invalid grouping preference format. Example: --grouping-preference 1-3,4-5,6"
+        )
+
+    for tok in tokens:
+        if "-" in tok:
+            m = re.fullmatch(r"(\d+)\s*-\s*(\d+)", tok)
+            if not m:
+                raise ValueError(
+                    f"Invalid group token '{tok}'. Expected N or N-M (e.g. 1-3)."
+                )
+            lo = int(m.group(1))
+            hi = int(m.group(2))
+            if lo > hi:
+                lo, hi = hi, lo
+            nums = list(range(lo, hi + 1))
+        else:
+            if not re.fullmatch(r"\d+", tok):
+                raise ValueError(
+                    f"Invalid group token '{tok}'. Expected N or N-M (e.g. 6 or 4-7)."
+                )
+            nums = [int(tok)]
+
+        for n in nums:
+            if n < 1 or n > paragraph_count:
+                raise ValueError(
+                    f"Paragraph index {n} is out of range 1-{paragraph_count}."
+                )
+            if n in used:
+                raise ValueError(
+                    f"Paragraph index {n} appears more than once in grouping preference."
+                )
+            used.add(n)
+        groups.append([n - 1 for n in nums])
+
+    flattened = [idx for grp in groups for idx in grp]
+    expected = list(range(paragraph_count))
+    if flattened != expected:
+        missing = [str(i + 1) for i in expected if i not in flattened]
+        missing_hint = f" Missing: {', '.join(missing[:10])}" if missing else ""
+        raise ValueError(
+            "Grouping preference must cover every paragraph exactly once in ascending order."
+            + missing_hint
+        )
+
+    return groups
+
+
+def build_grouping_preference_groups(
+    paragraphs: list[str],
+    breaks: list[int],
+    grouping_preference: str,
+) -> list[tuple[list[int], list[str], list[int]]]:
+    """Build user-requested groups and validate each group's SSML byte size."""
+    index_groups = parse_grouping_preference(grouping_preference, len(paragraphs))
+    groups: list[tuple[list[int], list[str], list[int]]] = []
+
+    for indices in index_groups:
+        texts = [paragraphs[i] for i in indices]
+        brks = [breaks[i] for i in indices]
+        ssml = build_ssml(texts, brks)
+        ssml_bytes = len(ssml.encode("utf-8"))
+        if ssml_bytes > MAX_SSML_BYTES:
+            group_label = f"{indices[0] + 1}-{indices[-1] + 1}" if len(indices) > 1 else str(indices[0] + 1)
+            raise ValueError(
+                "Grouping preference exceeds TTS SSML limit. "
+                f"Group {group_label} is {ssml_bytes} bytes (max {MAX_SSML_BYTES}). "
+                "Hint: split that range into smaller groups (for example, break a large "
+                "N-M range into two shorter ranges)."
+            )
+        groups.append((indices, texts, brks))
+
+    return groups
+
+
 def _merge_short_paragraphs(
     paragraphs: list[str],
     breaks: list[int],
@@ -691,8 +785,11 @@ def build_tts_debug_groups(
     paragraphs: list[str],
     breaks: list[int],
     chunking: str,
+    forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
 ) -> list[tuple[list[int], list[str], list[int]]]:
     """Build the exact paragraph groups that will be sent to Google TTS."""
+    if forced_groups is not None:
+        return forced_groups
     if chunking == "smart":
         return _merge_short_paragraphs(paragraphs, breaks)
     if chunking == "grouped":
@@ -713,6 +810,7 @@ def build_tts_debug_payload(
     paragraphs_tts: list[str],
     breaks: list[int],
     chunking: str,
+    forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
 ) -> dict:
     paragraphs_payload: list[dict] = []
     for idx, ((pid, raw_chunk, is_break), (_, display_text, _), (_, tts_text, _), spoken_text) in enumerate(
@@ -734,7 +832,12 @@ def build_tts_debug_payload(
 
     groups_payload: list[dict] = []
     for group_index, (indices, texts, group_breaks) in enumerate(
-        build_tts_debug_groups(paragraphs_tts, breaks, chunking),
+        build_tts_debug_groups(
+            paragraphs_tts,
+            breaks,
+            chunking,
+            forced_groups=forced_groups,
+        ),
         start=1,
     ):
         groups_payload.append(
@@ -884,6 +987,7 @@ def synthesize_opus_smart(
     language_code: str,
     out_path: Path,
     parallel: bool = True,
+    forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
 ) -> list[tuple[float, float]]:
     """Smart synthesis: merge short paragraphs into groups for better TTS context.
 
@@ -900,13 +1004,17 @@ def synthesize_opus_smart(
 
     client = texttospeech.TextToSpeechClient()
     n = len(paragraphs)
-    groups = _merge_short_paragraphs(paragraphs, breaks)
+    groups = forced_groups if forced_groups is not None else _merge_short_paragraphs(paragraphs, breaks)
 
     n_solo = sum(1 for g in groups if len(g[0]) == 1)
     n_merged = len(groups) - n_solo
     merged_paras = sum(len(g[0]) for g in groups if len(g[0]) > 1)
-    print(f"  Smart merge: {n} paragraphs → {len(groups)} groups "
-          f"({n_solo} solo, {n_merged} merged covering {merged_paras} paragraphs)")
+    if forced_groups is None:
+        print(f"  Smart merge: {n} paragraphs → {len(groups)} groups "
+              f"({n_solo} solo, {n_merged} merged covering {merged_paras} paragraphs)")
+    else:
+        print(f"  Manual grouping: {n} paragraphs → {len(groups)} groups "
+              f"({n_solo} solo, {n_merged} merged covering {merged_paras} paragraphs)")
 
     # Build SSML for each group
     ssmls: list[str] = []
@@ -1827,6 +1935,7 @@ def process_one_discourse(
     align_only: bool = False,
     chunking: str = "smart",
     verbose_tts: bool = False,
+    grouping_preference: str | None = None,
 ) -> int:
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
@@ -1875,6 +1984,28 @@ def process_one_discourse(
         else:
             breaks.append(consecutive_break_ms)
 
+    forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None
+    if grouping_preference:
+        if align_only:
+            print(
+                f"[skip] {slug}: --grouping-preference cannot be used with --align-only.",
+                file=sys.stderr,
+            )
+            return 1
+        try:
+            forced_groups = build_grouping_preference_groups(
+                paragraphs_tts,
+                breaks,
+                grouping_preference,
+            )
+            print(f"  Grouping preference: {grouping_preference}")
+        except ValueError as e:
+            print(
+                f"[skip] {slug}: {e}",
+                file=sys.stderr,
+            )
+            return 1
+
     if verbose_tts:
         debug_payload = build_tts_debug_payload(
             slug,
@@ -1885,6 +2016,7 @@ def process_one_discourse(
             paragraphs_tts,
             breaks,
             chunking,
+            forced_groups=forced_groups,
         )
         emit_tts_debug_payload(debug_payload, out_tts_debug)
 
@@ -1984,7 +2116,16 @@ def process_one_discourse(
         print(f"  Breaks: {n_long} × {break_ms}ms (verse), {n_short} × {consecutive_break_ms}ms (prose)")
         print(f"  Chunking: {chunking}")
 
-        if chunking == "smart":
+        if forced_groups is not None:
+            paragraph_boundaries, tts_groups = synthesize_opus_smart(
+                paragraphs_tts,
+                breaks,
+                voice_name,
+                language_code,
+                out_audio,
+                forced_groups=forced_groups,
+            )
+        elif chunking == "smart":
             paragraph_boundaries, tts_groups = synthesize_opus_smart(
                 paragraphs_tts, breaks, voice_name, language_code, out_audio
             )
@@ -2058,6 +2199,15 @@ def main() -> int:
             "including warnings for empty |display::::| overrides that fall back to display text."
         ),
     )
+    parser.add_argument(
+        "--grouping-preference",
+        help=(
+            "Optional manual paragraph grouping for TTS calls. "
+            "Format: 1-3,4-5,6 (1-based paragraph indices). "
+            "Must cover all paragraphs exactly once in ascending order. "
+            "If any group exceeds the SSML byte limit, generation stops with a hint."
+        ),
+    )
     args = parser.parse_args()
 
     creds = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
@@ -2102,6 +2252,7 @@ def main() -> int:
                 align_only=args.align_only,
                 chunking=chunking,
                 verbose_tts=args.verbose_tts,
+                grouping_preference=args.grouping_preference,
             )
             failed += rc
         except Exception as e:
