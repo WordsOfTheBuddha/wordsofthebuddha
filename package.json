@@ -33,7 +33,8 @@
 		"voice:push": ".venv-voice/bin/python scripts/sync_audio_r2.py push",
 		"voice:pull": ".venv-voice/bin/python scripts/sync_audio_r2.py pull",
 		"voice:status": "node scripts/generate-audio-status.mjs",
-		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py"
+		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
+		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.750.0",

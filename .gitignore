@@ -28,6 +28,7 @@ project-208b2b47-e2f3-4390-82f-17a86b1153e0.json
 .cache/
 public/audio/*.webm
 public/audio/*.manifest.json
+public/audio/*.bak
 
 # generated scripts
 public/offline-manifest.json
