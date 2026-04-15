@@ -57,6 +57,7 @@ const {
 	hideNavbar = false,
 	seoTitle = null, // Add new prop for SEO title
 	paragraphRequest = null,
+	discourseRange = null,
 	commentary,
 	contentImage = null, // Optional discourse header image
 	vizPrev = null,
@@ -82,6 +83,8 @@ const {
 	hideNavbar?: boolean;
 	seoTitle?: string | null;
 	paragraphRequest?: any;
+	/** Set when URL is a discourse excerpt (e.g. /dhp185-187); pairs with paragraphRequest for voice subset mode. */
+	discourseRange?: { start: string; end: string } | null;
 	commentary?: string | string[];
 	contentImage?: ContentImageData | ContentImageData[] | null;
 	vizPrev?: { slug: string; title: string } | null;
@@ -98,6 +101,8 @@ const {
  */
 import { audioSlugs } from "../data/audioStatus";
 const voiceDiscourseId = showPali && id ? id : undefined;
+/** Paragraph- or discourse-range URLs: voice plays only the visible excerpt. */
+const voiceFilteredSubset = Boolean(paragraphRequest || discourseRange);
 
 // Debug logging in development only
 debug("title is: ", title, " fp: ", fp);
@@ -384,7 +389,10 @@ if (!SEOTitle) {
 											paragraphRequest={paragraphRequest}
 										/>
 										{voiceDiscourseId && (
-											<VoiceMode discourseId={voiceDiscourseId} />
+											<VoiceMode
+												discourseId={voiceDiscourseId}
+												filteredSubset={voiceFilteredSubset}
+											/>
 										)}
 									</div>
 									<div class="flex items-center gap-1">

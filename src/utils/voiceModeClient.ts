@@ -607,6 +607,76 @@ export function initVoiceMode(
 
 	const base = voiceAudioBase(discourseId);
 	const lsKey = `${LS_PREFIX}${discourseId}`;
+	const filteredSubset = triggerBtn.dataset.voiceFilteredSubset === "true";
+
+	let subsetTMin = 0;
+	let subsetTMax = 0;
+	let subsetManifestIdx: number[] = [];
+
+	function subsetPlaybackActive(): boolean {
+		return filteredSubset && subsetManifestIdx.length > 0;
+	}
+
+	function recomputeSubsetWindow(): void {
+		if (!filteredSubset || !manifest) {
+			subsetManifestIdx = [];
+			subsetTMin = 0;
+			subsetTMax = 0;
+			return;
+		}
+		ensureArticle();
+		if (!article) {
+			subsetManifestIdx = [];
+			subsetTMin = 0;
+			subsetTMax = 0;
+			return;
+		}
+		const nums = new Set<number>();
+		article
+			.querySelectorAll<HTMLElement>(
+				"p.english-paragraph[data-paragraph-number]",
+			)
+			.forEach((p) => {
+				const n = Number(p.dataset.paragraphNumber);
+				if (Number.isFinite(n)) nums.add(n);
+			});
+		const sortedIds = [...nums].sort((a, b) => a - b);
+		const indices: number[] = [];
+		for (const pid of sortedIds) {
+			const mi = manifest.paragraphs.findIndex((p) => p.id === pid);
+			if (mi >= 0) indices.push(mi);
+		}
+		if (indices.length === 0) {
+			subsetManifestIdx = [];
+			subsetTMin = 0;
+			subsetTMax = 0;
+			return;
+		}
+		subsetManifestIdx = indices;
+		subsetTMin = manifest.paragraphs[indices[0]].start;
+		subsetTMax = manifest.paragraphs[indices[indices.length - 1]].end;
+	}
+
+	function ensurePlaybackStartInSubsetWindow(): void {
+		recomputeSubsetWindow();
+		if (!subsetPlaybackActive()) return;
+		if (
+			audio.currentTime < subsetTMin - 0.01 ||
+			audio.currentTime >= subsetTMax - 0.05
+		) {
+			audio.currentTime = subsetTMin;
+		}
+	}
+
+	function findSubsetListPositionForManifestIndex(curIdx: number): number {
+		const pos = subsetManifestIdx.indexOf(curIdx);
+		if (pos >= 0) return pos;
+		for (let i = 0; i < subsetManifestIdx.length; i++) {
+			const mi = subsetManifestIdx[i];
+			if (mi >= curIdx) return i;
+		}
+		return subsetManifestIdx.length - 1;
+	}
 
 	function readLs(): { position?: number; rate?: number; speed?: number } {
 		try {
@@ -633,18 +703,19 @@ export function initVoiceMode(
 
 	function writeLs(): void {
 		try {
-			localStorage.setItem(
-				lsKey,
-				JSON.stringify({
-					position: audio.currentTime,
-					paragraphId:
-						manifest?.paragraphs[
-							findParagraphIndexAtTime(manifest, audio.currentTime)
-						]?.id,
-					manifestVersion: manifest?.version,
-					speed: audio.playbackRate,
-				}),
-			);
+			if (filteredSubset) recomputeSubsetWindow();
+			const payload: Record<string, unknown> = {
+				manifestVersion: manifest?.version,
+				speed: audio.playbackRate,
+			};
+			if (!subsetPlaybackActive() && manifest) {
+				payload.position = audio.currentTime;
+				payload.paragraphId =
+					manifest.paragraphs[
+						findParagraphIndexAtTime(manifest, audio.currentTime)
+					]?.id;
+			}
+			localStorage.setItem(lsKey, JSON.stringify(payload));
 		} catch {
 			/* ignore */
 		}
@@ -692,6 +763,7 @@ export function initVoiceMode(
 			document.dispatchEvent(new CustomEvent("voiceParamChanged"));
 			ensureArticle();
 			injectButtons();
+			recomputeSubsetWindow();
 		} else {
 			voiceBar
 				.querySelector("details.voice-shortcuts-details")
@@ -790,8 +862,15 @@ export function initVoiceMode(
 		if (!manifest) return;
 		const d = audio.duration || manifest.duration || 0;
 		const t = audio.currentTime;
-		voiceTimeEl.textContent = `${formatTime(t)} / ${formatTime(d)}`;
-		if (d > 0) voiceSeek.value = String((t / d) * 100);
+		if (subsetPlaybackActive()) {
+			const span = Math.max(subsetTMax - subsetTMin, 0.001);
+			const excerptT = Math.max(0, Math.min(t - subsetTMin, span));
+			voiceTimeEl.textContent = `${formatTime(excerptT)} / ${formatTime(span)}`;
+			voiceSeek.value = String((excerptT / span) * 100);
+		} else {
+			voiceTimeEl.textContent = `${formatTime(t)} / ${formatTime(d)}`;
+			if (d > 0) voiceSeek.value = String((t / d) * 100);
+		}
 		updateHighlight(t);
 	}
 
@@ -804,6 +883,21 @@ export function initVoiceMode(
 			pauseAfterParagraphIdx = -1;
 			syncUi();
 		}
+	}
+
+	function checkSubsetEnd(): void {
+		if (!subsetPlaybackActive() || !manifest || audio.paused) return;
+		if (audio.currentTime < subsetTMax - 0.05) return;
+		audio.pause();
+		audio.currentTime = Math.min(audio.currentTime, subsetTMax);
+		lastParagraphIdx = -1;
+		syncUi();
+		document.dispatchEvent(
+			new CustomEvent("voicePlaybackComplete", {
+				bubbles: true,
+				detail: { slug: discourseId },
+			}),
+		);
 	}
 
 	/* ——— Buffering indicator ——— */
@@ -870,6 +964,7 @@ export function initVoiceMode(
 		if (rafId) return;
 		const tick = (): void => {
 			checkSingleParaPause();
+			checkSubsetEnd();
 			syncUi();
 			if (!audio.paused) rafId = requestAnimationFrame(tick);
 			else rafId = 0;
@@ -890,10 +985,11 @@ export function initVoiceMode(
 		}
 		// Don't save a phantom position while iOS is silently buffering
 		if (!isBuffering) writeLs();
+		const listenStart = subsetPlaybackActive() ? subsetTMin : 0;
 		if (
 			focusAllowed &&
 			!audio.paused &&
-			audio.currentTime >= 10 &&
+			audio.currentTime >= listenStart + 10 &&
 			document.documentElement.classList.contains("voice-mode") &&
 			!document.documentElement.classList.contains("voice-immersive")
 		) {
@@ -903,12 +999,23 @@ export function initVoiceMode(
 
 	function seekToParagraph(delta: number): void {
 		if (!manifest) return;
+		recomputeSubsetWindow();
 		const idx = findParagraphIndexAtTime(manifest, audio.currentTime);
-		const targetIdx = Math.max(
+		if (!subsetPlaybackActive()) {
+			const targetIdx = Math.max(
+				0,
+				Math.min(manifest.paragraphs.length - 1, idx + delta),
+			);
+			seekToParagraphById(manifest.paragraphs[targetIdx].id, true);
+			return;
+		}
+		const pos = findSubsetListPositionForManifestIndex(idx);
+		const nextPos = Math.max(
 			0,
-			Math.min(manifest.paragraphs.length - 1, idx + delta),
+			Math.min(subsetManifestIdx.length - 1, pos + delta),
 		);
-		seekToParagraphById(manifest.paragraphs[targetIdx].id, true);
+		const targetMi = subsetManifestIdx[nextPos];
+		seekToParagraphById(manifest.paragraphs[targetMi].id, true);
 	}
 
 	function seekToParagraphById(
@@ -996,15 +1103,23 @@ export function initVoiceMode(
 			return;
 		}
 		if (audio.paused) {
-			const endedOrAtEnd =
+			recomputeSubsetWindow();
+			const atFullEnd =
 				audio.ended ||
 				(Number.isFinite(audio.duration) &&
 					audio.duration > 0 &&
 					audio.currentTime >= audio.duration - 0.05);
+			const atSubsetEnd =
+				subsetPlaybackActive() &&
+				audio.currentTime >= subsetTMax - 0.05;
+			const endedOrAtEnd = atFullEnd || atSubsetEnd;
 			if (endedOrAtEnd) {
-				audio.currentTime = 0;
+				audio.currentTime = subsetPlaybackActive() ? subsetTMin : 0;
 				lastParagraphIdx = -1;
 				lastPausePosition = 0;
+			} else {
+				/* e.g. ?voice=1 + filtered URL: audio is still at t=0 until first Play */
+				ensurePlaybackStartInSubsetWindow();
 			}
 			resetUserScroll();
 			ensureAudioContext().then(() => audio.play().catch(() => {}));
@@ -1061,7 +1176,11 @@ export function initVoiceMode(
 			audio.playbackRate = nearest;
 		}
 		updateSpeedButtons();
-		if (typeof saved.position === "number" && saved.position > 0) {
+		if (
+			typeof saved.position === "number" &&
+			saved.position > 0 &&
+			!filteredSubset
+		) {
 			audio.addEventListener(
 				"loadedmetadata",
 				() => {
@@ -1190,10 +1309,13 @@ export function initVoiceMode(
 		if (!document.documentElement.classList.contains("voice-mode")) return;
 		const prev = article;
 		ensureArticle();
+		recomputeSubsetWindow();
 		if (article && article !== prev) {
 			removeParagraphPlayButtons(prev);
 			injectButtons();
 			lastParagraphIdx = -1;
+			syncUi();
+		} else {
 			syncUi();
 		}
 	});
@@ -1205,6 +1327,7 @@ export function initVoiceMode(
 		if (!on) clearBufferingState();
 		setVoiceMode(on);
 		if (on) {
+			ensurePlaybackStartInSubsetWindow();
 			syncUi();
 			ensureAudioContext().then(() => audio.play().catch(() => {}));
 		} else {
@@ -1229,8 +1352,15 @@ export function initVoiceMode(
 
 	voiceSeek.addEventListener("input", () => {
 		if (!manifest?.duration && !audio.duration) return;
+		recomputeSubsetWindow();
 		const d = audio.duration || manifest!.duration || 0;
-		audio.currentTime = (Number(voiceSeek.value) / 100) * d;
+		if (subsetPlaybackActive()) {
+			const span = Math.max(subsetTMax - subsetTMin, 0.001);
+			audio.currentTime =
+				subsetTMin + (Number(voiceSeek.value) / 100) * span;
+		} else {
+			audio.currentTime = (Number(voiceSeek.value) / 100) * d;
+		}
 		lastParagraphIdx = -1;
 		pauseAfterParagraphIdx = -1;
 		resetUserScroll();
@@ -1333,6 +1463,7 @@ export function initVoiceMode(
 				setVoiceMode(false);
 			} else {
 				setVoiceMode(true);
+				ensurePlaybackStartInSubsetWindow();
 				syncUi();
 				ensureAudioContext().then(() => audio.play().catch(() => {}));
 			}
