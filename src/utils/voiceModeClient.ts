@@ -996,6 +996,16 @@ export function initVoiceMode(
 			return;
 		}
 		if (audio.paused) {
+			const endedOrAtEnd =
+				audio.ended ||
+				(Number.isFinite(audio.duration) &&
+					audio.duration > 0 &&
+					audio.currentTime >= audio.duration - 0.05);
+			if (endedOrAtEnd) {
+				audio.currentTime = 0;
+				lastParagraphIdx = -1;
+				lastPausePosition = 0;
+			}
 			resetUserScroll();
 			ensureAudioContext().then(() => audio.play().catch(() => {}));
 		} else {
