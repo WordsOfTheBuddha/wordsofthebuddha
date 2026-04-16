@@ -72,13 +72,155 @@
     padding: 0.875rem 1rem;
     border-bottom: 1px solid #e5e7eb;
     gap: 0.5rem;
+    position: relative;
   }
 
   .dark .tm-popover-header {
     border-bottom-color: #374151;
   }
 
+  .tm-popover-header-trailing {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;
+  }
+
+  .tm-snapshot-anchor {
+    position: relative;
+  }
+
+  .tm-llm-snapshot-btn {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #c7d2fe;
+    background: #eef2ff;
+    color: #3730a3;
+    cursor: pointer;
+    line-height: 1.2;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tm-llm-snapshot-btn:hover {
+    background: #e0e7ff;
+    border-color: #a5b4fc;
+  }
+
+  .tm-llm-snapshot-btn[aria-expanded='true'] {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: white;
+  }
+
+  .dark .tm-llm-snapshot-btn {
+    background: #312e81;
+    border-color: #4c1d95;
+    color: #c7d2fe;
+  }
+
+  .dark .tm-llm-snapshot-btn:hover {
+    background: #3730a3;
+    border-color: #5b21b6;
+  }
+
+  .dark .tm-llm-snapshot-btn[aria-expanded='true'] {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: white;
+  }
+
+  .tm-llm-snapshot-popover {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.35rem);
+    z-index: 60;
+    width: min(36rem, calc(100vw - 2.5rem));
+    max-height: min(22rem, 45vh);
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .dark .tm-llm-snapshot-popover {
+    background: #111827;
+    border-color: #374151;
+  }
+
+  .tm-llm-snapshot-popover[hidden] {
+    display: none !important;
+  }
+
+  .tm-llm-snapshot-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .dark .tm-llm-snapshot-toolbar {
+    border-bottom-color: #374151;
+  }
+
+  .tm-llm-snapshot-hint {
+    font-size: 0.6875rem;
+    color: #6b7280;
+    line-height: 1.3;
+  }
+
+  .dark .tm-llm-snapshot-hint {
+    color: #9ca3af;
+  }
+
+  .tm-llm-snapshot-copy {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    background: #6366f1;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .tm-llm-snapshot-copy:hover {
+    background: #4f46e5;
+  }
+
+  .tm-llm-snapshot-copy.copied {
+    background: #059669;
+  }
+
+  .tm-llm-snapshot-pre {
+    margin: 0;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    overflow: auto;
+    flex: 1;
+    white-space: pre;
+    background: #f9fafb;
+    color: #1f2937;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .dark .tm-llm-snapshot-pre {
+    background: #030712;
+    color: #e5e7eb;
+  }
+
   .tm-popover-title {
+    flex: 1;
+    min-width: 0;
     font-weight: 600;
     font-size: 0.9375rem;
     line-height: 1.4;
@@ -2567,6 +2709,83 @@ function getCurrentSuttaId(): string {
   // Track the element that opened the popover for focus restoration
   let popoverTriggerElement: HTMLElement | null = null;
 
+  /**
+   * Plain JSON snapshot for LLM agents: one top discourse per phrase tab
+   * (same ranking as the first discourse tab for each phrase row). Avoids
+   * spreading TM objects that may contain Set instances.
+   */
+  function buildTmLlmSnapshot(
+    result: TMMatchResult,
+    ui: { viewedPhraseTabIndex: number; viewedDiscourseTabIndex: number },
+  ) {
+    const sourceRef = result.sourceRef
+      ? {
+          suttaId: result.sourceRef.suttaId,
+          paragraphNum: result.sourceRef.paragraphNum,
+          refDisplay: formatDiscourseRef(result.sourceRef),
+          url: `/${result.sourceRef.suttaId}.${result.sourceRef.paragraphNum}?pli=true`,
+        }
+      : undefined;
+
+    const phraseTabs = result.phraseGroups.map((pg, phraseTabIndex) => {
+      const displayDiscourses = pg.diverseDiscourses?.length
+        ? pg.diverseDiscourses
+        : pg.discourses.slice(0, 3);
+      const top = displayDiscourses[0];
+      if (!top) {
+        return {
+          phraseTabIndex,
+          tabLabel: formatPhraseTabLabel(pg, result.sourceWordCount),
+          similarity: pg.similarity,
+          matchedSegmentPali: pg.matchedSegment,
+          topMatch: null,
+        };
+      }
+      return {
+        phraseTabIndex,
+        tabLabel: formatPhraseTabLabel(pg, result.sourceWordCount),
+        similarity: pg.similarity,
+        matchedWordCount: pg.matchedWordCount,
+        totalDiscourseMatches: pg.totalCount,
+        matchedSegmentPali: pg.matchedSegment,
+        sourceHighlightWordRange: pg.startIndex !== undefined && pg.endIndex !== undefined
+          ? { startWordIndex: pg.startIndex, endWordIndex: pg.endIndex }
+          : undefined,
+        topMatch: {
+          refDisplay: formatDiscourseRef({ suttaId: top.suttaId, paragraphNum: top.paragraphNum }),
+          suttaId: top.suttaId,
+          paragraphNum: top.paragraphNum,
+          url: `/${top.suttaId}.${top.paragraphNum}?pli=true`,
+          matchedPaliParagraph: top.paliOriginal,
+          englishTranslation: top.englishOriginal,
+          matchQuality: top.matchQuality,
+        },
+      };
+    });
+
+    return {
+      schemaVersion: 1,
+      generatedAt: new Date().toISOString(),
+      pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+      agentBrief:
+        'Each phraseTabs[] entry is one Translation Memory phrase tab. topMatch is the first (highest-ranked) discourse shown for that tab. Reuse englishTranslation phrasing where it aligns with the source segment; adapt for context. Glosses use |term::definition| in source strings.',
+      source: {
+        paliParagraph: result.sourcePali,
+        wordCount: result.sourceWordCount,
+        ref: sourceRef,
+      },
+      summary: {
+        phraseTabCount: result.phraseGroups.length,
+        totalDiscourseMatchesAcrossUi: result.totalDiscourses,
+      },
+      uiContext: {
+        viewedPhraseTabIndex: ui.viewedPhraseTabIndex,
+        viewedDiscourseTabIndex: ui.viewedDiscourseTabIndex,
+      },
+      phraseTabs,
+    };
+  }
+
   // Show popover with match details
   // activePhraseIdx: which phrase group is selected (Row 1)
   // activeDiscourseIdx: which discourse within that phrase is selected (Row 2)
@@ -2680,13 +2899,34 @@ function getCurrentSuttaId(): string {
       : undefined;
     const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, undefined, entryHighlightRange, discourse.entryCoveredPositions);
 
+    const llmSnapshotJson = JSON.stringify(
+      buildTmLlmSnapshot(result, {
+        viewedPhraseTabIndex: activePhraseIdx,
+        viewedDiscourseTabIndex: activeDiscourseIdx,
+      }),
+      null,
+      2,
+    );
+
     overlay.innerHTML = `
       <div class="tm-popover" role="dialog" aria-modal="true">
         <div class="tm-popover-header">
           <span class="tm-popover-title">
             Translation Memory <span class="tm-discourse-count">(${result.totalDiscourses} text match${result.totalDiscourses !== 1 ? 'es' : ''})${singlePhraseLabel}</span>
           </span>
-          <button class="tm-popover-close" aria-label="Close">&times;</button>
+          <div class="tm-popover-header-trailing">
+            <div class="tm-snapshot-anchor">
+              <button type="button" class="tm-llm-snapshot-btn" aria-label="LLM agent JSON snapshot" aria-expanded="false" aria-controls="tm-llm-snapshot-panel" title="JSON: top match for each phrase tab">{...}</button>
+              <div id="tm-llm-snapshot-panel" class="tm-llm-snapshot-popover" role="region" aria-label="Translation memory JSON snapshot" hidden>
+                <div class="tm-llm-snapshot-toolbar">
+                  <span class="tm-llm-snapshot-hint">Top match per phrase tab · for agents</span>
+                  <button type="button" class="tm-llm-snapshot-copy">Copy JSON</button>
+                </div>
+                <pre class="tm-llm-snapshot-pre"></pre>
+              </div>
+            </div>
+            <button class="tm-popover-close" aria-label="Close">&times;</button>
+          </div>
         </div>
         ${phraseTabsHtml}
         ${discourseTabsHtml}
@@ -2710,6 +2950,56 @@ function getCurrentSuttaId(): string {
     `;
 
     document.body.appendChild(overlay);
+
+    const llmPre = overlay.querySelector('.tm-llm-snapshot-pre') as HTMLElement | null;
+    if (llmPre) llmPre.textContent = llmSnapshotJson;
+
+    const snapshotBtn = overlay.querySelector('.tm-llm-snapshot-btn') as HTMLButtonElement | null;
+    const snapshotPanel = overlay.querySelector('.tm-llm-snapshot-popover') as HTMLElement | null;
+    const snapshotCopy = overlay.querySelector('.tm-llm-snapshot-copy') as HTMLButtonElement | null;
+
+    const closeSnapshotPanel = () => {
+      if (snapshotPanel) snapshotPanel.hidden = true;
+      snapshotBtn?.setAttribute('aria-expanded', 'false');
+    };
+
+    const openSnapshotPanel = () => {
+      if (snapshotPanel) snapshotPanel.hidden = false;
+      snapshotBtn?.setAttribute('aria-expanded', 'true');
+    };
+
+    const toggleSnapshotPanel = () => {
+      if (snapshotPanel && !snapshotPanel.hidden) closeSnapshotPanel();
+      else openSnapshotPanel();
+    };
+
+    snapshotBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleSnapshotPanel();
+    });
+
+    snapshotCopy?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(llmSnapshotJson);
+        snapshotCopy.textContent = 'Copied';
+        snapshotCopy.classList.add('copied');
+        setTimeout(() => {
+          snapshotCopy.textContent = 'Copy JSON';
+          snapshotCopy.classList.remove('copied');
+        }, 1600);
+      } catch (err) {
+        console.error('TM snapshot copy failed:', err);
+      }
+    });
+
+    const snapshotOutsideDown = (e: MouseEvent) => {
+      if (!snapshotPanel || snapshotPanel.hidden) return;
+      const t = e.target as Node;
+      if (snapshotBtn?.contains(t) || snapshotPanel.contains(t)) return;
+      closeSnapshotPanel();
+    };
+    document.addEventListener('mousedown', snapshotOutsideDown, true);
 
     // Selection-based copy tooltip for English text
     const selectableEl = overlay.querySelector('.tm-selectable') as HTMLElement;
@@ -2966,6 +3256,8 @@ function getCurrentSuttaId(): string {
     let handleKeydown: ((e: KeyboardEvent) => void) | null = null;
 
     const cleanupAndClose = () => {
+      document.removeEventListener('mousedown', snapshotOutsideDown, true);
+      closeSnapshotPanel();
       overlay.removeEventListener('wheel', preventBackgroundScroll);
       overlay.removeEventListener('touchmove', preventBackgroundScroll);
       if (handleKeydown) {
@@ -2984,6 +3276,11 @@ function getCurrentSuttaId(): string {
     // Escape key handler
     handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        if (snapshotPanel && !snapshotPanel.hidden) {
+          e.preventDefault();
+          closeSnapshotPanel();
+          return;
+        }
         cleanupAndClose();
         return;
       }
