@@ -23,6 +23,13 @@ Outputs:
   public/audio/<slug>.webm
   public/audio/<slug>.manifest.json
 
+Environment variables:
+  TTS_VOICE                         Voice name (default: en-US-Chirp3-HD-Charon)
+  TTS_SPEAKING_RATE                 Speech rate 0.25–4.0 (default: 0.9)
+  TTS_PARAGRAPH_BREAK_MS            Verse/section break in ms (default: 1200)
+  TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS  Prose break in ms (default: 800)
+  GOOGLE_APPLICATION_CREDENTIALS   Path to GCP service account JSON
+
 See scripts/README-voice.md
 """
 
@@ -33,6 +40,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sys
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -739,7 +747,7 @@ def _synthesize_wav_chunk(
     )
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16,
-        speaking_rate=1.0,
+        speaking_rate=float(os.environ.get("TTS_SPEAKING_RATE", "0.9")),
     )
     response = client.synthesize_speech(
         input=synthesis_input, voice=voice, audio_config=audio_config
@@ -1975,6 +1983,14 @@ def process_one_discourse(
     print(f"Paragraphs: {len(paragraph_specs)}")
     print(f"Output: {out_audio.relative_to(REPO_ROOT)}")
 
+    # Backup existing files before any writes (enables rollback after generation)
+    _backed_up: list[str] = []
+    for _f in [out_audio, out_manifest]:
+        if _f.exists():
+            _bak = _f.with_suffix(_f.suffix + ".bak")
+            shutil.copy2(_f, _bak)
+            _backed_up.append(str(_bak.relative_to(REPO_ROOT)))
+
     breaks: list[int] = []
     for i, (_, _, is_break) in enumerate(paragraph_specs):
         if i == 0:
@@ -2155,6 +2171,10 @@ def process_one_discourse(
         encoding="utf-8",
     )
     print(f"Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    if _backed_up:
+        for _b in _backed_up:
+            print(f"  Backup: {_b}")
+        print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
     return 0
 
 
@@ -2220,6 +2240,7 @@ def main() -> int:
 
     voice_name = os.environ.get("TTS_VOICE", "en-US-Chirp3-HD-Charon")
     language_code = os.environ.get("TTS_LANGUAGE_CODE", "en-US")
+    speaking_rate = float(os.environ.get("TTS_SPEAKING_RATE", "0.9"))
     break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
     consecutive_break_ms = int(os.environ.get("TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS", "800"))
 
@@ -2237,7 +2258,9 @@ def main() -> int:
 
     print(f"Resolved {len(slugs)} discourse(s): {', '.join(slugs[:12])}{' …' if len(slugs) > 12 else ''}")
     chunking = args.chunking
-    print(f"Voice: {voice_name} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose) | chunking: {chunking}")
+    print(
+        f"Voice: {voice_name} | rate: {speaking_rate} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose) | chunking: {chunking}"
+    )
 
     failed = 0
     for slug in slugs:

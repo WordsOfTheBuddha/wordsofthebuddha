@@ -3,11 +3,11 @@
 Re-take specific TTS groups in an existing discourse audio.
 
 Usage:
-  # Retake TTS group 0 (first group) for iti23:
-  python scripts/edit_voice.py iti23 --retake-groups 0
+  # Retake TTS group 1 (first group) for iti23:
+  python scripts/edit_voice.py iti23 --retake-groups 1
 
-  # Retake groups 0 and 2:
-  python scripts/edit_voice.py iti23 --retake-groups 0,2
+  # Retake groups 1 and 3:
+  python scripts/edit_voice.py iti23 --retake-groups 1,3
 
   # Retake by paragraph range (1-based): paragraphs 1-3:
   python scripts/edit_voice.py iti23 --retake-paragraphs 1-3
@@ -21,6 +21,13 @@ Usage:
 Saves .bak backup files before editing. Use --rollback to restore.
 Keeps lossless WAV intermediates in .cache/voice-edit/ for re-encoding
 without quality loss on subsequent retakes.
+
+Environment variables (same as voice:gen):
+  TTS_VOICE                         Voice name (default: en-US-Chirp3-HD-Charon)
+  TTS_SPEAKING_RATE                 Speech rate 0.25–4.0 (default: 0.9)
+  TTS_PARAGRAPH_BREAK_MS            Verse/section break in ms (default: 1200)
+  TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS  Prose break in ms (default: 800)
+  GOOGLE_APPLICATION_CREDENTIALS   Path to GCP service account JSON
 """
 
 from __future__ import annotations
@@ -84,15 +91,17 @@ def _groups_for_paragraphs(
 
 
 def _parse_retake_groups(spec: str) -> list[int]:
-    """Parse comma-separated group indices: '0,2' -> [0, 2]."""
+    """Parse comma-separated 1-based group indices: '1,3' -> [0, 2] (0-based internally)."""
     parts = [p.strip() for p in spec.split(",")]
     indices: list[int] = []
     for p in parts:
         if "-" in p:
             lo, hi = p.split("-", 1)
-            indices.extend(range(int(lo), int(hi) + 1))
+            # Convert 1-based to 0-based: groups 1-3 become indices 0-2
+            indices.extend(range(int(lo) - 1, int(hi)))
         else:
-            indices.append(int(p))
+            # Convert 1-based to 0-based
+            indices.append(int(p) - 1)
     return sorted(set(indices))
 
 
@@ -253,7 +262,7 @@ def preview_groups(slug: str) -> None:
                     preview += "…"
                 first_words.append(f"    ¶{paragraphs[pi]['id']}: {preview}")
 
-        print(f"  Group {gi}: ¶{para_ids_display} [{g['start']:.2f}s – {g['end']:.2f}s] ({dur:.1f}s)")
+        print(f"  Group {gi + 1}: ¶{para_ids_display} [{g['start']:.2f}s – {g['end']:.2f}s] ({dur:.1f}s)")
         for line in first_words:
             print(line)
         print()
@@ -285,7 +294,9 @@ def retake_groups(
 
     kept_indices = [i for i in range(n_groups) if i not in retake_group_indices]
     retake_set = set(retake_group_indices)
-    print(f"\n{slug}: retaking groups {retake_group_indices}, keeping {kept_indices}")
+    retake_1based = [gi + 1 for gi in retake_group_indices]
+    kept_1based = [gi + 1 for gi in kept_indices]
+    print(f"\n{slug}: retaking groups {retake_1based}, keeping {kept_1based}")
 
     # ── 1. Load MDX and extract paragraph data ───────────────────────────
 
@@ -335,7 +346,7 @@ def retake_groups(
         brks = [breaks[pi] for pi in pids]
 
         ssml = build_ssml(texts, brks)
-        print(f"  Re-synthesizing group {gi} (¶{[pi+1 for pi in pids]})…")
+        print(f"  Re-synthesizing group {gi + 1} (¶{[pi+1 for pi in pids]})…")
         wav_bytes = _synthesize_wav_chunk(ssml, voice_name, language_code, client)
         retake_wavs[gi] = wav_bytes
 
@@ -474,7 +485,7 @@ def retake_groups(
     delta = (new_dur or 0) - (old_dur or 0)
     sign = "+" if delta >= 0 else ""
     print(f"\n  Done. Duration: {old_dur:.1f}s → {new_dur:.1f}s ({sign}{delta:.1f}s)")
-    print(f"  Rollback: python scripts/edit_voice.py {slug} --rollback")
+    print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
 
     return 0
 
@@ -499,7 +510,7 @@ def main() -> int:
     action.add_argument(
         "--retake-groups",
         metavar="INDICES",
-        help="Comma-separated 0-based group indices to re-synthesize (e.g. 0,2).",
+        help="Comma-separated 1-based group indices to re-synthesize (e.g. 1,3). See --preview for group numbering.",
     )
     action.add_argument(
         "--retake-paragraphs",
@@ -545,7 +556,8 @@ def main() -> int:
 
     if args.retake_paragraphs:
         retake_gis = _parse_retake_paragraphs(args.retake_paragraphs, manifest)
-        print(f"  Paragraphs {args.retake_paragraphs} → groups {retake_gis}")
+        retake_gis_display = [i + 1 for i in retake_gis]
+        print(f"  Paragraphs {args.retake_paragraphs} → groups {retake_gis_display}")
     else:
         retake_gis = _parse_retake_groups(args.retake_groups)
 
@@ -560,8 +572,10 @@ def main() -> int:
 
     voice_name = os.environ.get("TTS_VOICE", "en-US-Chirp3-HD-Charon")
     language_code = os.environ.get("TTS_LANGUAGE_CODE", "en-US")
+    speaking_rate = float(os.environ.get("TTS_SPEAKING_RATE", "0.9"))
     break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
     consecutive_break_ms = int(os.environ.get("TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS", "800"))
+    print(f"Voice: {voice_name} | rate: {speaking_rate} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose)")
 
     return retake_groups(
         slug,
