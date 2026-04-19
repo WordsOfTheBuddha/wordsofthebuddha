@@ -84,7 +84,7 @@ Script reads from `.env` file (or env vars):
 
 ```
 GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
-TTS_VOICE=en-US-Chirp3-HD-Charon
+TTS_VOICE=en-US-Studio-M
 TTS_LANGUAGE_CODE=en-US
 WHISPER_MODEL=base
 TTS_PARAGRAPH_BREAK_MS=1200
@@ -97,7 +97,7 @@ TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS=800
 {
   "version": 1,
   "textHash": "sha256 of normalized speakable text",
-  "voice": "en-US-Chirp3-HD-Charon",
+  "voice": "en-US-Studio-M",
   "generatedAt": "2026-04-09T00:00:00Z",
   "duration": 142.5,
   "paragraphs": [

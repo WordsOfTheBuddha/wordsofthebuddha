@@ -24,11 +24,14 @@ Outputs:
   public/audio/<slug>.manifest.json
 
 Environment variables:
-  TTS_VOICE                         Voice name (default: en-US-Chirp3-HD-Charon)
+  TTS_VOICE                         Voice name (default: en-US-Studio-M)
   TTS_SPEAKING_RATE                 Speech rate 0.25–4.0 (default: 0.9)
   TTS_PARAGRAPH_BREAK_MS            Verse/section break in ms (default: 1200)
   TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS  Prose break in ms (default: 800)
   GOOGLE_APPLICATION_CREDENTIALS   Path to GCP service account JSON
+
+Optional SSML <prosody> (voice:gen): --prosody-pitch / --prosody-rate / --prosody-volume
+(see Google Cloud TTS SSML). Combining SSML rate with TTS_SPEAKING_RATE may compound speed.
 
 See scripts/README-voice.md
 """
@@ -42,6 +45,7 @@ import os
 import re
 import shutil
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -500,20 +504,62 @@ def _has_adjacent_sentence_overlap(text: str) -> bool:
     return False
 
 
+def _quote_ssml_attr(value: str) -> str:
+    """Quote a string for use in SSML/XML double-quoted attributes."""
+    return '"' + escape(value, {'"': "&quot;", "'": "&apos;"}) + '"'
+
+
+@dataclass(frozen=True, slots=True)
+class SsmlProsodyOptions:
+    """Optional SSML ``<prosody>`` wrapper for Google Cloud TTS (see Cloud SSML docs)."""
+
+    pitch: str | None = None
+    rate: str | None = None
+    volume: str | None = None
+
+
+def optional_ssml_prosody(
+    pitch: str | None,
+    rate: str | None,
+    volume: str | None,
+) -> SsmlProsodyOptions | None:
+    """Build ``SsmlProsodyOptions`` from CLI strings, or None if all empty."""
+    def _s(x: str | None) -> str | None:
+        if x is None:
+            return None
+        t = x.strip()
+        return t if t else None
+
+    p, r, v = _s(pitch), _s(rate), _s(volume)
+    if p or r or v:
+        return SsmlProsodyOptions(pitch=p, rate=r, volume=v)
+    return None
+
+
 def build_ssml(
     paragraphs: list[str],
     break_ms: int | list[int],
+    *,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> str:
     """Build SSML from paragraphs with per-paragraph break durations.
     break_ms can be a single int (uniform) or a list aligned with paragraphs
-    where each value is the break *before* that paragraph (index 0 is unused)."""
+    where each value is the break *before* that paragraph (index 0 is unused).
+
+    ``prosody`` wraps the body in ``<prosody>`` when any field is set. Rate/pitch
+    strings follow Google's SSML docs (e.g. pitch ``medium``, rate ``90%`` or ``slow``).
+    """
+    pp = prosody.pitch if prosody else None
+    pr = prosody.rate if prosody else None
+    pv = prosody.volume if prosody else None
+
     breaks: list[int]
     if isinstance(break_ms, list):
         breaks = break_ms
     else:
         breaks = [break_ms] * len(paragraphs)
 
-    parts: list[str] = ["<speak>"]
+    parts: list[str] = []
     for i, p in enumerate(paragraphs):
         parts.append("<p>")
         sentences = _split_sentences(p)
@@ -526,8 +572,19 @@ def build_ssml(
         if i < len(paragraphs) - 1:
             ms = breaks[i + 1] if i + 1 < len(breaks) else breaks[-1] if breaks else 800
             parts.append(f'<break time="{ms}ms"/>')
-    parts.append("</speak>")
-    return "".join(parts)
+    inner = "".join(parts)
+
+    if pp is not None or pr is not None or pv is not None:
+        attrs: list[str] = []
+        if pp is not None:
+            attrs.append(f"pitch={_quote_ssml_attr(pp)}")
+        if pr is not None:
+            attrs.append(f"rate={_quote_ssml_attr(pr)}")
+        if pv is not None:
+            attrs.append(f"volume={_quote_ssml_attr(pv)}")
+        inner = f"<prosody {' '.join(attrs)}>{inner}</prosody>"
+
+    return f"<speak>{inner}</speak>"
 
 
 def text_hash(full_text: str) -> str:
@@ -549,10 +606,39 @@ MAX_SSML_BYTES = 4800  # Google TTS limit is 5000; leave margin
 MIN_MERGE_CHARS = 120  # Short paragraphs absorbed into neighboring group (smart mode)
 TARGET_GROUP_SIZE = 3  # Aim for this many paragraphs per TTS call (smart mode)
 
+# Brief paragraph snippets during generation (voice:gen); MDX display text, not phonetic align text.
+VOICE_PREVIEW_WORDS_GEN = 12
+
+
+def format_paragraph_first_words(text: str, max_words: int) -> str:
+    """First `max_words` whitespace-separated tokens; ellipsis if truncated."""
+    words = text.split()
+    if not words:
+        return ""
+    preview = " ".join(words[:max_words])
+    if len(words) > max_words:
+        preview += "…"
+    return preview
+
+
+def print_tts_group_paragraph_previews(
+    indices: list[int],
+    paragraph_specs_display: list[tuple[int, str, bool]],
+    max_words: int = VOICE_PREVIEW_WORDS_GEN,
+    indent: str = "      ",
+) -> None:
+    """Print one line per paragraph: ¶id + first words (same shape as voice:edit --preview)."""
+    for pi in indices:
+        pid, text, _ = paragraph_specs_display[pi]
+        snippet = format_paragraph_first_words(text, max_words)
+        if snippet:
+            print(f"{indent}¶{pid}: {snippet}")
+
 
 def _chunk_paragraphs(
     paragraphs: list[str],
     breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[list[str], list[int]]]:
     """Split paragraph list into groups whose SSML fits within the byte limit.
     Returns list of (paragraph_texts, break_durations) tuples per chunk."""
@@ -562,7 +648,7 @@ def _chunk_paragraphs(
     for i, p in enumerate(paragraphs):
         trial_texts = cur_texts + [p]
         trial_breaks = cur_breaks + [breaks[i] if i < len(breaks) else 800]
-        ssml = build_ssml(trial_texts, trial_breaks)
+        ssml = build_ssml(trial_texts, trial_breaks, prosody=prosody)
         if len(ssml.encode("utf-8")) > MAX_SSML_BYTES and cur_texts:
             chunks.append((cur_texts, cur_breaks))
             cur_texts = [p]
@@ -578,9 +664,10 @@ def _chunk_paragraphs(
 def _grouped_chunk_indices(
     paragraphs: list[str],
     breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[list[int], list[str], list[int]]]:
     """Return grouped-mode chunks with original paragraph indices attached."""
-    chunks = _chunk_paragraphs(paragraphs, breaks)
+    chunks = _chunk_paragraphs(paragraphs, breaks, prosody=prosody)
     out: list[tuple[list[int], list[str], list[int]]] = []
     cursor = 0
     for chunk_texts, chunk_breaks in chunks:
@@ -658,6 +745,7 @@ def build_grouping_preference_groups(
     paragraphs: list[str],
     breaks: list[int],
     grouping_preference: str,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[list[int], list[str], list[int]]]:
     """Build user-requested groups and validate each group's SSML byte size."""
     index_groups = parse_grouping_preference(grouping_preference, len(paragraphs))
@@ -666,7 +754,7 @@ def build_grouping_preference_groups(
     for indices in index_groups:
         texts = [paragraphs[i] for i in indices]
         brks = [breaks[i] for i in indices]
-        ssml = build_ssml(texts, brks)
+        ssml = build_ssml(texts, brks, prosody=prosody)
         ssml_bytes = len(ssml.encode("utf-8"))
         if ssml_bytes > MAX_SSML_BYTES:
             group_label = f"{indices[0] + 1}-{indices[-1] + 1}" if len(indices) > 1 else str(indices[0] + 1)
@@ -686,6 +774,7 @@ def _merge_short_paragraphs(
     breaks: list[int],
     min_chars: int = MIN_MERGE_CHARS,
     target_size: int = TARGET_GROUP_SIZE,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[list[int], list[str], list[int]]]:
     """Group paragraphs for TTS context using a sliding-window strategy.
 
@@ -710,7 +799,11 @@ def _merge_short_paragraphs(
 
         # Phase 1: fill up to target_size paragraphs
         while len(indices) < target_size and i + 1 < n:
-            trial = build_ssml(texts + [paragraphs[i + 1]], brks + [breaks[i + 1]])
+            trial = build_ssml(
+                texts + [paragraphs[i + 1]],
+                brks + [breaks[i + 1]],
+                prosody=prosody,
+            )
             if len(trial.encode("utf-8")) > MAX_SSML_BYTES:
                 break
             i += 1
@@ -720,7 +813,11 @@ def _merge_short_paragraphs(
 
         # Phase 2: absorb trailing short paragraphs beyond the base window
         while i + 1 < n and len(paragraphs[i + 1]) < min_chars:
-            trial = build_ssml(texts + [paragraphs[i + 1]], brks + [breaks[i + 1]])
+            trial = build_ssml(
+                texts + [paragraphs[i + 1]],
+                brks + [breaks[i + 1]],
+                prosody=prosody,
+            )
             if len(trial.encode("utf-8")) > MAX_SSML_BYTES:
                 break
             i += 1
@@ -747,6 +844,7 @@ def _synthesize_wav_chunk(
     )
     audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.LINEAR16,
+        sample_rate_hertz=44100,
         speaking_rate=float(os.environ.get("TTS_SPEAKING_RATE", "0.9")),
     )
     response = client.synthesize_speech(
@@ -760,6 +858,7 @@ def _synthesize_chunks_parallel(
     voice_name: str,
     language_code: str,
     client,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[bytes]:
     """Synthesize TTS chunks in parallel using a thread pool.
     Google TTS is IO-bound (network), so threads give near-linear speedup."""
@@ -767,7 +866,7 @@ def _synthesize_chunks_parallel(
 
     ssmls: list[str] = []
     for i, (chunk_texts, chunk_breaks) in enumerate(chunks):
-        ssml = build_ssml(chunk_texts, chunk_breaks)
+        ssml = build_ssml(chunk_texts, chunk_breaks, prosody=prosody)
         ssmls.append(ssml)
         print(f"  Chunk {i + 1}/{len(chunks)}: {len(ssml)} bytes SSML")
 
@@ -794,14 +893,15 @@ def build_tts_debug_groups(
     breaks: list[int],
     chunking: str,
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[list[int], list[str], list[int]]]:
     """Build the exact paragraph groups that will be sent to Google TTS."""
     if forced_groups is not None:
         return forced_groups
     if chunking == "smart":
-        return _merge_short_paragraphs(paragraphs, breaks)
+        return _merge_short_paragraphs(paragraphs, breaks, prosody=prosody)
     if chunking == "grouped":
-        return _grouped_chunk_indices(paragraphs, breaks)
+        return _grouped_chunk_indices(paragraphs, breaks, prosody=prosody)
     return [([i], [paragraphs[i]], [breaks[i]]) for i in range(len(paragraphs))]
 
 
@@ -819,6 +919,7 @@ def build_tts_debug_payload(
     breaks: list[int],
     chunking: str,
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> dict:
     paragraphs_payload: list[dict] = []
     for idx, ((pid, raw_chunk, is_break), (_, display_text, _), (_, tts_text, _), spoken_text) in enumerate(
@@ -845,6 +946,7 @@ def build_tts_debug_payload(
             breaks,
             chunking,
             forced_groups=forced_groups,
+            prosody=prosody,
         ),
         start=1,
     ):
@@ -855,7 +957,7 @@ def build_tts_debug_payload(
                 "paragraphIds": [raw_chunks[i][0] for i in indices],
                 "breaksMs": group_breaks,
                 "texts": texts,
-                "ssml": build_ssml(texts, group_breaks),
+                "ssml": build_ssml(texts, group_breaks, prosody=prosody),
             }
         )
 
@@ -895,6 +997,7 @@ def synthesize_opus(
     language_code: str,
     out_path: Path,
     parallel: bool = True,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[float, float]]:
     """Synthesize each paragraph independently and concatenate with silence gaps.
 
@@ -912,7 +1015,7 @@ def synthesize_opus(
     n = len(paragraphs)
 
     # Build single-paragraph SSML for each paragraph
-    ssmls = [build_ssml([p], [0]) for p in paragraphs]
+    ssmls = [build_ssml([p], [0], prosody=prosody) for p in paragraphs]
     for i, ssml in enumerate(ssmls):
         size = len(ssml.encode("utf-8"))
         if size > MAX_SSML_BYTES:
@@ -996,6 +1099,8 @@ def synthesize_opus_smart(
     out_path: Path,
     parallel: bool = True,
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
+    paragraph_specs_display: list[tuple[int, str, bool]] | None = None,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[float, float]]:
     """Smart synthesis: merge short paragraphs into groups for better TTS context.
 
@@ -1012,7 +1117,11 @@ def synthesize_opus_smart(
 
     client = texttospeech.TextToSpeechClient()
     n = len(paragraphs)
-    groups = forced_groups if forced_groups is not None else _merge_short_paragraphs(paragraphs, breaks)
+    groups = (
+        forced_groups
+        if forced_groups is not None
+        else _merge_short_paragraphs(paragraphs, breaks, prosody=prosody)
+    )
 
     n_solo = sum(1 for g in groups if len(g[0]) == 1)
     n_merged = len(groups) - n_solo
@@ -1021,13 +1130,13 @@ def synthesize_opus_smart(
         print(f"  Smart merge: {n} paragraphs → {len(groups)} groups "
               f"({n_solo} solo, {n_merged} merged covering {merged_paras} paragraphs)")
     else:
-        print(f"  Manual grouping: {n} paragraphs → {len(groups)} groups "
+        print(f"  User-provided grouping: {n} paragraphs → {len(groups)} groups "
               f"({n_solo} solo, {n_merged} merged covering {merged_paras} paragraphs)")
 
     # Build SSML for each group
     ssmls: list[str] = []
     for indices, texts, brks in groups:
-        ssml = build_ssml(texts, brks)
+        ssml = build_ssml(texts, brks, prosody=prosody)
         ssmls.append(ssml)
         size = len(ssml.encode("utf-8"))
         if size > MAX_SSML_BYTES:
@@ -1055,6 +1164,10 @@ def synthesize_opus_smart(
             g = groups[idx]
             label = f"¶{g[0][0]+1}" if len(g[0]) == 1 else f"¶{g[0][0]+1}–{g[0][-1]+1}"
             print(f"  ✓ Group {idx + 1} ({label}) done ({done_count}/{len(groups)})")
+            if paragraph_specs_display is not None:
+                print_tts_group_paragraph_previews(
+                    g[0], paragraph_specs_display, VOICE_PREVIEW_WORDS_GEN
+                )
 
     wav_chunks = [results[i] for i in range(len(groups))]
 
@@ -1137,6 +1250,7 @@ def synthesize_opus_grouped(
     language_code: str,
     out_path: Path,
     parallel: bool = True,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[float, float]]:
     """Grouped (byte-size) synthesis: pack paragraphs into SSML-size chunks.
 
@@ -1152,7 +1266,7 @@ def synthesize_opus_grouped(
 
     client = texttospeech.TextToSpeechClient()
     n = len(paragraphs)
-    chunks = _chunk_paragraphs(paragraphs, breaks)
+    chunks = _chunk_paragraphs(paragraphs, breaks, prosody=prosody)
 
     # Build a mapping from chunk index to original paragraph indices
     chunk_para_indices: list[list[int]] = []
@@ -1164,7 +1278,9 @@ def synthesize_opus_grouped(
 
     print(f"  Grouped mode: {n} paragraphs → {len(chunks)} byte-size chunks")
 
-    wav_chunks = _synthesize_chunks_parallel(chunks, voice_name, language_code, client)
+    wav_chunks = _synthesize_chunks_parallel(
+        chunks, voice_name, language_code, client, prosody=prosody
+    )
 
     # Concatenate and estimate per-paragraph boundaries
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1504,6 +1620,7 @@ def _align_with_whisperx(
     paragraph_specs: list[tuple[int, str, bool]],
     paragraph_boundaries: list[tuple[float, float]],
     tts_groups: list[tuple[float, float, list[int]]] | None = None,
+    paragraph_specs_display: list[tuple[int, str, bool]] | None = None,
 ) -> tuple[list[dict], float]:
     """Word-level alignment using WhisperX with known paragraph boundaries.
 
@@ -1629,9 +1746,17 @@ def _align_with_whisperx(
                             "words": words_out, "_tts_boundaries": True,
                         }
 
-                label = f"¶{indices[0]+1}–{indices[-1]+1}"
-                n_aligned = sum(len(paragraphs_out[pi]["words"]) for pi in indices)
-                print(f"  Group {gi+1} ({label}): {n_aligned} words aligned")
+            label = (
+                f"¶{indices[0]+1}"
+                if len(indices) == 1
+                else f"¶{indices[0]+1}–{indices[-1]+1}"
+            )
+            n_aligned = sum(len(paragraphs_out[pi]["words"]) for pi in indices)
+            print(f"  Group {gi+1} ({label}): {n_aligned} words aligned")
+            if paragraph_specs_display is not None:
+                print_tts_group_paragraph_previews(
+                    indices, paragraph_specs_display, VOICE_PREVIEW_WORDS_GEN
+                )
     else:
         # Fallback: per-paragraph alignment (paragraph mode or no group info)
         print(f"  Aligning {len(paragraph_specs)} paragraphs with WhisperX (per-paragraph)…")
@@ -1730,6 +1855,7 @@ def align_to_manifest(
     skip_align: bool,
     paragraph_boundaries: list[tuple[float, float]] | None = None,
     tts_groups: list[tuple[float, float, list[int]]] | None = None,
+    paragraph_specs_display: list[tuple[int, str, bool]] | None = None,
 ) -> dict:
     audio_hash = file_hash(audio_path)
 
@@ -1762,6 +1888,7 @@ def align_to_manifest(
             paragraphs_out, duration = _align_with_whisperx(
                 audio_path, paragraph_specs, paragraph_boundaries,
                 tts_groups=tts_groups,
+                paragraph_specs_display=paragraph_specs_display,
             )
         except ImportError:
             sys.stderr.write(
@@ -1944,6 +2071,7 @@ def process_one_discourse(
     chunking: str = "smart",
     verbose_tts: bool = False,
     grouping_preference: str | None = None,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> int:
     mdx_path = resolve_mdx_path(slug)
     raw = mdx_path.read_text(encoding="utf-8")
@@ -2013,6 +2141,7 @@ def process_one_discourse(
                 paragraphs_tts,
                 breaks,
                 grouping_preference,
+                prosody=prosody,
             )
             print(f"  Grouping preference: {grouping_preference}")
         except ValueError as e:
@@ -2021,6 +2150,8 @@ def process_one_discourse(
                 file=sys.stderr,
             )
             return 1
+
+    chunking_for_display = "user-provided" if forced_groups is not None else chunking
 
     if verbose_tts:
         debug_payload = build_tts_debug_payload(
@@ -2031,8 +2162,9 @@ def process_one_discourse(
             paragraph_specs_for_tts,
             paragraphs_tts,
             breaks,
-            chunking,
+            chunking_for_display,
             forced_groups=forced_groups,
+            prosody=prosody,
         )
         emit_tts_debug_payload(debug_payload, out_tts_debug)
 
@@ -2117,7 +2249,7 @@ def process_one_discourse(
                             _breaks.append(break_ms)
                         else:
                             _breaks.append(consecutive_break_ms)
-                    groups = _merge_short_paragraphs(_texts, _breaks)
+                    groups = _merge_short_paragraphs(_texts, _breaks, prosody=prosody)
                     tts_groups = []
                     for indices, _, _ in groups:
                         g_start = paragraph_boundaries[indices[0]][0]
@@ -2130,7 +2262,7 @@ def process_one_discourse(
         n_long = sum(1 for b in breaks if b == break_ms)
         n_short = sum(1 for b in breaks if b == consecutive_break_ms)
         print(f"  Breaks: {n_long} × {break_ms}ms (verse), {n_short} × {consecutive_break_ms}ms (prose)")
-        print(f"  Chunking: {chunking}")
+        print(f"  Chunking: {chunking_for_display}")
 
         if forced_groups is not None:
             paragraph_boundaries, tts_groups = synthesize_opus_smart(
@@ -2140,18 +2272,36 @@ def process_one_discourse(
                 language_code,
                 out_audio,
                 forced_groups=forced_groups,
+                paragraph_specs_display=paragraph_specs,
+                prosody=prosody,
             )
         elif chunking == "smart":
             paragraph_boundaries, tts_groups = synthesize_opus_smart(
-                paragraphs_tts, breaks, voice_name, language_code, out_audio
+                paragraphs_tts,
+                breaks,
+                voice_name,
+                language_code,
+                out_audio,
+                paragraph_specs_display=paragraph_specs,
+                prosody=prosody,
             )
         elif chunking == "grouped":
             paragraph_boundaries = synthesize_opus_grouped(
-                paragraphs_tts, breaks, voice_name, language_code, out_audio
+                paragraphs_tts,
+                breaks,
+                voice_name,
+                language_code,
+                out_audio,
+                prosody=prosody,
             )
         else:  # "paragraph"
             paragraph_boundaries = synthesize_opus(
-                paragraphs_tts, breaks, voice_name, language_code, out_audio
+                paragraphs_tts,
+                breaks,
+                voice_name,
+                language_code,
+                out_audio,
+                prosody=prosody,
             )
 
     manifest = align_to_manifest(
@@ -2162,6 +2312,7 @@ def process_one_discourse(
         skip_align=skip_align,
         paragraph_boundaries=paragraph_boundaries,
         tts_groups=tts_groups,
+        paragraph_specs_display=paragraph_specs,
     )
     if not skip_align:
         restore_manifest_display_words(manifest["paragraphs"], paragraph_specs)
@@ -2222,11 +2373,29 @@ def main() -> int:
     parser.add_argument(
         "--grouping-preference",
         help=(
-            "Optional manual paragraph grouping for TTS calls. "
+            "Optional user-provided paragraph grouping for TTS calls. "
             "Format: 1-3,4-5,6 (1-based paragraph indices). "
             "Must cover all paragraphs exactly once in ascending order. "
             "If any group exceeds the SSML byte limit, generation stops with a hint."
         ),
+    )
+    parser.add_argument(
+        "--prosody-pitch",
+        metavar="VALUE",
+        default=None,
+        help="Wrap SSML in <prosody pitch=…> (e.g. medium, default, +0st).",
+    )
+    parser.add_argument(
+        "--prosody-rate",
+        metavar="VALUE",
+        default=None,
+        help="Wrap SSML in <prosody rate=…> (e.g. 90%%, slow). May stack with TTS_SPEAKING_RATE.",
+    )
+    parser.add_argument(
+        "--prosody-volume",
+        metavar="VALUE",
+        default=None,
+        help="Wrap SSML in <prosody volume=…> (e.g. silent, soft, medium).",
     )
     args = parser.parse_args()
 
@@ -2238,7 +2407,7 @@ def main() -> int:
         )
         return 1
 
-    voice_name = os.environ.get("TTS_VOICE", "en-US-Chirp3-HD-Charon")
+    voice_name = os.environ.get("TTS_VOICE", "en-US-Studio-M")
     language_code = os.environ.get("TTS_LANGUAGE_CODE", "en-US")
     speaking_rate = float(os.environ.get("TTS_SPEAKING_RATE", "0.9"))
     break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
@@ -2258,9 +2427,22 @@ def main() -> int:
 
     print(f"Resolved {len(slugs)} discourse(s): {', '.join(slugs[:12])}{' …' if len(slugs) > 12 else ''}")
     chunking = args.chunking
-    print(
-        f"Voice: {voice_name} | rate: {speaking_rate} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose) | chunking: {chunking}"
+    chunking_banner = "user-provided" if args.grouping_preference else chunking
+    prosody = optional_ssml_prosody(
+        args.prosody_pitch, args.prosody_rate, args.prosody_volume
     )
+    print(
+        f"Voice: {voice_name} | rate: {speaking_rate} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose) | chunking: {chunking_banner}"
+    )
+    if prosody:
+        bits = []
+        if prosody.pitch:
+            bits.append(f"pitch={prosody.pitch}")
+        if prosody.rate:
+            bits.append(f"rate={prosody.rate}")
+        if prosody.volume:
+            bits.append(f"volume={prosody.volume}")
+        print(f"SSML prosody: {' '.join(bits)}")
 
     failed = 0
     for slug in slugs:
@@ -2276,6 +2458,7 @@ def main() -> int:
                 chunking=chunking,
                 verbose_tts=args.verbose_tts,
                 grouping_preference=args.grouping_preference,
+                prosody=prosody,
             )
             failed += rc
         except Exception as e:

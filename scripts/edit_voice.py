@@ -23,11 +23,15 @@ Keeps lossless WAV intermediates in .cache/voice-edit/ for re-encoding
 without quality loss on subsequent retakes.
 
 Environment variables (same as voice:gen):
-  TTS_VOICE                         Voice name (default: en-US-Chirp3-HD-Charon)
+  TTS_VOICE                         Voice name (default: en-US-Studio-M)
   TTS_SPEAKING_RATE                 Speech rate 0.25–4.0 (default: 0.9)
   TTS_PARAGRAPH_BREAK_MS            Verse/section break in ms (default: 1200)
   TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS  Prose break in ms (default: 800)
   GOOGLE_APPLICATION_CREDENTIALS   Path to GCP service account JSON
+
+Optional SSML prosody (retake only): use --prosody-pitch / --prosody-rate / --prosody-volume
+to wrap re-synthesized groups in <prosody> (see Google Cloud TTS SSML). Combining
+SSML rate with TTS_SPEAKING_RATE may compound speed—try API rate 1.0 if you set rate in SSML.
 """
 
 from __future__ import annotations
@@ -48,6 +52,7 @@ sys.path.insert(0, str(_SCRIPT_DIR))
 
 from generate_voice import (
     REPO_ROOT,
+    SsmlProsodyOptions,
     _synthesize_wav_chunk,
     align_to_manifest,
     apply_tts_long_a_macron_hint,
@@ -55,14 +60,50 @@ from generate_voice import (
     build_ssml,
     extract_paragraphs_auto,
     load_dotenv,
+    optional_ssml_prosody,
     resolve_mdx_path,
     restore_manifest_display_words,
     strip_frontmatter,
     text_hash,
 )
 
+
+def _preview_max_words_from_terminal() -> int:
+    """Use more of the terminal width than a fixed short cap (see voice:gen brief previews)."""
+    try:
+        cols = shutil.get_terminal_size().columns
+    except OSError:
+        cols = 100
+    # Roughly two lines of prose at typical font width.
+    return max(24, min(72, cols // 2))
+
 AUDIO_DIR = REPO_ROOT / "public" / "audio"
 CACHE_DIR = REPO_ROOT / ".cache" / "voice-edit"
+
+
+def _print_voice_tts_settings() -> None:
+    """Print resolved TTS configuration (same env defaults as retake synthesis)."""
+    voice_name = os.environ.get("TTS_VOICE", "en-US-Studio-M")
+    language_code = os.environ.get("TTS_LANGUAGE_CODE", "en-US")
+    speaking_rate = float(os.environ.get("TTS_SPEAKING_RATE", "0.9"))
+    break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
+    consecutive_break_ms = int(os.environ.get("TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS", "800"))
+    creds = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    cred_display = str(Path(creds).expanduser()) if creds else "(unset)"
+    print("  TTS (effective for retake / voice:gen):")
+    print(f"    Voice name:        {voice_name}")
+    print(f"    Language code:     {language_code}")
+    print(f"    API speaking rate: {speaking_rate}")
+    print(
+        f"    Paragraph pauses:  {break_ms} ms (verse/section) · "
+        f"{consecutive_break_ms} ms (prose/consecutive)"
+    )
+    print(f"    GCP credentials:   {cred_display}")
+    print("    Backend:           Google Cloud Text-to-Speech (SSML)")
+    print(
+        "    SSML prosody:      optional; use --prosody-pitch / --prosody-rate / "
+        "--prosody-volume on retake (or voice:gen)"
+    )
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────
@@ -247,8 +288,13 @@ def preview_groups(slug: str) -> None:
     paragraphs = manifest.get("paragraphs", [])
 
     print(f"\n{slug}: {len(paragraphs)} paragraphs, {len(tts_groups)} TTS groups")
+    _print_voice_tts_settings()
+    mv = manifest.get("voice")
+    if mv:
+        print(f"  Manifest (this audio): voice={mv}")
     print(f"  Total duration: {manifest.get('duration', '?')}s\n")
 
+    max_w = _preview_max_words_from_terminal()
     for gi, g in enumerate(tts_groups):
         pids = g["paragraphs"]
         dur = g["end"] - g["start"]
@@ -257,8 +303,8 @@ def preview_groups(slug: str) -> None:
         for pi in pids:
             if pi < len(paragraphs):
                 words = paragraphs[pi].get("words", [])
-                preview = " ".join(w["w"] for w in words[:8])
-                if len(words) > 8:
+                preview = " ".join(w["w"] for w in words[:max_w])
+                if len(words) > max_w:
                     preview += "…"
                 first_words.append(f"    ¶{paragraphs[pi]['id']}: {preview}")
 
@@ -275,6 +321,8 @@ def retake_groups(
     language_code: str,
     break_ms: int,
     consecutive_break_ms: int,
+    *,
+    prosody: SsmlProsodyOptions | None = None,
 ) -> int:
     """Re-synthesize specific TTS groups and splice into existing audio.
 
@@ -345,7 +393,7 @@ def retake_groups(
         texts = [paragraphs_tts[pi] for pi in pids]
         brks = [breaks[pi] for pi in pids]
 
-        ssml = build_ssml(texts, brks)
+        ssml = build_ssml(texts, brks, prosody=prosody)
         print(f"  Re-synthesizing group {gi + 1} (¶{[pi+1 for pi in pids]})…")
         wav_bytes = _synthesize_wav_chunk(ssml, voice_name, language_code, client)
         retake_wavs[gi] = wav_bytes
@@ -466,6 +514,7 @@ def retake_groups(
         skip_align=False,
         paragraph_boundaries=list(new_boundaries),
         tts_groups=new_tts_groups,
+        paragraph_specs_display=paragraph_specs,
     )
     restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
 
@@ -529,6 +578,25 @@ def main() -> int:
         help="Show TTS group structure without making changes.",
     )
 
+    parser.add_argument(
+        "--prosody-pitch",
+        metavar="VALUE",
+        default=None,
+        help="SSML prosody pitch for re-synthesized groups only (e.g. medium, default, +0st, -5%%).",
+    )
+    parser.add_argument(
+        "--prosody-rate",
+        metavar="VALUE",
+        default=None,
+        help="SSML prosody rate for re-synthesized groups only (e.g. 90%%, slow). See note on TTS_SPEAKING_RATE in --help.",
+    )
+    parser.add_argument(
+        "--prosody-volume",
+        metavar="VALUE",
+        default=None,
+        help="SSML prosody volume for re-synthesized groups only (e.g. silent, soft, medium).",
+    )
+
     args = parser.parse_args()
     slug = args.slug
 
@@ -570,12 +638,25 @@ def main() -> int:
         )
         return 1
 
-    voice_name = os.environ.get("TTS_VOICE", "en-US-Chirp3-HD-Charon")
+    voice_name = os.environ.get("TTS_VOICE", "en-US-Studio-M")
     language_code = os.environ.get("TTS_LANGUAGE_CODE", "en-US")
     speaking_rate = float(os.environ.get("TTS_SPEAKING_RATE", "0.9"))
     break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
     consecutive_break_ms = int(os.environ.get("TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS", "800"))
     print(f"Voice: {voice_name} | rate: {speaking_rate} | breaks: {break_ms}ms (verse) / {consecutive_break_ms}ms (prose)")
+
+    prosody = optional_ssml_prosody(
+        args.prosody_pitch, args.prosody_rate, args.prosody_volume
+    )
+    if prosody:
+        bits = []
+        if prosody.pitch:
+            bits.append(f"pitch={prosody.pitch}")
+        if prosody.rate:
+            bits.append(f"rate={prosody.rate}")
+        if prosody.volume:
+            bits.append(f"volume={prosody.volume}")
+        print(f"SSML prosody (retake only): {' '.join(bits)}")
 
     return retake_groups(
         slug,
@@ -584,6 +665,7 @@ def main() -> int:
         language_code,
         break_ms,
         consecutive_break_ms,
+        prosody=prosody,
     )
 
 
