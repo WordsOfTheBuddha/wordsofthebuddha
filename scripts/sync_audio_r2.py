@@ -18,6 +18,7 @@ Usage:
   python scripts/sync_audio_r2.py pull mn10         # same, one discourse slug
   python scripts/sync_audio_r2.py pull mn10,mn11    # pull several discourses
   python scripts/sync_audio_r2.py pull --force      # re-download all, ignoring MD5 match
+  python scripts/sync_audio_r2.py pull --dry-run    # list files that would download, with reasons
 
 Env vars (set in .env or export):
   R2_ACCOUNT_ID          Cloudflare account ID
@@ -200,6 +201,15 @@ def _human_upload_reason(
     return "would upload — local file differs from remote (MD5 ≠ remote ETag)"
 
 
+def _human_pull_reason(*, force: bool, local_exists: bool) -> str:
+    """Reason text for pull --dry-run (only called when a download would occur)."""
+    if force:
+        return "would download because --force was set (ignores local comparison)"
+    if not local_exists:
+        return "would download — no local file yet"
+    return "would download — local file differs from remote (MD5 ≠ remote ETag)"
+
+
 def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run: bool = False) -> None:
     from boto3.s3.transfer import TransferConfig
 
@@ -302,7 +312,7 @@ def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
         print(f"Pushed {uploaded} file(s), {skipped} unchanged.")
 
 
-def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False) -> None:
+def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run: bool = False) -> None:
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     pulled = 0
     skipped = 0
@@ -329,11 +339,31 @@ def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False) -> None:
                 continue
             if allowed is not None and key not in allowed:
                 continue
-            if not (key.endswith(".webm") or key.endswith(".manifest.json")):
+            if not _is_syncable_audio_basename(key):
                 continue
             local = AUDIO_DIR / key
+            remote_hash = (obj.get("ETag") or "").strip('"').lower()
+
+            if dry_run:
+                exists = local.is_file()
+                if force:
+                    would_pull = True
+                    reason = _human_pull_reason(force=True, local_exists=exists)
+                elif not exists:
+                    would_pull = True
+                    reason = _human_pull_reason(force=False, local_exists=False)
+                else:
+                    local_hash = _local_md5(local).lower()
+                    would_pull = not (remote_hash and local_hash == remote_hash)
+                    if not would_pull:
+                        skipped += 1
+                        continue
+                    reason = _human_pull_reason(force=False, local_exists=True)
+                print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)} — {reason}")
+                pulled += 1
+                continue
+
             if not force and local.is_file():
-                remote_hash = (obj.get("ETag") or "").strip('"').lower()
                 local_hash = _local_md5(local).lower()
                 if remote_hash and local_hash == remote_hash:
                     skipped += 1
@@ -341,7 +371,13 @@ def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False) -> None:
             print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)}")
             s3.download_file(bucket, key, str(local))
             pulled += 1
-    print(f"Pulled {pulled} file(s), skipped {skipped} unchanged (local MD5 matches remote ETag).")
+    if dry_run:
+        if pulled:
+            print(f"Dry run: would download {pulled} file(s).")
+        else:
+            print("Dry run: nothing to download.")
+    else:
+        print(f"Pulled {pulled} file(s), skipped {skipped} unchanged (local MD5 matches remote ETag).")
 
 
 def main() -> int:
@@ -367,13 +403,9 @@ def main() -> int:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Push only: list files that would upload and why (compares local MD5 to remote ETag).",
+        help="List files that would change (push: upload; pull: download) and why (no data transfer).",
     )
     args = parser.parse_args()
-
-    if args.dry_run and args.action != "push":
-        print("--dry-run is only supported for push.", file=sys.stderr)
-        return 2
 
     bucket = args.bucket or os.environ.get("R2_BUCKET", DEFAULT_BUCKET)
     s3 = get_s3_client()
@@ -382,7 +414,7 @@ def main() -> int:
     if args.action == "push":
         push(s3, bucket, slugs, force=args.force, dry_run=args.dry_run)
     else:
-        pull(s3, bucket, slugs, force=args.force)
+        pull(s3, bucket, slugs, force=args.force, dry_run=args.dry_run)
 
     return 0
 
