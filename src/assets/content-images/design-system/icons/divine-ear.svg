@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.72828) translate(3.9, -0.5)">
+    <g opacity="0.75" stroke="#90a8c0" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- ear outline -->
+            <path d="M 0 -12 Q 10 -12, 10 -2 Q 10 4, 6 6 Q 4 7, 4 10 Q 4 13, 0 13" stroke-width="1.2" />
+            <path d="M 4 0 Q 6 -2, 6 -4 Q 6 -6, 4 -6" stroke-width="0.9" />
+            <!-- concentric sound waves -->
+            <path d="M -4 -6 Q -8 0, -4 6" stroke-width="0.8" />
+            <path d="M -8 -9 Q -14 0, -8 9" stroke-width="0.8" />
+            <path d="M -12 -12 Q -20 0, -12 12" stroke-width="0.8" />
+            </g>
+  </g>
+</svg>

@@ -300,6 +300,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn6",
 				"mn25"
 			],
 			"labels": [
@@ -318,6 +319,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn6",
 				"mn25"
 			],
 			"labels": [
@@ -337,6 +339,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn6",
 				"mn25",
 				"mn106"
 			],
@@ -356,6 +359,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn6",
 				"mn25",
 				"mn106"
 			],
@@ -461,6 +465,7 @@
 			],
 			"discourse": [
 				"mn2",
+				"mn6",
 				"mn39"
 			],
 			"labels": [
@@ -1205,6 +1210,7 @@
 			],
 			"discourse": [
 				"mn118",
+				"mn6",
 				"mn10"
 			],
 			"labels": [
@@ -1378,6 +1384,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn25",
 				"mn119"
 			],
@@ -1400,6 +1407,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn25",
 				"mn119"
 			],
@@ -1422,6 +1430,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn25",
 				"mn119"
 			],
@@ -1446,6 +1455,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn25",
 				"mn106",
 				"mn119"
@@ -1585,6 +1595,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn25",
 				"mn119"
 			],
@@ -1948,6 +1959,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn53"
 			],
 			"labels": [
@@ -2050,6 +2062,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn53"
 			],
 			"labels": [
@@ -2073,6 +2086,7 @@
 			],
 			"discourse": [
 				"mn39",
+				"mn6",
 				"mn53",
 				"mn119"
 			],
@@ -2515,7 +2529,10 @@
 				"line-art",
 				"mn106"
 			],
-			"discourse": "mn106",
+			"discourse": [
+				"mn106",
+				"mn6"
+			],
 			"labels": [
 				"formless",
 				"perceiving escape",
@@ -2598,8 +2615,7 @@
 			"title": "Herd: barren tree",
 			"description": "Bare tree — extreme abstinence, strength failed",
 			"tags": [
-				"line-art",
-				"mn25"
+				"line-art"
 			],
 			"discourse": "mn25",
 			"labels": [
@@ -2657,6 +2673,156 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/cessation-vessel.svg"
+		},
+		{
+			"id": "psychic-power",
+			"title": "Psychic powers",
+			"description": "Flying cross-legged figure with radiance — iddhi",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"direct knowledge",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/psychic-power.svg"
+		},
+		{
+			"id": "divine-ear",
+			"title": "Divine ear element",
+			"description": "Ear with radiating concentric sound waves — dibbasotadhātu",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"direct knowledge",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/divine-ear.svg"
+		},
+		{
+			"id": "mind-reading",
+			"title": "Mind-reading",
+			"description": "Two head profiles with connecting mind-waves — cetopariyañāṇa",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/mind-reading.svg"
+		},
+		{
+			"id": "meditation-seat",
+			"title": "Meditation posture",
+			"description": "Steady seated figure — anirākatajjhāna",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"collectedness",
+				"mindfulness"
+			],
+			"valence": "+ve",
+			"svg": "icons/meditation-seat.svg"
+		},
+		{
+			"id": "discernment-lens",
+			"title": "Discernment",
+			"description": "Lens with centered point — vipassanā",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"insight",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/discernment-lens.svg"
+		},
+		{
+			"id": "companions-pair",
+			"title": "Spiritual companions",
+			"description": "Two companion figures joined at the center — sabrahmacārī",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"community",
+				"friendship"
+			],
+			"svg": "icons/companions-pair.svg"
+		},
+		{
+			"id": "donor-fruit-bowl",
+			"title": "Donor service fruitful",
+			"description": "Offering bowl with rising benefit marks — mahapphalā mahānisaṁsā",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"faith",
+				"giving"
+			],
+			"valence": "+ve",
+			"svg": "icons/donor-fruit-bowl.svg"
+		},
+		{
+			"id": "relatives-heart",
+			"title": "Relatives' recollection",
+			"description": "Heart-form with gentle smile — pasannacittā anussarantānaṁ",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"faith"
+			],
+			"valence": "+ve",
+			"svg": "icons/relatives-heart.svg"
+		},
+		{
+			"id": "conquer-discontent",
+			"title": "Overcoming discontent",
+			"description": "Balanced central staff with two opposing drops — aratiratisaho",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"diligence",
+				"non harm"
+			],
+			"valence": "+ve",
+			"svg": "icons/conquer-discontent.svg"
+		},
+		{
+			"id": "conquer-fear",
+			"title": "Overcoming fear and terror",
+			"description": "Steady figure beside a fading fear-wave — bhayabheravasaho",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn6",
+			"labels": [
+				"safety"
+			],
+			"valence": "+ve",
+			"svg": "icons/conquer-fear.svg"
 		}
 	]
 }

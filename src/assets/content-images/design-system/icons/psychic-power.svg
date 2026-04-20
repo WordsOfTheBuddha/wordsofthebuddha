@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.84819) translate(0, 4.95)">
+    <g opacity="0.75" stroke="#90a8c0" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- head -->
+            <circle cx="0" cy="-8" r="3" stroke-width="1.2" />
+            <!-- torso -->
+            <line x1="0" y1="-5" x2="0" y2="2" stroke-width="1.1" />
+            <!-- crossed legs (flat, grounded) -->
+            <path d="M -8 7 L -4 4 L 0 5 L 4 4 L 8 7" stroke-width="1" />
+            <!-- lap line -->
+            <line x1="-6" y1="7" x2="6" y2="7" stroke-width="0.8" />
+            <!-- arms resting on knees -->
+            <path d="M 0 -2 Q -5 2, -7 5" stroke-width="0.9" />
+            <path d="M 0 -2 Q 5 2, 7 5" stroke-width="0.9" />
+            <!-- radiance lines (above head) -->
+            <line x1="0" y1="-14" x2="0" y2="-17" stroke-width="0.8" />
+            <line x1="-5" y1="-13" x2="-7" y2="-16" stroke-width="0.8" />
+            <line x1="5" y1="-13" x2="7" y2="-16" stroke-width="0.8" />
+            <line x1="-9" y1="-10" x2="-12" y2="-11" stroke-width="0.7" />
+            <line x1="9" y1="-10" x2="12" y2="-11" stroke-width="0.7" />
+            </g>
+  </g>
+</svg>
