@@ -33,7 +33,7 @@ Environment variables (same as voice:gen):
   GOOGLE_APPLICATION_CREDENTIALS   Path to GCP service account JSON
 
 Optional SSML prosody (retake only): use --prosody-pitch / --prosody-rate / --prosody-volume
-to wrap re-synthesized groups in <prosody> (see Google Cloud TTS SSML). Combining
+to wrap re-synthesized groups/paragraphs in <prosody> (see Google Cloud TTS SSML). Combining
 SSML rate with TTS_SPEAKING_RATE may compound speed—try API rate 1.0 if you set rate in SSML.
 """
 
@@ -164,6 +164,29 @@ def _parse_retake_paragraphs(spec: str, manifest: dict) -> list[int]:
         else:
             para_indices.add(int(p) - 1)
     return _groups_for_paragraphs(manifest, para_indices)
+
+
+def _parse_retake_paragraph_indices(spec: str, manifest: dict) -> list[int]:
+    """Parse 1-based paragraph spec '1-3,5' -> 0-based paragraph indices."""
+    parts = [p.strip() for p in spec.split(",")]
+    para_indices: set[int] = set()
+    n_paras = len(manifest.get("paragraphs", []))
+    for p in parts:
+        if "-" in p:
+            lo, hi = p.split("-", 1)
+            lo_i = int(lo)
+            hi_i = int(hi)
+            if lo_i > hi_i:
+                lo_i, hi_i = hi_i, lo_i
+            for i in range(lo_i - 1, hi_i):
+                para_indices.add(i)
+        else:
+            para_indices.add(int(p) - 1)
+    out = sorted(para_indices)
+    for pi in out:
+        if pi < 0 or pi >= n_paras:
+            raise ValueError(f"Paragraph index {pi + 1} out of range 1-{n_paras}.")
+    return out
 
 
 def _backup(slug: str) -> None:
@@ -601,6 +624,183 @@ def retake_groups(
     return 0
 
 
+def retake_paragraphs_exact(
+    slug: str,
+    retake_paragraph_indices: list[int],
+    voice_name: str,
+    language_code: str,
+    break_ms: int,
+    consecutive_break_ms: int,
+    *,
+    prosody: SsmlProsodyOptions | None = None,
+) -> int:
+    """Re-synthesize specific paragraphs only (even inside larger TTS groups)."""
+    manifest = _load_manifest(slug)
+    paragraphs_in_manifest = manifest.get("paragraphs")
+    if not paragraphs_in_manifest:
+        print(f"[error] {slug}: manifest has no paragraphs", file=sys.stderr)
+        return 1
+
+    n_paras_manifest = len(paragraphs_in_manifest)
+    for pi in retake_paragraph_indices:
+        if pi < 0 or pi >= n_paras_manifest:
+            print(
+                f"[error] Paragraph index {pi + 1} out of range (1–{n_paras_manifest})",
+                file=sys.stderr,
+            )
+            return 1
+
+    retake_set = set(retake_paragraph_indices)
+    retake_1based = [i + 1 for i in retake_paragraph_indices]
+    print(f"\n{slug}: exact paragraph retake {retake_1based}")
+
+    mdx_path = resolve_mdx_path(slug)
+    raw = mdx_path.read_text(encoding="utf-8")
+    body = strip_frontmatter(raw)
+
+    paragraph_specs = extract_paragraphs_auto(body)
+    paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
+    if len(paragraph_specs) != n_paras_manifest:
+        print(
+            f"[error] {slug}: manifest/MDX paragraph mismatch "
+            f"({n_paras_manifest} vs {len(paragraph_specs)}).",
+            file=sys.stderr,
+        )
+        return 1
+
+    paragraphs_tts = [
+        apply_tts_long_a_macron_hint(apply_tts_phonetic_spellings(p))
+        for _, p, _ in paragraph_specs_for_tts
+    ]
+    paragraph_specs_align = [
+        (pid, apply_tts_phonetic_spellings(p), brk)
+        for pid, p, brk in paragraph_specs
+    ]
+
+    breaks: list[int] = []
+    for i, (_, _, is_break) in enumerate(paragraph_specs):
+        if i == 0:
+            breaks.append(0)
+        elif is_break:
+            breaks.append(break_ms)
+        else:
+            breaks.append(consecutive_break_ms)
+
+    _backup(slug)
+
+    from google.cloud import texttospeech
+
+    client = texttospeech.TextToSpeechClient()
+    retake_wavs: dict[int, bytes] = {}
+    for pi in retake_paragraph_indices:
+        ssml = build_ssml([paragraphs_tts[pi]], [0], prosody=prosody)
+        print(f"  Re-synthesizing paragraph {pi + 1}…")
+        retake_wavs[pi] = _synthesize_wav_chunk(ssml, voice_name, language_code, client)
+
+    first_retake_wav = retake_wavs[retake_paragraph_indices[0]]
+    buf = io.BytesIO(first_retake_wav)
+    with wave.open(buf, "rb") as tmp:
+        tts_rate = tmp.getframerate()
+        tts_channels = tmp.getnchannels()
+    print(f"  TTS WAV: {tts_rate}Hz, {tts_channels}ch")
+
+    current_wav = _ensure_cached_wav(slug, sample_rate=tts_rate, channels=tts_channels)
+    wav_params = _get_wav_params(current_wav)
+
+    combined_wav_path = AUDIO_DIR / f"{slug}.retake-para.tmp.wav"
+    new_boundaries: list[tuple[float, float]] = [None] * len(paragraph_specs)  # type: ignore[list-item]
+
+    try:
+        cursor = 0.0
+        with wave.open(str(combined_wav_path), "wb") as wout:
+            wout.setparams(wav_params)
+
+            for pi in range(len(paragraph_specs)):
+                if pi > 0 and breaks[pi] > 0:
+                    silence_sec = breaks[pi] / 1000.0
+                    wout.writeframes(
+                        _silence_frames(
+                            silence_sec,
+                            wav_params.framerate,
+                            wav_params.sampwidth,
+                            wav_params.nchannels,
+                        )
+                    )
+                    cursor += silence_sec
+
+                para_start = cursor
+                if pi in retake_set:
+                    in_buf = io.BytesIO(retake_wavs[pi])
+                    with wave.open(in_buf, "rb") as win:
+                        n_frames = win.getnframes()
+                        para_dur = n_frames / win.getframerate()
+                        wout.writeframes(win.readframes(n_frames))
+                else:
+                    old_para = paragraphs_in_manifest[pi]
+                    old_start = float(old_para["start"])
+                    old_end = float(old_para["end"])
+                    frames = _extract_wav_segment(current_wav, old_start, old_end)
+                    n_frames = len(frames) // (wav_params.sampwidth * wav_params.nchannels)
+                    para_dur = n_frames / wav_params.framerate
+                    wout.writeframes(frames)
+                para_end = para_start + para_dur
+                new_boundaries[pi] = (round(para_start, 4), round(para_end, 4))
+                cursor = para_end
+
+        out_webm = AUDIO_DIR / f"{slug}.webm"
+        print(f"  Encoding spliced audio → {out_webm.name}…")
+        _encode_wav_to_webm(combined_wav_path, out_webm)
+
+        cached_wav = _cache_wav_path(slug)
+        cached_wav.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(combined_wav_path), str(cached_wav))
+        print(f"  Updated cached WAV: {cached_wav.relative_to(REPO_ROOT)}")
+    finally:
+        if combined_wav_path.exists():
+            combined_wav_path.unlink(missing_ok=True)
+
+    new_tts_groups: list[tuple[float, float, list[int]]] | None = None
+    if manifest.get("ttsGroups"):
+        new_tts_groups = []
+        for g in manifest["ttsGroups"]:
+            pids = list(g["paragraphs"])
+            g_start = new_boundaries[pids[0]][0]
+            g_end = new_boundaries[pids[-1]][1]
+            new_tts_groups.append((g_start, g_end, pids))
+
+    paragraphs_text = [p for _, p, _ in paragraph_specs]
+    full_plain = "\n\n".join(paragraphs_text)
+    th = text_hash(full_plain)
+
+    out_audio = AUDIO_DIR / f"{slug}.webm"
+    manifest_out = align_to_manifest(
+        out_audio,
+        paragraph_specs_align,
+        voice_name,
+        th,
+        skip_align=False,
+        paragraph_boundaries=list(new_boundaries),
+        tts_groups=None,
+        paragraph_specs_display=paragraph_specs,
+    )
+    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
+    if new_tts_groups:
+        manifest_out["ttsGroups"] = [
+            {"start": s, "end": e, "paragraphs": pids}
+            for s, e, pids in new_tts_groups
+        ]
+
+    out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
+    out_manifest.write_text(
+        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    print("  Done. (exact paragraph retake mode)")
+    print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
+    return 0
+
+
 def copy_paragraphs(
     slug: str,
     source_slug: str,
@@ -812,7 +1012,7 @@ def main() -> int:
         "--retake-paragraphs",
         metavar="RANGE",
         help="1-based paragraph range to re-synthesize (e.g. 1-3,5). "
-             "Resolves to the TTS groups covering those paragraphs.",
+             "Defaults to retaking covering TTS groups; add --exact for paragraph-only retake.",
     )
     action.add_argument(
         "--rollback",
@@ -842,19 +1042,27 @@ def main() -> int:
         "--prosody-pitch",
         metavar="VALUE",
         default=None,
-        help="SSML prosody pitch for re-synthesized groups only (e.g. medium, default, +0st, -5%%).",
+        help="SSML prosody pitch for re-synthesized retakes (groups or exact paragraphs).",
     )
     parser.add_argument(
         "--prosody-rate",
         metavar="VALUE",
         default=None,
-        help="SSML prosody rate for re-synthesized groups only (e.g. 90%%, slow). See note on TTS_SPEAKING_RATE in --help.",
+        help="SSML prosody rate for re-synthesized retakes (e.g. 90%%, slow). See note on TTS_SPEAKING_RATE in --help.",
     )
     parser.add_argument(
         "--prosody-volume",
         metavar="VALUE",
         default=None,
-        help="SSML prosody volume for re-synthesized groups only (e.g. silent, soft, medium).",
+        help="SSML prosody volume for re-synthesized retakes (e.g. silent, soft, medium).",
+    )
+    parser.add_argument(
+        "--exact",
+        action="store_true",
+        help=(
+            "With --retake-paragraphs, re-synthesize exactly those paragraph(s) only, "
+            "instead of expanding to full covering TTS groups."
+        ),
     )
 
     args = parser.parse_args()
@@ -902,9 +1110,19 @@ def main() -> int:
     manifest = _load_manifest(slug)
 
     if args.retake_paragraphs:
-        retake_gis = _parse_retake_paragraphs(args.retake_paragraphs, manifest)
-        retake_gis_display = [i + 1 for i in retake_gis]
-        print(f"  Paragraphs {args.retake_paragraphs} → groups {retake_gis_display}")
+        if args.exact:
+            try:
+                retake_pis = _parse_retake_paragraph_indices(args.retake_paragraphs, manifest)
+            except ValueError as e:
+                print(f"[error] {e}", file=sys.stderr)
+                return 1
+            retake_pis_display = [i + 1 for i in retake_pis]
+            print(f"  Exact paragraphs to retake: {retake_pis_display}")
+            retake_gis = None
+        else:
+            retake_gis = _parse_retake_paragraphs(args.retake_paragraphs, manifest)
+            retake_gis_display = [i + 1 for i in retake_gis]
+            print(f"  Paragraphs {args.retake_paragraphs} → groups {retake_gis_display}")
     else:
         retake_gis = _parse_retake_groups(args.retake_groups)
 
@@ -936,6 +1154,17 @@ def main() -> int:
         if prosody.volume:
             bits.append(f"volume={prosody.volume}")
         print(f"SSML prosody (retake only): {' '.join(bits)}")
+
+    if args.retake_paragraphs and args.exact:
+        return retake_paragraphs_exact(
+            slug,
+            retake_pis,
+            voice_name,
+            language_code,
+            break_ms,
+            consecutive_break_ms,
+            prosody=prosody,
+        )
 
     return retake_groups(
         slug,

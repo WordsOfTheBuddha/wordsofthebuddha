@@ -105,6 +105,22 @@ Notes:
 - This mode does not require Google TTS credentials.
 - Existing `.webm` + `.manifest.json` are backed up (`.bak`) and can be restored with `--rollback`.
 
+## voice:edit exact paragraph retake
+
+By default, `--retake-paragraphs` expands to the covering TTS group(s). To retake only the
+exact paragraph(s) you selected, add `--exact`:
+
+```bash
+# Retake only paragraph 4 (even if it sits inside a larger TTS group)
+npm run voice:edit -- iti23 --retake-paragraphs 4 --exact
+```
+
+Notes:
+
+- This is useful for one-line fixes inside larger grouped audio.
+- It keeps existing backup/rollback behavior.
+- Internally this path aligns per paragraph after splicing, then restores `ttsGroups` metadata.
+
 ## MDX parsing
 
 - **Verses** with bare `#### N` headings (e.g. Dhammapada): one “paragraph” per verse block; manifest / alignment **ids** are still `1..n` in reading order (verse numbers stay only in the heading text).
