@@ -18,6 +18,9 @@ Usage:
   # Preview: show group structure without making changes:
   python scripts/edit_voice.py iti23 --preview
 
+  # Copy paragraph audio from another discourse without TTS:
+  python scripts/edit_voice.py iti23 --copy-from iti10 --copy-paragraphs 2=5,3=6
+
 Saves .bak backup files before editing. Use --rollback to restore.
 Keeps lossless WAV intermediates in .cache/voice-edit/ for re-encoding
 without quality loss on subsequent retakes.
@@ -40,9 +43,11 @@ import argparse
 import io
 import json
 import os
+import re
 import shutil
 import sys
 import wave
+from datetime import datetime, timezone
 from pathlib import Path
 
 # ── Import shared utilities from generate_voice.py ────────────────────────
@@ -59,6 +64,7 @@ from generate_voice import (
     apply_tts_phonetic_spellings,
     build_ssml,
     extract_paragraphs_auto,
+    file_hash,
     load_dotenv,
     optional_ssml_prosody,
     resolve_mdx_path,
@@ -276,6 +282,62 @@ def _ensure_cached_wav(slug: str, sample_rate: int | None = None, channels: int 
     print(f"  Decoding {webm.name} → cached WAV…")
     _decode_webm_to_wav(webm, cached, sample_rate=sample_rate, channels=channels)
     return cached
+
+
+def _parse_index_token(token: str) -> list[int]:
+    """Parse one 1-based index token ('3' or '3-5') to a list of 0-based indices."""
+    token = token.strip()
+    m_range = re.fullmatch(r"(\d+)\s*-\s*(\d+)", token)
+    if m_range:
+        lo = int(m_range.group(1))
+        hi = int(m_range.group(2))
+        if lo > hi:
+            lo, hi = hi, lo
+        return [i - 1 for i in range(lo, hi + 1)]
+    m_single = re.fullmatch(r"\d+", token)
+    if m_single:
+        return [int(token) - 1]
+    raise ValueError(f"Invalid index token '{token}'. Use N or N-M.")
+
+
+def _parse_copy_paragraph_mapping(spec: str) -> dict[int, int]:
+    """Parse mapping like '2=7,3-4=9-10' (1-based) to {target0: source0}."""
+    mapping: dict[int, int] = {}
+    pairs = [p.strip() for p in spec.split(",") if p.strip()]
+    if not pairs:
+        raise ValueError("Empty --copy-paragraphs mapping.")
+    for pair in pairs:
+        if "=" not in pair:
+            raise ValueError(f"Invalid mapping '{pair}'. Expected TARGET=SOURCE.")
+        left, right = pair.split("=", 1)
+        left_indices = _parse_index_token(left)
+        right_indices = _parse_index_token(right)
+        if len(left_indices) != len(right_indices):
+            raise ValueError(
+                f"Mapping '{pair}' has different sizes ({len(left_indices)} vs {len(right_indices)})."
+            )
+        for tgt, src in zip(left_indices, right_indices):
+            if tgt in mapping:
+                raise ValueError(f"Target paragraph {tgt + 1} mapped more than once.")
+            mapping[tgt] = src
+    return mapping
+
+
+def _retime_words(words: list[dict], src_start: float, dst_start: float) -> list[dict]:
+    """Shift paragraph word timestamps by constant offset."""
+    delta = dst_start - src_start
+    out: list[dict] = []
+    for w in words or []:
+        if "s" not in w or "e" not in w:
+            continue
+        out.append(
+            {
+                "w": w.get("w", ""),
+                "s": round(float(w["s"]) + delta, 4),
+                "e": round(float(w["e"]) + delta, 4),
+            }
+        )
+    return out
 
 
 # ── Core edit flow ────────────────────────────────────────────────────────
@@ -539,6 +601,191 @@ def retake_groups(
     return 0
 
 
+def copy_paragraphs(
+    slug: str,
+    source_slug: str,
+    copy_mapping: dict[int, int],
+    break_ms: int,
+    consecutive_break_ms: int,
+) -> int:
+    """Copy paragraph audio from source discourse into target without TTS."""
+    target_manifest = _load_manifest(slug)
+    source_manifest = _load_manifest(source_slug)
+    target_paras = target_manifest.get("paragraphs", [])
+    source_paras = source_manifest.get("paragraphs", [])
+
+    if not target_paras or not source_paras:
+        print("[error] Missing paragraph data in manifest(s).", file=sys.stderr)
+        return 1
+
+    mdx_path = resolve_mdx_path(slug)
+    raw = mdx_path.read_text(encoding="utf-8")
+    body = strip_frontmatter(raw)
+    paragraph_specs = extract_paragraphs_auto(body)
+    if len(paragraph_specs) != len(target_paras):
+        print(
+            f"[error] {slug}: target manifest paragraph count ({len(target_paras)}) "
+            f"does not match MDX ({len(paragraph_specs)}).",
+            file=sys.stderr,
+        )
+        return 1
+
+    n_target = len(target_paras)
+    for tgt, src in copy_mapping.items():
+        if tgt < 0 or tgt >= n_target:
+            print(f"[error] Target paragraph {tgt + 1} is out of range 1-{n_target}.", file=sys.stderr)
+            return 1
+        if src < 0 or src >= len(source_paras):
+            print(
+                f"[error] Source paragraph {src + 1} is out of range 1-{len(source_paras)}.",
+                file=sys.stderr,
+            )
+            return 1
+        sp = source_paras[src]
+        if sp.get("start") is None or sp.get("end") is None:
+            print(
+                f"[error] Source paragraph {src + 1} has no timing in {source_slug}.manifest.json.",
+                file=sys.stderr,
+            )
+            return 1
+
+    for i, tp in enumerate(target_paras):
+        if tp.get("start") is None or tp.get("end") is None:
+            print(
+                f"[error] Target paragraph {i + 1} has no timing in {slug}.manifest.json.",
+                file=sys.stderr,
+            )
+            return 1
+
+    display_map = ", ".join(f"{t + 1}={s + 1}" for t, s in sorted(copy_mapping.items()))
+    print(f"\n{slug}: copy paragraphs from {source_slug} ({display_map})")
+
+    breaks: list[int] = []
+    for i, (_, _, is_break) in enumerate(paragraph_specs):
+        if i == 0:
+            breaks.append(0)
+        elif is_break:
+            breaks.append(break_ms)
+        else:
+            breaks.append(consecutive_break_ms)
+
+    _backup(slug)
+
+    target_wav = _ensure_cached_wav(slug)
+    wav_params = _get_wav_params(target_wav)
+    source_wav = _ensure_cached_wav(
+        source_slug, sample_rate=wav_params.framerate, channels=wav_params.nchannels
+    )
+    wav_params = _get_wav_params(source_wav)
+
+    combined_wav_path = AUDIO_DIR / f"{slug}.copy.tmp.wav"
+    new_boundaries: list[tuple[float, float]] = [None] * n_target  # type: ignore[list-item]
+    paragraph_templates: list[dict] = [None] * n_target  # type: ignore[list-item]
+
+    try:
+        cursor = 0.0
+        with wave.open(str(combined_wav_path), "wb") as wout:
+            wout.setparams(wav_params)
+
+            for i in range(n_target):
+                if i > 0 and breaks[i] > 0:
+                    silence_sec = breaks[i] / 1000.0
+                    wout.writeframes(
+                        _silence_frames(
+                            silence_sec,
+                            wav_params.framerate,
+                            wav_params.sampwidth,
+                            wav_params.nchannels,
+                        )
+                    )
+                    cursor += silence_sec
+
+                if i in copy_mapping:
+                    src_i = copy_mapping[i]
+                    source_para = source_paras[src_i]
+                    seg_start = float(source_para["start"])
+                    seg_end = float(source_para["end"])
+                    frames = _extract_wav_segment(source_wav, seg_start, seg_end)
+                    paragraph_templates[i] = source_para
+                else:
+                    target_para = target_paras[i]
+                    seg_start = float(target_para["start"])
+                    seg_end = float(target_para["end"])
+                    frames = _extract_wav_segment(target_wav, seg_start, seg_end)
+                    paragraph_templates[i] = target_para
+
+                n_frames = len(frames) // (wav_params.sampwidth * wav_params.nchannels)
+                para_dur = n_frames / wav_params.framerate
+                para_start = cursor
+                para_end = cursor + para_dur
+                wout.writeframes(frames)
+                new_boundaries[i] = (round(para_start, 4), round(para_end, 4))
+                cursor = para_end
+
+        out_webm = AUDIO_DIR / f"{slug}.webm"
+        print(f"  Encoding spliced audio → {out_webm.name}…")
+        _encode_wav_to_webm(combined_wav_path, out_webm)
+
+        cached_wav = _cache_wav_path(slug)
+        cached_wav.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(combined_wav_path), str(cached_wav))
+        print(f"  Updated cached WAV: {cached_wav.relative_to(REPO_ROOT)}")
+    finally:
+        if combined_wav_path.exists():
+            combined_wav_path.unlink(missing_ok=True)
+
+    new_tts_groups: list[tuple[float, float, list[int]]] | None = None
+    if target_manifest.get("ttsGroups"):
+        new_tts_groups = []
+        for g in target_manifest["ttsGroups"]:
+            pids = list(g["paragraphs"])
+            g_start = new_boundaries[pids[0]][0]
+            g_end = new_boundaries[pids[-1]][1]
+            new_tts_groups.append((g_start, g_end, pids))
+
+    paragraphs_out: list[dict] = []
+    for i, (pid, _text, _brk) in enumerate(paragraph_specs):
+        tpl = paragraph_templates[i]
+        old_start = float(tpl.get("start", 0.0))
+        words = _retime_words(tpl.get("words", []), old_start, new_boundaries[i][0])
+        paragraphs_out.append(
+            {
+                "id": pid,
+                "start": new_boundaries[i][0],
+                "end": new_boundaries[i][1],
+                "words": words,
+            }
+        )
+
+    text_hash_hex = text_hash("\n\n".join(p for _, p, _ in paragraph_specs))
+    out_audio = AUDIO_DIR / f"{slug}.webm"
+    manifest_out = {
+        "version": 2,
+        "textHash": text_hash_hex,
+        "audioHash": file_hash(out_audio),
+        "voice": target_manifest.get("voice"),
+        "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "duration": new_boundaries[-1][1] if new_boundaries else 0,
+        "paragraphs": paragraphs_out,
+        "ttsBoundaries": [{"start": s, "end": e} for s, e in new_boundaries],
+    }
+    if new_tts_groups:
+        manifest_out["ttsGroups"] = [
+            {"start": s, "end": e, "paragraphs": pids}
+            for s, e, pids in new_tts_groups
+        ]
+
+    out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
+    out_manifest.write_text(
+        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    print("  Done (copy mode, no TTS synthesis).")
+    print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
+    return 0
+
+
 # ── CLI ───────────────────────────────────────────────────────────────────
 
 
@@ -576,6 +823,19 @@ def main() -> int:
         "--preview",
         action="store_true",
         help="Show TTS group structure without making changes.",
+    )
+    action.add_argument(
+        "--copy-paragraphs",
+        metavar="MAP",
+        help=(
+            "Copy paragraph audio without TTS. Mapping format TARGET=SOURCE (1-based), "
+            "comma-separated; ranges supported (e.g. 2=7,5-6=9-10)."
+        ),
+    )
+    parser.add_argument(
+        "--copy-from",
+        metavar="SOURCE_SLUG",
+        help="Source discourse slug for --copy-paragraphs (must have timed manifest/audio).",
     )
 
     parser.add_argument(
@@ -617,6 +877,25 @@ def main() -> int:
     if args.preview:
         preview_groups(slug)
         return 0
+
+    if args.copy_paragraphs:
+        if not args.copy_from:
+            print("[error] --copy-from is required with --copy-paragraphs.", file=sys.stderr)
+            return 1
+        try:
+            copy_mapping = _parse_copy_paragraph_mapping(args.copy_paragraphs)
+        except ValueError as e:
+            print(f"[error] {e}", file=sys.stderr)
+            return 1
+        break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
+        consecutive_break_ms = int(os.environ.get("TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS", "800"))
+        return copy_paragraphs(
+            slug,
+            args.copy_from,
+            copy_mapping,
+            break_ms,
+            consecutive_break_ms,
+        )
 
     # ── Retake ────────────────────────────────────────────────────────────
 

@@ -86,6 +86,25 @@ TTS only (no Whisper alignment):
 python scripts/generate_voice.py dhp1-20 --skip-align
 ```
 
+## voice:edit copy mode (no TTS)
+
+`voice:edit` can now copy one or more paragraph audio segments from an existing discourse
+and splice them into another discourse **without** synthesizing new speech.
+
+Use this for stock/repeated paragraph reuse:
+
+```bash
+# Copy target ¶2 from source ¶5, and target ¶3-4 from source ¶8-9
+npm run voice:edit -- iti23 --copy-from iti10 --copy-paragraphs 2=5,3-4=8-9
+```
+
+Notes:
+
+- Mapping is **1-based** and supports ranges (`N-M`).
+- Source discourse must already have timed audio/manifest (`start`/`end` paragraph timings).
+- This mode does not require Google TTS credentials.
+- Existing `.webm` + `.manifest.json` are backed up (`.bak`) and can be restored with `--rollback`.
+
 ## MDX parsing
 
 - **Verses** with bare `#### N` headings (e.g. Dhammapada): one “paragraph” per verse block; manifest / alignment **ids** are still `1..n` in reading order (verse numbers stay only in the heading text).
