@@ -153,7 +153,7 @@
   <text x="460" y="38" text-anchor="middle" fill="#c8a040"
     font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
     letter-spacing="3">MN 39 — Mahāassapura Sutta</text>
-  <text x="460" y="60" text-anchor="middle" fill="#708090"
+  <text x="516" y="60" text-anchor="middle" fill="#708090"
     font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
     letter-spacing="1">The Greater Discourse at Assapura</text>
   <line x1="260" y1="74" x2="660" y2="74" stroke="#a09070" stroke-width="0.5" stroke-opacity="0.3" />
@@ -195,7 +195,7 @@
         <line x1="-6" y1="-7" x2="5" y2="-7" stroke-width="0.9" />
         <line x1="-6" y1="-2" x2="3" y2="-2" stroke-width="0.9" />
         <line x1="-6" y1="3" x2="1" y2="3" stroke-width="0.9" />
-        <path d="M -2 8 L 1 11 L 7 5" stroke-width="1.2" />
+        <path d="M -2 5 L 1 8 L 7 2" stroke-width="1.2" />
       </g>
     </g>
   </g>

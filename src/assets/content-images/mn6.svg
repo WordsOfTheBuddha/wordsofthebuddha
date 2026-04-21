@@ -97,7 +97,7 @@
                 <line x1="-6" y1="-7" x2="5" y2="-7" stroke-width="0.9" />
                 <line x1="-6" y1="-2" x2="3" y2="-2" stroke-width="0.9" />
                 <line x1="-6" y1="3" x2="1" y2="3" stroke-width="0.9" />
-                <path d="M -2 8 L 1 11 L 7 5" stroke-width="1.2" />
+                <path d="M -2 5 L 1 8 L 7 2" stroke-width="1.2" />
               </g>
             </g>
           </g>
