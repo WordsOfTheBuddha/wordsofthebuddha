@@ -1802,14 +1802,14 @@ document.addEventListener("keydown", (ev) => {
 function discourseCardHtml(d: any): string {
 	const note = d.note ? String(d.note) : "";
 	const voiceIcon = (window as any).__audioSlugs?.has(d.id)
-		? `<a href="/${d.id}?voice=1" class="voice-listen-icon" aria-label="Listen" title="Listen"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1rem;height:1rem"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z"/></svg></a>`
+		? `<a href="/${d.id}?voice=1" class="voice-listen-icon ml-1 align-middle" aria-label="Listen" title="Listen"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1rem;height:1rem"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z"/></svg></a>`
 		: "";
 	return `
 		<div class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md">
 			<div class="flex items-start justify-between">
 				<div class="flex items-start flex-grow">
 					<div class="min-w-0 pr-4">
-						<h2 class="text-base sm:text-lg font-semibold text-text mt-2 mb-2 flex flex-wrap items-center gap-x-1.5 gap-y-1">
+						<h2 class="text-base sm:text-lg font-semibold text-text mt-2 mb-2 leading-snug">
 							<a href="/${
 								d.id
 							}" class="post-link text-gray-500 hover:text-link-color id mr-2 font-normal" data-base-href="/${
@@ -1822,7 +1822,7 @@ function discourseCardHtml(d: any): string {
 							${voiceIcon}
 							${
 								note
-									? `<span class="px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom -translate-y-0.5 mt-1">${note}</span>`
+									? `<span class="px-2 py-1 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap inline-block align-bottom mt-1">${note}</span>`
 									: ""
 							}
 						</h2>
