@@ -31,10 +31,7 @@
 			range.selectNodeContents(contentArea);
 
 			// Apply rich formatting (same logic as copy button)
-			const threshold = parseInt(
-				localStorage.getItem("tooltipThreshold") || "18"
-			);
-			const formattedContainer = getFormattedContainer(range, threshold);
+			const formattedContainer = getFormattedContainer(range, 0);
 
 			// Replace content with formatted version
 			contentArea.innerHTML = formattedContainer.innerHTML;

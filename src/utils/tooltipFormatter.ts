@@ -2,9 +2,14 @@
  * Tooltip Formatter Utility
  *
  * Shared formatting logic for tooltips used by both CopyButton and PrintFormatter components.
- * Supports both inline and footnoted tooltip formatting based on content length threshold.
+ * Supports inline and appendix tooltip formatting based on content length threshold.
  * Includes duplicate term tracking to avoid redundant annotations.
  */
+
+/** Drop punctuation that appears after a gloss term boundary. */
+function sanitizeGlossTerm(text: string): string {
+	return text.trim().replace(/[;:,.!?…)"'\]\u201d\u2019]+$/u, "").trim();
+}
 
 /** Replace heading tags with a normal paragraph whose text is bold (better paste targets). */
 function flattenHeadingsToBoldParagraphs(container: HTMLElement): void {
@@ -62,9 +67,7 @@ export function getFormattedContainer(
 
 	// Track processed terms to avoid duplicates
 	const processedTerms = new Set<string>();
-	const footnotes: Array<{ text: string; content: string; refNum: number }> =
-		[];
-	let footnoteCounter = 1;
+	const keyTerms: Array<{ text: string; content: string }> = [];
 
 	tooltipElements.forEach((element) => {
 		// Get tooltip content from either attribute
@@ -80,13 +83,14 @@ export function getFormattedContainer(
 			return;
 		}
 
-		const termText = textContent.trim().toLowerCase();
+		const cleanTermText = sanitizeGlossTerm(textContent);
+		const termKey = cleanTermText.toLowerCase();
 
 		// Skip if this term has already been processed
-		if (processedTerms.has(termText)) {
+		if (processedTerms.has(termKey)) {
 			// For duplicates, just keep the bold formatting without tooltip processing
 			const span = document.createElement("span");
-			span.innerHTML = `${textContent}`;
+			span.innerHTML = `<b>${cleanTermText || textContent.trim()}</b>`;
 			if (element.parentNode) {
 				element.parentNode.replaceChild(span, element);
 			}
@@ -94,22 +98,21 @@ export function getFormattedContainer(
 		}
 
 		// Mark this term as processed
-		processedTerms.add(termText);
+		processedTerms.add(termKey);
 
 		const span = document.createElement("span");
+		const displayTerm = cleanTermText || textContent.trim();
 
 		if (tooltipContent.length <= actualThreshold) {
 			// Inline format: <b>term</b> (definition)
-			span.innerHTML = `<b>${textContent}</b> (${tooltipContent})`;
+			span.innerHTML = `<b>${displayTerm}</b> (${tooltipContent})`;
 		} else {
-			// Footnote format now omits the inline reference marker: <b>term</b>
-			span.innerHTML = `<b>${textContent}</b>`;
-			footnotes.push({
-				text: textContent,
+			// Appendix format omits inline reference marker: <b>term</b>
+			span.innerHTML = `<b>${displayTerm}</b>`;
+			keyTerms.push({
+				text: displayTerm,
 				content: tooltipContent,
-				refNum: footnoteCounter,
 			});
-			footnoteCounter++;
 		}
 
 		if (element.parentNode) {
@@ -117,11 +120,19 @@ export function getFormattedContainer(
 		}
 	});
 
-	// Add footnotes section if there are any footnoted tooltips
-	if (footnotes.length > 0) {
+	// Add key terms section if there are any appendix tooltips
+	if (keyTerms.length > 0) {
 		const footnotesDiv = document.createElement("div");
+		const separatorRow = document.createElement("p");
+		separatorRow.textContent = "---";
+		separatorRow.style.margin = "0.5em 0";
+		const headingRow = document.createElement("p");
+		headingRow.innerHTML = "<b>Key Terms</b>:";
+		headingRow.style.margin = "0.5em 0";
+		const keyTermsList = document.createElement("ul");
+		keyTermsList.style.margin = "0.25em 0 0.5em 1.25em";
 
-		footnotes.forEach(({ text, content, refNum }) => {
+		keyTerms.forEach(({ text, content }) => {
 			// Extract Pali term from content if it exists (pattern: [paliTerm])
 			const paliMatch = content.match(/\[([^\]]+)\]$/);
 			const paliTerm = paliMatch ? paliMatch[1] : null;
@@ -129,20 +140,23 @@ export function getFormattedContainer(
 				? content.replace(/\s*\[([^\]]+)\]$/, "")
 				: content;
 
-			// Create individual footnote paragraph
-			const footnoteP = document.createElement("p");
-			footnoteP.style.margin = "0.5em 0";
+			// Create key term list item
+			const footnoteItem = document.createElement("li");
+			footnoteItem.style.margin = "0.35em 0";
 
-			// Format footnote content with ≈ symbol
+			// Format key term content with ≈ symbol
 			if (paliTerm) {
-				footnoteP.innerHTML = `[${refNum}] ${text} [${paliTerm}] ≈ ${cleanContent}`;
+				footnoteItem.innerHTML = `${text} [${paliTerm}] ≈ ${cleanContent}`;
 			} else {
-				footnoteP.innerHTML = `[${refNum}] ${text} ≈ ${cleanContent}`;
+				footnoteItem.innerHTML = `${text} ≈ ${cleanContent}`;
 			}
 
-			footnotesDiv.appendChild(footnoteP);
+			keyTermsList.appendChild(footnoteItem);
 		});
 
+		footnotesDiv.appendChild(separatorRow);
+		footnotesDiv.appendChild(headingRow);
+		footnotesDiv.appendChild(keyTermsList);
 		container.appendChild(footnotesDiv);
 	}
 

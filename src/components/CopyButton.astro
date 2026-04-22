@@ -26,9 +26,8 @@
 	 * Enhanced Copy Button with Annotation-Based Tooltips
 	 *
 	 * Features:
-	 * - Inline tooltips: Short tooltips (≤ threshold) shown as: <b>term</b> (definition)
-	 * - Footnoted tooltips: Long tooltips (> threshold) shown as: <b>term</b> [1] with footnotes below
-	 * - Configurable threshold via localStorage (default: 20 characters)
+	 * - Key terms are bolded inline and definitions are appended below as bullets
+	 * - Glosses are always appended (threshold forced to 0)
 	 *
 	 * Console functions:
 	 * - setTooltipThreshold(number): Change the threshold
@@ -73,8 +72,7 @@
 		const selection = window.getSelection();
 		if (!selection?.rangeCount) return;
 		const range = selection.getRangeAt(0);
-		const threshold = getTooltipThreshold();
-		const container = getFormattedContainer(range, threshold);
+		const container = getFormattedContainer(range, 0);
 		// Root div for clipboard HTML; avoid white-space: pre-wrap so paste targets (e.g. Reddit)
 		// do not double spacing with block elements (<p>, etc.).
 		const richText = `<div>${container.innerHTML}</div>`;
@@ -100,7 +98,7 @@
 	}
 
 	function getTooltipThreshold(): number {
-		return parseInt(localStorage.getItem("tooltipThreshold") || "18");
+		return parseInt(localStorage.getItem("tooltipThreshold") || "0");
 	}
 
 	function setTooltipThreshold(threshold: number): void {
