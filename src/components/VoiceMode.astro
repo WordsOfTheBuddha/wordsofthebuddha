@@ -67,10 +67,25 @@ const { discourseId, filteredSubset = false } = Astro.props;
 					</summary>
 					<div class="voice-shortcuts-panel">
 						<ul class="voice-shortcuts-list">
-							<li><kbd class="voice-shortcuts-kbd">V</kbd> Open or close voice mode</li>
-							<li><kbd class="voice-shortcuts-kbd">Space</kbd> Play or pause</li>
-							<li><kbd class="voice-shortcuts-kbd">←</kbd> <kbd class="voice-shortcuts-kbd">→</kbd> Previous or next paragraph</li>
-							<li><kbd class="voice-shortcuts-kbd">Esc</kbd> Close voice mode</li>
+							<li>
+								<span class="voice-shortcuts-keys"><kbd class="voice-shortcuts-kbd">V</kbd></span>
+								<span class="voice-shortcuts-text">Open or close voice mode</span>
+							</li>
+							<li>
+								<span class="voice-shortcuts-keys"><kbd class="voice-shortcuts-kbd">Space</kbd></span>
+								<span class="voice-shortcuts-text">Play or pause</span>
+							</li>
+							<li>
+								<span class="voice-shortcuts-keys">
+									<kbd class="voice-shortcuts-kbd">←</kbd>
+									<kbd class="voice-shortcuts-kbd">→</kbd>
+								</span>
+								<span class="voice-shortcuts-text">Previous or next paragraph</span>
+							</li>
+							<li>
+								<span class="voice-shortcuts-keys"><kbd class="voice-shortcuts-kbd">Esc</kbd></span>
+								<span class="voice-shortcuts-text">Close voice mode</span>
+							</li>
 						</ul>
 					</div>
 				</details>

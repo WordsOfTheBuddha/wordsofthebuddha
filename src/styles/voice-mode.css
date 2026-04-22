@@ -293,20 +293,39 @@ html.dark .voice-mode-trigger:hover {
 }
 
 .voice-shortcuts-list li {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: 0.25rem 0.35rem;
-	padding: 0.12rem 0;
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	align-items: center;
+	column-gap: 0.45rem;
+	padding: 0.30rem 0 0.06rem;
+	line-height: 1.25;
 }
 
 .voice-shortcuts-list li + li {
 	border-top: 1px solid rgb(255 255 255 / 0.06);
 }
 
+.voice-shortcuts-keys {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.22rem;
+	position: relative;
+	top: 1px;
+}
+
+.voice-shortcuts-text {
+	display: inline-flex;
+	align-items: center;
+	position: relative;
+	top: 1px;
+}
+
 .voice-shortcuts-kbd {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	padding: 0.05rem 0.28rem;
+	line-height: 1;
 	font-size: 0.625rem;
 	font-family: ui-monospace, monospace;
 	font-variant-numeric: tabular-nums;
