@@ -1,9 +1,10 @@
 ---
 title: Nimokkha sutta - Release
 description: The Buddha describes how he knows of the release, liberation and independence for living beings.
-fetter: ignorance
-tags: nibbāna,wisdom,liberation,sn,sn1-11,sn1
+qualities: solitude, liberation, delight
+themes: inspiration, wisdom
 slug: sn1.2
+priority: 1.1
 ---
 
 Sāvatthinidānaṁ.

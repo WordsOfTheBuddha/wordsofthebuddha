@@ -1,8 +1,8 @@
 ---
 title: Oghataraṇa sutta - Crossing the Flood
 description: The Buddha crossed the flood of suffering without any support and without struggling.
-tags: sn,sn1-11,sn1,ignorance,wisdom,Nibbāna
-fetter: ignorance
+qualities: quenching, attachment
+theme: inspiration, wisdom
 slug: sn1.1
 ---
 

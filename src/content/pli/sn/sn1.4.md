@@ -1,10 +1,8 @@
 ---
 title: Accenti sutta - Flies By
 description: Time flies by, one should abandon world’s bait, looking for peace.
-qualities: giving up, tranquility
+qualities: merit, tranquility, recollection of death
 theme: inspiration, wisdom
-fetter: ignorance
-tags: life,peace,happiness,sn,sn1-11,sn1
 slug: sn1.4
 ---
 
