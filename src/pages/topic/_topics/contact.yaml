@@ -23,6 +23,8 @@ leadsTo:
 discourses:
     - id: sn14.2
       note: "Elements -> Contacts"
+    - id: sn14.3
+      note: "Elements -> Contacts at each sense base"
     - id: sn36.10
       note: "Contact -> Feelings"
     - id: sn14.3
@@ -43,3 +45,7 @@ discourses:
       note: "Verse on contact"
     - id: mn111
       note: "Contact in jhānas"
+    - id: sn14.7
+      note: "In relation to other mental factors"
+    - id: sn14.9
+      note: "Acquisitions arise from contact"
