@@ -536,7 +536,7 @@ html.voice-mode .voice-word.voice-word-active {
 /* ——— Per-paragraph play actions ——— */
 .voice-para-actions {
 	position: absolute;
-	top: -0.2rem;
+	top: -1rem;
 	left: -0.25rem;
 	display: flex;
 	gap: 0.2rem;
@@ -581,7 +581,7 @@ html.voice-mode p.english-paragraph > .voice-para-actions:hover {
 @media (max-width: 640px) {
 	.voice-para-actions {
 		opacity: 0.45;
-		top: -0.15rem;
+		top: -1rem;
 		left: -0.15rem;
 	}
 	.voice-para-btn {
