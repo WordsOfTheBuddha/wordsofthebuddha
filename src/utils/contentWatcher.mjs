@@ -2,6 +2,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve, extname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import { naturalSort } from "./sort-routes.mjs";
 import { watch } from "node:fs";
 import { generateTopicMappings } from "./generateTopicMappings.ts";
@@ -17,6 +18,7 @@ const OUTPUT_FILE = resolve(__dirname, "../utils/routes.ts");
 const TOPICS_DIR = resolve(__dirname, "../pages/topic/_topics");
 
 const QUALITIES_FILE = resolve(__dirname, "../data/qualities.json");
+const QUALITIES_BASENAME = basename(QUALITIES_FILE);
 
 async function getFiles(dir) {
 	const entries = await readdir(dir, { withFileTypes: true });
@@ -61,6 +63,7 @@ async function watchContentDirectory() {
 	console.log(`👀 Watching for changes in ${CONTENT_DIR}...`);
 	let debounceTimer = null;
 	let pendingEvent = null; // Track what kind of change happened
+	let lastQualitiesHash = null;
 
 	/**
 	 * Run generators appropriate to the type of change:
@@ -162,18 +165,22 @@ async function watchContentDirectory() {
 
 	// Watch src/data/qualities.json for generating quality mappings
 	watch(QUALITIES_FILE, async (eventType, filename) => {
-		if (filename && filename.endsWith(".json")) {
+		// Ignore noisy sibling-file events from fs.watch; only react to qualities.json.
+		if (filename && basename(filename) !== QUALITIES_BASENAME) return;
+		try {
+			const content = await readFile(QUALITIES_FILE, "utf8");
+			const currentHash = createHash("sha256").update(content).digest("hex");
+			if (currentHash === lastQualitiesHash) return;
+			lastQualitiesHash = currentHash;
 			console.log(
-				`\nDetected ${eventType} on ${filename}. Regenerating quality mappings...`,
+				`\nDetected ${eventType} on ${QUALITIES_BASENAME}. Regenerating quality mappings...`,
 			);
-			try {
-				await generateQualityMappings();
-			} catch (error) {
-				console.error(
-					"❌ Quality mappings generation failed during watch:",
-					error,
-				);
-			}
+			await generateQualityMappings();
+		} catch (error) {
+			console.error(
+				"❌ Quality mappings generation failed during watch:",
+				error,
+			);
 		}
 	});
 }

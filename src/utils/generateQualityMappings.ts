@@ -3,6 +3,7 @@ import * as path from "path";
 import { globSync } from "glob";
 import { readFileSync } from "fs";
 import matter from "gray-matter";
+import { fileURLToPath } from "url";
 
 interface DiscourseItem {
 	id: string;
@@ -160,13 +161,18 @@ export async function generateQualityMappings() {
 			}
 		});
 
-		// Write to file
-		fs.writeFileSync(
-			path.join(process.cwd(), "src/data/qualityMappings.json"),
-			JSON.stringify(qualityData, null, 2)
-		);
-
-		console.log(`✅ Quality mappings generated successfully`);
+		// Only write when content changed to avoid unnecessary watcher/HMR churn.
+		const outputPath = path.join(process.cwd(), "src/data/qualityMappings.json");
+		const nextContent = JSON.stringify(qualityData, null, 2);
+		const prevContent = fs.existsSync(outputPath)
+			? fs.readFileSync(outputPath, "utf8")
+			: null;
+		if (prevContent !== nextContent) {
+			fs.writeFileSync(outputPath, nextContent);
+			console.log(`✅ Quality mappings generated successfully`);
+		} else {
+			console.log(`✅ Quality mappings already up to date`);
+		}
 		if (emptyQualitiesCount > 0) {
 			console.log(
 				`⚠️ ${emptyQualitiesCount} qualities have no associated discourses`
@@ -177,5 +183,8 @@ export async function generateQualityMappings() {
 	}
 }
 
-// Run the function when this module is the main module
-generateQualityMappings().catch(console.error);
+// Run as a script only when invoked directly.
+const thisFile = fileURLToPath(import.meta.url);
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(thisFile)) {
+	generateQualityMappings().catch(console.error);
+}
