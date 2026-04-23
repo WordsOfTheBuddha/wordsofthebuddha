@@ -5,18 +5,26 @@ Re-take specific TTS groups in an existing discourse audio.
 Usage:
   # Retake TTS group 1 (first group) for iti23:
   python scripts/edit_voice.py iti23 --retake-groups 1
+  python scripts/edit_voice.py iti23 -g 1
 
   # Retake groups 1 and 3:
   python scripts/edit_voice.py iti23 --retake-groups 1,3
 
   # Retake by paragraph range (1-based): paragraphs 1-3:
   python scripts/edit_voice.py iti23 --retake-paragraphs 1-3
+  python scripts/edit_voice.py iti23 -p 1-3
+
+  # Retake paragraphs by expanding to covering TTS groups:
+  python scripts/edit_voice.py iti23 -p 1-3 --covering-groups
 
   # Rollback to previous version:
   python scripts/edit_voice.py iti23 --rollback
 
   # Preview: show group structure without making changes:
   python scripts/edit_voice.py iti23 --preview
+
+  # Re-run alignment on existing audio/manifest only (no TTS synthesis):
+  python scripts/edit_voice.py iti23 --align-only
 
   # Copy paragraph audio from another discourse without TTS:
   python scripts/edit_voice.py iti23 --copy-from iti10 --copy-paragraphs 2=5,3=6
@@ -397,6 +405,103 @@ def preview_groups(slug: str) -> None:
         for line in first_words:
             print(line)
         print()
+
+
+def align_only(slug: str, voice_name: str) -> int:
+    """Re-run alignment on existing discourse audio without any TTS retake."""
+    manifest = _load_manifest(slug)
+    out_audio = AUDIO_DIR / f"{slug}.webm"
+    if not out_audio.exists():
+        print(f"[error] {slug}: no existing audio file {out_audio.name}", file=sys.stderr)
+        return 1
+
+    mdx_path = resolve_mdx_path(slug)
+    raw = mdx_path.read_text(encoding="utf-8")
+    body = strip_frontmatter(raw)
+    paragraph_specs = extract_paragraphs_auto(body)
+    if not paragraph_specs:
+        print(f"[error] {slug}: no paragraphs extracted from MDX.", file=sys.stderr)
+        return 1
+    paragraph_specs_align = [
+        (pid, apply_tts_phonetic_spellings(p), brk)
+        for pid, p, brk in paragraph_specs
+    ]
+    paragraphs_text = [p for _, p, _ in paragraph_specs]
+    th = text_hash("\n\n".join(paragraphs_text))
+
+    paragraph_boundaries: list[tuple[float, float]] | None = None
+    tts_groups: list[tuple[float, float, list[int]]] | None = None
+
+    try:
+        tts_b = manifest.get("ttsBoundaries")
+        if (
+            tts_b
+            and len(tts_b) == len(paragraph_specs)
+            and tts_b[0].get("start", 1) == 0
+        ):
+            paragraph_boundaries = [(b["start"], b["end"]) for b in tts_b]
+            print(
+                f"  Using {len(paragraph_boundaries)} TTS paragraph boundaries "
+                "from existing manifest"
+            )
+        elif not tts_b or (tts_b and tts_b[0].get("start", 1) > 0):
+            existing_paras = manifest.get("paragraphs", [])
+            ex_dur = manifest.get("duration")
+            if len(existing_paras) == len(paragraph_specs):
+                tight: list[tuple[float, float]] = []
+                for ep in existing_paras:
+                    s = ep.get("start")
+                    e = ep.get("end")
+                    if s is not None and e is not None:
+                        tight.append((float(s), float(e)))
+                if len(tight) == len(paragraph_specs):
+                    recovered: list[tuple[float, float]] = []
+                    for i, (s, e) in enumerate(tight):
+                        if i == 0:
+                            new_s = 0.0
+                        else:
+                            prev_end = tight[i - 1][1]
+                            new_s = round((prev_end + s) / 2, 4)
+                        if i == len(tight) - 1:
+                            new_e = round(float(ex_dur), 4) if ex_dur else e
+                        else:
+                            next_start = tight[i + 1][0]
+                            new_e = round((e + next_start) / 2, 4)
+                        recovered.append((new_s, new_e))
+                    paragraph_boundaries = recovered
+                    print(
+                        f"  Recovered {len(paragraph_boundaries)} paragraph boundaries "
+                        "from v1 manifest (gap-split)"
+                    )
+
+        tts_g = manifest.get("ttsGroups")
+        if tts_g:
+            tts_groups = [(g["start"], g["end"], g["paragraphs"]) for g in tts_g]
+            print(f"  Using {len(tts_groups)} TTS groups from existing manifest")
+    except Exception:
+        # Keep align-only robust; fallback alignment path will still run.
+        pass
+
+    print(f"\n{slug}: --align-only (no TTS synthesis)")
+    manifest_out = align_to_manifest(
+        out_audio,
+        paragraph_specs_align,
+        voice_name,
+        th,
+        skip_align=False,
+        paragraph_boundaries=paragraph_boundaries,
+        tts_groups=tts_groups,
+        paragraph_specs_display=paragraph_specs,
+    )
+    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
+
+    out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
+    out_manifest.write_text(
+        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    return 0
 
 
 def retake_groups(
@@ -1004,15 +1109,25 @@ def main() -> int:
 
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument(
+        "-g",
         "--retake-groups",
         metavar="INDICES",
         help="Comma-separated 1-based group indices to re-synthesize (e.g. 1,3). See --preview for group numbering.",
     )
     action.add_argument(
+        "-p",
         "--retake-paragraphs",
         metavar="RANGE",
         help="1-based paragraph range to re-synthesize (e.g. 1-3,5). "
-             "Defaults to retaking covering TTS groups; add --exact for paragraph-only retake.",
+             "Defaults to exact paragraph-only retake. "
+             "Add --covering-groups to expand selected paragraphs to full covering TTS groups.",
+    )
+    parser.add_argument(
+        "--covering-groups",
+        action="store_true",
+        help=(
+            "With --retake-paragraphs, retake full covering TTS groups instead of exact paragraphs."
+        ),
     )
     action.add_argument(
         "--rollback",
@@ -1023,6 +1138,11 @@ def main() -> int:
         "--preview",
         action="store_true",
         help="Show TTS group structure without making changes.",
+    )
+    action.add_argument(
+        "--align-only",
+        action="store_true",
+        help="Re-run alignment on existing .webm/.manifest without TTS synthesis.",
     )
     action.add_argument(
         "--copy-paragraphs",
@@ -1060,8 +1180,8 @@ def main() -> int:
         "--exact",
         action="store_true",
         help=(
-            "With --retake-paragraphs, re-synthesize exactly those paragraph(s) only, "
-            "instead of expanding to full covering TTS groups."
+            "Backward-compatible no-op: exact paragraph retake is now the default "
+            "for --retake-paragraphs."
         ),
     )
 
@@ -1086,6 +1206,15 @@ def main() -> int:
         preview_groups(slug)
         return 0
 
+    if args.align_only:
+        # Preserve existing manifest voice by default for metadata consistency.
+        manifest = _load_manifest(slug)
+        manifest_voice = manifest.get("voice")
+        voice_name_for_align = manifest_voice or os.environ.get("TTS_VOICE", "en-US-Studio-M")
+        if manifest_voice:
+            print(f"  Align-only voice metadata: {manifest_voice}")
+        return align_only(slug, voice_name_for_align)
+
     if args.copy_paragraphs:
         if not args.copy_from:
             print("[error] --copy-from is required with --copy-paragraphs.", file=sys.stderr)
@@ -1109,8 +1238,19 @@ def main() -> int:
 
     manifest = _load_manifest(slug)
 
+    if args.exact and args.covering_groups:
+        print(
+            "[error] --exact and --covering-groups cannot be used together.",
+            file=sys.stderr,
+        )
+        return 1
+
     if args.retake_paragraphs:
-        if args.exact:
+        if args.covering_groups:
+            retake_gis = _parse_retake_paragraphs(args.retake_paragraphs, manifest)
+            retake_gis_display = [i + 1 for i in retake_gis]
+            print(f"  Paragraphs {args.retake_paragraphs} → groups {retake_gis_display}")
+        else:
             try:
                 retake_pis = _parse_retake_paragraph_indices(args.retake_paragraphs, manifest)
             except ValueError as e:
@@ -1119,10 +1259,6 @@ def main() -> int:
             retake_pis_display = [i + 1 for i in retake_pis]
             print(f"  Exact paragraphs to retake: {retake_pis_display}")
             retake_gis = None
-        else:
-            retake_gis = _parse_retake_paragraphs(args.retake_paragraphs, manifest)
-            retake_gis_display = [i + 1 for i in retake_gis]
-            print(f"  Paragraphs {args.retake_paragraphs} → groups {retake_gis_display}")
     else:
         retake_gis = _parse_retake_groups(args.retake_groups)
 
@@ -1155,7 +1291,7 @@ def main() -> int:
             bits.append(f"volume={prosody.volume}")
         print(f"SSML prosody (retake only): {' '.join(bits)}")
 
-    if args.retake_paragraphs and args.exact:
+    if args.retake_paragraphs and not args.covering_groups:
         return retake_paragraphs_exact(
             slug,
             retake_pis,

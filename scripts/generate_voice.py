@@ -603,6 +603,7 @@ def file_hash(path: Path) -> str | None:
 
 
 MAX_SSML_BYTES = 4800  # Google TTS limit is 5000; leave margin
+SMALL_DOC_MAX_PARAGRAPHS = 7  # Smart mode: small docs first attempt one TTS group.
 MIN_MERGE_CHARS = 120  # Short paragraphs absorbed into neighboring group (smart mode)
 TARGET_GROUP_SIZE = 3  # Aim for this many paragraphs per TTS call (smart mode)
 
@@ -791,6 +792,14 @@ def _merge_short_paragraphs(
     """
     n = len(paragraphs)
     groups: list[tuple[list[int], list[str], list[int]]] = []
+
+    # Small-doc fast path: first try one group using pre-SSML text length.
+    # This intentionally measures plain paragraph payload bytes (not SSML tags).
+    if n <= SMALL_DOC_MAX_PARAGRAPHS:
+        total_text_bytes = sum(len(p.encode("utf-8")) for p in paragraphs)
+        if total_text_bytes <= MAX_SSML_BYTES:
+            return [(list(range(n)), list(paragraphs), list(breaks))]
+
     i = 0
     while i < n:
         indices = [i]
