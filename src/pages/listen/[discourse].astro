@@ -54,8 +54,20 @@ async function lookupTitle(slug: string | null): Promise<string | null> {
 		return null;
 	}
 }
+
+async function lookupDescription(slug: string | null): Promise<string | null> {
+	if (!slug) return null;
+	try {
+		const e = await getEntry("all", slug);
+		return (e?.data.description as string | undefined) ?? null;
+	} catch {
+		return null;
+	}
+}
 const nextTitle = await lookupTitle(nextSlug);
 const prevTitle = await lookupTitle(prevSlug);
+const nextDescription = await lookupDescription(nextSlug);
+const prevDescription = await lookupDescription(prevSlug);
 ---
 
 <ListenLayout title={title} description={description} displayId={displayId} slug={id}>
@@ -66,9 +78,11 @@ const prevTitle = await lookupTitle(prevSlug);
 		description={description}
 		nextSlug={nextSlug}
 		nextTitle={nextTitle}
+		nextDescription={nextDescription}
 		nextDisplayId={nextSlug ? formatDisplayId(nextSlug) : null}
 		prevSlug={prevSlug}
 		prevTitle={prevTitle}
+		prevDescription={prevDescription}
 		prevDisplayId={prevSlug ? formatDisplayId(prevSlug) : null}
 	/>
 </ListenLayout>

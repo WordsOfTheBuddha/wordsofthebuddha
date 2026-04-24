@@ -159,7 +159,7 @@ export class DiscoverRenderer {
 					`
 							: ""
 					}
-					
+
                     ${
 						item.pali && item.pali.length > 0
 							? `
@@ -430,7 +430,7 @@ export class DiscoverRenderer {
 					)
 					.join("")}
 			</div>
-			
+
 			${isExpanded ? this.renderStickyCollapseButton(item.id) : ""}
 		</div>
 	`;
@@ -488,8 +488,8 @@ export class DiscoverRenderer {
 		const buttonText = this.getConsistentButtonText(discourseCount, false);
 
 		return `
-		<button 
-			onclick="toggleExpanded('${itemId}')" 
+		<button
+			onclick="toggleExpanded('${itemId}')"
 			class="flex items-center gap-2 text-sm text-[var(--primary-color)] hover:text-[var(--link-hover-color)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50 rounded mt-3 ml-1"
 		>
 			${buttonText}

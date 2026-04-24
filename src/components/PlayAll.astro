@@ -1,0 +1,163 @@
+---
+/**
+ * <PlayAll group="<anthology-slug>" />
+ *
+ * Renders a "Play all" button that opens listen-mode at the first
+ * audio-bearing slug in the named playlist, with `?pl=<group>` so the
+ * listen-mode client uses the playlist as its queue source.
+ *
+ * Always renders so authors / readers can see coverage at a glance:
+ *   - 0 of N        → disabled (no audio yet)
+ *   - K of N (K<N)  → enabled, with "K of N" hint
+ *   - K of K        → enabled, no hint
+ * Renders nothing only when the playlist id is unknown.
+ */
+import { playlists } from "../data/playlists.generated";
+import { audioSlugs } from "../data/audioStatus";
+
+interface Props {
+	/** Anthology id (matches `slug` in the anthology MDX frontmatter). */
+	group: string;
+	/** Optional override label. */
+	label?: string;
+}
+
+const { group, label = "Audiobook" } = Astro.props;
+const pl = playlists[group];
+const audioOnly = pl ? pl.slugs.filter((s) => audioSlugs.has(s)) : [];
+const firstAudio = audioOnly[0] ?? null;
+const href = firstAudio ? `/listen/${firstAudio}?pl=${group}` : null;
+const total = pl?.slugs.length ?? 0;
+const ready = audioOnly.length;
+const countText = pl ? `${ready}/${total}` : "";
+const disabled = !href;
+---
+
+{
+	pl && (
+		<a
+			class={disabled ? "play-all is-disabled" : "play-all"}
+			href={href ?? "#"}
+			aria-disabled={disabled ? "true" : undefined}
+			role={disabled ? "link" : undefined}
+			tabindex={disabled ? -1 : undefined}
+			aria-label={
+				disabled
+					? `No audio recorded yet for ${pl.title}`
+					: `Play all available audio in ${pl.title}`
+			}
+			title={
+				disabled
+					? `No audio recorded yet (0 of ${total})`
+					: undefined
+			}
+		>
+			<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+				<path d="M6 4.5v11l9-5.5-9-5.5z" fill="currentColor" />
+			</svg>
+			<span class="play-all-label">{label}</span>
+			{pl && (
+				<span class="play-all-count">
+					{countText}
+				</span>
+			)}
+		</a>
+	)
+}
+
+{/*
+ * Anthology link enrichment: when the reader clicks a discourse link inside
+ * this anthology page, append `?pl={group}` so both the read-mode URL and
+ * any subsequent listen-mode trip carry the playlist context. Two pieces:
+ *   1. On load: rewrite every <a href="/{slug}"> whose slug is in this
+ *      playlist's slug set, so right-click → copy link gives the right URL.
+ *   2. Click delegation: catches links rendered after load (none today, but
+ *      cheap insurance and consistent for SPA-style updates).
+ */}
+{pl && (
+	<script
+		type="module"
+		set:html={`(() => {
+			const PL_SLUGS = new Set(${JSON.stringify(pl.slugs)});
+			const PL_ID = ${JSON.stringify(group)};
+			function injectPl(href) {
+				try {
+					const u = new URL(href, location.href);
+					if (u.origin !== location.origin) return null;
+					const m = u.pathname.match(/^\\/([^/]+)\\/?$/);
+					if (!m) return null;
+					if (!PL_SLUGS.has(m[1])) return null;
+					if (u.searchParams.get("pl") === PL_ID) return null;
+					u.searchParams.set("pl", PL_ID);
+					return u.pathname + u.search + u.hash;
+				} catch { return null; }
+			}
+			function rewriteAll() {
+				for (const a of document.querySelectorAll("a[href]")) {
+					const h = a.getAttribute("href");
+					if (!h) continue;
+					const next = injectPl(h);
+					if (next) a.setAttribute("href", next);
+				}
+			}
+			if (document.readyState === "loading") {
+				document.addEventListener("DOMContentLoaded", rewriteAll, { once: true });
+			} else {
+				rewriteAll();
+			}
+		})();`}
+	/>
+)}
+
+<style>
+	.play-all {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.48rem 0.8rem;
+		border: 1px solid color-mix(in srgb, #d6c79b 38%, transparent);
+		border-radius: 0.75rem;
+		background: linear-gradient(
+			180deg,
+			color-mix(in srgb, #d6c79b 16%, transparent),
+			color-mix(in srgb, #d6c79b 7%, transparent)
+		);
+		color: color-mix(in srgb, #e7dcbe 85%, #d6c79b 15%);
+		font-size: 0.84rem;
+		font-weight: 600;
+		line-height: 1;
+		text-decoration: none;
+		transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+	}
+	.play-all:hover,
+	.play-all:focus-visible {
+		background: linear-gradient(
+			180deg,
+			color-mix(in srgb, #d6c79b 23%, transparent),
+			color-mix(in srgb, #d6c79b 12%, transparent)
+		);
+		border-color: color-mix(in srgb, #d6c79b 62%, transparent);
+		transform: translateY(-0.5px);
+	}
+	.play-all svg {
+		width: 13px;
+		height: 13px;
+		flex: 0 0 auto;
+	}
+	.play-all-label {
+		letter-spacing: 0.02em;
+	}
+	.play-all-count {
+		opacity: 0.78;
+		font-size: 0.72rem;
+		font-weight: 500;
+		padding-left: 0.22rem;
+		margin-left: 0.08rem;
+		border-left: 1px solid color-mix(in srgb, #d6c79b 35%, transparent);
+	}
+	.play-all.is-disabled {
+		opacity: 0.55;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+</style>

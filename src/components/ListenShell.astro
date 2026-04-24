@@ -15,9 +15,11 @@ interface Props {
 	description?: string;
 	nextSlug: string | null;
 	nextTitle: string | null;
+	nextDescription?: string | null;
 	nextDisplayId: string | null;
 	prevSlug: string | null;
 	prevTitle: string | null;
+	prevDescription?: string | null;
 	prevDisplayId: string | null;
 }
 const props = Astro.props;
@@ -28,9 +30,11 @@ const initialDataJson = JSON.stringify({
 	description: props.description ?? null,
 	nextSlug: props.nextSlug,
 	nextTitle: props.nextTitle,
+	nextDescription: props.nextDescription ?? null,
 	nextDisplayId: props.nextDisplayId,
 	prevSlug: props.prevSlug,
 	prevTitle: props.prevTitle,
+	prevDescription: props.prevDescription ?? null,
 	prevDisplayId: props.prevDisplayId,
 });
 ---
@@ -63,13 +67,25 @@ const initialDataJson = JSON.stringify({
 
 	<footer class="listen-transport" aria-label="Playback controls">
 		<div class="listen-transport-buttons">
-			<button type="button" id="listen-prev" class="listen-btn listen-btn--ghost" aria-label="Previous">
+			<button
+				type="button"
+				id="listen-prev"
+				class="listen-btn listen-btn--ghost"
+				aria-label="Previous"
+				title="Previous paragraph / discourse"
+			>
 				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M15.79 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L11.832 10l3.938 3.71a.75.75 0 0 1 .02 1.06ZM8.284 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L4.831 10l3.938 3.71a.75.75 0 0 1 .015 1.06Z" /></svg>
 			</button>
 			<button type="button" id="listen-play" class="listen-btn listen-btn--primary" aria-label="Play">
 				<svg id="listen-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="28" height="28"><path d="M8 5.14v13.72c0 .8.87 1.29 1.55.87l10.79-6.86a1.03 1.03 0 0 0 0-1.74L9.55 4.27A1.03 1.03 0 0 0 8 5.14Z"/></svg>
 			</button>
-			<button type="button" id="listen-next" class="listen-btn listen-btn--ghost" aria-label="Next">
+			<button
+				type="button"
+				id="listen-next"
+				class="listen-btn listen-btn--ghost"
+				aria-label="Next"
+				title="Next paragraph / discourse"
+			>
 				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M4.21 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L8.168 10 4.23 6.29a.75.75 0 0 1-.02-1.06ZM11.716 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L15.169 10l-3.94-3.71a.75.75 0 0 1-.014-1.06Z" /></svg>
 			</button>
 		</div>
@@ -100,25 +116,12 @@ const initialDataJson = JSON.stringify({
 			</button>
 		</div>
 		<div class="listen-options">
-			<label class="listen-autoplay" for="listen-autoplay-toggle" title="Autoplay next discourse">
-				<input id="listen-autoplay-toggle" type="checkbox" />
-				<span>Autoplay</span>
-			</label>
-			<button
-				type="button"
-				id="listen-speed-cycle"
-				class="listen-speed-cycle"
-				aria-label="Cycle playback speed"
-				title="Cycle playback speed (+/−)"
-			>
-				<span id="listen-speed-label" aria-live="polite" aria-atomic="true">1×</span>
-			</button>
-			<div class="listen-options-end">
+			<div class="listen-options-start">
 				<details class="listen-shortcuts-details">
 					<summary class="listen-shortcuts-summary" title="Keyboard shortcuts">
 						<span class="sr-only">Keyboard shortcuts</span>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="listen-shortcuts-icon" aria-hidden="true">
-							<path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM8.94 6.94a.75.75 0 1 1-1.061-1.061 3 3 0 1 1 2.871 5.026v.345a.75.75 0 0 1-1.5 0v-.5c0-.734.851-1.121 1.4-1.4a1.5 1.5 0 1 0-1.71-2.461.75.75 0 1 1-1.04-1.085Z" clip-rule="evenodd" />
+							<path d="M4.25 4A2.25 2.25 0 0 0 2 6.25v7.5A2.25 2.25 0 0 0 4.25 16h11.5A2.25 2.25 0 0 0 18 13.75v-7.5A2.25 2.25 0 0 0 15.75 4H4.25Zm.75 2.5a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 5 6.5Zm2.75 0a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1-.75-.75Zm2.75 0a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1-.75-.75Zm2.75 0a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1-.75-.75ZM5 10a.75.75 0 0 1 .75-.75h8.5a.75.75 0 0 1 0 1.5h-8.5A.75.75 0 0 1 5 10Zm0 3.5a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 0 1.5h-3.5A.75.75 0 0 1 5 13.5Z" />
 						</svg>
 					</summary>
 					<div class="listen-shortcuts-panel">
@@ -155,6 +158,17 @@ const initialDataJson = JSON.stringify({
 						</ul>
 					</div>
 				</details>
+			</div>
+			<button
+				type="button"
+				id="listen-speed-cycle"
+				class="listen-speed-cycle"
+				aria-label="Cycle playback speed"
+				title="Cycle playback speed (+/−)"
+			>
+				<span id="listen-speed-label" aria-live="polite" aria-atomic="true">1×</span>
+			</button>
+			<div class="listen-options-end">
 				<button type="button" id="listen-queue-chip" class="listen-chip" aria-label="Queue">
 					<svg
 						id="listen-queue-icon"
@@ -182,8 +196,18 @@ const initialDataJson = JSON.stringify({
 		aria-live="polite"
 		aria-hidden="true"
 	>
+		<span class="listen-track-pulse-countdown" id="listen-track-pulse-countdown" aria-hidden="true"></span>
 		<span class="listen-track-pulse-id" id="listen-track-pulse-id"></span>
 		<span class="listen-track-pulse-title" id="listen-track-pulse-title"></span>
+		<span class="listen-track-pulse-description" id="listen-track-pulse-description"></span>
+		<div class="listen-track-pulse-actions" id="listen-track-pulse-actions" hidden>
+			<button type="button" id="listen-track-pulse-play-now" class="listen-track-pulse-btn listen-track-pulse-btn--primary">
+				Play Now&nbsp;
+			</button>
+			<button type="button" id="listen-track-pulse-cancel" class="listen-track-pulse-btn listen-track-pulse-btn--ghost">
+				Cancel
+			</button>
+		</div>
 	</div>
 
 	<div

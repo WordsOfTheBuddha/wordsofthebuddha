@@ -79,6 +79,8 @@ from generate_voice import (
     restore_manifest_display_words,
     strip_frontmatter,
     text_hash,
+    load_routes,
+    expand_all_args,
     write_manifest_v2,
 )
 
@@ -420,12 +422,14 @@ def align_only(slug: str, voice_name: str) -> int:
     raw = mdx_path.read_text(encoding="utf-8")
     body = strip_frontmatter(raw)
     paragraph_specs = extract_paragraphs_auto(body)
+    paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
+    paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
     if not paragraph_specs:
         print(f"[error] {slug}: no paragraphs extracted from MDX.", file=sys.stderr)
         return 1
     paragraph_specs_align = [
         (pid, apply_tts_phonetic_spellings(p), brk)
-        for pid, p, brk in paragraph_specs
+        for pid, p, brk in paragraph_specs_for_tts
     ]
     paragraphs_text = [p for _, p, _ in paragraph_specs]
     th = text_hash("\n\n".join(paragraphs_text))
@@ -494,7 +498,7 @@ def align_only(slug: str, voice_name: str) -> int:
         tts_groups=tts_groups,
         paragraph_specs_display=paragraph_specs,
     )
-    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
+    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs_manifest)
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
     write_manifest_v2(out_manifest, manifest_out, slug)
@@ -542,6 +546,7 @@ def retake_groups(
 
     paragraph_specs = extract_paragraphs_auto(body)
     paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
+    paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
 
     paragraphs_tts = [
         apply_tts_long_a_macron_hint(apply_tts_phonetic_spellings(p))
@@ -549,7 +554,7 @@ def retake_groups(
     ]
     paragraph_specs_align = [
         (pid, apply_tts_phonetic_spellings(p), brk)
-        for pid, p, brk in paragraph_specs
+        for pid, p, brk in paragraph_specs_for_tts
     ]
 
     n_paras = len(paragraph_specs)
@@ -704,7 +709,7 @@ def retake_groups(
         tts_groups=new_tts_groups,
         paragraph_specs_display=paragraph_specs,
     )
-    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
+    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs_manifest)
 
     # ── 10. Write manifest ───────────────────────────────────────────────
 
@@ -760,6 +765,7 @@ def retake_paragraphs_exact(
 
     paragraph_specs = extract_paragraphs_auto(body)
     paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
+    paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
     if len(paragraph_specs) != n_paras_manifest:
         print(
             f"[error] {slug}: manifest/MDX paragraph mismatch "
@@ -774,7 +780,7 @@ def retake_paragraphs_exact(
     ]
     paragraph_specs_align = [
         (pid, apply_tts_phonetic_spellings(p), brk)
-        for pid, p, brk in paragraph_specs
+        for pid, p, brk in paragraph_specs_for_tts
     ]
 
     breaks: list[int] = []
@@ -883,7 +889,7 @@ def retake_paragraphs_exact(
         tts_groups=None,
         paragraph_specs_display=paragraph_specs,
     )
-    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
+    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs_manifest)
     if new_tts_groups:
         manifest_out["ttsGroups"] = [
             {"start": s, "end": e, "paragraphs": pids}
@@ -1080,6 +1086,48 @@ def copy_paragraphs(
     return 0
 
 
+def refresh_manifest_text(slug: str, verbose_mismatch: bool = False) -> int:
+    """Safe-op: refresh manifest words from MDX parsing rules only.
+
+    No TTS synthesis and no alignment pass; keeps existing timing payload.
+    """
+    try:
+        manifest = _load_manifest(slug)
+    except FileNotFoundError as e:
+        print(f"[skip] {slug}: {e}", file=sys.stderr)
+        return 1
+
+    mdx_path = resolve_mdx_path(slug)
+    raw = mdx_path.read_text(encoding="utf-8")
+    body = strip_frontmatter(raw)
+
+    paragraph_specs_display = extract_paragraphs_auto(body)
+    paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
+    paragraphs = manifest.get("paragraphs") or []
+    if not paragraph_specs_display or not paragraph_specs_manifest:
+        print(f"[skip] {slug}: no paragraphs extracted from MDX.", file=sys.stderr)
+        return 1
+    if len(paragraphs) != len(paragraph_specs_manifest):
+        print(
+            f"[skip] {slug}: paragraph count mismatch manifest={len(paragraphs)} mdx={len(paragraph_specs_manifest)}",
+            file=sys.stderr,
+        )
+        return 1
+
+    restore_manifest_display_words(
+        paragraphs,
+        paragraph_specs_manifest,
+        verbose_mismatch=verbose_mismatch,
+    )
+    manifest["textHash"] = text_hash("\n\n".join(p for _, p, _ in paragraph_specs_display))
+    manifest["generatedAt"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
+    write_manifest_v2(out_manifest, manifest, slug)
+    print(f"  Refreshed: {out_manifest.relative_to(REPO_ROOT)}")
+    return 0
+
+
 # ── CLI ───────────────────────────────────────────────────────────────────
 
 
@@ -1093,7 +1141,9 @@ def main() -> int:
     )
     parser.add_argument(
         "slug",
-        help="Discourse slug (e.g. iti23, mn10).",
+        nargs="?",
+        default="",
+        help="Discourse slug (e.g. iti23, mn10). Optional with --refresh-manifest-text --all-targets.",
     )
 
     action = parser.add_mutually_exclusive_group(required=True)
@@ -1141,10 +1191,39 @@ def main() -> int:
             "comma-separated; ranges supported (e.g. 2=7,5-6=9-10)."
         ),
     )
+    action.add_argument(
+        "--refresh-manifest-text", "-r",
+        action="store_true",
+        help=(
+            "Safe-op: refresh manifest word display text from MDX without synthesis or alignment."
+        ),
+    )
     parser.add_argument(
         "--copy-from",
         metavar="SOURCE_SLUG",
         help="Source discourse slug for --copy-paragraphs (must have timed manifest/audio).",
+    )
+    parser.add_argument(
+        "--targets",
+        nargs="*",
+        default=[],
+        help=(
+            "Additional slug selectors for --refresh-manifest-text. Supports voice:gen-style selectors "
+            "(exact slugs, ranges like mn1-50, families like sn36, dhp, etc.)."
+        ),
+    )
+    parser.add_argument(
+        "--all-targets",
+        action="store_true",
+        help="With --refresh-manifest-text, process all routable slugs that currently have manifests.",
+    )
+    parser.add_argument(
+        "--verbose-mismatch",
+        action="store_true",
+        help=(
+            "With --refresh-manifest-text, print per-paragraph token mismatch details "
+            "in addition to the summary warning."
+        ),
     )
 
     parser.add_argument(
@@ -1175,7 +1254,37 @@ def main() -> int:
     )
 
     args = parser.parse_args()
-    slug = args.slug
+    slug = (args.slug or "").strip()
+
+    if args.refresh_manifest_text:
+        routes = load_routes()
+        if args.all_targets:
+            slugs = [s for s in routes if (AUDIO_DIR / f"{s}.manifest.json").exists()]
+        else:
+            selectors = [slug, *args.targets]
+            selectors = [s for s in selectors if s]
+            slugs = expand_all_args(selectors, routes)
+            if not slugs and slug in routes:
+                slugs = [slug]
+            slugs = [s for s in slugs if (AUDIO_DIR / f"{s}.manifest.json").exists()]
+
+        if not slugs:
+            print("[error] No manifests matched the provided selectors.", file=sys.stderr)
+            return 1
+
+        print(f"\nRefreshing manifest text for {len(slugs)} discourse(s)…")
+        failures = 0
+        for s in slugs:
+            failures += refresh_manifest_text(s, verbose_mismatch=args.verbose_mismatch)
+        if failures:
+            print(f"\nDone with {failures} failure(s).", file=sys.stderr)
+            return 1
+        print("\nDone.")
+        return 0
+
+    if not slug:
+        print("[error] slug is required for this operation.", file=sys.stderr)
+        return 1
 
     # ── Rollback ──────────────────────────────────────────────────────────
 

@@ -167,7 +167,7 @@ def strip_frontmatter(raw: str) -> str:
 
 
 def strip_glosses_display(text: str) -> str:
-    """Extract display text (first segment) — used for word-level alignment and DOM highlighting.
+    """Extract display text (first segment).
 
     |visible::tooltip|         -> visible
     |visible::tooltip::tts|    -> visible  (TTS override is silently ignored)
@@ -191,6 +191,36 @@ def strip_glosses_tts(text: str) -> str:
             _tooltip, tts_override = rest.split("::", 1)
             return tts_override.strip()
         return display
+    return re.sub(r"\|(.+?)::([^|]*)\|", _replace, text)
+
+
+def _contains_letter(text: str) -> bool:
+    return any(ch.isalpha() for ch in text)
+
+
+def strip_glosses_manifest(text: str) -> str:
+    """Extract manifest display text with TTS-aware fallback.
+
+    Rules for three-part glosses:
+      - If TTS override contains any letter: keep display text for manifest.
+      - If TTS override is punctuation-only or empty: use override (or empty),
+        so listen-mode text doesn't show words that were intentionally unsaid.
+
+    Examples:
+      |, bhikkhus,::::,|        -> ,
+      |, bhikkhus,::::|         -> ""
+      |[upon me]::::upon me|    -> [upon me]
+    """
+
+    def _replace(m: re.Match) -> str:
+        display = m.group(1)
+        rest = m.group(2)
+        if "::" not in rest:
+            return display
+        _tooltip, tts_override = rest.split("::", 1)
+        tts_text = tts_override.strip()
+        return display if _contains_letter(tts_text) else tts_text
+
     return re.sub(r"\|(.+?)::([^|]*)\|", _replace, text)
 
 
@@ -318,7 +348,8 @@ def _phonetic_token_norm(tok: str) -> str:
 def restore_manifest_display_words(
     paragraphs_out: list[dict],
     paragraph_specs_canonical: list[tuple[int, str, bool]],
-) -> None:
+    verbose_mismatch: bool = False,
+) -> int:
     """After alignment on phonetic text, rewrite word `w` fields to canonical spellings.
 
     Forced alignment must use a transcript that matches what was spoken; phonetic
@@ -326,8 +357,12 @@ def restore_manifest_display_words(
     real words from the MDX for the published manifest (and UI highlights).
     """
 
+    mismatch_count = 0
+
     for pdict, (_pid, can_text, _brk) in zip(paragraphs_out, paragraph_specs_canonical):
-        ph_text = apply_tts_phonetic_spellings(can_text)
+        # ph_text must reflect what the TTS/aligner actually received: phonetic spelling
+        # rewrites *and* em-dash → semicolon substitution (normalize_paragraph_body for_tts=True).
+        ph_text = apply_tts_phonetic_spellings(can_text).replace("—", ";")
         can_words = can_text.split()
         ph_words = ph_text.split()
         words_out = pdict.get("words") or []
@@ -338,27 +373,70 @@ def restore_manifest_display_words(
                     w["w"] = can_words[j]
             continue
 
-        sys.stderr.write(
-            "  Warning: word token count mismatch; restoring loanwords by lookup only.\n"
-        )
+        mismatch_count += 1
+        if verbose_mismatch:
+            sys.stderr.write(
+                f"  Mismatch detail: ¶{_pid} align_words={len(words_out)} canonical_words={len(can_words)}\n"
+            )
+
+        if words_out and can_words:
+            src_n = len(words_out)
+            tgt_n = len(can_words)
+            remapped: list[dict] = []
+            for j, tok in enumerate(can_words):
+                if src_n == 1 or tgt_n == 1:
+                    idx = 0
+                else:
+                    idx = round(j * (src_n - 1) / (tgt_n - 1))
+                base = words_out[max(0, min(idx, src_n - 1))]
+                remapped.append({
+                    "w": tok,
+                    "s": base.get("s"),
+                    "e": base.get("e"),
+                })
+            pdict["words"] = remapped
+            continue
+
         for w in words_out:
             core = _phonetic_token_norm(w["w"])
             if core in _PHONETIC_CORE_TO_CANONICAL:
                 canon = _PHONETIC_CORE_TO_CANONICAL[core]
                 w["w"] = _cap_like(canon, w["w"])
 
+    if mismatch_count:
+        sys.stderr.write(
+            f"  Warning: {mismatch_count} paragraph(s) had word-token mismatch; "
+            "restored canonical display words with timing remap.\n"
+        )
 
-def normalize_paragraph_body(text: str, for_tts: bool = False) -> str:
-    """Normalize raw MDX paragraph body for TTS synthesis or word-level alignment.
+    return mismatch_count
 
-    for_tts=False (default): uses display text for alignment/manifest (matches DOM).
-    for_tts=True:            uses TTS overrides for synthesis only.
+
+def normalize_paragraph_body(
+    text: str,
+    for_tts: bool = False,
+    for_manifest: bool = False,
+) -> str:
+    """Normalize raw MDX paragraph body for synthesis/alignment/manifest text.
+
+    for_tts=False, for_manifest=False (default): display text.
+    for_tts=True:                               TTS overrides (spoken text).
+    for_manifest=True:                          display text, except punctuation-only
+                                                / empty TTS overrides.
     """
+    if for_tts and for_manifest:
+        raise ValueError("normalize_paragraph_body: for_tts and for_manifest are mutually exclusive")
+
     text = text.strip()
     text = strip_heading_lines_for_tts(text)
     text = strip_collapse_blocks(text)
     text = strip_html_jsx_tags(text)
-    text = strip_glosses_tts(text) if for_tts else strip_glosses_display(text)
+    if for_tts:
+        text = strip_glosses_tts(text)
+    elif for_manifest:
+        text = strip_glosses_manifest(text)
+    else:
+        text = strip_glosses_display(text)
     text = normalize_inline_markdown(text)
     # Em dash: same clause boundary as semicolon for *spoken* output (Google TTS
     # treats `;` as a slightly stronger pause than `—` and the audio sounds
@@ -423,34 +501,62 @@ def extract_paragraph_chunks_auto(body: str) -> list[tuple[int, str, bool]]:
     return extract_paragraph_chunks_prose(body)
 
 
-def extract_paragraphs_heading_style(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
+def extract_paragraphs_heading_style(
+    body: str,
+    for_tts: bool = False,
+    for_manifest: bool = False,
+) -> list[tuple[int, str, bool]]:
     """Split on bare #### N verse headings (Dhammapada-style).
 
     Returns (paragraph_id_1_based, normalized_text, is_verse_long_break)."""
     out: list[tuple[int, str, bool]] = []
     for num, chunk, is_break in extract_paragraph_chunks_heading_style(body):
-        plain = normalize_paragraph_body(chunk, for_tts=for_tts)
+        plain = normalize_paragraph_body(
+            chunk,
+            for_tts=for_tts,
+            for_manifest=for_manifest,
+        )
         if plain:
             out.append((num, plain, is_break))
     return out
 
 
-def extract_paragraphs_prose(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
+def extract_paragraphs_prose(
+    body: str,
+    for_tts: bool = False,
+    for_manifest: bool = False,
+) -> list[tuple[int, str, bool]]:
     """Prose / MN-style: split on blank lines into blocks; paragraph numbers 1..n.
     Returns (paragraph_number, normalized_text, is_verse_long_break)."""
     out: list[tuple[int, str, bool]] = []
     for num, chunk, is_break in extract_paragraph_chunks_prose(body):
-        plain = normalize_paragraph_body(chunk, for_tts=for_tts)
+        plain = normalize_paragraph_body(
+            chunk,
+            for_tts=for_tts,
+            for_manifest=for_manifest,
+        )
         if plain:
             out.append((num, plain, is_break))
     return out
 
 
-def extract_paragraphs_auto(body: str, for_tts: bool = False) -> list[tuple[int, str, bool]]:
-    h = extract_paragraphs_heading_style(body, for_tts=for_tts)
+def extract_paragraphs_auto(
+    body: str,
+    for_tts: bool = False,
+    for_manifest: bool = False,
+) -> list[tuple[int, str, bool]]:
+    h = extract_paragraphs_heading_style(
+        body,
+        for_tts=for_tts,
+        for_manifest=for_manifest,
+    )
     if h:
         return h
-    return extract_paragraphs_prose(body, for_tts=for_tts)
+    return extract_paragraphs_prose(
+        body,
+        for_tts=for_tts,
+        for_manifest=for_manifest,
+    )
 
 
 MAX_SENTENCE_CHARS = 350
@@ -2164,6 +2270,9 @@ def enrich_manifest_v2(manifest: dict, slug: str) -> None:
     title = fm.get("title")
     if title and manifest.get("title") != title:
         manifest["title"] = title
+    description = fm.get("description")
+    if description and manifest.get("description") != description:
+        manifest["description"] = description
     if manifest.get("metadataSchemaVersion") != LISTEN_SCHEMA_VERSION:
         manifest["metadataSchemaVersion"] = LISTEN_SCHEMA_VERSION
 
@@ -2208,7 +2317,7 @@ def process_one_discourse(
     raw = mdx_path.read_text(encoding="utf-8")
     body = strip_frontmatter(raw)
     raw_chunks = extract_paragraph_chunks_auto(body)
-    # Display text: used for forced alignment and manifest word tokens (matches DOM).
+    # Display text: canonical page text (used for text hash and diagnostics).
     paragraph_specs = extract_paragraphs_auto(body)
     if not paragraph_specs:
         print(
@@ -2221,14 +2330,19 @@ def process_one_discourse(
     # Used ONLY for synthesis — never for alignment or manifest tokens.
     paragraph_specs_for_tts = extract_paragraphs_auto(body, for_tts=True)
 
+    # Manifest text: display-first, except punctuation-only / empty TTS
+    # overrides, where we keep the override so unspoken words aren't shown.
+    paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
+
     paragraphs_tts = [
         apply_tts_long_a_macron_hint(apply_tts_phonetic_spellings(p))
         for _, p, _ in paragraph_specs_for_tts
     ]
-    # Alignment: DOM display + loanword phonetics (matches audio for those words). No ā→aa.
+    # Alignment: spoken text + loanword phonetics (no ā→aa), so forced
+    # alignment follows what was actually synthesized.
     paragraph_specs_align = [
         (pid, apply_tts_phonetic_spellings(p), brk)
-        for pid, p, brk in paragraph_specs
+        for pid, p, brk in paragraph_specs_for_tts
     ]
     paragraphs_text = [p for _, p, _ in paragraph_specs]
     full_plain = "\n\n".join(paragraphs_text)
@@ -2446,7 +2560,7 @@ def process_one_discourse(
         paragraph_specs_display=paragraph_specs,
     )
     if not skip_align:
-        restore_manifest_display_words(manifest["paragraphs"], paragraph_specs)
+        restore_manifest_display_words(manifest["paragraphs"], paragraph_specs_manifest)
 
     write_manifest_v2(out_manifest, manifest, slug)
     print(f"Manifest: {out_manifest.relative_to(REPO_ROOT)} (v2 listen-mode metadata)")

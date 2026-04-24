@@ -111,10 +111,15 @@ debug("title is: ", title, " fp: ", fp);
 debug("qualities are: ", qualities);
 debug("commentary is: ", commentary);
 
+const hasDescription = String(description ?? "").trim().length > 0;
+const breadcrumbsHidden = hideBreadcrumbsForPath(fp || Astro.url.pathname);
+
 /** Extra space before the page title when there is no breadcrumb strip and no layout description box. */
 const sparseLayoutTitleTop =
-	hideBreadcrumbsForPath(fp || Astro.url.pathname) &&
-	!String(description ?? "").trim();
+	breadcrumbsHidden &&
+	!hasDescription;
+
+const titleNeedsBreadcrumbSpacing = !breadcrumbsHidden && !hasDescription;
 
 // Extract first image for SEO meta tags (works with single or array)
 const firstContentImage = contentImage
@@ -407,6 +412,7 @@ if (!SEOTitle) {
 						class:list={[
 							"flex items-start justify-between",
 							sparseLayoutTitleTop && "pt-2 sm:pt-4",
+							titleNeedsBreadcrumbSpacing && "mt-3 sm:mt-4 mb-3 sm:mb-4",
 						]}
 					>
 						<Title

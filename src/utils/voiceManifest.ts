@@ -28,6 +28,7 @@ export type VoiceManifest = {
 	/** Optional, additive (Phase 1). Populated by future regenerations of generate_voice.py. */
 	slug?: string;
 	title?: string;
+	description?: string;
 	displayId?: string;
 	metadataSchemaVersion?: number;
 };

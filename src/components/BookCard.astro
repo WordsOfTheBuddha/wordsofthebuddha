@@ -1,5 +1,7 @@
 ---
 import { getEntry } from "astro:content";
+import PlayAll from "./PlayAll.astro";
+import { playlists } from "../data/playlists.generated";
 
 // src/components/BookCard.astro
 
@@ -17,6 +19,9 @@ const { title, description, summary, imagePath, slug, author, lastUpdated } =
 	Astro.props;
 
 const bookItem = await getEntry("anthologies", slug);
+// Render <PlayAll> inline only when this anthology is a known playlist —
+// otherwise it would render nothing and we'd waste markup.
+const hasPlaylist = Boolean(playlists[slug]);
 
 export const formatDate = (date: string | Date) => {
 	return new Date(date).toLocaleDateString("en-US", {
@@ -48,25 +53,6 @@ export const formatDate = (date: string | Date) => {
 					{title || bookItem.data.title}
 				</a>
 			</h2>
-
-			<button
-				class="text-white hover:text-gray-600 opacity-0 transition-opacity duration-200 ml-4 shrink-0"
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="w-6 h-6"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-					></path>
-				</svg>
-			</button>
 		</div>
 
 		{
@@ -85,13 +71,22 @@ export const formatDate = (date: string | Date) => {
 			)
 		}
 
-		{
-			(author || bookItem.data.author) && (
-				<p class="mt-2 text-sm text-center sm:text-left text-[var(--text-muted)]">
-					By {author || bookItem.data.author}
-				</p>
-			)
-		}
+		<div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+			{
+				(author || bookItem.data.author) && (
+					<p class="text-sm text-center sm:text-left text-[var(--text-muted)]">
+						By {author || bookItem.data.author}
+					</p>
+				)
+			}
+			{
+				hasPlaylist && (
+					<div class="flex justify-center sm:justify-end sm:ml-4">
+						<PlayAll group={slug} />
+					</div>
+				)
+			}
+		</div>
 
 		{
 			lastUpdated && (

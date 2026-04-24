@@ -34,17 +34,22 @@ export type ListenInitialData = {
 	description: string | null;
 	nextSlug: string | null;
 	nextTitle: string | null;
+	nextDescription: string | null;
 	nextDisplayId: string | null;
 	prevSlug: string | null;
 	prevTitle: string | null;
+	prevDescription: string | null;
 	prevDisplayId: string | null;
 };
 
 const LS_AUTOPLAY = "listen:autoplay";
 const LS_RESUME = "listen:resume";
 const LS_SPEED = "listen:speed";
+const LS_TRANSITION_HOLD_MS = "listen:transitionHoldMs";
 const RESUME_TTL_MS = 24 * 60 * 60 * 1000;
 const PREV_RESTART_THRESHOLD_S = 3;
+const DEFAULT_TRANSITION_PULSE_MS = 1800;
+const DEFAULT_AUTOPLAY_TRANSITION_HOLD_MS = 10000;
 
 /** Discrete playback rates; mirrors voice-mode's `VOICE_PLAYBACK_RATES`. */
 const SPEED_RATES = [0.75, 1, 1.25, 1.5] as const;
@@ -74,8 +79,29 @@ function formatSpeedLabel(rate: number): string {
 }
 
 function titleFor(slug: string, fallback: string): string {
-	return audioTitles[slug] ?? fallback;
+	return audioTitles[slug] ?? runtimeTitles.get(slug) ?? fallback;
 }
+
+function durationFor(slug: string): number | undefined {
+	const fromBuild = audioDurations[slug];
+	if (typeof fromBuild === "number") return fromBuild;
+	return runtimeDurations.get(slug);
+}
+
+/**
+ * Titles discovered at runtime via the voice manifest (Phase 1 schema field
+ * `manifest.title`). Bridges the gap for slugs that gained audio after the
+ * last `audioTitles.generated.ts` rebuild — the queue would otherwise show
+ * the bare slug. Populated by `loadTrack()` when the active track resolves
+ * and by `hydrateQueueTitles()` for visible drawer items.
+ */
+const runtimeTitles = new Map<string, string>();
+
+/** Runtime duration fallback for slugs added after the last durations build. */
+const runtimeDurations = new Map<string, number>();
+
+/** Single-flight cache for runtime manifest metadata hydration. */
+const runtimeMetaHydration = new Map<string, Promise<void>>();
 
 type TrackMeta = {
 	slug: string;
@@ -83,6 +109,8 @@ type TrackMeta = {
 	displayId: string;
 	description: string | null;
 };
+
+type ParagraphPlaybackMode = "continuous" | "single";
 
 type Resume = { slug: string; time: number; savedAt: number };
 
@@ -162,6 +190,15 @@ function saveAutoplay(on: boolean): void {
 	} catch {}
 }
 
+function loadTransitionHoldMs(): number {
+	try {
+		const raw = localStorage.getItem(LS_TRANSITION_HOLD_MS);
+		const ms = raw ? Number(raw) : NaN;
+		if (Number.isFinite(ms) && ms >= 0) return Math.round(ms);
+	} catch {}
+	return DEFAULT_AUTOPLAY_TRANSITION_HOLD_MS;
+}
+
 function loadResume(slug: string): number | null {
 	try {
 		const raw = localStorage.getItem(LS_RESUME);
@@ -222,9 +259,6 @@ export function initListenMode(initial: ListenInitialData): void {
 	const titleEl = document.getElementById("listen-title");
 	const displayIdEl = document.getElementById("listen-display-id");
 	const stage = document.querySelector<HTMLElement>(".listen-stage");
-	const autoplayToggle = document.getElementById(
-		"listen-autoplay-toggle",
-	) as HTMLInputElement | null;
 	const queueLabel = document.getElementById("listen-queue-label");
 	const queueChip = document.getElementById("listen-queue-chip");
 	const modeSwitch = document.getElementById(
@@ -271,9 +305,50 @@ export function initListenMode(initial: ListenInitialData): void {
 	let manifest: VoiceManifest | null = null;
 	let activeParaIdx = -1;
 	let activeWordIdx = -1;
-	let autoplay = loadAutoplay();
+	let pauseAfterParagraphIdx = -1;
+	let paragraphPlaybackMode: ParagraphPlaybackMode = "continuous";
+	const autoplay = true;
+	const autoplayTransitionHoldMs = loadTransitionHoldMs();
 	let speed = loadSpeed();
-	if (autoplayToggle) autoplayToggle.checked = autoplay;
+	const knownDescriptions = new Map<string, string>();
+
+	function rememberDescription(slug: string | null, description: string | null | undefined): void {
+		if (!slug || typeof description !== "string") return;
+		const trimmed = description.trim();
+		if (!trimmed) return;
+		knownDescriptions.set(slug, trimmed);
+	}
+
+	function descriptionFor(slug: string | null): string | null {
+		if (!slug) return null;
+		return knownDescriptions.get(slug) ?? null;
+	}
+
+	/**
+	 * Eagerly hydrate runtime metadata for a slug so transitions and queue labels
+	 * can show title/description even before the user navigates to that discourse.
+	 */
+	function hydrateRuntimeMeta(slug: string | null): Promise<void> {
+		if (!slug) return Promise.resolve();
+		const existing = runtimeMetaHydration.get(slug);
+		if (existing) return existing;
+		const p = loadVoiceManifestForDiscourse(slug)
+			.then((m) => {
+				if (!m) return;
+				if (m.title) runtimeTitles.set(slug, m.title);
+				if (typeof m.description === "string") rememberDescription(slug, m.description);
+				if (typeof m.duration === "number" && m.duration > 0) {
+					runtimeDurations.set(slug, m.duration);
+				}
+			})
+			.catch(() => {});
+		runtimeMetaHydration.set(slug, p);
+		return p;
+	}
+
+	rememberDescription(initial.slug, initial.description);
+	rememberDescription(initial.nextSlug, initial.nextDescription);
+	rememberDescription(initial.prevSlug, initial.prevDescription);
 
 	// Playlist context (from `?pl=<id>`). When non-null, the queue, neighbours,
 	// and drawer header are sourced from the playlist instead of the global
@@ -321,6 +396,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			? {
 				slug: initial.nextSlug,
 				title: initial.nextTitle ?? initial.nextSlug,
+				description: initial.nextDescription ?? null,
 				displayId: initial.nextDisplayId ?? formatDisplayId(initial.nextSlug),
 			}
 			: null,
@@ -328,6 +404,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			? {
 				slug: initial.prevSlug,
 				title: initial.prevTitle ?? initial.prevSlug,
+				description: initial.prevDescription ?? null,
 				displayId: initial.prevDisplayId ?? formatDisplayId(initial.prevSlug),
 			}
 			: null,
@@ -343,25 +420,41 @@ export function initListenMode(initial: ListenInitialData): void {
 		const ps = i > 0 ? slugs[i - 1] : null;
 		neighbours = {
 			next: ns
-				? { slug: ns, title: titleFor(ns, ns), displayId: formatDisplayId(ns) }
+				? {
+					slug: ns,
+					title: titleFor(ns, ns),
+					description: descriptionFor(ns),
+					displayId: formatDisplayId(ns),
+				}
 				: null,
 			prev: ps
-				? { slug: ps, title: titleFor(ps, ps), displayId: formatDisplayId(ps) }
+				? {
+					slug: ps,
+					title: titleFor(ps, ps),
+					description: descriptionFor(ps),
+					displayId: formatDisplayId(ps),
+				}
 				: null,
 		};
+		if (ns) {
+			void hydrateRuntimeMeta(ns).then(() => {
+				if (neighbours.next?.slug !== ns) return;
+				neighbours.next.title = titleFor(ns, neighbours.next.title);
+				neighbours.next.description = descriptionFor(ns);
+				setQueueLabel();
+			});
+		}
+		if (ps) {
+			void hydrateRuntimeMeta(ps).then(() => {
+				if (neighbours.prev?.slug !== ps) return;
+				neighbours.prev.title = titleFor(ps, neighbours.prev.title);
+				neighbours.prev.description = descriptionFor(ps);
+			});
+		}
 	}
 
 	function setQueueLabel(): void {
 		if (!queueLabel) return;
-		// Autoplay off → there is no "next" in the playback sense, so the chip
-		// becomes a manual browse affordance (still opens the same drawer).
-		if (!autoplay) {
-			queueLabel.textContent = "Browse";
-			queueChip?.setAttribute("title", "Browse queue");
-			queueChip?.setAttribute("aria-label", "Browse queue");
-			queueChip?.removeAttribute("disabled");
-			return;
-		}
 		if (neighbours.next) {
 			queueLabel.textContent = `Up next · ${neighbours.next.displayId}`;
 			queueChip?.setAttribute(
@@ -440,16 +533,50 @@ export function initListenMode(initial: ListenInitialData): void {
 		// Verse line breaks come from `p.lineSizes` (manifest backfill v2). The
 		// `sum(lineSizes) === words.length` invariant was already enforced by the
 		// backfill writer, so we honour any present `lineSizes` directly.
-		for (const p of m.paragraphs) {
+		for (let i = 0; i < m.paragraphs.length; i++) {
+			const p = m.paragraphs[i];
 			const el = document.createElement("p");
 			el.className = "listen-paragraph";
 			el.dataset.paraId = String(p.id);
 			el.dataset.paragraphNumber = String(p.id);
+
+			const actions = document.createElement("span");
+			actions.className = "listen-para-actions";
+
+			const btnSingle = document.createElement("button");
+			btnSingle.type = "button";
+			btnSingle.className = "listen-para-btn listen-para-btn--single";
+			btnSingle.setAttribute("aria-label", "Play this paragraph only");
+			btnSingle.title = "Play this paragraph only";
+			btnSingle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811Z"></path></svg>';
+			btnSingle.addEventListener("click", (e) => {
+				e.stopPropagation();
+				void playParagraphByIndex(i, true);
+			});
+
+			const btnFrom = document.createElement("button");
+			btnFrom.type = "button";
+			btnFrom.className = "listen-para-btn listen-para-btn--from";
+			btnFrom.setAttribute("aria-label", "Play from here");
+			btnFrom.title = "Play from here";
+			btnFrom.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"></path></svg>';
+			btnFrom.addEventListener("click", (e) => {
+				e.stopPropagation();
+				void playParagraphByIndex(i, false);
+			});
+
+			actions.appendChild(btnSingle);
+			actions.appendChild(btnFrom);
+			el.appendChild(actions);
+
+			const text = document.createElement("span");
+			text.className = "listen-para-text";
 			const lineSizes = p.lineSizes && p.lineSizes.length > 1 ? p.lineSizes : undefined;
 			if (lineSizes) {
 				el.classList.add("listen-paragraph--verse");
 			}
-			renderWordSpans(el, p.words, lineSizes);
+			renderWordSpans(text, p.words, lineSizes);
+			el.appendChild(text);
 			stage.appendChild(el);
 		}
 		activeParaIdx = -1;
@@ -539,7 +666,7 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	async function loadTrack(
 		slug: string,
-		opts: { autoplayAfterLoad: boolean; resumeAt?: number },
+		opts: { autoplayAfterLoad: boolean; resumeAt?: number; description?: string | null },
 	): Promise<void> {
 		// Update header optimistically. Title source priority:
 		//   1. audioTitles bundled map (build-time slug → title)
@@ -548,6 +675,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		//   4. slug (last-resort fallback)
 		current = { ...current, slug };
 		current.displayId = formatDisplayId(slug);
+		current.description = opts.description ?? descriptionFor(slug);
 		const mapped = audioTitles[slug];
 		if (mapped) current.title = mapped;
 		else if (neighbours.next?.slug === slug) current.title = neighbours.next.title;
@@ -565,6 +693,14 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 		// Manifest may carry an authoritative title (Phase 1 schema extension).
 		if (m.title) current.title = m.title;
+		if (m.title) runtimeTitles.set(slug, m.title);
+		if (typeof m.description === "string") {
+			current.description = m.description;
+			rememberDescription(slug, m.description);
+		}
+		if (typeof m.duration === "number" && m.duration > 0) {
+			runtimeDurations.set(slug, m.duration);
+		}
 		if (m.slug) current.slug = m.slug;
 		renderHeader();
 		setMediaSessionMetadata();
@@ -591,88 +727,280 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 	}
 
-	async function advanceTo(slug: string): Promise<void> {
+	type AdvanceReason = "manual" | "queue" | "autoplay-end" | "history";
+
+	type TransitionState = {
+		timer: number;
+		raf: number | null;
+	};
+
+	let pulseTimer: number | null = null;
+	let transitionState: TransitionState | null = null;
+
+	function hideTrackPulse(): void {
+		const el = document.getElementById("listen-track-pulse");
+		const actions = document.getElementById("listen-track-pulse-actions");
+		const countdownEl = document.getElementById("listen-track-pulse-countdown");
+		const playNowBtn = document.getElementById("listen-track-pulse-play-now") as HTMLButtonElement | null;
+		if (!el || !actions || !countdownEl) return;
+		el.classList.remove("is-visible", "is-hold");
+		el.setAttribute("aria-hidden", "true");
+		el.onclick = null;
+		actions.hidden = true;
+		countdownEl.style.removeProperty("--countdown-progress");
+		playNowBtn?.style.removeProperty("--countdown-progress");
+		playNowBtn?.classList.remove("is-countdown");
+		playBtn.classList.remove("is-next-countdown");
+		if (pulseTimer !== null) {
+			clearTimeout(pulseTimer);
+			pulseTimer = null;
+		}
+	}
+
+	function clearTransitionState(): void {
+		if (!transitionState) return;
+		clearTimeout(transitionState.timer);
+		if (transitionState.raf !== null) cancelAnimationFrame(transitionState.raf);
+		transitionState = null;
+		hideTrackPulse();
+	}
+
+	function showTrackPulse(opts: {
+		displayId: string;
+		title: string;
+		description?: string | null;
+		holdMs?: number;
+		interactive?: boolean;
+		onPlayNow?: () => void;
+		onDismiss?: () => void;
+	}): void {
+		const el = document.getElementById("listen-track-pulse");
+		const idEl = document.getElementById("listen-track-pulse-id");
+		const titleEl = document.getElementById("listen-track-pulse-title");
+		const descEl = document.getElementById("listen-track-pulse-description");
+		const actions = document.getElementById("listen-track-pulse-actions") as HTMLElement | null;
+		const playNowBtn = document.getElementById("listen-track-pulse-play-now") as HTMLButtonElement | null;
+		const cancelBtn = document.getElementById("listen-track-pulse-cancel") as HTMLButtonElement | null;
+		const countdownEl = document.getElementById("listen-track-pulse-countdown") as HTMLElement | null;
+		if (!el || !idEl || !titleEl || !descEl || !actions || !countdownEl) return;
+
+		idEl.textContent = opts.displayId;
+		titleEl.textContent = opts.title;
+		descEl.textContent = opts.description?.trim() ?? "";
+		descEl.hidden = !descEl.textContent;
+		el.setAttribute("aria-hidden", "false");
+		el.classList.add("is-visible");
+
+		if (pulseTimer !== null) {
+			clearTimeout(pulseTimer);
+			pulseTimer = null;
+		}
+
+		if (!opts.interactive || !opts.holdMs || opts.holdMs <= 0) {
+			actions.hidden = true;
+			el.classList.remove("is-hold");
+			countdownEl.style.removeProperty("--countdown-progress");
+			playNowBtn?.style.removeProperty("--countdown-progress");
+			playNowBtn?.classList.remove("is-countdown");
+			playBtn.classList.remove("is-next-countdown");
+			pulseTimer = window.setTimeout(() => {
+				hideTrackPulse();
+			}, DEFAULT_TRANSITION_PULSE_MS);
+			return;
+		}
+
+		el.classList.add("is-hold");
+		actions.hidden = false;
+		playBtn.classList.add("is-next-countdown");
+		playNowBtn?.classList.add("is-countdown");
+		playNowBtn?.style.setProperty("--countdown-progress", "0");
+		let done = false;
+		const started = performance.now();
+
+		const finalize = (action: "play" | "dismiss"): void => {
+			if (done) return;
+			done = true;
+			if (action === "play") opts.onPlayNow?.();
+			else opts.onDismiss?.();
+		};
+
+		const rafTick = (): void => {
+			if (done) return;
+			const elapsed = performance.now() - started;
+			const progress = Math.max(0, Math.min(1, elapsed / opts.holdMs!));
+			countdownEl.style.setProperty("--countdown-progress", String(progress));
+			playNowBtn?.style.setProperty("--countdown-progress", String(progress));
+			if (progress >= 1) {
+				finalize("play");
+				return;
+			}
+			if (transitionState) transitionState.raf = requestAnimationFrame(rafTick);
+		};
+
+		const onPlayNow = (): void => finalize("play");
+		const onDismiss = (e?: Event): void => {
+			e?.stopPropagation();
+			finalize("dismiss");
+		};
+
+		el.onclick = onPlayNow;
+		playNowBtn?.addEventListener("click", onPlayNow, { once: true });
+		cancelBtn?.addEventListener("click", onDismiss, { once: true });
+
+		const timer = window.setTimeout(() => finalize("play"), opts.holdMs);
+		transitionState = {
+			timer,
+			raf: requestAnimationFrame(rafTick),
+		};
+	}
+
+	async function advanceTo(
+		slug: string,
+		opts: {
+			autoplayAfterLoad?: boolean;
+			reason?: AdvanceReason;
+			description?: string | null;
+			showPulse?: boolean;
+		} = {},
+	): Promise<void> {
 		// Capture the OUTGOING position so a later browser-back lands the
 		// listener back where they were, not at 0.
+		clearTransitionState();
 		rememberPosition(current.slug, audio.currentTime, audio.duration ?? null);
 		refreshNeighbours(slug);
 		setQueueLabel();
 		// Push a new history entry so the browser back button returns to the
 		// previous discourse (in-listen-mode navigation). The state object lets
 		// us distinguish our own entries from external navigations in popstate.
-		history.pushState({ listen: true, slug }, "", `/listen/${slug}${playlistQuery()}`);
-		showTrackPulse(formatDisplayId(slug), titleFor(slug, slug));
+		if (opts.reason !== "history") {
+			history.pushState({ listen: true, slug }, "", `/listen/${slug}${playlistQuery()}`);
+		}
+		if (opts.showPulse !== false) {
+			const pulseDescription = opts.description ?? descriptionFor(slug);
+			showTrackPulse({
+				displayId: formatDisplayId(slug),
+				title: titleFor(slug, slug),
+				description: pulseDescription,
+			});
+		}
 		const resumeAt = sessionPositions.get(slug);
-		await loadTrack(slug, { autoplayAfterLoad: true, resumeAt });
+		await loadTrack(slug, {
+			autoplayAfterLoad: opts.autoplayAfterLoad ?? true,
+			resumeAt,
+			description: opts.description,
+		});
 		// Refresh drawer contents if it happens to be open.
 		if (queueDrawer && !queueDrawer.hidden) renderQueue();
 	}
 
-	/**
-	 * Brief overlay announcing the new track. Triggered on `advanceTo` (queue
-	 * tap, autoplay, prev/next-discourse). Auto-dismisses; respects
-	 * prefers-reduced-motion via CSS.
-	 */
-	let pulseTimer: number | null = null;
-	function showTrackPulse(displayId: string, title: string): void {
-		const el = document.getElementById("listen-track-pulse");
-		const idEl = document.getElementById("listen-track-pulse-id");
-		const titleEl = document.getElementById("listen-track-pulse-title");
-		if (!el || !idEl || !titleEl) return;
-		idEl.textContent = displayId;
-		titleEl.textContent = title;
-		el.setAttribute("aria-hidden", "false");
-		el.classList.add("is-visible");
-		if (pulseTimer !== null) clearTimeout(pulseTimer);
-		pulseTimer = window.setTimeout(() => {
-			el.classList.remove("is-visible");
-			el.setAttribute("aria-hidden", "true");
-			pulseTimer = null;
-		}, 1800);
+	async function beginAutoplayTransition(next: {
+		slug: string;
+		title: string;
+		displayId: string;
+		description: string | null;
+	}): Promise<void> {
+		clearTransitionState();
+		await hydrateRuntimeMeta(next.slug);
+		const hydratedTitle = titleFor(next.slug, next.title);
+		const hydratedDescription = descriptionFor(next.slug) ?? next.description;
+		if (neighbours.next?.slug === next.slug) {
+			neighbours.next.title = hydratedTitle;
+			neighbours.next.description = hydratedDescription;
+			setQueueLabel();
+		}
+		showTrackPulse({
+			displayId: next.displayId,
+			title: hydratedTitle,
+			description: hydratedDescription,
+			holdMs: autoplayTransitionHoldMs,
+			interactive: true,
+			onPlayNow: () => {
+				void advanceTo(next.slug, {
+					autoplayAfterLoad: true,
+					reason: "autoplay-end",
+					description: hydratedDescription,
+					showPulse: false,
+				});
+			},
+			onDismiss: () => {
+				clearTransitionState();
+			},
+		});
+	}
+
+	function checkSingleParagraphPause(): void {
+		if (pauseAfterParagraphIdx < 0 || !manifest || audio.paused) return;
+		const target = manifest.paragraphs[pauseAfterParagraphIdx];
+		if (!target) return;
+		if (audio.currentTime >= target.end) {
+			audio.pause();
+			pauseAfterParagraphIdx = -1;
+		}
+	}
+
+	async function playParagraphByIndex(idx: number, singleOnly: boolean): Promise<void> {
+		if (!manifest) return;
+		const p = manifest.paragraphs[idx];
+		if (!p) return;
+		clearTransitionState();
+		paragraphPlaybackMode = singleOnly ? "single" : "continuous";
+		pauseAfterParagraphIdx = singleOnly ? idx : -1;
+		audio.currentTime = p.start;
+		if (audio.paused) {
+			try { await audio.play(); } catch {}
+		}
 	}
 
 	async function onNext(): Promise<void> {
 		if (!manifest) return;
+		clearTransitionState();
 		// Within-track: jump to next paragraph if available.
 		const i = activeParaIdx >= 0 ? activeParaIdx : findParagraphIdxAt(audio.currentTime);
 		if (i + 1 < manifest.paragraphs.length) {
-			audio.currentTime = manifest.paragraphs[i + 1].start;
-			if (audio.paused) {
-				try { await audio.play(); } catch {}
-			}
+			await playParagraphByIndex(i + 1, paragraphPlaybackMode === "single");
 			return;
 		}
 		// At end → next discourse if autoplay on.
 		if (autoplay && neighbours.next) {
-			await advanceTo(neighbours.next.slug);
+			await advanceTo(neighbours.next.slug, {
+				autoplayAfterLoad: true,
+				reason: "manual",
+				description: neighbours.next.description,
+			});
 		}
 	}
 
 	async function onPrev(): Promise<void> {
 		if (!manifest) return;
+		clearTransitionState();
 		const i = activeParaIdx >= 0 ? activeParaIdx : findParagraphIdxAt(audio.currentTime);
 		const para = manifest.paragraphs[i];
 		const offsetIntoPara = para ? audio.currentTime - para.start : 0;
 		// >3s in: restart current paragraph (YT semantics).
 		if (offsetIntoPara > PREV_RESTART_THRESHOLD_S) {
-			audio.currentTime = para.start;
-			if (audio.paused) { try { await audio.play(); } catch {} }
+			await playParagraphByIndex(i, paragraphPlaybackMode === "single");
 			return;
 		}
 		if (i > 0) {
-			audio.currentTime = manifest.paragraphs[i - 1].start;
-			if (audio.paused) { try { await audio.play(); } catch {} }
+			await playParagraphByIndex(i - 1, paragraphPlaybackMode === "single");
 			return;
 		}
 		// First paragraph + ≤3s + autoplay on → previous discourse, paragraph 1.
 		if (autoplay && neighbours.prev) {
-			await advanceTo(neighbours.prev.slug);
+			await advanceTo(neighbours.prev.slug, {
+				autoplayAfterLoad: true,
+				reason: "manual",
+				description: neighbours.prev.description,
+			});
 		}
 	}
 
 	// ── Wire DOM events ─────────────────────────────────────────────────
 	playBtn.addEventListener("click", () => {
+		clearTransitionState();
 		if (audio.paused) {
+			paragraphPlaybackMode = "continuous";
+			pauseAfterParagraphIdx = -1;
 			audio.play().catch((e) => console.warn("listen-mode: play() denied", e));
 		} else {
 			audio.pause();
@@ -682,24 +1010,26 @@ export function initListenMode(initial: ListenInitialData): void {
 	prevBtn.addEventListener("click", () => void onPrev());
 
 	seek.addEventListener("input", () => {
+		clearTransitionState();
+		paragraphPlaybackMode = "continuous";
+		pauseAfterParagraphIdx = -1;
 		const pct = Number(seek.value);
 		if (!Number.isFinite(pct) || !audio.duration) return;
 		audio.currentTime = (pct / 100) * audio.duration;
 	});
 
-	autoplayToggle?.addEventListener("change", () => {
-		autoplay = !!autoplayToggle.checked;
-		saveAutoplay(autoplay);
-		setQueueLabel();
-	});
-
 	queueChip?.addEventListener("click", () => {
+		clearTransitionState();
 		// Phase 2.4: tapping the queue chip opens the queue drawer.
 		// Falls back to direct-advance only when there's nothing to show.
 		if (queueDrawer && queueScrim && queueList) {
 			openQueueDrawer();
 		} else if (neighbours.next) {
-			void advanceTo(neighbours.next.slug);
+			void advanceTo(neighbours.next.slug, {
+				autoplayAfterLoad: true,
+				reason: "queue",
+				description: neighbours.next.description,
+			});
 		}
 	});
 
@@ -815,6 +1145,75 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (queueDrawer && !queueDrawer.hidden) renderQueue();
 	}
 
+	function renderQueueItemMeta(
+		metaEl: HTMLElement,
+		kind: "before" | "current" | "after",
+		durSec: number | undefined,
+	): void {
+		metaEl.textContent = "";
+		if (kind === "current") {
+			const nowEl = document.createElement("span");
+			nowEl.className = "listen-queue-item-marker listen-queue-item-marker--now";
+			nowEl.textContent = "Now";
+			metaEl.appendChild(nowEl);
+			if (typeof durSec === "number") {
+				const sepEl = document.createElement("span");
+				sepEl.className = "listen-queue-item-marker-sep";
+				sepEl.textContent = " · ";
+				const durEl = document.createElement("span");
+				durEl.className =
+					"listen-queue-item-marker listen-queue-item-marker--duration";
+				durEl.textContent = formatDurationShort(durSec);
+				metaEl.appendChild(sepEl);
+				metaEl.appendChild(durEl);
+			}
+			return;
+		}
+		if (typeof durSec === "number") {
+			const durEl = document.createElement("span");
+			durEl.className = "listen-queue-item-marker listen-queue-item-marker--duration";
+			durEl.textContent = formatDurationShort(durSec);
+			metaEl.appendChild(durEl);
+		}
+	}
+
+	/**
+	 * Hydrate missing queue metadata (title + duration) via manifest for slugs
+	 * that were added after the last generated maps build.
+	 */
+	function hydrateQueueMetadata(): void {
+		if (!queueList) return;
+		const rows = queueList.querySelectorAll<HTMLLIElement>(".listen-queue-li[data-slug]");
+		for (const row of rows) {
+			const slug = row.dataset.slug ?? null;
+			if (!slug) continue;
+			const missingTitle = !audioTitles[slug] && !runtimeTitles.has(slug);
+			const missingDuration = typeof durationFor(slug) !== "number";
+			if (!missingTitle && !missingDuration) continue;
+			const titleEl = row.querySelector<HTMLElement>(".listen-queue-item-title");
+			const metaEl = row.querySelector<HTMLElement>(".listen-queue-item-meta");
+			const btn = row.querySelector<HTMLButtonElement>(".listen-queue-item");
+			const kind: "before" | "current" | "after" =
+				btn?.classList.contains("is-current")
+					? "current"
+					: btn?.classList.contains("is-before")
+						? "before"
+						: "after";
+			void loadVoiceManifestForDiscourse(slug).then((m) => {
+				if (!m) return;
+				if (missingTitle && m.title) {
+					runtimeTitles.set(slug, m.title);
+					if (titleEl?.isConnected) titleEl.textContent = m.title;
+				}
+				if (missingDuration && typeof m.duration === "number" && m.duration > 0) {
+					runtimeDurations.set(slug, m.duration);
+					if (metaEl?.isConnected) renderQueueItemMeta(metaEl, kind, m.duration);
+					updateQueueStats(effectiveSlugs());
+				}
+			});
+		}
+	}
+
 	function renderQueue(): void {
 		if (!queueList) return;
 		const slugs = effectiveSlugs();
@@ -865,26 +1264,20 @@ export function initListenMode(initial: ListenInitialData): void {
 			titleEl.className = "listen-queue-item-title";
 			titleEl.textContent = fullTitle;
 			const markerEl = document.createElement("span");
-			markerEl.className = "listen-queue-item-marker";
-			// Show "Now" for the current row; otherwise show the
-			// per-discourse duration if known. Both occupy the same slot
-			// so layout stays consistent.
-			const dur = audioDurations[it.slug];
-			if (it.kind === "current") {
-				markerEl.textContent = "Now";
-			} else if (typeof dur === "number") {
-				markerEl.textContent = formatDurationShort(dur);
-				markerEl.classList.add("listen-queue-item-marker--duration");
-			} else {
-				markerEl.textContent = "";
-			}
+			markerEl.className = "listen-queue-item-meta";
+			renderQueueItemMeta(markerEl, it.kind, durationFor(it.slug));
 			btn.appendChild(idEl);
 			btn.appendChild(titleEl);
 			btn.appendChild(markerEl);
 			btn.addEventListener("click", () => {
+				clearTransitionState();
 				closeQueueDrawer();
 				if (it.kind === "current") return;
-				void advanceTo(it.slug);
+				void advanceTo(it.slug, {
+					autoplayAfterLoad: true,
+					reason: "queue",
+					description: null,
+				});
 			});
 			li.appendChild(btn);
 			queueList.appendChild(li);
@@ -892,6 +1285,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		wireReorderHandlers();
 		updateQueueStats(slugs);
 		if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
+		hydrateQueueMetadata();
 		// Scroll the current item to the top of the drawer (it's already
 		// near the top per QUEUE_BEFORE_N=3, but reset scroll explicitly so
 		// re-opens always start at the same anchor).
@@ -908,7 +1302,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		let totalSec = 0;
 		let knownCount = 0;
 		for (const s of slugs) {
-			const d = audioDurations[s];
+			const d = durationFor(s);
 			if (typeof d === "number") {
 				totalSec += d;
 				knownCount += 1;
@@ -1055,18 +1449,28 @@ export function initListenMode(initial: ListenInitialData): void {
 	speedCycleBtn?.addEventListener("click", cycleSpeed);
 
 	// ── Collapse toggle (hides the options row) ─────────────────────────
-	collapseBtn?.addEventListener("click", () => {
-		const collapsed = transportEl?.classList.toggle("is-collapsed");
-		const expanded = !collapsed;
-		collapseBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
-		collapseBtn.setAttribute(
+	const COLLAPSE_KEY = "listen-bar-collapsed";
+
+	function applyCollapseState(collapsed: boolean) {
+		transportEl?.classList.toggle("is-collapsed", collapsed);
+		collapseBtn?.setAttribute("aria-expanded", collapsed ? "false" : "true");
+		collapseBtn?.setAttribute(
 			"aria-label",
-			expanded ? "Collapse extra controls" : "Show extra controls",
+			collapsed ? "Show extra controls" : "Collapse extra controls",
 		);
-		collapseBtn.setAttribute(
+		collapseBtn?.setAttribute(
 			"title",
-			expanded ? "Collapse extra controls" : "Show extra controls",
+			collapsed ? "Show extra controls" : "Collapse extra controls",
 		);
+	}
+
+	// Restore persisted state on mount
+	applyCollapseState(localStorage.getItem(COLLAPSE_KEY) === "1");
+
+	collapseBtn?.addEventListener("click", () => {
+		const collapsed = !(transportEl?.classList.contains("is-collapsed") ?? false);
+		applyCollapseState(collapsed);
+		localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
 	});
 
 	// ── Keyboard shortcuts (mirrors voice mode) ─────────────────────────
@@ -1080,8 +1484,16 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (isInputFocused) return;
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
 
+		if (transitionState && (e.key === " " || e.key === "Enter")) {
+			e.preventDefault();
+			(document.getElementById("listen-track-pulse-play-now") as HTMLButtonElement | null)?.click();
+			return;
+		}
+
 		if (e.key === " ") {
 			e.preventDefault();
+			paragraphPlaybackMode = "continuous";
+			pauseAfterParagraphIdx = -1;
 			if (audio.paused) {
 				audio.play().catch(() => {});
 			} else {
@@ -1125,9 +1537,10 @@ export function initListenMode(initial: ListenInitialData): void {
 	audio.addEventListener("play", () => setPlayIcon(true));
 	audio.addEventListener("pause", () => setPlayIcon(false));
 	audio.addEventListener("ended", () => {
+		pauseAfterParagraphIdx = -1;
 		setPlayIcon(false);
 		if (autoplay && neighbours.next) {
-			void advanceTo(neighbours.next.slug);
+			void beginAutoplayTransition(neighbours.next);
 		}
 	});
 	audio.addEventListener("loadedmetadata", () => {
@@ -1136,6 +1549,7 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	let lastSavedAt = 0;
 	audio.addEventListener("timeupdate", () => {
+		checkSingleParagraphPause();
 		if (audio.duration) {
 			const pct = (audio.currentTime / audio.duration) * 100;
 			if (!seek.matches(":active")) seek.value = String(pct);
@@ -1179,6 +1593,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		const st = e.state as { listen?: boolean; slug?: string } | null;
 		const pathSlug = location.pathname.replace(/^\/listen\//, "");
 		if (st?.listen && pathSlug && pathSlug !== current.slug) {
+			clearTransitionState();
 			// Save outgoing position so a forward-nav back to it later resumes too.
 			rememberPosition(current.slug, audio.currentTime, audio.duration ?? null);
 			const wasPlaying = !audio.paused;
@@ -1194,9 +1609,17 @@ export function initListenMode(initial: ListenInitialData): void {
 			renderQueueTitle();
 			refreshNeighbours(pathSlug);
 			setQueueLabel();
-			showTrackPulse(formatDisplayId(pathSlug), titleFor(pathSlug, pathSlug));
+			showTrackPulse({
+				displayId: formatDisplayId(pathSlug),
+				title: titleFor(pathSlug, pathSlug),
+				description: descriptionFor(pathSlug),
+			});
 			const resumeAt = sessionPositions.get(pathSlug);
-			void loadTrack(pathSlug, { autoplayAfterLoad: wasPlaying, resumeAt });
+			void loadTrack(pathSlug, {
+				autoplayAfterLoad: wasPlaying,
+				resumeAt,
+				description: null,
+			});
 			if (queueDrawer && !queueDrawer.hidden) renderQueue();
 		}
 	});
@@ -1211,5 +1634,9 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 	refreshNeighbours(current.slug);
 	setQueueLabel();
-	void loadTrack(current.slug, { autoplayAfterLoad: false, resumeAt });
+	void loadTrack(current.slug, {
+		autoplayAfterLoad: false,
+		resumeAt,
+		description: current.description,
+	});
 }

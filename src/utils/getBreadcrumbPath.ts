@@ -18,10 +18,15 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 			label: "Anthologies",
 			path: "/anthologies",
 		});
-		path.push({
-			label: keyMap[id],
-			path: `/${id}`,
-		});
+		// On the listing page itself (`/anthologies`), `idPath` is just
+		// ["anthologies"]; emitting another crumb here would duplicate the
+		// label. Only push the per-book crumb when we have a child segment.
+		if (idPath.length > 1) {
+			path.push({
+				label: keyMap[id],
+				path: `/${id}`,
+			});
+		}
 		return path;
 	}
 
