@@ -1,0 +1,81 @@
+---
+/**
+ * Toolbar "Listen" trigger. Renders a pill-shaped button on discourse pages
+ * that have audio (whitelisted in `audioStatus`). Click → navigates to
+ * `/listen/{discourseId}` (preserving any active `?pl=` playlist context).
+ *
+ * Replaces the legacy in-page voice bar; the `/listen/{slug}` surface is now
+ * the single playback experience.
+ */
+import { audioSlugs } from "../data/audioStatus";
+
+interface Props {
+	discourseId: string;
+}
+const { discourseId } = Astro.props;
+// Build-time whitelist. If the slug isn't whitelisted, render hidden and probe
+// the manifest at runtime so newly-recorded discourses light up the button
+// between rebuilds.
+const hasAudio = audioSlugs.has(discourseId);
+---
+
+<button
+	type="button"
+	id="listen-trigger"
+	class={hasAudio ? "listen-trigger" : "listen-trigger hidden"}
+	aria-label="Open listen mode"
+	title="Listen mode (Shift+L)"
+	data-discourse-id={discourseId}
+	data-needs-probe={hasAudio ? undefined : "true"}
+>
+	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+		<path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+	</svg>
+	<span class="hidden sm:inline">Listen</span>
+</button>
+
+<script>
+	/** Carry over `?pl=…` (playlist context) so the listen surface keeps the
+	 * same queue the user was reading inside. */
+	function listenHrefFor(slug: string): string {
+		const pl = new URLSearchParams(window.location.search).get("pl");
+		return pl ? `/listen/${slug}?pl=${encodeURIComponent(pl)}` : `/listen/${slug}`;
+	}
+
+	const btn = document.getElementById("listen-trigger") as HTMLButtonElement | null;
+	const id = btn?.dataset.discourseId;
+	const needsProbe = btn?.dataset.needsProbe === "true";
+	if (btn && id) {
+		const reveal = (): void => {
+			btn.classList.remove("hidden");
+		};
+		if (needsProbe) {
+			void (async () => {
+				try {
+					const res = await fetch(`/audio/${id}.manifest.json`, { method: "HEAD" });
+					if (res.ok) reveal();
+				} catch { /* offline / network blip — stay hidden */ }
+			})();
+		}
+		btn.addEventListener("click", () => {
+			window.location.assign(listenHrefFor(id));
+		});
+
+		// Shift+L → open listen mode. Guard against editable targets and other modifiers.
+		document.addEventListener("keydown", (e) => {
+			if (e.key !== "L" && e.key !== "l") return;
+			if (!e.shiftKey) return;
+			if (e.ctrlKey || e.metaKey || e.altKey) return;
+			const active = document.activeElement as HTMLElement | null;
+			const tag = active?.tagName?.toLowerCase();
+			if (
+				tag === "input" ||
+				tag === "textarea" ||
+				tag === "select" ||
+				active?.isContentEditable
+			) return;
+			e.preventDefault();
+			window.location.assign(listenHrefFor(id));
+		});
+	}
+</script>

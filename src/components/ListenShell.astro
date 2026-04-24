@@ -1,0 +1,251 @@
+---
+/**
+ * Listen-mode UI shell. Owns the persistent `<audio>` element and transport.
+ * Track transitions inside listen mode update src + DOM + URL via
+ * `history.replaceState` — no full page navigation.
+ *
+ * Discourse text is rendered at *runtime* from the manifest's paragraph words,
+ * keeping this surface independent of the MDX rendering pipeline (no Pāli,
+ * no glossary tooltips). v1 prototype: paragraph-level highlight only.
+ */
+interface Props {
+	slug: string;
+	displayId: string;
+	title: string;
+	description?: string;
+	nextSlug: string | null;
+	nextTitle: string | null;
+	nextDisplayId: string | null;
+	prevSlug: string | null;
+	prevTitle: string | null;
+	prevDisplayId: string | null;
+}
+const props = Astro.props;
+const initialDataJson = JSON.stringify({
+	slug: props.slug,
+	displayId: props.displayId,
+	title: props.title,
+	description: props.description ?? null,
+	nextSlug: props.nextSlug,
+	nextTitle: props.nextTitle,
+	nextDisplayId: props.nextDisplayId,
+	prevSlug: props.prevSlug,
+	prevTitle: props.prevTitle,
+	prevDisplayId: props.prevDisplayId,
+});
+---
+
+<main id="listen-root" class="listen-root" aria-label="Listen mode">
+	<header class="listen-header">
+		<div class="listen-meta">
+			<span class="listen-display-id" id="listen-display-id">{props.displayId}</span>
+			<span class="listen-meta-sep" aria-hidden="true">·</span>
+			<span class="listen-title" id="listen-title">{props.title}</span>
+		</div>
+		<a
+			id="listen-mode-switch"
+			href={`/${props.slug}`}
+			class="listen-close"
+			aria-label="Close listen mode"
+			title="Close listen mode (Esc)"
+		>
+			<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="14" height="14">
+				<path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"/>
+			</svg>
+		</a>
+	</header>
+
+	<section class="listen-stage" aria-live="polite">
+		<p class="listen-paragraph listen-paragraph--placeholder" id="listen-paragraph">
+			Loading audio…
+		</p>
+	</section>
+
+	<footer class="listen-transport" aria-label="Playback controls">
+		<div class="listen-transport-buttons">
+			<button type="button" id="listen-prev" class="listen-btn listen-btn--ghost" aria-label="Previous">
+				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M15.79 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L11.832 10l3.938 3.71a.75.75 0 0 1 .02 1.06ZM8.284 14.77a.75.75 0 0 1-1.06.02l-4.5-4.25a.75.75 0 0 1 0-1.08l4.5-4.25a.75.75 0 1 1 1.04 1.08L4.831 10l3.938 3.71a.75.75 0 0 1 .015 1.06Z" /></svg>
+			</button>
+			<button type="button" id="listen-play" class="listen-btn listen-btn--primary" aria-label="Play">
+				<svg id="listen-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="28" height="28"><path d="M8 5.14v13.72c0 .8.87 1.29 1.55.87l10.79-6.86a1.03 1.03 0 0 0 0-1.74L9.55 4.27A1.03 1.03 0 0 0 8 5.14Z"/></svg>
+			</button>
+			<button type="button" id="listen-next" class="listen-btn listen-btn--ghost" aria-label="Next">
+				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M4.21 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L8.168 10 4.23 6.29a.75.75 0 0 1-.02-1.06ZM11.716 5.23a.75.75 0 0 1 1.06-.02l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.04-1.08L15.169 10l-3.94-3.71a.75.75 0 0 1-.014-1.06Z" /></svg>
+			</button>
+		</div>
+		<div class="listen-scrubber-row">
+			<span class="listen-time" id="listen-time-current">0:00</span>
+			<input
+				id="listen-seek"
+				class="listen-seek"
+				type="range"
+				min="0"
+				max="100"
+				step="0.01"
+				value="0"
+				aria-label="Seek"
+			/>
+			<span class="listen-time" id="listen-time-total">0:00</span>
+			<button
+				type="button"
+				id="listen-collapse-btn"
+				class="listen-collapse-btn"
+				aria-label="Collapse extra controls"
+				aria-expanded="true"
+				title="Collapse extra controls"
+			>
+				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="14" height="14">
+					<path d="M14.78 11.78a.75.75 0 0 1-1.06 0L10 8.06l-3.72 3.72a.75.75 0 1 1-1.06-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06Z"/>
+				</svg>
+			</button>
+		</div>
+		<div class="listen-options">
+			<label class="listen-autoplay" for="listen-autoplay-toggle" title="Autoplay next discourse">
+				<input id="listen-autoplay-toggle" type="checkbox" />
+				<span>Autoplay</span>
+			</label>
+			<button
+				type="button"
+				id="listen-speed-cycle"
+				class="listen-speed-cycle"
+				aria-label="Cycle playback speed"
+				title="Cycle playback speed (+/−)"
+			>
+				<span id="listen-speed-label" aria-live="polite" aria-atomic="true">1×</span>
+			</button>
+			<div class="listen-options-end">
+				<details class="listen-shortcuts-details">
+					<summary class="listen-shortcuts-summary" title="Keyboard shortcuts">
+						<span class="sr-only">Keyboard shortcuts</span>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="listen-shortcuts-icon" aria-hidden="true">
+							<path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM8.94 6.94a.75.75 0 1 1-1.061-1.061 3 3 0 1 1 2.871 5.026v.345a.75.75 0 0 1-1.5 0v-.5c0-.734.851-1.121 1.4-1.4a1.5 1.5 0 1 0-1.71-2.461.75.75 0 1 1-1.04-1.085Z" clip-rule="evenodd" />
+						</svg>
+					</summary>
+					<div class="listen-shortcuts-panel">
+						<ul class="listen-shortcuts-list">
+							<li>
+								<span class="listen-shortcuts-keys"><kbd class="listen-shortcuts-kbd">Space</kbd></span>
+								<span class="listen-shortcuts-text">Play or pause</span>
+							</li>
+							<li>
+								<span class="listen-shortcuts-keys">
+									<kbd class="listen-shortcuts-kbd">←</kbd>
+									<kbd class="listen-shortcuts-kbd">→</kbd>
+								</span>
+								<span class="listen-shortcuts-text">Previous or next paragraph</span>
+							</li>
+							<li>
+								<span class="listen-shortcuts-keys">
+									<kbd class="listen-shortcuts-kbd">−</kbd>
+									<kbd class="listen-shortcuts-kbd">+</kbd>
+								</span>
+								<span class="listen-shortcuts-text">Slower or faster</span>
+							</li>
+							<li>
+								<span class="listen-shortcuts-keys">
+									<kbd class="listen-shortcuts-kbd">Shift</kbd>
+									<kbd class="listen-shortcuts-kbd">L</kbd>
+								</span>
+								<span class="listen-shortcuts-text">Open listen mode (from any reading page)</span>
+							</li>
+							<li>
+								<span class="listen-shortcuts-keys"><kbd class="listen-shortcuts-kbd">Esc</kbd></span>
+								<span class="listen-shortcuts-text">Switch to reading mode</span>
+							</li>
+						</ul>
+					</div>
+				</details>
+				<button type="button" id="listen-queue-chip" class="listen-chip" aria-label="Queue">
+					<svg
+						id="listen-queue-icon"
+						class="listen-queue-icon"
+						viewBox="0 0 20 20"
+						fill="currentColor"
+						aria-hidden="true"
+						width="12"
+						height="12"
+					>
+						<path d="M3 5.5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.5Zm0 4.5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 10Zm0 4.5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z"/>
+					</svg>
+					<span id="listen-queue-label">Up next</span>
+				</button>
+			</div>
+		</div>
+	</footer>
+
+	<audio id="listen-audio" preload="auto" crossorigin="anonymous" playsinline></audio>
+
+	<div
+		id="listen-track-pulse"
+		class="listen-track-pulse"
+		role="status"
+		aria-live="polite"
+		aria-hidden="true"
+	>
+		<span class="listen-track-pulse-id" id="listen-track-pulse-id"></span>
+		<span class="listen-track-pulse-title" id="listen-track-pulse-title"></span>
+	</div>
+
+	<div
+		id="listen-queue-scrim"
+		class="listen-queue-scrim"
+		hidden
+		aria-hidden="true"
+	></div>
+	<aside
+		id="listen-queue-drawer"
+		class="listen-queue-drawer"
+		role="dialog"
+		aria-modal="false"
+		aria-label="Queue"
+		aria-hidden="true"
+		hidden
+	>
+		<div class="listen-queue-handle" aria-hidden="true"></div>
+		<header class="listen-queue-header">
+			<h2 class="listen-queue-title" id="listen-queue-title">Queue</h2>
+			<span
+				id="listen-queue-stats"
+				class="listen-queue-stats"
+				aria-live="polite"
+			></span>
+			<button
+				type="button"
+				id="listen-queue-reset"
+				class="listen-queue-reset"
+				aria-label="Reset queue order"
+				title="Reset queue order"
+				hidden
+			>
+				Reset
+			</button>
+			<button
+				type="button"
+				id="listen-queue-close"
+				class="listen-queue-close"
+				aria-label="Close queue"
+				title="Close queue"
+			>
+				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="14" height="14">
+					<path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"/>
+				</svg>
+			</button>
+		</header>
+		<ol id="listen-queue-list" class="listen-queue-list" role="listbox" aria-label="Discourse queue"></ol>
+	</aside>
+
+	<script id="listen-initial-data" type="application/json" set:html={initialDataJson}></script>
+</main>
+
+<script>
+	import { initListenMode } from "../utils/listenModeClient";
+	const dataEl = document.getElementById("listen-initial-data");
+	if (dataEl?.textContent) {
+		try {
+			const data = JSON.parse(dataEl.textContent);
+			initListenMode(data);
+		} catch (e) {
+			console.error("listen-mode: failed to parse initial data", e);
+		}
+	}
+</script>

@@ -360,8 +360,12 @@ def normalize_paragraph_body(text: str, for_tts: bool = False) -> str:
     text = strip_html_jsx_tags(text)
     text = strip_glosses_tts(text) if for_tts else strip_glosses_display(text)
     text = normalize_inline_markdown(text)
-    # Em dash: same clause boundary as semicolon for TTS and alignment (must match spoken SSML).
-    text = text.replace("—", ";")
+    # Em dash: same clause boundary as semicolon for *spoken* output (Google TTS
+    # treats `;` as a slightly stronger pause than `—` and the audio sounds
+    # cleaner). For the alignment/manifest path we keep the em dash so the DOM
+    # tokens match what the reader sees on the page.
+    if for_tts:
+        text = text.replace("—", ";")
     text = re.sub(r"\s+", " ", text)
     return text.strip()
 
@@ -2069,6 +2073,124 @@ def resolve_mdx_path(slug: str) -> Path:
     return found[0]
 
 
+# ── v2 listen-mode metadata enrichment ────────────────────────────────
+# Single source of truth for slug/displayId/title/isVerse/lineSizes
+# augmentation. Called from every manifest writer (generate_voice +
+# edit_voice) so freshly-recorded and re-aligned manifests always carry the
+# fields the listen-mode client expects.
+
+LISTEN_SCHEMA_VERSION = 2
+
+
+def _parse_frontmatter(raw: str) -> dict[str, str]:
+    """Minimal YAML-ish frontmatter scan: top-level scalar `key: value` only."""
+    if not raw.startswith("---"):
+        return {}
+    end = raw.find("\n---", 3)
+    if end == -1:
+        return {}
+    block = raw[3:end].strip()
+    out: dict[str, str] = {}
+    for line in block.splitlines():
+        m = re.match(r"^([A-Za-z_][\w-]*)\s*:\s*(.+?)\s*$", line)
+        if not m:
+            continue
+        key, val = m.group(1), m.group(2)
+        if (val.startswith('"') and val.endswith('"')) or (
+            val.startswith("'") and val.endswith("'")
+        ):
+            val = val[1:-1]
+        out[key] = val
+    return out
+
+
+def _format_display_id(slug: str) -> str:
+    """Mirror of `formatDisplayId` in src/utils/listenMode.ts."""
+    return re.sub(r"([a-z]+)(\d)", r"\1 \2", slug, count=1, flags=re.IGNORECASE).upper()
+
+
+def _strip_glosses_display_for_lines(text: str) -> str:
+    return re.sub(r"\|(.+?)::([^|]*)\|", lambda m: m.group(1), text)
+
+
+def _normalize_keeping_lines(text: str) -> list[str]:
+    """Mirror of the verse line-split path in normalize_paragraph_body
+    but preserving line breaks so we can count per-line word tokens."""
+    t = text.strip()
+    t = strip_heading_lines_for_tts(t)
+    t = strip_collapse_blocks(t)
+    t = strip_html_jsx_tags(t)
+    t = _strip_glosses_display_for_lines(t)
+    t = normalize_inline_markdown(t)
+    t = t.replace("\u2014", ";")
+    lines = []
+    for raw_line in re.split(r"\r\n|\n|\r", t):
+        line = re.sub(r"\s+", " ", raw_line).strip()
+        if line:
+            lines.append(line)
+    return lines
+
+
+def _line_sizes_for_verse(raw_chunk: str) -> list[int] | None:
+    lines = _normalize_keeping_lines(raw_chunk)
+    if len(lines) < 2:
+        return None
+    sizes = [len([t for t in line.split() if t]) for line in lines]
+    if any(n <= 0 for n in sizes):
+        return None
+    return sizes
+
+
+def enrich_manifest_v2(manifest: dict, slug: str) -> None:
+    """Mutate `manifest` in place: add slug/displayId/title and per-paragraph
+    isVerse + lineSizes (when sums match word counts). Idempotent and safe to
+    call on already-enriched manifests — only sets fields when they differ."""
+    try:
+        mdx_path = resolve_mdx_path(slug)
+    except FileNotFoundError:
+        return  # No MDX → can't enrich; leave manifest as-is.
+
+    raw = mdx_path.read_text(encoding="utf-8")
+    fm = _parse_frontmatter(raw)
+    body = strip_frontmatter(raw)
+    raw_chunks = extract_paragraph_chunks_auto(body)
+    by_id: dict[int, tuple[str, bool]] = {pid: (rc, isv) for pid, rc, isv in raw_chunks}
+
+    if manifest.get("slug") != slug:
+        manifest["slug"] = slug
+    display_id = _format_display_id(slug)
+    if manifest.get("displayId") != display_id:
+        manifest["displayId"] = display_id
+    title = fm.get("title")
+    if title and manifest.get("title") != title:
+        manifest["title"] = title
+    if manifest.get("metadataSchemaVersion") != LISTEN_SCHEMA_VERSION:
+        manifest["metadataSchemaVersion"] = LISTEN_SCHEMA_VERSION
+
+    for p in manifest.get("paragraphs") or []:
+        spec = by_id.get(p.get("id"))
+        if not spec:
+            continue
+        raw_chunk, is_verse = spec
+        if p.get("isVerse") != is_verse:
+            p["isVerse"] = is_verse
+        if is_verse:
+            sizes = _line_sizes_for_verse(raw_chunk)
+            if sizes is not None:
+                word_count = len(p.get("words") or [])
+                if sum(sizes) == word_count and p.get("lineSizes") != sizes:
+                    p["lineSizes"] = sizes
+
+
+def write_manifest_v2(path: Path, manifest: dict, slug: str) -> None:
+    """Enrich + serialise. All voice:gen / voice:edit writers should use this."""
+    enrich_manifest_v2(manifest, slug)
+    path.write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
 def process_one_discourse(
     slug: str,
     voice_name: str,
@@ -2326,11 +2448,9 @@ def process_one_discourse(
     if not skip_align:
         restore_manifest_display_words(manifest["paragraphs"], paragraph_specs)
 
-    out_manifest.write_text(
-        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    print(f"Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    write_manifest_v2(out_manifest, manifest, slug)
+    print(f"Manifest: {out_manifest.relative_to(REPO_ROOT)} (v2 listen-mode metadata)")
+
     if _backed_up:
         for _b in _backed_up:
             print(f"  Backup: {_b}")

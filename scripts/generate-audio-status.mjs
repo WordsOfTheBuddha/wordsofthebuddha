@@ -2,10 +2,20 @@
 /**
  * Generate src/data/audioStatus.ts — same contract as generate_audio_status.py.
  *
- * 1. If R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY are set: ListObjectsV2
- *    on the bucket (Node + @aws-sdk/client-s3). Works on Vercel / CI without Python.
- * 2. Else if .venv-voice exists and R2_ACCOUNT_ID is set: delegates to Python --from-r2.
- * 3. Else scans public/audio/ for pairs of .webm + valid .manifest.json.
+ * `audioSlugs` is treated as a **whitelist hint**, never a blacklist:
+ *   - Slugs in the set definitely have audio (badge + Listen pre-link).
+ *   - Slugs *not* in the set may still have audio added later — the reading
+ *     page should show the Listen trigger optimistically (the runtime fetch
+ *     is the final source of truth).
+ *
+ * Single source rule (no unions):
+ *   - If `PUBLIC_AUDIO_BASE_URL` is set, the runtime fetches audio from that
+ *     origin (R2 in production). The build status MUST reflect that origin.
+ *     We try Node S3 first (R2 creds present), then `python --from-r2`.
+ *   - Otherwise, audio is served from local `public/audio/`. The build status
+ *     reflects the local filesystem only.
+ * Mixing the two would lie to readers (a page with a manifest only on disk
+ * but not on R2 would 404 in production, and vice-versa).
  *
  * On fatal error, writes an empty Set so Astro can always import ../data/audioStatus.
  *
@@ -20,6 +30,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.join(__dirname, "..");
 const AUDIO_DIR = path.join(REPO_ROOT, "public", "audio");
 const OUT = path.join(REPO_ROOT, "src", "data", "audioStatus.ts");
+
+function isRemoteSource() {
+	const url = process.env.PUBLIC_AUDIO_BASE_URL;
+	return Boolean(url && url.trim().length > 0);
+}
 
 function hasR2NodeCreds() {
 	return Boolean(
@@ -147,20 +162,29 @@ function writeStatus(slugs) {
 }
 
 async function main() {
-	if (hasR2NodeCreds()) {
-		try {
-			const slugs = await slugsFromR2Node();
-			writeStatus(slugs);
-			return;
-		} catch (err) {
-			console.warn("generate-audio-status: R2 list (Node) failed:", err?.message || err);
-			if (tryPythonFromR2()) return;
-			throw err;
+	if (isRemoteSource()) {
+		// Production / preview: PUBLIC_AUDIO_BASE_URL is set — runtime fetches
+		// from R2. Reflect R2 contents only.
+		if (hasR2NodeCreds()) {
+			try {
+				const r2Slugs = await slugsFromR2Node();
+				writeStatus(r2Slugs);
+				return;
+			} catch (err) {
+				console.warn("generate-audio-status: R2 list (Node) failed:", err?.message || err);
+				if (tryPythonFromR2()) return;
+				throw err;
+			}
 		}
+		if (tryPythonFromR2()) return;
+		console.warn(
+			"generate-audio-status: PUBLIC_AUDIO_BASE_URL is set but no R2 creds — writing empty whitelist (runtime fetch is the fallback).",
+		);
+		writeStatus([]);
+		return;
 	}
 
-	if (tryPythonFromR2()) return;
-
+	// Dev / local: serve from public/audio. Reflect local filesystem only.
 	writeStatus(slugsFromLocal());
 }
 

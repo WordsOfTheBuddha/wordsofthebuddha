@@ -79,6 +79,7 @@ from generate_voice import (
     restore_manifest_display_words,
     strip_frontmatter,
     text_hash,
+    write_manifest_v2,
 )
 
 
@@ -496,10 +497,7 @@ def align_only(slug: str, voice_name: str) -> int:
     restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs)
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
-    out_manifest.write_text(
-        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
     return 0
 
@@ -711,10 +709,7 @@ def retake_groups(
     # ── 10. Write manifest ───────────────────────────────────────────────
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
-    out_manifest.write_text(
-        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
 
     # ── Summary ──────────────────────────────────────────────────────────
@@ -896,10 +891,7 @@ def retake_paragraphs_exact(
         ]
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
-    out_manifest.write_text(
-        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
     print("  Done. (exact paragraph retake mode)")
     print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
@@ -1081,10 +1073,7 @@ def copy_paragraphs(
         ]
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
-    out_manifest.write_text(
-        json.dumps(manifest_out, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
     print("  Done (copy mode, no TTS synthesis).")
     print(f"  Rollback: npm run voice:edit -- {slug} --rollback")

@@ -3,7 +3,8 @@ import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 // Add content styling with CSS classes
 import "../styles/global.css";
-import "../styles/voice-mode.css";
+import "../styles/listen-mode.css";
+import "../styles/listen-button.css";
 import Navbar from "../components/Navbar.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import LastUpdated from "../components/LastUpdated.astro";
@@ -16,6 +17,7 @@ import "../styles/content.css";
 import Title from "../components/Title.astro";
 import Description from "../components/Description.astro";
 import FooterNavigation from "../components/FooterNavigation.astro";
+import PlaylistChip from "../components/PlaylistChip.astro";
 import HighlightLayout from "../components/HighlightLayout.astro";
 import ReadLaterButton from "../components/ReadLaterButton.astro";
 import SaveButton from "../components/SaveButton.astro";
@@ -23,7 +25,7 @@ import ReadButton from "../components/ReadButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
 import ParagraphToggle from "../components/ParagraphToggle.astro";
-import VoiceMode from "../components/VoiceMode.astro";
+import ListenButton from "../components/ListenButton.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import QualityTags from "../components/QualityTags.astro";
 import Commentary from "../components/Commentary.astro";
@@ -369,6 +371,7 @@ if (!SEOTitle) {
 						)
 					}
 					<Breadcrumbs path={fp || Astro.url.pathname} />
+					<PlaylistChip />
 					{(<Description description={description} />)}
 					{
 						(showPali ||
@@ -389,10 +392,7 @@ if (!SEOTitle) {
 											paragraphRequest={paragraphRequest}
 										/>
 										{voiceDiscourseId && (
-											<VoiceMode
-												discourseId={voiceDiscourseId}
-												filteredSubset={voiceFilteredSubset}
-											/>
+											<ListenButton discourseId={voiceDiscourseId} />
 										)}
 									</div>
 									<div class="flex items-center gap-1">

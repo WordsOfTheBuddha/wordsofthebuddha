@@ -1,0 +1,767 @@
+/* Listen mode — dedicated audio surface. Dark-only, mobile-first. */
+
+.listen-html,
+.listen-body {
+	margin: 0;
+	padding: 0;
+	min-height: 100dvh;
+	background: #0e0c0a;
+	color: #ece6da;
+	font-family: "Spectral", Georgia, "Times New Roman", serif;
+}
+
+.listen-root {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	min-height: 100dvh;
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+
+.listen-header {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem 1rem 0.5rem;
+	position: sticky;
+	top: 0;
+	background: linear-gradient(to bottom, #0e0c0a 75%, transparent);
+	z-index: 5;
+}
+
+.listen-close {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	color: #9c917f;
+	background: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	text-decoration: none;
+	transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+.listen-close:hover {
+	color: #ece6da;
+	border-color: rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.listen-back,
+.listen-exit {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	color: #9c917f;
+	background: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	padding: 0.4rem 0.7rem;
+	font-size: 0.8rem;
+	text-decoration: none;
+	transition: color 150ms ease, border-color 150ms ease;
+}
+.listen-back:hover,
+.listen-exit:hover {
+	color: #ece6da;
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.listen-meta {
+	display: flex;
+	align-items: baseline;
+	justify-content: flex-start;
+	flex-wrap: nowrap;
+	gap: 0.45rem;
+	min-width: 0;
+	width: 100%;
+	font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}.listen-display-id {
+	flex: 0 0 auto;
+	font-size: 0.7rem;
+	letter-spacing: 0.12em;
+	color: #9c917f;
+	text-transform: uppercase;
+	font-weight: 500;
+}
+.listen-meta-sep {
+	flex: 0 0 auto;
+	color: #5a5247;
+	font-size: 0.78rem;
+}
+.listen-title {
+	flex: 0 1 auto;
+	font-size: 0.82rem;
+	color: #9c917f;
+	font-weight: 400;
+	margin: 0;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	letter-spacing: 0.01em;
+}
+
+/* ── Stage (paragraph text) ─────────────────────────────────────── */
+
+.listen-stage {
+	padding: 1rem 1.25rem 8rem;
+	overflow-y: auto;
+}
+@media (min-width: 720px) {
+	/* Reserve gutter for `¶ N` numbers in the absolute-positioned style. */
+	.listen-stage {
+		padding-left: 3.75rem;
+	}
+}
+
+.listen-paragraph {
+	position: relative;
+	font-size: 1.15rem;
+	line-height: 1.7;
+	margin: 0 0 1.25rem;
+	color: #6b6354;
+	transition: color 200ms ease;
+}
+.listen-paragraph[data-paragraph-number]::before {
+	content: "¶ " attr(data-paragraph-number);
+	position: absolute;
+	left: -2.6rem;
+	top: 0.35rem;
+	color: #5a5247;
+	font-family: "Inter", system-ui, sans-serif;
+	font-size: 0.7rem;
+	letter-spacing: 0.04em;
+	opacity: 0.7;
+	pointer-events: none;
+}
+@media (max-width: 720px) {
+	/* On narrow viewports, no gutter room — inline the number subtly. */
+	.listen-paragraph[data-paragraph-number]::before {
+		position: static;
+		display: inline;
+		margin-right: 0.4rem;
+		font-size: 0.65rem;
+		vertical-align: 0.18em;
+	}
+}
+.listen-paragraph.is-active {
+	color: #ece6da;
+}
+.listen-paragraph--placeholder {
+	font-style: italic;
+	color: #6b6354;
+}
+
+/* Verse paragraphs (Phase 2.10): per-line `<br>` boundaries from the
+   `/audio-paragraphs/{slug}.json` endpoint. Rendered as a centered stanza
+   block to evoke poetry; falls back to flat prose if the line counts don't
+   match the manifest tokenization. */
+.listen-paragraph--verse {
+	white-space: normal;
+	text-align: left;
+	font-style: italic;
+	padding-left: 1rem;
+	border-left: 2px solid rgba(214, 199, 155, 0.18);
+	margin-left: 0.25rem;
+}
+
+/* Per-word highlight: subtle accent-tinted fill on the active word, restricted
+   to the active paragraph (inactive paragraphs stay dim regardless). Mirrors
+   voice-mode's `color-mix(... 28%)` background pattern. */
+.listen-word {
+	border-radius: 2px;
+	transition: background-color 120ms ease, color 120ms ease;
+}
+.listen-paragraph.is-active .listen-word.is-active {
+	color: #f4ecd6;
+	background: color-mix(in srgb, #d6c79b 28%, transparent);
+}
+
+@media (min-width: 640px) {
+	.listen-paragraph { font-size: 1.25rem; }
+}
+
+/* ── Transport ──────────────────────────────────────────────────── */
+
+.listen-transport {
+	position: sticky;
+	bottom: 0;
+	background: linear-gradient(to top, #0e0c0a 80%, rgba(14, 12, 10, 0));
+	padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0));
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	min-width: 0;
+}
+
+.listen-transport-buttons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 1.25rem;
+}
+
+.listen-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.04);
+	color: #ece6da;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background 150ms ease, border-color 150ms ease;
+	padding: 0;
+}
+.listen-btn--ghost {
+	width: 44px;
+	height: 44px;
+}
+.listen-btn--primary {
+	width: 60px;
+	height: 60px;
+	background: #d6c79b;
+	color: #1a1611;
+	border-color: transparent;
+}
+.listen-btn:hover {
+	background: rgba(255, 255, 255, 0.08);
+}
+.listen-btn--primary:hover {
+	background: #e3d4a8;
+}
+
+.listen-scrubber-row {
+	display: grid;
+	grid-template-columns: auto 1fr auto auto;
+	align-items: center;
+	gap: 0.6rem;
+}
+.listen-collapse-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	background: rgba(255, 255, 255, 0.04);
+	color: #9c917f;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	padding: 0;
+	transition: background 150ms ease, color 150ms ease, transform 200ms ease;
+}
+.listen-collapse-btn:hover {
+	background: rgba(255, 255, 255, 0.08);
+	color: #ece6da;
+}
+/* Inverted from the SVG's natural orientation:
+   - expanded (default)  → chevron points down (suggests "click to collapse")
+   - collapsed           → chevron points up   (suggests "click to expand") */
+.listen-collapse-btn svg {
+	transform: rotate(180deg);
+}
+.listen-transport.is-collapsed .listen-collapse-btn svg {
+	transform: rotate(0deg);
+}
+.listen-transport.is-collapsed .listen-options {
+	display: none;
+}
+.listen-time {
+	font-variant-numeric: tabular-nums;
+	font-size: 0.78rem;
+	color: #9c917f;
+	min-width: 2.5em;
+	text-align: center;
+}
+.listen-seek {
+	width: 100%;
+	accent-color: #d6c79b;
+}
+
+.listen-options {
+	/* 3-zone grid: autoplay (left) | speed pill (centered under play) | end-cluster (right).
+	   Side columns are equal so the centre column lands directly under the play button.
+	   The whole row collapses via .listen-transport.is-collapsed, so the speed pill
+	   disappears with everything else when the user collapses extra controls. */
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	column-gap: 0.6rem;
+	font-size: 0.78rem;
+	color: #9c917f;
+	min-width: 0;
+}
+.listen-options > .listen-autoplay { justify-self: start; }
+.listen-options > .listen-speed-cycle { justify-self: center; }
+.listen-options > .listen-options-end { justify-self: end; }
+.listen-autoplay {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	cursor: pointer;
+	white-space: nowrap;
+	flex: 0 0 auto;
+}
+.listen-autoplay input {
+	accent-color: #d6c79b;
+}
+
+/* Single-button cyclic speed control. Tap cycles through SPEED_RATES. */
+.listen-speed-cycle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.6em;
+	height: 26px;
+	padding: 0 0.55rem;
+	background: rgba(255, 255, 255, 0.04);
+	color: #d6c79b;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	font-size: 0.78rem;
+	font-variant-numeric: tabular-nums;
+	line-height: 1;
+	flex: 0 0 auto;
+	transition: background 150ms ease, border-color 150ms ease;
+}
+.listen-speed-cycle:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.listen-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	color: #ece6da;
+	border-radius: 999px;
+	padding: 0.35rem 0.7rem;
+	font-size: 0.75rem;
+	cursor: pointer;
+	text-decoration: none;
+	white-space: nowrap;
+	max-width: 100%;
+	min-width: 0;
+	flex: 0 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: background 150ms ease, border-color 150ms ease;
+}
+#listen-queue-chip { min-width: 0; }
+#listen-queue-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: inline-block;
+	max-width: 12em;
+	vertical-align: bottom;
+}
+.listen-queue-icon {
+	flex: 0 0 auto;
+	color: #9c917f;
+	opacity: 0.85;
+}
+.listen-chip:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-chip[disabled] {
+	opacity: 0.4;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+.listen-chip--mode {
+	color: #9c917f;
+}
+.listen-chip--mode:hover {
+	color: #ece6da;
+}
+
+.listen-options-end {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-width: 0;
+	flex: 0 1 auto;
+}
+
+/* ── Keyboard shortcuts help (mirrors voice-mode pattern) ─────────── */
+
+.listen-shortcuts-details {
+	position: relative;
+	flex-shrink: 0;
+}
+/* Hide on touch-only surfaces — shortcuts hint is for keyboard users. */
+@media not ((hover: hover) and (pointer: fine)) {
+	.listen-shortcuts-details {
+		display: none !important;
+	}
+}
+.listen-shortcuts-summary {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	list-style: none;
+	width: 1.6rem;
+	height: 1.6rem;
+	margin: 0;
+	padding: 0;
+	border-radius: 9999px;
+	cursor: pointer;
+	color: #ece6da;
+	opacity: 0.45;
+	transition: opacity 0.15s, background-color 0.15s;
+}
+.listen-shortcuts-summary:hover,
+.listen-shortcuts-details[open] .listen-shortcuts-summary {
+	opacity: 0.95;
+	background: rgba(255, 255, 255, 0.08);
+}
+.listen-shortcuts-summary::-webkit-details-marker {
+	display: none;
+}
+.listen-shortcuts-icon {
+	width: 1rem;
+	height: 1rem;
+	display: block;
+}
+.listen-shortcuts-panel {
+	position: absolute;
+	right: 0;
+	bottom: 100%;
+	margin-bottom: 0.4rem;
+	z-index: 70;
+	min-width: 13rem;
+	max-width: min(20rem, calc(100vw - 1.5rem));
+	padding: 0.45rem 0.6rem;
+	font-size: 0.7rem;
+	line-height: 1.45;
+	color: #ece6da;
+	background: #1a1614;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 0.4rem;
+	box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+}
+.listen-shortcuts-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.listen-shortcuts-list li {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	align-items: center;
+	column-gap: 0.55rem;
+	padding: 0.32rem 0 0.32rem;
+	line-height: 1.25;
+}
+.listen-shortcuts-list li + li {
+	border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.listen-shortcuts-keys {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.22rem;
+}
+.listen-shortcuts-text {
+	display: inline-flex;
+	align-items: center;
+	color: #9c917f;
+}
+.listen-shortcuts-kbd {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.18rem 0.38rem;
+	line-height: 1;
+	font-size: 0.65rem;
+	font-family: ui-monospace, monospace;
+	font-variant-numeric: tabular-nums;
+	border-radius: 0.22rem;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.06);
+	white-space: nowrap;
+	color: #ece6da;
+}
+
+/* sr-only utility for the summary's hidden label */
+.listen-shortcuts-details .sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ── Queue drawer (Phase 2.4) ───────────────────────────────────── */
+
+.listen-queue-scrim {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 60;
+	opacity: 0;
+	transition: opacity 200ms ease;
+}
+.listen-queue-scrim.is-open {
+	opacity: 1;
+}
+.listen-queue-scrim[hidden] {
+	display: none;
+}
+
+.listen-queue-drawer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 61;
+	max-height: 70dvh;
+	display: flex;
+	flex-direction: column;
+	background: #14110d;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 14px 14px 0 0;
+	box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.5);
+	transform: translateY(100%);
+	transition: transform 240ms cubic-bezier(0.2, 0.8, 0.25, 1);
+	padding-bottom: env(safe-area-inset-bottom, 0);
+	color: #ece6da;
+	font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.listen-queue-drawer.is-open {
+	transform: translateY(0);
+}
+.listen-queue-drawer[hidden] {
+	display: none;
+}
+.listen-queue-handle {
+	width: 36px;
+	height: 4px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.18);
+	margin: 0.5rem auto 0.25rem;
+	flex: 0 0 auto;
+}
+.listen-queue-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.4rem 1rem 0.5rem;
+	flex: 0 0 auto;
+}
+.listen-queue-title {
+	margin: 0;
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #9c917f;
+}
+.listen-queue-stats {
+	flex: 1 1 auto;
+	margin: 0 0.75rem;
+	font-size: 0.7rem;
+	color: #6b6354;
+	letter-spacing: 0.04em;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.listen-queue-close {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 999px;
+	background: transparent;
+	color: #9c917f;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	cursor: pointer;
+	padding: 0;
+}
+.listen-queue-close:hover {
+	color: #ece6da;
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-queue-reset {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 24px;
+	padding: 0 0.55rem;
+	margin-right: 0.4rem;
+	background: transparent;
+	color: #9c917f;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.7rem;
+	letter-spacing: 0.04em;
+}
+.listen-queue-reset[hidden] {
+	display: none;
+}
+.listen-queue-reset:hover {
+	color: #ece6da;
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-queue-list {
+	margin: 0;
+	padding: 0 0.5rem 1rem;
+	list-style: none;
+	overflow-y: auto;
+	flex: 1 1 auto;
+}
+.listen-queue-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.65rem;
+	padding: 0.65rem 0.75rem;
+	border-radius: 10px;
+	cursor: pointer;
+	color: inherit;
+	background: transparent;
+	border: none;
+	width: 100%;
+	text-align: left;
+	font-family: inherit;
+}
+.listen-queue-item:hover {
+	background: rgba(255, 255, 255, 0.04);
+}
+.listen-queue-item.is-current {
+	background: rgba(214, 199, 155, 0.08);
+}
+.listen-queue-item.is-before {
+	opacity: 0.55;
+}
+.listen-queue-item-id {
+	font-size: 0.68rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: #9c917f;
+	min-width: 4.5em;
+}
+.listen-queue-item.is-current .listen-queue-item-id {
+	color: #d6c79b;
+}
+.listen-queue-item-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: 0.92rem;
+	color: #ece6da;
+	/* Two-line clamp: long titles wrap onto a second line then ellipsize.
+	   Solves mobile readability without needing a hover/tap interaction. */
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+	line-height: 1.25;
+}
+.listen-queue-item.is-before .listen-queue-item-title {
+	color: #6b6354;
+}
+.listen-queue-item-marker {
+	font-size: 0.68rem;
+	color: #d6c79b;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.listen-queue-item-marker--duration {
+	color: #6b6354;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
+	text-transform: none;
+}
+
+/* Drag-reorder. */
+.listen-queue-li {
+	list-style: none;
+}
+.listen-queue-li[draggable="true"] .listen-queue-item-grip {
+	cursor: grab;
+}
+.listen-queue-li.is-dragging {
+	opacity: 0.4;
+}
+.listen-queue-item-grip {
+	font-size: 0.85rem;
+	line-height: 1;
+	color: #5e564a;
+	letter-spacing: -0.15em;
+	user-select: none;
+	padding: 0 0.15rem;
+}
+.listen-queue-li:hover .listen-queue-item-grip {
+	color: #9c917f;
+}
+
+/* ── Track transition pulse (Option A) ─────────────────────────── */
+
+.listen-track-pulse {
+	position: fixed;
+	left: 50%;
+	top: 38%;
+	transform: translate(-50%, -50%) scale(0.96);
+	z-index: 80;
+	padding: 0.7rem 1.1rem;
+	background: rgba(20, 17, 13, 0.92);
+	border: 1px solid rgba(214, 199, 155, 0.25);
+	border-radius: 12px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.2rem;
+	font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 220ms ease, transform 220ms ease;
+	max-width: min(90vw, 28rem);
+	text-align: center;
+}
+.listen-track-pulse.is-visible {
+	opacity: 1;
+	transform: translate(-50%, -50%) scale(1);
+}
+.listen-track-pulse-id {
+	font-size: 0.7rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: #d6c79b;
+}
+.listen-track-pulse-title {
+	font-size: 0.95rem;
+	color: #ece6da;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+	.listen-track-pulse {
+		transition: opacity 100ms linear;
+		transform: translate(-50%, -50%);
+	}
+	.listen-track-pulse.is-visible { transform: translate(-50%, -50%); }
+}

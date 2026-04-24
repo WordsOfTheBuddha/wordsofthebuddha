@@ -5,7 +5,7 @@
 	"scripts": {
 		"watch-routes": "npx tsx --trace-deprecation src/utils/contentWatcher.mjs --watch",
 		"watch:images": "node src/utils/copyContentImages.mjs --watch",
-		"predev": "node src/utils/copyContentImages.mjs && npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generatePersonMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts && npx tsx src/utils/generateTranslationMemory.ts && node scripts/generate-audio-status.mjs",
+		"predev": "node src/utils/copyContentImages.mjs && npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node --trace-deprecation src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generatePersonMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts && npx tsx src/utils/generateTranslationMemory.ts && node scripts/generate-audio-status.mjs && node scripts/generate-audio-titles.mjs && node scripts/generate-playlists.mjs",
 		"gen:qualities": "npx tsx src/utils/generateQualityMappings.ts",
 		"gen:similes": "npx tsx src/utils/generateSimileMappings.ts",
 		"gen:persons": "npx tsx src/utils/generatePersonMappings.ts",
@@ -15,7 +15,7 @@
 		"analyze:content-image-colors": "tsx src/utils/analyzeContentImageSvgColors.ts",
 		"gen:offline": "npx tsx src/utils/generateOfflineManifest.ts",
 		"dev": "concurrently \"yarn run watch-routes\" \"yarn run watch:images\" \"node --trace-deprecation ./node_modules/.bin/astro dev --host\"",
-		"prebuild": "node src/utils/copyContentImages.mjs && npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generatePersonMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts && node scripts/generate-audio-status.mjs",
+		"prebuild": "node src/utils/copyContentImages.mjs && npx tsx --trace-deprecation src/utils/contentWatcher.mjs && node src/utils/updateTimestamps.mjs && npx tsx src/utils/generateContentCounts.ts && npx tsx src/utils/generateTopicMappings.ts && npx tsx src/utils/generateQualityMappings.ts && npx tsx src/utils/generateSimileMappings.ts && npx tsx src/utils/generatePersonMappings.ts && npx tsx src/utils/generateSearchIndex.ts && npx tsx src/utils/generateOfflineManifest.ts && node scripts/generate-audio-status.mjs && node scripts/generate-audio-titles.mjs && node scripts/generate-playlists.mjs",
 		"gen:search": "npx tsx src/utils/generateSearchIndex.ts",
 		"build": "node --trace-deprecation ./node_modules/.bin/astro build --silent",
 		"build:pwa": "astro build --config astro.config.pwa.mjs --silent",
@@ -33,6 +33,8 @@
 		"voice:push": ".venv-voice/bin/python scripts/sync_audio_r2.py push",
 		"voice:pull": ".venv-voice/bin/python scripts/sync_audio_r2.py pull",
 		"voice:status": "node scripts/generate-audio-status.mjs",
+		"voice:titles": "node scripts/generate-audio-titles.mjs",
+		"gen:playlists": "node scripts/generate-playlists.mjs",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
 		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py"
 	},

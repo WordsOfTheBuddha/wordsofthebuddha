@@ -49,6 +49,9 @@ const { prev, next } = Astro.props;
 </nav>
 
 <script>
+	import { playlists } from "../data/playlists.generated";
+	import { transformId } from "../utils/transformId";
+
 	function isEditableTarget(el: Element | null): boolean {
 		if (!el || !(el instanceof HTMLElement)) return false;
 		const tag = el.tagName.toLowerCase();
@@ -62,11 +65,78 @@ const { prev, next } = Astro.props;
 		return false;
 	}
 
+	function currentSlugFromPath(): string | null {
+		const seg = location.pathname.replace(/^\/+|\/+$/g, "");
+		return seg && !seg.includes("/") ? seg : null;
+	}
+
+	/**
+	 * When `?pl=` is set, the reading-mode prev/next chips should walk the
+	 * playlist's full slug list (not the global `routes` order) so the user
+	 * can read a curated collection in order. SSR can't know `?pl=`, so we
+	 * patch the chips' `data-base-href` and visible labels here.
+	 *
+	 * The full slug list is used (not audio-filtered) — read mode is not
+	 * gated on audio availability, only listen mode is.
+	 */
+	function applyPlaylistOverrides() {
+		const pl = new URLSearchParams(location.search).get("pl");
+		if (!pl) return;
+		const playlist = playlists[pl];
+		if (!playlist) return;
+		const cur = currentSlugFromPath();
+		if (!cur) return;
+		const slugs = playlist.slugs;
+		const i = slugs.indexOf(cur);
+		if (i < 0) return; // current discourse not in this playlist; leave chips alone
+
+		// Signal active-playlist state so other components (e.g. the read-
+		// mode PlaylistChip) can decide whether to surface their UI.
+		document.body.dataset.plActive = "1";
+
+		const prevSlug = i > 0 ? slugs[i - 1] : null;
+		const nextSlug = i + 1 < slugs.length ? slugs[i + 1] : null;
+		const titleFor = (s: string) => playlist.titles[s] || "";
+
+		patchChip("prev", prevSlug, titleFor);
+		patchChip("next", nextSlug, titleFor);
+	}
+
+	function patchChip(
+		direction: "prev" | "next",
+		slug: string | null,
+		titleFor: (s: string) => string,
+	) {
+		const link = document.querySelector(
+			`a.nav-link[data-footer-nav="${direction}"]`,
+		) as HTMLAnchorElement | null;
+		if (!link) return;
+		if (!slug) {
+			// Edge of the playlist — hide the chip but keep the parent slot
+			// (`w-full sm:w-1/2`) so the surviving sibling stays on its side
+			// (next on the right when prev is missing, etc.).
+			link.classList.add("hidden");
+			return;
+		}
+		link.classList.remove("hidden");
+		link.setAttribute("data-base-href", `/${slug}`);
+		const label = titleFor(slug);
+		const display = transformId(slug);
+		link.textContent =
+			direction === "prev"
+				? `← ${display}${label ? " " + label : ""}`
+				: `${display}${label ? " " + label : ""} →`;
+	}
+
 	function updateLinks() {
+		// Apply playlist overrides BEFORE rewriting query params so our new
+		// data-base-href is the source of truth for the next step.
+		applyPlaylistOverrides();
+
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
-		const voiceParam = new URLSearchParams(location.search).get("voice");
-		const voiceOn = voiceParam === "1" || voiceParam === "true";
+		const search = new URLSearchParams(location.search);
+		const pl = search.get("pl");
 		const links = document.querySelectorAll("a.nav-link");
 
 		links.forEach((link) => {
@@ -75,7 +145,7 @@ const { prev, next } = Astro.props;
 			const params = new URLSearchParams();
 			if (paliMode) params.set("pli", "true");
 			if (paliMode && layout === "split") params.set("layout", layout);
-			if (voiceOn) params.set("voice", "1");
+			if (pl) params.set("pl", pl);
 			(link as HTMLAnchorElement).href = params.toString()
 				? `${baseHref}?${params.toString()}`
 				: baseHref;
@@ -86,7 +156,6 @@ const { prev, next } = Astro.props;
 	document.addEventListener("astro:page-load", updateLinks);
 	document.addEventListener("paliModeChanged", updateLinks as EventListener);
 	document.addEventListener("layoutChanged", updateLinks as EventListener);
-	document.addEventListener("voiceParamChanged", updateLinks as EventListener);
 
 	if (!(window as unknown as { __footerNavBracketKeys?: boolean })
 		.__footerNavBracketKeys) {

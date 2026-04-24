@@ -1,0 +1,222 @@
+---
+/**
+ * Anthology breadcrumb that replaces the standard breadcrumb when the URL
+ * carries a valid `?pl=<id>` *and* the current discourse is part of that
+ * playlist. The original breadcrumb (`#breadcrumbs-strip`) is hidden via a
+ * sibling-class toggle so we never render two nav strips at once.
+ *
+ * Layout: matches the breadcrumb strip exactly (border-bottom, padding,
+ * text size, color tokens) so the swap is visually seamless.
+ *
+ *   ANTHOLOGY · <Title>  ›  SN 56.5                                ×
+ *
+ * Click `×` → strips `?pl=` from URL + every page link, restores standard
+ * breadcrumb, and reloads to reset footer chips.
+ */
+import { playlists } from "../data/playlists.generated";
+
+// Marshal id → { title, slugs } for the inline script. Slugs are needed
+// to confirm the *current* discourse is part of the playlist before
+// rendering the chip (avoids showing an anthology badge on a discourse
+// outside the playlist when the user manually edited the URL).
+type ChipPlaylist = { title: string; slugs: readonly string[] };
+const playlistDataById: Record<string, ChipPlaylist> = {};
+for (const [id, pl] of Object.entries(playlists)) {
+	playlistDataById[id] = { title: pl.title, slugs: pl.slugs };
+}
+---
+
+<div
+	id="playlist-chip"
+	class="playlist-chip hidden"
+	role="navigation"
+	aria-label="Anthology breadcrumb"
+>
+	<div class="playlist-chip-inner">
+		<span class="playlist-chip-prefix">ANTHOLOGY</span>
+		<span class="playlist-chip-sep" aria-hidden="true">·</span>
+		<a
+			id="playlist-chip-link"
+			class="playlist-chip-title"
+			href="#"
+			title="Open anthology"
+		>
+			…
+		</a>
+		<svg
+			class="playlist-chip-chevron"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M9 5l7 7-7 7"></path>
+		</svg>
+		<span id="playlist-chip-current" class="playlist-chip-current">…</span>
+	</div>
+	<button
+		id="playlist-chip-dismiss"
+		type="button"
+		class="playlist-chip-dismiss"
+		aria-label="Exit anthology mode"
+		title="Exit anthology — restore standard breadcrumb"
+	>
+		×
+	</button>
+</div>
+
+<style>
+	.playlist-chip {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+		color: var(--text-color);
+		border-bottom: 1px solid var(--border-color);
+	}
+	.playlist-chip.hidden {
+		display: none;
+	}
+	.playlist-chip-inner {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		min-width: 0;
+		flex: 1 1 auto;
+	}
+	.playlist-chip-prefix {
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
+		color: var(--text-muted);
+		font-weight: 500;
+		flex-shrink: 0;
+	}
+	.playlist-chip-sep {
+		color: var(--text-muted);
+		opacity: 0.6;
+		flex-shrink: 0;
+	}
+	/* Mobile: drop the ANTHOLOGY prefix to save horizontal room. The
+	   anthology *title* itself is the recognisable label, and dropping the
+	   word here matches how mobile breadcrumbs typically elide context. */
+	@media (max-width: 640px) {
+		.playlist-chip-prefix,
+		.playlist-chip-sep {
+			display: none;
+		}
+	}
+	.playlist-chip-title {
+		color: var(--link-color);
+		text-decoration: none;
+		font-weight: 500;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		min-width: 0;
+	}
+	.playlist-chip-title:hover {
+		text-decoration: underline;
+	}
+	.playlist-chip-chevron {
+		width: 1rem;
+		height: 1rem;
+		color: var(--text-muted);
+		opacity: 0.7;
+		flex-shrink: 0;
+	}
+	.playlist-chip-current {
+		color: var(--text-muted);
+		flex-shrink: 0;
+	}
+	.playlist-chip-dismiss {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		padding: 0;
+		border: none;
+		background: transparent;
+		color: var(--text-color);
+		opacity: 0.55;
+		font-size: 1.1rem;
+		line-height: 1;
+		border-radius: 999px;
+		cursor: pointer;
+		flex-shrink: 0;
+	}
+	.playlist-chip-dismiss:hover {
+		opacity: 1;
+		background: rgba(0, 0, 0, 0.08);
+	}
+	:global(.dark) .playlist-chip-dismiss:hover {
+		background: rgba(255, 255, 255, 0.1);
+	}
+	/* When the chip is active, hide the standard breadcrumb above it so we
+	   never show two nav strips. */
+	:global(body[data-pl-active="1"]) :global(#breadcrumbs-strip) {
+		display: none;
+	}
+</style>
+
+<script define:vars={{ playlistDataById }}>
+	(() => {
+		const chip = document.getElementById("playlist-chip");
+		const link = document.getElementById("playlist-chip-link");
+		const currentEl = document.getElementById("playlist-chip-current");
+		const dismiss = document.getElementById("playlist-chip-dismiss");
+		if (!chip || !link || !currentEl || !dismiss) return;
+
+		const data = playlistDataById || {};
+
+		const params = new URLSearchParams(location.search);
+		const id = params.get("pl");
+		if (!id || !data[id]) return;
+		const playlist = data[id];
+
+		// Confirm the current path is part of the playlist. Path is
+		// `/sn56.5` (no trailing /) for discourse pages.
+		const pathSlug =
+			location.pathname.replace(/^\/+/, "").split("/")[0] || "";
+		if (!pathSlug || !playlist.slugs.includes(pathSlug)) return;
+
+		// Mirror transformId() formatting (sn56.5 → SN 56.5).
+		const formatDisplayId = (s) =>
+			s.replace(/([a-z]+)(\d)/i, "$1 $2").toUpperCase();
+
+		link.textContent = playlist.title;
+		// Anthology landing page lives at /<anthology-id> by convention.
+		link.href = `/${id}`;
+		currentEl.textContent = formatDisplayId(pathSlug);
+
+		document.body.dataset.plActive = "1";
+		chip.classList.remove("hidden");
+
+		dismiss.addEventListener("click", () => {
+			// Strip ?pl= from URL.
+			const url = new URL(location.href);
+			url.searchParams.delete("pl");
+			history.replaceState(history.state, "", url.toString());
+			// Strip ?pl= from every page link so future clicks navigate
+			// without it.
+			document.querySelectorAll("a[href]").forEach((a) => {
+				try {
+					const u = new URL(a.href, location.origin);
+					if (u.origin !== location.origin) return;
+					if (!u.searchParams.has("pl")) return;
+					u.searchParams.delete("pl");
+					a.href = u.pathname + (u.search ? u.search : "") + u.hash;
+				} catch {}
+			});
+			// Reload so footer chips revert to canonical neighbours and the
+			// standard breadcrumb un-hides cleanly.
+			location.reload();
+		});
+	})();
+</script>

@@ -1,0 +1,74 @@
+---
+/**
+ * Prerendered listen-mode entry per discourse.
+ *
+ * Whitelist-vs-blacklist note: `audioSlugs` is a build-time hint regenerated
+ * on every prebuild. It can go stale between builds (audio gets recorded /
+ * uploaded after the last build). We therefore emit a listen page for every
+ * `routes` entry — the runtime `loadVoiceManifestForDiscourse` is the final
+ * source of truth. If the manifest 404s the client renders an empty stage
+ * (no paragraphs, no audio) but the page itself loads.
+ */
+export const prerender = true;
+import { getEntry } from "astro:content";
+import { routes } from "../../utils/routes";
+import { formatDisplayId, nextAudioSlug, prevAudioSlug } from "../../utils/listenMode";
+import ListenLayout from "../../layouts/ListenLayout.astro";
+import ListenShell from "../../components/ListenShell.astro";
+
+export async function getStaticPaths() {
+	const entries: { params: { discourse: string } }[] = [];
+	for (const rid of routes) {
+		try {
+			const e = await getEntry("all", rid);
+			if (e) entries.push({ params: { discourse: rid } });
+		} catch {}
+	}
+	return entries;
+}
+
+const { discourse: id } = Astro.params as { discourse?: string };
+if (!id) {
+	return new Response(null, { status: 404 });
+}
+
+const item = await getEntry("all", id);
+if (!item) {
+	return new Response(null, { status: 404 });
+}
+
+const title: string = item.data.title ?? id;
+const description: string | undefined = item.data.description;
+const displayId = formatDisplayId(id);
+
+// Build-time sibling lookup for queue prev/next + lock-screen pre-binding.
+const nextSlug = nextAudioSlug(id);
+const prevSlug = prevAudioSlug(id);
+
+async function lookupTitle(slug: string | null): Promise<string | null> {
+	if (!slug) return null;
+	try {
+		const e = await getEntry("all", slug);
+		return (e?.data.title as string | undefined) ?? null;
+	} catch {
+		return null;
+	}
+}
+const nextTitle = await lookupTitle(nextSlug);
+const prevTitle = await lookupTitle(prevSlug);
+---
+
+<ListenLayout title={title} description={description} displayId={displayId} slug={id}>
+	<ListenShell
+		slug={id}
+		displayId={displayId}
+		title={title}
+		description={description}
+		nextSlug={nextSlug}
+		nextTitle={nextTitle}
+		nextDisplayId={nextSlug ? formatDisplayId(nextSlug) : null}
+		prevSlug={prevSlug}
+		prevTitle={prevTitle}
+		prevDisplayId={prevSlug ? formatDisplayId(prevSlug) : null}
+	/>
+</ListenLayout>

@@ -1,0 +1,58 @@
+---
+/**
+ * Minimal layout for /listen/[discourse]: dark, full-viewport, no Navbar/Footer/Pāli/glossaries.
+ * Listen mode is its own consumption surface (separate from reading mode).
+ */
+import "../styles/global.css";
+import "../styles/listen-mode.css";
+
+interface Props {
+	title: string;
+	description?: string;
+	displayId: string;
+	slug: string;
+}
+const { title, description, displayId, slug } = Astro.props;
+
+const seoTitle = `Listen · ${displayId} ${title}`;
+---
+
+<!doctype html>
+<html lang="en" class="dark listen-html" dir="ltr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<title>{seoTitle}</title>
+		<meta name="description" content={description ?? `Listen to ${displayId} ${title}.`} />
+		<meta name="theme-color" content="#0e0c0a" />
+		<meta name="color-scheme" content="dark" />
+		<meta name="robots" content="index, follow" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<link
+			rel="preload"
+			href="/assets/fonts/Spectral-Regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<!-- Hint to the browser/SW that the audio + manifest for this slug are imminent. -->
+		<link rel="prefetch" href={`/audio/${slug}.manifest.json`} as="fetch" crossorigin="anonymous" />
+
+		<!-- Open Graph -->
+		<meta property="og:title" content={seoTitle} />
+		<meta property="og:description" content={description ?? `Listen to ${displayId} ${title}.`} />
+		<meta property="og:type" content="music.song" />
+
+		<script is:inline>
+			// Listen mode is dark-only. Sync theme-color meta + html class without
+			// touching localStorage so the user's reading-mode preference is preserved.
+			document.documentElement.classList.remove("light");
+			document.documentElement.classList.add("dark");
+			document.documentElement.style.colorScheme = "dark";
+		</script>
+	</head>
+	<body class="listen-body">
+		<slot />
+	</body>
+</html>

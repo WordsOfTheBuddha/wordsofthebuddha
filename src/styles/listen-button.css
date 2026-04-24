@@ -1,0 +1,56 @@
+/* Listen affordances: small inline icon used inside discourse cards (search,
+ * discover, explorer, /on/) and the toolbar trigger that opens /listen/{slug}. */
+
+/* ——— Inline listen icon in discourse cards ——— */
+/* Parent headings use flex + items-center so the icon centers with the title line */
+.voice-listen-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	line-height: 1;
+	color: var(--text-muted);
+	margin-left: 0.125rem;
+	opacity: 0.55;
+	transition: opacity 0.15s, color 0.15s;
+}
+.voice-listen-icon svg {
+	display: block;
+}
+.voice-listen-icon:hover {
+	opacity: 1;
+	color: var(--link-color);
+}
+.voice-listen-action {
+	cursor: pointer;
+}
+
+/* ——— Toolbar trigger button ——— */
+/* Must win over Tailwind `.hidden`: this file loads after utilities, so without
+ * `!important` `display: inline-flex` would override `display: none`. */
+.listen-trigger.hidden {
+	display: none !important;
+}
+
+.listen-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.35rem 0.55rem;
+	font-size: 0.8125rem;
+	line-height: 1.25rem;
+	border-radius: 9999px;
+	transition: background-color 0.2s;
+	color: var(--text-color, inherit);
+	background: transparent;
+	border: 1px solid transparent;
+	cursor: pointer;
+}
+
+.listen-trigger:hover {
+	background: rgb(0 0 0 / 0.06);
+}
+
+html.dark .listen-trigger:hover {
+	background: rgb(255 255 255 / 0.06);
+}
