@@ -11,7 +11,7 @@ import CC0Button from "../assets/CC0_button.svg";
 		<ThemeToggle />
 	</div>
 	<nav
-		class="flex min-w-0 flex-1 flex-nowrap items-center justify-end gap-x-3 gap-y-0 overflow-x-auto whitespace-nowrap pl-2 sm:gap-x-4"
+		class="footer-links-scroll flex min-w-0 flex-1 flex-nowrap items-center justify-end gap-x-3 gap-y-0 overflow-x-auto whitespace-nowrap pl-2 sm:gap-x-4"
 		aria-label="Footer links"
 	>
 		<a
@@ -31,3 +31,15 @@ import CC0Button from "../assets/CC0_button.svg";
 		>
 	</nav>
 </footer>
+
+<style>
+	.footer-links-scroll {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+		overflow-y: hidden;
+	}
+
+	.footer-links-scroll::-webkit-scrollbar {
+		display: none;
+	}
+</style>
