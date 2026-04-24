@@ -268,10 +268,6 @@ export function initListenMode(initial: ListenInitialData): void {
 		"listen-speed-cycle",
 	) as HTMLButtonElement | null;
 	const speedLabel = document.getElementById("listen-speed-label");
-	const collapseBtn = document.getElementById(
-		"listen-collapse-btn",
-	) as HTMLButtonElement | null;
-	const transportEl = document.querySelector<HTMLElement>(".listen-transport");
 	const queueDrawer = document.getElementById(
 		"listen-queue-drawer",
 	) as HTMLElement | null;
@@ -305,6 +301,8 @@ export function initListenMode(initial: ListenInitialData): void {
 	let manifest: VoiceManifest | null = null;
 	let activeParaIdx = -1;
 	let activeWordIdx = -1;
+	let activeLineParaIdx = -1;
+	let activeLineTop = Number.NaN;
 	let pauseAfterParagraphIdx = -1;
 	let paragraphPlaybackMode: ParagraphPlaybackMode = "continuous";
 	const autoplay = true;
@@ -455,8 +453,9 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	function setQueueLabel(): void {
 		if (!queueLabel) return;
+		const shortQueueLabel = window.matchMedia("(max-width: 640px)").matches;
 		if (neighbours.next) {
-			queueLabel.textContent = `Up next · ${neighbours.next.displayId}`;
+			queueLabel.textContent = `${shortQueueLabel ? "Next" : "Up next"} · ${neighbours.next.displayId}`;
 			queueChip?.setAttribute(
 				"title",
 				`Open queue · next is ${neighbours.next.displayId}${neighbours.next.title ? " · " + neighbours.next.title : ""}`,
@@ -581,6 +580,8 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 		activeParaIdx = -1;
 		activeWordIdx = -1;
+		activeLineParaIdx = -1;
+		activeLineTop = Number.NaN;
 		stage.scrollTop = 0;
 	}
 
@@ -592,6 +593,8 @@ export function initListenMode(initial: ListenInitialData): void {
 		});
 		const active = all[idx];
 		if (active instanceof HTMLElement) {
+			activeLineParaIdx = idx;
+			activeLineTop = Number.NaN;
 			active.scrollIntoView({ behavior: "smooth", block: "center" });
 		}
 	}
@@ -608,30 +611,41 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (!(span instanceof HTMLElement)) return;
 		span.classList.add("is-active");
 
-		// Keep the active word in view. Two complications:
-		//   1. .listen-transport is `position: sticky; bottom: 0` *inside* the
-		//      stage scroll container, so it overlays the bottom of the visible
-		//      area — words behind it are visually hidden even though they're
-		//      within stage.getBoundingClientRect().
-		//   2. Word changes fire on timeupdate, not on every layout reflow, so
-		//      we must check on every word change (not only paragraph change).
-		// Solution: subtract the transport's height from the safe bottom edge,
-		// add a small line-height buffer at the top.
+		// Keep the active word in view. Word changes fire on timeupdate, not on
+		// every layout reflow, so check on every word change (not only paragraph
+		// change). Recenter only once the word reaches a lower comfort band, so
+		// desktop can use the available text area while compact viewports still
+		// keep enough text below the highlighted line.
 		const transport = document.querySelector(".listen-transport");
-		const transportH =
-			transport instanceof HTMLElement ? transport.getBoundingClientRect().height : 0;
 		const stageRect = stage.getBoundingClientRect();
 		const wordRect = span.getBoundingClientRect();
-		const topMargin = Math.max(48, wordRect.height * 1.5);
-		const bottomMargin = transportH + Math.max(24, wordRect.height);
-		const hiddenBelow = wordRect.bottom > stageRect.bottom - bottomMargin;
+		const lineTop = Math.round(wordRect.top - stageRect.top + stage.scrollTop);
+		const isNewLine =
+			activeLineParaIdx !== paraIdx ||
+			!Number.isFinite(activeLineTop) ||
+			Math.abs(lineTop - activeLineTop) > Math.max(8, wordRect.height * 0.6);
+		if (isNewLine) {
+			activeLineParaIdx = paraIdx;
+			activeLineTop = lineTop;
+		}
+		const transportRect =
+			transport instanceof HTMLElement ? transport.getBoundingClientRect() : null;
+		const visualBottom = transportRect
+			? Math.min(stageRect.bottom, transportRect.top)
+			: stageRect.bottom;
+		const stageHeight = Math.max(1, visualBottom - stageRect.top);
+		const compactViewport = stageHeight < 520 || window.matchMedia("(max-width: 640px)").matches;
+		const lineHeight = Math.max(18, wordRect.height);
+		const topMargin = Math.max(48, lineHeight * 1.5);
+		const lowerBandRatio = compactViewport ? 0.72 : 0.82;
+		const lowerBandMinInset = compactViewport ? lineHeight * 3.5 : lineHeight * 2.5;
+		const lowerBand = Math.min(
+			stageRect.top + stageHeight * lowerBandRatio,
+			visualBottom - lowerBandMinInset,
+		);
+		const hiddenBelow = wordRect.bottom > lowerBand;
 		const hiddenAbove = wordRect.top < stageRect.top + topMargin;
-		if (hiddenBelow || hiddenAbove) {
-			// scrollIntoView on the span uses { block: "center" } against the
-			// nearest scroll ancestor (= stage). That centers the word in the
-			// raw stage rect, which is *above* the transport bar — so add a
-			// follow-up nudge to push it clear of the transport when it lands
-			// in the bottom half.
+		if (isNewLine && (hiddenBelow || hiddenAbove)) {
 			span.scrollIntoView({ behavior: "smooth", block: "center" });
 		}
 	}
@@ -876,11 +890,10 @@ export function initListenMode(initial: ListenInitialData): void {
 			history.pushState({ listen: true, slug }, "", `/listen/${slug}${playlistQuery()}`);
 		}
 		if (opts.showPulse !== false) {
-			const pulseDescription = opts.description ?? descriptionFor(slug);
 			showTrackPulse({
 				displayId: formatDisplayId(slug),
 				title: titleFor(slug, slug),
-				description: pulseDescription,
+				description: null,
 			});
 		}
 		const resumeAt = sessionPositions.get(slug);
@@ -993,6 +1006,16 @@ export function initListenMode(initial: ListenInitialData): void {
 				description: neighbours.prev.description,
 			});
 		}
+	}
+
+	async function advanceDiscourse(direction: -1 | 1): Promise<void> {
+		const target = direction < 0 ? neighbours.prev : neighbours.next;
+		if (!target) return;
+		await advanceTo(target.slug, {
+			autoplayAfterLoad: true,
+			reason: "manual",
+			description: target.description,
+		});
 	}
 
 	// ── Wire DOM events ─────────────────────────────────────────────────
@@ -1398,6 +1421,9 @@ export function initListenMode(initial: ListenInitialData): void {
 		queueDrawer.classList.add("is-open");
 		queueDrawer.setAttribute("aria-hidden", "false");
 		queueScrim.setAttribute("aria-hidden", "false");
+		window.requestAnimationFrame(() => {
+			focusQueueItem(0);
+		});
 	}
 
 	function closeQueueDrawer(): void {
@@ -1415,6 +1441,34 @@ export function initListenMode(initial: ListenInitialData): void {
 			queueDrawer.removeEventListener("transitionend", onEnd);
 		};
 		queueDrawer.addEventListener("transitionend", onEnd);
+	}
+
+	function getQueueItemButtons(): HTMLButtonElement[] {
+		if (!queueList) return [];
+		return Array.from(
+			queueList.querySelectorAll<HTMLButtonElement>(".listen-queue-item"),
+		);
+	}
+
+	function focusQueueItem(delta: -1 | 1 | 0): void {
+		const buttons = getQueueItemButtons();
+		if (!buttons.length) return;
+		const active = document.activeElement as HTMLElement | null;
+		const currentIndex = buttons.findIndex((button) => button === active);
+		if (delta === 0) {
+			const preferred =
+				buttons.find((button) => button.classList.contains("is-current")) ??
+				buttons.find((button) => !button.classList.contains("is-current")) ??
+				buttons[0];
+			preferred.focus();
+			preferred.scrollIntoView({ block: "nearest" });
+			return;
+		}
+		const anchor = currentIndex >= 0 ? currentIndex : 0;
+		const nextIndex = Math.max(0, Math.min(buttons.length - 1, anchor + delta));
+		const target = buttons[nextIndex];
+		target.focus();
+		target.scrollIntoView({ block: "nearest" });
 	}
 
 	queueScrim?.addEventListener("click", closeQueueDrawer);
@@ -1448,31 +1502,6 @@ export function initListenMode(initial: ListenInitialData): void {
 	applySpeed();
 	speedCycleBtn?.addEventListener("click", cycleSpeed);
 
-	// ── Collapse toggle (hides the options row) ─────────────────────────
-	const COLLAPSE_KEY = "listen-bar-collapsed";
-
-	function applyCollapseState(collapsed: boolean) {
-		transportEl?.classList.toggle("is-collapsed", collapsed);
-		collapseBtn?.setAttribute("aria-expanded", collapsed ? "false" : "true");
-		collapseBtn?.setAttribute(
-			"aria-label",
-			collapsed ? "Show extra controls" : "Collapse extra controls",
-		);
-		collapseBtn?.setAttribute(
-			"title",
-			collapsed ? "Show extra controls" : "Collapse extra controls",
-		);
-	}
-
-	// Restore persisted state on mount
-	applyCollapseState(localStorage.getItem(COLLAPSE_KEY) === "1");
-
-	collapseBtn?.addEventListener("click", () => {
-		const collapsed = !(transportEl?.classList.contains("is-collapsed") ?? false);
-		applyCollapseState(collapsed);
-		localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
-	});
-
 	// ── Keyboard shortcuts (mirrors voice mode) ─────────────────────────
 	document.addEventListener("keydown", (e) => {
 		const active = document.activeElement as HTMLElement | null;
@@ -1483,12 +1512,36 @@ export function initListenMode(initial: ListenInitialData): void {
 			(tag === "input" || tag === "textarea" || tag === "select" || active?.isContentEditable);
 		if (isInputFocused) return;
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
+			const queueOpen = !!(
+				queueDrawer &&
+				!queueDrawer.hidden &&
+				queueDrawer.classList.contains("is-open")
+			);
 
 		if (transitionState && (e.key === " " || e.key === "Enter")) {
 			e.preventDefault();
 			(document.getElementById("listen-track-pulse-play-now") as HTMLButtonElement | null)?.click();
 			return;
 		}
+
+			if ((e.key === "Q" || e.key === "q") && e.shiftKey) {
+				e.preventDefault();
+				if (queueDrawer && queueScrim && queueList) {
+					if (!queueOpen) openQueueDrawer();
+					else focusQueueItem(0);
+				}
+				return;
+			}
+
+			if (
+				queueOpen &&
+				queueDrawer?.contains(active) &&
+				(e.key === "ArrowDown" || e.key === "ArrowUp")
+			) {
+				e.preventDefault();
+				focusQueueItem(e.key === "ArrowDown" ? 1 : -1);
+				return;
+			}
 
 		if (e.key === " ") {
 			e.preventDefault();
@@ -1509,6 +1562,16 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (e.key === "ArrowRight" && !isRange) {
 			e.preventDefault();
 			void onNext();
+			return;
+		}
+		if (e.key === "[") {
+			e.preventDefault();
+			void advanceDiscourse(-1);
+			return;
+		}
+		if (e.key === "]") {
+			e.preventDefault();
+			void advanceDiscourse(1);
 			return;
 		}
 		if (e.key === "Escape") {
@@ -1612,7 +1675,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			showTrackPulse({
 				displayId: formatDisplayId(pathSlug),
 				title: titleFor(pathSlug, pathSlug),
-				description: descriptionFor(pathSlug),
+				description: null,
 			});
 			const resumeAt = sessionPositions.get(pathSlug);
 			void loadTrack(pathSlug, {

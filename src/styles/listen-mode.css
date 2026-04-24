@@ -253,10 +253,30 @@
 }
 
 .listen-transport-buttons {
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(2.7rem, 1fr) auto minmax(2.7rem, 1fr);
+	align-items: center;
+	column-gap: 0.75rem;
+	min-width: 0;
+}
+.listen-transport-side {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	min-width: 0;
+}
+.listen-transport-side--start {
+	justify-self: start;
+}
+.listen-transport-side--end {
+	justify-self: end;
+}
+.listen-transport-main {
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	column-gap: 1.25rem;
+	min-width: 0;
 }
 
 .listen-btn {
@@ -304,39 +324,9 @@
 
 .listen-scrubber-row {
 	display: grid;
-	grid-template-columns: auto 1fr auto auto;
+	grid-template-columns: auto 1fr auto;
 	align-items: center;
 	gap: 0.6rem;
-}
-.listen-collapse-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 26px;
-	height: 26px;
-	background: rgba(255, 255, 255, 0.04);
-	color: #9c917f;
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	border-radius: 999px;
-	cursor: pointer;
-	padding: 0;
-	transition: background 150ms ease, color 150ms ease, transform 200ms ease;
-}
-.listen-collapse-btn:hover {
-	background: rgba(255, 255, 255, 0.08);
-	color: #ece6da;
-}
-/* Inverted from the SVG's natural orientation:
-   - expanded (default)  → chevron points down (suggests "click to collapse")
-   - collapsed           → chevron points up   (suggests "click to expand") */
-.listen-collapse-btn svg {
-	transform: rotate(180deg);
-}
-.listen-transport.is-collapsed .listen-collapse-btn svg {
-	transform: rotate(0deg);
-}
-.listen-transport.is-collapsed .listen-options {
-	display: none;
 }
 .listen-time {
 	font-variant-numeric: tabular-nums;
@@ -348,30 +338,6 @@
 .listen-seek {
 	width: 100%;
 	accent-color: #d6c79b;
-}
-
-
-.listen-options {
-	/* 3-zone grid: shortcuts/help (left), speed pill (center), queue (right). */
-	display: grid;
-	grid-template-columns: 1fr auto 1fr;
-	align-items: center;
-	column-gap: 0.6rem;
-	font-size: 0.78rem;
-	color: #9c917f;
-	min-width: 0;
-}
-.listen-options > .listen-options-start {
-	grid-column: 1;
-	justify-self: start;
-}
-.listen-options > .listen-speed-cycle {
-	grid-column: 2;
-	justify-self: center;
-}
-.listen-options > .listen-options-end {
-	grid-column: 3;
-	justify-self: end;
 }
 
 /* Single-button cyclic speed control. Tap cycles through SPEED_RATES. */
@@ -392,6 +358,12 @@
 	line-height: 1;
 	flex: 0 0 auto;
 	transition: background 150ms ease, border-color 150ms ease;
+}
+.listen-speed-cycle span {
+	display: inline-flex;
+	align-items: center;
+	height: 100%;
+	transform: translateY(1px);
 }
 .listen-speed-cycle:hover {
 	background: rgba(255, 255, 255, 0.08);
@@ -423,7 +395,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: inline-block;
-	max-width: 12em;
+	max-width: min(12em, 26vw);
 	vertical-align: bottom;
 }
 .listen-queue-icon {
@@ -447,30 +419,14 @@
 	color: #ece6da;
 }
 
-.listen-options-end {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	min-width: 0;
-	flex: 0 1 auto;
-}
-
-.listen-options-start {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	min-width: 0;
-	flex: 0 1 auto;
-}
-
 /* ── Keyboard shortcuts help (mirrors voice-mode pattern) ─────────── */
 
 .listen-shortcuts-details {
 	position: relative;
 	flex-shrink: 0;
 }
-/* Hide on touch-only surfaces — shortcuts hint is for keyboard users. */
-@media not ((hover: hover) and (pointer: fine)) {
+/* Hide on mobile; tablet and desktop layouts can expose the shortcut hint. */
+@media (max-width: 640px) {
 	.listen-shortcuts-details {
 		display: none !important;
 	}
@@ -505,7 +461,7 @@
 }
 .listen-shortcuts-panel {
 	position: absolute;
-	left: 0;
+	right: 0;
 	bottom: 100%;
 	margin-bottom: 0.4rem;
 	z-index: 70;
@@ -575,6 +531,42 @@
 	border: 0;
 }
 
+
+@media (max-width: 430px) {
+	.listen-transport-buttons {
+		grid-template-columns: minmax(2.6rem, 0.8fr) auto minmax(3rem, 0.8fr);
+		column-gap: 0.45rem;
+	}
+	.listen-transport-main {
+		column-gap: 0.75rem;
+	}
+	.listen-btn--ghost {
+		width: 40px;
+		height: 40px;
+	}
+	.listen-btn--primary {
+		width: 56px;
+		height: 56px;
+	}
+	.listen-chip {
+		padding-inline: 0.55rem;
+	}
+	#listen-queue-label {
+		max-width: 6.4rem;
+	}
+}
+
+@media (max-width: 360px) {
+	.listen-transport {
+		padding-inline: 0.75rem;
+	}
+	.listen-transport-main {
+		column-gap: 0.5rem;
+	}
+	#listen-queue-label {
+		max-width: 4.8rem;
+	}
+}
 /* ── Queue drawer (Phase 2.4) ───────────────────────────────────── */
 
 .listen-queue-scrim {
