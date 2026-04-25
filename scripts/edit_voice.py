@@ -77,6 +77,7 @@ from generate_voice import (
     optional_ssml_prosody,
     resolve_mdx_path,
     restore_manifest_display_words,
+    print_verbose_manifest_metadata,
     strip_frontmatter,
     text_hash,
     load_routes,
@@ -410,7 +411,7 @@ def preview_groups(slug: str) -> None:
         print()
 
 
-def align_only(slug: str, voice_name: str) -> int:
+def align_only(slug: str, voice_name: str, *, verbose: bool = False) -> int:
     """Re-run alignment on existing discourse audio without any TTS retake."""
     manifest = _load_manifest(slug)
     out_audio = AUDIO_DIR / f"{slug}.webm"
@@ -498,11 +499,17 @@ def align_only(slug: str, voice_name: str) -> int:
         tts_groups=tts_groups,
         paragraph_specs_display=paragraph_specs,
     )
-    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs_manifest)
+    mismatch_count = restore_manifest_display_words(
+        manifest_out["paragraphs"],
+        paragraph_specs_manifest,
+        verbose_mismatch=verbose,
+    )
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
     write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    if verbose:
+        print_verbose_manifest_metadata(slug, manifest_out, mismatch_count=mismatch_count)
     return 0
 
 
@@ -515,6 +522,7 @@ def retake_groups(
     consecutive_break_ms: int,
     *,
     prosody: SsmlProsodyOptions | None = None,
+    verbose: bool = False,
 ) -> int:
     """Re-synthesize specific TTS groups and splice into existing audio.
 
@@ -709,13 +717,19 @@ def retake_groups(
         tts_groups=new_tts_groups,
         paragraph_specs_display=paragraph_specs,
     )
-    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs_manifest)
+    mismatch_count = restore_manifest_display_words(
+        manifest_out["paragraphs"],
+        paragraph_specs_manifest,
+        verbose_mismatch=verbose,
+    )
 
     # ── 10. Write manifest ───────────────────────────────────────────────
 
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
     write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    if verbose:
+        print_verbose_manifest_metadata(slug, manifest_out, mismatch_count=mismatch_count)
 
     # ── Summary ──────────────────────────────────────────────────────────
 
@@ -738,6 +752,7 @@ def retake_paragraphs_exact(
     consecutive_break_ms: int,
     *,
     prosody: SsmlProsodyOptions | None = None,
+    verbose: bool = False,
 ) -> int:
     """Re-synthesize specific paragraphs only (even inside larger TTS groups)."""
     manifest = _load_manifest(slug)
@@ -889,7 +904,11 @@ def retake_paragraphs_exact(
         tts_groups=None,
         paragraph_specs_display=paragraph_specs,
     )
-    restore_manifest_display_words(manifest_out["paragraphs"], paragraph_specs_manifest)
+    mismatch_count = restore_manifest_display_words(
+        manifest_out["paragraphs"],
+        paragraph_specs_manifest,
+        verbose_mismatch=verbose,
+    )
     if new_tts_groups:
         manifest_out["ttsGroups"] = [
             {"start": s, "end": e, "paragraphs": pids}
@@ -899,6 +918,8 @@ def retake_paragraphs_exact(
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
     write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    if verbose:
+        print_verbose_manifest_metadata(slug, manifest_out, mismatch_count=mismatch_count)
     print("  Done. (exact paragraph retake mode)")
     print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
     return 0
@@ -910,6 +931,8 @@ def copy_paragraphs(
     copy_mapping: dict[int, int],
     break_ms: int,
     consecutive_break_ms: int,
+    *,
+    verbose: bool = False,
 ) -> int:
     """Copy paragraph audio from source discourse into target without TTS."""
     target_manifest = _load_manifest(slug)
@@ -1081,12 +1104,19 @@ def copy_paragraphs(
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
     write_manifest_v2(out_manifest, manifest_out, slug)
     print(f"  Manifest: {out_manifest.relative_to(REPO_ROOT)}")
+    if verbose:
+        print_verbose_manifest_metadata(slug, manifest_out)
     print("  Done (copy mode, no TTS synthesis).")
     print(f"  Rollback: npm run voice:edit -- {slug} --rollback")
     return 0
 
 
-def refresh_manifest_text(slug: str, verbose_mismatch: bool = False) -> int:
+def refresh_manifest_text(
+    slug: str,
+    *,
+    verbose: bool = False,
+    verbose_mismatch: bool = False,
+) -> int:
     """Safe-op: refresh manifest words from MDX parsing rules only.
 
     No TTS synthesis and no alignment pass; keeps existing timing payload.
@@ -1114,10 +1144,10 @@ def refresh_manifest_text(slug: str, verbose_mismatch: bool = False) -> int:
         )
         return 1
 
-    restore_manifest_display_words(
+    mismatch_count = restore_manifest_display_words(
         paragraphs,
         paragraph_specs_manifest,
-        verbose_mismatch=verbose_mismatch,
+        verbose_mismatch=(verbose or verbose_mismatch),
     )
     manifest["textHash"] = text_hash("\n\n".join(p for _, p, _ in paragraph_specs_display))
     manifest["generatedAt"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -1125,6 +1155,8 @@ def refresh_manifest_text(slug: str, verbose_mismatch: bool = False) -> int:
     out_manifest = AUDIO_DIR / f"{slug}.manifest.json"
     write_manifest_v2(out_manifest, manifest, slug)
     print(f"  Refreshed: {out_manifest.relative_to(REPO_ROOT)}")
+    if verbose:
+        print_verbose_manifest_metadata(slug, manifest, mismatch_count=mismatch_count)
     return 0
 
 
@@ -1196,6 +1228,14 @@ def main() -> int:
         action="store_true",
         help=(
             "Safe-op: refresh manifest word display text from MDX without synthesis or alignment."
+        ),
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help=(
+            "Print detailed manifest diagnostics: per-paragraph token mismatch details "
+            "and heading metadata summary."
         ),
     )
     parser.add_argument(
@@ -1275,7 +1315,11 @@ def main() -> int:
         print(f"\nRefreshing manifest text for {len(slugs)} discourse(s)…")
         failures = 0
         for s in slugs:
-            failures += refresh_manifest_text(s, verbose_mismatch=args.verbose_mismatch)
+            failures += refresh_manifest_text(
+                s,
+                verbose=args.verbose,
+                verbose_mismatch=args.verbose_mismatch,
+            )
         if failures:
             print(f"\nDone with {failures} failure(s).", file=sys.stderr)
             return 1
@@ -1311,7 +1355,7 @@ def main() -> int:
         voice_name_for_align = manifest_voice or os.environ.get("TTS_VOICE", "en-US-Studio-M")
         if manifest_voice:
             print(f"  Align-only voice metadata: {manifest_voice}")
-        return align_only(slug, voice_name_for_align)
+        return align_only(slug, voice_name_for_align, verbose=args.verbose)
 
     if args.copy_paragraphs:
         if not args.copy_from:
@@ -1330,6 +1374,7 @@ def main() -> int:
             copy_mapping,
             break_ms,
             consecutive_break_ms,
+            verbose=args.verbose,
         )
 
     # ── Retake ────────────────────────────────────────────────────────────
@@ -1398,6 +1443,7 @@ def main() -> int:
             break_ms,
             consecutive_break_ms,
             prosody=prosody,
+            verbose=args.verbose,
         )
 
     return retake_groups(
@@ -1408,6 +1454,7 @@ def main() -> int:
         break_ms,
         consecutive_break_ms,
         prosody=prosody,
+        verbose=args.verbose,
     )
 
 

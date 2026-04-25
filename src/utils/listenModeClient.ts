@@ -46,10 +46,16 @@ const LS_AUTOPLAY = "listen:autoplay";
 const LS_RESUME = "listen:resume";
 const LS_SPEED = "listen:speed";
 const LS_TRANSITION_HOLD_MS = "listen:transitionHoldMs";
+const LS_SCRUBBER_COLLAPSED = "listen:scrubberCollapsed";
 const RESUME_TTL_MS = 24 * 60 * 60 * 1000;
 const PREV_RESTART_THRESHOLD_S = 3;
 const DEFAULT_TRANSITION_PULSE_MS = 1800;
 const DEFAULT_AUTOPLAY_TRANSITION_HOLD_MS = 10000;
+const MIN_STRUCTURED_WAVEFORM_PX_PER_PARAGRAPH = 12;
+const PARAGRAPH_SNAP_THRESHOLD_SEC = 5;
+const HEADING_SNAP_THRESHOLD_RATIO = 0.01;
+const MIN_HEADING_SNAP_THRESHOLD_SEC = 8;
+const MAX_HEADING_SNAP_THRESHOLD_SEC = 25;
 
 /** Discrete playback rates; mirrors voice-mode's `VOICE_PLAYBACK_RATES`. */
 const SPEED_RATES = [0.75, 1, 1.25, 1.5] as const;
@@ -69,6 +75,20 @@ function loadSpeed(): number {
 function saveSpeed(rate: number): void {
 	try {
 		localStorage.setItem(LS_SPEED, String(rate));
+	} catch {}
+}
+
+function loadScrubberCollapsed(): boolean {
+	try {
+		return localStorage.getItem(LS_SCRUBBER_COLLAPSED) === "1";
+	} catch {
+		return false;
+	}
+}
+
+function saveScrubberCollapsed(collapsed: boolean): void {
+	try {
+		localStorage.setItem(LS_SCRUBBER_COLLAPSED, collapsed ? "1" : "0");
 	} catch {}
 }
 
@@ -254,6 +274,10 @@ export function initListenMode(initial: ListenInitialData): void {
 	const prevBtn = document.getElementById("listen-prev");
 	const nextBtn = document.getElementById("listen-next");
 	const seek = document.getElementById("listen-seek") as HTMLInputElement | null;
+	const waveCanvas = document.getElementById("listen-waveform") as HTMLCanvasElement | null;
+	const waveCtx = waveCanvas?.getContext("2d") ?? null;
+	const transportEl = document.querySelector<HTMLElement>(".listen-transport");
+	const scrubberToggle = document.getElementById("listen-scrubber-toggle") as HTMLButtonElement | null;
 	const tCur = document.getElementById("listen-time-current");
 	const tTot = document.getElementById("listen-time-total");
 	const titleEl = document.getElementById("listen-title");
@@ -291,6 +315,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	// Re-bind to a non-nullable local so closures defined below preserve
 	// narrowing without per-use non-null assertions.
 	const audio: HTMLAudioElement = audioEl;
+	const playButton: HTMLElement = playBtn;
 
 	let current: TrackMeta = {
 		slug: initial.slug,
@@ -308,7 +333,17 @@ export function initListenMode(initial: ListenInitialData): void {
 	const autoplay = true;
 	const autoplayTransitionHoldMs = loadTransitionHoldMs();
 	let speed = loadSpeed();
+	let scrubberCollapsed = loadScrubberCollapsed();
 	const knownDescriptions = new Map<string, string>();
+
+	function applyScrubberCollapsed(): void {
+		transportEl?.classList.toggle("is-scrubber-collapsed", scrubberCollapsed);
+		const label = scrubberCollapsed ? "Expand seek view" : "Collapse seek view";
+		scrubberToggle?.setAttribute("aria-label", label);
+		scrubberToggle?.setAttribute("title", label);
+		scrubberToggle?.setAttribute("aria-expanded", scrubberCollapsed ? "false" : "true");
+		if (!scrubberCollapsed) drawWaveformCanvas();
+	}
 
 	function rememberDescription(slug: string | null, description: string | null | undefined): void {
 		if (!slug || typeof description !== "string") return;
@@ -507,7 +542,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		playIcon.innerHTML = playing
 			? '<path d="M6 4.75A.75.75 0 0 1 6.75 4h2.5a.75.75 0 0 1 .75.75v14.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75V4.75ZM14 4.75A.75.75 0 0 1 14.75 4h2.5a.75.75 0 0 1 .75.75v14.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75V4.75Z"/>'
 			: '<path d="M8 5.14v13.72c0 .8.87 1.29 1.55.87l10.79-6.86a1.03 1.03 0 0 0 0-1.74L9.55 4.27A1.03 1.03 0 0 0 8 5.14Z"/>';
-		playBtn?.setAttribute("aria-label", playing ? "Pause" : "Play");
+		playButton.setAttribute("aria-label", playing ? "Pause" : "Play");
 	}
 
 	function renderHeader(): void {
@@ -515,6 +550,150 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (displayIdEl) displayIdEl.textContent = current.displayId;
 		document.title = `Listen · ${current.displayId} ${current.title}`;
 		if (modeSwitch) modeSwitch.href = `/${current.slug}${playlistQuery()}`;
+	}
+
+	// ── Waveform canvas ─────────────────────────────────────────────────
+	// Path A: paragraph-structure timeline. Each bar represents one paragraph,
+	// height-scaled by word density (words/sec). No extra data files needed —
+	// all timing info comes from the already-loaded manifest.
+	let waveScaleInitialized = false;
+
+	function fillWaveRect(x: number, y: number, width: number, height: number, color: string): void {
+		if (!waveCtx) return;
+		waveCtx.fillStyle = color;
+		waveCtx.fillRect(x, y, width, height);
+	}
+
+	function drawFallbackTimeline(
+		W: number,
+		H: number,
+		dur: number,
+		currentTime: number,
+	): void {
+		const trackH = Math.max(5, Math.min(8, H * 0.22));
+		const trackY = Math.round((H - trackH) / 2);
+		const playedW = Math.max(0, Math.min(W, (currentTime / dur) * W));
+		fillWaveRect(0, trackY, W, trackH, "rgba(214, 199, 155, 0.18)");
+		fillWaveRect(0, trackY, playedW, trackH, "rgba(214, 199, 155, 0.78)");
+	}
+
+	function drawHeadingMarkers(
+		W: number,
+		H: number,
+		dur: number,
+		paras: VoiceManifest["paragraphs"],
+		headings: NonNullable<VoiceManifest["headings"]>,
+	): void {
+		const byId = new Map(paras.map((para) => [para.id, para]));
+		for (const heading of headings) {
+			const para = byId.get(heading.paragraphId);
+			if (!para) continue;
+			const x = Math.round((para.start / dur) * W);
+			const lineWidth = heading.level <= 3 ? 2 : 1.5;
+			fillWaveRect(x - lineWidth / 2, 1, lineWidth, H - 2, "rgba(236, 230, 218, 0.42)");
+			fillWaveRect(Math.max(0, x - 3), 0, 6, 2, "rgba(236, 230, 218, 0.55)");
+		}
+	}
+
+	function drawWaveformCanvas(): void {
+		if (!waveCanvas || !waveCtx || !manifest) return;
+		const W = waveCanvas.clientWidth;
+		const H = waveCanvas.clientHeight;
+		if (W === 0 || H === 0) return;
+		const dpr = window.devicePixelRatio || 1;
+		const bW = Math.round(W * dpr);
+		const bH = Math.round(H * dpr);
+		if (!waveScaleInitialized || waveCanvas.width !== bW || waveCanvas.height !== bH) {
+			waveCanvas.width = bW;
+			waveCanvas.height = bH;
+			waveCtx.scale(dpr, dpr);
+			waveScaleInitialized = true;
+		}
+		waveCtx.clearRect(0, 0, W, H);
+
+		const dur = (typeof manifest.duration === "number" && manifest.duration > 0)
+			? manifest.duration
+			: (audio.duration > 0 ? audio.duration : 0);
+		if (dur <= 0) return;
+
+		const paras = manifest.paragraphs;
+		const currentTime = seek?.matches(":active")
+			? (Number(seek.value) / 100) * dur
+			: audio.currentTime;
+		const pxPerParagraph = W / Math.max(1, paras.length);
+
+		const useFallbackTimeline = pxPerParagraph < MIN_STRUCTURED_WAVEFORM_PX_PER_PARAGRAPH;
+
+		if (useFallbackTimeline) {
+			drawFallbackTimeline(W, H, dur, currentTime);
+		} else {
+			// Compute word density (words/sec) for height variation.
+			const densities = paras.map(p => {
+				const d = p.end - p.start;
+				return d > 0 ? p.words.length / d : 0;
+			});
+			const maxD = Math.max(...densities, 1);
+			const minD = Math.min(...densities.filter(d => d > 0), 0);
+			const dRange = maxD - minD || 1;
+
+			const GAP_PX = 1.5;
+			const MIN_H_RATIO = 0.3;
+			const COLOR_PLAYED = "rgba(214, 199, 155, 0.88)";
+			const COLOR_UNPLAYED = "rgba(214, 199, 155, 0.25)";
+
+			for (let i = 0; i < paras.length; i++) {
+				const p = paras[i];
+				const x = (p.start / dur) * W;
+				const rawW = ((p.end - p.start) / dur) * W;
+				const barW = Math.max(rawW - GAP_PX, 1);
+
+				const norm = (densities[i] - minD) / dRange;
+				const hRatio = MIN_H_RATIO + (1 - MIN_H_RATIO) * norm;
+				const barH = Math.round(H * hRatio);
+				const barY = Math.round((H - barH) / 2);
+
+				if (currentTime >= p.end) {
+					waveCtx.fillStyle = COLOR_PLAYED;
+					waveCtx.fillRect(x, barY, barW, barH);
+				} else if (currentTime <= p.start) {
+					waveCtx.fillStyle = COLOR_UNPLAYED;
+					waveCtx.fillRect(x, barY, barW, barH);
+				} else {
+					const fraction = (currentTime - p.start) / (p.end - p.start);
+					const splitX = x + fraction * barW;
+					waveCtx.fillStyle = COLOR_PLAYED;
+					waveCtx.fillRect(x, barY, splitX - x, barH);
+					waveCtx.fillStyle = COLOR_UNPLAYED;
+					waveCtx.fillRect(splitX, barY, barW - (splitX - x), barH);
+				}
+			}
+		}
+
+		if (useFallbackTimeline && manifest.headings?.length) {
+			drawHeadingMarkers(W, H, dur, paras, manifest.headings);
+		}
+
+		// Playhead line.
+		if (currentTime > 0 && dur > 0) {
+			const px = (currentTime / dur) * W;
+			waveCtx.fillStyle = "rgba(255, 255, 255, 0.85)";
+			waveCtx.fillRect(Math.round(px) - 0.75, 0, 1.5, H);
+		}
+	}
+
+	function isFallbackTimelineMode(): boolean {
+		if (!manifest || !waveCanvas) return false;
+		const W = waveCanvas.clientWidth;
+		if (W <= 0) return false;
+		return W / Math.max(1, manifest.paragraphs.length) < MIN_STRUCTURED_WAVEFORM_PX_PER_PARAGRAPH;
+	}
+
+	if (waveCanvas) {
+		const ro = new ResizeObserver(() => {
+			waveScaleInitialized = false;
+			drawWaveformCanvas();
+		});
+		ro.observe(waveCanvas);
 	}
 
 	function renderParagraphs(m: VoiceManifest | null): void {
@@ -532,8 +711,22 @@ export function initListenMode(initial: ListenInitialData): void {
 		// Verse line breaks come from `p.lineSizes` (manifest backfill v2). The
 		// `sum(lineSizes) === words.length` invariant was already enforced by the
 		// backfill writer, so we honour any present `lineSizes` directly.
+		const headingsByParagraph = new Map<number, NonNullable<VoiceManifest["headings"]>>();
+		for (const heading of m.headings ?? []) {
+			const existing = headingsByParagraph.get(heading.paragraphId) ?? [];
+			existing.push(heading);
+			headingsByParagraph.set(heading.paragraphId, existing);
+		}
+
 		for (let i = 0; i < m.paragraphs.length; i++) {
 			const p = m.paragraphs[i];
+			for (const heading of headingsByParagraph.get(p.id) ?? []) {
+				const headingTag = heading.level <= 3 ? "h3" : "h4";
+				const headingEl = document.createElement(headingTag);
+				headingEl.className = "listen-heading";
+				headingEl.textContent = heading.text;
+				stage.appendChild(headingEl);
+			}
 			const el = document.createElement("p");
 			el.className = "listen-paragraph";
 			el.dataset.paraId = String(p.id);
@@ -591,12 +784,8 @@ export function initListenMode(initial: ListenInitialData): void {
 		all.forEach((el, i) => {
 			el.classList.toggle("is-active", i === idx);
 		});
-		const active = all[idx];
-		if (active instanceof HTMLElement) {
-			activeLineParaIdx = idx;
-			activeLineTop = Number.NaN;
-			active.scrollIntoView({ behavior: "smooth", block: "center" });
-		}
+		activeLineParaIdx = idx;
+		activeLineTop = Number.NaN;
 	}
 
 	function highlightWord(paraIdx: number, wordIdx: number): void {
@@ -611,14 +800,13 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (!(span instanceof HTMLElement)) return;
 		span.classList.add("is-active");
 
-		// Keep the active word in view. Word changes fire on timeupdate, not on
-		// every layout reflow, so check on every word change (not only paragraph
-		// change). Recenter only once the word reaches a lower comfort band, so
-		// desktop can use the available text area while compact viewports still
-		// keep enough text below the highlighted line.
+		// Keep the active word within a stable reading window. Most word changes
+		// should not move the viewport; scrolling only steps when the active line
+		// crosses a guard band or is actually clipped.
 		const transport = document.querySelector(".listen-transport");
 		const stageRect = stage.getBoundingClientRect();
 		const wordRect = span.getBoundingClientRect();
+		const paraRect = para.getBoundingClientRect();
 		const lineTop = Math.round(wordRect.top - stageRect.top + stage.scrollTop);
 		const isNewLine =
 			activeLineParaIdx !== paraIdx ||
@@ -636,17 +824,30 @@ export function initListenMode(initial: ListenInitialData): void {
 		const stageHeight = Math.max(1, visualBottom - stageRect.top);
 		const compactViewport = stageHeight < 520 || window.matchMedia("(max-width: 640px)").matches;
 		const lineHeight = Math.max(18, wordRect.height);
-		const topMargin = Math.max(48, lineHeight * 1.5);
-		const lowerBandRatio = compactViewport ? 0.72 : 0.82;
-		const lowerBandMinInset = compactViewport ? lineHeight * 3.5 : lineHeight * 2.5;
-		const lowerBand = Math.min(
-			stageRect.top + stageHeight * lowerBandRatio,
-			visualBottom - lowerBandMinInset,
+		const paragraphFits = paraRect.height <= stageHeight * 0.55;
+		const paragraphFullyVisible = paraRect.top >= stageRect.top && paraRect.bottom <= visualBottom;
+		if (paragraphFits && paragraphFullyVisible) return;
+
+		const topGuard = stageRect.top + stageHeight * (compactViewport ? 0.18 : 0.16);
+		const bottomGuard = Math.min(
+			stageRect.top + stageHeight * (compactViewport ? 0.78 : 0.84),
+			visualBottom - lineHeight * (compactViewport ? 1.75 : 2.25),
 		);
-		const hiddenBelow = wordRect.bottom > lowerBand;
-		const hiddenAbove = wordRect.top < stageRect.top + topMargin;
-		if (isNewLine && (hiddenBelow || hiddenAbove)) {
-			span.scrollIntoView({ behavior: "smooth", block: "center" });
+		const clippedAboveViewport = wordRect.bottom < stageRect.top + lineHeight * 0.5;
+		const clippedBelowViewport = wordRect.top > visualBottom - lineHeight * 0.5;
+		const shouldStep =
+			(isNewLine && (wordRect.top < topGuard || wordRect.bottom > bottomGuard)) ||
+			clippedAboveViewport ||
+			clippedBelowViewport;
+
+		if (shouldStep) {
+			const landingRatio = compactViewport ? 0.38 : 0.42;
+			const targetTop = stage.scrollTop + (wordRect.top - stageRect.top) - stageHeight * landingRatio;
+			const maxScrollTop = Math.max(0, stage.scrollHeight - stage.clientHeight);
+			const nextScrollTop = Math.max(0, Math.min(maxScrollTop, targetTop));
+			if (Math.abs(nextScrollTop - stage.scrollTop) > lineHeight * 0.5) {
+				stage.scrollTo({ top: nextScrollTop, behavior: "smooth" });
+			}
 		}
 	}
 
@@ -719,6 +920,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		renderHeader();
 		setMediaSessionMetadata();
 		renderParagraphs(m);
+		drawWaveformCanvas();
 
 		audio.src = webmUrlFor(slug, m);
 		audio.load();
@@ -764,7 +966,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		countdownEl.style.removeProperty("--countdown-progress");
 		playNowBtn?.style.removeProperty("--countdown-progress");
 		playNowBtn?.classList.remove("is-countdown");
-		playBtn.classList.remove("is-next-countdown");
+		playButton.classList.remove("is-next-countdown");
 		if (pulseTimer !== null) {
 			clearTimeout(pulseTimer);
 			pulseTimer = null;
@@ -816,7 +1018,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			countdownEl.style.removeProperty("--countdown-progress");
 			playNowBtn?.style.removeProperty("--countdown-progress");
 			playNowBtn?.classList.remove("is-countdown");
-			playBtn.classList.remove("is-next-countdown");
+			playButton.classList.remove("is-next-countdown");
 			pulseTimer = window.setTimeout(() => {
 				hideTrackPulse();
 			}, DEFAULT_TRANSITION_PULSE_MS);
@@ -825,7 +1027,7 @@ export function initListenMode(initial: ListenInitialData): void {
 
 		el.classList.add("is-hold");
 		actions.hidden = false;
-		playBtn.classList.add("is-next-countdown");
+		playButton.classList.add("is-next-countdown");
 		playNowBtn?.classList.add("is-countdown");
 		playNowBtn?.style.setProperty("--countdown-progress", "0");
 		let done = false;
@@ -1019,7 +1221,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	// ── Wire DOM events ─────────────────────────────────────────────────
-	playBtn.addEventListener("click", () => {
+	playButton.addEventListener("click", () => {
 		clearTransitionState();
 		if (audio.paused) {
 			paragraphPlaybackMode = "continuous";
@@ -1031,6 +1233,74 @@ export function initListenMode(initial: ListenInitialData): void {
 	});
 	nextBtn.addEventListener("click", () => void onNext());
 	prevBtn.addEventListener("click", () => void onPrev());
+	scrubberToggle?.addEventListener("click", () => {
+		scrubberCollapsed = !scrubberCollapsed;
+		saveScrubberCollapsed(scrubberCollapsed);
+		applyScrubberCollapsed();
+	});
+
+	// Snapping: paragraph starts keep a tight fixed window, while heading starts
+	// use a duration-relative window so long mobile timelines are still touchable.
+	// Both windows are symmetric: before or after a target can snap to it.
+	function headingSnapThresholdSec(): number {
+		const dur = (audio.duration > 0 ? audio.duration : manifest?.duration) ?? 0;
+		if (dur <= 0) return MIN_HEADING_SNAP_THRESHOLD_SEC;
+		return Math.max(
+			MIN_HEADING_SNAP_THRESHOLD_SEC,
+			Math.min(MAX_HEADING_SNAP_THRESHOLD_SEC, dur * HEADING_SNAP_THRESHOLD_RATIO),
+		);
+	}
+
+	function snapToNearestHeadingStart(t: number, maxDist: number): number | null {
+		if (!manifest?.headings?.length) return null;
+		const byId = new Map(manifest.paragraphs.map((para) => [para.id, para]));
+		let best = t;
+		let bestDist = maxDist;
+		for (const heading of manifest.headings) {
+			const para = byId.get(heading.paragraphId);
+			if (!para) continue;
+			const dist = Math.abs(t - para.start);
+			if (dist < bestDist) {
+				bestDist = dist;
+				best = para.start;
+			}
+		}
+		return best === t ? null : best;
+	}
+
+	function snapToNearestVisibleBoundary(t: number): number {
+		if (!manifest) return t;
+		const paras = manifest.paragraphs;
+		const headingSnap = snapToNearestHeadingStart(t, headingSnapThresholdSec());
+		if (isFallbackTimelineMode()) {
+			return headingSnap ?? t;
+		}
+		if (headingSnap !== null) return headingSnap;
+
+		let best = t;
+		let bestDist = PARAGRAPH_SNAP_THRESHOLD_SEC;
+		for (let i = 0; i < paras.length; i++) {
+			const p = paras[i];
+			// Candidate A: this paragraph's own start.
+			const distStart = Math.abs(t - p.start);
+			if (distStart < bestDist) {
+				bestDist = distStart;
+				best = p.start;
+			}
+			// Candidate B: next paragraph's start, when t is in the trailing
+			// window of this paragraph's end. Use strict-less so ties prefer
+			// the paragraph start already recorded above.
+			if (i + 1 < paras.length && t > p.end - PARAGRAPH_SNAP_THRESHOLD_SEC) {
+				const nextStart = paras[i + 1].start;
+				const distNext = Math.abs(t - nextStart);
+				if (distNext < bestDist) {
+					bestDist = distNext;
+					best = nextStart;
+				}
+			}
+		}
+		return best;
+	}
 
 	seek.addEventListener("input", () => {
 		clearTransitionState();
@@ -1038,7 +1308,14 @@ export function initListenMode(initial: ListenInitialData): void {
 		pauseAfterParagraphIdx = -1;
 		const pct = Number(seek.value);
 		if (!Number.isFinite(pct) || !audio.duration) return;
-		audio.currentTime = (pct / 100) * audio.duration;
+		const rawTime = (pct / 100) * audio.duration;
+		const snappedTime = snapToNearestVisibleBoundary(rawTime);
+		audio.currentTime = snappedTime;
+		// Nudge the range thumb to the snapped position so the visual stays in sync.
+		if (snappedTime !== rawTime) {
+			seek.value = String((snappedTime / audio.duration) * 100);
+		}
+		drawWaveformCanvas();
 	});
 
 	queueChip?.addEventListener("click", () => {
@@ -1057,12 +1334,10 @@ export function initListenMode(initial: ListenInitialData): void {
 	});
 
 	// ── Queue drawer (Phase 2.4) ────────────────────────────────────────
-	// We show the current track at slot ~3 from the top so the user sees a
-	// few "before" rows for context, and the bulk of the visible drawer is
-	// dedicated to upcoming tracks. The drawer is scrollable, so the
-	// "after" window can be generous.
-	const QUEUE_BEFORE_N = 3;
-	const QUEUE_AFTER_N = 47;
+	// Render the full queue so users can scroll freely backward and forward.
+	// On open, anchor the current item with a few previous rows visible for
+	// context instead of trimming the previous side to only those rows.
+	const QUEUE_CURRENT_VISIBLE_OFFSET_N = 3;
 
 	/**
 	 * Per-queue user reorder, persisted to localStorage.
@@ -1247,11 +1522,11 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (i < 0) {
 			before = [];
 			cur = null;
-			after = [...slugs.slice(0, QUEUE_BEFORE_N + QUEUE_AFTER_N + 1)];
+			after = [...slugs];
 		} else {
-			before = [...slugs.slice(Math.max(0, i - QUEUE_BEFORE_N), i)];
+			before = [...slugs.slice(0, i)];
 			cur = slugs[i];
-			after = [...slugs.slice(i + 1, i + 1 + QUEUE_AFTER_N)];
+			after = [...slugs.slice(i + 1)];
 		}
 		const items: { slug: string; kind: "before" | "current" | "after" }[] = [
 			...before.map((s) => ({ slug: s, kind: "before" as const })),
@@ -1309,10 +1584,18 @@ export function initListenMode(initial: ListenInitialData): void {
 		updateQueueStats(slugs);
 		if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
 		hydrateQueueMetadata();
-		// Scroll the current item to the top of the drawer (it's already
-		// near the top per QUEUE_BEFORE_N=3, but reset scroll explicitly so
-		// re-opens always start at the same anchor).
-		queueList.scrollTop = 0;
+		anchorQueueCurrentNearTop();
+	}
+
+	function anchorQueueCurrentNearTop(): void {
+		if (!queueList) return;
+		const currentRow = queueList.querySelector<HTMLLIElement>(`.listen-queue-li[data-slug="${current.slug}"]`);
+		if (currentRow) {
+			const rowH = currentRow.getBoundingClientRect().height || 44;
+			queueList.scrollTop = Math.max(0, currentRow.offsetTop - rowH * QUEUE_CURRENT_VISIBLE_OFFSET_N);
+		} else {
+			queueList.scrollTop = 0;
+		}
 	}
 
 	/**
@@ -1422,6 +1705,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		queueDrawer.setAttribute("aria-hidden", "false");
 		queueScrim.setAttribute("aria-hidden", "false");
 		window.requestAnimationFrame(() => {
+			anchorQueueCurrentNearTop();
 			focusQueueItem(0);
 		});
 	}
@@ -1461,7 +1745,6 @@ export function initListenMode(initial: ListenInitialData): void {
 				buttons.find((button) => !button.classList.contains("is-current")) ??
 				buttons[0];
 			preferred.focus();
-			preferred.scrollIntoView({ block: "nearest" });
 			return;
 		}
 		const anchor = currentIndex >= 0 ? currentIndex : 0;
@@ -1640,12 +1923,14 @@ export function initListenMode(initial: ListenInitialData): void {
 			saveResume(current.slug, audio.currentTime);
 			rememberPosition(current.slug, audio.currentTime, audio.duration ?? null);
 		}
+		drawWaveformCanvas();
 	});
 
 	// ── Boot ────────────────────────────────────────────────────────────
 	bindMediaSessionActions();
 	renderQueueTitle();
 	setQueueLabel();
+	applyScrubberCollapsed();
 	// Seed history state on the initial entry so popstate can detect when the
 	// user navigates back to it (vs a separate site entry).
 	history.replaceState({ listen: true, slug: current.slug }, "", location.pathname + location.search);

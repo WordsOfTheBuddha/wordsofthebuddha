@@ -70,6 +70,17 @@ const initialDataJson = JSON.stringify({
 			<div class="listen-transport-side listen-transport-side--start">
 				<button
 					type="button"
+					id="listen-scrubber-toggle"
+					class="listen-scrubber-toggle"
+					aria-label="Collapse waveform seek view"
+					aria-controls="listen-scrubber-row"
+					aria-expanded="true"
+					title="Collapse waveform seek view"
+				>
+					<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="14" height="14"><path d="M5.22 12.78a.75.75 0 0 0 1.06 0L10 9.06l3.72 3.72a.75.75 0 1 0 1.06-1.06l-4.25-4.25a.75.75 0 0 0-1.06 0l-4.25 4.25a.75.75 0 0 0 0 1.06Z" /></svg>
+				</button>
+				<button
+					type="button"
 					id="listen-speed-cycle"
 					class="listen-speed-cycle"
 					aria-label="Cycle playback speed"
@@ -173,18 +184,21 @@ const initialDataJson = JSON.stringify({
 				</details>
 			</div>
 		</div>
-		<div class="listen-scrubber-row">
+		<div class="listen-scrubber-row" id="listen-scrubber-row">
 			<span class="listen-time" id="listen-time-current">0:00</span>
-			<input
-				id="listen-seek"
-				class="listen-seek"
-				type="range"
-				min="0"
-				max="100"
-				step="0.01"
-				value="0"
-				aria-label="Seek"
-			/>
+			<div class="listen-seek-wrapper">
+				<canvas id="listen-waveform" class="listen-waveform" aria-hidden="true"></canvas>
+				<input
+					id="listen-seek"
+					class="listen-seek"
+					type="range"
+					min="0"
+					max="100"
+					step="0.01"
+					value="0"
+					aria-label="Seek"
+				/>
+			</div>
 			<span class="listen-time" id="listen-time-total">0:00</span>
 		</div>
 	</footer>

@@ -17,6 +17,12 @@ export type VoiceParagraph = {
 	/** Backfill (metadataSchemaVersion >= 2, verse paragraphs only): per-line word counts. */
 	lineSizes?: number[];
 };
+export type VoiceHeading = {
+	id: string;
+	level: number;
+	text: string;
+	paragraphId: number;
+};
 export type VoiceManifest = {
 	version: number;
 	textHash: string;
@@ -25,6 +31,8 @@ export type VoiceManifest = {
 	generatedAt: string | null;
 	duration: number | null;
 	paragraphs: VoiceParagraph[];
+	/** Optional section headings aligned to the next spoken paragraph. */
+	headings?: VoiceHeading[];
 	/** Optional, additive (Phase 1). Populated by future regenerations of generate_voice.py. */
 	slug?: string;
 	title?: string;

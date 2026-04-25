@@ -86,6 +86,15 @@ TTS only (no Whisper alignment):
 python scripts/generate_voice.py dhp1-20 --skip-align
 ```
 
+Review the smart chunk plan, spoken text, and SSML without a separate TTS-debug flag:
+
+```bash
+python scripts/generate_voice.py mn10 --verbose
+```
+
+This also writes `public/audio/<slug>.tts-debug.json` with the final TTS groups,
+group reasons, SSML byte sizes, and paragraph-level normalized text.
+
 ## voice:edit copy mode (no TTS)
 
 `voice:edit` can now copy one or more paragraph audio segments from an existing discourse

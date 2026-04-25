@@ -49,6 +49,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from audio_headings import apply_heading_metadata
+
 # Repo root = parent of scripts/
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -412,6 +414,33 @@ def restore_manifest_display_words(
     return mismatch_count
 
 
+def print_verbose_manifest_metadata(
+    slug: str,
+    manifest: dict,
+    *,
+    mismatch_count: int | None = None,
+) -> None:
+    """Emit concise manifest diagnostics for --verbose CLI runs."""
+    if mismatch_count is not None:
+        print(f"  Verbose: word-token mismatches restored: {mismatch_count}")
+
+    headings = manifest.get("headings") or []
+    if not headings:
+        print("  Verbose: headings: 0")
+        return
+
+    preview = []
+    for h in headings[:3]:
+        text = " ".join(str(h.get("text", "")).split())
+        if len(text) > 56:
+            text = text[:53] + "..."
+        preview.append(f"L{h.get('level', '?')} @ p{h.get('paragraphId', '?')}: {text}")
+
+    print(f"  Verbose: headings: {len(headings)}")
+    if preview:
+        print("    " + " | ".join(preview))
+
+
 def normalize_paragraph_body(
     text: str,
     for_tts: bool = False,
@@ -716,9 +745,96 @@ MAX_SSML_BYTES = 4800  # Google TTS limit is 5000; leave margin
 SMALL_DOC_MAX_PARAGRAPHS = 7  # Smart mode: small docs first attempt one TTS group.
 MIN_MERGE_CHARS = 120  # Short paragraphs absorbed into neighboring group (smart mode)
 TARGET_GROUP_SIZE = 3  # Aim for this many paragraphs per TTS call (smart mode)
+SMART_MIN_CONTEXT_BYTES = 700  # Tiny logical sections are packed with neighbors.
+SMART_SOFT_MAX_PARAGRAPHS = 16  # Avoid huge packs of repeated tiny sections.
 
 # Brief paragraph snippets during generation (voice:gen); MDX display text, not phonetic align text.
 VOICE_PREVIEW_WORDS_GEN = 12
+
+
+@dataclass(frozen=True, slots=True)
+class ParagraphHeading:
+    level: int
+    text: str
+
+
+@dataclass(frozen=True, slots=True)
+class SmartParagraph:
+    index: int
+    paragraph_id: int
+    text: str
+    display_text: str
+    break_ms: int
+    is_verse: bool
+    headings: tuple[ParagraphHeading, ...]
+
+
+def _parse_semantic_heading(line: str) -> ParagraphHeading | None:
+    m = re.match(r"^(#{1,6})\s+(.+?)\s*$", line.strip())
+    if not m:
+        return None
+    text = m.group(2).strip()
+    # Bare Dhammapada verse-number headings are paragraph markers, not sections.
+    if re.fullmatch(r"\d+", text):
+        return None
+    return ParagraphHeading(level=len(m.group(1)), text=text)
+
+
+def _paragraph_heading_metadata(
+    body: str,
+    expected_count: int,
+) -> list[tuple[ParagraphHeading, ...]]:
+    """Attach heading-only markdown blocks to the next spoken paragraph."""
+    # Dhammapada-style bare #### N headings are verse markers; do not treat them
+    # as semantic sections for smart chunking.
+    if extract_paragraph_chunks_heading_style(body):
+        return [tuple() for _ in range(expected_count)]
+
+    pending: list[ParagraphHeading] = []
+    headings_by_paragraph: list[tuple[ParagraphHeading, ...]] = []
+
+    for chunk in re.split(r"\n\s*\n+", body.strip()):
+        headings = [
+            h
+            for h in (_parse_semantic_heading(line) for line in chunk.splitlines())
+            if h is not None
+        ]
+        plain = normalize_paragraph_body(chunk)
+        if not plain:
+            pending.extend(headings)
+            continue
+
+        headings_by_paragraph.append(tuple(pending + headings))
+        pending = []
+
+    if len(headings_by_paragraph) != expected_count:
+        return [tuple() for _ in range(expected_count)]
+    return headings_by_paragraph
+
+
+def build_smart_paragraph_units(
+    body: str,
+    paragraph_specs: list[tuple[int, str, bool]],
+    paragraphs_tts: list[str],
+    breaks: list[int],
+) -> list[SmartParagraph]:
+    headings_by_paragraph = _paragraph_heading_metadata(body, len(paragraph_specs))
+    units: list[SmartParagraph] = []
+    for i, ((pid, display_text, is_verse), text, break_ms) in enumerate(
+        zip(paragraph_specs, paragraphs_tts, breaks)
+    ):
+        units.append(
+            SmartParagraph(
+                index=i,
+                paragraph_id=pid,
+                text=text,
+                display_text=display_text,
+                break_ms=break_ms,
+                is_verse=is_verse,
+                headings=headings_by_paragraph[i],
+            )
+        )
+    return units
 
 
 def format_paragraph_first_words(text: str, max_words: int) -> str:
@@ -786,6 +902,448 @@ def _grouped_chunk_indices(
         out.append((indices, chunk_texts, chunk_breaks))
         cursor += len(chunk_texts)
     return out
+
+
+def _ssml_bytes_for_indices(
+    indices: list[int],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> int:
+    texts = [paragraphs[i] for i in indices]
+    brks = [breaks[i] for i in indices]
+    return len(build_ssml(texts, brks, prosody=prosody).encode("utf-8"))
+
+
+def _indices_fit_ssml(
+    indices: list[int],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> bool:
+    return _ssml_bytes_for_indices(indices, paragraphs, breaks, prosody=prosody) <= MAX_SSML_BYTES
+
+
+def _indices_to_group(
+    indices: list[int],
+    paragraphs: list[str],
+    breaks: list[int],
+) -> tuple[list[int], list[str], list[int]]:
+    return (
+        list(indices),
+        [paragraphs[i] for i in indices],
+        [breaks[i] for i in indices],
+    )
+
+
+def _groups_from_index_groups(
+    index_groups: list[list[int]],
+    paragraphs: list[str],
+    breaks: list[int],
+) -> list[tuple[list[int], list[str], list[int]]]:
+    return [_indices_to_group(g, paragraphs, breaks) for g in index_groups if g]
+
+
+def _split_with_legacy_smart(
+    indices: list[int],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    sub_paragraphs = [paragraphs[i] for i in indices]
+    sub_breaks = [breaks[i] for i in indices]
+    out: list[list[int]] = []
+    for sub_indices, _texts, _brks in _merge_short_paragraphs(
+        sub_paragraphs,
+        sub_breaks,
+        prosody=prosody,
+    ):
+        out.append([indices[j] for j in sub_indices])
+    return out
+
+
+def _starts_quote(text: str) -> bool:
+    return text.lstrip().startswith(("\"", "'", "\u2018", "\u201c"))
+
+
+def _ends_quote(text: str) -> bool:
+    return text.rstrip().endswith(("\"", "'", "\u2019", "\u201d"))
+
+
+def _ends_dialogue_setup(text: str) -> bool:
+    return bool(
+        re.search(
+            r"\b(?:said|replied|asked|answered|addressed|declared|spoke|uttered)\s*:?\s*[\"'\u2019\u201d]*$",
+            text.strip(),
+            flags=re.IGNORECASE,
+        )
+    )
+
+
+def _good_dialogue_split(left: SmartParagraph, right: SmartParagraph) -> bool:
+    if _ends_dialogue_setup(left.display_text):
+        return False
+    if _ends_quote(left.display_text) and not _starts_quote(right.display_text):
+        return True
+    return _ends_quote(left.display_text) and _starts_quote(right.display_text)
+
+
+def _repair_dialogue_setup_boundaries(
+    groups: list[list[int]],
+    units: list[SmartParagraph] | None,
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    if not units:
+        return groups
+
+    groups = [list(g) for g in groups if g]
+    changed = True
+    while changed:
+        changed = False
+        for gi in range(len(groups) - 1):
+            left = units[groups[gi][-1]]
+            right = units[groups[gi + 1][0]]
+            if not (_ends_dialogue_setup(left.display_text) and _starts_quote(right.display_text)):
+                continue
+
+            merged = groups[gi] + groups[gi + 1]
+            if _indices_fit_ssml(merged, paragraphs, breaks, prosody=prosody):
+                groups[gi] = merged
+                del groups[gi + 1]
+                changed = True
+                break
+
+            if len(groups[gi + 1]) > 2:
+                moved = groups[gi] + groups[gi + 1][:1]
+                remaining = groups[gi + 1][1:]
+                if _indices_fit_ssml(moved, paragraphs, breaks, prosody=prosody):
+                    groups[gi] = moved
+                    groups[gi + 1] = remaining
+                    changed = True
+                    break
+    return groups
+
+
+def _best_local_repartition(
+    indices: list[int],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    """Find a low-solo contiguous repartition for a small local window."""
+    n = len(indices)
+    best: list[tuple[int, int, list[list[int]]] | None] = [None] * (n + 1)
+    best[0] = (0, 0, [])
+
+    for i in range(n):
+        if best[i] is None:
+            continue
+        solo_count, group_count, partitions = best[i]
+        for j in range(i + 1, n + 1):
+            group = indices[i:j]
+            if not _indices_fit_ssml(group, paragraphs, breaks, prosody=prosody):
+                continue
+            candidate = (
+                solo_count + (1 if len(group) == 1 else 0),
+                group_count + 1,
+                partitions + [group],
+            )
+            current = best[j]
+            if current is None or candidate[:2] < current[:2]:
+                best[j] = candidate
+
+    return best[n][2] if best[n] is not None else [indices]
+
+
+def _repair_solo_index_groups(
+    groups: list[list[int]],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    groups = [list(g) for g in groups if g]
+    changed = True
+    while changed and len(groups) > 1:
+        changed = False
+        for gi, group in enumerate(list(groups)):
+            if len(group) != 1:
+                continue
+
+            candidates: list[tuple[str, int]] = []
+            if gi > 0:
+                merged = groups[gi - 1] + group
+                if _indices_fit_ssml(merged, paragraphs, breaks, prosody=prosody):
+                    candidates.append(("prev", _ssml_bytes_for_indices(merged, paragraphs, breaks, prosody=prosody)))
+            if gi + 1 < len(groups):
+                merged = group + groups[gi + 1]
+                if _indices_fit_ssml(merged, paragraphs, breaks, prosody=prosody):
+                    candidates.append(("next", _ssml_bytes_for_indices(merged, paragraphs, breaks, prosody=prosody)))
+
+            if candidates:
+                side = sorted(candidates, key=lambda c: (c[0] != "prev", c[1]))[0][0]
+                if side == "prev":
+                    groups[gi - 1] = groups[gi - 1] + group
+                    del groups[gi]
+                else:
+                    groups[gi + 1] = group + groups[gi + 1]
+                    del groups[gi]
+                changed = True
+                break
+
+            if gi > 0 and len(groups[gi - 1]) > 2:
+                prev = groups[gi - 1][:-1]
+                cur = groups[gi - 1][-1:] + group
+                if _indices_fit_ssml(prev, paragraphs, breaks, prosody=prosody) and _indices_fit_ssml(cur, paragraphs, breaks, prosody=prosody):
+                    groups[gi - 1] = prev
+                    groups[gi] = cur
+                    changed = True
+                    break
+
+            if gi + 1 < len(groups) and len(groups[gi + 1]) > 2:
+                cur = group + groups[gi + 1][:1]
+                nxt = groups[gi + 1][1:]
+                if _indices_fit_ssml(cur, paragraphs, breaks, prosody=prosody) and _indices_fit_ssml(nxt, paragraphs, breaks, prosody=prosody):
+                    groups[gi] = cur
+                    groups[gi + 1] = nxt
+                    changed = True
+                    break
+
+            start = max(0, gi - 2)
+            end = min(len(groups), gi + 3)
+            window = groups[start:end]
+            window_solos = sum(1 for g in window if len(g) == 1)
+            window_indices = [idx for g in window for idx in g]
+            repartitioned = _best_local_repartition(
+                window_indices,
+                paragraphs,
+                breaks,
+                prosody=prosody,
+            )
+            if sum(1 for g in repartitioned if len(g) == 1) < window_solos:
+                groups[start:end] = repartitioned
+                changed = True
+                break
+    return groups
+
+
+def _needs_more_tts_context(
+    indices: list[int],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> bool:
+    return len(indices) < 2 or _ssml_bytes_for_indices(
+        indices,
+        paragraphs,
+        breaks,
+        prosody=prosody,
+    ) < SMART_MIN_CONTEXT_BYTES
+
+
+def _pack_tiny_segments(
+    segments: list[list[int]],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    groups: list[list[int]] = []
+    cur: list[int] = []
+
+    for segment in segments:
+        if not cur:
+            cur = list(segment)
+            continue
+
+        combined = cur + segment
+        cur_tiny = _needs_more_tts_context(cur, paragraphs, breaks, prosody=prosody)
+        segment_tiny = _needs_more_tts_context(segment, paragraphs, breaks, prosody=prosody)
+        under_soft_size = len(combined) <= SMART_SOFT_MAX_PARAGRAPHS
+        avoids_solo = len(cur) == 1 or len(segment) == 1
+
+        if (
+            (cur_tiny or segment_tiny)
+            and (under_soft_size or avoids_solo)
+            and _indices_fit_ssml(combined, paragraphs, breaks, prosody=prosody)
+        ):
+            cur = combined
+        else:
+            groups.append(cur)
+            cur = list(segment)
+
+    if cur:
+        groups.append(cur)
+    return groups
+
+
+def _split_by_dialogue_boundaries(
+    indices: list[int],
+    units: list[SmartParagraph] | None,
+) -> list[list[int]]:
+    if not units or len(indices) < 2:
+        return [indices]
+
+    segments: list[list[int]] = []
+    start = 0
+    for pos in range(1, len(indices)):
+        if _good_dialogue_split(units[indices[pos - 1]], units[indices[pos]]):
+            segments.append(indices[start:pos])
+            start = pos
+    segments.append(indices[start:])
+    return segments if len(segments) > 1 else [indices]
+
+
+def _split_segment_to_fit(
+    indices: list[int],
+    units: list[SmartParagraph] | None,
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    if _indices_fit_ssml(indices, paragraphs, breaks, prosody=prosody):
+        return [indices]
+
+    dialogue_segments = _split_by_dialogue_boundaries(indices, units)
+    if len(dialogue_segments) > 1:
+        packed: list[list[int]] = []
+        cur: list[int] = []
+        for segment in dialogue_segments:
+            if not _indices_fit_ssml(segment, paragraphs, breaks, prosody=prosody):
+                if cur:
+                    packed.append(cur)
+                    cur = []
+                packed.extend(_split_with_legacy_smart(segment, paragraphs, breaks, prosody=prosody))
+                continue
+
+            if not cur:
+                cur = list(segment)
+            elif _indices_fit_ssml(cur + segment, paragraphs, breaks, prosody=prosody):
+                cur += segment
+            else:
+                packed.append(cur)
+                cur = list(segment)
+        if cur:
+            packed.append(cur)
+        return packed
+
+    return _split_with_legacy_smart(indices, paragraphs, breaks, prosody=prosody)
+
+
+def _base_smart_segments(
+    units: list[SmartParagraph] | None,
+    n: int,
+) -> list[list[int]]:
+    if not units or len(units) != n:
+        return [list(range(n))]
+
+    heading_starts = [u.index for u in units if u.headings]
+    if heading_starts:
+        starts = sorted(set([0] + heading_starts))
+        return [list(range(start, end)) for start, end in zip(starts, starts[1:] + [n])]
+
+    starts = [0]
+    for i in range(1, n):
+        if units[i].is_verse != units[i - 1].is_verse:
+            starts.append(i)
+    return [list(range(start, end)) for start, end in zip(starts, starts[1:] + [n])]
+
+
+def _validate_or_split_groups(
+    groups: list[list[int]],
+    paragraphs: list[str],
+    breaks: list[int],
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    out: list[list[int]] = []
+    for group in groups:
+        if _indices_fit_ssml(group, paragraphs, breaks, prosody=prosody):
+            out.append(group)
+        else:
+            out.extend(_split_with_legacy_smart(group, paragraphs, breaks, prosody=prosody))
+    return out
+
+
+def plan_smart_chunk_indices(
+    paragraphs: list[str],
+    breaks: list[int],
+    smart_units: list[SmartParagraph] | None = None,
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[list[int]]:
+    """Plan smart TTS groups from document structure, then repair weak groups."""
+    n = len(paragraphs)
+    if n == 0:
+        return []
+
+    all_indices = list(range(n))
+    if n <= SMALL_DOC_MAX_PARAGRAPHS and _indices_fit_ssml(
+        all_indices,
+        paragraphs,
+        breaks,
+        prosody=prosody,
+    ):
+        return [all_indices]
+
+    expanded: list[list[int]] = []
+    for segment in _base_smart_segments(smart_units, n):
+        expanded.extend(
+            _split_segment_to_fit(
+                segment,
+                smart_units,
+                paragraphs,
+                breaks,
+                prosody=prosody,
+            )
+        )
+
+    groups = _pack_tiny_segments(expanded, paragraphs, breaks, prosody=prosody)
+    groups = _repair_dialogue_setup_boundaries(groups, smart_units, paragraphs, breaks, prosody=prosody)
+    groups = _repair_solo_index_groups(groups, paragraphs, breaks, prosody=prosody)
+    groups = _validate_or_split_groups(groups, paragraphs, breaks, prosody=prosody)
+    groups = _repair_solo_index_groups(groups, paragraphs, breaks, prosody=prosody)
+    return groups
+
+
+def plan_smart_groups(
+    paragraphs: list[str],
+    breaks: list[int],
+    smart_units: list[SmartParagraph] | None = None,
+    prosody: SsmlProsodyOptions | None = None,
+) -> list[tuple[list[int], list[str], list[int]]]:
+    return _groups_from_index_groups(
+        plan_smart_chunk_indices(
+            paragraphs,
+            breaks,
+            smart_units=smart_units,
+            prosody=prosody,
+        ),
+        paragraphs,
+        breaks,
+    )
+
+
+def describe_smart_group_reason(
+    indices: list[int],
+    smart_units: list[SmartParagraph] | None,
+) -> str:
+    if not indices:
+        return "empty"
+    if len(indices) == 1:
+        return "solo-unavoidable"
+    if not smart_units:
+        return "context-window"
+    group_units = [smart_units[i] for i in indices]
+    if group_units[0].headings:
+        return "section"
+    if any(u.headings for u in group_units[1:]):
+        return "tiny-section-merge"
+    if all(u.is_verse for u in group_units):
+        return "verse-run"
+    if any(u.is_verse for u in group_units):
+        return "verse-prose-run"
+    if any(_ends_dialogue_setup(u.display_text) for u in group_units[:-1]):
+        return "dialogue-continuity"
+    return "context-window"
 
 
 def parse_grouping_preference(
@@ -903,11 +1461,10 @@ def _merge_short_paragraphs(
     n = len(paragraphs)
     groups: list[tuple[list[int], list[str], list[int]]] = []
 
-    # Small-doc fast path: first try one group using pre-SSML text length.
-    # This intentionally measures plain paragraph payload bytes (not SSML tags).
+    # Small-doc fast path: first try one group using the exact SSML payload size.
     if n <= SMALL_DOC_MAX_PARAGRAPHS:
-        total_text_bytes = sum(len(p.encode("utf-8")) for p in paragraphs)
-        if total_text_bytes <= MAX_SSML_BYTES:
+        ssml = build_ssml(list(paragraphs), list(breaks), prosody=prosody)
+        if len(ssml.encode("utf-8")) <= MAX_SSML_BYTES:
             return [(list(range(n)), list(paragraphs), list(breaks))]
 
     i = 0
@@ -1012,13 +1569,19 @@ def build_tts_debug_groups(
     breaks: list[int],
     chunking: str,
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
+    smart_units: list[SmartParagraph] | None = None,
     prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[list[int], list[str], list[int]]]:
     """Build the exact paragraph groups that will be sent to Google TTS."""
     if forced_groups is not None:
         return forced_groups
     if chunking == "smart":
-        return _merge_short_paragraphs(paragraphs, breaks, prosody=prosody)
+        return plan_smart_groups(
+            paragraphs,
+            breaks,
+            smart_units=smart_units,
+            prosody=prosody,
+        )
     if chunking == "grouped":
         return _grouped_chunk_indices(paragraphs, breaks, prosody=prosody)
     return [([i], [paragraphs[i]], [breaks[i]]) for i in range(len(paragraphs))]
@@ -1038,6 +1601,7 @@ def build_tts_debug_payload(
     breaks: list[int],
     chunking: str,
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
+    smart_units: list[SmartParagraph] | None = None,
     prosody: SsmlProsodyOptions | None = None,
 ) -> dict:
     paragraphs_payload: list[dict] = []
@@ -1051,6 +1615,10 @@ def build_tts_debug_payload(
                 "id": pid,
                 "isBreak": is_break,
                 "breakBeforeMs": breaks[idx - 1],
+                "headings": [
+                    {"level": h.level, "text": h.text}
+                    for h in smart_units[idx - 1].headings
+                ] if smart_units and idx - 1 < len(smart_units) else [],
                 "raw": raw_chunk.strip(),
                 "displayText": display_text,
                 "ttsNormalizedText": tts_text,
@@ -1065,18 +1633,22 @@ def build_tts_debug_payload(
             breaks,
             chunking,
             forced_groups=forced_groups,
+            smart_units=smart_units,
             prosody=prosody,
         ),
         start=1,
     ):
+        ssml = build_ssml(texts, group_breaks, prosody=prosody)
         groups_payload.append(
             {
                 "groupIndex": group_index,
                 "paragraphIndices": [i + 1 for i in indices],
                 "paragraphIds": [raw_chunks[i][0] for i in indices],
+                "reason": "user-provided" if forced_groups is not None else describe_smart_group_reason(indices, smart_units),
                 "breaksMs": group_breaks,
+                "ssmlBytes": len(ssml.encode("utf-8")),
                 "texts": texts,
-                "ssml": build_ssml(texts, group_breaks, prosody=prosody),
+                "ssml": ssml,
             }
         )
 
@@ -1099,7 +1671,10 @@ def emit_tts_debug_payload(payload: dict, out_path: Path) -> None:
     print("  TTS groups / SSML:")
     for group in payload["ttsGroups"]:
         ids = ", ".join(str(pid) for pid in group["paragraphIds"])
-        print(f"    group {group['groupIndex']} (¶{ids})")
+        print(
+            f"    group {group['groupIndex']} (¶{ids}) "
+            f"[{group['reason']}, {group['ssmlBytes']} bytes]"
+        )
         print(f"      ssml: {_compact_text(group['ssml'])}")
 
     out_path.write_text(
@@ -1219,6 +1794,7 @@ def synthesize_opus_smart(
     parallel: bool = True,
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None,
     paragraph_specs_display: list[tuple[int, str, bool]] | None = None,
+    smart_units: list[SmartParagraph] | None = None,
     prosody: SsmlProsodyOptions | None = None,
 ) -> list[tuple[float, float]]:
     """Smart synthesis: merge short paragraphs into groups for better TTS context.
@@ -1239,7 +1815,12 @@ def synthesize_opus_smart(
     groups = (
         forced_groups
         if forced_groups is not None
-        else _merge_short_paragraphs(paragraphs, breaks, prosody=prosody)
+        else plan_smart_groups(
+            paragraphs,
+            breaks,
+            smart_units=smart_units,
+            prosody=prosody,
+        )
     )
 
     n_solo = sum(1 for g in groups if len(g[0]) == 1)
@@ -2185,7 +2766,7 @@ def resolve_mdx_path(slug: str) -> Path:
 # edit_voice) so freshly-recorded and re-aligned manifests always carry the
 # fields the listen-mode client expects.
 
-LISTEN_SCHEMA_VERSION = 2
+LISTEN_SCHEMA_VERSION = 3
 
 
 def _parse_frontmatter(raw: str) -> dict[str, str]:
@@ -2276,6 +2857,8 @@ def enrich_manifest_v2(manifest: dict, slug: str) -> None:
     if manifest.get("metadataSchemaVersion") != LISTEN_SCHEMA_VERSION:
         manifest["metadataSchemaVersion"] = LISTEN_SCHEMA_VERSION
 
+    apply_heading_metadata(manifest, raw, schema_version=LISTEN_SCHEMA_VERSION)
+
     for p in manifest.get("paragraphs") or []:
         spec = by_id.get(p.get("id"))
         if not spec:
@@ -2309,7 +2892,7 @@ def process_one_discourse(
     skip_align: bool,
     align_only: bool = False,
     chunking: str = "smart",
-    verbose_tts: bool = False,
+    verbose: bool = False,
     grouping_preference: str | None = None,
     prosody: SsmlProsodyOptions | None = None,
 ) -> int:
@@ -2373,6 +2956,13 @@ def process_one_discourse(
         else:
             breaks.append(consecutive_break_ms)
 
+    smart_units = build_smart_paragraph_units(
+        body,
+        paragraph_specs,
+        paragraphs_tts,
+        breaks,
+    )
+
     forced_groups: list[tuple[list[int], list[str], list[int]]] | None = None
     if grouping_preference:
         if align_only:
@@ -2398,7 +2988,7 @@ def process_one_discourse(
 
     chunking_for_display = "user-provided" if forced_groups is not None else chunking
 
-    if verbose_tts:
+    if verbose:
         debug_payload = build_tts_debug_payload(
             slug,
             mdx_path,
@@ -2409,6 +2999,7 @@ def process_one_discourse(
             breaks,
             chunking_for_display,
             forced_groups=forced_groups,
+            smart_units=smart_units,
             prosody=prosody,
         )
         emit_tts_debug_payload(debug_payload, out_tts_debug)
@@ -2518,6 +3109,7 @@ def process_one_discourse(
                 out_audio,
                 forced_groups=forced_groups,
                 paragraph_specs_display=paragraph_specs,
+                smart_units=smart_units,
                 prosody=prosody,
             )
         elif chunking == "smart":
@@ -2528,6 +3120,7 @@ def process_one_discourse(
                 language_code,
                 out_audio,
                 paragraph_specs_display=paragraph_specs,
+                smart_units=smart_units,
                 prosody=prosody,
             )
         elif chunking == "grouped":
@@ -2559,11 +3152,18 @@ def process_one_discourse(
         tts_groups=tts_groups,
         paragraph_specs_display=paragraph_specs,
     )
+    mismatch_count: int | None = None
     if not skip_align:
-        restore_manifest_display_words(manifest["paragraphs"], paragraph_specs_manifest)
+        mismatch_count = restore_manifest_display_words(
+            manifest["paragraphs"],
+            paragraph_specs_manifest,
+            verbose_mismatch=verbose,
+        )
 
     write_manifest_v2(out_manifest, manifest, slug)
     print(f"Manifest: {out_manifest.relative_to(REPO_ROOT)} (v2 listen-mode metadata)")
+    if verbose:
+        print_verbose_manifest_metadata(slug, manifest, mismatch_count=mismatch_count)
 
     if _backed_up:
         for _b in _backed_up:
@@ -2606,12 +3206,17 @@ def main() -> int:
         ),
     )
     parser.add_argument(
-        "--verbose-tts",
+        "--verbose",
         action="store_true",
         help=(
-            "Print and save the exact per-paragraph spoken text and SSML sent to Google TTS, "
-            "including warnings for empty |display::::| overrides that fall back to display text."
+            "Print detailed manifest diagnostics and save/print the exact smart TTS "
+            "chunk plan, spoken text, and SSML."
         ),
+    )
+    parser.add_argument(
+        "--verbose-tts",
+        action="store_true",
+        help=argparse.SUPPRESS,
     )
     parser.add_argument(
         "--grouping-preference",
@@ -2699,7 +3304,7 @@ def main() -> int:
                 skip_align=args.skip_align,
                 align_only=args.align_only,
                 chunking=chunking,
-                verbose_tts=args.verbose_tts,
+                verbose=args.verbose or args.verbose_tts,
                 grouping_preference=args.grouping_preference,
                 prosody=prosody,
             )

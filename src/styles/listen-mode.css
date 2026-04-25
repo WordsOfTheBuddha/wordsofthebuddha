@@ -13,11 +13,14 @@
 .listen-root {
 	display: grid;
 	grid-template-rows: auto 1fr auto;
+	height: 100dvh;
 	min-height: 100dvh;
+	max-height: 100dvh;
 	max-width: 760px;
 	margin: 0 auto;
 	padding: 0;
 	box-sizing: border-box;
+	overflow: hidden;
 }
 
 /* ── Header ─────────────────────────────────────────────────────── */
@@ -114,8 +117,17 @@
 /* ── Stage (paragraph text) ─────────────────────────────────────── */
 
 .listen-stage {
+	min-height: 0;
+	height: 100%;
 	padding: 1rem 1.25rem 8rem;
 	overflow-y: auto;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.listen-stage::-webkit-scrollbar {
+	width: 0;
+	height: 0;
 }
 @media (min-width: 720px) {
 	/* Reserve gutter for `¶ N` numbers in the absolute-positioned style. */
@@ -154,12 +166,33 @@
 		vertical-align: 0.18em;
 	}
 }
+@media (max-width: 640px) {
+	/* Phone layout: hide paragraph number prefix before text. */
+	.listen-paragraph[data-paragraph-number]::before {
+		display: none;
+	}
+}
 .listen-paragraph.is-active {
 	color: #ece6da;
 }
 .listen-paragraph--placeholder {
 	font-style: italic;
 	color: #6b6354;
+}
+
+.listen-heading {
+	margin: 1.9rem 0 0.75rem;
+	font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+	font-size: 0.78rem;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #d6c79b;
+	opacity: 0.9;
+}
+.listen-heading:first-child {
+	margin-top: 0;
 }
 
 .listen-para-actions {
@@ -271,6 +304,40 @@
 .listen-transport-side--end {
 	justify-self: end;
 }
+.listen-scrubber-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	background: rgba(255, 255, 255, 0.04);
+	color: #d6c79b;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	flex: 0 0 auto;
+	transition: background 150ms ease, border-color 150ms ease;
+}
+.listen-scrubber-toggle:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-scrubber-toggle svg {
+	transition: transform 150ms ease;
+	transform: rotate(180deg);
+}
+.listen-transport.is-scrubber-collapsed .listen-scrubber-toggle svg {
+	transform: rotate(0deg);
+}
+.listen-transport.is-scrubber-collapsed #listen-speed-cycle,
+.listen-transport.is-scrubber-collapsed .listen-shortcuts-details,
+.listen-transport.is-scrubber-collapsed #listen-queue-label {
+	display: none;
+}
+.listen-transport.is-scrubber-collapsed #listen-queue-chip {
+	padding-inline: 0.55rem;
+}
 .listen-transport-main {
 	display: inline-flex;
 	align-items: center;
@@ -328,6 +395,9 @@
 	align-items: center;
 	gap: 0.6rem;
 }
+.listen-transport.is-scrubber-collapsed .listen-scrubber-row {
+	display: none;
+}
 .listen-time {
 	font-variant-numeric: tabular-nums;
 	font-size: 0.78rem;
@@ -335,9 +405,29 @@
 	min-width: 2.5em;
 	text-align: center;
 }
-.listen-seek {
+.listen-seek-wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
 	width: 100%;
-	accent-color: #d6c79b;
+	height: 28px;
+}
+.listen-waveform {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	border-radius: 3px;
+}
+.listen-seek {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+	margin: 0;
 }
 
 /* Single-button cyclic speed control. Tap cycles through SPEED_RATES. */
@@ -429,6 +519,12 @@
 @media (max-width: 640px) {
 	.listen-shortcuts-details {
 		display: none !important;
+	}
+	#listen-queue-label {
+		display: none;
+	}
+	#listen-queue-chip {
+		padding-inline: 0.55rem;
 	}
 }
 .listen-shortcuts-summary {
@@ -534,8 +630,14 @@
 
 @media (max-width: 430px) {
 	.listen-transport-buttons {
-		grid-template-columns: minmax(2.6rem, 0.8fr) auto minmax(3rem, 0.8fr);
-		column-gap: 0.45rem;
+		grid-template-columns: minmax(3.4rem, 1fr) auto minmax(3.4rem, 1fr);
+		column-gap: 0.3rem;
+	}
+	span.listen-queue-item-title {
+		font-size: 0.8rem;
+	}
+	span.listen-queue-item-id {
+		font-size: 0.5rem;
 	}
 	.listen-transport-main {
 		column-gap: 0.75rem;
@@ -692,7 +794,7 @@
 }
 .listen-queue-item {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	gap: 0.65rem;
 	padding: 0.65rem 0.75rem;
 	border-radius: 10px;
@@ -742,6 +844,9 @@
 	color: #6b6354;
 }
 .listen-queue-item-meta {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
 	margin-left: auto;
 	white-space: nowrap;
 	font-variant-numeric: tabular-nums;
@@ -905,6 +1010,15 @@
 .listen-track-pulse.is-hold .listen-track-pulse-countdown {
 	display: none;
 }
+/* On mobile, the end-of-discourse hold modal carries a description paragraph
+   so it needs more room than the brief title-only pulse. */
+@media (max-width: 640px) {
+	.listen-track-pulse.is-hold {
+		max-width: min(96vw, 32rem);
+		padding: 0.9rem 1.2rem;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.listen-track-pulse {
 		transition: opacity 100ms linear;
