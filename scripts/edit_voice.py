@@ -1211,6 +1211,7 @@ def main() -> int:
         help="Show TTS group structure without making changes.",
     )
     action.add_argument(
+        "-a",
         "--align-only",
         action="store_true",
         help="Re-run alignment on existing .webm/.manifest without TTS synthesis.",
