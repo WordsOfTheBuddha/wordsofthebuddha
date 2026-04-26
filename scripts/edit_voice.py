@@ -929,8 +929,6 @@ def copy_paragraphs(
     slug: str,
     source_slug: str,
     copy_mapping: dict[int, int],
-    break_ms: int,
-    consecutive_break_ms: int,
     *,
     verbose: bool = False,
 ) -> int:
@@ -948,10 +946,29 @@ def copy_paragraphs(
     raw = mdx_path.read_text(encoding="utf-8")
     body = strip_frontmatter(raw)
     paragraph_specs = extract_paragraphs_auto(body)
+    target_paragraph_specs_manifest = extract_paragraphs_auto(body, for_manifest=True)
+    source_mdx_path = resolve_mdx_path(source_slug)
+    source_raw = source_mdx_path.read_text(encoding="utf-8")
+    source_body = strip_frontmatter(source_raw)
+    source_paragraph_specs_manifest = extract_paragraphs_auto(source_body, for_manifest=True)
     if len(paragraph_specs) != len(target_paras):
         print(
             f"[error] {slug}: target manifest paragraph count ({len(target_paras)}) "
             f"does not match MDX ({len(paragraph_specs)}).",
+            file=sys.stderr,
+        )
+        return 1
+    if len(target_paragraph_specs_manifest) != len(target_paras):
+        print(
+            f"[error] {slug}: target manifest paragraph count ({len(target_paras)}) "
+            "does not match normalized target text extraction.",
+            file=sys.stderr,
+        )
+        return 1
+    if len(source_paragraph_specs_manifest) != len(source_paras):
+        print(
+            f"[error] {source_slug}: source manifest paragraph count ({len(source_paras)}) "
+            "does not match normalized source text extraction.",
             file=sys.stderr,
         )
         return 1
@@ -974,6 +991,23 @@ def copy_paragraphs(
                 file=sys.stderr,
             )
             return 1
+        target_text = target_paragraph_specs_manifest[tgt][1]
+        source_text = source_paragraph_specs_manifest[src][1]
+        if target_text != source_text:
+            print(
+                f"[error] Text mismatch for mapping {tgt + 1}={src + 1}: "
+                "copy mode requires exact normalized paragraph text match.",
+                file=sys.stderr,
+            )
+            print(
+                f"        target({slug} ¶{tgt + 1}): {target_text}",
+                file=sys.stderr,
+            )
+            print(
+                f"        source({source_slug} ¶{src + 1}): {source_text}",
+                file=sys.stderr,
+            )
+            return 1
 
     for i, tp in enumerate(target_paras):
         if tp.get("start") is None or tp.get("end") is None:
@@ -986,14 +1020,17 @@ def copy_paragraphs(
     display_map = ", ".join(f"{t + 1}={s + 1}" for t, s in sorted(copy_mapping.items()))
     print(f"\n{slug}: copy paragraphs from {source_slug} ({display_map})")
 
-    breaks: list[int] = []
-    for i, (_, _, is_break) in enumerate(paragraph_specs):
+    # Preserve the target discourse's existing inter-paragraph pacing.
+    # This avoids global rhythm drift when copying only a subset of paragraphs.
+    breaks_sec: list[float] = []
+    for i in range(n_target):
         if i == 0:
-            breaks.append(0)
-        elif is_break:
-            breaks.append(break_ms)
-        else:
-            breaks.append(consecutive_break_ms)
+            breaks_sec.append(0.0)
+            continue
+        prev_end = float(target_paras[i - 1]["end"])
+        cur_start = float(target_paras[i]["start"])
+        gap = cur_start - prev_end
+        breaks_sec.append(max(0.0, gap))
 
     _backup(slug)
 
@@ -1014,8 +1051,8 @@ def copy_paragraphs(
             wout.setparams(wav_params)
 
             for i in range(n_target):
-                if i > 0 and breaks[i] > 0:
-                    silence_sec = breaks[i] / 1000.0
+                if i > 0 and breaks_sec[i] > 0:
+                    silence_sec = breaks_sec[i]
                     wout.writeframes(
                         _silence_frames(
                             silence_sec,
@@ -1367,14 +1404,10 @@ def main() -> int:
         except ValueError as e:
             print(f"[error] {e}", file=sys.stderr)
             return 1
-        break_ms = int(os.environ.get("TTS_PARAGRAPH_BREAK_MS", "1200"))
-        consecutive_break_ms = int(os.environ.get("TTS_CONSECUTIVE_PARAGRAPH_BREAK_MS", "800"))
         return copy_paragraphs(
             slug,
             args.copy_from,
             copy_mapping,
-            break_ms,
-            consecutive_break_ms,
             verbose=args.verbose,
         )
 
