@@ -1,11 +1,10 @@
 ---
 title: Dutiya jananakuhana sutta - Deceiving (Second)
-description: The spiritual life is not lived for the purpose of deceiving people, nor for the purpose of winning favor with people, nor for the sake of acquisitions, respect, and popularity, nor for the thought 'Let people know me.' But rather, this spiritual life is lived for the purpose of direct knowledge and full understanding.
-qualities: hypocrisy, direct knowledge, complete comprehension
-theme: inspiration, recollection of the Buddha
-fetter: personal existence, conceit, ignorance
-tags: spiritual life, direct knowledge, full understanding, Nibbāna, iti, iti28-49
+description: The spiritual life is not lived for the purpose of deceiving people, nor for the purpose of winning favor with people, nor for the sake of acquisitions, respect, and popularity, nor for the thought ‘Let people know me.’ But rather, this spiritual life is lived for the purpose of direct knowledge and full understanding.
+qualities: hypocrisy, direct knowledge, complete comprehension, spiritual life
+theme: inspiration, recollection of the Buddha, wisdom
 slug: iti36
+priority: 1.1
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

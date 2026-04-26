@@ -2,9 +2,7 @@
 title: Ātāpī sutta - With Continuous Effort
 description: A person who is lacking continuous effort and is without concern is incapable of attaining full awakening, Nibbāna, and the unsurpassed safety from bondage.
 qualities: continuous effort, fear of wrongdoing, weak in effort, moral recklessness, dullness, drowsiness, contempt, diligence, laziness
-theme: cultivating discernment, wisdom
-fetter: ignorance
-tags: effort, concern, awakening, Nibbāna, bondage, iti, iti28-49
+theme: cultivating discernment, wisdom, inspiration
 slug: iti34
 ---
 
