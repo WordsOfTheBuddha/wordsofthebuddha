@@ -195,7 +195,7 @@ function renderWordSpans(
 		lineSizes.reduce((a, b) => a + b, 0) === words.length;
 	let nextBreakAt = useLines ? lineSizes![0] : -1;
 	let lineCursor = 0;
-	let shouldCapitalizeNext = false;
+	let shouldCapitalizeNext = true; // capitalize first word of each paragraph
 	for (let i = 0; i < words.length; i++) {
 		const w = words[i];
 		let displayWord = w.w;
@@ -1017,6 +1017,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		timer: number;
 		raf: number | null;
 		playNow?: () => void;
+		abortCtrl?: AbortController;
 	};
 
 	let pulseTimer: number | null = null;
@@ -1046,6 +1047,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (!transitionState) return;
 		clearTimeout(transitionState.timer);
 		if (transitionState.raf !== null) cancelAnimationFrame(transitionState.raf);
+		transitionState.abortCtrl?.abort();
 		transitionState = null;
 		hideTrackPulse();
 	}
@@ -1132,11 +1134,13 @@ export function initListenMode(initial: ListenInitialData): void {
 		playNowBtn?.addEventListener("click", onPlayNow, { once: true });
 		cancelBtn?.addEventListener("click", onDismiss, { once: true });
 
+		const abortCtrl = new AbortController();
 		const timer = window.setTimeout(() => finalize("play"), opts.holdMs);
 		transitionState = {
 			timer,
 			raf: requestAnimationFrame(rafTick),
 			playNow: onPlayNow,
+			abortCtrl,
 		};
 	}
 
@@ -1943,6 +1947,11 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 		if (e.key === "Escape") {
 			e.preventDefault();
+			// If a transition modal is showing, Esc cancels it only (stays in listen mode).
+			if (transitionState) {
+				clearTransitionState();
+				return;
+			}
 			// If the queue drawer is open, Esc closes it first; otherwise exits.
 			if (queueDrawer && !queueDrawer.hidden && queueDrawer.classList.contains("is-open")) {
 				closeQueueDrawer();
