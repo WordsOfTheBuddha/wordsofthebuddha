@@ -175,6 +175,13 @@
 .listen-paragraph.is-active {
 	color: #ece6da;
 }
+.listen-root.is-scroll-unlocked .listen-paragraph {
+	color: #ece6da;
+}
+.listen-root.is-scroll-unlocked .listen-word.is-active {
+	color: #f4ecd6;
+	background: color-mix(in srgb, #d6c79b 28%, transparent);
+}
 .listen-paragraph--placeholder {
 	font-style: italic;
 	color: #6b6354;
@@ -304,6 +311,38 @@
 .listen-transport-side--end {
 	justify-self: end;
 }
+.listen-scroll-lock-toggle,
+.listen-scrubber-toggle,
+.listen-chip,
+.listen-queue-close,
+.listen-queue-reset {
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+.listen-scroll-lock-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	background: rgba(255, 255, 255, 0.04);
+	color: #d6c79b;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	flex: 0 0 auto;
+	transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.listen-scroll-lock-toggle:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-root.is-scroll-unlocked .listen-scroll-lock-toggle {
+	color: #ece6da;
+	border-color: rgba(214, 199, 155, 0.28);
+	background: rgba(214, 199, 155, 0.12);
+}
 .listen-scrubber-toggle {
 	display: inline-flex;
 	align-items: center;
@@ -332,6 +371,7 @@
 }
 .listen-transport.is-scrubber-collapsed #listen-speed-cycle,
 .listen-transport.is-scrubber-collapsed .listen-shortcuts-details,
+.listen-transport.is-scrubber-collapsed #listen-scroll-lock-toggle,
 .listen-transport.is-scrubber-collapsed #listen-queue-label {
 	display: none;
 }
@@ -914,7 +954,7 @@
 	pointer-events: auto;
 	opacity: 0;
 	transition: opacity 220ms ease, transform 220ms ease;
-	max-width: min(90vw, 28rem);
+	max-width: min(96vw, 36rem);
 	text-align: center;
 }
 .listen-track-pulse.is-visible {
@@ -1014,7 +1054,7 @@
    so it needs more room than the brief title-only pulse. */
 @media (max-width: 640px) {
 	.listen-track-pulse.is-hold {
-		max-width: min(96vw, 32rem);
+		max-width: min(98vw, 38rem);
 		padding: 0.9rem 1.2rem;
 	}
 }

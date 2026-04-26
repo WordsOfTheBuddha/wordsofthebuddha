@@ -47,6 +47,7 @@ const LS_RESUME = "listen:resume";
 const LS_SPEED = "listen:speed";
 const LS_TRANSITION_HOLD_MS = "listen:transitionHoldMs";
 const LS_SCRUBBER_COLLAPSED = "listen:scrubberCollapsed";
+const LS_SCROLL_UNLOCKED = "listen:scrollUnlocked";
 const RESUME_TTL_MS = 24 * 60 * 60 * 1000;
 const PREV_RESTART_THRESHOLD_S = 3;
 const DEFAULT_TRANSITION_PULSE_MS = 1800;
@@ -89,6 +90,20 @@ function loadScrubberCollapsed(): boolean {
 function saveScrubberCollapsed(collapsed: boolean): void {
 	try {
 		localStorage.setItem(LS_SCRUBBER_COLLAPSED, collapsed ? "1" : "0");
+	} catch {}
+}
+
+function loadScrollUnlocked(): boolean {
+	try {
+		return localStorage.getItem(LS_SCROLL_UNLOCKED) === "1";
+	} catch {
+		return false;
+	}
+}
+
+function saveScrollUnlocked(unlocked: boolean): void {
+	try {
+		localStorage.setItem(LS_SCROLL_UNLOCKED, unlocked ? "1" : "0");
 	} catch {}
 }
 
@@ -151,6 +166,24 @@ function renderWordSpans(
 	words: { w: string }[],
 	lineSizes?: number[],
 ): void {
+	const hasLetter = (s: string): boolean => /\p{L}/u.test(s);
+	const endsSentence = (s: string): boolean => /[.!?]["'”’)\]]*$/.test(s.trim());
+	const capitalizeFirstLetter = (s: string): string => {
+		for (let i = 0; i < s.length; i++) {
+			const ch = s[i];
+			const upper = ch.toLocaleUpperCase();
+			const lower = ch.toLocaleLowerCase();
+			// Letter check: letters have different upper/lower forms.
+			if (upper !== lower) {
+				if (ch === lower && ch !== upper) {
+					return s.slice(0, i) + upper + s.slice(i + 1);
+				}
+				return s;
+			}
+		}
+		return s;
+	};
+
 	// Words from the manifest carry punctuation in-token (e.g. "Bhikkhus,").
 	// Pure-punctuation tokens (rare) don't get a leading space.
 	const isPunctOnly = (s: string): boolean => /^[,.;:!?]+$/.test(s);
@@ -162,20 +195,32 @@ function renderWordSpans(
 		lineSizes.reduce((a, b) => a + b, 0) === words.length;
 	let nextBreakAt = useLines ? lineSizes![0] : -1;
 	let lineCursor = 0;
+	let shouldCapitalizeNext = false;
 	for (let i = 0; i < words.length; i++) {
 		const w = words[i];
+		let displayWord = w.w;
+		if (shouldCapitalizeNext) {
+			displayWord = capitalizeFirstLetter(displayWord);
+		}
+
 		if (i === nextBreakAt) {
 			parent.appendChild(document.createElement("br"));
 			lineCursor++;
 			nextBreakAt += lineSizes![lineCursor];
-		} else if (i > 0 && !isPunctOnly(w.w)) {
+		} else if (i > 0 && !isPunctOnly(displayWord)) {
 			parent.appendChild(document.createTextNode(" "));
 		}
 		const span = document.createElement("span");
 		span.className = "listen-word";
 		span.dataset.w = String(i);
-		span.textContent = w.w;
+		span.textContent = displayWord;
 		parent.appendChild(span);
+
+		if (endsSentence(displayWord)) {
+			shouldCapitalizeNext = true;
+		} else if (hasLetter(displayWord)) {
+			shouldCapitalizeNext = false;
+		}
 	}
 }
 
@@ -276,8 +321,11 @@ export function initListenMode(initial: ListenInitialData): void {
 	const seek = document.getElementById("listen-seek") as HTMLInputElement | null;
 	const waveCanvas = document.getElementById("listen-waveform") as HTMLCanvasElement | null;
 	const waveCtx = waveCanvas?.getContext("2d") ?? null;
+	const rootEl = document.getElementById("listen-root") as HTMLElement | null;
 	const transportEl = document.querySelector<HTMLElement>(".listen-transport");
 	const scrubberToggle = document.getElementById("listen-scrubber-toggle") as HTMLButtonElement | null;
+	const scrollLockToggle = document.getElementById("listen-scroll-lock-toggle") as HTMLButtonElement | null;
+	const scrollLockIcon = document.getElementById("listen-scroll-lock-icon") as SVGElement | null;
 	const tCur = document.getElementById("listen-time-current");
 	const tTot = document.getElementById("listen-time-total");
 	const titleEl = document.getElementById("listen-title");
@@ -334,6 +382,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	const autoplayTransitionHoldMs = loadTransitionHoldMs();
 	let speed = loadSpeed();
 	let scrubberCollapsed = loadScrubberCollapsed();
+	let scrollUnlocked = loadScrollUnlocked();
 	const knownDescriptions = new Map<string, string>();
 
 	function applyScrubberCollapsed(): void {
@@ -343,6 +392,24 @@ export function initListenMode(initial: ListenInitialData): void {
 		scrubberToggle?.setAttribute("title", label);
 		scrubberToggle?.setAttribute("aria-expanded", scrubberCollapsed ? "false" : "true");
 		if (!scrubberCollapsed) drawWaveformCanvas();
+	}
+
+	function applyScrollUnlock(): void {
+		rootEl?.classList.toggle("is-scroll-unlocked", scrollUnlocked);
+		const label = scrollUnlocked ? "Lock guided listen mode" : "Unlock free scroll mode";
+		scrollLockToggle?.setAttribute("aria-label", label);
+		scrollLockToggle?.setAttribute("title", label);
+		if (scrollLockIcon) {
+			scrollLockIcon.innerHTML = scrollUnlocked
+				? '<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>'
+				: '<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>';
+		}
+		if (!scrollUnlocked && activeParaIdx >= 0) {
+			highlightParagraph(activeParaIdx);
+			if (activeWordIdx >= 0) {
+				window.requestAnimationFrame(() => highlightWord(activeParaIdx, activeWordIdx));
+			}
+		}
 	}
 
 	function rememberDescription(slug: string | null, description: string | null | undefined): void {
@@ -799,6 +866,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		const span = para.querySelector(`.listen-word[data-w="${wordIdx}"]`);
 		if (!(span instanceof HTMLElement)) return;
 		span.classList.add("is-active");
+		if (scrollUnlocked) return;
 
 		// Keep the active word within a stable reading window. Most word changes
 		// should not move the viewport; scrolling only steps when the active line
@@ -948,6 +1016,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	type TransitionState = {
 		timer: number;
 		raf: number | null;
+		playNow?: () => void;
 	};
 
 	let pulseTimer: number | null = null;
@@ -1067,6 +1136,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		transitionState = {
 			timer,
 			raf: requestAnimationFrame(rafTick),
+			playNow: onPlayNow,
 		};
 	}
 
@@ -1237,6 +1307,11 @@ export function initListenMode(initial: ListenInitialData): void {
 		scrubberCollapsed = !scrubberCollapsed;
 		saveScrubberCollapsed(scrubberCollapsed);
 		applyScrubberCollapsed();
+	});
+	scrollLockToggle?.addEventListener("click", () => {
+		scrollUnlocked = !scrollUnlocked;
+		saveScrollUnlocked(scrollUnlocked);
+		applyScrollUnlock();
 	});
 
 	// Snapping: paragraph starts keep a tight fixed window, while heading starts
@@ -1727,6 +1802,12 @@ export function initListenMode(initial: ListenInitialData): void {
 		queueDrawer.addEventListener("transitionend", onEnd);
 	}
 
+	function activateQueueReset(event?: Event): void {
+		event?.preventDefault();
+		event?.stopPropagation();
+		resetQueueOrder();
+	}
+
 	function getQueueItemButtons(): HTMLButtonElement[] {
 		if (!queueList) return [];
 		return Array.from(
@@ -1756,7 +1837,10 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	queueScrim?.addEventListener("click", closeQueueDrawer);
 	queueCloseBtn?.addEventListener("click", closeQueueDrawer);
-	queueResetBtn?.addEventListener("click", resetQueueOrder);
+	queueResetBtn?.addEventListener("click", activateQueueReset);
+	queueResetBtn?.addEventListener("pointerup", (event) => {
+		if ((event as PointerEvent).pointerType === "touch") activateQueueReset(event);
+	});
 
 	// ── Speed control ───────────────────────────────────────────────────
 	function applySpeed(): void {
@@ -1886,8 +1970,21 @@ export function initListenMode(initial: ListenInitialData): void {
 		pauseAfterParagraphIdx = -1;
 		setPlayIcon(false);
 		if (autoplay && neighbours.next) {
-			void beginAutoplayTransition(neighbours.next);
+			if (document.visibilityState !== "visible") {
+				void advanceTo(neighbours.next.slug, {
+					autoplayAfterLoad: true,
+					reason: "autoplay-end",
+					description: neighbours.next.description,
+					showPulse: false,
+				});
+			} else {
+				void beginAutoplayTransition(neighbours.next);
+			}
 		}
+	});
+	document.addEventListener("visibilitychange", () => {
+		if (document.visibilityState === "visible") return;
+		transitionState?.playNow?.();
 	});
 	audio.addEventListener("loadedmetadata", () => {
 		if (tTot) tTot.textContent = formatTime(audio.duration);
@@ -1931,6 +2028,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	renderQueueTitle();
 	setQueueLabel();
 	applyScrubberCollapsed();
+	applyScrollUnlock();
 	// Seed history state on the initial entry so popstate can detect when the
 	// user navigates back to it (vs a separate site entry).
 	history.replaceState({ listen: true, slug: current.slug }, "", location.pathname + location.search);
