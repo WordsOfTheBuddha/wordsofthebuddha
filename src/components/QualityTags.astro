@@ -101,6 +101,45 @@ const hasQualities =
 	neutralQualities.length > 0 ||
 	negativeQualities.length > 0;
 
+type CombinedTag = {
+	id: string;
+	displayText: string;
+	href: string;
+	styleType: "topic" | "positive" | "neutral" | "negative";
+};
+
+const combinedTags: CombinedTag[] = [
+	...topics.map((topic) => ({
+		id: topic,
+		displayText:
+			topicMappings[topic as keyof typeof topicMappings].title,
+		href: `/on/${topic}`,
+		styleType: "topic" as const,
+	})),
+	...positiveQualities.map((quality) => ({
+		id: quality,
+		displayText: capitalizeFirstLetter(quality),
+		href: `/on/${quality}`,
+		styleType: "positive" as const,
+	})),
+	...neutralQualities.map((quality) => ({
+		id: quality,
+		displayText: capitalizeFirstLetter(quality),
+		href: `/on/${quality}`,
+		styleType: "neutral" as const,
+	})),
+	...negativeQualities.map((quality) => ({
+		id: quality,
+		displayText: capitalizeFirstLetter(quality),
+		href: `/on/${quality}`,
+		styleType: "negative" as const,
+	})),
+].sort((a, b) =>
+	a.displayText.localeCompare(b.displayText, undefined, {
+		sensitivity: "base",
+	}),
+);
+
 const label =
 	hasTopics && hasQualities
 		? "Topics & Qualities:"
@@ -113,40 +152,10 @@ const label =
 	<p class="text-sm" style="color: var(--gray-500);">{label}</p>
 	<div class="quality-list ml-2 inline-flex">
 		{
-			topics.map((topic) => (
-				<EntityPopover itemId={topic} href={`/on/${topic}`}>
-					<span class="quality-tag topic">
-						{
-							topicMappings[topic as keyof typeof topicMappings]
-								.title
-						}
-					</span>
-				</EntityPopover>
-			))
-		}
-		{
-			positiveQualities.map((quality) => (
-				<EntityPopover itemId={quality} href={`/on/${quality}`}>
-					<span class="quality-tag positive">
-						{capitalizeFirstLetter(quality)}
-					</span>
-				</EntityPopover>
-			))
-		}
-		{
-			neutralQualities.map((quality) => (
-				<EntityPopover itemId={quality} href={`/on/${quality}`}>
-					<span class="quality-tag neutral">
-						{capitalizeFirstLetter(quality)}
-					</span>
-				</EntityPopover>
-			))
-		}
-		{
-			negativeQualities.map((quality) => (
-				<EntityPopover itemId={quality} href={`/on/${quality}`}>
-					<span class="quality-tag negative">
-						{capitalizeFirstLetter(quality)}
+			combinedTags.map((tag) => (
+				<EntityPopover itemId={tag.id} href={tag.href}>
+					<span class={`quality-tag ${tag.styleType}`}>
+						{tag.displayText}
 					</span>
 				</EntityPopover>
 			))
