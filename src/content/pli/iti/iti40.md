@@ -1,12 +1,11 @@
 ---
-title: Vijjā sutta - Wisdom
-description: Ignorance is the forerunner in the arising of unwholesome qualities, and wisdom is the forerunner in the arising of wholesome qualities.
-qualities: ignorance, shamelessness, moral recklessness, wisdom, conscience, fear of wrongdoing, craving, greed, contempt
+title: Vijjā sutta - True Knowledge
+description: Ignorance is the forerunner in the arising of unwholesome qualities, and true knowledge is the forerunner in the arising of wholesome qualities.
+qualities: ignorance, shamelessness, moral recklessness, insight, conscience, fear of wrongdoing, craving, greed, contempt
 theme: cultivating discernment, wisdom
-fetter: ignorance, sensual desire
-tags: ignorance, unwholesome, wholesome, conscience, fear of wrongdoing, wisdom, sense of shame, respect, craving, greed, grasping, shamelessness, moral recklessness, iti, iti28-49
 slug: iti40
 commentary: A related teaching is at [SN 45.1 Avijjā Sutta - Ignorance](/sn45.1).
+priority: 1.2
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
