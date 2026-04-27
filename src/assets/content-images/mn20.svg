@@ -103,12 +103,12 @@
         opacity="0.9">When unwholesome thoughts arise…</text>
     <text x="460" y="126" text-anchor="middle" fill="#7888a0"
         font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-style="italic"
-        opacity="0.8">five progressive methods to overcome them</text>
+        opacity="0.8">five progressive shifts to overcome them</text>
 
     <!-- ============ MNEMONIC HEADER ============ -->
     <text x="460" y="162" text-anchor="middle" fill="#c8a040"
         font-family="Georgia,'Times New Roman',serif" font-size="28" font-weight="bold"
-        letter-spacing="14" filter="url(#glow1)">R . E . L . A . X</text>
+        letter-spacing="14" filter="url(#glow1)">S . H . I . F . T</text>
     <text x="460" y="182" text-anchor="middle" fill="#8a7838"
         font-family="Georgia,'Times New Roman',serif" font-size="10.5" letter-spacing="2"
         opacity="0.7">BECOME SKILLED IN THE SHAPING OF THOUGHTS</text>
@@ -118,16 +118,16 @@
         stroke-width="0.5" />
 
     <!-- ================================================================ -->
-    <!-- 1. R — REPLACE THE THOUGHT                                       -->
+    <!-- 1. S — SHIFT ATTENTION                                            -->
     <!-- ================================================================ -->
     <g>
         <!-- Mnemonic letter -->
         <text x="108" y="300" text-anchor="middle" fill="#d8b850"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.25" filter="url(#letterGlow)">R</text>
+            opacity="0.25" filter="url(#letterGlow)">S</text>
         <text x="108" y="300" text-anchor="middle" fill="#e8c860"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.85">R</text>
+            opacity="0.85">S</text>
 
         <!-- Panel -->
         <g filter="url(#shadowDrop)">
@@ -143,10 +143,10 @@
 
         <!-- English title -->
         <text x="210" y="258" fill="#c8d8e8"
-            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Replace the thought</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Shift attention</text>
         <text x="210" y="278" fill="#8898b0"
             font-family="Georgia,'Times New Roman',serif" font-size="14"
-            font-style="italic">with a wholesome sign</text>
+            font-style="italic">to a wholesome sign</text>
 
         <!-- Pali -->
         <text x="210" y="306" fill="#607888"
@@ -178,16 +178,16 @@
     </g>
 
     <!-- ================================================================ -->
-    <!-- 2. E — EXAMINE THE DRAWBACKS                                     -->
+    <!-- 2. H — HEED THE HARM                                              -->
     <!-- ================================================================ -->
     <g>
         <!-- Mnemonic letter -->
         <text x="108" y="440" text-anchor="middle" fill="#d8b850"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.25" filter="url(#letterGlow)">E</text>
+            opacity="0.25" filter="url(#letterGlow)">H</text>
         <text x="108" y="440" text-anchor="middle" fill="#e8c860"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.85">E</text>
+            opacity="0.85">H</text>
 
         <!-- Panel -->
         <g filter="url(#shadowDrop)">
@@ -203,7 +203,7 @@
 
         <!-- English title -->
         <text x="210" y="398" fill="#c8d8e8"
-            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Examine the drawbacks</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Highlight the harm</text>
         <text x="210" y="418" fill="#8898b0"
             font-family="Georgia,'Times New Roman',serif" font-size="14"
             font-style="italic">&#8216;these thoughts are unwholesome, they lead to discontentment&#8217;</text>
@@ -237,16 +237,16 @@
     </g>
 
     <!-- ================================================================ -->
-    <!-- 3. L — LOOK AWAY                                                 -->
+    <!-- 3. I — IGNORE IT                                                  -->
     <!-- ================================================================ -->
     <g>
         <!-- Mnemonic letter -->
         <text x="108" y="580" text-anchor="middle" fill="#d8b850"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.25" filter="url(#letterGlow)">L</text>
+            opacity="0.25" filter="url(#letterGlow)">I</text>
         <text x="108" y="580" text-anchor="middle" fill="#e8c860"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.85">L</text>
+            opacity="0.85">I</text>
 
         <!-- Panel -->
         <g filter="url(#shadowDrop)">
@@ -262,7 +262,7 @@
 
         <!-- English title -->
         <text x="210" y="538" fill="#c8d8e8"
-            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Look away</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Ignore it</text>
         <text x="210" y="558" fill="#8898b0"
             font-family="Georgia,'Times New Roman',serif" font-size="14"
             font-style="italic">disregard and do not give attention</text>
@@ -298,16 +298,16 @@
     </g>
 
     <!-- ================================================================ -->
-    <!-- 4. A — ATTENUATE THE FORMATION                                   -->
+    <!-- 4. F — FINE DOWN THE FORMATION                                    -->
     <!-- ================================================================ -->
     <g>
         <!-- Mnemonic letter -->
         <text x="108" y="720" text-anchor="middle" fill="#d8b850"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.25" filter="url(#letterGlow)">A</text>
+            opacity="0.25" filter="url(#letterGlow)">F</text>
         <text x="108" y="720" text-anchor="middle" fill="#e8c860"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.85">A</text>
+            opacity="0.85">F</text>
 
         <!-- Panel -->
         <g filter="url(#shadowDrop)">
@@ -323,7 +323,7 @@
 
         <!-- English title -->
         <text x="210" y="678" fill="#c8d8e8"
-            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Attenuate the formation</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Fine down the formation</text>
         <text x="210" y="698" fill="#8898b0"
             font-family="Georgia,'Times New Roman',serif" font-size="14"
             font-style="italic">still the thought-formation progressively</text>
@@ -387,16 +387,16 @@
     </g>
 
     <!-- ================================================================ -->
-    <!-- 5. X — EXERT FORCE OVER THE MIND                                 -->
+    <!-- 5. T — TAME THE MIND                                              -->
     <!-- ================================================================ -->
     <g>
         <!-- Mnemonic letter -->
         <text x="108" y="860" text-anchor="middle" fill="#d8b850"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.25" filter="url(#letterGlow)">X</text>
+            opacity="0.25" filter="url(#letterGlow)">T</text>
         <text x="108" y="860" text-anchor="middle" fill="#e8c860"
             font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="bold"
-            opacity="0.85">X</text>
+            opacity="0.85">T</text>
 
         <!-- Panel -->
         <g filter="url(#shadowDrop)">
@@ -412,7 +412,7 @@
 
         <!-- English title -->
         <text x="210" y="818" fill="#c8d8e8"
-            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">eXert force over the mind</text>
+            font-family="Georgia,'Times New Roman',serif" font-size="16" font-weight="bold">Tame the mind</text>
         <text x="210" y="838" fill="#8898b0"
             font-family="Georgia,'Times New Roman',serif" font-size="14"
             font-style="italic">teeth clenched, tongue to palate &#8212; restrain, subdue, overwhelm</text>
