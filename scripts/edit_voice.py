@@ -227,6 +227,28 @@ def _rollback(slug: str) -> bool:
     return restored
 
 
+def _print_splice_debug(
+    *,
+    mode: str,
+    para_idx0: int,
+    source_slug: str,
+    source_start: float,
+    source_end: float,
+    new_start: float,
+    new_end: float,
+    gap_before: float,
+    duration: float,
+) -> None:
+    """Verbose splice diagnostics for boundary investigation."""
+    print(
+        "  [splice] "
+        f"{mode} ¶{para_idx0 + 1}: "
+        f"src={source_slug}@[{source_start:.4f},{source_end:.4f}] "
+        f"→ dst=[{new_start:.4f},{new_end:.4f}] "
+        f"dur={duration:.4f}s gap_before={gap_before:.4f}s"
+    )
+
+
 def _decode_webm_to_wav(
     webm_path: Path, wav_path: Path,
     sample_rate: int | None = None, channels: int | None = None,
@@ -290,6 +312,34 @@ def _cache_wav_path(slug: str) -> Path:
     return CACHE_DIR / f"{slug}.full.wav"
 
 
+def _cache_meta_path(slug: str) -> Path:
+    """Path for cached WAV metadata."""
+    return CACHE_DIR / f"{slug}.full.meta.json"
+
+
+def _build_cache_meta(slug: str, *, sample_rate: int | None = None, channels: int | None = None) -> dict:
+    """Build cache metadata fingerprint for staleness detection."""
+    webm = AUDIO_DIR / f"{slug}.webm"
+    manifest = AUDIO_DIR / f"{slug}.manifest.json"
+    meta = {
+        "slug": slug,
+        "webmHash": file_hash(webm) if webm.exists() else None,
+        "manifestHash": file_hash(manifest) if manifest.exists() else None,
+        "sampleRate": sample_rate,
+        "channels": channels,
+        "updatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    return meta
+
+
+def _write_cache_meta(slug: str, *, sample_rate: int, channels: int) -> None:
+    """Persist cache metadata after decode/rebuild."""
+    meta_path = _cache_meta_path(slug)
+    meta_path.parent.mkdir(parents=True, exist_ok=True)
+    meta = _build_cache_meta(slug, sample_rate=sample_rate, channels=channels)
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def _ensure_cached_wav(slug: str, sample_rate: int | None = None, channels: int | None = None) -> Path:
     """Ensure a lossless WAV exists for the discourse. Decode from webm if needed.
 
@@ -297,17 +347,39 @@ def _ensure_cached_wav(slug: str, sample_rate: int | None = None, channels: int 
     doesn't match, re-decode to get consistent parameters.
     """
     cached = _cache_wav_path(slug)
+    meta_path = _cache_meta_path(slug)
+    expected_meta = _build_cache_meta(slug, sample_rate=sample_rate, channels=channels)
     if cached.exists():
+        recache_reason: str | None = None
         # Verify params match if specified
+        params = _get_wav_params(cached)
         if sample_rate or channels:
-            params = _get_wav_params(cached)
             if (sample_rate and params.framerate != sample_rate) or \
                (channels and params.nchannels != channels):
-                print(f"  Re-decoding cached WAV (rate/channels mismatch)…")
-                cached.unlink()
+                recache_reason = "rate/channels mismatch"
+        if recache_reason is None:
+            if not meta_path.exists():
+                recache_reason = "cache metadata missing"
             else:
-                print(f"  Using cached WAV: {cached.relative_to(REPO_ROOT)}")
-                return cached
+                try:
+                    current_meta = json.loads(meta_path.read_text(encoding="utf-8"))
+                except json.JSONDecodeError:
+                    current_meta = {}
+                    recache_reason = "cache metadata unreadable"
+                if recache_reason is None:
+                    if (
+                        current_meta.get("webmHash") != expected_meta.get("webmHash")
+                        or current_meta.get("manifestHash") != expected_meta.get("manifestHash")
+                    ):
+                        recache_reason = "source webm/manifest changed"
+                    elif sample_rate and current_meta.get("sampleRate") not in (None, sample_rate):
+                        recache_reason = "cached sample rate fingerprint mismatch"
+                    elif channels and current_meta.get("channels") not in (None, channels):
+                        recache_reason = "cached channel fingerprint mismatch"
+        if recache_reason:
+            print(f"  Re-decoding cached WAV ({recache_reason})…")
+            cached.unlink(missing_ok=True)
+            meta_path.unlink(missing_ok=True)
         else:
             print(f"  Using cached WAV: {cached.relative_to(REPO_ROOT)}")
             return cached
@@ -316,6 +388,8 @@ def _ensure_cached_wav(slug: str, sample_rate: int | None = None, channels: int 
         raise FileNotFoundError(f"No audio: {webm.relative_to(REPO_ROOT)}")
     print(f"  Decoding {webm.name} → cached WAV…")
     _decode_webm_to_wav(webm, cached, sample_rate=sample_rate, channels=channels)
+    decoded = _get_wav_params(cached)
+    _write_cache_meta(slug, sample_rate=decoded.framerate, channels=decoded.nchannels)
     return cached
 
 
@@ -373,6 +447,60 @@ def _retime_words(words: list[dict], src_start: float, dst_start: float) -> list
             }
         )
     return out
+
+
+def _derive_manifest_breaks_sec(paragraphs: list[dict]) -> list[float] | None:
+    """Derive per-paragraph pre-gap seconds from manifest timings.
+
+    Returns a list where item i is the silence gap before paragraph i.
+    Returns None if timing data is missing or inconsistent.
+    """
+    if not paragraphs:
+        return None
+    breaks_sec: list[float] = [0.0]
+    for i in range(1, len(paragraphs)):
+        prev = paragraphs[i - 1]
+        cur = paragraphs[i]
+        if (
+            prev.get("end") is None
+            or cur.get("start") is None
+        ):
+            return None
+        prev_end = float(prev["end"])
+        cur_start = float(cur["start"])
+        breaks_sec.append(max(0.0, cur_start - prev_end))
+    return breaks_sec
+
+
+def _analyze_manifest_timing_overlaps(paragraphs: list[dict]) -> list[tuple[int, float]]:
+    """Return overlaps as (paragraph_index_0_based, overlap_seconds)."""
+    overlaps: list[tuple[int, float]] = []
+    for i in range(1, len(paragraphs)):
+        prev_end = paragraphs[i - 1].get("end")
+        cur_start = paragraphs[i].get("start")
+        if prev_end is None or cur_start is None:
+            continue
+        overlap = float(prev_end) - float(cur_start)
+        if overlap > 0:
+            overlaps.append((i, overlap))
+    return overlaps
+
+
+def _print_manifest_overlap_warning(*, slug: str, paragraphs: list[dict], label: str) -> None:
+    """Warn about overlapping paragraph timing in manifest data."""
+    overlaps = _analyze_manifest_timing_overlaps(paragraphs)
+    if not overlaps:
+        return
+    preview = ", ".join(
+        f"¶{idx}→¶{idx + 1} ({secs:.3f}s)"
+        for idx, secs in overlaps[:4]
+    )
+    more = f" +{len(overlaps) - 4} more" if len(overlaps) > 4 else ""
+    print(
+        f"  Warning: {slug} {label} has overlapping paragraph timings: "
+        f"{preview}{more}.",
+        file=sys.stderr,
+    )
 
 
 # ── Core edit flow ────────────────────────────────────────────────────────
@@ -566,16 +694,26 @@ def retake_groups(
     ]
 
     n_paras = len(paragraph_specs)
+    _print_manifest_overlap_warning(
+        slug=slug,
+        paragraphs=manifest.get("paragraphs", []),
+        label="manifest",
+    )
 
-    # Compute breaks
-    breaks: list[int] = []
-    for i, (_, _, is_break) in enumerate(paragraph_specs):
-        if i == 0:
-            breaks.append(0)
-        elif is_break:
-            breaks.append(break_ms)
-        else:
-            breaks.append(consecutive_break_ms)
+    # Preserve existing manifest pacing when possible; fallback to configured breaks.
+    manifest_paragraphs = manifest.get("paragraphs", [])
+    breaks_sec = _derive_manifest_breaks_sec(manifest_paragraphs) if len(manifest_paragraphs) == n_paras else None
+    if breaks_sec is None:
+        breaks_sec = []
+        for i, (_, _, is_break) in enumerate(paragraph_specs):
+            if i == 0:
+                breaks_sec.append(0.0)
+            elif is_break:
+                breaks_sec.append(break_ms / 1000.0)
+            else:
+                breaks_sec.append(consecutive_break_ms / 1000.0)
+        print("  Warning: using configured break defaults (manifest pacing unavailable).")
+    breaks_ms = [int(round(s * 1000.0)) for s in breaks_sec]
 
     # ── 2. Backup existing files ─────────────────────────────────────────
 
@@ -592,7 +730,7 @@ def retake_groups(
         g = tts_groups[gi]
         pids = g["paragraphs"]
         texts = [paragraphs_tts[pi] for pi in pids]
-        brks = [breaks[pi] for pi in pids]
+        brks = [breaks_ms[pi] for pi in pids]
 
         ssml = build_ssml(texts, brks, prosody=prosody)
         print(f"  Re-synthesizing group {gi + 1} (¶{[pi+1 for pi in pids]})…")
@@ -629,8 +767,8 @@ def retake_groups(
                 first_pi = pids[0]
 
                 # Insert silence gap before non-first groups
-                if first_pi > 0 and breaks[first_pi] > 0:
-                    silence_sec = breaks[first_pi] / 1000.0
+                if first_pi > 0 and breaks_sec[first_pi] > 0:
+                    silence_sec = breaks_sec[first_pi]
                     wout.writeframes(
                         _silence_frames(silence_sec, wav_params.framerate,
                                         wav_params.sampwidth, wav_params.nchannels)
@@ -650,6 +788,9 @@ def retake_groups(
                     # Extract kept segment from cached WAV (lossless)
                     old_start = g["start"]
                     old_end = g["end"]
+                    if first_pi > 0:
+                        prev_end = float(manifest_paragraphs[first_pi - 1]["end"])
+                        old_start = max(float(old_start), prev_end)
                     frames = _extract_wav_segment(current_wav, old_start, old_end)
                     n_frames = len(frames) // (wav_params.sampwidth * wav_params.nchannels)
                     group_dur = n_frames / wav_params.framerate
@@ -672,6 +813,15 @@ def retake_groups(
                         inner_cursor += para_dur
 
                 cursor = group_start + group_dur
+                if verbose:
+                    print(
+                        "  [splice] "
+                        f"retake-groups group {gi + 1} "
+                        f"({'retake' if gi in retake_set else 'keep'}): "
+                        f"start={group_start:.4f}s dur={group_dur:.4f}s "
+                        f"gap_before={breaks_sec[first_pi]:.4f}s "
+                        f"paras={[pi + 1 for pi in pids]}"
+                    )
 
         # ── 6. Encode to WebM ────────────────────────────────────────────
 
@@ -684,6 +834,8 @@ def retake_groups(
         cached_wav = _cache_wav_path(slug)
         cached_wav.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(combined_wav_path), str(cached_wav))
+        updated_params = _get_wav_params(cached_wav)
+        _write_cache_meta(slug, sample_rate=updated_params.framerate, channels=updated_params.nchannels)
         print(f"  Updated cached WAV: {cached_wav.relative_to(REPO_ROOT)}")
 
     finally:
@@ -793,19 +945,28 @@ def retake_paragraphs_exact(
         apply_tts_long_a_macron_hint(apply_tts_phonetic_spellings(p))
         for _, p, _ in paragraph_specs_for_tts
     ]
+    _print_manifest_overlap_warning(
+        slug=slug,
+        paragraphs=paragraphs_in_manifest,
+        label="manifest",
+    )
     paragraph_specs_align = [
         (pid, apply_tts_phonetic_spellings(p), brk)
         for pid, p, brk in paragraph_specs_for_tts
     ]
 
-    breaks: list[int] = []
-    for i, (_, _, is_break) in enumerate(paragraph_specs):
-        if i == 0:
-            breaks.append(0)
-        elif is_break:
-            breaks.append(break_ms)
-        else:
-            breaks.append(consecutive_break_ms)
+    # Preserve existing manifest pacing when possible; fallback to configured breaks.
+    breaks_sec = _derive_manifest_breaks_sec(paragraphs_in_manifest) if len(paragraphs_in_manifest) == len(paragraph_specs) else None
+    if breaks_sec is None:
+        breaks_sec = []
+        for i, (_, _, is_break) in enumerate(paragraph_specs):
+            if i == 0:
+                breaks_sec.append(0.0)
+            elif is_break:
+                breaks_sec.append(break_ms / 1000.0)
+            else:
+                breaks_sec.append(consecutive_break_ms / 1000.0)
+        print("  Warning: using configured break defaults (manifest pacing unavailable).")
 
     _backup(slug)
 
@@ -837,8 +998,8 @@ def retake_paragraphs_exact(
             wout.setparams(wav_params)
 
             for pi in range(len(paragraph_specs)):
-                if pi > 0 and breaks[pi] > 0:
-                    silence_sec = breaks[pi] / 1000.0
+                if pi > 0 and breaks_sec[pi] > 0:
+                    silence_sec = breaks_sec[pi]
                     wout.writeframes(
                         _silence_frames(
                             silence_sec,
@@ -860,6 +1021,9 @@ def retake_paragraphs_exact(
                     old_para = paragraphs_in_manifest[pi]
                     old_start = float(old_para["start"])
                     old_end = float(old_para["end"])
+                    if pi > 0:
+                        prev_end = float(paragraphs_in_manifest[pi - 1]["end"])
+                        old_start = max(old_start, prev_end)
                     frames = _extract_wav_segment(current_wav, old_start, old_end)
                     n_frames = len(frames) // (wav_params.sampwidth * wav_params.nchannels)
                     para_dur = n_frames / wav_params.framerate
@@ -867,6 +1031,26 @@ def retake_paragraphs_exact(
                 para_end = para_start + para_dur
                 new_boundaries[pi] = (round(para_start, 4), round(para_end, 4))
                 cursor = para_end
+                if verbose:
+                    if pi in retake_set:
+                        src_slug = f"{slug} (retake)"
+                        src_start = 0.0
+                        src_end = para_dur
+                    else:
+                        src_slug = slug
+                        src_start = old_start
+                        src_end = old_end
+                    _print_splice_debug(
+                        mode="retake-paragraphs",
+                        para_idx0=pi,
+                        source_slug=src_slug,
+                        source_start=float(src_start),
+                        source_end=float(src_end),
+                        new_start=para_start,
+                        new_end=para_end,
+                        gap_before=breaks_sec[pi],
+                        duration=para_dur,
+                    )
 
         out_webm = AUDIO_DIR / f"{slug}.webm"
         print(f"  Encoding spliced audio → {out_webm.name}…")
@@ -875,6 +1059,8 @@ def retake_paragraphs_exact(
         cached_wav = _cache_wav_path(slug)
         cached_wav.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(combined_wav_path), str(cached_wav))
+        updated_params = _get_wav_params(cached_wav)
+        _write_cache_meta(slug, sample_rate=updated_params.framerate, channels=updated_params.nchannels)
         print(f"  Updated cached WAV: {cached_wav.relative_to(REPO_ROOT)}")
     finally:
         if combined_wav_path.exists():
@@ -937,6 +1123,10 @@ def copy_paragraphs(
     source_manifest = _load_manifest(source_slug)
     target_paras = target_manifest.get("paragraphs", [])
     source_paras = source_manifest.get("paragraphs", [])
+    _print_manifest_overlap_warning(slug=slug, paragraphs=target_paras, label="target manifest")
+    _print_manifest_overlap_warning(
+        slug=source_slug, paragraphs=source_paras, label="source manifest"
+    )
 
     if not target_paras or not source_paras:
         print("[error] Missing paragraph data in manifest(s).", file=sys.stderr)
@@ -1068,12 +1258,18 @@ def copy_paragraphs(
                     source_para = source_paras[src_i]
                     seg_start = float(source_para["start"])
                     seg_end = float(source_para["end"])
+                    if src_i > 0:
+                        src_prev_end = float(source_paras[src_i - 1]["end"])
+                        seg_start = max(seg_start, src_prev_end)
                     frames = _extract_wav_segment(source_wav, seg_start, seg_end)
                     paragraph_templates[i] = source_para
                 else:
                     target_para = target_paras[i]
                     seg_start = float(target_para["start"])
                     seg_end = float(target_para["end"])
+                    if i > 0:
+                        tgt_prev_end = float(target_paras[i - 1]["end"])
+                        seg_start = max(seg_start, tgt_prev_end)
                     frames = _extract_wav_segment(target_wav, seg_start, seg_end)
                     paragraph_templates[i] = target_para
 
@@ -1084,6 +1280,31 @@ def copy_paragraphs(
                 wout.writeframes(frames)
                 new_boundaries[i] = (round(para_start, 4), round(para_end, 4))
                 cursor = para_end
+                if verbose:
+                    if i in copy_mapping:
+                        _print_splice_debug(
+                            mode="copy",
+                            para_idx0=i,
+                            source_slug=source_slug,
+                            source_start=seg_start,
+                            source_end=seg_end,
+                            new_start=para_start,
+                            new_end=para_end,
+                            gap_before=breaks_sec[i],
+                            duration=para_dur,
+                        )
+                    else:
+                        _print_splice_debug(
+                            mode="copy",
+                            para_idx0=i,
+                            source_slug=slug,
+                            source_start=seg_start,
+                            source_end=seg_end,
+                            new_start=para_start,
+                            new_end=para_end,
+                            gap_before=breaks_sec[i],
+                            duration=para_dur,
+                        )
 
         out_webm = AUDIO_DIR / f"{slug}.webm"
         print(f"  Encoding spliced audio → {out_webm.name}…")
@@ -1092,6 +1313,8 @@ def copy_paragraphs(
         cached_wav = _cache_wav_path(slug)
         cached_wav.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(combined_wav_path), str(cached_wav))
+        updated_params = _get_wav_params(cached_wav)
+        _write_cache_meta(slug, sample_rate=updated_params.framerate, channels=updated_params.nchannels)
         print(f"  Updated cached WAV: {cached_wav.relative_to(REPO_ROOT)}")
     finally:
         if combined_wav_path.exists():
@@ -1375,9 +1598,13 @@ def main() -> int:
         ok = _rollback(slug)
         # Also invalidate cached WAV so next retake decodes fresh
         cached = _cache_wav_path(slug)
+        cached_meta = _cache_meta_path(slug)
         if cached.exists():
             cached.unlink()
             print(f"  Removed cached WAV: {cached.relative_to(REPO_ROOT)}")
+        if cached_meta.exists():
+            cached_meta.unlink()
+            print(f"  Removed cached metadata: {cached_meta.relative_to(REPO_ROOT)}")
         return 0 if ok else 1
 
     # ── Preview ───────────────────────────────────────────────────────────
