@@ -187,6 +187,9 @@ function renderWordSpans(
 	// Words from the manifest carry punctuation in-token (e.g. "Bhikkhus,").
 	// Pure-punctuation tokens (rare) don't get a leading space.
 	const isPunctOnly = (s: string): boolean => /^[,.;:!?]+$/.test(s);
+	// Opening punctuation should not be followed by an injected space.
+	// Example: token stream ["“", "dwell"] should render as `“Dwell`, not `“ Dwell`.
+	const isOpeningPunctOnly = (s: string): boolean => /^[([{“‘]+$/.test(s.trim());
 	// Only honour `lineSizes` when the count matches (paragraph endpoint may
 	// drift from manifest tokenization on edge cases — fall back to flat).
 	const useLines =
@@ -200,6 +203,9 @@ function renderWordSpans(
 		const w = words[i];
 		let displayWord = w.w;
 		if (shouldCapitalizeNext) {
+			// Some manifests can retain leading whitespace when prior tokens are
+			// removed during TTS edits; strip it from sentence/paragraph starts.
+			displayWord = displayWord.trimStart();
 			displayWord = capitalizeFirstLetter(displayWord);
 		}
 
@@ -207,7 +213,11 @@ function renderWordSpans(
 			parent.appendChild(document.createElement("br"));
 			lineCursor++;
 			nextBreakAt += lineSizes![lineCursor];
-		} else if (i > 0 && !isPunctOnly(displayWord)) {
+		} else if (
+			i > 0 &&
+			!isPunctOnly(displayWord) &&
+			!isOpeningPunctOnly(words[i - 1]?.w ?? "")
+		) {
 			parent.appendChild(document.createTextNode(" "));
 		}
 		const span = document.createElement("span");
@@ -831,7 +841,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			const text = document.createElement("span");
 			text.className = "listen-para-text";
 			const lineSizes = p.lineSizes && p.lineSizes.length > 1 ? p.lineSizes : undefined;
-			if (lineSizes) {
+			if (p.isVerse || lineSizes) {
 				el.classList.add("listen-paragraph--verse");
 			}
 			renderWordSpans(text, p.words, lineSizes);
