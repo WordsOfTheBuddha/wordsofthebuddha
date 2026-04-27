@@ -2,8 +2,9 @@
 title: Paṭisallāna sutta - Seclusion
 description: The Buddha instructs to dwell in seclusion, enjoying solitude, being devoted to tranquility of mind, meditating with diligence, being endowed with discernment, practicing in an empty dwelling.
 qualities: solitude, tranquility, cultivation, discernment
-theme: inspiration
+theme: inspiration, training guideline
 slug: iti45
+priority: 1.1
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

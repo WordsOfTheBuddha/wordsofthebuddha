@@ -1,9 +1,10 @@
 ---
 title: Diṭṭhigata sutta - Two Kinds Of Wrong Views
 description: Overcome by two kinds of wrong views, some get stuck, while others overreach. But those with vision see.
-qualities: wrong view, disenchantment, dispassion, ending, complete comprehension
-theme: cultivating discernment
+qualities: wrong view, self-making, self-erasure, vision
+theme: inspiration, cultivating discernment
 slug: iti49
+priority: 1.3
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
