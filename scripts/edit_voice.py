@@ -95,6 +95,12 @@ def _preview_max_words_from_terminal() -> int:
     # Roughly two lines of prose at typical font width.
     return max(24, min(72, cols // 2))
 
+
+def _print_verbose_ssml(group_label: str, ssml: str) -> None:
+    """Print the SSML payload that will be sent to TTS."""
+    print(f"  [ssml] {group_label}:")
+    print(ssml)
+
 AUDIO_DIR = REPO_ROOT / "public" / "audio"
 CACHE_DIR = REPO_ROOT / ".cache" / "voice-edit"
 
@@ -734,6 +740,8 @@ def retake_groups(
 
         ssml = build_ssml(texts, brks, prosody=prosody)
         print(f"  Re-synthesizing group {gi + 1} (¶{[pi+1 for pi in pids]})…")
+        if verbose:
+            _print_verbose_ssml(f"group {gi + 1}", ssml)
         wav_bytes = _synthesize_wav_chunk(ssml, voice_name, language_code, client)
         retake_wavs[gi] = wav_bytes
 
@@ -977,6 +985,8 @@ def retake_paragraphs_exact(
     for pi in retake_paragraph_indices:
         ssml = build_ssml([paragraphs_tts[pi]], [0], prosody=prosody)
         print(f"  Re-synthesizing paragraph {pi + 1}…")
+        if verbose:
+            _print_verbose_ssml(f"paragraph {pi + 1}", ssml)
         retake_wavs[pi] = _synthesize_wav_chunk(ssml, voice_name, language_code, client)
 
     first_retake_wav = retake_wavs[retake_paragraph_indices[0]]

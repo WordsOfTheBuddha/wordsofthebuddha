@@ -47,6 +47,7 @@ import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 
 from audio_headings import apply_heading_metadata
@@ -175,7 +176,14 @@ def strip_glosses_display(text: str) -> str:
     |visible::tooltip::tts|    -> visible  (TTS override is silently ignored)
     |visible::::tts|           -> visible
     """
-    return re.sub(r"\|(.+?)::([^|]*)\|", lambda m: m.group(1), text)
+    def _replace(m: re.Match) -> str:
+        inner = m.group(1)
+        if "::" not in inner:
+            return m.group(0)
+        display, _rest = inner.split("::", 1)
+        return display
+
+    return re.sub(r"\|([^|]+)\|", _replace, text)
 
 
 def strip_glosses_tts(text: str) -> str:
@@ -187,13 +195,16 @@ def strip_glosses_tts(text: str) -> str:
     |visible::::|              -> ""       (explicit empty TTS replacement)
     """
     def _replace(m: re.Match) -> str:
-        display = m.group(1)
-        rest = m.group(2)  # "tooltip" or "tooltip::tts-override"
+        inner = m.group(1)
+        if "::" not in inner:
+            return m.group(0)
+        display, rest = inner.split("::", 1)
         if "::" in rest:
             _tooltip, tts_override = rest.split("::", 1)
             return tts_override.strip()
         return display
-    return re.sub(r"\|(.+?)::([^|]*)\|", _replace, text)
+
+    return re.sub(r"\|([^|]+)\|", _replace, text)
 
 
 def _contains_letter(text: str) -> bool:
@@ -215,15 +226,17 @@ def strip_glosses_manifest(text: str) -> str:
     """
 
     def _replace(m: re.Match) -> str:
-        display = m.group(1)
-        rest = m.group(2)
+        inner = m.group(1)
+        if "::" not in inner:
+            return m.group(0)
+        display, rest = inner.split("::", 1)
         if "::" not in rest:
             return display
         _tooltip, tts_override = rest.split("::", 1)
         tts_text = tts_override.strip()
         return display if _contains_letter(tts_text) else tts_text
 
-    return re.sub(r"\|(.+?)::([^|]*)\|", _replace, text)
+    return re.sub(r"\|([^|]+)\|", _replace, text)
 
 
 # Backward-compat alias: outside the TTS pipeline, display text is always correct.
@@ -263,9 +276,32 @@ def strip_collapse_blocks(text: str) -> str:
     )
 
 
-def strip_html_jsx_tags(text: str) -> str:
-    """Remove HTML/JSX component tags (e.g. <Image ... />), not full collapse blocks."""
-    return re.sub(r"</?[a-zA-Z][^>]*>", "", text)
+def strip_html_jsx_tags(text: str, *, preserve_ssml: bool = False) -> str:
+    """Remove HTML/JSX component tags (e.g. <Image ... />), not full collapse blocks.
+
+    In TTS mode we optionally preserve a constrained inline SSML subset so
+    glossary TTS overrides can inject pronunciation hints.
+    """
+    if not preserve_ssml:
+        return re.sub(r"</?[a-zA-Z][^>]*>", "", text)
+
+    allowed = ("say-as", "sub", "phoneme", "break")
+    placeholders: list[str] = []
+
+    def _stash(m: re.Match) -> str:
+        placeholders.append(m.group(0))
+        return f"__SSML_PLACEHOLDER_{len(placeholders)-1}__"
+
+    protected = text
+    for tag in allowed:
+        protected = re.sub(rf"<{tag}\b[^>]*>", _stash, protected, flags=re.IGNORECASE)
+        protected = re.sub(rf"</{tag}>", _stash, protected, flags=re.IGNORECASE)
+        protected = re.sub(rf"<{tag}\b[^>]*/>", _stash, protected, flags=re.IGNORECASE)
+
+    stripped = re.sub(r"</?[a-zA-Z][^>]*>", "", protected)
+    for i, raw in enumerate(placeholders):
+        stripped = stripped.replace(f"__SSML_PLACEHOLDER_{i}__", raw)
+    return stripped
 
 
 def _cap_like(replacement: str, original: str) -> str:
@@ -370,9 +406,12 @@ def restore_manifest_display_words(
         words_out = pdict.get("words") or []
 
         if len(words_out) == len(can_words) == len(ph_words):
+            # Alignment timing is already per-token; when counts match, always
+            # restore canonical display tokens by index. This guarantees that
+            # phonetic/TTS overrides (e.g. "jhaa-nas") do not leak into the
+            # published manifest words shown in listen mode.
             for j, w in enumerate(words_out):
-                if _phonetic_token_norm(w["w"]) == _phonetic_token_norm(ph_words[j]):
-                    w["w"] = can_words[j]
+                w["w"] = can_words[j]
             continue
 
         mismatch_count += 1
@@ -459,7 +498,7 @@ def normalize_paragraph_body(
     text = text.strip()
     text = strip_heading_lines_for_tts(text)
     text = strip_collapse_blocks(text)
-    text = strip_html_jsx_tags(text)
+    text = strip_html_jsx_tags(text, preserve_ssml=for_tts)
     if for_tts:
         text = strip_glosses_tts(text)
     elif for_manifest:
@@ -698,15 +737,43 @@ def build_ssml(
     else:
         breaks = [break_ms] * len(paragraphs)
 
+    allowed_inline_ssml_tags = {"say-as", "sub", "phoneme", "break"}
+
+    def _looks_like_ssml_fragment(text: str) -> bool:
+        t = text.strip()
+        return "<" in t and ">" in t
+
+    def _validate_inline_ssml_fragment(text: str, paragraph_index_1_based: int) -> None:
+        try:
+            root = ET.fromstring(f"<root>{text}</root>")
+        except ET.ParseError as e:
+            raise ValueError(
+                f"Invalid inline SSML in paragraph {paragraph_index_1_based}: {e}"
+            ) from e
+
+        for el in root.iter():
+            if el is root:
+                continue
+            if el.tag not in allowed_inline_ssml_tags:
+                allowed = ", ".join(sorted(allowed_inline_ssml_tags))
+                raise ValueError(
+                    f"Unsupported inline SSML tag <{el.tag}> in paragraph "
+                    f"{paragraph_index_1_based}. Allowed tags: {allowed}"
+                )
+
     parts: list[str] = []
     for i, p in enumerate(paragraphs):
         parts.append("<p>")
-        sentences = _split_sentences(p)
-        if len(sentences) > 1:
-            for s in sentences:
-                parts.append(f"<s>{escape(s)}</s>")
+        if _looks_like_ssml_fragment(p):
+            _validate_inline_ssml_fragment(p, i + 1)
+            parts.append(p)
         else:
-            parts.append(escape(p))
+            sentences = _split_sentences(p)
+            if len(sentences) > 1:
+                for s in sentences:
+                    parts.append(f"<s>{escape(s)}</s>")
+            else:
+                parts.append(escape(p))
         parts.append("</p>")
         if i < len(paragraphs) - 1:
             ms = breaks[i + 1] if i + 1 < len(breaks) else breaks[-1] if breaks else 800
@@ -2828,6 +2895,40 @@ def _line_sizes_for_verse(raw_chunk: str) -> list[int] | None:
     return sizes
 
 
+def _coerce_line_sizes_to_word_count(sizes: list[int], target_count: int) -> list[int] | None:
+    """Adjust per-line token counts to match manifest word totals.
+
+    Some paragraphs can lose or gain a token between MDX-line parsing and final
+    manifest tokenization (e.g. punctuation-only gloss overrides or editorial
+    inserts that are stripped for spoken output). Keep stanza shape by preserving
+    line count while nudging counts to the target total.
+    """
+    if not sizes or target_count <= 0:
+        return None
+    if target_count < len(sizes):
+        return None
+
+    out = sizes[:]
+    delta = target_count - sum(out)
+    while delta != 0:
+        if delta > 0:
+            # Grow the currently longest line (stable tie-break: first match).
+            idx = max(range(len(out)), key=lambda i: out[i])
+            out[idx] += 1
+            delta -= 1
+            continue
+
+        # delta < 0: shrink the longest line that can still keep >= 1 token.
+        shrinkable = [i for i, n in enumerate(out) if n > 1]
+        if not shrinkable:
+            return None
+        idx = max(shrinkable, key=lambda i: out[i])
+        out[idx] -= 1
+        delta += 1
+
+    return out
+
+
 def enrich_manifest_v2(manifest: dict, slug: str) -> None:
     """Mutate `manifest` in place: add slug/displayId/title and per-paragraph
     isVerse + lineSizes (when sums match word counts). Idempotent and safe to
@@ -2870,8 +2971,9 @@ def enrich_manifest_v2(manifest: dict, slug: str) -> None:
             sizes = _line_sizes_for_verse(raw_chunk)
             if sizes is not None:
                 word_count = len(p.get("words") or [])
-                if sum(sizes) == word_count and p.get("lineSizes") != sizes:
-                    p["lineSizes"] = sizes
+                coerced = _coerce_line_sizes_to_word_count(sizes, word_count)
+                if coerced is not None and p.get("lineSizes") != coerced:
+                    p["lineSizes"] = coerced
 
 
 def write_manifest_v2(path: Path, manifest: dict, slug: str) -> None:
