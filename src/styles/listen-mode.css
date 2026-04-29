@@ -369,6 +369,7 @@
 .listen-transport.is-scrubber-collapsed .listen-scrubber-toggle svg {
 	transform: rotate(0deg);
 }
+.listen-transport.is-scrubber-collapsed #listen-autoplay-toggle,
 .listen-transport.is-scrubber-collapsed #listen-speed-cycle,
 .listen-transport.is-scrubber-collapsed .listen-shortcuts-details,
 .listen-transport.is-scrubber-collapsed #listen-scroll-lock-toggle,
@@ -409,6 +410,9 @@
 	color: #1a1611;
 	border-color: transparent;
 	position: relative;
+}
+#listen-play-icon {
+	transform: translateY(-1px);
 }
 .listen-btn:hover {
 	background: rgba(255, 255, 255, 0.08);
@@ -468,6 +472,64 @@
 	opacity: 0;
 	cursor: pointer;
 	margin: 0;
+}
+
+/* Autoplay next track when expanded (hidden with speed etc. when scrubber collapsed). */
+.listen-autoplay-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 42px;
+	height: 26px;
+	padding: 0;
+	background: transparent;
+	color: #111;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+	cursor: pointer;
+	flex: 0 0 auto;
+	transition: background 150ms ease, border-color 150ms ease;
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+.listen-autoplay-toggle:hover {
+	background: rgba(255, 255, 255, 0.04);
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-autoplay-toggle-track {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	width: 34px;
+	height: 18px;
+	background: rgba(255, 255, 255, 0.22);
+	border-radius: 999px;
+	transition: background 150ms ease;
+}
+.listen-autoplay-toggle-thumb {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 14px;
+	height: 14px;
+	background: #ece6da;
+	color: #0f0d0a;
+	border-radius: 999px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+	transition: transform 180ms ease;
+}
+.listen-autoplay-toggle[aria-pressed="true"] {
+	border-color: rgba(214, 199, 155, 0.28);
+	background: rgba(214, 199, 155, 0.12);
+}
+.listen-autoplay-toggle[aria-pressed="true"] .listen-autoplay-toggle-track {
+	background: #d6c79b;
+}
+.listen-autoplay-toggle[aria-pressed="true"] .listen-autoplay-toggle-thumb {
+	transform: translateX(16px);
 }
 
 /* Single-button cyclic speed control. Tap cycles through SPEED_RATES. */
@@ -673,6 +735,9 @@
 		grid-template-columns: minmax(3.4rem, 1fr) auto minmax(3.4rem, 1fr);
 		column-gap: 0.3rem;
 	}
+	.listen-transport-side--end {
+		transform: translateX(0.42rem);
+	}
 	span.listen-queue-item-title {
 		font-size: 0.8rem;
 	}
@@ -692,6 +757,19 @@
 	}
 	.listen-chip {
 		padding-inline: 0.55rem;
+	}
+	.listen-autoplay-toggle {
+		min-width: 38px;
+	}
+	.listen-autoplay-toggle-track {
+		width: 30px;
+	}
+	.listen-autoplay-toggle-thumb {
+		width: 12px;
+		height: 12px;
+	}
+	.listen-autoplay-toggle[aria-pressed="true"] .listen-autoplay-toggle-thumb {
+		transform: translateX(14px);
 	}
 	#listen-queue-label {
 		max-width: 6.4rem;

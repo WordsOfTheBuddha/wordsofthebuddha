@@ -334,6 +334,9 @@ export function initListenMode(initial: ListenInitialData): void {
 	const rootEl = document.getElementById("listen-root") as HTMLElement | null;
 	const transportEl = document.querySelector<HTMLElement>(".listen-transport");
 	const scrubberToggle = document.getElementById("listen-scrubber-toggle") as HTMLButtonElement | null;
+	const autoplayToggle = document.getElementById(
+		"listen-autoplay-toggle",
+	) as HTMLButtonElement | null;
 	const scrollLockToggle = document.getElementById("listen-scroll-lock-toggle") as HTMLButtonElement | null;
 	const scrollLockIcon = document.getElementById("listen-scroll-lock-icon") as SVGElement | null;
 	const tCur = document.getElementById("listen-time-current");
@@ -388,12 +391,21 @@ export function initListenMode(initial: ListenInitialData): void {
 	let activeLineTop = Number.NaN;
 	let pauseAfterParagraphIdx = -1;
 	let paragraphPlaybackMode: ParagraphPlaybackMode = "continuous";
-	const autoplay = true;
+	let autoplay = loadAutoplay();
 	const autoplayTransitionHoldMs = loadTransitionHoldMs();
 	let speed = loadSpeed();
 	let scrubberCollapsed = loadScrubberCollapsed();
 	let scrollUnlocked = loadScrollUnlocked();
 	const knownDescriptions = new Map<string, string>();
+
+	function applyAutoplayUi(): void {
+		if (!autoplayToggle) return;
+		autoplayToggle.setAttribute("aria-pressed", autoplay ? "true" : "false");
+		const onLabel = "Autoplay next discourse is on. Activate to turn off.";
+		const offLabel = "Autoplay next discourse is off. Activate to turn on.";
+		autoplayToggle.setAttribute("aria-label", autoplay ? onLabel : offLabel);
+		autoplayToggle.title = autoplay ? onLabel : offLabel;
+	}
 
 	function applyScrubberCollapsed(): void {
 		transportEl?.classList.toggle("is-scrubber-collapsed", scrubberCollapsed);
@@ -1322,6 +1334,11 @@ export function initListenMode(initial: ListenInitialData): void {
 		saveScrubberCollapsed(scrubberCollapsed);
 		applyScrubberCollapsed();
 	});
+	autoplayToggle?.addEventListener("click", () => {
+		autoplay = !autoplay;
+		saveAutoplay(autoplay);
+		applyAutoplayUi();
+	});
 	scrollLockToggle?.addEventListener("click", () => {
 		scrollUnlocked = !scrollUnlocked;
 		saveScrollUnlocked(scrollUnlocked);
@@ -2046,6 +2063,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	bindMediaSessionActions();
 	renderQueueTitle();
 	setQueueLabel();
+	applyAutoplayUi();
 	applyScrubberCollapsed();
 	applyScrollUnlock();
 	// Seed history state on the initial entry so popstate can detect when the
