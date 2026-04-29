@@ -1,6 +1,6 @@
 ---
 title: Desanā sutta - Teaching
-description: The Blessed One outlines two sequential teachings of the Dhamma: first, see harm as harm; second, become dispassionate and detached from it.
+description: "The Blessed One outlines two sequential teachings of the Dhamma: first, see harm as harm; second, become dispassionate and detached from it."
 qualities: harm, dispassion, recollection of the Buddha, ending
 theme: principle, recollection of the Buddha
 slug: iti39

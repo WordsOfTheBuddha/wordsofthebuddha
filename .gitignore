@@ -47,6 +47,9 @@ src/utils/routes.ts
 
 # data auto generation
 src/data/audioStatus.ts
+src/data/audioDurations.generated.ts
+src/data/audioTitles.generated.ts
+src/data/playlists.generated.ts
 src/data/directoryStructureWithCounts.ts
 src/data/qualityMappings.json
 src/data/simileMappings.json
