@@ -684,6 +684,35 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 	}
 
+	function drawHeadingMarkersInParagraphMode(
+		W: number,
+		H: number,
+		dur: number,
+		paras: VoiceManifest["paragraphs"],
+		headings: NonNullable<VoiceManifest["headings"]>,
+	): void {
+		const byId = new Map(paras.map((para) => [para.id, para]));
+		for (const heading of headings) {
+			const para = byId.get(heading.paragraphId);
+			if (!para) continue;
+			const x = Math.round((para.start / dur) * W);
+			const isPrimaryLevel = heading.level <= 3;
+			const lineWidth = isPrimaryLevel ? 2.25 : 1.5;
+			const stemColor = isPrimaryLevel
+				? "rgba(244, 236, 214, 0.85)"
+				: "rgba(236, 230, 218, 0.68)";
+			const capColor = isPrimaryLevel
+				? "rgba(244, 236, 214, 0.95)"
+				: "rgba(236, 230, 218, 0.78)";
+			const glowColor = isPrimaryLevel
+				? "rgba(214, 199, 155, 0.35)"
+				: "rgba(214, 199, 155, 0.2)";
+			fillWaveRect(x - 2, 1, 4, H - 2, glowColor);
+			fillWaveRect(x - lineWidth / 2, 1, lineWidth, H - 2, stemColor);
+			fillWaveRect(Math.max(0, x - 3), 0, 6, 2, capColor);
+		}
+	}
+
 	function drawWaveformCanvas(): void {
 		if (!waveCanvas || !waveCtx || !manifest) return;
 		const W = waveCanvas.clientWidth;
@@ -727,8 +756,8 @@ export function initListenMode(initial: ListenInitialData): void {
 
 			const GAP_PX = 1.5;
 			const MIN_H_RATIO = 0.3;
-			const COLOR_PLAYED = "rgba(214, 199, 155, 0.88)";
-			const COLOR_UNPLAYED = "rgba(214, 199, 155, 0.25)";
+			const COLOR_PLAYED = "rgba(214, 199, 155, 0.62)";
+			const COLOR_UNPLAYED = "rgba(214, 199, 155, 0.15)";
 
 			for (let i = 0; i < paras.length; i++) {
 				const p = paras[i];
@@ -760,6 +789,8 @@ export function initListenMode(initial: ListenInitialData): void {
 
 		if (useFallbackTimeline && manifest.headings?.length) {
 			drawHeadingMarkers(W, H, dur, paras, manifest.headings);
+		} else if (!useFallbackTimeline && manifest.headings?.length) {
+			drawHeadingMarkersInParagraphMode(W, H, dur, paras, manifest.headings);
 		}
 
 		// Playhead line.
