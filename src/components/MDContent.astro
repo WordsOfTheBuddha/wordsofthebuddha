@@ -462,17 +462,22 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 			}
 		});
 
-		// Preserve footnotes (same logic as PrintFormatter)
-		const footnotesSection = contentArea.querySelector("div:last-child");
-		if (footnotesSection && footnotesSection.textContent?.includes("[1]")) {
-			const footnotesClone = footnotesSection.cloneNode(
-				true
-			) as HTMLElement;
-			footnotesClone.style.marginTop = "2rem";
-			footnotesClone.style.paddingTop = "1rem";
-			footnotesClone.style.borderTop = "1px solid #333";
-			fragment.appendChild(footnotesClone);
-		}
+		// Preserve trailing non-panel sections (e.g. numeric footnotes or Key Terms).
+		// Key Terms is now bulleted and no longer uses numeric markers like [1].
+		const trailingSections = Array.from(contentArea.children).filter(
+			(el) =>
+				el instanceof HTMLElement &&
+				el.tagName === "DIV" &&
+				el !== panel1 &&
+				el !== panel2
+		) as HTMLElement[];
+		trailingSections.forEach((section, index) => {
+			const sectionClone = section.cloneNode(true) as HTMLElement;
+			sectionClone.style.marginTop = index === 0 ? "2rem" : "1rem";
+			sectionClone.style.paddingTop = "1rem";
+			sectionClone.style.borderTop = "1px solid #333";
+			fragment.appendChild(sectionClone);
+		});
 
 		// Store original for restoration and replace content
 		window.originalSplitContent = contentArea.innerHTML;

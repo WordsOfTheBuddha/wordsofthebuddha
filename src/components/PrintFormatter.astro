@@ -31,7 +31,21 @@
 			range.selectNodeContents(contentArea);
 
 			// Apply rich formatting (same logic as copy button)
-			const formattedContainer = getFormattedContainer(range, 0);
+			const formattedContainer = getFormattedContainer(range, 0, {
+				includeSeparator: false,
+			});
+			// Print-only safeguard: remove any standalone markdown-style separator
+			// immediately before a Key Terms heading.
+			Array.from(formattedContainer.querySelectorAll("p")).forEach((p) => {
+				const text = (p.textContent || "").trim();
+				if (text !== "---") return;
+				const next = p.nextElementSibling as HTMLElement | null;
+				if (!next) return;
+				const nextText = (next.textContent || "").trim().toLowerCase();
+				if (nextText.startsWith("key terms")) {
+					p.remove();
+				}
+			});
 
 			// Replace content with formatted version
 			contentArea.innerHTML = formattedContainer.innerHTML;
@@ -275,6 +289,16 @@
 		/* Ensure footnotes content also has consistent sizing */
 		.print-formatted > div:last-child * {
 			font-size: 11pt !important;
+		}
+
+		/* Single-page print: render Key Terms as plain lines (no bullets) */
+		.print-formatted .key-terms-list {
+			list-style: none !important;
+			margin: 0.25em 0 0.5em 0 !important;
+			padding-left: 0 !important;
+		}
+		.print-formatted .key-terms-list li {
+			margin: 0.35em 0 !important;
 		}
 
 		/* Ensure good page breaks */

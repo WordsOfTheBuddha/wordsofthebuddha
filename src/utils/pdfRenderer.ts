@@ -205,7 +205,7 @@ function buildSplitPdfHtmlFromPairs(pairs: ContentPair[]): string {
 /**
  * Converts all .tt[data-def] spans to footnote references.
  * Appends a <section class="footnotes"> at the end of the HTML.
- * Duplicate terms (by text) are de-annotated after first occurrence.
+ * Duplicate entries are de-annotated only when term + definition both match.
  */
 export function processFootnotes(
 	html: string,
@@ -224,7 +224,7 @@ export function processFootnotes(
 	for (const el of spans) {
 		const def = el.getAttribute("data-def") || "";
 		const term = el.textContent?.trim() || "";
-		const key = term.toLowerCase();
+		const key = `${term.toLowerCase()}||${def.trim()}`;
 
 		const replacement = document.createElement("span");
 
@@ -239,6 +239,20 @@ export function processFootnotes(
 		}
 
 		el.replaceWith(replacement);
+	}
+
+	// Guard against a stray markdown-style separator line before Key Terms.
+	// This should remain a web-copy-only affordance, not a print artifact.
+	const terminalParagraphs = Array.from(root.querySelectorAll("p"));
+	for (const p of terminalParagraphs) {
+		const text = (p.textContent || "").trim();
+		if (text !== "---") continue;
+		const next = p.nextElementSibling as HTMLElement | null;
+		if (!next) continue;
+		const nextText = (next.textContent || "").trim().toLowerCase();
+		if (nextText === "key terms" || nextText.startsWith("key terms:")) {
+			p.remove();
+		}
 	}
 
 	// Append footnote section if there are any long definitions

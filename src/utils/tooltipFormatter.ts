@@ -24,7 +24,8 @@ function flattenHeadingsToBoldParagraphs(container: HTMLElement): void {
 
 export function getFormattedContainer(
 	range: Range,
-	threshold?: number
+	threshold?: number,
+	options?: { includeSeparator?: boolean }
 ): HTMLDivElement {
 	const container = document.createElement("div");
 	const originalContent = range.cloneContents();
@@ -65,8 +66,9 @@ export function getFormattedContainer(
 	const actualThreshold =
 		threshold ?? parseInt(localStorage.getItem("tooltipThreshold") || "18");
 
-	// Track processed terms to avoid duplicates
-	const processedTerms = new Set<string>();
+	const includeSeparator = options?.includeSeparator ?? true;
+	// Track processed entries; dedupe only when BOTH term and meaning match.
+	const processedEntries = new Set<string>();
 	const keyTerms: Array<{ text: string; content: string }> = [];
 
 	tooltipElements.forEach((element) => {
@@ -84,34 +86,35 @@ export function getFormattedContainer(
 		}
 
 		const cleanTermText = sanitizeGlossTerm(textContent);
-		const termKey = cleanTermText.toLowerCase();
+		const displayTerm = cleanTermText || textContent.trim();
+		const cleanTooltipContent = tooltipContent.trim();
+		const entryKey = `${displayTerm.toLowerCase()}||${cleanTooltipContent}`;
 
-		// Skip if this term has already been processed
-		if (processedTerms.has(termKey)) {
+		// Skip only exact duplicate term+meaning pairs
+		if (processedEntries.has(entryKey)) {
 			// For duplicates, just keep the bold formatting without tooltip processing
 			const span = document.createElement("span");
-			span.innerHTML = `<b>${cleanTermText || textContent.trim()}</b>`;
+			span.innerHTML = `<b>${displayTerm}</b>`;
 			if (element.parentNode) {
 				element.parentNode.replaceChild(span, element);
 			}
 			return;
 		}
 
-		// Mark this term as processed
-		processedTerms.add(termKey);
+		// Mark this term+meaning entry as processed
+		processedEntries.add(entryKey);
 
 		const span = document.createElement("span");
-		const displayTerm = cleanTermText || textContent.trim();
 
-		if (tooltipContent.length <= actualThreshold) {
+		if (cleanTooltipContent.length <= actualThreshold) {
 			// Inline format: <b>term</b> (definition)
-			span.innerHTML = `<b>${displayTerm}</b> (${tooltipContent})`;
+			span.innerHTML = `<b>${displayTerm}</b> (${cleanTooltipContent})`;
 		} else {
 			// Appendix format omits inline reference marker: <b>term</b>
 			span.innerHTML = `<b>${displayTerm}</b>`;
 			keyTerms.push({
 				text: displayTerm,
-				content: tooltipContent,
+				content: cleanTooltipContent,
 			});
 		}
 
@@ -123,13 +126,11 @@ export function getFormattedContainer(
 	// Add key terms section if there are any appendix tooltips
 	if (keyTerms.length > 0) {
 		const footnotesDiv = document.createElement("div");
-		const separatorRow = document.createElement("p");
-		separatorRow.textContent = "---";
-		separatorRow.style.margin = "0.5em 0";
 		const headingRow = document.createElement("p");
 		headingRow.innerHTML = "<b>Key Terms</b>:";
 		headingRow.style.margin = "0.5em 0";
 		const keyTermsList = document.createElement("ul");
+		keyTermsList.className = "key-terms-list";
 		keyTermsList.style.margin = "0.25em 0 0.5em 1.25em";
 
 		keyTerms.forEach(({ text, content }) => {
@@ -146,15 +147,20 @@ export function getFormattedContainer(
 
 			// Format key term content with ≈ symbol
 			if (paliTerm) {
-				footnoteItem.innerHTML = `${text} [${paliTerm}] ≈ ${cleanContent}`;
+				footnoteItem.innerHTML = `<b>${text}</b> [${paliTerm}] ≈ ${cleanContent}`;
 			} else {
-				footnoteItem.innerHTML = `${text} ≈ ${cleanContent}`;
+				footnoteItem.innerHTML = `<b>${text}</b> ≈ ${cleanContent}`;
 			}
 
 			keyTermsList.appendChild(footnoteItem);
 		});
 
-		footnotesDiv.appendChild(separatorRow);
+		if (includeSeparator) {
+			const separatorRow = document.createElement("p");
+			separatorRow.textContent = "---";
+			separatorRow.style.margin = "0.5em 0";
+			footnotesDiv.appendChild(separatorRow);
+		}
 		footnotesDiv.appendChild(headingRow);
 		footnotesDiv.appendChild(keyTermsList);
 		container.appendChild(footnotesDiv);
