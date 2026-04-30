@@ -81,6 +81,42 @@ Icons are frequently drawn at **opacity 0.45–0.65** with **`filter="url(#iconG
 3. **Split panels:** Two `rect` regions (left/right) with contrasting fills (`patternLeft` / `patternRight` or `cellLeft` / `cellRight`) and a **gold vertical** between them.
 4. **Numbered lists:** Circle `r≈10–11`, stroke ~0.8–1, digit centered; optional **connector path** (orthogonal + rounded “elbow”) to annotation text.
 5. **Ladder / path diagrams (AN 10.x):** Stacked rounded rects with `stgN` fills, small **glow dot** beside step, optional **sparkle trail** to a **radial `libGlow`** apex.
+## Transform-first architecture (required for all new diagrams)
+
+Every **top-level section** and every **repeated row or card** is wrapped in a named `<g>` with an explicit `translate`:
+
+```xml
+<g id="section-name" transform="translate(0, Y_OFFSET)">
+  <!-- section contents; all internal coordinates start from 0 -->
+  <g id="row-label" transform="translate(0, ROW_Y)">
+    <!-- row contents -->
+  </g>
+</g>
+```
+
+**Rules:**
+
+- No exceptions — never embed section-level geometry directly at absolute coordinates.
+- Build each section as though it starts at `(0, 0)`; apply the outer translate to position it.
+- To reposition a section, change **only its outer translate** — never touch internal geometry.
+- To verbatim-copy a section from another SVG (e.g., a jhāna band), copy the inner content unchanged and adjust only the outer `<g transform="translate(...)">`.
+- When stacking sections, compute each Y offset as: `previous_translate_Y + previous_section_height + desired_gap`.
+
+This discipline makes diagrams maintainable: spacing adjustments are single-line changes, and sections from one discourse SVG can be reused in another without modification.
+
+## Quoted text in SVG elements — use Unicode quotes
+
+Quoted speech and discourse phrases embedded in `<text>` elements use **Unicode curly/typographic quotes** (`"…"` / `'…'`), not ASCII straight quotes (`"…"`). This applies to both English and transliterated Pali.
+
+```xml
+<!-- correct -->
+<text …>"Why am I, being subject to birth, seeking what is also subject to birth?"</text>
+
+<!-- avoid -->
+<text …>"Why am I, being subject to birth, seeking what is also subject to birth?"</text>
+```
+
+Rationale: discourse illustrations are published content; typographic quotes read as authored text, not code. ASCII quotes are acceptable only inside SVG attribute values (`fill="#c8a040"`, `font-style="italic"`, etc.) where they are markup syntax.
 
 ## Icon assets (standalone files)
 

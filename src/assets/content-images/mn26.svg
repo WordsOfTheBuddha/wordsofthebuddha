@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 3300" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
+  <title id="title">MN 26 Pāsarāsi Sutta — The Noble Quest</title>
+  <desc id="desc">A discourse visualization of MN 26: two kinds of quest, the noble search begins, two teachers and the doctrinal verdict, full awakening at Uruvelā as attainment and as knowledge, Brahmā's appeal, and the meditative path beyond Māra's reach.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="38%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="18%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffd980" stop-opacity="0.68" />
+      <stop offset="82%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+    <linearGradient id="cardIgnoble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#251624" />
+      <stop offset="100%" stop-color="#17111c" />
+    </linearGradient>
+    <linearGradient id="cardNoble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142b34" />
+      <stop offset="100%" stop-color="#101d2a" />
+    </linearGradient>
+    <linearGradient id="teacherGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182536" />
+      <stop offset="100%" stop-color="#111a28" />
+    </linearGradient>
+    <linearGradient id="awakeningGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#20302a" />
+      <stop offset="100%" stop-color="#182020" />
+    </linearGradient>
+    <linearGradient id="knowledgeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2a36" />
+      <stop offset="100%" stop-color="#161e2a" />
+    </linearGradient>
+    <linearGradient id="teachingGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1b2838" />
+      <stop offset="100%" stop-color="#121e2c" />
+    </linearGradient>
+    <linearGradient id="jhana1Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#141e2c" />
+    </linearGradient>
+    <linearGradient id="formless1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2838" />
+      <stop offset="100%" stop-color="#14202e" />
+    </linearGradient>
+    <linearGradient id="formless2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2c34" />
+      <stop offset="100%" stop-color="#18242a" />
+    </linearGradient>
+    <linearGradient id="formless3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#222e2c" />
+      <stop offset="100%" stop-color="#1c2624" />
+    </linearGradient>
+    <linearGradient id="formless4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#28302a" />
+      <stop offset="100%" stop-color="#222822" />
+    </linearGradient>
+    <linearGradient id="cessationGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2e3020" />
+      <stop offset="100%" stop-color="#282818" />
+    </linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.18" />
+      <stop offset="55%" stop-color="#c8a040" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="3300" fill="url(#bg)" />
+  <ellipse cx="460" cy="320" rx="320" ry="140" fill="#c8a040" opacity="0.035" />
+  <ellipse cx="460" cy="1370" rx="340" ry="160" fill="#60a088" opacity="0.03" />
+  <ellipse cx="460" cy="2540" rx="360" ry="180" fill="#ffd700" opacity="0.025" />
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 1 — HEADER                              ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="header" transform="translate(0, 0)">
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="22" font-weight="bold" letter-spacing="3">MN 26 — PĀSARĀSI SUTTA</text>
+    <text x="460" y="70" text-anchor="middle" fill="#90a0b8" font-size="15" font-style="italic">The Noble Quest</text>
+    <line x1="270" y1="86" x2="650" y2="86" stroke="#a09070" stroke-opacity="0.32" stroke-width="0.6" />
+    <text x="460" y="111" text-anchor="middle" fill="#90c0b0" font-size="12" font-style="italic">Seeking the unborn, unsurpassed security from bondage</text>
+    <text x="460" y="132" text-anchor="middle" fill="#708878" font-size="11" font-style="italic" opacity="0.82">ajātaṁ anuttaraṁ yogakkhemaṁ nibbānaṁ pariyesati</text>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 2 — TWO QUESTS                          ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="two-quests" transform="translate(0, 150)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">TWO KINDS OF QUESTS · DVEMĀ PARIYESANĀ</text>
+    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Being subject to what changes, one either seeks more of it — or, having understood the drawback, seeks release</text>
+    <text x="460" y="71" text-anchor="middle" fill="#586878" font-size="10.5" font-style="italic" opacity="0.85">“ children, spouse, servants, livestock, gold and silver — all subject to birth, aging, illness, death ”</text>
+
+    <!-- Hinge band: ādīnavaṁ viditvā -->
+    <g id="quest-hinge" transform="translate(0, 96)">
+      <path d="M 250 48 C 360 0, 560 0, 670 48" fill="none" stroke="#c8a040" stroke-opacity="0.55" stroke-width="0.9" stroke-dasharray="2 4" stroke-linecap="round" />
+      <path d="M -4 -4 L 0 0 L 4 -4" fill="none" stroke="#c8a040" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" transform="translate(325, 25) rotate(255)" />
+      <path d="M -4 -4 L 0 0 L 4 -4" fill="none" stroke="#c8a040" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" transform="translate(595, 25) rotate(280)" />
+      <circle cx="250" cy="48" r="3" fill="#a06070" opacity="0.7" />
+      <circle cx="670" cy="48" r="3" fill="#60a088" opacity="0.7" />
+      <rect x="360" y="-2" width="200" height="42" rx="6" fill="#101a28" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.7" />
+      <text x="460" y="15" text-anchor="middle" fill="#d8c890" font-size="10" font-weight="bold" letter-spacing="1">SEEING THE DRAWBACK</text>
+      <text x="460" y="32" text-anchor="middle" fill="#a08858" font-size="10" font-style="italic">ādīnavaṁ viditvā</text>
+    </g>
+
+    <g id="quest-columns" transform="translate(0, 150)">
+      <g id="quest-ignoble" transform="translate(70, 0)">
+        <rect x="0" y="0" width="370" height="340" rx="8" fill="url(#cardIgnoble)" stroke="#a06070" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <g id="quest-ignoble-header" transform="translate(80, 0)">
+            <g id="icon-quest-ignoble-figure" transform="translate(20, 16) scale(1.7)" opacity="0.78" filter="url(#iconGlow)">
+            <g transform="translate(12, 12) scale(0.68571) translate(-12, -15.45)">
+                <circle cx="12" cy="6" r="5" fill="none" stroke="#a06070" stroke-width="1" />
+                <line x1="12" y1="12" x2="12" y2="28" stroke="#a06070" stroke-width="1" />
+                <path d="M 0 18 L 6 12" stroke="#a06070" stroke-width="0.8" fill="none" />
+                <path d="M 24 18 L 18 24" stroke="#a06070" stroke-width="0.8" fill="none" />
+                <path d="M 0 14 L 0 6 M -3 9 L 0 6 L 3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 24 22 L 24 30 M 21 27 L 24 30 L 27 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            </g>
+            <text x="76" y="30" fill="#d0a0a8" font-size="13" font-weight="bold">Ignoble Quest</text>
+            <text x="76" y="49" fill="#886878" font-size="11" font-style="italic">anariyā pariyesanā</text>
+        </g>
+        <line x1="24" y1="68" x2="346" y2="68" stroke="#a06070" stroke-opacity="0.22" stroke-width="0.6" />
+        <g id="ignoble-rows" font-size="11.5">
+          <g id="iq-row-1" transform="translate(0, 92)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#a06070" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#c07060" font-size="9" font-weight="bold">1</text>
+            <text x="56" y="4" fill="#b8a0a8">One seeks what is subject to birth</text>
+            <text x="56" y="22" fill="#786878" font-size="10" font-style="italic">jātidhammo samāno jātidhammaṁyeva pariyesati</text>
+          </g>
+          <g id="iq-row-2" transform="translate(0, 134)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#a06070" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#c07060" font-size="9" font-weight="bold">2</text>
+            <text x="56" y="4" fill="#b8a0a8">One seeks what is subject to aging</text>
+            <text x="56" y="22" fill="#786878" font-size="10" font-style="italic">jarādhammo … jarādhammaṁyeva pariyesati</text>
+          </g>
+          <g id="iq-row-3" transform="translate(0, 176)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#a06070" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#c07060" font-size="9" font-weight="bold">3</text>
+            <text x="56" y="4" fill="#b8a0a8">One seeks what is subject to illness</text>
+            <text x="56" y="22" fill="#786878" font-size="10" font-style="italic">byādhidhammo … byādhidhammaṁyeva pariyesati</text>
+          </g>
+          <g id="iq-row-4" transform="translate(0, 218)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#a06070" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#c07060" font-size="9" font-weight="bold">4</text>
+            <text x="56" y="4" fill="#b8a0a8">One seeks what is subject to death</text>
+            <text x="56" y="22" fill="#786878" font-size="10" font-style="italic">maraṇadhammo … maraṇadhammaṁyeva pariyesati</text>
+          </g>
+          <g id="iq-row-5" transform="translate(0, 260)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#a06070" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#c07060" font-size="9" font-weight="bold">5</text>
+            <text x="56" y="4" fill="#b8a0a8">One seeks what is subject to sorrow</text>
+            <text x="56" y="22" fill="#786878" font-size="10" font-style="italic">sokadhammo … sokadhammaṁyeva pariyesati</text>
+          </g>
+          <g id="iq-row-6" transform="translate(0, 302)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#a06070" stroke-width="0.8" />
+            <text x="36" y="5" text-anchor="middle" fill="#c07060" font-size="9" font-weight="bold">6</text>
+            <text x="56" y="4" fill="#b8a0a8">One seeks what is subject to defilement</text>
+            <text x="56" y="22" fill="#786878" font-size="10" font-style="italic">saṅkilesadhammo … saṅkilesadhammaṁyeva pariyesati</text>
+          </g>
+        </g>
+      </g>
+
+      <g id="quest-noble" transform="translate(480, 0)">
+        <rect x="0" y="0" width="370" height="340" rx="8" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <g id="quest-noble-header" transform="translate(80, 0)">
+            <g id="icon-quest-noble-figure" transform="translate(20, 14) scale(1.7)" opacity="0.82" filter="url(#iconGlow)">
+            <g transform="translate(12, 12) scale(0.57236) translate(-12, -18.95)">
+                <circle cx="12" cy="6" r="5" fill="none" stroke="#60a088" stroke-width="1" />
+                <line x1="12" y1="12" x2="12" y2="28" stroke="#60a088" stroke-width="1" />
+                <path d="M 0 18 L 6 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+                <path d="M 24 18 L 18 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+                <circle cx="12" cy="34" r="3" fill="none" stroke="#80c0a0" stroke-width="0.8" opacity="0.6" />
+            </g>
+            </g>
+            <text x="76" y="30" fill="#98d0b0" font-size="13" font-weight="bold">Noble Quest</text>
+            <text x="76" y="49" fill="#6a9890" font-size="11" font-style="italic">ariyā pariyesanā</text>
+        </g>
+        <line x1="24" y1="68" x2="346" y2="68" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
+        <g id="noble-rows" font-size="11.5">
+          <g id="nq-row-1" transform="translate(0, 92)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#80c0a0" font-size="9" font-weight="bold">1</text>
+            <text x="56" y="4" fill="#b8d8d0">One seeks the unborn unsurpassed security from bondage</text>
+            <text x="56" y="22" fill="#688880" font-size="10" font-style="italic">ajātaṁ anuttaraṁ yogakkhemaṁ nibbānaṁ pariyesati</text>
+          </g>
+          <g id="nq-row-2" transform="translate(0, 134)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#80c0a0" font-size="9" font-weight="bold">2</text>
+            <text x="56" y="4" fill="#b8d8d0">One seeks the unaging ...</text>
+            <text x="56" y="22" fill="#688880" font-size="10" font-style="italic">ajaraṁ … nibbānaṁ pariyesati</text>
+          </g>
+          <g id="nq-row-3" transform="translate(0, 176)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#80c0a0" font-size="9" font-weight="bold">3</text>
+            <text x="56" y="4" fill="#b8d8d0">One seeks the unailing ...</text>
+            <text x="56" y="22" fill="#688880" font-size="10" font-style="italic">abyādhiṁ … nibbānaṁ pariyesati</text>
+          </g>
+          <g id="nq-row-4" transform="translate(0, 218)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#80c0a0" font-size="9" font-weight="bold">4</text>
+            <text x="56" y="4" fill="#b8d8d0">One seeks the deathless ...</text>
+            <text x="56" y="22" fill="#688880" font-size="10" font-style="italic">amataṁ … nibbānaṁ pariyesati</text>
+          </g>
+          <g id="nq-row-5" transform="translate(0, 260)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+            <text x="36" y="4" text-anchor="middle" fill="#80c0a0" font-size="9" font-weight="bold">5</text>
+            <text x="56" y="4" fill="#b8d8d0">One seeks the sorrowless ...</text>
+            <text x="56" y="22" fill="#688880" font-size="10" font-style="italic">asokaṁ … nibbānaṁ pariyesati</text>
+          </g>
+          <g id="nq-row-6" transform="translate(0, 302)">
+            <circle cx="36" cy="2" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+            <text x="36" y="5" text-anchor="middle" fill="#80c0a0" font-size="9" font-weight="bold">6</text>
+            <text x="56" y="4" fill="#b8d8d0">One seeks the undefiled ...</text>
+            <text x="56" y="22" fill="#688880" font-size="10" font-style="italic">asaṅkiliṭṭhaṁ … nibbānaṁ pariyesati</text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 3 — THE NOBLE SEARCH BEGINS             ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="going-forth" transform="translate(0, 690)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">THE NOBLE SEARCH BEGINS · ARIYĀ PARIYESANĀ</text>
+    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Realization, then resolve, then going forth — the going-forth is the result, not the topic</text>
+
+    <g id="search-card" transform="translate(70, 74)">
+      <rect x="0" y="0" width="780" height="260" rx="8" fill="url(#cardNeutral)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <g id="search-row-1" transform="translate(0, 30)">
+        <circle cx="46" cy="8" r="11" fill="none" stroke="#c8a040" stroke-width="0.9" />
+        <text x="46" y="11" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">1</text>
+        <text x="78" y="6" fill="#c8d8e8" font-size="12" font-weight="bold">Realization</text>
+        <text x="78" y="26" fill="#a0b0c8" font-size="11.4">“Why am I, being subject to birth, seeking what is also subject to birth?”</text>
+        <text x="78" y="45" fill="#708878" font-size="10.5" font-style="italic">kiṁ nu kho ahaṁ jātidhammo samāno jātidhammaṁyeva pariyesāmi?</text>
+        <g id="icon-bowl-robe" transform="translate(700, 0) scale(1.45)" opacity="0.7" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(0.72329) translate(-14, -12.85)">
+            <path d="M 0 18 Q 14 28, 28 18" fill="none" stroke="#6888a0" stroke-width="1.2" />
+            <line x1="0" y1="18" x2="28" y2="18" stroke="#6888a0" stroke-width="0.8" />
+            <path d="M 6 4 L 14 0 L 22 4 L 18 14 L 10 14 Z" fill="none" stroke="#80a0b0" stroke-width="0.8" opacity="0.6" />
+          </g>
+        </g>
+      </g>
+      <line x1="46" y1="68" x2="46" y2="86" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1" stroke-linecap="round" />
+      <path d="M 40 78 L 46 86 L 52 78" fill="none" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="search-row-2" transform="translate(0, 110)">
+        <circle cx="46" cy="8" r="11" fill="none" stroke="#c8a040" stroke-width="0.9" />
+        <text x="46" y="11" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">2</text>
+        <text x="78" y="6" fill="#c8d8e8" font-size="12" font-weight="bold">Resolve</text>
+        <text x="78" y="26" fill="#a0b0c8" font-size="11.4">“Suppose, having understood the drawback, I seek the unborn, unsurpassed security from bondage”</text>
+        <text x="78" y="45" fill="#708878" font-size="10.5" font-style="italic">ādīnavaṁ viditvā, ajātaṁ anuttaraṁ yogakkhemaṁ nibbānaṁ pariyeseyyaṁ</text>
+      </g>
+      <line x1="46" y1="148" x2="46" y2="166" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1" stroke-linecap="round" />
+      <path d="M 40 158 L 46 166 L 52 158" fill="none" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+
+      <g id="search-row-3" transform="translate(0, 190)">
+        <circle cx="46" cy="8" r="11" fill="none" stroke="#c8a040" stroke-width="0.9" />
+        <text x="46" y="10" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">3</text>
+        <text x="78" y="6" fill="#c8d8e8" font-size="12" font-weight="bold">Going forth</text>
+        <text x="78" y="26" fill="#a0b0c8" font-size="11.4">Then, while still young, with black hair, he shaved hair and beard, put on the ochre robes, and went forth</text>
+        <text x="78" y="45" fill="#708878" font-size="10.5" font-style="italic">kesamassuṁ ohāretvā kāsāyāni vatthāni acchādetvā agārasmā anagāriyaṁ pabbajiṁ</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 4 — TWO TEACHERS                        ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="two-teachers" transform="translate(0, 1040)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">TWO TEACHERS · ATTAINMENT AND SUBSEQUENT DEPARTURE</text>
+    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">The most refined samādhis still leads to re-appearance in subtle realms — not Nibbāna</text>
+
+    <g id="teacher-cards" transform="translate(70, 74)">
+
+      <g id="teacher-alara" transform="translate(0, 0)">
+        <rect x="0" y="0" width="380" height="242" rx="8" fill="url(#teacherGrad)" stroke="#7888a0" stroke-opacity="0.42" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <text x="190" y="32" text-anchor="middle" fill="#c8d8e8" font-size="13" font-weight="bold">Āḷāra Kālāma</text>
+        <text x="190" y="50" text-anchor="middle" fill="#708090" font-size="10.5" font-style="italic">first teacher</text>
+        <g id="icon-alara-nothingness" transform="translate(316, 10) scale(2.0)" opacity="0.78" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(1.45655) translate(-10, -10)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" stroke-dasharray="4,3" />
+          </g>
+        </g>
+        <line x1="22" y1="62" x2="358" y2="62" stroke="#7888a0" stroke-opacity="0.22" stroke-width="0.6" />
+
+        <g id="alara-attain" transform="translate(0, 84)">
+          <text x="190" y="0" text-anchor="middle" fill="#c8a040" font-size="10.5" font-weight="bold" letter-spacing="1">▸ ATTAINED</text>
+          <text x="190" y="20" text-anchor="middle" fill="#c8d8e8" font-size="11.6">The Base of Nothingness — the highest his teacher knew</text>
+          <text x="190" y="38" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">ākiñcaññāyatanaṁ pavedesi</text>
+        </g>
+
+        <g id="alara-verdict" transform="translate(0, 154)">
+          <text x="190" y="0" text-anchor="middle" fill="#d0a0a8" font-size="10.5" font-weight="bold" letter-spacing="1">▸ SAW THE LIMIT, AND DEPARTED</text>
+          <text x="190" y="20" text-anchor="middle" fill="#b8a0a8" font-size="11.2">“ This Dhamma does not lead to nibbāna —</text>
+          <text x="190" y="36" text-anchor="middle" fill="#b8a0a8" font-size="11.2">only to re-appearance in this base ”</text>
+          <text x="190" y="58" text-anchor="middle" fill="#8a7080" font-size="10.5" font-style="italic">nāyaṁ dhammo nibbānāya saṁvattati,</text>
+          <text x="190" y="74" text-anchor="middle" fill="#8a7080" font-size="10.5" font-style="italic">yāvadeva ākiñcaññāyatanūpapattiyā</text>
+        </g>
+      </g>
+
+      <g id="teacher-uddaka" transform="translate(400, 0)">
+        <rect x="0" y="0" width="380" height="242" rx="8" fill="url(#teacherGrad)" stroke="#7888a0" stroke-opacity="0.42" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <text x="190" y="32" text-anchor="middle" fill="#c8d8e8" font-size="13" font-weight="bold">Uddaka Rāmaputta</text>
+        <text x="190" y="50" text-anchor="middle" fill="#708090" font-size="10.5" font-style="italic">second teacher</text>
+        <!-- icon-neither-base : exact library geometry, enlarged -->
+        <g id="icon-uddaka-neither" transform="translate(316, 10) scale(2)" opacity="0.82" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(1.45655) translate(-10, -10)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" opacity="0.5" />
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.3" stroke-dasharray="1,3" />
+          </g>
+        </g>
+        <line x1="22" y1="62" x2="358" y2="62" stroke="#7888a0" stroke-opacity="0.22" stroke-width="0.6" />
+
+        <g id="uddaka-attain" transform="translate(0, 84)">
+          <text x="190" y="0" text-anchor="middle" fill="#c8a040" font-size="10.5" font-weight="bold" letter-spacing="1">▸ ATTAINED</text>
+          <text x="190" y="20" text-anchor="middle" fill="#c8d8e8" font-size="11.6">The Base of Neither Perception nor Non-Perception</text>
+          <text x="190" y="38" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">nevasaññānāsaññāyatanaṁ pavedesi</text>
+        </g>
+
+        <g id="uddaka-verdict" transform="translate(0, 154)">
+          <text x="190" y="0" text-anchor="middle" fill="#d0a0a8" font-size="10.5" font-weight="bold" letter-spacing="1">▸ SAW THE LIMIT, AND DEPARTED</text>
+          <text x="190" y="20" text-anchor="middle" fill="#b8a0a8" font-size="11.2">“ This Dhamma does not lead to nibbāna —</text>
+          <text x="190" y="36" text-anchor="middle" fill="#b8a0a8" font-size="11.2">only to re-appearance in this base ”</text>
+          <text x="190" y="58" text-anchor="middle" fill="#8a7080" font-size="10.5" font-style="italic">nāyaṁ dhammo nibbānāya saṁvattati,</text>
+          <text x="190" y="74" text-anchor="middle" fill="#8a7080" font-size="10.5" font-style="italic">yāvadeva nevasaññānāsaññāyatanūpapattiyā</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 5 — AWAKENING (5a + 5b side by side)    ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="awakening" transform="translate(0, 1380)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">AT URUVELĀ — THE NOBLE QUEST FULFILLED · SAMBODHI</text>
+    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">The same six rows — now resolved. And the knowledge: this is final</text>
+
+    <g id="awakening-cards" transform="translate(70, 74)">
+
+      <g id="awakening-attainment" transform="translate(0, 0)">
+        <rect x="0" y="0" width="380" height="370" rx="8" fill="url(#awakeningGrad)" stroke="#c8a040" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <ellipse cx="340" cy="36" rx="34" ry="28" fill="url(#libGlow)" />
+        <g id="icon-awakening-sparkle" transform="translate(340, 26) scale(0.85)" opacity="0.92" filter="url(#glow1)">
+          <g transform="translate(12, 12) scale(1.52491) translate(0, 0)">
+            <line x1="-6.5" y1="0" x2="6.5" y2="0" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round"/>
+            <line x1="0" y1="-6.5" x2="0" y2="6.5" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round"/>
+            <line x1="-3.9" y1="-3.9" x2="3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round"/>
+            <line x1="3.9" y1="-3.9" x2="-3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="1.2" fill="#fffde8"/>
+          </g>
+        </g>
+        <text x="190" y="34" text-anchor="middle" fill="#d8d8a8" font-size="13" font-weight="bold">Awakening as attainment</text>
+        <text x="190" y="52" text-anchor="middle" fill="#a8c8b8" font-size="10.8" font-style="italic">“I attained the unborn, unsurpassed security from bondage.”</text>
+        <line x1="22" y1="68" x2="358" y2="68" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.6" />
+
+        <g id="awake-rows" font-size="11.5">
+          <g id="aw-row-1" transform="translate(0, 92)">
+            <circle cx="40" cy="2" r="8" fill="none" stroke="#c8a040" stroke-width="0.85" />
+            <text x="40" y="4" text-anchor="middle" fill="#d8c890" font-size="9" font-weight="bold">1</text>
+            <text x="60" y="4" fill="#d8d8b8">Attained the unborn</text>
+            <text x="60" y="22" fill="#807858" font-size="10" font-style="italic">ajātaṁ … nibbānaṁ ajjhagamaṁ</text>
+          </g>
+          <g id="aw-row-2" transform="translate(0, 134)">
+            <circle cx="40" cy="2" r="8" fill="none" stroke="#c8a040" stroke-width="0.85" />
+            <text x="40" y="4" text-anchor="middle" fill="#d8c890" font-size="9" font-weight="bold">2</text>
+            <text x="60" y="4" fill="#d8d8b8">Attained the unaging</text>
+            <text x="60" y="22" fill="#807858" font-size="10" font-style="italic">ajaraṁ … ajjhagamaṁ</text>
+          </g>
+          <g id="aw-row-3" transform="translate(0, 176)">
+            <circle cx="40" cy="2" r="8" fill="none" stroke="#c8a040" stroke-width="0.85" />
+            <text x="40" y="4" text-anchor="middle" fill="#d8c890" font-size="9" font-weight="bold">3</text>
+            <text x="60" y="4" fill="#d8d8b8">Attained the unailing</text>
+            <text x="60" y="22" fill="#807858" font-size="10" font-style="italic">abyādhiṁ … ajjhagamaṁ</text>
+          </g>
+          <g id="aw-row-4" transform="translate(0, 218)">
+            <circle cx="40" cy="2" r="8" fill="none" stroke="#c8a040" stroke-width="0.85" />
+            <text x="40" y="4" text-anchor="middle" fill="#d8c890" font-size="9" font-weight="bold">4</text>
+            <text x="60" y="4" fill="#d8d8b8">Attained the deathless</text>
+            <text x="60" y="22" fill="#807858" font-size="10" font-style="italic">amataṁ … ajjhagamaṁ</text>
+          </g>
+          <g id="aw-row-5" transform="translate(0, 260)">
+            <circle cx="40" cy="2" r="8" fill="none" stroke="#c8a040" stroke-width="0.85" />
+            <text x="40" y="4" text-anchor="middle" fill="#d8c890" font-size="9" font-weight="bold">5</text>
+            <text x="60" y="4" fill="#d8d8b8">Attained the sorrowless</text>
+            <text x="60" y="22" fill="#807858" font-size="10" font-style="italic">asokaṁ … ajjhagamaṁ</text>
+          </g>
+          <g id="aw-row-6" transform="translate(0, 302)">
+            <circle cx="40" cy="2" r="8" fill="none" stroke="#c8a040" stroke-width="0.85" />
+            <text x="40" y="6" text-anchor="middle" fill="#d8c890" font-size="9" font-weight="bold">6</text>
+            <text x="60" y="4" fill="#d8d8b8">Attained the undefiled</text>
+            <text x="60" y="22" fill="#807858" font-size="10" font-style="italic">asaṅkiliṭṭhaṁ … ajjhagamaṁ</text>
+          </g>
+        </g>
+      </g>
+
+      <g id="awakening-knowledge" transform="translate(400, 0)">
+        <rect x="0" y="0" width="380" height="370" rx="8" fill="url(#knowledgeGrad)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <g id="icon-awakening-knowledge" transform="translate(340, 26) scale(0.85)" opacity="0.92" filter="url(#glow1)">
+            <g transform="translate(12, 12) translate(-2.5, 2.5)">
+                <g opacity="0.85" stroke="#80c0a8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                    <path d="M -14 0 Q 0 -11, 14 0" stroke-width="1.3" />
+                    <path d="M -14 0 Q 0 11, 14 0" stroke-width="1.3" />
+                    <circle cx="0" cy="0" r="4" stroke-width="1" />
+                    <circle cx="0" cy="0" r="1.2" fill="#80c0a8" stroke="none" />
+                    <line x1="0" y1="-14" x2="0" y2="-19" stroke-width="0.8" />
+                    <line x1="12" y1="-9" x2="16" y2="-14" stroke-width="0.8" />
+                    <line x1="-12" y1="-9" x2="-16" y2="-14" stroke-width="0.8" />
+                    <line x1="16" y1="0" x2="21" y2="0" stroke-width="0.8" />
+                    <line x1="12" y1="9" x2="16" y2="14" stroke-width="0.8" />
+                </g>
+            </g>
+        </g>
+        <text x="190" y="34" text-anchor="middle" fill="#c8d8e8" font-size="13" font-weight="bold">Awakening as knowledge</text>
+        <text x="190" y="52" text-anchor="middle" fill="#90c0b0" font-size="10.8" font-style="italic">“And he knew it was final”</text>
+        <line x1="22" y1="68" x2="358" y2="68" stroke="#60a088" stroke-opacity="0.28" stroke-width="0.6" />
+
+        <text x="190" y="100" text-anchor="middle" fill="#a0b0c8" font-size="11.2">Knowledge and vision arose:</text>
+        <text x="190" y="118" text-anchor="middle" fill="#688880" font-size="10.5" font-style="italic">ñāṇañca pana me dassanaṁ udapādi</text>
+
+        <rect x="22" y="146" width="3.5" height="34" rx="1" fill="#d8c890" opacity="0.85" />
+        <text x="190" y="160" text-anchor="middle" fill="#e0d8b0" font-size="12.6" font-weight="bold">“ My liberation is unshakeable ”</text>
+        <text x="190" y="178" text-anchor="middle" fill="#807858" font-size="10.5" font-style="italic">akuppā me vimutti</text>
+
+        <rect x="22" y="206" width="3.5" height="56" rx="1" fill="#90b8c8" opacity="0.85" />
+        <text x="190" y="220" text-anchor="middle"  fill="#d8e4f0" font-size="12.4" font-weight="bold">“ This is my final birth;</text>
+        <text x="190" y="238" text-anchor="middle" fill="#d8e4f0" font-size="12.4" font-weight="bold"> there is no further renewed existence ”</text>
+        <text x="190" y="258" text-anchor="middle" fill="#556e7a" font-size="10.5" font-style="italic">ayamantimā jāti, natthi dāni punabbhavo</text>
+
+        <line x1="22" y1="290" x2="358" y2="290" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
+        <text x="190" y="318" text-anchor="middle" fill="#90c0b0" font-size="11" font-style="italic">The noble quest, complete.</text>
+        <text x="190" y="340" text-anchor="middle" fill="#688880" font-size="10.5" font-style="italic">ariyā pariyesanā pariyositā</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 6 — BRAHMĀ'S APPEAL                     ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="brahma-appeal" transform="translate(0, 1860)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">BRAHMĀ'S APPEAL · BRAHMAYĀCANA</text>
+    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">A real hesitation, then a turning toward the world</text>
+
+    <g id="brahma-card" transform="translate(70, 74)">
+      <rect x="0" y="0" width="780" height="230" rx="8" fill="url(#teachingGrad)" stroke="#60a088" stroke-opacity="0.42" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <text x="28" y="34" fill="#c8d8e8" font-size="13" font-weight="bold">First inclination: not to teach</text>
+      <text x="28" y="55" fill="#a0b0c8" font-size="11.4">“ My mind inclined toward being unconcerned, not toward teaching the Dhamma ”</text>
+      <text x="28" y="74" fill="#708878" font-size="10.5" font-style="italic">appossukkatāya cittaṁ namati, no dhammadesanāya</text>
+
+      <line x1="28" y1="92" x2="752" y2="92" stroke="#60a088" stroke-opacity="0.2" stroke-width="0.6" />
+
+      <text x="28" y="118" fill="#c8d8e8" font-size="12.4" font-weight="bold">Brahmā Sahampati appeals:</text>
+      <text x="28" y="138" fill="#a0b0c8" font-size="11.2">“ The Dhamma is profound — but there are beings with little dust in their eyes ”</text>
+      <text x="28" y="156" fill="#708878" font-size="10.5" font-style="italic">santi sattā apparajakkhajātikā, assavaṇatā dhammassa parihāyanti</text>
+
+      <!-- Lotus simile (MN 26 §21): some lotuses immersed, level with surface, risen clear -->
+      <g id="lotus-beings" transform="translate(420, 110)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- water body -->
+        <rect x="0" y="50" width="340" height="32" fill="#1a3548" fill-opacity="0.4" stroke="none" />
+        <!-- water surface waves -->
+        <path d="M 0 50 Q 20 47, 40 50 T 80 50 T 120 50 T 160 50 T 200 50 T 240 50 T 280 50 T 320 50 T 340 50" fill="none" stroke="#5088a0" stroke-opacity="0.6" stroke-width="0.9" />
+        <path d="M 0 56 Q 30 54, 60 56 T 120 56 T 180 56 T 240 56 T 300 56 T 340 56" fill="none" stroke="#4078a0" stroke-opacity="0.32" stroke-width="0.6" />
+        <!-- ripple lines -->
+        <line x1="40" y1="66" x2="70" y2="66" stroke="#5088a0" stroke-opacity="0.25" stroke-width="0.5" />
+        <line x1="190" y1="70" x2="230" y2="70" stroke="#5088a0" stroke-opacity="0.25" stroke-width="0.5" />
+        <line x1="110" y1="76" x2="140" y2="76" stroke="#5088a0" stroke-opacity="0.2" stroke-width="0.5" />
+
+        <!-- Submerged lotus -->
+        <g transform="translate(50, 78)">
+            <line x1="0" y1="4" x2="0" y2="0" stroke="#506880" stroke-width="0.6" stroke-opacity="0.5" />
+            <path d="M 0 0 C -5 0, -6 -6, -6 -11 C -6 -17, 0 -24, 0 -24 C 0 -24, 6 -17, 6 -11 C 6 -6, 5 0, 0 0 Z M 0 -22 L 0 -10"
+              fill="#1a3040" fill-opacity="0.55" stroke="#708090" stroke-width="0.7" stroke-opacity="0.6" />
+        </g>
+        <text x="50" y="100" text-anchor="middle" fill="#586878" font-size="9" font-style="italic">immersed</text>
+
+        <!-- At-surface lotus -->
+        <g transform="translate(170, 50)">
+            <line x1="0" y1="32" x2="0" y2="0" stroke="#506880" stroke-width="0.6" stroke-opacity="0.5" />
+            <path d="M 0 0 C -4 -8, -4 -16, 0 -22 C 4 -16, 4 -8, 0 0 Z M 0 0 C -10 -2, -14 -8, -10 -16 C -6 -10, -3 -4, 0 0 Z M 0 0 C 10 -2, 14 -8, 10 -16 C 6 -10, 3 -4, 0 0 Z"
+              fill="#28384a" fill-opacity="0.5" stroke="#80a0b0" stroke-width="0.85" stroke-opacity="0.75" />
+        </g>
+        <text x="170" y="100" text-anchor="middle" fill="#688090" font-size="9" font-style="italic">at the surface</text>
+
+        <!-- Risen-clear lotus -->
+        <g transform="translate(290, 38)">
+            <line x1="0" y1="44" x2="0" y2="0" stroke="#506880" stroke-width="0.6" stroke-opacity="0.45" />
+            <path d="M 0 0 C -5 -10, -5 -20, 0 -26 C 5 -20, 5 -10, 0 0 Z M 0 0 C -10 -4, -15 -12, -11 -20 C -6 -12, -3 -6, 0 0 Z M 0 0 C 10 -4, 15 -12, 11 -20 C 6 -12, 3 -6, 0 0 Z M 0 0 C -14 0, -20 -6, -18 -12 C -10 -8, -5 -4, 0 0 Z M 0 0 C 14 0, 20 -6, 18 -12 C 10 -8, 5 -4, 0 0 Z"
+              fill="#2a3a30" fill-opacity="0.5" stroke="#80c0a0" stroke-width="1" stroke-opacity="0.9" />
+        </g>
+        <text x="290" y="100" text-anchor="middle" fill="#80a098" font-size="9" font-style="italic">risen clear</text>
+      </g>
+
+      <line x1="28" y1="196" x2="752" y2="196" stroke="#60a088" stroke-opacity="0.22" stroke-width="0.6" />
+      <text x="28" y="216" fill="#90c0b0" font-size="11.6" font-style="italic">“ The doors to the Deathless are open" — apārutā tesaṁ amatassa dvārā</text>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 7 — BEYOND MĀRA  (verbatim from MN 25)  ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="beyond-mara" transform="translate(0, 2190)">
+    <line x1="100" y1="0" x2="820" y2="0" stroke="url(#tierGrad)" stroke-width="0.5" opacity="0.4" />
+    <text x="460" y="18" text-anchor="middle" fill="#c8a040"
+      font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+      letter-spacing="2" opacity="0.75">WHERE MĀRA CANNOT GO · AGATI MĀRASSA</text>
+    <text x="460" y="38" text-anchor="middle" fill="#90c0b0"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">“ has blinded Māra, gone beyond the Evil One's sight, becoming invisible to him ”</text>
+    <text x="460" y="54" text-anchor="middle" fill="#708878"
+      font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">andhamakāsi māraṁ, apadaṁ vadhitvā māracakkhuṁ adassanaṁ gato pāpimato</text>
+
+
+    <!-- ══════ 5a — FOUR JHĀNAS — NESTED RECTANGLES ══════ -->
+    <g id="jhanas" transform="translate(0, 68)">
+
+      <!-- 1st Jhāna (outer, filled) — bottom=490 -->
+      <g filter="url(#shadowDrop)">
+        <rect x="70" y="0" width="780" height="490" rx="8" fill="url(#jhana1Grad)"
+          stroke="#c8a040" stroke-opacity="0.42" stroke-width="0.8" />
+      </g>
+
+      <text x="96" y="24" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">First Jhāna<tspan fill="#8098a8" font-size="11" font-weight="normal" font-style="italic"> · paṭhama jhāna</tspan></text>
+      <text x="96" y="46" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Secluded from sensual pleasures, secluded from unwholesome states</text>
+      <text x="96" y="62" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Accompanied by reflection <tspan fill="#6888a0" font-style="italic">(savitakkaṁ)</tspan> · Examination <tspan fill="#6888a0" font-style="italic">(savicāraṁ)</tspan></text>
+      <text x="96" y="78" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Born of seclusion <tspan fill="#6888a0" font-style="italic">(vivekajaṁ)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#6888a0" font-style="italic">(pītisukhaṁ)</tspan></text>
+
+      <!-- Jhāna 1 icon (bathtub/kneading) -->
+      <g transform="translate(790, 26)" opacity="0.65" filter="url(#iconGlow)">
+        <g transform="translate(12, 12) scale(1) translate(0, -4.15)">
+          <g opacity="0.8" stroke="#d8c890" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+            <path d="M -22 -4 L -22 14 Q -22 24, 0 24 Q 22 24, 22 14 L 22 -4" />
+            <path d="M -18 4 Q -9 0, 0 4 Q 9 8, 18 4" opacity="0.5" />
+            <circle cx="-8" cy="-6" r="3" stroke-width="0.8" opacity="0.6" />
+            <circle cx="6" cy="-10" r="2.5" stroke-width="0.7" opacity="0.5" />
+            <circle cx="12" cy="-4" r="2" stroke-width="0.6" opacity="0.45" />
+            <circle cx="-2" cy="-14" r="2" stroke-width="0.6" opacity="0.4" />
+            <circle cx="0" cy="-4" r="1.5" stroke-width="0.5" opacity="0.35" />
+          </g>
+        </g>
+      </g>
+      <text x="800" y="72" text-anchor="middle" fill="#d8c890" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">kneading powder</text>
+
+      <!-- 2nd Jhāna — bottom=475 (gap 15 from 490) -->
+      <rect x="100" y="92" width="720" height="383" rx="8" fill="none"
+        stroke="#78a890" stroke-opacity="0.55" stroke-width="0.8" />
+
+      <text x="126" y="122" fill="#78a890"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Second Jhāna<tspan fill="#6a9888" font-size="11" font-weight="normal" font-style="italic"> · dutiya jhāna</tspan></text>
+      <text x="126" y="148" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Internal tranquility <tspan fill="#6888a0" font-style="italic">(sampasādanaṁ)</tspan> · Unification of mind <tspan fill="#6888a0" font-style="italic">(ekodibhāvaṁ)</tspan></text>
+      <text x="126" y="166" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Free from reflection and examination <tspan fill="#6888a0" font-style="italic">(avitakkaṁ · avicāraṁ)</tspan></text>
+      <text x="126" y="184" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Born of collectedness <tspan fill="#6888a0" font-style="italic">(samādhijaṁ)</tspan> · Imbued with uplifting joy and pleasure <tspan fill="#6888a0" font-style="italic">(pītisukhaṁ)</tspan></text>
+
+      <!-- Jhāna 2 icon (lake/spring) -->
+      <g transform="translate(754, 128)" opacity="0.65" filter="url(#iconGlow)">
+        <g transform="translate(12, 12) scale(1) translate(0, -14.525)">
+          <g opacity="0.85" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0" fill="none" stroke="#78b8a8" stroke-width="1.2" />
+            <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0 L 24 22 Q 12 25, 0 22 Q -12 19, -24 22 Z" fill="#305060" fill-opacity="0.25" stroke="none" />
+            <circle cx="-6" cy="14" r="2.5" fill="#78b8a8" fill-opacity="0.25" stroke="#78b8a8" stroke-width="0.6" />
+            <circle cx="5" cy="9" r="3" fill="#78b8a8" fill-opacity="0.2" stroke="#78b8a8" stroke-width="0.6" />
+            <circle cx="-10" cy="7" r="1.8" fill="#78b8a8" fill-opacity="0.18" stroke="#78b8a8" stroke-width="0.5" />
+            <circle cx="10" cy="17" r="2" fill="#78b8a8" fill-opacity="0.3" stroke="#78b8a8" stroke-width="0.5" />
+            <circle cx="0" cy="4" r="1.5" fill="#78b8a8" fill-opacity="0.15" stroke="#78b8a8" stroke-width="0.5" />
+            <path d="M 0 24 C -3 27, 3 30, 0 33" stroke="#78b8a8" stroke-width="0.8" fill="none" opacity="0.35" />
+          </g>
+        </g>
+      </g>
+
+      <text x="764" y="170" text-anchor="middle" fill="#b8d0b8" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">underground spring</text>
+
+      <!-- 3rd Jhāna — bottom=460 (gap 15 from 475) -->
+      <rect x="130" y="202" width="660" height="258" rx="8" fill="none"
+        stroke="#aab8c8" stroke-opacity="0.55" stroke-width="0.8" />
+
+      <text x="156" y="232" fill="#aab8c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Third Jhāna<tspan fill="#8098a8" font-size="11" font-weight="normal" font-style="italic"> · tatiya jhāna</tspan></text>
+      <text x="156" y="258" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">With fading of desire for uplifting joy <tspan fill="#6888a0" font-style="italic">(pītiyā ca virāgā)</tspan></text>
+      <text x="156" y="276" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Equanimous <tspan fill="#6888a0" font-style="italic">(upekkhako)</tspan> · Mindful <tspan fill="#6888a0" font-style="italic">(sato)</tspan> · Clearly aware <tspan fill="#6888a0" font-style="italic">(sampajāno)</tspan></text>
+      <text x="156" y="294" fill="#a0b0c8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Experiencing pleasure with the body <tspan fill="#6888a0" font-style="italic">(sukhaṁ ca kāyena paṭisaṁvedeti)</tspan></text>
+
+      <!-- Jhāna 3 icon (submerged lotus) -->
+      <g transform="translate(730, 236)" opacity="0.60" filter="url(#iconGlow)">
+        <g transform="translate(12, 12) scale(1.2) translate(0, 0.125)">
+          <g opacity="0.85" stroke="#90a8b8" fill-opacity="0.12" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M -22 -8 Q -11 -11, 0 -8 Q 11 -5, 22 -8" fill="none" stroke-width="0.9" />
+            <path d="M -18 -5 Q -9 -8, 0 -5 Q 9 -2, 18 -5" fill="none" stroke-width="0.5" opacity="0.4" />
+            <path d="M 0 10 C -10 10, -18 2, -14 -4 C -10 -8, 0 -2, 0 10 Z" fill="#90a8b8" stroke-width="0.9" />
+            <path d="M 0 10 C 10 10, 18 2, 14 -4 C 10 -8, 0 -2, 0 10 Z" fill="#90a8b8" stroke-width="0.9" />
+            <path d="M 0 10 C -5 10, -11 4, -7 -3 C -3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" stroke-width="0.6" />
+            <path d="M 0 10 C 5 10, 11 4, 7 -3 C 3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" stroke-width="0.6" />
+            <circle cx="0" cy="4" r="3.5" fill="#90a8b8" fill-opacity="0.15" stroke-width="0.7" />
+          </g>
+        </g>
+      </g>
+
+      <text x="740" y="276" text-anchor="middle" fill="#d0d8e0" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">submerged lotus</text>
+
+      <!-- 4th Jhāna (innermost) — bottom=445 (gap 15 from 460) -->
+      <rect x="160" y="312" width="600" height="133" rx="8" fill="none"
+        stroke="#d0d8e0" stroke-opacity="0.65" stroke-width="0.8" />
+
+      <text x="186" y="346" fill="#d0d8e0"
+        font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold">Fourth Jhāna<tspan fill="#a0b0c0" font-size="11" font-weight="normal" font-style="italic"> · catuttha jhāna</tspan></text>
+      <text x="186" y="372" fill="#c0c8d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Abandoning bodily pleasure and pain <tspan fill="#6888a0" font-style="italic">(sukhassa ca pahānā · dukkhassa ca pahānā)</tspan></text>
+      <text x="186" y="390" fill="#c0c8d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Settling of mental pleasure and displeasure <tspan fill="#6888a0" font-style="italic">(somanassadomanassānaṁ atthaṅgamā)</tspan></text>
+      <text x="186" y="408" fill="#c0c8d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Purification of mindfulness through equanimity <tspan fill="#6888a0" font-style="italic">(upekkhāsatipārisuddhi)</tspan></text>
+      <text x="186" y="426" fill="#c0c8d8"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5">Experiencing a neither-painful-nor-pleasant feeling <tspan fill="#6888a0" font-style="italic">(adukkhamasukhaṁ)</tspan></text>
+
+      <!-- Jhāna 4 icon (bright orb) -->
+      <g transform="translate(688, 350)" opacity="0.70" filter="url(#glow1)">
+        <g transform="translate(12, 12) scale(1)">
+          <g opacity="0.85" stroke="#d0d8e0" fill="none" stroke-linecap="round">
+            <circle cx="0" cy="0" r="20" fill="#e0e8f0" fill-opacity="0.2" stroke-width="1" />
+            <circle cx="-6" cy="-7" r="7" fill="#e0e8f0" fill-opacity="0.12" stroke="none" />
+            <circle cx="-4" cy="-5" r="3" fill="#f0f4f8" fill-opacity="0.08" stroke="none" />
+          </g>
+        </g>
+      </g>
+
+      <text x="692" y="400" text-anchor="middle" fill="#e0e8f0" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">covered from head to toe</text>
+      <text x="692" y="418" text-anchor="middle" fill="#c8d8e8" opacity="0.45" font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">in a spotless white cloth</text>
+    </g>
+
+
+    <!-- ══════ 5b — FOUR FORMLESS ATTAINMENTS ══════ -->
+    <g id="formless" transform="translate(0, 576)">
+      <line x1="160" y1="0" x2="760" y2="0" stroke="#556070" stroke-opacity="0.2" stroke-width="0.5" />
+
+      <!-- Card 5: Boundless Space -->
+      <g id="formless-1" transform="translate(0, 14)">
+        <g filter="url(#shadowDrop)">
+          <rect x="100" y="0" width="720" height="58" rx="7" fill="url(#formless1)"
+            stroke="#5a7888" stroke-opacity="0.35" stroke-width="0.7" />
+        </g>
+        <circle cx="124" cy="29" r="10" fill="none" stroke="#7898b0" stroke-opacity="0.5" stroke-width="1" />
+        <text x="124" y="32" text-anchor="middle" fill="#7898b0"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">5</text>
+        <text x="150" y="22" fill="#a0b8d0"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Base of Boundless Space</text>
+        <text x="150" y="40" fill="#708090"
+          font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">‘ananto ākāso’ti ākāsānañcāyatanaṁ upasampajja viharati</text>
+        <!-- space-base icon -->
+        <g transform="translate(788, 16)" opacity="0.55" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(1.28) translate(-10, -10)">
+            <circle cx="10" cy="10" r="8" fill="none" stroke="#7888a0" stroke-width="0.5" stroke-dasharray="2,2" />
+            <circle cx="10" cy="10" r="4" fill="none" stroke="#7888a0" stroke-width="0.4" />
+          </g>
+        </g>
+      </g>
+
+      <!-- Card 6: Boundless Consciousness -->
+      <g id="formless-2" transform="translate(0, 84)">
+        <g filter="url(#shadowDrop)">
+          <rect x="110" y="0" width="700" height="58" rx="7" fill="url(#formless2)"
+            stroke="#5a7888" stroke-opacity="0.35" stroke-width="0.7" />
+        </g>
+        <circle cx="134" cy="29" r="10" fill="none" stroke="#7898b0" stroke-opacity="0.5" stroke-width="1" />
+        <text x="134" y="33" text-anchor="middle" fill="#7898b0"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">6</text>
+        <text x="160" y="22" fill="#a8bcd0"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Base of Boundless Consciousness</text>
+        <text x="160" y="40" fill="#708090"
+          font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">‘anantaṁ viññāṇan’ti viññāṇañcāyatanaṁ upasampajja viharati</text>
+        <!-- consciousness-base icon -->
+        <g transform="translate(778, 16)" opacity="0.55" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(1.28) translate(-10, -10)">
+            <circle cx="10" cy="10" r="8" fill="none" stroke="#7888a0" stroke-width="0.5" />
+            <circle cx="10" cy="10" r="5" fill="none" stroke="#7888a0" stroke-width="0.4" />
+            <circle cx="10" cy="10" r="2" fill="none" stroke="#7888a0" stroke-width="0.3" />
+          </g>
+        </g>
+      </g>
+
+      <!-- Card 7: Nothingness -->
+      <g id="formless-3" transform="translate(0, 154)">
+        <g filter="url(#shadowDrop)">
+          <rect x="120" y="0" width="680" height="58" rx="7" fill="url(#formless3)"
+            stroke="#5a7888" stroke-opacity="0.35" stroke-width="0.7" />
+        </g>
+        <circle cx="144" cy="29" r="10" fill="none" stroke="#88a098" stroke-opacity="0.5" stroke-width="1" />
+        <text x="144" y="32" text-anchor="middle" fill="#88a098"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">7</text>
+        <text x="170" y="22" fill="#b0c4b8"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Base of Nothingness</text>
+        <text x="170" y="40" fill="#708090"
+          font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">‘natthi kiñcī’ti ākiñcaññāyatanaṁ upasampajja viharati</text>
+        <!-- nothingness-base icon -->
+        <g transform="translate(768, 16)" opacity="0.55" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(1.45655) translate(-10, -10)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" stroke-dasharray="4,3" />
+          </g>
+        </g>
+      </g>
+
+      <!-- Card 8: Neither Perception Nor Non-Perception -->
+      <g id="formless-4" transform="translate(0, 224)">
+        <g filter="url(#shadowDrop)">
+          <rect x="130" y="0" width="660" height="58" rx="7" fill="url(#formless4)"
+            stroke="#5a7888" stroke-opacity="0.35" stroke-width="0.7" />
+        </g>
+        <circle cx="154" cy="29" r="10" fill="none" stroke="#a0a890" stroke-opacity="0.5" stroke-width="1" />
+        <text x="154" y="33" text-anchor="middle" fill="#a0a890"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">8</text>
+        <text x="180" y="22" fill="#c0c8b0"
+          font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Base of Neither Perception Nor Non-Perception</text>
+        <text x="180" y="40" fill="#708090"
+          font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">nevasaññānāsaññāyatanaṁ upasampajja viharati</text>
+        <!-- neither-base icon -->
+        <g transform="translate(758, 16)" opacity="0.55" filter="url(#iconGlow)">
+          <g transform="translate(12, 12) scale(1.45655) translate(-10, -10)">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.5" opacity="0.5" />
+            <circle cx="10" cy="10" r="7" fill="none" stroke="#7888a0" stroke-width="0.3" stroke-dasharray="1,3" />
+          </g>
+        </g>
+      </g>
+    </g>
+
+
+    <!-- ══════ 5c — CESSATION ══════ -->
+    <g id="cessation" transform="translate(0, 874)">
+      <g filter="url(#shadowDrop)">
+        <rect x="140" y="0" width="640" height="56" rx="8" fill="url(#cessationGrad)"
+          stroke="#c8a040" stroke-opacity="0.5" stroke-width="0.8" />
+      </g>
+      <circle cx="166" cy="28" r="10" fill="none" stroke="#c8a040" stroke-opacity="0.6" stroke-width="1" />
+      <text x="166" y="30" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">9</text>
+      <text x="192" y="24" fill="#e0c870"
+        font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">Cessation of Perception and What Is Felt</text>
+      <text x="192" y="42" fill="#a0a080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">saññāvedayitanirodhaṁ upasampajja viharati</text>
+      <!-- Cessation icon (intact vessel, no inner activity) -->
+      <g transform="translate(760, 32)" opacity="0.6" filter="url(#iconGlow)">
+        <ellipse cx="0" cy="-2" rx="8" ry="11" fill="#c8a040" fill-opacity="0.06" stroke="#c8a040" stroke-width="0.7" />
+        <circle cx="0" cy="-16" r="4" fill="none" stroke="#c8a040" stroke-width="0.6" />
+        <line x1="-4" y1="-6" x2="4" y2="-6" stroke="#c8a040" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+        <line x1="-5" y1="0" x2="5" y2="0" stroke="#c8a040" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+        <line x1="-4" y1="6" x2="4" y2="6" stroke="#c8a040" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+      </g>
+    </g>
+
+
+    <!-- ══════ 5d — LIBERATION (outside cessation card) ══════ -->
+    <g id="liberation" transform="translate(0, 920)">
+      <ellipse cx="460" cy="68" rx="250" ry="70" fill="url(#libGlow)" />
+
+      <!-- Liberation rect -->
+      <g filter="url(#shadowDrop)">
+        <rect x="150" y="28" width="620" height="100" rx="8" fill="url(#cessationGrad)"
+          stroke="#c8a040" stroke-opacity="0.3" stroke-width="0.7" />
+      </g>
+
+      <g filter="url(#glow1)">
+        <text x="460" y="56" text-anchor="middle" fill="#c8a040"
+          font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Having seen with wisdom, his mental defilements are completely exhausted</text>
+      </g>
+      <text x="460" y="74" text-anchor="middle" fill="#a0a080"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">paññāya cassa disvā āsavā parikkhīṇā honti</text>
+
+      <line x1="380" y1="84" x2="540" y2="84" stroke="#c8a040" stroke-opacity="0.15" stroke-width="0.5" />
+
+      <g filter="url(#glow2)">
+        <text x="460" y="102" text-anchor="middle" fill="#c8a040"
+          font-family="Georgia,'Times New Roman',serif" font-size="13" font-weight="bold"
+          opacity="0.9">He has crossed over entanglement in the world</text>
+      </g>
+      <text x="460" y="118" text-anchor="middle" fill="#c8a040"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+        opacity="0.8">tiṇṇo loke visattikan</text>
+
+      <!-- Liberation icon (defilements-ended, centered above rect) -->
+      <g transform="translate(730, 60)" opacity="0.65" filter="url(#glow1)">
+        <g transform="translate(12, 12) scale(1) translate(-2, 0)">
+          <g stroke="#c0a860" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+            <ellipse cx="-7" cy="0" rx="7" ry="9" />
+            <ellipse cx="11" cy="0" rx="7" ry="9" />
+            <line x1="0" y1="-5" x2="4" y2="-9" stroke-width="0.9" />
+            <line x1="0" y1="5" x2="4" y2="9" stroke-width="0.9" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- ╔════════════════════════════════════════════════╗ -->
+  <!-- ║  PHASE 8 — FOOTER                              ║ -->
+  <!-- ╚════════════════════════════════════════════════╝ -->
+  <g id="footer" transform="translate(0, 3252)">
+    <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn26" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="17" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn26</text>
+    </a>
+    <!-- Lotus motif -->
+    <g transform="translate(460, 36) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+      <circle cx="0" cy="-28" r="9" />
+    </g>
+  </g>
+</svg>
