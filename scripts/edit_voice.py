@@ -48,8 +48,10 @@ SSML rate with TTS_SPEAKING_RATE may compound speed—try API rate 1.0 if you se
 from __future__ import annotations
 
 import argparse
+import audioop
 import io
 import json
+import math
 import os
 import re
 import shutil
@@ -103,6 +105,7 @@ def _print_verbose_ssml(group_label: str, ssml: str) -> None:
 
 AUDIO_DIR = REPO_ROOT / "public" / "audio"
 CACHE_DIR = REPO_ROOT / ".cache" / "voice-edit"
+MAX_GAIN_MATCH_DB = 4.0
 
 
 def _print_voice_tts_settings() -> None:
@@ -277,10 +280,11 @@ def _decode_webm_to_wav(
 
 
 def _encode_wav_to_webm(wav_path: Path, webm_path: Path) -> None:
-    """Encode WAV to Opus/WebM."""
+    """Encode WAV to Opus/WebM with a gentle safety limiter."""
     cmd = (
         f'ffmpeg -y -i "{wav_path}" -c:a libopus -b:a 32k '
-        f'-vbr on -application voip -f webm "{webm_path}" -loglevel error 2>&1'
+        f'-vbr on -application voip -af "alimiter=limit=0.95:level=disabled" '
+        f'-f webm "{webm_path}" -loglevel error 2>&1'
     )
     ret = os.system(cmd)
     if ret != 0:
@@ -307,10 +311,58 @@ def _extract_wav_segment(
         return w.readframes(e_frame - s_frame)
 
 
+def _rms_dbfs(frames: bytes, sampwidth: int) -> float | None:
+    """Return RMS level in dBFS for PCM frames, or None if silent/empty."""
+    if not frames:
+        return None
+    rms = audioop.rms(frames, sampwidth)
+    if rms <= 0:
+        return None
+    full_scale = float((1 << (8 * sampwidth - 1)) - 1)
+    return 20.0 * math.log10(float(rms) / full_scale)
+
+
+def _apply_gain_to_wav_bytes(wav_bytes: bytes, gain_db: float) -> bytes:
+    """Apply gain in dB to WAV bytes, keeping parameters unchanged."""
+    if abs(gain_db) < 0.01:
+        return wav_bytes
+    in_buf = io.BytesIO(wav_bytes)
+    out_buf = io.BytesIO()
+    with wave.open(in_buf, "rb") as win:
+        params = win.getparams()
+        frames = win.readframes(win.getnframes())
+    factor = 10 ** (gain_db / 20.0)
+    out_frames = audioop.mul(frames, params.sampwidth, factor)
+    with wave.open(out_buf, "wb") as wout:
+        wout.setparams(params)
+        wout.writeframes(out_frames)
+    return out_buf.getvalue()
+
+
 def _silence_frames(duration_sec: float, framerate: int, sampwidth: int, nchannels: int) -> bytes:
     """Generate silent PCM frames."""
     n_frames = int(duration_sec * framerate)
     return b"\x00" * (n_frames * sampwidth * nchannels)
+
+
+def _match_retake_gain(
+    *,
+    retake_wav_bytes: bytes,
+    reference_frames: bytes,
+    sampwidth: int,
+    max_correction_db: float = MAX_GAIN_MATCH_DB,
+) -> tuple[bytes, float]:
+    """Match retake segment loudness to reference RMS with conservative clamping."""
+    ref_db = _rms_dbfs(reference_frames, sampwidth)
+    in_buf = io.BytesIO(retake_wav_bytes)
+    with wave.open(in_buf, "rb") as win:
+        retake_frames = win.readframes(win.getnframes())
+        retake_sampwidth = win.getsampwidth()
+    retake_db = _rms_dbfs(retake_frames, retake_sampwidth)
+    if ref_db is None or retake_db is None:
+        return retake_wav_bytes, 0.0
+    correction_db = max(-max_correction_db, min(max_correction_db, ref_db - retake_db))
+    return _apply_gain_to_wav_bytes(retake_wav_bytes, correction_db), correction_db
 
 
 def _cache_wav_path(slug: str) -> Path:
@@ -758,6 +810,26 @@ def retake_groups(
     current_wav = _ensure_cached_wav(slug, sample_rate=tts_rate, channels=tts_channels)
     wav_params = _get_wav_params(current_wav)
 
+    # Lightly loudness-match retaken groups to the segment they replace.
+    for gi in retake_group_indices:
+        g = tts_groups[gi]
+        pids = g["paragraphs"]
+        first_pi = pids[0]
+        old_start = float(g["start"])
+        old_end = float(g["end"])
+        if first_pi > 0:
+            prev_end = float(manifest_paragraphs[first_pi - 1]["end"])
+            old_start = max(old_start, prev_end)
+        reference_frames = _extract_wav_segment(current_wav, old_start, old_end)
+        adjusted, gain_db = _match_retake_gain(
+            retake_wav_bytes=retake_wavs[gi],
+            reference_frames=reference_frames,
+            sampwidth=wav_params.sampwidth,
+        )
+        retake_wavs[gi] = adjusted
+        if verbose:
+            print(f"  [gain-match] group {gi + 1}: {gain_db:+.2f} dB")
+
     # ── 5. Splice: concatenate all groups in order ───────────────────────
 
     combined_wav_path = AUDIO_DIR / f"{slug}.edit.tmp.wav"
@@ -998,6 +1070,24 @@ def retake_paragraphs_exact(
 
     current_wav = _ensure_cached_wav(slug, sample_rate=tts_rate, channels=tts_channels)
     wav_params = _get_wav_params(current_wav)
+
+    # Lightly loudness-match retaken paragraphs to the segment they replace.
+    for pi in retake_paragraph_indices:
+        old_para = paragraphs_in_manifest[pi]
+        old_start = float(old_para["start"])
+        old_end = float(old_para["end"])
+        if pi > 0:
+            prev_end = float(paragraphs_in_manifest[pi - 1]["end"])
+            old_start = max(old_start, prev_end)
+        reference_frames = _extract_wav_segment(current_wav, old_start, old_end)
+        adjusted, gain_db = _match_retake_gain(
+            retake_wav_bytes=retake_wavs[pi],
+            reference_frames=reference_frames,
+            sampwidth=wav_params.sampwidth,
+        )
+        retake_wavs[pi] = adjusted
+        if verbose:
+            print(f"  [gain-match] paragraph {pi + 1}: {gain_db:+.2f} dB")
 
     combined_wav_path = AUDIO_DIR / f"{slug}.retake-para.tmp.wav"
     new_boundaries: list[tuple[float, float]] = [None] * len(paragraph_specs)  # type: ignore[list-item]
