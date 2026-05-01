@@ -509,7 +509,7 @@
 .listen-autoplay-toggle-thumb {
 	position: absolute;
 	left: 2px;
-	top: 2px;
+	top: 50%;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -519,7 +519,13 @@
 	color: #0f0d0a;
 	border-radius: 999px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+	transform: translateY(-50%);
 	transition: transform 180ms ease;
+}
+/* Play triangles read optically right-heavy in a circle; nudge left for even balance. */
+.listen-autoplay-toggle-thumb svg {
+	display: block;
+	transform: translateX(-0.75px);
 }
 .listen-autoplay-toggle[aria-pressed="true"] {
 	border-color: rgba(214, 199, 155, 0.28);
@@ -529,7 +535,7 @@
 	background: #d6c79b;
 }
 .listen-autoplay-toggle[aria-pressed="true"] .listen-autoplay-toggle-thumb {
-	transform: translateX(16px);
+	transform: translateY(-50%) translateX(16px);
 }
 
 /* Single-button cyclic speed control. Tap cycles through SPEED_RATES. */
@@ -758,18 +764,25 @@
 	.listen-chip {
 		padding-inline: 0.55rem;
 	}
+	/* Slightly larger than desktop thumb so the control stays easy to see on small screens. */
 	.listen-autoplay-toggle {
-		min-width: 38px;
+		min-width: 44px;
 	}
 	.listen-autoplay-toggle-track {
-		width: 30px;
+		width: 36px;
+		height: 20px;
 	}
 	.listen-autoplay-toggle-thumb {
-		width: 12px;
-		height: 12px;
+		width: 16px;
+		height: 16px;
+	}
+	.listen-autoplay-toggle-thumb svg {
+		width: 10px;
+		height: 10px;
+		transform: translateX(-1px);
 	}
 	.listen-autoplay-toggle[aria-pressed="true"] .listen-autoplay-toggle-thumb {
-		transform: translateX(14px);
+		transform: translateY(-50%) translateX(16px);
 	}
 	#listen-queue-label {
 		max-width: 6.4rem;
