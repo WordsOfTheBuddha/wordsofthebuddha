@@ -185,8 +185,10 @@ function renderWordSpans(
 	};
 
 	// Words from the manifest carry punctuation in-token (e.g. "Bhikkhus,").
-	// Pure-punctuation tokens (rare) don't get a leading space.
-	const isPunctOnly = (s: string): boolean => /^[,.;:!?]+$/.test(s);
+	// A lone single-character punct token (comma, sentence end, etc.) doesn't get a
+	// leading space — it's glued to the prior word visually. Multi-char punct-only
+	// tokens (e.g. "...") keep normal word spacing before them.
+	const isPunctOnly = (s: string): boolean => /^[,.;:!?]$/.test(s);
 	// Opening punctuation should not be followed by an injected space.
 	// Example: token stream ["“", "dwell"] should render as `“Dwell`, not `“ Dwell`.
 	const isOpeningPunctOnly = (s: string): boolean => /^[([{“‘]+$/.test(s.trim());
