@@ -1,6 +1,6 @@
 ---
 title: Somanassa sutta - Joy
-description: A bhikkhu endowed with two qualities of being moved on occasions that inspire a sense of urgency and by wisely striving when aroused with urgency, dwells in the here and now with abundant ease and joy, and his mind is directed towards the wearing away of the mental defilements.
+description: A bhikkhu endowed with two qualities of being moved on occasions that inspire a sense of urgency and by wisely striving when aroused with urgency, dwells in the here and now with abundant ease and joy, and his mind is directed towards the wearing away of the taints.
 qualities: happiness, ending, right effort, imperturbable, tranquility, continuous effort, examination, joy
 theme: inspiration, wisdom
 slug: iti37

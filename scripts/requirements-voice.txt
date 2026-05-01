@@ -1,4 +1,6 @@
 # PoC: TTS + forced alignment (install in a venv: python3 -m venv .venv-voice && source .venv-voice/bin/activate)
+# Python 3.13+ removed stdlib audioop; edit_voice.py uses it for RMS/gain.
+audioop-lts>=0.2.0
 google-cloud-texttospeech>=2.16.0
 stable-ts>=2.19.0
 whisperx>=3.8.0
