@@ -1985,12 +1985,12 @@ export function initListenMode(initial: ListenInitialData): void {
 			}
 			return;
 		}
-		if (e.key === "ArrowLeft" && !isRange) {
+		if (e.key === "ArrowLeft") {
 			e.preventDefault();
 			void onPrev();
 			return;
 		}
-		if (e.key === "ArrowRight" && !isRange) {
+		if (e.key === "ArrowRight") {
 			e.preventDefault();
 			void onNext();
 			return;
