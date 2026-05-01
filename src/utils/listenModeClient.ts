@@ -167,7 +167,18 @@ function renderWordSpans(
 	lineSizes?: number[],
 ): void {
 	const hasLetter = (s: string): boolean => /\p{L}/u.test(s);
-	const endsSentence = (s: string): boolean => /[.!?]["'”’)\]]*$/.test(s.trim());
+	const isPeriodOnlyToken = (s: string): boolean => /^\.+$/.test(s.trim());
+	/** Sentence end for display caps — excludes ellipses used as pauses between phrases. */
+	const endsSentence = (s: string): boolean => {
+		const t = s.trim();
+		if (!t) return false;
+		// Token is only two or more dots (e.g. "..." or "..") — not a full stop.
+		if (isPeriodOnlyToken(t) && t.length >= 2) return false;
+		// Word ends with an ellipsis run (e.g. "food...") or unicode ellipsis.
+		if (/\.{2,}["'”’)\]]*$/.test(t)) return false;
+		if (/[\u2026]["'”’)\]]*$/.test(t)) return false;
+		return /[.!?]["'”’)\]]*$/.test(t);
+	};
 	const capitalizeFirstLetter = (s: string): string => {
 		for (let i = 0; i < s.length; i++) {
 			const ch = s[i];
@@ -228,7 +239,24 @@ function renderWordSpans(
 		span.textContent = displayWord;
 		parent.appendChild(span);
 
-		if (endsSentence(displayWord)) {
+		const trimmedDisplay = displayWord.trim();
+		// A run of several "." tokens (split alignment) is an ellipsis, not "." × 3 sentence ends.
+		if (isPeriodOnlyToken(trimmedDisplay) && trimmedDisplay.length === 1) {
+			let runStart = i;
+			while (runStart > 0 && isPeriodOnlyToken(words[runStart - 1]?.w ?? "")) {
+				runStart--;
+			}
+			let runEnd = i;
+			while (
+				runEnd + 1 < words.length &&
+				isPeriodOnlyToken(words[runEnd + 1]?.w ?? "")
+			) {
+				runEnd++;
+			}
+			if (runEnd - runStart + 1 === 1) {
+				shouldCapitalizeNext = true;
+			}
+		} else if (endsSentence(displayWord)) {
 			shouldCapitalizeNext = true;
 		} else if (hasLetter(displayWord)) {
 			shouldCapitalizeNext = false;
