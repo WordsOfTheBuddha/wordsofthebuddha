@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+if [ ! -f "scripts/detect-rerecord-impact.py" ]; then
+  exit 0
+fi
+
+python3 scripts/detect-rerecord-impact.py --rev-range HEAD^..HEAD --format pretty || true
+

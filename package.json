@@ -34,6 +34,7 @@
 		"voice:pull": ".venv-voice/bin/python scripts/sync_audio_r2.py pull",
 		"voice:status": "node scripts/generate-audio-status.mjs",
 		"voice:titles": "node scripts/generate-audio-titles.mjs",
+		"voice:rerecord-impact": "python3 scripts/detect-rerecord-impact.py --rev-range HEAD --format pretty",
 		"gen:playlists": "node scripts/generate-playlists.mjs",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
 		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py"
