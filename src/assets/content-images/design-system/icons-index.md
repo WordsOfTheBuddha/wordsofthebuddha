@@ -102,7 +102,7 @@ Generated from `icons-manifest.json` (version 1).
 | simile-cultivated-wet-wood | Cultivated: wet sappy wood | mn119 | cultivation, non harm, wholesome | line-art | `icons/simile-cultivated-wet-wood.svg` |
 | simile-cultivated-full-jar | Cultivated: full jar | mn119 | cultivation, non harm, wholesome | line-art | `icons/simile-cultivated-full-jar.svg` |
 | chariot-wheel | Skilled charioteer | mn119 | direct knowledge | line-art | `icons/chariot-wheel.svg` |
-| defilements-ended | Ending of mental defilements | mn39, mn6, mn25, mn119 | awakening, ending, liberation, psychic power, safety | line-art, gold, mn39 | `icons/defilements-ended.svg` |
+| defilements-ended | Ending of taints | mn39, mn6, mn25, mn119 | awakening, ending, liberation, psychic power, safety | line-art, gold, mn39 | `icons/defilements-ended.svg` |
 | conceit-noble-birth | Conceit motif: noble birth | mn113 | conceit | line-art, mn113 | `icons/conceit-noble-birth.svg` |
 | conceit-wealth | Conceit motif: abundant wealth | mn113 | conceit | line-art, mn113 | `icons/conceit-wealth.svg` |
 | conceit-fame | Conceit motif: recognition and fame | mn113 | conceit | line-art, mn113 | `icons/conceit-fame.svg` |

@@ -113,7 +113,7 @@
     <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
     <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">TWO KINDS OF QUESTS · DVEMĀ PARIYESANĀ</text>
     <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Being subject to what changes, one either seeks more of it — or, having understood the drawback, seeks release</text>
-    <text x="460" y="71" text-anchor="middle" fill="#586878" font-size="10.5" font-style="italic" opacity="0.85">“ children, spouse, servants, livestock, gold and silver — all subject to birth, aging, illness, death ”</text>
+    <text x="460" y="71" text-anchor="middle" fill="#586878" font-size="10.5" font-style="italic" opacity="0.85">“ children, spouse, servants, livestock, gold and silver — all subject to birth, aging, illness, death, sorrow, defilement ”</text>
 
     <!-- Hinge band: ādīnavaṁ viditvā -->
     <g id="quest-hinge" transform="translate(0, 96)">
@@ -297,7 +297,7 @@
   <g id="two-teachers" transform="translate(0, 1040)">
     <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
     <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">TWO TEACHERS · ATTAINMENT AND SUBSEQUENT DEPARTURE</text>
-    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">The most refined samādhis still leads to re-appearance in subtle realms — not Nibbāna</text>
+    <text x="460" y="51" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">The most refined samādhis still lead to re-appearance in subtle realms — not Nibbāna</text>
 
     <g id="teacher-cards" transform="translate(70, 74)">
 
@@ -796,7 +796,7 @@
 
       <g filter="url(#glow1)">
         <text x="460" y="56" text-anchor="middle" fill="#c8a040"
-          font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Having seen with wisdom, his mental defilements are completely exhausted</text>
+          font-family="Georgia,'Times New Roman',serif" font-size="11.5" font-weight="bold">Having seen with wisdom, his taints are completely exhausted</text>
       </g>
       <text x="460" y="74" text-anchor="middle" fill="#a0a080"
         font-family="Georgia,'Times New Roman',serif" font-size="10" font-style="italic">paññāya cassa disvā āsavā parikkhīṇā honti</text>
