@@ -1,11 +1,8 @@
 ---
-title: Dutiya esan sutta - Quest (Second)
-description: The Buddha describes the three quests of sensual pleasure, renewed existence, and spiritual life as the result of holding tight to the thought 'This is the truth' and the accumulation of bases for views.
-qualities: sensual desire, self-making, giving up, attachment, dispassion, quenching, ending
-theme: cultivating discernment, wisdom
-topic: quest
-fetter: doubt, sensual desire, desire for fine-material existence, desire for immaterial existence, ignorance
-tags: iti, iti50-99, quest, pursuit, sensual pleasure, renewed existence, spiritual life, cessation, cease, desireless, fulfilled, without doubt, buddha
+title: Dutiya esanā sutta - Quest (Second)
+description: The Buddha describes the three quests of sensual pleasure, renewed existence, and spiritual life as the result of holding tight to the thought ‘This is the truth’ and the accumulation of bases for views.
+qualities: sensual desire, self-making, spiritual life, giving up, attachment, speculation, quest
+theme: cultivating discernment, wisdom, inspiration
 slug: iti55
 ---
 

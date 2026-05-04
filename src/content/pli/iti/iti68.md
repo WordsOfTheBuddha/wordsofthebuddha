@@ -1,10 +1,9 @@
 ---
 title: Paṭhama rāga sutta - Passion (First)
-description: Whoever has not let go of passion, aversion, and delusion is said to be bound by Māra, ensnared by Māra's trap, at the mercy of the Evil One, and subject to his will.
+description: Whoever has not let go of passion, aversion, and delusion is said to be bound by Māra, ensnared by Māra’s trap, and subject to the will of the Evil One.
 qualities: passion, aversion, delusion, ignorance, truth, giving up
 theme: cultivating discernment, inspiration
 slug: iti68
-simile: ocean
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

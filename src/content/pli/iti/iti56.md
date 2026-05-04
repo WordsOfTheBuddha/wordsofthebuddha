@@ -1,10 +1,8 @@
 ---
-title: Paṭhama āsava sutta - Defilements (First)
-description: The Buddha describes the three defilements - the taint of sensual desire, the taint of becoming, and the taint of ignorance, and the way of practice leading to their cessation.
-qualities: sensual desire, self-making, ignorance, collectedness, clear awareness, mindfulness, discernment, ending
-theme: cultivating discernment
-fetter: sensual desire, desire for material existence, desire for immaterial existence, ignorance
-tags: defilement, taint, sensual desire, being, existence, ignorance, discernment, quenching, collectedness, clearly aware, mindfulness, cessation, craving, iti, iti50-99
+title: Paṭhama āsava sutta - Taints (First)
+description: The Buddha describes the three taints - the taint of sensual desire, the taint of becoming, and the taint of ignorance, and the way of practice leading to their cessation.
+qualities: sensual desire, self-making, ignorance, ending
+theme: cultivating discernment, inspiration
 slug: iti56
 ---
 

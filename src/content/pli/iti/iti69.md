@@ -1,6 +1,6 @@
 ---
 title: Dutiya rāga sutta - Passion (Second)
-description: Whoever has let go of passion, aversion, and delusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, lurking with fierce animals and monsters.
+description: Whoever has let go of passion, aversion, and delusion is called one who has crossed beyond the ocean—with its waves, currents, whirlpools, fierce beasts, and monsters.
 qualities: passion, aversion, delusion, ignorance, giving up, free from attachment
 theme: cultivating discernment, inspiration
 slug: iti69

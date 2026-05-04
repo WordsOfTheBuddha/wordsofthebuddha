@@ -1,7 +1,7 @@
 ---
 title: Soceyya sutta - Purity
 description: The Buddha describes the three kinds of purity - by body, speech and mind.
-qualities: ethical conduct, non-harm, giving up
+qualities: ethical conduct, giving up
 theme: inspiration, wisdom
 slug: iti66
 ---

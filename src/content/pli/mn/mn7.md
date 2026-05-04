@@ -11,9 +11,13 @@ Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane a
 
 “Bhadante”ti te bhikkhū bhagavato paccassosuṁ. Bhagavā etadavoca:
 
+### The Simile of the Cloth
+
 “Seyyathāpi, bhikkhave, vatthaṁ saṅkiliṭṭhaṁ malaggahitaṁ; tamenaṁ rajako yasmiṁ yasmiṁ raṅgajāte upasaṁhareyya—yadi nīlakāya yadi pītakāya yadi lohitakāya yadi mañjiṭṭhakāya durattavaṇṇamevassa aparisuddhavaṇṇamevassa. Taṁ kissa hetu? Aparisuddhattā, bhikkhave, vatthassa. Evameva kho, bhikkhave, citte saṅkiliṭṭhe, duggati pāṭikaṅkhā.
 
 Seyyathāpi, bhikkhave, vatthaṁ parisuddhaṁ pariyodātaṁ; tamenaṁ rajako yasmiṁ yasmiṁ raṅgajāte upasaṁhareyya—yadi nīlakāya yadi pītakāya yadi lohitakāya yadi mañjiṭṭhakāya—surattavaṇṇamevassa parisuddhavaṇṇamevassa. Taṁ kissa hetu? Parisuddhattā, bhikkhave, vatthassa. Evameva kho, bhikkhave, citte asaṅkiliṭṭhe, sugati pāṭikaṅkhā.
+
+#### Impurities of the Mind
 
 Katame ca, bhikkhave, cittassa upakkilesā? Abhijjhāvisamalobho cittassa upakkileso, byāpādo cittassa upakkileso, kodho cittassa upakkileso, upanāho cittassa upakkileso, makkho cittassa upakkileso, paḷāso cittassa upakkileso, issā cittassa upakkileso, macchariyaṁ cittassa upakkileso, māyā cittassa upakkileso, sāṭheyyaṁ cittassa upakkileso, thambho cittassa upakkileso, sārambho cittassa upakkileso, māno cittassa upakkileso, atimāno cittassa upakkileso, mado cittassa upakkileso, pamādo cittassa upakkileso.
 
@@ -28,6 +32,8 @@ saṅghe aveccappasādena samannāgato hoti: ‘suppaṭipanno bhagavato sāvaka
 Yathodhi kho panassa cattaṁ hoti vantaṁ muttaṁ pahīnaṁ paṭinissaṭṭhaṁ, so ‘buddhe aveccappasādena samannāgatomhī’ti labhati atthavedaṁ, labhati dhammavedaṁ, labhati dhammūpasaṁhitaṁ pāmojjaṁ. Pamuditassa pīti jāyati, pītimanassa kāyo passambhati, passaddhakāyo sukhaṁ vedeti, sukhino cittaṁ samādhiyati; ‘dhamme …pe… saṅghe aveccappasādena samannāgatomhī’ti labhati atthavedaṁ, labhati dhammavedaṁ, labhati dhammūpasaṁhitaṁ pāmojjaṁ; pamuditassa pīti jāyati, pītimanassa kāyo passambhati, passaddhakāyo sukhaṁ vedeti, sukhino cittaṁ samādhiyati. ‘Yathodhi kho pana me cattaṁ vantaṁ muttaṁ pahīnaṁ paṭinissaṭṭhan’ti labhati atthavedaṁ, labhati dhammavedaṁ, labhati dhammūpasaṁhitaṁ pāmojjaṁ; pamuditassa pīti jāyati, pītimanassa kāyo passambhati, passaddhakāyo sukhaṁ vedeti, sukhino cittaṁ samādhiyati.
 
 Sa kho so, bhikkhave, bhikkhu evaṁsīlo evaṁdhammo evaṁpañño sālīnañcepi piṇḍapātaṁ bhuñjati vicitakāḷakaṁ anekasūpaṁ anekabyañjanaṁ, nevassa taṁ hoti antarāyāya. Seyyathāpi, bhikkhave, vatthaṁ saṅkiliṭṭhaṁ malaggahitaṁ acchodakaṁ āgamma parisuddhaṁ hoti pariyodātaṁ, ukkāmukhaṁ vā panāgamma jātarūpaṁ parisuddhaṁ hoti pariyodātaṁ; evameva kho, bhikkhave, bhikkhu evaṁsīlo evaṁdhammo evaṁpañño sālīnañcepi piṇḍapātaṁ bhuñjati vicitakāḷakaṁ anekasūpaṁ anekabyañjanaṁ, nevassa taṁ hoti antarāyāya.
+
+### Divine Abodes and Liberation
 
 So mettāsahagatena cetasā ekaṁ disaṁ pharitvā viharati, tathā dutiyaṁ, tathā tatiyaṁ, tathā catutthaṁ. Iti uddhamadho tiriyaṁ sabbadhi sabbattatāya sabbāvantaṁ lokaṁ mettāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā viharati; karuṇāsahagatena cetasā …pe… muditāsahagatena cetasā …pe… upekkhāsahagatena cetasā ekaṁ disaṁ pharitvā viharati, tathā dutiyaṁ, tathā tatiyaṁ, tathā catutthaṁ. Iti uddhamadho tiriyaṁ sabbadhi sabbattatāya sabbāvantaṁ lokaṁ upekkhāsahagatena cetasā vipulena mahaggatena appamāṇena averena abyāpajjena pharitvā viharati.
 

@@ -1,6 +1,6 @@
 ---
 title: Puññakiriyavatthu sutta - Bases for Making Merit
-description: The Buddha shares the three bases for making merit through 1) giving, 2) ethical conduct, and 3) cultivating a mind of loving-kindness.
+description: The Buddha shares the three bases for making merit through 1.) giving, 2.) ethical conduct, and 3.) cultivating a mind of loving-kindness.
 qualities: giving, ethical conduct, loving-kindness, cultivation
 theme: inspiration, principle
 slug: iti60

@@ -1,10 +1,8 @@
 ---
-title: Dutiya āsava sutta - Defilements (Second)
-description: The Buddha describes the three defilements - the taint of sensual desire, the taint of becoming, and the taint of ignorance, and one who is free from them.
-qualities: sensual desire, self-making, ignorance, ending, dispassion
-theme: wisdom, principle
-fetter: sensual desire, desire for material existence, desire for immaterial existence, ignorance
-tags: defilement, taint, sensual desire, being, existence, ignorance, attachment, release, Māra, iti, iti50-99
+title: Dutiya āsava sutta - Taints (Second)
+description: The Buddha describes the three taints - the taint of sensual desire, the taint of becoming, and the taint of ignorance, and the one who is free from them.
+qualities: sensual desire, self-making, ignorance, ending
+theme: wisdom, inspiration
 slug: iti57
 ---
 

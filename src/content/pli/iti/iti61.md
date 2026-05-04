@@ -1,10 +1,8 @@
 ---
 title: Cakkhu sutta - Eyesight
-description: The Buddha declares the three types of eyesight - 1) the physical eye, 2) the divine eye, and 3) the eye of wisdom. The eye of wisdom is unsurpassed of the three.
-qualities: wisdom
-theme: cultivating discernment, wisdom
-fetter: ignorance
-tags: eyesight, physical eye, divine eye, eye of wisdom, vision, insight, iti, iti50-99
+description: The Buddha declares the three types of eyesight - 1.) the physical eye, 2.) the divine eye, and 3.) the eye of wisdom. The eye of wisdom is unsurpassed of the three.
+qualities: wisdom, insight
+theme: wisdom, inspiration
 slug: iti61
 ---
 
