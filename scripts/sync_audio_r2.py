@@ -13,12 +13,17 @@ Usage:
   python scripts/sync_audio_r2.py push              # upload all local → R2
   python scripts/sync_audio_r2.py push dhp1-20      # upload one discourse
   python scripts/sync_audio_r2.py push mn10,mn11    # upload several (comma-separated slugs)
-  python scripts/sync_audio_r2.py push --dry-run    # list files that would upload, with reasons
+  python scripts/sync_audio_r2.py push --dry-run    # list files that would upload (age-safe)
   python scripts/sync_audio_r2.py pull              # download R2 → local (skip when local MD5 matches ETag)
   python scripts/sync_audio_r2.py pull mn10         # same, one discourse slug
   python scripts/sync_audio_r2.py pull mn10,mn11    # pull several discourses
   python scripts/sync_audio_r2.py pull --force      # re-download all, ignoring MD5 match
-  python scripts/sync_audio_r2.py pull --dry-run    # list files that would download, with reasons
+  python scripts/sync_audio_r2.py pull -F           # same (--force)
+  python scripts/sync_audio_r2.py pull --dry-run    # list files that would download (age-safe)
+
+  When MD5 differs, push/pull use manifest generatedAt so older content does not overwrite
+  newer on the other side; --dry-run omits blocked files and summarizes them.
+  Use --force / -F to ignore MD5, age checks, and overwrite anyway.
 
 Env vars (set in .env or export):
   R2_ACCOUNT_ID          Cloudflare account ID
@@ -30,8 +35,10 @@ Env vars (set in .env or export):
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
+from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -181,16 +188,88 @@ def _fetch_remote_etags_bulk(s3, bucket: str, slugs: list[str] | None) -> dict[s
     return out
 
 
+def _parse_generated_at_iso(raw: str | None) -> datetime | None:
+    """Parse manifest generatedAt (ISO-8601; treats naive as UTC)."""
+    if not raw or not isinstance(raw, str):
+        return None
+    t = raw.strip()
+    if not t:
+        return None
+    if t.endswith("Z"):
+        t = t[:-1] + "+00:00"
+    try:
+        dt = datetime.fromisoformat(t)
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def _local_manifest_generated_at(manifest_path: Path) -> datetime | None:
+    try:
+        with open(manifest_path, encoding="utf-8") as fh:
+            data = json.load(fh)
+        return _parse_generated_at_iso(data.get("generatedAt"))
+    except (OSError, json.JSONDecodeError, TypeError, UnicodeDecodeError):
+        return None
+
+
+def _remote_manifest_generated_at(
+    s3,
+    bucket: str,
+    manifest_key: str,
+    cache: dict[str, datetime | None],
+) -> datetime | None:
+    if manifest_key in cache:
+        return cache[manifest_key]
+    try:
+        obj = s3.get_object(Bucket=bucket, Key=manifest_key)
+        body = obj["Body"].read()
+        data = json.loads(body.decode("utf-8"))
+        dt = _parse_generated_at_iso(data.get("generatedAt"))
+    except Exception:
+        dt = None
+    cache[manifest_key] = dt
+    return dt
+
+
+def _pair_generated_ats_for_audio_object(
+    *,
+    key: str,
+    local_audio_path: Path,
+    s3,
+    bucket: str,
+    remote_gen_at_cache: dict[str, datetime | None],
+) -> tuple[datetime | None, datetime | None]:
+    """
+    Timestamps from `{slug}.manifest.json` for both .manifest.json and .webm keys
+    (paired discourse assets share generatedAt).
+    """
+    if key.endswith(".manifest.json"):
+        ldt = _local_manifest_generated_at(local_audio_path)
+        rdt = _remote_manifest_generated_at(s3, bucket, key, remote_gen_at_cache)
+        return ldt, rdt
+    if key.endswith(".webm"):
+        stem = Path(key).stem
+        mk = f"{stem}.manifest.json"
+        lmanifest = AUDIO_DIR / mk
+        ldt = _local_manifest_generated_at(lmanifest)
+        rdt = _remote_manifest_generated_at(s3, bucket, mk, remote_gen_at_cache)
+        return ldt, rdt
+    return None, None
+
+
 def _human_upload_reason(
     *,
     force: bool,
-    local_hash: str,
-    remote_etag: str | None,
     remote_missing: bool,
     remote_error: str | None,
+    local_dt: datetime | None,
+    remote_dt: datetime | None,
 ) -> str:
     if force:
-        return "would upload because --force was set (ignores remote comparison)"
+        return "would upload because --force / -F was set (ignores remote comparison)"
     if remote_error:
         return (
             f"would upload — could not compare to remote ({remote_error}); "
@@ -198,16 +277,44 @@ def _human_upload_reason(
         )
     if remote_missing:
         return "would upload — no object with this key on remote (new upload)"
-    return "would upload — local file differs from remote (MD5 ≠ remote ETag)"
+    if local_dt is not None and remote_dt is not None:
+        if local_dt > remote_dt:
+            return (
+                "would upload — local newer than remote (manifest generatedAt), "
+                "MD5 differs from remote ETag"
+            )
+        if local_dt == remote_dt:
+            return (
+                "would upload — MD5 differs from remote ETag "
+                "(same manifest generatedAt)"
+            )
+    return "would upload — differs from remote (MD5 ≠ remote ETag)"
 
 
-def _human_pull_reason(*, force: bool, local_exists: bool) -> str:
+def _human_pull_reason(
+    *,
+    force: bool,
+    local_exists: bool,
+    local_dt: datetime | None,
+    remote_dt: datetime | None,
+) -> str:
     """Reason text for pull --dry-run (only called when a download would occur)."""
     if force:
-        return "would download because --force was set (ignores local comparison)"
+        return "would download because --force / -F was set (ignores local comparison)"
     if not local_exists:
         return "would download — no local file yet"
-    return "would download — local file differs from remote (MD5 ≠ remote ETag)"
+    if local_dt is not None and remote_dt is not None:
+        if remote_dt > local_dt:
+            return (
+                "would download — remote newer than local (manifest generatedAt), "
+                "MD5 differs from local file"
+            )
+        if remote_dt == local_dt:
+            return (
+                "would download — MD5 differs from remote ETag "
+                "(same manifest generatedAt)"
+            )
+    return "would download — differs from remote (MD5 ≠ remote ETag)"
 
 
 def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run: bool = False) -> None:
@@ -221,6 +328,7 @@ def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
 
     uploaded = 0
     skipped = 0
+    skipped_local_older = 0
 
     # --force: skip remote listing and MD5; upload every file (fast path for full re-push).
     if force:
@@ -228,10 +336,10 @@ def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
             if dry_run:
                 reason = _human_upload_reason(
                     force=True,
-                    local_hash="",
-                    remote_etag=None,
                     remote_missing=False,
                     remote_error=None,
+                    local_dt=None,
+                    remote_dt=None,
                 )
                 print(f"  ↑ {f.name} — {reason}")
                 uploaded += 1
@@ -263,6 +371,7 @@ def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
 
     remote_etags = _fetch_remote_etags_bulk(s3, bucket, slugs)
     local_hashes = _local_md5_parallel(files)
+    remote_gen_at_cache: dict[str, datetime | None] = {}
 
     for f in files:
         key = f.name
@@ -270,23 +379,48 @@ def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
         remote_etag = remote_etags.get(key)
         remote_missing = key not in remote_etags
 
+        if remote_etag and local_hash.lower() == remote_etag.lower():
+            if not dry_run:
+                skipped += 1
+            continue
+
+        if remote_missing:
+            local_dt, remote_dt = None, None
+        else:
+            local_dt, remote_dt = _pair_generated_ats_for_audio_object(
+                key=key,
+                local_audio_path=f,
+                s3=s3,
+                bucket=bucket,
+                remote_gen_at_cache=remote_gen_at_cache,
+            )
+        if (
+            local_dt is not None
+            and remote_dt is not None
+            and local_dt < remote_dt
+        ):
+            if dry_run:
+                skipped_local_older += 1
+            else:
+                print(
+                    f"  ⊘ {f.name} — skipped: local older than remote "
+                    "(manifest generatedAt); use --force / -F to overwrite"
+                )
+                skipped_local_older += 1
+            continue
+
         if dry_run:
-            if remote_etag and local_hash.lower() == remote_etag.lower():
-                continue
             reason = _human_upload_reason(
                 force=False,
-                local_hash=local_hash,
-                remote_etag=remote_etag,
                 remote_missing=remote_missing,
                 remote_error=None,
+                local_dt=local_dt,
+                remote_dt=remote_dt,
             )
             print(f"  ↑ {f.name} — {reason}")
             uploaded += 1
             continue
 
-        if remote_etag and local_hash.lower() == remote_etag.lower():
-            skipped += 1
-            continue
         content_type = "audio/webm" if f.suffix == ".webm" else "application/json"
         cache = (
             "public, max-age=31536000, immutable"
@@ -308,14 +442,27 @@ def push(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
             print(f"Dry run: would upload {uploaded} file(s).")
         else:
             print("Dry run: nothing to upload.")
+        if skipped_local_older:
+            print(
+                f"  ({skipped_local_older} file(s) omitted: local older than remote "
+                "(manifest generatedAt); use --force / -F to include them)"
+            )
     else:
-        print(f"Pushed {uploaded} file(s), {skipped} unchanged.")
+        tail = f"Pushed {uploaded} file(s), {skipped} unchanged."
+        if skipped_local_older:
+            tail += (
+                f" Skipped {skipped_local_older} (local older than remote; "
+                "use --force / -F)."
+            )
+        print(tail)
 
 
 def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run: bool = False) -> None:
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     pulled = 0
     skipped = 0
+    skipped_remote_older = 0
+    remote_gen_at_cache: dict[str, datetime | None] = {}
     paginator = s3.get_paginator("list_objects_v2")
     allowed: set[str] | None = None
     list_prefix = ""
@@ -347,18 +494,49 @@ def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
             if dry_run:
                 exists = local.is_file()
                 if force:
-                    would_pull = True
-                    reason = _human_pull_reason(force=True, local_exists=exists)
-                elif not exists:
-                    would_pull = True
-                    reason = _human_pull_reason(force=False, local_exists=False)
-                else:
-                    local_hash = _local_md5(local).lower()
-                    would_pull = not (remote_hash and local_hash == remote_hash)
-                    if not would_pull:
-                        skipped += 1
-                        continue
-                    reason = _human_pull_reason(force=False, local_exists=True)
+                    reason = _human_pull_reason(
+                        force=True,
+                        local_exists=exists,
+                        local_dt=None,
+                        remote_dt=None,
+                    )
+                    print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)} — {reason}")
+                    pulled += 1
+                    continue
+                if not exists:
+                    reason = _human_pull_reason(
+                        force=False,
+                        local_exists=False,
+                        local_dt=None,
+                        remote_dt=None,
+                    )
+                    print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)} — {reason}")
+                    pulled += 1
+                    continue
+                local_hash = _local_md5(local).lower()
+                if remote_hash and local_hash == remote_hash:
+                    skipped += 1
+                    continue
+                local_dt, remote_dt = _pair_generated_ats_for_audio_object(
+                    key=key,
+                    local_audio_path=local,
+                    s3=s3,
+                    bucket=bucket,
+                    remote_gen_at_cache=remote_gen_at_cache,
+                )
+                if (
+                    local_dt is not None
+                    and remote_dt is not None
+                    and remote_dt < local_dt
+                ):
+                    skipped_remote_older += 1
+                    continue
+                reason = _human_pull_reason(
+                    force=False,
+                    local_exists=True,
+                    local_dt=local_dt,
+                    remote_dt=remote_dt,
+                )
                 print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)} — {reason}")
                 pulled += 1
                 continue
@@ -368,6 +546,24 @@ def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
                 if remote_hash and local_hash == remote_hash:
                     skipped += 1
                     continue
+                local_dt, remote_dt = _pair_generated_ats_for_audio_object(
+                    key=key,
+                    local_audio_path=local,
+                    s3=s3,
+                    bucket=bucket,
+                    remote_gen_at_cache=remote_gen_at_cache,
+                )
+                if (
+                    local_dt is not None
+                    and remote_dt is not None
+                    and remote_dt < local_dt
+                ):
+                    print(
+                        f"  ⊘ {key} — skipped: remote older than local "
+                        "(manifest generatedAt); use --force / -F to overwrite"
+                    )
+                    skipped_remote_older += 1
+                    continue
             print(f"  ↓ s3://{bucket}/{key} → {local.relative_to(REPO_ROOT)}")
             s3.download_file(bucket, key, str(local))
             pulled += 1
@@ -376,8 +572,22 @@ def pull(s3, bucket: str, slugs: list[str] | None, force: bool = False, dry_run:
             print(f"Dry run: would download {pulled} file(s).")
         else:
             print("Dry run: nothing to download.")
+        if skipped_remote_older:
+            print(
+                f"  ({skipped_remote_older} file(s) omitted: remote older than local "
+                "(manifest generatedAt); use --force / -F to include them)"
+            )
     else:
-        print(f"Pulled {pulled} file(s), skipped {skipped} unchanged (local MD5 matches remote ETag).")
+        tail = (
+            f"Pulled {pulled} file(s), skipped {skipped} unchanged "
+            "(local MD5 matches remote ETag)."
+        )
+        if skipped_remote_older:
+            tail += (
+                f" Skipped {skipped_remote_older} (remote older than local; "
+                "use --force / -F)."
+            )
+        print(tail)
 
 
 def main() -> int:
@@ -393,11 +603,13 @@ def main() -> int:
     )
     parser.add_argument("--bucket", default=None, help=f"R2 bucket name (default: {DEFAULT_BUCKET})")
     parser.add_argument(
+        "-F",
         "--force",
         action="store_true",
         help=(
-            "Push: bypass MD5 check and always upload (useful when R2 ETag is stale/wrong). "
-            "Pull: download even when local MD5 already matches remote ETag."
+            "Push: bypass MD5 / generatedAt checks and always upload. "
+            "Pull: download even when local MD5 already matches remote ETag. "
+            "Also overrides age guards (older local / older remote)."
         ),
     )
     parser.add_argument(
