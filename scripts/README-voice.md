@@ -95,6 +95,40 @@ python scripts/generate_voice.py mn10 --verbose
 This also writes `public/audio/<slug>.tts-debug.json` with the final TTS groups,
 group reasons, SSML byte sizes, and paragraph-level normalized text.
 
+## voice:normalize (batch LUFS)
+
+Two-pass **ffmpeg `loudnorm`** across existing `public/audio/<slug>.webm` files. Default is **measure-only** (no writes). Add **`--apply`** to rewrite WebM, refresh `audioHash` in the manifest when present, and back up previous files to `*.bak`. Clears `.cache/voice-edit/<slug>.full.*` so the next `voice:edit` re-decodes from the new file.
+
+**Strategies** (`--strategy`):
+
+- **`fixed`** (default) — normalize toward **`--target-lufs`** (default **−16** LUFS, or `VOICE_NORM_TARGET_LUFS`). True peak and LRA use `--tp` / `--lra` (defaults **−1.5** dBTP and **11** LU, or `VOICE_NORM_TP` / `VOICE_NORM_LRA`).
+- **`reference`** — target = **measured integrated loudness** of **`--reference`** `<slug>` (pass 1 on that file only for the target number).
+- **`median`** — target = **median** of each file’s `input_i` over the resolved batch (after filtering missing WebM).
+
+**Dry-run table columns:** `input_i` (integrated LUFS), `input_tp` (true peak dBTP), `input_lra` (loudness range in LU), `Δ→target`, `target_I`.
+
+**Discourse arguments** (one or more tokens, space-separated in the shell; after `npm run voice:normalize --`):
+
+1. **Exact slug** if it exists in `routes` **or** `public/audio/<slug>.webm` exists (covers bundle names like `an1.1-10` that are a single file).
+2. **Dotted range** — `sn1.1-10` → `sn1.1` … `sn1.10` (only slugs that exist in routes or on disk).
+3. **Plain numeric range** — `iti1-3`, `mn1-10`, `dhp1-20` → `prefix` + integer for each step in range (same existence filter).
+4. **`voice:gen`-style shortcuts** — `iti`, `sn36`, `mn`, `dhp`, … via `expand_target_token` in `generate_voice.py`.
+
+Examples:
+
+```bash
+# Default dry-run: table of input_i, input_tp, input_lra, delta to target
+yarn voice:normalize -- an3.36 an10.76
+yarn voice:normalize -- iti1-3 iti10
+yarn voice:normalize -- sn1.1-10
+yarn voice:normalize -- --strategy median iti1 iti2 iti3
+yarn voice:normalize -- --strategy reference --reference iti5 iti1-20
+# Write files (backups + manifest audioHash)
+yarn voice:normalize -- --apply --target-lufs -16 iti1 iti2
+```
+
+Requires **ffmpeg** with the `loudnorm` filter (same as other voice scripts). Does **not** need Google TTS.
+
 ## voice:edit copy mode (no TTS)
 
 `voice:edit` can now copy one or more paragraph audio segments from an existing discourse

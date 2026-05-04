@@ -37,7 +37,8 @@
 		"voice:rerecord-impact": "python3 scripts/detect-rerecord-impact.py --rev-range HEAD --format pretty",
 		"gen:playlists": "node scripts/generate-playlists.mjs",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
-		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py"
+		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py",
+		"voice:normalize": ".venv-voice/bin/python scripts/normalize_voice.py"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.750.0",
