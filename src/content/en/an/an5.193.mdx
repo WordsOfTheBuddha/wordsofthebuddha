@@ -1,7 +1,7 @@
 ---
 title: Saṅgārava sutta - With Saṅgārava
 description: The Buddha explains to the brahmin Saṅgārava why memorized mantras are sometimes forgotten. Using metaphors of water that is dyed, boiling, overgrown, rippling, or muddy, he illustrates how the five hindrances cloud the mind.
-qualities: ill will, sensual desire, dullness, drowsiness, doubt, anxiety, perceiving escape
+qualities: ill will, sensual desire, dullness, drowsiness, doubt, anxiety, perceiving escape, muddle-mindedness
 theme: wisdom, inspiration, inquisitiveness
 slug: an5.193
 priority: 1.3
