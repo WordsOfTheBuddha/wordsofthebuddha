@@ -111,6 +111,7 @@ Notes:
 
 - Mapping is **1-based** and supports ranges (`N-M`).
 - Source discourse must already have timed audio/manifest (`start`/`end` paragraph timings).
+- Copied paragraphs are **loudness-matched** to the target discourse’s existing audio for that paragraph (same RMS-based clamp as retake, typically within a few dB), so level stays consistent with the rest of the file.
 - This mode does not require Google TTS credentials.
 - Existing `.webm` + `.manifest.json` are backed up (`.bak`) and can be restored with `--rollback`.
 

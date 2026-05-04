@@ -365,6 +365,29 @@ def _match_retake_gain(
     return _apply_gain_to_wav_bytes(retake_wav_bytes, correction_db), correction_db
 
 
+def _gain_match_pcm_to_reference(
+    segment_frames: bytes,
+    reference_frames: bytes,
+    wav_params,
+) -> tuple[bytes, float]:
+    """Loudness-match a PCM segment to reference RMS (same clamp as retake). Returns (frames, dB)."""
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as wout:
+        wout.setnchannels(wav_params.nchannels)
+        wout.setsampwidth(wav_params.sampwidth)
+        wout.setframerate(wav_params.framerate)
+        wout.setcomptype("NONE", "not compressed")
+        wout.writeframes(segment_frames)
+    adjusted_wav, correction_db = _match_retake_gain(
+        retake_wav_bytes=buf.getvalue(),
+        reference_frames=reference_frames,
+        sampwidth=wav_params.sampwidth,
+    )
+    in_buf = io.BytesIO(adjusted_wav)
+    with wave.open(in_buf, "rb") as win:
+        return win.readframes(win.getnframes()), correction_db
+
+
 def _cache_wav_path(slug: str) -> Path:
     """Path for cached full-discourse WAV (lossless intermediate)."""
     return CACHE_DIR / f"{slug}.full.wav"
@@ -1362,6 +1385,18 @@ def copy_paragraphs(
                         src_prev_end = float(source_paras[src_i - 1]["end"])
                         seg_start = max(seg_start, src_prev_end)
                     frames = _extract_wav_segment(source_wav, seg_start, seg_end)
+                    tgt_para_ref = target_paras[i]
+                    ref_start = float(tgt_para_ref["start"])
+                    ref_end = float(tgt_para_ref["end"])
+                    if i > 0:
+                        tgt_prev_end = float(target_paras[i - 1]["end"])
+                        ref_start = max(ref_start, tgt_prev_end)
+                    reference_frames = _extract_wav_segment(target_wav, ref_start, ref_end)
+                    frames, gain_db = _gain_match_pcm_to_reference(
+                        frames, reference_frames, wav_params
+                    )
+                    if verbose or abs(gain_db) >= 0.01:
+                        print(f"  [gain-match] copy ¶{i + 1}: {gain_db:+.2f} dB (vs target slice)")
                     paragraph_templates[i] = source_para
                 else:
                     target_para = target_paras[i]
