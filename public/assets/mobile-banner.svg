@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="128" viewBox="0 0 1080 128" role="img" aria-labelledby="title desc">
+  <title id="title">Words of the Buddha Reddit mobile banner background</title>
+  <desc id="desc">A warm dark banner background with subtle mandala geometry and flowing line patterns.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1080" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17120d" />
+      <stop offset="0.45" stop-color="#241d14" />
+      <stop offset="1" stop-color="#19130e" />
+    </linearGradient>
+    <radialGradient id="warmGlow" cx="50%" cy="50%" r="62%">
+      <stop offset="0" stop-color="#d47445" stop-opacity="0.2" />
+      <stop offset="0.5" stop-color="#9b2c2c" stop-opacity="0.08" />
+      <stop offset="1" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <path id="mandalaPetal" d="M0,-54 C11,-42 11,-25 0,-16 C-11,-25 -11,-42 0,-54Z" />
+  </defs>
+
+  <rect width="1080" height="128" fill="url(#background)" />
+  <rect width="1080" height="128" fill="url(#warmGlow)" />
+
+  <g opacity="0.9">
+    <path d="M0 18 C145 42 232 10 361 27 C485 43 569 83 704 68 C841 53 923 17 1080 33" fill="none" stroke="#e7dcc4" stroke-opacity="0.055" stroke-width="1" />
+    <path d="M0 104 C124 80 241 96 365 83 C487 71 596 31 722 47 C861 64 941 104 1080 90" fill="none" stroke="#d47445" stroke-opacity="0.08" stroke-width="1.1" />
+  </g>
+
+  <g transform="translate(540 67)" opacity="0.4">
+    <circle r="102" fill="none" stroke="#e7dcc4" stroke-opacity="0.13" stroke-width="0.8" />
+    <circle r="86" fill="none" stroke="#e7dcc4" stroke-opacity="0.11" stroke-width="0.7" />
+    <circle r="68" fill="none" stroke="#d47445" stroke-opacity="0.11" stroke-width="0.7" />
+    <g opacity="0.85">
+      <use href="#mandalaPetal" transform="rotate(0)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(45)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(90)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(135)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(180)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(225)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(270)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+      <use href="#mandalaPetal" transform="rotate(315)" fill="#e7dcc4" fill-opacity="0.018" stroke="#e7dcc4" stroke-opacity="0.17" stroke-width="0.7" />
+    </g>
+    <g stroke="#e7dcc4" stroke-opacity="0.1" stroke-width="0.6">
+      <line x1="0" y1="-12" x2="0" y2="-76" />
+      <line x1="8.5" y1="-8.5" x2="53.7" y2="-53.7" />
+      <line x1="12" y1="0" x2="76" y2="0" />
+      <line x1="8.5" y1="8.5" x2="53.7" y2="53.7" />
+      <line x1="0" y1="12" x2="0" y2="76" />
+      <line x1="-8.5" y1="8.5" x2="-53.7" y2="53.7" />
+      <line x1="-12" y1="0" x2="-76" y2="0" />
+      <line x1="-8.5" y1="-8.5" x2="-53.7" y2="-53.7" />
+    </g>
+    <circle r="15" fill="none" stroke="#d47445" stroke-opacity="0.18" stroke-width="0.9" />
+    <circle r="5" fill="#d47445" fill-opacity="0.18" />
+  </g>
+
+  <g transform="translate(905 64)" opacity="0.65">
+    <circle r="39" fill="none" stroke="#e7dcc4" stroke-opacity="0.15" stroke-width="0.8" />
+    <circle r="29" fill="none" stroke="#d47445" stroke-opacity="0.18" stroke-width="0.8" />
+    <circle r="4" fill="#d47445" fill-opacity="0.5" />
+    <g stroke="#e7dcc4" stroke-opacity="0.13" stroke-width="0.7">
+      <line x1="0" y1="-9" x2="0" y2="-34" />
+      <line x1="6.4" y1="-6.4" x2="24" y2="-24" />
+      <line x1="9" y1="0" x2="34" y2="0" />
+      <line x1="6.4" y1="6.4" x2="24" y2="24" />
+      <line x1="0" y1="9" x2="0" y2="34" />
+      <line x1="-6.4" y1="6.4" x2="-24" y2="24" />
+      <line x1="-9" y1="0" x2="-34" y2="0" />
+      <line x1="-6.4" y1="-6.4" x2="-24" y2="-24" />
+    </g>
+  </g>
+</svg>

@@ -3,9 +3,9 @@
     <path id="petal" d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" />
   </defs>
 
-  <rect width="120" height="120" rx="24" fill="#9B2C2C" />
+  <rect width="120" height="120" rx="12" fill="#9B2C2C" />
 
-  <g transform="translate(60,62) scale(1.48)" stroke="#9B2C2C" stroke-width="3.5" stroke-linejoin="round">
+  <g transform="translate(60,66) scale(1.35)" stroke="#9B2C2C" stroke-width="3.5" stroke-linejoin="round">
     <use href="#petal" transform="translate(-14, 16) rotate(-65)" fill="#F29C5A" />
     <use href="#petal" transform="translate(14, 16) rotate(65)" fill="#F29C5A" />
 
