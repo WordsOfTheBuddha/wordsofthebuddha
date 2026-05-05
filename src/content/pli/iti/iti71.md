@@ -1,8 +1,8 @@
 ---
 title: Sammādiṭṭhika sutta - Who Has Right View
 description: The Buddha shares the consequences of holding on to right views and acting upon them based on his direct knowledge.
-fetter: doubt, adherence to rules and observances, ignorance
-tags: right view, good conduct, wise, heaven, iti, iti50-99
+qualities: right view, direct knowledge, discernment
+theme: inspiration, principle
 slug: iti71
 ---
 
