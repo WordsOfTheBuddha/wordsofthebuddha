@@ -787,7 +787,7 @@
 			"Context: A quality of the cultivated mind—malleable, workable, and free from rigidity and resistance. Akin to refined gold, a flexible mind is suitable for cultivation of direct knowledge.",
 			"Supported by:{collectedness}",
 			"Leads to:{direct knowledge, tame}",
-			"[mudu, kammañña]"
+			"[mudu, kammañña, soracca]"
 		],
 		"formless": [
 			"immaterial",
@@ -1544,6 +1544,7 @@
 			"articulate words",
 			"eloquent communication",
 			"Context: Speech that is purified by abstaining from falsehood, divisive talk, harsh words, and idle chatter.",
+            "Related:{well-spoken-speech}",
 			"Supported by:{right intention}",
 			"Guarded by:{right view, right effort, mindfulness}",
 			"Leads to:{non-harm}",
