@@ -2863,8 +2863,14 @@ def _format_display_id(slug: str) -> str:
     return re.sub(r"([a-z]+)(\d)", r"\1 \2", slug, count=1, flags=re.IGNORECASE).upper()
 
 
-def _strip_glosses_display_for_lines(text: str) -> str:
-    return re.sub(r"\|(.+?)::([^|]*)\|", lambda m: m.group(1), text)
+def _strip_glosses_manifest_for_lines(text: str) -> str:
+    """Mirror manifest gloss handling while preserving line boundaries.
+
+    Verse `lineSizes` must be computed from the same token stream used by
+    manifest words. This keeps `<br>` insertion aligned for lines that use
+    punctuation-only / empty TTS overrides (e.g. ``|, bhikkhus,::::|``).
+    """
+    return strip_glosses_manifest(text)
 
 
 def _normalize_keeping_lines(text: str) -> list[str]:
@@ -2874,7 +2880,7 @@ def _normalize_keeping_lines(text: str) -> list[str]:
     t = strip_heading_lines_for_tts(t)
     t = strip_collapse_blocks(t)
     t = strip_html_jsx_tags(t)
-    t = _strip_glosses_display_for_lines(t)
+    t = _strip_glosses_manifest_for_lines(t)
     t = normalize_inline_markdown(t)
     t = t.replace("\u2014", ";")
     lines = []
