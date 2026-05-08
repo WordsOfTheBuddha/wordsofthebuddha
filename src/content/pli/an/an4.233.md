@@ -1,8 +1,8 @@
 ---
 title: Vitthāra sutta - Kamma in Detail
-description: The Buddha describes the four kinds of kamma (actions) and their results in detail.
-qualities: wholesome, unwholesome, suffering, contentment
-theme: principle, directly knowing
+description: "The Buddha explains four kinds of kamma: afflictive, non-afflictive, mixed, and the intention to abandon these deeds."
+qualities: wholesome, unwholesome, suffering, intentional constructs
+theme: principle, wisdom
 slug: an4.233
 ---
 
