@@ -301,7 +301,8 @@
 			"discourse": [
 				"mn1",
 				"mn6",
-				"mn25"
+				"mn25",
+				"mn111"
 			],
 			"labels": [
 				"formless",
@@ -320,7 +321,8 @@
 			"discourse": [
 				"mn1",
 				"mn6",
-				"mn25"
+				"mn25",
+				"mn111"
 			],
 			"labels": [
 				"formless",
@@ -341,7 +343,8 @@
 				"mn1",
 				"mn6",
 				"mn25",
-				"mn106"
+				"mn106",
+				"mn111"
 			],
 			"labels": [
 				"formless",
@@ -361,7 +364,8 @@
 				"mn1",
 				"mn6",
 				"mn25",
-				"mn106"
+				"mn106",
+				"mn111"
 			],
 			"labels": [
 				"formless",
@@ -1230,7 +1234,8 @@
 			],
 			"discourse": [
 				"mn118",
-				"mn10"
+				"mn10",
+				"mn111"
 			],
 			"labels": [
 				"awakening",
@@ -1386,6 +1391,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn111",
 				"mn119"
 			],
 			"labels": [
@@ -1409,6 +1415,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn111",
 				"mn119"
 			],
 			"labels": [
@@ -1432,6 +1439,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn111",
 				"mn119"
 			],
 			"labels": [
@@ -1458,6 +1466,7 @@
 				"mn6",
 				"mn25",
 				"mn106",
+				"mn111",
 				"mn119"
 			],
 			"labels": [
@@ -1577,7 +1586,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn119",
+			"discourse": [
+				"mn119",
+				"mn111"
+			],
 			"labels": [
 				"direct knowledge"
 			],
@@ -1586,7 +1598,7 @@
 		},
 		{
 			"id": "defilements-ended",
-			"title": "Ending of taints",
+			"title": "Ending of mental defilements",
 			"description": "Twin liberation orbs — āsavakkhaya, cetovimutti",
 			"tags": [
 				"line-art",
@@ -1597,6 +1609,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn111",
 				"mn119"
 			],
 			"labels": [
@@ -1795,7 +1808,10 @@
 				"line-art",
 				"sparkle"
 			],
-			"discourse": "an10.1",
+			"discourse": [
+				"an10.1",
+				"mn111"
+			],
 			"labels": [
 				"liberation"
 			],
@@ -1960,7 +1976,8 @@
 			"discourse": [
 				"mn39",
 				"mn6",
-				"mn53"
+				"mn53",
+				"mn111"
 			],
 			"labels": [
 				"ethical conduct"
@@ -2512,7 +2529,10 @@
 				"line-art",
 				"mn106"
 			],
-			"discourse": "mn106",
+			"discourse": [
+				"mn106",
+				"mn111"
+			],
 			"labels": [
 				"dispassion",
 				"recognition of impermanence",
@@ -2667,7 +2687,10 @@
 				"gold",
 				"dashed"
 			],
-			"discourse": "mn25",
+			"discourse": [
+				"mn25",
+				"mn111"
+			],
 			"labels": [
 				"ending"
 			],
@@ -2728,7 +2751,10 @@
 				"line-art",
 				"gold"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn111"
+			],
 			"labels": [
 				"collectedness",
 				"mindfulness"
@@ -2744,7 +2770,10 @@
 				"line-art",
 				"gold"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn111"
+			],
 			"labels": [
 				"insight",
 				"wisdom"
