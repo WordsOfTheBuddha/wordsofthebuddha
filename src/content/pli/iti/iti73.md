@@ -1,6 +1,6 @@
 ---
 title: Santatara sutta - More Peaceful than
-description: The formless element is more peaceful than the form realm. Yet, cessation is more peaceful than the formless element.
+description: Cessation is more peaceful than the form or formless realms. Beings attached to these states face renewed existence.
 qualities: formless, ending, tranquility, free from attachment
 theme: wisdom, directly knowing
 slug: iti73

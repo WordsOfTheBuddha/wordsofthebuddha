@@ -1,6 +1,6 @@
 ---
 title: Avuṭṭhika sutta - Rainless
-description: Three kinds of persons are found in the world - 1) one like a rainless cloud, 2) one like a cloud that rains in a certain area, and 3) one like a cloud that rains everywhere.
+description: Three kinds of persons are found in the world - 1.) One like a rainless cloud, 2.) one like a cloud that rains in a certain area, and 3.) one like a cloud that rains everywhere.
 qualities: stinginess, giving
 theme: cultivating discernment
 slug: iti75
