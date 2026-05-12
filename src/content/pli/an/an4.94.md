@@ -1,14 +1,20 @@
 ---
-title: Tatiya samādhi  sutta - Collectedness (Third)
-description: To develop tranquility and insight, one should ask experienced practitioners.
-fetter: ignorance
-tags: tranquility, insight, wisdom, an, an4
+title: Tatiya samādhi sutta - Collectedness (Third)
+description: The Buddha advises four kinds of persons on seeking spiritual guidance. Depending on their attainments, practitioners should approach accomplished individuals to learn how to steady the mind or distinctly see intentional constructs, aiming to wear away the taints.
+qualities: tranquility, penetrative vision, ending
+theme: wisdom
 slug: an4.94
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
 
-Idha, bhikkhave, ekacco puggalo lābhī hoti ajjhattaṁ cetosamathassa, na lābhī adhipaññādhammavipassanāya. Idha pana, bhikkhave, ekacco puggalo lābhī hoti adhipaññādhammavipassanāya, na lābhī ajjhattaṁ cetosamathassa. Idha pana, bhikkhave, ekacco puggalo na ceva lābhī hoti ajjhattaṁ cetosamathassa na ca lābhī adhipaññādhammavipassanāya. Idha pana, bhikkhave, ekacco puggalo lābhī ceva hoti ajjhattaṁ cetosamathassa lābhī ca adhipaññādhammavipassanāya.
+Idha, bhikkhave, ekacco puggalo lābhī hoti ajjhattaṁ cetosamathassa, na lābhī adhipaññādhammavipassanāya.
+
+Idha pana, bhikkhave, ekacco puggalo lābhī hoti adhipaññādhammavipassanāya, na lābhī ajjhattaṁ cetosamathassa.
+
+Idha pana, bhikkhave, ekacco puggalo na ceva lābhī hoti ajjhattaṁ cetosamathassa na ca lābhī adhipaññādhammavipassanāya.
+
+Idha pana, bhikkhave, ekacco puggalo lābhī ceva hoti ajjhattaṁ cetosamathassa lābhī ca adhipaññādhammavipassanāya.
 
 Tatra, bhikkhave, yvāyaṁ puggalo lābhī ajjhattaṁ cetosamathassa na lābhī adhipaññādhammavipassanāya, tena, bhikkhave, puggalena yvāyaṁ puggalo lābhī adhipaññādhammavipassanāya so upasaṅkamitvā evamassa vacanīyo: ‘kathaṁ nu kho, āvuso, saṅkhārā daṭṭhabbā? Kathaṁ saṅkhārā sammasitabbā? Kathaṁ saṅkhārā vipassitabbā’ti? Tassa so yathādiṭṭhaṁ yathāviditaṁ byākaroti: ‘evaṁ kho, āvuso, saṅkhārā daṭṭhabbā, evaṁ saṅkhārā sammasitabbā, evaṁ saṅkhārā vipassitabbā’ti. So aparena samayena lābhī ceva hoti ajjhattaṁ cetosamathassa lābhī ca adhipaññādhammavipassanāya.
 

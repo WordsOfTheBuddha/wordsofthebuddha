@@ -1,8 +1,8 @@
 ---
-title: Dutiya samādhi  sutta - Collectedness (Second)
-description: The Buddha describes the four kinds of persons found existing in the world and how they can develop both tranquility and insight.
-fetter: ignorance
-tags: tranquility, insight, wisdom, an, an4
+title: Dutiya samādhi sutta - Collectedness (Second)
+description: The Buddha categorizes four kinds of persons based on their meditative attainments. He emphasizes urgent exertion to develop internal tranquility of mind and the penetrative vision of the Dhammas
+qualities: tranquility, penetrative vision, ending
+theme: wisdom
 slug: an4.93
 ---
 

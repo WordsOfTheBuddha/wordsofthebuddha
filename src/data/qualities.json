@@ -138,6 +138,7 @@
 		"patience",
 		"perceiving drawback",
 		"perceiving escape",
+        "penetrative vision",
 		"politeness",
 		"psychic power",
 		"quenching",
@@ -559,7 +560,7 @@
 			"Context: Clear seeing that distinguishes what is wholesome from unwholesome, true from false.",
 			"Supported by:{examination, clear awareness}",
 			"Leads to:{perceiving drawback, perceiving escape, wisdom}",
-			"[viveka, vipassanā, nipaka, niccheyya]"
+			"[viveka, nipaka, niccheyya]"
 		],
 		"discontentment": [
 			"dissatisfaction",
@@ -623,6 +624,15 @@
 			"Supported by:{delusion, speculation}",
 			"Leads to:{faithlessness, ignorance}",
 			"[vicikiccha, kaṅkhā, vimati]"
+		],
+		"penetrative vision": [
+			"insight into phenomena",
+			"clear seeing of the Dhammas",
+			"Context: Penetrative vision that discerns phenomena as they arise and pass away, clearly seeing their conditioned nature without clinging.",
+			"Related:{insight}",
+			"Supported by:{stream-entry}",
+			"Leads to:{recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
+			"[vipassanā, dhammavipassanā, anupadadhammavipassanā]"
 		],
 		"drowsiness": [
 			"sleepiness",
@@ -1022,8 +1032,8 @@
 			"having insight",
 			"with understanding",
 			"right knowledge",
-			"Context: Insight is the deep, intuitive realization, a penetrative seeing into the true nature of things that transforms understanding",
-			"Related:{learned}",
+			"Context: Insight is deep, intuitive realization that transforms understanding and guides practice.",
+			"Related:{learned, penetrative vision}",
 			"Supported by:{wisdom}",
 			"Leads to:{direct knowledge, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
 			"[ñāṇa, sammāñāṇa]"

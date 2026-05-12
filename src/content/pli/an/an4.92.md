@@ -1,8 +1,8 @@
 ---
-title: Paṭhama samādhi  sutta - Collectedness (First)
-description: The Buddha describes the four kinds of persons found existing in the world.
-fetter: ignorance
-tags: tranquility, insight, wisdom, an, an4
+title: Paṭhama samādhi sutta - Collectedness (First)
+description: The Buddha outlines four kinds of persons based on whether they possess internal tranquility of mind, the penetrative vision of the Dhammas through higher wisdom, neither, or both of these attainments.
+qualities: tranquility, penetrative vision, wisdom
+theme: wisdom
 slug: an4.92
 ---
 
