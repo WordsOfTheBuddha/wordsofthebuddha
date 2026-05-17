@@ -1,10 +1,8 @@
 ---
 title: Bahujanahita sutta - The Welfare Of The Many
-description: The Buddha shares on the three kinds of persons who arise in the world for the welfare of the many - 1) the Tathāgata, 2) the Arahant, and 3) the trainee.
-qualities: diligence, ending, ethical conduct, recollection of the Buddha, recollection of the Sangha
+description: "Three individuals arise for the world’s welfare: the Buddha, the Arahant, and the trainee disciple. Out of compassion, all three teach the pure Dhamma, opening the door to the deathless and helping diligent followers make an end to suffering."
+qualities: diligence, ethical conduct, recollection of the Buddha, recollection of the Sangha
 theme: inspiration, recollection of the Buddha
-fetter: ignorance
-tags: iti,nibbāna,arahant,welfare,compassion,dhamma
 slug: iti84
 ---
 
