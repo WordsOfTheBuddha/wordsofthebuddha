@@ -1,7 +1,7 @@
 ---
 title: Tatiya vagga - The Chapter on the Foremost (Third)
 description: The Buddha describes the foremost of his bhikkhu disciples in various categories.
-qualities: faith, inspiration, tame, well-spoken speech
+qualities: faith, inspiration, tame, well-spoken-speech
 theme: inspiration
 slug: an1.209-218
 ---

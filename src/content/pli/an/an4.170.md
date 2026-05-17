@@ -1,8 +1,8 @@
 ---
 title: Yuganaddha sutta - In Tandem
 description: The Venerable Ānanda explains the four paths to arahantship.
-fetter: ignorance
-tags: an,an4,tranquility,insight,arahantship
+qualities: tranquility, penetrative vision
+theme: wisdom
 slug: an4.170
 ---
 

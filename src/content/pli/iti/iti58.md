@@ -1,6 +1,6 @@
 ---
 title: Taṇhā sutta - Craving
-description: The Buddha describes the three kinds of craving - 1.) craving for sensual pleasures, 2.) craving for becoming, and 3.) craving for non-becoming.
+description: The Buddha describes the three kinds of craving - 1.) craving for sensual pleasures, 2.) craving for existence, and 3.) craving for non-becoming.
 qualities: craving, sensual desire, self-making, self-erasure, giving up
 theme: inspiration, principle
 slug: iti58
