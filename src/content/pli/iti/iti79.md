@@ -1,6 +1,6 @@
 ---
 title: Parihāna sutta - Decline
-description: The Buddha describes three qualities that lead to the decline of a trainee bhikkhu and three qualities that lead to non-decline.
+description: The Buddha describes three things that lead to the decline of a trainee bhikkhu and three things that lead to non-decline.
 qualities: personal existence view, drowsiness, anxiety, trainee
 theme: cultivating discernment, inspiration
 slug: iti79
