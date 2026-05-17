@@ -41,16 +41,16 @@
 		"voice:normalize": ".venv-voice/bin/python scripts/normalize_voice.py"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.750.0",
-		"@astrojs/check": "0.9.6",
-		"@astrojs/mdx": "4.3.12",
+		"@astrojs/check": "0.9.9",
+		"@astrojs/mdx": "5.0.6",
 		"@astrojs/tailwind": "6.0.2",
-		"@astrojs/vercel": "9.0.2",
+		"@astrojs/vercel": "10.0.7",
+		"@aws-sdk/client-s3": "^3.750.0",
 		"@sc-voice/ms-dpd": "^2.54.0",
 		"@sparticuz/chromium-min": "143.0.4",
 		"@vercel/analytics": "^1.4.1",
 		"@vercel/speed-insights": "^1.1.0",
-		"astro": "5.16.3",
+		"astro": "6.3.3",
 		"cytoscape": "^3.33.1",
 		"firebase": "^11.2.0",
 		"firebase-admin": "^13.0.2",
@@ -67,7 +67,7 @@
 		"typescript": "^5.7.3"
 	},
 	"devDependencies": {
-		"@astrojs/node": "9.5.1",
+		"@astrojs/node": "10.1.1",
 		"@resvg/resvg-js": "^2.6.2",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/js-yaml": "^4.0.9",
