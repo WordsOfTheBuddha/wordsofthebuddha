@@ -1,19 +1,70 @@
 ---
 title: Aggappasāda sutta - Best Confidence
-description: The Buddha shares the three kinds of best confidence - 1) in the Buddha, 2) in the mental quality of fading of desire, and 3) in the community of the Blessed One's disciples.
+description: The Buddha shares the three kinds of best confidence - 1.) in the Buddha, 2.) in the mental quality of fading of desire, and 3.) in the community of the Blessed One’s disciples.
 qualities: recollection of the Buddha, dispassion, giving, faith, merit, tranquility
 theme: wisdom, recollection of the Buddha
 fetter: doubt, ignorance
 tags: confidence, Buddha, mental quality, fading of desire, community, disciples, Dhamma, Saṅgha, iti, iti50-99
 slug: iti90
-commentary:
-    - "[1] The four pairs of persons and the eight kinds of individuals that constitute the community of the Blessed One’s disciples are as follows:"
-    - "| **Four Pairs - Stages**            | **Eight kinds - Path**       | **Eight kinds - Fruition**    | **Fetters Overcome / Weakened**                                  |"
-    - "|----------------------|------------------------------------------|-----------------------------------------|------------------------------------------------------------------|"
-    - "| **1st Stage**        | Path of Stream-entry   | Fruition of Stream-entry | Overcomes: <br> 1) |Personal existence::the felt sense of being someone; the five aggregates subject to clinging; the totality of psycho-physical experience within which a sense of “I” or “mine” arises [sakkāya]| <br> 2) |Doubt::uncertainty, indecisiveness, lack of confidence in the Buddha’s teachings [vicikicchā]| <br> 3) |Clinging to rules and observances::clinging to precepts and practices, adherence to rites and rituals [sīlabbataparāmāsa]| |"
-    - "| **2nd Stage**        | Path of Once-return   | Fruition of Once-return | Weakens: <br> 4) |Sensual desire::interest in sensual pleasure, sensual impulse [kāmacchanda]| <br> 5) |Ill will::intentional act of mentally opposing or rejecting others; an intentional construct fueled by aversion, directed against kindness or compassion. It manifests as hostility of will, impeding goodwill and fostering internal or external conflict. [byāpāda]| |"
-    - "| **3rd Stage**        | Path of Non-return       | Fruition of Non-return     | Overcomes: <br> 4) Sensual desire <br> 5) Ill will |"
-    - "| **4th Stage**        | Path of Arahantship     | Fruition of Arahantship | Overcomes: <br> 6) |Passion for worldly existence::desire for material existence [rūparāga]| <br> 7) |Passion for formless existence::desire for non-material existence [arūparāga]| <br> 8) |Conceit::self-view expressed as comparison—seeing oneself as superior, inferior, or equal; the persistent “I am” conceit (asmimāna) that underlies identification [māna]| <br> 9) |Restlessness::mental agitation, distraction, excitement [uddhacca]| <br>10) |Ignorance::fundamental unawareness or misunderstanding of the true nature of reality, not experientially understanding the four noble truths [avijjā]| |"
+commentary: |
+  [1] The four pairs of persons and the eight kinds of individuals that constitute the community of the Blessed One’s disciples are as follows:
+
+  <table class="commentary-table">
+    <thead>
+      <tr>
+        <th><strong>Four Pairs - Stages</strong></th>
+        <th><strong>Eight kinds - Path</strong></th>
+        <th><strong>Eight kinds - Fruition</strong></th>
+        <th><strong>Fetters Overcome / Weakened</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1st Stage</strong></td>
+        <td>Path of Stream-entry</td>
+        <td>Fruition of Stream-entry</td>
+        <td>
+          Overcomes:<br>
+          1) |Personal existence::the felt sense of being someone; the five aggregates subject to clinging; the totality of psycho-physical experience within which a sense of "I" or "mine" arises [sakkāya]|<br>
+          2) |Doubt::uncertainty, indecisiveness, lack of confidence in the Buddha’s teachings [vicikicchā]|<br>
+          3) |Clinging to rules and observances::clinging to precepts and practices, adherence to rites and rituals [sīlabbataparāmāsa]|
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2nd Stage</strong></td>
+        <td>Path of Once-return</td>
+        <td>Fruition of Once-return</td>
+        <td>
+          Weakens:<br>
+          4) |Sensual desire::interest in sensual pleasure, sensual impulse [kāmacchanda]|<br>
+          5) |Ill will::intentional act of mentally opposing or rejecting others; an intentional construct fueled by aversion, directed against kindness or compassion. It manifests as hostility of will, impeding goodwill and fostering internal or external conflict. [byāpāda]|
+        </td>
+      </tr>
+      <tr>
+        <td><strong>3rd Stage</strong></td>
+        <td>Path of Non-return</td>
+        <td>Fruition of Non-return</td>
+        <td>
+          Overcomes:<br>
+          4) Sensual desire<br>
+          5) Ill will
+        </td>
+      </tr>
+      <tr>
+        <td><strong>4th Stage</strong></td>
+        <td>Path of Arahantship</td>
+        <td>Fruition of Arahantship</td>
+        <td>
+          Overcomes:<br>
+          6) |Passion for worldly existence::desire for material existence [rūparāga]|<br>
+          7) |Passion for formless existence::desire for non-material existence [arūparāga]|<br>
+          8) |Conceit::self-view expressed as comparison, seeing oneself as superior, inferior, or equal; the persistent "I am" conceit (asmimāna) that underlies identification [māna]|<br>
+          9) |Restlessness::mental agitation, distraction, excitement [uddhacca]|<br>
+          10) |Ignorance::fundamental unawareness or misunderstanding of the true nature of reality, not experientially understanding the four noble truths [avijjā]|
+        </td>
+      </tr>
+    </tbody>
+  </table>
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

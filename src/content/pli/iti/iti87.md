@@ -1,10 +1,11 @@
 ---
 title: Andhakaraṇa sutta - Blinding
-description: The three unwholesome thoughts are blinding, produce lack of clarity, cause ignorance, obstruct wisdom, and are troublesome and not conducive to Nibbāna. The three wholesome thoughts give sight, produce clarity and create insight, grow wisdom, and are trouble-free and conducive to Nibbāna.
+description: The three unwholesome thoughts are blinding, produce lack of vision, cause ignorance, obstruct wisdom, and are troublesome and not conducive to Nibbāna. The three wholesome thoughts give sight, produce vision and create insight, grow wisdom, and are trouble-free and conducive to Nibbāna.
 qualities: sensual desire, ill will, harm, non-harm, giving up, loving-kindness, examination
 theme: cultivating discernment, inspiration
 slug: iti87
 simile: rainfall clearing away dust
+priority: 1.1
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:
