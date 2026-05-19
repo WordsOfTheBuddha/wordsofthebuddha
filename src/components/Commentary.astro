@@ -7,30 +7,41 @@ const { commentary } = Astro.props;
 const unescape = (s: string) =>
 	s.startsWith("\\[") ? s.replace(/^\\\[/, "[") : s;
 
+function extractCommentaryItems(content: string): { num: string; content: string }[] {
+	const normalized = content.replace(/\r\n/g, "\n");
+	const markers = [...normalized.matchAll(/^\[(\d+)\]\s*/gm)];
+
+	if (markers.length === 0) return [];
+
+	const items: { num: string; content: string }[] = [];
+
+	for (let i = 0; i < markers.length; i++) {
+		const marker = markers[i];
+		const nextMarker = markers[i + 1];
+		const start = (marker.index ?? 0) + marker[0].length;
+		const end = nextMarker?.index ?? normalized.length;
+		const noteContent = normalized.slice(start, end).trim();
+
+		items.push({
+			num: marker[1],
+			content: noteContent,
+		});
+	}
+
+	return items;
+}
+
 // Handle both string and array formats
 let commentaryContent = "";
 let commentaryItems: { num: string; content: string }[] = [];
 
 if (commentary) {
 	if (Array.isArray(commentary)) {
-		commentary.forEach((item: string) => {
-			const processed = unescape(item);
-			const match = processed.match(/^\[(\d+)\]\s*(.*)/);
-			if (match) {
-				commentaryItems.push({
-					num: match[1],
-					content: match[2].trim(),
-				});
-			}
-		});
-		commentaryContent = commentary.join("\n\n");
+		commentaryContent = commentary.map((item: string) => unescape(item)).join("\n\n");
+		commentaryItems = extractCommentaryItems(commentaryContent);
 	} else if (typeof commentary === "string" && commentary.trim()) {
-		commentaryContent = commentary;
-		const processed = unescape(commentaryContent);
-		const match = processed.match(/^\[(\d+)\]\s*(.*)/);
-		if (match) {
-			commentaryItems.push({ num: match[1], content: match[2].trim() });
-		}
+		commentaryContent = unescape(commentary);
+		commentaryItems = extractCommentaryItems(commentaryContent);
 	}
 }
 
@@ -41,26 +52,21 @@ const parsedCommentary = commentaryContent
 	? parseSimpleMarkdown(commentaryContent)
 	: "";
 
-// Create JSON for client-side popover (only if there are items)
-const commentaryDataJson =
-	commentaryItems.length > 0
-		? JSON.stringify(
-				Object.fromEntries(
-					commentaryItems.map((i) => [i.num, i.content]),
-				),
-			)
-		: "{}";
 ---
 
 {
 	commentaryContent && commentaryContent.trim() !== "" && (
 		<>
-			{/* Hidden data for client-side popover */}
-			<script
-				id="commentary-data"
-				type="application/json"
-				set:html={commentaryDataJson}
-			/>
+			{/* Hidden pre-rendered note content for client-side popover */}
+			<div class="commentary-note-templates" aria-hidden="true">
+				{commentaryItems.map((item) => (
+					<div
+						class="commentary-note-template"
+						data-note={item.num}
+						set:html={parseSimpleMarkdown(item.content)}
+					/>
+				))}
+			</div>
 
 			{/* Popover container (positioned by JS) */}
 			<div id="commentary-popover" class="commentary-popover">
@@ -92,6 +98,10 @@ const commentaryDataJson =
 
 	.commentary-content a {
 		@apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300;
+	}
+
+	.commentary-note-templates {
+		display: none;
 	}
 
 	/* Table styles */
@@ -249,6 +259,35 @@ const commentaryDataJson =
 		font-weight: 600;
 	}
 
+	.commentary-popover .popover-contentarea :global(p) {
+		margin-bottom: 0.75rem;
+	}
+
+	.commentary-popover .popover-contentarea :global(.commentary-table),
+	.commentary-popover .popover-contentarea :global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 0.5rem;
+		font-size: 0.82rem;
+		line-height: 1.45;
+	}
+
+	.commentary-popover .popover-contentarea :global(.commentary-table th),
+	.commentary-popover .popover-contentarea :global(.commentary-table td),
+	.commentary-popover .popover-contentarea :global(table th),
+	.commentary-popover .popover-contentarea :global(table td) {
+		border: 1px solid var(--popover-border, #e5e7eb);
+		padding: 0.35rem 0.45rem;
+		vertical-align: top;
+		text-align: left;
+	}
+
+	.commentary-popover .popover-contentarea :global(.commentary-table th),
+	.commentary-popover .popover-contentarea :global(table th) {
+		background: color-mix(in srgb, var(--surface-elevated, #ffffff) 88%, #000 12%);
+		font-weight: 600;
+	}
+
 	.commentary-popover .popover-arrow {
 		position: absolute;
 		width: 12px;
@@ -341,12 +380,15 @@ const commentaryDataJson =
 		// First, convert any plain-text ^[n]^ markers to DOM elements
 		convertCommentaryMarkers();
 
-		const dataEl = document.getElementById("commentary-data");
-		if (!dataEl) return;
-
-		const commentaryData: Record<string, string> = JSON.parse(
-			dataEl.textContent || "{}",
+		const noteTemplateEls = document.querySelectorAll<HTMLElement>(
+			".commentary-note-template[data-note]",
 		);
+		const commentaryData: Record<string, string> = {};
+		noteTemplateEls.forEach((el) => {
+			const noteNum = el.dataset.note;
+			if (!noteNum) return;
+			commentaryData[noteNum] = el.innerHTML;
+		});
 		if (!Object.keys(commentaryData).length) return;
 
 		const popoverEl = document.getElementById(
@@ -365,19 +407,12 @@ const commentaryDataJson =
 
 		let activeRef: HTMLElement | null = null;
 
-		// Parse basic markdown syntax
-		const parseContent = (content: string) =>
-			content
-				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-				.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-				.replace(/\*(.+?)\*/g, "<em>$1</em>");
-
 		function showPopover(ref: HTMLElement) {
 			const noteNum = ref.dataset.note;
 			if (!noteNum || !commentaryData[noteNum]) return;
 
 			activeRef = ref;
-			bodyEl.innerHTML = parseContent(commentaryData[noteNum]);
+			bodyEl.innerHTML = commentaryData[noteNum];
 
 			// Measure popover height
 			popoverEl.style.cssText = "visibility:hidden;top:0;left:0";
