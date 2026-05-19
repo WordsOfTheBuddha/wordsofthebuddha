@@ -3389,8 +3389,12 @@ function getCurrentSuttaId(): string {
 
     // Pattern: |term::definition [paliterm]| or |term::definition|
     return escaped.replace(
-      /\|(.+?)::(.+?)\|/g,
+      /\|(.+?)::(.*?)\|/g,
       (_, term, definition) => {
+        // Only show tooltip if definition (gloss content) is non-empty after trimming
+        if (!definition.trim()) {
+          return term;
+        }
         const escapedDef = definition.replace(/"/g, '&quot;');
         return `<span class="tooltip-text tm-gloss" data-tooltip-content="${escapedDef}">${term}</span>`;
       }
