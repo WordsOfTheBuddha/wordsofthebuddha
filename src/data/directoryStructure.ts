@@ -146,7 +146,7 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 					sn25: {
 						title: "Okkantasaṁyutta - Connected Discourses on Arrival",
 						description:
-							'The "Connected Discourses on Arrival" focuses on the theme of arrival or entry into the Dhamma, exploring the moment when one first comprehends the truth of the teachings. These suttas often feature the Buddha or his disciples explaining the significance of this pivotal moment, using vivid imagery and examples to convey the transformative power of understanding. The discourses in this collection emphasize the importance of direct experience and the sudden, profound shift that occurs when one truly sees the Dhamma. This saṁyutta offers a compelling look at the threshold of awakening.',
+							'The "Connected Discourses on Arrival" presents a sequence of brief discourses showing how insight begins with seeing impermanence across different aspects of experience, including the sense faculties, their objects, consciousness, contact, feeling, perception, intention, craving, elements, and the aggregates. Each sutta applies the same formula: when these phenomena are understood as impermanent, changing, and becoming otherwise, one enters the fixed course of rightness as a faith-follower or Dhamma-follower, and with full knowledge and vision becomes a stream-enterer. This collection highlights the threshold of awakening as a decisive penetration of impermanence at any point in experience.',
 					},
 					sn28: {
 						title: "Sāriputtasaṁyutta - Connected Discourses with Sāriputta",
