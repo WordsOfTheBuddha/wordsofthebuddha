@@ -3,8 +3,6 @@ title: Aggappasāda sutta - Best Confidence
 description: The Buddha shares the three kinds of best confidence - 1.) in the Buddha, 2.) in the mental quality of fading of desire, and 3.) in the community of the Blessed One’s disciples.
 qualities: recollection of the Buddha, dispassion, giving, faith, merit, tranquility
 theme: wisdom, recollection of the Buddha
-fetter: doubt, ignorance
-tags: confidence, Buddha, mental quality, fading of desire, community, disciples, Dhamma, Saṅgha, iti, iti50-99
 slug: iti90
 commentary: |
   [1] The four pairs of persons and the eight kinds of individuals that constitute the community of the Blessed One’s disciples are as follows:

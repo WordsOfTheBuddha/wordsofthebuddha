@@ -1,9 +1,8 @@
 ---
 title: Jīvika sutta - Livelihood
-description: The Buddha explains how the livelihood of subsisting on alms, although an extreme of livelihoods, is a sensible choice for those who hope to discern a complete end to the entire mass of suffering.
+description: The Buddha explains how the livelihood of subsisting on alms, although the lowest of livelihoods, is a sensible choice for those who hope to discern a complete end to the entire mass of suffering.
 qualities: suffering, discernment, craving, passion, sensual desire, ill will, muddle-mindedness, distraction, non-restraint, harm, unprincipled conduct
-fetter: doubt, personal existence, conceit, ignorance
-tags: iti, livelihood, alms, suffering, household, renunciation, iti50-99
+theme: inspiration, wisdom
 simile: charred log, blazing iron ball
 slug: iti91
 ---

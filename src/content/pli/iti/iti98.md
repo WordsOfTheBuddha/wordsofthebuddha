@@ -1,6 +1,6 @@
 ---
 title: Dāna sutta - Giving
-description: The Buddha distinguishes between two types of giving, sharing, and assistance—those based on material things and those based on the Dhamma. In each case, giving, sharing, and assisting with the Dhamma are declared the highest.
+description: The Buddha declares that giving, sharing, and assisting with the Dhamma is vastly superior to material gifts. By diligently speaking and listening to the Accomplished One's instruction with a settled mind, practitioners realize the ultimate goal.
 qualities: giving, faith, discernment, diligence
 theme: inspiration, wisdom
 slug: iti98
