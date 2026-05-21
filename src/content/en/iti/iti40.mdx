@@ -1,7 +1,7 @@
 ---
 title: Vijjā sutta - True Knowledge
 description: Ignorance is the forerunner in the arising of unwholesome qualities, and true knowledge is the forerunner in the arising of wholesome qualities.
-qualities: ignorance, shamelessness, moral recklessness, insight, conscience, fear of wrongdoing, craving, greed, contempt
+qualities: ignorance, shamelessness, moral recklessness, insight, conscience, fear of wrongdoing, craving, greed, contempt, true knowledge
 theme: cultivating discernment, wisdom
 slug: iti40
 commentary: A related teaching is at [SN 45.1 Avijjā Sutta - Ignorance](/sn45.1).

@@ -1,7 +1,7 @@
 ---
 title: Sammādiṭṭhi sutta - Right View
 description: The venerable Sāriputta delivers a comprehensive exposition on “Right View,” detailing sixteen ways a noble disciple achieves clarity in the Dhamma. By understanding the wholesome and unwholesome, nutriments, the Four Noble Truths, dependent origination, and the taints—including their arising and cessation—a disciple abandons underlying tendencies and realizes the end of suffering.
-qualities: right view, wrong view, recollection of the Dhamma, intentional constructs, felt experience, contact, ignorance, wholesome, unwholesome, name, craving, attachment, self-making
+qualities: right view, wrong view, recollection of the Dhamma, intentional constructs, felt experience, contact, ignorance, wholesome, unwholesome, name, craving, attachment, self-making, true knowledge
 theme: wisdom, principle
 slug: mn9
 priority: 2

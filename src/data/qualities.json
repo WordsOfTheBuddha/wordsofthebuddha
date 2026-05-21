@@ -119,6 +119,7 @@
 		"happiness",
 		"humility",
 		"impartiality",
+		"imperturbable",
 		"inquisitiveness",
 		"insight",
 		"inspiration",
@@ -166,9 +167,9 @@
 		"spiritual life",
 		"tame",
 		"tranquility",
+        "true knowledge",
 		"truth",
 		"unassuming",
-		"imperturbable",
 		"vigour",
 		"vision",
 		"wakefulness",
@@ -383,7 +384,7 @@
 			"seeing things as they are",
 			"Context: The thorough understanding of phenomena as they truly are—fully knowing their arising, passing, and the unsatisfactoriness inherent in them while they persist.",
 			"Supported by:{wisdom, insight, direct knowledge}",
-			"Leads to:{ending}",
+			"Leads to:{true knowledge, ending}",
 			"[pariññāya, sammadaññā, sampajañña, saṅkhāya]"
 		],
 		"conceit": [
@@ -960,6 +961,7 @@
 			"Context: A fundamental blindness to the true nature of reality. It is not merely a lack of information, but an active misperception that views the transient as permanent and the unsatisfactory as a source of happiness, thereby fueling the cycle of suffering.",
 			"Supported by:{anxiety, doubt, drowsiness, dullness, ill will, sensual desire}",
 			"Leads to:{aversion, conceit, craving, desire, delusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
+            "Opposite:{true knowledge}",
 			"[avijjā]"
 		],
 		"ill will": [
@@ -1006,6 +1008,20 @@
 			"Leads to:{irritability}",
 			"Opposite:{patience}",
 			"[akkhama]"
+		],
+		"imperturbable": [
+			"unagitated",
+			"unmoved",
+			"unruffled",
+			"unshaken",
+			"untroubled",
+			"unwavering",
+			"without mental unease",
+			"Context: A stable clarity of mind that does not react strongly to changing circumstances, remaining even and composed in both pleasant and difficult conditions.",
+			"Supported by:{collectedness, equanimity}",
+			"Leads to:{formless}",
+			"Opposite:{perturbation}",
+			"[aparitassa, anigha, aneja, avihaññamāna]"
 		],
 		"inquisitiveness": [
 			"considering",
@@ -1418,7 +1434,7 @@
 			"realization of transience",
 			"Context: Perceiving all conditioned things as unstable and transient. This recognition weakens attachment by revealing the continual arising and ceasing of phenomena, turning the mind toward wisdom and release.",
 			"Supported by:{insight, perceiving drawback}",
-			"Leads to:{vision}",
+			"Leads to:{true knowledge, vision}",
 			"[aniccasaññā]"
 		],
 		"recognition of not-self": [
@@ -1427,7 +1443,7 @@
 			"recognition of alteration and changing nature",
 			"Context: Seeing that no phenomenon can rightly be taken as “I” or “mine.” It reveals the impersonal, dependently arisen nature of all experience, undermining conceit and attachment to identity.",
 			"Supported by:{insight, perceiving drawback}",
-			"Leads to:{vision}",
+			"Leads to:{true knowledge, vision}",
 			"[anattasaññā]"
 		],
 		"recognition of unattractiveness": [
@@ -1443,7 +1459,7 @@
 			"recognition of discontentment",
 			"Context: Perceiving the inherent inadequacy and unreliability of conditioned existence. This recognition loosens craving and the pursuit of lasting satisfaction in what cannot endure.",
 			"Supported by:{insight, perceiving drawback}",
-			"Leads to:{vision}",
+			"Leads to:{true knowledge, vision}",
 			"[dukkhasaññā]"
 		],
 		"recollection of death": [
@@ -1830,6 +1846,14 @@
 			"Leads to:{harm, wrong livelihood}",
 			"[sāṭheyya]"
 		],
+        "true knowledge": [
+            "direct realization of truth",
+			"Context: A direct experiential knowing that cuts through ignorance and sees phenomena in line with reality. It is not secondhand belief or mere conceptual understanding, but a truth realized for oneself.",
+            "Supported by:{complete comprehension, recognition of impermanence, recognition of not-self, recognition of unsatisfactoriness}",
+			"Leads to:{vision}",
+			"Opposite:{ignorance}",
+            "[vijjā]"
+        ],
 		"truth": [
 			"accuracy",
 			"reliability",
@@ -1859,20 +1883,6 @@
 			"Leads to:{passion}",
 			"Opposite:{cultivation}",
 			"[abhāvita]"
-		],
-		"imperturbable": [
-			"unagitated",
-			"unmoved",
-			"unruffled",
-			"unshaken",
-			"untroubled",
-			"unwavering",
-			"without mental unease",
-			"Context: A stable clarity of mind that does not react strongly to changing circumstances, remaining even and composed in both pleasant and difficult conditions.",
-			"Supported by:{collectedness, equanimity}",
-			"Leads to:{formless}",
-			"Opposite:{perturbation}",
-			"[aparitassa, anigha, aneja, avihaññamāna]"
 		],
 		"unprincipled conduct": [
 			"lacking in moral principles",
@@ -1938,7 +1948,7 @@
 			"seeing the truth",
 			"seeing the dhamma",
 			"Context: The corrective clarity that clearly sees into the true nature of things as they actually are.",
-			"Supported by:{collectedness, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness, recollection of death}",
+			"Supported by:{collectedness, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness, recollection of death, true knowledge}",
 			"Leads to:{disenchantment}",
 			"[dassana, ñāṇadassana, yathābhūtañāṇadassana]"
 		],
@@ -1985,7 +1995,7 @@
 			"Context: Lived understanding and sound judgment that steers the mind away from suffering, distinct from mere accumulation of facts.",
 			"Leads to:{good friendship, good habits, insight, patience}",
 			"Opposite:{delusion, immaturity, lack of discernment}",
-			"[paññā, vijjā, medhā, dhīra, paṇḍita, asammūḷha]"
+			"[paññā, medhā, dhīra, paṇḍita, asammūḷha]"
 		],
 		"wise attention": [
 			"proper attention",
