@@ -1,0 +1,65 @@
+title: "Dependent Co-Arising"
+description: "Dependent Co-Arising is the principle that when this exists, that comes to be; with the arising of this, that arises; when this does not exist, that does not come to be; with the cessation of this, that ceases. In the discourses it names both the general pattern of conditionality and, often, the twelve-link unfolding of suffering."
+synonyms:
+    - dependent origination
+    - dependent arising
+    - conditionality
+    - conditioned arising
+pali:
+    - paṭiccasamuppāda
+    - idappaccayatā
+redirects:
+    - dependent-origination
+    - dependent-co-arising
+    - dependent-coarising
+    - conditionality
+    - conditioned-arising
+    - dependent co-arising
+    - dependent-arising
+    - dependent origination
+    - paticcasamuppada
+    - paticca-samuppada
+    - paṭiccasamuppāda
+    - pratityasamutpāda
+    - pratityasamutpada
+post:
+    url: /fire
+    title: "Fire: Investigating Recurrent Experience"
+    description: "The Buddha cast his entire framework of liberation in the language of fire and its cessation. This essay traces that structure using what we now understand about how fire actually works."
+supportedBy:
+    - wise attention
+    - right view
+    - investigation
+related:
+    - intentional-constructs
+    - consciousness
+    - contact
+    - stream-entry
+leadsTo:
+    - penetrative vision
+    - stream-entry
+discourses:
+    - id: "sn12.1"
+      note: "Core twelve-link formula"
+    - id: "sn12.2"
+      note: "Detailed link analysis"
+    - id: "sn12.15"
+      note: "Middle way formulation"
+    - id: "sn12.20"
+      note: "Stable principle, right wisdom"
+    - id: "sn12.41"
+      note: "Dependent arising and stream-entry"
+    - id: "mn9"
+      note: "Dependent arising in right view"
+    - id: "mn38"
+      note: "Conditioned consciousness"
+    - id: "ud1.1"
+      note: "Awakening contemplation, forward order"
+    - id: "mn26"
+      note: "Hard to see deeply"
+    - id: "sn12.23"
+      note: "Liberative sequence to release"
+    - id: "sn12.51"
+      note: "Investigating arising and cessation"
+    - id: "sn12.61"
+      note: "Applied to lived experience"
