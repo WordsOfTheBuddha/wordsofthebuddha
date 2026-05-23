@@ -161,6 +161,87 @@ function webmUrlFor(slug: string, m: VoiceManifest | null): string {
 	return `${base}.webm?h=${encodeURIComponent(h)}`;
 }
 
+function isEmDashToken(s: string): boolean {
+	return /^—+$/.test(s.trim());
+}
+
+function round4(n: number): number {
+	return Math.round(n * 10000) / 10000;
+}
+
+function splitEmDashToken(token: VoiceWord): VoiceWord[] {
+	const trimmed = token.w.trim();
+	if (!trimmed.includes("—") || isEmDashToken(trimmed)) {
+		return [token];
+	}
+
+	const parts = trimmed.match(/—+|[^—]+/g);
+	if (!parts || parts.length < 2) return [token];
+
+	const nonDashPieces = parts.filter((part) => !isEmDashToken(part));
+	if (nonDashPieces.length === 0) return [token];
+
+	const totalUnits = nonDashPieces.reduce((sum, part) => sum + Math.max(1, part.length), 0);
+	const duration = Math.max(0, token.e - token.s);
+	let cursor = token.s;
+	let remainingUnits = totalUnits;
+	const out: VoiceWord[] = [];
+
+	for (const part of parts) {
+		if (isEmDashToken(part)) {
+			out.push({ w: part, s: round4(cursor), e: round4(cursor) });
+			continue;
+		}
+
+		const units = Math.max(1, part.length);
+		const isLastWordPiece = remainingUnits === units;
+		const end = isLastWordPiece ? token.e : cursor + duration * (units / totalUnits);
+		out.push({ w: part, s: round4(cursor), e: round4(end) });
+		cursor = end;
+		remainingUnits -= units;
+	}
+
+	return out;
+}
+
+function normalizeListenManifest(m: VoiceManifest): VoiceManifest {
+	const paragraphs = m.paragraphs.map((paragraph) => {
+		const expandedWords: VoiceWord[] = [];
+		const lineSizes = paragraph.lineSizes ? [...paragraph.lineSizes] : undefined;
+		let lineIdx = 0;
+		let wordsLeftInLine = lineSizes?.[0] ?? 0;
+
+		for (const word of paragraph.words) {
+			if (lineSizes) {
+				while (lineIdx < lineSizes.length && wordsLeftInLine <= 0) {
+					lineIdx++;
+					wordsLeftInLine = lineSizes[lineIdx] ?? 0;
+				}
+			}
+
+			const pieces = splitEmDashToken(word);
+			expandedWords.push(...pieces);
+			if (lineSizes && pieces.length > 1) {
+				lineSizes[lineIdx] += pieces.length - 1;
+			}
+			if (lineSizes) {
+				wordsLeftInLine--;
+			}
+		}
+
+		return {
+			...paragraph,
+			words: expandedWords,
+			lineSizes,
+		};
+	});
+
+	return {
+		...m,
+		paragraphs,
+	};
+}
+
 function renderWordSpans(
 	parent: HTMLElement,
 	words: { w: string }[],
@@ -221,6 +302,9 @@ function renderWordSpans(
 			displayWord = displayWord.trimStart();
 			displayWord = capitalizeFirstLetter(displayWord);
 		}
+		const prevWord = words[i - 1]?.w ?? "";
+		const currIsDash = isEmDashToken(displayWord);
+		const prevIsDash = isEmDashToken(prevWord);
 
 		if (i === nextBreakAt) {
 			parent.appendChild(document.createElement("br"));
@@ -229,7 +313,9 @@ function renderWordSpans(
 		} else if (
 			i > 0 &&
 			!isPunctOnly(displayWord) &&
-			!isOpeningPunctOnly(words[i - 1]?.w ?? "")
+			!currIsDash &&
+			!prevIsDash &&
+			!isOpeningPunctOnly(prevWord)
 		) {
 			parent.appendChild(document.createTextNode(" "));
 		}
@@ -1014,7 +1100,15 @@ export function initListenMode(initial: ListenInitialData): void {
 			if (ws[mid].s <= t) lo = mid + 1;
 			else hi = mid;
 		}
-		return Math.max(0, lo - 1);
+		const clamp = Math.max(0, lo - 1);
+		if (!isEmDashToken(ws[clamp]?.w ?? "")) return clamp;
+		for (let i = clamp - 1; i >= 0; i--) {
+			if (!isEmDashToken(ws[i]?.w ?? "")) return i;
+		}
+		for (let i = clamp + 1; i < ws.length; i++) {
+			if (!isEmDashToken(ws[i]?.w ?? "")) return i;
+		}
+		return -1;
 	}
 
 	function findParagraphIdxAt(t: number): number {
@@ -1052,7 +1146,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		setMediaSessionMetadata();
 
 		const m = await loadVoiceManifestForDiscourse(slug);
-		manifest = m;
+		manifest = m ? normalizeListenManifest(m) : m;
 		if (!m) {
 			renderParagraphs(null);
 			return;
@@ -1070,7 +1164,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (m.slug) current.slug = m.slug;
 		renderHeader();
 		setMediaSessionMetadata();
-		renderParagraphs(m);
+		renderParagraphs(manifest);
 		drawWaveformCanvas();
 
 		audio.src = webmUrlFor(slug, m);
