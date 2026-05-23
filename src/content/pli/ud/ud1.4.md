@@ -1,8 +1,8 @@
 ---
-title: Huṁhuṅka sutta - Arrogance
-description: The Buddha expresses an inspired utterance on the qualities that make one a true brahmin.
-fetter: conceit, ignorance
-tags: arrogance, conceit, Dhamma, ignorance, pride, ud, ud1
+title: Huṁhuṅka sutta - Huffy
+description: The Buddha expresses an inspired utterance on the qualities that make one a true sage.
+qualities: conceit, brashness, humility
+theme: inspiration, wisdom
 slug: ud1.4
 ---
 

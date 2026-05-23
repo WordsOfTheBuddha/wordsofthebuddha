@@ -1,8 +1,8 @@
 ---
 title: Tatiya bodhi sutta - Upon Awakening (Third)
-description: The Buddha contemplates dependent co-arising in forward and reverse order just after his awakening.
-fetter: ignorance
-tags: ud,ud1,awakening,dependent origination, dependent co-arising,wise attention,ignorance
+description: The Buddha contemplates dependent co-arising in forward and reverse order just after his full awakening.
+qualities: wise attention, dependent co-arising
+theme: inspiration, wisdom, principle
 slug: ud1.3
 ---
 

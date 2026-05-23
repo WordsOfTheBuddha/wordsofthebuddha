@@ -1,8 +1,8 @@
 ---
 title: Dutiya bodhi sutta - Upon Awakening (Second)
-description: The Buddha contemplates dependent co-arising in reverse order just after his awakening.
-fetter: ignorance
-tags: ud,ud1,awakening,dependent origination, dependent co-arising,dependent co-arising,wise attention,ignorance
+description: The Buddha contemplates dependent arising in reverse order just after his full awakening.
+qualities: wise attention, dependent arising
+theme: inspiration, wisdom, principle
 slug: ud1.2
 ---
 

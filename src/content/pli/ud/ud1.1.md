@@ -1,8 +1,8 @@
 ---
-title: Paṭhama bodhi sutta - Upon Awakening [First]
-description: The Buddha contemplates dependent co-arising in forward order just after his awakening.
-fetter: ignorance
-tags: ud,ud1,awakening,dependent origination, dependent co-arising,wise attention,ignorance
+title: Paṭhama bodhi sutta - Upon Awakening (First)
+description: The Buddha contemplates dependent arising in forward order just after his full awakening.
+qualities: wise attention, dependent arising
+theme: inspiration, wisdom, principle
 slug: ud1.1
 ---
 
