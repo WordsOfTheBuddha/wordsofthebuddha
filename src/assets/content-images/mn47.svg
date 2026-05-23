@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2120" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
+  <title id="title">MN 47 Vīmaṁsaka Sutta — Examining the Teacher</title>
+  <desc id="desc">A discourse visualization of MN 47: how a disciple who cannot read minds should examine the Tathāgata through sight and hearing across six progressive levels of behavior, integrity, and teaching to establish unshakeable, reason-based faith.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="38%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="18%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffd980" stop-opacity="0.68" />
+      <stop offset="82%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+    <linearGradient id="cardIgnoble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#251624" />
+      <stop offset="100%" stop-color="#17111c" />
+    </linearGradient>
+    <linearGradient id="cardNoble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142b34" />
+      <stop offset="100%" stop-color="#101d2a" />
+    </linearGradient>
+    <linearGradient id="teacherGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182536" />
+      <stop offset="100%" stop-color="#111a28" />
+    </linearGradient>
+    <linearGradient id="teachingGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1b2838" />
+      <stop offset="100%" stop-color="#121e2c" />
+    </linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.18" />
+      <stop offset="55%" stop-color="#c8a040" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="2120" fill="url(#bg)" />
+  <ellipse cx="460" cy="320" rx="320" ry="140" fill="#c8a040" opacity="0.035" />
+  <ellipse cx="460" cy="1200" rx="340" ry="160" fill="#60a088" opacity="0.03" />
+  <ellipse cx="460" cy="1870" rx="360" ry="180" fill="#ffd700" opacity="0.025" />
+
+  <!-- ========================================== -->
+  <!-- PHASE 1 — HEADER                           -->
+  <!-- ========================================== -->
+  <g id="header" transform="translate(0, 0)">
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="22" font-weight="bold" letter-spacing="3">MN 47 — VĪMAṀSAKA SUTTA</text>
+    <text x="460" y="70" text-anchor="middle" fill="#90a0b8" font-size="15" font-style="italic">Examining</text>
+    <line x1="270" y1="84" x2="650" y2="84" stroke="#a09070" stroke-opacity="0.32" stroke-width="0.6" />
+    <text x="460" y="108" text-anchor="middle" fill="#90c0b0" font-size="12" font-style="italic">“One who is an inquirer, not knowing how to encompass another’s mind, should examine a Teacher...”</text>
+    <text x="460" y="128" text-anchor="middle" fill="#708878" font-size="11" font-style="italic" opacity="0.82">vīmaṁsakena bhikkhunā parassa cetopariyāyaṁ ajānantena tathāgate samannesanā kātabbā</text>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- PHASE 2 — PORTALS OF INQUIRY               -->
+  <!-- ========================================== -->
+  <g id="sensory-gateway" transform="translate(0, 140)">
+    <line x1="100" y1="20" x2="820" y2="20" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="27" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2.5">TWO FIELDS OF INQUIRY · DVĪSU DHAMMESU</text>
+    <text x="460" y="50" text-anchor="middle" fill="#708090" font-size="11.5" font-style="italic">“What qualities of the teacher are evident through what is seen and heard?”</text>
+
+    <!-- Left: Seen (Cakkhuviññeyyā) -->
+    <g id="gateway-seen" transform="translate(180, 70)">
+      <rect x="0" y="0" width="220" height="96" rx="8" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <g id="icon-seen" transform="translate(15, 14) scale(1.6)" opacity="0.85">
+        <g transform="translate(12, 12) scale(1.24235) translate(-10, -10)">
+          <path d="M 2 10 Q 10 2, 18 10" fill="none" stroke="#c8a040" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 2 10 Q 10 18, 18 10" fill="none" stroke="#c8a040" stroke-width="1" stroke-linecap="round"/>
+          <circle cx="10" cy="10" r="2.5" fill="none" stroke="#c8a040" stroke-width="0.8"/>
+        </g>
+      </g>
+      <text x="70" y="34" fill="#a0c8b8" font-size="13.5" font-weight="bold">The Eye</text>
+      <text x="70" y="52" fill="#709084" font-size="11" font-style="italic">cakkhuviññeyyā dhammā</text>
+      <text x="110" y="80" text-anchor="middle" fill="#90a8a0" font-size="11">Observing visible actions</text>
+    </g>
+
+    <!-- Right: Heard (Sotaviññeyyā) -->
+    <g id="gateway-heard" transform="translate(520, 70)">
+      <rect x="0" y="0" width="220" height="96" rx="8" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <g id="icon-heard" transform="translate(15, 14) scale(1.6)" opacity="0.85">
+        <g transform="translate(12, 12) scale(1.408) translate(-10, -9)">
+          <path d="M 14 2 Q 6 2, 6 10 Q 6 16, 10 16" fill="none" stroke="#7888a0" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 10 10 Q 12 8, 12 12" fill="none" stroke="#7888a0" stroke-width="0.7" stroke-linecap="round"/>
+        </g>
+      </g>
+      <text x="70" y="34" fill="#a0c8b8" font-size="13.5" font-weight="bold">The Ear</text>
+      <text x="70" y="52" fill="#709084" font-size="11" font-style="italic">sotaviññeyyā dhammā</text>
+      <text x="110" y="80" text-anchor="middle" fill="#90a8a0" font-size="11">Hearing spoken words &amp; teachings</text>
+    </g>
+
+    <!-- Center connecting line/flow to signify investigation -->
+    <g transform="translate(410, 118)" opacity="0.5">
+      <path d="M 0 0 L 100 0" stroke="#c8a040" stroke-dasharray="1 3" stroke-width="1" />
+      <polygon points="46,-3 54,0 46,3" fill="#c8a040" />
+    </g>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- PHASE 3 — THE SIX STAGES OF SCRUTINY       -->
+  <!-- ========================================== -->
+  <g id="six-stage-scrutiny" transform="translate(0, 360)">
+    <line x1="100" y1="14" x2="820" y2="14" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="21" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2.3">INVESTIGATION OF MENTAL QUALITIES · DHAMMASAMANNESANĀ</text>
+    <text x="460" y="44" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">A six-point checklist for examining a teacher</text>
+
+    <!-- Vertical gold spine on left of card text for stability -->
+    <line x1="175" y1="68" x2="175" y2="670" stroke="#4a5a70" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="2 2" />
+
+    <!-- STEP 1 -->
+    <g id="step-1" transform="translate(130, 68)">
+      <rect x="0" y="0" width="660" height="84" rx="8" fill="url(#cardIgnoble)" stroke="#a06070" stroke-opacity="0.3" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <circle cx="45" cy="42" r="14" fill="#251624" stroke="#a06070" stroke-width="1.2" />
+      <text x="45" y="45" text-anchor="middle" fill="#d0a0a8" font-size="11" font-weight="bold">1</text>
+
+      <text x="80" y="32" fill="#d0a0a8" font-size="13" font-weight="bold">Defiled Mental Qualities</text>
+      <text x="80" y="49" fill="#886878" font-size="11" font-style="italic">saṅkiliṭṭhā dhammā</text>
+      <text x="80" y="67" fill="#b0959c" font-size="11">Check for any corrupt, defiled traits of mind shown in actions or speech.</text>
+
+      <rect x="596" y="34" width="16" height="16" rx="3" fill="none" stroke="#a06070" stroke-opacity="0.75" stroke-width="1" />
+    </g>
+
+    <!-- STEP 2 -->
+    <g id="step-2" transform="translate(130, 168)">
+      <rect x="0" y="0" width="660" height="84" rx="8" fill="url(#cardIgnoble)" stroke="#a07a60" stroke-opacity="0.3" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <circle cx="45" cy="42" r="14" fill="#201b18" stroke="#a07a60" stroke-width="1.2" />
+      <text x="45" y="45" text-anchor="middle" fill="#d0b0a0" font-size="11" font-weight="bold">2</text>
+
+      <text x="80" y="32" fill="#d0b0a0" font-size="13" font-weight="bold">Mixed or Muddled Qualities</text>
+      <text x="80" y="49" fill="#907868" font-size="11" font-style="italic">vītimissā dhammā</text>
+      <text x="80" y="67" fill="#b0a095" font-size="11">Check for mixed or inconsistent habits alternating between clean and compromised.</text>
+
+      <rect x="596" y="34" width="16" height="16" rx="3" fill="none" stroke="#a07a60" stroke-opacity="0.75" stroke-width="1" />
+    </g>
+
+    <!-- STEP 3 -->
+    <g id="step-3" transform="translate(130, 268)">
+      <rect x="0" y="0" width="660" height="84" rx="8" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <circle cx="45" cy="42" r="14" fill="#102520" stroke="#60a088" stroke-width="1.2" />
+      <text x="45" y="44" text-anchor="middle" fill="#90c8b0" font-size="11" font-weight="bold">3</text>
+
+      <text x="80" y="32" fill="#90c8b0" font-size="13" font-weight="bold">Purified Mental Qualities</text>
+      <text x="80" y="49" fill="#688c78" font-size="11" font-style="italic">vodātā dhammā</text>
+      <text x="80" y="67" fill="#90a89c" font-size="11">Check whether wholesome, completely clean qualities are visible in behavior.</text>
+
+      <rect x="596" y="34" width="16" height="16" rx="3" fill="none" stroke="#60a088" stroke-opacity="0.75" stroke-width="1" />
+    </g>
+
+    <!-- STEP 4 -->
+    <g id="step-4" transform="translate(130, 368)">
+      <rect x="0" y="0" width="660" height="84" rx="8" fill="url(#cardNoble)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <circle cx="45" cy="42" r="14" fill="#121e2a" stroke="#6888a0" stroke-width="1.2" />
+      <text x="45" y="44" text-anchor="middle" fill="#a0c0d8" font-size="11" font-weight="bold">4</text>
+
+      <text x="80" y="32" fill="#a0c0d8" font-size="13" font-weight="bold">Sustained Integration Over Time</text>
+      <text x="80" y="49" fill="#70889c" font-size="11" font-style="italic">dīgharattaṁ samāpanno</text>
+      <text x="80" y="67" fill="#95abbc" font-size="11">Check whether the state is long-standing and integrated, not a recent phase.</text>
+
+      <rect x="596" y="34" width="16" height="16" rx="3" fill="none" stroke="#6888a0" stroke-opacity="0.75" stroke-width="1" />
+    </g>
+
+    <!-- STEP 5 -->
+    <g id="step-5" transform="translate(130, 468)">
+      <rect x="0" y="0" width="660" height="84" rx="8" fill="url(#cardNeutral)" stroke="#c8a040" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <circle cx="45" cy="42" r="14" fill="#1d201a" stroke="#c8a040" stroke-width="1.2" />
+      <text x="45" y="45" text-anchor="middle" fill="#e0c890" font-size="11" font-weight="bold">5</text>
+
+      <text x="80" y="32" fill="#e0c890" font-size="13" font-weight="bold">Freedom Under Public Fame</text>
+      <text x="80" y="49" fill="#988458" font-size="11" font-style="italic">ādīnava</text>
+      <text x="80" y="67" fill="#bca980" font-size="11">Check whether fame and a large following bring drawbacks such as conceit or arrogance.</text>
+
+      <rect x="596" y="34" width="16" height="16" rx="3" fill="none" stroke="#c8a040" stroke-opacity="0.75" stroke-width="1" />
+    </g>
+
+    <!-- STEP 6 -->
+    <g id="step-6" transform="translate(130, 568)">
+      <rect x="0" y="0" width="660" height="84" rx="8" fill="url(#cardNoble)" stroke="#c8a040" stroke-opacity="0.4" stroke-width="0.8" filter="url(#shadowDrop)" />
+      <circle cx="45" cy="42" r="14" fill="#252015" stroke="#c8a040" stroke-width="1.2" />
+      <text x="45" y="46" text-anchor="middle" fill="#ffd980" font-size="11" font-weight="bold">6</text>
+
+      <text x="80" y="32" fill="#ffd980" font-size="13" font-weight="bold">Fearless &amp; Unforced Restraint</text>
+      <text x="80" y="49" fill="#c8a040" font-size="11" font-style="italic">abhayūparata · rāgakkhaya</text>
+      <text x="80" y="67" fill="#dfcfb0" font-size="11">Check whether restraint comes from fearlessness and the wearing away of passion.</text>
+
+      <rect x="596" y="34" width="16" height="16" rx="3" fill="none" stroke="#ffd980" stroke-opacity="0.75" stroke-width="1" />
+    </g>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- PHASE 4 — BEHAVIOR & DIRECT INQUIRY        -->
+  <!-- ========================================== -->
+  <g id="sustained-observation" transform="translate(0, 1110)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2.5">BEHAVIORAL OBSERVATION &amp; DIRECT INQUIRY</text>
+    <text x="460" y="48" text-anchor="middle" fill="#708090" font-size="11" font-style="italic">Cross-verifying a teacher’s conduct in community and in solitude against their own testimony</text>
+
+    <!-- Mid spine -->
+    <line x1="460" y1="76" x2="460" y2="290" stroke="#c8a040" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="2 3" />
+
+    <!-- Left Option: Sustained Observation -->
+    <g id="obs-behavioral" transform="translate(70, 76)">
+      <rect x="0" y="0" width="370" height="210" rx="8" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.3" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <g id="icon-lotus" transform="translate(167, 14) scale(1.52)" opacity="0.84">
+        <g fill="none" stroke="#688c78" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 5 21 L 19 21" />
+
+            <path d="M 12 19 L 12 21" />
+
+            <path d="M 12 19 C 8.5 13 9 5 12 2 C 15 5 15.5 13 12 19 Z" />
+
+            <path d="M 12 19 C 7 17 3 12 3 7 C 5 10 8 13.5 10.5 14.8" />
+
+            <path d="M 12 19 C 17 17 21 12 21 7 C 19 10 16 13.5 13.5 14.8" />
+
+            <path d="M 12 19 C 7 20 2 17 1 13 C 3 14 6.5 16 9.8 17.5" />
+
+            <path d="M 12 19 C 17 20 22 17 23 13 C 21 14 17.5 16 14.2 17.5" />
+        </g>
+      </g>
+
+      <text x="185" y="88" text-anchor="middle" fill="#90c8b0" font-size="13" font-weight="bold">Observable Integrity</text>
+      <text x="185" y="105" text-anchor="middle" fill="#688c78" font-size="11" font-style="italic">anupalitta</text>
+
+      <circle cx="36" cy="135" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+      <text x="36" y="138" text-anchor="middle" fill="#90c8b0" font-size="9" font-weight="bold">A</text>
+      <text x="56" y="140" fill="#b0c8bc" font-size="11">Whether dwelling in the Saṅgha or alone</text>
+
+      <circle cx="36" cy="162" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+      <text x="36" y="165" text-anchor="middle" fill="#90c8b0" font-size="9" font-weight="bold">B</text>
+      <text x="56" y="165" fill="#b0c8bc" font-size="11">Behaves with no conceit, despising none</text>
+
+      <circle cx="36" cy="190" r="8" fill="none" stroke="#60a088" stroke-width="0.8" />
+      <text x="36" y="193" text-anchor="middle" fill="#90c8b0" font-size="9" font-weight="bold">C</text>
+      <text x="56" y="193" fill="#b0c8bc" font-size="11">Untainted with worldly benefits (āmisa)</text>
+    </g>
+
+    <!-- Right Option: Direct Verification -->
+    <g id="obs-inquiry" transform="translate(480, 76)">
+      <rect x="0" y="0" width="370" height="210" rx="8" fill="url(#teacherGrad)" stroke="#c8a040" stroke-opacity="0.3" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <g id="icon-meditation" transform="translate(166, 15) scale(1.6)" opacity="0.8">
+        <g fill="none" stroke="#c8a040" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="6" r="3" />
+          <path d="M 5 21 L 19 21 L 16 15 L 8 15 Z" fill="#1e1b10" />
+          <path d="M 12 9 C 9 11, 7 13, 8 15 C 9 17, 15 17, 16 15 C 17 13, 15 11, 12 9 Z" />
+          <path d="M 6 21 C 6 18, 9 16, 12 16 C 15 16, 18 18, 18 21" stroke-opacity="0.7" />
+        </g>
+      </g>
+
+      <text x="185" y="88" text-anchor="middle" fill="#e0c890" font-size="13" font-weight="bold">Direct Verification</text>
+      <text x="185" y="105" text-anchor="middle" fill="#c8a040" font-size="11" font-style="italic">“They are my path and my domain...”</text>
+
+      <g transform="translate(15, 126)">
+        <rect x="0" y="0" width="340" height="72" rx="4" fill="#141a24" stroke="#c8a040" stroke-opacity="0.2" stroke-width="0.8" />
+        <text x="170" y="21" text-anchor="middle" fill="#bfd0e0" font-size="11">“Purified mental qualities are found in me.”</text>
+        <text x="170" y="42" text-anchor="middle" fill="#ffd980" font-size="11" font-weight="bold" font-style="italic">“They are my domain — yet I do not identify with them.”</text>
+        <text x="170" y="58" text-anchor="middle" fill="#887040" font-size="9" font-style="italic">na ca tena tammayo</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- PHASE 5 — PROGRESSIVE INSTRUCTION          -->
+  <!-- ========================================== -->
+  <g id="progressive-teaching" transform="translate(0, 1440)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2.5">PROGRESSIVE INSTRUCTION &amp; REALIZATION</text>
+    <text x="460" y="48" text-anchor="middle" fill="#708090" font-size="11.5" font-style="italic">How direct knowledge arises through progressively refined teachings</text>
+
+    <!-- Progressive card -->
+    <g transform="translate(130, 68)">
+      <rect x="0" y="0" width="660" height="196" rx="8" fill="url(#teachingGrad)" stroke="#6888a0" stroke-opacity="0.35" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <!-- Step A: Approach (Centered around x=110) -->
+      <g transform="translate(0, 24)">
+        <circle cx="110" cy="20" r="13" fill="#0d1c2a" stroke="#6888a0" stroke-width="1" />
+        <text x="110" y="23" text-anchor="middle" fill="#a0c0d8" font-size="11" font-weight="bold">1</text>
+        <text x="110" y="46" text-anchor="middle" fill="#a0c0d8" font-size="12" font-weight="bold">Approaches</text>
+        <text x="110" y="59" text-anchor="middle" fill="#70889c" font-size="10.5" font-style="italic">upasaṅkamati</text>
+        <text x="110" y="76" text-anchor="middle" fill="#8cb0c8" font-family="Georgia,'Times New Roman',serif" font-size="10.5">
+          <tspan x="110" dy="0">Approaching the</tspan>
+          <tspan x="110" dy="14">teacher with open,</tspan>
+          <tspan x="110" dy="14">questioning inquiry</tspan>
+        </text>
+      </g>
+
+      <!-- Draw Arrow A->B -->
+      <path d="M 180 44 L 260 44" fill="none" stroke="#6888a0" stroke-opacity="0.4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <polygon points="264,44 258,41 258,47" fill="#6888a0" fill-opacity="0.6" />
+
+      <!-- Step B: Refined Dhamma (Centered around x=330) -->
+      <g transform="translate(0, 24)">
+        <circle cx="330" cy="20" r="13" fill="#0d1c2a" stroke="#6888a0" stroke-width="1" />
+        <text x="330" y="23" text-anchor="middle" fill="#a0c0d8" font-size="11" font-weight="bold">2</text>
+        <text x="330" y="46" text-anchor="middle" fill="#a0c0d8" font-size="12" font-weight="bold">Progressive Dhamma</text>
+        <text x="330" y="59" text-anchor="middle" fill="#70889c" font-size="10.5" font-style="italic">uttaruttariṁ paṇītapaṇītaṁ kaṇhasukkasappaṭibhāgo</text>
+        <text x="330" y="76" text-anchor="middle" fill="#8cb0c8" font-family="Georgia,'Times New Roman',serif" font-size="10.5">
+          <tspan x="330" dy="0">Gradually unfolding teaching</tspan>
+          <tspan x="330" dy="14">with its higher and refined levels,</tspan>
+          <tspan x="330" dy="14">with its dark &amp; bright counterparts</tspan>
+        </text>
+      </g>
+
+      <!-- Draw Arrow B->C -->
+      <path d="M 400 44 L 480 44" fill="none" stroke="#6888a0" stroke-opacity="0.4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <polygon points="484,44 478,41 478,47" fill="#6888a0" fill-opacity="0.6" />
+
+      <!-- Step C: Direct Knowledge (Centered around x=550) -->
+      <g transform="translate(0, 24)">
+        <circle cx="550" cy="20" r="13" fill="#1c2520" stroke="#60a088" stroke-width="1" />
+        <text x="550" y="22" text-anchor="middle" fill="#90c8b0" font-size="11" font-weight="bold">3</text>
+        <text x="550" y="46" text-anchor="middle" fill="#90c8b0" font-size="12" font-weight="bold">Direct Knowledge</text>
+        <text x="550" y="59" text-anchor="middle" fill="#688c78" font-size="10.5" font-style="italic">abhiññāya ... niṭṭhaṁ gacchati</text>
+        <text x="550" y="76" text-anchor="middle" fill="#8cbcb0" font-family="Georgia,'Times New Roman',serif" font-size="10.5">
+          <tspan x="550" dy="0">Verifying aspects</tspan>
+          <tspan x="550" dy="14">of the Dhamma by</tspan>
+          <tspan x="550" dy="14">direct personal insight</tspan>
+        </text>
+      </g>
+
+      <!-- Bottom summary linking to Triple Gem alignment -->
+      <line x1="24" y1="142" x2="636" y2="142" stroke="#4a5a70" stroke-opacity="0.25" stroke-width="0.8" />
+      <text x="330" y="162" text-anchor="middle" fill="#bca980" font-size="11" font-style="italic" font-weight="bold">Places confidence in the Teacher:</text>
+      <text x="330" y="180" text-anchor="middle" fill="#e0d8b0" font-size="11">The Teacher is perfectly awakened · The Dhamma is well-proclaimed · The Saṅgha is practicing well</text>
+    </g>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- PHASE 6 — UNSHAKEABLE REALIZATION-FOUNDED  -->
+  <!-- ========================================== -->
+  <g id="rooted-faith" transform="translate(0, 1770)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="25" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2.5">GROUNDED FAITH ROOTED IN REALIZATION</text>
+    <text x="460" y="48" text-anchor="middle" fill="#708090" font-size="11.5" font-style="italic">ākāravatī saddhā · dassanamūlikā</text>
+
+    <!-- Central glorious gold card -->
+    <g transform="translate(130, 68)">
+      <rect x="0" y="0" width="660" height="200" rx="8" fill="url(#cardNoble)" fill-opacity="1" stroke="#c8a040" stroke-opacity="0.65" stroke-width="1" filter="url(#shadowDrop)" />
+
+      <!-- Radial gradient aura behind icon for emphasis/glow -->
+      <circle cx="110" cy="100" r="80" fill="url(#libGlow)" />
+
+      <!-- Rooted Faith Icon Inline -->
+      <g id="icon-rooted-faith" transform="translate(50, 40) scale(5)" filter="url(#glow1)" opacity="0.95">
+        <g fill="none" stroke="#ffd700" stroke-width="0.4" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Central trunk -->
+          <path d="M 12 3 L 12 15" stroke-width="0.5" />
+          <path d="M 8 3 L 16 3" stroke-width="0.3" />
+          <circle cx="12" cy="3" r="0.6" fill="#ffd700" stroke="none" />
+          <!-- Center seed -->
+          <circle cx="12" cy="15" r="1" />
+          <!-- Roots -->
+          <path d="M 10.5 16 L 8 19 L 6 21" stroke-width="0.3" />
+          <path d="M 12 16 L 12 21" stroke-width="0.3" />
+          <path d="M 13.5 16 L 16 19 L 18 21" stroke-width="0.3" />
+        </g>
+      </g>
+
+      <!-- Climax text -->
+      <g transform="translate(200, 0)">
+        <!--text x="223" y="44" text-anchor="middle" fill="#ffd980" font-size="16" font-weight="bold" letter-spacing="0.5">Supported by reasons, rooted in realization</text>
+        <text x="223" y="64" text-anchor="middle" fill="#a0b8bc" font-size="11.5" font-style="italic">saddhā · patiṭṭhitā · dassanamūlikā</text-->
+
+        <text x="223" y="64" text-anchor="middle" fill="#dfdfdf" font-size="13" font-weight="bold">“Such faith is supported by reasons, rooted in understanding...</text>
+
+        <text x="223" y="96" text-anchor="middle" fill="#9bc0b0" font-size="12">unshakeable by any ascetic, priest, deity, Māra, Brahmā, or anyone else</text>
+        <text x="223" y="112" text-anchor="middle" fill="#9bc0b0" font-size="12">in the entire world”</text>
+
+        <rect x="0" y="132" width="446" height="36" rx="4" fill="#0d1b1a" stroke="#60a088" stroke-opacity="0.3" stroke-width="0.8" />
+        <text x="223" y="146" text-anchor="middle" fill="#80c0a0" font-size="10.5" font-weight="bold" letter-spacing="1">HOW CHARACTER IS INVESTIGATED</text>
+        <text x="223" y="162" text-anchor="middle" fill="#80c0a0" font-size="10" font-style="italic" letter-spacing="1">IN ACCORDANCE WITH THE DHAMMA</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- FOOTER                                     -->
+  <!-- ========================================== -->
+  <g id="footer" transform="translate(0, 2070)">
+    <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn47" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="16" text-anchor="middle" fill="#405060" font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn47</text>
+    </a>
+    <!-- Lotus motif -->
+    <g transform="translate(460, 36) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+      <circle cx="0" cy="-28" r="9" />
+    </g>
+  </g>
+</svg>

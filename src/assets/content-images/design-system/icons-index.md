@@ -22,10 +22,10 @@ Generated from `icons-manifest.json` (version 1).
 | refulgent | Refulgent glory | mn1 | phenomena | line-art | `icons/refulgent.svg` |
 | great-fruit | Great fruit | mn1 | phenomena | line-art | `icons/great-fruit.svg` |
 | overlord | Overlord | mn1 | phenomena | line-art, gold | `icons/overlord.svg` |
-| space-base | Boundless space | mn1, mn6, mn25 | formless, phenomena | line-art, dashed | `icons/space-base.svg` |
-| consciousness-base | Boundless consciousness | mn1, mn6, mn25 | formless, phenomena | line-art | `icons/consciousness-base.svg` |
-| nothingness-base | Nothingness | mn1, mn6, mn25, mn106 | formless, phenomena | line-art, dashed | `icons/nothingness-base.svg` |
-| neither-base | Neither perception nor non-perception | mn1, mn6, mn25, mn106 | formless, phenomena | line-art | `icons/neither-base.svg` |
+| space-base | Boundless space | mn1, mn6, mn25, mn111 | formless, phenomena | line-art, dashed | `icons/space-base.svg` |
+| consciousness-base | Boundless consciousness | mn1, mn6, mn25, mn111 | formless, phenomena | line-art | `icons/consciousness-base.svg` |
+| nothingness-base | Nothingness | mn1, mn6, mn25, mn106, mn111 | formless, phenomena | line-art, dashed | `icons/nothingness-base.svg` |
+| neither-base | Neither perception nor non-perception | mn1, mn6, mn25, mn106, mn111 | formless, phenomena | line-art | `icons/neither-base.svg` |
 | oneness | Oneness | mn1 | phenomena | line-art | `icons/oneness.svg` |
 | diversity | Diversity | mn1 | phenomena | line-art | `icons/diversity.svg` |
 | all | All | mn1 | phenomena | line-art | `icons/all.svg` |
@@ -83,7 +83,7 @@ Generated from `icons-manifest.json` (version 1).
 | bojjhanga-energy | Bojjhaṅga: energy | mn118, mn10 | awakening, diligence, effort | line-art, bojjhanga | `icons/bojjhanga-energy.svg` |
 | bojjhanga-joy | Bojjhaṅga: joy | mn118, mn10 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-joy.svg` |
 | bojjhanga-tranquility | Bojjhaṅga: tranquility | mn118, mn6, mn10 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-tranquility.svg` |
-| bojjhanga-collectedness | Bojjhaṅga: collectedness | mn118, mn10 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-collectedness.svg` |
+| bojjhanga-collectedness | Bojjhaṅga: collectedness | mn118, mn10, mn111 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-collectedness.svg` |
 | bojjhanga-equanimity | Bojjhaṅga: equanimity | mn118, mn10 | awakening, equanimity | line-art, bojjhanga | `icons/bojjhanga-equanimity.svg` |
 | breath-torso | Mindfulness of breathing (torso icon) | mn119, mn10 | awakening, clear awareness, mindfulness | line-art, breath, body | `icons/breath-torso.svg` |
 | shared-postures-four | Four postures | mn119, mn10, mn20 | mindfulness, skillful means | line-art, figure | `icons/shared-postures-four.svg` |
@@ -91,18 +91,18 @@ Generated from `icons-manifest.json` (version 1).
 | body-impurities | Body impurities review | mn119, mn10 | mindfulness | line-art, body | `icons/body-impurities.svg` |
 | four-elements | Four elements in the body | mn119, mn10, mn106 | elements, mindfulness | line-art | `icons/four-elements.svg` |
 | charnel-skull | Nine charnel grounds | mn119, mn10 | mindfulness, wholesome | line-art, death | `icons/charnel-skull.svg` |
-| jhana-first | First jhāna simile | mn39, mn6, mn25, mn119 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-first.svg` |
-| jhana-second | Second jhāna simile | mn39, mn6, mn25, mn119 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-second.svg` |
-| jhana-third | Third jhāna simile | mn39, mn6, mn25, mn119 | awakening, collectedness, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-third.svg` |
-| jhana-fourth | Fourth jhāna simile | mn39, mn6, mn25, mn106, mn119 | awakening, clear awareness, collectedness, direct knowledge, dispassion, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-fourth.svg` |
+| jhana-first | First jhāna simile | mn39, mn6, mn25, mn111, mn119 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-first.svg` |
+| jhana-second | Second jhāna simile | mn39, mn6, mn25, mn111, mn119 | awakening, collectedness, non harm, renunciation | line-art, jhana | `icons/jhana-second.svg` |
+| jhana-third | Third jhāna simile | mn39, mn6, mn25, mn111, mn119 | awakening, collectedness, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-third.svg` |
+| jhana-fourth | Fourth jhāna simile | mn39, mn6, mn25, mn106, mn111, mn119 | awakening, clear awareness, collectedness, direct knowledge, dispassion, equanimity, mindfulness, non harm, renunciation | line-art, jhana | `icons/jhana-fourth.svg` |
 | simile-uncultivated-clay | Uncultivated: clay and rock | mn119 | harm, uncultivated, unwholesome | line-art | `icons/simile-uncultivated-clay.svg` |
 | simile-uncultivated-wood | Uncultivated: dry wood | mn119 | harm, uncultivated, unwholesome | line-art | `icons/simile-uncultivated-wood.svg` |
 | simile-uncultivated-jar | Uncultivated: empty jar | mn119 | harm, uncultivated, unwholesome | line-art | `icons/simile-uncultivated-jar.svg` |
 | simile-cultivated-string | Cultivated: string on heartwood | mn119 | cultivation, non harm, wholesome | line-art | `icons/simile-cultivated-string.svg` |
 | simile-cultivated-wet-wood | Cultivated: wet sappy wood | mn119 | cultivation, non harm, wholesome | line-art | `icons/simile-cultivated-wet-wood.svg` |
 | simile-cultivated-full-jar | Cultivated: full jar | mn119 | cultivation, non harm, wholesome | line-art | `icons/simile-cultivated-full-jar.svg` |
-| chariot-wheel | Skilled charioteer | mn119 | direct knowledge | line-art | `icons/chariot-wheel.svg` |
-| defilements-ended | Ending of taints | mn39, mn6, mn25, mn119 | awakening, ending, liberation, psychic power, safety | line-art, gold, mn39 | `icons/defilements-ended.svg` |
+| chariot-wheel | Skilled charioteer | mn119, mn111 | direct knowledge | line-art | `icons/chariot-wheel.svg` |
+| defilements-ended | Ending of mental defilements | mn39, mn6, mn25, mn111, mn119 | awakening, ending, liberation, psychic power, safety | line-art, gold, mn39 | `icons/defilements-ended.svg` |
 | conceit-noble-birth | Conceit motif: noble birth | mn113 | conceit | line-art, mn113 | `icons/conceit-noble-birth.svg` |
 | conceit-wealth | Conceit motif: abundant wealth | mn113 | conceit | line-art, mn113 | `icons/conceit-wealth.svg` |
 | conceit-fame | Conceit motif: recognition and fame | mn113 | conceit | line-art, mn113 | `icons/conceit-fame.svg` |
@@ -115,7 +115,7 @@ Generated from `icons-manifest.json` (version 1).
 | conceit-alms | Conceit motif: alms collector | mn113 | conceit | line-art, mn113 | `icons/conceit-alms.svg` |
 | ui-chevron-down | Chevron down | mn1, mn2 |  | ui, chevron | `icons/ui-chevron-down.svg` |
 | ui-arrow-down | Arrow down | mn2 |  | ui, arrow | `icons/ui-arrow-down.svg` |
-| liberation-sparkle | Liberation sparkle | an10.1 | liberation | gold, line-art, sparkle | `icons/liberation-sparkle.svg` |
+| liberation-sparkle | Liberation sparkle | an10.1, mn111 | liberation | gold, line-art, sparkle | `icons/liberation-sparkle.svg` |
 | wide-arc | Wide structural arc | an7.61 |  | line-art, arc | `icons/wide-arc.svg` |
 | branch-split | Branch split | sn36.6 |  | line-art, fork | `icons/branch-split.svg` |
 | tree-barren | Tree simile: without branches and leaves | an7.65 | path, unprincipled conduct, unwholesome | line-art, an7, tree | `icons/tree-barren.svg` |
@@ -125,7 +125,7 @@ Generated from `icons-manifest.json` (version 1).
 | one-dart | One dart | sn36.6 | insight, liberation | line-art, sn36, vedana, dart | `icons/one-dart.svg` |
 | friction-sticks-heat | rubbing wood: friction and heat | sn36.10 | insight, simile | line-art, simile | `icons/friction-sticks-heat.svg` |
 | sticks-separated-heat | separating wood: heat fades | sn36.10 | insight, simile | line-art, simile | `icons/sticks-separated-heat.svg` |
-| virtue-tablet | Accomplishment in virtue | mn39, mn6, mn53 | ethical conduct | line-art, mn53, sekha, sila | `icons/virtue-tablet.svg` |
+| virtue-tablet | Accomplishment in virtue | mn39, mn6, mn53, mn111 | ethical conduct | line-art, mn53, sekha, sila | `icons/virtue-tablet.svg` |
 | sense-restraint | Sense restraint | mn39, mn53 | sense restraint, wholesome | line-art, mn53, sekha, sense | `icons/eye-shield.svg` |
 | moderation-bowl | Moderation in eating | mn39, mn53 | ethical conduct, renunciation, sense restraint | line-art, mn53, sekha, bowl | `icons/moderation-bowl.svg` |
 | wakefulness-moon | Devotion to wakefulness | mn39, mn53 | clear awareness, effort, mindfulness | line-art, mn53, sekha | `icons/wakefulness-moon.svg` |
@@ -155,7 +155,7 @@ Generated from `icons-manifest.json` (version 1).
 | simile-villages-traveler | Simile: traveler among villages (past lives) | mn39 | direct knowledge, insight, psychic power, simile | line-art | `icons/simile-villages-traveler.svg` |
 | simile-two-houses | Simile: seeing between two houses (divine eye) | mn39 | direct knowledge, insight, psychic power, simile | line-art | `icons/simile-two-houses.svg` |
 | simile-mountain-lake | Simile: clear mountain lake (ending of taints) | mn39 | direct knowledge, ending, insight, liberation, psychic power, simile | line-art | `icons/simile-mountain-lake.svg` |
-| impermanence-dissolve | Recognition of impermanence | mn106 | dispassion, recognition of impermanence, wisdom | line-art, mn106 | `icons/impermanence-dissolve.svg` |
+| impermanence-dissolve | Recognition of impermanence | mn106, mn111 | dispassion, recognition of impermanence, wisdom | line-art, mn106 | `icons/impermanence-dissolve.svg` |
 | emptiness-void | Emptiness of perceptions | mn106, mn6 | formless, perceiving escape, with nothing | line-art, mn106 | `icons/emptiness-void.svg` |
 | non-belonging-scatter | Non-belonging | mn106 | formless, free from attachment, non identification, recognition of not self | line-art, mn106 | `icons/non-belonging-scatter.svg` |
 | dwell-loop | Return loop (repeat often) | mn106 | diligence, effort, skillful means | line-art, mn106, arrow | `icons/dwell-loop.svg` |
@@ -164,14 +164,16 @@ Generated from `icons-manifest.json` (version 1).
 | herd-barren-tree | Herd: barren tree | mn25 | harm, simile | line-art | `icons/herd-barren-tree.svg` |
 | herd-visible-lair | Herd: visible lair | mn25 | harm, simile, wrong view | line-art, dashed | `icons/herd-visible-lair.svg` |
 | herd-beyond-reach | Herd: beyond reach | mn25 | liberation, safety, simile | line-art | `icons/herd-beyond-reach.svg` |
-| cessation-vessel | Cessation of perception and feeling | mn25 | ending | line-art, gold, dashed | `icons/cessation-vessel.svg` |
+| cessation-vessel | Cessation of perception and feeling | mn25, mn111 | ending | line-art, gold, dashed | `icons/cessation-vessel.svg` |
 | psychic-power | Psychic powers | mn6 | direct knowledge, psychic power | line-art | `icons/psychic-power.svg` |
 | divine-ear | Divine ear element | mn6 | direct knowledge, psychic power | line-art | `icons/divine-ear.svg` |
 | mind-reading | Mind-reading | mn6 | direct knowledge, insight, psychic power | line-art | `icons/mind-reading.svg` |
-| meditation-seat | Meditation posture | mn6 | collectedness, mindfulness | line-art, gold | `icons/meditation-seat.svg` |
-| discernment-lens | Discernment | mn6 | insight, wisdom | line-art, gold | `icons/discernment-lens.svg` |
+| meditation-seat | Meditation posture | mn6, mn111 | collectedness, mindfulness | line-art, gold | `icons/meditation-seat.svg` |
+| discernment-lens | Discernment | mn6, mn111 | insight, wisdom | line-art, gold | `icons/discernment-lens.svg` |
 | companions-pair | Spiritual companions | mn6 | community, friendship | line-art | `icons/companions-pair.svg` |
 | donor-fruit-bowl | Donor service fruitful | mn6 | faith, giving | line-art | `icons/donor-fruit-bowl.svg` |
 | relatives-heart | Relatives' recollection | mn6 | faith | line-art | `icons/relatives-heart.svg` |
 | conquer-discontent | Overcoming discontent | mn6 | diligence, non harm | line-art | `icons/conquer-discontent.svg` |
 | conquer-fear | Overcoming fear and terror | mn6 | safety | line-art | `icons/conquer-fear.svg` |
+| rooted-faith | Faith supported by reasons | mn47 | collectedness, direct knowledge, faith | line-art, gold | `icons/rooted-faith.svg` |
+| untainted-lotus | Untainted lotus | mn47 | integrity, purity, renunciation | line-art | `icons/untainted-lotus.svg` |

@@ -2852,6 +2852,38 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/conquer-fear.svg"
+		},
+		{
+			"id": "rooted-faith",
+			"title": "Faith supported by reasons",
+			"description": "A sturdy central pillar on a base of deep-growing organic roots — ākāravatī saddhā dassanamūlikā",
+			"tags": [
+				"line-art",
+				"gold"
+			],
+			"discourse": "mn47",
+			"labels": [
+				"collectedness",
+				"direct knowledge",
+				"faith"
+			],
+			"valence": "+ve",
+			"svg": "icons/rooted-faith.svg"
+		},
+		{
+			"id": "untainted-lotus",
+			"title": "Untainted lotus",
+			"description": "Lotus blossom with untouched water droplets — anupalitta",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn47",
+			"labels": [
+				"integrity",
+				"purity",
+				"renunciation"
+			],
+			"svg": "icons/untainted-lotus.svg"
 		}
 	]
 }
