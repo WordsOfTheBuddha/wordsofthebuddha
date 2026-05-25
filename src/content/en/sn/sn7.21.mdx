@@ -1,7 +1,7 @@
 ---
 title: Saṅgārava sutta - With Saṅgārava
 description: The brahmin Saṅgārava believes ritually bathing in water washes away wrongdoings. The Buddha corrects him, teaching that the Dhamma is the true tranquil lake with banks of ethical conduct, where the wise bathe to safely cross to the far shore.
-qualities: ethical conduct, recollection of the Dhamma
+qualities: ethical conduct, recollection of the Dhamma, clinging to rules and observances
 theme: inspiration, wisdom
 slug: sn7.21
 character: Brahmin Saṅgārava, Venerable Ānanda
