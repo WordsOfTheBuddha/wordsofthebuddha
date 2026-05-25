@@ -22,6 +22,7 @@ related:
     - person-of-integrity
     - good friendship
     - trainee
+    - dependent co-arising
 leadsTo:
     - arahant
     - ending
@@ -30,6 +31,8 @@ discourses:
       note: "Concise summary"
     - id: "sn55.2"
       note: "Four qualities of one who becomes a stream-enterer"
+    - id: "sn12.41"
+      note: "dependent co-arising and stream-entry"
     - id: "sn13.1"
       note: "simile"
     - id: "mn48"
