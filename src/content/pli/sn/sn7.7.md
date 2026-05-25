@@ -1,5 +1,5 @@
 ---
-title: Suddhika sutta
+title: Suddhika sutta - Pure
 description: The brahmin Suddhika asserts that only his own caste can achieve purity. The Buddha corrects him, explaining that muttering prayers and birth status mean nothing if one is inwardly defiled.
 qualities: ethical conduct, wrong effort, rousing of energy
 theme: inspiration, wisdom
