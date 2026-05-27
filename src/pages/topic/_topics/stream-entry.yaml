@@ -29,10 +29,12 @@ leadsTo:
 discourses:
     - id: "sn55.5"
       note: "Concise summary"
-    - id: "sn55.2"
-      note: "Four qualities of one who becomes a stream-enterer"
     - id: "sn12.41"
       note: "dependent co-arising and stream-entry"
+    - id: sn12.3
+      note: "wrong and right way of practice"
+    - id: "sn55.2"
+      note: "Four qualities of one who becomes a stream-enterer"
     - id: "sn13.1"
       note: "simile"
     - id: "mn48"
@@ -49,3 +51,7 @@ discourses:
       note: "How should a stream-enterer train further"
     - id: "sn22.122"
       note: "How a stream-enterer attends to the aggregates for further progress"
+    - id: an6.94
+    - id: an6.97
+    - id: an10.63
+      note: "Stream-enterer has a definite conclusion about the Buddha"
