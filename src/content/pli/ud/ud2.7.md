@@ -1,8 +1,8 @@
 ---
 title: Ekaputtaka sutta - Only Young Son
 description: Inspired utterance on practicing diligently to leave behind what seems pleasant.
-fetter: sensual desire
-tags: ud,ud2,attachment,sorrow
+qualities: affection
+theme: inspiration, wisdom
 slug: ud2.7
 ---
 
