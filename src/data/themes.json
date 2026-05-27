@@ -25,5 +25,6 @@
 		"mindfulness of the Buddha",
 		"reflection on the qualities of the Buddha"
 	],
-	"urgency": ["inspires prompt action", "emphasizes immediacy"]
+	"urgency": ["inspires prompt action", "emphasizes immediacy"],
+    "story": ["narrative", "account", "tale"]
 }

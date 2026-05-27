@@ -1,8 +1,8 @@
 ---
 title: Sāriputta sutta - Sāriputta
-description: Venerable Sāriputta is sitting in meditation posture, aligning his body upright, and having set up mindfulness at the fore. The Blessed One sees this and expresses an inspired utterance.
-fetter: restlessness, ignorance
-tags: Sāriputta, meditation, mindfulness, body, feelings, mind, mental qualities, mountain, delusion, ud, ud3
+description: Venerable Sāriputta is sitting in meditation posture, aligning his body upright, having set up mindfulness at the fore. The Blessed One sees this and expresses an inspired utterance.
+qualities: imperturbable, delusion
+theme: inspiration, wisdom, story
 character: Sāriputta
 slug: ud3.4
 ---

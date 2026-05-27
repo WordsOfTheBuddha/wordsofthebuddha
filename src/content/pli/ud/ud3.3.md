@@ -1,15 +1,7 @@
 ---
 title: Yasoja sutta - With Yasoja
-description: >-
-  When five hundred bhikkhus headed by the venerable Yasoja come to see the
-  Buddha, they make a great commotion while preparing their lodgings. The Buddha
-  dismisses them out of compassion, and later, they so dwell that the Buddha may
-  be pleased with them. Living secluded, diligent, resolute, and with continuous
-  effort, they all realize the three true knowledges during that very rainy
-  season.
-qualities: >-
-  solitude, diligence, rousing of energy, continuous effort, imperturbable,
-  collectedness, direct knowledge
+description: When five hundred bhikkhus headed by the venerable Yasoja come to see the Buddha, they make a great commotion while preparing their lodgings. The Buddha dismisses them out of compassion, and later, they so dwell that the Buddha may be pleased with them. Living secluded, diligent, resolute, and with continuous effort, they all realize the three true knowledges during that very rainy season.
+qualities: solitude, diligence, rousing of energy, continuous effort, imperturbable, collectedness, direct knowledge
 theme: inspiration
 slug: ud3.3
 simile: 'mountain, fishermen making a haul of fish'

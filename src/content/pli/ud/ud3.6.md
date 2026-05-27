@@ -1,8 +1,8 @@
 ---
 title: Pilindavaccha sutta - Pilindavaccha
-description: The Buddha explains why Venerable Pilindavaccha addresses the bhikkhus with the term 'outcaste'.
-fetter: ignorance
-tags: outcaste, ignorance, brahmin, bhikkhu, ud, ud3
+description: The Buddha explains why Venerable Pilindavaccha addresses the bhikkhus with the term ‘outcaste’.
+qualities: conceit, quenching
+theme: inspiration
 character: Venerable Pilindavaccha
 slug: ud3.6
 ---
