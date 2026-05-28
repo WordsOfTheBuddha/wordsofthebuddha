@@ -3,9 +3,10 @@ title: Piyatara sutta - Dearer
 description: King Pasenadi of Kosala and Queen Mallikā discuss who is dearer to them.
 qualities: affection, non-harm
 theme: inspiration, wisdom
-fetter: ignorance
-tags: dear,ud,ud5
 slug: ud5.1
+character:
+  - King Pasenadi of Kosala
+  - Queen Mallikā
 ---
 
 Evaṁ me sutaṁ—ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tena kho pana samayena rājā pasenadi kosalo mallikāya deviyā saddhiṁ uparipāsādavaragato hoti. Atha kho rājā pasenadi kosalo mallikaṁ deviṁ etadavoca: “atthi nu kho te, mallike, kocañño attanā piyataro”ti?

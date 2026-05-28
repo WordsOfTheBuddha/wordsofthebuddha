@@ -3,8 +3,6 @@ title: Kumāraka sutta - Boys
 description: If suffering is displeasing to you, do not commit evil deeds, whether openly or in secret.
 qualities: suffering, fear
 theme: wisdom, principle
-fetter: ignorance
-tags: suffering, evil deeds, dukkha, ud, ud5
 slug: ud5.4
 ---
 

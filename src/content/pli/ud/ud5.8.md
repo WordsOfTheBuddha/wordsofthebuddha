@@ -1,6 +1,12 @@
 ---
-title: Saṅghabheda sutta
+title: Saṅghabheda sutta - Splitting Apart of the Community
+description: When venerable Ānanda reports Devadatta’s intention to split the Saṅgha, the Buddha speaks an inspired verse about the contrasting nature of good and evil deeds.
+qualities: 'harm, non-harm'
+theme: inspiration
 slug: ud5.8
+character:
+  - Devadatta
+  - venerable Ānanda
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tena kho pana samayena āyasmā ānando tadahuposathe pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya rājagahaṁ piṇḍāya pāvisi.

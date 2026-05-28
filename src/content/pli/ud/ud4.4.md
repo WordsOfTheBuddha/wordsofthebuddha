@@ -1,11 +1,8 @@
 ---
 title: Yakkhapahāra sutta - The Spirit’s Blow
-description: >-
-  When a reckless spirit strikes the venerable Sāriputta with a blow powerful
-  enough to split a mountain, the elder remains in deep collectedness, feeling
-  only a “little pain.”
-qualities: 'collectedness, imperturbable'
-theme: 'inspiration, wisdom'
+description: When a reckless spirit strikes the venerable Sāriputta with a blow powerful enough to split a mountain, the elder remains in deep collectedness, feeling only a “little pain.”
+qualities: collectedness, imperturbable
+theme: inspiration, wisdom
 slug: ud4.4
 character:
   - Venerable Sāriputta
