@@ -1,12 +1,8 @@
 ---
 title: Āyusaṅkhārossajjana sutta - Relinquishing the Life Force
-description: >-
-  After Ānanda misses the sign to request the Buddha to remain, Māra reminds the
-  Buddha of his promise to pass away now that the Dhamma and spiritual life are
-  well established. The Buddha relinquishes the life force after weighing the
-  incomparable and continued existence.
-qualities: 'ending, psychic power'
-theme: 'inspiration, recollection of the Buddha'
+description: After Ānanda misses the sign to request the Buddha to remain, Māra reminds the Buddha of his promise to pass away now that the Dhamma and spiritual life are well established. The Buddha relinquishes the life force after weighing the incomparable and continued existence.
+qualities: ending, psychic power
+theme: inspiration, recollection of the Buddha
 slug: ud6.1
 character:
   - Venerable Ānanda
