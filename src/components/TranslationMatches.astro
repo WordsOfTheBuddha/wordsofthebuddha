@@ -241,6 +241,41 @@
     color: #9ca3af;
   }
 
+  .tm-popover-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .dark .tm-popover-toolbar {
+    background: #111827;
+    border-bottom-color: #374151;
+  }
+
+  .tm-same-discourse-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #374151;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .dark .tm-same-discourse-toggle {
+    color: #d1d5db;
+  }
+
+  .tm-same-discourse-checkbox {
+    accent-color: #6366f1;
+    width: 0.9375rem;
+    height: 0.9375rem;
+    cursor: pointer;
+  }
+
   .tm-tabs {
     display: flex;
     gap: 0.25rem;
@@ -418,6 +453,15 @@
 
   .tm-section {
     margin-bottom: 1rem;
+  }
+
+  .tm-empty-state {
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .dark .tm-empty-state {
+    color: #9ca3af;
   }
 
   .tm-section:last-child {
@@ -633,6 +677,10 @@
     totalDiscourses: number;
     sourceWordCount: number; // Total words in source paragraph for percentage calculation
     sourceRef?: { suttaId: string; paragraphNum: number }; // Source paragraph reference for display
+  }
+
+  interface TMMatchOptions {
+    excludeSameDiscourse?: boolean;
   }
 
   const THRESHOLDS = {
@@ -1530,11 +1578,16 @@
   }
 
   // Find partial matches using n-gram index
-  function findNgramMatches(queryWords: string[], currentSuttaId?: string): Map<number, Set<string>> {
+  function findNgramMatches(
+    queryWords: string[],
+    currentSuttaId?: string,
+    options?: TMMatchOptions,
+  ): Map<number, Set<string>> {
     if (!tmIndex || !tmIndex.ngrams) return new Map();
 
     const ngramSize = tmIndex.ngramSize || 5;
     const queryNgrams = extractNgrams(queryWords, ngramSize);
+    const excludeSameDiscourse = Boolean(options?.excludeSameDiscourse && currentSuttaId);
 
     // Map entry ID -> matched n-grams
     const entryMatches = new Map<number, Set<string>>();
@@ -1544,8 +1597,12 @@
       if (!entryIds) continue;
 
       for (const id of entryIds) {
-        // Note: We now allow same-discourse matching for internal consistency checking
         const entry = tmIndex.entries[id];
+        if (!entry) continue;
+
+        if (excludeSameDiscourse && entry.source.suttaId === currentSuttaId) {
+          continue;
+        }
 
         if (!entryMatches.has(id)) {
           entryMatches.set(id, new Set());
@@ -1559,11 +1616,18 @@
 
   // Find multiple matches for a Pali paragraph
   // sourceRef: optional reference to the source paragraph for display in popover
-  function findMatches(queryPali: string, queryPaliOriginal: string, currentSuttaId?: string, sourceRef?: { suttaId: string; paragraphNum: number }): TMMatchResult | null {
+  function findMatches(
+    queryPali: string,
+    queryPaliOriginal: string,
+    currentSuttaId?: string,
+    sourceRef?: { suttaId: string; paragraphNum: number },
+    options?: TMMatchOptions,
+  ): TMMatchResult | null {
     if (!tmIndex || tmIndex.entries.length === 0) return null;
 
     const queryNormalized = normalizePali(queryPali);
     const queryWords = queryNormalized.split(/\s+/).filter(w => w.length > 0);
+    const excludeSameDiscourse = Boolean(options?.excludeSameDiscourse && currentSuttaId);
 
     // Also extract words using the same method as entry words (for extension)
     // This ensures consistent word comparison during range extension
@@ -1588,13 +1652,17 @@
     }> = [];
 
     // Step 1: Use n-gram index to find candidate entries with shared phrases
-    const ngramMatches = findNgramMatches(queryWords, currentSuttaId);
+    const ngramMatches = findNgramMatches(queryWords, currentSuttaId, options);
 
     // Step 2: For entries with n-gram matches, compute detailed match
     // Now supports MULTIPLE matches per entry for distinct regions
     for (const [entryId, matchedNgrams] of ngramMatches) {
       const entry = tmIndex.entries[entryId];
       if (!entry) continue;
+
+      if (excludeSameDiscourse && entry.source.suttaId === currentSuttaId) {
+        continue;
+      }
 
       // Skip the exact same paragraph (same suttaId AND same paragraphNum)
       if (sourceRef && entry.source.suttaId === sourceRef.suttaId && entry.source.paragraphNum === sourceRef.paragraphNum) {
@@ -1738,6 +1806,10 @@
     // Step 3: Also check entries without n-gram matches but potential contiguous matches
     // (for short entries that might not have enough n-grams)
     for (const entry of tmIndex.entries) {
+      if (excludeSameDiscourse && entry.source.suttaId === currentSuttaId) {
+        continue;
+      }
+
       // Skip the exact same paragraph (same suttaId AND same paragraphNum)
       if (sourceRef && entry.source.suttaId === sourceRef.suttaId && entry.source.paragraphNum === sourceRef.paragraphNum) {
         continue;
@@ -2621,8 +2693,8 @@ function getCurrentSuttaId(): string {
           })),
         };
 
-        btn.textContent = `TM (${result.totalDiscourses})`;
         btn.setAttribute('data-tm-matches', JSON.stringify(serializableResult));
+        updateTmTriggerLabel(btn as HTMLElement, result);
       } else {
         // No matches found
         btn.textContent = 'TM (0)';
@@ -2786,12 +2858,94 @@ function getCurrentSuttaId(): string {
     };
   }
 
+  function getDisplayedDiscoursesForPhraseGroup(phraseGroup: TMPhraseGroup): TMDiscourse[] {
+    if (phraseGroup.diverseDiscourses?.length) {
+      return phraseGroup.diverseDiscourses;
+    }
+    return phraseGroup.discourses.slice(0, 3);
+  }
+
+  function hasDisplayedSameDiscourseMatch(result: TMMatchResult): boolean {
+    const currentSuttaId = getCurrentSuttaId();
+    if (!currentSuttaId) return false;
+
+    return result.phraseGroups.some((phraseGroup) =>
+      getDisplayedDiscoursesForPhraseGroup(phraseGroup).some(
+        (discourse) => discourse.suttaId === currentSuttaId,
+      ),
+    );
+  }
+
+  const TM_HIDE_SAME_DISCOURSE_STORAGE_KEY = 'tm-hide-same-discourse';
+
+  function getHideSameDiscoursePreference(): boolean {
+    try {
+      return window.localStorage.getItem(TM_HIDE_SAME_DISCOURSE_STORAGE_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  function setHideSameDiscoursePreference(value: boolean): void {
+    try {
+      window.localStorage.setItem(TM_HIDE_SAME_DISCOURSE_STORAGE_KEY, value ? 'true' : 'false');
+    } catch {
+      // Ignore storage failures in private browsing or restricted contexts.
+    }
+  }
+
+  function createEmptyTmResult(result: TMMatchResult): TMMatchResult {
+    return {
+      phraseGroups: [],
+      sourcePali: result.sourcePali,
+      totalDiscourses: 0,
+      sourceWordCount: result.sourceWordCount,
+      sourceRef: result.sourceRef,
+    };
+  }
+
+  function getDisplayTmResult(
+    result: TMMatchResult,
+    excludeSameDiscourse: boolean,
+  ): TMMatchResult {
+    if (!excludeSameDiscourse) return result;
+
+    const currentSuttaId = getCurrentSuttaId();
+    if (!currentSuttaId) return result;
+
+    return (
+      findMatches(
+        result.sourcePali,
+        result.sourcePali,
+        currentSuttaId,
+        result.sourceRef,
+        { excludeSameDiscourse: true },
+      ) ?? createEmptyTmResult(result)
+    );
+  }
+
+  function updateTmTriggerLabel(trigger: HTMLElement, result: TMMatchResult): void {
+    const visibleResult = getDisplayTmResult(result, getHideSameDiscoursePreference());
+    trigger.textContent = `TM (${visibleResult.totalDiscourses})`;
+    trigger.removeAttribute('data-pali-text');
+    (trigger as HTMLButtonElement).disabled = false;
+    trigger.style.opacity = '';
+  }
+
   // Show popover with match details
   // activePhraseIdx: which phrase group is selected (Row 1)
   // activeDiscourseIdx: which discourse within that phrase is selected (Row 2)
   // focusRow: which row to focus after render ('phrase' | 'discourse' | 'auto')
   // triggerElement: the element that opened the popover (for focus restoration on close)
-  function showPopover(result: TMMatchResult, activePhraseIdx: number = 0, activeDiscourseIdx: number = 0, focusRow: 'phrase' | 'discourse' | 'auto' = 'auto', triggerElement?: HTMLElement) {
+  function showPopover(
+    result: TMMatchResult,
+    activePhraseIdx: number = 0,
+    activeDiscourseIdx: number = 0,
+    focusRow: 'phrase' | 'discourse' | 'auto' = 'auto',
+    triggerElement?: HTMLElement,
+    excludeSameDiscourse: boolean = getHideSameDiscoursePreference(),
+    keepSnapshotPanelOpen: boolean = false,
+  ) {
     // DEBUG: Log what showPopover receives
     console.log('[TM UI Debug] showPopover called with:', {
       phraseGroupCount: result.phraseGroups.length,
@@ -2812,23 +2966,39 @@ function getCurrentSuttaId(): string {
     const existing = document.querySelector('.tm-popover-overlay');
     if (existing) existing.remove();
 
-    const phraseGroup = result.phraseGroups[activePhraseIdx];
+    const canToggleSameDiscourse = hasDisplayedSameDiscourseMatch(result);
+    const effectiveExcludeSameDiscourse = canToggleSameDiscourse
+      ? excludeSameDiscourse
+      : false;
+    const displayResult = getDisplayTmResult(result, effectiveExcludeSameDiscourse);
+    if (popoverTriggerElement) {
+      updateTmTriggerLabel(popoverTriggerElement, result);
+    }
+    const hasMatches = displayResult.phraseGroups.length > 0;
+    const safePhraseIdx = hasMatches
+      ? Math.min(activePhraseIdx, displayResult.phraseGroups.length - 1)
+      : 0;
+    const phraseGroup = hasMatches ? displayResult.phraseGroups[safePhraseIdx] : null;
     // Use diverse discourses for display, fallback to regular discourses
-    const displayDiscourses = phraseGroup.diverseDiscourses || phraseGroup.discourses.slice(0, 3);
-    const discourse = displayDiscourses[activeDiscourseIdx] || displayDiscourses[0];
-    const percentage = Math.round(phraseGroup.similarity * 100);
-    const sourceUrl = `/${discourse.suttaId}.${discourse.paragraphNum}?pli=true`;
-    const isPartialMatch = percentage < 95;
+    const displayDiscourses = phraseGroup
+      ? getDisplayedDiscoursesForPhraseGroup(phraseGroup)
+      : [];
+    const safeDiscourseIdx = displayDiscourses.length
+      ? Math.min(activeDiscourseIdx, displayDiscourses.length - 1)
+      : 0;
+    const discourse = displayDiscourses[safeDiscourseIdx] || null;
+    const percentage = phraseGroup ? Math.round(phraseGroup.similarity * 100) : 0;
+    const sourceUrl = discourse ? `/${discourse.suttaId}.${discourse.paragraphNum}?pli=true` : '';
 
     // Row 1: Phrase pattern tabs - only show if more than one phrase group
-    const showPhraseRow = result.phraseGroups.length > 1;
-    console.log('[TM UI Debug] Building tabs:', { showPhraseRow, groupCount: result.phraseGroups.length });
+    const showPhraseRow = displayResult.phraseGroups.length > 1;
+    console.log('[TM UI Debug] Building tabs:', { showPhraseRow, groupCount: displayResult.phraseGroups.length });
     const phraseTabsHtml = showPhraseRow ? `
       <div class="tm-tabs tm-phrase-tabs">
-        ${result.phraseGroups.map((pg, i) => {
+        ${displayResult.phraseGroups.map((pg, i) => {
           console.log(`[TM UI Debug] Rendering tab ${i}:`, { wordCount: pg.matchedWordCount, range: `${pg.startIndex}-${pg.endIndex}` });
-          const isActive = i === activePhraseIdx;
-          const label = formatPhraseTabLabel(pg, result.sourceWordCount);
+          const isActive = i === safePhraseIdx;
+          const label = formatPhraseTabLabel(pg, displayResult.sourceWordCount);
           return `<button class="tm-tab tm-phrase-tab ${isActive ? 'tm-tab-active' : ''}" data-phrase-index="${i}">
             ${label}
           </button>`;
@@ -2838,13 +3008,13 @@ function getCurrentSuttaId(): string {
 
     // Row 2: Discourse tabs for the selected phrase (show top 3 diverse discourses)
     // Use totalCount for the actual count, not just stored discourses
-    const totalInGroup = phraseGroup.totalCount;
+    const totalInGroup = phraseGroup?.totalCount ?? 0;
     const remainingDiscourses = totalInGroup - displayDiscourses.length;
 
-    let discourseTabsHtml = `
+    let discourseTabsHtml = displayDiscourses.length > 0 ? `
       <div class="tm-tabs tm-discourse-tabs">
         ${displayDiscourses.map((d, i) => {
-          const isActive = i === activeDiscourseIdx;
+          const isActive = i === safeDiscourseIdx;
           const discRef = formatDiscourseRef({ suttaId: d.suttaId, paragraphNum: d.paragraphNum });
           return `<button class="tm-tab tm-discourse-tab ${isActive ? 'tm-tab-active' : ''}" data-discourse-index="${i}">
             ${discRef}
@@ -2852,22 +3022,22 @@ function getCurrentSuttaId(): string {
         }).join('')}
         ${remainingDiscourses > 0 ? `<span class="tm-more-count">+${remainingDiscourses} match${remainingDiscourses !== 1 ? 'es' : ''}</span>` : ''}
       </div>
-    `;
+    ` : '';
 
     // Render source Pali with clickable word spans and position-based highlighting
     // Use PER-DISCOURSE source coverage data so gaps are accurate for the selected discourse
     // Fall back to group-level data if per-discourse data is not available
-    const srcStart = discourse.sourceStartIndex ?? phraseGroup.startIndex;
-    const srcEnd = discourse.sourceEndIndex ?? phraseGroup.endIndex;
-    const srcCovered = discourse.sourceCoveredPositions ?? phraseGroup.coveredPositions;
+    const srcStart = discourse?.sourceStartIndex ?? phraseGroup?.startIndex;
+    const srcEnd = discourse?.sourceEndIndex ?? phraseGroup?.endIndex;
+    const srcCovered = discourse?.sourceCoveredPositions ?? phraseGroup?.coveredPositions;
     const sourceHighlightRange = (srcStart !== undefined && srcEnd !== undefined)
       ? { start: srcStart, end: srcEnd }
       : undefined;
-    const renderedSourcePali = renderPaliWithWords(result.sourcePali, undefined, sourceHighlightRange, srcCovered);
+    const renderedSourcePali = renderPaliWithWords(displayResult.sourcePali, undefined, sourceHighlightRange, srcCovered);
 
     // Format source reference link (e.g., "MN112 ¶25 ↗")
-    const sourceRefLink = result.sourceRef
-      ? `<a href="/${result.sourceRef.suttaId}.${result.sourceRef.paragraphNum}?pli=true" target="_blank" class="tm-discourse-link" title="Open ${formatDiscourseRef(result.sourceRef)} in new tab">${formatDiscourseRef(result.sourceRef)} ↗</a>`
+    const sourceRefLink = displayResult.sourceRef
+      ? `<a href="/${displayResult.sourceRef.suttaId}.${displayResult.sourceRef.paragraphNum}?pli=true" target="_blank" class="tm-discourse-link" title="Open ${formatDiscourseRef(displayResult.sourceRef)} in new tab">${formatDiscourseRef(displayResult.sourceRef)} ↗</a>`
       : '';
 
     // Always show source paragraph with highlighting
@@ -2882,27 +3052,31 @@ function getCurrentSuttaId(): string {
     `;
 
     // Build title - include phrase label (without count) if only one phrase group
-    const singlePhraseLabel = !showPhraseRow ? ` · ${formatPhraseTabLabel(phraseGroup, result.sourceWordCount, false)}` : '';
+    const singlePhraseLabel = !showPhraseRow && phraseGroup
+      ? ` · ${formatPhraseTabLabel(phraseGroup, displayResult.sourceWordCount, false)}`
+      : '';
 
     // Create popover
     const overlay = document.createElement('div');
     overlay.className = 'tm-popover-overlay';
 
     // Render English with glosses as tooltips
-    const renderedEnglish = renderGlosses(discourse.englishOriginal);
+    const renderedEnglish = discourse ? renderGlosses(discourse.englishOriginal) : '';
 
     // Render matched Pali phrase with position-based highlighting
     // Use entryStartIndex/entryEndIndex to highlight the exact matching range in the entry text
     // Pass entryCoveredPositions to show gap words with different styling
-    const entryHighlightRange = (discourse.entryStartIndex !== undefined && discourse.entryEndIndex !== undefined)
+    const entryHighlightRange = discourse && discourse.entryStartIndex !== undefined && discourse.entryEndIndex !== undefined
       ? { start: discourse.entryStartIndex, end: discourse.entryEndIndex }
       : undefined;
-    const renderedMatchedPali = renderPaliWithWords(discourse.paliOriginal, undefined, entryHighlightRange, discourse.entryCoveredPositions);
+    const renderedMatchedPali = discourse
+      ? renderPaliWithWords(discourse.paliOriginal, undefined, entryHighlightRange, discourse.entryCoveredPositions)
+      : '';
 
     const llmSnapshotJson = JSON.stringify(
-      buildTmLlmSnapshot(result, {
-        viewedPhraseTabIndex: activePhraseIdx,
-        viewedDiscourseTabIndex: activeDiscourseIdx,
+      buildTmLlmSnapshot(displayResult, {
+        viewedPhraseTabIndex: safePhraseIdx,
+        viewedDiscourseTabIndex: safeDiscourseIdx,
       }),
       null,
       2,
@@ -2912,7 +3086,7 @@ function getCurrentSuttaId(): string {
       <div class="tm-popover" role="dialog" aria-modal="true">
         <div class="tm-popover-header">
           <span class="tm-popover-title">
-            Translation Memory <span class="tm-discourse-count">(${result.totalDiscourses} text match${result.totalDiscourses !== 1 ? 'es' : ''})${singlePhraseLabel}</span>
+            Translation Memory <span class="tm-discourse-count">(${displayResult.totalDiscourses} text match${displayResult.totalDiscourses !== 1 ? 'es' : ''})${singlePhraseLabel}</span>
           </span>
           <div class="tm-popover-header-trailing">
             <div class="tm-snapshot-anchor">
@@ -2928,10 +3102,19 @@ function getCurrentSuttaId(): string {
             <button class="tm-popover-close" aria-label="Close">&times;</button>
           </div>
         </div>
+        ${canToggleSameDiscourse ? `
+        <div class="tm-popover-toolbar">
+          <label class="tm-same-discourse-toggle">
+            <input type="checkbox" class="tm-same-discourse-checkbox" ${effectiveExcludeSameDiscourse ? 'checked' : ''}>
+            <span>Hide matches from this discourse</span>
+          </label>
+        </div>
+        ` : ''}
         ${phraseTabsHtml}
         ${discourseTabsHtml}
         <div class="tm-popover-content">
           ${sourcePaliSection}
+          ${discourse ? `
           <div class="tm-section">
             <div class="tm-section-label">
               Matched Phrase (Pali)
@@ -2945,6 +3128,12 @@ function getCurrentSuttaId(): string {
             <div class="tm-section-label">Matched Translation</div>
             <div class="tm-section-content tm-english tm-selectable" data-raw-english="${escapeHtml(discourse.englishOriginal)}">${renderedEnglish}</div>
           </div>
+          ` : `
+          <div class="tm-section">
+            <div class="tm-section-label">Matches</div>
+            <div class="tm-section-content tm-empty-state">No suggestions remain after hiding matches from this discourse.</div>
+          </div>
+          `}
         </div>
       </div>
     `;
@@ -2957,6 +3146,7 @@ function getCurrentSuttaId(): string {
     const snapshotBtn = overlay.querySelector('.tm-llm-snapshot-btn') as HTMLButtonElement | null;
     const snapshotPanel = overlay.querySelector('.tm-llm-snapshot-popover') as HTMLElement | null;
     const snapshotCopy = overlay.querySelector('.tm-llm-snapshot-copy') as HTMLButtonElement | null;
+    const sameDiscourseCheckbox = overlay.querySelector('.tm-same-discourse-checkbox') as HTMLInputElement | null;
 
     const closeSnapshotPanel = () => {
       if (snapshotPanel) snapshotPanel.hidden = true;
@@ -2972,6 +3162,20 @@ function getCurrentSuttaId(): string {
       if (snapshotPanel && !snapshotPanel.hidden) closeSnapshotPanel();
       else openSnapshotPanel();
     };
+
+    if (keepSnapshotPanelOpen) {
+      openSnapshotPanel();
+    }
+
+    sameDiscourseCheckbox?.addEventListener('change', () => {
+      const nextValue = sameDiscourseCheckbox.checked;
+      const shouldKeepSnapshotOpen = Boolean(snapshotPanel && !snapshotPanel.hidden);
+      setHideSameDiscoursePreference(nextValue);
+      if (popoverTriggerElement) {
+        updateTmTriggerLabel(popoverTriggerElement, result);
+      }
+      showPopover(result, safePhraseIdx, safeDiscourseIdx, 'auto', undefined, nextValue, shouldKeepSnapshotOpen);
+    });
 
     snapshotBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -3140,7 +3344,7 @@ function getCurrentSuttaId(): string {
 
       copyTooltip.querySelector('.tm-selection-copy-btn')?.addEventListener('click', async (ev) => {
         ev.stopPropagation();
-        const rawEnglish = discourse.englishOriginal;
+        const rawEnglish = discourse?.englishOriginal || '';
         const rawText = getRawTextForSelection(selection, rawEnglish);
 
         try {
@@ -3179,7 +3383,8 @@ function getCurrentSuttaId(): string {
     overlay.querySelectorAll('.tm-phrase-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
         const phraseIdx = parseInt((e.target as HTMLElement).getAttribute('data-phrase-index') || '0');
-        showPopover(result, phraseIdx, 0, 'phrase'); // Stay on phrase row
+        const shouldKeepSnapshotOpen = Boolean(snapshotPanel && !snapshotPanel.hidden);
+        showPopover(result, phraseIdx, 0, 'phrase', undefined, effectiveExcludeSameDiscourse, shouldKeepSnapshotOpen); // Stay on phrase row
       });
     });
 
@@ -3187,7 +3392,8 @@ function getCurrentSuttaId(): string {
     overlay.querySelectorAll('.tm-discourse-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
         const discourseIdx = parseInt((e.target as HTMLElement).getAttribute('data-discourse-index') || '0');
-        showPopover(result, activePhraseIdx, discourseIdx, 'discourse'); // Stay on discourse row
+        const shouldKeepSnapshotOpen = Boolean(snapshotPanel && !snapshotPanel.hidden);
+        showPopover(result, safePhraseIdx, discourseIdx, 'discourse', undefined, effectiveExcludeSameDiscourse, shouldKeepSnapshotOpen); // Stay on discourse row
       });
     });
 
@@ -3211,42 +3417,59 @@ function getCurrentSuttaId(): string {
     };
     document.addEventListener('selectionchange', selectionChangeHandler);
 
+    function findScrollableTmContainer(target: HTMLElement | null): HTMLElement | null {
+      if (!target) return null;
+
+      const snapshotScrollable = target.closest('.tm-llm-snapshot-popover, .tm-llm-snapshot-pre') as HTMLElement | null;
+      if (snapshotScrollable && overlay.contains(snapshotScrollable)) {
+        return snapshotScrollable.classList.contains('tm-llm-snapshot-pre')
+          ? snapshotScrollable
+          : (snapshotScrollable.querySelector('.tm-llm-snapshot-pre') as HTMLElement | null) ?? snapshotScrollable;
+      }
+
+      const contentScrollable = target.closest('.tm-popover-content') as HTMLElement | null;
+      if (contentScrollable && overlay.contains(contentScrollable)) {
+        return contentScrollable;
+      }
+
+      return null;
+    }
+
+    function canScrollOnAxis(container: HTMLElement, delta: number, axis: 'x' | 'y'): boolean {
+      if (delta === 0) return false;
+
+      if (axis === 'y') {
+        if (container.scrollHeight <= container.clientHeight) return false;
+        const maxScrollTop = container.scrollHeight - container.clientHeight;
+        if (delta < 0) return container.scrollTop > 0;
+        return container.scrollTop < maxScrollTop;
+      }
+
+      if (container.scrollWidth <= container.clientWidth) return false;
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      if (delta < 0) return container.scrollLeft > 0;
+      return container.scrollLeft < maxScrollLeft;
+    }
+
     // Prevent page scroll when popover is open, but allow scroll inside popover content
     const preventBackgroundScroll = (e: WheelEvent | TouchEvent) => {
-      const popoverContent = overlay.querySelector('.tm-popover-content') as HTMLElement;
-      if (!popoverContent) {
+      const target = e.target as HTMLElement | null;
+      const scrollContainer = findScrollableTmContainer(target);
+      if (!scrollContainer) {
         e.preventDefault();
         return;
       }
 
-      // Check if content is scrollable
-      const isScrollable = popoverContent.scrollHeight > popoverContent.clientHeight;
-      if (!isScrollable) {
-        e.preventDefault();
-        return;
-      }
-
-      // Check if the event target is inside the scrollable content
-      const target = e.target as HTMLElement;
-      if (!popoverContent.contains(target)) {
-        e.preventDefault();
-        return;
-      }
-
-      // For wheel events, prevent scroll at boundaries to avoid background scroll
       if (e instanceof WheelEvent) {
-        const { scrollTop, scrollHeight, clientHeight } = popoverContent;
-        const atTop = scrollTop <= 0;
-        const atBottom = scrollTop + clientHeight >= scrollHeight;
-
-        // Scrolling up at top or down at bottom would scroll background
-        if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+        const canScrollVertically = canScrollOnAxis(scrollContainer, e.deltaY, 'y');
+        const canScrollHorizontally = canScrollOnAxis(scrollContainer, e.deltaX, 'x');
+        if (!canScrollVertically && !canScrollHorizontally) {
           e.preventDefault();
           return;
         }
       }
 
-      // Allow the scroll inside popover content
+      // Allow the scroll inside TM content or the JSON snapshot panel.
       e.stopPropagation();
     };
     overlay.addEventListener('wheel', preventBackgroundScroll, { passive: false });
@@ -3561,10 +3784,6 @@ function getCurrentSuttaId(): string {
     console.log('[TM UI Debug] FRESH computation, phraseGroups:', result?.phraseGroups.length);
 
     if (result && result.phraseGroups.length > 0) {
-      // Update button with count
-      trigger.textContent = `TM (${result.totalDiscourses})`;
-      (trigger as HTMLButtonElement).disabled = false;
-
       // Cache the result for future clicks
       const serializeD = (d: TMDiscourse) => ({
         ...d,
@@ -3587,7 +3806,7 @@ function getCurrentSuttaId(): string {
         })),
       };
       trigger.setAttribute('data-tm-matches', JSON.stringify(serializableResult));
-      trigger.removeAttribute('data-pali-text'); // No longer needed
+      updateTmTriggerLabel(trigger as HTMLElement, result);
 
       showPopover(result, 0, 0, 'auto', trigger as HTMLElement);
     } else {
