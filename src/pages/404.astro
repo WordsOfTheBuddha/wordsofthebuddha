@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+	fp="/404"
+	seoTitle="Page not found — Words of the Buddha"
+	showAuth={false}
+>
+	<section
+		aria-labelledby="page-title"
+		class="flex flex-col items-center justify-center min-h-[55vh] px-4 py-8 text-center not-prose"
+	>
+		<p
+			class="text-6xl sm:text-7xl font-bold tracking-tight text-gradient-accent mb-4"
+			aria-hidden="true"
+		>
+			404
+		</p>
+
+		<p class="max-w-md text-base mb-2" style="color: var(--text-muted);">
+			This path leads nowhere. The address you followed does not match any
+			teaching or page in this collection—perhaps the link is outdated, or
+			the page has moved.
+		</p>
+
+		<nav
+			class="mt-8 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4"
+			aria-label="Helpful links"
+		>
+			<a
+				href="/"
+				class="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white transition-colors"
+				style="background-color: var(--auth-button-bg);"
+			>
+				Return home
+			</a>
+			<a
+				href="/discover"
+				class="text-sm font-medium hover:underline"
+				style="color: var(--link-color);"
+			>
+				Discover & Explore
+			</a>
+			<a
+				href="/search"
+				class="text-sm font-medium hover:underline"
+				style="color: var(--link-color);"
+			>
+				Search
+			</a>
+			<a
+				href="/random"
+				class="text-sm font-medium hover:underline"
+				style="color: var(--link-color);"
+			>
+				Random reading
+			</a>
+		</nav>
+	</section>
+</Layout>

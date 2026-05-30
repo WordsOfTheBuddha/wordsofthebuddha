@@ -26,6 +26,7 @@ const HIDE_BREADCRUMBS_PATHS = new Set([
 	"/public-domain",
 	"/buddha-quotes",
 	"/design-system",
+	"/404",
 ]);
 
 /** Matches `Breadcrumbs.astro` — routes that skip the breadcrumb strip. */
