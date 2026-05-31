@@ -1,11 +1,8 @@
 ---
 title: Paṭhama lakuṇḍakabhaddiya sutta - Lakuṇḍaka Bhaddiya (First)
-description: >-
-  Seeing venerable Lakuṇḍaka Bhaddiya’s mind liberated from the taints through
-  not grasping from a talk on the Dhamma by venerable Sāriputta, the Blessed One
-  expresses an inspired utterance about his liberation.
-qualities: 'conceit, free from attachment, liberation'
-theme: 'inspiration, wisdom'
+description: Seeing venerable Lakuṇḍaka Bhaddiya’s mind liberated from the taints through not grasping from a talk on the Dhamma by venerable Sāriputta, the Blessed One expresses an inspired utterance about his liberation.
+qualities: conceit, free from attachment, liberation
+theme: inspiration, wisdom
 slug: ud7.1
 character:
   - Venerable Sāriputta
