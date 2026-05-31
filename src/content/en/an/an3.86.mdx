@@ -1,7 +1,7 @@
 ---
 title: Paṭhamasikkhā sutta - Training (First)
 description: The Buddha maps the stages of awakening to fulfilling ethical conduct, collectedness, and wisdom.
-qualities: trainee, ethical conduct, wisdom
+qualities: trainee, ethical conduct, wisdom, stream-entry
 theme: wisdom
 slug: an3.86
 ---

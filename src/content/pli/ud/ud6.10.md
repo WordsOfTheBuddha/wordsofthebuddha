@@ -1,6 +1,6 @@
 ---
 title: Uppajjanti sutta - Arising
-description: “The glowworm shines only so long, as the sun has not yet risen.” The Buddha shares this inspired utterance after venerable Ānanda observes that other sects receive honor and support only until perfectly Awakened Ones arise in the world.
+description: “The glowworm shines only so long, as the sun has not yet risen.” The Buddha shares this inspired utterance after venerable Ānanda observes that the speculators receive honor and support only until perfectly Awakened Ones arise in the world.
 qualities: recollection of the Buddha, wrong view, speculation
 theme: inspiration
 simile: glowworm vs radiant sun
