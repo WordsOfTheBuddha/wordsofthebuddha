@@ -35,6 +35,10 @@ discourses:
       note: "wrong and right way of practice"
     - id: "sn55.2"
       note: "Four qualities of one who becomes a stream-enterer"
+    - id: "sn22.109"
+      note: "Stream-enterer's discernment regarding the five aggregates"
+    - id: "sn22.126"
+      note: "Stream-enterer is endowed with true knowledge"
     - id: "sn13.1"
       note: "simile"
     - id: "mn48"
@@ -45,8 +49,6 @@ discourses:
       note: "surmounts fear of future suffering"
     - id: "sn25.1"
       note: "one who is incapable of dying before entering the stream"
-    - id: "sn12.41"
-      note: "How to verify for oneself that one is a stream-enterer"
     - id: "sn55.3"
       note: "How should a stream-enterer train further"
     - id: "sn22.122"
@@ -54,4 +56,6 @@ discourses:
     - id: an6.94
     - id: an6.97
     - id: an10.63
-      note: "Stream-enterer has a definite conclusion about the Buddha"
+      note: "Has a definite conclusion about the Buddha"
+    - id: an3.86
+      note: "The trainee's trajectory"
