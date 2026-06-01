@@ -13,6 +13,7 @@
 			"discourse": [
 				"mn1",
 				"mn10",
+				"mn47",
 				"mn148"
 			],
 			"labels": [
@@ -32,6 +33,7 @@
 			"discourse": [
 				"mn1",
 				"mn10",
+				"mn47",
 				"mn148"
 			],
 			"labels": [
@@ -130,7 +132,10 @@
 				"line-art",
 				"elements"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn77"
+			],
 			"labels": [
 				"elements",
 				"phenomena"
@@ -145,7 +150,10 @@
 				"line-art",
 				"elements"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn77"
+			],
 			"labels": [
 				"elements",
 				"phenomena"
@@ -161,7 +169,10 @@
 				"elements",
 				"fire"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn77"
+			],
 			"labels": [
 				"elements",
 				"phenomena"
@@ -176,7 +187,10 @@
 				"line-art",
 				"elements"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn77"
+			],
 			"labels": [
 				"elements",
 				"phenomena"
@@ -302,6 +316,7 @@
 				"mn1",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn111"
 			],
 			"labels": [
@@ -322,6 +337,7 @@
 				"mn1",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn111"
 			],
 			"labels": [
@@ -343,6 +359,7 @@
 				"mn1",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn106",
 				"mn111"
 			],
@@ -364,6 +381,7 @@
 				"mn1",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn106",
 				"mn111"
 			],
@@ -566,7 +584,10 @@
 				"line-art",
 				"dots"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"mn77"
+			],
 			"labels": [
 				"awakening"
 			],
@@ -1391,6 +1412,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn111",
 				"mn119"
 			],
@@ -1415,6 +1437,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn111",
 				"mn119"
 			],
@@ -1439,6 +1462,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn111",
 				"mn119"
 			],
@@ -1465,6 +1489,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn106",
 				"mn111",
 				"mn119"
@@ -1609,6 +1634,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn77",
 				"mn111",
 				"mn119"
 			],
@@ -1977,6 +2003,7 @@
 				"mn39",
 				"mn6",
 				"mn53",
+				"mn77",
 				"mn111"
 			],
 			"labels": [
@@ -2475,7 +2502,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn77"
+			],
 			"labels": [
 				"direct knowledge",
 				"insight",
@@ -2492,7 +2522,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn77"
+			],
 			"labels": [
 				"direct knowledge",
 				"insight",
@@ -2509,7 +2542,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn77"
+			],
 			"labels": [
 				"direct knowledge",
 				"ending",
@@ -2689,6 +2725,7 @@
 			],
 			"discourse": [
 				"mn25",
+				"mn77",
 				"mn111"
 			],
 			"labels": [
@@ -2704,7 +2741,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn77"
+			],
 			"labels": [
 				"direct knowledge",
 				"psychic power"
@@ -2719,7 +2759,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn77"
+			],
 			"labels": [
 				"direct knowledge",
 				"psychic power"
@@ -2734,7 +2777,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn77"
+			],
 			"labels": [
 				"direct knowledge",
 				"insight",
@@ -2772,6 +2818,7 @@
 			],
 			"discourse": [
 				"mn6",
+				"mn77",
 				"mn111"
 			],
 			"labels": [
@@ -2884,6 +2931,162 @@
 				"renunciation"
 			],
 			"svg": "icons/untainted-lotus.svg"
+		},
+		{
+			"id": "honey-pure",
+			"title": "Pure honey at the crossroads",
+			"description": "Crossroads with a honey drop — khuddamadhuṁ anelakaṁ, the crowd awaiting the teaching",
+			"tags": [
+				"line-art",
+				"gold",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"faith",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/honey-pure.svg"
+		},
+		{
+			"id": "knowledge-vision",
+			"title": "Knowledge and vision",
+			"description": "Eye with verification check — ñāṇadassana",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/knowledge-vision.svg"
+		},
+		{
+			"id": "four-noble-truths",
+			"title": "The Four Noble Truths",
+			"description": "Quartered disc — cattāri ariyasaccāni",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"insight",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/four-noble-truths.svg"
+		},
+		{
+			"id": "eightfold-path-wheel",
+			"title": "Noble Eightfold Path",
+			"description": "Eight-spoked wheel — ariya aṭṭhaṅgika magga",
+			"tags": [
+				"line-art",
+				"gold",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"collectedness",
+				"ethical conduct",
+				"path",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/eightfold-path-wheel.svg"
+		},
+		{
+			"id": "four-right-efforts",
+			"title": "Four right efforts",
+			"description": "Four striving flags — cattāro sammappadhānā",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"diligence",
+				"effort",
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/four-right-efforts.svg"
+		},
+		{
+			"id": "iddhipada-four",
+			"title": "Four bases of psychic power",
+			"description": "Four nodes around a center — cattāro iddhipādā",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"collectedness",
+				"effort",
+				"psychic power"
+			],
+			"valence": "+ve",
+			"svg": "icons/iddhipada-four.svg"
+		},
+		{
+			"id": "five-faculties",
+			"title": "Five spiritual faculties",
+			"description": "Five ascending bars — pañcindriyāni",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"collectedness",
+				"effort",
+				"faith",
+				"mindfulness",
+				"wisdom"
+			],
+			"valence": "+ve",
+			"svg": "icons/five-faculties.svg"
+		},
+		{
+			"id": "beryl-gem-thread",
+			"title": "Beryl gem strung on a thread",
+			"description": "Eight-faceted gem with a colored thread — maṇi veḷuriyo simile",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"direct knowledge",
+				"insight",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/beryl-gem-thread.svg"
+		},
+		{
+			"id": "mind-made-body",
+			"title": "Mind-made body",
+			"description": "Reed drawn from its sheath — manomaya kāya",
+			"tags": [
+				"line-art",
+				"mn77"
+			],
+			"discourse": "mn77",
+			"labels": [
+				"direct knowledge",
+				"psychic power",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/mind-made-body.svg"
 		}
 	]
 }

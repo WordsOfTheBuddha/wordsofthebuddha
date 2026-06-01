@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <g opacity="0.85" stroke="#a0c0d8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="-5,-9 5,-9 10,0 5,9 -5,9 -10,0" stroke-width="1.1" fill="#a0c0d8" fill-opacity="0.08" />
+      <line x1="-5" y1="-9" x2="-5" y2="9" stroke-width="0.5" opacity="0.6" />
+      <line x1="5" y1="-9" x2="5" y2="9" stroke-width="0.5" opacity="0.6" />
+      <line x1="-10" y1="0" x2="10" y2="0" stroke-width="0.5" opacity="0.6" />
+      <path d="M -11 -6 L 11 6" stroke="#d8b860" stroke-width="0.9" opacity="0.8" />
+    </g>
+  </g>
+</svg>

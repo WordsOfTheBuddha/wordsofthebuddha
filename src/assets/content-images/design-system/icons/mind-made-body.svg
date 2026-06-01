@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)">
+    <g opacity="0.85" stroke="#a0c0b8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-11" y="-4" width="8" height="16" rx="2" stroke-width="1.1" />
+      <line x1="-7" y1="12" x2="-7" y2="-12" stroke-width="1.1" />
+      <path d="M -7 -12 L -10 -7 M -7 -12 L -4 -7" stroke-width="0.8" />
+      <path d="M 3 12 Q 11 4, 8 -4 Q 6 -9, 11 -11" stroke-width="0.9" opacity="0.7" />
+    </g>
+  </g>
+</svg>
