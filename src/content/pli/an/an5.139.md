@@ -8,6 +8,8 @@ simile: king's elephant
 priority: 1.4
 ---
 
+#### Unable to Endure
+
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño nāgo na rājāraho hoti na rājabhoggo, na rañño aṅgaṁtveva saṅkhaṁ gacchati. Katamehi pañcahi? Idha, bhikkhave, rañño nāgo akkhamo hoti rūpānaṁ, akkhamo saddānaṁ, akkhamo gandhānaṁ, akkhamo rasānaṁ, akkhamo phoṭṭhabbānaṁ.
 
 Kathañca, bhikkhave, rañño nāgo akkhamo hoti rūpānaṁ? Idha, bhikkhave, rañño nāgo saṅgāmagato hatthikāyaṁ vā disvā assakāyaṁ vā disvā rathakāyaṁ vā disvā pattikāyaṁ vā disvā saṁsīdati visīdati, na santhambhati na sakkoti saṅgāmaṁ otarituṁ. Evaṁ kho, bhikkhave, rañño nāgo akkhamo hoti rūpānaṁ.
@@ -35,6 +37,8 @@ Kathañca, bhikkhave, bhikkhu akkhamo hoti rasānaṁ? Idha, bhikkhave, bhikkhu 
 Kathañca, bhikkhave, bhikkhu akkhamo hoti phoṭṭhabbānaṁ? Idha, bhikkhave, bhikkhu kāyena phoṭṭhabbaṁ phusitvā rajanīye phoṭṭhabbe sārajjati, na sakkoti cittaṁ samādahituṁ. Evaṁ kho, bhikkhave, bhikkhu akkhamo hoti phoṭṭhabbānaṁ.
 
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu na āhuneyyo hoti na pāhuneyyo na dakkhiṇeyyo na añjalikaraṇīyo na anuttaraṁ puññakkhettaṁ lokassa.
+
+#### Able to Endure
 
 Pañcahi, bhikkhave, aṅgehi samannāgato rañño nāgo rājāraho hoti rājabhoggo, rañño aṅgaṁtveva saṅkhaṁ gacchati. Katamehi pañcahi? Idha, bhikkhave, rañño nāgo khamo hoti rūpānaṁ, khamo saddānaṁ, khamo gandhānaṁ, khamo rasānaṁ, khamo phoṭṭhabbānaṁ.
 
