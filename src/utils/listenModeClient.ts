@@ -769,6 +769,12 @@ export function initListenMode(initial: ListenInitialData): void {
 		waveCtx.fillRect(x, y, width, height);
 	}
 
+	/** Nudge marker center so symmetric caps/stems are not cropped at canvas edges. */
+	function edgeSafeMarkerX(W: number, x: number, extentHalf: number): number {
+		if (W <= extentHalf * 2) return W / 2;
+		return Math.max(extentHalf, Math.min(W - extentHalf, x));
+	}
+
 	function drawFallbackTimeline(
 		W: number,
 		H: number,
@@ -795,8 +801,10 @@ export function initListenMode(initial: ListenInitialData): void {
 			if (!para) continue;
 			const x = Math.round((para.start / dur) * W);
 			const lineWidth = heading.level <= 3 ? 2 : 1.5;
-			fillWaveRect(x - lineWidth / 2, 1, lineWidth, H - 2, "rgba(236, 230, 218, 0.42)");
-			fillWaveRect(Math.max(0, x - 3), 0, 6, 2, "rgba(236, 230, 218, 0.55)");
+			const capHalf = 3;
+			const cx = edgeSafeMarkerX(W, x, capHalf);
+			fillWaveRect(cx - lineWidth / 2, 1, lineWidth, H - 2, "rgba(236, 230, 218, 0.42)");
+			fillWaveRect(cx - capHalf, 0, capHalf * 2, 2, "rgba(236, 230, 218, 0.55)");
 		}
 	}
 
@@ -823,9 +831,12 @@ export function initListenMode(initial: ListenInitialData): void {
 			const glowColor = isPrimaryLevel
 				? "rgba(214, 199, 155, 0.35)"
 				: "rgba(214, 199, 155, 0.2)";
-			fillWaveRect(x - 2, 1, 4, H - 2, glowColor);
-			fillWaveRect(x - lineWidth / 2, 1, lineWidth, H - 2, stemColor);
-			fillWaveRect(Math.max(0, x - 3), 0, 6, 2, capColor);
+			const capHalf = 3;
+			const glowHalf = 2;
+			const cx = edgeSafeMarkerX(W, x, Math.max(capHalf, glowHalf, lineWidth / 2));
+			fillWaveRect(cx - glowHalf, 1, glowHalf * 2, H - 2, glowColor);
+			fillWaveRect(cx - lineWidth / 2, 1, lineWidth, H - 2, stemColor);
+			fillWaveRect(cx - capHalf, 0, capHalf * 2, 2, capColor);
 		}
 	}
 

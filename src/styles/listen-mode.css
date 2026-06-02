@@ -462,7 +462,7 @@
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
-	border-radius: 3px;
+	/* No border-radius: section marker caps sit at y=0 and get clipped in rounded corners. */
 }
 .listen-seek {
 	position: relative;
