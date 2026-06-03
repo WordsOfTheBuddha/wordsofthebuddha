@@ -665,7 +665,8 @@
 }
 .listen-shortcuts-panel {
 	position: absolute;
-	right: 0;
+	left: 0;
+	right: auto;
 	bottom: 100%;
 	margin-bottom: 0.4rem;
 	z-index: 70;
@@ -853,12 +854,20 @@
 .listen-queue-header {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: 0.4rem;
 	padding: 0.4rem 1rem 0.5rem;
 	flex: 0 0 auto;
 }
+.listen-queue-summary {
+	flex: 1 1 auto;
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+	min-width: 0;
+}
 .listen-queue-title {
 	margin: 0;
+	flex: 0 0 auto;
 	font-size: 0.78rem;
 	font-weight: 500;
 	letter-spacing: 0.08em;
@@ -867,7 +876,6 @@
 }
 .listen-queue-stats {
 	flex: 1 1 auto;
-	margin: 0 0.75rem;
 	font-size: 0.7rem;
 	color: #6b6354;
 	letter-spacing: 0.04em;
@@ -875,6 +883,105 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* ── Queue filter ─────────────────────────────────────────────── */
+.listen-queue-filter {
+	flex: 1 1 auto;
+	display: flex;
+	align-items: center;
+	min-width: 0;
+}
+.listen-queue-filter[hidden] {
+	display: none;
+}
+.listen-queue-filter-input {
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 28px;
+	padding: 0 0.6rem;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 999px;
+	color: #ece6da;
+	font: inherit;
+	font-size: 0.82rem;
+	letter-spacing: 0.01em;
+	outline: none;
+}
+.listen-queue-filter-input::placeholder {
+	color: #6b6354;
+}
+.listen-queue-filter-input:focus {
+	border-color: rgba(214, 199, 155, 0.45);
+	background: rgba(255, 255, 255, 0.07);
+}
+.listen-queue-filter-clear {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	margin-left: -28px;
+	margin-right: 0.4rem;
+	border: none;
+	background: transparent;
+	color: #9c917f;
+	cursor: pointer;
+	border-radius: 999px;
+	padding: 0;
+}
+.listen-queue-filter-clear[hidden] {
+	display: none;
+}
+.listen-queue-filter-clear:hover {
+	color: #ece6da;
+}
+.listen-queue-filter-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	flex: 0 0 auto;
+	border-radius: 999px;
+	background: transparent;
+	color: #9c917f;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	cursor: pointer;
+	padding: 0;
+}
+.listen-queue-filter-toggle:hover {
+	color: #ece6da;
+	border-color: rgba(255, 255, 255, 0.18);
+}
+.listen-queue-filter-toggle[aria-pressed="true"] {
+	color: #d6c79b;
+	border-color: rgba(214, 199, 155, 0.4);
+	background: rgba(214, 199, 155, 0.1);
+}
+
+/* Empty-state row shown when a filter matches nothing. */
+.listen-queue-empty {
+	padding: 1.25rem 0.75rem;
+	text-align: center;
+	font-size: 0.82rem;
+	color: #6b6354;
+	list-style: none;
+}
+
+/* While filtering on small screens, the input takes over the row: hide the
+   track/runtime summary to make space (the count moves into the input area). */
+.listen-queue-header.is-filtering .listen-queue-summary {
+	display: none;
+}
+@media (min-width: 640px) {
+	/* Tablet and up: there's room for both, so keep the summary (count) visible
+	   alongside the filter input. */
+	.listen-queue-header.is-filtering .listen-queue-summary {
+		display: flex;
+		flex: 0 1 auto;
+	}
 }
 .listen-queue-close {
 	display: inline-flex;

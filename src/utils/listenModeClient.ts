@@ -484,6 +484,21 @@ export function initListenMode(initial: ListenInitialData): void {
 	const queueResetBtn = document.getElementById(
 		"listen-queue-reset",
 	) as HTMLButtonElement | null;
+	const queueHeader = queueDrawer?.querySelector<HTMLElement>(
+		".listen-queue-header",
+	) ?? null;
+	const queueFilterWrap = document.getElementById(
+		"listen-queue-filter",
+	) as HTMLElement | null;
+	const queueFilterInput = document.getElementById(
+		"listen-queue-filter-input",
+	) as HTMLInputElement | null;
+	const queueFilterClear = document.getElementById(
+		"listen-queue-filter-clear",
+	) as HTMLButtonElement | null;
+	const queueFilterToggle = document.getElementById(
+		"listen-queue-filter-toggle",
+	) as HTMLButtonElement | null;
 
 	if (!audioEl || !playBtn || !prevBtn || !nextBtn || !seek || !tCur || !tTot) {
 		console.error("listen-mode: required DOM nodes missing");
@@ -1611,6 +1626,50 @@ export function initListenMode(initial: ListenInitialData): void {
 	// context instead of trimming the previous side to only those rows.
 	const QUEUE_CURRENT_VISIBLE_OFFSET_N = 3;
 
+	// ── Queue filtering ─────────────────────────────────────────────────
+	// Free-text filter matched against the display id (e.g. "MN 111") and the
+	// track title. Drag-reorder is disabled while a filter is active since the
+	// visible window no longer reflects the full queue order.
+	let queueFilterActive = false;
+	let queueFilter = "";
+
+	/** Lowercase, strip diacritics, collapse whitespace — for filter matching. */
+	function foldForMatch(value: string): string {
+		return value
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.replace(/\s+/g, " ")
+			.trim();
+	}
+
+	/** Normalised needle for matching (folded, collapsed whitespace). */
+	function normalizeFilter(value: string): string {
+		return foldForMatch(value);
+	}
+
+	/** True when a single filter token matches this slug (and its haystack). */
+	function filterTokenMatchesSlug(tok: string, slug: string, haystack: string): boolean {
+		// "sn" is a substring of "snp", so substring match would include SnP;
+		// align with site search: SN collection = slug starts with sn, not snp.
+		if (tok === "sn") {
+			const s = slug.toLowerCase();
+			return s.startsWith("sn") && !s.startsWith("snp");
+		}
+		return haystack.includes(tok);
+	}
+
+	/** True when `slug` matches the current filter (or no filter is set). */
+	function slugMatchesFilter(slug: string): boolean {
+		if (!queueFilter) return true;
+		const haystack = foldForMatch(`${formatDisplayId(slug)} ${titleFor(slug, slug)}`);
+		// Match each whitespace-separated token independently so "mn 111" and
+		// "111 mn" both hit, and partial words still match.
+		return queueFilter
+			.split(" ")
+			.every((tok) => filterTokenMatchesSlug(tok, slug, haystack));
+	}
+
 	/**
 	 * Per-queue user reorder, persisted to localStorage.
 	 *   - Playlist queues: key = `listen:queueOrder:<playlist-id>`.
@@ -1800,17 +1859,29 @@ export function initListenMode(initial: ListenInitialData): void {
 			cur = slugs[i];
 			after = [...slugs.slice(i + 1)];
 		}
-		const items: { slug: string; kind: "before" | "current" | "after" }[] = [
+		let items: { slug: string; kind: "before" | "current" | "after" }[] = [
 			...before.map((s) => ({ slug: s, kind: "before" as const })),
 			...(cur ? [{ slug: cur, kind: "current" as const }] : []),
 			...after.map((s) => ({ slug: s, kind: "after" as const })),
 		];
+		const filtering = queueFilterActive && queueFilter.length > 0;
+		if (filtering) items = items.filter((it) => slugMatchesFilter(it.slug));
 		queueList.innerHTML = "";
+		if (filtering && items.length === 0) {
+			const empty = document.createElement("li");
+			empty.className = "listen-queue-empty";
+			empty.textContent = "No tracks match your filter.";
+			queueList.appendChild(empty);
+			updateQueueStats(slugs);
+			if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
+			return;
+		}
 		for (const it of items) {
 			const li = document.createElement("li");
 			li.className = "listen-queue-li";
 			li.dataset.slug = it.slug;
-			li.draggable = true;
+			// Reorder only makes sense over the full, unfiltered list.
+			li.draggable = !filtering;
 
 			const btn = document.createElement("button");
 			btn.type = "button";
@@ -1841,6 +1912,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			btn.appendChild(markerEl);
 			btn.addEventListener("click", () => {
 				clearTransitionState();
+				if (queueFilterActive) closeQueueFilter(false);
 				closeQueueDrawer();
 				if (it.kind === "current") return;
 				void advanceTo(it.slug, {
@@ -1852,11 +1924,15 @@ export function initListenMode(initial: ListenInitialData): void {
 			li.appendChild(btn);
 			queueList.appendChild(li);
 		}
-		wireReorderHandlers();
+		if (!filtering) wireReorderHandlers();
 		updateQueueStats(slugs);
 		if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
 		hydrateQueueMetadata();
-		anchorQueueCurrentNearTop();
+		if (filtering) {
+			queueList.scrollTop = 0;
+		} else {
+			anchorQueueCurrentNearTop();
+		}
 	}
 
 	function anchorQueueCurrentNearTop(): void {
@@ -1877,16 +1953,24 @@ export function initListenMode(initial: ListenInitialData): void {
 	function updateQueueStats(slugs: readonly string[]): void {
 		const statsEl = document.getElementById("listen-queue-stats");
 		if (!statsEl) return;
+		const filtering = queueFilterActive && queueFilter.length > 0;
+		const shown = filtering ? slugs.filter(slugMatchesFilter) : slugs;
 		let totalSec = 0;
 		let knownCount = 0;
-		for (const s of slugs) {
+		for (const s of shown) {
 			const d = durationFor(s);
 			if (typeof d === "number") {
 				totalSec += d;
 				knownCount += 1;
 			}
 		}
-		const trackLabel = `${slugs.length} ${slugs.length === 1 ? "track" : "tracks"}`;
+		if (filtering) {
+			const base = `${shown.length} of ${slugs.length}`;
+			statsEl.textContent =
+				knownCount === 0 ? base : `${base} · ${formatDurationShort(totalSec)}`;
+			return;
+		}
+		const trackLabel = `${shown.length} ${shown.length === 1 ? "track" : "tracks"}`;
 		if (knownCount === 0) {
 			statsEl.textContent = trackLabel;
 		} else {
@@ -1976,9 +2060,14 @@ export function initListenMode(initial: ListenInitialData): void {
 		queueDrawer.classList.add("is-open");
 		queueDrawer.setAttribute("aria-hidden", "false");
 		queueScrim.setAttribute("aria-hidden", "false");
+		const filtering = queueFilterActive && queueFilter.length > 0;
 		window.requestAnimationFrame(() => {
-			anchorQueueCurrentNearTop();
-			focusQueueItem(0);
+			if (filtering) {
+				queueFilterInput?.focus();
+			} else {
+				anchorQueueCurrentNearTop();
+				focusQueueItem(0);
+			}
 		});
 	}
 
@@ -2004,6 +2093,69 @@ export function initListenMode(initial: ListenInitialData): void {
 		event?.stopPropagation();
 		resetQueueOrder();
 	}
+
+	function syncFilterClearVisibility(): void {
+		if (queueFilterClear) queueFilterClear.hidden = queueFilter.length === 0;
+	}
+
+	function openQueueFilter(): void {
+		if (!queueFilterWrap || !queueFilterInput) return;
+		queueFilterActive = true;
+		queueHeader?.classList.add("is-filtering");
+		queueFilterWrap.hidden = false;
+		queueFilterToggle?.setAttribute("aria-pressed", "true");
+		queueFilterInput.focus();
+		queueFilterInput.select();
+	}
+
+	function closeQueueFilter(focusToggle = true): void {
+		queueFilterActive = false;
+		queueFilter = "";
+		if (queueFilterInput) queueFilterInput.value = "";
+		queueHeader?.classList.remove("is-filtering");
+		if (queueFilterWrap) queueFilterWrap.hidden = true;
+		queueFilterToggle?.setAttribute("aria-pressed", "false");
+		syncFilterClearVisibility();
+		if (queueDrawer && !queueDrawer.hidden) renderQueue();
+		if (focusToggle) queueFilterToggle?.focus();
+	}
+
+	function applyQueueFilter(raw: string): void {
+		queueFilter = normalizeFilter(raw);
+		syncFilterClearVisibility();
+		if (queueDrawer && !queueDrawer.hidden) renderQueue();
+	}
+
+	queueFilterToggle?.addEventListener("click", () => {
+		if (queueFilterActive) closeQueueFilter();
+		else openQueueFilter();
+	});
+	queueFilterInput?.addEventListener("input", () => {
+		applyQueueFilter(queueFilterInput.value);
+	});
+	queueFilterClear?.addEventListener("click", () => {
+		if (!queueFilterInput) return;
+		queueFilterInput.value = "";
+		applyQueueFilter("");
+		queueFilterInput.focus();
+	});
+	queueFilterInput?.addEventListener("keydown", (event) => {
+		if (event.key === "Escape") {
+			event.preventDefault();
+			event.stopPropagation();
+			if (queueFilterInput.value) {
+				queueFilterInput.value = "";
+				applyQueueFilter("");
+			} else {
+				closeQueueFilter();
+			}
+			return;
+		}
+		if (event.key === "ArrowDown") {
+			event.preventDefault();
+			focusQueueItem(0);
+		}
+	});
 
 	function getQueueItemButtons(): HTMLButtonElement[] {
 		if (!queueList) return [];

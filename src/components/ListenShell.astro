@@ -270,12 +270,53 @@ const initialDataJson = JSON.stringify({
 	>
 		<div class="listen-queue-handle" aria-hidden="true"></div>
 		<header class="listen-queue-header">
-			<h2 class="listen-queue-title" id="listen-queue-title">Queue</h2>
-			<span
-				id="listen-queue-stats"
-				class="listen-queue-stats"
-				aria-live="polite"
-			></span>
+			<div class="listen-queue-summary" id="listen-queue-summary">
+				<h2 class="listen-queue-title" id="listen-queue-title">Queue</h2>
+				<span
+					id="listen-queue-stats"
+					class="listen-queue-stats"
+					aria-live="polite"
+				></span>
+			</div>
+			<div class="listen-queue-filter" id="listen-queue-filter" hidden>
+				<input
+					id="listen-queue-filter-input"
+					class="listen-queue-filter-input"
+					type="text"
+					inputmode="search"
+					placeholder="Filter tracks…"
+					aria-label="Filter tracks"
+					autocomplete="off"
+					autocorrect="off"
+					autocapitalize="off"
+					spellcheck="false"
+				/>
+				<button
+					type="button"
+					id="listen-queue-filter-clear"
+					class="listen-queue-filter-clear"
+					aria-label="Clear filter"
+					title="Clear filter"
+					hidden
+				>
+					<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" width="12" height="12">
+						<path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"/>
+					</svg>
+				</button>
+			</div>
+			<button
+				type="button"
+				id="listen-queue-filter-toggle"
+				class="listen-queue-filter-toggle"
+				aria-label="Filter tracks"
+				title="Filter tracks"
+				aria-pressed="false"
+			>
+				<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" width="15" height="15">
+					<circle cx="8.5" cy="8.5" r="5.25"/>
+					<path d="m12.6 12.6 3.4 3.4" stroke-linecap="round"/>
+				</svg>
+			</button>
 			<button
 				type="button"
 				id="listen-queue-reset"
