@@ -34,6 +34,7 @@
 				"mn1",
 				"mn10",
 				"mn47",
+				"mn95",
 				"mn148"
 			],
 			"labels": [
@@ -552,7 +553,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"mn95"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2819,6 +2823,7 @@
 			"discourse": [
 				"mn6",
 				"mn77",
+				"mn95",
 				"mn111"
 			],
 			"labels": [
@@ -2908,7 +2913,10 @@
 				"line-art",
 				"gold"
 			],
-			"discourse": "mn47",
+			"discourse": [
+				"mn47",
+				"mn95"
+			],
 			"labels": [
 				"collectedness",
 				"direct knowledge",
@@ -2934,8 +2942,8 @@
 		},
 		{
 			"id": "honey-pure",
-			"title": "Pure honey at the crossroads",
-			"description": "Crossroads with a honey drop — khuddamadhuṁ anelakaṁ, the crowd awaiting the teaching",
+			"title": "Pure honey free of wax",
+			"description": "Radiant golden drop and vessel — khuddamadhuṁ anelakaṁ, purity without admixture",
 			"tags": [
 				"line-art",
 				"gold",
@@ -2957,7 +2965,10 @@
 				"line-art",
 				"mn77"
 			],
-			"discourse": "mn77",
+			"discourse": [
+				"mn77",
+				"mn95"
+			],
 			"labels": [
 				"direct knowledge",
 				"insight",
@@ -3087,6 +3098,40 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/mind-made-body.svg"
+		},
+		{
+			"id": "greed",
+			"title": "Greed",
+			"description": "Grasping claw closing on an object — lobha / lobhanīyā dhammā",
+			"tags": [
+				"line-art",
+				"mn95",
+				"burgundy"
+			],
+			"discourse": "mn95",
+			"labels": [
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/greed.svg"
+		},
+		{
+			"id": "delusion",
+			"title": "Delusion",
+			"description": "Disorienting inward spiral — moha / mohanīyā dhammā",
+			"tags": [
+				"line-art",
+				"mn95",
+				"burgundy"
+			],
+			"discourse": "mn95",
+			"labels": [
+				"harm",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/delusion.svg"
 		}
 	]
 }
