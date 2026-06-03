@@ -5,7 +5,7 @@ qualities: solitude, tranquility, learned, diligence, examination, recollection 
 theme: wisdom
 slug: an5.74
 priority: 1.2
-commentary: "[1] [Per MP](https://epitaka.org/book/Mp-v?para=166&line=1): "does not discern its supreme meaning with wisdom" means that he does not understand the meaning of that Dhamma, which is higher than the mere learning (pariyatti), by means of the wisdom of the path together with penetrative vision (vipassanā). That is, he does not see the Four Noble Truths, nor does he penetrate them."
+commentary: "[1] [Per MP](https://epitaka.org/book/Mp-v?para=166&line=1): “does not discern its supreme meaning with wisdom” means that he does not understand the meaning of that Dhamma, which is higher than the mere learning (pariyatti), by means of the wisdom of the path together with penetrative vision (vipassanā). That is, he does not see the Four Noble Truths, nor does he penetrate them."
 ---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca:
