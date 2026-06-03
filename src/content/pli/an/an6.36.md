@@ -1,8 +1,8 @@
 ---
 title: Vivādamūla sutta - Root Of Disputes
-description: The Buddha shares the six roots of disputes - 1) anger and resentment, 2) denigration and contention, 3) envy and miserliness, 4) deceit and hypocrisy, 5) evil desires and wrong view, 6) clinging to views, holding on to them, and insisting on them - that lead to one not fulfilling the training, to dispute in the community, and to the harm and suffering of many.
-fetter: personal existence, adherence to rules and observances, ill will, conceit, ignorance
-tags: disputes, anger, resentment, denigration, contention, envy, miserliness, deceit, hypocrisy, evil desires, wrong view, clinging, views, training, harm, suffering, community, saṅgha, Dhamma, Teacher, respect, deference, politeness, an, an6
+description: The Buddha shares the six roots of disputes - 1.) irritable nature and resentment, 2.) denigration and contention, 3.) envy and miserliness, 4.) deceit and hypocrisy, 5.) evil desires and wrong view, 6.) clinging to views, holding on to them, and insisting on them - that lead to one not fulfilling the training, to dispute in the community, and to the harm and suffering of many.
+qualities: irritability, resentment, contempt, feuding, jealousy, stinginess, hypocrisy, treachery, harm, wrong view, attachment, giving up
+theme: wisdom, inquisitiveness, training guideline
 slug: an6.36
 ---
 

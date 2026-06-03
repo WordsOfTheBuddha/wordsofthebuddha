@@ -1,8 +1,8 @@
 ---
 title: Paṭhama lokadhamma sutta - Worldly Conditions (First)
 description: The Buddha describes in brief the eight worldly conditions that revolve around the world and the world revolves around them - gain and loss, disgrace and fame, blame and praise, pleasure, and pain.
-fetter: personal existence, conceit, ignorance
-tags: an, an8, worldly, gain, acquisition, loss, fame, disgrace, disrepute, praise, blame, pleasure, pain, impermanence, mindfulness, wisdom
+qualities: recognition of impermanence, imperturbable
+theme: wisdom, inquisitiveness
 slug: an8.5
 ---
 

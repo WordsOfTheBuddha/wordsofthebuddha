@@ -1,9 +1,8 @@
 ---
 title: Anutappiya sutta - Regret
 description: One who delights in personal existence dies with regret and their passing away is not fortunate. One who delights in Nibbāna and gives up personal existence dies without regret and their passing away is fortunate.
-fetter: personal existence, ignorance
 qualities: personal existence view, mental proliferation, suffering
-tags: personal existence, delight, work, talk, sleep, company, bonding, mental proliferation, Nibbāna, auspicious, regret, fortunate, suffering, death, an, an6
+theme: wisdom, training guideline, inspiration
 character: Venerable Sāriputta
 slug: an6.15
 ---
