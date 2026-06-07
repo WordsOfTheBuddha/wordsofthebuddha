@@ -9,7 +9,7 @@
  * **Valence** — from `labels` against `qualities.json` polarity lists (mixed +/− → none).
  * If no labels, inferred from title + description + tags (quality-key word matches).
  *
- * **tags** — search-only (e.g. line-art); not a facet.
+ * **tags** — search-only (e.g. line-art); not a facet. Do not repeat discourse slugs here.
  *
  * **Discourse (multi):** `discourse` may be a string or non-empty string[].
  * The **first** slug is the primary (default viz link order on the design-system page).
@@ -137,6 +137,17 @@ function normalizeDiscourse(d: string | string[]): string | string[] {
 	return [primary, ...sortDiscourseIds(rest)];
 }
 
+/** Drop tags that duplicate a discourse slug on the same icon. */
+function stripDiscourseFromTags(
+	tags: string[],
+	discourse: string | string[],
+): string[] {
+	const slugs = new Set(
+		(Array.isArray(discourse) ? discourse : [discourse]).map((s) => s.trim()),
+	);
+	return tags.filter((t) => !slugs.has(t));
+}
+
 /** Infer quality keys from title/description/tags when `labels` is empty after merge. */
 function inferLabelsFromText(
 	icon: Pick<IconEntry, "title" | "description" | "tags">,
@@ -181,7 +192,7 @@ const icons: IconEntry[] = [
 		id: "cognized",
 		title: "Sense: cognized",
 		description: "Mind/consciousness motif for viññāta",
-		discourse: ["mn1", "mn148", "mn10"],
+		discourse: ["mn1", "mn9", "mn148", "mn10"],
 		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
@@ -301,7 +312,7 @@ const icons: IconEntry[] = [
 		id: "space-base",
 		title: "Boundless space",
 		description: "ākāsānañcāyatana — dashed circles",
-		discourse: ["mn1", "mn25", "mn6", "mn111", "mn77"],
+		discourse: ["mn1", "mn9", "mn25", "mn6", "mn111", "mn77"],
 		tags: ["line-art", "dashed"],
 		themes: ["phenomena", "formless"],
 	},
@@ -358,7 +369,7 @@ const icons: IconEntry[] = [
 		id: "tangle-unwise-attention",
 		title: "Unwise attention",
 		description: "Tangled lines for ayoniso, āsava, uddhaccakukkucca",
-		discourse: "mn2",
+		discourse: ["mn2", "mn9"],
 		tags: ["burgundy", "line-art"],
 		themes: ["wisdom", "five hindrances", "harm"]
 	},
@@ -413,8 +424,8 @@ const icons: IconEntry[] = [
 	{
 		id: "thorn-vine",
 		title: "Thorn vine",
-		description: "Thorn vine representative of thought of ill will (byāpādavitakka)",
-		discourse: ["mn2", "mn95"],
+		description: "Thorn vine representative of thought of ill will (byāpādavitakka); reused for aversion (dosa)",
+		discourse: ["mn2", "mn95", "mn9"],
 		tags: ["line-art"],
 		themes: ["five hindrances", "unwholesome", "harm"]
 	},
@@ -599,7 +610,7 @@ const icons: IconEntry[] = [
 		id: "feeling-droplet",
 		title: "Feeling contemplation",
 		description: "Droplet or flame — vedanānupassī",
-		discourse: ["mn118", "mn10"],
+		discourse: ["mn118", "mn9", "mn10"],
 		tags: ["line-art", "feeling"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -726,8 +737,8 @@ const icons: IconEntry[] = [
 		id: "mind-contemplation",
 		title: "Mind contemplation",
 		description:
-			"Concentric circles — citte cittānupassī",
-		discourse: ["mn118", "mn10"],
+			"Concentric circles — citte cittānupassī; reused for mental intention nutriment (manosañcetanā)",
+		discourse: ["mn118", "mn9", "mn10"],
 		tags: ["line-art", "mind"],
 		themes: ["mindfulness", "wholesome", "sense restraint"],
 	},
@@ -817,8 +828,8 @@ const icons: IconEntry[] = [
 		id: "clear-awareness-fourfold",
 		title: "Clear awareness — four sense domains",
 		description:
-			"2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī",
-		discourse: ["mn39", "mn119", "mn10"],
+			"2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī; reused for six sense bases (saḷāyatana)",
+		discourse: ["mn39", "mn119", "mn10", "mn9"],
 		tags: ["line-art"],
 		themes: ["clear awareness", "mindfulness"],
 	},
@@ -845,7 +856,7 @@ const icons: IconEntry[] = [
 		title: "Nine charnel grounds",
 		description:
 			"Skull and bones — sivathikā",
-		discourse: ["mn119", "mn10"],
+		discourse: ["mn119", "mn9", "mn10"],
 		tags: ["line-art", "death"],
 		themes: ["mindfulness", "wholesome"],
 	},
@@ -942,7 +953,7 @@ const icons: IconEntry[] = [
 		title: "Ending of mental defilements",
 		description: "Twin liberation orbs — āsavakkhaya, cetovimutti",
 		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77"],
-		tags: ["line-art", "gold", "mn39"],
+		tags: ["line-art", "gold"],
 		themes: ["awakening", "liberation", "ending", "safety", "psychic power"],
 	},
 	// MN 113
@@ -951,70 +962,70 @@ const icons: IconEntry[] = [
 		title: "Conceit motif: noble birth",
 		description: "Crown zigzag — worldly status",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-wealth",
 		title: "Conceit motif: abundant wealth",
 		description: "Twin orbs",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-fame",
 		title: "Conceit motif: recognition and fame",
 		description: "Star",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-material-gains",
 		title: "Conceit motif: material gains",
 		description: "Dish / gains curve",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-great-learning",
 		title: "Conceit motif: great learning",
 		description: "Open book",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-vinaya",
 		title: "Conceit motif: Vinaya expert",
 		description: "Scroll / basket",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-dhamma-teacher",
 		title: "Conceit motif: Dhamma teacher",
 		description: "Head with speech arc",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-forest",
 		title: "Conceit motif: forest dweller",
 		description: "Tree",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-rag-robe",
 		title: "Conceit motif: rag-robe wearer",
 		description: "Folded cloth",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	{
 		id: "conceit-alms",
 		title: "Conceit motif: alms collector",
 		description: "Alms bowl curve",
 		discourse: "mn113",
-		tags: ["line-art", "mn113"],
+		tags: ["line-art"],
 	},
 	// UI (shared)
 	{
@@ -1036,7 +1047,7 @@ const icons: IconEntry[] = [
 		id: "liberation-sparkle",
 		title: "Liberation sparkle",
 		description: "Gold sparkle on path to liberation",
-		discourse: ["an10.1", "mn111"],
+		discourse: ["an10.1", "mn9", "mn111"],
 		tags: ["gold", "line-art", "sparkle"],
 	},
 	{
@@ -1097,8 +1108,8 @@ const icons: IconEntry[] = [
 		id: "friction-sticks-heat",
 		title: "rubbing wood: friction and heat",
 		description:
-			"Rubbing two dry wood pieces produces flame-like heat. Simile for sustained contact (phassa) that produces feeling.",
-		discourse: "sn36.10",
+			"Rubbing two dry wood pieces produces flame-like heat. Simile for sustained contact (phassa) that produces feeling; reused for contact nutriment and DO node 10.",
+		discourse: ["sn36.10", "mn9"],
 		tags: ["line-art", "simile"],
 		themes: ["insight", "simile"],
 	},
@@ -1117,7 +1128,7 @@ const icons: IconEntry[] = [
 		title: "Accomplishment in virtue",
 		description: "Tablet with precepts and checkmark",
 		discourse: ["mn39", "mn53", "mn6", "mn111", "mn77"],
-		tags: ["line-art", "mn53", "sekha", "sila"],
+		tags: ["line-art", "sekha", "sila"],
 		themes: ["ethics", "conduct"],
 	},
 	{
@@ -1125,15 +1136,15 @@ const icons: IconEntry[] = [
 		title: "Sense restraint",
 		description: "Eye with shield",
 		discourse: ["mn39", "mn53"],
-		tags: ["line-art", "mn53", "sekha", "sense"],
+		tags: ["line-art", "sekha", "sense"],
 		themes: ["sense restraint", "wholesome"],
 	},
 	{
 		id: "moderation-bowl",
 		title: "Moderation in eating",
 		description: "Alms bowl",
-		discourse: ["mn39", "mn53"],
-		tags: ["line-art", "mn53", "sekha", "bowl"],
+		discourse: ["mn39", "mn9", "mn53"],
+		tags: ["line-art", "sekha", "bowl"],
 		themes: ["conduct", "renunciation", "sense restraint"],
 	},
 	{
@@ -1141,15 +1152,15 @@ const icons: IconEntry[] = [
 		title: "Devotion to wakefulness",
 		description: "Moon with watch marks",
 		discourse: ["mn39", "mn53"],
-		tags: ["line-art", "mn53", "sekha"],
+		tags: ["line-art", "sekha"],
 		themes: ["effort", "mindfulness", "clear awareness"],
 	},
 	{
 		id: "hen-egg-simile",
 		title: "Hen and egg simile",
 		description: "Cracked egg",
-		discourse: "mn53",
-		tags: ["line-art", "mn53", "sekha"],
+		discourse: ["mn53", "mn9"],
+		tags: ["line-art", "sekha"],
 		themes: ["insight", "liberation", "awakening"],
 	},
 	{
@@ -1157,7 +1168,7 @@ const icons: IconEntry[] = [
 		title: "Recollection of past lives",
 		description: "Eye glancing backward — first breakthrough (pubbenivāsānussati)",
 		discourse: ["mn39", "mn53", "mn6"],
-		tags: ["line-art", "mn39", "mn53", "sekha"],
+		tags: ["line-art", "sekha"],
 		themes: ["insight", "liberation", "psychic power", "direct knowledge"],
 	},
 	{
@@ -1166,7 +1177,7 @@ const icons: IconEntry[] = [
 		description:
 			"Radiant eye — second breakthrough (dibbacakkhu)",
 		discourse: ["mn39", "mn53", "mn119", "mn6"],
-		tags: ["line-art", "mn39", "mn53", "sekha"],
+		tags: ["line-art", "sekha"],
 		themes: ["insight", "liberation", "psychic power", "direct knowledge"],
 		qualities: ["psychic power"],
 	},
@@ -1175,7 +1186,7 @@ const icons: IconEntry[] = [
 		title: "breaking of fetters",
 		description: "Fetters abandoned — broken chain",
 		discourse: ["mn2", "mn53", "mn119"],
-		tags: ["line-art", "mn53", "sekha"],
+		tags: ["line-art", "sekha"],
 		themes: ["liberation", "insight", "psychic power", "direct knowledge", "ending"],
 	},
 	// MN 148 Chachakka — unique internal-base icons (body: mn118-body-observer)
@@ -1185,7 +1196,7 @@ const icons: IconEntry[] = [
 		description:
 			"Nose outline — ghāna",
 		discourse: ["mn148", "mn10"],
-		tags: ["line-art", "mn148", "sense"],
+		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
 	{
@@ -1194,7 +1205,7 @@ const icons: IconEntry[] = [
 		description:
 			"Tongue outline — jivhā",
 		discourse: ["mn148", "mn10"],
-		tags: ["line-art", "mn148", "sense"],
+		tags: ["line-art", "sense"],
 		themes: ["sense bases", "phenomena"],
 	},
 	// MN 20 Vitakkasaṇṭhāna — similes (postures: shared-postures-four)
@@ -1203,7 +1214,7 @@ const icons: IconEntry[] = [
 		title: "Fine peg replaces coarse peg",
 		description: "Two pegs and replacement arrow (aññaṁ nimittaṁ…)",
 		discourse: "mn20",
-		tags: ["line-art", "mn20", "vitakka"],
+		tags: ["line-art", "vitakka"],
 		themes: ["skillful means", "wholesome"],
 	},
 	{
@@ -1211,7 +1222,7 @@ const icons: IconEntry[] = [
 		title: "Carcass hung around the neck",
 		description: "Figure recoiling from necklace (drawbacks)",
 		discourse: "mn20",
-		tags: ["line-art", "mn20", "vitakka"],
+		tags: ["line-art", "vitakka"],
 		themes: ["dispassion", "insight", "skillful means"],
 	},
 	{
@@ -1219,7 +1230,7 @@ const icons: IconEntry[] = [
 		title: "Closing the eyes / looking away",
 		description: "Struck-through eye — (asati amanasikāra)",
 		discourse: "mn20",
-		tags: ["line-art", "mn20", "vitakka"],
+		tags: ["line-art", "vitakka"],
 		themes: ["sense restraint", "skillful means"],
 	},
 	{
@@ -1227,7 +1238,7 @@ const icons: IconEntry[] = [
 		title: "Strong person subdues a weaker one",
 		description: "Two figures — (forceful mind training)",
 		discourse: "mn20",
-		tags: ["line-art", "mn20", "vitakka"],
+		tags: ["line-art", "vitakka"],
 		themes: ["wholesome", "effort", "skillful means"],
 	},
 	// MN 10 Satipaṭṭhāna — five hindrances (detail panel)
@@ -1236,7 +1247,7 @@ const icons: IconEntry[] = [
 		title: "Hindrance: dullness and drowsiness",
 		description: "Thinamiddha motif — cloud and drooping line.",
 		discourse: "mn10",
-		tags: ["line-art", "mn10", "hindrances"],
+		tags: ["line-art", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
 	{
@@ -1244,7 +1255,7 @@ const icons: IconEntry[] = [
 		title: "Hindrance: doubt",
 		description: "Vicikicchā motif — question-mark curve.",
 		discourse: "mn10",
-		tags: ["line-art", "mn10", "hindrances"],
+		tags: ["line-art", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
 	// MN 39 Mahāassapura — hindrance similes (paired), pure conduct, three knowledges (viz)
@@ -1252,7 +1263,7 @@ const icons: IconEntry[] = [
 		id: "simile-debt",
 		title: "Simile: debt (craving)",
 		description: "Figure burdened with money sack — abhijjhā like iṇa",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1260,7 +1271,7 @@ const icons: IconEntry[] = [
 		id: "simile-debt-free",
 		title: "Simile: free from debt (craving abandoned)",
 		description: "Upright figure, coins scattered — abhijjhā pahāya",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "non-harm", "renunciation", "wholesome"],
 	},
@@ -1268,7 +1279,7 @@ const icons: IconEntry[] = [
 		id: "simile-disease",
 		title: "Simile: disease (ill will)",
 		description: "Aching figure with pain marks — byāpāda like roga",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1276,7 +1287,7 @@ const icons: IconEntry[] = [
 		id: "simile-healthy",
 		title: "Simile: regaining health (ill will abandoned)",
 		description: "Strong figure and bowl — byāpāda pahāya",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "non-harm", "renunciation", "wholesome"],
 	},
@@ -1284,7 +1295,7 @@ const icons: IconEntry[] = [
 		id: "simile-prison",
 		title: "Simile: prison (dullness and drowsiness)",
 		description: "Figure behind bars — thīnamiddha like bandhanāgāra",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1292,7 +1303,7 @@ const icons: IconEntry[] = [
 		id: "simile-released",
 		title: "Simile: released from prison (dullness abandoned)",
 		description: "Open gate and free figure — thīnamiddha pahāya",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "non-harm", "safety", "renunciation", "wholesome"],
 	},
@@ -1300,7 +1311,7 @@ const icons: IconEntry[] = [
 		id: "simile-slavery",
 		title: "Simile: slavery (restlessness and worry)",
 		description: "Figure in shackles — uddhaccakukkucca like dāsabya",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1308,7 +1319,7 @@ const icons: IconEntry[] = [
 		id: "simile-freedom",
 		title: "Simile: freed from slavery (restlessness abandoned)",
 		description: "Unshackled, arms raised — uddhaccakukkucca pahāya",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "non-harm", "renunciation", "wholesome"],
 	},
@@ -1316,7 +1327,7 @@ const icons: IconEntry[] = [
 		id: "simile-dangerous-path",
 		title: "Simile: dangerous wilderness path (doubt)",
 		description: "Thorny track and wary traveler — vicikicchā like kantāraddhānamagga",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1324,7 +1335,7 @@ const icons: IconEntry[] = [
 		id: "simile-safe-arrival",
 		title: "Simile: place of safety (doubt abandoned)",
 		description: "Figure on sheltered ground — vicikicchā pahāya",
-		discourse: "mn39",
+		discourse: ["mn39"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "non-harm", "safety", "renunciation", "wholesome"],
 	},
@@ -1332,8 +1343,8 @@ const icons: IconEntry[] = [
 		id: "triple-purity",
 		title: "Pure conduct: body, speech, and mind",
 		description: "Triangle of figure, speech bubble, and radiant mind — kāya · vacī · mano",
-		discourse: "mn39",
-		tags: ["line-art", "mn39", "conduct"],
+		discourse: ["mn39", "mn9"],
+		tags: ["line-art", "conduct"],
 		labels: ["ethical conduct", "wholesome"],
 	},
 	{
@@ -1364,9 +1375,9 @@ const icons: IconEntry[] = [
 	{
 		id: "impermanence-dissolve",
 		title: "Recognition of impermanence",
-		description: "Half-arc dissolving into particles — aniccasaññā",
-		discourse: ["mn106", "mn111"],
-		tags: ["line-art", "mn106"],
+		description: "Half-arc dissolving into particles — aniccasaññā; reused for taints (āsavā) exposition header",
+		discourse: ["mn106", "mn9", "mn111"],
+		tags: ["line-art"],
 		labels: ["recognition of impermanence", "dispassion", "wisdom"],
 	},
 	{
@@ -1374,7 +1385,7 @@ const icons: IconEntry[] = [
 		title: "Emptiness of perceptions",
 		description: "Hollow ring with dashed void — suññato",
 		discourse: ["mn106", "mn6"],
-		tags: ["line-art", "mn106"],
+		tags: ["line-art"],
 		labels: ["with nothing", "perceiving escape", "formless"],
 	},
 	{
@@ -1382,7 +1393,7 @@ const icons: IconEntry[] = [
 		title: "Non-belonging",
 		description: "Unconnected dot with dispersed lines — netaṁ mama",
 		discourse: "mn106",
-		tags: ["line-art", "mn106"],
+		tags: ["line-art"],
 		labels: ["recognition of not-self", "free from attachment", "non-identification", "formless"],
 	},
 	{
@@ -1391,7 +1402,7 @@ const icons: IconEntry[] = [
 		description:
 			"U-shaped track with arrow — dwell thus often · tabbahulavihārī",
 		discourse: "mn106",
-		tags: ["line-art", "mn106", "arrow"],
+		tags: ["line-art", "arrow"],
 		labels: ["skillful means", "diligence", "effort"],
 	},
 	// MN 25 Nivāpa — custom icon set
@@ -1399,7 +1410,7 @@ const icons: IconEntry[] = [
 		id: "bait-five-cords",
 		title: "Bait: five cords of sensual pleasure",
 		description: "Five radiating lines from a central dot — pañcannaṁ kāmaguṇānaṁ nivāpa",
-		discourse: "mn25",
+		discourse: ["mn25", "mn9"],
 		tags: ["line-art", "gold"],
 		labels: ["harm", "five hindrances", "simile"],
 	},
@@ -1480,7 +1491,7 @@ const icons: IconEntry[] = [
 		id: "discernment-lens",
 		title: "Discernment",
 		description: "Lens with centered point — vipassanā",
-		discourse: ["mn6", "mn111", "mn77", "mn95"],
+		discourse: ["mn6", "mn9", "mn111", "mn77", "mn95"],
 		tags: ["line-art", "gold"],
 		labels: ["wisdom", "insight"],
 	},
@@ -1546,7 +1557,7 @@ const icons: IconEntry[] = [
 		title: "Pure honey free of wax",
 		description: "Radiant golden drop and vessel — khuddamadhuṁ anelakaṁ, purity without admixture",
 		discourse: "mn77",
-		tags: ["line-art", "gold", "mn77"],
+		tags: ["line-art", "gold"],
 		labels: ["faith", "simile"],
 	},
 	{
@@ -1554,23 +1565,23 @@ const icons: IconEntry[] = [
 		title: "Knowledge and vision",
 		description: "Eye with verification check — ñāṇadassana",
 		discourse: ["mn77", "mn95"],
-		tags: ["line-art", "mn77"],
+		tags: ["line-art"],
 		labels: ["direct knowledge", "wisdom", "insight"],
 	},
 	{
 		id: "four-noble-truths",
 		title: "The Four Noble Truths",
 		description: "Quartered disc — cattāri ariyasaccāni",
-		discourse: "mn77",
-		tags: ["line-art", "mn77"],
+		discourse: ["mn77"],
+		tags: ["line-art"],
 		labels: ["wisdom", "insight"],
 	},
 	{
 		id: "eightfold-path-wheel",
 		title: "Noble Eightfold Path",
 		description: "Eight-spoked wheel — ariya aṭṭhaṅgika magga",
-		discourse: "mn77",
-		tags: ["line-art", "gold", "mn77"],
+		discourse: ["mn9", "mn77"],
+		tags: ["line-art", "gold"],
 		labels: ["path", "ethical conduct", "collectedness", "wisdom"],
 	},
 	{
@@ -1578,7 +1589,7 @@ const icons: IconEntry[] = [
 		title: "Four right efforts",
 		description: "Four striving flags — cattāro sammappadhānā",
 		discourse: "mn77",
-		tags: ["line-art", "mn77"],
+		tags: ["line-art"],
 		labels: ["effort", "diligence", "wholesome"],
 	},
 	{
@@ -1586,7 +1597,7 @@ const icons: IconEntry[] = [
 		title: "Four bases of psychic power",
 		description: "Four nodes around a center — cattāro iddhipādā",
 		discourse: "mn77",
-		tags: ["line-art", "mn77"],
+		tags: ["line-art"],
 		labels: ["collectedness", "effort", "psychic power"],
 	},
 	{
@@ -1594,7 +1605,7 @@ const icons: IconEntry[] = [
 		title: "Five spiritual faculties",
 		description: "Five ascending bars — pañcindriyāni",
 		discourse: "mn77",
-		tags: ["line-art", "mn77"],
+		tags: ["line-art"],
 		labels: ["faith", "effort", "mindfulness", "collectedness", "wisdom"],
 	},
 	{
@@ -1602,7 +1613,7 @@ const icons: IconEntry[] = [
 		title: "Beryl gem strung on a thread",
 		description: "Eight-faceted gem with a colored thread — maṇi veḷuriyo simile",
 		discourse: "mn77",
-		tags: ["line-art", "mn77"],
+		tags: ["line-art"],
 		labels: ["insight", "direct knowledge", "simile"],
 	},
 	{
@@ -1610,7 +1621,7 @@ const icons: IconEntry[] = [
 		title: "Mind-made body",
 		description: "Reed drawn from its sheath — manomaya kāya",
 		discourse: "mn77",
-		tags: ["line-art", "mn77"],
+		tags: ["line-art"],
 		labels: ["psychic power", "direct knowledge", "simile"],
 	},
 	// ── MN 95 · Caṅkī Sutta ────────────
@@ -1618,17 +1629,59 @@ const icons: IconEntry[] = [
 		id: "greed",
 		title: "Greed",
 		description: "Grasping claw closing on an object — lobha / lobhanīyā dhammā",
-		discourse: "mn95",
-		tags: ["line-art", "mn95", "burgundy"],
+		discourse: ["mn9", "mn95"],
+		tags: ["line-art", "burgundy"],
 		labels: ["unwholesome", "harm"],
 	},
 	{
 		id: "delusion",
 		title: "Delusion",
 		description: "Disorienting inward spiral — moha / mohanīyā dhammā",
-		discourse: "mn95",
-		tags: ["line-art", "mn95", "burgundy"],
+		discourse: ["mn9", "mn95"],
+		tags: ["line-art", "burgundy"],
 		labels: ["unwholesome", "harm"],
+	},
+	// ── MN 9 · Sammādiṭṭhi Sutta ────────────
+	{
+		id: "non-greed",
+		title: "Non-greed",
+		description: "Open hand releasing, contentment — alobha / kusalamūla",
+		discourse: "mn9",
+		tags: ["line-art", "teal"],
+		labels: ["wholesome"],
+	},
+	{
+		id: "non-aversion",
+		title: "Non-aversion",
+		description: "Heart of good-will, loving-kindness — adosa / kusalamūla",
+		discourse: "mn9",
+		tags: ["line-art", "teal"],
+		labels: ["wholesome"],
+	},
+	{
+		id: "non-delusion",
+		title: "Non-delusion",
+		description: "Radiant orb of clarity, clear seeing — amoha / kusalamūla",
+		discourse: "mn9",
+		tags: ["line-art", "teal"],
+		labels: ["wholesome"],
+	},
+	{
+		id: "name-and-form",
+		title: "Name and form",
+		description: "Body figure joined to a radiant mind orb — nāmarūpa (mentality-materiality)",
+		discourse: "mn9",
+		tags: ["line-art"],
+		themes: ["dependent origination"],
+	},
+	{
+		id: "four-clinging",
+		title: "Four kinds of clinging",
+		description: "2×2 anchor grid — kāmupādāna · diṭṭhupādāna · sīlabbatupādāna · attavādupādāna",
+		discourse: "mn9",
+		tags: ["line-art"],
+		themes: ["dependent origination", "craving"],
+		labels: ["unwholesome"],
 	},
 ];
 
@@ -1656,6 +1709,7 @@ function main() {
 		const valenceOut = inferValence(labelsOut, vManual);
 		return {
 			...rest,
+			tags: stripDiscourseFromTags(rest.tags, discRaw),
 			discourse: normalizeDiscourse(discRaw),
 			labels: labelsOut,
 			...(valenceOut ? { valence: valenceOut } : {}),

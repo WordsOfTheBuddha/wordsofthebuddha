@@ -71,6 +71,7 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn9",
 				"mn10",
 				"mn148"
 			],
@@ -316,6 +317,7 @@
 			"discourse": [
 				"mn1",
 				"mn6",
+				"mn9",
 				"mn25",
 				"mn77",
 				"mn111"
@@ -440,7 +442,10 @@
 				"burgundy",
 				"line-art"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"mn9"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -549,12 +554,13 @@
 		{
 			"id": "thorn-vine",
 			"title": "Thorn vine",
-			"description": "Thorn vine representative of thought of ill will (byāpādavitakka)",
+			"description": "Thorn vine representative of thought of ill will (byāpādavitakka); reused for aversion (dosa)",
 			"tags": [
 				"line-art"
 			],
 			"discourse": [
 				"mn2",
+				"mn9",
 				"mn95"
 			],
 			"labels": [
@@ -917,6 +923,7 @@
 			],
 			"discourse": [
 				"mn118",
+				"mn9",
 				"mn10"
 			],
 			"labels": [
@@ -1134,13 +1141,14 @@
 		{
 			"id": "mind-contemplation",
 			"title": "Mind contemplation",
-			"description": "Concentric circles — citte cittānupassī",
+			"description": "Concentric circles — citte cittānupassī; reused for mental intention nutriment (manosañcetanā)",
 			"tags": [
 				"line-art",
 				"mind"
 			],
 			"discourse": [
 				"mn118",
+				"mn9",
 				"mn10"
 			],
 			"labels": [
@@ -1332,12 +1340,13 @@
 		{
 			"id": "clear-awareness-fourfold",
 			"title": "Clear awareness — four sense domains",
-			"description": "2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī",
+			"description": "2×2 grid (eye, ear, body activity, cognizing) — sampajānakārī; reused for six sense bases (saḷāyatana)",
 			"tags": [
 				"line-art"
 			],
 			"discourse": [
 				"mn39",
+				"mn9",
 				"mn10",
 				"mn119"
 			],
@@ -1395,6 +1404,7 @@
 			],
 			"discourse": [
 				"mn119",
+				"mn9",
 				"mn10"
 			],
 			"labels": [
@@ -1631,8 +1641,7 @@
 			"description": "Twin liberation orbs — āsavakkhaya, cetovimutti",
 			"tags": [
 				"line-art",
-				"gold",
-				"mn39"
+				"gold"
 			],
 			"discourse": [
 				"mn39",
@@ -1657,8 +1666,7 @@
 			"title": "Conceit motif: noble birth",
 			"description": "Crown zigzag — worldly status",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1672,8 +1680,7 @@
 			"title": "Conceit motif: abundant wealth",
 			"description": "Twin orbs",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1687,8 +1694,7 @@
 			"title": "Conceit motif: recognition and fame",
 			"description": "Star",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1702,8 +1708,7 @@
 			"title": "Conceit motif: material gains",
 			"description": "Dish / gains curve",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1717,8 +1722,7 @@
 			"title": "Conceit motif: great learning",
 			"description": "Open book",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1732,8 +1736,7 @@
 			"title": "Conceit motif: Vinaya expert",
 			"description": "Scroll / basket",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1747,8 +1750,7 @@
 			"title": "Conceit motif: Dhamma teacher",
 			"description": "Head with speech arc",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1762,8 +1764,7 @@
 			"title": "Conceit motif: forest dweller",
 			"description": "Tree",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1777,8 +1778,7 @@
 			"title": "Conceit motif: rag-robe wearer",
 			"description": "Folded cloth",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1792,8 +1792,7 @@
 			"title": "Conceit motif: alms collector",
 			"description": "Alms bowl curve",
 			"tags": [
-				"line-art",
-				"mn113"
+				"line-art"
 			],
 			"discourse": "mn113",
 			"labels": [
@@ -1840,6 +1839,7 @@
 			],
 			"discourse": [
 				"an10.1",
+				"mn9",
 				"mn111"
 			],
 			"labels": [
@@ -1964,12 +1964,15 @@
 		{
 			"id": "friction-sticks-heat",
 			"title": "rubbing wood: friction and heat",
-			"description": "Rubbing two dry wood pieces produces flame-like heat. Simile for sustained contact (phassa) that produces feeling.",
+			"description": "Rubbing two dry wood pieces produces flame-like heat. Simile for sustained contact (phassa) that produces feeling; reused for contact nutriment and DO node 10.",
 			"tags": [
 				"line-art",
 				"simile"
 			],
-			"discourse": "sn36.10",
+			"discourse": [
+				"sn36.10",
+				"mn9"
+			],
 			"labels": [
 				"insight",
 				"simile"
@@ -1999,7 +2002,6 @@
 			"description": "Tablet with precepts and checkmark",
 			"tags": [
 				"line-art",
-				"mn53",
 				"sekha",
 				"sila"
 			],
@@ -2022,7 +2024,6 @@
 			"description": "Eye with shield",
 			"tags": [
 				"line-art",
-				"mn53",
 				"sekha",
 				"sense"
 			],
@@ -2043,12 +2044,12 @@
 			"description": "Alms bowl",
 			"tags": [
 				"line-art",
-				"mn53",
 				"sekha",
 				"bowl"
 			],
 			"discourse": [
 				"mn39",
+				"mn9",
 				"mn53"
 			],
 			"labels": [
@@ -2065,7 +2066,6 @@
 			"description": "Moon with watch marks",
 			"tags": [
 				"line-art",
-				"mn53",
 				"sekha"
 			],
 			"discourse": [
@@ -2086,10 +2086,12 @@
 			"description": "Cracked egg",
 			"tags": [
 				"line-art",
-				"mn53",
 				"sekha"
 			],
-			"discourse": "mn53",
+			"discourse": [
+				"mn53",
+				"mn9"
+			],
 			"labels": [
 				"awakening",
 				"insight",
@@ -2104,8 +2106,6 @@
 			"description": "Eye glancing backward — first breakthrough (pubbenivāsānussati)",
 			"tags": [
 				"line-art",
-				"mn39",
-				"mn53",
 				"sekha"
 			],
 			"discourse": [
@@ -2128,8 +2128,6 @@
 			"description": "Radiant eye — second breakthrough (dibbacakkhu)",
 			"tags": [
 				"line-art",
-				"mn39",
-				"mn53",
 				"sekha"
 			],
 			"discourse": [
@@ -2153,7 +2151,6 @@
 			"description": "Fetters abandoned — broken chain",
 			"tags": [
 				"line-art",
-				"mn53",
 				"sekha"
 			],
 			"discourse": [
@@ -2177,7 +2174,6 @@
 			"description": "Nose outline — ghāna",
 			"tags": [
 				"line-art",
-				"mn148",
 				"sense"
 			],
 			"discourse": [
@@ -2196,7 +2192,6 @@
 			"description": "Tongue outline — jivhā",
 			"tags": [
 				"line-art",
-				"mn148",
 				"sense"
 			],
 			"discourse": [
@@ -2215,7 +2210,6 @@
 			"description": "Two pegs and replacement arrow (aññaṁ nimittaṁ…)",
 			"tags": [
 				"line-art",
-				"mn20",
 				"vitakka"
 			],
 			"discourse": "mn20",
@@ -2232,7 +2226,6 @@
 			"description": "Figure recoiling from necklace (drawbacks)",
 			"tags": [
 				"line-art",
-				"mn20",
 				"vitakka"
 			],
 			"discourse": "mn20",
@@ -2250,7 +2243,6 @@
 			"description": "Struck-through eye — (asati amanasikāra)",
 			"tags": [
 				"line-art",
-				"mn20",
 				"vitakka"
 			],
 			"discourse": "mn20",
@@ -2267,7 +2259,6 @@
 			"description": "Two figures — (forceful mind training)",
 			"tags": [
 				"line-art",
-				"mn20",
 				"vitakka"
 			],
 			"discourse": "mn20",
@@ -2285,7 +2276,6 @@
 			"description": "Thinamiddha motif — cloud and drooping line.",
 			"tags": [
 				"line-art",
-				"mn10",
 				"hindrances"
 			],
 			"discourse": "mn10",
@@ -2303,7 +2293,6 @@
 			"description": "Vicikicchā motif — question-mark curve.",
 			"tags": [
 				"line-art",
-				"mn10",
 				"hindrances"
 			],
 			"discourse": "mn10",
@@ -2488,10 +2477,12 @@
 			"description": "Triangle of figure, speech bubble, and radiant mind — kāya · vacī · mano",
 			"tags": [
 				"line-art",
-				"mn39",
 				"conduct"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn9"
+			],
 			"labels": [
 				"ethical conduct",
 				"wholesome"
@@ -2564,13 +2555,13 @@
 		{
 			"id": "impermanence-dissolve",
 			"title": "Recognition of impermanence",
-			"description": "Half-arc dissolving into particles — aniccasaññā",
+			"description": "Half-arc dissolving into particles — aniccasaññā; reused for taints (āsavā) exposition header",
 			"tags": [
-				"line-art",
-				"mn106"
+				"line-art"
 			],
 			"discourse": [
 				"mn106",
+				"mn9",
 				"mn111"
 			],
 			"labels": [
@@ -2586,8 +2577,7 @@
 			"title": "Emptiness of perceptions",
 			"description": "Hollow ring with dashed void — suññato",
 			"tags": [
-				"line-art",
-				"mn106"
+				"line-art"
 			],
 			"discourse": [
 				"mn106",
@@ -2606,8 +2596,7 @@
 			"title": "Non-belonging",
 			"description": "Unconnected dot with dispersed lines — netaṁ mama",
 			"tags": [
-				"line-art",
-				"mn106"
+				"line-art"
 			],
 			"discourse": "mn106",
 			"labels": [
@@ -2625,7 +2614,6 @@
 			"description": "U-shaped track with arrow — dwell thus often · tabbahulavihārī",
 			"tags": [
 				"line-art",
-				"mn106",
 				"arrow"
 			],
 			"discourse": "mn106",
@@ -2645,7 +2633,10 @@
 				"line-art",
 				"gold"
 			],
-			"discourse": "mn25",
+			"discourse": [
+				"mn25",
+				"mn9"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2822,6 +2813,7 @@
 			],
 			"discourse": [
 				"mn6",
+				"mn9",
 				"mn77",
 				"mn95",
 				"mn111"
@@ -2946,8 +2938,7 @@
 			"description": "Radiant golden drop and vessel — khuddamadhuṁ anelakaṁ, purity without admixture",
 			"tags": [
 				"line-art",
-				"gold",
-				"mn77"
+				"gold"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -2962,8 +2953,7 @@
 			"title": "Knowledge and vision",
 			"description": "Eye with verification check — ñāṇadassana",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": [
 				"mn77",
@@ -2982,8 +2972,7 @@
 			"title": "The Four Noble Truths",
 			"description": "Quartered disc — cattāri ariyasaccāni",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -2999,10 +2988,12 @@
 			"description": "Eight-spoked wheel — ariya aṭṭhaṅgika magga",
 			"tags": [
 				"line-art",
-				"gold",
+				"gold"
+			],
+			"discourse": [
+				"mn9",
 				"mn77"
 			],
-			"discourse": "mn77",
 			"labels": [
 				"collectedness",
 				"ethical conduct",
@@ -3017,8 +3008,7 @@
 			"title": "Four right efforts",
 			"description": "Four striving flags — cattāro sammappadhānā",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -3034,8 +3024,7 @@
 			"title": "Four bases of psychic power",
 			"description": "Four nodes around a center — cattāro iddhipādā",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -3051,8 +3040,7 @@
 			"title": "Five spiritual faculties",
 			"description": "Five ascending bars — pañcindriyāni",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -3070,8 +3058,7 @@
 			"title": "Beryl gem strung on a thread",
 			"description": "Eight-faceted gem with a colored thread — maṇi veḷuriyo simile",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -3087,8 +3074,7 @@
 			"title": "Mind-made body",
 			"description": "Reed drawn from its sheath — manomaya kāya",
 			"tags": [
-				"line-art",
-				"mn77"
+				"line-art"
 			],
 			"discourse": "mn77",
 			"labels": [
@@ -3105,10 +3091,12 @@
 			"description": "Grasping claw closing on an object — lobha / lobhanīyā dhammā",
 			"tags": [
 				"line-art",
-				"mn95",
 				"burgundy"
 			],
-			"discourse": "mn95",
+			"discourse": [
+				"mn9",
+				"mn95"
+			],
 			"labels": [
 				"harm",
 				"unwholesome"
@@ -3122,16 +3110,92 @@
 			"description": "Disorienting inward spiral — moha / mohanīyā dhammā",
 			"tags": [
 				"line-art",
-				"mn95",
 				"burgundy"
 			],
-			"discourse": "mn95",
+			"discourse": [
+				"mn9",
+				"mn95"
+			],
 			"labels": [
 				"harm",
 				"unwholesome"
 			],
 			"valence": "-ve",
 			"svg": "icons/delusion.svg"
+		},
+		{
+			"id": "non-greed",
+			"title": "Non-greed",
+			"description": "Open hand releasing, contentment — alobha / kusalamūla",
+			"tags": [
+				"line-art",
+				"teal"
+			],
+			"discourse": "mn9",
+			"labels": [
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/non-greed.svg"
+		},
+		{
+			"id": "non-aversion",
+			"title": "Non-aversion",
+			"description": "Heart of good-will, loving-kindness — adosa / kusalamūla",
+			"tags": [
+				"line-art",
+				"teal"
+			],
+			"discourse": "mn9",
+			"labels": [
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/non-aversion.svg"
+		},
+		{
+			"id": "non-delusion",
+			"title": "Non-delusion",
+			"description": "Radiant orb of clarity, clear seeing — amoha / kusalamūla",
+			"tags": [
+				"line-art",
+				"teal"
+			],
+			"discourse": "mn9",
+			"labels": [
+				"wholesome"
+			],
+			"valence": "+ve",
+			"svg": "icons/non-delusion.svg"
+		},
+		{
+			"id": "name-and-form",
+			"title": "Name and form",
+			"description": "Body figure joined to a radiant mind orb — nāmarūpa (mentality-materiality)",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn9",
+			"labels": [
+				"dependent origination"
+			],
+			"svg": "icons/name-and-form.svg"
+		},
+		{
+			"id": "four-clinging",
+			"title": "Four kinds of clinging",
+			"description": "2×2 anchor grid — kāmupādāna · diṭṭhupādāna · sīlabbatupādāna · attavādupādāna",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn9",
+			"labels": [
+				"craving",
+				"dependent origination",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/four-clinging.svg"
 		}
 	]
 }

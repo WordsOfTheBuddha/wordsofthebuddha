@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12)" fill="none" stroke="#80a0b0" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(-6, 0)">
+      <circle cx="0" cy="-6" r="2.2" stroke-width="1" />
+      <line x1="0" y1="-3.8" x2="0" y2="3" stroke-width="1" />
+      <line x1="0" y1="-1.5" x2="-3" y2="1.5" stroke-width="0.9" />
+      <line x1="0" y1="-1.5" x2="3" y2="1.5" stroke-width="0.9" />
+      <line x1="0" y1="3" x2="-2.6" y2="8" stroke-width="0.9" />
+      <line x1="0" y1="3" x2="2.6" y2="8" stroke-width="0.9" />
+    </g>
+    <g transform="translate(7, -1)">
+      <circle cx="0" cy="0" r="3.2" stroke-width="1" />
+      <circle cx="0" cy="0" r="0.9" fill="#80a0b0" stroke="none" />
+      <path d="M 0 -3.2 L 0 -5.6 M 3.2 0 L 5.6 0 M 0 3.2 L 0 5.6 M -2.3 -2.3 L -3.9 -3.9 M 2.3 -2.3 L 3.9 -3.9 M -2.3 2.3 L -3.9 3.9" stroke-width="0.7" opacity="0.8" />
+    </g>
+    <line x1="-2.5" y1="-1" x2="3.5" y2="-1" stroke-width="0.6" stroke-dasharray="1.5 1.5" opacity="0.55" />
+  </g>
+</svg>
