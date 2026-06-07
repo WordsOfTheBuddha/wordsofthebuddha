@@ -1,6 +1,15 @@
 ---
-title: Nirodha sutta
+title: Nirodha sutta - Cessation
+description: When the venerable Udāyī repeatedly contradicts Sāriputta regarding mind-made bodies and cessation, the Buddha intervenes to correct his misunderstanding. Afterwards, the venerable Upavāṇa enumerates the five essential qualities that make an elder monk truly worthy of respect.
+qualities: politeness, collectedness, ethical conduct, learned, liberation
+theme: wisdom, inspiration
 slug: an5.166
+priority: 1.1
+character:
+  - Venerable Sāriputta
+  - Venerable Ānanda
+  - Venerable Udāyī
+  - Venerable Upavāṇa
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi …pe…
