@@ -62,6 +62,22 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 	:global(html.pali-on) .md-content :global(.pali-only-notice) {
 		display: none;
 	}
+	/* Reference-fallback pages in Pali-only mode (default): render the full
+	   page as Pali source text and hide the reference translation. */
+	:global(html.ref-pali-only) .md-content :global(.pali-paragraph) {
+		display: block !important;
+		opacity: 1;
+	}
+	:global(html.ref-pali-only) .md-content :global(.english-paragraph) {
+		display: none !important;
+	}
+	/* Pali-only always reads interleaved; ignore a remembered split layout */
+	:global(html.ref-pali-only) .split-wrapper {
+		display: none !important;
+	}
+	:global(html.ref-pali-only) .interleaved-article {
+		display: block !important;
+	}
 	.md-content :global(.reference-translation-credit) {
 		font-size: 0.75rem;
 		line-height: 1.4;

@@ -24,6 +24,7 @@ import SaveButton from "../components/SaveButton.astro";
 import ReadButton from "../components/ReadButton.astro";
 import PaliButton from "../components/PaliButton.astro";
 import PaliLayoutToggle from "../components/PaliLayoutToggle.astro";
+import ReferenceTranslationToggle from "../components/ReferenceTranslationToggle.astro";
 import ParagraphToggle from "../components/ParagraphToggle.astro";
 import ListenButton from "../components/ListenButton.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
@@ -66,6 +67,7 @@ const {
 	vizNext = null,
 	fullWidthSlot = false,
 	viewSource = "en",
+	referenceFallback = false,
 } = Astro.props as {
 	id?: string;
 	fp?: string;
@@ -95,6 +97,8 @@ const {
 	/** Skip prose + max-w-4xl so pages can use full-width layouts (e.g. design system). */
 	fullWidthSlot?: boolean;
 	viewSource?: "en" | "sujato-reference";
+	/** Page shows a B. Sujato reference translation fallback; defaults to Pali-only with a translation toggle. */
+	referenceFallback?: boolean;
 };
 
 /**
@@ -112,6 +116,21 @@ const voiceFilteredSubset = Boolean(paragraphRequest || discourseRange);
 debug("title is: ", title, " fp: ", fp);
 debug("qualities are: ", qualities);
 debug("commentary is: ", commentary);
+
+// Runs before paint on reference-fallback pages so the Pali-only/translation
+// choice (localStorage or ?trans=) applies without a flash of the wrong view.
+const refInitScript = `(function () {
+	var params = new URLSearchParams(window.location.search);
+	var transParam = params.get("trans");
+	var show =
+		transParam !== null
+			? transParam === "true"
+			: localStorage.getItem("refShowTranslation") === "true";
+	if (transParam !== null) {
+		localStorage.setItem("refShowTranslation", String(show));
+	}
+	document.documentElement.classList.toggle("ref-pali-only", !show);
+})();`;
 
 const hasDescription = String(description ?? "").trim().length > 0;
 const breadcrumbsHidden = hideBreadcrumbsForPath(fp || Astro.url.pathname);
@@ -146,7 +165,7 @@ if (!SEOTitle) {
 
 <html
 	lang="en"
-	class={serverTheme}
+	class:list={[serverTheme, referenceFallback && "ref-pali-only"]}
 	dir="ltr"
 	data-has-viz={contentImage ? "true" : "false"}
 >
@@ -325,6 +344,7 @@ if (!SEOTitle) {
 				}
 			}
 		</script>
+		{referenceFallback && <script is:inline set:html={refInitScript} />}
 		<!-- When navigating to a ?viz= URL, hide page content to prevent flash behind the modal -->
 		<style>
 			:root[style*="--viz-preload"] {
@@ -339,6 +359,13 @@ if (!SEOTitle) {
 			:root[style*="--viz-preload"] .viz-initial-open,
 			:root[style*="--viz-preload"] .viz-initial-open * {
 				visibility: visible !important;
+			}
+		</style>
+		<style is:global>
+			/* Pali-only mode on reference-fallback pages: the Pali toggle and
+			   layout switch are redundant when the whole page is Pali. */
+			html.ref-pali-only .ref-pali-controls {
+				display: none !important;
 			}
 		</style>
 		<!-- Audio slugs for voice listen icons in client-rendered cards -->
@@ -388,11 +415,20 @@ if (!SEOTitle) {
 							<>
 								<div class="flex items-center justify-between gap-1">
 									<div class="flex items-center gap-1">
+										{referenceFallback && (
+											<ReferenceTranslationToggle />
+										)}
 										{showPali && (
-											<>
+											<span
+												class:list={[
+													"contents",
+													referenceFallback &&
+														"ref-pali-controls",
+												]}
+											>
 												<PaliButton />
 												<PaliLayoutToggle />
-											</>
+											</span>
 										)}
 										{contentImage && <ImageToggle />}
 										<ParagraphToggle

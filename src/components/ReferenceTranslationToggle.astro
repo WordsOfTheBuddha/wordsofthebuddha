@@ -1,0 +1,87 @@
+---
+import ChevronRight from "../assets/chevron-right.svg?raw";
+import ChevronDown from "../assets/chevron-down.svg?raw";
+
+const { class: className } = Astro.props;
+// Server renders Pali-only by default; the head inline script in Layout
+// flips html.ref-pali-only before paint based on localStorage/?trans=.
+---
+
+<button
+	id="refTranslationToggle"
+	class:list={[
+		"inline-flex items-center gap-1 pl-2 px-4 py-2 text-sm rounded-full transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+		className,
+	]}
+	aria-label="Toggle reference translation"
+	aria-pressed="false"
+	title="Show reference translation by Bhikkhu Sujato"
+>
+	<span
+		class="ref-chevron-right w-4 h-4"
+		style="color: inherit"
+		set:html={ChevronRight}
+	/>
+	<span
+		class="ref-chevron-down w-4 h-4 hidden"
+		style="color: inherit"
+		set:html={ChevronDown}
+	/>
+	<span>Translation</span>
+</button>
+
+<style>
+	/* Highlight when translation is shown */
+	:global(html:not(.ref-pali-only)) #refTranslationToggle {
+		color: var(--layout-active-color);
+	}
+</style>
+
+<script>
+	const btn = document.getElementById("refTranslationToggle");
+
+	function syncUI() {
+		if (!btn) return;
+		const showTranslation =
+			!document.documentElement.classList.contains("ref-pali-only");
+		btn.querySelector(".ref-chevron-right")?.classList.toggle(
+			"hidden",
+			showTranslation,
+		);
+		btn.querySelector(".ref-chevron-down")?.classList.toggle(
+			"hidden",
+			!showTranslation,
+		);
+		btn.setAttribute("aria-pressed", String(showTranslation));
+		btn.title = showTranslation
+			? "Show Pāli text only"
+			: "Show reference translation by Bhikkhu Sujato";
+	}
+
+	if (btn) {
+		btn.addEventListener("click", () => {
+			const showTranslation =
+				document.documentElement.classList.toggle("ref-pali-only") ===
+				false;
+			localStorage.setItem(
+				"refShowTranslation",
+				String(showTranslation),
+			);
+
+			// Keep URL shareable without a reload
+			const url = new URL(window.location.href);
+			if (showTranslation) url.searchParams.set("trans", "true");
+			else url.searchParams.delete("trans");
+			window.history.replaceState({}, "", url.toString());
+
+			syncUI();
+			document.dispatchEvent(
+				new CustomEvent("refTranslationChanged", {
+					detail: { showTranslation },
+				}),
+			);
+		});
+	}
+
+	syncUI();
+</script>
