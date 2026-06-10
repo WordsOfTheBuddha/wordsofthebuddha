@@ -28,6 +28,12 @@ const bookSchema = baseSchema.extend({
 	order: z.number().int().optional(),
 });
 
+const referenceSchema = baseSchema.extend({
+	translator: z.string().optional(),
+	license: z.string().optional(),
+	source: z.string().optional(),
+});
+
 function createCollection(
 	base: string,
 	pattern: string = "*.mdx",
@@ -55,6 +61,11 @@ const anthologies = createCollection(
 );
 const all = createCollection("src/content/en/", "**/*.mdx");
 const pliAll = createCollection("src/content/pli/", "**/*.md");
+const referenceSujato = createCollection(
+	"src/content/references/sujato/",
+	"**/*.md",
+	referenceSchema,
+);
 
 export const collections = {
 	dn,
@@ -69,4 +80,5 @@ export const collections = {
 	anthologies,
 	all,
 	pliAll,
+	referenceSujato,
 };

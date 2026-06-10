@@ -65,6 +65,7 @@ const {
 	vizPrev = null,
 	vizNext = null,
 	fullWidthSlot = false,
+	viewSource = "en",
 } = Astro.props as {
 	id?: string;
 	fp?: string;
@@ -93,6 +94,7 @@ const {
 	vizNext?: { slug: string; title: string } | null;
 	/** Skip prose + max-w-4xl so pages can use full-width layouts (e.g. design system). */
 	fullWidthSlot?: boolean;
+	viewSource?: "en" | "sujato-reference";
 };
 
 /**
@@ -456,7 +458,11 @@ if (!SEOTitle) {
 					}
 					{
 						lastUpdated && (
-							<LastUpdated lastUpdated={lastUpdated} path={fp} />
+							<LastUpdated
+								lastUpdated={lastUpdated}
+								path={fp}
+								viewSource={viewSource}
+							/>
 						)
 					}
 					<FooterNavigation prev={prev} next={next} />

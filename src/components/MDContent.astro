@@ -59,6 +59,16 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 	.md-content :global(.english-paragraph) {
 		margin-top: 0.5rem;
 	}
+	:global(html.pali-on) .md-content :global(.pali-only-notice) {
+		display: none;
+	}
+	.md-content :global(.reference-translation-credit) {
+		font-size: 0.75rem;
+		line-height: 1.4;
+		opacity: 0.55;
+		margin: 0 0 1rem;
+		font-style: italic;
+	}
 	.pali-content {
 		margin-bottom: 2rem;
 		opacity: 0.8;

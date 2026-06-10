@@ -1,0 +1,28 @@
+---
+slug: sn2.7
+source: suttacentral/bilara-data
+edition: ms
+title: Pañcālacaṇḍasutta
+---
+
+Sāvatthinidānaṁ.
+
+Ekamantaṁ ṭhito kho pañcālacaṇḍo devaputto bhagavato santike imaṁ gāthaṁ abhāsi:
+
+“Sambādhe vata okāsaṁ,
+
+Avindi bhūrimedhaso;
+
+Yo jhānamabujjhi buddho,
+
+Paṭilīnanisabho munī”ti.
+
+“Sambādhe vāpi vindanti,
+
+(pañcālacaṇḍāti bhagavā)
+
+Dhammaṁ nibbānapattiyā;
+
+Ye satiṁ paccalatthaṁsu,
+
+Sammā te susamāhitā”ti.

@@ -1,0 +1,16 @@
+---
+slug: an5.69
+source: suttacentral/bilara-data
+edition: ms
+title: Nibbidāsutta
+---
+
+“Pañcime, bhikkhave, dhammā bhāvitā bahulīkatā ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṁvattanti.
+
+Katame pañca?
+
+Idha, bhikkhave, bhikkhu asubhānupassī kāye viharati, āhāre paṭikūlasaññī, sabbaloke anabhiratasaññī, sabbasaṅkhāresu aniccānupassī, maraṇasaññā kho panassa ajjhattaṁ sūpaṭṭhitā hoti.
+
+Ime kho, bhikkhave, pañca dhammā bhāvitā bahulīkatā ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṁvattantī”ti.
+
+Navamaṁ.

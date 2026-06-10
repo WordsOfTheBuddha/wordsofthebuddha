@@ -1,5 +1,9 @@
 ---
-const { lastUpdated, path } = Astro.props;
+const { lastUpdated, path, viewSource = "en" } = Astro.props as {
+	lastUpdated?: string | null;
+	path?: string;
+	viewSource?: "en" | "sujato-reference";
+};
 
 export const formatDate = (date: string | null) => {
 	if (!date) return null;
@@ -14,7 +18,12 @@ export const formatDate = (date: string | null) => {
 	}
 };
 
-const formattedDate = formatDate(lastUpdated);
+const formattedDate = formatDate(lastUpdated ?? null);
+
+const sourceHref =
+	viewSource === "sujato-reference"
+		? `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/references/sujato/${path}.md`
+		: `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/en/${path}.mdx`;
 ---
 
 {
@@ -25,7 +34,7 @@ const formattedDate = formatDate(lastUpdated);
 			</p>
 			<div class="flex items-center space-x-4 ml-auto">
 				<a
-					href={`https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/en/${path}.mdx`}
+					href={sourceHref}
 					class="ml-2 hover:underline text-sm"
 					style="color: var(--gray-500)"
 					target="_blank"

@@ -1,0 +1,115 @@
+---
+slug: an8.20
+source: suttacentral/bilara-data
+translator: sujato
+license: CC0
+title: Sabbath
+---
+
+At one time the Buddha was staying near Sāvatthī in the stilt longhouse of Migāra’s mother in the Eastern Monastery.
+
+Now, at that time it was the sabbath, and the Buddha was sitting surrounded by the Saṅgha of monks.
+
+And then, as the night was getting late, in the first watch of the night, Venerable Ānanda rose from his seat, arranged his robe over one shoulder, raised his cupped palms toward the Buddha and said,
+
+“Sir, the night is getting late. It is the first watch of the night, and the Saṅgha of monks has been sitting long.
+
+Please, sir, may the Buddha recite the monastic code to the monks.”
+
+But when he said this, the Buddha kept silent.
+
+For a second time, as the night was getting late, in the middle watch of the night, Ānanda rose from his seat, arranged his robe over one shoulder, raised his cupped palms toward the Buddha and said,
+
+“Sir, the night is getting late. It is the middle watch of the night, and the Saṅgha of monks has been sitting long.
+
+Please, sir, may the Buddha recite the monastic code to the monks.”
+
+But for a second time the Buddha kept silent.
+
+For a third time, as the night was getting late, in the last watch of the night, as dawn stirred, bringing joy to the night, Ānanda rose from his seat, arranged his robe over one shoulder, raised his cupped palms toward the Buddha and said,
+
+“Sir, the night is getting late. It is the last watch of the night and dawn stirs, bringing joy to the night.
+
+And the Saṅgha has been sitting long.
+
+Please, sir, may the Buddha recite the monastic code to the monks.”
+
+“Ānanda, the assembly is not pure.”
+
+Then Venerable Mahāmoggallāna thought,
+
+“Who is the Buddha talking about?”
+
+Then he focused on encompassing the minds of everyone in the Saṅgha.
+
+He saw that unethical individual, of bad qualities, filthy, with suspicious behavior, underhand, no true ascetic or spiritual practitioner—though claiming to be one—rotten inside, festering, and depraved, sitting in the middle of the Saṅgha.
+
+When he saw him he rose from his seat, went up to him and said,
+
+“Get up, reverend. The Buddha has seen you.
+
+You can’t live in communion with the monks.”
+
+But when he said this, that individual kept silent.
+
+For a second time
+
+and a third time,
+
+he asked that monk to leave.
+
+But for a third time that individual kept silent.
+
+Then Venerable Mahāmoggallāna took that individual by the arm, ejected him out the gate, and bolted the door. Then he went up to the Buddha, and said to him,
+
+“I have ejected that individual.
+
+The assembly is pure.
+
+Please, sir, may the Buddha recite the monastic code to the monks.”
+
+“It’s incredible, Moggallāna, it’s amazing,
+
+how that futile man waited to be taken by the arm!”
+
+Then the Buddha said to the monks:
+
+“Now, monks, you should perform the sabbath and recite the monastic code.
+
+From this day forth, I will not perform the sabbath or recite the monastic code.
+
+It’s impossible, monks, it can’t happen that a Realized One could recite the monastic code in an impure assembly.
+
+Seeing these eight incredible and amazing things the titans love the ocean.
+
+What eight?
+
+The ocean gradually slants, slopes, and inclines, with no abrupt precipice.
+
+This is the first thing the titans love about the ocean.
+
+(Tell in full as in the previous discourse.)
+
+Furthermore, many great beings live in the ocean, such as leviathans, leviathan-gulpers, leviathan-gulper-gulpers, titans, dragons, and centaurs. In the ocean there are life-forms a hundred leagues long, or even two hundred, three hundred, four hundred, or five hundred leagues long.
+
+This is the eighth thing the titans love about the ocean.
+
+Seeing these eight incredible and amazing things the titans love the ocean.
+
+In the same way, seeing eight incredible and amazing things, mendicants, the mendicants love this teaching and training.
+
+What eight?
+
+The ocean gradually slants, slopes, and inclines, with no abrupt precipice.
+
+In the same way in this teaching and training the penetration to enlightenment comes from gradual training, progress, and practice, not abruptly.
+
+This is the first thing the mendicants love about this teaching and training. …
+
+Many great beings live in the ocean, such as leviathans, leviathan-gulpers, leviathan-gulper-gulpers, titans, dragons, and centaurs. In the ocean there are life-forms a hundred leagues long, or even two hundred, three hundred, four hundred, or five hundred leagues long.
+
+In the same way, great beings live in this teaching and training, and these are those beings. The stream-enterer and the one practicing to realize the fruit of stream-entry. The once-returner and the one practicing to realize the fruit of once-return. The non-returner and the one practicing to realize the fruit of non-return. The perfected one, and the one practicing for perfection.
+
+This is the eighth thing the mendicants love about this teaching and training.
+
+Seeing these eight incredible and amazing things, the mendicants love this teaching and training.”

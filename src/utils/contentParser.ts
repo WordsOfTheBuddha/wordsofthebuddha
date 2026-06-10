@@ -678,6 +678,40 @@ function processBlocks(
 	return pairs;
 }
 
+const END_MARKER =
+	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)\.(ṁ)?$/;
+
+/** Shown when a discourse has Pali but no English or reference translation. */
+export const PALI_ONLY_NOTICE =
+	'<p class="english-paragraph pali-only-notice">English translation not yet available. Enable Pāli view to read the source text.</p>';
+
+/** Small attribution prepended before reference English on direct URLs. */
+export const REFERENCE_TRANSLATION_CREDIT =
+	'<p class="english-paragraph reference-translation-credit">Translation by Bhikkhu Sujato (CC0). A Words of the Buddha rendering is not available yet.</p>';
+
+/**
+ * Build paragraph pairs from Pali-only content (no English file).
+ * Used for direct URLs to discourses that are not yet translated.
+ */
+export function parsePaliOnly(paliText: string): ContentPair[] {
+	const paragraphs = paliText
+		.split(/\n\n+/)
+		.map((p) => p.trim())
+		.filter(
+			(p) =>
+				p.length > 0 &&
+				!p.startsWith("---") &&
+				!p.startsWith("#") &&
+				!END_MARKER.test(p),
+		);
+
+	return paragraphs.map((pali) => ({
+		type: "paragraph" as const,
+		english: "",
+		pali,
+	}));
+}
+
 // Helper to process quotes in a paragraph based on boundaries.
 function processParagraphQuotes(
 	p: string,
@@ -972,6 +1006,9 @@ export function createCombinedMarkdown(
 				if (pair.type === "other") {
 					return pair.english;
 				}
+				if (!pair.english.trim()) {
+					return "";
+				}
 				if (!pair.english.startsWith("#")) {
 					return formatBlock(
 						pair.english,
@@ -989,6 +1026,7 @@ export function createCombinedMarkdown(
 					pair.actualParagraphNumber,
 				);
 			})
+			.filter(Boolean)
 			.join("\n\n");
 
 		return { pali, english };
@@ -1003,6 +1041,9 @@ export function createCombinedMarkdown(
 				return pair.english;
 			}
 			if (!showPali || !pair.pali) {
+				if (!pair.english.trim()) {
+					return "";
+				}
 				const currentIndex = pair.english.startsWith("#")
 					? undefined
 					: pairIndex++;
@@ -1017,6 +1058,15 @@ export function createCombinedMarkdown(
 			const currentIndex = pair.english.startsWith("#")
 				? undefined
 				: pairIndex++;
+			if (!pair.english.trim()) {
+				return formatBlock(
+					pair.pali,
+					true,
+					currentIndex,
+					paragraphRequest,
+					pair.actualParagraphNumber,
+				);
+			}
 			return `${formatBlock(
 				pair.pali,
 				true,

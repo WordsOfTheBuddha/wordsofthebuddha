@@ -1,0 +1,137 @@
+---
+slug: sn6.10
+source: suttacentral/bilara-data
+translator: sujato
+license: CC0
+title: With Kokālika
+---
+
+At Sāvatthī.
+
+Then the mendicant Kokālika went up to the Buddha, bowed, sat down to one side, and said to him,
+
+“Sir, Sāriputta and Moggallāna have corrupt wishes. They’ve fallen under the sway of corrupt wishes.”
+
+When this was said, the Buddha said to Kokālika,
+
+“Don’t say that, Kokālika! Don’t say that, Kokālika!
+
+Have confidence in Sāriputta and Moggallāna, they’re good monks.”
+
+For a second time Kokālika said to the Buddha,
+
+“Despite my faith and trust in the Buddha, Sāriputta and Moggallāna have corrupt wishes. They’ve fallen under the sway of corrupt wishes.”
+
+For a second time, the Buddha said to Kokālika,
+
+“Don’t say that, Kokālika! Don’t say that, Kokālika!
+
+Have confidence in Sāriputta and Moggallāna, they’re good monks.”
+
+For a third time Kokālika said to the Buddha,
+
+“Despite my faith and trust in the Buddha, Sāriputta and Moggallāna have corrupt wishes. They’ve fallen under the sway of corrupt wishes.”
+
+For a third time, the Buddha said to Kokālika,
+
+“Don’t say that, Kokālika! Don’t say that, Kokālika!
+
+Have confidence in Sāriputta and Moggallāna, they’re good monks.”
+
+Then Kokālika rose from his seat, bowed, and respectfully circled the Buddha, keeping him on his right, before leaving.
+
+Not long after he left his body erupted with boils the size of mustard seeds.
+
+The boils grew to the size of mung beans, then chickpeas, then jujube seeds, then jujubes, then myrobalans, then unripe wood-apples, then ripe wood-apples. Finally they burst open, and pus and blood oozed out.
+
+Then the mendicant Kokālika died of that illness.
+
+He was reborn in the Pink Lotus hell because of his resentment for Sāriputta and Moggallāna.
+
+Then, late at night, the glorious divinity Sahampati, lighting up the entire Jeta’s Grove, went up to the Buddha, bowed, stood to one side, and said to him,
+
+“Sir, the mendicant Kokālika has passed away.
+
+He was reborn in the Pink Lotus hell because of his resentment for Sāriputta and Moggallāna.”
+
+That’s what the divinity Sahampati said.
+
+Then he bowed and respectfully circled the Buddha, keeping him on his right side, before vanishing right there.
+
+Then, when the night had passed, the Buddha told the mendicants all that had happened.
+
+When he said this, one of the mendicants asked the Buddha,
+
+“Sir, how long is the lifespan in the Pink Lotus hell?”
+
+“It’s long, mendicant.
+
+It’s not easy to calculate
+
+how many years, how many hundreds or thousands or hundreds of thousands of years it lasts.”
+
+“But sir, is it possible to give a simile?”
+
+“It’s possible,” said the Buddha.
+
+“Suppose there was a Kosalan load of twenty packs of sesame seed. And at the end of every hundred years someone would remove a single seed from it.
+
+By this means the Kosalan load of twenty packs of sesame seed would run out faster than a single lifetime in the Abbuda hell.
+
+Now, twenty lifetimes in the Abbuda hell equal one lifetime in the Nirabbuda hell.
+
+Twenty lifetimes in the Nirabbuda hell equal one lifetime in the Ababa hell.
+
+Twenty lifetimes in the Ababa hell equal one lifetime in the Aṭaṭa hell.
+
+Twenty lifetimes in the Aṭaṭa hell equal one lifetime in the Ahaha hell.
+
+Twenty lifetimes in the Ahaha hell equal one lifetime in the Yellow Lotus hell.
+
+Twenty lifetimes in the Yellow Lotus hell equal one lifetime in the Fragrant Water Lily hell.
+
+Twenty lifetimes in the Fragrant Water Lily hell equal one lifetime in the Blue Water Lily hell.
+
+Twenty lifetimes in the Blue Water Lily hell equal one lifetime in the White Lotus hell.
+
+Twenty lifetimes in the White Lotus hell equal one lifetime in the Pink Lotus hell.
+
+The mendicant Kokālika has been reborn in the Pink Lotus hell because of his resentment for Sāriputta and Moggallāna.”
+
+That is what the Buddha said.
+
+Then the Holy One, the Teacher, went on to say:
+
+“A man is born
+
+with an axe in his mouth.
+
+A fool cuts themselves with it
+
+when they say bad words.
+
+When you praise someone worthy of criticism,
+
+or criticize someone worthy of praise,
+
+you choose a losing hand with your own mouth:
+
+you’ll never find happiness that way.
+
+A losing hand at dice is a trivial thing,
+
+if all you lose is your money
+
+and all you own, even yourself.
+
+What’s a really terrible hand
+
+is to hate the holy ones.
+
+For a hundred thousand times a hundred million,
+
+times five hundred and thirty-six times <j>a thousand times ten million years
+
+a slanderer of noble ones goes to hell,
+
+having aimed bad words and thoughts at them.”

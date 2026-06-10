@@ -1,0 +1,94 @@
+---
+slug: an4.244
+source: suttacentral/bilara-data
+edition: ms
+title: Āpattibhayasutta
+---
+
+“Cattārimāni, bhikkhave, āpattibhayāni.
+
+Katamāni cattāri?
+
+Seyyathāpi, bhikkhave, coraṁ āgucāriṁ gahetvā rañño dasseyyuṁ:
+
+‘ayaṁ te, deva, coro āgucārī.
+
+Imassa devo daṇḍaṁ paṇetū’ti.
+
+Tamenaṁ rājā evaṁ vadeyya:
+
+‘gacchatha, bho, imaṁ purisaṁ daḷhāya rajjuyā pacchābāhaṁ gāḷhabandhanaṁ bandhitvā khuramuṇḍaṁ karitvā kharassarena paṇavena rathikāya rathikaṁ siṅghāṭakena siṅghāṭakaṁ parinetvā dakkhiṇena dvārena nikkhāmetvā dakkhiṇato nagarassa sīsaṁ chindathā’ti.
+
+Tamenaṁ rañño purisā daḷhāya rajjuyā pacchābāhaṁ gāḷhabandhanaṁ bandhitvā khuramuṇḍaṁ karitvā kharassarena paṇavena rathikāya rathikaṁ siṅghāṭakena siṅghāṭakaṁ parinetvā dakkhiṇena dvārena nikkhāmetvā dakkhiṇato nagarassa sīsaṁ chindeyyuṁ.
+
+Tatraññatarassa thalaṭṭhassa purisassa evamassa:
+
+‘pāpakaṁ vata, bho, ayaṁ puriso kammaṁ akāsi gārayhaṁ sīsacchejjaṁ.
+
+Yatra hi nāma rañño purisā daḷhāya rajjuyā pacchābāhaṁ gāḷhabandhanaṁ bandhitvā khuramuṇḍaṁ karitvā kharassarena paṇavena rathikāya rathikaṁ siṅghāṭakena siṅghāṭakaṁ parinetvā dakkhiṇena dvārena nikkhāmetvā dakkhiṇato nagarassa sīsaṁ chindissanti.
+
+So vatassāhaṁ evarūpaṁ pāpakammaṁ na kareyyaṁ gārayhaṁ sīsacchejjan’ti.
+
+Evamevaṁ kho, bhikkhave, yassa kassaci bhikkhussa vā bhikkhuniyā vā evaṁ tibbā bhayasaññā paccupaṭṭhitā hoti pārājikesu dhammesu.
+
+Tassetaṁ pāṭikaṅkhaṁ—anāpanno vā pārājikaṁ dhammaṁ na āpajjissati, āpanno vā pārājikaṁ dhammaṁ yathādhammaṁ paṭikarissati.
+
+Seyyathāpi, bhikkhave, puriso kāḷavatthaṁ paridhāya kese pakiritvā musalaṁ khandhe āropetvā mahājanakāyaṁ upasaṅkamitvā evaṁ vadeyya:
+
+‘ahaṁ, bhante, pāpakammaṁ akāsiṁ gārayhaṁ mosallaṁ, yena me āyasmanto attamanā honti taṁ karomī’ti.
+
+Tatraññatarassa thalaṭṭhassa purisassa evamassa:
+
+‘pāpakaṁ vata, bho, ayaṁ puriso kammaṁ akāsi gārayhaṁ mosallaṁ.
+
+Yatra hi nāma kāḷavatthaṁ paridhāya kese pakiritvā musalaṁ khandhe āropetvā mahājanakāyaṁ upasaṅkamitvā evaṁ vakkhati:
+
+“ahaṁ, bhante, pāpakammaṁ akāsiṁ gārayhaṁ mosallaṁ, yena me āyasmanto attamanā honti taṁ karomī”ti.
+
+So vatassāhaṁ evarūpaṁ pāpakammaṁ na kareyyaṁ gārayhaṁ mosallan’ti.
+
+Evamevaṁ kho, bhikkhave, yassa kassaci bhikkhussa vā bhikkhuniyā vā evaṁ tibbā bhayasaññā paccupaṭṭhitā hoti saṅghādisesesu dhammesu, tassetaṁ pāṭikaṅkhaṁ—anāpanno vā saṅghādisesaṁ dhammaṁ na āpajjissati, āpanno vā saṅghādisesaṁ dhammaṁ yathādhammaṁ paṭikarissati.
+
+Seyyathāpi, bhikkhave, puriso kāḷavatthaṁ paridhāya kese pakiritvā bhasmapuṭaṁ khandhe āropetvā mahājanakāyaṁ upasaṅkamitvā evaṁ vadeyya:
+
+‘ahaṁ, bhante, pāpakammaṁ akāsiṁ gārayhaṁ bhasmapuṭaṁ.
+
+Yena me āyasmanto attamanā honti taṁ karomī’ti.
+
+Tatraññatarassa thalaṭṭhassa purisassa evamassa:
+
+‘pāpakaṁ vata, bho, ayaṁ puriso kammaṁ akāsi gārayhaṁ bhasmapuṭaṁ.
+
+Yatra hi nāma kāḷavatthaṁ paridhāya kese pakiritvā bhasmapuṭaṁ khandhe āropetvā mahājanakāyaṁ upasaṅkamitvā evaṁ vakkhati:
+
+“ahaṁ, bhante, pāpakammaṁ akāsiṁ gārayhaṁ bhasmapuṭaṁ;
+
+yena me āyasmanto attamanā honti taṁ karomī”ti.
+
+So vatassāhaṁ evarūpaṁ pāpakammaṁ na kareyyaṁ gārayhaṁ bhasmapuṭan’ti.
+
+Evamevaṁ kho, bhikkhave, yassa kassaci bhikkhussa vā bhikkhuniyā vā evaṁ tibbā bhayasaññā paccupaṭṭhitā hoti pācittiyesu dhammesu, tassetaṁ pāṭikaṅkhaṁ—anāpanno vā pācittiyaṁ dhammaṁ na āpajjissati, āpanno vā pācittiyaṁ dhammaṁ yathādhammaṁ paṭikarissati.
+
+Seyyathāpi, bhikkhave, puriso kāḷavatthaṁ paridhāya kese pakiritvā mahājanakāyaṁ upasaṅkamitvā evaṁ vadeyya:
+
+‘ahaṁ, bhante, pāpakammaṁ akāsiṁ gārayhaṁ upavajjaṁ.
+
+Yena me āyasmanto attamanā honti taṁ karomī’ti.
+
+Tatraññatarassa thalaṭṭhassa purisassa evamassa:
+
+‘pāpakaṁ vata, bho, ayaṁ puriso kammaṁ akāsi gārayhaṁ upavajjaṁ.
+
+Yatra hi nāma kāḷavatthaṁ paridhāya kese pakiritvā mahājanakāyaṁ upasaṅkamitvā evaṁ vakkhati:
+
+“ahaṁ, bhante, pāpakammaṁ akāsiṁ gārayhaṁ upavajjaṁ;
+
+yena me āyasmanto attamanā honti taṁ karomī”ti.
+
+So vatassāhaṁ evarūpaṁ pāpakammaṁ na kareyyaṁ gārayhaṁ upavajjan’ti.
+
+Evamevaṁ kho, bhikkhave, yassa kassaci bhikkhussa vā bhikkhuniyā vā evaṁ tibbā bhayasaññā paccupaṭṭhitā hoti pāṭidesanīyesu dhammesu, tassetaṁ pāṭikaṅkhaṁ—anāpanno vā pāṭidesanīyaṁ dhammaṁ na āpajjissati, āpanno vā pāṭidesanīyaṁ dhammaṁ yathādhammaṁ paṭikarissati.
+
+Imāni kho, bhikkhave, cattāri āpattibhayānī”ti.
+
+Dutiyaṁ.
