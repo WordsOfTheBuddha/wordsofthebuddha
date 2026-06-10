@@ -1,7 +1,7 @@
 ---
 title: Pema sutta - Affection
 description: The Buddha explains how four modes of social partiality—affection and aversion arising in relation to others—bind beings to the world. He shows how a bhikkhu transcends these entanglements by means of the jhānas and attains final liberation through uprooting the deep-seated conceits of self-making.
-qualities: affection, aversion, collectedness, liberation, conceit, argumentativeness, self-making, non-identification
+qualities: affection, aversion, jhana, liberation, conceit, argumentativeness, self-making, non-identification
 theme: inquisitiveness, wisdom, cultivating discernment
 slug: an4.200
 priority: 2

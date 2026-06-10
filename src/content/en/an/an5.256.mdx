@@ -1,7 +1,7 @@
 ---
 title: Paṭhama jhāna sutta - First Jhāna
 description: The Buddha explains that one is incapable of entering and abiding in the first jhāna without giving up these five things.
-qualities: stinginess, giving up
+qualities: stinginess, giving up, jhana
 theme: cultivating discernment, inspiration
 fetter: doubt, sensual desire, ignorance
 tags: jhāna, stinginess, sensual desire, doubt, ignorance, acquisition, reputation, teachings, family, dwelling, gain, an, an5

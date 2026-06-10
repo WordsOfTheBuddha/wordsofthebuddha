@@ -76,7 +76,7 @@ const NEUTRAL_QUALITY_SET = new Set(QUALITIES_RAW.neutral);
 const TOPIC_SYNONYMS: Record<string, string> = {
 	satipatthana: "mindfulness",
 	samadhi: "collectedness",
-	jhana: "collectedness",
+	jhana: "jhana",
 	"sense-bases": "sense bases",
 	"sense-restraint": "sense restraint",
 	"skillful-means": "skillful means",

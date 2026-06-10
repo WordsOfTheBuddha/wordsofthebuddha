@@ -119,17 +119,19 @@ function loadAdditionalMappings(filename: string) {
 	return {};
 }
 
-// Helper function to find matching discourses from quality mappings
+// Helper function to find matching discourses from quality mappings.
+// Match only canonical identifiers (slug, title, redirects)—not display synonyms,
+// which can overlap across related topics (e.g. collectedness vs jhana).
 function findQualityDiscourses(
 	topicTitle: string,
 	slug: string,
-	synonyms: string[] = [],
+	redirects: string[] = [],
 	qualityMappings: any,
 ) {
 	const searchTerms = [
 		slug.toLowerCase(),
 		topicTitle.toLowerCase(),
-		...synonyms.map((s) => s.toLowerCase()),
+		...redirects.map((r) => r.toLowerCase()),
 	];
 
 	for (const searchTerm of searchTerms) {
@@ -230,7 +232,7 @@ export async function generateTopicMappings() {
 		const qualityDiscourses = findQualityDiscourses(
 			topic.title,
 			slug,
-			topic.synonyms,
+			topic.redirects,
 			qualityMappings,
 		);
 		const simileDiscourses = findSimileDiscourses(

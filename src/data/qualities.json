@@ -123,6 +123,7 @@
 		"inquisitiveness",
 		"insight",
 		"inspiration",
+		"jhana",
 		"joy",
 		"uplifting joy",
 		"learned",
@@ -356,8 +357,9 @@
 			"Context: A mental quality of composure where awareness is gathered, steady, rather than scattered or tense. In such collectedness, supported by mindfulness and right view, experience is clearly known and can be wisely contemplated.",
 			"Supported by:{contentment, clear awareness, happiness, mindfulness}",
 			"Leads to:{equanimity, flexible, imperturbable, psychic power, vision}",
+			"Related:{jhana}",
 			"Opposite:{wrong collectedness}",
-			"[jhāna, samādhi, samāhita, susamāhita, sammāsamādhi]"
+			"[samādhi, samāhita, susamāhita, sammāsamādhi]"
 		],
 		"companionship": [
 			"friendship",
@@ -1089,6 +1091,17 @@
 			"Leads to:{argumentativeness}",
 			"Opposite:{appreciative joy}",
 			"[issā]"
+		],
+		"jhana": [
+			"meditation",
+			"undistracted awareness",
+			"absorption",
+			"mental absorption",
+			"Context: Meditative absorptions in which the mind becomes unified, secluded from hindrances, and abides with rapture and pleasure born of seclusion. Jhānas represent refined levels of mental collectedness cultivated for tranquility, insight, and liberation.",
+			"Related:{collectedness}",
+			"Supported by:{contentment, happiness, mindfulness, clear awareness}",
+			"Leads to:{equanimity, formless, vision}",
+			"[jhāna]"
 		],
 		"joy": [
 			"cheerfulness",

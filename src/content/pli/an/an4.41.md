@@ -1,7 +1,7 @@
 ---
 title: Samādhibhāvanā sutta - Developments of Collectedness
 description: The Buddha explains four developments of collectedness that, when cultivated and frequently practiced, lead to 1) a pleasant abiding in the here and now, 2) the attainment of knowledge and vision, 3) clear present moment awareness, and 4) the wearing away of the taints.
-qualities: vision, happiness, clear awareness, mindfulness, ending
+qualities: vision, happiness, clear awareness, mindfulness, ending, collectedness
 theme: wisdom, principle
 slug: an4.41
 commentary: "[1] See [Puṇṇaka’s Questions (SnP 5.3)](/snp5.3), where the Buddha responds with the following verse to venerable Puṇṇaka’s question about who has crossed over birth and old age."

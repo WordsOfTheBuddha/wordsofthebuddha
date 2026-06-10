@@ -1,27 +1,20 @@
 title: "Jhana"
-description: "A mental quality of composure where awareness is gathered, steady, rather than scattered or tense. In such collectedness, supported by mindfulness and right view, experience is clearly known and can be wisely contemplated."
+description: "An abiding with a steady, collected awareness that is attained through seclusion from the five hindrances and unwholesome mental states. When supported by right view, a jhāna can be a basis for the wearing away of taints and directing the mind toward the vision of Nibbāna."
 synonyms:
-    - absorption
-    - concentration
-    - collectedness
-    - mental composure
-    - stability of mind
+    - meditation
     - undistracted awareness
 pali:
     - jhāna
-    - samādhi
     - samāhita
     - susamāhita
     - sammāsamādhi
 redirects:
-    - absorption
-    - immersion
-    - samadhi
-    - concentration
-    - right-concentration
-    - right-collectedness
+    - jhana
+    - meditation
+related:
     - collectedness
-    - right-collectedness
+    - mindfulness
+    - clear awareness
 supportedBy:
     - contentment
     - happiness
@@ -34,19 +27,25 @@ discourses:
       note: "with extra guideline details and similes"
     - id: "an5.28"
       note: "Jhanas explained with rich similes"
+    - id: "mn53"
+      note: "gradual training guidelines to cultivate jhānas"
     - id: "an4.200"
       note: "jhānas help transcend social partialities"
     - id: "an5.256"
       note: "give up stinginess to abide in the first jhāna"
     - id: "an6.73"
       note: "give up these six qualities"
-    - id: "mn17"
-      note: "reflection on suitable environment for jhāna"
     - id: "mn39"
       note: "training guidelines with similes"
     - id: "mn19"
       note: "how to cultivate thoughts"
-    - id: "an3.101"
-      note: "a framework on meditation"
     - id: "mn108"
       note: "blameworthy and praiseworthy meditations"
+    - id: "an9.36"
+      note: "wearing away of taints through jhānas"
+    - id: "mn64"
+      note: "abandoning fetters through jhānas and formless bases"
+    - id: "an4.123"
+      note: "wrt an ordinary person and a noble disciple"
+    - id: "an4.124"
+      note: "cultivation while perceiving drawbacks"

@@ -2,7 +2,7 @@
 
 title: Paṭhama tajjhāna sutta - First Jhāna (First)
 description: Six qualities to abandon to dwell in the first jhāna - 1) sensual desire, 2) ill will, 3) complacency, 4) restlessness, 5) doubt, 6) failure to clearly see the true danger in sensual pleasures with correct wisdom.
-qualities: collectedness, sensual desire, ill will, dullness, drowsiness, anxiety, ill will,sensual desire, doubt, giving up
+qualities: jhana, sensual desire, ill will, dullness, drowsiness, anxiety, ill will,sensual desire, doubt, giving up
 theme: inquisitiveness, wisdom, cultivating discernment
 fetter: doubt,adherence to rules and observances
 tags: jhana,an,an6,first jhana,sensual desire,ill will,complacency,restlessness,doubt

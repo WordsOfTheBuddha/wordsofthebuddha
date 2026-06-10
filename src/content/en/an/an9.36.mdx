@@ -1,7 +1,7 @@
 ---
 title: Jhāna sutta - Jhāna
 description: The wearing away of the taints is dependent on the jhanas and formless bases. A meditator enters these states, perceives all present phenomena as impermanent and not-self, and directs the mind toward the deathless element.
-qualities: recognition of impermanence, recognition of not-self, recognition of unsatisfactoriness, ending, collectedness, formless
+qualities: recognition of impermanence, recognition of not-self, recognition of unsatisfactoriness, ending, jhana, formless
 theme: wisdom, principle
 slug: an9.36
 simile: archer
