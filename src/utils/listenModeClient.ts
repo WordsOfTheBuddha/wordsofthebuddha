@@ -23,6 +23,7 @@ import {
 	getPlaylist,
 	isAudioSlug,
 } from "./listenMode";
+import { listenDisplayWords } from "./listenDisplayWords";
 import { audioTitles } from "../data/audioTitles.generated";
 import { audioDurations } from "../data/audioDurations.generated";
 import type { Playlist } from "../data/playlists.generated";
@@ -247,35 +248,6 @@ function renderWordSpans(
 	words: { w: string }[],
 	lineSizes?: number[],
 ): void {
-	const hasLetter = (s: string): boolean => /\p{L}/u.test(s);
-	const isPeriodOnlyToken = (s: string): boolean => /^\.+$/.test(s.trim());
-	/** Sentence end for display caps — excludes ellipses used as pauses between phrases. */
-	const endsSentence = (s: string): boolean => {
-		const t = s.trim();
-		if (!t) return false;
-		// Token is only two or more dots (e.g. "..." or "..") — not a full stop.
-		if (isPeriodOnlyToken(t) && t.length >= 2) return false;
-		// Word ends with an ellipsis run (e.g. "food...") or unicode ellipsis.
-		if (/\.{2,}["'”’)\]]*$/.test(t)) return false;
-		if (/[\u2026]["'”’)\]]*$/.test(t)) return false;
-		return /[.!?]["'”’)\]]*$/.test(t);
-	};
-	const capitalizeFirstLetter = (s: string): string => {
-		for (let i = 0; i < s.length; i++) {
-			const ch = s[i];
-			const upper = ch.toLocaleUpperCase();
-			const lower = ch.toLocaleLowerCase();
-			// Letter check: letters have different upper/lower forms.
-			if (upper !== lower) {
-				if (ch === lower && ch !== upper) {
-					return s.slice(0, i) + upper + s.slice(i + 1);
-				}
-				return s;
-			}
-		}
-		return s;
-	};
-
 	// Words from the manifest carry punctuation in-token (e.g. "Bhikkhus,").
 	// A lone single-character punct token (comma, sentence end, etc.) doesn't get a
 	// leading space — it's glued to the prior word visually. Multi-char punct-only
@@ -284,6 +256,7 @@ function renderWordSpans(
 	// Opening punctuation should not be followed by an injected space.
 	// Example: token stream ["“", "dwell"] should render as `“Dwell`, not `“ Dwell`.
 	const isOpeningPunctOnly = (s: string): boolean => /^[([{“‘]+$/.test(s.trim());
+	const displayWords = listenDisplayWords(words);
 	// Only honour `lineSizes` when the count matches (paragraph endpoint may
 	// drift from manifest tokenization on edge cases — fall back to flat).
 	const useLines =
@@ -292,16 +265,8 @@ function renderWordSpans(
 		lineSizes.reduce((a, b) => a + b, 0) === words.length;
 	let nextBreakAt = useLines ? lineSizes![0] : -1;
 	let lineCursor = 0;
-	let shouldCapitalizeNext = true; // capitalize first word of each paragraph
 	for (let i = 0; i < words.length; i++) {
-		const w = words[i];
-		let displayWord = w.w;
-		if (shouldCapitalizeNext) {
-			// Some manifests can retain leading whitespace when prior tokens are
-			// removed during TTS edits; strip it from sentence/paragraph starts.
-			displayWord = displayWord.trimStart();
-			displayWord = capitalizeFirstLetter(displayWord);
-		}
+		const displayWord = displayWords[i];
 		const prevWord = words[i - 1]?.w ?? "";
 		const currIsDash = isEmDashToken(displayWord);
 		const prevIsDash = isEmDashToken(prevWord);
@@ -324,29 +289,6 @@ function renderWordSpans(
 		span.dataset.w = String(i);
 		span.textContent = displayWord;
 		parent.appendChild(span);
-
-		const trimmedDisplay = displayWord.trim();
-		// A run of several "." tokens (split alignment) is an ellipsis, not "." × 3 sentence ends.
-		if (isPeriodOnlyToken(trimmedDisplay) && trimmedDisplay.length === 1) {
-			let runStart = i;
-			while (runStart > 0 && isPeriodOnlyToken(words[runStart - 1]?.w ?? "")) {
-				runStart--;
-			}
-			let runEnd = i;
-			while (
-				runEnd + 1 < words.length &&
-				isPeriodOnlyToken(words[runEnd + 1]?.w ?? "")
-			) {
-				runEnd++;
-			}
-			if (runEnd - runStart + 1 === 1) {
-				shouldCapitalizeNext = true;
-			}
-		} else if (endsSentence(displayWord)) {
-			shouldCapitalizeNext = true;
-		} else if (hasLetter(displayWord)) {
-			shouldCapitalizeNext = false;
-		}
 	}
 }
 

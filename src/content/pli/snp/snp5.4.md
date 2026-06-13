@@ -1,6 +1,6 @@
 ---
 title: Mettagūmāṇavapucchā - Mettagū’s Questions
-description: The venerable Mettagū asks the Blessed One about the origin of suffering and how the wise cross the flood of birth and sorrow. The Buddha shares a Dhamma that is directly visible, revealing that sufferings have acquisitions as their source and showing the path for the wise to reach the far shore, free from craving and untroubled.
+description: The venerable Mettagū asks the Blessed One about the arising of suffering and how the wise cross the flood of birth and sorrow. The Buddha shares a Dhamma that is directly visible, revealing that sufferings have acquisitions as their source and showing the path for the wise to reach the far shore, free from craving and untroubled.
 qualities: suffering, attachment, mindfulness, free from attachment, with nothing, imperturbable, quenching, wisdom, diligence, ending
 theme: inspiration, wisdom
 slug: snp5.4
