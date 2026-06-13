@@ -381,7 +381,7 @@ if (!SEOTitle) {
 		<Analytics />
 		<SpeedInsights />
 		<BottomDrawer />
-		<TranslationMatches />
+		{import.meta.env.DEV && <TranslationMatches />}
 		<PrintFormatter />
 		<main class="flex-1 flex flex-col p-4">
 			<div
@@ -509,8 +509,27 @@ if (!SEOTitle) {
 		<ScrollToTop />
 	</body>
 	<script>
-		// Register the Service Worker for offline support (dev and prod)
-		if ("serviceWorker" in navigator) {
+		// In dev, actively remove any previously-installed Service Worker so it
+		// doesn't keep serving stale cached HTML against the dev server.
+		if (import.meta.env.DEV && "serviceWorker" in navigator) {
+			navigator.serviceWorker
+				.getRegistrations()
+				.then((regs) =>
+					Promise.all(regs.map((reg) => reg.unregister())),
+				)
+				.catch(() => {});
+			if (typeof caches !== "undefined") {
+				caches
+					.keys()
+					.then((keys) =>
+						Promise.all(keys.map((key) => caches.delete(key))),
+					)
+					.catch(() => {});
+			}
+		}
+
+		// Register the Service Worker for offline support (prod only)
+		if (import.meta.env.PROD && "serviceWorker" in navigator) {
 			window.addEventListener("load", () => {
 				navigator.serviceWorker.register("/sw.js?v=6").catch(() => {
 					/* ignore */
