@@ -309,8 +309,8 @@ const isSearchOnly = mode === "search-only";
 							<li><code class="not-prose">quest</code> — finds “quest” (fuzzy)</li>
 							<li><code class="not-prose">^SN</code> or <code class="not-prose">^AN</code> — only in that collection (e.g. SN, AN, MN, DHP)</li>
 							<li><code class="not-prose">!word</code> — exclude discourses containing <em>word</em></li>
-							<li><code class="not-prose">'jhana</code> — exact word “jhana”</li>
-							<li><code class="not-prose">"letting go"</code> — exact phrase</li>
+							<li><code class="not-prose">'jhana</code> or <code class="not-prose">"jhana"</code> — exact word “jhana” (short suffixes OK, e.g. <code class="not-prose">'sati</code> matches “satima” but not “cessation” or “satisfaction”)</li>
+							<li><code class="not-prose">"letting go"</code> — exact phrase (each word exact)</li>
 							<li><code class="not-prose">illusion | ignorance</code> — either word</li>
 							<li><code class="not-prose">akuppa cetovimutti</code> or <code class="not-prose">animmita</code> — Pali terms (fuzzy)</li>
 						</ul>
@@ -776,7 +776,12 @@ const isSearchOnly = mode === "search-only";
 		textContainsPaliWholeWord,
 		countPaliWholeWordOccurrences,
 		getPaliMatchType,
+		getParsedSearchTerms,
+		getCleanQueryString,
+		textContainsStrictWord,
+		STRICT_WORD_MAX_SUFFIX,
 	} from "../utils/searchRanking";
+	import { normalizeSearchQuery } from "../utils/fuseQueryParser";
 
 	async function performSearch(
 		query: string,
@@ -809,12 +814,19 @@ const isSearchOnly = mode === "search-only";
 				persons: 0,
 			};
 
-			// Parse slug prefix filters (e.g., "^SN12 consciousness" → filter to sn12.* slugs)
-			const { prefixes: slugPrefixes, searchQuery: effectiveQuery } = parseSlugPrefixes(query);
+			// Normalize query ("sati" → 'sati) then parse slug prefix filters
+			const normalizedQuery = normalizeSearchQuery(query);
+			const { prefixes: slugPrefixes, searchQuery: effectiveQuery } =
+				parseSlugPrefixes(normalizedQuery);
 			const hasSlugFilter = slugPrefixes.length > 0;
 			const isFilterOnly = hasSlugFilter && !effectiveQuery.trim();
 
-			const queryLower = (effectiveQuery || query).toLowerCase().trim();
+			const parsedTerms = getParsedSearchTerms(
+				effectiveQuery || normalizedQuery,
+			);
+			const queryLower =
+				getCleanQueryString(effectiveQuery || normalizedQuery) ||
+				(effectiveQuery || normalizedQuery).toLowerCase().trim();
 			const queryLength = queryLower.length;
 
 			const maxEditDistance = getMaxAllowedEditDistance(queryLength);
@@ -1243,7 +1255,10 @@ const isSearchOnly = mode === "search-only";
 				discourseResults = await getFilteredDiscourses(slugPrefixes);
 			} else {
 				// Pass full query so slug prefix (e.g. ^AN) is in the Fuse query and OR counts are correct
-				discourseResults = await searchDiscourses(query.trim(), { highlight: true });
+				discourseResults = await searchDiscourses(
+					normalizedQuery.trim(),
+					{ highlight: true },
+				);
 			}
 
 			// Get non-stopword terms for multi-term query ranking
@@ -1744,23 +1759,26 @@ const isSearchOnly = mode === "search-only";
 	function highlightText(text: string, query: string): string {
 		if (!text || !query || query.length < 2) return text;
 
-		// Split query into terms, strip search operators, filter valid terms
-		const terms = query.toLowerCase().split(/\s+/)
-			.map(t => stripSearchOps(t))
-			.filter(t => t.length >= 2);
+		const normalizedQuery = normalizeSearchQuery(query);
+		const { searchQuery } = parseSlugPrefixes(normalizedQuery);
+		const terms = getParsedSearchTerms(searchQuery || normalizedQuery).filter(
+			(t) => !t.isStopword && t.term.length >= 2,
+		);
 		if (terms.length === 0) return text;
 
 		// Sort terms: non-stopwords first (they're more important)
-		const sortedTerms = terms.sort((a, b) => {
-			const aStop = isStopword(a) ? 1 : 0;
-			const bStop = isStopword(b) ? 1 : 0;
+		const sortedTerms = [...terms].sort((a, b) => {
+			const aStop = a.isStopword ? 1 : 0;
+			const bStop = b.isStopword ? 1 : 0;
 			return aStop - bStop;
 		});
 
 		let result = text;
+		const UL = "\\p{L}\\p{N}";
+		const NOT_UL = `[^${UL}]`;
 
 		// Highlight first occurrence of each term only
-		for (const term of sortedTerms) {
+		for (const { term, exact } of sortedTerms) {
 			const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 			// Build case-insensitive pattern with diacritic support
@@ -1784,10 +1802,13 @@ const isSearchOnly = mode === "search-only";
 			}
 
 			try {
-				// Use word boundary for short terms, allow infix for longer terms
-				const boundaryPattern = term.length < 4 ? `\\b(${pattern})\\b` : `(${pattern})`;
-				const regex = new RegExp(boundaryPattern, "u"); // Note: removed 'g' flag for first match only
-				// Use different highlight color for stopwords (lighter)
+				// Exact-word mode: whole word + short suffix only (no infix in "cessation")
+				const boundaryPattern = exact
+					? `(?<=^|${NOT_UL})(${pattern}[${UL}]{0,${STRICT_WORD_MAX_SUFFIX}})(?=${NOT_UL}|$)`
+					: term.length < 4
+						? `\\b(${pattern})\\b`
+						: `(${pattern})`;
+				const regex = new RegExp(boundaryPattern, "u");
 				const markClass = isStopword(term)
 					? "bg-yellow-50 dark:bg-yellow-950 px-0.5 rounded"
 					: "bg-yellow-100 dark:bg-yellow-900 px-0.5 rounded";

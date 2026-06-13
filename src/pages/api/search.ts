@@ -63,9 +63,12 @@ import {
 	slugMatchesQuery,
 	isStopword,
 	calculatePhraseProximityBoost,
+	getCleanQueryString,
+	getParsedSearchTerms,
 	type MatchType,
 	type ScoredResult,
 } from "../../utils/searchRanking";
+import { normalizeSearchQuery } from "../../utils/fuseQueryParser";
 
 // Deduplicate topics/qualities that share the same primary pali term
 // Also deduplicate discourses by slug (in case of Fuse/supplemental overlap)
@@ -161,14 +164,17 @@ export const GET: APIRoute = async ({ url }) => {
 			);
 		}
 
-		// Parse slug prefix filters (e.g., "^SN12 consciousness" → filter to sn12.* slugs)
+		// Normalize query ("sati" → 'sati) then parse slug prefix filters
+		const normalizedQuery = normalizeSearchQuery(query);
 		const { prefixes: slugPrefixes, searchQuery } =
-			parseSlugPrefixes(query);
+			parseSlugPrefixes(normalizedQuery);
 		const hasSlugFilter = slugPrefixes.length > 0;
 
 		// Use the search query (without ^prefix terms) for actual matching
-		const effectiveQuery = searchQuery || query; // Fallback to original if only prefixes
-		const queryLower = effectiveQuery.toLowerCase().trim();
+		const effectiveQuery = searchQuery || normalizedQuery;
+		const queryLower =
+			getCleanQueryString(effectiveQuery) ||
+			effectiveQuery.toLowerCase().trim();
 		const queryLength = queryLower.length;
 
 		const results: ScoredResult[] = [];
@@ -676,9 +682,10 @@ export const GET: APIRoute = async ({ url }) => {
 					}));
 			} else {
 				// Pass full query so slug prefix (e.g. ^AN) is in the search and OR counts are correct
-				discourseResults = await searchDiscourses(query.trim(), {
-					highlight: true,
-				});
+				discourseResults = await searchDiscourses(
+					normalizedQuery.trim(),
+					{ highlight: true },
+				);
 			}
 
 			tDiscFuse = performance.now();

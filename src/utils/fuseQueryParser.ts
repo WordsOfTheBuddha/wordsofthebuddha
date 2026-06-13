@@ -22,10 +22,17 @@ interface ParseResult {
     usedTerms: Set<string>;  // Track terms used in OR operations
 }
 
+export interface ContentIncludeGroup {
+    /** OR alternatives within the group */
+    terms: string[];
+    /** When true, terms use strict word matching (not infix) */
+    strict: boolean;
+}
+
 /** Content/contentPali conditions applied as post-filter (Fuse only has slug/title/description) */
 export interface ContentConditions {
-    /** Each inner array is an OR group; doc must match at least one term per group */
-    include: string[][];
+    /** Each group is an OR; doc must match at least one term per group */
+    include: ContentIncludeGroup[];
     /** Doc must not contain any of these terms in content or contentPali */
     exclude: string[];
 }
@@ -42,6 +49,8 @@ export type HighlightTerm = {
     field: string;
     term: string;
     operation: 'startsWith' | 'endsWith' | 'negation' | 'exact' | 'fuzzy' | 'doesNotStartWith' | 'doesNotEndWith';
+    /** True when the query used field:... syntax (vs searching all fields) */
+    fieldSpecific?: boolean;
 }
 
 export function parseFieldPattern(term: string): { field?: SearchField; value: string } {
@@ -187,6 +196,11 @@ function simplifyGroupedTerms(terms: string[]): string[] {
     });
 }
 
+/** Normalize user query (curly quotes, "phrase" → 'word tokens, etc.) before parsing. */
+export function normalizeSearchQuery(query: string): string {
+    return simplifyQuery(query);
+}
+
 function simplifyQuery(query: string): string {
     // First normalize quotes to straight quotes
     query = query
@@ -223,6 +237,19 @@ function cleanValueForContent(value: string): string {
     return v.trim().toLowerCase();
 }
 
+function isStrictContentTerm(value: string): boolean {
+    const v = value.startsWith('!') ? value.slice(1) : value;
+    return v.startsWith("'");
+}
+
+function addContentInclude(
+    contentConditions: ContentConditions,
+    terms: string[],
+    strict: boolean,
+): void {
+    contentConditions.include.push({ terms, strict });
+}
+
 function extractHighlightTerm(term: string): HighlightTerm | null {
     const { field, value } = parseFieldPattern(term);
     let operation: HighlightTerm['operation'] = 'fuzzy';
@@ -251,7 +278,8 @@ function extractHighlightTerm(term: string): HighlightTerm | null {
     return {
         field: field || 'content',
         term: cleanValue,
-        operation
+        operation,
+        fieldSpecific: !!field,
     };
 }
 
@@ -309,7 +337,15 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
             });
 
             if (contentOrTerms.length > 0) {
-                contentConditions.include.push(contentOrTerms);
+                const strict = orTerms.some((orTerm) => {
+                    const { field, value } = parseFieldPattern(orTerm);
+                    return (
+                        !!field &&
+                        isContentField(field) &&
+                        isStrictContentTerm(value)
+                    );
+                });
+                addContentInclude(contentConditions, contentOrTerms, strict);
             }
             if (fuseOrClauses.length > 0) {
                 andTerms.push(fuseOrClauses.length === 1 ? fuseOrClauses[0] : { $or: fuseOrClauses });
@@ -324,7 +360,11 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
                     if (term.value.startsWith('!')) {
                         contentConditions.exclude.push(clean);
                     } else {
-                        contentConditions.include.push([clean]);
+                        addContentInclude(
+                            contentConditions,
+                            [clean],
+                            isStrictContentTerm(term.value),
+                        );
                     }
                 } else {
                     andTerms.push({ [term.field]: term.value });

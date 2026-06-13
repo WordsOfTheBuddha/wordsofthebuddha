@@ -511,6 +511,44 @@ export function stripSearchOperators(term: string): string {
 	return cleaned;
 }
 
+export interface ParsedSearchTerm {
+	term: string;
+	/** True for `'term` or `"term"` (phrase quotes) exact-word mode */
+	exact: boolean;
+	isStopword: boolean;
+}
+
+/**
+ * Parse query into search terms with exact-word flags.
+ * Run {@link normalizeSearchQuery} on the query first when it may contain "phrases".
+ */
+export function getParsedSearchTerms(query: string): ParsedSearchTerm[] {
+	return query
+		.toLowerCase()
+		.split(/\s+/)
+		.filter((t) => t.length > 0)
+		.map((raw) => {
+			const withoutNegation = raw.startsWith("!") ? raw.slice(1) : raw;
+			const exact =
+				withoutNegation.startsWith("'") ||
+				withoutNegation.startsWith('"');
+			const cleanTerm = stripSearchOperators(raw);
+			return {
+				term: cleanTerm,
+				exact,
+				isStopword: isStopword(cleanTerm),
+			};
+		})
+		.filter((t) => t.term.length > 0);
+}
+
+/** Query string with search operators stripped (for ranking / display matching). */
+export function getCleanQueryString(query: string): string {
+	return getParsedSearchTerms(query)
+		.map((t) => t.term)
+		.join(" ");
+}
+
 /**
  * Split query into terms and classify them
  */
@@ -1371,6 +1409,61 @@ export function textContainsWholeWord(text: string, query: string): boolean {
 	// e.g., "non-craving" should NOT match "craving" as a whole word
 	const regex = new RegExp(`(^|[^-])\\b${pattern}\\b`, "i");
 	return regex.test(normalizedText);
+}
+
+/** Max extra characters after a query prefix for strict/exact-word search (`'term`). */
+export const STRICT_WORD_MAX_SUFFIX = 2;
+
+/**
+ * True when `word` equals `query` or starts with `query` with at most
+ * {@link STRICT_WORD_MAX_SUFFIX} trailing characters (e.g. sati → satima).
+ * Diacritic-insensitive.
+ */
+export function wordMatchesStrict(
+	word: string,
+	query: string,
+	maxSuffix: number = STRICT_WORD_MAX_SUFFIX,
+): boolean {
+	const normalizedWord = normalizeDiacritics(word.toLowerCase());
+	const normalizedQuery = normalizeDiacritics(query.toLowerCase());
+	if (normalizedWord === normalizedQuery) return true;
+	if (!normalizedWord.startsWith(normalizedQuery)) return false;
+	return normalizedWord.length - normalizedQuery.length <= maxSuffix;
+}
+
+/**
+ * Check if text contains `query` as a strict word: not as an infix inside a longer
+ * word, but as a whole word or with a short inflection suffix (0–2 chars).
+ * Used for `'term` exact-word search. Diacritic-insensitive.
+ */
+export function textContainsStrictWord(
+	text: string,
+	query: string,
+	maxSuffix: number = STRICT_WORD_MAX_SUFFIX,
+): boolean {
+	const normalizedText = normalizeDiacritics(
+		stripAnnotations(text).toLowerCase(),
+	);
+	const normalizedQuery = normalizeDiacritics(query.toLowerCase());
+	if (!normalizedQuery) return false;
+
+	const escaped = escapeRegExpForSearch(normalizedQuery);
+	const regex = new RegExp(
+		`(^|[^\\p{L}\\p{N}])${escaped}[\\p{L}\\p{N}]{0,${maxSuffix}}(?=[^\\p{L}\\p{N}]|$)`,
+		"u",
+	);
+	return regex.test(normalizedText);
+}
+
+/** Match a single term; exact mode uses strict word boundaries (no infix). */
+export function textContainsQueryTerm(
+	text: string,
+	term: string,
+	exact: boolean,
+): boolean {
+	return exact
+		? textContainsStrictWord(text, term)
+		: textContainsQuery(text, term);
 }
 
 /**

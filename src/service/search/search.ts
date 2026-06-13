@@ -10,6 +10,8 @@ import {
 	findPhraseMatchPositions,
 	calculatePhraseProximity,
 	stripAnnotations,
+	textContainsStrictWord,
+	STRICT_WORD_MAX_SUFFIX,
 } from "../../utils/searchRanking";
 import Fuse from "fuse.js";
 
@@ -175,15 +177,15 @@ function highlightBestMatch(
 ): { result: string; matched: boolean } {
 	const markOpen = `<mark class="${markClass} rounded" ${MARK_STYLE}>`;
 
-	// For exact operations, use Unicode-aware word boundaries
+	// For exact operations, match whole word with short inflection suffix (e.g. sati → satima)
 	if (operation === "exact") {
 		const regex = new RegExp(
-			`(?<=^|${NOT_UL})${infixPattern}(?=${NOT_UL}|$)`,
+			`(?<=^|${NOT_UL})(${infixPattern}[${UL}]{0,${STRICT_WORD_MAX_SUFFIX}})(?=${NOT_UL}|$)`,
 			"u",
 		);
 		if (regex.test(text)) {
 			return {
-				result: text.replace(regex, (m) => `${markOpen}${m}</mark>`),
+				result: text.replace(regex, (_, matched) => `${markOpen}${matched}</mark>`),
 				matched: true,
 			};
 		}
@@ -294,7 +296,7 @@ function createHighlightPattern(
 		case "negation":
 			return "";
 		case "exact":
-			return `\\b${diacriticPattern}\\b`; // Full word match only
+			return `${diacriticPattern}[${UL}]{0,${STRICT_WORD_MAX_SUFFIX}}`;
 		case "startsWith":
 			// For highlighting, we should only highlight if it's at start of paragraph
 			return `^[^\\S\\r\\n]*${diacriticPattern}`; // Match start of content with optional whitespace
@@ -784,6 +786,15 @@ function findBestMatchingParagraph(
 	return result;
 }
 
+function contentTextForSlug(
+	slug: string,
+	normalizedMap: Map<string, { content: string; contentPali: string }>,
+): string {
+	const norm = normalizedMap.get(slug);
+	if (!norm) return "";
+	return `${norm.content || ""} ${norm.contentPali || ""}`;
+}
+
 /**
  * Whether a document's content satisfies contentConditions (include/exclude).
  * Used when the query has content: or contentPali: terms or generic negations
@@ -801,9 +812,7 @@ function docMatchesContentConditions(
 		return true;
 	}
 	if (!slug || typeof slug !== "string") return false;
-	const norm = normalizedMap.get(slug);
-	if (!norm) return false;
-	const text = (norm.content || "") + " " + (norm.contentPali || "");
+	const text = contentTextForSlug(slug, normalizedMap);
 	const normalizedText = text; // map already stores normalized content
 
 	for (const term of contentConditions.exclude) {
@@ -811,12 +820,67 @@ function docMatchesContentConditions(
 		if (normalizedText.includes(t)) return false;
 	}
 	for (const group of contentConditions.include) {
-		const hasOne = group.some((term) =>
-			normalizedText.includes(normalizeText(term)),
-		);
+		const hasOne = group.terms.some((term) => {
+			if (group.strict) {
+				return textContainsStrictWord(text, term);
+			}
+			return normalizedText.includes(normalizeText(term));
+		});
 		if (!hasOne) return false;
 	}
 	return true;
+}
+
+/**
+ * Post-filter Fuse results for `'term` exact-word queries. Fuse treats `'term` as
+ * a substring match, so we require strict word boundaries (short suffix allowed).
+ */
+function docMatchesExactHighlightTerms(
+	doc: SearchData,
+	highlightTerms: HighlightTerm[],
+	normalizedMap: Map<string, { content: string; contentPali: string }>,
+): boolean {
+	const exactTerms = highlightTerms.filter(
+		(ht) =>
+			ht.operation === "exact" &&
+			!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
+				ht.operation,
+			),
+	);
+	if (exactTerms.length === 0) return true;
+
+	const contentText = contentTextForSlug(doc.slug, normalizedMap);
+	const norm = normalizedMap.get(doc.slug);
+
+	return exactTerms.every((ht) => {
+		const term = ht.term;
+		if (ht.fieldSpecific && ht.field) {
+			switch (ht.field) {
+				case "slug":
+					return textContainsStrictWord(doc.slug || "", term);
+				case "title":
+					return textContainsStrictWord(doc.title || "", term);
+				case "description":
+					return textContainsStrictWord(doc.description || "", term);
+				case "content":
+					return textContainsStrictWord(norm?.content || "", term);
+				case "contentPali":
+					return textContainsStrictWord(norm?.contentPali || "", term);
+				default:
+					return false;
+			}
+		}
+
+		const fields = [
+			doc.slug || "",
+			doc.title || "",
+			doc.description || "",
+			contentText,
+		];
+		return fields.some((fieldText) =>
+			textContainsStrictWord(fieldText, term),
+		);
+	});
 }
 
 /**
@@ -979,14 +1043,15 @@ async function performSearchInner(
 	const foundSlugs = new Set(fuseResults.map((r) => r.item.slug));
 	const runContentSupplement = !isSlugOnlyQuery(fuseQuery);
 
-	const contentTerms = highlightTerms
-		.filter(
-			(ht) =>
-				!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
-					ht.operation,
-				),
-		)
-		.map((ht) => normalizeText(ht.term.toLowerCase()));
+	const contentHighlightTerms = highlightTerms.filter(
+		(ht) =>
+			!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
+				ht.operation,
+			),
+	);
+	const contentTerms = contentHighlightTerms.map((ht) =>
+		normalizeText(ht.term.toLowerCase()),
+	);
 
 	const contentSupplementResults: Array<{
 		item: SearchData;
@@ -1018,8 +1083,15 @@ async function performSearchInner(
 			if (foundSlugs.has(doc.slug)) continue;
 			const normalized = normalizedMap.get(doc.slug);
 			if (!normalized) continue;
-			const matchesAll = contentTerms.every((term, i) => {
+			const matchesAll = contentHighlightTerms.every((ht, i) => {
+				const term = contentTerms[i];
 				const regex = contentRegexes[i];
+				const combined = `${normalized.content} ${normalized.contentPali}`;
+
+				if (ht.operation === "exact") {
+					return textContainsStrictWord(combined, ht.term);
+				}
+
 				// Plain includes first (fast path), then Pali stem regex for vowel-ending terms
 				if (
 					normalized.content.includes(term) ||
@@ -1079,10 +1151,26 @@ async function performSearchInner(
 			}));
 	} else {
 		searchResults = [...fuseResults, ...contentSupplementResults];
+		const normalizedMap = getNormalizedContentMap();
 		if (hasContentConditions) {
-			const normalizedMap = getNormalizedContentMap();
 			searchResults = searchResults.filter((r) =>
-				docMatchesContentConditions(r.item.slug, contentConditions, normalizedMap),
+				docMatchesContentConditions(
+					r.item.slug,
+					contentConditions,
+					normalizedMap,
+				),
+			);
+		}
+		const hasExactTerms = highlightTerms.some(
+			(ht) => ht.operation === "exact",
+		);
+		if (hasExactTerms) {
+			searchResults = searchResults.filter((r) =>
+				docMatchesExactHighlightTerms(
+					r.item,
+					highlightTerms,
+					normalizedMap,
+				),
 			);
 		}
 	}
