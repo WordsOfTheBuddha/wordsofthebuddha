@@ -1,10 +1,12 @@
 ---
 title: Saṅkhitta sutta - Brief
-description: The Buddha advises Mahāpajāpatī Gotamī on how to discern the teachings to be abandoned and the teachings to be embraced by observing for eight qualities.
-fetter: doubt, conceit, ignorance
-tags: an,an8,passion,dispassion,accumulation,reduction,greediness,contentment,company,seclusion,procrastination,energy,effort,arousal,enthusiasm,support,abandonment,embracement
+description: The Buddha advises Mahāpajāpatī Gotamī on how to discern what is the Teacher’s Instruction by observing for eight qualities.
+qualities: discernment, recollection of the Dhamma
+theme: cultivating discernment, wisdom
 slug: an8.53
 character: Mahāpajāpati Gotamī
+commentary: This discourse should be read in conjunction with [AN 7.83 Satthusāsana sutta - The Teacher’s Instruction](/an7.83).
+priority: 1.2
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho mahāpajāpatī gotamī yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitā kho sā mahāpajāpatī gotamī bhagavantaṁ etadavoca:

@@ -4,6 +4,7 @@ description: The Buddha shares the four kinds of persons — those who cultivate
 qualities: jhana, unification, uplifting joy, tranquility, mindfulness, clear awareness, equanimity, perceiving drawback
 theme: inspiration, principle
 slug: an4.124
+priority: 1.2
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
