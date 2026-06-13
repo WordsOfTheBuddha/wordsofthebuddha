@@ -687,7 +687,7 @@ export const PALI_ONLY_NOTICE =
 
 /** Small attribution prepended before reference English on direct URLs. */
 export const REFERENCE_TRANSLATION_CREDIT =
-	'<p class="english-paragraph reference-translation-credit">Translation by Bhikkhu Sujato (CC0). A Words of the Buddha rendering is not available yet.</p>';
+	'<p class="english-paragraph reference-translation-credit">Reference Translation by Bhikkhu Sujato (CC0).</p>';
 
 /**
  * Build paragraph pairs from Pali-only content (no English file).
