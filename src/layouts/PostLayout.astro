@@ -19,6 +19,7 @@ const {
 	image,
 	imageCaption,
 	hideHeader = false,
+	hideExternalLinkIcons = false,
 	commentary,
 	draft = false,
 } = props;
@@ -233,6 +234,8 @@ const serverTheme = "dark";
 					<article
 						class="post-content prose prose-lg dark:prose-invert max-w-none p-4 pt-6"
 						style="opacity: 0; transition: opacity 0.15s ease-in;"
+						data-hide-external-link-icons={hideExternalLinkIcons ||
+							undefined}
 					>
 						{
 							(draft || topDate) && (
@@ -530,6 +533,12 @@ const serverTheme = "dark";
 
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
+			var article = document.querySelector(
+				".post-content",
+			) as HTMLElement | null;
+			var hideExternalLinkIcons =
+				article?.dataset.hideExternalLinkIcons === "true";
+
 			// Open all content links in new tabs (skip anchor links)
 			var links = document.querySelectorAll(".post-content a");
 			for (var i = 0; i < links.length; i++) {
@@ -538,12 +547,22 @@ const serverTheme = "dark";
 					links[i].setAttribute("target", "_blank");
 					links[i].setAttribute("rel", "noopener");
 				}
+				if (hideExternalLinkIcons) {
+					var next = links[i].nextSibling;
+					if (
+						next &&
+						next.nodeType === Node.TEXT_NODE &&
+						next.textContent
+					) {
+						next.textContent = next.textContent.replace(
+							/\s*↗\s*/g,
+							"",
+						);
+					}
+				}
 			}
 
 			// Reveal content after tooltips have been processed by BottomDrawer
-			var article = document.querySelector(
-				".post-content",
-			) as HTMLElement;
 			if (article) {
 				// Use requestAnimationFrame to ensure BottomDrawer's DOMContentLoaded
 				// handler (replaceTooltips) has completed first
