@@ -2,12 +2,11 @@
 slug: an7.38
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamapaṭisambhidāsutta
 ---
 
-“Sattahi, bhikkhave, dhammehi samannāgato bhikkhu nacirasseva catasso paṭisambhidā sayaṁ abhiññā sacchikatvā upasampajja vihareyya.
-
-Katamehi sattahi?
+“Sattahi, bhikkhave, dhammehi samannāgato bhikkhu nacirasseva catasso paṭisambhidā sayaṁ abhiññā sacchikatvā upasampajja vihareyya. Katamehi sattahi?
 
 Idha, bhikkhave, bhikkhu ‘idaṁ me cetaso līnattan’ti yathābhūtaṁ pajānāti;
 

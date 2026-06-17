@@ -1,18 +1,18 @@
 ---
-title: Bhaddaka sutta - Auspicious
-description: One who delights in personal existence does not have an auspicious death. One who delights in Nibbāna and gives up personal existence has an auspicious death.
-fetter: personal existence, ignorance
-qualities: personal existence view, mental proliferation, suffering
-tags: personal existence, delight, work, talk, sleep, company, bonding, mental proliferation, Nibbāna, auspicious, suffering, death, an, an6
+title: Bhaddaka sutta - Good
+description: One who delights in work, talk, sleep, company, bonding, and mental proliferation faces a bad death, remaining bound to personal existence.
+qualities: personal existence view, delight, drowsiness, wrong speech, mental proliferation, attachment
+theme: wisdom, inspiration
 character: Venerable Sāriputta
 slug: an6.14
+priority: 1.2
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.
 
 “Āvuso”ti kho te bhikkhū āyasmato sāriputtassa paccassosuṁ. Āyasmā sāriputto etadavoca:
 
-### Delight in Personal Existence
+#### Delight in Personal Existence
 
 “Tathā tathā, āvuso, bhikkhu vihāraṁ kappeti yathā yathāssa vihāraṁ kappayato na bhaddakaṁ maraṇaṁ hoti, na bhaddikā kālakiriyā. Kathañcāvuso, bhikkhu tathā tathā vihāraṁ kappeti yathā yathāssa vihāraṁ kappayato na bhaddakaṁ maraṇaṁ hoti, na bhaddikā kālakiriyā?
 
@@ -30,7 +30,7 @@ papañcārāmo hoti papañcarato papañcārāmataṁ anuyutto.
 
 Evaṁ kho, āvuso, bhikkhu tathā tathā vihāraṁ kappeti yathā yathāssa vihāraṁ kappayato na bhaddakaṁ maraṇaṁ hoti, na bhaddikā kālakiriyā. Ayaṁ vuccatāvuso: ‘bhikkhu sakkāyābhirato nappajahāsi sakkāyaṁ sammā dukkhassa antakiriyāya’.
 
-### Giving up Personal Existence
+#### Giving up Personal Existence
 
 Tathā tathāvuso, bhikkhu vihāraṁ kappeti yathā yathāssa vihāraṁ kappayato bhaddakaṁ maraṇaṁ hoti, bhaddikā kālakiriyā. Kathañcāvuso, bhikkhu tathā tathā vihāraṁ kappeti yathā yathāssa vihāraṁ kappayato bhaddakaṁ maraṇaṁ hoti, bhaddikā kālakiriyā?
 

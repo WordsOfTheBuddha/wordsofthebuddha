@@ -2,6 +2,7 @@
 slug: an5.134
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Yassaṁdisaṁsutta
 ---
 
@@ -19,38 +20,20 @@ pariṇāyako kho panassa hoti paṇḍito viyatto medhāvī paṭibalo atītān
 
 tassime cattāro dhammā yasaṁ paripācenti.
 
-So iminā yasapañcamena dhammena samannāgato yassaṁ yassaṁ disāyaṁ viharati, sakasmiṁyeva vijite viharati.
+So iminā yasapañcamena dhammena samannāgato yassaṁ yassaṁ disāyaṁ viharati, sakasmiṁyeva vijite viharati. Taṁ kissa hetu? Evañhetaṁ, bhikkhave, hoti vijitāvīnaṁ.
 
-Taṁ kissa hetu?
+Evamevaṁ kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu yassaṁ yassaṁ disāyaṁ viharati, vimuttacittova viharati. Katamehi pañcahi?
 
-Evañhetaṁ, bhikkhave, hoti vijitāvīnaṁ.
+Idha, bhikkhave, bhikkhu sīlavā hoti, pātimokkhasaṁvarasaṁvuto viharati ācāragocarasampanno aṇumattesu vajjesu bhayadassāvī, samādāya sikkhati sikkhāpadesu— rājāva khattiyo muddhāvasitto jātisampanno;
 
-Evamevaṁ kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu yassaṁ yassaṁ disāyaṁ viharati, vimuttacittova viharati.
+bahussuto hoti sutadharo sutasannicayo, ye te dhammā ādikalyāṇā majjhekalyāṇā pariyosānakalyāṇā sātthaṁ sabyañjanaṁ kevalaparipuṇṇaṁ parisuddhaṁ brahmacariyaṁ abhivadanti, tathārūpāssa dhammā bahussutā honti dhātā vacasā paricitā manasānupekkhitā diṭṭhiyā suppaṭividdhā— rājāva khattiyo muddhāvasitto aḍḍho mahaddhano mahābhogo paripuṇṇakosakoṭṭhāgāro;
 
-Katamehi pañcahi?
+āraddhavīriyo viharati akusalānaṁ dhammānaṁ pahānāya kusalānaṁ dhammānaṁ upasampadāya thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu— rājāva khattiyo muddhāvasitto balasampanno;
 
-Idha, bhikkhave, bhikkhu sīlavā hoti, pātimokkhasaṁvarasaṁvuto viharati ācāragocarasampanno aṇumattesu vajjesu bhayadassāvī, samādāya sikkhati sikkhāpadesu—
-
-rājāva khattiyo muddhāvasitto jātisampanno;
-
-bahussuto hoti sutadharo sutasannicayo, ye te dhammā ādikalyāṇā majjhekalyāṇā pariyosānakalyāṇā sātthaṁ sabyañjanaṁ kevalaparipuṇṇaṁ parisuddhaṁ brahmacariyaṁ abhivadanti, tathārūpāssa dhammā bahussutā honti dhātā vacasā paricitā manasānupekkhitā diṭṭhiyā suppaṭividdhā—
-
-rājāva khattiyo muddhāvasitto aḍḍho mahaddhano mahābhogo paripuṇṇakosakoṭṭhāgāro;
-
-āraddhavīriyo viharati akusalānaṁ dhammānaṁ pahānāya kusalānaṁ dhammānaṁ upasampadāya thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu—
-
-rājāva khattiyo muddhāvasitto balasampanno;
-
-paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā—
-
-rājāva khattiyo muddhāvasitto pariṇāyakasampanno;
+paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā— rājāva khattiyo muddhāvasitto pariṇāyakasampanno;
 
 tassime cattāro dhammā vimuttiṁ paripācenti.
 
-So iminā vimuttipañcamena dhammena samannāgato yassaṁ yassaṁ disāyaṁ viharati vimuttacittova viharati.
-
-Taṁ kissa hetu?
-
-Evañhetaṁ, bhikkhave, hoti vimuttacittānan”ti.
+So iminā vimuttipañcamena dhammena samannāgato yassaṁ yassaṁ disāyaṁ viharati vimuttacittova viharati. Taṁ kissa hetu? Evañhetaṁ, bhikkhave, hoti vimuttacittānan”ti.
 
 Catutthaṁ.

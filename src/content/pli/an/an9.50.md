@@ -2,6 +2,7 @@
 slug: an9.50
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Tadaṅganibbānasutta
 ---
 

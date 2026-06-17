@@ -2,26 +2,17 @@
 slug: an7.23
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamasattakasutta
 ---
 
-Evaṁ me sutaṁ—
+Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Tatra kho bhagavā bhikkhū āmantesi:
 
-ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.
+“satta vo, bhikkhave, aparihāniye dhamme desessāmi. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.
 
-Tatra kho bhagavā bhikkhū āmantesi:
+“Evaṁ, bhante”ti kho te bhikkhū bhagavato paccassosuṁ. Bhagavā etadavoca:
 
-“satta vo, bhikkhave, aparihāniye dhamme desessāmi.
-
-Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.
-
-“Evaṁ, bhante”ti kho te bhikkhū bhagavato paccassosuṁ.
-
-Bhagavā etadavoca:
-
-“Katame ca, bhikkhave, satta aparihāniyā dhammā?
-
-Yāvakīvañca, bhikkhave, bhikkhū abhiṇhaṁ sannipātā bhavissanti sannipātabahulā; vuddhiyeva, bhikkhave, bhikkhūnaṁ pāṭikaṅkhā, no parihāni.
+“Katame ca, bhikkhave, satta aparihāniyā dhammā? Yāvakīvañca, bhikkhave, bhikkhū abhiṇhaṁ sannipātā bhavissanti sannipātabahulā; vuddhiyeva, bhikkhave, bhikkhūnaṁ pāṭikaṅkhā, no parihāni.
 
 Yāvakīvañca, bhikkhave, bhikkhū samaggā sannipatissanti, samaggā vuṭṭhahissanti, samaggā saṅghakaraṇīyāni karissanti; vuddhiyeva, bhikkhave, bhikkhūnaṁ pāṭikaṅkhā, no parihāni.
 

@@ -2,96 +2,20 @@
 slug: an3.183-352
 source: suttacentral/bilara-data
 edition: ms
-title: ""
+granularity: paragraph
 ---
 
-“Rāgassa, bhikkhave, abhiññāya tayo dhammā bhāvetabbā.
+“Rāgassa, bhikkhave, abhiññāya tayo dhammā bhāvetabbā. Katame tayo? Suññato samādhi, animitto samādhi, appaṇihito samādhi— rāgassa, bhikkhave, abhiññāya ime tayo dhammā bhāvetabbā. (…)
 
-Katame tayo?
+Rāgassa, bhikkhave, pariññāya …pe… parikkhayāya … pahānāya … khayāya … vayāya … virāgāya … nirodhāya … cāgāya … paṭinissaggāya ime tayo dhammā bhāvetabbā.
 
-Suññato samādhi, animitto samādhi, appaṇihito samādhi—
+Dosassa … mohassa … kodhassa … upanāhassa … makkhassa … paḷāsassa … issāya … macchariyassa … māyāya … sāṭheyyassa … thambhassa … sārambhassa … mānassa … atimānassa … madassa … pamādassa … abhiññāya … pariññāya … parikkhayāya … pahānāya … khayāya … vayāya … virāgāya … nirodhāya … cāgāya … paṭinissaggāya ime tayo dhammā bhāvetabbā”ti.
 
-rāgassa, bhikkhave, abhiññāya ime tayo dhammā bhāvetabbā. (…)
-
-Rāgassa, bhikkhave, pariññāya …pe…
-
-parikkhayāya …
-
-pahānāya …
-
-khayāya …
-
-vayāya …
-
-virāgāya …
-
-nirodhāya …
-
-cāgāya …
-
-paṭinissaggāya ime tayo dhammā bhāvetabbā.
-
-Dosassa …
-
-mohassa …
-
-kodhassa …
-
-upanāhassa …
-
-makkhassa …
-
-paḷāsassa …
-
-issāya …
-
-macchariyassa …
-
-māyāya …
-
-sāṭheyyassa …
-
-thambhassa …
-
-sārambhassa …
-
-mānassa …
-
-atimānassa …
-
-madassa …
-
-pamādassa …
-
-abhiññāya …
-
-pariññāya …
-
-parikkhayāya …
-
-pahānāya …
-
-khayāya …
-
-vayāya …
-
-virāgāya …
-
-nirodhāya …
-
-cāgāya …
-
-paṭinissaggāya ime tayo dhammā bhāvetabbā”ti.
-
-Idamavoca bhagavā.
-
-Attamanā te bhikkhū bhagavato bhāsitaṁ abhinandunti.
+Idamavoca bhagavā. Attamanā te bhikkhū bhagavato bhāsitaṁ abhinandunti.
 
 Rāgapeyyālaṁ niṭṭhitaṁ.
 
 Tassuddānaṁ
-
-Rāgaṁ dosañca mohañca,
 
 kodhūpanāhapañcamaṁ;
 
@@ -99,15 +23,11 @@ Makkhapaḷāsaissā ca,
 
 maccharimāyāsāṭheyyā.
 
-Thambhasārambhamānañca,
-
 atimānamadassa ca;
 
 Pamādā sattarasa vuttā,
 
 rāgapeyyālanissitā.
-
-Ete opammayuttena,
 
 āpādena abhiññāya;
 
@@ -118,8 +38,6 @@ pahānakkhayabbayena;
 Virāganirodhacāgaṁ,
 
 paṭinissagge ime dasa.
-
-Suññato animitto ca,
 
 appaṇihito ca tayo;
 

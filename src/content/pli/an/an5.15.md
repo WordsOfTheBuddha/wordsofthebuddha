@@ -2,44 +2,21 @@
 slug: an5.15
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Daṭṭhabbasutta
 ---
 
-“Pañcimāni, bhikkhave, balāni.
+“Pañcimāni, bhikkhave, balāni. Katamāni pañca? Saddhābalaṁ, vīriyabalaṁ, satibalaṁ, samādhibalaṁ, paññābalaṁ.
 
-Katamāni pañca?
+Kattha ca, bhikkhave, saddhābalaṁ daṭṭhabbaṁ? Catūsu sotāpattiyaṅgesu. Ettha saddhābalaṁ daṭṭhabbaṁ.
 
-Saddhābalaṁ, vīriyabalaṁ, satibalaṁ, samādhibalaṁ, paññābalaṁ.
+Kattha ca, bhikkhave, vīriyabalaṁ daṭṭhabbaṁ? Catūsu sammappadhānesu. Ettha vīriyabalaṁ daṭṭhabbaṁ.
 
-Kattha ca, bhikkhave, saddhābalaṁ daṭṭhabbaṁ?
+Kattha ca, bhikkhave, satibalaṁ daṭṭhabbaṁ? Catūsu satipaṭṭhānesu. Ettha satibalaṁ daṭṭhabbaṁ.
 
-Catūsu sotāpattiyaṅgesu.
+Kattha ca, bhikkhave, samādhibalaṁ daṭṭhabbaṁ? Catūsu jhānesu. Ettha samādhibalaṁ daṭṭhabbaṁ.
 
-Ettha saddhābalaṁ daṭṭhabbaṁ.
-
-Kattha ca, bhikkhave, vīriyabalaṁ daṭṭhabbaṁ?
-
-Catūsu sammappadhānesu.
-
-Ettha vīriyabalaṁ daṭṭhabbaṁ.
-
-Kattha ca, bhikkhave, satibalaṁ daṭṭhabbaṁ?
-
-Catūsu satipaṭṭhānesu.
-
-Ettha satibalaṁ daṭṭhabbaṁ.
-
-Kattha ca, bhikkhave, samādhibalaṁ daṭṭhabbaṁ?
-
-Catūsu jhānesu.
-
-Ettha samādhibalaṁ daṭṭhabbaṁ.
-
-Kattha ca, bhikkhave, paññābalaṁ daṭṭhabbaṁ?
-
-Catūsu ariyasaccesu.
-
-Ettha paññābalaṁ daṭṭhabbaṁ.
+Kattha ca, bhikkhave, paññābalaṁ daṭṭhabbaṁ? Catūsu ariyasaccesu. Ettha paññābalaṁ daṭṭhabbaṁ.
 
 Imāni kho, bhikkhave, pañca balānī”ti.
 

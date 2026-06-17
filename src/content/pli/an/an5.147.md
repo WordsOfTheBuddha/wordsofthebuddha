@@ -2,23 +2,12 @@
 slug: an5.147
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Asappurisadānasutta
 ---
 
-“Pañcimāni, bhikkhave, asappurisadānāni.
+“Pañcimāni, bhikkhave, asappurisadānāni. Katamāni pañca? Asakkaccaṁ deti, acittīkatvā deti, asahatthā deti, apaviddhaṁ deti, anāgamanadiṭṭhiko deti. Imāni kho, bhikkhave, pañca asappurisadānāni.
 
-Katamāni pañca?
-
-Asakkaccaṁ deti, acittīkatvā deti, asahatthā deti, apaviddhaṁ deti, anāgamanadiṭṭhiko deti.
-
-Imāni kho, bhikkhave, pañca asappurisadānāni.
-
-Pañcimāni, bhikkhave, sappurisadānāni.
-
-Katamāni pañca?
-
-Sakkaccaṁ deti, cittīkatvā deti, sahatthā deti, anapaviddhaṁ deti, āgamanadiṭṭhiko deti.
-
-Imāni kho, bhikkhave, pañca sappurisadānānī”ti.
+Pañcimāni, bhikkhave, sappurisadānāni. Katamāni pañca? Sakkaccaṁ deti, cittīkatvā deti, sahatthā deti, anapaviddhaṁ deti, āgamanadiṭṭhiko deti. Imāni kho, bhikkhave, pañca sappurisadānānī”ti.
 
 Sattamaṁ.

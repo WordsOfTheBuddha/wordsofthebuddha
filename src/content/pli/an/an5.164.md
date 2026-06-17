@@ -2,14 +2,13 @@
 slug: an5.164
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Sājīvasutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi …pe…
 
-pañcahi, āvuso, dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnaṁ.
-
-Katamehi pañcahi?
+pañcahi, āvuso, dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnaṁ. Katamehi pañcahi?
 
 Idhāvuso, bhikkhu attanā ca sīlasampanno hoti, sīlasampadākathāya ca āgataṁ pañhaṁ byākattā hoti;
 

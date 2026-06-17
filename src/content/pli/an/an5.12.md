@@ -2,27 +2,14 @@
 slug: an5.12
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Kūṭasutta
 ---
 
-“Pañcimāni, bhikkhave, sekhabalāni.
+“Pañcimāni, bhikkhave, sekhabalāni. Katamāni pañca? Saddhābalaṁ, hirībalaṁ, ottappabalaṁ, vīriyabalaṁ, paññābalaṁ— imāni kho, bhikkhave, pañca sekhabalāni. Imesaṁ kho, bhikkhave, pañcannaṁ sekhabalānaṁ etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ paññābalaṁ.
 
-Katamāni pañca?
+Seyyathāpi, bhikkhave, kūṭāgārassa etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ kūṭaṁ. Evamevaṁ kho, bhikkhave, imesaṁ pañcannaṁ sekhabalānaṁ etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ paññābalaṁ.
 
-Saddhābalaṁ, hirībalaṁ, ottappabalaṁ, vīriyabalaṁ, paññābalaṁ—
-
-imāni kho, bhikkhave, pañca sekhabalāni.
-
-Imesaṁ kho, bhikkhave, pañcannaṁ sekhabalānaṁ etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ paññābalaṁ.
-
-Seyyathāpi, bhikkhave, kūṭāgārassa etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ kūṭaṁ.
-
-Evamevaṁ kho, bhikkhave, imesaṁ pañcannaṁ sekhabalānaṁ etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ paññābalaṁ.
-
-Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ:
-
-‘saddhābalena samannāgatā bhavissāma sekhabalena, hirībalena … ottappabalena … vīriyabalena … paññābalena samannāgatā bhavissāma sekhabalenā’ti.
-
-Evañhi vo, bhikkhave, sikkhitabban”ti.
+Tasmātiha, bhikkhave, evaṁ sikkhitabbaṁ: ‘saddhābalena samannāgatā bhavissāma sekhabalena, hirībalena … ottappabalena … vīriyabalena … paññābalena samannāgatā bhavissāma sekhabalenā’ti. Evañhi vo, bhikkhave, sikkhitabban”ti.
 
 Dutiyaṁ.

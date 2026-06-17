@@ -2,18 +2,15 @@
 slug: sn1.58
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Uppathasutta
 ---
-
-“Kiṁsu uppatho akkhāto,
 
 kiṁsu rattindivakkhayo;
 
 Kiṁ malaṁ brahmacariyassa,
 
 kiṁ sinānamanodakan”ti.
-
-“Rāgo uppatho akkhāto,
 
 Vayo rattindivakkhayo;
 

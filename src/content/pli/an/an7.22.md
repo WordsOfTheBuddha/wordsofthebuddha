@@ -2,54 +2,21 @@
 slug: an7.22
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Vassakārasutta
 ---
 
-Evaṁ me sutaṁ—
+Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.
 
-ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.
+Tena kho pana samayena rājā māgadho ajātasattu vedehiputto vajjī abhiyātukāmo hoti. So evamāha: “ahaṁ hime vajjī evaṁmahiddhike evaṁmahānubhāve ucchecchāmi, vajjī vināsessāmi, vajjī anayabyasanaṁ āpādessāmī”ti.
 
-Tena kho pana samayena rājā māgadho ajātasattu vedehiputto vajjī abhiyātukāmo hoti.
+Atha kho rājā māgadho ajātasattu vedehiputto vassakāraṁ brāhmaṇaṁ māgadhamahāmattaṁ āmantesi: “ehi tvaṁ, brāhmaṇa, yena bhagavā tenupasaṅkama; upasaṅkamitvā mama vacanena bhagavato pāde sirasā vandāhi, appābādhaṁ appātaṅkaṁ lahuṭṭhānaṁ balaṁ phāsuvihāraṁ puccha: ‘rājā, bhante, māgadho ajātasattu vedehiputto bhagavato pāde sirasā vandati, appābādhaṁ appātaṅkaṁ lahuṭṭhānaṁ balaṁ phāsuvihāraṁ pucchatī’ti. Evañca vadehi: ‘rājā, bhante, māgadho ajātasattu vedehiputto vajjī abhiyātukāmo. So evamāha— ahaṁ hime vajjī evaṁmahiddhike evaṁmahānubhāve ucchecchāmi, vajjī vināsessāmi, vajjī anayabyasanaṁ āpādessāmī’ti. Yathā te bhagavā byākaroti, taṁ sādhukaṁ uggahetvā mama āroceyyāsi. Na hi tathāgatā vitathaṁ bhaṇantī”ti.
 
-So evamāha:
+“Evaṁ, bho”ti kho vassakāro brāhmaṇo māgadhamahāmatto rañño māgadhassa ajātasattussa vedehiputtassa paṭissutvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho vassakāro brāhmaṇo māgadhamahāmatto bhagavantaṁ etadavoca:
 
-“ahaṁ hime vajjī evaṁmahiddhike evaṁmahānubhāve ucchecchāmi, vajjī vināsessāmi, vajjī anayabyasanaṁ āpādessāmī”ti.
+“rājā, bho gotama, māgadho ajātasattu vedehiputto bhoto gotamassa pāde sirasā vandati, appābādhaṁ appātaṅkaṁ lahuṭṭhānaṁ balaṁ phāsuvihāraṁ pucchati. Rājā, bho gotama, māgadho ajātasattu vedehiputto vajjī abhiyātukāmo. So evamāha: ‘ahaṁ hime vajjī evaṁmahiddhike evaṁmahānubhāve ucchecchāmi, vajjī vināsessāmi, vajjī anayabyasanaṁ āpādessāmī’”ti.
 
-Atha kho rājā māgadho ajātasattu vedehiputto vassakāraṁ brāhmaṇaṁ māgadhamahāmattaṁ āmantesi:
-
-“ehi tvaṁ, brāhmaṇa, yena bhagavā tenupasaṅkama; upasaṅkamitvā mama vacanena bhagavato pāde sirasā vandāhi, appābādhaṁ appātaṅkaṁ lahuṭṭhānaṁ balaṁ phāsuvihāraṁ puccha:
-
-‘rājā, bhante, māgadho ajātasattu vedehiputto bhagavato pāde sirasā vandati, appābādhaṁ appātaṅkaṁ lahuṭṭhānaṁ balaṁ phāsuvihāraṁ pucchatī’ti.
-
-Evañca vadehi:
-
-‘rājā, bhante, māgadho ajātasattu vedehiputto vajjī abhiyātukāmo.
-
-So evamāha—
-
-ahaṁ hime vajjī evaṁmahiddhike evaṁmahānubhāve ucchecchāmi, vajjī vināsessāmi, vajjī anayabyasanaṁ āpādessāmī’ti.
-
-Yathā te bhagavā byākaroti, taṁ sādhukaṁ uggahetvā mama āroceyyāsi.
-
-Na hi tathāgatā vitathaṁ bhaṇantī”ti.
-
-“Evaṁ, bho”ti kho vassakāro brāhmaṇo māgadhamahāmatto rañño māgadhassa ajātasattussa vedehiputtassa paṭissutvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi.
-
-Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho vassakāro brāhmaṇo māgadhamahāmatto bhagavantaṁ etadavoca:
-
-“rājā, bho gotama, māgadho ajātasattu vedehiputto bhoto gotamassa pāde sirasā vandati, appābādhaṁ appātaṅkaṁ lahuṭṭhānaṁ balaṁ phāsuvihāraṁ pucchati.
-
-Rājā, bho gotama, māgadho ajātasattu vedehiputto vajjī abhiyātukāmo.
-
-So evamāha:
-
-‘ahaṁ hime vajjī evaṁmahiddhike evaṁmahānubhāve ucchecchāmi, vajjī vināsessāmi, vajjī anayabyasanaṁ āpādessāmī’”ti.
-
-Tena kho pana samayena āyasmā ānando bhagavato piṭṭhito ṭhito hoti bhagavantaṁ bījayamāno.
-
-Atha kho bhagavā āyasmantaṁ ānandaṁ āmantesi:
-
-“kinti te, ānanda, sutaṁ: ‘vajjī abhiṇhaṁ sannipātā sannipātabahulā’”ti?
+Tena kho pana samayena āyasmā ānando bhagavato piṭṭhito ṭhito hoti bhagavantaṁ bījayamāno. Atha kho bhagavā āyasmantaṁ ānandaṁ āmantesi: “kinti te, ānanda, sutaṁ: ‘vajjī abhiṇhaṁ sannipātā sannipātabahulā’”ti?
 
 “Sutaṁ metaṁ, bhante: ‘vajjī abhiṇhaṁ sannipātā sannipātabahulā’”ti.
 
@@ -93,22 +60,10 @@ Kinti te, ānanda, sutaṁ: ‘vajjīnaṁ arahantesu dhammikā rakkhāvaraṇag
 
 Atha kho bhagavā vassakāraṁ brāhmaṇaṁ māgadhamahāmattaṁ āmantesi:
 
-“ekamidāhaṁ, brāhmaṇa, samayaṁ vesāliyaṁ viharāmi sārandade cetiye.
+“ekamidāhaṁ, brāhmaṇa, samayaṁ vesāliyaṁ viharāmi sārandade cetiye. Tatrāhaṁ, brāhmaṇa, vajjīnaṁ ime satta aparihāniye dhamme desesiṁ. Yāvakīvañca, brāhmaṇa, ime satta aparihāniyā dhammā vajjīsu ṭhassanti, imesu ca sattasu aparihāniyesu dhammesu vajjī sandississanti; vuddhiyeva, brāhmaṇa, vajjīnaṁ pāṭikaṅkhā, no parihānī”ti.
 
-Tatrāhaṁ, brāhmaṇa, vajjīnaṁ ime satta aparihāniye dhamme desesiṁ.
+“Ekamekenapi, bho gotama, aparihāniyena dhammena samannāgatānaṁ vajjīnaṁ vuddhiyeva pāṭikaṅkhā, no parihāni; ko pana vādo sattahi aparihāniyehi dhammehi. Akaraṇīyā ca, bho gotama, vajjī raññā māgadhena ajātasattunā vedehiputtena yadidaṁ yuddhassa, aññatra upalāpanāya, aññatra mithubhedā. Handa ca dāni mayaṁ, bho gotama, gacchāma, bahukiccā mayaṁ bahukaraṇīyā”ti.
 
-Yāvakīvañca, brāhmaṇa, ime satta aparihāniyā dhammā vajjīsu ṭhassanti, imesu ca sattasu aparihāniyesu dhammesu vajjī sandississanti; vuddhiyeva, brāhmaṇa, vajjīnaṁ pāṭikaṅkhā, no parihānī”ti.
-
-“Ekamekenapi, bho gotama, aparihāniyena dhammena samannāgatānaṁ vajjīnaṁ vuddhiyeva pāṭikaṅkhā, no parihāni;
-
-ko pana vādo sattahi aparihāniyehi dhammehi.
-
-Akaraṇīyā ca, bho gotama, vajjī raññā māgadhena ajātasattunā vedehiputtena yadidaṁ yuddhassa, aññatra upalāpanāya, aññatra mithubhedā.
-
-Handa ca dāni mayaṁ, bho gotama, gacchāma, bahukiccā mayaṁ bahukaraṇīyā”ti.
-
-“Yassadāni tvaṁ, brāhmaṇa, kālaṁ maññasī”ti.
-
-Atha kho vassakāro brāhmaṇo māgadhamahāmatto bhagavato bhāsitaṁ abhinanditvā anumoditvā uṭṭhāyāsanā pakkāmīti.
+“Yassadāni tvaṁ, brāhmaṇa, kālaṁ maññasī”ti. Atha kho vassakāro brāhmaṇo māgadhamahāmatto bhagavato bhāsitaṁ abhinanditvā anumoditvā uṭṭhāyāsanā pakkāmīti.
 
 Dutiyaṁ.

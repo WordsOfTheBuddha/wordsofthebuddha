@@ -2,6 +2,7 @@
 slug: an5.242
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamakāyaduccaritasutta
 ---
 

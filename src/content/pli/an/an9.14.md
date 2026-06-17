@@ -2,6 +2,7 @@
 slug: an9.14
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Samiddhisutta
 ---
 
@@ -43,26 +44,6 @@ Atha kho āyasmā samiddhi yenāyasmā sāriputto tenupasaṅkami; upasaṅkamit
 
 “Amatogadhā, bhante”ti.
 
-“‘Kimārammaṇā, samiddhi, purisassa saṅkappavitakkā uppajjantī’ti, iti puṭṭho samāno ‘nāmarūpārammaṇā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kva nānattaṁ gacchantī’ti, iti puṭṭho samāno ‘dhātūsu, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁsamudayā’ti, iti puṭṭho samāno ‘phassasamudayā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁsamosaraṇā’ti, iti puṭṭho samāno ‘vedanāsamosaraṇā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁpamukhā’ti, iti puṭṭho samāno ‘samādhippamukhā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁadhipateyyā’ti, iti puṭṭho samāno ‘satādhipateyyā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁuttarā’ti, iti puṭṭho samāno ‘paññuttarā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁsārā’ti, iti puṭṭho samāno ‘vimuttisārā, bhante’ti vadesi.
-
-‘Te pana, samiddhi, kiṁogadhā’ti, iti puṭṭho samāno ‘amatogadhā, bhante’ti vadesi.
-
-Sādhu sādhu, samiddhi.
-
-Sādhu kho tvaṁ, samiddhi, puṭṭho puṭṭho vissajjesi, tena ca mā maññī”ti.
+“‘Kimārammaṇā, samiddhi, purisassa saṅkappavitakkā uppajjantī’ti, iti puṭṭho samāno ‘nāmarūpārammaṇā, bhante’ti vadesi. ‘Te pana, samiddhi, kva nānattaṁ gacchantī’ti, iti puṭṭho samāno ‘dhātūsu, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁsamudayā’ti, iti puṭṭho samāno ‘phassasamudayā, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁsamosaraṇā’ti, iti puṭṭho samāno ‘vedanāsamosaraṇā, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁpamukhā’ti, iti puṭṭho samāno ‘samādhippamukhā, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁadhipateyyā’ti, iti puṭṭho samāno ‘satādhipateyyā, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁuttarā’ti, iti puṭṭho samāno ‘paññuttarā, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁsārā’ti, iti puṭṭho samāno ‘vimuttisārā, bhante’ti vadesi. ‘Te pana, samiddhi, kiṁogadhā’ti, iti puṭṭho samāno ‘amatogadhā, bhante’ti vadesi. Sādhu sādhu, samiddhi. Sādhu kho tvaṁ, samiddhi, puṭṭho puṭṭho vissajjesi, tena ca mā maññī”ti.
 
 Catutthaṁ.

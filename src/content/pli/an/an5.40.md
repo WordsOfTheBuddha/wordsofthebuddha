@@ -2,50 +2,19 @@
 slug: an5.40
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Mahāsālaputtasutta
 ---
 
-“Himavantaṁ, bhikkhave, pabbatarājaṁ nissāya mahāsālā pañcahi vaḍḍhīhi vaḍḍhanti.
+“Himavantaṁ, bhikkhave, pabbatarājaṁ nissāya mahāsālā pañcahi vaḍḍhīhi vaḍḍhanti. Katamāhi pañcahi? Sākhāpattapalāsena vaḍḍhanti; tacena vaḍḍhanti; papaṭikāya vaḍḍhanti; pheggunā vaḍḍhanti; sārena vaḍḍhanti. Himavantaṁ, bhikkhave, pabbatarājaṁ nissāya mahāsālā imāhi pañcahi vaḍḍhīhi vaḍḍhanti.
 
-Katamāhi pañcahi?
-
-Sākhāpattapalāsena vaḍḍhanti;
-
-tacena vaḍḍhanti;
-
-papaṭikāya vaḍḍhanti;
-
-pheggunā vaḍḍhanti;
-
-sārena vaḍḍhanti.
-
-Himavantaṁ, bhikkhave, pabbatarājaṁ nissāya mahāsālā imāhi pañcahi vaḍḍhīhi vaḍḍhanti.
-
-Evamevaṁ kho, bhikkhave, saddhaṁ kulaputtaṁ nissāya antojano pañcahi vaḍḍhīhi vaḍḍhati.
-
-Katamāhi pañcahi?
-
-Saddhāya vaḍḍhati;
-
-sīlena vaḍḍhati;
-
-sutena vaḍḍhati;
-
-cāgena vaḍḍhati;
-
-paññāya vaḍḍhati.
-
-Saddhaṁ, bhikkhave, kulaputtaṁ nissāya antojano imāhi pañcahi vaḍḍhīhi vaḍḍhatīti.
-
-Yathā hi pabbato selo,
+Evamevaṁ kho, bhikkhave, saddhaṁ kulaputtaṁ nissāya antojano pañcahi vaḍḍhīhi vaḍḍhati. Katamāhi pañcahi? Saddhāya vaḍḍhati; sīlena vaḍḍhati; sutena vaḍḍhati; cāgena vaḍḍhati; paññāya vaḍḍhati. Saddhaṁ, bhikkhave, kulaputtaṁ nissāya antojano imāhi pañcahi vaḍḍhīhi vaḍḍhatīti.
 
 araññasmiṁ brahāvane;
 
 Taṁ rukkhā upanissāya,
 
 vaḍḍhante te vanappatī.
-
-Tatheva sīlasampannaṁ,
 
 Saddhaṁ kulaputtaṁ imaṁ;
 
@@ -57,15 +26,11 @@ Amaccā ñātisaṅghā ca,
 
 Ye cassa anujīvino.
 
-Tyassa sīlavato sīlaṁ,
-
 cāgaṁ sucaritāni ca;
 
 Passamānānukubbanti,
 
 ye bhavanti vicakkhaṇā.
-
-Idha dhammaṁ caritvāna,
 
 maggaṁ sugatigāminaṁ;
 
@@ -78,8 +43,6 @@ Dasamaṁ.
 Sumanavaggo catuttho.
 
 Tassuddānaṁ
-
-Sumanā cundī uggaho,
 
 sīho dānānisaṁsako;
 

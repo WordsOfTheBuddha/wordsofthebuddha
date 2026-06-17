@@ -2,10 +2,9 @@
 slug: sn1.45
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Anomasutta
 ---
-
-“Anomanāmaṁ nipuṇatthadassiṁ,
 
 Paññādadaṁ kāmālaye asattaṁ;
 

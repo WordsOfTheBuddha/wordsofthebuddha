@@ -2,15 +2,10 @@
 slug: an4.154
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Satibalasutta
 ---
 
-“Cattārimāni, bhikkhave, balāni.
-
-Katamāni cattāri?
-
-Satibalaṁ, samādhibalaṁ, anavajjabalaṁ, saṅgahabalaṁ—
-
-Imāni kho, bhikkhave, cattāri balānī”ti.
+“Cattārimāni, bhikkhave, balāni. Katamāni cattāri? Satibalaṁ, samādhibalaṁ, anavajjabalaṁ, saṅgahabalaṁ— Imāni kho, bhikkhave, cattāri balānī”ti.
 
 Catutthaṁ.

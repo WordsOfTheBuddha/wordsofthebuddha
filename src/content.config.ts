@@ -29,9 +29,12 @@ const bookSchema = baseSchema.extend({
 });
 
 const referenceSchema = baseSchema.extend({
+	title: z.string().optional(),
 	translator: z.string().optional(),
 	license: z.string().optional(),
 	source: z.string().optional(),
+	edition: z.string().optional(),
+	granularity: z.string().optional(),
 });
 
 function createCollection(
@@ -59,10 +62,21 @@ const anthologies = createCollection(
 	"*.mdx",
 	bookSchema,
 );
+const pliSchema = baseSchema.extend({
+	title: z.string().optional(),
+	source: z.string().optional(),
+	edition: z.string().optional(),
+	granularity: z.string().optional(),
+});
 const all = createCollection("src/content/en/", "**/*.mdx");
-const pliAll = createCollection("src/content/pli/", "**/*.md");
+const pliAll = createCollection("src/content/pli/", "**/*.md", pliSchema);
 const referenceSujato = createCollection(
 	"src/content/references/sujato/",
+	"**/*.md",
+	referenceSchema,
+);
+const referencePliMs = createCollection(
+	"src/content/references/pli-ms/",
 	"**/*.md",
 	referenceSchema,
 );
@@ -81,4 +95,5 @@ export const collections = {
 	all,
 	pliAll,
 	referenceSujato,
+	referencePliMs,
 };

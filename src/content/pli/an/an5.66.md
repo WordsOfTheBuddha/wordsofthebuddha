@@ -2,12 +2,11 @@
 slug: an5.66
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Sājīvasutta
 ---
 
-“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnaṁ.
-
-Katamehi pañcahi?
+“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnaṁ. Katamehi pañcahi?
 
 Idha, bhikkhave, bhikkhu attanā ca sīlasampanno hoti, sīlasampadāya kathāya ca kataṁ pañhaṁ byākattā hoti;
 

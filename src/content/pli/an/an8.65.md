@@ -2,60 +2,27 @@
 slug: an8.65
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Abhibhāyatanasutta
 ---
 
-“Aṭṭhimāni, bhikkhave, abhibhāyatanāni.
+“Aṭṭhimāni, bhikkhave, abhibhāyatanāni. Katamāni aṭṭha?
 
-Katamāni aṭṭha?
+Ajjhattaṁ rūpasaññī eko bahiddhā rūpāni passati parittāni suvaṇṇadubbaṇṇāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ paṭhamaṁ abhibhāyatanaṁ.
 
-Ajjhattaṁ rūpasaññī eko bahiddhā rūpāni passati parittāni suvaṇṇadubbaṇṇāni.
+Ajjhattaṁ rūpasaññī eko bahiddhā rūpāni passati appamāṇāni suvaṇṇadubbaṇṇāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ dutiyaṁ abhibhāyatanaṁ.
 
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
+Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati parittāni suvaṇṇadubbaṇṇāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ tatiyaṁ abhibhāyatanaṁ.
 
-Idaṁ paṭhamaṁ abhibhāyatanaṁ.
+Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati appamāṇāni suvaṇṇadubbaṇṇāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ catutthaṁ abhibhāyatanaṁ.
 
-Ajjhattaṁ rūpasaññī eko bahiddhā rūpāni passati appamāṇāni suvaṇṇadubbaṇṇāni.
+Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati nīlāni nīlavaṇṇāni nīlanidassanāni nīlanibhāsāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ pañcamaṁ abhibhāyatanaṁ.
 
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
+Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati pītāni pītavaṇṇāni pītanidassanāni pītanibhāsāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ chaṭṭhaṁ abhibhāyatanaṁ.
 
-Idaṁ dutiyaṁ abhibhāyatanaṁ.
+Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati lohitakāni lohitakavaṇṇāni lohitakanidassanāni lohitakanibhāsāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ sattamaṁ abhibhāyatanaṁ.
 
-Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati parittāni suvaṇṇadubbaṇṇāni.
-
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
-
-Idaṁ tatiyaṁ abhibhāyatanaṁ.
-
-Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati appamāṇāni suvaṇṇadubbaṇṇāni.
-
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
-
-Idaṁ catutthaṁ abhibhāyatanaṁ.
-
-Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati nīlāni nīlavaṇṇāni nīlanidassanāni nīlanibhāsāni.
-
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
-
-Idaṁ pañcamaṁ abhibhāyatanaṁ.
-
-Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati pītāni pītavaṇṇāni pītanidassanāni pītanibhāsāni.
-
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
-
-Idaṁ chaṭṭhaṁ abhibhāyatanaṁ.
-
-Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati lohitakāni lohitakavaṇṇāni lohitakanidassanāni lohitakanibhāsāni.
-
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
-
-Idaṁ sattamaṁ abhibhāyatanaṁ.
-
-Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati odātāni odātavaṇṇāni odātanidassanāni odātanibhāsāni.
-
-‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti.
-
-Idaṁ aṭṭhamaṁ abhibhāyatanaṁ.
+Ajjhattaṁ arūpasaññī eko bahiddhā rūpāni passati odātāni odātavaṇṇāni odātanidassanāni odātanibhāsāni. ‘Tāni abhibhuyya jānāmi passāmī’ti, evaṁsaññī hoti. Idaṁ aṭṭhamaṁ abhibhāyatanaṁ.
 
 Imāni kho, bhikkhave, aṭṭha abhibhāyatanānī”ti.
 

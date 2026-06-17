@@ -2,10 +2,9 @@
 slug: snp5.17
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Piṅgiyamāṇavapucchā
 ---
-
-“Jiṇṇohamasmi abalo vītavaṇṇo,
 
 (iccāyasmā piṅgiyo)
 
@@ -17,8 +16,6 @@ Māhaṁ nassaṁ momuho antarāva,
 
 Jātijarāya idha vippahānaṁ”.
 
-“Disvāna rūpesu vihaññamāne,
-
 (piṅgiyāti bhagavā)
 
 Ruppanti rūpesu janā pamattā;
@@ -26,8 +23,6 @@ Ruppanti rūpesu janā pamattā;
 Tasmā tuvaṁ piṅgiya appamatto,
 
 Jahassu rūpaṁ apunabbhavāya”.
-
-“Disā catasso vidisā catasso,
 
 Uddhaṁ adho dasa disā imāyo;
 
@@ -38,8 +33,6 @@ Atho aviññātaṁ kiñcanamatthi loke;
 Ācikkha dhammaṁ yamahaṁ vijaññaṁ,
 
 Jātijarāya idha vippahānaṁ”.
-
-“Taṇhādhipanne manuje pekkhamāno,
 
 (piṅgiyāti bhagavā)
 

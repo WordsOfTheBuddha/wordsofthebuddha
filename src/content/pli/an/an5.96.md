@@ -2,12 +2,11 @@
 slug: an5.96
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Sutadharasutta
 ---
 
-“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu ānāpānassatiṁ āsevanto nacirasseva akuppaṁ paṭivijjhati.
-
-Katamehi pañcahi?
+“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu ānāpānassatiṁ āsevanto nacirasseva akuppaṁ paṭivijjhati. Katamehi pañcahi?
 
 Idha, bhikkhave, bhikkhu appaṭṭho hoti appakicco subharo susantoso jīvitaparikkhāresu;
 

@@ -2,32 +2,17 @@
 slug: an3.120
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamasoceyyasutta
 ---
 
-“Tīṇimāni, bhikkhave, soceyyāni.
+“Tīṇimāni, bhikkhave, soceyyāni. Katamāni tīṇi? Kāyasoceyyaṁ, vacīsoceyyaṁ, manosoceyyaṁ.
 
-Katamāni tīṇi?
+Katamañca, bhikkhave, kāyasoceyyaṁ? Idha, bhikkhave, ekacco pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, kāmesumicchācārā paṭivirato hoti. Idaṁ vuccati, bhikkhave, kāyasoceyyaṁ.
 
-Kāyasoceyyaṁ, vacīsoceyyaṁ, manosoceyyaṁ.
+Katamañca, bhikkhave, vacīsoceyyaṁ? Idha, bhikkhave, ekacco musāvādā paṭivirato hoti, pisuṇāya vācāya paṭivirato hoti, pharusāya vācāya paṭivirato hoti, samphappalāpā paṭivirato hoti. Idaṁ vuccati, bhikkhave, vacīsoceyyaṁ.
 
-Katamañca, bhikkhave, kāyasoceyyaṁ?
-
-Idha, bhikkhave, ekacco pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, kāmesumicchācārā paṭivirato hoti.
-
-Idaṁ vuccati, bhikkhave, kāyasoceyyaṁ.
-
-Katamañca, bhikkhave, vacīsoceyyaṁ?
-
-Idha, bhikkhave, ekacco musāvādā paṭivirato hoti, pisuṇāya vācāya paṭivirato hoti, pharusāya vācāya paṭivirato hoti, samphappalāpā paṭivirato hoti.
-
-Idaṁ vuccati, bhikkhave, vacīsoceyyaṁ.
-
-Katamañca, bhikkhave, manosoceyyaṁ?
-
-Idha, bhikkhave, ekacco anabhijjhālu hoti abyāpannacitto sammādiṭṭhiko.
-
-Idaṁ vuccati, bhikkhave, manosoceyyaṁ.
+Katamañca, bhikkhave, manosoceyyaṁ? Idha, bhikkhave, ekacco anabhijjhālu hoti abyāpannacitto sammādiṭṭhiko. Idaṁ vuccati, bhikkhave, manosoceyyaṁ.
 
 Imāni kho, bhikkhave, tīṇi soceyyānī”ti.
 

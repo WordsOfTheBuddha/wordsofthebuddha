@@ -2,20 +2,15 @@
 slug: an5.163
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Sākacchasutta
 ---
 
-Tatra kho āyasmā sāriputto bhikkhū āmantesi:
+Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.
 
-“āvuso bhikkhave”ti.
+“Āvuso”ti kho te bhikkhū āyasmato sāriputtassa paccassosuṁ. Āyasmā sāriputto etadavoca:
 
-“Āvuso”ti kho te bhikkhū āyasmato sāriputtassa paccassosuṁ.
-
-Āyasmā sāriputto etadavoca:
-
-“Pañcahāvuso, dhammehi samannāgato bhikkhu alaṁ sākaccho sabrahmacārīnaṁ.
-
-Katamehi pañcahi?
+“Pañcahāvuso, dhammehi samannāgato bhikkhu alaṁ sākaccho sabrahmacārīnaṁ. Katamehi pañcahi?
 
 Idhāvuso, bhikkhu attanā ca sīlasampanno hoti, sīlasampadākathāya ca āgataṁ pañhaṁ byākattā hoti;
 

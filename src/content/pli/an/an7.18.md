@@ -2,6 +2,7 @@
 slug: an7.18
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Anattānupassīsutta
 ---
 

@@ -2,50 +2,17 @@
 slug: an6.2
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Dutiyaāhuneyyasutta
 ---
 
-“Chahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassa.
-
-Katamehi chahi?
+“Chahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassa. Katamehi chahi?
 
 Idha, bhikkhave, bhikkhu anekavihitaṁ iddhividhaṁ paccanubhoti—ekopi hutvā bahudhā hoti, bahudhāpi hutvā eko hoti; āvibhāvaṁ tirobhāvaṁ; tirokuṭṭaṁ tiropākāraṁ tiropabbataṁ asajjamāno gacchati, seyyathāpi ākāse; pathaviyāpi ummujjanimujjaṁ karoti, seyyathāpi udake; udakepi abhijjamāne gacchati, seyyathāpi pathaviyaṁ; ākāsepi pallaṅkena kamati, seyyathāpi pakkhī sakuṇo; imepi candimasūriye evaṁmahiddhike evaṁmahānubhāve pāṇinā parimasati parimajjati; yāva brahmalokāpi kāyena vasaṁ vatteti.
 
 Dibbāya, sotadhātuyā visuddhāya atikkantamānusikāya ubho sadde suṇāti—dibbe ca mānuse ca, ye dūre santike ca.
 
-Parasattānaṁ parapuggalānaṁ cetasā ceto paricca pajānāti.
-
-Sarāgaṁ vā cittaṁ sarāgaṁ cittanti pajānāti,
-
-vītarāgaṁ vā cittaṁ …
-
-sadosaṁ vā cittaṁ …
-
-vītadosaṁ vā cittaṁ …
-
-samohaṁ vā cittaṁ …
-
-vītamohaṁ vā cittaṁ …
-
-saṅkhittaṁ vā cittaṁ …
-
-vikkhittaṁ vā cittaṁ …
-
-mahaggataṁ vā cittaṁ …
-
-amahaggataṁ vā cittaṁ …
-
-sauttaraṁ vā cittaṁ …
-
-anuttaraṁ vā cittaṁ …
-
-samāhitaṁ vā cittaṁ …
-
-asamāhitaṁ vā cittaṁ …
-
-vimuttaṁ vā cittaṁ …
-
-avimuttaṁ vā cittaṁ avimuttaṁ cittanti pajānāti.
+Parasattānaṁ parapuggalānaṁ cetasā ceto paricca pajānāti. Sarāgaṁ vā cittaṁ sarāgaṁ cittanti pajānāti, vītarāgaṁ vā cittaṁ … sadosaṁ vā cittaṁ … vītadosaṁ vā cittaṁ … samohaṁ vā cittaṁ … vītamohaṁ vā cittaṁ … saṅkhittaṁ vā cittaṁ … vikkhittaṁ vā cittaṁ … mahaggataṁ vā cittaṁ … amahaggataṁ vā cittaṁ … sauttaraṁ vā cittaṁ … anuttaraṁ vā cittaṁ … samāhitaṁ vā cittaṁ … asamāhitaṁ vā cittaṁ … vimuttaṁ vā cittaṁ … avimuttaṁ vā cittaṁ avimuttaṁ cittanti pajānāti.
 
 Anekavihitaṁ pubbenivāsaṁ anussarati, seyyathidaṁ—ekampi jātiṁ dvepi jātiyo …pe…. Iti sākāraṁ sauddesaṁ anekavihitaṁ pubbenivāsaṁ anussarati.
 

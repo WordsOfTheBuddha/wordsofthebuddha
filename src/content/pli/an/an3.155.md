@@ -2,6 +2,7 @@
 slug: an3.155
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Pubbaṇhasutta
 ---
 
@@ -11,15 +12,11 @@ Ye, bhikkhave, sattā majjhanhikasamayaṁ kāyena sucaritaṁ caranti, vācāya
 
 Ye, bhikkhave, sattā sāyanhasamayaṁ kāyena sucaritaṁ caranti, vācāya sucaritaṁ caranti, manasā sucaritaṁ caranti, susāyanho, bhikkhave, tesaṁ sattānanti.
 
-Sunakkhattaṁ sumaṅgalaṁ,
-
 suppabhātaṁ suhuṭṭhitaṁ;
 
 Sukhaṇo sumuhutto ca,
 
 suyiṭṭhaṁ brahmacārisu.
-
-Padakkhiṇaṁ kāyakammaṁ,
 
 vācākammaṁ padakkhiṇaṁ;
 
@@ -30,8 +27,6 @@ paṇīdhi te padakkhiṇe;
 Padakkhiṇāni katvāna,
 
 labhantatthe padakkhiṇe.
-
-Te atthaladdhā sukhitā,
 
 viruḷhā buddhasāsane;
 
@@ -44,8 +39,6 @@ Dasamaṁ.
 Maṅgalavaggo pañcamo.
 
 Tassuddānaṁ
-
-Akusalañca sāvajjaṁ,
 
 visamāsucinā saha;
 

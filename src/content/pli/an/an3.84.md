@@ -2,37 +2,22 @@
 slug: an3.84
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Vajjiputtasutta
 ---
 
-Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
+Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho aññataro vajjiputtako bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so vajjiputtako bhikkhu bhagavantaṁ etadavoca:
 
-Atha kho aññataro vajjiputtako bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so vajjiputtako bhikkhu bhagavantaṁ etadavoca:
+“sādhikamidaṁ, bhante, diyaḍḍhasikkhāpadasataṁ anvaddhamāsaṁ uddesaṁ āgacchati. Nāhaṁ, bhante, ettha sakkomi sikkhitun”ti.
 
-“sādhikamidaṁ, bhante, diyaḍḍhasikkhāpadasataṁ anvaddhamāsaṁ uddesaṁ āgacchati.
+“Sakkhissasi pana tvaṁ, bhikkhu, tīsu sikkhāsu sikkhituṁ— adhisīlasikkhāya, adhicittasikkhāya adhipaññāsikkhāyā”ti?
 
-Nāhaṁ, bhante, ettha sakkomi sikkhitun”ti.
+“Sakkomahaṁ, bhante, tīsu sikkhāsu sikkhituṁ— adhisīlasikkhāya, adhicittasikkhāya, adhipaññāsikkhāyā”ti.
 
-“Sakkhissasi pana tvaṁ, bhikkhu, tīsu sikkhāsu sikkhituṁ—
+“Tasmātiha tvaṁ, bhikkhu, tīsu sikkhāsu sikkhassu— adhisīlasikkhāya, adhicittasikkhāya, adhipaññāsikkhāya.
 
-adhisīlasikkhāya, adhicittasikkhāya adhipaññāsikkhāyā”ti?
+Yato kho tvaṁ, bhikkhu, adhisīlampi sikkhissasi, adhicittampi sikkhissasi, adhipaññampi sikkhissasi, tassa tuyhaṁ bhikkhu adhisīlampi sikkhato adhicittampi sikkhato adhipaññampi sikkhato rāgo pahīyissati, doso pahīyissati, moho pahīyissati. So tvaṁ rāgassa pahānā dosassa pahānā mohassa pahānā yaṁ akusalaṁ na taṁ karissasi, yaṁ pāpaṁ na taṁ sevissasī”ti.
 
-“Sakkomahaṁ, bhante, tīsu sikkhāsu sikkhituṁ—
-
-adhisīlasikkhāya, adhicittasikkhāya, adhipaññāsikkhāyā”ti.
-
-“Tasmātiha tvaṁ, bhikkhu, tīsu sikkhāsu sikkhassu—
-
-adhisīlasikkhāya, adhicittasikkhāya, adhipaññāsikkhāya.
-
-Yato kho tvaṁ, bhikkhu, adhisīlampi sikkhissasi, adhicittampi sikkhissasi, adhipaññampi sikkhissasi, tassa tuyhaṁ bhikkhu adhisīlampi sikkhato adhicittampi sikkhato adhipaññampi sikkhato rāgo pahīyissati, doso pahīyissati, moho pahīyissati.
-
-So tvaṁ rāgassa pahānā dosassa pahānā mohassa pahānā yaṁ akusalaṁ na taṁ karissasi, yaṁ pāpaṁ na taṁ sevissasī”ti.
-
-Atha kho so bhikkhu aparena samayena adhisīlampi sikkhi, adhicittampi sikkhi, adhipaññampi sikkhi.
-
-Tassa adhisīlampi sikkhato adhicittampi sikkhato adhipaññampi sikkhato rāgo pahīyi, doso pahīyi, moho pahīyi.
-
-So rāgassa pahānā dosassa pahānā mohassa pahānā yaṁ akusalaṁ taṁ nākāsi, yaṁ pāpaṁ taṁ na sevīti.
+Atha kho so bhikkhu aparena samayena adhisīlampi sikkhi, adhicittampi sikkhi, adhipaññampi sikkhi. Tassa adhisīlampi sikkhato adhicittampi sikkhato adhipaññampi sikkhato rāgo pahīyi, doso pahīyi, moho pahīyi. So rāgassa pahānā dosassa pahānā mohassa pahānā yaṁ akusalaṁ taṁ nākāsi, yaṁ pāpaṁ taṁ na sevīti.
 
 Catutthaṁ.

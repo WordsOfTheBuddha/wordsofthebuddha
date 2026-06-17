@@ -2,26 +2,15 @@
 slug: an5.159
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Udāyīsutta
 ---
 
-Evaṁ me sutaṁ—
-
-ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
-
-Tena kho pana samayena āyasmā udāyī mahatiyā gihiparisāya parivuto dhammaṁ desento nisinno hoti.
-
-Addasā kho āyasmā ānando āyasmantaṁ udāyiṁ mahatiyā gihiparisāya parivutaṁ dhammaṁ desentaṁ nisinnaṁ.
-
-Disvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:
+Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme. Tena kho pana samayena āyasmā udāyī mahatiyā gihiparisāya parivuto dhammaṁ desento nisinno hoti. Addasā kho āyasmā ānando āyasmantaṁ udāyiṁ mahatiyā gihiparisāya parivutaṁ dhammaṁ desentaṁ nisinnaṁ. Disvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:
 
 “āyasmā, bhante, udāyī mahatiyā gihiparisāya parivuto dhammaṁ desetī”ti.
 
-“Na kho, ānanda, sukaraṁ paresaṁ dhammaṁ desetuṁ.
-
-Paresaṁ, ānanda, dhammaṁ desentena pañca dhamme ajjhattaṁ upaṭṭhāpetvā paresaṁ dhammo desetabbo.
-
-Katame pañca?
+“Na kho, ānanda, sukaraṁ paresaṁ dhammaṁ desetuṁ. Paresaṁ, ānanda, dhammaṁ desentena pañca dhamme ajjhattaṁ upaṭṭhāpetvā paresaṁ dhammo desetabbo. Katame pañca?
 
 ‘Anupubbiṁ kathaṁ kathessāmī’ti paresaṁ dhammo desetabbo;
 
@@ -33,8 +22,6 @@ Katame pañca?
 
 ‘attānañca parañca anupahacca kathaṁ kathessāmī’ti paresaṁ dhammo desetabbo.
 
-Na kho, ānanda, sukaraṁ paresaṁ dhammaṁ desetuṁ.
-
-Paresaṁ, ānanda, dhammaṁ desentena ime pañca dhamme ajjhattaṁ upaṭṭhāpetvā paresaṁ dhammo desetabbo”ti.
+Na kho, ānanda, sukaraṁ paresaṁ dhammaṁ desetuṁ. Paresaṁ, ānanda, dhammaṁ desentena ime pañca dhamme ajjhattaṁ upaṭṭhāpetvā paresaṁ dhammo desetabbo”ti.
 
 Navamaṁ.

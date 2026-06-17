@@ -2,6 +2,7 @@
 slug: an1.278-286
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: 22. Dutiyavagga
 ---
 
@@ -17,19 +18,7 @@ title: 22. Dutiyavagga
 
 285–286
 
-“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ ekissā lokadhātuyā dve rājāno cakkavattī apubbaṁ acarimaṁ uppajjeyyuṁ. Netaṁ ṭhānaṁ vijjati.
-
-“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ itthī arahaṁ assa sammāsambuddho. Netaṁ ṭhānaṁ vijjati.
-
-“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ itthī rājā assa cakkavattī. Netaṁ ṭhānaṁ vijjati.
-
-“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ itthī sakkattaṁ kāreyya …pe… mārattaṁ kāreyya …pe… brahmattaṁ kāreyya. Netaṁ ṭhānaṁ vijjati.
-
-“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ kāyaduccaritassa iṭṭho kanto manāpo vipāko nibbatteyya. Netaṁ ṭhānaṁ vijjati.
-
-“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ vacīduccaritassa …pe… yaṁ manoduccaritassa iṭṭho kanto manāpo vipāko nibbatteyya. Netaṁ ṭhānaṁ vijjati.
-
-Ṭhānañca kho etaṁ, bhikkhave, vijjati yaṁ ekissā lokadhātuyā eko rājā cakkavattī uppajjeyya. Ṭhānametaṁ vijjatī”ti.
+“Aṭṭhānametaṁ, bhikkhave, anavakāso yaṁ vacīduccaritassa …pe… yaṁ manoduccaritassa iṭṭho kanto manāpo vipāko nibbatteyya. Netaṁ ṭhānaṁ vijjati. Ṭhānañca kho etaṁ, bhikkhave, vijjati yaṁ ekissā lokadhātuyā eko rājā cakkavattī uppajjeyya. Ṭhānametaṁ vijjatī”ti.
 
 Ṭhānañca kho, etaṁ, bhikkhave, vijjati yaṁ puriso arahaṁ assa sammāsambuddho. Ṭhānametaṁ vijjatī”ti.
 

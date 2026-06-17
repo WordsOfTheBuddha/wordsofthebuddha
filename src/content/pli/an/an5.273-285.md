@@ -2,6 +2,7 @@
 slug: an5.273-285
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Senāsanapaññāpakasuttādi
 ---
 
@@ -33,13 +34,7 @@ Sāmaṇerapesako na sammannitabbo …pe… sāmaṇerapesako sammannitabbo …p
 
 Sammato na pesetabbo …pe… sammato pesetabbo …pe….
 
-Sāmaṇerapesako bālo veditabbo …pe… paṇḍito veditabbo … khataṁ upahataṁ attānaṁ pariharati … akkhataṁ anupahataṁ attānaṁ pariharati … yathābhataṁ nikkhitto evaṁ niraye … yathābhataṁ nikkhitto evaṁ sagge.
-
-Katamehi pañcahi?
-
-Na chandāgatiṁ gacchati, na dosāgatiṁ gacchati, na mohāgatiṁ gacchati, na bhayāgatiṁ gacchati, pesitāpesitaṁ jānāti.
-
-Imehi kho, bhikkhave, pañcahi dhammehi samannāgato sāmaṇerapesako yathābhataṁ nikkhitto evaṁ sagge”ti.
+Sāmaṇerapesako bālo veditabbo …pe… paṇḍito veditabbo … khataṁ upahataṁ attānaṁ pariharati … akkhataṁ anupahataṁ attānaṁ pariharati … yathābhataṁ nikkhitto evaṁ niraye … yathābhataṁ nikkhitto evaṁ sagge. Katamehi pañcahi? Na chandāgatiṁ gacchati, na dosāgatiṁ gacchati, na mohāgatiṁ gacchati, na bhayāgatiṁ gacchati, pesitāpesitaṁ jānāti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato sāmaṇerapesako yathābhataṁ nikkhitto evaṁ sagge”ti.
 
 Cuddasamaṁ.
 

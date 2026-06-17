@@ -2,6 +2,7 @@
 slug: an2.163-179
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: 15. Samāpattivagga
 ---
 
@@ -39,109 +40,7 @@ title: 15. Samāpattivagga
 
 179
 
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Katame dve?
-
-Samāpattikusalatā ca samāpattivuṭṭhānakusalatā ca.
-
-Ajjavañca maddavañca.
-
-Khanti ca soraccañca.
-
-Sākhalyañca paṭisanthāro ca.
-
-Avihiṁsā ca soceyyañca.
-
-Indriyesu aguttadvāratā ca bhojane amattaññutā ca.
-
-Indriyesu guttadvāratā ca bhojane mattaññutā ca.
-
-Paṭisaṅkhānabalañca bhāvanābalañca.
-
-Satibalañca samādhibalañca.
-
-Samatho ca vipassanā ca.
-
-Sīlavipatti ca diṭṭhivipatti ca.
-
-Sīlasampadā ca diṭṭhisampadā ca.
-
-Sīlavisuddhi ca diṭṭhivisuddhi ca.
-
-Diṭṭhivisuddhi ca yathādiṭṭhissa ca padhānaṁ.
-
-Asantuṭṭhitā ca kusalesu dhammesu, appaṭivānitā ca padhānasmiṁ.
-
-Muṭṭhassaccañca asampajaññañca.
-
-Sati ca sampajaññañca.
-
-Ime kho, bhikkhave, dve dhammā”ti.
+“Dveme, bhikkhave, dhammā. Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Katame dve? Samāpattikusalatā ca samāpattivuṭṭhānakusalatā ca. Ajjavañca maddavañca. Khanti ca soraccañca. Sākhalyañca paṭisanthāro ca. Avihiṁsā ca soceyyañca. Indriyesu aguttadvāratā ca bhojane amattaññutā ca. Indriyesu guttadvāratā ca bhojane mattaññutā ca. Paṭisaṅkhānabalañca bhāvanābalañca. Satibalañca samādhibalañca. Samatho ca vipassanā ca. Sīlavipatti ca diṭṭhivipatti ca. Sīlasampadā ca diṭṭhisampadā ca. Sīlavisuddhi ca diṭṭhivisuddhi ca. Diṭṭhivisuddhi ca yathādiṭṭhissa ca padhānaṁ. Asantuṭṭhitā ca kusalesu dhammesu, appaṭivānitā ca padhānasmiṁ. Muṭṭhassaccañca asampajaññañca. Sati ca sampajaññañca. Ime kho, bhikkhave, dve dhammā”ti.
 
 Ime kho, bhikkhave, dve dhammā”.
 

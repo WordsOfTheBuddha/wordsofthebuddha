@@ -2,18 +2,15 @@
 slug: sn1.60
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Kavisutta
 ---
-
-“Kiṁsu nidānaṁ gāthānaṁ,
 
 kiṁsu tāsaṁ viyañjanaṁ;
 
 Kiṁsu sannissitā gāthā,
 
 kiṁsu gāthānamāsayo”ti.
-
-“Chando nidānaṁ gāthānaṁ,
 
 akkharā tāsaṁ viyañjanaṁ;
 
@@ -24,8 +21,6 @@ kavi gāthānamāsayo”ti.
 Jarāvaggo chaṭṭho.
 
 Tassuddānaṁ
-
-Jarā ajarasā mittaṁ,
 
 vatthu tīṇi janāni ca;
 

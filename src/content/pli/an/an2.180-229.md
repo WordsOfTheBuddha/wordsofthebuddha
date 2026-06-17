@@ -2,6 +2,7 @@
 slug: an2.180-229
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: 16. Kodhapeyyāla
 ---
 
@@ -25,67 +26,7 @@ title: 16. Kodhapeyyāla
 
 225–229
 
-“Dveme, bhikkhave, dhammā.
-
-“Dveme, bhikkhave, dhammā.
-
-“Dvīhi, bhikkhave, dhammehi samannāgato dukkhaṁ viharati.
-
-“Dvīhi, bhikkhave, dhammehi samannāgato sukhaṁ viharati.
-
-“Dveme, bhikkhave, dhammā sekhassa bhikkhuno parihānāya saṁvattanti.
-
-“Dveme, bhikkhave, dhammā sekhassa bhikkhuno aparihānāya saṁvattanti.
-
-“Dvīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.
-
-“Dvīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ sagge.
-
-“Dvīhi, bhikkhave, dhammehi samannāgato idhekacco kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjati.
-
-“Dvīhi, bhikkhave, dhammehi samannāgato idhekacco kāyassa bhedā paraṁ maraṇā sugatiṁ saggaṁ lokaṁ upapajjati.
-
-Katame dve?
-
-Katame dve?
-
-Katamehi dvīhi?
-
-Katamehi dvīhi?
-
-Katame dve?
-
-Katame dve?
-
-Katamehi dvīhi?
-
-Katamehi dvīhi?
-
-Katamehi dvīhi?
-
-Katamehi dvīhi?
-
-Kodho ca upanāho ca … makkho ca paḷāso ca … issā ca macchariyañca … māyā ca sāṭheyyañca … ahirikañca anottappañca.
-
-Akkodho ca anupanāho ca … amakkho ca apaḷāso ca … anissā ca amacchariyañca … amāyā ca asāṭheyyañca … hirī ca ottappañca.
-
-Kodhena ca upanāhena ca … makkhena ca paḷāsena ca … issāya ca macchariyena ca … māyāya ca sāṭheyyena ca … ahirikena ca anottappena ca.
-
-Akkodhena ca anupanāhena ca … amakkhena ca apaḷāsena ca … anissāya ca amacchariyena ca … amāyāya ca asāṭheyyena ca … hiriyā ca ottappena ca.
-
-Kodho ca upanāho ca … makkho ca paḷāso ca … issā ca macchariyañca … māyā ca sāṭheyyañca … ahirikañca anottappañca.
-
-Akkodho ca anupanāho ca … amakkho ca apaḷāso ca … anissā ca amacchariyañca … amāyā ca asāṭheyyañca … hirī ca ottappañca.
-
-Kodhena ca upanāhena ca … makkhena ca paḷāsena ca … issāya ca macchariyena ca … māyāya ca sāṭheyyena ca … ahirikena ca anottappena ca.
-
-Akkodhena ca anupanāhena ca … amakkhena ca apaḷāsena ca … anissāya ca amacchariyena ca … amāyāya ca asāṭheyyena ca … hiriyā ca ottappena ca.
-
-Kodhena ca upanāhena ca … makkhena ca paḷāsena ca … issāya ca macchariyena ca … māyāya ca sāṭheyyena ca … ahirikena ca anottappena ca.
-
-Akkodhena ca anupanāhena ca … amakkhena ca apaḷāsena ca … anissāya ca amacchariyena ca … amāyāya ca asāṭheyyena ca … hiriyā ca ottappena ca.
-
-Ime kho, bhikkhave, dve dhammā”.
+“Dvīhi, bhikkhave, dhammehi samannāgato idhekacco kāyassa bhedā paraṁ maraṇā sugatiṁ saggaṁ lokaṁ upapajjati. Katame dve? Katame dve? Katamehi dvīhi? Katamehi dvīhi? Katame dve? Katame dve? Katamehi dvīhi? Katamehi dvīhi? Katamehi dvīhi? Katamehi dvīhi? Kodho ca upanāho ca … makkho ca paḷāso ca … issā ca macchariyañca … māyā ca sāṭheyyañca … ahirikañca anottappañca. Akkodho ca anupanāho ca … amakkho ca apaḷāso ca … anissā ca amacchariyañca … amāyā ca asāṭheyyañca … hirī ca ottappañca. Kodhena ca upanāhena ca … makkhena ca paḷāsena ca … issāya ca macchariyena ca … māyāya ca sāṭheyyena ca … ahirikena ca anottappena ca. Akkodhena ca anupanāhena ca … amakkhena ca apaḷāsena ca … anissāya ca amacchariyena ca … amāyāya ca asāṭheyyena ca … hiriyā ca ottappena ca. Kodho ca upanāho ca … makkho ca paḷāso ca … issā ca macchariyañca … māyā ca sāṭheyyañca … ahirikañca anottappañca. Akkodho ca anupanāho ca … amakkho ca apaḷāso ca … anissā ca amacchariyañca … amāyā ca asāṭheyyañca … hirī ca ottappañca. Kodhena ca upanāhena ca … makkhena ca paḷāsena ca … issāya ca macchariyena ca … māyāya ca sāṭheyyena ca … ahirikena ca anottappena ca. Akkodhena ca anupanāhena ca … amakkhena ca apaḷāsena ca … anissāya ca amacchariyena ca … amāyāya ca asāṭheyyena ca … hiriyā ca ottappena ca. Kodhena ca upanāhena ca … makkhena ca paḷāsena ca … issāya ca macchariyena ca … māyāya ca sāṭheyyena ca … ahirikena ca anottappena ca. Akkodhena ca anupanāhena ca … amakkhena ca apaḷāsena ca … anissāya ca amacchariyena ca … amāyāya ca asāṭheyyena ca … hiriyā ca ottappena ca. Ime kho, bhikkhave, dve dhammā”.
 
 Ime kho, bhikkhave, dve dhammā”.
 

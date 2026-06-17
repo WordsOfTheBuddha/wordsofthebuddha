@@ -2,6 +2,7 @@
 slug: an4.270
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Samphappalāpasutta
 ---
 

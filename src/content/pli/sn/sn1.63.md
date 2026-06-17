@@ -2,18 +2,15 @@
 slug: sn1.63
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Taṇhāsutta
 ---
-
-“Kenassu nīyati loko,
 
 kenassu parikassati;
 
 Kissassu ekadhammassa,
 
 sabbeva vasamanvagū”ti.
-
-“Taṇhāya nīyati loko,
 
 taṇhāya parikassati;
 

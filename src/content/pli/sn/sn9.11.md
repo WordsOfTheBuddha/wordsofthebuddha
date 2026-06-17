@@ -2,26 +2,19 @@
 slug: sn9.11
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Akusalavitakkasutta
 ---
 
 Ekaṁ samayaṁ aññataro bhikkhu kosalesu viharati aññatarasmiṁ vanasaṇḍe.
 
-Tena kho pana samayena so bhikkhu divāvihāragato pāpake akusale vitakke vitakketi, seyyathidaṁ—
-
-kāmavitakkaṁ, byāpādavitakkaṁ, vihiṁsāvitakkaṁ.
-
-Atha kho yā tasmiṁ vanasaṇḍe adhivatthā devatā tassa bhikkhuno anukampikā atthakāmā taṁ bhikkhuṁ saṁvejetukāmā yena so bhikkhu tenupasaṅkami; upasaṅkamitvā taṁ bhikkhuṁ gāthāhi ajjhabhāsi:
-
-“Ayoniso manasikārā,
+Tena kho pana samayena so bhikkhu divāvihāragato pāpake akusale vitakke vitakketi, seyyathidaṁ— kāmavitakkaṁ, byāpādavitakkaṁ, vihiṁsāvitakkaṁ. Atha kho yā tasmiṁ vanasaṇḍe adhivatthā devatā tassa bhikkhuno anukampikā atthakāmā taṁ bhikkhuṁ saṁvejetukāmā yena so bhikkhu tenupasaṅkami; upasaṅkamitvā taṁ bhikkhuṁ gāthāhi ajjhabhāsi:
 
 so vitakkehi khajjasi;
 
 Ayoniso paṭinissajja,
 
 yoniso anucintaya.
-
-Satthāraṁ dhammamārabbha,
 
 saṅghaṁ sīlāni attano;
 

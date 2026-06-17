@@ -2,35 +2,16 @@
 slug: an5.171
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Sārajjasutta
 ---
 
-Evaṁ me sutaṁ—
+Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
 
-ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+“Bhadante”ti te bhikkhū bhagavato paccassosuṁ. Bhagavā etadavoca:
 
-Tatra kho bhagavā bhikkhū āmantesi:
+“Pañcahi, bhikkhave, dhammehi samannāgato upāsako sārajjaṁ okkanto hoti. Katamehi pañcahi? Pāṇātipātī hoti, adinnādāyī hoti, kāmesumicchācārī hoti, musāvādī hoti, surāmerayamajjapamādaṭṭhāyī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako sārajjaṁ okkanto hoti.
 
-“bhikkhavo”ti.
-
-“Bhadante”ti te bhikkhū bhagavato paccassosuṁ.
-
-Bhagavā etadavoca:
-
-“Pañcahi, bhikkhave, dhammehi samannāgato upāsako sārajjaṁ okkanto hoti.
-
-Katamehi pañcahi?
-
-Pāṇātipātī hoti, adinnādāyī hoti, kāmesumicchācārī hoti, musāvādī hoti, surāmerayamajjapamādaṭṭhāyī hoti.
-
-Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako sārajjaṁ okkanto hoti.
-
-Pañcahi, bhikkhave, dhammehi samannāgato upāsako visārado hoti.
-
-Katamehi pañcahi?
-
-Pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, kāmesumicchācārā paṭivirato hoti, musāvādā paṭivirato hoti, surāmerayamajjapamādaṭṭhānā paṭivirato hoti.
-
-Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako visārado hotī”ti.
+Pañcahi, bhikkhave, dhammehi samannāgato upāsako visārado hoti. Katamehi pañcahi? Pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, kāmesumicchācārā paṭivirato hoti, musāvādā paṭivirato hoti, surāmerayamajjapamādaṭṭhānā paṭivirato hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako visārado hotī”ti.
 
 Paṭhamaṁ.

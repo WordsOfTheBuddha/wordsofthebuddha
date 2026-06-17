@@ -2,8 +2,12 @@
 /**
  * Import Pali root text and Sujato reference translations from SuttaCentral bilara-data.
  *
- * - Pali  → src/content/pli/{collection}/{id}.md       (skips existing files)
- * - Sujato → src/content/references/sujato/{collection}/{id}.md
+ * - Pali (paragraph) → src/content/pli/{collection}/{id}.md
+ *     SC paragraph structure via html/ cognate markup; replaces files previously
+ *     imported from bilara (source: suttacentral/bilara-data). Skips curated pli.
+ * - Pali (segments)  → src/content/references/pli-ms/{collection}/{id}.md
+ *     One bilara segment per paragraph; used for Sujato reference pairing.
+ * - Sujato           → src/content/references/sujato/{collection}/{id}.md
  *
  * Usage:
  *   node scripts/import-sc-bilara.mjs
@@ -28,11 +32,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const CACHE_DIR = path.join(PROJECT_ROOT, ".cache/bilara-data");
 const PLI_DIR = path.join(PROJECT_ROOT, "src/content/pli");
+const PLI_MS_DIR = path.join(PROJECT_ROOT, "src/content/references/pli-ms");
 const REF_DIR = path.join(PROJECT_ROOT, "src/content/references/sujato");
 
 const DEFAULT_COLLECTIONS = ["dhp", "iti", "ud", "mn", "snp", "sn", "an", "kp", "dn"];
 const BILARA_REPO = "https://github.com/suttacentral/bilara-data.git";
 const BILARA_BRANCH = "published";
+const SPARSE_PATHS = [
+	"root/pli/ms/sutta",
+	"html/pli/ms/sutta",
+	"translation/en/sujato/sutta",
+];
 
 const args = process.argv.slice(2);
 const collections = getArgValues("--collections") ?? DEFAULT_COLLECTIONS;
@@ -61,6 +71,10 @@ function ensureBilaraCache() {
 		execSync(`git -C "${CACHE_DIR}" reset --hard origin/${BILARA_BRANCH}`, {
 			stdio: "inherit",
 		});
+		execSync(
+			`git -C "${CACHE_DIR}" sparse-checkout set ${SPARSE_PATHS.join(" ")}`,
+			{ stdio: "inherit" },
+		);
 		return;
 	}
 
@@ -70,7 +84,7 @@ function ensureBilaraCache() {
 		`git clone --filter=blob:none --sparse --branch ${BILARA_BRANCH} --depth 1 ${BILARA_REPO} "${CACHE_DIR}"`,
 		{ stdio: "inherit" },
 	);
-	execSync(`git -C "${CACHE_DIR}" sparse-checkout set root/pli/ms/sutta translation/en/sujato/sutta`, {
+	execSync(`git -C "${CACHE_DIR}" sparse-checkout set ${SPARSE_PATHS.join(" ")}`, {
 		stdio: "inherit",
 	});
 }
@@ -131,35 +145,136 @@ function isEndMarker(text) {
 	);
 }
 
-function segmentsToBody(segments, { includeHeaders = false } = {}) {
-	const entries = Object.entries(segments).sort(([a], [b]) =>
-		compareSegmentKeys(a, b),
-	);
+/** Expand sparse bilara html.json templates to <p> boundaries (matches SC API). */
+function expandHtmlTemplate(tpl) {
+	const template = tpl ?? " {} ";
+	const [open, close] = template.split("{}");
+	if (open.includes("<p") || close.includes("</p>")) {
+		return { open, close };
+	}
+	if (/^\s+\{\}\s+$/.test(template)) {
+		return { open: "<p>", close: "</p>" };
+	}
+	if (/^\s+\{\}$/.test(template)) {
+		return { open: "<p>", close: "" };
+	}
+	if (template === "{}" || (open === "" && close === "")) {
+		return { open: "", close: "" };
+	}
+	if (/^\{\}\s+$/.test(template)) {
+		return { open: "", close: "</p>" };
+	}
+	return { open: "<p>", close: "</p>" };
+}
 
+function extractMeta(segments) {
 	const meta = {};
-	for (const [key, raw] of entries) {
+	for (const [key, raw] of Object.entries(segments)) {
 		const part = key.split(":")[1] ?? "";
 		if (part.startsWith("0.")) {
 			meta[part] = stripBilaraMarkup(raw);
 		}
 	}
-
-	const paragraphs = [];
-	for (const [key, raw] of entries) {
-		const part = key.split(":")[1] ?? "";
-		if (!part || part.startsWith("0.")) continue;
-		const text = stripBilaraMarkup(raw);
-		if (!text || isEndMarker(text)) continue;
-		paragraphs.push(text);
-	}
-
 	const title =
 		meta["0.3"] ||
 		meta["0.2"] ||
 		meta["0.1"]?.replace(/\s+\d+[\d.]*\s*$/, "").trim() ||
 		undefined;
+	const normalizedTitle =
+		title && title !== "~" && title.trim() !== "" ? title : undefined;
+	return { meta, title: normalizedTitle };
+}
 
-	return { paragraphs, title, meta };
+function orderedContentKeys(segments) {
+	return Object.keys(segments)
+		.filter((key) => {
+			const part = key.split(":")[1] ?? "";
+			return part && !part.startsWith("0.") && !key.startsWith("_");
+		})
+		.sort(compareSegmentKeys);
+}
+
+/** One bilara segment → one paragraph (for pli-ms / Sujato pairing). */
+function segmentsToSegmentParagraphs(segments) {
+	const paragraphs = [];
+	for (const key of orderedContentKeys(segments)) {
+		const text = stripBilaraMarkup(segments[key]);
+		if (!text || isEndMarker(text)) continue;
+		paragraphs.push(text);
+	}
+	return paragraphs;
+}
+
+/** Merge segments using html/ cognate markup (SC paragraph view). */
+function segmentsToParagraphs(segments, htmlMarkup) {
+	const paragraphs = [];
+	let current = "";
+
+	for (const key of orderedContentKeys(segments)) {
+		const text = stripBilaraMarkup(segments[key]);
+		if (!text || isEndMarker(text)) continue;
+
+		const { open, close } = expandHtmlTemplate(htmlMarkup?.[key]);
+		if (open.includes("<p")) current = "";
+		current += (current && text ? " " : "") + text;
+		if (close.includes("</p>")) {
+			paragraphs.push(current);
+			current = "";
+		}
+	}
+
+	if (current) paragraphs.push(current);
+	return paragraphs;
+}
+
+function htmlPathForRoot(rootPath) {
+	return rootPath
+		.replace(
+			`${path.join(CACHE_DIR, "root/pli/ms/sutta")}`,
+			`${path.join(CACHE_DIR, "html/pli/ms/sutta")}`,
+		)
+		.replace(/_root-pli-ms\.json$/, "_html.json");
+}
+
+function loadHtmlMarkup(rootPath) {
+	const htmlPath = htmlPathForRoot(rootPath);
+	if (!existsSync(htmlPath)) return null;
+	return JSON.parse(readFileSync(htmlPath, "utf-8"));
+}
+
+function isBilaraImportedPali(filePath) {
+	if (!existsSync(filePath)) return true;
+	const content = readFileSync(filePath, "utf-8");
+	return (
+		/^source:\s*suttacentral\/bilara-data\s*$/m.test(content) &&
+		/^edition:\s*ms\s*$/m.test(content)
+	);
+}
+
+function yamlScalar(value) {
+	const text = String(value);
+	if (
+		text.includes(":") ||
+		text.includes("#") ||
+		text.includes("'") ||
+		text.includes('"') ||
+		text.startsWith(" ") ||
+		text.endsWith(" ") ||
+		text.startsWith("[") ||
+		text.startsWith("{") ||
+		text.startsWith("@") ||
+		text.startsWith("`") ||
+		text.startsWith("|") ||
+		text.startsWith(">") ||
+		text === "*" ||
+		text === "&" ||
+		text === "!" ||
+		text === "%" ||
+		text === "~"
+	) {
+		return JSON.stringify(text);
+	}
+	return text;
 }
 
 function buildMarkdown({ slug, title, body, extraFrontmatter = {} }) {
@@ -172,7 +287,7 @@ function buildMarkdown({ slug, title, body, extraFrontmatter = {} }) {
 
 	const lines = ["---"];
 	for (const [key, value] of Object.entries(fm)) {
-		lines.push(`${key}: ${value}`);
+		lines.push(`${key}: ${yamlScalar(value)}`);
 	}
 	lines.push("---", "");
 	if (body.length) lines.push(body.join("\n\n"));
@@ -184,12 +299,15 @@ function writeIfNeeded(filePath, content, { force = false, label }) {
 		return "skipped";
 	}
 	if (dryRun) {
-		console.log(`[dry-run] would write ${label}: ${path.relative(PROJECT_ROOT, filePath)}`);
-		return existsSync(filePath) ? "skipped" : "created";
+		console.log(
+			`[dry-run] would write ${label}: ${path.relative(PROJECT_ROOT, filePath)}`,
+		);
+		return existsSync(filePath) ? "updated" : "created";
 	}
 	mkdirSync(path.dirname(filePath), { recursive: true });
+	const existed = existsSync(filePath);
 	writeFileSync(filePath, content, "utf-8");
-	return existsSync(filePath) && force ? "updated" : "created";
+	return existed ? "updated" : "created";
 }
 
 function main() {
@@ -205,7 +323,10 @@ function main() {
 	const collectionSet = new Set(collections);
 	const stats = {
 		paliCreated: 0,
+		paliUpdated: 0,
 		paliSkipped: 0,
+		pliMsCreated: 0,
+		pliMsUpdated: 0,
 		refCreated: 0,
 		refUpdated: 0,
 		refSkipped: 0,
@@ -221,27 +342,49 @@ function main() {
 			// Dhp uses chapter files locally; skip bulk per-verse pali import.
 			if (collection === "dhp") continue;
 
-			const outPath = path.join(PLI_DIR, collection, `${id}.md`);
-			if (existsSync(outPath) && !forcePali) {
+			const segments = JSON.parse(readFileSync(file, "utf-8"));
+			const { title } = extractMeta(segments);
+			const htmlMarkup = loadHtmlMarkup(file);
+
+			const pliMsPath = path.join(PLI_MS_DIR, collection, `${id}.md`);
+			const segmentParagraphs = segmentsToSegmentParagraphs(segments);
+			const pliMsMarkdown = buildMarkdown({
+				slug: id,
+				title,
+				body: segmentParagraphs,
+				extraFrontmatter: { edition: "ms", granularity: "segment" },
+			});
+			const pliMsResult = writeIfNeeded(pliMsPath, pliMsMarkdown, {
+				force: true,
+				label: "pli-ms",
+			});
+			if (pliMsResult === "created") stats.pliMsCreated++;
+			else if (pliMsResult === "updated") stats.pliMsUpdated++;
+
+			const pliPath = path.join(PLI_DIR, collection, `${id}.md`);
+			const mayWritePli =
+				forcePali || !existsSync(pliPath) || isBilaraImportedPali(pliPath);
+
+			if (!mayWritePli) {
 				stats.paliSkipped++;
 				continue;
 			}
 
-			const segments = JSON.parse(readFileSync(file, "utf-8"));
-			const { paragraphs, title } = segmentsToBody(segments);
-			const markdown = buildMarkdown({
+			const mergedParagraphs = segmentsToParagraphs(segments, htmlMarkup);
+			const pliMarkdown = buildMarkdown({
 				slug: id,
 				title,
-				body: paragraphs,
-				extraFrontmatter: { edition: "ms" },
+				body: mergedParagraphs,
+				extraFrontmatter: { edition: "ms", granularity: "paragraph" },
 			});
 
-			const result = writeIfNeeded(outPath, markdown, {
-				force: forcePali,
+			const existed = existsSync(pliPath);
+			const pliResult = writeIfNeeded(pliPath, pliMarkdown, {
+				force: true,
 				label: "pali",
 			});
-			if (result === "created" || result === "updated") stats.paliCreated++;
-			else stats.paliSkipped++;
+			if (pliResult === "created") stats.paliCreated++;
+			else if (pliResult === "updated") stats.paliUpdated++;
 		}
 	}
 
@@ -254,7 +397,8 @@ function main() {
 
 			const outPath = path.join(REF_DIR, collection, `${id}.md`);
 			const segments = JSON.parse(readFileSync(file, "utf-8"));
-			const { paragraphs, title } = segmentsToBody(segments);
+			const { title } = extractMeta(segments);
+			const paragraphs = segmentsToSegmentParagraphs(segments);
 			const markdown = buildMarkdown({
 				slug: id,
 				title,
@@ -277,11 +421,14 @@ function main() {
 	}
 
 	console.log("\nImport complete:");
-	console.log(`  Pali created/updated: ${stats.paliCreated}`);
-	console.log(`  Pali skipped (existing): ${stats.paliSkipped}`);
-	console.log(`  References created: ${stats.refCreated}`);
-	console.log(`  References updated: ${stats.refUpdated}`);
-	console.log(`  References skipped: ${stats.refSkipped}`);
+	console.log(`  Pali (paragraph) created: ${stats.paliCreated}`);
+	console.log(`  Pali (paragraph) updated: ${stats.paliUpdated}`);
+	console.log(`  Pali (paragraph) skipped (curated): ${stats.paliSkipped}`);
+	console.log(`  Pli-ms (segment) created: ${stats.pliMsCreated}`);
+	console.log(`  Pli-ms (segment) updated: ${stats.pliMsUpdated}`);
+	console.log(`  Sujato references created: ${stats.refCreated}`);
+	console.log(`  Sujato references updated: ${stats.refUpdated}`);
+	console.log(`  Sujato references skipped: ${stats.refSkipped}`);
 	console.log(`  Collections: ${collections.join(", ")}`);
 }
 

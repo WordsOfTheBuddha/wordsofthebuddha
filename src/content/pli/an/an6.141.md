@@ -2,13 +2,7 @@
 slug: an6.141
 source: suttacentral/bilara-data
 edition: ms
-title: ""
+granularity: paragraph
 ---
 
-“Rāgassa, bhikkhave, abhiññāya cha dhammā bhāvetabbā.
-
-Katame cha?
-
-Buddhānussati, dhammānussati, saṅghānussati, sīlānussati, cāgānussati, devatānussati.
-
-Rāgassa, bhikkhave, abhiññāya ime cha dhammā bhāvetabbā”ti.
+“Rāgassa, bhikkhave, abhiññāya cha dhammā bhāvetabbā. Katame cha? Buddhānussati, dhammānussati, saṅghānussati, sīlānussati, cāgānussati, devatānussati. Rāgassa, bhikkhave, abhiññāya ime cha dhammā bhāvetabbā”ti.

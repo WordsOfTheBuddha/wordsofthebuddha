@@ -2,6 +2,7 @@
 slug: an4.304-783
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Dosaabhiññādisutta
 ---
 

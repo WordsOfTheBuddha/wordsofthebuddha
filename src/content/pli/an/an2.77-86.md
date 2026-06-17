@@ -2,6 +2,7 @@
 slug: an2.77-86
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: 8. Sanimittavagga
 ---
 
@@ -25,27 +26,7 @@ title: 8. Sanimittavagga
 
 86
 
-“Sanimittā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no animittā.
-
-“Sanidānā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no anidānā.
-
-“Sahetukā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no ahetukā.
-
-“Sasaṅkhārā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no asaṅkhārā.
-
-“Sappaccayā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no appaccayā.
-
-“Sarūpā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no arūpā.
-
-“Savedanā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no avedanā.
-
-“Sasaññā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no asaññā.
-
-“Saviññāṇā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no aviññāṇā.
-
-“Saṅkhatārammaṇā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no asaṅkhatārammaṇā.
-
-Tasseva nimittassa pahānā evaṁ te pāpakā akusalā dhammā na hontī”ti.
+“Saṅkhatārammaṇā, bhikkhave, uppajjanti pāpakā akusalā dhammā, no asaṅkhatārammaṇā. Tasseva nimittassa pahānā evaṁ te pāpakā akusalā dhammā na hontī”ti.
 
 Tasseva nidānassa pahānā evaṁ te pāpakā akusalā dhammā na hontī”ti.
 

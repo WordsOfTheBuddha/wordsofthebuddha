@@ -1,0 +1,25 @@
+---
+slug: an6.75
+source: suttacentral/bilara-data
+edition: ms
+granularity: segment
+title: Dukkhasutta
+---
+
+“Chahi, bhikkhave, dhammehi samannāgato bhikkhu diṭṭheva dhamme dukkhaṁ viharati savighātaṁ saupāyāsaṁ sapariḷāhaṁ, kāyassa bhedā paraṁ maraṇā duggati pāṭikaṅkhā.
+
+Katamehi chahi?
+
+Kāmavitakkena, byāpādavitakkena, vihiṁsāvitakkena, kāmasaññāya, byāpādasaññāya, vihiṁsāsaññāya—
+
+imehi, kho, bhikkhave, chahi dhammehi samannāgato bhikkhu diṭṭheva dhamme dukkhaṁ viharati savighātaṁ saupāyāsaṁ sapariḷāhaṁ, kāyassa bhedā paraṁ maraṇā duggati pāṭikaṅkhā.
+
+Chahi, bhikkhave, dhammehi samannāgato bhikkhu diṭṭheva dhamme sukhaṁ viharati avighātaṁ anupāyāsaṁ apariḷāhaṁ, kāyassa bhedā paraṁ maraṇā sugati pāṭikaṅkhā.
+
+Katamehi chahi?
+
+Nekkhammavitakkena, abyāpādavitakkena, avihiṁsāvitakkena, nekkhammasaññāya, abyāpādasaññāya, avihiṁsāsaññāya—
+
+imehi, kho, bhikkhave, chahi dhammehi samannāgato bhikkhu diṭṭheva dhamme sukhaṁ viharati avighātaṁ anupāyāsaṁ apariḷāhaṁ, kāyassa bhedā paraṁ maraṇā sugati pāṭikaṅkhā”ti.
+
+Paṭhamaṁ.

@@ -2,12 +2,11 @@
 slug: sn2.14
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Nandanasutta
 ---
 
 Ekamantaṁ ṭhito kho nandano devaputto bhagavantaṁ gāthāya ajjhabhāsi:
-
-“Pucchāmi taṁ gotama bhūripañña,
 
 Anāvaṭaṁ bhagavato ñāṇadassanaṁ;
 
@@ -19,15 +18,11 @@ Kathaṁvidho dukkhamaticca iriyati,
 
 Kathaṁvidhaṁ devatā pūjayantī”ti.
 
-“Yo sīlavā paññavā bhāvitatto,
-
 Samāhito jhānarato satīmā;
 
 Sabbassa sokā vigatā pahīnā,
 
 Khīṇāsavo antimadehadhārī.
-
-Tathāvidhaṁ sīlavantaṁ vadanti,
 
 Tathāvidhaṁ paññavantaṁ vadanti;
 

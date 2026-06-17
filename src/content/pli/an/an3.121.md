@@ -2,26 +2,15 @@
 slug: an3.121
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Dutiyasoceyyasutta
 ---
 
-“Tīṇimāni, bhikkhave, soceyyāni.
+“Tīṇimāni, bhikkhave, soceyyāni. Katamāni tīṇi? Kāyasoceyyaṁ, vacīsoceyyaṁ, manosoceyyaṁ.
 
-Katamāni tīṇi?
+Katamañca, bhikkhave, kāyasoceyyaṁ? Idha, bhikkhave, bhikkhu pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, abrahmacariyā paṭivirato hoti. Idaṁ vuccati, bhikkhave, kāyasoceyyaṁ.
 
-Kāyasoceyyaṁ, vacīsoceyyaṁ, manosoceyyaṁ.
-
-Katamañca, bhikkhave, kāyasoceyyaṁ?
-
-Idha, bhikkhave, bhikkhu pāṇātipātā paṭivirato hoti, adinnādānā paṭivirato hoti, abrahmacariyā paṭivirato hoti.
-
-Idaṁ vuccati, bhikkhave, kāyasoceyyaṁ.
-
-Katamañca, bhikkhave, vacīsoceyyaṁ?
-
-Idha, bhikkhave, bhikkhu musāvādā paṭivirato hoti, pisuṇāya vācāya paṭivirato hoti, pharusāya vācāya paṭivirato hoti, samphappalāpā paṭivirato hoti.
-
-Idaṁ vuccati, bhikkhave, vacīsoceyyaṁ.
+Katamañca, bhikkhave, vacīsoceyyaṁ? Idha, bhikkhave, bhikkhu musāvādā paṭivirato hoti, pisuṇāya vācāya paṭivirato hoti, pharusāya vācāya paṭivirato hoti, samphappalāpā paṭivirato hoti. Idaṁ vuccati, bhikkhave, vacīsoceyyaṁ.
 
 Katamañca, bhikkhave, manosoceyyaṁ?
 
@@ -38,8 +27,6 @@ santaṁ vā ajjhattaṁ vicikicchaṁ: ‘atthi me ajjhattaṁ vicikicchā’ti
 Idaṁ vuccati, bhikkhave, manosoceyyaṁ.
 
 Imāni kho, bhikkhave, tīṇi soceyyānīti.
-
-Kāyasuciṁ vacīsuciṁ,
 
 cetosuciṁ anāsavaṁ;
 

@@ -2,24 +2,19 @@
 slug: sn9.7
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Nāgadattasutta
 ---
 
 Ekaṁ samayaṁ āyasmā nāgadatto kosalesu viharati aññatarasmiṁ vanasaṇḍe.
 
-Tena kho pana samayena āyasmā nāgadatto atikālena gāmaṁ pavisati, atidivā paṭikkamati.
-
-Atha kho yā tasmiṁ vanasaṇḍe adhivatthā devatā āyasmato nāgadattassa anukampikā atthakāmā āyasmantaṁ nāgadattaṁ saṁvejetukāmā yenāyasmā nāgadatto tenupasaṅkami; upasaṅkamitvā āyasmantaṁ nāgadattaṁ gāthāhi ajjhabhāsi:
-
-“Kāle pavisa nāgadatta,
+Tena kho pana samayena āyasmā nāgadatto atikālena gāmaṁ pavisati, atidivā paṭikkamati. Atha kho yā tasmiṁ vanasaṇḍe adhivatthā devatā āyasmato nāgadattassa anukampikā atthakāmā āyasmantaṁ nāgadattaṁ saṁvejetukāmā yenāyasmā nāgadatto tenupasaṅkami; upasaṅkamitvā āyasmantaṁ nāgadattaṁ gāthāhi ajjhabhāsi:
 
 Divā ca āgantvā ativelacārī;
 
 Saṁsaṭṭho gahaṭṭhehi,
 
 Samānasukhadukkho.
-
-Bhāyāmi nāgadattaṁ suppagabbhaṁ,
 
 Kulesu vinibaddhaṁ;
 

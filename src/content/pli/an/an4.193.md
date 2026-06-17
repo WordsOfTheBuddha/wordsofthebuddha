@@ -2,30 +2,17 @@
 slug: an4.193
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Bhaddiyasutta
 ---
 
-Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
+Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho bhaddiyo licchavi yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho bhaddiyo licchavi bhagavantaṁ etadavoca:
 
-Atha kho bhaddiyo licchavi yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho bhaddiyo licchavi bhagavantaṁ etadavoca:
+“Sutaṁ metaṁ, bhante: ‘māyāvī samaṇo gotamo āvaṭṭaniṁ māyaṁ jānāti yāya aññatitthiyānaṁ sāvake āvaṭṭetī’ti. Ye te, bhante, evamāhaṁsu: ‘māyāvī samaṇo gotamo āvaṭṭaniṁ māyaṁ jānāti yāya aññatitthiyānaṁ sāvake āvaṭṭetī’ti, kacci te, bhante, bhagavato vuttavādino, na ca bhagavantaṁ abhūtena abbhācikkhanti, dhammassa ca anudhammaṁ byākaronti, na ca koci sahadhammiko vādānupāto gārayhaṁ ṭhānaṁ āgacchati, anabbhakkhātukāmā hi mayaṁ, bhante, bhagavantan”ti?
 
-“Sutaṁ metaṁ, bhante:
+“Etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti. Yadā tumhe, bhaddiya, attanāva jāneyyātha: ‘ime dhammā akusalā, ime dhammā sāvajjā, ime dhammā viññugarahitā, ime dhammā samattā samādinnā ahitāya dukkhāya saṁvattantī’ti, atha tumhe, bhaddiya, pajaheyyātha.
 
-‘māyāvī samaṇo gotamo āvaṭṭaniṁ māyaṁ jānāti yāya aññatitthiyānaṁ sāvake āvaṭṭetī’ti.
-
-Ye te, bhante, evamāhaṁsu:
-
-‘māyāvī samaṇo gotamo āvaṭṭaniṁ māyaṁ jānāti yāya aññatitthiyānaṁ sāvake āvaṭṭetī’ti, kacci te, bhante, bhagavato vuttavādino, na ca bhagavantaṁ abhūtena abbhācikkhanti, dhammassa ca anudhammaṁ byākaronti, na ca koci sahadhammiko vādānupāto gārayhaṁ ṭhānaṁ āgacchati, anabbhakkhātukāmā hi mayaṁ, bhante, bhagavantan”ti?
-
-“Etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti.
-
-Yadā tumhe, bhaddiya, attanāva jāneyyātha:
-
-‘ime dhammā akusalā, ime dhammā sāvajjā, ime dhammā viññugarahitā, ime dhammā samattā samādinnā ahitāya dukkhāya saṁvattantī’ti, atha tumhe, bhaddiya, pajaheyyātha.
-
-Taṁ kiṁ maññatha, bhaddiya,
-
-lobho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
+Taṁ kiṁ maññatha, bhaddiya, lobho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
 
 “Ahitāya, bhante”.
 
@@ -33,9 +20,7 @@ lobho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti
 
 “Evaṁ, bhante”.
 
-“Taṁ kiṁ maññatha, bhaddiya,
-
-doso purisassa …pe… moho purisassa …pe… sārambho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
+“Taṁ kiṁ maññatha, bhaddiya, doso purisassa …pe… moho purisassa …pe… sārambho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
 
 “Ahitāya, bhante”.
 
@@ -55,39 +40,17 @@ doso purisassa …pe… moho purisassa …pe… sārambho purisassa ajjhattaṁ 
 
 “Viññugarahitā, bhante”.
 
-“Samattā samādinnā ahitāya dukkhāya saṁvattanti, no vā?
+“Samattā samādinnā ahitāya dukkhāya saṁvattanti, no vā? Kathaṁ vā ettha hotī”ti?
 
-Kathaṁ vā ettha hotī”ti?
+“Samattā, bhante, samādinnā ahitāya dukkhāya saṁvattanti. Evaṁ no ettha hotī”ti.
 
-“Samattā, bhante, samādinnā ahitāya dukkhāya saṁvattanti.
+“Iti kho, bhaddiya, yaṁ taṁ te avocumhā— etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti. Yadā tumhe, bhaddiya, attanāva jāneyyātha: ‘ime dhammā akusalā, ime dhammā sāvajjā, ime dhammā viññugarahitā, ime dhammā samattā samādinnā ahitāya dukkhāya saṁvattantīti, atha tumhe, bhaddiya, pajaheyyāthā’ti, iti yaṁ taṁ vuttaṁ idametaṁ paṭicca vuttaṁ.
 
-Evaṁ no ettha hotī”ti.
+Etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti. Yadā tumhe, bhaddiya, attanāva jāneyyātha: ‘ime dhammā kusalā, ime dhammā anavajjā, ime dhammā viññuppasatthā, ime dhammā samattā samādinnā hitāya sukhāya saṁvattantī’ti, atha tumhe, bhaddiya, upasampajja vihareyyāthāti.
 
-“Iti kho, bhaddiya, yaṁ taṁ te avocumhā—
+Taṁ kiṁ maññatha, bhaddiya, alobho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
 
-etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti.
-
-Yadā tumhe, bhaddiya, attanāva jāneyyātha:
-
-‘ime dhammā akusalā, ime dhammā sāvajjā, ime dhammā viññugarahitā, ime dhammā samattā samādinnā ahitāya dukkhāya saṁvattantīti, atha tumhe, bhaddiya, pajaheyyāthā’ti,
-
-iti yaṁ taṁ vuttaṁ idametaṁ paṭicca vuttaṁ.
-
-Etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti.
-
-Yadā tumhe, bhaddiya, attanāva jāneyyātha:
-
-‘ime dhammā kusalā, ime dhammā anavajjā, ime dhammā viññuppasatthā, ime dhammā samattā samādinnā hitāya sukhāya saṁvattantī’ti, atha tumhe, bhaddiya, upasampajja vihareyyāthāti.
-
-Taṁ kiṁ maññatha, bhaddiya,
-
-alobho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
-
-“Hitāya, bhante”.
-
-“Aluddho panāyaṁ, bhaddiya, purisapuggalo lobhena anabhibhūto apariyādinnacitto neva pāṇaṁ hanati, na adinnaṁ ādiyati, na paradāraṁ gacchati, na musā bhaṇati, parampi tathattāya na samādapeti yaṁsa hoti dīgharattaṁ hitāya sukhāyā”ti.
-
-“Evaṁ, bhante”.
+“Hitāya, bhante”. “Aluddho panāyaṁ, bhaddiya, purisapuggalo lobhena anabhibhūto apariyādinnacitto neva pāṇaṁ hanati, na adinnaṁ ādiyati, na paradāraṁ gacchati, na musā bhaṇati, parampi tathattāya na samādapeti yaṁsa hoti dīgharattaṁ hitāya sukhāyā”ti. “Evaṁ, bhante”.
 
 “Taṁ kiṁ maññatha, bhaddiya, adoso purisassa …pe… amoho purisassa …pe… asārambho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”ti?
 
@@ -109,78 +72,24 @@ alobho purisassa ajjhattaṁ uppajjamāno uppajjati hitāya vā ahitāya vā”t
 
 “Viññuppasatthā, bhante”.
 
-“Samattā samādinnā hitāya sukhāya saṁvattanti no vā?
+“Samattā samādinnā hitāya sukhāya saṁvattanti no vā? Kathaṁ vā ettha hotī”ti?
 
-Kathaṁ vā ettha hotī”ti?
+“Samattā, bhante, samādinnā hitāya sukhāya saṁvattanti. Evaṁ no ettha hotī”ti.
 
-“Samattā, bhante, samādinnā hitāya sukhāya saṁvattanti.
+“Iti kho, bhaddiya, yaṁ taṁ te avocumhā— etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti. Yadā tumhe, bhaddiya, attanāva jāneyyātha: ‘ime dhammā kusalā, ime dhammā anavajjā, ime dhammā viññuppasatthā, ime dhammā samattā samādinnā hitāya sukhāya saṁvattantīti, atha tumhe, bhaddiya, upasampajja vihareyyāthā’ti, iti yaṁ taṁ vuttaṁ idametaṁ paṭicca vuttaṁ.
 
-Evaṁ no ettha hotī”ti.
+Ye kho te, bhaddiya, loke santo sappurisā te sāvakaṁ evaṁ samādapenti: ‘ehi tvaṁ, ambho purisa, lobhaṁ vineyya viharāhi. Lobhaṁ vineyya viharanto na lobhajaṁ kammaṁ karissasi kāyena vācāya manasā. Dosaṁ vineyya viharāhi. Dosaṁ vineyya viharanto na dosajaṁ kammaṁ karissasi kāyena vācāya manasā. Mohaṁ vineyya viharāhi. Mohaṁ vineyya viharanto na mohajaṁ kammaṁ karissasi kāyena vācāya manasā. Sārambhaṁ vineyya viharāhi. Sārambhaṁ vineyya viharanto na sārambhajaṁ kammaṁ karissasi kāyena vācāya manasā’”ti.
 
-“Iti kho, bhaddiya, yaṁ taṁ te avocumhā—
+Evaṁ vutte, bhaddiyo licchavi bhagavantaṁ etadavoca: “abhikkantaṁ, bhante …pe… upāsakaṁ maṁ, bhante, bhagavā dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-etha tumhe, bhaddiya, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā ‘samaṇo no garū’ti.
-
-Yadā tumhe, bhaddiya, attanāva jāneyyātha:
-
-‘ime dhammā kusalā, ime dhammā anavajjā, ime dhammā viññuppasatthā, ime dhammā samattā samādinnā hitāya sukhāya saṁvattantīti, atha tumhe, bhaddiya, upasampajja vihareyyāthā’ti,
-
-iti yaṁ taṁ vuttaṁ idametaṁ paṭicca vuttaṁ.
-
-Ye kho te, bhaddiya, loke santo sappurisā te sāvakaṁ evaṁ samādapenti:
-
-‘ehi tvaṁ, ambho purisa, lobhaṁ vineyya viharāhi.
-
-Lobhaṁ vineyya viharanto na lobhajaṁ kammaṁ karissasi kāyena vācāya manasā.
-
-Dosaṁ vineyya viharāhi.
-
-Dosaṁ vineyya viharanto na dosajaṁ kammaṁ karissasi kāyena vācāya manasā.
-
-Mohaṁ vineyya viharāhi.
-
-Mohaṁ vineyya viharanto na mohajaṁ kammaṁ karissasi kāyena vācāya manasā.
-
-Sārambhaṁ vineyya viharāhi.
-
-Sārambhaṁ vineyya viharanto na sārambhajaṁ kammaṁ karissasi kāyena vācāya manasā’”ti.
-
-Evaṁ vutte, bhaddiyo licchavi bhagavantaṁ etadavoca:
-
-“abhikkantaṁ, bhante …pe… upāsakaṁ maṁ, bhante, bhagavā dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
-
-“Api nu tāhaṁ, bhaddiya, evaṁ avacaṁ:
-
-‘ehi me tvaṁ, bhaddiya, sāvako hohi;
-
-ahaṁ satthā bhavissāmī’”ti?
+“Api nu tāhaṁ, bhaddiya, evaṁ avacaṁ: ‘ehi me tvaṁ, bhaddiya, sāvako hohi; ahaṁ satthā bhavissāmī’”ti?
 
 “No hetaṁ, bhante”.
 
-“Evaṁvādiṁ kho maṁ, bhaddiya, evamakkhāyiṁ eke samaṇabrāhmaṇā asatā tucchā musā abhūtena abbhācikkhanti:
+“Evaṁvādiṁ kho maṁ, bhaddiya, evamakkhāyiṁ eke samaṇabrāhmaṇā asatā tucchā musā abhūtena abbhācikkhanti: ‘māyāvī samaṇo gotamo āvaṭṭaniṁ māyaṁ jānāti yāya aññatitthiyānaṁ sāvake āvaṭṭetī’”ti.
 
-‘māyāvī samaṇo gotamo āvaṭṭaniṁ māyaṁ jānāti yāya aññatitthiyānaṁ sāvake āvaṭṭetī’”ti.
+“Bhaddikā, bhante, āvaṭṭanī māyā. Kalyāṇī, bhante, āvaṭṭanī māyā. Piyā me, bhante, ñātisālohitā imāya āvaṭṭaniyā āvaṭṭeyyuṁ, piyānampi me assa ñātisālohitānaṁ dīgharattaṁ hitāya sukhāya. Sabbe cepi, bhante, khattiyā imāya āvaṭṭaniyā āvaṭṭeyyuṁ, sabbesampissa khattiyānaṁ dīgharattaṁ hitāya sukhāya. Sabbe cepi, bhante, brāhmaṇā … vessā … suddā imāya āvaṭṭaniyā āvaṭṭeyyuṁ, sabbesampissa suddānaṁ dīgharattaṁ hitāya sukhāyā”ti.
 
-“Bhaddikā, bhante, āvaṭṭanī māyā.
-
-Kalyāṇī, bhante, āvaṭṭanī māyā.
-
-Piyā me, bhante, ñātisālohitā imāya āvaṭṭaniyā āvaṭṭeyyuṁ, piyānampi me assa ñātisālohitānaṁ dīgharattaṁ hitāya sukhāya.
-
-Sabbe cepi, bhante, khattiyā imāya āvaṭṭaniyā āvaṭṭeyyuṁ, sabbesampissa khattiyānaṁ dīgharattaṁ hitāya sukhāya.
-
-Sabbe cepi, bhante, brāhmaṇā … vessā … suddā imāya āvaṭṭaniyā āvaṭṭeyyuṁ, sabbesampissa suddānaṁ dīgharattaṁ hitāya sukhāyā”ti.
-
-“Evametaṁ, bhaddiya, evametaṁ, bhaddiya.
-
-Sabbe cepi, bhaddiya, khattiyā imāya āvaṭṭaniyā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, sabbesampissa khattiyānaṁ dīgharattaṁ hitāya sukhāya.
-
-Sabbe cepi, bhaddiya, brāhmaṇā … vessā … suddā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, sabbesampissa suddānaṁ dīgharattaṁ hitāya sukhāya.
-
-Sadevako cepi, bhaddiya, loko samārako sabrahmako sassamaṇabrāhmaṇī pajā sadevamanussā imāya āvaṭṭaniyā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, sadevakassapissa lokassa samārakassa sabrahmakassa sassamaṇabrāhmaṇiyā pajāya sadevamanussāya dīgharattaṁ hitāya sukhāya.
-
-Ime cepi, bhaddiya, mahāsālā imāya āvaṭṭaniyā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, imesampissa mahāsālānaṁ dīgharattaṁ hitāya sukhāya (…).
-
-Ko pana vādo manussabhūtassā”ti.
+“Evametaṁ, bhaddiya, evametaṁ, bhaddiya. Sabbe cepi, bhaddiya, khattiyā imāya āvaṭṭaniyā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, sabbesampissa khattiyānaṁ dīgharattaṁ hitāya sukhāya. Sabbe cepi, bhaddiya, brāhmaṇā … vessā … suddā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, sabbesampissa suddānaṁ dīgharattaṁ hitāya sukhāya. Sadevako cepi, bhaddiya, loko samārako sabrahmako sassamaṇabrāhmaṇī pajā sadevamanussā imāya āvaṭṭaniyā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, sadevakassapissa lokassa samārakassa sabrahmakassa sassamaṇabrāhmaṇiyā pajāya sadevamanussāya dīgharattaṁ hitāya sukhāya. Ime cepi, bhaddiya, mahāsālā imāya āvaṭṭaniyā āvaṭṭeyyuṁ akusaladhammappahānāya kusaladhammūpasampadāya, imesampissa mahāsālānaṁ dīgharattaṁ hitāya sukhāya (…). Ko pana vādo manussabhūtassā”ti.
 
 Tatiyaṁ.

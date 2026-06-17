@@ -2,12 +2,11 @@
 slug: an4.137
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Dutiyasīlasutta
 ---
 
-“Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ.
-
-Katame cattāro?
+“Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?
 
 Idha, bhikkhave, ekacco puggalo na sīlagaru hoti na sīlādhipateyyo, na samādhigaru hoti na samādhādhipateyyo, na paññāgaru hoti na paññādhipateyyo.
 

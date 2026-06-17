@@ -2,20 +2,15 @@
 slug: sn5.3
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Kisāgotamīsutta
 ---
 
 Sāvatthinidānaṁ.
 
-Atha kho kisāgotamī bhikkhunī pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya sāvatthiṁ piṇḍāya pāvisi.
-
-Sāvatthiyaṁ piṇḍāya caritvā pacchābhattaṁ piṇḍapātapaṭikkantā yena andhavanaṁ tenupasaṅkami, upasaṅkamitvā divāvihārāya.
-
-Andhavanaṁ ajjhogāhetvā aññatarasmiṁ rukkhamūle divāvihāraṁ nisīdi.
+Atha kho kisāgotamī bhikkhunī pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya sāvatthiṁ piṇḍāya pāvisi. Sāvatthiyaṁ piṇḍāya caritvā pacchābhattaṁ piṇḍapātapaṭikkantā yena andhavanaṁ tenupasaṅkami, upasaṅkamitvā divāvihārāya. Andhavanaṁ ajjhogāhetvā aññatarasmiṁ rukkhamūle divāvihāraṁ nisīdi.
 
 Atha kho māro pāpimā kisāgotamiyā bhikkhuniyā bhayaṁ chambhitattaṁ lomahaṁsaṁ uppādetukāmo samādhimhā cāvetukāmo yena kisāgotamī bhikkhunī tenupasaṅkami; upasaṅkamitvā kisāgotamiṁ bhikkhuniṁ gāthāya ajjhabhāsi:
-
-“Kiṁ nu tvaṁ mataputtāva,
 
 ekamāsi rudammukhī;
 
@@ -23,25 +18,17 @@ Vanamajjhagatā ekā,
 
 purisaṁ nu gavesasī”ti.
 
-Atha kho kisāgotamiyā bhikkhuniyā etadahosi:
+Atha kho kisāgotamiyā bhikkhuniyā etadahosi: “ko nu khvāyaṁ manusso vā amanusso vā gāthaṁ bhāsatī”ti?
 
-“ko nu khvāyaṁ manusso vā amanusso vā gāthaṁ bhāsatī”ti?
-
-Atha kho kisāgotamiyā bhikkhuniyā etadahosi:
-
-“māro kho ayaṁ pāpimā mama bhayaṁ chambhitattaṁ lomahaṁsaṁ uppādetukāmo samādhimhā cāvetukāmo gāthaṁ bhāsatī”ti.
+Atha kho kisāgotamiyā bhikkhuniyā etadahosi: “māro kho ayaṁ pāpimā mama bhayaṁ chambhitattaṁ lomahaṁsaṁ uppādetukāmo samādhimhā cāvetukāmo gāthaṁ bhāsatī”ti.
 
 Atha kho kisāgotamī bhikkhunī “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāhi paccabhāsi:
-
-“Accantaṁ mataputtāmhi,
 
 purisā etadantikā;
 
 Na socāmi na rodāmi,
 
 na taṁ bhāyāmi āvuso.
-
-Sabbattha vihatā nandī,
 
 tamokkhandho padālito;
 

@@ -2,14 +2,11 @@
 slug: an5.27
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Samādhisutta
 ---
 
-“Samādhiṁ, bhikkhave, bhāvetha appamāṇaṁ nipakā patissatā.
-
-Samādhiṁ, bhikkhave, bhāvayataṁ appamāṇaṁ nipakānaṁ patissatānaṁ pañca ñāṇāni paccattaññeva uppajjanti.
-
-Katamāni pañca?
+“Samādhiṁ, bhikkhave, bhāvetha appamāṇaṁ nipakā patissatā. Samādhiṁ, bhikkhave, bhāvayataṁ appamāṇaṁ nipakānaṁ patissatānaṁ pañca ñāṇāni paccattaññeva uppajjanti. Katamāni pañca?
 
 ‘Ayaṁ samādhi paccuppannasukho ceva āyatiñca sukhavipāko’ti paccattaññeva ñāṇaṁ uppajjati,
 
@@ -21,8 +18,6 @@ Katamāni pañca?
 
 ‘sato kho panāhaṁ imaṁ samāpajjāmi sato vuṭṭhahāmī’ti paccattaññeva ñāṇaṁ uppajjati.
 
-Samādhiṁ, bhikkhave, bhāvetha appamāṇaṁ nipakā patissatā.
-
-Samādhiṁ, bhikkhave, bhāvayataṁ appamāṇaṁ nipakānaṁ patissatānaṁ imāni pañca ñāṇāni paccattaññeva uppajjantī”ti.
+Samādhiṁ, bhikkhave, bhāvetha appamāṇaṁ nipakā patissatā. Samādhiṁ, bhikkhave, bhāvayataṁ appamāṇaṁ nipakānaṁ patissatānaṁ imāni pañca ñāṇāni paccattaññeva uppajjantī”ti.
 
 Sattamaṁ.

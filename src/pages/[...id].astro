@@ -95,6 +95,8 @@ let mainContent = "";
 let sideContent;
 let splitEnglish: string | undefined = undefined;
 let splitPali: string | undefined = undefined;
+let refPaliOnlyContent: string | undefined = undefined;
+let referenceFallbackPage = false;
 // Server should not decide layout; default to interleaved for prerender/SSR.
 // Client (Layout.astro) handles layout toggling and URL cleanup.
 const layout: "split" | "interleaved" = "interleaved";
@@ -321,21 +323,34 @@ const layout: "split" | "interleaved" = "interleaved";
 	}
 
 	if (currentIndex === -1) {
-		const paliOnlyEntry = await getEntry("pliAll", id);
+		const paliParagraphEntry = await getEntry("pliAll", id);
 		const englishEntry = await getEntry("all", id);
-		if (!paliOnlyEntry || englishEntry) {
+		if (!paliParagraphEntry || englishEntry) {
 			debug("No matching route found for:", id);
 			return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 		}
 		// Direct URL to discourse without a native English translation yet
 		const referenceEntry = await getEntry("referenceSujato", id);
+		const paliSegmentEntry = await getEntry("referencePliMs", id);
 		let pairs;
 		let useReferenceEnglish = false;
 
+		// Default view: SC paragraph-merged Pāli from pliAll
+		const paliOnlyPairs = parsePaliOnly(paliParagraphEntry.body);
+		const paliOnlyInterleaved = createCombinedMarkdown(
+			paliOnlyPairs,
+			true,
+			"interleaved",
+		);
+		if (typeof paliOnlyInterleaved === "string") {
+			refPaliOnlyContent = paliOnlyInterleaved;
+		}
+
 		if (referenceEntry) {
 			useReferenceEnglish = true;
+			const paliForReference = paliSegmentEntry ?? paliParagraphEntry;
 			pairs = await parseContent(
-				paliOnlyEntry,
+				paliForReference,
 				referenceEntry,
 				undefined,
 				undefined,
@@ -343,7 +358,7 @@ const layout: "split" | "interleaved" = "interleaved";
 				null,
 			);
 		} else {
-			pairs = parsePaliOnly(paliOnlyEntry.body);
+			pairs = paliOnlyPairs;
 		}
 
 		const interleavedContent = createCombinedMarkdown(
@@ -366,15 +381,15 @@ const layout: "split" | "interleaved" = "interleaved";
 			splitPali = splitContent.pali;
 		}
 
-		const fpParts = (paliOnlyEntry.filePath ?? "").split("/");
+		const fpParts = (paliParagraphEntry.filePath ?? "").split("/");
 		const folder = fpParts[fpParts.length - 2] || "";
 		const fp = folder ? `${folder}/${id}` : id;
 		const paliTitle =
-			(paliOnlyEntry.data as { title?: string }).title || id;
+			(paliParagraphEntry.data as { title?: string }).title || id;
 		const displayTitle =
 			(referenceEntry?.data as { title?: string } | undefined)?.title ||
 			paliTitle;
-		const filePath = paliOnlyEntry.filePath || "";
+		const filePath = paliParagraphEntry.filePath || "";
 		const lastUpdated = getLastModified(filePath);
 
 		suttaProps = {
@@ -395,9 +410,10 @@ const layout: "split" | "interleaved" = "interleaved";
 			contentImage: null,
 			vizPrev: null,
 			vizNext: null,
-			viewSource: useReferenceEnglish ? "sujato-reference" : "en",
+			viewSource: useReferenceEnglish ? "pli" : "en",
 			referenceFallback: useReferenceEnglish,
 		};
+		referenceFallbackPage = useReferenceEnglish;
 	} else {
 	// Load content with fresh file system read in development
 	let contentItem = await getEntry("all", id);
@@ -573,5 +589,7 @@ const layout: "split" | "interleaved" = "interleaved";
 		content={mainContent}
 		splitEnglish={splitEnglish}
 		splitPali={splitPali}
+		refPaliOnlyContent={refPaliOnlyContent}
+		referenceFallback={referenceFallbackPage}
 	/>
 </Layout>

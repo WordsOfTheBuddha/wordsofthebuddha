@@ -2,6 +2,7 @@
 slug: an4.217
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamavohārapathasutta
 ---
 

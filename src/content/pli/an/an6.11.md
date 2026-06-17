@@ -2,12 +2,11 @@
 slug: an6.11
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamasāraṇīyasutta
 ---
 
-“Chayime, bhikkhave, dhammā sāraṇīyā.
-
-Katame cha?
+“Chayime, bhikkhave, dhammā sāraṇīyā. Katame cha?
 
 Idha, bhikkhave, bhikkhuno mettaṁ kāyakammaṁ paccupaṭṭhitaṁ hoti sabrahmacārīsu āvi ceva raho ca, ayampi dhammo sāraṇīyo.
 

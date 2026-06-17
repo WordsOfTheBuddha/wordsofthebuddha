@@ -2,12 +2,11 @@
 slug: an4.231
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Kavisutta
 ---
 
-“Cattārome, bhikkhave, kavī.
-
-Katame cattāro?
+“Cattārome, bhikkhave, kavī. Katame cattāro?
 
 Cintākavi, sutakavi, atthakavi, paṭibhānakavi—
 
@@ -18,8 +17,6 @@ Ekādasamaṁ.
 Duccaritavaggo tatiyo.
 
 Tassuddānaṁ
-
-Duccaritaṁ diṭṭhi akataññū ca,
 
 Pāṇātipātāpi dve maggā;
 

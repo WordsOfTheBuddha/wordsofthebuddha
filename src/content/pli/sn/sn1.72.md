@@ -2,18 +2,15 @@
 slug: sn1.72
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Rathasutta
 ---
-
-“Kiṁsu rathassa paññāṇaṁ,
 
 kiṁsu paññāṇamaggino;
 
 Kiṁsu raṭṭhassa paññāṇaṁ,
 
 kiṁsu paññāṇamitthiyā”ti.
-
-“Dhajo rathassa paññāṇaṁ,
 
 dhūmo paññāṇamaggino;
 

@@ -2,103 +2,44 @@
 slug: dn7
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Jāliyasutta
 ---
 
-Evaṁ me sutaṁ—
+Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
 
-ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
-
-Tena kho pana samayena dve pabbajitā—
-
-muṇḍiyo ca paribbājako jāliyo ca dārupattikantevāsī yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavatā saddhiṁ sammodiṁsu.
-
-Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ aṭṭhaṁsu. Ekamantaṁ ṭhitā kho te dve pabbajitā bhagavantaṁ etadavocuṁ:
-
-“kiṁ nu kho, āvuso gotama, taṁ jīvaṁ taṁ sarīraṁ, udāhu aññaṁ jīvaṁ aññaṁ sarīran”ti?
+Tena kho pana samayena dve pabbajitā— muṇḍiyo ca paribbājako jāliyo ca dārupattikantevāsī yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavatā saddhiṁ sammodiṁsu. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ aṭṭhaṁsu. Ekamantaṁ ṭhitā kho te dve pabbajitā bhagavantaṁ etadavocuṁ: “kiṁ nu kho, āvuso gotama, taṁ jīvaṁ taṁ sarīraṁ, udāhu aññaṁ jīvaṁ aññaṁ sarīran”ti?
 
 “Tena hāvuso, suṇātha sādhukaṁ manasi karotha, bhāsissāmī”ti.
 
-“Evamāvuso”ti kho te dve pabbajitā bhagavato paccassosuṁ.
+“Evamāvuso”ti kho te dve pabbajitā bhagavato paccassosuṁ. Bhagavā etadavoca:
 
-Bhagavā etadavoca:
+“idhāvuso, tathāgato loke uppajjati arahaṁ, sammāsambuddho …pe… Evaṁ kho, āvuso, bhikkhu sīlasampanno hoti.
 
-“idhāvuso, tathāgato loke uppajjati arahaṁ, sammāsambuddho …pe…
+…pe… Paṭhamaṁ jhānaṁ upasampajja viharati. Yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
 
-Evaṁ kho, āvuso, bhikkhu sīlasampanno hoti.
+Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
 
-…pe…
+Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi. Atha ca panāhaṁ na vadāmi: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā …pe…
 
-Paṭhamaṁ jhānaṁ upasampajja viharati.
+dutiyaṁ jhānaṁ … tatiyaṁ jhānaṁ … catutthaṁ jhānaṁ upasampajja viharati. Yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti?
 
-Yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya:
+Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati kallaṁ, tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
 
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
+Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi. Atha ca panāhaṁ na vadāmi: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā …pe…
 
-Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ tassetaṁ vacanāya:
+ñāṇadassanāya cittaṁ abhinīharati abhininnāmeti … yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
 
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
+Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati kallaṁ tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
 
-Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi.
+Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi. Atha ca panāhaṁ na vadāmi: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā …pe….
 
-Atha ca panāhaṁ na vadāmi:
+…pe… Nāparaṁ itthattāyāti pajānāti. Yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti?
 
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā …pe…
+Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati, na kallaṁ tassetaṁ vacanāya: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
 
-dutiyaṁ jhānaṁ …
+Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi. Atha ca panāhaṁ na vadāmi: ‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā”ti.
 
-tatiyaṁ jhānaṁ …
-
-catutthaṁ jhānaṁ upasampajja viharati.
-
-Yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti?
-
-Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati kallaṁ, tassetaṁ vacanāya:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
-
-Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi.
-
-Atha ca panāhaṁ na vadāmi:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā …pe…
-
-ñāṇadassanāya cittaṁ abhinīharati abhininnāmeti …
-
-yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
-
-Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati kallaṁ tassetaṁ vacanāya:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
-
-Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi.
-
-Atha ca panāhaṁ na vadāmi:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā …pe….
-
-…pe… Nāparaṁ itthattāyāti pajānāti.
-
-Yo kho, āvuso, bhikkhu evaṁ jānāti evaṁ passati, kallaṁ nu kho tassetaṁ vacanāya:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti?
-
-Yo so, āvuso, bhikkhu evaṁ jānāti evaṁ passati, na kallaṁ tassetaṁ vacanāya:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vāti.
-
-Ahaṁ kho panetaṁ, āvuso, evaṁ jānāmi evaṁ passāmi.
-
-Atha ca panāhaṁ na vadāmi:
-
-‘taṁ jīvaṁ taṁ sarīran’ti vā ‘aññaṁ jīvaṁ aññaṁ sarīran’ti vā”ti.
-
-Idamavoca bhagavā.
-
-Attamanā te dve pabbajitā bhagavato bhāsitaṁ abhinandunti.
+Idamavoca bhagavā. Attamanā te dve pabbajitā bhagavato bhāsitaṁ abhinandunti.
 
 Jāliyasuttaṁ niṭṭhitaṁ sattamaṁ.

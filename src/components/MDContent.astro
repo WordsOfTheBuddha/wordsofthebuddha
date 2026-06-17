@@ -3,47 +3,64 @@ import { parseMarkdown } from "../utils/mdParser";
 
 interface Props {
 	content: string;
-	// Optional split-mode content; when provided, split view can be shown via html.split
 	splitEnglish?: string;
 	splitPali?: string;
+	/** Paragraph-level Pāli for reference-fallback pages (default view). */
+	refPaliOnlyContent?: string;
+	referenceFallback?: boolean;
 }
 
-const { content, splitEnglish, splitPali } = Astro.props;
+const {
+	content,
+	splitEnglish,
+	splitPali,
+	refPaliOnlyContent,
+	referenceFallback = false,
+} = Astro.props;
 const parsedInterleaved = await parseMarkdown(content);
 const parsedSplitEnglish = splitEnglish
 	? await parseMarkdown(splitEnglish)
 	: null;
 const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
+const parsedRefPaliOnly = refPaliOnlyContent
+	? await parseMarkdown(refPaliOnlyContent)
+	: null;
 ---
 
 {
-	(
-		<>
-			<!-- Interleaved article (default) -->
+	referenceFallback && parsedRefPaliOnly ? (
+		<div class="ref-pali-only-view">
 			<article
-				class="content-fade md-content prose prose-lg dark:prose-invert interleaved-article"
-				aria-hidden="false"
-				set:html={parsedInterleaved}
+				class="content-fade md-content prose prose-lg dark:prose-invert interleaved-article visible"
+				set:html={parsedRefPaliOnly}
 			/>
-
-			<!-- Split wrapper (only visible when html has split + pali-on) -->
-			{parsedSplitEnglish && parsedSplitPali && (
-				<div class="content-fade split-wrapper" aria-hidden="true">
-					<article
-						id="panel1"
-						class="split-panel md-content prose prose-lg dark:prose-invert"
-						set:html={parsedSplitEnglish}
-					/>
-					<article
-						id="panel2"
-						class="split-panel md-content prose prose-lg dark:prose-invert"
-						set:html={parsedSplitPali}
-					/>
-				</div>
-			)}
-		</>
-	)
+		</div>
+	) : null
 }
+<div class:list={["ref-translation-view", !referenceFallback && "contents"]}>
+	<!-- Interleaved article (default) -->
+	<article
+		class="content-fade md-content prose prose-lg dark:prose-invert interleaved-article"
+		aria-hidden="false"
+		set:html={parsedInterleaved}
+	/>
+
+	<!-- Split wrapper (only visible when html has split + pali-on) -->
+	{parsedSplitEnglish && parsedSplitPali && (
+		<div class="content-fade split-wrapper" aria-hidden="true">
+			<article
+				id="panel1"
+				class="split-panel md-content prose prose-lg dark:prose-invert"
+				set:html={parsedSplitEnglish}
+			/>
+			<article
+				id="panel2"
+				class="split-panel md-content prose prose-lg dark:prose-invert"
+				set:html={parsedSplitPali}
+			/>
+		</div>
+	)}
+</div>
 
 <style>
 	.md-content :global(.pali-paragraph) {
@@ -77,6 +94,17 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 	}
 	:global(html.ref-pali-only) .interleaved-article {
 		display: block !important;
+	}
+	/* Reference-fallback: toggle between paragraph Pāli and segment-aligned translation */
+	:global(html.ref-pali-only) .ref-translation-view {
+		display: none !important;
+	}
+	:global(html:not(.ref-pali-only)) .ref-pali-only-view {
+		display: none !important;
+	}
+	:global(.ref-pali-only-view) .md-content :global(.pali-paragraph) {
+		display: block !important;
+		opacity: 1;
 	}
 	.md-content :global(.reference-translation-credit) {
 		font-size: 0.75rem;

@@ -2,14 +2,11 @@
 slug: an4.136
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Paṭhamasīlasutta
 ---
 
-“Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ.
-
-Katame cattāro?
-
-Idha, bhikkhave, ekacco puggalo sīlesu na paripūrakārī hoti, samādhismiṁ na paripūrakārī, paññāya na paripūrakārī.
+“Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro? Idha, bhikkhave, ekacco puggalo sīlesu na paripūrakārī hoti, samādhismiṁ na paripūrakārī, paññāya na paripūrakārī.
 
 Idha pana, bhikkhave, ekacco puggalo sīlesu paripūrakārī hoti, samādhismiṁ na paripūrakārī, paññāya na paripūrakārī.
 

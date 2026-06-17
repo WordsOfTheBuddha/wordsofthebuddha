@@ -2,18 +2,15 @@
 slug: an8.52
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Ovādasutta
 ---
 
-Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
-
-Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:
+Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:
 
 “katihi nu kho, bhante, dhammehi samannāgato bhikkhu bhikkhunovādako sammannitabbo”ti?
 
-“Aṭṭhahi kho, ānanda, dhammehi samannāgato bhikkhu bhikkhunovādako sammannitabbo.
-
-Katamehi aṭṭhahi?
+“Aṭṭhahi kho, ānanda, dhammehi samannāgato bhikkhu bhikkhunovādako sammannitabbo. Katamehi aṭṭhahi?
 
 Idhānanda, bhikkhu sīlavā hoti …pe… samādāya sikkhati sikkhāpadesu;
 

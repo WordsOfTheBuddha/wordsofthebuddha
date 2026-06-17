@@ -2,7 +2,7 @@
 const { lastUpdated, path, viewSource = "en" } = Astro.props as {
 	lastUpdated?: string | null;
 	path?: string;
-	viewSource?: "en" | "sujato-reference";
+	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms";
 };
 
 export const formatDate = (date: string | null) => {
@@ -20,10 +20,28 @@ export const formatDate = (date: string | null) => {
 
 const formattedDate = formatDate(lastUpdated ?? null);
 
+const sourceHrefByView: Record<string, string> = {
+	en: `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/en/${path}.mdx`,
+	"sujato-reference": `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/references/sujato/${path}.md`,
+	pli: `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/pli/${path}.md`,
+	"pli-ms": `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/references/pli-ms/${path}.md`,
+};
+
 const sourceHref =
-	viewSource === "sujato-reference"
-		? `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/references/sujato/${path}.md`
-		: `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/en/${path}.mdx`;
+	sourceHrefByView[viewSource] ?? sourceHrefByView.en;
+const sourceLabelByView: Record<string, string> = {
+	en: "View Source",
+	"sujato-reference": "View Sujato ref.",
+	pli: "View Pāli source",
+	"pli-ms": "View segment Pāli",
+};
+const sourceLabel = sourceLabelByView[viewSource] ?? "View Source";
+const pliMsHref = path
+	? `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/references/pli-ms/${path}.md`
+	: sourceHref;
+const sujatoHref = path
+	? `https://github.com/wordsofthebuddha/wordsofthebuddha/tree/main/src/content/references/sujato/${path}.md`
+	: sourceHref;
 ---
 
 {
@@ -34,15 +52,46 @@ const sourceHref =
 			</p>
 			<div class="flex items-center space-x-4 ml-auto">
 				<a
+					id="viewSourceLink"
 					href={sourceHref}
+					data-pli-href={viewSource === "pli" ? sourceHref : undefined}
+					data-pli-ms-href={viewSource === "pli" ? pliMsHref : undefined}
+					data-sujato-href={viewSource === "pli" ? sujatoHref : undefined}
 					class="ml-2 hover:underline text-sm"
 					style="color: var(--gray-500)"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					View Source ↗
+					{sourceLabel} ↗
 				</a>
 			</div>
 		</div>
 	)
 }
+
+{viewSource === "pli" && (
+	<script>
+		const link = document.getElementById("viewSourceLink");
+		if (link) {
+			const pliHref = link.dataset.pliHref;
+			const pliMsHref = link.dataset.pliMsHref;
+			const sujatoHref = link.dataset.sujatoHref;
+
+			const syncSourceLink = () => {
+				const showTranslation =
+					!document.documentElement.classList.contains("ref-pali-only");
+				const anchor = link as HTMLAnchorElement;
+				if (showTranslation && pliMsHref) {
+					anchor.href = pliMsHref;
+					anchor.textContent = "View segment Pāli ↗";
+				} else if (pliHref) {
+					anchor.href = pliHref;
+					anchor.textContent = "View Pāli source ↗";
+				}
+			};
+
+			syncSourceLink();
+			document.addEventListener("refTranslationChanged", syncSourceLink);
+		}
+	</script>
+)}

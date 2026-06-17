@@ -2,6 +2,7 @@
 slug: an4.277-303
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Pariññādisutta
 ---
 

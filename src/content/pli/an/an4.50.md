@@ -2,54 +2,29 @@
 slug: an4.50
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Upakkilesasutta
 ---
 
-“Cattārome, bhikkhave, candimasūriyānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
+“Cattārome, bhikkhave, candimasūriyānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti. Katame cattāro? Abbhā, bhikkhave, candimasūriyānaṁ upakkilesā, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti. Mahikā, bhikkhave, candimasūriyānaṁ upakkilesā, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti. Dhūmo rajo, bhikkhave, candimasūriyānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti. Rāhu, bhikkhave, asurindo candimasūriyānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti. Ime kho, bhikkhave, cattāro candimasūriyānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
 
-Katame cattāro?
+Evamevaṁ kho, bhikkhave, cattārome samaṇabrāhmaṇānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti. Katame cattāro?
 
-Abbhā, bhikkhave, candimasūriyānaṁ upakkilesā, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
+Santi, bhikkhave, eke samaṇabrāhmaṇā suraṁ pivanti merayaṁ, surāmerayapānā appaṭiviratā. Ayaṁ, bhikkhave, paṭhamo samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
 
-Mahikā, bhikkhave, candimasūriyānaṁ upakkilesā, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
+Santi, bhikkhave, eke samaṇabrāhmaṇā methunaṁ dhammaṁ paṭisevanti, methunasmā dhammā appaṭiviratā. Ayaṁ, bhikkhave, dutiyo samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
 
-Dhūmo rajo, bhikkhave, candimasūriyānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
+Santi, bhikkhave, eke samaṇabrāhmaṇā jātarūparajataṁ sādiyanti, jātarūparajatapaṭiggahaṇā appaṭiviratā. Ayaṁ, bhikkhave, tatiyo samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
 
-Rāhu, bhikkhave, asurindo candimasūriyānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
-
-Ime kho, bhikkhave, cattāro candimasūriyānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā candimasūriyā na tapanti na bhāsanti na virocanti.
-
-Evamevaṁ kho, bhikkhave, cattārome samaṇabrāhmaṇānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
-
-Katame cattāro?
-
-Santi, bhikkhave, eke samaṇabrāhmaṇā suraṁ pivanti merayaṁ, surāmerayapānā appaṭiviratā.
-
-Ayaṁ, bhikkhave, paṭhamo samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
-
-Santi, bhikkhave, eke samaṇabrāhmaṇā methunaṁ dhammaṁ paṭisevanti, methunasmā dhammā appaṭiviratā.
-
-Ayaṁ, bhikkhave, dutiyo samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
-
-Santi, bhikkhave, eke samaṇabrāhmaṇā jātarūparajataṁ sādiyanti, jātarūparajatapaṭiggahaṇā appaṭiviratā.
-
-Ayaṁ, bhikkhave, tatiyo samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
-
-Santi, bhikkhave, eke samaṇabrāhmaṇā micchājīvena jīvanti, micchājīvā appaṭiviratā.
-
-Ayaṁ, bhikkhave, catuttho samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
+Santi, bhikkhave, eke samaṇabrāhmaṇā micchājīvena jīvanti, micchājīvā appaṭiviratā. Ayaṁ, bhikkhave, catuttho samaṇabrāhmaṇānaṁ upakkileso, yena upakkilesena upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocanti.
 
 Ime kho, bhikkhave, cattāro samaṇabrāhmaṇānaṁ upakkilesā, yehi upakkilesehi upakkiliṭṭhā eke samaṇabrāhmaṇā na tapanti na bhāsanti na virocantīti.
-
-Rāgadosaparikkiṭṭhā,
 
 eke samaṇabrāhmaṇā;
 
 Avijjānivutā posā,
 
 piyarūpābhinandino.
-
-Suraṁ pivanti merayaṁ,
 
 paṭisevanti methunaṁ;
 
@@ -61,8 +36,6 @@ Micchājīvena jīvanti,
 
 eke samaṇabrāhmaṇā.
 
-Ete upakkilesā vuttā,
-
 buddhenādiccabandhunā;
 
 Yehi upakkilesehi,
@@ -72,8 +45,6 @@ eke samaṇabrāhmaṇā;
 Na tapanti na bhāsanti,
 
 asuddhā sarajā magā.
-
-Andhakārena onaddhā,
 
 taṇhādāsā sanettikā;
 
@@ -86,8 +57,6 @@ Dasamaṁ.
 Rohitassavaggo pañcamo.
 
 Tassuddānaṁ
-
-Samādhipañhā dve kodhā,
 
 Rohitassāpare duve;
 

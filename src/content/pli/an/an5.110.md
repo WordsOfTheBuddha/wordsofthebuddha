@@ -2,12 +2,11 @@
 slug: an5.110
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Araññasutta
 ---
 
-“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁ araññavanapatthāni pantāni senāsanāni paṭisevituṁ.
-
-Katamehi pañcahi?
+“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁ araññavanapatthāni pantāni senāsanāni paṭisevituṁ. Katamehi pañcahi?
 
 Idha, bhikkhave, bhikkhu sīlavā hoti …pe… samādāya sikkhati sikkhāpadesu;
 
@@ -26,8 +25,6 @@ Dasamaṁ.
 Phāsuvihāravaggo paṭhamo.
 
 Tassuddānaṁ
-
-Sārajjaṁ saṅkito coro,
 
 Sukhumālaṁ phāsu pañcamaṁ;
 

@@ -2,16 +2,13 @@
 slug: sn2.6
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Kāmadasutta
 ---
 
 Sāvatthinidānaṁ.
 
-Ekamantaṁ ṭhito kho kāmado devaputto bhagavantaṁ etadavoca:
-
-“dukkaraṁ, bhagavā, sudukkaraṁ, bhagavā”ti.
-
-“Dukkaraṁ vāpi karonti,
+Ekamantaṁ ṭhito kho kāmado devaputto bhagavantaṁ etadavoca: “dukkaraṁ, bhagavā, sudukkaraṁ, bhagavā”ti.
 
 (kāmadāti bhagavā)
 
@@ -23,8 +20,6 @@ Tuṭṭhi hoti sukhāvahā”ti.
 
 “Dullabhā, bhagavā, yadidaṁ tuṭṭhī”ti.
 
-“Dullabhaṁ vāpi labhanti,
-
 (kāmadāti bhagavā)
 
 Cittavūpasame ratā;
@@ -35,8 +30,6 @@ Bhāvanāya rato mano”ti.
 
 “Dussamādahaṁ, bhagavā, yadidaṁ cittan”ti.
 
-“Dussamādahaṁ vāpi samādahanti,
-
 (kāmadāti bhagavā)
 
 Indriyūpasame ratā;
@@ -46,8 +39,6 @@ Te chetvā maccuno jālaṁ,
 Ariyā gacchanti kāmadā”ti.
 
 “Duggamo, bhagavā, visamo maggo”ti.
-
-“Duggame visame vāpi,
 
 Ariyā gacchanti kāmada;
 

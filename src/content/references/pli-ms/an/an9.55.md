@@ -1,0 +1,11 @@
+---
+slug: an9.55
+source: suttacentral/bilara-data
+edition: ms
+granularity: segment
+title: Amatappattasutta
+---
+
+“‘Amatappatto, amatappatto’ti, āvuso, vuccati ….
+
+Catutthaṁ.

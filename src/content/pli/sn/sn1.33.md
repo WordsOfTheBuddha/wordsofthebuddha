@@ -2,16 +2,13 @@
 slug: sn1.33
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Sādhusutta
 ---
 
 Sāvatthinidānaṁ.
 
-Atha kho sambahulā satullapakāyikā devatāyo abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṁ jetavanaṁ obhāsetvā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhaṁsu.
-
-Ekamantaṁ ṭhitā kho ekā devatā bhagavato santike imaṁ udānaṁ udānesi:
-
-“Sādhu kho mārisa dānaṁ,
+Atha kho sambahulā satullapakāyikā devatāyo abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṁ jetavanaṁ obhāsetvā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhaṁsu. Ekamantaṁ ṭhitā kho ekā devatā bhagavato santike imaṁ udānaṁ udānesi:
 
 maccherā ca pamādā ca;
 
@@ -23,11 +20,7 @@ Deyyaṁ hoti vijānatā”ti.
 
 Atha kho aparā devatā bhagavato santike imaṁ udānaṁ udānesi:
 
-“Sādhu kho mārisa dānaṁ,
-
-Api ca appakasmimpi sāhu dānaṁ.
-
-Appasmeke pavecchanti,
+“Sādhu kho mārisa dānaṁ, Api ca appakasmimpi sāhu dānaṁ.
 
 bahuneke na dicchare;
 
@@ -36,8 +29,6 @@ Appasmā dakkhiṇā dinnā,
 sahassena samaṁ mitā”ti.
 
 Atha kho aparā devatā bhagavato santike imaṁ udānaṁ udānesi:
-
-“Sādhu kho mārisa dānaṁ,
 
 Appakasmimpi sāhu dānaṁ;
 
@@ -53,15 +44,11 @@ Teneva so hoti sukhī paratthā”ti.
 
 Atha kho aparā devatā bhagavato santike imaṁ udānaṁ udānesi:
 
-“Sādhu kho mārisa dānaṁ,
-
 Appakasmimpi sāhu dānaṁ;
 
 Saddhāyapi sāhu dānaṁ,
 
 Api ca dhammaladdhassāpi sāhu dānaṁ.
-
-Yo dhammaladdhassa dadāti dānaṁ,
 
 Uṭṭhānavīriyādhigatassa jantu;
 
@@ -71,8 +58,6 @@ Dibbāni ṭhānāni upeti macco”ti.
 
 Atha kho aparā devatā bhagavato santike imaṁ udānaṁ udānesi:
 
-“Sādhu kho mārisa dānaṁ,
-
 Appakasmimpi sāhu dānaṁ;
 
 Saddhāyapi sāhu dānaṁ,
@@ -81,8 +66,6 @@ Dhammaladdhassāpi sāhu dānaṁ;
 
 Api ca viceyya dānampi sāhu dānaṁ.
 
-Viceyya dānaṁ sugatappasatthaṁ,
-
 Ye dakkhiṇeyyā idha jīvaloke;
 
 Etesu dinnāni mahapphalāni,
@@ -90,8 +73,6 @@ Etesu dinnāni mahapphalāni,
 Bījāni vuttāni yathā sukhette”ti.
 
 Atha kho aparā devatā bhagavato santike imaṁ udānaṁ udānesi:
-
-“Sādhu kho mārisa dānaṁ,
 
 Appakasmimpi sāhu dānaṁ;
 
@@ -103,21 +84,15 @@ Viceyya dānampi sāhu dānaṁ,
 
 Api ca pāṇesupi sādhu saṁyamo.
 
-Yo pāṇabhūtāni aheṭhayaṁ caraṁ,
-
 Parūpavādā na karonti pāpaṁ;
 
 Bhīruṁ pasaṁsanti na hi tattha sūraṁ,
 
 Bhayā hi santo na karonti pāpan”ti.
 
-Atha kho aparā devatā bhagavantaṁ etadavoca:
-
-“kassa nu kho, bhagavā, subhāsitan”ti?
+Atha kho aparā devatā bhagavantaṁ etadavoca: “kassa nu kho, bhagavā, subhāsitan”ti?
 
 “Sabbāsaṁ vo subhāsitaṁ pariyāyena, api ca mamapi suṇātha—
-
-Saddhā hi dānaṁ bahudhā pasatthaṁ,
 
 Dānā ca kho dhammapadaṁva seyyo;
 

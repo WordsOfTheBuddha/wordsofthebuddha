@@ -1,0 +1,37 @@
+---
+slug: an9.25
+source: suttacentral/bilara-data
+edition: ms
+granularity: segment
+title: Paññāsutta
+---
+
+“Yato kho, bhikkhave, bhikkhuno paññāya cittaṁ suparicitaṁ hoti, tassetaṁ, bhikkhave, bhikkhuno kallaṁ vacanāya:
+
+‘khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyāti pajānāmī’ti.
+
+Kathañca, bhikkhave, bhikkhuno paññāya cittaṁ suparicitaṁ hoti?
+
+‘Vītarāgaṁ me cittan’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘vītadosaṁ me cittan’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘vītamohaṁ me cittan’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘asarāgadhammaṁ me cittan’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘asadosadhammaṁ me cittan’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘asamohadhammaṁ me cittan’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘anāvattidhammaṁ me cittaṁ kāmabhavāyā’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘anāvattidhammaṁ me cittaṁ rūpabhavāyā’ti paññāya cittaṁ suparicitaṁ hoti;
+
+‘anāvattidhammaṁ me cittaṁ arūpabhavāyā’ti paññāya cittaṁ suparicitaṁ hoti.
+
+Yato kho, bhikkhave, bhikkhuno paññāya cittaṁ suparicitaṁ hoti, tassetaṁ, bhikkhave, bhikkhuno kallaṁ vacanāya:
+
+‘khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyāti pajānāmī’”ti.
+
+Pañcamaṁ.

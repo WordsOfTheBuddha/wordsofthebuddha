@@ -2,12 +2,11 @@
 slug: an9.13
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Koṭṭhikasutta
 ---
 
-Atha kho āyasmā mahākoṭṭhiko yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi.
-
-Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā mahākoṭṭhiko āyasmantaṁ sāriputtaṁ etadavoca:
+Atha kho āyasmā mahākoṭṭhiko yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā mahākoṭṭhiko āyasmantaṁ sāriputtaṁ etadavoca:
 
 “kiṁ nu kho, āvuso sāriputta, ‘yaṁ kammaṁ diṭṭhadhammavedanīyaṁ, taṁ me kammaṁ samparāyavedanīyaṁ hotū’ti, etassa atthāya bhagavati brahmacariyaṁ vussatī”ti?
 
@@ -67,26 +66,12 @@ Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Eka
 
 ‘Kiṁ nu kho, āvuso sāriputta, yaṁ kammaṁ vedanīyaṁ taṁ me kammaṁ avedanīyaṁ hotūti, etassa atthāya bhagavati brahmacariyaṁ vussatī’ti, iti puṭṭho samāno ‘no hidaṁ, āvuso’ti vadesi.
 
-‘Kiṁ panāvuso sāriputta, yaṁ kammaṁ avedanīyaṁ taṁ me kammaṁ vedanīyaṁ hotūti, etassa atthāya bhagavati brahmacariyaṁ vussatī’ti, iti puṭṭho samāno ‘no hidaṁ, āvuso’ti vadesi.
-
-Atha kimatthaṁ carahāvuso, bhagavati brahmacariyaṁ vussatī”ti?
+‘Kiṁ panāvuso sāriputta, yaṁ kammaṁ avedanīyaṁ taṁ me kammaṁ vedanīyaṁ hotūti, etassa atthāya bhagavati brahmacariyaṁ vussatī’ti, iti puṭṭho samāno ‘no hidaṁ, āvuso’ti vadesi. Atha kimatthaṁ carahāvuso, bhagavati brahmacariyaṁ vussatī”ti?
 
 “Yaṁ khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ, tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussatīti.
 
 Kiṁ panassāvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ, yassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussatīti?
 
-‘Idaṁ dukkhan’ti khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ.
-
-Tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussati.
-
-‘Ayaṁ dukkhasamudayo’ti khvassa, āvuso …pe… ‘ayaṁ dukkhanirodho’ti khvassa, āvuso …pe…
-
-‘ayaṁ dukkhanirodhagāminī paṭipadā’ti khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ.
-
-Tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussati.
-
-Idaṁ khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ.
-
-Tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussatī”ti.
+‘Idaṁ dukkhan’ti khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ. Tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussati. ‘Ayaṁ dukkhasamudayo’ti khvassa, āvuso …pe… ‘ayaṁ dukkhanirodho’ti khvassa, āvuso …pe… ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ. Tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussati. Idaṁ khvassa, āvuso, aññātaṁ adiṭṭhaṁ appattaṁ asacchikataṁ anabhisametaṁ. Tassa ñāṇāya dassanāya pattiyā sacchikiriyāya abhisamayāya bhagavati brahmacariyaṁ vussatī”ti.
 
 Tatiyaṁ.

@@ -1,0 +1,39 @@
+---
+slug: sn1.77
+source: suttacentral/bilara-data
+edition: ms
+granularity: segment
+title: Issariyasutta
+---
+
+“Kiṁsu issariyaṁ loke,
+
+kiṁsu bhaṇḍānamuttamaṁ;
+
+Kiṁsu satthamalaṁ loke,
+
+kiṁsu lokasmimabbudaṁ.
+
+Kiṁsu harantaṁ vārenti,
+
+haranto pana ko piyo;
+
+Kiṁsu punappunāyantaṁ,
+
+abhinandanti paṇḍitā”ti.
+
+“Vaso issariyaṁ loke,
+
+itthī bhaṇḍānamuttamaṁ;
+
+Kodho satthamalaṁ loke,
+
+corā lokasmimabbudā.
+
+Coraṁ harantaṁ vārenti,
+
+haranto samaṇo piyo;
+
+Samaṇaṁ punappunāyantaṁ,
+
+abhinandanti paṇḍitā”ti.

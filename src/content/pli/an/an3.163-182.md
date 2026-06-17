@@ -2,12 +2,8 @@
 slug: an3.163-182
 source: suttacentral/bilara-data
 edition: ms
-title: ""
+granularity: paragraph
 ---
-
-“Tīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.
-
-Tīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ sagge.
 
 Attanā ca adinnādāyī hoti, parañca adinnādāne samādapeti, adinnādāne ca samanuñño hoti …pe….
 
@@ -45,10 +41,6 @@ Attanā ca micchādiṭṭhiko hoti, parañca micchādiṭṭhiyā samādapeti, 
 
 Attanā ca sammādiṭṭhiko hoti, parañca sammādiṭṭhiyā samādapeti, sammādiṭṭhiyā ca samanuñño hoti.
 
-Katamehi tīhi?
-
-Katamehi tīhi?
-
 Imehi kho, bhikkhave, tīhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ sagge”ti.
 
 Attanā ca pāṇātipātī hoti, parañca pāṇātipāte samādapeti, pāṇātipāte ca samanuñño hoti.
@@ -60,8 +52,6 @@ Kammapathapeyyālaṁ niṭṭhitaṁ.
 Imehi kho, bhikkhave, tīhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.
 
 Tassuddānaṁ
-
-Pāṇaṁ adinnamicchā ca,
 
 musāvādī ca pisuṇā;
 

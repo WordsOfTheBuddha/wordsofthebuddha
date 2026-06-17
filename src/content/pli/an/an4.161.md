@@ -2,12 +2,11 @@
 slug: an4.161
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Saṅkhittasutta
 ---
 
-“Catasso imā, bhikkhave, paṭipadā.
-
-Katamā catasso?
+“Catasso imā, bhikkhave, paṭipadā. Katamā catasso?
 
 Dukkhā paṭipadā dandhābhiññā,
 

@@ -2,18 +2,15 @@
 slug: sn1.18
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Hirīsutta
 ---
-
-“Hirīnisedho puriso,
 
 koci lokasmiṁ vijjati;
 
 Yo nindaṁ apabodhati,
 
 asso bhadro kasāmivā”ti.
-
-“Hirīnisedhā tanuyā,
 
 ye caranti sadā satā;
 

@@ -2,10 +2,9 @@
 slug: sn1.42
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Kiṁdadasutta
 ---
-
-“Kiṁdado balado hoti,
 
 kiṁdado hoti vaṇṇado;
 
@@ -17,15 +16,11 @@ Ko ca sabbadado hoti,
 
 taṁ me akkhāhi pucchito”ti.
 
-“Annado balado hoti,
-
 vatthado hoti vaṇṇado;
 
 Yānado sukhado hoti,
 
 dīpado hoti cakkhudo.
-
-So ca sabbadado hoti,
 
 yo dadāti upassayaṁ;
 

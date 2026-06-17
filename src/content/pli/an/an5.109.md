@@ -2,12 +2,11 @@
 slug: an5.109
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Cātuddisasutta
 ---
 
-“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu cātuddiso hoti.
-
-Katamehi pañcahi?
+“Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu cātuddiso hoti. Katamehi pañcahi?
 
 Idha, bhikkhave, bhikkhu sīlavā hoti, pātimokkhasaṁvarasaṁvuto viharati ācāragocarasampanno aṇumattesu vajjesu bhayadassāvī, samādāya sikkhati sikkhāpadesu;
 

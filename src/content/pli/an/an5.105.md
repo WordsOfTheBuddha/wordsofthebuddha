@@ -2,12 +2,11 @@
 slug: an5.105
 source: suttacentral/bilara-data
 edition: ms
+granularity: paragraph
 title: Phāsuvihārasutta
 ---
 
-“Pañcime, bhikkhave, phāsuvihārā.
-
-Katame pañca?
+“Pañcime, bhikkhave, phāsuvihārā. Katame pañca?
 
 Idha, bhikkhave, bhikkhuno mettaṁ kāyakammaṁ paccupaṭṭhitaṁ hoti sabrahmacārīsu āvi ceva raho ca, mettaṁ vacīkammaṁ … mettaṁ manokammaṁ paccupaṭṭhitaṁ hoti sabrahmacārīsu āvi ceva raho ca.
 
