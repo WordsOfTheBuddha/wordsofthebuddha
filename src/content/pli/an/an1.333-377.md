@@ -2,7 +2,7 @@
 title: Catuttha vagga - The Chapter on One Thing (Fourth)
 slug: an1.333-377
 description: Using the simile of Jambudīpa's rare delightful parks amid rugged terrain, the Buddha illustrates how rare it is to be reborn as a human, to encounter the Dhamma, and to gain the taste of liberation.
-qualities: wisdom, ignorance, lack of discernment, examination, collectedness, unification, liberation, wise attention, rousing of energy
+qualities: wisdom, ignorance, lack of discernment, examination, collectedness, unification, liberation, radical attention, rousing of energy
 theme: urgency, inspiration, wisdom
 priority: 1.1
 ---

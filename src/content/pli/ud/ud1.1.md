@@ -1,7 +1,7 @@
 ---
 title: Paṭhama bodhi sutta - Upon Awakening (First)
 description: The Buddha contemplates dependent arising in forward order just after his full awakening.
-qualities: wise attention, dependent arising
+qualities: radical attention, dependent arising
 theme: inspiration, wisdom, principle
 slug: ud1.1
 ---

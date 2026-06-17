@@ -74,7 +74,7 @@
 		"unprincipled conduct",
 		"undeveloped",
 		"unwholesome",
-		"unwise attention",
+		"superficial attention",
 		"vanity",
 		"weak in effort",
 		"wrong collectedness",
@@ -176,7 +176,7 @@
 		"wakefulness",
 		"wholesome",
 		"wisdom",
-		"wise attention",
+		"radical attention",
 		"with nothing",
 		"without fear"
 	],
@@ -962,7 +962,7 @@
 			"not knowing the four noble truths",
 			"Context: A fundamental blindness to the true nature of reality. It is not merely a lack of information, but an active misperception that views the transient as permanent and the unsatisfactory as a source of happiness, thereby fueling the cycle of suffering.",
 			"Supported by:{anxiety, doubt, drowsiness, dullness, ill will, sensual desire}",
-			"Leads to:{aversion, conceit, craving, desire, delusion, immaturity, moral recklessness, passion, shamelessness, unwise attention, wrong view}",
+			"Leads to:{aversion, conceit, craving, desire, delusion, immaturity, moral recklessness, passion, shamelessness, superficial attention, wrong view}",
             "Opposite:{true knowledge}",
 			"[avijjā]"
 		],
@@ -1042,7 +1042,7 @@
 			"loss of reason",
 			"madness",
 			"Context: A disturbed and unstable mental condition in which the mind is scattered, erratic, or deranged. It can range from temporary disorientation and agitation to severe forms of insanity, obstructing clarity and discernment.",
-			"Supported by:{unwise attention, wrong view}",
+			"Supported by:{superficial attention, wrong view}",
 			"Leads to:{suffering}",
 			"[ummattaka, cittakkhepa]"
 		],
@@ -1130,7 +1130,7 @@
 			"lack of wisdom",
 			"child-like in understanding",
 			"Context: Failure to understand cause and effect or to recognize wholesome from unwholesome. It clouds judgment and makes the mind easily led by craving and aversion.",
-			"Supported by:{passion, aversion, delusion, unwise attention}",
+			"Supported by:{passion, aversion, delusion, superficial attention}",
 			"Leads to:{immaturity, bad friendship}",
 			"Opposite:{wisdom}",
 			"[asampajañña, bāla, duppañña]"
@@ -1594,7 +1594,7 @@
 			"right belief",
 			"view that is inline with the Dhamma",
 			"Context: View that is in line with the Dhamma — teachings of the Buddha that point to the nature of reality, the ultimate truth.",
-			"Supported by:{wise attention}",
+			"Supported by:{radical attention}",
 			"Guarded by:{right effort, mindfulness}",
 			"Leads to:{cultivation, loving-kindness, non-harm, stream-entry}",
 			"[sammādiṭṭhi]"
@@ -1768,8 +1768,8 @@
 			"theorizing",
 			"hypothesis-making",
 			"reasoned reflection",
-			"Context: A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often rooted in unwise attention. Speculation can further proliferate into views and opinions.",
-			"Supported by:{unwise attention, recognition of diversity}",
+			"Context: A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often rooted in superficial attention. Speculation can further proliferate into views and opinions.",
+			"Supported by:{superficial attention, recognition of diversity}",
 			"Leads to:{mental proliferation, doubt}",
 			"Opposite:{examination}",
 			"[takka, kappa]"
@@ -1919,14 +1919,14 @@
 			"Opposite:{wholesome}",
 			"[akusala]"
 		],
-		"unwise attention": [
-			"improper attention",
-			"imprudent use of the mind",
-			"unfocused attention",
-			"Context: Attention that misses the point of contact, fixating on concepts or features. Disconnected from the source of experience, it then engages in reactions of craving, aversion, and delusion.",
+		"superficial attention": [
+			"unwise attention",
+			"attention to the foreground",
+			"content-bound reflection",
+			"Context: Attention that misses the structural matrix, fixating entirely on the surface features and content of an experience. Remaining bound to the foreground, it feeds proliferation and reactions of craving, aversion, and delusion.",
 			"Supported by:{negligence, ignorance}",
 			"Leads to:{lack of discernment, speculation}",
-			"Opposite:{wise attention}",
+			"Opposite:{radical attention}",
 			"[ayonisomanasikāra]"
 		],
 		"vanity": [
@@ -2010,14 +2010,15 @@
 			"Opposite:{delusion, immaturity, lack of discernment}",
 			"[paññā, medhā, dhīra, paṇḍita, asammūḷha]"
 		],
-		"wise attention": [
-			"proper attention",
-			"prudent use of the mind",
-			"attention to the source",
-			"Context: Paying attention to the point of contact where experience originates. It discerns the specific cause of the present moment, preventing the mind from drifting into proliferation.",
+		"radical attention": [
+			"wise attention",
+			"root-level attention",
+			"attention to the structural source",
+			"contextual reflection",
+			"Context: Attending to the structural container or matrix from where the foreground experience originates. It discerns the background conditions of the present moment, preventing the mind from getting caught in the content.",
 			"Supported by:{wisdom, perceiving drawback}",
 			"Leads to:{right view}",
-			"Opposite:{unwise attention}",
+			"Opposite:{superficial attention}",
 			"[yonisomanasikāra]"
 		],
 		"with nothing": [
@@ -2097,7 +2098,7 @@
 			"untrue view",
 			"false belief",
 			"Context: A distorted understanding that sees permanence in the impermanent, satisfaction in the unsatisfactory, or self in the not-self. Wrong view guides action by delusion, obscuring cause and effect, and closes the door to wisdom and release.",
-			"Supported by:{unwise attention, ignorance}",
+			"Supported by:{superficial attention, ignorance}",
 			"Leads to:{undeveloped, wrong intention}",
 			"[micchādiṭṭhi]"
 		]

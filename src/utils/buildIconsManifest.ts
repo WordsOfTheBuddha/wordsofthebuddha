@@ -367,7 +367,7 @@ const icons: IconEntry[] = [
 	// MN 2
 	{
 		id: "tangle-unwise-attention",
-		title: "Unwise attention",
+		title: "Superficial attention",
 		description: "Tangled lines for ayoniso, āsava, uddhaccakukkucca",
 		discourse: ["mn2", "mn9"],
 		tags: ["burgundy", "line-art"],

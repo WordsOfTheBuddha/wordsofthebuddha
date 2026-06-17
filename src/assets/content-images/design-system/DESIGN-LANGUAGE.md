@@ -43,8 +43,8 @@ These recur across files; exact hex drifts slightly per piece.
 | **Accent / structure** | `#c8a040` | Tier labels, spines, highlights, “liberation” thread. |
 | **Cool ink (primary text)** | `#a0b0c8`, `#c8d8e8` | English headings on dark panels. |
 | **Secondary ink** | `#708090`, `#8898b0` | Subtitles, Pali, de-emphasized lines. |
-| **Harm / tension** | `#a06070`, burgundy strokes | Unwise attention, painful/samsaric motifs. |
-| **Harmony / release** | `#60a088`, `#80c0a0` | Wise attention, wholesome flows. |
+| **Harm / tension** | `#a06070`, burgundy strokes | Superficial attention, painful/samsaric motifs. |
+| **Harmony / release** | `#60a088`, `#80c0a0` | Radical attention, wholesome flows. |
 | **Neutral structure** | `#7888a0`, `#6888a0` | Icons, connectors, inactive modalities. |
 | **Liberation glow** | `#ffd700`, `#daa520` | Radial gradients, sparkles, apex glows (often low opacity). |
 

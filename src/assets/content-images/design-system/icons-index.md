@@ -29,8 +29,8 @@ Generated from `icons-manifest.json` (version 1).
 | oneness | Oneness | mn1 | phenomena | line-art | `icons/oneness.svg` |
 | diversity | Diversity | mn1 | phenomena | line-art | `icons/diversity.svg` |
 | all | All | mn1 | phenomena | line-art | `icons/all.svg` |
-| tangle-unwise-attention | Unwise attention | mn2 | five hindrances, harm, wisdom | burgundy, line-art | `icons/tangle-unwise-attention.svg` |
-| wise-attention | Wise attention | mn2 | safety, wisdom | teal, line-art | `icons/wise-attention.svg` |
+| tangle-unwise-attention | Superficial attention | mn2 | five hindrances, harm, wisdom | burgundy, line-art | `icons/tangle-unwise-attention.svg` |
+| wise-attention | Radical attention | mn2 | safety, wisdom | teal, line-art | `icons/wise-attention.svg` |
 | eye-shield | Restraint (eye + gates) | mn2 | sense restraint, wholesome | line-art | `icons/eye-shield.svg` |
 | bowl-robe | Proper use (bowl + robe) | mn2, mn6, mn39 | ethical conduct, wholesome | line-art | `icons/bowl-robe.svg` |
 | endure | Enduring | mn2 | wholesome | line-art | `icons/endure.svg` |

@@ -1,7 +1,7 @@
 ---
 title: Dutiya bodhi sutta - Upon Awakening (Second)
 description: The Buddha contemplates dependent arising in reverse order just after his full awakening.
-qualities: wise attention, dependent arising
+qualities: radical attention, dependent arising
 theme: inspiration, wisdom, principle
 slug: ud1.2
 ---

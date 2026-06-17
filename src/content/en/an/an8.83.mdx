@@ -1,7 +1,7 @@
 ---
 title: Mūlaka sutta - Rooted
 description: The Buddha provides an eight-step psychological framework regarding the underlying nature of human experience.
-qualities: desire, wise attention, contact, collectedness, mindfulness, wisdom, liberation
+qualities: desire, radical attention, contact, collectedness, mindfulness, wisdom, liberation
 theme: wisdom, inquisitiveness
 slug: an8.83
 priority: 1.2

@@ -90,7 +90,7 @@
 
     <!-- ============ CORE CONTRAST PANEL ============ -->
 
-    <!-- Left: Unwise Attention -->
+    <!-- Left: Superficial Attention -->
     <g filter="url(#shadowDrop)">
         <rect x="60" y="148" width="388" height="92" rx="8" fill="url(#patternLeft)"
             stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5" />

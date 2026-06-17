@@ -1,7 +1,7 @@
 ---
 title: Niddasavatthu sutta - Grounds for Inclination
 description: The Buddha describes the seven grounds for wholesome inclinations, of 1) undertaking the training precepts, 2) attending carefully to the Dhamma, 3) removing longing, 4) seclusion, 5) arousing energy, 6) skilled mindfulness, and 7) realization of right view.
-qualities: diligence, wise attention, contentment, solitude, rousing of energy, mindfulness, right view
+qualities: diligence, radical attention, contentment, solitude, rousing of energy, mindfulness, right view
 theme: inspiration
 slug: an7.20
 ---
