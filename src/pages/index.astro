@@ -2,6 +2,7 @@
 export const prerender = false;
 import { getEntry, render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import RedditCommunity from "../components/RedditCommunity.astro";
 import { isFirebaseInitialized } from "../service/firebase/server";
 
 const home = await getEntry("all", "index");
@@ -57,4 +58,5 @@ const { Content } = await render(home);
 		)
 	}
 	<Content />
+	<RedditCommunity />
 </Layout>
