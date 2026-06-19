@@ -6,9 +6,10 @@ import SearchIcon from "../assets/search.svg?raw"; // Add this import
 interface Props {
 	showAuth?: boolean;
 	showSearch?: boolean;
+	showBrand?: boolean;
 }
 
-const { showAuth = false, showSearch = true } = Astro.props;
+const { showAuth = false, showSearch = true, showBrand = true } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isInReviewSection =
 	currentPath === "/review-room" || currentPath === "/profile";
@@ -26,20 +27,32 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 ---
 
 <nav
-	class="flex items-center justify-between border-b border-[color:var(--surface-border)]
-         px-4 py-3 text-[var(--surface-ink)] min-h-[4rem]"
+	class:list={[
+		"flex items-center px-4 py-3 text-[var(--surface-ink)] min-h-[4rem]",
+		showBrand && "border-b border-[color:var(--surface-border)]",
+		showBrand ? "justify-between" : "justify-end nav-minimal",
+	]}
 >
-	<div class="text-lg md:text-xl font-bold flex items-center min-h-[2.25rem]">
-		<a href="/" class="brand-link" aria-label="Words of the Buddha home">
-			<span class="brand-text text-gradient-accent">Words of the Buddha</span>
-		</a>
-	</div>
+	{
+		showBrand && (
+			<div class="text-lg md:text-xl font-bold flex items-center min-h-[2.25rem]">
+				<a href="/" class="brand-link" aria-label="Words of the Buddha home">
+					<span class="brand-text text-gradient-accent">Words of the Buddha</span>
+				</a>
+			</div>
+		)
+	}
 	<div class="flex items-center gap-2 min-h-[2.25rem] z-50">
 		{
 			showSearch && (
 				<a
 					href="/search"
-					class="p-2 hover:text-[var(--link-hover-color)]"
+					class:list={[
+						"nav-search-link p-2",
+						showBrand
+							? "hover:text-[var(--link-hover-color)]"
+							: "nav-search-link--subtle",
+					]}
 					title="Search"
 					aria-label="Search"
 					role="button"
@@ -148,6 +161,14 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 
 	.brand-link :global(.logo-mark) {
 		transform: translateY(0.02em);
+	}
+
+	nav.nav-minimal :global(.nav-search-link--subtle) {
+		color: var(--text-muted);
+	}
+
+	nav.nav-minimal :global(.nav-search-link--subtle:hover) {
+		color: var(--text-color);
 	}
 </style>
 

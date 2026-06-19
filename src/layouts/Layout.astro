@@ -58,6 +58,7 @@ const {
 	showPali = false,
 	showFilter = false,
 	hideNavbar = false,
+	showNavbarBrand = true,
 	seoTitle = null, // Add new prop for SEO title
 	paragraphRequest = null,
 	discourseRange = null,
@@ -86,6 +87,7 @@ const {
 	showPali?: boolean;
 	showFilter?: boolean;
 	hideNavbar?: boolean;
+	showNavbarBrand?: boolean;
 	seoTitle?: string | null;
 	paragraphRequest?: any;
 	/** Set when URL is a discourse excerpt (e.g. /dhp185-187); pairs with paragraphRequest for voice subset mode. */
@@ -401,6 +403,7 @@ if (!SEOTitle) {
 							<Navbar
 								showAuth={showAuth}
 								showSearch={showSearch}
+								showBrand={showNavbarBrand}
 							/>
 						)
 					}
