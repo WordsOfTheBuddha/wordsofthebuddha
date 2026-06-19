@@ -516,6 +516,9 @@ export function parseContent(
 	return result;
 }
 
+const END_MARKER =
+	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)\.(ṁ)?$/;
+
 function processBlocks(
 	englishText: string,
 	paliText: string,
@@ -653,33 +656,40 @@ function processBlocks(
 	});
 
 	// In development mode, if there are more Pali paragraphs than English,
-	// include up to 3 extra Pali paragraphs to help with translation workflow
+	// include up to 3 extra Pali paragraphs to help with translation workflow.
+	// Skip sutta end markers (e.g. "Dutiyaṁ.") and omit the English placeholder
+	// when only a single trailing paragraph remains.
 	if (import.meta.env.DEV && paliIndex < paliParagraphs.length) {
-		let added = 0;
-		let scanIndex = paliIndex;
-
-		while (scanIndex < paliParagraphs.length && added < 3) {
-			const nextPali = paliParagraphs[scanIndex];
-			// Only add if it's not a heading
-			if (nextPali && !nextPali.startsWith("#")) {
-				pairs.push({
-					type: "paragraph",
-					english:
-						'<span class="text-gray-400 italic">Translation in progress...</span>',
-					pali: nextPali,
-					// No actualParagraphNumber for unpaired Pali
-				});
-				added++;
+		const remaining: string[] = [];
+		for (let i = paliIndex; i < paliParagraphs.length; i++) {
+			const nextPali = paliParagraphs[i];
+			if (
+				nextPali &&
+				!nextPali.startsWith("#") &&
+				!END_MARKER.test(nextPali.trim())
+			) {
+				remaining.push(nextPali);
 			}
-			scanIndex++;
+		}
+
+		const toAdd = remaining.slice(0, 3);
+		const soleTrailingParagraph =
+			toAdd.length === 1 && remaining.length === 1;
+
+		for (const pali of toAdd) {
+			pairs.push({
+				type: "paragraph",
+				english: soleTrailingParagraph
+					? ""
+					: '<span class="text-gray-400 italic">Translation in progress...</span>',
+				pali,
+				// No actualParagraphNumber for unpaired Pali
+			});
 		}
 	}
 
 	return pairs;
 }
-
-const END_MARKER =
-	/^(Paṭhama|Dutiya|Tatiya|Catuttha|Pañcama|Chaṭṭha|Sattama|Aṭṭhama|Navama|Dasama|Ekādasama)\.(ṁ)?$/;
 
 /** Shown when a discourse has Pali but no English or reference translation. */
 export const PALI_ONLY_NOTICE =
@@ -1007,6 +1017,15 @@ export function createCombinedMarkdown(
 					return pair.english;
 				}
 				if (!pair.english.trim()) {
+					// Keep split columns aligned when Pali has a trailing paragraph
+					if (
+						pair.pali &&
+						pair.type === "paragraph" &&
+						!pair.pali.startsWith("#")
+					) {
+						const idx = pairIndex++;
+						return `<p class="english-paragraph" data-pair-id="${idx}"></p>`;
+					}
 					return "";
 				}
 				if (!pair.english.startsWith("#")) {

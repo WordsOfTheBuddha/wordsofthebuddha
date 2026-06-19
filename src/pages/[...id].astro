@@ -20,6 +20,7 @@ import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
 import { findContentImages } from "../utils/contentImage";
+import { findNearestTranslatedNeighbors } from "../utils/translatedNeighbors";
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
@@ -392,12 +393,20 @@ const layout: "split" | "interleaved" = "interleaved";
 		const filePath = paliParagraphEntry.filePath || "";
 		const lastUpdated = getLastModified(filePath);
 
+		let refPrev = null;
+		let refNext = null;
+		if (useReferenceEnglish) {
+			const { prevId, nextId } = findNearestTranslatedNeighbors(id, routes);
+			if (prevId) refPrev = await getEntry("all", prevId);
+			if (nextId) refNext = await getEntry("all", nextId);
+		}
+
 		suttaProps = {
 			fp,
 			title: displayTitle,
 			description: undefined,
-			prev: null,
-			next: null,
+			prev: refPrev,
+			next: refNext,
 			id,
 			showReadLater: false,
 			showSave: false,
