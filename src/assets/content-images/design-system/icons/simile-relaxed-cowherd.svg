@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 12) scale(0.18657) translate(-70, -44.05)">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="34" y1="76" x2="34" y2="40" stroke="#688090" stroke-width="1.4" />
+        <ellipse cx="34" cy="26" rx="20" ry="14" stroke="#7890a0" stroke-width="1.2" />
+        <path d="M 20 38 Q 32 44, 44 36" stroke="#7890a0" stroke-width="0.8" opacity="0.5" />
+        <circle cx="40" cy="54" r="5.5" stroke="#c8d8e8" stroke-width="1.2" />
+        <line x1="40" y1="59.5" x2="40" y2="68" stroke="#c8d8e8" stroke-width="1.15" />
+        <line x1="40" y1="68" x2="34" y2="74" stroke="#c8d8e8" stroke-width="1" />
+        <line x1="40" y1="68" x2="46" y2="74" stroke="#c8d8e8" stroke-width="1" />
+        <line x1="40" y1="62" x2="36" y2="66" stroke="#c8d8e8" stroke-width="0.95" />
+        <line x1="40" y1="62" x2="44" y2="66" stroke="#c8d8e8" stroke-width="0.95" />
+        <circle cx="78" cy="46" r="7" stroke="#80c0a0" stroke-width="1.2" />
+        <ellipse cx="102" cy="52" rx="24" ry="12" stroke="#80c0a0" stroke-width="1.2" />
+        <path d="M 73 38 L 70 30 M 83 38 L 86 30" stroke="#80c0a0" stroke-width="1" />
+        <path d="M 76 50 Q 73 58, 74 66" stroke="#80c0a0" stroke-width="0.9" />
+        <line x1="86" y1="64" x2="86" y2="76" stroke="#80c0a0" stroke-width="1" />
+        <line x1="98" y1="64" x2="98" y2="76" stroke="#80c0a0" stroke-width="1" />
+        <line x1="110" y1="64" x2="110" y2="76" stroke="#80c0a0" stroke-width="1" />
+        <line x1="122" y1="62" x2="122" y2="76" stroke="#80c0a0" stroke-width="1" />
+      </g>
+  </g>
+</svg>
