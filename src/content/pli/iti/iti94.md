@@ -4,6 +4,9 @@ description: The Buddha instructs that one should examine experience in such a w
 qualities: collectedness, imperturbable, examination, free from attachment, consciousness
 theme: wisdom, principle
 slug: iti94
+priority: 1.2
+commentary:
+  - "[1] A detailed exposition of this brief instruction can be found in [MN 138 - Uddesavibhaṅga sutta - The Exposition of a Summary](/mn138)."
 ---
 
 Vuttañhetaṁ bhagavatā vuttamarahatāti me sutaṁ:

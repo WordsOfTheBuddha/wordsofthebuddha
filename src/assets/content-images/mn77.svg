@@ -981,7 +981,7 @@
     <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
     <a href="https://wordsofthebuddha.org/mn77" target="_blank" rel="noopener noreferrer">
       <text x="460" y="18" text-anchor="middle" fill="#485840"
-        font-family="Georgia,'Times New Roman',serif" font-size="9.5" letter-spacing="1">wordsofthebuddha.org/mn77</text>
+        font-family="Georgia,'Times New Roman',serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn77</text>
     </a>
     <g transform="translate(460, 40) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
       <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />

@@ -405,7 +405,7 @@
   <text x="460" y="1982" text-anchor="middle" fill="#507868" font-family="Georgia,Times New Roman,serif" font-size="10" font-style="italic">pacchimaṁ janataṁ anukampamāno</text>
 
   <line x1="300" y1="2000" x2="620" y2="2000" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
-  <a href="https://wordsofthebuddha.org/mn4" target="_blank" rel="noopener noreferrer"><text x="460" y="2016" text-anchor="middle" fill="#405060" font-family="Georgia,Times New Roman,serif" font-size="9.5" letter-spacing="1">wordsofthebuddha.org/mn4</text></a>
+  <a href="https://wordsofthebuddha.org/mn4" target="_blank" rel="noopener noreferrer"><text x="460" y="2016" text-anchor="middle" fill="#405060" font-family="Georgia,Times New Roman,serif" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn4</text></a>
 
   <!-- Lotus motif -->
   <g transform="translate(460, 2036) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
