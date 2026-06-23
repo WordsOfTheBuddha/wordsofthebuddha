@@ -35,10 +35,23 @@ export function getLastModified(filepath: string): Date {
     if (!filepath) return new Date();
 
     const normalizedPath = normalizeFilePath(filepath);
+
+    // In dev, prefer live filesystem mtime so "last updated" tracks edits.
+    if (import.meta.env.DEV) {
+        try {
+            const absPath = path.join(process.cwd(), normalizedPath);
+            if (fs.existsSync(absPath)) {
+                return fs.statSync(absPath).mtime;
+            }
+        } catch {
+            // Fall through to git-based cache.
+        }
+    }
+
     const cache = loadCache();
     const cachedDate = cache[normalizedPath];
 
-    if (!cachedDate) {
+    if (!cachedDate && import.meta.env.DEV) {
         console.warn(`[getLastModified] No cache for: ${normalizedPath}`);
     }
 

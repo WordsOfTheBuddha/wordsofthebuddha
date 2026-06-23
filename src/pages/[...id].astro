@@ -2,6 +2,7 @@
 // Catch-all stays SSR to support partial paragraph routes
 export const prerender = false;
 import { getEntry } from "astro:content";
+import { getEnglishEntry, getPaliEntry } from "../utils/getContentEntry";
 import {
 	parseContent,
 	createCombinedMarkdown,
@@ -160,7 +161,7 @@ const layout: "split" | "interleaved" = "interleaved";
 			);
 
 			// Check if the baseId exists as a discourse
-			const baseContent = await getEntry("all", baseId);
+			const baseContent = await getEnglishEntry(baseId);
 			if (baseContent) {
 				debug(
 					`Found baseContent for ${baseId} - treating as paragraph range`
@@ -323,14 +324,21 @@ const layout: "split" | "interleaved" = "interleaved";
 		}
 	}
 
+	let servePublishedEnglish = currentIndex !== -1;
+
 	if (currentIndex === -1) {
-		const paliParagraphEntry = await getEntry("pliAll", id);
-		const englishEntry = await getEntry("all", id);
-		if (!paliParagraphEntry || englishEntry) {
-			debug("No matching route found for:", id);
-			return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
-		}
-		// Direct URL to discourse without a native English translation yet
+		const englishEntry = await getEnglishEntry(id);
+		if (englishEntry) {
+			// Native translation exists; routes.ts may not have regenerated yet in dev.
+			servePublishedEnglish = true;
+			currentIndex = routes.indexOf(id);
+		} else {
+			const paliParagraphEntry = await getPaliEntry(id);
+			if (!paliParagraphEntry) {
+				debug("No matching route found for:", id);
+				return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
+			}
+			// Direct URL to discourse without a native English translation yet
 		const referenceEntry = await getEntry("referenceSujato", id);
 		const paliSegmentEntry = await getEntry("referencePliMs", id);
 		let pairs;
@@ -397,8 +405,8 @@ const layout: "split" | "interleaved" = "interleaved";
 		let refNext = null;
 		if (useReferenceEnglish) {
 			const { prevId, nextId } = findNearestTranslatedNeighbors(id, routes);
-			if (prevId) refPrev = await getEntry("all", prevId);
-			if (nextId) refNext = await getEntry("all", nextId);
+			if (prevId) refPrev = await getEnglishEntry(prevId);
+			if (nextId) refNext = await getEnglishEntry(nextId);
 		}
 
 		suttaProps = {
@@ -423,12 +431,17 @@ const layout: "split" | "interleaved" = "interleaved";
 			referenceFallback: useReferenceEnglish,
 		};
 		referenceFallbackPage = useReferenceEnglish;
-	} else {
-	// Load content with fresh file system read in development
-	let contentItem = await getEntry("all", id);
+		}
+	}
+
+	if (servePublishedEnglish) {
+	let contentItem = await getEnglishEntry(id);
 
 	if (!contentItem) {
-		console.warn("English content not found");
+		console.warn(
+			"English content not found for:",
+			id,
+		);
 		console.groupEnd();
 		return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 	}
@@ -437,7 +450,7 @@ const layout: "split" | "interleaved" = "interleaved";
 	// Always include Pali content so client can toggle without server roundtrips
 	let paliContent = { body: "" } as any;
 	{
-		const paliEntry = await getEntry("pliAll", id);
+		const paliEntry = await getPaliEntry(id);
 		if (paliEntry) paliContent = paliEntry;
 	}
 
@@ -478,22 +491,22 @@ const layout: "split" | "interleaved" = "interleaved";
 	let folder = fpParts[fpParts.length - 2] || "";
 	const fp = folder ? `${folder}/${id}` : id;
 
-	// Find next and previous items
+	// Find next and previous items (skip when slug not yet in routes.ts)
 	const nextIndex = currentIndex + 1;
 	const prevIndex = currentIndex - 1;
 	const next =
-		nextIndex < routes.length
-			? await getEntry("all", routes[nextIndex])
+		currentIndex >= 0 && nextIndex < routes.length
+			? await getEnglishEntry(routes[nextIndex])
 			: null;
 	const prev =
-		prevIndex >= 0 ? await getEntry("all", routes[prevIndex]) : null;
+		currentIndex > 0 ? await getEnglishEntry(routes[prevIndex]) : null;
 
 	// Find previous/next discourse in the same collection that has at least one viz image
 	const collectionPrefix = (id.match(/^[a-z]+/i)?.[0] || "").toLowerCase();
 	let prevViz: { slug: string; title: string } | null = null;
 	let nextViz: { slug: string; title: string } | null = null;
 
-	if (collectionPrefix) {
+	if (collectionPrefix && currentIndex >= 0) {
 		for (let i = currentIndex - 1; i >= 0; i--) {
 			const candidateId = routes[i];
 			const candidatePrefix = (
@@ -501,7 +514,7 @@ const layout: "split" | "interleaved" = "interleaved";
 			).toLowerCase();
 			if (candidatePrefix !== collectionPrefix) continue;
 
-			const candidateEntry = await getEntry("all", candidateId);
+			const candidateEntry = await getEnglishEntry(candidateId);
 			if (!candidateEntry) continue;
 
 			const candidateImages = findContentImages(
@@ -529,7 +542,7 @@ const layout: "split" | "interleaved" = "interleaved";
 			).toLowerCase();
 			if (candidatePrefix !== collectionPrefix) continue;
 
-			const candidateEntry = await getEntry("all", candidateId);
+			const candidateEntry = await getEnglishEntry(candidateId);
 			if (!candidateEntry) continue;
 
 			const candidateImages = findContentImages(

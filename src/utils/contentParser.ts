@@ -529,12 +529,14 @@ function processBlocks(
 	const paliParagraphs = paliText
 		? paliText
 				.split(/\n\n+/)
-				.filter((p) => p.trim().length > 0 && !p.startsWith("---"))
+				.map((p) => p.trim())
+				.filter((p) => p.length > 0 && !p.startsWith("---"))
 		: [];
 
 	const englishBlocks = englishText
 		.split(/\n\n+/)
-		.filter((p) => p.trim().length > 0 && !p.startsWith("---"));
+		.map((p) => p.trim())
+		.filter((p) => p.length > 0 && !p.startsWith("---"));
 
 	let paliIndex = 0;
 	let actualParagraphNumber = 1;
@@ -887,8 +889,9 @@ export function formatBlock(
 	};
 
 	// Handle headings - still process inline emphasis
-	if (text.startsWith("#")) {
-		return processInlineEmphasis(text);
+	const trimmed = text.trimStart();
+	if (trimmed.startsWith("#")) {
+		return processInlineEmphasis(trimmed);
 	}
 
 	// Generate paragraph number and anchor ID (just the number, no prefix)
