@@ -4,7 +4,7 @@ description: The Buddha explains four developments of collectedness that, when c
 qualities: vision, happiness, clear awareness, mindfulness, ending, collectedness
 theme: wisdom, principle
 slug: an4.41
-commentary: "[1] See [Puṇṇaka’s Questions (SnP 5.3)](/snp5.3), where the Buddha responds with the following verse to venerable Puṇṇaka’s question about who has crossed over birth and old age."
+commentary: "[1] See [SnP 5.3 Puṇṇakamāṇavapucchā - Puṇṇaka’s Questions](/snp5.3), where the Buddha responds with the following verse to venerable Puṇṇaka’s question about who has crossed over birth and old age."
 priority: 1.5
 ---
 

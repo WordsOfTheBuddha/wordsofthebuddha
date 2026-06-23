@@ -2,8 +2,9 @@
 title: Hirīottappa sutta - Sense of Right and Wrong and Fear of Wrongdoing
 description: Through a simile of a tree, the Buddha describes the importance of the sense of right and wrong and fear of wrongdoing as the foundation for cultivating wholesome qualities and the path to liberation.
 qualities: conscience, fear of wrongdoing, ethical conduct, sense restraint, collectedness, vision
-theme: cultivating discernment, wisdom
+theme: inquisitiveness, cultivating discernment, wisdom
 simile: tree
+priority: 1.4
 slug: an7.65
 ---
 

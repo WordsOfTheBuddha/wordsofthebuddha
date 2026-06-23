@@ -1,9 +1,6 @@
 ---
+title: Nagaropama sutta
 slug: an7.67
-source: suttacentral/bilara-data
-edition: ms
-granularity: paragraph
-title: Nagaropamasutta
 ---
 
 “Yato kho, bhikkhave, rañño paccantimaṁ nagaraṁ sattahi nagaraparikkhārehi suparikkhataṁ hoti, catunnañca āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Idaṁ vuccati, bhikkhave, rañño paccantimaṁ nagaraṁ akaraṇīyaṁ bāhirehi paccatthikehi paccāmittehi.
@@ -63,5 +60,3 @@ Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṁ tilamuggamāsāparaṇ
 Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṁ bhesajjaṁ sannicitaṁ hoti, seyyathidaṁ— sappi navanītaṁ telaṁ madhu phāṇitaṁ loṇaṁ abbhantarānaṁ ratiyā aparitassāya phāsuvihārāya bāhirānaṁ paṭighātāya. Evamevaṁ kho, bhikkhave, ariyasāvako sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṁ atthaṅgamā adukkhamasukhaṁ upekkhāsatipārisuddhiṁ catutthaṁ jhānaṁ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa. Imesaṁ catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī.
 
 Yato kho, bhikkhave, ariyasāvako imehi sattahi saddhammehi samannāgato hoti, imesañca catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Ayaṁ vuccati, bhikkhave, ariyasāvako akaraṇīyo mārassa akaraṇīyo pāpimato”ti.
-
-Tatiyaṁ.
