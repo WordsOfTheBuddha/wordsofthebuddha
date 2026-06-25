@@ -621,7 +621,10 @@
 				"bowl",
 				"burgundy"
 			],
-			"discourse": "mn3",
+			"discourse": [
+				"mn3",
+				"sn22.81"
+			],
 			"labels": [],
 			"svg": "icons/bowl-overflow.svg"
 		},
@@ -1663,7 +1666,8 @@
 				"mn25",
 				"mn77",
 				"mn111",
-				"mn119"
+				"mn119",
+				"sn22.81"
 			],
 			"labels": [
 				"awakening",

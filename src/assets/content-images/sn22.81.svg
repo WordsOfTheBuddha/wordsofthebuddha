@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1320" width="920" height="1320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0b1528"/>
+      <stop offset="46%"  stop-color="#0e1a30"/>
+      <stop offset="100%" stop-color="#101e36"/>
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#c8a040" stop-opacity="0"/>
+      <stop offset="20%"  stop-color="#c8a040" stop-opacity="0.5"/>
+      <stop offset="80%"  stop-color="#c8a040" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="panelFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#171b2c"/>
+      <stop offset="100%" stop-color="#151826"/>
+    </linearGradient>
+    <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#221828"/>
+      <stop offset="100%" stop-color="#1a1422"/>
+    </linearGradient>
+    <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#142a32"/>
+      <stop offset="100%" stop-color="#10242c"/>
+    </linearGradient>
+    <linearGradient id="pleasantFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#316a55"/>
+      <stop offset="100%" stop-color="#214837"/>
+    </linearGradient>
+    <linearGradient id="painfulFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#7a3943"/>
+      <stop offset="100%" stop-color="#4b232a"/>
+    </linearGradient>
+    <linearGradient id="neutralFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#495875"/>
+      <stop offset="100%" stop-color="#303a4d"/>
+    </linearGradient>
+    <linearGradient id="reframeFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#1a1420"/>
+      <stop offset="100%" stop-color="#16121c"/>
+    </linearGradient>
+    <linearGradient id="sankharaFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#1c1a14"/>
+      <stop offset="100%" stop-color="#181610"/>
+    </linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#ffd700" stop-opacity="0.22"/>
+      <stop offset="55%"  stop-color="#daa520" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#daa520" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.42"/>
+    </filter>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowGold" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#c8a040"/>
+    </marker>
+
+    <!-- design-system/icons: liberation-sparkle -->
+    <symbol id="icon-liberation-sparkle" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.52491)">
+        <line x1="-6.5" y1="0" x2="6.5" y2="0" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round"/>
+        <line x1="0" y1="-6.5" x2="0" y2="6.5" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round"/>
+        <line x1="-3.9" y1="-3.9" x2="3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round"/>
+        <line x1="3.9" y1="-3.9" x2="-3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round"/>
+        <circle cx="0" cy="0" r="1.2" fill="#fffde8"/>
+      </g>
+    </symbol>
+
+    <!-- design-system/icons: defilements-ended -->
+    <symbol id="icon-defilements-ended" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.63614) translate(-2, 0)">
+        <g opacity="0.85" stroke="#c0a860" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+          <ellipse cx="-7" cy="0" rx="7" ry="9"/>
+          <ellipse cx="11" cy="0" rx="7" ry="9"/>
+          <line x1="0" y1="-5" x2="4" y2="-9" stroke-width="0.9"/>
+          <line x1="0" y1="5" x2="4" y2="9" stroke-width="0.9"/>
+        </g>
+      </g>
+    </symbol>
+
+    <!-- design-system/icons: bowl-overflow — āsavā persist and grow -->
+    <symbol id="icon-bowl-overflow" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.46418) translate(0, -3.475)">
+        <g opacity="0.85">
+          <ellipse cx="0" cy="0" rx="22" ry="8" fill="none" stroke="#c07060" stroke-width="1.5"/>
+          <path d="M -22 0 C -22 6 -16 20 0 22 C 16 20 22 6 22 0" fill="none" stroke="#c07060" stroke-width="1.5"/>
+          <circle cx="-10" cy="-8" r="4" fill="#c07060" opacity="0.5"/>
+          <circle cx="3" cy="-10" r="3.5" fill="#c07060" opacity="0.45"/>
+          <circle cx="-3" cy="-4" r="3" fill="#c07060" opacity="0.4"/>
+          <circle cx="12" cy="-6" r="3" fill="#c07060" opacity="0.35"/>
+          <circle cx="-14" cy="-3" r="2.5" fill="#c07060" opacity="0.3"/>
+          <circle cx="7" cy="-3" r="2.5" fill="#c07060" opacity="0.3"/>
+          <circle cx="-5" cy="-13" r="2.8" fill="#c07060" opacity="0.4"/>
+          <circle cx="8" cy="-12" r="2.2" fill="#c07060" opacity="0.35"/>
+        </g>
+      </g>
+    </symbol>
+  </defs>
+
+  <rect width="920" height="1320" fill="url(#bg)"/>
+  <ellipse cx="460" cy="1180" rx="360" ry="160" fill="#204838" opacity="0.05"/>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- S0 — TITLE                                              -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <g id="section-title" transform="translate(0,0)">
+    <text x="460" y="42" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold"
+      fill="#d8c8a0" letter-spacing="2.4">SN 22.81 — PĀLILEYYAKA SUTTA</text>
+    <text x="460" y="66" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="15" font-style="italic"
+      fill="#a09070" letter-spacing="0.8">At Pālileyyaka</text>
+    <line x1="258" y1="80" x2="662" y2="80"
+      stroke="#708090" stroke-opacity="0.3" stroke-width="0.6"/>
+    <text x="460" y="106" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="12" font-style="italic"
+      fill="#90c0b0">"How should one know and see for the immediate wearing away of the taints?"</text>
+    <text x="460" y="126" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic"
+      fill="#5e7e74">kathaṁ nu kho jānato kathaṁ passato anantarā āsavānaṁ khayo hoti</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- S1 — HERO: person + thought bubbles  (y=138, h=420)    -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <g id="section-hero" transform="translate(0,138)">
+
+    <!-- Bubble tails (4 circles each, starting near bubble edge toward head 460,248) -->
+    <!-- B1 (152,105) -->
+    <circle cx="214" cy="133" r="4.5" fill="#7a4060" opacity="0.5"/>
+    <circle cx="275" cy="161" r="4"   fill="#7a4060" opacity="0.42"/>
+    <circle cx="336" cy="189" r="3"   fill="#7a4060" opacity="0.34"/>
+    <circle cx="397" cy="217" r="2.2" fill="#7a4060" opacity="0.26"/>
+    <!-- B2 (307,72) -->
+    <circle cx="365" cy="110" r="4.5" fill="#7a4060" opacity="0.5"/>
+    <circle cx="404" cy="144" r="4"   fill="#7a4060" opacity="0.42"/>
+    <circle cx="424" cy="178" r="3"   fill="#7a4060" opacity="0.34"/>
+    <circle cx="442" cy="212" r="2.2" fill="#7a4060" opacity="0.26"/>
+    <!-- B3 (460,58) — highlighted thread to chain -->
+    <circle cx="460" cy="98"  r="4.5" fill="#7a4060" opacity="0.5"/>
+    <circle cx="460" cy="135" r="4"   fill="#7a4060" opacity="0.42"/>
+    <circle cx="460" cy="172" r="3"   fill="#7a4060" opacity="0.34"/>
+    <circle cx="460" cy="209" r="2.2" fill="#7a4060" opacity="0.26"/>
+    <!-- B4 (613,72) -->
+    <circle cx="555" cy="110" r="4.5" fill="#7a4060" opacity="0.5"/>
+    <circle cx="516" cy="144" r="4"   fill="#7a4060" opacity="0.42"/>
+    <circle cx="496" cy="178" r="3"   fill="#7a4060" opacity="0.34"/>
+    <circle cx="478" cy="212" r="2.2" fill="#7a4060" opacity="0.26"/>
+    <!-- B5 (768,105) -->
+    <circle cx="706" cy="133" r="4.5" fill="#7a4060" opacity="0.5"/>
+    <circle cx="645" cy="161" r="4"   fill="#7a4060" opacity="0.42"/>
+    <circle cx="584" cy="189" r="3"   fill="#7a4060" opacity="0.34"/>
+    <circle cx="523" cy="217" r="2.2" fill="#7a4060" opacity="0.26"/>
+
+    <!-- 5 Thought bubbles (arc lowered — closer to figure) -->
+    <ellipse cx="150" cy="105" rx="84" ry="32"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+    <text x="152" y="101" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#c0a8b8"
+      >Self has form</text>
+    <text x="152" y="115" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" fill="#806070"
+      >rūpavantaṁ attānaṁ samanupassati</text>
+
+    <ellipse cx="307" cy="72" rx="72" ry="32"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+    <text x="307" y="68" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#c0a8b8"
+      >Consciousness is self</text>
+    <text x="307" y="82" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" fill="#806070"
+      >viññāṇaṁ attato samanupassati</text>
+
+    <ellipse cx="460" cy="58" rx="78" ry="32"
+      fill="#1c1520" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1"/>
+    <text x="460" y="54" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#c0a8b8"
+      >My self is eternal</text>
+    <text x="460" y="68" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" fill="#806070"
+      >sassatadiṭṭhi</text>
+
+    <ellipse cx="613" cy="72" rx="74" ry="32"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+    <text x="613" y="68" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#c0a8b8"
+      >I will simply cease</text>
+    <text x="613" y="82" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" fill="#806070"
+      >ucchedadiṭṭhi</text>
+
+    <ellipse cx="768" cy="105" rx="70" ry="32"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+    <text x="768" y="101" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#c0a8b8"
+      >I just don't know</text>
+    <text x="768" y="115" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" fill="#806070"
+      >kaṅkhitā · vicikicchitā</text>
+
+    <!-- The puthujjana figure (large, centered) -->
+    <g opacity="0.72" filter="url(#iconGlow)">
+      <circle cx="460" cy="248" r="17" fill="none" stroke="#a06070" stroke-width="1.5"/>
+      <line x1="460" y1="265" x2="460" y2="308" stroke="#a06070" stroke-width="1.5"/>
+      <line x1="460" y1="283" x2="434" y2="298" stroke="#a06070" stroke-width="1.2"/>
+      <line x1="460" y1="283" x2="486" y2="298" stroke="#a06070" stroke-width="1.2"/>
+      <line x1="460" y1="308" x2="447" y2="336" stroke="#a06070" stroke-width="1.2"/>
+      <line x1="460" y1="308" x2="473" y2="336" stroke="#a06070" stroke-width="1.2"/>
+    </g>
+
+    <!-- Caption -->
+    <text x="460" y="364" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic" fill="#8898b0"
+      >These regardings, views, as well as doubt are intentional constructs <tspan font-size="10" font-weight="normal">(saṅkhārā)</tspan></text>
+
+  </g><!-- /section-hero -->
+
+  <!-- Bubble thread: center bubble down to construct box in WHEN TOUCHED -->
+  <path d="M 460 228 L 460 830" stroke="#c8a040" stroke-width="0.8" stroke-dasharray="4 3" fill="none" opacity="0.28"/>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- S2 — WHEN TOUCHED  (grid + craving + construct)        -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <g id="section-chain" transform="translate(0,518)">
+    <line x1="100" y1="0" x2="820" y2="0" stroke="url(#tierGrad)" stroke-width="0.55" opacity="0.5"/>
+    <text x="460" y="22" text-anchor="middle" fill="#c8a040"
+      font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+      letter-spacing="2.2" opacity="0.82">WHEN TOUCHED BY A FEELING BORN OF IGNORANCE-CONTACT</text>
+    <text x="460" y="40" text-anchor="middle" fill="#708090"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">avijjāsamphassajena · vedayitena phuṭṭhassa</text>
+
+    <g filter="url(#shadowDrop)">
+      <rect x="96" y="56" width="728" height="340" rx="10" fill="url(#panelFill)" stroke="#3f5f79" stroke-opacity="0.42" stroke-width="0.8"/>
+    </g>
+
+    <g font-family="Georgia,'Times New Roman',serif" text-anchor="end">
+      <text x="82" y="102" fill="#c8d8e8" font-size="12" font-weight="bold">Contact</text>
+      <text x="82" y="116" fill="#8898b0" font-size="10" font-style="italic">phassa</text>
+      <text x="82" y="180" fill="#c8d8e8" font-size="12" font-weight="bold">Feeling</text>
+      <text x="82" y="194" fill="#8898b0" font-size="10" font-style="italic">vedanā</text>
+      <text x="82" y="258" fill="#c8d8e8" font-size="12" font-weight="bold">Craving</text>
+      <text x="82" y="272" fill="#8898b0" font-size="10" font-style="italic">taṇhā</text>
+    </g>
+
+    <g stroke-width="0.7">
+      <!-- Contact row -->
+      <rect x="145" y="78" width="90" height="40" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+      <rect x="253" y="78" width="90" height="40" rx="5" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.56"/>
+      <rect x="361" y="78" width="90" height="40" rx="5" fill="#161d2b" stroke="#435062" stroke-dasharray="4 3" stroke-opacity="0.62"/>
+      <rect x="469" y="78" width="90" height="40" rx="5" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.56"/>
+      <rect x="577" y="78" width="90" height="40" rx="5" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.56"/>
+      <rect x="685" y="78" width="90" height="40" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+      <!-- Feeling row -->
+      <rect x="145" y="156" width="90" height="40" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+      <rect x="253" y="156" width="90" height="40" rx="5" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.56"/>
+      <rect x="361" y="156" width="90" height="40" rx="5" fill="#161d2b" stroke="#435062" stroke-dasharray="4 3" stroke-opacity="0.62"/>
+      <rect x="469" y="156" width="90" height="40" rx="5" fill="url(#neutralFill)" stroke="#607090" stroke-opacity="0.56"/>
+      <rect x="577" y="156" width="90" height="40" rx="5" fill="url(#painfulFill)" stroke="#a05060" stroke-opacity="0.56"/>
+      <rect x="685" y="156" width="90" height="40" rx="5" fill="url(#pleasantFill)" stroke="#4a8a72" stroke-opacity="0.6"/>
+      <!-- Craving row — h=48, labels by tone -->
+      <rect x="145" y="234" width="90" height="48" rx="5" fill="url(#pleasantFill)" stroke="#c8a040" stroke-opacity="0.5"/>
+      <rect x="253" y="234" width="90" height="48" rx="5" fill="url(#painfulFill)" stroke="#c8a040" stroke-opacity="0.5"/>
+      <rect x="361" y="234" width="90" height="48" rx="5" fill="#161d2b" stroke="#435062" stroke-dasharray="4 3" stroke-opacity="0.62"/>
+      <rect x="469" y="234" width="90" height="48" rx="5" fill="url(#neutralFill)" stroke="#c8a040" stroke-opacity="0.45"/>
+      <rect x="577" y="234" width="90" height="48" rx="5" fill="url(#painfulFill)" stroke="#c8a040" stroke-opacity="0.5"/>
+      <rect x="685" y="234" width="90" height="48" rx="5" fill="url(#pleasantFill)" stroke="#c8a040" stroke-opacity="0.5"/>
+    </g>
+
+    <!-- Craving row bracket + ignorance note -->
+    <rect x="26" y="228" width="762" height="60" rx="6"
+      fill="none" stroke="#5a7090" stroke-opacity="0.5" stroke-width="0.75"/>
+    <text x="32" y="282" fill="#708090"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-style="italic"
+      >* due to ignorance</text>
+
+    <g font-family="Georgia,'Times New Roman',serif" text-anchor="middle" font-size="7.5">
+      <text x="190" y="252" fill="#d0e8dc" font-weight="bold">sense pleasures</text>
+      <text x="190" y="264" fill="#6ea088" font-style="italic" font-size="7">↑ kāma-taṇhā</text>
+      <text x="298" y="252" fill="#e8c0c8" font-weight="bold">non-becoming</text>
+      <text x="298" y="264" fill="#a07078" font-style="italic" font-size="7">↓ vibhava-taṇhā</text>
+      <text x="514" y="252" fill="#c0c8d8" font-weight="bold">becoming</text>
+      <text x="514" y="264" fill="#8898b0" font-style="italic" font-size="7">○ bhava-taṇhā</text>
+      <text x="622" y="252" fill="#e8c0c8" font-weight="bold">non-becoming</text>
+      <text x="622" y="264" fill="#a07078" font-style="italic" font-size="7">↓ vibhava-taṇhā</text>
+      <text x="730" y="252" fill="#d0e8dc" font-weight="bold">becoming</text>
+      <text x="730" y="264" fill="#6ea088" font-style="italic" font-size="7">○ bhava-taṇhā</text>
+    </g>
+
+    <!-- Connectors: contact → feeling → craving -->
+    <g stroke="#c8a040" stroke-width="0.7" stroke-opacity="0.28">
+      <line x1="190" y1="118" x2="190" y2="156"/>
+      <line x1="298" y1="118" x2="298" y2="156"/>
+      <line x1="406" y1="118" x2="406" y2="156"/>
+      <line x1="514" y1="118" x2="514" y2="156"/>
+      <line x1="622" y1="118" x2="622" y2="156"/>
+      <line x1="730" y1="118" x2="730" y2="156"/>
+      <line x1="190" y1="196" x2="190" y2="234"/>
+      <line x1="298" y1="196" x2="298" y2="234"/>
+      <line x1="406" y1="196" x2="406" y2="234"/>
+      <line x1="514" y1="196" x2="514" y2="234"/>
+      <line x1="622" y1="196" x2="622" y2="234"/>
+      <line x1="730" y1="196" x2="730" y2="234"/>
+    </g>
+
+    <line x1="406" y1="68" x2="406" y2="296" stroke="#c8a040" stroke-width="0.9" opacity="0.16"/>
+    <text x="406" y="100" text-anchor="middle" dominant-baseline="middle" fill="#607080"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">no contact</text>
+    <text x="406" y="176" text-anchor="middle" dominant-baseline="middle" fill="#607080"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">feeling subsides</text>
+    <text x="406" y="258" text-anchor="middle" dominant-baseline="middle" fill="#607080"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic">craving subsides</text>
+
+    <!-- Craving → construct merge (dotted) -->
+    <g stroke="#c8a040" stroke-width="0.7" stroke-opacity="0.35" stroke-dasharray="3 3" fill="none">
+      <path d="M 190 282 L 190 296 L 460 296"/>
+      <path d="M 298 282 L 298 296 L 460 296"/>
+      <path d="M 514 282 L 514 296 L 460 296"/>
+      <path d="M 622 282 L 622 296 L 460 296"/>
+      <path d="M 730 282 L 730 296 L 460 296"/>
+      <path d="M 460 296 L 460 308"/>
+    </g>
+
+    <g filter="url(#shadowDrop)">
+      <rect x="140" y="312" width="640" height="74" rx="8"
+        fill="#1c1a14" stroke="#c8a040" stroke-opacity="0.55" stroke-width="0.9"/>
+    </g>
+    <text x="460" y="330" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic" fill="#d8c8a0"
+      >When an uninstructed ordinary person is touched, craving arises · an intentional construct is born from that craving</text>
+    <text x="460" y="346" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic" fill="#a09070"
+      >phuṭṭhassa assutavato puthujjanassa uppannā taṇhā; tatojo so saṅkhāro</text>
+    <text x="460" y="362" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" fill="#90c0b0"
+      >It is impermanent · conditioned · dependently arisen</text>
+    <text x="460" y="376" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9" font-style="italic" fill="#6ea088"
+      >anicca · saṅkhata · paṭiccasamuppanna</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- S3 — THE DIFFERENCE: KNOWING AND SEEING                  -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <g id="section-result" transform="translate(0,912)">
+    <line x1="100" y1="20" x2="820" y2="20"
+      stroke="url(#tierGrad)" stroke-width="0.55" opacity="0.5"/>
+    <text x="460" y="42" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="12.5" font-weight="bold"
+      fill="#c8a040" letter-spacing="1.6" opacity="0.82">THE DIFFERENCE IS IN KNOWING AND SEEING</text>
+    <text x="460" y="60" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic" fill="#708090"
+      >the arising of construct as dependently arisen from ignorance-contact</text>
+
+    <line x1="460" y1="72" x2="460" y2="276"
+      stroke="#c8a040" stroke-width="0.8" opacity="0.12"/>
+
+    <!-- Left panel (puthujjana) -->
+    <g filter="url(#shadowDrop)">
+      <rect x="40" y="76" width="408" height="200" rx="8"
+        fill="url(#patternLeft)" stroke="#5a3848" stroke-width="0.8" stroke-opacity="0.5"/>
+    </g>
+
+    <!-- Left bubble tails (toward figure head at 244,162) -->
+    <circle cx="168" cy="128" r="3.5" fill="#7a4060" opacity="0.42"/>
+    <circle cx="192" cy="140" r="2.5" fill="#7a4060" opacity="0.32"/>
+    <circle cx="214" cy="150" r="1.8" fill="#7a4060" opacity="0.24"/>
+    <circle cx="244" cy="128" r="3.5" fill="#7a4060" opacity="0.42"/>
+    <circle cx="244" cy="140" r="2.5" fill="#7a4060" opacity="0.32"/>
+    <circle cx="244" cy="152" r="1.8" fill="#7a4060" opacity="0.24"/>
+    <circle cx="320" cy="128" r="3.5" fill="#7a4060" opacity="0.42"/>
+    <circle cx="296" cy="140" r="2.5" fill="#7a4060" opacity="0.32"/>
+    <circle cx="274" cy="150" r="1.8" fill="#7a4060" opacity="0.24"/>
+
+    <!-- Left mini-bubbles (solid, spread) -->
+    <ellipse cx="128" cy="108" rx="48" ry="22"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.8"/>
+    <text x="128" y="112" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="bold" fill="#c0a8b8"
+      >Self has form</text>
+
+    <ellipse cx="244" cy="102" rx="52" ry="22"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.8"/>
+    <text x="244" y="102" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="bold" fill="#c0a8b8"
+      >My self is eternal</text>
+
+    <ellipse cx="360" cy="108" rx="48" ry="22"
+      fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.8"/>
+    <text x="360" y="112" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="bold" fill="#c0a8b8"
+      >I will simply cease</text>
+
+    <!-- Left figure (puthujjana, arms slightly raised) -->
+    <g opacity="0.70" filter="url(#iconGlow)">
+      <circle cx="244" cy="162" r="13" fill="none" stroke="#a06070" stroke-width="1.3"/>
+      <line x1="244" y1="175" x2="244" y2="204" stroke="#a06070" stroke-width="1.3"/>
+      <line x1="244" y1="186" x2="228" y2="197" stroke="#a06070" stroke-width="1.1"/>
+      <line x1="244" y1="186" x2="260" y2="197" stroke="#a06070" stroke-width="1.1"/>
+      <line x1="244" y1="204" x2="235" y2="220" stroke="#a06070" stroke-width="1.1"/>
+      <line x1="244" y1="204" x2="253" y2="220" stroke="#a06070" stroke-width="1.1"/>
+    </g>
+
+    <text x="244" y="244" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" fill="#c0a8b8"
+      >Sees an essence in the construct born of ignorance-contact</text>
+    <text x="244" y="260" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic" fill="#806070"
+      >samanupassanā · diṭṭhi · kaṅkhā</text>
+
+    <!-- Outcome — callout below left panel (grasping → āsavā persist) -->
+    <g filter="url(#shadowDrop)">
+      <rect x="40" y="284" width="408" height="48" rx="8"
+        fill="#1a1420" stroke="#7a4060" stroke-opacity="0.45" stroke-width="0.8"/>
+    </g>
+    <!-- icon: bowl-overflow — left, vertically centered -->
+    <use href="#icon-bowl-overflow" x="52" y="290" width="36" height="36" opacity="0.78" filter="url(#iconGlow)"/>
+    <g filter="url(#glow1)">
+      <text x="244" y="304" text-anchor="middle"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#c0a8b8"
+        >taints persist and grow</text>
+    </g>
+    <text x="244" y="320" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic" fill="#806070"
+      >āsavā · dhuvaṃ · vaḍḍhanti</text>
+
+    <!-- Right panel (ariyasavaka) — matched size -->
+    <g filter="url(#shadowDrop)">
+      <rect x="472" y="76" width="408" height="200" rx="8"
+        fill="url(#patternRight)" stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5"/>
+    </g>
+
+    <!-- Liberation glow -->
+    <ellipse cx="676" cy="152" rx="116" ry="60" fill="url(#libGlow)"/>
+
+    <!-- Right bubble tails (toward figure head at 676,162) -->
+    <circle cx="600" cy="128" r="3.5" fill="#60a088" opacity="0.32"/>
+    <circle cx="624" cy="140" r="2.5" fill="#60a088" opacity="0.24"/>
+    <circle cx="646" cy="150" r="1.8" fill="#60a088" opacity="0.18"/>
+    <circle cx="676" cy="128" r="3.5" fill="#60a088" opacity="0.32"/>
+    <circle cx="676" cy="140" r="2.5" fill="#60a088" opacity="0.24"/>
+    <circle cx="676" cy="152" r="1.8" fill="#60a088" opacity="0.18"/>
+    <circle cx="752" cy="128" r="3.5" fill="#60a088" opacity="0.32"/>
+    <circle cx="728" cy="140" r="2.5" fill="#60a088" opacity="0.24"/>
+    <circle cx="706" cy="150" r="1.8" fill="#60a088" opacity="0.18"/>
+
+    <!-- Right mini-bubbles (dashed, spread to match left) -->
+    <ellipse cx="560" cy="108" rx="48" ry="22"
+      fill="#1c1520" fill-opacity="0.06" stroke="#60a088"
+      stroke-opacity="0.28" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <text x="560" y="112" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="bold"
+      fill="#90c0b8" fill-opacity="0.42">Self has form</text>
+
+    <ellipse cx="676" cy="102" rx="52" ry="22"
+      fill="#1c1520" fill-opacity="0.06" stroke="#60a088"
+      stroke-opacity="0.28" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <text x="676" y="102" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="bold"
+      fill="#90c0b8" fill-opacity="0.42">My self is eternal</text>
+
+    <ellipse cx="792" cy="108" rx="48" ry="22"
+      fill="#1c1520" fill-opacity="0.06" stroke="#60a088"
+      stroke-opacity="0.28" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <text x="792" y="112" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="bold"
+      fill="#90c0b8" fill-opacity="0.42">I will simply cease</text>
+
+    <!-- Right figure (ariyasavaka, arms lower/settled) -->
+    <g opacity="0.72" filter="url(#iconGlow)">
+      <circle cx="676" cy="162" r="13" fill="none" stroke="#60a088" stroke-width="1.3"/>
+      <line x1="676" y1="175" x2="676" y2="204" stroke="#60a088" stroke-width="1.3"/>
+      <line x1="676" y1="189" x2="660" y2="198" stroke="#60a088" stroke-width="1.1"/>
+      <line x1="676" y1="189" x2="692" y2="198" stroke="#60a088" stroke-width="1.1"/>
+      <line x1="676" y1="204" x2="667" y2="220" stroke="#60a088" stroke-width="1.1"/>
+      <line x1="676" y1="204" x2="685" y2="220" stroke="#60a088" stroke-width="1.1"/>
+    </g>
+
+    <text x="676" y="244" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="10" font-weight="bold" fill="#90c0b8"
+      >By seeing the construct as impermanent · conditioned · dependently arisen</text>
+    <text x="676" y="260" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic" fill="#6ea088"
+      >anicca · saṅkhata · paṭiccasamuppanna</text>
+
+    <!-- Outcome — callout below right panel (knowing and seeing → khayo) -->
+    <g filter="url(#shadowDrop)">
+      <rect x="472" y="284" width="408" height="48" rx="8"
+        fill="#142428" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.8"/>
+    </g>
+    <!-- icon: defilements-ended — right, vertically centered -->
+    <use href="#icon-defilements-ended" x="832" y="290" width="36" height="36" opacity="0.72" filter="url(#iconGlow)"/>
+    <g filter="url(#glow1)">
+      <text x="676" y="304" text-anchor="middle"
+        font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-weight="bold" fill="#80c0a0"
+        >immediate wearing away of taints</text>
+    </g>
+    <text x="676" y="320" text-anchor="middle"
+      font-family="Georgia,'Times New Roman',serif" font-size="9.5" font-style="italic" fill="#507868"
+      >anantarā āsavānaṁ khayo hoti</text>
+
+  </g><!-- /section-result -->
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- FOOTER  (y=1388)                                        -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <g id="section-footer" transform="translate(0,1268)">
+    <line x1="300" y1="0" x2="620" y2="0"
+      stroke="#304058" stroke-opacity="0.3" stroke-width="0.5"/>
+    <a href="https://wordsofthebuddha.org/sn22.81" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="20" text-anchor="middle"
+        font-family="Georgia,'Times New Roman',serif" font-size="10" fill="#405060" letter-spacing="1"
+        >wordsofthebuddha.org/sn22.81</text>
+    </a>
+    <g transform="translate(460,40) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14,16) rotate(-65)"/>
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14,16) rotate(65)"/>
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9,0) rotate(-25)"/>
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9,0) rotate(25)"/>
+      <circle cx="0" cy="-28" r="9"/>
+    </g>
+  </g>
+
+</svg>

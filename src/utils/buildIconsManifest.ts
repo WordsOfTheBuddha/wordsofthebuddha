@@ -450,7 +450,7 @@ const icons: IconEntry[] = [
 		id: "bowl-overflow",
 		title: "Heir of material things (bowl with excess)",
 		description: "Heaped bowl — āmisadāyāda",
-		discourse: "mn3",
+		discourse: ["mn3", "sn22.81"],
 		tags: ["line-art", "bowl", "burgundy"],
 	},
 	{
@@ -952,7 +952,7 @@ const icons: IconEntry[] = [
 		id: "defilements-ended",
 		title: "Ending of mental defilements",
 		description: "Twin liberation orbs — āsavakkhaya, cetovimutti",
-		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19"],
+		discourse: ["mn39", "mn119", "mn25", "mn6", "mn111", "mn77", "mn19", "sn22.81"],
 		tags: ["line-art", "gold"],
 		themes: ["awakening", "liberation", "ending", "safety", "psychic power"],
 	},
