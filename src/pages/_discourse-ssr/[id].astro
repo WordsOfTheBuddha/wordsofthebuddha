@@ -1,0 +1,37 @@
+---
+// SSR reference/Pāli-only discourse pages (rewritten from /:slug by middleware).
+export const prerender = false;
+import { buildReferenceDiscoursePage } from "../../utils/referenceDiscoursePage";
+import Layout from "../../layouts/Layout.astro";
+import MDContent from "../../components/MDContent.astro";
+
+const { id } = Astro.params as { id?: string };
+
+if (!id) {
+	return new Response(null, { status: 404 });
+}
+
+const refPage = await buildReferenceDiscoursePage(id);
+if (!refPage) {
+	return new Response(null, { status: 404 });
+}
+
+const {
+	mainContent,
+	splitEnglish,
+	splitPali,
+	refPaliOnlyContent,
+	referenceFallbackPage,
+	suttaProps,
+} = refPage;
+---
+
+<Layout {...suttaProps}>
+	<MDContent
+		content={mainContent}
+		splitEnglish={splitEnglish}
+		splitPali={splitPali}
+		refPaliOnlyContent={refPaliOnlyContent}
+		referenceFallback={referenceFallbackPage}
+	/>
+</Layout>

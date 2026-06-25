@@ -1,8 +1,7 @@
 ---
 // Prerendered canonical discourse pages for offline/PWA and fast static delivery.
-// These pages mirror the SSR catch-all output for canonical slugs only.
+// Native English translations only; reference fallbacks are SSR via middleware → /_discourse-ssr/:id.
 export const prerender = true;
-import { getEntry } from "astro:content";
 import { getEnglishEntry, getPaliEntry } from "../utils/getContentEntry";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
@@ -12,50 +11,39 @@ import { getLastModified } from "../utils/getLastModified";
 import { findContentImages } from "../utils/contentImage";
 
 export async function getStaticPaths() {
-	// Only canonical routes that exist in the 'all' content collection
-	const entries: { params: { discourse: string } }[] = [];
-	for (const rid of routes) {
-		try {
-			const e = await getEntry("all", rid);
-			if (e) entries.push({ params: { discourse: rid } });
-		} catch {}
-	}
-	return entries;
+	return routes.map((discourse) => ({ params: { discourse } }));
 }
 
 const { discourse: id } = Astro.params as { discourse?: string };
 
-// Guard: if somehow invoked with a non-canonical id, 404
-if (!id || !routes.includes(id)) {
+if (!id) {
 	return new Response(null, { status: 404 });
 }
 
-// Load English and Pali content (dev reads from disk via getContentEntry)
 const contentItem = await getEnglishEntry(id);
 if (!contentItem) {
 	return new Response(null, { status: 404 });
 }
+
 let paliContent: { body: string } = { body: "" };
 const paliEntry = await getPaliEntry(id);
 if (paliEntry) paliContent = paliEntry;
 
-// Build pairs and both variants (interleaved + split) always, client toggles via CSS
 const pairs = await parseContent(paliContent, contentItem);
 const interleavedContent = createCombinedMarkdown(pairs, true, "interleaved");
 const splitContent = createCombinedMarkdown(pairs, true, "split");
 
-let mainContent =
+const mainContent =
 	typeof interleavedContent === "string" ? interleavedContent : "";
-let splitEnglish =
+const splitEnglish =
 	typeof splitContent !== "string" ? splitContent.english : undefined;
-let splitPali =
+const splitPali =
 	typeof splitContent !== "string" ? splitContent.pali : undefined;
 
-// Metadata and nav
 const filePath = contentItem.filePath || "";
 const lastUpdated = getLastModified(filePath);
 const fpParts = (contentItem.filePath ?? "").split("/");
-let folder = fpParts[fpParts.length - 2] || "";
+const folder = fpParts[fpParts.length - 2] || "";
 const fp = folder ? `${folder}/${id}` : id;
 
 const currentIndex = routes.findIndex((r) => r === id);
@@ -68,14 +56,13 @@ const prev =
 		? await getEnglishEntry(routes[currentIndex - 1])
 		: null;
 
-// Look up content images (convention-based: src/assets/content-images/{id}.{ext})
 const contentImages = findContentImages(
 	id,
 	{
 		image: contentItem.data.image,
 		imageCaption: contentItem.data.imageCaption,
 	},
-	contentItem.data.title
+	contentItem.data.title,
 );
 const contentImage = contentImages.length > 0 ? contentImages : null;
 
@@ -83,9 +70,7 @@ const suttaProps = {
 	fp,
 	title: contentItem.data.title,
 	description: contentItem.data.description,
-	qualities: contentItem.data.qualities
-		?.split(",")
-		.map((t: string) => t.trim()),
+	qualities: contentItem.data.qualities?.split(",").map((t: string) => t.trim()),
 	prev,
 	next,
 	id,
@@ -109,5 +94,5 @@ const suttaProps = {
 		splitPali={splitPali}
 	/>
 
-	<!-- Note: Canonical discourse pages are static. Paragraph ranges via path (e.g., /sn1.1.1-2) are handled by SSR catch-all at src/pages/[...id].astro. -->
+	<!-- Paragraph ranges (e.g. /sn1.1.1-2) are SSR at src/pages/[...id].astro. -->
 </Layout>

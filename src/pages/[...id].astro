@@ -10,9 +10,6 @@ import {
 	constructHierarchicalEnd,
 	isValidParagraphRange,
 	debug,
-	parsePaliOnly,
-	PALI_ONLY_NOTICE,
-	REFERENCE_TRANSLATION_CREDIT,
 } from "../utils/contentParser";
 import { routes } from "../utils/routes";
 import { directoryStructure } from "../data/directoryStructure";
@@ -21,7 +18,7 @@ import { getLastModified } from "../utils/getLastModified";
 import MDContent from "../components/MDContent.astro";
 import { transformId } from "../utils/transformId";
 import { findContentImages } from "../utils/contentImage";
-import { findNearestTranslatedNeighbors } from "../utils/translatedNeighbors";
+import { buildReferenceDiscoursePage } from "../utils/referenceDiscoursePage";
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
@@ -338,99 +335,19 @@ const layout: "split" | "interleaved" = "interleaved";
 				debug("No matching route found for:", id);
 				return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
 			}
-			// Direct URL to discourse without a native English translation yet
-		const referenceEntry = await getEntry("referenceSujato", id);
-		const paliSegmentEntry = await getEntry("referencePliMs", id);
-		let pairs;
-		let useReferenceEnglish = false;
 
-		// Default view: SC paragraph-merged Pāli from pliAll
-		const paliOnlyPairs = parsePaliOnly(paliParagraphEntry.body);
-		const paliOnlyInterleaved = createCombinedMarkdown(
-			paliOnlyPairs,
-			true,
-			"interleaved",
-		);
-		if (typeof paliOnlyInterleaved === "string") {
-			refPaliOnlyContent = paliOnlyInterleaved;
-		}
+			const refPage = await buildReferenceDiscoursePage(id);
+			if (!refPage) {
+				debug("No matching route found for:", id);
+				return Astro.redirect(`/search?q=${encodeURIComponent(id)}`);
+			}
 
-		if (referenceEntry) {
-			useReferenceEnglish = true;
-			const paliForReference = paliSegmentEntry ?? paliParagraphEntry;
-			pairs = await parseContent(
-				paliForReference,
-				referenceEntry,
-				undefined,
-				undefined,
-				null,
-				null,
-			);
-		} else {
-			pairs = paliOnlyPairs;
-		}
-
-		const interleavedContent = createCombinedMarkdown(
-			pairs,
-			true,
-			"interleaved",
-		);
-		const splitContent = createCombinedMarkdown(pairs, true, "split");
-
-		const leadNotice = useReferenceEnglish
-			? REFERENCE_TRANSLATION_CREDIT
-			: PALI_ONLY_NOTICE;
-
-		mainContent =
-			typeof interleavedContent === "string"
-				? `${leadNotice}\n\n${interleavedContent}`
-				: leadNotice;
-		if (typeof splitContent !== "string") {
-			splitEnglish = `${leadNotice}${splitContent.english ? `\n\n${splitContent.english}` : ""}`;
-			splitPali = splitContent.pali;
-		}
-
-		const fpParts = (paliParagraphEntry.filePath ?? "").split("/");
-		const folder = fpParts[fpParts.length - 2] || "";
-		const fp = folder ? `${folder}/${id}` : id;
-		const paliTitle =
-			(paliParagraphEntry.data as { title?: string }).title || id;
-		const displayTitle =
-			(referenceEntry?.data as { title?: string } | undefined)?.title ||
-			paliTitle;
-		const filePath = paliParagraphEntry.filePath || "";
-		const lastUpdated = getLastModified(filePath);
-
-		let refPrev = null;
-		let refNext = null;
-		if (useReferenceEnglish) {
-			const { prevId, nextId } = findNearestTranslatedNeighbors(id, routes);
-			if (prevId) refPrev = await getEnglishEntry(prevId);
-			if (nextId) refNext = await getEnglishEntry(nextId);
-		}
-
-		suttaProps = {
-			fp,
-			title: displayTitle,
-			description: undefined,
-			prev: refPrev,
-			next: refNext,
-			id,
-			showReadLater: false,
-			showSave: false,
-			showRead: false,
-			lastUpdated,
-			showAuth: true,
-			showPali: true,
-			paragraphRequest: null,
-			discourseRange: null,
-			contentImage: null,
-			vizPrev: null,
-			vizNext: null,
-			viewSource: useReferenceEnglish ? "pli" : "en",
-			referenceFallback: useReferenceEnglish,
-		};
-		referenceFallbackPage = useReferenceEnglish;
+			mainContent = refPage.mainContent;
+			splitEnglish = refPage.splitEnglish;
+			splitPali = refPage.splitPali;
+			refPaliOnlyContent = refPage.refPaliOnlyContent;
+			referenceFallbackPage = refPage.referenceFallbackPage;
+			suttaProps = refPage.suttaProps;
 		}
 	}
 
