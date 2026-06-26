@@ -16,8 +16,7 @@ Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅgaṁ ka
 
 Atha kho āyasmā vaṅgīso bhagavantaṁ sammukhā sāruppāya gāthāya abhitthavi:
 
+“Cando yathā vigatavalāhake nabhe,
 Virocati vigatamalova bhāṇumā;
-
 Evampi aṅgīrasa tvaṁ mahāmuni,
-
 Atirocasi yasasā sabbalokan”ti.

@@ -24,26 +24,22 @@ Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅgaṁ ka
 
 Atha kho āyasmā vaṅgīso bhagavantaṁ sammukhā sāruppāhi gāthāhi abhitthavi:
 
+“Ajja pannarase visuddhiyā,
 Bhikkhū pañcasatā samāgatā;
-
 Saṁyojanabandhanacchidā,
-
 Anīghā khīṇapunabbhavā isī.
 
+Cakkavattī yathā rājā,
 amaccaparivārito;
-
 Samantā anupariyeti,
-
 sāgarantaṁ mahiṁ imaṁ.
 
+Evaṁ vijitasaṅgāmaṁ,
 satthavāhaṁ anuttaraṁ;
-
 Sāvakā payirupāsanti,
-
 tevijjā maccuhāyino.
 
+Sabbe bhagavato puttā,
 palāpettha na vijjati;
-
 Taṇhāsallassa hantāraṁ,
-
 vande ādiccabandhunan”ti.

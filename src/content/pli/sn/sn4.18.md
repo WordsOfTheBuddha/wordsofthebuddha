@@ -20,16 +20,14 @@ Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavan
 
 “Tena hi, bhante, bhagavā dutiyampi pañcasālaṁ brāhmaṇagāmaṁ piṇḍāya pavisatu. Tathāhaṁ karissāmi yathā bhagavā piṇḍaṁ lacchatī”ti.
 
+“Apuññaṁ pasavi māro,
 āsajja naṁ tathāgataṁ;
-
 Kiṁ nu maññasi pāpima,
-
 na me pāpaṁ vipaccati.
 
+Susukhaṁ vata jīvāma,
 yesaṁ no natthi kiñcanaṁ;
-
 Pītibhakkhā bhavissāma,
-
 devā ābhassarā yathā”ti.
 
 Atha kho māro pāpimā “jānāti maṁ bhagavā, jānāti maṁ sugato”ti dukkhī dummano tatthevantaradhāyīti.

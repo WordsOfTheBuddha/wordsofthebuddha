@@ -12,24 +12,21 @@ Atha kho sambahulā bhikkhū pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāy
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imā gāthāyo abhāsi:
 
+“Na taṁ daḷhaṁ bandhanamāhu dhīrā,
 Yadāyasaṁ dārujaṁ pabbajañca;
-
 Sārattarattā maṇikuṇḍalesu,
-
 Puttesu dāresu ca yā apekkhā.
 
+Etaṁ daḷhaṁ bandhanamāhu dhīrā,
 Ohārinaṁ sithilaṁ duppamuñcaṁ;
-
 Etampi chetvāna paribbajanti,
-
 Anapekkhino kāmasukhaṁ pahāyā”ti.
 
 Paṭhamo vaggo.
 
 Tassuddānaṁ
 
+Daharo puriso jarā,
 piyaṁ attānarakkhito;
-
 Appakā aḍḍakaraṇaṁ,
-
 mallikā yaññabandhananti.

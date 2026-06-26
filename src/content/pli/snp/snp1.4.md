@@ -14,48 +14,41 @@ Addasā kho kasibhāradvājo brāhmaṇo bhagavantaṁ piṇḍāya ṭhitaṁ. 
 
 Atha kho kasibhāradvājo brāhmaṇo bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Kassako paṭijānāsi,
 na ca passāma te kasiṁ;
-
 Kasiṁ no pucchito brūhi,
-
 yathā jānemu te kasiṁ”.
 
+“Saddhā bījaṁ tapo vuṭṭhi,
 paññā me yuganaṅgalaṁ;
-
 Hirī īsā mano yottaṁ,
-
 sati me phālapācanaṁ.
 
+Kāyagutto vacīgutto,
 āhāre udare yato;
-
 Saccaṁ karomi niddānaṁ,
-
 soraccaṁ me pamocanaṁ.
 
+Vīriyaṁ me dhuradhorayhaṁ,
 yogakkhemādhivāhanaṁ;
-
 Gacchati anivattantaṁ,
-
 yattha gantvā na socati.
 
+Evamesā kasī kaṭṭhā,
 Sā hoti amatapphalā;
-
 Etaṁ kasiṁ kasitvāna,
-
 Sabbadukkhā pamuccatī”ti.
 
 Atha kho kasibhāradvājo brāhmaṇo mahatiyā kaṁsapātiyā pāyasaṁ vaḍḍhetvā bhagavato upanāmesi: “bhuñjatu bhavaṁ gotamo pāyasaṁ. Kassako bhavaṁ; yañhi bhavaṁ gotamo amatapphalaṁ kasiṁ kasatī”ti.
 
+“Gāthābhigītaṁ me abhojaneyyaṁ,
 Sampassataṁ brāhmaṇa nesa dhammo;
-
 Gāthābhigītaṁ panudanti buddhā,
-
 Dhamme satī brāhmaṇa vuttiresā.
 
+Aññena ca kevalinaṁ mahesiṁ,
 Khīṇāsavaṁ kukkuccavūpasantaṁ;
-
 Annena pānena upaṭṭhahassu,
-
 Khettaṁ hi taṁ puññapekkhassa hotī”ti.
 
 “Atha kassa cāhaṁ, bho gotama, imaṁ pāyasaṁ dammī”ti? “Na khvāhaṁ taṁ, brāhmaṇa, passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya, yassa so pāyaso bhutto sammā pariṇāmaṁ gaccheyya, aññatra tathāgatassa vā tathāgatasāvakassa vā. Tena hi tvaṁ, brāhmaṇa, taṁ pāyasaṁ appaharite vā chaḍḍehi appāṇake vā udake opilāpehī”ti.

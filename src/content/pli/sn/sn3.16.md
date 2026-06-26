@@ -12,14 +12,12 @@ Atha kho rājā pasenadi kosalo yena bhagavā tenupasaṅkami; upasaṅkamitvā 
 
 Atha kho bhagavā rājānaṁ pasenadiṁ kosalaṁ anattamanataṁ viditvā tāyaṁ velāyaṁ imā gāthāyo abhāsi:
 
+“Itthīpi hi ekacciyā,
 seyyā posa janādhipa;
-
 Medhāvinī sīlavatī,
-
 sassudevā patibbatā.
 
+Tassā yo jāyati poso,
 sūro hoti disampati;
-
 Tādisā subhagiyā putto,
-
 rajjampi anusāsatī”ti.

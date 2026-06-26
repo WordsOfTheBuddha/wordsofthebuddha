@@ -18,8 +18,7 @@ Atha kho sambahulā bhikkhū pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāy
 
 Idamavoca …pe…
 
+“Jayaṁ veraṁ pasavati,
 dukkhaṁ seti parājito;
-
 Upasanto sukhaṁ seti,
-
 hitvā jayaparājayan”ti.

@@ -20,16 +20,14 @@ Ahampi, bhikkhave, yena uruvelā senānigamo tenupasaṅkamissāmi dhammadesanā
 
 Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Baddhosi sabbapāsehi,
 ye dibbā ye ca mānusā;
-
 Mahābandhanabaddhosi,
-
 na me samaṇa mokkhasī”ti.
 
+“Muttāhaṁ sabbapāsehi,
 Ye dibbā ye ca mānusā;
-
 Mahābandhanamuttomhi,
-
 Nihato tvamasi antakā”ti.
 
 Atha kho māro pāpimā …pe… tatthevantaradhāyīti.

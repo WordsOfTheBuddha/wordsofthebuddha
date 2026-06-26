@@ -26,14 +26,12 @@ Ete, bhante, mama purisā carā ocarakā janapadaṁ ocaritvā āgacchanti. Tehi
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imā gāthāyo abhāsi:
 
+“Na vaṇṇarūpena naro sujāno,
 Na vissase ittaradassanena;
-
 Susaññatānañhi viyañjanena,
-
 Asaññatā lokamimaṁ caranti.
 
+Patirūpako mattikākuṇḍalova,
 Lohaḍḍhamāsova suvaṇṇachanno;
-
 Caranti loke parivārachannā,
-
 Anto asuddhā bahi sobhamānā”ti.

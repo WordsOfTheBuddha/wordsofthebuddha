@@ -20,48 +20,41 @@ Addasā kho kasibhāradvājo brāhmaṇo bhagavantaṁ piṇḍāya ṭhitaṁ. 
 
 Atha kho kasibhāradvājo brāhmaṇo bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Kassako paṭijānāsi,
 na ca passāmi te kasiṁ;
-
 Kassako pucchito brūhi,
-
 kathaṁ jānemu taṁ kasin”ti.
 
+“Saddhā bījaṁ tapo vuṭṭhi,
 paññā me yuganaṅgalaṁ;
-
 Hirī īsā mano yottaṁ,
-
 sati me phālapācanaṁ.
 
+Kāyagutto vacīgutto,
 āhāre udare yato;
-
 Saccaṁ karomi niddānaṁ,
-
 soraccaṁ me pamocanaṁ.
 
+Vīriyaṁ me dhuradhorayhaṁ,
 yogakkhemādhivāhanaṁ;
-
 Gacchati anivattantaṁ,
-
 yattha gantvā na socati.
 
+Evamesā kasī kaṭṭhā,
 sā hoti amatapphalā;
-
 Etaṁ kasiṁ kasitvāna,
-
 sabbadukkhā pamuccatī”ti.
 
 “Bhuñjatu bhavaṁ gotamo. Kassako bhavaṁ. Yañhi bhavaṁ gotamo amatapphalampi kasiṁ kasatī”ti.
 
+“Gāthābhigītaṁ me abhojaneyyaṁ,
 Sampassataṁ brāhmaṇa nesa dhammo;
-
 Gāthābhigītaṁ panudanti buddhā,
-
 Dhamme sati brāhmaṇa vuttiresā.
 
+Aññena ca kevalinaṁ mahesiṁ,
 Khīṇāsavaṁ kukkuccavūpasantaṁ;
-
 Annena pānena upaṭṭhahassu,
-
 Khettañhi taṁ puññapekkhassa hotī”ti.
 
 Evaṁ vutte, kasibhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama …pe… ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.

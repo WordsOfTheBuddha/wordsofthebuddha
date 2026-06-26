@@ -12,8 +12,7 @@ Tena kho pana samayena bhagavā divāvihāragato hoti paṭisallīno. Atha kho s
 
 Atha kho subrahmā paccekabrahmā kokālikaṁ bhikkhuṁ ārabbha bhagavato santike imaṁ gāthaṁ abhāsi:
 
+“Appameyyaṁ paminanto,
 Kodha vidvā vikappaye;
-
 Appameyyaṁ pamāyinaṁ,
-
 Nivutaṁ taṁ maññe puthujjanan”ti.

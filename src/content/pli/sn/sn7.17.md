@@ -14,16 +14,14 @@ Disvānassa etadahosi: “ahaṁ kho imasmiṁ vanasaṇḍe kammantaṁ kārāp
 
 Atha kho navakammikabhāradvājo brāhmaṇo yena bhagavā tenupasaṅkami. upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Ke nu kammantā karīyanti,
 bhikkhu sālavane tava;
-
 Yadekako araññasmiṁ,
-
 ratiṁ vindati gotamo”ti.
 
+“Na me vanasmiṁ karaṇīyamatthi,
 Ucchinnamūlaṁ me vanaṁ visūkaṁ;
-
 Svāhaṁ vane nibbanatho visallo,
-
 Eko rame aratiṁ vippahāyā”ti.
 
 Evaṁ vutte, navakammikabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama …pe… upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.

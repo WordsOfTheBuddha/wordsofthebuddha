@@ -145,12 +145,30 @@ function isEndMarker(text) {
 	);
 }
 
+/** Verse-line segments (including the closing line) join with newlines. */
+function isVerseLineSegment(tpl) {
+	return typeof tpl === "string" && tpl.includes("verse-line");
+}
+
+/** Verse-line spans without <p> tags continue the current paragraph. */
+function isInlineVerseLineTemplate(tpl) {
+	if (typeof tpl !== "string") return false;
+	return (
+		tpl.includes("verse-line") &&
+		!tpl.includes("<p") &&
+		!tpl.includes("</p>")
+	);
+}
+
 /** Expand sparse bilara html.json templates to <p> boundaries (matches SC API). */
 function expandHtmlTemplate(tpl) {
 	const template = tpl ?? " {} ";
 	const [open, close] = template.split("{}");
 	if (open.includes("<p") || close.includes("</p>")) {
 		return { open, close };
+	}
+	if (isInlineVerseLineTemplate(template)) {
+		return { open: "", close: "" };
 	}
 	if (/^\s+\{\}\s+$/.test(template)) {
 		return { open: "<p>", close: "</p>" };
@@ -214,9 +232,14 @@ function segmentsToParagraphs(segments, htmlMarkup) {
 		const text = stripBilaraMarkup(segments[key]);
 		if (!text || isEndMarker(text)) continue;
 
-		const { open, close } = expandHtmlTemplate(htmlMarkup?.[key]);
+		const tpl = htmlMarkup?.[key];
+		const { open, close } = expandHtmlTemplate(tpl);
 		if (open.includes("<p")) current = "";
-		current += (current && text ? " " : "") + text;
+		if (current && text) {
+			current += isVerseLineSegment(tpl) ? `\n${text}` : ` ${text}`;
+		} else {
+			current += text;
+		}
 		if (close.includes("</p>")) {
 			paragraphs.push(current);
 			current = "";
@@ -363,7 +386,7 @@ function main() {
 
 			const pliPath = path.join(PLI_DIR, collection, `${id}.md`);
 			const mayWritePli =
-				forcePali || !existsSync(pliPath) || isBilaraImportedPali(pliPath);
+				!existsSync(pliPath) || isBilaraImportedPali(pliPath);
 
 			if (!mayWritePli) {
 				stats.paliSkipped++;
@@ -380,7 +403,7 @@ function main() {
 
 			const existed = existsSync(pliPath);
 			const pliResult = writeIfNeeded(pliPath, pliMarkdown, {
-				force: true,
+				force: forcePali,
 				label: "pali",
 			});
 			if (pliResult === "created") stats.paliCreated++;
@@ -432,4 +455,15 @@ function main() {
 	console.log(`  Collections: ${collections.join(", ")}`);
 }
 
-main();
+export {
+	compareSegmentKeys,
+	expandHtmlTemplate,
+	isInlineVerseLineTemplate,
+	isVerseLineSegment,
+	orderedContentKeys,
+	segmentsToParagraphs,
+	stripBilaraMarkup,
+};
+
+const isDirectRun = process.argv[1]?.endsWith("import-sc-bilara.mjs");
+if (isDirectRun) main();

@@ -42,48 +42,39 @@ Iti pañcaṅgavippahīne pañcaṅgasamannāgate dinnaṁ mahapphalan”ti.
 
 Idamavoca bhagavā …pe… satthā:
 
+“Issattaṁ balavīriyañca,
 yasmiṁ vijjetha māṇave;
-
 Taṁ yuddhattho bhare rājā,
-
 nāsūraṁ jātipaccayā.
 
+Tatheva khantisoraccaṁ,
 dhammā yasmiṁ patiṭṭhitā;
-
 Ariyavuttiṁ medhāviṁ,
-
 hīnajaccampi pūjaye.
 
+Kāraye assame ramme,
 vāsayettha bahussute;
-
 Papañca vivane kayirā,
-
 dugge saṅkamanāni ca.
 
+Annaṁ pānaṁ khādanīyaṁ,
 vatthasenāsanāni ca;
-
 Dadeyya ujubhūtesu,
-
 vippasannena cetasā.
 
+Yathā hi megho thanayaṁ,
 vijjumālī satakkaku;
-
 Thalaṁ ninnañca pūreti,
-
 abhivassaṁ vasundharaṁ.
 
+Tatheva saddho sutavā,
 abhisaṅkhacca bhojanaṁ;
-
 Vanibbake tappayati,
-
 annapānena paṇḍito.
 
+Āmodamāno pakireti,
 detha dethāti bhāsati;
-
 Taṁ hissa gajjitaṁ hoti,
-
 devasseva pavassato;
-
 Sā puññadhārā vipulā,
-
 dātāraṁ abhivassatī”ti.

@@ -16,20 +16,17 @@ Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅgaṁ ka
 
 Atha kho āyasmā vaṅgīso āyasmantaṁ mahāmoggallānaṁ bhagavato sammukhā sāruppāhi gāthāhi abhitthavi:
 
+“Nagassa passe āsīnaṁ,
 muniṁ dukkhassa pāraguṁ;
-
 Sāvakā payirupāsanti,
-
 tevijjā maccuhāyino.
 
+Te cetasā anupariyeti,
 Moggallāno mahiddhiko;
-
 Cittaṁ nesaṁ samannesaṁ,
-
 Vippamuttaṁ nirūpadhiṁ.
 
+Evaṁ sabbaṅgasampannaṁ,
 Muniṁ dukkhassa pāraguṁ;
-
 Anekākārasampannaṁ,
-
 Payirupāsanti gotaman”ti.

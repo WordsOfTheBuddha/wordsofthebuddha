@@ -6,14 +6,12 @@ granularity: paragraph
 title: Cittasutta
 ---
 
+“Kenassu nīyati loko,
 kenassu parikassati;
-
 Kissassu ekadhammassa,
-
 sabbeva vasamanvagū”ti.
 
+“Cittena nīyati loko,
 cittena parikassati;
-
 Cittassa ekadhammassa,
-
 sabbeva vasamanvagū”ti.

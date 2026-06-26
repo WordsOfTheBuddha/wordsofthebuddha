@@ -12,32 +12,27 @@ Atha kho āyasmā ānando pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya s
 
 Tena kho pana samayena āyasmato vaṅgīsassa anabhirati uppannā hoti, rāgo cittaṁ anuddhaṁseti. Atha kho āyasmā vaṅgīso āyasmantaṁ ānandaṁ gāthāya ajjhabhāsi:
 
+“Kāmarāgena ḍayhāmi,
 cittaṁ me pariḍayhati;
-
 Sādhu nibbāpanaṁ brūhi,
-
 anukampāya gotamā”ti.
 
+“Saññāya vipariyesā,
 cittaṁ te pariḍayhati;
-
 Nimittaṁ parivajjehi,
-
 subhaṁ rāgūpasaṁhitaṁ.
 
+Saṅkhāre parato passa,
 dukkhato mā ca attato;
-
 Nibbāpehi mahārāgaṁ,
-
 mā ḍayhittho punappunaṁ.
 
+Asubhāya cittaṁ bhāvehi,
 ekaggaṁ susamāhitaṁ;
-
 Sati kāyagatā tyatthu,
-
 nibbidābahulo bhava.
 
+Animittañca bhāvehi,
 mānānusayamujjaha;
-
 Tato mānābhisamayā,
-
 upasanto carissasī”ti.

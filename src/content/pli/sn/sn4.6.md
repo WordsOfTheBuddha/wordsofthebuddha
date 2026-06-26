@@ -14,22 +14,19 @@ Atha kho māro pāpimā bhagavato bhayaṁ chambhitattaṁ lomahaṁsaṁ uppād
 
 Atha kho bhagavā “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāhi ajjhabhāsi:
 
+“Yo suññagehāni sevati,
 Seyyā so muni attasaññato;
-
 Vossajja careyya tattha so,
-
 Patirūpañhi tathāvidhassa taṁ.
 
+Carakā bahū bheravā bahū,
 Atho ḍaṁsasarīsapā bahū;
-
 Lomampi na tattha iñjaye,
-
 Suññāgāragato mahāmuni.
 
+Nabhaṁ phaleyya pathavī caleyya,
 Sabbepi pāṇā uda santaseyyuṁ;
-
 Sallampi ce urasi pakappayeyyuṁ,
-
 Upadhīsu tāṇaṁ na karonti buddhā”ti.
 
 Atha kho māro pāpimā “jānāti maṁ bhagavā, jānāti maṁ sugato”ti dukkhī dummano tatthevantaradhāyīti.

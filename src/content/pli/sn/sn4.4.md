@@ -14,16 +14,14 @@ Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipat
 
 Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Baddhosi mārapāsena,
 ye dibbā ye ca mānusā;
-
 Mārabandhanabaddhosi,
-
 na me samaṇa mokkhasī”ti.
 
+“Muttāhaṁ mārapāsena,
 Ye dibbā ye ca mānusā;
-
 Mārabandhanamuttomhi,
-
 Nihato tvamasi antakā”ti.
 
 Atha kho māro pāpimā …pe… tatthevantaradhāyīti.

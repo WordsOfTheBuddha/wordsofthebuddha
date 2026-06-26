@@ -18,24 +18,19 @@ Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅgaṁ ka
 
 Atha kho āyasmā vaṅgīso āyasmantaṁ sāriputtaṁ sammukhā sāruppāhi gāthāhi abhitthavi:
 
+“Gambhīrapañño medhāvī,
 maggāmaggassa kovido;
-
 Sāriputto mahāpañño,
-
 dhammaṁ deseti bhikkhunaṁ.
 
+Saṅkhittenapi deseti,
 vitthārenapi bhāsati;
-
 Sāḷikāyiva nigghoso,
-
 paṭibhānaṁ udīrayi.
 
+Tassa taṁ desayantassa,
 suṇanti madhuraṁ giraṁ;
-
 Sarena rajanīyena,
-
 savanīyena vaggunā;
-
 Udaggacittā muditā,
-
 sotaṁ odhenti bhikkhavo”ti.

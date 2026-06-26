@@ -14,32 +14,28 @@ Atha kho āyasmato godhikassa etadahosi: “yāva chaṭṭhaṁ khvāhaṁ sām
 
 Atha kho māro pāpimā āyasmato godhikassa cetasā cetoparivitakkamaññāya yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāhi ajjhabhāsi:
 
+“Mahāvīra mahāpañña,
 iddhiyā yasasā jala;
-
 Sabbaverabhayātīta,
-
 pāde vandāmi cakkhuma.
 
+Sāvako te mahāvīra,
 maraṇaṁ maraṇābhibhū;
-
 Ākaṅkhati cetayati,
-
 taṁ nisedha jutindhara.
 
+Kathañhi bhagavā tuyhaṁ,
 Sāvako sāsane rato;
-
 Appattamānaso sekkho,
-
 Kālaṁ kayirā janesutā”ti.
 
 Tena kho pana samayena āyasmatā godhikena satthaṁ āharitaṁ hoti.
 
 Atha kho bhagavā “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāya ajjhabhāsi:
 
+“Evañhi dhīrā kubbanti,
 nāvakaṅkhanti jīvitaṁ;
-
 Samūlaṁ taṇhamabbuyha,
-
 godhiko parinibbuto”ti.
 
 Atha kho bhagavā bhikkhū āmantesi: “āyāma, bhikkhave, yena isigilipassaṁ kāḷasilā tenupasaṅkamissāma yattha godhikena kulaputtena satthaṁ āharitan”ti.
@@ -60,26 +56,22 @@ Atha kho bhagavā bhikkhū āmantesi:
 
 Atha kho māro pāpimā beluvapaṇḍuvīṇaṁ ādāya yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Uddhaṁ adho ca tiriyaṁ,
 disā anudisā svahaṁ;
-
 Anvesaṁ nādhigacchāmi,
-
 godhiko so kuhiṁ gato”ti.
 
+“Yo dhīro dhitisampanno,
 jhāyī jhānarato sadā;
-
 Ahorattaṁ anuyuñjaṁ,
-
 jīvitaṁ anikāmayaṁ.
 
+Jetvāna maccuno senaṁ,
 anāgantvā punabbhavaṁ;
-
 Samūlaṁ taṇhamabbuyha,
-
 godhiko parinibbuto”ti.
 
+Tassa sokaparetassa,
 vīṇā kacchā abhassatha;
-
 Tato so dummano yakkho,
-
 tatthevantaradhāyathāti.

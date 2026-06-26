@@ -22,20 +22,16 @@ Atha kho āyasmato anuruddhassa etadahosi: “kahaṁ nu kho bhagavā etarahi vi
 
 Atha kho āyasmā mahāmoggallāno taṁ brahmānaṁ gāthāya ajjhabhāsi:
 
+“Ajjāpi te āvuso sā diṭṭhi,
 Yā te diṭṭhi pure ahu;
-
 Passasi vītivattantaṁ,
-
 Brahmaloke pabhassaran”ti.
 
+“Na me mārisa sā diṭṭhi,
 yā me diṭṭhi pure ahu;
-
 Passāmi vītivattantaṁ,
-
 brahmaloke pabhassaraṁ;
-
 Svāhaṁ ajja kathaṁ vajjaṁ,
-
 ahaṁ niccomhi sassato”ti.
 
 Atha kho bhagavā taṁ brahmānaṁ saṁvejetvā—seyyathāpi nāma balavā puriso samiñjitaṁ vā bāhaṁ pasāreyya, pasāritaṁ vā bāhaṁ samiñjeyya; evameva—tasmiṁ brahmaloke antarahito jetavane pāturahosi.
@@ -46,18 +42,16 @@ Atha kho so brahmā aññataraṁ brahmapārisajjaṁ āmantesi: “ehi tvaṁ, 
 
 Atha kho āyasmā mahāmoggallāno taṁ brahmapārisajjaṁ gāthāya ajjhabhāsi:
 
+“Tevijjā iddhipattā ca,
 cetopariyāyakovidā;
-
 Khīṇāsavā arahanto,
-
 bahū buddhassa sāvakā”ti.
 
 Atha kho so brahmapārisajjo āyasmato mahāmoggallānassa bhāsitaṁ abhinanditvā anumoditvā yena so brahmā tenupasaṅkami; upasaṅkamitvā taṁ brahmānaṁ etadavoca: “āyasmā, mārisa, mahāmoggallāno evamāha:
 
+‘Tevijjā iddhipattā ca,
 cetopariyāyakovidā;
-
 Khīṇāsavā arahanto,
-
 bahū buddhassa sāvakā’”ti.
 
 Idamavoca so brahmapārisajjo. Attamano ca so brahmā tassa brahmapārisajjassa bhāsitaṁ abhinandīti.

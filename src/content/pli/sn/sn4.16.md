@@ -20,16 +20,14 @@ Evaṁ vutte, bhagavā taṁ bhikkhuṁ etadavoca: “na so, bhikkhu, balībaddo
 
 Atha kho bhagavā “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāya ajjhabhāsi:
 
+“Rūpaṁ vedayitaṁ saññā,
 viññāṇaṁ yañca saṅkhataṁ;
-
 Nesohamasmi netaṁ me,
-
 evaṁ tattha virajjati.
 
+Evaṁ virattaṁ khemattaṁ,
 sabbasaṁyojanātigaṁ;
-
 Anvesaṁ sabbaṭṭhānesu,
-
 mārasenāpi nājjhagā”ti.
 
 Atha kho māro pāpimā …pe… tatthevantaradhāyīti.

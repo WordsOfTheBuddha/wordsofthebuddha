@@ -14,34 +14,29 @@ Atha kho bhāradvājagotto brāhmaṇo tehi māṇavakehi saddhiṁ yena so vana
 
 Disvāna yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Gambhīrarūpe bahubherave vane,
 Suññaṁ araññaṁ vijanaṁ vigāhiya;
-
 Aniñjamānena ṭhitena vaggunā,
-
 Sucārurūpaṁ vata bhikkhu jhāyasi.
 
+Na yattha gītaṁ napi yattha vāditaṁ,
 Eko araññe vanavassito muni;
-
 Accherarūpaṁ paṭibhāti maṁ idaṁ,
-
 Yadekako pītimano vane vase.
 
+Maññāmahaṁ lokādhipatisahabyataṁ,
 Ākaṅkhamāno tidivaṁ anuttaraṁ;
-
 Kasmā bhavaṁ vijanamaraññamassito,
-
 Tapo idha kubbasi brahmapattiyā”ti.
 
+“Yā kāci kaṅkhā abhinandanā vā,
 Anekadhātūsu puthū sadāsitā;
-
 Aññāṇamūlappabhavā pajappitā,
-
 Sabbā mayā byantikatā samūlikā.
 
+Svāhaṁ akaṅkho asito anūpayo,
 Sabbesu dhammesu visuddhadassano;
-
 Pappuyya sambodhimanuttaraṁ sivaṁ,
-
 Jhāyāmahaṁ brahma raho visārado”ti.
 
 Evaṁ vutte, bhāradvājagotto brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama, abhikkantaṁ, bho gotama …pe… ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.

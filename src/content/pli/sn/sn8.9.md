@@ -18,20 +18,17 @@ Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅgaṁ ka
 
 Atha kho āyasmā vaṅgīso āyasmantaṁ aññāsikoṇḍaññaṁ bhagavato sammukhā sāruppāhi gāthāhi abhitthavi:
 
+“Buddhānubuddho so thero,
 koṇḍañño tibbanikkamo;
-
 Lābhī sukhavihārānaṁ,
-
 vivekānaṁ abhiṇhaso.
 
+Yaṁ sāvakena pattabbaṁ,
 satthusāsanakārinā;
-
 Sabbassa taṁ anuppattaṁ,
-
 appamattassa sikkhato.
 
+Mahānubhāvo tevijjo,
 cetopariyāyakovido;
-
 Koṇḍañño buddhadāyādo,
-
 pāde vandati satthuno”ti.

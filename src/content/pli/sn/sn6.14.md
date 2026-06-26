@@ -34,16 +34,14 @@ Atha kho abhibhū bhikkhu sikhiṁ bhagavantaṁ arahantaṁ sammāsambuddhaṁ 
 
 ‘Evaṁ, bhante’ti kho, bhikkhave, abhibhū bhikkhu sikhissa bhagavato arahato sammāsambuddhassa paṭissutvā brahmaloke ṭhito imā gāthāyo abhāsi:
 
+‘Ārambhatha nikkamatha,
 Yuñjatha buddhasāsane;
-
 Dhunātha maccuno senaṁ,
-
 Naḷāgāraṁva kuñjaro.
 
+Yo imasmiṁ dhammavinaye,
 appamatto vihassati;
-
 Pahāya jātisaṁsāraṁ,
-
 dukkhassantaṁ karissatī’ti.
 
 Atha kho, bhikkhave, sikhī ca bhagavā arahaṁ sammāsambuddho abhibhū ca bhikkhu brahmānañca brahmaparisañca brahmapārisajje ca saṁvejetvā— seyyathāpi nāma …pe… tasmiṁ brahmaloke antarahitā aruṇavatiyā rājadhāniyā pāturahesuṁ.
@@ -56,16 +54,14 @@ Atha kho, bhikkhave, sikhī bhagavā arahaṁ sammāsambuddho bhikkhū āmantesi
 
 Evaṁ kho mayaṁ, bhante, assumha abhibhussa bhikkhuno brahmaloke ṭhitassa gāthāyo bhāsamānassa:
 
+‘Ārambhatha nikkamatha,
 yuñjatha buddhasāsane;
-
 Dhunātha maccuno senaṁ,
-
 naḷāgāraṁva kuñjaro.
 
+Yo imasmiṁ dhammavinaye,
 appamatto vihassati;
-
 Pahāya jātisaṁsāraṁ,
-
 dukkhassantaṁ karissatī’ti.
 
 ‘Evaṁ kho mayaṁ, bhante, assumha abhibhussa bhikkhuno brahmaloke ṭhitassa gāthāyo bhāsamānassā’ti.

@@ -18,16 +18,14 @@ Evaṁ vutte, bhagavā taṁ bhikkhuṁ etadavoca: “nesā, bhikkhu, pathavī u
 
 Atha kho bhagavā “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāya ajjhabhāsi:
 
+“Rūpā saddā rasā gandhā,
 phassā dhammā ca kevalā;
-
 Etaṁ lokāmisaṁ ghoraṁ,
-
 ettha loko vimucchito.
 
+Etañca samatikkamma,
 sato buddhassa sāvako;
-
 Māradheyyaṁ atikkamma,
-
 ādiccova virocatī”ti.
 
 Atha kho māro pāpimā …pe… tatthevantaradhāyīti.

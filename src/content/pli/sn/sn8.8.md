@@ -18,28 +18,24 @@ Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅgaṁ ka
 
 Atha kho āyasmā vaṅgīso bhagavantaṁ sammukhā sāruppāhi gāthāhi abhitthavi:
 
+“Parosahassaṁ bhikkhūnaṁ,
 sugataṁ payirupāsati;
-
 Desentaṁ virajaṁ dhammaṁ,
-
 nibbānaṁ akutobhayaṁ.
 
+Suṇanti dhammaṁ vimalaṁ,
 sammāsambuddhadesitaṁ;
-
 Sobhati vata sambuddho,
-
 bhikkhusaṅghapurakkhato.
 
+Nāganāmosi bhagavā,
 isīnaṁ isisattamo;
-
 Mahāmeghova hutvāna,
-
 sāvake abhivassati.
 
+Divāvihārā nikkhamma,
 satthudassanakamyatā;
-
 Sāvako te mahāvīra,
-
 pāde vandati vaṅgiso”ti.
 
 “Kiṁ nu te, vaṅgīsa, imā gāthāyo pubbe parivitakkitā, udāhu ṭhānasova taṁ paṭibhantī”ti?
@@ -50,26 +46,22 @@ pāde vandati vaṅgiso”ti.
 
 “Evaṁ, bhante”ti kho āyasmā vaṅgīso bhagavato paṭissutvā bhiyyoso mattāya bhagavantaṁ pubbe aparivitakkitāhi gāthāhi abhitthavi:
 
+“Ummaggapathaṁ mārassa abhibhuyya,
 Carasi pabhijja khilāni;
-
 Taṁ passatha bandhapamuñcakaraṁ,
-
 Asitaṁ bhāgaso pavibhajaṁ.
 
+Oghassa nittharaṇatthaṁ,
 Anekavihitaṁ maggaṁ akkhāsi;
-
 Tasmiñce amate akkhāte,
-
 Dhammaddasā ṭhitā asaṁhīrā.
 
+Pajjotakaro ativijjha,
 Sabbaṭṭhitīnaṁ atikkamamaddasa;
-
 Ñatvā ca sacchikatvā ca,
-
 Aggaṁ so desayi dasaddhānaṁ.
 
+Evaṁ sudesite dhamme,
 Ko pamādo vijānataṁ dhammaṁ;
-
 Tasmā hi tassa bhagavato sāsane,
-
 Appamatto sadā namassamanusikkhe”ti.

@@ -38,90 +38,70 @@ Seyyathāpi, mahārāja, puriso pallaṅkā vā pallaṅkaṁ saṅkameyya, assa
 
 Idamavoca …pe…
 
+“Daliddo puriso rāja,
 assaddho hoti maccharī;
-
 Kadariyo pāpasaṅkappo,
-
 micchādiṭṭhi anādaro.
 
+Samaṇe brāhmaṇe vāpi,
 aññe vāpi vanibbake;
-
 Akkosati paribhāsati,
-
 natthiko hoti rosako.
 
+Dadamānaṁ nivāreti,
 yācamānāna bhojanaṁ;
-
 Tādiso puriso rāja,
-
 mīyamāno janādhipa;
-
 Upeti nirayaṁ ghoraṁ,
-
 tamotamaparāyano.
 
+Daliddo puriso rāja,
 saddho hoti amaccharī;
-
 Dadāti seṭṭhasaṅkappo,
-
 abyaggamanaso naro.
 
+Samaṇe brāhmaṇe vāpi,
 aññe vāpi vanibbake;
-
 Uṭṭhāya abhivādeti,
-
 samacariyāya sikkhati.
 
+Dadamānaṁ na vāreti,
 yācamānāna bhojanaṁ;
-
 Tādiso puriso rāja,
-
 mīyamāno janādhipa;
-
 Upeti tidivaṁ ṭhānaṁ,
-
 tamojotiparāyano.
 
+Aḍḍho ce puriso rāja,
 assaddho hoti maccharī;
-
 Kadariyo pāpasaṅkappo,
-
 micchādiṭṭhi anādaro.
 
+Samaṇe brāhmaṇe vāpi,
 aññe vāpi vanibbake;
-
 Akkosati paribhāsati,
-
 natthiko hoti rosako.
 
+Dadamānaṁ nivāreti,
 yācamānāna bhojanaṁ;
-
 Tādiso puriso rāja,
-
 mīyamāno janādhipa;
-
 Upeti nirayaṁ ghoraṁ,
-
 jotitamaparāyano.
 
+Aḍḍho ce puriso rāja,
 saddho hoti amaccharī;
-
 Dadāti seṭṭhasaṅkappo,
-
 abyaggamanaso naro.
 
+Samaṇe brāhmaṇe vāpi,
 aññe vāpi vanibbake;
-
 Uṭṭhāya abhivādeti,
-
 samacariyāya sikkhati.
 
+Dadamānaṁ na vāreti,
 yācamānāna bhojanaṁ;
-
 Tādiso puriso rāja,
-
 mīyamāno janādhipa;
-
 Upeti tidivaṁ ṭhānaṁ,
-
 jotijotiparāyano”ti.

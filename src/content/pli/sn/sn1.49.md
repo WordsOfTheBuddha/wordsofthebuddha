@@ -6,74 +6,58 @@ granularity: paragraph
 title: Maccharisutta
 ---
 
+“Yedha maccharino loke,
 kadariyā paribhāsakā;
-
 Aññesaṁ dadamānānaṁ,
-
 antarāyakarā narā.
-
-samparāyo ca kīdiso;
-
-Bhagavantaṁ puṭṭhumāgamma,
-
-kathaṁ jānemu taṁ mayan”ti.
-
-kadariyā paribhāsakā;
-
-Aññesaṁ dadamānānaṁ,
-
-antarāyakarā narā.
-
-yamalokaṁ upapajjare;
-
-Sace enti manussattaṁ,
-
-dalidde jāyare kule.
-
-yattha kicchena labbhati;
-
-Parato āsīsare bālā,
-
-tampi tesaṁ na labbhati;
-
-Diṭṭhe dhammesa vipāko,
-
-samparāye ca duggatī”ti.
-
-aññaṁ pucchāma gotama;
-
-Yedha laddhā manussattaṁ,
-
-vadaññū vītamaccharā.
-
-saṅghe ca tibbagāravā;
 
 Kīdiso tesaṁ vipāko,
-
 samparāyo ca kīdiso;
-
 Bhagavantaṁ puṭṭhumāgamma,
-
 kathaṁ jānemu taṁ mayan”ti.
 
-vadaññū vītamaccharā;
+“Yedha maccharino loke,
+kadariyā paribhāsakā;
+Aññesaṁ dadamānānaṁ,
+antarāyakarā narā.
 
-Buddhe pasannā dhamme ca,
-
-saṅghe ca tibbagāravā;
-
-Ete saggā pakāsanti,
-
-yattha te upapajjare.
-
-aḍḍhe ājāyare kule;
+Nirayaṁ tiracchānayoniṁ,
+yamalokaṁ upapajjare;
+Sace enti manussattaṁ,
+dalidde jāyare kule.
 
 Coḷaṁ piṇḍo ratī khiḍḍā,
+yattha kicchena labbhati;
+Parato āsīsare bālā,
+tampi tesaṁ na labbhati;
+Diṭṭhe dhammesa vipāko,
+samparāye ca duggatī”ti.
 
+“Itihetaṁ vijānāma,
+aññaṁ pucchāma gotama;
+Yedha laddhā manussattaṁ,
+vadaññū vītamaccharā.
+
+Buddhe pasannā dhamme ca,
+saṅghe ca tibbagāravā;
+Kīdiso tesaṁ vipāko,
+samparāyo ca kīdiso;
+Bhagavantaṁ puṭṭhumāgamma,
+kathaṁ jānemu taṁ mayan”ti.
+
+“Yedha laddhā manussattaṁ,
+vadaññū vītamaccharā;
+Buddhe pasannā dhamme ca,
+saṅghe ca tibbagāravā;
+Ete saggā pakāsanti,
+yattha te upapajjare.
+
+Sace enti manussattaṁ,
+aḍḍhe ājāyare kule;
+Coḷaṁ piṇḍo ratī khiḍḍā,
 yatthākicchena labbhati.
 
+Parasambhatesu bhogesu,
 vasavattīva modare;
-
 Diṭṭhe dhammesa vipāko,
-
 samparāye ca suggatī”ti.

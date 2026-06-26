@@ -20,8 +20,7 @@ Atha kho te bhikkhū yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagav
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ gāthaṁ abhāsi:
 
+“Yo dukkhamaddakkhi yatonidānaṁ,
 Kāmesu so jantu kathaṁ nameyya;
-
 Upadhiṁ viditvā saṅgoti loke,
-
 Tasseva jantu vinayāya sikkhe”ti.

@@ -46,38 +46,32 @@ Padume pana, bhikkhu, niraye kokāliko bhikkhu upapanno sāriputtamoggallānesu 
 
 Idamavoca bhagavā. Idaṁ vatvāna sugato athāparaṁ etadavoca satthā:
 
+“Purisassa hi jātassa,
 kuṭhārī jāyate mukhe;
-
 Yāya chindati attānaṁ,
-
 bālo dubbhāsitaṁ bhaṇaṁ.
 
+Yo nindiyaṁ pasaṁsati,
 Taṁ vā nindati yo pasaṁsiyo;
-
 Vicināti mukhena so kaliṁ,
-
 Kalinā tena sukhaṁ na vindati.
 
+Appamattako ayaṁ kali,
 Yo akkhesu dhanaparājayo;
-
 Sabbassāpi sahāpi attanā,
-
 Ayameva mahantaro kali;
-
 Yo sugatesu manaṁ padosaye.
 
+Sataṁ sahassānaṁ nirabbudānaṁ,
 Chattiṁsati pañca ca abbudāni;
-
 Yamariyagarahī nirayaṁ upeti,
-
 Vācaṁ manañca paṇidhāya pāpakan”ti.
 
 Paṭhamo vaggo.
 
 Tassuddānaṁ
 
+Āyācanaṁ gāravo brahmadevo,
 Bako ca brahmā aparā ca diṭṭhi;
-
 Pamādakokālikatissako ca,
-
 Turū ca brahmā aparo ca kokālikoti.

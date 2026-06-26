@@ -22,44 +22,37 @@ Atha kho brahmuno sahampatissa etadahosi: “ayaṁ kho āyasmato brahmadevassa 
 
 Atha kho brahmā sahampati—seyyathāpi nāma balavā puriso samiñjitaṁ vā bāhaṁ pasāreyya, pasāritaṁ vā bāhaṁ samiñjeyya; evameva—brahmaloke antarahito āyasmato brahmadevassa mātu nivesane pāturahosi. Atha kho brahmā sahampati vehāsaṁ ṭhito āyasmato brahmadevassa mātaraṁ brāhmaṇiṁ gāthāya ajjhabhāsi:
 
+“Dūre ito brāhmaṇi brahmaloko,
 Yassāhutiṁ paggaṇhāsi niccaṁ;
-
 Netādiso brāhmaṇi brahmabhakkho,
-
 Kiṁ jappasi brahmapathaṁ ajānaṁ.
 
+Eso hi te brāhmaṇi brahmadevo,
 Nirūpadhiko atidevapatto;
-
 Akiñcano bhikkhu anaññaposī,
-
 Yo te so piṇḍāya gharaṁ paviṭṭho.
 
+Āhuneyyo vedagu bhāvitatto,
 Narānaṁ devānañca dakkhiṇeyyo;
-
 Bāhitvā pāpāni anūpalitto,
-
 Ghāsesanaṁ iriyati sītibhūto.
 
+Na tassa pacchā na puratthamatthi,
 Santo vidhūmo anigho nirāso;
-
 Nikkhittadaṇḍo tasathāvaresu,
-
 So tyāhutiṁ bhuñjatu aggapiṇḍaṁ.
 
+Visenibhūto upasantacitto,
 Nāgova danto carati anejo;
-
 Bhikkhu susīlo suvimuttacitto,
-
 So tyāhutiṁ bhuñjatu aggapiṇḍaṁ.
 
+Tasmiṁ pasannā avikampamānā,
 Patiṭṭhapehi dakkhiṇaṁ dakkhiṇeyye;
-
 Karohi puññaṁ sukhamāyatikaṁ,
-
 Disvā muniṁ brāhmaṇi oghatiṇṇanti.
 
+Tasmiṁ pasannā avikampamānā,
 Patiṭṭhapesi dakkhiṇaṁ dakkhiṇeyye;
-
 Akāsi puññaṁ sukhamāyatikaṁ,
-
 Disvā muniṁ brāhmaṇī oghatiṇṇan”ti.

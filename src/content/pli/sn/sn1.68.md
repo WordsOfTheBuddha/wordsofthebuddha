@@ -6,14 +6,12 @@ granularity: paragraph
 title: Pihitasutta
 ---
 
+“Kenassu pihito loko,
 kismiṁ loko patiṭṭhito;
-
 Kenassu uḍḍito loko,
-
 kenassu parivārito”ti.
 
+“Maccunā pihito loko,
 dukkhe loko patiṭṭhito;
-
 Taṇhāya uḍḍito loko,
-
 jarāya parivārito”ti.

@@ -16,32 +16,27 @@ Atha kho āyasmato vaṅgīsassa etadahosi: “alābhā vata me, na vata me lāb
 
 Atha kho āyasmā vaṅgīso attanāva attano anabhiratiṁ vinodetvā abhiratiṁ uppādetvā tāyaṁ velāyaṁ imā gāthāyo abhāsi:
 
+“Nikkhantaṁ vata maṁ santaṁ,
 agārasmānagāriyaṁ;
-
 Vitakkā upadhāvanti,
-
 pagabbhā kaṇhato ime.
 
+Uggaputtā mahissāsā,
 sikkhitā daḷhadhammino;
-
 Samantā parikireyyuṁ,
-
 sahassaṁ apalāyinaṁ.
 
+Sacepi etato bhiyyo,
 āgamissanti itthiyo;
-
 Neva maṁ byādhayissanti,
-
 dhamme samhi patiṭṭhitaṁ.
 
+Sakkhī hi me sutaṁ etaṁ,
 buddhassādiccabandhuno;
-
 Nibbānagamanaṁ maggaṁ,
-
 tattha me nirato mano.
 
+Evañce maṁ viharantaṁ,
 pāpima upagacchasi;
-
 Tathā maccu karissāmi,
-
 na me maggampi dakkhasī”ti.

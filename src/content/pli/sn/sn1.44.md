@@ -6,8 +6,7 @@ granularity: paragraph
 title: Ekamūlasutta
 ---
 
+“Ekamūlaṁ dvirāvaṭṭaṁ,
 timalaṁ pañcapattharaṁ;
-
 Samuddaṁ dvādasāvaṭṭaṁ,
-
 pātālaṁ atarī isī”ti.

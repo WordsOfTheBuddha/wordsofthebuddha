@@ -20,24 +20,19 @@ Atha kho sambahulā bhikkhū pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāy
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imā gāthāyo abhāsi:
 
+“Vilumpateva puriso,
 yāvassa upakappati;
-
 Yadā caññe vilumpanti,
-
 so vilutto viluppati.
 
+Ṭhānañhi maññati bālo,
 yāva pāpaṁ na paccati;
-
 Yadā ca paccati pāpaṁ,
-
 atha dukkhaṁ nigacchati.
 
+Hantā labhati hantāraṁ,
 jetāraṁ labhate jayaṁ;
-
 Akkosako ca akkosaṁ,
-
 rosetārañca rosako;
-
 Atha kammavivaṭṭena,
-
 so vilutto viluppatī”ti.

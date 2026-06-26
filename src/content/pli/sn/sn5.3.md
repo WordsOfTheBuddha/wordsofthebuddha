@@ -12,10 +12,9 @@ Atha kho kisāgotamī bhikkhunī pubbaṇhasamayaṁ nivāsetvā pattacīvaramā
 
 Atha kho māro pāpimā kisāgotamiyā bhikkhuniyā bhayaṁ chambhitattaṁ lomahaṁsaṁ uppādetukāmo samādhimhā cāvetukāmo yena kisāgotamī bhikkhunī tenupasaṅkami; upasaṅkamitvā kisāgotamiṁ bhikkhuniṁ gāthāya ajjhabhāsi:
 
+“Kiṁ nu tvaṁ mataputtāva,
 ekamāsi rudammukhī;
-
 Vanamajjhagatā ekā,
-
 purisaṁ nu gavesasī”ti.
 
 Atha kho kisāgotamiyā bhikkhuniyā etadahosi: “ko nu khvāyaṁ manusso vā amanusso vā gāthaṁ bhāsatī”ti?
@@ -24,16 +23,14 @@ Atha kho kisāgotamiyā bhikkhuniyā etadahosi: “māro kho ayaṁ pāpimā mam
 
 Atha kho kisāgotamī bhikkhunī “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāhi paccabhāsi:
 
+“Accantaṁ mataputtāmhi,
 purisā etadantikā;
-
 Na socāmi na rodāmi,
-
 na taṁ bhāyāmi āvuso.
 
+Sabbattha vihatā nandī,
 tamokkhandho padālito;
-
 Jetvāna maccuno senaṁ,
-
 viharāmi anāsavā”ti.
 
 Atha kho māro pāpimā “jānāti maṁ kisāgotamī bhikkhunī”ti dukkhī dummano tatthevantaradhāyīti.

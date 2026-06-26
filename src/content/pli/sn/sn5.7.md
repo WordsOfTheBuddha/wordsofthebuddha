@@ -14,36 +14,28 @@ Atha kho māro pāpimā yena upacālā bhikkhunī tenupasaṅkami; upasaṅkamit
 
 “Na khvāhaṁ, āvuso, katthaci uppajjitukāmā”ti.
 
+“Tāvatiṁsā ca yāmā ca,
 tusitā cāpi devatā;
-
 Nimmānaratino devā,
-
 ye devā vasavattino;
-
 Tattha cittaṁ paṇidhehi,
-
 ratiṁ paccanubhossasī”ti.
 
+“Tāvatiṁsā ca yāmā ca,
 tusitā cāpi devatā;
-
 Nimmānaratino devā,
-
 ye devā vasavattino;
-
 Kāmabandhanabaddhā te,
-
 enti māravasaṁ puna.
 
+Sabbo ādīpito loko,
 sabbo loko padhūpito;
-
 Sabbo pajjālito loko,
-
 sabbo loko pakampito.
 
+Akampitaṁ apajjalitaṁ,
 aputhujjanasevitaṁ;
-
 Agati yattha mārassa,
-
 tattha me nirato mano”ti.
 
 Atha kho māro pāpimā “jānāti maṁ upacālā bhikkhunī”ti dukkhī dummano tatthevantaradhāyīti.

@@ -22,14 +22,12 @@ Acchariyaṁ, bhante, abbhutaṁ, bhante. Yāvasubhāsitamidaṁ, bhante, bhagav
 
 “Na kho panāhaṁ, āvuso, appatvā lokassa antaṁ dukkhassa antakiriyaṁ vadāmi. Api ca khvāhaṁ, āvuso, imasmiṁyeva byāmamatte kaḷevare sasaññimhi samanake lokañca paññapemi lokasamudayañca lokanirodhañca lokanirodhagāminiñca paṭipadanti.
 
+Gamanena na pattabbo,
 lokassanto kudācanaṁ;
-
 Na ca appatvā lokantaṁ,
-
 dukkhā atthi pamocanaṁ.
 
+Tasmā have lokavidū sumedho,
 Lokantagū vusitabrahmacariyo;
-
 Lokassa antaṁ samitāvi ñatvā,
-
 Nāsīsati lokamimaṁ parañcā”ti.

@@ -36,10 +36,9 @@ Tena kho pana samayena candanaṅgaliko upāsako tassaṁ parisāyaṁ nisinno h
 
 Atha kho candanaṅgaliko upāsako bhagavato sammukhā tadanurūpāya gāthāya abhitthavi:
 
+“Padumaṁ yathā kokanadaṁ sugandhaṁ,
 Pāto siyā phullamavītagandhaṁ;
-
 Aṅgīrasaṁ passa virocamānaṁ,
-
 Tapantamādiccamivantalikkhe”ti.
 
 Atha kho te pañca rājāno candanaṅgalikaṁ upāsakaṁ pañcahi uttarāsaṅgehi acchādesuṁ. Atha kho candanaṅgaliko upāsako tehi pañcahi uttarāsaṅgehi bhagavantaṁ acchādesīti.

@@ -18,54 +18,46 @@ Saññāvedayitanirodhā vuṭṭhahitvā nevasaññānāsaññāyatanaṁ samā
 
 Parinibbute bhagavati saha parinibbānā brahmā sahampati imaṁ gāthaṁ abhāsi:
 
+“Sabbeva nikkhipissanti,
 bhūtā loke samussayaṁ;
-
 Yattha etādiso satthā,
-
 loke appaṭipuggalo;
-
 Tathāgato balappatto,
-
 sambuddho parinibbuto”ti.
 
 Parinibbute bhagavati saha parinibbānā sakko devānamindo imaṁ gāthaṁ abhāsi:
 
+“Aniccā vata saṅkhārā,
 uppādavayadhammino;
-
 Uppajjitvā nirujjhanti,
-
 tesaṁ vūpasamo sukho”ti.
 
 Parinibbute bhagavati saha parinibbānā āyasmā ānando imaṁ gāthaṁ abhāsi:
 
+“Tadāsi yaṁ bhiṁsanakaṁ,
 tadāsi lomahaṁsanaṁ;
-
 Sabbākāravarūpete,
-
 sambuddhe parinibbute”ti.
 
 Parinibbute bhagavati saha parinibbānā āyasmā anuruddho imā gāthāyo abhāsi:
 
+“Nāhu assāsapassāso,
 ṭhitacittassa tādino;
-
 Anejo santimārabbha,
-
 cakkhumā parinibbuto.
 
+Asallīnena cittena,
 vedanaṁ ajjhavāsayi;
-
 Pajjotasseva nibbānaṁ,
-
 vimokkho cetaso ahū”ti.
 
 Dutiyo vaggo.
 
 Tassuddānaṁ
 
+Brahmāsanaṁ devadatto,
 Andhakavindo aruṇavatī;
-
 Parinibbānena ca desitaṁ,
-
 Idaṁ brahmapañcakanti.
 
 Brahmasaṁyuttaṁ samattaṁ.

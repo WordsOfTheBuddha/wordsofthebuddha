@@ -14,16 +14,14 @@ Atha kho māro pāpimā, bhagavato bhayaṁ chambhitattaṁ lomahaṁsaṁ uppā
 
 Atha kho bhagavā “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāhi ajjhabhāsi:
 
+“Saṁsaraṁ dīghamaddhānaṁ,
 vaṇṇaṁ katvā subhāsubhaṁ;
-
 Alaṁ te tena pāpima,
-
 nihato tvamasi antaka.
 
+Ye ca kāyena vācāya,
 manasā ca susaṁvutā;
-
 Na te māravasānugā,
-
 na te mārassa baddhagū”ti.
 
 Atha kho māro …pe… tatthevantaradhāyīti.

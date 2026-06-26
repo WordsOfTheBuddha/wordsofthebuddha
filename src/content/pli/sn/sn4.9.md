@@ -14,16 +14,14 @@ Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kal
 
 Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Dīghamāyu manussānaṁ,
 na naṁ hīḷe suporiso;
-
 Careyya khīramattova,
-
 natthi maccussa āgamo”ti.
 
+“Appamāyu manussānaṁ,
 hīḷeyya naṁ suporiso;
-
 Careyyādittasīsova,
-
 natthi maccussa nāgamo”ti.
 
 Atha kho māro …pe… tatthevantaradhāyīti.

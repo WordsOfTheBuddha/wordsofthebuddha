@@ -12,42 +12,35 @@ Tena kho pana samayena māro pāpimā sattavassāni bhagavantaṁ anubandho hoti
 
 Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Sokāvatiṇṇo nu vanamhi jhāyasi,
 Vittaṁ nu jīno uda patthayāno;
-
 Āguṁ nu gāmasmimakāsi kiñci,
-
 Kasmā janena na karosi sakkhiṁ;
-
 Sakkhī na sampajjati kenaci te”ti.
 
+“Sokassa mūlaṁ palikhāya sabbaṁ,
 Anāgu jhāyāmi asocamāno;
-
 Chetvāna sabbaṁ bhavalobhajappaṁ,
-
 Anāsavo jhāyāmi pamattabandhū”ti.
 
+“Yaṁ vadanti mama yidanti,
 ye vadanti mamanti ca;
-
 Ettha ce te mano atthi,
-
 na me samaṇa mokkhasī”ti.
 
+“Yaṁ vadanti na taṁ mayhaṁ,
 ye vadanti na te ahaṁ;
-
 Evaṁ pāpima jānāhi,
-
 na me maggampi dakkhasī”ti.
 
+“Sace maggaṁ anubuddhaṁ,
 khemaṁ amatagāminaṁ;
-
 Apehi gaccha tvameveko,
-
 kimaññamanusāsasī”ti.
 
+“Amaccudheyyaṁ pucchanti,
 ye janā pāragāmino;
-
 Tesāhaṁ puṭṭho akkhāmi,
-
 yaṁ saccaṁ taṁ nirūpadhin”ti.
 
 “Seyyathāpi, bhante, gāmassa vā nigamassa vā avidūre pokkharaṇī. Tatrassa kakkaṭako. Atha kho, bhante, sambahulā kumārakā vā kumārikāyo vā tamhā gāmā vā nigamā vā nikkhamitvā yena sā pokkharaṇī tenupasaṅkameyyuṁ; upasaṅkamitvā taṁ kakkaṭakaṁ udakā uddharitvā thale patiṭṭhapeyyuṁ. Yaṁ yadeva hi so, bhante, kakkaṭako aḷaṁ abhininnāmeyya taṁ tadeva te kumārakā vā kumārikāyo vā kaṭṭhena vā kathalāya vā sañchindeyyuṁ sambhañjeyyuṁ sampalibhañjeyyuṁ. Evañhi so, bhante, kakkaṭako sabbehi aḷehi sañchinnehi sambhaggehi sampalibhaggehi abhabbo taṁ pokkharaṇiṁ otarituṁ.
@@ -56,14 +49,12 @@ Evameva kho, bhante, yāni kānici visūkāyikāni visevitāni vipphanditāni, s
 
 Atha kho māro pāpimā bhagavato santike imā nibbejanīyā gāthāyo abhāsi:
 
+“Medavaṇṇañca pāsāṇaṁ,
 vāyaso anupariyagā;
-
 Apettha muduṁ vindema,
-
 api assādanā siyā.
 
+Aladdhā tattha assādaṁ,
 vāyasetto apakkame;
-
 Kākova selamāsajja,
-
 nibbijjāpema gotamā”ti.

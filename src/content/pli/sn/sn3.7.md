@@ -14,12 +14,9 @@ Ekamantaṁ nisinno kho rājā pasenadi kosalo bhagavantaṁ etadavoca: “idhā
 
 Idamavoca …pe…
 
+“Sārattā kāmabhogesu,
 giddhā kāmesu mucchitā;
-
 Atisāraṁ na bujjhanti,
-
 macchā khippaṁva oḍḍitaṁ;
-
 Pacchāsaṁ kaṭukaṁ hoti,
-
 vipāko hissa pāpako”ti.

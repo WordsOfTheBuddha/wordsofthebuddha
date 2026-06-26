@@ -14,34 +14,26 @@ Atha kho sambahulā bhikkhū pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāy
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imā gāthāyo abhāsi:
 
+“Assamedhaṁ purisamedhaṁ,
 sammāpāsaṁ vājapeyyaṁ;
-
 Niraggaḷaṁ mahārambhā,
-
 na te honti mahapphalā.
 
-vividhā yattha haññare;
-
-Na taṁ sammaggatā yaññaṁ,
-
-upayanti mahesino.
-
-yajanti anukulaṁ sadā;
-
 Ajeḷakā ca gāvo ca,
-
-vividhā nettha haññare;
-
-Etaṁ sammaggatā yaññaṁ,
-
+vividhā yattha haññare;
+Na taṁ sammaggatā yaññaṁ,
 upayanti mahesino.
 
+Ye ca yaññā nirārambhā,
+yajanti anukulaṁ sadā;
+Ajeḷakā ca gāvo ca,
+vividhā nettha haññare;
+Etaṁ sammaggatā yaññaṁ,
+upayanti mahesino.
+
+Etaṁ yajetha medhāvī,
 eso yañño mahapphalo;
-
 Etañhi yajamānassa,
-
 seyyo hoti na pāpiyo;
-
 Yañño ca vipulo hoti,
-
 pasīdanti ca devatā”ti.

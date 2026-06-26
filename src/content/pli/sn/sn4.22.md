@@ -20,14 +20,11 @@ Dutiyampi kho āyasmā samiddhi tattheva appamatto ātāpī pahitatto vihāsi. D
 
 Atha kho āyasmā samiddhi māraṁ pāpimantaṁ gāthāya ajjhabhāsi:
 
+“Saddhāyāhaṁ pabbajito,
 agārasmā anagāriyaṁ;
-
 Sati paññā ca me buddhā,
-
 cittañca susamāhitaṁ;
-
 Kāmaṁ karassu rūpāni,
-
 neva maṁ byādhayissasī”ti.
 
 Atha kho māro pāpimā “jānāti maṁ samiddhi bhikkhū”ti dukkhī dummano tatthevantaradhāyīti.

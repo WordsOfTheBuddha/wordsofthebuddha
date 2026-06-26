@@ -14,10 +14,9 @@ Atha kho māro pāpimā bhagavato bhayaṁ chambhitattaṁ lomahaṁsaṁ uppād
 
 Atha kho bhagavā “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāya ajjhabhāsi:
 
+“Saṁsaraṁ dīghamaddhānaṁ,
 Vaṇṇaṁ katvā subhāsubhaṁ;
-
 Alaṁ te tena pāpima,
-
 Nihato tvamasi antakā”ti.
 
 Atha kho māro pāpimā “jānāti maṁ bhagavā, jānāti maṁ sugato”ti dukkhī dummano tatthevantaradhāyīti.

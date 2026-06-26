@@ -16,16 +16,14 @@ Tena kho pana samayena bhagavā abbhokāse caṅkamati.
 
 Atha kho paccanīkasāto brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ caṅkamantaṁ etadavoca: “bhaṇa samaṇadhamman”ti.
 
+“Na paccanīkasātena,
 suvijānaṁ subhāsitaṁ;
-
 Upakkiliṭṭhacittena,
-
 sārambhabahulena ca.
 
+Yo ca vineyya sārambhaṁ,
 appasādañca cetaso;
-
 Āghātaṁ paṭinissajja,
-
 sa ve jaññā subhāsitan”ti.
 
 Evaṁ vutte, paccanīkasāto brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama, abhikkantaṁ, bho gotama …pe… upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.

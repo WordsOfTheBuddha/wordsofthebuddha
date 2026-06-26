@@ -20,16 +20,14 @@ Atha kho māro pāpimā kassakavaṇṇaṁ abhinimminitvā mahantaṁ naṅgala
 
 “Taveva, pāpima, cakkhu, tava rūpā, tava cakkhusamphassaviññāṇāyatanaṁ. Yattha ca kho, pāpima, natthi cakkhu, natthi rūpā, natthi cakkhusamphassaviññāṇāyatanaṁ, agati tava tattha, pāpima. Taveva, pāpima, sotaṁ, tava saddā, tava sotasamphassaviññāṇāyatanaṁ. Yattha ca kho, pāpima, natthi sotaṁ, natthi saddā, natthi sotasamphassaviññāṇāyatanaṁ, agati tava tattha, pāpima. Taveva, pāpima, ghānaṁ, tava gandhā, tava ghānasamphassaviññāṇāyatanaṁ. Yattha ca kho, pāpima, natthi ghānaṁ, natthi gandhā, natthi ghānasamphassaviññāṇāyatanaṁ, agati tava tattha, pāpima. Taveva, pāpima, jivhā, tava rasā, tava jivhāsamphassaviññāṇāyatanaṁ …pe… taveva, pāpima, kāyo, tava phoṭṭhabbā, tava kāyasamphassaviññāṇāyatanaṁ …pe… taveva, pāpima, mano, tava dhammā, tava manosamphassaviññāṇāyatanaṁ. Yattha ca kho, pāpima, natthi mano, natthi dhammā, natthi manosamphassaviññāṇāyatanaṁ, agati tava tattha, pāpimā”ti.
 
+“Yaṁ vadanti mama yidanti,
 ye vadanti mamanti ca;
-
 Ettha ce te mano atthi,
-
 na me samaṇa mokkhasī”ti.
 
+“Yaṁ vadanti na taṁ mayhaṁ,
 ye vadanti na te ahaṁ;
-
 Evaṁ pāpima jānāhi,
-
 na me maggampi dakkhasī”ti.
 
 Atha kho māro pāpimā …pe… tatthevantaradhāyīti.

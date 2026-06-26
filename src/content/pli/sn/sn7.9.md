@@ -20,36 +20,31 @@ Atha kho sundarikabhāradvājassa brāhmaṇassa etadahosi: “muṇḍāpi hi i
 
 Atha kho sundarikabhāradvājo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ etadavoca: “kiṁjacco bhavan”ti?
 
+“Mā jātiṁ puccha caraṇañca puccha,
 Kaṭṭhā have jāyati jātavedo;
-
 Nīcākulīnopi muni dhitimā,
-
 Ājānīyo hoti hirīnisedho.
 
+Saccena danto damasā upeto,
 Vedantagū vusitabrahmacariyo;
-
 Yaññopanīto tamupavhayetha,
-
 Kālena so juhati dakkhiṇeyye”ti.
 
+“Addhā suyiṭṭhaṁ suhutaṁ mama yidaṁ,
 Yaṁ tādisaṁ vedagumaddasāmi;
-
 Tumhādisānañhi adassanena,
-
 Añño jano bhuñjati habyasesan”ti.
 
 “Bhuñjatu bhavaṁ gotamo. Brāhmaṇo bhavan”ti.
 
+“Gāthābhigītaṁ me abhojaneyyaṁ,
 Sampassataṁ brāhmaṇa nesa dhammo;
-
 Gāthābhigītaṁ panudanti buddhā,
-
 Dhamme sati brāhmaṇa vuttiresā.
 
+Aññena ca kevalinaṁ mahesiṁ,
 Khīṇāsavaṁ kukkuccavūpasantaṁ;
-
 Annena pānena upaṭṭhahassu,
-
 Khettañhi taṁ puññapekkhassa hotī”ti.
 
 “Atha kassa cāhaṁ, bho gotama, imaṁ habyasesaṁ dammī”ti?
@@ -60,34 +55,29 @@ Atha kho sundarikabhāradvājo brāhmaṇo taṁ habyasesaṁ appāṇake udake 
 
 Atha kho sundarikabhāradvājo brāhmaṇo saṁviggo lomahaṭṭhajāto yena bhagavā tenupasaṅkami; upasaṅkamitvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitaṁ kho sundarikabhāradvājaṁ brāhmaṇaṁ bhagavā gāthāhi ajjhabhāsi:
 
+“Mā brāhmaṇa dāru samādahāno,
 Suddhiṁ amaññi bahiddhā hi etaṁ;
-
 Na hi tena suddhiṁ kusalā vadanti,
-
 Yo bāhirena parisuddhimicche.
 
+Hitvā ahaṁ brāhmaṇa dārudāhaṁ,
 Ajjhattamevujjalayāmi jotiṁ;
-
 Niccagginī niccasamāhitatto,
-
 Arahaṁ ahaṁ brahmacariyaṁ carāmi.
 
+Māno hi te brāhmaṇa khāribhāro,
 Kodho dhumo bhasmani mosavajjaṁ;
-
 Jivhā sujā hadayaṁ jotiṭhānaṁ,
-
 Attā sudanto purisassa joti.
 
+Dhammo rahado brāhmaṇa sīlatittho,
 Anāvilo sabbhi sataṁ pasattho;
-
 Yattha have vedaguno sinātā,
-
 Anallagattāva taranti pāraṁ.
 
+Saccaṁ dhammo saṁyamo brahmacariyaṁ,
 Majjhe sitā brāhmaṇa brahmapatti;
-
 Sa tujjubhūtesu namo karohi,
-
 Tamahaṁ naraṁ dhammasārīti brūmī”ti.
 
 Evaṁ vutte, sundarikabhāradvājo brāhmaṇo bhagavantaṁ etadavoca: “abhikkantaṁ, bho gotama …pe… aññataro ca panāyasmā bhāradvājo arahataṁ ahosīti.

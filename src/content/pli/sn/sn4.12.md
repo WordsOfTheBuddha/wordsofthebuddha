@@ -12,16 +12,14 @@ Atha kho mārassa pāpimato etadahosi: “ayaṁ kho samaṇo gotamo mahatiyā p
 
 Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Kinnu sīhova nadasi,
 parisāyaṁ visārado;
-
 Paṭimallo hi te atthi,
-
 vijitāvī nu maññasī”ti.
 
+“Nadanti ve mahāvīrā,
 parisāsu visāradā;
-
 Tathāgatā balappattā,
-
 tiṇṇā loke visattikan”ti.
 
 Atha kho māro pāpimā “jānāti maṁ bhagavā, jānāti maṁ sugato”ti dukkhī dummano tatthevantaradhāyīti.

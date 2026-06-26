@@ -12,10 +12,9 @@ Atha kho āḷavikā bhikkhunī pubbaṇhasamayaṁ nivāsetvā pattacīvaramād
 
 Atha kho māro pāpimā āḷavikāya bhikkhuniyā bhayaṁ chambhitattaṁ lomahaṁsaṁ uppādetukāmo vivekamhā cāvetukāmo yena āḷavikā bhikkhunī tenupasaṅkami; upasaṅkamitvā āḷavikaṁ bhikkhuniṁ gāthāya ajjhabhāsi:
 
+“Natthi nissaraṇaṁ loke,
 kiṁ vivekena kāhasi;
-
 Bhuñjassu kāmaratiyo,
-
 māhu pacchānutāpinī”ti.
 
 Atha kho āḷavikāya bhikkhuniyā etadahosi: “ko nu khvāyaṁ manusso vā amanusso vā gāthaṁ bhāsatī”ti?
@@ -24,16 +23,14 @@ Atha kho āḷavikāya bhikkhuniyā etadahosi: “māro kho ayaṁ pāpimā mama
 
 Atha kho āḷavikā bhikkhunī “māro ayaṁ pāpimā” iti viditvā māraṁ pāpimantaṁ gāthāhi paccabhāsi:
 
+“Atthi nissaraṇaṁ loke,
 paññāya me suphussitaṁ;
-
 Pamattabandhu pāpima,
-
 na tvaṁ jānāsi taṁ padaṁ.
 
+Sattisūlūpamā kāmā,
 khandhāsaṁ adhikuṭṭanā;
-
 Yaṁ tvaṁ kāmaratiṁ brūsi,
-
 arati mayha sā ahū”ti.
 
 Atha kho māro pāpimā “jānāti maṁ āḷavikā bhikkhunī”ti dukkhī dummano tatthevantaradhāyīti.

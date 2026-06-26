@@ -6,8 +6,7 @@ granularity: paragraph
 title: Anomasutta
 ---
 
+“Anomanāmaṁ nipuṇatthadassiṁ,
 Paññādadaṁ kāmālaye asattaṁ;
-
 Taṁ passatha sabbaviduṁ sumedhaṁ,
-
 Ariye pathe kamamānaṁ mahesin”ti.

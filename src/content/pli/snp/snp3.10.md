@@ -22,138 +22,115 @@ Evaṁ vutte, aññataro bhikkhu bhagavantaṁ etadavoca: “kīvadīghaṁ nu k
 
 “Seyyathāpi, bhikkhu, vīsatikhāriko kosalako tilavāho; tato puriso vassasatassa vassasatassa accayena ekamekaṁ tilaṁ uddhareyya. Khippataraṁ kho so bhikkhu vīsatikhāriko kosalako tilavāho iminā upakkamena parikkhayaṁ pariyādānaṁ gaccheyya, na tveva eko abbudo nirayo. Seyyathāpi, bhikkhu, vīsati abbudā nirayā evameko nirabbudo nirayo. Seyyathāpi, bhikkhu, vīsati nirabbudā nirayā evameko ababo nirayo. Seyyathāpi, bhikkhu, vīsati ababā nirayā evameko aṭaṭo nirayo. Seyyathāpi, bhikkhu, vīsati aṭaṭā nirayā evameko ahaho nirayo. Seyyathāpi, bhikkhu, vīsati ahahā nirayā evameko kumudo nirayo. Seyyathāpi, bhikkhu, vīsati kumudā nirayā evameko sogandhiko nirayo. Seyyathāpi, bhikkhu, vīsati sogandhikā nirayā evameko uppalako nirayo. Seyyathāpi, bhikkhu, vīsati uppalakā nirayā evameko puṇḍarīko nirayo. Seyyathāpi, bhikkhu, vīsati puṇḍarīkā nirayā evameko padumo nirayo. Padumaṁ kho pana bhikkhu nirayaṁ kokāliko bhikkhu upapanno sāriputtamoggallānesu cittaṁ āghātetvā”ti. Idamavoca bhagavā. Idaṁ vatvāna sugato athāparaṁ etadavoca satthā:
 
+“Purisassa hi jātassa,
 kuṭhārī jāyate mukhe;
-
 Yāya chindati attānaṁ,
-
 bālo dubbhāsitaṁ bhaṇaṁ.
 
+Yo nindiyaṁ pasaṁsati,
 Taṁ vā nindati yo pasaṁsiyo;
-
 Vicināti mukhena so kaliṁ,
-
 Kalinā tena sukhaṁ na vindati.
 
+Appamatto ayaṁ kali,
 Yo akkhesu dhanaparājayo;
-
 Sabbassāpi sahāpi attanā,
-
 Ayameva mahattaro kali;
-
 Yo sugatesu manaṁ padosaye.
 
+Sataṁ sahassānaṁ nirabbudānaṁ,
 Chattiṁsati pañca ca abbudāni;
-
 Yamariyagarahī nirayaṁ upeti,
-
 Vācaṁ manañca paṇidhāya pāpakaṁ.
 
+Abhūtavādī nirayaṁ upeti,
 Yo vāpi katvā na karomicāha;
-
 Ubhopi te pecca samā bhavanti,
-
 Nihīnakammā manujā parattha.
 
+Yo appaduṭṭhassa narassa dussati,
 Suddhassa posassa anaṅgaṇassa;
-
 Tameva bālaṁ pacceti pāpaṁ,
-
 Sukhumo rajo paṭivātaṁva khitto.
 
+Yo lobhaguṇe anuyutto,
 So vacasā paribhāsati aññe;
-
 Asaddho kadariyo avadaññū,
-
 Macchari pesuṇiyaṁ anuyutto.
 
+Mukhadugga vibhūta anariya,
 Bhūnahu pāpaka dukkaṭakāri;
-
 Purisanta kalī avajāta,
-
 Mā bahubhāṇidha nerayikosi.
 
+Rajamākirasī ahitāya,
 Sante garahasi kibbisakārī;
-
 Bahūni duccaritāni caritvā,
-
 Gacchasi kho papataṁ cirarattaṁ.
 
+Na hi nassati kassaci kammaṁ,
 Eti hataṁ labhateva suvāmi;
-
 Dukkhaṁ mando paraloke,
-
 Attani passati kibbisakārī.
 
+Ayosaṅkusamāhataṭṭhānaṁ,
 Tiṇhadhāramayasūlamupeti;
-
 Atha tattaayoguḷasannibhaṁ,
-
 Bhojanamatthi tathā patirūpaṁ.
 
+Na hi vaggu vadanti vadantā,
 Nābhijavanti na tāṇamupenti;
-
 Aṅgāre santhate sayanti,
-
 Ginisampajjalitaṁ pavisanti.
 
+Jālena ca onahiyāna,
 Tattha hananti ayomayakuṭebhi;
-
 Andhaṁva timisamāyanti,
-
 Taṁ vitatañhi yathā mahikāyo.
 
+Atha lohamayaṁ pana kumbhiṁ,
 Ginisampajjalitaṁ pavisanti;
-
 Paccanti hi tāsu cirarattaṁ,
-
 Agginisamāsu samuppilavāte.
 
+Atha pubbalohitamisse,
 Tattha kiṁ paccati kibbisakārī;
-
 Yaṁ yaṁ disakaṁ adhiseti,
-
 Tattha kilissati samphusamāno.
 
+Puḷavāvasathe salilasmiṁ,
 Tattha kiṁ paccati kibbisakārī;
-
 Gantuṁ na hi tīramapatthi,
-
 Sabbasamā hi samantakapallā.
 
+Asipattavanaṁ pana tiṇhaṁ,
 Taṁ pavisanti samucchidagattā;
-
 Jivhaṁ balisena gahetvā,
-
 Ārajayārajayā vihananti.
 
+Atha vetaraṇiṁ pana duggaṁ,
 Tiṇhadhārakhuradhāramupenti;
-
 Tattha mandā papatanti,
-
 Pāpakarā pāpāni karitvā.
 
+Khādanti hi tattha rudante,
 Sāmā sabalā kākolagaṇā ca;
-
 Soṇā siṅgālā paṭigiddhā,
-
 Kulalā vāyasā ca vitudanti.
 
+Kicchā vatayaṁ idha vutti,
 Yaṁ jano phusati kibbisakārī;
-
 Tasmā idha jīvitasese,
-
 Kiccakaro siyā naro na cappamajje.
 
+Te gaṇitā vidūhi tilavāhā,
 Ye padume niraye upanītā;
-
 Nahutāni hi koṭiyo pañca bhavanti,
-
 Dvādasa koṭisatāni punaññā.
 
+Yāva dukhā nirayā idha vuttā,
 Tatthapi tāva ciraṁ vasitabbaṁ;
-
 Tasmā sucipesalasādhuguṇesu,
-
 Vācaṁ manaṁ satataṁ parirakkhe”ti.
 
 Kokālikasuttaṁ dasamaṁ.

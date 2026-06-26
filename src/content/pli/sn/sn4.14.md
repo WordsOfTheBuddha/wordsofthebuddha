@@ -14,16 +14,14 @@ Atha kho mārassa pāpimato etadahosi: “ayaṁ kho samaṇo gotamo mahatiyā g
 
 Atha kho māro pāpimā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ gāthāya ajjhabhāsi:
 
+“Netaṁ tava patirūpaṁ,
 yadaññamanusāsasi;
-
 Anurodhavirodhesu,
-
 mā sajjittho tadācaran”ti.
 
+“Hitānukampī sambuddho,
 yadaññamanusāsati;
-
 Anurodhavirodhehi,
-
 vippamutto tathāgato”ti.
 
 Atha kho māro pāpimā “jānāti maṁ bhagavā, jānāti maṁ sugato”ti dukkhī dummano tatthevantaradhāyīti.

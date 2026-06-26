@@ -24,14 +24,12 @@ Seyyathāpi, mahārāja, gāmassa vā nigamassa vā avidūre pokkharaṇī accho
 
 Evameva kho, mahārāja, sappuriso uḷāre bhoge labhitvā attānaṁ sukheti pīṇeti, mātāpitaro sukheti pīṇeti, puttadāraṁ sukheti pīṇeti, dāsakammakaraporise sukheti pīṇeti, mittāmacce sukheti pīṇeti, samaṇabrāhmaṇesu uddhaggikaṁ dakkhiṇaṁ patiṭṭhāpeti sovaggikaṁ sukhavipākaṁ saggasaṁvattanikaṁ. Tassa te bhoge evaṁ sammā paribhuñjiyamāne neva rājāno haranti, na corā haranti, na aggi ḍahati, na udakaṁ vahati, na appiyā dāyādā haranti. Evaṁsa te, mahārāja, bhogā sammā paribhuñjiyamānā paribhogaṁ gacchanti, no parikkhayan”ti.
 
+“Amanussaṭṭhāne udakaṁva sītaṁ,
 Tadapeyyamānaṁ parisosameti;
-
 Evaṁ dhanaṁ kāpuriso labhitvā,
-
 Nevattanā bhuñjati no dadāti.
 
+Dhīro ca viññū adhigamma bhoge,
 So bhuñjati kiccakaro ca hoti;
-
 So ñātisaṅghaṁ nisabho bharitvā,
-
 Anindito saggamupeti ṭhānan”ti.

@@ -30,16 +30,14 @@ Seyyathāpi nāma saradasamaye viddhe vigatavalāhake deve ādicco nabhaṁ abbh
 
 Atha kho susimo devaputto āyasmantaṁ sāriputtaṁ ārabbha bhagavato santike imaṁ gāthaṁ abhāsi:
 
+“Paṇḍitoti samaññāto,
 sāriputto akodhano;
-
 Appiccho sorato danto,
-
 satthuvaṇṇābhato isī”ti.
 
 Atha kho bhagavā āyasmantaṁ sāriputtaṁ ārabbha susimaṁ devaputtaṁ gāthāya paccabhāsi:
 
+“Paṇḍitoti samaññāto,
 sāriputto akodhano;
-
 Appiccho sorato danto,
-
 kālaṁ kaṅkhati sudanto”ti.

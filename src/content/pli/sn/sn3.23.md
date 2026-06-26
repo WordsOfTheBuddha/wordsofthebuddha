@@ -14,8 +14,7 @@ Ekamantaṁ nisinno kho rājā pasenadi kosalo bhagavantaṁ etadavoca: “kati 
 
 Idamavoca …pe…
 
+“Lobho doso ca moho ca,
 purisaṁ pāpacetasaṁ;
-
 Hiṁsanti attasambhūtā,
-
 tacasāraṁva samphalan”ti.
