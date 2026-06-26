@@ -1,3 +1,5 @@
+import { transformId } from "./transformId";
+
 // Debug helper for development-only console output
 export function debug(...args: any[]) {
 	if (import.meta.env.DEV) {
@@ -77,6 +79,34 @@ export function isValidParagraphRange(start: number, end: number): boolean {
 	return !isNaN(start) && !isNaN(end) && start <= end;
 }
 
+function formatDiscourseHref(fullReference: string): string {
+	return fullReference
+		.toLowerCase()
+		.replace(/\s+/g, "")
+		.replace(/[–—]/g, "-");
+}
+
+function formatSectionNotFoundNotice(
+	fullReference: string,
+	hrf: string,
+): string {
+	const href = formatDiscourseHref(fullReference);
+	return `<p class="english-paragraph">No content was found for ${transformId(hrf)} in ${transformId(href)}. <a href="/${href}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`;
+}
+
+function formatViewFullTextLink(fullReference: string): string {
+	const href = formatDiscourseHref(fullReference);
+	return `<p><a href="/${href}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`;
+}
+
+/** Subset pages with only a fallback link (no matched paragraphs). */
+export function isViewFullTextFallbackOnly(content: string): boolean {
+	return (
+		/View full text for:/i.test(content) &&
+		!/\bdata-pair-id=/.test(content)
+	);
+}
+
 // Detect MDX-specific blocks (import statements, JSX components like <Image />)
 // that only appear in English content and have no Pali counterpart
 function isCodeOrComponentBlock(block: string): boolean {
@@ -134,10 +164,13 @@ export function parseContent(
 		end?: number;
 	} | null,
 	discourseRange?: { start: string; end: string } | null,
+	/** Current URL slug (HRF): shown in subset fallback copy; link uses fullReference. */
+	hrf?: string,
 ) {
 	const pairs: ContentPair[] = [];
 	const paliText = paliContent?.body?.trim?.() ? paliContent.body : "";
 	const englishText = toSmartQuotes(englishContent?.body || "");
+	const displaySlug = hrf ?? (fullReference ? formatDiscourseHref(fullReference) : "");
 
 	// Handle paragraph requests
 	if (paragraphRequest) {
@@ -203,20 +236,19 @@ export function parseContent(
 		if (
 			(paragraphRequest.type === "range" ||
 				paragraphRequest.type === "single") &&
-			filteredPairs.length > 0 &&
 			fullReference
 		) {
-			const baseId = fullReference;
-			filteredPairs.push({
-				type: "paragraph",
-				english: `\n\n<p><a href="/${baseId
-					.toLowerCase()
-					.replace(/\s+/g, "")
-					.replace(
-						/[–—]/g,
-						"-",
-					)}" class="text-blue-600 hover:underline">View full text for: ${baseId}</a></p>`,
-			});
+			if (filteredPairs.length === 0) {
+				filteredPairs.push({
+					type: "other",
+					english: formatSectionNotFoundNotice(fullReference, displaySlug),
+				});
+			} else {
+				filteredPairs.push({
+					type: "other",
+					english: formatViewFullTextLink(fullReference),
+				});
+			}
 		}
 
 		return filteredPairs;
@@ -369,15 +401,11 @@ export function parseContent(
 
 		// Add "View full text" link if this is a partial view
 		if (fullReference) {
-			targetEnglish.push(
-				`\n\n<p><a href="/${fullReference
-					.toLowerCase()
-					.replace(/\s+/g, "")
-					.replace(
-						/[–—]/g,
-						"-",
-					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`,
-			);
+			if (targetEnglish.length === 0) {
+				targetEnglish.push(formatSectionNotFoundNotice(fullReference, displaySlug));
+			} else {
+				targetEnglish.push(formatViewFullTextLink(fullReference));
+			}
 		}
 
 		const result = processBlocks(
@@ -487,17 +515,13 @@ export function parseContent(
 			}
 		}
 
-		// Add "See full text" link if this is a partial view
+		// Add "View full text" link if this is a partial view
 		if (fullReference) {
-			targetEnglish.push(
-				`\n\n<p><a href="/${fullReference
-					.toLowerCase()
-					.replace(/\s+/g, "")
-					.replace(
-						/[–—]/g,
-						"-",
-					)}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`,
-			);
+			if (targetEnglish.length === 0) {
+				targetEnglish.push(formatSectionNotFoundNotice(fullReference, displaySlug));
+			} else {
+				targetEnglish.push(formatViewFullTextLink(fullReference));
+			}
 		}
 
 		debug("Target English blocks for section:", targetEnglish.length);

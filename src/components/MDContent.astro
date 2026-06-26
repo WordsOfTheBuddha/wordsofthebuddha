@@ -1,5 +1,6 @@
 ---
 import { parseMarkdown } from "../utils/mdParser";
+import { isViewFullTextFallbackOnly } from "../utils/contentParser";
 
 interface Props {
 	content: string;
@@ -25,6 +26,10 @@ const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 const parsedRefPaliOnly = refPaliOnlyContent
 	? await parseMarkdown(refPaliOnlyContent)
 	: null;
+/** Subset URLs with no matched section/paragraphs: skip content-fade (nothing to align). */
+const showFallbackImmediately =
+	isViewFullTextFallbackOnly(content) ||
+	(splitEnglish ? isViewFullTextFallbackOnly(splitEnglish) : false);
 ---
 
 {
@@ -40,14 +45,22 @@ const parsedRefPaliOnly = refPaliOnlyContent
 <div class:list={["ref-translation-view", !referenceFallback && "contents"]}>
 	<!-- Interleaved article (default) -->
 	<article
-		class="content-fade md-content prose prose-lg dark:prose-invert interleaved-article"
+		class:list={[
+			"md-content prose prose-lg dark:prose-invert interleaved-article",
+			showFallbackImmediately
+				? "subset-fallback"
+				: "content-fade",
+		]}
 		aria-hidden="false"
 		set:html={parsedInterleaved}
 	/>
 
 	<!-- Split wrapper (only visible when html has split + pali-on) -->
-	{parsedSplitEnglish && parsedSplitPali && (
-		<div class="content-fade split-wrapper" aria-hidden="true">
+	{parsedSplitEnglish && parsedSplitPali && !showFallbackImmediately && (
+		<div
+			class:list={["content-fade split-wrapper"]}
+			aria-hidden="true"
+		>
 			<article
 				id="panel1"
 				class="split-panel md-content prose prose-lg dark:prose-invert"
@@ -124,6 +137,15 @@ const parsedRefPaliOnly = refPaliOnlyContent
 		border-top: 1px solid rgba(156, 163, 175, 0.2);
 	}
 
+	/* Subset URLs with no matched section: always show interleaved fallback. */
+	.subset-fallback {
+		opacity: 1;
+	}
+
+	:global(html.split.pali-on) .subset-fallback {
+		display: block !important;
+	}
+
 	.split-wrapper {
 		display: none; /* hidden by default */
 		grid-template-columns: 1fr 1fr;
@@ -139,8 +161,8 @@ const parsedRefPaliOnly = refPaliOnlyContent
 		display: grid;
 	}
 
-	/* Hide interleaved when split + pali-on */
-	:global(html.split.pali-on) .interleaved-article {
+	/* Hide interleaved when split + pali-on (except subset fallback notices) */
+	:global(html.split.pali-on) .interleaved-article:not(.subset-fallback) {
 		display: none;
 	}
 

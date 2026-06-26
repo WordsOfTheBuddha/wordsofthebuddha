@@ -9,6 +9,7 @@ import {
 	compareHierarchicalNumber,
 	constructHierarchicalEnd,
 	isValidParagraphRange,
+	isViewFullTextFallbackOnly,
 	debug,
 } from "../utils/contentParser";
 import { routes } from "../utils/routes";
@@ -115,35 +116,6 @@ const layout: "split" | "interleaved" = "interleaved";
 	let baseDiscourseId = id;
 	let discourseRange: { start: string; end: string } | null = null;
 
-	// Helper function to check if a range contains another range
-	function rangeContainsRange(
-		parentRange: string,
-		targetRange: string
-	): boolean {
-		const [parentStart, parentEnd] = parentRange.split("-");
-		const [targetStart, targetEnd] = targetRange.split("-");
-
-		// Debug logging in development only
-		debug(
-			`Checking if parent range ${parentRange} contains target range ${targetRange}`
-		);
-		debug(
-			`Parent: ${parentStart} to ${parentEnd}, Target: ${targetStart} to ${targetEnd}`
-		);
-
-		// Use hierarchical comparison instead of parseFloat
-		const targetStartInRange =
-			compareHierarchicalNumber(targetStart, parentStart) >= 0;
-		const targetEndInRange =
-			compareHierarchicalNumber(targetEnd, parentEnd) <= 0;
-
-		debug(
-			`targetStartInRange: ${targetStartInRange}, targetEndInRange: ${targetEndInRange}`
-		);
-
-		return targetStartInRange && targetEndInRange;
-	}
-
 	if (currentIndex === -1) {
 		// Parse the ID to find potential parent route OR paragraph request
 		// First, try to parse the full ID more carefully
@@ -221,25 +193,35 @@ const layout: "split" | "interleaved" = "interleaved";
 						`Found range in numericPart: ${startStr} to ${endStr}`
 					);
 
-					// Find a route that contains this range
+					const constructedTargetEnd = constructHierarchicalEnd(
+						startStr,
+						endStr,
+					);
+
+					// Find a route whose hierarchical range contains the target range
 					const parentRoute = routes.find((route) => {
 						if (!route.startsWith(prefix)) return false;
 
 						const rangeMatch = route.match(
-							/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/
+							/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/,
 						);
 
 						if (!rangeMatch) return false;
 
-						// Check if the route's range contains our target range
-						const routeRangeStr = rangeMatch[0];
-						const targetRangeStr = `${startStr}-${endStr}`;
-						const contains = rangeContainsRange(
-							routeRangeStr,
-							targetRangeStr
+						const [, rangeStart, rangeEnd] = rangeMatch;
+						const properRangeEnd = constructHierarchicalEnd(
+							rangeStart,
+							rangeEnd,
 						);
 
-						return contains;
+						return (
+							compareHierarchicalNumber(startStr, rangeStart) >=
+								0 &&
+							compareHierarchicalNumber(
+								constructedTargetEnd,
+								properRangeEnd,
+							) <= 0
+						);
 					});
 
 					if (parentRoute) {
@@ -251,11 +233,9 @@ const layout: "split" | "interleaved" = "interleaved";
 						);
 						id = parentRoute;
 						fullRef = transformId(parentRoute);
-						// Set up discourse range for content parsing
-						// Construct the proper end value with full hierarchical structure
 						const constructedEnd = constructHierarchicalEnd(
 							startStr,
-							endStr
+							endStr,
 						);
 						discourseRange = {
 							start: startStr,
@@ -378,7 +358,8 @@ const layout: "split" | "interleaved" = "interleaved";
 		!paragraphRequest && !discourseRange ? sectionNumber : undefined,
 		fullRef,
 		paragraphRequest,
-		discourseRange
+		discourseRange,
+		originalId || id,
 	);
 
 	// Generate both interleaved and split variants; client toggles via html classes
@@ -496,6 +477,8 @@ const layout: "split" | "interleaved" = "interleaved";
 	);
 	const contentImage = contentImages.length > 0 ? contentImages : null;
 
+	const subsetFallback = isViewFullTextFallbackOnly(mainContent);
+
 	suttaProps = {
 		fp,
 		title: contentItem.data.title,
@@ -506,12 +489,12 @@ const layout: "split" | "interleaved" = "interleaved";
 		prev,
 		next,
 		id,
-		showReadLater: true,
-		showSave: true,
-		showRead: true,
+		showReadLater: !subsetFallback,
+		showSave: !subsetFallback,
+		showRead: !subsetFallback,
 		lastUpdated,
 		showAuth: true,
-		showPali: true,
+		showPali: !subsetFallback,
 		paragraphRequest,
 		discourseRange,
 		commentary: contentItem.data.commentary,

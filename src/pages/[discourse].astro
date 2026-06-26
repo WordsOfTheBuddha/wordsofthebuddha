@@ -1,6 +1,6 @@
 ---
 // Prerendered canonical discourse pages for offline/PWA and fast static delivery.
-// Native English translations only; reference fallbacks are SSR via middleware → /_discourse-ssr/:id.
+// Native English translations only; reference fallbacks are SSR via middleware → /discourse-ssr/:id.
 export const prerender = true;
 import { getEnglishEntry, getPaliEntry } from "../utils/getContentEntry";
 import Layout from "../layouts/Layout.astro";
