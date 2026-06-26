@@ -1,0 +1,31 @@
+---
+// SSR partial discourse routes (rewritten from /:slug by middleware).
+// Bypasses prerendered [discourse].astro, which wins route priority in production.
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+import MDContent from "../../components/MDContent.astro";
+import { resolveCatchAllDiscoursePage } from "../../utils/catchAllDiscoursePage";
+
+const { id: originalId } = Astro.params;
+const result = await resolveCatchAllDiscoursePage(originalId, Astro.redirect);
+if (result instanceof Response) return result;
+
+const {
+	suttaProps,
+	mainContent,
+	splitEnglish,
+	splitPali,
+	refPaliOnlyContent,
+	referenceFallbackPage,
+} = result;
+---
+
+<Layout {...suttaProps}>
+	<MDContent
+		content={mainContent}
+		splitEnglish={splitEnglish}
+		splitPali={splitPali}
+		refPaliOnlyContent={refPaliOnlyContent}
+		referenceFallback={referenceFallbackPage}
+	/>
+</Layout>

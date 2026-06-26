@@ -1,10 +1,10 @@
 ---
 title: Accharāsaṅghāta vagga - The Chapter on a Finger Snap
-description: The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, heedfulness, and laziness.
-fetter: ignorance
+description: The Buddha explains the importance of developing a radiant mind, a mind of loving-kindness and the consequences of negligence, diligence, and laziness.
 qualities: learned, loving-kindness, collectedness, wholesome, unwholesome, negligence, diligence, laziness
-tags: mind, radiant, development, loving-kindness, heedfulness, negligence, laziness, wholesome, unwholesome, an, an1
+theme: wisdom, cultivating discernment
 slug: an1.51-60
+priority: 1.1
 ---
 
 #### 1.51

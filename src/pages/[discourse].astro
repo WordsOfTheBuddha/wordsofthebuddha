@@ -6,9 +6,13 @@ import { getEnglishEntry, getPaliEntry } from "../utils/getContentEntry";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
 import { routes } from "../utils/routes";
+import { referenceOnlyRouteSet } from "../utils/referenceOnlyRoutes";
 import { parseContent, createCombinedMarkdown } from "../utils/contentParser";
 import { getLastModified } from "../utils/getLastModified";
 import { findContentImages } from "../utils/contentImage";
+
+/** Subset/paragraph slugs like sn49.1 (mirrors src/middleware.ts). */
+const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 
 export async function getStaticPaths() {
 	return routes.map((discourse) => ({ params: { discourse } }));
@@ -22,6 +26,13 @@ if (!id) {
 
 const contentItem = await getEnglishEntry(id);
 if (!contentItem) {
+	// Production: prerendered [discourse] outranks SSR catch-all; rewrite when middleware did not.
+	if (referenceOnlyRouteSet.has(id)) {
+		return Astro.rewrite(new URL(`/discourse-ssr/${id}`, Astro.url));
+	}
+	if (DISCOURSE_SLICE.test(id)) {
+		return Astro.rewrite(new URL(`/discourse-dynamic/${id}`, Astro.url));
+	}
 	return new Response(null, { status: 404 });
 }
 
