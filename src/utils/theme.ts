@@ -66,6 +66,10 @@ export function handleNavigation(event: MouseEvent) {
 			url.searchParams.set("pli", "true");
 		}
 
+		if (localStorage.getItem("refMode") === "true") {
+			url.searchParams.set("ref", "true");
+		}
+
 		window.location.href = url.toString();
 	}
 }

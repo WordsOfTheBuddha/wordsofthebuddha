@@ -10,6 +10,7 @@ interface Props {
 	clamp?: number;
 	count?: number;
 	titleTag?: string;
+	variant?: "default" | "reference";
 }
 
 export const formatDate = (date: string | Date) => {
@@ -29,18 +30,33 @@ const {
 	clamp = 3,
 	count = 0,
 	titleTag,
+	variant = "default",
 } = Astro.props;
 
 const hasAudio = audioSlugs.has(id);
+const isReference = variant === "reference";
+const cardClamp = isReference ? 2 : clamp;
+const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 ---
 
 <div
-	class="post-item relative flex flex-col w-full p-5 mt-6 rounded-2xl border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] transition-shadow duration-200 shadow-sm hover:shadow-md"
+	class:list={[
+		"post-item relative flex flex-col w-full rounded-2xl border text-[var(--surface-ink)] transition-shadow duration-200",
+		cardPadding,
+		isReference
+			? "post-item--reference not-prose border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm"
+			: "border-[color:var(--surface-border)] bg-[var(--surface-elevated)] shadow-sm hover:shadow-md",
+	]}
 >
 	<div class="flex items-start justify-between">
 		<div class="flex items-start flex-grow">
 			<div class="min-w-0 pr-4">
-				<h2 class="text-base sm:text-lg font-semibold text-text leading-snug">
+				<h2
+					class:list={[
+						"text-base sm:text-lg font-semibold text-text leading-snug",
+						isReference && "my-0",
+					]}
+				>
 					<a
 						href={`/${id}`}
 						class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal"
@@ -51,7 +67,7 @@ const hasAudio = audioSlugs.has(id);
 						></a
 					>
 					{
-						titleTag && (
+						!isReference && titleTag && (
 							<span class="ml-1 inline-flex px-2 py-0.5 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap align-middle">
 								{titleTag}
 							</span>
@@ -96,7 +112,7 @@ const hasAudio = audioSlugs.has(id);
 		</div>
 		{
 			count > 0 && (
-				<div class="shrink-0 self-start">
+				<div class="shrink-0 self-start text-right">
 					<span class="px-2 py-0.5 rounded-md text-xs font-medium text-white bg-primary shadow-sm">
 						{count}
 					</span>
@@ -105,7 +121,12 @@ const hasAudio = audioSlugs.has(id);
 		}
 	</div>
 	<p
-		class=`mt-2 text-text line-clamp-${clamp+1} md:line-clamp-${clamp} text-sm sm:text-base`
+		class:list={[
+			"mt-2 text-text text-sm sm:text-base",
+			isReference
+				? "line-clamp-3 md:line-clamp-2"
+				: `line-clamp-${clamp + 1} md:line-clamp-${clamp}`,
+		]}
 		set:html={description?.replace(
 			/\[([^\]]+)\]\(([^)]+)\)/g,
 			'<a href="$2" class="inline-link">$1</a>'
@@ -121,20 +142,24 @@ const hasAudio = audioSlugs.has(id);
 </div>
 
 <script>
+	import { resolveRefMode } from "../utils/refModeClient";
+
 	function updatePostLinks() {
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
+		const refMode = resolveRefMode();
 		const links = document.querySelectorAll("a.post-link");
 
 		links.forEach((link) => {
 			const baseHref = link.getAttribute("data-base-href");
+			if (!baseHref) return;
 			const params = new URLSearchParams();
 			if (paliMode) params.set("pli", "true");
 			if (layout === "split") params.set("layout", layout);
-			if (params.toString()) {
-				(link as HTMLAnchorElement).href =
-					`${baseHref}?${params.toString()}`;
-			}
+			if (refMode) params.set("ref", "true");
+			(link as HTMLAnchorElement).href = params.toString()
+				? `${baseHref}?${params.toString()}`
+				: baseHref;
 		});
 	}
 
@@ -192,6 +217,13 @@ const hasAudio = audioSlugs.has(id);
 			transparent
 		);
 		color: var(--surface-ink);
+	}
+	.line-clamp-3 {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.line-clamp-4 {
 		display: -webkit-box;

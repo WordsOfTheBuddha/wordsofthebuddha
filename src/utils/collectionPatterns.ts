@@ -1,3 +1,37 @@
+/** True when a discourse slug belongs to a collection index slug (e.g. an4.10 → an4). */
+export function slugMatchesCollectionPattern(
+	slug: string,
+	collection: string,
+): boolean {
+	const rangeMatch = collection.match(/^([a-z]+)(\d+)-(\d+)$/);
+	if (rangeMatch) {
+		const [, prefix, startStr, endStr] = rangeMatch;
+		const start = Number(startStr);
+		const end = Number(endStr);
+		const slugMatch = slug.match(/^([a-z]+)(\d+)(?:\.|$)/);
+		if (!slugMatch) return false;
+		const [, slugPrefix, slugNumStr] = slugMatch;
+		const slugNum = Number(slugNumStr);
+		if (slugPrefix !== prefix || slugNum < start || slugNum > end) {
+			return false;
+		}
+		if (prefix === "sn") {
+			return slug.includes(".");
+		}
+		return !slug.includes(".");
+	}
+
+	if (collection === "sn") {
+		return slug.startsWith("sn") && !slug.startsWith("snp");
+	}
+
+	if (/^[a-z]+$/.test(collection)) {
+		return slug.startsWith(collection);
+	}
+
+	return slug.startsWith(`${collection}.`) || slug === collection;
+}
+
 export function createSearchPattern(collection: string): string | null {
 	// Check if it's a range pattern (e.g., mn101-152 or sn1-11)
 	const rangeMatch = collection.match(/^([a-z]+)(\d+)-(\d+)$/);

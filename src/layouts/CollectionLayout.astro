@@ -14,6 +14,8 @@ import {
 	collectionExportTextFileCount,
 } from "../utils/collectionPdfExportScope";
 import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
+import collectionReferenceIndex from "../data/collectionReferenceIndex";
+import { slugMatchesCollectionPattern } from "../utils/collectionPatterns";
 
 interface Props {
 	title: string;
@@ -54,9 +56,27 @@ const pdfExportSelectionTree = collectionSlug
 	: null;
 
 const hasChildren = children && Object.keys(children).length > 0;
-// Build-time default; client JS will honor ?view=…
-const defaultShowCollections =
-	hasChildren && Astro.url.searchParams.get("view") !== "discourses";
+const viewParam = Astro.url.searchParams.get("view");
+// Build-time default; client JS will honor ?view=… and ?ref
+const defaultShowCollections = hasChildren && viewParam !== "discourses";
+
+const enSlugsOnPage = new Set(pagePosts.map((post) => post.slug));
+const referencePostsForCollection = collectionSlug
+	? collectionReferenceIndex.filter(
+			(entry) =>
+				slugMatchesCollectionPattern(entry.slug, collectionSlug) &&
+				!enSlugsOnPage.has(entry.slug),
+		)
+	: [];
+const hasReferenceOnlyDiscourses = referencePostsForCollection.length > 0;
+const referencePostsData = referencePostsForCollection.map(
+	({ slug, title, description }) => ({
+		slug,
+		title,
+		description,
+	}),
+);
+const referencePostsJson = JSON.stringify(referencePostsData);
 
 // Dev-time debug: log render context (collection view vs discourses view)
 if (import.meta.env?.DEV) {
@@ -68,16 +88,49 @@ if (import.meta.env?.DEV) {
 		childCollections: hasChildren ? Object.keys(children || {}).length : 0,
 		defaultShowCollections,
 	});
+	if (collectionSlug && hasReferenceOnlyDiscourses) {
+		console.log("[CollectionLayout:ref] build", {
+			collectionSlug,
+			referenceCount: referencePostsData.length,
+			enOnPage: enSlugsOnPage.size,
+		});
+	}
 }
 
-// Function to find content count for a specific slug
-function getContentCount(slug: string): number {
+// Function to find availability counts for a specific slug
+function getAvailabilityCounts(slug: string): {
+	readableCount: number;
+	translatedCount: number;
+} {
+	const empty = { readableCount: 0, translatedCount: 0 };
 	const currentPath = Astro.url.pathname.replace(/\/$/, "");
 	const pathParts = currentPath.split("/").filter(Boolean);
 
-	if (directoryStructureWithCounts[slug]?.contentCount !== undefined) {
-		return directoryStructureWithCounts[slug].contentCount ?? 0;
-	}
+	const fromNode = (
+		node: DirectoryStructure | undefined,
+	): { readableCount: number; translatedCount: number } | null => {
+		if (!node) return null;
+		if (
+			node.readableCount !== undefined ||
+			node.translatedCount !== undefined
+		) {
+			return {
+				readableCount: node.readableCount ?? node.contentCount ?? 0,
+				translatedCount:
+					node.translatedCount ?? node.contentCount ?? 0,
+			};
+		}
+		if (node.contentCount !== undefined) {
+			return {
+				readableCount: node.contentCount,
+				translatedCount: node.contentCount,
+			};
+		}
+		return null;
+	};
+
+	const top = fromNode(directoryStructureWithCounts[slug]);
+	if (top) return top;
 
 	if (pathParts.length === 1) {
 		const parentKey = Object.keys(directoryStructureWithCounts).find(
@@ -90,12 +143,10 @@ function getContentCount(slug: string): number {
 				directoryStructureWithCounts[parentKey]?.children?.[
 					pathParts[0]
 				];
-			if (
-				currentPathCollection?.children?.[slug]?.contentCount !==
-				undefined
-			) {
-				return currentPathCollection.children[slug].contentCount ?? 0;
-			}
+			const nested = fromNode(
+				currentPathCollection?.children?.[slug],
+			);
+			if (nested) return nested;
 		}
 	}
 
@@ -104,19 +155,16 @@ function getContentCount(slug: string): number {
 		directoryStructureWithCounts[pathParts[0]]?.children
 	) {
 		const parent = directoryStructureWithCounts[pathParts[0]];
-		if (
-			parent.children &&
-			parent.children[slug]?.contentCount !== undefined
-		) {
-			return parent.children[slug].contentCount ?? 0;
-		}
+		const child = fromNode(parent.children?.[slug]);
+		if (child) return child;
 	}
 
-	if (children && (children as any)[slug]?.contentCount !== undefined) {
-		return (children as any)[slug].contentCount as number;
+	if (children) {
+		const child = fromNode((children as Record<string, DirectoryStructure>)[slug]);
+		if (child) return child;
 	}
 
-	return 0;
+	return empty;
 }
 ---
 
@@ -125,31 +173,46 @@ function getContentCount(slug: string): number {
 		{
 			hasChildren && (
 				<div class="mb-6 grid grid-cols-[minmax(0,1fr)_auto] grid-rows-[auto_auto] gap-x-2 gap-y-2 print:hidden sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:grid-rows-1 sm:items-center sm:gap-x-3 sm:gap-y-0">
-					<div class="col-start-1 row-start-1 inline-flex w-fit shrink-0 rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
-						<button
-							type="button"
-							id="view-collections"
-							class={[
-								"px-4 py-1 text-sm rounded-full transition-colors",
-								defaultShowCollections
-									? "bg-primary text-white dark:text-gray-100"
-									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-							].join(" ")}
-						>
-							Collections
-						</button>
-						<button
-							type="button"
-							id="view-discourses"
-							class={[
-								"px-4 py-1 text-sm rounded-full transition-colors",
-								!defaultShowCollections
-									? "bg-primary text-white dark:text-gray-100"
-									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-							].join(" ")}
-						>
-							Discourses
-						</button>
+					<div class="col-start-1 row-start-1 flex min-w-0 items-center gap-2">
+						<div class="inline-flex w-fit shrink-0 items-center rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
+							<button
+								type="button"
+								id="view-collections"
+								class={[
+									"px-4 py-1 text-sm rounded-full transition-colors",
+									defaultShowCollections
+										? "bg-primary text-white dark:text-gray-100"
+										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+								].join(" ")}
+							>
+								Collections
+							</button>
+							<button
+								type="button"
+								id="view-discourses"
+								class={[
+									"px-4 py-1 text-sm rounded-full transition-colors",
+									!defaultShowCollections
+										? "bg-primary text-white dark:text-gray-100"
+										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+								].join(" ")}
+							>
+								Discourses
+							</button>
+						</div>
+						{
+							hasReferenceOnlyDiscourses && (
+								<button
+									type="button"
+									id="toggle-ref"
+									aria-pressed="false"
+									class="toggle-ref shrink-0 text-xs transition-colors print:hidden text-[var(--text-muted)] hover:text-[var(--text-color)]"
+									title="Include reference-only discourses (Sujato translation)"
+								>
+									ref
+								</button>
+							)
+						}
 					</div>
 					{
 						collectionSlug && (
@@ -195,15 +258,18 @@ function getContentCount(slug: string): number {
 							string,
 							DirectoryStructure,
 						][]
-					).map(([slug, data]) => (
+					).map(([slug, data]) => {
+						const { readableCount } = getAvailabilityCounts(slug);
+						return (
 						<PostCard
 							title={data.title}
 							description={data.description || ""}
 							id={slug}
 							clamp={5}
-							count={getContentCount(slug)}
+							count={readableCount}
 						/>
-					))}
+						);
+					})}
 				</div>
 			)
 		}
@@ -211,13 +277,26 @@ function getContentCount(slug: string): number {
 		{
 			!hasChildren && (
 				<div class="mb-4 flex flex-wrap items-center justify-between gap-2 print:hidden">
-					<div class="relative min-w-0 flex-1 sm:max-w-xs">
+					<div class="relative flex min-w-0 flex-1 items-center gap-2 sm:max-w-xs">
 						<input
 							type="text"
 							id="client-filter"
 							class="w-full min-w-0 sm:w-48 px-2 py-1 text-sm bg-transparent border-b border-[color:rgba(44,44,44,0.15)] dark:border-[color:rgba(231,220,196,0.25)] focus:outline-none focus:border-[var(--primary-color)]"
 							placeholder="Filter discourses..."
 						/>
+						{
+							hasReferenceOnlyDiscourses && (
+								<button
+									type="button"
+									id="toggle-ref"
+									aria-pressed="false"
+									class="toggle-ref shrink-0 text-xs transition-colors text-[var(--text-muted)] hover:text-[var(--text-color)]"
+									title="Include reference-only discourses (Sujato translation)"
+								>
+									ref
+								</button>
+							)
+						}
 					</div>
 					{
 						collectionSlug && (
@@ -238,6 +317,7 @@ function getContentCount(slug: string): number {
 				"posts-grid",
 				hasChildren && defaultShowCollections ? "hidden" : "",
 			].join(" ")}
+			data-collection-slug={collectionSlug ?? ""}
 		>
 			{
 				pagePosts.map((post) => (
@@ -249,7 +329,18 @@ function getContentCount(slug: string): number {
 					/>
 				))
 			}
+			<div id="reference-cards-mount" />
 		</div>
+
+		{
+			hasReferenceOnlyDiscourses && (
+				<script
+					id="reference-posts-data"
+					type="application/json"
+					set:html={referencePostsJson}
+				/>
+			)
+		}
 
 		{collectionSlug && <CollectionNavigation collection={collectionSlug} />}
 	</main>
@@ -273,34 +364,255 @@ function getContentCount(slug: string): number {
 	}
 
 	<ScrollToTop />
-</Layout>
 
-<style>
-	.bg-primary {
-		background-color: var(--primary-color);
-	}
-	.hidden {
-		display: none;
-	}
-	.active-tab {
-		background-color: var(--primary-color);
-		color: white;
-	}
-</style>
+	<style>
+		.bg-primary {
+			background-color: var(--primary-color);
+		}
+		.hidden {
+			display: none;
+		}
+		.active-tab {
+			background-color: var(--primary-color);
+			color: white;
+		}
+	</style>
 
-<script>
-	const params = new URLSearchParams(window.location.search);
-	const view = params.get("view");
-	const hasChildren = !!document.getElementById("collections-grid");
-	const collectionsGrid = document.getElementById("collections-grid");
-	const discoursesGrid = document.getElementById("discourses-grid");
-	const filterWrap = document.getElementById("filter-wrap");
-	const btnCollections = document.getElementById("view-collections");
-	const btnDiscourses = document.getElementById("view-discourses");
+	<script>
+	import {
+		deleteRefParam,
+		initRefModeFromUrl,
+		resolveRefMode,
+		setRefParam,
+		setStoredRefMode,
+	} from "../utils/refModeClient";
 
-	function setView(mode: string) {
+	const isDev = import.meta.env.DEV;
+
+	function debugLog(...args) {
+		if (isDev) console.log("[CollectionLayout:ref]", ...args);
+	}
+
+	function getCollectionSlug() {
+		return (
+			document
+				.getElementById("discourses-grid")
+				?.getAttribute("data-collection-slug") || ""
+		);
+	}
+
+	function discourseLinkParams(refOn) {
+		const params = new URLSearchParams();
+		if (refOn) params.set("ref", "true");
+		const paliMode = localStorage.getItem("paliMode") === "true";
+		const layout = localStorage.getItem("layout") || "interleaved";
+		if (paliMode) params.set("pli", "true");
+		if (layout === "split") params.set("layout", layout);
+		return params;
+	}
+
+	function discourseLinkHref(slug, refOn = true) {
+		const base = `/${slug}`;
+		const params = discourseLinkParams(refOn);
+		const qs = params.toString();
+		return qs ? `${base}?${qs}` : base;
+	}
+
+	function updateDiscoursePostLinks() {
+		const refOn = resolveRefMode();
+		const params = discourseLinkParams(refOn);
+		const qs = params.toString();
+		discoursesGrid?.querySelectorAll("a.post-link").forEach((link) => {
+			const baseHref = link.getAttribute("data-base-href");
+			if (!baseHref) return;
+			link.href = qs ? `${baseHref}?${qs}` : baseHref;
+		});
+	}
+
+	function escapeHtml(text) {
+		return text
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;");
+	}
+
+	function slugFromPostItem(post) {
+		const href =
+			post.querySelector("a.post-link")?.getAttribute("data-base-href") ||
+			"";
+		return href.replace(/^\//, "");
+	}
+
+	function compareSlugs(a, b) {
+		return a.localeCompare(b, undefined, {
+			numeric: true,
+			sensitivity: "base",
+		});
+	}
+
+	function getReferencePostsData() {
+		const el = document.getElementById("reference-posts-data");
+		if (!el?.textContent?.trim()) {
+			debugLog("reference-posts-data element missing or empty");
+			return [];
+		}
+		try {
+			const data = JSON.parse(el.textContent);
+			debugLog("parsed referencePostsData", { count: data.length });
+			return data;
+		} catch (err) {
+			console.error("[CollectionLayout:ref] JSON parse failed", err);
+			return [];
+		}
+	}
+
+	function transformId(id) {
+		if (typeof id !== "string") return "";
+		id = id.split("#")[0];
+		const rangePattern = /^([a-zA-Z]+)(\d+)-(\d+)$/;
+		const rangeMatch = id.match(rangePattern);
+		if (rangeMatch) {
+			const [, chars, start, end] = rangeMatch;
+			return `${chars.toUpperCase()} ${start}–${end}`;
+		}
+		const transformed = id.replace(
+			/([a-zA-Z]+)(\d+)/,
+			(_, chars, digits) => `${chars.toUpperCase()} ${digits}`,
+		);
+		if (transformed === id) {
+			const decoded = decodeURIComponent(id);
+			return decoded.charAt(0).toUpperCase() + decoded.slice(1);
+		}
+		return transformed;
+	}
+
+	function renderReferenceCard(entry) {
+		const href = discourseLinkHref(entry.slug);
+		const card = document.createElement("div");
+		card.className =
+			"post-item post-item--reference not-prose relative flex flex-col w-full p-3 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
+		card.dataset.slug = entry.slug;
+		card.innerHTML = `
+			<div class="flex items-start justify-between">
+				<div class="flex items-start flex-grow">
+					<div class="min-w-0 pr-4">
+						<h2 class="my-0 text-base sm:text-lg font-semibold text-text leading-snug">
+							<a href="${escapeHtml(href)}" class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal" data-base-href="/${escapeHtml(entry.slug)}">
+								${escapeHtml(transformId(entry.slug))}&nbsp;<span style="color:var(--text-color)">${escapeHtml(entry.title)}</span>
+							</a>
+						</h2>
+					</div>
+				</div>
+			</div>
+			<p class="mt-2 text-text line-clamp-3 md:line-clamp-2 text-sm sm:text-base">${escapeHtml(entry.description || "")}</p>
+		`;
+		return card;
+	}
+
+	function sortDiscourseGrid(grid) {
+		const mount = document.getElementById("reference-cards-mount");
+		const items = [...grid.querySelectorAll(":scope > .post-item")];
+		items.sort((a, b) =>
+			compareSlugs(slugFromPostItem(a), slugFromPostItem(b)),
+		);
+		for (const item of items) {
+			grid.insertBefore(item, mount);
+		}
+		debugLog("sorted discourse grid", { total: items.length });
+	}
+
+	function loadReferenceCardsIfNeeded() {
+		const refOn = resolveRefMode();
+		const collectionSlug = getCollectionSlug();
+		debugLog("loadReferenceCardsIfNeeded", {
+			refOn,
+			collectionSlug,
+			search: window.location.search,
+		});
+
+		if (!refOn || !collectionSlug) return;
+
+		const grid = document.getElementById("discourses-grid");
+		const mount = document.getElementById("reference-cards-mount");
+		if (!grid || !mount) {
+			debugLog("missing grid or mount", { grid: !!grid, mount: !!mount });
+			return;
+		}
+
+		const existingSlugs = new Set(
+			[...grid.querySelectorAll("a.post-link")].map(
+				(a) => a.getAttribute("data-base-href")?.replace(/^\//, "") || "",
+			),
+		);
+		debugLog("existing EN slugs on page", existingSlugs.size);
+
+		const referencePostsData = getReferencePostsData();
+		const refs = referencePostsData.filter(
+			(entry) => !existingSlugs.has(entry.slug),
+		);
+		debugLog("refs to append", {
+			total: referencePostsData.length,
+			afterDedup: refs.length,
+			sample: refs.slice(0, 3).map((r) => r.slug),
+		});
+
+		// Remove prior reference cards (re-toggle safe)
+		grid.querySelectorAll(".post-item--reference").forEach((el) => el.remove());
+
+		if (!refs.length) {
+			debugLog("no reference cards to append");
+			return;
+		}
+
+		const fragment = document.createDocumentFragment();
+		for (const entry of refs) {
+			fragment.appendChild(renderReferenceCard(entry));
+		}
+		grid.insertBefore(fragment, mount);
+		sortDiscourseGrid(grid);
+		debugLog("appended reference cards", {
+			count: refs.length,
+			postItems: grid.querySelectorAll(".post-item").length,
+		});
+	}
+
+	function removeReferenceCards() {
+		const grid = document.getElementById("discourses-grid");
+		grid
+			?.querySelectorAll(".post-item--reference")
+			.forEach((el) => el.remove());
+		debugLog("removed reference cards");
+	}
+
+	function syncRefToggleState(active) {
+		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
+			toggleRef.classList.toggle("font-medium", active);
+			toggleRef.classList.toggle("text-[var(--link-color)]", active);
+			toggleRef.classList.toggle("underline", active);
+			toggleRef.classList.toggle("underline-offset-2", active);
+			toggleRef.classList.toggle("text-[var(--text-muted)]", !active);
+			toggleRef.setAttribute("aria-pressed", active ? "true" : "false");
+		}
+	}
+
+	let collectionsGrid;
+	let discoursesGrid;
+	let filterWrap;
+	let btnCollections;
+	let btnDiscourses;
+	let hasChildren;
+
+	function setTabActive(btn, active) {
+		btn.classList.toggle("bg-primary", active);
+		btn.classList.toggle("text-white", active);
+		btn.classList.toggle("dark:text-gray-100", active);
+		btn.classList.toggle("text-[var(--text-muted)]", !active);
+		btn.classList.toggle("hover:text-[var(--text-color)]", !active);
+	}
+
+	function setView(mode) {
 		const showCollections = hasChildren && mode !== "discourses";
-		// Batch DOM changes to next frame to reduce flicker
 		requestAnimationFrame(() => {
 			if (collectionsGrid)
 				collectionsGrid.classList.toggle("hidden", !showCollections);
@@ -309,40 +621,14 @@ function getContentCount(slug: string): number {
 			if (filterWrap)
 				filterWrap.classList.toggle("hidden", showCollections);
 			if (btnCollections && btnDiscourses) {
-				btnCollections.classList.toggle("bg-primary", showCollections);
-				btnCollections.classList.toggle("text-white", showCollections);
-				btnDiscourses.classList.toggle("bg-primary", !showCollections);
-				btnDiscourses.classList.toggle("text-white", !showCollections);
+				setTabActive(btnCollections, showCollections);
+				setTabActive(btnDiscourses, !showCollections);
 			}
 		});
 	}
 
-	// Initial
-	if (view) setView(view);
-
-	// Enhance tabs to toggle without full reload
-	btnCollections?.addEventListener("click", () => {
-		setView("collections");
-		const url = new URL(window.location.href);
-		url.searchParams.set("view", "collections");
-		// Defer URL update slightly to avoid layout paint race
-		setTimeout(() => window.history.replaceState({}, "", url), 0);
-	});
-	btnDiscourses?.addEventListener("click", () => {
-		setView("discourses");
-		const url = new URL(window.location.href);
-		url.searchParams.set("view", "discourses");
-		setTimeout(() => window.history.replaceState({}, "", url), 0);
-	});
-
-	// Client-side filter for discourses list
-	const input = document.getElementById("client-filter") as HTMLInputElement;
-	const posts = discoursesGrid?.querySelectorAll(".post-item");
-	input?.addEventListener("input", (e) => {
-		const filter = (e.target as HTMLInputElement).value
-			.toLowerCase()
-			.normalize("NFD")
-			.replace(/[\u0300-\u036f]/g, "");
+	function applyFilter(filter) {
+		const posts = discoursesGrid?.querySelectorAll(".post-item");
 		posts?.forEach((post) => {
 			const aTag = post.querySelector("a");
 			const hrefValue = aTag?.getAttribute("href")?.toLowerCase() || "";
@@ -357,5 +643,88 @@ function getContentCount(slug: string): number {
 				!!filter && !combinedContent.includes(filter),
 			);
 		});
-	});
-</script>
+	}
+
+	function initCollectionLayout() {
+		const params = new URLSearchParams(window.location.search);
+		const view = params.get("view");
+		const showRef = initRefModeFromUrl();
+		hasChildren = !!document.getElementById("collections-grid");
+		collectionsGrid = document.getElementById("collections-grid");
+		discoursesGrid = document.getElementById("discourses-grid");
+		filterWrap = document.getElementById("filter-wrap");
+		btnCollections = document.getElementById("view-collections");
+		btnDiscourses = document.getElementById("view-discourses");
+		const collectionSlug = getCollectionSlug();
+
+		debugLog("init", {
+			showRef,
+			view,
+			hasChildren,
+			search: window.location.search,
+			collectionSlug,
+		});
+
+		if (view) {
+			setView(view);
+		}
+		syncRefToggleState(showRef);
+		loadReferenceCardsIfNeeded();
+		updateDiscoursePostLinks();
+
+		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
+			toggleRef.addEventListener("click", (e) => {
+				e.preventDefault();
+				const url = new URL(window.location.href);
+				const wasOn = resolveRefMode(url.searchParams);
+				debugLog("toggle clicked", { wasOn });
+
+				if (wasOn) {
+					deleteRefParam(url);
+					setStoredRefMode(false);
+					syncRefToggleState(false);
+					removeReferenceCards();
+					window.history.replaceState({}, "", url);
+					updateDiscoursePostLinks();
+					return;
+				}
+
+				setRefParam(url);
+				setStoredRefMode(true);
+				syncRefToggleState(true);
+				window.history.replaceState({}, "", url);
+				loadReferenceCardsIfNeeded();
+				updateDiscoursePostLinks();
+			});
+		}
+
+		btnCollections?.addEventListener("click", () => {
+			setView("collections");
+			const url = new URL(window.location.href);
+			url.searchParams.set("view", "collections");
+			setTimeout(() => window.history.replaceState({}, "", url), 0);
+		});
+		btnDiscourses?.addEventListener("click", () => {
+			setView("discourses");
+			const url = new URL(window.location.href);
+			url.searchParams.set("view", "discourses");
+			setTimeout(() => window.history.replaceState({}, "", url), 0);
+		});
+
+		const input = document.getElementById("client-filter");
+		input?.addEventListener("input", (e) => {
+			const filter = e.target.value
+				.toLowerCase()
+				.normalize("NFD")
+				.replace(/[\u0300-\u036f]/g, "");
+			applyFilter(filter);
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initCollectionLayout);
+	} else {
+		initCollectionLayout();
+	}
+	</script>
+</Layout>

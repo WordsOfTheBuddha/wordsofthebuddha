@@ -612,6 +612,7 @@ if (!SEOTitle) {
 			});
 		}
 
+		import { initRefModeFromUrl } from "../utils/refModeClient";
 		import {
 			handleNavigation,
 			synchronizePreferences,
@@ -620,6 +621,7 @@ if (!SEOTitle) {
 
 		// Load preferences once when the page loads
 		document.addEventListener("DOMContentLoaded", async () => {
+			initRefModeFromUrl();
 			const urlParams = new URLSearchParams(window.location.search);
 			const pliParam = urlParams.get("pli");
 			const resolvedShowPali =
