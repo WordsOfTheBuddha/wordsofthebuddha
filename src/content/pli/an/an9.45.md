@@ -1,9 +1,9 @@
 ---
 slug: an9.45
 source: suttacentral/bilara-data
+title: Ubhatobhāgavimuttasutta
 edition: ms
 granularity: paragraph
-title: Ubhatobhāgavimuttasutta
 ---
 
 “‘Ubhatobhāgavimutto, ubhatobhāgavimutto’ti, āvuso, vuccati. Kittāvatā nu kho, āvuso, ubhatobhāgavimutto vutto bhagavatā”ti?

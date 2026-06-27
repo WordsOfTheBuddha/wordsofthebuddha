@@ -1,9 +1,9 @@
 ---
 slug: an4.91
 source: suttacentral/bilara-data
+title: Asurasutta
 edition: ms
 granularity: paragraph
-title: Asurasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

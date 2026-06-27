@@ -1,9 +1,9 @@
 ---
 slug: an9.66
 source: suttacentral/bilara-data
+title: Upādānakkhandhasutta
 edition: ms
 granularity: paragraph
-title: Upādānakkhandhasutta
 ---
 
 “Pañcime, bhikkhave, upādānakkhandhā. Katame pañca? Rūpupādānakkhandho, vedanupādānakkhandho, saññupādānakkhandho, saṅkhārupādānakkhandho, viññāṇupādānakkhandho— ime kho, bhikkhave, pañcupādānakkhandhā.

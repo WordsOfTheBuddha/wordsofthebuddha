@@ -1,9 +1,9 @@
 ---
 slug: an5.115
 source: suttacentral/bilara-data
+title: Maccharinīsutta
 edition: ms
 granularity: paragraph
-title: Maccharinīsutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgatā bhikkhunī yathābhataṁ nikkhittā evaṁ niraye. Katamehi pañcahi? Āvāsamaccharinī hoti, kulamaccharinī hoti, lābhamaccharinī hoti, vaṇṇamaccharinī hoti, dhammamaccharinī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgatā bhikkhunī yathābhataṁ nikkhittā evaṁ niraye.

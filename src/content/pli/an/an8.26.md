@@ -1,9 +1,9 @@
 ---
 slug: an8.26
 source: suttacentral/bilara-data
+title: Jīvakasutta
 edition: ms
 granularity: paragraph
-title: Jīvakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati jīvakambavane. Atha kho jīvako komārabhacco yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho jīvako komārabhacco bhagavantaṁ etadavoca: “kittāvatā nu kho, bhante, upāsako hotī”ti?

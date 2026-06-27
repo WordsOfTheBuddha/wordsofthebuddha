@@ -1,9 +1,9 @@
 ---
 slug: sn1.22
 source: suttacentral/bilara-data
+title: Phusatisutta
 edition: ms
 granularity: paragraph
-title: Phusatisutta
 ---
 
 “Nāphusantaṁ phusati ca,

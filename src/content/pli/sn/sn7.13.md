@@ -1,9 +1,9 @@
 ---
 slug: sn7.13
 source: suttacentral/bilara-data
+title: Devahitasutta
 edition: ms
 granularity: paragraph
-title: Devahitasutta
 ---
 
 Sāvatthinidānaṁ.

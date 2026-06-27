@@ -1,9 +1,9 @@
 ---
 slug: an4.159
 source: suttacentral/bilara-data
+title: Bhikkhunīsutta
 edition: ms
 granularity: paragraph
-title: Bhikkhunīsutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati ghositārāme.

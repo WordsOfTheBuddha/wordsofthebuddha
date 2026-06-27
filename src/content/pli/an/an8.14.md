@@ -1,9 +1,9 @@
 ---
 slug: an8.14
 source: suttacentral/bilara-data
+title: Assakhaḷuṅkasutta
 edition: ms
 granularity: paragraph
-title: Assakhaḷuṅkasutta
 ---
 
 “Aṭṭha ca, bhikkhave, assakhaḷuṅke desessāmi aṭṭha ca assadose, aṭṭha ca purisakhaḷuṅke aṭṭha ca purisadose. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.

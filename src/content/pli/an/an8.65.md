@@ -1,9 +1,9 @@
 ---
 slug: an8.65
 source: suttacentral/bilara-data
+title: Abhibhāyatanasutta
 edition: ms
 granularity: paragraph
-title: Abhibhāyatanasutta
 ---
 
 “Aṭṭhimāni, bhikkhave, abhibhāyatanāni. Katamāni aṭṭha?

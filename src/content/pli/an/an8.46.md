@@ -1,9 +1,9 @@
 ---
 slug: an8.46
 source: suttacentral/bilara-data
+title: Anuruddhasutta
 edition: ms
 granularity: paragraph
-title: Anuruddhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
@@ -52,28 +52,24 @@ Cāgavatī kho pana hoti. Vigatamalamaccherena cetasā agāraṁ ajjhāvasati mu
 
 Imehi kho, anuruddha, aṭṭhahi dhammehi samannāgato mātugāmo kāyassa bhedā paraṁ maraṇā manāpakāyikānaṁ devānaṁ sahabyataṁ upapajjatīti.
 
+Yo naṁ bharati sabbadā,
 niccaṁ ātāpi ussuko;
-
 Taṁ sabbakāmadaṁ posaṁ,
-
 bhattāraṁ nātimaññati.
 
+Na cāpi sotthi bhattāraṁ,
 issāvādena rosaye;
-
 Bhattu ca garuno sabbe,
-
 paṭipūjeti paṇḍitā.
 
+Uṭṭhāhikā analasā,
 saṅgahitaparijjanā;
-
 Bhattu manāpaṁ carati,
-
 sambhataṁ anurakkhati.
 
+Yā evaṁ vattati nārī,
 bhattu chandavasānugā;
-
 Manāpā nāma te devā,
-
 yattha sā upapajjatī”ti.
 
 Chaṭṭhaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an8.57
 source: suttacentral/bilara-data
+title: Paṭhamaāhuneyyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaāhuneyyasutta
 ---
 
 “Aṭṭhahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassa. Katamehi aṭṭhahi?

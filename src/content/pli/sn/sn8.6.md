@@ -1,9 +1,9 @@
 ---
 slug: sn8.6
 source: suttacentral/bilara-data
+title: Sāriputtasutta
 edition: ms
 granularity: paragraph
-title: Sāriputtasutta
 ---
 
 Ekaṁ samayaṁ āyasmā sāriputto sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

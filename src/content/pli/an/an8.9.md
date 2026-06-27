@@ -1,9 +1,9 @@
 ---
 slug: an8.9
 source: suttacentral/bilara-data
+title: Nandasutta
 edition: ms
 granularity: paragraph
-title: Nandasutta
 ---
 
 “‘kulaputto’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. ‘Balavā’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. ‘Pāsādiko’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. ‘Tibbarāgo’ti, bhikkhave, nandaṁ sammā vadamāno vadeyya. Kimaññatra, bhikkhave, nando indriyesu guttadvāro, bhojane mattaññū, jāgariyaṁ anuyutto, satisampajaññena samannāgato, yehi nando sakkoti paripuṇṇaṁ parisuddhaṁ brahmacariyaṁ carituṁ.

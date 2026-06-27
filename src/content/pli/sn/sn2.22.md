@@ -1,9 +1,9 @@
 ---
 slug: sn2.22
 source: suttacentral/bilara-data
+title: Khemasutta
 edition: ms
 granularity: paragraph
-title: Khemasutta
 ---
 
 Ekamantaṁ ṭhito kho khemo devaputto bhagavato santike imā gāthāyo abhāsi:

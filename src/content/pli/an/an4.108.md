@@ -1,9 +1,9 @@
 ---
 slug: an4.108
 source: suttacentral/bilara-data
+title: Balībaddasutta
 edition: ms
 granularity: paragraph
-title: Balībaddasutta
 ---
 
 “Cattārome, bhikkhave, balībaddā. Katame cattāro?

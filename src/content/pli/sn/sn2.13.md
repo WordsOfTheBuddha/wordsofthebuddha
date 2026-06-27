@@ -1,9 +1,9 @@
 ---
 slug: sn2.13
 source: suttacentral/bilara-data
+title: Dīghalaṭṭhisutta
 edition: ms
 granularity: paragraph
-title: Dīghalaṭṭhisutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

@@ -1,9 +1,9 @@
 ---
 slug: an5.217
 source: suttacentral/bilara-data
+title: Paṭhamaapāsādikasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaapāsādikasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā apāsādike. Katame pañca? Attāpi attānaṁ upavadati, anuvicca viññū garahanti, pāpako kittisaddo abbhuggacchati, sammūḷho kālaṁ karoti, kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjati. Ime kho, bhikkhave, pañca ādīnavā apāsādike.

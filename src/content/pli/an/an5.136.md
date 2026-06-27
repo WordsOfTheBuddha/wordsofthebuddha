@@ -1,9 +1,9 @@
 ---
 slug: an5.136
 source: suttacentral/bilara-data
+title: Dutiyapatthanāsutta
 edition: ms
 granularity: paragraph
-title: Dutiyapatthanāsutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño khattiyassa muddhāvasittassa jeṭṭho putto oparajjaṁ pattheti. Katamehi pañcahi?

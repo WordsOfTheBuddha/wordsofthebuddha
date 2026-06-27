@@ -1,9 +1,9 @@
 ---
 slug: an7.23
 source: suttacentral/bilara-data
+title: Paṭhamasattakasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasattakasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Tatra kho bhagavā bhikkhū āmantesi:

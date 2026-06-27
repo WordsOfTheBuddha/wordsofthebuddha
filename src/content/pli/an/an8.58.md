@@ -1,9 +1,9 @@
 ---
 slug: an8.58
 source: suttacentral/bilara-data
+title: Dutiyaāhuneyyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaāhuneyyasutta
 ---
 
 “Aṭṭhahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassa. Katamehi aṭṭhahi?

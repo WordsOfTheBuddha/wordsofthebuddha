@@ -1,9 +1,9 @@
 ---
 slug: an3.71
 source: suttacentral/bilara-data
+title: Channasutta
 edition: ms
 granularity: paragraph
-title: Channasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho channo paribbājako yenāyasmā ānando tenupasaṅkami; upasaṅkamitvā āyasmatā ānandena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho channo paribbājako āyasmantaṁ ānandaṁ etadavoca:

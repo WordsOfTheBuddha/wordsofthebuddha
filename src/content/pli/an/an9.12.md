@@ -1,9 +1,9 @@
 ---
 slug: an9.12
 source: suttacentral/bilara-data
+title: Saupādisesasutta
 edition: ms
 granularity: paragraph
-title: Saupādisesasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

@@ -1,9 +1,9 @@
 ---
 slug: an7.54
 source: suttacentral/bilara-data
+title: Abyākatasutta
 edition: ms
 granularity: paragraph
-title: Abyākatasutta
 ---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca:

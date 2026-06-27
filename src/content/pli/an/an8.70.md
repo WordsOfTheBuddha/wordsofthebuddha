@@ -1,9 +1,9 @@
 ---
 slug: an8.70
 source: suttacentral/bilara-data
+title: Bhūmicālasutta
 edition: ms
 granularity: paragraph
-title: Bhūmicālasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
@@ -54,10 +54,9 @@ Parinibbātu dāni, bhante, bhagavā, parinibbātu sugato. Parinibbānakālo dā
 
 Atha kho bhagavā cāpāle cetiye sato sampajāno āyusaṅkhāraṁ ossaji. Ossaṭṭhe ca bhagavatā āyusaṅkhāre mahābhūmicālo ahosi bhiṁsanako salomahaṁso, devadundubhiyo ca phaliṁsu. Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
 
+“Tulamatulañca sambhavaṁ,
 Bhavasaṅkhāramavassaji muni;
-
 Ajjhattarato samāhito,
-
 Abhindi kavacamivattasambhavan”ti.
 
 Atha kho āyasmato ānandassa etadahosi: “mahā vatāyaṁ bhūmicālo; sumahā vatāyaṁ bhūmicālo bhiṁsanako salomahaṁso, devadundubhiyo ca phaliṁsu. Ko nu kho hetu, ko paccayo mahato bhūmicālassa pātubhāvāyā”ti?
@@ -90,8 +89,7 @@ Bhūmicālavaggo dutiyo.
 
 Tassuddānaṁ
 
+Icchā alañca saṅkhittaṁ,
 gayā abhibhunā saha;
-
 Vimokkho dve ca vohārā,
-
 parisā bhūmicālenāti.

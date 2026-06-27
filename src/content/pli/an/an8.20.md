@@ -1,9 +1,9 @@
 ---
 slug: an8.20
 source: suttacentral/bilara-data
+title: Uposathasutta
 edition: ms
 granularity: paragraph
-title: Uposathasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde.
@@ -62,8 +62,7 @@ Mahāvaggo dutiyo.
 
 Tassuddānaṁ
 
+Verañjo sīho ājaññaṁ,
 khaḷuṅkena malāni ca;
-
 Dūteyyaṁ dve ca bandhanā,
-
 pahārādo uposathoti.

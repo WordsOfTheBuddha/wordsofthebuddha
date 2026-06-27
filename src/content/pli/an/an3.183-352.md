@@ -17,32 +17,26 @@ Rāgapeyyālaṁ niṭṭhitaṁ.
 
 Tassuddānaṁ
 
+Rāgaṁ dosañca mohañca,
 kodhūpanāhapañcamaṁ;
-
 Makkhapaḷāsaissā ca,
-
 maccharimāyāsāṭheyyā.
 
+Thambhasārambhamānañca,
 atimānamadassa ca;
-
 Pamādā sattarasa vuttā,
-
 rāgapeyyālanissitā.
 
+Ete opammayuttena,
 āpādena abhiññāya;
-
 Pariññāya parikkhayā,
-
 pahānakkhayabbayena;
-
 Virāganirodhacāgaṁ,
-
 paṭinissagge ime dasa.
 
+Suññato animitto ca,
 appaṇihito ca tayo;
-
 Samādhimūlakā peyyā—
-
 lesupi vavatthitā cāti.
 
 Tatiyo paṇṇāsako niṭṭhito.

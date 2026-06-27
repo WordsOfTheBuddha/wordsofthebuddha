@@ -1,9 +1,9 @@
 ---
 slug: an5.130
 source: suttacentral/bilara-data
+title: Byasanasutta
 edition: ms
 granularity: paragraph
-title: Byasanasutta
 ---
 
 “Pañcimāni, bhikkhave, byasanāni. Katamāni pañca? Ñātibyasanaṁ, bhogabyasanaṁ, rogabyasanaṁ, sīlabyasanaṁ, diṭṭhibyasanaṁ. Na, bhikkhave, sattā ñātibyasanahetu vā bhogabyasanahetu vā rogabyasanahetu vā kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjanti. Sīlabyasanahetu vā, bhikkhave, sattā diṭṭhibyasanahetu vā kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjanti. Imāni kho, bhikkhave, pañca byasanāni.
@@ -16,8 +16,7 @@ Gilānavaggo tatiyo.
 
 Tassuddānaṁ
 
+Gilāno satisūpaṭṭhi,
 Dve upaṭṭhākā duvāyusā;
-
 Vapakāsasamaṇasukhā,
-
 Parikuppaṁ byasanena cāti.

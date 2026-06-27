@@ -1,9 +1,9 @@
 ---
 slug: sn5.10
 source: suttacentral/bilara-data
+title: Vajirāsutta
 edition: ms
 granularity: paragraph
-title: Vajirāsutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an4.211
 source: suttacentral/bilara-data
+title: Parisāsutta
 edition: ms
 granularity: paragraph
-title: Parisāsutta
 ---
 
 “Cattārome, bhikkhave, parisadūsanā. Katame cattāro? Bhikkhu, bhikkhave, dussīlo pāpadhammo parisadūsano; bhikkhunī, bhikkhave, dussīlā pāpadhammā parisadūsanā; upāsako, bhikkhave, dussīlo pāpadhammo parisadūsano; upāsikā, bhikkhave, dussīlā pāpadhammā parisadūsanā. Ime kho, bhikkhave, cattāro parisadūsanā.

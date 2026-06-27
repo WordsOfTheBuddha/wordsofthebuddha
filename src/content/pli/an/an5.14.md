@@ -1,9 +1,9 @@
 ---
 slug: an5.14
 source: suttacentral/bilara-data
+title: Vitthatasutta
 edition: ms
 granularity: paragraph
-title: Vitthatasutta
 ---
 
 “Pañcimāni, bhikkhave, balāni. Katamāni pañca? Saddhābalaṁ, vīriyabalaṁ, satibalaṁ, samādhibalaṁ, paññābalaṁ.

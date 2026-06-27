@@ -1,9 +1,9 @@
 ---
 slug: an7.55
 source: suttacentral/bilara-data
+title: Purisagatisutta
 edition: ms
 granularity: paragraph
-title: Purisagatisutta
 ---
 
 “Satta ca, bhikkhave, purisagatiyo desessāmi anupādā ca parinibbānaṁ. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.

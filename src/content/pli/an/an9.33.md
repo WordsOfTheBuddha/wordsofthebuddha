@@ -1,9 +1,9 @@
 ---
 slug: an9.33
 source: suttacentral/bilara-data
+title: Anupubbavihārasamāpattisutta
 edition: ms
 granularity: paragraph
-title: Anupubbavihārasamāpattisutta
 ---
 
 “Navayimā, bhikkhave, anupubbavihārasamāpattiyo desessāmi, taṁ suṇātha …pe… katamā ca, bhikkhave, nava anupubbavihārasamāpattiyo?

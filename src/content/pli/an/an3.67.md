@@ -1,9 +1,9 @@
 ---
 slug: an3.67
 source: suttacentral/bilara-data
+title: Kathāvatthusutta
 edition: ms
 granularity: paragraph
-title: Kathāvatthusutta
 ---
 
 “Tīṇimāni, bhikkhave, kathāvatthūni. Katamāni tīṇi? Atītaṁ vā, bhikkhave, addhānaṁ ārabbha kathaṁ katheyya: ‘evaṁ ahosi atītamaddhānan’ti. Anāgataṁ vā, bhikkhave, addhānaṁ ārabbha kathaṁ katheyya: ‘evaṁ bhavissati anāgatamaddhānan’ti. Etarahi vā, bhikkhave, paccuppannaṁ addhānaṁ ārabbha kathaṁ katheyya: ‘evaṁ hoti etarahi paccuppannamaddhānan’ti.
@@ -18,50 +18,41 @@ Kathāsampayogena, bhikkhave, puggalo veditabbo yadi vā kaccho yadi vā akaccho
 
 Kathāsampayogena, bhikkhave, puggalo veditabbo yadi vā saupaniso yadi vā anupanisoti. Anohitasoto, bhikkhave, anupaniso hoti, ohitasoto saupaniso hoti. So saupaniso samāno abhijānāti ekaṁ dhammaṁ, parijānāti ekaṁ dhammaṁ, pajahati ekaṁ dhammaṁ, sacchikaroti ekaṁ dhammaṁ. So abhijānanto ekaṁ dhammaṁ, parijānanto ekaṁ dhammaṁ, pajahanto ekaṁ dhammaṁ, sacchikaronto ekaṁ dhammaṁ sammāvimuttiṁ phusati. Etadatthā, bhikkhave, kathā; etadatthā mantanā; etadatthā upanisā; etadatthaṁ sotāvadhānaṁ, yadidaṁ anupādā cittassa vimokkhoti.
 
+Ye viruddhā sallapanti,
 viniviṭṭhā samussitā;
-
 Anariyaguṇamāsajja,
-
 aññoññavivaresino.
 
+Dubbhāsitaṁ vikkhalitaṁ,
 sampamohaṁ parājayaṁ;
-
 Aññoññassābhinandanti,
-
 tadariyo kathanācare.
 
+Sace cassa kathākāmo,
 kālamaññāya paṇḍito;
-
 Dhammaṭṭhapaṭisaṁyuttā,
-
 yā ariyacaritā kathā.
 
+Taṁ kathaṁ kathaye dhīro,
 aviruddho anussito;
-
 Anunnatena manasā,
-
 apaḷāso asāhaso.
 
+Anusūyāyamāno so,
 sammadaññāya bhāsati;
-
 Subhāsitaṁ anumodeyya,
-
 dubbhaṭṭhe nāpasādaye.
 
+Upārambhaṁ na sikkheyya,
 khalitañca na gāhaye;
-
 Nābhihare nābhimadde,
-
 na vācaṁ payutaṁ bhaṇe.
 
+Aññātatthaṁ pasādatthaṁ,
 sataṁ ve hoti mantanā;
-
 Evaṁ kho ariyā mantenti,
-
 esā ariyāna mantanā;
-
 Etadaññāya medhāvī,
-
 na samusseyya mantaye”ti.
 
 Sattamaṁ.

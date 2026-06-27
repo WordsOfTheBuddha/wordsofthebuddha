@@ -1,9 +1,9 @@
 ---
 slug: an4.270
 source: suttacentral/bilara-data
+title: Samphappalāpasutta
 edition: ms
 granularity: paragraph
-title: Samphappalāpasutta
 ---
 
 …pe… Attanā ca samphappalāpī hoti, parañca samphappalāpe samādapeti, samphappalāpe ca samanuñño hoti, samphappalāpassa ca vaṇṇaṁ bhāsati—imehi …pe….

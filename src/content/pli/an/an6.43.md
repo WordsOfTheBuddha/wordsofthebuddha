@@ -1,9 +1,9 @@
 ---
 slug: an6.43
 source: suttacentral/bilara-data
+title: Nāgasutta
 edition: ms
 granularity: paragraph
-title: Nāgasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -38,100 +38,84 @@ Api ca, udāyi, yo sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā 
 
 “Acchariyaṁ, bhante, abbhutaṁ, bhante. Yāva subhāsitañcidaṁ, bhante, bhagavatā— api ca, udāyi, yo sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya āguṁ na karoti kāyena vācāya manasā, tamahaṁ ‘nāgo’ti brūmīti. Idañca panāhaṁ, bhante, bhagavatā subhāsitaṁ imāhi gāthāhi anumodāmi—
 
+Manussabhūtaṁ sambuddhaṁ,
 attadantaṁ samāhitaṁ;
-
 Iriyamānaṁ brahmapathe,
-
 cittassūpasame rataṁ.
 
+Yaṁ manussā namassanti,
 sabbadhammāna pāraguṁ;
-
 Devāpi taṁ namassanti,
-
 iti me arahato sutaṁ.
 
+Sabbasaṁyojanātītaṁ,
 vanā nibbanamāgataṁ;
-
 Kāmehi nekkhammarataṁ,
-
 muttaṁ selāva kañcanaṁ.
 
+Sabbe accarucī nāgo,
 himavāññe siluccaye;
-
 Sabbesaṁ nāganāmānaṁ,
-
 saccanāmo anuttaro.
 
+Nāgaṁ vo kittayissāmi,
 na hi āguṁ karoti so;
-
 Soraccaṁ avihiṁsā ca,
-
 pādā nāgassa te duve.
 
+Tapo ca brahmacariyaṁ,
 caraṇā nāgassa tyāpare;
-
 Saddhāhattho mahānāgo,
-
 upekkhāsetadantavā.
 
+Sati gīvā siro paññā,
 vīmaṁsā dhammacintanā;
-
 Dhammakucchisamātapo,
-
 viveko tassa vāladhi.
 
+So jhāyī assāsarato,
 ajjhattaṁ susamāhito;
-
 Gacchaṁ samāhito nāgo,
-
 ṭhito nāgo samāhito.
 
+Seyyaṁ samāhito nāgo,
 nisinnopi samāhito;
-
 Sabbattha saṁvuto nāgo,
-
 esā nāgassa sampadā.
 
+Bhuñjati anavajjāni,
 sāvajjāni na bhuñjati;
-
 Ghāsamacchādanaṁ laddhā,
-
 sannidhiṁ parivajjayaṁ.
 
+Saṁyojanaṁ aṇuṁ thūlaṁ,
 sabbaṁ chetvāna bandhanaṁ;
-
 Yena yeneva gacchati,
-
 anapekkhova gacchati.
 
+Yathāpi udake jātaṁ,
 puṇḍarīkaṁ pavaḍḍhati;
-
 Nupalippati toyena,
-
 sucigandhaṁ manoramaṁ.
 
+Tatheva loke sujāto,
 buddho loke viharati;
-
 Nupalippati lokena,
-
 toyena padumaṁ yathā.
 
+Mahāginīva jalito,
 anāhārūpasammati;
-
 Saṅkhāresūpasantesu,
-
 nibbutoti pavuccati.
 
+Atthassāyaṁ viññāpanī,
 upamā viññūhi desitā;
-
 Viññassanti mahānāgā,
-
 nāgaṁ nāgena desitaṁ.
 
+Vītarāgo vītadoso,
 Vītamoho anāsavo;
-
 Sarīraṁ vijahaṁ nāgo,
-
 Parinibbissati anāsavo”ti.
 
 Paṭhamaṁ.

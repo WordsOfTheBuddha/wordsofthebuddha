@@ -1,9 +1,9 @@
 ---
 slug: an3.12
 source: suttacentral/bilara-data
+title: Sāraṇīyasutta
 edition: ms
 granularity: paragraph
-title: Sāraṇīyasutta
 ---
 
 “Tīṇimāni, bhikkhave, rañño khattiyassa muddhāvasittassa yāvajīvaṁ sāraṇīyāni bhavanti. Katamāni tīṇi? Yasmiṁ, bhikkhave, padese rājā khattiyo muddhāvasitto jāto hoti. Idaṁ, bhikkhave, paṭhamaṁ rañño khattiyassa muddhāvasittassa yāvajīvaṁ sāraṇīyaṁ hoti.

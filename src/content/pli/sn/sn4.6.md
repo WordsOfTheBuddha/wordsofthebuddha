@@ -1,9 +1,9 @@
 ---
 slug: sn4.6
 source: suttacentral/bilara-data
+title: Sappasutta
 edition: ms
 granularity: paragraph
-title: Sappasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

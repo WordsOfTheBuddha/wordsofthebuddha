@@ -1,9 +1,9 @@
 ---
 slug: sn7.10
 source: suttacentral/bilara-data
+title: Bahudhītarasutta
 edition: ms
 granularity: paragraph
-title: Bahudhītarasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu viharati aññatarasmiṁ vanasaṇḍe.

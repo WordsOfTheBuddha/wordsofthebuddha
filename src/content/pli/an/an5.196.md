@@ -1,9 +1,9 @@
 ---
 slug: an5.196
 source: suttacentral/bilara-data
+title: Mahāsupinasutta
 edition: ms
 granularity: paragraph
-title: Mahāsupinasutta
 ---
 
 “Tathāgatassa, bhikkhave, arahato sammāsambuddhassa pubbeva sambodhā anabhisambuddhassa bodhisattasseva sato pañca mahāsupinā pāturahesuṁ. Katame pañca?

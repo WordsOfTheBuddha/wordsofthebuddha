@@ -1,9 +1,9 @@
 ---
 slug: sn4.18
 source: suttacentral/bilara-data
+title: Piṇḍasutta
 edition: ms
 granularity: paragraph
-title: Piṇḍasutta
 ---
 
 Ekaṁ samayaṁ bhagavā magadhesu viharati pañcasālāyaṁ brāhmaṇagāme.

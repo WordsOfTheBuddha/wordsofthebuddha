@@ -1,9 +1,9 @@
 ---
 slug: an4.238
 source: suttacentral/bilara-data
+title: Bojjhaṅgasutta
 edition: ms
 granularity: paragraph
-title: Bojjhaṅgasutta
 ---
 
 “Cattārimāni, bhikkhave, kammāni …pe… kaṇhaṁ kaṇhavipākaṁ …pe…

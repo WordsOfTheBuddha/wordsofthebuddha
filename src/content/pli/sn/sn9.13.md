@@ -1,9 +1,9 @@
 ---
 slug: sn9.13
 source: suttacentral/bilara-data
+title: Pākatindriyasutta
 edition: ms
 granularity: paragraph
-title: Pākatindriyasutta
 ---
 
 Ekaṁ samayaṁ sambahulā bhikkhū kosalesu viharanti aññatarasmiṁ vanasaṇḍe uddhatā unnaḷā capalā mukharā vikiṇṇavācā muṭṭhassatino asampajānā asamāhitā vibbhantacittā pākatindriyā.

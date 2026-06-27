@@ -1,9 +1,9 @@
 ---
 slug: an5.4
 source: suttacentral/bilara-data
+title: Yathābhatasutta
 edition: ms
 granularity: paragraph
-title: Yathābhatasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Idha, bhikkhave, bhikkhu assaddho hoti, ahiriko hoti, anottappī hoti, kusīto hoti, duppañño hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu yathābhataṁ nikkhitto evaṁ niraye.

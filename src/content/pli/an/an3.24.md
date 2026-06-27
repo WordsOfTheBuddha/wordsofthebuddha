@@ -1,9 +1,9 @@
 ---
 slug: an3.24
 source: suttacentral/bilara-data
+title: Bahukārasutta
 edition: ms
 granularity: paragraph
-title: Bahukārasutta
 ---
 
 “Tayome, bhikkhave, puggalā puggalassa bahukārā. Katame tayo?

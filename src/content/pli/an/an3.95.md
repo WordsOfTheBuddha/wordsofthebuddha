@@ -1,9 +1,9 @@
 ---
 slug: an3.95
 source: suttacentral/bilara-data
+title: Parisāsutta
 edition: ms
 granularity: paragraph
-title: Parisāsutta
 ---
 
 “Tisso imā, bhikkhave, parisā. Katamā tisso? Aggavatī parisā, vaggā parisā, samaggā parisā.

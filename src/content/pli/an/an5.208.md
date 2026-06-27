@@ -1,9 +1,9 @@
 ---
 slug: an5.208
 source: suttacentral/bilara-data
+title: Dantakaṭṭhasutta
 edition: ms
 granularity: paragraph
-title: Dantakaṭṭhasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā dantakaṭṭhassa akhādane. Katame pañca? Acakkhussaṁ, mukhaṁ duggandhaṁ hoti, rasaharaṇiyo na visujjhanti, pittaṁ semhaṁ bhattaṁ pariyonandhati, bhattamassa nacchādeti. Ime kho, bhikkhave, pañca ādīnavā dantakaṭṭhassa akhādane.

@@ -1,9 +1,9 @@
 ---
 slug: an5.164
 source: suttacentral/bilara-data
+title: Sājīvasutta
 edition: ms
 granularity: paragraph
-title: Sājīvasutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi …pe…

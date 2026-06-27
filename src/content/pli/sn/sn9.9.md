@@ -1,9 +1,9 @@
 ---
 slug: sn9.9
 source: suttacentral/bilara-data
+title: Vajjiputtasutta
 edition: ms
 granularity: paragraph
-title: Vajjiputtasutta
 ---
 
 Ekaṁ samayaṁ aññataro vajjiputtako bhikkhu vesāliyaṁ viharati aññatarasmiṁ vanasaṇḍe.

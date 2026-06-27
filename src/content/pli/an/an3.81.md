@@ -1,9 +1,9 @@
 ---
 slug: an3.81
 source: suttacentral/bilara-data
+title: Samaṇasutta
 edition: ms
 granularity: paragraph
-title: Samaṇasutta
 ---
 
 “Tīṇimāni, bhikkhave, samaṇassa samaṇiyāni samaṇakaraṇīyāni. Katamāni tīṇi? Adhisīlasikkhāsamādānaṁ, adhicittasikkhāsamādānaṁ, adhipaññāsikkhāsamādānaṁ— imāni kho, bhikkhave, tīṇi samaṇassa samaṇiyāni samaṇakaraṇīyāni.

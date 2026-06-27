@@ -1,9 +1,9 @@
 ---
 slug: an4.28
 source: suttacentral/bilara-data
+title: Ariyavaṁsasutta
 edition: ms
 granularity: paragraph
-title: Ariyavaṁsasutta
 ---
 
 “Cattārome, bhikkhave, ariyavaṁsā aggaññā rattaññā vaṁsaññā porāṇā asaṅkiṇṇā asaṅkiṇṇapubbā, na saṅkīyanti na saṅkīyissanti, appaṭikuṭṭhā samaṇehi brāhmaṇehi viññūhi. Katame cattāro?
@@ -20,20 +20,16 @@ Ime kho, bhikkhave, cattāro ariyavaṁsā aggaññā rattaññā vaṁsaññā 
 
 Imehi ca pana, bhikkhave, catūhi ariyavaṁsehi samannāgato bhikkhu puratthimāya cepi disāya viharati sveva aratiṁ sahati, na taṁ arati sahati; pacchimāya cepi disāya viharati sveva aratiṁ sahati, na taṁ arati sahati; uttarāya cepi disāya viharati sveva aratiṁ sahati, na taṁ arati sahati; dakkhiṇāya cepi disāya viharati sveva aratiṁ sahati, na taṁ arati sahati. Taṁ kissa hetu? Aratiratisaho hi, bhikkhave, dhīroti.
 
+Nārati sahati dhīraṁ,
 nārati dhīraṁ sahati;
-
 Dhīrova aratiṁ sahati,
-
 dhīro hi aratissaho.
 
+Sabbakammavihāyīnaṁ,
 panuṇṇaṁ ko nivāraye;
-
 Nekkhaṁ jambonadasseva,
-
 ko taṁ ninditumarahati;
-
 Devāpi naṁ pasaṁsanti,
-
 brahmunāpi pasaṁsito”ti.
 
 Aṭṭhamaṁ.

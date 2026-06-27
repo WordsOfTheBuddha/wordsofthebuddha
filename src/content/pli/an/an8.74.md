@@ -1,9 +1,9 @@
 ---
 slug: an8.74
 source: suttacentral/bilara-data
+title: Dutiyamaraṇassatisutta
 edition: ms
 granularity: paragraph
-title: Dutiyamaraṇassatisutta
 ---
 
 Ekaṁ samayaṁ bhagavā nātike viharati giñjakāvasathe. Tatra kho bhagavā bhikkhū āmantesi …pe… maraṇassati, bhikkhave, bhāvitā bahulīkatā mahapphalā hoti mahānisaṁsā amatogadhā amatapariyosānā.

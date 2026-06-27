@@ -1,9 +1,9 @@
 ---
 slug: an4.78
 source: suttacentral/bilara-data
+title: Dakkhiṇasutta
 edition: ms
 granularity: paragraph
-title: Dakkhiṇasutta
 ---
 
 “Catasso imā, bhikkhave, dakkhiṇā visuddhiyo. Katamā catasso? Atthi, bhikkhave, dakkhiṇā dāyakato visujjhati, no paṭiggāhakato; atthi, bhikkhave, dakkhiṇā paṭiggāhakato visujjhati, no dāyakato; atthi, bhikkhave, dakkhiṇā neva dāyakato visujjhati, no paṭiggāhakato; atthi, bhikkhave, dakkhiṇā dāyakato ceva visujjhati paṭiggāhakato ca.

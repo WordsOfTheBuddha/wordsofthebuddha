@@ -1,9 +1,9 @@
 ---
 slug: sn3.10
 source: suttacentral/bilara-data
+title: Bandhanasutta
 edition: ms
 granularity: paragraph
-title: Bandhanasutta
 ---
 
 Tena kho pana samayena raññā pasenadinā kosalena mahājanakāyo bandhāpito hoti, appekacce rajjūhi appekacce andūhi appekacce saṅkhalikāhi.

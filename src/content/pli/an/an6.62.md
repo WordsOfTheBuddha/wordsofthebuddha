@@ -1,9 +1,9 @@
 ---
 slug: an6.62
 source: suttacentral/bilara-data
+title: Purisindriyañāṇasutta
 edition: ms
 granularity: paragraph
-title: Purisindriyañāṇasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ yena daṇḍakappakaṁ nāma kosalānaṁ nigamo tadavasari. Atha kho bhagavā maggā okkamma aññatarasmiṁ rukkhamūle paññatte āsane nisīdi. Te ca bhikkhū daṇḍakappakaṁ pavisiṁsu āvasathaṁ pariyesituṁ.

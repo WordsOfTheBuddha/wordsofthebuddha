@@ -1,9 +1,9 @@
 ---
 slug: an5.192
 source: suttacentral/bilara-data
+title: Doṇabrāhmaṇasutta
 edition: ms
 granularity: paragraph
-title: Doṇabrāhmaṇasutta
 ---
 
 Atha kho doṇo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho doṇo brāhmaṇo bhagavantaṁ etadavoca:

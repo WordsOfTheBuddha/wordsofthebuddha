@@ -1,9 +1,9 @@
 ---
 slug: an5.232
 source: suttacentral/bilara-data
+title: Piyasutta
 edition: ms
 granularity: paragraph
-title: Piyasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu sabrahmacārīnaṁ piyo ca hoti manāpo ca garu ca bhāvanīyo ca. Katamehi pañcahi?

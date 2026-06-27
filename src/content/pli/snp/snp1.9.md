@@ -1,9 +1,9 @@
 ---
 slug: snp1.9
 source: suttacentral/bilara-data
+title: Hemavatasutta
 edition: ms
 granularity: paragraph
-title: Hemavatasutta
 ---
 
 (iti sātāgiro yakkho)

@@ -1,9 +1,9 @@
 ---
 slug: an6.41
 source: suttacentral/bilara-data
+title: Dārukkhandhasutta
 edition: ms
 granularity: paragraph
-title: Dārukkhandhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā sāriputto rājagahe viharati gijjhakūṭe pabbate.

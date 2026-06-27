@@ -1,9 +1,9 @@
 ---
 slug: an7.47
 source: suttacentral/bilara-data
+title: Dutiyaaggisutta
 edition: ms
 granularity: paragraph
-title: Dutiyaaggisutta
 ---
 
 Tena kho pana samayena uggatasarīrassa brāhmaṇassa mahāyañño upakkhaṭo hoti. Pañca usabhasatāni thūṇūpanītāni honti yaññatthāya, pañca vacchatarasatāni thūṇūpanītāni honti yaññatthāya, pañca vacchatarisatāni thūṇūpanītāni honti yaññatthāya, pañca ajasatāni thūṇūpanītāni honti yaññatthāya, pañca urabbhasatāni thūṇūpanītāni honti yaññatthāya.

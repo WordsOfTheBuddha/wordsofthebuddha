@@ -1,9 +1,9 @@
 ---
 slug: sn8.5
 source: suttacentral/bilara-data
+title: Subhāsitasutta
 edition: ms
 granularity: paragraph
-title: Subhāsitasutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an9.31
 source: suttacentral/bilara-data
+title: Anupubbanirodhasutta
 edition: ms
 granularity: paragraph
-title: Anupubbanirodhasutta
 ---
 
 “Navayime, bhikkhave, anupubbanirodhā. Katame nava?
@@ -34,8 +34,7 @@ Sattāvāsavaggo tatiyo.
 
 Tassuddānaṁ
 
+Tiṭhānaṁ khaḷuṅko taṇhā,
 Sattapaññā silāyupo;
-
 Dve verā dve āghātāni,
-
 Anupubbanirodhena cāti.

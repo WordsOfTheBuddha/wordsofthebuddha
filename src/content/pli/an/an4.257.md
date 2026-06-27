@@ -1,9 +1,9 @@
 ---
 slug: an4.257
 source: suttacentral/bilara-data
+title: Mālukyaputtasutta
 edition: ms
 granularity: paragraph
-title: Mālukyaputtasutta
 ---
 
 Atha kho āyasmā mālukyaputto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā mālukyaputto bhagavantaṁ etadavoca:

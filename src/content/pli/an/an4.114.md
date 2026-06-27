@@ -1,9 +1,9 @@
 ---
 slug: an4.114
 source: suttacentral/bilara-data
+title: Nāgasutta
 edition: ms
 granularity: paragraph
-title: Nāgasutta
 ---
 
 “Catūhi, bhikkhave, aṅgehi samannāgato rañño nāgo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati. Katamehi catūhi? Idha, bhikkhave, rañño nāgo sotā ca hoti, hantā ca, khantā ca, gantā ca.

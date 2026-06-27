@@ -1,9 +1,9 @@
 ---
 slug: sn2.29
 source: suttacentral/bilara-data
+title: Susimasutta
 edition: ms
 granularity: paragraph
-title: Susimasutta
 ---
 
 Sāvatthinidānaṁ.

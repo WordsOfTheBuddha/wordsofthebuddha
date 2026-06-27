@@ -1,9 +1,9 @@
 ---
 slug: an6.82
 source: suttacentral/bilara-data
+title: Dutiyanirayasutta
 edition: ms
 granularity: paragraph
-title: Dutiyanirayasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi chahi? Pāṇātipātī hoti, adinnādāyī hoti, kāmesumicchācārī hoti, musāvādī hoti, luddho ca, pagabbho ca. Imehi kho, bhikkhave, chahi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.

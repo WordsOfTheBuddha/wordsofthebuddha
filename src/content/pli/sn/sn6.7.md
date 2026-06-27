@@ -1,9 +1,9 @@
 ---
 slug: sn6.7
 source: suttacentral/bilara-data
+title: Kokālikasutta
 edition: ms
 granularity: paragraph
-title: Kokālikasutta
 ---
 
 Sāvatthinidānaṁ.

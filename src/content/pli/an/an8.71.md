@@ -1,9 +1,9 @@
 ---
 slug: an8.71
 source: suttacentral/bilara-data
+title: Paṭhamasaddhāsutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasaddhāsutta
 ---
 
 “Saddho ca, bhikkhave, bhikkhu hoti, no ca sīlavā. Evaṁ so tenaṅgena aparipūro hoti. Tena taṁ aṅgaṁ paripūretabbaṁ: ‘kintāhaṁ saddho ca assaṁ sīlavā cā’ti. Yato ca kho, bhikkhave, bhikkhu saddho ca hoti sīlavā ca, evaṁ so tenaṅgena paripūro hoti.

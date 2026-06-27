@@ -1,9 +1,9 @@
 ---
 slug: an4.156
 source: suttacentral/bilara-data
+title: Kappasutta
 edition: ms
 granularity: paragraph
-title: Kappasutta
 ---
 
 “Cattārimāni, bhikkhave, kappassa asaṅkhyeyyāni. Katamāni cattāri?

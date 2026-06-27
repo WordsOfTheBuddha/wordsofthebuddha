@@ -1,9 +1,9 @@
 ---
 slug: an5.119
 source: suttacentral/bilara-data
+title: Micchāvācāsutta
 edition: ms
 granularity: paragraph
-title: Micchāvācāsutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgatā bhikkhunī yathābhataṁ nikkhittā evaṁ niraye. Katamehi pañcahi? Ananuvicca apariyogāhetvā avaṇṇārahassa vaṇṇaṁ bhāsati, ananuvicca apariyogāhetvā vaṇṇārahassa avaṇṇaṁ bhāsati, micchāvācā ca hoti, micchākammantā ca, saddhādeyyaṁ vinipāteti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgatā bhikkhunī yathābhataṁ nikkhittā evaṁ niraye.

@@ -1,9 +1,9 @@
 ---
 slug: an5.171
 source: suttacentral/bilara-data
+title: Sārajjasutta
 edition: ms
 granularity: paragraph
-title: Sārajjasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

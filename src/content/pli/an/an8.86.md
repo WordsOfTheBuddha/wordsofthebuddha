@@ -1,9 +1,9 @@
 ---
 slug: an8.86
 source: suttacentral/bilara-data
+title: Yasasutta
 edition: ms
 granularity: paragraph
-title: Yasasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ yena icchānaṅgalaṁ nāma kosalānaṁ brāhmaṇagāmo tadavasari. Tatra sudaṁ bhagavā icchānaṅgale viharati icchānaṅgalavanasaṇḍe. Assosuṁ kho icchānaṅgalakā brāhmaṇagahapatikā:

@@ -1,9 +1,9 @@
 ---
 slug: an5.54
 source: suttacentral/bilara-data
+title: Samayasutta
 edition: ms
 granularity: paragraph
-title: Samayasutta
 ---
 
 “Pañcime, bhikkhave, asamayā padhānāya. Katame pañca?

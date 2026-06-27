@@ -1,9 +1,9 @@
 ---
 slug: sn8.2
 source: suttacentral/bilara-data
+title: Aratīsutta
 edition: ms
 granularity: paragraph
-title: Aratīsutta
 ---
 
 Ekaṁ samayaṁ …pe… āyasmā vaṅgīso āḷaviyaṁ viharati aggāḷave cetiye āyasmatā nigrodhakappena upajjhāyena saddhiṁ.

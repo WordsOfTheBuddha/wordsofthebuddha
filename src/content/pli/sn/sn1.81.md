@@ -1,9 +1,9 @@
 ---
 slug: sn1.81
 source: suttacentral/bilara-data
+title: Araṇasutta
 edition: ms
 granularity: paragraph
-title: Araṇasutta
 ---
 
 “Kesūdha araṇā loke,

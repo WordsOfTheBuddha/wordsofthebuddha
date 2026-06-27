@@ -1,9 +1,9 @@
 ---
 slug: sn1.17
 source: suttacentral/bilara-data
+title: Dukkarasutta
 edition: ms
 granularity: paragraph
-title: Dukkarasutta
 ---
 
 “Dukkaraṁ duttitikkhañca,

@@ -1,9 +1,9 @@
 ---
 slug: sn2.14
 source: suttacentral/bilara-data
+title: Nandanasutta
 edition: ms
 granularity: paragraph
-title: Nandanasutta
 ---
 
 Ekamantaṁ ṭhito kho nandano devaputto bhagavantaṁ gāthāya ajjhabhāsi:

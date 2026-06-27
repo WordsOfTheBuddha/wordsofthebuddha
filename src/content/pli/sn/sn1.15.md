@@ -1,9 +1,9 @@
 ---
 slug: sn1.15
 source: suttacentral/bilara-data
+title: Saṇamānasutta
 edition: ms
 granularity: paragraph
-title: Saṇamānasutta
 ---
 
 “Ṭhite majjhanhike kāle,

@@ -1,9 +1,9 @@
 ---
 slug: an4.48
 source: suttacentral/bilara-data
+title: Visākhasutta
 edition: ms
 granularity: paragraph
-title: Visākhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -16,16 +16,14 @@ Atha kho bhagavā sāyanhasamayaṁ paṭisallānā vuṭṭhito yena upaṭṭh
 
 Atha kho bhagavā āyasmantaṁ visākhaṁ pañcālaputtaṁ etadavoca: “sādhu sādhu, visākha. Sādhu kho tvaṁ, visākha, bhikkhū dhammiyā kathāya sandassesi samādapesi samuttejesi sampahaṁsesi poriyā vācāya vissaṭṭhāya anelagalāya atthassa viññāpaniyā pariyāpannāya anissitāyāti.
 
+Nābhāsamānaṁ jānanti,
 missaṁ bālehi paṇḍitaṁ;
-
 Bhāsamānañca jānanti,
-
 desentaṁ amataṁ padaṁ.
 
+Bhāsaye jotaye dhammaṁ,
 paggaṇhe isinaṁ dhajaṁ;
-
 Subhāsitadhajā isayo,
-
 dhammo hi isinaṁ dhajo”ti.
 
 Aṭṭhamaṁ.

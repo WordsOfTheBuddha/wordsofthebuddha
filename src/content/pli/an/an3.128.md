@@ -1,9 +1,9 @@
 ---
 slug: an3.128
 source: suttacentral/bilara-data
+title: Kaṭuviyasutta
 edition: ms
 granularity: paragraph
-title: Kaṭuviyasutta
 ---
 
 Ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye.
@@ -22,28 +22,24 @@ Atha kho so bhikkhu bhagavatā iminā ovādena ovadito saṁvegamāpādi. Atha k
 
 “Abhijjhā kho, bhikkhu, kaṭuviyaṁ; byāpādo āmagandho; pāpakā akusalā vitakkā makkhikā. Taṁ vata, bhikkhu, kaṭuviyakataṁ attānaṁ āmagandhena avassutaṁ makkhikā nānupatissanti nānvāssavissantīti, netaṁ ṭhānaṁ vijjatīti.
 
+Aguttaṁ cakkhusotasmiṁ,
 indriyesu asaṁvutaṁ;
-
 Makkhikānupatissanti,
-
 saṅkappā rāganissitā.
 
+Kaṭuviyakato bhikkhu,
 āmagandhe avassuto;
-
 Ārakā hoti nibbānā,
-
 vighātasseva bhāgavā.
 
+Gāme vā yadi vāraññe,
 aladdhā samathamattano;
-
 Pareti bālo dummedho,
-
 makkhikāhi purakkhato.
 
+Ye ca sīlena sampannā,
 paññāyūpasameratā;
-
 Upasantā sukhaṁ senti,
-
 nāsayitvāna makkhikā”ti.
 
 Chaṭṭhaṁ.

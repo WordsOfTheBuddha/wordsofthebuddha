@@ -1,9 +1,9 @@
 ---
 slug: snp1.7
 source: suttacentral/bilara-data
+title: Vasalasutta
 edition: ms
 granularity: paragraph
-title: Vasalasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya sāvatthiṁ piṇḍāya pāvisi. Tena kho pana samayena aggikabhāradvājassa brāhmaṇassa nivesane aggi pajjalito hoti āhuti paggahitā. Atha kho bhagavā sāvatthiyaṁ sapadānaṁ piṇḍāya caramāno yena aggikabhāradvājassa brāhmaṇassa nivesanaṁ tenupasaṅkami.

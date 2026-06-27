@@ -1,9 +1,9 @@
 ---
 slug: an9.53
 source: suttacentral/bilara-data
+title: Khemappattasutta
 edition: ms
 granularity: paragraph
-title: Khemappattasutta
 ---
 
 “‘Khemappatto, khemappatto’ti, āvuso, vuccati ….

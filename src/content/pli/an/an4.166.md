@@ -1,9 +1,9 @@
 ---
 slug: an4.166
 source: suttacentral/bilara-data
+title: Ubhayasutta
 edition: ms
 granularity: paragraph
-title: Ubhayasutta
 ---
 
 “Catasso imā, bhikkhave, paṭipadā. Katamā catasso?

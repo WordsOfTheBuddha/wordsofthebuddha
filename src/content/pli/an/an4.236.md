@@ -1,9 +1,9 @@
 ---
 slug: an4.236
 source: suttacentral/bilara-data
+title: Dutiyasikkhāpadasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasikkhāpadasutta
 ---
 
 “Cattārimāni, bhikkhave, kammāni mayā sayaṁ abhiññā sacchikatvā paveditāni. Katamāni cattāri?

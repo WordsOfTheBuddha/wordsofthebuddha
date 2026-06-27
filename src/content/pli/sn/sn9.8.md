@@ -1,9 +1,9 @@
 ---
 slug: sn9.8
 source: suttacentral/bilara-data
+title: Kulagharaṇīsutta
 edition: ms
 granularity: paragraph
-title: Kulagharaṇīsutta
 ---
 
 Ekaṁ samayaṁ aññataro bhikkhu kosalesu viharati aññatarasmiṁ vanasaṇḍe.

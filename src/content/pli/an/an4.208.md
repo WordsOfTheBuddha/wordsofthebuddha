@@ -1,9 +1,9 @@
 ---
 slug: an4.208
 source: suttacentral/bilara-data
+title: Dutiyapāpadhammasutta
 edition: ms
 granularity: paragraph
-title: Dutiyapāpadhammasutta
 ---
 
 “Pāpañca vo, bhikkhave, desessāmi, pāpena pāpatarañca; kalyāṇañca, kalyāṇena kalyāṇatarañca. Taṁ suṇātha …pe…

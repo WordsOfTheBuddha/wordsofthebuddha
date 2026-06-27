@@ -1,9 +1,9 @@
 ---
 slug: an5.287-292
 source: suttacentral/bilara-data
+title: Bhikkhunīsuttādi
 edition: ms
 granularity: paragraph
-title: Bhikkhunīsuttādi
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgatā bhikkhunī …pe… sikkhamānā … sāmaṇero … sāmaṇerī … upāsako … upāsikā yathābhataṁ nikkhittā evaṁ niraye. Katamehi pañcahi? Pāṇātipātinī hoti, adinnādāyinī hoti, kāmesumicchācārinī hoti, musāvādinī hoti, surāmerayamajjapamādaṭṭhāyinī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgatā upāsikā yathābhataṁ nikkhittā evaṁ niraye.

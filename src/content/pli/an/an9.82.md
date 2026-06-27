@@ -1,9 +1,9 @@
 ---
 slug: an9.82
 source: suttacentral/bilara-data
+title: Cetasovinibandhasutta
 edition: ms
 granularity: paragraph
-title: Cetasovinibandhasutta
 ---
 
 “Pañcime, bhikkhave, cetasovinibandhā. Katame pañca? Idha, bhikkhave, bhikkhu kāmesu avītarāgo hoti …pe… ime kho, bhikkhave, pañca cetasovinibandhā.

@@ -1,9 +1,9 @@
 ---
 slug: an8.3
 source: suttacentral/bilara-data
+title: Paṭhamaappiyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaappiyasutta
 ---
 
 “Aṭṭhahi, bhikkhave, dhammehi samannāgato bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca. Katamehi aṭṭhahi? Idha, bhikkhave, bhikkhu appiyapasaṁsī ca hoti, piyagarahī ca, lābhakāmo ca, sakkārakāmo ca, ahiriko ca, anottappī ca, pāpiccho ca, micchādiṭṭhi ca. Imehi kho, bhikkhave, aṭṭhahi dhammehi samannāgato bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.

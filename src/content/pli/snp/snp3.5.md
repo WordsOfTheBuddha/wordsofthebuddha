@@ -1,9 +1,9 @@
 ---
 slug: snp3.5
 source: suttacentral/bilara-data
+title: Māghasutta
 edition: ms
 granularity: paragraph
-title: Māghasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Atha kho māgho māṇavo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho māgho māṇavo bhagavantaṁ etadavoca:

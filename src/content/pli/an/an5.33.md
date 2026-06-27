@@ -1,9 +1,9 @@
 ---
 slug: an5.33
 source: suttacentral/bilara-data
+title: Uggahasutta
 edition: ms
 granularity: paragraph
-title: Uggahasutta
 ---
 
 Ekaṁ samayaṁ bhagavā bhaddiye viharati jātiyā vane.
@@ -26,28 +26,24 @@ Tasmātiha, kumāriyo, evaṁ sikkhitabbaṁ: ‘yo so bhattu abbhantaro antojan
 
 Tasmātiha, kumāriyo, evaṁ sikkhitabbaṁ: ‘yaṁ bhattā āharissati dhanaṁ vā dhaññaṁ vā rajataṁ vā jātarūpaṁ vā, taṁ ārakkhena guttiyā sampādessāma, tattha ca bhavissāma adhuttī athenī asoṇḍī avināsikāyo’ti. Evañhi vo, kumāriyo, sikkhitabbaṁ. Imehi kho, kumāriyo, pañcahi dhammehi samannāgato mātugāmo kāyassa bhedā paraṁ maraṇā manāpakāyikānaṁ devānaṁ sahabyataṁ upapajjatīti.
 
+Yo naṁ bharati sabbadā,
 niccaṁ ātāpi ussuko;
-
 Sabbakāmaharaṁ posaṁ,
-
 bhattāraṁ nātimaññati.
 
+Na cāpi sotthi bhattāraṁ,
 issācārena rosaye;
-
 Bhattu ca garuno sabbe,
-
 paṭipūjeti paṇḍitā.
 
+Uṭṭhāhikā analasā,
 saṅgahitaparijjanā;
-
 Bhattu manāpaṁ carati,
-
 sambhataṁ anurakkhati.
 
+Yā evaṁ vattatī nārī,
 bhattuchandavasānugā;
-
 Manāpā nāma te devā,
-
 yattha sā upapajjatī”ti.
 
 Tatiyaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an5.228
 source: suttacentral/bilara-data
+title: Ussūrabhattasutta
 edition: ms
 granularity: paragraph
-title: Ussūrabhattasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā ussūrabhatte kule. Katame pañca? Ye te atithī pāhunā, te na kālena paṭipūjenti; yā tā balipaṭiggāhikā devatā, tā na kālena paṭipūjenti; ye te samaṇabrāhmaṇā ekabhattikā rattūparatā viratā vikālabhojanā, te na kālena paṭipūjenti; dāsakammakaraporisā vimukhā kammaṁ karonti; tāvatakaṁyeva asamayena bhuttaṁ anojavantaṁ hoti. Ime kho, bhikkhave, pañca ādīnavā ussūrabhatte kule.

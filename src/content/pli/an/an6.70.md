@@ -1,9 +1,9 @@
 ---
 slug: an6.70
 source: suttacentral/bilara-data
+title: Samādhisutta
 edition: ms
 granularity: paragraph
-title: Samādhisutta
 ---
 
 “‘So vata, bhikkhave, bhikkhu na santena samādhinā na paṇītena na paṭippassaddhiladdhena na ekodibhāvādhigatena anekavihitaṁ iddhividhaṁ paccanubhavissati—ekopi hutvā bahudhā bhavissati, bahudhāpi hutvā eko bhavissati …pe… yāva brahmalokāpi kāyena vasaṁ vattessatī’ti netaṁ ṭhānaṁ vijjati.

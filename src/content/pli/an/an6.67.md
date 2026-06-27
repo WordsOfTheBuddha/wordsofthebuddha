@@ -1,9 +1,9 @@
 ---
 slug: an6.67
 source: suttacentral/bilara-data
+title: Mittasutta
 edition: ms
 granularity: paragraph
-title: Mittasutta
 ---
 
 “‘So vata, bhikkhave, bhikkhu pāpamitto pāpasahāyo pāpasampavaṅko, pāpamitte sevamāno bhajamāno payirupāsamāno, tesañca diṭṭhānugatiṁ āpajjamāno ābhisamācārikaṁ dhammaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Ābhisamācārikaṁ dhammaṁ aparipūretvā sekhaṁ dhammaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sekhaṁ dhammaṁ aparipūretvā sīlāni paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sīlāni aparipūretvā kāmarāgaṁ vā rūparāgaṁ vā arūparāgaṁ vā pajahissatī’ti netaṁ ṭhānaṁ vijjati.

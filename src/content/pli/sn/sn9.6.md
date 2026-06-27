@@ -1,9 +1,9 @@
 ---
 slug: sn9.6
 source: suttacentral/bilara-data
+title: Anuruddhasutta
 edition: ms
 granularity: paragraph
-title: Anuruddhasutta
 ---
 
 Ekaṁ samayaṁ āyasmā anuruddho kosalesu viharati aññatarasmiṁ vanasaṇḍe.

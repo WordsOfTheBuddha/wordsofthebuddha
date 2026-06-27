@@ -1,9 +1,9 @@
 ---
 slug: an3.99
 source: suttacentral/bilara-data
+title: Potthakasutta
 edition: ms
 granularity: paragraph
-title: Potthakasutta
 ---
 
 “Navopi, bhikkhave, potthako dubbaṇṇo ca hoti dukkhasamphasso ca appaggho ca; majjhimopi, bhikkhave, potthako dubbaṇṇo ca hoti dukkhasamphasso ca appaggho ca; jiṇṇopi, bhikkhave, potthako dubbaṇṇo ca hoti dukkhasamphasso ca appaggho ca. Jiṇṇampi, bhikkhave, potthakaṁ ukkhaliparimajjanaṁ vā karonti saṅkārakūṭe vā naṁ chaḍḍenti.

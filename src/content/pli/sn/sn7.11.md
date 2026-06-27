@@ -1,9 +1,9 @@
 ---
 slug: sn7.11
 source: suttacentral/bilara-data
+title: Kasibhāradvājasutta
 edition: ms
 granularity: paragraph
-title: Kasibhāradvājasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā magadhesu viharati dakkhiṇāgirismiṁ ekanāḷāyaṁ brāhmaṇagāme.

@@ -1,9 +1,9 @@
 ---
 slug: an5.114
 source: suttacentral/bilara-data
+title: Andhakavindasutta
 edition: ms
 granularity: paragraph
-title: Andhakavindasutta
 ---
 
 Ekaṁ samayaṁ bhagavā magadhesu viharati andhakavinde. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ ānandaṁ bhagavā etadavoca:

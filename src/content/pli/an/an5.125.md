@@ -1,9 +1,9 @@
 ---
 slug: an5.125
 source: suttacentral/bilara-data
+title: Paṭhamaanāyussāsutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaanāyussāsutta
 ---
 
 “Pañcime, bhikkhave, dhammā anāyussā. Katame pañca? Asappāyakārī hoti, sappāye mattaṁ na jānāti, apariṇatabhojī ca hoti, akālacārī ca hoti, abrahmacārī ca. Ime kho, bhikkhave, pañca dhammā anāyussā.

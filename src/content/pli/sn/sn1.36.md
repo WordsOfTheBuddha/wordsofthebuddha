@@ -1,9 +1,9 @@
 ---
 slug: sn1.36
 source: suttacentral/bilara-data
+title: Saddhāsutta
 edition: ms
 granularity: paragraph
-title: Saddhāsutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

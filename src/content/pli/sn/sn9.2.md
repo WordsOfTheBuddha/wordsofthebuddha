@@ -1,9 +1,9 @@
 ---
 slug: sn9.2
 source: suttacentral/bilara-data
+title: Upaṭṭhānasutta
 edition: ms
 granularity: paragraph
-title: Upaṭṭhānasutta
 ---
 
 Ekaṁ samayaṁ aññataro bhikkhu kosalesu viharati aññatarasmiṁ vanasaṇḍe.

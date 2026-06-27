@@ -1,9 +1,9 @@
 ---
 slug: an5.34
 source: suttacentral/bilara-data
+title: Sīhasenāpatisutta
 edition: ms
 granularity: paragraph
-title: Sīhasenāpatisutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
@@ -26,26 +26,21 @@ Evaṁ vutte, sīho senāpati bhagavantaṁ etadavoca: “yānimāni, bhante, bh
 
 “Evametaṁ, sīha, evametaṁ, sīha. Dāyako dānapati kāyassa bhedā paraṁ maraṇā sugatiṁ saggaṁ lokaṁ upapajjatīti.
 
+Dadaṁ piyo hoti bhajanti naṁ bahū,
 Kittiñca pappoti yaso ca vaḍḍhati;
-
 Amaṅkubhūto parisaṁ vigāhati,
-
 Visārado hoti naro amaccharī.
 
+Tasmā hi dānāni dadanti paṇḍitā,
 Vineyya maccheramalaṁ sukhesino;
-
 Te dīgharattaṁ tidive patiṭṭhitā,
-
 Devānaṁ sahabyagatā ramanti te.
 
+Katāvakāsā katakusalā ito cutā,
 Sayaṁpabhā anuvicaranti nandanaṁ;
-
 Te tattha nandanti ramanti modare,
-
 Samappitā kāmaguṇehi pañcahi;
-
 Katvāna vākyaṁ asitassa tādino,
-
 Ramanti sagge sugatassa sāvakā”ti.
 
 Catutthaṁ.

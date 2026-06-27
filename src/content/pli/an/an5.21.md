@@ -1,9 +1,9 @@
 ---
 slug: an5.21
 source: suttacentral/bilara-data
+title: Paṭhamaagāravasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaagāravasutta
 ---
 
 “So vata, bhikkhave, bhikkhu agāravo appatisso asabhāgavuttiko ‘sabrahmacārīsu ābhisamācārikaṁ dhammaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Ābhisamācārikaṁ dhammaṁ aparipūretvā sekhaṁ dhammaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sekhaṁ dhammaṁ aparipūretvā sīlāni paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sīlāni aparipūretvā sammādiṭṭhiṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sammādiṭṭhiṁ aparipūretvā sammāsamādhiṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati.

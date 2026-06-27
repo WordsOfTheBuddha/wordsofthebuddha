@@ -1,9 +1,9 @@
 ---
 slug: an9.52
 source: suttacentral/bilara-data
+title: Khemasutta
 edition: ms
 granularity: paragraph
-title: Khemasutta
 ---
 
 “‘Khemaṁ, kheman’ti, āvuso, vuccati. Kittāvatā nu kho, āvuso, khemaṁ vuttaṁ bhagavatā”ti?

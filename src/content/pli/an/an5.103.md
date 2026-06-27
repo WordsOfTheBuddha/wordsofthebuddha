@@ -1,9 +1,9 @@
 ---
 slug: an5.103
 source: suttacentral/bilara-data
+title: Mahācorasutta
 edition: ms
 granularity: paragraph
-title: Mahācorasutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato mahācoro sandhimpi chindati, nillopampi harati, ekāgārikampi karoti, paripanthepi tiṭṭhati. Katamehi pañcahi? Idha, bhikkhave, mahācoro visamanissito ca hoti, gahananissito ca, balavanissito ca, bhogacāgī ca, ekacārī ca.

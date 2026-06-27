@@ -1,9 +1,9 @@
 ---
 slug: an9.56
 source: suttacentral/bilara-data
+title: Abhayasutta
 edition: ms
 granularity: paragraph
-title: Abhayasutta
 ---
 
 “‘Abhayaṁ, abhayan’ti, āvuso, vuccati ….

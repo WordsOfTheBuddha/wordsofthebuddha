@@ -1,9 +1,9 @@
 ---
 slug: an3.34
 source: suttacentral/bilara-data
+title: Nidānasutta
 edition: ms
 granularity: paragraph
-title: Nidānasutta
 ---
 
 “Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya. Katamāni tīṇi? Lobho nidānaṁ kammānaṁ samudayāya, doso nidānaṁ kammānaṁ samudayāya, moho nidānaṁ kammānaṁ samudayāya.
@@ -38,20 +38,16 @@ Yaṁ adosapakataṁ kammaṁ …pe… yaṁ amohapakataṁ kammaṁ amohajaṁ 
 
 Imāni kho, bhikkhave, tīṇi nidānāni kammānaṁ samudayāyāti.
 
+Lobhajaṁ dosajañceva,
 mohajañcāpaviddasu;
-
 Yaṁ tena pakataṁ kammaṁ,
-
 appaṁ vā yadi vā bahuṁ;
-
 Idheva taṁ vedaniyaṁ,
-
 vatthu aññaṁ na vijjati.
 
+Tasmā lobhañca dosañca,
 mohajañcāpi viddasu;
-
 Vijjaṁ uppādayaṁ bhikkhu,
-
 sabbā duggatiyo jahe”ti.
 
 Catutthaṁ.

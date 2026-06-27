@@ -1,9 +1,9 @@
 ---
 slug: sn1.54
 source: suttacentral/bilara-data
+title: Vatthusutta
 edition: ms
 granularity: paragraph
-title: Vatthusutta
 ---
 
 “Kiṁsu vatthu manussānaṁ,

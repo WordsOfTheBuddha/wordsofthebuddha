@@ -1,9 +1,9 @@
 ---
 slug: an8.29
 source: suttacentral/bilara-data
+title: Akkhaṇasutta
 edition: ms
 granularity: paragraph
-title: Akkhaṇasutta
 ---
 
 “‘Khaṇakicco loko, khaṇakicco loko’ti, bhikkhave, assutavā puthujjano bhāsati, no ca kho so jānāti khaṇaṁ vā akkhaṇaṁ vā. Aṭṭhime, bhikkhave, akkhaṇā asamayā brahmacariyavāsāya. Katame aṭṭha?
@@ -28,68 +28,56 @@ Ime kho, bhikkhave, aṭṭha akkhaṇā asamayā brahmacariyavāsāya.
 
 Ekova kho, bhikkhave, khaṇo ca samayo ca brahmacariyavāsāya. Katamo eko? Idha, bhikkhave, tathāgato ca loke uppanno hoti arahaṁ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṁ buddho bhagavā. Dhammo ca desiyati opasamiko parinibbāniko sambodhagāmī sugatappavedito. Ayañca puggalo majjhimesu janapadesu paccājāto hoti, so ca hoti paññavā ajaḷo aneḷamūgo paṭibalo subhāsitadubbhāsitassa atthamaññātuṁ. Ayaṁ, bhikkhave, ekova khaṇo ca samayo ca brahmacariyavāsāyāti.
 
+Manussalābhaṁ laddhāna,
 saddhamme suppavedite;
-
 Ye khaṇaṁ nādhigacchanti,
-
 atināmenti te khaṇaṁ.
 
+Bahū hi akkhaṇā vuttā,
 maggassa antarāyikā;
-
 Kadāci karahaci loke,
-
 uppajjanti tathāgatā.
 
+Tayidaṁ sammukhībhūtaṁ,
 yaṁ lokasmiṁ sudullabhaṁ;
-
 Manussapaṭilābho ca,
-
 saddhammassa ca desanā;
-
 Alaṁ vāyamituṁ tattha,
-
 attakāmena jantunā.
 
+Kathaṁ vijaññā saddhammaṁ,
 khaṇo ve mā upaccagā;
-
 Khaṇātītā hi socanti,
-
 nirayamhi samappitā.
 
+Idha ce naṁ virādheti,
 saddhammassa niyāmataṁ;
-
 Vāṇijova atītattho,
-
 cirattaṁ anutapissati.
 
+Avijjānivuto poso,
 saddhammaṁ aparādhiko;
-
 Jātimaraṇasaṁsāraṁ,
-
 ciraṁ paccanubhossati.
 
+Ye ca laddhā manussattaṁ,
 saddhamme suppavedite;
-
 Akaṁsu satthu vacanaṁ,
-
 karissanti karonti vā.
 
+Khaṇaṁ paccaviduṁ loke,
 brahmacariyaṁ anuttaraṁ;
-
 Ye maggaṁ paṭipajjiṁsu,
-
 tathāgatappaveditaṁ.
 
+Ye saṁvarā cakkhumatā,
 desitādiccabandhunā;
-
 Tesu gutto sadā sato,
-
 vihare anavassuto.
 
+Sabbe anusaye chetvā,
 māradheyyaparānuge;
-
 Te ve pāraṅgatā loke,
-
 ye pattā āsavakkhayan”ti.
 
 Navamaṁ.

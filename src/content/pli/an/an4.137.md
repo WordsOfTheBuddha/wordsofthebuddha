@@ -1,9 +1,9 @@
 ---
 slug: an4.137
 source: suttacentral/bilara-data
+title: Dutiyasīlasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasīlasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

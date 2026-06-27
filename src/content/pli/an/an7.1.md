@@ -1,9 +1,9 @@
 ---
 slug: an7.1
 source: suttacentral/bilara-data
+title: Paṭhamapiyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamapiyasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

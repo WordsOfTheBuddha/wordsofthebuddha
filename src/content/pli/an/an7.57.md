@@ -1,9 +1,9 @@
 ---
 slug: an7.57
 source: suttacentral/bilara-data
+title: Sīhasenāpatisutta
 edition: ms
 granularity: paragraph
-title: Sīhasenāpatisutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho sīho senāpati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho sīho senāpati bhagavantaṁ etadavoca:

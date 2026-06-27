@@ -1,9 +1,9 @@
 ---
 slug: an7.24
 source: suttacentral/bilara-data
+title: Dutiyasattakasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasattakasutta
 ---
 
 “Satta vo, bhikkhave, aparihāniye dhamme desessāmi. Taṁ suṇātha, sādhukaṁ manasi karotha …pe… katame ca, bhikkhave, satta aparihāniyā dhammā?

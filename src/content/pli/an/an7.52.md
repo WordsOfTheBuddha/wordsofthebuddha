@@ -1,9 +1,9 @@
 ---
 slug: an7.52
 source: suttacentral/bilara-data
+title: Dānamahapphalasutta
 edition: ms
 granularity: paragraph
-title: Dānamahapphalasutta
 ---
 
 Ekaṁ samayaṁ bhagavā campāyaṁ viharati gaggarāya pokkharaṇiyā tīre.

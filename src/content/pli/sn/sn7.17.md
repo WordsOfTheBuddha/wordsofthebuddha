@@ -1,9 +1,9 @@
 ---
 slug: sn7.17
 source: suttacentral/bilara-data
+title: Navakammikasutta
 edition: ms
 granularity: paragraph
-title: Navakammikasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu viharati aññatarasmiṁ vanasaṇḍe.

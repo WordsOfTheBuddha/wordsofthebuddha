@@ -1,9 +1,9 @@
 ---
 slug: an4.104
 source: suttacentral/bilara-data
+title: Udakarahadasutta
 edition: ms
 granularity: paragraph
-title: Udakarahadasutta
 ---
 
 “Cattārome, bhikkhave, udakarahadā. Katame cattāro?

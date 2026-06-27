@@ -1,9 +1,9 @@
 ---
 slug: sn7.22
 source: suttacentral/bilara-data
+title: Khomadussasutta
 edition: ms
 granularity: paragraph
-title: Khomadussasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sakkesu viharati khomadussaṁ nāmaṁ sakyānaṁ nigamo.

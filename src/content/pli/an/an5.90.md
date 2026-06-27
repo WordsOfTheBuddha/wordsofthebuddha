@@ -1,9 +1,9 @@
 ---
 slug: an5.90
 source: suttacentral/bilara-data
+title: Dutiyasekhasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasekhasutta
 ---
 
 “Pañcime, bhikkhave, dhammā sekhassa bhikkhuno parihānāya saṁvattanti. Katame pañca?
@@ -40,8 +40,7 @@ Theravaggo catuttho.
 
 Tassuddānaṁ
 
+Rajanīyo vītarāgo,
 kuhakāssaddhaakkhamā;
-
 Paṭisambhidā ca sīlena,
-
 thero sekhā pare duveti.

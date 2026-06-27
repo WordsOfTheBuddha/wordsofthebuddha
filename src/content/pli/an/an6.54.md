@@ -1,9 +1,9 @@
 ---
 slug: an6.54
 source: suttacentral/bilara-data
+title: Dhammikasutta
 edition: ms
 granularity: paragraph
-title: Dhammikasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.
@@ -80,76 +80,60 @@ Taṁ kiṁ maññasi, brāhmaṇa dhammika, yo ime cha satthāre titthakare kā
 
 “Yo kho, brāhmaṇa dhammika, ime cha satthāre titthakare kāmesu vītarāge anekasataparivāre sasāvakasaṅghe paduṭṭhacitto akkoseyya paribhāseyya, bahuṁ so apuññaṁ pasaveyya. Yo ekaṁ diṭṭhisampannaṁ puggalaṁ paduṭṭhacitto akkosati paribhāsati, ayaṁ tato bahutaraṁ apuññaṁ pasavati. Taṁ kissa hetu? Nāhaṁ, brāhmaṇa dhammika, ito bahiddhā evarūpiṁ khantiṁ vadāmi, yathāmaṁ sabrahmacārīsu. Tasmātiha, brāhmaṇa dhammika, evaṁ sikkhitabbaṁ: ‘na no samasabrahmacārīsu cittāni paduṭṭhāni bhavissantī’ti. Evañhi te, brāhmaṇa dhammika, sikkhitabbanti.
 
+Sunetto mūgapakkho ca,
 aranemi ca brāhmaṇo;
-
 Kuddālako ahu satthā,
-
 hatthipālo ca māṇavo.
 
+Jotipālo ca govindo,
 ahu sattapurohito;
-
 Ahiṁsakā atītaṁse,
-
 cha satthāro yasassino.
 
-Kāmasaṁyojanātigā;
-
-Kāmarāgaṁ virājetvā,
-
-Brahmalokūpagā ahuṁ.
-
-Anekāni satānipi;
-
 Nirāmagandhā karuṇedhimuttā,
-
 Kāmasaṁyojanātigā;
-
 Kāmarāgaṁ virājetvā,
-
 Brahmalokūpagā ahuṁ.
 
+Ahesuṁ sāvakā tesaṁ,
+Anekāni satānipi;
+Nirāmagandhā karuṇedhimuttā,
+Kāmasaṁyojanātigā;
+Kāmarāgaṁ virājetvā,
+Brahmalokūpagā ahuṁ.
+
+Yete isī bāhirake,
 vītarāge samāhite;
-
 Paduṭṭhamanasaṅkappo,
-
 yo naro paribhāsati;
-
 Bahuñca so pasavati,
-
 apuññaṁ tādiso naro.
 
+Yo cekaṁ diṭṭhisampannaṁ,
 Bhikkhuṁ buddhassa sāvakaṁ;
-
 Paduṭṭhamanasaṅkappo,
-
 Yo naro paribhāsati;
-
 Ayaṁ tato bahutaraṁ,
-
 Apuññaṁ pasave naro.
 
+Na sādhurūpaṁ āsīde,
 diṭṭhiṭṭhānappahāyinaṁ;
-
 Sattamo puggalo eso,
-
 ariyasaṅghassa vuccati.
 
+Avītarāgo kāmesu,
 yassa pañcindriyā mudū;
-
 Saddhā sati ca vīriyaṁ,
-
 samatho ca vipassanā.
 
+Tādisaṁ bhikkhumāsajja,
 pubbeva upahaññati;
-
 Attānaṁ upahantvāna,
-
 pacchā aññaṁ vihiṁsati.
 
+Yo ca rakkhati attānaṁ,
 rakkhito tassa bāhiro;
-
 Tasmā rakkheyya attānaṁ,
-
 akkhato paṇḍito sadā”ti.
 
 Dvādasamaṁ.
@@ -158,10 +142,9 @@ Dhammikavaggo pañcamo.
 
 Tassuddānaṁ
 
+Nāgamigasālā iṇaṁ,
 Cundaṁ dve sandiṭṭhikā duve;
-
 Khemaindriya ānanda,
-
 Khattiyā appamādena dhammikoti.
 
 Paṭhamo paṇṇāsako samatto.

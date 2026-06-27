@@ -1,9 +1,9 @@
 ---
 slug: an6.22
 source: suttacentral/bilara-data
+title: Aparihāniyasutta
 edition: ms
 granularity: paragraph
-title: Aparihāniyasutta
 ---
 
 “Chayime, bhikkhave, aparihāniye dhamme desessāmi, taṁ suṇātha …pe… katame ca, bhikkhave, cha aparihāniyā dhammā? Na kammārāmatā, na bhassārāmatā, na niddārāmatā, na saṅgaṇikārāmatā, sovacassatā, kalyāṇamittatā— ime kho, bhikkhave, cha aparihāniyā dhammā.

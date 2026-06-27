@@ -1,9 +1,9 @@
 ---
 slug: an4.111
 source: suttacentral/bilara-data
+title: Kesisutta
 edition: ms
 granularity: paragraph
-title: Kesisutta
 ---
 
 Atha kho kesi assadammasārathi yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho kesiṁ assadammasārathiṁ bhagavā etadavoca: “tvaṁ khosi, kesi, paññāto assadammasārathīti. Kathaṁ pana tvaṁ, kesi, assadammaṁ vinesī”ti?

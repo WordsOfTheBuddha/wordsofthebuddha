@@ -1,9 +1,9 @@
 ---
 slug: an4.245
 source: suttacentral/bilara-data
+title: Sikkhānisaṁsasutta
 edition: ms
 granularity: paragraph
-title: Sikkhānisaṁsasutta
 ---
 
 “Sikkhānisaṁsamidaṁ, bhikkhave, brahmacariyaṁ vussati paññuttaraṁ vimuttisāraṁ satādhipateyyaṁ.

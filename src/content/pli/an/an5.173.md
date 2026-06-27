@@ -1,9 +1,9 @@
 ---
 slug: an5.173
 source: suttacentral/bilara-data
+title: Nirayasutta
 edition: ms
 granularity: paragraph
-title: Nirayasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato upāsako yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Pāṇātipātī hoti …pe… surāmerayamajjapamādaṭṭhāyī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako yathābhataṁ nikkhitto evaṁ niraye.

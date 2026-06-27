@@ -1,9 +1,9 @@
 ---
 slug: an9.51
 source: suttacentral/bilara-data
+title: Diṭṭhadhammanibbānasutta
 edition: ms
 granularity: paragraph
-title: Diṭṭhadhammanibbānasutta
 ---
 
 “‘Diṭṭhadhammanibbānaṁ diṭṭhadhammanibbānan’ti, āvuso, vuccati. Kittāvatā nu kho, āvuso, diṭṭhadhammanibbānaṁ vuttaṁ bhagavatā”ti?
@@ -18,10 +18,9 @@ Sāmaññavaggo pañcamo.
 
 Tassuddānaṁ
 
+Sambādho kāyasakkhī paññā,
 Ubhatobhāgo sandiṭṭhikā dve;
-
 Nibbānaṁ parinibbānaṁ,
-
 Tadaṅgadiṭṭhadhammikena cāti.
 
 Paṭhamo paṇṇāsako samatto.

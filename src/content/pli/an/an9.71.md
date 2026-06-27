@@ -1,9 +1,9 @@
 ---
 slug: an9.71
 source: suttacentral/bilara-data
+title: Cetokhilasutta
 edition: ms
 granularity: paragraph
-title: Cetokhilasutta
 ---
 
 “Pañcime, bhikkhave, cetokhilā. Katame pañca? Idha, bhikkhave, bhikkhu satthari kaṅkhati vicikicchati nādhimuccati na sampasīdati. Yo so, bhikkhave, bhikkhu satthari kaṅkhati vicikicchati nādhimuccati na sampasīdati, tassa cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya. Yassa cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya, ayaṁ paṭhamo cetokhilo.

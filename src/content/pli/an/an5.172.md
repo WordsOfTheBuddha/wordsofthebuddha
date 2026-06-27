@@ -1,9 +1,9 @@
 ---
 slug: an5.172
 source: suttacentral/bilara-data
+title: Visāradasutta
 edition: ms
 granularity: paragraph
-title: Visāradasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato upāsako avisārado agāraṁ ajjhāvasati. Katamehi pañcahi? Pāṇātipātī hoti …pe… surāmerayamajjapamādaṭṭhāyī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako avisārado agāraṁ ajjhāvasati.

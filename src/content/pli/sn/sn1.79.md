@@ -1,9 +1,9 @@
 ---
 slug: sn1.79
 source: suttacentral/bilara-data
+title: Pātheyyasutta
 edition: ms
 granularity: paragraph
-title: Pātheyyasutta
 ---
 
 “Kiṁsu bandhati pātheyyaṁ,

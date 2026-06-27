@@ -1,9 +1,9 @@
 ---
 slug: sn7.8
 source: suttacentral/bilara-data
+title: Aggikasutta
 edition: ms
 granularity: paragraph
-title: Aggikasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

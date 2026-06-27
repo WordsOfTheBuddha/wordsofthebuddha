@@ -1,9 +1,9 @@
 ---
 slug: an9.13
 source: suttacentral/bilara-data
+title: Koṭṭhikasutta
 edition: ms
 granularity: paragraph
-title: Koṭṭhikasutta
 ---
 
 Atha kho āyasmā mahākoṭṭhiko yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā mahākoṭṭhiko āyasmantaṁ sāriputtaṁ etadavoca:

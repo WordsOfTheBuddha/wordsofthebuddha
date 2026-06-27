@@ -1,9 +1,9 @@
 ---
 slug: an3.78
 source: suttacentral/bilara-data
+title: Sīlabbatasutta
 edition: ms
 granularity: paragraph
-title: Sīlabbatasutta
 ---
 
 Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ ānandaṁ bhagavā etadavoca: “sabbaṁ nu kho, ānanda, sīlabbataṁ jīvitaṁ brahmacariyaṁ upaṭṭhānasāraṁ saphalan”ti?

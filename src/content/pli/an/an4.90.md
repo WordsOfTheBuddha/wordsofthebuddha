@@ -1,9 +1,9 @@
 ---
 slug: an4.90
 source: suttacentral/bilara-data
+title: Khandhasutta
 edition: ms
 granularity: paragraph
-title: Khandhasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro? Samaṇamacalo, samaṇapuṇḍarīko, samaṇapadumo, samaṇesu samaṇasukhumālo.
@@ -24,8 +24,7 @@ Macalavaggo catuttho.
 
 Tassuddānaṁ
 
+Pāṇātipāto ca musā,
 avaṇṇakodhatamoṇatā;
-
 Putto saṁyojanañceva,
-
 diṭṭhi khandhena te dasāti.

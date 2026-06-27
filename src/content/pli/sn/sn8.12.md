@@ -1,9 +1,9 @@
 ---
 slug: sn8.12
 source: suttacentral/bilara-data
+title: Vaṅgīsasutta
 edition: ms
 granularity: paragraph
-title: Vaṅgīsasutta
 ---
 
 Ekaṁ samayaṁ āyasmā vaṅgīso sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

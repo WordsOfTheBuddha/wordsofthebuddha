@@ -1,9 +1,9 @@
 ---
 slug: an4.189
 source: suttacentral/bilara-data
+title: Sacchikaraṇīyasutta
 edition: ms
 granularity: paragraph
-title: Sacchikaraṇīyasutta
 ---
 
 “Cattārome, bhikkhave, sacchikaraṇīyā dhammā. Katame cattāro?

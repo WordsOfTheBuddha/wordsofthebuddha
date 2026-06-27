@@ -1,9 +1,9 @@
 ---
 slug: dn1
 source: suttacentral/bilara-data
+title: Brahmajālasutta
 edition: ms
 granularity: paragraph
-title: Brahmajālasutta
 ---
 
 1. Paribbājakakathā

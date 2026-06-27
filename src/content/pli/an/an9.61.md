@@ -1,9 +1,9 @@
 ---
 slug: an9.61
 source: suttacentral/bilara-data
+title: Anupubbanirodhasutta
 edition: ms
 granularity: paragraph
-title: Anupubbanirodhasutta
 ---
 
 “‘Anupubbanirodho, anupubbanirodho’ti, āvuso, vuccati. Kittāvatā nu kho, āvuso, anupubbanirodho vutto bhagavatā”ti?

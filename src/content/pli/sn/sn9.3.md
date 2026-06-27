@@ -1,9 +1,9 @@
 ---
 slug: sn9.3
 source: suttacentral/bilara-data
+title: Kassapagottasutta
 edition: ms
 granularity: paragraph
-title: Kassapagottasutta
 ---
 
 Ekaṁ samayaṁ āyasmā kassapagotto kosalesu viharati aññatarasmiṁ vanasaṇḍe.

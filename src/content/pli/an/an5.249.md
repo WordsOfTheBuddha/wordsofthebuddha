@@ -1,9 +1,9 @@
 ---
 slug: an5.249
 source: suttacentral/bilara-data
+title: Sivathikasutta
 edition: ms
 granularity: paragraph
-title: Sivathikasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā sivathikāya. Katame pañca?

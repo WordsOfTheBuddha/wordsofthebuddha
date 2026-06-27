@@ -1,9 +1,9 @@
 ---
 slug: snp3.6
 source: suttacentral/bilara-data
+title: Sabhiyasutta
 edition: ms
 granularity: paragraph
-title: Sabhiyasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tena kho pana samayena sabhiyassa paribbājakassa purāṇasālohitāya devatāya pañhā uddiṭṭhā honti: “yo te, sabhiya, samaṇo vā brāhmaṇo vā ime pañhe puṭṭho byākaroti tassa santike brahmacariyaṁ careyyāsī”ti.

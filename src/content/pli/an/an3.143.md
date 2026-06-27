@@ -1,9 +1,9 @@
 ---
 slug: an3.143
 source: suttacentral/bilara-data
+title: Paṭhamamoranivāpasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamamoranivāpasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati moranivāpe paribbājakārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

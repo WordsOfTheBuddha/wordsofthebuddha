@@ -1,9 +1,9 @@
 ---
 slug: sn8.7
 source: suttacentral/bilara-data
+title: Pavāraṇāsutta
 edition: ms
 granularity: paragraph
-title: Pavāraṇāsutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde mahatā bhikkhusaṅghena saddhiṁ pañcamattehi bhikkhusatehi sabbeheva arahantehi. Tena kho pana samayena bhagavā tadahuposathe pannarase pavāraṇāya bhikkhusaṅghaparivuto abbhokāse nisinno hoti.

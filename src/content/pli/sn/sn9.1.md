@@ -1,9 +1,9 @@
 ---
 slug: sn9.1
 source: suttacentral/bilara-data
+title: Vivekasutta
 edition: ms
 granularity: paragraph
-title: Vivekasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ aññataro bhikkhu kosalesu viharati aññatarasmiṁ vanasaṇḍe.

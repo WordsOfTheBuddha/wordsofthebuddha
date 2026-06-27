@@ -1,9 +1,9 @@
 ---
 slug: an9.50
 source: suttacentral/bilara-data
+title: Tadaṅganibbānasutta
 edition: ms
 granularity: paragraph
-title: Tadaṅganibbānasutta
 ---
 
 “‘Tadaṅganibbānaṁ, tadaṅganibbānan’ti, āvuso, vuccati …pe….

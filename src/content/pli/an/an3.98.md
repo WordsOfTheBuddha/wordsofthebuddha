@@ -1,9 +1,9 @@
 ---
 slug: an3.98
 source: suttacentral/bilara-data
+title: Tatiyaājānīyasutta
 edition: ms
 granularity: paragraph
-title: Tatiyaājānīyasutta
 ---
 
 “Tīhi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhayaṁ gacchati. Katamehi tīhi? Idha, bhikkhave, rañño bhadro assājānīyo vaṇṇasampanno ca hoti balasampanno ca javasampanno ca. Imehi kho, bhikkhave, tīhi aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhyaṁ gacchati.

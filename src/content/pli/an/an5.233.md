@@ -1,9 +1,9 @@
 ---
 slug: an5.233
 source: suttacentral/bilara-data
+title: Sobhanasutta
 edition: ms
 granularity: paragraph
-title: Sobhanasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu āvāsaṁ sobheti. Katamehi pañcahi?

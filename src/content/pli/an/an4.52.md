@@ -1,9 +1,9 @@
 ---
 slug: an4.52
 source: suttacentral/bilara-data
+title: Dutiyapuññābhisandasutta
 edition: ms
 granularity: paragraph
-title: Dutiyapuññābhisandasutta
 ---
 
 “Cattārome, bhikkhave, puññābhisandā kusalābhisandā sukhassāhārā sovaggikā sukhavipākā saggasaṁvattanikā iṭṭhāya kantāya manāpāya hitāya sukhāya saṁvattanti. Katame cattāro?
@@ -18,22 +18,19 @@ Puna caparaṁ, bhikkhave, ariyasāvako ariyakantehi sīlehi samannāgato hoti a
 
 Ime kho, bhikkhave, cattāro puññābhisandā kusalābhisandā sukhassāhārā sovaggikā sukhavipākā saggasaṁvattanikā iṭṭhāya kantāya manāpāya hitāya sukhāya saṁvattantīti.
 
+Yassa saddhā tathāgate,
 acalā suppatiṭṭhitā;
-
 Sīlañca yassa kalyāṇaṁ,
-
 ariyakantaṁ pasaṁsitaṁ.
 
+Saṅghe pasādo yassatthi,
 ujubhūtañca dassanaṁ;
-
 Adaliddoti taṁ āhu,
-
 amoghaṁ tassa jīvitaṁ.
 
+Tasmā saddhañca sīlañca,
 pasādaṁ dhammadassanaṁ;
-
 Anuyuñjetha medhāvī,
-
 saraṁ buddhāna sāsanan”ti.
 
 Dutiyaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an4.152
 source: suttacentral/bilara-data
+title: Saddhābalasutta
 edition: ms
 granularity: paragraph
-title: Saddhābalasutta
 ---
 
 “Cattārimāni, bhikkhave, balāni. Katamāni cattāri? Saddhābalaṁ, vīriyabalaṁ, satibalaṁ, samādhibalaṁ— Imāni kho, bhikkhave, cattāri balānī”ti.

@@ -1,9 +1,9 @@
 ---
 slug: sn1.74
 source: suttacentral/bilara-data
+title: Vuṭṭhisutta
 edition: ms
 granularity: paragraph
-title: Vuṭṭhisutta
 ---
 
 “Kiṁsu uppatataṁ seṭṭhaṁ,

@@ -1,9 +1,9 @@
 ---
 slug: an3.11
 source: suttacentral/bilara-data
+title: Ñātasutta
 edition: ms
 granularity: paragraph
-title: Ñātasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato ñāto bhikkhu bahujanaahitāya paṭipanno hoti bahujanadukkhāya, bahuno janassa anatthāya ahitāya dukkhāya devamanussānaṁ. Katamehi tīhi? Ananulomike kāyakamme samādapeti, ananulomike vacīkamme samādapeti, ananulomikesu dhammesu samādapeti.

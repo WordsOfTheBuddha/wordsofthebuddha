@@ -1,9 +1,9 @@
 ---
 slug: an4.99
 source: suttacentral/bilara-data
+title: Sikkhāpadasutta
 edition: ms
 granularity: paragraph
-title: Sikkhāpadasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

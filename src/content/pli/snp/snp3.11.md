@@ -1,9 +1,9 @@
 ---
 slug: snp3.11
 source: suttacentral/bilara-data
+title: Nālakasutta
 edition: ms
 granularity: paragraph
-title: Nālakasutta
 ---
 
 Ānandajāte tidasagaṇe patīte,

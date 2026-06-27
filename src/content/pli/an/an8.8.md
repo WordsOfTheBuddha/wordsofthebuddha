@@ -1,9 +1,9 @@
 ---
 slug: an8.8
 source: suttacentral/bilara-data
+title: Uttaravipattisutta
 edition: ms
 granularity: paragraph
-title: Uttaravipattisutta
 ---
 
 Ekaṁ samayaṁ āyasmā uttaro mahisavatthusmiṁ viharati saṅkheyyake pabbate vaṭajālikāyaṁ. Tatra kho āyasmā uttaro bhikkhū āmantesi: “sādhāvuso, bhikkhu kālena kālaṁ attavipattiṁ paccavekkhitā hoti. Sādhāvuso, bhikkhu kālena kālaṁ paravipattiṁ paccavekkhitā hoti. Sādhāvuso, bhikkhu kālena kālaṁ attasampattiṁ paccavekkhitā hoti. Sādhāvuso, bhikkhu kālena kālaṁ parasampattiṁ paccavekkhitā hotī”ti.

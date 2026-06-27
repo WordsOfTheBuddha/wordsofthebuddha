@@ -1,9 +1,9 @@
 ---
 slug: an4.178
 source: suttacentral/bilara-data
+title: Jambālīsutta
 edition: ms
 granularity: paragraph
-title: Jambālīsutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

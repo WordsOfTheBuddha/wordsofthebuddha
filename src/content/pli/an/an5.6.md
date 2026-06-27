@@ -1,9 +1,9 @@
 ---
 slug: an5.6
 source: suttacentral/bilara-data
+title: Samāpattisutta
 edition: ms
 granularity: paragraph
-title: Samāpattisutta
 ---
 
 “Na tāva, bhikkhave, akusalassa samāpatti hoti yāva saddhā paccupaṭṭhitā hoti kusalesu dhammesu. Yato ca kho, bhikkhave, saddhā antarahitā hoti, assaddhiyaṁ pariyuṭṭhāya tiṭṭhati; atha akusalassa samāpatti hoti.

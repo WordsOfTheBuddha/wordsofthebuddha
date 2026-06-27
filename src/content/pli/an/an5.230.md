@@ -1,9 +1,9 @@
 ---
 slug: an5.230
 source: suttacentral/bilara-data
+title: Dutiyakaṇhasappasutta
 edition: ms
 granularity: paragraph
-title: Dutiyakaṇhasappasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā kaṇhasappe. Katame pañca? Kodhano, upanāhī, ghoraviso, dujjivho, mittadubbhī. Ime kho, bhikkhave, pañca ādīnavā kaṇhasappe.
@@ -16,8 +16,7 @@ Dīghacārikavaggo tatiyo.
 
 Tassuddānaṁ
 
+Dve dīghacārikā vuttā,
 atinivāsamaccharī;
-
 Dve ca kulūpakā bhogā,
-
 bhattaṁ sappāpare duveti.

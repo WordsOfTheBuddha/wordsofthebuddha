@@ -1,9 +1,9 @@
 ---
 slug: an5.134
 source: suttacentral/bilara-data
+title: Yassaṁdisaṁsutta
 edition: ms
 granularity: paragraph
-title: Yassaṁdisaṁsutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rājā khattiyo muddhāvasitto yassaṁ yassaṁ disāyaṁ viharati, sakasmiṁyeva vijite viharati.

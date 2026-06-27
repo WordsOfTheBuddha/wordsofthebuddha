@@ -1,9 +1,9 @@
 ---
 slug: an3.109
 source: suttacentral/bilara-data
+title: Arakkhitasutta
 edition: ms
 granularity: paragraph
-title: Arakkhitasutta
 ---
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: an4.36
 source: suttacentral/bilara-data
+title: Doṇasutta
 edition: ms
 granularity: paragraph
-title: Doṇasutta
 ---
 
 Ekaṁ samayaṁ bhagavā antarā ca ukkaṭṭhaṁ antarā ca setabyaṁ addhānamaggappaṭipanno hoti. Doṇopi sudaṁ brāhmaṇo antarā ca ukkaṭṭhaṁ antarā ca setabyaṁ addhānamaggappaṭipanno hoti.
@@ -38,20 +38,16 @@ Seyyathāpi, brāhmaṇa, uppalaṁ vā padumaṁ vā puṇḍarīkaṁ vā udak
 
 Buddhoti maṁ, brāhmaṇa, dhārehīti.
 
+Yena devūpapatyassa,
 gandhabbo vā vihaṅgamo;
-
 Yakkhattaṁ yena gaccheyyaṁ,
-
 manussattañca abbaje;
-
 Te mayhaṁ āsavā khīṇā,
-
 viddhastā vinaḷīkatā.
 
+Puṇḍarīkaṁ yathā vaggu,
 Toyena nupalippati;
-
 Nupalippāmi lokena,
-
 Tasmā buddhosmi brāhmaṇā”ti.
 
 Chaṭṭhaṁ.

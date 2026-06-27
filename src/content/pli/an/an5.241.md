@@ -1,9 +1,9 @@
 ---
 slug: an5.241
 source: suttacentral/bilara-data
+title: Paṭhamaduccaritasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaduccaritasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā duccarite. Katame pañca? Attāpi attānaṁ upavadati; anuvicca viññū garahanti; pāpako kittisaddo abbhuggacchati; sammūḷho kālaṁ karoti; kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjati. Ime kho, bhikkhave, pañca ādīnavā duccarite.

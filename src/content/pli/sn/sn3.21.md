@@ -1,9 +1,9 @@
 ---
 slug: sn3.21
 source: suttacentral/bilara-data
+title: Puggalasutta
 edition: ms
 granularity: paragraph
-title: Puggalasutta
 ---
 
 Sāvatthinidānaṁ.

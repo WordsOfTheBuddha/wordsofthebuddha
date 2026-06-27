@@ -1,9 +1,9 @@
 ---
 slug: an4.112
 source: suttacentral/bilara-data
+title: Javasutta
 edition: ms
 granularity: paragraph
-title: Javasutta
 ---
 
 “Catūhi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati. Katamehi catūhi? Ajjavena, javena, khantiyā, soraccena— imehi kho, bhikkhave, catūhi aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti, rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati.

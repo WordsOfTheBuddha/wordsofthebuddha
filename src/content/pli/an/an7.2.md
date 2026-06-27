@@ -1,9 +1,9 @@
 ---
 slug: an7.2
 source: suttacentral/bilara-data
+title: Dutiyapiyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyapiyasutta
 ---
 
 “Sattahi, bhikkhave, dhammehi samannāgato bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca. Katamehi sattahi? Idha, bhikkhave, bhikkhu lābhakāmo ca hoti, sakkārakāmo ca hoti, anavaññattikāmo ca hoti, ahiriko ca hoti, anottappī ca, issukī ca, maccharī ca. Imehi kho, bhikkhave, sattahi dhammehi samannāgato bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.

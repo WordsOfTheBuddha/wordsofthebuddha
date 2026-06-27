@@ -1,9 +1,9 @@
 ---
 slug: an3.70
 source: suttacentral/bilara-data
+title: Uposathasutta
 edition: ms
 granularity: paragraph
-title: Uposathasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde.
@@ -80,38 +80,33 @@ Yāni, visākhe, mānusakāni aṭṭha vassasatāni, nimmānaratīnaṁ devāna
 
 Yāni, visākhe, mānusakāni soḷasa vassasatāni, paranimmitavasavattīnaṁ devānaṁ eso eko rattindivo. Tāya rattiyā tiṁsarattiyo māso. Tena māsena dvādasamāsiyo saṁvaccharo. Tena saṁvaccharena dibbāni soḷasa vassasahassāni paranimmitavasavattīnaṁ devānaṁ āyuppamāṇaṁ. Ṭhānaṁ kho panetaṁ, visākhe, vijjati yaṁ idhekacco itthī vā puriso vā aṭṭhaṅgasamannāgataṁ uposathaṁ upavasitvā kāyassa bhedā paraṁ maraṇā paranimmitavasavattīnaṁ devānaṁ sahabyataṁ upapajjeyya. Idaṁ kho panetaṁ, visākhe, sandhāya bhāsitaṁ: ‘kapaṇaṁ mānusakaṁ rajjaṁ dibbaṁ sukhaṁ upanidhāyā’ti.
 
+Pāṇaṁ na haññe na cadinnamādiye,
 Musā na bhāse na ca majjapo siyā;
-
 Abrahmacariyā virameyya methunā,
-
 Rattiṁ na bhuñjeyya vikālabhojanaṁ.
 
+Mālaṁ na dhāre na ca gandhamācare,
 Mañce chamāyaṁ va sayetha santhate;
-
 Etañhi aṭṭhaṅgikamāhuposathaṁ,
-
 Buddhena dukkhantagunā pakāsitaṁ.
 
+Cando ca suriyo ca ubho sudassanā,
 Obhāsayaṁ anupariyanti yāvatā;
-
 Tamonudā te pana antalikkhagā,
-
 Nabhe pabhāsanti disāvirocanā.
 
+Etasmiṁ yaṁ vijjati antare dhanaṁ,
 Muttā maṇi veḷuriyañca bhaddakaṁ;
-
 Siṅgī suvaṇṇaṁ atha vāpi kañcanaṁ,
-
 Yaṁ jātarūpaṁ haṭakanti vuccati.
 
+Aṭṭhaṅgupetassa uposathassa,
 Kalampi te nānubhavanti soḷasiṁ;
-
 Candappabhā tāragaṇā ca sabbe.
 
+Tasmā hi nārī ca naro ca sīlavā,
 Aṭṭhaṅgupetaṁ upavassuposathaṁ;
-
 Puññāni katvāna sukhudrayāni,
-
 Aninditā saggamupenti ṭhānan”ti.
 
 Dasamaṁ.
@@ -120,8 +115,7 @@ Mahāvaggo sattamo.
 
 Tassuddānaṁ
 
+Titthabhayañca venāgo,
 sarabho kesamuttiyā;
-
 Sāḷho cāpi kathāvatthu,
-
 titthiyamūluposathoti.

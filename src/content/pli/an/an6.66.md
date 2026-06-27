@@ -1,9 +1,9 @@
 ---
 slug: an6.66
 source: suttacentral/bilara-data
+title: Arahattasutta
 edition: ms
 granularity: paragraph
-title: Arahattasutta
 ---
 
 “Cha, bhikkhave, dhamme appahāya abhabbo arahattaṁ sacchikātuṁ. Katame cha? Thinaṁ, middhaṁ, uddhaccaṁ, kukkuccaṁ, assaddhiyaṁ, pamādaṁ— ime kho, bhikkhave, cha dhamme appahāya abhabbo arahattaṁ sacchikātuṁ.

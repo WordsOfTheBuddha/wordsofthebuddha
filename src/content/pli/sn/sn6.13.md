@@ -1,9 +1,9 @@
 ---
 slug: sn6.13
 source: suttacentral/bilara-data
+title: Andhakavindasutta
 edition: ms
 granularity: paragraph
-title: Andhakavindasutta
 ---
 
 Ekaṁ samayaṁ bhagavā māgadhesu viharati andhakavinde.

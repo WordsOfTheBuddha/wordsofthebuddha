@@ -1,9 +1,9 @@
 ---
 slug: an6.72
 source: suttacentral/bilara-data
+title: Balasutta
 edition: ms
 granularity: paragraph
-title: Balasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu abhabbo samādhismiṁ balataṁ pāpuṇituṁ. Katamehi chahi? Idha, bhikkhave, bhikkhu na samādhissa samāpattikusalo hoti, na samādhissa ṭhitikusalo hoti, na samādhissa vuṭṭhānakusalo hoti, asakkaccakārī ca hoti, asātaccakārī ca, asappāyakārī ca. Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu abhabbo samādhismiṁ balataṁ pāpuṇituṁ.

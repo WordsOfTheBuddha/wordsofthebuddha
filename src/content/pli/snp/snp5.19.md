@@ -1,9 +1,9 @@
 ---
 slug: snp5.19
 source: suttacentral/bilara-data
+title: Pārāyanānugītigāthā
 edition: ms
 granularity: paragraph
-title: Pārāyanānugītigāthā
 ---
 
 (iccāyasmā piṅgiyo)

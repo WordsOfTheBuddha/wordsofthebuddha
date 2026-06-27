@@ -1,9 +1,9 @@
 ---
 slug: sn3.12
 source: suttacentral/bilara-data
+title: Pañcarājasutta
 edition: ms
 granularity: paragraph
-title: Pañcarājasutta
 ---
 
 Sāvatthinidānaṁ.

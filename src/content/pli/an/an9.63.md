@@ -1,9 +1,9 @@
 ---
 slug: an9.63
 source: suttacentral/bilara-data
+title: Sikkhādubbalyasutta
 edition: ms
 granularity: paragraph
-title: Sikkhādubbalyasutta
 ---
 
 “Pañcimāni, bhikkhave, sikkhādubbalyāni. Katamāni pañca? Pāṇātipāto, adinnādānaṁ, kāmesumicchācāro, musāvādo, surāmerayamajjapamādaṭṭhānaṁ— imāni kho, bhikkhave, pañca sikkhādubbalyāni.

@@ -1,9 +1,9 @@
 ---
 slug: sn5.4
 source: suttacentral/bilara-data
+title: Vijayāsutta
 edition: ms
 granularity: paragraph
-title: Vijayāsutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an9.17
 source: suttacentral/bilara-data
+title: Kulasutta
 edition: ms
 granularity: paragraph
-title: Kulasutta
 ---
 
 “Navahi, bhikkhave, aṅgehi samannāgataṁ kulaṁ anupagantvā vā nālaṁ upagantuṁ, upagantvā vā nālaṁ nisīdituṁ. Katamehi navahi? Na manāpena paccuṭṭhenti, na manāpena abhivādenti, na manāpena āsanaṁ denti, santamassa pariguhanti, bahukampi thokaṁ denti, paṇītampi lūkhaṁ denti, asakkaccaṁ denti no sakkaccaṁ, na upanisīdanti dhammassavanāya, bhāsitamassa na sussūsanti. Imehi kho, bhikkhave, navahaṅgehi samannāgataṁ kulaṁ anupagantvā vā nālaṁ upagantuṁ upagantvā vā nālaṁ nisīdituṁ.

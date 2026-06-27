@@ -1,9 +1,9 @@
 ---
 slug: sn1.14
 source: suttacentral/bilara-data
+title: Khattiyasutta
 edition: ms
 granularity: paragraph
-title: Khattiyasutta
 ---
 
 “Khattiyo dvipadaṁ seṭṭho,

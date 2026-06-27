@@ -1,9 +1,9 @@
 ---
 slug: an6.81
 source: suttacentral/bilara-data
+title: Paṭhamanirayasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamanirayasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi chahi? Pāṇātipātī hoti, adinnādāyī hoti, kāmesumicchācārī hoti, musāvādī hoti, pāpiccho ca, micchādiṭṭhi ca. Imehi kho, bhikkhave, chahi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.

@@ -1,9 +1,9 @@
 ---
 slug: an6.16
 source: suttacentral/bilara-data
+title: Nakulapitusutta
 edition: ms
 granularity: paragraph
-title: Nakulapitusutta
 ---
 
 Ekaṁ samayaṁ bhagavā bhaggesu viharati susumāragire bhesakaḷāvane migadāye. Tena kho pana samayena nakulapitā gahapati ābādhiko hoti dukkhito bāḷhagilāno. Atha kho nakulamātā gahapatānī nakulapitaraṁ gahapatiṁ etadavoca:

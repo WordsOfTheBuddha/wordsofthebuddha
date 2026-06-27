@@ -1,9 +1,9 @@
 ---
 slug: dn4
 source: suttacentral/bilara-data
+title: Soṇadaṇḍasutta
 edition: ms
 granularity: paragraph
-title: Soṇadaṇḍasutta
 ---
 
 1. Campeyyakabrāhmaṇagahapatikā

@@ -1,9 +1,9 @@
 ---
 slug: sn7.18
 source: suttacentral/bilara-data
+title: Kaṭṭhahārasutta
 edition: ms
 granularity: paragraph
-title: Kaṭṭhahārasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu viharati aññatarasmiṁ vanasaṇḍe.

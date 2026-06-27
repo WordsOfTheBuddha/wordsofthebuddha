@@ -1,9 +1,9 @@
 ---
 slug: an3.115
 source: suttacentral/bilara-data
+title: Appameyyasutta
 edition: ms
 granularity: paragraph
-title: Appameyyasutta
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo? Suppameyyo, duppameyyo, appameyyo.

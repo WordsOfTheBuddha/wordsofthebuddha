@@ -1,9 +1,9 @@
 ---
 slug: sn8.1
 source: suttacentral/bilara-data
+title: Nikkhantasutta
 edition: ms
 granularity: paragraph
-title: Nikkhantasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā vaṅgīso āḷaviyaṁ viharati aggāḷave cetiye āyasmatā nigrodhakappena upajjhāyena saddhiṁ.

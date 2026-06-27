@@ -1,9 +1,9 @@
 ---
 slug: an4.267
 source: suttacentral/bilara-data
+title: Musāvādīsutta
 edition: ms
 granularity: paragraph
-title: Musāvādīsutta
 ---
 
 …pe… Attanā ca musāvādī hoti, parañca musāvāde samādapeti, musāvāde ca samanuñño hoti, musāvādassa ca vaṇṇaṁ bhāsati—imehi kho …pe….

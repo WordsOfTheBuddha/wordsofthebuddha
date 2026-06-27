@@ -1,9 +1,9 @@
 ---
 slug: an3.1
 source: suttacentral/bilara-data
+title: Bhayasutta
 edition: ms
 granularity: paragraph
-title: Bhayasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

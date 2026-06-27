@@ -1,9 +1,9 @@
 ---
 slug: sn1.47
 source: suttacentral/bilara-data
+title: Vanaropasutta
 edition: ms
 granularity: paragraph
-title: Vanaropasutta
 ---
 
 “Kesaṁ divā ca ratto ca,

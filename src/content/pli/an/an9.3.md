@@ -1,9 +1,9 @@
 ---
 slug: an9.3
 source: suttacentral/bilara-data
+title: Meghiyasutta
 edition: ms
 granularity: paragraph
-title: Meghiyasutta
 ---
 
 Ekaṁ samayaṁ bhagavā cālikāyaṁ viharati cālikāpabbate.

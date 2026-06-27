@@ -1,9 +1,9 @@
 ---
 slug: an5.12
 source: suttacentral/bilara-data
+title: Kūṭasutta
 edition: ms
 granularity: paragraph
-title: Kūṭasutta
 ---
 
 “Pañcimāni, bhikkhave, sekhabalāni. Katamāni pañca? Saddhābalaṁ, hirībalaṁ, ottappabalaṁ, vīriyabalaṁ, paññābalaṁ— imāni kho, bhikkhave, pañca sekhabalāni. Imesaṁ kho, bhikkhave, pañcannaṁ sekhabalānaṁ etaṁ aggaṁ etaṁ saṅgāhikaṁ etaṁ saṅghātaniyaṁ, yadidaṁ paññābalaṁ.

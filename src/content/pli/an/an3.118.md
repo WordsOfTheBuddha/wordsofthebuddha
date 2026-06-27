@@ -1,9 +1,9 @@
 ---
 slug: an3.118
 source: suttacentral/bilara-data
+title: Apaṇṇakasutta
 edition: ms
 granularity: paragraph
-title: Apaṇṇakasutta
 ---
 
 “Tisso imā, bhikkhave, vipattiyo. Katamā tisso? Sīlavipatti, cittavipatti, diṭṭhivipatti.

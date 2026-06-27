@@ -1,9 +1,9 @@
 ---
 slug: an4.46
 source: suttacentral/bilara-data
+title: Dutiyarohitassasutta
 edition: ms
 granularity: paragraph
-title: Dutiyarohitassasutta
 ---
 
 Atha kho bhagavā tassā rattiyā accayena bhikkhū āmantesi: “imaṁ, bhikkhave, rattiṁ rohitasso devaputto abhikkantāya rattiyā abhikkantavaṇṇo kevalakappaṁ jetavanaṁ obhāsetvā yenāhaṁ tenupasaṅkami; upasaṅkamitvā maṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhito kho, bhikkhave, rohitasso devaputto maṁ etadavoca: ‘yattha nu kho, bhante, na jāyati na jīyati na mīyati na cavati na upapajjati, sakkā nu kho so, bhante, gamanena lokassa anto ñātuṁ vā daṭṭhuṁ vā pāpuṇituṁ vā’ti?
@@ -16,16 +16,14 @@ Acchariyaṁ, bhante, abbhutaṁ, bhante. Yāva subhāsitamidaṁ, bhante, bhaga
 
 ‘Yattha kho, āvuso, na jāyati na jīyati na mīyati na cavati na upapajjati, nāhaṁ, taṁ gamanena lokassa antaṁ ñāteyyaṁ daṭṭheyyaṁ patteyyanti vadāmī’ti. Na cāhaṁ, āvuso, appatvāva lokassa antaṁ dukkhassantakiriyaṁ vadāmi. Api cāhaṁ, āvuso, imasmiṁyeva byāmamatte kaḷevare sasaññimhi samanake lokañca paññāpemi lokasamudayañca lokanirodhañca lokanirodhagāminiñca paṭipadanti.
 
+Gamanena na pattabbo,
 lokassanto kudācanaṁ;
-
 Na ca appatvā lokantaṁ,
-
 dukkhā atthi pamocanaṁ.
 
+Tasmā have lokavidū sumedho,
 Lokantagū vusitabrahmacariyo;
-
 Lokassa antaṁ samitāvi ñatvā,
-
 Nāsīsatī lokamimaṁ parañcā”ti.
 
 Chaṭṭhaṁ.

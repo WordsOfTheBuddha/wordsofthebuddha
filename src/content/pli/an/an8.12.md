@@ -1,9 +1,9 @@
 ---
 slug: an8.12
 source: suttacentral/bilara-data
+title: Sīhasutta
 edition: ms
 granularity: paragraph
-title: Sīhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Tena kho pana samayena sambahulā abhiññātā abhiññātā licchavī santhāgāre sannisinnā sannipatitā anekapariyāyena buddhassa vaṇṇaṁ bhāsanti, dhammassa vaṇṇaṁ bhāsanti, saṅghassa vaṇṇaṁ bhāsanti.

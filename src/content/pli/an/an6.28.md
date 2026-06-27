@@ -1,9 +1,9 @@
 ---
 slug: an6.28
 source: suttacentral/bilara-data
+title: Dutiyasamayasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasamayasutta
 ---
 
 Ekaṁ samayaṁ sambahulā therā bhikkhū bārāṇasiyaṁ viharanti isipatane migadāye. Atha kho tesaṁ therānaṁ bhikkhūnaṁ pacchābhattaṁ piṇḍapātapaṭikkantānaṁ maṇḍalamāḷe sannisinnānaṁ sannipatitānaṁ ayamantarākathā udapādi:

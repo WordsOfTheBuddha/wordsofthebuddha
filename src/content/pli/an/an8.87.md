@@ -1,9 +1,9 @@
 ---
 slug: an8.87
 source: suttacentral/bilara-data
+title: Pattanikujjanasutta
 edition: ms
 granularity: paragraph
-title: Pattanikujjanasutta
 ---
 
 “Aṭṭhahi, bhikkhave, aṅgehi samannāgatassa upāsakassa ākaṅkhamāno saṅgho pattaṁ nikkujjeyya. Katamehi aṭṭhahi? Bhikkhūnaṁ alābhāya parisakkati, bhikkhūnaṁ anatthāya parisakkati, bhikkhūnaṁ avāsāya parisakkati, bhikkhū akkosati paribhāsati, bhikkhū bhikkhūhi bhedeti, buddhassa avaṇṇaṁ bhāsati, dhammassa avaṇṇaṁ bhāsati, saṅghassa avaṇṇaṁ bhāsati. Imehi kho, bhikkhave, aṭṭhahaṅgehi samannāgatassa upāsakassa ākaṅkhamāno saṅgho pattaṁ nikkujjeyya.

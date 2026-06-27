@@ -1,9 +1,9 @@
 ---
 slug: an7.39
 source: suttacentral/bilara-data
+title: Dutiyapaṭisambhidāsutta
 edition: ms
 granularity: paragraph
-title: Dutiyapaṭisambhidāsutta
 ---
 
 “Sattahi, bhikkhave, dhammehi samannāgato sāriputto catasso paṭisambhidā sayaṁ abhiññā sacchikatvā upasampajja viharati. Katamehi sattahi?

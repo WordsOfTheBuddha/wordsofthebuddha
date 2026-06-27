@@ -1,9 +1,9 @@
 ---
 slug: an3.150
 source: suttacentral/bilara-data
+title: Paṭhamakhatasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamakhatasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bālo abyatto asappuriso khataṁ upahataṁ attānaṁ pariharati, sāvajjo ca hoti sānuvajjo ca viññūnaṁ, bahuñca apuññaṁ pasavati. Katamehi tīhi? Akusalena kāyakammena, akusalena vacīkammena, akusalena manokammena—

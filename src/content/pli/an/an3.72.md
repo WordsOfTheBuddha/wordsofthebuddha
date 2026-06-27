@@ -1,9 +1,9 @@
 ---
 slug: an3.72
 source: suttacentral/bilara-data
+title: Ājīvakasutta
 edition: ms
 granularity: paragraph
-title: Ājīvakasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati ghositārāme. Atha kho aññataro ājīvakasāvako gahapati yenāyasmā ānando tenupasaṅkami; upasaṅkamitvā āyasmantaṁ ānandaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so ājīvakasāvako gahapati āyasmantaṁ ānandaṁ etadavoca:

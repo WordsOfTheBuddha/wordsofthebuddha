@@ -1,9 +1,9 @@
 ---
 slug: sn1.39
 source: suttacentral/bilara-data
+title: Paṭhamapajjunnadhītusutta
 edition: ms
 granularity: paragraph
-title: Paṭhamapajjunnadhītusutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.

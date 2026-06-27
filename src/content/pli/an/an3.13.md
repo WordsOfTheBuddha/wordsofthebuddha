@@ -1,9 +1,9 @@
 ---
 slug: an3.13
 source: suttacentral/bilara-data
+title: Āsaṁsasutta
 edition: ms
 granularity: paragraph
-title: Āsaṁsasutta
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo? Nirāso, āsaṁso, vigatāso. Katamo ca, bhikkhave puggalo nirāso? Idha, bhikkhave, ekacco puggalo nīce kule paccājāto hoti, caṇḍālakule vā venakule vā nesādakule vā rathakārakule vā pukkusakule vā dalidde appannapānabhojane kasiravuttike, yattha kasirena ghāsacchādo labbhati. So ca hoti dubbaṇṇo duddasiko okoṭimako bavhābādho kāṇo vā kuṇī vā khañjo vā pakkhahato vā, na lābhī annassa pānassa vatthassa yānassa mālāgandhavilepanassa seyyāvasathapadīpeyyassa. So suṇāti: ‘itthannāmo kira khattiyo khattiyehi khattiyābhisekena abhisitto’ti. Tassa na evaṁ hoti: ‘kudāssu nāma mampi khattiyā khattiyābhisekena abhisiñcissantī’ti. Ayaṁ vuccati, bhikkhave, puggalo nirāso.

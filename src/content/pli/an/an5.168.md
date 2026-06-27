@@ -1,9 +1,9 @@
 ---
 slug: an5.168
 source: suttacentral/bilara-data
+title: Sīlasutta
 edition: ms
 granularity: paragraph
-title: Sīlasutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi:

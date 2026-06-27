@@ -1,9 +1,9 @@
 ---
 slug: an4.45
 source: suttacentral/bilara-data
+title: Rohitassasutta
 edition: ms
 granularity: paragraph
-title: Rohitassasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -22,16 +22,14 @@ Acchariyaṁ, bhante, abbhutaṁ, bhante. Yāva subhāsitamidaṁ, bhante, bhaga
 
 “‘Yattha kho, āvuso, na jāyati na jīyati na mīyati na cavati na upapajjati, nāhaṁ taṁ gamanena lokassa antaṁ ñāteyyaṁ daṭṭheyyaṁ patteyyan’ti vadāmi. Na cāhaṁ, āvuso, appatvāva lokassa antaṁ dukkhassa antakiriyaṁ vadāmi. Api cāhaṁ, āvuso, imasmiṁyeva byāmamatte kaḷevare sasaññimhi samanake lokañca paññāpemi lokasamudayañca lokanirodhañca lokanirodhagāminiñca paṭipadanti.
 
+Gamanena na pattabbo,
 lokassanto kudācanaṁ;
-
 Na ca appatvā lokantaṁ,
-
 dukkhā atthi pamocanaṁ.
 
+Tasmā have lokavidū sumedho,
 Lokantagū vusitabrahmacariyo;
-
 Lokassa antaṁ samitāvi ñatvā,
-
 Nāsīsatī lokamimaṁ parañcā”ti.
 
 Pañcamaṁ.

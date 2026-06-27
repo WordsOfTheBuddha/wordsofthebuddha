@@ -1,9 +1,9 @@
 ---
 slug: sn5.9
 source: suttacentral/bilara-data
+title: Selāsutta
 edition: ms
 granularity: paragraph
-title: Selāsutta
 ---
 
 Sāvatthinidānaṁ.

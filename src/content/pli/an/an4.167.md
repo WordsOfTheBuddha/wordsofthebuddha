@@ -1,9 +1,9 @@
 ---
 slug: an4.167
 source: suttacentral/bilara-data
+title: Mahāmoggallānasutta
 edition: ms
 granularity: paragraph
-title: Mahāmoggallānasutta
 ---
 
 Atha kho āyasmā sāriputto yenāyasmā mahāmoggallāno tenupasaṅkami; upasaṅkamitvā āyasmatā mahāmoggallānena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā sāriputto āyasmantaṁ mahāmoggallānaṁ etadavoca:

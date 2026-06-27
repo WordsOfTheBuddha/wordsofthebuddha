@@ -1,9 +1,9 @@
 ---
 slug: sn1.69
 source: suttacentral/bilara-data
+title: Icchāsutta
 edition: ms
 granularity: paragraph
-title: Icchāsutta
 ---
 
 “Kenassu bajjhatī loko,

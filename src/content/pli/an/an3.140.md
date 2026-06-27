@@ -1,9 +1,9 @@
 ---
 slug: an3.140
 source: suttacentral/bilara-data
+title: Assakhaḷuṅkasutta
 edition: ms
 granularity: paragraph
-title: Assakhaḷuṅkasutta
 ---
 
 “Tayo ca, bhikkhave, assakhaḷuṅke desessāmi tayo ca purisakhaḷuṅke. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.

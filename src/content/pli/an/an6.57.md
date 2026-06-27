@@ -1,9 +1,9 @@
 ---
 slug: an6.57
 source: suttacentral/bilara-data
+title: Chaḷabhijātisutta
 edition: ms
 granularity: paragraph
-title: Chaḷabhijātisutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: sn1.34
 source: suttacentral/bilara-data
+title: Nasantisutta
 edition: ms
 granularity: paragraph
-title: Nasantisutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

@@ -1,9 +1,9 @@
 ---
 slug: an9.8
 source: suttacentral/bilara-data
+title: Sajjhasutta
 edition: ms
 granularity: paragraph
-title: Sajjhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Atha kho sajjho paribbājako yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho sajjho paribbājako bhagavantaṁ etadavoca:

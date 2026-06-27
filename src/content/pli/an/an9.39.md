@@ -1,9 +1,9 @@
 ---
 slug: an9.39
 source: suttacentral/bilara-data
+title: Devāsurasaṅgāmasutta
 edition: ms
 granularity: paragraph
-title: Devāsurasaṅgāmasutta
 ---
 
 “Bhūtapubbaṁ, bhikkhave, devāsurasaṅgāmo samupabyūḷho ahosi. Tasmiṁ kho pana, bhikkhave, saṅgāme asurā jiniṁsu, devā parājayiṁsu. Parājitā ca, bhikkhave, devā apayiṁsuyeva uttarenābhimukhā, abhiyiṁsu asurā.

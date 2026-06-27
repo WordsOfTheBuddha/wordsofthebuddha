@@ -1,9 +1,9 @@
 ---
 slug: sn4.22
 source: suttacentral/bilara-data
+title: Samiddhisutta
 edition: ms
 granularity: paragraph
-title: Samiddhisutta
 ---
 
 Ekaṁ samayaṁ bhagavā sakkesu viharati silāvatiyaṁ.

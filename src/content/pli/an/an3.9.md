@@ -1,9 +1,9 @@
 ---
 slug: an3.9
 source: suttacentral/bilara-data
+title: Khatasutta
 edition: ms
 granularity: paragraph
-title: Khatasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bālo abyatto asappuriso khataṁ upahataṁ attānaṁ pariharati, sāvajjo ca hoti sānuvajjo ca viññūnaṁ, bahuñca apuññaṁ pasavati. Katamehi tīhi? Kāyaduccaritena, vacīduccaritena, manoduccaritena.

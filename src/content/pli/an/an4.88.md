@@ -1,9 +1,9 @@
 ---
 slug: an4.88
 source: suttacentral/bilara-data
+title: Saṁyojanasutta
 edition: ms
 granularity: paragraph
-title: Saṁyojanasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro? Samaṇamacalo, samaṇapuṇḍarīko, samaṇapadumo, samaṇesu samaṇasukhumālo.

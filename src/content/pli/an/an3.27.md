@@ -1,9 +1,9 @@
 ---
 slug: an3.27
 source: suttacentral/bilara-data
+title: Jigucchitabbasutta
 edition: ms
 granularity: paragraph
-title: Jigucchitabbasutta
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo? Atthi, bhikkhave, puggalo jigucchitabbo na sevitabbo na bhajitabbo na payirupāsitabbo. Atthi, bhikkhave, puggalo ajjhupekkhitabbo na sevitabbo na bhajitabbo na payirupāsitabbo. Atthi, bhikkhave, puggalo sevitabbo bhajitabbo payirupāsitabbo.
@@ -16,10 +16,9 @@ Katamo ca, bhikkhave, puggalo sevitabbo bhajitabbo payirupāsitabbo? Idha, bhikk
 
 Ime kho, bhikkhave, tayo puggalā santo saṁvijjamānā lokasminti.
 
+Nihīyati puriso nihīnasevī,
 Na ca hāyetha kadāci tulyasevī;
-
 Seṭṭhamupanamaṁ udeti khippaṁ,
-
 Tasmā attano uttariṁ bhajethā”ti.
 
 Sattamaṁ.

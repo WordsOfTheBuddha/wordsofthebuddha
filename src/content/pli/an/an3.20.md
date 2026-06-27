@@ -1,9 +1,9 @@
 ---
 slug: an3.20
 source: suttacentral/bilara-data
+title: Dutiyapāpaṇikasutta
 edition: ms
 granularity: paragraph
-title: Dutiyapāpaṇikasutta
 ---
 
 “Tīhi, bhikkhave, aṅgehi samannāgato pāpaṇiko nacirasseva mahattaṁ vepullattaṁ pāpuṇāti bhogesu. Katamehi tīhi? Idha, bhikkhave, pāpaṇiko cakkhumā ca hoti vidhuro ca nissayasampanno ca.
@@ -34,8 +34,7 @@ Rathakāravaggo dutiyo.
 
 Tassuddānaṁ
 
+Ñāto sāraṇīyo bhikkhu,
 cakkavattī sacetano;
-
 Apaṇṇakattā devo ca,
-
 duve pāpaṇikena cāti.

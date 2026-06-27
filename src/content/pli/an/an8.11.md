@@ -1,9 +1,9 @@
 ---
 slug: an8.11
 source: suttacentral/bilara-data
+title: Verañjasutta
 edition: ms
 granularity: paragraph
-title: Verañjasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā verañjāyaṁ viharati naḷerupucimandamūle. Atha kho verañjo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho verañjo brāhmaṇo bhagavantaṁ etadavoca:

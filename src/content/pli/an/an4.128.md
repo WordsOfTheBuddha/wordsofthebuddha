@@ -1,9 +1,9 @@
 ---
 slug: an4.128
 source: suttacentral/bilara-data
+title: Dutiyatathāgataacchariyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyatathāgataacchariyasutta
 ---
 
 “Tathāgatassa, bhikkhave, arahato sammāsambuddhassa pātubhāvā cattāro acchariyā abbhutā dhammā pātubhavanti. Katame cattāro?

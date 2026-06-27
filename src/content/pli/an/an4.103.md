@@ -1,9 +1,9 @@
 ---
 slug: an4.103
 source: suttacentral/bilara-data
+title: Kumbhasutta
 edition: ms
 granularity: paragraph
-title: Kumbhasutta
 ---
 
 “Cattārome, bhikkhave, kumbhā. Katame cattāro?

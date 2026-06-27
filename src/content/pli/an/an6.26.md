@@ -1,9 +1,9 @@
 ---
 slug: an6.26
 source: suttacentral/bilara-data
+title: Mahākaccānasutta
 edition: ms
 granularity: paragraph
-title: Mahākaccānasutta
 ---
 
 Tatra kho āyasmā mahākaccāno bhikkhū āmantesi: “āvuso bhikkhave”ti.

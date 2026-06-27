@@ -1,9 +1,9 @@
 ---
 slug: snp2.12
 source: suttacentral/bilara-data
+title: Nigrodhakappa (vaṅgīsa) sutta
 edition: ms
 granularity: paragraph
-title: Nigrodhakappa (vaṅgīsa) sutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā āḷaviyaṁ viharati aggāḷave cetiye. Tena kho pana samayena āyasmato vaṅgīsassa upajjhāyo nigrodhakappo nāma thero aggāḷave cetiye aciraparinibbuto hoti. Atha kho āyasmato vaṅgīsassa rahogatassa paṭisallīnassa evaṁ cetaso parivitakko udapādi— parinibbuto nu kho me upajjhāyo udāhu no parinibbutoti? Atha kho āyasmā vaṅgīso sāyanhasamayaṁ paṭisallānā vuṭṭhito yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā vaṅgīso bhagavantaṁ etadavoca— idha mayhaṁ, bhante, rahogatassa paṭisallīnassa evaṁ cetaso parivitakko udapādi— parinibbuto nu kho me upajjhāyo, udāhu no parinibbutoti. Atha kho āyasmā vaṅgīso uṭṭhāyāsanā ekaṁsaṁ cīvaraṁ katvā yena bhagavā tenañjaliṁ paṇāmetvā bhagavantaṁ gāthāya ajjhabhāsi:

@@ -1,9 +1,9 @@
 ---
 slug: an4.102
 source: suttacentral/bilara-data
+title: Dutiyavalāhakasutta
 edition: ms
 granularity: paragraph
-title: Dutiyavalāhakasutta
 ---
 
 “Cattārome, bhikkhave, valāhakā. Katame cattāro?

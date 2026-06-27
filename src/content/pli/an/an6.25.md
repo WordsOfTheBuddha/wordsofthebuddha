@@ -1,9 +1,9 @@
 ---
 slug: an6.25
 source: suttacentral/bilara-data
+title: Anussatiṭṭhānasutta
 edition: ms
 granularity: paragraph
-title: Anussatiṭṭhānasutta
 ---
 
 “Chayimāni, bhikkhave, anussatiṭṭhānāni. Katamāni cha?

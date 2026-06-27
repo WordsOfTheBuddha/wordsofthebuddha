@@ -1,9 +1,9 @@
 ---
 slug: an5.163
 source: suttacentral/bilara-data
+title: Sākacchasutta
 edition: ms
 granularity: paragraph
-title: Sākacchasutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.

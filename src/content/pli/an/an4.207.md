@@ -1,9 +1,9 @@
 ---
 slug: an4.207
 source: suttacentral/bilara-data
+title: Paṭhamapāpadhammasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamapāpadhammasutta
 ---
 
 “Pāpañca vo, bhikkhave, desessāmi, pāpena pāpatarañca; kalyāṇañca, kalyāṇena kalyāṇatarañca. Taṁ suṇātha …pe….

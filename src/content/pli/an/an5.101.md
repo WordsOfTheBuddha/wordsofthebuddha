@@ -1,9 +1,9 @@
 ---
 slug: an5.101
 source: suttacentral/bilara-data
+title: Sārajjasutta
 edition: ms
 granularity: paragraph
-title: Sārajjasutta
 ---
 
 “Pañcime, bhikkhave, sekhavesārajjakaraṇā dhammā. Katame pañca? Idha, bhikkhave, bhikkhu saddho hoti, sīlavā hoti, bahussuto hoti, āraddhavīriyo hoti, paññavā hoti.

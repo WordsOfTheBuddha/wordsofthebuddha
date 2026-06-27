@@ -1,9 +1,9 @@
 ---
 slug: an4.260
 source: suttacentral/bilara-data
+title: Dutiyaājānīyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaājānīyasutta
 ---
 
 “Catūhi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati. Katamehi catūhi? Idha, bhikkhave, rañño bhadro assājānīyo vaṇṇasampanno ca hoti, balasampanno ca, javasampanno ca, ārohapariṇāhasampanno ca. Imehi kho, bhikkhave, catūhi aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati.

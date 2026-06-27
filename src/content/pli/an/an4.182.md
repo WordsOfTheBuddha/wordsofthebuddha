@@ -1,9 +1,9 @@
 ---
 slug: an4.182
 source: suttacentral/bilara-data
+title: Pāṭibhogasutta
 edition: ms
 granularity: paragraph
-title: Pāṭibhogasutta
 ---
 
 “Catunnaṁ, bhikkhave, dhammānaṁ natthi koci pāṭibhogo— samaṇo vā brāhmaṇo vā devo vā māro vā brahmā vā koci vā lokasmiṁ.

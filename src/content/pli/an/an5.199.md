@@ -1,9 +1,9 @@
 ---
 slug: an5.199
 source: suttacentral/bilara-data
+title: Kulasutta
 edition: ms
 granularity: paragraph
-title: Kulasutta
 ---
 
 “Yaṁ, bhikkhave, sīlavanto pabbajitā kulaṁ upasaṅkamanti, tattha manussā pañcahi ṭhānehi bahuṁ puññaṁ pasavanti. Katamehi pañcahi?

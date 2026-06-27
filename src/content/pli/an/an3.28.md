@@ -1,9 +1,9 @@
 ---
 slug: an3.28
 source: suttacentral/bilara-data
+title: Gūthabhāṇīsutta
 edition: ms
 granularity: paragraph
-title: Gūthabhāṇīsutta
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo? Gūthabhāṇī, pupphabhāṇī, madhubhāṇī.

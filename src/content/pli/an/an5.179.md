@@ -1,9 +1,9 @@
 ---
 slug: an5.179
 source: suttacentral/bilara-data
+title: Gihisutta
 edition: ms
 granularity: paragraph
-title: Gihisutta
 ---
 
 Atha kho anāthapiṇḍiko gahapati pañcamattehi upāsakasatehi parivuto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Atha kho bhagavā āyasmantaṁ sāriputtaṁ āmantesi:
@@ -24,94 +24,79 @@ Puna caparaṁ, sāriputta, ariyasāvako ariyakantehi sīlehi samannāgato hoti 
 
 Yaṁ kañci, sāriputta, jāneyyātha gihiṁ odātavasanaṁ—imesu pañcasu sikkhāpadesu saṁvutakammantaṁ, imesañca catunnaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhiṁ akicchalābhiṁ akasiralābhiṁ, so ākaṅkhamāno attanāva attānaṁ byākareyya: ‘khīṇanirayomhi khīṇatiracchānayoni khīṇapettivisayo khīṇāpāyaduggativinipāto, sotāpannohamasmi avinipātadhammo niyato sambodhiparāyaṇo’ti.
 
+Nirayesu bhayaṁ disvā,
 pāpāni parivajjaye;
-
 Ariyadhammaṁ samādāya,
-
 paṇḍito parivajjaye.
 
+Na hiṁse pāṇabhūtāni,
 vijjamāne parakkame;
-
 Musā ca na bhaṇe jānaṁ,
-
 adinnaṁ na parāmase.
 
+Sehi dārehi santuṭṭho,
 paradārañca ārame;
-
 Merayaṁ vāruṇiṁ jantu,
-
 na pive cittamohaniṁ.
 
+Anussareyya sambuddhaṁ,
 dhammañcānuvitakkaye;
-
 Abyāpajjaṁ hitaṁ cittaṁ,
-
 devalokāya bhāvaye.
 
+Upaṭṭhite deyyadhamme,
 puññatthassa jigīsato;
-
 Santesu paṭhamaṁ dinnā,
-
 vipulā hoti dakkhiṇā.
 
+Santo have pavakkhāmi,
 sāriputta suṇohi me;
-
 Iti kaṇhāsu setāsu,
-
 rohiṇīsu harīsu vā.
 
+Kammāsāsu sarūpāsu,
 gosu pārevatāsu vā;
-
 Yāsu kāsuci etāsu,
-
 danto jāyati puṅgavo.
 
+Dhorayho balasampanno,
 kalyāṇajavanikkamo;
-
 Tameva bhāre yuñjanti,
-
 nāssa vaṇṇaṁ parikkhare.
 
+Evamevaṁ manussesu,
 yasmiṁ kismiñci jātiye;
-
 Khattiye brāhmaṇe vesse,
-
 sudde caṇḍālapukkuse.
 
+Yāsu kāsuci etāsu,
 danto jāyati subbato;
-
 Dhammaṭṭho sīlasampanno,
-
 saccavādī hirīmano.
 
+Pahīnajātimaraṇo,
 brahmacariyassa kevalī;
-
 Pannabhāro visaṁyutto,
-
 katakicco anāsavo.
 
+Pāragū sabbadhammānaṁ,
 anupādāya nibbuto;
-
 Tasmiñca viraje khette,
-
 vipulā hoti dakkhiṇā.
 
+Bālā ca avijānantā,
 dummedhā assutāvino;
-
 Bahiddhā dadanti dānāni,
-
 na hi sante upāsare.
 
+Ye ca sante upāsanti,
 sappaññe dhīrasammate;
-
 Saddhā ca nesaṁ sugate,
-
 mūlajātā patiṭṭhitā.
 
+Devalokañca te yanti,
 kule vā idha jāyare;
-
 Anupubbena nibbānaṁ,
-
 adhigacchanti paṇḍitā”ti.
 
 Navamaṁ.

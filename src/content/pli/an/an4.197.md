@@ -1,9 +1,9 @@
 ---
 slug: an4.197
 source: suttacentral/bilara-data
+title: Mallikādevīsutta
 edition: ms
 granularity: paragraph
-title: Mallikādevīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho mallikā devī yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnā kho mallikā devī bhagavantaṁ etadavoca:

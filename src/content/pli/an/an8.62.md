@@ -1,9 +1,9 @@
 ---
 slug: an8.62
 source: suttacentral/bilara-data
+title: Alaṁsutta
 edition: ms
 granularity: paragraph
-title: Alaṁsutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁ attano alaṁ paresaṁ. Katamehi chahi? Idha, bhikkhave, bhikkhu khippanisanti ca hoti kusalesu dhammesu; sutānañca dhammānaṁ dhāraṇajātiko hoti; dhātānañca dhammānaṁ atthūpaparikkhitā hoti; atthamaññāya dhammamaññāya dhammānudhammappaṭipanno ca hoti; kalyāṇavāco ca hoti kalyāṇavākkaraṇo, poriyā vācāya samannāgato vissaṭṭhāya anelagaḷāya atthassa viññāpaniyā; sandassako ca hoti samādapako samuttejako sampahaṁsako sabrahmacārīnaṁ. Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu alaṁ attano alaṁ paresaṁ.

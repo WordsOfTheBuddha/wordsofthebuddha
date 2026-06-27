@@ -1,9 +1,9 @@
 ---
 slug: an5.104
 source: suttacentral/bilara-data
+title: Samaṇasukhumālasutta
 edition: ms
 granularity: paragraph
-title: Samaṇasukhumālasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu samaṇesu samaṇasukhumālo hoti.

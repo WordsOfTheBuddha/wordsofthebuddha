@@ -1,9 +1,9 @@
 ---
 slug: sn1.68
 source: suttacentral/bilara-data
+title: Pihitasutta
 edition: ms
 granularity: paragraph
-title: Pihitasutta
 ---
 
 “Kenassu pihito loko,

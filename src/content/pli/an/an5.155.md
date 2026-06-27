@@ -1,9 +1,9 @@
 ---
 slug: an5.155
 source: suttacentral/bilara-data
+title: Dutiyasaddhammasammosasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasaddhammasammosasutta
 ---
 
 “Pañcime, bhikkhave, dhammā saddhammassa sammosāya antaradhānāya saṁvattanti. Katame pañca?

@@ -1,9 +1,9 @@
 ---
 slug: sn1.48
 source: suttacentral/bilara-data
+title: Jetavanasutta
 edition: ms
 granularity: paragraph
-title: Jetavanasutta
 ---
 
 “Idañhi taṁ jetavanaṁ,

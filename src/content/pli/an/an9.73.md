@@ -1,9 +1,9 @@
 ---
 slug: an9.73
 source: suttacentral/bilara-data
+title: Sikkhasutta
 edition: ms
 granularity: paragraph
-title: Sikkhasutta
 ---
 
 “Pañcimāni, bhikkhave, sikkhādubbalyāni. Katamāni pañca? Pāṇātipāto …pe… surāmerayamajjapamādaṭṭhānaṁ— imāni kho, bhikkhave, pañca sikkhādubbalyāni.

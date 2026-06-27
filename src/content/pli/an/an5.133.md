@@ -1,9 +1,9 @@
 ---
 slug: an5.133
 source: suttacentral/bilara-data
+title: Dhammarājāsutta
 edition: ms
 granularity: paragraph
-title: Dhammarājāsutta
 ---
 
 “Yopi so, bhikkhave, rājā cakkavattī dhammiko dhammarājā, sopi na arājakaṁ cakkaṁ vattetī”ti.

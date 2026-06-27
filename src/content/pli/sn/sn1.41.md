@@ -1,9 +1,9 @@
 ---
 slug: sn1.41
 source: suttacentral/bilara-data
+title: Ādittasutta
 edition: ms
 granularity: paragraph
-title: Ādittasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

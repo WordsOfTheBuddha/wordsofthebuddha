@@ -1,9 +1,9 @@
 ---
 slug: an5.76
 source: suttacentral/bilara-data
+title: Dutiyayodhājīvasutta
 edition: ms
 granularity: paragraph
-title: Dutiyayodhājīvasutta
 ---
 
 “Pañcime, bhikkhave, yodhājīvā santo saṁvijjamānā lokasmiṁ. Katame pañca?

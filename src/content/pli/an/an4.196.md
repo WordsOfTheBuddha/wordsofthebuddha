@@ -1,9 +1,9 @@
 ---
 slug: an4.196
 source: suttacentral/bilara-data
+title: Sāḷhasutta
 edition: ms
 granularity: paragraph
-title: Sāḷhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho sāḷho ca licchavi abhayo ca licchavi yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinno kho sāḷho licchavi bhagavantaṁ etadavoca:

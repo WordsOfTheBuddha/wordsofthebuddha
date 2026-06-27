@@ -1,9 +1,9 @@
 ---
 slug: an3.141
 source: suttacentral/bilara-data
+title: Assaparassasutta
 edition: ms
 granularity: paragraph
-title: Assaparassasutta
 ---
 
 “Tayo ca, bhikkhave, assaparasse desessāmi tayo ca purisaparasse. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.

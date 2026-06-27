@@ -1,9 +1,9 @@
 ---
 slug: an3.64
 source: suttacentral/bilara-data
+title: Sarabhasutta
 edition: ms
 granularity: paragraph
-title: Sarabhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.

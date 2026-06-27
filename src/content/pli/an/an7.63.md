@@ -1,9 +1,9 @@
 ---
 slug: an7.63
 source: suttacentral/bilara-data
+title: Bhariyāsutta
 edition: ms
 granularity: paragraph
-title: Bhariyāsutta
 ---
 
 Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya yena anāthapiṇḍikassa gahapatissa nivesanaṁ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.

@@ -1,9 +1,9 @@
 ---
 slug: sn1.42
 source: suttacentral/bilara-data
+title: Kiṁdadasutta
 edition: ms
 granularity: paragraph
-title: Kiṁdadasutta
 ---
 
 “Kiṁdado balado hoti,

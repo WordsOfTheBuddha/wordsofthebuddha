@@ -1,9 +1,9 @@
 ---
 slug: sn1.24
 source: suttacentral/bilara-data
+title: Manonivāraṇasutta
 edition: ms
 granularity: paragraph
-title: Manonivāraṇasutta
 ---
 
 “Yato yato mano nivāraye,

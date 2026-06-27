@@ -1,9 +1,9 @@
 ---
 slug: an5.108
 source: suttacentral/bilara-data
+title: Asekhasutta
 edition: ms
 granularity: paragraph
-title: Asekhasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo …pe… anuttaraṁ puññakkhettaṁ lokassa.

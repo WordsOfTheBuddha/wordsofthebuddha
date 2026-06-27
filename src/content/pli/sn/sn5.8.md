@@ -1,9 +1,9 @@
 ---
 slug: sn5.8
 source: suttacentral/bilara-data
+title: Sīsupacālāsutta
 edition: ms
 granularity: paragraph
-title: Sīsupacālāsutta
 ---
 
 Sāvatthinidānaṁ.

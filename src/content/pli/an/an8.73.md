@@ -1,9 +1,9 @@
 ---
 slug: an8.73
 source: suttacentral/bilara-data
+title: Paṭhamamaraṇassatisutta
 edition: ms
 granularity: paragraph
-title: Paṭhamamaraṇassatisutta
 ---
 
 Ekaṁ samayaṁ bhagavā nātike viharati giñjakāvasathe. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

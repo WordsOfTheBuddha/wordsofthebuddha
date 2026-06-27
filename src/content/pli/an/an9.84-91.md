@@ -1,9 +1,9 @@
 ---
 slug: an9.84-91
 source: suttacentral/bilara-data
+title: Nīvaraṇasuttādi
 edition: ms
 granularity: paragraph
-title: Nīvaraṇasuttādi
 ---
 
 (Yathā satipaṭṭhānavagge tathā iddhipādavasena vitthāretabbā.)

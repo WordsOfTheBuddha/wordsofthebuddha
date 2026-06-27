@@ -1,9 +1,9 @@
 ---
 slug: an4.185
 source: suttacentral/bilara-data
+title: Brāhmaṇasaccasutta
 edition: ms
 granularity: paragraph
-title: Brāhmaṇasaccasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.

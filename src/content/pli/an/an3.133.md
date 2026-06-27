@@ -1,9 +1,9 @@
 ---
 slug: an3.133
 source: suttacentral/bilara-data
+title: Yodhājīvasutta
 edition: ms
 granularity: paragraph
-title: Yodhājīvasutta
 ---
 
 “Tīhi, bhikkhave, aṅgehi samannāgato yodhājīvo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhyaṁ gacchati. Katamehi tīhi? Idha, bhikkhave, yodhājīvo dūre pātī ca hoti akkhaṇavedhī ca mahato ca kāyassa padāletā. Imehi, kho, bhikkhave, tīhi aṅgehi samannāgato yodhājīvo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhyaṁ gacchati.

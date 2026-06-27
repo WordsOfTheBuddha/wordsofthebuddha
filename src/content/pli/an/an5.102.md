@@ -1,9 +1,9 @@
 ---
 slug: an5.102
 source: suttacentral/bilara-data
+title: Ussaṅkitasutta
 edition: ms
 granularity: paragraph
-title: Ussaṅkitasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu ussaṅkitaparisaṅkito hoti pāpabhikkhūti api akuppadhammopi.

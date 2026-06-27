@@ -1,9 +1,9 @@
 ---
 slug: an3.83
 source: suttacentral/bilara-data
+title: Khettasutta
 edition: ms
 granularity: paragraph
-title: Khettasutta
 ---
 
 “Tīṇimāni, bhikkhave, kassakassa gahapatissa pubbe karaṇīyāni. Katamāni tīṇi? Idha, bhikkhave, kassako gahapati paṭikacceva khettaṁ sukaṭṭhaṁ karoti sumatikataṁ. Paṭikacceva khettaṁ sukaṭṭhaṁ karitvā sumatikataṁ kālena bījāni patiṭṭhāpeti. Kālena bījāni patiṭṭhāpetvā samayena udakaṁ abhinetipi apanetipi. Imāni kho, bhikkhave, tīṇi kassakassa gahapatissa pubbe karaṇīyāni.

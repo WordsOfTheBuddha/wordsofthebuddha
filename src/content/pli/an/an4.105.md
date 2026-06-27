@@ -1,9 +1,9 @@
 ---
 slug: an4.105
 source: suttacentral/bilara-data
+title: Ambasutta
 edition: ms
 granularity: paragraph
-title: Ambasutta
 ---
 
 “Cattārimāni, bhikkhave, ambāni. Katamāni cattāri?

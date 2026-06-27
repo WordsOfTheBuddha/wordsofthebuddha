@@ -1,9 +1,9 @@
 ---
 slug: an5.237
 source: suttacentral/bilara-data
+title: Dutiyaavaṇṇārahasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaavaṇṇārahasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Ananuvicca apariyogāhetvā avaṇṇārahassa vaṇṇaṁ bhāsati; ananuvicca apariyogāhetvā vaṇṇārahassa avaṇṇaṁ bhāsati; āvāsamaccharī hoti āvāsapaligedhī; kulamaccharī hoti kulapaligedhī; saddhādeyyaṁ vinipāteti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye.

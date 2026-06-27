@@ -1,17 +1,16 @@
 ---
 slug: an9.42
 source: suttacentral/bilara-data
+title: Sambādhasutta
 edition: ms
 granularity: paragraph
-title: Sambādhasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati ghositārāme. Atha kho āyasmā udāyī yenāyasmā ānando tenupasaṅkami; upasaṅkamitvā āyasmatā ānandena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā udāyī āyasmantaṁ ānandaṁ etadavoca: “vuttamidaṁ, āvuso, pañcālacaṇḍena devaputtena:
 
+‘Sambādhe gataṁ okāsaṁ,
 Avidvā bhūrimedhaso;
-
 Yo jhānamabujjhi buddho,
-
 Paṭilīnanisabho munī’ti.
 
 Katamo, āvuso, sambādho, katamo sambādhe okāsādhigamo vutto bhagavatā”ti?

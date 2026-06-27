@@ -1,9 +1,9 @@
 ---
 slug: an9.60
 source: suttacentral/bilara-data
+title: Nirodhasutta
 edition: ms
 granularity: paragraph
-title: Nirodhasutta
 ---
 
 “‘Nirodho, nirodho’ti, āvuso, vuccati ….

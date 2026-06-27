@@ -1,9 +1,9 @@
 ---
 slug: an3.129
 source: suttacentral/bilara-data
+title: Paṭhamaanuruddhasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaanuruddhasutta
 ---
 
 Atha kho āyasmā anuruddho yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā anuruddho bhagavantaṁ etadavoca:

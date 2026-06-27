@@ -1,9 +1,9 @@
 ---
 slug: an4.69
 source: suttacentral/bilara-data
+title: Padhānasutta
 edition: ms
 granularity: paragraph
-title: Padhānasutta
 ---
 
 “Cattārimāni, bhikkhave, padhānāni. Katamāni cattāri? Saṁvarappadhānaṁ, pahānappadhānaṁ, bhāvanāppadhānaṁ, anurakkhaṇāppadhānaṁ.
@@ -18,14 +18,11 @@ Katamañca, bhikkhave, anurakkhaṇāppadhānaṁ? Idha, bhikkhave, bhikkhu uppa
 
 Imāni kho, bhikkhave, cattāri padhānānīti.
 
+Saṁvaro ca pahānañca,
 bhāvanā anurakkhaṇā;
-
 Ete padhānā cattāro,
-
 desitādiccabandhunā;
-
 Yo hi bhikkhu idhātāpī,
-
 khayaṁ dukkhassa pāpuṇe”ti.
 
 Navamaṁ.

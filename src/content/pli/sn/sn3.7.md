@@ -1,9 +1,9 @@
 ---
 slug: sn3.7
 source: suttacentral/bilara-data
+title: Aḍḍakaraṇasutta
 edition: ms
 granularity: paragraph
-title: Aḍḍakaraṇasutta
 ---
 
 Sāvatthinidānaṁ.

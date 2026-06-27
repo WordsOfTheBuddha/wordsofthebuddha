@@ -1,9 +1,9 @@
 ---
 slug: an4.10
 source: suttacentral/bilara-data
+title: Yogasutta
 edition: ms
 granularity: paragraph
-title: Yogasutta
 ---
 
 “Cattārome, bhikkhave, yogā. Katame cattāro? Kāmayogo, bhavayogo, diṭṭhiyogo, avijjāyogo.
@@ -30,22 +30,19 @@ Avijjāyogavisaṁyogo ca kathaṁ hoti? Idha, bhikkhave, ekacco channaṁ phass
 
 Ime kho, bhikkhave, cattāro visaṁyogāti.
 
+Kāmayogena saṁyuttā,
 bhavayogena cūbhayaṁ;
-
 Diṭṭhiyogena saṁyuttā,
-
 avijjāya purakkhatā.
 
+Sattā gacchanti saṁsāraṁ,
 jātimaraṇagāmino;
-
 Ye ca kāme pariññāya,
-
 bhavayogañca sabbaso.
 
+Diṭṭhiyogaṁ samūhacca,
 avijjañca virājayaṁ;
-
 Sabbayogavisaṁyuttā,
-
 te ve yogātigā munī”ti.
 
 Dasamaṁ.
@@ -54,8 +51,7 @@ Bhaṇḍagāmavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Anubuddhaṁ papatitaṁ dve,
 Khatā anusotapañcamaṁ;
-
 Appassuto ca sobhanaṁ,
-
 Vesārajjaṁ taṇhāyogena te dasāti.

@@ -1,9 +1,9 @@
 ---
 slug: sn4.16
 source: suttacentral/bilara-data
+title: Pattasutta
 edition: ms
 granularity: paragraph
-title: Pattasutta
 ---
 
 Sāvatthinidānaṁ.

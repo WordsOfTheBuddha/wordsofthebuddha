@@ -1,9 +1,9 @@
 ---
 slug: snp3.10
 source: suttacentral/bilara-data
+title: Kokālikasutta
 edition: ms
 granularity: paragraph
-title: Kokālikasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho kokāliko bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho kokāliko bhikkhu bhagavantaṁ etadavoca: “pāpicchā, bhante, sāriputtamoggallānā, pāpikānaṁ icchānaṁ vasaṁ gatā”ti.

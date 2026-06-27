@@ -1,9 +1,9 @@
 ---
 slug: sn4.15
 source: suttacentral/bilara-data
+title: Mānasasutta
 edition: ms
 granularity: paragraph
-title: Mānasasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

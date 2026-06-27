@@ -1,9 +1,9 @@
 ---
 slug: an9.18
 source: suttacentral/bilara-data
+title: Navaṅguposathasutta
 edition: ms
 granularity: paragraph
-title: Navaṅguposathasutta
 ---
 
 “Navahi, bhikkhave, aṅgehi samannāgato uposatho upavuttho mahapphalo hoti mahānisaṁso mahājutiko mahāvipphāro. Kathaṁ upavuttho ca, bhikkhave, navahaṅgehi samannāgato uposatho mahapphalo hoti mahānisaṁso mahājutiko mahāvipphāro?

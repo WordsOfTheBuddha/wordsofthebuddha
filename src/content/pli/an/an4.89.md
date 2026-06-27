@@ -1,9 +1,9 @@
 ---
 slug: an4.89
 source: suttacentral/bilara-data
+title: Sammādiṭṭhisutta
 edition: ms
 granularity: paragraph
-title: Sammādiṭṭhisutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro? Samaṇamacalo, samaṇapuṇḍarīko, samaṇapadumo, samaṇesu samaṇasukhumālo.

@@ -1,9 +1,9 @@
 ---
 slug: an6.10
 source: suttacentral/bilara-data
+title: Mahānāmasutta
 edition: ms
 granularity: paragraph
-title: Mahānāmasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sakkesu viharati kapilavatthusmiṁ nigrodhārāme. Atha kho mahānāmo sakko yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno, kho mahānāmo sakko bhagavantaṁ etadavoca:
@@ -32,8 +32,7 @@ Dasamaṁ.
 
 Tassuddānaṁ
 
+Dve āhuneyyā indriya,
 balāni tayo ājānīyā;
-
 Anuttariya anussatī,
-
 mahānāmena te dasāti.

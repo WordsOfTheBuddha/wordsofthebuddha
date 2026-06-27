@@ -1,9 +1,9 @@
 ---
 slug: an6.21
 source: suttacentral/bilara-data
+title: Sāmakasutta
 edition: ms
 granularity: paragraph
-title: Sāmakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sakkesu viharati sāmagāmake pokkharaṇiyāyaṁ.

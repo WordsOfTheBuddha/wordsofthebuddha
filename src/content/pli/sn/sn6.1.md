@@ -1,9 +1,9 @@
 ---
 slug: sn6.1
 source: suttacentral/bilara-data
+title: Brahmāyācanasutta
 edition: ms
 granularity: paragraph
-title: Brahmāyācanasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre ajapālanigrodhamūle paṭhamābhisambuddho.

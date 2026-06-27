@@ -1,9 +1,9 @@
 ---
 slug: sn1.45
 source: suttacentral/bilara-data
+title: Anomasutta
 edition: ms
 granularity: paragraph
-title: Anomasutta
 ---
 
 “Anomanāmaṁ nipuṇatthadassiṁ,

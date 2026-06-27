@@ -1,9 +1,9 @@
 ---
 slug: an3.55
 source: suttacentral/bilara-data
+title: Nibbutasutta
 edition: ms
 granularity: paragraph
-title: Nibbutasutta
 ---
 
 Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho jāṇussoṇi brāhmaṇo bhagavantaṁ etadavoca:

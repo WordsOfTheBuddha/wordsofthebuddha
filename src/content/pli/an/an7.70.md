@@ -1,9 +1,9 @@
 ---
 slug: an7.70
 source: suttacentral/bilara-data
+title: Sakkaccasutta
 edition: ms
 granularity: paragraph
-title: Sakkaccasutta
 ---
 
 Atha kho āyasmato sāriputtassa rahogatassa paṭisallīnassa evaṁ cetaso parivitakko udapādi: “kiṁ nu kho, bhikkhu, sakkatvā garuṁ katvā upanissāya viharanto akusalaṁ pajaheyya, kusalaṁ bhāveyyā”ti?

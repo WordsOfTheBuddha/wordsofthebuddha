@@ -1,9 +1,9 @@
 ---
 slug: an3.93
 source: suttacentral/bilara-data
+title: Pavivekasutta
 edition: ms
 granularity: paragraph
-title: Pavivekasutta
 ---
 
 “Tīṇimāni, bhikkhave, aññatitthiyā paribbājakā pavivekāni paññāpenti. Katamāni tīṇi? Cīvarapavivekaṁ, piṇḍapātapavivekaṁ, senāsanapavivekaṁ.

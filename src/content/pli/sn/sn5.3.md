@@ -1,9 +1,9 @@
 ---
 slug: sn5.3
 source: suttacentral/bilara-data
+title: Kisāgotamīsutta
 edition: ms
 granularity: paragraph
-title: Kisāgotamīsutta
 ---
 
 Sāvatthinidānaṁ.

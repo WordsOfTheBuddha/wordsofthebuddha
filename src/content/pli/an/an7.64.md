@@ -1,9 +1,9 @@
 ---
 slug: an7.64
 source: suttacentral/bilara-data
+title: Kodhanasutta
 edition: ms
 granularity: paragraph
-title: Kodhanasutta
 ---
 
 “Sattime, bhikkhave, dhammā sapattakantā sapattakaraṇā kodhanaṁ āgacchanti itthiṁ vā purisaṁ vā. Katame satta?
@@ -24,106 +24,89 @@ Puna caparaṁ, bhikkhave, sapatto sapattassa evaṁ icchati: ‘aho vatāyaṁ 
 
 Ime kho, bhikkhave, satta dhammā sapattakantā sapattakaraṇā kodhanaṁ āgacchanti itthiṁ vā purisaṁ vāti.
 
+Kodhano dubbaṇṇo hoti,
 atho dukkhampi seti so;
-
 Atho atthaṁ gahetvāna,
-
 anatthaṁ adhipajjati.
 
+Tato kāyena vācāya,
 vadhaṁ katvāna kodhano;
-
 Kodhābhibhūto puriso,
-
 dhanajāniṁ nigacchati.
 
+Kodhasammadasammatto,
 āyasakyaṁ nigacchati;
-
 Ñātimittā suhajjā ca,
-
 parivajjanti kodhanaṁ.
 
+Anatthajanano kodho,
 kodho cittappakopano;
-
 Bhayamantarato jātaṁ,
-
 taṁ jano nāvabujjhati.
 
+Kuddho atthaṁ na jānāti,
 kuddho dhammaṁ na passati;
-
 Andhatamaṁ tadā hoti,
-
 yaṁ kodho sahate naraṁ.
 
+Yaṁ kuddho uparodheti,
 sukaraṁ viya dukkaraṁ;
-
 Pacchā so vigate kodhe,
-
 aggidaḍḍhova tappati.
 
+Dummaṅkuyaṁ padasseti,
 dhūmaṁ dhūmīva pāvako;
-
 Yato patāyati kodho,
-
 yena kujjhanti mānavā.
 
+Nāssa hirī na ottappaṁ,
 na vāco hoti gāravo;
-
 Kodhena abhibhūtassa,
-
 na dīpaṁ hoti kiñcanaṁ.
 
+Tapanīyāni kammāni,
 yāni dhammehi ārakā;
-
 Tāni ārocayissāmi,
-
 taṁ suṇātha yathā tathaṁ.
 
+Kuddho hi pitaraṁ hanti,
 hanti kuddho samātaraṁ;
-
 Kuddho hi brāhmaṇaṁ hanti,
-
 hanti kuddho puthujjanaṁ.
 
+Yāya mātu bhato poso,
 imaṁ lokaṁ avekkhati;
-
 Tampi pāṇadadiṁ santiṁ,
-
 hanti kuddho puthujjano.
 
+Attūpamā hi te sattā,
 attā hi paramo piyo;
-
 Hanti kuddho puthuttānaṁ,
-
 nānārūpesu mucchito.
 
+Asinā hanti attānaṁ,
 visaṁ khādanti mucchitā;
-
 Rajjuyā bajjha mīyanti,
-
 pabbatāmapi kandare.
 
+Bhūnahaccāni kammāni,
 attamāraṇiyāni ca;
-
 Karontā nāvabujjhanti,
-
 kodhajāto parābhavo.
 
+Itāyaṁ kodharūpena,
 maccupāso guhāsayo;
-
 Taṁ damena samucchinde,
-
 paññāvīriyena diṭṭhiyā.
 
+Yathā metaṁ akusalaṁ,
 samucchindetha paṇḍito;
-
 Tatheva dhamme sikkhetha,
-
 mā no dummaṅkuyaṁ ahu.
 
+Vītakodhā anāyāsā,
 Vītalobhā anussukā;
-
 Dantā kodhaṁ pahantvāna,
-
 Parinibbanti anāsavā”ti.
 
 Ekādasamaṁ.
@@ -132,8 +115,7 @@ Abyākatavaggo chaṭṭho.
 
 Tassuddānaṁ
 
+Abyākato purisagati,
 Tissa sīha arakkhiyaṁ;
-
 Kimilaṁ satta pacalā,
-
 Mettā bhariyā kodhekādasāti.

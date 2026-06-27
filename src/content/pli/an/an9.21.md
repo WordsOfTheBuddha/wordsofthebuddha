@@ -1,9 +1,9 @@
 ---
 slug: an9.21
 source: suttacentral/bilara-data
+title: Tiṭhānasutta
 edition: ms
 granularity: paragraph
-title: Tiṭhānasutta
 ---
 
 “Tīhi, bhikkhave, ṭhānehi uttarakurukā manussā deve ca tāvatiṁse adhiggaṇhanti jambudīpake ca manusse. Katamehi tīhi? Amamā, apariggahā, niyatāyukā, visesaguṇā— imehi kho, bhikkhave, tīhi ṭhānehi uttarakurukā manussā deve ca tāvatiṁse adhiggaṇhanti jambudīpake ca manusse.

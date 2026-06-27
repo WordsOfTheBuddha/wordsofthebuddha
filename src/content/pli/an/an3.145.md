@@ -1,9 +1,9 @@
 ---
 slug: an3.145
 source: suttacentral/bilara-data
+title: Tatiyamoranivāpasutta
 edition: ms
 granularity: paragraph
-title: Tatiyamoranivāpasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bhikkhu accantaniṭṭho hoti accantayogakkhemī accantabrahmacārī accantapariyosāno seṭṭho devamanussānaṁ. Katamehi tīhi? Sammādiṭṭhiyā, sammāñāṇena, sammāvimuttiyā—
@@ -16,8 +16,7 @@ Yodhājīvavaggo cuddasamo.
 
 Tassuddānaṁ
 
+Yodho parisamittañca,
 uppādā kesakambalo;
-
 Sampadā vuddhi tayo assā,
-
 tayo moranivāpinoti.

@@ -1,9 +1,9 @@
 ---
 slug: an3.33
 source: suttacentral/bilara-data
+title: Sāriputtasutta
 edition: ms
 granularity: paragraph
-title: Sāriputtasutta
 ---
 
 Atha kho āyasmā sāriputto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ sāriputtaṁ bhagavā etadavoca: “saṅkhittenapi kho ahaṁ, sāriputta, dhammaṁ deseyyaṁ; vitthārenapi kho ahaṁ, sāriputta, dhammaṁ deseyyaṁ; saṅkhittavitthārenapi kho ahaṁ, sāriputta, dhammaṁ deseyyaṁ; aññātāro ca dullabhā”ti.
@@ -16,16 +16,14 @@ Yato ca kho, sāriputta, bhikkhuno imasmiñca saviññāṇake kāye ahaṅkāra
 
 Idañca pana metaṁ, sāriputta, sandhāya bhāsitaṁ pārāyane udayapañhe:
 
+‘Pahānaṁ kāmasaññānaṁ,
 domanassāna cūbhayaṁ;
-
 Thinassa ca panūdanaṁ,
-
 kukkuccānaṁ nivāraṇaṁ.
 
+Upekkhāsatisaṁsuddhaṁ,
 dhammatakkapurejavaṁ;
-
 Aññāvimokkhaṁ pabrūmi,
-
 avijjāya pabhedanan’”ti.
 
 Tatiyaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an5.117
 source: suttacentral/bilara-data
+title: Issukinīsutta
 edition: ms
 granularity: paragraph
-title: Issukinīsutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgatā bhikkhunī yathābhataṁ nikkhittā evaṁ niraye. Katamehi pañcahi? Ananuvicca apariyogāhetvā avaṇṇārahassa vaṇṇaṁ bhāsati, ananuvicca apariyogāhetvā vaṇṇārahassa avaṇṇaṁ bhāsati, issukinī ca hoti, maccharinī ca, saddhādeyyaṁ vinipāteti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgatā bhikkhunī yathābhataṁ nikkhittā evaṁ niraye.

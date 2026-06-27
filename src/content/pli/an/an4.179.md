@@ -1,9 +1,9 @@
 ---
 slug: an4.179
 source: suttacentral/bilara-data
+title: Nibbānasutta
 edition: ms
 granularity: paragraph
-title: Nibbānasutta
 ---
 
 Atha kho āyasmā ānando yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando āyasmantaṁ sāriputtaṁ etadavoca:

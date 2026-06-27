@@ -1,9 +1,9 @@
 ---
 slug: an3.121
 source: suttacentral/bilara-data
+title: Dutiyasoceyyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasoceyyasutta
 ---
 
 “Tīṇimāni, bhikkhave, soceyyāni. Katamāni tīṇi? Kāyasoceyyaṁ, vacīsoceyyaṁ, manosoceyyaṁ.
@@ -28,10 +28,9 @@ Idaṁ vuccati, bhikkhave, manosoceyyaṁ.
 
 Imāni kho, bhikkhave, tīṇi soceyyānīti.
 
+Kāyasuciṁ vacīsuciṁ,
 cetosuciṁ anāsavaṁ;
-
 Suciṁ soceyyasampannaṁ,
-
 āhu ninhātapāpakan”ti.
 
 Navamaṁ.

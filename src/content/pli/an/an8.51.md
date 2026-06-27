@@ -1,9 +1,9 @@
 ---
 slug: an8.51
 source: suttacentral/bilara-data
+title: Gotamīsutta
 edition: ms
 granularity: paragraph
-title: Gotamīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā sakkesu viharati kapilavatthusmiṁ nigrodhārāme. Atha kho mahāpajāpatī gotamī yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitā kho mahāpajāpatī gotamī bhagavantaṁ etadavoca:

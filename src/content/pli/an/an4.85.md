@@ -1,9 +1,9 @@
 ---
 slug: an4.85
 source: suttacentral/bilara-data
+title: Tamotamasutta
 edition: ms
 granularity: paragraph
-title: Tamotamasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

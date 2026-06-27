@@ -1,9 +1,9 @@
 ---
 slug: an4.129
 source: suttacentral/bilara-data
+title: Ānandaacchariyasutta
 edition: ms
 granularity: paragraph
-title: Ānandaacchariyasutta
 ---
 
 “Cattārome, bhikkhave, acchariyā abbhutā dhammā ānande. Katame cattāro?

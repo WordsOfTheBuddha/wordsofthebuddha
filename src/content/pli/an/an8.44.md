@@ -1,9 +1,9 @@
 ---
 slug: an8.44
 source: suttacentral/bilara-data
+title: Vāseṭṭhasutta
 edition: ms
 granularity: paragraph
-title: Vāseṭṭhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho vāseṭṭho upāsako yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho vāseṭṭhaṁ upāsakaṁ bhagavā etadavoca:

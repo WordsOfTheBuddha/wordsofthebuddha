@@ -1,9 +1,9 @@
 ---
 slug: an7.56
 source: suttacentral/bilara-data
+title: Tissabrahmāsutta
 edition: ms
 granularity: paragraph
-title: Tissabrahmāsutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.

@@ -1,9 +1,9 @@
 ---
 slug: snp1.12
 source: suttacentral/bilara-data
+title: Munisutta
 edition: ms
 granularity: paragraph
-title: Munisutta
 ---
 
 Santhavāto bhayaṁ jātaṁ,

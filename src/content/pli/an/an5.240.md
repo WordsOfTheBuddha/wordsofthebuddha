@@ -1,9 +1,9 @@
 ---
 slug: an5.240
 source: suttacentral/bilara-data
+title: Dutiyamacchariyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyamacchariyasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Āvāsamaccharī hoti; kulamaccharī hoti; lābhamaccharī hoti; vaṇṇamaccharī hoti; dhammamaccharī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye.
@@ -16,8 +16,7 @@ Dasamaṁ.
 
 Tassuddānaṁ
 
+Āvāsiko piyo ca sobhano,
 Bahūpakāro anukampako ca;
-
 Tayo avaṇṇārahā ceva,
-
 Macchariyā duvepi cāti.

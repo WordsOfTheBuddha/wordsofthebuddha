@@ -1,9 +1,9 @@
 ---
 slug: an5.159
 source: suttacentral/bilara-data
+title: Udāyīsutta
 edition: ms
 granularity: paragraph
-title: Udāyīsutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme. Tena kho pana samayena āyasmā udāyī mahatiyā gihiparisāya parivuto dhammaṁ desento nisinno hoti. Addasā kho āyasmā ānando āyasmantaṁ udāyiṁ mahatiyā gihiparisāya parivutaṁ dhammaṁ desentaṁ nisinnaṁ. Disvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:

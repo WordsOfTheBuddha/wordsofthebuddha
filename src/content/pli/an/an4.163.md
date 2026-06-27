@@ -1,9 +1,9 @@
 ---
 slug: an4.163
 source: suttacentral/bilara-data
+title: Asubhasutta
 edition: ms
 granularity: paragraph
-title: Asubhasutta
 ---
 
 “Catasso imā, bhikkhave, paṭipadā. Katamā catasso?

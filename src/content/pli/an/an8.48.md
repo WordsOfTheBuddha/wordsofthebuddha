@@ -1,9 +1,9 @@
 ---
 slug: an8.48
 source: suttacentral/bilara-data
+title: Nakulamātāsutta
 edition: ms
 granularity: paragraph
-title: Nakulamātāsutta
 ---
 
 Ekaṁ samayaṁ bhagavā bhaggesu viharati susumāragire bhesakaḷāvane migadāye. Atha kho nakulamātā gahapatānī yena bhagavā tenupasaṅkami; upasaṅkamitvā …pe…. Ekamantaṁ nisinnaṁ kho nakulamātaraṁ gahapatāniṁ bhagavā etadavoca:
@@ -28,28 +28,24 @@ Cāgavatī kho pana hoti vigatamalamaccherena cetasā agāraṁ ajjhāvasati mut
 
 Imehi kho, nakulamāte, aṭṭhahi dhammehi samannāgato mātugāmo kāyassa bhedā paraṁ maraṇā manāpakāyikānaṁ devānaṁ sahabyataṁ upapajjatīti.
 
+Yo naṁ bharati sabbadā,
 niccaṁ ātāpi ussuko;
-
 Taṁ sabbakāmadaṁ posaṁ,
-
 bhattāraṁ nātimaññati.
 
+Na cāpi sotthi bhattāraṁ,
 issāvādena rosaye;
-
 Bhattu ca garuno sabbe,
-
 paṭipūjeti paṇḍitā.
 
+Uṭṭhāhikā analasā,
 saṅgahitaparijjanā;
-
 Bhattu manāpaṁ carati,
-
 sambhataṁ anurakkhati.
 
+Yā evaṁ vattati nārī,
 bhattu chandavasānugā;
-
 Manāpā nāma te devā,
-
 yattha sā upapajjatī”ti.
 
 Aṭṭhamaṁ.

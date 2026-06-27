@@ -1,9 +1,9 @@
 ---
 slug: an4.231
 source: suttacentral/bilara-data
+title: Kavisutta
 edition: ms
 granularity: paragraph
-title: Kavisutta
 ---
 
 “Cattārome, bhikkhave, kavī. Katame cattāro?
@@ -18,8 +18,7 @@ Duccaritavaggo tatiyo.
 
 Tassuddānaṁ
 
+Duccaritaṁ diṭṭhi akataññū ca,
 Pāṇātipātāpi dve maggā;
-
 Dve vohārapathā vuttā,
-
 Ahirikaṁ duppaññakavinā cāti.

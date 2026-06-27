@@ -1,9 +1,9 @@
 ---
 slug: an5.201
 source: suttacentral/bilara-data
+title: Kimilasutta
 edition: ms
 granularity: paragraph
-title: Kimilasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kimilāyaṁ viharati veḷuvane. Atha kho āyasmā kimilo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā kimilo bhagavantaṁ etadavoca:

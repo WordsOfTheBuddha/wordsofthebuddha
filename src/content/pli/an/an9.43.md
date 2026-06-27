@@ -1,9 +1,9 @@
 ---
 slug: an9.43
 source: suttacentral/bilara-data
+title: Kāyasakkhīsutta
 edition: ms
 granularity: paragraph
-title: Kāyasakkhīsutta
 ---
 
 “‘Kāyasakkhī, kāyasakkhī’ti, āvuso, vuccati. Kittāvatā nu kho, āvuso, kāyasakkhī vutto bhagavatā”ti?

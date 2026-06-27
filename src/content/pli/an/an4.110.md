@@ -1,9 +1,9 @@
 ---
 slug: an4.110
 source: suttacentral/bilara-data
+title: Āsīvisasutta
 edition: ms
 granularity: paragraph
-title: Āsīvisasutta
 ---
 
 “Cattārome, bhikkhave, āsīvisā. Katame cattāro?
@@ -42,8 +42,7 @@ Valāhakavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Dve valāhā kumbha udaka,
 rahadā dve honti ambāni;
-
 Mūsikā balībaddā rukkhā,
-
 āsīvisena te dasāti.

@@ -1,9 +1,9 @@
 ---
 slug: an4.121
 source: suttacentral/bilara-data
+title: Attānuvādasutta
 edition: ms
 granularity: paragraph
-title: Attānuvādasutta
 ---
 
 “Cattārimāni, bhikkhave, bhayāni. Katamāni cattāri? Attānuvādabhayaṁ, parānuvādabhayaṁ, daṇḍabhayaṁ, duggatibhayaṁ.

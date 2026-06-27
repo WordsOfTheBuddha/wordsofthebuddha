@@ -1,9 +1,9 @@
 ---
 slug: an7.22
 source: suttacentral/bilara-data
+title: Vassakārasutta
 edition: ms
 granularity: paragraph
-title: Vassakārasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.

@@ -1,9 +1,9 @@
 ---
 slug: sn2.4
 source: suttacentral/bilara-data
+title: Māgadhasutta
 edition: ms
 granularity: paragraph
-title: Māgadhasutta
 ---
 
 Sāvatthinidānaṁ.

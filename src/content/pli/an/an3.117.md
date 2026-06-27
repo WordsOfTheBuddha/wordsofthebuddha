@@ -1,9 +1,9 @@
 ---
 slug: an3.117
 source: suttacentral/bilara-data
+title: Vipattisampadāsutta
 edition: ms
 granularity: paragraph
-title: Vipattisampadāsutta
 ---
 
 “Tisso imā, bhikkhave, vipattiyo. Katamā tisso? Sīlavipatti, cittavipatti, diṭṭhivipatti. Katamā ca, bhikkhave, sīlavipatti? Idha, bhikkhave, ekacco pāṇātipātī hoti, adinnādāyī hoti, kāmesumicchācārī hoti, musāvādī hoti, pisuṇavāco hoti, pharusavāco hoti, samphappalāpī hoti. Ayaṁ vuccati, bhikkhave, sīlavipatti.

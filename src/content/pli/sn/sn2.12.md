@@ -1,9 +1,9 @@
 ---
 slug: sn2.12
 source: suttacentral/bilara-data
+title: Veṇḍusutta
 edition: ms
 granularity: paragraph
-title: Veṇḍusutta
 ---
 
 Ekamantaṁ ṭhito kho veṇḍu devaputto bhagavato santike imaṁ gāthaṁ abhāsi:

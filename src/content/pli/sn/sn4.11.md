@@ -1,9 +1,9 @@
 ---
 slug: sn4.11
 source: suttacentral/bilara-data
+title: Pāsāṇasutta
 edition: ms
 granularity: paragraph
-title: Pāsāṇasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Tena kho pana samayena bhagavā rattandhakāratimisāyaṁ abbhokāse nisinno hoti, devo ca ekamekaṁ phusāyati.

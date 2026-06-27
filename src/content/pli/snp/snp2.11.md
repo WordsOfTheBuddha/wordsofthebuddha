@@ -1,9 +1,9 @@
 ---
 slug: snp2.11
 source: suttacentral/bilara-data
+title: Rāhulasutta
 edition: ms
 granularity: paragraph
-title: Rāhulasutta
 ---
 
 “Kacci abhiṇhasaṁvāsā,

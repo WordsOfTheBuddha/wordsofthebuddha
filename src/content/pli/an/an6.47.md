@@ -1,9 +1,9 @@
 ---
 slug: an6.47
 source: suttacentral/bilara-data
+title: Paṭhamasandiṭṭhikasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasandiṭṭhikasutta
 ---
 
 Atha kho moḷiyasīvako paribbājako yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho moḷiyasīvako paribbājako bhagavantaṁ etadavoca:

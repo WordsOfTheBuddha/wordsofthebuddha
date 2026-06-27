@@ -1,9 +1,9 @@
 ---
 slug: an5.121
 source: suttacentral/bilara-data
+title: Gilānasutta
 edition: ms
 granularity: paragraph
-title: Gilānasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho bhagavā sāyanhasamayaṁ paṭisallānā vuṭṭhito yena gilānasālā tenupasaṅkami. Addasā kho bhagavā aññataraṁ bhikkhuṁ dubbalaṁ gilānakaṁ; disvā paññatte āsane nisīdi. Nisajja kho bhagavā bhikkhū āmantesi:

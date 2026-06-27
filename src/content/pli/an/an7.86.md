@@ -1,9 +1,9 @@
 ---
 slug: an7.86
 source: suttacentral/bilara-data
+title: Samaṇasutta
 edition: ms
 granularity: paragraph
-title: Samaṇasutta
 ---
 
 “Sattannaṁ, bhikkhave, dhammānaṁ samitattā samaṇo hoti …pe….

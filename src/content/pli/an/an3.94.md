@@ -1,9 +1,9 @@
 ---
 slug: an3.94
 source: suttacentral/bilara-data
+title: Saradasutta
 edition: ms
 granularity: paragraph
-title: Saradasutta
 ---
 
 “Seyyathāpi, bhikkhave, saradasamaye viddhe vigatavalāhake deve ādicco nabhaṁ abbhussakkamāno sabbaṁ ākāsagataṁ tamagataṁ abhivihacca bhāsate ca tapate ca virocati ca.

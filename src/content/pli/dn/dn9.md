@@ -1,9 +1,9 @@
 ---
 slug: dn9
 source: suttacentral/bilara-data
+title: Poṭṭhapādasutta
 edition: ms
 granularity: paragraph
-title: Poṭṭhapādasutta
 ---
 
 1. Poṭṭhapādaparibbājakavatthu

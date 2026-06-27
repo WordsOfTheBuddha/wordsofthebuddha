@@ -1,9 +1,9 @@
 ---
 slug: an3.137
 source: suttacentral/bilara-data
+title: Kesakambalasutta
 edition: ms
 granularity: paragraph
-title: Kesakambalasutta
 ---
 
 “Seyyathāpi, bhikkhave, yāni kānici tantāvutānaṁ vatthānaṁ, kesakambalo tesaṁ paṭikiṭṭho akkhāyati. Kesakambalo, bhikkhave, sīte sīto, uṇhe uṇho, dubbaṇṇo, duggandho, dukkhasamphasso. Evamevaṁ kho, bhikkhave, yāni kānici puthusamaṇabrāhmaṇavādānaṁ makkhalivādo tesaṁ paṭikiṭṭho akkhāyati.

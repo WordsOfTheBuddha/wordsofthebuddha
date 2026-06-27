@@ -1,9 +1,9 @@
 ---
 slug: an3.125
 source: suttacentral/bilara-data
+title: Gotamakacetiyasutta
 edition: ms
 granularity: paragraph
-title: Gotamakacetiyasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati gotamake cetiye. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

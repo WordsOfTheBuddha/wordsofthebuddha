@@ -1,9 +1,9 @@
 ---
 slug: an4.203
 source: suttacentral/bilara-data
+title: Sattakammasutta
 edition: ms
 granularity: paragraph
-title: Sattakammasutta
 ---
 
 “Asappurisañca vo, bhikkhave, desessāmi, asappurisena asappurisatarañca; sappurisañca, sappurisena sappurisatarañca. Taṁ suṇātha …pe….

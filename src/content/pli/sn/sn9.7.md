@@ -1,9 +1,9 @@
 ---
 slug: sn9.7
 source: suttacentral/bilara-data
+title: Nāgadattasutta
 edition: ms
 granularity: paragraph
-title: Nāgadattasutta
 ---
 
 Ekaṁ samayaṁ āyasmā nāgadatto kosalesu viharati aññatarasmiṁ vanasaṇḍe.

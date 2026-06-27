@@ -1,9 +1,9 @@
 ---
 slug: sn6.15
 source: suttacentral/bilara-data
+title: Parinibbānasutta
 edition: ms
 granularity: paragraph
-title: Parinibbānasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kusinārāyaṁ viharati upavattane mallānaṁ sālavane antarena yamakasālānaṁ parinibbānasamaye.

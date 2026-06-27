@@ -1,9 +1,9 @@
 ---
 slug: dn6
 source: suttacentral/bilara-data
+title: Mahālisutta
 edition: ms
 granularity: paragraph
-title: Mahālisutta
 ---
 
 1. Brāhmaṇadūtavatthu

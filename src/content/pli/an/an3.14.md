@@ -1,9 +1,9 @@
 ---
 slug: an3.14
 source: suttacentral/bilara-data
+title: Cakkavattisutta
 edition: ms
 granularity: paragraph
-title: Cakkavattisutta
 ---
 
 “Yopi so, bhikkhave, rājā cakkavattī dhammiko dhammarājā sopi na arājakaṁ cakkaṁ vattetī”ti. Evaṁ vutte, aññataro bhikkhu bhagavantaṁ etadavoca:

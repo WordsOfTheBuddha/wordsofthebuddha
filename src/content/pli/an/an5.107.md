@@ -1,9 +1,9 @@
 ---
 slug: an5.107
 source: suttacentral/bilara-data
+title: Sīlasutta
 edition: ms
 granularity: paragraph
-title: Sīlasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassa.

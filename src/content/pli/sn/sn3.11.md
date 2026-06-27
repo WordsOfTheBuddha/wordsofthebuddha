@@ -1,9 +1,9 @@
 ---
 slug: sn3.11
 source: suttacentral/bilara-data
+title: Sattajaṭilasutta
 edition: ms
 granularity: paragraph
-title: Sattajaṭilasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde.

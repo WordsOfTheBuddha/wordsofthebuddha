@@ -1,9 +1,9 @@
 ---
 slug: sn6.5
 source: suttacentral/bilara-data
+title: Aññatarabrahmasutta
 edition: ms
 granularity: paragraph
-title: Aññatarabrahmasutta
 ---
 
 Sāvatthinidānaṁ.

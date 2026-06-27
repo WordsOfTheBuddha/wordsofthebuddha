@@ -1,9 +1,9 @@
 ---
 slug: an3.56
 source: suttacentral/bilara-data
+title: Palokasutta
 edition: ms
 granularity: paragraph
-title: Palokasutta
 ---
 
 Atha kho aññataro brāhmaṇamahāsālo yena bhagavā tenupasaṅkami …pe… ekamantaṁ nisinno kho so brāhmaṇamahāsālo bhagavantaṁ etadavoca:

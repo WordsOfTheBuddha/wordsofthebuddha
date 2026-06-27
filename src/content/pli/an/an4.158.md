@@ -1,9 +1,9 @@
 ---
 slug: an4.158
 source: suttacentral/bilara-data
+title: Parihānisutta
 edition: ms
 granularity: paragraph
-title: Parihānisutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhave”ti.

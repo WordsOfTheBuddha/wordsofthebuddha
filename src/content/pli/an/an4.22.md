@@ -1,9 +1,9 @@
 ---
 slug: an4.22
 source: suttacentral/bilara-data
+title: Dutiyauruvelasutta
 edition: ms
 granularity: paragraph
-title: Dutiyauruvelasutta
 ---
 
 “Ekamidāhaṁ, bhikkhave, samayaṁ uruvelāyaṁ viharāmi najjā nerañjarāya tīre ajapālanigrodhe paṭhamābhisambuddho. Atha kho, bhikkhave, sambahulā brāhmaṇā jiṇṇā vuddhā mahallakā addhagatā vayoanuppattā yenāhaṁ tenupasaṅkamiṁsu; upasaṅkamitvā mayā saddhiṁ sammodiṁsu.
@@ -28,32 +28,26 @@ Catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ n
 
 Ime kho, bhikkhave, cattāro therakaraṇā dhammāti.
 
+Yo uddhatena cittena,
 samphañca bahu bhāsati;
-
 Asamāhitasaṅkappo,
-
 asaddhammarato mago;
-
 Ārā so thāvareyyamhā,
-
 pāpadiṭṭhi anādaro.
 
+Yo ca sīlena sampanno,
 sutavā paṭibhānavā;
-
 Saññato dhīro dhammesu,
-
 paññāyatthaṁ vipassati.
 
+Pāragū sabbadhammānaṁ,
 akhilo paṭibhānavā;
-
 Pahīnajātimaraṇo,
-
 brahmacariyassa kevalī.
 
+Tamahaṁ vadāmi theroti,
 yassa no santi āsavā;
-
 Āsavānaṁ khayā bhikkhu,
-
 so theroti pavuccatī”ti.
 
 Dutiyaṁ.

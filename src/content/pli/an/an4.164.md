@@ -1,9 +1,9 @@
 ---
 slug: an4.164
 source: suttacentral/bilara-data
+title: Paṭhamakhamasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamakhamasutta
 ---
 
 “Catasso imā, bhikkhave, paṭipadā. Katamā catasso? Akkhamā paṭipadā, khamā paṭipadā, damā paṭipadā, samā paṭipadā.

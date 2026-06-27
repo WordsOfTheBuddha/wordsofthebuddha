@@ -1,9 +1,9 @@
 ---
 slug: an3.8
 source: suttacentral/bilara-data
+title: Sabyābajjhasutta
 edition: ms
 granularity: paragraph
-title: Sabyābajjhasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bālo veditabbo. Katamehi tīhi? Sabyābajjhena kāyakammena, sabyābajjhena vacīkammena, sabyābajjhena manokammena …pe… abyābajjhena kāyakammena, abyābajjhena vacīkammena, abyābajjhena manokammena. Imehi, kho, bhikkhave, tīhi dhammehi samannāgato paṇḍito veditabbo.

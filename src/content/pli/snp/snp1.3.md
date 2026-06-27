@@ -1,9 +1,9 @@
 ---
 slug: snp1.3
 source: suttacentral/bilara-data
+title: Khaggavisāṇasutta
 edition: ms
 granularity: paragraph
-title: Khaggavisāṇasutta
 ---
 
 “Sabbesu bhūtesu nidhāya daṇḍaṁ,

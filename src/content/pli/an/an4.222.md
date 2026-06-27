@@ -1,9 +1,9 @@
 ---
 slug: an4.222
 source: suttacentral/bilara-data
+title: Diṭṭhisutta
 edition: ms
 granularity: paragraph
-title: Diṭṭhisutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato bālo abyatto asappuriso khataṁ upahataṁ attānaṁ pariharati, sāvajjo ca hoti sānuvajjo viññūnaṁ; bahuñca apuññaṁ pasavati. Katamehi catūhi? Kāyaduccaritena, vacīduccaritena, manoduccaritena, micchādiṭṭhiyā— imehi kho, bhikkhave, catūhi dhammehi samannāgato bālo abyatto asappuriso khataṁ upahataṁ attānaṁ pariharati, sāvajjo ca hoti sānuvajjo viññūnaṁ, bahuñca apuññaṁ pasavati.

@@ -1,9 +1,9 @@
 ---
 slug: an4.16
 source: suttacentral/bilara-data
+title: Sokhummasutta
 edition: ms
 granularity: paragraph
-title: Sokhummasutta
 ---
 
 “Cattārimāni, bhikkhave, sokhummāni. Katamāni cattāri?
@@ -18,20 +18,16 @@ Saṅkhārasokhummena samannāgato hoti paramena; tena ca saṅkhārasokhummena 
 
 Imāni kho, bhikkhave, cattāri sokhummānīti.
 
+Rūpasokhummataṁ ñatvā,
 vedanānañca sambhavaṁ;
-
 Saññā yato samudeti,
-
 atthaṁ gacchati yattha ca;
-
 Saṅkhāre parato ñatvā,
-
 dukkhato no ca attato.
 
+Sa ve sammaddaso bhikkhu,
 santo santipade rato;
-
 Dhāreti antimaṁ dehaṁ,
-
 jetvā māraṁ savāhinin”ti.
 
 Chaṭṭhaṁ.

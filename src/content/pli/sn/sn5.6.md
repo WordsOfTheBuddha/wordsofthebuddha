@@ -1,9 +1,9 @@
 ---
 slug: sn5.6
 source: suttacentral/bilara-data
+title: Cālāsutta
 edition: ms
 granularity: paragraph
-title: Cālāsutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an4.87
 source: suttacentral/bilara-data
+title: Puttasutta
 edition: ms
 granularity: paragraph
-title: Puttasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro? Samaṇamacalo, samaṇapuṇḍarīko, samaṇapadumo, samaṇesu samaṇasukhumālo.

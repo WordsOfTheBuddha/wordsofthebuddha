@@ -1,9 +1,9 @@
 ---
 slug: an3.32
 source: suttacentral/bilara-data
+title: Ānandasutta
 edition: ms
 granularity: paragraph
-title: Ānandasutta
 ---
 
 Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:
@@ -20,10 +20,9 @@ Evaṁ kho, ānanda, siyā bhikkhuno tathārūpo samādhipaṭilābho yathā ima
 
 Idañca pana metaṁ, ānanda, sandhāya bhāsitaṁ pārāyane puṇṇakapañhe:
 
+‘Saṅkhāya lokasmiṁ paroparāni,
 Yassiñjitaṁ natthi kuhiñci loke;
-
 Santo vidhūmo anīgho nirāso,
-
 Atāri so jātijaranti brūmī’”ti.
 
 Dutiyaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an4.171
 source: suttacentral/bilara-data
+title: Cetanāsutta
 edition: ms
 granularity: paragraph
-title: Cetanāsutta
 ---
 
 “Kāye vā, bhikkhave, sati kāyasañcetanāhetu uppajjati ajjhattaṁ sukhadukkhaṁ. Vācāya vā, bhikkhave, sati vacīsañcetanāhetu uppajjati ajjhattaṁ sukhadukkhaṁ. Mane vā, bhikkhave, sati manosañcetanāhetu uppajjati ajjhattaṁ sukhadukkhaṁ avijjāpaccayāva.

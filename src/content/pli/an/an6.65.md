@@ -1,9 +1,9 @@
 ---
 slug: an6.65
 source: suttacentral/bilara-data
+title: Anāgāmiphalasutta
 edition: ms
 granularity: paragraph
-title: Anāgāmiphalasutta
 ---
 
 “Cha, bhikkhave, dhamme appahāya abhabbo anāgāmiphalaṁ sacchikātuṁ. Katame cha? Assaddhiyaṁ, ahirikaṁ, anottappaṁ, kosajjaṁ, muṭṭhassaccaṁ, duppaññataṁ— ime kho, bhikkhave, cha dhamme appahāya abhabbo anāgāmiphalaṁ sacchikātuṁ.

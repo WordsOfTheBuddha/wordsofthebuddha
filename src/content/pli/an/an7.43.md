@@ -1,9 +1,9 @@
 ---
 slug: an7.43
 source: suttacentral/bilara-data
+title: Dutiyaniddasasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaniddasasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
@@ -32,8 +32,7 @@ Devatāvaggo catuttho.
 
 Tassuddānaṁ
 
+Appamādo hirī ceva,
 dve suvacā duve mittā;
-
 Dve paṭisambhidā dve vasā,
-
 duve niddasavatthunāti.

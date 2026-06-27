@@ -1,9 +1,9 @@
 ---
 slug: sn1.70
 source: suttacentral/bilara-data
+title: Lokasutta
 edition: ms
 granularity: paragraph
-title: Lokasutta
 ---
 
 “Kismiṁ loko samuppanno,

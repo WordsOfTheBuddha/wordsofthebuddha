@@ -1,9 +1,9 @@
 ---
 slug: an4.268
 source: suttacentral/bilara-data
+title: Pisuṇavācāsutta
 edition: ms
 granularity: paragraph
-title: Pisuṇavācāsutta
 ---
 
 …pe… Attanā ca pisuṇavāco hoti, parañca pisuṇāya vācāya samādapeti, pisuṇāya vācāya ca samanuñño hoti, pisuṇāya vācāya ca vaṇṇaṁ bhāsati—imehi …pe….

@@ -1,9 +1,9 @@
 ---
 slug: an5.221
 source: suttacentral/bilara-data
+title: Paṭhamadīghacārikasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamadīghacārikasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā dīghacārikaṁ anavatthacārikaṁ anuyuttassa viharato. Katame pañca? Assutaṁ na suṇāti, sutaṁ na pariyodāpeti, sutenekaccena avisārado hoti, gāḷhaṁ rogātaṅkaṁ phusati, na ca mittavā hoti. Ime kho, bhikkhave, pañca ādīnavā dīghacārikaṁ anavatthacārikaṁ anuyuttassa viharato.

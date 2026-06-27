@@ -1,9 +1,9 @@
 ---
 slug: an5.81
 source: suttacentral/bilara-data
+title: Rajanīyasutta
 edition: ms
 granularity: paragraph
-title: Rajanīyasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca. Katamehi pañcahi? Rajanīye rajjati, dussanīye dussati, mohanīye muyhati, kuppanīye kuppati, madanīye majjati— imehi kho, bhikkhave, pañcahi dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.

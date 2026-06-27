@@ -1,9 +1,9 @@
 ---
 slug: sn7.19
 source: suttacentral/bilara-data
+title: Mātuposakasutta
 edition: ms
 granularity: paragraph
-title: Mātuposakasutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an4.269
 source: suttacentral/bilara-data
+title: Pharusavācāsutta
 edition: ms
 granularity: paragraph
-title: Pharusavācāsutta
 ---
 
 …pe… Attanā ca pharusavāco hoti, parañca pharusāya vācāya samādapeti, pharusāya vācāya ca samanuñño hoti, pharusāya vācāya ca vaṇṇaṁ bhāsati …pe….

@@ -1,9 +1,9 @@
 ---
 slug: an5.176
 source: suttacentral/bilara-data
+title: Pītisutta
 edition: ms
 granularity: paragraph
-title: Pītisutta
 ---
 
 Atha kho anāthapiṇḍiko gahapati pañcamattehi upāsakasatehi parivuto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:

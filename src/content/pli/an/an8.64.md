@@ -1,9 +1,9 @@
 ---
 slug: an8.64
 source: suttacentral/bilara-data
+title: Gayāsīsasutta
 edition: ms
 granularity: paragraph
-title: Gayāsīsasutta
 ---
 
 Ekaṁ samayaṁ bhagavā gayāyaṁ viharati gayāsīse. Tatra kho bhagavā bhikkhū āmantesi …pe…

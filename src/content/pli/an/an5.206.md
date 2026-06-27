@@ -1,9 +1,9 @@
 ---
 slug: an5.206
 source: suttacentral/bilara-data
+title: Vinibandhasutta
 edition: ms
 granularity: paragraph
-title: Vinibandhasutta
 ---
 
 “Pañcime, bhikkhave, cetasovinibandhā. Katame pañca? Idha, bhikkhave, bhikkhu kāmesu avītarāgo hoti avigatacchando avigatapemo avigatapipāso avigatapariḷāho avigatataṇho. Yo so, bhikkhave, bhikkhu kāmesu avītarāgo hoti avigatacchando avigatapemo avigatapipāso avigatapariḷāho avigatataṇho, tassa cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya. Yassa cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya, ayaṁ paṭhamo cetasovinibandho.

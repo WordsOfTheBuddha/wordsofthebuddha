@@ -1,9 +1,9 @@
 ---
 slug: an4.96
 source: suttacentral/bilara-data
+title: Rāgavinayasutta
 edition: ms
 granularity: paragraph
-title: Rāgavinayasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

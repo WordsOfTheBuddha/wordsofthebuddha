@@ -1,9 +1,9 @@
 ---
 slug: sn2.26
 source: suttacentral/bilara-data
+title: Rohitassasutta
 edition: ms
 granularity: paragraph
-title: Rohitassasutta
 ---
 
 Sāvatthinidānaṁ.

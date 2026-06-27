@@ -1,9 +1,9 @@
 ---
 slug: snp2.6
 source: suttacentral/bilara-data
+title: Kapilasutta (dhammacariyasutta)
 edition: ms
 granularity: paragraph
-title: Kapilasutta (dhammacariyasutta)
 ---
 
 Dhammacariyaṁ brahmacariyaṁ,

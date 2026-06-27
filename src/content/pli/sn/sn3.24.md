@@ -1,9 +1,9 @@
 ---
 slug: sn3.24
 source: suttacentral/bilara-data
+title: Issattasutta
 edition: ms
 granularity: paragraph
-title: Issattasutta
 ---
 
 Sāvatthinidānaṁ.

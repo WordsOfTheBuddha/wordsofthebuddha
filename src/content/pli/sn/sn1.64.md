@@ -1,9 +1,9 @@
 ---
 slug: sn1.64
 source: suttacentral/bilara-data
+title: Saṁyojanasutta
 edition: ms
 granularity: paragraph
-title: Saṁyojanasutta
 ---
 
 “Kiṁsu saṁyojano loko,

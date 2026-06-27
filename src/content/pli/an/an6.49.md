@@ -1,9 +1,9 @@
 ---
 slug: an6.49
 source: suttacentral/bilara-data
+title: Khemasutta
 edition: ms
 granularity: paragraph
-title: Khemasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -22,10 +22,9 @@ Idamavocāyasmā sumano. Samanuñño satthā ahosi. Atha kho āyasmā sumano “
 
 Atha kho bhagavā acirapakkantesu āyasmante ca kheme āyasmante ca sumane bhikkhū āmantesi: “evaṁ kho, bhikkhave, kulaputtā aññaṁ byākaronti. Attho ca vutto attā ca anupanīto. Atha ca pana idhekacce moghapurisā hasamānakā maññe aññaṁ byākaronti. Te pacchā vighātaṁ āpajjantīti.
 
+Na ussesu na omesu,
 Samatte nopanīyare;
-
 Khīṇā jāti vusitaṁ brahmacariyaṁ,
-
 Caranti saṁyojanavippamuttā”ti.
 
 Sattamaṁ.

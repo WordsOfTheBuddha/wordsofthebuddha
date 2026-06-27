@@ -1,9 +1,9 @@
 ---
 slug: sn1.49
 source: suttacentral/bilara-data
+title: Maccharisutta
 edition: ms
 granularity: paragraph
-title: Maccharisutta
 ---
 
 “Yedha maccharino loke,

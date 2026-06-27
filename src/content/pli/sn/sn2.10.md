@@ -1,9 +1,9 @@
 ---
 slug: sn2.10
 source: suttacentral/bilara-data
+title: Sūriyasutta
 edition: ms
 granularity: paragraph
-title: Sūriyasutta
 ---
 
 Sāvatthinidānaṁ.

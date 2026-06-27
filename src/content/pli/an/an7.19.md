@@ -1,9 +1,9 @@
 ---
 slug: an7.19
 source: suttacentral/bilara-data
+title: Nibbānasutta
 edition: ms
 granularity: paragraph
-title: Nibbānasutta
 ---
 
 “Nibbāne sukhānupassī viharati sukhasaññī sukhapaṭisaṁvedī satataṁ samitaṁ abbokiṇṇaṁ cetasā adhimuccamāno paññāya pariyogāhamāno. So āsavānaṁ khayā …pe… sacchikatvā upasampajja viharati. Ayaṁ bhikkhave, paṭhamo puggalo āhuneyyo …pe… puññakkhettaṁ lokassa.

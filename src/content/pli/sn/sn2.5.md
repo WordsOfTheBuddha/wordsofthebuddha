@@ -1,9 +1,9 @@
 ---
 slug: sn2.5
 source: suttacentral/bilara-data
+title: Dāmalisutta
 edition: ms
 granularity: paragraph
-title: Dāmalisutta
 ---
 
 Sāvatthinidānaṁ.

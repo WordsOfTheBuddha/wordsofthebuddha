@@ -1,9 +1,9 @@
 ---
 slug: an8.77
 source: suttacentral/bilara-data
+title: Icchāsutta
 edition: ms
 granularity: paragraph
-title: Icchāsutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi: “āvuso bhikkhavo”ti.

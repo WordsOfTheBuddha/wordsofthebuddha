@@ -1,9 +1,9 @@
 ---
 slug: sn4.17
 source: suttacentral/bilara-data
+title: Chaphassāyatanasutta
 edition: ms
 granularity: paragraph
-title: Chaphassāyatanasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.

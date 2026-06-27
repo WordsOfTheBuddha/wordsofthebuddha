@@ -1,9 +1,9 @@
 ---
 slug: an6.38
 source: suttacentral/bilara-data
+title: Attakārīsutta
 edition: ms
 granularity: paragraph
-title: Attakārīsutta
 ---
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca:

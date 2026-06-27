@@ -1,9 +1,9 @@
 ---
 slug: an4.271
 source: suttacentral/bilara-data
+title: Abhijjhālusutta
 edition: ms
 granularity: paragraph
-title: Abhijjhālusutta
 ---
 
 …pe… Attanā ca abhijjhālu hoti, parañca abhijjhāya samādapeti, abhijjhāya ca samanuñño hoti, abhijjhāya ca vaṇṇaṁ bhāsati …pe….

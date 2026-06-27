@@ -1,9 +1,9 @@
 ---
 slug: sn2.6
 source: suttacentral/bilara-data
+title: Kāmadasutta
 edition: ms
 granularity: paragraph
-title: Kāmadasutta
 ---
 
 Sāvatthinidānaṁ.

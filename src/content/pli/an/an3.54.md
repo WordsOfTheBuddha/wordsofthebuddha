@@ -1,9 +1,9 @@
 ---
 slug: an3.54
 source: suttacentral/bilara-data
+title: Paribbājakasutta
 edition: ms
 granularity: paragraph
-title: Paribbājakasutta
 ---
 
 Atha kho aññataro brāhmaṇaparibbājako yena bhagavā tenupasaṅkami; upasaṅkamitvā …pe… ekamantaṁ nisinno kho so brāhmaṇaparibbājako bhagavantaṁ etadavoca:

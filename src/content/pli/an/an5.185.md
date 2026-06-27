@@ -1,9 +1,9 @@
 ---
 slug: an5.185
 source: suttacentral/bilara-data
+title: Abbhokāsikasutta
 edition: ms
 granularity: paragraph
-title: Abbhokāsikasutta
 ---
 
 “Pañcime, bhikkhave, abbhokāsikā …pe….

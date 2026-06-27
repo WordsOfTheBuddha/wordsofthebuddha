@@ -1,9 +1,9 @@
 ---
 slug: an4.243
 source: suttacentral/bilara-data
+title: Saṅghabhedakasutta
 edition: ms
 granularity: paragraph
-title: Saṅghabhedakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ ānandaṁ bhagavā etadavoca: “api nu taṁ, ānanda, adhikaraṇaṁ vūpasantan”ti?

@@ -1,9 +1,9 @@
 ---
 slug: sn1.75
 source: suttacentral/bilara-data
+title: Bhītāsutta
 edition: ms
 granularity: paragraph
-title: Bhītāsutta
 ---
 
 “Kiṁsūdha bhītā janatā anekā,

@@ -1,9 +1,9 @@
 ---
 slug: sn4.21
 source: suttacentral/bilara-data
+title: Sambahulasutta
 edition: ms
 granularity: paragraph
-title: Sambahulasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sakkesu viharati silāvatiyaṁ.

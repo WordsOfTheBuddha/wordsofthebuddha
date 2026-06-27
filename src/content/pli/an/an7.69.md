@@ -1,9 +1,9 @@
 ---
 slug: an7.69
 source: suttacentral/bilara-data
+title: Pāricchattakasutta
 edition: ms
 granularity: paragraph
-title: Pāricchattakasutta
 ---
 
 “Yasmiṁ, bhikkhave, samaye devānaṁ tāvatiṁsānaṁ pāricchattako koviḷāro paṇḍupalāso hoti, attamanā, bhikkhave, devā tāvatiṁsā tasmiṁ samaye honti: ‘paṇḍupalāso dāni pāricchattako koviḷāro nacirasseva dāni pannapalāso bhavissatī’ti.

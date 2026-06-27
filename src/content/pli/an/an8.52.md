@@ -1,9 +1,9 @@
 ---
 slug: an8.52
 source: suttacentral/bilara-data
+title: Ovādasutta
 edition: ms
 granularity: paragraph
-title: Ovādasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:

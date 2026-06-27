@@ -1,9 +1,9 @@
 ---
 slug: an5.200
 source: suttacentral/bilara-data
+title: Nissāraṇīyasutta
 edition: ms
 granularity: paragraph
-title: Nissāraṇīyasutta
 ---
 
 “Pañcimā, bhikkhave, nissāraṇīyā dhātuyo. Katamā pañca?
@@ -26,10 +26,9 @@ Brāhmaṇavaggo pañcamo.
 
 Tassuddānaṁ
 
+Soṇo doṇo saṅgāravo,
 Kāraṇapālī ca piṅgiyānī;
-
 Supinā ca vassā vācā,
-
 Kulaṁ nissāraṇīyena cāti.
 
 Catuttho paṇṇāsako samatto.

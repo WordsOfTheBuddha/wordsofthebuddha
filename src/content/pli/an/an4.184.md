@@ -1,9 +1,9 @@
 ---
 slug: an4.184
 source: suttacentral/bilara-data
+title: Abhayasutta
 edition: ms
 granularity: paragraph
-title: Abhayasutta
 ---
 
 Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho jāṇussoṇi brāhmaṇo bhagavantaṁ etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: an5.286
 source: suttacentral/bilara-data
+title: Bhikkhusutta
 edition: ms
 granularity: paragraph
-title: Bhikkhusutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Pāṇātipātī hoti, adinnādāyī hoti, abrahmacārī hoti, musāvādī hoti, surāmerayamajjapamādaṭṭhāyī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu yathābhataṁ nikkhitto evaṁ niraye.

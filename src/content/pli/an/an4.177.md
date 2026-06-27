@@ -1,9 +1,9 @@
 ---
 slug: an4.177
 source: suttacentral/bilara-data
+title: Rāhulasutta
 edition: ms
 granularity: paragraph
-title: Rāhulasutta
 ---
 
 Atha kho āyasmā rāhulo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ rāhulaṁ bhagavā etadavoca:

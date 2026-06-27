@@ -1,9 +1,9 @@
 ---
 slug: sn1.46
 source: suttacentral/bilara-data
+title: Accharāsutta
 edition: ms
 granularity: paragraph
-title: Accharāsutta
 ---
 
 “Accharāgaṇasaṅghuṭṭhaṁ,

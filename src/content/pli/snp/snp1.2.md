@@ -1,9 +1,9 @@
 ---
 slug: snp1.2
 source: suttacentral/bilara-data
+title: Dhaniyasutta
 edition: ms
 granularity: paragraph
-title: Dhaniyasutta
 ---
 
 (iti dhaniyo gopo)

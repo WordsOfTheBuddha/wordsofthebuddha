@@ -1,9 +1,9 @@
 ---
 slug: dn8
 source: suttacentral/bilara-data
+title: Mahāsīhanādasutta
 edition: ms
 granularity: paragraph
-title: Mahāsīhanādasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruññāyaṁ viharati kaṇṇakatthale migadāye.

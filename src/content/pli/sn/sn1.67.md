@@ -1,9 +1,9 @@
 ---
 slug: sn1.67
 source: suttacentral/bilara-data
+title: Uḍḍitasutta
 edition: ms
 granularity: paragraph
-title: Uḍḍitasutta
 ---
 
 “Kenassu uḍḍito loko,

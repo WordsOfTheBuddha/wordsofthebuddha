@@ -1,9 +1,9 @@
 ---
 slug: an5.203
 source: suttacentral/bilara-data
+title: Assājānīyasutta
 edition: ms
 granularity: paragraph
-title: Assājānīyasutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅgantveva saṅkhaṁ gacchati.

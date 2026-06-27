@@ -1,9 +1,9 @@
 ---
 slug: an3.89
 source: suttacentral/bilara-data
+title: Paṭhamasikkhattayasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasikkhattayasutta
 ---
 
 “Tisso imā, bhikkhave, sikkhā. Katamā tisso? Adhisīlasikkhā, adhicittasikkhā, adhipaññāsikkhā.

@@ -1,9 +1,9 @@
 ---
 slug: an6.29
 source: suttacentral/bilara-data
+title: Udāyīsutta
 edition: ms
 granularity: paragraph
-title: Udāyīsutta
 ---
 
 Atha kho bhagavā āyasmantaṁ udāyiṁ āmantesi: “kati nu kho, udāyi, anussatiṭṭhānānī”ti?

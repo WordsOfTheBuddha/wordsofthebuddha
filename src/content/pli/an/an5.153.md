@@ -1,9 +1,9 @@
 ---
 slug: an5.153
 source: suttacentral/bilara-data
+title: Tatiyasammattaniyāmasutta
 edition: ms
 granularity: paragraph
-title: Tatiyasammattaniyāmasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ. Katamehi pañcahi? Makkhī dhammaṁ suṇāti makkhapariyuṭṭhito, upārambhacitto dhammaṁ suṇāti randhagavesī, dhammadesake āhatacitto hoti khīlajāto, duppañño hoti jaḷo eḷamūgo, anaññāte aññātamānī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ.

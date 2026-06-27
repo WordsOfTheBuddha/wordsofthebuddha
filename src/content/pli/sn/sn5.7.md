@@ -1,9 +1,9 @@
 ---
 slug: sn5.7
 source: suttacentral/bilara-data
+title: Upacālāsutta
 edition: ms
 granularity: paragraph
-title: Upacālāsutta
 ---
 
 Sāvatthinidānaṁ.

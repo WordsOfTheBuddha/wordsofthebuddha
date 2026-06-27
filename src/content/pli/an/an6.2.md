@@ -1,9 +1,9 @@
 ---
 slug: an6.2
 source: suttacentral/bilara-data
+title: Dutiyaāhuneyyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaāhuneyyasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassa. Katamehi chahi?

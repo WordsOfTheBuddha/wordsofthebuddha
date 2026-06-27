@@ -1,9 +1,9 @@
 ---
 slug: an3.127
 source: suttacentral/bilara-data
+title: Hatthakasutta
 edition: ms
 granularity: paragraph
-title: Hatthakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -22,16 +22,14 @@ Seyyathāpi, bhante, bhagavā etarahi ākiṇṇo viharati bhikkhūhi bhikkhunī
 
 Tiṇṇāhaṁ, bhante, dhammānaṁ atitto appaṭivāno kālaṅkato. Katamesaṁ tiṇṇaṁ? Bhagavato ahaṁ, bhante, dassanassa atitto appaṭivāno kālaṅkato; saddhammasavanassāhaṁ, bhante, atitto appaṭivāno kālaṅkato; saṅghassāhaṁ, bhante, upaṭṭhānassa atitto appaṭivāno kālaṅkato. Imesaṁ kho ahaṁ, bhante, tiṇṇaṁ dhammānaṁ atitto appaṭivāno kālaṅkatoti.
 
+Nāhaṁ bhagavato dassanassa,
 Tittimajjhagā kudācanaṁ;
-
 Saṅghassa upaṭṭhānassa,
-
 Saddhammasavanassa ca.
 
+Adhisīlaṁ sikkhamāno,
 saddhammasavane rato;
-
 Tiṇṇaṁ dhammānaṁ atitto,
-
 hatthako avihaṁ gato”ti.
 
 Pañcamaṁ.

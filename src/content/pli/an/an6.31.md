@@ -1,9 +1,9 @@
 ---
 slug: an6.31
 source: suttacentral/bilara-data
+title: Sekhasutta
 edition: ms
 granularity: paragraph
-title: Sekhasutta
 ---
 
 “Chayime, bhikkhave, dhammā sekhassa bhikkhuno parihānāya saṁvattanti. Katame cha? Kammārāmatā, bhassārāmatā, niddārāmatā, saṅgaṇikārāmatā, indriyesu aguttadvāratā, bhojane amattaññutā— ime kho, bhikkhave, cha dhammā sekhassa bhikkhuno parihānāya saṁvattanti.

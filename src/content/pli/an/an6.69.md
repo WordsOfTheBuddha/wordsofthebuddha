@@ -1,9 +1,9 @@
 ---
 slug: an6.69
 source: suttacentral/bilara-data
+title: Devatāsutta
 edition: ms
 granularity: paragraph
-title: Devatāsutta
 ---
 
 Atha kho aññatarā devatā abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṁ jetavanaṁ obhāsetvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitā kho sā devatā bhagavantaṁ etadavoca:

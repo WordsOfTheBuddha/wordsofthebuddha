@@ -1,9 +1,9 @@
 ---
 slug: sn1.80
 source: suttacentral/bilara-data
+title: Pajjotasutta
 edition: ms
 granularity: paragraph
-title: Pajjotasutta
 ---
 
 “Kiṁsu lokasmi pajjoto,

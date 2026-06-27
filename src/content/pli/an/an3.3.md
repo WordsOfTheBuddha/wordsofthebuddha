@@ -1,9 +1,9 @@
 ---
 slug: an3.3
 source: suttacentral/bilara-data
+title: Cintīsutta
 edition: ms
 granularity: paragraph
-title: Cintīsutta
 ---
 
 “Tīṇimāni, bhikkhave, bālassa bālalakkhaṇāni bālanimittāni bālāpadānāni. Katamāni tīṇi? Idha, bhikkhave, bālo duccintitacintī ca hoti dubbhāsitabhāsī ca dukkaṭakammakārī ca. No cedaṁ, bhikkhave, bālo duccintitacintī ca abhavissa dubbhāsitabhāsī ca dukkaṭakammakārī ca, kena naṁ paṇḍitā jāneyyuṁ: ‘bālo ayaṁ bhavaṁ asappuriso’ti? Yasmā ca kho, bhikkhave, bālo duccintitacintī ca hoti dubbhāsitabhāsī ca dukkaṭakammakārī ca tasmā naṁ paṇḍitā jānanti: ‘bālo ayaṁ bhavaṁ asappuriso’ti. Imāni kho, bhikkhave, tīṇi bālassa bālalakkhaṇāni bālanimittāni bālāpadānāni.

@@ -1,9 +1,9 @@
 ---
 slug: an8.40
 source: suttacentral/bilara-data
+title: Duccaritavipākasutta
 edition: ms
 granularity: paragraph
-title: Duccaritavipākasutta
 ---
 
 “Pāṇātipāto, bhikkhave, āsevito bhāvito bahulīkato nirayasaṁvattaniko tiracchānayonisaṁvattaniko pettivisayasaṁvattaniko. Yo sabbalahuso pāṇātipātassa vipāko, manussabhūtassa appāyukasaṁvattaniko hoti.
@@ -28,8 +28,7 @@ Dānavaggo catuttho.
 
 Tassuddānaṁ
 
+Dve dānāni vatthuñca,
 khettaṁ dānūpapattiyo;
-
 Kiriyaṁ dve sappurisā,
-
 abhisando vipāko cāti.

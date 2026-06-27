@@ -1,9 +1,9 @@
 ---
 slug: sn1.78
 source: suttacentral/bilara-data
+title: Kāmasutta
 edition: ms
 granularity: paragraph
-title: Kāmasutta
 ---
 
 “Kimatthakāmo na dade,

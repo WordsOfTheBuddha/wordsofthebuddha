@@ -1,9 +1,9 @@
 ---
 slug: an4.147
 source: suttacentral/bilara-data
+title: Dutiyakālasutta
 edition: ms
 granularity: paragraph
-title: Dutiyakālasutta
 ---
 
 “Cattārome, bhikkhave, kālā sammā bhāviyamānā sammā anuparivattiyamānā anupubbena āsavānaṁ khayaṁ pāpenti. Katame cattāro? Kālena dhammassavanaṁ, kālena dhammasākacchā, kālena sammasanā, kālena vipassanā—

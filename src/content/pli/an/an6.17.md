@@ -1,9 +1,9 @@
 ---
 slug: an6.17
 source: suttacentral/bilara-data
+title: Soppasutta
 edition: ms
 granularity: paragraph
-title: Soppasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

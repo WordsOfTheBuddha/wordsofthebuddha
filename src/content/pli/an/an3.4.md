@@ -1,9 +1,9 @@
 ---
 slug: an3.4
 source: suttacentral/bilara-data
+title: Accayasutta
 edition: ms
 granularity: paragraph
-title: Accayasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bālo veditabbo. Katamehi tīhi? Accayaṁ accayato na passati, accayaṁ accayato disvā yathādhammaṁ nappaṭikaroti, parassa kho pana accayaṁ desentassa yathādhammaṁ nappaṭiggaṇhāti.

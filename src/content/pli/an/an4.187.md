@@ -1,9 +1,9 @@
 ---
 slug: an4.187
 source: suttacentral/bilara-data
+title: Vassakārasutta
 edition: ms
 granularity: paragraph
-title: Vassakārasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

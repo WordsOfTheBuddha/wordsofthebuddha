@@ -1,9 +1,9 @@
 ---
 slug: an5.66
 source: suttacentral/bilara-data
+title: Sājīvasutta
 edition: ms
 granularity: paragraph
-title: Sājīvasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnaṁ. Katamehi pañcahi?

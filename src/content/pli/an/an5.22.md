@@ -1,9 +1,9 @@
 ---
 slug: an5.22
 source: suttacentral/bilara-data
+title: Dutiyaagāravasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaagāravasutta
 ---
 
 “So vata, bhikkhave, bhikkhu agāravo appatisso asabhāgavuttiko ‘sabrahmacārīsu ābhisamācārikaṁ dhammaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Ābhisamācārikaṁ dhammaṁ aparipūretvā sekhaṁ dhammaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sekhaṁ dhammaṁ aparipūretvā sīlakkhandhaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Sīlakkhandhaṁ aparipūretvā samādhikkhandhaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati. ‘Samādhikkhandhaṁ aparipūretvā paññākkhandhaṁ paripūressatī’ti netaṁ ṭhānaṁ vijjati.

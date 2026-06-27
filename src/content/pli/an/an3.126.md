@@ -1,9 +1,9 @@
 ---
 slug: an3.126
 source: suttacentral/bilara-data
+title: Bharaṇḍukālāmasutta
 edition: ms
 granularity: paragraph
-title: Bharaṇḍukālāmasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno yena kapilavatthu tadavasari.

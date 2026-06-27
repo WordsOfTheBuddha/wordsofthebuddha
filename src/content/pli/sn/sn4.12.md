@@ -1,9 +1,9 @@
 ---
 slug: sn4.12
 source: suttacentral/bilara-data
+title: Kinnusīhasutta
 edition: ms
 granularity: paragraph
-title: Kinnusīhasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tena kho pana samayena bhagavā mahatiyā parisāya parivuto dhammaṁ deseti.

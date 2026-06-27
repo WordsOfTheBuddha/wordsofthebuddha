@@ -1,9 +1,9 @@
 ---
 slug: an5.105
 source: suttacentral/bilara-data
+title: Phāsuvihārasutta
 edition: ms
 granularity: paragraph
-title: Phāsuvihārasutta
 ---
 
 “Pañcime, bhikkhave, phāsuvihārā. Katame pañca?

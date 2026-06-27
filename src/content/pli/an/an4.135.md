@@ -1,9 +1,9 @@
 ---
 slug: an4.135
 source: suttacentral/bilara-data
+title: Sāvajjasutta
 edition: ms
 granularity: paragraph
-title: Sāvajjasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro? Sāvajjo, vajjabahulo, appavajjo, anavajjo.

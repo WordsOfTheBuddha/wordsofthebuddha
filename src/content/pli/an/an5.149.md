@@ -1,9 +1,9 @@
 ---
 slug: an5.149
 source: suttacentral/bilara-data
+title: Paṭhamasamayavimuttasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasamayavimuttasutta
 ---
 
 “Pañcime, bhikkhave, dhammā samayavimuttassa bhikkhuno parihānāya saṁvattanti. Katame pañca? Kammārāmatā, bhassārāmatā, niddārāmatā, saṅgaṇikārāmatā, yathāvimuttaṁ cittaṁ na paccavekkhati. Ime kho, bhikkhave, pañca dhammā samayavimuttassa bhikkhuno parihānāya saṁvattanti.

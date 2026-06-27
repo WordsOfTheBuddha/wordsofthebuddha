@@ -1,9 +1,9 @@
 ---
 slug: an7.21
 source: suttacentral/bilara-data
+title: Sārandadasutta
 edition: ms
 granularity: paragraph
-title: Sārandadasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā vesāliyaṁ viharati sārandade cetiye. Atha kho sambahulā licchavī yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinne kho te licchavī bhagavā etadavoca:

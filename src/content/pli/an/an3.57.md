@@ -1,9 +1,9 @@
 ---
 slug: an3.57
 source: suttacentral/bilara-data
+title: Vacchagottasutta
 edition: ms
 granularity: paragraph
-title: Vacchagottasutta
 ---
 
 Atha kho vacchagotto paribbājako yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho vacchagotto paribbājako bhagavantaṁ etadavoca:
@@ -26,62 +26,51 @@ Katamehi pañcahi aṅgehi samannāgato hoti? Asekkhena sīlakkhandhena samannā
 
 Iti pañcaṅgavippahīne pañcaṅgasamannāgate dinnaṁ mahapphalanti vadāmīti.
 
+Iti kaṇhāsu setāsu,
 rohiṇīsu harīsu vā;
-
 Kammāsāsu sarūpāsu,
-
 gosu pārevatāsu vā.
 
+Yāsu kāsuci etāsu,
 danto jāyati puṅgavo;
-
 Dhorayho balasampanno,
-
 kalyāṇajavanikkamo;
-
 Tameva bhāre yuñjanti,
-
 nāssa vaṇṇaṁ parikkhare.
 
+Evamevaṁ manussesu,
 yasmiṁ kasmiñci jātiye;
-
 Khattiye brāhmaṇe vesse,
-
 sudde caṇḍālapukkuse.
 
+Yāsu kāsuci etāsu,
 danto jāyati subbato;
-
 Dhammaṭṭho sīlasampanno,
-
 saccavādī hirīmano.
 
+Pahīnajātimaraṇo,
 brahmacariyassa kevalī;
-
 Pannabhāro visaṁyutto,
-
 katakicco anāsavo.
 
+Pāragū sabbadhammānaṁ,
 anupādāya nibbuto;
-
 Tasmiṁyeva viraje khette,
-
 vipulā hoti dakkhiṇā.
 
+Bālā ca avijānantā,
 dummedhā assutāvino;
-
 Bahiddhā denti dānāni,
-
 na hi sante upāsare.
 
+Ye ca sante upāsanti,
 sappaññe dhīrasammate;
-
 Saddhā ca nesaṁ sugate,
-
 mūlajātā patiṭṭhitā.
 
+Devalokañca te yanti,
 kule vā idha jāyare;
-
 Anupubbena nibbānaṁ,
-
 adhigacchanti paṇḍitā”ti.
 
 Sattamaṁ.

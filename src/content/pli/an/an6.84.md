@@ -1,9 +1,9 @@
 ---
 slug: an6.84
 source: suttacentral/bilara-data
+title: Rattidivasasutta
 edition: ms
 granularity: paragraph
-title: Rattidivasasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgatassa bhikkhuno yā ratti vā divaso vā āgacchati hāniyeva pāṭikaṅkhā kusalesu dhammesu, no vuddhi. Katamehi chahi? Idha, bhikkhave, bhikkhu mahiccho hoti, vighātavā, asantuṭṭho, itarītaracīvarapiṇḍapātasenāsanagilānappaccayabhesajjaparikkhārena, assaddho hoti, dussīlo hoti, kusīto hoti, muṭṭhassati hoti, duppañño hoti. Imehi kho, bhikkhave, chahi dhammehi samannāgatassa bhikkhuno yā ratti vā divaso vā āgacchati hāniyeva pāṭikaṅkhā kusalesu dhammesu, no vuddhi.
@@ -16,8 +16,7 @@ Arahattavaggo aṭṭhamo.
 
 Tassuddānaṁ
 
+Dukkhaṁ arahattaṁ uttari ca,
 Sukhaṁ adhigamena ca;
-
 Mahantattaṁ dvayaṁ niraye,
-
 Aggadhammañca rattiyoti.

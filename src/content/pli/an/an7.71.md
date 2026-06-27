@@ -1,9 +1,9 @@
 ---
 slug: an7.71
 source: suttacentral/bilara-data
+title: Bhāvanāsutta
 edition: ms
 granularity: paragraph
-title: Bhāvanāsutta
 ---
 
 “Bhāvanaṁ ananuyuttassa, bhikkhave, bhikkhuno viharato kiñcāpi evaṁ icchā uppajjeyya: ‘aho vata me anupādāya āsavehi cittaṁ vimucceyyā’ti, atha khvassa neva anupādāya āsavehi cittaṁ vimuccati. Taṁ kissa hetu? ‘Abhāvitattā’tissa vacanīyaṁ. Kissa abhāvitattā? Catunnaṁ satipaṭṭhānānaṁ, catunnaṁ sammappadhānānaṁ, catunnaṁ iddhipādānaṁ, pañcannaṁ indriyānaṁ, pañcannaṁ balānaṁ, sattannaṁ bojjhaṅgānaṁ, ariyassa aṭṭhaṅgikassa maggassa.

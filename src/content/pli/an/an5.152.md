@@ -1,9 +1,9 @@
 ---
 slug: an5.152
 source: suttacentral/bilara-data
+title: Dutiyasammattaniyāmasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasammattaniyāmasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ. Katamehi pañcahi? Kathaṁ paribhoti, kathikaṁ paribhoti, attānaṁ paribhoti, duppañño hoti jaḷo eḷamūgo, anaññāte aññātamānī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ.

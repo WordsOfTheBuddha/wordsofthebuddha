@@ -1,9 +1,9 @@
 ---
 slug: an4.174
 source: suttacentral/bilara-data
+title: Ānandasutta
 edition: ms
 granularity: paragraph
-title: Ānandasutta
 ---
 
 Atha kho āyasmā ānando yenāyasmā mahākoṭṭhiko tenupasaṅkami; upasaṅkamitvā āyasmatā mahākoṭṭhikena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando āyasmantaṁ mahākoṭṭhikaṁ etadavoca:

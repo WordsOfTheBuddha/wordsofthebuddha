@@ -1,9 +1,9 @@
 ---
 slug: an5.50
 source: suttacentral/bilara-data
+title: Nāradasutta
 edition: ms
 granularity: paragraph
-title: Nāradasutta
 ---
 
 Ekaṁ samayaṁ āyasmā nārado pāṭaliputte viharati kukkuṭārāme.
@@ -50,28 +50,24 @@ Puna caparaṁ, mahārāja, sutavato ariyasāvakassa byādhidhammaṁ byādhīya
 
 Imāni kho, mahārāja, pañca alabbhanīyāni ṭhānāni samaṇena vā brāhmaṇena vā devena vā mārena vā brahmunā vā kenaci vā lokasminti.
 
+Na socanāya paridevanāya,
 Atthodha labbhā api appakopi;
-
 Socantamenaṁ dukhitaṁ viditvā,
-
 Paccatthikā attamanā bhavanti.
 
+Yato ca kho paṇḍito āpadāsu,
 Na vedhatī atthavinicchayaññū;
-
 Paccatthikāssa dukhitā bhavanti,
-
 Disvā mukhaṁ avikāraṁ purāṇaṁ.
 
+Jappena mantena subhāsitena,
 Anuppadānena paveṇiyā vā;
-
 Yathā yathā yattha labhetha atthaṁ,
-
 Tathā tathā tattha parakkameyya.
 
+Sace pajāneyya alabbhaneyyo,
 Mayāva aññena vā esa attho;
-
 Asocamāno adhivāsayeyya,
-
 Kammaṁ daḷhaṁ kinti karomi dānī”ti.
 
 Evaṁ vutte, muṇḍo rājā āyasmantaṁ nāradaṁ etadavoca: “ko nāmo ayaṁ, bhante, dhammapariyāyo”ti?
@@ -88,10 +84,9 @@ Muṇḍarājavaggo pañcamo.
 
 Tassuddānaṁ
 
+Ādiyo sappuriso iṭṭhā,
 manāpadāyībhisandaṁ;
-
 Sampadā ca dhanaṁ ṭhānaṁ,
-
 kosalo nāradena cāti.
 
 Paṭhamo paṇṇāsako samatto.

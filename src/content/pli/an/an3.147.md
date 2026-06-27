@@ -1,9 +1,9 @@
 ---
 slug: an3.147
 source: suttacentral/bilara-data
+title: Sāvajjasutta
 edition: ms
 granularity: paragraph
-title: Sāvajjasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi tīhi? Sāvajjena kāyakammena, sāvajjena vacīkammena, sāvajjena manokammena—

@@ -1,9 +1,9 @@
 ---
 slug: an5.9
 source: suttacentral/bilara-data
+title: Paṭhamaagāravasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaagāravasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme. Katamehi pañcahi? Assaddho, bhikkhave, bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme. Ahiriko, bhikkhave, bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme. Anottappī, bhikkhave, bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme. Kusīto, bhikkhave, bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme. Duppañño, bhikkhave, bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu agāravo appatisso cavati, nappatiṭṭhāti saddhamme.

@@ -1,9 +1,9 @@
 ---
 slug: sn1.62
 source: suttacentral/bilara-data
+title: Cittasutta
 edition: ms
 granularity: paragraph
-title: Cittasutta
 ---
 
 “Kenassu nīyati loko,

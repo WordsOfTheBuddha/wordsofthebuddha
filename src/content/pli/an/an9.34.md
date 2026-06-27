@@ -1,9 +1,9 @@
 ---
 slug: an9.34
 source: suttacentral/bilara-data
+title: Nibbānasukhasutta
 edition: ms
 granularity: paragraph
-title: Nibbānasukhasutta
 ---
 
 Ekaṁ samayaṁ āyasmā sāriputto rājagahe viharati veḷuvane kalandakanivāpe.

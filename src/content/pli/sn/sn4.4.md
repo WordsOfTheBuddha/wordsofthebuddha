@@ -1,9 +1,9 @@
 ---
 slug: sn4.4
 source: suttacentral/bilara-data
+title: Paṭhamamārapāsasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamamārapāsasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

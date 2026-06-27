@@ -1,9 +1,9 @@
 ---
 slug: an4.198
 source: suttacentral/bilara-data
+title: Attantapasutta
 edition: ms
 granularity: paragraph
-title: Attantapasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

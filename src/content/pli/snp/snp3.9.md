@@ -1,9 +1,9 @@
 ---
 slug: snp3.9
 source: suttacentral/bilara-data
+title: Vāseṭṭhasutta
 edition: ms
 granularity: paragraph
-title: Vāseṭṭhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā icchānaṅgale viharati icchānaṅgalavanasaṇḍe. Tena kho pana samayena sambahulā abhiññātā abhiññātā brāhmaṇamahāsālā icchānaṅgale paṭivasanti, seyyathidaṁ— caṅkī brāhmaṇo, tārukkho brāhmaṇo, pokkharasāti brāhmaṇo, jāṇussoṇi brāhmaṇo, todeyyo brāhmaṇo, aññe ca abhiññātā abhiññātā brāhmaṇamahāsālā. Atha kho vāseṭṭhabhāradvājānaṁ māṇavānaṁ jaṅghāvihāraṁ anucaṅkamantānaṁ anuvicarantānaṁ ayamantarākathā udapādi: “kathaṁ, bho, brāhmaṇo hotī”ti?

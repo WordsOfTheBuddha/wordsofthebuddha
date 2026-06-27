@@ -1,9 +1,9 @@
 ---
 slug: sn1.72
 source: suttacentral/bilara-data
+title: Rathasutta
 edition: ms
 granularity: paragraph
-title: Rathasutta
 ---
 
 “Kiṁsu rathassa paññāṇaṁ,

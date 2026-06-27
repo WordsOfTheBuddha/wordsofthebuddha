@@ -1,9 +1,9 @@
 ---
 slug: an4.118
 source: suttacentral/bilara-data
+title: Saṁvejanīyasutta
 edition: ms
 granularity: paragraph
-title: Saṁvejanīyasutta
 ---
 
 “Cattārimāni, bhikkhave, saddhassa kulaputtassa dassanīyāni saṁvejanīyāni ṭhānāni. Katamāni cattāri?

@@ -1,9 +1,9 @@
 ---
 slug: an9.44
 source: suttacentral/bilara-data
+title: Paññāvimuttasutta
 edition: ms
 granularity: paragraph
-title: Paññāvimuttasutta
 ---
 
 “‘Paññāvimutto, paññāvimutto’ti, āvuso, vuccati. Kittāvatā nu kho, āvuso, paññāvimutto vutto bhagavatā”ti?

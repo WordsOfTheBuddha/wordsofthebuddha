@@ -1,9 +1,9 @@
 ---
 slug: an4.35
 source: suttacentral/bilara-data
+title: Vassakārasutta
 edition: ms
 granularity: paragraph
-title: Vassakārasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Atha kho vassakāro brāhmaṇo magadhamahāmatto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho vassakāro brāhmaṇo magadhamahāmatto bhagavantaṁ etadavoca:
@@ -36,20 +36,16 @@ Neva kho tyāhaṁ, brāhmaṇa, anumodāmi na pana paṭikkosāmi. Imehi kho ah
 
 “Addhā kho tyāhaṁ, brāhmaṇa, āsajja upanīya vācā bhāsitā. Api ca tyāhaṁ byākarissāmi: ‘ahañhi, brāhmaṇa, bahujanahitāya paṭipanno bahujanasukhāya; bahu me janatā ariye ñāye patiṭṭhāpitā, yadidaṁ kalyāṇadhammatā kusaladhammatā. Ahañhi, brāhmaṇa, yaṁ vitakkaṁ ākaṅkhāmi vitakketuṁ taṁ vitakkaṁ vitakkemi, yaṁ vitakkaṁ nākaṅkhāmi vitakketuṁ na taṁ vitakkaṁ vitakkemi, yaṁ saṅkappaṁ ākaṅkhāmi saṅkappetuṁ taṁ saṅkappaṁ saṅkappemi, yaṁ saṅkappaṁ nākaṅkhāmi saṅkappetuṁ na taṁ saṅkappaṁ saṅkappemi. Ahañhi, brāhmaṇa, cetovasippatto vitakkapathe. Ahañhi, brāhmaṇa, catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī akicchalābhī akasiralābhī. Ahañhi, brāhmaṇa, āsavānaṁ khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharāmī’ti.
 
+Yo vedi sabbasattānaṁ,
 maccupāsappamocanaṁ;
-
 Hitaṁ devamanussānaṁ,
-
 ñāyaṁ dhammaṁ pakāsayi;
-
 Yaṁ ve disvā ca sutvā ca,
-
 pasīdanti bahū janā.
 
+Maggāmaggassa kusalo,
 Katakicco anāsavo;
-
 Buddho antimasārīro,
-
 Mahāpañño mahāpurisoti vuccatī”ti.
 
 Pañcamaṁ.

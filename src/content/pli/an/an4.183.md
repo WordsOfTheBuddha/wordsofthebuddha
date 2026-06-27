@@ -1,9 +1,9 @@
 ---
 slug: an4.183
 source: suttacentral/bilara-data
+title: Sutasutta
 edition: ms
 granularity: paragraph
-title: Sutasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Atha kho vassakāro brāhmaṇo magadhamahāmatto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho vassakāro brāhmaṇo magadhamahāmatto bhagavantaṁ etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: sn2.7
 source: suttacentral/bilara-data
+title: Pañcālacaṇḍasutta
 edition: ms
 granularity: paragraph
-title: Pañcālacaṇḍasutta
 ---
 
 Sāvatthinidānaṁ.

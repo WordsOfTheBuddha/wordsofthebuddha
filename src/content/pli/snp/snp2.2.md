@@ -1,9 +1,9 @@
 ---
 slug: snp2.2
 source: suttacentral/bilara-data
+title: Āmagandhasutta
 edition: ms
 granularity: paragraph
-title: Āmagandhasutta
 ---
 
 “Sāmākaciṅgūlakacīnakāni ca,

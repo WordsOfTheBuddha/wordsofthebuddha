@@ -1,9 +1,9 @@
 ---
 slug: sn1.40
 source: suttacentral/bilara-data
+title: Dutiyapajjunnadhītusuttaṁ
 edition: ms
 granularity: paragraph
-title: Dutiyapajjunnadhītusuttaṁ
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.

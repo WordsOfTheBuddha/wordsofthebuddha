@@ -1,9 +1,9 @@
 ---
 slug: an5.99
 source: suttacentral/bilara-data
+title: Sīhasutta
 edition: ms
 granularity: paragraph
-title: Sīhasutta
 ---
 
 “Sīho, bhikkhave, migarājā sāyanhasamayaṁ āsayā nikkhamati; āsayā nikkhamitvā vijambhati; vijambhitvā samantā catuddisaṁ anuviloketi; samantā catuddisaṁ anuviloketvā tikkhattuṁ sīhanādaṁ nadati; tikkhattuṁ sīhanādaṁ naditvā gocarāya pakkamati. So hatthissa cepi pahāraṁ deti, sakkaccaññeva pahāraṁ deti, no asakkaccaṁ; mahiṁsassa cepi pahāraṁ deti, sakkaccaññeva pahāraṁ deti, no asakkaccaṁ; gavassa cepi pahāraṁ deti, sakkaccaññeva pahāraṁ deti, no asakkaccaṁ; dīpissa cepi pahāraṁ deti, sakkaccaññeva pahāraṁ deti, no asakkaccaṁ; khuddakānañcepi pāṇānaṁ pahāraṁ deti antamaso sasabiḷārānampi, sakkaccaññeva pahāraṁ deti, no asakkaccaṁ. Taṁ kissa hetu? ‘Mā me yoggapatho nassā’ti.

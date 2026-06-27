@@ -1,9 +1,9 @@
 ---
 slug: sn6.4
 source: suttacentral/bilara-data
+title: Bakabrahmasutta
 edition: ms
 granularity: paragraph
-title: Bakabrahmasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

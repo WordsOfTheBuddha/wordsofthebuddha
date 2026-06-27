@@ -1,9 +1,9 @@
 ---
 slug: an4.193
 source: suttacentral/bilara-data
+title: Bhaddiyasutta
 edition: ms
 granularity: paragraph
-title: Bhaddiyasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho bhaddiyo licchavi yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho bhaddiyo licchavi bhagavantaṁ etadavoca:

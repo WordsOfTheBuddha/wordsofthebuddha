@@ -1,9 +1,9 @@
 ---
 slug: snp1.10
 source: suttacentral/bilara-data
+title: Āḷavakasutta
 edition: ms
 granularity: paragraph
-title: Āḷavakasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā āḷaviyaṁ viharati āḷavakassa yakkhassa bhavane. Atha kho āḷavako yakkho yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ etadavoca: “nikkhama, samaṇā”ti. “Sādhāvuso”ti bhagavā nikkhami. “Pavisa, samaṇā”ti. “Sādhāvuso”ti bhagavā pāvisi.

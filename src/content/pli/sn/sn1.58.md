@@ -1,9 +1,9 @@
 ---
 slug: sn1.58
 source: suttacentral/bilara-data
+title: Uppathasutta
 edition: ms
 granularity: paragraph
-title: Uppathasutta
 ---
 
 “Kiṁsu uppatho akkhāto,

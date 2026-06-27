@@ -1,9 +1,9 @@
 ---
 slug: sn4.19
 source: suttacentral/bilara-data
+title: Kassakasutta
 edition: ms
 granularity: paragraph
-title: Kassakasutta
 ---
 
 Sāvatthinidānaṁ.

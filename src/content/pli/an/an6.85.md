@@ -1,9 +1,9 @@
 ---
 slug: an6.85
 source: suttacentral/bilara-data
+title: Sītibhāvasutta
 edition: ms
 granularity: paragraph
-title: Sītibhāvasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu abhabbo anuttaraṁ sītibhāvaṁ sacchikātuṁ. Katamehi chahi? Idha, bhikkhave, bhikkhu yasmiṁ samaye cittaṁ niggahetabbaṁ tasmiṁ samaye cittaṁ na niggaṇhāti, yasmiṁ samaye cittaṁ paggahetabbaṁ tasmiṁ samaye cittaṁ na paggaṇhāti, yasmiṁ samaye cittaṁ sampahaṁsitabbaṁ tasmiṁ samaye cittaṁ na sampahaṁseti, yasmiṁ samaye cittaṁ ajjhupekkhitabbaṁ tasmiṁ samaye cittaṁ na ajjhupekkhati, hīnādhimuttiko ca hoti, sakkāyābhirato ca. Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu abhabbo anuttaraṁ sītibhāvaṁ sacchikātuṁ.

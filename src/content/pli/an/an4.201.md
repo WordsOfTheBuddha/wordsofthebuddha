@@ -1,9 +1,9 @@
 ---
 slug: an4.201
 source: suttacentral/bilara-data
+title: Sikkhāpadasutta
 edition: ms
 granularity: paragraph
-title: Sikkhāpadasutta
 ---
 
 “Asappurisañca vo, bhikkhave, desessāmi, asappurisena asappurisatarañca; sappurisañca, sappurisena sappurisatarañca. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.

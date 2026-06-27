@@ -1,9 +1,9 @@
 ---
 slug: an7.68
 source: suttacentral/bilara-data
+title: Dhammaññūsutta
 edition: ms
 granularity: paragraph
-title: Dhammaññūsutta
 ---
 
 “Sattahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassa. Katamehi sattahi? Idha, bhikkhave, bhikkhu dhammaññū ca hoti atthaññū ca attaññū ca mattaññū ca kālaññū ca parisaññū ca puggalaparoparaññū ca.

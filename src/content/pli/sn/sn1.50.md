@@ -1,9 +1,9 @@
 ---
 slug: sn1.50
 source: suttacentral/bilara-data
+title: Ghaṭīkārasutta
 edition: ms
 granularity: paragraph
-title: Ghaṭīkārasutta
 ---
 
 “Avihaṁ upapannāse,

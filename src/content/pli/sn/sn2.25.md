@@ -1,9 +1,9 @@
 ---
 slug: sn2.25
 source: suttacentral/bilara-data
+title: Jantusutta
 edition: ms
 granularity: paragraph
-title: Jantusutta
 ---
 
 Evaṁ me sutaṁ—

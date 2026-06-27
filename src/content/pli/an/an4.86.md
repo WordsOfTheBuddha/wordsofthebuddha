@@ -1,9 +1,9 @@
 ---
 slug: an4.86
 source: suttacentral/bilara-data
+title: Oṇatoṇatasutta
 edition: ms
 granularity: paragraph
-title: Oṇatoṇatasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

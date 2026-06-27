@@ -1,9 +1,9 @@
 ---
 slug: an4.130
 source: suttacentral/bilara-data
+title: Cakkavattiacchariyasutta
 edition: ms
 granularity: paragraph
-title: Cakkavattiacchariyasutta
 ---
 
 “Cattārome, bhikkhave, acchariyā abbhutā dhammā raññe cakkavattimhi. Katame cattāro?
@@ -28,8 +28,7 @@ Bhayavaggo tatiyo.
 
 Tassuddānaṁ
 
+Attānuvādaūmi ca,
 dve ca nānā dve ca honti;
-
 Mettā dve ca acchariyā,
-
 aparā ca tathā duveti.

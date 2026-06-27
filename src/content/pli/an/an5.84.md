@@ -1,9 +1,9 @@
 ---
 slug: an5.84
 source: suttacentral/bilara-data
+title: Assaddhasutta
 edition: ms
 granularity: paragraph
-title: Assaddhasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ appiyo ca hoti, amanāpo ca agaru ca abhāvanīyo ca. Katamehi pañcahi? Assaddho hoti, ahiriko hoti, anottappī hoti, kusīto hoti, duppañño hoti— imehi kho, bhikkhave, pañcahi dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.

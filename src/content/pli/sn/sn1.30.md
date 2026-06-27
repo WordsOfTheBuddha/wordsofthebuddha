@@ -1,9 +1,9 @@
 ---
 slug: sn1.30
 source: suttacentral/bilara-data
+title: Eṇijaṅghasutta
 edition: ms
 granularity: paragraph
-title: Eṇijaṅghasutta
 ---
 
 “Eṇijaṅghaṁ kisaṁ vīraṁ,

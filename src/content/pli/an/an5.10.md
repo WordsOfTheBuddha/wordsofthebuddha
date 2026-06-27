@@ -1,9 +1,9 @@
 ---
 slug: an5.10
 source: suttacentral/bilara-data
+title: Dutiyaagāravasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaagāravasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ. Katamehi pañcahi? Assaddho, bhikkhave, bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ. Ahiriko, bhikkhave, bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ. Anottappī, bhikkhave, bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ. Kusīto, bhikkhave, bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ. Duppañño, bhikkhave, bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu agāravo appatisso abhabbo imasmiṁ dhammavinaye vuddhiṁ virūḷhiṁ vepullaṁ āpajjituṁ.
@@ -16,8 +16,7 @@ Sekhabalavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Saṅkhittaṁ vitthataṁ dukkhā,
 bhataṁ sikkhāya pañcamaṁ;
-
 Samāpatti ca kāmesu,
-
 cavanā dve agāravāti.

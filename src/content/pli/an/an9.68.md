@@ -1,9 +1,9 @@
 ---
 slug: an9.68
 source: suttacentral/bilara-data
+title: Gatisutta
 edition: ms
 granularity: paragraph
-title: Gatisutta
 ---
 
 “Pañcimā, bhikkhave, gatiyo. Katamā pañca? Nirayo, tiracchānayoni, pettivisayo, manussā, devā— imā kho, bhikkhave, pañca gatiyo.

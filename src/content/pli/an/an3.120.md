@@ -1,9 +1,9 @@
 ---
 slug: an3.120
 source: suttacentral/bilara-data
+title: Paṭhamasoceyyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasoceyyasutta
 ---
 
 “Tīṇimāni, bhikkhave, soceyyāni. Katamāni tīṇi? Kāyasoceyyaṁ, vacīsoceyyaṁ, manosoceyyaṁ.

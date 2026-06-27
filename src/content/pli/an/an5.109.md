@@ -1,9 +1,9 @@
 ---
 slug: an5.109
 source: suttacentral/bilara-data
+title: Cātuddisasutta
 edition: ms
 granularity: paragraph
-title: Cātuddisasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu cātuddiso hoti. Katamehi pañcahi?

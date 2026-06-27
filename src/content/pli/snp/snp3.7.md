@@ -1,9 +1,9 @@
 ---
 slug: snp3.7
 source: suttacentral/bilara-data
+title: Selasutta
 edition: ms
 granularity: paragraph
-title: Selasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā aṅguttarāpesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ aḍḍhateḷasehi bhikkhusatehi yena āpaṇaṁ nāma aṅguttarāpānaṁ nigamo tadavasari. Assosi kho keṇiyo jaṭilo: “samaṇo khalu, bho, gotamo sakyaputto sakyakulā pabbajito aṅguttarāpesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ aḍḍhateḷasehi bhikkhusatehi āpaṇaṁ anuppatto. Taṁ kho pana bhavantaṁ gotamaṁ evaṁ kalyāṇo kittisaddo abbhuggato: ‘itipi so bhagavā arahaṁ sammāsambuddho vijjācaraṇasampanno sugato lokavidū anuttaro purisadammasārathi satthā devamanussānaṁ buddho bhagavā’ti. So imaṁ lokaṁ sadevakaṁ samārakaṁ sabrahmakaṁ sassamaṇabrāhmaṇiṁ pajaṁ sadevamanussaṁ sayaṁ abhiññā sacchikatvā pavedeti. So dhammaṁ deseti ādikalyāṇaṁ majjhekalyāṇaṁ pariyosānakalyāṇaṁ sātthaṁ sabyañjanaṁ, kevalaparipuṇṇaṁ parisuddhaṁ brahmacariyaṁ pakāseti. Sādhu kho pana tathārūpānaṁ arahataṁ dassanaṁ hotī”ti.

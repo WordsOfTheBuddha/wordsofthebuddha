@@ -1,9 +1,9 @@
 ---
 slug: an9.48
 source: suttacentral/bilara-data
+title: Nibbānasutta
 edition: ms
 granularity: paragraph
-title: Nibbānasutta
 ---
 
 “‘Nibbānaṁ, nibbānan’ti, āvuso, vuccati …pe….

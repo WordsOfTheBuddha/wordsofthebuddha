@@ -1,9 +1,9 @@
 ---
 slug: an5.218
 source: suttacentral/bilara-data
+title: Dutiyaapāsādikasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaapāsādikasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā apāsādike. Katame pañca? Appasannā nappasīdanti, pasannānañca ekaccānaṁ aññathattaṁ hoti, satthusāsanaṁ akataṁ hoti, pacchimā janatā diṭṭhānugatiṁ āpajjati, cittamassa nappasīdati. Ime kho, bhikkhave, pañca ādīnavā apāsādike.

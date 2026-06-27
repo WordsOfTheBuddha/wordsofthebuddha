@@ -1,9 +1,9 @@
 ---
 slug: an5.72
 source: suttacentral/bilara-data
+title: Dutiyacetovimuttiphalasutta
 edition: ms
 granularity: paragraph
-title: Dutiyacetovimuttiphalasutta
 ---
 
 “Pañcime, bhikkhave, dhammā bhāvitā bahulīkatā cetovimuttiphalā ca honti cetovimuttiphalānisaṁsā ca, paññāvimuttiphalā ca honti paññāvimuttiphalānisaṁsā ca. Katame pañca?

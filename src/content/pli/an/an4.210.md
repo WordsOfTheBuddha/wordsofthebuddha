@@ -1,9 +1,9 @@
 ---
 slug: an4.210
 source: suttacentral/bilara-data
+title: Catutthapāpadhammasutta
 edition: ms
 granularity: paragraph
-title: Catutthapāpadhammasutta
 ---
 
 “Pāpadhammañca vo, bhikkhave, desessāmi, pāpadhammena pāpadhammatarañca; kalyāṇadhammañca, kalyāṇadhammena kalyāṇadhammatarañca. Taṁ suṇātha …pe….
@@ -22,8 +22,7 @@ Sappurisavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Sikkhāpadañca assaddhaṁ,
 Sattakammaṁ atho ca dasakammaṁ;
-
 Aṭṭhaṅgikañca dasamaggaṁ,
-
 Dve pāpadhammā apare dveti.

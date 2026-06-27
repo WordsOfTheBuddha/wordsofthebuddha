@@ -1,9 +1,9 @@
 ---
 slug: an9.28
 source: suttacentral/bilara-data
+title: Dutiyaverasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaverasutta
 ---
 
 “Yato kho, bhikkhave, ariyasāvakassa pañca bhayāni verāni vūpasantāni honti, catūhi ca sotāpattiyaṅgehi samannāgato hoti, so ākaṅkhamāno attanāva attānaṁ byākareyya: ‘khīṇanirayomhi khīṇatiracchānayoni khīṇapettivisayo khīṇāpāyaduggativinipāto; sotāpannohamasmi avinipātadhammo niyato sambodhiparāyaṇo’”ti.

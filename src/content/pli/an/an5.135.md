@@ -1,9 +1,9 @@
 ---
 slug: an5.135
 source: suttacentral/bilara-data
+title: Paṭhamapatthanāsutta
 edition: ms
 granularity: paragraph
-title: Paṭhamapatthanāsutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño khattiyassa muddhāvasittassa jeṭṭho putto rajjaṁ pattheti. Katamehi pañcahi?

@@ -1,9 +1,9 @@
 ---
 slug: an5.197
 source: suttacentral/bilara-data
+title: Vassasutta
 edition: ms
 granularity: paragraph
-title: Vassasutta
 ---
 
 “Pañcime, bhikkhave, vassassa antarāyā, yaṁ nemittā na jānanti, yattha nemittānaṁ cakkhu na kamati. Katame pañca?

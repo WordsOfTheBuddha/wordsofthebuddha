@@ -1,9 +1,9 @@
 ---
 slug: sn1.12
 source: suttacentral/bilara-data
+title: Nandatisutta
 edition: ms
 granularity: paragraph
-title: Nandatisutta
 ---
 
 Sāvatthinidānaṁ.

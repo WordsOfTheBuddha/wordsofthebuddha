@@ -1,9 +1,9 @@
 ---
 slug: an4.263
 source: suttacentral/bilara-data
+title: Kammasutta
 edition: ms
 granularity: paragraph
-title: Kammasutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato bālo abyatto asappuriso khataṁ upahataṁ attānaṁ pariharati, sāvajjo ca hoti sānuvajjo viññūnaṁ, bahuñca apuññaṁ pasavati. Katamehi catūhi? Sāvajjena kāyakammena, sāvajjena vacīkammena, sāvajjena manokammena, sāvajjāya diṭṭhiyā— imehi kho, bhikkhave, catūhi dhammehi samannāgato bālo abyatto asappuriso khataṁ upahataṁ attānaṁ pariharati, sāvajjo ca hoti sānuvajjo viññūnaṁ, bahuñca apuññaṁ pasavati.
@@ -16,8 +16,7 @@ Abhiññāvaggo chaṭṭho.
 
 Tassuddānaṁ
 
+Abhiññā pariyesanā,
 saṅgahaṁ mālukyaputto;
-
 Kulaṁ dve ca ājānīyā,
-
 balaṁ araññakammunāti.

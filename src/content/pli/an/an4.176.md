@@ -1,9 +1,9 @@
 ---
 slug: an4.176
 source: suttacentral/bilara-data
+title: Āyācanasutta
 edition: ms
 granularity: paragraph
-title: Āyācanasutta
 ---
 
 “Saddho, bhikkhave, bhikkhu evaṁ sammā āyācamāno āyāceyya: ‘tādiso homi yādisā sāriputtamoggallānā’ti. Esā, bhikkhave, tulā etaṁ pamāṇaṁ mama sāvakānaṁ bhikkhūnaṁ, yadidaṁ sāriputtamoggallānā.

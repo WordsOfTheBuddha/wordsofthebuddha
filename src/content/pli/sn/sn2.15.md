@@ -1,9 +1,9 @@
 ---
 slug: sn2.15
 source: suttacentral/bilara-data
+title: Candanasutta
 edition: ms
 granularity: paragraph
-title: Candanasutta
 ---
 
 Ekamantaṁ ṭhito kho candano devaputto bhagavantaṁ gāthāya ajjhabhāsi:

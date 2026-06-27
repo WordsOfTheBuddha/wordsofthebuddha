@@ -1,9 +1,9 @@
 ---
 slug: an4.139
 source: suttacentral/bilara-data
+title: Dhammakathikasutta
 edition: ms
 granularity: paragraph
-title: Dhammakathikasutta
 ---
 
 “Cattārome, bhikkhave, dhammakathikā. Katame cattāro?

@@ -1,9 +1,9 @@
 ---
 slug: sn3.19
 source: suttacentral/bilara-data
+title: Paṭhamaaputtakasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaaputtakasutta
 ---
 
 Sāvatthinidānaṁ.

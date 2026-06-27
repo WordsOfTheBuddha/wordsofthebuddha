@@ -1,9 +1,9 @@
 ---
 slug: an4.246
 source: suttacentral/bilara-data
+title: Seyyāsutta
 edition: ms
 granularity: paragraph
-title: Seyyāsutta
 ---
 
 “Catasso imā, bhikkhave, seyyā. Katamā catasso? Petaseyyā, kāmabhogiseyyā, sīhaseyyā, tathāgataseyyā.

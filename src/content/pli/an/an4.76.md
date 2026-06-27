@@ -1,9 +1,9 @@
 ---
 slug: an4.76
 source: suttacentral/bilara-data
+title: Kusinārasutta
 edition: ms
 granularity: paragraph
-title: Kusinārasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kusinārāyaṁ viharati upavattane mallānaṁ sālavane antarena yamakasālānaṁ parinibbānasamaye. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

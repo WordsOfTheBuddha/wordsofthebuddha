@@ -1,9 +1,9 @@
 ---
 slug: an8.13
 source: suttacentral/bilara-data
+title: Assājānīyasutta
 edition: ms
 granularity: paragraph
-title: Assājānīyasutta
 ---
 
 “Aṭṭhahi, bhikkhave, aṅgehi samannāgato rañño bhaddo assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati. Katamehi aṭṭhahi?

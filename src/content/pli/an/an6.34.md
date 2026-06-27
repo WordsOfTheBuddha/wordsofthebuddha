@@ -1,9 +1,9 @@
 ---
 slug: an6.34
 source: suttacentral/bilara-data
+title: Mahāmoggallānasutta
 edition: ms
 granularity: paragraph
-title: Mahāmoggallānasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

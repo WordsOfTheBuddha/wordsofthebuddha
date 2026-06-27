@@ -1,9 +1,9 @@
 ---
 slug: an6.45
 source: suttacentral/bilara-data
+title: Iṇasutta
 edition: ms
 granularity: paragraph
-title: Iṇasutta
 ---
 
 “Dāliddiyaṁ, bhikkhave, dukkhaṁ lokasmiṁ kāmabhogino”ti?
@@ -42,104 +42,86 @@ Tamenaṁ araññagataṁ vā rukkhamūlagataṁ vā suññāgāragataṁ vā vi
 
 Sa kho so, bhikkhave, daliddo assako anāḷhiko kāyena duccaritaṁ caritvā vācāya duccaritaṁ caritvā manasā duccaritaṁ caritvā kāyassa bhedā paraṁ maraṇā nirayabandhane vā bajjhati tiracchānayonibandhane vā. Nāhaṁ, bhikkhave, aññaṁ ekabandhanampi samanupassāmi evaṁdāruṇaṁ evaṅkaṭukaṁ evaṁantarāyakaraṁ anuttarassa yogakkhemassa adhigamāya, yathayidaṁ, bhikkhave, nirayabandhanaṁ vā tiracchānayonibandhanaṁ vāti.
 
+Dāliddiyaṁ dukkhaṁ loke,
 iṇādānañca vuccati;
-
 Daliddo iṇamādāya,
-
 bhuñjamāno vihaññati.
 
+Tato anucaranti naṁ,
 bandhanampi nigacchati;
-
 Etañhi bandhanaṁ dukkhaṁ,
-
 kāmalābhābhijappinaṁ.
 
+Tatheva ariyavinaye,
 saddhā yassa na vijjati;
-
 Ahirīko anottappī,
-
 pāpakammavinibbayo.
 
+Kāyaduccaritaṁ katvā,
 vacīduccaritāni ca;
-
 Manoduccaritaṁ katvā,
-
 ‘mā maṁ jaññū’ti icchati.
 
+So saṁsappati kāyena,
 vācāya uda cetasā;
-
 Pāpakammaṁ pavaḍḍhento,
-
 tattha tattha punappunaṁ.
 
+So pāpakammo dummedho,
 jānaṁ dukkaṭamattano;
-
 Daliddo iṇamādāya,
-
 bhuñjamāno vihaññati.
 
+Tato anucaranti naṁ,
 saṅkappā mānasā dukhā;
-
 Gāme vā yadi vāraññe,
-
 yassa vippaṭisārajā.
 
+So pāpakammo dummedho,
 jānaṁ dukkaṭamattano;
-
 Yonimaññataraṁ gantvā,
-
 niraye vāpi bajjhati.
 
+Etañhi bandhanaṁ dukkhaṁ,
 yamhā dhīro pamuccati;
-
 Dhammaladdhehi bhogehi,
-
 dadaṁ cittaṁ pasādayaṁ.
 
+Ubhayattha kaṭaggāho,
 saddhassa gharamesino;
-
 Diṭṭhadhammahitatthāya,
-
 samparāyasukhāya ca;
-
 Evametaṁ gahaṭṭhānaṁ,
-
 cāgo puññaṁ pavaḍḍhati.
 
+Tatheva ariyavinaye,
 saddhā yassa patiṭṭhitā;
-
 Hirīmano ca ottappī,
-
 paññavā sīlasaṁvuto.
 
+Eso kho ariyavinaye,
 ‘sukhajīvī’ti vuccati;
-
 Nirāmisaṁ sukhaṁ laddhā,
-
 upekkhaṁ adhitiṭṭhati.
 
+Pañca nīvaraṇe hitvā,
 niccaṁ āraddhavīriyo;
-
 Jhānāni upasampajja,
-
 ekodi nipako sato.
 
+Evaṁ ñatvā yathābhūtaṁ,
 sabbasaṁyojanakkhaye;
-
 Sabbaso anupādāya,
-
 sammā cittaṁ vimuccati.
 
+Tassa sammā vimuttassa,
 ñāṇañce hoti tādino;
-
 ‘Akuppā me vimuttī’ti,
-
 bhavasaṁyojanakkhaye.
 
+Etaṁ kho paramaṁ ñāṇaṁ,
 etaṁ sukhamanuttaraṁ;
-
 Asokaṁ virajaṁ khemaṁ,
-
 etaṁ ānaṇyamuttaman”ti.
 
 Tatiyaṁ.

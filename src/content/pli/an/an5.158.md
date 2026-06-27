@@ -1,9 +1,9 @@
 ---
 slug: an5.158
 source: suttacentral/bilara-data
+title: Sārajjasutta
 edition: ms
 granularity: paragraph
-title: Sārajjasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu sārajjaṁ okkanto hoti. Katamehi pañcahi? Idha, bhikkhave, bhikkhu assaddho hoti, dussīlo hoti, appassuto hoti, kusīto hoti, duppañño hoti. Imehi kho, bhikkhave, pañcahi, dhammehi samannāgato bhikkhu sārajjaṁ okkanto hoti.

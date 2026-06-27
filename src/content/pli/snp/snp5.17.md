@@ -1,9 +1,9 @@
 ---
 slug: snp5.17
 source: suttacentral/bilara-data
+title: Piṅgiyamāṇavapucchā
 edition: ms
 granularity: paragraph
-title: Piṅgiyamāṇavapucchā
 ---
 
 (iccāyasmā piṅgiyo)

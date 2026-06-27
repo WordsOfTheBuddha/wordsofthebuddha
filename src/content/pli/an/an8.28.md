@@ -1,9 +1,9 @@
 ---
 slug: an8.28
 source: suttacentral/bilara-data
+title: Dutiyabalasutta
 edition: ms
 granularity: paragraph
-title: Dutiyabalasutta
 ---
 
 Atha kho āyasmā sāriputto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ sāriputtaṁ bhagavā etadavoca:

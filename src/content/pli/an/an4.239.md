@@ -1,9 +1,9 @@
 ---
 slug: an4.239
 source: suttacentral/bilara-data
+title: Sāvajjasutta
 edition: ms
 granularity: paragraph
-title: Sāvajjasutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi catūhi? Sāvajjena kāyakammena, sāvajjena vacīkammena, sāvajjena manokammena, sāvajjāya diṭṭhiyā— imehi kho, bhikkhave, catūhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.

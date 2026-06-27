@@ -1,9 +1,9 @@
 ---
 slug: sn4.25
 source: suttacentral/bilara-data
+title: Māradhītusutta
 edition: ms
 granularity: paragraph
-title: Māradhītusutta
 ---
 
 Atha kho māro pāpimā bhagavato santike imā nibbejanīyā gāthāyo abhāsitvā tamhā ṭhānā apakkamma bhagavato avidūre pathaviyaṁ pallaṅkena nisīdi tuṇhībhūto maṅkubhūto pattakkhandho adhomukho pajjhāyanto appaṭibhāno kaṭṭhena bhūmiṁ vilikhanto.

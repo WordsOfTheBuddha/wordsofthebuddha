@@ -1,9 +1,9 @@
 ---
 slug: an5.111
 source: suttacentral/bilara-data
+title: Kulūpakasutta
 edition: ms
 granularity: paragraph
-title: Kulūpakasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato kulūpako bhikkhu kulesu appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca. Katamehi pañcahi? Asanthavavissāsī ca hoti, anissaravikappī ca, vissaṭṭhupasevī ca, upakaṇṇakajappī ca, atiyācanako ca. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato kulūpako bhikkhu kulesu appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.

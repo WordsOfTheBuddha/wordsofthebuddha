@@ -1,9 +1,9 @@
 ---
 slug: sn4.9
 source: suttacentral/bilara-data
+title: Paṭhamaāyusutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaāyusutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

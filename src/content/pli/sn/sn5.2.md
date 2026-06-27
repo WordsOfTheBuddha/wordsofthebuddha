@@ -1,9 +1,9 @@
 ---
 slug: sn5.2
 source: suttacentral/bilara-data
+title: Somāsutta
 edition: ms
 granularity: paragraph
-title: Somāsutta
 ---
 
 Sāvatthinidānaṁ.

@@ -5,6 +5,12 @@ edition: ms
 granularity: paragraph
 ---
 
+“Tīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi tīhi? Attanā ca pāṇātipātī hoti, parañca pāṇātipāte samādapeti, pāṇātipāte ca samanuñño hoti.
+
+Imehi kho, bhikkhave, tīhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.
+
+Tīhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ sagge. Katamehi tīhi? Attanā ca pāṇātipātā paṭivirato hoti, parañca pāṇātipātā veramaṇiyā samādapeti, pāṇātipātā veramaṇiyā ca samanuñño hoti …pe….
+
 Attanā ca adinnādāyī hoti, parañca adinnādāne samādapeti, adinnādāne ca samanuñño hoti …pe….
 
 Attanā ca adinnādānā paṭivirato hoti, parañca adinnādānā veramaṇiyā samādapeti, adinnādānā veramaṇiyā ca samanuñño hoti …pe….
@@ -43,22 +49,13 @@ Attanā ca sammādiṭṭhiko hoti, parañca sammādiṭṭhiyā samādapeti, sa
 
 Imehi kho, bhikkhave, tīhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ sagge”ti.
 
-Attanā ca pāṇātipātī hoti, parañca pāṇātipāte samādapeti, pāṇātipāte ca samanuñño hoti.
-
-Attanā ca pāṇātipātā paṭivirato hoti, parañca pāṇātipātā veramaṇiyā samādapeti, pāṇātipātā veramaṇiyā ca samanuñño hoti …pe….
-
 Kammapathapeyyālaṁ niṭṭhitaṁ.
-
-Imehi kho, bhikkhave, tīhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.
 
 Tassuddānaṁ
 
+Pāṇaṁ adinnamicchā ca,
 musāvādī ca pisuṇā;
-
 Pharusā samphappalāpo ca,
-
 abhijjhā byāpādadiṭṭhi ca;
-
 Kammapathesu peyyālaṁ,
-
 tikakena niyojayeti.

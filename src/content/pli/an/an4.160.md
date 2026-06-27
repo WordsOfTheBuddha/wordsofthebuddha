@@ -1,9 +1,9 @@
 ---
 slug: an4.160
 source: suttacentral/bilara-data
+title: Sugatavinayasutta
 edition: ms
 granularity: paragraph
-title: Sugatavinayasutta
 ---
 
 “Sugato vā, bhikkhave, loke tiṭṭhamāno sugatavinayo vā tadassa bahujanahitāya bahujanasukhāya lokānukampāya atthāya hitāya sukhāya devamanussānaṁ.
@@ -42,8 +42,7 @@ Indriyavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Indriyāni saddhā paññā,
 sati saṅkhānapañcamaṁ;
-
 Kappo rogo parihāni,
-
 bhikkhunī sugatena cāti.

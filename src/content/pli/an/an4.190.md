@@ -1,9 +1,9 @@
 ---
 slug: an4.190
 source: suttacentral/bilara-data
+title: Uposathasutta
 edition: ms
 granularity: paragraph
-title: Uposathasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde.
@@ -28,8 +28,7 @@ Brāhmaṇavaggo catuttho.
 
 Tassuddānaṁ
 
+Yodhā pāṭibhogasutaṁ,
 Abhayaṁ brāhmaṇasaccena pañcamaṁ;
-
 Ummaggavassakāro,
-
 Upako sacchikiriyā ca uposathoti.

@@ -1,9 +1,9 @@
 ---
 slug: an3.60
 source: suttacentral/bilara-data
+title: Saṅgāravasutta
 edition: ms
 granularity: paragraph
-title: Saṅgāravasutta
 ---
 
 Atha kho saṅgāravo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho saṅgāravo brāhmaṇo bhagavantaṁ etadavoca:
@@ -76,8 +76,7 @@ Brāhmaṇavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Dve brāhmaṇā caññataro,
 paribbājakena nibbutaṁ;
-
 Palokavaccho tikaṇṇo,
-
 soṇi saṅgāravena cāti.

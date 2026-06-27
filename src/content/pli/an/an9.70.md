@@ -1,9 +1,9 @@
 ---
 slug: an9.70
 source: suttacentral/bilara-data
+title: Uddhambhāgiyasutta
 edition: ms
 granularity: paragraph
-title: Uddhambhāgiyasutta
 ---
 
 “Pañcimāni, bhikkhave, uddhambhāgiyāni saṁyojanāni. Katamāni pañca? Rūparāgo, arūparāgo, māno, uddhaccaṁ, avijjā— imāni kho, bhikkhave, pañcuddhambhāgiyāni saṁyojanāni.

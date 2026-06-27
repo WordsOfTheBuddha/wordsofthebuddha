@@ -1,9 +1,9 @@
 ---
 slug: an5.24
 source: suttacentral/bilara-data
+title: Dussīlasutta
 edition: ms
 granularity: paragraph
-title: Dussīlasutta
 ---
 
 “Dussīlassa, bhikkhave, sīlavipannassa hatūpaniso hoti sammāsamādhi; sammāsamādhimhi asati sammāsamādhivipannassa hatūpanisaṁ hoti yathābhūtañāṇadassanaṁ; yathābhūtañāṇadassane asati yathābhūtañāṇadassanavipannassa hatūpaniso hoti nibbidāvirāgo; nibbidāvirāge asati nibbidāvirāgavipannassa hatūpanisaṁ hoti vimuttiñāṇadassanaṁ.

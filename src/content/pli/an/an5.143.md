@@ -1,9 +1,9 @@
 ---
 slug: an5.143
 source: suttacentral/bilara-data
+title: Sārandadasutta
 edition: ms
 granularity: paragraph
-title: Sārandadasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an6.23
 source: suttacentral/bilara-data
+title: Bhayasutta
 edition: ms
 granularity: paragraph
-title: Bhayasutta
 ---
 
 “‘Bhayan’ti, bhikkhave, kāmānametaṁ adhivacanaṁ; ‘dukkhan’ti, bhikkhave, kāmānametaṁ adhivacanaṁ; ‘rogo’ti, bhikkhave, kāmānametaṁ adhivacanaṁ; ‘gaṇḍo’ti, bhikkhave, kāmānametaṁ adhivacanaṁ; ‘saṅgo’ti, bhikkhave, kāmānametaṁ adhivacanaṁ; ‘paṅko’ti, bhikkhave, kāmānametaṁ adhivacanaṁ.
@@ -12,22 +12,19 @@ Kasmā ca, bhikkhave, ‘bhayan’ti kāmānametaṁ adhivacanaṁ? Kāmarāgara
 
 Kasmā ca, bhikkhave, dukkhanti …pe… rogoti … gaṇḍoti … saṅgoti … paṅkoti kāmānametaṁ adhivacanaṁ? Kāmarāgarattāyaṁ, bhikkhave, chandarāgavinibaddho diṭṭhadhammikāpi paṅkā na parimuccati, samparāyikāpi paṅkā na parimuccati, tasmā ‘paṅko’ti kāmānametaṁ adhivacananti.
 
+Bhayaṁ dukkhaṁ rogo gaṇḍo,
 saṅgo paṅko ca ubhayaṁ;
-
 Ete kāmā pavuccanti,
-
 yattha satto puthujjano.
 
+Upādāne bhayaṁ disvā,
 jātimaraṇasambhave;
-
 Anupādā vimuccanti,
-
 jātimaraṇasaṅkhaye.
 
+Te khemappattā sukhino,
 diṭṭhadhammābhinibbutā;
-
 Sabbaverabhayātītā,
-
 sabbadukkhaṁ upaccagun”ti.
 
 Tatiyaṁ.

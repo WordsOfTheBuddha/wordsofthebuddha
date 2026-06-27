@@ -1,9 +1,9 @@
 ---
 slug: sn4.14
 source: suttacentral/bilara-data
+title: Patirūpasutta
 edition: ms
 granularity: paragraph
-title: Patirūpasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu viharati ekasālāyaṁ brāhmaṇagāme.

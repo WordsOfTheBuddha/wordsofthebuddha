@@ -1,9 +1,9 @@
 ---
 slug: an9.4
 source: suttacentral/bilara-data
+title: Nandakasutta
 edition: ms
 granularity: paragraph
-title: Nandakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

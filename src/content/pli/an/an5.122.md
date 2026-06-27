@@ -1,9 +1,9 @@
 ---
 slug: an5.122
 source: suttacentral/bilara-data
+title: Satisūpaṭṭhitasutta
 edition: ms
 granularity: paragraph
-title: Satisūpaṭṭhitasutta
 ---
 
 “Yo hi koci, bhikkhave, bhikkhu vā bhikkhunī vā pañca dhamme bhāveti pañca dhamme bahulīkaroti, tassa dvinnaṁ phalānaṁ aññataraṁ phalaṁ pāṭikaṅkhaṁ— diṭṭheva dhamme aññā, sati vā upādisese anāgāmitā.

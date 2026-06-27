@@ -1,9 +1,9 @@
 ---
 slug: an4.175
 source: suttacentral/bilara-data
+title: Upavāṇasutta
 edition: ms
 granularity: paragraph
-title: Upavāṇasutta
 ---
 
 Atha kho āyasmā upavāṇo yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā upavāṇo āyasmantaṁ sāriputtaṁ etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: an5.272
 source: suttacentral/bilara-data
+title: Bhattuddesakasutta
 edition: ms
 granularity: paragraph
-title: Bhattuddesakasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhattuddesako na sammannitabbo. Katamehi pañcahi? Chandāgatiṁ gacchati, dosāgatiṁ gacchati, mohāgatiṁ gacchati, bhayāgatiṁ gacchati, uddiṭṭhānuddiṭṭhaṁ na jānāti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhattuddesako na sammannitabbo.

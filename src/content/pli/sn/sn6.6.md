@@ -1,9 +1,9 @@
 ---
 slug: sn6.6
 source: suttacentral/bilara-data
+title: Brahmalokasutta
 edition: ms
 granularity: paragraph
-title: Brahmalokasutta
 ---
 
 Sāvatthinidānaṁ.

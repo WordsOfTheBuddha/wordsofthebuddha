@@ -1,9 +1,9 @@
 ---
 slug: an6.87
 source: suttacentral/bilara-data
+title: Voropitasutta
 edition: ms
 granularity: paragraph
-title: Voropitasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ. Katamehi chahi? Mātā jīvitā voropitā hoti, pitā jīvitā voropito hoti, arahaṁ jīvitā voropito hoti, tathāgatassa duṭṭhena cittena lohitaṁ uppāditaṁ hoti, saṅgho bhinno hoti, duppañño hoti jaḷo eḷamūgo. Imehi kho, bhikkhave, chahi dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ.

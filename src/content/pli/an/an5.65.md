@@ -1,9 +1,9 @@
 ---
 slug: an5.65
 source: suttacentral/bilara-data
+title: Sākacchasutta
 edition: ms
 granularity: paragraph
-title: Sākacchasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁsākaccho sabrahmacārīnaṁ. Katamehi pañcahi?

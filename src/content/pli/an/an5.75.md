@@ -1,9 +1,9 @@
 ---
 slug: an5.75
 source: suttacentral/bilara-data
+title: Paṭhamayodhājīvasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamayodhājīvasutta
 ---
 
 “Pañcime, bhikkhave, yodhājīvā santo saṁvijjamānā lokasmiṁ. Katame pañca?

@@ -1,9 +1,9 @@
 ---
 slug: an8.49
 source: suttacentral/bilara-data
+title: Paṭhamaidhalokikasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaidhalokikasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Atha kho visākhā migāramātā yena bhagavā tenupasaṅkami …pe…. Ekamantaṁ nisinnaṁ kho visākhaṁ migāramātaraṁ bhagavā etadavoca:
@@ -32,28 +32,24 @@ Kathañca, visākhe, mātugāmo paññāsampanno hoti? Idha, visākhe, mātugām
 
 Imehi kho, visākhe, catūhi dhammehi samannāgato mātugāmo paralokavijayāya paṭipanno hoti, paraloko āraddho hotīti.
 
+Susaṁvihitakammantā,
 saṅgahitaparijjanā;
-
 Bhattu manāpaṁ carati,
-
 sambhataṁ anurakkhati.
 
+Saddhā sīlena sampannā,
 vadaññū vītamaccharā;
-
 Niccaṁ maggaṁ visodheti,
-
 sotthānaṁ samparāyikaṁ.
 
+Iccete aṭṭha dhammā ca,
 yassā vijjanti nāriyā;
-
 Tampi sīlavatiṁ āhu,
-
 dhammaṭṭhaṁ saccavādiniṁ.
 
+Soḷasākārasampannā,
 Aṭṭhaṅgasusamāgatā;
-
 Tādisī sīlavatī upāsikā,
-
 Upapajjati devalokaṁ manāpan”ti.
 
 Navamaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: sn4.2
 source: suttacentral/bilara-data
+title: Hatthirājavaṇṇasutta
 edition: ms
 granularity: paragraph
-title: Hatthirājavaṇṇasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre ajapālanigrodhamūle paṭhamābhisambuddho.

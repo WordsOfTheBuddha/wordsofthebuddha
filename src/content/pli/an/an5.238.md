@@ -1,9 +1,9 @@
 ---
 slug: an5.238
 source: suttacentral/bilara-data
+title: Tatiyaavaṇṇārahasutta
 edition: ms
 granularity: paragraph
-title: Tatiyaavaṇṇārahasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Ananuvicca apariyogāhetvā avaṇṇārahassa vaṇṇaṁ bhāsati; ananuvicca apariyogāhetvā vaṇṇārahassa avaṇṇaṁ bhāsati; āvāsamaccharī hoti; kulamaccharī hoti; lābhamaccharī hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye.

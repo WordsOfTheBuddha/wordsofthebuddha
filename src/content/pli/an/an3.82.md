@@ -1,9 +1,9 @@
 ---
 slug: an3.82
 source: suttacentral/bilara-data
+title: Gadrabhasutta
 edition: ms
 granularity: paragraph
-title: Gadrabhasutta
 ---
 
 “Seyyathāpi, bhikkhave, gadrabho gogaṇaṁ piṭṭhito piṭṭhito anubandho hoti: ‘ahampi dammo, ahampi dammo’ti. Tassa na tādiso vaṇṇo hoti seyyathāpi gunnaṁ, na tādiso saro hoti seyyathāpi gunnaṁ, na tādisaṁ padaṁ hoti seyyathāpi gunnaṁ. So gogaṇaṁyeva piṭṭhito piṭṭhito anubandho hoti: ‘ahampi dammo, ahampi dammo’ti.

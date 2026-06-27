@@ -1,9 +1,9 @@
 ---
 slug: an6.39
 source: suttacentral/bilara-data
+title: Nidānasutta
 edition: ms
 granularity: paragraph
-title: Nidānasutta
 ---
 
 “Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya. Katamāni tīṇi? Lobho nidānaṁ kammānaṁ samudayāya, doso nidānaṁ kammānaṁ samudayāya, moho nidānaṁ kammānaṁ samudayāya. Na, bhikkhave, lobhā alobho samudeti; atha kho, bhikkhave, lobhā lobhova samudeti. Na, bhikkhave, dosā adoso samudeti; atha kho, bhikkhave, dosā dosova samudeti. Na, bhikkhave, mohā amoho samudeti; atha kho, bhikkhave, mohā mohova samudeti. Na, bhikkhave, lobhajena kammena dosajena kammena mohajena kammena devā paññāyanti, manussā paññāyanti, yā vā panaññāpi kāci sugatiyo. Atha kho, bhikkhave, lobhajena kammena dosajena kammena mohajena kammena nirayo paññāyati tiracchānayoni paññāyati pettivisayo paññāyati, yā vā panaññāpi kāci duggatiyo. Imāni kho, bhikkhave, tīṇi nidānāni kammānaṁ samudayāya.

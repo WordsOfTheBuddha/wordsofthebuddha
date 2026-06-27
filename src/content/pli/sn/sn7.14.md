@@ -1,9 +1,9 @@
 ---
 slug: sn7.14
 source: suttacentral/bilara-data
+title: Mahāsālasutta
 edition: ms
 granularity: paragraph
-title: Mahāsālasutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an6.59
 source: suttacentral/bilara-data
+title: Dārukammikasutta
 edition: ms
 granularity: paragraph
-title: Dārukammikasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā nātike viharati giñjakāvasathe.

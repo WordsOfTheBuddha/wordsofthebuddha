@@ -1,9 +1,9 @@
 ---
 slug: an5.132
 source: suttacentral/bilara-data
+title: Dutiyacakkānuvattanasutta
 edition: ms
 granularity: paragraph
-title: Dutiyacakkānuvattanasutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño cakkavattissa jeṭṭho putto pitarā pavattitaṁ cakkaṁ dhammeneva anuppavatteti; taṁ hoti cakkaṁ appaṭivattiyaṁ kenaci manussabhūtena paccatthikena pāṇinā.

@@ -1,9 +1,9 @@
 ---
 slug: an5.187
 source: suttacentral/bilara-data
+title: Yathāsanthatikasutta
 edition: ms
 granularity: paragraph
-title: Yathāsanthatikasutta
 ---
 
 “Pañcime, bhikkhave, yathāsanthatikā …pe….

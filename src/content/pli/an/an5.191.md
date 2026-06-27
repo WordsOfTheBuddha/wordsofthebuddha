@@ -1,9 +1,9 @@
 ---
 slug: an5.191
 source: suttacentral/bilara-data
+title: Soṇasutta
 edition: ms
 granularity: paragraph
-title: Soṇasutta
 ---
 
 “Pañcime, bhikkhave, porāṇā brāhmaṇadhammā etarahi sunakhesu sandissanti, no brāhmaṇesu. Katame pañca?

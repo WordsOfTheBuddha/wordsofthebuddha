@@ -1,9 +1,9 @@
 ---
 slug: sn4.3
 source: suttacentral/bilara-data
+title: Subhasutta
 edition: ms
 granularity: paragraph
-title: Subhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre ajapālanigrodhamūle paṭhamābhisambuddho.

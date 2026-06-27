@@ -1,9 +1,9 @@
 ---
 slug: an7.73
 source: suttacentral/bilara-data
+title: Sunettasutta
 edition: ms
 granularity: paragraph
-title: Sunettasutta
 ---
 
 “Bhūtapubbaṁ, bhikkhave, sunetto nāma satthā ahosi titthakaro kāmesu vītarāgo. Sunettassa kho pana, bhikkhave, satthuno anekāni sāvakasatāni ahesuṁ. Sunetto satthā sāvakānaṁ brahmalokasahabyatāya dhammaṁ desesi. Ye kho pana, bhikkhave, sunettassa satthuno brahmalokasahabyatāya dhammaṁ desentassa cittāni nappasādesuṁ te kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjiṁsu. Ye kho pana, bhikkhave, sunettassa satthuno brahmalokasahabyatāya dhammaṁ desentassa cittāni pasādesuṁ te kāyassa bhedā paraṁ maraṇā sugatiṁ saggaṁ lokaṁ upapajjiṁsu.

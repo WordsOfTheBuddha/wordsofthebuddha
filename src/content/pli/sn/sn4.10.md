@@ -1,9 +1,9 @@
 ---
 slug: sn4.10
 source: suttacentral/bilara-data
+title: Dutiyaāyusutta
 edition: ms
 granularity: paragraph
-title: Dutiyaāyusutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Tatra kho bhagavā …pe… etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: an3.102
 source: suttacentral/bilara-data
+title: Nimittasutta
 edition: ms
 granularity: paragraph
-title: Nimittasutta
 ---
 
 “Adhicittamanuyuttena, bhikkhave, bhikkhunā tīṇi nimittāni kālena kālaṁ manasi kātabbāni— kālena kālaṁ samādhinimittaṁ manasi kātabbaṁ, kālena kālaṁ paggahanimittaṁ manasi kātabbaṁ, kālena kālaṁ upekkhānimittaṁ manasi kātabbaṁ.
@@ -32,10 +32,9 @@ Loṇakapallavaggo pañcamo.
 
 Tassuddānaṁ
 
+Accāyikaṁ pavivekaṁ,
 Sarado parisā tayo;
-
 Ājānīyā potthako ca,
-
 Loṇaṁ dhovati nimittānīti.
 
 Dutiyo paṇṇāsako samatto.

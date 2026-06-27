@@ -1,9 +1,9 @@
 ---
 slug: an4.241
 source: suttacentral/bilara-data
+title: Samaṇasutta
 edition: ms
 granularity: paragraph
-title: Samaṇasutta
 ---
 
 “‘Idheva, bhikkhave, paṭhamo samaṇo, idha dutiyo samaṇo, idha tatiyo samaṇo, idha catuttho samaṇo; suññā parappavādā samaṇehi aññehī’ti— evametaṁ, bhikkhave, sammā sīhanādaṁ nadatha.

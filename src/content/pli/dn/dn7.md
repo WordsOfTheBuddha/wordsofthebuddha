@@ -1,9 +1,9 @@
 ---
 slug: dn7
 source: suttacentral/bilara-data
+title: Jāliyasutta
 edition: ms
 granularity: paragraph
-title: Jāliyasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.

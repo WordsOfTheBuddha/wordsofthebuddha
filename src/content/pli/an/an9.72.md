@@ -1,9 +1,9 @@
 ---
 slug: an9.72
 source: suttacentral/bilara-data
+title: Cetasovinibandhasutta
 edition: ms
 granularity: paragraph
-title: Cetasovinibandhasutta
 ---
 
 “Pañcime, bhikkhave, cetasovinibandhā. Katame pañca? Idha, bhikkhave, bhikkhu kāmesu avītarāgo hoti avigatacchando avigatapemo avigatapipāso avigatapariḷāho avigatataṇho. Yo so, bhikkhave, bhikkhu kāmesu avītarāgo hoti avigatacchando avigatapemo avigatapipāso avigatapariḷāho avigatataṇho, tassa cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya. Yassa cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya, ayaṁ paṭhamo cetasovinibandho.
@@ -18,8 +18,7 @@ Satipaṭṭhānavaggo dutiyo.
 
 Tassuddānaṁ
 
+Sikkhā nīvaraṇākāmā,
 Khandhā ca orambhāgiyā gati;
-
 Maccheraṁ uddhambhāgiyā aṭṭhamaṁ,
-
 Cetokhilā vinibandhāti.

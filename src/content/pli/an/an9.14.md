@@ -1,9 +1,9 @@
 ---
 slug: an9.14
 source: suttacentral/bilara-data
+title: Samiddhisutta
 edition: ms
 granularity: paragraph
-title: Samiddhisutta
 ---
 
 Atha kho āyasmā samiddhi yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmantaṁ sāriputtaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ samiddhiṁ āyasmā sāriputto etadavoca:

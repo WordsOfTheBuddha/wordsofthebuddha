@@ -1,9 +1,9 @@
 ---
 slug: an5.210
 source: suttacentral/bilara-data
+title: Muṭṭhassatisutta
 edition: ms
 granularity: paragraph
-title: Muṭṭhassatisutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā muṭṭhassatissa asampajānassa niddaṁ okkamayato. Katame pañca? Dukkhaṁ supati, dukkhaṁ paṭibujjhati, pāpakaṁ supinaṁ passati, devatā na rakkhanti, asuci muccati. Ime kho, bhikkhave, pañca ādīnavā muṭṭhassatissa asampajānassa niddaṁ okkamayato.
@@ -16,8 +16,7 @@ Kimilavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Kimilo dhammassavanaṁ,
 ājānīyo balaṁ khilaṁ;
-
 Vinibandhaṁ yāgu kaṭṭhaṁ,
-
 gītaṁ muṭṭhassatinā cāti.

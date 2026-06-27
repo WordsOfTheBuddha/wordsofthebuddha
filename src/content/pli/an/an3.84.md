@@ -1,9 +1,9 @@
 ---
 slug: an3.84
 source: suttacentral/bilara-data
+title: Vajjiputtasutta
 edition: ms
 granularity: paragraph
-title: Vajjiputtasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho aññataro vajjiputtako bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so vajjiputtako bhikkhu bhagavantaṁ etadavoca:

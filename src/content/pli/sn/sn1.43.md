@@ -1,9 +1,9 @@
 ---
 slug: sn1.43
 source: suttacentral/bilara-data
+title: Annasutta
 edition: ms
 granularity: paragraph
-title: Annasutta
 ---
 
 “Annamevābhinandanti,

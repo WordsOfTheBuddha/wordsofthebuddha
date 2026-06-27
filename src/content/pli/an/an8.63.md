@@ -1,9 +1,9 @@
 ---
 slug: an8.63
 source: suttacentral/bilara-data
+title: Saṅkhittasutta
 edition: ms
 granularity: paragraph
-title: Saṅkhittasutta
 ---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami …pe… ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca: “sādhu me, bhante, bhagavā saṅkhittena dhammaṁ desetu, yamahaṁ bhagavato dhammaṁ sutvā eko vūpakaṭṭho appamatto ātāpī pahitatto vihareyyan”ti.

@@ -1,9 +1,9 @@
 ---
 slug: sn2.30
 source: suttacentral/bilara-data
+title: Nānātitthiyasāvakasutta
 edition: ms
 granularity: paragraph
-title: Nānātitthiyasāvakasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

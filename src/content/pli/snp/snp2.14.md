@@ -1,9 +1,9 @@
 ---
 slug: snp2.14
 source: suttacentral/bilara-data
+title: Dhammikasutta
 edition: ms
 granularity: paragraph
-title: Dhammikasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho dhammiko upāsako pañcahi upāsakasatehi saddhiṁ yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho dhammiko upāsako bhagavantaṁ gāthāhi ajjhabhāsi:

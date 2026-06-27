@@ -1,9 +1,9 @@
 ---
 slug: sn4.13
 source: suttacentral/bilara-data
+title: Sakalikasutta
 edition: ms
 granularity: paragraph
-title: Sakalikasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati maddakucchismiṁ migadāye.

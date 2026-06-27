@@ -1,9 +1,9 @@
 ---
 slug: sn1.77
 source: suttacentral/bilara-data
+title: Issariyasutta
 edition: ms
 granularity: paragraph
-title: Issariyasutta
 ---
 
 “Kiṁsu issariyaṁ loke,

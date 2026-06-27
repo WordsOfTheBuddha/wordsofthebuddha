@@ -1,9 +1,9 @@
 ---
 slug: sn7.9
 source: suttacentral/bilara-data
+title: Sundarikasutta
 edition: ms
 granularity: paragraph
-title: Sundarikasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu viharati sundarikāya nadiyā tīre.

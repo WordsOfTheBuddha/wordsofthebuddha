@@ -1,9 +1,9 @@
 ---
 slug: an5.32
 source: suttacentral/bilara-data
+title: Cundīsutta
 edition: ms
 granularity: paragraph
-title: Cundīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe. Atha kho cundī rājakumārī pañcahi rathasatehi pañcahi ca kumārisatehi parivutā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnā kho cundī rājakumārī bhagavantaṁ etadavoca:
@@ -20,28 +20,24 @@ Yāvatā, cundi, saṅghā vā gaṇā vā, tathāgatasāvakasaṅgho tesaṁ ag
 
 Yāvatā, cundi, sīlāni, ariyakantāni sīlāni tesaṁ aggamakkhāyati, yadidaṁ— akhaṇḍāni acchiddāni asabalāni akammāsāni bhujissāni viññuppasatthāni aparāmaṭṭhāni samādhisaṁvattanikāni. Ye kho, cundi, ariyakantesu sīlesu paripūrakārino, agge te paripūrakārino. Agge kho pana paripūrakārīnaṁ aggo vipāko hotīti.
 
+Aggato ve pasannānaṁ,
 aggaṁ dhammaṁ vijānataṁ;
-
 Agge buddhe pasannānaṁ,
-
 dakkhiṇeyye anuttare.
 
+Agge dhamme pasannānaṁ,
 virāgūpasame sukhe;
-
 Agge saṅghe pasannānaṁ,
-
 puññakkhette anuttare.
 
+Aggasmiṁ dānaṁ dadataṁ,
 aggaṁ puññaṁ pavaḍḍhati;
-
 Aggaṁ āyu ca vaṇṇo ca,
-
 yaso kitti sukhaṁ balaṁ.
 
+Aggassa dātā medhāvī,
 aggadhammasamāhito;
-
 Devabhūto manusso vā,
-
 aggappatto pamodatī”ti.
 
 Dutiyaṁ.

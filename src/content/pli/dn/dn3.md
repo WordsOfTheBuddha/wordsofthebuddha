@@ -1,9 +1,9 @@
 ---
 slug: dn3
 source: suttacentral/bilara-data
+title: Ambaṭṭhasutta
 edition: ms
 granularity: paragraph
-title: Ambaṭṭhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ pañcamattehi bhikkhusatehi yena icchānaṅgalaṁ nāma kosalānaṁ brāhmaṇagāmo tadavasari. Tatra sudaṁ bhagavā icchānaṅgale viharati icchānaṅgalavanasaṇḍe.
@@ -210,18 +210,16 @@ Atha kho bhagavā ambaṭṭhaṁ māṇavaṁ āmantesi: “Taṁ kiṁ mañña
 
 “Ettāvatā kho, ambaṭṭha, khattiyo paramanihīnataṁ patto hoti, yadeva naṁ khattiyā khuramuṇḍaṁ karitvā bhassapuṭena vadhitvā raṭṭhā vā nagarā vā pabbājenti. Iti kho, ambaṭṭha, yadā khattiyo paramanihīnataṁ patto hoti, tadāpi khattiyāva seṭṭhā, hīnā brāhmaṇā. Brahmunā pesā, ambaṭṭha, sanaṅkumārena gāthā bhāsitā:
 
+‘Khattiyo seṭṭho janetasmiṁ,
 ye gottapaṭisārino;
-
 Vijjācaraṇasampanno,
-
 so seṭṭho devamānuse’ti.
 
 Sā kho panesā, ambaṭṭha, brahmunā sanaṅkumārena gāthā sugītā no duggītā, subhāsitā no dubbhāsitā, atthasaṁhitā no anatthasaṁhitā, anumatā mayā. Ahampi hi, ambaṭṭha, evaṁ vadāmi—
 
+Khattiyo seṭṭho janetasmiṁ,
 ye gottapaṭisārino;
-
 Vijjācaraṇasampanno,
-
 so seṭṭho devamānuse”ti.
 
 Bhāṇavāro paṭhamo.

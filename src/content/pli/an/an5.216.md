@@ -1,9 +1,9 @@
 ---
 slug: an5.216
 source: suttacentral/bilara-data
+title: Dutiyaakkhantisutta
 edition: ms
 granularity: paragraph
-title: Dutiyaakkhantisutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā akkhantiyā. Katame pañca? Bahuno janassa appiyo hoti amanāpo, luddo ca hoti, vippaṭisārī ca, sammūḷho kālaṁ karoti, kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjati. Ime kho, bhikkhave, pañca ādīnavā akkhantiyā.

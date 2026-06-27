@@ -1,9 +1,9 @@
 ---
 slug: an4.162
 source: suttacentral/bilara-data
+title: Vitthārasutta
 edition: ms
 granularity: paragraph
-title: Vitthārasutta
 ---
 
 “Catasso imā, bhikkhave, paṭipadā. Katamā catasso?

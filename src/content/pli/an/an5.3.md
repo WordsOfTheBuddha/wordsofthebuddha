@@ -1,9 +1,9 @@
 ---
 slug: an5.3
 source: suttacentral/bilara-data
+title: Dukkhasutta
 edition: ms
 granularity: paragraph
-title: Dukkhasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu diṭṭheva dhamme dukkhaṁ viharati savighātaṁ saupāyāsaṁ sapariḷāhaṁ, kāyassa ca bhedā paraṁ maraṇā duggati pāṭikaṅkhā. Katamehi pañcahi? Idha, bhikkhave, bhikkhu assaddho hoti, ahiriko hoti, anottappī hoti, kusīto hoti, duppañño hoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu diṭṭheva dhamme dukkhaṁ viharati savighātaṁ saupāyāsaṁ sapariḷāhaṁ, kāyassa ca bhedā paraṁ maraṇā duggati pāṭikaṅkhā.

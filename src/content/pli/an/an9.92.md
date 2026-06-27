@@ -1,9 +1,9 @@
 ---
 slug: an9.92
 source: suttacentral/bilara-data
+title: Cetasovinibandhasutta
 edition: ms
 granularity: paragraph
-title: Cetasovinibandhasutta
 ---
 
 “Pañcime, bhikkhave, cetasovinibandhā. Katame pañca? Idha, bhikkhave, bhikkhu kāmesu avītarāgo hoti …pe… ime kho, bhikkhave, pañca cetasovinibandhā.
@@ -14,8 +14,7 @@ Dasamaṁ.
 
 Iddhipādavaggo catuttho.
 
+Yatheva satipaṭṭhānā,
 padhānā caturopi ca;
-
 Cattāro iddhipādā ca,
-
 tatheva sampayojayeti.

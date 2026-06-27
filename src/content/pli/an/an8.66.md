@@ -1,9 +1,9 @@
 ---
 slug: an8.66
 source: suttacentral/bilara-data
+title: Vimokkhasutta
 edition: ms
 granularity: paragraph
-title: Vimokkhasutta
 ---
 
 “Aṭṭhime, bhikkhave, vimokkhā. Katame aṭṭha? Rūpī rūpāni passati. Ayaṁ paṭhamo vimokkho.

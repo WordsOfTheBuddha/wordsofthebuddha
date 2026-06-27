@@ -1,9 +1,9 @@
 ---
 slug: an3.50
 source: suttacentral/bilara-data
+title: Mahācorasutta
 edition: ms
 granularity: paragraph
-title: Mahācorasutta
 ---
 
 “Tīhi, bhikkhave, aṅgehi samannāgato mahācoro sandhimpi chindati, nillopampi harati, ekāgārikampi karoti, paripanthepi tiṭṭhati. Katamehi tīhi?
@@ -34,10 +34,9 @@ Cūḷavaggo pañcamo.
 
 Tassuddānaṁ
 
+Sammukhī ṭhānatthavasaṁ,
 pavatti paṇḍita sīlavaṁ;
-
 Saṅkhataṁ pabbatātappaṁ,
-
 mahācorenekādasāti.
 
 Paṭhamo paṇṇāsako samatto.

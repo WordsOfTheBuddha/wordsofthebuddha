@@ -1,9 +1,9 @@
 ---
 slug: sn5.1
 source: suttacentral/bilara-data
+title: Āḷavikāsutta
 edition: ms
 granularity: paragraph
-title: Āḷavikāsutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

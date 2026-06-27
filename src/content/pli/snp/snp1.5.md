@@ -1,9 +1,9 @@
 ---
 slug: snp1.5
 source: suttacentral/bilara-data
+title: Cundasutta
 edition: ms
 granularity: paragraph
-title: Cundasutta
 ---
 
 (iti cundo kammāraputto)

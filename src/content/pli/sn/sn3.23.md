@@ -1,9 +1,9 @@
 ---
 slug: sn3.23
 source: suttacentral/bilara-data
+title: Lokasutta
 edition: ms
 granularity: paragraph
-title: Lokasutta
 ---
 
 Sāvatthinidānaṁ.

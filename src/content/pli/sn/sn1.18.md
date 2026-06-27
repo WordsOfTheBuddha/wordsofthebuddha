@@ -1,9 +1,9 @@
 ---
 slug: sn1.18
 source: suttacentral/bilara-data
+title: Hirīsutta
 edition: ms
 granularity: paragraph
-title: Hirīsutta
 ---
 
 “Hirīnisedho puriso,

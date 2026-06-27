@@ -1,9 +1,9 @@
 ---
 slug: an4.262
 source: suttacentral/bilara-data
+title: Araññasutta
 edition: ms
 granularity: paragraph
-title: Araññasutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato bhikkhu nālaṁ araññavanapatthāni pantāni senāsanāni paṭisevituṁ. Katamehi catūhi? Kāmavitakkena, byāpādavitakkena, vihiṁsāvitakkena, duppañño hoti jaḷo elamūgo— imehi kho, bhikkhave, catūhi dhammehi samannāgato bhikkhu nālaṁ araññavanapatthāni pantāni senāsanāni paṭisevituṁ.

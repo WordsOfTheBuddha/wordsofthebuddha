@@ -1,9 +1,9 @@
 ---
 slug: an5.80
 source: suttacentral/bilara-data
+title: Catutthaanāgatabhayasutta
 edition: ms
 granularity: paragraph
-title: Catutthaanāgatabhayasutta
 ---
 
 “Pañcimāni, bhikkhave, anāgatabhayāni etarahi asamuppannāni āyatiṁ samuppajjissanti. Tāni vo paṭibujjhitabbāni; paṭibujjhitvā ca tesaṁ pahānāya vāyamitabbaṁ.
@@ -26,8 +26,7 @@ Yodhājīvavaggo tatiyo.
 
 Tassuddānaṁ
 
+Dve cetovimuttiphalā,
 dve ca dhammavihārino;
-
 Yodhājīvā ca dve vuttā,
-
 cattāro ca anāgatāti.

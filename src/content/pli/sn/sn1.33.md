@@ -1,9 +1,9 @@
 ---
 slug: sn1.33
 source: suttacentral/bilara-data
+title: Sādhusutta
 edition: ms
 granularity: paragraph
-title: Sādhusutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an3.22
 source: suttacentral/bilara-data
+title: Gilānasutta
 edition: ms
 granularity: paragraph
-title: Gilānasutta
 ---
 
 “Tayome, bhikkhave, gilānā santo saṁvijjamānā lokasmiṁ. Katame tayo?

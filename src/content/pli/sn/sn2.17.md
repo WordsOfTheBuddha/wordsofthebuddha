@@ -1,9 +1,9 @@
 ---
 slug: sn2.17
 source: suttacentral/bilara-data
+title: Subrahmasutta
 edition: ms
 granularity: paragraph
-title: Subrahmasutta
 ---
 
 Ekamantaṁ ṭhito kho subrahmā devaputto bhagavantaṁ gāthāya ajjhabhāsi:

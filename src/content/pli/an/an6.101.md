@@ -1,9 +1,9 @@
 ---
 slug: an6.101
 source: suttacentral/bilara-data
+title: Nibbānasutta
 edition: ms
 granularity: paragraph
-title: Nibbānasutta
 ---
 
 “‘So vata, bhikkhave, bhikkhu nibbānaṁ dukkhato samanupassanto anulomikāya khantiyā samannāgato bhavissatī’ti netaṁ ṭhānaṁ vijjati. ‘Anulomikāya khantiyā asamannāgato sammattaniyāmaṁ okkamissatī’ti netaṁ ṭhānaṁ vijjati. ‘Sammattaniyāmaṁ anokkamamāno sotāpattiphalaṁ vā sakadāgāmiphalaṁ vā anāgāmiphalaṁ vā arahattaṁ vā sacchikarissatī’ti netaṁ ṭhānaṁ vijjati.

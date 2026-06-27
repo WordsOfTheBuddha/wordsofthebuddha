@@ -1,9 +1,9 @@
 ---
 slug: an9.19
 source: suttacentral/bilara-data
+title: Devatāsutta
 edition: ms
 granularity: paragraph
-title: Devatāsutta
 ---
 
 “Imañca, bhikkhave, rattiṁ sambahulā devatā abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṁ jetavanaṁ obhāsetvā yenāhaṁ tenupasaṅkamiṁsu; upasaṅkamitvā maṁ abhivādetvā ekamantaṁ aṭṭhaṁsu. Ekamantaṁ ṭhitā kho, bhikkhave, tā devatā maṁ etadavocuṁ: ‘upasaṅkamiṁsu no, bhante, pubbe manussabhūtānaṁ pabbajitā agārāni. Te mayaṁ, bhante, paccuṭṭhimha, no ca kho abhivādimha. Tā mayaṁ, bhante, aparipuṇṇakammantā vippaṭisāriniyo paccānutāpiniyo hīnaṁ kāyaṁ upapannā’ti.

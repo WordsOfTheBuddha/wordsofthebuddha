@@ -1,9 +1,9 @@
 ---
 slug: an6.37
 source: suttacentral/bilara-data
+title: Chaḷaṅgadānasutta
 edition: ms
 granularity: paragraph
-title: Chaḷaṅgadānasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -24,28 +24,24 @@ Evaṁ chaḷaṅgasamannāgatāya, bhikkhave, dakkhiṇāya na sukaraṁ puññ
 
 Seyyathāpi, bhikkhave, mahāsamudde na sukaraṁ udakassa pamāṇaṁ gahetuṁ: ‘ettakāni udakāḷhakānīti vā ettakāni udakāḷhakasatānīti vā ettakāni udakāḷhakasahassānīti vā ettakāni udakāḷhakasatasahassānī’ti vā. Atha kho asaṅkhyeyyo appameyyo mahāudakakkhandhotveva saṅkhaṁ gacchati. Evamevaṁ kho, bhikkhave, evaṁ chaḷaṅgasamannāgatāya dakkhiṇāya na sukaraṁ puññassa pamāṇaṁ gahetuṁ: ‘ettako puññābhisando kusalābhisando sukhassāhāro sovaggiko sukhavipāko saggasaṁvattaniko iṭṭhāya kantāya manāpāya hitāya sukhāya saṁvattatī’ti. Atha kho asaṅkhyeyyo appameyyo mahāpuññakkhandhotveva saṅkhaṁ gacchatī”ti.
 
+“Pubbeva dānā sumano,
 dadaṁ cittaṁ pasādaye;
-
 Datvā attamano hoti,
-
 esā yaññassa sampadā.
 
+Vītarāgā vītadosā,
 vītamohā anāsavā;
-
 Khettaṁ yaññassa sampannaṁ,
-
 saññatā brahmacārayo.
 
+Sayaṁ ācamayitvāna,
 datvā sakehi pāṇibhi;
-
 Attano parato ceso,
-
 yañño hoti mahapphalo.
 
+Evaṁ yajitvā medhāvī,
 saddho muttena cetasā;
-
 Abyāpajjaṁ sukhaṁ lokaṁ,
-
 paṇḍito upapajjatī”ti.
 
 Sattamaṁ.

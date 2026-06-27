@@ -1,9 +1,9 @@
 ---
 slug: sn1.35
 source: suttacentral/bilara-data
+title: Ujjhānasaññisutta
 edition: ms
 granularity: paragraph
-title: Ujjhānasaññisutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

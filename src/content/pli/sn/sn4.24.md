@@ -1,9 +1,9 @@
 ---
 slug: sn4.24
 source: suttacentral/bilara-data
+title: Sattavassānubandhasutta
 edition: ms
 granularity: paragraph
-title: Sattavassānubandhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre ajapālanigrodhe.

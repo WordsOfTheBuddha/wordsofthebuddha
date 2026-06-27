@@ -1,9 +1,9 @@
 ---
 slug: sn1.27
 source: suttacentral/bilara-data
+title: Sarasutta
 edition: ms
 granularity: paragraph
-title: Sarasutta
 ---
 
 “Kuto sarā nivattanti,

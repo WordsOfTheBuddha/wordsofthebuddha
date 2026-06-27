@@ -1,9 +1,9 @@
 ---
 slug: sn4.1
 source: suttacentral/bilara-data
+title: Tapokammasutta
 edition: ms
 granularity: paragraph
-title: Tapokammasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā uruvelāyaṁ viharati najjā nerañjarāya tīre ajapālanigrodhamūle paṭhamābhisambuddho.

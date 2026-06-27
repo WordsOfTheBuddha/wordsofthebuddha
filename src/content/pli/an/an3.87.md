@@ -1,9 +1,9 @@
 ---
 slug: an3.87
 source: suttacentral/bilara-data
+title: Dutiyasikkhāsutta
 edition: ms
 granularity: paragraph
-title: Dutiyasikkhāsutta
 ---
 
 “Sādhikamidaṁ, bhikkhave, diyaḍḍhasikkhāpadasataṁ anvaddhamāsaṁ uddesaṁ āgacchati yattha attakāmā kulaputtā sikkhanti. Tisso imā, bhikkhave, sikkhā yatthetaṁ sabbaṁ samodhānaṁ gacchati. Katamā tisso? Adhisīlasikkhā, adhicittasikkhā, adhipaññāsikkhā— imā kho, bhikkhave, tisso sikkhā yatthetaṁ sabbaṁ samodhānaṁ gacchati.

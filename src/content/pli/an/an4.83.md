@@ -1,9 +1,9 @@
 ---
 slug: an4.83
 source: suttacentral/bilara-data
+title: Avaṇṇārahasutta
 edition: ms
 granularity: paragraph
-title: Avaṇṇārahasutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi catūhi? Ananuvicca apariyogāhetvā avaṇṇārahassa vaṇṇaṁ bhāsati, ananuvicca apariyogāhetvā vaṇṇārahassa avaṇṇaṁ bhāsati, ananuvicca apariyogāhetvā appasādanīye ṭhāne pasādaṁ upadaṁseti, ananuvicca apariyogāhetvā pasādanīye ṭhāne appasādaṁ upadaṁseti— imehi kho, bhikkhave, catūhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.

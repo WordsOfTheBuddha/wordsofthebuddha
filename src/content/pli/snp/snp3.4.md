@@ -1,9 +1,9 @@
 ---
 slug: snp3.4
 source: suttacentral/bilara-data
+title: Pūraḷāsa (sundarikabhāradvāja) sutta
 edition: ms
 granularity: paragraph
-title: Pūraḷāsa (sundarikabhāradvāja) sutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosalesu viharati sundarikāya nadiyā tīre. Tena kho pana samayena sundarikabhāradvājo brāhmaṇo sundarikāya nadiyā tīre aggiṁ juhati, aggihuttaṁ paricarati. Atha kho sundarikabhāradvājo brāhmaṇo aggiṁ juhitvā aggihuttaṁ paricaritvā uṭṭhāyāsanā samantā catuddisā anuvilokesi: “ko nu kho imaṁ habyasesaṁ bhuñjeyyā”ti? Addasā kho sundarikabhāradvājo brāhmaṇo bhagavantaṁ avidūre aññatarasmiṁ rukkhamūle sasīsaṁ pārutaṁ nisinnaṁ; disvāna vāmena hatthena habyasesaṁ gahetvā dakkhiṇena hatthena kamaṇḍaluṁ gahetvā yena bhagavā tenupasaṅkami.

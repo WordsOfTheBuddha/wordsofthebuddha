@@ -1,9 +1,9 @@
 ---
 slug: an5.1
 source: suttacentral/bilara-data
+title: Saṅkhittasutta
 edition: ms
 granularity: paragraph
-title: Saṅkhittasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

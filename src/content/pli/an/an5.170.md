@@ -1,9 +1,9 @@
 ---
 slug: an5.170
 source: suttacentral/bilara-data
+title: Bhaddajisutta
 edition: ms
 granularity: paragraph
-title: Bhaddajisutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati ghositārāme. Atha kho āyasmā bhaddaji yenāyasmā ānando tenupasaṅkami; upasaṅkamitvā āyasmatā ānandena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ bhaddajiṁ āyasmā ānando etadavoca:
@@ -28,8 +28,7 @@ Dasamaṁ.
 
 Tassuddānaṁ
 
+Dve āghātavinayā,
 sākacchā sājīvato pañhaṁ;
-
 Pucchā nirodho codanā,
-
 sīlaṁ nisanti bhaddajīti.

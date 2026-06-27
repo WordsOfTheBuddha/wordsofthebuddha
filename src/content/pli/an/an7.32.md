@@ -1,9 +1,9 @@
 ---
 slug: an7.32
 source: suttacentral/bilara-data
+title: Appamādagāravasutta
 edition: ms
 granularity: paragraph
-title: Appamādagāravasutta
 ---
 
 Atha kho aññatarā devatā abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṁ jetavanaṁ obhāsetvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitā kho sā devatā bhagavantaṁ etadavoca:
@@ -16,16 +16,14 @@ Atha kho bhagavā tassā rattiyā accayena bhikkhū āmantesi: “imaṁ, bhikkh
 
 Idamavoca, bhikkhave, sā devatā. Idaṁ vatvā maṁ abhivādetvā padakkhiṇaṁ katvā tatthevantaradhāyīti.
 
+Satthugaru dhammagaru,
 saṅghe ca tibbagāravo;
-
 Samādhigaru ātāpī,
-
 sikkhāya tibbagāravo.
 
+Appamādagaru bhikkhu,
 paṭisanthāragāravo;
-
 Abhabbo parihānāya,
-
 nibbānasseva santike”ti.
 
 Paṭhamaṁ.

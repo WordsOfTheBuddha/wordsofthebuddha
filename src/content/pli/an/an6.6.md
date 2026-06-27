@@ -1,9 +1,9 @@
 ---
 slug: an6.6
 source: suttacentral/bilara-data
+title: Dutiyaājānīyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaājānīyasutta
 ---
 
 “Chahi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅgantveva saṅkhaṁ gacchati. Katamehi chahi? Idha, bhikkhave, rañño bhadro assājānīyo khamo hoti rūpānaṁ, khamo saddānaṁ, khamo gandhānaṁ, khamo rasānaṁ, khamo phoṭṭhabbānaṁ, balasampanno ca hoti. Imehi kho, bhikkhave, chahi aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅgantveva saṅkhaṁ gacchati.

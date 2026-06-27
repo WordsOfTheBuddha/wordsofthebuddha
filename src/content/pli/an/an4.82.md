@@ -1,9 +1,9 @@
 ---
 slug: an4.82
 source: suttacentral/bilara-data
+title: Musāvādasutta
 edition: ms
 granularity: paragraph
-title: Musāvādasutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi catūhi? Musāvādī hoti, pisuṇavāco hoti, pharusavāco hoti, samphappalāpī hoti— imehi kho, bhikkhave, catūhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.

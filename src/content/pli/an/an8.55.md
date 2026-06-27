@@ -1,9 +1,9 @@
 ---
 slug: an8.55
 source: suttacentral/bilara-data
+title: Ujjayasutta
 edition: ms
 granularity: paragraph
-title: Ujjayasutta
 ---
 
 Atha kho ujjayo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho ujjayo brāhmaṇo bhagavantaṁ etadavoca:
@@ -38,28 +38,24 @@ Katamā ca, brāhmaṇa, paññāsampadā? Idha, brāhmaṇa, kulaputto paññav
 
 “Ime kho, brāhmaṇa, cattāro dhammā kulaputtassa samparāyahitāya saṁvattanti samparāyasukhāyāti.
 
+Uṭṭhātā kammadheyyesu,
 appamatto vidhānavā;
-
 Samaṁ kappeti jīvikaṁ,
-
 sambhataṁ anurakkhati.
 
+Saddho sīlena sampanno,
 vadaññū vītamaccharo;
-
 Niccaṁ maggaṁ visodheti,
-
 sotthānaṁ samparāyikaṁ.
 
+Iccete aṭṭha dhammā ca,
 saddhassa gharamesino;
-
 Akkhātā saccanāmena,
-
 ubhayattha sukhāvahā.
 
+Diṭṭhadhammahitatthāya,
 samparāyasukhāya ca;
-
 Evametaṁ gahaṭṭhānaṁ,
-
 cāgo puññaṁ pavaḍḍhatī”ti.
 
 Pañcamaṁ.

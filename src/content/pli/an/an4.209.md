@@ -1,9 +1,9 @@
 ---
 slug: an4.209
 source: suttacentral/bilara-data
+title: Tatiyapāpadhammasutta
 edition: ms
 granularity: paragraph
-title: Tatiyapāpadhammasutta
 ---
 
 “Pāpadhammañca vo, bhikkhave, desessāmi, pāpadhammena pāpadhammatarañca; kalyāṇadhammañca, kalyāṇadhammena kalyāṇadhammatarañca. Taṁ suṇātha …pe….

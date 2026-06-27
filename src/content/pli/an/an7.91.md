@@ -1,9 +1,9 @@
 ---
 slug: an7.91
 source: suttacentral/bilara-data
+title: Ariyasutta
 edition: ms
 granularity: paragraph
-title: Ariyasutta
 ---
 
 “… Ārakattā ariyo hoti …pe….

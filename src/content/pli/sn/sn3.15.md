@@ -1,9 +1,9 @@
 ---
 slug: sn3.15
 source: suttacentral/bilara-data
+title: Dutiyasaṅgāmasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasaṅgāmasutta
 ---
 
 Atha kho rājā māgadho ajātasattu vedehiputto caturaṅginiṁ senaṁ sannayhitvā rājānaṁ pasenadiṁ kosalaṁ abbhuyyāsi yena kāsi. Assosi kho rājā pasenadi kosalo: “rājā kira māgadho ajātasattu vedehiputto caturaṅginiṁ senaṁ sannayhitvā mamaṁ abbhuyyāto yena kāsī”ti. Atha kho rājā pasenadi kosalo caturaṅginiṁ senaṁ sannayhitvā rājānaṁ māgadhaṁ ajātasattuṁ vedehiputtaṁ paccuyyāsi yena kāsi. Atha kho rājā ca māgadho ajātasattu vedehiputto rājā ca pasenadi kosalo saṅgāmesuṁ. Tasmiṁ kho pana saṅgāme rājā pasenadi kosalo rājānaṁ māgadhaṁ ajātasattuṁ vedehiputtaṁ parājesi, jīvaggāhañca naṁ aggahesi.

@@ -1,9 +1,9 @@
 ---
 slug: an8.19
 source: suttacentral/bilara-data
+title: Pahārādasutta
 edition: ms
 granularity: paragraph
-title: Pahārādasutta
 ---
 
 Ekaṁ samayaṁ bhagavā verañjāyaṁ viharati naḷerupucimandamūle.

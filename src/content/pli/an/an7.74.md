@@ -1,9 +1,9 @@
 ---
 slug: an7.74
 source: suttacentral/bilara-data
+title: Arakasutta
 edition: ms
 granularity: paragraph
-title: Arakasutta
 ---
 
 “Bhūtapubbaṁ, bhikkhave, arako nāma satthā ahosi titthakaro kāmesu vītarāgo. Arakassa kho pana, bhikkhave, satthuno anekāni sāvakasatāni ahesuṁ. Arako satthā sāvakānaṁ evaṁ dhammaṁ deseti: ‘appakaṁ, brāhmaṇa, jīvitaṁ manussānaṁ parittaṁ lahukaṁ bahudukkhaṁ bahupāyāsaṁ mantāyaṁ boddhabbaṁ, kattabbaṁ kusalaṁ, caritabbaṁ brahmacariyaṁ, natthi jātassa amaraṇaṁ.
@@ -34,8 +34,7 @@ Mahāvaggo sattamo.
 
 Tassuddānaṁ
 
+Hirīsūriyaṁ upamā,
 dhammaññū pārichattakaṁ;
-
 Sakkaccaṁ bhāvanā aggi,
-
 sunettaarakena cāti.

@@ -1,9 +1,9 @@
 ---
 slug: sn2.18
 source: suttacentral/bilara-data
+title: Kakudhasutta
 edition: ms
 granularity: paragraph
-title: Kakudhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sākete viharati añjanavane migadāye.

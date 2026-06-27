@@ -1,9 +1,9 @@
 ---
 slug: an7.16
 source: suttacentral/bilara-data
+title: Aniccānupassīsutta
 edition: ms
 granularity: paragraph
-title: Aniccānupassīsutta
 ---
 
 “Sattime, bhikkhave, puggalā āhuneyyā pāhuneyyā dakkhiṇeyyā añjalikaraṇīyā anuttaraṁ puññakkhettaṁ lokassa. Katame satta?

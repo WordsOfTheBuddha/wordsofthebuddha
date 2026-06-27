@@ -1,9 +1,9 @@
 ---
 slug: an9.37
 source: suttacentral/bilara-data
+title: Ānandasutta
 edition: ms
 granularity: paragraph
-title: Ānandasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando kosambiyaṁ viharati ghositārāme. Tatra kho āyasmā ānando bhikkhū āmantesi: “āvuso bhikkhave”ti.

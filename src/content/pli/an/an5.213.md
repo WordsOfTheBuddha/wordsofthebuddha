@@ -1,9 +1,9 @@
 ---
 slug: an5.213
 source: suttacentral/bilara-data
+title: Sīlasutta
 edition: ms
 granularity: paragraph
-title: Sīlasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā dussīlassa sīlavipattiyā. Katame pañca?

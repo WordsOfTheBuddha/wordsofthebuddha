@@ -1,9 +1,9 @@
 ---
 slug: an7.58
 source: suttacentral/bilara-data
+title: Arakkheyyasutta
 edition: ms
 granularity: paragraph
-title: Arakkheyyasutta
 ---
 
 “Cattārimāni, bhikkhave, tathāgatassa arakkheyyāni, tīhi ca anupavajjo. Katamāni cattāri tathāgatassa arakkheyyāni?

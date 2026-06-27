@@ -1,9 +1,9 @@
 ---
 slug: sn1.11
 source: suttacentral/bilara-data
+title: Nandanasutta
 edition: ms
 granularity: paragraph
-title: Nandanasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

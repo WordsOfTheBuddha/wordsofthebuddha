@@ -1,9 +1,9 @@
 ---
 slug: an6.86
 source: suttacentral/bilara-data
+title: Āvaraṇasutta
 edition: ms
 granularity: paragraph
-title: Āvaraṇasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ. Katamehi chahi? Kammāvaraṇatāya samannāgato hoti, kilesāvaraṇatāya samannāgato hoti, vipākāvaraṇatāya samannāgato hoti, assaddho ca hoti, acchandiko ca, duppañño ca. Imehi kho, bhikkhave, chahi dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an8.43
 source: suttacentral/bilara-data
+title: Visākhāsutta
 edition: ms
 granularity: paragraph
-title: Visākhāsutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde. Atha kho visākhā migāramātā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho visākhaṁ migāramātaraṁ bhagavā etadavoca:
@@ -26,38 +26,33 @@ aṭṭha vassasatāni …pe…
 
 soḷasa vassasatāni paranimmitavasavattīnaṁ devānaṁ eso eko rattindivo. Tāya rattiyā tiṁsarattiyo māso. Tena māsena dvādasamāsiyo saṁvaccharo. Tena saṁvaccharena dibbāni soḷasa vassasahassāni paranimmitavasavattīnaṁ devānaṁ āyuppamāṇaṁ. Ṭhānaṁ kho panetaṁ, visākhe, vijjati yaṁ idhekacco itthī vā puriso vā aṭṭhaṅgasamannāgataṁ uposathaṁ upavasitvā kāyassa bhedā paraṁ maraṇā paranimmitavasavattīnaṁ devānaṁ sahabyataṁ upapajjeyya. Idaṁ kho panetaṁ, visākhe, sandhāya bhāsitaṁ: ‘kapaṇaṁ mānusakaṁ rajjaṁ dibbaṁ sukhaṁ upanidhāyā’ti.
 
+Pāṇaṁ na haññe na cadinnamādiye,
 Musā na bhāse na ca majjapo siyā;
-
 Abrahmacariyā virameyya methunā,
-
 Rattiṁ na bhuñjeyya vikālabhojanaṁ.
 
+Mālaṁ na dhāre na ca gandhamācare,
 Mañce chamāyaṁ va sayetha santhate;
-
 Etañhi aṭṭhaṅgikamāhuposathaṁ,
-
 Buddhena dukkhantagunā pakāsitaṁ.
 
+Cando ca suriyo ca ubho sudassanā,
 Obhāsayaṁ anupariyanti yāvatā;
-
 Tamonudā te pana antalikkhagā,
-
 Nabhe pabhāsanti disāvirocanā.
 
+Etasmiṁ yaṁ vijjati antare dhanaṁ,
 Muttā maṇi veḷuriyañca bhaddakaṁ;
-
 Siṅgīsuvaṇṇaṁ atha vāpi kañcanaṁ,
-
 Yaṁ jātarūpaṁ haṭakanti vuccati.
 
+Aṭṭhaṅgupetassa uposathassa,
 Kalampi te nānubhavanti soḷasiṁ;
-
 Candappabhā tāragaṇā ca sabbe.
 
+Tasmā hi nārī ca naro ca sīlavā,
 Aṭṭhaṅgupetaṁ upavassuposathaṁ;
-
 Puññāni katvāna sukhudrayāni,
-
 Aninditā saggamupenti ṭhānan”ti.
 
 Tatiyaṁ.

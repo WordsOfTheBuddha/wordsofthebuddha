@@ -1,9 +1,9 @@
 ---
 slug: sn1.63
 source: suttacentral/bilara-data
+title: Taṇhāsutta
 edition: ms
 granularity: paragraph
-title: Taṇhāsutta
 ---
 
 “Kenassu nīyati loko,

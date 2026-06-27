@@ -1,9 +1,9 @@
 ---
 slug: an8.84
 source: suttacentral/bilara-data
+title: Corasutta
 edition: ms
 granularity: paragraph
-title: Corasutta
 ---
 
 “Aṭṭhahi, bhikkhave, aṅgehi samannāgato mahācoro khippaṁ pariyāpajjati, na ciraṭṭhitiko hoti. Katamehi aṭṭhahi? Appaharantassa paharati, anavasesaṁ ādiyati, itthiṁ hanati, kumāriṁ dūseti, pabbajitaṁ vilumpati, rājakosaṁ vilumpati, accāsanne kammaṁ karoti, na ca nidhānakusalo hoti. Imehi kho, bhikkhave, aṭṭhahaṅgehi samannāgato mahācoro khippaṁ pariyāpajjati, na ciraṭṭhitiko hoti.

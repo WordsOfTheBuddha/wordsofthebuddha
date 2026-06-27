@@ -1,9 +1,9 @@
 ---
 slug: an7.50
 source: suttacentral/bilara-data
+title: Methunasutta
 edition: ms
 granularity: paragraph
-title: Methunasutta
 ---
 
 Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho jāṇussoṇi brāhmaṇo bhagavantaṁ etadavoca: “bhavampi no gotamo brahmacārī paṭijānātī”ti?

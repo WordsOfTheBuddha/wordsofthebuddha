@@ -1,9 +1,9 @@
 ---
 slug: an4.212
 source: suttacentral/bilara-data
+title: Diṭṭhisutta
 edition: ms
 granularity: paragraph
-title: Diṭṭhisutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi catūhi? Kāyaduccaritena, vacīduccaritena, manoduccaritena, micchādiṭṭhiyā— imehi kho, bhikkhave, catūhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.

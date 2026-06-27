@@ -1,9 +1,9 @@
 ---
 slug: an7.87
 source: suttacentral/bilara-data
+title: Brāhmaṇasutta
 edition: ms
 granularity: paragraph
-title: Brāhmaṇasutta
 ---
 
 “… Bāhitattā brāhmaṇo hoti …pe….

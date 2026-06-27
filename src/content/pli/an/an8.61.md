@@ -1,9 +1,9 @@
 ---
 slug: an8.61
 source: suttacentral/bilara-data
+title: Icchāsutta
 edition: ms
 granularity: paragraph
-title: Icchāsutta
 ---
 
 “Aṭṭhime, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame aṭṭha?

@@ -1,9 +1,9 @@
 ---
 slug: an5.97
 source: suttacentral/bilara-data
+title: Kathāsutta
 edition: ms
 granularity: paragraph
-title: Kathāsutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu ānāpānassatiṁ bhāvento nacirasseva akuppaṁ paṭivijjhati. Katamehi pañcahi?

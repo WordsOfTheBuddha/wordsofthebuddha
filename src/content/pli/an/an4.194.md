@@ -1,9 +1,9 @@
 ---
 slug: an4.194
 source: suttacentral/bilara-data
+title: Sāmugiyasutta
 edition: ms
 granularity: paragraph
-title: Sāmugiyasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando koliyesu viharati sāmugaṁ nāma koliyānaṁ nigamo. Atha kho sambahulā sāmugiyā koliyaputtā yenāyasmā ānando tenupasaṅkamiṁsu; upasaṅkamitvā āyasmantaṁ ānandaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinne kho te sāmugiye koliyaputte āyasmā ānando etadavoca:

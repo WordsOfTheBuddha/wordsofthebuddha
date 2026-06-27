@@ -1,9 +1,9 @@
 ---
 slug: an9.2
 source: suttacentral/bilara-data
+title: Nissayasutta
 edition: ms
 granularity: paragraph
-title: Nissayasutta
 ---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ …pe… ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca:

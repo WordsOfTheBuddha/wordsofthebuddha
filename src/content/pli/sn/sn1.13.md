@@ -1,9 +1,9 @@
 ---
 slug: sn1.13
 source: suttacentral/bilara-data
+title: Natthiputtasamasutta
 edition: ms
 granularity: paragraph
-title: Natthiputtasamasutta
 ---
 
 Sāvatthinidānaṁ.

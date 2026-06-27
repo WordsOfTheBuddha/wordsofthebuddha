@@ -1,9 +1,9 @@
 ---
 slug: an9.54
 source: suttacentral/bilara-data
+title: Amatasutta
 edition: ms
 granularity: paragraph
-title: Amatasutta
 ---
 
 “‘Amataṁ, amatan’ti, āvuso, vuccati ….

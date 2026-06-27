@@ -1,9 +1,9 @@
 ---
 slug: an4.244
 source: suttacentral/bilara-data
+title: Āpattibhayasutta
 edition: ms
 granularity: paragraph
-title: Āpattibhayasutta
 ---
 
 “Cattārimāni, bhikkhave, āpattibhayāni. Katamāni cattāri?

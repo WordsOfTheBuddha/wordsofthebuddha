@@ -1,9 +1,9 @@
 ---
 slug: an5.175
 source: suttacentral/bilara-data
+title: Caṇḍālasutta
 edition: ms
 granularity: paragraph
-title: Caṇḍālasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato upāsako upāsakacaṇḍālo ca hoti upāsakamalañca upāsakapatikuṭṭho ca. Katamehi pañcahi? Assaddho hoti; dussīlo hoti; kotūhalamaṅgaliko hoti, maṅgalaṁ pacceti no kammaṁ; ito ca bahiddhā dakkhiṇeyyaṁ gavesati; tattha ca pubbakāraṁ karoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato upāsako upāsakacaṇḍālo ca hoti upāsakamalañca upāsakapatikuṭṭho ca.

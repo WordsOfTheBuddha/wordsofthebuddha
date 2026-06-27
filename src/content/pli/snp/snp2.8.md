@@ -1,9 +1,9 @@
 ---
 slug: snp2.8
 source: suttacentral/bilara-data
+title: Dhamma (nāvā) sutta
 edition: ms
 granularity: paragraph
-title: Dhamma (nāvā) sutta
 ---
 
 Yasmā hi dhammaṁ puriso vijaññā,

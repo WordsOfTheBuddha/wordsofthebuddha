@@ -1,9 +1,9 @@
 ---
 slug: an5.23
 source: suttacentral/bilara-data
+title: Upakkilesasutta
 edition: ms
 granularity: paragraph
-title: Upakkilesasutta
 ---
 
 “Pañcime, bhikkhave, jātarūpassa upakkilesā, yehi upakkilesehi upakkiliṭṭhaṁ jātarūpaṁ na ceva mudu hoti na ca kammaniyaṁ na ca pabhassaraṁ pabhaṅgu ca na ca sammā upeti kammāya. Katame pañca? Ayo, lohaṁ, tipu, sīsaṁ, sajjhaṁ— ime kho, bhikkhave, pañca jātarūpassa upakkilesā, yehi upakkilesehi upakkiliṭṭhaṁ jātarūpaṁ na ceva mudu hoti na ca kammaniyaṁ na ca pabhassaraṁ pabhaṅgu ca na ca sammā upeti kammāya.

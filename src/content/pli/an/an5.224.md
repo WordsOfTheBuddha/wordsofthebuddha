@@ -1,9 +1,9 @@
 ---
 slug: an5.224
 source: suttacentral/bilara-data
+title: Maccharīsutta
 edition: ms
 granularity: paragraph
-title: Maccharīsutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā atinivāse. Katame pañca? Āvāsamaccharī hoti, kulamaccharī hoti, lābhamaccharī hoti, vaṇṇamaccharī hoti, dhammamaccharī hoti. Ime kho, bhikkhave, pañca ādīnavā atinivāse.

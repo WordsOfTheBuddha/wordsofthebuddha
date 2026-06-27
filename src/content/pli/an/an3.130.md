@@ -1,9 +1,9 @@
 ---
 slug: an3.130
 source: suttacentral/bilara-data
+title: Dutiyaanuruddhasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaanuruddhasutta
 ---
 
 Atha kho āyasmā anuruddho yenāyasmā sāriputto tenupasaṅkami; upasaṅkamitvā āyasmatā sāriputtena saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā anuruddho āyasmantaṁ sāriputtaṁ etadavoca:

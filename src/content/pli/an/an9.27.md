@@ -1,9 +1,9 @@
 ---
 slug: an9.27
 source: suttacentral/bilara-data
+title: Paṭhamaverasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaverasutta
 ---
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:

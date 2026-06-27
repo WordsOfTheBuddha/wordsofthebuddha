@@ -1,9 +1,9 @@
 ---
 slug: snp2.13
 source: suttacentral/bilara-data
+title: Sammāparibbājanīyasutta
 edition: ms
 granularity: paragraph
-title: Sammāparibbājanīyasutta
 ---
 
 “Pucchāmi muniṁ pahūtapaññaṁ,

@@ -1,9 +1,9 @@
 ---
 slug: an4.206
 source: suttacentral/bilara-data
+title: Dasamaggasutta
 edition: ms
 granularity: paragraph
-title: Dasamaggasutta
 ---
 
 “Asappurisañca vo, bhikkhave, desessāmi, asappurisena asappurisatarañca; sappurisañca, sappurisena sappurisatarañca. Taṁ suṇātha …pe….

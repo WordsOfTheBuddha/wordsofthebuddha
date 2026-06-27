@@ -1,9 +1,9 @@
 ---
 slug: an5.151
 source: suttacentral/bilara-data
+title: Paṭhamasammattaniyāmasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasammattaniyāmasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ. Katamehi pañcahi? Kathaṁ paribhoti, kathikaṁ paribhoti, attānaṁ paribhoti, vikkhittacitto dhammaṁ suṇāti, anekaggacitto ayoniso ca manasi karoti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato suṇantopi saddhammaṁ abhabbo niyāmaṁ okkamituṁ kusalesu dhammesu sammattaṁ.

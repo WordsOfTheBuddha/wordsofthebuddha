@@ -1,9 +1,9 @@
 ---
 slug: sn9.5
 source: suttacentral/bilara-data
+title: Ānandasutta
 edition: ms
 granularity: paragraph
-title: Ānandasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando kosalesu viharati aññatarasmiṁ vanasaṇḍe.

@@ -1,9 +1,9 @@
 ---
 slug: an4.138
 source: suttacentral/bilara-data
+title: Nikaṭṭhasutta
 edition: ms
 granularity: paragraph
-title: Nikaṭṭhasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

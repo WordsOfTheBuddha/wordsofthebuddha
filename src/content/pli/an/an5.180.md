@@ -1,9 +1,9 @@
 ---
 slug: an5.180
 source: suttacentral/bilara-data
+title: Gavesīsutta
 edition: ms
 granularity: paragraph
-title: Gavesīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu cārikaṁ carati mahatā bhikkhusaṅghena saddhiṁ. Addasā kho bhagavā addhānamaggappaṭipanno aññatarasmiṁ padese mahantaṁ sālavanaṁ; disvāna maggā okkamma yena taṁ sālavanaṁ tenupasaṅkami; upasaṅkamitvā taṁ sālavanaṁ ajjhogāhetvā aññatarasmiṁ padese sitaṁ pātvākāsi.
@@ -46,8 +46,7 @@ Upāsakavaggo tatiyo.
 
 Tassuddānaṁ
 
+Sārajjaṁ visārado nirayaṁ,
 Veraṁ caṇḍālapañcamaṁ;
-
 Pīti vaṇijjā rājāno,
-
 Gihī ceva gavesināti.

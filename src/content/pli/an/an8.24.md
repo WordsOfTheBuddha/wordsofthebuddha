@@ -1,9 +1,9 @@
 ---
 slug: an8.24
 source: suttacentral/bilara-data
+title: Dutiyahatthakasutta
 edition: ms
 granularity: paragraph
-title: Dutiyahatthakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā āḷaviyaṁ viharati aggāḷave cetiye. Atha kho hatthako āḷavako pañcamattehi upāsakasatehi parivuto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho hatthakaṁ āḷavakaṁ bhagavā etadavoca:

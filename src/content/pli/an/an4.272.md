@@ -1,9 +1,9 @@
 ---
 slug: an4.272
 source: suttacentral/bilara-data
+title: Byāpannacittasutta
 edition: ms
 granularity: paragraph
-title: Byāpannacittasutta
 ---
 
 …pe… Attanā ca byāpannacitto hoti, parañca byāpāde samādapeti, byāpāde ca samanuñño hoti, byāpādassa ca vaṇṇaṁ bhāsati—imehi …pe….

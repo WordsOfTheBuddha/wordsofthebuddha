@@ -1,9 +1,9 @@
 ---
 slug: an3.74
 source: suttacentral/bilara-data
+title: Nigaṇṭhasutta
 edition: ms
 granularity: paragraph
-title: Nigaṇṭhasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ. Atha kho abhayo ca licchavi paṇḍitakumārako ca licchavi yenāyasmā ānando tenupasaṅkamiṁsu; upasaṅkamitvā āyasmantaṁ ānandaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinno kho abhayo licchavi āyasmantaṁ ānandaṁ etadavoca:

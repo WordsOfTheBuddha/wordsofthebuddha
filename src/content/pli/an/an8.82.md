@@ -1,9 +1,9 @@
 ---
 slug: an8.82
 source: suttacentral/bilara-data
+title: Puṇṇiyasutta
 edition: ms
 granularity: paragraph
-title: Puṇṇiyasutta
 ---
 
 Atha kho āyasmā puṇṇiyo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā puṇṇiyo bhagavantaṁ etadavoca:

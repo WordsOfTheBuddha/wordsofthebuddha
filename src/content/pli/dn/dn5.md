@@ -1,9 +1,9 @@
 ---
 slug: dn5
 source: suttacentral/bilara-data
+title: Kūṭadantasutta
 edition: ms
 granularity: paragraph
-title: Kūṭadantasutta
 ---
 
 1. Khāṇumatakabrāhmaṇagahapatikā

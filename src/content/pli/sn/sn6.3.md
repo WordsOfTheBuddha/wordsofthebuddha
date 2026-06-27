@@ -1,9 +1,9 @@
 ---
 slug: sn6.3
 source: suttacentral/bilara-data
+title: Brahmadevasutta
 edition: ms
 granularity: paragraph
-title: Brahmadevasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

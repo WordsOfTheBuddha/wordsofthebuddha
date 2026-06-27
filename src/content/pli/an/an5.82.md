@@ -1,9 +1,9 @@
 ---
 slug: an5.82
 source: suttacentral/bilara-data
+title: Vītarāgasutta
 edition: ms
 granularity: paragraph
-title: Vītarāgasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca. Katamehi pañcahi? Avītarāgo hoti, avītadoso hoti, avītamoho hoti, makkhī ca, paḷāsī ca— imehi kho, bhikkhave, pañcahi dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.

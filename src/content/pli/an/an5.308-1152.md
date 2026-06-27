@@ -15,36 +15,26 @@ Rāgapeyyālaṁ niṭṭhitaṁ.
 
 Tassuddānaṁ
 
+Abhiññāya pariññāya parikkhayāya,
 Pahānāya khayāya vayena ca;
-
 Virāganirodhā cāgañca,
-
 Paṭinissaggo ime dasāti.
 
 Pañcakanipāto niṭṭhito.
 
 Tatridaṁ vagguddānaṁ
 
+Sekhabalaṁ balañceva,
 Pañcaṅgikañca sumanaṁ;
-
 Muṇḍanīvaraṇañca saññañca,
-
 Yodhājīvañca aṭṭhamaṁ;
-
 Theraṁ kakudhaphāsuñca,
-
 Andhakavindadvādasaṁ;
-
 Gilānarājatikaṇḍaṁ,
-
 Saddhammāghātupāsakaṁ;
-
 Araññabrāhmaṇañceva,
-
 Kimilakkosakaṁ tathā;
-
 Dīghācārāvāsikañca,
-
 Duccaritūpasampadanti.
 
 Pañcakanipātapāḷi niṭṭhitā.

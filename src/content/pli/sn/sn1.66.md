@@ -1,9 +1,9 @@
 ---
 slug: sn1.66
 source: suttacentral/bilara-data
+title: Attahatasutta
 edition: ms
 granularity: paragraph
-title: Attahatasutta
 ---
 
 “Kenassubbhāhato loko,

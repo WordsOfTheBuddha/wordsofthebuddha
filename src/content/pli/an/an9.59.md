@@ -1,9 +1,9 @@
 ---
 slug: an9.59
 source: suttacentral/bilara-data
+title: Anupubbapassaddhisutta
 edition: ms
 granularity: paragraph
-title: Anupubbapassaddhisutta
 ---
 
 “‘Anupubbapassaddhi, anupubbapassaddhī’ti, āvuso, vuccati ….

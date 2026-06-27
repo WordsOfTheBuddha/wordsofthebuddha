@@ -1,9 +1,9 @@
 ---
 slug: an4.265
 source: suttacentral/bilara-data
+title: Adinnādāyīsutta
 edition: ms
 granularity: paragraph
-title: Adinnādāyīsutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi catūhi? Attanā ca adinnādāyī hoti, parañca adinnādāne samādapeti, adinnādāne ca samanuñño hoti, adinnādānassa ca vaṇṇaṁ bhāsati— imehi kho …pe….

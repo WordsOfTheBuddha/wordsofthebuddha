@@ -1,9 +1,9 @@
 ---
 slug: an6.11
 source: suttacentral/bilara-data
+title: Paṭhamasāraṇīyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasāraṇīyasutta
 ---
 
 “Chayime, bhikkhave, dhammā sāraṇīyā. Katame cha?

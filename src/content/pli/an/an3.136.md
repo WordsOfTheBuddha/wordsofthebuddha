@@ -1,9 +1,9 @@
 ---
 slug: an3.136
 source: suttacentral/bilara-data
+title: Uppādāsutta
 edition: ms
 granularity: paragraph
-title: Uppādāsutta
 ---
 
 “Uppādā vā, bhikkhave, tathāgatānaṁ anuppādā vā tathāgatānaṁ, ṭhitāva sā dhātu dhammaṭṭhitatā dhammaniyāmatā. Sabbe saṅkhārā aniccā. Taṁ tathāgato abhisambujjhati abhisameti. Abhisambujjhitvā abhisametvā ācikkhati deseti paññāpeti paṭṭhapeti vivarati vibhajati uttānīkaroti: ‘sabbe saṅkhārā aniccā’ti.

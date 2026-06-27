@@ -1,9 +1,9 @@
 ---
 slug: an5.15
 source: suttacentral/bilara-data
+title: Daṭṭhabbasutta
 edition: ms
 granularity: paragraph
-title: Daṭṭhabbasutta
 ---
 
 “Pañcimāni, bhikkhave, balāni. Katamāni pañca? Saddhābalaṁ, vīriyabalaṁ, satibalaṁ, samādhibalaṁ, paññābalaṁ.

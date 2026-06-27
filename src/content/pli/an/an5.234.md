@@ -1,9 +1,9 @@
 ---
 slug: an5.234
 source: suttacentral/bilara-data
+title: Bahūpakārasutta
 edition: ms
 granularity: paragraph
-title: Bahūpakārasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu āvāsassa bahūpakāro hoti. Katamehi pañcahi?

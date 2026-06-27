@@ -1,9 +1,9 @@
 ---
 slug: sn8.9
 source: suttacentral/bilara-data
+title: Koṇḍaññasutta
 edition: ms
 granularity: paragraph
-title: Koṇḍaññasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

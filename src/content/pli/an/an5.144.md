@@ -1,9 +1,9 @@
 ---
 slug: an5.144
 source: suttacentral/bilara-data
+title: Tikaṇḍakīsutta
 edition: ms
 granularity: paragraph
-title: Tikaṇḍakīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā sākete viharati tikaṇḍakīvane. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

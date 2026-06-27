@@ -1,9 +1,9 @@
 ---
 slug: an3.73
 source: suttacentral/bilara-data
+title: Mahānāmasakkasutta
 edition: ms
 granularity: paragraph
-title: Mahānāmasakkasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sakkesu viharati kapilavatthusmiṁ nigrodhārāme. Tena kho pana samayena bhagavā gilānā vuṭṭhito hoti aciravuṭṭhito gelaññā. Atha kho mahānāmo sakko yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho mahānāmo sakko bhagavantaṁ etadavoca:

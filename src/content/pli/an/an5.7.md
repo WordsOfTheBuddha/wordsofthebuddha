@@ -1,9 +1,9 @@
 ---
 slug: an5.7
 source: suttacentral/bilara-data
+title: Kāmasutta
 edition: ms
 granularity: paragraph
-title: Kāmasutta
 ---
 
 “Yebhuyyena, bhikkhave, sattā kāmesu laḷitā. Asitabyābhaṅgiṁ, bhikkhave, kulaputto ohāya agārasmā anagāriyaṁ pabbajito hoti, ‘saddhāpabbajito kulaputto’ti alaṁvacanāya. Taṁ kissa hetu? Labbhā, bhikkhave, yobbanena kāmā te ca kho yādisā vā tādisā vā. Ye ca, bhikkhave, hīnā kāmā ye ca majjhimā kāmā ye ca paṇītā kāmā, sabbe kāmā ‘kāmā’tveva saṅkhaṁ gacchanti.

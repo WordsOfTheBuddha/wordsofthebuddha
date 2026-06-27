@@ -1,9 +1,9 @@
 ---
 slug: an7.27
 source: suttacentral/bilara-data
+title: Saññāsutta
 edition: ms
 granularity: paragraph
-title: Saññāsutta
 ---
 
 “Satta vo, bhikkhave, aparihāniye dhamme desessāmi. Taṁ suṇātha, sādhukaṁ manasi karotha …pe…. Katame ca, bhikkhave, satta aparihāniyā dhammā? Yāvakīvañca, bhikkhave, bhikkhū aniccasaññaṁ bhāvessanti; vuddhiyeva, bhikkhave, bhikkhūnaṁ pāṭikaṅkhā, no parihāni.

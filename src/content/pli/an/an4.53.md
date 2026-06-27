@@ -1,9 +1,9 @@
 ---
 slug: an4.53
 source: suttacentral/bilara-data
+title: Paṭhamasaṁvāsasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasaṁvāsasutta
 ---
 
 Ekaṁ samayaṁ bhagavā antarā ca madhuraṁ antarā ca verañjaṁ addhānamaggappaṭipanno hoti. Sambahulāpi kho gahapatī ca gahapatāniyo ca antarā ca madhuraṁ antarā ca verañjaṁ addhānamaggappaṭipannā honti. Atha kho bhagavā maggā okkamma aññatarasmiṁ rukkhamūle (…) nisīdi. Addasaṁsu kho gahapatī ca gahapatāniyo ca bhagavantaṁ aññatarasmiṁ rukkhamūle nisinnaṁ.
@@ -30,48 +30,38 @@ Kathañca, gahapatayo, devo deviyā saddhiṁ saṁvasati? Idha, gahapatayo, sā
 
 Ime kho, gahapatayo, cattāro saṁvāsāti.
 
+Ubho ca honti dussīlā,
 kadariyā paribhāsakā;
-
 Te honti jānipatayo,
-
 chavā saṁvāsamāgatā.
 
+Sāmiko hoti dussīlo,
 kadariyo paribhāsako;
-
 Bhariyā sīlavatī hoti,
-
 vadaññū vītamaccharā;
-
 Sāpi devī saṁvasati,
-
 chavena patinā saha.
 
+Sāmiko sīlavā hoti,
 vadaññū vītamaccharo;
-
 Bhariyā hoti dussīlā,
-
 kadariyā paribhāsikā;
-
 Sāpi chavā saṁvasati,
-
 devena patinā saha.
 
+Ubho saddhā vadaññū ca,
 saññatā dhammajīvino;
-
 Te honti jānipatayo,
-
 aññamaññaṁ piyaṁvadā.
 
+Atthāsaṁ pacurā honti,
 phāsukaṁ upajāyati;
-
 Amittā dummanā honti,
-
 ubhinnaṁ samasīlinaṁ.
 
+Idha dhammaṁ caritvāna,
 samasīlabbatā ubho;
-
 Nandino devalokasmiṁ,
-
 modanti kāmakāmino”ti.
 
 Tatiyaṁ.

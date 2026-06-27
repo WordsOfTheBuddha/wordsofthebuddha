@@ -1,9 +1,9 @@
 ---
 slug: an5.106
 source: suttacentral/bilara-data
+title: Ānandasutta
 edition: ms
 granularity: paragraph
-title: Ānandasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.

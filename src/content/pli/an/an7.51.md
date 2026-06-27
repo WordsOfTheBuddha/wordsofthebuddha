@@ -1,9 +1,9 @@
 ---
 slug: an7.51
 source: suttacentral/bilara-data
+title: Saṁyogasutta
 edition: ms
 granularity: paragraph
-title: Saṁyogasutta
 ---
 
 “Saṁyogavisaṁyogaṁ vo, bhikkhave, dhammapariyāyaṁ desessāmi. Taṁ suṇātha …pe… katamo ca so, bhikkhave, saṁyogo visaṁyogo dhammapariyāyo?

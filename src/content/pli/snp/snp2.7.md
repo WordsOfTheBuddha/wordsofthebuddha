@@ -1,9 +1,9 @@
 ---
 slug: snp2.7
 source: suttacentral/bilara-data
+title: Brāhmaṇadhammikasutta
 edition: ms
 granularity: paragraph
-title: Brāhmaṇadhammikasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Atha kho sambahulā kosalakā brāhmaṇamahāsālā jiṇṇā vuḍḍhā mahallakā addhagatā vayoanuppattā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavatā saddhiṁ sammodiṁsu. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinnā kho te brāhmaṇamahāsālā bhagavantaṁ etadavocuṁ: “sandissanti nu kho, bho gotama, etarahi brāhmaṇā porāṇānaṁ brāhmaṇānaṁ brāhmaṇadhamme”ti? “Na kho, brāhmaṇā, sandissanti etarahi brāhmaṇā porāṇānaṁ brāhmaṇānaṁ brāhmaṇadhamme”ti. “Sādhu no bhavaṁ gotamo porāṇānaṁ brāhmaṇānaṁ brāhmaṇadhammaṁ bhāsatu, sace bhoto gotamassa agarū”ti. “Tena hi, brāhmaṇā, suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti. “Evaṁ, bho”ti kho te brāhmaṇamahāsālā bhagavato paccassosuṁ. Bhagavā etadavoca:

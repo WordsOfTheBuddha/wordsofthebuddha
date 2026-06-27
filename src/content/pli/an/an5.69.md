@@ -1,9 +1,9 @@
 ---
 slug: an5.69
 source: suttacentral/bilara-data
+title: Nibbidāsutta
 edition: ms
 granularity: paragraph
-title: Nibbidāsutta
 ---
 
 “Pañcime, bhikkhave, dhammā bhāvitā bahulīkatā ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṁvattanti.

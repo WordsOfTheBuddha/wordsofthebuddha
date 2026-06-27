@@ -1,9 +1,9 @@
 ---
 slug: an3.10
 source: suttacentral/bilara-data
+title: Malasutta
 edition: ms
 granularity: paragraph
-title: Malasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato tayo male appahāya yathābhataṁ nikkhitto evaṁ niraye. Katamehi tīhi? Dussīlo ca hoti, dussīlyamalañcassa appahīnaṁ hoti; issukī ca hoti, issāmalañcassa appahīnaṁ hoti; maccharī ca hoti, maccheramalañcassa appahīnaṁ hoti.
@@ -20,8 +20,7 @@ Bālavaggo paṭhamo.
 
 Tassuddānaṁ
 
+Bhayaṁ lakkhaṇacintī ca,
 accayañca ayoniso;
-
 Akusalañca sāvajjaṁ,
-
 sabyābajjhakhataṁ malanti.

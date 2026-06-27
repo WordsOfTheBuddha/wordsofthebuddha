@@ -1,9 +1,9 @@
 ---
 slug: an5.88
 source: suttacentral/bilara-data
+title: Therasutta
 edition: ms
 granularity: paragraph
-title: Therasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato thero bhikkhu bahujanaahitāya paṭipanno hoti bahujanaasukhāya bahuno janassa anatthāya ahitāya dukkhāya devamanussānaṁ.

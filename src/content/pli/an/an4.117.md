@@ -1,9 +1,9 @@
 ---
 slug: an4.117
 source: suttacentral/bilara-data
+title: Ārakkhasutta
 edition: ms
 granularity: paragraph
-title: Ārakkhasutta
 ---
 
 “Catūsu, bhikkhave, ṭhānesu attarūpena appamādo sati cetaso ārakkho karaṇīyo. Katamesu catūsu?

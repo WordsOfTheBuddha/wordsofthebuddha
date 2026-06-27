@@ -1,9 +1,9 @@
 ---
 slug: an3.123
 source: suttacentral/bilara-data
+title: Kusinārasutta
 edition: ms
 granularity: paragraph
-title: Kusinārasutta
 ---
 
 Ekaṁ samayaṁ bhagavā kusinārāyaṁ viharati baliharaṇe vanasaṇḍe. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

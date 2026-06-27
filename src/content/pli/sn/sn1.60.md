@@ -1,9 +1,9 @@
 ---
 slug: sn1.60
 source: suttacentral/bilara-data
+title: Kavisutta
 edition: ms
 granularity: paragraph
-title: Kavisutta
 ---
 
 “Kiṁsu nidānaṁ gāthānaṁ,

@@ -1,9 +1,9 @@
 ---
 slug: an6.58
 source: suttacentral/bilara-data
+title: Āsavasutta
 edition: ms
 granularity: paragraph
-title: Āsavasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassa. Katamehi chahi?

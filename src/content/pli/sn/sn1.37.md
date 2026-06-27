@@ -1,9 +1,9 @@
 ---
 slug: sn1.37
 source: suttacentral/bilara-data
+title: Samayasutta
 edition: ms
 granularity: paragraph
-title: Samayasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sakkesu viharati kapilavatthusmiṁ mahāvane mahatā bhikkhusaṅghena saddhiṁ pañcamattehi bhikkhusatehi sabbeheva arahantehi; dasahi ca lokadhātūhi devatā yebhuyyena sannipatitā honti bhagavantaṁ dassanāya bhikkhusaṅghañca.

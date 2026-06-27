@@ -1,9 +1,9 @@
 ---
 slug: an6.46
 source: suttacentral/bilara-data
+title: Mahācundasutta
 edition: ms
 granularity: paragraph
-title: Mahācundasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ āyasmā mahācundo cetīsu viharati sayaṁjātiyaṁ. Tatra kho āyasmā mahācundo bhikkhū āmantesi: “āvuso bhikkhave”ti.

@@ -1,9 +1,9 @@
 ---
 slug: an7.72
 source: suttacentral/bilara-data
+title: Aggikkhandhopamasutta
 edition: ms
 granularity: paragraph
-title: Aggikkhandhopamasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosalesu cārikaṁ carati mahatā bhikkhusaṅghena saddhiṁ.

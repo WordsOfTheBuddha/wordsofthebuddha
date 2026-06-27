@@ -1,9 +1,9 @@
 ---
 slug: an4.237
 source: suttacentral/bilara-data
+title: Ariyamaggasutta
 edition: ms
 granularity: paragraph
-title: Ariyamaggasutta
 ---
 
 “Cattārimāni, bhikkhave, kammāni mayā sayaṁ abhiññā sacchikatvā paveditāni. Katamāni cattāri?

@@ -1,9 +1,9 @@
 ---
 slug: an3.75
 source: suttacentral/bilara-data
+title: Nivesakasutta
 edition: ms
 granularity: paragraph
-title: Nivesakasutta
 ---
 
 Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ ānandaṁ bhagavā etadavoca:

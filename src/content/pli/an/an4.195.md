@@ -1,9 +1,9 @@
 ---
 slug: an4.195
 source: suttacentral/bilara-data
+title: Vappasutta
 edition: ms
 granularity: paragraph
-title: Vappasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sakkesu viharati kapilavatthusmiṁ nigrodhārāme. Atha kho vappo sakko nigaṇṭhasāvako yenāyasmā mahāmoggallāno tenupasaṅkami; upasaṅkamitvā āyasmantaṁ mahāmoggallānaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho vappaṁ sakkaṁ nigaṇṭhasāvakaṁ āyasmā mahāmoggallāno etadavoca:

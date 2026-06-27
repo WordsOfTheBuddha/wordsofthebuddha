@@ -1,9 +1,9 @@
 ---
 slug: sn6.9
 source: suttacentral/bilara-data
+title: Turūbrahmasutta
 edition: ms
 granularity: paragraph
-title: Turūbrahmasutta
 ---
 
 Sāvatthinidānaṁ.

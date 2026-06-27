@@ -1,9 +1,9 @@
 ---
 slug: an3.59
 source: suttacentral/bilara-data
+title: Jāṇussoṇisutta
 edition: ms
 granularity: paragraph
-title: Jāṇussoṇisutta
 ---
 
 Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ …pe… ekamantaṁ nisinno kho jāṇussoṇi brāhmaṇo bhagavantaṁ etadavoca:
@@ -32,22 +32,19 @@ So evaṁ samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese m
 
 ‘Khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyā’ti pajānāti. Ayamassa tatiyā vijjā adhigatā hoti; avijjā vihatā, vijjā uppannā; tamo vihato, āloko uppanno yathā taṁ appamattassa ātāpino pahitattassa viharatoti.
 
+Yo sīlabbatasampanno,
 pahitatto samāhito;
-
 Cittaṁ yassa vasībhūtaṁ,
-
 ekaggaṁ susamāhitaṁ.
 
+Pubbenivāsaṁ yo vedī,
 saggāpāyañca passati;
-
 Atho jātikkhayaṁ patto,
-
 abhiññāvosito muni.
 
+Etāhi tīhi vijjāhi,
 tevijjo hoti brāhmaṇo;
-
 Tamahaṁ vadāmi tevijjaṁ,
-
 nāññaṁ lapitalāpananti.
 
 Evaṁ kho, brāhmaṇa, ariyassa vinaye tevijjo hotī”ti.

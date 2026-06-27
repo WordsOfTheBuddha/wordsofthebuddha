@@ -1,9 +1,9 @@
 ---
 slug: an6.27
 source: suttacentral/bilara-data
+title: Paṭhamasamayasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasamayasutta
 ---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca:

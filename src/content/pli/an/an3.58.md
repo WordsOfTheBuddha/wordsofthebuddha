@@ -1,9 +1,9 @@
 ---
 slug: an3.58
 source: suttacentral/bilara-data
+title: Tikaṇṇasutta
 edition: ms
 granularity: paragraph
-title: Tikaṇṇasutta
 ---
 
 Atha kho tikaṇṇo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ …pe… ekamantaṁ nisinno kho tikaṇṇo brāhmaṇo bhagavato sammukhā tevijjānaṁ sudaṁ brāhmaṇānaṁ vaṇṇaṁ bhāsati: “evampi tevijjā brāhmaṇā, itipi tevijjā brāhmaṇā”ti.
@@ -30,34 +30,29 @@ So evaṁ samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese m
 
 ‘Khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthattāyā’ti pajānāti. Ayamassa tatiyā vijjā adhigatā hoti; avijjā vihatā, vijjā uppannā; tamo vihato, āloko uppanno yathā taṁ appamattassa ātāpino pahitattassa viharatoti.
 
+Anuccāvacasīlassa,
 nipakassa ca jhāyino;
-
 Cittaṁ yassa vasībhūtaṁ,
-
 ekaggaṁ susamāhitaṁ.
 
+Taṁ ve tamonudaṁ dhīraṁ,
 tevijjaṁ maccuhāyinaṁ;
-
 Hitaṁ devamanussānaṁ,
-
 āhu sabbappahāyinaṁ.
 
+Tīhi vijjāhi sampannaṁ,
 asammūḷhavihārinaṁ;
-
 Buddhaṁ antimadehinaṁ,
-
 taṁ namassanti gotamaṁ.
 
+Pubbenivāsaṁ yo vedī,
 saggāpāyañca passati;
-
 Atho jātikkhayaṁ patto,
-
 abhiññāvosito muni.
 
+Etāhi tīhi vijjāhi,
 tevijjo hoti brāhmaṇo;
-
 Tamahaṁ vadāmi tevijjaṁ,
-
 nāññaṁ lapitalāpananti.
 
 Evaṁ kho, brāhmaṇa, ariyassa vinaye tevijjo hotī”ti.

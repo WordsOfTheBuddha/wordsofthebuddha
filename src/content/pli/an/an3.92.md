@@ -1,9 +1,9 @@
 ---
 slug: an3.92
 source: suttacentral/bilara-data
+title: Accāyikasutta
 edition: ms
 granularity: paragraph
-title: Accāyikasutta
 ---
 
 “Tīṇimāni, bhikkhave, kassakassa gahapatissa accāyikāni karaṇīyāni. Katamāni tīṇi? Idha, bhikkhave, kassako gahapati sīghaṁ sīghaṁ khettaṁ sukaṭṭhaṁ karoti sumatikataṁ. Sīghaṁ sīghaṁ khettaṁ sukaṭṭhaṁ karitvā sumatikataṁ sīghaṁ sīghaṁ bījāni patiṭṭhāpeti. Sīghaṁ sīghaṁ bījāni patiṭṭhāpetvā sīghaṁ sīghaṁ udakaṁ abhinetipi apanetipi. Imāni kho, bhikkhave, tīṇi kassakassa gahapatissa accāyikāni karaṇīyāni. Tassa kho taṁ, bhikkhave, kassakassa gahapatissa natthi sā iddhi vā ānubhāvo vā: ‘ajjeva me dhaññāni jāyantu, sveva gabbhīni hontu, uttarasveva paccantū’ti. Atha kho, bhikkhave, hoti so samayo yaṁ tassa kassakassa gahapatissa tāni dhaññāni utupariṇāmīni jāyantipi gabbhīnipi honti paccantipi.

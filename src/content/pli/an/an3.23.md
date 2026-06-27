@@ -1,9 +1,9 @@
 ---
 slug: an3.23
 source: suttacentral/bilara-data
+title: Saṅkhārasutta
 edition: ms
 granularity: paragraph
-title: Saṅkhārasutta
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo?

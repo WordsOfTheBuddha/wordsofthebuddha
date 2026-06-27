@@ -1,9 +1,9 @@
 ---
 slug: an3.21
 source: suttacentral/bilara-data
+title: Samiddhasutta
 edition: ms
 granularity: paragraph
-title: Samiddhasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

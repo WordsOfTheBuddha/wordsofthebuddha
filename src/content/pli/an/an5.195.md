@@ -1,9 +1,9 @@
 ---
 slug: an5.195
 source: suttacentral/bilara-data
+title: Piṅgiyānīsutta
 edition: ms
 granularity: paragraph
-title: Piṅgiyānīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
@@ -14,10 +14,9 @@ Atha kho piṅgiyānī brāhmaṇo uṭṭhāyāsanā ekaṁsaṁ uttarāsaṅga
 
 “Paṭibhātu taṁ piṅgiyānī”ti bhagavā avoca. Atha kho piṅgiyānī brāhmaṇo bhagavato sammukhā sāruppāya gāthāya abhitthavi:
 
+“Padmaṁ yathā kokanadaṁ sugandhaṁ,
 Pāto siyā phullamavītagandhaṁ;
-
 Aṅgīrasaṁ passa virocamānaṁ,
-
 Tapantamādiccamivantalikkhe”ti.
 
 Atha kho te licchavī pañcahi uttarāsaṅgasatehi piṅgiyāniṁ brāhmaṇaṁ acchādesuṁ. Atha kho piṅgiyānī brāhmaṇo tehi pañcahi uttarāsaṅgasatehi bhagavantaṁ acchādesi.

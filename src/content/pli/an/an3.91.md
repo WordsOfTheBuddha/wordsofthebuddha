@@ -1,9 +1,9 @@
 ---
 slug: an3.91
 source: suttacentral/bilara-data
+title: Saṅkavāsutta
 edition: ms
 granularity: paragraph
-title: Saṅkavāsutta
 ---
 
 Ekaṁ samayaṁ bhagavā kosalesu cārikaṁ caramāno mahatā bhikkhusaṅghena saddhiṁ yena saṅkavā nāma kosalānaṁ nigamo tadavasari. Tatra sudaṁ bhagavā saṅkavāyaṁ viharati.
@@ -38,8 +38,7 @@ Samaṇavaggo catuttho.
 
 Tassuddānaṁ
 
+Samaṇo gadrabho khettaṁ,
 vajjiputto ca sekkhakaṁ;
-
 Tayo ca sikkhanā vuttā,
-
 dve sikkhā saṅkavāya cāti.

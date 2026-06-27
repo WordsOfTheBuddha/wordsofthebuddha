@@ -1,9 +1,9 @@
 ---
 slug: sn1.26
 source: suttacentral/bilara-data
+title: Pajjotasutta
 edition: ms
 granularity: paragraph
-title: Pajjotasutta
 ---
 
 “Kati lokasmiṁ pajjotā,

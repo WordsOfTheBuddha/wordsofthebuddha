@@ -1,9 +1,9 @@
 ---
 slug: an3.53
 source: suttacentral/bilara-data
+title: Aññatarabrāhmaṇasutta
 edition: ms
 granularity: paragraph
-title: Aññatarabrāhmaṇasutta
 ---
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi …pe… ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca:

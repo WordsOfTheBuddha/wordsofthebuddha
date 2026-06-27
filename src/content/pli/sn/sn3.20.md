@@ -1,9 +1,9 @@
 ---
 slug: sn3.20
 source: suttacentral/bilara-data
+title: Dutiyaaputtakasutta
 edition: ms
 granularity: paragraph
-title: Dutiyaaputtakasutta
 ---
 
 Atha kho rājā pasenadi kosalo divā divassa yena bhagavā tenupasaṅkami; upasaṅkamitvā ekamantaṁ nisinnaṁ kho rājānaṁ pasenadiṁ kosalaṁ bhagavā etadavoca: “handa kuto nu tvaṁ, mahārāja, āgacchasi divā divassā”ti?

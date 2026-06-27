@@ -1,9 +1,9 @@
 ---
 slug: sn6.8
 source: suttacentral/bilara-data
+title: Katamodakatissasutta
 edition: ms
 granularity: paragraph
-title: Katamodakatissasutta
 ---
 
 Sāvatthinidānaṁ.

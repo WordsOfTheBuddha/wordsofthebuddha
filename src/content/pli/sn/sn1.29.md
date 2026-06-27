@@ -1,9 +1,9 @@
 ---
 slug: sn1.29
 source: suttacentral/bilara-data
+title: Catucakkasutta
 edition: ms
 granularity: paragraph
-title: Catucakkasutta
 ---
 
 “Catucakkaṁ navadvāraṁ,

@@ -1,9 +1,9 @@
 ---
 slug: sn6.14
 source: suttacentral/bilara-data
+title: Aruṇavatīsutta
 edition: ms
 granularity: paragraph
-title: Aruṇavatīsutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati …pe… tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

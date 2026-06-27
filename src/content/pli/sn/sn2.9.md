@@ -1,9 +1,9 @@
 ---
 slug: sn2.9
 source: suttacentral/bilara-data
+title: Candimasutta
 edition: ms
 granularity: paragraph
-title: Candimasutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: an9.35
 source: suttacentral/bilara-data
+title: Gāvīupamāsutta
 edition: ms
 granularity: paragraph
-title: Gāvīupamāsutta
 ---
 
 “Seyyathāpi, bhikkhave, gāvī pabbateyyā bālā abyattā akhettaññū akusalā visame pabbate carituṁ. Tassā evamassa: ‘yannūnāhaṁ agatapubbañceva disaṁ gaccheyyaṁ, akhāditapubbāni ca tiṇāni khādeyyaṁ, apītapubbāni ca pānīyāni piveyyan’ti. Sā purimaṁ pādaṁ na suppatiṭṭhitaṁ patiṭṭhāpetvā pacchimaṁ pādaṁ uddhareyya. Sā na ceva agatapubbaṁ disaṁ gaccheyya, na ca akhāditapubbāni tiṇāni khādeyya, na ca apītapubbāni pānīyāni piveyya; yasmiṁ cassā padese ṭhitāya evamassa: ‘yannūnāhaṁ agatapubbañceva disaṁ gaccheyyaṁ, akhāditapubbāni ca tiṇāni khādeyyaṁ, apītapubbāni ca pānīyāni piveyyan’ti tañca padesaṁ na sotthinā paccāgaccheyya. Taṁ kissa hetu? Tathā hi sā, bhikkhave, gāvī pabbateyyā bālā abyattā akhettaññū akusalā visame pabbate carituṁ.

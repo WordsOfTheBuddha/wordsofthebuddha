@@ -1,9 +1,9 @@
 ---
 slug: an3.119
 source: suttacentral/bilara-data
+title: Kammantasutta
 edition: ms
 granularity: paragraph
-title: Kammantasutta
 ---
 
 “Tisso imā, bhikkhave, vipattiyo. Katamā tisso? Kammantavipatti, ājīvavipatti, diṭṭhivipatti.

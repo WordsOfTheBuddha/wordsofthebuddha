@@ -1,9 +1,9 @@
 ---
 slug: an5.131
 source: suttacentral/bilara-data
+title: Paṭhamacakkānuvattanasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamacakkānuvattanasutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rājā cakkavattī dhammeneva cakkaṁ vatteti; taṁ hoti cakkaṁ appaṭivattiyaṁ kenaci manussabhūtena paccatthikena pāṇinā.

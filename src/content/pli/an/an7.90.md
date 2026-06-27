@@ -1,9 +1,9 @@
 ---
 slug: an7.90
 source: suttacentral/bilara-data
+title: Vedagūsutta
 edition: ms
 granularity: paragraph
-title: Vedagūsutta
 ---
 
 “… Viditattā vedagū hoti …pe….

@@ -1,9 +1,9 @@
 ---
 slug: an8.76
 source: suttacentral/bilara-data
+title: Dutiyasampadāsutta
 edition: ms
 granularity: paragraph
-title: Dutiyasampadāsutta
 ---
 
 “Aṭṭhimā, bhikkhave, sampadā. Katamā aṭṭha? Uṭṭhānasampadā, ārakkhasampadā, kalyāṇamittatā, samajīvitā, saddhāsampadā, sīlasampadā, cāgasampadā, paññāsampadā.
@@ -26,28 +26,24 @@ Katamā ca, bhikkhave, paññāsampadā? Idha, bhikkhave, kulaputto paññavā h
 
 Imā kho, bhikkhave, aṭṭha sampadāti.
 
+Uṭṭhātā kammadheyyesu,
 appamatto vidhānavā;
-
 Samaṁ kappeti jīvikaṁ,
-
 sambhataṁ anurakkhati.
 
+Saddho sīlena sampanno,
 vadaññū vītamaccharo;
-
 Niccaṁ maggaṁ visodheti,
-
 sotthānaṁ samparāyikaṁ.
 
+Iccete aṭṭha dhammā ca,
 saddhassa gharamesino;
-
 Akkhātā saccanāmena,
-
 ubhayattha sukhāvahā.
 
+Diṭṭhadhammahitatthāya,
 samparāyasukhāya ca;
-
 Evametaṁ gahaṭṭhānaṁ,
-
 cāgo puññaṁ pavaḍḍhatī”ti.
 
 Chaṭṭhaṁ.

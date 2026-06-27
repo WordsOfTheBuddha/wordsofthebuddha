@@ -1,9 +1,9 @@
 ---
 slug: an5.257-263
 source: suttacentral/bilara-data
+title: Dutiyajhānasuttādisattaka
 edition: ms
 granularity: paragraph
-title: Dutiyajhānasuttādisattaka
 ---
 
 “Pañcime, bhikkhave, dhamme appahāya abhabbo dutiyaṁ jhānaṁ …pe… abhabbo tatiyaṁ jhānaṁ … abhabbo catutthaṁ jhānaṁ … abhabbo sotāpattiphalaṁ … abhabbo sakadāgāmiphalaṁ … abhabbo anāgāmiphalaṁ … abhabbo arahattaṁ sacchikātuṁ. Katame pañca? Āvāsamacchariyaṁ, kulamacchariyaṁ, lābhamacchariyaṁ, vaṇṇamacchariyaṁ, dhammamacchariyaṁ. Ime kho, bhikkhave, pañca dhamme appahāya abhabbo arahattaṁ sacchikātuṁ.

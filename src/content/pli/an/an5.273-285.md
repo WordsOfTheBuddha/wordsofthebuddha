@@ -1,9 +1,9 @@
 ---
 slug: an5.273-285
 source: suttacentral/bilara-data
+title: Senāsanapaññāpakasuttādi
 edition: ms
 granularity: paragraph
-title: Senāsanapaññāpakasuttādi
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato senāsanapaññāpako na sammannitabbo …pe… paññattāpaññattaṁ na jānāti …pe… senāsanapaññāpako sammannitabbo …pe… paññattāpaññattaṁ jānāti …pe….

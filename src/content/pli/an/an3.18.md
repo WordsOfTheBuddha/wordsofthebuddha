@@ -1,9 +1,9 @@
 ---
 slug: an3.18
 source: suttacentral/bilara-data
+title: Devalokasutta
 edition: ms
 granularity: paragraph
-title: Devalokasutta
 ---
 
 “Sace vo, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ: ‘devalokūpapattiyā, āvuso, samaṇe gotame brahmacariyaṁ vussathā’ti? Nanu tumhe, bhikkhave, evaṁ puṭṭhā aṭṭīyeyyātha harāyeyyātha jiguccheyyāthā”ti?

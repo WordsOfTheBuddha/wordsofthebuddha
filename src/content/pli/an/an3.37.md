@@ -1,9 +1,9 @@
 ---
 slug: an3.37
 source: suttacentral/bilara-data
+title: Catumahārājasutta
 edition: ms
 granularity: paragraph
-title: Catumahārājasutta
 ---
 
 “Aṭṭhamiyaṁ, bhikkhave, pakkhassa catunnaṁ mahārājānaṁ amaccā pārisajjā imaṁ lokaṁ anuvicaranti: ‘kacci bahū manussā manussesu matteyyā petteyyā sāmaññā brahmaññā kule jeṭṭhāpacāyino uposathaṁ upavasanti paṭijāgaronti puññāni karontī’ti.
@@ -18,28 +18,22 @@ Sace pana, bhikkhave, bahū honti manussā manussesu matteyyā petteyyā sāmañ
 
 Bhūtapubbaṁ, bhikkhave, sakko devānamindo deve tāvatiṁse anunayamāno tāyaṁ velāyaṁ imaṁ gāthaṁ abhāsi:
 
+‘Cātuddasiṁ pañcadasiṁ,
 yā ca pakkhassa aṭṭhamī;
-
 Pāṭihāriyapakkhañca,
-
 aṭṭhaṅgasusamāgataṁ;
-
 Uposathaṁ upavaseyya,
-
 yopissa mādiso naro’ti.
 
 Sā kho panesā, bhikkhave, sakkena devānamindena gāthā duggītā na sugītā dubbhāsitā na subhāsitā. Taṁ kissa hetu? Sakko hi, bhikkhave, devānamindo avītarāgo avītadoso avītamoho.
 
 Yo ca kho so, bhikkhave, bhikkhu arahaṁ khīṇāsavo vusitavā brahmacariyo katakaraṇīyo ohitabhāro anuppattasadattho parikkhīṇabhavasaṁyojano sammadaññāvimutto, tassa kho etaṁ, bhikkhave, bhikkhuno kallaṁ vacanāya:
 
+‘Cātuddasiṁ pañcadasiṁ,
 yā ca pakkhassa aṭṭhamī;
-
 Pāṭihāriyapakkhañca,
-
 aṭṭhaṅgasusamāgataṁ;
-
 Uposathaṁ upavaseyya,
-
 yopissa mādiso naro’ti.
 
 Taṁ kissa hetu? So hi, bhikkhave, bhikkhu vītarāgo vītadoso vītamoho”ti.

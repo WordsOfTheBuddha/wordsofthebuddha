@@ -1,9 +1,9 @@
 ---
 slug: sn8.11
 source: suttacentral/bilara-data
+title: Gaggarāsutta
 edition: ms
 granularity: paragraph
-title: Gaggarāsutta
 ---
 
 Ekaṁ samayaṁ bhagavā campāyaṁ viharati gaggarāya pokkharaṇiyā tīre mahatā bhikkhusaṅghena saddhiṁ pañcamattehi bhikkhusatehi sattahi ca upāsakasatehi sattahi ca upāsikāsatehi anekehi ca devatāsahassehi. Tyāssudaṁ bhagavā atirocati vaṇṇena ceva yasasā ca.

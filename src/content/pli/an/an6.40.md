@@ -1,9 +1,9 @@
 ---
 slug: an6.40
 source: suttacentral/bilara-data
+title: Kimilasutta
 edition: ms
 granularity: paragraph
-title: Kimilasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kimilāyaṁ viharati niculavane. Atha kho āyasmā kimilo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā kimilo bhagavantaṁ etadavoca:

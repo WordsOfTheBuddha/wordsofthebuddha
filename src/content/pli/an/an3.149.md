@@ -1,9 +1,9 @@
 ---
 slug: an3.149
 source: suttacentral/bilara-data
+title: Asucisutta
 edition: ms
 granularity: paragraph
-title: Asucisutta
 ---
 
 “Tīhi, bhikkhave …pe… asucinā kāyakammena, asucinā vacīkammena, asucinā manokammena— imehi kho …pe… evaṁ niraye.

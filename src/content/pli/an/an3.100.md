@@ -1,9 +1,9 @@
 ---
 slug: an3.100
 source: suttacentral/bilara-data
+title: Loṇakapallasutta
 edition: ms
 granularity: paragraph
-title: Loṇakapallasutta
 ---
 
 “Yo, bhikkhave, evaṁ vadeyya: ‘yathā yathāyaṁ puriso kammaṁ karoti tathā tathā taṁ paṭisaṁvediyatī’ti, evaṁ santaṁ, bhikkhave, brahmacariyavāso na hoti, okāso na paññāyati sammā dukkhassa antakiriyāya.

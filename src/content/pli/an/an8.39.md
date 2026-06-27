@@ -1,9 +1,9 @@
 ---
 slug: an8.39
 source: suttacentral/bilara-data
+title: Abhisandasutta
 edition: ms
 granularity: paragraph
-title: Abhisandasutta
 ---
 
 “Aṭṭhime, bhikkhave, puññābhisandā kusalābhisandā sukhassāhārā sovaggikā sukhavipākā saggasaṁvattanikā, iṭṭhāya kantāya manāpāya hitāya sukhāya saṁvattanti. Katame aṭṭha?

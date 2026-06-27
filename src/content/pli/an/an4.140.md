@@ -1,9 +1,9 @@
 ---
 slug: an4.140
 source: suttacentral/bilara-data
+title: Vādīsutta
 edition: ms
 granularity: paragraph
-title: Vādīsutta
 ---
 
 “Cattārome, bhikkhave, vādī. Katame cattāro?
@@ -24,8 +24,7 @@ Puggalavaggo catuttho.
 
 Tassuddānaṁ
 
+Saṁyojanaṁ paṭibhāno,
 ugghaṭitaññu uṭṭhānaṁ;
-
 Sāvajjo dve ca sīlāni,
-
 nikaṭṭha dhamma vādī cāti.

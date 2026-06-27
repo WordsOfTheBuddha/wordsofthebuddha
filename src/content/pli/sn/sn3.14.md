@@ -1,9 +1,9 @@
 ---
 slug: sn3.14
 source: suttacentral/bilara-data
+title: Paṭhamasaṅgāmasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamasaṅgāmasutta
 ---
 
 Sāvatthinidānaṁ.

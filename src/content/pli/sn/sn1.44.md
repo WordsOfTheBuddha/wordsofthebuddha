@@ -1,9 +1,9 @@
 ---
 slug: sn1.44
 source: suttacentral/bilara-data
+title: Ekamūlasutta
 edition: ms
 granularity: paragraph
-title: Ekamūlasutta
 ---
 
 “Ekamūlaṁ dvirāvaṭṭaṁ,

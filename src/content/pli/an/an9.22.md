@@ -1,9 +1,9 @@
 ---
 slug: an9.22
 source: suttacentral/bilara-data
+title: Assakhaḷuṅkasutta
 edition: ms
 granularity: paragraph
-title: Assakhaḷuṅkasutta
 ---
 
 “Tayo ca, bhikkhave, assakhaḷuṅke desessāmi tayo ca purisakhaḷuṅke tayo ca assaparasse tayo ca purisaparasse tayo ca bhadde assājānīye tayo ca bhadde purisājānīye. Taṁ suṇātha. (…)

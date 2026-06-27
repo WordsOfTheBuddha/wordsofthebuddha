@@ -1,9 +1,9 @@
 ---
 slug: an7.42
 source: suttacentral/bilara-data
+title: Paṭhamaniddasasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaniddasasutta
 ---
 
 Atha kho āyasmā sāriputto pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya sāvatthiṁ piṇḍāya pāvisi. Atha kho āyasmato sāriputtassa etadahosi: “atippago kho tāva sāvatthiyaṁ piṇḍāya carituṁ. Yannūnāhaṁ yena aññatitthiyānaṁ paribbājakānaṁ ārāmo tenupasaṅkameyyan”ti.

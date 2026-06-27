@@ -1,9 +1,9 @@
 ---
 slug: an3.110
 source: suttacentral/bilara-data
+title: Byāpannasutta
 edition: ms
 granularity: paragraph
-title: Byāpannasutta
 ---
 
 Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:

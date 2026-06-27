@@ -1,9 +1,9 @@
 ---
 slug: sn8.8
 source: suttacentral/bilara-data
+title: Parosahassasutta
 edition: ms
 granularity: paragraph
-title: Parosahassasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme mahatā bhikkhusaṅghena saddhiṁ aḍḍhatelasehi bhikkhusatehi.

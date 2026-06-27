@@ -1,9 +1,9 @@
 ---
 slug: an5.239
 source: suttacentral/bilara-data
+title: Paṭhamamacchariyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamamacchariyasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye. Katamehi pañcahi? Āvāsamaccharī hoti; kulamaccharī hoti; lābhamaccharī hoti; vaṇṇamaccharī hoti; saddhādeyyaṁ vinipāteti. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato āvāsiko bhikkhu yathābhataṁ nikkhitto evaṁ niraye.

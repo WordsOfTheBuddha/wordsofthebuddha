@@ -1,9 +1,9 @@
 ---
 slug: an5.194
 source: suttacentral/bilara-data
+title: Kāraṇapālīsutta
 edition: ms
 granularity: paragraph
-title: Kāraṇapālīsutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.

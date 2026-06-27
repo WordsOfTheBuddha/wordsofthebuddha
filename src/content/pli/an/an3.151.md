@@ -1,9 +1,9 @@
 ---
 slug: an3.151
 source: suttacentral/bilara-data
+title: Dutiyakhatasutta
 edition: ms
 granularity: paragraph
-title: Dutiyakhatasutta
 ---
 
 “Tīhi, bhikkhave …pe… sāvajjena kāyakammena, sāvajjena vacīkammena, sāvajjena manokammena …pe….

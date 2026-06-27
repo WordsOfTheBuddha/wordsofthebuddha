@@ -1,9 +1,9 @@
 ---
 slug: an4.220
 source: suttacentral/bilara-data
+title: Dussīlasutta
 edition: ms
 granularity: paragraph
-title: Dussīlasutta
 ---
 
 “Catūhi, bhikkhave, dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye. Katamehi catūhi? Assaddho hoti, dussīlo hoti, kusīto hoti, duppañño hoti— imehi kho, bhikkhave, catūhi dhammehi samannāgato yathābhataṁ nikkhitto evaṁ niraye.
@@ -16,8 +16,7 @@ Parisasobhaṇavaggo dutiyo.
 
 Tassuddānaṁ
 
+Parisā diṭṭhi akataññutā,
 Pāṇātipātāpi dve maggā;
-
 Dve vohārapathā vuttā,
-
 Ahirikaṁ duppaññena cāti.

@@ -1,9 +1,9 @@
 ---
 slug: sn8.3
 source: suttacentral/bilara-data
+title: Pesalasutta
 edition: ms
 granularity: paragraph
-title: Pesalasutta
 ---
 
 Ekaṁ samayaṁ āyasmā vaṅgīso āḷaviyaṁ viharati aggāḷave cetiye āyasmatā nigrodhakappena upajjhāyena saddhiṁ.

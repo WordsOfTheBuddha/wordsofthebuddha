@@ -1,9 +1,9 @@
 ---
 slug: sn6.12
 source: suttacentral/bilara-data
+title: Devadattasutta
 edition: ms
 granularity: paragraph
-title: Devadattasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate acirapakkante devadatte.

@@ -1,9 +1,9 @@
 ---
 slug: sn8.4
 source: suttacentral/bilara-data
+title: Ānandasutta
 edition: ms
 granularity: paragraph
-title: Ānandasutta
 ---
 
 Ekaṁ samayaṁ āyasmā ānando sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

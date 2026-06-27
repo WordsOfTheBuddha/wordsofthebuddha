@@ -1,9 +1,9 @@
 ---
 slug: an4.107
 source: suttacentral/bilara-data
+title: Mūsikasutta
 edition: ms
 granularity: paragraph
-title: Mūsikasutta
 ---
 
 “Catasso imā, bhikkhave, mūsikā. Katamā catasso?

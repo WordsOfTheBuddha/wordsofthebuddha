@@ -1,9 +1,9 @@
 ---
 slug: an6.53
 source: suttacentral/bilara-data
+title: Appamādasutta
 edition: ms
 granularity: paragraph
-title: Appamādasutta
 ---
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca:

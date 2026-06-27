@@ -1,9 +1,9 @@
 ---
 slug: an3.153
 source: suttacentral/bilara-data
+title: Catutthakhatasutta
 edition: ms
 granularity: paragraph
-title: Catutthakhatasutta
 ---
 
 “Tīhi, bhikkhave …pe… asucinā kāyakammena, asucinā vacīkammena, asucinā manokammena …pe….

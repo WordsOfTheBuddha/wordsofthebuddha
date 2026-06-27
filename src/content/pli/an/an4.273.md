@@ -1,9 +1,9 @@
 ---
 slug: an4.273
 source: suttacentral/bilara-data
+title: Micchādiṭṭhisutta
 edition: ms
 granularity: paragraph
-title: Micchādiṭṭhisutta
 ---
 
 …pe… Attanā ca micchādiṭṭhiko hoti, parañca micchādiṭṭhiyā samādapeti, micchādiṭṭhiyā ca samanuñño hoti, micchādiṭṭhiyā ca vaṇṇaṁ bhāsati—imehi …pe….

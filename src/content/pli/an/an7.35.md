@@ -1,9 +1,9 @@
 ---
 slug: an7.35
 source: suttacentral/bilara-data
+title: Dutiyasovacassatāsutta
 edition: ms
 granularity: paragraph
-title: Dutiyasovacassatāsutta
 ---
 
 “Imaṁ, bhikkhave, rattiṁ aññatarā devatā abhikkantāya rattiyā abhikkantavaṇṇā …pe… ‘sattime, bhante, dhammā bhikkhuno aparihānāya saṁvattanti. Katame satta? Satthugāravatā, dhammagāravatā, saṅghagāravatā, sikkhāgāravatā, samādhigāravatā, sovacassatā, kalyāṇamittatā. Ime kho, bhante, satta dhammā bhikkhuno aparihānāya saṁvattantī’ti.

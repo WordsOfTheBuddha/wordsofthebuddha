@@ -1,9 +1,9 @@
 ---
 slug: an3.5
 source: suttacentral/bilara-data
+title: Ayonisosutta
 edition: ms
 granularity: paragraph
-title: Ayonisosutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bālo veditabbo. Katamehi tīhi? Ayoniso pañhaṁ kattā hoti, ayoniso pañhaṁ vissajjetā hoti, parassa kho pana yoniso pañhaṁ vissajjitaṁ parimaṇḍalehi padabyañjanehi siliṭṭhehi upagatehi nābbhanumoditā hoti.

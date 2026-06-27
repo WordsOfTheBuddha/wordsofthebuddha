@@ -1,9 +1,9 @@
 ---
 slug: sn3.16
 source: suttacentral/bilara-data
+title: Mallikāsutta
 edition: ms
 granularity: paragraph
-title: Mallikāsutta
 ---
 
 Sāvatthinidānaṁ.

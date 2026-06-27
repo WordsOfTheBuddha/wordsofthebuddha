@@ -1,9 +1,9 @@
 ---
 slug: sn9.10
 source: suttacentral/bilara-data
+title: Sajjhāyasutta
 edition: ms
 granularity: paragraph
-title: Sajjhāyasutta
 ---
 
 Ekaṁ samayaṁ aññataro bhikkhu kosalesu viharati aññatarasmiṁ vanasaṇḍe.

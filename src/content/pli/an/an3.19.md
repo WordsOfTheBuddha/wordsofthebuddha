@@ -1,9 +1,9 @@
 ---
 slug: an3.19
 source: suttacentral/bilara-data
+title: Paṭhamapāpaṇikasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamapāpaṇikasutta
 ---
 
 “Tīhi, bhikkhave, aṅgehi samannāgato pāpaṇiko abhabbo anadhigataṁ vā bhogaṁ adhigantuṁ, adhigataṁ vā bhogaṁ phātiṁ kātuṁ. Katamehi tīhi? Idha, bhikkhave, pāpaṇiko pubbaṇhasamayaṁ na sakkaccaṁ kammantaṁ adhiṭṭhāti, majjhanhikasamayaṁ na sakkaccaṁ kammantaṁ adhiṭṭhāti, sāyanhasamayaṁ na sakkaccaṁ kammantaṁ adhiṭṭhāti. Imehi kho, bhikkhave, tīhi aṅgehi samannāgato pāpaṇiko abhabbo anadhigataṁ vā bhogaṁ adhigantuṁ, adhigataṁ vā bhogaṁ phātiṁ kātuṁ.

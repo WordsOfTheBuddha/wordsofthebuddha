@@ -1,9 +1,9 @@
 ---
 slug: an3.96
 source: suttacentral/bilara-data
+title: Paṭhamaājānīyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaājānīyasutta
 ---
 
 “Tīhi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhyaṁ gacchati. Katamehi tīhi? Idha, bhikkhave, rañño bhadro assājānīyo vaṇṇasampanno ca hoti balasampanno ca javasampanno ca. Imehi kho, bhikkhave, tīhi aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhyaṁ gacchati.

@@ -1,9 +1,9 @@
 ---
 slug: an3.142
 source: suttacentral/bilara-data
+title: Assājānīyasutta
 edition: ms
 granularity: paragraph
-title: Assājānīyasutta
 ---
 
 “Tayo ca, bhikkhave, bhadre assājānīye desessāmi tayo ca bhadre purisājānīye. Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.

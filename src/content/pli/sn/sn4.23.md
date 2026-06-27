@@ -1,9 +1,9 @@
 ---
 slug: sn4.23
 source: suttacentral/bilara-data
+title: Godhikasutta
 edition: ms
 granularity: paragraph
-title: Godhikasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati veḷuvane kalandakanivāpe.

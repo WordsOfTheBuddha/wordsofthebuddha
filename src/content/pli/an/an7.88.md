@@ -1,9 +1,9 @@
 ---
 slug: an7.88
 source: suttacentral/bilara-data
+title: Sottiyasutta
 edition: ms
 granularity: paragraph
-title: Sottiyasutta
 ---
 
 “… Nissutattā sottiyo hoti …pe….

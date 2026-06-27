@@ -1,9 +1,9 @@
 ---
 slug: an6.5
 source: suttacentral/bilara-data
+title: Paṭhamaājānīyasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamaājānīyasutta
 ---
 
 “Chahi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅgantveva saṅkhaṁ gacchati.

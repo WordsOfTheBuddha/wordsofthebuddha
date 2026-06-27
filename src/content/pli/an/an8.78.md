@@ -1,9 +1,9 @@
 ---
 slug: an8.78
 source: suttacentral/bilara-data
+title: Alaṁsutta
 edition: ms
 granularity: paragraph
-title: Alaṁsutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi …pe… chahāvuso, dhammehi samannāgato bhikkhu alaṁ attano, alaṁ paresaṁ. Katamehi chahi? Idhāvuso, bhikkhu khippanisanti ca hoti kusalesu dhammesu; sutānañca dhammānaṁ dhāraṇajātiko hoti; dhātānañca dhammānaṁ atthūpaparikkhitā hoti; atthamaññāya dhammamaññāya dhammānudhammappaṭipanno ca hoti; kalyāṇavāco ca hoti kalyāṇavākkaraṇo, poriyā vācāya samannāgato vissaṭṭhāya anelagaḷāya atthassa viññāpaniyā; sandassako ca hoti samādapako samuttejako sampahaṁsako sabrahmacārīnaṁ. Imehi kho, āvuso, chahi dhammehi samannāgato bhikkhu alaṁ attano, alaṁ paresaṁ.

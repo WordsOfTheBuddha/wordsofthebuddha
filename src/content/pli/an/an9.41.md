@@ -1,9 +1,9 @@
 ---
 slug: an9.41
 source: suttacentral/bilara-data
+title: Tapussasutta
 edition: ms
 granularity: paragraph
-title: Tapussasutta
 ---
 
 Ekaṁ samayaṁ bhagavā mallesu viharati uruvelakappaṁ nāma mallānaṁ nigamo.
@@ -52,8 +52,7 @@ Mahāvaggo catuttho.
 
 Tassuddānaṁ
 
+Dve vihārā ca nibbānaṁ,
 gāvī jhānena pañcamaṁ;
-
 Ānando brāhmaṇā devo,
-
 nāgena tapussena cāti.

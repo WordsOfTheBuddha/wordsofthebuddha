@@ -1,9 +1,9 @@
 ---
 slug: sn1.28
 source: suttacentral/bilara-data
+title: Mahaddhanasutta
 edition: ms
 granularity: paragraph
-title: Mahaddhanasutta
 ---
 
 “Mahaddhanā mahābhogā,

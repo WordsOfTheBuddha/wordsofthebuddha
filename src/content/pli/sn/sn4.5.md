@@ -1,9 +1,9 @@
 ---
 slug: sn4.5
 source: suttacentral/bilara-data
+title: Dutiyamārapāsasutta
 edition: ms
 granularity: paragraph
-title: Dutiyamārapāsasutta
 ---
 
 Ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

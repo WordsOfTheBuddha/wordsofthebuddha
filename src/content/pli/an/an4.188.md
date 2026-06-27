@@ -1,9 +1,9 @@
 ---
 slug: an4.188
 source: suttacentral/bilara-data
+title: Upakasutta
 edition: ms
 granularity: paragraph
-title: Upakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate. Atha kho upako maṇḍikāputto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho upako maṇḍikāputto bhagavantaṁ etadavoca:

@@ -1,9 +1,9 @@
 ---
 slug: an5.43
 source: suttacentral/bilara-data
+title: Iṭṭhasutta
 edition: ms
 granularity: paragraph
-title: Iṭṭhasutta
 ---
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:
@@ -22,22 +22,19 @@ Na kho, gahapati, arahati ariyasāvako yasakāmo yasaṁ āyācituṁ vā abhina
 
 Na kho, gahapati, arahati ariyasāvako saggakāmo saggaṁ āyācituṁ vā abhinandituṁ vā saggānaṁ vāpi hetu. Saggakāmena, gahapati, ariyasāvakena saggasaṁvattanikā paṭipadā paṭipajjitabbā. Saggasaṁvattanikā hissa paṭipadā paṭipannā saggapaṭilābhāya saṁvattati. So lābhī hoti saggānanti.
 
+Āyuṁ vaṇṇaṁ yasaṁ kittiṁ,
 Saggaṁ uccākulīnataṁ;
-
 Ratiyo patthayānena,
-
 Uḷārā aparāparā.
 
+Appamādaṁ pasaṁsanti,
 puññakiriyāsu paṇḍitā;
-
 Appamatto ubho atthe,
-
 adhigaṇhāti paṇḍito.
 
+Diṭṭhe dhamme ca yo attho,
 yo cattho samparāyiko;
-
 Atthābhisamayā dhīro,
-
 paṇḍitoti pavuccatī”ti.
 
 Tatiyaṁ.

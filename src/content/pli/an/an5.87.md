@@ -1,9 +1,9 @@
 ---
 slug: an5.87
 source: suttacentral/bilara-data
+title: Sīlavantasutta
 edition: ms
 granularity: paragraph
-title: Sīlavantasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato thero bhikkhu sabrahmacārīnaṁ piyo ca hoti manāpo ca garu ca bhāvanīyo ca. Katamehi pañcahi?

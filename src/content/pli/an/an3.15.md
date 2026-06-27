@@ -1,9 +1,9 @@
 ---
 slug: an3.15
 source: suttacentral/bilara-data
+title: Sacetanasutta
 edition: ms
 granularity: paragraph
-title: Sacetanasutta
 ---
 
 Ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

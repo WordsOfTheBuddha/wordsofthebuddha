@@ -1,9 +1,9 @@
 ---
 slug: sn2.24
 source: suttacentral/bilara-data
+title: Ghaṭīkārasutta
 edition: ms
 granularity: paragraph
-title: Ghaṭīkārasutta
 ---
 
 Ekamantaṁ ṭhito kho ghaṭīkāro devaputto bhagavato santike imaṁ gāthaṁ abhāsi:

@@ -1,9 +1,9 @@
 ---
 slug: an5.141
 source: suttacentral/bilara-data
+title: Avajānātisutta
 edition: ms
 granularity: paragraph
-title: Avajānātisutta
 ---
 
 “Pañcime, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame pañca? Datvā avajānāti, saṁvāsena avajānāti, ādheyyamukho hoti, lolo hoti, mando momūho hoti.

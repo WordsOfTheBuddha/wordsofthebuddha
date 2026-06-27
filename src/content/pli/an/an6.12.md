@@ -1,9 +1,9 @@
 ---
 slug: an6.12
 source: suttacentral/bilara-data
+title: Dutiyasāraṇīyasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasāraṇīyasutta
 ---
 
 “Chayime, bhikkhave, dhammā sāraṇīyā piyakaraṇā garukaraṇā saṅgahāya avivādāya sāmaggiyā ekībhāvāya saṁvattanti. Katame cha?

@@ -1,9 +1,9 @@
 ---
 slug: an4.161
 source: suttacentral/bilara-data
+title: Saṅkhittasutta
 edition: ms
 granularity: paragraph
-title: Saṅkhittasutta
 ---
 
 “Catasso imā, bhikkhave, paṭipadā. Katamā catasso?

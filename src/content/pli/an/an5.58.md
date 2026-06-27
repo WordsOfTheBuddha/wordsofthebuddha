@@ -1,9 +1,9 @@
 ---
 slug: an5.58
 source: suttacentral/bilara-data
+title: Licchavikumārakasutta
 edition: ms
 granularity: paragraph
-title: Licchavikumārakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā vesāliyaṁ viharati mahāvane kūṭāgārasālāyaṁ.
@@ -34,28 +34,24 @@ Puna caparaṁ, mahānāma, kulaputto uṭṭhānavīriyādhigatehi bhogehi bāh
 
 Yassa kassaci, mahānāma, kulaputtassa ime pañca dhammā saṁvijjanti— yadi vā rañño khattiyassa muddhābhisittassa, yadi vā raṭṭhikassa pettanikassa, yadi vā senāya senāpatikassa, yadi vā gāmagāmaṇikassa, yadi vā pūgagāmaṇikassa, ye vā pana kulesu paccekādhipaccaṁ kārenti, vuddhiyeva pāṭikaṅkhā, no parihānīti.
 
+Mātāpitukiccakaro,
 puttadārahito sadā;
-
 Antojanassa atthāya,
-
 ye cassa anujīvino.
 
+Ubhinnañceva atthāya,
 Vadaññū hoti sīlavā;
-
 Ñātīnaṁ pubbapetānaṁ,
-
 Diṭṭhe dhamme ca jīvataṁ.
 
+Samaṇānaṁ brāhmaṇānaṁ,
 devatānañca paṇḍito;
-
 Vittisañjanano hoti,
-
 dhammena gharamāvasaṁ.
 
+So karitvāna kalyāṇaṁ,
 pujjo hoti pasaṁsiyo;
-
 Idheva naṁ pasaṁsanti,
-
 pecca sagge pamodatī”ti.
 
 Aṭṭhamaṁ.

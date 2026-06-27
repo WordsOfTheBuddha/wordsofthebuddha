@@ -1,9 +1,9 @@
 ---
 slug: an9.38
 source: suttacentral/bilara-data
+title: Lokāyatikasutta
 edition: ms
 granularity: paragraph
-title: Lokāyatikasutta
 ---
 
 Atha kho dve lokāyatikā brāhmaṇā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavatā saddhiṁ sammodiṁsu. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinnā kho te brāhmaṇā bhagavantaṁ etadavocuṁ:

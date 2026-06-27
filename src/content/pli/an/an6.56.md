@@ -1,9 +1,9 @@
 ---
 slug: an6.56
 source: suttacentral/bilara-data
+title: Phaggunasutta
 edition: ms
 granularity: paragraph
-title: Phaggunasutta
 ---
 
 Tena kho pana samayena āyasmā phagguno ābādhiko hoti dukkhito bāḷhagilāno. Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:

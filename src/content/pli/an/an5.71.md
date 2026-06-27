@@ -1,9 +1,9 @@
 ---
 slug: an5.71
 source: suttacentral/bilara-data
+title: Paṭhamacetovimuttiphalasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamacetovimuttiphalasutta
 ---
 
 “Pañcime, bhikkhave, dhammā bhāvitā bahulīkatā cetovimuttiphalā ca honti cetovimuttiphalānisaṁsā ca, paññāvimuttiphalā ca honti paññāvimuttiphalānisaṁsā ca.

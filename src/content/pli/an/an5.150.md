@@ -1,9 +1,9 @@
 ---
 slug: an5.150
 source: suttacentral/bilara-data
+title: Dutiyasamayavimuttasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasamayavimuttasutta
 ---
 
 “Pañcime, bhikkhave, dhammā samayavimuttassa bhikkhuno parihānāya saṁvattanti. Katame pañca? Kammārāmatā, bhassārāmatā, niddārāmatā, indriyesu aguttadvāratā, bhojane amattaññutā. Ime kho, bhikkhave, pañca dhammā samayavimuttassa bhikkhuno parihānāya saṁvattanti.
@@ -16,10 +16,9 @@ Tikaṇḍakīvaggo pañcamo.
 
 Tassuddānaṁ
 
+Datvā avajānāti ārabhati ca,
 Sārandada tikaṇḍa nirayena ca;
-
 Mitto asappurisasappurisena,
-
 Samayavimuttaṁ apare dveti.
 
 Tatiyo paṇṇāsako samatto.

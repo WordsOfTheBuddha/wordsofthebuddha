@@ -1,9 +1,9 @@
 ---
 slug: an9.6
 source: suttacentral/bilara-data
+title: Sevanāsutta
 edition: ms
 granularity: paragraph
-title: Sevanāsutta
 ---
 
 Tatra kho āyasmā sāriputto bhikkhū āmantesi …pe… āyasmā sāriputto etadavoca:

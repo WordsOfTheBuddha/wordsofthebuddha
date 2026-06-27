@@ -1,9 +1,9 @@
 ---
 slug: an8.81
 source: suttacentral/bilara-data
+title: Satisampajaññasutta
 edition: ms
 granularity: paragraph
-title: Satisampajaññasutta
 ---
 
 “Satisampajaññe, bhikkhave, asati satisampajaññavipannassa hatūpanisaṁ hoti hirottappaṁ. Hirottappe asati hirottappavipannassa hatūpaniso hoti indriyasaṁvaro. Indriyasaṁvare asati indriyasaṁvaravipannassa hatūpanisaṁ hoti sīlaṁ. Sīle asati sīlavipannassa hatūpaniso hoti sammāsamādhi. Sammāsamādhimhi asati sammāsamādhivipannassa hatūpanisaṁ hoti yathābhūtañāṇadassanaṁ. Yathābhūtañāṇadassane asati yathābhūtañāṇadassanavipannassa hatūpaniso hoti nibbidāvirāgo. Nibbidāvirāge asati nibbidāvirāgavipannassa hatūpanisaṁ hoti vimuttiñāṇadassanaṁ.

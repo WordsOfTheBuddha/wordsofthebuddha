@@ -1,9 +1,9 @@
 ---
 slug: sn9.4
 source: suttacentral/bilara-data
+title: Sambahulasutta
 edition: ms
 granularity: paragraph
-title: Sambahulasutta
 ---
 
 Ekaṁ samayaṁ sambahulā bhikkhū kosalesu viharanti aññatarasmiṁ vanasaṇḍe.

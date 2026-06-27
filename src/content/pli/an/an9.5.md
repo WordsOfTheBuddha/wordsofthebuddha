@@ -1,9 +1,9 @@
 ---
 slug: an9.5
 source: suttacentral/bilara-data
+title: Balasutta
 edition: ms
 granularity: paragraph
-title: Balasutta
 ---
 
 “Cattārimāni, bhikkhave, balāni. Katamāni cattāri? Paññābalaṁ, vīriyabalaṁ, anavajjabalaṁ, saṅgāhabalaṁ.

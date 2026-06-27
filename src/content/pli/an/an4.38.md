@@ -1,9 +1,9 @@
 ---
 slug: an4.38
 source: suttacentral/bilara-data
+title: Patilīnasutta
 edition: ms
 granularity: paragraph
-title: Patilīnasutta
 ---
 
 “Panuṇṇapaccekasacco, bhikkhave, bhikkhu ‘samavayasaṭṭhesano passaddhakāyasaṅkhāro patilīno’ti vuccati.
@@ -16,22 +16,19 @@ Kathañca, bhikkhave, bhikkhu passaddhakāyasaṅkhāro hoti? Idha, bhikkhave, b
 
 Kathañca, bhikkhave, bhikkhu patilīno hoti? Idha, bhikkhave, bhikkhuno asmimāno pahīno hoti ucchinnamūlo tālāvatthukato anabhāvaṅkato āyatiṁ anuppādadhammo. Evaṁ kho, bhikkhave, bhikkhu patilīno hoti. Panuṇṇapaccekasacco, bhikkhave, bhikkhu ‘samavayasaṭṭhesano passaddhakāyasaṅkhāro patilīno’ti vuccatīti.
 
+Kāmesanā bhavesanā,
 brahmacariyesanā saha;
-
 Iti saccaparāmāso,
-
 diṭṭhiṭṭhānā samussayā.
 
+Sabbarāgavirattassa,
 taṇhakkhayavimuttino;
-
 Esanā paṭinissaṭṭhā,
-
 diṭṭhiṭṭhānā samūhatā.
 
+Sa ve santo sato bhikkhu,
 passaddho aparājito;
-
 Mānābhisamayā buddho,
-
 patilīnoti vuccatī”ti.
 
 Aṭṭhamaṁ.

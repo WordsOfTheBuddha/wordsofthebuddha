@@ -1,9 +1,9 @@
 ---
 slug: an5.140
 source: suttacentral/bilara-data
+title: Sotasutta
 edition: ms
 granularity: paragraph
-title: Sotasutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi samannāgato rañño nāgo rājāraho hoti rājabhoggo, rañño aṅgaṁtveva saṅkhaṁ gacchati. Katamehi pañcahi? Idha, bhikkhave, rañño nāgo sotā ca hoti, hantā ca, rakkhitā ca, khantā ca, gantā ca.
@@ -40,8 +40,7 @@ Rājavaggo catuttho.
 
 Tassuddānaṁ
 
+Cakkānuvattanā rājā,
 Yassaṁdisaṁ dve ceva patthanā;
-
 Appaṁsupati bhattādo,
-
 Akkhamo ca sotena cāti.

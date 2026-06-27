@@ -1,9 +1,9 @@
 ---
 slug: an4.54
 source: suttacentral/bilara-data
+title: Dutiyasaṁvāsasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasaṁvāsasutta
 ---
 
 “Cattārome, bhikkhave, saṁvāsā. Katame cattāro?
@@ -26,48 +26,38 @@ Kathañca, bhikkhave, devo deviyā saddhiṁ saṁvasati? Idha, bhikkhave, sāmi
 
 Ime kho, bhikkhave, cattāro saṁvāsāti.
 
+Ubho ca honti dussīlā,
 kadariyā paribhāsakā;
-
 Te honti jānipatayo,
-
 chavā saṁvāsamāgatā.
 
+Sāmiko hoti dussīlo,
 kadariyo paribhāsako;
-
 Bhariyā sīlavatī hoti,
-
 vadaññū vītamaccharā;
-
 Sāpi devī saṁvasati,
-
 chavena patinā saha.
 
+Sāmiko sīlavā hoti,
 vadaññū vītamaccharo;
-
 Bhariyā hoti dussīlā,
-
 kadariyā paribhāsikā;
-
 Sāpi chavā saṁvasati,
-
 devena patinā saha.
 
+Ubho saddhā vadaññū ca,
 saññatā dhammajīvino;
-
 Te honti jānipatayo,
-
 aññamaññaṁ piyaṁvadā.
 
+Atthāsaṁ pacurā honti,
 phāsukaṁ upajāyati;
-
 Amittā dummanā honti,
-
 ubhinnaṁ samasīlinaṁ.
 
+Idha dhammaṁ caritvāna,
 samasīlabbatā ubho;
-
 Nandino devalokasmiṁ,
-
 modanti kāmakāmino”ti.
 
 Catutthaṁ.

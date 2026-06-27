@@ -1,9 +1,9 @@
 ---
 slug: an5.126
 source: suttacentral/bilara-data
+title: Dutiyaanāyussāsutta
 edition: ms
 granularity: paragraph
-title: Dutiyaanāyussāsutta
 ---
 
 “Pañcime, bhikkhave, dhammā anāyussā. Katame pañca? Asappāyakārī hoti, sappāye mattaṁ na jānāti, apariṇatabhojī ca hoti, dussīlo ca, pāpamitto ca. Ime kho, bhikkhave, pañca dhammā anāyussā.

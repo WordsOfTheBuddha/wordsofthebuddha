@@ -1,9 +1,9 @@
 ---
 slug: an3.113
 source: suttacentral/bilara-data
+title: Āpāyikasutta
 edition: ms
 granularity: paragraph
-title: Āpāyikasutta
 ---
 
 “Tayome, bhikkhave, āpāyikā nerayikā idamappahāya. Katame tayo?

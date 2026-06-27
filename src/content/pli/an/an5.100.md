@@ -1,9 +1,9 @@
 ---
 slug: an5.100
 source: suttacentral/bilara-data
+title: Kakudhatherasutta
 edition: ms
 granularity: paragraph
-title: Kakudhatherasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
@@ -46,10 +46,9 @@ Kakudhavaggo pañcamo.
 
 Tassuddānaṁ
 
+Dve sampadā byākaraṇaṁ,
 phāsu akuppapañcamaṁ;
-
 Sutaṁ kathā āraññako,
-
 sīho ca kakudho dasāti.
 
 Dutiyo paṇṇāsako samatto.

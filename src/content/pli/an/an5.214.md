@@ -1,9 +1,9 @@
 ---
 slug: an5.214
 source: suttacentral/bilara-data
+title: Bahubhāṇisutta
 edition: ms
 granularity: paragraph
-title: Bahubhāṇisutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā bahubhāṇismiṁ puggale. Katame pañca? Musā bhaṇati, pisuṇaṁ bhaṇati, pharusaṁ bhaṇati, samphappalāpaṁ bhaṇati, kāyassa bhedā paraṁ maraṇā apāyaṁ duggatiṁ vinipātaṁ nirayaṁ upapajjati. Ime kho, bhikkhave, pañca ādīnavā bahubhāṇismiṁ puggale.

@@ -1,9 +1,9 @@
 ---
 slug: an5.178
 source: suttacentral/bilara-data
+title: Rājāsutta
 edition: ms
 granularity: paragraph
-title: Rājāsutta
 ---
 
 “Taṁ kiṁ maññatha, bhikkhave, api nu tumhehi diṭṭhaṁ vā sutaṁ vā: ‘ayaṁ puriso pāṇātipātaṁ pahāya pāṇātipātā paṭiviratoti. Tamenaṁ rājāno gahetvā pāṇātipātā veramaṇihetu hananti vā bandhanti vā pabbājenti vā yathāpaccayaṁ vā karontī’”ti?

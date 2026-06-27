@@ -1,9 +1,9 @@
 ---
 slug: an5.227
 source: suttacentral/bilara-data
+title: Bhogasutta
 edition: ms
 granularity: paragraph
-title: Bhogasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā bhogesu. Katame pañca? Aggisādhāraṇā bhogā, udakasādhāraṇā bhogā, rājasādhāraṇā bhogā, corasādhāraṇā bhogā, appiyehi dāyādehi sādhāraṇā bhogā. Ime kho, bhikkhave, pañca ādīnavā bhogesu.

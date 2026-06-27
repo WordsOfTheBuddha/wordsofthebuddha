@@ -1,9 +1,9 @@
 ---
 slug: an4.95
 source: suttacentral/bilara-data
+title: Chavālātasutta
 edition: ms
 granularity: paragraph
-title: Chavālātasutta
 ---
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame cattāro?

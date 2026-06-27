@@ -1,9 +1,9 @@
 ---
 slug: an6.60
 source: suttacentral/bilara-data
+title: Hatthisāriputtasutta
 edition: ms
 granularity: paragraph
-title: Hatthisāriputtasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye.

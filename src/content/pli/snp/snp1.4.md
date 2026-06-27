@@ -1,9 +1,9 @@
 ---
 slug: snp1.4
 source: suttacentral/bilara-data
+title: Kasibhāradvājasutta
 edition: ms
 granularity: paragraph
-title: Kasibhāradvājasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā magadhesu viharati dakkhiṇāgirismiṁ ekanāḷāyaṁ brāhmaṇagāme. Tena kho pana samayena kasibhāradvājassa brāhmaṇassa pañcamattāni naṅgalasatāni payuttāni honti vappakāle. Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya yena kasibhāradvājassa brāhmaṇassa kammanto tenupasaṅkami. Tena kho pana samayena kasibhāradvājassa brāhmaṇassa parivesanā vattati. Atha kho bhagavā yena parivesanā tenupasaṅkami; upasaṅkamitvā ekamantaṁ aṭṭhāsi.

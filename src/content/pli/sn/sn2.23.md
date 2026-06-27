@@ -1,9 +1,9 @@
 ---
 slug: sn2.23
 source: suttacentral/bilara-data
+title: Serīsutta
 edition: ms
 granularity: paragraph
-title: Serīsutta
 ---
 
 Ekamantaṁ ṭhito kho serī devaputto bhagavantaṁ gāthāya ajjhabhāsi:

@@ -1,9 +1,9 @@
 ---
 slug: dn2
 source: suttacentral/bilara-data
+title: Sāmaññaphalasutta
 edition: ms
 granularity: paragraph
-title: Sāmaññaphalasutta
 ---
 
 1. Rājāmaccakathā

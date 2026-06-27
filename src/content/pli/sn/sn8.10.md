@@ -1,9 +1,9 @@
 ---
 slug: sn8.10
 source: suttacentral/bilara-data
+title: Moggallānasutta
 edition: ms
 granularity: paragraph
-title: Moggallānasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati isigilipasse kāḷasilāyaṁ mahatā bhikkhusaṅghena saddhiṁ pañcamattehi bhikkhusatehi sabbeheva arahantehi. Tesaṁ sudaṁ āyasmā mahāmoggallāno cetasā cittaṁ samannesati vippamuttaṁ nirupadhiṁ.

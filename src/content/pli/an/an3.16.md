@@ -1,9 +1,9 @@
 ---
 slug: an3.16
 source: suttacentral/bilara-data
+title: Apaṇṇakasutta
 edition: ms
 granularity: paragraph
-title: Apaṇṇakasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bhikkhu apaṇṇakapaṭipadaṁ paṭipanno hoti, yoni cassa āraddhā hoti āsavānaṁ khayāya. Katamehi tīhi? Idha, bhikkhave, bhikkhu indriyesu guttadvāro hoti, bhojane mattaññū hoti, jāgariyaṁ anuyutto hoti.

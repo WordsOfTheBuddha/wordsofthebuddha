@@ -1,9 +1,9 @@
 ---
 slug: an4.30
 source: suttacentral/bilara-data
+title: Paribbājakasutta
 edition: ms
 granularity: paragraph
-title: Paribbājakasutta
 ---
 
 Ekaṁ samayaṁ bhagavā rājagahe viharati gijjhakūṭe pabbate.
@@ -34,10 +34,9 @@ Yo kho, paribbājakā, imāni cattāri dhammapadāni garahitabbaṁ paṭikkosit
 
 Yepi te, paribbājakā, ahesuṁ ukkalā vassabhaññā ahetukavādā akiriyavādā natthikavādā, tepi imāni cattāri dhammapadāni na garahitabbaṁ na paṭikkositabbaṁ amaññiṁsu. Taṁ kissa hetu? Nindābyārosanaupārambhabhayāti.
 
+Abyāpanno sadā sato,
 ajjhattaṁ susamāhito;
-
 Abhijjhāvinaye sikkhaṁ,
-
 appamattoti vuccatī”ti.
 
 Dasamaṁ.
@@ -46,8 +45,7 @@ Uruvelavaggo tatiyo.
 
 Tassuddānaṁ
 
+Dve uruvelā loko kāḷako,
 Brahmacariyena pañcamaṁ;
-
 Kuhaṁ santuṭṭhi vaṁso ca,
-
 Dhammapadaṁ paribbājakena cāti.

@@ -1,9 +1,9 @@
 ---
 slug: sn7.15
 source: suttacentral/bilara-data
+title: Mānatthaddhasutta
 edition: ms
 granularity: paragraph
-title: Mānatthaddhasutta
 ---
 
 Sāvatthinidānaṁ.

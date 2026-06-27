@@ -1,9 +1,9 @@
 ---
 slug: an3.68
 source: suttacentral/bilara-data
+title: Aññatitthiyasutta
 edition: ms
 granularity: paragraph
-title: Aññatitthiyasutta
 ---
 
 “Sace, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ: ‘tayome, āvuso, dhammā. Katame tayo? Rāgo, doso, moho— ime kho, āvuso, tayo dhammā. Imesaṁ, āvuso, tiṇṇaṁ dhammānaṁ ko viseso ko adhippayāso kiṁ nānākaraṇan’ti? Evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ kinti byākareyyāthā”ti?

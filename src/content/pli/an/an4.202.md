@@ -1,9 +1,9 @@
 ---
 slug: an4.202
 source: suttacentral/bilara-data
+title: Assaddhasutta
 edition: ms
 granularity: paragraph
-title: Assaddhasutta
 ---
 
 “Asappurisañca vo, bhikkhave, desessāmi, asappurisena asappurisatarañca; sappurisañca, sappurisena sappurisatarañca. Taṁ suṇātha …pe….

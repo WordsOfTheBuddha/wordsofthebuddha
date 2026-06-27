@@ -1,9 +1,9 @@
 ---
 slug: an7.89
 source: suttacentral/bilara-data
+title: Nhātakasutta
 edition: ms
 granularity: paragraph
-title: Nhātakasutta
 ---
 
 “… Nhātattā nhātako hoti …pe….

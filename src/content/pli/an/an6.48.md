@@ -1,9 +1,9 @@
 ---
 slug: an6.48
 source: suttacentral/bilara-data
+title: Dutiyasandiṭṭhikasutta
 edition: ms
 granularity: paragraph
-title: Dutiyasandiṭṭhikasutta
 ---
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca:

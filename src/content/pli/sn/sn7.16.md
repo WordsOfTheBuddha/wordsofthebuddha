@@ -1,9 +1,9 @@
 ---
 slug: sn7.16
 source: suttacentral/bilara-data
+title: Paccanīkasutta
 edition: ms
 granularity: paragraph
-title: Paccanīkasutta
 ---
 
 Sāvatthinidānaṁ.

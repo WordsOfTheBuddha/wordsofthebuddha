@@ -1,9 +1,9 @@
 ---
 slug: an3.6
 source: suttacentral/bilara-data
+title: Akusalasutta
 edition: ms
 granularity: paragraph
-title: Akusalasutta
 ---
 
 “Tīhi, bhikkhave, dhammehi samannāgato bālo veditabbo. Katamehi tīhi? Akusalena kāyakammena, akusalena vacīkammena, akusalena manokammena.

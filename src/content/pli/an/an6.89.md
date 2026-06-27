@@ -1,9 +1,9 @@
 ---
 slug: an6.89
 source: suttacentral/bilara-data
+title: Appahāyasutta
 edition: ms
 granularity: paragraph
-title: Appahāyasutta
 ---
 
 “Cha, bhikkhave, dhamme appahāya abhabbo diṭṭhisampadaṁ sacchikātuṁ. Katame cha? Sakkāyadiṭṭhiṁ, vicikicchaṁ, sīlabbataparāmāsaṁ, apāyagamanīyaṁ rāgaṁ, apāyagamanīyaṁ dosaṁ, apāyagamanīyaṁ mohaṁ. Ime kho, bhikkhave, cha dhamme appahāya abhabbo diṭṭhisampadaṁ sacchikātuṁ.

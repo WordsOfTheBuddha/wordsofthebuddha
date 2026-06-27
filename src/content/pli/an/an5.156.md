@@ -1,9 +1,9 @@
 ---
 slug: an5.156
 source: suttacentral/bilara-data
+title: Tatiyasaddhammasammosasutta
 edition: ms
 granularity: paragraph
-title: Tatiyasaddhammasammosasutta
 ---
 
 “Pañcime, bhikkhave, dhammā saddhammassa sammosāya antaradhānāya saṁvattanti. Katame pañca?

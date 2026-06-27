@@ -1,9 +1,9 @@
 ---
 slug: sn6.11
 source: suttacentral/bilara-data
+title: Sanaṅkumārasutta
 edition: ms
 granularity: paragraph
-title: Sanaṅkumārasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā rājagahe viharati sappinītīre.

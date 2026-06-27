@@ -1,9 +1,9 @@
 ---
 slug: an3.116
 source: suttacentral/bilara-data
+title: Āneñjasutta
 edition: ms
 granularity: paragraph
-title: Āneñjasutta
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo?

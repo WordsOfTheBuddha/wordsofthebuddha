@@ -1,9 +1,9 @@
 ---
 slug: an5.53
 source: suttacentral/bilara-data
+title: Padhāniyaṅgasutta
 edition: ms
 granularity: paragraph
-title: Padhāniyaṅgasutta
 ---
 
 “Pañcimāni, bhikkhave, padhāniyaṅgāni. Katamāni pañca?

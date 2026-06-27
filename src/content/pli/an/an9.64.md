@@ -1,9 +1,9 @@
 ---
 slug: an9.64
 source: suttacentral/bilara-data
+title: Nīvaraṇasutta
 edition: ms
 granularity: paragraph
-title: Nīvaraṇasutta
 ---
 
 “Pañcimāni, bhikkhave, nīvaraṇāni. Katamāni pañca? Kāmacchandanīvaraṇaṁ, byāpādanīvaraṇaṁ, thinamiddhanīvaraṇaṁ, uddhaccakukkuccanīvaraṇaṁ, vicikicchānīvaraṇaṁ— imāni kho, bhikkhave, pañca nīvaraṇāni.

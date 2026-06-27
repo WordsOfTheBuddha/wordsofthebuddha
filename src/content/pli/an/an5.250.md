@@ -1,9 +1,9 @@
 ---
 slug: an5.250
 source: suttacentral/bilara-data
+title: Puggalappasādasutta
 edition: ms
 granularity: paragraph
-title: Puggalappasādasutta
 ---
 
 “Pañcime, bhikkhave, ādīnavā puggalappasāde. Katame pañca?
@@ -22,10 +22,9 @@ Duccaritavaggo pañcamo.
 
 Tassuddānaṁ
 
+Duccaritaṁ kāyaduccaritaṁ,
 Vacīduccaritaṁ manoduccaritaṁ;
-
 Catūhi pare dve sivathikā,
-
 Puggalappasādena cāti.
 
 Pañcamo paṇṇāsako samatto.

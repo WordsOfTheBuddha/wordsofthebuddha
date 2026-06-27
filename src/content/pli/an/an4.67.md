@@ -1,9 +1,9 @@
 ---
 slug: an4.67
 source: suttacentral/bilara-data
+title: Ahirājasutta
 edition: ms
 granularity: paragraph
-title: Ahirājasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -16,44 +16,36 @@ Katamāni cattāri? Virūpakkhaṁ ahirājakulaṁ, erāpathaṁ ahirājakulaṁ
 
 Anujānāmi, bhikkhave, imāni cattāri ahirājakulāni mettena cittena pharituṁ attaguttiyā attarakkhāya attaparittāyāti.
 
+Virūpakkhehi me mettaṁ,
 Mettaṁ erāpathehi me;
-
 Chabyāputtehi me mettaṁ,
-
 Mettaṁ kaṇhāgotamakehi ca.
 
+Apādakehi me mettaṁ,
 mettaṁ dvipādakehi me;
-
 Catuppadehi me mettaṁ,
-
 mettaṁ bahuppadehi me.
 
+Mā maṁ apādako hiṁsi,
 mā maṁ hiṁsi dvipādako;
-
 Mā maṁ catuppado hiṁsi,
-
 mā maṁ hiṁsi bahuppado.
 
+Sabbe sattā sabbe pāṇā,
 sabbe bhūtā ca kevalā;
-
 Sabbe bhadrāni passantu,
-
 mā kañci pāpamāgamā.
 
+Appamāṇo buddho,
 Appamāṇo dhammo;
-
 Appamāṇo saṅgho,
-
 Pamāṇavantāni sarīsapāni.
 
+Ahivicchikā satapadī,
 Uṇṇanābhī sarabū mūsikā;
-
 Katā me rakkhā katā me parittā,
-
 Paṭikkamantu bhūtāni;
-
 Sohaṁ namo bhagavato,
-
 Namo sattannaṁ sammāsambuddhānan”ti.
 
 Sattamaṁ.

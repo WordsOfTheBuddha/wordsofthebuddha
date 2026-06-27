@@ -1,9 +1,9 @@
 ---
 slug: an9.69
 source: suttacentral/bilara-data
+title: Macchariyasutta
 edition: ms
 granularity: paragraph
-title: Macchariyasutta
 ---
 
 “Pañcimāni, bhikkhave, macchariyāni. Katamāni pañca? Āvāsamacchariyaṁ, kulamacchariyaṁ, lābhamacchariyaṁ, vaṇṇamacchariyaṁ, dhammamacchariyaṁ— imāni kho, bhikkhave, pañca macchariyāni.

@@ -1,9 +1,9 @@
 ---
 slug: an6.83
 source: suttacentral/bilara-data
+title: Aggadhammasutta
 edition: ms
 granularity: paragraph
-title: Aggadhammasutta
 ---
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu abhabbo aggaṁ dhammaṁ arahattaṁ sacchikātuṁ. Katamehi chahi? Idha, bhikkhave, bhikkhu assaddho hoti, ahiriko hoti, anottappī hoti, kusīto hoti, duppañño hoti, kāye ca jīvite ca sāpekkho hoti. Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu abhabbo aggaṁ dhammaṁ arahattaṁ sacchikātuṁ.

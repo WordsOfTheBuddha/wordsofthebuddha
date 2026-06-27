@@ -1,9 +1,9 @@
 ---
 slug: sn7.20
 source: suttacentral/bilara-data
+title: Bhikkhakasutta
 edition: ms
 granularity: paragraph
-title: Bhikkhakasutta
 ---
 
 Sāvatthinidānaṁ.

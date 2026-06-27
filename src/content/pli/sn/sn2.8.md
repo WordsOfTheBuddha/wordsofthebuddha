@@ -1,9 +1,9 @@
 ---
 slug: sn2.8
 source: suttacentral/bilara-data
+title: Tāyanasutta
 edition: ms
 granularity: paragraph
-title: Tāyanasutta
 ---
 
 Sāvatthinidānaṁ.

@@ -1,9 +1,9 @@
 ---
 slug: sn9.14
 source: suttacentral/bilara-data
+title: Gandhatthenasutta
 edition: ms
 granularity: paragraph
-title: Gandhatthenasutta
 ---
 
 Ekaṁ samayaṁ aññataro bhikkhu kosalesu viharati aññatarasmiṁ vanasaṇḍe.

@@ -1,9 +1,9 @@
 ---
 slug: an5.55
 source: suttacentral/bilara-data
+title: Mātāputtasutta
 edition: ms
 granularity: paragraph
-title: Mātāputtasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -18,42 +18,33 @@ Nāhaṁ, bhikkhave, aññaṁ ekasaddampi … ekagandhampi … ekarasampi … e
 
 Itthī, bhikkhave, gacchantīpi purisassa cittaṁ pariyādāya tiṭṭhati; ṭhitāpi …pe… nisinnāpi … sayānāpi … hasantīpi … bhaṇantīpi … gāyantīpi … rodantīpi … ugghātitāpi … matāpi purisassa cittaṁ pariyādāya tiṭṭhati. Yañhi taṁ, bhikkhave, sammā vadamāno vadeyya: ‘samantapāso mārassā’ti mātugāmaṁyeva sammā vadamāno vadeyya: ‘samantapāso mārassā’ti.
 
+Sallape asihatthena,
 pisācenāpi sallape;
-
 Āsīvisampi āsīde,
-
 yena daṭṭho na jīvati;
-
 Na tveva eko ekāya,
-
 mātugāmena sallape.
 
+Muṭṭhassatiṁ tā bandhanti,
 pekkhitena sitena ca;
-
 Athopi dunnivatthena,
-
 mañjunā bhaṇitena ca;
-
 Neso jano svāsīsado,
-
 api ugghātito mato.
 
+Pañca kāmaguṇā ete,
 itthirūpasmiṁ dissare;
-
 Rūpā saddā rasā gandhā,
-
 phoṭṭhabbā ca manoramā.
 
+Tesaṁ kāmoghavūḷhānaṁ,
 kāme aparijānataṁ;
-
 Kālaṁ gati bhavābhavaṁ,
-
 saṁsārasmiṁ purakkhatā.
 
+Ye ca kāme pariññāya,
 caranti akutobhayā;
-
 Te ve pāraṅgatā loke,
-
 ye pattā āsavakkhayan”ti.
 
 Pañcamaṁ.

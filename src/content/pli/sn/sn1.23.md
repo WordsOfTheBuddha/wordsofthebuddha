@@ -1,9 +1,9 @@
 ---
 slug: sn1.23
 source: suttacentral/bilara-data
+title: Jaṭāsutta
 edition: ms
 granularity: paragraph
-title: Jaṭāsutta
 ---
 
 “Antojaṭā bahijaṭā,

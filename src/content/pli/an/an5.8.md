@@ -1,9 +1,9 @@
 ---
 slug: an5.8
 source: suttacentral/bilara-data
+title: Cavanasutta
 edition: ms
 granularity: paragraph
-title: Cavanasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu cavati, nappatiṭṭhāti saddhamme. Katamehi pañcahi? Assaddho, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme. Ahiriko, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme. Anottappī, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme. Kusīto, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme. Duppañño, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu cavati, nappatiṭṭhāti saddhamme.

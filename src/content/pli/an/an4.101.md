@@ -1,9 +1,9 @@
 ---
 slug: an4.101
 source: suttacentral/bilara-data
+title: Paṭhamavalāhakasutta
 edition: ms
 granularity: paragraph
-title: Paṭhamavalāhakasutta
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.

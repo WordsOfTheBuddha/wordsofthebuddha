@@ -1,9 +1,9 @@
 ---
 slug: sn3.9
 source: suttacentral/bilara-data
+title: Yaññasutta
 edition: ms
 granularity: paragraph
-title: Yaññasutta
 ---
 
 Sāvatthinidānaṁ.

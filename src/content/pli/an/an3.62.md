@@ -1,9 +1,9 @@
 ---
 slug: an3.62
 source: suttacentral/bilara-data
+title: Bhayasutta
 edition: ms
 granularity: paragraph
-title: Bhayasutta
 ---
 
 “Tīṇimāni, bhikkhave, amātāputtikāni bhayānīti assutavā puthujjano bhāsati. Katamāni tīṇi?

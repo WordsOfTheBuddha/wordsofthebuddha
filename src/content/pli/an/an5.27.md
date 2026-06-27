@@ -1,9 +1,9 @@
 ---
 slug: an5.27
 source: suttacentral/bilara-data
+title: Samādhisutta
 edition: ms
 granularity: paragraph
-title: Samādhisutta
 ---
 
 “Samādhiṁ, bhikkhave, bhāvetha appamāṇaṁ nipakā patissatā. Samādhiṁ, bhikkhave, bhāvayataṁ appamāṇaṁ nipakānaṁ patissatānaṁ pañca ñāṇāni paccattaññeva uppajjanti. Katamāni pañca?

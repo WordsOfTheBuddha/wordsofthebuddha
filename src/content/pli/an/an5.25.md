@@ -1,9 +1,9 @@
 ---
 slug: an5.25
 source: suttacentral/bilara-data
+title: Anuggahitasutta
 edition: ms
 granularity: paragraph
-title: Anuggahitasutta
 ---
 
 “Pañcahi, bhikkhave, aṅgehi anuggahitā sammādiṭṭhi cetovimuttiphalā ca hoti cetovimuttiphalānisaṁsā ca, paññāvimuttiphalā ca hoti paññāvimuttiphalānisaṁsā ca.

@@ -1,9 +1,9 @@
 ---
 slug: an9.40
 source: suttacentral/bilara-data
+title: Nāgasutta
 edition: ms
 granularity: paragraph
-title: Nāgasutta
 ---
 
 “Yasmiṁ, bhikkhave, samaye āraññikassa nāgassa gocarapasutassa hatthīpi hatthiniyopi hatthikalabhāpi hatthicchāpāpi purato purato gantvā tiṇaggāni chindanti, tena, bhikkhave, āraññiko nāgo aṭṭīyati harāyati jigucchati. Yasmiṁ, bhikkhave, samaye āraññikassa nāgassa gocarapasutassa hatthīpi hatthiniyopi hatthikalabhāpi hatthicchāpāpi obhaggobhaggaṁ sākhābhaṅgaṁ khādanti, tena, bhikkhave, āraññiko nāgo aṭṭīyati harāyati jigucchati. Yasmiṁ, bhikkhave, samaye āraññikassa nāgassa ogāhaṁ otiṇṇassa hatthīpi hatthiniyopi hatthikalabhāpi hatthicchāpāpi purato purato gantvā soṇḍāya udakaṁ āloḷenti, tena, bhikkhave, āraññiko nāgo aṭṭīyati harāyati jigucchati. Yasmiṁ, bhikkhave, samaye āraññikassa nāgassa ogāhā uttiṇṇassa hatthiniyo kāyaṁ upanighaṁsantiyo gacchanti, tena, bhikkhave, āraññiko nāgo aṭṭīyati harāyati jigucchati.

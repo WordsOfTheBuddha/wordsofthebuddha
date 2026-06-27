@@ -1,9 +1,9 @@
 ---
 slug: an5.31
 source: suttacentral/bilara-data
+title: Sumanasutta
 edition: ms
 granularity: paragraph
-title: Sumanasutta
 ---
 
 Ekaṁ samayaṁ …pe… anāthapiṇḍikassa ārāme. Atha kho sumanā rājakumārī pañcahi rathasatehi pañcahi rājakumārisatehi parivutā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnā kho sumanā rājakumārī bhagavantaṁ etadavoca:
@@ -36,34 +36,29 @@ Ekaṁ samayaṁ …pe… anāthapiṇḍikassa ārāme. Atha kho sumanā rājak
 
 Idamavoca bhagavā. Idaṁ vatvāna sugato athāparaṁ etadavoca satthā:
 
+“Yathāpi cando vimalo,
 gacchaṁ ākāsadhātuyā;
-
 Sabbe tārāgaṇe loke,
-
 ābhāya atirocati.
 
+Tatheva sīlasampanno,
 saddho purisapuggalo;
-
 Sabbe maccharino loke,
-
 cāgena atirocati.
 
+Yathāpi megho thanayaṁ,
 vijjumālī satakkaku;
-
 Thalaṁ ninnañca pūreti,
-
 abhivassaṁ vasundharaṁ.
 
+Evaṁ dassanasampanno,
 sammāsambuddhasāvako;
-
 Macchariṁ adhigaṇhāti,
-
 pañcaṭhānehi paṇḍito.
 
+Āyunā yasasā ceva,
 vaṇṇena ca sukhena ca;
-
 Sa ve bhogaparibyūḷho,
-
 pecca sagge pamodatī”ti.
 
 Paṭhamaṁ.

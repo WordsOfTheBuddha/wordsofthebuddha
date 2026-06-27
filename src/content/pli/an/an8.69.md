@@ -1,9 +1,9 @@
 ---
 slug: an8.69
 source: suttacentral/bilara-data
+title: Parisāsutta
 edition: ms
 granularity: paragraph
-title: Parisāsutta
 ---
 
 “Aṭṭhimā, bhikkhave, parisā. Katamā aṭṭha? Khattiyaparisā, brāhmaṇaparisā, gahapatiparisā, samaṇaparisā, cātumahārājikaparisā, tāvatiṁsaparisā, māraparisā, brahmaparisā.

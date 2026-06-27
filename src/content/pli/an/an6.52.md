@@ -1,9 +1,9 @@
 ---
 slug: an6.52
 source: suttacentral/bilara-data
+title: Khattiyasutta
 edition: ms
 granularity: paragraph
-title: Khattiyasutta
 ---
 
 Atha kho jāṇussoṇi brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho jāṇussoṇi brāhmaṇo bhagavantaṁ etadavoca:

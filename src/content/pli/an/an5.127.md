@@ -1,9 +1,9 @@
 ---
 slug: an5.127
 source: suttacentral/bilara-data
+title: Vapakāsasutta
 edition: ms
 granularity: paragraph
-title: Vapakāsasutta
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu nālaṁ saṅghamhā vapakāsituṁ. Katamehi pañcahi? Idha, bhikkhave, bhikkhu asantuṭṭho hoti itarītarena cīvarena, asantuṭṭho hoti itarītarena piṇḍapātena, asantuṭṭho hoti itarītarena senāsanena, asantuṭṭho hoti itarītarena gilānappaccayabhesajjaparikkhārena, kāmasaṅkappabahulo ca viharati. Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu nālaṁ saṅghamhā vapakāsituṁ.

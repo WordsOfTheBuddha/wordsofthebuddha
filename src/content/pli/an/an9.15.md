@@ -1,9 +1,9 @@
 ---
 slug: an9.15
 source: suttacentral/bilara-data
+title: Gaṇḍasutta
 edition: ms
 granularity: paragraph
-title: Gaṇḍasutta
 ---
 
 “Seyyathāpi, bhikkhave, gaṇḍo anekavassagaṇiko. Tassassu gaṇḍassa nava vaṇamukhāni nava abhedanamukhāni. Tato yaṁ kiñci pagghareyya— asuciyeva pagghareyya, duggandhaṁyeva pagghareyya, jegucchiyaṁyeva pagghareyya; yaṁ kiñci pasaveyya— asuciyeva pasaveyya, duggandhaṁyeva pasaveyya, jegucchiyaṁyeva pasaveyya.

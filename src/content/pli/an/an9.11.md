@@ -1,9 +1,9 @@
 ---
 slug: an9.11
 source: suttacentral/bilara-data
+title: Sīhanādasutta
 edition: ms
 granularity: paragraph
-title: Sīhanādasutta
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.

@@ -1,9 +1,9 @@
 ---
 slug: an5.186
 source: suttacentral/bilara-data
+title: Nesajjikasutta
 edition: ms
 granularity: paragraph
-title: Nesajjikasutta
 ---
 
 “Pañcime, bhikkhave, nesajjikā …pe….
