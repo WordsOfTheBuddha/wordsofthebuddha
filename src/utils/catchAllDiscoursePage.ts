@@ -10,9 +10,13 @@ import {
 import { getEnglishEntry, getPaliEntry } from "./getContentEntry";
 import { getLastModified } from "./getLastModified";
 import { routes } from "./routes";
+import { referenceOnlyRoutes } from "./referenceOnlyRoutes";
 import { transformId } from "./transformId";
 import { findContentImages } from "./contentImage";
 import { buildReferenceDiscoursePage } from "./referenceDiscoursePage";
+import { findParentDiscourseRoute } from "./referenceSegmentParser";
+
+const discourseRoutes = [...routes, ...referenceOnlyRoutes];
 
 export type CatchAllDiscoursePage = {
 	suttaProps: Record<string, unknown>;
@@ -100,28 +104,16 @@ export async function resolveCatchAllDiscoursePage(
 						endStr,
 					);
 
-					const parentRoute = routes.find((route) => {
-						if (!route.startsWith(prefix)) return false;
-
-						const rangeMatch = route.match(
-							/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/,
-						);
-						if (!rangeMatch) return false;
-
-						const [, rangeStart, rangeEnd] = rangeMatch;
-						const properRangeEnd = constructHierarchicalEnd(
-							rangeStart,
-							rangeEnd,
-						);
-
-						return (
+					const parentRoute = findParentDiscourseRoute(
+						prefix,
+						(rangeStart, properRangeEnd) =>
 							compareHierarchicalNumber(startStr, rangeStart) >= 0 &&
 							compareHierarchicalNumber(
 								constructedTargetEnd,
 								properRangeEnd,
-							) <= 0
-						);
-					});
+							) <= 0,
+						discourseRoutes,
+					);
 
 					if (parentRoute) {
 						currentIndex = routes.findIndex(
@@ -137,29 +129,17 @@ export async function resolveCatchAllDiscoursePage(
 				} else {
 					sectionNumber = numericPart;
 
-					const parentRoute = routes.find((route) => {
-						if (!route.startsWith(prefix)) return false;
-
-						const rangeMatch = route.match(
-							/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/,
-						);
-						if (!rangeMatch) return false;
-
-						const [, rangeStart, rangeEnd] = rangeMatch;
-						const properRangeEnd = constructHierarchicalEnd(
-							rangeStart,
-							rangeEnd,
-						);
-
-						return (
+					const parentRoute = findParentDiscourseRoute(
+						prefix,
+						(rangeStart, properRangeEnd) =>
 							compareHierarchicalNumber(numericPart, rangeStart) >=
 								0 &&
 							compareHierarchicalNumber(
 								numericPart,
 								properRangeEnd,
-							) <= 0
-						);
-					});
+							) <= 0,
+						discourseRoutes,
+					);
 
 					if (parentRoute) {
 						currentIndex = routes.findIndex(
@@ -186,7 +166,12 @@ export async function resolveCatchAllDiscoursePage(
 				return redirect(`/search?q=${encodeURIComponent(id)}`);
 			}
 
-			const refPage = await buildReferenceDiscoursePage(id);
+			const refPage = await buildReferenceDiscoursePage(id, {
+				sectionNumber,
+				discourseRange: discourseRange ?? undefined,
+				fullRef,
+				hrf: originalId || id,
+			});
 			if (!refPage) {
 				return redirect(`/search?q=${encodeURIComponent(id)}`);
 			}

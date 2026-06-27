@@ -195,9 +195,24 @@ const showFallbackImmediately =
 		margin-bottom: var(--min-para-spacing, 1rem);
 	}
 
-	/* Ensure consistent base margins */
+	/* Ensure consistent base margins; flow-root prevents margin collapse between pairs */
 	.split-panel [data-pair-id] {
+		display: flow-root;
 		margin-top: 8px; /* Match the English paragraph margin */
+	}
+
+	/* Empty EN slots in split view reserve vertical space via JS min-height */
+	.split-panel .english-pair-spacer {
+		margin-top: 8px;
+		margin-bottom: 0;
+		padding: 0;
+		border: 0;
+	}
+
+	.split-panel .english-pair-spacer-inner {
+		display: block;
+		height: 0;
+		overflow: hidden;
 	}
 
 	/* Common fade transition */
@@ -313,13 +328,17 @@ const showFallbackImmediately =
 
 			if (!leftPanel || !rightPanel) return;
 
-			// Reset margins to base value
+			// Reset margins and spacer heights to base value
 			document
 				.querySelectorAll(
 					"#panel1 [data-pair-id], #panel2 [data-pair-id]"
 				)
 				.forEach((el) => {
-					(el as HTMLElement).style.marginTop = "8px";
+					const node = el as HTMLElement;
+					node.style.marginTop = "8px";
+					if (node.classList.contains("english-pair-spacer")) {
+						node.style.minHeight = "";
+					}
 				});
 
 			// Get all paragraph pairs
@@ -329,6 +348,30 @@ const showFallbackImmediately =
 			const paraIds = Array.from(engParas).map((p) =>
 				p.getAttribute("data-pair-id")
 			);
+
+			// Empty English rows must match paired Pāli height so the left column
+			// doesn't collapse when Sujato skips peyyāla segments.
+			paraIds.forEach((id) => {
+				const eng = document.querySelector(
+					`#panel1 [data-pair-id="${id}"]`
+				);
+				const pali = document.querySelector(
+					`#panel2 [data-pair-id="${id}"]`
+				);
+				if (!eng || !pali) return;
+
+				const engText = (eng.textContent || "")
+					.replace(/\u200B/g, "")
+					.replace(/\s+/g, "")
+					.trim();
+				if (!engText) {
+					const paliHeight = (pali as HTMLElement).getBoundingClientRect()
+						.height;
+					if (paliHeight > 0) {
+						(eng as HTMLElement).style.minHeight = `${paliHeight}px`;
+					}
+				}
+			});
 
 			// First align the tops of each paragraph pair
 			paraIds.forEach((id) => {

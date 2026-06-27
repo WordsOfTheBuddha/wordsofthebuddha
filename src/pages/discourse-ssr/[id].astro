@@ -2,6 +2,7 @@
 // SSR reference/Pāli-only discourse pages (rewritten from /:slug by middleware).
 export const prerender = false;
 import { buildReferenceDiscoursePage } from "../../utils/referenceDiscoursePage";
+import { urlHasRefParam } from "../../utils/urlRefParam";
 import Layout from "../../layouts/Layout.astro";
 import MDContent from "../../components/MDContent.astro";
 
@@ -11,7 +12,8 @@ if (!id) {
 	return new Response(null, { status: 404 });
 }
 
-const refPage = await buildReferenceDiscoursePage(id);
+const refMode = urlHasRefParam(Astro.url.searchParams);
+const refPage = await buildReferenceDiscoursePage(id, { refMode });
 if (!refPage) {
 	return new Response(null, { status: 404 });
 }

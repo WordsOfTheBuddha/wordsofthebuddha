@@ -99,6 +99,40 @@ function formatViewFullTextLink(fullReference: string): string {
 	return `<p><a href="/${href}" class="text-blue-600 hover:underline">View full text for: ${fullReference}</a></p>`;
 }
 
+/** Whether a #### / ### heading matches a partial discourse slug (e.g. 1.576 in 1.576–582). */
+export function headingMatchesSectionNumber(
+	heading: string,
+	targetSection: string | number,
+): boolean {
+	const headingContent = heading.replace(/^#+\s+/, "");
+	const rangeMatch = headingContent.match(
+		/^(\d+(?:\.\d+)?)(?:[–-])(\d+(?:\.\d+)?)(?:\s|$)/,
+	);
+
+	if (rangeMatch) {
+		const rangeStart = rangeMatch[1];
+		const rangeEnd = rangeMatch[2];
+		const properRangeEnd = constructHierarchicalEnd(rangeStart, rangeEnd);
+		return isHierarchicalNumberInRange(
+			String(targetSection),
+			rangeStart,
+			properRangeEnd,
+		);
+	}
+
+	const singleMatch = headingContent.match(/^(\d+(?:\.\d+)?)/);
+	if (singleMatch) {
+		return singleMatch[1] === String(targetSection);
+	}
+
+	return false;
+}
+
+function extractHeadingNumber(heading: string): string | undefined {
+	const headingContent = heading.replace(/^#+\s+/, "");
+	return headingContent.match(/^(\d+(?:\.\d+)?)/)?.[1];
+}
+
 /** Subset pages with only a fallback link (no matched paragraphs). */
 export function isViewFullTextFallbackOnly(content: string): boolean {
 	return (
@@ -279,9 +313,7 @@ export function parseContent(
 				block.startsWith("###") || block.startsWith("####");
 
 			if (isHeading) {
-				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/,
-				)?.[1];
+				const headingNumber = extractHeadingNumber(block);
 				debug(
 					`Block ${i}: Found heading ${headingNumber}, inTargetRange: ${inTargetRange}`,
 				);
@@ -368,9 +400,7 @@ export function parseContent(
 			const isHeading =
 				block.startsWith("###") || block.startsWith("####");
 			if (isHeading) {
-				const headingNumber = block.match(
-					/#{3,4}\s+(\d+(?:\.\d+)?)/,
-				)?.[1];
+				const headingNumber = extractHeadingNumber(block);
 
 				if (headingNumber) {
 					const isInRange = isHierarchicalNumberInRange(
@@ -425,59 +455,6 @@ export function parseContent(
 		let inTargetSection = false;
 		let targetEnglish: string[] = [];
 		let targetPali: string[] = [];
-
-		// Helper to extract heading number and check if it matches or contains sectionNumber
-		function headingMatchesSectionNumber(
-			heading: string,
-			targetSection: string | number,
-		): boolean {
-			// Extract the full heading content (everything after heading markers)
-			const headingContent = heading.replace(/^#+\s+/, "");
-
-			// Try to match range headings (e.g., "1.395–401" or "1.395-401")
-			// Handles both en-dash (–) and hyphen (-) separators
-			const rangeMatch = headingContent.match(
-				/^(\d+(?:\.\d+)?)(?:[–\-])(\d+(?:\.\d+)?)(?:\s|$)/,
-			);
-
-			if (rangeMatch) {
-				const rangeStart = rangeMatch[1];
-				const rangeEnd = rangeMatch[2];
-
-				// For range headings like "1.395–401", construct the full end value
-				// e.g., rangeStart="1.395", rangeEnd="401" -> "1.401"
-				const properRangeEnd = constructHierarchicalEnd(
-					rangeStart,
-					rangeEnd,
-				);
-
-				debug(
-					`Checking range heading: ${rangeStart}–${properRangeEnd} for section: ${targetSection}`,
-				);
-
-				// Check if target section falls within this range
-				return isHierarchicalNumberInRange(
-					String(targetSection),
-					rangeStart,
-					properRangeEnd,
-				);
-			}
-
-			// Try to match single heading numbers (e.g., "1.394")
-			const singleMatch = headingContent.match(/^(\d+(?:\.\d+)?)/);
-			if (singleMatch) {
-				const headingNumber = singleMatch[1];
-				debug(
-					"Found single heading:",
-					headingNumber,
-					"looking for:",
-					targetSection,
-				);
-				return headingNumber === String(targetSection);
-			}
-
-			return false;
-		}
 
 		// Process English content
 		for (const block of englishBlocks) {
@@ -764,7 +741,7 @@ function processParagraphQuotes(
 	return p;
 }
 
-function toSmartQuotes(text: string): string {
+export function toSmartQuotes(text: string): string {
 	// Smart quote characters
 	const LDQ = "\u201C"; // left double quote "
 	const RDQ = "\u201D"; // right double quote "
@@ -1014,9 +991,16 @@ export function createCombinedMarkdown(
 		const pali = pairs
 			.filter(
 				(pair): pair is ContentPair & { pali: string } =>
-					pair.pali !== undefined,
+					pair.pali !== undefined && Boolean(pair.pali.trim()),
 			)
 			.map((pair) => {
+				// EN-only #### headings have no Pāli counterpart in split view
+				if (
+					pair.english.trimStart().startsWith("#") &&
+					!pair.pali.trim()
+				) {
+					return "";
+				}
 				if (!pair.pali.startsWith("#")) {
 					return formatBlock(
 						pair.pali,
@@ -1034,6 +1018,7 @@ export function createCombinedMarkdown(
 					pair.actualParagraphNumber,
 				);
 			})
+			.filter(Boolean)
 			.join("\n\n");
 
 		pairIndex = 0;
@@ -1051,7 +1036,7 @@ export function createCombinedMarkdown(
 						!pair.pali.startsWith("#")
 					) {
 						const idx = pairIndex++;
-						return `<p class="english-paragraph" data-pair-id="${idx}"></p>`;
+						return `<p class="english-paragraph english-pair-spacer" data-pair-id="${idx}" aria-hidden="true"><span class="english-pair-spacer-inner">&#8203;</span></p>`;
 					}
 					return "";
 				}
@@ -1081,7 +1066,7 @@ export function createCombinedMarkdown(
 	// Return interleaved content
 	let pairIndex = 0;
 	const result = pairs
-		.map((pair) => {
+			.map((pair) => {
 			// Pass through resolved component blocks (e.g. <img> from <Image>)
 			if (pair.type === "other") {
 				return pair.english;

@@ -1,15 +1,27 @@
-import { getEntry } from "astro:content";
 import {
 	createCombinedMarkdown,
+	isViewFullTextFallbackOnly,
 	PALI_ONLY_NOTICE,
 	parseContent,
 	parsePaliOnly,
 	REFERENCE_TRANSLATION_CREDIT,
+	toSmartQuotes,
 } from "./contentParser";
-import { getEnglishEntry, getPaliEntry } from "./getContentEntry";
+import {
+	hasSegmentMarkers,
+	parseReferenceSegmentContent,
+	filterReferenceSegmentPairs,
+	type ReferenceSubsetFilter,
+} from "./referenceSegmentParser";
+import {
+	getPaliEntry,
+	getReferencePliMsEntry,
+	getReferenceSujatoEntry,
+	getDiscourseNeighborEntry,
+	type ContentEntryLike,
+} from "./getContentEntry";
 import { getLastModified } from "./getLastModified";
-import { routes } from "./routes";
-import { findNearestTranslatedNeighbors } from "./translatedNeighbors";
+import { findPageDiscourseNeighbors } from "./discourseNeighbors";
 
 export type ReferenceDiscoursePage = {
 	mainContent: string;
@@ -21,8 +33,9 @@ export type ReferenceDiscoursePage = {
 		fp: string;
 		title: string;
 		description?: string;
-		prev: Awaited<ReturnType<typeof getEnglishEntry>>;
-		next: Awaited<ReturnType<typeof getEnglishEntry>>;
+		qualities?: string[];
+		prev: ContentEntryLike | null;
+		next: ContentEntryLike | null;
 		id: string;
 		showReadLater: boolean;
 		showSave: boolean;
@@ -31,7 +44,7 @@ export type ReferenceDiscoursePage = {
 		showAuth: boolean;
 		showPali: boolean;
 		paragraphRequest: null;
-		discourseRange: null;
+		discourseRange: { start: string; end: string } | null;
 		contentImage: null;
 		vizPrev: null;
 		vizNext: null;
@@ -43,12 +56,15 @@ export type ReferenceDiscoursePage = {
 /** Build a Pāli-only or Sujato reference page for direct discourse URLs. */
 export async function buildReferenceDiscoursePage(
 	id: string,
+	options: ReferenceSubsetFilter & { refMode?: boolean } = {},
 ): Promise<ReferenceDiscoursePage | null> {
+	const { refMode = false, sectionNumber, discourseRange, fullRef, hrf } =
+		options;
 	const paliParagraphEntry = await getPaliEntry(id);
 	if (!paliParagraphEntry) return null;
 
-	const referenceEntry = await getEntry("referenceSujato", id);
-	const paliSegmentEntry = await getEntry("referencePliMs", id);
+	const referenceEntry = await getReferenceSujatoEntry(id);
+	const paliSegmentEntry = await getReferencePliMsEntry(id);
 	const useReferenceEnglish = Boolean(referenceEntry);
 
 	const paliOnlyPairs = parsePaliOnly(paliParagraphEntry.body);
@@ -65,16 +81,36 @@ export async function buildReferenceDiscoursePage(
 	let pairs;
 	if (referenceEntry) {
 		const paliForReference = paliSegmentEntry ?? paliParagraphEntry;
-		pairs = await parseContent(
-			paliForReference,
-			referenceEntry,
-			undefined,
-			undefined,
-			null,
-			null,
-		);
+		const useSegmentKeys =
+			paliSegmentEntry &&
+			hasSegmentMarkers(paliSegmentEntry.body) &&
+			hasSegmentMarkers(referenceEntry.body);
+		pairs = useSegmentKeys
+			? parseReferenceSegmentContent(
+					paliForReference,
+					referenceEntry,
+					toSmartQuotes,
+				)
+			: await parseContent(
+					paliForReference,
+					referenceEntry,
+					undefined,
+					undefined,
+					null,
+					null,
+				);
 	} else {
 		pairs = paliOnlyPairs;
+	}
+
+	const isPartialView = Boolean(sectionNumber || discourseRange);
+	if (isPartialView && fullRef) {
+		pairs = filterReferenceSegmentPairs(pairs, {
+			sectionNumber,
+			discourseRange: discourseRange ?? undefined,
+			fullRef,
+			hrf: hrf ?? id,
+		});
 	}
 
 	const interleavedContent = createCombinedMarkdown(
@@ -107,16 +143,30 @@ export async function buildReferenceDiscoursePage(
 	const displayTitle =
 		(referenceEntry?.data as { title?: string } | undefined)?.title ||
 		paliTitle;
+	const refData = referenceEntry?.data as
+		| {
+				description?: string;
+				qualities?: string;
+				title?: string;
+		  }
+		| undefined;
+	const description = refData?.description;
+	const qualities = refData?.qualities
+		?.split(",")
+		.map((t: string) => t.trim())
+		.filter(Boolean);
 	const filePath = paliParagraphEntry.filePath || "";
 	const lastUpdated = getLastModified(filePath);
+	const subsetFallback =
+		isPartialView && typeof interleavedContent === "string"
+			? isViewFullTextFallbackOnly(interleavedContent)
+			: false;
 
 	let refPrev = null;
 	let refNext = null;
-	if (useReferenceEnglish) {
-		const { prevId, nextId } = findNearestTranslatedNeighbors(id, routes);
-		if (prevId) refPrev = await getEnglishEntry(prevId);
-		if (nextId) refNext = await getEnglishEntry(nextId);
-	}
+	const { prevId, nextId } = findPageDiscourseNeighbors(id, refMode);
+	if (prevId) refPrev = await getDiscourseNeighborEntry(prevId);
+	if (nextId) refNext = await getDiscourseNeighborEntry(nextId);
 
 	return {
 		mainContent,
@@ -127,18 +177,19 @@ export async function buildReferenceDiscoursePage(
 		suttaProps: {
 			fp,
 			title: displayTitle,
-			description: undefined,
+			description,
+			qualities,
 			prev: refPrev,
 			next: refNext,
 			id,
-			showReadLater: false,
-			showSave: false,
-			showRead: false,
+			showReadLater: !subsetFallback,
+			showSave: !subsetFallback,
+			showRead: !subsetFallback,
 			lastUpdated,
 			showAuth: true,
-			showPali: true,
+			showPali: !subsetFallback,
 			paragraphRequest: null,
-			discourseRange: null,
+			discourseRange: discourseRange ?? null,
 			contentImage: null,
 			vizPrev: null,
 			vizNext: null,

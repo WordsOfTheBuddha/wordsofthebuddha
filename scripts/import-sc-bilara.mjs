@@ -6,8 +6,9 @@
  *     SC paragraph structure via html/ cognate markup; replaces files previously
  *     imported from bilara (source: suttacentral/bilara-data). Skips curated pli.
  * - Pali (segments)  → src/content/references/pli-ms/{collection}/{id}.md
- *     One bilara segment per paragraph; used for Sujato reference pairing.
+ *     One bilara segment per block with <!-- @segment key --> markers for pairing.
  * - Sujato           → src/content/references/sujato/{collection}/{id}.md
+ *     Same segment keys; empty peyyāla slots preserved for alignment.
  *
  * Usage:
  *   node scripts/import-sc-bilara.mjs
@@ -27,6 +28,8 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import matter from "gray-matter";
+import { buildSujatoMarkdown } from "./lib/sujato-frontmatter.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, "..");
@@ -43,6 +46,31 @@ const SPARSE_PATHS = [
 	"html/pli/ms/sutta",
 	"translation/en/sujato/sutta",
 ];
+
+/** Curated frontmatter preserved across bilara re-imports. */
+const PRESERVED_FRONTMATTER_KEYS = [
+	"description",
+	"qualities",
+	"theme",
+	"simile",
+	"topic",
+	"priority",
+	"commentary",
+];
+
+function readPreservedFrontmatter(filePath) {
+	if (!existsSync(filePath)) return {};
+	const raw = readFileSync(filePath, "utf-8");
+	const { data } = matter(raw);
+	const preserved = {};
+	for (const key of PRESERVED_FRONTMATTER_KEYS) {
+		const value = data[key];
+		if (value !== undefined && value !== null && value !== "") {
+			preserved[key] = value;
+		}
+	}
+	return preserved;
+}
 
 const args = process.argv.slice(2);
 const collections = getArgValues("--collections") ?? DEFAULT_COLLECTIONS;
@@ -116,6 +144,11 @@ function collectionFromId(id) {
 }
 
 function compareSegmentKeys(a, b) {
+	const prefixA = a.includes(":") ? a.slice(0, a.indexOf(":")) : a;
+	const prefixB = b.includes(":") ? b.slice(0, b.indexOf(":")) : b;
+	if (prefixA !== prefixB) {
+		return prefixA.localeCompare(prefixB, undefined, { numeric: true });
+	}
 	const parse = (key) => {
 		const seg = key.split(":")[1] ?? "";
 		return seg.split(".").map((n) => Number.parseInt(n, 10) || 0);
@@ -223,6 +256,24 @@ function segmentsToSegmentParagraphs(segments) {
 	return paragraphs;
 }
 
+/** Segment blocks with bilara keys for EN/PL pairing on reference pages. */
+function segmentsToMarkedBlocks(segments, { includeEmpty = false } = {}) {
+	const blocks = [];
+	for (const key of orderedContentKeys(segments)) {
+		const text = stripBilaraMarkup(segments[key]);
+		if (isEndMarker(text)) continue;
+		if (!includeEmpty && !text) continue;
+		blocks.push({ key, text: text || "" });
+	}
+	return blocks;
+}
+
+function markedBlocksToBody(blocks) {
+	return blocks
+		.map(({ key, text }) => `<!-- @segment ${key} -->\n\n${text}`)
+		.join("\n\n");
+}
+
 /** Merge segments using html/ cognate markup (SC paragraph view). */
 function segmentsToParagraphs(segments, htmlMarkup) {
 	const paragraphs = [];
@@ -274,47 +325,14 @@ function isBilaraImportedPali(filePath) {
 	);
 }
 
-function yamlScalar(value) {
-	const text = String(value);
-	if (
-		text.includes(":") ||
-		text.includes("#") ||
-		text.includes("'") ||
-		text.includes('"') ||
-		text.startsWith(" ") ||
-		text.endsWith(" ") ||
-		text.startsWith("[") ||
-		text.startsWith("{") ||
-		text.startsWith("@") ||
-		text.startsWith("`") ||
-		text.startsWith("|") ||
-		text.startsWith(">") ||
-		text === "*" ||
-		text === "&" ||
-		text === "!" ||
-		text === "%" ||
-		text === "~"
-	) {
-		return JSON.stringify(text);
-	}
-	return text;
-}
-
 function buildMarkdown({ slug, title, body, extraFrontmatter = {} }) {
-	const fm = {
+	return buildSujatoMarkdown({
 		slug,
 		source: "suttacentral/bilara-data",
 		...extraFrontmatter,
-	};
-	if (title) fm.title = title;
-
-	const lines = ["---"];
-	for (const [key, value] of Object.entries(fm)) {
-		lines.push(`${key}: ${yamlScalar(value)}`);
-	}
-	lines.push("---", "");
-	if (body.length) lines.push(body.join("\n\n"));
-	return `${lines.join("\n")}\n`;
+		...(title ? { title } : {}),
+		body,
+	});
 }
 
 function writeIfNeeded(filePath, content, { force = false, label }) {
@@ -355,6 +373,36 @@ function main() {
 		refSkipped: 0,
 	};
 
+	if (!paliOnly) {
+		for (const file of paliFiles) {
+			const id = parseSuttaId(file);
+			if (!id) continue;
+			const collection = collectionFromId(id);
+			if (!collectionSet.has(collection)) continue;
+
+			// Dhp uses chapter files locally; skip bulk per-verse pli-ms import.
+			if (collection === "dhp") continue;
+
+			const segments = JSON.parse(readFileSync(file, "utf-8"));
+			const { title } = extractMeta(segments);
+
+			const pliMsPath = path.join(PLI_MS_DIR, collection, `${id}.md`);
+			const pliMsBlocks = segmentsToMarkedBlocks(segments);
+			const pliMsMarkdown = buildMarkdown({
+				slug: id,
+				title,
+				body: markedBlocksToBody(pliMsBlocks),
+				extraFrontmatter: { edition: "ms", granularity: "segment" },
+			});
+			const pliMsResult = writeIfNeeded(pliMsPath, pliMsMarkdown, {
+				force: true,
+				label: "pli-ms",
+			});
+			if (pliMsResult === "created") stats.pliMsCreated++;
+			else if (pliMsResult === "updated") stats.pliMsUpdated++;
+		}
+	}
+
 	if (!referencesOnly) {
 		for (const file of paliFiles) {
 			const id = parseSuttaId(file);
@@ -368,21 +416,6 @@ function main() {
 			const segments = JSON.parse(readFileSync(file, "utf-8"));
 			const { title } = extractMeta(segments);
 			const htmlMarkup = loadHtmlMarkup(file);
-
-			const pliMsPath = path.join(PLI_MS_DIR, collection, `${id}.md`);
-			const segmentParagraphs = segmentsToSegmentParagraphs(segments);
-			const pliMsMarkdown = buildMarkdown({
-				slug: id,
-				title,
-				body: segmentParagraphs,
-				extraFrontmatter: { edition: "ms", granularity: "segment" },
-			});
-			const pliMsResult = writeIfNeeded(pliMsPath, pliMsMarkdown, {
-				force: true,
-				label: "pli-ms",
-			});
-			if (pliMsResult === "created") stats.pliMsCreated++;
-			else if (pliMsResult === "updated") stats.pliMsUpdated++;
 
 			const pliPath = path.join(PLI_DIR, collection, `${id}.md`);
 			const mayWritePli =
@@ -421,14 +454,18 @@ function main() {
 			const outPath = path.join(REF_DIR, collection, `${id}.md`);
 			const segments = JSON.parse(readFileSync(file, "utf-8"));
 			const { title } = extractMeta(segments);
-			const paragraphs = segmentsToSegmentParagraphs(segments);
+			const paragraphs = segmentsToMarkedBlocks(segments, {
+				includeEmpty: true,
+			});
+			const preserved = readPreservedFrontmatter(outPath);
 			const markdown = buildMarkdown({
 				slug: id,
 				title,
-				body: paragraphs,
+				body: markedBlocksToBody(paragraphs),
 				extraFrontmatter: {
 					translator: "sujato",
 					license: "CC0",
+					...preserved,
 				},
 			});
 
@@ -460,7 +497,9 @@ export {
 	expandHtmlTemplate,
 	isInlineVerseLineTemplate,
 	isVerseLineSegment,
+	markedBlocksToBody,
 	orderedContentKeys,
+	segmentsToMarkedBlocks,
 	segmentsToParagraphs,
 	stripBilaraMarkup,
 };
