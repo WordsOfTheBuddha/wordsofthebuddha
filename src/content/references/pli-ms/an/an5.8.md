@@ -1,41 +1,75 @@
 ---
 slug: an5.8
 source: suttacentral/bilara-data
+title: Cavanasutta
 edition: ms
 granularity: segment
-title: Cavanasutta
 ---
+
+<!-- @segment an5.8:1.1 -->
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu cavati, nappatiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:1.2 -->
+
 Katamehi pañcahi?
+
+<!-- @segment an5.8:1.3 -->
 
 Assaddho, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:1.4 -->
+
 Ahiriko, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme.
+
+<!-- @segment an5.8:1.5 -->
 
 Anottappī, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:1.6 -->
+
 Kusīto, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme.
+
+<!-- @segment an5.8:1.7 -->
 
 Duppañño, bhikkhave, bhikkhu cavati, nappatiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:1.8 -->
+
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu cavati, nappatiṭṭhāti saddhamme.
+
+<!-- @segment an5.8:2.1 -->
 
 Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu na cavati, patiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:2.2 -->
+
 Katamehi pañcahi?
+
+<!-- @segment an5.8:2.3 -->
 
 Saddho, bhikkhave, bhikkhu na cavati, patiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:2.4 -->
+
 Hirīmā, bhikkhave, bhikkhu na cavati, patiṭṭhāti saddhamme.
+
+<!-- @segment an5.8:2.5 -->
 
 Ottappī, bhikkhave, bhikkhu na cavati, patiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:2.6 -->
+
 Āraddhavīriyo, bhikkhave, bhikkhu na cavati, patiṭṭhāti saddhamme.
+
+<!-- @segment an5.8:2.7 -->
 
 Paññavā, bhikkhave, bhikkhu na cavati, patiṭṭhāti saddhamme.
 
+<!-- @segment an5.8:2.8 -->
+
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu na cavati, patiṭṭhāti saddhamme”ti.
+
+<!-- @segment an5.8:2.9 -->
 
 Aṭṭhamaṁ.

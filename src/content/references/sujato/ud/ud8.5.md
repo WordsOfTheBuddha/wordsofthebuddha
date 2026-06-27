@@ -6,194 +6,386 @@ license: CC0
 title: With Cunda
 ---
 
+<!-- @segment ud8.5:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud8.5:1.2 -->
 
 At one time the Buddha was wandering in the land of the Mallas together with a large Saṅgha when he arrived at Pāvā.
 
+<!-- @segment ud8.5:1.3 -->
+
 There he stayed in Cunda the smith’s mango grove.
+
+<!-- @segment ud8.5:2.1 -->
 
 Cunda heard that the Buddha had arrived and was staying in his mango grove.
 
+<!-- @segment ud8.5:2.2 -->
+
 Then he went to the Buddha, bowed, and sat down to one side.
+
+<!-- @segment ud8.5:2.3 -->
 
 The Buddha educated, encouraged, fired up, and inspired him with a Dhamma talk.
 
+<!-- @segment ud8.5:2.4 -->
+
 Then Cunda said to the Buddha,
+
+<!-- @segment ud8.5:2.5 -->
 
 “Sir, would the Buddha, together with the mendicant Saṅgha, please accept tomorrow’s meal from me?”
 
+<!-- @segment ud8.5:2.6 -->
+
 The Buddha consented with silence.
+
+<!-- @segment ud8.5:3.1 -->
 
 Then, knowing that the Buddha had consented, Cunda rose from his seat, bowed, and respectfully circled the Buddha, keeping him on his right, before leaving.
 
+<!-- @segment ud8.5:3.2 -->
+
 And when the night had passed Cunda had delicious fresh and cooked foods prepared in his own home, and plenty of pork on the turn. Then he had the Buddha informed of the time, saying,
+
+<!-- @segment ud8.5:3.3 -->
 
 “Sir, it’s time. The meal is ready.”
 
+<!-- @segment ud8.5:4.1 -->
+
 Then the Buddha robed up in the morning and, taking his bowl and robe, went to the home of Cunda together with the mendicant Saṅgha, where he sat on the seat spread out
+
+<!-- @segment ud8.5:4.2 -->
 
 and addressed Cunda,
 
+<!-- @segment ud8.5:4.3 -->
+
 “Cunda, please serve me with the pork on the turn that you’ve prepared.
+
+<!-- @segment ud8.5:4.4 -->
 
 And serve the mendicant Saṅgha with the other foods.”
 
+<!-- @segment ud8.5:4.5 -->
+
 “Yes, sir,” replied Cunda, and did as he was asked.
+
+<!-- @segment ud8.5:5.1 -->
 
 Then the Buddha addressed Cunda,
 
+<!-- @segment ud8.5:5.2 -->
+
 “Cunda, any pork on the turn that’s left over, you should bury it in a pit.
+
+<!-- @segment ud8.5:5.3 -->
 
 I don’t see anyone in this world—with its gods, Māras, and Divinities, this population with its ascetics and brahmins, its gods and humans—who could properly digest it except for the Realized One.”
 
+<!-- @segment ud8.5:5.4 -->
+
 “Yes, sir,” replied Cunda. He did as he was asked, then came back to the Buddha, bowed, and sat down to one side.
+
+<!-- @segment ud8.5:5.5 -->
 
 Then the Buddha educated, encouraged, fired up, and inspired him with a Dhamma talk, after which he rose from his seat and left.
 
+<!-- @segment ud8.5:6.1 -->
+
 After the Buddha had eaten Cunda’s meal, he fell severely ill with bloody dysentery, struck by dreadful pains, close to death.
+
+<!-- @segment ud8.5:6.2 -->
 
 But he endured unbothered, with mindfulness and situational awareness.
 
+<!-- @segment ud8.5:7.1 -->
+
 Then the Buddha said to Venerable Ānanda,
+
+<!-- @segment ud8.5:7.2 -->
 
 “Come, Ānanda, let’s go to Kusinārā.”
 
+<!-- @segment ud8.5:7.3 -->
+
 “Yes, sir,” Ānanda replied.
+
+<!-- @segment ud8.5:8.1 -->
 
 I’ve heard that after eating
 
+<!-- @segment ud8.5:8.2 -->
+
 the meal of Cunda the smith,
+
+<!-- @segment ud8.5:8.3 -->
 
 the attentive one fell severely ill,
 
+<!-- @segment ud8.5:8.4 -->
+
 with pains, close to death.
+
+<!-- @segment ud8.5:9.1 -->
 
 A severe sickness struck the Teacher
 
+<!-- @segment ud8.5:9.2 -->
+
 who had eaten the pork on the turn.
+
+<!-- @segment ud8.5:9.3 -->
 
 While still purging the Buddha said:
 
+<!-- @segment ud8.5:9.4 -->
+
 “I’ll go to the citadel of Kusinārā.”
+
+<!-- @segment ud8.5:10.1 -->
 
 Then the Buddha left the road and went to the root of a certain tree, where he addressed Ānanda,
 
+<!-- @segment ud8.5:10.2 -->
+
 “Go on then, Ānanda, fold my outer robe in four and spread it out for me. I am tired and will sit down.”
+
+<!-- @segment ud8.5:10.3 -->
 
 “Yes, sir,” replied Ānanda, and did as he was asked.
 
+<!-- @segment ud8.5:10.4 -->
+
 The Buddha sat on the seat spread out,
+
+<!-- @segment ud8.5:10.5 -->
 
 and said to Venerable Ānanda,
 
+<!-- @segment ud8.5:10.6 -->
+
 “Go on then, Ānanda, fetch me some water. I am thirsty and will drink.”
+
+<!-- @segment ud8.5:11.1 -->
 
 When he said this, Venerable Ānanda said to the Buddha,
 
+<!-- @segment ud8.5:11.2 -->
+
 “Sir, just now around five hundred carts have passed by. The shallow water has been churned up by their wheels, and it flows cloudy and murky.
+
+<!-- @segment ud8.5:11.3 -->
 
 The Kakutthā river is not far away, with clear, sweet, cool water, clean, with smooth banks, delightful.
 
+<!-- @segment ud8.5:11.4 -->
+
 There the Buddha can drink and cool his limbs.”
+
+<!-- @segment ud8.5:12.1 -->
 
 For a second time,
 
+<!-- @segment ud8.5:12.2 -->
+
 and a third time, the Buddha said to Ānanda,
+
+<!-- @segment ud8.5:12.3 -->
 
 “Go on then, Ānanda, fetch me some water. I am thirsty and will drink.”
 
+<!-- @segment ud8.5:12.4 -->
+
 “Yes, sir,” replied Ānanda. Taking his bowl he went to the river.
+
+<!-- @segment ud8.5:12.5 -->
 
 Now, though the shallow water in that river had been churned up by wheels, and flowed cloudy and murky, when Ānanda approached it flowed transparent, clear, and unclouded.
 
+<!-- @segment ud8.5:13.1 -->
+
 Then Venerable Ānanda thought,
+
+<!-- @segment ud8.5:13.2 -->
 
 “Oh lord, how incredible, how amazing! The Realized One has such psychic power and might!
 
+<!-- @segment ud8.5:13.3 -->
+
 For though the shallow water in that river had been churned up by wheels, and flowed cloudy and murky, when I approached it flowed transparent, clear, and unclouded.”
+
+<!-- @segment ud8.5:13.4 -->
 
 Gathering a bowl of drinking water he went back to the Buddha, and said to him,
 
+<!-- @segment ud8.5:13.5 -->
+
 “It’s incredible, sir, it’s amazing! The Realized One has such psychic power and might!
+
+<!-- @segment ud8.5:13.6 -->
 
 For though the shallow water in that river had been churned up by wheels, and flowed cloudy and murky, when I approached it flowed transparent, clear, and unclouded.
 
+<!-- @segment ud8.5:13.7 -->
+
 Drink the water, Blessed One! Drink the water, Holy One!”
+
+<!-- @segment ud8.5:14.1 -->
 
 So the Buddha drank the water.
 
+<!-- @segment ud8.5:14.2 -->
+
 Then the Buddha together with a large Saṅgha of mendicants went to the Kakutthā River. He plunged into the river and bathed and drank.
+
+<!-- @segment ud8.5:14.3 -->
 
 And when he had emerged, he went to the mango grove, where he addressed Venerable Cundaka,
 
+<!-- @segment ud8.5:14.4 -->
+
 “Go on then, Cundaka, fold my outer robe in four and spread it out for me. I am tired and will lie down.”
+
+<!-- @segment ud8.5:15.1 -->
 
 “Yes, sir,” replied Cundaka, and did as he was asked.
 
+<!-- @segment ud8.5:15.2 -->
+
 And then the Buddha laid down in the lion’s posture—on the right side, placing one foot on top of the other—mindful and aware, and focused on the time of getting up.
+
+<!-- @segment ud8.5:15.3 -->
 
 But Cundaka sat down right there in front of the Buddha.
 
+<!-- @segment ud8.5:16.1 -->
+
 Having gone to Kakutthā Creek,
+
+<!-- @segment ud8.5:16.2 -->
 
 whose water was transparent, sweet, and clear,
 
+<!-- @segment ud8.5:16.3 -->
+
 the Teacher, being tired, plunged in,
+
+<!-- @segment ud8.5:16.4 -->
 
 the Realized One, without compare in the world.
 
+<!-- @segment ud8.5:17.1 -->
+
 And after bathing and drinking the Teacher emerged.
+
+<!-- @segment ud8.5:17.2 -->
 
 Before the group of mendicants, in the middle, <j>the Buddha,
 
+<!-- @segment ud8.5:17.3 -->
+
 the Teacher who rolled forth <j>the present dispensation,
+
+<!-- @segment ud8.5:17.4 -->
 
 the great seer went to the mango grove.
 
+<!-- @segment ud8.5:17.5 -->
+
 He addressed the mendicant named Cundaka:
+
+<!-- @segment ud8.5:17.6 -->
 
 “Spread out my folded robe so I can lie down.”
 
+<!-- @segment ud8.5:18.1 -->
+
 The evolved one urged Cunda,
+
+<!-- @segment ud8.5:18.2 -->
 
 who quickly spread the folded robe.
 
+<!-- @segment ud8.5:18.3 -->
+
 The Teacher lay down so tired,
+
+<!-- @segment ud8.5:18.4 -->
 
 while Cunda sat there before him.
 
+<!-- @segment ud8.5:19.1 -->
+
 Then the Buddha said to Venerable Ānanda,
+
+<!-- @segment ud8.5:19.2 -->
 
 “Now it may happen, Ānanda, that others may give rise to some regret for Cunda the smith:
 
+<!-- @segment ud8.5:19.3 -->
+
 ‘It’s your loss, respectable Cunda, it’s your misfortune, in that the Realized One was fully quenched after eating his last almsmeal from you.’
+
+<!-- @segment ud8.5:19.4 -->
 
 You should get rid of remorse in Cunda the smith like this:
 
+<!-- @segment ud8.5:20.1 -->
+
 ‘You’re fortunate, respectable Cunda, you’re so very fortunate,
+
+<!-- @segment ud8.5:20.2 -->
 
 in that the Realized One was fully quenched after eating his last almsmeal from you.
 
+<!-- @segment ud8.5:20.3 -->
+
 I have heard and learned this in the presence of the Buddha.
+
+<!-- @segment ud8.5:20.4 -->
 
 There are two almsmeal offerings that have identical fruit and result, and are more fruitful and beneficial than other almsmeal offerings.
 
+<!-- @segment ud8.5:20.5 -->
+
 What two?
+
+<!-- @segment ud8.5:20.6 -->
 
 The almsmeal after eating which a Realized One awakens to the supreme perfect awakening; and the almsmeal after eating which he becomes fully extinguished in the element of extinguishment with no residue.
 
+<!-- @segment ud8.5:20.7 -->
+
 These two almsmeal offerings have identical fruit and result, and are more fruitful and beneficial than other almsmeal offerings.
+
+<!-- @segment ud8.5:21.1 -->
 
 You’ve accumulated a deed that leads to long life, beauty, happiness, glory, heaven, and sovereignty.’
 
+<!-- @segment ud8.5:21.2 -->
+
 You should dispel remorse in Cunda the smith like this.”
+
+<!-- @segment ud8.5:22.1 -->
 
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
 
+<!-- @segment ud8.5:23.1 -->
+
 “A giver’s merit grows;
+
+<!-- @segment ud8.5:23.2 -->
 
 enmity doesn’t build up when you have self-control.
 
+<!-- @segment ud8.5:23.3 -->
+
 A skillful person gives up bad things—
+
+<!-- @segment ud8.5:23.4 -->
 
 with the end of greed, hate, and delusion, <j>they’re quenched.”

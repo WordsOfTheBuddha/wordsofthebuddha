@@ -1,39 +1,71 @@
 ---
 slug: an3.23
 source: suttacentral/bilara-data
+title: Saṅkhārasutta
 edition: ms
 granularity: segment
-title: Saṅkhārasutta
 ---
+
+<!-- @segment an3.23:1.1 -->
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ.
 
+<!-- @segment an3.23:1.2 -->
+
 Katame tayo?
+
+<!-- @segment an3.23:1.3 -->
 
 Idha, bhikkhave, ekacco puggalo sabyābajjhaṁ kāyasaṅkhāraṁ abhisaṅkharoti, sabyābajjhaṁ vacīsaṅkhāraṁ abhisaṅkharoti, sabyābajjhaṁ manosaṅkhāraṁ abhisaṅkharoti.
 
+<!-- @segment an3.23:1.4 -->
+
 So sabyābajjhaṁ kāyasaṅkhāraṁ abhisaṅkharitvā, sabyābajjhaṁ vacīsaṅkhāraṁ abhisaṅkharitvā, sabyābajjhaṁ manosaṅkhāraṁ abhisaṅkharitvā sabyābajjhaṁ lokaṁ upapajjati.
+
+<!-- @segment an3.23:1.5 -->
 
 Tamenaṁ sabyābajjhaṁ lokaṁ upapannaṁ samānaṁ sabyābajjhā phassā phusanti.
 
+<!-- @segment an3.23:1.6 -->
+
 So sabyābajjhehi phassehi phuṭṭho samāno sabyābajjhaṁ vedanaṁ vedayati ekantadukkhaṁ, seyyathāpi sattā nerayikā.
+
+<!-- @segment an3.23:2.1 -->
 
 Idha pana, bhikkhave, ekacco puggalo abyābajjhaṁ kāyasaṅkhāraṁ abhisaṅkharoti, abyābajjhaṁ vacīsaṅkhāraṁ abhisaṅkharoti, abyābajjhaṁ manosaṅkhāraṁ abhisaṅkharoti.
 
+<!-- @segment an3.23:2.2 -->
+
 So abyābajjhaṁ kāyasaṅkhāraṁ abhisaṅkharitvā, abyābajjhaṁ vacīsaṅkhāraṁ abhisaṅkharitvā, abyābajjhaṁ manosaṅkhāraṁ abhisaṅkharitvā abyābajjhaṁ lokaṁ upapajjati.
+
+<!-- @segment an3.23:2.3 -->
 
 Tamenaṁ abyābajjhaṁ lokaṁ upapannaṁ samānaṁ abyābajjhā phassā phusanti.
 
+<!-- @segment an3.23:2.4 -->
+
 So abyābajjhehi phassehi phuṭṭho samāno abyābajjhaṁ vedanaṁ vedayati ekantasukhaṁ, seyyathāpi devā subhakiṇhā.
+
+<!-- @segment an3.23:3.1 -->
 
 Idha pana, bhikkhave, ekacco puggalo sabyābajjhampi abyābajjhampi kāyasaṅkhāraṁ abhisaṅkharoti, sabyābajjhampi abyābajjhampi vacīsaṅkhāraṁ abhisaṅkharoti, sabyābajjhampi abyābajjhampi manosaṅkhāraṁ abhisaṅkharoti.
 
+<!-- @segment an3.23:3.2 -->
+
 So sabyābajjhampi abyābajjhampi kāyasaṅkhāraṁ abhisaṅkharitvā, sabyābajjhampi abyābajjhampi vacīsaṅkhāraṁ abhisaṅkharitvā, sabyābajjhampi abyābajjhampi manosaṅkhāraṁ abhisaṅkharitvā sabyābajjhampi abyābajjhampi lokaṁ upapajjati.
+
+<!-- @segment an3.23:3.3 -->
 
 Tamenaṁ sabyābajjhampi abyābajjhampi lokaṁ upapannaṁ samānaṁ sabyābajjhāpi abyābajjhāpi phassā phusanti.
 
+<!-- @segment an3.23:3.4 -->
+
 So sabyābajjhehipi abyābajjhehipi phassehi phuṭṭho samāno sabyābajjhampi abyābajjhampi vedanaṁ vedayati vokiṇṇasukhadukkhaṁ, seyyathāpi manussā ekacce ca devā ekacce ca vinipātikā.
 
+<!-- @segment an3.23:3.5 -->
+
 Ime kho, bhikkhave, tayo puggalā santo saṁvijjamānā lokasmin”ti.
+
+<!-- @segment an3.23:3.6 -->
 
 Tatiyaṁ.

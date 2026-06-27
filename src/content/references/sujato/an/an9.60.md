@@ -6,4 +6,6 @@ license: CC0
 title: Cessation
 ---
 
+<!-- @segment an9.60:1.1 -->
+
 “Reverend, they speak of ‘cessation’. …”

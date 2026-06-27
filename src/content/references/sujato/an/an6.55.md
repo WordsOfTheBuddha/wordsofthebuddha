@@ -6,170 +6,374 @@ license: CC0
 title: With Soṇa
 ---
 
+<!-- @segment an6.55:1.1 -->
+
 So I have heard.
+
+<!-- @segment an6.55:1.2 -->
 
 At one time the Buddha was staying near Rājagaha, on the Vulture’s Peak Mountain.
 
+<!-- @segment an6.55:1.3 -->
+
 Now at that time Venerable Soṇa was staying near Rājagaha in the Cool Grove.
+
+<!-- @segment an6.55:1.4 -->
 
 Then as he was in private retreat this thought came to his mind,
 
+<!-- @segment an6.55:1.5 -->
+
 “I am one of the Buddha’s most energetic disciples.
 
+<!-- @segment an6.55:1.6 -->
+
 Yet my mind is not freed from defilements by not grasping. But my family has wealth. I could enjoy that wealth and make merit.
+
+<!-- @segment an6.55:1.7 -->
 
 Why don’t I resign the training and return to a lesser life, so I can enjoy my wealth and make merit?”
 
+<!-- @segment an6.55:2.1 -->
+
 Then the Buddha knew Venerable Soṇa’s train of thought. As easily as a strong person would extend or contract their arm, he vanished from the Vulture’s Peak and reappeared in the Cool Grove in front of Soṇa,
+
+<!-- @segment an6.55:2.2 -->
 
 and sat on the seat spread out.
 
+<!-- @segment an6.55:2.3 -->
+
 Soṇa bowed to the Buddha and sat down to one side.
+
+<!-- @segment an6.55:2.4 -->
 
 The Buddha said to him,
 
+<!-- @segment an6.55:3.1 -->
+
 “Soṇa, as you were in private retreat didn’t this thought come to your mind:
+
+<!-- @segment an6.55:3.2 -->
 
 ‘I am one of the Buddha’s most energetic disciples.
 
+<!-- @segment an6.55:3.3 -->
+
 Yet my mind is not freed from defilements by not grasping. But my family has wealth. I could enjoy that wealth and make merit.
+
+<!-- @segment an6.55:3.4 -->
 
 Why don’t I resign the training and return to a lesser life, so I can enjoy my wealth and make merit?’”
 
+<!-- @segment an6.55:3.5 -->
+
 “Yes, sir.”
+
+<!-- @segment an6.55:4.1 -->
 
 “What do you think, Soṇa?
 
+<!-- @segment an6.55:4.2 -->
+
 When you were still a layman, weren’t you a good player of the arched harp?”
 
+<!-- @segment an6.55:4.3 -->
+
 “Yes, sir.”
+
+<!-- @segment an6.55:4.4 -->
 
 “When your harp’s strings were tuned too tight, was it resonant and playable?”
 
+<!-- @segment an6.55:4.5 -->
+
 “No, sir.”
+
+<!-- @segment an6.55:5.1 -->
 
 “When your harp’s strings were tuned too slack, was it resonant and playable?”
 
+<!-- @segment an6.55:5.2 -->
+
 “No, sir.”
+
+<!-- @segment an6.55:6.1 -->
 
 “But when your harp’s strings were tuned neither too tight nor too slack, but fixed at an even tension, was it resonant and playable?”
 
+<!-- @segment an6.55:6.2 -->
+
 “Yes, sir.”
+
+<!-- @segment an6.55:7.1 -->
 
 “In the same way, Soṇa, when energy is too forceful it leads to restlessness. When energy is too slack it leads to laziness.
 
+<!-- @segment an6.55:7.2 -->
+
 So, Soṇa, you should focus on energy and serenity, find a balance of the faculties, and learn the character of this situation.”
+
+<!-- @segment an6.55:7.3 -->
 
 “Yes, sir,” Soṇa replied.
 
+<!-- @segment an6.55:7.4 -->
+
 After advising Soṇa like this, the Buddha, as easily as a strong person would extend or contract their arm, vanished from the Cool Grove and reappeared on the Vulture’s Peak.
+
+<!-- @segment an6.55:8.1 -->
 
 After some time Soṇa focused on energy and serenity, found a balance of the faculties, and learned the pattern of this situation.
 
+<!-- @segment an6.55:8.2 -->
+
 Then Soṇa, living alone, withdrawn, diligent, keen, and resolute, soon realized the supreme culmination of the spiritual path in this very life. He lived having achieved with his own insight the goal for which gentlemen rightly go forth from the lay life to homelessness.
+
+<!-- @segment an6.55:8.3 -->
 
 He understood: “Rebirth is ended; the spiritual journey has been completed; what had to be done has been done; there is nothing further for this place.”
 
+<!-- @segment an6.55:8.4 -->
+
 And Venerable Soṇa became one of the perfected.
+
+<!-- @segment an6.55:9.1 -->
 
 Then, when Soṇa had attained perfection, he thought,
 
+<!-- @segment an6.55:9.2 -->
+
 “Why don’t I go to the Buddha and declare my enlightenment in his presence?”
+
+<!-- @segment an6.55:9.3 -->
 
 Then Soṇa went up to the Buddha, bowed, sat down to one side, and said to him:
 
+<!-- @segment an6.55:10.1 -->
+
 “Sir, a mendicant who is perfected—with defilements ended, who has completed the spiritual journey, done what had to be done, laid down the burden, achieved their heart’s goal, utterly ended the fetter of continued existence, and is rightly freed through enlightenment—is dedicated to six things.
+
+<!-- @segment an6.55:10.2 -->
 
 They are dedicated to renunciation, seclusion, kindness, the ending of craving, the ending of grasping, and mental clarity.
 
+<!-- @segment an6.55:11.1 -->
+
 It may be, sir, that one of the venerables here thinks:
+
+<!-- @segment an6.55:11.2 -->
 
 ‘Maybe this venerable is dedicated to renunciation solely out of mere faith.’
 
+<!-- @segment an6.55:11.3 -->
+
 But it should not be seen like this.
+
+<!-- @segment an6.55:11.4 -->
 
 A mendicant with defilements ended does not see in themselves anything more to do, or anything that needs improvement. They’re dedicated to renunciation because they’re free of greed, hate, and delusion with the end of greed, hate, and delusion.
 
+<!-- @segment an6.55:12.1 -->
+
 It may be, sir, that one of the venerables here thinks:
+
+<!-- @segment an6.55:12.2 -->
 
 ‘Maybe this venerable is dedicated to seclusion because they enjoy possessions, honor, and popularity.’
 
+<!-- @segment an6.55:12.3 -->
+
 But it should not be seen like this. …
+
+<!-- @segment an6.55:12.4 -->
+
+
+
+<!-- @segment an6.55:13.1 -->
 
 It may be, sir, that one of the venerables here thinks:
 
+<!-- @segment an6.55:13.2 -->
+
 ‘Maybe this venerable is dedicated to kindness because they believe that adhering to precepts and observances is essential.’
+
+<!-- @segment an6.55:13.3 -->
 
 But it should not be seen like this. …
 
+<!-- @segment an6.55:13.4 -->
+
+
+
+<!-- @segment an6.55:14.1 -->
+
 They’re dedicated to the ending of craving because they’re free of greed, hate, and delusion with the end of greed, hate, and delusion.
+
+<!-- @segment an6.55:15.1 -->
 
 They’re dedicated to the ending of grasping because they’re free of greed, hate, and delusion with the end of greed, hate, and delusion.
 
+<!-- @segment an6.55:16.1 -->
+
 They’re dedicated to clarity of mind because they’re free of greed, hate, and delusion with the end of greed, hate, and delusion.
+
+<!-- @segment an6.55:17.1 -->
 
 When a mendicant’s mind is rightly freed like this, even if compelling sights come into the range of vision they don’t overcome their mind.
 
+<!-- @segment an6.55:17.2 -->
+
 Their mind is quite untainted. It is steady, imperturbable, observing disappearance.
+
+<!-- @segment an6.55:17.3 -->
 
 Even if compelling sounds …
 
+<!-- @segment an6.55:17.4 -->
+
 smells …
+
+<!-- @segment an6.55:17.5 -->
 
 tastes …
 
+<!-- @segment an6.55:17.6 -->
+
 touches …
+
+<!-- @segment an6.55:17.7 -->
 
 and ideas come into the range of the mind they don’t overcome the mind.
 
+<!-- @segment an6.55:17.8 -->
+
 Their mind is quite untainted. It is steady, imperturbable, observing disappearance.
+
+<!-- @segment an6.55:17.9 -->
 
 Suppose there was a mountain that was one solid mass of rock, without cracks or holes.
 
+<!-- @segment an6.55:17.10 -->
+
 Even if violent storms were to blow up out of the east, the west, the north, and the south,
+
+<!-- @segment an6.55:17.11 -->
+
+
+
+<!-- @segment an6.55:17.12 -->
 
 they couldn’t make it shake or rock or tremble.
 
+<!-- @segment an6.55:17.13 -->
+
 In the same way, when a mendicant’s mind is rightly freed like this, even if compelling sights come into the range of vision they don’t overcome their mind. …
+
+<!-- @segment an6.55:17.14 -->
+
+
+
+<!-- @segment an6.55:17.15 -->
+
+
+
+<!-- @segment an6.55:17.16 -->
+
+
+
+<!-- @segment an6.55:17.17 -->
+
+
+
+<!-- @segment an6.55:17.18 -->
+
+
+
+<!-- @segment an6.55:17.19 -->
+
+
+
+<!-- @segment an6.55:17.20 -->
 
 Their mind is quite untainted. It is steady, imperturbable, observing disappearance.
 
+<!-- @segment an6.55:18.1 -->
+
 When you’re dedicated to renunciation
+
+<!-- @segment an6.55:18.2 -->
 
 and seclusion of the heart;
 
+<!-- @segment an6.55:18.3 -->
+
 when you’re dedicated to kindness
+
+<!-- @segment an6.55:18.4 -->
 
 and the end of grasping;
 
+<!-- @segment an6.55:19.1 -->
+
 when you’re dedicated to the ending of craving
+
+<!-- @segment an6.55:19.2 -->
 
 and clarity of heart;
 
+<!-- @segment an6.55:19.3 -->
+
 and you’ve seen the arising of the senses,
+
+<!-- @segment an6.55:19.4 -->
 
 your mind is rightly freed.
 
+<!-- @segment an6.55:20.1 -->
+
 For that one, rightly freed,
+
+<!-- @segment an6.55:20.2 -->
 
 a mendicant with peaceful mind,
 
+<!-- @segment an6.55:20.3 -->
+
 there’s nothing to be improved,
+
+<!-- @segment an6.55:20.4 -->
 
 and nothing more to do.
 
+<!-- @segment an6.55:21.1 -->
+
 As the wind cannot stir
+
+<!-- @segment an6.55:21.2 -->
 
 a solid mass of rock,
 
+<!-- @segment an6.55:21.3 -->
+
 so too sights, tastes, sounds,
+
+<!-- @segment an6.55:21.4 -->
 
 smells, and touches—the lot—
 
+<!-- @segment an6.55:22.1 -->
+
 and ideas, whether liked or disliked,
+
+<!-- @segment an6.55:22.2 -->
 
 don’t disturb the unaffected one.
 
+<!-- @segment an6.55:22.3 -->
+
 Their mind is steady and free
+
+<!-- @segment an6.55:22.4 -->
 
 as they observe fall.”

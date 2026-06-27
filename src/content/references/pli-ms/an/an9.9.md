@@ -1,17 +1,27 @@
 ---
 slug: an9.9
 source: suttacentral/bilara-data
+title: Puggalasutta
 edition: ms
 granularity: segment
-title: Puggalasutta
 ---
+
+<!-- @segment an9.9:1.1 -->
 
 “Navayime, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ.
 
+<!-- @segment an9.9:1.2 -->
+
 Katame nava?
+
+<!-- @segment an9.9:1.3 -->
 
 Arahā, arahattāya paṭipanno, anāgāmī, anāgāmiphalasacchikiriyāya paṭipanno, sakadāgāmī, sakadāgāmiphalasacchikiriyāya paṭipanno, sotāpanno, sotāpattiphalasacchikiriyāya paṭipanno, puthujjano—
 
+<!-- @segment an9.9:1.4 -->
+
 ime kho, bhikkhave, nava puggalā santo saṁvijjamānā lokasmin”ti.
+
+<!-- @segment an9.9:1.5 -->
 
 Navamaṁ.

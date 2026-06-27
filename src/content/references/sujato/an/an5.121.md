@@ -6,24 +6,46 @@ license: CC0
 title: Sick
 ---
 
+<!-- @segment an5.121:1.1 -->
+
 At one time the Buddha was staying near Vesālī, at the Great Wood, in the hall with the peaked roof.
+
+<!-- @segment an5.121:1.2 -->
 
 Then in the late afternoon, the Buddha came out of retreat and went to the infirmary, where
 
+<!-- @segment an5.121:1.3 -->
+
 he saw a certain mendicant who was weak and sick.
+
+<!-- @segment an5.121:1.4 -->
 
 He sat down on the seat spread out,
 
+<!-- @segment an5.121:1.5 -->
+
 and addressed the mendicants:
+
+<!-- @segment an5.121:2.1 -->
 
 “Mendicants, if a weak and sick mendicant does not neglect five things, it can be expected that
 
+<!-- @segment an5.121:2.2 -->
+
 they will soon realize the undefiled freedom of heart and freedom by wisdom in this very life, and live having realized it with their own insight due to the ending of defilements.
+
+<!-- @segment an5.121:3.1 -->
 
 What five?
 
+<!-- @segment an5.121:3.2 -->
+
 It’s when a mendicant meditates observing the ugliness of the body, perceives the repulsiveness of food, perceives dissatisfaction with the whole world, observes the impermanence of all conditions, and has well established the perception of their own death.
 
+<!-- @segment an5.121:3.3 -->
+
 If a weak and sick mendicant does not neglect these five things, it can be expected that
+
+<!-- @segment an5.121:3.4 -->
 
 they will soon realize the undefiled freedom of heart and freedom by wisdom in this very life, and live having realized it with their own insight due to the ending of defilements.”

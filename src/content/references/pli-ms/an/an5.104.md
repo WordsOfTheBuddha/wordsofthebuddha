@@ -1,43 +1,79 @@
 ---
 slug: an5.104
 source: suttacentral/bilara-data
+title: Samaṇasukhumālasutta
 edition: ms
 granularity: segment
-title: Samaṇasukhumālasutta
 ---
+
+<!-- @segment an5.104:1.1 -->
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu samaṇesu samaṇasukhumālo hoti.
 
+<!-- @segment an5.104:2.1 -->
+
 Katamehi pañcahi?
+
+<!-- @segment an5.104:2.2 -->
 
 Idha, bhikkhave, bhikkhu yācitova bahulaṁ cīvaraṁ paribhuñjati, appaṁ ayācito; yācitova bahulaṁ piṇḍapātaṁ paribhuñjati, appaṁ ayācito; yācitova bahulaṁ senāsanaṁ paribhuñjati, appaṁ ayācito; yācitova bahulaṁ gilānapaccayabhesajjaparikkhāraṁ paribhuñjati, appaṁ ayācito.
 
+<!-- @segment an5.104:2.3 -->
+
 Yehi kho pana sabrahmacārīhi saddhiṁ viharati, tyassa manāpeneva bahulaṁ kāyakammena samudācaranti, appaṁ amanāpena; manāpeneva bahulaṁ vacīkammena samudācaranti, appaṁ amanāpena; manāpeneva bahulaṁ manokammena samudācaranti, appaṁ amanāpena;
 
+<!-- @segment an5.104:2.4 -->
+
 manāpaṁyeva upahāraṁ upaharanti, appaṁ amanāpaṁ.
+
+<!-- @segment an5.104:2.5 -->
 
 Yāni kho pana tāni vedayitāni pittasamuṭṭhānāni vā semhasamuṭṭhānāni vā vātasamuṭṭhānāni vā sannipātikāni vā utupariṇāmajāni vā visamaparihārajāni vā opakkamikāni vā kammavipākajāni vā, tānissa na bahudeva uppajjanti.
 
+<!-- @segment an5.104:2.6 -->
+
 Appābādho hoti, catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī,
+
+<!-- @segment an5.104:2.7 -->
 
 āsavānaṁ khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharati.
 
+<!-- @segment an5.104:2.8 -->
+
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu samaṇesu samaṇasukhumālo hoti.
+
+<!-- @segment an5.104:3.1 -->
 
 Yañhi taṁ, bhikkhave, sammā vadamāno vadeyya: ‘samaṇesu samaṇasukhumālo’ti, mameva taṁ, bhikkhave, sammā vadamāno vadeyya: ‘samaṇesu samaṇasukhumālo’ti.
 
+<!-- @segment an5.104:3.2 -->
+
 Ahañhi, bhikkhave, yācitova bahulaṁ cīvaraṁ paribhuñjāmi, appaṁ ayācito; yācitova bahulaṁ piṇḍapātaṁ paribhuñjāmi, appaṁ ayācito; yācitova bahulaṁ senāsanaṁ paribhuñjāmi, appaṁ ayācito; yācitova bahulaṁ gilānapaccayabhesajjaparikkhāraṁ paribhuñjāmi, appaṁ ayācito.
+
+<!-- @segment an5.104:3.3 -->
 
 Yehi kho pana bhikkhūhi saddhiṁ viharāmi, te maṁ manāpeneva bahulaṁ kāyakammena samudācaranti, appaṁ amanāpena; manāpeneva bahulaṁ vacīkammena samudācaranti, appaṁ amanāpena; manāpeneva bahulaṁ manokammena samudācaranti, appaṁ amanāpena;
 
+<!-- @segment an5.104:3.4 -->
+
 manāpaṁyeva upahāraṁ upaharanti, appaṁ amanāpaṁ.
+
+<!-- @segment an5.104:3.5 -->
 
 Yāni kho pana tāni vedayitāni—pittasamuṭṭhānāni vā semhasamuṭṭhānāni vā vātasamuṭṭhānāni vā sannipātikāni vā utupariṇāmajāni vā visamaparihārajāni vā opakkamikāni vā kammavipākajāni vā—tāni me na bahudeva uppajjanti. Appābādhohamasmi.
 
+<!-- @segment an5.104:3.6 -->
+
 catunnaṁ kho panasmi jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī akicchalābhī akasiralābhī,
+
+<!-- @segment an5.104:3.7 -->
 
 āsavānaṁ khayā …pe… sacchikatvā upasampajja viharāmi.
 
+<!-- @segment an5.104:4.1 -->
+
 Yañhi taṁ, bhikkhave, sammā vadamāno vadeyya: ‘samaṇesu samaṇasukhumālo’ti, mameva taṁ, bhikkhave, sammā vadamāno vadeyya: ‘samaṇesu samaṇasukhumālo’”ti.
+
+<!-- @segment an5.104:4.2 -->
 
 Catutthaṁ.

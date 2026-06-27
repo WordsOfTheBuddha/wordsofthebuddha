@@ -6,22 +6,42 @@ license: CC0
 title: Peak
 ---
 
+<!-- @segment an5.12:1.1 -->
+
 “Mendicants, there are these five powers of a trainee.
+
+<!-- @segment an5.12:1.2 -->
 
 What five?
 
+<!-- @segment an5.12:1.3 -->
+
 The powers of faith, conscience, prudence, energy, and wisdom.
+
+<!-- @segment an5.12:1.4 -->
 
 These are the five powers of a trainee.
 
+<!-- @segment an5.12:1.5 -->
+
 Of these five powers of a trainee, the power of wisdom is the chief. It holds and binds everything together.
+
+<!-- @segment an5.12:2.1 -->
 
 It’s like a bungalow. The roof-peak is the chief point, which holds and binds everything together.
 
+<!-- @segment an5.12:2.2 -->
+
 In the same way, of these five powers of a trainee, the power of wisdom is the chief. It holds and binds everything together.
+
+<!-- @segment an5.12:3.1 -->
 
 So you should train like this:
 
+<!-- @segment an5.12:3.2 -->
+
 ‘We will have the trainee’s powers of faith, conscience, prudence, energy, and wisdom.’
+
+<!-- @segment an5.12:3.3 -->
 
 That’s how you should train.”

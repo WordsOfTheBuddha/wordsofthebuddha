@@ -1,173 +1,339 @@
 ---
 slug: an9.36
 source: suttacentral/bilara-data
+title: Jhānasutta
 edition: ms
 granularity: segment
-title: Jhānasutta
 ---
+
+<!-- @segment an9.36:1.1 -->
 
 “Paṭhamampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmi;
 
+<!-- @segment an9.36:1.2 -->
+
 dutiyampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmi;
+
+<!-- @segment an9.36:1.3 -->
 
 tatiyampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmi;
 
+<!-- @segment an9.36:1.4 -->
+
 catutthampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmi;
+
+<!-- @segment an9.36:1.5 -->
 
 ākāsānañcāyatanampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmi;
 
+<!-- @segment an9.36:1.6 -->
+
 viññāṇañcāyatanampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmi;
+
+<!-- @segment an9.36:1.7 -->
 
 ākiñcaññāyatanampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmi;
 
+<!-- @segment an9.36:1.8 -->
+
 nevasaññānāsaññāyatanampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmi;
+
+<!-- @segment an9.36:1.9 -->
 
 saññāvedayitanirodhampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmi.
 
+<!-- @segment an9.36:2.1 -->
+
 ‘Paṭhamampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmī’ti, iti kho panetaṁ vuttaṁ.
 
+<!-- @segment an9.36:2.2 -->
+
 Kiñcetaṁ paṭicca vuttaṁ?
+
+<!-- @segment an9.36:2.3 -->
 
 Idha, bhikkhave, bhikkhu vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.36:2.4 -->
+
 So yadeva tattha hoti rūpagataṁ vedanāgataṁ saññāgataṁ saṅkhāragataṁ viññāṇagataṁ, te dhamme aniccato dukkhato rogato gaṇḍato sallato aghato ābādhato parato palokato suññato anattato samanupassati.
+
+<!-- @segment an9.36:2.5 -->
 
 So tehi dhammehi cittaṁ paṭivāpeti.
 
+<!-- @segment an9.36:2.6 -->
+
 So tehi dhammehi cittaṁ paṭivāpetvā amatāya dhātuyā cittaṁ upasaṁharati:
+
+<!-- @segment an9.36:2.7 -->
 
 ‘etaṁ santaṁ etaṁ paṇītaṁ yadidaṁ sabbasaṅkhārasamatho sabbūpadhipaṭinissaggo taṇhākkhayo virāgo nirodho nibbānan’ti.
 
+<!-- @segment an9.36:2.8 -->
+
 So tattha ṭhito āsavānaṁ khayaṁ pāpuṇāti.
+
+<!-- @segment an9.36:2.9 -->
 
 No ce āsavānaṁ khayaṁ pāpuṇāti, teneva dhammarāgena tāya dhammanandiyā pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti tattha parinibbāyī anāvattidhammo tasmā lokā.
 
+<!-- @segment an9.36:3.1 -->
+
 Seyyathāpi, bhikkhave, issāso vā issāsantevāsī vā tiṇapurisarūpake vā mattikāpuñje vā yoggaṁ karitvā, so aparena samayena dūrepātī ca hoti akkhaṇavedhī ca mahato ca kāyassa padāletā;
+
+<!-- @segment an9.36:3.2 -->
 
 evamevaṁ kho, bhikkhave, bhikkhu vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.36:3.3 -->
+
 So yadeva tattha hoti rūpagataṁ vedanāgataṁ saññāgataṁ saṅkhāragataṁ viññāṇagataṁ, te dhamme aniccato dukkhato rogato gaṇḍato sallato aghato ābādhato parato palokato suññato anattato samanupassati.
+
+<!-- @segment an9.36:3.4 -->
 
 So tehi dhammehi cittaṁ paṭivāpeti.
 
+<!-- @segment an9.36:3.5 -->
+
 So tehi dhammehi cittaṁ paṭivāpetvā amatāya dhātuyā cittaṁ upasaṁharati:
+
+<!-- @segment an9.36:3.6 -->
 
 ‘etaṁ santaṁ etaṁ paṇītaṁ yadidaṁ sabbasaṅkhārasamatho sabbūpadhipaṭinissaggo taṇhākkhayo virāgo nirodho nibbānan’ti.
 
+<!-- @segment an9.36:3.7 -->
+
 So tattha ṭhito āsavānaṁ khayaṁ pāpuṇāti.
 
+<!-- @segment an9.36:3.8 -->
+
 No ce āsavānaṁ khayaṁ pāpuṇāti, teneva dhammarāgena tāya dhammanandiyā pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti tattha parinibbāyī anāvattidhammo tasmā lokā.
+
+<!-- @segment an9.36:3.9 -->
 
 ‘Paṭhamampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmī’ti,
 
+<!-- @segment an9.36:3.10 -->
+
 iti yaṁ taṁ vuttaṁ, idametaṁ paṭicca vuttaṁ.
+
+<!-- @segment an9.36:4.1 -->
 
 Dutiyampāhaṁ, bhikkhave, jhānaṁ nissāya …pe…
 
+<!-- @segment an9.36:4.2 -->
+
 tatiyampāhaṁ, bhikkhave, jhānaṁ nissāya …pe…
+
+<!-- @segment an9.36:4.3 -->
 
 ‘catutthampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmī’ti, iti kho panetaṁ vuttaṁ.
 
+<!-- @segment an9.36:4.4 -->
+
 Kiñcetaṁ paṭicca vuttaṁ?
+
+<!-- @segment an9.36:4.5 -->
 
 Idha, bhikkhave, bhikkhu sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṁ atthaṅgamā adukkhamasukhaṁ upekkhāsatipārisuddhiṁ catutthaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.36:4.6 -->
+
 So yadeva tattha hoti rūpagataṁ vedanāgataṁ saññāgataṁ saṅkhāragataṁ viññāṇagataṁ, te dhamme aniccato dukkhato rogato gaṇḍato sallato aghato ābādhato parato palokato suññato anattato samanupassati.
+
+<!-- @segment an9.36:4.7 -->
 
 So tehi dhammehi cittaṁ paṭivāpeti.
 
+<!-- @segment an9.36:4.8 -->
+
 So tehi dhammehi cittaṁ paṭivāpetvā amatāya dhātuyā cittaṁ upasaṁharati:
+
+<!-- @segment an9.36:4.9 -->
 
 ‘etaṁ santaṁ etaṁ paṇītaṁ yadidaṁ sabbasaṅkhārasamatho sabbūpadhipaṭinissaggo taṇhākkhayo virāgo nirodho nibbānan’ti.
 
+<!-- @segment an9.36:4.10 -->
+
 So tattha ṭhito āsavānaṁ khayaṁ pāpuṇāti.
+
+<!-- @segment an9.36:4.11 -->
 
 No ce āsavānaṁ khayaṁ pāpuṇāti, teneva dhammarāgena tāya dhammanandiyā pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti tattha parinibbāyī anāvattidhammo tasmā lokā.
 
+<!-- @segment an9.36:5.1 -->
+
 Seyyathāpi, bhikkhave, issāso vā issāsantevāsī vā tiṇapurisarūpake vā mattikāpuñje vā yoggaṁ karitvā, so aparena samayena dūrepātī ca hoti akkhaṇavedhī ca mahato ca kāyassa padāletā;
+
+<!-- @segment an9.36:5.2 -->
 
 evamevaṁ kho, bhikkhave, bhikkhu sukhassa ca pahānā …pe… catutthaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.36:5.3 -->
+
 So yadeva tattha hoti rūpagataṁ vedanāgataṁ …pe…
 
+<!-- @segment an9.36:5.4 -->
+
 anāvattidhammo tasmā lokā.
+
+<!-- @segment an9.36:5.5 -->
 
 ‘Catutthampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmī’ti, iti yaṁ taṁ vuttaṁ, idametaṁ paṭicca vuttaṁ.
 
+<!-- @segment an9.36:6.1 -->
+
 ‘Ākāsānañcāyatanampāhaṁ, bhikkhave, jhānaṁ nissāya āsavānaṁ khayaṁ vadāmī’ti, iti kho panetaṁ vuttaṁ.
 
+<!-- @segment an9.36:6.2 -->
+
 Kiñcetaṁ paṭicca vuttaṁ?
+
+<!-- @segment an9.36:6.3 -->
 
 Idha, bhikkhave, bhikkhu sabbaso rūpasaññānaṁ samatikkamā paṭighasaññānaṁ atthaṅgamā nānattasaññānaṁ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanaṁ upasampajja viharati.
 
+<!-- @segment an9.36:6.4 -->
+
 So yadeva tattha hoti vedanāgataṁ saññāgataṁ saṅkhāragataṁ viññāṇagataṁ, te dhamme aniccato dukkhato rogato gaṇḍato sallato aghato ābādhato parato palokato suññato anattato samanupassati.
+
+<!-- @segment an9.36:6.5 -->
 
 So tehi dhammehi cittaṁ paṭivāpeti.
 
+<!-- @segment an9.36:6.6 -->
+
 So tehi dhammehi cittaṁ paṭivāpetvā amatāya dhātuyā cittaṁ upasaṁharati:
+
+<!-- @segment an9.36:6.7 -->
 
 ‘etaṁ santaṁ etaṁ paṇītaṁ yadidaṁ sabbasaṅkhārasamatho sabbūpadhipaṭinissaggo taṇhākkhayo virāgo nirodho nibbānan’ti.
 
+<!-- @segment an9.36:6.8 -->
+
 So tattha ṭhito āsavānaṁ khayaṁ pāpuṇāti.
+
+<!-- @segment an9.36:6.9 -->
 
 No ce āsavānaṁ khayaṁ pāpuṇāti, teneva dhammarāgena tāya dhammanandiyā pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti tattha parinibbāyī anāvattidhammo tasmā lokā.
 
+<!-- @segment an9.36:7.1 -->
+
 Seyyathāpi, bhikkhave, issāso vā issāsantevāsī vā tiṇapurisarūpake vā mattikāpuñje vā yoggaṁ karitvā, so aparena samayena dūrepātī ca hoti akkhaṇavedhī ca mahato ca kāyassa padāletā;
+
+<!-- @segment an9.36:7.2 -->
 
 evamevaṁ kho, bhikkhave, bhikkhu sabbaso rūpasaññānaṁ samatikkamā paṭighasaññānaṁ atthaṅgamā nānattasaññānaṁ amanasikārā ‘ananto ākāso’ti ākāsānañcāyatanaṁ upasampajja viharati.
 
+<!-- @segment an9.36:7.3 -->
+
 So yadeva tattha hoti vedanāgataṁ saññāgataṁ …pe…
+
+<!-- @segment an9.36:7.4 -->
 
 anāvattidhammo tasmā lokā.
 
+<!-- @segment an9.36:7.5 -->
+
 ‘Ākāsānañcāyatanampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmī’ti,
 
+<!-- @segment an9.36:7.6 -->
+
 iti yaṁ taṁ vuttaṁ, idametaṁ paṭicca vuttaṁ.
+
+<!-- @segment an9.36:8.1 -->
 
 ‘Viññāṇañcāyatanampāhaṁ, bhikkhave, nissāya …pe…
 
+<!-- @segment an9.36:8.2 -->
+
 ākiñcaññāyatanampāhaṁ, bhikkhave, nissāya āsavānaṁ khayaṁ vadāmī’ti, iti kho panetaṁ vuttaṁ.
+
+<!-- @segment an9.36:8.3 -->
 
 Kiñcetaṁ paṭicca vuttaṁ?
 
+<!-- @segment an9.36:8.4 -->
+
 Idha, bhikkhave, bhikkhu sabbaso viññāṇañcāyatanaṁ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṁ upasampajja viharati.
+
+<!-- @segment an9.36:8.5 -->
 
 So yadeva tattha hoti vedanāgataṁ saññāgataṁ saṅkhāragataṁ viññāṇagataṁ, te dhamme aniccato dukkhato rogato gaṇḍato sallato aghato ābādhato parato palokato suññato anattato samanupassati.
 
+<!-- @segment an9.36:8.6 -->
+
 So tehi dhammehi cittaṁ paṭivāpeti.
+
+<!-- @segment an9.36:8.7 -->
 
 So tehi dhammehi cittaṁ paṭivāpetvā amatāya dhātuyā cittaṁ upasaṁharati:
 
+<!-- @segment an9.36:8.8 -->
+
 ‘etaṁ santaṁ etaṁ paṇītaṁ yadidaṁ sabbasaṅkhārasamatho sabbūpadhipaṭinissaggo taṇhākkhayo virāgo nirodho nibbānan’ti.
+
+<!-- @segment an9.36:8.9 -->
 
 So tattha ṭhito āsavānaṁ khayaṁ pāpuṇāti.
 
+<!-- @segment an9.36:8.10 -->
+
 No ce āsavānaṁ khayaṁ pāpuṇāti, teneva dhammarāgena tāya dhammanandiyā pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti tattha parinibbāyī anāvattidhammo tasmā lokā.
+
+<!-- @segment an9.36:9.1 -->
 
 Seyyathāpi, bhikkhave, issāso vā issāsantevāsī vā tiṇapurisarūpake vā mattikāpuñje vā yoggaṁ karitvā, so aparena samayena dūrepātī ca hoti akkhaṇavedhī ca mahato ca kāyassa padāletā;
 
+<!-- @segment an9.36:9.2 -->
+
 evamevaṁ kho, bhikkhave, bhikkhu sabbaso viññāṇañcāyatanaṁ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṁ upasampajja viharati.
+
+<!-- @segment an9.36:9.3 -->
 
 So yadeva tattha hoti vedanāgataṁ saññāgataṁ saṅkhāragataṁ viññāṇagataṁ, te dhamme aniccato dukkhato rogato gaṇḍato sallato aghato ābādhato parato palokato suññato anattato samanupassati.
 
+<!-- @segment an9.36:9.4 -->
+
 So tehi dhammehi cittaṁ paṭivāpeti.
+
+<!-- @segment an9.36:9.5 -->
 
 So tehi dhammehi cittaṁ paṭivāpetvā amatāya dhātuyā cittaṁ upasaṁharati:
 
+<!-- @segment an9.36:9.6 -->
+
 ‘etaṁ santaṁ etaṁ paṇītaṁ yadidaṁ sabbasaṅkhārasamatho sabbūpadhipaṭinissaggo taṇhākkhayo virāgo nirodho nibbānan’ti.
+
+<!-- @segment an9.36:9.7 -->
 
 So tattha ṭhito āsavānaṁ khayaṁ pāpuṇāti.
 
+<!-- @segment an9.36:9.8 -->
+
 No ce āsavānaṁ khayaṁ pāpuṇāti, teneva dhammarāgena tāya dhammanandiyā pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti tattha parinibbāyī anāvattidhammo tasmā lokā.
+
+<!-- @segment an9.36:9.9 -->
 
 ‘Ākiñcaññāyatanampāhaṁ, nissāya āsavānaṁ khayaṁ vadāmī’ti,
 
+<!-- @segment an9.36:9.10 -->
+
 iti yaṁ taṁ vuttaṁ, idametaṁ paṭicca vuttaṁ.
+
+<!-- @segment an9.36:10.1 -->
 
 Iti kho, bhikkhave, yāvatā saññāsamāpatti tāvatā aññāpaṭivedho.
 
+<!-- @segment an9.36:10.2 -->
+
 Yāni ca kho imāni, bhikkhave, nissāya dve āyatanāni—
 
+<!-- @segment an9.36:10.3 -->
+
 nevasaññānāsaññāyatanasamāpatti ca saññāvedayitanirodho ca, jhāyīhete, bhikkhave, samāpattikusalehi samāpattivuṭṭhānakusalehi samāpajjitvā vuṭṭhahitvā sammā akkhātabbānīti vadāmī”ti.
+
+<!-- @segment an9.36:10.4 -->
 
 Pañcamaṁ.

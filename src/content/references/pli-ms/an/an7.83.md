@@ -1,29 +1,51 @@
 ---
 slug: an7.83
 source: suttacentral/bilara-data
+title: Satthusāsanasutta
 edition: ms
 granularity: segment
-title: Satthusāsanasutta
 ---
+
+<!-- @segment an7.83:1.1 -->
 
 Atha kho āyasmā upāli yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā upāli bhagavantaṁ etadavoca:
 
+<!-- @segment an7.83:2.1 -->
+
 “Sādhu me, bhante, bhagavā saṅkhittena dhammaṁ desetu, yamahaṁ bhagavato dhammaṁ sutvā eko vūpakaṭṭho appamatto ātāpī pahitatto vihareyyan”ti.
+
+<!-- @segment an7.83:2.2 -->
 
 “Ye kho tvaṁ, upāli, dhamme jāneyyāsi:
 
+<!-- @segment an7.83:2.3 -->
+
 ‘ime dhammā na ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṁvattantī’ti;
 
+<!-- @segment an7.83:2.4 -->
+
 ekaṁsena, upāli, dhāreyyāsi:
+
+<!-- @segment an7.83:2.5 -->
 
 ‘neso dhammo neso vinayo netaṁ satthusāsanan’ti.
 
+<!-- @segment an7.83:2.6 -->
+
 Ye ca kho tvaṁ, upāli, dhamme jāneyyāsi:
+
+<!-- @segment an7.83:2.7 -->
 
 ‘ime dhammā ekantanibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṁvattantī’ti;
 
+<!-- @segment an7.83:2.8 -->
+
 ekaṁsena, upāli, dhāreyyāsi:
 
+<!-- @segment an7.83:2.9 -->
+
 ‘eso dhammo eso vinayo etaṁ satthusāsanan’”ti.
+
+<!-- @segment an7.83:2.10 -->
 
 Navamaṁ.

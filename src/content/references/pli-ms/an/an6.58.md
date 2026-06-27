@@ -1,119 +1,231 @@
 ---
 slug: an6.58
 source: suttacentral/bilara-data
+title: Āsavasutta
 edition: ms
 granularity: segment
-title: Āsavasutta
 ---
+
+<!-- @segment an6.58:1.1 -->
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassa.
 
+<!-- @segment an6.58:2.1 -->
+
 Katamehi chahi?
+
+<!-- @segment an6.58:2.2 -->
 
 Idha, bhikkhave, bhikkhuno ye āsavā saṁvarā pahātabbā te saṁvarena pahīnā honti,
 
+<!-- @segment an6.58:2.3 -->
+
 ye āsavā paṭisevanā pahātabbā te paṭisevanāya pahīnā honti,
+
+<!-- @segment an6.58:2.4 -->
 
 ye āsavā adhivāsanā pahātabbā te adhivāsanāya pahīnā honti,
 
+<!-- @segment an6.58:2.5 -->
+
 ye āsavā parivajjanā pahātabbā te parivajjanāya pahīnā honti,
+
+<!-- @segment an6.58:2.6 -->
 
 ye āsavā vinodanā pahātabbā te vinodanāya pahīnā honti,
 
+<!-- @segment an6.58:2.7 -->
+
 ye āsavā bhāvanā pahātabbā te bhāvanāya pahīnā honti.
+
+<!-- @segment an6.58:3.1 -->
 
 Katame ca, bhikkhave, āsavā saṁvarā pahātabbā ye saṁvarena pahīnā honti?
 
+<!-- @segment an6.58:3.2 -->
+
 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso cakkhundriyasaṁvarasaṁvuto viharati.
+
+<!-- @segment an6.58:3.3 -->
 
 Yaṁ hissa, bhikkhave, cakkhundriyasaṁvaraṁ asaṁvutassa viharato uppajjeyyuṁ āsavā vighātapariḷāhā, cakkhundriyasaṁvaraṁ saṁvutassa viharato evaṁsa te āsavā vighātapariḷāhā na honti.
 
+<!-- @segment an6.58:3.4 -->
+
 Paṭisaṅkhā yoniso sotindriya …pe…
+
+<!-- @segment an6.58:3.5 -->
 
 ghānindriya …
 
+<!-- @segment an6.58:3.6 -->
+
 jivhindriya …
+
+<!-- @segment an6.58:3.7 -->
 
 kāyindriya …
 
+<!-- @segment an6.58:3.8 -->
+
 manindriyasaṁvarasaṁvuto viharati.
+
+<!-- @segment an6.58:3.9 -->
 
 Yaṁ hissa, bhikkhave, manindriyasaṁvaraṁ asaṁvutassa viharato uppajjeyyuṁ āsavā vighātapariḷāhā, manindriyasaṁvaraṁ saṁvutassa viharato evaṁsa te āsavā vighātapariḷāhā na honti.
 
+<!-- @segment an6.58:3.10 -->
+
 Ime vuccanti, bhikkhave, āsavā saṁvarā pahātabbā ye saṁvarena pahīnā honti.
+
+<!-- @segment an6.58:4.1 -->
 
 Katame ca, bhikkhave, āsavā paṭisevanā pahātabbā ye paṭisevanāya pahīnā honti?
 
+<!-- @segment an6.58:4.2 -->
+
 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso cīvaraṁ paṭisevati:
+
+<!-- @segment an6.58:4.3 -->
 
 ‘yāvadeva sītassa paṭighātāya, uṇhassa paṭighātāya, ḍaṁsamakasavātātapasarīsapasamphassānaṁ paṭighātāya, yāvadeva hirikopīnapaṭicchādanatthaṁ’.
 
+<!-- @segment an6.58:4.4 -->
+
 Paṭisaṅkhā yoniso piṇḍapātaṁ paṭisevati:
+
+<!-- @segment an6.58:4.5 -->
 
 ‘neva davāya na madāya na maṇḍanāya na vibhūsanāya, yāvadeva imassa kāyassa ṭhitiyā yāpanāya, vihiṁsūparatiyā brahmacariyānuggahāya, iti purāṇañca vedanaṁ paṭihaṅkhāmi, navañca vedanaṁ na uppādessāmi, yātrā ca me bhavissati anavajjatā ca phāsuvihāro ca’.
 
+<!-- @segment an6.58:4.6 -->
+
 Paṭisaṅkhā yoniso senāsanaṁ paṭisevati:
+
+<!-- @segment an6.58:4.7 -->
 
 ‘yāvadeva sītassa paṭighātāya, uṇhassa paṭighātāya, ḍaṁsamakasavātātapasarīsapasamphassānaṁ paṭighātāya, yāvadeva utuparissayavinodanapaṭisallānārāmatthaṁ’.
 
+<!-- @segment an6.58:4.8 -->
+
 Paṭisaṅkhā yoniso gilānapaccayabhesajjaparikkhāraṁ paṭisevati:
+
+<!-- @segment an6.58:4.9 -->
 
 ‘yāvadeva uppannānaṁ veyyābādhikānaṁ vedanānaṁ paṭighātāya, abyābajjhaparamatāyā’ti.
 
+<!-- @segment an6.58:4.10 -->
+
 Yaṁ hissa, bhikkhave, appaṭisevato uppajjeyyuṁ āsavā vighātapariḷāhā, paṭisevato evaṁsa te āsavā vighātapariḷāhā na honti.
+
+<!-- @segment an6.58:4.11 -->
 
 Ime vuccanti, bhikkhave, āsavā paṭisevanā pahātabbā ye paṭisevanāya pahīnā honti.
 
+<!-- @segment an6.58:5.1 -->
+
 Katame ca, bhikkhave, āsavā adhivāsanā pahātabbā ye adhivāsanāya pahīnā honti?
+
+<!-- @segment an6.58:5.2 -->
 
 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso khamo hoti sītassa uṇhassa, jighacchāya, pipāsāya, ḍaṁsamakasavātātapasarīsapasamphassānaṁ, duruttānaṁ durāgatānaṁ vacanapathānaṁ, uppannānaṁ sārīrikānaṁ vedanānaṁ dukkhānaṁ tibbānaṁ kharānaṁ kaṭukānaṁ asātānaṁ amanāpānaṁ pāṇaharānaṁ adhivāsakajātiko hoti.
 
+<!-- @segment an6.58:5.3 -->
+
 Yaṁ hissa, bhikkhave, anadhivāsato uppajjeyyuṁ āsavā vighātapariḷāhā, adhivāsato evaṁsa te āsavā vighātapariḷāhā na honti.
+
+<!-- @segment an6.58:5.4 -->
 
 Ime vuccanti, bhikkhave, āsavā adhivāsanā pahātabbā ye adhivāsanāya pahīnā honti.
 
+<!-- @segment an6.58:6.1 -->
+
 Katame ca, bhikkhave, āsavā parivajjanā pahātabbā ye parivajjanāya pahīnā honti?
+
+<!-- @segment an6.58:6.2 -->
 
 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso caṇḍaṁ hatthiṁ parivajjeti, caṇḍaṁ assaṁ parivajjeti, caṇḍaṁ goṇaṁ parivajjeti, caṇḍaṁ kukkuraṁ parivajjeti, ahiṁ khāṇuṁ kaṇṭakaṭṭhānaṁ sobbhaṁ papātaṁ candanikaṁ oḷigallaṁ, yathārūpe anāsane nisinnaṁ, yathārūpe agocare carantaṁ, yathārūpe pāpake mitte bhajantaṁ viññū sabrahmacārī pāpakesu ṭhānesu okappeyyuṁ, so tañca anāsanaṁ tañca agocaraṁ te ca pāpake mitte paṭisaṅkhā yoniso parivajjeti.
 
+<!-- @segment an6.58:6.3 -->
+
 Yaṁ hissa, bhikkhave, aparivajjayato uppajjeyyuṁ āsavā vighātapariḷāhā, parivajjayato evaṁsa te āsavā vighātapariḷāhā na honti.
+
+<!-- @segment an6.58:6.4 -->
 
 Ime vuccanti, bhikkhave, āsavā parivajjanā pahātabbā ye parivajjanāya pahīnā honti.
 
+<!-- @segment an6.58:7.1 -->
+
 Katame ca, bhikkhave, āsavā vinodanā pahātabbā ye vinodanāya pahīnā honti?
+
+<!-- @segment an6.58:7.2 -->
 
 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso uppannaṁ kāmavitakkaṁ nādhivāseti pajahati vinodeti byantīkaroti anabhāvaṁ gameti,
 
+<!-- @segment an6.58:7.3 -->
+
 paṭisaṅkhā yoniso uppannaṁ byāpādavitakkaṁ …
+
+<!-- @segment an6.58:7.4 -->
 
 uppannaṁ vihiṁsāvitakkaṁ …
 
+<!-- @segment an6.58:7.5 -->
+
 uppannuppanne pāpake akusale dhamme nādhivāseti pajahati vinodeti byantīkaroti anabhāvaṁ gameti.
+
+<!-- @segment an6.58:7.6 -->
 
 Yaṁ hissa, bhikkhave, avinodayato uppajjeyyuṁ āsavā vighātapariḷāhā, vinodayato evaṁsa te āsavā vighātapariḷāhā na honti.
 
+<!-- @segment an6.58:7.7 -->
+
 Ime vuccanti, bhikkhave, āsavā vinodanā pahātabbā ye vinodanāya pahīnā honti.
+
+<!-- @segment an6.58:8.1 -->
 
 Katame ca, bhikkhave, āsavā bhāvanā pahātabbā ye bhāvanāya pahīnā honti?
 
+<!-- @segment an6.58:8.2 -->
+
 Idha, bhikkhave, bhikkhu paṭisaṅkhā yoniso satisambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vosaggapariṇāmiṁ,
+
+<!-- @segment an6.58:8.3 -->
 
 paṭisaṅkhā yoniso dhammavicayasambojjhaṅgaṁ bhāveti …
 
+<!-- @segment an6.58:8.4 -->
+
 vīriyasambojjhaṅgaṁ bhāveti …
+
+<!-- @segment an6.58:8.5 -->
 
 pītisambojjhaṅgaṁ bhāveti …
 
+<!-- @segment an6.58:8.6 -->
+
 passaddhisambojjhaṅgaṁ bhāveti …
+
+<!-- @segment an6.58:8.7 -->
 
 samādhisambojjhaṅgaṁ bhāveti …
 
+<!-- @segment an6.58:8.8 -->
+
 upekkhāsambojjhaṅgaṁ bhāveti vivekanissitaṁ virāganissitaṁ nirodhanissitaṁ vosaggapariṇāmiṁ.
+
+<!-- @segment an6.58:8.9 -->
 
 Yaṁ hissa, bhikkhave, abhāvayato uppajjeyyuṁ āsavā vighātapariḷāhā, bhāvayato evaṁsa te āsavā vighātapariḷāhā na honti.
 
+<!-- @segment an6.58:8.10 -->
+
 Ime vuccanti, bhikkhave, āsavā bhāvanā pahātabbā ye bhāvanāya pahīnā honti.
 
+<!-- @segment an6.58:9.1 -->
+
 Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassā”ti.
+
+<!-- @segment an6.58:9.2 -->
 
 Catutthaṁ.

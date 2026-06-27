@@ -6,60 +6,138 @@ license: CC0
 title: Sex
 ---
 
+<!-- @segment an7.50:1.1 -->
+
 Then the brahmin Jānussoṇi went up to the Buddha, and exchanged greetings with him.
+
+<!-- @segment an7.50:1.2 -->
 
 When the greetings and polite conversation were over, he sat down to one side and said to the Buddha,
 
+<!-- @segment an7.50:1.3 -->
+
 “Does Mister Gotama claim to be chaste?”
+
+<!-- @segment an7.50:1.4 -->
 
 “Brahmin, if anyone should be rightly said to
 
+<!-- @segment an7.50:1.5 -->
+
 live the chaste life intact, impeccable, spotless, and unmarred, full and pure, it’s me.”
+
+<!-- @segment an7.50:1.6 -->
+
+
+
+<!-- @segment an7.50:1.7 -->
 
 “But what, Mister Gotama, is a break, taint, stain, or mar in chastity?”
 
+<!-- @segment an7.50:2.1 -->
+
 “Firstly, an ascetic or brahmin who claims to be perfectly chaste does not mutually engage in sex with a lady.
+
+<!-- @segment an7.50:2.2 -->
 
 However, they consent to being anointed, massaged, bathed, and rubbed by a lady.
 
+<!-- @segment an7.50:2.3 -->
+
 They enjoy it and like it and find it rewarding.
 
+<!-- @segment an7.50:2.4 -->
+
 This is a break, taint, stain, or mar in chastity.
+
+<!-- @segment an7.50:2.5 -->
 
 This is called one who lives the chaste life impurely, yoked by the yoke of sex. They’re not freed from rebirth, old age, death, sorrow, lamentation, pain, sadness, and distress. They’re not freed from suffering, I say.
 
+<!-- @segment an7.50:3.1 -->
+
 Furthermore, an ascetic or brahmin who claims to be perfectly chaste does not mutually engage in sex with a lady. Nor do they consent to massage and bathing.
+
+<!-- @segment an7.50:3.2 -->
 
 However, they giggle and play and have fun with ladies. …
 
+<!-- @segment an7.50:4.1 -->
+
+
+
+<!-- @segment an7.50:4.2 -->
+
 they gaze into a lady’s eyes. …
+
+<!-- @segment an7.50:5.1 -->
+
+
+
+<!-- @segment an7.50:5.2 -->
 
 they listen through a wall or rampart to the sound of ladies laughing or chatting or singing or crying. …
 
+<!-- @segment an7.50:6.1 -->
+
+
+
+<!-- @segment an7.50:6.2 -->
+
 they recall when they used to laugh, chat, and have fun with ladies …
+
+<!-- @segment an7.50:7.1 -->
+
+
+
+<!-- @segment an7.50:7.2 -->
 
 they see a householder or their child amusing themselves, supplied and provided with the five kinds of sensual stimulation. …
 
+<!-- @segment an7.50:8.1 -->
+
 They don’t see a householder or their child amusing themselves, supplied and provided with the five kinds of sensual stimulation.
+
+<!-- @segment an7.50:8.2 -->
 
 However, they live the chaste life wishing to be reborn in one of the orders of gods. They think: ‘By this precept or observance or fervent austerity or spiritual practice, may I become one of the gods!’
 
+<!-- @segment an7.50:8.3 -->
+
 They enjoy it and like it and find it rewarding.
+
+<!-- @segment an7.50:8.4 -->
 
 This is a break, taint, stain, or mar in chastity.
 
+<!-- @segment an7.50:8.5 -->
+
 This is called one who lives the chaste life impurely, yoked by the yoke of sex. They’re not free from rebirth, old age, death, sorrow, lamentation, pain, sadness, and distress. They’re not free from suffering, I say.
+
+<!-- @segment an7.50:9.1 -->
 
 As long as I saw that these seven sexual yokes—or even one of them—had not been given up in me, I didn’t announce my supreme perfect awakening in this world with its gods, Māras, and Divinities, this population with its ascetics and brahmins, its gods and humans.
 
+<!-- @segment an7.50:10.1 -->
+
 But when I saw that these seven sexual yokes—every one of them—had been given up in me, I announced my supreme perfect awakening in this world with its gods, Māras, and Divinities, this population with its ascetics and brahmins, its gods and humans.
+
+<!-- @segment an7.50:10.2 -->
 
 Knowledge and vision arose in me:
 
+<!-- @segment an7.50:10.3 -->
+
 ‘My freedom is unshakable; this is my last rebirth; now there’ll be no more future lives.’”
+
+<!-- @segment an7.50:11.1 -->
 
 When he said this, the brahmin Jānussoṇi said to the Buddha,
 
+<!-- @segment an7.50:11.2 -->
+
 “Excellent, worthy Gotama! Excellent! …
+
+<!-- @segment an7.50:11.3 -->
 
 From this day forth, may the worthy Gotama remember me as a lay follower who has gone for refuge for life.”

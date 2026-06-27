@@ -6,62 +6,122 @@ license: CC0
 title: 3. Unworkable
 ---
 
+<!-- @segment an1.21:1.0 -->
+
 21
 
-22
-
-23
-
-24
-
-25
-
-26
-
-27
-
-28
-
-29
-
-30
+<!-- @segment an1.21:1.1 -->
 
 “Mendicants, I do not see a single thing that, when it’s not developed like this, is as unworkable as the mind.
 
-“Mendicants, I do not see a single thing that, when it is developed like this, is as workable as the mind.
-
-“Mendicants, I do not see a single thing that, when it’s not developed like this, is so very harmful as the mind.
-
-“Mendicants, I do not see a single thing that, when it is developed like this, is so very beneficial as the mind.
-
-“Mendicants, I do not see a single thing that, when it’s not developed, with such untapped potential, is so very harmful as the mind.
-
-“Mendicants, I do not see a single thing that, when it is developed, with its potential realized, is so very beneficial as the mind.
-
-“Mendicants, I do not see a single thing that, when it’s not developed and cultivated, is so very harmful as the mind.
-
-“Mendicants, I do not see a single thing that, when it is developed and cultivated, is so very beneficial as the mind.
-
-“Mendicants, I do not see a single thing that, when it’s not developed and cultivated, brings such suffering as the mind.
-
-“Mendicants, I do not see a single thing that, when it is developed and cultivated, brings such happiness as the mind.
+<!-- @segment an1.21:1.2 -->
 
 An undeveloped mind is unworkable.”
 
+<!-- @segment an1.22:1.0 -->
+
+22
+
+<!-- @segment an1.22:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it is developed like this, is as workable as the mind.
+
+<!-- @segment an1.22:1.2 -->
+
 A developed mind is workable.”
+
+<!-- @segment an1.23:1.0 -->
+
+23
+
+<!-- @segment an1.23:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it’s not developed like this, is so very harmful as the mind.
+
+<!-- @segment an1.23:1.2 -->
 
 An undeveloped mind is very harmful.”
 
+<!-- @segment an1.24:1.0 -->
+
+24
+
+<!-- @segment an1.24:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it is developed like this, is so very beneficial as the mind.
+
+<!-- @segment an1.24:1.2 -->
+
 A developed mind is very beneficial.”
+
+<!-- @segment an1.25:1.0 -->
+
+25
+
+<!-- @segment an1.25:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it’s not developed, with such untapped potential, is so very harmful as the mind.
+
+<!-- @segment an1.25:1.2 -->
 
 An undeveloped mind, with untapped potential, is very harmful.”
 
+<!-- @segment an1.26:1.0 -->
+
+26
+
+<!-- @segment an1.26:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it is developed, with its potential realized, is so very beneficial as the mind.
+
+<!-- @segment an1.26:1.2 -->
+
 A developed mind, with its potential realized, is very beneficial.”
+
+<!-- @segment an1.27:1.0 -->
+
+27
+
+<!-- @segment an1.27:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it’s not developed and cultivated, is so very harmful as the mind.
+
+<!-- @segment an1.27:1.2 -->
 
 An undeveloped and uncultivated mind is very harmful.”
 
+<!-- @segment an1.28:1.0 -->
+
+28
+
+<!-- @segment an1.28:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it is developed and cultivated, is so very beneficial as the mind.
+
+<!-- @segment an1.28:1.2 -->
+
 A developed and cultivated mind is very beneficial.”
 
+<!-- @segment an1.29:1.0 -->
+
+29
+
+<!-- @segment an1.29:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it’s not developed and cultivated, brings such suffering as the mind.
+
+<!-- @segment an1.29:1.2 -->
+
 An undeveloped and uncultivated mind brings suffering.”
+
+<!-- @segment an1.30:1.0 -->
+
+30
+
+<!-- @segment an1.30:1.1 -->
+
+“Mendicants, I do not see a single thing that, when it is developed and cultivated, brings such happiness as the mind.
+
+<!-- @segment an1.30:1.2 -->
 
 A developed and cultivated mind brings happiness.”

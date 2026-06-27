@@ -1,157 +1,307 @@
 ---
 slug: an5.57
 source: suttacentral/bilara-data
+title: Abhiṇhapaccavekkhitabbaṭhānasutta
 edition: ms
 granularity: segment
-title: Abhiṇhapaccavekkhitabbaṭhānasutta
 ---
+
+<!-- @segment an5.57:1.1 -->
 
 “Pañcimāni, bhikkhave, ṭhānāni abhiṇhaṁ paccavekkhitabbāni itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
 
+<!-- @segment an5.57:1.2 -->
+
 Katamāni pañca?
+
+<!-- @segment an5.57:1.3 -->
 
 ‘Jarādhammomhi, jaraṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
 
+<!-- @segment an5.57:1.4 -->
+
 ‘Byādhidhammomhi, byādhiṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:1.5 -->
 
 ‘Maraṇadhammomhi, maraṇaṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
 
+<!-- @segment an5.57:1.6 -->
+
 ‘Sabbehi me piyehi manāpehi nānābhāvo vinābhāvo’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:1.7 -->
 
 ‘Kammassakomhi, kammadāyādo kammayoni kammabandhu kammapaṭisaraṇo.
 
+<!-- @segment an5.57:1.8 -->
+
 Yaṁ kammaṁ karissāmi—kalyāṇaṁ vā pāpakaṁ vā—
 
+<!-- @segment an5.57:1.9 -->
+
 tassa dāyādo bhavissāmī’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:2.1 -->
 
 Kiñca, bhikkhave, atthavasaṁ paṭicca ‘jarādhammomhi, jaraṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā?
 
+<!-- @segment an5.57:2.2 -->
+
 Atthi, bhikkhave, sattānaṁ yobbane yobbanamado, yena madena mattā kāyena duccaritaṁ caranti, vācāya duccaritaṁ caranti, manasā duccaritaṁ caranti.
+
+<!-- @segment an5.57:2.3 -->
 
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato yo yobbane yobbanamado so sabbaso vā pahīyati tanu vā pana hoti.
 
+<!-- @segment an5.57:2.4 -->
+
 Idaṁ kho, bhikkhave, atthavasaṁ paṭicca ‘jarādhammomhi, jaraṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:3.1 -->
 
 Kiñca, bhikkhave, atthavasaṁ paṭicca ‘byādhidhammomhi, byādhiṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā?
 
+<!-- @segment an5.57:3.2 -->
+
 Atthi, bhikkhave, sattānaṁ ārogye ārogyamado, yena madena mattā kāyena duccaritaṁ caranti, vācāya duccaritaṁ caranti, manasā duccaritaṁ caranti.
+
+<!-- @segment an5.57:3.3 -->
 
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato yo ārogye ārogyamado so sabbaso vā pahīyati tanu vā pana hoti.
 
+<!-- @segment an5.57:3.4 -->
+
 Idaṁ kho, bhikkhave, atthavasaṁ paṭicca ‘byādhidhammomhi, byādhiṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:4.1 -->
 
 Kiñca, bhikkhave, atthavasaṁ paṭicca ‘maraṇadhammomhi, maraṇaṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā?
 
+<!-- @segment an5.57:4.2 -->
+
 Atthi, bhikkhave, sattānaṁ jīvite jīvitamado, yena madena mattā kāyena duccaritaṁ caranti, vācāya duccaritaṁ caranti, manasā duccaritaṁ caranti.
+
+<!-- @segment an5.57:4.3 -->
 
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato yo jīvite jīvitamado so sabbaso vā pahīyati tanu vā pana hoti.
 
+<!-- @segment an5.57:4.4 -->
+
 Idaṁ kho, bhikkhave, atthavasaṁ paṭicca ‘maraṇadhammomhi, maraṇaṁ anatīto’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:5.1 -->
 
 Kiñca, bhikkhave, atthavasaṁ paṭicca ‘sabbehi me piyehi manāpehi nānābhāvo vinābhāvo’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā?
 
+<!-- @segment an5.57:5.2 -->
+
 Atthi, bhikkhave, sattānaṁ piyesu manāpesu yo chandarāgo yena rāgena rattā kāyena duccaritaṁ caranti, vācāya duccaritaṁ caranti, manasā duccaritaṁ caranti.
+
+<!-- @segment an5.57:5.3 -->
 
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato yo piyesu manāpesu chandarāgo so sabbaso vā pahīyati tanu vā pana hoti.
 
+<!-- @segment an5.57:5.4 -->
+
 Idaṁ kho, bhikkhave, atthavasaṁ paṭicca ‘sabbehi me piyehi manāpehi nānābhāvo vinābhāvo’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
+
+<!-- @segment an5.57:6.1 -->
 
 Kiñca, bhikkhave, atthavasaṁ paṭicca ‘kammassakomhi, kammadāyādo kammayoni kammabandhu kammapaṭisaraṇo, yaṁ kammaṁ karissāmi—
 
+<!-- @segment an5.57:6.2 -->
+
 kalyāṇaṁ vā pāpakaṁ vā—tassa dāyādo bhavissāmī’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā?
+
+<!-- @segment an5.57:6.3 -->
 
 Atthi, bhikkhave, sattānaṁ kāyaduccaritaṁ vacīduccaritaṁ manoduccaritaṁ.
 
+<!-- @segment an5.57:6.4 -->
+
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato sabbaso vā duccaritaṁ pahīyati tanu vā pana hoti.
+
+<!-- @segment an5.57:6.5 -->
 
 Idaṁ kho, bhikkhave, atthavasaṁ paṭicca ‘kammassakomhi, kammadāyādo kammayoni kammabandhu kammapaṭisaraṇo, yaṁ kammaṁ karissāmi—
 
+<!-- @segment an5.57:6.6 -->
+
 kalyāṇaṁ vā pāpakaṁ vā—
+
+<!-- @segment an5.57:6.7 -->
 
 tassa dāyādo bhavissāmī’ti abhiṇhaṁ paccavekkhitabbaṁ itthiyā vā purisena vā gahaṭṭhena vā pabbajitena vā.
 
+<!-- @segment an5.57:7.1 -->
+
 Sa kho so, bhikkhave, ariyasāvako iti paṭisañcikkhati:
+
+<!-- @segment an5.57:7.2 -->
 
 ‘na kho ahaññeveko jarādhammo jaraṁ anatīto, atha kho yāvatā sattānaṁ āgati gati cuti upapatti sabbe sattā jarādhammā jaraṁ anatītā’ti.
 
+<!-- @segment an5.57:7.3 -->
+
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato maggo sañjāyati.
 
+<!-- @segment an5.57:7.4 -->
+
 So taṁ maggaṁ āsevati bhāveti bahulīkaroti.
+
+<!-- @segment an5.57:7.5 -->
 
 Tassa taṁ maggaṁ āsevato bhāvayato bahulīkaroto saṁyojanāni sabbaso pahīyanti anusayā byantīhonti.
 
+<!-- @segment an5.57:8.1 -->
+
 ‘Na kho ahaññeveko byādhidhammo byādhiṁ anatīto, atha kho yāvatā sattānaṁ āgati gati cuti upapatti sabbe sattā byādhidhammā byādhiṁ anatītā’ti.
+
+<!-- @segment an5.57:8.2 -->
 
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato maggo sañjāyati.
 
+<!-- @segment an5.57:8.3 -->
+
 So taṁ maggaṁ āsevati bhāveti bahulīkaroti.
 
+<!-- @segment an5.57:8.4 -->
+
 Tassa taṁ maggaṁ āsevato bhāvayato bahulīkaroto saṁyojanāni sabbaso pahīyanti, anusayā byantīhonti.
+
+<!-- @segment an5.57:9.1 -->
 
 ‘Na kho ahaññeveko maraṇadhammo maraṇaṁ anatīto, atha kho yāvatā sattānaṁ āgati gati cuti upapatti sabbe sattā maraṇadhammā maraṇaṁ anatītā’ti.
 
+<!-- @segment an5.57:9.2 -->
+
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato maggo sañjāyati.
+
+<!-- @segment an5.57:9.3 -->
 
 So taṁ maggaṁ āsevati bhāveti bahulīkaroti.
 
+<!-- @segment an5.57:9.4 -->
+
 Tassa taṁ maggaṁ āsevato bhāvayato bahulīkaroto saṁyojanāni sabbaso pahīyanti, anusayā byantīhonti.
+
+<!-- @segment an5.57:10.1 -->
 
 ‘Na kho mayhevekassa sabbehi piyehi manāpehi nānābhāvo vinābhāvo, atha kho yāvatā sattānaṁ āgati gati cuti upapatti sabbesaṁ sattānaṁ piyehi manāpehi nānābhāvo vinābhāvo’ti.
 
+<!-- @segment an5.57:10.2 -->
+
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato maggo sañjāyati.
 
+<!-- @segment an5.57:10.3 -->
+
 So taṁ maggaṁ āsevati bhāveti bahulīkaroti.
+
+<!-- @segment an5.57:10.4 -->
 
 Tassa taṁ maggaṁ āsevato bhāvayato bahulīkaroto saṁyojanāni sabbaso pahīyanti, anusayā byantīhonti.
 
+<!-- @segment an5.57:11.1 -->
+
 ‘Na kho ahaññeveko kammassako kammadāyādo kammayoni kammabandhu kammapaṭisaraṇo, yaṁ kammaṁ karissāmi—kalyāṇaṁ vā pāpakaṁ vā—tassa dāyādo bhavissāmi;
+
+<!-- @segment an5.57:11.2 -->
 
 atha kho yāvatā sattānaṁ āgati gati cuti upapatti sabbe sattā kammassakā kammadāyādā kammayoni kammabandhu kammapaṭisaraṇā, yaṁ kammaṁ karissanti—kalyāṇaṁ vā pāpakaṁ vā—tassa dāyādā bhavissantī’ti.
 
+<!-- @segment an5.57:11.3 -->
+
 Tassa taṁ ṭhānaṁ abhiṇhaṁ paccavekkhato maggo sañjāyati.
+
+<!-- @segment an5.57:11.4 -->
 
 So taṁ maggaṁ āsevati bhāveti bahulīkaroti.
 
+<!-- @segment an5.57:11.5 -->
+
 Tassa taṁ maggaṁ āsevato bhāvayato bahulīkaroto saṁyojanāni sabbaso pahīyanti, anusayā byantīhontīti.
+
+<!-- @segment an5.57:12.1 -->
 
 Byādhidhammā jarādhammā,
 
+<!-- @segment an5.57:12.2 -->
+
 atho maraṇadhammino;
+
+<!-- @segment an5.57:12.3 -->
 
 Yathā dhammā tathā sattā,
 
+<!-- @segment an5.57:12.4 -->
+
 jigucchanti puthujjanā.
+
+<!-- @segment an5.57:13.1 -->
 
 Ahañce taṁ jiguccheyyaṁ,
 
+<!-- @segment an5.57:13.2 -->
+
 evaṁ dhammesu pāṇisu;
+
+<!-- @segment an5.57:13.3 -->
 
 Na metaṁ patirūpassa,
 
+<!-- @segment an5.57:13.4 -->
+
 mama evaṁ vihārino.
+
+<!-- @segment an5.57:14.1 -->
 
 Sohaṁ evaṁ viharanto,
 
+<!-- @segment an5.57:14.2 -->
+
 ñatvā dhammaṁ nirūpadhiṁ;
+
+<!-- @segment an5.57:14.3 -->
 
 Ārogye yobbanasmiñca,
 
+<!-- @segment an5.57:14.4 -->
+
 jīvitasmiñca ye madā.
+
+<!-- @segment an5.57:15.1 -->
 
 Sabbe made abhibhosmi,
 
+<!-- @segment an5.57:15.2 -->
+
 Nekkhammaṁ daṭṭhu khemato;
+
+<!-- @segment an5.57:15.3 -->
 
 Tassa me ahu ussāho,
 
+<!-- @segment an5.57:15.4 -->
+
 Nibbānaṁ abhipassato.
+
+<!-- @segment an5.57:16.1 -->
 
 Nāhaṁ bhabbo etarahi,
 
+<!-- @segment an5.57:16.2 -->
+
 Kāmāni paṭisevituṁ;
+
+<!-- @segment an5.57:16.3 -->
 
 Anivatti bhavissāmi,
 
+<!-- @segment an5.57:16.4 -->
+
 Brahmacariyaparāyaṇo”ti.
+
+<!-- @segment an5.57:16.5 -->
 
 Sattamaṁ.

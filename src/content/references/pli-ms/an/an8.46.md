@@ -1,159 +1,311 @@
 ---
 slug: an8.46
 source: suttacentral/bilara-data
+title: Anuruddhasutta
 edition: ms
 granularity: segment
-title: Anuruddhasutta
 ---
+
+<!-- @segment an8.46:1.1 -->
 
 Ekaṁ samayaṁ bhagavā kosambiyaṁ viharati ghositārāme.
 
+<!-- @segment an8.46:1.2 -->
+
 Tena kho pana samayena āyasmā anuruddho divāvihāraṁ gato hoti paṭisallīno.
+
+<!-- @segment an8.46:1.3 -->
 
 Atha kho sambahulā manāpakāyikā devatā yenāyasmā anuruddho tenupasaṅkamiṁsu; upasaṅkamitvā āyasmantaṁ anuruddhaṁ abhivādetvā ekamantaṁ aṭṭhaṁsu. Ekamantaṁ ṭhitā kho tā devatā āyasmantaṁ anuruddhaṁ etadavocuṁ:
 
+<!-- @segment an8.46:1.4 -->
+
 “mayaṁ, bhante anuruddha, manāpakāyikā nāma devatā tīsu ṭhānesu issariyaṁ kārema vasaṁ vattema.
+
+<!-- @segment an8.46:1.5 -->
 
 Mayaṁ, bhante anuruddha, yādisakaṁ vaṇṇaṁ ākaṅkhāma tādisakaṁ vaṇṇaṁ ṭhānaso paṭilabhāma;
 
+<!-- @segment an8.46:1.6 -->
+
 yādisakaṁ saraṁ ākaṅkhāma tādisakaṁ saraṁ ṭhānaso paṭilabhāma;
 
+<!-- @segment an8.46:1.7 -->
+
 yādisakaṁ sukhaṁ ākaṅkhāma tādisakaṁ sukhaṁ ṭhānaso paṭilabhāma.
+
+<!-- @segment an8.46:1.8 -->
 
 Mayaṁ, bhante anuruddha, manāpakāyikā nāma devatā imesu tīsu ṭhānesu issariyaṁ kārema vasaṁ vattemā”ti.
 
+<!-- @segment an8.46:2.1 -->
+
 Atha kho āyasmato anuruddhassa etadahosi:
+
+<!-- @segment an8.46:2.2 -->
 
 “aho vatimā devatā sabbāva nīlā assu nīlavaṇṇā nīlavatthā nīlālaṅkārā”ti.
 
+<!-- @segment an8.46:2.3 -->
+
 Atha kho tā devatā āyasmato anuruddhassa cittamaññāya sabbāva nīlā ahesuṁ nīlavaṇṇā nīlavatthā nīlālaṅkārā.
+
+<!-- @segment an8.46:3.1 -->
 
 Atha kho āyasmato anuruddhassa etadahosi:
 
+<!-- @segment an8.46:3.2 -->
+
 “aho vatimā devatā sabbāva pītā assu …pe…
+
+<!-- @segment an8.46:3.3 -->
 
 sabbāva lohitakā assu …
 
+<!-- @segment an8.46:3.4 -->
+
 sabbāva odātā assu odātavaṇṇā odātavatthā odātālaṅkārā”ti.
+
+<!-- @segment an8.46:3.5 -->
 
 Atha kho tā devatā āyasmato anuruddhassa cittamaññāya sabbāva odātā ahesuṁ odātavaṇṇā odātavatthā odātālaṅkārā.
 
+<!-- @segment an8.46:4.1 -->
+
 Atha kho tā devatā ekā ca gāyi ekā ca nacci ekā ca accharaṁ vādesi.
+
+<!-- @segment an8.46:4.2 -->
 
 Seyyathāpi nāma pañcaṅgikassa tūriyassa suvinītassa suppaṭipatāḷitassa kusalehi susamannāhatassa saddo hoti vaggu ca rajanīyo ca kamanīyo ca pemanīyo ca madanīyo ca;
 
+<!-- @segment an8.46:4.3 -->
+
 evamevaṁ tāsaṁ devatānaṁ alaṅkārānaṁ saddo hoti vaggu ca rajanīyo ca kamanīyo ca pemanīyo ca madanīyo ca.
+
+<!-- @segment an8.46:4.4 -->
 
 Atha kho āyasmā anuruddho indriyāni okkhipi.
 
+<!-- @segment an8.46:5.1 -->
+
 Atha kho tā devatā “na khvayyo anuruddho sādiyatī”ti tatthevantaradhāyiṁsu.
+
+<!-- @segment an8.46:5.2 -->
 
 Atha kho āyasmā anuruddho sāyanhasamayaṁ paṭisallānā vuṭṭhito yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā anuruddho bhagavantaṁ etadavoca:
 
+<!-- @segment an8.46:6.1 -->
+
 “Idhāhaṁ, bhante, divāvihāraṁ gato homi paṭisallīno.
+
+<!-- @segment an8.46:6.2 -->
 
 Atha kho, bhante, sambahulā manāpakāyikā devatā yenāhaṁ tenupasaṅkamiṁsu; upasaṅkamitvā maṁ abhivādetvā ekamantaṁ aṭṭhaṁsu. Ekamantaṁ ṭhitā kho, bhante, tā devatā maṁ etadavocuṁ:
 
+<!-- @segment an8.46:6.3 -->
+
 ‘mayaṁ, bhante anuruddha, manāpakāyikā nāma devatā tīsu ṭhānesu issariyaṁ kārema vasaṁ vattema.
+
+<!-- @segment an8.46:6.4 -->
 
 Mayaṁ, bhante anuruddha, yādisakaṁ vaṇṇaṁ ākaṅkhāma tādisakaṁ vaṇṇaṁ ṭhānaso paṭilabhāma;
 
+<!-- @segment an8.46:6.5 -->
+
 yādisakaṁ saraṁ ākaṅkhāma tādisakaṁ saraṁ ṭhānaso paṭilabhāma;
+
+<!-- @segment an8.46:6.6 -->
 
 yādisakaṁ sukhaṁ ākaṅkhāma tādisakaṁ sukhaṁ ṭhānaso paṭilabhāma.
 
+<!-- @segment an8.46:6.7 -->
+
 Mayaṁ, bhante anuruddha, manāpakāyikā nāma devatā imesu tīsu ṭhānesu issariyaṁ kārema vasaṁ vattemā’ti.
 
+<!-- @segment an8.46:6.8 -->
+
 Tassa mayhaṁ, bhante, etadahosi:
+
+<!-- @segment an8.46:6.9 -->
 
 ‘aho vatimā devatā sabbāva nīlā assu nīlavaṇṇā nīlavatthā nīlālaṅkārā’ti.
 
+<!-- @segment an8.46:6.10 -->
+
 Atha kho, bhante, tā devatā mama cittamaññāya sabbāva nīlā ahesuṁ nīlavaṇṇā nīlavatthā nīlālaṅkārā.
+
+<!-- @segment an8.46:7.1 -->
 
 Tassa mayhaṁ, bhante, etadahosi:
 
+<!-- @segment an8.46:7.2 -->
+
 ‘aho vatimā devatā sabbāva pītā assu …pe…
+
+<!-- @segment an8.46:7.3 -->
 
 sabbāva lohitakā assu …pe…
 
+<!-- @segment an8.46:7.4 -->
+
 sabbāva odātā assu odātavaṇṇā odātavatthā odātālaṅkārā’ti.
+
+<!-- @segment an8.46:7.5 -->
 
 Atha kho, bhante, tā devatā mama cittamaññāya sabbāva odātā ahesuṁ odātavaṇṇā odātavatthā odātālaṅkārā.
 
+<!-- @segment an8.46:8.1 -->
+
 Atha kho, bhante, tā devatā ekā ca gāyi ekā ca nacci ekā ca accharaṁ vādesi.
+
+<!-- @segment an8.46:8.2 -->
 
 Seyyathāpi nāma pañcaṅgikassa tūriyassa suvinītassa suppaṭipatāḷitassa kusalehi susamannāhatassa saddo hoti vaggu ca rajanīyo ca kamanīyo ca pemanīyo ca madanīyo ca;
 
+<!-- @segment an8.46:8.3 -->
+
 evamevaṁ tāsaṁ devatānaṁ alaṅkārānaṁ saddo hoti vaggu ca rajanīyo ca kamanīyo ca pemanīyo ca madanīyo ca.
+
+<!-- @segment an8.46:8.4 -->
 
 Atha khvāhaṁ, bhante, indriyāni okkhipi.
 
+<!-- @segment an8.46:9.1 -->
+
 Atha kho, bhante, tā devatā ‘na khvayyo anuruddho sādiyatī’ti tatthevantaradhāyiṁsu.
+
+<!-- @segment an8.46:9.2 -->
 
 Katihi nu kho, bhante, dhammehi samannāgato mātugāmo kāyassa bhedā paraṁ maraṇā manāpakāyikānaṁ devānaṁ sahabyataṁ upapajjatī”ti?
 
+<!-- @segment an8.46:10.1 -->
+
 “Aṭṭhahi kho, anuruddha, dhammehi samannāgato mātugāmo kāyassa bhedā paraṁ maraṇā manāpakāyikānaṁ devānaṁ sahabyataṁ upapajjati.
+
+<!-- @segment an8.46:10.2 -->
 
 Katamehi aṭṭhahi?
 
+<!-- @segment an8.46:10.3 -->
+
 Idha, anuruddha, mātugāmo yassa mātāpitaro bhattuno denti atthakāmā hitesino anukampakā anukampaṁ upādāya tassa hoti pubbuṭṭhāyinī pacchānipātinī kiṅkārapaṭissāvinī manāpacārinī piyavādinī.
+
+<!-- @segment an8.46:11.1 -->
 
 Ye te bhattu garuno honti—
 
+<!-- @segment an8.46:11.2 -->
+
 mātāti vā pitāti vā samaṇabrāhmaṇāti vā—
+
+<!-- @segment an8.46:11.3 -->
 
 te sakkaroti, garuṁ karoti, māneti, pūjeti, abbhāgate ca āsanodakena paṭipūjeti.
 
+<!-- @segment an8.46:12.1 -->
+
 Ye te bhattu abbhantarā kammantā—uṇṇāti vā kappāsāti vā—tattha dakkhā hoti analasā tatrupāyāya vīmaṁsāya samannāgatā alaṁ kātuṁ alaṁ saṁvidhātuṁ.
+
+<!-- @segment an8.46:13.1 -->
 
 Yo so bhattu abbhantaro antojano—dāsāti vā pessāti vā kammakarāti vā—
 
+<!-- @segment an8.46:13.2 -->
+
 tesaṁ katañca katato jānāti akatañca akatato jānāti, gilānakānañca balābalaṁ jānāti khādanīyaṁ bhojanīyañcassa paccaṁsena saṁvibhajati.
+
+<!-- @segment an8.46:14.1 -->
 
 Yaṁ bhattu āharati dhanaṁ vā dhaññaṁ vā jātarūpaṁ vā taṁ ārakkhena guttiyā sampādeti, tattha ca hoti adhuttī athenī asoṇḍī avināsikā.
 
+<!-- @segment an8.46:15.1 -->
+
 Upāsikā kho pana hoti buddhaṁ saraṇaṁ gatā dhammaṁ saraṇaṁ gatā saṅghaṁ saraṇaṁ gatā.
+
+<!-- @segment an8.46:16.1 -->
 
 Sīlavatī kho pana hoti—
 
+<!-- @segment an8.46:16.2 -->
+
 pāṇātipātā paṭiviratā, adinnādānā paṭiviratā, kāmesumicchācārā paṭiviratā, musāvādā paṭiviratā, surāmerayamajjapamādaṭṭhānā paṭiviratā.
+
+<!-- @segment an8.46:17.1 -->
 
 Cāgavatī kho pana hoti.
 
+<!-- @segment an8.46:17.2 -->
+
 Vigatamalamaccherena cetasā agāraṁ ajjhāvasati muttacāgā payatapāṇinī vossaggaratā yācayogā dānasaṁvibhāgaratā.
+
+<!-- @segment an8.46:18.1 -->
 
 Imehi kho, anuruddha, aṭṭhahi dhammehi samannāgato mātugāmo kāyassa bhedā paraṁ maraṇā manāpakāyikānaṁ devānaṁ sahabyataṁ upapajjatīti.
 
+<!-- @segment an8.46:19.1 -->
+
 Yo naṁ bharati sabbadā,
+
+<!-- @segment an8.46:19.2 -->
 
 niccaṁ ātāpi ussuko;
 
+<!-- @segment an8.46:19.3 -->
+
 Taṁ sabbakāmadaṁ posaṁ,
+
+<!-- @segment an8.46:19.4 -->
 
 bhattāraṁ nātimaññati.
 
+<!-- @segment an8.46:20.1 -->
+
 Na cāpi sotthi bhattāraṁ,
+
+<!-- @segment an8.46:20.2 -->
 
 issāvādena rosaye;
 
+<!-- @segment an8.46:20.3 -->
+
 Bhattu ca garuno sabbe,
+
+<!-- @segment an8.46:20.4 -->
 
 paṭipūjeti paṇḍitā.
 
+<!-- @segment an8.46:21.1 -->
+
 Uṭṭhāhikā analasā,
+
+<!-- @segment an8.46:21.2 -->
 
 saṅgahitaparijjanā;
 
+<!-- @segment an8.46:21.3 -->
+
 Bhattu manāpaṁ carati,
+
+<!-- @segment an8.46:21.4 -->
 
 sambhataṁ anurakkhati.
 
+<!-- @segment an8.46:22.1 -->
+
 Yā evaṁ vattati nārī,
+
+<!-- @segment an8.46:22.2 -->
 
 bhattu chandavasānugā;
 
+<!-- @segment an8.46:22.3 -->
+
 Manāpā nāma te devā,
 
+<!-- @segment an8.46:22.4 -->
+
 yattha sā upapajjatī”ti.
+
+<!-- @segment an8.46:22.5 -->
 
 Chaṭṭhaṁ.

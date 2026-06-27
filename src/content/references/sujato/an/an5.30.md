@@ -6,78 +6,172 @@ license: CC0
 title: With Nāgita
 ---
 
+<!-- @segment an5.30:1.1 -->
+
 So I have heard.
+
+<!-- @segment an5.30:1.2 -->
 
 At one time the Buddha was wandering in the land of the Kosalans together with a large Saṅgha of mendicants when he arrived at a village of the Kosalan brahmins named Icchānaṅgala.
 
+<!-- @segment an5.30:1.3 -->
+
 He stayed in a forest near Icchānaṅgala.
+
+<!-- @segment an5.30:1.4 -->
 
 The brahmins and householders of Icchānaṅgala heard:
 
+<!-- @segment an5.30:1.5 -->
+
 “It seems the ascetic Gotama—a Sakyan, gone forth from a Sakyan family—has arrived at Icchānaṅgala. He is staying in a forest near Icchānaṅgala.
+
+<!-- @segment an5.30:1.6 -->
 
 He has this good reputation:
 
+<!-- @segment an5.30:1.7 -->
+
 ‘That Blessed One is perfected, a fully awakened Buddha, accomplished in knowledge and conduct, holy, knower of the world, supreme guide for those fit for training, teacher of gods and humans, awakened, blessed.’
+
+<!-- @segment an5.30:1.8 -->
 
 He has realized with his own insight this world—with its gods, Māras, and divinities, this population with its ascetics and brahmins, gods and humans—and he makes it known to others.
 
+<!-- @segment an5.30:1.9 -->
+
 He proclaims a teaching that’s good in the beginning, good in the middle, and good in the end, meaningful and well-phrased. And he reveals a spiritual practice that’s entirely full and pure.
+
+<!-- @segment an5.30:1.10 -->
 
 It’s good to see such perfected ones.”
 
+<!-- @segment an5.30:1.11 -->
+
 Then, when the night had passed, they took many fresh and cooked foods and went to the forest near Icchānaṅgala, where they stood outside the gates making a colossal racket.
+
+<!-- @segment an5.30:2.1 -->
 
 Now, at that time Venerable Nāgita was the Buddha’s attendant.
 
+<!-- @segment an5.30:2.2 -->
+
 Then the Buddha said to Nāgita,
+
+<!-- @segment an5.30:2.3 -->
 
 “Nāgita, who’s making that colossal racket? You’d think it was fishermen hauling in a catch!”
 
+<!-- @segment an5.30:2.4 -->
+
 “Sir, it’s these brahmins and householders of Icchānaṅgala. They’ve brought many fresh and cooked foods, and they’re standing outside the gates wanting to offer it specially to the Buddha and the mendicant Saṅgha.”
+
+<!-- @segment an5.30:2.5 -->
 
 “Nāgita, may I never become famous. May fame not come to me.
 
+<!-- @segment an5.30:2.6 -->
+
 There are those who can’t get the pleasure of renunciation, the pleasure of seclusion, the pleasure of peace, the pleasure of awakening when they want, without trouble or difficulty like I can.
+
+<!-- @segment an5.30:2.7 -->
 
 Let them enjoy the filthy, lazy pleasure of possessions, honor, and popularity.”
 
+<!-- @segment an5.30:3.1 -->
+
 “Sir, may the Blessed One please relent now! May the Holy One relent!
+
+<!-- @segment an5.30:3.2 -->
 
 Now is the time for the Buddha to relent.
 
+<!-- @segment an5.30:3.3 -->
+
 Wherever the Buddha now goes, the brahmins and householders, and people of town and country will incline the same way.
+
+<!-- @segment an5.30:3.4 -->
 
 It’s like when the heavens rain heavily and the water flows downhill.
 
+<!-- @segment an5.30:3.5 -->
+
 In the same way, wherever the Buddha now goes, the brahmins and householders, and people of town and country will incline the same way.
+
+<!-- @segment an5.30:3.6 -->
 
 Why is that?
 
+<!-- @segment an5.30:3.7 -->
+
 Because of the Buddha’s ethics and wisdom.”
+
+<!-- @segment an5.30:4.1 -->
 
 “Nāgita, may I never become famous. May fame not come to me.
 
+<!-- @segment an5.30:4.2 -->
+
 There are those who can’t get the pleasure of renunciation, the pleasure of seclusion, the pleasure of peace, the pleasure of awakening when they want, without trouble or difficulty like I can.
+
+<!-- @segment an5.30:4.3 -->
 
 Let them enjoy the filthy, lazy pleasure of possessions, honor, and popularity.
 
+<!-- @segment an5.30:4.4 -->
+
 What you eat, drink, chew, and taste ends up as excrement and urine.
 
+<!-- @segment an5.30:4.5 -->
+
 This is its outcome.
+
+<!-- @segment an5.30:4.6 -->
 
 When loved ones decay and perish, sorrow, lamentation, pain, sadness, and distress arise.
 
+<!-- @segment an5.30:4.7 -->
+
 This is its outcome.
+
+<!-- @segment an5.30:4.8 -->
 
 When you pursue meditation on the feature of ugliness, revulsion at the feature of beauty becomes stabilized.
 
+<!-- @segment an5.30:4.9 -->
+
 This is its outcome.
+
+<!-- @segment an5.30:4.10 -->
 
 When you meditate observing impermanence in the six fields of contact, revulsion at contact becomes stabilized.
 
+<!-- @segment an5.30:4.11 -->
+
 This is its outcome.
+
+<!-- @segment an5.30:4.12 -->
 
 When you meditate observing rise and fall in the five grasping aggregates, revulsion at grasping becomes stabilized.
 
+<!-- @segment an5.30:4.13 -->
+
 This is its outcome.”
+
+<!-- @segment an5.30:4.14 -->
+
+
+
+<!-- @segment an5.30:4.15 -->
+
+
+
+<!-- @segment an5.30:5.1 -->
+
+
+
+<!-- @segment an5.30:5.2 -->
+
+
+
+<!-- @segment an5.30:5.3 -->

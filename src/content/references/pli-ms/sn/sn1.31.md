@@ -1,91 +1,175 @@
 ---
 slug: sn1.31
 source: suttacentral/bilara-data
+title: Sabbhisutta
 edition: ms
 granularity: segment
-title: Sabbhisutta
 ---
+
+<!-- @segment sn1.31:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment sn1.31:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment sn1.31:1.3 -->
 
 Atha kho sambahulā satullapakāyikā devatāyo abhikkantāya rattiyā abhikkantavaṇṇā kevalakappaṁ jetavanaṁ obhāsetvā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhaṁsu.
 
+<!-- @segment sn1.31:1.4 -->
+
 Ekamantaṁ ṭhitā kho ekā devatā bhagavato santike imaṁ gāthaṁ abhāsi:
+
+<!-- @segment sn1.31:2.1 -->
 
 “Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:2.2 -->
+
 sabbhi kubbetha santhavaṁ;
 
+<!-- @segment sn1.31:2.3 -->
+
 Sataṁ saddhammamaññāya,
+
+<!-- @segment sn1.31:2.4 -->
 
 seyyo hoti na pāpiyo”ti.
 
+<!-- @segment sn1.31:3.1 -->
+
 Atha kho aparā devatā bhagavato santike imaṁ gāthaṁ abhāsi:
+
+<!-- @segment sn1.31:4.1 -->
 
 “Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:4.2 -->
+
 sabbhi kubbetha santhavaṁ;
 
+<!-- @segment sn1.31:4.3 -->
+
 Sataṁ saddhammamaññāya,
+
+<!-- @segment sn1.31:4.4 -->
 
 paññā labbhati nāññato”ti.
 
+<!-- @segment sn1.31:5.1 -->
+
 Atha kho aparā devatā bhagavato santike imaṁ gāthaṁ abhāsi:
+
+<!-- @segment sn1.31:6.1 -->
 
 “Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:6.2 -->
+
 sabbhi kubbetha santhavaṁ;
 
+<!-- @segment sn1.31:6.3 -->
+
 Sataṁ saddhammamaññāya,
+
+<!-- @segment sn1.31:6.4 -->
 
 sokamajjhe na socatī”ti.
 
+<!-- @segment sn1.31:7.1 -->
+
 Atha kho aparā devatā bhagavato santike imaṁ gāthaṁ abhāsi:
+
+<!-- @segment sn1.31:8.1 -->
 
 “Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:8.2 -->
+
 sabbhi kubbetha santhavaṁ;
 
+<!-- @segment sn1.31:8.3 -->
+
 Sataṁ saddhammamaññāya,
+
+<!-- @segment sn1.31:8.4 -->
 
 ñātimajjhe virocatī”ti.
 
+<!-- @segment sn1.31:9.1 -->
+
 Atha kho aparā devatā bhagavato santike imaṁ gāthaṁ abhāsi:
+
+<!-- @segment sn1.31:10.1 -->
 
 “Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:10.2 -->
+
 sabbhi kubbetha santhavaṁ;
 
+<!-- @segment sn1.31:10.3 -->
+
 Sataṁ saddhammamaññāya,
+
+<!-- @segment sn1.31:10.4 -->
 
 sattā gacchanti suggatin”ti.
 
+<!-- @segment sn1.31:11.1 -->
+
 Atha kho aparā devatā bhagavato santike imaṁ gāthaṁ abhāsi:
+
+<!-- @segment sn1.31:12.1 -->
 
 “Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:12.2 -->
+
 sabbhi kubbetha santhavaṁ;
 
+<!-- @segment sn1.31:12.3 -->
+
 Sataṁ saddhammamaññāya,
+
+<!-- @segment sn1.31:12.4 -->
 
 sattā tiṭṭhanti sātatan”ti.
 
+<!-- @segment sn1.31:13.1 -->
+
 Atha kho aparā devatā bhagavantaṁ etadavoca:
+
+<!-- @segment sn1.31:13.2 -->
 
 “kassa nu kho, bhagavā, subhāsitan”ti?
 
+<!-- @segment sn1.31:14.1 -->
+
 “Sabbāsaṁ vo subhāsitaṁ pariyāyena, api ca mamapi suṇātha—
+
+<!-- @segment sn1.31:15.1 -->
 
 Sabbhireva samāsetha,
 
+<!-- @segment sn1.31:15.2 -->
+
 sabbhi kubbetha santhavaṁ;
+
+<!-- @segment sn1.31:15.3 -->
 
 Sataṁ saddhammamaññāya,
 
+<!-- @segment sn1.31:15.4 -->
+
 sabbadukkhā pamuccatī”ti.
 
+<!-- @segment sn1.31:16.1 -->
+
 Idamavoca bhagavā.
+
+<!-- @segment sn1.31:16.2 -->
 
 Attamanā tā devatāyo bhagavantaṁ abhivādetvā padakkhiṇaṁ katvā tatthevantaradhāyiṁsūti.

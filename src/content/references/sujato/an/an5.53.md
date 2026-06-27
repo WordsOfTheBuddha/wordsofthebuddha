@@ -6,24 +6,46 @@ license: CC0
 title: Factors That Support Meditation
 ---
 
+<!-- @segment an5.53:1.1 -->
+
 “Mendicants, there are these five factors that support meditation.
+
+<!-- @segment an5.53:1.2 -->
 
 What five?
 
+<!-- @segment an5.53:1.3 -->
+
 It’s when a mendicant has faith in the Realized One’s awakening:
+
+<!-- @segment an5.53:1.4 -->
 
 ‘That Blessed One is perfected, a fully awakened Buddha, accomplished in knowledge and conduct, holy, knower of the world, supreme guide for those fit for training, teacher of gods and humans, awakened, blessed.’
 
+<!-- @segment an5.53:1.5 -->
+
 They are rarely ill or unwell.
+
+<!-- @segment an5.53:1.6 -->
 
 Their stomach digests well, being neither too hot nor too cold, but just right, and fit for meditation.
 
+<!-- @segment an5.53:1.7 -->
+
 They’re not devious or deceitful.
+
+<!-- @segment an5.53:1.8 -->
 
 They reveal themselves honestly to the Teacher or sensible spiritual companions.
 
+<!-- @segment an5.53:1.9 -->
+
 They live with energy roused up for giving up unskillful qualities and embracing skillful qualities. They’re strong, staunchly vigorous, not slacking off when it comes to developing skillful qualities.
 
+<!-- @segment an5.53:1.10 -->
+
 They’re wise. They have the wisdom of arising and passing away which is noble, penetrative, and leads to the complete ending of suffering.
+
+<!-- @segment an5.53:1.11 -->
 
 These are the five factors that support meditation.”

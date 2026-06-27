@@ -6,104 +6,206 @@ license: CC0
 title: With Sumanā
 ---
 
+<!-- @segment an5.31:1.1 -->
+
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
+
+<!-- @segment an5.31:1.2 -->
 
 Then Princess Sumanā, escorted by five hundred chariots and five hundred royal maidens, went up to the Buddha, bowed, sat down to one side, and said to him:
 
+<!-- @segment an5.31:2.1 -->
+
 “Sir, suppose there were two disciples equal in faith, ethics, and wisdom.
+
+<!-- @segment an5.31:2.2 -->
 
 One is a giver, one is not.
 
+<!-- @segment an5.31:2.3 -->
+
 When their body breaks up, after death, they’re reborn in a good place, a heavenly realm.
+
+<!-- @segment an5.31:2.4 -->
 
 When they have become gods, would there be any distinction or difference between them?”
 
+<!-- @segment an5.31:3.1 -->
+
 “There would be, Sumanā,” said the Buddha.
+
+<!-- @segment an5.31:3.2 -->
 
 “As a god, the one who was a giver surpasses the other in five respects:
 
+<!-- @segment an5.31:3.3 -->
+
 heavenly lifespan, beauty, happiness, glory, and sovereignty.
+
+<!-- @segment an5.31:3.4 -->
 
 As a god, the one who was a giver surpasses the other in these five respects.”
 
+<!-- @segment an5.31:4.1 -->
+
 “But sir, if they pass away from there and come back to this place as human beings, would there still be any distinction or difference between them?”
 
+<!-- @segment an5.31:4.2 -->
+
 “There would be, Sumanā,” said the Buddha.
+
+<!-- @segment an5.31:4.3 -->
 
 “As a human being, the one who was a giver would surpass the other in five respects:
 
+<!-- @segment an5.31:4.4 -->
+
 human lifespan, beauty, happiness, glory, and sovereignty.
+
+<!-- @segment an5.31:4.5 -->
 
 As a human being, the one who was a giver surpasses the other in these five respects.”
 
+<!-- @segment an5.31:5.1 -->
+
 “But sir, if they both go forth from the lay life to homelessness, would there still be any distinction or difference between them?”
+
+<!-- @segment an5.31:5.2 -->
 
 “There would be, Sumanā,” said the Buddha.
 
+<!-- @segment an5.31:5.3 -->
+
 “As a renunciate, the one who was a giver surpasses the other in five respects.
+
+<!-- @segment an5.31:5.4 -->
 
 They usually use only what they’ve been invited to accept—robes, almsfood, lodgings, and medicines and supplies for the sick—rarely using them without invitation.
 
+<!-- @segment an5.31:5.5 -->
+
 When living with other spiritual practitioners, they usually find themselves treated agreeably by them by way of body, speech, and mind, and rarely disagreeably. And they are usually presented with agreeable things by them, rarely with disagreeable ones.
+
+<!-- @segment an5.31:5.6 -->
 
 As a renunciate, the one who was a giver surpasses the other in these five respects.”
 
+<!-- @segment an5.31:6.1 -->
+
 “But sir, if they both attain perfection, as perfected ones would there still be any distinction or difference between them?”
+
+<!-- @segment an5.31:6.2 -->
 
 “In that case, I say there is no difference between the freedom of one and the freedom of the other.”
 
+<!-- @segment an5.31:7.1 -->
+
 “It’s incredible, sir, it’s amazing!
+
+<!-- @segment an5.31:7.2 -->
 
 This is quite enough to justify giving gifts and making merit.
 
+<!-- @segment an5.31:7.3 -->
+
 For merit is helpful for those who have become gods, human beings, and renunciates.”
+
+<!-- @segment an5.31:7.4 -->
 
 “That’s so true, Sumanā.
 
+<!-- @segment an5.31:7.5 -->
+
 It’s quite enough to justify giving gifts and making merit.
+
+<!-- @segment an5.31:7.6 -->
 
 For merit is helpful for those who have become gods, human beings, and renunciates.”
 
+<!-- @segment an5.31:8.1 -->
+
 That is what the Buddha said.
+
+<!-- @segment an5.31:8.2 -->
 
 Then the Holy One, the Teacher, went on to say:
 
+<!-- @segment an5.31:9.1 -->
+
 “The moon so immaculate,
+
+<!-- @segment an5.31:9.2 -->
 
 journeying across the dimension of space;
 
+<!-- @segment an5.31:9.3 -->
+
 outshines with its radiance
+
+<!-- @segment an5.31:9.4 -->
 
 all the world’s stars.
 
+<!-- @segment an5.31:10.1 -->
+
 So too, a faithful individual,
+
+<!-- @segment an5.31:10.2 -->
 
 perfect in ethics,
 
+<!-- @segment an5.31:10.3 -->
+
 outshines with their generosity
+
+<!-- @segment an5.31:10.4 -->
 
 all the world’s stingy people.
 
+<!-- @segment an5.31:11.1 -->
+
 The thundering rain cloud,
+
+<!-- @segment an5.31:11.2 -->
 
 its hundred peaks wreathed in lightning,
 
+<!-- @segment an5.31:11.3 -->
+
 pours down over the rich earth,
+
+<!-- @segment an5.31:11.4 -->
 
 soaking the uplands and valleys.
 
+<!-- @segment an5.31:12.1 -->
+
 Even so, an astute person accomplished in vision,
+
+<!-- @segment an5.31:12.2 -->
 
 a disciple of the fully awakened Buddha,
 
+<!-- @segment an5.31:12.3 -->
+
 surpasses a stingy person
+
+<!-- @segment an5.31:12.4 -->
 
 in five respects:
 
+<!-- @segment an5.31:13.1 -->
+
 long life and fame,
+
+<!-- @segment an5.31:13.2 -->
 
 beauty and happiness.
 
+<!-- @segment an5.31:13.3 -->
+
 Lavished with riches,
+
+<!-- @segment an5.31:13.4 -->
 
 they depart to rejoice in heaven.”

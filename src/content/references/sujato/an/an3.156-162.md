@@ -6,148 +6,308 @@ license: CC0
 title: Untitled Discourses on Three Practices
 ---
 
+<!-- @segment an3.156:1.1 -->
+
 “Mendicants, there are three practices.
 
-Mendicants, there are three practices.
-
-They develop the basis of psychic power that has immersion due to enthusiasm, and active effort.
-
-They develop the faculty of faith …
-
-They develop the power of faith …
-
-They develop the awakening factor of mindfulness …
-
-They develop right view …
+<!-- @segment an3.156:1.2 -->
 
 What three?
 
-What three?
-
-They develop the basis of psychic power that has immersion due to energy, and active effort.
-
-energy …
-
-energy …
-
-investigation of principles …
-
-right purpose …
+<!-- @segment an3.156:1.3 -->
 
 The addicted practice, the scorching practice, and the middle practice.
 
-The addicted practice, the scorching practice, the middle practice.
-
-They develop the basis of psychic power that has immersion due to mental development, and active effort.
-
-mindfulness …
-
-mindfulness …
-
-energy …
-
-right speech …
+<!-- @segment an3.156:1.4 -->
 
 And what’s the addicted practice?
 
-And what’s the addicted practice? …
-
-They develop the basis of psychic power that has immersion due to inquiry, and active effort. …
-
-immersion …
-
-immersion …
-
-rapture …
-
-right action …
+<!-- @segment an3.156:1.5 -->
 
 It’s when someone has this doctrine and view:
 
-This is called the addicted practice.
-
-wisdom …
-
-wisdom …
-
-tranquility …
-
-right livelihood …
+<!-- @segment an3.156:1.6 -->
 
 ‘There’s nothing wrong with sensual pleasures’;
 
-immersion …
-
-right effort …
+<!-- @segment an3.156:1.7 -->
 
 so they throw themselves into sensual pleasures.
 
-equanimity …
-
-right mindfulness …
+<!-- @segment an3.156:1.8 -->
 
 This is called the addicted practice.
 
-right immersion …
-
-This is called the middle practice.
-
-These are the three practices.”
+<!-- @segment an3.156:2.1 -->
 
 And what’s the scorching practice?
 
-And what is the scorching practice? …
+<!-- @segment an3.156:2.2 -->
 
 It’s when someone goes naked, ignoring conventions. They lick their hands, and don’t come or wait when called. They don’t consent to food brought to them, or food prepared on their behalf, or an invitation for a meal.
 
-This is called the scorching practice.
+<!-- @segment an3.156:2.3 -->
 
 They don’t receive anything from a pot or bowl; or from someone who keeps sheep, or who has a weapon or a shovel in their home; or where a couple is eating; or where there is a woman who is pregnant, breastfeeding, or who lives with a man; or where there’s a hound waiting or flies buzzing. They accept no fish or meat or beer or wine, and drink no fermented gruel.
 
+<!-- @segment an3.156:2.4 -->
+
 They go to just one house for alms, taking just one mouthful, or two houses and two mouthfuls, up to seven houses and seven mouthfuls.
+
+<!-- @segment an3.156:2.5 -->
 
 They feed on one saucer a day, two saucers a day, up to seven saucers a day.
 
+<!-- @segment an3.156:2.6 -->
+
 They eat once a day, once every second day, up to once a week, and so on, even up to once a fortnight. They live pursuing the practice of eating food at set intervals.
+
+<!-- @segment an3.156:3.1 -->
 
 They eat herbs, millet, wild rice, poor rice, water lettuce, rice bran, scum from boiling rice, sesame flour, grass, or cow dung. They survive on forest roots and fruits, or eating fallen fruit.
 
-And what’s the middle practice?
-
-It’s when a mendicant generates enthusiasm, tries, makes an effort, exerts the mind, and strives so that bad, unskillful qualities don’t arise.
-
-They generate enthusiasm, try, make an effort, exert the mind, and strive so that bad, unskillful qualities that have arisen are given up.
-
-They generate enthusiasm, try, make an effort, exert the mind, and strive so that skillful qualities arise.
-
-They generate enthusiasm, try, make an effort, exert the mind, and strive so that skillful qualities that have arisen remain, are not lost, but increase, mature, and are completed by development. …
+<!-- @segment an3.156:4.1 -->
 
 They wear robes of sunn hemp, mixed hemp, corpse-wrapping cloth, rags, lodh tree bark, antelope hide (whole or in strips), kusa grass, bark, wood-chips, human hair, horse-tail hair, or owls’ wings.
 
+<!-- @segment an3.156:4.2 -->
+
 They tear out their hair and beard, committed to this practice.
+
+<!-- @segment an3.156:4.3 -->
 
 They constantly stand, turning down seats.
 
+<!-- @segment an3.156:4.4 -->
+
 They squat, committed to the endeavor of squatting.
+
+<!-- @segment an3.156:4.5 -->
 
 They lie on a mat of thorns, making a mat of thorns their bed.
 
+<!-- @segment an3.156:4.6 -->
+
 They’re devoted to ritual bathing three times a day, including at dusk.
+
+<!-- @segment an3.156:4.7 -->
 
 And so they live pursuing these various ways of mortifying and tormenting the body.
 
+<!-- @segment an3.156:4.8 -->
+
 This is called the scorching practice.
+
+<!-- @segment an3.156:5.1 -->
 
 And what’s the middle practice?
 
+<!-- @segment an3.156:5.2 -->
+
 It’s when a mendicant meditates by observing an aspect of the body—keen, aware, and mindful, rid of covetousness and displeasure for the world.
+
+<!-- @segment an3.156:5.3 -->
 
 They meditate observing an aspect of feelings …
 
+<!-- @segment an3.156:5.4 -->
+
 They meditate observing an aspect of the mind …
+
+<!-- @segment an3.156:5.5 -->
 
 They meditate observing an aspect of principles—keen, aware, and mindful, rid of covetousness and displeasure for the world.
 
+<!-- @segment an3.156:5.6 -->
+
 This is called the middle practice.
 
+<!-- @segment an3.156:5.7 -->
+
 These are the three practices.
+
+<!-- @segment an3.157:1.1 -->
+
+Mendicants, there are three practices.
+
+<!-- @segment an3.157:1.2 -->
+
+What three?
+
+<!-- @segment an3.157:1.3 -->
+
+The addicted practice, the scorching practice, the middle practice.
+
+<!-- @segment an3.157:1.4 -->
+
+And what’s the addicted practice? …
+
+<!-- @segment an3.157:1.5 -->
+
+This is called the addicted practice.
+
+<!-- @segment an3.157:2.1 -->
+
+And what is the scorching practice? …
+
+<!-- @segment an3.157:2.2 -->
+
+This is called the scorching practice.
+
+<!-- @segment an3.157:3.1 -->
+
+And what’s the middle practice?
+
+<!-- @segment an3.157:3.2 -->
+
+It’s when a mendicant generates enthusiasm, tries, makes an effort, exerts the mind, and strives so that bad, unskillful qualities don’t arise.
+
+<!-- @segment an3.157:3.3 -->
+
+They generate enthusiasm, try, make an effort, exert the mind, and strive so that bad, unskillful qualities that have arisen are given up.
+
+<!-- @segment an3.157:3.4 -->
+
+They generate enthusiasm, try, make an effort, exert the mind, and strive so that skillful qualities arise.
+
+<!-- @segment an3.157:3.5 -->
+
+They generate enthusiasm, try, make an effort, exert the mind, and strive so that skillful qualities that have arisen remain, are not lost, but increase, mature, and are completed by development. …
+
+<!-- @segment an3.158:1.1 -->
+
+They develop the basis of psychic power that has immersion due to enthusiasm, and active effort.
+
+<!-- @segment an3.158:1.2 -->
+
+They develop the basis of psychic power that has immersion due to energy, and active effort.
+
+<!-- @segment an3.158:1.3 -->
+
+They develop the basis of psychic power that has immersion due to mental development, and active effort.
+
+<!-- @segment an3.158:1.4 -->
+
+They develop the basis of psychic power that has immersion due to inquiry, and active effort. …
+
+<!-- @segment an3.159:1.1 -->
+
+They develop the faculty of faith …
+
+<!-- @segment an3.159:1.2 -->
+
+energy …
+
+<!-- @segment an3.159:1.3 -->
+
+mindfulness …
+
+<!-- @segment an3.159:1.4 -->
+
+immersion …
+
+<!-- @segment an3.159:1.5 -->
+
+wisdom …
+
+<!-- @segment an3.160:1.1 -->
+
+They develop the power of faith …
+
+<!-- @segment an3.160:1.2 -->
+
+energy …
+
+<!-- @segment an3.160:1.3 -->
+
+mindfulness …
+
+<!-- @segment an3.160:1.4 -->
+
+immersion …
+
+<!-- @segment an3.160:1.5 -->
+
+wisdom …
+
+<!-- @segment an3.161:1.1 -->
+
+They develop the awakening factor of mindfulness …
+
+<!-- @segment an3.161:1.2 -->
+
+investigation of principles …
+
+<!-- @segment an3.161:1.3 -->
+
+energy …
+
+<!-- @segment an3.161:1.4 -->
+
+rapture …
+
+<!-- @segment an3.161:1.5 -->
+
+tranquility …
+
+<!-- @segment an3.161:1.6 -->
+
+immersion …
+
+<!-- @segment an3.161:1.7 -->
+
+equanimity …
+
+<!-- @segment an3.162:1.1 -->
+
+They develop right view …
+
+<!-- @segment an3.162:1.2 -->
+
+right purpose …
+
+<!-- @segment an3.162:1.3 -->
+
+right speech …
+
+<!-- @segment an3.162:1.4 -->
+
+right action …
+
+<!-- @segment an3.162:1.5 -->
+
+right livelihood …
+
+<!-- @segment an3.162:1.6 -->
+
+right effort …
+
+<!-- @segment an3.162:1.7 -->
+
+right mindfulness …
+
+<!-- @segment an3.162:1.8 -->
+
+right immersion …
+
+<!-- @segment an3.162:1.9 -->
+
+This is called the middle practice.
+
+<!-- @segment an3.162:1.10 -->
+
+These are the three practices.”
+
+<!-- @segment an3.162:1.11 -->
+
+
+
+<!-- @segment an3.162:2.1 -->
+
+
+
+<!-- @segment an3.162:2.2 -->
+
+
+
+<!-- @segment an3.162:2.3 -->

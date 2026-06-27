@@ -6,112 +6,226 @@ license: CC0
 title: The Licchavi Youths
 ---
 
+<!-- @segment an5.58:1.1 -->
+
 At one time the Buddha was staying near Vesālī, at the Great Wood, in the hall with the peaked roof.
+
+<!-- @segment an5.58:1.2 -->
 
 Then the Buddha robed up in the morning and, taking his bowl and robe, entered Vesālī for alms.
 
+<!-- @segment an5.58:1.3 -->
+
 Then after the meal, on his return from almsround, he plunged deep into the Great Wood and sat at the root of a tree for the day’s meditation.
+
+<!-- @segment an5.58:2.1 -->
 
 Now at that time several Licchavi youths took strung bows and, escorted by a pack of hounds, were going for a walk in the Great Wood when they saw the Buddha seated at the root of a tree.
 
+<!-- @segment an5.58:2.2 -->
+
 When they saw him, they put down their strung bows, dispatched their hounds to one side, and went up to him. They bowed and silently paid homage to the Buddha with cupped palms.
+
+<!-- @segment an5.58:3.1 -->
 
 Now at that time Mahānāma the Licchavi was going for a walk in the Great Wood when he saw those Licchavi youths silently paying homage to the Buddha with cupped palms.
 
+<!-- @segment an5.58:3.2 -->
+
 Seeing this, he went up to the Buddha, bowed, sat down to one side,
+
+<!-- @segment an5.58:3.3 -->
 
 and expressed this heartfelt sentiment,
 
+<!-- @segment an5.58:3.4 -->
+
 “They will become Vajjis! They will become Vajjis!”
+
+<!-- @segment an5.58:4.1 -->
 
 “But Mahānāma, why do you say that
 
+<!-- @segment an5.58:4.2 -->
+
 they will become Vajjis?”
+
+<!-- @segment an5.58:4.3 -->
 
 “Sir, these Licchavi youths are violent, harsh, and brash.
 
+<!-- @segment an5.58:4.4 -->
+
 Whenever sweets are left out for families—sugar-cane, jujube fruits, pancakes, pies, or fritters—they filch them and eat them up.
+
+<!-- @segment an5.58:4.5 -->
 
 And they hit women and girls of good families on their backs.
 
+<!-- @segment an5.58:4.6 -->
+
 But now they’re silently paying homage to the Buddha with cupped palms.”
+
+<!-- @segment an5.58:5.1 -->
+
+
+
+<!-- @segment an5.58:5.2 -->
 
 “Mahānāma, you can expect only growth, not decline, when you find five qualities in any gentleman—whether he’s an anointed aristocratic king, an appointed or hereditary official, an army general, a village chief, a guild chief, or a ruler of his own clan.
 
+<!-- @segment an5.58:6.1 -->
+
 What five?
+
+<!-- @segment an5.58:6.2 -->
 
 Firstly, a gentleman uses his legitimate wealth—earned by his efforts and initiative, built up with his own hands, gathered by the sweat of the brow—to honor, respect, esteem, and venerate his mother and father.
 
+<!-- @segment an5.58:6.3 -->
+
 Honored in this way, his mother and father love him with a good heart, wishing:
 
+<!-- @segment an5.58:6.4 -->
+
 ‘Live long! Stay alive for a long time!’
+
+<!-- @segment an5.58:6.5 -->
 
 When a gentleman is loved by his mother and father, you can expect only growth, not decline.
 
+<!-- @segment an5.58:7.1 -->
+
 Furthermore, a gentleman uses his legitimate wealth to honor, respect, esteem, and venerate his wives and children, bondservants, workers, and staff.
+
+<!-- @segment an5.58:7.2 -->
 
 Honored in this way, his wives and children, bondservants, workers, and staff love him with a good heart, wishing:
 
+<!-- @segment an5.58:7.3 -->
+
 ‘Live long! Stay alive for a long time!’
+
+<!-- @segment an5.58:7.4 -->
 
 When a gentleman is loved by his wives and children, bondservants, workers, and staff, you can expect only growth, not decline.
 
+<!-- @segment an5.58:8.1 -->
+
 Furthermore, a gentleman uses his legitimate wealth to honor, respect, esteem, and venerate those who work the neighboring fields, and those he does business with.
+
+<!-- @segment an5.58:8.2 -->
 
 Honored in this way, those who work the neighboring fields, and those he does business with love him with a good heart, wishing:
 
+<!-- @segment an5.58:8.3 -->
+
 ‘Live long! Stay alive for a long time!’
+
+<!-- @segment an5.58:8.4 -->
 
 When a gentleman is loved by those who work the neighboring fields, and those he does business with, you can expect only growth, not decline.
 
+<!-- @segment an5.58:9.1 -->
+
 Furthermore, a gentleman uses his legitimate wealth to honor, respect, esteem, and venerate the deities who receive spirit-offerings.
+
+<!-- @segment an5.58:9.2 -->
 
 Honored in this way, the deities who receive spirit-offerings love him with a good heart, wishing:
 
+<!-- @segment an5.58:9.3 -->
+
 ‘Live long! Stay alive for a long time!’
+
+<!-- @segment an5.58:9.4 -->
 
 When a gentleman is loved by the deities, you can expect only growth, not decline.
 
+<!-- @segment an5.58:10.1 -->
+
 Furthermore, a gentleman uses his legitimate wealth to honor, respect, esteem, and venerate ascetics and brahmins.
+
+<!-- @segment an5.58:10.2 -->
 
 Honored in this way, ascetics and brahmins love him with a good heart, wishing:
 
+<!-- @segment an5.58:10.3 -->
+
 ‘Live long! Stay alive for a long time!’
+
+<!-- @segment an5.58:10.4 -->
 
 When a gentleman is loved by ascetics and brahmins, you can expect only growth, not decline.
 
+<!-- @segment an5.58:11.1 -->
+
 You can expect only growth, not decline, when you find these five qualities in any gentleman—
+
+<!-- @segment an5.58:11.2 -->
 
 whether he’s an anointed aristocratic king, an appointed or hereditary official, an army general, a village chief, a guild chief, or a ruler of his own clan.
 
+<!-- @segment an5.58:12.1 -->
+
 He’s always dutiful to his mother and father,
+
+<!-- @segment an5.58:12.2 -->
 
 and for the good of his wives and children.
 
+<!-- @segment an5.58:12.3 -->
+
 He looks after those in his household,
+
+<!-- @segment an5.58:12.4 -->
 
 and those dependent on him for their livelihood.
 
+<!-- @segment an5.58:13.1 -->
+
 A bountiful and ethical person
+
+<!-- @segment an5.58:13.2 -->
 
 looks after the welfare of relatives—
 
+<!-- @segment an5.58:13.3 -->
+
 both those who have passed away,
+
+<!-- @segment an5.58:13.4 -->
 
 and those alive at present.
 
+<!-- @segment an5.58:14.1 -->
+
 While living at home, an astute person
+
+<!-- @segment an5.58:14.2 -->
 
 uses legitimate means to give rise to joy
 
+<!-- @segment an5.58:14.3 -->
+
 for ascetics, brahmins,
+
+<!-- @segment an5.58:14.4 -->
 
 and also the gods.
 
+<!-- @segment an5.58:15.1 -->
+
 Having done good,
+
+<!-- @segment an5.58:15.2 -->
 
 he’s venerable and praiseworthy.
 
+<!-- @segment an5.58:15.3 -->
+
 They praise him in this life,
+
+<!-- @segment an5.58:15.4 -->
 
 and he departs to rejoice in heaven.”

@@ -1,25 +1,43 @@
 ---
 slug: an6.79
 source: suttacentral/bilara-data
+title: Adhigamasutta
 edition: ms
 granularity: segment
-title: Adhigamasutta
 ---
+
+<!-- @segment an6.79:1.1 -->
 
 “Chahi, bhikkhave, dhammehi samannāgato bhikkhu abhabbo anadhigataṁ vā kusalaṁ dhammaṁ adhigantuṁ, adhigataṁ vā kusalaṁ dhammaṁ phātiṁ kātuṁ.
 
+<!-- @segment an6.79:1.2 -->
+
 Katamehi chahi?
+
+<!-- @segment an6.79:1.3 -->
 
 Idha, bhikkhave, bhikkhu na āyakusalo ca hoti, na apāyakusalo ca hoti, na upāyakusalo ca hoti, anadhigatānaṁ kusalānaṁ dhammānaṁ adhigamāya na chandaṁ janeti, adhigate kusale dhamme na ārakkhati, sātaccakiriyāya na sampādeti.
 
+<!-- @segment an6.79:1.4 -->
+
 Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu abhabbo anadhigataṁ vā kusalaṁ dhammaṁ adhigantuṁ, adhigataṁ vā kusalaṁ dhammaṁ phātiṁ kātuṁ.
+
+<!-- @segment an6.79:2.1 -->
 
 Chahi, bhikkhave, dhammehi samannāgato bhikkhu bhabbo anadhigataṁ vā kusalaṁ dhammaṁ adhigantuṁ, adhigataṁ vā kusalaṁ dhammaṁ phātiṁ kātuṁ.
 
+<!-- @segment an6.79:2.2 -->
+
 Katamehi chahi?
+
+<!-- @segment an6.79:2.3 -->
 
 Idha, bhikkhave, bhikkhu āyakusalo ca hoti, apāyakusalo ca hoti, upāyakusalo ca hoti, anadhigatānaṁ kusalānaṁ dhammānaṁ adhigamāya chandaṁ janeti, adhigate kusale dhamme ārakkhati, sātaccakiriyāya sampādeti.
 
+<!-- @segment an6.79:2.4 -->
+
 Imehi kho, bhikkhave, chahi dhammehi samannāgato bhikkhu bhabbo anadhigataṁ vā kusalaṁ dhammaṁ adhigantuṁ, adhigataṁ vā kusalaṁ dhammaṁ phātiṁ kātun”ti.
+
+<!-- @segment an6.79:2.5 -->
 
 Pañcamaṁ.

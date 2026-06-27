@@ -6,32 +6,62 @@ license: CC0
 title: King Udena
 ---
 
+<!-- @segment ud7.10:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud7.10:1.2 -->
 
 At one time the Buddha was staying near Kosambī, in Ghosita’s Monastery.
 
+<!-- @segment ud7.10:1.3 -->
+
 Now at that time, while King Udena was visiting a park, his royal compound burned down. Five hundred women died, with Queen Sāmāvatī at their head.
+
+<!-- @segment ud7.10:2.1 -->
 
 Then several mendicants robed up in the morning and, taking their bowls and robes, entered Kosambī for alms.
 
+<!-- @segment ud7.10:2.2 -->
+
 Then, after the meal, when they returned from almsround, they went up to the Buddha, bowed, sat down to one side, and told him had happened. They asked the Buddha,
+
+<!-- @segment ud7.10:2.5 -->
 
 “Sir, where have those laywomen been reborn in the next life?”
 
+<!-- @segment ud7.10:3.1 -->
+
 “Among those laywomen there were stream-enterers, once-returners, and non-returners.
+
+<!-- @segment ud7.10:3.2 -->
 
 None of those laywomen died without some fruit of the practice.”
 
+<!-- @segment ud7.10:4.1 -->
+
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
+
+<!-- @segment ud7.10:5.1 -->
 
 “The world is caught up in delusion,
 
+<!-- @segment ud7.10:5.2 -->
+
 but is looked on as making sense.
+
+<!-- @segment ud7.10:5.3 -->
 
 The fool caught up in attachment
 
+<!-- @segment ud7.10:5.4 -->
+
 is surrounded by darkness.
 
+<!-- @segment ud7.10:5.5 -->
+
 It seems as if eternal,
+
+<!-- @segment ud7.10:5.6 -->
 
 but for one who sees, there is nothing.”

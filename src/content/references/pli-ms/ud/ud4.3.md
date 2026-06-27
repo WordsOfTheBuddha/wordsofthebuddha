@@ -1,55 +1,103 @@
 ---
 slug: ud4.3
 source: suttacentral/bilara-data
+title: Gopālakasutta
 edition: ms
 granularity: segment
-title: Gopālakasutta
 ---
+
+<!-- @segment ud4.3:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud4.3:1.2 -->
+
 ekaṁ samayaṁ bhagavā kosalesu cārikaṁ carati mahatā bhikkhusaṅghena saddhiṁ.
+
+<!-- @segment ud4.3:1.3 -->
 
 Atha kho bhagavā maggā okkamma yena aññataraṁ rukkhamūlaṁ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
 
+<!-- @segment ud4.3:2.1 -->
+
 Atha kho aññataro gopālako yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi.
+
+<!-- @segment ud4.3:2.2 -->
 
 Ekamantaṁ nisinnaṁ kho taṁ gopālakaṁ bhagavā dhammiyā kathāya sandassesi samādapesi samuttejesi sampahaṁsesi.
 
+<!-- @segment ud4.3:3.1 -->
+
 Atha kho so gopālako bhagavatā dhammiyā kathāya sandassito samādapito samuttejito sampahaṁsito bhagavantaṁ etadavoca:
+
+<!-- @segment ud4.3:3.2 -->
 
 “adhivāsetu me, bhante, bhagavā svātanāya bhattaṁ saddhiṁ bhikkhusaṅghenā”ti.
 
+<!-- @segment ud4.3:3.3 -->
+
 Adhivāsesi bhagavā tuṇhībhāvena.
+
+<!-- @segment ud4.3:3.4 -->
 
 Atha kho so gopālako bhagavato adhivāsanaṁ viditvā uṭṭhāyāsanā bhagavantaṁ abhivādetvā padakkhiṇaṁ katvā pakkāmi.
 
+<!-- @segment ud4.3:4.1 -->
+
 Atha kho so gopālako tassā rattiyā accayena sake nivesane pahūtaṁ appodakapāyāsaṁ paṭiyādāpetvā navañca sappiṁ bhagavato kālaṁ ārocesi:
+
+<!-- @segment ud4.3:4.2 -->
 
 “kālo, bhante, niṭṭhitaṁ bhattan”ti.
 
+<!-- @segment ud4.3:5.1 -->
+
 Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya saddhiṁ bhikkhusaṅghena yena tassa gopālakassa nivesanaṁ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
+
+<!-- @segment ud4.3:5.2 -->
 
 Atha kho so gopālako buddhappamukhaṁ bhikkhusaṅghaṁ appodakapāyāsena navena ca sappinā sahatthā santappesi sampavāresi.
 
+<!-- @segment ud4.3:5.3 -->
+
 Atha kho so gopālako bhagavantaṁ bhuttāviṁ onītapattapāṇiṁ aññataraṁ nīcaṁ āsanaṁ gahetvā ekamantaṁ nisīdi.
+
+<!-- @segment ud4.3:5.4 -->
 
 Ekamantaṁ nisinnaṁ kho taṁ gopālakaṁ bhagavā dhammiyā kathāya sandassetvā samādapetvā samuttejetvā sampahaṁsetvā uṭṭhāyāsanā pakkāmi.
 
+<!-- @segment ud4.3:5.5 -->
+
 Atha kho acirapakkantassa bhagavato taṁ gopālakaṁ aññataro puriso sīmantarikāya jīvitā voropesi.
+
+<!-- @segment ud4.3:6.1 -->
 
 Atha kho sambahulā bhikkhū yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinnā kho te bhikkhū bhagavantaṁ etadavocuṁ:
 
+<!-- @segment ud4.3:6.2 -->
+
 “yena, bhante, gopālakena ajja buddhappamukho bhikkhusaṅgho appodakapāyāsena navena ca sappinā sahatthā santappito sampavārito so kira, bhante, gopālako aññatarena purisena sīmantarikāya jīvitā voropito”ti.
+
+<!-- @segment ud4.3:7.1 -->
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
 
+<!-- @segment ud4.3:8.1 -->
+
 “Diso disaṁ yaṁ taṁ kayirā,
+
+<!-- @segment ud4.3:8.2 -->
 
 verī vā pana verinaṁ;
 
+<!-- @segment ud4.3:8.3 -->
+
 Micchāpaṇihitaṁ cittaṁ,
 
+<!-- @segment ud4.3:8.4 -->
+
 pāpiyo naṁ tato kare”ti.
+
+<!-- @segment ud4.3:8.5 -->
 
 Tatiyaṁ.

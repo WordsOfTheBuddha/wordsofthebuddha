@@ -6,148 +6,370 @@ license: CC0
 title: Followed by Ear
 ---
 
+<!-- @segment an4.191:1.1 -->
+
 “Mendicants, you can expect four benefits when the teachings have been followed by ear, consolidated by voice, examined by the mind, and well comprehended theoretically.
+
+<!-- @segment an4.191:1.2 -->
 
 What four?
 
+<!-- @segment an4.191:1.3 -->
+
 Take a mendicant who memorizes the teaching—
+
+<!-- @segment an4.191:1.4 -->
 
 statements, mixed prose & verse, discussions, verses, inspired exclamations, legends, stories of past lives, amazing stories, and elaborations.
 
+<!-- @segment an4.191:1.5 -->
+
 They’ve followed those teachings by ear, consolidated them by voice, examined them by the mind, and well comprehended them theoretically.
 
+<!-- @segment an4.191:1.6 -->
+
 But they die unmindful and are reborn in one of the orders of gods.
+
+<!-- @segment an4.191:1.7 -->
 
 Being happy there, passages of the teaching come back to them.
 
+<!-- @segment an4.191:1.8 -->
+
 Memory comes up slowly,
 
+<!-- @segment an4.191:1.9 -->
+
 but then that being quickly reaches distinction.
+
+<!-- @segment an4.191:1.10 -->
 
 This is the first benefit you can expect when the teachings have been followed by ear, consolidated by voice, examined by the mind, and well comprehended theoretically.
 
+<!-- @segment an4.191:2.1 -->
+
 Furthermore, take a mendicant who memorizes the teaching—
+
+<!-- @segment an4.191:2.2 -->
 
 statements, mixed prose & verse, discussions, verses, inspired exclamations, legends, stories of past lives, amazing stories, and elaborations.
 
+<!-- @segment an4.191:2.3 -->
+
 They’ve followed those teachings by ear, consolidated them by voice, examined them by the mind, and well comprehended them theoretically.
 
+<!-- @segment an4.191:2.4 -->
+
 But they die unmindful and are reborn in one of the orders of gods.
+
+<!-- @segment an4.191:2.5 -->
 
 Though they’re happy there, passages of the teaching don’t come back to them.
 
+<!-- @segment an4.191:2.6 -->
+
 However, a mendicant with psychic powers, who has achieved mastery of the mind, teaches Dhamma to the assembly of gods.
+
+<!-- @segment an4.191:2.7 -->
 
 They think:
 
+<!-- @segment an4.191:2.8 -->
+
 ‘I used to lead the spiritual life in this same teaching and training.’
+
+<!-- @segment an4.191:2.9 -->
 
 Memory comes up slowly,
 
+<!-- @segment an4.191:2.10 -->
+
 but then that being quickly reaches distinction.
+
+<!-- @segment an4.191:2.11 -->
 
 Suppose a person was skilled in the sound of drums.
 
+<!-- @segment an4.191:2.12 -->
+
 While traveling along a road they hear the sound of drums.
+
+<!-- @segment an4.191:2.13 -->
 
 They wouldn’t have any doubts or uncertainties about whether
 
+<!-- @segment an4.191:2.14 -->
+
 that was the sound of drums or not.
+
+<!-- @segment an4.191:2.15 -->
 
 They’d just conclude, ‘That’s the sound of drums.’
 
+<!-- @segment an4.191:2.16 -->
+
 In the same way, take a mendicant who memorizes the teaching …
+
+<!-- @segment an4.191:2.17 -->
+
+
+
+<!-- @segment an4.191:2.18 -->
+
+
+
+<!-- @segment an4.191:2.19 -->
 
 But they die unmindful and are reborn in one of the orders of gods. …
 
+<!-- @segment an4.191:2.20 -->
+
+
+
+<!-- @segment an4.191:2.21 -->
+
+
+
+<!-- @segment an4.191:2.22 -->
+
+
+
+<!-- @segment an4.191:2.23 -->
+
+
+
+<!-- @segment an4.191:2.24 -->
+
 Memory comes up slowly,
 
+<!-- @segment an4.191:2.25 -->
+
 but then that being quickly reaches distinction.
+
+<!-- @segment an4.191:2.26 -->
 
 This is the second benefit you can expect when the teachings have been followed by ear, consolidated by voice, examined by the mind, and well comprehended theoretically.
 
+<!-- @segment an4.191:3.1 -->
+
 Furthermore, take a mendicant who memorizes the teaching—
+
+<!-- @segment an4.191:3.2 -->
 
 statements, mixed prose & verse, discussions, verses, inspired exclamations, legends, stories of past lives, amazing stories, and elaborations.
 
+<!-- @segment an4.191:3.3 -->
+
 They’ve followed those teachings by ear, consolidated them by voice, examined them by the mind, and well comprehended them theoretically.
 
+<!-- @segment an4.191:3.4 -->
+
 But they die unmindful and are reborn in one of the orders of gods.
+
+<!-- @segment an4.191:3.5 -->
 
 But passages of the teaching don’t come back to them when they’re happy, nor does a mendicant with psychic powers … teach Dhamma to the assembly of gods.
 
+<!-- @segment an4.191:3.6 -->
+
 However, a godling teaches Dhamma to the assembly of gods.
+
+<!-- @segment an4.191:3.7 -->
 
 They think:
 
+<!-- @segment an4.191:3.8 -->
+
 ‘I used to lead the spiritual life in this same teaching and training.’
+
+<!-- @segment an4.191:3.9 -->
 
 Memory comes up slowly,
 
+<!-- @segment an4.191:3.10 -->
+
 but then that being quickly reaches distinction.
+
+<!-- @segment an4.191:3.11 -->
 
 Suppose a person was skilled in the sound of horns.
 
+<!-- @segment an4.191:3.12 -->
+
 While traveling along a road they hear the sound of horns.
+
+<!-- @segment an4.191:3.13 -->
 
 They wouldn’t have any doubt about whether
 
+<!-- @segment an4.191:3.14 -->
+
 that was the sound of horns or not.
+
+<!-- @segment an4.191:3.15 -->
 
 They’d just conclude, ‘That’s the sound of horns.’
 
+<!-- @segment an4.191:3.16 -->
+
 In the same way, take a mendicant who memorizes the teaching …
+
+<!-- @segment an4.191:3.17 -->
+
+
+
+<!-- @segment an4.191:3.18 -->
+
+
+
+<!-- @segment an4.191:3.19 -->
 
 But they die unmindful and are reborn in one of the orders of gods. …
 
+<!-- @segment an4.191:3.20 -->
+
+
+
+<!-- @segment an4.191:3.21 -->
+
+
+
+<!-- @segment an4.191:3.22 -->
+
+
+
+<!-- @segment an4.191:3.23 -->
+
+
+
+<!-- @segment an4.191:3.24 -->
+
 Memory comes up slowly,
 
+<!-- @segment an4.191:3.25 -->
+
 but then that being quickly reaches distinction.
+
+<!-- @segment an4.191:3.26 -->
 
 This is the third benefit you can expect when the teachings have been followed by ear, consolidated by voice, examined by the mind, and well comprehended theoretically.
 
+<!-- @segment an4.191:4.1 -->
+
 Furthermore, take a mendicant who memorizes the teaching—
+
+<!-- @segment an4.191:4.2 -->
 
 statements, mixed prose & verse, discussions, verses, inspired exclamations, legends, stories of past lives, amazing stories, and elaborations.
 
+<!-- @segment an4.191:4.3 -->
+
 They’ve followed those teachings by ear, consolidated them by voice, examined them by the mind, and well comprehended them theoretically.
+
+<!-- @segment an4.191:4.4 -->
 
 But they die unmindful and are reborn in one of the orders of gods.
 
+<!-- @segment an4.191:4.5 -->
+
 But passages of the teaching don’t come back to them when they’re happy, and neither a mendicant with psychic powers … nor a godling teaches Dhamma to the assembly of gods.
+
+<!-- @segment an4.191:4.6 -->
 
 But a being who has been reborn spontaneously reminds another such being:
 
+<!-- @segment an4.191:4.7 -->
+
 ‘Do you remember, good fellow? Do you remember where we used to lead the spiritual life?’
+
+<!-- @segment an4.191:4.8 -->
 
 He says:
 
+<!-- @segment an4.191:4.9 -->
+
 ‘I remember, good fellow, I remember!’
+
+<!-- @segment an4.191:4.10 -->
 
 Memory comes up slowly,
 
+<!-- @segment an4.191:4.11 -->
+
 but then that being quickly reaches distinction.
+
+<!-- @segment an4.191:4.12 -->
 
 Suppose there were two friends who had played together in the sand.
 
+<!-- @segment an4.191:4.13 -->
+
 Some time or other they’d meet.
+
+<!-- @segment an4.191:4.14 -->
 
 And one friend would say to the other:
 
+<!-- @segment an4.191:4.15 -->
+
 ‘Do you remember this, dear? Do you remember that, dear?’
+
+<!-- @segment an4.191:4.16 -->
 
 They’d say:
 
+<!-- @segment an4.191:4.17 -->
+
 ‘I remember, dear, I remember!’
+
+<!-- @segment an4.191:4.18 -->
 
 In the same way, take a mendicant who memorizes the teaching …
 
+<!-- @segment an4.191:4.19 -->
+
+
+
+<!-- @segment an4.191:4.20 -->
+
+
+
+<!-- @segment an4.191:4.21 -->
+
 But they die unmindful and are reborn in one of the orders of gods. …
+
+<!-- @segment an4.191:4.22 -->
+
+
+
+<!-- @segment an4.191:4.23 -->
+
+
+
+<!-- @segment an4.191:4.24 -->
+
+
+
+<!-- @segment an4.191:4.25 -->
+
+
+
+<!-- @segment an4.191:4.26 -->
+
+
+
+<!-- @segment an4.191:4.27 -->
 
 Memory comes up slowly,
 
+<!-- @segment an4.191:4.28 -->
+
 but then that being quickly reaches distinction.
 
+<!-- @segment an4.191:4.29 -->
+
 This is the fourth benefit you can expect when the teachings have been followed by ear, consolidated by voice, examined by the mind, and well comprehended theoretically.
+
+<!-- @segment an4.191:4.30 -->
 
 You can expect these four benefits when the teachings have been followed by ear, consolidated by voice, examined by the mind, and well comprehended theoretically.”

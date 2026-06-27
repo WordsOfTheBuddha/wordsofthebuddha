@@ -6,78 +6,154 @@ license: CC0
 title: The Shady Orchid Tree
 ---
 
+<!-- @segment an7.69:1.1 -->
+
 “Mendicants, when the leaves on the Shady Orchid Tree belonging to the gods of the thirty-three turn brown, the gods are elated. They think:
+
+<!-- @segment an7.69:1.2 -->
 
 ‘Now the leaves on the Shady Orchid Tree have turned brown! It won’t be long until they fall.’
 
+<!-- @segment an7.69:2.1 -->
+
 When the leaves have fallen, the gods are elated. They think:
+
+<!-- @segment an7.69:2.2 -->
 
 ‘Now the leaves on the Shady Orchid Tree have fallen. It won’t be long until its foliage starts to regrow.’
 
+<!-- @segment an7.69:3.1 -->
+
 When the foliage starts to regrow, the gods are elated. They think:
+
+<!-- @segment an7.69:3.2 -->
 
 ‘Now the foliage of the Shady Orchid Tree has started to regrow. It won’t be long until it’s ready to grow flowers and leaves separately.’
 
+<!-- @segment an7.69:4.1 -->
+
 When it’s ready to grow flowers and leaves separately, the gods are elated. They think:
+
+<!-- @segment an7.69:4.2 -->
 
 ‘Now the Shady Orchid Tree is ready to grow flowers and leaves separately. It won’t be long until buds start to form.’
 
+<!-- @segment an7.69:5.1 -->
+
 When the buds start to form, the gods are elated. They think:
+
+<!-- @segment an7.69:5.2 -->
 
 ‘Now the buds of the Shady Orchid Tree have started to form. It won’t be long until the buds burst.’
 
+<!-- @segment an7.69:6.1 -->
+
 When the buds have burst, the gods are elated. They think:
+
+<!-- @segment an7.69:6.2 -->
 
 ‘Now the buds of the Shady Orchid Tree have burst. It won’t be long until it fully blossoms.’
 
+<!-- @segment an7.69:7.1 -->
+
 When the Shady Orchid Tree of the gods of the thirty-three has fully blossomed, the gods are elated. For four heavenly months they amused themselves at the root of the tree, supplied and provided with the five kinds of sensual stimulation. When the Shady Orchid Tree has fully blossomed, its radiance spreads for fifty leagues, while its fragrance wafts for a hundred leagues.
+
+<!-- @segment an7.69:7.2 -->
 
 Such is the majesty of the Shady Orchid Tree.
 
+<!-- @segment an7.69:8.1 -->
+
 In the same way, when a noble disciple plans to go forth from the lay life to homelessness, they’re like the Shady Orchid Tree when its leaves turn brown.
+
+<!-- @segment an7.69:9.1 -->
 
 When a noble disciple shaves off their hair and beard, dresses in ocher robes, and goes forth from the lay life to homelessness, they’re like the Shady Orchid Tree when its leaves fall.
 
+<!-- @segment an7.69:10.1 -->
+
 When a noble disciple, quite secluded from sensual pleasures, secluded from unskillful qualities, enters and remains in the first absorption, which has the rapture and bliss born of seclusion, while placing the mind and keeping it connected,
+
+<!-- @segment an7.69:10.2 -->
 
 they’re like the Shady Orchid Tree when its foliage starts to regrow.
 
+<!-- @segment an7.69:11.1 -->
+
 When, as the placing of the mind and keeping it connected are stilled, a noble disciple enters and remains in the second absorption, which has the rapture and bliss born of immersion, with internal clarity and mind at one, without placing the mind and keeping it connected,
+
+<!-- @segment an7.69:11.2 -->
 
 they’re like the Shady Orchid Tree when it’s ready to grow flowers and leaves separately.
 
+<!-- @segment an7.69:12.1 -->
+
 When, with the fading away of rapture, a noble disciple enters and remains in the third absorption, where they meditate with equanimity, mindful and aware, personally experiencing the bliss of which the noble ones declare, ‘Equanimous and mindful, one meditates in bliss’,
+
+<!-- @segment an7.69:12.2 -->
 
 they’re like the Shady Orchid Tree when its buds start to form.
 
+<!-- @segment an7.69:13.1 -->
+
 When, with the giving up of pleasure and pain and the disappearance of former happiness and sadness, a noble disciple enters and remains in the fourth absorption, without pleasure or pain, with pure equanimity and mindfulness,
+
+<!-- @segment an7.69:13.2 -->
 
 they’re like the Shady Orchid Tree when its buds burst.
 
+<!-- @segment an7.69:14.1 -->
+
 When a noble disciple realizes the undefiled freedom of heart and freedom by wisdom in this very life, and they live having realized it with their own insight due to the ending of defilements,
+
+<!-- @segment an7.69:14.2 -->
 
 they’re like the Shady Orchid tree when it fully blossoms.
 
+<!-- @segment an7.69:15.1 -->
+
 At that time the earth gods raise the cry:
 
+<!-- @segment an7.69:15.2 -->
+
 ‘This venerable named so-and-so, from such-and-such village or town, the protégé of the venerable named so-and-so, went forth from the lay life to homelessness. They’ve realized the undefiled freedom of heart and freedom by wisdom in this very life. And they live having realized it with their own insight due to the ending of defilements.’
+
+<!-- @segment an7.69:16.1 -->
 
 Hearing the cry of the earth gods, the gods of the four great kings …
 
+<!-- @segment an7.69:16.2 -->
+
 the gods of the thirty-three …
+
+<!-- @segment an7.69:16.3 -->
 
 the gods of Yama …
 
+<!-- @segment an7.69:16.4 -->
+
 the joyful gods …
+
+<!-- @segment an7.69:16.5 -->
 
 the gods who love to create …
 
+<!-- @segment an7.69:16.6 -->
+
 the gods who control what is created by others …
+
+<!-- @segment an7.69:16.7 -->
 
 the gods of the Divinity’s host raise the cry:
 
+<!-- @segment an7.69:16.8 -->
+
 ‘This venerable named so-and-so, from such-and-such village or town, the protégé of the venerable named so-and-so, went forth from the lay life to homelessness. They’ve realized the undefiled freedom of heart and freedom by wisdom in this very life. And they live having realized it with their own insight due to the ending of defilements.’
 
+<!-- @segment an7.69:16.9 -->
+
 And so at that moment, that hour, the cry soars up to the realm of divinity.
+
+<!-- @segment an7.69:16.10 -->
 
 Such is the majesty of a mendicant who has ended the defilements.”

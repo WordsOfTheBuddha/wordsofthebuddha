@@ -1,151 +1,295 @@
 ---
 slug: ud3.9
 source: suttacentral/bilara-data
+title: Sippasutta
 edition: ms
 granularity: segment
-title: Sippasutta
 ---
+
+<!-- @segment ud3.9:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud3.9:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment ud3.9:1.3 -->
 
 Tena kho pana samayena sambahulānaṁ bhikkhūnaṁ pacchābhattaṁ piṇḍapātapaṭikkantānaṁ maṇḍalamāḷe sannisinnānaṁ sannipatitānaṁ ayamantarākathā udapādi:
 
+<!-- @segment ud3.9:1.4 -->
+
 “ko nu kho, āvuso, sippaṁ jānāti?
 
+<!-- @segment ud3.9:1.5 -->
+
 Ko kiṁ sippaṁ sikkhi?
+
+<!-- @segment ud3.9:1.6 -->
 
 Kataraṁ sippaṁ sippānaṁ aggan”ti?
 
+<!-- @segment ud3.9:2.1 -->
+
 Tatthekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.2 -->
 
 “hatthisippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.3 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.4 -->
 
 “assasippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.5 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.6 -->
 
 “rathasippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.7 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.8 -->
 
 “dhanusippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.9 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.10 -->
 
 “tharusippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.11 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.12 -->
 
 “muddāsippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.13 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.14 -->
 
 “gaṇanāsippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.15 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.16 -->
 
 “saṅkhānasippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.17 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.18 -->
 
 “lekhāsippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.19 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.20 -->
 
 “kāveyyasippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.21 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.22 -->
 
 “lokāyatasippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.23 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:2.24 -->
 
 “khattavijjāsippaṁ sippānaṁ aggan”ti.
 
+<!-- @segment ud3.9:2.25 -->
+
 Ayañcarahi tesaṁ bhikkhūnaṁ antarākathā hoti vippakatā.
+
+<!-- @segment ud3.9:3.1 -->
 
 Atha kho bhagavā sāyanhasamayaṁ paṭisallānā vuṭṭhito yena maṇḍalamāḷo tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
 
+<!-- @segment ud3.9:3.2 -->
+
 Nisajja kho bhagavā bhikkhū āmantesi:
+
+<!-- @segment ud3.9:3.3 -->
 
 “kāya nuttha, bhikkhave, etarahi kathāya sannisinnā, kā ca pana vo antarākathā vippakatā”ti?
 
+<!-- @segment ud3.9:4.1 -->
+
 “Idha, bhante, amhākaṁ pacchābhattaṁ piṇḍapātapaṭikkantānaṁ maṇḍalamāḷe sannisinnānaṁ ayamantarākathā udapādi:
+
+<!-- @segment ud3.9:4.2 -->
 
 ‘ko nu kho, āvuso, sippaṁ jānāti?
 
+<!-- @segment ud3.9:4.3 -->
+
 Ko kiṁ sippaṁ sikkhi?
+
+<!-- @segment ud3.9:4.4 -->
 
 Kataraṁ sippaṁ sippānaṁ aggan’ti?
 
+<!-- @segment ud3.9:5.1 -->
+
 Tatthekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.2 -->
 
 ‘hatthisippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.3 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.4 -->
 
 ‘assasippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.5 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.6 -->
 
 ‘rathasippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.7 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.8 -->
 
 ‘dhanusippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.9 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.10 -->
 
 ‘tharusippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.11 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.12 -->
 
 ‘muddāsippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.13 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.14 -->
 
 ‘gaṇanāsippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.15 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.16 -->
 
 ‘saṅkhānasippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.17 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.18 -->
 
 ‘lekhāsippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.19 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.20 -->
 
 ‘kāveyyasippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.21 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.22 -->
 
 ‘lokāyatasippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.23 -->
+
 Ekacce evamāhaṁsu:
+
+<!-- @segment ud3.9:5.24 -->
 
 ‘khattavijjāsippaṁ sippānaṁ aggan’ti.
 
+<!-- @segment ud3.9:5.25 -->
+
 Ayaṁ kho no, bhante, antarākathā hoti vippakatā, atha bhagavā anuppatto”ti.
+
+<!-- @segment ud3.9:6.1 -->
 
 “Na khvetaṁ, bhikkhave, tumhākaṁ patirūpaṁ kulaputtānaṁ saddhā agārasmā anagāriyaṁ pabbajitānaṁ yaṁ tumhe evarūpiṁ kathaṁ katheyyātha.
 
+<!-- @segment ud3.9:6.2 -->
+
 Sannipatitānaṁ vo, bhikkhave, dvayaṁ karaṇīyaṁ—
+
+<!-- @segment ud3.9:6.3 -->
 
 dhammī vā kathā ariyo vā tuṇhībhāvo”ti.
 
+<!-- @segment ud3.9:7.1 -->
+
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
+
+<!-- @segment ud3.9:8.1 -->
 
 “Asippajīvī lahu atthakāmo,
 
+<!-- @segment ud3.9:8.2 -->
+
 Yatindriyo sabbadhi vippamutto;
+
+<!-- @segment ud3.9:8.3 -->
 
 Anokasārī amamo nirāso,
 
+<!-- @segment ud3.9:8.4 -->
+
 Hitvā mānaṁ ekacaro sa bhikkhū”ti.
+
+<!-- @segment ud3.9:8.5 -->
 
 Navamaṁ.

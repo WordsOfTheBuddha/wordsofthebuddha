@@ -6,10 +6,18 @@ license: CC0
 title: Listening to the Teaching
 ---
 
+<!-- @segment an5.202:1.1 -->
+
 “Mendicants, there are these five benefits of listening to the teaching.
+
+<!-- @segment an5.202:1.2 -->
 
 What five?
 
+<!-- @segment an5.202:1.3 -->
+
 You learn new things, clarify what you’ve learned, get over uncertainty, correct your views, and inspire confidence in your mind.
+
+<!-- @segment an5.202:1.4 -->
 
 These are the five benefits of listening to the teaching.”

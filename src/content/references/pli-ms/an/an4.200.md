@@ -1,183 +1,359 @@
 ---
 slug: an4.200
 source: suttacentral/bilara-data
+title: Pemasutta
 edition: ms
 granularity: segment
-title: Pemasutta
 ---
+
+<!-- @segment an4.200:1.1 -->
 
 “Cattārimāni, bhikkhave, pemāni jāyanti.
 
+<!-- @segment an4.200:1.2 -->
+
 Katamāni cattāri?
+
+<!-- @segment an4.200:1.3 -->
 
 Pemā pemaṁ jāyati,
 
+<!-- @segment an4.200:1.4 -->
+
 pemā doso jāyati,
+
+<!-- @segment an4.200:1.5 -->
 
 dosā pemaṁ jāyati,
 
+<!-- @segment an4.200:1.6 -->
+
 dosā doso jāyati.
+
+<!-- @segment an4.200:2.1 -->
 
 Kathañca, bhikkhave, pemā pemaṁ jāyati?
 
+<!-- @segment an4.200:2.2 -->
+
 Idha, bhikkhave, puggalo puggalassa iṭṭho hoti kanto manāpo.
+
+<!-- @segment an4.200:2.3 -->
 
 Taṁ pare iṭṭhena kantena manāpena samudācaranti.
 
+<!-- @segment an4.200:2.4 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an4.200:2.5 -->
 
 ‘yo kho myāyaṁ puggalo iṭṭho kanto manāpo, taṁ pare iṭṭhena kantena manāpena samudācarantī’ti.
 
+<!-- @segment an4.200:2.6 -->
+
 So tesu pemaṁ janeti.
+
+<!-- @segment an4.200:2.7 -->
 
 Evaṁ kho, bhikkhave, pemā pemaṁ jāyati.
 
+<!-- @segment an4.200:3.1 -->
+
 Kathañca, bhikkhave, pemā doso jāyati?
+
+<!-- @segment an4.200:3.2 -->
 
 Idha, bhikkhave, puggalo puggalassa iṭṭho hoti kanto manāpo.
 
+<!-- @segment an4.200:3.3 -->
+
 Taṁ pare aniṭṭhena akantena amanāpena samudācaranti.
 
+<!-- @segment an4.200:3.4 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an4.200:3.5 -->
 
 ‘yo kho myāyaṁ puggalo iṭṭho kanto manāpo, taṁ pare aniṭṭhena akantena amanāpena samudācarantī’ti.
 
+<!-- @segment an4.200:3.6 -->
+
 So tesu dosaṁ janeti.
+
+<!-- @segment an4.200:3.7 -->
 
 Evaṁ kho, bhikkhave, pemā doso jāyati.
 
+<!-- @segment an4.200:4.1 -->
+
 Kathañca, bhikkhave, dosā pemaṁ jāyati?
 
+<!-- @segment an4.200:4.2 -->
+
 Idha, bhikkhave, puggalo puggalassa aniṭṭho hoti akanto amanāpo.
+
+<!-- @segment an4.200:4.3 -->
 
 Taṁ pare aniṭṭhena akantena amanāpena samudācaranti.
 
+<!-- @segment an4.200:4.4 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an4.200:4.5 -->
 
 ‘yo kho myāyaṁ puggalo aniṭṭho akanto amanāpo, taṁ pare aniṭṭhena akantena amanāpena samudācarantī’ti.
 
+<!-- @segment an4.200:4.6 -->
+
 So tesu pemaṁ janeti.
+
+<!-- @segment an4.200:4.7 -->
 
 Evaṁ kho, bhikkhave, dosā pemaṁ jāyati.
 
+<!-- @segment an4.200:5.1 -->
+
 Kathañca, bhikkhave, dosā doso jāyati?
+
+<!-- @segment an4.200:5.2 -->
 
 Idha, bhikkhave, puggalo puggalassa aniṭṭho hoti akanto amanāpo.
 
+<!-- @segment an4.200:5.3 -->
+
 Taṁ pare iṭṭhena kantena manāpena samudācaranti.
+
+<!-- @segment an4.200:5.4 -->
 
 Tassa evaṁ hoti:
 
+<!-- @segment an4.200:5.5 -->
+
 ‘yo kho myāyaṁ puggalo aniṭṭho akanto amanāpo, taṁ pare iṭṭhena kantena manāpena samudācarantī’ti.
+
+<!-- @segment an4.200:5.6 -->
 
 So tesu dosaṁ janeti.
 
+<!-- @segment an4.200:5.7 -->
+
 Evaṁ kho, bhikkhave, dosā doso jāyati.
+
+<!-- @segment an4.200:5.8 -->
 
 Imāni kho, bhikkhave, cattāri pemāni jāyanti.
 
+<!-- @segment an4.200:6.1 -->
+
 Yasmiṁ, bhikkhave, samaye bhikkhu vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharati,
 
+<!-- @segment an4.200:6.2 -->
+
 yampissa pemā pemaṁ jāyati tampissa tasmiṁ samaye na hoti, yopissa pemā doso jāyati sopissa tasmiṁ samaye na hoti, yampissa dosā pemaṁ jāyati tampissa tasmiṁ samaye na hoti, yopissa dosā doso jāyati sopissa tasmiṁ samaye na hoti.
+
+<!-- @segment an4.200:7.1 -->
 
 Yasmiṁ, bhikkhave, samaye bhikkhu vitakkavicārānaṁ vūpasamā …pe… dutiyaṁ jhānaṁ …pe… tatiyaṁ jhānaṁ …pe… catutthaṁ jhānaṁ upasampajja viharati,
 
+<!-- @segment an4.200:7.2 -->
+
 yampissa pemā pemaṁ jāyati tampissa tasmiṁ samaye na hoti, yopissa pemā doso jāyati sopissa tasmiṁ samaye na hoti, yampissa dosā pemaṁ jāyati tampissa tasmiṁ samaye na hoti, yopissa dosā doso jāyati sopissa tasmiṁ samaye na hoti.
+
+<!-- @segment an4.200:8.1 -->
 
 Yasmiṁ, bhikkhave, samaye bhikkhu āsavānaṁ khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharati, yampissa pemā pemaṁ jāyati tampissa pahīnaṁ hoti ucchinnamūlaṁ tālāvatthukataṁ anabhāvaṅkataṁ āyatiṁ anuppādadhammaṁ, yopissa pemā doso jāyati sopissa pahīno hoti ucchinnamūlo tālāvatthukato anabhāvaṅkato āyatiṁ anuppādadhammo,
 
+<!-- @segment an4.200:8.2 -->
+
 yampissa dosā pemaṁ jāyati tampissa pahīnaṁ hoti ucchinnamūlaṁ tālāvatthukataṁ anabhāvaṅkataṁ āyatiṁ anuppādadhammaṁ, yopissa dosā doso jāyati sopissa pahīno hoti ucchinnamūlo tālāvatthukato anabhāvaṅkato āyatiṁ anuppādadhammo.
+
+<!-- @segment an4.200:8.3 -->
 
 Ayaṁ vuccati, bhikkhave, bhikkhu neva usseneti na paṭiseneti na dhūpāyati na pajjalati na sampajjhāyati.
 
+<!-- @segment an4.200:9.1 -->
+
 Kathañca, bhikkhave, bhikkhu usseneti?
+
+<!-- @segment an4.200:9.2 -->
 
 Idha, bhikkhave, bhikkhu rūpaṁ attato samanupassati, rūpavantaṁ vā attānaṁ, attani vā rūpaṁ, rūpasmiṁ vā attānaṁ;
 
+<!-- @segment an4.200:9.3 -->
+
 vedanaṁ attato samanupassati, vedanāvantaṁ vā attānaṁ, attani vā vedanaṁ, vedanāya vā attānaṁ;
+
+<!-- @segment an4.200:9.4 -->
 
 saññaṁ attato samanupassati, saññāvantaṁ vā attānaṁ, attani vā saññaṁ, saññāya vā attānaṁ;
 
+<!-- @segment an4.200:9.5 -->
+
 saṅkhāre attato samanupassati, saṅkhāravantaṁ vā attānaṁ, attani vā saṅkhāre, saṅkhāresu vā attānaṁ;
+
+<!-- @segment an4.200:9.6 -->
 
 viññāṇaṁ attato samanupassati, viññāṇavantaṁ vā attānaṁ, attani vā viññāṇaṁ, viññāṇasmiṁ vā attānaṁ.
 
+<!-- @segment an4.200:9.7 -->
+
 Evaṁ kho, bhikkhave, bhikkhu usseneti.
+
+<!-- @segment an4.200:10.1 -->
 
 Kathañca, bhikkhave, bhikkhu na usseneti?
 
+<!-- @segment an4.200:10.2 -->
+
 Idha, bhikkhave, bhikkhu na rūpaṁ attato samanupassati, na rūpavantaṁ vā attānaṁ, na attani vā rūpaṁ, na rūpasmiṁ vā attānaṁ;
+
+<!-- @segment an4.200:10.3 -->
 
 na vedanaṁ attato samanupassati, na vedanāvantaṁ vā attānaṁ, na attani vā vedanaṁ, na vedanāya vā attānaṁ;
 
+<!-- @segment an4.200:10.4 -->
+
 na saññaṁ attato samanupassati, na saññāvantaṁ vā attānaṁ, na attani vā saññaṁ, na saññāya vā attānaṁ;
+
+<!-- @segment an4.200:10.5 -->
 
 na saṅkhāre attato samanupassati, na saṅkhāravantaṁ vā attānaṁ, na attani vā saṅkhāre, na saṅkhāresu vā attānaṁ;
 
+<!-- @segment an4.200:10.6 -->
+
 na viññāṇaṁ attato samanupassati, na viññāṇavantaṁ vā attānaṁ, na attani vā viññāṇaṁ, na viññāṇasmiṁ vā attānaṁ.
+
+<!-- @segment an4.200:10.7 -->
 
 Evaṁ kho, bhikkhave, bhikkhu na usseneti.
 
+<!-- @segment an4.200:11.1 -->
+
 Kathañca, bhikkhave, bhikkhu paṭiseneti?
+
+<!-- @segment an4.200:11.2 -->
 
 Idha, bhikkhave, bhikkhu akkosantaṁ paccakkosati, rosantaṁ paṭirosati, bhaṇḍantaṁ paṭibhaṇḍati.
 
+<!-- @segment an4.200:11.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu paṭiseneti.
+
+<!-- @segment an4.200:12.1 -->
 
 Kathañca, bhikkhave, bhikkhu na paṭiseneti?
 
+<!-- @segment an4.200:12.2 -->
+
 Idha, bhikkhave, bhikkhu akkosantaṁ na paccakkosati, rosantaṁ na paṭirosati, bhaṇḍantaṁ na paṭibhaṇḍati.
+
+<!-- @segment an4.200:12.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu na paṭiseneti.
 
+<!-- @segment an4.200:13.1 -->
+
 Kathañca, bhikkhave, bhikkhu dhūpāyati?
+
+<!-- @segment an4.200:13.2 -->
 
 Asmīti, bhikkhave, sati itthasmīti hoti, evaṁsmīti hoti, aññathāsmīti hoti, asasmīti hoti, satasmīti hoti, santi hoti, itthaṁ santi hoti, evaṁ santi hoti, aññathā santi hoti, apihaṁ santi hoti, apihaṁ itthaṁ santi hoti, apihaṁ evaṁ santi hoti, apihaṁ aññathā santi hoti, bhavissanti hoti, itthaṁ bhavissanti hoti, evaṁ bhavissanti hoti, aññathā bhavissanti hoti.
 
+<!-- @segment an4.200:13.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu dhūpāyati.
+
+<!-- @segment an4.200:14.1 -->
 
 Kathañca, bhikkhave, bhikkhu na dhūpāyati?
 
+<!-- @segment an4.200:14.2 -->
+
 Asmīti, bhikkhave, asati itthasmīti na hoti, evaṁsmīti na hoti, aññathāsmīti na hoti, asasmīti na hoti, satasmīti na hoti, santi na hoti, itthaṁ santi na hoti, evaṁ santi na hoti, aññathā santi na hoti, apihaṁ santi na hoti, apihaṁ itthaṁ santi na hoti, apihaṁ evaṁ santi na hoti, apihaṁ aññathā santi na hoti, bhavissanti na hoti, itthaṁ bhavissanti na hoti, evaṁ bhavissanti na hoti, aññathā bhavissanti na hoti.
+
+<!-- @segment an4.200:14.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu na dhūpāyati.
 
+<!-- @segment an4.200:15.1 -->
+
 Kathañca, bhikkhave, bhikkhu pajjalati?
+
+<!-- @segment an4.200:15.2 -->
 
 Iminā asmīti, bhikkhave, sati iminā itthasmīti hoti, iminā evaṁsmīti hoti, iminā aññathāsmīti hoti, iminā asasmīti hoti, iminā satasmīti hoti, iminā santi hoti, iminā itthaṁ santi hoti, iminā evaṁ santi hoti, iminā aññathā santi hoti, iminā apihaṁ santi hoti, iminā apihaṁ itthaṁ santi hoti, iminā apihaṁ evaṁ santi hoti, iminā apihaṁ aññathā santi hoti, iminā bhavissanti hoti, iminā itthaṁ bhavissanti hoti, iminā evaṁ bhavissanti hoti, iminā aññathā bhavissanti hoti.
 
+<!-- @segment an4.200:15.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu pajjalati.
+
+<!-- @segment an4.200:16.1 -->
 
 Kathañca, bhikkhave, bhikkhu na pajjalati?
 
+<!-- @segment an4.200:16.2 -->
+
 Iminā asmīti, bhikkhave, asati iminā itthasmīti na hoti, iminā evaṁsmīti na hoti, iminā aññathāsmīti na hoti, iminā asasmīti na hoti, iminā satasmīti na hoti, iminā santi na hoti, iminā itthaṁ santi na hoti, iminā evaṁ santi na hoti, iminā aññathā santi na hoti, iminā apihaṁ santi na hoti, iminā apihaṁ itthaṁ santi na hoti, iminā apihaṁ evaṁ santi na hoti, iminā apihaṁ aññathā santi na hoti, iminā bhavissanti na hoti, iminā itthaṁ bhavissanti na hoti, iminā evaṁ bhavissanti na hoti, iminā aññathā bhavissanti na hoti.
+
+<!-- @segment an4.200:16.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu na pajjalati.
 
+<!-- @segment an4.200:17.1 -->
+
 Kathañca, bhikkhave, bhikkhu sampajjhāyati?
+
+<!-- @segment an4.200:17.2 -->
 
 Idha, bhikkhave, bhikkhuno asmimāno pahīno na hoti ucchinnamūlo tālāvatthukato anabhāvaṅkato āyatiṁ anuppādadhammo.
 
+<!-- @segment an4.200:17.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu sampajjhāyati.
+
+<!-- @segment an4.200:18.1 -->
 
 Kathañca, bhikkhave, bhikkhu na sampajjhāyati?
 
+<!-- @segment an4.200:18.2 -->
+
 Idha, bhikkhave, bhikkhuno asmimāno pahīno hoti ucchinnamūlo tālāvatthukato anabhāvaṅkato āyatiṁ anuppādadhammo.
+
+<!-- @segment an4.200:18.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu na sampajjhāyatī”ti.
 
+<!-- @segment an4.200:18.4 -->
+
 Dasamaṁ.
+
+<!-- @segment an4.200:18.5 -->
 
 Mahāvaggo pañcamo.
 
+<!-- @segment an4.200:19.0 -->
+
 Tassuddānaṁ
+
+<!-- @segment an4.200:19.1 -->
 
 Sotānugataṁ ṭhānaṁ,
 
+<!-- @segment an4.200:19.2 -->
+
 Bhaddiya sāmugiya vappa sāḷhā ca;
+
+<!-- @segment an4.200:19.3 -->
 
 Mallika attantāpo,
 
+<!-- @segment an4.200:19.4 -->
+
 Taṇhā pemena ca dasā teti.
+
+<!-- @segment an4.200:19.5 -->
 
 Catuttho mahāpaṇṇāsako samatto.

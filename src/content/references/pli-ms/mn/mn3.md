@@ -1,259 +1,511 @@
 ---
 slug: mn3
 source: suttacentral/bilara-data
+title: Dhammadāyādasutta
 edition: ms
 granularity: segment
-title: Dhammadāyādasutta
 ---
+
+<!-- @segment mn3:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment mn3:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment mn3:1.3 -->
 
 Tatra kho bhagavā bhikkhū āmantesi:
 
+<!-- @segment mn3:1.4 -->
+
 “bhikkhavo”ti.
+
+<!-- @segment mn3:1.5 -->
 
 “Bhadante”ti te bhikkhū bhagavato paccassosuṁ.
 
+<!-- @segment mn3:1.6 -->
+
 Bhagavā etadavoca:
+
+<!-- @segment mn3:2.1 -->
 
 “Dhammadāyādā me, bhikkhave, bhavatha, mā āmisadāyādā.
 
+<!-- @segment mn3:2.2 -->
+
 Atthi me tumhesu anukampā:
 
+<!-- @segment mn3:2.3 -->
+
 ‘kinti me sāvakā dhammadāyādā bhaveyyuṁ, no āmisadāyādā’ti.
+
+<!-- @segment mn3:2.4 -->
 
 Tumhe ca me, bhikkhave, āmisadāyādā bhaveyyātha no dhammadāyādā, tumhepi tena ādiyā bhaveyyātha:
 
+<!-- @segment mn3:2.5 -->
+
 ‘āmisadāyādā satthusāvakā viharanti, no dhammadāyādā’ti;
+
+<!-- @segment mn3:2.6 -->
 
 ahampi tena ādiyo bhaveyyaṁ:
 
+<!-- @segment mn3:2.7 -->
+
 ‘āmisadāyādā satthusāvakā viharanti, no dhammadāyādā’ti.
+
+<!-- @segment mn3:2.8 -->
 
 Tumhe ca me, bhikkhave, dhammadāyādā bhaveyyātha, no āmisadāyādā, tumhepi tena na ādiyā bhaveyyātha:
 
+<!-- @segment mn3:2.9 -->
+
 ‘dhammadāyādā satthusāvakā viharanti, no āmisadāyādā’ti;
+
+<!-- @segment mn3:2.10 -->
 
 ahampi tena na ādiyo bhaveyyaṁ:
 
+<!-- @segment mn3:2.11 -->
+
 ‘dhammadāyādā satthusāvakā viharanti, no āmisadāyādā’ti.
+
+<!-- @segment mn3:2.12 -->
 
 Tasmātiha me, bhikkhave, dhammadāyādā bhavatha, mā āmisadāyādā.
 
+<!-- @segment mn3:2.13 -->
+
 Atthi me tumhesu anukampā:
+
+<!-- @segment mn3:2.14 -->
 
 ‘kinti me sāvakā dhammadāyādā bhaveyyuṁ, no āmisadāyādā’ti.
 
+<!-- @segment mn3:3.1 -->
+
 Idhāhaṁ, bhikkhave, bhuttāvī assaṁ pavārito paripuṇṇo pariyosito suhito yāvadattho;
+
+<!-- @segment mn3:3.2 -->
 
 siyā ca me piṇḍapāto atirekadhammo chaḍḍanīyadhammo.
 
+<!-- @segment mn3:3.3 -->
+
 Atha dve bhikkhū āgaccheyyuṁ jighacchādubbalyaparetā.
+
+<!-- @segment mn3:3.4 -->
 
 Tyāhaṁ evaṁ vadeyyaṁ:
 
+<!-- @segment mn3:3.5 -->
+
 ‘ahaṁ khomhi, bhikkhave, bhuttāvī pavārito paripuṇṇo pariyosito suhito yāvadattho;
+
+<!-- @segment mn3:3.6 -->
 
 atthi ca me ayaṁ piṇḍapāto atirekadhammo chaḍḍanīyadhammo.
 
+<!-- @segment mn3:3.7 -->
+
 Sace ākaṅkhatha, bhuñjatha, no ce tumhe bhuñjissatha, idānāhaṁ appaharite vā chaḍḍessāmi, appāṇake vā udake opilāpessāmī’ti.
+
+<!-- @segment mn3:3.8 -->
 
 Tatrekassa bhikkhuno evamassa:
 
+<!-- @segment mn3:3.9 -->
+
 ‘bhagavā kho bhuttāvī pavārito paripuṇṇo pariyosito suhito yāvadattho;
+
+<!-- @segment mn3:3.10 -->
 
 atthi cāyaṁ bhagavato piṇḍapāto atirekadhammo chaḍḍanīyadhammo.
 
+<!-- @segment mn3:3.11 -->
+
 Sace mayaṁ na bhuñjissāma, idāni bhagavā appaharite vā chaḍḍessati, appāṇake vā udake opilāpessati.
+
+<!-- @segment mn3:3.12 -->
 
 Vuttaṁ kho panetaṁ bhagavatā:
 
+<!-- @segment mn3:3.13 -->
+
 “dhammadāyādā me, bhikkhave, bhavatha, mā āmisadāyādā”ti.
+
+<!-- @segment mn3:3.14 -->
 
 Āmisaññataraṁ kho panetaṁ, yadidaṁ piṇḍapāto.
 
+<!-- @segment mn3:3.15 -->
+
 Yannūnāhaṁ imaṁ piṇḍapātaṁ abhuñjitvā imināva jighacchādubbalyena evaṁ imaṁ rattindivaṁ vītināmeyyan’ti.
+
+<!-- @segment mn3:3.16 -->
 
 So taṁ piṇḍapātaṁ abhuñjitvā teneva jighacchādubbalyena evaṁ taṁ rattindivaṁ vītināmeyya.
 
+<!-- @segment mn3:3.17 -->
+
 Atha dutiyassa bhikkhuno evamassa:
+
+<!-- @segment mn3:3.18 -->
 
 ‘bhagavā kho bhuttāvī pavārito paripuṇṇo pariyosito suhito yāvadattho;
 
+<!-- @segment mn3:3.19 -->
+
 atthi cāyaṁ bhagavato piṇḍapāto atirekadhammo chaḍḍanīyadhammo.
+
+<!-- @segment mn3:3.20 -->
 
 Sace mayaṁ na bhuñjissāma, idāni bhagavā appaharite vā chaḍḍessati, appāṇake vā udake opilāpessati.
 
+<!-- @segment mn3:3.21 -->
+
 Yannūnāhaṁ imaṁ piṇḍapātaṁ bhuñjitvā jighacchādubbalyaṁ paṭivinodetvā evaṁ imaṁ rattindivaṁ vītināmeyyan’ti.
+
+<!-- @segment mn3:3.22 -->
 
 So taṁ piṇḍapātaṁ bhuñjitvā jighacchādubbalyaṁ paṭivinodetvā evaṁ taṁ rattindivaṁ vītināmeyya.
 
+<!-- @segment mn3:3.23 -->
+
 Kiñcāpi so, bhikkhave, bhikkhu taṁ piṇḍapātaṁ bhuñjitvā jighacchādubbalyaṁ paṭivinodetvā evaṁ taṁ rattindivaṁ vītināmeyya, atha kho asuyeva me purimo bhikkhu pujjataro ca pāsaṁsataro ca.
+
+<!-- @segment mn3:3.24 -->
 
 Taṁ kissa hetu?
 
+<!-- @segment mn3:3.25 -->
+
 Tañhi tassa, bhikkhave, bhikkhuno dīgharattaṁ appicchatāya santuṭṭhiyā sallekhāya subharatāya vīriyārambhāya saṁvattissati.
+
+<!-- @segment mn3:3.26 -->
 
 Tasmātiha me, bhikkhave, dhammadāyādā bhavatha, mā āmisadāyādā.
 
+<!-- @segment mn3:3.27 -->
+
 Atthi me tumhesu anukampā:
+
+<!-- @segment mn3:3.28 -->
 
 ‘kinti me sāvakā dhammadāyādā bhaveyyuṁ, no āmisadāyādā’”ti.
 
+<!-- @segment mn3:4.1 -->
+
 Idamavoca bhagavā.
+
+<!-- @segment mn3:4.2 -->
 
 Idaṁ vatvāna sugato uṭṭhāyāsanā vihāraṁ pāvisi.
 
+<!-- @segment mn3:4.3 -->
+
 Tatra kho āyasmā sāriputto acirapakkantassa bhagavato bhikkhū āmantesi:
+
+<!-- @segment mn3:4.4 -->
 
 “āvuso bhikkhave”ti.
 
+<!-- @segment mn3:4.5 -->
+
 “Āvuso”ti kho te bhikkhū āyasmato sāriputtassa paccassosuṁ.
 
+<!-- @segment mn3:4.6 -->
+
 Āyasmā sāriputto etadavoca:
+
+<!-- @segment mn3:5.1 -->
 
 “Kittāvatā nu kho, āvuso, satthu pavivittassa viharato sāvakā vivekaṁ nānusikkhanti, kittāvatā ca pana satthu pavivittassa viharato sāvakā vivekamanusikkhantī”ti?
 
+<!-- @segment mn3:5.2 -->
+
 “Dūratopi kho mayaṁ, āvuso, āgacchāma āyasmato sāriputtassa santike etassa bhāsitassa atthamaññātuṁ.
+
+<!-- @segment mn3:5.3 -->
 
 Sādhu vatāyasmantaṁyeva sāriputtaṁ paṭibhātu etassa bhāsitassa attho;
 
+<!-- @segment mn3:5.4 -->
+
 āyasmato sāriputtassa sutvā bhikkhū dhāressantī”ti.
+
+<!-- @segment mn3:5.5 -->
 
 “Tena hāvuso, suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.
 
+<!-- @segment mn3:5.6 -->
+
 “Evamāvuso”ti kho te bhikkhū āyasmato sāriputtassa paccassosuṁ.
+
+<!-- @segment mn3:5.7 -->
 
 Āyasmā sāriputto etadavoca:
 
+<!-- @segment mn3:6.1 -->
+
 “Kittāvatā nu kho, āvuso, satthu pavivittassa viharato sāvakā vivekaṁ nānusikkhanti?
+
+<!-- @segment mn3:6.2 -->
 
 Idhāvuso, satthu pavivittassa viharato sāvakā vivekaṁ nānusikkhanti,
 
+<!-- @segment mn3:6.3 -->
+
 yesañca dhammānaṁ satthā pahānamāha, te ca dhamme nappajahanti,
+
+<!-- @segment mn3:6.4 -->
 
 bāhulikā ca honti, sāthalikā, okkamane pubbaṅgamā, paviveke nikkhittadhurā.
 
+<!-- @segment mn3:6.5 -->
+
 Tatrāvuso, therā bhikkhū tīhi ṭhānehi gārayhā bhavanti.
 
+<!-- @segment mn3:6.6 -->
+
 ‘Satthu pavivittassa viharato sāvakā vivekaṁ nānusikkhantī’ti—
+
+<!-- @segment mn3:6.7 -->
 
 iminā paṭhamena ṭhānena therā bhikkhū gārayhā bhavanti.
 
+<!-- @segment mn3:6.8 -->
+
 ‘Yesañca dhammānaṁ satthā pahānamāha te ca dhamme nappajahantī’ti—
+
+<!-- @segment mn3:6.9 -->
 
 iminā dutiyena ṭhānena therā bhikkhū gārayhā bhavanti.
 
+<!-- @segment mn3:6.10 -->
+
 ‘Bāhulikā ca, sāthalikā, okkamane pubbaṅgamā, paviveke nikkhittadhurā’ti—
+
+<!-- @segment mn3:6.11 -->
 
 iminā tatiyena ṭhānena therā bhikkhū gārayhā bhavanti.
 
+<!-- @segment mn3:6.12 -->
+
 Therā, āvuso, bhikkhū imehi tīhi ṭhānehi gārayhā bhavanti.
 
+<!-- @segment mn3:6.13 -->
+
 Tatrāvuso, majjhimā bhikkhū …pe…
+
+<!-- @segment mn3:6.14 -->
 
 navā bhikkhū tīhi ṭhānehi gārayhā bhavanti.
 
+<!-- @segment mn3:6.15 -->
+
 ‘Satthu pavivittassa viharato sāvakā vivekaṁ nānusikkhantī’ti—
+
+<!-- @segment mn3:6.16 -->
 
 iminā paṭhamena ṭhānena navā bhikkhū gārayhā bhavanti.
 
+<!-- @segment mn3:6.17 -->
+
 ‘Yesañca dhammānaṁ satthā pahānamāha te ca dhamme nappajahantī’ti—
+
+<!-- @segment mn3:6.18 -->
 
 iminā dutiyena ṭhānena navā bhikkhū gārayhā bhavanti.
 
+<!-- @segment mn3:6.19 -->
+
 ‘Bāhulikā ca honti, sāthalikā, okkamane pubbaṅgamā, paviveke nikkhittadhurā’ti—
+
+<!-- @segment mn3:6.20 -->
 
 iminā tatiyena ṭhānena navā bhikkhū gārayhā bhavanti.
 
+<!-- @segment mn3:6.21 -->
+
 Navā, āvuso, bhikkhū imehi tīhi ṭhānehi gārayhā bhavanti.
+
+<!-- @segment mn3:6.22 -->
 
 Ettāvatā kho, āvuso, satthu pavivittassa viharato sāvakā vivekaṁ nānusikkhanti.
 
+<!-- @segment mn3:7.1 -->
+
 Kittāvatā ca panāvuso, satthu pavivittassa viharato sāvakā vivekamanusikkhanti?
+
+<!-- @segment mn3:7.2 -->
 
 Idhāvuso, satthu pavivittassa viharato sāvakā vivekamanusikkhanti—
 
+<!-- @segment mn3:7.3 -->
+
 yesañca dhammānaṁ satthā pahānamāha te ca dhamme pajahanti;
+
+<!-- @segment mn3:7.4 -->
 
 na ca bāhulikā honti, na sāthalikā okkamane nikkhittadhurā paviveke pubbaṅgamā.
 
+<!-- @segment mn3:7.5 -->
+
 Tatrāvuso, therā bhikkhū tīhi ṭhānehi pāsaṁsā bhavanti.
 
+<!-- @segment mn3:7.6 -->
+
 ‘Satthu pavivittassa viharato sāvakā vivekamanusikkhantī’ti—
+
+<!-- @segment mn3:7.7 -->
 
 iminā paṭhamena ṭhānena therā bhikkhū pāsaṁsā bhavanti.
 
+<!-- @segment mn3:7.8 -->
+
 ‘Yesañca dhammānaṁ satthā pahānamāha te ca dhamme pajahantī’ti—
+
+<!-- @segment mn3:7.9 -->
 
 iminā dutiyena ṭhānena therā bhikkhū pāsaṁsā bhavanti.
 
+<!-- @segment mn3:7.10 -->
+
 ‘Na ca bāhulikā, na sāthalikā okkamane nikkhittadhurā paviveke pubbaṅgamā’ti—
+
+<!-- @segment mn3:7.11 -->
 
 iminā tatiyena ṭhānena therā bhikkhū pāsaṁsā bhavanti.
 
+<!-- @segment mn3:7.12 -->
+
 Therā, āvuso, bhikkhū imehi tīhi ṭhānehi pāsaṁsā bhavanti.
+
+<!-- @segment mn3:7.13 -->
 
 Tatrāvuso, majjhimā bhikkhū …pe…
 
+<!-- @segment mn3:7.14 -->
+
 navā bhikkhū tīhi ṭhānehi pāsaṁsā bhavanti.
+
+<!-- @segment mn3:7.15 -->
 
 ‘Satthu pavivittassa viharato sāvakā vivekamanusikkhantī’ti—
 
+<!-- @segment mn3:7.16 -->
+
 iminā paṭhamena ṭhānena navā bhikkhū pāsaṁsā bhavanti.
+
+<!-- @segment mn3:7.17 -->
 
 ‘Yesañca dhammānaṁ satthā pahānamāha te ca dhamme pajahantī’ti—
 
+<!-- @segment mn3:7.18 -->
+
 iminā dutiyena ṭhānena navā bhikkhū pāsaṁsā bhavanti.
+
+<!-- @segment mn3:7.19 -->
 
 ‘Na ca bāhulikā, na sāthalikā okkamane nikkhittadhurā paviveke pubbaṅgamā’ti—
 
+<!-- @segment mn3:7.20 -->
+
 iminā tatiyena ṭhānena navā bhikkhū pāsaṁsā bhavanti.
+
+<!-- @segment mn3:7.21 -->
 
 Navā, āvuso, bhikkhū imehi tīhi ṭhānehi pāsaṁsā bhavanti.
 
+<!-- @segment mn3:7.22 -->
+
 Ettāvatā kho, āvuso, satthu pavivittassa viharato sāvakā vivekamanusikkhanti.
+
+<!-- @segment mn3:8.1 -->
 
 Tatrāvuso, lobho ca pāpako doso ca pāpako.
 
+<!-- @segment mn3:8.2 -->
+
 Lobhassa ca pahānāya dosassa ca pahānāya atthi majjhimā paṭipadā cakkhukaraṇī ñāṇakaraṇī upasamāya abhiññāya sambodhāya nibbānāya saṁvattati.
+
+<!-- @segment mn3:8.3 -->
 
 Katamā ca sā, āvuso, majjhimā paṭipadā cakkhukaraṇī ñāṇakaraṇī upasamāya abhiññāya sambodhāya nibbānāya saṁvattati?
 
+<!-- @segment mn3:8.4 -->
+
 Ayameva ariyo aṭṭhaṅgiko maggo, seyyathidaṁ—
 
+<!-- @segment mn3:8.5 -->
+
 sammādiṭṭhi sammāsaṅkappo sammāvācā sammākammanto sammāājīvo sammāvāyāmo sammāsati sammāsamādhi.
+
+<!-- @segment mn3:8.6 -->
 
 Ayaṁ kho sā, āvuso, majjhimā paṭipadā cakkhukaraṇī ñāṇakaraṇī upasamāya abhiññāya sambodhāya nibbānāya saṁvattati.
 
+<!-- @segment mn3:9-15.1 -->
+
 Tatrāvuso, kodho ca pāpako upanāho ca pāpako …pe…
+
+<!-- @segment mn3:9-15.2 -->
 
 makkho ca pāpako paḷāso ca pāpako,
 
+<!-- @segment mn3:9-15.3 -->
+
 issā ca pāpikā maccherañca pāpakaṁ,
+
+<!-- @segment mn3:9-15.4 -->
 
 māyā ca pāpikā sāṭheyyañca pāpakaṁ,
 
+<!-- @segment mn3:9-15.5 -->
+
 thambho ca pāpako sārambho ca pāpako,
+
+<!-- @segment mn3:9-15.6 -->
 
 māno ca pāpako atimāno ca pāpako,
 
+<!-- @segment mn3:9-15.7 -->
+
 mado ca pāpako pamādo ca pāpako.
+
+<!-- @segment mn3:9-15.8 -->
 
 Madassa ca pahānāya pamādassa ca pahānāya atthi majjhimā paṭipadā cakkhukaraṇī ñāṇakaraṇī upasamāya abhiññāya sambodhāya nibbānāya saṁvattati.
 
+<!-- @segment mn3:9-15.9 -->
+
 Katamā ca sā, āvuso, majjhimā paṭipadā cakkhukaraṇī ñāṇakaraṇī upasamāya abhiññāya sambodhāya nibbānāya saṁvattati?
+
+<!-- @segment mn3:9-15.10 -->
 
 Ayameva ariyo aṭṭhaṅgiko maggo, seyyathidaṁ—
 
+<!-- @segment mn3:9-15.11 -->
+
 sammādiṭṭhi sammāsaṅkappo sammāvācā sammākammanto sammāājīvo sammāvāyāmo sammāsati sammāsamādhi.
+
+<!-- @segment mn3:9-15.12 -->
 
 Ayaṁ kho sā, āvuso, majjhimā paṭipadā cakkhukaraṇī ñāṇakaraṇī upasamāya abhiññāya sambodhāya nibbānāya saṁvattatī”ti.
 
+<!-- @segment mn3:9-15.13 -->
+
 Idamavocāyasmā sāriputto.
 
+<!-- @segment mn3:9-15.14 -->
+
 Attamanā te bhikkhū āyasmato sāriputtassa bhāsitaṁ abhinandunti.
+
+<!-- @segment mn3:9-15.15 -->
 
 Dhammadāyādasuttaṁ niṭṭhitaṁ tatiyaṁ.

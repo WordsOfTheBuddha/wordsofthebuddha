@@ -1,25 +1,43 @@
 ---
 slug: an5.127
 source: suttacentral/bilara-data
+title: Vapakāsasutta
 edition: ms
 granularity: segment
-title: Vapakāsasutta
 ---
+
+<!-- @segment an5.127:1.1 -->
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu nālaṁ saṅghamhā vapakāsituṁ.
 
+<!-- @segment an5.127:1.2 -->
+
 Katamehi pañcahi?
+
+<!-- @segment an5.127:1.3 -->
 
 Idha, bhikkhave, bhikkhu asantuṭṭho hoti itarītarena cīvarena, asantuṭṭho hoti itarītarena piṇḍapātena, asantuṭṭho hoti itarītarena senāsanena, asantuṭṭho hoti itarītarena gilānappaccayabhesajjaparikkhārena, kāmasaṅkappabahulo ca viharati.
 
+<!-- @segment an5.127:1.4 -->
+
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu nālaṁ saṅghamhā vapakāsituṁ.
+
+<!-- @segment an5.127:2.1 -->
 
 Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁ saṅghamhā vapakāsituṁ.
 
+<!-- @segment an5.127:2.2 -->
+
 Katamehi pañcahi?
+
+<!-- @segment an5.127:2.3 -->
 
 Idha, bhikkhave, bhikkhu santuṭṭho hoti itarītarena cīvarena, santuṭṭho hoti itarītarena piṇḍapātena, santuṭṭho hoti itarītarena senāsanena, santuṭṭho hoti itarītarena gilānappaccayabhesajjaparikkhārena, nekkhammasaṅkappabahulo ca viharati.
 
+<!-- @segment an5.127:2.4 -->
+
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu alaṁ saṅghamhā vapakāsitun”ti.
+
+<!-- @segment an5.127:2.5 -->
 
 Sattamaṁ.

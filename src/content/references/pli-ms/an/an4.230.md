@@ -1,13 +1,19 @@
 ---
 slug: an4.230
 source: suttacentral/bilara-data
+title: Duppaññasutta
 edition: ms
 granularity: segment
-title: Duppaññasutta
 ---
+
+<!-- @segment an4.230:1.1 -->
 
 …pe… Assaddho hoti, dussīlo hoti, kusīto hoti, duppañño hoti …pe… saddho hoti, sīlavā hoti, āraddhavīriyo hoti, paññavā hoti—
 
+<!-- @segment an4.230:1.2 -->
+
 imehi kho, bhikkhave, catūhi dhammehi samannāgato paṇḍito viyatto sappuriso akkhataṁ anupahataṁ attānaṁ pariharati, anavajjo ca hoti ananuvajjo viññūnaṁ, bahuñca puññaṁ pasavatī”ti.
+
+<!-- @segment an4.230:1.3 -->
 
 Dasamaṁ.

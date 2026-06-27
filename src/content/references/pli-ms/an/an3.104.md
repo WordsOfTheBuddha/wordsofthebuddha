@@ -1,29 +1,51 @@
 ---
 slug: an3.104
 source: suttacentral/bilara-data
+title: Paṭhamaassādasutta
 edition: ms
 granularity: segment
-title: Paṭhamaassādasutta
 ---
+
+<!-- @segment an3.104:1.1 -->
 
 “Lokassāhaṁ, bhikkhave, assādapariyesanaṁ acariṁ. Yo loke assādo tadajjhagamaṁ.
 
+<!-- @segment an3.104:1.2 -->
+
 Yāvatako loke assādo, paññāya me so sudiṭṭho.
+
+<!-- @segment an3.104:1.3 -->
 
 Lokassāhaṁ, bhikkhave, ādīnavapariyesanaṁ acariṁ. Yo loke ādīnavo tadajjhagamaṁ.
 
+<!-- @segment an3.104:1.4 -->
+
 Yāvatako loke ādīnavo, paññāya me so sudiṭṭho.
+
+<!-- @segment an3.104:1.5 -->
 
 Lokassāhaṁ, bhikkhave, nissaraṇapariyesanaṁ acariṁ. Yaṁ loke nissaraṇaṁ tadajjhagamaṁ.
 
+<!-- @segment an3.104:1.6 -->
+
 Yāvatakaṁ loke nissaraṇaṁ, paññāya me taṁ sudiṭṭhaṁ.
+
+<!-- @segment an3.104:1.7 -->
 
 Yāvakīvañcāhaṁ, bhikkhave, lokassa assādañca assādato ādīnavañca ādīnavato nissaraṇañca nissaraṇato yathābhūtaṁ nābbhaññāsiṁ, neva tāvāhaṁ, bhikkhave, sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya ‘anuttaraṁ sammāsambodhiṁ abhisambuddho’ti paccaññāsiṁ.
 
+<!-- @segment an3.104:1.8 -->
+
 Yato ca khvāhaṁ, bhikkhave, lokassa assādañca assādato ādīnavañca ādīnavato nissaraṇañca nissaraṇato yathābhūtaṁ abbhaññāsiṁ, athāhaṁ, bhikkhave, sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya ‘anuttaraṁ sammāsambodhiṁ abhisambuddho’ti paccaññāsiṁ.
+
+<!-- @segment an3.104:1.9 -->
 
 Ñāṇañca pana me dassanaṁ udapādi:
 
+<!-- @segment an3.104:1.10 -->
+
 ‘akuppā me vimutti, ayamantimā jāti, natthi dāni punabbhavo’”ti.
+
+<!-- @segment an3.104:1.11 -->
 
 Dutiyaṁ.

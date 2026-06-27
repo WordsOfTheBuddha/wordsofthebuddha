@@ -1,49 +1,91 @@
 ---
 slug: an4.259
 source: suttacentral/bilara-data
+title: Paṭhamaājānīyasutta
 edition: ms
 granularity: segment
-title: Paṭhamaājānīyasutta
 ---
+
+<!-- @segment an4.259:1.1 -->
 
 “Catūhi, bhikkhave, aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati.
 
+<!-- @segment an4.259:1.2 -->
+
 Katamehi catūhi?
+
+<!-- @segment an4.259:1.3 -->
 
 Idha, bhikkhave, rañño bhadro assājānīyo vaṇṇasampanno ca hoti balasampanno ca javasampanno ca ārohapariṇāhasampanno ca.
 
+<!-- @segment an4.259:1.4 -->
+
 Imehi kho, bhikkhave, catūhi aṅgehi samannāgato rañño bhadro assājānīyo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati.
+
+<!-- @segment an4.259:2.1 -->
 
 Evamevaṁ kho, bhikkhave, catūhi dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassa.
 
+<!-- @segment an4.259:2.2 -->
+
 Katamehi catūhi?
+
+<!-- @segment an4.259:2.3 -->
 
 Idha, bhikkhave, bhikkhu vaṇṇasampanno ca hoti balasampanno ca javasampanno ca ārohapariṇāhasampanno ca.
 
+<!-- @segment an4.259:3.1 -->
+
 Kathañca, bhikkhave, bhikkhu vaṇṇasampanno hoti?
+
+<!-- @segment an4.259:3.2 -->
 
 Idha, bhikkhave, bhikkhu sīlavā hoti …pe… samādāya sikkhati sikkhāpadesu.
 
+<!-- @segment an4.259:3.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu vaṇṇasampanno hoti.
+
+<!-- @segment an4.259:4.1 -->
 
 Kathañca, bhikkhave, bhikkhu balasampanno hoti?
 
+<!-- @segment an4.259:4.2 -->
+
 Idha, bhikkhave, bhikkhu āraddhavīriyo viharati akusalānaṁ dhammānaṁ pahānāya, kusalānaṁ dhammānaṁ upasampadāya, thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu.
+
+<!-- @segment an4.259:4.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu balasampanno hoti.
 
+<!-- @segment an4.259:5.1 -->
+
 Kathañca, bhikkhave, bhikkhu javasampanno hoti?
+
+<!-- @segment an4.259:5.2 -->
 
 Idha, bhikkhave, bhikkhu ‘idaṁ dukkhan’ti yathābhūtaṁ pajānāti …pe… ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṁ pajānāti.
 
+<!-- @segment an4.259:5.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu javasampanno hoti.
+
+<!-- @segment an4.259:6.1 -->
 
 Kathañca, bhikkhave, bhikkhu ārohapariṇāhasampanno hoti?
 
+<!-- @segment an4.259:6.2 -->
+
 Idha, bhikkhave, bhikkhu lābhī hoti cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānaṁ.
+
+<!-- @segment an4.259:6.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu ārohapariṇāhasampanno hoti.
 
+<!-- @segment an4.259:7.1 -->
+
 Imehi kho, bhikkhave, catūhi dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassā”ti.
+
+<!-- @segment an4.259:7.2 -->
 
 Chaṭṭhaṁ.

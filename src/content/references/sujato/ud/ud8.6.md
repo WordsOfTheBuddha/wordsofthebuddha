@@ -6,194 +6,386 @@ license: CC0
 title: The Layfolk of Pāṭali Village
 ---
 
+<!-- @segment ud8.6:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud8.6:1.2 -->
 
 At one time the Buddha was wandering in the land of the Magadhans together with a large Saṅgha of mendicants when he arrived at the village of Pāṭali.
 
+<!-- @segment ud8.6:1.3 -->
+
 The lay followers of Pāṭali Village heard that he had arrived.
+
+<!-- @segment ud8.6:1.5 -->
 
 So they went to see him, bowed, sat down to one side, and said to him,
 
+<!-- @segment ud8.6:1.7 -->
+
 “Sir, please consent to come to our guest house.”
+
+<!-- @segment ud8.6:1.8 -->
 
 The Buddha consented with silence.
 
+<!-- @segment ud8.6:2.1 -->
+
 Then, knowing that the Buddha had consented, the lay followers of Pāṭali Village rose from their seat, bowed, and respectfully circled the Buddha, keeping him on their right. Then they went to the guest house, where they spread carpets all over, prepared seats, set up a water jar, and placed an oil lamp. Then they went back to the Buddha, bowed, stood to one side, and told him of their preparations, saying:
+
+<!-- @segment ud8.6:2.3 -->
 
 “Please, sir, come at your convenience.”
 
+<!-- @segment ud8.6:3.1 -->
+
 In the morning, the Buddha robed up and, taking his bowl and robe, went to the guest house together with the Saṅgha of mendicants. Having washed his feet he entered the guest house and sat against the central column facing east.
+
+<!-- @segment ud8.6:3.2 -->
 
 The Saṅgha of mendicants also washed their feet, entered the guest house, and sat against the west wall facing east, with the Buddha right in front of them.
 
+<!-- @segment ud8.6:3.3 -->
+
 The lay followers of Pāṭali Village also washed their feet, entered the guest house, and sat against the east wall facing west, with the Buddha right in front of them.
+
+<!-- @segment ud8.6:3.4 -->
 
 Then the Buddha addressed them:
 
+<!-- @segment ud8.6:4.1 -->
+
 “Householders, there are these five drawbacks for an unethical person because of their failure in ethics.
 
+<!-- @segment ud8.6:4.2 -->
+
 What five?
+
+<!-- @segment ud8.6:4.3 -->
 
 Firstly, an unethical person loses great wealth on account of negligence.
 
+<!-- @segment ud8.6:4.4 -->
+
 This is the first drawback.
+
+<!-- @segment ud8.6:5.1 -->
 
 Furthermore, an unethical person gets a bad reputation.
 
+<!-- @segment ud8.6:5.2 -->
+
 This is the second drawback.
+
+<!-- @segment ud8.6:6.1 -->
 
 Furthermore, an unethical person enters any kind of assembly timid and embarrassed, whether it’s an assembly of aristocrats, brahmins, householders, or ascetics.
 
+<!-- @segment ud8.6:6.2 -->
+
 This is the third drawback.
+
+<!-- @segment ud8.6:7.1 -->
 
 Furthermore, an unethical person feels lost when they die.
 
+<!-- @segment ud8.6:7.2 -->
+
 This is the fourth drawback.
+
+<!-- @segment ud8.6:8.1 -->
 
 Furthermore, an unethical person, when their body breaks up, after death, is reborn in a place of loss, a bad place, the underworld, hell.
 
+<!-- @segment ud8.6:8.2 -->
+
 This is the fifth drawback.
+
+<!-- @segment ud8.6:8.3 -->
 
 These are the five drawbacks for an unethical person because of their failure in ethics.
 
+<!-- @segment ud8.6:9.1 -->
+
 There are these five benefits for an ethical person because of their accomplishment in ethics.
+
+<!-- @segment ud8.6:9.2 -->
 
 What five?
 
+<!-- @segment ud8.6:9.3 -->
+
 Firstly, an ethical person gains great wealth on account of diligence.
+
+<!-- @segment ud8.6:9.4 -->
 
 This is the first benefit.
 
+<!-- @segment ud8.6:10.1 -->
+
 Furthermore, an ethical person gets a good reputation.
+
+<!-- @segment ud8.6:10.2 -->
 
 This is the second benefit.
 
+<!-- @segment ud8.6:11.1 -->
+
 Furthermore, an ethical person enters any kind of assembly bold and self-assured, whether it’s an assembly of aristocrats, brahmins, householders, or ascetics.
+
+<!-- @segment ud8.6:11.2 -->
 
 This is the third benefit.
 
+<!-- @segment ud8.6:12.1 -->
+
 Furthermore, an ethical person dies not feeling lost.
+
+<!-- @segment ud8.6:12.2 -->
 
 This is the fourth benefit.
 
+<!-- @segment ud8.6:13.1 -->
+
 Furthermore, when an ethical person’s body breaks up, after death, they’re reborn in a good place, a heavenly realm.
+
+<!-- @segment ud8.6:13.2 -->
 
 This is the fifth benefit.
 
+<!-- @segment ud8.6:13.3 -->
+
 These are the five benefits for an ethical person because of their accomplishment in ethics.”
+
+<!-- @segment ud8.6:14.1 -->
 
 The Buddha spent much of the night educating, encouraging, firing up, and inspiring the lay followers of Pāṭali Village with a Dhamma talk. Then he sent them off,
 
+<!-- @segment ud8.6:14.2 -->
+
 “The night is getting late, householders. Please go at your convenience.”
+
+<!-- @segment ud8.6:14.3 -->
 
 And then the lay followers of Pāṭali Village approved and agreed with what the Buddha said. They rose from their seat, bowed, and respectfully circled the Buddha, keeping him on their right, before leaving.
 
+<!-- @segment ud8.6:14.4 -->
+
 Soon after they left the Buddha entered a private cubicle.
+
+<!-- @segment ud8.6:15.1 -->
 
 Now at that time the Magadhan ministers Sunidha and Vassakāra were building a citadel at Pāṭali Village to keep the Vajjis out.
 
+<!-- @segment ud8.6:15.2 -->
+
 At that time thousands of deities were taking possession of building sites in Pāṭali Village.
+
+<!-- @segment ud8.6:15.3 -->
 
 Illustrious rulers or royal chief ministers inclined to build houses at sites possessed by illustrious deities.
 
+<!-- @segment ud8.6:15.4 -->
+
 Middling rulers or royal chief ministers inclined to build houses at sites possessed by middling deities.
 
+<!-- @segment ud8.6:15.5 -->
+
 Lesser rulers or royal chief ministers inclined to build houses at sites possessed by lesser deities.
+
+<!-- @segment ud8.6:16.1 -->
 
 With clairvoyance that is purified and superhuman, the Buddha saw those deities taking possession of building sites in Pāṭali Village,
 
+<!-- @segment ud8.6:16.2 -->
+
 and the people building houses in accord with the station of the deities.
+
+<!-- @segment ud8.6:16.5 -->
 
 The Buddha rose at the crack of dawn and addressed Ānanda,
 
+<!-- @segment ud8.6:17.1 -->
+
 “Ānanda, who is building a citadel at Pāṭali Village?”
+
+<!-- @segment ud8.6:17.2 -->
 
 “Sir, the Magadhan chief ministers Sunidha and Vassakāra are building a citadel to keep the Vajjis out.”
 
+<!-- @segment ud8.6:17.3 -->
+
 “It’s as if they were building the citadel in consultation with the gods of the thirty-three.
+
+<!-- @segment ud8.6:17.5 -->
 
 With clairvoyance that is purified and superhuman, I saw those deities taking possession of building sites.
 
+<!-- @segment ud8.6:17.6 -->
+
 Illustrious rulers or royal chief ministers inclined to build houses at sites possessed by illustrious deities.
+
+<!-- @segment ud8.6:17.7 -->
 
 Middling rulers or royal chief ministers inclined to build houses at sites possessed by middling deities.
 
+<!-- @segment ud8.6:17.8 -->
+
 Lesser rulers or royal chief ministers inclined to build houses at sites possessed by lesser deities.
+
+<!-- @segment ud8.6:17.9 -->
 
 As far as the civilized region extends, as far as the trading zone extends, this will be the chief city: the Pāṭaliputta trade center.
 
+<!-- @segment ud8.6:17.10 -->
+
 But Pāṭaliputta will face three threats:
+
+<!-- @segment ud8.6:17.11 -->
 
 from fire, flood, and dissension.”
 
+<!-- @segment ud8.6:18.1 -->
+
 Then the Magadhan ministers Sunidha and Vassakāra approached the Buddha, and exchanged greetings with him.
+
+<!-- @segment ud8.6:18.2 -->
 
 When the greetings and polite conversation were over, they stood to one side and said,
 
+<!-- @segment ud8.6:18.4 -->
+
 “Would Mister Gotama together with the mendicant Saṅgha please accept today’s meal from me?”
+
+<!-- @segment ud8.6:19.1 -->
 
 Then, knowing that the Buddha had consented, they went to their own guest house, where they had delicious fresh and cooked foods prepared. Then they had the Buddha informed of the time, saying,
 
+<!-- @segment ud8.6:19.2 -->
+
 “It’s time, worthy Gotama, the meal is ready.”
+
+<!-- @segment ud8.6:20.1 -->
 
 Then the Buddha robed up in the morning and, taking his bowl and robe, went to their guest house together with the mendicant Saṅgha, where he sat on the seat spread out.
 
+<!-- @segment ud8.6:20.2 -->
+
 Then Sunidha and Vassakāra served and satisfied the mendicant Saṅgha headed by the Buddha with their own hands with delicious fresh and cooked foods.
+
+<!-- @segment ud8.6:21.1 -->
 
 When the Buddha had eaten and washed his hand and bowl, Sunidha and Vassakāra took a low seat and sat to one side.
 
+<!-- @segment ud8.6:21.2 -->
+
 The Buddha expressed his appreciation with these verses:
+
+<!-- @segment ud8.6:22.1 -->
 
 “In the place he makes his dwelling,
 
+<!-- @segment ud8.6:22.2 -->
+
 having fed the astute
+
+<!-- @segment ud8.6:22.3 -->
 
 and the virtuous here,
 
+<!-- @segment ud8.6:22.4 -->
+
 the restrained spiritual practitioners,
+
+<!-- @segment ud8.6:23.1 -->
 
 he should dedicate an offering
 
+<!-- @segment ud8.6:23.2 -->
+
 to the deities there.
+
+<!-- @segment ud8.6:23.3 -->
 
 Venerated, they venerate him;
 
+<!-- @segment ud8.6:23.4 -->
+
 honored, they honor him.
+
+<!-- @segment ud8.6:24.1 -->
 
 After that they have sympathy for him,
 
+<!-- @segment ud8.6:24.2 -->
+
 like a mother for the child at her breast.
+
+<!-- @segment ud8.6:24.3 -->
 
 A man beloved of the deities
 
+<!-- @segment ud8.6:24.4 -->
+
 always sees nice things.”
+
+<!-- @segment ud8.6:25.1 -->
 
 When the Buddha had expressed his appreciation to Sunidha and Vassakāra with these verses, he rose from his seat and left.
 
+<!-- @segment ud8.6:26.1 -->
+
 Sunidha and Vassakāra followed behind the Buddha, thinking,
+
+<!-- @segment ud8.6:26.2 -->
 
 “The gate through which the ascetic Gotama exits today shall be named the Gotama Gate.
 
+<!-- @segment ud8.6:26.3 -->
+
 The ford at which he crosses the Ganges River shall be named the Gotama Ford.”
+
+<!-- @segment ud8.6:27.1 -->
 
 Then the gate through which the Buddha exited was named the Gotama Gate.
 
+<!-- @segment ud8.6:27.2 -->
+
 Then the Buddha came to the Ganges River.
+
+<!-- @segment ud8.6:27.3 -->
 
 Now at that time the Ganges was full to the brim so a crow could drink from it.
 
+<!-- @segment ud8.6:27.4 -->
+
 Wanting to cross from the near to the far shore, some people were seeking a boat, some a dinghy, while some were tying up a raft.
+
+<!-- @segment ud8.6:27.5 -->
 
 But, as easily as a strong person would extend or contract their arm, the Buddha, together with the mendicant Saṅgha, vanished from the near shore and landed on the far shore.
 
+<!-- @segment ud8.6:28.1 -->
+
 He saw all those humans wanting to cross over.
+
+<!-- @segment ud8.6:29.1 -->
 
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
 
+<!-- @segment ud8.6:30.1 -->
+
 “Those who cross a deluge or stream
+
+<!-- @segment ud8.6:30.2 -->
 
 have built a bridge and left the marshes behind.
 
+<!-- @segment ud8.6:30.3 -->
+
 While some people are still tying a raft,
+
+<!-- @segment ud8.6:30.4 -->
 
 intelligent people have crossed over.”

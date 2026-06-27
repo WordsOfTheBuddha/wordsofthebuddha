@@ -6,18 +6,34 @@ license: CC0
 title: A Family
 ---
 
+<!-- @segment an7.13:1.1 -->
+
 “Mendicants, visiting a family with seven factors is not worthwhile, or if you’ve already arrived, sitting down is not worthwhile.
 
+<!-- @segment an7.13:1.2 -->
+
 What seven?
+
+<!-- @segment an7.13:1.3 -->
 
 They don’t politely rise, bow, or offer a seat. They hide what they have. Even when they have much they give little. Even when they have fine things they give coarse things. They give carelessly, not carefully.
 
+<!-- @segment an7.13:1.4 -->
+
 Visiting a family with these seven factors is not worthwhile, or if you’ve already arrived, sitting down is not worthwhile.
+
+<!-- @segment an7.13:2.1 -->
 
 Visiting a family with seven factors is worthwhile, or if you’ve already arrived, sitting down is worthwhile.
 
+<!-- @segment an7.13:2.2 -->
+
 What seven?
 
+<!-- @segment an7.13:2.3 -->
+
 They politely rise, bow, and offer a seat. They don’t hide what they have. When they have much they give much. When they have refined things they give refined things. They give carefully, not carelessly.
+
+<!-- @segment an7.13:2.4 -->
 
 Visiting a family with these seven factors is worthwhile, or if you’ve already arrived, sitting down is worthwhile.”

@@ -6,132 +6,262 @@ license: CC0
 title: Kinds of Wives
 ---
 
+<!-- @segment an7.63:1.1 -->
+
 Then the Buddha robed up in the morning and, taking his bowl and robe, went to the home of the householder Anāthapiṇḍika, where he sat on the seat spread out.
+
+<!-- @segment an7.63:1.2 -->
 
 Now at that time people in Anāthapiṇḍika’s home were making a colossal racket.
 
+<!-- @segment an7.63:1.3 -->
+
 Then the householder Anāthapiṇḍika went up to the Buddha, bowed, and sat down to one side. The Buddha said to him,
+
+<!-- @segment an7.63:2.1 -->
 
 “Householder, what’s with the people making that colossal racket in your home? You’d think it was fishermen hauling in a catch!”
 
+<!-- @segment an7.63:2.2 -->
+
 “Sir, that’s my daughter-in-law Sujātā. She’s been brought here from a wealthy family.
+
+<!-- @segment an7.63:2.3 -->
 
 She doesn’t obey her mother-in-law or father-in-law or her husband. And she does not honor, respect, esteem, and venerate the Buddha.”
 
+<!-- @segment an7.63:3.1 -->
+
 Then the Buddha addressed Sujātā, saying,
+
+<!-- @segment an7.63:3.2 -->
 
 “Come, Sujātā.”
 
+<!-- @segment an7.63:3.3 -->
+
 “Yes, sir,” she replied. She went up to the Buddha, bowed, and sat down to one side. The Buddha said to her:
+
+<!-- @segment an7.63:4.1 -->
 
 “Sujātā, a man can have seven kinds of wife.
 
+<!-- @segment an7.63:4.2 -->
+
 What seven?
+
+<!-- @segment an7.63:4.3 -->
 
 A wife like a killer, a wife like a thief, a wife like a lord, a wife like a mother, a wife like a sister, a wife like a comrade, and a wife like a bondservant.
 
+<!-- @segment an7.63:4.4 -->
+
 These are the kinds of wife that a man can have.
 
+<!-- @segment an7.63:4.5 -->
+
 Which one of these are you?”
+
+<!-- @segment an7.63:4.6 -->
 
 “Sir, I don’t understand the detailed meaning of what the Buddha has said in brief.
 
+<!-- @segment an7.63:4.7 -->
+
 Please teach me this matter so I can understand the detailed meaning.”
+
+<!-- @segment an7.63:4.8 -->
 
 “Well then, Sujātā, listen and apply your mind well, I will speak.”
 
+<!-- @segment an7.63:4.9 -->
+
 “Yes, sir,” she replied.
+
+<!-- @segment an7.63:4.10 -->
 
 The Buddha said this:
 
+<!-- @segment an7.63:5.1 -->
+
 “With a mind full of hate and no kindness,
+
+<!-- @segment an7.63:5.2 -->
 
 lusting for others, looking down on her husband,
 
+<!-- @segment an7.63:5.3 -->
+
 she longs to murder him who paid the price for her.
 
+<!-- @segment an7.63:5.4 -->
+
 A man’s wife of this sort
+
+<!-- @segment an7.63:5.5 -->
 
 is called a wife and a killer.
 
+<!-- @segment an7.63:6.1 -->
+
 A woman’s husband earns his wealth
+
+<!-- @segment an7.63:6.2 -->
 
 by focusing on a profession, trade, or farming.
 
+<!-- @segment an7.63:6.3 -->
+
 And even if it’s only a little, she wants to take it.
 
+<!-- @segment an7.63:6.4 -->
+
 A man’s wife of this sort
+
+<!-- @segment an7.63:6.5 -->
 
 is called a wife and a thief.
 
+<!-- @segment an7.63:7.1 -->
+
 She’s an idle glutton who doesn’t want to work.
+
+<!-- @segment an7.63:7.2 -->
 
 Her words are harsh, fierce, and rude.
 
+<!-- @segment an7.63:7.3 -->
+
 He works hard, but she lives as his master.
 
+<!-- @segment an7.63:7.4 -->
+
 A man’s wife of this sort
+
+<!-- @segment an7.63:7.5 -->
 
 is called a wife and a lord.
 
+<!-- @segment an7.63:8.1 -->
+
 She’s always caring and kind,
+
+<!-- @segment an7.63:8.2 -->
 
 looking after her husband like a mother her child.
 
+<!-- @segment an7.63:8.3 -->
+
 She keeps the wealth that he has earned secure.
 
+<!-- @segment an7.63:8.4 -->
+
 A man’s wife of this sort
+
+<!-- @segment an7.63:8.5 -->
 
 is called a wife and a mother.
 
+<!-- @segment an7.63:9.1 -->
+
 She respects her husband
+
+<!-- @segment an7.63:9.2 -->
 
 as a younger sister respects her elder.
 
+<!-- @segment an7.63:9.3 -->
+
 Conscientious, she does what her husband says.
 
+<!-- @segment an7.63:9.4 -->
+
 A man’s wife of this sort
+
+<!-- @segment an7.63:9.5 -->
 
 is called a wife and a sister.
 
+<!-- @segment an7.63:10.1 -->
+
 She’s delighted to see him,
+
+<!-- @segment an7.63:10.2 -->
 
 like one reunited with a long-lost comrade.
 
+<!-- @segment an7.63:10.3 -->
+
 She’s of good pedigree, virtuous, and devoted.
 
+<!-- @segment an7.63:10.4 -->
+
 A man’s wife of this sort
+
+<!-- @segment an7.63:10.5 -->
 
 is called a wife and a comrade.
 
+<!-- @segment an7.63:11.1 -->
+
 She has no anger <j>when threatened with violence by the rod.
+
+<!-- @segment an7.63:11.2 -->
 
 Without hate or anger,
 
+<!-- @segment an7.63:11.3 -->
+
 she endures her husband and does what he says.
+
+<!-- @segment an7.63:11.4 -->
 
 A man’s wife of this sort
 
+<!-- @segment an7.63:11.5 -->
+
 is called a wife and a bondservant.
+
+<!-- @segment an7.63:12.1 -->
 
 The kinds of wives here called
 
+<!-- @segment an7.63:12.2 -->
+
 killer, thief, and lord;
+
+<!-- @segment an7.63:12.3 -->
 
 immoral, harsh, and lacking regard for others,
 
+<!-- @segment an7.63:12.4 -->
+
 when their body breaks up they set course for hell.
+
+<!-- @segment an7.63:13.1 -->
 
 But the kinds of wives here called
 
+<!-- @segment an7.63:13.2 -->
+
 mother, sister, friend, and bondservant;
+
+<!-- @segment an7.63:13.3 -->
 
 steadfast in their own morality, <j>restrained for a long time,
 
+<!-- @segment an7.63:13.4 -->
+
 when their body breaks up <j>they set course for a good place.
+
+<!-- @segment an7.63:14.1 -->
 
 Sujātā, these are the seven kinds of wife that a man can have.
 
+<!-- @segment an7.63:14.2 -->
+
 Which one of these are you?”
+
+<!-- @segment an7.63:14.3 -->
 
 “Sir, from this day forth may the Buddha remember me as a wife like a bondservant.”

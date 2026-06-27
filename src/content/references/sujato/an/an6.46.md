@@ -6,58 +6,114 @@ license: CC0
 title: By Mahācunda
 ---
 
+<!-- @segment an6.46:1.1 -->
+
 So I have heard.
+
+<!-- @segment an6.46:1.2 -->
 
 At one time Venerable Mahācunda was staying in the land of the Cetis at Sahajāti.
 
+<!-- @segment an6.46:1.3 -->
+
 There he addressed the mendicants:
+
+<!-- @segment an6.46:1.4 -->
 
 “Reverends, mendicants!”
 
+<!-- @segment an6.46:1.5 -->
+
 “Reverend,” they replied.
+
+<!-- @segment an6.46:1.6 -->
 
 Venerable Mahācunda said this:
 
+<!-- @segment an6.46:2.1 -->
+
 “Take a case where mendicants who practice discernment of principles rebuke mendicants who practice absorption:
+
+<!-- @segment an6.46:2.2 -->
 
 ‘They say, “We practice absorption meditation! We practice absorption meditation!” And they meditate and concentrate and contemplate and ruminate.
 
+<!-- @segment an6.46:2.3 -->
+
 Why do they practice absorption meditation? In what way do they practice absorption meditation? How do they practice absorption meditation?’
 
+<!-- @segment an6.46:2.4 -->
+
 In this case the mendicants who practice discernment of principles are not inspired, and the mendicants who practice absorption are not inspired. And they’re not acting for the welfare and happiness of the people, for the people, for the benefit, welfare, and happiness of gods and humans.
+
+<!-- @segment an6.46:3.1 -->
 
 Now, take a case where mendicants who practice absorption meditation rebuke mendicants who practice discernment of principles:
 
+<!-- @segment an6.46:3.2 -->
+
 ‘They say, “We practice discernment of principles! We practice discernment of principles!” But they’re restless, insolent, fickle, scurrilous, loose-tongued, unmindful, lacking situational awareness and immersion, with straying minds and undisciplined faculties.
+
+<!-- @segment an6.46:3.3 -->
 
 Why do they practice discernment of principles? In what way do they practice discernment of principles? How do they practice discernment of principles?’
 
+<!-- @segment an6.46:3.4 -->
+
 In this case the mendicants who practice absorption are not inspired, and the mendicants who practice discernment of principles are not inspired. And they’re not acting for the welfare and happiness of the people, for the people, for the benefit, welfare, and happiness of gods and humans.
+
+<!-- @segment an6.46:4.1 -->
 
 Now, take a case where mendicants who practice discernment of principles praise only others like them, not mendicants who practice absorption.
 
+<!-- @segment an6.46:4.2 -->
+
 In this case the mendicants who practice discernment of principles are not inspired, and the mendicants who practice absorption are not inspired. And they’re not acting for the welfare and happiness of the people, for the people, for the benefit, welfare, and happiness of gods and humans.
+
+<!-- @segment an6.46:5.1 -->
 
 And take a case where mendicants who practice absorption praise only others like them, not mendicants who practice discernment of principles.
 
+<!-- @segment an6.46:5.2 -->
+
 In this case the mendicants who practice absorption are not inspired, and the mendicants who practice discernment of principles are not inspired. And they’re not acting for the welfare and happiness of the people, for the people, for the benefit, welfare, and happiness of gods and humans.
 
+<!-- @segment an6.46:6.1 -->
+
 So you should train like this:
+
+<!-- @segment an6.46:6.2 -->
 
 ‘As mendicants who practice discernment of principles, we will praise mendicants who practice absorption.’
 
+<!-- @segment an6.46:6.3 -->
+
 That’s how you should train.
 
+<!-- @segment an6.46:6.4 -->
+
 Why is that?
+
+<!-- @segment an6.46:6.5 -->
 
 Because it’s rare to find such incredible individuals in the world who have direct meditative experience of the element free of death.
 
+<!-- @segment an6.46:7.1 -->
+
 So you should train like this:
+
+<!-- @segment an6.46:7.2 -->
 
 ‘As mendicants who practice absorption, we will praise mendicants who practice discernment of principles.’
 
+<!-- @segment an6.46:7.3 -->
+
 That’s how you should train.
 
+<!-- @segment an6.46:7.4 -->
+
 Why is that?
+
+<!-- @segment an6.46:7.5 -->
 
 Because it’s incredibly rare to find individuals in the world who see the meaning of a deep saying with penetrating wisdom.”

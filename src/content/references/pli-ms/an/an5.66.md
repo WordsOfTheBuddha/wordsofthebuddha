@@ -1,25 +1,43 @@
 ---
 slug: an5.66
 source: suttacentral/bilara-data
+title: Sājīvasutta
 edition: ms
 granularity: segment
-title: Sājīvasutta
 ---
+
+<!-- @segment an5.66:1.1 -->
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnaṁ.
 
+<!-- @segment an5.66:1.2 -->
+
 Katamehi pañcahi?
+
+<!-- @segment an5.66:1.3 -->
 
 Idha, bhikkhave, bhikkhu attanā ca sīlasampanno hoti, sīlasampadāya kathāya ca kataṁ pañhaṁ byākattā hoti;
 
+<!-- @segment an5.66:1.4 -->
+
 attanā ca samādhisampanno hoti, samādhisampadāya kathāya ca kataṁ pañhaṁ byākattā hoti;
+
+<!-- @segment an5.66:1.5 -->
 
 attanā ca paññāsampanno hoti, paññāsampadāya kathāya ca kataṁ pañhaṁ byākattā hoti;
 
+<!-- @segment an5.66:1.6 -->
+
 attanā ca vimuttisampanno hoti, vimuttisampadāya kathāya ca kataṁ pañhaṁ byākattā hoti;
+
+<!-- @segment an5.66:1.7 -->
 
 attanā ca vimuttiñāṇadassanasampanno hoti, vimuttiñāṇadassanasampadāya kathāya ca kataṁ pañhaṁ byākattā hoti.
 
+<!-- @segment an5.66:1.8 -->
+
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu alaṁsājīvo sabrahmacārīnan”ti.
+
+<!-- @segment an5.66:1.9 -->
 
 Chaṭṭhaṁ.

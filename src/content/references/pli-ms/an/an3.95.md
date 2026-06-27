@@ -1,47 +1,87 @@
 ---
 slug: an3.95
 source: suttacentral/bilara-data
+title: Parisāsutta
 edition: ms
 granularity: segment
-title: Parisāsutta
 ---
+
+<!-- @segment an3.95:1.1 -->
 
 “Tisso imā, bhikkhave, parisā.
 
+<!-- @segment an3.95:1.2 -->
+
 Katamā tisso?
+
+<!-- @segment an3.95:1.3 -->
 
 Aggavatī parisā, vaggā parisā, samaggā parisā.
 
+<!-- @segment an3.95:2.1 -->
+
 Katamā ca, bhikkhave, aggavatī parisā?
+
+<!-- @segment an3.95:2.2 -->
 
 Idha, bhikkhave, yassaṁ parisāyaṁ therā bhikkhū na bāhulikā honti na sāthalikā, okkamane nikkhittadhurā paviveke pubbaṅgamā, vīriyaṁ ārabhanti appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya, tesaṁ pacchimā janatā diṭṭhānugatiṁ āpajjati.
 
+<!-- @segment an3.95:2.3 -->
+
 Sāpi hoti na bāhulikā na sāthalikā okkamane nikkhittadhurā paviveke pubbaṅgamā, vīriyaṁ ārabhati appattassa pattiyā anadhigatassa adhigamāya asacchikatassa sacchikiriyāya.
+
+<!-- @segment an3.95:2.4 -->
 
 Ayaṁ vuccati, bhikkhave, aggavatī parisā.
 
+<!-- @segment an3.95:3.1 -->
+
 Katamā ca, bhikkhave, vaggā parisā?
+
+<!-- @segment an3.95:3.2 -->
 
 Idha, bhikkhave, yassaṁ parisāyaṁ bhikkhū bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṁ mukhasattīhi vitudantā viharanti, ayaṁ vuccati, bhikkhave, vaggā parisā.
 
+<!-- @segment an3.95:4.1 -->
+
 Katamā ca, bhikkhave, samaggā parisā?
+
+<!-- @segment an3.95:4.2 -->
 
 Idha, bhikkhave, yassaṁ parisāyaṁ bhikkhū samaggā sammodamānā avivadamānā khīrodakībhūtā aññamaññaṁ piyacakkhūhi sampassantā viharanti, ayaṁ vuccati, bhikkhave, samaggā parisā.
 
+<!-- @segment an3.95:5.1 -->
+
 Yasmiṁ, bhikkhave, samaye bhikkhū samaggā sammodamānā avivadamānā khīrodakībhūtā aññamaññaṁ piyacakkhūhi sampassantā viharanti, bahuṁ, bhikkhave, bhikkhū tasmiṁ samaye puññaṁ pasavanti.
+
+<!-- @segment an3.95:5.2 -->
 
 Brahmaṁ, bhikkhave, vihāraṁ tasmiṁ samaye bhikkhū viharanti, yadidaṁ muditāya cetovimuttiyā.
 
+<!-- @segment an3.95:5.3 -->
+
 Pamuditassa pīti jāyati, pītimanassa kāyo passambhati, passaddhakāyo sukhaṁ vediyati, sukhino cittaṁ samādhiyati.
+
+<!-- @segment an3.95:6.1 -->
 
 Seyyathāpi, bhikkhave, uparipabbate thullaphusitake deve vassante taṁ udakaṁ yathāninnaṁ pavattamānaṁ pabbatakandarapadarasākhā paripūreti, pabbatakandarapadarasākhā paripūrā kusobbhe paripūrenti, kusobbhā paripūrā mahāsobbhe paripūrenti, mahāsobbhā paripūrā kunnadiyo paripūrenti, kunnadiyo paripūrā mahānadiyo paripūrenti, mahānadiyo paripūrā samuddaṁ paripūrenti.
 
+<!-- @segment an3.95:7.1 -->
+
 Evamevaṁ kho, bhikkhave, yasmiṁ samaye bhikkhū samaggā sammodamānā avivadamānā khīrodakībhūtā aññamaññaṁ piyacakkhūhi sampassantā viharanti, bahuṁ, bhikkhave, bhikkhū tasmiṁ samaye puññaṁ pasavanti.
+
+<!-- @segment an3.95:7.2 -->
 
 Brahmaṁ, bhikkhave, vihāraṁ tasmiṁ samaye bhikkhū viharanti, yadidaṁ muditāya cetovimuttiyā.
 
+<!-- @segment an3.95:7.3 -->
+
 Pamuditassa pīti jāyati, pītimanassa kāyo passambhati, passaddhakāyo sukhaṁ vediyati, sukhino cittaṁ samādhiyati.
 
+<!-- @segment an3.95:7.4 -->
+
 Imā kho, bhikkhave, tisso parisā”ti.
+
+<!-- @segment an3.95:7.5 -->
 
 Catutthaṁ.

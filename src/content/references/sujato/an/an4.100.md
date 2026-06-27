@@ -6,54 +6,172 @@ license: CC0
 title: With Potaliya the Wanderer
 ---
 
+<!-- @segment an4.100:1.1 -->
+
 Then the wanderer Potaliya went up to the Buddha, and exchanged greetings with him.
+
+<!-- @segment an4.100:1.2 -->
 
 When the greetings and polite conversation were over, he sat down to one side, and the Buddha said to him:
 
+<!-- @segment an4.100:2.1 -->
+
 “Potaliya, these four individuals are found in the world.
+
+<!-- @segment an4.100:2.2 -->
 
 What four?
 
+<!-- @segment an4.100:2.3 -->
+
 One individual criticizes those deserving of criticism at the right time, truthfully and correctly. But they don’t praise those deserving of praise at the right time, truthfully and correctly.
+
+<!-- @segment an4.100:2.4 -->
 
 Another individual praises those deserving of praise … But they don’t criticize those deserving of criticism …
 
+<!-- @segment an4.100:2.5 -->
+
 Another individual doesn’t praise those deserving of praise … Nor do they criticize those deserving of criticism …
+
+<!-- @segment an4.100:2.6 -->
 
 Another individual criticizes those deserving of criticism at the right time, truthfully and correctly. And they praise those deserving of praise at the right time, truthfully and correctly.
 
+<!-- @segment an4.100:2.7 -->
+
 These are the four individuals found in the world.
+
+<!-- @segment an4.100:2.8 -->
 
 Of these four individuals, who do you believe to be the finest?”
 
+<!-- @segment an4.100:3.1 -->
+
+
+
+<!-- @segment an4.100:3.2 -->
+
+
+
+<!-- @segment an4.100:3.3 -->
+
+
+
+<!-- @segment an4.100:3.4 -->
+
+
+
+<!-- @segment an4.100:3.5 -->
+
+
+
+<!-- @segment an4.100:3.6 -->
+
+
+
+<!-- @segment an4.100:3.7 -->
+
+
+
+<!-- @segment an4.100:3.8 -->
+
 “Mister Gotama, of these four individuals, it is the individual who neither praises those deserving of praise at the right time, truthfully and correctly; nor criticizes those deserving of criticism at the right time, truthfully and correctly.
+
+<!-- @segment an4.100:3.9 -->
 
 That is the individual I believe to be the finest.
 
+<!-- @segment an4.100:3.10 -->
+
 Why is that?
+
+<!-- @segment an4.100:3.11 -->
 
 Because, worthy Gotama, equanimity is the best.”
 
+<!-- @segment an4.100:4.1 -->
+
+
+
+<!-- @segment an4.100:4.2 -->
+
+
+
+<!-- @segment an4.100:4.3 -->
+
 “Potaliya, of these four individuals, it is the individual who criticizes those deserving of criticism at the right time, truthfully and correctly; and praises those deserving of praise at the right time, truthfully and correctly.
+
+<!-- @segment an4.100:4.4 -->
 
 That is the individual I consider to be the finest.
 
+<!-- @segment an4.100:4.5 -->
+
 Why is that?
+
+<!-- @segment an4.100:4.6 -->
 
 Because, Potaliya, understanding of time and context is the best.”
 
+<!-- @segment an4.100:5.1 -->
+
+
+
+<!-- @segment an4.100:5.2 -->
+
+
+
+<!-- @segment an4.100:5.3 -->
+
 “Mister Gotama, of these four individuals, it is the individual who criticizes those deserving of criticism at the right time, truthfully and correctly; and praises those deserving of praise at the right time, truthfully and correctly.
+
+<!-- @segment an4.100:5.4 -->
 
 That is the individual I believe to be the finest.
 
+<!-- @segment an4.100:5.5 -->
+
 Why is that?
+
+<!-- @segment an4.100:5.6 -->
 
 Because, worthy Gotama, understanding of time and context is the best.
 
+<!-- @segment an4.100:6.1 -->
+
 Excellent, worthy Gotama! Excellent!
+
+<!-- @segment an4.100:6.2 -->
 
 As if he were righting the overturned, or revealing the hidden, or pointing out the path to the lost, or lighting a lamp in the dark so people with clear eyes can see what’s there, worthy Gotama has made the teaching clear in many ways.
 
+<!-- @segment an4.100:6.3 -->
+
 I go for refuge to the worthy Gotama, to the teaching, and to the mendicant Saṅgha.
 
+<!-- @segment an4.100:6.4 -->
+
 From this day forth, may the worthy Gotama remember me as a lay follower who has gone for refuge for life.”
+
+<!-- @segment an4.100:6.5 -->
+
+
+
+<!-- @segment an4.100:6.6 -->
+
+
+
+<!-- @segment an4.100:7.1 -->
+
+
+
+<!-- @segment an4.100:7.2 -->
+
+
+
+<!-- @segment an4.100:7.3 -->
+
+
+
+<!-- @segment an4.100:7.4 -->

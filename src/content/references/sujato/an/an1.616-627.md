@@ -6,82 +6,162 @@ license: CC0
 title: The Chapter on Freedom From Death
 ---
 
+<!-- @segment an1.616:1.0 -->
+
 616
 
-617
-
-618
-
-619
-
-620
-
-621
-
-622
-
-623
-
-624
-
-625
-
-626
-
-627
+<!-- @segment an1.616:1.1 -->
 
 “Mendicants, those who don’t enjoy mindfulness of the body don’t enjoy freedom from death.
 
-“Mendicants, those who haven’t enjoyed mindfulness of the body haven’t enjoyed freedom from death.
-
-“Mendicants, those who have lost mindfulness of the body have lost freedom from death.
-
-“Mendicants, those who have missed out on mindfulness of the body have missed out on freedom from death.
-
-“Mendicants, those who have neglected mindfulness of the body have neglected freedom from death.
-
-“Mendicants, those who have forgotten mindfulness of the body have forgotten freedom from death.
-
-“Mendicants, those who haven’t cultivated mindfulness of the body haven’t cultivated freedom from death.
-
-“Mendicants, those who haven’t developed mindfulness of the body haven’t developed freedom from death.
-
-“Mendicants, those who haven’t made much of mindfulness of the body haven’t made much of the deathless.
-
-“Mendicants, those who haven’t had insight into mindfulness of the body haven’t had insight into freedom from death.
-
-“Mendicants, those who haven’t completely understood mindfulness of the body haven’t completely understood freedom from death.
-
-“Mendicants, those who haven’t realized mindfulness of the body haven’t realized freedom from death.
+<!-- @segment an1.616:1.2 -->
 
 Those who enjoy mindfulness of the body enjoy freedom from death.”
 
+<!-- @segment an1.617:1.0 -->
+
+617
+
+<!-- @segment an1.617:1.1 -->
+
+“Mendicants, those who haven’t enjoyed mindfulness of the body haven’t enjoyed freedom from death.
+
+<!-- @segment an1.617:1.2 -->
+
 Those who have enjoyed mindfulness of the body have enjoyed freedom from death.”
+
+<!-- @segment an1.618:1.0 -->
+
+618
+
+<!-- @segment an1.618:1.1 -->
+
+“Mendicants, those who have lost mindfulness of the body have lost freedom from death.
+
+<!-- @segment an1.618:1.2 -->
 
 Those who haven’t lost mindfulness of the body haven’t lost freedom from death.”
 
+<!-- @segment an1.619:1.0 -->
+
+619
+
+<!-- @segment an1.619:1.1 -->
+
+“Mendicants, those who have missed out on mindfulness of the body have missed out on freedom from death.
+
+<!-- @segment an1.619:1.2 -->
+
 Those who have undertaken mindfulness of the body have not missed out on freedom from death.”
+
+<!-- @segment an1.620:1.0 -->
+
+620
+
+<!-- @segment an1.620:1.1 -->
+
+“Mendicants, those who have neglected mindfulness of the body have neglected freedom from death.
+
+<!-- @segment an1.620:1.2 -->
 
 Those who have not neglected mindfulness of the body have not neglected freedom from death.”
 
+<!-- @segment an1.621:1.0 -->
+
+621
+
+<!-- @segment an1.621:1.1 -->
+
+“Mendicants, those who have forgotten mindfulness of the body have forgotten freedom from death.
+
+<!-- @segment an1.621:1.2 -->
+
 Those who haven’t forgotten mindfulness of the body haven’t forgotten freedom from death.”
+
+<!-- @segment an1.622:1.0 -->
+
+622
+
+<!-- @segment an1.622:1.1 -->
+
+“Mendicants, those who haven’t cultivated mindfulness of the body haven’t cultivated freedom from death.
+
+<!-- @segment an1.622:1.2 -->
 
 Those who have cultivated mindfulness of the body have cultivated freedom from death.”
 
+<!-- @segment an1.623:1.0 -->
+
+623
+
+<!-- @segment an1.623:1.1 -->
+
+“Mendicants, those who haven’t developed mindfulness of the body haven’t developed freedom from death.
+
+<!-- @segment an1.623:1.2 -->
+
 Those who have developed mindfulness of the body have developed freedom from death.”
+
+<!-- @segment an1.624:1.0 -->
+
+624
+
+<!-- @segment an1.624:1.1 -->
+
+“Mendicants, those who haven’t made much of mindfulness of the body haven’t made much of the deathless.
+
+<!-- @segment an1.624:1.2 -->
 
 Those who have made much of mindfulness of the body have made much of the deathless.”
 
+<!-- @segment an1.625:1.0 -->
+
+625
+
+<!-- @segment an1.625:1.1 -->
+
+“Mendicants, those who haven’t had insight into mindfulness of the body haven’t had insight into freedom from death.
+
+<!-- @segment an1.625:1.2 -->
+
 Those who have had insight into mindfulness of the body have had insight into freedom from death.”
+
+<!-- @segment an1.626:1.0 -->
+
+626
+
+<!-- @segment an1.626:1.1 -->
+
+“Mendicants, those who haven’t completely understood mindfulness of the body haven’t completely understood freedom from death.
+
+<!-- @segment an1.626:1.2 -->
 
 Those who have completely understood mindfulness of the body have completely understood freedom from death.”
 
+<!-- @segment an1.627:1.0 -->
+
+627
+
+<!-- @segment an1.627:1.1 -->
+
+“Mendicants, those who haven’t realized mindfulness of the body haven’t realized freedom from death.
+
+<!-- @segment an1.627:1.2 -->
+
 Those who have realized mindfulness of the body have realized freedom from death.”
+
+<!-- @segment an1.627:1.3 -->
 
 The thousand discourses of the Ones are complete.
 
+<!-- @segment an1.627:2.1 -->
+
 That is what the Buddha said.
 
+<!-- @segment an1.627:2.2 -->
+
 Satisfied, the mendicants approved what the Buddha said.
+
+<!-- @segment an1.627:2.4 -->
 
 The Book of the Ones is finished.

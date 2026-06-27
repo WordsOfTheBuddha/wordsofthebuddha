@@ -1,47 +1,87 @@
 ---
 slug: ud2.2
 source: suttacentral/bilara-data
+title: Rājasutta
 edition: ms
 granularity: segment
-title: Rājasutta
 ---
+
+<!-- @segment ud2.2:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud2.2:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment ud2.2:1.3 -->
 
 Tena kho pana samayena sambahulānaṁ bhikkhūnaṁ pacchābhattaṁ piṇḍapātapaṭikkantānaṁ upaṭṭhānasālāyaṁ sannisinnānaṁ sannipatitānaṁ ayamantarākathā udapādi:
 
+<!-- @segment ud2.2:1.4 -->
+
 “ko nu kho, āvuso, imesaṁ dvinnaṁ rājūnaṁ mahaddhanataro vā mahābhogataro vā mahākosataro vā mahāvijitataro vā mahāvāhanataro vā mahabbalataro vā mahiddhikataro vā mahānubhāvataro vā rājā vā māgadho seniyo bimbisāro, rājā vā pasenadi kosalo”ti?
+
+<!-- @segment ud2.2:1.5 -->
 
 Ayañcarahi tesaṁ bhikkhūnaṁ antarākathā hoti vippakatā.
 
+<!-- @segment ud2.2:2.1 -->
+
 Atha kho bhagavā sāyanhasamayaṁ paṭisallānā vuṭṭhito yenupaṭṭhānasālā tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
+
+<!-- @segment ud2.2:2.2 -->
 
 Nisajja kho bhagavā bhikkhū āmantesi:
 
+<!-- @segment ud2.2:2.3 -->
+
 “kāya nuttha, bhikkhave, etarahi kathāya sannisinnā sannipatitā, kā ca pana vo antarākathā vippakatā”ti?
+
+<!-- @segment ud2.2:3.1 -->
 
 “Idha, bhante, amhākaṁ pacchābhattaṁ piṇḍapātapaṭikkantānaṁ upaṭṭhānasālāyaṁ sannisinnānaṁ sannipatitānaṁ ayamantarākathā udapādi:
 
+<!-- @segment ud2.2:3.2 -->
+
 ‘ko nu kho, āvuso, imesaṁ dvinnaṁ rājūnaṁ mahaddhanataro vā mahābhogataro vā mahākosataro vā mahāvijitataro vā mahāvāhanataro vā mahabbalataro vā mahiddhikataro vā mahānubhāvataro vā rājā vā māgadho seniyo bimbisāro, rājā vā pasenadi kosalo’ti?
+
+<!-- @segment ud2.2:3.3 -->
 
 Ayaṁ kho no, bhante, antarākathā vippakatā, atha bhagavā anuppatto”ti.
 
+<!-- @segment ud2.2:4.1 -->
+
 “Na khvetaṁ, bhikkhave, tumhākaṁ patirūpaṁ kulaputtānaṁ saddhā agārasmā anagāriyaṁ pabbajitānaṁ yaṁ tumhe evarūpiṁ kathaṁ katheyyātha.
+
+<!-- @segment ud2.2:4.2 -->
 
 Sannipatitānaṁ vo, bhikkhave, dvayaṁ karaṇīyaṁ—
 
+<!-- @segment ud2.2:4.3 -->
+
 dhammī vā kathā ariyo vā tuṇhībhāvo”ti.
+
+<!-- @segment ud2.2:5.1 -->
 
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
 
+<!-- @segment ud2.2:6.1 -->
+
 “Yañca kāmasukhaṁ loke,
+
+<!-- @segment ud2.2:6.2 -->
 
 yañcidaṁ diviyaṁ sukhaṁ;
 
+<!-- @segment ud2.2:6.3 -->
+
 Taṇhakkhayasukhassete,
 
+<!-- @segment ud2.2:6.4 -->
+
 kalaṁ nāgghanti soḷasin”ti.
+
+<!-- @segment ud2.2:6.5 -->
 
 Dutiyaṁ.

@@ -1,47 +1,87 @@
 ---
 slug: an4.91
 source: suttacentral/bilara-data
+title: Asurasutta
 edition: ms
 granularity: segment
-title: Asurasutta
 ---
+
+<!-- @segment an4.91:1.1 -->
 
 “Cattārome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ.
 
+<!-- @segment an4.91:1.2 -->
+
 Katame cattāro?
+
+<!-- @segment an4.91:1.3 -->
 
 Asuro asuraparivāro,
 
+<!-- @segment an4.91:1.4 -->
+
 asuro devaparivāro,
+
+<!-- @segment an4.91:1.5 -->
 
 devo asuraparivāro,
 
+<!-- @segment an4.91:1.6 -->
+
 devo devaparivāro.
+
+<!-- @segment an4.91:2.1 -->
 
 Kathañca, bhikkhave, puggalo asuro hoti asuraparivāro?
 
+<!-- @segment an4.91:2.2 -->
+
 Idha, bhikkhave, ekacco puggalo dussīlo hoti pāpadhammo, parisāpissa hoti dussīlā pāpadhammā.
+
+<!-- @segment an4.91:2.3 -->
 
 Evaṁ kho, bhikkhave, puggalo asuro hoti asuraparivāro.
 
+<!-- @segment an4.91:3.1 -->
+
 Kathañca, bhikkhave, puggalo asuro hoti devaparivāro?
+
+<!-- @segment an4.91:3.2 -->
 
 Idha, bhikkhave, ekacco puggalo dussīlo hoti pāpadhammo, parisā ca khvassa hoti sīlavatī kalyāṇadhammā.
 
+<!-- @segment an4.91:3.3 -->
+
 Evaṁ kho, bhikkhave, puggalo asuro hoti devaparivāro.
+
+<!-- @segment an4.91:4.1 -->
 
 Kathañca, bhikkhave, puggalo devo hoti asuraparivāro?
 
+<!-- @segment an4.91:4.2 -->
+
 Idha, bhikkhave, ekacco puggalo sīlavā hoti kalyāṇadhammo, parisā ca khvassa hoti dussīlā pāpadhammā.
+
+<!-- @segment an4.91:4.3 -->
 
 Evaṁ kho, bhikkhave, puggalo devo hoti asuraparivāro.
 
+<!-- @segment an4.91:5.1 -->
+
 Kathañca, bhikkhave, puggalo devo hoti devaparivāro?
+
+<!-- @segment an4.91:5.2 -->
 
 Idha, bhikkhave, ekacco puggalo sīlavā hoti kalyāṇadhammo, parisāpissa hoti sīlavatī kalyāṇadhammā.
 
+<!-- @segment an4.91:5.3 -->
+
 Evaṁ kho, bhikkhave, puggalo devo hoti, devaparivāro.
 
+<!-- @segment an4.91:5.4 -->
+
 Ime kho, bhikkhave, cattāro puggalā santo saṁvijjamānā lokasmin”ti.
+
+<!-- @segment an4.91:5.5 -->
 
 Paṭhamaṁ.

@@ -6,26 +6,62 @@ license: CC0
 title: Few
 ---
 
+<!-- @segment sn3.6:1.1 -->
+
 At Sāvatthī.
+
+<!-- @segment sn3.6:1.2 -->
 
 Seated to one side, King Pasenadi said to the Buddha,
 
+<!-- @segment sn3.6:1.3 -->
+
 “Just now, sir, as I was in private retreat this thought came to mind:
+
+<!-- @segment sn3.6:1.4 -->
 
 ‘Few are the sentient beings in the world who, when they obtain luxury possessions, don’t grow indulgent and negligent, giving in to greed for sensual pleasures, and doing the wrong thing by others.
 
+<!-- @segment sn3.6:1.5 -->
+
 There are many more who, when they obtain luxury possessions, do grow indulgent and negligent, giving in to greed for sensual pleasures, and doing the wrong thing by others.’”
+
+<!-- @segment sn3.6:2.1 -->
 
 “That’s so true, great king! That’s so true!” said the Buddha. And he repeated the king’s statement, adding:
 
+<!-- @segment sn3.6:2.2 -->
+
+
+
+<!-- @segment sn3.6:2.3 -->
+
+
+
+<!-- @segment sn3.6:2.4 -->
+
+
+
+<!-- @segment sn3.6:3.1 -->
+
 “Full of desire for possessions and pleasures,
+
+<!-- @segment sn3.6:3.2 -->
 
 greedy, infatuated by sensual pleasures;
 
+<!-- @segment sn3.6:3.3 -->
+
 they don’t notice that they’ve gone too far,
+
+<!-- @segment sn3.6:3.4 -->
 
 like deer ensnared in a trap set out.
 
+<!-- @segment sn3.6:3.5 -->
+
 It’ll be bitter later on;
+
+<!-- @segment sn3.6:3.6 -->
 
 for the result will be bad for them.”

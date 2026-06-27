@@ -1,57 +1,107 @@
 ---
 slug: an4.181
 source: suttacentral/bilara-data
+title: Yodhājīvasutta
 edition: ms
 granularity: segment
-title: Yodhājīvasutta
 ---
+
+<!-- @segment an4.181:1.1 -->
 
 “Catūhi, bhikkhave, aṅgehi samannāgato yodhājīvo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati.
 
+<!-- @segment an4.181:1.2 -->
+
 Katamehi catūhi?
+
+<!-- @segment an4.181:1.3 -->
 
 Idha, bhikkhave, yodhājīvo ṭhānakusalo ca hoti, dūrepātī ca, akkhaṇavedhī ca, mahato ca kāyassa padāletā.
 
+<!-- @segment an4.181:1.4 -->
+
 Imehi kho, bhikkhave, catūhi aṅgehi samannāgato yodhājīvo rājāraho hoti rājabhoggo, rañño aṅganteva saṅkhaṁ gacchati.
+
+<!-- @segment an4.181:1.5 -->
 
 Evamevaṁ kho, bhikkhave, catūhi dhammehi samannāgato bhikkhu āhuneyyo hoti pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassa.
 
+<!-- @segment an4.181:1.6 -->
+
 Katamehi catūhi?
+
+<!-- @segment an4.181:1.7 -->
 
 Idha, bhikkhave, bhikkhu ṭhānakusalo ca hoti, dūrepātī ca, akkhaṇavedhī ca, mahato ca kāyassa padāletā.
 
+<!-- @segment an4.181:2.1 -->
+
 Kathañca, bhikkhave, bhikkhu ṭhānakusalo hoti?
+
+<!-- @segment an4.181:2.2 -->
 
 Idha, bhikkhave, bhikkhu sīlavā hoti …pe… samādāya sikkhati sikkhāpadesu.
 
+<!-- @segment an4.181:2.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu ṭhānakusalo hoti.
+
+<!-- @segment an4.181:3.1 -->
 
 Kathañca, bhikkhave, bhikkhu dūrepātī hoti?
 
+<!-- @segment an4.181:3.2 -->
+
 Idha, bhikkhave, bhikkhu yaṁ kiñci rūpaṁ atītānāgatapaccuppannaṁ ajjhattaṁ vā bahiddhā vā oḷārikaṁ vā sukhumaṁ vā hīnaṁ vā paṇītaṁ vā yaṁ dūre santike vā, sabbaṁ rūpaṁ ‘netaṁ mama, nesohamasmi, na meso attā’ti evametaṁ yathābhūtaṁ sammappaññāya passati.
+
+<!-- @segment an4.181:3.3 -->
 
 Yā kāci vedanā …
 
+<!-- @segment an4.181:3.4 -->
+
 yā kāci saññā …
+
+<!-- @segment an4.181:3.5 -->
 
 ye keci saṅkhārā …
 
+<!-- @segment an4.181:3.6 -->
+
 yaṁ kiñci viññāṇaṁ atītānāgatapaccuppannaṁ ajjhattaṁ vā bahiddhā vā oḷārikaṁ vā sukhumaṁ vā hīnaṁ vā paṇītaṁ vā yaṁ dūre santike vā, sabbaṁ viññāṇaṁ ‘netaṁ mama, nesohamasmi, na meso attā’ti evametaṁ yathābhūtaṁ sammappaññāya passati.
+
+<!-- @segment an4.181:3.7 -->
 
 Evaṁ kho, bhikkhave, bhikkhu dūrepātī hoti.
 
+<!-- @segment an4.181:4.1 -->
+
 Kathañca, bhikkhave, bhikkhu akkhaṇavedhī hoti?
+
+<!-- @segment an4.181:4.2 -->
 
 Idha, bhikkhave, bhikkhu ‘idaṁ dukkhan’ti yathābhūtaṁ pajānāti …pe… ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṁ pajānāti.
 
+<!-- @segment an4.181:4.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu akkhaṇavedhī hoti.
+
+<!-- @segment an4.181:5.1 -->
 
 Kathañca, bhikkhave, bhikkhu mahato kāyassa padāletā hoti?
 
+<!-- @segment an4.181:5.2 -->
+
 Idha, bhikkhave, bhikkhu mahantaṁ avijjākkhandhaṁ padāletā.
+
+<!-- @segment an4.181:5.3 -->
 
 Evaṁ kho, bhikkhave, bhikkhu mahato kāyassa padāletā hoti.
 
+<!-- @segment an4.181:5.4 -->
+
 Imehi kho, bhikkhave, catūhi dhammehi samannāgato bhikkhu āhuneyyo hoti …pe… anuttaraṁ puññakkhettaṁ lokassā”ti.
+
+<!-- @segment an4.181:5.5 -->
 
 Paṭhamaṁ.

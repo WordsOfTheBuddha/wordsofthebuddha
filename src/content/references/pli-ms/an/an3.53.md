@@ -1,49 +1,91 @@
 ---
 slug: an3.53
 source: suttacentral/bilara-data
+title: Aññatarabrāhmaṇasutta
 edition: ms
 granularity: segment
-title: Aññatarabrāhmaṇasutta
 ---
+
+<!-- @segment an3.53:1.1 -->
 
 Atha kho aññataro brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi …pe… ekamantaṁ nisinno kho so brāhmaṇo bhagavantaṁ etadavoca:
 
+<!-- @segment an3.53:1.2 -->
+
 “‘sandiṭṭhiko dhammo sandiṭṭhiko dhammo’ti, bho gotama, vuccati.
+
+<!-- @segment an3.53:1.3 -->
 
 Kittāvatā nu kho, bho gotama, sandiṭṭhiko dhammo hoti akāliko ehipassiko opaneyyiko paccattaṁ veditabbo viññūhī”ti?
 
+<!-- @segment an3.53:2.1 -->
+
 “Ratto kho, brāhmaṇa, rāgena abhibhūto pariyādinnacitto attabyābādhāyapi ceteti, parabyābādhāyapi ceteti, ubhayabyābādhāyapi ceteti, cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
+
+<!-- @segment an3.53:2.2 -->
 
 Rāge pahīne nevattabyābādhāyapi ceteti, na parabyābādhāyapi ceteti, na ubhayabyābādhāyapi ceteti, na cetasikaṁ dukkhaṁ domanassaṁ paṭisaṁvedeti.
 
+<!-- @segment an3.53:2.3 -->
+
 Ratto kho …pe… kāyena duccaritaṁ carati, vācāya duccaritaṁ carati, manasā duccaritaṁ carati.
+
+<!-- @segment an3.53:2.4 -->
 
 Rāge pahīne neva kāyena duccaritaṁ carati, na vācāya duccaritaṁ carati, na manasā duccaritaṁ carati.
 
+<!-- @segment an3.53:2.5 -->
+
 Ratto kho …pe… attatthampi yathābhūtaṁ nappajānāti, paratthampi yathābhūtaṁ nappajānāti, ubhayatthampi yathābhūtaṁ nappajānāti.
+
+<!-- @segment an3.53:2.6 -->
 
 Rāge pahīne attatthampi yathābhūtaṁ pajānāti, paratthampi yathābhūtaṁ pajānāti, ubhayatthampi yathābhūtaṁ pajānāti.
 
+<!-- @segment an3.53:2.7 -->
+
 Evampi kho, brāhmaṇa, sandiṭṭhiko dhammo hoti …pe….
+
+<!-- @segment an3.53:3.1 -->
 
 Duṭṭho kho, brāhmaṇa, dosena abhibhūto pariyādinnacitto attabyābādhāyapi ceteti, parabyābādhāyapi ceteti, ubhayabyābādhāyapi ceteti, cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
 
+<!-- @segment an3.53:3.2 -->
+
 Dose pahīne nevattabyābādhāyapi ceteti, na parabyābādhāyapi ceteti, na ubhayabyābādhāyapi ceteti, na cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
+
+<!-- @segment an3.53:3.3 -->
 
 Evampi kho, brāhmaṇa, sandiṭṭhiko dhammo hoti …pe….
 
+<!-- @segment an3.53:4.1 -->
+
 Mūḷho kho, brāhmaṇa, mohena abhibhūto pariyādinnacitto attabyābādhāyapi ceteti, parabyābādhāyapi ceteti, ubhayabyābādhāyapi ceteti, cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
+
+<!-- @segment an3.53:4.2 -->
 
 Mohe pahīne nevattabyābādhāyapi ceteti, na parabyābādhāyapi ceteti, na ubhayabyābādhāyapi ceteti, na cetasikaṁ dukkhaṁ domanassaṁ paṭisaṁvedeti.
 
+<!-- @segment an3.53:4.3 -->
+
 Evaṁ kho, brāhmaṇa, sandiṭṭhiko dhammo hoti akāliko ehipassiko opaneyyiko paccattaṁ veditabbo viññūhī”ti.
+
+<!-- @segment an3.53:5.1 -->
 
 “Abhikkantaṁ, bho gotama, abhikkantaṁ, bho gotama.
 
+<!-- @segment an3.53:5.2 -->
+
 Seyyathāpi, bho gotama, nikkujjitaṁ vā ukkujjeyya, paṭicchannaṁ vā vivareyya, mūḷhassa vā maggaṁ ācikkheyya, andhakāre vā telapajjotaṁ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṁ bhotā gotamena anekapariyāyena dhammo pakāsito.
+
+<!-- @segment an3.53:5.3 -->
 
 Esāhaṁ bhavantaṁ gotamaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca.
 
+<!-- @segment an3.53:5.4 -->
+
 Upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
+
+<!-- @segment an3.53:5.5 -->
 
 Tatiyaṁ.

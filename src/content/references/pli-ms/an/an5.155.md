@@ -1,65 +1,123 @@
 ---
 slug: an5.155
 source: suttacentral/bilara-data
+title: Dutiyasaddhammasammosasutta
 edition: ms
 granularity: segment
-title: Dutiyasaddhammasammosasutta
 ---
+
+<!-- @segment an5.155:1.1 -->
 
 “Pañcime, bhikkhave, dhammā saddhammassa sammosāya antaradhānāya saṁvattanti.
 
+<!-- @segment an5.155:1.2 -->
+
 Katame pañca?
+
+<!-- @segment an5.155:1.3 -->
 
 Idha, bhikkhave, bhikkhū dhammaṁ na pariyāpuṇanti—
 
+<!-- @segment an5.155:1.4 -->
+
 suttaṁ, geyyaṁ, veyyākaraṇaṁ, gāthaṁ, udānaṁ, itivuttakaṁ, jātakaṁ, abbhutadhammaṁ, vedallaṁ.
+
+<!-- @segment an5.155:1.5 -->
 
 Ayaṁ, bhikkhave, paṭhamo dhammo saddhammassa sammosāya antaradhānāya saṁvattati.
 
+<!-- @segment an5.155:2.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ na vitthārena paresaṁ desenti.
+
+<!-- @segment an5.155:2.2 -->
 
 Ayaṁ, bhikkhave, dutiyo dhammo saddhammassa sammosāya antaradhānāya saṁvattati.
 
+<!-- @segment an5.155:3.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ na vitthārena paraṁ vācenti.
+
+<!-- @segment an5.155:3.2 -->
 
 Ayaṁ, bhikkhave, tatiyo dhammo saddhammassa sammosāya antaradhānāya saṁvattati.
 
+<!-- @segment an5.155:4.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ na vitthārena sajjhāyaṁ karonti.
+
+<!-- @segment an5.155:4.2 -->
 
 Ayaṁ, bhikkhave, catuttho dhammo saddhammassa sammosāya antaradhānāya saṁvattati.
 
+<!-- @segment an5.155:5.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ na cetasā anuvitakkenti anuvicārenti manasānupekkhanti.
+
+<!-- @segment an5.155:5.2 -->
 
 Ayaṁ, bhikkhave, pañcamo dhammo saddhammassa sammosāya antaradhānāya saṁvattati.
 
+<!-- @segment an5.155:5.3 -->
+
 Ime kho, bhikkhave, pañca dhammā saddhammassa sammosāya antaradhānāya saṁvattanti.
+
+<!-- @segment an5.155:6.1 -->
 
 Pañcime, bhikkhave, dhammā saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattanti.
 
+<!-- @segment an5.155:6.2 -->
+
 Katame pañca?
+
+<!-- @segment an5.155:6.3 -->
 
 Idha, bhikkhave, bhikkhū dhammaṁ pariyāpuṇanti—
 
+<!-- @segment an5.155:6.4 -->
+
 suttaṁ, geyyaṁ, veyyākaraṇaṁ, gāthaṁ, udānaṁ, itivuttakaṁ, jātakaṁ, abbhutadhammaṁ, vedallaṁ.
+
+<!-- @segment an5.155:6.5 -->
 
 Ayaṁ, bhikkhave, paṭhamo dhammo saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattati.
 
+<!-- @segment an5.155:7.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ vitthārena paresaṁ desenti.
+
+<!-- @segment an5.155:7.2 -->
 
 Ayaṁ, bhikkhave, dutiyo dhammo saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattati.
 
+<!-- @segment an5.155:8.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ vitthārena paraṁ vācenti.
+
+<!-- @segment an5.155:8.2 -->
 
 Ayaṁ, bhikkhave, tatiyo dhammo saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattati.
 
+<!-- @segment an5.155:9.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ vitthārena sajjhāyaṁ karonti.
+
+<!-- @segment an5.155:9.2 -->
 
 Ayaṁ, bhikkhave, catuttho dhammo saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattati.
 
+<!-- @segment an5.155:10.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhū yathāsutaṁ yathāpariyattaṁ dhammaṁ cetasā anuvitakkenti anuvicārenti manasānupekkhanti.
+
+<!-- @segment an5.155:10.2 -->
 
 Ayaṁ, bhikkhave, pañcamo dhammo saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattati.
 
+<!-- @segment an5.155:10.3 -->
+
 Ime kho, bhikkhave, pañca dhammā saddhammassa ṭhitiyā asammosāya anantaradhānāya saṁvattantī”ti.
+
+<!-- @segment an5.155:10.4 -->
 
 Pañcamaṁ.

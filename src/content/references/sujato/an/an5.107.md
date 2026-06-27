@@ -6,10 +6,18 @@ license: CC0
 title: Ethics
 ---
 
+<!-- @segment an5.107:1.1 -->
+
 “Mendicants, a mendicant with five qualities is worthy of offerings dedicated to the gods, worthy of hospitality, worthy of a religious donation, worthy of veneration with cupped palms, and is the supreme field of merit for the world.
+
+<!-- @segment an5.107:2.1 -->
 
 What five?
 
+<!-- @segment an5.107:2.2 -->
+
 It’s when a mendicant is accomplished in ethics, immersion, wisdom, freedom, and the knowledge and vision of freedom.
+
+<!-- @segment an5.107:3.1 -->
 
 A mendicant with these five qualities is worthy of offerings dedicated to the gods, worthy of hospitality, worthy of a religious donation, worthy of veneration with cupped palms, and is the supreme field of merit for the world.”

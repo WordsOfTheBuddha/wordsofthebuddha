@@ -1,55 +1,103 @@
 ---
 slug: an6.49
 source: suttacentral/bilara-data
+title: Khemasutta
 edition: ms
 granularity: segment
-title: Khemasutta
 ---
+
+<!-- @segment an6.49:1.1 -->
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
 
+<!-- @segment an6.49:1.2 -->
+
 Tena kho pana samayena āyasmā ca khemo āyasmā ca sumano sāvatthiyaṁ viharanti andhavanasmiṁ.
+
+<!-- @segment an6.49:1.3 -->
 
 Atha kho āyasmā ca khemo āyasmā ca sumano yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdiṁsu. Ekamantaṁ nisinno kho āyasmā khemo bhagavantaṁ etadavoca:
 
+<!-- @segment an6.49:2.1 -->
+
 “Yo so, bhante, bhikkhu arahaṁ khīṇāsavo vusitavā katakaraṇīyo ohitabhāro anuppattasadattho parikkhīṇabhavasaṁyojano sammadaññāvimutto tassa na evaṁ hoti:
+
+<!-- @segment an6.49:2.2 -->
 
 ‘atthi me seyyoti vā atthi me sadisoti vā atthi me hīnoti vā’”ti.
 
+<!-- @segment an6.49:2.3 -->
+
 Idamavocāyasmā khemo.
 
+<!-- @segment an6.49:2.4 -->
+
 Samanuñño satthā ahosi.
+
+<!-- @segment an6.49:2.5 -->
 
 Atha kho āyasmā khemo “samanuñño me satthā”ti uṭṭhāyāsanā bhagavantaṁ abhivādetvā padakkhiṇaṁ katvā pakkāmi.
 
+<!-- @segment an6.49:3.1 -->
+
 Atha kho āyasmā sumano acirapakkante āyasmante kheme bhagavantaṁ etadavoca:
+
+<!-- @segment an6.49:3.2 -->
 
 “yo so, bhante, bhikkhu arahaṁ khīṇāsavo vusitavā katakaraṇīyo ohitabhāro anuppattasadattho parikkhīṇabhavasaṁyojano sammadaññāvimutto tassa na evaṁ hoti:
 
+<!-- @segment an6.49:3.3 -->
+
 ‘natthi me seyyoti vā natthi me sadisoti vā natthi me hīnoti vā’”ti.
+
+<!-- @segment an6.49:3.4 -->
 
 Idamavocāyasmā sumano.
 
+<!-- @segment an6.49:3.5 -->
+
 Samanuñño satthā ahosi.
+
+<!-- @segment an6.49:3.6 -->
 
 Atha kho āyasmā sumano “samanuñño me satthā”ti uṭṭhāyāsanā bhagavantaṁ abhivādetvā padakkhiṇaṁ katvā pakkāmi.
 
+<!-- @segment an6.49:4.1 -->
+
 Atha kho bhagavā acirapakkantesu āyasmante ca kheme āyasmante ca sumane bhikkhū āmantesi:
+
+<!-- @segment an6.49:4.2 -->
 
 “evaṁ kho, bhikkhave, kulaputtā aññaṁ byākaronti.
 
+<!-- @segment an6.49:4.3 -->
+
 Attho ca vutto attā ca anupanīto.
+
+<!-- @segment an6.49:4.4 -->
 
 Atha ca pana idhekacce moghapurisā hasamānakā maññe aññaṁ byākaronti.
 
+<!-- @segment an6.49:4.5 -->
+
 Te pacchā vighātaṁ āpajjantīti.
+
+<!-- @segment an6.49:5.1 -->
 
 Na ussesu na omesu,
 
+<!-- @segment an6.49:5.2 -->
+
 Samatte nopanīyare;
+
+<!-- @segment an6.49:5.3 -->
 
 Khīṇā jāti vusitaṁ brahmacariyaṁ,
 
+<!-- @segment an6.49:5.4 -->
+
 Caranti saṁyojanavippamuttā”ti.
+
+<!-- @segment an6.49:5.5 -->
 
 Sattamaṁ.

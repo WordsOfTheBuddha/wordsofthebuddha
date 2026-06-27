@@ -1,123 +1,239 @@
 ---
 slug: an6.26
 source: suttacentral/bilara-data
+title: Mahākaccānasutta
 edition: ms
 granularity: segment
-title: Mahākaccānasutta
 ---
+
+<!-- @segment an6.26:1.1 -->
 
 Tatra kho āyasmā mahākaccāno bhikkhū āmantesi:
 
+<!-- @segment an6.26:1.2 -->
+
 “āvuso bhikkhave”ti.
+
+<!-- @segment an6.26:1.3 -->
 
 “Āvuso”ti kho te bhikkhū āyasmato mahākaccānassa paccassosuṁ.
 
+<!-- @segment an6.26:1.4 -->
+
 Āyasmā mahākaccāno etadavoca:
+
+<!-- @segment an6.26:1.5 -->
 
 “acchariyaṁ, āvuso;
 
+<!-- @segment an6.26:1.6 -->
+
 abbhutaṁ, āvuso.
+
+<!-- @segment an6.26:1.7 -->
 
 Yāvañcidaṁ tena bhagavatā jānatā passatā arahatā sammāsambuddhena sambādhe okāsādhigamo anubuddho sattānaṁ visuddhiyā sokaparidevānaṁ samatikkamāya dukkhadomanassānaṁ atthaṅgamāya ñāyassa adhigamāya nibbānassa sacchikiriyāya, yadidaṁ cha anussatiṭṭhānāni.
 
+<!-- @segment an6.26:2.1 -->
+
 Katamāni cha?
+
+<!-- @segment an6.26:2.2 -->
 
 Idhāvuso, ariyasāvako tathāgataṁ anussarati:
 
+<!-- @segment an6.26:2.3 -->
+
 ‘itipi so bhagavā …pe… satthā devamanussānaṁ buddho bhagavā’ti.
+
+<!-- @segment an6.26:2.4 -->
 
 Yasmiṁ, āvuso, samaye ariyasāvako tathāgataṁ anussarati nevassa tasmiṁ samaye rāgapariyuṭṭhitaṁ cittaṁ hoti, na dosapariyuṭṭhitaṁ cittaṁ hoti, na mohapariyuṭṭhitaṁ cittaṁ hoti;
 
+<!-- @segment an6.26:2.5 -->
+
 ujugatamevassa tasmiṁ samaye cittaṁ hoti, nikkhantaṁ muttaṁ vuṭṭhitaṁ gedhamhā.
+
+<!-- @segment an6.26:2.6 -->
 
 ‘Gedho’ti kho, āvuso, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
 
+<!-- @segment an6.26:2.7 -->
+
 Sa kho so, āvuso, ariyasāvako sabbaso ākāsasamena cetasā viharati vipulena mahaggatena appamāṇena averena abyāpajjena.
 
+<!-- @segment an6.26:2.8 -->
+
 Idampi kho, āvuso, ārammaṇaṁ karitvā evam’idhekacce sattā visuddhidhammā bhavanti.
+
+<!-- @segment an6.26:3.1 -->
 
 Puna caparaṁ, āvuso, ariyasāvako dhammaṁ anussarati:
 
+<!-- @segment an6.26:3.2 -->
+
 ‘svākkhāto bhagavatā dhammo …pe… paccattaṁ veditabbo viññūhī’ti.
+
+<!-- @segment an6.26:3.3 -->
 
 Yasmiṁ, āvuso, samaye ariyasāvako dhammaṁ anussarati nevassa tasmiṁ samaye rāgapariyuṭṭhitaṁ cittaṁ hoti, na dosapariyuṭṭhitaṁ cittaṁ hoti, na mohapariyuṭṭhitaṁ cittaṁ hoti;
 
+<!-- @segment an6.26:3.4 -->
+
 ujugatamevassa tasmiṁ samaye cittaṁ hoti, nikkhantaṁ muttaṁ vuṭṭhitaṁ gedhamhā.
+
+<!-- @segment an6.26:3.5 -->
 
 ‘Gedho’ti kho, āvuso, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
 
+<!-- @segment an6.26:3.6 -->
+
 Sa kho so, āvuso, ariyasāvako sabbaso ākāsasamena cetasā viharati vipulena mahaggatena appamāṇena averena abyāpajjena.
 
+<!-- @segment an6.26:3.7 -->
+
 Idampi kho, āvuso, ārammaṇaṁ karitvā evam’idhekacce sattā visuddhidhammā bhavanti.
+
+<!-- @segment an6.26:4.1 -->
 
 Puna caparaṁ, āvuso, ariyasāvako saṅghaṁ anussarati:
 
+<!-- @segment an6.26:4.2 -->
+
 ‘suppaṭipanno bhagavato sāvakasaṅgho …pe… anuttaraṁ puññakkhettaṁ lokassā’ti.
+
+<!-- @segment an6.26:4.3 -->
 
 Yasmiṁ, āvuso, samaye ariyasāvako saṅghaṁ anussarati nevassa tasmiṁ samaye rāgapariyuṭṭhitaṁ cittaṁ hoti, na dosapariyuṭṭhitaṁ cittaṁ hoti, na mohapariyuṭṭhitaṁ cittaṁ hoti;
 
+<!-- @segment an6.26:4.4 -->
+
 ujugatamevassa tasmiṁ samaye cittaṁ hoti, nikkhantaṁ muttaṁ vuṭṭhitaṁ gedhamhā.
+
+<!-- @segment an6.26:4.5 -->
 
 ‘Gedho’ti kho, āvuso, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
 
+<!-- @segment an6.26:4.6 -->
+
 Sa kho so, āvuso, ariyasāvako sabbaso ākāsasamena cetasā viharati vipulena mahaggatena appamāṇena averena abyāpajjena.
 
+<!-- @segment an6.26:4.7 -->
+
 Idampi kho, āvuso, ārammaṇaṁ karitvā evam’idhekacce sattā visuddhidhammā bhavanti.
+
+<!-- @segment an6.26:5.1 -->
 
 Puna caparaṁ, āvuso, ariyasāvako attano sīlāni anussarati akhaṇḍāni …pe… samādhisaṁvattanikāni.
 
+<!-- @segment an6.26:5.2 -->
+
 Yasmiṁ, āvuso, samaye ariyasāvako attano sīlaṁ anussarati nevassa tasmiṁ samaye rāgapariyuṭṭhitaṁ cittaṁ hoti, na dosapariyuṭṭhitaṁ cittaṁ hoti, na mohapariyuṭṭhitaṁ cittaṁ hoti;
+
+<!-- @segment an6.26:5.3 -->
 
 ujugatamevassa tasmiṁ samaye cittaṁ hoti, nikkhantaṁ muttaṁ vuṭṭhitaṁ gedhamhā.
 
+<!-- @segment an6.26:5.4 -->
+
 ‘Gedho’ti kho, āvuso, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
+
+<!-- @segment an6.26:5.5 -->
 
 Sa kho so, āvuso, ariyasāvako sabbaso ākāsasamena cetasā viharati vipulena mahaggatena appamāṇena averena abyāpajjena.
 
+<!-- @segment an6.26:5.6 -->
+
 Idampi kho, āvuso, ārammaṇaṁ karitvā evam’idhekacce sattā visuddhidhammā bhavanti.
+
+<!-- @segment an6.26:6.1 -->
 
 Puna caparaṁ, āvuso, ariyasāvako attano cāgaṁ anussarati:
 
+<!-- @segment an6.26:6.2 -->
+
 ‘lābhā vata me, suladdhaṁ vata me …pe…
+
+<!-- @segment an6.26:6.3 -->
 
 yācayogo dānasaṁvibhāgarato’ti.
 
+<!-- @segment an6.26:6.4 -->
+
 Yasmiṁ, āvuso, samaye ariyasāvako attano cāgaṁ anussarati nevassa tasmiṁ samaye rāgapariyuṭṭhitaṁ cittaṁ hoti, na dosapariyuṭṭhitaṁ cittaṁ hoti, na mohapariyuṭṭhitaṁ cittaṁ hoti;
+
+<!-- @segment an6.26:6.5 -->
 
 ujugatamevassa tasmiṁ samaye cittaṁ hoti, nikkhantaṁ muttaṁ vuṭṭhitaṁ gedhamhā.
 
+<!-- @segment an6.26:6.6 -->
+
 ‘Gedho’ti kho, āvuso, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
+
+<!-- @segment an6.26:6.7 -->
 
 Sa kho so, āvuso, ariyasāvako sabbaso ākāsasamena cetasā viharati vipulena mahaggatena appamāṇena averena abyāpajjena.
 
+<!-- @segment an6.26:6.8 -->
+
 Idampi kho, āvuso, ārammaṇaṁ karitvā evam’idhekacce sattā visuddhidhammā bhavanti.
+
+<!-- @segment an6.26:7.1 -->
 
 Puna caparaṁ, āvuso, ariyasāvako devatā anussarati:
 
+<!-- @segment an6.26:7.2 -->
+
 ‘santi devā cātumahārājikā, santi devā …pe… tatuttari.
+
+<!-- @segment an6.26:7.3 -->
 
 Yathārūpāya saddhāya samannāgatā tā devatā ito cutā tattha upapannā; mayhampi tathārūpā saddhā saṁvijjati.
 
+<!-- @segment an6.26:7.4 -->
+
 Yathārūpena sīlena …
+
+<!-- @segment an6.26:7.5 -->
 
 sutena …
 
+<!-- @segment an6.26:7.6 -->
+
 cāgena …
+
+<!-- @segment an6.26:7.7 -->
 
 paññāya samannāgatā tā devatā ito cutā tattha upapannā; mayhampi tathārūpā paññā saṁvijjatī’ti.
 
+<!-- @segment an6.26:7.8 -->
+
 Yasmiṁ, āvuso, samaye ariyasāvako attano ca tāsañca devatānaṁ saddhañca sīlañca sutañca cāgañca paññañca anussarati nevassa tasmiṁ samaye rāgapariyuṭṭhitaṁ cittaṁ hoti, na dosapariyuṭṭhitaṁ cittaṁ hoti, na mohapariyuṭṭhitaṁ cittaṁ hoti;
+
+<!-- @segment an6.26:7.9 -->
 
 ujugatamevassa tasmiṁ samaye cittaṁ hoti, nikkhantaṁ muttaṁ vuṭṭhitaṁ gedhamhā.
 
+<!-- @segment an6.26:7.10 -->
+
 ‘Gedho’ti kho, āvuso, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
+
+<!-- @segment an6.26:7.11 -->
 
 Sa kho so, āvuso, ariyasāvako sabbaso ākāsasamena cetasā viharati vipulena mahaggatena appamāṇena averena abyāpajjena.
 
+<!-- @segment an6.26:7.12 -->
+
 Idampi kho, āvuso, ārammaṇaṁ karitvā evam’idhekacce sattā visuddhidhammā bhavanti.
+
+<!-- @segment an6.26:8.1 -->
 
 Acchariyaṁ, āvuso, abbhutaṁ, āvuso.
 
+<!-- @segment an6.26:8.2 -->
+
 Yāvañcidaṁ tena bhagavatā jānatā passatā arahatā sammāsambuddhena sambādhe okāsādhigamo anubuddho sattānaṁ visuddhiyā sokaparidevānaṁ samatikkamāya dukkhadomanassānaṁ atthaṅgamāya ñāyassa adhigamāya nibbānassa sacchikiriyāya, yadidaṁ cha anussatiṭṭhānānī”ti.
+
+<!-- @segment an6.26:8.3 -->
 
 Chaṭṭhaṁ.

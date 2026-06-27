@@ -1,99 +1,191 @@
 ---
 slug: an4.21
 source: suttacentral/bilara-data
+title: Paṭhamauruvelasutta
 edition: ms
 granularity: segment
-title: Paṭhamauruvelasutta
 ---
+
+<!-- @segment an4.21:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment an4.21:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment an4.21:1.3 -->
 
 Tatra kho bhagavā bhikkhū āmantesi:
 
+<!-- @segment an4.21:1.4 -->
+
 “bhikkhavo”ti.
+
+<!-- @segment an4.21:1.5 -->
 
 “Bhadante”ti te bhikkhū bhagavato paccassosuṁ.
 
+<!-- @segment an4.21:1.6 -->
+
 Bhagavā etadavoca:
+
+<!-- @segment an4.21:2.1 -->
 
 “Ekamidāhaṁ, bhikkhave, samayaṁ uruvelāyaṁ viharāmi najjā nerañjarāya tīre ajapālanigrodhe paṭhamābhisambuddho.
 
+<!-- @segment an4.21:2.2 -->
+
 Tassa mayhaṁ, bhikkhave, rahogatassa paṭisallīnassa evaṁ cetaso parivitakko udapādi:
+
+<!-- @segment an4.21:2.3 -->
 
 ‘dukkhaṁ kho agāravo viharati appatisso.
 
+<!-- @segment an4.21:2.4 -->
+
 Kiṁ nu kho ahaṁ samaṇaṁ vā brāhmaṇaṁ vā sakkatvā garuṁ katvā upanissāya vihareyyan’ti?
 
+<!-- @segment an4.21:3.1 -->
+
 Tassa mayhaṁ, bhikkhave, etadahosi:
+
+<!-- @segment an4.21:3.2 -->
 
 ‘aparipūrassa kho ahaṁ sīlakkhandhassa pāripūriyā aññaṁ samaṇaṁ vā brāhmaṇaṁ vā sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
 
+<!-- @segment an4.21:3.3 -->
+
 Na kho panāhaṁ passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya aññaṁ samaṇaṁ vā brāhmaṇaṁ vā attanā sīlasampannataraṁ, yamahaṁ sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
+
+<!-- @segment an4.21:4.1 -->
 
 Aparipūrassa kho ahaṁ samādhikkhandhassa pāripūriyā aññaṁ samaṇaṁ vā brāhmaṇaṁ vā sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
 
+<!-- @segment an4.21:4.2 -->
+
 Na kho panāhaṁ passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya aññaṁ samaṇaṁ vā brāhmaṇaṁ vā attanā samādhisampannataraṁ, yamahaṁ sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
+
+<!-- @segment an4.21:5.1 -->
 
 Aparipūrassa kho ahaṁ paññākkhandhassa pāripūriyā aññaṁ samaṇaṁ vā brāhmaṇaṁ vā sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
 
+<!-- @segment an4.21:5.2 -->
+
 Na kho panāhaṁ passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya aññaṁ samaṇaṁ vā brāhmaṇaṁ vā attanā paññāsampannataraṁ, yamahaṁ sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
+
+<!-- @segment an4.21:6.1 -->
 
 Aparipūrassa kho ahaṁ vimuttikkhandhassa pāripūriyā aññaṁ samaṇaṁ vā brāhmaṇaṁ vā sakkatvā garuṁ katvā upanissāya vihareyyaṁ.
 
+<!-- @segment an4.21:6.2 -->
+
 Na kho panāhaṁ passāmi sadevake loke samārake sabrahmake sassamaṇabrāhmaṇiyā pajāya sadevamanussāya aññaṁ samaṇaṁ vā brāhmaṇaṁ vā attanā vimuttisampannataraṁ, yamahaṁ sakkatvā garuṁ katvā upanissāya vihareyyan’ti.
+
+<!-- @segment an4.21:7.1 -->
 
 Tassa mayhaṁ, bhikkhave, etadahosi:
 
+<!-- @segment an4.21:7.2 -->
+
 ‘yannūnāhaṁ yvāyaṁ dhammo mayā abhisambuddho tameva dhammaṁ sakkatvā garuṁ katvā upanissāya vihareyyan’ti.
+
+<!-- @segment an4.21:8.1 -->
 
 Atha kho, bhikkhave, brahmā sahampati mama cetasā cetoparivitakkamaññāya—seyyathāpi nāma balavā puriso samiñjitaṁ vā bāhaṁ pasāreyya, pasāritaṁ vā bāhaṁ samiñjeyya; evamevaṁ—brahmaloke antarahito mama purato pāturahosi.
 
+<!-- @segment an4.21:8.2 -->
+
 Atha kho, bhikkhave, brahmā sahampati ekaṁsaṁ uttarāsaṅgaṁ karitvā dakkhiṇaṁ jāṇumaṇḍalaṁ pathaviyaṁ nihantvā yenāhaṁ tenañjaliṁ paṇāmetvā maṁ etadavoca:
+
+<!-- @segment an4.21:8.3 -->
 
 ‘evametaṁ, bhagavā, evametaṁ, sugata.
 
+<!-- @segment an4.21:8.4 -->
+
 Yepi te, bhante, ahesuṁ atītamaddhānaṁ arahanto sammāsambuddhā tepi bhagavanto dhammaṁyeva sakkatvā garuṁ katvā upanissāya vihariṁsu;
+
+<!-- @segment an4.21:8.5 -->
 
 yepi te, bhante, bhavissanti anāgatamaddhānaṁ arahanto sammāsambuddhā tepi bhagavanto dhammaṁyeva sakkatvā garuṁ katvā upanissāya viharissanti;
 
+<!-- @segment an4.21:8.6 -->
+
 bhagavāpi, bhante, etarahi arahaṁ sammāsambuddho dhammaṁyeva sakkatvā garuṁ katvā upanissāya viharatū’ti.
+
+<!-- @segment an4.21:8.7 -->
 
 Idamavoca brahmā sahampati.
 
+<!-- @segment an4.21:8.8 -->
+
 Idaṁ vatvā athāparaṁ etadavoca:
+
+<!-- @segment an4.21:9.1 -->
 
 ‘Ye ca atītā sambuddhā,
 
+<!-- @segment an4.21:9.2 -->
+
 ye ca buddhā anāgatā;
+
+<!-- @segment an4.21:9.3 -->
 
 Yo cetarahi sambuddho,
 
+<!-- @segment an4.21:9.4 -->
+
 bahūnaṁ sokanāsano.
+
+<!-- @segment an4.21:10.1 -->
 
 Sabbe saddhammagaruno,
 
+<!-- @segment an4.21:10.2 -->
+
 vihaṁsu viharanti ca;
+
+<!-- @segment an4.21:10.3 -->
 
 Athopi viharissanti,
 
+<!-- @segment an4.21:10.4 -->
+
 esā buddhāna dhammatā.
+
+<!-- @segment an4.21:11.1 -->
 
 Tasmā hi attakāmena,
 
+<!-- @segment an4.21:11.2 -->
+
 mahattamabhikaṅkhatā;
+
+<!-- @segment an4.21:11.3 -->
 
 Saddhammo garukātabbo,
 
+<!-- @segment an4.21:11.4 -->
+
 saraṁ buddhāna sāsanan’ti.
+
+<!-- @segment an4.21:12.1 -->
 
 Idamavoca, bhikkhave, brahmā sahampati.
 
+<!-- @segment an4.21:12.2 -->
+
 Idaṁ vatvā maṁ abhivādetvā padakkhiṇaṁ katvā tatthevantaradhāyi.
+
+<!-- @segment an4.21:12.3 -->
 
 Atha khvāhaṁ, bhikkhave, brahmuno ca ajjhesanaṁ viditvā attano ca patirūpaṁ yvāyaṁ dhammo mayā abhisambuddho tameva dhammaṁ sakkatvā garuṁ katvā upanissāya vihāsiṁ.
 
+<!-- @segment an4.21:12.4 -->
+
 Yato ca kho, bhikkhave, saṅghopi mahattena samannāgato, atha me saṅghepi gāravo”ti.
+
+<!-- @segment an4.21:12.5 -->
 
 Paṭhamaṁ.

@@ -6,126 +6,298 @@ license: CC0
 title: Cessation
 ---
 
+<!-- @segment an5.166:1.1 -->
+
 There Venerable Sāriputta addressed the mendicants:
+
+<!-- @segment an5.166:1.2 -->
 
 “Reverends, take a mendicant who is accomplished in ethics, immersion, and wisdom. They might enter into and emerge from the cessation of perception and feeling.
 
+<!-- @segment an5.166:1.3 -->
+
 That is possible.
+
+<!-- @segment an5.166:1.4 -->
 
 If they don’t reach enlightenment in this very life, then, surpassing the company of gods that consume edible food, they’re reborn in a certain host of mind-made gods. There they might enter into and emerge from the cessation of perception and feeling.
 
+<!-- @segment an5.166:1.5 -->
+
 That is possible.”
+
+<!-- @segment an5.166:2.1 -->
 
 When he said this, Venerable Udāyī said to him,
 
+<!-- @segment an5.166:2.2 -->
+
 “This is not possible, Reverend Sāriputta, it cannot happen!”
+
+<!-- @segment an5.166:2.3 -->
+
+
+
+<!-- @segment an5.166:3.1 -->
 
 But for a second … and a third time Sāriputta repeated his statement.
 
+<!-- @segment an5.166:3.2 -->
+
+
+
+<!-- @segment an5.166:3.3 -->
+
+
+
+<!-- @segment an5.166:3.4 -->
+
+
+
+<!-- @segment an5.166:3.5 -->
+
+
+
+<!-- @segment an5.166:4.1 -->
+
 And for a third time, Udāyī said to him,
+
+<!-- @segment an5.166:4.2 -->
 
 “This is not possible, Reverend Sāriputta, it cannot happen!”
 
+<!-- @segment an5.166:4.3 -->
+
+
+
+<!-- @segment an5.166:5.1 -->
+
 Then Venerable Sāriputta thought,
+
+<!-- @segment an5.166:5.2 -->
 
 “Venerable Udāyī disagrees with me three times, and not one mendicant agrees with me.
 
+<!-- @segment an5.166:5.3 -->
+
 Why don’t I go to see the Buddha?”
+
+<!-- @segment an5.166:5.4 -->
 
 Then Sāriputta went up to the Buddha, bowed, sat down to one side,
 
+<!-- @segment an5.166:5.5 -->
+
 and said to the mendicants:
+
+<!-- @segment an5.166:5.6 -->
 
 “Reverends, take a mendicant who is accomplished in ethics, immersion, and wisdom. They might enter into and emerge from the cessation of perception and feeling.
 
+<!-- @segment an5.166:5.7 -->
+
 There is such a possibility.
+
+<!-- @segment an5.166:5.8 -->
 
 If they don’t reach enlightenment in this very life, they’re reborn in the company of a certain host of mind-made gods, who surpass the gods that consume edible food. There they might enter into and emerge from the cessation of perception and feeling.
 
+<!-- @segment an5.166:5.9 -->
+
 That is possible.”
+
+<!-- @segment an5.166:6.1 -->
 
 When he said this, Udāyī said to him,
 
+<!-- @segment an5.166:6.2 -->
+
 “This is not possible, Reverend Sāriputta, it cannot happen!”
+
+<!-- @segment an5.166:6.3 -->
+
+
+
+<!-- @segment an5.166:7.1 -->
 
 But for a second … and a third time Sāriputta repeated his statement.
 
+<!-- @segment an5.166:7.2 -->
+
+
+
+<!-- @segment an5.166:7.3 -->
+
+
+
+<!-- @segment an5.166:7.4 -->
+
+
+
+<!-- @segment an5.166:7.5 -->
+
+
+
+<!-- @segment an5.166:8.1 -->
+
 And for a third time, Udāyī said to him,
+
+<!-- @segment an5.166:8.2 -->
 
 “This is not possible, Reverend Sāriputta, it cannot happen!”
 
+<!-- @segment an5.166:8.3 -->
+
+
+
+<!-- @segment an5.166:9.1 -->
+
 Then Venerable Sāriputta thought,
+
+<!-- @segment an5.166:9.2 -->
 
 “Even in front of the Buddha Venerable Udāyī disagrees with me three times, and not one mendicant agrees with me.
 
+<!-- @segment an5.166:9.3 -->
+
 I’d better stay silent.”
+
+<!-- @segment an5.166:9.4 -->
 
 Then Sāriputta fell silent.
 
+<!-- @segment an5.166:10.1 -->
+
 Then the Buddha said to Venerable Udāyī,
+
+<!-- @segment an5.166:10.2 -->
 
 “But Udāyī, do you believe in a mind-made body?”
 
+<!-- @segment an5.166:10.3 -->
+
 “For those gods, sir, who are formless, made of perception.”
+
+<!-- @segment an5.166:10.4 -->
 
 “Udāyī, what has an incompetent fool like you got to say?
 
+<!-- @segment an5.166:10.5 -->
+
 How on earth could you imagine you’ve got something worth saying!”
+
+<!-- @segment an5.166:11.1 -->
 
 Then the Buddha said to Venerable Ānanda,
 
+<!-- @segment an5.166:11.2 -->
+
 “Ānanda! How can you just watch while a senior mendicant is being harassed?
+
+<!-- @segment an5.166:11.3 -->
 
 Don’t you have any compassion for a senior mendicant who is being harassed?”
 
+<!-- @segment an5.166:12.1 -->
+
 Then the Buddha addressed the mendicants:
+
+<!-- @segment an5.166:12.2 -->
 
 “Mendicants, take a mendicant who is accomplished in ethics, immersion, and wisdom. They might enter into and emerge from the cessation of perception and feeling.
 
+<!-- @segment an5.166:12.3 -->
+
 That is possible.
+
+<!-- @segment an5.166:12.4 -->
 
 If they don’t reach enlightenment in this very life, they’re reborn in the company of a certain host of mind-made gods, who surpass the gods that consume edible food. There they might enter into and emerge from the cessation of perception and feeling.
 
+<!-- @segment an5.166:12.5 -->
+
 That is possible.”
+
+<!-- @segment an5.166:12.6 -->
 
 That is what the Buddha said.
 
+<!-- @segment an5.166:12.7 -->
+
 When he had spoken, the Holy One rose from his seat and entered his dwelling.
+
+<!-- @segment an5.166:13.1 -->
 
 Then, not long after the Buddha had left, Venerable Ānanda went to Venerable Upavāṇa and said to him,
 
+<!-- @segment an5.166:13.2 -->
+
 “Reverend Upavāṇa, they’ve been harassing other senior mendicants,
+
+<!-- @segment an5.166:13.3 -->
 
 but I didn’t question them.
 
+<!-- @segment an5.166:13.4 -->
+
 I wouldn’t be surprised if the Buddha brings this up when he comes out of retreat later this afternoon. He might even call upon Venerable Upavāṇa himself.
+
+<!-- @segment an5.166:13.5 -->
 
 And right now I feel timid.”
 
+<!-- @segment an5.166:13.6 -->
+
 Then in the late afternoon, the Buddha came out of retreat and went to the assembly hall, where he sat on the seat spread out, and said to Upavāṇa,
+
+<!-- @segment an5.166:14.1 -->
 
 “Upavāṇa, how many qualities should a senior mendicant have to be dear and beloved to their spiritual companions, respected and admired?”
 
+<!-- @segment an5.166:14.2 -->
+
 “Sir, a senior mendicant with five qualities is dear and beloved to their spiritual companions, respected and admired.
+
+<!-- @segment an5.166:14.3 -->
 
 What five?
 
+<!-- @segment an5.166:14.4 -->
+
 It’s when a mendicant is ethical, restrained in the monastic code, conducting themselves well and resorting for alms in suitable places. Seeing danger in the slightest fault, they keep the rules they’ve undertaken.
+
+<!-- @segment an5.166:14.5 -->
 
 They’re very learned, remembering and keeping what they’ve learned. These teachings are good in the beginning, good in the middle, and good in the end, meaningful and well-phrased, describing a spiritual practice that’s totally full and pure. They are very learned in such teachings, remembering them, reciting them, mentally scrutinizing them, and penetrating them theoretically.
 
+<!-- @segment an5.166:14.6 -->
+
 They’re a good speaker who enunciates well, with a polished, clear, and articulate voice that expresses the meaning.
+
+<!-- @segment an5.166:14.7 -->
 
 They get the four absorptions—blissful meditations in this life that belong to the higher mind—when they want, without trouble or difficulty.
 
+<!-- @segment an5.166:14.8 -->
+
 They realize the undefiled freedom of heart and freedom by wisdom in this very life. And they live having realized it with their own insight due to the ending of defilements.
+
+<!-- @segment an5.166:14.9 -->
 
 A senior mendicant with these five qualities is dear and beloved to their spiritual companions, respected and admired.”
 
+<!-- @segment an5.166:15.1 -->
+
 “Good, good, Upavāṇa!
+
+<!-- @segment an5.166:15.2 -->
 
 A senior mendicant with these five qualities is dear and beloved to their spiritual companions, respected and admired.
 
+<!-- @segment an5.166:15.3 -->
+
 If these five qualities are not found in a senior mendicant, why would their spiritual companions honor, respect, revere, or venerate them? Because of their broken teeth, gray hair, and wrinkled skin?
+
+<!-- @segment an5.166:15.4 -->
 
 But since these five qualities are found in a senior mendicant, their spiritual companions honor, respect, revere, or venerate them.”

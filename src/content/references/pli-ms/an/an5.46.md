@@ -1,17 +1,27 @@
 ---
 slug: an5.46
 source: suttacentral/bilara-data
+title: Sampadāsutta
 edition: ms
 granularity: segment
-title: Sampadāsutta
 ---
+
+<!-- @segment an5.46:1.1 -->
 
 “Pañcimā, bhikkhave, sampadā.
 
+<!-- @segment an5.46:1.2 -->
+
 Katamā pañca?
+
+<!-- @segment an5.46:1.3 -->
 
 Saddhāsampadā, sīlasampadā, sutasampadā, cāgasampadā, paññāsampadā—
 
+<!-- @segment an5.46:1.4 -->
+
 imā kho, bhikkhave, pañca sampadā”ti.
+
+<!-- @segment an5.46:1.5 -->
 
 Chaṭṭhaṁ.

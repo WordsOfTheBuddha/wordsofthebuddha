@@ -1,117 +1,227 @@
 ---
 slug: ud8.8
 source: suttacentral/bilara-data
+title: Visākhāsutta
 edition: ms
 granularity: segment
-title: Visākhāsutta
 ---
+
+<!-- @segment ud8.8:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud8.8:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati pubbārāme migāramātupāsāde.
+
+<!-- @segment ud8.8:1.3 -->
 
 Tena kho pana samayena visākhāya migāramātuyā nattā kālaṅkatā hoti piyā manāpā.
 
+<!-- @segment ud8.8:1.4 -->
+
 Atha kho visākhā migāramātā allavatthā allakesā divā divassa yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi.
+
+<!-- @segment ud8.8:1.5 -->
 
 Ekamantaṁ nisinnaṁ kho visākhaṁ migāramātaraṁ bhagavā etadavoca:
 
+<!-- @segment ud8.8:2.1 -->
+
 “Handa kuto nu tvaṁ, visākhe, āgacchasi allavatthā allakesā idhūpasaṅkantā divā divassā”ti?
+
+<!-- @segment ud8.8:2.2 -->
 
 “Nattā me, bhante, piyā manāpā kālaṅkatā.
 
+<!-- @segment ud8.8:2.3 -->
+
 Tenāhaṁ allavatthā allakesā idhūpasaṅkantā divā divassā”ti.
+
+<!-- @segment ud8.8:2.4 -->
 
 “Iccheyyāsi tvaṁ, visākhe, yāvatikā sāvatthiyā manussā tāvatike putte ca nattāro cā”ti?
 
+<!-- @segment ud8.8:2.5 -->
+
 “Iccheyyāhaṁ, bhagavā, yāvatikā sāvatthiyā manussā tāvatike putte ca nattāro cā”ti.
+
+<!-- @segment ud8.8:3.1 -->
 
 “Kīvabahukā pana, visākhe, sāvatthiyā manussā devasikaṁ kālaṁ karontī”ti?
 
+<!-- @segment ud8.8:3.2 -->
+
 “Dasapi, bhante, sāvatthiyā manussā devasikaṁ kālaṁ karonti;
+
+<!-- @segment ud8.8:3.3 -->
 
 navapi, bhante …
 
+<!-- @segment ud8.8:3.4 -->
+
 aṭṭhapi, bhante …
+
+<!-- @segment ud8.8:3.5 -->
 
 sattapi, bhante …
 
+<!-- @segment ud8.8:3.6 -->
+
 chapi, bhante …
+
+<!-- @segment ud8.8:3.7 -->
 
 pañcapi, bhante …
 
+<!-- @segment ud8.8:3.8 -->
+
 cattāropi, bhante …
+
+<!-- @segment ud8.8:3.9 -->
 
 tīṇipi, bhante …
 
+<!-- @segment ud8.8:3.10 -->
+
 dvepi, bhante, sāvatthiyā manussā devasikaṁ kālaṁ karonti.
+
+<!-- @segment ud8.8:3.11 -->
 
 Ekopi, bhante, sāvatthiyā manusso devasikaṁ kālaṁ karoti.
 
+<!-- @segment ud8.8:3.12 -->
+
 Avivittā, bhante, sāvatthi manussehi kālaṁ karontehī”ti.
+
+<!-- @segment ud8.8:4.1 -->
 
 “Taṁ kiṁ maññasi, visākhe, api nu tvaṁ kadāci karahaci anallavatthā vā bhaveyyāsi anallakesā vā”ti?
 
+<!-- @segment ud8.8:4.2 -->
+
 “No hetaṁ, bhante.
+
+<!-- @segment ud8.8:4.3 -->
 
 Alaṁ me, bhante, tāva bahukehi puttehi ca nattārehi cā”ti.
 
+<!-- @segment ud8.8:5.1 -->
+
 “Yesaṁ kho, visākhe, sataṁ piyāni, sataṁ tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.2 -->
 
 yesaṁ navuti piyāni, navuti tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.3 -->
+
 yesaṁ asīti piyāni, asīti tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.4 -->
 
 yesaṁ sattati piyāni, sattati tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.5 -->
+
 yesaṁ saṭṭhi piyāni, saṭṭhi tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.6 -->
 
 yesaṁ paññāsaṁ piyāni, paññāsaṁ tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.7 -->
+
 yesaṁ cattārīsaṁ piyāni, cattārīsaṁ tesaṁ dukkhāni,
+
+<!-- @segment ud8.8:5.8 -->
 
 yesaṁ tiṁsaṁ piyāni, tiṁsaṁ tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.9 -->
+
 yesaṁ vīsati piyāni, vīsati tesaṁ dukkhāni,
+
+<!-- @segment ud8.8:5.10 -->
 
 yesaṁ dasa piyāni, dasa tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.11 -->
+
 yesaṁ nava piyāni, nava tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.12 -->
 
 yesaṁ aṭṭha piyāni, aṭṭha tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.13 -->
+
 yesaṁ satta piyāni, satta tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.14 -->
 
 yesaṁ cha piyāni, cha tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.15 -->
+
 yesaṁ pañca piyāni, pañca tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.16 -->
 
 yesaṁ cattāri piyāni, cattāri tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.17 -->
+
 yesaṁ tīṇi piyāni, tīṇi tesaṁ dukkhāni;
+
+<!-- @segment ud8.8:5.18 -->
 
 yesaṁ dve piyāni, dve tesaṁ dukkhāni;
 
+<!-- @segment ud8.8:5.19 -->
+
 yesaṁ ekaṁ piyaṁ, ekaṁ tesaṁ dukkhaṁ;
+
+<!-- @segment ud8.8:5.20 -->
 
 yesaṁ natthi piyaṁ, natthi tesaṁ dukkhaṁ, asokā te virajā anupāyāsāti vadāmī”ti.
 
+<!-- @segment ud8.8:6.1 -->
+
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
+
+<!-- @segment ud8.8:7.1 -->
 
 “Ye keci sokā paridevitā vā,
 
+<!-- @segment ud8.8:7.2 -->
+
 Dukkhā va lokasmimanekarūpā;
+
+<!-- @segment ud8.8:7.3 -->
 
 Piyaṁ paṭiccappabhavanti ete,
 
+<!-- @segment ud8.8:7.4 -->
+
 Piye asante na bhavanti ete.
+
+<!-- @segment ud8.8:8.1 -->
 
 Tasmā hi te sukhino vītasokā,
 
+<!-- @segment ud8.8:8.2 -->
+
 Yesaṁ piyaṁ natthi kuhiñci loke;
+
+<!-- @segment ud8.8:8.3 -->
 
 Tasmā asokaṁ virajaṁ patthayāno,
 
+<!-- @segment ud8.8:8.4 -->
+
 Piyaṁ na kayirātha kuhiñci loke”ti.
+
+<!-- @segment ud8.8:8.5 -->
 
 Aṭṭhamaṁ.

@@ -1,151 +1,295 @@
 ---
 slug: an8.19
 source: suttacentral/bilara-data
+title: Pahārādasutta
 edition: ms
 granularity: segment
-title: Pahārādasutta
 ---
+
+<!-- @segment an8.19:1.1 -->
 
 Ekaṁ samayaṁ bhagavā verañjāyaṁ viharati naḷerupucimandamūle.
 
+<!-- @segment an8.19:1.2 -->
+
 Atha kho pahārādo asurindo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ aṭṭhāsi. Ekamantaṁ ṭhitaṁ kho pahārādaṁ asurindaṁ bhagavā etadavoca:
+
+<!-- @segment an8.19:2.1 -->
 
 “Api pana, pahārāda, asurā mahāsamudde abhiramantī”ti?
 
+<!-- @segment an8.19:2.2 -->
+
 “Abhiramanti, bhante, asurā mahāsamudde”ti.
+
+<!-- @segment an8.19:2.3 -->
 
 “Kati pana, pahārāda, mahāsamudde acchariyā abbhutā dhammā, ye disvā disvā asurā mahāsamudde abhiramantī”ti?
 
+<!-- @segment an8.19:2.4 -->
+
 “Aṭṭha, bhante, mahāsamudde acchariyā abbhutā dhammā, ye disvā disvā asurā mahāsamudde abhiramanti.
 
+<!-- @segment an8.19:2.5 -->
+
 Katame aṭṭha?
+
+<!-- @segment an8.19:2.6 -->
 
 Mahāsamuddo, bhante, anupubbaninno anupubbapoṇo anupubbapabbhāro, na āyatakeneva papāto.
 
+<!-- @segment an8.19:2.7 -->
+
 Yampi, bhante, mahāsamuddo anupubbaninno anupubbapoṇo anupubbapabbhāro, na āyatakeneva papāto;
+
+<!-- @segment an8.19:2.8 -->
 
 ayaṁ, bhante, mahāsamudde paṭhamo acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
 
+<!-- @segment an8.19:3.1 -->
+
 Puna caparaṁ, bhante, mahāsamuddo ṭhitadhammo velaṁ nātivattati.
+
+<!-- @segment an8.19:3.2 -->
 
 Yampi, bhante, mahāsamuddo ṭhitadhammo velaṁ nātivattati;
 
+<!-- @segment an8.19:3.3 -->
+
 ayaṁ, bhante, mahāsamudde dutiyo acchariyo abbhuto dhammo yaṁ disvā disvā asurā mahāsamudde abhiramanti.
+
+<!-- @segment an8.19:4.1 -->
 
 Puna caparaṁ, bhante, mahāsamuddo na matena kuṇapena saṁvasati. Yaṁ hoti mahāsamudde mataṁ kuṇapaṁ, taṁ khippameva tīraṁ vāheti, thalaṁ ussāreti.
 
+<!-- @segment an8.19:4.2 -->
+
 Yampi, bhante, mahāsamuddo na matena kuṇapena saṁvasati, yaṁ hoti mahāsamudde mataṁ kuṇapaṁ, taṁ khippameva tīraṁ vāheti, thalaṁ ussāreti;
+
+<!-- @segment an8.19:4.3 -->
 
 ayaṁ, bhante, mahāsamudde tatiyo acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
 
+<!-- @segment an8.19:5.1 -->
+
 Puna caparaṁ, bhante, yā kāci mahānadiyo, seyyathidaṁ—
+
+<!-- @segment an8.19:5.2 -->
 
 gaṅgā yamunā aciravatī sarabhū mahī, tā mahāsamuddaṁ patvā jahanti purimāni nāmagottāni, ‘mahāsamuddo’ tveva saṅkhaṁ gacchanti.
 
+<!-- @segment an8.19:5.3 -->
+
 Yampi, bhante, yā kāci mahānadiyo, seyyathidaṁ—gaṅgā yamunā aciravatī sarabhū mahī, tā mahāsamuddaṁ patvā jahanti purimāni nāmagottāni, ‘mahāsamuddo’ tveva saṅkhaṁ gacchanti;
+
+<!-- @segment an8.19:5.4 -->
 
 ayaṁ, bhante, mahāsamudde catuttho acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
 
+<!-- @segment an8.19:6.1 -->
+
 Puna caparaṁ, bhante, yā ca loke savantiyo mahāsamuddaṁ appenti yā ca antalikkhā dhārā papatanti, na tena mahāsamuddassa ūnattaṁ vā pūrattaṁ vā paññāyati.
+
+<!-- @segment an8.19:6.2 -->
 
 Yampi, bhante, yā ca loke savantiyo mahāsamuddaṁ appenti yā ca antalikkhā dhārā papatanti, na tena mahāsamuddassa ūnattaṁ vā pūrattaṁ vā paññāyati;
 
+<!-- @segment an8.19:6.3 -->
+
 ayaṁ, bhante, mahāsamudde pañcamo acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
+
+<!-- @segment an8.19:7.1 -->
 
 Puna caparaṁ, bhante, mahāsamuddo ekaraso loṇaraso.
 
+<!-- @segment an8.19:7.2 -->
+
 Yampi, bhante, mahāsamuddo ekaraso loṇaraso;
+
+<!-- @segment an8.19:7.3 -->
 
 ayaṁ, bhante, mahāsamudde chaṭṭho acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
 
+<!-- @segment an8.19:8.1 -->
+
 Puna caparaṁ, bhante, mahāsamuddo bahuratano anekaratano. Tatrimāni ratanāni, seyyathidaṁ—muttā maṇi veḷuriyo saṅkho silā pavāḷaṁ rajataṁ jātarūpaṁ lohitako masāragallaṁ.
+
+<!-- @segment an8.19:8.2 -->
 
 Yampi, bhante, mahāsamuddo bahuratano anekaratano; tatrimāni ratanāni, seyyathidaṁ—muttā maṇi veḷuriyo saṅkho silā pavāḷaṁ rajataṁ jātarūpaṁ lohitako masāragallaṁ;
 
+<!-- @segment an8.19:8.3 -->
+
 ayaṁ, bhante, mahāsamudde sattamo acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
+
+<!-- @segment an8.19:9.1 -->
 
 Puna caparaṁ, bhante, mahāsamuddo mahataṁ bhūtānaṁ āvāso. Tatrime bhūtā—timi timiṅgalo timirapiṅgalo asurā nāgā gandhabbā. Santi mahāsamudde yojanasatikāpi attabhāvā, dviyojanasatikāpi attabhāvā, tiyojanasatikāpi attabhāvā, catuyojanasatikāpi attabhāvā, pañcayojanasatikāpi attabhāvā.
 
+<!-- @segment an8.19:9.2 -->
+
 Yampi, bhante, mahāsamuddo mahataṁ bhūtānaṁ āvāso; tatrime bhūtā—timi timiṅgalo timirapiṅgalo asurā nāgā gandhabbā; santi mahāsamudde yojanasatikāpi attabhāvā …pe… tiyojana … catuyojana … pañcayojanasatikāpi attabhāvā;
+
+<!-- @segment an8.19:9.3 -->
 
 ayaṁ, bhante, mahāsamudde aṭṭhamo acchariyo abbhuto dhammo, yaṁ disvā disvā asurā mahāsamudde abhiramanti.
 
+<!-- @segment an8.19:9.4 -->
+
 Ime kho, bhante, mahāsamudde aṭṭha acchariyā abbhutā dhammā, ye disvā disvā asurā mahāsamudde abhiramantīti.
+
+<!-- @segment an8.19:10.1 -->
 
 Api pana, bhante, bhikkhū imasmiṁ dhammavinaye abhiramantī”ti?
 
+<!-- @segment an8.19:10.2 -->
+
 “Abhiramanti, pahārāda, bhikkhū imasmiṁ dhammavinaye”ti.
+
+<!-- @segment an8.19:10.3 -->
 
 “Kati pana, bhante, imasmiṁ dhammavinaye acchariyā abbhutā dhammā, ye disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramantī”ti?
 
+<!-- @segment an8.19:10.4 -->
+
 “Aṭṭha, pahārāda, imasmiṁ dhammavinaye acchariyā abbhutā dhammā, ye disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
+
+<!-- @segment an8.19:10.5 -->
 
 Katame aṭṭha?
 
+<!-- @segment an8.19:10.6 -->
+
 Seyyathāpi, pahārāda, mahāsamuddo anupubbaninno anupubbapoṇo anupubbapabbhāro, na āyatakeneva papāto;
+
+<!-- @segment an8.19:10.7 -->
 
 evamevaṁ kho, pahārāda, imasmiṁ dhammavinaye anupubbasikkhā anupubbakiriyā anupubbapaṭipadā, na āyatakeneva aññāpaṭivedho.
 
+<!-- @segment an8.19:10.8 -->
+
 Yampi, pahārāda, imasmiṁ dhammavinaye anupubbasikkhā anupubbakiriyā anupubbapaṭipadā, na āyatakeneva aññāpaṭivedho;
+
+<!-- @segment an8.19:10.9 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye paṭhamo acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:11.1 -->
+
 Seyyathāpi, pahārāda, mahāsamuddo ṭhitadhammo velaṁ nātivattati;
+
+<!-- @segment an8.19:11.2 -->
 
 evamevaṁ kho, pahārāda, yaṁ mayā sāvakānaṁ sikkhāpadaṁ paññattaṁ taṁ mama sāvakā jīvitahetupi nātikkamanti.
 
+<!-- @segment an8.19:11.3 -->
+
 Yampi, pahārāda, mayā sāvakānaṁ sikkhāpadaṁ paññattaṁ taṁ mama sāvakā jīvitahetupi nātikkamanti;
+
+<!-- @segment an8.19:11.4 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye dutiyo acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:12.1 -->
+
 Seyyathāpi, pahārāda, mahāsamuddo na matena kuṇapena saṁvasati. Yaṁ hoti mahāsamudde mataṁ kuṇapaṁ, taṁ khippameva tīraṁ vāheti thalaṁ ussāreti;
+
+<!-- @segment an8.19:13.1 -->
 
 evamevaṁ kho, pahārāda, yo so puggalo dussīlo pāpadhammo asucisaṅkassarasamācāro paṭicchannakammanto assamaṇo samaṇapaṭiñño abrahmacārī brahmacāripaṭiñño antopūti avassuto kasambujāto, na tena saṅgho saṁvasati; khippameva naṁ sannipatitvā ukkhipati. Kiñcāpi so hoti majjhe bhikkhusaṅghassa sannisinno, atha kho so ārakāva saṅghamhā saṅgho ca tena.
 
+<!-- @segment an8.19:13.2 -->
+
 Yampi, pahārāda, yo so puggalo dussīlo pāpadhammo asucisaṅkassarasamācāro paṭicchannakammanto assamaṇo samaṇapaṭiñño abrahmacārī brahmacāripaṭiñño antopūti avassuto kasambujāto, na tena saṅgho saṁvasati; khippameva naṁ sannipatitvā ukkhipati; kiñcāpi so hoti majjhe bhikkhusaṅghassa sannisinno, atha kho so ārakāva saṅghamhā saṅgho ca tena;
+
+<!-- @segment an8.19:13.3 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye tatiyo acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:14.1 -->
+
 Seyyathāpi, pahārāda, yā kāci mahānadiyo, seyyathidaṁ—gaṅgā yamunā aciravatī sarabhū mahī, tā mahāsamuddaṁ patvā jahanti purimāni nāmagottāni, ‘mahāsamuddo’ tveva saṅkhaṁ gacchanti;
+
+<!-- @segment an8.19:14.2 -->
 
 evamevaṁ kho, pahārāda, cattārome vaṇṇā—khattiyā, brāhmaṇā, vessā, suddā, te tathāgatappavedite dhammavinaye agārasmā anagāriyaṁ pabbajitvā jahanti purimāni nāmagottāni, ‘samaṇā sakyaputtiyā’ tveva saṅkhaṁ gacchanti.
 
+<!-- @segment an8.19:14.3 -->
+
 Yampi, pahārāda, cattārome vaṇṇā—khattiyā, brāhmaṇā, vessā, suddā, te tathāgatappavedite dhammavinaye agārasmā anagāriyaṁ pabbajitvā jahanti purimāni nāmagottāni, ‘samaṇā sakyaputtiyā’ tveva saṅkhaṁ gacchanti;
+
+<!-- @segment an8.19:14.4 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye catuttho acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:15.1 -->
+
 Seyyathāpi, pahārāda, yā ca loke savantiyo mahāsamuddaṁ appenti yā ca antalikkhā dhārā papatanti, na tena mahāsamuddassa ūnattaṁ vā pūrattaṁ vā paññāyati;
+
+<!-- @segment an8.19:15.2 -->
 
 evamevaṁ kho, pahārāda, bahū cepi bhikkhū anupādisesāya nibbānadhātuyā parinibbāyanti, na tena nibbānadhātuyā ūnattaṁ vā pūrattaṁ vā paññāyati.
 
+<!-- @segment an8.19:15.3 -->
+
 Yampi, pahārāda, bahū cepi bhikkhū anupādisesāya nibbānadhātuyā parinibbāyanti, na tena nibbānadhātuyā ūnattaṁ vā pūrattaṁ vā paññāyati;
+
+<!-- @segment an8.19:15.4 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye pañcamo acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:16.1 -->
+
 Seyyathāpi, pahārāda, mahāsamuddo ekaraso loṇaraso;
+
+<!-- @segment an8.19:16.2 -->
 
 evamevaṁ kho, pahārāda, ayaṁ dhammavinayo ekaraso, vimuttiraso.
 
+<!-- @segment an8.19:16.3 -->
+
 Yampi, pahārāda, ayaṁ dhammavinayo ekaraso, vimuttiraso;
+
+<!-- @segment an8.19:16.4 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye chaṭṭho acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:17.1 -->
+
 Seyyathāpi, pahārāda, mahāsamuddo bahuratano anekaratano; tatrimāni ratanāni, seyyathidaṁ—muttā maṇi veḷuriyo saṅkho silā pavāḷaṁ rajataṁ jātarūpaṁ lohitako masāragallaṁ;
+
+<!-- @segment an8.19:17.2 -->
 
 evamevaṁ kho, pahārāda, ayaṁ dhammavinayo bahuratano anekaratano. Tatrimāni ratanāni, seyyathidaṁ—cattāro satipaṭṭhānā, cattāro sammappadhānā, cattāro iddhipādā, pañcindriyāni, pañca balāni, satta bojjhaṅgā, ariyo aṭṭhaṅgiko maggo.
 
+<!-- @segment an8.19:17.3 -->
+
 Yampi, pahārāda, ayaṁ dhammavinayo bahuratano anekaratano; tatrimāni ratanāni, seyyathidaṁ—cattāro satipaṭṭhānā, cattāro sammappadhānā, cattāro iddhipādā, pañcindriyāni, pañca balāni, satta bojjhaṅgā, ariyo aṭṭhaṅgiko maggo;
+
+<!-- @segment an8.19:17.4 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye sattamo acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:18.1 -->
+
 Seyyathāpi, pahārāda, mahāsamuddo mahataṁ bhūtānaṁ āvāso; tatrime bhūtā—timi timiṅgalo timirapiṅgalo asurā nāgā gandhabbā; santi mahāsamudde yojanasatikāpi attabhāvā, dviyojanasatikāpi attabhāvā, tiyojanasatikāpi attabhāvā, catuyojanasatikāpi attabhāvā, pañcayojanasatikāpi attabhāvā;
+
+<!-- @segment an8.19:18.2 -->
 
 evamevaṁ kho, pahārāda, ayaṁ dhammavinayo mahataṁ bhūtānaṁ āvāso; tatrime bhūtā—sotāpanno sotāpattiphalasacchikiriyāya paṭipanno, sakadāgāmī sakadāgāmiphalasacchikiriyāya paṭipanno, anāgāmī anāgāmiphalasacchikiriyāya paṭipanno, arahā arahattāya paṭipanno.
 
+<!-- @segment an8.19:18.3 -->
+
 Yampi, pahārāda, ayaṁ dhammavinayo mahataṁ bhūtānaṁ āvāso; tatrime bhūtā—sotāpanno sotāpattiphalasacchikiriyāya paṭipanno, sakadāgāmī sakadāgāmiphalasacchikiriyāya paṭipanno, anāgāmī anāgāmiphalasacchikiriyāya paṭipanno, arahā arahattāya paṭipanno;
+
+<!-- @segment an8.19:18.4 -->
 
 ayaṁ, pahārāda, imasmiṁ dhammavinaye aṭṭhamo acchariyo abbhuto dhammo, yaṁ disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramanti.
 
+<!-- @segment an8.19:19.1 -->
+
 Ime kho, pahārāda, imasmiṁ dhammavinaye aṭṭha acchariyā abbhutā dhammā, ye disvā disvā bhikkhū imasmiṁ dhammavinaye abhiramantī”ti.
+
+<!-- @segment an8.19:19.2 -->
 
 Navamaṁ.

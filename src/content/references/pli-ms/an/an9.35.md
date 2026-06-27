@@ -1,191 +1,375 @@
 ---
 slug: an9.35
 source: suttacentral/bilara-data
+title: Gāvīupamāsutta
 edition: ms
 granularity: segment
-title: Gāvīupamāsutta
 ---
+
+<!-- @segment an9.35:1.1 -->
 
 “Seyyathāpi, bhikkhave, gāvī pabbateyyā bālā abyattā akhettaññū akusalā visame pabbate carituṁ.
 
+<!-- @segment an9.35:1.2 -->
+
 Tassā evamassa:
 
+<!-- @segment an9.35:1.3 -->
+
 ‘yannūnāhaṁ agatapubbañceva disaṁ gaccheyyaṁ, akhāditapubbāni ca tiṇāni khādeyyaṁ, apītapubbāni ca pānīyāni piveyyan’ti.
+
+<!-- @segment an9.35:1.4 -->
 
 Sā purimaṁ pādaṁ na suppatiṭṭhitaṁ patiṭṭhāpetvā pacchimaṁ pādaṁ uddhareyya.
 
+<!-- @segment an9.35:1.5 -->
+
 Sā na ceva agatapubbaṁ disaṁ gaccheyya, na ca akhāditapubbāni tiṇāni khādeyya, na ca apītapubbāni pānīyāni piveyya;
+
+<!-- @segment an9.35:1.6 -->
 
 yasmiṁ cassā padese ṭhitāya evamassa:
 
+<!-- @segment an9.35:1.7 -->
+
 ‘yannūnāhaṁ agatapubbañceva disaṁ gaccheyyaṁ, akhāditapubbāni ca tiṇāni khādeyyaṁ, apītapubbāni ca pānīyāni piveyyan’ti tañca padesaṁ na sotthinā paccāgaccheyya.
 
+<!-- @segment an9.35:1.8 -->
+
 Taṁ kissa hetu?
+
+<!-- @segment an9.35:1.9 -->
 
 Tathā hi sā, bhikkhave, gāvī pabbateyyā bālā abyattā akhettaññū akusalā visame pabbate carituṁ.
 
+<!-- @segment an9.35:1.10 -->
+
 Evamevaṁ kho, bhikkhave, idhekacco bhikkhu bālo abyatto akhettaññū akusalo vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṁ savicāraṁ vivekajaṁ pītisukhaṁ paṭhamaṁ jhānaṁ upasampajja viharati;
+
+<!-- @segment an9.35:1.11 -->
 
 so taṁ nimittaṁ na āsevati na bhāveti na bahulīkaroti na svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:2.1 -->
+
 Tassa evaṁ hoti:
 
+<!-- @segment an9.35:2.2 -->
+
 ‘yannūnāhaṁ vitakkavicārānaṁ vūpasamā ajjhattaṁ sampasādanaṁ cetaso ekodibhāvaṁ avitakkaṁ avicāraṁ samādhijaṁ pītisukhaṁ dutiyaṁ jhānaṁ upasampajja vihareyyan’ti.
+
+<!-- @segment an9.35:2.3 -->
 
 So na sakkoti vitakkavicārānaṁ vūpasamā …pe… dutiyaṁ jhānaṁ upasampajja viharituṁ.
 
+<!-- @segment an9.35:2.4 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:2.5 -->
 
 ‘yannūnāhaṁ vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṁ savicāraṁ vivekajaṁ pītisukhaṁ paṭhamaṁ jhānaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:2.6 -->
+
 So na sakkoti vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharituṁ.
+
+<!-- @segment an9.35:2.7 -->
 
 Ayaṁ vuccati, bhikkhave, ‘bhikkhu ubhato bhaṭṭho ubhato parihīno, seyyathāpi sā gāvī pabbateyyā bālā abyattā akhettaññū akusalā visame pabbate carituṁ’.
 
+<!-- @segment an9.35:3.1 -->
+
 Seyyathāpi, bhikkhave, gāvī pabbateyyā paṇḍitā byattā khettaññū kusalā visame pabbate carituṁ.
+
+<!-- @segment an9.35:3.2 -->
 
 Tassā evamassa:
 
+<!-- @segment an9.35:3.3 -->
+
 ‘yannūnāhaṁ agatapubbañceva disaṁ gaccheyyaṁ, akhāditapubbāni ca tiṇāni khādeyyaṁ, apītapubbāni ca pānīyāni piveyyan’ti.
+
+<!-- @segment an9.35:3.4 -->
 
 Sā purimaṁ pādaṁ suppatiṭṭhitaṁ patiṭṭhāpetvā pacchimaṁ pādaṁ uddhareyya.
 
+<!-- @segment an9.35:3.5 -->
+
 Sā agatapubbañceva disaṁ gaccheyya, akhāditapubbāni ca tiṇāni khādeyya, apītapubbāni ca pānīyāni piveyya.
+
+<!-- @segment an9.35:3.6 -->
 
 Yasmiṁ cassā padese ṭhitāya evamassa:
 
+<!-- @segment an9.35:3.7 -->
+
 ‘yannūnāhaṁ agatapubbañceva disaṁ gaccheyyaṁ, akhāditapubbāni ca tiṇāni khādeyyaṁ, apītapubbāni ca pānīyāni piveyyan’ti tañca padesaṁ sotthinā paccāgaccheyya.
+
+<!-- @segment an9.35:3.8 -->
 
 Taṁ kissa hetu?
 
+<!-- @segment an9.35:3.9 -->
+
 Tathā hi sā, bhikkhave, gāvī pabbateyyā paṇḍitā byattā khettaññū kusalā visame pabbate carituṁ.
+
+<!-- @segment an9.35:3.10 -->
 
 Evamevaṁ kho, bhikkhave, idhekacco bhikkhu paṇḍito byatto khettaññū kusalo vivicceva kāmehi vivicca akusalehi dhammehi savitakkaṁ savicāraṁ vivekajaṁ pītisukhaṁ paṭhamaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.35:3.11 -->
+
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:4.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:4.2 -->
 
 ‘yannūnāhaṁ vitakkavicārānaṁ vūpasamā ajjhattaṁ sampasādanaṁ cetaso ekodibhāvaṁ avitakkaṁ avicāraṁ samādhijaṁ pītisukhaṁ dutiyaṁ jhānaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:4.3 -->
+
 So dutiyaṁ jhānaṁ anabhihiṁsamāno vitakkavicārānaṁ vūpasamā … dutiyaṁ jhānaṁ upasampajja viharati.
+
+<!-- @segment an9.35:4.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:5.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:5.2 -->
 
 ‘yannūnāhaṁ pītiyā ca virāgā upekkhako ca vihareyyaṁ sato ca sampajāno, sukhañca kāyena paṭisaṁvedeyyaṁ yaṁ taṁ ariyā ācikkhanti—upekkhako satimā sukhavihārīti tatiyaṁ jhānaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:5.3 -->
+
 So tatiyaṁ jhānaṁ anabhihiṁsamāno pītiyā ca virāgā … tatiyaṁ jhānaṁ upasampajja viharati.
+
+<!-- @segment an9.35:5.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:6.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:6.2 -->
 
 ‘yannūnāhaṁ sukhassa ca pahānā dukkhassa ca pahānā pubbeva somanassadomanassānaṁ atthaṅgamā adukkhamasukhaṁ upekkhāsatipārisuddhiṁ catutthaṁ jhānaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:6.3 -->
+
 So catutthaṁ jhānaṁ anabhihiṁsamāno sukhassa ca pahānā …pe… catutthaṁ jhānaṁ upasampajja viharati.
+
+<!-- @segment an9.35:6.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:7.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:7.2 -->
 
 ‘yannūnāhaṁ sabbaso rūpasaññānaṁ samatikkamā paṭighasaññānaṁ atthaṅgamā nānattasaññānaṁ amanasikārā ananto ākāsoti ākāsānañcāyatanaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:7.3 -->
+
 So ākāsānañcāyatanaṁ anabhihiṁsamāno sabbaso rūpasaññānaṁ samatikkamā …pe… ākāsānañcāyatanaṁ upasampajja viharati.
+
+<!-- @segment an9.35:7.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:8.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:8.2 -->
 
 ‘yannūnāhaṁ sabbaso ākāsānañcāyatanaṁ samatikkamma anantaṁ viññāṇanti viññāṇañcāyatanaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:8.3 -->
+
 So viññāṇañcāyatanaṁ anabhihiṁsamāno sabbaso ākāsānañcāyatanaṁ samatikkamma ‘anantaṁ viññāṇan’ti viññāṇañcāyatanaṁ upasampajja viharati.
+
+<!-- @segment an9.35:8.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:9.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:9.2 -->
 
 ‘yannūnāhaṁ sabbaso viññāṇañcāyatanaṁ samatikkamma natthi kiñcīti ākiñcaññāyatanaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:9.3 -->
+
 So ākiñcaññāyatanaṁ anabhihiṁsamāno sabbaso viññāṇañcāyatanaṁ samatikkamma ‘natthi kiñcī’ti ākiñcaññāyatanaṁ upasampajja viharati.
+
+<!-- @segment an9.35:9.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:10.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:10.2 -->
 
 ‘yannūnāhaṁ sabbaso ākiñcaññāyatanaṁ samatikkamma nevasaññānāsaññāyatanaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:10.3 -->
+
 So nevasaññānāsaññāyatanaṁ anabhihiṁsamāno sabbaso ākiñcaññāyatanaṁ samatikkamma nevasaññānāsaññāyatanaṁ upasampajja viharati.
+
+<!-- @segment an9.35:10.4 -->
 
 So taṁ nimittaṁ āsevati bhāveti bahulīkaroti svādhiṭṭhitaṁ adhiṭṭhāti.
 
+<!-- @segment an9.35:11.1 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an9.35:11.2 -->
 
 ‘yannūnāhaṁ sabbaso nevasaññānāsaññāyatanaṁ samatikkamma saññāvedayitanirodhaṁ upasampajja vihareyyan’ti.
 
+<!-- @segment an9.35:11.3 -->
+
 So saññāvedayitanirodhaṁ anabhihiṁsamāno sabbaso nevasaññānāsaññāyatanaṁ samatikkamma saññāvedayitanirodhaṁ upasampajja viharati.
+
+<!-- @segment an9.35:12.1 -->
 
 Yato kho, bhikkhave, bhikkhu taṁ tadeva samāpattiṁ samāpajjatipi vuṭṭhātipi, tassa mudu cittaṁ hoti kammaññaṁ.
 
+<!-- @segment an9.35:12.2 -->
+
 Mudunā kammaññena cittena appamāṇo samādhi hoti subhāvito.
+
+<!-- @segment an9.35:12.3 -->
 
 So appamāṇena samādhinā subhāvitena yassa yassa abhiññāsacchikaraṇīyassa dhammassa cittaṁ abhininnāmeti abhiññāsacchikiriyāya tatra tatreva sakkhibhabbataṁ pāpuṇāti sati sati āyatane.
 
+<!-- @segment an9.35:13.1 -->
+
 So sace ākaṅkhati: ‘anekavihitaṁ iddhividhaṁ paccanubhaveyyaṁ—ekopi hutvā bahudhā assaṁ, bahudhāpi hutvā eko assaṁ …pe… yāva brahmalokāpi kāyena vasaṁ vatteyyan’ti,
 
+<!-- @segment an9.35:13.2 -->
+
 tatra tatreva sakkhibhabbataṁ pāpuṇāti sati sati āyatane.
+
+<!-- @segment an9.35:14.1 -->
 
 So sace ākaṅkhati: ‘dibbāya sotadhātuyā …pe…
 
+<!-- @segment an9.35:14.2 -->
+
 sati sati āyatane.
+
+<!-- @segment an9.35:15.1 -->
 
 So sace ākaṅkhati: ‘parasattānaṁ parapuggalānaṁ cetasā ceto paricca pajāneyyaṁ,
 
+<!-- @segment an9.35:15.2 -->
+
 sarāgaṁ vā cittaṁ sarāgaṁ cittanti pajāneyyaṁ,
+
+<!-- @segment an9.35:15.3 -->
 
 vītarāgaṁ vā cittaṁ vītarāgaṁ cittanti pajāneyyaṁ,
 
+<!-- @segment an9.35:15.4 -->
+
 sadosaṁ vā cittaṁ sadosaṁ cittanti pajāneyyaṁ,
+
+<!-- @segment an9.35:15.5 -->
 
 vītadosaṁ vā cittaṁ vītadosaṁ cittanti pajāneyyaṁ,
 
+<!-- @segment an9.35:15.6 -->
+
 samohaṁ vā cittaṁ samohaṁ cittanti pajāneyyaṁ,
+
+<!-- @segment an9.35:15.7 -->
 
 vītamohaṁ vā cittaṁ …
 
+<!-- @segment an9.35:15.8 -->
+
 saṅkhittaṁ vā cittaṁ …
+
+<!-- @segment an9.35:15.9 -->
 
 vikkhittaṁ vā cittaṁ …
 
+<!-- @segment an9.35:15.10 -->
+
 mahaggataṁ vā cittaṁ …
+
+<!-- @segment an9.35:15.11 -->
 
 amahaggataṁ vā cittaṁ …
 
+<!-- @segment an9.35:15.12 -->
+
 sauttaraṁ vā cittaṁ …
+
+<!-- @segment an9.35:15.13 -->
 
 anuttaraṁ vā cittaṁ …
 
+<!-- @segment an9.35:15.14 -->
+
 samāhitaṁ vā cittaṁ …
+
+<!-- @segment an9.35:15.15 -->
 
 asamāhitaṁ vā cittaṁ …
 
+<!-- @segment an9.35:15.16 -->
+
 vimuttaṁ vā cittaṁ …
+
+<!-- @segment an9.35:15.17 -->
 
 avimuttaṁ vā cittaṁ avimuttaṁ cittanti pajāneyyan’ti,
 
+<!-- @segment an9.35:15.18 -->
+
 tatra tatreva sakkhibhabbataṁ pāpuṇāti sati sati āyatane.
+
+<!-- @segment an9.35:16.1 -->
 
 So sace ākaṅkhati: ‘anekavihitaṁ pubbenivāsaṁ anussareyyaṁ, seyyathidaṁ—ekampi jātiṁ dvepi jātiyo …pe… iti sākāraṁ sauddesaṁ anekavihitaṁ pubbenivāsaṁ anussareyyan’ti,
 
+<!-- @segment an9.35:16.2 -->
+
 tatra tatreva sakkhibhabbataṁ pāpuṇāti sati sati āyatane.
+
+<!-- @segment an9.35:17.1 -->
 
 So sace ākaṅkhati: ‘dibbena cakkhunā visuddhena atikkantamānusakena …pe… yathākammūpage satte pajāneyyan’ti
 
+<!-- @segment an9.35:17.2 -->
+
 tatra tatreva sakkhibhabbataṁ pāpuṇāti sati sati āyatane.
+
+<!-- @segment an9.35:18.1 -->
 
 So sace ākaṅkhati: ‘āsavānaṁ khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja vihareyyan’ti,
 
+<!-- @segment an9.35:18.2 -->
+
 tatra tatreva sakkhibhabbataṁ pāpuṇāti sati sati āyatane”ti.
+
+<!-- @segment an9.35:18.3 -->
 
 Catutthaṁ.

@@ -6,180 +6,358 @@ license: CC0
 title: Gems
 ---
 
+<!-- @segment kp6:1.1 -->
+
 Whatever beings have gathered here,
+
+<!-- @segment kp6:1.2 -->
 
 on the ground or in the sky,
 
+<!-- @segment kp6:1.3 -->
+
 may beings all be of happy heart,
+
+<!-- @segment kp6:1.4 -->
 
 and listen carefully to what is said.
 
+<!-- @segment kp6:2.1 -->
+
 So pay heed, all you beings,
+
+<!-- @segment kp6:2.2 -->
 
 have love for humankind,
 
+<!-- @segment kp6:2.3 -->
+
 who day and night bring offerings;
+
+<!-- @segment kp6:2.4 -->
 
 please protect them diligently.
 
+<!-- @segment kp6:3.1 -->
+
 There’s no wealth this life or the next,
+
+<!-- @segment kp6:3.2 -->
 
 no sublime gem in the heavens,
 
+<!-- @segment kp6:3.3 -->
+
 that equals the Realized One.
+
+<!-- @segment kp6:3.4 -->
 
 This sublime gem is in the Buddha:
 
+<!-- @segment kp6:3.5 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:4.1 -->
 
 Ending, dispassion, the undying, the sublime,
 
+<!-- @segment kp6:4.2 -->
+
 attained by the Sakyan Sage immersed in samādhi;
+
+<!-- @segment kp6:4.3 -->
 
 there is nothing equal to that Dhamma.
 
+<!-- @segment kp6:4.4 -->
+
 This sublime gem is in the Dhamma:
 
+<!-- @segment kp6:4.5 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:5.1 -->
 
 The purity praised by the highest Buddha,
 
+<!-- @segment kp6:5.2 -->
+
 is said to be the “immersion with immediate fruit”;
+
+<!-- @segment kp6:5.3 -->
 
 no equal to that immersion is found.
 
+<!-- @segment kp6:5.4 -->
+
 This sublime gem is in the Dhamma:
 
+<!-- @segment kp6:5.5 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:6.1 -->
 
 The eight individual persons praised by the good
 
+<!-- @segment kp6:6.2 -->
+
 are the four pairs of the Holy One’s disciples;
+
+<!-- @segment kp6:6.3 -->
 
 they are worthy of religious donations,
 
+<!-- @segment kp6:6.4 -->
+
 what’s given to them is very fruitful.
+
+<!-- @segment kp6:6.5 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:6.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:7.1 -->
 
 Dedicated to Gotama’s dispensation,
 
+<!-- @segment kp6:7.2 -->
+
 strong-minded, free of sense desire,
+
+<!-- @segment kp6:7.3 -->
 
 they’ve attained the goal, plunged into freedom from death,
 
+<!-- @segment kp6:7.4 -->
+
 and enjoy the quenching they’ve freely gained.
+
+<!-- @segment kp6:7.5 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:7.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:8.1 -->
 
 As Indra’s pillar rooted in earth
 
+<!-- @segment kp6:8.2 -->
+
 is not shaken by the four winds,
+
+<!-- @segment kp6:8.3 -->
 
 I say a true person is like this,
 
+<!-- @segment kp6:8.4 -->
+
 who sees the noble truths in experience.
+
+<!-- @segment kp6:8.5 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:8.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:9.1 -->
 
 Those who fathom the noble truths
 
+<!-- @segment kp6:9.2 -->
+
 taught by the one of deep wisdom,
+
+<!-- @segment kp6:9.3 -->
 
 do not take an eighth life,
 
+<!-- @segment kp6:9.4 -->
+
 even if they are hugely negligent.
+
+<!-- @segment kp6:9.5 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:9.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:10.1 -->
 
 When they attain to vision
 
+<!-- @segment kp6:10.2 -->
+
 they give up three things:
+
+<!-- @segment kp6:10.3 -->
 
 substantialist view, doubt, and any
 
+<!-- @segment kp6:10.4 -->
+
 attachment to precepts and observances.
+
+<!-- @segment kp6:11.1 -->
 
 They’re freed from the four places of loss,
 
+<!-- @segment kp6:11.2 -->
+
 and cannot do six things.
+
+<!-- @segment kp6:11.3 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:11.4 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:12.1 -->
 
 Even if they do a bad deed
 
+<!-- @segment kp6:12.2 -->
+
 by body, speech, or mind,
+
+<!-- @segment kp6:12.3 -->
 
 they are unable to conceal it;
 
+<!-- @segment kp6:12.4 -->
+
 they say this inability applies to one who has seen the truth.
+
+<!-- @segment kp6:12.5 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:12.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:13.1 -->
 
 Like a tall forest tree crowned with flowers
 
+<!-- @segment kp6:13.2 -->
+
 in the first month of summer;
+
+<!-- @segment kp6:13.3 -->
 
 that’s how he taught the superb Dhamma,
 
+<!-- @segment kp6:13.4 -->
+
 leading to extinguishment, the ultimate benefit.
+
+<!-- @segment kp6:13.5 -->
 
 This sublime gem is in the Buddha:
 
+<!-- @segment kp6:13.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:14.1 -->
 
 The superb, knower of the superb, giver of the superb, bringer of the superb;
 
+<!-- @segment kp6:14.2 -->
+
 taught the superb Dhamma supreme.
+
+<!-- @segment kp6:14.3 -->
 
 This sublime gem is in the Buddha:
 
+<!-- @segment kp6:14.4 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:15.1 -->
 
 The old is ended, nothing new is produced.
 
+<!-- @segment kp6:15.2 -->
+
 their minds have no desire for future rebirth.
+
+<!-- @segment kp6:15.3 -->
 
 Withered are the seeds, there’s no desire for growth,
 
+<!-- @segment kp6:15.4 -->
+
 those attentive ones are extinguished just like this lamp.
+
+<!-- @segment kp6:15.5 -->
 
 This sublime gem is in the Saṅgha:
 
+<!-- @segment kp6:15.6 -->
+
 by this truth, may you be well!
+
+<!-- @segment kp6:16.1 -->
 
 Whatever beings have gathered here,
 
+<!-- @segment kp6:16.2 -->
+
 on the ground or in the sky:
 
+<!-- @segment kp6:16.3 -->
+
 the Realized One is honored by gods and humans!
+
+<!-- @segment kp6:16.4 -->
 
 We bow to the Buddha! May you be safe!
 
+<!-- @segment kp6:17.1 -->
+
 Whatever beings have gathered here,
+
+<!-- @segment kp6:17.2 -->
 
 on the ground or in the sky:
 
+<!-- @segment kp6:17.3 -->
+
 the Realized One is honored by gods and humans!
+
+<!-- @segment kp6:17.4 -->
 
 We bow to the Dhamma! May you be safe!
 
+<!-- @segment kp6:18.1 -->
+
 Whatever beings have gathered here,
+
+<!-- @segment kp6:18.2 -->
 
 on the ground or in the sky:
 
+<!-- @segment kp6:18.3 -->
+
 the Realized One is honored by gods and humans!
+
+<!-- @segment kp6:18.4 -->
 
 We bow to the Saṅgha! May you be safe!

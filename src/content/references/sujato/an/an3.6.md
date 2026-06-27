@@ -6,20 +6,38 @@ license: CC0
 title: Unskillful
 ---
 
+<!-- @segment an3.6:1.1 -->
+
 “A fool is known by three things.
 
+<!-- @segment an3.6:1.2 -->
+
 What three?
+
+<!-- @segment an3.6:1.3 -->
 
 Unskillful deeds by way of body, speech, and mind.
 
+<!-- @segment an3.6:1.4 -->
+
 These are the three things by which a fool is known.
+
+<!-- @segment an3.6:2.1 -->
 
 An astute person is known by three things.
 
+<!-- @segment an3.6:2.2 -->
+
 What three?
+
+<!-- @segment an3.6:2.3 -->
 
 Skillful deeds by way of body, speech, and mind.
 
+<!-- @segment an3.6:2.4 -->
+
 These are the three things by which an astute person is known.
+
+<!-- @segment an3.6:2.5 -->
 
 So you should train …”

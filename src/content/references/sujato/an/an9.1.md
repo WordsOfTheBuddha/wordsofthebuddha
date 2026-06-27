@@ -6,68 +6,134 @@ license: CC0
 title: Awakening
 ---
 
+<!-- @segment an9.1:1.1 -->
+
 So I have heard.
+
+<!-- @segment an9.1:1.2 -->
 
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
 
+<!-- @segment an9.1:1.3 -->
+
 There the Buddha addressed the mendicants:
 
+<!-- @segment an9.1:2.1 -->
+
 “Mendicants, if wanderers of other religions were to ask:
+
+<!-- @segment an9.1:2.2 -->
 
 ‘Reverends, what is the vital condition for the development of the qualities on the same side as awakening?’ How would you answer them?”
 
+<!-- @segment an9.1:2.3 -->
+
 “Our teachings are rooted in the Buddha. … The mendicants will listen and remember it.”
+
+<!-- @segment an9.1:3.1 -->
 
 “Well then, mendicants, listen and apply your mind well, I will speak.”
 
+<!-- @segment an9.1:3.2 -->
+
 “Yes, sir,” they replied.
+
+<!-- @segment an9.1:3.3 -->
 
 The Buddha said this:
 
+<!-- @segment an9.1:4.1 -->
+
 “Mendicants, if wanderers of other religions were to ask:
+
+<!-- @segment an9.1:4.2 -->
 
 ‘Reverends, what is the vital condition for the development of the qualities on the same side as awakening?’ You should answer them:
 
+<!-- @segment an9.1:5.1 -->
+
 ‘It’s when a mendicant has good friends, companions, and associates.
+
+<!-- @segment an9.1:5.2 -->
 
 This is the first vital condition for the development of the awakening factors.
 
+<!-- @segment an9.1:6.1 -->
+
 Furthermore, a mendicant is ethical, restrained in the monastic code, conducting themselves well and resorting for alms in suitable places. Seeing danger in the slightest fault, they keep the rules they’ve undertaken.
+
+<!-- @segment an9.1:6.2 -->
 
 This is the second vital condition for the development of the qualities on the same side as awakening.
 
+<!-- @segment an9.1:7.1 -->
+
 Furthermore, a mendicant gets to take part in talk about self-effacement that helps open the heart, when they want, without trouble or difficulty. That is, talk about fewness of wishes, contentment, seclusion, aloofness, arousing energy, ethics, immersion, wisdom, freedom, and the knowledge and vision of freedom.
+
+<!-- @segment an9.1:7.2 -->
 
 This is the third vital condition for the development of the qualities on the same side as awakening.
 
+<!-- @segment an9.1:8.1 -->
+
 Furthermore, a mendicant lives with energy roused up for giving up unskillful qualities and embracing skillful qualities. They are strong, staunchly vigorous, not slacking off when it comes to developing skillful qualities.
+
+<!-- @segment an9.1:8.2 -->
 
 This is the fourth vital condition for the development of the qualities on the same side as awakening.
 
+<!-- @segment an9.1:9.1 -->
+
 Furthermore, a mendicant is wise. They have the wisdom of arising and passing away which is noble, penetrative, and leads to the complete ending of suffering.
+
+<!-- @segment an9.1:9.2 -->
 
 This is the fifth vital condition for the development of the qualities on the same side as awakening.’
 
+<!-- @segment an9.1:10.1 -->
+
 A mendicant with good friends, companions, and associates can expect to
+
+<!-- @segment an9.1:10.2 -->
 
 be ethical …
 
+<!-- @segment an9.1:11.1 -->
+
 A mendicant with good friends, companions, and associates can expect to
+
+<!-- @segment an9.1:11.2 -->
 
 take part in talk about self-effacement that helps open the heart …
 
+<!-- @segment an9.1:12.1 -->
+
 A mendicant with good friends, companions, and associates can expect to
+
+<!-- @segment an9.1:12.2 -->
 
 live with energy roused up …
 
+<!-- @segment an9.1:13.1 -->
+
 A mendicant with good friends, companions, and associates can expect to
+
+<!-- @segment an9.1:13.2 -->
 
 be wise …
 
+<!-- @segment an9.1:14.1 -->
+
 But then, a mendicant grounded on these five things should develop four further things.
+
+<!-- @segment an9.1:14.2 -->
 
 They should develop the perception of ugliness to give up greed, love to give up hate, mindfulness of breathing to cut off thinking, and perception of impermanence to uproot the conceit ‘I am’.
 
+<!-- @segment an9.1:14.3 -->
+
 When you perceive impermanence, the perception of not-self becomes stabilized.
+
+<!-- @segment an9.1:14.4 -->
 
 Perceiving not-self, you uproot the conceit ‘I am’ and attain extinguishment in this very life.”

@@ -6,18 +6,34 @@ license: CC0
 title: Stingy
 ---
 
+<!-- @segment an5.224:1.1 -->
+
 “Mendicants, there are these five drawbacks of overstaying.
 
+<!-- @segment an5.224:1.2 -->
+
 What five?
+
+<!-- @segment an5.224:1.3 -->
 
 You become stingy with dwellings, families, material things, praise, and the teaching.
 
+<!-- @segment an5.224:1.4 -->
+
 These are the five drawbacks of overstaying.
+
+<!-- @segment an5.224:2.1 -->
 
 There are these five benefits of staying for a reasonable length of time.
 
+<!-- @segment an5.224:2.2 -->
+
 What five?
 
+<!-- @segment an5.224:2.3 -->
+
 You’re not stingy with dwellings, families, material things, praise, and the teaching.
+
+<!-- @segment an5.224:2.4 -->
 
 These are the five benefits of staying for a reasonable length of time.”

@@ -6,30 +6,58 @@ license: CC0
 title: A Stick
 ---
 
+<!-- @segment ud2.3:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud2.3:1.2 -->
 
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
 
+<!-- @segment ud2.3:1.3 -->
+
 Now at that time, between Sāvatthī and the Jeta Grove, several boys were hitting a snake with a stick.
+
+<!-- @segment ud2.3:1.4 -->
 
 Then the Buddha robed up in the morning and, taking his bowl and robe, entered Sāvatthī for alms.
 
+<!-- @segment ud2.3:1.5 -->
+
 He saw the boys hitting the snake.
+
+<!-- @segment ud2.3:2.1 -->
 
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
 
+<!-- @segment ud2.3:3.1 -->
+
 “Creatures love happiness,
+
+<!-- @segment ud2.3:3.2 -->
 
 so if you harm them with a stick
 
+<!-- @segment ud2.3:3.3 -->
+
 in search of your own happiness,
+
+<!-- @segment ud2.3:3.4 -->
 
 after death you’ll find no happiness.
 
+<!-- @segment ud2.3:4.1 -->
+
 Creatures love happiness,
+
+<!-- @segment ud2.3:4.2 -->
 
 so if you don’t harm them with a stick
 
+<!-- @segment ud2.3:4.3 -->
+
 in search of your own happiness,
+
+<!-- @segment ud2.3:4.4 -->
 
 after death you will find happiness.”

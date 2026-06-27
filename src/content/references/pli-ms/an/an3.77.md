@@ -1,41 +1,75 @@
 ---
 slug: an3.77
 source: suttacentral/bilara-data
+title: Dutiyabhavasutta
 edition: ms
 granularity: segment
-title: Dutiyabhavasutta
 ---
+
+<!-- @segment an3.77:1.1 -->
 
 Atha kho āyasmā ānando yena bhagavā tenupasaṅkami …pe… āyasmā ānando bhagavantaṁ etadavoca:
 
+<!-- @segment an3.77:1.2 -->
+
 “bhavo, bhavoti, bhante, vuccati.
+
+<!-- @segment an3.77:1.3 -->
 
 Kittāvatā nu kho, bhante, bhavo hotī”ti?
 
+<!-- @segment an3.77:2.1 -->
+
 “Kāmadhātuvepakkañca, ānanda, kammaṁ nābhavissa, api nu kho kāmabhavo paññāyethā”ti?
+
+<!-- @segment an3.77:2.2 -->
 
 “No hetaṁ, bhante”.
 
+<!-- @segment an3.77:2.3 -->
+
 “Iti kho, ānanda, kammaṁ khettaṁ, viññāṇaṁ bījaṁ, taṇhā sneho.
+
+<!-- @segment an3.77:2.4 -->
 
 Avijjānīvaraṇānaṁ sattānaṁ taṇhāsaṁyojanānaṁ hīnāya dhātuyā cetanā patiṭṭhitā patthanā patiṭṭhitā evaṁ āyatiṁ punabbhavābhinibbatti hoti.
 
+<!-- @segment an3.77:3.1 -->
+
 Rūpadhātuvepakkañca, ānanda, kammaṁ nābhavissa, api nu kho rūpabhavo paññāyethā”ti?
+
+<!-- @segment an3.77:3.2 -->
 
 “No hetaṁ, bhante”.
 
+<!-- @segment an3.77:3.3 -->
+
 “Iti kho, ānanda, kammaṁ khettaṁ, viññāṇaṁ bījaṁ, taṇhā sneho.
+
+<!-- @segment an3.77:3.4 -->
 
 Avijjānīvaraṇānaṁ sattānaṁ taṇhāsaṁyojanānaṁ majjhimāya dhātuyā cetanā patiṭṭhitā patthanā patiṭṭhitā evaṁ āyatiṁ punabbhavābhinibbatti hoti.
 
+<!-- @segment an3.77:4.1 -->
+
 Arūpadhātuvepakkañca, ānanda, kammaṁ nābhavissa, api nu kho arūpabhavo paññāyethā”ti?
+
+<!-- @segment an3.77:4.2 -->
 
 “No hetaṁ, bhante”.
 
+<!-- @segment an3.77:4.3 -->
+
 “Iti kho, ānanda, kammaṁ khettaṁ, viññāṇaṁ bījaṁ, taṇhā sneho.
+
+<!-- @segment an3.77:4.4 -->
 
 Avijjānīvaraṇānaṁ sattānaṁ taṇhāsaṁyojanānaṁ paṇītāya dhātuyā cetanā patiṭṭhitā patthanā patiṭṭhitā evaṁ āyatiṁ punabbhavābhinibbatti hoti.
 
+<!-- @segment an3.77:4.5 -->
+
 Evaṁ kho, ānanda, bhavo hotī”ti.
+
+<!-- @segment an3.77:4.6 -->
 
 Sattamaṁ.

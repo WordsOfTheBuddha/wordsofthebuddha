@@ -6,12 +6,22 @@ license: CC0
 title: Stinginess
 ---
 
+<!-- @segment an9.69:1.1 -->
+
 “Mendicants, there are these five kinds of stinginess.
+
+<!-- @segment an9.69:1.2 -->
 
 What five?
 
+<!-- @segment an9.69:1.3 -->
+
 Stinginess with dwellings, families, material things, praise, and the teaching.
 
+<!-- @segment an9.69:1.4 -->
+
 These are the five kinds of stinginess.
+
+<!-- @segment an9.69:2.1 -->
 
 To give up these five kinds of stinginess you should develop the four kinds of mindfulness meditation. …”

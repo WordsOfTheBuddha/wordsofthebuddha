@@ -6,88 +6,362 @@ license: CC0
 title: Perceptions in Detail
 ---
 
+<!-- @segment an7.49:1.1 -->
+
 “Mendicants, these seven perceptions, when developed and cultivated, are very fruitful and beneficial. They have freedom from death as their objective and culmination.
+
+<!-- @segment an7.49:1.2 -->
 
 What seven?
 
+<!-- @segment an7.49:1.3 -->
+
 The perceptions of ugliness, death, repulsiveness of food, dissatisfaction with the whole world, impermanence, suffering in impermanence, and not-self in suffering.
+
+<!-- @segment an7.49:1.4 -->
 
 These seven perceptions, when developed and cultivated, are very fruitful and beneficial. They have freedom from death as their objective and culmination.
 
+<!-- @segment an7.49:2.1 -->
+
 ‘When the perception of ugliness is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’
+
+<!-- @segment an7.49:2.2 -->
 
 That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:2.3 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of ugliness, their mind draws back from sexual intercourse. They shrink away, turn aside, and don’t get drawn into it. And either equanimity or revulsion become stabilized.
+
+<!-- @segment an7.49:2.4 -->
 
 It’s like a chicken’s feather or a scrap of sinew thrown in a fire. It shrivels up, shrinks, rolls up, and doesn’t stretch out.
 
+<!-- @segment an7.49:2.5 -->
+
 In the same way, when a mendicant often meditates with a mind reinforced with the perception of ugliness, their mind draws back from sexual intercourse. …
+
+<!-- @segment an7.49:3.1 -->
 
 If a mendicant often meditates with a mind reinforced with the perception of ugliness, but their mind is drawn to sexual intercourse, and not repulsed,
 
+<!-- @segment an7.49:3.2 -->
+
 they should know: ‘My perception of ugliness is undeveloped. I don’t have any distinction higher than before. I haven’t attained a fruit of development.’
 
+<!-- @segment an7.49:3.3 -->
+
 In this way they are aware of the situation.
+
+<!-- @segment an7.49:3.4 -->
 
 But if a mendicant often meditates with a mind reinforced with the perception of ugliness, their mind draws back from sexual intercourse …
 
+<!-- @segment an7.49:3.5 -->
+
 they should know: ‘My perception of ugliness is well developed. I have realized a distinction higher than before. I have attained a fruit of development.’
 
+<!-- @segment an7.49:3.6 -->
+
 In this way they are aware of the situation.
+
+<!-- @segment an7.49:3.7 -->
 
 ‘When the perception of ugliness is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’
 
+<!-- @segment an7.49:3.8 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:4.1 -->
 
 ‘When the perception of death is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’ That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:4.2 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of death, their mind draws back from desire to be reborn. …
 
+<!-- @segment an7.49:4.3 -->
+
+
+
+<!-- @segment an7.49:4.4 -->
+
+
+
+<!-- @segment an7.49:5.1 -->
+
+
+
+<!-- @segment an7.49:5.2 -->
+
+
+
+<!-- @segment an7.49:5.3 -->
+
+
+
+<!-- @segment an7.49:5.4 -->
+
+
+
+<!-- @segment an7.49:5.5 -->
+
+
+
+<!-- @segment an7.49:5.6 -->
+
+
+
+<!-- @segment an7.49:5.7 -->
+
+
+
+<!-- @segment an7.49:5.8 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:6.1 -->
 
 ‘When the perception of the repulsiveness of food is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’ That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:6.2 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of the repulsiveness of food, their mind draws back from craving for tastes. …
 
+<!-- @segment an7.49:6.3 -->
+
+
+
+<!-- @segment an7.49:6.4 -->
+
+
+
+<!-- @segment an7.49:7.1 -->
+
+
+
+<!-- @segment an7.49:7.2 -->
+
+
+
+<!-- @segment an7.49:7.3 -->
+
+
+
+<!-- @segment an7.49:7.4 -->
+
+
+
+<!-- @segment an7.49:7.5 -->
+
+
+
+<!-- @segment an7.49:7.6 -->
+
+
+
+<!-- @segment an7.49:7.7 -->
+
+
+
+<!-- @segment an7.49:7.8 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:8.1 -->
 
 ‘When the perception of dissatisfaction with the whole world is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’ That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:8.2 -->
+
+
+
+<!-- @segment an7.49:8.3 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of dissatisfaction with the whole world, their mind draws back from the world’s shiny things. …
 
+<!-- @segment an7.49:8.4 -->
+
+
+
+<!-- @segment an7.49:8.5 -->
+
+
+
+<!-- @segment an7.49:9.1 -->
+
+
+
+<!-- @segment an7.49:9.2 -->
+
+
+
+<!-- @segment an7.49:9.3 -->
+
+
+
+<!-- @segment an7.49:9.4 -->
+
+
+
+<!-- @segment an7.49:9.5 -->
+
+
+
+<!-- @segment an7.49:9.6 -->
+
+
+
+<!-- @segment an7.49:9.7 -->
+
+
+
+<!-- @segment an7.49:9.8 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:10.1 -->
 
 ‘When the perception of impermanence is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’ That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:10.2 -->
+
+
+
+<!-- @segment an7.49:10.3 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of impermanence, their mind draws back from material things, honors, and fame. …
 
+<!-- @segment an7.49:10.4 -->
+
+
+
+<!-- @segment an7.49:10.5 -->
+
+
+
+<!-- @segment an7.49:11.1 -->
+
+
+
+<!-- @segment an7.49:11.2 -->
+
+
+
+<!-- @segment an7.49:11.3 -->
+
+
+
+<!-- @segment an7.49:11.4 -->
+
+
+
+<!-- @segment an7.49:11.5 -->
+
+
+
+<!-- @segment an7.49:11.6 -->
+
+
+
+<!-- @segment an7.49:11.7 -->
+
+
+
+<!-- @segment an7.49:11.8 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:12.1 -->
 
 ‘When the perception of suffering in impermanence is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’ That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:12.2 -->
+
+
+
+<!-- @segment an7.49:12.3 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of suffering in impermanence, they establish a keen perception of the danger of sloth, laziness, slackness, negligence, lack of commitment, and failure to review, like a killer with a drawn sword. …
 
+<!-- @segment an7.49:13.1 -->
+
+
+
+<!-- @segment an7.49:13.2 -->
+
+
+
+<!-- @segment an7.49:13.3 -->
+
+
+
+<!-- @segment an7.49:13.4 -->
+
+
+
+<!-- @segment an7.49:13.5 -->
+
+
+
+<!-- @segment an7.49:13.6 -->
+
+
+
+<!-- @segment an7.49:13.7 -->
+
+
+
+<!-- @segment an7.49:13.8 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:14.1 -->
 
 ‘When the perception of not-self in suffering is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’ That’s what I said, but why did I say it?
 
+<!-- @segment an7.49:14.2 -->
+
+
+
+<!-- @segment an7.49:14.3 -->
+
 When a mendicant often meditates with a mind reinforced with the perception of not-self in suffering, their heart is rid of I-making, mine-making, and conceit for this conscious body and externally for all signs. It has gone beyond discrimination, and is peaceful and well freed.
+
+<!-- @segment an7.49:15.1 -->
 
 If a mendicant often meditates with a mind reinforced with the perception of not-self in suffering, but their heart is not rid of I-making, mine-making, and conceit for this conscious body and externally for all signs; nor has it gone beyond discrimination, and is not peaceful or well freed,
 
+<!-- @segment an7.49:15.2 -->
+
 they should know: ‘My perception of not-self in suffering is undeveloped. I don’t have any distinction higher than before. I haven’t attained a fruit of development.’
 
+<!-- @segment an7.49:15.3 -->
+
 In this way they are aware of the situation.
+
+<!-- @segment an7.49:16.1 -->
 
 But if a mendicant often meditates with a mind reinforced with the perception of not-self in suffering, and their heart is rid of I-making, mine-making, and conceit for this conscious body and externally for all signs; and it has gone beyond discrimination, and is peaceful and well freed,
 
+<!-- @segment an7.49:16.2 -->
+
 they should know: ‘My perception of not-self in suffering is well developed. I have realized a distinction higher than before. I have attained a fruit of development.’
+
+<!-- @segment an7.49:16.3 -->
 
 In this way they are aware of the situation.
 
+<!-- @segment an7.49:16.4 -->
+
 ‘When the perception of not-self in suffering is developed and cultivated it’s very fruitful and beneficial. It has freedom from death as its objective and culmination.’
 
+<!-- @segment an7.49:16.5 -->
+
 That’s what I said, and this is why I said it.
+
+<!-- @segment an7.49:17.1 -->
 
 These seven perceptions, when developed and cultivated, are very fruitful and beneficial. Their objective and culmination is freedom from death.”

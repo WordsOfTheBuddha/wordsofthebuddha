@@ -1,89 +1,171 @@
 ---
 slug: an1.11-20
 source: suttacentral/bilara-data
+title: 2. Nīvaraṇappahānavagga
 edition: ms
 granularity: segment
-title: 2. Nīvaraṇappahānavagga
 ---
+
+<!-- @segment an1.11:1.0 -->
 
 11
 
-12
-
-13
-
-14
-
-15
-
-16
-
-17
-
-18
-
-19
-
-20
+<!-- @segment an1.11:1.1 -->
 
 “Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā kāmacchando uppajjati uppanno vā kāmacchando bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, subhanimittaṁ.
 
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā byāpādo uppajjati uppanno vā byāpādo bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, paṭighanimittaṁ.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā thinamiddhaṁ uppajjati uppannaṁ vā thinamiddhaṁ bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, arati tandī vijambhitā bhattasammado cetaso ca līnattaṁ.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā uddhaccakukkuccaṁ uppajjati uppannaṁ vā uddhaccakukkuccaṁ bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, cetaso avūpasamo.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannā vā vicikicchā uppajjati uppannā vā vicikicchā bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, ayonisomanasikāro.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā kāmacchando nuppajjati uppanno vā kāmacchando pahīyati yathayidaṁ, bhikkhave, asubhanimittaṁ.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā byāpādo nuppajjati uppanno vā byāpādo pahīyati yathayidaṁ, bhikkhave, mettā cetovimutti.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā thinamiddhaṁ nuppajjati uppannaṁ vā thinamiddhaṁ pahīyati yathayidaṁ, bhikkhave, ārambhadhātu nikkamadhātu parakkamadhātu.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā uddhaccakukkuccaṁ nuppajjati uppannaṁ vā uddhaccakukkuccaṁ pahīyati yathayidaṁ, bhikkhave, cetaso vūpasamo.
-
-“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannā vā vicikicchā nuppajjati uppannā vā vicikicchā pahīyati yathayidaṁ, bhikkhave, yonisomanasikāro.
+<!-- @segment an1.11:1.2 -->
 
 Subhanimittaṁ, bhikkhave, ayoniso manasi karoto anuppanno ceva kāmacchando uppajjati uppanno ca kāmacchando bhiyyobhāvāya vepullāya saṁvattatī”ti.
 
-Paṭighanimittaṁ, bhikkhave, ayoniso manasi karoto anuppanno ceva byāpādo uppajjati uppanno ca byāpādo bhiyyobhāvāya vepullāya saṁvattatī”ti.
-
-Līnacittassa, bhikkhave, anuppannañceva thinamiddhaṁ uppajjati uppannañca thinamiddhaṁ bhiyyobhāvāya vepullāya saṁvattatī”ti.
-
-Avūpasantacittassa, bhikkhave, anuppannañceva uddhaccakukkuccaṁ uppajjati uppannañca uddhaccakukkuccaṁ bhiyyobhāvāya vepullāya saṁvattatī”ti.
-
-Ayoniso, bhikkhave, manasi karoto anuppannā ceva vicikicchā uppajjati uppannā ca vicikicchā bhiyyobhāvāya vepullāya saṁvattatī”ti.
-
-Asubhanimittaṁ, bhikkhave, yoniso manasi karoto anuppanno ceva kāmacchando nuppajjati uppanno ca kāmacchando pahīyatī”ti.
-
-Mettaṁ, bhikkhave, cetovimuttiṁ yoniso manasi karoto anuppanno ceva byāpādo nuppajjati uppanno ca byāpādo pahīyatī”ti.
-
-Āraddhavīriyassa, bhikkhave, anuppannañceva thinamiddhaṁ nuppajjati uppannañca thinamiddhaṁ pahīyatī”ti.
-
-Vūpasantacittassa, bhikkhave, anuppannañceva uddhaccakukkuccaṁ nuppajjati uppannañca uddhaccakukkuccaṁ pahīyatī”ti.
-
-Yoniso, bhikkhave, manasi karoto anuppannā ceva vicikicchā nuppajjati uppannā ca vicikicchā pahīyatī”ti.
+<!-- @segment an1.11:1.3 -->
 
 Paṭhamaṁ.
 
+<!-- @segment an1.12:1.0 -->
+
+12
+
+<!-- @segment an1.12:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā byāpādo uppajjati uppanno vā byāpādo bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, paṭighanimittaṁ.
+
+<!-- @segment an1.12:1.2 -->
+
+Paṭighanimittaṁ, bhikkhave, ayoniso manasi karoto anuppanno ceva byāpādo uppajjati uppanno ca byāpādo bhiyyobhāvāya vepullāya saṁvattatī”ti.
+
+<!-- @segment an1.12:1.3 -->
+
 Dutiyaṁ.
+
+<!-- @segment an1.13:1.0 -->
+
+13
+
+<!-- @segment an1.13:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā thinamiddhaṁ uppajjati uppannaṁ vā thinamiddhaṁ bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, arati tandī vijambhitā bhattasammado cetaso ca līnattaṁ.
+
+<!-- @segment an1.13:1.2 -->
+
+Līnacittassa, bhikkhave, anuppannañceva thinamiddhaṁ uppajjati uppannañca thinamiddhaṁ bhiyyobhāvāya vepullāya saṁvattatī”ti.
+
+<!-- @segment an1.13:1.3 -->
 
 Tatiyaṁ.
 
+<!-- @segment an1.14:1.0 -->
+
+14
+
+<!-- @segment an1.14:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā uddhaccakukkuccaṁ uppajjati uppannaṁ vā uddhaccakukkuccaṁ bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, cetaso avūpasamo.
+
+<!-- @segment an1.14:1.2 -->
+
+Avūpasantacittassa, bhikkhave, anuppannañceva uddhaccakukkuccaṁ uppajjati uppannañca uddhaccakukkuccaṁ bhiyyobhāvāya vepullāya saṁvattatī”ti.
+
+<!-- @segment an1.14:1.3 -->
+
 Catutthaṁ.
+
+<!-- @segment an1.15:1.0 -->
+
+15
+
+<!-- @segment an1.15:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannā vā vicikicchā uppajjati uppannā vā vicikicchā bhiyyobhāvāya vepullāya saṁvattati yathayidaṁ, bhikkhave, ayonisomanasikāro.
+
+<!-- @segment an1.15:1.2 -->
+
+Ayoniso, bhikkhave, manasi karoto anuppannā ceva vicikicchā uppajjati uppannā ca vicikicchā bhiyyobhāvāya vepullāya saṁvattatī”ti.
+
+<!-- @segment an1.15:1.3 -->
 
 Pañcamaṁ.
 
+<!-- @segment an1.16:1.0 -->
+
+16
+
+<!-- @segment an1.16:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā kāmacchando nuppajjati uppanno vā kāmacchando pahīyati yathayidaṁ, bhikkhave, asubhanimittaṁ.
+
+<!-- @segment an1.16:1.2 -->
+
+Asubhanimittaṁ, bhikkhave, yoniso manasi karoto anuppanno ceva kāmacchando nuppajjati uppanno ca kāmacchando pahīyatī”ti.
+
+<!-- @segment an1.16:1.3 -->
+
 Chaṭṭhaṁ.
+
+<!-- @segment an1.17:1.0 -->
+
+17
+
+<!-- @segment an1.17:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppanno vā byāpādo nuppajjati uppanno vā byāpādo pahīyati yathayidaṁ, bhikkhave, mettā cetovimutti.
+
+<!-- @segment an1.17:1.2 -->
+
+Mettaṁ, bhikkhave, cetovimuttiṁ yoniso manasi karoto anuppanno ceva byāpādo nuppajjati uppanno ca byāpādo pahīyatī”ti.
+
+<!-- @segment an1.17:1.3 -->
 
 Sattamaṁ.
 
+<!-- @segment an1.18:1.0 -->
+
+18
+
+<!-- @segment an1.18:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā thinamiddhaṁ nuppajjati uppannaṁ vā thinamiddhaṁ pahīyati yathayidaṁ, bhikkhave, ārambhadhātu nikkamadhātu parakkamadhātu.
+
+<!-- @segment an1.18:1.2 -->
+
+Āraddhavīriyassa, bhikkhave, anuppannañceva thinamiddhaṁ nuppajjati uppannañca thinamiddhaṁ pahīyatī”ti.
+
+<!-- @segment an1.18:1.3 -->
+
 Aṭṭhamaṁ.
+
+<!-- @segment an1.19:1.0 -->
+
+19
+
+<!-- @segment an1.19:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannaṁ vā uddhaccakukkuccaṁ nuppajjati uppannaṁ vā uddhaccakukkuccaṁ pahīyati yathayidaṁ, bhikkhave, cetaso vūpasamo.
+
+<!-- @segment an1.19:1.2 -->
+
+Vūpasantacittassa, bhikkhave, anuppannañceva uddhaccakukkuccaṁ nuppajjati uppannañca uddhaccakukkuccaṁ pahīyatī”ti.
+
+<!-- @segment an1.19:1.3 -->
 
 Navamaṁ.
 
+<!-- @segment an1.20:1.0 -->
+
+20
+
+<!-- @segment an1.20:1.1 -->
+
+“Nāhaṁ, bhikkhave, aññaṁ ekadhammampi samanupassāmi yena anuppannā vā vicikicchā nuppajjati uppannā vā vicikicchā pahīyati yathayidaṁ, bhikkhave, yonisomanasikāro.
+
+<!-- @segment an1.20:1.2 -->
+
+Yoniso, bhikkhave, manasi karoto anuppannā ceva vicikicchā nuppajjati uppannā ca vicikicchā pahīyatī”ti.
+
+<!-- @segment an1.20:1.3 -->
+
 Dasamaṁ.
+
+<!-- @segment an1.20:1.4 -->
 
 Nīvaraṇappahānavaggo dutiyo.

@@ -6,140 +6,298 @@ license: CC0
 title: Places People Are Reborn
 ---
 
+<!-- @segment an7.55:1.1 -->
+
 “Mendicants, I will teach you seven places people are reborn, and extinguishment by not grasping.
+
+<!-- @segment an7.55:1.2 -->
 
 Listen and apply your mind well, I will speak.”
 
+<!-- @segment an7.55:1.3 -->
+
 “Yes, sir,” the mendicants replied.
+
+<!-- @segment an7.55:1.4 -->
 
 The Buddha said this:
 
+<!-- @segment an7.55:1.5 -->
+
 “And what are the seven places people are reborn?
+
+<!-- @segment an7.55:2.1 -->
 
 Take a mendicant who practices like this:
 
+<!-- @segment an7.55:2.2 -->
+
 ‘It might not be, and it might not be mine. It will not be, and it will not be mine. I am giving up what exists, what has come to be.’ They gain equanimity.
 
+<!-- @segment an7.55:2.3 -->
+
 They’re not attached to life, or to creating a new life. And they see with right wisdom that there is a peaceful state beyond.
+
+<!-- @segment an7.55:2.4 -->
 
 But they haven’t completely realized that state. They haven’t totally given up the underlying tendencies of conceit, desire for continued existence, and ignorance.
 
+<!-- @segment an7.55:2.5 -->
+
 With the ending of the five lower fetters they’re extinguished between one life and the next.
+
+<!-- @segment an7.55:2.6 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off would be extinguished.
 
+<!-- @segment an7.55:2.7 -->
+
 In the same way, a mendicant who practices like this …
 
+<!-- @segment an7.55:2.8 -->
+
+
+
+<!-- @segment an7.55:2.9 -->
+
+
+
+<!-- @segment an7.55:2.10 -->
+
+
+
+<!-- @segment an7.55:2.11 -->
+
 With the ending of the five lower fetters they’re extinguished between one life and the next.
+
+<!-- @segment an7.55:3.1 -->
 
 Take a mendicant who practices like this:
 
+<!-- @segment an7.55:3.2 -->
+
 ‘It might not be, and it might not be mine. It will not be, and it will not be mine. I am giving up what exists, what has come to be.’ They gain equanimity.
+
+<!-- @segment an7.55:3.3 -->
 
 They’re not attached to life, or to creating a new life. And they see with right wisdom that there is a peaceful state beyond.
 
+<!-- @segment an7.55:3.4 -->
+
 But they haven’t totally realized that state. They haven’t completely given up the underlying tendencies of conceit, desire for continued existence, and ignorance.
 
+<!-- @segment an7.55:3.5 -->
+
 With the ending of the five lower fetters they’re extinguished between one life and the next.
+
+<!-- @segment an7.55:3.6 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off and floated away would be extinguished.
 
+<!-- @segment an7.55:3.7 -->
+
 In the same way, a mendicant who practices like this …
 
+<!-- @segment an7.55:3.8 -->
+
+
+
+<!-- @segment an7.55:3.9 -->
+
 With the ending of the five lower fetters they’re extinguished between one life and the next.
+
+<!-- @segment an7.55:4.1 -->
 
 Take a mendicant who practices like this:
 
+<!-- @segment an7.55:4.2 -->
+
 ‘It might not be, and it might not be mine. …’
 
+<!-- @segment an7.55:4.3 -->
+
 With the ending of the five lower fetters they’re extinguished between one life and the next.
+
+<!-- @segment an7.55:4.4 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off and floated away would be extinguished before landing.
 
+<!-- @segment an7.55:4.5 -->
+
 In the same way, a mendicant who practices like this …
+
+<!-- @segment an7.55:4.6 -->
+
+
+
+<!-- @segment an7.55:4.7 -->
 
 With the ending of the five lower fetters they’re extinguished between one life and the next.
 
+<!-- @segment an7.55:5.1 -->
+
 Take a mendicant who practices like this:
+
+<!-- @segment an7.55:5.2 -->
 
 ‘It might not be, and it might not be mine. …’
 
+<!-- @segment an7.55:5.3 -->
+
 With the ending of the five lower fetters they’re extinguished upon landing.
+
+<!-- @segment an7.55:5.4 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off and floated away would be extinguished upon landing.
 
+<!-- @segment an7.55:5.5 -->
+
 In the same way, a mendicant who practices like this …
 
+<!-- @segment an7.55:5.6 -->
+
 ‘It might not be, and it might not be mine. …’
+
+<!-- @segment an7.55:5.7 -->
 
 With the ending of the five lower fetters they’re extinguished upon landing.
 
+<!-- @segment an7.55:6.1 -->
+
 Take a mendicant who practices like this:
+
+<!-- @segment an7.55:6.2 -->
 
 ‘It might not be, and it might not be mine. …’
 
+<!-- @segment an7.55:6.3 -->
+
 With the ending of the five lower fetters they’re extinguished without extra effort.
+
+<!-- @segment an7.55:6.4 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off and floated away would fall on a little heap of grass or twigs.
 
+<!-- @segment an7.55:6.5 -->
+
 There it would ignite a fire and produce smoke. But the fire would consume the grass or twigs and become extinguished due to not being fed.
+
+<!-- @segment an7.55:6.6 -->
 
 In the same way, a mendicant who practices like this …
 
+<!-- @segment an7.55:6.7 -->
+
 ‘It might not be, and it might not be mine. …’
+
+<!-- @segment an7.55:6.8 -->
 
 With the ending of the five lower fetters they’re extinguished without extra effort.
 
+<!-- @segment an7.55:7.1 -->
+
 Take a mendicant who practices like this:
+
+<!-- @segment an7.55:7.2 -->
 
 ‘It might not be, and it might not be mine. …’
 
+<!-- @segment an7.55:7.3 -->
+
 With the ending of the five lower fetters they’re extinguished with extra effort.
+
+<!-- @segment an7.55:7.4 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off and floated away would fall on a large heap of grass or twigs.
 
+<!-- @segment an7.55:7.5 -->
+
 There it would ignite a fire and produce smoke. But the fire would consume the grass or twigs and become extinguished due to not being fed.
+
+<!-- @segment an7.55:7.6 -->
 
 In the same way, a mendicant who practices like this …
 
+<!-- @segment an7.55:7.7 -->
+
 ‘It might not be, and it might not be mine. …’
+
+<!-- @segment an7.55:7.8 -->
 
 With the ending of the five lower fetters they’re extinguished with extra effort.
 
+<!-- @segment an7.55:8.1 -->
+
 Take a mendicant who practices like this:
+
+<!-- @segment an7.55:8.2 -->
 
 ‘It might not be, and it might not be mine. It will not be, and it will not be mine. I am giving up what exists, what has come to be.’ They gain equanimity.
 
+<!-- @segment an7.55:8.3 -->
+
 They’re not attached to life, or to creating a new life. And they see with right wisdom that there is a peaceful state beyond.
+
+<!-- @segment an7.55:8.4 -->
 
 But they haven’t totally realized that state. They haven’t completely given up the underlying tendencies of conceit, desire for continued existence, and ignorance.
 
+<!-- @segment an7.55:8.5 -->
+
 With the ending of the five lower fetters they head upstream, going to the Akaniṭṭha realm.
+
+<!-- @segment an7.55:8.6 -->
 
 Suppose you struck an iron pot that had been heated all day. Any spark that flew off and floated away would fall on a huge heap of grass or twigs.
 
+<!-- @segment an7.55:8.7 -->
+
 There it would ignite a fire and produce smoke. And after consuming the grass and twigs, the fire would burn up plants and trees until it reached a green field, a roadside, a cliff’s edge, a body of water, or cleared parkland, where it would be extinguished due to not being fed.
+
+<!-- @segment an7.55:8.8 -->
 
 In the same way, a mendicant who practices like this …
 
+<!-- @segment an7.55:8.9 -->
+
 ‘It might not be, and it might not be mine. …’
+
+<!-- @segment an7.55:8.10 -->
 
 With the ending of the five lower fetters they head upstream, going to the Akaniṭṭha realm.
 
+<!-- @segment an7.55:8.11 -->
+
 These are the seven places people are reborn.
+
+<!-- @segment an7.55:9.1 -->
 
 And what is complete extinguishment with no fuel for grasping?
 
+<!-- @segment an7.55:9.2 -->
+
 Take a mendicant who practices like this:
+
+<!-- @segment an7.55:9.3 -->
 
 ‘It might not be, and it might not be mine. It will not be, and it will not be mine. I am giving up what exists, what has come to be.’ They gain equanimity.
 
+<!-- @segment an7.55:9.4 -->
+
 They’re not attached to life, or to creating a new life. And they see with right wisdom that there is a peaceful state beyond.
+
+<!-- @segment an7.55:9.5 -->
 
 And they have totally realized that state. They’ve completely given up the underlying tendencies of conceit, desire for continued existence, and ignorance.
 
+<!-- @segment an7.55:9.6 -->
+
 They’ve realized the undefiled freedom of heart and freedom by wisdom in this very life, and live having realized it with their own insight due to the ending of defilements.
 
+<!-- @segment an7.55:9.7 -->
+
 This is called complete extinguishment with no fuel for grasping.
+
+<!-- @segment an7.55:9.8 -->
 
 These are the seven places people are reborn, and extinguishment by not grasping.”

@@ -1,99 +1,191 @@
 ---
 slug: an4.171
 source: suttacentral/bilara-data
+title: Cetanāsutta
 edition: ms
 granularity: segment
-title: Cetanāsutta
 ---
+
+<!-- @segment an4.171:1.1 -->
 
 “Kāye vā, bhikkhave, sati kāyasañcetanāhetu uppajjati ajjhattaṁ sukhadukkhaṁ.
 
+<!-- @segment an4.171:1.2 -->
+
 Vācāya vā, bhikkhave, sati vacīsañcetanāhetu uppajjati ajjhattaṁ sukhadukkhaṁ.
+
+<!-- @segment an4.171:1.3 -->
 
 Mane vā, bhikkhave, sati manosañcetanāhetu uppajjati ajjhattaṁ sukhadukkhaṁ avijjāpaccayāva.
 
+<!-- @segment an4.171:2.1 -->
+
 Sāmaṁ vā taṁ, bhikkhave, kāyasaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ.
+
+<!-- @segment an4.171:2.2 -->
 
 Pare vāssa taṁ, bhikkhave, kāyasaṅkhāraṁ abhisaṅkharonti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ.
 
+<!-- @segment an4.171:2.3 -->
+
 Sampajāno vā taṁ, bhikkhave, kāyasaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ.
+
+<!-- @segment an4.171:2.4 -->
 
 Asampajāno vā taṁ, bhikkhave, kāyasaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ.
 
+<!-- @segment an4.171:3.1 -->
+
 Sāmaṁ vā taṁ, bhikkhave, vacīsaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ;
+
+<!-- @segment an4.171:3.2 -->
 
 pare vāssa taṁ, bhikkhave, vacīsaṅkhāraṁ abhisaṅkharonti;
 
+<!-- @segment an4.171:3.3 -->
+
 yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ;
+
+<!-- @segment an4.171:3.4 -->
 
 sampajāno vā taṁ, bhikkhave, vacīsaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ;
 
+<!-- @segment an4.171:3.5 -->
+
 asampajāno vā taṁ, bhikkhave, vacīsaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ.
+
+<!-- @segment an4.171:4.1 -->
 
 Sāmaṁ vā taṁ, bhikkhave, manosaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ;
 
+<!-- @segment an4.171:4.2 -->
+
 pare vāssa taṁ, bhikkhave, manosaṅkhāraṁ abhisaṅkharonti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ;
+
+<!-- @segment an4.171:4.3 -->
 
 sampajāno vā taṁ, bhikkhave, manosaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ;
 
+<!-- @segment an4.171:4.4 -->
+
 asampajāno vā taṁ, bhikkhave, manosaṅkhāraṁ abhisaṅkharoti, yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ.
+
+<!-- @segment an4.171:5.1 -->
 
 Imesu, bhikkhave, dhammesu avijjā anupatitā,
 
+<!-- @segment an4.171:5.2 -->
+
 avijjāya tveva asesavirāganirodhā so kāyo na hoti yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ, sā vācā na hoti yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ, so mano na hoti yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhaṁ,
+
+<!-- @segment an4.171:5.3 -->
 
 khettaṁ taṁ na hoti …pe… vatthu taṁ na hoti …pe… āyatanaṁ taṁ na hoti …pe… adhikaraṇaṁ taṁ na hoti yaṁpaccayāssa taṁ uppajjati ajjhattaṁ sukhadukkhanti.
 
+<!-- @segment an4.171:6.1 -->
+
 Cattārome, bhikkhave, attabhāvapaṭilābhā.
+
+<!-- @segment an4.171:6.2 -->
 
 Katame cattāro?
 
+<!-- @segment an4.171:6.3 -->
+
 Atthi, bhikkhave, attabhāvapaṭilābho, yasmiṁ attabhāvapaṭilābhe attasañcetanā kamati, no parasañcetanā.
+
+<!-- @segment an4.171:6.4 -->
 
 Atthi, bhikkhave, attabhāvapaṭilābho, yasmiṁ attabhāvapaṭilābhe parasañcetanā kamati, no attasañcetanā.
 
+<!-- @segment an4.171:6.5 -->
+
 Atthi, bhikkhave, attabhāvapaṭilābho, yasmiṁ attabhāvapaṭilābhe attasañcetanā ca kamati parasañcetanā ca.
+
+<!-- @segment an4.171:6.6 -->
 
 Atthi, bhikkhave, attabhāvapaṭilābho, yasmiṁ attabhāvapaṭilābhe nevattasañcetanā kamati, no parasañcetanā.
 
+<!-- @segment an4.171:6.7 -->
+
 Ime kho, bhikkhave, cattāro attabhāvapaṭilābhā”ti.
+
+<!-- @segment an4.171:7.1 -->
 
 Evaṁ vutte, āyasmā sāriputto bhagavantaṁ etadavoca:
 
+<!-- @segment an4.171:7.2 -->
+
 “imassa kho ahaṁ, bhante, bhagavatā saṅkhittena bhāsitassa evaṁ vitthārena atthaṁ ājānāmi:
+
+<!-- @segment an4.171:7.3 -->
 
 ‘tatra, bhante, yāyaṁ attabhāvapaṭilābho yasmiṁ attabhāvapaṭilābhe attasañcetanā kamati no parasañcetanā, attasañcetanāhetu tesaṁ sattānaṁ tamhā kāyā cuti hoti.
 
+<!-- @segment an4.171:7.4 -->
+
 Tatra, bhante, yāyaṁ attabhāvapaṭilābho yasmiṁ attabhāvapaṭilābhe parasañcetanā kamati no attasañcetanā, parasañcetanāhetu tesaṁ sattānaṁ tamhā kāyā cuti hoti.
+
+<!-- @segment an4.171:7.5 -->
 
 Tatra, bhante, yāyaṁ attabhāvapaṭilābho yasmiṁ attabhāvapaṭilābhe attasañcetanā ca kamati parasañcetanā ca, attasañcetanā ca parasañcetanā ca hetu tesaṁ sattānaṁ tamhā kāyā cuti hoti.
 
+<!-- @segment an4.171:7.6 -->
+
 Tatra, bhante, yāyaṁ attabhāvapaṭilābho yasmiṁ attabhāvapaṭilābhe neva attasañcetanā kamati no parasañcetanā, katame tena devā daṭṭhabbā’”ti?
+
+<!-- @segment an4.171:7.7 -->
 
 “Nevasaññānāsaññāyatanūpagā, sāriputta, devā tena daṭṭhabbā”ti.
 
+<!-- @segment an4.171:8.1 -->
+
 “Ko nu kho, bhante, hetu ko paccayo, yena m’idhekacce sattā tamhā kāyā cutā āgāmino honti āgantāro itthattaṁ?
+
+<!-- @segment an4.171:8.2 -->
 
 Ko pana, bhante, hetu ko paccayo, yena m’idhekacce sattā tamhā kāyā cutā anāgāmino honti anāgantāro itthattan”ti?
 
+<!-- @segment an4.171:8.3 -->
+
 “Idha, sāriputta, ekaccassa puggalassa orambhāgiyāni saṁyojanāni appahīnāni honti, so diṭṭheva dhamme nevasaññānāsaññāyatanaṁ upasampajja viharati.
+
+<!-- @segment an4.171:8.4 -->
 
 So tadassādeti, taṁ nikāmeti, tena ca vittiṁ āpajjati;
 
+<!-- @segment an4.171:8.5 -->
+
 tattha ṭhito tadadhimutto tabbahulavihārī aparihīno kālaṁ kurumāno nevasaññānāsaññāyatanūpagānaṁ devānaṁ sahabyataṁ upapajjati.
+
+<!-- @segment an4.171:8.6 -->
 
 So tato cuto āgāmī hoti āgantā itthattaṁ.
 
+<!-- @segment an4.171:9.1 -->
+
 Idha pana, sāriputta, ekaccassa puggalassa orambhāgiyāni saṁyojanāni pahīnāni honti, so diṭṭheva dhamme nevasaññānāsaññāyatanaṁ upasampajja viharati.
+
+<!-- @segment an4.171:9.2 -->
 
 So tadassādeti, taṁ nikāmeti, tena ca vittiṁ āpajjati;
 
+<!-- @segment an4.171:9.3 -->
+
 tattha ṭhito tadadhimutto tabbahulavihārī aparihīno kālaṁ kurumāno nevasaññānāsaññāyatanūpagānaṁ devānaṁ sahabyataṁ upapajjati.
+
+<!-- @segment an4.171:9.4 -->
 
 So tato cuto anāgāmī hoti anāgantā itthattaṁ.
 
+<!-- @segment an4.171:10.1 -->
+
 Ayaṁ kho, sāriputta, hetu ayaṁ paccayo, yena m’idhekacce sattā tamhā kāyā cutā āgāmino honti āgantāro itthattaṁ.
 
+<!-- @segment an4.171:10.2 -->
+
 Ayaṁ pana, sāriputta, hetu ayaṁ paccayo, yena m’idhekacce sattā tamhā kāyā cutā anāgāmino honti anāgantāro itthattan”ti.
+
+<!-- @segment an4.171:10.3 -->
 
 Paṭhamaṁ.

@@ -1,91 +1,175 @@
 ---
 slug: an4.36
 source: suttacentral/bilara-data
+title: Doṇasutta
 edition: ms
 granularity: segment
-title: Doṇasutta
 ---
+
+<!-- @segment an4.36:1.1 -->
 
 Ekaṁ samayaṁ bhagavā antarā ca ukkaṭṭhaṁ antarā ca setabyaṁ addhānamaggappaṭipanno hoti.
 
+<!-- @segment an4.36:1.2 -->
+
 Doṇopi sudaṁ brāhmaṇo antarā ca ukkaṭṭhaṁ antarā ca setabyaṁ addhānamaggappaṭipanno hoti.
+
+<!-- @segment an4.36:1.3 -->
 
 Addasā kho doṇo brāhmaṇo bhagavato pādesu cakkāni sahassārāni sanemikāni sanābhikāni sabbākāraparipūrāni;
 
+<!-- @segment an4.36:1.4 -->
+
 disvānassa etadahosi:
+
+<!-- @segment an4.36:1.5 -->
 
 “acchariyaṁ vata bho, abbhutaṁ vata bho.
 
+<!-- @segment an4.36:1.6 -->
+
 Na vatimāni manussabhūtassa padāni bhavissantī”ti.
+
+<!-- @segment an4.36:1.7 -->
 
 Atha kho bhagavā maggā okkamma aññatarasmiṁ rukkhamūle nisīdi pallaṅkaṁ ābhujitvā ujuṁ kāyaṁ paṇidhāya parimukhaṁ satiṁ upaṭṭhapetvā.
 
+<!-- @segment an4.36:1.8 -->
+
 Atha kho doṇo brāhmaṇo bhagavato padāni anugacchanto addasa bhagavantaṁ aññatarasmiṁ rukkhamūle nisinnaṁ pāsādikaṁ pasādanīyaṁ santindriyaṁ santamānasaṁ uttamadamathasamathamanuppattaṁ dantaṁ guttaṁ saṁyatindriyaṁ nāgaṁ.
+
+<!-- @segment an4.36:1.9 -->
 
 Disvāna yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ etadavoca:
 
+<!-- @segment an4.36:2.1 -->
+
 “Devo no bhavaṁ bhavissatī”ti?
+
+<!-- @segment an4.36:2.2 -->
 
 “Na kho ahaṁ, brāhmaṇa, devo bhavissāmī”ti.
 
+<!-- @segment an4.36:2.3 -->
+
 “Gandhabbo no bhavaṁ bhavissatī”ti?
+
+<!-- @segment an4.36:2.4 -->
 
 “Na kho ahaṁ, brāhmaṇa, gandhabbo bhavissāmī”ti.
 
+<!-- @segment an4.36:2.5 -->
+
 “Yakkho no bhavaṁ bhavissatī”ti?
+
+<!-- @segment an4.36:2.6 -->
 
 “Na kho ahaṁ, brāhmaṇa, yakkho bhavissāmī”ti.
 
+<!-- @segment an4.36:2.7 -->
+
 “Manusso no bhavaṁ bhavissatī”ti?
+
+<!-- @segment an4.36:2.8 -->
 
 “Na kho ahaṁ, brāhmaṇa, manusso bhavissāmī”ti.
 
+<!-- @segment an4.36:3.1 -->
+
 “‘Devo no bhavaṁ bhavissatī’ti, iti puṭṭho samāno:
+
+<!-- @segment an4.36:3.2 -->
 
 ‘na kho ahaṁ, brāhmaṇa, devo bhavissāmī’ti vadesi.
 
+<!-- @segment an4.36:3.3 -->
+
 ‘Gandhabbo no bhavaṁ bhavissatī’ti, iti puṭṭho samāno:
+
+<!-- @segment an4.36:3.4 -->
 
 ‘na kho ahaṁ, brāhmaṇa, gandhabbo bhavissāmī’ti vadesi.
 
+<!-- @segment an4.36:3.5 -->
+
 ‘Yakkho no bhavaṁ bhavissatī’ti, iti puṭṭho samāno:
+
+<!-- @segment an4.36:3.6 -->
 
 ‘na kho ahaṁ, brāhmaṇa, yakkho bhavissāmī’ti vadesi.
 
+<!-- @segment an4.36:3.7 -->
+
 ‘Manusso no bhavaṁ bhavissatī’ti, iti puṭṭho samāno:
+
+<!-- @segment an4.36:3.8 -->
 
 ‘na kho ahaṁ, brāhmaṇa, manusso bhavissāmī’ti vadesi.
 
+<!-- @segment an4.36:3.9 -->
+
 Atha ko carahi bhavaṁ bhavissatī”ti?
+
+<!-- @segment an4.36:4.1 -->
 
 “Yesaṁ kho ahaṁ, brāhmaṇa, āsavānaṁ appahīnattā devo bhaveyyaṁ, te me āsavā pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṁ anuppādadhammā.
 
+<!-- @segment an4.36:4.2 -->
+
 Yesaṁ kho ahaṁ, brāhmaṇa, āsavānaṁ appahīnattā gandhabbo bhaveyyaṁ … yakkho bhaveyyaṁ … manusso bhaveyyaṁ, te me āsavā pahīnā ucchinnamūlā tālāvatthukatā anabhāvaṅkatā āyatiṁ anuppādadhammā.
+
+<!-- @segment an4.36:4.3 -->
 
 Seyyathāpi, brāhmaṇa, uppalaṁ vā padumaṁ vā puṇḍarīkaṁ vā udake jātaṁ udake saṁvaḍḍhaṁ udakā accuggamma tiṭṭhati anupalittaṁ udakena;
 
+<!-- @segment an4.36:4.4 -->
+
 evamevaṁ kho ahaṁ, brāhmaṇa, loke jāto loke saṁvaḍḍho lokaṁ abhibhuyya viharāmi anupalitto lokena.
+
+<!-- @segment an4.36:4.5 -->
 
 Buddhoti maṁ, brāhmaṇa, dhārehīti.
 
+<!-- @segment an4.36:5.1 -->
+
 Yena devūpapatyassa,
+
+<!-- @segment an4.36:5.2 -->
 
 gandhabbo vā vihaṅgamo;
 
+<!-- @segment an4.36:5.3 -->
+
 Yakkhattaṁ yena gaccheyyaṁ,
+
+<!-- @segment an4.36:5.4 -->
 
 manussattañca abbaje;
 
+<!-- @segment an4.36:5.5 -->
+
 Te mayhaṁ āsavā khīṇā,
+
+<!-- @segment an4.36:5.6 -->
 
 viddhastā vinaḷīkatā.
 
+<!-- @segment an4.36:6.1 -->
+
 Puṇḍarīkaṁ yathā vaggu,
+
+<!-- @segment an4.36:6.2 -->
 
 Toyena nupalippati;
 
+<!-- @segment an4.36:6.3 -->
+
 Nupalippāmi lokena,
 
+<!-- @segment an4.36:6.4 -->
+
 Tasmā buddhosmi brāhmaṇā”ti.
+
+<!-- @segment an4.36:6.5 -->
 
 Chaṭṭhaṁ.

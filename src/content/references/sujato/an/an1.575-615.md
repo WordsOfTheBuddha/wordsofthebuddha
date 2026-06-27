@@ -6,98 +6,194 @@ license: CC0
 title: The Chapter on Mindfulness of the Body
 ---
 
+<!-- @segment an1.575:1.0 -->
+
 575
 
-576–582
-
-583
-
-584
-
-585
-
-586–590
-
-591–592
-
-593–595
-
-596–599
-
-600–615
+<!-- @segment an1.575:1.1 -->
 
 “Mendicants, anyone who brings into their mind the great ocean includes all of the streams that run into it.
 
-“One thing, mendicants, when developed and cultivated leads to great urgency … great benefit … great sanctuary from the yoke … mindfulness and awareness … gaining knowledge and vision … blissful meditation in this life … the realization of the fruit of knowledge and freedom.
-
-“When one thing, mendicants, is developed and cultivated the body and mind become tranquil, thinking and considering settle down, and all of the qualities that play a part in realization are fully developed.
-
-“When one thing, mendicants, is developed and cultivated, unskillful qualities do not arise, and, if they’ve already arisen, they are given up.
-
-“When one thing, mendicants, is developed and cultivated, skillful qualities arise, and, once they’ve arisen, they increase and grow.
-
-“When one thing, mendicants, is developed and cultivated, ignorance is given up … knowledge arises … the conceit ‘I am’ is given up … the underlying tendencies are uprooted … the fetters are given up.
-
-“One thing, mendicants, when developed and cultivated leads to demolition by wisdom … to complete extinguishment with no fuel for grasping.
-
-“When one thing is developed and cultivated there is the penetration of many elements … the penetration of diverse elements … the analysis of many elements.
-
-“One thing, mendicants, when developed and cultivated leads to the realization of the fruit of stream-entry … once-return … non-return … perfection.
-
-“One thing, mendicants, when developed and cultivated, leads to the getting of wisdom … the growth of wisdom … the increase of wisdom … to great wisdom … to widespread wisdom … to abundant wisdom … to deep wisdom … to extraordinary wisdom … to vast wisdom … to much wisdom … to fast wisdom … to light wisdom … to laughing wisdom … to swift wisdom … to sharp wisdom … to penetrating wisdom.
+<!-- @segment an1.575:1.2 -->
 
 In the same way, anyone who has developed and cultivated mindfulness of the body includes all of the skillful qualities that play a part in realization.”
 
-What one thing?
+<!-- @segment an1.576-582:1.0 -->
+
+576–582
+
+<!-- @segment an1.576-582:1.1 -->
+
+“One thing, mendicants, when developed and cultivated leads to great urgency … great benefit … great sanctuary from the yoke … mindfulness and awareness … gaining knowledge and vision … blissful meditation in this life … the realization of the fruit of knowledge and freedom.
+
+<!-- @segment an1.576-582:1.2 -->
 
 What one thing?
 
-What one thing?
-
-What one thing?
-
-What one thing?
-
-What one thing?
-
-What one thing?
-
-What one thing?
-
-What one thing?
+<!-- @segment an1.576-582:1.3 -->
 
 Mindfulness of the body.
 
-Mindfulness of the body.
-
-Mindfulness of the body.
-
-Mindfulness of the body.
-
-Mindfulness of the body.
-
-Mindfulness of the body.
-
-Mindfulness of the body.
-
-Mindfulness of the body.
-
-Mindfulness of the body.
+<!-- @segment an1.576-582:1.4 -->
 
 This one thing, when developed and cultivated, leads to great urgency … great benefit … great sanctuary from the yoke … mindfulness and awareness … gaining knowledge and vision … blissful meditation in this life … the realization of the fruit of knowledge and freedom.”
 
+<!-- @segment an1.583:1.0 -->
+
+583
+
+<!-- @segment an1.583:1.1 -->
+
+“When one thing, mendicants, is developed and cultivated the body and mind become tranquil, thinking and considering settle down, and all of the qualities that play a part in realization are fully developed.
+
+<!-- @segment an1.583:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.583:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.583:1.4 -->
+
 When this one thing is developed and cultivated, the body and mind become tranquil, thinking and considering settle down, and all of the qualities that play a part in realization are fully developed.”
+
+<!-- @segment an1.584:1.0 -->
+
+584
+
+<!-- @segment an1.584:1.1 -->
+
+“When one thing, mendicants, is developed and cultivated, unskillful qualities do not arise, and, if they’ve already arisen, they are given up.
+
+<!-- @segment an1.584:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.584:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.584:1.4 -->
 
 When this one thing is developed and cultivated, unskillful qualities do not arise, and, if they’ve already arisen, they are given up.”
 
+<!-- @segment an1.585:1.0 -->
+
+585
+
+<!-- @segment an1.585:1.1 -->
+
+“When one thing, mendicants, is developed and cultivated, skillful qualities arise, and, once they’ve arisen, they increase and grow.
+
+<!-- @segment an1.585:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.585:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.585:1.4 -->
+
 When this one thing is developed and cultivated, skillful qualities arise, and, once they’ve arisen, they increase and grow.”
+
+<!-- @segment an1.586-590:1.0 -->
+
+586–590
+
+<!-- @segment an1.586-590:1.1 -->
+
+“When one thing, mendicants, is developed and cultivated, ignorance is given up … knowledge arises … the conceit ‘I am’ is given up … the underlying tendencies are uprooted … the fetters are given up.
+
+<!-- @segment an1.586-590:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.586-590:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.586-590:1.4 -->
 
 When this one thing is developed and cultivated, ignorance is given up … knowledge arises … the conceit ‘I am’ is given up … the underlying tendencies are uprooted … the fetters are given up.”
 
+<!-- @segment an1.591-592:1.0 -->
+
+591–592
+
+<!-- @segment an1.591-592:1.1 -->
+
+“One thing, mendicants, when developed and cultivated leads to demolition by wisdom … to complete extinguishment with no fuel for grasping.
+
+<!-- @segment an1.591-592:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.591-592:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.591-592:1.4 -->
+
 This one thing, mendicants, when developed and cultivated leads to demolition by wisdom … to complete extinguishment with no fuel for grasping.”
+
+<!-- @segment an1.593-595:1.0 -->
+
+593–595
+
+<!-- @segment an1.593-595:1.1 -->
+
+“When one thing is developed and cultivated there is the penetration of many elements … the penetration of diverse elements … the analysis of many elements.
+
+<!-- @segment an1.593-595:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.593-595:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.593-595:1.4 -->
 
 When this one thing is developed and cultivated there is the penetration of many elements … the penetration of diverse elements … the analysis of many elements.”
 
+<!-- @segment an1.596-599:1.0 -->
+
+596–599
+
+<!-- @segment an1.596-599:1.1 -->
+
+“One thing, mendicants, when developed and cultivated leads to the realization of the fruit of stream-entry … once-return … non-return … perfection.
+
+<!-- @segment an1.596-599:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.596-599:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.596-599:1.4 -->
+
 This one thing, when developed and cultivated, leads to the realization of the fruit of stream-entry … once-return … non-return … perfection.”
+
+<!-- @segment an1.600-615:1.0 -->
+
+600–615
+
+<!-- @segment an1.600-615:1.1 -->
+
+“One thing, mendicants, when developed and cultivated, leads to the getting of wisdom … the growth of wisdom … the increase of wisdom … to great wisdom … to widespread wisdom … to abundant wisdom … to deep wisdom … to extraordinary wisdom … to vast wisdom … to much wisdom … to fast wisdom … to light wisdom … to laughing wisdom … to swift wisdom … to sharp wisdom … to penetrating wisdom.
+
+<!-- @segment an1.600-615:1.2 -->
+
+What one thing?
+
+<!-- @segment an1.600-615:1.3 -->
+
+Mindfulness of the body.
+
+<!-- @segment an1.600-615:1.4 -->
 
 This one thing, when developed and cultivated, leads to the getting of wisdom … the growth of wisdom … the increase of wisdom … to great wisdom … to widespread wisdom … to abundant wisdom … to deep wisdom … to extraordinary wisdom … to vast wisdom … to much wisdom … to fast wisdom … to light wisdom … to laughing wisdom … to swift wisdom … to sharp wisdom … to penetrating wisdom.”

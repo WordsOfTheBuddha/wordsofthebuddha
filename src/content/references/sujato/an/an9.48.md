@@ -6,4 +6,6 @@ license: CC0
 title: Extinguishment
 ---
 
+<!-- @segment an9.48:1.1 -->
+
 “Reverend, they speak of ‘extinguishment’. …”

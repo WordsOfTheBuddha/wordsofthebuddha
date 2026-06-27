@@ -6,18 +6,34 @@ license: CC0
 title: With Kimbila
 ---
 
+<!-- @segment an5.201:1.1 -->
+
 At one time the Buddha was staying near Kimbilā in the Freshwater Mangrove Wood.
+
+<!-- @segment an5.201:1.2 -->
 
 Then Venerable Kimbila went up to the Buddha, bowed, sat down to one side, and said to him:
 
+<!-- @segment an5.201:1.3 -->
+
 “What is the cause, sir, what is the reason why the true teaching does not last long after the final quenching of the Realized One?”
+
+<!-- @segment an5.201:1.4 -->
 
 “Kimbila, it’s when the monks, nuns, laymen, and laywomen lack respect and reverence for the Teacher, the teaching, the Saṅgha, the training, and each other after the final quenching of the Realized One.
 
+<!-- @segment an5.201:1.5 -->
+
 This is the cause, this is the reason why the true teaching does not last long after the final quenching of the Realized One.”
+
+<!-- @segment an5.201:2.1 -->
 
 “What is the cause, sir, what is the reason why the true teaching does last long after the final quenching of the Realized One?”
 
+<!-- @segment an5.201:2.2 -->
+
 “Kimbila, it’s when the monks, nuns, laymen, and laywomen maintain respect and reverence for the Teacher, the teaching, the Saṅgha, the training, and each other after the final quenching of the Realized One.
+
+<!-- @segment an5.201:2.3 -->
 
 This is the cause, this is the reason why the true teaching does last long after the final quenching of the Realized One.”

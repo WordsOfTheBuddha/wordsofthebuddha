@@ -6,36 +6,70 @@ license: CC0
 title: Business
 ---
 
+<!-- @segment an4.79:1.1 -->
+
 Then Venerable Sāriputta went up to the Buddha, bowed, sat down to one side, and said to him:
+
+<!-- @segment an4.79:1.2 -->
 
 “Sir, what is the cause, what is the reason why for different people the same kind of business undertaking might fail,
 
+<!-- @segment an4.79:1.3 -->
+
 while another doesn’t meet expectations,
 
+<!-- @segment an4.79:1.4 -->
+
 another meets expectations,
+
+<!-- @segment an4.79:1.5 -->
 
 and another exceeds expectations?”
 
+<!-- @segment an4.79:2.1 -->
+
 “Sāriputta, take a case where someone goes to an ascetic or brahmin and invites them to ask for what they need. But they fail to give what’s requested.
+
+<!-- @segment an4.79:2.2 -->
 
 When they’ve passed away from that life, if they’re reborn in this place, whatever business they undertake fails.
 
+<!-- @segment an4.79:3.1 -->
+
 Take a case where someone goes to an ascetic or brahmin and invites them to ask for what they need. They give what’s requested, but don’t meet expectations.
+
+<!-- @segment an4.79:3.2 -->
 
 When they’ve passed away from that life, if they’re reborn in this place, whatever business they undertake doesn’t meet expectations.
 
+<!-- @segment an4.79:4.1 -->
+
 Take a case where someone goes to an ascetic or brahmin and invites them to ask for what they need. They give what’s requested, meeting expectations.
+
+<!-- @segment an4.79:4.2 -->
 
 When they’ve passed away from that life, if they’re reborn in this place, whatever business they undertake meets expectations.
 
+<!-- @segment an4.79:5.1 -->
+
 Take a case where someone goes to an ascetic or brahmin and invites them to ask for what they need. They give what’s requested, exceeding expectations.
+
+<!-- @segment an4.79:5.2 -->
 
 When they’ve passed away from that life, if they’re reborn in this place, whatever business they undertake exceeds expectations.
 
+<!-- @segment an4.79:6.1 -->
+
 This is the cause, this is the reason why for different people the same kind of business undertaking might fail,
+
+<!-- @segment an4.79:6.2 -->
 
 while another doesn’t meet expectations,
 
+<!-- @segment an4.79:6.3 -->
+
 another meets expectations,
+
+<!-- @segment an4.79:6.4 -->
 
 and another exceeds expectations.”

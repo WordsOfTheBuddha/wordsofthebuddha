@@ -1,25 +1,43 @@
 ---
 slug: an3.105
 source: suttacentral/bilara-data
+title: Dutiyaassādasutta
 edition: ms
 granularity: segment
-title: Dutiyaassādasutta
 ---
+
+<!-- @segment an3.105:1.1 -->
 
 “No cedaṁ, bhikkhave, loke assādo abhavissa, nayidaṁ sattā loke sārajjeyyuṁ.
 
+<!-- @segment an3.105:1.2 -->
+
 Yasmā ca kho, bhikkhave, atthi loke assādo, tasmā sattā loke sārajjanti.
+
+<!-- @segment an3.105:1.3 -->
 
 No cedaṁ, bhikkhave, loke ādīnavo abhavissa, nayidaṁ sattā loke nibbindeyyuṁ.
 
+<!-- @segment an3.105:1.4 -->
+
 Yasmā ca kho, bhikkhave, atthi loke ādīnavo, tasmā sattā loke nibbindanti.
+
+<!-- @segment an3.105:1.5 -->
 
 No cedaṁ, bhikkhave, loke nissaraṇaṁ abhavissa, nayidaṁ sattā lokamhā nissareyyuṁ.
 
+<!-- @segment an3.105:1.6 -->
+
 Yasmā ca kho, bhikkhave, atthi loke nissaraṇaṁ, tasmā sattā lokamhā nissaranti.
+
+<!-- @segment an3.105:1.7 -->
 
 Yāvakīvañca, bhikkhave, sattā lokassa assādañca assādato ādīnavañca ādīnavato nissaraṇañca nissaraṇato yathābhūtaṁ nābbhaññāsuṁ, neva tāva, bhikkhave, sattā sadevakā lokā samārakā sabrahmakā sassamaṇabrāhmaṇiyā pajāya sadevamanussāya nissaṭā visaṁyuttā vippamuttā vimariyādīkatena cetasā vihariṁsu.
 
+<!-- @segment an3.105:1.8 -->
+
 Yato ca kho, bhikkhave, sattā lokassa assādañca assādato ādīnavañca ādīnavato nissaraṇañca nissaraṇato yathābhūtaṁ abbhaññāsuṁ, atha, bhikkhave, sattā sadevakā lokā samārakā sabrahmakā sassamaṇabrāhmaṇiyā pajāya sadevamanussāya nissaṭā visaṁyuttā vippamuttā vimariyādīkatena cetasā viharantī”ti.
+
+<!-- @segment an3.105:1.9 -->
 
 Tatiyaṁ.

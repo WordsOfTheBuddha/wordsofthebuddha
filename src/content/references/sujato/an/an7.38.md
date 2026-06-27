@@ -6,22 +6,42 @@ license: CC0
 title: Textual Analysis (1st)
 ---
 
+<!-- @segment an7.38:1.1 -->
+
 “Mendicants, a mendicant with seven qualities will soon realize the four kinds of textual analysis and live having achieved them with their own insight.
+
+<!-- @segment an7.38:1.2 -->
 
 What seven?
 
+<!-- @segment an7.38:1.3 -->
+
 It’s when a mendicant truly understands: ‘This is mental sluggishness’.
+
+<!-- @segment an7.38:1.4 -->
 
 They truly understand internally constricted mind as ‘internally constricted mind’.
 
+<!-- @segment an7.38:1.5 -->
+
 They truly understand externally scattered mind as ‘externally scattered mind’.
+
+<!-- @segment an7.38:1.6 -->
 
 They know feelings as they arise, as they remain, and as they go away.
 
+<!-- @segment an7.38:1.7 -->
+
 They know perceptions as they arise, as they remain, and as they go away.
+
+<!-- @segment an7.38:1.8 -->
 
 They know thoughts as they arise, as they remain, and as they go away.
 
+<!-- @segment an7.38:1.9 -->
+
 The patterns of qualities—suitable or unsuitable, inferior or superior, or those with a portion of dark or bright—are properly grasped, focused on, borne in mind, and penetrated with wisdom.
+
+<!-- @segment an7.38:1.10 -->
 
 A mendicant with these seven qualities will soon realize the four kinds of textual analysis and live having achieved them with their own insight.”

@@ -1,55 +1,103 @@
 ---
 slug: an4.245
 source: suttacentral/bilara-data
+title: Sikkhānisaṁsasutta
 edition: ms
 granularity: segment
-title: Sikkhānisaṁsasutta
 ---
+
+<!-- @segment an4.245:1.1 -->
 
 “Sikkhānisaṁsamidaṁ, bhikkhave, brahmacariyaṁ vussati paññuttaraṁ vimuttisāraṁ satādhipateyyaṁ.
 
+<!-- @segment an4.245:1.2 -->
+
 Kathañca, bhikkhave, sikkhānisaṁsaṁ hoti?
+
+<!-- @segment an4.245:1.3 -->
 
 Idha, bhikkhave, mayā sāvakānaṁ ābhisamācārikā sikkhā paññattā appasannānaṁ pasādāya pasannānaṁ bhiyyobhāvāya.
 
+<!-- @segment an4.245:1.4 -->
+
 Yathā yathā, bhikkhave, mayā sāvakānaṁ ābhisamācārikā sikkhā paññattā appasannānaṁ pasādāya pasannānaṁ bhiyyobhāvāya tathā tathā so tassā sikkhāya akhaṇḍakārī hoti acchiddakārī asabalakārī akammāsakārī, samādāya sikkhati sikkhāpadesu.
+
+<!-- @segment an4.245:2.1 -->
 
 Puna caparaṁ, bhikkhave, mayā sāvakānaṁ ādibrahmacariyikā sikkhā paññattā sabbaso sammā dukkhakkhayāya.
 
+<!-- @segment an4.245:2.2 -->
+
 Yathā yathā, bhikkhave, mayā sāvakānaṁ ādibrahmacariyikā sikkhā paññattā sabbaso sammā dukkhakkhayāya tathā tathā so tassā sikkhāya akhaṇḍakārī hoti acchiddakārī asabalakārī akammāsakārī, samādāya sikkhati sikkhāpadesu.
+
+<!-- @segment an4.245:2.3 -->
 
 Evaṁ kho, bhikkhave, sikkhānisaṁsaṁ hoti.
 
+<!-- @segment an4.245:3.1 -->
+
 Kathañca, bhikkhave, paññuttaraṁ hoti?
 
+<!-- @segment an4.245:3.2 -->
+
 Idha, bhikkhave, mayā sāvakānaṁ dhammā desitā sabbaso sammā dukkhakkhayāya.
+
+<!-- @segment an4.245:3.3 -->
 
 Yathā yathā, bhikkhave, mayā sāvakānaṁ dhammā desitā sabbaso sammā dukkhakkhayāya tathā tathāssa te dhammā paññāya samavekkhitā honti.
 
+<!-- @segment an4.245:3.4 -->
+
 Evaṁ kho, bhikkhave, paññuttaraṁ hoti.
+
+<!-- @segment an4.245:4.1 -->
 
 Kathañca, bhikkhave, vimuttisāraṁ hoti?
 
+<!-- @segment an4.245:4.2 -->
+
 Idha, bhikkhave, mayā sāvakānaṁ dhammā desitā sabbaso sammā dukkhakkhayāya.
+
+<!-- @segment an4.245:4.3 -->
 
 Yathā yathā, bhikkhave, mayā sāvakānaṁ dhammā desitā sabbaso sammā dukkhakkhayāya tathā tathāssa te dhammā vimuttiyā phusitā honti.
 
+<!-- @segment an4.245:4.4 -->
+
 Evaṁ kho, bhikkhave, vimuttisāraṁ hoti.
+
+<!-- @segment an4.245:5.1 -->
 
 Kathañca, bhikkhave, satādhipateyyaṁ hoti?
 
+<!-- @segment an4.245:5.2 -->
+
 ‘Iti aparipūraṁ vā ābhisamācārikaṁ sikkhaṁ paripūressāmi, paripūraṁ vā ābhisamācārikaṁ sikkhaṁ tattha tattha paññāya anuggahessāmī’ti—ajjhattaṁyeva sati sūpaṭṭhitā hoti.
+
+<!-- @segment an4.245:5.3 -->
 
 ‘Iti aparipūraṁ vā ādibrahmacariyikaṁ sikkhaṁ paripūressāmi, paripūraṁ vā ādibrahmacariyikaṁ sikkhaṁ tattha tattha paññāya anuggahessāmī’ti—ajjhattaṁyeva sati sūpaṭṭhitā hoti.
 
+<!-- @segment an4.245:5.4 -->
+
 ‘Iti asamavekkhitaṁ vā dhammaṁ paññāya samavekkhissāmi, samavekkhitaṁ vā dhammaṁ tattha tattha paññāya anuggahessāmī’ti—ajjhattaṁyeva sati sūpaṭṭhitā hoti.
+
+<!-- @segment an4.245:5.5 -->
 
 ‘Iti aphusitaṁ vā dhammaṁ vimuttiyā phusissāmi, phusitaṁ vā dhammaṁ tattha tattha paññāya anuggahessāmī’ti—ajjhattaṁyeva sati sūpaṭṭhitā hoti.
 
+<!-- @segment an4.245:5.6 -->
+
 Evaṁ kho, bhikkhave, satādhipateyyaṁ hoti.
+
+<!-- @segment an4.245:5.7 -->
 
 ‘Sikkhānisaṁsamidaṁ, bhikkhave, brahmacariyaṁ vussati paññuttaraṁ vimuttisāraṁ satādhipateyyan’ti,
 
+<!-- @segment an4.245:5.8 -->
+
 iti yaṁ taṁ vuttaṁ idametaṁ paṭicca vuttan”ti.
+
+<!-- @segment an4.245:5.9 -->
 
 Tatiyaṁ.

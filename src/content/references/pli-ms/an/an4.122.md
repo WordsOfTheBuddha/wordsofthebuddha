@@ -1,137 +1,267 @@
 ---
 slug: an4.122
 source: suttacentral/bilara-data
+title: Ūmibhayasutta
 edition: ms
 granularity: segment
-title: Ūmibhayasutta
 ---
+
+<!-- @segment an4.122:1.1 -->
 
 “Cattārimāni, bhikkhave, bhayāni udakorohantassa pāṭikaṅkhitabbāni.
 
+<!-- @segment an4.122:1.2 -->
+
 Katamāni cattāri?
+
+<!-- @segment an4.122:1.3 -->
 
 Ūmibhayaṁ, kumbhīlabhayaṁ, āvaṭṭabhayaṁ, susukābhayaṁ—
 
+<!-- @segment an4.122:1.4 -->
+
 Imāni kho, bhikkhave, cattāri bhayāni udakorohantassa pāṭikaṅkhitabbāni.
+
+<!-- @segment an4.122:1.5 -->
 
 Evamevaṁ kho, bhikkhave, cattāri bhayāni idhekaccassa kulaputtassa imasmiṁ dhammavinaye agārasmā anagāriyaṁ pabbajitassa pāṭikaṅkhitabbāni.
 
+<!-- @segment an4.122:1.6 -->
+
 Katamāni cattāri?
+
+<!-- @segment an4.122:1.7 -->
 
 Ūmibhayaṁ, kumbhīlabhayaṁ, āvaṭṭabhayaṁ, susukābhayaṁ.
 
+<!-- @segment an4.122:2.1 -->
+
 Katamañca, bhikkhave, ūmibhayaṁ?
+
+<!-- @segment an4.122:2.2 -->
 
 Idha, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṁ pabbajito hoti:
 
+<!-- @segment an4.122:2.3 -->
+
 ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto;
+
+<!-- @segment an4.122:2.4 -->
 
 appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.
 
+<!-- @segment an4.122:2.5 -->
+
 Tamenaṁ tathā pabbajitaṁ samānaṁ sabrahmacārino ovadanti anusāsanti:
+
+<!-- @segment an4.122:2.6 -->
 
 ‘evaṁ te abhikkamitabbaṁ, evaṁ te paṭikkamitabbaṁ, evaṁ te āloketabbaṁ, evaṁ te viloketabbaṁ, evaṁ te samiñjitabbaṁ, evaṁ te pasāritabbaṁ, evaṁ te saṅghāṭipattacīvaraṁ dhāretabban’ti.
 
+<!-- @segment an4.122:2.7 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an4.122:2.8 -->
 
 ‘mayaṁ kho pubbe agāriyabhūtā samānā aññe ovadāmapi anusāsāmapi.
 
+<!-- @segment an4.122:2.9 -->
+
 Ime panamhākaṁ puttamattā maññe nattamattā maññe ovaditabbaṁ anusāsitabbaṁ maññantī’ti.
 
+<!-- @segment an4.122:2.10 -->
+
 So kupito anattamano sikkhaṁ paccakkhāya hīnāyāvattati.
+
+<!-- @segment an4.122:2.11 -->
 
 Ayaṁ vuccati, bhikkhave, bhikkhu ūmibhayassa bhīto sikkhaṁ paccakkhāya hīnāyāvatto.
 
+<!-- @segment an4.122:2.12 -->
+
 Ūmibhayanti kho, bhikkhave, kodhūpāyāsassetaṁ adhivacanaṁ.
+
+<!-- @segment an4.122:2.13 -->
 
 Idaṁ vuccati, bhikkhave, ūmibhayaṁ.
 
+<!-- @segment an4.122:3.1 -->
+
 Katamañca, bhikkhave, kumbhīlabhayaṁ?
+
+<!-- @segment an4.122:3.2 -->
 
 Idha, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṁ pabbajito hoti:
 
+<!-- @segment an4.122:3.3 -->
+
 ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto;
 
+<!-- @segment an4.122:3.4 -->
+
 appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.
+
+<!-- @segment an4.122:3.5 -->
 
 Tamenaṁ tathā pabbajitaṁ samānaṁ sabrahmacārino ovadanti anusāsanti:
 
+<!-- @segment an4.122:3.6 -->
+
 ‘idaṁ te khāditabbaṁ, idaṁ te na khāditabbaṁ, idaṁ te bhuñjitabbaṁ, idaṁ te na bhuñjitabbaṁ, idaṁ te sāyitabbaṁ, idaṁ te na sāyitabbaṁ, idaṁ te pātabbaṁ, idaṁ te na pātabbaṁ, kappiyaṁ te khāditabbaṁ, akappiyaṁ te na khāditabbaṁ, kappiyaṁ te bhuñjitabbaṁ, akappiyaṁ te na bhuñjitabbaṁ, kappiyaṁ te sāyitabbaṁ, akappiyaṁ te na sāyitabbaṁ, kappiyaṁ te pātabbaṁ, akappiyaṁ te na pātabbaṁ, kāle te khāditabbaṁ, vikāle te na khāditabbaṁ, kāle te bhuñjitabbaṁ, vikāle te na bhuñjitabbaṁ, kāle te sāyitabbaṁ, vikāle te na sāyitabbaṁ, kāle te pātabbaṁ, vikāle te na pātabban’ti.
 
+<!-- @segment an4.122:3.7 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an4.122:3.8 -->
 
 ‘mayaṁ kho pubbe agāriyabhūtā samānā yaṁ icchāma taṁ khādāma, yaṁ na icchāma na taṁ khādāma;
 
+<!-- @segment an4.122:3.9 -->
+
 yaṁ icchāma taṁ bhuñjāma, yaṁ na icchāma na taṁ bhuñjāma;
+
+<!-- @segment an4.122:3.10 -->
 
 yaṁ icchāma taṁ sāyāma, yaṁ na icchāma na taṁ sāyāma;
 
+<!-- @segment an4.122:3.11 -->
+
 yaṁ icchāma taṁ pivāma, yaṁ na icchāma na taṁ pivāma;
+
+<!-- @segment an4.122:3.12 -->
 
 kappiyampi khādāma akappiyampi khādāma kappiyampi bhuñjāma akappiyampi bhuñjāma kappiyampi sāyāma akappiyampi sāyāma kappiyampi pivāma akappiyampi pivāma, kālepi khādāma vikālepi khādāma kālepi bhuñjāma vikālepi bhuñjāma kālepi sāyāma vikālepi sāyāma kālepi pivāma vikālepi pivāma;
 
+<!-- @segment an4.122:3.13 -->
+
 yampi no saddhā gahapatikā divā vikāle paṇītaṁ khādanīyaṁ vā bhojanīyaṁ vā denti, tatrapime mukhāvaraṇaṁ maññe karontī’ti.
+
+<!-- @segment an4.122:3.14 -->
 
 So kupito anattamano sikkhaṁ paccakkhāya hīnāyāvattati.
 
+<!-- @segment an4.122:3.15 -->
+
 Ayaṁ vuccati, bhikkhave, bhikkhu kumbhīlabhayassa bhīto sikkhaṁ paccakkhāya hīnāyāvatto.
+
+<!-- @segment an4.122:3.16 -->
 
 Kumbhīlabhayanti kho, bhikkhave, odarikattassetaṁ adhivacanaṁ.
 
+<!-- @segment an4.122:3.17 -->
+
 Idaṁ vuccati, bhikkhave, kumbhīlabhayaṁ.
+
+<!-- @segment an4.122:4.1 -->
 
 Katamañca, bhikkhave, āvaṭṭabhayaṁ?
 
+<!-- @segment an4.122:4.2 -->
+
 Idha, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṁ pabbajito hoti:
+
+<!-- @segment an4.122:4.3 -->
 
 ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi, dukkhehi domanassehi upāyāsehi dukkhotiṇṇo dukkhapareto;
 
+<!-- @segment an4.122:4.4 -->
+
 appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.
 
+<!-- @segment an4.122:4.5 -->
+
 So evaṁ pabbajito samāno pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya gāmaṁ vā nigamaṁ vā piṇḍāya pavisati arakkhiteneva kāyena arakkhitāya vācāya arakkhitena cittena anupaṭṭhitāya satiyā asaṁvutehi indriyehi.
+
+<!-- @segment an4.122:4.6 -->
 
 So tattha passati gahapatiṁ vā gahapatiputtaṁ vā pañcahi kāmaguṇehi samappitaṁ samaṅgībhūtaṁ paricārayamānaṁ.
 
+<!-- @segment an4.122:4.7 -->
+
 Tassa evaṁ hoti:
+
+<!-- @segment an4.122:4.8 -->
 
 ‘mayaṁ kho pubbe agāriyabhūtā samānā pañcahi kāmaguṇehi samappitā samaṅgībhūtā paricārimhā;
 
+<!-- @segment an4.122:4.9 -->
+
 saṁvijjanti kho pana me kule bhogā.
+
+<!-- @segment an4.122:4.10 -->
 
 Sakkā bhoge ca bhuñjituṁ puññāni ca kātuṁ.
 
+<!-- @segment an4.122:4.11 -->
+
 Yannūnāhaṁ sikkhaṁ paccakkhāya hīnāyāvattitvā bhoge ca bhuñjeyyaṁ puññāni ca kareyyan’ti.
+
+<!-- @segment an4.122:4.12 -->
 
 So sikkhaṁ paccakkhāya hīnāyāvattati.
 
+<!-- @segment an4.122:4.13 -->
+
 Ayaṁ vuccati, bhikkhave, bhikkhu āvaṭṭabhayassa bhīto sikkhaṁ paccakkhāya hīnāyāvatto.
+
+<!-- @segment an4.122:4.14 -->
 
 Āvaṭṭabhayanti kho, bhikkhave, pañcannetaṁ kāmaguṇānaṁ adhivacanaṁ.
 
+<!-- @segment an4.122:4.15 -->
+
 Idaṁ vuccati, bhikkhave, āvaṭṭabhayaṁ.
+
+<!-- @segment an4.122:5.1 -->
 
 Katamañca, bhikkhave, susukābhayaṁ?
 
+<!-- @segment an4.122:5.2 -->
+
 Idha, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṁ pabbajito hoti:
+
+<!-- @segment an4.122:5.3 -->
 
 ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi dukkhehi domanassehi upāyāsehi, dukkhotiṇṇo dukkhapareto;
 
+<!-- @segment an4.122:5.4 -->
+
 appeva nāma imassa kevalassa dukkhakkhandhassa antakiriyā paññāyethā’ti.
+
+<!-- @segment an4.122:5.5 -->
 
 So evaṁ pabbajito samāno pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya gāmaṁ vā nigamaṁ vā piṇḍāya pavisati arakkhiteneva kāyena arakkhitāya vācāya arakkhitena cittena anupaṭṭhitāya satiyā asaṁvutehi indriyehi.
 
+<!-- @segment an4.122:5.6 -->
+
 So tattha passati mātugāmaṁ dunnivatthaṁ vā duppārutaṁ vā.
+
+<!-- @segment an4.122:5.7 -->
 
 Tassa mātugāmaṁ disvā dunnivatthaṁ vā duppārutaṁ vā rāgo cittaṁ anuddhaṁseti.
 
+<!-- @segment an4.122:5.8 -->
+
 So rāgānuddhaṁsitena cittena sikkhaṁ paccakkhāya hīnāyāvattati.
+
+<!-- @segment an4.122:5.9 -->
 
 Ayaṁ vuccati, bhikkhave, bhikkhu susukābhayassa bhīto sikkhaṁ paccakkhāya hīnāyāvatto.
 
+<!-- @segment an4.122:5.10 -->
+
 Susukābhayanti kho, bhikkhave, mātugāmassetaṁ adhivacanaṁ.
+
+<!-- @segment an4.122:5.11 -->
 
 Idaṁ vuccati, bhikkhave, susukābhayaṁ.
 
+<!-- @segment an4.122:5.12 -->
+
 Imāni kho, bhikkhave, cattāri bhayāni idhekaccassa kulaputtassa imasmiṁ dhammavinaye agārasmā anagāriyaṁ pabbajitassa pāṭikaṅkhitabbānī”ti.
+
+<!-- @segment an4.122:5.13 -->
 
 Dutiyaṁ.

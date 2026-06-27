@@ -1,17 +1,27 @@
 ---
 slug: an6.90
 source: suttacentral/bilara-data
+title: Pahīnasutta
 edition: ms
 granularity: segment
-title: Pahīnasutta
 ---
+
+<!-- @segment an6.90:1.1 -->
 
 “Chayime, bhikkhave, dhammā diṭṭhisampannassa puggalassa pahīnā.
 
+<!-- @segment an6.90:1.2 -->
+
 Katame cha?
+
+<!-- @segment an6.90:1.3 -->
 
 Sakkāyadiṭṭhi, vicikicchā, sīlabbataparāmāso, apāyagamanīyo rāgo, apāyagamanīyo doso, apāyagamanīyo moho.
 
+<!-- @segment an6.90:1.4 -->
+
 Ime kho, bhikkhave, cha dhammā diṭṭhisampannassa puggalassa pahīnā”ti.
+
+<!-- @segment an6.90:1.5 -->
 
 Chaṭṭhaṁ.

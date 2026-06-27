@@ -6,266 +6,530 @@ license: CC0
 title: The Lowlife
 ---
 
+<!-- @segment snp1.7:1.1 -->
+
 So I have heard.
+
+<!-- @segment snp1.7:1.2 -->
 
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
 
+<!-- @segment snp1.7:1.3 -->
+
 Then the Buddha robed up in the morning and, taking his bowl and robe, entered Sāvatthī for alms.
+
+<!-- @segment snp1.7:1.4 -->
 
 Now at that time in the brahmin Bhāradvāja the Fire-Worshiper’s home the sacred flame had been kindled and the oblation prepared.
 
+<!-- @segment snp1.7:1.5 -->
+
 Wandering indiscriminately for almsfood in Sāvatthī, the Buddha approached Bhāradvāja the Fire-Worshiper’s house.
+
+<!-- @segment snp1.7:2.1 -->
 
 Bhāradvāja the Fire-Worshiper saw the Buddha coming off in the distance
 
+<!-- @segment snp1.7:2.2 -->
+
 and said to him,
+
+<!-- @segment snp1.7:2.3 -->
 
 “Stop right there, shaveling!
 
+<!-- @segment snp1.7:2.4 -->
+
 Right there, fake ascetic!
+
+<!-- @segment snp1.7:2.5 -->
 
 Right there, lowlife!”
 
+<!-- @segment snp1.7:3.1 -->
+
 When he said this, the Buddha said to him,
+
+<!-- @segment snp1.7:3.2 -->
 
 “But brahmin, do you know what is a lowlife or what are the qualities that make you a lowlife?”
 
+<!-- @segment snp1.7:3.3 -->
+
 “No I do not, worthy Gotama.
+
+<!-- @segment snp1.7:3.4 -->
 
 Please, worthy Gotama, teach me this matter so I can understand what is a lowlife or what are the qualities that make you a lowlife.”
 
+<!-- @segment snp1.7:3.5 -->
+
 “Well then, brahmin, listen and apply your mind well, I will speak.”
+
+<!-- @segment snp1.7:3.6 -->
 
 “Yes, worthy sir,” Bhāradvāja the Fire-Worshiper replied.
 
+<!-- @segment snp1.7:3.7 -->
+
 The Buddha said this:
+
+<!-- @segment snp1.7:4.1 -->
 
 “Irritable and acrimonious,
 
+<!-- @segment snp1.7:4.2 -->
+
 wicked and offensive,
+
+<!-- @segment snp1.7:4.3 -->
 
 a man deficient in view, deceitful:
 
+<!-- @segment snp1.7:4.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:5.1 -->
 
 He harms living creatures
 
+<!-- @segment snp1.7:5.2 -->
+
 born of womb or of egg,
+
+<!-- @segment snp1.7:5.3 -->
 
 and has no kindness for creatures:
 
+<!-- @segment snp1.7:5.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:6.1 -->
 
 He destroys and devastates
 
+<!-- @segment snp1.7:6.2 -->
+
 villages and towns,
+
+<!-- @segment snp1.7:6.3 -->
 
 a notorious oppressor:
 
+<!-- @segment snp1.7:6.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:7.1 -->
 
 Whether in village or wilderness,
 
+<!-- @segment snp1.7:7.2 -->
+
 he steals what belongs to others,
+
+<!-- @segment snp1.7:7.3 -->
 
 taking what has not been given:
 
+<!-- @segment snp1.7:7.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:8.1 -->
 
 Having fallen into debt,
 
+<!-- @segment snp1.7:8.2 -->
+
 when pressed to pay up he flees, saying
+
+<!-- @segment snp1.7:8.3 -->
 
 ‘I don’t owe you anything!’:
 
+<!-- @segment snp1.7:8.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:9.1 -->
 
 Wanting some item or other,
 
+<!-- @segment snp1.7:9.2 -->
+
 he attacks a person in the street
+
+<!-- @segment snp1.7:9.3 -->
 
 and takes it:
 
+<!-- @segment snp1.7:9.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:10.1 -->
 
 For his own sake or the sake of another,
 
+<!-- @segment snp1.7:10.2 -->
+
 or for the sake of wealth, a man
+
+<!-- @segment snp1.7:10.3 -->
 
 tells a lie when asked to bear witness:
 
+<!-- @segment snp1.7:10.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:11.1 -->
 
 He is spied among the partners
 
+<!-- @segment snp1.7:11.2 -->
+
 of relatives and friends,
+
+<!-- @segment snp1.7:11.3 -->
 
 by force or seduction:
 
+<!-- @segment snp1.7:11.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:12.1 -->
 
 Though able, he does not look after
 
+<!-- @segment snp1.7:12.2 -->
+
 his mother and father
+
+<!-- @segment snp1.7:12.3 -->
 
 when elderly, past their prime:
 
+<!-- @segment snp1.7:12.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:13.1 -->
 
 He hits or verbally abuses
 
+<!-- @segment snp1.7:13.2 -->
+
 his mother or father,
+
+<!-- @segment snp1.7:13.3 -->
 
 brother, sister, or mother-in-law:
 
+<!-- @segment snp1.7:13.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:14.1 -->
 
 When asked about the good,
 
+<!-- @segment snp1.7:14.2 -->
+
 he teaches what is bad,
+
+<!-- @segment snp1.7:14.3 -->
 
 giving secretive advice:
 
+<!-- @segment snp1.7:14.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:15.1 -->
 
 Having done a bad deed, he wishes,
 
+<!-- @segment snp1.7:15.2 -->
+
 ‘May no-one find me out!’
+
+<!-- @segment snp1.7:15.3 -->
 
 His deeds are underhand:
 
+<!-- @segment snp1.7:15.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:16.1 -->
 
 When visiting another family
 
+<!-- @segment snp1.7:16.2 -->
+
 he eats their delicious food,
+
+<!-- @segment snp1.7:16.3 -->
 
 but does not return the honor:
 
+<!-- @segment snp1.7:16.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:17.1 -->
 
 He deceives with lies
 
+<!-- @segment snp1.7:17.2 -->
+
 ascetics and brahmins
+
+<!-- @segment snp1.7:17.3 -->
 
 and other supplicants:
 
+<!-- @segment snp1.7:17.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:18.1 -->
 
 When time comes to offer a meal
 
+<!-- @segment snp1.7:18.2 -->
+
 to brahmins or ascetics,
+
+<!-- @segment snp1.7:18.3 -->
 
 he abuses them and does not give:
 
+<!-- @segment snp1.7:18.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:19.1 -->
 
 He talks about what never happened,
 
+<!-- @segment snp1.7:19.2 -->
+
 being wrapped up in delusion,
+
+<!-- @segment snp1.7:19.3 -->
 
 chasing after some item or other:
 
+<!-- @segment snp1.7:19.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:20.1 -->
 
 He extols himself
 
+<!-- @segment snp1.7:20.2 -->
+
 and disparages others,
+
+<!-- @segment snp1.7:20.3 -->
 
 brought down by his pride:
 
+<!-- @segment snp1.7:20.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:21.1 -->
 
 He’s a bully and a miser,
 
+<!-- @segment snp1.7:21.2 -->
+
 of corrupt wishes, stingy, and devious,
+
+<!-- @segment snp1.7:21.3 -->
 
 shameless, imprudent:
 
+<!-- @segment snp1.7:21.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:22.1 -->
 
 He insults the Buddha
 
+<!-- @segment snp1.7:22.2 -->
+
 or his disciple,
+
+<!-- @segment snp1.7:22.3 -->
 
 whether lay or renunciate:
 
+<!-- @segment snp1.7:22.4 -->
+
 know him as a lowlife.
+
+<!-- @segment snp1.7:23.1 -->
 
 He claims to be a perfected one,
 
+<!-- @segment snp1.7:23.2 -->
+
 when he really is no such thing.
+
+<!-- @segment snp1.7:23.3 -->
 
 In the world with its divinities,
 
+<!-- @segment snp1.7:23.4 -->
+
 that crook is truly the lowest lowlife.
+
+<!-- @segment snp1.7:23.5 -->
 
 These who are called lowlifes
 
+<!-- @segment snp1.7:23.6 -->
+
 I have explained to you.
+
+<!-- @segment snp1.7:24.1 -->
 
 You’re not a lowlife by birth,
 
+<!-- @segment snp1.7:24.2 -->
+
 nor by birth are you a brahmin.
 
+<!-- @segment snp1.7:24.3 -->
+
 You’re a lowlife by your deeds,
+
+<!-- @segment snp1.7:24.4 -->
 
 by deeds you’re a brahmin.
 
+<!-- @segment snp1.7:25.1 -->
+
 And also you should know
+
+<!-- @segment snp1.7:25.2 -->
 
 according to this example.
 
+<!-- @segment snp1.7:25.3 -->
+
 A corpse-worker’s son of the dog-eating caste
+
+<!-- @segment snp1.7:25.4 -->
 
 became renowned as Mātaṅga.
 
+<!-- @segment snp1.7:26.1 -->
+
 Mātaṅga achieved the highest fame
+
+<!-- @segment snp1.7:26.2 -->
 
 so very hard to find.
 
+<!-- @segment snp1.7:26.3 -->
+
 Lots of aristocrats and brahmins
+
+<!-- @segment snp1.7:26.4 -->
 
 came to serve him.
 
+<!-- @segment snp1.7:27.1 -->
+
 He ascended the stainless highway
+
+<!-- @segment snp1.7:27.2 -->
 
 that leads to the heavens;
 
+<!-- @segment snp1.7:27.3 -->
+
 having discarded sensual desire,
+
+<!-- @segment snp1.7:27.4 -->
 
 he was reborn in a realm of divinity.
 
+<!-- @segment snp1.7:27.5 -->
+
 His birth did not prevent him
+
+<!-- @segment snp1.7:27.6 -->
 
 from rebirth in the realm of divinity.
 
+<!-- @segment snp1.7:28.1 -->
+
 Those born in a brahmin family
+
+<!-- @segment snp1.7:28.2 -->
 
 who recite as kinsmen of the hymns,
 
+<!-- @segment snp1.7:28.3 -->
+
 are often discovered
+
+<!-- @segment snp1.7:28.4 -->
 
 in the midst of wicked deeds.
 
+<!-- @segment snp1.7:29.1 -->
+
 Blameworthy in this very life,
+
+<!-- @segment snp1.7:29.2 -->
 
 and in the next, a bad destination.
 
+<!-- @segment snp1.7:29.3 -->
+
 Their birth does not prevent them
+
+<!-- @segment snp1.7:29.4 -->
 
 from blame or bad destiny.
 
+<!-- @segment snp1.7:30.1 -->
+
 You’re not a lowlife by birth,
+
+<!-- @segment snp1.7:30.2 -->
 
 nor by birth are you a brahmin.
 
+<!-- @segment snp1.7:30.3 -->
+
 You’re a lowlife by your deeds,
+
+<!-- @segment snp1.7:30.4 -->
 
 by deeds you’re a brahmin.”
 
+<!-- @segment snp1.7:31.1 -->
+
 When he had spoken, the brahmin Bhāradvāja the Fire-Worshiper said to the Buddha,
 
+<!-- @segment snp1.7:31.2 -->
+
 “Excellent, worthy Gotama! Excellent! …
+
+<!-- @segment snp1.7:31.3 -->
 
 From this day forth, may the worthy Gotama remember me as a lay follower who has gone for refuge for life.”

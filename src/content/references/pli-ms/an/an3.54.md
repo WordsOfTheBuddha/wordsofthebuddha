@@ -1,49 +1,91 @@
 ---
 slug: an3.54
 source: suttacentral/bilara-data
+title: Paribbājakasutta
 edition: ms
 granularity: segment
-title: Paribbājakasutta
 ---
+
+<!-- @segment an3.54:1.1 -->
 
 Atha kho aññataro brāhmaṇaparibbājako yena bhagavā tenupasaṅkami; upasaṅkamitvā …pe… ekamantaṁ nisinno kho so brāhmaṇaparibbājako bhagavantaṁ etadavoca:
 
+<!-- @segment an3.54:1.2 -->
+
 “‘sandiṭṭhiko dhammo sandiṭṭhiko dhammo’ti, bho gotama, vuccati.
+
+<!-- @segment an3.54:1.3 -->
 
 Kittāvatā nu kho, bho gotama, sandiṭṭhiko dhammo hoti akāliko ehipassiko opaneyyiko paccattaṁ veditabbo viññūhī”ti?
 
+<!-- @segment an3.54:2.1 -->
+
 “Ratto kho, brāhmaṇa, rāgena abhibhūto pariyādinnacitto attabyābādhāyapi ceteti, parabyābādhāyapi ceteti, ubhayabyābādhāyapi ceteti, cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
+
+<!-- @segment an3.54:2.2 -->
 
 Rāge pahīne nevattabyābādhāyapi ceteti, na parabyābādhāyapi ceteti, na ubhayabyābādhāyapi ceteti, na cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
 
+<!-- @segment an3.54:3.1 -->
+
 Ratto kho, brāhmaṇa, rāgena abhibhūto pariyādinnacitto kāyena duccaritaṁ carati, vācāya duccaritaṁ carati, manasā duccaritaṁ carati.
+
+<!-- @segment an3.54:3.2 -->
 
 Rāge pahīne neva kāyena duccaritaṁ carati, na vācāya duccaritaṁ carati, na manasā duccaritaṁ carati.
 
+<!-- @segment an3.54:4.1 -->
+
 Ratto kho, brāhmaṇa, rāgena abhibhūto pariyādinnacitto attatthampi yathābhūtaṁ nappajānāti, paratthampi yathābhūtaṁ nappajānāti, ubhayatthampi yathābhūtaṁ nappajānāti.
+
+<!-- @segment an3.54:4.2 -->
 
 Rāge pahīne attatthampi yathābhūtaṁ pajānāti, paratthampi yathābhūtaṁ pajānāti, ubhayatthampi yathābhūtaṁ pajānāti.
 
+<!-- @segment an3.54:4.3 -->
+
 Evampi kho, brāhmaṇa, sandiṭṭhiko dhammo hoti …pe….
+
+<!-- @segment an3.54:5.1 -->
 
 Duṭṭho kho, brāhmaṇa, dosena …pe…
 
+<!-- @segment an3.54:5.2 -->
+
 mūḷho kho, brāhmaṇa, mohena abhibhūto pariyādinnacitto attabyābādhāyapi ceteti, parabyābādhāyapi ceteti, ubhayabyābādhāyapi ceteti, cetasikampi dukkhaṁ domanassaṁ paṭisaṁvedeti.
+
+<!-- @segment an3.54:5.3 -->
 
 Mohe pahīne nevattabyābādhāyapi ceteti, na parabyābādhāyapi ceteti, na ubhayabyābādhāyapi ceteti, na cetasikaṁ dukkhaṁ domanassaṁ paṭisaṁvedeti.
 
+<!-- @segment an3.54:6.1 -->
+
 Mūḷho kho, brāhmaṇa, mohena abhibhūto pariyādinnacitto, kāyena duccaritaṁ carati, vācāya duccaritaṁ carati, manasā duccaritaṁ carati.
+
+<!-- @segment an3.54:6.2 -->
 
 Mohe pahīne neva kāyena duccaritaṁ carati, na vācāya duccaritaṁ carati, na manasā duccaritaṁ carati.
 
+<!-- @segment an3.54:7.1 -->
+
 Mūḷho kho, brāhmaṇa, mohena abhibhūto pariyādinnacitto attatthampi yathābhūtaṁ nappajānāti, paratthampi yathābhūtaṁ nappajānāti, ubhayatthampi yathābhūtaṁ nappajānāti.
+
+<!-- @segment an3.54:7.2 -->
 
 Mohe pahīne attatthampi yathābhūtaṁ pajānāti, paratthampi yathābhūtaṁ pajānāti, ubhayatthampi yathābhūtaṁ pajānāti.
 
+<!-- @segment an3.54:7.3 -->
+
 Evaṁ kho, brāhmaṇa, sandiṭṭhiko dhammo hoti akāliko ehipassiko opaneyyiko paccattaṁ veditabbo viññūhī”ti.
+
+<!-- @segment an3.54:8.1 -->
 
 “Abhikkantaṁ, bho gotama …pe…
 
+<!-- @segment an3.54:8.2 -->
+
 upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
+
+<!-- @segment an3.54:8.3 -->
 
 Catutthaṁ.

@@ -1,29 +1,51 @@
 ---
 slug: an5.114
 source: suttacentral/bilara-data
+title: Andhakavindasutta
 edition: ms
 granularity: segment
-title: Andhakavindasutta
 ---
+
+<!-- @segment an5.114:1.1 -->
 
 Ekaṁ samayaṁ bhagavā magadhesu viharati andhakavinde.
 
+<!-- @segment an5.114:1.2 -->
+
 Atha kho āyasmā ānando yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho āyasmantaṁ ānandaṁ bhagavā etadavoca:
+
+<!-- @segment an5.114:2.1 -->
 
 “Ye te, ānanda, bhikkhū navā acirapabbajitā adhunāgatā imaṁ dhammavinayaṁ, te vo, ānanda, bhikkhū pañcasu dhammesu samādapetabbā nivesetabbā patiṭṭhāpetabbā.
 
+<!-- @segment an5.114:2.2 -->
+
 Katamesu pañcasu?
+
+<!-- @segment an5.114:2.3 -->
 
 ‘Etha tumhe, āvuso, sīlavā hotha, pātimokkhasaṁvarasaṁvutā viharatha ācāragocarasampannā aṇumattesu vajjesu bhayadassāvino, samādāya sikkhatha sikkhāpadesū’ti—iti pātimokkhasaṁvare samādapetabbā nivesetabbā patiṭṭhāpetabbā.
 
+<!-- @segment an5.114:3.1 -->
+
 ‘Etha tumhe, āvuso, indriyesu guttadvārā viharatha ārakkhasatino nipakkasatino, sārakkhitamānasā satārakkhena cetasā samannāgatā’ti—iti indriyasaṁvare samādapetabbā nivesetabbā patiṭṭhāpetabbā.
+
+<!-- @segment an5.114:4.1 -->
 
 ‘Etha tumhe, āvuso, appabhassā hotha, bhasse pariyantakārino’ti—iti bhassapariyante samādapetabbā nivesetabbā patiṭṭhāpetabbā.
 
+<!-- @segment an5.114:5.1 -->
+
 ‘Etha tumhe, āvuso, āraññikā hotha, araññavanapatthāni pantāni senāsanāni paṭisevathā’ti—iti kāyavūpakāse samādapetabbā nivesetabbā patiṭṭhāpetabbā.
+
+<!-- @segment an5.114:6.1 -->
 
 ‘Etha tumhe, āvuso, sammādiṭṭhikā hotha sammādassanena samannāgatā’ti—iti sammādassane samādapetabbā nivesetabbā patiṭṭhāpetabbā.
 
+<!-- @segment an5.114:6.2 -->
+
 Ye te, ānanda, bhikkhū navā acirapabbajitā adhunāgatā imaṁ dhammavinayaṁ, te vo, ānanda, bhikkhū imesu pañcasu dhammesu samādapetabbā nivesetabbā patiṭṭhāpetabbā”ti.
+
+<!-- @segment an5.114:6.3 -->
 
 Catutthaṁ.

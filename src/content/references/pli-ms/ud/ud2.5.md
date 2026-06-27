@@ -1,33 +1,59 @@
 ---
 slug: ud2.5
 source: suttacentral/bilara-data
+title: Upāsakasutta
 edition: ms
 granularity: segment
-title: Upāsakasutta
 ---
+
+<!-- @segment ud2.5:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud2.5:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment ud2.5:1.3 -->
 
 Tena kho pana samayena aññataro icchānaṅgalako upāsako sāvatthiṁ anuppatto hoti kenacideva karaṇīyena.
 
+<!-- @segment ud2.5:1.4 -->
+
 Atha kho so upāsako sāvatthiyaṁ taṁ karaṇīyaṁ tīretvā yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi.
+
+<!-- @segment ud2.5:1.5 -->
 
 Ekamantaṁ nisinnaṁ kho taṁ upāsakaṁ bhagavā etadavoca:
 
+<!-- @segment ud2.5:1.6 -->
+
 “cirassaṁ kho tvaṁ, upāsaka, imaṁ pariyāyamakāsi yadidaṁ idhāgamanāyā”ti.
+
+<!-- @segment ud2.5:2.1 -->
 
 “Cirapaṭikāhaṁ, bhante, bhagavantaṁ dassanāya upasaṅkamitukāmo, api cāhaṁ kehici kehici kiccakaraṇīyehi byāvaṭo. Evāhaṁ nāsakkhiṁ bhagavantaṁ dassanāya upasaṅkamitun”ti.
 
+<!-- @segment ud2.5:3.1 -->
+
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
+
+<!-- @segment ud2.5:4.1 -->
 
 “Sukhaṁ vata tassa na hoti kiñci,
 
+<!-- @segment ud2.5:4.2 -->
+
 Saṅkhātadhammassa bahussutassa;
+
+<!-- @segment ud2.5:4.3 -->
 
 Sakiñcanaṁ passa vihaññamānaṁ,
 
+<!-- @segment ud2.5:4.4 -->
+
 Jano janasmiṁ paṭibandharūpo”ti.
+
+<!-- @segment ud2.5:4.5 -->
 
 Pañcamaṁ.

@@ -1,55 +1,103 @@
 ---
 slug: an8.71
 source: suttacentral/bilara-data
+title: Paṭhamasaddhāsutta
 edition: ms
 granularity: segment
-title: Paṭhamasaddhāsutta
 ---
+
+<!-- @segment an8.71:1.1 -->
 
 “Saddho ca, bhikkhave, bhikkhu hoti, no ca sīlavā.
 
+<!-- @segment an8.71:1.2 -->
+
 Evaṁ so tenaṅgena aparipūro hoti.
 
+<!-- @segment an8.71:1.3 -->
+
 Tena taṁ aṅgaṁ paripūretabbaṁ:
+
+<!-- @segment an8.71:1.4 -->
 
 ‘kintāhaṁ saddho ca assaṁ sīlavā cā’ti.
 
+<!-- @segment an8.71:1.5 -->
+
 Yato ca kho, bhikkhave, bhikkhu saddho ca hoti sīlavā ca,
 
+<!-- @segment an8.71:1.6 -->
+
 evaṁ so tenaṅgena paripūro hoti.
+
+<!-- @segment an8.71:2.1 -->
 
 Saddho ca, bhikkhave, bhikkhu hoti sīlavā ca, no ca bahussuto.
 
+<!-- @segment an8.71:2.2 -->
+
 Evaṁ so tenaṅgena aparipūro hoti.
 
+<!-- @segment an8.71:2.3 -->
+
 Tena taṁ aṅgaṁ paripūretabbaṁ:
+
+<!-- @segment an8.71:2.4 -->
 
 ‘kintāhaṁ saddho ca assaṁ, sīlavā ca, bahussuto cā’ti.
 
+<!-- @segment an8.71:2.5 -->
+
 Yato ca kho, bhikkhave, bhikkhu saddho ca hoti sīlavā ca bahussuto ca,
 
+<!-- @segment an8.71:2.6 -->
+
 evaṁ so tenaṅgena paripūro hoti.
+
+<!-- @segment an8.71:3.1 -->
 
 Saddho ca, bhikkhave, bhikkhu hoti sīlavā ca bahussuto ca, no ca dhammakathiko …pe…
 
+<!-- @segment an8.71:3.2 -->
+
 dhammakathiko ca, no ca parisāvacaro …pe…
+
+<!-- @segment an8.71:3.3 -->
 
 parisāvacaro ca, no ca visārado parisāya dhammaṁ deseti …pe…
 
+<!-- @segment an8.71:3.4 -->
+
 visārado ca parisāya dhammaṁ deseti, no ca catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī …pe…
+
+<!-- @segment an8.71:3.5 -->
 
 catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī, no ca āsavānaṁ khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharati;
 
+<!-- @segment an8.71:3.6 -->
+
 evaṁ so tenaṅgena aparipūro hoti.
+
+<!-- @segment an8.71:3.7 -->
 
 Tena taṁ aṅgaṁ paripūretabbaṁ:
 
+<!-- @segment an8.71:3.8 -->
+
 ‘kintāhaṁ saddho ca assaṁ, sīlavā ca, bahussuto ca, dhammakathiko ca, parisāvacaro ca, visārado ca parisāya dhammaṁ deseyyaṁ, catunnañca jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī assaṁ akicchalābhī akasiralābhī, āsavānañca khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja vihareyyan’ti.
+
+<!-- @segment an8.71:4.1 -->
 
 Yato ca kho, bhikkhave, bhikkhu saddho ca hoti, sīlavā ca, bahussuto ca, dhammakathiko ca, parisāvacaro ca, visārado ca parisāya dhammaṁ deseti, catunnañca jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī, āsavānañca khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharati;
 
+<!-- @segment an8.71:4.2 -->
+
 evaṁ so tenaṅgena paripūro hoti.
 
+<!-- @segment an8.71:4.3 -->
+
 Imehi kho, bhikkhave, aṭṭhahi dhammehi samannāgato bhikkhu samantapāsādiko ca hoti sabbākāraparipūro cā”ti.
+
+<!-- @segment an8.71:4.4 -->
 
 Paṭhamaṁ.

@@ -6,18 +6,34 @@ license: CC0
 title: About Extinguishment (3rd)
 ---
 
+<!-- @segment ud8.3:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud8.3:1.2 -->
 
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
 
+<!-- @segment ud8.3:1.3 -->
+
 Now at that time the Buddha was educating, encouraging, firing up, and inspiring the mendicants with a Dhamma talk about extinguishment.
+
+<!-- @segment ud8.3:1.4 -->
 
 And those mendicants were paying attention, applying the mind, concentrating wholeheartedly, and actively listening.
 
+<!-- @segment ud8.3:2.1 -->
+
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
+
+<!-- @segment ud8.3:3.1 -->
 
 “There is, mendicants, freedom from rebirth, freedom from what has been produced, made, and conditioned.
 
+<!-- @segment ud8.3:3.2 -->
+
 If there were no freedom from rebirth, freedom from what has been produced, made, and conditioned, then you would find no escape here from rebirth, from what has been produced, made, and conditioned.
+
+<!-- @segment ud8.3:3.3 -->
 
 But since there is freedom from rebirth, freedom from what has been produced, made, and conditioned, an escape is found from rebirth, from what has been produced, made, and conditioned.”

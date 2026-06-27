@@ -6,78 +6,154 @@ license: CC0
 title: A Wild Colt
 ---
 
+<!-- @segment an3.140:1.1 -->
+
 “Mendicants, I will teach you about three wild colts and three wild people.
+
+<!-- @segment an3.140:1.2 -->
 
 Listen and apply your mind well, I will speak.”
 
+<!-- @segment an3.140:1.3 -->
+
 “Yes, sir,” they replied.
+
+<!-- @segment an3.140:1.4 -->
 
 The Buddha said this:
 
+<!-- @segment an3.140:2.1 -->
+
 “What are the three wild colts?
+
+<!-- @segment an3.140:2.2 -->
 
 One wild colt is fast, but not beautiful or well proportioned.
 
+<!-- @segment an3.140:2.3 -->
+
 Another wild colt is fast and beautiful, but not well proportioned.
+
+<!-- @segment an3.140:2.4 -->
 
 While another wild colt is fast, beautiful, and well proportioned.
 
+<!-- @segment an3.140:2.5 -->
+
 These are the three wild colts.
+
+<!-- @segment an3.140:3.1 -->
 
 And what are the three wild people?
 
+<!-- @segment an3.140:3.2 -->
+
 One wild person is fast, but not beautiful or well proportioned.
+
+<!-- @segment an3.140:3.3 -->
 
 Another wild person is fast and beautiful, but not well proportioned.
 
+<!-- @segment an3.140:3.4 -->
+
 While another wild person is fast, beautiful, and well proportioned.
+
+<!-- @segment an3.140:4.1 -->
 
 And how is a wild person fast, but not beautiful or well proportioned?
 
+<!-- @segment an3.140:4.2 -->
+
 It’s when a mendicant truly understands: ‘This is suffering’ … ‘This is the origin of suffering’ … ‘This is the cessation of suffering’ … ‘This is the practice that leads to the cessation of suffering’.
 
+<!-- @segment an3.140:4.3 -->
+
 This is how they’re fast, I say.
+
+<!-- @segment an3.140:4.4 -->
 
 But when asked a question about the teaching or training, they falter without answering.
 
+<!-- @segment an3.140:4.5 -->
+
 This is how they’re not beautiful, I say.
+
+<!-- @segment an3.140:4.6 -->
 
 And they don’t receive robes, almsfood, lodgings, and medicines and supplies for the sick.
 
+<!-- @segment an3.140:4.7 -->
+
 This is how they’re not well proportioned, I say.
+
+<!-- @segment an3.140:4.8 -->
 
 This is how a wild person is fast, but not beautiful or well proportioned.
 
+<!-- @segment an3.140:5.1 -->
+
 And how is a wild person fast and beautiful, but not well proportioned?
+
+<!-- @segment an3.140:5.2 -->
 
 It’s when a mendicant truly understands: ‘This is suffering’ … ‘This is the origin of suffering’ … ‘This is the cessation of suffering’ … ‘This is the practice that leads to the cessation of suffering’.
 
+<!-- @segment an3.140:5.3 -->
+
 This is how they’re fast, I say.
+
+<!-- @segment an3.140:5.4 -->
 
 When asked a question about the teaching or training, they answer without faltering.
 
+<!-- @segment an3.140:5.5 -->
+
 This is how they’re beautiful, I say.
+
+<!-- @segment an3.140:5.6 -->
 
 But they don’t receive robes, almsfood, lodgings, and medicines and supplies for the sick.
 
+<!-- @segment an3.140:5.7 -->
+
 This is how they’re not well proportioned, I say.
+
+<!-- @segment an3.140:5.8 -->
 
 This is how a wild person is fast and beautiful, but not well proportioned.
 
+<!-- @segment an3.140:6.1 -->
+
 And how is a wild person fast, beautiful, and well proportioned?
+
+<!-- @segment an3.140:6.2 -->
 
 It’s when a mendicant truly understands: ‘This is suffering’ … ‘This is the origin of suffering’ … ‘This is the cessation of suffering’ … ‘This is the practice that leads to the cessation of suffering’.
 
+<!-- @segment an3.140:6.3 -->
+
 This is how they’re fast, I say.
+
+<!-- @segment an3.140:6.4 -->
 
 When asked a question about the teaching or training, they answer without faltering.
 
+<!-- @segment an3.140:6.5 -->
+
 This is how they’re beautiful, I say.
+
+<!-- @segment an3.140:6.6 -->
 
 They receive robes, almsfood, lodgings, and medicines and supplies for the sick.
 
+<!-- @segment an3.140:6.7 -->
+
 This is how they’re well proportioned, I say.
 
+<!-- @segment an3.140:6.8 -->
+
 This is how a wild person is fast, beautiful, and well proportioned.
+
+<!-- @segment an3.140:6.9 -->
 
 These are the three wild people.”

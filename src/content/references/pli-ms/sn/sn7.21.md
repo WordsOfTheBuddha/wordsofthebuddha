@@ -1,51 +1,95 @@
 ---
 slug: sn7.21
 source: suttacentral/bilara-data
+title: Saṅgāravasutta
 edition: ms
 granularity: segment
-title: Saṅgāravasutta
 ---
+
+<!-- @segment sn7.21:1.1 -->
 
 Sāvatthinidānaṁ.
 
+<!-- @segment sn7.21:1.2 -->
+
 Tena kho pana samayena saṅgāravo nāma brāhmaṇo sāvatthiyaṁ paṭivasati udakasuddhiko, udakena parisuddhiṁ pacceti, sāyaṁ pātaṁ udakorohanānuyogamanuyutto viharati.
+
+<!-- @segment sn7.21:1.3 -->
 
 Atha kho āyasmā ānando pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya sāvatthiṁ piṇḍāya pāvisi.
 
+<!-- @segment sn7.21:1.4 -->
+
 Sāvatthiyaṁ piṇḍāya caritvā pacchābhattaṁ piṇḍapātapaṭikkanto yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho āyasmā ānando bhagavantaṁ etadavoca:
+
+<!-- @segment sn7.21:1.5 -->
 
 “idha, bhante, saṅgāravo nāma brāhmaṇo sāvatthiyaṁ paṭivasati udakasuddhiko, udakena suddhiṁ pacceti, sāyaṁ pātaṁ udakorohanānuyogamanuyutto viharati.
 
+<!-- @segment sn7.21:1.6 -->
+
 Sādhu, bhante, bhagavā yena saṅgāravassa brāhmaṇassa nivesanaṁ tenupasaṅkamatu anukampaṁ upādāyā”ti.
+
+<!-- @segment sn7.21:1.7 -->
 
 Adhivāsesi bhagavā tuṇhībhāvena.
 
+<!-- @segment sn7.21:2.1 -->
+
 Atha kho bhagavā pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya yena saṅgāravassa brāhmaṇassa nivesanaṁ tenupasaṅkami; upasaṅkamitvā paññatte āsane nisīdi.
+
+<!-- @segment sn7.21:2.2 -->
 
 Atha kho saṅgāravo brāhmaṇo yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavatā saddhiṁ sammodi.
 
+<!-- @segment sn7.21:2.3 -->
+
 Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho saṅgāravaṁ brāhmaṇaṁ bhagavā etadavoca:
+
+<!-- @segment sn7.21:2.4 -->
 
 “saccaṁ kira tvaṁ, brāhmaṇa, udakasuddhiko, udakena suddhiṁ paccesi, sāyaṁ pātaṁ udakorohanānuyogamanuyutto viharasī”ti?
 
+<!-- @segment sn7.21:2.5 -->
+
 “Evaṁ, bho gotama”.
+
+<!-- @segment sn7.21:2.6 -->
 
 “Kiṁ pana tvaṁ, brāhmaṇa, atthavasaṁ sampassamāno udakasuddhiko, udakasuddhiṁ paccesi, sāyaṁ pātaṁ udakorohanānuyogamanuyutto viharasī”ti?
 
+<!-- @segment sn7.21:2.7 -->
+
 “Idha me, bho gotama, yaṁ divā pāpakammaṁ kataṁ hoti, taṁ sāyaṁ nhānena pavāhemi, yaṁ rattiṁ pāpakammaṁ kataṁ hoti taṁ pātaṁ nhānena pavāhemi.
+
+<!-- @segment sn7.21:2.8 -->
 
 Imaṁ khvāhaṁ, bho gotama, atthavasaṁ sampassamāno udakasuddhiko, udakena suddhiṁ paccemi, sāyaṁ pātaṁ udakorohanānuyogamanuyutto viharāmī”ti.
 
+<!-- @segment sn7.21:3.1 -->
+
 “Dhammo rahado brāhmaṇa sīlatittho,
+
+<!-- @segment sn7.21:3.2 -->
 
 Anāvilo sabbhi sataṁ pasattho;
 
+<!-- @segment sn7.21:3.3 -->
+
 Yattha have vedaguno sinātā,
+
+<!-- @segment sn7.21:3.4 -->
 
 Anallagattāva taranti pāran”ti.
 
+<!-- @segment sn7.21:4.1 -->
+
 Evaṁ vutte, saṅgāravo brāhmaṇo bhagavantaṁ etadavoca:
 
+<!-- @segment sn7.21:4.2 -->
+
 “abhikkantaṁ, bho gotama, abhikkantaṁ, bho gotama …pe…
+
+<!-- @segment sn7.21:4.3 -->
 
 upāsakaṁ maṁ bhavaṁ gotamo dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.

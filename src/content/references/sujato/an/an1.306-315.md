@@ -6,90 +6,178 @@ license: CC0
 title: Chapter Two
 ---
 
+<!-- @segment an1.306:1.0 -->
+
 306
 
-307
-
-308
-
-309
-
-310
-
-311
-
-312
-
-313
-
-314
-
-315
+<!-- @segment an1.306:1.1 -->
 
 “Mendicants, I do not see a single thing that gives rise to unskillful qualities, or, when they have arisen, makes them increase and grow like wrong view.
 
-“Mendicants, I do not see a single thing that gives rise to skillful qualities, or, when they have arisen, makes them increase and grow like right view.
-
-“Mendicants, I do not see a single thing that gives rise to unskillful qualities, or makes skillful qualities decline like wrong view.
-
-“Mendicants, I do not see a single thing that gives rise to skillful qualities, or makes unskillful qualities decline like right view.
-
-“Mendicants, I do not see a single thing that gives rise to wrong view, and once arisen, makes it grow like irrational application of mind.
-
-“Mendicants, I do not see a single thing that gives rise to right view, or, once it has already arisen, makes it grow like rational application of mind.
-
-“Mendicants, I do not see a single thing that causes sentient beings to be reborn, when their body breaks up, after death, in a place of loss, a bad place, the underworld, hell like wrong view.
-
-“Mendicants, I do not see a single thing that causes sentient beings to be reborn, when their body breaks up, after death, in a good place, a heavenly realm like right view.
-
-“Mendicants, when an individual has wrong view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is unlikable, undesirable, disagreeable, harmful, and suffering.
-
-“Mendicants, when an individual has right view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is likable, desirable, agreeable, beneficial, and pleasant.
+<!-- @segment an1.306:1.2 -->
 
 When you have wrong view, unskillful qualities arise or, when they have arisen, they increase and grow.”
 
+<!-- @segment an1.307:1.0 -->
+
+307
+
+<!-- @segment an1.307:1.1 -->
+
+“Mendicants, I do not see a single thing that gives rise to skillful qualities, or, when they have arisen, makes them increase and grow like right view.
+
+<!-- @segment an1.307:1.2 -->
+
 When you have right view, unarisen skillful qualities arise or, when they have arisen, they increase and grow.”
+
+<!-- @segment an1.308:1.0 -->
+
+308
+
+<!-- @segment an1.308:1.1 -->
+
+“Mendicants, I do not see a single thing that gives rise to unskillful qualities, or makes skillful qualities decline like wrong view.
+
+<!-- @segment an1.308:1.2 -->
 
 When you have wrong view, unskillful qualities arise and skillful qualities decline.”
 
+<!-- @segment an1.309:1.0 -->
+
+309
+
+<!-- @segment an1.309:1.1 -->
+
+“Mendicants, I do not see a single thing that gives rise to skillful qualities, or makes unskillful qualities decline like right view.
+
+<!-- @segment an1.309:1.2 -->
+
 When you have right view, skillful qualities arise and unskillful qualities decline.”
+
+<!-- @segment an1.310:1.0 -->
+
+310
+
+<!-- @segment an1.310:1.1 -->
+
+“Mendicants, I do not see a single thing that gives rise to wrong view, and once arisen, makes it grow like irrational application of mind.
+
+<!-- @segment an1.310:1.2 -->
 
 When you apply the mind irrationally, wrong view arises, and once arisen it grows.”
 
+<!-- @segment an1.311:1.0 -->
+
+311
+
+<!-- @segment an1.311:1.1 -->
+
+“Mendicants, I do not see a single thing that gives rise to right view, or, once it has already arisen, makes it grow like rational application of mind.
+
+<!-- @segment an1.311:1.2 -->
+
 When you apply the mind rationally, right view arises, and once arisen it grows.”
+
+<!-- @segment an1.312:1.0 -->
+
+312
+
+<!-- @segment an1.312:1.1 -->
+
+“Mendicants, I do not see a single thing that causes sentient beings to be reborn, when their body breaks up, after death, in a place of loss, a bad place, the underworld, hell like wrong view.
+
+<!-- @segment an1.312:1.2 -->
 
 It is because they have wrong view that sentient beings, when their body breaks up, after death, are reborn in a place of loss, a bad place, the underworld, hell.”
 
+<!-- @segment an1.313:1.0 -->
+
+313
+
+<!-- @segment an1.313:1.1 -->
+
+“Mendicants, I do not see a single thing that causes sentient beings to be reborn, when their body breaks up, after death, in a good place, a heavenly realm like right view.
+
+<!-- @segment an1.313:1.2 -->
+
 It is because they have right view that sentient beings, when their body breaks up, after death, are reborn in a good place, a heavenly realm.”
 
-Why is that?
+<!-- @segment an1.314:1.0 -->
+
+314
+
+<!-- @segment an1.314:1.1 -->
+
+“Mendicants, when an individual has wrong view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is unlikable, undesirable, disagreeable, harmful, and suffering.
+
+<!-- @segment an1.314:1.2 -->
 
 Why is that?
+
+<!-- @segment an1.314:1.3 -->
 
 Because their view is bad.
 
-Because their view is good.
+<!-- @segment an1.314:1.4 -->
 
 Suppose a seed of neem, angled gourd, or bitter gourd was planted in moist earth. Whatever nutrients it takes up from the earth and water would lead to its bitter, acerbic, and unpleasant taste.
 
-Suppose a seed of sugar cane, fine rice, or grape was planted in moist earth. Whatever nutrients it takes up from the earth and water would lead to its sweet, pleasant, delectable flavor.
+<!-- @segment an1.314:1.5 -->
 
 Why is that?
 
-Why is that?
+<!-- @segment an1.314:1.6 -->
 
 Because the seed is bad.
 
-Because the seed is good.
+<!-- @segment an1.314:1.7 -->
 
 In the same way, when an individual has wrong view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is unlikable, undesirable, disagreeable, harmful, and suffering.
 
-In the same way, when an individual has right view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is likable, desirable, agreeable, beneficial, and pleasant.
+<!-- @segment an1.314:1.8 -->
 
 Why is that?
 
-Why is that?
+<!-- @segment an1.314:1.9 -->
 
 Because their view is bad.”
+
+<!-- @segment an1.315:1.0 -->
+
+315
+
+<!-- @segment an1.315:1.1 -->
+
+“Mendicants, when an individual has right view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is likable, desirable, agreeable, beneficial, and pleasant.
+
+<!-- @segment an1.315:1.2 -->
+
+Why is that?
+
+<!-- @segment an1.315:1.3 -->
+
+Because their view is good.
+
+<!-- @segment an1.315:1.4 -->
+
+Suppose a seed of sugar cane, fine rice, or grape was planted in moist earth. Whatever nutrients it takes up from the earth and water would lead to its sweet, pleasant, delectable flavor.
+
+<!-- @segment an1.315:1.5 -->
+
+Why is that?
+
+<!-- @segment an1.315:1.6 -->
+
+Because the seed is good.
+
+<!-- @segment an1.315:1.7 -->
+
+In the same way, when an individual has right view, whatever bodily, verbal, or mental deeds they undertake in line with that view, their intentions, aims, wishes, and choices all lead to what is likable, desirable, agreeable, beneficial, and pleasant.
+
+<!-- @segment an1.315:1.8 -->
+
+Why is that?
+
+<!-- @segment an1.315:1.9 -->
 
 Because their view is good.”

@@ -1,87 +1,167 @@
 ---
 slug: an3.20
 source: suttacentral/bilara-data
+title: Dutiyapāpaṇikasutta
 edition: ms
 granularity: segment
-title: Dutiyapāpaṇikasutta
 ---
+
+<!-- @segment an3.20:1.1 -->
 
 “Tīhi, bhikkhave, aṅgehi samannāgato pāpaṇiko nacirasseva mahattaṁ vepullattaṁ pāpuṇāti bhogesu.
 
+<!-- @segment an3.20:1.2 -->
+
 Katamehi tīhi?
+
+<!-- @segment an3.20:1.3 -->
 
 Idha, bhikkhave, pāpaṇiko cakkhumā ca hoti vidhuro ca nissayasampanno ca.
 
+<!-- @segment an3.20:1.4 -->
+
 Kathañca, bhikkhave, pāpaṇiko cakkhumā hoti?
+
+<!-- @segment an3.20:1.5 -->
 
 Idha, bhikkhave, pāpaṇiko paṇiyaṁ jānāti:
 
+<!-- @segment an3.20:1.6 -->
+
 ‘idaṁ paṇiyaṁ evaṁ kītaṁ, evaṁ vikkayamānaṁ, ettakaṁ mūlaṁ bhavissati, ettako udayo’ti.
+
+<!-- @segment an3.20:1.7 -->
 
 Evaṁ kho, bhikkhave, pāpaṇiko cakkhumā hoti.
 
+<!-- @segment an3.20:2.1 -->
+
 Kathañca, bhikkhave, pāpaṇiko vidhuro hoti?
+
+<!-- @segment an3.20:2.2 -->
 
 Idha, bhikkhave, pāpaṇiko kusalo hoti paṇiyaṁ ketuñca vikketuñca.
 
+<!-- @segment an3.20:2.3 -->
+
 Evaṁ kho, bhikkhave, pāpaṇiko vidhuro hoti.
+
+<!-- @segment an3.20:3.1 -->
 
 Kathañca, bhikkhave, pāpaṇiko nissayasampanno hoti?
 
+<!-- @segment an3.20:3.2 -->
+
 Idha, bhikkhave, pāpaṇikaṁ ye te gahapatī vā gahapatiputtā vā aḍḍhā mahaddhanā mahābhogā te evaṁ jānanti:
+
+<!-- @segment an3.20:3.3 -->
 
 ‘ayaṁ kho bhavaṁ pāpaṇiko cakkhumā vidhuro ca paṭibalo puttadārañca posetuṁ, amhākañca kālena kālaṁ anuppadātun’ti.
 
+<!-- @segment an3.20:3.4 -->
+
 Te naṁ bhogehi nipatanti:
+
+<!-- @segment an3.20:3.5 -->
 
 ‘ito, samma pāpaṇika, bhoge karitvā puttadārañca posehi, amhākañca kālena kālaṁ anuppadehī’ti.
 
+<!-- @segment an3.20:3.6 -->
+
 Evaṁ kho, bhikkhave, pāpaṇiko nissayasampanno hoti.
+
+<!-- @segment an3.20:3.7 -->
 
 Imehi kho, bhikkhave, tīhi aṅgehi samannāgato pāpaṇiko nacirasseva mahattaṁ vepullattaṁ pāpuṇāti bhogesu.
 
+<!-- @segment an3.20:4.1 -->
+
 Evamevaṁ kho, bhikkhave, tīhi dhammehi samannāgato bhikkhu nacirasseva mahattaṁ vepullattaṁ pāpuṇāti kusalesu dhammesu.
+
+<!-- @segment an3.20:4.2 -->
 
 Katamehi tīhi?
 
+<!-- @segment an3.20:4.3 -->
+
 Idha, bhikkhave, bhikkhu cakkhumā ca hoti vidhuro ca nissayasampanno ca.
+
+<!-- @segment an3.20:4.4 -->
 
 Kathañca, bhikkhave, bhikkhu cakkhumā hoti?
 
+<!-- @segment an3.20:4.5 -->
+
 Idha, bhikkhave, bhikkhu ‘idaṁ dukkhan’ti yathābhūtaṁ pajānāti, ‘ayaṁ dukkhasamudayo’ti yathābhūtaṁ pajānāti, ‘ayaṁ dukkhanirodho’ti yathābhūtaṁ pajānāti, ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṁ pajānāti.
+
+<!-- @segment an3.20:4.6 -->
 
 Evaṁ kho, bhikkhave, bhikkhu cakkhumā hoti.
 
+<!-- @segment an3.20:5.1 -->
+
 Kathañca, bhikkhave, bhikkhu vidhuro hoti?
+
+<!-- @segment an3.20:5.2 -->
 
 Idha, bhikkhave, bhikkhu āraddhavīriyo viharati akusalānaṁ dhammānaṁ pahānāya, kusalānaṁ dhammānaṁ upasampadāya, thāmavā daḷhaparakkamo anikkhittadhuro kusalesu dhammesu.
 
+<!-- @segment an3.20:5.3 -->
+
 Evaṁ kho, bhikkhave, bhikkhu vidhuro hoti.
+
+<!-- @segment an3.20:6.1 -->
 
 Kathañca, bhikkhave, bhikkhu nissayasampanno hoti?
 
+<!-- @segment an3.20:6.2 -->
+
 Idha, bhikkhave, bhikkhu ye te bhikkhū bahussutā āgatāgamā dhammadharā vinayadharā mātikādharā te kālena kālaṁ upasaṅkamitvā paripucchati paripañhati:
+
+<!-- @segment an3.20:6.3 -->
 
 ‘idaṁ, bhante, kathaṁ, imassa ko attho’ti?
 
+<!-- @segment an3.20:6.4 -->
+
 Tassa te āyasmanto avivaṭañceva vivaranti, anuttānīkatañca uttānīkaronti, anekavihitesu ca kaṅkhāṭhāniyesu dhammesu kaṅkhaṁ paṭivinodenti.
+
+<!-- @segment an3.20:6.5 -->
 
 Evaṁ kho, bhikkhave, bhikkhu nissayasampanno hoti.
 
+<!-- @segment an3.20:6.6 -->
+
 Imehi kho, bhikkhave, tīhi dhammehi samannāgato bhikkhu nacirasseva mahattaṁ vepullattaṁ pāpuṇāti kusalesu dhammesū”ti.
+
+<!-- @segment an3.20:6.7 -->
 
 Dasamaṁ.
 
+<!-- @segment an3.20:6.8 -->
+
 Paṭhamabhāṇavāro niṭṭhito.
+
+<!-- @segment an3.20:6.9 -->
 
 Rathakāravaggo dutiyo.
 
+<!-- @segment an3.20:7.0 -->
+
 Tassuddānaṁ
+
+<!-- @segment an3.20:7.1 -->
 
 Ñāto sāraṇīyo bhikkhu,
 
+<!-- @segment an3.20:7.2 -->
+
 cakkavattī sacetano;
 
+<!-- @segment an3.20:7.3 -->
+
 Apaṇṇakattā devo ca,
+
+<!-- @segment an3.20:7.4 -->
 
 duve pāpaṇikena cāti.

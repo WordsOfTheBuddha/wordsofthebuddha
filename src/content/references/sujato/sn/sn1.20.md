@@ -6,132 +6,412 @@ license: CC0
 title: With Samiddhi
 ---
 
+<!-- @segment sn1.20:1.1 -->
+
 So I have heard.
+
+<!-- @segment sn1.20:1.2 -->
 
 At one time the Buddha was staying near Rājagaha in the Hot Springs Monastery.
 
+<!-- @segment sn1.20:1.3 -->
+
 Then Venerable Samiddhi rose at the crack of dawn and went to the hot springs to bathe.
+
+<!-- @segment sn1.20:1.4 -->
 
 When he had bathed and emerged from the water he stood in one robe drying his limbs.
 
+<!-- @segment sn1.20:1.5 -->
+
 Then, late at night, a glorious deity, lighting up the entire hot springs, went up to Samiddhi, and, standing in the air, addressed him in verse:
+
+<!-- @segment sn1.20:2.1 -->
 
 “Mendicant, you seek alms before you eat;
 
+<!-- @segment sn1.20:2.2 -->
+
 you don’t seek alms after eating.
+
+<!-- @segment sn1.20:2.3 -->
 
 But you should eat first, then seek alms:
 
+<!-- @segment sn1.20:2.4 -->
+
 don’t let the time pass you by.”
+
+<!-- @segment sn1.20:3.1 -->
 
 “I actually don’t know the time;
 
+<!-- @segment sn1.20:3.2 -->
+
 it’s hidden and unseen.
+
+<!-- @segment sn1.20:3.3 -->
 
 That’s why I seek alms before eating,
 
+<!-- @segment sn1.20:3.4 -->
+
 so that the time may not pass me by!”
+
+<!-- @segment sn1.20:4.1 -->
 
 Then that deity landed on the ground and said to Samiddhi,
 
+<!-- @segment sn1.20:4.2 -->
+
 “You’ve gone forth while young, mendicant. With pristine black hair, you’re blessed with youth, in the prime of life, and you’ve never flirted with sensual pleasures.
+
+<!-- @segment sn1.20:4.3 -->
 
 Enjoy human sensual pleasures!
 
+<!-- @segment sn1.20:4.4 -->
+
 Don’t give up what is apparent in the present to chase after what takes effect over time.”
+
+<!-- @segment sn1.20:5.1 -->
 
 “I’m not, reverend.
 
+<!-- @segment sn1.20:5.2 -->
+
 I’m giving up what takes effect over time to chase after what is apparent in the present.
+
+<!-- @segment sn1.20:5.3 -->
 
 For the Buddha has said that sensual pleasures take effect over time, with much suffering and distress, and they’re all the more full of drawbacks.
 
+<!-- @segment sn1.20:5.4 -->
+
 But this teaching is apparent in the present life, immediately effective, inviting inspection, relevant, so that sensible people can know it for themselves.”
+
+<!-- @segment sn1.20:6.1 -->
 
 “But in what way, mendicant, has the Buddha said that sensual pleasures take effect over time, with much suffering and distress, and they’re all the more full of drawbacks?
 
+<!-- @segment sn1.20:6.2 -->
+
 And how is this teaching apparent in the present life, immediately effective, inviting inspection, relevant, so that sensible people can know it for themselves?”
+
+<!-- @segment sn1.20:7.1 -->
 
 “I’m junior, respectable sir, recently gone forth, newly come to this teaching and training.
 
+<!-- @segment sn1.20:7.2 -->
+
 I’m not able to explain this in detail.
+
+<!-- @segment sn1.20:7.3 -->
 
 But he, that Blessed One, the perfected one, the fully awakened Buddha, is staying near Rājagaha in the Hot Springs Monastery.
 
+<!-- @segment sn1.20:7.4 -->
+
 You should approach him and ask about this matter.
+
+<!-- @segment sn1.20:7.5 -->
 
 And you should remember it in line with the Buddha’s answer.”
 
+<!-- @segment sn1.20:8.1 -->
+
 “It’s not easy for us to approach the Buddha, as he is surrounded by other illustrious deities.
+
+<!-- @segment sn1.20:8.2 -->
 
 If you go to the Buddha and ask him about this matter, we’ll come along and listen to the teaching.”
 
+<!-- @segment sn1.20:8.3 -->
+
 “Yes, reverend,” Venerable Samiddhi replied. He went to the Buddha, bowed, sat down to one side, and told him what had happened. Then he added:
+
+<!-- @segment sn1.20:9.1 -->
+
+
+
+<!-- @segment sn1.20:9.2 -->
+
+
+
+<!-- @segment sn1.20:9.3 -->
+
+
+
+<!-- @segment sn1.20:10.1 -->
+
+
+
+<!-- @segment sn1.20:10.2 -->
+
+
+
+<!-- @segment sn1.20:10.3 -->
+
+
+
+<!-- @segment sn1.20:10.4 -->
+
+
+
+<!-- @segment sn1.20:11.1 -->
+
+
+
+<!-- @segment sn1.20:12.1 -->
+
+
+
+<!-- @segment sn1.20:12.2 -->
+
+
+
+<!-- @segment sn1.20:12.3 -->
+
+
+
+<!-- @segment sn1.20:12.4 -->
+
+
+
+<!-- @segment sn1.20:13.1 -->
+
+
+
+<!-- @segment sn1.20:13.2 -->
+
+
+
+<!-- @segment sn1.20:13.3 -->
+
+
+
+<!-- @segment sn1.20:13.4 -->
+
+
+
+<!-- @segment sn1.20:14.1 -->
+
+
+
+<!-- @segment sn1.20:14.2 -->
+
+
+
+<!-- @segment sn1.20:14.3 -->
+
+
+
+<!-- @segment sn1.20:14.4 -->
+
+
+
+<!-- @segment sn1.20:14.5 -->
+
+
+
+<!-- @segment sn1.20:15.1 -->
+
+
+
+<!-- @segment sn1.20:15.2 -->
+
+
+
+<!-- @segment sn1.20:15.3 -->
+
+
+
+<!-- @segment sn1.20:16.1 -->
+
+
+
+<!-- @segment sn1.20:16.2 -->
+
+
+
+<!-- @segment sn1.20:16.3 -->
+
+
+
+<!-- @segment sn1.20:16.4 -->
+
+
+
+<!-- @segment sn1.20:16.5 -->
+
+
+
+<!-- @segment sn1.20:17.1 -->
+
+
+
+<!-- @segment sn1.20:17.2 -->
+
+
+
+<!-- @segment sn1.20:17.3 -->
+
+
+
+<!-- @segment sn1.20:17.4 -->
 
 “Sir, if that deity spoke the truth, he’ll be close by.”
 
+<!-- @segment sn1.20:18.1 -->
+
 When he had spoken, that deity said to Samiddhi,
+
+<!-- @segment sn1.20:18.2 -->
 
 “Ask, mendicant, ask! For I have arrived.”
 
+<!-- @segment sn1.20:19.1 -->
+
 Then the Buddha addressed the deity in verse:
+
+<!-- @segment sn1.20:20.1 -->
 
 “Sentient beings who perceive the communicable,
 
+<!-- @segment sn1.20:20.2 -->
+
 become established in the communicable.
+
+<!-- @segment sn1.20:20.3 -->
 
 Not understanding the communicable,
 
+<!-- @segment sn1.20:20.4 -->
+
 they fall under the yoke of Death.
+
+<!-- @segment sn1.20:21.1 -->
 
 But having fully understood the communicable,
 
+<!-- @segment sn1.20:21.2 -->
+
 they don’t conceive a communicator,
+
+<!-- @segment sn1.20:21.3 -->
 
 for they have nothing
 
+<!-- @segment sn1.20:21.4 -->
+
 by which they might be described.
+
+<!-- @segment sn1.20:21.5 -->
 
 Tell me if you understand, spirit.”
 
+<!-- @segment sn1.20:22.1 -->
+
 “I don’t understand the detailed meaning of the Buddha’s brief statement.
 
+<!-- @segment sn1.20:22.2 -->
+
 Please teach me this matter so I can understand the detailed meaning.”
+
+<!-- @segment sn1.20:23.1 -->
 
 “If you think that ‘I’m equal,
 
+<!-- @segment sn1.20:23.2 -->
+
 special, or worse’, you’ll dispute about that.
+
+<!-- @segment sn1.20:23.3 -->
 
 Unwavering in the face of the three discriminations,
 
+<!-- @segment sn1.20:23.4 -->
+
 they have no thought, ‘I’m equal or special’.
 
+<!-- @segment sn1.20:23.5 -->
+
 Tell me if you understand, spirit.”
+
+<!-- @segment sn1.20:24.1 -->
 
 “I don’t understand the detailed meaning of the Buddha’s brief statement.
 
+<!-- @segment sn1.20:24.2 -->
+
 Please teach me this matter so I can understand the detailed meaning.”
+
+<!-- @segment sn1.20:25.1 -->
 
 “They gave up judgement without falling into conceit;
 
+<!-- @segment sn1.20:25.2 -->
+
 craving for name and form was cut off right here.
+
+<!-- @segment sn1.20:25.3 -->
 
 They cut the ties, untroubled, <j>with no need for hope.
 
+<!-- @segment sn1.20:25.4 -->
+
 Though gods and humans search for them
+
+<!-- @segment sn1.20:25.5 -->
 
 in this life or the next, they never find them,
 
+<!-- @segment sn1.20:25.6 -->
+
 not in heaven nor in any abode.
+
+<!-- @segment sn1.20:26.1 -->
 
 Tell me if you understand, spirit.”
 
+<!-- @segment sn1.20:27.1 -->
+
 “This is how I understand the detailed meaning of the Buddha’s brief statement:
+
+<!-- @segment sn1.20:28.1 -->
 
 You should never do anything bad
 
+<!-- @segment sn1.20:28.2 -->
+
 by speech or mind or body in all the world.
+
+<!-- @segment sn1.20:28.3 -->
 
 Having given up sensual pleasures, <j>mindful and aware,
 
+<!-- @segment sn1.20:28.4 -->
+
 you shouldn’t keep doing <j>what’s painful and pointless.”
+
+<!-- @segment sn1.20:28.5 -->
+
+
+
+<!-- @segment sn1.20:29.1 -->
+
+
+
+<!-- @segment sn1.20:29.2 -->
+
+
+
+<!-- @segment sn1.20:29.3 -->
+
+
+
+<!-- @segment sn1.20:29.4 -->
+
+
+
+<!-- @segment sn1.20:29.5 -->

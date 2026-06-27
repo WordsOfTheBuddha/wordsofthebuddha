@@ -6,18 +6,34 @@ license: CC0
 title: Gratification (2nd)
 ---
 
+<!-- @segment an3.105:1.1 -->
+
 “Mendicants, if there were no gratification in the world, sentient beings wouldn’t be aroused by it.
+
+<!-- @segment an3.105:1.2 -->
 
 But because there is gratification in the world, sentient beings are aroused by it.
 
+<!-- @segment an3.105:1.3 -->
+
 If the world had no drawback, sentient beings wouldn’t grow disillusioned with it.
+
+<!-- @segment an3.105:1.4 -->
 
 But since the world has a drawback, sentient beings do grow disillusioned with it.
 
+<!-- @segment an3.105:1.5 -->
+
 If there were no escape from the world, sentient beings wouldn’t escape from it.
+
+<!-- @segment an3.105:1.6 -->
 
 But since there is an escape from the world, sentient beings do escape from it.
 
+<!-- @segment an3.105:1.7 -->
+
 As long as sentient beings don’t truly understand the world’s gratification, drawback, and escape for what they are, they haven’t escaped from this world—with its gods, Māras, and Divinities, this population with its ascetics and brahmins, its gods and humans—and they don’t live detached, liberated, with mind free of boundaries.
+
+<!-- @segment an3.105:1.8 -->
 
 But when sentient beings truly understand the world’s gratification, drawback, and escape for what they are, they’ve escaped from this world—with its gods, Māras, and Divinities, this population with its ascetics and brahmins, its gods and humans—and they live detached, liberated, with mind free of boundaries.”

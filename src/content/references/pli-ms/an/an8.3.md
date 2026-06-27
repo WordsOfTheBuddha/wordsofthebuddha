@@ -1,25 +1,43 @@
 ---
 slug: an8.3
 source: suttacentral/bilara-data
+title: Paṭhamaappiyasutta
 edition: ms
 granularity: segment
-title: Paṭhamaappiyasutta
 ---
+
+<!-- @segment an8.3:1.1 -->
 
 “Aṭṭhahi, bhikkhave, dhammehi samannāgato bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.
 
+<!-- @segment an8.3:1.2 -->
+
 Katamehi aṭṭhahi?
+
+<!-- @segment an8.3:1.3 -->
 
 Idha, bhikkhave, bhikkhu appiyapasaṁsī ca hoti, piyagarahī ca, lābhakāmo ca, sakkārakāmo ca, ahiriko ca, anottappī ca, pāpiccho ca, micchādiṭṭhi ca.
 
+<!-- @segment an8.3:1.4 -->
+
 Imehi kho, bhikkhave, aṭṭhahi dhammehi samannāgato bhikkhu sabrahmacārīnaṁ appiyo ca hoti amanāpo ca agaru ca abhāvanīyo ca.
+
+<!-- @segment an8.3:2.1 -->
 
 Aṭṭhahi, bhikkhave, dhammehi samannāgato bhikkhu sabrahmacārīnaṁ piyo ca hoti manāpo ca garu ca bhāvanīyo ca.
 
+<!-- @segment an8.3:2.2 -->
+
 Katamehi aṭṭhahi?
+
+<!-- @segment an8.3:2.3 -->
 
 Idha, bhikkhave, bhikkhu na appiyapasaṁsī ca hoti, na piyagarahī ca, na lābhakāmo ca, na sakkārakāmo ca, hirīmā ca hoti, ottappī ca, appiccho ca, sammādiṭṭhi ca.
 
+<!-- @segment an8.3:2.4 -->
+
 Imehi kho, bhikkhave, aṭṭhahi dhammehi samannāgato bhikkhu sabrahmacārīnaṁ piyo ca hoti manāpo ca garu ca bhāvanīyo cā”ti.
+
+<!-- @segment an8.3:2.5 -->
 
 Tatiyaṁ.

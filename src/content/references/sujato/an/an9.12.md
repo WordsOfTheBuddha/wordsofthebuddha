@@ -6,92 +6,226 @@ license: CC0
 title: With Residue
 ---
 
+<!-- @segment an9.12:1.1 -->
+
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
+
+<!-- @segment an9.12:1.2 -->
 
 Then Venerable Sāriputta robed up in the morning and, taking his bowl and robe, entered Sāvatthī for alms.
 
+<!-- @segment an9.12:1.3 -->
+
 Then it occurred to him,
+
+<!-- @segment an9.12:1.4 -->
 
 “It’s too early to wander for alms in Sāvatthī.
 
+<!-- @segment an9.12:1.5 -->
+
 Why don’t I visit the monastery of the wanderers of other religions?”
+
+<!-- @segment an9.12:1.6 -->
 
 Then he went to the monastery of the wanderers of other religions and exchanged greetings with the wanderers there.
 
+<!-- @segment an9.12:1.7 -->
+
 When the greetings and polite conversation were over, he sat down to one side.
+
+<!-- @segment an9.12:2.1 -->
 
 Now at that time while those wanderers of other religions were sitting together this discussion came up among them:
 
+<!-- @segment an9.12:2.2 -->
+
 “Reverends, no-one who dies with residue is exempt from hell, the animal realm, or the ghost realm. They’re not exempt from places of loss, bad places, the underworld.”
+
+<!-- @segment an9.12:2.3 -->
 
 Sāriputta neither approved nor rejected that statement of the wanderers of other religions.
 
+<!-- @segment an9.12:2.4 -->
+
 He rose from his seat, thinking,
+
+<!-- @segment an9.12:2.5 -->
 
 “I will learn the meaning of this statement from the Buddha himself.”
 
+<!-- @segment an9.12:2.6 -->
+
 Then Sāriputta wandered for alms in Sāvatthī. After the meal, on his return from almsround, he went to the Buddha, bowed, sat down to one side, and told him what had happened.
+
+<!-- @segment an9.12:3.1 -->
+
+
+
+<!-- @segment an9.12:3.2 -->
+
+
+
+<!-- @segment an9.12:3.3 -->
+
+
+
+<!-- @segment an9.12:3.4 -->
+
+
+
+<!-- @segment an9.12:3.5 -->
+
+
+
+<!-- @segment an9.12:3.6 -->
+
+
+
+<!-- @segment an9.12:3.7 -->
+
+
+
+<!-- @segment an9.12:3.8 -->
+
+
+
+<!-- @segment an9.12:3.9 -->
+
+
+
+<!-- @segment an9.12:3.10 -->
+
+
+
+<!-- @segment an9.12:3.11 -->
+
+
+
+<!-- @segment an9.12:4.1 -->
 
 “Sāriputta, these foolish, incompetent wanderers following other religions: who are they to know whether someone has residue or not?
 
+<!-- @segment an9.12:5.1 -->
+
 There are these nine individuals who, dying with residue, are exempt from hell, the animal realm, and the ghost realm. They’re exempt from places of loss, bad places, the underworld.
+
+<!-- @segment an9.12:5.2 -->
 
 What nine?
 
+<!-- @segment an9.12:5.3 -->
+
 There’s an individual who has fulfilled ethics and immersion, but has limited wisdom.
+
+<!-- @segment an9.12:5.4 -->
 
 With the ending of the five lower fetters they’re extinguished between one life and the next.
 
+<!-- @segment an9.12:5.5 -->
+
 This is the first individual …
+
+<!-- @segment an9.12:6.1 -->
 
 Furthermore, there’s an individual who has fulfilled ethics and immersion, but has limited wisdom.
 
+<!-- @segment an9.12:6.2 -->
+
 With the ending of the five lower fetters they’re extinguished upon landing. This is the second individual …
+
+<!-- @segment an9.12:6.3 -->
 
 With the ending of the five lower fetters they’re extinguished without extra effort.
 
+<!-- @segment an9.12:6.4 -->
+
 This is the third individual …
+
+<!-- @segment an9.12:6.5 -->
 
 With the ending of the five lower fetters they’re extinguished with extra effort.
 
+<!-- @segment an9.12:6.6 -->
+
 This is the fourth individual …
+
+<!-- @segment an9.12:6.7 -->
 
 With the ending of the five lower fetters they head upstream, going to the Akaniṭṭha realm.
 
+<!-- @segment an9.12:6.8 -->
+
 This is the fifth individual …
 
+<!-- @segment an9.12:7.1 -->
+
 Furthermore, there’s an individual who has fulfilled ethics, but has limited immersion and wisdom.
+
+<!-- @segment an9.12:7.2 -->
 
 With the ending of three fetters, and the weakening of greed, hate, and delusion, they’re a once-returner. They come back to this world once only, then make an end of suffering.
 
+<!-- @segment an9.12:7.3 -->
+
 This is the sixth individual …
 
+<!-- @segment an9.12:8.1 -->
+
 Furthermore, there’s an individual who has fulfilled ethics, but has limited immersion and wisdom.
+
+<!-- @segment an9.12:8.2 -->
 
 With the ending of three fetters, they’re a one-seeder. They will be reborn just one time in a human existence, then make an end of suffering.
 
+<!-- @segment an9.12:8.3 -->
+
 This is the seventh individual …
 
+<!-- @segment an9.12:9.1 -->
+
 Furthermore, there’s an individual who has fulfilled ethics, but has limited immersion and wisdom.
+
+<!-- @segment an9.12:9.2 -->
 
 With the ending of three fetters, they go from family to family. They will transmigrate between two or three families and then make an end of suffering.
 
+<!-- @segment an9.12:9.3 -->
+
 This is the eighth individual …
+
+<!-- @segment an9.12:10.1 -->
 
 Furthermore, there’s an individual who has fulfilled ethics, but has limited immersion and wisdom.
 
+<!-- @segment an9.12:10.2 -->
+
 With the ending of three fetters, they have at most seven rebirths. They will transmigrate at most seven times among gods and humans and then make an end of suffering.
+
+<!-- @segment an9.12:10.3 -->
 
 This is the ninth individual …
 
+<!-- @segment an9.12:11.1 -->
+
 These foolish, incompetent wanderers following other religions: who are they to know whether someone has residue or not?
+
+<!-- @segment an9.12:11.2 -->
 
 These are the nine individuals who, dying with residue, are exempt from hell, the animal realm, and the ghost realm. They’re exempt from places of loss, bad places, the underworld.
 
+<!-- @segment an9.12:11.3 -->
+
 Up until now, Sāriputta, I have not felt the need to give this exposition of the teaching to the monks, nuns, laymen, and laywomen.
+
+<!-- @segment an9.12:11.4 -->
 
 Why is that?
 
+<!-- @segment an9.12:11.5 -->
+
 For I didn’t want those who heard it to introduce negligence.
+
+<!-- @segment an9.12:11.6 -->
 
 However, I have spoken it in order to answer your question.”

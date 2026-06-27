@@ -6,26 +6,50 @@ license: CC0
 title: Esteem
 ---
 
+<!-- @segment ud2.4:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud2.4:1.2 -->
 
 At one time the Buddha was staying near Sāvatthī in Jeta’s Grove, Anāthapiṇḍika’s monastery.
 
+<!-- @segment ud2.4:1.3 -->
+
 Now at that time the Buddha was honored, respected, revered, venerated, and esteemed. And he received robes, almsfood, lodgings, and medicines and supplies for the sick.
+
+<!-- @segment ud2.4:1.4 -->
 
 And the mendicant Saṅgha was also honored, respected, revered, venerated, and esteemed. And they received robes, almsfood, lodgings, and medicines and supplies for the sick.
 
+<!-- @segment ud2.4:1.5 -->
+
 But the wanderers who followed other religions were not honored, respected, revered, venerated, and esteemed. And they didn’t receive robes, almsfood, lodgings, and medicines and supplies for the sick.
+
+<!-- @segment ud2.4:1.6 -->
 
 Then those wanderers who followed other religions, unable to bear the esteem of the mendicant Sangha, abused, attacked, harassed, and troubled the mendicants in the village and the wilderness.
 
+<!-- @segment ud2.4:2.1 -->
+
 Then several mendicants went up to the Buddha, bowed, sat down to one side, and told him what had happened.
+
+<!-- @segment ud2.4:3.1 -->
 
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
 
+<!-- @segment ud2.4:4.1 -->
+
 “When struck by pleasure and pain <j>in the village or wilderness,
+
+<!-- @segment ud2.4:4.2 -->
 
 regard it not as self or alien.
 
+<!-- @segment ud2.4:4.3 -->
+
 Contacts strike because of attachment;
+
+<!-- @segment ud2.4:4.4 -->
 
 how would contacts strike one free of attachment?”

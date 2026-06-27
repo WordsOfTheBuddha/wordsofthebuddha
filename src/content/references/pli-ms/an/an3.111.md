@@ -1,37 +1,67 @@
 ---
 slug: an3.111
 source: suttacentral/bilara-data
+title: Paṭhamanidānasutta
 edition: ms
 granularity: segment
-title: Paṭhamanidānasutta
 ---
+
+<!-- @segment an3.111:1.1 -->
 
 “Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya.
 
+<!-- @segment an3.111:1.2 -->
+
 Katamāni tīṇi?
+
+<!-- @segment an3.111:1.3 -->
 
 Lobho nidānaṁ kammānaṁ samudayāya, doso nidānaṁ kammānaṁ samudayāya, moho nidānaṁ kammānaṁ samudayāya.
 
+<!-- @segment an3.111:1.4 -->
+
 Yaṁ, bhikkhave, lobhapakataṁ kammaṁ lobhajaṁ lobhanidānaṁ lobhasamudayaṁ, taṁ kammaṁ akusalaṁ taṁ kammaṁ sāvajjaṁ taṁ kammaṁ dukkhavipākaṁ, taṁ kammaṁ kammasamudayāya saṁvattati, na taṁ kammaṁ kammanirodhāya saṁvattati.
+
+<!-- @segment an3.111:1.5 -->
 
 Yaṁ, bhikkhave, dosapakataṁ kammaṁ dosajaṁ dosanidānaṁ dosasamudayaṁ, taṁ kammaṁ akusalaṁ taṁ kammaṁ sāvajjaṁ taṁ kammaṁ dukkhavipākaṁ, taṁ kammaṁ kammasamudayāya saṁvattati, na taṁ kammaṁ kammanirodhāya saṁvattati.
 
+<!-- @segment an3.111:1.6 -->
+
 Yaṁ, bhikkhave, mohapakataṁ kammaṁ mohajaṁ mohanidānaṁ mohasamudayaṁ, taṁ kammaṁ akusalaṁ taṁ kammaṁ sāvajjaṁ taṁ kammaṁ dukkhavipākaṁ, taṁ kammaṁ kammasamudayāya saṁvattati, na taṁ kammaṁ kammanirodhāya saṁvattati.
+
+<!-- @segment an3.111:1.7 -->
 
 Imāni kho, bhikkhave, tīṇi nidānāni kammānaṁ samudayāya.
 
+<!-- @segment an3.111:2.1 -->
+
 Tīṇimāni, bhikkhave, nidānāni kammānaṁ samudayāya.
+
+<!-- @segment an3.111:2.2 -->
 
 Katamāni tīṇi?
 
+<!-- @segment an3.111:2.3 -->
+
 Alobho nidānaṁ kammānaṁ samudayāya, adoso nidānaṁ kammānaṁ samudayāya, amoho nidānaṁ kammānaṁ samudayāya.
+
+<!-- @segment an3.111:2.4 -->
 
 Yaṁ, bhikkhave, alobhapakataṁ kammaṁ alobhajaṁ alobhanidānaṁ alobhasamudayaṁ, taṁ kammaṁ kusalaṁ taṁ kammaṁ anavajjaṁ taṁ kammaṁ sukhavipākaṁ, taṁ kammaṁ kammanirodhāya saṁvattati, na taṁ kammaṁ kammasamudayāya saṁvattati.
 
+<!-- @segment an3.111:2.5 -->
+
 Yaṁ, bhikkhave, adosapakataṁ kammaṁ adosajaṁ adosanidānaṁ adosasamudayaṁ, taṁ kammaṁ kusalaṁ taṁ kammaṁ anavajjaṁ taṁ kammaṁ sukhavipākaṁ, taṁ kammaṁ kammanirodhāya saṁvattati, na taṁ kammaṁ kammasamudayāya saṁvattati.
+
+<!-- @segment an3.111:2.6 -->
 
 Yaṁ, bhikkhave, amohapakataṁ kammaṁ amohajaṁ amohanidānaṁ amohasamudayaṁ, taṁ kammaṁ kusalaṁ taṁ kammaṁ anavajjaṁ taṁ kammaṁ sukhavipākaṁ, taṁ kammaṁ kammanirodhāya saṁvattati, na taṁ kammaṁ kammasamudayāya saṁvattati.
 
+<!-- @segment an3.111:2.7 -->
+
 Imāni kho, bhikkhave, tīṇi nidānāni kammānaṁ samudayāyā”ti.
+
+<!-- @segment an3.111:2.8 -->
 
 Navamaṁ.

@@ -1,27 +1,47 @@
 ---
 slug: an6.11
 source: suttacentral/bilara-data
+title: Paṭhamasāraṇīyasutta
 edition: ms
 granularity: segment
-title: Paṭhamasāraṇīyasutta
 ---
+
+<!-- @segment an6.11:1.1 -->
 
 “Chayime, bhikkhave, dhammā sāraṇīyā.
 
+<!-- @segment an6.11:1.2 -->
+
 Katame cha?
+
+<!-- @segment an6.11:1.3 -->
 
 Idha, bhikkhave, bhikkhuno mettaṁ kāyakammaṁ paccupaṭṭhitaṁ hoti sabrahmacārīsu āvi ceva raho ca, ayampi dhammo sāraṇīyo.
 
+<!-- @segment an6.11:2.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhuno mettaṁ vacīkammaṁ paccupaṭṭhitaṁ hoti sabrahmacārīsu āvi ceva raho ca, ayampi dhammo sāraṇīyo.
+
+<!-- @segment an6.11:3.1 -->
 
 Puna caparaṁ, bhikkhave, bhikkhuno mettaṁ manokammaṁ paccupaṭṭhitaṁ hoti sabrahmacārīsu āvi ceva raho ca, ayampi dhammo sāraṇīyo.
 
+<!-- @segment an6.11:4.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhu ye te lābhā dhammikā dhammaladdhā antamaso pattapariyāpannamattampi tathārūpehi lābhehi appaṭivibhattabhogī hoti sīlavantehi sabrahmacārīhi sādhāraṇabhogī, ayampi dhammo sāraṇīyo.
+
+<!-- @segment an6.11:5.1 -->
 
 Puna caparaṁ, bhikkhave, bhikkhu yāni tāni sīlāni akhaṇḍāni acchiddāni asabalāni akammāsāni bhujissāni viññuppasatthāni aparāmaṭṭhāni samādhisaṁvattanikāni tathārūpehi sīlehi sīlasāmaññagato viharati sabrahmacārīhi āvi ceva raho ca, ayampi dhammo sāraṇīyo.
 
+<!-- @segment an6.11:6.1 -->
+
 Puna caparaṁ, bhikkhave, bhikkhu yāyaṁ diṭṭhi ariyā niyyānikā niyyāti takkarassa sammā dukkhakkhayāya tathārūpāya diṭṭhiyā diṭṭhisāmaññagato viharati sabrahmacārīhi āvi ceva raho ca, ayampi dhammo sāraṇīyo.
 
+<!-- @segment an6.11:7.1 -->
+
 Ime kho, bhikkhave, cha dhammā sāraṇīyā”ti.
+
+<!-- @segment an6.11:7.2 -->
 
 Paṭhamaṁ.

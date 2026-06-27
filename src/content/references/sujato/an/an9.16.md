@@ -6,10 +6,18 @@ license: CC0
 title: Perceptions
 ---
 
+<!-- @segment an9.16:1.1 -->
+
 “Mendicants, these nine perceptions, when developed and cultivated, are very fruitful and beneficial. Their objective and culmination is freedom from death.
+
+<!-- @segment an9.16:1.2 -->
 
 What nine?
 
+<!-- @segment an9.16:1.3 -->
+
 The perceptions of ugliness, death, repulsiveness of food, dissatisfaction with the whole world, impermanence, suffering in impermanence, not-self in suffering, giving up, and fading away.
+
+<!-- @segment an9.16:1.4 -->
 
 These nine perceptions, when developed and cultivated, are very fruitful and beneficial. Their objective and culmination is freedom from death.”

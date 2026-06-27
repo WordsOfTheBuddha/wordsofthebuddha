@@ -1,215 +1,423 @@
 ---
 slug: ud6.4
 source: suttacentral/bilara-data
+title: Paṭhamanānātitthiyasutta
 edition: ms
 granularity: segment
-title: Paṭhamanānātitthiyasutta
 ---
+
+<!-- @segment ud6.4:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud6.4:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment ud6.4:1.3 -->
 
 Tena kho pana samayena sambahulā nānātitthiyasamaṇabrāhmaṇaparibbājakā sāvatthiyaṁ paṭivasanti nānādiṭṭhikā nānākhantikā nānārucikā nānādiṭṭhinissayanissitā.
 
+<!-- @segment ud6.4:2.1 -->
+
 Santeke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:2.2 -->
 
 “sassato loko, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:3.1 -->
+
 Santi paneke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:3.2 -->
 
 “asassato loko, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:4.1 -->
+
 Santeke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:4.2 -->
 
 “antavā loko, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:5.1 -->
+
 Santi paneke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:5.2 -->
 
 “anantavā loko, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:6.1 -->
+
 Santeke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:6.2 -->
 
 “taṁ jīvaṁ taṁ sarīraṁ, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:7.1 -->
+
 Santi paneke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:7.2 -->
 
 “aññaṁ jīvaṁ aññaṁ sarīraṁ, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:8.1 -->
+
 Santeke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:8.2 -->
 
 “hoti tathāgato paraṁ maraṇā, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:9.1 -->
+
 Santi paneke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:9.2 -->
 
 “na hoti tathāgato paraṁ maraṇā, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:10.1 -->
+
 Santeke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:10.2 -->
 
 “hoti ca na ca hoti tathāgato paraṁ maraṇā, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:11.1 -->
+
 Santi paneke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
+
+<!-- @segment ud6.4:11.2 -->
 
 “neva hoti na na hoti tathāgato paraṁ maraṇā, idameva saccaṁ moghamaññan”ti.
 
+<!-- @segment ud6.4:12.1 -->
+
 Te bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṁ mukhasattīhi vitudantā viharanti:
+
+<!-- @segment ud6.4:12.2 -->
 
 “ediso dhammo, nediso dhammo;
 
+<!-- @segment ud6.4:12.3 -->
+
 nediso dhammo, ediso dhammo”ti.
+
+<!-- @segment ud6.4:13.1 -->
 
 Atha kho sambahulā bhikkhū pubbaṇhasamayaṁ nivāsetvā pattacīvaramādāya sāvatthiṁ piṇḍāya pāvisiṁsu.
 
+<!-- @segment ud6.4:13.2 -->
+
 Sāvatthiyaṁ piṇḍāya caritvā pacchābhattaṁ piṇḍapātapaṭikkantā yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdiṁsu.
+
+<!-- @segment ud6.4:13.3 -->
 
 Ekamantaṁ nisinnā kho te bhikkhū bhagavantaṁ etadavocuṁ:
 
+<!-- @segment ud6.4:14.1 -->
+
 “Idha, bhante, sambahulā nānātitthiyasamaṇabrāhmaṇaparibbājakā sāvatthiyaṁ paṭivasanti nānādiṭṭhikā nānākhantikā nānārucikā nānādiṭṭhinissayanissitā—
+
+<!-- @segment ud6.4:15.1 -->
 
 Santeke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino:
 
+<!-- @segment ud6.4:15.2 -->
+
 ‘sassato loko, idameva saccaṁ moghamaññan’ti …pe…
+
+<!-- @segment ud6.4:15.3 -->
 
 te bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṁ mukhasattīhi vitudantā viharanti:
 
+<!-- @segment ud6.4:15.4 -->
+
 ‘ediso dhammo, nediso dhammo;
 
+<!-- @segment ud6.4:15.5 -->
+
 nediso dhammo, ediso dhammo’”ti.
+
+<!-- @segment ud6.4:16.1 -->
 
 “Aññatitthiyā, bhikkhave, paribbājakā andhā acakkhukā;
 
+<!-- @segment ud6.4:16.2 -->
+
 atthaṁ na jānanti, anatthaṁ na jānanti, dhammaṁ na jānanti, adhammaṁ na jānanti.
+
+<!-- @segment ud6.4:16.3 -->
 
 Te atthaṁ ajānantā anatthaṁ ajānantā dhammaṁ ajānantā adhammaṁ ajānantā bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṁ mukhasattīhi vitudantā viharanti:
 
+<!-- @segment ud6.4:16.4 -->
+
 ‘ediso dhammo, nediso dhammo;
+
+<!-- @segment ud6.4:16.5 -->
 
 nediso dhammo, ediso dhammo’ti.
 
+<!-- @segment ud6.4:17.1 -->
+
 Bhūtapubbaṁ, bhikkhave, imissāyeva sāvatthiyā aññataro rājā ahosi.
+
+<!-- @segment ud6.4:17.2 -->
 
 Atha kho, bhikkhave, so rājā aññataraṁ purisaṁ āmantesi:
 
+<!-- @segment ud6.4:17.3 -->
+
 ‘ehi tvaṁ, ambho purisa, yāvatakā sāvatthiyā jaccandhā te sabbe ekajjhaṁ sannipātehī’ti.
+
+<!-- @segment ud6.4:17.4 -->
 
 ‘Evaṁ, devā’ti kho, bhikkhave, so puriso tassa rañño paṭissutvā yāvatakā sāvatthiyā jaccandhā te sabbe gahetvā yena so rājā tenupasaṅkami; upasaṅkamitvā taṁ rājānaṁ etadavoca:
 
+<!-- @segment ud6.4:17.5 -->
+
 ‘sannipātitā kho te, deva, yāvatakā sāvatthiyā jaccandhā’ti.
+
+<!-- @segment ud6.4:17.6 -->
 
 ‘Tena hi, bhaṇe, jaccandhānaṁ hatthiṁ dassehī’ti.
 
+<!-- @segment ud6.4:17.7 -->
+
 ‘Evaṁ, devā’ti kho, bhikkhave, so puriso tassa rañño paṭissutvā jaccandhānaṁ hatthiṁ dassesi—
+
+<!-- @segment ud6.4:18.1 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa sīsaṁ dassesi:
 
+<!-- @segment ud6.4:18.2 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.3 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa kaṇṇaṁ dassesi:
 
+<!-- @segment ud6.4:18.4 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.5 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa dantaṁ dassesi:
 
+<!-- @segment ud6.4:18.6 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.7 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa soṇḍaṁ dassesi:
 
+<!-- @segment ud6.4:18.8 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.9 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa kāyaṁ dassesi:
 
+<!-- @segment ud6.4:18.10 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.11 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa pādaṁ dassesi:
 
+<!-- @segment ud6.4:18.12 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.13 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa satthiṁ dassesi:
 
+<!-- @segment ud6.4:18.14 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.15 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa naṅguṭṭhaṁ dassesi:
 
+<!-- @segment ud6.4:18.16 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:18.17 -->
 
 Ekaccānaṁ jaccandhānaṁ hatthissa vāladhiṁ dassesi:
 
+<!-- @segment ud6.4:18.18 -->
+
 ‘ediso, jaccandhā, hatthī’ti.
+
+<!-- @segment ud6.4:19.1 -->
 
 Atha kho, bhikkhave, so puriso jaccandhānaṁ hatthiṁ dassetvā yena so rājā tenupasaṅkami; upasaṅkamitvā taṁ rājānaṁ etadavoca:
 
+<!-- @segment ud6.4:19.2 -->
+
 ‘diṭṭho kho tehi, deva, jaccandhehi hatthī;
+
+<!-- @segment ud6.4:19.3 -->
 
 yassadāni kālaṁ maññasī’ti.
 
+<!-- @segment ud6.4:20.1 -->
+
 Atha kho, bhikkhave, so rājā yena te jaccandhā tenupasaṅkami; upasaṅkamitvā te jaccandhe etadavoca:
+
+<!-- @segment ud6.4:20.2 -->
 
 ‘diṭṭho vo, jaccandhā, hatthī’ti?
 
+<!-- @segment ud6.4:20.3 -->
+
 ‘Evaṁ, deva, diṭṭho no hatthī’ti.
+
+<!-- @segment ud6.4:20.4 -->
 
 ‘Vadetha, jaccandhā, kīdiso hatthī’ti?
 
+<!-- @segment ud6.4:21.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa sīsaṁ diṭṭhaṁ ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:21.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi kumbho’ti.
 
+<!-- @segment ud6.4:22.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa kaṇṇo diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:22.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi suppo’ti.
 
+<!-- @segment ud6.4:23.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa danto diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:23.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi khīlo’ti.
 
+<!-- @segment ud6.4:24.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa soṇḍo diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:24.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi naṅgalīsā’ti.
 
+<!-- @segment ud6.4:25.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa kāyo diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:25.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi koṭṭho’ti.
 
+<!-- @segment ud6.4:26.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa pādo diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:26.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi thūṇo’ti.
 
+<!-- @segment ud6.4:27.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa satthi diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:27.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi udukkhalo’ti.
 
+<!-- @segment ud6.4:28.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa naṅguṭṭhaṁ diṭṭhaṁ ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:28.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi musalo’ti.
 
+<!-- @segment ud6.4:29.1 -->
+
 Yehi, bhikkhave, jaccandhehi hatthissa vāladhi diṭṭho ahosi, te evamāhaṁsu:
+
+<!-- @segment ud6.4:29.2 -->
 
 ‘ediso, deva, hatthī seyyathāpi sammajjanī’ti.
 
+<!-- @segment ud6.4:30.1 -->
+
 Te ‘ediso hatthī, nediso hatthī;
+
+<!-- @segment ud6.4:30.2 -->
 
 nediso hatthī, ediso hatthī’ti aññamaññaṁ muṭṭhīhi saṁsumbhiṁsu.
 
+<!-- @segment ud6.4:30.3 -->
+
 Tena ca pana, bhikkhave, so rājā attamano ahosi.
+
+<!-- @segment ud6.4:31.1 -->
 
 Evamevaṁ kho, bhikkhave, aññatitthiyā paribbājakā andhā acakkhukā.
 
+<!-- @segment ud6.4:31.2 -->
+
 Te atthaṁ na jānanti anatthaṁ na jānanti, dhammaṁ na jānanti adhammaṁ na jānanti.
+
+<!-- @segment ud6.4:31.3 -->
 
 Te atthaṁ ajānantā anatthaṁ ajānantā, dhammaṁ ajānantā adhammaṁ ajānantā bhaṇḍanajātā kalahajātā vivādāpannā aññamaññaṁ mukhasattīhi vitudantā viharanti:
 
+<!-- @segment ud6.4:31.4 -->
+
 ‘ediso dhammo, nediso dhammo;
+
+<!-- @segment ud6.4:31.5 -->
 
 nediso dhammo, ediso dhammo’”ti.
 
+<!-- @segment ud6.4:32.1 -->
+
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
+
+<!-- @segment ud6.4:33.1 -->
 
 “Imesu kira sajjanti,
 
+<!-- @segment ud6.4:33.2 -->
+
 eke samaṇabrāhmaṇā;
+
+<!-- @segment ud6.4:33.3 -->
 
 Viggayha naṁ vivadanti,
 
+<!-- @segment ud6.4:33.4 -->
+
 janā ekaṅgadassino”ti.
+
+<!-- @segment ud6.4:33.5 -->
 
 Catutthaṁ.

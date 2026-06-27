@@ -1,149 +1,291 @@
 ---
 slug: an9.22
 source: suttacentral/bilara-data
+title: Assakhaḷuṅkasutta
 edition: ms
 granularity: segment
-title: Assakhaḷuṅkasutta
 ---
+
+<!-- @segment an9.22:1.1 -->
 
 “Tayo ca, bhikkhave, assakhaḷuṅke desessāmi tayo ca purisakhaḷuṅke tayo ca assaparasse tayo ca purisaparasse tayo ca bhadde assājānīye tayo ca bhadde purisājānīye.
 
+<!-- @segment an9.22:1.2 -->
+
 Taṁ suṇātha. (…)
+
+<!-- @segment an9.22:2.1 -->
 
 Katame ca, bhikkhave, tayo assakhaḷuṅkā?
 
+<!-- @segment an9.22:2.2 -->
+
 Idha, bhikkhave, ekacco assakhaḷuṅko javasampanno hoti, na vaṇṇasampanno, na ārohapariṇāhasampanno.
+
+<!-- @segment an9.22:2.3 -->
 
 Idha pana, bhikkhave, ekacco assakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca, na ārohapariṇāhasampanno.
 
+<!-- @segment an9.22:2.4 -->
+
 Idha pana, bhikkhave, ekacco assakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
+
+<!-- @segment an9.22:2.5 -->
 
 Ime kho, bhikkhave, tayo assakhaḷuṅkā.
 
+<!-- @segment an9.22:3.1 -->
+
 Katame ca, bhikkhave, tayo purisakhaḷuṅkā?
+
+<!-- @segment an9.22:3.2 -->
 
 Idha, bhikkhave, ekacco purisakhaḷuṅko javasampanno hoti, na vaṇṇasampanno, na ārohapariṇāhasampanno.
 
+<!-- @segment an9.22:3.3 -->
+
 Idha pana, bhikkhave, ekacco purisakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca, na ārohapariṇāhasampanno.
+
+<!-- @segment an9.22:3.4 -->
 
 Idha pana, bhikkhave, ekacco purisakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
 
+<!-- @segment an9.22:4.1 -->
+
 Kathañca, bhikkhave, purisakhaḷuṅko javasampanno hoti, na vaṇṇasampanno na ārohapariṇāhasampanno?
+
+<!-- @segment an9.22:4.2 -->
 
 Idha, bhikkhave, bhikkhu ‘idaṁ dukkhan’ti yathābhūtaṁ pajānāti, ‘ayaṁ dukkhasamudayo’ti yathābhūtaṁ pajānāti, ‘ayaṁ dukkhanirodho’ti yathābhūtaṁ pajānāti, ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṁ pajānāti.
 
+<!-- @segment an9.22:4.3 -->
+
 Idamassa javasmiṁ vadāmi.
+
+<!-- @segment an9.22:4.4 -->
 
 Abhidhamme kho pana abhivinaye pañhaṁ puṭṭho saṁsādeti, no vissajjeti.
 
+<!-- @segment an9.22:4.5 -->
+
 Idamassa na vaṇṇasmiṁ vadāmi.
+
+<!-- @segment an9.22:4.6 -->
 
 Na kho pana lābhī hoti cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānaṁ.
 
+<!-- @segment an9.22:4.7 -->
+
 Idamassa na ārohapariṇāhasmiṁ vadāmi.
+
+<!-- @segment an9.22:4.8 -->
 
 Evaṁ kho, bhikkhave, purisakhaḷuṅko javasampanno hoti, na vaṇṇasampanno na ārohapariṇāhasampanno.
 
+<!-- @segment an9.22:5.1 -->
+
 Kathañca, bhikkhave, purisakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca, na ārohapariṇāhasampanno?
+
+<!-- @segment an9.22:5.2 -->
 
 Idha, bhikkhave, bhikkhu ‘idaṁ dukkhan’ti yathābhūtaṁ pajānāti …pe… ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṁ pajānāti.
 
+<!-- @segment an9.22:5.3 -->
+
 Idamassa javasmiṁ vadāmi.
+
+<!-- @segment an9.22:5.4 -->
 
 Abhidhamme kho pana abhivinaye pañhaṁ puṭṭho vissajjeti, no saṁsādeti.
 
+<!-- @segment an9.22:5.5 -->
+
 Idamassa vaṇṇasmiṁ vadāmi.
+
+<!-- @segment an9.22:5.6 -->
 
 Na kho pana lābhī hoti cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānaṁ.
 
+<!-- @segment an9.22:5.7 -->
+
 Idamassa na ārohapariṇāhasmiṁ vadāmi.
+
+<!-- @segment an9.22:5.8 -->
 
 Evaṁ kho, bhikkhave, purisakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca, na ārohapariṇāhasampanno.
 
+<!-- @segment an9.22:6.1 -->
+
 Kathañca, bhikkhave, purisakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca?
+
+<!-- @segment an9.22:6.2 -->
 
 Idha, bhikkhave, bhikkhu ‘idaṁ dukkhan’ti yathābhūtaṁ pajānāti …pe… ‘ayaṁ dukkhanirodhagāminī paṭipadā’ti yathābhūtaṁ pajānāti.
 
+<!-- @segment an9.22:6.3 -->
+
 Idamassa javasmiṁ vadāmi.
+
+<!-- @segment an9.22:6.4 -->
 
 Abhidhamme kho pana abhivinaye pañhaṁ puṭṭho vissajjeti, no saṁsādeti.
 
+<!-- @segment an9.22:6.5 -->
+
 Idamassa vaṇṇasmiṁ vadāmi.
+
+<!-- @segment an9.22:6.6 -->
 
 Lābhī kho pana hoti cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānaṁ.
 
+<!-- @segment an9.22:6.7 -->
+
 Idamassa ārohapariṇāhasmiṁ vadāmi.
+
+<!-- @segment an9.22:6.8 -->
 
 Evaṁ kho, bhikkhave, purisakhaḷuṅko javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
 
+<!-- @segment an9.22:6.9 -->
+
 Ime kho, bhikkhave, tayo purisakhaḷuṅkā.
+
+<!-- @segment an9.22:7.1 -->
 
 Katame ca, bhikkhave, tayo assaparassā?
 
+<!-- @segment an9.22:7.2 -->
+
 Idha, bhikkhave, ekacco assaparasso …pe…
 
+<!-- @segment an9.22:7.3 -->
+
 javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
+
+<!-- @segment an9.22:7.4 -->
 
 Ime kho, bhikkhave, tayo assaparassā.
 
+<!-- @segment an9.22:8.1 -->
+
 Katame ca, bhikkhave, tayo purisaparassā?
+
+<!-- @segment an9.22:8.2 -->
 
 Idha, bhikkhave, ekacco purisaparasso …pe…
 
+<!-- @segment an9.22:8.3 -->
+
 javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
+
+<!-- @segment an9.22:9.1 -->
 
 Kathañca, bhikkhave, purisaparasso …pe…
 
+<!-- @segment an9.22:9.2 -->
+
 javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca?
+
+<!-- @segment an9.22:9.3 -->
 
 Idha, bhikkhave, bhikkhu pañcannaṁ orambhāgiyānaṁ saṁyojanānaṁ parikkhayā opapātiko hoti, tattha parinibbāyī anāvattidhammo tasmā lokā.
 
+<!-- @segment an9.22:9.4 -->
+
 Idamassa javasmiṁ vadāmi.
+
+<!-- @segment an9.22:9.5 -->
 
 Abhidhamme kho pana abhivinaye pañhaṁ puṭṭho vissajjeti, no saṁsādeti.
 
+<!-- @segment an9.22:9.6 -->
+
 Idamassa vaṇṇasmiṁ vadāmi.
+
+<!-- @segment an9.22:9.7 -->
 
 Lābhī kho pana hoti cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānaṁ.
 
+<!-- @segment an9.22:9.8 -->
+
 Idamassa ārohapariṇāhasmiṁ vadāmi.
+
+<!-- @segment an9.22:9.9 -->
 
 Evaṁ kho, bhikkhave, purisaparasso javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
 
+<!-- @segment an9.22:9.10 -->
+
 Ime kho, bhikkhave, tayo purisaparassā.
+
+<!-- @segment an9.22:10.1 -->
 
 Katame ca, bhikkhave, tayo bhaddā assājānīyā?
 
+<!-- @segment an9.22:10.2 -->
+
 Idha, bhikkhave, ekacco bhaddo assājānīyo …pe…
 
+<!-- @segment an9.22:10.3 -->
+
 javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
+
+<!-- @segment an9.22:10.4 -->
 
 Ime kho, bhikkhave, tayo bhaddā assājānīyā.
 
+<!-- @segment an9.22:11.1 -->
+
 Katame ca, bhikkhave, tayo bhaddā purisājānīyā?
+
+<!-- @segment an9.22:11.2 -->
 
 Idha, bhikkhave, ekacco bhaddo purisājānīyo …pe…
 
+<!-- @segment an9.22:11.3 -->
+
 javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
+
+<!-- @segment an9.22:12.1 -->
 
 Kathañca, bhikkhave, bhaddo purisājānīyo …pe…
 
+<!-- @segment an9.22:12.2 -->
+
 javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca?
+
+<!-- @segment an9.22:12.3 -->
 
 Idha, bhikkhave, bhikkhu āsavānaṁ khayā anāsavaṁ cetovimuttiṁ paññāvimuttiṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja viharati.
 
+<!-- @segment an9.22:12.4 -->
+
 Idamassa javasmiṁ vadāmi.
+
+<!-- @segment an9.22:12.5 -->
 
 Abhidhamme kho pana abhivinaye pañhaṁ puṭṭho vissajjeti, no saṁsādeti.
 
+<!-- @segment an9.22:12.6 -->
+
 Idamassa vaṇṇasmiṁ vadāmi.
+
+<!-- @segment an9.22:12.7 -->
 
 Lābhī kho pana hoti cīvarapiṇḍapātasenāsanagilānapaccayabhesajjaparikkhārānaṁ.
 
+<!-- @segment an9.22:12.8 -->
+
 Idamassa ārohapariṇāhasmiṁ vadāmi.
+
+<!-- @segment an9.22:12.9 -->
 
 Evaṁ kho, bhikkhave, bhaddo purisājānīyo javasampanno ca hoti vaṇṇasampanno ca ārohapariṇāhasampanno ca.
 
+<!-- @segment an9.22:12.10 -->
+
 Ime kho, bhikkhave, tayo bhaddā purisājānīyā”ti.
+
+<!-- @segment an9.22:12.11 -->
 
 Dutiyaṁ.

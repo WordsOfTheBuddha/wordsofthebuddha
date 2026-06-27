@@ -6,44 +6,86 @@ license: CC0
 title: A Sure Bet
 ---
 
+<!-- @segment an3.16:1.1 -->
+
 “Mendicants, when a mendicant has three things their practice is a sure bet, and they have laid the groundwork for ending the defilements.
+
+<!-- @segment an3.16:1.2 -->
 
 What three?
 
+<!-- @segment an3.16:1.3 -->
+
 It’s when a mendicant guards the sense doors, eats in moderation, and is dedicated to wakefulness.
+
+<!-- @segment an3.16:2.1 -->
 
 And how does a mendicant guard the sense doors?
 
+<!-- @segment an3.16:2.2 -->
+
 When a mendicant sees a sight with their eyes, they don’t get caught up in the features and details.
+
+<!-- @segment an3.16:2.3 -->
 
 If the faculty of sight were left unrestrained, bad unskillful qualities of covetousness and displeasure would become overwhelming. For this reason, they practice restraint, protecting the faculty of sight, and achieving its restraint.
 
+<!-- @segment an3.16:2.4 -->
+
 When they hear a sound with their ears …
+
+<!-- @segment an3.16:2.5 -->
 
 When they smell an odor with their nose …
 
+<!-- @segment an3.16:2.6 -->
+
 When they taste a flavor with their tongue …
+
+<!-- @segment an3.16:2.7 -->
 
 When they feel a touch with their body …
 
+<!-- @segment an3.16:2.8 -->
+
 When they know an idea with their mind, they don’t get caught up in the features and details.
+
+<!-- @segment an3.16:2.9 -->
 
 If the faculty of mind were left unrestrained, bad unskillful qualities of covetousness and displeasure would become overwhelming. For this reason, they practice restraint, protecting the faculty of mind, and achieving its restraint.
 
+<!-- @segment an3.16:2.10 -->
+
 That’s how a mendicant guards the sense doors.
+
+<!-- @segment an3.16:3.1 -->
 
 And how does a mendicant eat in moderation?
 
+<!-- @segment an3.16:3.2 -->
+
 It’s when a mendicant reflects rationally on the food that they eat:
+
+<!-- @segment an3.16:3.3 -->
 
 ‘Not for fun, indulgence, adornment, or decoration, but only to sustain this body, to avoid harm, and to support spiritual practice. In this way, I shall put an end to old discomfort and not give rise to new discomfort, and I will have the means to keep going, blamelessness, and a comfortable abiding.’
 
+<!-- @segment an3.16:3.4 -->
+
 That’s how a mendicant eats in moderation.
+
+<!-- @segment an3.16:4.1 -->
 
 And how is a mendicant dedicated to wakefulness?
 
+<!-- @segment an3.16:4.2 -->
+
 It’s when a mendicant practices walking and sitting meditation by day, purifying their mind from obstacles. In the first watch of the night, they continue to practice walking and sitting meditation. In the middle watch, they lie down in the lion’s posture—on the right side, placing one foot on top of the other—mindful and aware, and focused on the time of getting up. In the last watch, they get up and continue to practice walking and sitting meditation, purifying their mind from obstacles.
 
+<!-- @segment an3.16:4.3 -->
+
 This is how a mendicant is dedicated to wakefulness.
+
+<!-- @segment an3.16:4.4 -->
 
 When a mendicant possesses these three things their practice is a sure bet, and they have laid the groundwork for ending the defilements.”

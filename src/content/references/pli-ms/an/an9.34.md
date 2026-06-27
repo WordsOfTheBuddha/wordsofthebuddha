@@ -1,141 +1,275 @@
 ---
 slug: an9.34
 source: suttacentral/bilara-data
+title: Nibbānasukhasutta
 edition: ms
 granularity: segment
-title: Nibbānasukhasutta
 ---
+
+<!-- @segment an9.34:1.1 -->
 
 Ekaṁ samayaṁ āyasmā sāriputto rājagahe viharati veḷuvane kalandakanivāpe.
 
+<!-- @segment an9.34:1.2 -->
+
 Tatra kho āyasmā sāriputto bhikkhū āmantesi:
+
+<!-- @segment an9.34:1.3 -->
 
 “sukhamidaṁ, āvuso, nibbānaṁ.
 
+<!-- @segment an9.34:1.4 -->
+
 Sukhamidaṁ, āvuso, nibbānan”ti.
+
+<!-- @segment an9.34:1.5 -->
 
 Evaṁ vutte, āyasmā udāyī āyasmantaṁ sāriputtaṁ etadavoca:
 
+<!-- @segment an9.34:1.6 -->
+
 “kiṁ panettha, āvuso sāriputta, sukhaṁ yadettha natthi vedayitan”ti?
+
+<!-- @segment an9.34:1.7 -->
 
 “Etadeva khvettha, āvuso, sukhaṁ yadettha natthi vedayitaṁ.
 
+<!-- @segment an9.34:1.8 -->
+
 Pañcime, āvuso, kāmaguṇā.
+
+<!-- @segment an9.34:1.9 -->
 
 Katame pañca?
 
+<!-- @segment an9.34:1.10 -->
+
 Cakkhuviññeyyā rūpā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā,
+
+<!-- @segment an9.34:1.11 -->
 
 sotaviññeyyā saddā …pe…
 
+<!-- @segment an9.34:1.12 -->
+
 ghānaviññeyyā gandhā …
+
+<!-- @segment an9.34:1.13 -->
 
 jivhāviññeyyā rasā …
 
+<!-- @segment an9.34:1.14 -->
+
 kāyaviññeyyā phoṭṭhabbā iṭṭhā kantā manāpā piyarūpā kāmūpasaṁhitā rajanīyā—
+
+<!-- @segment an9.34:1.15 -->
 
 ime kho, āvuso, pañca kāmaguṇā.
 
+<!-- @segment an9.34:1.16 -->
+
 Yaṁ kho, āvuso, ime pañca kāmaguṇe paṭicca uppajjati sukhaṁ somanassaṁ, idaṁ vuccatāvuso, kāmasukhaṁ.
+
+<!-- @segment an9.34:2.1 -->
 
 Idhāvuso, bhikkhu vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.34:2.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato kāmasahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:2.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:2.4 -->
 
 evamevassa te kāmasahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:2.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:2.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:3.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu vitakkavicārānaṁ vūpasamā …pe… dutiyaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.34:3.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato vitakkasahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:3.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:3.4 -->
 
 evamevassa te vitakkasahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:3.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:3.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:4.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu pītiyā ca virāgā …pe… tatiyaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.34:4.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato pītisahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:4.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:4.4 -->
 
 evamevassa te pītisahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:4.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:4.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:5.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu sukhassa ca pahānā …pe… catutthaṁ jhānaṁ upasampajja viharati.
 
+<!-- @segment an9.34:5.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato upekkhāsahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:5.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:5.4 -->
 
 evamevassa te upekkhāsahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:5.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:5.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:6.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu sabbaso rūpasaññānaṁ samatikkamā paṭighasaññānaṁ atthaṅgamā nānattasaññānaṁ amanasikārā ananto ākāsoti ākāsānañcāyatanaṁ upasampajja viharati.
 
+<!-- @segment an9.34:6.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato rūpasahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:6.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:6.4 -->
 
 evamevassa te rūpasahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:6.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:6.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:7.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu sabbaso ākāsānañcāyatanaṁ samatikkamma anantaṁ viññāṇanti viññāṇañcāyatanaṁ upasampajja viharati.
 
+<!-- @segment an9.34:7.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato ākāsānañcāyatanasahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:7.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:7.4 -->
 
 evamevassa te ākāsānañcāyatanasahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:7.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:7.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:8.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu sabbaso viññāṇañcāyatanaṁ samatikkamma, natthi kiñcīti ākiñcaññāyatanaṁ upasampajja viharati.
 
+<!-- @segment an9.34:8.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato viññāṇañcāyatanasahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
 
+<!-- @segment an9.34:8.3 -->
+
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
+
+<!-- @segment an9.34:8.4 -->
 
 evamevassa te viññāṇañcāyatanasahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
 
+<!-- @segment an9.34:8.5 -->
+
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:8.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:9.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu sabbaso ākiñcaññāyatanaṁ samatikkamma nevasaññānāsaññāyatanaṁ upasampajja viharati.
 
+<!-- @segment an9.34:9.2 -->
+
 Tassa ce, āvuso, bhikkhuno iminā vihārena viharato ākiñcaññāyatanasahagatā saññāmanasikārā samudācaranti, svassa hoti ābādho.
+
+<!-- @segment an9.34:9.3 -->
 
 Seyyathāpi, āvuso, sukhino dukkhaṁ uppajjeyya yāvadeva ābādhāya;
 
+<!-- @segment an9.34:9.4 -->
+
 evamevassa te ākiñcaññāyatanasahagatā saññāmanasikārā samudācaranti. Svassa hoti ābādho.
+
+<!-- @segment an9.34:9.5 -->
 
 Yo kho panāvuso, ābādho dukkhametaṁ vuttaṁ bhagavatā.
 
+<!-- @segment an9.34:9.6 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānaṁ.
+
+<!-- @segment an9.34:10.1 -->
 
 Puna caparaṁ, āvuso, bhikkhu sabbaso nevasaññānāsaññāyatanaṁ samatikkamma saññāvedayitanirodhaṁ upasampajja viharati, paññāya cassa disvā āsavā parikkhīṇā honti.
 
+<!-- @segment an9.34:11.1 -->
+
 Imināpi kho etaṁ, āvuso, pariyāyena veditabbaṁ yathā sukhaṁ nibbānan”ti.
+
+<!-- @segment an9.34:11.2 -->
 
 Tatiyaṁ.

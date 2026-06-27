@@ -1,55 +1,103 @@
 ---
 slug: an3.109
 source: suttacentral/bilara-data
+title: Arakkhitasutta
 edition: ms
 granularity: segment
-title: Arakkhitasutta
 ---
+
+<!-- @segment an3.109:1.1 -->
 
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:
 
+<!-- @segment an3.109:1.2 -->
+
 “citte, gahapati, arakkhite kāyakammampi arakkhitaṁ hoti, vacīkammampi arakkhitaṁ hoti, manokammampi arakkhitaṁ hoti.
+
+<!-- @segment an3.109:1.3 -->
 
 Tassa arakkhitakāyakammantassa arakkhitavacīkammantassa arakkhitamanokammantassa kāyakammampi avassutaṁ hoti, vacīkammampi avassutaṁ hoti, manokammampi avassutaṁ hoti.
 
+<!-- @segment an3.109:1.4 -->
+
 Tassa avassutakāyakammantassa avassutavacīkammantassa avassutamanokammantassa kāyakammampi pūtikaṁ hoti, vacīkammampi pūtikaṁ hoti, manokammampi pūtikaṁ hoti.
 
+<!-- @segment an3.109:1.5 -->
+
 Tassa pūtikāyakammantassa pūtivacīkammantassa pūtimanokammantassa na bhaddakaṁ maraṇaṁ hoti, na bhaddikā kālakiriyā.
+
+<!-- @segment an3.109:2.1 -->
 
 Seyyathāpi, gahapati, kūṭāgāre ducchanne kūṭampi arakkhitaṁ hoti, gopānasiyopi arakkhitā honti, bhittipi arakkhitā hoti;
 
+<!-- @segment an3.109:2.2 -->
+
 kūṭampi avassutaṁ hoti, gopānasiyopi avassutā honti, bhittipi avassutā hoti;
+
+<!-- @segment an3.109:2.3 -->
 
 kūṭampi pūtikaṁ hoti, gopānasiyopi pūtikā honti, bhittipi pūtikā hoti.
 
+<!-- @segment an3.109:3.1 -->
+
 Evamevaṁ kho, gahapati, citte arakkhite kāyakammampi arakkhitaṁ hoti, vacīkammampi arakkhitaṁ hoti, manokammampi arakkhitaṁ hoti.
+
+<!-- @segment an3.109:3.2 -->
 
 Tassa arakkhitakāyakammantassa arakkhitavacīkammantassa arakkhitamanokammantassa kāyakammampi avassutaṁ hoti, vacīkammampi avassutaṁ hoti, manokammampi avassutaṁ hoti.
 
+<!-- @segment an3.109:3.3 -->
+
 Tassa avassutakāyakammantassa avassutavacīkammantassa avassutamanokammantassa kāyakammampi pūtikaṁ hoti, vacīkammampi pūtikaṁ hoti, manokammampi pūtikaṁ hoti.
+
+<!-- @segment an3.109:3.4 -->
 
 Tassa pūtikāyakammantassa pūtivacīkammantassa pūtimanokammantassa na bhaddakaṁ maraṇaṁ hoti, na bhaddikā kālakiriyā.
 
+<!-- @segment an3.109:4.1 -->
+
 Citte, gahapati, rakkhite kāyakammampi rakkhitaṁ hoti, vacīkammampi rakkhitaṁ hoti, manokammampi rakkhitaṁ hoti.
+
+<!-- @segment an3.109:4.2 -->
 
 Tassa rakkhitakāyakammantassa rakkhitavacīkammantassa rakkhitamanokammantassa kāyakammampi anavassutaṁ hoti, vacīkammampi anavassutaṁ hoti, manokammampi anavassutaṁ hoti.
 
+<!-- @segment an3.109:4.3 -->
+
 Tassa anavassutakāyakammantassa anavassutavacīkammantassa anavassutamanokammantassa kāyakammampi apūtikaṁ hoti, vacīkammampi apūtikaṁ hoti, manokammampi apūtikaṁ hoti.
+
+<!-- @segment an3.109:4.4 -->
 
 Tassa apūtikāyakammantassa apūtivacīkammantassa apūtimanokammantassa bhaddakaṁ maraṇaṁ hoti, bhaddikā kālakiriyā.
 
+<!-- @segment an3.109:5.1 -->
+
 Seyyathāpi, gahapati, kūṭāgāre succhanne kūṭampi rakkhitaṁ hoti, gopānasiyopi rakkhitā honti, bhittipi rakkhitā hoti;
+
+<!-- @segment an3.109:5.2 -->
 
 kūṭampi anavassutaṁ hoti, gopānasiyopi anavassutā honti, bhittipi anavassutā hoti;
 
+<!-- @segment an3.109:5.3 -->
+
 kūṭampi apūtikaṁ hoti, gopānasiyopi apūtikā honti, bhittipi apūtikā hoti.
+
+<!-- @segment an3.109:6.1 -->
 
 Evamevaṁ kho, gahapati, citte rakkhite kāyakammampi rakkhitaṁ hoti, vacīkammampi rakkhitaṁ hoti, manokammampi rakkhitaṁ hoti.
 
+<!-- @segment an3.109:6.2 -->
+
 Tassa rakkhitakāyakammantassa rakkhitavacīkammantassa rakkhitamanokammantassa kāyakammampi anavassutaṁ hoti, vacīkammampi anavassutaṁ hoti, manokammampi anavassutaṁ hoti.
+
+<!-- @segment an3.109:6.3 -->
 
 Tassa anavassutakāyakammantassa anavassutavacīkammantassa anavassutamanokammantassa kāyakammampi apūtikaṁ hoti, vacīkammampi apūtikaṁ hoti, manokammampi apūtikaṁ hoti.
 
+<!-- @segment an3.109:6.4 -->
+
 Tassa apūtikāyakammantassa apūtivacīkammantassa apūtimanokammantassa bhaddakaṁ maraṇaṁ hoti, bhaddikā kālakiriyā”ti.
+
+<!-- @segment an3.109:6.5 -->
 
 Sattamaṁ.

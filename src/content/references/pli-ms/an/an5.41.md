@@ -1,89 +1,171 @@
 ---
 slug: an5.41
 source: suttacentral/bilara-data
+title: Ādiyasutta
 edition: ms
 granularity: segment
-title: Ādiyasutta
 ---
+
+<!-- @segment an5.41:1.1 -->
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
 
+<!-- @segment an5.41:1.2 -->
+
 Atha kho anāthapiṇḍiko gahapati yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho anāthapiṇḍikaṁ gahapatiṁ bhagavā etadavoca:
+
+<!-- @segment an5.41:1.3 -->
 
 “pañcime, gahapati, bhogānaṁ ādiyā.
 
+<!-- @segment an5.41:1.4 -->
+
 Katame pañca?
+
+<!-- @segment an5.41:1.5 -->
 
 Idha, gahapati, ariyasāvako uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi attānaṁ sukheti pīṇeti sammā sukhaṁ pariharati;
 
+<!-- @segment an5.41:1.6 -->
+
 mātāpitaro sukheti pīṇeti sammā sukhaṁ pariharati;
+
+<!-- @segment an5.41:1.7 -->
 
 puttadāradāsakammakaraporise sukheti pīṇeti sammā sukhaṁ pariharati.
 
+<!-- @segment an5.41:1.8 -->
+
 Ayaṁ paṭhamo bhogānaṁ ādiyo.
+
+<!-- @segment an5.41:2.1 -->
 
 Puna caparaṁ, gahapati, ariyasāvako uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi mittāmacce sukheti pīṇeti sammā sukhaṁ pariharati.
 
+<!-- @segment an5.41:2.2 -->
+
 Ayaṁ dutiyo bhogānaṁ ādiyo.
+
+<!-- @segment an5.41:3.1 -->
 
 Puna caparaṁ, gahapati, ariyasāvako uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi yā tā honti āpadā—
 
+<!-- @segment an5.41:3.2 -->
+
 aggito vā udakato vā rājato vā corato vā appiyato vā dāyādato—
+
+<!-- @segment an5.41:3.3 -->
 
 tathārūpāsu āpadāsu bhogehi pariyodhāya vattati, sotthiṁ attānaṁ karoti.
 
+<!-- @segment an5.41:3.4 -->
+
 Ayaṁ tatiyo bhogānaṁ ādiyo.
+
+<!-- @segment an5.41:4.1 -->
 
 Puna caparaṁ, gahapati, ariyasāvako uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi pañcabaliṁ kattā hoti.
 
+<!-- @segment an5.41:4.2 -->
+
 Ñātibaliṁ, atithibaliṁ, pubbapetabaliṁ, rājabaliṁ, devatābaliṁ—
+
+<!-- @segment an5.41:4.3 -->
 
 ayaṁ catuttho bhogānaṁ ādiyo.
 
+<!-- @segment an5.41:5.1 -->
+
 Puna caparaṁ, gahapati, ariyasāvako uṭṭhānavīriyādhigatehi bhogehi bāhābalaparicitehi sedāvakkhittehi dhammikehi dhammaladdhehi ye te samaṇabrāhmaṇā madappamādā paṭiviratā khantisoracce niviṭṭhā ekamattānaṁ damenti ekamattānaṁ samenti ekamattānaṁ parinibbāpenti, tathārūpesu samaṇabrāhmaṇesu uddhaggikaṁ dakkhiṇaṁ patiṭṭhāpeti sovaggikaṁ sukhavipākaṁ saggasaṁvattanikaṁ.
+
+<!-- @segment an5.41:5.2 -->
 
 Ayaṁ pañcamo bhogānaṁ ādiyo.
 
+<!-- @segment an5.41:5.3 -->
+
 Ime kho, gahapati, pañca bhogānaṁ ādiyā.
+
+<!-- @segment an5.41:6.1 -->
 
 Tassa ce, gahapati, ariyasāvakassa ime pañca bhogānaṁ ādiye ādiyato bhogā parikkhayaṁ gacchanti, tassa evaṁ hoti:
 
+<!-- @segment an5.41:6.2 -->
+
 ‘ye vata bhogānaṁ ādiyā te cāhaṁ ādiyāmi bhogā ca me parikkhayaṁ gacchantī’ti.
+
+<!-- @segment an5.41:6.3 -->
 
 Itissa hoti avippaṭisāro.
 
+<!-- @segment an5.41:6.4 -->
+
 Tassa ce, gahapati, ariyasāvakassa ime pañca bhogānaṁ ādiye ādiyato bhogā abhivaḍḍhanti, tassa evaṁ hoti:
+
+<!-- @segment an5.41:6.5 -->
 
 ‘ye vata bhogānaṁ ādiyā te cāhaṁ ādiyāmi bhogā ca me abhivaḍḍhantī’ti.
 
+<!-- @segment an5.41:6.6 -->
+
 Itissa hoti ubhayeneva avippaṭisāroti.
+
+<!-- @segment an5.41:7.1 -->
 
 Bhuttā bhogā bhatā bhaccā,
 
+<!-- @segment an5.41:7.2 -->
+
 vitiṇṇā āpadāsu me;
+
+<!-- @segment an5.41:7.3 -->
 
 Uddhaggā dakkhiṇā dinnā,
 
+<!-- @segment an5.41:7.4 -->
+
 atho pañcabalīkatā;
+
+<!-- @segment an5.41:7.5 -->
 
 Upaṭṭhitā sīlavanto,
 
+<!-- @segment an5.41:7.6 -->
+
 saññatā brahmacārayo.
+
+<!-- @segment an5.41:8.1 -->
 
 Yadatthaṁ bhogaṁ iccheyya,
 
+<!-- @segment an5.41:8.2 -->
+
 paṇḍito gharamāvasaṁ;
+
+<!-- @segment an5.41:8.3 -->
 
 So me attho anuppatto,
 
+<!-- @segment an5.41:8.4 -->
+
 kataṁ ananutāpiyaṁ.
+
+<!-- @segment an5.41:9.1 -->
 
 Etaṁ anussaraṁ macco,
 
+<!-- @segment an5.41:9.2 -->
+
 ariyadhamme ṭhito naro;
+
+<!-- @segment an5.41:9.3 -->
 
 Idheva naṁ pasaṁsanti,
 
+<!-- @segment an5.41:9.4 -->
+
 pecca sagge pamodatī”ti.
+
+<!-- @segment an5.41:9.5 -->
 
 Paṭhamaṁ.

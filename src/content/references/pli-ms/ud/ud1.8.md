@@ -1,65 +1,123 @@
 ---
 slug: ud1.8
 source: suttacentral/bilara-data
+title: Saṅgāmajisutta
 edition: ms
 granularity: segment
-title: Saṅgāmajisutta
 ---
+
+<!-- @segment ud1.8:1.1 -->
 
 Evaṁ me sutaṁ—
 
+<!-- @segment ud1.8:1.2 -->
+
 ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
+
+<!-- @segment ud1.8:1.3 -->
 
 Tena kho pana samayena āyasmā saṅgāmaji sāvatthiṁ anuppatto hoti bhagavantaṁ dassanāya.
 
+<!-- @segment ud1.8:1.4 -->
+
 Assosi kho āyasmato saṅgāmajissa purāṇadutiyikā:
+
+<!-- @segment ud1.8:1.5 -->
 
 “ayyo kira saṅgāmaji sāvatthiṁ anuppatto”ti.
 
+<!-- @segment ud1.8:1.6 -->
+
 Sā dārakaṁ ādāya jetavanaṁ agamāsi.
+
+<!-- @segment ud1.8:2.1 -->
 
 Tena kho pana samayena āyasmā saṅgāmaji aññatarasmiṁ rukkhamūle divāvihāraṁ nisinno hoti.
 
+<!-- @segment ud1.8:2.2 -->
+
 Atha kho āyasmato saṅgāmajissa purāṇadutiyikā yenāyasmā saṅgāmaji tenupasaṅkami; upasaṅkamitvā āyasmantaṁ saṅgāmajiṁ etadavoca:
 
+<!-- @segment ud1.8:2.3 -->
+
 “khuddaputtañhi, samaṇa, posa man”ti.
+
+<!-- @segment ud1.8:2.4 -->
 
 Evaṁ vutte, āyasmā saṅgāmaji tuṇhī ahosi.
 
+<!-- @segment ud1.8:3.1 -->
+
 Dutiyampi kho āyasmato saṅgāmajissa purāṇadutiyikā āyasmantaṁ saṅgāmajiṁ etadavoca:
 
+<!-- @segment ud1.8:3.2 -->
+
 “khuddaputtañhi, samaṇa, posa man”ti.
+
+<!-- @segment ud1.8:3.3 -->
 
 Dutiyampi kho āyasmā saṅgāmaji tuṇhī ahosi.
 
+<!-- @segment ud1.8:4.1 -->
+
 Tatiyampi kho āyasmato saṅgāmajissa purāṇadutiyikā āyasmantaṁ saṅgāmajiṁ etadavoca:
+
+<!-- @segment ud1.8:4.2 -->
 
 “khuddaputtañhi, samaṇa, posa man”ti.
 
+<!-- @segment ud1.8:4.3 -->
+
 Tatiyampi kho āyasmā saṅgāmaji tuṇhī ahosi.
+
+<!-- @segment ud1.8:5.1 -->
 
 Atha kho āyasmato saṅgāmajissa purāṇadutiyikā taṁ dārakaṁ āyasmato saṅgāmajissa purato nikkhipitvā pakkāmi:
 
+<!-- @segment ud1.8:5.2 -->
+
 “eso te, samaṇa, putto; posa nan”ti.
+
+<!-- @segment ud1.8:6.1 -->
 
 Atha kho āyasmā saṅgāmaji taṁ dārakaṁ neva olokesi nāpi ālapi.
 
+<!-- @segment ud1.8:6.2 -->
+
 Atha kho āyasmato saṅgāmajissa purāṇadutiyikā avidūraṁ gantvā apalokentī addasa āyasmantaṁ saṅgāmajiṁ taṁ dārakaṁ neva olokentaṁ nāpi ālapantaṁ, disvānassā etadahosi:
+
+<!-- @segment ud1.8:6.3 -->
 
 “na cāyaṁ samaṇo puttenapi atthiko”ti.
 
+<!-- @segment ud1.8:6.4 -->
+
 Tato paṭinivattitvā dārakaṁ ādāya pakkāmi.
+
+<!-- @segment ud1.8:6.5 -->
 
 Addasā kho bhagavā dibbena cakkhunā visuddhena atikkantamānusakena āyasmato saṅgāmajissa purāṇadutiyikāya evarūpaṁ vippakāraṁ.
 
+<!-- @segment ud1.8:7.1 -->
+
 Atha kho bhagavā etamatthaṁ viditvā tāyaṁ velāyaṁ imaṁ udānaṁ udānesi:
+
+<!-- @segment ud1.8:8.1 -->
 
 “Āyantiṁ nābhinandati,
 
+<!-- @segment ud1.8:8.2 -->
+
 pakkamantiṁ na socati;
+
+<!-- @segment ud1.8:8.3 -->
 
 Saṅgā saṅgāmajiṁ muttaṁ,
 
+<!-- @segment ud1.8:8.4 -->
+
 tamahaṁ brūmi brāhmaṇan”ti.
+
+<!-- @segment ud1.8:8.5 -->
 
 Aṭṭhamaṁ.

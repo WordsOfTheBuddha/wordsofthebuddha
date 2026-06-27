@@ -1,105 +1,203 @@
 ---
 slug: snp5.8
 source: suttacentral/bilara-data
+title: Nandamāṇavapucchā
 edition: ms
 granularity: segment
-title: Nandamāṇavapucchā
 ---
+
+<!-- @segment snp5.8:1.1 -->
 
 “Santi loke munayo,
 
+<!-- @segment snp5.8:1.2 -->
+
 (iccāyasmā nando)
+
+<!-- @segment snp5.8:1.3 -->
 
 Janā vadanti tayidaṁ kathaṁsu;
 
+<!-- @segment snp5.8:1.4 -->
+
 Ñāṇūpapannaṁ no muniṁ vadanti,
+
+<!-- @segment snp5.8:1.5 -->
 
 Udāhu ve jīvitenūpapannaṁ”.
 
+<!-- @segment snp5.8:2.1 -->
+
 “Na diṭṭhiyā na sutiyā na ñāṇena, (…)
+
+<!-- @segment snp5.8:2.2 -->
 
 Munīdha nanda kusalā vadanti;
 
+<!-- @segment snp5.8:2.3 -->
+
 Visenikatvā anīghā nirāsā,
+
+<!-- @segment snp5.8:2.4 -->
 
 Caranti ye te munayoti brūmi”.
 
+<!-- @segment snp5.8:3.1 -->
+
 “Ye kecime samaṇabrāhmaṇāse,
+
+<!-- @segment snp5.8:3.2 -->
 
 (iccāyasmā nando)
 
+<!-- @segment snp5.8:3.3 -->
+
 Diṭṭhassutenāpi vadanti suddhiṁ;
+
+<!-- @segment snp5.8:3.4 -->
 
 Sīlabbatenāpi vadanti suddhiṁ,
 
+<!-- @segment snp5.8:3.5 -->
+
 Anekarūpena vadanti suddhiṁ.
+
+<!-- @segment snp5.8:3.6 -->
 
 Kaccissu te bhagavā tattha yatā carantā,
 
+<!-- @segment snp5.8:3.7 -->
+
 Atāru jātiñca jarañca mārisa;
+
+<!-- @segment snp5.8:3.8 -->
 
 Pucchāmi taṁ bhagavā brūhi me taṁ”.
 
+<!-- @segment snp5.8:4.1 -->
+
 “Ye kecime samaṇabrāhmaṇāse,
+
+<!-- @segment snp5.8:4.2 -->
 
 (nandāti bhagavā)
 
+<!-- @segment snp5.8:4.3 -->
+
 Diṭṭhassutenāpi vadanti suddhiṁ;
 
+<!-- @segment snp5.8:4.4 -->
+
 Sīlabbatenāpi vadanti suddhiṁ,
+
+<!-- @segment snp5.8:4.5 -->
 
 Anekarūpena vadanti suddhiṁ;
 
+<!-- @segment snp5.8:4.6 -->
+
 Kiñcāpi te tattha yatā caranti,
+
+<!-- @segment snp5.8:4.7 -->
 
 Nātariṁsu jātijaranti brūmi”.
 
+<!-- @segment snp5.8:5.1 -->
+
 “Ye kecime samaṇabrāhmaṇāse,
+
+<!-- @segment snp5.8:5.2 -->
 
 (iccāyasmā nando)
 
+<!-- @segment snp5.8:5.3 -->
+
 Diṭṭhassutenāpi vadanti suddhiṁ;
+
+<!-- @segment snp5.8:5.4 -->
 
 Sīlabbatenāpi vadanti suddhiṁ,
 
+<!-- @segment snp5.8:5.5 -->
+
 Anekarūpena vadanti suddhiṁ.
+
+<!-- @segment snp5.8:5.6 -->
 
 Te ce muni brūsi anoghatiṇṇe,
 
+<!-- @segment snp5.8:5.7 -->
+
 Atha ko carahi devamanussaloke;
+
+<!-- @segment snp5.8:5.8 -->
 
 Atāri jātiñca jarañca mārisa,
 
+<!-- @segment snp5.8:5.9 -->
+
 Pucchāmi taṁ bhagavā brūhi me taṁ”.
+
+<!-- @segment snp5.8:6.1 -->
 
 “Nāhaṁ sabbe samaṇabrāhmaṇāse,
 
+<!-- @segment snp5.8:6.2 -->
+
 (nandāti bhagavā)
+
+<!-- @segment snp5.8:6.3 -->
 
 Jātijarāya nivutāti brūmi;
 
+<!-- @segment snp5.8:6.4 -->
+
 Ye sīdha diṭṭhaṁ va sutaṁ mutaṁ vā,
+
+<!-- @segment snp5.8:6.5 -->
 
 Sīlabbataṁ vāpi pahāya sabbaṁ.
 
+<!-- @segment snp5.8:6.6 -->
+
 Anekarūpampi pahāya sabbaṁ,
 
+<!-- @segment snp5.8:6.7 -->
+
 Taṇhaṁ pariññāya anāsavāse;
+
+<!-- @segment snp5.8:6.8 -->
 
 Te ve narā oghatiṇṇāti brūmi”.
 
+<!-- @segment snp5.8:7.1 -->
+
 “Etābhinandāmi vaco mahesino,
+
+<!-- @segment snp5.8:7.2 -->
 
 Sukittitaṁ gotamanūpadhīkaṁ;
 
+<!-- @segment snp5.8:7.3 -->
+
 Ye sīdha diṭṭhaṁ va sutaṁ mutaṁ vā,
+
+<!-- @segment snp5.8:7.4 -->
 
 Sīlabbataṁ vāpi pahāya sabbaṁ.
 
+<!-- @segment snp5.8:7.5 -->
+
 Anekarūpampi pahāya sabbaṁ,
+
+<!-- @segment snp5.8:7.6 -->
 
 Taṇhaṁ pariññāya anāsavāse;
 
+<!-- @segment snp5.8:7.7 -->
+
 Ahampi te oghatiṇṇāti brūmī”ti.
+
+<!-- @segment snp5.8:7.8 -->
 
 Nandamāṇavapucchā sattamā.

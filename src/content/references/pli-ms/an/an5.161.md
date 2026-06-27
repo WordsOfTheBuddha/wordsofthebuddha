@@ -1,39 +1,71 @@
 ---
 slug: an5.161
 source: suttacentral/bilara-data
+title: Paṭhamaāghātapaṭivinayasutta
 edition: ms
 granularity: segment
-title: Paṭhamaāghātapaṭivinayasutta
 ---
+
+<!-- @segment an5.161:1.1 -->
 
 “Pañcime, bhikkhave, āghātapaṭivinayā yattha bhikkhuno uppanno āghāto sabbaso paṭivinetabbo.
 
+<!-- @segment an5.161:1.2 -->
+
 Katame pañca?
+
+<!-- @segment an5.161:1.3 -->
 
 Yasmiṁ, bhikkhave, puggale āghāto jāyetha, mettā tasmiṁ puggale bhāvetabbā;
 
+<!-- @segment an5.161:1.4 -->
+
 evaṁ tasmiṁ puggale āghāto paṭivinetabbo.
+
+<!-- @segment an5.161:1.5 -->
 
 Yasmiṁ, bhikkhave, puggale āghāto jāyetha, karuṇā tasmiṁ puggale bhāvetabbā;
 
+<!-- @segment an5.161:1.6 -->
+
 evaṁ tasmiṁ puggale āghāto paṭivinetabbo.
+
+<!-- @segment an5.161:1.7 -->
 
 Yasmiṁ, bhikkhave, puggale āghāto jāyetha, upekkhā tasmiṁ puggale bhāvetabbā;
 
+<!-- @segment an5.161:1.8 -->
+
 evaṁ tasmiṁ puggale āghāto paṭivinetabbo.
+
+<!-- @segment an5.161:1.9 -->
 
 Yasmiṁ, bhikkhave, puggale āghāto jāyetha, asatiamanasikāro tasmiṁ puggale āpajjitabbo;
 
+<!-- @segment an5.161:1.10 -->
+
 evaṁ tasmiṁ puggale āghāto paṭivinetabbo.
+
+<!-- @segment an5.161:1.11 -->
 
 Yasmiṁ, bhikkhave, puggale āghāto jāyetha, kammassakatā tasmiṁ puggale adhiṭṭhātabbā:
 
+<!-- @segment an5.161:1.12 -->
+
 ‘kammassako ayamāyasmā kammadāyādo kammayoni kammabandhu kammapaṭisaraṇo,
+
+<!-- @segment an5.161:1.13 -->
 
 yaṁ kammaṁ karissati kalyāṇaṁ vā pāpakaṁ vā tassa dāyādo bhavissatī’ti;
 
+<!-- @segment an5.161:1.14 -->
+
 evaṁ tasmiṁ puggale āghāto paṭivinetabbo.
 
+<!-- @segment an5.161:1.15 -->
+
 Ime kho, bhikkhave, pañca āghātapaṭivinayā, yattha bhikkhuno uppanno āghāto sabbaso paṭivinetabbo”ti.
+
+<!-- @segment an5.161:1.16 -->
 
 Paṭhamaṁ.

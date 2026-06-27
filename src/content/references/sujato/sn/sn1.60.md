@@ -6,18 +6,48 @@ license: CC0
 title: A Poet
 ---
 
+<!-- @segment sn1.60:1.1 -->
+
 “What’s the source of verses?
+
+<!-- @segment sn1.60:1.2 -->
 
 What constitutes their phrasing?
 
+<!-- @segment sn1.60:1.3 -->
+
 What do verses depend upon?
+
+<!-- @segment sn1.60:1.4 -->
 
 What underlies verses?”
 
+<!-- @segment sn1.60:2.1 -->
+
 “Metre is the source of verses.
+
+<!-- @segment sn1.60:2.2 -->
 
 Syllables constitute their phrasing.
 
+<!-- @segment sn1.60:2.3 -->
+
 Verses depend on names.
 
+<!-- @segment sn1.60:2.4 -->
+
 A poet underlies verses.”
+
+<!-- @segment sn1.60:2.5 -->
+
+
+
+<!-- @segment sn1.60:3.1 -->
+
+
+
+<!-- @segment sn1.60:3.2 -->
+
+
+
+<!-- @segment sn1.60:3.3 -->

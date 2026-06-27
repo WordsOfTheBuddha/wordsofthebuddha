@@ -6,164 +6,344 @@ license: CC0
 title: Grounds for Laziness and Arousing Energy
 ---
 
+<!-- @segment an8.80:1.1 -->
+
 “Mendicants, there are eight grounds for laziness.
+
+<!-- @segment an8.80:1.2 -->
 
 What eight?
 
+<!-- @segment an8.80:1.3 -->
+
 Firstly, a mendicant has some work to do.
 
+<!-- @segment an8.80:1.4 -->
+
 They think:
+
+<!-- @segment an8.80:1.5 -->
 
 ‘I have some work to do. But while doing it my body will get tired. I’d better have a lie down.’
 
+<!-- @segment an8.80:1.6 -->
+
 They lie down, and don’t rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:1.7 -->
 
 This is the first ground for laziness.
 
+<!-- @segment an8.80:2.1 -->
+
 Furthermore, a mendicant has done some work.
 
+<!-- @segment an8.80:2.2 -->
+
 They think:
+
+<!-- @segment an8.80:2.3 -->
 
 ‘I’ve done some work. But while working my body got tired. I’d better have a lie down.’
 
+<!-- @segment an8.80:2.4 -->
+
 They lie down, and don’t rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:2.5 -->
 
 This is the second ground for laziness.
 
+<!-- @segment an8.80:3.1 -->
+
 Furthermore, a mendicant has to go on a journey.
 
+<!-- @segment an8.80:3.2 -->
+
 They think:
+
+<!-- @segment an8.80:3.3 -->
 
 ‘I have to go on a journey. But while walking my body will get tired. I’d better have a lie down.’
 
+<!-- @segment an8.80:3.4 -->
+
 They lie down, and don’t rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:3.5 -->
 
 This is the third ground for laziness.
 
+<!-- @segment an8.80:4.1 -->
+
 Furthermore, a mendicant has gone on a journey.
 
+<!-- @segment an8.80:4.2 -->
+
 They think:
+
+<!-- @segment an8.80:4.3 -->
 
 ‘I’ve gone on a journey. But while walking my body got tired. I’d better have a lie down.’
 
+<!-- @segment an8.80:4.4 -->
+
 They lie down, and don’t rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:4.5 -->
 
 This is the fourth ground for laziness.
 
+<!-- @segment an8.80:5.1 -->
+
 Furthermore, a mendicant has wandered for alms, but they didn’t get to fill up on as much food as they like, coarse or fine.
 
+<!-- @segment an8.80:5.2 -->
+
 They think:
+
+<!-- @segment an8.80:5.3 -->
 
 ‘I’ve wandered for alms, but I didn’t get to fill up on as much food as I like, coarse or fine. My body is tired and unfit for work. I’d better have a lie down.’
 
+<!-- @segment an8.80:5.4 -->
+
 They lie down, and don’t rouse energy for achieving the unachieved, attaining the unattained, and realizing the unrealized.
+
+<!-- @segment an8.80:5.5 -->
 
 This is the fifth ground for laziness.
 
+<!-- @segment an8.80:6.1 -->
+
 Furthermore, a mendicant has wandered for alms, and they got to fill up on as much food as they like, coarse or fine.
 
+<!-- @segment an8.80:6.2 -->
+
 They think:
+
+<!-- @segment an8.80:6.3 -->
 
 ‘I’ve wandered for alms, and I got to fill up on as much food as I like, coarse or fine. My body is heavy, unfit for work, like I’ve just eaten a load of beans. I’d better have a lie down.’
 
+<!-- @segment an8.80:6.4 -->
+
 They lie down, and don’t rouse energy for achieving the unachieved, attaining the unattained, and realizing the unrealized.
+
+<!-- @segment an8.80:6.5 -->
 
 This is the sixth ground for laziness.
 
+<!-- @segment an8.80:7.1 -->
+
 Furthermore, a mendicant feels a little sick.
 
+<!-- @segment an8.80:7.2 -->
+
 They think:
+
+<!-- @segment an8.80:7.3 -->
 
 ‘I feel a little sick. Lying down would be good for me. I’d better have a lie down.’
 
+<!-- @segment an8.80:7.4 -->
+
 They lie down, and don’t rouse energy for achieving the unachieved, attaining the unattained, and realizing the unrealized.
+
+<!-- @segment an8.80:7.5 -->
 
 This is the seventh ground for laziness.
 
+<!-- @segment an8.80:8.1 -->
+
 Furthermore, a mendicant has recently recovered from illness.
 
+<!-- @segment an8.80:8.2 -->
+
 They think:
+
+<!-- @segment an8.80:8.3 -->
 
 ‘I’ve recently recovered from illness. My body is weak and unfit for work. I’d better have a lie down.’
 
+<!-- @segment an8.80:8.4 -->
+
 They lie down, and don’t rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:8.5 -->
 
 This is the eighth ground for laziness.
 
+<!-- @segment an8.80:8.6 -->
+
 These are the eight grounds for laziness.
+
+<!-- @segment an8.80:9.1 -->
 
 There are eight grounds for arousing energy.
 
+<!-- @segment an8.80:9.2 -->
+
 What eight?
+
+<!-- @segment an8.80:9.3 -->
 
 Firstly, a mendicant has some work to do.
 
+<!-- @segment an8.80:9.4 -->
+
 They think:
+
+<!-- @segment an8.80:9.5 -->
 
 ‘I have some work to do. While working it’s not easy to focus on the instructions of the Buddhas. I’d better preemptively rouse up energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.’
 
+<!-- @segment an8.80:9.6 -->
+
 They rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:9.7 -->
 
 This is the first ground for arousing energy.
 
+<!-- @segment an8.80:10.1 -->
+
 Furthermore, a mendicant has done some work.
 
+<!-- @segment an8.80:10.2 -->
+
 They think:
+
+<!-- @segment an8.80:10.3 -->
 
 ‘I’ve done some work. While I was working I wasn’t able to focus on the instructions of the Buddhas. I’d better preemptively rouse up energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.’
 
+<!-- @segment an8.80:10.4 -->
+
 They rouse up energy …
+
+<!-- @segment an8.80:10.5 -->
 
 This is the second ground for arousing energy.
 
+<!-- @segment an8.80:11.1 -->
+
 Furthermore, a mendicant has to go on a journey.
 
+<!-- @segment an8.80:11.2 -->
+
 They think:
+
+<!-- @segment an8.80:11.3 -->
 
 ‘I have to go on a journey. While walking it’s not easy to focus on the instructions of the Buddhas. I’d better preemptively rouse up energy …’ …
 
+<!-- @segment an8.80:11.4 -->
+
 This is the third ground for arousing energy.
+
+<!-- @segment an8.80:12.1 -->
 
 Furthermore, a mendicant has gone on a journey.
 
+<!-- @segment an8.80:12.2 -->
+
 They think:
+
+<!-- @segment an8.80:12.3 -->
 
 ‘I’ve gone on a journey. While I was walking I wasn’t able to focus on the instructions of the Buddhas. I’d better preemptively rouse up energy …’ …
 
+<!-- @segment an8.80:12.4 -->
+
 This is the fourth ground for arousing energy.
+
+<!-- @segment an8.80:13.1 -->
 
 Furthermore, a mendicant has wandered for alms, but they didn’t get to fill up on as much food as they like, coarse or fine.
 
+<!-- @segment an8.80:13.2 -->
+
 They think:
+
+<!-- @segment an8.80:13.3 -->
 
 ‘I’ve wandered for alms, but I didn’t get to fill up on as much food as I like, rough or fine. My body is light and fit for work. I’d better preemptively rouse up energy …’ …
 
+<!-- @segment an8.80:13.4 -->
+
 This is the fifth ground for arousing energy.
+
+<!-- @segment an8.80:14.1 -->
 
 Furthermore, a mendicant has wandered for alms, and they got to fill up on as much food as they like, coarse or fine.
 
+<!-- @segment an8.80:14.2 -->
+
 They think:
+
+<!-- @segment an8.80:14.3 -->
 
 ‘I’ve wandered for alms, and I got to fill up on as much food as I like, coarse or fine. My body is strong and fit for work. I’d better preemptively rouse up energy …’ …
 
+<!-- @segment an8.80:14.4 -->
+
 This is the sixth ground for arousing energy.
+
+<!-- @segment an8.80:15.1 -->
 
 Furthermore, a mendicant feels a little sick.
 
+<!-- @segment an8.80:15.2 -->
+
 They think:
+
+<!-- @segment an8.80:15.3 -->
 
 ‘I feel a little sick. It’s possible this illness will worsen. I’d better preemptively rouse up energy …’ …
 
+<!-- @segment an8.80:15.4 -->
+
 This is the seventh ground for arousing energy.
+
+<!-- @segment an8.80:16.1 -->
 
 Furthermore, a mendicant has recently recovered from illness.
 
+<!-- @segment an8.80:16.2 -->
+
 They think:
+
+<!-- @segment an8.80:16.3 -->
 
 ‘I’ve recently recovered from illness. It’s possible the illness will come back. I’d better preemptively rouse up energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.’
 
+<!-- @segment an8.80:16.4 -->
+
 They rouse energy for attaining the unattained, achieving the unachieved, and realizing the unrealized.
+
+<!-- @segment an8.80:16.5 -->
 
 This is the eighth ground for arousing energy.
 
+<!-- @segment an8.80:17.1 -->
+
 These are the eight grounds for arousing energy.”
+
+<!-- @segment an8.80:17.2 -->
+
+
+
+<!-- @segment an8.80:17.3 -->
+
+
+
+<!-- @segment an8.80:18.1 -->
+
+
+
+<!-- @segment an8.80:18.2 -->
+
+
+
+<!-- @segment an8.80:18.3 -->

@@ -6,56 +6,110 @@ license: CC0
 title: With Kāmada
 ---
 
+<!-- @segment sn2.6:1.1 -->
+
 At Sāvatthī.
+
+<!-- @segment sn2.6:1.2 -->
 
 Standing to one side, the godling Kāmada said to the Buddha,
 
+<!-- @segment sn2.6:1.3 -->
+
 “It’s too hard, Blessed One! It’s just too hard!”
+
+<!-- @segment sn2.6:2.1 -->
 
 “They do it even though it’s hard,”
 
+<!-- @segment sn2.6:2.2 -->
+
 said the Buddha to Kāmada,
+
+<!-- @segment sn2.6:2.3 -->
 
 “the stable trainees with ethics, and immersion.
 
+<!-- @segment sn2.6:2.4 -->
+
 For one who has entered the homeless life,
+
+<!-- @segment sn2.6:2.5 -->
 
 contentment brings happiness.”
 
+<!-- @segment sn2.6:3.1 -->
+
 “Such contentment, Blessed One, is hard to find.”
+
+<!-- @segment sn2.6:4.1 -->
 
 “They find it even though it’s hard,”
 
+<!-- @segment sn2.6:4.2 -->
+
 said the Buddha to Kāmada,
+
+<!-- @segment sn2.6:4.3 -->
 
 “those who love peace of mind;
 
+<!-- @segment sn2.6:4.4 -->
+
 whose minds love to meditate
+
+<!-- @segment sn2.6:4.5 -->
 
 day and night.”
 
+<!-- @segment sn2.6:5.1 -->
+
 “But it’s hard, Blessed One, to immerse this mind in samādhi.”
+
+<!-- @segment sn2.6:6.1 -->
 
 “They become immersed in samādhi <j>even though it’s hard,”
 
+<!-- @segment sn2.6:6.2 -->
+
 said the Buddha to Kāmada,
+
+<!-- @segment sn2.6:6.3 -->
 
 “those who love calming the faculties.
 
+<!-- @segment sn2.6:6.4 -->
+
 Having cut through the net of Death,
+
+<!-- @segment sn2.6:6.5 -->
 
 the noble ones, Kāmada, go on their way.”
 
+<!-- @segment sn2.6:7.1 -->
+
 “But this path, Blessed One, is rough and hard to travel.”
+
+<!-- @segment sn2.6:8.1 -->
 
 “Though it’s rough, hard to travel,
 
+<!-- @segment sn2.6:8.2 -->
+
 the noble ones, Kāmada, go on their way.
+
+<!-- @segment sn2.6:8.3 -->
 
 The ignoble fall headfirst
 
+<!-- @segment sn2.6:8.4 -->
+
 on a rough path.
 
+<!-- @segment sn2.6:8.5 -->
+
 But the path of the noble ones is smooth,
+
+<!-- @segment sn2.6:8.6 -->
 
 for the noble ones are smooth amid the rough.”

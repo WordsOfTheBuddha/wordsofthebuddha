@@ -1,33 +1,59 @@
 ---
 slug: an8.83
 source: suttacentral/bilara-data
+title: Mūlakasutta
 edition: ms
 granularity: segment
-title: Mūlakasutta
 ---
+
+<!-- @segment an8.83:1.1 -->
 
 “Sace, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ:
 
+<!-- @segment an8.83:1.2 -->
+
 ‘kiṁmūlakā, āvuso, sabbe dhammā, kiṁsambhavā sabbe dhammā, kiṁsamudayā sabbe dhammā, kiṁsamosaraṇā sabbe dhammā, kiṁpamukhā sabbe dhammā, kiṁadhipateyyā sabbe dhammā, kiṁuttarā sabbe dhammā, kiṁsārā sabbe dhammā’ti, evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ kinti byākareyyāthā”ti?
+
+<!-- @segment an8.83:1.3 -->
 
 “Bhagavaṁmūlakā no, bhante, dhammā, bhagavaṁnettikā bhagavaṁpaṭisaraṇā. Sādhu, bhante, bhagavantaṁyeva paṭibhātu etassa bhāsitassa attho. Bhagavato sutvā bhikkhū dhāressantī”ti.
 
+<!-- @segment an8.83:2.1 -->
+
 “Tena hi, bhikkhave, desessāmi.
+
+<!-- @segment an8.83:2.2 -->
 
 Taṁ suṇātha, sādhukaṁ manasi karotha, bhāsissāmī”ti.
 
+<!-- @segment an8.83:2.3 -->
+
 “Evaṁ, bhante”ti kho te bhikkhū bhagavato paccassosuṁ.
+
+<!-- @segment an8.83:2.4 -->
 
 Bhagavā etadavoca:
 
+<!-- @segment an8.83:2.5 -->
+
 “sace, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ:
+
+<!-- @segment an8.83:2.6 -->
 
 ‘kiṁmūlakā, āvuso, sabbe dhammā, kiṁsambhavā sabbe dhammā, kiṁsamudayā sabbe dhammā, kiṁsamosaraṇā sabbe dhammā, kiṁpamukhā sabbe dhammā, kiṁadhipateyyā sabbe dhammā, kiṁuttarā sabbe dhammā, kiṁsārā sabbe dhammā’ti,
 
+<!-- @segment an8.83:2.7 -->
+
 evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ evaṁ byākareyyātha:
+
+<!-- @segment an8.83:2.8 -->
 
 ‘chandamūlakā, āvuso, sabbe dhammā, manasikārasambhavā sabbe dhammā, phassasamudayā sabbe dhammā, vedanāsamosaraṇā sabbe dhammā, samādhippamukhā sabbe dhammā, satādhipateyyā sabbe dhammā, paññuttarā sabbe dhammā, vimuttisārā sabbe dhammā’ti,
 
+<!-- @segment an8.83:2.9 -->
+
 evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ evaṁ byākareyyāthā”ti.
+
+<!-- @segment an8.83:2.10 -->
 
 Tatiyaṁ.

@@ -6,46 +6,90 @@ license: CC0
 title: Upon Awakening (2nd)
 ---
 
+<!-- @segment ud1.2:1.1 -->
+
 So I have heard.
+
+<!-- @segment ud1.2:1.2 -->
 
 At one time, when he was first awakened, the Buddha was staying in Uruvelā at the root of the tree of awakening on the bank of the Nerañjarā River.
 
+<!-- @segment ud1.2:1.3 -->
+
 There the Buddha sat cross-legged for seven days without moving, experiencing the bliss of freedom.
+
+<!-- @segment ud1.2:1.4 -->
 
 When seven days had passed, the Buddha emerged from that state of immersion. In the second part of the night, he carefully applied the mind to dependent origination in reverse order:
 
+<!-- @segment ud1.2:2.1 -->
+
 “When this doesn’t exist, this doesn’t come to be; due to the cessation of this, this ceases. That is:
+
+<!-- @segment ud1.2:2.2 -->
 
 When ignorance ceases, choices cease.
 
+<!-- @segment ud1.2:2.3 -->
+
 When choices cease, consciousness ceases.
+
+<!-- @segment ud1.2:2.4 -->
 
 When consciousness ceases, name and form cease.
 
+<!-- @segment ud1.2:2.5 -->
+
 When name and form cease, the six sense fields cease.
+
+<!-- @segment ud1.2:2.6 -->
 
 When the six sense fields cease, contact ceases.
 
+<!-- @segment ud1.2:2.7 -->
+
 When contact ceases, feeling ceases.
+
+<!-- @segment ud1.2:2.8 -->
 
 When feeling ceases, craving ceases.
 
+<!-- @segment ud1.2:2.9 -->
+
 When craving ceases, grasping ceases.
+
+<!-- @segment ud1.2:2.10 -->
 
 When grasping ceases, continued existence ceases.
 
+<!-- @segment ud1.2:2.11 -->
+
 When continued existence ceases, rebirth ceases.
+
+<!-- @segment ud1.2:2.12 -->
 
 When rebirth ceases, old age and death, sorrow, lamentation, pain, sadness, and distress cease.
 
+<!-- @segment ud1.2:2.13 -->
+
 That is how this entire mass of suffering ceases.”
+
+<!-- @segment ud1.2:3.1 -->
 
 Then, understanding this matter, on that occasion the Buddha expressed this heartfelt sentiment:
 
+<!-- @segment ud1.2:4.1 -->
+
 “When things become clear
+
+<!-- @segment ud1.2:4.2 -->
 
 to the keen, meditating brahmin,
 
+<!-- @segment ud1.2:4.3 -->
+
 his doubts are dispelled,
+
+<!-- @segment ud1.2:4.4 -->
 
 since he’s known the end of conditions.”
