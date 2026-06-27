@@ -11,7 +11,10 @@ interface Props {
 const { prev, next } = Astro.props;
 ---
 
-<nav class="relative flex flex-col sm:flex-row gap-4 sm:gap-8 w-full my-6">
+<nav
+	class="relative flex flex-col sm:flex-row gap-4 sm:gap-8 w-full my-6"
+	data-discourse-footer-nav
+>
 	<div class="w-full sm:w-1/2 flex justify-start">
 		{
 			prev && (
@@ -20,6 +23,8 @@ const { prev, next } = Astro.props;
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-left"
 					style="color: var(--link-color)"
 					data-base-href={`/${prev.id}`}
+					data-neighbor-slug={prev.id}
+					data-neighbor-title={prev.data.title}
 					data-footer-nav="prev"
 					title="Previous discourse — press ["
 					aria-keyshortcuts="["
@@ -37,6 +42,8 @@ const { prev, next } = Astro.props;
 					class="nav-link w-fit p-3 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-sm shadow-md hover:shadow-lg transition-shadow duration-200 text-right"
 					style="color: var(--link-color)"
 					data-base-href={`/${next.id}`}
+					data-neighbor-slug={next.id}
+					data-neighbor-title={next.data.title}
 					data-footer-nav="next"
 					title="Next discourse — press ]"
 					aria-keyshortcuts="]"
@@ -50,6 +57,15 @@ const { prev, next } = Astro.props;
 
 <script>
 	import { playlists } from "../data/playlists.generated";
+	import {
+		findDiscourseNeighbors,
+		getRoutableDiscourseSlugs,
+	} from "../utils/discourseNeighbors";
+	import {
+		getDiscourseNeighborTitle,
+		seedDiscourseNeighborTitles,
+	} from "../utils/discourseNeighborTitles";
+	import { resolveRefMode } from "../utils/refModeClient";
 	import { transformId } from "../utils/transformId";
 
 	function isEditableTarget(el: Element | null): boolean {
@@ -70,6 +86,10 @@ const { prev, next } = Astro.props;
 		return seg && !seg.includes("/") ? seg : null;
 	}
 
+	function discourseFooterNavRoot(): HTMLElement | null {
+		return document.querySelector("[data-discourse-footer-nav]");
+	}
+
 	/**
 	 * When `?pl=` is set, the reading-mode prev/next chips should walk the
 	 * playlist's full slug list (not the global `routes` order) so the user
@@ -79,7 +99,36 @@ const { prev, next } = Astro.props;
 	 * The full slug list is used (not audio-filtered) — read mode is not
 	 * gated on audio availability, only listen mode is.
 	 */
+	function seedNeighborTitlesFromNav() {
+		const root = discourseFooterNavRoot();
+		if (!root) return;
+		const seeds: [string, string][] = [];
+		root.querySelectorAll("a.nav-link[data-footer-nav]").forEach((link) => {
+				const slug = link.getAttribute("data-neighbor-slug");
+				const title = link.getAttribute("data-neighbor-title");
+				if (slug && title) seeds.push([slug, title]);
+			});
+		seedDiscourseNeighborTitles(seeds);
+	}
+
+	/** When `?ref=true`, walk EN + reference-only neighbors (SSR uses EN-only). */
+	function applyRefNeighborOverrides() {
+		const search = new URLSearchParams(location.search);
+		if (!resolveRefMode(search) || search.get("pl")) return;
+		if (!discourseFooterNavRoot()) return;
+		const cur = currentSlugFromPath();
+		if (!cur) return;
+
+		seedNeighborTitlesFromNav();
+		const titleFor = (slug: string) => getDiscourseNeighborTitle(slug);
+		const slugs = getRoutableDiscourseSlugs();
+		const { prevId, nextId } = findDiscourseNeighbors(cur, slugs);
+		patchChip("prev", prevId, titleFor);
+		patchChip("next", nextId, titleFor);
+	}
+
 	function applyPlaylistOverrides() {
+		if (!discourseFooterNavRoot()) return;
 		const pl = new URLSearchParams(location.search).get("pl");
 		if (!pl) return;
 		const playlist = playlists[pl];
@@ -107,7 +156,9 @@ const { prev, next } = Astro.props;
 		slug: string | null,
 		titleFor: (s: string) => string,
 	) {
-		const link = document.querySelector(
+		const root = discourseFooterNavRoot();
+		if (!root) return;
+		const link = root.querySelector(
 			`a.nav-link[data-footer-nav="${direction}"]`,
 		) as HTMLAnchorElement | null;
 		if (!link) return;
@@ -120,7 +171,9 @@ const { prev, next } = Astro.props;
 		}
 		link.classList.remove("hidden");
 		link.setAttribute("data-base-href", `/${slug}`);
+		link.setAttribute("data-neighbor-slug", slug);
 		const label = titleFor(slug);
+		if (label) link.setAttribute("data-neighbor-title", label);
 		const display = transformId(slug);
 		link.textContent =
 			direction === "prev"
@@ -129,23 +182,26 @@ const { prev, next } = Astro.props;
 	}
 
 	function updateLinks() {
-		// Apply playlist overrides BEFORE rewriting query params so our new
+		// Apply neighbor overrides BEFORE rewriting query params so our new
 		// data-base-href is the source of truth for the next step.
 		applyPlaylistOverrides();
+		applyRefNeighborOverrides();
 
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
 		const search = new URLSearchParams(location.search);
 		const pl = search.get("pl");
-		const links = document.querySelectorAll("a.nav-link");
-
-		links.forEach((link) => {
+		const refMode = resolveRefMode(search);
+		const root = discourseFooterNavRoot();
+		if (!root) return;
+		root.querySelectorAll("a.nav-link").forEach((link) => {
 			const baseHref = link.getAttribute("data-base-href");
 			if (!baseHref) return;
 			const params = new URLSearchParams();
 			if (paliMode) params.set("pli", "true");
 			if (paliMode && layout === "split") params.set("layout", layout);
 			if (pl) params.set("pl", pl);
+			if (refMode) params.set("ref", "true");
 			(link as HTMLAnchorElement).href = params.toString()
 				? `${baseHref}?${params.toString()}`
 				: baseHref;
@@ -165,20 +221,23 @@ const { prev, next } = Astro.props;
 			if (e.ctrlKey || e.metaKey || e.altKey) return;
 			if (isEditableTarget(document.activeElement)) return;
 
+			const root = discourseFooterNavRoot();
+			if (!root) return;
+
 			if (e.key === "[") {
-				const link = document.querySelector(
+				const link = root.querySelector(
 					'a.nav-link[data-footer-nav="prev"]',
 				) as HTMLAnchorElement | null;
-				if (!link) return;
+				if (!link || link.classList.contains("hidden")) return;
 				e.preventDefault();
 				window.location.assign(link.href);
 				return;
 			}
 			if (e.key === "]") {
-				const link = document.querySelector(
+				const link = root.querySelector(
 					'a.nav-link[data-footer-nav="next"]',
 				) as HTMLAnchorElement | null;
-				if (!link) return;
+				if (!link || link.classList.contains("hidden")) return;
 				e.preventDefault();
 				window.location.assign(link.href);
 			}
