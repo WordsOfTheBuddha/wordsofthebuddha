@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perceptions
+description: The Buddha teaches on perceptions, presenting a sixfold teaching for disciples on the path.
+qualities: giving up, non-harm, wholesome, harm
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.110:1.1 -->

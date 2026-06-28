@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wielding Power (1st)
+description: The Buddha teaches on wielding power (1st), presenting a fivefold teaching for disciples on the path.
+qualities: wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.131:1.1 -->

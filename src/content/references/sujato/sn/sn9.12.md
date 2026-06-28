@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Midday
+description: A forest deity approaches a mendicant in verse on midday, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: mindfulness, wisdom
+theme: training guideline, principle
 ---
 
 <!-- @segment sn9.12:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Failure
+description: The Buddha describes the five qualities fails, and doesn’t establish themselves in the tru—a mendicant who is faithless, shameless, imprudent, and witless fails, and doesn’t establish themselves in the true teaching, and a mendicant with these five qualities fails, and doesn’t establish themselves in the true teaching.
+qualities: fear of wrongdoing, faith
+theme: inspiration
 ---
 
 <!-- @segment an5.8:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sāriputta’s Lion’s Roar
+description: The Buddha teaches Venerable S on sāriputta’s lion’s roar, presenting a ninefold teaching for disciples on the path.
+qualities: mindfulness, ill will, unwholesome, cruelty, cultivation, desire
+theme: story, training guideline
 ---
 
 <!-- @segment an9.11:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (4th)
+description: The Buddha teaches on broken (4th), presenting a threefold teaching for disciples on the path.
+qualities: immaturity, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.153:1.1 -->

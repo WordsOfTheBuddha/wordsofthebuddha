@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Desirable
+description: The Buddha teaches on desirable, presenting a fivefold teaching for disciples on the path.
+qualities: desire, aversion, dearness, ill will
+theme: principle
 ---
 
 <!-- @segment an5.81:1.1 -->

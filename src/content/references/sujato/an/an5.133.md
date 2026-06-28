@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Principled King
+description: The Buddha teaches on a principled king, presenting a fivefold teaching for disciples on the path.
+qualities: safety, wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.133:1.1 -->

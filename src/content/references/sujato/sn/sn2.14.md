@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nandana
+description: Standing to one side, the young deity Nandana addresses the Buddha in verse on with nandana.
+qualities: vision, suffering, wisdom, jhana, ethical conduct, mindfulness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn2.14:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Going on a Mission
+description: The Buddha describes the eight qualities that make a mendicant worthy of going on a mission to teach and guide others.
+qualities: wisdom
+theme: inquisitiveness, wisdom
 ---
 
 <!-- @segment an8.16:1.1 -->

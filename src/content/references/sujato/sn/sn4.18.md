@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Alms Food
+description: Māra the Wicked obstructs or tempts the Buddha or his disciples regarding alms food, and is overcome through wisdom, restraint, and the power of the Dhamma.
+qualities: uplifting joy, wisdom
+theme: wisdom, story
 ---
 
 <!-- @segment sn4.18:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nāgadatta
+description: A forest deity approaches a mendicant in verse on with nāgadatta, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: craving, compassion
+theme: training guideline, story
 ---
 
 <!-- @segment sn9.7:1.1 -->

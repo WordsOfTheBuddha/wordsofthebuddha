@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Uggaha
+description: The Buddha teaches on with uggaha, presenting a fivefold teaching for disciples on the path.
+qualities: happiness, respect, desire, compassion, craving, loving-kindness
+theme: story, urgency
 ---
 
 <!-- @segment an5.33:1.1 -->

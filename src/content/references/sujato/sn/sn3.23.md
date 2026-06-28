@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The World
+description: King Pasenadi of Kosala visits the Buddha and discusses the world, receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: suffering, harm, delusion, greed, aversion, craving
+theme: story, principle
 ---
 
 <!-- @segment sn3.23:1.1 -->

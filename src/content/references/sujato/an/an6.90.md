@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Given Up
+description: The Buddha teaches that an individual accomplished in view has given up six things that obstruct the path to liberation.
+qualities: delusion, doubt, greed, aversion, craving, wrong view
+theme: principle, wisdom
 ---
 
 <!-- @segment an6.90:1.1 -->

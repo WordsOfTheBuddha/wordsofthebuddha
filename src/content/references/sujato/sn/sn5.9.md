@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Selā
+description: The nun Selā confronts Māra in verse when he asks who created the puppet and where its maker is, refuting the notion of a creator and teaching insight into the conditioned nature of the aggregates.
+qualities: fear, craving, cultivation, jhana, collectedness
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn5.9:1.1 -->

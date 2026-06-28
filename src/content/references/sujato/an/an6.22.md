@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Non-decline
+description: The Buddha teaches on non-decline, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, delight
+theme: principle
 ---
 
 <!-- @segment an6.22:1.1 -->

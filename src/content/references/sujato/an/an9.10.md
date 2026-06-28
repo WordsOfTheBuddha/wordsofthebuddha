@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Worthy of Offerings Dedicated to the Gods
+description: The Buddha describes the nine individuals—the perfected one and the one practicing for perfection, the non-returner and the one practicing to realize the fruit of non-return, the once-returner and the one practicing to realize the fruit of once-return, and the stream-enterer and the one practicing to realize the fruit of stream-entry, and and a lamb of the flock.
+qualities: merit, wisdom
+theme: principle
 ---
 
 <!-- @segment an9.10:1.1 -->

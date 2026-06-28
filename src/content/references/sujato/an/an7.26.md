@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Awakening Factors
+description: The Buddha describes the seven principles that prevent decline last among the mendicants, and as long as the mendicants.
+qualities: cultivation, equanimity, mindfulness, tranquility, examination, uplifting joy
+theme: training guideline, principle
 ---
 
 <!-- @segment an7.26:1.1 -->

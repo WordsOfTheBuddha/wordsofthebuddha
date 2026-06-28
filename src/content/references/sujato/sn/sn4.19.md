@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Farmer
+description: While the Buddha teaches on extinguishment, Māra appears as a muddy farmer claiming dominion over the six sense fields; the Buddha refutes him, teaching non-attachment to eye, ear, nose, tongue, body, and mind.
+qualities: giving, wisdom
+theme: training guideline, inspiration
 ---
 
 <!-- @segment sn4.19:1.1 -->

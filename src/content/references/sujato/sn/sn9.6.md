@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Anuruddha
+description: A forest deity or the Buddha teaches on with anuruddha, encouraging mendicants in seclusion to guard the mind against sensuality and negligence.
+qualities: delight, desire, immaturity
+theme: training guideline, urgency
 ---
 
 <!-- @segment sn9.6:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Sympathetic Mendicant
+description: The Buddha teaches on a sympathetic mendicant, presenting a fivefold teaching for disciples on the path.
+qualities: merit, mindfulness, compassion, faith, truth, wholesome
+theme: inspiration
 ---
 
 <!-- @segment an5.235:1.1 -->

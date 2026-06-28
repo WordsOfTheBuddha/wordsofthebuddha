@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Grounds
+description: A deity engages the Buddha in verse on grounds, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.54:1.1 -->

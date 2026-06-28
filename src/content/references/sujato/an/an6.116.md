@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Restlessness
+description: The Buddha teaches on restlessness, presenting a sixfold teaching for disciples on the path.
+qualities: anxiety, negligence, diligence, tranquility
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.116:1.1 -->

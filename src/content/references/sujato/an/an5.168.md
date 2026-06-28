@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethics
+description: The Buddha teaches on ethics, presenting a fivefold teaching for disciples on the path.
+qualities: vision, quenching, dispassion, true knowledge, liberation, ethical conduct
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.168:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bitter
+description: The Buddha teaches on bitter, presenting a threefold teaching for disciples on the path.
+qualities: doubt, wisdom, ill will, desire, anxiety, harm
+theme: story, training guideline
 ---
 
 <!-- @segment an3.128:1.1 -->

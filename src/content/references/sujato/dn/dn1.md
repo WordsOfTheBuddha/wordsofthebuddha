@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Divine Net
+description: After overhearing a wanderer and his pupil contradict each other about the Buddha, the Buddha teaches the mendicants the Brahmajāla—a systematic survey of sixty-two kinds of wrong view about the past and future, from eternalism to nihilism.
+qualities: wrong view, examination, wisdom, discernment, attachment
+theme: cultivating discernment, wisdom
 ---
 
 <!-- @segment dn1:1.0 -->

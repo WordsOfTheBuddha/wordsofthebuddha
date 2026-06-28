@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Respect for Conscience
+description: The Buddha teaches on respect for conscience, presenting a sevenfold teaching for disciples on the path.
+qualities: conscience, respect, unassuming, rousing of energy, collectedness
+theme: training guideline, principle
 ---
 
 <!-- @segment an7.33:1.1 -->

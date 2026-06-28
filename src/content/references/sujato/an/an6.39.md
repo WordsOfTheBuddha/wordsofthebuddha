@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sources
+description: The Buddha teaches on sources, presenting a sixfold teaching for disciples on the path.
+qualities: contentment, delusion, greed, affection, aversion, harm
+theme: principle, wisdom
 ---
 
 <!-- @segment an6.39:1.1 -->

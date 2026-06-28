@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguished
+description: The Buddha teaches on extinguished, presenting a sixfold teaching for disciples on the path.
+qualities: suffering, wrong view
+theme: principle
 ---
 
 <!-- @segment an6.101:1.1 -->

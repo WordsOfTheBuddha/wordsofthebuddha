@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Not Learned From Anyone Else
+description: The Buddha describes the five powers—faith, conscience, prudence, energy, and wisdom—that support a mendicant on the path.
+qualities: learned, conscience, faith, insight, wisdom, vigour
+theme: recollection of the Buddha, inspiration
 ---
 
 <!-- @segment an5.11:1.1 -->

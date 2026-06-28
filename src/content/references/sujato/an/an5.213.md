@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethics
+description: The Buddha describes the five drawbacks for an unethical person because of their failure in ethics—firstly, an unethical person loses great wealth on account of negligence, this is the first drawback, furthermore, an unethical person gets a bad reputation, and this is the second drawback, and furthermore, an unethical person enters any kind of assembly timid and embarrassed, whether it’s an assembly of aristocrats, brahmins, householders, or ascetics.
+qualities: harm, wholesome, diligence, negligence, adventurousness, fear
+theme: story, urgency
 ---
 
 <!-- @segment an5.213:1.1 -->

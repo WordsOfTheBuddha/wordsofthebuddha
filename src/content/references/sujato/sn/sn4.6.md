@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Serpent
+description: Māra the Wicked challenges the Buddha in verse on a serpent; the Teacher answers with wisdom and declares his defeat.
+qualities: fear, craving, flexible
+theme: story, training guideline
 ---
 
 <!-- @segment sn4.6:1.1 -->

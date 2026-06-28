@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Temporarily Free (2nd)
+description: The Buddha teaches on temporarily free (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: sense restraint, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.150:1.1 -->

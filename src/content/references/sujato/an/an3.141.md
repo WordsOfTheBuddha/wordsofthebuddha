@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Excellent Horses
+description: The Buddha teaches on excellent horses, presenting a threefold teaching for disciples on the path.
+qualities: ending, wisdom
+theme: training guideline, inquisitiveness
 ---
 
 <!-- @segment an3.141:1.1 -->

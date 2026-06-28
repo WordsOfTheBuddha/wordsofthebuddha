@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lifespan (1st)
+description: The Buddha teaches mendicants that human life is short and no one born is immortal; Māra interrupts in verse claiming people enjoy long life, and the Buddha refutes him, urging diligence in the spiritual life.
+qualities: spiritual life, wholesome
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.9:1.1 -->

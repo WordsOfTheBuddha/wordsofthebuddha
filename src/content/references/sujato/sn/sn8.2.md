@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Dissatisfaction
+description: When lust infects his mind after seeing finely dressed women, Venerable Vaṅgīsa dispels his own discontent by reciting verses on renunciation, firmness in the teaching, and defying Māra on the path to extinguishment.
+qualities: giving, desire, contentment, passion, sensual desire, giving up
+theme: training guideline, inspiration
 ---
 
 <!-- @segment sn8.2:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Shopkeeper (1st)
+description: The Buddha teaches on a shopkeeper (1st), presenting a threefold teaching for disciples on the path.
+qualities: wholesome, cultivation, jhana, collectedness
+theme: training guideline, principle
 ---
 
 <!-- @segment an3.19:1.1 -->

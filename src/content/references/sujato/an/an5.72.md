@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freedom of Heart is the Fruit (2nd)
+description: The Buddha teaches on freedom of heart is the fruit (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: liberation, wisdom, suffering, giving, giving up, recognition of impermanence
+theme: urgency, principle
 ---
 
 <!-- @segment an5.72:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Observing Impermanence in the Eye
+description: The Buddha describes the seven individuals—first, take an individual who meditates observing impermanence in the eye, they perceive impermanence and experience impermanence, constantly, continually, and without interruption, and they apply the mind and fathom with wisdom.
+qualities: ending, merit, wisdom, liberation, vigour, insight
+theme: urgency, training guideline
 ---
 
 <!-- @segment an7.95:1.1 -->

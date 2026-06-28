@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Quenched
+description: The Buddha teaches on quenched, presenting a threefold teaching for disciples on the path.
+qualities: displeasure, suffering, delusion, greed, ending, aversion
+theme: story
 ---
 
 <!-- @segment an3.55:1.1 -->

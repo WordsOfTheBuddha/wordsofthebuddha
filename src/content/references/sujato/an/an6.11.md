@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Warm-hearted (1st)
+description: The Buddha describes the six warm-hearted qualities—firstly, a mendicant consistently treats their spiritual companions with bodily kindness, both in public and in private. this is a warm-hearted quality, furthermore, a mendicant consistently treats their spiritual companions with verbal kindness, both in public and in private. this too is a warm-hearted quality, furthermore, a mendicant consistently treats their spiritual companions with mental kindness, and furthermore, a mendicant shares without reservation any material things they have gained by legitimate means, even the food placed in the alms-bowl, using them in common with their ethical spiritual companions. this too is a warm-hearted quality, and furthermore, a mendicant lives according to the view shared with their spiritual companions, both in public and in private. that view is noble and emancipating, and delivers one who practices it to the complete ending of suffering. this too is a warm-hearted quality.
+qualities: loving-kindness, ending, suffering, ethical conduct, collectedness, wrong view
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an6.11:1.1 -->

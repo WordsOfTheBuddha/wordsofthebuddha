@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Piṅgiyānī
+description: The Buddha teaches on piṅgiyānī, presenting a fivefold teaching for disciples on the path.
+qualities: mindfulness, wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.195:1.1 -->

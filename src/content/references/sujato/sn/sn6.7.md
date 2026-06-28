@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Kokālika
+description: While the Buddha is in retreat, the divinity Subrahmā speaks in verse at his door on the folly of Kokālika, who judged the immeasurable chief disciples by mere measuring.
+qualities: cultivation, jhana, mindfulness
+theme: story, training guideline
 ---
 
 <!-- @segment sn6.7:1.1 -->

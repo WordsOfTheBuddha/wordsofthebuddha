@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sārandada
+description: The Buddha teaches on at sārandada, presenting a fivefold teaching for disciples on the path.
+qualities: compassion, sensual desire
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.143:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Master Thief
+description: The Buddha teaches on a master thief, presenting a fivefold teaching for disciples on the path.
+qualities: harm, wrong view, ethical conduct
+theme: principle, wisdom
 ---
 
 <!-- @segment an5.103:1.1 -->

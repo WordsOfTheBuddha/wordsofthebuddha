@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Another Discourse on the First Absorption
+description: The Buddha teaches that stinginess with dwellings, families, material things, praise, and the teachings obstructs higher attainments and must be given up to realize the fruits of the path.
+qualities: jhana, giving, giving up, stinginess, gratefulness
+theme: principle
 ---
 
 <!-- @segment an5.264:1.1 -->

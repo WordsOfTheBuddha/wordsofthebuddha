@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Baka the Divinity
+description: Baka the Divinity, thinking his realm is permanent and eternal, invites the Buddha as a welcome guest; the Teacher refutes his ignorance, teaching impermanence and the escape beyond even the highest Brahmā realm.
+qualities: ignorance, wholesome, merit, vision, sorrow, delusion
+theme: wisdom, story
 ---
 
 <!-- @segment sn6.4:1.1 -->

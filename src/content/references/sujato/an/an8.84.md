@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Master Thief
+description: The Buddha teaches on a master thief, presenting a eightfold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an8.84:1.1 -->

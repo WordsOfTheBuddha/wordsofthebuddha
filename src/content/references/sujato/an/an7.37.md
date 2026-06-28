@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Friend (2nd)
+description: The Buddha teaches on a friend (2nd), presenting a sevenfold teaching for disciples on the path.
+qualities: harm, wisdom
+theme: principle
 ---
 
 <!-- @segment an7.37:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Khema
+description: The Buddha teaches on with khema, presenting a sixfold teaching for disciples on the path.
+qualities: anxiety, suffering
+theme: story
 ---
 
 <!-- @segment an6.49:1.1 -->

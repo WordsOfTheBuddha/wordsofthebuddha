@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Respect for Diligence
+description: The Buddha teaches on respect for diligence, presenting a sevenfold teaching for disciples on the path.
+qualities: respect, diligence, rousing of energy, collectedness
+theme: training guideline, principle
 ---
 
 <!-- @segment an7.32:1.1 -->

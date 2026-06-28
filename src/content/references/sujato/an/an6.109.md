@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Thoughts
+description: The Buddha teaches on thoughts, presenting a sixfold teaching for disciples on the path.
+qualities: giving up, non-harm, wholesome, harm
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.109:1.1 -->

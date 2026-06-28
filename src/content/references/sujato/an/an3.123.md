@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Kusinārā
+description: The Buddha teaches on at kusinārā, presenting a threefold teaching for disciples on the path.
+qualities: wholesome, giving up, non-harm, harm
+theme: story, wisdom
 ---
 
 <!-- @segment an3.123:1.1 -->

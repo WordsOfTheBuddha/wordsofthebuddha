@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Brahmin Cosmologists
+description: The Buddha teaches on brahmin cosmologists, presenting a ninefold teaching for disciples on the path.
+qualities: vision, jhana, attachment, truth, wisdom, suffering
+theme: story, training guideline
 ---
 
 <!-- @segment an9.38:1.1 -->

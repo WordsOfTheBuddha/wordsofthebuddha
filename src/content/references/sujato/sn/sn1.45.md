@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Peerless
+description: A deity engages the Buddha in verse on peerless, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom, sensual desire
+theme: wisdom
 ---
 
 <!-- @segment sn1.45:1.1 -->

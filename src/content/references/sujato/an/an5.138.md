@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Eating Food
+description: The Buddha describes the five qualities eats food, takes up space, tramples beds and chair—it’s when a royal bull elephant can’t endure sights, sounds, smells, tastes, and touches, a royal bull elephant with these five factors eats food, takes up space, drops dung, and takes a ticket, yet is still reckoned a royal bull elephant, in the same way, a mendicant with five qualities eats food, takes up space, tramples beds and chairs, and takes a ticket, yet is still reckoned a mendicant, and what five?, and it’s when a mendicant can’t endure sights, sounds, smells, tastes, and touches.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.138:1.1 -->

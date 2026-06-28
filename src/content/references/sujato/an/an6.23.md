@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Dangers
+description: The Buddha teaches on dangers, presenting a sixfold teaching for disciples on the path.
+qualities: suffering, greed, desire, ending, attachment, sensual desire
+theme: urgency
 ---
 
 <!-- @segment an6.23:1.1 -->

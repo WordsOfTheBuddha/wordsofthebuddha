@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
+description: The Buddha teaches a disciple on with ānanda, presenting a fivefold teaching for disciples on the path.
+qualities: ethical conduct, liberation, ending, insight, wisdom
+theme: story, training guideline
 ---
 
 <!-- @segment an5.106:1.1 -->

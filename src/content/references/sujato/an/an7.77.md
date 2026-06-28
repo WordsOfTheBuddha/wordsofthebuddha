@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Expert in the Monastic Law (3rd)
+description: The Buddha describes a mendicant who is an expert in the monastic law with seven qualities—including mastery of offenses, ethics, immersion, and the ending of defilements.
+qualities: liberation, ending, insight, wisdom
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an7.77:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Threats
+description: The Buddha describes the five fears and enmities—killing living creatures, stealing, sexual misconduct, lying, and intoxicants of beer, wine, and liquor, unless these five fears and enmities are given up, one is said to be unethical, and is reborn in hell, once these five fears and enmities are given up, one is said to be ethical, and is reborn in a good place, and what five?, and killing living creatures, stealing, sexual misconduct, lying, and intoxicants of beer, wine, and liquor.
+qualities: displeasure, slaughtering, suffering, fear, sexual misconduct, wholesome
+theme: story
 ---
 
 <!-- @segment an5.174:1.1 -->

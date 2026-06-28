@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Araka
+description: The Buddha teaches on about araka, presenting a sevenfold teaching for disciples on the path.
+qualities: suffering, spiritual life, anxiety, wholesome, anger, regret
+theme: story, urgency
 ---
 
 <!-- @segment an7.74:1.1 -->

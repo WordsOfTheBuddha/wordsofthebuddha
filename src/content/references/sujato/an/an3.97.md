@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred (2nd)
+description: The Buddha teaches on the thoroughbred (2nd), presenting a threefold teaching for disciples on the path.
+qualities: merit, respect, wholesome, ending, giving, giving up
+theme: story, principle
 ---
 
 <!-- @segment an3.97:1.1 -->

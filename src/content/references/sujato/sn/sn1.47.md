@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Planters
+description: A deity engages the Buddha in verse on planters, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: merit, wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.47:1.1 -->

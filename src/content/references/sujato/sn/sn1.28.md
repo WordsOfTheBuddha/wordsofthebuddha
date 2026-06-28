@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Affluent
+description: A deity engages the Buddha in verse on affluent, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: craving, ignorance, desire, affection, aversion, delusion
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.28:1.1 -->

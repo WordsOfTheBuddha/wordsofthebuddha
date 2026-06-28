@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Three Particulars
+description: The Buddha teaches on in three particulars, presenting a ninefold teaching for disciples on the path.
+qualities: happiness, mindfulness, spiritual life
+theme: principle
 ---
 
 <!-- @segment an9.21:1.1 -->

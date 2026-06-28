@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seven Qualities
+description: The Buddha teaches on seven qualities, presenting a sevenfold teaching for disciples on the path.
+qualities: insight, learned, ethical conduct, faith, mindfulness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an7.60:1.1 -->

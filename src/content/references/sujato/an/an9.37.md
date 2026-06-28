@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: By Ānanda
+description: The Buddha teaches on by ānanda, presenting a ninefold teaching for disciples on the path.
+qualities: sorrow, displeasure, lamentation, suffering, collectedness
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an9.37:1.1 -->

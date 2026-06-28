@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess
+description: The Buddha teaches on stinginess, describing the seven fetters and how they bind or afflict beings on the path.
+qualities: stinginess, aversion, conceit, doubt, jealousy, wrong view
+theme: principle
 ---
 
 <!-- @segment an7.10:1.1 -->

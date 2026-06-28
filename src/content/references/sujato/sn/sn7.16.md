@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Contraphile
+description: "The angry brahmin The Contraphile sets out to refute the Buddha's doctrine but is answered with teaching on the contraphile, ethical conduct, and the ending of defilements."
+qualities: resentment, mindfulness
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.16:1.1 -->

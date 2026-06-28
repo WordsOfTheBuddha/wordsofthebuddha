@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Gift With Six Factors
+description: The Buddha teaches on a gift with six factors, presenting a sixfold teaching for disciples on the path.
+qualities: giving, merit, happiness, delusion, greed, aversion
+theme: principle
 ---
 
 <!-- @segment an6.37:1.1 -->

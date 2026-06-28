@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ghaṭīkāra
+description: "The young deity Ghaṭīkāra recites verses celebrating mendicants reborn in the Aviha realm after ending greed and hate, and the Buddha asks who has crossed Death's dominion, leading to dialogue on those perfected in past births."
+qualities: ending, greed, attachment, aversion, mindfulness, craving
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn2.24:1.1 -->

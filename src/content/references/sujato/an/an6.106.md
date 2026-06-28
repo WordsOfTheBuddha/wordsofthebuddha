@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Craving
+description: The Buddha teaches on craving, presenting a sixfold teaching for disciples on the path.
+qualities: craving, conceit, suffering, sensual desire
+theme: principle, wisdom
 ---
 
 <!-- @segment an6.106:1.1 -->

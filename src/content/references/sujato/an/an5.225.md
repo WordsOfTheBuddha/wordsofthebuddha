@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Visiting Families (1st)
+description: The Buddha describes the five drawbacks of visiting families.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.225:1.1 -->

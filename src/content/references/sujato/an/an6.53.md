@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Diligence
+description: The Buddha teaches on diligence, presenting a sixfold teaching for disciples on the path.
+qualities: diligence, wisdom
+theme: story
 ---
 
 <!-- @segment an6.53:1.1 -->

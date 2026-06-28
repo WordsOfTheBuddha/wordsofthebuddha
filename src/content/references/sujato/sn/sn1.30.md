@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Antelope Calves
+description: A deity engages the Buddha in verse on antelope calves, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: suffering, desire, liberation, sensual desire, craving
+theme: wisdom, inquisitiveness
 ---
 
 <!-- @segment sn1.30:1.1 -->

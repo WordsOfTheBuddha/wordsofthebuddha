@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nārada
+description: The Buddha teaches on with nārada, presenting a fivefold teaching for disciples on the path.
+qualities: sorrow, wholesome, doubt, learned, ending, dearness
+theme: story, urgency
 ---
 
 <!-- @segment an5.50:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deceiver
+description: The Buddha teaches on deceiver, presenting a fivefold teaching for disciples on the path.
+qualities: dearness, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.83:1.1 -->

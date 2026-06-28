@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Robes
+description: The Buddha teaches on robes, presenting a fivefold teaching for disciples on the path.
+qualities: insanity, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.182:1.1 -->

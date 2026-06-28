@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Inspiring All Around (2nd)
+description: The Buddha teaches on inspiring all around (2nd), presenting a eightfold teaching for disciples on the path.
+qualities: respect, ending, formless, learned, liberation, insight
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an8.72:1.1 -->

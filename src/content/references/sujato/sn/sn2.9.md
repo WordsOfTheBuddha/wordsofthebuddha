@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Moon
+description: "When the Moon God is seized by Rāhu, lord of titans, he recollects the Buddha and pleads for refuge; the Teacher then commands Rāhu to release him in verse, declaring the Buddhas' compassion for the world."
+qualities: compassion, happiness, liberation, mindfulness
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn2.9:1.1 -->

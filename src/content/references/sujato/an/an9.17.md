@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Families
+description: The Buddha teaches on families, presenting a ninefold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an9.17:1.1 -->

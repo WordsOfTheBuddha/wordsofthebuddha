@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deserving Criticism (3rd)
+description: The Buddha teaches on deserving criticism (3rd), presenting a fivefold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.238:1.1 -->

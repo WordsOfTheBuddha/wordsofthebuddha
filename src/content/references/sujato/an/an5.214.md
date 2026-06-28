@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Someone Who Talks a Lot
+description: The Buddha describes the five drawbacks for an individual who talks a lot.
+qualities: harm, wholesome
+theme: urgency
 ---
 
 <!-- @segment an5.214:1.1 -->

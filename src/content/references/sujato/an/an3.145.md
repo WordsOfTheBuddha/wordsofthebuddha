@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At the Peacocks’ Feeding Ground (3rd)
+description: The Buddha teaches on at the peacocks’ feeding ground (3rd), presenting a threefold teaching for disciples on the path.
+qualities: spiritual life, safety, right view, insight, liberation, wrong view
+theme: wisdom
 ---
 
 <!-- @segment an3.145:1.1 -->

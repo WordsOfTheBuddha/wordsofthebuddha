@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Success
+description: The Buddha teaches on success, presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom, giving
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an5.46:1.1 -->

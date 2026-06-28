@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Layperson
+description: The Buddha teaches the householder on a layperson, presenting a fivefold teaching for disciples on the path.
+qualities: faith, harm, cultivation, jhana, ethical conduct, merit
+theme: story, urgency
 ---
 
 <!-- @segment an5.179:1.1 -->

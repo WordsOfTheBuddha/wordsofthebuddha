@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fetters
+description: The Buddha teaches on fetters, describing the seven fetters and how they bind or afflict beings on the path.
+qualities: aversion, conceit, doubt, ignorance, desire, delusion
+theme: principle
 ---
 
 <!-- @segment an7.8:1.1 -->

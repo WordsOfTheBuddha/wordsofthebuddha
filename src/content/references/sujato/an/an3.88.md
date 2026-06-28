@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Training (3rd)
+description: The Buddha teaches on training (3rd), presenting a threefold teaching for disciples on the path.
+qualities: ending, suffering, wisdom, liberation, vigour, insight
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.88:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Rohitassa
+description: Standing to one side, the young deity Rohitassa addresses the Buddha in verse on with rohitassa.
+qualities: suffering, ending, desire, liberation, tame
+theme: inspiration, story
 ---
 
 <!-- @segment sn2.26:1.1 -->

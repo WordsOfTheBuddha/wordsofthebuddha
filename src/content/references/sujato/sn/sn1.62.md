@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mind
+description: A deity engages the Buddha in verse on mind, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.62:1.1 -->

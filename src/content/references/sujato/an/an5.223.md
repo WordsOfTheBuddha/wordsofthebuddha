@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Overstaying
+description: The Buddha describes the five drawbacks of overstaying.
+qualities: ill will, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.223:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assemblies
+description: The Buddha teaches on assemblies, presenting a threefold teaching for disciples on the path.
+qualities: uplifting joy, merit, liberation, solitude, vigour, collectedness
+theme: inspiration, principle
 ---
 
 <!-- @segment an3.95:1.1 -->

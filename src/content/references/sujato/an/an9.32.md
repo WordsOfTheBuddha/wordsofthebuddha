@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Progressive Meditations
+description: The Buddha describes the nine progressive meditations—from the four absorptions through the formless dimensions to the cessation of perception and feeling.
+qualities: jhana, ending
+theme: training guideline
 ---
 
 <!-- @segment an9.32:1.1 -->

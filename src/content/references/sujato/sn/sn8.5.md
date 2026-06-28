@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Well-Spoken Words
+description: Venerable Vaṅgīsa, inspired by a Dhamma talk, rises to extol Venerable the in verse—praising his wisdom, clarity of teaching, and benefit to the Saṅgha.
+qualities: wholesome, truth, harm, dearness, suffering, mindfulness
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.5:1.1 -->

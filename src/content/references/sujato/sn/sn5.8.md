@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sīsupacālā
+description: The nun Sīsupacālā confronts Māra in verse when he challenges her for shaving her head yet approving no creed, declaring her devotion to the unrivaled Sakyan Buddha who is everywhere freed and unattached.
+qualities: ending, cultivation, jhana, craving, wrong view
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn5.8:1.1 -->

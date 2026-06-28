@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Things That Play a Part in Realization
+description: The Buddha teaches on things that play a part in realization, presenting a sixfold teaching for disciples on the path.
+qualities: suffering, giving, giving up, ending, recognition of impermanence
+theme: urgency, principle
 ---
 
 <!-- @segment an6.35:1.1 -->

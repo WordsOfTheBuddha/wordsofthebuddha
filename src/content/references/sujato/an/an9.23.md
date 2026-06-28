@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Rooted in Craving
+description: The Buddha teaches the nine things rooted in craving—craving for sights, sounds, smells, tastes, touches, and ideas, each in three modes of seeking what is pleasing.
+qualities: craving, attachment, stinginess, desire, passion, sensual desire
+theme: principle
 ---
 
 <!-- @segment an9.23:1.1 -->

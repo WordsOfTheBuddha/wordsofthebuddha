@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Apparent in the Present Life (1st)
+description: The Buddha teaches the wanderer on apparent in the present life (1st), presenting a sixfold teaching for disciples on the path.
+qualities: greed, delusion, aversion, craving, ill will
+theme: wisdom
 ---
 
 <!-- @segment an6.47:1.1 -->

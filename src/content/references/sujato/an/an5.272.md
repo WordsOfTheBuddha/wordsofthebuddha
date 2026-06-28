@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Meal Assigner
+description: The Buddha teaches on a meal assigner, presenting a fivefold teaching for disciples on the path.
+qualities: aggressiveness, aversion, immaturity, wisdom
+theme: cultivating discernment
 ---
 
 <!-- @segment an5.272:1.1 -->

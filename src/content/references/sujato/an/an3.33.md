@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sāriputta
+description: The Buddha teaches Venerable S on with sāriputta, presenting a threefold teaching for disciples on the path.
+qualities: conceit, liberation, wisdom, equanimity, giving, giving up
+theme: training guideline, inquisitiveness
 ---
 
 <!-- @segment an3.33:1.1 -->

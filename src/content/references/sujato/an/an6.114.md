@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Contentment
+description: The Buddha teaches on contentment, presenting a sixfold teaching for disciples on the path.
+qualities: contentment, mindfulness
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.114:1.1 -->

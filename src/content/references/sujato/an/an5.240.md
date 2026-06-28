@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess (2nd)
+description: The Buddha teaches on stinginess (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: stinginess, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.240:1.1 -->

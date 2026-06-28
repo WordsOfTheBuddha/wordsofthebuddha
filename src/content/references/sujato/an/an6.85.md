@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Coolness
+description: The Buddha teaches on coolness, presenting a sixfold teaching for disciples on the path.
+qualities: equanimity, delight
+theme: inspiration
 ---
 
 <!-- @segment an6.85:1.1 -->

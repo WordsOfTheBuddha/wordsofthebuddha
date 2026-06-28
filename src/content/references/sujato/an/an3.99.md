@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Jute
+description: The Buddha teaches on jute, presenting a threefold teaching for disciples on the path.
+qualities: harm, wholesome, suffering, happiness, aversion, ethical conduct
+theme: training guideline
 ---
 
 <!-- @segment an3.99:1.1 -->

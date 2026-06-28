@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Impact
+description: A deity engages the Buddha in verse on impact, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: harm, immaturity
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.22:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Candimasa
+description: Late at night the glorious young deity Candimasa approaches the Buddha and speaks in verse on with candimasa, exploring the continuity of kamma, rebirth, and the pursuit of wisdom across realms.
+qualities: mindfulness, wisdom
+theme: inspiration, principle
 ---
 
 <!-- @segment sn2.11:1.1 -->

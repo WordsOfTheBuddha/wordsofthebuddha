@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kāmada
+description: Standing to one side, the young deity Kāmada addresses the Buddha in verse on with kāmada.
+qualities: affection, contentment, happiness, collectedness
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn2.6:1.1 -->

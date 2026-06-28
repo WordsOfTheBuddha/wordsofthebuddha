@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With the Divinity Tudu
+description: When the mendicant Kokālika slanders Sāriputta and Moggallāna as corrupt, the Buddha warns him repeatedly to have confidence in them; Kokālika persists and suffers the consequences of divisive speech.
+qualities: harm, happiness, suffering, aversion, faith, wholesome
+theme: story, inspiration
 ---
 
 <!-- @segment sn6.9:1.1 -->

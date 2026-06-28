@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Katamorakatissaka
+description: While the Buddha is in retreat, the divinity Suddhāvāsa speaks in verse on the folly of judging the immeasurable, referring to the mendicant Katamorakatissaka.
+qualities: cultivation, jhana, mindfulness, wisdom
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn6.8:1.1 -->

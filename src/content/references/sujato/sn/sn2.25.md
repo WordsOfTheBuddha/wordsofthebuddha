@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Jantu
+description: A young deity engages the Buddha in verse on with jantu, reflecting on past deeds, rebirth, and the pursuit of liberation.
+qualities: suffering, mindfulness, collectedness
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn2.25:1.1 -->

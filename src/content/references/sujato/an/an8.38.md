@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A True Person
+description: The Buddha teaches on a true person, presenting a eightfold teaching for disciples on the path.
+qualities: wholesome, happiness, faith, stinginess, mindfulness, wisdom
+theme: story, inspiration
 ---
 
 <!-- @segment an8.38:1.1 -->

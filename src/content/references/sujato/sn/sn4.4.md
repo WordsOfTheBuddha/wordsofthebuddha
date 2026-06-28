@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Māra’s Snares (1st)
+description: Māra the Wicked challenges the Buddha in verse on māra’s snares (1st); the Teacher answers with wisdom and declares his defeat.
+qualities: right effort, attachment, liberation, vigour
+theme: story, training guideline
 ---
 
 <!-- @segment sn4.4:1.1 -->

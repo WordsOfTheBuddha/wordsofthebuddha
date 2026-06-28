@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Collecting Firewood
+description: The Buddha teaches brahmins in dialogue and verse, refuting pride in birth and ritual while guiding them toward ethical conduct and wisdom.
+qualities: mindfulness, vision, desire, delusion
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.18:1.1 -->

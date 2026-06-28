@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fault-Finding Deities
+description: A deity engages the Buddha in verse on fault-finding deities, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: anger, aversion, doubt, mindfulness, attachment, jhana
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.35:1.1 -->

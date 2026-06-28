@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguishment in This Life
+description: The Buddha teaches on extinguishment in this life, presenting a ninefold teaching for disciples on the path.
+qualities: wisdom, ending, jhana, sensual desire
+theme: wisdom
 ---
 
 <!-- @segment an9.51:1.1 -->

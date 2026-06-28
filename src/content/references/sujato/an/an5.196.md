@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Great Dreams
+description: The Buddha teaches on the great dreams, presenting a fivefold teaching for disciples on the path.
+qualities: quenching, liberation
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.196:1.1 -->

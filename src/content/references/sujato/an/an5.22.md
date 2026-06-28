@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disrespect (2nd)
+description: The Buddha teaches on disrespect (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: quenching, wisdom, contempt, unassuming, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.22:1.1 -->

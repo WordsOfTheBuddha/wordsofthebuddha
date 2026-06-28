@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sleep
+description: The Buddha teaches on sleep, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, cultivation, wrong speech, wakefulness, dearness, liberation
+theme: story, training guideline
 ---
 
 <!-- @segment an6.17:1.1 -->

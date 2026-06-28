@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Lodgings Allotter
+description: The Buddha presents a repeated fivefold teaching on a lodgings allotter in this grouped discourse.
+qualities: aggressiveness, aversion
+theme: principle
 ---
 
 <!-- @segment an5.273-285:1.1 -->

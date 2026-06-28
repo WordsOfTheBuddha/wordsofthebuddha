@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Boulders
+description: "While the Buddha meditates on Vulture's Peak in the rain at night, Māra crushes boulders nearby to terrify him; the Buddha declares in verse that the rightly released and awakened are unshaken even if the mountain shook."
+qualities: fear, craving, flexible, imperturbable, liberation
+theme: story, training guideline
 ---
 
 <!-- @segment sn4.11:1.1 -->

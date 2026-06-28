@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kāraṇapālī
+description: The Buddha teaches on with kāraṇapālī, presenting a fivefold teaching for disciples on the path.
+qualities: suffering, wisdom, wakefulness, ending, happiness, joy
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.194:1.1 -->

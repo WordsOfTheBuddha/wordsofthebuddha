@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Knowledge of the Faculties of Persons
+description: The Buddha teaches a disciple on knowledge of the faculties of persons, presenting a sixfold teaching for disciples on the path.
+qualities: unwholesome, wholesome, attachment, harm, examination, liberation
+theme: story, urgency
 ---
 
 <!-- @segment an6.62:1.1 -->

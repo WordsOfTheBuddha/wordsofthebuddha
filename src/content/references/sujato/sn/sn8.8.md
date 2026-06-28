@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Over a Thousand
+description: Venerable Vaṅgīsa, inspired by a Dhamma talk, rises to extol Venerable him in verse—praising his wisdom, clarity of teaching, and benefit to the Saṅgha.
+qualities: truth, mindfulness, desire, cultivation, jhana, liberation
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.8:1.1 -->

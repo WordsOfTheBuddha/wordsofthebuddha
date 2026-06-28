@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fields
+description: The Buddha teaches on fields, presenting a threefold teaching for disciples on the path.
+qualities: wisdom, vigour
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.83:1.1 -->

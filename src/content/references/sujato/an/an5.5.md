@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disrobing
+description: The Buddha teaches on disrobing, presenting a fivefold teaching for disciples on the path.
+qualities: conscience, faith, spiritual life, wisdom, displeasure, suffering
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.5:1.1 -->

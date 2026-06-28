@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Graduation (1st)
+description: The Buddha teaches Venerable S on graduation (1st), presenting a sevenfold teaching for disciples on the path.
+qualities: insight, spiritual life, vigour, mindfulness, diligence, wakefulness
+theme: training guideline, inquisitiveness
 ---
 
 <!-- @segment an7.42:1.1 -->

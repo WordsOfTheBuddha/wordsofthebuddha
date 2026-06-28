@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Gayā Head
+description: The Buddha teaches on at gayā head, presenting a eightfold teaching for disciples on the path.
+qualities: vision, suffering, liberation
+theme: story, wisdom
 ---
 
 <!-- @segment an8.64:1.1 -->

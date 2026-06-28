@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Little Sleep
+description: The Buddha teaches on little sleep, presenting a fivefold teaching for disciples on the path.
+qualities: craving, liberation
+theme: story
 ---
 
 <!-- @segment an5.137:1.1 -->

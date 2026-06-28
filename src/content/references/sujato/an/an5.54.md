@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Times Good for Meditation
+description: The Buddha teaches on times good for meditation, presenting a fivefold teaching for disciples on the path.
+qualities: cultivation, jhana, wholesome, faith, cruelty, harm
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.54:1.1 -->

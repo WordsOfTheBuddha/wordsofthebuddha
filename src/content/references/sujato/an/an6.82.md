@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hell (2nd)
+description: The Buddha teaches on hell (2nd), presenting a sixfold teaching for disciples on the path.
+qualities: sexual misconduct, craving
+theme: principle
 ---
 
 <!-- @segment an6.82:1.1 -->

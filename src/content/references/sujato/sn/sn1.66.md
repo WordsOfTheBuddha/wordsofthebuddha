@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Beaten Down
+description: A deity engages the Buddha in verse on beaten down, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: craving, desire
+theme: wisdom, urgency
 ---
 
 <!-- @segment sn1.66:1.1 -->

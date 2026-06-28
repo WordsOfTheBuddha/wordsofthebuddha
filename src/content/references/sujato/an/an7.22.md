@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vassakāra
+description: The Buddha describes the seven principles that prevent decline last among the vajjis, and as long as the vajjis.
+qualities: cultivation, respect, safety, wholesome, craving, harm
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an7.22:1.1 -->

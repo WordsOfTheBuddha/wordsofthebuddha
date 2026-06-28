@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Urgent
+description: The Buddha teaches on urgent, presenting a threefold teaching for disciples on the path.
+qualities: wisdom, attachment, free from attachment, vigour
+theme: urgency, training guideline
 ---
 
 <!-- @segment an3.92:1.1 -->

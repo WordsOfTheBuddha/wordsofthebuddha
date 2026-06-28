@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Tissa the Divinity
+description: The Buddha teaches Venerable Mah on tissa the divinity, presenting a sevenfold teaching for disciples on the path.
+qualities: wholesome, insight, happiness, wisdom, faith, flexible
+theme: story, training guideline
 ---
 
 <!-- @segment an7.56:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kimbila
+description: The Buddha teaches Venerable Kimbila on with kimbila, presenting a fivefold teaching for disciples on the path.
+qualities: quenching, respect
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.201:1.1 -->

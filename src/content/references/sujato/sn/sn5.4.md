@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vijayā
+description: The nun Vijayā confronts Māra in verse when he tempts her with youth and the music of a five-piece band, teaching that she has handed back sensual pleasures and eradicated craving for the rotting body.
+qualities: craving, fear, formless, cultivation, jhana, collectedness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment sn5.4:1.1 -->

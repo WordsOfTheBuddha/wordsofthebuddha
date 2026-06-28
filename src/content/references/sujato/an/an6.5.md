@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred (1st)
+description: The Buddha teaches that a fine royal thoroughbred with six factors—including endurance of sights, sounds, smells, tastes, and touches—is worthy of a king and fit to serve a king.
+qualities: merit, respect
+theme: story, principle
 ---
 
 <!-- @segment an6.5:1.1 -->

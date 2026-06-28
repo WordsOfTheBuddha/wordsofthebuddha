@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Gifts of an Untrue Person
+description: The Buddha describes the five gifts of an untrue person.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.147:1.1 -->

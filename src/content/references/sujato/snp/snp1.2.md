@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Wealthy Rancher
+description: Verses in which the rancher Dhaniya boasts of his worldly security and the Buddha counters with the safety of one who has quelled anger and found shelter in the Dhamma, culminating in both going for refuge.
+qualities: desire, delight, sorrow, harm, spiritual life, anger
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.2:1.1 -->

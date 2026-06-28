@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Arising
+description: The Buddha teaches on arising, presenting a threefold teaching for disciples on the path.
+qualities: suffering, wisdom
+theme: urgency, recollection of the Buddha
 ---
 
 <!-- @segment an3.136:1.1 -->

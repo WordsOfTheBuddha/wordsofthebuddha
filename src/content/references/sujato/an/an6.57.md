@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Six Classes of Rebirth
+description: The Buddha teaches a disciple on the six classes of rebirth, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, harm, mindfulness, wisdom, cultivation, jhana
+theme: principle
 ---
 
 <!-- @segment an6.57:1.1 -->

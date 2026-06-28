@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Longevity (1st)
+description: The Buddha teaches on longevity (1st), presenting a fivefold teaching for disciples on the path.
+qualities: spiritual life, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.125:1.1 -->

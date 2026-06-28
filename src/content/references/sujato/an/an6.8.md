@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unsurpassable
+description: The Buddha describes six unsurpassable things—the unsurpassable sight, sound, happiness, training, generosity, and reflection—that inspire faith and confidence in the teaching.
+qualities: attachment, wisdom
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.8:1.1 -->

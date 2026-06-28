@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Blameworthy
+description: The Buddha contrasts the fool and the astute person, each known by three qualities of conduct and response.
+qualities: unwholesome, wholesome, immaturity, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.7:1.1 -->

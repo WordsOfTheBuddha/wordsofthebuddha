@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Uppalavaṇṇā
+description: The nun Uppalavaṇṇā confronts Māra in verse when he tries to frighten her with the threat of assault while she meditates alone, declaring her mastery of mind, psychic power, and freedom from all bonds.
+qualities: fear, craving, psychic power, collectedness
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn5.5:1.1 -->

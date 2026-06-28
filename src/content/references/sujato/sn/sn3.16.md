@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Daughter
+description: King Pasenadi of Kosala visits the Buddha and discusses a daughter, receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: wisdom
+theme: story
 ---
 
 <!-- @segment sn3.16:1.1 -->

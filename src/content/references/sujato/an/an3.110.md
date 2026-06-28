@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fallen
+description: The Buddha teaches on fallen, presenting a threefold teaching for disciples on the path.
+qualities: wholesome, harm
+theme: story, urgency
 ---
 
 <!-- @segment an3.110:1.1 -->

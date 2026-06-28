@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Carer (2nd)
+description: The Buddha teaches on a carer (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: affection, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.124:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Many Daughters
+description: The brahmin Many Daughters laments having many daughters and no sons; the Buddha teaches that daughters may be as good as sons when they are ethical, learned, and devoted to their husbands.
+qualities: mindfulness, insight
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.10:1.1 -->

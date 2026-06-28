@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Who Should Give Dependence
+description: The Buddha describes the five qualities—it’s a mendicant who has the entire spectrum of an adept’s ethics, immersion, wisdom, freedom, and the knowledge and vision of freedom, and dependence should be given by a mendicant with these five qualities.”.
+qualities: vision, liberation, wisdom, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.252:1.1 -->

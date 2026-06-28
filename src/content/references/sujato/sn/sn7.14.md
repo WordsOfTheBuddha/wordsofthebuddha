@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A well-to-do brahmin
+description: The Buddha teaches brahmins in dialogue and verse, refuting pride in birth and ritual while guiding them toward ethical conduct and wisdom.
+qualities: adventurousness, compassion, mindfulness
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.14:1.1 -->

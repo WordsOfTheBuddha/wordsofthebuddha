@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Lowlife
+description: Verse dialogue in the Uragavagga in which the Buddha responds regarding the lowlife, contrasting worldly security with the safety of one established in the path.
+qualities: harm, giving, delusion, sensual desire, desire, conceit
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.7:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nanda
+description: The Buddha teaches on nanda, presenting a eightfold teaching for disciples on the path.
+qualities: mindfulness, wakefulness, harm, cultivation, jhana, spiritual life
+theme: training guideline
 ---
 
 <!-- @segment an8.9:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seclusion
+description: The Buddha teaches on seclusion, presenting a threefold teaching for disciples on the path.
+qualities: solitude, giving, giving up, right view, wrong view, adventurousness
+theme: urgency, training guideline
 ---
 
 <!-- @segment an3.93:1.1 -->

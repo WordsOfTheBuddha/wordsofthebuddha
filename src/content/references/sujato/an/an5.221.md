@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Long Wandering (1st)
+description: The Buddha describes the five drawbacks for someone who likes long and aimless wandering.
+qualities: learned, faith
+theme: inspiration
 ---
 
 <!-- @segment an5.221:1.1 -->

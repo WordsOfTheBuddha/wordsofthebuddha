@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stains
+description: The Buddha teaches on stains, presenting a threefold teaching for disciples on the path.
+qualities: jealousy, stinginess, ethical conduct
+theme: principle
 ---
 
 <!-- @segment an3.10:1.1 -->

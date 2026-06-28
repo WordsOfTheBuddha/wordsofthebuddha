@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Imperturbable
+description: The Buddha describes the three individuals—the lifespan of the gods of infinite space is twenty thousand eons, an ordinary person stays there until the lifespan of those gods is spent, then they go to hell or the animal realm or the ghost realm, but a disciple of the buddha stays there until the lifespan of those gods is spent, and then they’re extinguished in that very life.
+qualities: learned, imperturbable
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an3.116:1.1 -->

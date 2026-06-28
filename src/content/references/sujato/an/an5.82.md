@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Free of Greed
+description: The Buddha teaches on free of greed, presenting a fivefold teaching for disciples on the path.
+qualities: greed, delusion, aversion, dearness, craving, ill will
+theme: principle
 ---
 
 <!-- @segment an5.82:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Righteous Life
+description: Verses in the Little Chapter (A Righteous Life) on ethical conduct, devotion, and the supreme value of the Buddha, Dhamma, and Saṅgha.
+qualities: suffering, harm, spiritual life, delusion, ignorance, mindfulness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.6:1.1 -->

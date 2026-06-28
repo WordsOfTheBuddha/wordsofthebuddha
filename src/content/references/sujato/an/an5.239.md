@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess (1st)
+description: The Buddha teaches on stinginess (1st), presenting a fivefold teaching for disciples on the path.
+qualities: faith, stinginess
+theme: inspiration
 ---
 
 <!-- @segment an5.239:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Elements of Escape
+description: The Buddha describes the five elements of escape—take a case where a mendicant focuses on sensual pleasures, but on that their mind does not leap forth, gain confidence, settle down, and become decided, but when they focus on renunciation, on that their mind leaps forth, gains confidence, settles down, and becomes decided, their mind is in a good state, well developed, well risen, well freed, and well detached from sensual pleasures, and they’re freed from the distressing and feverish defilements that arise because of sensual pleasures, so they don’t experience that kind of feeling, and this is how the escape from sensual pleasures is explained.
+qualities: wholesome, ill will, faith, compassion, formless, conceit
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an5.200:1.1 -->

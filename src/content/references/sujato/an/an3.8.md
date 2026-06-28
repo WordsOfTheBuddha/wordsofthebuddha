@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hurtful
+description: The Buddha contrasts the fool and the astute person, each known by three qualities of conduct and response.
+qualities: immaturity, wisdom
+theme: training guideline, cultivating discernment
 ---
 
 <!-- @segment an3.8:1.1 -->

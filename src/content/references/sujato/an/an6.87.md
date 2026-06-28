@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Murderer
+description: The Buddha teaches on a murderer, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, wisdom
+theme: recollection of the Buddha
 ---
 
 <!-- @segment an6.87:1.1 -->

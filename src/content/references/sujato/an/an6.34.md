@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahāmoggallāna
+description: The Buddha teaches Venerable Mah on with mahāmoggallāna, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, faith, affection, craving
+theme: story, directly knowing
 ---
 
 <!-- @segment an6.34:1.1 -->

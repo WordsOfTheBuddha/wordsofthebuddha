@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hard-heartedness
+description: The Buddha describes the five kinds of hard-heartedness—firstly, a mendicant has doubts about the teacher. they’re uncertain, undecided, and lacking confidence, this being so, their mind doesn’t incline toward keenness, commitment, persistence, and striving, this is the first kind of hard-heartedness, and furthermore, a mendicant has doubts about the teaching, and the saṅgha.
+qualities: vigour, aversion, faith, right effort
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.205:1.1 -->

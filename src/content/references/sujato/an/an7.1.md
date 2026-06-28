@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Pleasing (1st)
+description: The Buddha contrasts mendicants disliked and admired by their spiritual companions, each defined by seven qualities—including desire for material things, honor, and status, versus conscience, prudence, and right view.
+qualities: conscience, right view, wrong view, desire, dearness
+theme: story, wisdom
 ---
 
 <!-- @segment an7.1:1.1 -->

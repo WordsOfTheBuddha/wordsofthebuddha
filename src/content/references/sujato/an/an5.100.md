@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kakudha
+description: "The Buddha describes the five teachers found in the world—firstly, some teacher with impure conduct claims: ‘i am pure in ethics. my ethical conduct is pure, bright, uncorrupted.’, but their disciples know:, ‘this teacher has impure ethical conduct, but claims to be ethically pure, and they wouldn’t like it if we were to tell the laypeople, and and how could we treat them in a way that they don’t like?."
+qualities: vision, ethical conduct, psychic power, desire
+theme: story, wisdom
 ---
 
 <!-- @segment an5.100:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Nun
+description: The Buddha presents a repeated fivefold teaching on a nun in this grouped discourse.
+qualities: sexual misconduct, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.287-292:1.1 -->

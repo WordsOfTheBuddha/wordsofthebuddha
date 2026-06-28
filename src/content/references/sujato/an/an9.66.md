@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Grasping Aggregates
+description: The Buddha teaches on grasping aggregates, presenting a ninefold teaching for disciples on the path.
+qualities: attachment, mindfulness, cultivation, jhana
+theme: training guideline
 ---
 
 <!-- @segment an9.66:1.1 -->

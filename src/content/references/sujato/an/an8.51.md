@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Gotamī
+description: The Buddha teaches a disciple on with gotamī, presenting a eightfold teaching for disciples on the path.
+qualities: respect, spiritual life, lamentation, suffering, learned, cruelty
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an8.51:1.1 -->

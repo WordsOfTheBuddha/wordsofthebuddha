@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Udāyī
+description: The Buddha teaches the Buddha on with udāyī, presenting a sixfold teaching for disciples on the path.
+qualities: jhana, suffering, mindfulness, giving, giving up, vision
+theme: training guideline, cultivating discernment
 ---
 
 <!-- @segment an6.29:1.1 -->

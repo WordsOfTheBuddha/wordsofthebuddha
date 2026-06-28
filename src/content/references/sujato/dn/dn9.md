@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Poṭṭhapāda
+description: The wanderer Poṭṭhapāda asks how perception arises and ceases; the Buddha teaches the gradual cessation of perceptions through successive refinements of immersion, culminating in the ending of perception and feeling.
+qualities: collectedness, wisdom, examination, discernment, direct knowledge
+theme: directly knowing, wisdom
 ---
 
 <!-- @segment dn9:1.0 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Individuals
+description: The Buddha describes the seven individuals.
+qualities: faith, merit, wisdom, wrong view
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an7.14:1.1 -->

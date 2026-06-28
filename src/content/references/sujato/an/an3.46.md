@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethical
+description: The Buddha teaches on ethical, presenting a threefold teaching for disciples on the path.
+qualities: merit, ethical conduct
+theme: principle
 ---
 
 <!-- @segment an3.46:1.1 -->

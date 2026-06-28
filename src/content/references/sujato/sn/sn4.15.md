@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Mental Snare
+description: Māra the Wicked challenges the Buddha in verse on a mental snare; the Teacher answers with wisdom and declares his defeat.
+qualities: desire, wisdom
+theme: wisdom, story
 ---
 
 <!-- @segment sn4.15:1.1 -->

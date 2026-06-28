@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Appeal of the Divinity
+description: After awakening, the Buddha reflects that the Dhamma is too deep to teach and inclines to passivity; the divinity Sahampati appears to plead that beings with little dust in their eyes will understand, and the Buddha surveys the world with compassion and agrees to teach.
+qualities: ending, greed, sorrow, attachment, harm, liberation
+theme: urgency, recollection of the Buddha
 ---
 
 <!-- @segment sn6.1:1.1 -->

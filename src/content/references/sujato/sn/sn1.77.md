@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Authority
+description: A deity engages the Buddha in verse on authority, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: anger, ill will, wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.77:1.1 -->

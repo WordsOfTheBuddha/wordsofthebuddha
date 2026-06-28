@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With the Householder Tapussa
+description: The Buddha teaches on with the householder tapussa, presenting a ninefold teaching for disciples on the path.
+qualities: faith, suffering, jhana, uplifting joy, giving up, ending
+theme: story, training guideline
 ---
 
 <!-- @segment an9.41:1.1 -->

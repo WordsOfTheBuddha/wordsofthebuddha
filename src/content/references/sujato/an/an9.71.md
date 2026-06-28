@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hard-heartedness
+description: The Buddha teaches on hard-heartedness, presenting a ninefold teaching for disciples on the path.
+qualities: vigour, mindfulness, aversion, cultivation, faith, jhana
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an9.71:1.1 -->

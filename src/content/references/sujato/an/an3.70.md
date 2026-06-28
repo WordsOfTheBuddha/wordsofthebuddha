@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sabbath
+description: The Buddha teaches on sabbath, presenting a threefold teaching for disciples on the path.
+qualities: vigour, joy, respect, happiness, ethical conduct, faith
+theme: story, urgency
 ---
 
 <!-- @segment an3.70:1.1 -->

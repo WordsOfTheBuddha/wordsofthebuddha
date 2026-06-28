@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sagacity
+description: The Buddha describes the three kinds of sagacity.
+qualities: liberation, ending, insight, wisdom
+theme: principle, wisdom
 ---
 
 <!-- @segment an3.122:1.1 -->

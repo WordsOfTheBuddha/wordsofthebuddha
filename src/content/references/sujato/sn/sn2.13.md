@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Dīghalaṭṭhi
+description: Late at night the glorious young deity Dīghalaṭṭhi approaches the Buddha and speaks in verse on with dīghalaṭṭhi, exploring the continuity of kamma, rebirth, and the pursuit of wisdom across realms.
+qualities: desire, mindfulness, wholesome
+theme: inspiration, story
 ---
 
 <!-- @segment sn2.13:1.1 -->

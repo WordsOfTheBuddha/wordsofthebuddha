@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Graduation (2nd)
+description: The Buddha teaches a disciple on graduation (2nd), presenting a sevenfold teaching for disciples on the path.
+qualities: insight, spiritual life, learned, fear of wrongdoing, faith, mindfulness
+theme: story, training guideline
 ---
 
 <!-- @segment an7.43:1.1 -->

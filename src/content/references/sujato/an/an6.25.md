@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Topics for Recollection
+description: "The Buddha describes the six topics for recollection—firstly, a noble disciple recollects the realized one:, ‘that blessed one is perfected, a fully awakened buddha, accomplished in knowledge and conduct, holy, knower of the world, supreme guide for those fit for training, teacher of gods and humans, awakened, blessed.’, when a noble disciple recollects the realized one their mind is not full of greed, hate, and delusion, and at that time their mind is quite unswerving. they’ve left behind greed; they’re free of it and have risen above it, and ‘greed’ is a term for the five kinds of sensual stimulation, and relying on this, some sentient beings are purified in this way."
+qualities: greed, delusion, aversion, giving, faith, wisdom
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an6.25:1.1 -->

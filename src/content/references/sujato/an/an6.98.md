@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Impermanence
+description: The Buddha teaches on impermanence, presenting a sixfold teaching for disciples on the path.
+qualities: wrong view, wisdom
+theme: urgency
 ---
 
 <!-- @segment an6.98:1.1 -->

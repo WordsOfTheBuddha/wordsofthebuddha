@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disliked (1st)
+description: The Buddha contrasts mendicants disliked and admired by their spiritual companions, each defined by eight qualities of conduct, conscience, and view.
+qualities: conscience, desire, right view, wrong view
+theme: wisdom
 ---
 
 <!-- @segment an8.3:1.1 -->

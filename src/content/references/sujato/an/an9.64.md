@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hindrances
+description: The Buddha teaches on hindrances, presenting a ninefold teaching for disciples on the path.
+qualities: mindfulness, displeasure, cultivation, greed, jealousy, jhana
+theme: training guideline, principle
 ---
 
 <!-- @segment an9.64:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Vaṅgīsa and His Mentor Nigrodhakappa
+description: Verses in the Little Chapter (Vaṅgīsa and His Mentor Nigrodhakappa) on ethical conduct, devotion, and the supreme value of the Buddha, Dhamma, and Saṅgha.
+qualities: wisdom, liberation, quenching, craving, doubt, desire
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.12:1.1 -->

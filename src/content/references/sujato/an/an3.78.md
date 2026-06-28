@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Precepts and Observances
+description: The Buddha teaches a disciple on precepts and observances, presenting a threefold teaching for disciples on the path.
+qualities: unwholesome, wholesome, wisdom
+theme: wisdom
 ---
 
 <!-- @segment an3.78:1.1 -->

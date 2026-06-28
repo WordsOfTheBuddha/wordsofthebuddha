@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Gavesī
+description: The Buddha describes the five hundred lay followers ….
+qualities: quenching, mindfulness, liberation, insight
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.180:1.1 -->

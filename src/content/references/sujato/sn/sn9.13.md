@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Undisciplined Faculties
+description: A forest deity approaches a mendicant in verse on undisciplined faculties, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: suffering, compassion, craving, mindfulness, collectedness
+theme: urgency, training guideline
 ---
 
 <!-- @segment sn9.13:1.1 -->

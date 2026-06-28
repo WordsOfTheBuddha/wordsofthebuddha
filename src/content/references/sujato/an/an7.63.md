@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Wives
+description: The Buddha teaches the Buddha on kinds of wives, presenting a sevenfold teaching for disciples on the path.
+qualities: respect, anger, aversion, wholesome, aggressiveness, fear of wrongdoing
+theme: story, principle
 ---
 
 <!-- @segment an7.63:1.1 -->

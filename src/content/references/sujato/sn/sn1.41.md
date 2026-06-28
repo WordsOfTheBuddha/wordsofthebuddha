@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: On Fire
+description: Late at night a radiant deity approaches the Buddha and speaks in verse on on fire, and the Teacher responds with a teaching on the Dhamma.
+qualities: giving, wholesome, happiness, mindfulness
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.41:1.1 -->

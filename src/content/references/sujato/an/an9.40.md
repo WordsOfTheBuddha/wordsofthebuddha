@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Bull Elephant in the Forest
+description: The Buddha teaches on the simile of the bull elephant in the forest, presenting a ninefold teaching for disciples on the path.
+qualities: adventurousness, giving, giving up, jhana, doubt, drowsiness
+theme: training guideline, principle
 ---
 
 <!-- @segment an9.40:1.1 -->

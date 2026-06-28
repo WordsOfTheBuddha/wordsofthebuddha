@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Vajji
+description: A forest deity approaches a mendicant in verse on a vajji, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: compassion, craving
+theme: training guideline, principle
 ---
 
 <!-- @segment sn9.9:1.1 -->

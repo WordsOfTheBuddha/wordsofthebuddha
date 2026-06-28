@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kokālika
+description: After awakening, the Buddha reflects that the Dhamma is too deep to teach and inclines to passivity; the divinity Sahampati appears to plead that beings with little dust in their eyes will understand, and the Buddha surveys the world with compassion and agrees to teach.
+qualities: faith, resentment, wholesome, harm, happiness, aversion
+theme: recollection of the Buddha, inspiration
 ---
 
 <!-- @segment sn6.10:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Trash
+description: The Buddha teaches on trash, presenting a eightfold teaching for disciples on the path.
+qualities: wholesome, harm, suffering, aversion, respect, wrong view
+theme: story
 ---
 
 <!-- @segment an8.10:1.1 -->

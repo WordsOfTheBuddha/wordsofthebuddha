@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sabbath
+description: The Buddha teaches Venerable Mah on sabbath, presenting a eightfold teaching for disciples on the path.
+qualities: affection, joy, harm, ethical conduct
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an8.20:1.1 -->

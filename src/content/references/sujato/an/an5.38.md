@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faith
+description: The Buddha teaches on faith, presenting a fivefold teaching for disciples on the path.
+qualities: faith, merit, delusion, greed, suffering, aversion
+theme: urgency, inspiration
 ---
 
 <!-- @segment an5.38:1.1 -->

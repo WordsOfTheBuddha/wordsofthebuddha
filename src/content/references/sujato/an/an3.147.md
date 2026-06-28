@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Blameworthy
+description: The Buddha teaches on blameworthy, presenting a threefold teaching for disciples on the path.
+qualities: unwholesome, wholesome
+theme: principle
 ---
 
 <!-- @segment an3.147:1.1 -->

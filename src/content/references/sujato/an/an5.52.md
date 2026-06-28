@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Heap of the Unskillful
+description: The Buddha describes the five hindrances—sensual desire, ill will, dullness and drowsiness, restlessness and worry, and doubt—that overwhelm the mind and weaken wisdom until they are abandoned.
+qualities: unwholesome, doubt, drowsiness, dullness, ill will, sensual desire
+theme: principle
 ---
 
 <!-- @segment an5.52:1.1 -->

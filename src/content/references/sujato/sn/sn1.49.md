@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stingy
+description: A deity engages the Buddha in verse on stingy, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: respect, stinginess, harm, wholesome
+theme: inquisitiveness, wisdom
 ---
 
 <!-- @segment sn1.49:1.1 -->

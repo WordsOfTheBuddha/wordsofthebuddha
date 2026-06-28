@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Sword
+description: A deity engages the Buddha in verse on a sword, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: sensual desire, desire, mindfulness, wrong view
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn1.21:1.1 -->

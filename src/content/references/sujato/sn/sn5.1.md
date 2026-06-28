@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Āḷavikā
+description: The nun Āḷavikā confronts Māra in verse when he urges her to enjoy erotic delights rather than seek seclusion, teaching that she has personally experienced the escape from the world and sees sensual pleasures as swords upon the aggregates.
+qualities: fear, craving, solitude, delight, wisdom, regret
+theme: story, inspiration
 ---
 
 <!-- @segment sn5.1:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Talk
+description: The Buddha teaches on talk, presenting a fivefold teaching for disciples on the path.
+qualities: liberation, contentment, mindfulness, vision, wakefulness, wisdom
+theme: training guideline, principle
 ---
 
 <!-- @segment an5.97:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (1st)
+description: The Buddha teaches that five things should be developed for insight into greed, five things should be developed.
+qualities: greed, insight, discontentment, suffering, craving
+theme: urgency, principle
 ---
 
 <!-- @segment an5.303:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ensnared
+description: A deity engages the Buddha in verse on ensnared, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: craving, suffering
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.67:1.1 -->

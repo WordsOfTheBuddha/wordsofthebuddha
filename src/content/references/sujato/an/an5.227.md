@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Riches
+description: The Buddha describes the five drawbacks of riches.
+qualities: happiness, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.227:1.1 -->

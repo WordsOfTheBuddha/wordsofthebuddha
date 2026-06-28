@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Nālaka
+description: "Verses on about nālaka in the Great Chapter, recounting the Buddha's encounters and his teaching on renunciation, ethical conduct, and liberation."
+qualities: happiness, jhana, solitude, spiritual life, vision, desire
+theme: training guideline, inspiration
 ---
 
 <!-- @segment snp3.11:1.1 -->

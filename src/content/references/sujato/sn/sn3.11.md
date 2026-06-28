@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seven Matted-Hair Ascetics
+description: King Pasenadi of Kosala visits the Buddha and hears teaching on seven matted-hair ascetics, exploring ethics, kingship, and the Dhamma through dialogue and simile.
+qualities: wisdom, faith, sensual desire
+theme: story, inspiration
 ---
 
 <!-- @segment sn3.11:1.1 -->

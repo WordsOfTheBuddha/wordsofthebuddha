@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vaṅgīsa
+description: "Venerable Vaṅgīsa, having recently attained perfection, recites verses on his going forth, the Buddha's awakening, and the joy of freedom from the aggregates, elements, and sense fields."
+qualities: faith, psychic power, liberation, mindfulness, quenching
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.12:1.1 -->

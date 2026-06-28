@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Māgha
+description: Verses in which the Buddha meets a brahmin during a fire sacrifice and teaches that true purity comes from ethical conduct and abandoning harmful deeds, not ritual offerings.
+qualities: merit, giving, greed, anger, imperturbable, conceit
+theme: story, urgency
 ---
 
 <!-- @segment snp3.5:1.1 -->

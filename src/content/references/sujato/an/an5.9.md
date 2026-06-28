@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disrespect (1st)
+description: The Buddha contrasts disrespectful and respectful mendicants, each defined by five qualities—faithlessness, shamelessness, imprudence, laziness, and lack of wisdom versus their opposites.
+qualities: unassuming, contempt, fear of wrongdoing, faith
+theme: inspiration
 ---
 
 <!-- @segment an5.9:1.1 -->

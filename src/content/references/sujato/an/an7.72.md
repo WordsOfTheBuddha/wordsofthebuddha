@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Great Mass of Fire
+description: The Buddha teaches on the simile of the great mass of fire, presenting a sevenfold teaching for disciples on the path.
+qualities: harm, suffering, faith, wholesome, diligence, inquisitiveness
+theme: story, urgency
 ---
 
 <!-- @segment an7.72:1.1 -->

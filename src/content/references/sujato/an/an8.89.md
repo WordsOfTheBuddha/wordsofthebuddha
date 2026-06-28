@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Reconciliation
+description: The Buddha teaches on reconciliation, presenting a eightfold teaching for disciples on the path.
+qualities: harm, cruelty
+theme: principle
 ---
 
 <!-- @segment an8.89:1.1 -->

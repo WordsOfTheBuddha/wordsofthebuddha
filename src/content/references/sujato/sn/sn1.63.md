@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Craving
+description: A deity engages the Buddha in verse on craving, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: craving, wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.63:1.1 -->

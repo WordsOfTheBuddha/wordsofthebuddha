@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Impure
+description: The Buddha teaches on impure, presenting a threefold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an3.149:1.1 -->

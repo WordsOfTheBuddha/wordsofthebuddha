@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Association
+description: The Buddha teaches on association, presenting a ninefold teaching for disciples on the path.
+qualities: unwholesome, wholesome
+theme: cultivating discernment
 ---
 
 <!-- @segment an9.6:1.1 -->

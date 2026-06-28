@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Agreeable
+description: The Buddha teaches on agreeable, presenting a fivefold teaching for disciples on the path.
+qualities: compassion, learned, appreciative joy, gratefulness, mindfulness, respect
+theme: story
 ---
 
 <!-- @segment an5.44:1.1 -->

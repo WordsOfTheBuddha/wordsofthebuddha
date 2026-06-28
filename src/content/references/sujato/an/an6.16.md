@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nakula’s Father
+description: The Buddha teaches on nakula’s father, presenting a sixfold teaching for disciples on the path.
+qualities: compassion, doubt, suffering, tranquility, loving-kindness, giving
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an6.16:1.1 -->

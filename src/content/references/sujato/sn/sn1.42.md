@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Giving What?
+description: A deity engages the Buddha in verse on giving what?, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: giving, happiness, vision, liberation
+theme: wisdom, urgency
 ---
 
 <!-- @segment sn1.42:1.1 -->

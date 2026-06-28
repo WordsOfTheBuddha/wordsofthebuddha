@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Sabbath with Nine Factors
+description: The Buddha teaches on the sabbath with nine factors, presenting a ninefold teaching for disciples on the path.
+qualities: respect, affection, compassion, slaughtering, wholesome, ill will
+theme: training guideline, principle
 ---
 
 <!-- @segment an9.18:1.1 -->

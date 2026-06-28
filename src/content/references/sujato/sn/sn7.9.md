@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhāradvāja of Sundarikā
+description: The brahmin Bhāradvāja of Sundarikā boasts of his lineage and learning; the Buddha refutes pride in birth and teaches that a true brahmin is one who has abandoned unwholesome qualities and lives by ethical conduct.
+qualities: spiritual life, truth, conscience, merit, anger, conceit
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.9:1.1 -->

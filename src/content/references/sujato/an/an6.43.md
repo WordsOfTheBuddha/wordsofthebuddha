@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Giant
+description: The Buddha teaches on the giant, presenting a sixfold teaching for disciples on the path.
+qualities: jhana, wholesome, equanimity, faith, giving, giving up
+theme: story, training guideline
 ---
 
 <!-- @segment an6.43:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Five Kings
+description: King Pasenadi of Kosala visits the Buddha and hears teaching on five kings, exploring ethics, kingship, and the Dhamma through dialogue and simile.
+qualities: wholesome, mindfulness, sensual desire
+theme: story, inspiration
 ---
 
 <!-- @segment sn3.12:1.1 -->

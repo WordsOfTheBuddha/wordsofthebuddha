@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Peak
+description: The Buddha describes the five powers of a trainee—faith, conscience, prudence, energy, and wisdom—that support a mendicant on the path.
+qualities: wisdom, conscience, faith, vigour
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.12:1.1 -->

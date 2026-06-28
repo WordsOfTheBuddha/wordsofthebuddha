@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lost Opportunities
+description: The Buddha describes the eight lost opportunities for spiritual practice—but an individual has been reborn in hell, this is the first lost opportunity for spiritual practice, furthermore, a realized one has arisen in the world, and but an individual has been reborn in the animal realm. this is the second lost opportunity, and furthermore, a realized one has arisen in the world, and but an individual has been reborn in the ghost realm. this is the third lost opportunity, and furthermore, a realized one has arisen in the world, and but an individual has been reborn in one of the long-lived orders of gods. this is the fourth lost opportunity.
+qualities: ending, giving, insight, spiritual life, ignorance, regret
+theme: story, urgency
 ---
 
 <!-- @segment an8.29:1.1 -->

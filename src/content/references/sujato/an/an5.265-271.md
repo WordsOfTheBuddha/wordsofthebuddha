@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Another Discourse on the Second Absorption, Etc.
+description: The Buddha teaches that without giving up five kinds of stinginess one cannot attain higher absorptions or the fruits of the path, and that abandoning them opens the way to stream-entry through perfection in this grouped discourse.
+qualities: jhana, giving, giving up, stinginess, gratefulness
+theme: principle
 ---
 
 <!-- @segment an5.265-271:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Devadatta
+description: After awakening, the Buddha reflects that the Dhamma is too deep to teach and inclines to passivity; the divinity Sahampati appears to plead that beings with little dust in their eyes will understand, and the Buddha surveys the world with compassion and agrees to teach.
+qualities: mindfulness, wisdom
+theme: recollection of the Buddha, story
 ---
 
 <!-- @segment sn6.12:1.1 -->

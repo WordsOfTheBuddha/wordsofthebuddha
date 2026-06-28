@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Powers
+description: The Buddha teaches on powers, presenting a ninefold teaching for disciples on the path.
+qualities: fear, vigour, wisdom, unwholesome, wholesome, harm
+theme: urgency, training guideline
 ---
 
 <!-- @segment an9.5:1.1 -->

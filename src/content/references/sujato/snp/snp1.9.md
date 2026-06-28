@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Hemavata
+description: Verses in the Uragavagga (With Hemavata) depicting how a mendicant abandons defilements and sheds worldly attachment like a serpent casting off its worn-out skin.
+qualities: suffering, wisdom, delusion, negligence, attachment, jhana
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.9:1.1 -->

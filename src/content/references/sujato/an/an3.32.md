@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
+description: The Buddha teaches a disciple on with ānanda, presenting a threefold teaching for disciples on the path.
+qualities: conceit, liberation, wisdom, ending, craving, giving up
+theme: training guideline, inquisitiveness
 ---
 
 <!-- @segment an3.32:1.1 -->

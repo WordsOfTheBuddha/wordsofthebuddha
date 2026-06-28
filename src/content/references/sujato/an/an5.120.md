@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wrong Effort
+description: The Buddha teaches on wrong effort, presenting a fivefold teaching for disciples on the path.
+qualities: vigour, faith, mindfulness, wrong effort, right effort, wrong mindfulness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.120:1.1 -->

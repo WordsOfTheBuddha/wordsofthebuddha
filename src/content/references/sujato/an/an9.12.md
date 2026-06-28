@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Residue
+description: The Buddha describes the nine individuals who, dying with residue, are exempt from hell, the animal realm, and the ghost—there’s an individual who has fulfilled ethics and immersion, but has limited wisdom, with the ending of the five lower fetters they’re extinguished between one life and the next, this is the first individual, and furthermore, there’s an individual who has fulfilled ethics and immersion, but has limited wisdom, and with the ending of the five lower fetters they’re extinguished upon landing. this is the second individual, and with the ending of the five lower fetters they’re extinguished without extra effort, and this is the third individual, and with the ending of the five lower fetters they’re extinguished with extra effort, and this is the fourth individual.
+qualities: ending, wisdom, quenching, suffering, harm, vigour
+theme: story, training guideline
 ---
 
 <!-- @segment an9.12:1.1 -->

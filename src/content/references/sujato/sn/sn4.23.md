@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Godhika
+description: Venerable Godhika repeatedly attains temporary release of heart only to fall away; on the seventh occasion he takes his own life while fully awakened, and Māra tries to claim him—until the Buddha declares Godhika is fully extinguished.
+qualities: liberation, craving, sorrow, desire, compassion, jhana
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.23:1.1 -->

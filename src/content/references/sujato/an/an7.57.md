@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: General Sīha
+description: The Buddha teaches on general sīha, presenting a sevenfold teaching for disciples on the path.
+qualities: giving, wholesome, adventurousness, compassion, faith
+theme: story, urgency
 ---
 
 <!-- @segment an7.57:1.1 -->

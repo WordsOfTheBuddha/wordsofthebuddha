@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Provisions
+description: A deity engages the Buddha in verse on provisions, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: desire, attachment, faith
+theme: wisdom, inspiration
 ---
 
 <!-- @segment sn1.79:1.1 -->

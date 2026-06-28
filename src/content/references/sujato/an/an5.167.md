@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accusation
+description: The Buddha teaches on accusation, presenting a fivefold teaching for disciples on the path.
+qualities: aversion, faith, respect, truth, wakefulness, mindfulness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.167:1.1 -->

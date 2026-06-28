@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Not Determined by Anything
+description: The Buddha teaches on not determined by anything, presenting a sixfold teaching for disciples on the path.
+qualities: wisdom
+theme: wisdom
 ---
 
 <!-- @segment an6.104:1.1 -->

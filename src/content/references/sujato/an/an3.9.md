@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken
+description: The Buddha teaches on broken, presenting a threefold teaching for disciples on the path.
+qualities: merit, wholesome, harm, immaturity, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.9:1.1 -->

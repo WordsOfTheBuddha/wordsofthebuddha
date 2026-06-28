@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (2nd)
+description: The Buddha teaches on broken (2nd), presenting a threefold teaching for disciples on the path.
+qualities: unwholesome, wholesome, immaturity, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.151:1.1 -->

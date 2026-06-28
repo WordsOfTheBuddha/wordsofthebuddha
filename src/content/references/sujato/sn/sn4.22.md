@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Samiddhi
+description: When Venerable Samiddhi reflects on his good fortune in teacher, teaching, and companions, Māra makes a terrifying noise to frighten him; the Buddha teaches Samiddhi to develop perception of impermanence in all things.
+qualities: faith, mindfulness, wisdom, continuous effort, wholesome, ethical conduct
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.22:1.1 -->

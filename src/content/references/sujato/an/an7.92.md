@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Perfected One
+description: The Buddha teaches on a perfected one, presenting a sevenfold teaching for disciples on the path.
+qualities: delusion, conceit, doubt, greed, aversion, craving
+theme: principle, wisdom
 ---
 
 <!-- @segment an7.92:1.1 -->

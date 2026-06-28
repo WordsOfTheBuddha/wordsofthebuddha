@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Wanderer
+description: The Buddha teaches on a wanderer, presenting a threefold teaching for disciples on the path.
+qualities: wholesome, displeasure, delusion, greed, harm, suffering
+theme: story, wisdom
 ---
 
 <!-- @segment an3.54:1.1 -->

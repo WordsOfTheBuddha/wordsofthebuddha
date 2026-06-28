@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Qualities
+description: The Buddha describes the seven bad qualities.
+qualities: harm, faith, mindfulness
+theme: inspiration
 ---
 
 <!-- @segment an7.93:1.1 -->

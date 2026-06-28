@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Donkey
+description: The Buddha teaches on the donkey, presenting a threefold teaching for disciples on the path.
+qualities: wisdom, vigour
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.82:1.1 -->

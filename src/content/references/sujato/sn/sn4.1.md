@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mortification
+description: Soon after his awakening, the Buddha reflects that he is freed from pointless mortification; Māra accuses him of straying from the path of purity, and the Buddha answers that ethics, immersion, and wisdom led to ultimate purity.
+qualities: wisdom, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment sn4.1:1.1 -->

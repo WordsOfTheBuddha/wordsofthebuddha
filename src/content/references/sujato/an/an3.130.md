@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Anuruddha (2nd)
+description: The Buddha teaches Venerable Anuruddha on with anuruddha (2nd), presenting a threefold teaching for disciples on the path.
+qualities: mindfulness, attachment, free from attachment, liberation, vigour, insight
+theme: urgency, principle
 ---
 
 <!-- @segment an3.130:1.1 -->

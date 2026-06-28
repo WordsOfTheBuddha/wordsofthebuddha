@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stuck-Up
+description: The Buddha teaches brahmins in dialogue and verse, refuting pride in birth and ritual while guiding them toward ethical conduct and wisdom.
+qualities: respect, wholesome, conceit, faith
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.15:1.1 -->

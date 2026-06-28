@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: States of Existence
+description: The Buddha teaches on states of existence, presenting a sixfold teaching for disciples on the path.
+qualities: formless, wisdom, conceit, craving, suffering, tame
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an6.105:1.1 -->

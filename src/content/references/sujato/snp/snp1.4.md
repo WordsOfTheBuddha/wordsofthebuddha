@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhāradvāja the Farmer
+description: Verse dialogue in the Uragavagga in which the Buddha responds regarding with bhāradvāja the farmer, contrasting worldly security with the safety of one established in the path.
+qualities: mindfulness, liberation, conscience, faith, insight, merit
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.4:1.1 -->

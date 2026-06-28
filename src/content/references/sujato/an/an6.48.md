@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Apparent in the Present Life (2nd)
+description: The Buddha teaches on apparent in the present life (2nd), presenting a sixfold teaching for disciples on the path.
+qualities: greed, delusion, aversion, craving, ill will
+theme: story, wisdom
 ---
 
 <!-- @segment an6.48:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Giving Up Stinginess
+description: The Buddha teaches that stinginess with dwellings, families, material things, praise, and the teachings obstructs higher attainments and must be given up to realize the fruits of the path.
+qualities: stinginess, spiritual life, giving, giving up
+theme: principle
 ---
 
 <!-- @segment an5.255:1.1 -->

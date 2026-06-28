@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Free of Strife
+description: A deity engages the Buddha in verse on free of strife, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: desire, wisdom
+theme: wisdom
 ---
 
 <!-- @segment sn1.81:1.1 -->

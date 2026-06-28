@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Should Be Seen
+description: The Buddha describes the five powers—faith, energy, mindfulness, immersion, and wisdom—and how they support practice on the path.
+qualities: mindfulness, faith, wisdom, vigour, cultivation, jhana
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.15:1.1 -->

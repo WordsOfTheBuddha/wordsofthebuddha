@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A God
+description: The Buddha teaches on a god, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, respect, companionship, good friendship
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an6.69:1.1 -->

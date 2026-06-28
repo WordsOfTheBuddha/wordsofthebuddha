@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Immersion
+description: The Buddha teaches on immersion, presenting a sixfold teaching for disciples on the path.
+qualities: liberation, ending, insight, psychic power, wisdom, greed
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an6.70:1.1 -->

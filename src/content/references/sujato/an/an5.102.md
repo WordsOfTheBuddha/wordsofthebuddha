@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Suspected
+description: The Buddha teaches on suspected, presenting a fivefold teaching for disciples on the path.
+qualities: harm, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.102:1.1 -->

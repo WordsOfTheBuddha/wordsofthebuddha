@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Arguments
+description: The Buddha teaches on arguments, presenting a threefold teaching for disciples on the path.
+qualities: feuding, giving up, non-harm, wholesome, harm
+theme: principle
 ---
 
 <!-- @segment an3.124:1.1 -->

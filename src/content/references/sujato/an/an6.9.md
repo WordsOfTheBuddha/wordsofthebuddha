@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Topics for Recollection
+description: The Buddha describes the six topics for recollection.
+qualities: recollection of the Buddha, giving
+theme: principle
 ---
 
 <!-- @segment an6.9:1.1 -->

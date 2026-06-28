@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hard to Admonish
+description: The Buddha teaches on hard to admonish, presenting a sixfold teaching for disciples on the path.
+qualities: companionship, bad friendship, harm, good friendship, mindfulness, wholesome
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.115:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Autumn
+description: The Buddha teaches on autumn, presenting a threefold teaching for disciples on the path.
+qualities: attachment, vision, doubt, ill will, delusion, greed
+theme: wisdom
 ---
 
 <!-- @segment an3.94:1.1 -->

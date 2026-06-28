@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perils
+description: The Buddha teaches on perils, presenting a threefold teaching for disciples on the path.
+qualities: desire, giving, giving up, mindfulness, right effort, right livelihood
+theme: urgency, training guideline
 ---
 
 <!-- @segment an3.62:1.1 -->

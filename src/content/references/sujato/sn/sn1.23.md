@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Tangle
+description: A deity engages the Buddha in verse on a tangle, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom, greed, ignorance, aversion, delusion, craving
+theme: wisdom
 ---
 
 <!-- @segment sn1.23:1.1 -->

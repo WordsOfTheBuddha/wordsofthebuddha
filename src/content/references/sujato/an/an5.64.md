@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Growth (2nd)
+description: The Buddha teaches on growth (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom, giving, cultivation
+theme: inspiration, principle
 ---
 
 <!-- @segment an5.64:1.1 -->

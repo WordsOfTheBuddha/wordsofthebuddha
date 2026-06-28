@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Charnel Ground Dwellers
+description: The Buddha teaches on charnel ground dwellers, presenting a fivefold teaching for disciples on the path.
+qualities: insanity, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.184:1.1 -->

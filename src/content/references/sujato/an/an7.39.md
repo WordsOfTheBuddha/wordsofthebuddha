@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Textual Analysis (2nd)
+description: The Buddha teaches on textual analysis (2nd), presenting a sevenfold teaching for disciples on the path.
+qualities: examination, insight, wisdom, dullness, laziness
+theme: wisdom
 ---
 
 <!-- @segment an7.39:1.1 -->

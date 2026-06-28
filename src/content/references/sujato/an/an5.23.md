@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Corruptions
+description: The Buddha describes the five corruptions of native gold—iron, copper, tin, lead, and silver, when native gold is corrupted by these five corruptions it’s not pliable, workable, or radiant, but is brittle and not completely ready for working, but when native gold is free of these five corruptions it becomes pliable, workable, and radiant, not brittle, and ready to be worked, and then the goldsmith can successfully create any kind of ornament they want, whether a ring, earrings, a necklace, or a golden garland, and in the same way, there are these five corruptions of the mind. when the mind is corrupted by these it’s not pliable, workable, or radiant. it’s brittle, and not rightly immersed in samādhi for the ending of defilements.
+qualities: flexible, desire, ending, delusion, greed, aversion
+theme: urgency, wisdom
 ---
 
 <!-- @segment an5.23:1.1 -->

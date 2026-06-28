@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bound for Loss
+description: The Buddha teaches on bound for loss, presenting a threefold teaching for disciples on the path.
+qualities: attachment, spiritual life, sensual desire, wrong view
+theme: wisdom
 ---
 
 <!-- @segment an3.113:1.1 -->

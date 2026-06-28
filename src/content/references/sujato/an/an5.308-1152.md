@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Greed, Etc.
+description: The Buddha teaches that five things—the powers of faith, energy, mindfulness, immersion, and wisdom—should be developed for the complete understanding, ending, and letting go of greed, hate, delusion, and other unwholesome qualities in this grouped discourse.
+qualities: giving up, ending, giving, conceit, greed, negligence
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.308-1152:1.1 -->

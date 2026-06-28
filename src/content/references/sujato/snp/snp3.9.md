@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vāseṭṭha
+description: "Verses recounting the Buddha's going forth, his encounter with King Bimbisāra, and his teaching on the drawbacks of sensual pleasures and the security of the renunciate life."
+qualities: attachment, craving, free from attachment, slaughtering, wholesome, ending
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment snp3.9:1.1 -->

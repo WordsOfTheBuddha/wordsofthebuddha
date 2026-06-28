@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Settlement of Disciplinary Issues
+description: The Buddha describes the seven principles for the settlement of any disciplinary issues that might arise—resolution face-to-face to be applied, resolution through recollection to be granted, resolution because of past insanity to be granted, and acting according to what has been admitted, and majority decision, and further penalty, and covering over as if with grass.
+qualities: insanity, wisdom
+theme: principle
 ---
 
 <!-- @segment an7.84:1.1 -->

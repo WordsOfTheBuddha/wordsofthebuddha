@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Disciples of Various Monastics of Other Religions
+description: Several young deities, disciples of rival teachers, praise their former masters in verse before the Buddha, who refutes each claim and declares the noble path of ethics, immersion, and wisdom.
+qualities: mindfulness, wholesome, merit, truth, attachment, cruelty
+theme: inspiration, story
 ---
 
 <!-- @segment sn2.30:1.1 -->

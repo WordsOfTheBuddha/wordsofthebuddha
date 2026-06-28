@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Conduct
+description: The Buddha teaches on bad conduct, presenting a sixfold teaching for disciples on the path.
+qualities: harm, wholesome
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.108:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At the Peacocks’ Feeding Ground (2nd)
+description: The Buddha teaches on at the peacocks’ feeding ground (2nd), presenting a threefold teaching for disciples on the path.
+qualities: spiritual life, safety, psychic power
+theme: principle
 ---
 
 <!-- @segment an3.144:1.1 -->

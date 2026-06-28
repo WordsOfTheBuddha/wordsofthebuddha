@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ascetics
+description: The Buddha teaches on ascetics, presenting a threefold teaching for disciples on the path.
+qualities: wisdom, vigour
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.81:1.1 -->

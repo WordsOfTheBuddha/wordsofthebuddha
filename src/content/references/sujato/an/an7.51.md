@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Yoking and Unyoking
+description: The Buddha teaches on yoking and unyoking, presenting a sevenfold teaching for disciples on the path.
+qualities: happiness, desire
+theme: principle
 ---
 
 <!-- @segment an7.51:1.1 -->

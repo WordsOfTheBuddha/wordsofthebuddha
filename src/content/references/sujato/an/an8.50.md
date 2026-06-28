@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Winning in This Life (2nd)
+description: The Buddha describes the eight qualities.
+qualities: faith, wisdom, giving, stinginess, ending, sexual misconduct
+theme: recollection of the Buddha, inspiration
 ---
 
 <!-- @segment an8.50:1.1 -->

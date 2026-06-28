@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Jānussoṇi
+description: The Buddha teaches on with jānussoṇi, presenting a threefold teaching for disciples on the path.
+qualities: flexible, ending, ignorance, suffering, imperturbable, tame
+theme: story, urgency
 ---
 
 <!-- @segment an3.59:1.1 -->

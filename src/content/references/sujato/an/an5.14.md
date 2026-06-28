@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Detail
+description: The Buddha describes the five powers—faith, energy, mindfulness, immersion, and wisdom—and explains each in detail, from faith in the Realized One to the power of wisdom.
+qualities: mindfulness, faith, wisdom, jhana, vigour, suffering
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an5.14:1.1 -->

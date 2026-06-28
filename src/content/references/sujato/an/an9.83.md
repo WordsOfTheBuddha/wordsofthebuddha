@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Weaknesses in Training and the Bases of Psychic Power
+description: The Buddha teaches on weaknesses in training and the bases of psychic power, presenting a ninefold teaching for disciples on the path.
+qualities: psychic power, vigour, sexual misconduct, stealing, cultivation, slaughtering
+theme: training guideline
 ---
 
 <!-- @segment an9.83:1.1 -->

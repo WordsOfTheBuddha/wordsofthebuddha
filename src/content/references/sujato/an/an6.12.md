@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Warm-hearted (2nd)
+description: The Buddha teaches on warm-hearted (2nd), presenting a sixfold teaching for disciples on the path.
+qualities: respect, affection, loving-kindness, ending, suffering, feuding
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an6.12:1.1 -->

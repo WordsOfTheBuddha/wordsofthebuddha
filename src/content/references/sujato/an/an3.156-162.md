@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Three Practices
+description: The Buddha describes the three practices—the addicted practice, the scorching practice, and the middle practice—contrasting indulgence in sensual pleasures, self-mortification, and the noble eightfold path.
+qualities: vigour, mindfulness, psychic power, faith, wisdom, displeasure
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an3.156:1.1 -->

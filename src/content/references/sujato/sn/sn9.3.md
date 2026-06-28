@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kassapagotta
+description: A forest deity admonishes mendicants in verse on with kassapagotta, urging mindfulness, seclusion, and diligence on the path beyond sensual dust.
+qualities: craving, cultivation, jhana, immaturity
+theme: training guideline, wisdom
 ---
 
 <!-- @segment sn9.3:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Hatthisāriputta
+description: The Buddha teaches Venerable Mah on with hatthisāriputta, presenting a sixfold teaching for disciples on the path.
+qualities: jhana, giving up, passion, sensual desire, giving, attachment
+theme: story, training guideline
 ---
 
 <!-- @segment an6.60:1.1 -->

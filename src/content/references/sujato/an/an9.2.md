@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Supported
+description: The Buddha teaches on supported, presenting a ninefold teaching for disciples on the path.
+qualities: unwholesome, wisdom, wholesome, conscience, faith, vigour
+theme: inspiration, principle
 ---
 
 <!-- @segment an9.2:1.1 -->

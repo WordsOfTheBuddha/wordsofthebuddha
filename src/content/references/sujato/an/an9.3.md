@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Meghiya
+description: The Buddha teaches Venerable Meghiya on with meghiya, presenting a ninefold teaching for disciples on the path.
+qualities: wholesome, cultivation, liberation, unwholesome, contentment, vision
+theme: principle
 ---
 
 <!-- @segment an9.3:1.1 -->

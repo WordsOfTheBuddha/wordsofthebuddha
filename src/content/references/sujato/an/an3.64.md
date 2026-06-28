@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sarabha
+description: The Buddha teaches on with sarabha, presenting a threefold teaching for disciples on the path.
+qualities: learned, with nothing, doubt, aversion, ending, suffering
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an3.64:1.1 -->

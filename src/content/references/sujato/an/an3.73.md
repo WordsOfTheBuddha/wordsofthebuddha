@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahānāma the Sakyan
+description: The Buddha teaches a disciple on with mahānāma the sakyan, presenting a threefold teaching for disciples on the path.
+qualities: wisdom, suffering, jhana, ending, liberation, insight
+theme: story, training guideline
 ---
 
 <!-- @segment an3.73:1.1 -->

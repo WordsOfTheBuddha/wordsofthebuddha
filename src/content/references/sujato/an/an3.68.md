@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Followers of Other Religions
+description: The Buddha teaches on followers of other religions, presenting a threefold teaching for disciples on the path.
+qualities: aversion, delusion, greed, unwholesome, affection, liberation
+theme: principle
 ---
 
 <!-- @segment an3.68:1.1 -->

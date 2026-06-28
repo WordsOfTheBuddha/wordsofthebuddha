@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Eight Individuals (2nd)
+description: The Buddha describes the eight individuals—the stream-enterer and the one practicing to realize the fruit of stream-entry, the once-returner and the one practicing to realize the fruit of once-return, the non-returner and the one practicing to realize the fruit of non-return, and the perfected one, and the one practicing for perfection.
+qualities: merit, wisdom
+theme: principle
 ---
 
 <!-- @segment an8.60:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Sunetta
+description: The Buddha teaches on about sunetta, presenting a sevenfold teaching for disciples on the path.
+qualities: faith, desire, harm, wholesome, cruelty, sensual desire
+theme: story, urgency
 ---
 
 <!-- @segment an7.73:1.1 -->

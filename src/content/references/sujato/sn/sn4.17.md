@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Six Fields of Contact
+description: While the Buddha teaches on the six fields of contact, Māra makes a terrifying noise like the earth shattering; the Buddha exposes him and teaches the mendicants to see formations as impermanent.
+qualities: mindfulness, wisdom
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.17:1.1 -->

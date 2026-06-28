@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Battle (1st)
+description: After King Ajātasattu defeats King Pasenadi in battle, the Buddha teaches that Ajātasattu has bad friends, companions, and associates, while Pasenadi has good ones—and that good friendship is the whole of the spiritual life.
+qualities: harm, wholesome
+theme: story
 ---
 
 <!-- @segment sn3.14:1.1 -->

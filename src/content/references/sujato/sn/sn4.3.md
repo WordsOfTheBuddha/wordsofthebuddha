@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Beautiful
+description: "Soon after awakening, Māra displays beautiful and ugly rainbow colors to frighten the Buddha during night meditation; the Teacher replies in verse that those well restrained in body, speech, and mind do not fall under Māra's sway."
+qualities: fear, craving, flexible
+theme: training guideline
 ---
 
 <!-- @segment sn4.3:1.1 -->

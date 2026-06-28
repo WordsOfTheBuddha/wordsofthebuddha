@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Support
+description: The Buddha teaches a disciple on support, presenting a threefold teaching for disciples on the path.
+qualities: faith, compassion, merit, wholesome
+theme: recollection of the Buddha, directly knowing
 ---
 
 <!-- @segment an3.75:1.1 -->

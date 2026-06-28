@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Families
+description: The Buddha teaches on families, presenting a fivefold teaching for disciples on the path.
+qualities: merit, wisdom, stinginess, faith, ethical conduct
+theme: inspiration, inquisitiveness
 ---
 
 <!-- @segment an5.199:1.1 -->

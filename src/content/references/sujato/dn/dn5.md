@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kūṭadanta
+description: "The brahmin Kūṭadanta seeks advice on a great sacrifice to ensure his welfare; the Buddha recounts how a past king's true sacrifice consisted of ethical conduct, harmlessness, and generosity—not slaughter—and guides Kūṭadanta to go for refuge."
+qualities: giving, ethical conduct, harm, faith, wisdom
+theme: story, principle
 ---
 
 <!-- @segment dn5:1.0 -->

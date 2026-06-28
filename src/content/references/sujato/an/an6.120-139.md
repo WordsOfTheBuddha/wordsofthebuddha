@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Bhallika, Etc.
+description: The Buddha teaches that having six qualities certain outstanding householders became stream-enterers and went on to heavenly rebirth, applying the same formula to each in this grouped discourse.
+qualities: liberation, faith, ethical conduct
+theme: urgency, recollection of the Buddha
 ---
 
 <!-- @segment an6.120-139:1.1 -->

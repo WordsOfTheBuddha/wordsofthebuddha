@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hard to Do
+description: A deity engages the Buddha in verse on hard to do, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: immaturity, wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.17:1.1 -->

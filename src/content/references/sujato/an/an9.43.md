@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Direct Witness
+description: The Buddha teaches on a direct witness, presenting a ninefold teaching for disciples on the path.
+qualities: jhana, wisdom, attachment, ending, sensual desire
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an9.43:1.1 -->

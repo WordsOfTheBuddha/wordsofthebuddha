@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Somā
+description: The nun Somā confronts Māra in verse when he claims that awakening is too challenging for a woman with “two-inch wisdom,” teaching that what makes one a sage is wisdom itself—not gender.
+qualities: fear, craving, wisdom, cultivation, jhana, collectedness
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn5.2:1.1 -->

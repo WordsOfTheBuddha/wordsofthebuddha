@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: There Are None
+description: A deity engages the Buddha in verse on there are none, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: desire, conceit, suffering, attachment, anger, craving
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.34:1.1 -->

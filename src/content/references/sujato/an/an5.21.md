@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disrespect (1st)
+description: The Buddha teaches on disrespect (1st), presenting a fivefold teaching for disciples on the path.
+qualities: right view, quenching, contempt, unassuming, collectedness, wrong view
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.21:1.1 -->

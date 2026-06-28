@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Friends
+description: The Buddha teaches on friends, presenting a sixfold teaching for disciples on the path.
+qualities: desire, quenching, formless, sensual desire, harm, wholesome
+theme: principle
 ---
 
 <!-- @segment an6.67:1.1 -->

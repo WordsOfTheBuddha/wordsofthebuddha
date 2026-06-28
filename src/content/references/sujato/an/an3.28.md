@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Speech like Dung
+description: The Buddha describes the three individuals—one with speech like dung, one with speech like flowers, and one with speech like honey, and who has speech like dung?, and this is called an individual with speech like dung.
+qualities: dearness, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.28:1.1 -->

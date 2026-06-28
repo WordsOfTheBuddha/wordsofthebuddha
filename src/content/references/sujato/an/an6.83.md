@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Best Thing
+description: The Buddha teaches on the best thing, presenting a sixfold teaching for disciples on the path.
+qualities: compassion, fear of wrongdoing, faith
+theme: inspiration
 ---
 
 <!-- @segment an6.83:1.1 -->

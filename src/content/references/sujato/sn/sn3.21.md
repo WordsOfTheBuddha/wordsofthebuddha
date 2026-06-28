@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Individuals
+description: King Pasenadi of Kosala visits the Buddha and discusses individuals, receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: attachment, harm, wholesome, giving, wrong view, cruelty
+theme: story, urgency
 ---
 
 <!-- @segment sn3.21:1.1 -->

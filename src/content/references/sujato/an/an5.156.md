@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Decline of the True Teaching (3rd)
+description: The Buddha teaches on the decline of the true teaching (3rd), presenting a fivefold teaching for disciples on the path.
+qualities: vigour, learned, faith, cruelty, solitude, harm
+theme: inspiration, principle
 ---
 
 <!-- @segment an5.156:1.1 -->

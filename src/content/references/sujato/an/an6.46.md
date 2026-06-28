@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: By Mahācunda
+description: The Buddha teaches on by mahācunda, presenting a sixfold teaching for disciples on the path.
+qualities: jhana, discernment, happiness, cultivation, wisdom, mindfulness
+theme: urgency, training guideline
 ---
 
 <!-- @segment an6.46:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Day and Night
+description: The Buddha teaches on day and night, presenting a sixfold teaching for disciples on the path.
+qualities: cultivation, wholesome, ethical conduct, faith, mindfulness
+theme: inspiration
 ---
 
 <!-- @segment an6.84:1.1 -->

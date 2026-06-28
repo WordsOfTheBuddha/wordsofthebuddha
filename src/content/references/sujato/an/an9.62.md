@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Impossible
+description: The Buddha teaches that without giving up nine unwholesome qualities—greed, hate, delusion, anger, acrimony, disdain, contempt, jealousy, and stinginess—one cannot realize perfection.
+qualities: giving, giving up, anger, contempt, delusion, greed
+theme: principle
 ---
 
 <!-- @segment an9.62:1.1 -->

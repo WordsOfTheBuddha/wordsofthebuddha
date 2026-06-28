@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Archery
+description: King Pasenadi of Kosala visits the Buddha and discusses archery, receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: learned, vision, flexible, liberation, merit, patience
+theme: story, training guideline
 ---
 
 <!-- @segment sn3.24:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wilderness Dwellers
+description: The Buddha describes the five kinds of wilderness dwellers.
+qualities: contentment, insanity, solitude
+theme: principle
 ---
 
 <!-- @segment an5.181:1.1 -->

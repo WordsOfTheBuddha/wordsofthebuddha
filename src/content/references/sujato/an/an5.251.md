@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Who Should Give Ordination
+description: The Buddha describes the five qualities—it’s a mendicant who has the entire spectrum of an adept’s ethics,, immersion,, freedom,, and and the knowledge and vision of freedom, and ordination should be given by a mendicant with these five qualities.”.
+qualities: vision, liberation, wisdom, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.251:1.1 -->

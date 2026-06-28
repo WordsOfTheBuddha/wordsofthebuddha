@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kisāgotamī
+description: The nun Kisāgotamī confronts Māra in verse when he taunts her for crying as if her children had died, declaring that she has overcome grief, defeated the army of death, and lives without defilements.
+qualities: fear, craving, respect, cultivation, delight, jhana
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn5.3:1.1 -->

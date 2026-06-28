@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahākaccāna
+description: The Buddha teaches on with mahākaccāna, presenting a sixfold teaching for disciples on the path.
+qualities: greed, delusion, aversion, giving, faith, wisdom
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an6.26:1.1 -->

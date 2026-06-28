@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Paṅkadhā
+description: The Buddha teaches on at paṅkadhā, presenting a threefold teaching for disciples on the path.
+qualities: happiness, harm, suffering, cultivation, unwholesome, immaturity
+theme: story, training guideline
 ---
 
 <!-- @segment an3.91:1.1 -->

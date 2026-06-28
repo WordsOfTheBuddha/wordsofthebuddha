@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Likable
+description: The Buddha describes the five things, which are likable, desirable, and agreeable—long life,, happiness,, and and heaven.
+qualities: happiness, diligence, merit, wisdom
+theme: story, training guideline
 ---
 
 <!-- @segment an5.43:1.1 -->

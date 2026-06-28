@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Timidity
+description: The Buddha teaches on timidity, presenting a fivefold teaching for disciples on the path.
+qualities: sexual misconduct, wisdom
+theme: story
 ---
 
 <!-- @segment an5.171:1.1 -->

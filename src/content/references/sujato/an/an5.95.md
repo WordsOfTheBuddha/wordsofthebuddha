@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unshakable
+description: The Buddha teaches on unshakable, presenting a fivefold teaching for disciples on the path.
+qualities: examination, inspiration, liberation, wrong view
+theme: principle, wisdom
 ---
 
 <!-- @segment an5.95:1.1 -->

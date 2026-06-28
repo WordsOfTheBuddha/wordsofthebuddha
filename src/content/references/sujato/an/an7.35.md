@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Easy to Admonish (2nd)
+description: The Buddha teaches on easy to admonish (2nd), presenting a sevenfold teaching for disciples on the path.
+qualities: respect, wholesome, companionship, good friendship, collectedness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an7.35:1.1 -->

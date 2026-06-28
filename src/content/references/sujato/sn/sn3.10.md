@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shackles
+description: King Pasenadi of Kosala visits the Buddha and hears teaching on shackles, exploring ethics, kingship, and the Dhamma through dialogue and simile.
+qualities: compassion, passion, sensual desire
+theme: story, wisdom
 ---
 
 <!-- @segment sn3.10:1.1 -->

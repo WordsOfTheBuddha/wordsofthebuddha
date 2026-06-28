@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Four Great Kings (1st)
+description: The Buddha teaches on the four great kings (1st), presenting a threefold teaching for disciples on the path.
+qualities: merit, respect, delusion, greed, aversion, craving
+theme: story
 ---
 
 <!-- @segment an3.37:1.1 -->

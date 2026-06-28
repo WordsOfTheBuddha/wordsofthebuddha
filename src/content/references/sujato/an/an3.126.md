@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bharaṇḍu Kālāma
+description: The Buddha describes the three teachers found in the world—one teacher advocates the complete understanding of sensual pleasures,, but not of forms or feelings, one teacher advocates the complete understanding of sensual pleasures and forms,.
+qualities: flexible, sensual desire
+theme: story, wisdom
 ---
 
 <!-- @segment an3.126:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Longevity (2nd)
+description: The Buddha teaches on longevity (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: ethical conduct, harm, wholesome
+theme: principle
 ---
 
 <!-- @segment an5.126:1.1 -->

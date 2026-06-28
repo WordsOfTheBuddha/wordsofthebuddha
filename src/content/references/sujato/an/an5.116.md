@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Praise
+description: The Buddha teaches on praise, presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.116:1.1 -->

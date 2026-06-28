@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Ethics
+description: The Buddha describes the five qualities is worthy of offerings dedicated to the gods, wort.
+qualities: merit, vision, liberation, respect, wisdom, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.107:1.1 -->

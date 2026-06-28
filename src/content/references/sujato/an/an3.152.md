@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Broken (3rd)
+description: The Buddha teaches on broken (3rd), presenting a threefold teaching for disciples on the path.
+qualities: ethical conduct, immaturity, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.152:1.1 -->

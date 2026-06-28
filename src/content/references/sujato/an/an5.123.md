@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Carer (1st)
+description: The Buddha teaches on a carer (1st), presenting a fivefold teaching for disciples on the path.
+qualities: suffering, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.123:1.1 -->

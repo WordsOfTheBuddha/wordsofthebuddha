@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deserving Criticism (2nd)
+description: The Buddha teaches on deserving criticism (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.237:1.1 -->

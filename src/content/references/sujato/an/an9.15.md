@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Boil
+description: The Buddha teaches on the simile of the boil, presenting a ninefold teaching for disciples on the path.
+qualities: delusion, ending, ill will
+theme: urgency
 ---
 
 <!-- @segment an9.15:1.1 -->

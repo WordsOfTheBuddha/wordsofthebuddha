@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Gaggarā
+description: Venerable Vaṅgīsa, inspired by a Dhamma talk, rises to extol Venerable him in verse—praising his wisdom, clarity of teaching, and benefit to the Saṅgha.
+qualities: mindfulness, wisdom
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.11:1.1 -->

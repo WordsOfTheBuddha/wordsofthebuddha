@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accomplishments (2nd)
+description: The Buddha describes the eight accomplishments—accomplishment in initiative, protection, good friendship, and balanced finances, and accomplishment in faith, ethics, generosity, and and wisdom.
+qualities: giving, faith, wisdom, good friendship, companionship, wholesome
+theme: story, urgency
 ---
 
 <!-- @segment an8.76:1.1 -->

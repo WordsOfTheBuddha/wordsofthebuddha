@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unprotected
+description: The Buddha teaches the householder on unprotected, presenting a threefold teaching for disciples on the path.
+qualities: wholesome, harm
+theme: story, urgency
 ---
 
 <!-- @segment an3.109:1.1 -->

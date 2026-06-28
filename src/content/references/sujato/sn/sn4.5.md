@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Māra’s Snares (2nd)
+description: Māra the Wicked challenges the Buddha in verse on māra’s snares (2nd); the Teacher answers with wisdom and declares his defeat.
+qualities: attachment, wholesome, happiness, compassion
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.5:1.1 -->

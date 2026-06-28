@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Fruits of the Ascetic Life
+description: King Ajātasattu, restless on a moonlit night, asks which ascetic he might honor; after rejecting several famous teachers, he visits the Buddha and hears the gradual training culminating in the four kinds of psychic power and the fruits of the ascetic life.
+qualities: faith, collectedness, wisdom, liberation, examination
+theme: training guideline, directly knowing
 ---
 
 <!-- @segment dn2:1.0 -->

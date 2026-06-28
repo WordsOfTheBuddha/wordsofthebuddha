@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lion
+description: "While the Buddha teaches with a lion's roar among mendicants, Māra challenges him in verse; the Buddha answers, declaring the defeat of the Wicked One."
+qualities: attachment, wisdom
+theme: wisdom, story
 ---
 
 <!-- @segment sn4.12:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unmindful
+description: The Buddha describes the five drawbacks of falling asleep unmindful and unaware.
+qualities: harm, mindfulness
+theme: principle
 ---
 
 <!-- @segment an5.210:1.1 -->

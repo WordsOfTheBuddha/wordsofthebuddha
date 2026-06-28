@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Irritable
+description: The Buddha teaches on irritable, presenting a sevenfold teaching for disciples on the path.
+qualities: anger, harm, wholesome, truth, slaughtering, conscience
+theme: urgency, principle
 ---
 
 <!-- @segment an7.64:1.1 -->

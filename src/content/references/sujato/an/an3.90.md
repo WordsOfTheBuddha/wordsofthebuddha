@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Three Trainings (2nd)
+description: The Buddha teaches on three trainings (2nd), presenting a threefold teaching for disciples on the path.
+qualities: wisdom, jhana, ending, liberation, insight, craving
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.90:1.1 -->

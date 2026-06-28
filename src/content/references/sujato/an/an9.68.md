@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Places of Rebirth
+description: The Buddha teaches on places of rebirth, presenting a ninefold teaching for disciples on the path.
+qualities: mindfulness, cultivation, jhana
+theme: training guideline
 ---
 
 <!-- @segment an9.68:1.1 -->

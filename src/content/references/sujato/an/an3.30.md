@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Upside-down
+description: The Buddha describes the three individuals—one with upside-down wisdom, one with wisdom on their lap, and one with widespread wisdom, and who is the individual with upside-down wisdom?, and it’s an individual who often goes to the monastery to hear the teaching in the presence of the mendicants.
+qualities: wholesome, wisdom, mindfulness, learned, suffering
+theme: wisdom
 ---
 
 <!-- @segment an3.30:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Three Trainings (1st)
+description: The Buddha teaches on three trainings (1st), presenting a threefold teaching for disciples on the path.
+qualities: suffering, jhana, wisdom, ending, unwholesome, ethical conduct
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.89:1.1 -->

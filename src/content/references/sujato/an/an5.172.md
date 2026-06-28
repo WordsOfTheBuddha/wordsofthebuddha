@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assured
+description: The Buddha teaches on assured, presenting a fivefold teaching for disciples on the path.
+qualities: sexual misconduct, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.172:1.1 -->

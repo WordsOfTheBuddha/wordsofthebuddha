@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Commemoration
+description: The Buddha teaches on commemoration, presenting a threefold teaching for disciples on the path.
+qualities: suffering, ending, liberation, insight, wisdom
+theme: story, wisdom
 ---
 
 <!-- @segment an3.12:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Channa
+description: The Buddha teaches the wanderer on with channa, presenting a threefold teaching for disciples on the path.
+qualities: delusion, greed, wholesome, aversion, displeasure, giving
+theme: story, training guideline
 ---
 
 <!-- @segment an3.71:1.1 -->

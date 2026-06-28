@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Can’t Give Rise
+description: The Buddha teaches on can’t give rise, presenting a sixfold teaching for disciples on the path.
+qualities: delusion, doubt, greed, aversion, craving, wrong view
+theme: principle, wisdom
 ---
 
 <!-- @segment an6.91:1.1 -->

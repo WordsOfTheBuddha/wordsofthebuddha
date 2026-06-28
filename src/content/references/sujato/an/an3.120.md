@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Purity (1st)
+description: The Buddha describes the three kinds of purity.
+qualities: right view, sexual misconduct, wrong view
+theme: principle, wisdom
 ---
 
 <!-- @segment an3.120:1.1 -->

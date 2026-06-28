@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Monk
+description: The Buddha teaches on a monk, presenting a fivefold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.286:1.1 -->

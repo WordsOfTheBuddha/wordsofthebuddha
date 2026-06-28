@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Delight
+description: A deity engages the Buddha in verse on delight, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: delight, sorrow, mindfulness, craving
+theme: inspiration, principle
 ---
 
 <!-- @segment sn1.12:1.1 -->

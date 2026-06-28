@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Greed, Etc.
+description: The Buddha teaches that three things—emptiness immersion, signless immersion, and undirected immersion—should be developed for insight into and the complete ending of greed, hate, delusion, and other unwholesome qualities.
+qualities: ending, giving, giving up, greed, insight, conceit
+theme: training guideline, principle
 ---
 
 <!-- @segment an3.183-352:1.1 -->

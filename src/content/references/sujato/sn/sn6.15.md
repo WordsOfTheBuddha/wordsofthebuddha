@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Full Extinguishment
+description: At his final passing between sal trees at Kusinārā, the Buddha enters and emerges from successive absorptions until fully extinguished; the divinity Sahampati then laments in verse that even such an unrivaled Teacher must lay down the body.
+qualities: jhana, ending, diligence, imperturbable, liberation, fear
+theme: recollection of the Buddha, story
 ---
 
 <!-- @segment sn6.15:1.1 -->

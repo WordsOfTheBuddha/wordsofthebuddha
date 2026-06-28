@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Welfare of Both
+description: The Buddha describes the five qualities is practicing for both their own welfare and that—it’s when a mendicant is personally accomplished in ethics, immersion, wisdom, freedom, and the knowledge and vision of freedom. and they encourage others in these qualities, and a mendicant with these five qualities is practicing both for their own welfare and that of others.”.
+qualities: vision, liberation, wisdom, collectedness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.20:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Well-known
+description: The Buddha teaches on well-known, presenting a threefold teaching for disciples on the path.
+qualities: happiness, suffering, harm, wholesome
+theme: inspiration
 ---
 
 <!-- @segment an3.11:1.1 -->

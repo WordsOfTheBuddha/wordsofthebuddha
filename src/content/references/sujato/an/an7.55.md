@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Places People Are Reborn
+description: The Buddha teaches on places people are reborn, presenting a sevenfold teaching for disciples on the path.
+qualities: ending, wisdom, equanimity, giving, giving up, conceit
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an7.55:1.1 -->

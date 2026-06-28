@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vāseṭṭha on the Sabbath
+description: The Buddha teaches on with vāseṭṭha on the sabbath, presenting a eightfold teaching for disciples on the path.
+qualities: happiness, wholesome
+theme: story, principle
 ---
 
 <!-- @segment an8.44:1.1 -->

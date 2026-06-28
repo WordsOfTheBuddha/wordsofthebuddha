@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Soṇadaṇḍa
+description: When the brahmin Soṇadaṇḍa is pressed to define a true brahmin before a crowd eager to see the Buddha, he lists five qualities—birth, mantra-learning, beauty, ethics, and wisdom—and the Buddha shows which are essential.
+qualities: examination, ethical conduct, wisdom, conceit, learned
+theme: cultivating discernment, wisdom
 ---
 
 <!-- @segment dn4:1.0 -->

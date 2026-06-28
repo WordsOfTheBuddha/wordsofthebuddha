@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Asking Questions
+description: The Buddha teaches on asking questions, presenting a fivefold teaching for disciples on the path.
+qualities: wholesome, craving
+theme: inquisitiveness, wisdom
 ---
 
 <!-- @segment an5.165:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sela
+description: "Verses recounting the Buddha's going forth, his encounter with King Bimbisāra, and his teaching on the drawbacks of sensual pleasures and the security of the renunciate life."
+qualities: wholesome, mindfulness, insight, spiritual life, wisdom, fear
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment snp3.7:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Progressive Cessation
+description: The Buddha teaches on progressive cessation, presenting a ninefold teaching for disciples on the path.
+qualities: ending, wisdom, jhana, sensual desire
+theme: wisdom
 ---
 
 <!-- @segment an9.61:1.1 -->

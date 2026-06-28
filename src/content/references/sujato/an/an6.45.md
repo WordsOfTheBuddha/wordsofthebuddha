@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Debt
+description: The Buddha teaches on debt, presenting a sixfold teaching for disciples on the path.
+qualities: suffering, desire, harm, conscience, faith, wholesome
+theme: story, urgency
 ---
 
 <!-- @segment an6.45:1.1 -->

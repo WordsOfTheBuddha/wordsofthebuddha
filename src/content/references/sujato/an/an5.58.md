@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Licchavi Youths
+description: The Buddha teaches on the licchavi youths, presenting a fivefold teaching for disciples on the path.
+qualities: cultivation, wholesome, respect, affection, joy, jhana
+theme: story, training guideline
 ---
 
 <!-- @segment an5.58:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Devahita
+description: The brahmin Devahita, a fire-worshiper, challenges the Buddha in verse on sacrifice and purity; the Teacher teaches that true purity comes from ethical conduct and abandoning harmful deeds, not ritual offerings.
+qualities: ending, insight, desire, giving
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.13:1.1 -->

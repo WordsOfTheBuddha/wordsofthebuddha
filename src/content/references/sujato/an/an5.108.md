@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An adept
+description: The Buddha describes the five qualities is worthy of offerings dedicated to the gods, wort—it’s when they have the entire spectrum of the adept’s ethics, immersion, wisdom, freedom, and knowledge and vision of freedom, and a mendicant with these five qualities … is the supreme field of merit for the world.”.
+qualities: merit, vision, liberation, wisdom, respect, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.108:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Splinter
+description: A deity engages the Buddha in verse on a splinter, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: mindfulness, conceit, learned, craving, wholesome, collectedness
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.38:1.1 -->

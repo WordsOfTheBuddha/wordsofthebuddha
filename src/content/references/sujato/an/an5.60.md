@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Gone Forth When Old (2nd)
+description: The Buddha teaches on gone forth when old (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.60:1.1 -->

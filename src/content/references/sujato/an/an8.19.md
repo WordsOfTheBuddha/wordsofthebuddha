@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Pahārāda
+description: The Buddha teaches on with pahārāda, presenting a eightfold teaching for disciples on the path.
+qualities: affection, mindfulness, psychic power, cultivation, harm, jhana
+theme: principle
 ---
 
 <!-- @segment an8.19:1.1 -->

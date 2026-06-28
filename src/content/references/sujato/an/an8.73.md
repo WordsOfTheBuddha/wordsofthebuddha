@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mindfulness of Death (1st)
+description: The Buddha teaches on mindfulness of death (1st), presenting a eightfold teaching for disciples on the path.
+qualities: mindfulness, recollection of death, ending, liberation, wholesome
+theme: story, urgency
 ---
 
 <!-- @segment an8.73:1.1 -->

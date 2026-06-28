@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good
+description: A deity engages the Buddha in verse on good, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wholesome, giving, mindfulness, faith, harm, happiness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn1.33:1.1 -->

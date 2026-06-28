@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Results of Misconduct
+description: The Buddha teaches on the results of misconduct, presenting a eightfold teaching for disciples on the path.
+qualities: sexual misconduct, stealing, feuding, insanity, slaughtering, wrong speech
+theme: principle
 ---
 
 <!-- @segment an8.40:1.1 -->

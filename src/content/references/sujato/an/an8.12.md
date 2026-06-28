@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sīha
+description: The Buddha teaches on with sīha, presenting a eightfold teaching for disciples on the path.
+qualities: unwholesome, flexible, giving, doubt, harm, wholesome
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an8.12:1.1 -->

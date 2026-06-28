@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Cast Down
+description: The Buddha describes the five qualities is placed in hell as if delivered there—it’s when a mendicant is faithless, shameless, imprudent, lazy, and witless, a mendicant with these five qualities is placed in hell as if delivered there, a mendicant with five qualities is placed in heaven as if delivered there, and what five?, and it’s when a mendicant is faithful, conscientious, prudent, energetic, and wise.
+qualities: fear of wrongdoing, faith
+theme: inspiration
 ---
 
 <!-- @segment an5.4:1.1 -->

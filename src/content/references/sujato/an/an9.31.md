@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Progressive Cessations
+description: The Buddha describes the nine progressive cessations—successively giving up perceptions of form, contact, and the formless dimensions until perception and feeling cease.
+qualities: jhana, attachment, ending, uplifting joy
+theme: principle
 ---
 
 <!-- @segment an9.31:1.1 -->

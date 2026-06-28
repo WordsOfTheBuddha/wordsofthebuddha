@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Having Wrong View
+description: The Buddha teaches on having wrong view, presenting a fivefold teaching for disciples on the path.
+qualities: faith, wrong view, right view
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an5.118:1.1 -->

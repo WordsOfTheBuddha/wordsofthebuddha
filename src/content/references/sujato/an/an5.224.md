@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stingy
+description: The Buddha describes the five drawbacks of overstaying.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.224:1.1 -->

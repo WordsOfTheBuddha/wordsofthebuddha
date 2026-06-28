@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kings
+description: The Buddha teaches on kings, presenting a fivefold teaching for disciples on the path.
+qualities: harm, wholesome, stealing, wrong speech, slaughtering, sexual misconduct
+theme: story
 ---
 
 <!-- @segment an5.178:1.1 -->

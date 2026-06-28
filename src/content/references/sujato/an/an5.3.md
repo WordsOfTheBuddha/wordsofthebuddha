@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Suffering
+description: The Buddha teaches on suffering, presenting a fivefold teaching for disciples on the path.
+qualities: suffering, anxiety, harm, wholesome, fear of wrongdoing, faith
+theme: urgency, inspiration
 ---
 
 <!-- @segment an5.3:1.1 -->

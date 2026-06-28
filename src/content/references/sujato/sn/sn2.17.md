@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Subrahmā
+description: Standing to one side, the young deity Subrahmā addresses the Buddha in verse on with subrahmā.
+qualities: safety, anxiety, giving up
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn2.17:1.1 -->

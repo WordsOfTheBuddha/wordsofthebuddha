@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Renounced
+description: When lust infects his mind after seeing finely dressed women, Venerable Vaṅgīsa dispels his own discontent by reciting verses on renunciation, firmness in the teaching, and defying Māra on the path to extinguishment.
+qualities: contentment, passion, sensual desire, giving, tame
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.1:1.1 -->

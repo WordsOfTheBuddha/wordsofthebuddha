@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Chew Sticks
+description: The Buddha describes the five drawbacks of not using chew sticks.
+qualities: harm, wholesome
+theme: principle
 ---
 
 <!-- @segment an5.208:1.1 -->

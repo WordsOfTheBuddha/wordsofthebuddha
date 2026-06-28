@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fragrances
+description: The Buddha describes the three kinds of fragrance that spread only with the wind, not against it.
+qualities: wholesome, sexual misconduct, stinginess, ethical conduct, giving
+theme: principle
 ---
 
 <!-- @segment an3.79:1.1 -->

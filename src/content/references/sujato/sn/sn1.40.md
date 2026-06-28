@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Pajjunna’s Daughter (2nd)
+description: A deity engages the Buddha in verse on with pajjunna’s daughter (2nd), exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: learned, harm, mindfulness, sensual desire
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.40:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Maghada
+description: The young deity Maghada asks how many lamps light up the world; the Buddha answers that sun, moon, fire, and a Buddha are the four—there is no fifth.
+qualities: wisdom
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn2.4:1.1 -->

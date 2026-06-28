@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Extinguishment is Bliss
+description: The Buddha teaches on extinguishment is bliss, presenting a ninefold teaching for disciples on the path.
+qualities: suffering, jhana, cultivation, uplifting joy, equanimity, happiness
+theme: training guideline, principle
 ---
 
 <!-- @segment an9.34:1.1 -->

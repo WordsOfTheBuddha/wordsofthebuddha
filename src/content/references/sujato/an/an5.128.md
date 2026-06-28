@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Ascetic’s Happiness
+description: The Buddha describes the five kinds of suffering for an ascetic.
+qualities: happiness, spiritual life, suffering
+theme: principle
 ---
 
 <!-- @segment an5.128:1.1 -->

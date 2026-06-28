@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: One Who Knows the Teachings
+description: The Buddha teaches that a mendicant with seven qualities is worthy of offerings dedicated to the gods, hospitality, religious donation, and veneration as the supreme field of merit.
+qualities: respect, merit, faith, wisdom, cultivation, giving
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an7.68:1.1 -->

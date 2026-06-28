@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Splinter
+description: Māra the Wicked challenges the Buddha in verse on a splinter; the Teacher answers with wisdom and declares his defeat.
+qualities: mindfulness, compassion, fear, sorrow
+theme: wisdom, story
 ---
 
 <!-- @segment sn4.13:1.1 -->

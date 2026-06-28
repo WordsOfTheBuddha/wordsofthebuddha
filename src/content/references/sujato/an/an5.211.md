@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Abuser
+description: The Buddha teaches on an abuser, presenting a fivefold teaching for disciples on the path.
+qualities: harm, wisdom
+theme: urgency
 ---
 
 <!-- @segment an5.211:1.1 -->

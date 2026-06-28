@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Teaching in Brief
+description: The Buddha teaches on a teaching in brief, presenting a eightfold teaching for disciples on the path.
+qualities: attachment, uplifting joy, equanimity, liberation, displeasure, greed
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an8.63:1.1 -->

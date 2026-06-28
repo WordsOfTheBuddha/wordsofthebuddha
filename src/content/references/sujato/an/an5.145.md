@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hell
+description: The Buddha teaches on hell, presenting a fivefold teaching for disciples on the path.
+qualities: sexual misconduct, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.145:1.1 -->

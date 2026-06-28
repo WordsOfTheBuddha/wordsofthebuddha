@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Tree Trunk
+description: The Buddha teaches Venerable S on a tree trunk, presenting a sixfold teaching for disciples on the path.
+qualities: tame, wisdom
+theme: principle
 ---
 
 <!-- @segment an6.41:1.1 -->

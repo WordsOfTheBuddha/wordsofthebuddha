@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Rare
+description: The Buddha teaches on rare, presenting a threefold teaching for disciples on the path.
+qualities: wisdom
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an3.114:1.1 -->

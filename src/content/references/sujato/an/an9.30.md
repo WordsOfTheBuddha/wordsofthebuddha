@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Getting Rid of Resentment
+description: The Buddha teaches nine ways to get rid of resentment toward someone who has done wrong, from developing love to resolving to set that person free in the heart.
+qualities: resentment, affection, harm
+theme: principle
 ---
 
 <!-- @segment an9.30:1.1 -->

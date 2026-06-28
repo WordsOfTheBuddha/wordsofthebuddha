@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fire
+description: The Buddha describes the five drawbacks of a fire.
+qualities: harm, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.219:1.1 -->

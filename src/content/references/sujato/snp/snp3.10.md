@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Kokālika
+description: Verses in the Great Chapter (With Kokālika) on renunciation, ethical conduct, and the path to liberation through solitude and discernment.
+qualities: harm, faith, wholesome, resentment, happiness, greed
+theme: story, cultivating discernment
 ---
 
 <!-- @segment snp3.10:1.1 -->

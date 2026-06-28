@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Pacetana
+description: The Buddha teaches on about pacetana, presenting a threefold teaching for disciples on the path.
+qualities: wholesome, ill will
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an3.15:1.1 -->

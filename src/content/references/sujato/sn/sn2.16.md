@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vāsudatta
+description: Standing to one side, the young deity Vāsudatta addresses the Buddha in verse on with vāsudatta.
+qualities: sensual desire, desire, mindfulness, wrong view
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn2.16:1.1 -->

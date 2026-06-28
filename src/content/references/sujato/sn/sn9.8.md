@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Mistress of the House
+description: A forest deity approaches a mendicant in verse on the mistress of the house, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: craving, compassion
+theme: training guideline, principle
 ---
 
 <!-- @segment sn9.8:1.1 -->

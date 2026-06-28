@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Awakening
+description: The Buddha teaches the vital conditions for developing qualities on the side of awakening—good friends, ethics, talk that opens the heart, energy, and wisdom—and four further perceptions to uproot conceit and attain extinguishment.
+qualities: cultivation, wholesome, vigour, contentment, vision, wisdom
+theme: story, urgency
 ---
 
 <!-- @segment an9.1:1.1 -->

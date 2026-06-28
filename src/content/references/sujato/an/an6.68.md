@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Enjoying Company
+description: The Buddha teaches on enjoying company, presenting a sixfold teaching for disciples on the path.
+qualities: right view, solitude, quenching, giving, giving up, affection
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an6.68:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sensual Pleasures
+description: The Buddha teaches on sensual pleasures, presenting a fivefold teaching for disciples on the path.
+qualities: wholesome, conscience, faith, wisdom, vigour, negligence
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an5.7:1.1 -->

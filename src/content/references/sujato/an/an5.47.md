@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wealth
+description: The Buddha describes the five kinds of wealth.
+qualities: faith, wisdom, giving, wholesome, learned, mindfulness
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an5.47:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Several
+description: "Māra the Wicked appears to young mendicants in the guise of an old brahmin, urging them to enjoy sensual pleasures rather than renounce what is apparent for what is distant; the mendicants refute him with the Buddha's teaching on the drawbacks of sensuality."
+qualities: suffering, giving, giving up, attachment, anxiety, sensual desire
+theme: story, training guideline
 ---
 
 <!-- @segment sn4.21:1.1 -->

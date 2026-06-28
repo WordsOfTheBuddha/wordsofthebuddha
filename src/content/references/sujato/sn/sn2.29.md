@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Susīma
+description: "The Buddha asks Ānanda whether he endorses Sāriputta; when Ānanda praises Sāriputta's wisdom and qualities, a young deity Susīma endorses him too, and the Buddha approves."
+qualities: wisdom, anger, flexible, happiness, uplifting joy, mindfulness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn2.29:1.1 -->

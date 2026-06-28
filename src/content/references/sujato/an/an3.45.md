@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Recommended by the Astute
+description: The Buddha describes the three things—going forth,, and and taking care of your mother and father.
+qualities: giving, self-control, vision, non-harm, wholesome, harm
+theme: inspiration, principle
 ---
 
 <!-- @segment an3.45:1.1 -->

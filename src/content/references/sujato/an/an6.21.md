@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sāma Village
+description: The Buddha teaches on at sāma village, presenting a sixfold teaching for disciples on the path.
+qualities: delight, wholesome, harm
+theme: story, inspiration
 ---
 
 <!-- @segment an6.21:1.1 -->

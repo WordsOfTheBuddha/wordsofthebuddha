@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Madhurā
+description: The Buddha describes the five drawbacks of madhurā.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.220:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Purity (2nd)
+description: The Buddha describes the three kinds of purity.
+qualities: doubt, drowsiness, dullness, ill will, sensual desire, desire
+theme: principle, wisdom
 ---
 
 <!-- @segment an3.121:1.1 -->

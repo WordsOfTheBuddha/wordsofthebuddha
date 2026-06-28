@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Welfare of Others (2nd)
+description: The Buddha describes the five qualities is practicing for the welfare of others, but not t—it’s when a mendicant is not personally accomplished in ethics, immersion, wisdom, freedom, or the knowledge and vision of freedom. but they encourage others in these qualities, a mendicant with these five qualities is practicing for the welfare of others, and but not their own.”.
+qualities: vision, liberation, wisdom, collectedness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.18:1.1 -->

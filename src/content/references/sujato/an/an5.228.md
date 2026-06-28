@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Eating Late
+description: The Buddha describes the five drawbacks for a family who takes their meals late in the day—when guests visit, they are not served on time, the deities who accept spirit-offerings are not served on time, ascetics and brahmins who eat in one part of the day, abstaining from eating at night, and from food at the wrong time are not served on time, and bondservants, workers, and staff do their duties neglectfully, and a meal eaten during the wrong period is not nutritious.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.228:1.1 -->

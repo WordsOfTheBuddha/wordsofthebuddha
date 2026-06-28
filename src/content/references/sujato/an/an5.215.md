@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Intolerance (1st)
+description: The Buddha describes the five drawbacks of intolerance.
+qualities: patience, harm, wholesome
+theme: urgency
 ---
 
 <!-- @segment an5.215:1.1 -->

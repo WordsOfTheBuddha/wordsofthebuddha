@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Food
+description: A deity engages the Buddha in verse on food, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: faith, stinginess, merit, wholesome
+theme: wisdom, inspiration
 ---
 
 <!-- @segment sn1.43:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhāradvāja the Farmer
+description: The brahmin Bhāradvāja the Farmer asks the Buddha in verse what must be slain to sleep at ease without sorrow; the Teacher answers that anger—with its poisonous root, festering core, and striking out—must be cut off.
+qualities: liberation, conscience, faith, merit, mindfulness, truth
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.11:1.1 -->

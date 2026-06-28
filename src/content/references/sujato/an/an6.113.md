@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Discontent
+description: The Buddha teaches on discontent, presenting a sixfold teaching for disciples on the path.
+qualities: cruelty, unprincipled conduct, non-harm, harm
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.113:1.1 -->

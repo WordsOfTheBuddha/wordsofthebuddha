@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Factors That Support Meditation
+description: "The Buddha describes the five factors that support meditation—it’s when a mendicant has faith in the realized one’s awakening:, ‘that blessed one is perfected, a fully awakened buddha, accomplished in knowledge and conduct, holy, knower of the world, supreme guide for those fit for training, teacher of gods and humans, awakened, blessed.’, they are rarely ill or unwell, and their stomach digests well, being neither too hot nor too cold, but just right, and fit for meditation, and they’re not devious or deceitful."
+qualities: cultivation, jhana, wholesome, ending, faith, giving
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an5.53:1.1 -->

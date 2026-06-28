@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Streams
+description: A deity engages the Buddha in verse on streams, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.27:1.1 -->

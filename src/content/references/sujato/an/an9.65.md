@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Kinds of Sensual Stimulation
+description: The Buddha teaches on kinds of sensual stimulation, presenting a ninefold teaching for disciples on the path.
+qualities: mindfulness, cultivation, jhana
+theme: training guideline, principle
 ---
 
 <!-- @segment an9.65:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faithless
+description: The Buddha teaches on faithless, presenting a fivefold teaching for disciples on the path.
+qualities: dearness, fear of wrongdoing, faith
+theme: inspiration
 ---
 
 <!-- @segment an5.84:1.1 -->

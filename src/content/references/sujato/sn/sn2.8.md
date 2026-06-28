@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Tāyana
+description: Standing to one side, the young deity Tāyana addresses the Buddha in verse on with tāyana.
+qualities: spiritual life, mindfulness, wholesome, harm, sensual desire, right effort
+theme: inspiration, story
 ---
 
 <!-- @segment sn2.8:1.1 -->

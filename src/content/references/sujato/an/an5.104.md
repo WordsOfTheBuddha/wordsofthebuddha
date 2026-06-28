@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Delicate Ascetic of Ascetics
+description: The Buddha describes the five qualities is a delicate ascetic of ascetics—it’s when a mendicant usually uses only what they’ve been invited to accept—robes, almsfood, lodgings, and medicines and supplies for the sick—rarely using them without invitation, when living with other spiritual practitioners, they usually find themselves treated agreeably by them by way of body, speech, and mind, and rarely disagreeably, and they are usually presented with agreeable things by them, rarely with disagreeable ones, and they get the four absorptions—blissful meditations in this life that belong to the higher mind—when they want, without trouble or difficulty, and and they realize the undefiled freedom of heart and freedom by wisdom in this very life. and they live having realized it with their own insight due to the ending of defilements.
+qualities: liberation, wisdom, wholesome, ending, insight
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.104:1.1 -->

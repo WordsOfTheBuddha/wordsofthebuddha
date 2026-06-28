@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhāradvāja of Sundarikā on the Sacrificial Cake
+description: "Verses recounting the Buddha's going forth, his encounter with King Bimbisāra, and his teaching on the drawbacks of sensual pleasures and the security of the renunciate life."
+qualities: merit, conceit, desire, wholesome, ending, imperturbable
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment snp3.4:1.1 -->

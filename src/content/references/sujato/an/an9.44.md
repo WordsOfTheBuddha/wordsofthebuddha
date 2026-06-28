@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freed by Wisdom
+description: The Buddha teaches on freed by wisdom, presenting a ninefold teaching for disciples on the path.
+qualities: wisdom, ending, jhana, sensual desire
+theme: wisdom
 ---
 
 <!-- @segment an9.44:1.1 -->

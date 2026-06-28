@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahānāma
+description: The Buddha teaches on with mahānāma, presenting a eightfold teaching for disciples on the path.
+qualities: ethical conduct, faith, giving, sexual misconduct
+theme: story, inspiration
 ---
 
 <!-- @segment an8.25:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Shopkeeper (2nd)
+description: The Buddha teaches on a shopkeeper (2nd), presenting a threefold teaching for disciples on the path.
+qualities: wholesome, suffering, ending, giving, giving up, learned
+theme: inquisitiveness, principle
 ---
 
 <!-- @segment an3.20:1.1 -->

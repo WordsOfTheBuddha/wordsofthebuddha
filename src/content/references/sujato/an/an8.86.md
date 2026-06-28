@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nāgita
+description: The Buddha teaches on with nāgita, presenting a eightfold teaching for disciples on the path.
+qualities: giving up, solitude, wholesome, wrong speech, wisdom, craving
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an8.86:1.1 -->

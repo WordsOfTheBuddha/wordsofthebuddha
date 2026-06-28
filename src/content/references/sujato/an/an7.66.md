@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Seven Suns
+description: The Buddha teaches on the seven suns, presenting a sevenfold teaching for disciples on the path.
+qualities: suffering, wisdom, affection, liberation, insight, truth
+theme: story, urgency
 ---
 
 <!-- @segment an7.66:1.1 -->

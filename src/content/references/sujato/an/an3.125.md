@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Gotamaka Shrine
+description: The Buddha teaches on the gotamaka shrine, presenting a threefold teaching for disciples on the path.
+qualities: direct knowledge, wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an3.125:1.1 -->

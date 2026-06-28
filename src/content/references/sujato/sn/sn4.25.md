@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Māra’s Daughters
+description: "Māra's daughters Craving, Malignancy, and Lust try to seduce the Buddha with beauty and allure; he teaches them on the dangers of form, feeling, and the path of those freed from sensuality, leaving them defeated."
+qualities: passion, sensual desire, craving, ending, jhana, aversion
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.25:1.1 -->

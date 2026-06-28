@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seclusion
+description: A forest deity, sympathizing with a mendicant whose mind strays to domestic life during meditation, admonishes him in verse to dispel desire for people, give up discontent, and cross the dusty abyss of sensuality.
+qualities: solitude, greed, desire, compassion, craving, cultivation
+theme: training guideline
 ---
 
 <!-- @segment sn9.1:1.1 -->

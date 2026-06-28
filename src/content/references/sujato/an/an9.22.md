@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Wild Colt
+description: The Buddha teaches on a wild colt, presenting a ninefold teaching for disciples on the path.
+qualities: adventurousness, suffering, ending, liberation, insight, wisdom
+theme: training guideline, inquisitiveness
 ---
 
 <!-- @segment an9.22:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Puṇṇiya
+description: The Buddha teaches Venerable Pu on with puṇṇiya, presenting a eightfold teaching for disciples on the path.
+qualities: faith, wisdom
+theme: recollection of the Buddha, inspiration
 ---
 
 <!-- @segment an8.82:1.1 -->

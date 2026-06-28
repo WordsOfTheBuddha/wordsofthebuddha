@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fastened Shut
+description: A deity engages the Buddha in verse on fastened shut, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: craving, suffering
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.68:1.1 -->

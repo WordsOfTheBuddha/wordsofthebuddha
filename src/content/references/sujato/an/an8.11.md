@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Verañjā
+description: The Buddha teaches on at verañjā, presenting a eightfold teaching for disciples on the path.
+qualities: suffering, harm, unwholesome, ending, ignorance, flexible
+theme: story, urgency
 ---
 
 <!-- @segment an8.11:1.1 -->

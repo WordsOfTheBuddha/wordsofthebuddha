@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Getting Rich
+description: The Buddha describes the five reasons to get rich—firstly, with his legitimate wealth—earned by his efforts and initiative, built up with his own hands, gathered by the sweat of the brow—a noble disciple makes himself happy and pleased, keeping himself properly happy, he makes his mother and father happy, he makes his children, partners, bondservants, workers, and staff happy, and this is the first reason to get rich, and furthermore, with his legitimate wealth he makes his friends and colleagues happy.
+qualities: happiness, patience, tame, negligence, regret, vanity
+theme: story, inspiration
 ---
 
 <!-- @segment an5.41:1.1 -->

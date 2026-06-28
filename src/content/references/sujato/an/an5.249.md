@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Charnel Ground
+description: The Buddha describes the five drawbacks to a charnel ground.
+qualities: wholesome, harm
+theme: principle
 ---
 
 <!-- @segment an5.249:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Chariot
+description: A deity engages the Buddha in verse on a chariot, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.72:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Transience
+description: The Buddha teaches on transience, presenting a sixfold teaching for disciples on the path.
+qualities: recognition of impermanence, delight
+theme: urgency
 ---
 
 <!-- @segment an6.102:1.1 -->

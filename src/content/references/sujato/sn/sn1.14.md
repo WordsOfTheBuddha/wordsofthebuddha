@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aristocrats
+description: A deity engages the Buddha in verse on aristocrats, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wholesome, wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.14:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Hatthaka
+description: The Buddha teaches on with hatthaka, presenting a threefold teaching for disciples on the path.
+qualities: mindfulness, wisdom
+theme: story, training guideline
 ---
 
 <!-- @segment an3.127:1.1 -->

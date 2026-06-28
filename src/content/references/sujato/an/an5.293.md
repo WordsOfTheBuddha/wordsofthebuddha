@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: An Ājīvaka
+description: The Buddha teaches on an ājīvaka, presenting a fivefold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an5.293:1.1 -->

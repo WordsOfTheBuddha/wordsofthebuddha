@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Afraid
+description: A deity engages the Buddha in verse on afraid, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: fear, wisdom, flexible, harm, faith
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn1.75:1.1 -->

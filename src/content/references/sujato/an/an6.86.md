@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Obstacles
+description: The Buddha teaches on obstacles, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, faith
+theme: inspiration
 ---
 
 <!-- @segment an6.86:1.1 -->

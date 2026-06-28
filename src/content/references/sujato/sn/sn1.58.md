@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Deviation
+description: A deity engages the Buddha in verse on deviation, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: spiritual life, ending, passion, sensual desire
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.58:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Corpse-worker
+description: The Buddha teaches on corpse-worker, presenting a fivefold teaching for disciples on the path.
+qualities: ethical conduct, faith
+theme: inspiration
 ---
 
 <!-- @segment an5.175:1.1 -->

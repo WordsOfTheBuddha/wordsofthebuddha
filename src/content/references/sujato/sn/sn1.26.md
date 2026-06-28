@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lamps
+description: A deity engages the Buddha in verse on lamps, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom
+theme: wisdom
 ---
 
 <!-- @segment sn1.26:1.1 -->

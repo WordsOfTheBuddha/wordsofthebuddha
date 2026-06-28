@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Mother and Son
+description: The Buddha describes the five kinds of sensual stimulation.
+qualities: passion, sensual desire, sorrow, safety, ending, wholesome
+theme: story, training guideline
 ---
 
 <!-- @segment an5.55:1.1 -->

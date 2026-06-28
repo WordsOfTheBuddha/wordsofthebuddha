@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Vajji
+description: The Buddha teaches on the vajji, presenting a threefold teaching for disciples on the path.
+qualities: wisdom, delusion, greed, aversion, harm, unwholesome
+theme: story, training guideline
 ---
 
 <!-- @segment an3.84:1.1 -->

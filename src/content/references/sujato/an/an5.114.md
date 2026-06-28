@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Andhakavinda
+description: The Buddha teaches a disciple on at andhakavinda, presenting a fivefold teaching for disciples on the path.
+qualities: mindfulness, right view, sense restraint, ethical conduct, wrong view, ill will
+theme: story, training guideline
 ---
 
 <!-- @segment an5.114:1.1 -->

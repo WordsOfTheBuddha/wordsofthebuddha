@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Jāliya
+description: The wanderer Jāliya debates whether the soul is the same as or different from the body; the Buddha refuses the dichotomy and teaches dependent origination, showing that consciousness arises through conditions, not an enduring self.
+qualities: wrong view, examination, wisdom, recognition of not-self, discernment
+theme: wisdom, cultivating discernment
 ---
 
 <!-- @segment dn7:1.1 -->

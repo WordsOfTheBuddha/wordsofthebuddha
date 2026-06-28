@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assemblies
+description: The Buddha describes the three assemblies.
+qualities: wisdom
+theme: inquisitiveness, principle
 ---
 
 <!-- @segment an3.134:1.1 -->

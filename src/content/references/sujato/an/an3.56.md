@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Breaking Apart
+description: The Buddha teaches on breaking apart, presenting a threefold teaching for disciples on the path.
+qualities: desire, affection, greed, harm, unprincipled conduct, craving
+theme: story
 ---
 
 <!-- @segment an3.56:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: One’s Own Volition
+description: The Buddha teaches on one’s own volition, presenting a sixfold teaching for disciples on the path.
+qualities: vigour, patience, wrong view
+theme: story, wisdom
 ---
 
 <!-- @segment an6.38:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Greed, Etc.
+description: The Buddha teaches a repeated formula on six things that should be developed for complete understanding, ending, and letting go of unwholesome qualities in this grouped discourse.
+qualities: ending, greed, giving, giving up, craving
+theme: principle, wisdom
 ---
 
 <!-- @segment an6.143-169:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Danger
+description: The Buddha teaches on danger, presenting a eightfold teaching for disciples on the path.
+qualities: suffering, greed, desire, mindfulness, sensual desire, craving
+theme: principle
 ---
 
 <!-- @segment an8.56:1.1 -->

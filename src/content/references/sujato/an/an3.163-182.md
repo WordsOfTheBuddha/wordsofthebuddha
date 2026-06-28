@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses on Three Qualities
+description: The Buddha presents a repeated threefold teaching on untitled discourses on three qualities in this grouped discourse.
+qualities: sexual misconduct, right view, ill will, wrong view, stealing, slaughtering
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an3.163:1.1 -->

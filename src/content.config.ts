@@ -9,6 +9,7 @@ const baseSchema = z.object({
 	qualities: z.string().optional(),
 	theme: z.string().optional(),
 	simile: z.string().optional(),
+	topic: z.string().optional(),
 	commentary: z.union([z.string(), z.array(z.string())]).optional(),
 	priority: z.number().optional(),
 	// Content image (optional)

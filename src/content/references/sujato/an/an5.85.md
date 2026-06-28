@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Cannot Endure
+description: The Buddha teaches on cannot endure, presenting a fivefold teaching for disciples on the path.
+qualities: dearness, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.85:1.1 -->

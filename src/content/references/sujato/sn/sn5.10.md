@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vajirā
+description: The nun Vajirā confronts Māra in verse when he asks who created the sentient being, teaching that there is only a pile of conditions and aggregates—like a chariot assembled from parts—with nothing to be found beyond suffering that arises and ceases.
+qualities: fear, craving, suffering, cultivation, jhana, collectedness
+theme: inspiration, training guideline
 ---
 
 <!-- @segment sn5.10:1.1 -->

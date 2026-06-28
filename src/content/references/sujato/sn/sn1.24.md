@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shielding the Mind
+description: A deity engages the Buddha in verse on shielding the mind, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: suffering, self-control, harm, ill will
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.24:1.1 -->

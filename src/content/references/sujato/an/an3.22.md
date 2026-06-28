@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Patients
+description: The Buddha describes the three patients—in some cases a patient won’t recover from an illness, regardless of whether or not they get suitable food and medicines, and a capable carer, in some cases a patient will recover from an illness, regardless of whether or not they get suitable food and medicines, and a capable carer, in some cases a patient can recover from an illness, but only if they get suitable food and medicines, and a capable carer, and and not if they don’t get these things.
+qualities: wholesome, wisdom
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an3.22:1.1 -->

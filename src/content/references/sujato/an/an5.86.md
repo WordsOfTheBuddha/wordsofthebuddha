@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Attaining the Methods of Textual Analysis
+description: The Buddha teaches on attaining the methods of textual analysis, presenting a fivefold teaching for disciples on the path.
+qualities: dearness, examination, inspiration
+theme: wisdom
 ---
 
 <!-- @segment an5.86:1.1 -->

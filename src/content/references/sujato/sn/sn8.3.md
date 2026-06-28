@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good-Hearted
+description: "Venerable Vaṅgīsa recites spontaneous verses on good-hearted, blending poetic expression with insight into the Buddha's teaching."
+qualities: conceit, wholesome, inspiration, happiness, truth
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn8.3:1.1 -->

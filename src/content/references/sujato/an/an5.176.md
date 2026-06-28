@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Rapture
+description: The Buddha teaches on rapture, presenting a fivefold teaching for disciples on the path.
+qualities: attachment, uplifting joy, displeasure, solitude, suffering, happiness
+theme: story, training guideline
 ---
 
 <!-- @segment an5.176:1.1 -->

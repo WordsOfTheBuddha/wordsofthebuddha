@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wielding Power (2nd)
+description: The Buddha teaches on wielding power (2nd), presenting a fivefold teaching for disciples on the path.
+qualities: wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.132:1.1 -->

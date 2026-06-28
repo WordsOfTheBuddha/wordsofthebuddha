@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Samiddhi
+description: The Buddha teaches Venerable Samiddhi on with samiddhi, presenting a ninefold teaching for disciples on the path.
+qualities: liberation, wholesome, mindfulness, wisdom, collectedness, conceit
+theme: urgency, training guideline
 ---
 
 <!-- @segment an9.14:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Dārukammika
+description: The Buddha teaches the householder on with dārukammika, presenting a sixfold teaching for disciples on the path.
+qualities: respect, mindfulness, wholesome, collectedness, sensual desire
+theme: story, urgency
 ---
 
 <!-- @segment an6.59:1.1 -->

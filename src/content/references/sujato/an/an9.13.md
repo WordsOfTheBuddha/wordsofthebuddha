@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Koṭṭhita
+description: The Buddha teaches Venerable Mah on with koṭṭhita, presenting a ninefold teaching for disciples on the path.
+qualities: spiritual life, suffering, ending
+theme: wisdom
 ---
 
 <!-- @segment an9.13:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Future Perils (4th)
+description: The Buddha teaches on future perils (4th), presenting a fivefold teaching for disciples on the path.
+qualities: spiritual life, wisdom
+theme: training guideline
 ---
 
 <!-- @segment an5.80:1.1 -->

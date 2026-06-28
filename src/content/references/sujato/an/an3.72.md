@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Disciple of the Ājīvakas
+description: The Buddha teaches on a disciple of the ājīvakas, presenting a threefold teaching for disciples on the path.
+qualities: delusion, greed, aversion, giving, giving up, craving
+theme: story
 ---
 
 <!-- @segment an3.72:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred (3rd)
+description: The Buddha teaches on the thoroughbred (3rd), presenting a threefold teaching for disciples on the path.
+qualities: merit, liberation, respect, wholesome, ending, giving
+theme: story, principle
 ---
 
 <!-- @segment an3.98:1.1 -->

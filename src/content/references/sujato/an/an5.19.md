@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Welfare of Neither
+description: The Buddha describes the five qualities is practicing neither for their own welfare, nor t—it’s when a mendicant is not personally accomplished in ethics, immersion, wisdom, freedom, or the knowledge and vision of freedom. nor do they encourage others in these qualities, a mendicant with these five qualities is practicing neither for their own welfare, and nor that of others.”.
+qualities: vision, liberation, wisdom, collectedness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.19:1.1 -->

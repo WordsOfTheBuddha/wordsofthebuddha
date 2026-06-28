@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Dāmali
+description: Late at night the glorious young deity Dāmali approaches the Buddha and speaks in verse on with dāmali, exploring the continuity of kamma, rebirth, and the pursuit of wisdom across realms.
+qualities: giving, giving up, mindfulness, sensual desire, right effort
+theme: inspiration, story
 ---
 
 <!-- @segment sn2.5:1.1 -->

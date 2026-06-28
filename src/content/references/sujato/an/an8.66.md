@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Liberations
+description: The Buddha describes the eight liberations—having physical form, they see forms, this is the first liberation, not perceiving form internally, they see forms externally, and this is the second liberation, and they’re focused only on beauty, and this is the third liberation, and going totally beyond perceptions of form, with the disappearance of perceptions of impingement, not focusing on perceptions of diversity, aware that ‘space is infinite’, they enter and remain in the dimension of infinite space, and this is the fourth liberation.
+qualities: liberation, ending
+theme: principle
 ---
 
 <!-- @segment an8.66:1.1 -->

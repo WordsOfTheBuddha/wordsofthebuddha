@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Gone Forth When Old (1st)
+description: The Buddha teaches on gone forth when old (1st), presenting a fivefold teaching for disciples on the path.
+qualities: learned, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.59:1.1 -->

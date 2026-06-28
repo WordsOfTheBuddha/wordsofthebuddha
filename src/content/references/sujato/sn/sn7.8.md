@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhāradvāja the Fire-Worshiper
+description: The brahmin Bhāradvāja the Fire-Worshiper boasts of his lineage and learning; the Buddha refutes pride in birth and teaches that a true brahmin is one who has abandoned unwholesome qualities and lives by ethical conduct.
+qualities: ending, insight, merit, wholesome
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.8:1.1 -->

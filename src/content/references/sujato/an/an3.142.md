@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thoroughbred
+description: The Buddha teaches on the thoroughbred, presenting a threefold teaching for disciples on the path.
+qualities: liberation, ending, insight, wisdom
+theme: training guideline, inquisitiveness
 ---
 
 <!-- @segment an3.142:1.1 -->

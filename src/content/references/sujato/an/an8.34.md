@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Field
+description: The Buddha teaches on a field, presenting a eightfold teaching for disciples on the path.
+qualities: wholesome, mindfulness, vigour, right effort, right livelihood, right speech
+theme: story, training guideline
 ---
 
 <!-- @segment an8.34:1.1 -->

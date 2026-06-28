@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sumanā
+description: The Buddha teaches on with sumanā, presenting a fivefold teaching for disciples on the path.
+qualities: merit, giving, happiness, liberation, faith, vision
+theme: story, urgency
 ---
 
 <!-- @segment an5.31:1.1 -->

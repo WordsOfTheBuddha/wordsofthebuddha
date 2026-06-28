@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Anuruddha and the Agreeable Deities
+description: The Buddha teaches Venerable Anuruddha on anuruddha and the agreeable deities, presenting a eightfold teaching for disciples on the path.
+qualities: sexual misconduct, stinginess, desire, compassion, craving, cultivation
+theme: story, urgency
 ---
 
 <!-- @segment an8.46:1.1 -->

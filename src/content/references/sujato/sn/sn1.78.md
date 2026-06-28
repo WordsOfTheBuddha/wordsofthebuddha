@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Desire
+description: A deity engages the Buddha in verse on desire, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: harm, wholesome, desire, liberation
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.78:1.1 -->

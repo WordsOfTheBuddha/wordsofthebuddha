@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Action
+description: The Buddha teaches on action, presenting a threefold teaching for disciples on the path.
+qualities: giving, insight, right livelihood, sexual misconduct, wrong livelihood, harm
+theme: story, wisdom
 ---
 
 <!-- @segment an3.119:1.1 -->

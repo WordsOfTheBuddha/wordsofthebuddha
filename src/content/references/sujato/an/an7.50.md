@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sex
+description: The Buddha teaches on sex, presenting a sevenfold teaching for disciples on the path.
+qualities: suffering, lamentation, spiritual life, vision, sorrow, anxiety
+theme: story, urgency
 ---
 
 <!-- @segment an7.50:1.1 -->

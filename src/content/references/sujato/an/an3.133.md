@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Warrior
+description: The Buddha teaches on a warrior, presenting a threefold teaching for disciples on the path.
+qualities: right view, suffering, merit, ending, respect, ignorance
+theme: story, principle
 ---
 
 <!-- @segment an3.133:1.1 -->

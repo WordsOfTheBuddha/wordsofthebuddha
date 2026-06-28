@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Bhaddaji
+description: The Buddha teaches Venerable Bhaddaji on with bhaddaji, presenting a fivefold teaching for disciples on the path.
+qualities: happiness, learned
+theme: inspiration
 ---
 
 <!-- @segment an5.170:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Sārandada
+description: The Buddha describes the seven principles that prevent decline last among the vajjis, and as long as the vajjis.
+qualities: cultivation, respect, safety, harm
+theme: story, principle
 ---
 
 <!-- @segment an7.21:1.1 -->

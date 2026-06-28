@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Freed Both Ways
+description: The Buddha teaches on freed both ways, presenting a ninefold teaching for disciples on the path.
+qualities: wisdom, ending, jhana, sensual desire
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an9.45:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Lion’s Roar to the Naked Ascetic Kassapa
+description: "The naked ascetic Kassapa challenges the Buddha on ascetic practices; the Buddha delivers the lion's roar, distinguishing true austerity from self-torment and teaching the middle practice of the noble path."
+qualities: examination, ethical conduct, wisdom, clinging to rules and observances, discernment
+theme: training guideline, cultivating discernment
 ---
 
 <!-- @segment dn8:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Seven Years of Pursuit
+description: After pursuing the Buddha for seven years without finding a vulnerability, Māra questions him in verse on why he meditates alone in the forest; the Buddha answers that he has uprooted suffering and is unshakable.
+qualities: sorrow, jhana, truth, greed, liberation, mindfulness
+theme: training guideline, story
 ---
 
 <!-- @segment sn4.24:1.1 -->

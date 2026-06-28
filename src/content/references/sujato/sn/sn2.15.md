@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Candana
+description: Standing to one side, the young deity Candana addresses the Buddha in verse on with candana.
+qualities: greed, delight, craving
+theme: inspiration, principle
 ---
 
 <!-- @segment sn2.15:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Garden of Delight
+description: The Buddha recounts how deities of the company of the Thirty-Three disputed in verse over heavenly pleasures, and how a wiser deity reminded them that all conditions are impermanent and their settling is bliss.
+qualities: delight, immaturity
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.11:1.1 -->

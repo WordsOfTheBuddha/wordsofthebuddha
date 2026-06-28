@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perfection
+description: The Buddha teaches that without giving up six things one cannot attain higher fruits of the path, and that abandoning them opens the way to deeper realization.
+qualities: giving, giving up, faith, drowsiness, dullness, negligence
+theme: inspiration, principle
 ---
 
 <!-- @segment an6.66:1.1 -->

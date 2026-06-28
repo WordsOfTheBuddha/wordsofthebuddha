@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Worthy of Offerings (2nd)
+description: The Buddha teaches that a mendicant accomplished in the six higher knowledges—psychic powers, clairaudience, mind reading, recollection of past lives, clairvoyance, and the ending of defilements—is worthy of offerings and the supreme field of merit.
+qualities: greed, harm, wholesome, merit, right view, delusion
+theme: urgency, wisdom
 ---
 
 <!-- @segment an6.2:1.1 -->

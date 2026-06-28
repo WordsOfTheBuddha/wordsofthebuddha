@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sources
+description: The Buddha teaches the three sources that give rise to deeds—greed, hate, and delusion—and how they shape action and its results.
+qualities: delusion, greed, aversion, contentment, affection, harm
+theme: principle, wisdom
 ---
 
 <!-- @segment an3.34:1.1 -->

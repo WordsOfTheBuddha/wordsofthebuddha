@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Saviṭṭha
+description: The Buddha describes the three individuals.
+qualities: faith, wisdom, collectedness, wrong view
+theme: story, training guideline
 ---
 
 <!-- @segment an3.21:1.1 -->

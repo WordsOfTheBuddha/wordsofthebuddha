@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Himalaya
+description: The Buddha teaches on the himalaya, presenting a sixfold teaching for disciples on the path.
+qualities: ignorance, delusion, collectedness
+theme: story, training guideline
 ---
 
 <!-- @segment an6.24:1.1 -->

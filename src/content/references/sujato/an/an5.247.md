@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Verbal Conduct (2nd)
+description: The Buddha describes the five drawbacks in bad verbal conduct … benefits in good verbal conduct …”.
+qualities: harm, wholesome
+theme: principle
 ---
 
 <!-- @segment an5.247:1.1 -->

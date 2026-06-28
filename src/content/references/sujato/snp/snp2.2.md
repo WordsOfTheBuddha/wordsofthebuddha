@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Putrefaction
+description: Verses in which the Buddha teaches the brahmin poet Kassapa that feasting on alms food is not putrefaction when obtained honestly, contrasting the simple fare of the good with indulgence in rich food.
+qualities: suffering, unprincipled conduct, sincerity, anger, boastfulness, doubt
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.2:1.1 -->

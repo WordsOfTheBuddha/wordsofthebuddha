@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Dhammika
+description: The Buddha teaches that an individual accomplished in view has given up six things that obstruct the path to liberation.
+qualities: desire, faith, wholesome, harm, sensual desire, cruelty
+theme: story, urgency
 ---
 
 <!-- @segment an6.54:1.1 -->

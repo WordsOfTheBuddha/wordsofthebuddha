@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Peak, Again
+description: The Buddha describes the five powers—faith, energy, mindfulness, immersion, and wisdom—and teaches that wisdom is the chief power that holds and binds the others together.
+qualities: wisdom, faith, mindfulness, vigour, collectedness
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an5.16:1.1 -->

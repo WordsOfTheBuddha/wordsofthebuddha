@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Capable of Realizing
+description: The Buddha teaches six qualities that make someone incapable of realizing higher attainments that can be realized with extra effort.
+qualities: wisdom
+theme: wisdom
 ---
 
 <!-- @segment an6.71:1.1 -->

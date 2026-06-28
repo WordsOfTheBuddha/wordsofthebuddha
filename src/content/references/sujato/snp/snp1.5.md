@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Cunda
+description: Verses in the Uragavagga (With Cunda) depicting how a mendicant abandons defilements and sheds worldly attachment like a serpent casting off its worn-out skin.
+qualities: faith, learned, wisdom, craving, doubt, adventurousness
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.5:1.1 -->

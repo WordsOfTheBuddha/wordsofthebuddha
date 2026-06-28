@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Pañcālacaṇḍa
+description: Standing to one side, the young deity Pañcālacaṇḍa addresses the Buddha in verse on with pañcālacaṇḍa.
+qualities: mindfulness, jhana, collectedness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn2.7:1.1 -->

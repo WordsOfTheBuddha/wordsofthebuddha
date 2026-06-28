@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Right Way to Wander
+description: Verses in the Little Chapter (The Right Way to Wander) on ethical conduct, devotion, and the supreme value of the Buddha, Dhamma, and Saṅgha.
+qualities: truth, desire, ending, aversion, greed, learned
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.13:1.1 -->

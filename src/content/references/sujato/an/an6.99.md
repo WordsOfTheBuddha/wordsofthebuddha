@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Suffering
+description: The Buddha teaches on suffering, presenting a sixfold teaching for disciples on the path.
+qualities: suffering, wrong view
+theme: principle
 ---
 
 <!-- @segment an6.99:1.1 -->

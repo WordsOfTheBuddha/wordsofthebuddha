@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Porridge
+description: The Buddha describes the five benefits of porridge.
+qualities: craving, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.207:1.1 -->

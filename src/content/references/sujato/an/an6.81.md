@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hell (1st)
+description: The Buddha teaches on hell (1st), presenting a sixfold teaching for disciples on the path.
+qualities: sexual misconduct, right view, wrong view
+theme: wisdom
 ---
 
 <!-- @segment an6.81:1.1 -->

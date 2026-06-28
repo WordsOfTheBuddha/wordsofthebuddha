@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Accomplishments (1st)
+description: The Buddha teaches on accomplishments (1st), presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom, giving
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an5.91:1.1 -->

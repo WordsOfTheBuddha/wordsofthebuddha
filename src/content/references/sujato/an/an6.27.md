@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Proper Occasions (1st)
+description: The Buddha teaches on proper occasions (1st), presenting a sixfold teaching for disciples on the path.
+qualities: sensual desire, desire, cultivation, jhana, doubt, drowsiness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an6.27:1.1 -->

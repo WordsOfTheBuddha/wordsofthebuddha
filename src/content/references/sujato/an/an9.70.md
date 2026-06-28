@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Higher Fetters
+description: The Buddha teaches on higher fetters, presenting a ninefold teaching for disciples on the path.
+qualities: desire, formless, mindfulness, conceit, ignorance, anxiety
+theme: training guideline
 ---
 
 <!-- @segment an9.70:1.1 -->

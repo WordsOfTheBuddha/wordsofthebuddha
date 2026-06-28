@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: At Tikaṇḍakī
+description: The Buddha teaches on at tikaṇḍakī, presenting a fivefold teaching for disciples on the path.
+qualities: greed, aversion, delusion, craving, mindfulness, ill will
+theme: story, training guideline
 ---
 
 <!-- @segment an5.144:1.1 -->

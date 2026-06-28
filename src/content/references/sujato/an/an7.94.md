@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good Qualities
+description: The Buddha describes the seven good qualities.
+qualities: wholesome, learned, fear of wrongdoing, faith, mindfulness
+theme: inspiration
 ---
 
 <!-- @segment an7.94:1.1 -->

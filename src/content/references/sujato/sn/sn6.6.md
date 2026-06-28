@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Negligent Divinity
+description: The divinities Subrahmā and Suddhāvāsa, finding the Buddha in retreat, visit a negligent Brahmā in his prosperous realm and inspire awe in him, teaching that even psychic power is worthless without attending on the Buddha.
+qualities: wholesome, psychic power, jhana, cultivation, mindfulness
+theme: wisdom, story
 ---
 
 <!-- @segment sn6.6:1.1 -->

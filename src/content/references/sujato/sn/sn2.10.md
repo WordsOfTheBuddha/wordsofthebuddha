@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Sun
+description: "When the Sun God is seized by Rāhu, lord of titans, he recollects the Buddha and pleads for refuge; the Teacher then commands Rāhu to release him in verse, declaring the Buddhas' compassion for the world."
+qualities: liberation, compassion, joy, mindfulness
+theme: recollection of the Buddha, inspiration
 ---
 
 <!-- @segment sn2.10:1.1 -->

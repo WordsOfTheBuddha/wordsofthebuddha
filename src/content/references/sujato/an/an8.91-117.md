@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourses With Various Laywomen on the Sabbath
+description: The Buddha presents a repeated eightfold teaching on untitled discourses with various laywomen on the sabbath in this grouped discourse.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an8.91-117:1.1 -->

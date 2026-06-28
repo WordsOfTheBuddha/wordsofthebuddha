@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The World
+description: A deity engages the Buddha in verse on the world, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: attachment, wisdom
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.70:1.1 -->

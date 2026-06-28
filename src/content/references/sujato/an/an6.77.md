@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Superhuman States
+description: The Buddha teaches on superhuman states, presenting a sixfold teaching for disciples on the path.
+qualities: vision, giving, giving up, mindfulness
+theme: wisdom
 ---
 
 <!-- @segment an6.77:1.1 -->

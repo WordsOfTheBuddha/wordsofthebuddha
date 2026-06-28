@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Black Snakes (1st)
+description: The Buddha describes the five drawbacks of a black snake.
+qualities: ill will, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.229:1.1 -->

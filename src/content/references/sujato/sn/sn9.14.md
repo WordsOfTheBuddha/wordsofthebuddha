@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Thief of Scent
+description: A forest deity approaches a mendicant in verse on the thief of scent, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: wholesome, compassion, craving, harm, stealing
+theme: training guideline, wisdom
 ---
 
 <!-- @segment sn9.14:1.1 -->

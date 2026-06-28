@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Visākhā on the Sabbath
+description: The Buddha teaches on with visākhā on the sabbath, presenting a eightfold teaching for disciples on the path.
+qualities: happiness, wholesome, respect, compassion, slaughtering, merit
+theme: principle
 ---
 
 <!-- @segment an8.43:1.1 -->

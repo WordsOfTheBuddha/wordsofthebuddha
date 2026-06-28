@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Poet
+description: A deity engages the Buddha in verse on a poet, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: wisdom
+theme: inspiration, principle
 ---
 
 <!-- @segment sn1.60:1.1 -->

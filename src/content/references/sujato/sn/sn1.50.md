@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ghaṭīkāra
+description: A deity engages the Buddha in verse on with ghaṭīkāra, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: ending, greed, attachment, aversion, craving, ill will
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn1.50:1.1 -->

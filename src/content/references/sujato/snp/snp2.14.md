@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Dhammika
+description: Verses on with dhammika in the Little Chapter, encouraging loving-kindness toward all beings and devotion to the qualities of the Buddha, Dhamma, and Saṅgha.
+qualities: wisdom, wholesome, suffering, desire, aggressiveness, attachment
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.14:1.1 -->

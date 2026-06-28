@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Disillusionment
+description: The Buddha teaches on disillusionment, presenting a fivefold teaching for disciples on the path.
+qualities: dispassion, insight, ending, discontentment, suffering
+theme: urgency, training guideline
 ---
 
 <!-- @segment an5.69:1.1 -->

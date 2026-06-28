@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Four Wheels
+description: A deity engages the Buddha in verse on four wheels, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: greed, craving, desire, attachment
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.29:1.1 -->

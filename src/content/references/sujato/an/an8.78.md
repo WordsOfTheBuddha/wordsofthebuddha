@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Good Enough
+description: The Buddha teaches on good enough, presenting a eightfold teaching for disciples on the path.
+qualities: wholesome, wisdom
+theme: inspiration, inquisitiveness
 ---
 
 <!-- @segment an8.78:1.1 -->

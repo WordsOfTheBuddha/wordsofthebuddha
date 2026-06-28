@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Invitation to Admonish
+description: Venerable Vaṅgīsa, inspired by a Dhamma talk, rises to extol Venerable the in verse—praising his wisdom, clarity of teaching, and benefit to the Saṅgha.
+qualities: wisdom, craving, imperturbable, mindfulness, safety
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.7:1.1 -->

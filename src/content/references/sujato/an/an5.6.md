@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Becoming
+description: The Buddha teaches on becoming, presenting a fivefold teaching for disciples on the path.
+qualities: unwholesome, faith, wisdom, wholesome, conscience, faithlessness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment an5.6:1.1 -->

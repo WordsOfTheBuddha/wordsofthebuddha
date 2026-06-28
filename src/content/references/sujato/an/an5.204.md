@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Powers
+description: The Buddha describes the five powers—faith, conscience, prudence, energy, and wisdom—that support a mendicant on the path.
+qualities: conscience, faith, wisdom, vigour
+theme: inspiration, principle
 ---
 
 <!-- @segment an5.204:1.1 -->

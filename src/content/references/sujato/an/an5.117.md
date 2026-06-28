@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Jealous
+description: The Buddha teaches on jealous, presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.117:1.1 -->

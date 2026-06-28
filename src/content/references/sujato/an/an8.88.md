@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Proclamation of No Confidence
+description: The Buddha teaches on a proclamation of no confidence, presenting a eightfold teaching for disciples on the path.
+qualities: faith, desire, harm, cruelty
+theme: inspiration
 ---
 
 <!-- @segment an8.88:1.1 -->

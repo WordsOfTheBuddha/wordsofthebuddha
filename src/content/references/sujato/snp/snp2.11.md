@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Rāhula
+description: Verses in the Little Chapter (With Rāhula) on ethical conduct, devotion, and the supreme value of the Buddha, Dhamma, and Saṅgha.
+qualities: wisdom, conceit, contempt, faith, mindfulness, suffering
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.11:1.1 -->

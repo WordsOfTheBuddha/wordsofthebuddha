@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Tikaṇṇa
+description: The Buddha teaches on with tikaṇṇa, presenting a threefold teaching for disciples on the path.
+qualities: suffering, ending, flexible, jhana, ignorance, harm
+theme: story, urgency
 ---
 
 <!-- @segment an3.58:1.1 -->

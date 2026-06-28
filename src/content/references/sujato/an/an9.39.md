@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The War Between the Gods and the Titans
+description: The Buddha teaches on the war between the gods and the titans, presenting a ninefold teaching for disciples on the path.
+qualities: jhana, attachment, wisdom, ending, uplifting joy, solitude
+theme: story, wisdom
 ---
 
 <!-- @segment an9.39:1.1 -->

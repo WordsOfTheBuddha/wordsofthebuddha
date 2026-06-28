@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Shackles of the Heart
+description: The Buddha teaches on shackles of the heart, presenting a ninefold teaching for disciples on the path.
+qualities: vigour, unwholesome, wholesome, craving, greed, passion
+theme: training guideline
 ---
 
 <!-- @segment an9.82:1.1 -->

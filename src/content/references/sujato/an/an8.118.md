@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (1st)
+description: The Buddha teaches that eight things should be developed for insight into and the complete ending of greed, hate, delusion, and other unwholesome qualities.
+qualities: greed, insight, mindfulness, right effort, right livelihood, right speech
+theme: training guideline, principle
 ---
 
 <!-- @segment an8.118:1.1 -->

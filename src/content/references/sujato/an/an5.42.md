@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A True Person
+description: The Buddha teaches on a true person, presenting a fivefold teaching for disciples on the path.
+qualities: happiness, ethical conduct, learned, fear of wrongdoing
+theme: principle
 ---
 
 <!-- @segment an5.42:1.1 -->

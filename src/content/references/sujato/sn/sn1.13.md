@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: There’s Nothing Like a Child
+description: A deity engages the Buddha in verse on there’s nothing like a child, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: affection, wisdom, mindfulness
+theme: inspiration, wisdom
 ---
 
 <!-- @segment sn1.13:1.1 -->

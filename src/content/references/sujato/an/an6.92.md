@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Things That Can’t Be Done (1st)
+description: The Buddha teaches on things that can’t be done (1st), presenting a sixfold teaching for disciples on the path.
+qualities: faith, wrong view
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.92:1.1 -->

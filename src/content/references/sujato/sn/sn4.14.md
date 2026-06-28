@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Appropriate
+description: While the Buddha teaches a large assembly of laypeople, Māra claims it is not appropriate for him to instruct others and warns against favoring and opposing; the Buddha answers that he teaches without grasping at views.
+qualities: compassion, wisdom
+theme: wisdom, story
 ---
 
 <!-- @segment sn4.14:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Nymphs
+description: A deity engages the Buddha in verse on nymphs, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: conscience, mindfulness, right view, wrong view
+theme: wisdom
 ---
 
 <!-- @segment sn1.46:1.1 -->

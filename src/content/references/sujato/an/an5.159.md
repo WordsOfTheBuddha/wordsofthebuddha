@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Udāyī
+description: The Buddha teaches on with udāyī, presenting a fivefold teaching for disciples on the path.
+qualities: loving-kindness, wisdom
+theme: story, principle
 ---
 
 <!-- @segment an5.159:1.1 -->

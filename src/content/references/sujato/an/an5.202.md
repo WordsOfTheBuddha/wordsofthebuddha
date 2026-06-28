@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Listening to the Teaching
+description: The Buddha describes the five benefits of listening to the teaching.
+qualities: learned, doubt, faith, wrong view
+theme: inspiration
 ---
 
 <!-- @segment an5.202:1.1 -->

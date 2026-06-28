@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Horned Rhino
+description: Verses in the Uragavagga (The Horned Rhino) depicting how a mendicant abandons defilements and sheds worldly attachment like a serpent casting off its worn-out skin.
+qualities: affection, liberation, greed, aversion, compassion, equanimity
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.3:1.1 -->

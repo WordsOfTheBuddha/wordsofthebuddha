@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Conscience
+description: A deity engages the Buddha in verse on conscience, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: conscience, suffering, mindfulness
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.18:1.1 -->

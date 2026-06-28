@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Lump of Salt
+description: The Buddha teaches on a lump of salt, presenting a threefold teaching for disciples on the path.
+qualities: harm, stealing, suffering, spiritual life, wisdom, patience
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.100:1.1 -->

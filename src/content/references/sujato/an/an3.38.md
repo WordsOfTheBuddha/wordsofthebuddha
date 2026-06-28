@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Four Great Kings (2nd)
+description: The Buddha teaches on the four great kings (2nd), presenting a threefold teaching for disciples on the path.
+qualities: suffering, lamentation, sorrow, anxiety, displeasure
+theme: story, urgency
 ---
 
 <!-- @segment an3.38:1.1 -->

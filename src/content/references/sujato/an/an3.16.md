@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Sure Bet
+description: The Buddha teaches on a sure bet, presenting a threefold teaching for disciples on the path.
+qualities: wakefulness, harm, cultivation, jhana, ending, displeasure
+theme: training guideline, principle
 ---
 
 <!-- @segment an3.16:1.1 -->

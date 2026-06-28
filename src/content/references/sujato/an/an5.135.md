@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aspiration (1st)
+description: The Buddha describes the five qualities aspires to end the defilements—it’s when an anointed aristocratic king’s eldest son is well born on both his mother’s and father’s side, stemming from a clean vessel, with irrefutable and impeccable genealogy back to the seventh paternal generation, he is attractive, good-looking, lovely, of surpassing beauty, he is dear and beloved to his parents, and he is dear and beloved to the people of town and country, and he is trained and skilled in the arts of anointed aristocratic kings, such as elephant riding, horse riding, driving a chariot, archery, and swordsmanship.
+qualities: wholesome, dearness, faith, ending, giving, giving up
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.135:1.1 -->

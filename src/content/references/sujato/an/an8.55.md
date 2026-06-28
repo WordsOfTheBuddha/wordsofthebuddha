@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ujjaya
+description: The Buddha describes the eight qualities of a faithful householder of discernment.
+qualities: happiness, giving, faith, wisdom, wholesome, good friendship
+theme: story, urgency
 ---
 
 <!-- @segment an8.55:1.1 -->

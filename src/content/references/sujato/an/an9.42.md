@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Cramped
+description: The Buddha teaches Venerable Ud on cramped, presenting a ninefold teaching for disciples on the path.
+qualities: jhana, attachment, uplifting joy, equanimity, giving, giving up
+theme: principle, wisdom
 ---
 
 <!-- @segment an9.42:1.1 -->

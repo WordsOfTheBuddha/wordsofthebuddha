@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Visākhā on the Agreeable Gods
+description: The Buddha teaches on with visākhā on the agreeable gods, presenting a eightfold teaching for disciples on the path.
+qualities: stinginess, desire, compassion, craving, giving, loving-kindness
+theme: story, urgency
 ---
 
 <!-- @segment an8.47:1.1 -->

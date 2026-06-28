@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Defilements
+description: The Buddha teaches that a mendicant who has given up defilements by restraint, using, enduring, avoiding, getting rid, and developing is worthy of offerings and the supreme field of merit.
+qualities: harm, adventurousness, suffering, merit, respect, equanimity
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an6.58:1.1 -->

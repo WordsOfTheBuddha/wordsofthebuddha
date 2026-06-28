@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Hair Blanket
+description: The Buddha teaches on a hair blanket, presenting a threefold teaching for disciples on the path.
+qualities: vigour, harm, suffering, wrong view
+theme: recollection of the Buddha, wisdom
 ---
 
 <!-- @segment an3.137:1.1 -->

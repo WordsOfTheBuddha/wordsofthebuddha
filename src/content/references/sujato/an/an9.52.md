@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Safe Place
+description: The Buddha teaches on a safe place, presenting a ninefold teaching for disciples on the path.
+qualities: wisdom, ending, jhana, sensual desire
+theme: wisdom
 ---
 
 <!-- @segment an9.52:1.1 -->

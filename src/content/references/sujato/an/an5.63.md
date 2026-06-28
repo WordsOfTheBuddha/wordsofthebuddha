@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Growth (1st)
+description: The Buddha teaches on growth (1st), presenting a fivefold teaching for disciples on the path.
+qualities: faith, wisdom, giving, cultivation, wholesome
+theme: inspiration, principle
 ---
 
 <!-- @segment an5.63:1.1 -->

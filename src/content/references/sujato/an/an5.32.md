@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Cundī
+description: The Buddha teaches on with cundī, presenting a fivefold teaching for disciples on the path.
+qualities: faith, harm, wholesome, merit, ending, ethical conduct
+theme: story, urgency
 ---
 
 <!-- @segment an5.32:1.1 -->

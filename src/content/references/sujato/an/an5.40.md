@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Great Sal Trees
+description: The Buddha teaches on great sal trees, presenting a fivefold teaching for disciples on the path.
+qualities: faith, giving, wholesome, ethical conduct, wisdom, delight
+theme: story, inspiration
 ---
 
 <!-- @segment an5.40:1.1 -->

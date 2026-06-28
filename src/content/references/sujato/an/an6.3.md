@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faculties
+description: The Buddha teaches that a mendicant with six qualities is worthy of offerings dedicated to the gods, hospitality, religious donation, and veneration as the supreme field of merit.
+qualities: merit, wisdom, liberation, respect, ending, faith
+theme: training guideline, inspiration
 ---
 
 <!-- @segment an6.3:1.1 -->

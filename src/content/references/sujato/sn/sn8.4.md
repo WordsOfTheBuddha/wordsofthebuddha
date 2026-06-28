@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
+description: When lust infects his mind after seeing finely dressed women, Venerable Vaṅgīsa dispels his own discontent by reciting verses on renunciation, firmness in the teaching, and defying Māra on the path to extinguishment.
+qualities: passion, sensual desire, conceit, compassion, mindfulness, suffering
+theme: training guideline, wisdom
 ---
 
 <!-- @segment sn8.4:1.1 -->

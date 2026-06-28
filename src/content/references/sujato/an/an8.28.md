@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Powers (2nd)
+description: The Buddha teaches Venerable S on powers (2nd), presenting a eightfold teaching for disciples on the path.
+qualities: wisdom, mindfulness, psychic power, cultivation, giving up, jhana
+theme: principle
 ---
 
 <!-- @segment an8.28:1.1 -->

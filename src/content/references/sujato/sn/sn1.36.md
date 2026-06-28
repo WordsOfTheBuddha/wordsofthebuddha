@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faith
+description: A deity engages the Buddha in verse on faith, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: faith, negligence, mindfulness, diligence, happiness, anger
+theme: story, inspiration
 ---
 
 <!-- @segment sn1.36:1.1 -->

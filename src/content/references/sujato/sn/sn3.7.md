@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Judgment
+description: King Pasenadi of Kosala visits the Buddha and hears teaching on judgment, exploring ethics, kingship, and the Dhamma through dialogue and simile.
+qualities: harm, suffering, desire, sensual desire, craving
+theme: story, urgency
 ---
 
 <!-- @segment sn3.7:1.1 -->

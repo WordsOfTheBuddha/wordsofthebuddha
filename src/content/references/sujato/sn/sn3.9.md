@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sacrifice
+description: King Pasenadi of Kosala visits the Buddha and hears teaching on sacrifice, exploring ethics, kingship, and the Dhamma through dialogue and simile.
+qualities: ill will, wisdom
+theme: story, wisdom
 ---
 
 <!-- @segment sn3.9:1.1 -->

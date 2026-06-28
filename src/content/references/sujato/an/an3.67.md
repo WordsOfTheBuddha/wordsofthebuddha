@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Topics of Discussion
+description: The Buddha teaches on topics of discussion, presenting a threefold teaching for disciples on the path.
+qualities: aversion, liberation, attachment, examination, jealousy, aggressiveness
+theme: directly knowing, inquisitiveness
 ---
 
 <!-- @segment an3.67:1.1 -->

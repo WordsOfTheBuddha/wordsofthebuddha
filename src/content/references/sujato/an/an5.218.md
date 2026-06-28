@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unimpressive Conduct (2nd)
+description: The Buddha describes the five drawbacks of unimpressive conduct.
+qualities: faith, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.218:1.1 -->

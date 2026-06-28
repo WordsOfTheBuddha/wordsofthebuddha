@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Lower Fetters
+description: The Buddha teaches on lower fetters, presenting a ninefold teaching for disciples on the path.
+qualities: mindfulness, doubt, ill will, sensual desire, desire, cultivation
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an9.67:1.1 -->

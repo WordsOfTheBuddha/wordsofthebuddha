@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Brahmanical Traditions
+description: Verses in the Little Chapter (Brahmanical Traditions) on ethical conduct, devotion, and the supreme value of the Buddha, Dhamma, and Saṅgha.
+qualities: spiritual life, patience, faith, happiness, craving, greed
+theme: inspiration, wisdom
 ---
 
 <!-- @segment snp2.7:1.1 -->

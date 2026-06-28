@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Khema
+description: The young deity Khema recites verses on the bitter fruit of wicked deeds and the gladness of skillful actions, and the Buddha adds the simile of a careful cart driver who stays on the highway.
+qualities: wholesome, mindfulness, immaturity
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn2.22:1.1 -->

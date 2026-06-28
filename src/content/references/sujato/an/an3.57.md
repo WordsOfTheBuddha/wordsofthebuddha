@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vacchagotta
+description: The Buddha teaches the wanderer on with vacchagotta, presenting a threefold teaching for disciples on the path.
+qualities: faith, giving, merit, vision, liberation, ethical conduct
+theme: urgency, training guideline
 ---
 
 <!-- @segment an3.57:1.1 -->

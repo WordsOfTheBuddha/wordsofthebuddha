@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Senior Mendicants
+description: The Buddha teaches on senior mendicants, presenting a fivefold teaching for disciples on the path.
+qualities: learned, mindfulness, wholesome, happiness, suffering, harm
+theme: wisdom
 ---
 
 <!-- @segment an5.88:1.1 -->

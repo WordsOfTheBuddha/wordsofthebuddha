@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Morning
+description: The Buddha teaches on morning, presenting a threefold teaching for disciples on the path.
+qualities: wholesome, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.155:1.1 -->

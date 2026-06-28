@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Assemblies
+description: The Buddha describes the eight assemblies—of aristocrats, brahmins, householders, and ascetics, and their counterparts among gods, demons, divinities, and Brahmās—and how a mendicant should train when entering each.
+qualities: wisdom
+theme: inspiration, principle
 ---
 
 <!-- @segment an8.69:1.1 -->

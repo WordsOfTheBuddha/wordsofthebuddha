@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Downfalls for a Lay Follower
+description: The Buddha describes the seven downfalls for a lay follower … there are these seven successes for a lay follower—they don’t miss out on seeing the mendicants, they don’t neglect listening to the true teaching, they train in higher ethical conduct, and they’re very confident about mendicants, whether senior, junior, or middle, and they don’t listen to the teaching with a hostile, fault-finding mind, and they don’t seek outside of the buddhist community for those worthy of religious donations, and and they serve the buddhist community first.
+qualities: ethical conduct, faith
+theme: inspiration, principle
 ---
 
 <!-- @segment an7.31:1.1 -->

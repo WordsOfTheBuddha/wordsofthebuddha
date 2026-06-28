@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Bad Mental Conduct (2nd)
+description: The Buddha describes the five drawbacks in bad mental conduct … benefits in good mental conduct …”.
+qualities: harm, wholesome
+theme: principle
 ---
 
 <!-- @segment an5.248:1.1 -->

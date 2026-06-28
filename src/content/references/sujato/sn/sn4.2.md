@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In the Form of an Elephant King
+description: Soon after awakening, while meditating in the rain at night, the Buddha is approached by Māra manifesting as a terrifying elephant king; the Teacher recognizes him and remains fearless.
+qualities: fear, craving, flexible
+theme: story, training guideline
 ---
 
 <!-- @segment sn4.2:1.1 -->

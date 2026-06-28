@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Three Grounds
+description: The Buddha teaches on three grounds, presenting a threefold teaching for disciples on the path.
+qualities: faith, stinginess, giving, ethical conduct
+theme: inspiration
 ---
 
 <!-- @segment an3.42:1.1 -->

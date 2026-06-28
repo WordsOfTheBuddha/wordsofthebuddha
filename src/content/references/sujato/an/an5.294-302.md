@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Jain Ascetic, Etc.
+description: The Buddha presents a repeated fivefold teaching on a jain ascetic, etc. in this grouped discourse.
+qualities: sexual misconduct, wisdom
+theme: principle
 ---
 
 <!-- @segment an5.294-302:1.1 -->

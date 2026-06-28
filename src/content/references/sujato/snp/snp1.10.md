@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Āḷavaka
+description: Verse dialogue in the Uragavagga in which the Buddha responds regarding with āḷavaka, contrasting worldly security with the safety of one established in the path.
+qualities: wisdom, faith, giving, truth, wholesome, happiness
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.10:1.1 -->

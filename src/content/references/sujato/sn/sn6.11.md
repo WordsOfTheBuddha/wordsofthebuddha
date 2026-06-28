@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Sanaṅkumāra
+description: The divinity Sanaṅkumāra recites verses before the Buddha declaring that one accomplished in knowledge and conduct is best among gods and humans, beyond mere birth as an aristocrat; the Teacher approves.
+qualities: mindfulness, wisdom
+theme: inspiration, story
 ---
 
 <!-- @segment sn6.11:1.1 -->

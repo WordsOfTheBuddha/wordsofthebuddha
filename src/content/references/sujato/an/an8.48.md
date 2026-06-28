@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nakula’s Mother on the Agreeable Gods
+description: The Buddha teaches on with nakula’s mother on the agreeable gods, presenting a eightfold teaching for disciples on the path.
+qualities: sexual misconduct, stinginess, desire, compassion, craving, giving
+theme: story, urgency
 ---
 
 <!-- @segment an8.48:1.1 -->

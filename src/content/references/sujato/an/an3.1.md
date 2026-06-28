@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Perils
+description: The Buddha teaches that whatever dangers, perils, and hazards there are all come from the foolish, not the astute, urging mendicants to shun the three qualities of a fool and undertake those of an astute person.
+qualities: ill will, immaturity, wisdom
+theme: story, training guideline
 ---
 
 <!-- @segment an3.1:1.1 -->

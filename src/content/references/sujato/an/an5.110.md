@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wilderness
+description: The Buddha teaches on wilderness, presenting a fivefold teaching for disciples on the path.
+qualities: wholesome, learned, flexible, liberation, mindfulness, ending
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an5.110:1.1 -->

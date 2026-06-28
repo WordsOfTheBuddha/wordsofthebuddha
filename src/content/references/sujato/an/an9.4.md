@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Nandaka
+description: The Buddha teaches on with nandaka, presenting a ninefold teaching for disciples on the path.
+qualities: respect, tranquility, wisdom, discernment, wholesome, shyness
+theme: story, inspiration
 ---
 
 <!-- @segment an9.4:1.1 -->

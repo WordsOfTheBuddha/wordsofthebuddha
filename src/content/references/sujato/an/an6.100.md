@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Not-Self
+description: The Buddha teaches on not-self, presenting a sixfold teaching for disciples on the path.
+qualities: wrong view, wisdom
+theme: principle
 ---
 
 <!-- @segment an6.100:1.1 -->

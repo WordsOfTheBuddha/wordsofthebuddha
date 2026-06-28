@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Giving Up
+description: The Buddha teaches on giving up, presenting a sevenfold teaching for disciples on the path.
+qualities: conceit, spiritual life, doubt, ignorance, desire, giving
+theme: wisdom
 ---
 
 <!-- @segment an7.9:1.1 -->

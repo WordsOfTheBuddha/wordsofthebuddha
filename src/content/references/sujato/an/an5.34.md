@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With General Sīha
+description: The Buddha teaches on with general sīha, presenting a fivefold teaching for disciples on the path.
+qualities: giving, wholesome, faith, adventurousness, delight, dearness
+theme: story, urgency
 ---
 
 <!-- @segment an5.34:1.1 -->

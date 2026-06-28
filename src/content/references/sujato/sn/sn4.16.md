@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Alms Bowls
+description: While the Buddha teaches on the five grasping aggregates, Māra manifests as an ox threatening alms bowls to distract the mendicants; the Buddha exposes him in verse.
+qualities: attachment, desire
+theme: training guideline, inspiration
 ---
 
 <!-- @segment sn4.16:1.1 -->

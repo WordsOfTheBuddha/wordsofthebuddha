@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Childless (1st)
+description: King Pasenadi of Kosala visits the Buddha and discusses childless (1st), receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: happiness, wholesome, collectedness
+theme: story
 ---
 
 <!-- @segment sn3.19:1.1 -->

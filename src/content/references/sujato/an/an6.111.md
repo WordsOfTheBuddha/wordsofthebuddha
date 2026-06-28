@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Elements
+description: The Buddha teaches on elements, presenting a sixfold teaching for disciples on the path.
+qualities: cruelty, giving up, non-harm, wholesome, sensual desire, harm
+theme: training guideline, principle
 ---
 
 <!-- @segment an6.111:1.1 -->

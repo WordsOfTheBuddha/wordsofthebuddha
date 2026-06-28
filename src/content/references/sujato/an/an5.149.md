@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Temporarily Free (1st)
+description: The Buddha teaches on temporarily free (1st), presenting a fivefold teaching for disciples on the path.
+qualities: liberation, wrong view
+theme: principle
 ---
 
 <!-- @segment an5.149:1.1 -->

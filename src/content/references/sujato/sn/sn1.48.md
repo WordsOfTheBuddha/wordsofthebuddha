@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Jeta’s Grove
+description: A deity engages the Buddha in verse on jeta’s grove, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: ethical conduct, joy, wisdom, wholesome
+theme: wisdom, story
 ---
 
 <!-- @segment sn1.48:1.1 -->

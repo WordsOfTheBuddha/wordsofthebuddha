@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Friend
+description: The Buddha teaches on a friend, presenting a fivefold teaching for disciples on the path.
+qualities: feuding, wisdom
+theme: inspiration
 ---
 
 <!-- @segment an5.146:1.1 -->

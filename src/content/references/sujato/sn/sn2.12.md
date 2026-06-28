@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Vishnu
+description: Standing to one side, the young deity Vishnu addresses the Buddha in verse on with vishnu.
+qualities: jhana, mindfulness
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn2.12:1.1 -->

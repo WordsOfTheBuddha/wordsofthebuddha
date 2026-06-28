@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Aristocrats
+description: The Buddha teaches on aristocrats, presenting a sixfold teaching for disciples on the path.
+qualities: wisdom, ethical conduct, patience, stealing
+theme: story, wisdom
 ---
 
 <!-- @segment an6.52:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Faith in Individuals
+description: "The Buddha describes the five drawbacks of placing faith in an individual—the individual to whom an individual is devoted falls into an offense such that the saṅgha suspends them, it occurs to them:, ‘this individual dear and beloved to me has been suspended by the saṅgha.’, and they lose much of their faith in mendicants, and so they don’t frequent other mendicants,."
+qualities: faith, dearness
+theme: inspiration
 ---
 
 <!-- @segment an5.250:1.1 -->

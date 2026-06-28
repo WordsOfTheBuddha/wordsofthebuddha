@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
+description: A forest deity approaches a mendicant in verse on with ānanda, encouraging seclusion, mindfulness, and freedom from sensual desire.
+qualities: craving, compassion
+theme: training guideline
 ---
 
 <!-- @segment sn9.5:1.1 -->

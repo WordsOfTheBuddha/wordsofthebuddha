@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Basis
+description: The Buddha teaches on basis, presenting a threefold teaching for disciples on the path.
+qualities: flexible, equanimity, ending, insight, liberation, psychic power
+theme: training guideline, principle
 ---
 
 <!-- @segment an3.102:1.1 -->

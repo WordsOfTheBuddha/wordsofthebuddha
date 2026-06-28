@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ānanda
+description: The Buddha teaches a disciple on with ānanda, presenting a sixfold teaching for disciples on the path.
+qualities: learned, doubt
+theme: inspiration, inquisitiveness
 ---
 
 <!-- @segment an6.51:1.1 -->

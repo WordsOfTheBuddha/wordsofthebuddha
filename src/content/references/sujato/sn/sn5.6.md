@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Cālā
+description: The nun Cālā confronts Māra in verse when he urges her to approve of rebirth for the sake of sensual pleasures, teaching that birth brings killing, caging, and misery—and that the Buddha has settled her in the truth of transcending rebirth.
+qualities: formless, giving, giving up, truth, suffering, cultivation
+theme: inspiration, urgency
 ---
 
 <!-- @segment sn5.6:1.1 -->

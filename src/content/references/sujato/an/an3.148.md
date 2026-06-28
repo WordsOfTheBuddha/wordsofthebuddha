@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unethical
+description: The Buddha teaches on unethical, presenting a threefold teaching for disciples on the path.
+qualities: ethical conduct, wisdom
+theme: principle
 ---
 
 <!-- @segment an3.148:1.1 -->

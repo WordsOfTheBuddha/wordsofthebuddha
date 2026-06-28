@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Untitled Discourse on Greed (2nd)
+description: The Buddha teaches that six things should be developed for insight into and the complete ending of greed, hate, delusion, and other unwholesome qualities.
+qualities: greed, insight, recollection of the Buddha, giving, craving
+theme: principle, wisdom
 ---
 
 <!-- @segment an6.141:1.1 -->

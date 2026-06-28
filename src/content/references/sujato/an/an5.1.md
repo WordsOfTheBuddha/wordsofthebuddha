@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: In Brief
+description: The Buddha describes the five powers of a trainee—faith, conscience, prudence, energy, and wisdom—that support a mendicant on the path.
+qualities: conscience, faith, wisdom, vigour
+theme: story, training guideline
 ---
 
 <!-- @segment an5.1:1.1 -->

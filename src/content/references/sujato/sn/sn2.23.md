@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Serī
+description: Standing to one side, the young deity Serī addresses the Buddha in verse on with serī.
+qualities: giving, merit, wholesome, faith, stinginess
+theme: story, inspiration
 ---
 
 <!-- @segment sn2.23:1.1 -->

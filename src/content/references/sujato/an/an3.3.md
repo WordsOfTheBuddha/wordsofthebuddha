@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Thinking
+description: The Buddha describes the three characteristics, signs, and manifestations of a fool.
+qualities: immaturity, wisdom
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an3.3:1.1 -->

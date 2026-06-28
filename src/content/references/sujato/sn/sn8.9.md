@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Koṇḍañña
+description: Venerable Vaṅgīsa, inspired by a Dhamma talk, rises to extol Venerable the in verse—praising his wisdom, clarity of teaching, and benefit to the Saṅgha.
+qualities: mindfulness, solitude, ill will
+theme: inspiration, recollection of the Buddha
 ---
 
 <!-- @segment sn8.9:1.1 -->

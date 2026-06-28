@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Childless (2nd)
+description: King Pasenadi of Kosala visits the Buddha and discusses childless (2nd), receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: merit, wholesome, giving, ending, ill will
+theme: story, inspiration
 ---
 
 <!-- @segment sn3.20:1.1 -->

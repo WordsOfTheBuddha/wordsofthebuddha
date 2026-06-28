@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fires (2nd)
+description: The Buddha teaches on fires (2nd), presenting a sevenfold teaching for disciples on the path.
+qualities: harm, undeveloped, wholesome, suffering, unwholesome, delusion
+theme: story, urgency
 ---
 
 <!-- @segment an7.47:1.1 -->

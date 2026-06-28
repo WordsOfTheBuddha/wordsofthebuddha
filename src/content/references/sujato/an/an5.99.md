@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Lion
+description: The Buddha teaches on the lion, presenting a fivefold teaching for disciples on the path.
+qualities: respect, wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an5.99:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Uttara on Failure
+description: The Buddha teaches on uttara on failure, presenting a eightfold teaching for disciples on the path.
+qualities: wholesome, bad friendship, companionship, harm, inspiration, spiritual life
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an8.8:1.1 -->

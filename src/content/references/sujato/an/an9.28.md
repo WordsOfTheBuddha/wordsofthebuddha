@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fears and Enmities (2nd)
+description: The Buddha teaches on fears and enmities (2nd), presenting a ninefold teaching for disciples on the path.
+qualities: displeasure, suffering, fear, desire, harm, slaughtering
+theme: directly knowing, training guideline
 ---
 
 <!-- @segment an9.28:1.1 -->

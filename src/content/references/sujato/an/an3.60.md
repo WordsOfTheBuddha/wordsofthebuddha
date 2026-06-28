@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Saṅgārava
+description: The Buddha teaches on with saṅgārava, presenting a threefold teaching for disciples on the path.
+qualities: psychic power, wholesome, attachment, insight, spiritual life, delusion
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an3.60:1.1 -->

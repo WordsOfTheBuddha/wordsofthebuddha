@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Very Fruitful Gift
+description: The Buddha teaches on a very fruitful gift, presenting a sevenfold teaching for disciples on the path.
+qualities: wholesome, giving
+theme: story, urgency
 ---
 
 <!-- @segment an7.52:1.1 -->

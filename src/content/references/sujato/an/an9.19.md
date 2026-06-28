@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Deity
+description: The Buddha teaches on a deity, presenting a ninefold teaching for disciples on the path.
+qualities: regret, quenching, jhana
+theme: inquisitiveness, wisdom
 ---
 
 <!-- @segment an9.19:1.1 -->

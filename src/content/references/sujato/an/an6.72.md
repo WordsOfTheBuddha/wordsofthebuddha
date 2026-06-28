@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Strength
+description: The Buddha teaches on strength, presenting a sixfold teaching for disciples on the path.
+qualities: collectedness, wisdom
+theme: training guideline
 ---
 
 <!-- @segment an6.72:1.1 -->

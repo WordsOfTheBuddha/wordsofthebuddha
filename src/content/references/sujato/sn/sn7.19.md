@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Brahmin Who Provided for His Mother
+description: The Buddha teaches brahmins in dialogue and verse, refuting pride in birth and ritual while guiding them toward ethical conduct and wisdom.
+qualities: merit, wisdom
+theme: cultivating discernment, story
 ---
 
 <!-- @segment sn7.19:1.1 -->

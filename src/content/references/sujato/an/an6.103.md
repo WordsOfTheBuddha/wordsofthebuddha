@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With a Drawn Sword
+description: The Buddha teaches on with a drawn sword, presenting a sixfold teaching for disciples on the path.
+qualities: suffering, affection
+theme: principle
 ---
 
 <!-- @segment an6.103:1.1 -->

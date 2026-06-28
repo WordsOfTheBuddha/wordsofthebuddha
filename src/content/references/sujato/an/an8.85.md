@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Terms for the Realized One
+description: The Buddha teaches on terms for the realized one, presenting a eightfold teaching for disciples on the path.
+qualities: liberation, wisdom
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an8.85:1.1 -->

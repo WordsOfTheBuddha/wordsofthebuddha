@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Wrong Speech
+description: The Buddha teaches on wrong speech, presenting a fivefold teaching for disciples on the path.
+qualities: faith, wrong speech, right speech, ethical conduct, unprincipled conduct
+theme: inspiration
 ---
 
 <!-- @segment an5.119:1.1 -->

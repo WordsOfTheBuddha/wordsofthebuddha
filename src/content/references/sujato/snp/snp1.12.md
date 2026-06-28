@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Sage
+description: Verses in the Uragavagga (The Sage) depicting how a mendicant abandons defilements and sheds worldly attachment like a serpent casting off its worn-out skin.
+qualities: ending, craving, greed, vision, wisdom, negligence
+theme: inspiration, principle
 ---
 
 <!-- @segment snp1.12:1.1 -->

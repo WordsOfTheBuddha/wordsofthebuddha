@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Hopes
+description: The Buddha describes the three individuals.
+qualities: liberation, ending, insight, wisdom, harm, wholesome
+theme: story, wisdom
 ---
 
 <!-- @segment an3.13:1.1 -->

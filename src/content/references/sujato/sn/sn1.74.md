@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Rain
+description: A deity engages the Buddha in verse on rain, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: ignorance, delusion
+theme: wisdom
 ---
 
 <!-- @segment sn1.74:1.1 -->

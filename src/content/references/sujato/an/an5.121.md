@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Sick
+description: The Buddha teaches on sick, presenting a fivefold teaching for disciples on the path.
+qualities: liberation, ending, insight, wisdom, discontentment, suffering
+theme: story, urgency
 ---
 
 <!-- @segment an5.121:1.1 -->

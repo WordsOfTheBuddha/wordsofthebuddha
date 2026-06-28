@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Starting Fights
+description: The Buddha teaches on starting fights, presenting a fivefold teaching for disciples on the path.
+qualities: harm, wisdom
+theme: urgency
 ---
 
 <!-- @segment an5.212:1.1 -->

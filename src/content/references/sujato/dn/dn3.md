@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Ambaṭṭha
+description: The proud young brahmin Ambaṭṭha is sent to examine the Buddha but insults him; the Buddha refutes his claim to descent from the sage Kaṇha and teaches the true marks of a brahmin by conduct, not birth.
+qualities: conceit, examination, wisdom, ethical conduct, discernment
+theme: cultivating discernment, story
 ---
 
 <!-- @segment dn3:1.1.1 -->

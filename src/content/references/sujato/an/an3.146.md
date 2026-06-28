@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Unskillful
+description: The Buddha teaches on unskillful, presenting a threefold teaching for disciples on the path.
+qualities: unwholesome, wholesome
+theme: principle
 ---
 
 <!-- @segment an3.146:1.1 -->

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Battle (2nd)
+description: King Pasenadi of Kosala visits the Buddha and discusses battle (2nd), receiving guidance on conduct, wisdom, and the spiritual life.
+qualities: suffering, cruelty, immaturity
+theme: story, wisdom
 ---
 
 <!-- @segment sn3.15:1.1 -->

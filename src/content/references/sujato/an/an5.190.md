@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Those Who Eat Only From the Almsbowl
+description: The Buddha teaches on those who eat only from the almsbowl, presenting a fivefold teaching for disciples on the path.
+qualities: contentment, insanity, solitude
+theme: principle
 ---
 
 <!-- @segment an5.190:1.1 -->

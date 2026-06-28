@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Simile of the Cow
+description: The Buddha teaches on the simile of the cow, presenting a ninefold teaching for disciples on the path.
+qualities: jhana, attachment, uplifting joy, unwholesome, desire, ending
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an9.35:1.1 -->

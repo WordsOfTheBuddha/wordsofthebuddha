@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Training (2nd)
+description: The Buddha teaches on training (2nd), presenting a threefold teaching for disciples on the path.
+qualities: ending, wisdom, suffering, quenching, liberation, vigour
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an3.87:1.1 -->

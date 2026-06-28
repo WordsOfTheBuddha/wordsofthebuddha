@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Stinginess
+description: The Buddha teaches on stinginess, presenting a ninefold teaching for disciples on the path.
+qualities: stinginess, mindfulness, cultivation, jhana
+theme: training guideline, principle
 ---
 
 <!-- @segment an9.69:1.1 -->

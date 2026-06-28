@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: About Aruṇavatī
+description: The divinity Aruṇavatī approaches the Buddha and speaks in verse on about aruṇavatī, affirming the depth and reach of the Dhamma even among exalted beings.
+qualities: wholesome, giving, giving up, suffering, mindfulness, psychic power
+theme: recollection of the Buddha, story
 ---
 
 <!-- @segment sn6.14:1.1 -->

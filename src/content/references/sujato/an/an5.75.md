@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Warriors (1st)
+description: The Buddha describes the five hindrances—sensual desire, ill will, dullness and drowsiness, restlessness and worry, and doubt—that overwhelm the mind and weaken wisdom until they are abandoned.
+qualities: spiritual life, ending, giving, giving up, suffering, jhana
+theme: training guideline, principle
 ---
 
 <!-- @segment an5.75:1.1 -->

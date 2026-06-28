@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Quick-witted
+description: The Buddha teaches a disciple on quick-witted, presenting a fivefold teaching for disciples on the path.
+qualities: learned, wholesome
+theme: principle
 ---
 
 <!-- @segment an5.169:1.1 -->

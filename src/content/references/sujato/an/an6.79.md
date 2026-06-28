@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Achievement
+description: The Buddha teaches on achievement, presenting a sixfold teaching for disciples on the path.
+qualities: wholesome, vigour
+theme: principle
 ---
 
 <!-- @segment an6.79:1.1 -->

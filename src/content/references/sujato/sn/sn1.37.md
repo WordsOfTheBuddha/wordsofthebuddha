@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The Congregation
+description: A deity engages the Buddha in verse on the congregation, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: mindfulness, giving, giving up, collectedness, wisdom
+theme: inspiration, story
 ---
 
 <!-- @segment sn1.37:1.1 -->

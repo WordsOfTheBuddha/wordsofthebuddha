@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Upacālā
+description: The nun Upacālā confronts Māra in verse when he tempts her with rebirth among the gods of the Thirty-Three and other heavens, teaching that the whole world is burning and her mind adores the place where Māra cannot go.
+qualities: affection, delight, attachment, cultivation, jhana, sensual desire
+theme: training guideline, inspiration
 ---
 
 <!-- @segment sn5.7:1.1 -->

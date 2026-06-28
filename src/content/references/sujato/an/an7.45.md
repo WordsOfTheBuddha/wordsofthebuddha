@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Prerequisites for Immersion
+description: The Buddha describes the seven prerequisites for immersion—right view, right purpose, right speech, right action, right livelihood, right effort, and right mindfulness, and unification of mind with these seven factors as prerequisites is what is called noble right immersion ‘with its vital conditions’ and also ‘with its prerequisites’.”.
+qualities: unification, mindfulness, right effort, right livelihood, right speech, right view
+theme: training guideline, principle
 ---
 
 <!-- @segment an7.45:1.1 -->

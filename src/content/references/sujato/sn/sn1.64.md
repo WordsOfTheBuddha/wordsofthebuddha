@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fetter
+description: A deity engages the Buddha in verse on fetter, exploring a teaching on suffering, liberation, and the law of kamma.
+qualities: giving, giving up, craving, delight
+theme: wisdom, principle
 ---
 
 <!-- @segment sn1.64:1.1 -->

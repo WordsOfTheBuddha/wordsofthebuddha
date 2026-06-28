@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: With Mahāli
+description: Brahmin emissaries from Kosala ask the Buddha whether any ascetic or brahmin has directly seen the Brahmā realm; the Buddha explains that rebirth among Brahmās follows the path of ethics, immersion, and wisdom—not mere ritual or speculation.
+qualities: faith, collectedness, wisdom, ethical conduct, examination
+theme: wisdom, training guideline
 ---
 
 <!-- @segment dn6:1.0 -->

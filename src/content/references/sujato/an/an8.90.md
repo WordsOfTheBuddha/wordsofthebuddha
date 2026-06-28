@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Proper Behavior in a Case of Aggravated Misconduct
+description: The Buddha teaches on proper behavior in a case of aggravated misconduct, presenting a eightfold teaching for disciples on the path.
+qualities: wisdom
+theme: principle
 ---
 
 <!-- @segment an8.90:1.1 -->

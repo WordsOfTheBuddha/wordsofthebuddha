@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Fears and Enmities (1st)
+description: The Buddha teaches the householder on fears and enmities (1st), presenting a ninefold teaching for disciples on the path.
+qualities: displeasure, suffering, fear, faith, desire, harm
+theme: story, recollection of the Buddha
 ---
 
 <!-- @segment an9.27:1.1 -->

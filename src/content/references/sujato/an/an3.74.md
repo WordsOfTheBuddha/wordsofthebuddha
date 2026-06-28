@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Jains
+description: The Buddha teaches on jains, presenting a threefold teaching for disciples on the path.
+qualities: ending, suffering, jhana, vision, liberation, insight
+theme: recollection of the Buddha, training guideline
 ---
 
 <!-- @segment an3.74:1.1 -->

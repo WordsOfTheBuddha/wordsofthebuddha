@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: The King of Mountains
+description: The Buddha teaches on the king of mountains, presenting a threefold teaching for disciples on the path.
+qualities: faith, wholesome, ethical conduct, wisdom, delight, desire
+theme: story, inspiration
 ---
 
 <!-- @segment an3.48:1.1 -->

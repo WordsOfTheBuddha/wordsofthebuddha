@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Very Helpful
+description: The Buddha describes the three individuals—the individual who has enabled you to go for refuge to the buddha, the teaching, and the saṅgha, this individual is very helpful to another, and this individual is very helpful to another.
+qualities: suffering, ending, liberation, insight, wisdom
+theme: wisdom
 ---
 
 <!-- @segment an3.24:1.1 -->

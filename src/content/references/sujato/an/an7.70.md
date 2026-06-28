@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Honor
+description: The Buddha teaches on honor, presenting a sevenfold teaching for disciples on the path.
+qualities: respect, diligence, wholesome, unwholesome, contempt, collectedness
+theme: training guideline, wisdom
 ---
 
 <!-- @segment an7.70:1.1 -->

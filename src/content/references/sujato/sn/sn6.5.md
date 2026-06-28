@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: A Certain Divinity
+description: "A Brahmā who thinks no ascetic can reach his realm is visited by the Buddha and chief disciples displaying mastery of the fire element; the Brahmā's conceit is humbled before the power of the Realized One."
+qualities: wholesome, psychic power, craving, wrong view, harm
+theme: wisdom, story
 ---
 
 <!-- @segment sn6.5:1.1 -->
