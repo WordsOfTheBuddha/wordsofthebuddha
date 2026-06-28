@@ -1,82 +1,78 @@
 ---
 import { keyMap } from "../utils/transformId";
-import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
+import { collectionAvailability } from "../data/collectionAvailability";
 
 // Define status type for type safety
 type StatusType = "review" | "complete";
 
-// Define collection info - using our new counts from directoryStructureWithCounts
+// Define collection info from generated availability data
 const collections = [
 	{
 		name: "dhp",
-		count: directoryStructureWithCounts.dhp?.contentCount || 0,
 		suffix: "verses",
-		title: directoryStructureWithCounts.dhp?.title || "Dhammapada",
-		total: 423,
-		// Optional status for 100% collections: 'review' or 'complete'
+		title: "Dhammapada",
+		total: collectionAvailability.dhp.total,
 		status: "complete" as StatusType,
 	},
 	{
 		name: "iti",
-		count: directoryStructureWithCounts.iti?.contentCount || 0,
 		suffix: "sayings",
-		title: directoryStructureWithCounts.iti?.title || "Itivuttaka",
-		total: 112,
-		// Example of a completed collection
+		title: "Itivuttaka",
+		total: collectionAvailability.iti.total,
 		status: "complete" as StatusType,
 	},
 	{
 		name: "ud",
-		count: directoryStructureWithCounts.ud?.contentCount || 0,
 		suffix: "utterances",
-		title: directoryStructureWithCounts.ud?.title || "Udāna",
-		total: 80,
+		title: "Udāna",
+		total: collectionAvailability.ud.total,
 		status: "complete" as StatusType,
 	},
 	{
 		name: "mn",
-		count: directoryStructureWithCounts.mn?.contentCount || 0,
 		suffix: "discourses",
-		title: directoryStructureWithCounts.mn?.title || "Majjhima Nikāya",
-		total: 152,
+		title: "Majjhima Nikāya",
+		total: collectionAvailability.mn.total,
 	},
 	{
 		name: "snp",
-		count: directoryStructureWithCounts.snp?.contentCount || 0,
 		suffix: "teachings",
-		title: directoryStructureWithCounts.snp?.title || "Sutta Nipāta",
-		total: 71,
+		title: "Sutta Nipāta",
+		total: collectionAvailability.snp.total,
 	},
 	{
 		name: "sn",
-		count: directoryStructureWithCounts.sn?.contentCount || 0,
 		suffix: "discourses",
-		title: directoryStructureWithCounts.sn?.title || "Saṁyutta Nikāya",
-		total: 2889,
+		title: "Saṁyutta Nikāya",
+		total: collectionAvailability.sn.total,
 	},
 	{
 		name: "an",
-		count: directoryStructureWithCounts.an?.contentCount || 0,
 		suffix: "discourses",
-		title: directoryStructureWithCounts.an?.title || "Aṅguttara Nikāya",
-		total: 9557,
+		title: "Aṅguttara Nikāya",
+		total: collectionAvailability.an.total,
 	},
 	{
 		name: "dn",
-		count: directoryStructureWithCounts.dn?.contentCount || 0,
 		suffix: "discourses",
-		title: directoryStructureWithCounts.dn?.title || "Dīgha Nikāya",
-		total: 34,
+		title: "Dīgha Nikāya",
+		total: collectionAvailability.dn.total,
 	},
 	{
 		name: "kp",
-		count: directoryStructureWithCounts.kp?.contentCount || 0,
 		suffix: "passages",
-		title: directoryStructureWithCounts.kp?.title || "Khuddakapāṭha",
-		total: 9,
-        status: "complete" as StatusType,
+		title: "Khuddakapāṭha",
+		total: collectionAvailability.kp.total,
+		status: "complete" as StatusType,
 	},
-];
+].map((collection) => {
+	const avail = collectionAvailability[collection.name];
+	return {
+		...collection,
+		readableCount: avail?.readableCount ?? 0,
+		translatedCount: avail?.translatedCount ?? 0,
+	};
+});
 
 // Status display configurations with proper typing
 const statusConfig: Record<
@@ -88,16 +84,22 @@ const statusConfig: Record<
 	}
 > = {
 	review: {
-		color: "bg-indigo-600", // Deeper color representing almost complete
+		color: "bg-indigo-600",
 		label: "Proofreading",
 		shortLabel: "",
 	},
 	complete: {
-		color: "bg-emerald-600", // Deepest color for final completion
+		color: "bg-emerald-600",
 		label: "Complete",
 		shortLabel: "✓",
 	},
 };
+
+function progressColor(percentage: number): string {
+	if (percentage < 30) return "bg-amber-500";
+	if (percentage < 70) return "bg-blue-500";
+	return "bg-green-500";
+}
 ---
 
 <table
@@ -120,112 +122,155 @@ const statusConfig: Record<
 	</thead>
 	<tbody>
 		{
-			collections.map(({ name, count, suffix, title, total, status }) => {
-				const percentage = Math.round((count / total) * 100) || 0;
-				const isComplete = percentage >= 100;
+			collections.map(
+				({
+					name,
+					readableCount,
+					translatedCount,
+					suffix,
+					title,
+					total,
+					status,
+				}) => {
+					const percentage = Math.min(
+						100,
+						Math.round((readableCount / total) * 100) || 0,
+					);
+					const translatedPercentage = Math.min(
+						100,
+						Math.round((translatedCount / total) * 100) || 0,
+					);
+					const isComplete = percentage >= 100;
+					const useStackedBar = readableCount > translatedCount;
 
-				// Determine color and label based on percentage or status
-				let color, statusText;
+					let barColor: string;
+					let statusText: string | null;
 
-				if (isComplete && status) {
-					// Use manual status for 100% collections with status
-					// Type assertion to ensure TypeScript knows status is a valid key
-					const typedStatus = status as StatusType;
-					color = statusConfig[typedStatus].color;
-					statusText = statusConfig[typedStatus].label;
-				} else {
-					// Use percentage-based color with gradual progression
-					color =
-						percentage < 30
-							? "bg-amber-500" // Early progress
-							: percentage < 70
-								? "bg-blue-500" // Medium progress
-								: "bg-green-500"; // Significant progress
-					statusText = null; // No status text for percentage-based items
-				}
+					if (isComplete && status) {
+						const typedStatus = status as StatusType;
+						barColor = statusConfig[typedStatus].color;
+						statusText = statusConfig[typedStatus].label;
+					} else {
+						barColor = progressColor(percentage);
+						statusText = null;
+					}
 
-				return (
-					<tr class="hover:bg-[rgba(44,44,44,0.04)] dark:hover:bg-[rgba(231,220,196,0.06)]">
-						<td class="py-2 px-4 border-b border-[color:var(--surface-border)] align-middle">
-							<a href={name} class="flex items-center">
+					return (
+						<tr class="hover:bg-[rgba(44,44,44,0.04)] dark:hover:bg-[rgba(231,220,196,0.06)]">
+							<td class="py-2 px-4 border-b border-[color:var(--surface-border)] align-middle">
+								<a href={name} class="flex items-center">
+									<span class="font-medium">
+										{keyMap[name] || name}
+									</span>
+									<span class="ml-2 text-xs text-gray-500 hidden sm:inline">
+										({title.split(" - ")[0]})
+									</span>
+								</a>
+							</td>
+							<td class="py-2 px-4 border-b border-[color:var(--surface-border)] hidden sm:table-cell">
 								<span class="font-medium">
-									{keyMap[name] || name}
-								</span>
-								<span class="ml-2 text-xs text-gray-500 hidden sm:inline">
-									({title.split(" - ")[0]})
-								</span>
-							</a>
-						</td>
-						<td class="py-2 px-4 border-b border-[color:var(--surface-border)] hidden sm:table-cell">
-							<span class="font-medium">{count}</span> {suffix}
-						</td>
-						<td class="py-2 px-4 border-b border-[color:var(--surface-border)]">
-							<div class="text-xs text-gray-500 sm:hidden mt-1">
-								{count} {suffix}
-							</div>
-							<div class="flex items-center">
-								<div class="w-full bg-[var(--surface-paper)] rounded-sm h-6 mr-1 sm:mr-2 relative border border-[color:var(--surface-border)]">
-									<div
-										class={`h-full rounded-sm transition-all duration-500 flex items-center justify-center text-white text-xs ${color}`}
-										style={`width: ${isComplete ? "100" : percentage}%`}
-									>
-										{/* Mobile: show in filled area only if >= 40% */}
-										{percentage >= 40 && (
-											<span class="font-medium sm:hidden">
-												{percentage} %
-											</span>
+									{readableCount.toLocaleString()}
+								</span>{" "}
+								{suffix}
+							</td>
+							<td class="py-2 px-4 border-b border-[color:var(--surface-border)]">
+								<div class="text-xs text-gray-500 sm:hidden mt-1">
+									{readableCount.toLocaleString()} {suffix}
+								</div>
+								<div class="flex items-center">
+									<div class="w-full bg-[var(--surface-paper)] rounded-sm h-6 mr-1 sm:mr-2 relative border border-[color:var(--surface-border)] overflow-hidden">
+										{useStackedBar ? (
+											<>
+												<div
+													class={`absolute inset-y-0 left-0 rounded-sm transition-all duration-500 opacity-40 ${barColor}`}
+													style={`width: ${percentage}%`}
+												/>
+												<div
+													class={`absolute inset-y-0 left-0 rounded-sm transition-all duration-500 opacity-90 ${barColor}`}
+													style={`width: ${translatedPercentage}%`}
+												/>
+												<div
+													class={`absolute inset-0 flex items-center justify-center text-xs font-medium pointer-events-none ${percentage >= 50 ? "text-white" : "text-gray-700 dark:text-gray-300"}`}
+												>
+													{percentage}%
+												</div>
+											</>
+										) : (
+											<div
+												class={`h-full rounded-sm transition-all duration-500 flex items-center justify-center text-white text-xs ${barColor}`}
+												style={`width: ${isComplete ? "100" : percentage}%`}
+											>
+												{percentage >= 40 && (
+													<span class="font-medium sm:hidden">
+														{percentage}%
+													</span>
+												)}
+												{percentage >= 15 && (
+													<span class="font-medium hidden sm:inline">
+														{percentage}%
+													</span>
+												)}
+											</div>
 										)}
-										{/* Tablet and up: show in filled area if >= 15% */}
-										{percentage >= 15 && (
-											<span class="font-medium hidden sm:inline">
+										{percentage < 40 && (
+											<div class="absolute inset-0 flex items-center justify-center text-gray-700 dark:text-gray-300 text-xs font-medium sm:hidden pointer-events-none">
 												{percentage}%
-											</span>
+											</div>
 										)}
 									</div>
-									{/* Mobile: show in unfilled area if < 40% */}
-									{percentage < 40 && (
-										<div class="absolute inset-0 flex items-center justify-center text-gray-700 dark:text-gray-300 text-xs font-medium sm:hidden">
-											{percentage} %
-										</div>
-									)}
+									<div class="whitespace-nowrap text-xs sm:text-sm">
+										{isComplete && status && (
+											<>
+												<span class="font-medium hidden sm:inline">
+													{statusText}
+												</span>
+												<span class="font-medium sm:hidden">
+													{
+														statusConfig[
+															status as StatusType
+														].shortLabel
+													}
+												</span>
+											</>
+										)}
+									</div>
 								</div>
-								<div class="whitespace-nowrap text-xs sm:text-sm">
-									{isComplete && status && (
-										<>
-											<span class="font-medium hidden sm:inline">
-												{statusText}
-											</span>
-											<span class="font-medium sm:hidden">
-												{
-													statusConfig[
-														status as StatusType
-													].shortLabel
-												}
-											</span>
-										</>
-									)}
-								</div>
-							</div>
-						</td>
-					</tr>
-				);
-			})
+							</td>
+						</tr>
+					);
+				},
+			)
 		}
 	</tbody>
 </table>
 
+<div
+	class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[var(--text-muted)] mt-1 mb-4 px-1"
+	aria-label="Progress bar legend"
+>
+	<div class="flex items-center gap-2">
+		<span
+			class="inline-flex w-8 h-4 shrink-0 rounded-sm bg-[var(--surface-paper)] border border-[color:var(--surface-border)] overflow-hidden relative"
+			aria-hidden="true"
+		>
+			<span class="absolute inset-y-0 left-0 w-full rounded-sm bg-green-500 opacity-90"
+			></span>
+		</span>
+		<span>Curated translation</span>
+	</div>
+	<div class="flex items-center gap-2">
+		<span
+			class="inline-flex w-8 h-4 shrink-0 rounded-sm bg-[var(--surface-paper)] border border-[color:var(--surface-border)] overflow-hidden relative"
+			aria-hidden="true"
+		>
+			<span class="absolute inset-y-0 left-0 w-full rounded-sm bg-green-500 opacity-40"
+			></span>
+		</span>
+		<span>Reference translation</span>
+	</div>
+</div>
+
 <style>
-	@keyframes progress {
-		0% {
-			width: 0;
-		}
-	}
-
-	.h-2.5 {
-		height: 0.625rem;
-	}
-
-	/* Update height for the progress bar to fit text */
 	.h-6 {
 		height: 1.5rem;
 	}

@@ -41,6 +41,8 @@ const REF_DIR = path.join(PROJECT_ROOT, "src/content/references/sujato");
 const DEFAULT_COLLECTIONS = ["dhp", "iti", "ud", "mn", "snp", "sn", "an", "kp", "dn"];
 const BILARA_REPO = "https://github.com/suttacentral/bilara-data.git";
 const BILARA_BRANCH = "published";
+/** SC ids that map to a different curated site slug — skip bilara overwrite. */
+const CURATED_REFERENCE_IDS = new Set(["snp5.17"]);
 const SPARSE_PATHS = [
 	"root/pli/ms/sutta",
 	"html/pli/ms/sutta",
@@ -368,6 +370,7 @@ function main() {
 		paliSkipped: 0,
 		pliMsCreated: 0,
 		pliMsUpdated: 0,
+		pliMsSkipped: 0,
 		refCreated: 0,
 		refUpdated: 0,
 		refSkipped: 0,
@@ -382,6 +385,10 @@ function main() {
 
 			// Dhp uses chapter files locally; skip bulk per-verse pli-ms import.
 			if (collection === "dhp") continue;
+			if (CURATED_REFERENCE_IDS.has(id)) {
+				stats.pliMsSkipped++;
+				continue;
+			}
 
 			const segments = JSON.parse(readFileSync(file, "utf-8"));
 			const { title } = extractMeta(segments);
@@ -450,6 +457,10 @@ function main() {
 			if (!id) continue;
 			const collection = collectionFromId(id);
 			if (!collectionSet.has(collection)) continue;
+			if (CURATED_REFERENCE_IDS.has(id)) {
+				stats.refSkipped++;
+				continue;
+			}
 
 			const outPath = path.join(REF_DIR, collection, `${id}.md`);
 			const segments = JSON.parse(readFileSync(file, "utf-8"));
@@ -486,6 +497,7 @@ function main() {
 	console.log(`  Pali (paragraph) skipped (curated): ${stats.paliSkipped}`);
 	console.log(`  Pli-ms (segment) created: ${stats.pliMsCreated}`);
 	console.log(`  Pli-ms (segment) updated: ${stats.pliMsUpdated}`);
+	console.log(`  Pli-ms (segment) skipped (curated): ${stats.pliMsSkipped}`);
 	console.log(`  Sujato references created: ${stats.refCreated}`);
 	console.log(`  Sujato references updated: ${stats.refUpdated}`);
 	console.log(`  Sujato references skipped: ${stats.refSkipped}`);

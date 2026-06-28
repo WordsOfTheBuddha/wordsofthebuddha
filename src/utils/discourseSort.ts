@@ -20,6 +20,12 @@ function numericPartsAfterPrefix(rest: string): number[] {
 	return rest.split(/\D+/).filter(Boolean).map((n) => parseInt(n, 10));
 }
 
+function discourseSortParts(slug: string): number[] {
+	const dotted = slug.match(/^([a-z]+)(\d.*)$/i);
+	if (dotted) return numericPartsAfterPrefix(dotted[2] ?? "");
+	return [];
+}
+
 /** Compare two discourse ids (e.g. mn2 vs mn10, mn1 vs sn12.3). */
 export function compareDiscourseIds(a: string, b: string): number {
 	const pa = /^([a-z]+)(\d.*)$/i.exec(a);
@@ -30,8 +36,8 @@ export function compareDiscourseIds(a: string, b: string): number {
 		const wa = COLLECTION_WEIGHT[ca] ?? 100;
 		const wb = COLLECTION_WEIGHT[cb] ?? 100;
 		if (wa !== wb) return wa - wb;
-		const na = numericPartsAfterPrefix(pa[2] ?? "");
-		const nb = numericPartsAfterPrefix(pb[2] ?? "");
+		const na = discourseSortParts(a);
+		const nb = discourseSortParts(b);
 		const len = Math.max(na.length, nb.length);
 		for (let i = 0; i < len; i++) {
 			const va = na[i] ?? 0;

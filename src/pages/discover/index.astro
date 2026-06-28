@@ -3,11 +3,11 @@ export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
 import BottomDrawer from "../../components/BottomDrawer.astro";
 import ExploreWidget from "../../components/ExploreWidget.astro";
-import { routes } from "../../utils/routes";
+import { siteAvailability } from "../../data/collectionAvailability";
 
 const seoTitle = "Discover the Words of the Buddha";
 const subTitle =
-	`Over 2,300 discourses, verses, sayings, passages, and utterances from ${routes.length.toLocaleString()} texts with parallel Pāli-English translations`;
+	`Over ${siteAvailability.unitCount.toLocaleString()} discourses, verses, sayings, passages, and utterances from ${siteAvailability.textCount.toLocaleString()} texts with parallel Pāli-English translations`;
 const description = "Explore";
 ---
 
