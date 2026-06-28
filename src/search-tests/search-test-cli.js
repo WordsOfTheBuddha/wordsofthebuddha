@@ -44,6 +44,7 @@ const flags = {
 	verbose: args.includes("--verbose") || args.includes("-v"),
 	diff: args.includes("--diff"),
 	add: args.includes("--add"), // Add ad-hoc query to test suite
+	references: args.includes("--references"),
 };
 
 // Parse --query "term" (ad-hoc search)
@@ -506,7 +507,12 @@ const API_BASE_URL = process.env.SEARCH_API_URL || "http://localhost:4321";
  * Requires the dev server to be running: npm run dev
  */
 async function performTestSearch(query) {
-	const url = `${API_BASE_URL}/api/search?q=${encodeURIComponent(query)}&limit=50`;
+	const params = new URLSearchParams({
+		q: query,
+		limit: "50",
+	});
+	if (flags.references) params.set("references", "true");
+	const url = `${API_BASE_URL}/api/search?${params}`;
 
 	try {
 		const response = await fetch(url);

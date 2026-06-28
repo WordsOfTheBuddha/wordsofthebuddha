@@ -134,7 +134,7 @@ async function watchContentDirectory() {
 				// Search index + TM run concurrently so files are written at ~same time
 				await Promise.all([
 					incrementalSearchIndexUpdate(absChangedFile).then(() =>
-						console.log("   • searchIndex.ts updated"),
+						console.log("   • search-index.json updated"),
 					),
 					updateTranslationMemory(absChangedFile).then(() =>
 						console.log("   • translationMemory.json updated"),
@@ -151,7 +151,7 @@ async function watchContentDirectory() {
 				console.log(`🚧 Incremental update for ${changedFile}...`);
 				await Promise.all([
 					incrementalSearchIndexUpdate(absChangedFile).then(() =>
-						console.log("   • searchIndex.ts updated"),
+						console.log("   • search-index.json updated"),
 					),
 					updateTranslationMemory(absChangedFile).then(() =>
 						console.log("   • translationMemory.json updated"),

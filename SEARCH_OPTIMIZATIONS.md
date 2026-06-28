@@ -246,6 +246,19 @@ against title, slug, and every synonym — without early exit.
 
 ---
 
+## Reference Search Pilot (June 2026)
+
+**Status:** Implemented (pilot infrastructure)
+
+- **Generator:** `src/utils/generateReferenceSearchIndex.ts` → `src/data/referenceSearchIndex.ts`
+- **API flag:** `GET /api/search?references=true` merges ~2,592 reference-only docs + Pali
+- **Benchmark:** `npm run bench:search` (requires `npm run dev`)
+- **Lazy load:** Reference index loaded on first `references=true` request via dynamic import
+
+Run benchmark after dev server is up to capture native vs reference latency table.
+
+---
+
 ## Browser Sync Gap
 
 ### Pali multi-term fallback — RESOLVED ✅

@@ -1,5 +1,8 @@
-// Use the prebuilt static index so search can run server- and client-side (offline)
-import searchIndex from "../../data/searchIndex";
+// Search index is loaded from public/search-index.json (not bundled into serverless).
+import {
+	loadNativeSearchIndex,
+	loadReferenceSearchIndex,
+} from "../../utils/loadSearchIndexData";
 import {
 	buildFuseQuery,
 	type HighlightTerm,
@@ -33,29 +36,82 @@ export interface SearchData {
 	maxScore?: number; // Cap the maximum score for this doc
 	priority?: number; // Optional priority multiplier for discourses (from frontmatter/search index)
 	contentSearchable?: boolean; // If false, don't show content snippets
+	referenceOnly?: boolean; // Sujato reference translation (no native EN page)
+}
+
+/** Optional perf stats populated when includeReferences is used (pilot / API timing). */
+export interface SearchPerfStats {
+	refIndexLoad?: number;
+	refDocCount?: number;
+	contentScan?: number;
 }
 
 let fuseIndex: Fuse<SearchData> | null = null;
+let mergedFuseIndex: Fuse<SearchData> | null = null;
+let referenceSearchData: SearchData[] | null = null;
 
 // Pre-normalized content for fast content scanning (built once, reused across searches)
 let normalizedContentMap: Map<
 	string,
 	{ content: string; contentPali: string }
 > | null = null;
+let mergedNormalizedContentMap: Map<
+	string,
+	{ content: string; contentPali: string }
+> | null = null;
 
-function getNormalizedContentMap() {
-	if (normalizedContentMap) return normalizedContentMap;
-	normalizedContentMap = new Map();
-	const data = searchIndex as unknown as SearchData[];
+function buildNormalizedContentMap(
+	data: SearchData[],
+): Map<string, { content: string; contentPali: string }> {
+	const map = new Map<string, { content: string; contentPali: string }>();
 	for (const doc of data) {
-		normalizedContentMap.set(doc.slug, {
+		map.set(doc.slug, {
 			content: normalizeText((doc.content || "").toLowerCase()),
 			contentPali: doc.contentPali
 				? normalizeText(doc.contentPali.toLowerCase())
 				: "",
 		});
 	}
-	return normalizedContentMap;
+	return map;
+}
+
+let nativeSearchData: SearchData[] | null = null;
+
+async function ensureNativeSearchData(): Promise<SearchData[]> {
+	if (!nativeSearchData) {
+		nativeSearchData =
+			(await loadNativeSearchIndex()) as unknown as SearchData[];
+	}
+	return nativeSearchData;
+}
+
+async function buildNativeNormalizedContentMap(): Promise<
+	Map<string, { content: string; contentPali: string }>
+> {
+	const data = await ensureNativeSearchData();
+	return buildNormalizedContentMap(data);
+}
+
+async function buildMergedNormalizedContentMap(): Promise<
+	Map<string, { content: string; contentPali: string }>
+> {
+	const native = await ensureNativeSearchData();
+	const merged = referenceSearchData
+		? [...native, ...referenceSearchData]
+		: native;
+	return buildNormalizedContentMap(merged);
+}
+
+async function loadReferenceSearchData(): Promise<SearchData[]> {
+	if (referenceSearchData) return referenceSearchData;
+	referenceSearchData =
+		(await loadReferenceSearchIndex()) as unknown as SearchData[];
+	return referenceSearchData;
+}
+
+/** Load reference index and reset merged caches (for API / pilot). */
+export async function ensureReferenceSearchIndexLoaded(): Promise<SearchData[]> {
+	return loadReferenceSearchData();
 }
 
 const FUSE_OPTIONS = {
@@ -86,28 +142,38 @@ const FUSE_OPTIONS = {
 	useExtendedSearch: true,
 };
 
-async function getSearchIndex(slugPrefixFilter?: string[]): Promise<Fuse<SearchData>> {
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+async function getSearchIndex(
+	slugPrefixFilter?: string[],
+	searchData?: SearchData[],
+	useMergedCache = false,
+): Promise<Fuse<SearchData>> {
+	const data: SearchData[] =
+		searchData ?? (await ensureNativeSearchData());
 
 	const useFilter = slugPrefixFilter && slugPrefixFilter.length > 0;
 	const dataToIndex = useFilter
-		? searchData.filter((doc) =>
+		? data.filter((doc) =>
 				slugPrefixFilter!.some((p) =>
 					doc.slug.toLowerCase().startsWith(p),
 				),
 			)
-		: searchData;
+		: data;
 	if (import.meta.env?.DEV && useFilter) {
 		console.log("[search] index filtered to prefix(es)", slugPrefixFilter, "→", dataToIndex.length, "docs");
 	}
 
-	if (!useFilter && fuseIndex) {
+	if (!useFilter && !searchData && fuseIndex) {
 		return fuseIndex;
+	}
+	if (!useFilter && useMergedCache && mergedFuseIndex) {
+		return mergedFuseIndex;
 	}
 
 	const fuse = new Fuse(dataToIndex, FUSE_OPTIONS);
-	if (!useFilter) {
+	if (!useFilter && !searchData) {
 		fuseIndex = fuse;
+	} else if (!useFilter && useMergedCache) {
+		mergedFuseIndex = fuse;
 	}
 	return fuse;
 }
@@ -115,6 +181,10 @@ async function getSearchIndex(slugPrefixFilter?: string[]): Promise<Fuse<SearchD
 export interface SearchOptions {
 	fields?: Array<keyof SearchData>;
 	highlight?: boolean;
+	/** Include reference-only (Sujato) discourses from lazy-loaded referenceSearchIndex */
+	includeReferences?: boolean;
+	/** Populated with refIndexLoad / refDocCount when includeReferences is true */
+	perf?: SearchPerfStats;
 }
 
 interface ParagraphMatch {
@@ -953,7 +1023,37 @@ async function performSearchInner(
 		}
 	}
 
-	const fuse = await getSearchIndex(slugPrefixFilter);
+	const includeReferences = options.includeReferences === true;
+	let activeSearchData: SearchData[] = await ensureNativeSearchData();
+
+	if (includeReferences) {
+		const tRef0 = performance.now();
+		const refData = await loadReferenceSearchData();
+		activeSearchData = [...activeSearchData, ...refData];
+		if (options.perf) {
+			options.perf.refIndexLoad = Math.round(performance.now() - tRef0);
+			options.perf.refDocCount = refData.length;
+		}
+		if (import.meta.env?.DEV) {
+			console.log(
+				"[search] references enabled:",
+				refData.length,
+				"docs, total",
+				activeSearchData.length,
+			);
+		}
+	}
+
+	const normalizedMap = includeReferences
+		? (mergedNormalizedContentMap ??=
+				await buildMergedNormalizedContentMap())
+		: (normalizedContentMap ??= await buildNativeNormalizedContentMap());
+
+	const fuse = await getSearchIndex(
+		slugPrefixFilter,
+		includeReferences ? activeSearchData : undefined,
+		includeReferences,
+	);
 	const t0 = performance.now();
 	const andClauses = fuseQuery.$and;
 	const hasFuseClauses = Array.isArray(andClauses) && andClauses.length > 0;
@@ -981,7 +1081,7 @@ async function performSearchInner(
 				}
 			}
 		}
-		const searchDataAll = searchIndex as unknown as SearchData[];
+		const searchDataAll = activeSearchData;
 		const subset = terms.size > 0
 			? searchDataAll.filter((doc) =>
 					slugPrefixFilter!.some((p) =>
@@ -1002,7 +1102,6 @@ async function performSearchInner(
 		const metaSlugs = new Set(metadataMatches.map((d) => d.slug));
 
 		// Also match docs where content/contentPali contains any OR term (union with metadata)
-		const normalizedMap = getNormalizedContentMap();
 		const contentMatches = subset.filter((doc) => {
 			if (metaSlugs.has(doc.slug)) return false;
 			const norm = normalizedMap.get(doc.slug);
@@ -1070,8 +1169,7 @@ async function performSearchInner(
 	});
 
 	if (runContentSupplement && contentTerms.length > 0) {
-		const normalizedMap = getNormalizedContentMap();
-		let allDocs = searchIndex as unknown as SearchData[];
+		let allDocs = activeSearchData;
 		if (slugPrefixFilter?.length) {
 			allDocs = allDocs.filter((doc) =>
 				slugPrefixFilter!.some((p) =>
@@ -1119,6 +1217,9 @@ async function performSearchInner(
 	}
 
 	const tContentScan = performance.now();
+	if (options.perf) {
+		options.perf.contentScan = Math.round(tContentScan - tFuseSearch);
+	}
 
 	const hasContentConditions =
 		contentConditions.include.length > 0 ||
@@ -1129,8 +1230,7 @@ async function performSearchInner(
 	if (!hasFuseClauses && hasContentConditions) {
 		// Content-only query (e.g. "content:faith | content:urgency"): no Fuse clauses,
 		// so start from all docs and filter by content conditions (OR within groups).
-		const normalizedMap = getNormalizedContentMap();
-		let allDocs = searchIndex as unknown as SearchData[];
+		let allDocs = activeSearchData;
 		const prefixFilter = slugPrefixFilter;
 		if (prefixFilter && prefixFilter.length > 0) {
 			allDocs = allDocs.filter((doc) =>
@@ -1151,7 +1251,6 @@ async function performSearchInner(
 			}));
 	} else {
 		searchResults = [...fuseResults, ...contentSupplementResults];
-		const normalizedMap = getNormalizedContentMap();
 		if (hasContentConditions) {
 			searchResults = searchResults.filter((r) =>
 				docMatchesContentConditions(
@@ -1262,8 +1361,18 @@ async function performSearchInner(
  */
 export async function getFilteredDiscourses(
 	slugPrefixes: string[],
+	options: Pick<SearchOptions, "includeReferences" | "perf"> = {},
 ): Promise<SearchResult[]> {
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+	let searchData: SearchData[] = await ensureNativeSearchData();
+	if (options.includeReferences) {
+		const tRef0 = performance.now();
+		const refData = await loadReferenceSearchData();
+		searchData = [...searchData, ...refData];
+		if (options.perf) {
+			options.perf.refIndexLoad = Math.round(performance.now() - tRef0);
+			options.perf.refDocCount = refData.length;
+		}
+	}
 
 	return searchData
 		.filter((item) => {
@@ -1276,7 +1385,20 @@ export async function getFilteredDiscourses(
 			title: item.title,
 			description: item.description,
 			contentSnippet: null,
+			priority: item.priority,
 		}));
+}
+
+/** O(1) slug lookup for native + optional reference index (API scoring). */
+export async function getSearchDocBySlug(
+	slug: string,
+	includeReferences = false,
+): Promise<SearchData | undefined> {
+	const native = await ensureNativeSearchData();
+	const found = native.find((d) => d.slug === slug);
+	if (found || !includeReferences) return found;
+	const refData = await loadReferenceSearchData();
+	return refData.find((d) => d.slug === slug);
 }
 
 /**
@@ -1285,11 +1407,11 @@ export async function getFilteredDiscourses(
  * @param query - The search query
  * @param excludeSlugs - Set of slugs to exclude (already in Fuse results)
  */
-export function findContentWholeWordMatches(
+export async function findContentWholeWordMatches(
 	query: string,
 	excludeSlugs: Set<string>,
-): SearchResult[] {
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+): Promise<SearchResult[]> {
+	const searchData = await ensureNativeSearchData();
 	const queryLower = query.toLowerCase().trim();
 	const queryTerms = queryLower.split(/\s+/).filter((t) => t.length > 0);
 
@@ -1321,8 +1443,8 @@ export function findContentWholeWordMatches(
  * Get full content for a discourse by slug.
  * Used for client-side term matching where contentSnippet is insufficient.
  */
-export function getFullContentBySlug(slug: string): string | null {
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+export async function getFullContentBySlug(slug: string): Promise<string | null> {
+	const searchData = await ensureNativeSearchData();
 	const item = searchData.find((d) => d.slug === slug);
 	return item?.content ?? null;
 }
@@ -1331,8 +1453,10 @@ export function getFullContentBySlug(slug: string): string | null {
  * Create a map of slug -> full content for efficient lookups.
  * Returns a function that retrieves full content by slug.
  */
-export function getContentLookup(): (slug: string) => string | null {
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+export async function getContentLookup(): Promise<
+	(slug: string) => string | null
+> {
+	const searchData = await ensureNativeSearchData();
 	const contentMap = new Map<string, string>();
 	for (const item of searchData) {
 		contentMap.set(item.slug, item.content);
@@ -1344,8 +1468,10 @@ export function getContentLookup(): (slug: string) => string | null {
  * Create a map of slug -> Pali content for efficient lookups.
  * Returns a function that retrieves Pali content by slug.
  */
-export function getPaliContentLookup(): (slug: string) => string | null {
-	const searchData: SearchData[] = searchIndex as unknown as SearchData[];
+export async function getPaliContentLookup(): Promise<
+	(slug: string) => string | null
+> {
+	const searchData = await ensureNativeSearchData();
 	const paliMap = new Map<string, string>();
 	for (const item of searchData) {
 		if (item.contentPali) {

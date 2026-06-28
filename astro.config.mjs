@@ -9,6 +9,7 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
+import { searchIndexStatic } from "./src/integrations/searchIndexStatic.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -38,6 +39,7 @@ export default defineConfig({
 	},
 
 	integrations: [
+		searchIndexStatic(),
 		tailwind({
 			applyBaseStyles: false,
 		}),
@@ -65,6 +67,10 @@ export default defineConfig({
 	adapter: vercel({
 		maxDuration: 30,
 		includeFiles: vercelPdfIncludeContentImages,
+		excludeFiles: [
+			"generated/search-index.json",
+			"generated/reference-search-index.json",
+		],
 	}),
 
 	redirects: {

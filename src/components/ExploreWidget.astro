@@ -1246,8 +1246,8 @@ const isSearchOnly = mode === "search-only";
 			const { performSearch: searchDiscourses, getFilteredDiscourses, getContentLookup, getPaliContentLookup } = await import("../service/search/search");
 
 			// Create content lookup for full content matching (English + Pali)
-			const getContentBySlug = getContentLookup();
-			const getPaliContentBySlug = getPaliContentLookup();
+			const getContentBySlug = await getContentLookup();
+			const getPaliContentBySlug = await getPaliContentLookup();
 
 			let discourseResults: any[];
 			if (isFilterOnly) {

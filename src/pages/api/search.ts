@@ -1,13 +1,24 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { performSearch as searchDiscourses } from "../../service/search/search";
-import searchIndex from "../../data/searchIndex";
-
-// Pre-build slug→doc map for O(1) lookups (avoids O(n) .find() per discourse result)
-const searchIndexBySlug = new Map(
-	(searchIndex as any[]).map((doc) => [doc.slug, doc]),
-);
+import {
+	performSearch as searchDiscourses,
+	getFilteredDiscourses,
+	ensureReferenceSearchIndexLoaded,
+	type SearchPerfStats,
+} from "../../service/search/search";
+import { loadNativeSearchIndex } from "../../utils/loadSearchIndexData";
+import type { SearchIndexDoc } from "../../utils/loadSearchIndexData";
 import { buildUnifiedContent } from "../../utils/discover-data";
+
+let searchIndexBySlug: Map<string, SearchIndexDoc> | null = null;
+
+async function getSearchIndexBySlug(): Promise<Map<string, SearchIndexDoc>> {
+	if (!searchIndexBySlug) {
+		const docs = await loadNativeSearchIndex();
+		searchIndexBySlug = new Map(docs.map((doc) => [doc.slug, doc]));
+	}
+	return searchIndexBySlug;
+}
 
 // Cache category data and Fuse index at module level (data is static JSON)
 let cachedAllCategories: ReturnType<typeof buildUnifiedContent> | null = null;
@@ -143,6 +154,9 @@ export const GET: APIRoute = async ({ url }) => {
 			url.searchParams.get("categories") !== "false";
 		const includeDiscourses =
 			url.searchParams.get("discourses") !== "false";
+		const includeReferences =
+			url.searchParams.get("references") === "true";
+		const searchPerf: SearchPerfStats = {};
 
 		if (!query.trim()) {
 			return new Response(
@@ -197,6 +211,16 @@ export const GET: APIRoute = async ({ url }) => {
 		}
 
 		const tParse = performance.now();
+
+		const nativeBySlug = await getSearchIndexBySlug();
+		let docBySlug: Map<string, SearchIndexDoc> = nativeBySlug;
+		if (includeReferences) {
+			const refData = await ensureReferenceSearchIndexLoaded();
+			docBySlug = new Map([
+				...nativeBySlug,
+				...refData.map((doc) => [doc.slug, doc] as const),
+			]);
+		}
 
 		// Search categories (skip if slug filter is active - categories don't have discourse-style slugs)
 		if (includeCategories && !hasSlugFilter && effectiveQuery.trim()) {
@@ -669,22 +693,19 @@ export const GET: APIRoute = async ({ url }) => {
 
 			if (isFilterOnly) {
 				// Filter-only: return all discourses that match the slug prefix
-				discourseResults = (searchIndex as any[])
-					.filter((item) =>
-						slugMatchesPrefixes(item.slug, slugPrefixes),
-					)
-					.map((item) => ({
-						slug: item.slug,
-						title: item.title,
-						description: item.description,
-						contentSnippet: null,
-						priority: item.priority,
-					}));
+				discourseResults = await getFilteredDiscourses(slugPrefixes, {
+					includeReferences,
+					perf: searchPerf,
+				});
 			} else {
 				// Pass full query so slug prefix (e.g. ^AN) is in the search and OR counts are correct
 				discourseResults = await searchDiscourses(
 					normalizedQuery.trim(),
-					{ highlight: true },
+					{
+						highlight: true,
+						includeReferences,
+						perf: searchPerf,
+					},
 				);
 			}
 
@@ -756,7 +777,7 @@ export const GET: APIRoute = async ({ url }) => {
 				);
 
 				// Look up full content from search index (used for multi-term matching and occurrence counting)
-				const indexedDoc = searchIndexBySlug.get(itemSlug);
+				const indexedDoc = docBySlug.get(itemSlug);
 				const fullContent = indexedDoc?.content || "";
 				const fullContentPali = indexedDoc?.contentPali || "";
 
@@ -1107,6 +1128,17 @@ export const GET: APIRoute = async ({ url }) => {
 			format: Math.round(tFormat - tRanking),
 			total: Math.round(tFormat - t0),
 		};
+		if (includeReferences) {
+			if (searchPerf.refIndexLoad !== undefined) {
+				timing.refIndexLoad = searchPerf.refIndexLoad;
+			}
+			if (searchPerf.refDocCount !== undefined) {
+				timing.refDocCount = searchPerf.refDocCount;
+			}
+			if (searchPerf.contentScan !== undefined) {
+				timing.refContentScan = searchPerf.contentScan;
+			}
+		}
 		console.log(
 			`[search-perf] q=${JSON.stringify(query)} | parse=${timing.parse}ms categories=${timing.categories}ms discourses=${timing.discourses}ms (fuse=${discFuseMs}ms scoring=${discScoringMs}ms) ranking=${timing.ranking}ms format=${timing.format}ms TOTAL=${timing.total}ms`,
 		);

@@ -380,16 +380,15 @@ import Layout from "../layouts/Layout.astro";
 			(async () => {
 				try {
 					// Import all search-related data modules to get accurate size
-					const [searchMod, discoverMod] = await Promise.all([
-						import("../data/searchIndex"),
+					const [searchRes, discoverMod] = await Promise.all([
+						fetch("/search-index.json"),
 						import("../utils/discover-data"),
 					]);
 
 					// Get discourse index size
-					const searchData =
-						(searchMod &&
-							(searchMod.default || searchMod.searchIndex)) ||
-						[];
+					const searchData = searchRes.ok
+						? await searchRes.json()
+						: [];
 					const searchBytes = new TextEncoder().encode(
 						JSON.stringify(searchData),
 					).length;
