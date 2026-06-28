@@ -14,6 +14,10 @@ import {
 	findContentBySlug,
 	getStaticOnSlugs,
 } from "../../utils/discover-data";
+import {
+	getReferencePostsForDiscourseScopes,
+	getReferencePostsForTag,
+} from "../../utils/referencePostsForPage";
 import type { UnifiedContentItem } from "../../types/discover";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
@@ -90,6 +94,19 @@ const additionalDiscourses =
 
 const displayTitle = content.title;
 const totalDiscourses = allDiscourses.length;
+
+const enSlugsOnPage = new Set(allDiscourses.map((d: { id: string }) => d.id));
+const referencePostsForPage =
+	contentType === "quality" || contentType === "topic"
+		? getReferencePostsForTag(slug, enSlugsOnPage)
+		: getReferencePostsForDiscourseScopes(
+				allDiscourses.map((d: { id: string }) => d.id),
+				enSlugsOnPage,
+			);
+const hasReferenceOnlyDiscourses = referencePostsForPage.length > 0;
+const referencePostsJson = JSON.stringify(referencePostsForPage);
+const showDiscoursesList =
+	additionalDiscourses.length > 0 || hasReferenceOnlyDiscourses;
 ---
 
 <Layout seoTitle={`${displayTitle} - Words of the Buddha`} showAuth={true}>
@@ -503,17 +520,30 @@ const totalDiscourses = allDiscourses.length;
 			/* All Discourses or More Discourses Section (flat list in API order) */
 		}
 		{
-			additionalDiscourses.length > 0 && (
+			showDiscoursesList && (
 				<div class="space-y-6">
-					{primaryDiscourses.length > 0 && (
-						<h2 class="text-xl font-medium mb-4">
+					<div class="flex flex-wrap items-center justify-between gap-2 print:hidden">
+						<h2 class="text-xl font-medium mb-0">
 							{contentType === "topic" &&
 							primaryDiscourses.length > 0
 								? "More Discourses"
 								: "Discourses"}
 						</h2>
-					)}
-					<div class="px-2 space-y-4">
+						{
+							hasReferenceOnlyDiscourses && (
+								<button
+									type="button"
+									id="toggle-ref"
+									aria-pressed="false"
+									class="toggle-ref ml-auto shrink-0 text-xs transition-colors text-[var(--text-muted)] hover:text-[var(--text-color)]"
+									title="Include reference-only discourses (Sujato translation)"
+								>
+									ref
+								</button>
+							)
+						}
+					</div>
+					<div id="discourses-grid" class="px-2 space-y-4">
 						{additionalDiscourses.map((discourse: any) => (
 							<PostCard
 								title={discourse.title}
@@ -521,9 +551,34 @@ const totalDiscourses = allDiscourses.length;
 								id={discourse.id}
 							/>
 						))}
+						<div id="reference-cards-mount" />
 					</div>
 				</div>
 			)
 		}
+
+		{
+			hasReferenceOnlyDiscourses && (
+				<script
+					id="reference-posts-data"
+					type="application/json"
+					set:html={referencePostsJson}
+				/>
+			)
+		}
 	</main>
+
+	<script>
+		import { initReferenceDiscourseCards } from "../../utils/referenceDiscourseCardsClient";
+
+		function initOnPageRefDiscourses() {
+			initReferenceDiscourseCards();
+		}
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", initOnPageRefDiscourses);
+		} else {
+			initOnPageRefDiscourses();
+		}
+	</script>
 </Layout>

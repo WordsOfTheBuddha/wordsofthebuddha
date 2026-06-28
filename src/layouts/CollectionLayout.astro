@@ -14,8 +14,7 @@ import {
 	collectionExportTextFileCount,
 } from "../utils/collectionPdfExportScope";
 import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
-import collectionReferenceIndex from "../data/collectionReferenceIndex";
-import { slugMatchesCollectionPattern } from "../utils/collectionPatterns";
+import { getReferencePostsForCollection } from "../utils/referencePostsForPage";
 
 interface Props {
 	title: string;
@@ -62,11 +61,7 @@ const defaultShowCollections = hasChildren && viewParam !== "discourses";
 
 const enSlugsOnPage = new Set(pagePosts.map((post) => post.slug));
 const referencePostsForCollection = collectionSlug
-	? collectionReferenceIndex.filter(
-			(entry) =>
-				slugMatchesCollectionPattern(entry.slug, collectionSlug) &&
-				!enSlugsOnPage.has(entry.slug),
-		)
+	? getReferencePostsForCollection(collectionSlug, enSlugsOnPage)
 	: [];
 const hasReferenceOnlyDiscourses = referencePostsForCollection.length > 0;
 /** Discourses grid is visible at build time (no child collections, or ?view=discourses). */
@@ -386,238 +381,7 @@ function getAvailabilityCounts(slug: string): {
 	</style>
 
 	<script>
-	import {
-		deleteRefParam,
-		initRefModeFromUrl,
-		resolveRefMode,
-		setRefParam,
-		setStoredRefMode,
-	} from "../utils/refModeClient";
-	import { compareDiscourseIds } from "../utils/discourseSort";
-
-	const isDev = import.meta.env.DEV;
-
-	function debugLog(...args) {
-		if (isDev) console.log("[CollectionLayout:ref]", ...args);
-	}
-
-	function getCollectionSlug() {
-		return (
-			document
-				.getElementById("discourses-grid")
-				?.getAttribute("data-collection-slug") || ""
-		);
-	}
-
-	function discourseLinkParams(refOn) {
-		const params = new URLSearchParams();
-		if (refOn) params.set("ref", "true");
-		const paliMode = localStorage.getItem("paliMode") === "true";
-		const layout = localStorage.getItem("layout") || "interleaved";
-		if (paliMode) params.set("pli", "true");
-		if (layout === "split") params.set("layout", layout);
-		return params;
-	}
-
-	function discourseLinkHref(slug, refOn = true) {
-		const base = `/${slug}`;
-		const params = discourseLinkParams(refOn);
-		const qs = params.toString();
-		return qs ? `${base}?${qs}` : base;
-	}
-
-	function updateDiscoursePostLinks() {
-		const refOn = resolveRefMode();
-		const params = discourseLinkParams(refOn);
-		const qs = params.toString();
-		discoursesGrid?.querySelectorAll("a.post-link").forEach((link) => {
-			const baseHref = link.getAttribute("data-base-href");
-			if (!baseHref) return;
-			link.href = qs ? `${baseHref}?${qs}` : baseHref;
-		});
-	}
-
-	function escapeHtml(text) {
-		return text
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/"/g, "&quot;");
-	}
-
-	function slugFromPostItem(post) {
-		const href =
-			post.querySelector("a.post-link")?.getAttribute("data-base-href") ||
-			"";
-		return href.replace(/^\//, "");
-	}
-
-	function compareSlugs(a, b) {
-		return compareDiscourseIds(a, b);
-	}
-
-	function getReferencePostsData() {
-		const el = document.getElementById("reference-posts-data");
-		if (!el?.textContent?.trim()) {
-			debugLog("reference-posts-data element missing or empty");
-			return [];
-		}
-		try {
-			const data = JSON.parse(el.textContent);
-			debugLog("parsed referencePostsData", { count: data.length });
-			return data;
-		} catch (err) {
-			console.error("[CollectionLayout:ref] JSON parse failed", err);
-			return [];
-		}
-	}
-
-	function transformId(id) {
-		if (typeof id !== "string") return "";
-		id = id.split("#")[0];
-		const rangePattern = /^([a-zA-Z]+)(\d+)-(\d+)$/;
-		const rangeMatch = id.match(rangePattern);
-		if (rangeMatch) {
-			const [, chars, start, end] = rangeMatch;
-			return `${chars.toUpperCase()} ${start}–${end}`;
-		}
-		const transformed = id.replace(
-			/([a-zA-Z]+)(\d+)/,
-			(_, chars, digits) => `${chars.toUpperCase()} ${digits}`,
-		);
-		if (transformed === id) {
-			const decoded = decodeURIComponent(id);
-			return decoded.charAt(0).toUpperCase() + decoded.slice(1);
-		}
-		return transformed;
-	}
-
-	function renderReferenceCard(entry) {
-		const href = discourseLinkHref(entry.slug);
-		const card = document.createElement("div");
-		card.className =
-			"post-item post-item--reference not-prose relative flex flex-col w-full p-3 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
-		card.dataset.slug = entry.slug;
-		card.innerHTML = `
-			<div class="flex items-start justify-between">
-				<div class="flex items-start flex-grow">
-					<div class="min-w-0 pr-4">
-						<h2 class="my-0 text-base sm:text-lg font-semibold text-text leading-snug">
-							<a href="${escapeHtml(href)}" class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal" data-base-href="/${escapeHtml(entry.slug)}">
-								${escapeHtml(transformId(entry.slug))}&nbsp;<span style="color:var(--text-color)">${escapeHtml(entry.title)}</span>
-							</a>
-						</h2>
-					</div>
-				</div>
-			</div>
-			<p class="mt-2 text-text line-clamp-3 md:line-clamp-2 text-sm sm:text-base">${escapeHtml(entry.description || "")}</p>
-		`;
-		return card;
-	}
-
-	function sortDiscourseGrid(grid) {
-		const mount = document.getElementById("reference-cards-mount");
-		const items = [...grid.querySelectorAll(":scope > .post-item")];
-		items.sort((a, b) =>
-			compareSlugs(slugFromPostItem(a), slugFromPostItem(b)),
-		);
-		for (const item of items) {
-			grid.insertBefore(item, mount);
-		}
-		debugLog("sorted discourse grid", { total: items.length });
-	}
-
-	function loadReferenceCards() {
-		const collectionSlug = getCollectionSlug();
-		const grid = document.getElementById("discourses-grid");
-		const mount = document.getElementById("reference-cards-mount");
-		if (!collectionSlug || !grid || !mount) {
-			debugLog("missing grid, mount, or collection slug", {
-				collectionSlug,
-				grid: !!grid,
-				mount: !!mount,
-			});
-			return;
-		}
-
-		const existingSlugs = new Set(
-			[...grid.querySelectorAll("a.post-link")].map(
-				(a) => a.getAttribute("data-base-href")?.replace(/^\//, "") || "",
-			),
-		);
-		debugLog("existing EN slugs on page", existingSlugs.size);
-
-		const referencePostsData = getReferencePostsData();
-		const refs = referencePostsData.filter(
-			(entry) => !existingSlugs.has(entry.slug),
-		);
-		debugLog("refs to append", {
-			total: referencePostsData.length,
-			afterDedup: refs.length,
-			sample: refs.slice(0, 3).map((r) => r.slug),
-		});
-
-		// Remove prior reference cards (re-toggle safe)
-		grid.querySelectorAll(".post-item--reference").forEach((el) => el.remove());
-
-		if (!refs.length) {
-			debugLog("no reference cards to append");
-			return;
-		}
-
-		const fragment = document.createDocumentFragment();
-		for (const entry of refs) {
-			fragment.appendChild(renderReferenceCard(entry));
-		}
-		grid.insertBefore(fragment, mount);
-		sortDiscourseGrid(grid);
-		debugLog("appended reference cards", {
-			count: refs.length,
-			postItems: grid.querySelectorAll(".post-item").length,
-		});
-	}
-
-	function syncReferenceDiscourseCards() {
-		const refOn = resolveRefMode();
-		debugLog("syncReferenceDiscourseCards", {
-			refOn,
-			search: window.location.search,
-		});
-
-		if (!refOn) {
-			removeReferenceCards();
-		} else {
-			loadReferenceCards();
-		}
-		applyFilter(getActiveFilter());
-	}
-
-	function removeReferenceCards() {
-		const grid = document.getElementById("discourses-grid");
-		grid
-			?.querySelectorAll(".post-item--reference")
-			.forEach((el) => el.remove());
-		debugLog("removed reference cards");
-	}
-
-	function syncRefToggleState(active) {
-		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
-			toggleRef.classList.toggle("font-medium", active);
-			toggleRef.classList.toggle("text-[var(--link-color)]", active);
-			toggleRef.classList.toggle("underline", active);
-			toggleRef.classList.toggle("underline-offset-2", active);
-			toggleRef.classList.toggle("text-[var(--text-muted)]", !active);
-			toggleRef.setAttribute("aria-pressed", active ? "true" : "false");
-		}
-	}
-
-	function syncRefToggleVisibility(showDiscourses) {
-		const hasRefData = !!document.getElementById("reference-posts-data");
-		const visible = showDiscourses && hasRefData;
-		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
-			toggleRef.classList.toggle("hidden", !visible);
-		}
-	}
+	import { initReferenceDiscourseCards } from "../utils/referenceDiscourseCardsClient";
 
 	let collectionsGrid;
 	let discoursesGrid;
@@ -625,6 +389,7 @@ function getAvailabilityCounts(slug: string): {
 	let btnCollections;
 	let btnDiscourses;
 	let hasChildren;
+	let syncRefToggleVisibility;
 
 	function setTabActive(btn, active) {
 		btn.classList.toggle("bg-primary", active);
@@ -648,7 +413,7 @@ function getAvailabilityCounts(slug: string): {
 				setTabActive(btnCollections, showCollections);
 				setTabActive(btnDiscourses, !showCollections);
 			}
-			syncRefToggleVisibility(showDiscourses);
+			syncRefToggleVisibility?.(showDiscourses);
 		});
 	}
 
@@ -683,56 +448,23 @@ function getAvailabilityCounts(slug: string): {
 	function initCollectionLayout() {
 		const params = new URLSearchParams(window.location.search);
 		const view = params.get("view");
-		const showRef = initRefModeFromUrl();
 		hasChildren = !!document.getElementById("collections-grid");
 		collectionsGrid = document.getElementById("collections-grid");
 		discoursesGrid = document.getElementById("discourses-grid");
 		filterWrap = document.getElementById("filter-wrap");
 		btnCollections = document.getElementById("view-collections");
 		btnDiscourses = document.getElementById("view-discourses");
-		const collectionSlug = getCollectionSlug();
 
-		debugLog("init", {
-			showRef,
-			view,
-			hasChildren,
-			search: window.location.search,
-			collectionSlug,
+		const refCards = initReferenceDiscourseCards({
+			getActiveFilter,
+			applyFilter,
 		});
+		syncRefToggleVisibility = refCards?.syncRefToggleVisibility;
 
 		if (view) {
 			setView(view);
 		} else {
-			syncRefToggleVisibility(!hasChildren);
-		}
-		syncRefToggleState(showRef);
-		syncReferenceDiscourseCards();
-		updateDiscoursePostLinks();
-
-		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
-			toggleRef.addEventListener("click", (e) => {
-				e.preventDefault();
-				const url = new URL(window.location.href);
-				const wasOn = resolveRefMode(url.searchParams);
-				debugLog("toggle clicked", { wasOn });
-
-				if (wasOn) {
-					deleteRefParam(url);
-					setStoredRefMode(false);
-					syncRefToggleState(false);
-					window.history.replaceState({}, "", url);
-					syncReferenceDiscourseCards();
-					updateDiscoursePostLinks();
-					return;
-				}
-
-				setRefParam(url);
-				setStoredRefMode(true);
-				syncRefToggleState(true);
-				window.history.replaceState({}, "", url);
-				syncReferenceDiscourseCards();
-				updateDiscoursePostLinks();
-			});
+			syncRefToggleVisibility?.(!hasChildren);
 		}
 
 		btnCollections?.addEventListener("click", () => {

@@ -13,13 +13,10 @@
  *   threshold  – integer, max tooltip def length before footnoting (default: 40)
  *
  * ⚠️  Deployment note:
- *   Playwright's bundled Chromium (~300 MB) cannot be included in a Vercel
- *   Serverless Function. For production deployment you have two options:
- *     1. Replace `chromium` from 'playwright' with `@sparticuz/chromium` +
- *        `playwright-core` (works on Vercel/AWS Lambda with the chromium layer).
- *     2. Generate PDFs at build time and serve as static assets.
- *   For local development and Node.js servers, the bundled Chromium works
- *   as-is after running: npx playwright install chromium
+ *   Production uses @sparticuz/chromium-min + playwright-core (no bundled Chromium).
+ *   For local PDF export, install Chrome/Chromium or run
+ *   `npx playwright install chromium` (devDependency) and set
+ *   PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH if needed.
  */
 export const prerender = false;
 
@@ -83,14 +80,13 @@ function getChromiumPackUrl(): string {
 }
 
 async function launchBrowser(): Promise<Browser> {
+	const { chromium: core } = await import("playwright-core");
+	const launchArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
+
 	const isServerless =
 		!!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
 	if (isServerless) {
-		const [{ default: chromiumMin }, { chromium: core }] =
-			await Promise.all([
-				import("@sparticuz/chromium-min"),
-				import("playwright-core"),
-			]);
+		const { default: chromiumMin } = await import("@sparticuz/chromium-min");
 		return core.launch({
 			args: chromiumMin.args,
 			executablePath:
@@ -98,10 +94,22 @@ async function launchBrowser(): Promise<Browser> {
 			headless: true,
 		});
 	}
-	// Local / Node server: use playwright's bundled Chromium
-	const { chromium } = await import("playwright");
-	return chromium.launch({
-		args: ["--no-sandbox", "--disable-setuid-sandbox"],
+
+	// Local / Node server: playwright-core + installed Chrome/Chromium.
+	// Set PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH for a custom binary, or run
+	// `npx playwright install chromium` (devDependency) and point env at it.
+	const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+	if (executablePath) {
+		return core.launch({
+			executablePath,
+			args: launchArgs,
+			headless: true,
+		});
+	}
+	return core.launch({
+		channel: process.env.PW_CHANNEL || "chrome",
+		args: launchArgs,
+		headless: true,
 	});
 }
 
