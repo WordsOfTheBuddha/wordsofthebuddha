@@ -1,7 +1,3 @@
-import { readFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
-import path from "node:path";
-
 export interface SearchIndexDoc {
 	slug: string;
 	title: string;
@@ -21,24 +17,6 @@ let nativeCache: SearchIndexDoc[] | null = null;
 let nativeLoadPromise: Promise<SearchIndexDoc[]> | null = null;
 let referenceCache: SearchIndexDoc[] | null = null;
 let referenceLoadPromise: Promise<SearchIndexDoc[]> | null = null;
-
-function publicJsonCandidates(filename: string): string[] {
-	const cwd = process.cwd();
-	return [
-		path.join(cwd, "generated", filename),
-		path.join(cwd, "public", filename),
-		path.join(cwd, ".vercel", "output", "static", filename),
-	];
-}
-
-async function readJsonFromDisk(filename: string): Promise<SearchIndexDoc[] | null> {
-	for (const filePath of publicJsonCandidates(filename)) {
-		if (!existsSync(filePath)) continue;
-		const raw = await readFile(filePath, "utf8");
-		return JSON.parse(raw) as SearchIndexDoc[];
-	}
-	return null;
-}
 
 function siteOrigin(): string {
 	if (typeof process !== "undefined" && process.env.SITE) {
@@ -63,11 +41,12 @@ async function fetchJson(filename: string): Promise<SearchIndexDoc[]> {
 }
 
 async function loadIndex(filename: string): Promise<SearchIndexDoc[]> {
+	// Disk read only on server/build — dynamic import keeps node:fs out of client bundles.
 	if (import.meta.env.SSR) {
-		const fromDisk = await readJsonFromDisk(filename);
+		const { readIndexFromDisk } = await import("./loadSearchIndexData.server");
+		const fromDisk = await readIndexFromDisk(filename);
 		if (fromDisk) return fromDisk;
 	}
-	// Production SSR: indexes are on the static CDN, not in the serverless bundle.
 	return fetchJson(filename);
 }
 
