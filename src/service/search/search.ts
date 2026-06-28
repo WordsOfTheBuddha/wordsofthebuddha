@@ -604,7 +604,6 @@ function findBestMatchingParagraph(
 	}
 
 	if (!bestMatch) {
-		console.log("Debug: No matches found in any paragraph");
 		return null;
 	}
 
