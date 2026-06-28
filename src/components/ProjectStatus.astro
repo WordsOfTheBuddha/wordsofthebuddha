@@ -89,7 +89,7 @@ const statusConfig: Record<
 		shortLabel: "",
 	},
 	complete: {
-		color: "bg-emerald-600",
+		color: "bg-green-500 opacity-90",
 		label: "Complete",
 		shortLabel: "✓",
 	},
@@ -116,7 +116,7 @@ function progressColor(percentage: number): string {
 				>Available</th
 			>
 			<th
-				class="py-2 px-4 text-left border-b border-[color:var(--surface-border)]"
+				class="py-2 px-4 text-left border-b border-[color:var(--surface-border)] sm:w-px sm:whitespace-nowrap"
 			></th>
 		</tr>
 	</thead>
@@ -157,7 +157,7 @@ function progressColor(percentage: number): string {
 
 					return (
 						<tr class="hover:bg-[rgba(44,44,44,0.04)] dark:hover:bg-[rgba(231,220,196,0.06)]">
-							<td class="py-2 px-4 border-b border-[color:var(--surface-border)] align-middle">
+							<td class="py-2 px-3 sm:px-4 border-b border-[color:var(--surface-border)] align-middle whitespace-nowrap">
 								<a href={name} class="flex items-center">
 									<span class="font-medium">
 										{keyMap[name] || name}
@@ -167,18 +167,20 @@ function progressColor(percentage: number): string {
 									</span>
 								</a>
 							</td>
-							<td class="py-2 px-4 border-b border-[color:var(--surface-border)] hidden sm:table-cell">
+							<td class="py-2 px-4 border-b border-[color:var(--surface-border)] hidden sm:table-cell w-px whitespace-nowrap">
 								<span class="font-medium">
 									{readableCount.toLocaleString()}
 								</span>{" "}
 								{suffix}
 							</td>
-							<td class="py-2 px-4 border-b border-[color:var(--surface-border)]">
-								<div class="text-xs text-gray-500 sm:hidden mt-1">
-									{readableCount.toLocaleString()} {suffix}
-								</div>
-								<div class="flex items-center">
-									<div class="w-full bg-[var(--surface-paper)] rounded-sm h-6 mr-1 sm:mr-2 relative border border-[color:var(--surface-border)] overflow-hidden">
+							<td class="py-2 px-3 sm:px-4 border-b border-[color:var(--surface-border)] align-middle w-full sm:w-px sm:whitespace-nowrap">
+								<div class="flex flex-col items-end gap-1 sm:items-start sm:gap-0 min-w-0">
+									<div class="text-xs text-[var(--text-muted)] whitespace-nowrap tabular-nums shrink-0 sm:hidden">
+										{readableCount.toLocaleString()}{" "}
+										{suffix}
+									</div>
+									<div class="flex items-center w-full sm:w-auto min-w-0">
+									<div class="w-full sm:w-36 bg-[var(--surface-paper)] rounded-sm h-6 mr-1 sm:mr-2 relative border border-[color:var(--surface-border)] overflow-hidden shrink-0">
 										{useStackedBar ? (
 											<>
 												<div
@@ -235,6 +237,7 @@ function progressColor(percentage: number): string {
 										)}
 									</div>
 								</div>
+							</div>
 							</td>
 						</tr>
 					);
@@ -245,7 +248,7 @@ function progressColor(percentage: number): string {
 </table>
 
 <div
-	class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[var(--text-muted)] mt-1 mb-4 px-1"
+	class="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-xs text-[var(--text-muted)] mt-1 mb-4 px-1"
 	aria-label="Progress bar legend"
 >
 	<div class="flex items-center gap-2">

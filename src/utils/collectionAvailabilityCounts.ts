@@ -78,9 +78,9 @@ export const CANONICAL_TOTALS: Record<string, number> = {
 	iti: 112,
 	ud: 80,
 	mn: 152,
-	snp: 71,
+	snp: 72,
 	sn: 2889,
-	an: 9557,
+	an: 8122,
 	dn: 34,
 	kp: 9,
 };

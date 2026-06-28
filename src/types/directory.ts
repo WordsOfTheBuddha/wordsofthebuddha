@@ -7,4 +7,6 @@ export interface DirectoryStructure {
 		end: number;
 	};
 	contentCount?: number;
+	translatedCount?: number;
+	readableCount?: number;
 }

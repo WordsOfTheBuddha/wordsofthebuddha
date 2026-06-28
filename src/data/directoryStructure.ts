@@ -143,15 +143,50 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							"The \"Connected Discourses with Rādha\" centers on venerable Rādha, a disciple of the Buddha known for his sharp intellect and his role in asking profound questions that lead to deep teachings. These discourses often involve venerable Rādha approaching the Buddha with inquiries about the nature of reality, the self, and the path to liberation. The Buddha's responses are typically concise yet deeply insightful, using metaphors and analogies to illuminate complex concepts. This collection provides a glimpse into the dynamic between teacher and student, showcasing how the Buddha's wisdom unfolds through dialogue.",
 					},
+					sn24: {
+						title: "Diṭṭhisaṁyutta - Connected Discourses on Views",
+						description:
+							'The "Connected Discourses on Views" contains discourses examining how wrong views arise from grasping and insisting on the five aggregates. These teachings catalog a wide range of speculative views — including eternalism, annihilationism, and nihilistic doctrines — showing how each view depends on clinging to form, feeling, perception, intentional constructs, or consciousness. By analyzing the conditions that give rise to such views and demonstrating their impermanent and unsatisfactory nature, these discourses offer insight into the dangers of dogmatism and the importance of seeing things as they truly are.',
+					},
 					sn25: {
 						title: "Okkantasaṁyutta - Connected Discourses on Arrival",
 						description:
 							'The "Connected Discourses on Arrival" presents a sequence of brief discourses showing how insight begins with seeing impermanence across different aspects of experience, including the sense faculties, their objects, consciousness, contact, feeling, perception, intention, craving, elements, and the aggregates. Each sutta applies the same formula: when these phenomena are understood as impermanent, changing, and becoming otherwise, one enters the fixed course of rightness as a faith-follower or Dhamma-follower, and with full knowledge and vision becomes a stream-enterer. This collection highlights the threshold of awakening as a decisive penetration of impermanence at any point in experience.',
 					},
+					sn26: {
+						title: "Uppādasaṁyutta - Connected Discourses on Arising",
+						description:
+							'The "Connected Discourses on Arising" contains brief teachings on the arising and cessation of the six sense bases. Each discourse applies the same formula: the arising, continuation, and manifestation of the eye, ear, nose, tongue, body, and mind is the arising of suffering, the continuation of disease, and the manifestation of old age and death; their cessation is the cessation of suffering. This collection complements the teachings on dependent co-arising by highlighting how the process of becoming unfolds through sensory experience.',
+					},
+					sn27: {
+						title: "Kilesasaṁyutta - Connected Discourses on Corruptions",
+						description:
+							'The "Connected Discourses on Corruptions" contains brief teachings on how desire and greed for the six sense objects — forms, sounds, odors, tastes, tangible objects, and mental objects — corrupt the mind. Each discourse identifies such desire as a defilement of the mind that must be abandoned through direct knowledge for the realization of the fruit of arahantship. This collection underscores the importance of purifying the mind by relinquishing attachment to sensory experience.',
+					},
 					sn28: {
 						title: "Sāriputtasaṁyutta - Connected Discourses with Sāriputta",
 						description:
 							"The \"Connected Discourses with Sāriputta\" features venerable Sāriputta, one of the Buddha's foremost disciples, renowned for his wisdom and analytical skills. These discourses often involve Sāriputta engaging in discussions with the Buddha or other bhikkhus, delving into intricate aspects of the Dhamma. The suttas in this collection are characterized by their depth and precision, as Sāriputta's questions and reflections lead to detailed expositions on topics such as dependent origination, the nature of consciousness, and the path to liberation. This saṁyutta highlights the intellectual rigor and clarity that Sāriputta brings to the teachings.",
+					},
+					sn29: {
+						title: "Nāgasaṁyutta - Connected Discourses with Nāgas",
+						description:
+							'The "Connected Discourses with Nāgas" contains teachings about nāgas — powerful serpent-like beings — including the four modes of their reproduction and the kammic causes that lead to rebirth among them. These discourses also explore how certain nāgas observe the uposatha precepts and dwell with purified bodies. While drawing on the cosmological imagery of ancient India, this collection illustrates the universal operation of kamma across diverse realms of existence.',
+					},
+					sn30: {
+						title: "Supaṇṇasaṁyutta - Connected Discourses with Phoenixes",
+						description:
+							'The "Connected Discourses with Phoenixes" contains teachings about supaṇṇas — magnificent bird-like beings — including the four modes of their reproduction and the kammic causes that lead to rebirth among them. These discourses examine how conduct in body, speech, and mind determines whether one is reborn among these exalted beings. Like the parallel collection on nāgas, this saṁyutta uses vivid cosmological imagery to illustrate the law of kamma.',
+					},
+					sn31: {
+						title: "Gandhabbakāyikasaṁyutta - Connected Discourses with the Gandhabbas",
+						description:
+							'The "Connected Discourses with the Gandhabbas" contains teachings about the gandhabba deities, including the various classes who dwell among fragrant roots, heartwood, bark, flowers, and other natural substances. These discourses explore the kammic causes that lead to rebirth in the gandhabba realm and describe the qualities of these celestial musicians. This collection offers a glimpse into the diverse cosmology of the early Buddhist texts and the role of ethical conduct in shaping future existence.',
+					},
+					sn32: {
+						title: "Valāhakasaṁyutta - Connected Discourses with the Cloud Devas",
+						description:
+							'The "Connected Discourses with the Cloud Devas" contains teachings about the valāhaka deities — beings associated with thunderclouds — including those of cool, warm, stormy, windy, and rainy clouds. These discourses describe the various classes of cloud deities and the conduct that leads to rebirth among them. This saṁyutta continues the cosmological theme of the preceding collections, illustrating how kamma shapes existence across the full range of celestial realms.',
 					},
 					sn33: {
 						title: "Vacchagottasaṁyutta - Connected Discourses with Vacchagotta",
@@ -190,6 +225,16 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						title: "Jambukhādakasaṁyutta - Connected Discourses with Jambukhādaka",
 						description:
 							'The "Connected Discourses with Jambukhādaka" features a series of conversations between venerable Sāriputta and his nephew, the wanderer Jambukhādaka. These discourses follow a systematic pattern where Jambukhādaka asks direct questions about core Buddhist concepts, such as Nibbāna, arahantship, and the purpose of the spiritual life. Sāriputta responds with clear, concise explanations that illuminate the path to liberation.',
+					},
+					sn39: {
+						title: "Sāmaṇḍakasaṁyutta - Connected Discourses with Sāmaṇḍaka",
+						description:
+							'The "Connected Discourses with Sāmaṇḍaka" features a series of conversations between venerable Sāriputta and the wanderer Sāmaṇḍaka. Following the same systematic pattern as the discourses with Jambukhādaka, Sāmaṇḍaka asks direct questions about core Buddhist concepts — such as Nibbāna, the noble eightfold path, and the purpose of the spiritual life — and Sāriputta responds with clear, concise explanations. This collection also includes a discourse on the difficulties of going forth, finding contentment, and practicing in line with the teaching.',
+					},
+					sn40: {
+						title: "Moggallānasaṁyutta - Connected Discourses with Moggallāna",
+						description:
+							'The "Connected Discourses with Moggallāna" features venerable Mahāmoggallāna recounting his meditative attainments, particularly the formless absorptions. In these discourses, Moggallāna describes how distracting perceptions arose during his practice and how the Buddha appeared by psychic power to encourage him to settle his mind and master each attainment. This collection offers an intimate portrait of one of the Buddha\'s foremost disciples working through the challenges of deep meditation.',
 					},
 					sn41: {
 						title: "Cittasaṁyutta - Connected Discourses with Citta the Householder",
@@ -239,10 +284,25 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 						description:
 							'The "Connected Discourses on the Faculties" explores the five spiritual faculties: faith, energy, mindfulness, collectedness, and wisdom. These teachings examine how these faculties function as both the means to attain liberation and as qualities that become increasingly refined through practice. By developing these faculties in a balanced way, practitioners can progress on the path to awakening.',
 					},
+					sn49: {
+						title: "Sammappadhānasaṁyutta - Connected Discourses on the Right Efforts",
+						description:
+							'The "Connected Discourses on the Right Efforts" contains discourses focusing on the four right efforts: preventing the arising of unarisen unwholesome states, abandoning arisen unwholesome states, arousing unarisen wholesome states, and maintaining arisen wholesome states. Using vivid similes — such as the Ganges river slanting toward the east — these teachings illustrate how cultivating the right efforts systematically inclines a practitioner toward Nibbāna.',
+					},
+					sn50: {
+						title: "Balasaṁyutta - Connected Discourses on the Powers",
+						description:
+							'The "Connected Discourses on the Powers" contains discourses focusing on the five powers: faith, energy, mindfulness, collectedness, and wisdom. These teachings explore how these powers, when developed and frequently practiced, lead a practitioner to slant, slope, and incline toward Nibbāna. While closely related to the spiritual faculties, the powers represent the strengthened and unshakeable qualities that support progress on the path to liberation.',
+					},
 					sn51: {
 						title: "Iddhipādasaṁyutta - Connected Discourses on the Bases of Psychic Power",
 						description:
 							'The "Connected Discourses on the Bases of Psychic Power" contains discourses focusing on the qualities of aspiration, energy, purification of mind, and investigation that lead to the development of psychic power when frequently cultivated. This collection offers insights into the power of the mind and the potential for spiritual growth through the cultivation of these qualities.',
+					},
+					sn52: {
+						title: "Anuruddhasaṁyutta - Connected Discourses with Anuruddha",
+						description:
+							'The "Connected Discourses with Anuruddha" features venerable Anuruddha, one of the Buddha\'s foremost disciples, renowned for his mastery of the divine eye and the four establishments of mindfulness. These discourses include Anuruddha\'s reflections on the indispensability of mindfulness meditation, his exchanges with Sāriputta and Mahāmoggallāna about his meditative attainments, and teachings on how he developed the direct knowledges. This collection highlights the path of diligent mindfulness practice leading to profound spiritual powers and awakening.',
 					},
 					sn53: {
 						title: "Jhānasaṁyutta - Connected Discourses on Collectedness",

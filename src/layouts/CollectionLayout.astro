@@ -386,6 +386,7 @@ function getAvailabilityCounts(slug: string): {
 		setRefParam,
 		setStoredRefMode,
 	} from "../utils/refModeClient";
+	import { compareDiscourseIds } from "../utils/discourseSort";
 
 	const isDev = import.meta.env.DEV;
 
@@ -445,10 +446,7 @@ function getAvailabilityCounts(slug: string): {
 	}
 
 	function compareSlugs(a, b) {
-		return a.localeCompare(b, undefined, {
-			numeric: true,
-			sensitivity: "base",
-		});
+		return compareDiscourseIds(a, b);
 	}
 
 	function getReferencePostsData() {

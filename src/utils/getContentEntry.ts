@@ -27,6 +27,14 @@ export type ContentEntryLike = {
 
 const EN_ROOT = path.join(process.cwd(), "src/content/en");
 const PLI_ROOT = path.join(process.cwd(), "src/content/pli");
+const SUJATO_ROOT = path.join(
+	process.cwd(),
+	"src/content/references/sujato",
+);
+const PLI_MS_ROOT = path.join(
+	process.cwd(),
+	"src/content/references/pli-ms",
+);
 
 function resolveEnglishPath(slug: string, hintPath?: string): string | null {
 	const cwd = process.cwd();
@@ -49,6 +57,26 @@ function resolveEnglishPath(slug: string, hintPath?: string): string | null {
 		}
 	} catch {
 		// EN_ROOT missing in tests or unusual cwd
+	}
+
+	return null;
+}
+
+function resolveReferencePath(
+	root: string,
+	slug: string,
+	hintPath?: string,
+): string | null {
+	const cwd = process.cwd();
+	if (hintPath) {
+		const abs = path.join(cwd, hintPath);
+		if (fs.existsSync(abs)) return abs;
+	}
+
+	const prefix = slug.match(/^([a-z]+)/i)?.[1]?.toLowerCase();
+	if (prefix) {
+		const direct = path.join(root, prefix, `${slug}.md`);
+		if (fs.existsSync(direct)) return direct;
 	}
 
 	return null;
@@ -140,6 +168,28 @@ async function findStoredPaliEntry(slug: string) {
 	}
 }
 
+async function findStoredReferenceEntry(
+	collection: "referenceSujato" | "referencePliMs",
+	slug: string,
+) {
+	try {
+		let entry = await getEntry(collection, slug);
+		if (entry) return entry;
+
+		const allEntries = await getCollection(collection);
+		return (
+			allEntries.find(
+				(item) =>
+					item.id === slug ||
+					item.data.slug === slug ||
+					item.id.endsWith(`/${slug}`),
+			) ?? null
+		);
+	} catch {
+		return null;
+	}
+}
+
 function storedToLike(entry: {
 	id: string;
 	slug?: string;
@@ -193,5 +243,77 @@ export async function getPaliEntry(
 	if (stored) return storedToLike(stored);
 
 	if (diskPath) return readMarkdownEntry(diskPath, slug);
+	return null;
+}
+
+/**
+ * Resolve a Sujato reference translation entry (glob ids may be `an/an4.10`).
+ */
+export async function getReferenceSujatoEntry(
+	slug: string,
+): Promise<ContentEntryLike | null> {
+	const stored = await findStoredReferenceEntry("referenceSujato", slug);
+	const diskPath = resolveReferencePath(SUJATO_ROOT, slug, stored?.filePath);
+
+	if (import.meta.env.DEV && diskPath) {
+		return readMarkdownEntry(diskPath, stored?.id ?? slug);
+	}
+
+	if (stored) return storedToLike(stored);
+
+	if (diskPath) return readMarkdownEntry(diskPath, slug);
+	return null;
+}
+
+/**
+ * Resolve a Pāli MS segment reference entry (glob ids may be `an/an4.10`).
+ */
+export async function getReferencePliMsEntry(
+	slug: string,
+): Promise<ContentEntryLike | null> {
+	const stored = await findStoredReferenceEntry("referencePliMs", slug);
+	const diskPath = resolveReferencePath(PLI_MS_ROOT, slug, stored?.filePath);
+
+	if (import.meta.env.DEV && diskPath) {
+		return readMarkdownEntry(diskPath, stored?.id ?? slug);
+	}
+
+	if (stored) return storedToLike(stored);
+
+	if (diskPath) return readMarkdownEntry(diskPath, slug);
+	return null;
+}
+
+/** Resolve a neighbor entry for footer navigation (EN, Sujato ref, or Pāli). */
+export async function getDiscourseNeighborEntry(
+	slug: string,
+): Promise<ContentEntryLike | null> {
+	const english = await getEnglishEntry(slug);
+	if (english) return { ...english, id: slug };
+
+	const reference = await getReferenceSujatoEntry(slug);
+	if (reference) {
+		return {
+			...reference,
+			id: slug,
+			data: {
+				...reference.data,
+				title: reference.data.title || slug,
+			},
+		};
+	}
+
+	const pali = await getPaliEntry(slug);
+	if (pali) {
+		return {
+			...pali,
+			id: slug,
+			data: {
+				...pali.data,
+				title: (pali.data.title as string | undefined) || slug,
+			},
+		};
+	}
+
 	return null;
 }
