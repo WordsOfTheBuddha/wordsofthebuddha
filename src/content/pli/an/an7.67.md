@@ -1,9 +1,15 @@
 ---
-title: Nagaropama sutta
+title: Nagaropama sutta - Simile of the Fortress
+description: Using the metaphor of a well-provisioned frontier fort, the Buddha outlines the architectural safeguards of the spiritual life. Equipped with seven good qualities and nourished by the four jhānas, a noble disciple's mind becomes a spiritual fortress that cannot be overrun by Māra.
+qualities: jhana, cultivation, wholesome, unwholesome
+theme: wisdom, inspiration, training guideline
 slug: an7.67
+priority: 1.5
 ---
 
 “Yato kho, bhikkhave, rañño paccantimaṁ nagaraṁ sattahi nagaraparikkhārehi suparikkhataṁ hoti, catunnañca āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Idaṁ vuccati, bhikkhave, rañño paccantimaṁ nagaraṁ akaraṇīyaṁ bāhirehi paccatthikehi paccāmittehi.
+
+#### Seven Requisites of a Fortress
 
 Katamehi sattahi nagaraparikkhārehi suparikkhataṁ hoti?
 
@@ -23,6 +29,8 @@ Puna caparaṁ, bhikkhave, rañño paccantime nagare pākāro hoti ucco ceva vit
 
 Imehi sattahi nagaraparikkhārehi suparikkhataṁ hoti.
 
+#### Four Kinds of Nutriments
+
 Katamesaṁ catunnaṁ āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī?
 
 Idha, bhikkhave, rañño paccantime nagare bahuṁ tiṇakaṭṭhodakaṁ sannicitaṁ hoti abbhantarānaṁ ratiyā aparitassāya phāsuvihārāya bāhirānaṁ paṭighātāya.
@@ -35,7 +43,11 @@ Puna caparaṁ, bhikkhave, rañño paccantime nagare bahuṁ bhesajjaṁ sannici
 
 Imesaṁ kho, bhikkhave, catunnaṁ āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī.
 
-Yato kho, bhikkhave, rañño paccantimaṁ nagaraṁ imehi sattahi nagaraparikkhārehi suparikkhataṁ hoti, imesañca catunnaṁ āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Idaṁ vuccati, bhikkhave, rañño paccantimaṁ nagaraṁ akaraṇīyaṁ bāhirehi paccatthikehi paccāmittehi. Evamevaṁ kho, bhikkhave, yato ariyasāvako sattahi saddhammehi samannāgato hoti, catunnañca jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Ayaṁ vuccati, bhikkhave, ariyasāvako akaraṇīyo mārassa akaraṇīyo pāpimato. Katamehi sattahi saddhammehi samannāgato hoti?
+Yato kho, bhikkhave, rañño paccantimaṁ nagaraṁ imehi sattahi nagaraparikkhārehi suparikkhataṁ hoti, imesañca catunnaṁ āhārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Idaṁ vuccati, bhikkhave, rañño paccantimaṁ nagaraṁ akaraṇīyaṁ bāhirehi paccatthikehi paccāmittehi.
+
+Evamevaṁ kho, bhikkhave, yato ariyasāvako sattahi saddhammehi samannāgato hoti, catunnañca jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī. Ayaṁ vuccati, bhikkhave, ariyasāvako akaraṇīyo mārassa akaraṇīyo pāpimato. Katamehi sattahi saddhammehi samannāgato hoti?
+
+#### Seven Good Qualities
 
 Seyyathāpi, bhikkhave, rañño paccantime nagare esikā hoti gambhīranemā sunikhātā acalā asampavedhī abbhantarānaṁ guttiyā bāhirānaṁ paṭighātāya. Evamevaṁ kho, bhikkhave, ariyasāvako saddho hoti, saddahati tathāgatassa bodhiṁ ‘itipi so …pe… buddho bhagavā’ti. Saddhesiko, bhikkhave, ariyasāvako akusalaṁ pajahati, kusalaṁ bhāveti; sāvajjaṁ pajahati, anavajjaṁ bhāveti; suddhaṁ attānaṁ pariharati. Iminā paṭhamena saddhammena samannāgato hoti.
 
@@ -51,7 +63,11 @@ Seyyathāpi, bhikkhave, rañño paccantime nagare dovāriko hoti paṇḍito bya
 
 Seyyathāpi, bhikkhave, rañño paccantime nagare pākāro hoti ucco ceva vitthato ca vāsanalepanasampanno ca abbhantarānaṁ guttiyā bāhirānaṁ paṭighātāya. Evamevaṁ kho, bhikkhave, ariyasāvako paññavā hoti udayatthagāminiyā paññāya samannāgato ariyāya nibbedhikāya sammā dukkhakkhayagāminiyā. Paññāvāsanalepanasampanno, bhikkhave, ariyasāvako akusalaṁ pajahati, kusalaṁ bhāveti; sāvajjaṁ pajahati, anavajjaṁ bhāveti; suddhaṁ attānaṁ pariharati. Iminā sattamena saddhammena samannāgato hoti. Imehi sattahi saddhammehi samannāgato hoti.
 
-Katamesaṁ catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī? Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṁ tiṇakaṭṭhodakaṁ sannicitaṁ hoti abbhantarānaṁ ratiyā aparitassāya phāsuvihārāya bāhirānaṁ paṭighātāya. Evamevaṁ kho, bhikkhave, ariyasāvako vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.
+Katamesaṁ catunnaṁ jhānānaṁ ābhicetasikānaṁ diṭṭhadhammasukhavihārānaṁ nikāmalābhī hoti akicchalābhī akasiralābhī?
+
+#### Four Jhānas
+
+Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṁ tiṇakaṭṭhodakaṁ sannicitaṁ hoti abbhantarānaṁ ratiyā aparitassāya phāsuvihārāya bāhirānaṁ paṭighātāya. Evamevaṁ kho, bhikkhave, ariyasāvako vivicceva kāmehi …pe… paṭhamaṁ jhānaṁ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.
 
 Seyyathāpi, bhikkhave, rañño paccantime nagare bahuṁ sāliyavakaṁ sannicitaṁ hoti abbhantarānaṁ ratiyā aparitassāya phāsuvihārāya bāhirānaṁ paṭighātāya. Evamevaṁ kho, bhikkhave, ariyasāvako vitakkavicārānaṁ vūpasamā …pe… dutiyaṁ jhānaṁ upasampajja viharati attano ratiyā aparitassāya phāsuvihārāya okkamanāya nibbānassa.
 
