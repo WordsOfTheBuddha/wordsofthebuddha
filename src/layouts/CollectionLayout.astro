@@ -69,6 +69,10 @@ const referencePostsForCollection = collectionSlug
 		)
 	: [];
 const hasReferenceOnlyDiscourses = referencePostsForCollection.length > 0;
+/** Discourses grid is visible at build time (no child collections, or ?view=discourses). */
+const showDiscoursesByDefault = !hasChildren || !defaultShowCollections;
+const showRefToggle =
+	hasReferenceOnlyDiscourses && showDiscoursesByDefault;
 const referencePostsData = referencePostsForCollection.map(
 	({ slug, title, description }) => ({
 		slug,
@@ -206,7 +210,10 @@ function getAvailabilityCounts(slug: string): {
 									type="button"
 									id="toggle-ref"
 									aria-pressed="false"
-									class="toggle-ref shrink-0 text-xs transition-colors print:hidden text-[var(--text-muted)] hover:text-[var(--text-color)]"
+									class={[
+										"toggle-ref shrink-0 text-xs transition-colors print:hidden text-[var(--text-muted)] hover:text-[var(--text-color)]",
+										defaultShowCollections ? "hidden" : "",
+									].join(" ")}
 									title="Include reference-only discourses (Sujato translation)"
 								>
 									ref
@@ -285,7 +292,7 @@ function getAvailabilityCounts(slug: string): {
 							placeholder="Filter discourses..."
 						/>
 						{
-							hasReferenceOnlyDiscourses && (
+							showRefToggle && (
 								<button
 									type="button"
 									id="toggle-ref"
@@ -520,21 +527,16 @@ function getAvailabilityCounts(slug: string): {
 		debugLog("sorted discourse grid", { total: items.length });
 	}
 
-	function loadReferenceCardsIfNeeded() {
-		const refOn = resolveRefMode();
+	function loadReferenceCards() {
 		const collectionSlug = getCollectionSlug();
-		debugLog("loadReferenceCardsIfNeeded", {
-			refOn,
-			collectionSlug,
-			search: window.location.search,
-		});
-
-		if (!refOn || !collectionSlug) return;
-
 		const grid = document.getElementById("discourses-grid");
 		const mount = document.getElementById("reference-cards-mount");
-		if (!grid || !mount) {
-			debugLog("missing grid or mount", { grid: !!grid, mount: !!mount });
+		if (!collectionSlug || !grid || !mount) {
+			debugLog("missing grid, mount, or collection slug", {
+				collectionSlug,
+				grid: !!grid,
+				mount: !!mount,
+			});
 			return;
 		}
 
@@ -575,6 +577,21 @@ function getAvailabilityCounts(slug: string): {
 		});
 	}
 
+	function syncReferenceDiscourseCards() {
+		const refOn = resolveRefMode();
+		debugLog("syncReferenceDiscourseCards", {
+			refOn,
+			search: window.location.search,
+		});
+
+		if (!refOn) {
+			removeReferenceCards();
+		} else {
+			loadReferenceCards();
+		}
+		applyFilter(getActiveFilter());
+	}
+
 	function removeReferenceCards() {
 		const grid = document.getElementById("discourses-grid");
 		grid
@@ -591,6 +608,14 @@ function getAvailabilityCounts(slug: string): {
 			toggleRef.classList.toggle("underline-offset-2", active);
 			toggleRef.classList.toggle("text-[var(--text-muted)]", !active);
 			toggleRef.setAttribute("aria-pressed", active ? "true" : "false");
+		}
+	}
+
+	function syncRefToggleVisibility(showDiscourses) {
+		const hasRefData = !!document.getElementById("reference-posts-data");
+		const visible = showDiscourses && hasRefData;
+		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
+			toggleRef.classList.toggle("hidden", !visible);
 		}
 	}
 
@@ -611,6 +636,7 @@ function getAvailabilityCounts(slug: string): {
 
 	function setView(mode) {
 		const showCollections = hasChildren && mode !== "discourses";
+		const showDiscourses = !showCollections;
 		requestAnimationFrame(() => {
 			if (collectionsGrid)
 				collectionsGrid.classList.toggle("hidden", !showCollections);
@@ -622,7 +648,18 @@ function getAvailabilityCounts(slug: string): {
 				setTabActive(btnCollections, showCollections);
 				setTabActive(btnDiscourses, !showCollections);
 			}
+			syncRefToggleVisibility(showDiscourses);
 		});
+	}
+
+	function getActiveFilter() {
+		const input = document.getElementById("client-filter");
+		return (
+			input?.value
+				?.toLowerCase()
+				.normalize("NFD")
+				.replace(/[\u0300-\u036f]/g, "") || ""
+		);
 	}
 
 	function applyFilter(filter) {
@@ -665,9 +702,11 @@ function getAvailabilityCounts(slug: string): {
 
 		if (view) {
 			setView(view);
+		} else {
+			syncRefToggleVisibility(!hasChildren);
 		}
 		syncRefToggleState(showRef);
-		loadReferenceCardsIfNeeded();
+		syncReferenceDiscourseCards();
 		updateDiscoursePostLinks();
 
 		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
@@ -681,8 +720,8 @@ function getAvailabilityCounts(slug: string): {
 					deleteRefParam(url);
 					setStoredRefMode(false);
 					syncRefToggleState(false);
-					removeReferenceCards();
 					window.history.replaceState({}, "", url);
+					syncReferenceDiscourseCards();
 					updateDiscoursePostLinks();
 					return;
 				}
@@ -691,7 +730,7 @@ function getAvailabilityCounts(slug: string): {
 				setStoredRefMode(true);
 				syncRefToggleState(true);
 				window.history.replaceState({}, "", url);
-				loadReferenceCardsIfNeeded();
+				syncReferenceDiscourseCards();
 				updateDiscoursePostLinks();
 			});
 		}

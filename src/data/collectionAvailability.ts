@@ -37,7 +37,7 @@ export const collectionAvailability: Record<string, CollectionAvailability> = {
   "snp": {
     "translatedCount": 47,
     "readableCount": 72,
-    "total": 71
+    "total": 72
   },
   "sn": {
     "translatedCount": 560,
