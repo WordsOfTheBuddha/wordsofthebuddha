@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g transform="translate(12, 11)">
+    <!-- Crucible body: curved trapezoid bowl -->
+    <path d="M -6 -6 Q -8 2 -5 7 Q 0 10 5 7 Q 8 2 6 -6"
+          fill="#c8a040" fill-opacity="0.09" stroke="#c8a040" stroke-width="1.1"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Top lip -->
+    <line x1="-6" y1="-6" x2="6" y2="-6" stroke="#c8a040" stroke-width="1" stroke-linecap="round"/>
+    <!-- Molten gold shimmer inside -->
+    <path d="M -4 1 Q 0 4 4 1" fill="none" stroke="#ffd700" stroke-width="0.9"
+          stroke-linecap="round" opacity="0.85"/>
+    <!-- Flame below crucible -->
+    <path d="M 0 12 C -3 10 -1 8 0 9 C 1 8 3 10 0 12 Z"
+          fill="#d08840" fill-opacity="0.6" stroke="#c8a040" stroke-width="0.5"/>
+    <!-- Inner bright flame tip -->
+    <path d="M 0 9 C -1 7.5 0 6 1 7.5 Z" fill="#ffd060" fill-opacity="0.7"/>
+  </g>
+</svg>
