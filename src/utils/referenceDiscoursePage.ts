@@ -6,6 +6,7 @@ import {
 	parsePaliOnly,
 	REFERENCE_TRANSLATION_CREDIT,
 	toSmartQuotes,
+	type ContentPair,
 } from "./contentParser";
 import {
 	hasSegmentMarkers,
@@ -29,6 +30,8 @@ export type ReferenceDiscoursePage = {
 	splitPali?: string;
 	refPaliOnlyContent?: string;
 	referenceFallbackPage: boolean;
+	/** Paragraph pairs for PDF / polytext export. */
+	contentPairs: ContentPair[];
 	suttaProps: {
 		fp: string;
 		title: string;
@@ -174,6 +177,7 @@ export async function buildReferenceDiscoursePage(
 		splitPali,
 		refPaliOnlyContent,
 		referenceFallbackPage: useReferenceEnglish,
+		contentPairs: pairs,
 		suttaProps: {
 			fp,
 			title: displayTitle,

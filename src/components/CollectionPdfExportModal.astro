@@ -40,11 +40,20 @@ const hasExportTree =
 	exportSelectionTree.chapters.some((ch) => ch.discourses.length > 0);
 
 const exportTreeDiscourseTotal = hasExportTree
-	? exportSelectionTree!.chapters.reduce(
-			(acc, ch) => acc + ch.discourses.length,
-			0,
-		)
+	? exportSelectionTree!.totalDiscourseCount
 	: 0;
+
+const exportTreeReferenceCount = hasExportTree
+	? exportSelectionTree!.referenceDiscourseCount
+	: 0;
+
+const exportTreeReferencePercent = hasExportTree
+	? exportSelectionTree!.referencePercent
+	: 0;
+
+const hasReferenceDiscourses = exportTreeReferenceCount > 0;
+
+const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCount;
 ---
 
 <dialog
@@ -85,8 +94,11 @@ const exportTreeDiscourseTotal = hasExportTree
 								<span
 									class="collection-pdf-selection-count"
 									id="pdf-selection-count"
+									data-curated-total={exportTreeCuratedCount}
+									data-reference-total={exportTreeReferenceCount}
+									data-full-total={exportTreeDiscourseTotal}
 								>
-									{exportTreeDiscourseTotal} of {exportTreeDiscourseTotal} selected
+									{exportTreeCuratedCount} of {exportTreeCuratedCount} selected
 								</span>
 								<button
 									type="button"
@@ -127,13 +139,27 @@ const exportTreeDiscourseTotal = hasExportTree
 									</div>
 									<ul class="pdf-tree-discourses">
 										{ch.discourses.map((d) => (
-											<li>
-												<label class="pdf-tree-discourse-label">
+											<li
+												class:list={[
+													d.isReference && "pdf-tree-discourse--reference",
+												]}
+												data-is-reference={d.isReference ? "true" : undefined}
+												hidden={d.isReference ? true : undefined}
+											>
+												<label
+													class:list={[
+														"pdf-tree-discourse-label",
+														d.isReference &&
+															"pdf-tree-discourse-label--reference",
+													]}
+												>
 													<input
 														type="checkbox"
 														class="pdf-discourse-cb"
 														data-slug={d.slug}
-														checked
+														data-is-reference={d.isReference ? "true" : "false"}
+														checked={!d.isReference}
+														disabled={d.isReference ? true : undefined}
 													/>
 													<span class="pdf-tree-discourse-title">
 														<span class="pdf-tree-id">{transformId(d.slug)}</span>
@@ -142,6 +168,9 @@ const exportTreeDiscourseTotal = hasExportTree
 																{" "}
 																<span>{d.title}</span>
 															</>
+														) : null}
+														{d.isReference ? (
+															<span class="pdf-tree-ref-badge">Ref.</span>
 														) : null}
 													</span>
 												</label>
@@ -198,6 +227,24 @@ const exportTreeDiscourseTotal = hasExportTree
 				aria-label="PDF options"
 			>
 				<h3 class="collection-pdf-section-label">Options</h3>
+
+				{
+					hasReferenceDiscourses && (
+						<label class="collection-pdf-field block mt-3" id="pdf-opt-ref-wrap">
+							<input
+								type="checkbox"
+								id="pdf-opt-ref"
+								name="includeRef"
+								class="mr-2"
+							/>
+							<span id="pdf-opt-ref-label">
+								Include Ref. Translations ({exportTreeReferenceCount}{" "}
+								{exportTreeReferenceCount === 1 ? "discourse" : "discourses"},{" "}
+								{exportTreeReferencePercent}%)
+							</span>
+						</label>
+					)
+				}
 
 				<label class="collection-pdf-field">
 					<input type="checkbox" id="pdf-opt-pli" name="pli" class="mr-2" />
@@ -519,6 +566,29 @@ const exportTreeDiscourseTotal = hasExportTree
 	.pdf-tree-discourses li {
 		margin: 0.2rem 0;
 	}
+	.pdf-tree-discourse-label--reference {
+		padding: 0.2rem 0.35rem;
+		margin: -0.2rem -0.35rem;
+		border-radius: 8px;
+		border: 1px dashed
+			color-mix(in srgb, var(--border-color, rgba(44, 44, 44, 0.25)) 70%, transparent);
+		background: color-mix(
+			in srgb,
+			var(--surface-paper, #faf9f6) 85%,
+			var(--border-color, rgba(44, 44, 44, 0.08))
+		);
+		opacity: 0.92;
+	}
+	.pdf-tree-ref-badge {
+		display: inline-block;
+		margin-left: 0.35rem;
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--text-muted);
+		vertical-align: middle;
+	}
 	.collection-pdf-dialog-footer {
 		display: flex;
 		justify-content: flex-end;
@@ -606,8 +676,50 @@ const exportTreeDiscourseTotal = hasExportTree
 </style>
 
 <script>
+	import { resolveRefMode } from "../utils/refModeClient";
+
 	let toastTimer: ReturnType<typeof setTimeout>;
 	let keydownHandlerWired = false;
+
+	function refsIncluded(dlg: HTMLDialogElement): boolean {
+		const refOpt = dlg.querySelector(
+			"#pdf-opt-ref",
+		) as HTMLInputElement | null;
+		return !refOpt || refOpt.checked;
+	}
+
+	function getActiveDiscourseCheckboxes(
+		dlg: HTMLDialogElement,
+	): HTMLInputElement[] {
+		const includeRefs = refsIncluded(dlg);
+		return Array.from(
+			dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb"),
+		).filter((cb) => includeRefs || cb.dataset.isReference !== "true");
+	}
+
+	function setReferenceDiscoursesVisible(
+		dlg: HTMLDialogElement,
+		visible: boolean,
+	) {
+		dlg
+			.querySelectorAll<HTMLElement>("li[data-is-reference='true']")
+			.forEach((li) => {
+				if (visible) li.removeAttribute("hidden");
+				else li.setAttribute("hidden", "");
+			});
+		dlg
+			.querySelectorAll<HTMLInputElement>(
+				".pdf-discourse-cb[data-is-reference='true']",
+			)
+			.forEach((cb) => {
+				cb.disabled = !visible;
+				if (!visible) cb.checked = false;
+			});
+		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
+			syncChapterFromChildren(ch);
+		});
+		updateExportTreeSelectionUi(dlg);
+	}
 
 	function getCollectionPdfDialogs(): HTMLDialogElement[] {
 		return Array.from(
@@ -730,6 +842,14 @@ const exportTreeDiscourseTotal = hasExportTree
 			}
 
 			keyTermsInput.checked = true;
+
+			const refOpt = dlg.querySelector(
+				"#pdf-opt-ref",
+			) as HTMLInputElement | null;
+			if (refOpt) {
+				refOpt.checked = resolveRefMode();
+				setReferenceDiscoursesVisible(dlg, refOpt.checked);
+			}
 		} catch {
 			pliInput.checked = false;
 			layoutFieldset.disabled = true;
@@ -743,9 +863,10 @@ const exportTreeDiscourseTotal = hasExportTree
 	}
 
 	function updateExportTreeSelectionUi(dlg: HTMLDialogElement) {
-		const total = dlg.querySelectorAll(".pdf-discourse-cb").length;
+		const active = getActiveDiscourseCheckboxes(dlg);
+		const total = active.length;
 		if (total === 0) return;
-		const sel = dlg.querySelectorAll(".pdf-discourse-cb:checked").length;
+		const sel = active.filter((cb) => cb.checked).length;
 		const countEl = dlg.querySelector("#pdf-selection-count");
 		if (countEl) countEl.textContent = `${sel} of ${total} selected`;
 		const gen = dlg.querySelector(
@@ -758,9 +879,9 @@ const exportTreeDiscourseTotal = hasExportTree
 		const chapterCb = chapterEl.querySelector(
 			".pdf-chapter-cb",
 		) as HTMLInputElement | null;
-		const discs = chapterEl.querySelectorAll<HTMLInputElement>(
-			".pdf-discourse-cb",
-		);
+		const discs = Array.from(
+			chapterEl.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb"),
+		).filter((d) => !d.disabled);
 		if (!chapterCb) return;
 		let n = 0;
 		let c = 0;
@@ -778,14 +899,15 @@ const exportTreeDiscourseTotal = hasExportTree
 		chapterEl
 			.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb")
 			.forEach((d) => {
-				d.checked = chapterCb.checked;
+				if (!d.disabled) d.checked = chapterCb.checked;
 			});
 		chapterCb.indeterminate = false;
 	}
 
 	function resetExportTreeToAll(dlg: HTMLDialogElement) {
-		if (dlg.querySelectorAll(".pdf-discourse-cb").length === 0) return;
-		dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb").forEach((d) => {
+		const active = getActiveDiscourseCheckboxes(dlg);
+		if (active.length === 0) return;
+		active.forEach((d) => {
 			d.checked = true;
 		});
 		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
@@ -799,7 +921,7 @@ const exportTreeDiscourseTotal = hasExportTree
 	}
 
 	function clearAllDiscourses(dlg: HTMLDialogElement) {
-		dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb").forEach((d) => {
+		getActiveDiscourseCheckboxes(dlg).forEach((d) => {
 			d.checked = false;
 		});
 		dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
@@ -893,9 +1015,8 @@ const exportTreeDiscourseTotal = hasExportTree
 			const usePostExport = !!dlg.querySelector(".pdf-discourse-cb");
 			let response: Response;
 			if (usePostExport) {
-				const selectedDiscourseSlugs = Array.from(
-					dlg.querySelectorAll<HTMLInputElement>(".pdf-discourse-cb:checked"),
-				)
+				const selectedDiscourseSlugs = getActiveDiscourseCheckboxes(dlg)
+					.filter((el) => el.checked)
 					.map((el) => el.dataset.slug)
 					.filter((s): s is string => !!s && s.length > 0);
 				if (selectedDiscourseSlugs.length === 0) {
@@ -1046,6 +1167,23 @@ const exportTreeDiscourseTotal = hasExportTree
 					"#pdf-fieldset-viz-colors",
 				) as HTMLFieldSetElement | null;
 				if (vizFs) vizFs.disabled = !(el as HTMLInputElement).checked;
+			}
+			if (el.id === "pdf-opt-ref") {
+				const includeRef = (el as HTMLInputElement).checked;
+				setReferenceDiscoursesVisible(dlg, includeRef);
+				if (includeRef) {
+					dlg
+						.querySelectorAll<HTMLInputElement>(
+							".pdf-discourse-cb[data-is-reference='true']",
+						)
+						.forEach((cb) => {
+							cb.checked = true;
+						});
+					dlg.querySelectorAll(".pdf-tree-chapter").forEach((ch) => {
+						syncChapterFromChildren(ch);
+					});
+					updateExportTreeSelectionUi(dlg);
+				}
 			}
 		};
 

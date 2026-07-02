@@ -16,7 +16,7 @@ import { JSDOM } from "jsdom";
 import { Marked, Renderer } from "marked";
 import type { Tokens } from "marked";
 import type { DirectoryStructure } from "../types/directory";
-import { findEntry, findEntriesBySlugPrefix } from "./textApi";
+import { findEntry } from "./textApi";
 import { findContentImages } from "./contentImage";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
@@ -25,10 +25,12 @@ import {
 	createCombinedMarkdown,
 	formatBlock,
 	parseContent,
+	PALI_ONLY_NOTICE,
+	REFERENCE_TRANSLATION_CREDIT,
 	type ContentPair,
 } from "./contentParser";
-import { getChapterEntryListForPdf } from "./collectionPdfChapterEntries";
-import { discourseSlugFromEntry } from "./collectionPdfExportTree";
+import { getChapterDiscourseLinesForPdf } from "./collectionPdfExportTree";
+import { buildReferenceDiscoursePage } from "./referenceDiscoursePage";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -196,6 +198,53 @@ function buildSplitPdfHtmlFromPairs(pairs: ContentPair[]): string {
 	}
 
 	return `<div class="pdf-poly-split">${rows.join("\n")}</div>`;
+}
+
+function referenceEnglishMarkdownFromPairs(pairs: ContentPair[]): string {
+	return pairs
+		.map((pair) => (pair.type === "other" ? pair.english : pair.english))
+		.filter((block) => block.trim().length > 0)
+		.join("\n\n");
+}
+
+async function fetchReferenceDiscourseHtml(
+	slug: string,
+	paliOptions?: PdfPaliOptions,
+	includeKeyTermsSection = true,
+): Promise<string> {
+	const refPage = await buildReferenceDiscoursePage(slug, { refMode: true });
+	if (!refPage) return "<p><em>(Content not available)</em></p>";
+
+	const credit = refPage.referenceFallbackPage
+		? REFERENCE_TRANSLATION_CREDIT
+		: "";
+	const { contentPairs: pairs } = refPage;
+
+	let html: string;
+	if (paliOptions?.enabled) {
+		const layout = paliOptions.layout === "split" ? "split" : "interleaved";
+		if (layout === "split") {
+			html = `${credit}${buildSplitPdfHtmlFromPairs(pairs)}`;
+		} else {
+			const combined = createCombinedMarkdown(pairs, true, "interleaved");
+			const body =
+				typeof combined === "string"
+					? polytextMarkdownToHtml(combined)
+					: "";
+			html = `${credit}${body}`;
+		}
+	} else if (refPage.referenceFallbackPage) {
+		const enMarkdown = referenceEnglishMarkdownFromPairs(pairs);
+		html = `${credit}${enMarkdown ? mdxBodyToHtml(enMarkdown) : ""}`;
+	} else {
+		const paliMarkdown = refPage.refPaliOnlyContent ?? "";
+		html = `${PALI_ONLY_NOTICE}${
+			paliMarkdown ? polytextMarkdownToHtml(paliMarkdown) : ""
+		}`;
+	}
+
+	html = processFootnotes(html, { includeKeyTermsSection });
+	return html;
 }
 
 // ---------------------------------------------------------------------------
@@ -567,27 +616,32 @@ async function fetchChapterDiscourses(
 	includeKeyTermsSection = true,
 	selectedDiscourseSlugs?: Set<string> | null,
 ): Promise<DiscoursePdf[]> {
-	const limited = await getChapterEntryListForPdf(chapterSlug, range);
+	const lines = await getChapterDiscourseLinesForPdf(chapterSlug, range);
 	const filtered =
 		selectedDiscourseSlugs && selectedDiscourseSlugs.size > 0
-			? limited.filter((entry) =>
-					selectedDiscourseSlugs.has(discourseSlugFromEntry(entry)),
-				)
-			: limited;
+			? lines.filter((line) => selectedDiscourseSlugs.has(line.slug))
+			: lines;
 
-	// Render body for each discourse in parallel
 	const discourses = await Promise.all(
-		filtered.map(async (entry) => {
-			const slug = (entry.data as any)?.slug || entry.slug || "";
-			const title = (entry.data as any)?.title || slug;
-			const description = (entry.data as any)?.description || "";
-			const html = await fetchDiscourseHtml(
-				slug,
-				imageMode,
-				paliOptions,
-				includeKeyTermsSection,
-			);
-			return { slug, title, description, html };
+		filtered.map(async (line) => {
+			const html = line.isReference
+				? await fetchReferenceDiscourseHtml(
+						line.slug,
+						paliOptions,
+						includeKeyTermsSection,
+					)
+				: await fetchDiscourseHtml(
+						line.slug,
+						imageMode,
+						paliOptions,
+						includeKeyTermsSection,
+					);
+			return {
+				slug: line.slug,
+				title: line.title,
+				description: line.description || "",
+				html,
+			};
 		}),
 	);
 
