@@ -1,6 +1,6 @@
 ---
 title: Nagaropama sutta - Simile of the Fortress
-description: Using the metaphor of a well-provisioned frontier fort, the Buddha outlines the architectural safeguards of the spiritual life. Equipped with seven good qualities and nourished by the four jhānas, a noble disciple's mind becomes a spiritual fortress that cannot be overrun by Māra.
+description: Using the metaphor of a well-provisioned frontier fortress, the Buddha outlines the safeguards of the spiritual life. Equipped with seven good qualities and nourished by the four jhānas, a noble disciple’s mind becomes a fortress that cannot be overrun by Māra.
 qualities: jhana, cultivation, wholesome, unwholesome
 theme: wisdom, inspiration, training guideline
 slug: an7.67
