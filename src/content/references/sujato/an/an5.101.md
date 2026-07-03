@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Assurance
 description: The Buddha teaches on assurance, presenting a fivefold teaching for disciples on the path.
-qualities: faith, learned, ethical conduct, wisdom
+qualities: faith, learning, ethical conduct, wisdom
 theme: inspiration
 ---
 

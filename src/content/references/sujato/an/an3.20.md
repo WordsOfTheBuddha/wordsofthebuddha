@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: A Shopkeeper (2nd)
 description: The Buddha teaches on a shopkeeper (2nd), presenting a threefold teaching for disciples on the path.
-qualities: wholesome, suffering, ending, giving, giving up, learned
+qualities: wholesome, suffering, ending, giving, giving up, learning
 theme: inquisitiveness, principle
 ---
 

@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With Bhaddaji
 description: The Buddha teaches Venerable Bhaddaji on with bhaddaji, presenting a fivefold teaching for disciples on the path.
-qualities: happiness, learned
+qualities: happiness, learning
 theme: inspiration
 ---
 

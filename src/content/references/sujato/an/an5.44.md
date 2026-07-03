@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Agreeable
 description: The Buddha teaches on agreeable, presenting a fivefold teaching for disciples on the path.
-qualities: compassion, learned, appreciative joy, gratefulness, mindfulness, respect
+qualities: compassion, learning, appreciative joy, gratefulness, mindfulness, respect
 theme: story
 ---
 

@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With Sarabha
 description: The Buddha teaches on with sarabha, presenting a threefold teaching for disciples on the path.
-qualities: learned, with nothing, doubt, aversion, ending, suffering
+qualities: learning, with nothing, doubt, aversion, ending, suffering
 theme: story, recollection of the Buddha
 ---
 

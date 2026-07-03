@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Timidity
 description: The Buddha describes the five qualities is overcome by timidity—it’s when a mendicant is faithless, unethical, with little learning, lazy, and witless, a mendicant with these five qualities is overcome by timidity, a mendicant with five qualities is self-assured, and what five?, and it’s when a mendicant is faithful, ethical, learned, energetic, and wise.
-qualities: learned, ethical conduct, faith
+qualities: learning, ethical conduct, faith
 theme: inspiration
 ---
 

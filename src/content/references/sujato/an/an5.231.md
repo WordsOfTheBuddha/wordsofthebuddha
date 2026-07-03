@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: A Resident Mendicant
 description: The Buddha teaches on a resident mendicant, presenting a fivefold teaching for disciples on the path.
-qualities: learned, unassuming, wholesome
+qualities: learning, unassuming, wholesome
 theme: inspiration
 ---
 

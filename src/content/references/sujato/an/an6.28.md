@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Proper Occasions (2nd)
 description: The Buddha teaches on proper occasions (2nd), presenting a sixfold teaching for disciples on the path.
-qualities: sensual desire, desire, mindfulness, cultivation, jhana, learned
+qualities: sensual desire, desire, mindfulness, cultivation, jhana, learning
 theme: training guideline, wisdom
 ---
 

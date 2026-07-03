@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: At Uruvelā (2nd)
 description: The Buddha describes the four qualities that make a senior.
-qualities: learned, mindfulness, wholesome, ending, wisdom, liberation
+qualities: learning, mindfulness, wholesome, ending, wisdom, liberation
 theme: story, urgency
 ---
 

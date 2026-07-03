@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With Ānanda
 description: The Buddha teaches a disciple on with ānanda, presenting a sixfold teaching for disciples on the path.
-qualities: learned, doubt
+qualities: learning, doubt
 theme: inspiration, inquisitiveness
 ---
 

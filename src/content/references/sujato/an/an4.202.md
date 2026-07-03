@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Faithless
 description: The Buddha teaches on faithless, presenting a fourfold teaching for disciples on the path.
-qualities: conscience, faith, learned, mindfulness, wisdom, fear of wrongdoing
+qualities: conscience, faith, learning, mindfulness, wisdom, fear of wrongdoing
 theme: inspiration, wisdom
 ---
 

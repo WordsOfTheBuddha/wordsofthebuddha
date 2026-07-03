@@ -1,7 +1,7 @@
 ---
 title: Vimuttāyatana sutta - Causes for Liberation
 description: The Buddha explains the five causes for liberation, which include hearing the Dhamma, teaching the Dhamma to others, reciting the Dhamma, reflecting on the Dhamma, and attending to a theme of mental stillness.
-qualities: learned, joy, uplifting joy, tranquility, happiness, collectedness, liberation, examination
+qualities: learning, joy, uplifting joy, tranquility, happiness, collectedness, liberation, examination
 theme: cultivating discernment, wisdom, inquisitiveness
 slug: an5.26
 priority: 1.4

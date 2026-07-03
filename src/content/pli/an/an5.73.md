@@ -1,7 +1,7 @@
 ---
 title: Paṭhama dhamma vihārī sutta - Dweller in the Dhamma (First)
 description: A true “dweller in the Dhamma” does not pass the day solely learning, teaching, reciting, or pondering teachings. Instead, they balance their learning by prioritizing seclusion and applying themselves to internal serenity of mind.
-qualities: solitude, tranquility, learned, diligence, examination, recollection of the Dhamma
+qualities: solitude, tranquility, learning, diligence, examination, recollection of the Dhamma
 theme: wisdom
 slug: an5.73
 priority: 1.1

@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: The Boat
 description: Verses in the Little Chapter (The Boat) on ethical conduct, devotion, and the supreme value of the Buddha, Dhamma, and Saṅgha.
-qualities: learned, happiness, faith, immaturity
+qualities: learning, happiness, faith, immaturity
 theme: inspiration, wisdom
 ---
 

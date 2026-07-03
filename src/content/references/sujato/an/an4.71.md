@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Effort
 description: The Buddha teaches on effort, presenting a fourfold teaching for disciples on the path.
-qualities: ending, learned, vigour, ethical conduct, right effort
+qualities: ending, learning, vigour, ethical conduct, right effort
 theme: training guideline, principle
 ---
 

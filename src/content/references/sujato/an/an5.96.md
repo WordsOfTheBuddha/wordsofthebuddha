@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Remembering What You’ve Learned
 description: The Buddha teaches on remembering what you’ve learned, presenting a fivefold teaching for disciples on the path.
-qualities: mindfulness, learned, wholesome, wakefulness, liberation, wrong view
+qualities: mindfulness, learning, wholesome, wakefulness, liberation, wrong view
 theme: principle, wisdom
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Vibhatti sutta - Analytical Knowledges
 description: Venerable Sāriputta describes the four analytical knowledges he realized a half-month after his full ordination.
-qualities: learned, wisdom
+qualities: learning, wisdom
 theme: inspiration, cultivating discernment
 slug: an4.172
 character: Venerable Sāriputta

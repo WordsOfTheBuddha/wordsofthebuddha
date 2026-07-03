@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Beautification
 description: The Buddha teaches on beautification, presenting a fivefold teaching for disciples on the path.
-qualities: wholesome, learned, mindfulness, ethical conduct, ill will
+qualities: wholesome, learning, mindfulness, ethical conduct, ill will
 theme: training guideline, inspiration
 ---
 

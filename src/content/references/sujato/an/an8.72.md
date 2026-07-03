@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Inspiring All Around (2nd)
 description: The Buddha teaches on inspiring all around (2nd), presenting a eightfold teaching for disciples on the path.
-qualities: respect, ending, formless, learned, liberation, insight
+qualities: respect, ending, formless, learning, liberation, insight
 theme: training guideline, inspiration
 ---
 

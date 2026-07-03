@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Very Helpful
 description: The Buddha teaches on very helpful, presenting a fivefold teaching for disciples on the path.
-qualities: learned, wholesome, merit, mindfulness, ethical conduct, ill will
+qualities: learning, wholesome, merit, mindfulness, ethical conduct, ill will
 theme: training guideline, wisdom
 ---
 

@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: A Splinter
 description: A deity engages the Buddha in verse on a splinter, exploring a teaching on suffering, liberation, and the law of kamma.
-qualities: mindfulness, conceit, learned, craving, wholesome, collectedness
+qualities: mindfulness, conceit, learning, craving, wholesome, collectedness
 theme: inspiration, story
 ---
 

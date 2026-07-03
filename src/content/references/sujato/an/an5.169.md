@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Quick-witted
 description: The Buddha teaches a disciple on quick-witted, presenting a fivefold teaching for disciples on the path.
-qualities: learned, wholesome
+qualities: learning, wholesome
 theme: principle
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Catuttha Etadagga vagga - The Chapter on the Foremost (Fourth)
 description: The Buddha describes the foremost of his bhikkhu disciples in various categories.
-qualities: learned, mindfulness, psychic power, sense restraint, inspiration
+qualities: learning, mindfulness, psychic power, sense restraint, inspiration
 theme: inspiration
 slug: an1.219-234
 ---

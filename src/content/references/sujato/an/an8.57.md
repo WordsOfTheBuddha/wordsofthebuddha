@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Worthy of Offerings Dedicated to the Gods (1st)
 description: The Buddha teaches that a mendicant with eight qualities is worthy of offerings dedicated to the gods, hospitality, religious donation, and veneration as the supreme field of merit.
-qualities: wholesome, learned, merit, liberation, mindfulness, respect
+qualities: wholesome, learning, merit, liberation, mindfulness, respect
 theme: training guideline, wisdom
 ---
 

@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Earthquakes
 description: The Buddha describes the eight causes and reasons for a great earthquake—this great earth is established on water, the water is established on air, and the air stands in space. at a time when a great wind blows, it stirs the water, and the water stirs the earth, this is the first cause and reason for a great earthquake, furthermore, there is an ascetic or brahmin with psychic power who has achieved mastery of the mind, or a god who is mighty and powerful. they’ve developed a limited perception of earth and a limitless perception of water. they make the earth shake and rock and tremble, and this is the second cause and reason for a great earthquake, and furthermore, when the being intent on awakening passes away from the host of joyful gods, he’s conceived in his mother’s womb, mindful and aware. then the earth shakes and rocks and trembles, and this is the third cause and reason for a great earthquake, and furthermore, when the being intent on awakening comes out of his mother’s womb mindful and aware, the earth shakes and rocks and trembles, and this is the fourth cause and reason for a great earthquake.
-qualities: learned, psychic power, happiness, compassion, desire, cultivation
+qualities: learning, psychic power, happiness, compassion, desire, cultivation
 theme: story, recollection of the Buddha
 ---
 

@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: A True Person
 description: The Buddha teaches on a true person, presenting a fivefold teaching for disciples on the path.
-qualities: happiness, ethical conduct, learned, fear of wrongdoing
+qualities: happiness, ethical conduct, learning, fear of wrongdoing
 theme: principle
 ---
 

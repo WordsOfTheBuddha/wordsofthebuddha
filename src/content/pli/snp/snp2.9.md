@@ -1,7 +1,7 @@
 ---
 title: Kiṁsīla sutta - What Virtue
 description: Verses detailing the conduct needed to reach the ultimate goal. The teaching contrasts the impulsive and negligent with the steadfast mind, emphasizing the importance of honoring teachers, abandoning defilements, and establishing oneself in the peace and collectedness of the Dhamma.
-qualities: learned, wisdom, impatience, well spoken speech, wrong speech, unprincipled conduct, ethical conduct, self-control, negligence, aggressiveness, flexible, tranquility, collectedness
+qualities: learning, wisdom, impatience, well spoken speech, wrong speech, unprincipled conduct, ethical conduct, self-control, negligence, aggressiveness, flexible, tranquility, collectedness
 theme: inspiration, wisdom
 slug: snp2.9
 ---

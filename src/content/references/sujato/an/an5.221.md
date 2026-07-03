@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Long Wandering (1st)
 description: The Buddha describes the five drawbacks for someone who likes long and aimless wandering.
-qualities: learned, faith
+qualities: learning, faith
 theme: inspiration
 ---
 

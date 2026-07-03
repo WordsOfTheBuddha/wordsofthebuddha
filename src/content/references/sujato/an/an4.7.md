@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Grace
 description: The Buddha describes the four who, explaining this fourfold teaching for disciples on the path.
-qualities: learned, faith
+qualities: learning, faith
 theme: inspiration
 ---
 

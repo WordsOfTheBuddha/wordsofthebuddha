@@ -1,7 +1,7 @@
 ---
 title: Nirodha sutta - Cessation
 description: When the venerable Udāyī repeatedly contradicts Sāriputta regarding mind-made bodies and cessation, the Buddha intervenes to correct his misunderstanding. Afterwards, the venerable Upavāṇa enumerates the five essential qualities that make an elder monk truly worthy of respect.
-qualities: politeness, collectedness, ethical conduct, learned, liberation
+qualities: politeness, collectedness, ethical conduct, learning, liberation
 theme: wisdom, inspiration
 slug: an5.166
 priority: 1.1

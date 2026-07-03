@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: The Training of a Holy One
 description: The Buddha teaches on the training of a holy one, presenting a fourfold teaching for disciples on the path.
-qualities: vigour, happiness, learned, solitude, wholesome, compassion
+qualities: vigour, happiness, learning, solitude, wholesome, compassion
 theme: recollection of the Buddha, training guideline
 ---
 

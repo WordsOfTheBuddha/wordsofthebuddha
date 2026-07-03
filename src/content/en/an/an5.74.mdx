@@ -1,7 +1,7 @@
 ---
 title: Dutiyadhammavihārī sutta - Dweller in the Dhamma (Second)
 description: Merely learning, teaching, reciting, or pondering the teachings is insufficient. A true "dweller in the Dhamma" goes beyond these activities by deeply understanding the meaning of the Dhamma with wisdom.
-qualities: solitude, tranquility, learned, diligence, examination, recollection of the Dhamma, discernment, penetrative vision
+qualities: solitude, tranquility, learning, diligence, examination, recollection of the Dhamma, discernment, penetrative vision
 theme: wisdom
 slug: an5.74
 priority: 1.2

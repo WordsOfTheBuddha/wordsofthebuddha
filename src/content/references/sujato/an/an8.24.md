@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With Hatthaka (2nd)
 description: The Buddha teaches the householder on with hatthaka (2nd), presenting a eightfold teaching for disciples on the path.
-qualities: wholesome, giving, learned, fear of wrongdoing, ethical conduct, faith
+qualities: wholesome, giving, learning, fear of wrongdoing, ethical conduct, faith
 theme: story, inspiration
 ---
 

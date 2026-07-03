@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With Vassakāra
 description: The Buddha teaches on with vassakāra, presenting a fourfold teaching for disciples on the path.
-qualities: wisdom, liberation, ending, happiness, insight, learned
+qualities: wisdom, liberation, ending, happiness, insight, learning
 theme: story, urgency
 ---
 

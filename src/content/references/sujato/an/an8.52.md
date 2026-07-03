@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: An Adviser for Nuns
 description: The Buddha teaches a disciple on an adviser for nuns, presenting a eightfold teaching for disciples on the path.
-qualities: wholesome, learned, mindfulness, tame, ethical conduct, ill will
+qualities: wholesome, learning, mindfulness, tame, ethical conduct, ill will
 theme: story, inspiration
 ---
 

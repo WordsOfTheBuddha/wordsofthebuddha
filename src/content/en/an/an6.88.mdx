@@ -1,7 +1,7 @@
 ---
 title: Sussūsati sutta - Wishes to Listen
 description: The Buddha contrasts two sets of six qualities that determine one's capacity for progress when hearing the Dhamma. One is incapable of growth in wholesome qualities if they are unwilling to listen, inattentive, misinterpret the meaning, and hold contrary views.
-qualities: learned, respect, attachment, wholesome
+qualities: learning, respect, attachment, wholesome
 theme: cultivating discernment, wisdom
 slug: an6.88
 ---

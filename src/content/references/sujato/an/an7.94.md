@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Good Qualities
 description: The Buddha describes the seven good qualities.
-qualities: wholesome, learned, fear of wrongdoing, faith, mindfulness
+qualities: wholesome, learning, fear of wrongdoing, faith, mindfulness
 theme: inspiration
 ---
 

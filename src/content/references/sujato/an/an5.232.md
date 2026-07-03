@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Liked
 description: The Buddha teaches on liked, presenting a fivefold teaching for disciples on the path.
-qualities: wholesome, learned, dearness, liberation, mindfulness, ending
+qualities: wholesome, learning, dearness, liberation, mindfulness, ending
 theme: training guideline, wisdom
 ---
 

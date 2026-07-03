@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Wilderness
 description: The Buddha teaches on wilderness, presenting a fivefold teaching for disciples on the path.
-qualities: wholesome, learned, flexible, liberation, mindfulness, ending
+qualities: wholesome, learning, flexible, liberation, mindfulness, ending
 theme: training guideline, wisdom
 ---
 

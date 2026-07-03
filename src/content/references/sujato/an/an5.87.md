@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: Ethical
 description: The Buddha teaches on ethical, presenting a fivefold teaching for disciples on the path.
-qualities: wholesome, learned, dearness, liberation, mindfulness, ending
+qualities: wholesome, learning, dearness, liberation, mindfulness, ending
 theme: training guideline, wisdom
 ---
 

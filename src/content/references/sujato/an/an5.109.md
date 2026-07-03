@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: All Four Quarters
 description: The Buddha describes the five qualities is at ease in any quarter—it’s when mendicant is ethical, restrained in the monastic code, conducting themselves well and resorting for alms in suitable places. seeing danger in the slightest fault, they keep the rules they’ve undertaken, they’re content with any kind of robes, almsfood, lodgings, and medicines and supplies for the sick, they get the four absorptions—blissful meditations in this life that belong to the higher mind—when they want, without trouble or difficulty, and they realize the undefiled freedom of heart and freedom by wisdom in this very life. and they live having realized it with their own insight due to the ending of defilements, and a mendicant with these five qualities is at ease in any quarter.”.
-qualities: learned, wholesome, liberation, mindfulness, ending, insight
+qualities: learning, wholesome, liberation, mindfulness, ending, insight
 theme: training guideline, wisdom
 ---
 

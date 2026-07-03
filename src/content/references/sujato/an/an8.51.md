@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With Gotamī
 description: The Buddha teaches a disciple on with gotamī, presenting a eightfold teaching for disciples on the path.
-qualities: respect, spiritual life, lamentation, suffering, learned, cruelty
+qualities: respect, spiritual life, lamentation, suffering, learning, cruelty
 theme: story, recollection of the Buddha
 ---
 

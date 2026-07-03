@@ -5,7 +5,7 @@ translator: sujato
 license: CC0
 title: With the Wanderer Sajjha
 description: The Buddha teaches the wanderer on with the wanderer sajjha, presenting a ninefold teaching for disciples on the path.
-qualities: learned, delight, desire, faith, mindfulness
+qualities: learning, delight, desire, faith, mindfulness
 theme: story, training guideline
 ---
 

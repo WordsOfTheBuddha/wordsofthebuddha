@@ -1,7 +1,7 @@
 ---
 title: Suppabuddhakuṭṭhi sutta - With Suppabuddha the Leper
 description: The story of Suppabuddha, a poor, impoverished, and pitiful leper who attains the stainless Dhamma eye after hearing a progressive discourse.
-qualities: learned, ethical conduct, faith, respect, right view
+qualities: learning, ethical conduct, faith, respect, right view
 theme: inspiration
 slug: ud5.3
 character: Suppabuddha the Leper
