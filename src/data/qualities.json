@@ -126,7 +126,7 @@
 		"jhana",
 		"joy",
 		"uplifting joy",
-		"learned",
+		"learning",
 		"liberation",
 		"loving-kindness",
 		"merit",
@@ -1031,7 +1031,7 @@
 			"inquiring",
 			"testing",
 			"Context: The faculty of investigation that probes into phenomena, testing what is wholesome and unwholesome. It examines the teachings and one's own experience to discern truth from falsity.",
-			"Leads to:{learned, examination}",
+			"Leads to:{learning, examination}",
 			"Supported by:{inspiration}",
 			"[vīmaṃsā]"
 		],
@@ -1051,7 +1051,7 @@
 			"with understanding",
 			"right knowledge",
 			"Context: Insight is deep, intuitive realization that transforms understanding and guides practice.",
-			"Related:{learned, penetrative vision}",
+			"Related:{learning, penetrative vision}",
 			"Supported by:{wisdom}",
 			"Leads to:{direct knowledge, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, recognition of unattractiveness}",
 			"[ñāṇa, sammāñāṇa]"
@@ -1155,7 +1155,7 @@
 			"Opposite:{continuous effort, rousing of energy}",
 			"[ālasya, kosajja, kusīta, tandī]"
 		],
-		"learned": [
+		"learning": [
 			"having knowledge",
 			"well studied",
 			"Related:{insight}",
@@ -1872,7 +1872,7 @@
 			"reliability",
 			"verifiability",
 			"Context: The quality of what is real and dependable; speech and conduct aligned with reality, honesty, and integrity.",
-			"Leads to:{conscience, giving, inspiration, learned, respect}",
+			"Leads to:{conscience, giving, inspiration, learning, respect}",
 			"[sacca]"
 		],
 		"unassuming": [
