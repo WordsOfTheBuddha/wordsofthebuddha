@@ -2,8 +2,8 @@
 
 export const siteAvailability = {
   "textCount": 3720,
-  "translatedCount": 2296,
-  "readableCount": 1128,
+  "translatedCount": 2299,
+  "readableCount": 1131,
   "unitCount": 12028
 } as const;
 
@@ -45,7 +45,7 @@ export const collectionAvailability: Record<string, CollectionAvailability> = {
     "total": 2889
   },
   "an": {
-    "translatedCount": 959,
+    "translatedCount": 962,
     "readableCount": 8122,
     "total": 8122
   },
