@@ -13,7 +13,9 @@
 			"discourse": [
 				"mn1",
 				"mn10",
+				"mn18",
 				"mn47",
+				"mn140",
 				"mn148"
 			],
 			"labels": [
@@ -33,8 +35,10 @@
 			"discourse": [
 				"mn1",
 				"mn10",
+				"mn18",
 				"mn47",
 				"mn95",
+				"mn140",
 				"mn148"
 			],
 			"labels": [
@@ -53,6 +57,8 @@
 			],
 			"discourse": [
 				"mn1",
+				"mn18",
+				"mn140",
 				"mn148"
 			],
 			"labels": [
@@ -73,6 +79,8 @@
 				"mn1",
 				"mn9",
 				"mn10",
+				"mn18",
+				"mn140",
 				"mn148"
 			],
 			"labels": [
@@ -91,7 +99,6 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn19",
 				"mn29",
 				"mn30",
 				"mn113",
@@ -115,7 +122,6 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn19",
 				"mn29",
 				"mn30",
 				"mn113",
@@ -138,7 +144,8 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn77"
+				"mn77",
+				"mn140"
 			],
 			"labels": [
 				"elements",
@@ -156,7 +163,8 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn77"
+				"mn77",
+				"mn140"
 			],
 			"labels": [
 				"elements",
@@ -175,7 +183,8 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn77"
+				"mn77",
+				"mn140"
 			],
 			"labels": [
 				"elements",
@@ -193,7 +202,8 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn77"
+				"mn77",
+				"mn140"
 			],
 			"labels": [
 				"elements",
@@ -322,7 +332,8 @@
 				"mn9",
 				"mn25",
 				"mn77",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"formless",
@@ -343,7 +354,8 @@
 				"mn6",
 				"mn25",
 				"mn77",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"formless",
@@ -366,7 +378,8 @@
 				"mn25",
 				"mn77",
 				"mn106",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"formless",
@@ -388,7 +401,8 @@
 				"mn25",
 				"mn77",
 				"mn106",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"formless",
@@ -446,7 +460,8 @@
 			],
 			"discourse": [
 				"mn2",
-				"mn9"
+				"mn9",
+				"mn18"
 			],
 			"labels": [
 				"five hindrances",
@@ -463,7 +478,10 @@
 				"teal",
 				"line-art"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"mn18"
+			],
 			"labels": [
 				"safety",
 				"wisdom"
@@ -544,10 +562,7 @@
 				"line-art",
 				"flame"
 			],
-			"discourse": [
-				"mn2",
-				"mn19"
-			],
+			"discourse": "mn2",
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -566,7 +581,6 @@
 			"discourse": [
 				"mn2",
 				"mn9",
-				"mn19",
 				"mn95"
 			],
 			"labels": [
@@ -584,10 +598,7 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": [
-				"mn2",
-				"mn19"
-			],
+			"discourse": "mn2",
 			"labels": [
 				"harm",
 				"unwholesome"
@@ -621,10 +632,7 @@
 				"bowl",
 				"burgundy"
 			],
-			"discourse": [
-				"mn3",
-				"sn22.81"
-			],
+			"discourse": "mn3",
 			"labels": [],
 			"svg": "icons/bowl-overflow.svg"
 		},
@@ -770,7 +778,10 @@
 				"bowl",
 				"gold"
 			],
-			"discourse": "mn5",
+			"discourse": [
+				"mn5",
+				"mn140"
+			],
 			"labels": [
 				"diligence"
 			],
@@ -1662,12 +1673,11 @@
 			"discourse": [
 				"mn39",
 				"mn6",
-				"mn19",
 				"mn25",
 				"mn77",
 				"mn111",
 				"mn119",
-				"sn22.81"
+				"mn140"
 			],
 			"labels": [
 				"awakening",
@@ -1744,9 +1754,9 @@
 			],
 			"discourse": "mn113",
 			"labels": [
-				"conceit"
+				"conceit",
+				"learning"
 			],
-			"valence": "-ve",
 			"svg": "icons/conceit-great-learning.svg"
 		},
 		{
@@ -1858,7 +1868,9 @@
 			"discourse": [
 				"an10.1",
 				"mn9",
-				"mn111"
+				"mn18",
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"liberation"
@@ -1989,7 +2001,8 @@
 			],
 			"discourse": [
 				"sn36.10",
-				"mn9"
+				"mn9",
+				"mn140"
 			],
 			"labels": [
 				"insight",
@@ -2006,7 +2019,10 @@
 				"line-art",
 				"simile"
 			],
-			"discourse": "sn36.10",
+			"discourse": [
+				"sn36.10",
+				"mn140"
+			],
 			"labels": [
 				"insight",
 				"simile"
@@ -2198,7 +2214,9 @@
 			],
 			"discourse": [
 				"mn148",
-				"mn10"
+				"mn10",
+				"mn18",
+				"mn140"
 			],
 			"labels": [
 				"phenomena",
@@ -2216,7 +2234,9 @@
 			],
 			"discourse": [
 				"mn148",
-				"mn10"
+				"mn10",
+				"mn18",
+				"mn140"
 			],
 			"labels": [
 				"phenomena",
@@ -2519,7 +2539,6 @@
 			],
 			"discourse": [
 				"mn39",
-				"mn19",
 				"mn77"
 			],
 			"labels": [
@@ -2540,7 +2559,6 @@
 			],
 			"discourse": [
 				"mn39",
-				"mn19",
 				"mn77"
 			],
 			"labels": [
@@ -2621,7 +2639,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn106",
+			"discourse": [
+				"mn106",
+				"mn140"
+			],
 			"labels": [
 				"formless",
 				"free from attachment",
@@ -2658,7 +2679,8 @@
 			],
 			"discourse": [
 				"mn25",
-				"mn9"
+				"mn9",
+				"mn19"
 			],
 			"labels": [
 				"five hindrances",
@@ -2744,7 +2766,8 @@
 			"discourse": [
 				"mn25",
 				"mn77",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"ending"
@@ -2817,7 +2840,8 @@
 			],
 			"discourse": [
 				"mn6",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"collectedness",
@@ -2839,7 +2863,8 @@
 				"mn9",
 				"mn77",
 				"mn95",
-				"mn111"
+				"mn111",
+				"mn140"
 			],
 			"labels": [
 				"insight",
@@ -2947,7 +2972,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn47",
+			"discourse": [
+				"mn47",
+				"mn19"
+			],
 			"labels": [
 				"integrity",
 				"purity",
@@ -2980,7 +3008,8 @@
 			],
 			"discourse": [
 				"mn77",
-				"mn95"
+				"mn95",
+				"mn140"
 			],
 			"labels": [
 				"direct knowledge",
@@ -3154,10 +3183,7 @@
 				"line-art",
 				"teal"
 			],
-			"discourse": [
-				"mn9",
-				"mn19"
-			],
+			"discourse": "mn9",
 			"labels": [
 				"wholesome"
 			],
@@ -3172,10 +3198,7 @@
 				"line-art",
 				"teal"
 			],
-			"discourse": [
-				"mn9",
-				"mn19"
-			],
+			"discourse": "mn9",
 			"labels": [
 				"wholesome"
 			],
@@ -3228,8 +3251,8 @@
 		},
 		{
 			"id": "simile-active-cowherd",
-			"title": "Simile: autumn cowherd",
-			"description": "Cowherd striking and restraining cows with a stick — guarding unwholesome thoughts",
+			"title": "Simile: unwholesome autumn cowherd",
+			"description": "Cowherd striking/holding cows with a stick — vigilance with unwholesome thoughts",
 			"tags": [
 				"line-art"
 			],
@@ -3244,8 +3267,8 @@
 		},
 		{
 			"id": "simile-relaxed-cowherd",
-			"title": "Simile: summer cowherd",
-			"description": "Cowherd seated under a tree, mindful that the herd is there — wholesome thoughts",
+			"title": "Simile: wholesome summer cowherd",
+			"description": "Cowherd resting under a tree, simply aware — mindfulness of wholesome thoughts",
 			"tags": [
 				"line-art"
 			],
@@ -3259,20 +3282,71 @@
 			"svg": "icons/simile-relaxed-cowherd.svg"
 		},
 		{
-			"id": "non-harm-thought",
-			"title": "Non-harm thought",
-			"description": "Open palms / protective arc — avihiṁsāvitakka (wholesome thought class)",
+			"id": "simile-deer-mara-decoy",
+			"title": "Simile: Māra's deer trap decoy and dummy",
+			"description": "Low-lying marsh pasture with a trap/decoy and skull dummy representing Māra's threat",
 			"tags": [
-				"line-art",
-				"teal"
+				"line-art"
 			],
 			"discourse": "mn19",
 			"labels": [
-				"non harm",
-				"wholesome"
+				"harm",
+				"simile",
+				"unwholesome"
+			],
+			"valence": "-ve",
+			"svg": "icons/simile-deer-mara-decoy.svg"
+		},
+		{
+			"id": "mental-proliferation",
+			"title": "Mental proliferation",
+			"description": "Triple conduct triangle with central tangle — papañcasaññāsaṅkhā overwhelm",
+			"tags": [
+				"burgundy",
+				"line-art",
+				"conduct"
+			],
+			"discourse": "mn18",
+			"labels": [
+				"harm",
+				"wisdom"
+			],
+			"svg": "icons/mental-proliferation.svg"
+		},
+		{
+			"id": "honey-ball",
+			"title": "Honey ball",
+			"description": "Compact sphere with honey drip — madhupiṇḍika simile; the Dhamma is sweet wherever tasted",
+			"tags": [
+				"line-art",
+				"gold",
+				"simile"
+			],
+			"discourse": "mn18",
+			"labels": [
+				"simile",
+				"well being"
 			],
 			"valence": "+ve",
-			"svg": "icons/non-harm-thought.svg"
+			"svg": "icons/honey-ball.svg"
+		},
+		{
+			"id": "goldsmith-crucible",
+			"title": "Goldsmith's crucible",
+			"description": "Crucible over flame with molten-gold shimmer — suvaṇṇakāra simile; purified equanimity as refined gold, fit to be directed anywhere yet left unworked",
+			"tags": [
+				"line-art",
+				"gold",
+				"simile"
+			],
+			"discourse": "mn140",
+			"labels": [
+				"elements",
+				"formless",
+				"simile"
+			],
+			"valence": "+ve",
+			"svg": "icons/goldsmith-crucible.svg"
 		}
 	]
 }
