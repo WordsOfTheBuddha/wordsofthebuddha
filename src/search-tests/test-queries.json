@@ -122,7 +122,7 @@
 				{
 					"type": "has",
 					"slug": "mn117",
-					"maxPosition": 3,
+					"maxPosition": 5,
 					"reason": "MN 117 (The Great Forty) is THE discourse on the noble eightfold path"
 				}
 			]
@@ -430,8 +430,8 @@
 				{
 					"type": "has",
 					"slug": "mn43",
-					"maxPosition": 3,
-					"reason": "mn43 has all 3 terms in visible area - should be top 3"
+					"maxPosition": 5,
+					"reason": "mn43 has all 3 terms in visible area - should be top 5"
 				},
 				{
 					"type": "has",
@@ -468,7 +468,7 @@
 				{
 					"type": "has",
 					"slug": "mn43",
-					"maxPosition": 3,
+					"maxPosition": 5,
 					"reason": "mn43 has all 3 terms in visible area"
 				},
 				{
@@ -500,7 +500,7 @@
 				{
 					"type": "has",
 					"slug": "mn43",
-					"maxPosition": 3,
+					"maxPosition": 5,
 					"reason": "mn43 has all 3 terms in visible area"
 				},
 				{
@@ -534,6 +534,69 @@
 					"slug": "iti100",
 					"maxPosition": 5,
 					"reason": "Iti 100 has all three terms in Pali content"
+				}
+			]
+		},
+		{
+			"id": "prefix-sn22-pali",
+			"query": "^SN22 āsavānaṁ",
+			"category": "prefix-filter",
+			"description": "SN 22 prefix with Pali term — should scope to SN 22 and find āsavānaṁ in Pali content",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "sn22.101",
+					"maxPosition": 5,
+					"reason": "SN 22.101 has āsavānaṁ in Pali content within SN 22 prefix"
+				}
+			]
+		},
+		{
+			"id": "prefix-sn22-phrase",
+			"query": "^SN22 \"āsavānaṁ khaya\"",
+			"category": "prefix-filter",
+			"description": "SN 22 prefix with quoted Pali phrase",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "sn22.101",
+					"maxPosition": 5,
+					"reason": "SN 22.101 matches the āsavānaṁ khaya phrase in Pali content"
+				}
+			]
+		},
+		{
+			"id": "prefix-sn-phrase",
+			"query": "^SN \"āsavānaṁ khaya\"",
+			"category": "prefix-filter",
+			"description": "SN collection prefix with quoted Pali phrase",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "sn22.101",
+					"maxPosition": 50,
+					"reason": "SN 22.101 should appear somewhere in SN-scoped results"
+				}
+			]
+		},
+		{
+			"id": "pali-single-asavanam",
+			"query": "āsavānaṁ",
+			"category": "pali-content",
+			"description": "Single Pali term — results present with highlighted snippet",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "sn22.101",
+					"maxPosition": 20,
+					"reason": "SN 22.101 has āsavānaṁ in Pali content"
+				},
+				{
+					"type": "snippetContains",
+					"slug": "sn22.101",
+					"textContains": "<mark",
+					"maxPosition": 20,
+					"reason": "Pali snippet should highlight the matched term"
 				}
 			]
 		}

@@ -1,6 +1,6 @@
 {
   "query": "four noble truths",
-  "timestamp": "2026-03-08T04:12:35.564Z",
+  "timestamp": "2026-07-07T08:32:12.128Z",
   "version": "1.0.0",
   "results": [
     {
@@ -18,6 +18,18 @@
     {
       "rank": 2,
       "type": "discourse",
+      "slug": "mn9",
+      "title": "Sammādiṭṭhi sutta - Right View",
+      "description": "The venerable Sāriputta delivers a comprehensive exposition on “Right View,” detailing sixteen ways a noble disciple achieves clarity in the Dhamma. By understanding the wholesome and unwholesome, nut",
+      "contentSnippet": "<strong>The <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Nobl",
+      "score": 119.7,
+      "matchType": "description-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 3,
+      "type": "discourse",
       "slug": "dn22",
       "title": "Mahāsatipaṭṭhāna sutta - The Great Discourse on the Establishments of Mindfulness",
       "description": "The Buddha's most detailed exposition of the four establishments of mindfulness. This extended version includes comprehensive definitions of the Four Noble Truths, the Noble Eightfold Path, and the fo",
@@ -28,25 +40,13 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 3,
-      "type": "discourse",
-      "slug": "sn56.11",
-      "title": "Dhammacakkappavattana sutta - Setting in Motion of the Wheel of Dhamma",
-      "description": "The Buddha’s first discourse to the group of five bhikkhus at the Deer Park in Isipatana, near Varanasi. The discourse explains the Four Noble Truths and the Noble Eightfold Path in brief. It ends wit",
-      "contentSnippet": "As long as my wisdom and vision regarding these <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\"",
-      "score": 117.2,
-      "matchType": "description-whole-word",
-      "priority": 1.2,
-      "nonStopwordMatches": 3
-    },
-    {
       "rank": 4,
       "type": "topic-quality",
       "slug": "wisdom",
       "title": "Wisdom",
       "description": "Lived understanding and sound judgment that steers the mind away from suffering, distinct from mere accumulation of facts.",
       "pali": [
-        "paññā, vijjā, medhā, dhīra, paṇḍita"
+        "paññā, medhā, dhīra, paṇḍita, asammūḷha"
       ],
       "synonyms": [
         "(of a person) wise, astute, intelligent, learned, skilled, firm, stable, steadfast",
@@ -82,6 +82,18 @@
     {
       "rank": 6,
       "type": "discourse",
+      "slug": "sn56.11",
+      "title": "Dhammacakkappavattana sutta - Setting in Motion of the Wheel of Dhamma",
+      "description": "The Buddha’s first discourse to the group of five bhikkhus at the Deer Park in Isipatana, near Varanasi. The discourse explains the Four Noble Truths and the Noble Eightfold Path in brief. It ends wit",
+      "contentSnippet": "As long as my wisdom and vision regarding these <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\"",
+      "score": 117.2,
+      "matchType": "description-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
       "slug": "sn56.5",
       "title": "Paṭhama samaṇabrāhmaṇa sutta - Ascetics And Brahmins (First)",
       "description": "Whether in the past, future, or present, all fully awakened to things as they truly are do so by fully awakening to the Four Noble Truths.",
@@ -92,7 +104,19 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 7,
+      "rank": 8,
+      "type": "discourse",
+      "slug": "sn56.44",
+      "title": "Kūṭāgāra sutta - Building with a Peaked Roof",
+      "description": "The Buddha explains the importance of understanding the Four Noble Truths to end suffering with a simile of constructing a building with a peaked roof.",
+      "contentSnippet": "“Bhikkhus, if someone were to say: ‘|Without completely comprehending::not realizing the four noble truths, not experientially penetrating the four noble truths [anabhisamecca]| the <mark class=\"bg-ye",
+      "score": 116.9,
+      "matchType": "description-whole-word",
+      "priority": 1.1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 9,
       "type": "discourse",
       "slug": "sn56.21",
       "title": "Paṭhama koṭigāma sutta - At Koṭi Village (First)",
@@ -104,19 +128,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 8,
-      "type": "discourse",
-      "slug": "sn56.44",
-      "title": "Kūṭāgāra sutta - Mansion",
-      "description": "The Buddha explains the importance of understanding the Four Noble Truths to end suffering with a simile of constructing a mansion.",
-      "contentSnippet": "“Bhikkhus, if someone were to say: ‘Without |fully understanding::understanding the four noble truths in principle, then discerning them in each moment and then experientially penetrating them| the <m",
-      "score": 116.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 9,
+      "rank": 10,
       "type": "discourse",
       "slug": "mn28",
       "title": "Mahāhatthipadopama sutta - The Greater Discourse on the Simile of the Elephant’s Footprint",
@@ -128,7 +140,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 10,
+      "rank": 11,
       "type": "discourse",
       "slug": "sn56.34",
       "title": "Cela sutta - Clothes",
@@ -140,7 +152,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 11,
+      "rank": 12,
       "type": "discourse",
       "slug": "sn56.37",
       "title": "Paṭhama sūriya sutta - The Sun (First)",
@@ -152,7 +164,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 12,
+      "rank": 13,
       "type": "discourse",
       "slug": "sn56.49",
       "title": "Paṭhama sinerupabbatarāja sutta - Sineru, King Of Mountains (First)",
@@ -164,7 +176,42 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 13,
+      "rank": 14,
+      "type": "discourse",
+      "slug": "mn77",
+      "title": "Mahāsakuludāyi sutta - The Greater Discourse to Sakuludāyī",
+      "description": "Sakuludāyī marvels at the profound respect the Buddha receives. The Buddha explains this reverence stems not from strict asceticism—as some disciples are stricter than he is—but from his supreme virtu",
+      "contentSnippet": "Furthermore, Udāyī, when my disciples are overcome by suffering and overwhelmed by suffering, they approach me and ask about the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-i",
+      "score": 115.4,
+      "matchType": "description-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn48.10",
+      "title": "Dutiya vibhaṅga sutta - Analysis of Five Faculties (Second)",
+      "description": "The Buddha provides a detailed analysis of the five spiritual faculties. He defines faith as conviction in the Buddha’s awakening, energy as the four right efforts, mindfulness as the four establishme",
+      "contentSnippet": "And what|, bhikkhus,::::| is the faculty of collectedness? Here, |bhikkhus,::::| a disciple of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Noble</mark> On",
+      "score": 113,
+      "matchType": "description-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "sn48.53",
+      "title": "Sekha sutta - Trainee",
+      "description": "The Buddha explains the difference between a trainee still practicing the path and an adept who is fully awakened. While a trainee discerns the Four Noble Truths as they truly are and has unwavering c",
+      "score": 112.7,
+      "matchType": "description-whole-word",
+      "priority": 1.1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 17,
       "type": "discourse",
       "slug": "sn56.1",
       "title": "Samādhi sutta - Collectedness",
@@ -175,7 +222,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 14,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn56.20",
       "title": "Tatha sutta - True",
@@ -187,7 +234,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 15,
+      "rank": 19,
       "type": "discourse",
       "slug": "iti102",
       "title": "Āsavakkhaya sutta - Wearing Away of the Taints",
@@ -198,7 +245,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 16,
+      "rank": 20,
       "type": "discourse",
       "slug": "iti103",
       "title": "Samaṇabrāhmaṇa sutta - Ascetics and Brahmins",
@@ -206,52 +253,6 @@
       "score": 112.4,
       "matchType": "description-whole-word",
       "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 17,
-      "type": "discourse",
-      "slug": "sn56.25",
-      "title": "Āsavakkhaya sutta - Wearing Away Of The Taints",
-      "description": "The wearing away of the mental defilements for is one who knows and sees the Four Noble Truths.",
-      "score": 112.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "sn56.42",
-      "title": "Papāta sutta - Precipice",
-      "description": "The Buddha explains the greater precipice of delighting in intentional constructs leading to rebirth, aging, death, and sorrow, lamentation, pain, displeasure, and despair, resulting from not understa",
-      "score": 112.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "sn56.24",
-      "title": "Arahanta sutta - Arahants",
-      "description": "The Arahants of the past, present, and future have truly understood the Four Noble Truths.",
-      "contentSnippet": "“Whether in the past, present, or future, bhikkhus, all those arahants and Perfectly Awakened Ones have truly understood the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inlin",
-      "score": 116.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "mn10",
-      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
-      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
-      "contentSnippet": "<strong>4.5. Observing the Mental Qualities with regard to the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Four</mark> <mark class=\"bg-yellow-100 dark:bg-yell",
-      "score": 109.7,
-      "matchType": "content-whole-word",
-      "priority": 1.9,
       "nonStopwordMatches": 3
     }
   ],

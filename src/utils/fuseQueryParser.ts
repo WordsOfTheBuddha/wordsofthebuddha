@@ -287,11 +287,34 @@ function isContentField(field: string): field is 'content' | 'contentPali' {
     return field === 'content' || field === 'contentPali';
 }
 
-/** True if value looks like a collection prefix only (e.g. ^AN, ^SN), not ^an4. */
-function isCollectionPrefixOnly(value: string): boolean {
-    if (!value.startsWith('^') || value.length < 2) return false;
-    const rest = value.slice(1).toLowerCase();
-    return /^[a-z]+$/.test(rest); // letters only, no digits/dots
+/**
+ * Extract slug prefix from a ^term (e.g. ^SN, ^SN22, ^sn12.1, ^mn38).
+ * Merges ^sn + following number term into sn22 (parity with parseSlugPrefixes).
+ */
+function extractSlugPrefix(
+    value: string,
+    nextTerm?: ParsedTerm,
+): { prefix: string; skipNext: boolean } | null {
+    if (!value.startsWith('^') || value.length < 2) return null;
+
+    let prefix = value.slice(1).toLowerCase();
+    let skipNext = false;
+
+    if (
+        nextTerm &&
+        !nextTerm.isOr &&
+        !nextTerm.isFieldSpecific &&
+        /^[a-z]+$/i.test(prefix) &&
+        /^\d+/.test(nextTerm.value)
+    ) {
+        prefix = prefix + nextTerm.value.toLowerCase();
+        skipNext = true;
+    }
+
+    // Collection (^sn) or discourse prefix (^sn22, ^sn12.1, ^mn38)
+    if (!/^[a-z]+[\d.]*$/.test(prefix)) return null;
+
+    return { prefix, skipNext };
 }
 
 export function buildFuseQuery(rawQuery: string): FuseQueryResult {
@@ -302,7 +325,8 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
     const contentConditions: ContentConditions = { include: [], exclude: [] };
     let slugPrefixFilter: string[] | undefined;
 
-    parsedTerms.forEach((term, index) => {
+    for (let index = 0; index < parsedTerms.length; index++) {
+        const term = parsedTerms[index];
         if (term.isOr) {
             // Handle OR groups
             const orTerms = term.value
@@ -351,8 +375,11 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
                 andTerms.push(fuseOrClauses.length === 1 ? fuseOrClauses[0] : { $or: fuseOrClauses });
             }
         } else {
-            const highlightTerm = extractHighlightTerm(term.value);
-            if (highlightTerm) highlightTerms.add(highlightTerm);
+            const slugPrefix = extractSlugPrefix(term.value, parsedTerms[index + 1]);
+            if (!slugPrefix) {
+                const highlightTerm = extractHighlightTerm(term.value);
+                if (highlightTerm) highlightTerms.add(highlightTerm);
+            }
 
             if (term.isFieldSpecific && term.field) {
                 if (isContentField(term.field)) {
@@ -370,11 +397,13 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
                     andTerms.push({ [term.field]: term.value });
                 }
             } else {
-                // Collection-only prefix (e.g. ^AN, ^SN): pre-filter index by slug instead of Fuse clause so OR counts are correct
-                if (isCollectionPrefixOnly(term.value)) {
-                    const prefix = term.value.slice(1).toLowerCase();
+                // Slug prefix (^SN, ^SN22, ^sn12.1): pre-filter index by slug instead of Fuse metadata clause
+                if (slugPrefix) {
                     slugPrefixFilter = slugPrefixFilter ?? [];
-                    if (!slugPrefixFilter.includes(prefix)) slugPrefixFilter.push(prefix);
+                    if (!slugPrefixFilter.includes(slugPrefix.prefix)) {
+                        slugPrefixFilter.push(slugPrefix.prefix);
+                    }
+                    if (slugPrefix.skipNext) index++;
                 } else {
                     const expanded = expandGenericTerm(term.value);
                     andTerms.push(expanded.length === 1 ? expanded[0] : { $or: expanded });
@@ -385,7 +414,7 @@ export function buildFuseQuery(rawQuery: string): FuseQueryResult {
                 }
             }
         }
-    });
+    }
 
     const fuseQuery = { $and: andTerms };
     normalizeSlugPrefixCase(fuseQuery);

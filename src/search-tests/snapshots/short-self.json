@@ -1,6 +1,6 @@
 {
   "query": "self",
-  "timestamp": "2026-03-08T04:12:36.860Z",
+  "timestamp": "2026-07-07T08:32:13.477Z",
   "version": "1.0.0",
   "results": [
     {
@@ -145,8 +145,8 @@
     {
       "rank": 10,
       "type": "topic-quality",
-      "slug": "personal existence",
-      "title": "Personal existence",
+      "slug": "personal existence view",
+      "title": "Personal existence view",
       "description": "The view that there is a real self within or a substantial reality outside. This mistaken grasp of self and world sustains attachment, conceit, and the cycle of suffering.",
       "pali": [
         "sakkāya-diṭṭhi"
@@ -246,25 +246,25 @@
     {
       "rank": 16,
       "type": "topic-quality",
-      "slug": "unassuming",
-      "title": "Unassuming",
-      "description": "A gentle, low-profile way of speaking and acting that avoids drawing attention to oneself; restrained in self-display, giving space to others, and simple in manner.",
+      "slug": "shyness",
+      "title": "Shyness",
+      "description": "A shrinking, exposed unease in the company of others—often tied to dishonor, misconduct, or a bad conscience. It is a fear of being seen as wrong or unworthy, and can lead to withdrawal or agitation.",
       "pali": [
-        "appagabbha, sorata"
+        "maṅku, maṅkubhūta"
       ],
       "synonyms": [
-        "courteous",
-        "low-key",
-        "respectful",
-        "not impudent",
-        "self-effacing",
-        "unpretentious"
+        "embarrassed",
+        "humiliated",
+        "sheepish",
+        "self-conscious",
+        "dumbstruck",
+        "despondent"
       ],
       "score": 94,
       "matchType": "exact",
       "priority": 1,
       "nonStopwordMatches": 1,
-      "synonymMatchPosition": 4
+      "synonymMatchPosition": 3
     },
     {
       "rank": 17,
@@ -281,11 +281,11 @@
     {
       "rank": 18,
       "type": "discourse",
-      "slug": "sn47.19",
-      "title": "Sedaka sutta - At Sedaka",
-      "description": "Through a parable of an acrobat and his apprentice, the Buddha teaches that protecting oneself through mindfulness also protects others, and vice versa. Self-discipline through mindfulness leads to co",
-      "contentSnippet": "When this was said, bhikkhus, the apprentice Medakathālikā said this to the acrobat: ‘That’s not the way to do it, teacher. You protect yourself, teacher, and I’ll protect myself. Thus, each <mark cla",
-      "score": 89.2,
+      "slug": "mn140",
+      "title": "Dhātuvibhaṅga sutta - Exposition on the Elements",
+      "description": "In a chance meeting, the Buddha, unrecognized by the bhikkhu Pukkusāti, teaches him to deconstruct experience into six elements, six fields of contact, eighteen mental explorations, and four foundatio",
+      "contentSnippet": "And what|, bhikkhu,::::| is the earth element? The earth element may be internal or external. And what|, bhikkhu,::::| is the internal earth element? Whatever internally, belonging to one<mark class=\"",
+      "score": 89.6,
       "matchType": "description-whole-word",
       "priority": 2,
       "nonStopwordMatches": 0
@@ -293,32 +293,31 @@
     {
       "rank": 19,
       "type": "discourse",
-      "slug": "mn22",
-      "title": "Alagaddūpama sutta - Simile of the Water Snake",
-      "description": "The Dhamma can be like a snake that bites if grasped wrongly. This discourse tackles the danger of misinterpretation, sparked by a bhikkhu who claimed sensual pleasures weren't obstructions. The Buddh",
-      "contentSnippet": "There are these six views, bhikkhus. What are the six? Here, bhikkhus, an |uninstructed::uninitiated, untaught, untrained [assutavant]| ordinary person, |who has no regard for::lit. who has not seen [",
-      "score": 88.5,
+      "slug": "sn22.90",
+      "title": "Channa sutta - With Channa",
+      "description": "Though understanding impermanence and not-self, venerable Channa anxiously struggles to accept Nibbāna, wondering, “Who is my self?” Venerable Ānanda shares the Buddha’s teaching on avoiding the extre",
+      "contentSnippet": "Then it occurred to venerable Channa: “I, too, think in this way: ‘Form is impermanent, feeling ... perception ... intentional constructs ... consciousness is impermanent; form is not-<mark class=\"bg-",
+      "score": 89.3,
       "matchType": "description-whole-word",
-      "priority": 1.5,
+      "priority": 2,
       "nonStopwordMatches": 0
     },
     {
       "rank": 20,
       "type": "topic-quality",
-      "slug": "humility",
-      "title": "Humility",
-      "description": "An honest, even-toned self-appraisal that stays open to feedback, honors others, and neither inflates nor denies one’s real abilities; it supports learning, concord, and restraint.",
+      "slug": "unassuming",
+      "title": "Unassuming",
+      "description": "A gentle, low-profile way of speaking and acting that avoids drawing attention to oneself; restrained in self-display, giving space to others, and simple in manner.",
       "pali": [
-        "anatimāna"
+        "appagabbha, sorata"
       ],
       "synonyms": [
-        "accepting of correction",
-        "modesty",
-        "unpretentiousness",
-        "humbleness",
-        "freedom from self-importance",
-        "recognition of limits",
-        "staying teachable"
+        "courteous",
+        "low-key",
+        "respectful",
+        "not impudent",
+        "self-effacing",
+        "unpretentious"
       ],
       "score": 94,
       "matchType": "exact",

@@ -1,6 +1,6 @@
 {
   "query": "dukkha",
-  "timestamp": "2026-03-08T04:12:38.655Z",
+  "timestamp": "2026-07-07T08:32:15.050Z",
   "version": "1.0.0",
   "results": [
     {
@@ -45,7 +45,7 @@
       "type": "discourse",
       "slug": "iti28",
       "title": "Dukkhavihāra sutta - Discontented Abiding",
-      "description": "A person endowed with the two qualities of guarding the sense doors and moderation in eating lives with discontentedness in this very life and after death, a bad destination is expected.",
+      "description": "A person endowed with the two qualities of guarding the sense doors and moderation in eating lives with discontentedness in this very life and after death, a bad destination is to be expected.",
       "contentSnippet": "Bhojanamhi amattaññū,\nindriyesu asaṁvuto;\nKāyadukkhaṁ cetodukkhaṁ,\n<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhaṁ</mark> so adhigacchati.",
       "score": 93,
       "matchType": "prefix",
@@ -109,6 +109,42 @@
     {
       "rank": 8,
       "type": "discourse",
+      "slug": "mn9",
+      "title": "Sammādiṭṭhi sutta - Right View",
+      "description": "The venerable Sāriputta delivers a comprehensive exposition on “Right View,” detailing sixteen ways a noble disciple achieves clarity in the Dhamma. By understanding the wholesome and unwholesome, nut",
+      "contentSnippet": "“Siyā, āvuso. Yato kho, āvuso, ariyasāvako <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhañca</mark> pajānāti, dukkhasamudayañca pajānāti, dukkhanirodhañca",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 9,
+      "type": "discourse",
+      "slug": "mn10",
+      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
+      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
+      "contentSnippet": "Kathañca pana, bhikkhave, bhikkhu dhammesu dhammānupassī viharati catūsu ariyasaccesu? Idha, bhikkhave, bhikkhu ‘idaṁ <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05r",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 10,
+      "type": "discourse",
+      "slug": "mn19",
+      "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
+      "description": "Detailing how frequent pondering becomes the inclination of the mind, the Buddha recounts his pre-awakening practice of categorizing thoughts. He explains the process of abandoning thoughts of sensual",
+      "contentSnippet": "So evaṁ samāhite citte parisuddhe pariyodāte anaṅgaṇe vigatūpakkilese mudubhūte kammaniye ṭhite āneñjappatte āsavānaṁ khayañāṇāya cittaṁ abhininnāmesiṁ. So ‘idaṁ <mark class=\"bg-yellow-100 dark:bg-yel",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 11,
+      "type": "discourse",
       "slug": "mn38",
       "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
       "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
@@ -119,7 +155,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 9,
+      "rank": 12,
       "type": "discourse",
       "slug": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
@@ -131,7 +167,55 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 10,
+      "rank": 13,
+      "type": "discourse",
+      "slug": "mn77",
+      "title": "Mahāsakuludāyi sutta - The Greater Discourse to Sakuludāyī",
+      "description": "Sakuludāyī marvels at the profound respect the Buddha receives. The Buddha explains this reverence stems not from strict asceticism—as some disciples are stricter than he is—but from his supreme virtu",
+      "contentSnippet": "Puna caparaṁ, udāyi, mama sāvakā yena <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhena</mark> dukkhotiṇṇā dukkhaparetā te maṁ upasaṅkamitvā dukkhaṁ ariyas",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "mn82",
+      "title": "Raṭṭhapāla sutta - On Raṭṭhapāla",
+      "description": "Raṭṭhapāla ordains after a fierce struggle with his parents and attains liberation. He later explains to King Korabya the four Dhamma summaries, revealing that despite worldly success, the world is fu",
+      "contentSnippet": "Katamañca, bho raṭṭhapāla, byādhipārijuññaṁ? Idha, bho raṭṭhapāla, ekacco ābādhiko hoti <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhito</mark> bāḷhagilān",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "mn138",
+      "title": "Uddesavibhaṅga sutta - The Exposition of a Summary",
+      "description": "The Buddha delivers a brief, challenging summary statement on maintaining a consciousness that is unscattered externally, not fixated internally, and unperturbed by not grasping. When he departs unexp",
+      "contentSnippet": "Puna caparaṁ, āvuso, bhikkhu sukhassa ca pahānā <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhassa</mark> ca pahānā pubbeva somanassadomanassānaṁ atthaṅgam",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "mn140",
+      "title": "Dhātuvibhaṅga sutta - Exposition on the Elements",
+      "description": "In a chance meeting, the Buddha, unrecognized by the bhikkhu Pukkusāti, teaches him to deconstruct experience into six elements, six fields of contact, eighteen mental explorations, and four foundatio",
+      "contentSnippet": "Dukkhavedaniyaṁ, bhikkhu, phassaṁ paṭicca uppajjati <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhā</mark> vedanā. So dukkhaṁ vedanaṁ vedayamāno ‘dukkhaṁ v",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
       "type": "discourse",
       "slug": "mn141",
       "title": "Saccavibhaṅga sutta - Exposition of the Truths",
@@ -143,7 +227,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 11,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn22.87",
       "title": "Vakkali sutta - Vakkali",
@@ -155,111 +239,27 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 12,
+      "rank": 19,
       "type": "discourse",
-      "slug": "an3.65",
-      "title": "Kesamutti sutta - With the Kālāmas of Kesamutta",
-      "description": "When the Kālāmas, perplexed by conflicting teachers, ask the Buddha how to know truth from falsehood, he advises against blind reliance on tradition or authority. Instead, offering a pragmatic test: r",
-      "contentSnippet": "Etha tumhe, kālāmā, mā anussavena, mā paramparāya, mā itikirāya, mā piṭakasampadānena, mā takkahetu, mā nayahetu, mā ākāraparivitakkena, mā diṭṭhinijjhānakkhantiyā, mā bhabbarūpatāya, mā samaṇo no gar",
+      "slug": "sn36.6",
+      "title": "Salla sutta - The Dart",
+      "description": "The Buddha explains the distinction between an ordinary person and a wise disciple using the metaphor of two darts. While both experience the first dart of physical pain, the ordinary person adds a se",
+      "contentSnippet": "“Assutavā, bhikkhave, puthujjano sukhampi vedanaṁ vedayati, <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhampi</mark> vedanaṁ vedayati, adukkhamasukhampi v",
       "score": 84.5,
       "matchType": "content-whole-word",
       "priority": 2,
       "nonStopwordMatches": 0
     },
     {
-      "rank": 13,
-      "type": "discourse",
-      "slug": "mn10",
-      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
-      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
-      "contentSnippet": "Kathañca pana, bhikkhave, bhikkhu dhammesu dhammānupassī viharati catūsu ariyasaccesu? Idha, bhikkhave, bhikkhu ‘idaṁ <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05r",
-      "score": 84.35,
-      "matchType": "content-whole-word",
-      "priority": 1.9,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 14,
-      "type": "discourse",
-      "slug": "mn29",
-      "title": "Mahāsāropama sutta - The Greater Discourse on the Simile of the Heartwood",
-      "description": "After Devadatta’s departure, the Buddha taught that the spiritual life is not pursued for acquisitions, respect, popularity, ethical conduct, collectedness, or knowledge and vision. Through the simile",
-      "contentSnippet": "“Idha, bhikkhave, ekacco kulaputto saddhā agārasmā anagāriyaṁ pabbajito hoti: ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-",
-      "score": 84.35,
-      "matchType": "content-whole-word",
-      "priority": 1.9,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "dn22",
-      "title": "Mahāsatipaṭṭhāna sutta - The Great Discourse on the Establishments of Mindfulness",
-      "description": "The Buddha's most detailed exposition of the four establishments of mindfulness. This extended version includes comprehensive definitions of the Four Noble Truths, the Noble Eightfold Path, and the fo",
-      "contentSnippet": "Jātipi <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhā</mark>, jarāpi dukkhā, maraṇampi dukkhaṁ, sokaparidevadukkhadomanassupāyāsāpi dukkhā, appiyehi sampa",
-      "score": 84.35,
-      "matchType": "content-whole-word",
-      "priority": 1.9,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 16,
-      "type": "discourse",
-      "slug": "mn30",
-      "title": "Cūḷasāropama sutta - The Shorter Discourse on the Simile of the Heartwood",
-      "description": "When questioned about rival teachers, the Buddha sets the debate aside to explain the true purpose of the spiritual life through the simile of the heartwood. He cautions that settling for fame, ethica",
-      "contentSnippet": "Evameva kho, brāhmaṇa, idhekacco puggalo saddhā agārasmā anagāriyaṁ pabbajito hoti: ‘otiṇṇomhi jātiyā jarāya maraṇena sokehi paridevehi <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"pa",
-      "score": 84.2,
-      "matchType": "content-whole-word",
-      "priority": 1.8,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 17,
-      "type": "discourse",
-      "slug": "mn43",
-      "title": "Mahāvedalla sutta - The Greater Series Of Questions And Answers",
-      "description": "A series of questions and answers between Venerable Sāriputta and Venerable Mahākoṭṭhita that clarify subtle yet important aspects of the teachings. Topics covered include wisdom, consciousness, felt ",
-      "contentSnippet": "“‘Nappajānāti nappajānātī’ti kho, āvuso, tasmā duppaññoti vuccati. Kiñca nappajānāti? ‘Idaṁ <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhan</mark>’ti napp",
-      "score": 83.9,
-      "matchType": "content-whole-word",
-      "priority": 1.6,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "sn22.55",
-      "title": "Udāna sutta - Inspired Saying",
-      "description": "A teaching on the fearless resolve that severs the lower fetters, followed by the exact inquiry needed to immediately wear away mental defilements.",
-      "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Dukkhaṁ</mark> rūpaṁ ‘dukkhaṁ rūpan’ti yathābhūtaṁ nappajānāti, dukkhaṁ vedanaṁ … dukkhaṁ saññaṁ … dukkhe saṅkhāre",
-      "score": 83.9,
-      "matchType": "content-whole-word",
-      "priority": 1.6,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "mn2",
-      "title": "Sabbāsava sutta - Overcoming Of All The Taints",
-      "description": "The Buddha explains the cause for the restraint of all the taints and how there is abandoning of all the taints through the seven methods of seeing, restraint, proper use, enduring, avoiding, removing",
-      "contentSnippet": "So ‘idaṁ <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhan</mark>’ti yoniso manasi karoti, ‘ayaṁ dukkhasamudayo’ti yoniso manasi karoti, ‘ayaṁ dukkhanirodho",
-      "score": 83.75,
-      "matchType": "content-whole-word",
-      "priority": 1.5,
-      "nonStopwordMatches": 0
-    },
-    {
       "rank": 20,
       "type": "discourse",
-      "slug": "mn22",
-      "title": "Alagaddūpama sutta - Simile of the Water Snake",
-      "description": "The Dhamma can be like a snake that bites if grasped wrongly. This discourse tackles the danger of misinterpretation, sparked by a bhikkhu who claimed sensual pleasures weren't obstructions. The Buddh",
-      "contentSnippet": "“Kassa kho nāma tvaṁ, moghapurisa, mayā evaṁ dhammaṁ desitaṁ ājānāsi? Nanu mayā, moghapurisa, anekapariyāyena antarāyikā dhammā antarāyikā vuttā? Alañca pana te paṭisevato antarāyāya. Appassādā kāmā v",
-      "score": 83.75,
+      "slug": "sn35.136",
+      "title": "Paṭhamarūpārāma sutta - Delight in Forms",
+      "description": "The Buddha contrasts the suffering experienced by gods and humans, who delight in impermanent sense objects, with the contentment of the Tathāgata who understands their true nature, highlighting the d",
+      "contentSnippet": "Yaṁ pare sukhato āhu,\ntadariyā āhu <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">dukkhato</mark>;\nYaṁ pare dukkhato āhu,\ntadariyā sukhato vidū.",
+      "score": 84.5,
       "matchType": "content-whole-word",
-      "priority": 1.5,
+      "priority": 2,
       "nonStopwordMatches": 0
     }
   ],

@@ -1,6 +1,6 @@
 {
   "query": "wrong effort",
-  "timestamp": "2026-03-08T04:12:37.802Z",
+  "timestamp": "2026-07-07T08:32:14.369Z",
   "version": "1.0.0",
   "results": [
     {
@@ -74,7 +74,7 @@
       "slug": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He",
-      "contentSnippet": "In this matter, bhikkhus, right view comes first. And how does right view come first? For one possessing right view, wrong view is worn away. And the multitude of harmful, unwholesome qualities that a",
+      "contentSnippet": "In this matter, |bhikkhus,::::| right view comes first. And how does right view come first? For one endowed with right view, wrong view is worn away. And the multitude of harmful, unwholesome qualitie",
       "score": 106,
       "matchType": "content-whole-word",
       "priority": 3,
@@ -97,15 +97,27 @@
       "type": "discourse",
       "slug": "mn19",
       "title": "Dvedhāvitakka sutta - The Two Kinds of Thoughts",
-      "description": "The Buddha explains how he divided his thoughts into two kinds - 1) thoughts of sensual desire, ill will, and harm; and 2) thoughts of relinquishment, non-ill will, and non-harm. He explains how he ab",
-      "contentSnippet": "Bhikkhus, I have given this simile in order to convey a meaning. This is the meaning here: ‘The great low-lying marsh’ is a term for sensual pleasures. ‘The large herd of deer’ represents beings. ‘The",
-      "score": 103,
+      "description": "Detailing how frequent pondering becomes the inclination of the mind, the Buddha recounts his pre-awakening practice of categorizing thoughts. He explains the process of abandoning thoughts of sensual",
+      "contentSnippet": "|Bhikkhus,::::| I have given this simile in order to convey a meaning. And this is the meaning here: ‘The great low-lying marsh’ is a term for sensual pleasures. ‘The large herd of deer’ is a term for",
+      "score": 104.5,
       "matchType": "content-whole-word",
-      "priority": 1,
+      "priority": 2,
       "nonStopwordMatches": 2
     },
     {
       "rank": 9,
+      "type": "discourse",
+      "slug": "mn126",
+      "title": "Bhūmija sutta - Bhūmija",
+      "description": "After Prince Jayasena questions whether making a wish determines spiritual success, venerable Bhūmija explains that the outcome depends entirely on using the proper method. The Buddha confirms this wi",
+      "contentSnippet": "Whatever ascetics or brahmins, Bhūmija, have |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa]|, |wrong s",
+      "score": 103.3,
+      "matchType": "content-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 10,
       "type": "discourse",
       "slug": "sn45.1",
       "title": "Avijjā sutta - Ignorance",
@@ -117,7 +129,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 10,
+      "rank": 11,
       "type": "discourse",
       "slug": "an10.106",
       "title": "Nijjara sutta - Wearing Away",
@@ -129,7 +141,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 11,
+      "rank": 12,
       "type": "discourse",
       "slug": "mn8",
       "title": "Sallekha sutta - Effacement",
@@ -141,7 +153,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 12,
+      "rank": 13,
       "type": "discourse",
       "slug": "an10.103",
       "title": "Micchatta sutta - Wrongness",
@@ -153,7 +165,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 13,
+      "rank": 14,
       "type": "discourse",
       "slug": "sn14.29",
       "title": "Dasaṅgasutta sutta - The Tenfold Path",
@@ -165,7 +177,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 14,
+      "rank": 15,
       "type": "discourse",
       "slug": "sn45.25",
       "title": "Paṭhama asappurisa sutta - Person with no Integrity (First)",
@@ -177,7 +189,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 15,
+      "rank": 16,
       "type": "discourse",
       "slug": "sn45.23",
       "title": "Paṭhama paṭipadā sutta - Way of Practice (First)",
@@ -189,7 +201,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 16,
+      "rank": 17,
       "type": "topic-quality",
       "slug": "continuous effort",
       "title": "Continuous effort",
@@ -211,7 +223,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 17,
+      "rank": 18,
       "type": "topic-quality",
       "slug": "weak in effort",
       "title": "Weak in effort",
@@ -230,7 +242,19 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 18,
+      "rank": 19,
+      "type": "discourse",
+      "slug": "mn101",
+      "title": "Devadaha sutta - At Devadaha",
+      "description": "The Buddha critiques the Nigaṇṭhas’ belief that all suffering is determined by past deeds and erased by extreme asceticism. Instead, he explains how right effort applied to present causes of suffering",
+      "contentSnippet": "Thus, with the mind collected, purified, clarified, blemish-free, free from impurities, flexible, suitable for use, stable, and unshakeable, he directs the mind toward the knowledge of the passing awa",
+      "score": 70.6,
+      "matchType": "multi-term-content",
+      "priority": 1.2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 20,
       "type": "discourse",
       "slug": "an3.61",
       "title": "Titthāyatana sutta - Bases Of Sectarian Views",
@@ -239,30 +263,6 @@
       "score": 70,
       "matchType": "multi-term-content",
       "priority": 3,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "dhp306-319",
-      "title": "Niraya vagga - Chapter 22 - Hell",
-      "description": "Dhammapada verses 306–319 warn of the suffering that follows false speech, misconduct, and wrong view. The verses highlight the danger of negligence, hypocrisy, and slack effort in spiritual practice.",
-      "contentSnippet": "Just as |kusa grass::sharp-bladed grass used in the ancient India in ceremonies and symbolic contexts [kusa]|, if <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">",
-      "score": 70,
-      "matchType": "multi-term-content",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "iti99",
-      "title": "Tevijja sutta - Threefold Knowledge",
-      "description": "The Buddha describes a brahmin possessing the three true knowledges through the Dhamma, not through mere repetition of what is said. This includes the recollection of past lives, the divine eye seeing",
-      "contentSnippet": "Again, bhikkhus, the bhikkhu with the |divine eye::the faculty of clairvoyance, the ability to see beyond the ordinary human range [dibbacakkhu]|, purified and surpassing human vision, sees beings pas",
-      "score": 70,
-      "matchType": "multi-term-content",
-      "priority": 1,
       "nonStopwordMatches": 2
     }
   ],

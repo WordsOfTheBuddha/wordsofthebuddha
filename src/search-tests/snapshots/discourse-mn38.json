@@ -1,6 +1,6 @@
 {
   "query": "mn 38",
-  "timestamp": "2026-03-06T08:20:14.402Z",
+  "timestamp": "2026-07-07T08:32:12.469Z",
   "version": "1.0.0",
   "results": [
     {
@@ -20,8 +20,8 @@
       "slug": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
-      "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 px-1 rounded\">38</mark>.) ‘Others could be |lacking sense of right and wrong::shamelessness, lacking conscience [ahirika]|; we shall be with a sense of ri",
-      "score": 60,
+      "contentSnippet": "<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">38</mark>.) ‘Others could be |lacking sense of right and wrong::shamelessness, lacking conscience [ahirika]|; we s",
+      "score": 61.2,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
@@ -32,10 +32,21 @@
       "slug": "an1.394-574",
       "title": "Aparaaccharāsaṅghāta vagga - The Chapter on the Finger Snap",
       "description": "How much practice makes one a true practitioner? The Buddha declares that even a “finger snap” of cultivation fulfills the Teacher's instruction. A rapid-fire survey of the path's essential practices,",
-      "score": 29,
+      "score": 30,
       "matchType": "content-fuzzy",
       "priority": 1,
       "nonStopwordMatches": 1
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
+      "slug": "mn138",
+      "title": "Uddesavibhaṅga sutta - The Exposition of a Summary",
+      "description": "The Buddha delivers a brief, challenging summary statement on maintaining a consciousness that is unscattered externally, not fixated internally, and unperturbed by not grasping. When he departs unexp",
+      "score": 18,
+      "matchType": "content-fuzzy",
+      "priority": 2,
+      "nonStopwordMatches": 0
     }
   ],
   "assertions": [

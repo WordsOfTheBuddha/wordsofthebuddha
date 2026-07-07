@@ -1,6 +1,6 @@
 {
   "query": "fire simile",
-  "timestamp": "2026-03-08T04:12:37.147Z",
+  "timestamp": "2026-07-07T08:32:13.747Z",
   "version": "1.0.0",
   "results": [
     {
@@ -40,18 +40,6 @@
     {
       "rank": 4,
       "type": "discourse",
-      "slug": "sn22.95",
-      "title": "Pheṇapiṇḍūpama sutta - The Simile Of The Lump Of Foam",
-      "description": "The Buddha presents a series of similes for the five aggregates - physical form is akin to a lump of foam, feelings akin to water bubbles, perception like a mirage, intentional constructs are like a t",
-      "contentSnippet": "He should give up all bonds,\nand make himself his own refuge;\nLiving as if his head were on <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fire</mark>,\naspiring ",
-      "score": 74,
-      "matchType": "term-title-match",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 5,
-      "type": "discourse",
       "slug": "sn35.246",
       "title": "Vīṇopama sutta - Simile of the Lute",
       "description": "The Buddha explains how to rein in the mind when desire, passion, aversion, delusion, or repulsion arises in regard to the six sense bases using the simile of a watchman and an ox and the simile of a ",
@@ -62,7 +50,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 5,
       "type": "discourse",
       "slug": "mn28",
       "title": "Mahāhatthipadopama sutta - The Greater Discourse on the Simile of the Elephant’s Footprint",
@@ -74,7 +62,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 7,
+      "rank": 6,
       "type": "discourse",
       "slug": "mn75",
       "title": "Māgaṇḍiya sutta - To Māgaṇḍiya",
@@ -86,15 +74,27 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 8,
+      "rank": 7,
       "type": "discourse",
       "slug": "mn27",
-      "title": "Cūḷahatthipadopama sutta - The Shorter Discourse on the Simile of the Elephant’s Footprint",
+      "title": "Cūḷahatthipadopama sutta - The Lesser Discourse on the Simile of the Elephant’s Footprint",
       "description": "Using the simile of an elephant’s footprint, the Buddha illustrates how confidence in him develops gradually through practice. A noble disciple trains in conduct, sense restraint, contentment, and min",
       "contentSnippet": "They hear, ‘The ascetic Gotama has arrived at such-and-such a village or town.’ Then they approach the ascetic Gotama. And the ascetic Gotama instructs them, encourages them, <mark class=\"bg-yellow-10",
       "score": 72.8,
       "matchType": "term-title-match",
       "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 8,
+      "type": "discourse",
+      "slug": "sn22.95",
+      "title": "Pheṇapiṇḍūpama sutta - The Simile Of The Lump Of Foam",
+      "description": "The Buddha employs five powerful metaphors to expose the coreless nature of the aggregates. He likens form to foam, feeling to a water bubble, perception to a mirage, intentional constructs to a hollo",
+      "contentSnippet": "He should give up all bonds,\nand make himself his own refuge;\nliving as if his head were on <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fire</mark>,\naspiring ",
+      "score": 71.2,
+      "matchType": "term-title-match",
+      "priority": 1.4,
       "nonStopwordMatches": 2
     },
     {
@@ -123,17 +123,29 @@
     {
       "rank": 11,
       "type": "discourse",
+      "slug": "mn126",
+      "title": "Bhūmija sutta - Bhūmija",
+      "description": "After Prince Jayasena questions whether making a wish determines spiritual success, venerable Bhūmija explains that the outcome depends entirely on using the proper method. The Buddha confirms this wi",
+      "contentSnippet": "Suppose, Bhūmija, a man needing <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fire</mark>, seeking fire, wandering in search of fire, were to take a wet sappy p",
+      "score": 69.39999999999999,
+      "matchType": "multi-term-content",
+      "priority": 1.2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
       "slug": "mn119",
       "title": "Kāyagatāsati sutta - Mindfulness of the Body",
       "description": "The Buddha details a comprehensive training in mindfulness of the body—from breath and postures to anatomical reflection and charnel-ground contemplations. He explains how this cultivation steadies th",
-      "contentSnippet": "Suppose, bhikkhus, there were a dry sapless piece of wood, and a man were to come with an upper <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fire</mark>-stick,",
+      "contentSnippet": "Suppose|, bhikkhus,::::| there were a dry sapless piece of wood, and a man were to come with an upper <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fire</mark>-",
       "score": 66.2,
       "matchType": "multi-term-content",
       "priority": 2,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 12,
+      "rank": 13,
       "type": "discourse",
       "slug": "sn35.245",
       "title": "Kiṁsukopama sutta - The Kiṁsuka Tree",
@@ -145,7 +157,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 13,
+      "rank": 14,
       "type": "discourse",
       "slug": "mn99",
       "title": "Subha sutta - With Subha",
@@ -157,7 +169,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 14,
+      "rank": 15,
+      "type": "discourse",
+      "slug": "mn101",
+      "title": "Devadaha sutta - At Devadaha",
+      "description": "The Buddha critiques the Nigaṇṭhas’ belief that all suffering is determined by past deeds and erased by extreme asceticism. Instead, he explains how right effort applied to present causes of suffering",
+      "contentSnippet": "Suppose, bhikkhus, a fletcher warms and heats an arrow shaft between two <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fires</mark>, making it straight and work",
+      "score": 63.800000000000004,
+      "matchType": "multi-term-content",
+      "priority": 1.2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 16,
       "type": "discourse",
       "slug": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
@@ -169,7 +193,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 15,
+      "rank": 17,
       "type": "discourse",
       "slug": "sn46.53",
       "title": "Aggi sutta - Fire",
@@ -181,7 +205,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 16,
+      "rank": 18,
       "type": "discourse",
       "slug": "sn35.241",
       "title": "Paṭhama dārukkhandhopama sutta - Simile of the Wooden Log (First)",
@@ -192,7 +216,7 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 17,
+      "rank": 19,
       "type": "discourse",
       "slug": "sn35.247",
       "title": "Chappāṇakopama sutta - The Simile of the Six Animals",
@@ -203,38 +227,15 @@
       "nonStopwordMatches": 1
     },
     {
-      "rank": 18,
+      "rank": 20,
       "type": "discourse",
       "slug": "mn7",
       "title": "Vattha sutta - The Simile of the Cloth",
       "description": "The Buddha uses the simile of a defiled cloth to explain how the mind can be similarly defiled by various impurities, and how it can be purified by abandoning them. And it is through this very practic",
+      "contentSnippet": "<strong>The <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Simile</mark> of the Cloth</strong>\n\n“Suppose, |bhikkhus,::::| a cloth were |defiled::tainted, tarnish",
       "score": 34,
       "matchType": "content-fuzzy",
       "priority": 1,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "mn38",
-      "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
-      "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
-      "contentSnippet": "Just as <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">fire</mark> is reckoned by the particular condition dependent upon which it burns—when fire burns dependen",
-      "score": 33,
-      "matchType": "content-fuzzy",
-      "priority": 2,
-      "nonStopwordMatches": 1
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "mn125",
-      "title": "Dantabhūmi sutta - Ground of Mastery",
-      "description": "After Prince Jayasena expresses disbelief about the possibility of attaining unification of mind,  the Buddha explains why a life of sensual pleasure blinds one to spiritual truths using two vivid sim",
-      "contentSnippet": "So too, Aggivessana, Prince Jayasena is obstructed, hindered, engulfed, and encircled by a |mass of ignorance::lit. mountain of not knowing [avijjākhandha]| far greater than this. Thus it is impossibl",
-      "score": 33,
-      "matchType": "content-fuzzy",
-      "priority": 2,
       "nonStopwordMatches": 1
     }
   ],

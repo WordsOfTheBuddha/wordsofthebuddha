@@ -1,6 +1,6 @@
 {
   "query": "noble eightfold path",
-  "timestamp": "2026-03-08T04:12:34.937Z",
+  "timestamp": "2026-07-07T08:32:11.595Z",
   "version": "1.0.0",
   "results": [
     {
@@ -30,29 +30,41 @@
     {
       "rank": 3,
       "type": "discourse",
+      "slug": "mn149",
+      "title": "Mahāsaḷāyatanika sutta - The Greater Discourse on the Six Sense Fields",
+      "description": "The Buddha explains that ignorance regarding the six sense fields fuels infatuation, craving, and the five aggregates, leading to distress. Conversely, knowing and seeing the senses truly abandons cra",
+      "contentSnippet": "For one who is thus, his view is |right view::view that is in line with the Dhamma - teachings of the Buddha that point to the nature of reality, the ultimate truth [sammādiṭṭhi]|; his intention is |r",
+      "score": 119.20000000000002,
+      "matchType": "description-whole-word",
+      "priority": 1.8,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 4,
+      "type": "discourse",
       "slug": "mn117",
       "title": "Mahācattārīsaka sutta - The Great Forty",
       "description": "The Buddha expounds the noble right collectedness complete with its supporting conditions, clarifying how the factors of the noble eightfold path give rise to either mundane or supramundane fruits. He",
-      "contentSnippet": "And what, bhikkhus, is right view that is <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">noble</mark>, free from defilements, supramundane, and a factor of the <",
+      "contentSnippet": "And what|, bhikkhus,::::| is right view that is <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">noble</mark>, taintless, supramundane, and a factor of the <mark c",
       "score": 118.4,
       "matchType": "description-whole-word",
       "priority": 3,
       "nonStopwordMatches": 3
     },
     {
-      "rank": 4,
+      "rank": 5,
       "type": "discourse",
       "slug": "sn45.2",
       "title": "Upaḍḍha sutta - Half The Spiritual Life",
       "description": "When Ānanda says that good friendship is half of the spiritual life, the Buddha corrects him, saying that it is the whole of the spiritual life. The Buddha explains that good friendship is the basis f",
-      "contentSnippet": "And how, Ānanda, does a bhikkhu with good friends, companions, and associates cultivate and frequently practice the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem",
+      "contentSnippet": "And how, Ānanda, does a bhikkhu with good friends, good companions, and good associates cultivate and frequently practice the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inli",
       "score": 117.9,
       "matchType": "description-whole-word",
       "priority": 1.4,
       "nonStopwordMatches": 3
     },
     {
-      "rank": 5,
+      "rank": 6,
       "type": "discourse",
       "slug": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
@@ -64,7 +76,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 6,
+      "rank": 7,
       "type": "discourse",
       "slug": "sn45.160",
       "title": "Nadī sutta - River",
@@ -76,24 +88,12 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 7,
+      "rank": 8,
       "type": "discourse",
       "slug": "sn45.64-68",
       "title": "Sīlasampadādi suttapañcaka - Five Discourses Beginning With Accomplishment in Virtue",
       "description": "The Buddha explains the importance of accomplishment in virtue, aspiration, self-development, view, and diligence in the development and cultivation of the noble eightfold path.",
       "contentSnippet": "“One thing, bhikkhus, is greatly beneficial for the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg",
-      "score": 117.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 8,
-      "type": "discourse",
-      "slug": "mn9",
-      "title": "Sammādiṭṭhi sutta - Right View",
-      "description": "Venerable Sāriputta gives a detailed explanation of right view, the first factor of the noble eightfold path. At the prompting of the other bhikkhus, he approaches the topic from a wide range of persp",
-      "contentSnippet": "“There might be, friends. When, friends, a noble disciple understands suffering, the origin of suffering, the end of suffering, and the way of practice leading to the end of suffering — to this extent",
       "score": 117.4,
       "matchType": "description-whole-word",
       "priority": 1,
@@ -126,6 +126,18 @@
     {
       "rank": 11,
       "type": "discourse",
+      "slug": "sn3.18",
+      "title": "Kalyāṇamitta sutta - Good Friends",
+      "description": "The Buddha teaches King Pasenadi that good friendship is the entire spiritual life, fostering the Noble Eightfold Path. He then advises the king to rely on diligence in wholesome states to secure bene",
+      "contentSnippet": "And how, Ānanda, does a bhikkhu with good friends, good companions, and good associates cultivate and frequently practice the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inli",
+      "score": 117,
+      "matchType": "description-whole-word",
+      "priority": 1.1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 12,
+      "type": "discourse",
       "slug": "sn45.50-54",
       "title": "Sīlasampadādi suttapañcaka - Five Discourses Beginning With Accomplishment in Virtue",
       "description": "The Buddha explains the importance of accomplishment in virtue, aspiration, self-development, view, and diligence in the development and cultivation of the noble eightfold path.",
@@ -136,7 +148,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 12,
+      "rank": 13,
       "type": "discourse",
       "slug": "sn45.180",
       "title": "Uddhambhāgiya sutta - Higher Fetters",
@@ -148,7 +160,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 13,
+      "rank": 14,
       "type": "discourse",
       "slug": "sn45.49",
       "title": "Kalyāṇamitta sutta - Good Friend",
@@ -160,7 +172,19 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 14,
+      "rank": 15,
+      "type": "discourse",
+      "slug": "sn45.55",
+      "title": "Yonisomanasikārasampadā sutta - Accomplishment in Wise Attention",
+      "description": "The Buddha explains the importance of accomplishment in radical attention in the development and cultivation of the noble eightfold path.",
+      "contentSnippet": "“Bhikkhus, just as dawn precedes and predicts the rising of the sun, so too does accomplishment in |radical attention::root-level attention, attention to the structural source, contextual reflection, ",
+      "score": 116.80000000000001,
+      "matchType": "description-whole-word",
+      "priority": 1,
+      "nonStopwordMatches": 3
+    },
+    {
+      "rank": 16,
       "type": "discourse",
       "slug": "sn45.3",
       "title": "Sāriputta sutta - Sāriputta",
@@ -172,19 +196,7 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "sn45.55",
-      "title": "Yonisomanasikārasampadā sutta - Accomplishment in Wise Attention",
-      "description": "The Buddha explains the importance of accomplishment in wise attention in the development and cultivation of the noble eightfold path.",
-      "contentSnippet": "“Bhikkhus, just as dawn precedes and predicts the rising of the sun, so too does accomplishment in |wise attention::proper attention, prudent use of the mind, wise reflection, attention to the source ",
-      "score": 116.80000000000001,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 16,
+      "rank": 17,
       "type": "topic-quality",
       "slug": "breathing",
       "title": "Mindfulness of Breath",
@@ -203,37 +215,25 @@
       "nonStopwordMatches": 3
     },
     {
-      "rank": 17,
+      "rank": 18,
       "type": "discourse",
-      "slug": "sn35.245",
-      "title": "Kiṁsukopama sutta - The Kiṁsuka Tree",
-      "description": "The Buddha uses a simile of a kiṁsuka tree to explain the different perspectives of the bhikkhus on the purification of vision. He then shares a simile of a lord of the city to share the importance of",
-      "contentSnippet": "‘Route by which way they had arrived,’ bhikkhu, is a designation for the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Noble</mark> <mark class=\"bg-yellow-100 d",
-      "score": 116.4,
+      "slug": "mn126",
+      "title": "Bhūmija sutta - Bhūmija",
+      "description": "After Prince Jayasena questions whether making a wish determines spiritual success, venerable Bhūmija explains that the outcome depends entirely on using the proper method. The Buddha confirms this wi",
+      "contentSnippet": "Whatever ascetics or brahmins, Bhūmija, have |wrong view::a distorted perception, an untrue view, a false belief [micchādiṭṭhi]|, |wrong intention::wrong notion, wrong idea [micchāsaṅkappa]|, |wrong s",
+      "score": 113,
       "matchType": "description-whole-word",
-      "priority": 1,
+      "priority": 1.2,
       "nonStopwordMatches": 3
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "discourse",
       "slug": "mn8",
       "title": "Sallekha sutta - Effacement",
       "description": "The Buddha distinguishes pleasant abidings in the here and now from the way of effacement leading upwards to complete quenching. Effacement is shown as the gradual chipping away of defilements through",
       "contentSnippet": "It is possible here that with the |fading of desire for::dispassion toward, detachment from [virāga]| uplifting joy, the bhikkhu dwells |equanimous::mental poised, mentally balanced, non-reactive, dis",
       "score": 112.4,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 3
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "sn45.63",
-      "title": "Kalyāṇamitta sutta - Good Friend",
-      "description": "Good friendship is greatly beneficial for the arising, development and extensive cultivation of the Noble Eightfold Path.",
-      "contentSnippet": "One thing, bhikkhus, is greatly beneficial for the arising of the <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">Noble</mark> <mark class=\"bg-yellow-100 dark:bg-",
-      "score": 116.80000000000001,
       "matchType": "description-whole-word",
       "priority": 1,
       "nonStopwordMatches": 3

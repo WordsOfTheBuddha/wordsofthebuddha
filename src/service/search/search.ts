@@ -263,16 +263,9 @@ function highlightBestMatch(
 	}
 
 	// For infix-capable patterns, prefer whole-word match using Unicode letter boundaries.
-	// In paliMode, also allow the last stem vowel to vary (a→o, etc.)
-	let stemPattern = infixPattern;
-	if (paliMode) {
-		stemPattern = infixPattern.replace(
-			/(\[[^\]]*\])$/,
-			ANY_VOWEL_PATTERN,
-		);
-	}
+	// (paliMode vowel flexibility is applied in createHighlightPattern before this call)
 	const wholeWordRegex = new RegExp(
-		`(^|${NOT_UL})(?=${stemPattern})(${stemPattern}[${UL}]{0,3})(?=${NOT_UL}|$)`,
+		`(^|${NOT_UL})(?=${infixPattern})(${infixPattern}[${UL}]{0,3})(?=${NOT_UL}|$)`,
 		"u",
 	);
 	if (wholeWordRegex.test(text)) {
@@ -352,8 +345,8 @@ function createHighlightPattern(
 	}
 
 	// In paliMode, allow the final stem vowel to match any vowel (a→o, e, i, u)
-	// so "animitta" matches "animitto", "animitte", etc.
-	if (paliMode) {
+	// when the stem ends in a vowel — not for consonant-final terms like āsavānaṁ.
+	if (paliMode && /[aeiou]$/i.test(normalized)) {
 		diacriticPattern = diacriticPattern.replace(
 			/(\[[^\]]*\])$/,
 			ANY_VOWEL_PATTERN,
@@ -376,7 +369,7 @@ function createHighlightPattern(
 			// For fuzzy/infix, check term length
 			// Short terms (< 4 chars) only match whole words to avoid over-highlighting
 			if (term.length < MIN_LENGTH_FOR_INFIX_HIGHLIGHT) {
-				return `\\b${diacriticPattern}\\b`;
+				return `(?<=^|${NOT_UL})${diacriticPattern}(?=${NOT_UL}|$)`;
 			}
 			return diacriticPattern; // Infix match (can be part of another word)
 	}
@@ -855,6 +848,59 @@ function findBestMatchingParagraph(
 	return result;
 }
 
+function termMatchesInNormalizedText(
+	normalizedText: string,
+	term: string,
+	operation: HighlightTerm["operation"],
+): boolean {
+	const t = normalizeText(term.toLowerCase());
+	if (operation === "exact") {
+		return textContainsStrictWord(normalizedText, term);
+	}
+	if (normalizedText.includes(t)) return true;
+	if (/[aeiou]$/.test(t)) {
+		const stem = t.slice(0, -1);
+		return new RegExp(`${stem}[aeiou]`, "i").test(normalizedText);
+	}
+	return false;
+}
+
+/** True when every highlight term matches in contentPali but not in English content */
+function isPaliOnlyContentMatch(
+	item: SearchData,
+	highlightTerms: HighlightTerm[],
+	normalizedMap: Map<string, { content: string; contentPali: string }>,
+): boolean {
+	const norm = normalizedMap.get(item.slug);
+	if (!norm?.contentPali) return false;
+
+	const englishNorm = normalizeText(
+		stripAnnotations((item.content || "").toLowerCase()),
+	);
+
+	const activeTerms = highlightTerms.filter(
+		(ht) =>
+			!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
+				ht.operation,
+			),
+	);
+	if (activeTerms.length === 0) return false;
+
+	return activeTerms.every((ht) => {
+		const inPali = termMatchesInNormalizedText(
+			norm.contentPali,
+			ht.term,
+			ht.operation,
+		);
+		const inEnglish = termMatchesInNormalizedText(
+			englishNorm,
+			ht.term,
+			ht.operation,
+		);
+		return inPali && !inEnglish;
+	});
+}
+
 function contentTextForSlug(
 	slug: string,
 	normalizedMap: Map<string, { content: string; contentPali: string }>,
@@ -1302,9 +1348,34 @@ async function performSearchInner(
 			const matchList = (matches as { key?: string; indices?: [number, number][] }[] | undefined) ?? [];
 			const contentMatches = matchList.filter((m) => m.key === "content");
 			const contentPaliMatches = matchList.filter((m) => m.key === "contentPali");
+			const paliOnly = isPaliOnlyContentMatch(
+				item,
+				highlightTerms,
+				normalizedMap,
+			);
 
-			// Try English snippet (uses Fuse indices when available, regex fallback otherwise)
-			if (item.content) {
+			const tryPaliSnippet = () => {
+				if (!item.contentPali || typeof item.contentPali !== "string") {
+					return;
+				}
+				const paliIndices = contentPaliMatches.length
+					? contentPaliMatches.flatMap((match) => match.indices ?? [])
+					: [];
+				const paliSnippet = findBestMatchingParagraph(
+					item.contentPali,
+					paliIndices,
+					highlightTerms,
+					true, // paliMode: flexible stem vowels, Unicode-aware boundaries
+				);
+				if (paliSnippet && paliSnippet.includes("<mark")) {
+					result.contentSnippet = paliSnippet;
+				}
+			};
+
+			if (paliOnly) {
+				tryPaliSnippet();
+			} else if (item.content) {
+				// Try English snippet (uses Fuse indices when available, regex fallback otherwise)
 				const indices = contentMatches.length
 					? contentMatches.flatMap((match) => match.indices ?? [])
 					: [];
@@ -1318,24 +1389,9 @@ async function performSearchInner(
 				}
 			}
 
-			// Fall back to Pali snippet only when English had no match
-			if (
-				!result.contentSnippet &&
-				item.contentPali &&
-				typeof item.contentPali === "string"
-			) {
-				const paliIndices = contentPaliMatches.length
-					? contentPaliMatches.flatMap((match) => match.indices ?? [])
-					: [];
-				const paliSnippet = findBestMatchingParagraph(
-					item.contentPali,
-					paliIndices,
-					highlightTerms,
-					true, // paliMode: flexible stem vowels, Unicode-aware boundaries
-				);
-				if (paliSnippet && paliSnippet.includes("<mark")) {
-					result.contentSnippet = paliSnippet;
-				}
+			// Fall back to Pali snippet when English had no highlighted match
+			if (!result.contentSnippet) {
+				tryPaliSnippet();
 			}
 		}
 

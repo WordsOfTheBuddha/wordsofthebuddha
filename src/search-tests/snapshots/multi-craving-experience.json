@@ -1,6 +1,6 @@
 {
   "query": "craving experience",
-  "timestamp": "2026-03-08T04:12:40.969Z",
+  "timestamp": "2026-07-07T08:51:28.198Z",
   "version": "1.0.0",
   "results": [
     {
@@ -29,7 +29,7 @@
       "slug": "mn38",
       "title": "Mahā taṇhāsaṅkhaya sutta - The Greater Discourse on the Exhaustion of Craving",
       "description": "When a misguided monk clings to the idea of an unchanging consciousness that “wanders through rebirths,” the Buddha corrects him, revealing the truth of dependent co-arising. Consciousness, like fire,",
-      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its characteristic, and fr",
+      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its birth, and from what d",
       "score": 100,
       "matchType": "term-title-match",
       "priority": 2,
@@ -40,7 +40,7 @@
       "type": "discourse",
       "slug": "sn12.23",
       "title": "Upanisa sutta - Proximate Causes",
-      "description": "The Buddha explains the proximate causes for the ending of the mental defilements. The twelve factors leading to the ending of defilements are explained along with twelve factors that lead to sufferin",
+      "description": "The Buddha explains the proximate causes for the wearing away of the taints. The twelve factors leading to the wearing away of the taints are explained along with twelve factors that lead to suffering",
       "contentSnippet": "And what, bhikkhus, is the proximate cause for <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>? ‘|Felt <mark class=\"bg-yellow-100 dark:bg-yellow-90",
       "score": 95,
       "matchType": "multi-term-content",
@@ -50,29 +50,52 @@
     {
       "rank": 4,
       "type": "discourse",
+      "slug": "mn11",
+      "title": "Cūḷasīhanāda sutta - The Lesser Discourse on the Lion’s Roar",
+      "description": "The Buddha outlines an approach to cross-examine other sects and their doctrines, and how to distinguish between the true Dhamma and the false Dhamma through the comprehension of the four kinds of cli",
+      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>|, bhikkhus,::::| has what as its source, what as its arising, what as its birth, and from ",
+      "score": 94.2,
+      "matchType": "multi-term-content",
+      "priority": 1.4,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 5,
+      "type": "discourse",
       "slug": "sn12.11",
       "title": "Āhāra sutta - Nutriment",
       "description": "The Buddha explains the four kinds of nutriments that sustain beings that are existing and support those seeking birth, and how they arise from craving.",
-      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its characteristic, and fr",
+      "contentSnippet": "And this <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>, bhikkhus, has what as its source, what as its arising, what as its birth, and from what d",
       "score": 93.6,
       "matchType": "multi-term-content",
       "priority": 1.2,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 5,
+      "rank": 6,
+      "type": "discourse",
+      "slug": "dn15",
+      "title": "Mahānidāna sutta",
+      "contentSnippet": "“Therefore, Ānanda, this is the cause, this is the source, this is the origination, this is the condition for <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">crav",
+      "score": 93,
+      "matchType": "multi-term-content",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 7,
       "type": "discourse",
       "slug": "sn12.4",
       "title": "Vipassī sutta - Vipassī",
-      "description": "In the far past, the Buddha Vipassī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depend",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Vipassī: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose for",
+      "description": "In the far past, the Buddha Vipassī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through radical attention and insight into dep",
+      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Vipassī: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through radical attention, insight arose ",
       "score": 91,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 6,
+      "rank": 8,
       "type": "discourse",
       "slug": "sn12.65",
       "title": "Nagara sutta - The City",
@@ -84,7 +107,19 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 7,
+      "rank": 9,
+      "type": "discourse",
+      "slug": "mn9",
+      "title": "Sammādiṭṭhi sutta - Right View",
+      "description": "The venerable Sāriputta delivers a comprehensive exposition on “Right View,” detailing sixteen ways a noble disciple achieves clarity in the Dhamma. By understanding the wholesome and unwholesome, nut",
+      "contentSnippet": "“There could be, friends. When, friends, a disciple of the Noble Ones discerns craving, discerns the arising of craving, discerns the cessation of craving, and discerns the way leading to the cessatio",
+      "score": 90,
+      "matchType": "multi-term-content",
+      "priority": 2,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 10,
       "type": "topic-quality",
       "slug": "self-erasure",
       "title": "Self Erasure",
@@ -106,7 +141,7 @@
       "synonymMatchPosition": 0
     },
     {
-      "rank": 8,
+      "rank": 11,
       "type": "topic-quality",
       "slug": "non-identification",
       "title": "Non Identification",
@@ -126,19 +161,19 @@
       "synonymMatchPosition": 1
     },
     {
-      "rank": 9,
+      "rank": 12,
       "type": "discourse",
       "slug": "sn12.66",
       "title": "Sammasa sutta - Examination",
       "description": "The Buddha uses a simile of a bronze cup of beverage mixed with poison to illustrate how craving for agreeable and pleasant sense experiences leads to acquisition and suffering, while wisely seeing th",
-      "contentSnippet": "Furthermore, when engaged in inward examination, a bhikkhu examines thus: “But this acquisition—what is its source, from what does it arise, what is its characteristic, and from what does it come into",
+      "contentSnippet": "Furthermore, when engaged in inward examination, a bhikkhu examines thus: ‘But this acquisition—what is its source, from what does it arise, what as its birth, and from what does it come into being? W",
       "score": 86.39999999999999,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 10,
+      "rank": 13,
       "type": "discourse",
       "slug": "an3.61",
       "title": "Titthāyatana sutta - Bases Of Sectarian Views",
@@ -150,7 +185,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 11,
+      "rank": 14,
       "type": "topic-quality",
       "slug": "greed",
       "title": "Greed",
@@ -172,18 +207,18 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 12,
+      "rank": 15,
       "type": "topic-quality",
-      "slug": "unwise attention",
-      "title": "Unwise attention",
-      "description": "Attention that misses the point of contact, fixating on concepts or features. Disconnected from the source of experience, it then engages in reactions of craving, aversion, and delusion.",
+      "slug": "superficial attention",
+      "title": "Superficial attention",
+      "description": "Attention that misses the structural matrix, fixating entirely on the surface features and foreground content of an experience. By remaining bound to the periphery, it feeds mental proliferation and d",
       "pali": [
         "ayonisomanasikāra"
       ],
       "synonyms": [
-        "improper attention",
-        "imprudent use of the mind",
-        "unfocused attention"
+        "unwise attention",
+        "attention to the foreground",
+        "content-bound reflection"
       ],
       "score": 75,
       "matchType": "cross-field-all",
@@ -191,7 +226,7 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 13,
+      "rank": 16,
       "type": "topic-quality",
       "slug": "recognition of diversity",
       "title": "Recognition of diversity",
@@ -210,10 +245,22 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 14,
+      "rank": 17,
+      "type": "discourse",
+      "slug": "dhp334-359",
+      "title": "Taṇhā vagga - Chapter 24 - Craving",
+      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
+      "contentSnippet": "Beings, beset by |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>::wanting, desire, lit. thirst [tasiṇā]|,\nwriggle like a trapped hare;\nbound fast ",
+      "score": 74,
+      "matchType": "term-title-match",
+      "priority": 1,
+      "nonStopwordMatches": 2
+    },
+    {
+      "rank": 18,
       "type": "discourse",
       "slug": "iti53",
-      "title": "Dutiya vedan sutta - Felt Experiences (Second)",
+      "title": "Dutiya vedanā sutta - Felt Experiences (Second)",
       "description": "The Buddha describes how to see the three felt experiences that are experienced on contact through the sense doors - pleasant, painful, and neither-painful-nor-pleasant.",
       "contentSnippet": "“There are these three |felt <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">experiences</mark>::pleasant, neutral, or painful sensation, feeling felt on contact ",
       "score": 74,
@@ -222,37 +269,25 @@
       "nonStopwordMatches": 2
     },
     {
-      "rank": 15,
-      "type": "discourse",
-      "slug": "dhp334-359",
-      "title": "Taṇhā vagga - Chapter 24 - Craving",
-      "description": "Dhammapada verses 334–359 depict craving as a binding force, likening it to a creeping vine, a trapped hare, and a spider’s web. The wise cut these bonds, free from passion, aversion, illusion, and lo",
-      "contentSnippet": "Beings, beset by |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">craving</mark>::wanting, desire, lit. thirst [tasiṇā]|,\nwriggle like a trapped hare;\nBound fast ",
-      "score": 74,
-      "matchType": "term-title-match",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 16,
+      "rank": 19,
       "type": "discourse",
       "slug": "sn12.5",
       "title": "Sikhī sutta - Sikhī",
-      "description": "In the far past, the Buddha Sikhī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into dependen",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Sikhī: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose for B",
+      "description": "In the far past, the Buddha Sikhī prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through radical attention and insight into depen",
+      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Sikhī: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through radical attention, insight arose fo",
       "score": 91,
       "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     },
     {
-      "rank": 17,
+      "rank": 20,
       "type": "topic-quality",
       "slug": "delight",
       "title": "Delight",
       "description": "A mental quality of relishing and taking pleasure in what is experienced—especially in sensuality or the prospect of continued becoming. When it fastens onto gratification, it nourishes craving and ke",
       "pali": [
-        "nandi"
+        "nandi, ārāmatā"
       ],
       "synonyms": [
         "relishing",
@@ -261,60 +296,6 @@
       ],
       "score": 75,
       "matchType": "cross-field-all",
-      "priority": 1,
-      "nonStopwordMatches": 2
-    },
-    {
-      "rank": 18,
-      "type": "topic-quality",
-      "slug": "speculation",
-      "title": "Speculation",
-      "description": "A form of discursive thought that wanders into conjecture and theorizing, disconnected from direct experience. It involves moving from one idea to another through logic and argument, and is often root",
-      "pali": [
-        "takka, kappa"
-      ],
-      "synonyms": [
-        "analytical thinking disconnected from direct experience",
-        "conjecture",
-        "discursive reasoning",
-        "theorizing",
-        "hypothesis-making",
-        "reasoned reflection"
-      ],
-      "score": 75,
-      "matchType": "term-synonym-exact",
-      "priority": 1,
-      "nonStopwordMatches": 1,
-      "synonymMatchPosition": 0
-    },
-    {
-      "rank": 19,
-      "type": "topic-quality",
-      "slug": "direct knowledge",
-      "title": "Direct knowledge",
-      "description": "A deep, firsthand realization or knowing that arises from personal experience, not from study or conceptual understanding; it is an immediate, unmediated apprehension of truth.",
-      "pali": [
-        "abhiñña"
-      ],
-      "synonyms": [
-        "experiential understanding",
-        "direct experience"
-      ],
-      "score": 75,
-      "matchType": "term-synonym-exact",
-      "priority": 1,
-      "nonStopwordMatches": 1,
-      "synonymMatchPosition": 1
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "sn12.6",
-      "title": "Vessabhū sutta - Vessabhū",
-      "description": "In the far past, the Buddha Vessabhū prior to his full awakening reflects on how the world has fallen into trouble and discovers the escape from suffering through wise attention and insight into depen",
-      "contentSnippet": "Then, bhikkhus, the thought occurred to the Bodhisatta Vessabhū: ‘What is it that, when present, leads to craving? Dependent on what does craving arise?' Then, through wise attention, insight arose fo",
-      "score": 91,
-      "matchType": "multi-term-content",
       "priority": 1,
       "nonStopwordMatches": 2
     }

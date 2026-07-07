@@ -1,6 +1,6 @@
 {
   "query": "equanimity",
-  "timestamp": "2026-03-08T04:12:37.469Z",
+  "timestamp": "2026-07-07T08:32:14.017Z",
   "version": "1.0.0",
   "results": [
     {
@@ -63,6 +63,30 @@
     {
       "rank": 5,
       "type": "discourse",
+      "slug": "an4.125",
+      "title": "Paṭhama mettā sutta - Loving-kindness (First)",
+      "description": "The Buddha shares the four kinds of persons — those who cultivate loving-kindness, compassion, appreciative joy, and equanimity while perceiving gratification — and the difference in their rebirths.",
+      "contentSnippet": "Again, |bhikkhus,::::| here a certain person abides pervading one direction with a mind imbued with |compassion::mental quality of wise empathy in response to suffering, which counters qualities of ha",
+      "score": 86.8,
+      "matchType": "description-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 6,
+      "type": "discourse",
+      "slug": "an4.126",
+      "title": "Dutiya mettā sutta - Loving-kindness (Second)",
+      "description": "The Buddha shares the four kinds of persons — those who cultivate loving-kindness, compassion, appreciative joy, and equanimity while perceiving drawbacks — and the difference in their rebirths.",
+      "contentSnippet": "Again, |bhikkhus,::::| here a certain person abides pervading one direction with a mind imbued with |compassion::mental quality of wise empathy in response to suffering, which counters qualities of ha",
+      "score": 86.8,
+      "matchType": "description-whole-word",
+      "priority": 1.2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 7,
+      "type": "discourse",
       "slug": "mn99",
       "title": "Subha sutta - With Subha",
       "description": "The young brahmin Subha questions the Buddha about whether householders or renunciants are superior and what brings the greatest merit. The Buddha explains that he evaluates actions with discernment, ",
@@ -73,7 +97,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 6,
+      "rank": 8,
       "type": "discourse",
       "slug": "an5.161",
       "title": "Paṭhama āghātapaṭivinaya sutta - Removing Resentment (First)",
@@ -85,7 +109,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 7,
+      "rank": 9,
       "type": "discourse",
       "slug": "an7.53",
       "title": "Nandamātā sutta - Nanda’s Mother",
@@ -97,7 +121,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 8,
+      "rank": 10,
       "type": "discourse",
       "slug": "an3.63",
       "title": "Venāgapura sutta - At Venāgapura",
@@ -109,19 +133,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 9,
-      "type": "discourse",
-      "slug": "an4.125",
-      "title": "Paṭhama mettā sutta - Loving-kindness (First)",
-      "description": "The Buddha shares the four kinds of persons — those who cultivate loving-kindness, compassion, appreciative joy, and equanimity while perceiving gratification — and the difference in their rebirths.",
-      "contentSnippet": "Again, bhikkhus, here a certain person abides pervading one direction with a mind imbued with |compassion::mental quality of wise empathy in response to suffering, which counters qualities of harm or ",
-      "score": 86.2,
-      "matchType": "description-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 10,
+      "rank": 11,
       "type": "discourse",
       "slug": "an3.61",
       "title": "Titthāyatana sutta - Bases Of Sectarian Views",
@@ -133,24 +145,12 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 11,
-      "type": "discourse",
-      "slug": "mn66",
-      "title": "Laṭukikopama sutta - Simile of the Quail",
-      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types ",
-      "contentSnippet": "Here, Udāyī, a bhikkhu, having secluded himself from sensual pleasures and |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]| mental qualities, enters and dwells ",
-      "score": 84.5,
-      "matchType": "content-whole-word",
-      "priority": 2,
-      "nonStopwordMatches": 0
-    },
-    {
       "rank": 12,
       "type": "discourse",
-      "slug": "mn111",
-      "title": "Anupada sutta - Sequentially",
-      "description": "The Buddha praises Sāriputta for his “sequential discernment of mental states.” Entering each successive escape from the defilements, Sāriputta precisely identifies every factor present in the jhānas ",
-      "contentSnippet": "The states within the fourth jhāna are <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark>, neither painful nor pleasant feeling, |absence of enjoym",
+      "slug": "mn10",
+      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
+      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
+      "contentSnippet": "When the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark>::the quality of balanced observation, non-reactivity, and mental e",
       "score": 84.5,
       "matchType": "content-whole-word",
       "priority": 2,
@@ -158,6 +158,54 @@
     },
     {
       "rank": 13,
+      "type": "discourse",
+      "slug": "mn66",
+      "title": "Laṭukikopama sutta - Simile of the Quail",
+      "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types ",
+      "contentSnippet": "Here, Udāyī, entirely secluded from sensual pleasures and |unwholesome::unhealthy, unskillful, unbeneficial, or karmically unprofitable [akusala]| mental states, a bhikkhu enters and dwells in the fir",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 14,
+      "type": "discourse",
+      "slug": "mn111",
+      "title": "Anupada sutta - Sequentially",
+      "description": "The Buddha highlights Sāriputta’s penetrative vision of the successive Dhammas. By sequentially discerning the arising and vanishing of every Dhamma across the jhānas and formless bases, Sāriputta rem",
+      "contentSnippet": "The Dhammas within the fourth jhāna are <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark>, neither painful nor pleasant feeling, |absence of enjoy",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 15,
+      "type": "discourse",
+      "slug": "mn138",
+      "title": "Uddesavibhaṅga sutta - The Exposition of a Summary",
+      "description": "The Buddha delivers a brief, challenging summary statement on maintaining a consciousness that is unscattered externally, not fixated internally, and unperturbed by not grasping. When he departs unexp",
+      "contentSnippet": "Furthermore, friends, with the |fading of desire for::dispassion toward, detachment from [virāga]| uplifting joy, he dwells |equanimous::mental poised, mentally balanced, non-reactive, disregarding [u",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 16,
+      "type": "discourse",
+      "slug": "mn140",
+      "title": "Dhātuvibhaṅga sutta - Exposition on the Elements",
+      "description": "In a chance meeting, the Buddha, unrecognized by the bhikkhu Pukkusāti, teaches him to deconstruct experience into six elements, six fields of contact, eighteen mental explorations, and four foundatio",
+      "contentSnippet": "He thus discerns: ‘If I were to direct this <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark> thus purified and thus made bright towards the |base",
+      "score": 84.5,
+      "matchType": "content-whole-word",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 17,
       "type": "discourse",
       "slug": "sn46.2",
       "title": "Kāya sutta - The Body",
@@ -169,19 +217,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 14,
-      "type": "discourse",
-      "slug": "mn10",
-      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
-      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
-      "contentSnippet": "When the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark>::the quality of balanced observation, non-reactivity, and mental e",
-      "score": 84.35,
-      "matchType": "content-whole-word",
-      "priority": 1.9,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 15,
+      "rank": 18,
       "type": "discourse",
       "slug": "dn22",
       "title": "Mahāsatipaṭṭhāna sutta - The Great Discourse on the Establishments of Mindfulness",
@@ -193,19 +229,19 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 16,
+      "rank": 19,
       "type": "discourse",
       "slug": "mn152",
-      "title": "Indriyabhāvanā sutta - Development of the Faculties",
-      "description": "When a young brahmin claims that avoiding sights and sounds constitutes development of the faculties, the Buddha reveals that true cultivation lies in understanding pleasant and unpleasant experiences",
-      "contentSnippet": "“And how, Ānanda, is there the unsurpassed development of the faculties in the Noble Ones’ Vinaya? Here, Ānanda, when a bhikkhu sees a form with the eye, there arises in him what is |agreeable::pleasa",
+      "title": "Indriyabhāvanā sutta - Development of the Sense Faculties",
+      "description": "When a young brahmin claims that avoiding sights and sounds constitutes development of the sense faculties, the Buddha reveals that true cultivation lies in understanding pleasant and unpleasant exper",
+      "contentSnippet": "“And how, Ānanda, is there the unsurpassed development of the sense faculties in the Vinaya of the Noble Ones? Here, |Ānanda,::::| when a bhikkhu sees a form with the eye, there arises in him what is ",
       "score": 83.75,
       "matchType": "content-whole-word",
       "priority": 1.5,
       "nonStopwordMatches": 0
     },
     {
-      "rank": 17,
+      "rank": 20,
       "type": "discourse",
       "slug": "sn46.53",
       "title": "Aggi sutta - Fire",
@@ -214,42 +250,6 @@
       "score": 83.75,
       "matchType": "content-whole-word",
       "priority": 1.5,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 18,
-      "type": "discourse",
-      "slug": "mn54",
-      "title": "Potaliya sutta - To Potaliya",
-      "description": "When the householder Potaliya claims he has “cut off all dealings” by retiring, the Buddha explains that true renunciation lies not in abandoning possessions but in abandoning unwholesome actions and ",
-      "contentSnippet": "“In the same way, householder, a disciple of the Noble Ones reflects thus: ‘Sensual pleasures have been compared to a skeleton by the Blessed One; they are fraught with much |suffering::discomfort, un",
-      "score": 83.45,
-      "matchType": "content-whole-word",
-      "priority": 1.3,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 19,
-      "type": "discourse",
-      "slug": "mn28",
-      "title": "Mahāhatthipadopama sutta - The Greater Discourse on the Simile of the Elephant’s Footprint",
-      "description": "Venerable Sāriputta explains how all wholesome teachings are encompassed by the Four Noble Truths. He then explains the four great elements of earth, water, fire and wind.",
-      "contentSnippet": "When that bhikkhu thus recollects the Buddha, the Dhamma, and the Saṅgha, if <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark> supported by the wh",
-      "score": 83,
-      "matchType": "content-whole-word",
-      "priority": 1,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "mn55",
-      "title": "Jīvaka sutta - Discourse with Jīvaka",
-      "description": "The Buddha explains to Jīvaka the circumstances in which meat may be consumed and the demerit of slaughtering living beings for the Tathāgata or his disciples.",
-      "contentSnippet": "With a mind imbued with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">equanimity</mark>::mental poise, mental balance, equipoise, non-reactivity, composure [up",
-      "score": 83,
-      "matchType": "content-whole-word",
-      "priority": 1,
       "nonStopwordMatches": 0
     }
   ],

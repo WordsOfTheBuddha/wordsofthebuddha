@@ -1,6 +1,6 @@
 {
   "query": "mindfulnes",
-  "timestamp": "2026-03-08T04:12:39.980Z",
+  "timestamp": "2026-07-07T08:32:16.179Z",
   "version": "1.0.0",
   "results": [
     {
@@ -69,10 +69,10 @@
     {
       "rank": 4,
       "type": "discourse",
-      "slug": "mn119",
-      "title": "Kāyagatāsati sutta - Mindfulness of the Body",
-      "description": "The Buddha details a comprehensive training in mindfulness of the body—from breath and postures to anatomical reflection and charnel-ground contemplations. He explains how this cultivation steadies th",
-      "contentSnippet": "Here, bhikkhus, a bhikkhu, having gone to the forest, to the foot of a tree, or to an empty dwelling, sits down, folding his legs crosswise, setting his body upright, establishing <mark class=\"bg-yell",
+      "slug": "mn10",
+      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
+      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
+      "contentSnippet": "Here|, bhikkhus,::::,| when the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::the quality of mindfulness leading to ful",
       "score": 91,
       "matchType": "word-prefix",
       "priority": 2,
@@ -81,13 +81,13 @@
     {
       "rank": 5,
       "type": "discourse",
-      "slug": "mn10",
-      "title": "Satipaṭṭhānasutta - Establishments of Mindfulness",
-      "description": "The Buddha describes the four establishments of mindfulness to be cultivated in detail, namely - mindfulness of the body, mindfulness of the felt experience, mindfulness of the mind, and mindfulness o",
-      "contentSnippet": "Here, bhikkhus, when the |awakening factor of <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::the quality of mindfulness leading to full awake",
-      "score": 90.7,
+      "slug": "mn119",
+      "title": "Kāyagatāsati sutta - Mindfulness of the Body",
+      "description": "The Buddha details a comprehensive training in mindfulness of the body—from breath and postures to anatomical reflection and charnel-ground contemplations. He explains how this cultivation steadies th",
+      "contentSnippet": "Here, |bhikkhus,::::| a bhikkhu, having gone to the forest, to the foot of a tree, or to an empty dwelling, sits down, folding his legs crosswise, setting his body upright, establishing <mark class=\"b",
+      "score": 91,
       "matchType": "word-prefix",
-      "priority": 1.9,
+      "priority": 2,
       "nonStopwordMatches": 0
     },
     {
@@ -166,7 +166,7 @@
       "slug": "sn47.2",
       "title": "Sati sutta - Mindfulness",
       "description": "The Buddha explains how a bhikkhu should live with mindfulness and clear awareness.",
-      "contentSnippet": "“Bhikkhus, a bhikkhu should dwell with |<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::remembering to be present with continuous effort, obse",
+      "contentSnippet": "“Bhikkhus, a bhikkhu should dwell with **|<mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0.05rem\">mindfulness</mark>::remembering to be present with continuous effort, ob",
       "score": 88.5,
       "matchType": "word-prefix",
       "priority": 1,
@@ -178,7 +178,7 @@
       "slug": "an1.575-615",
       "title": "Kāyagatāsati vagga - The Chapter on Mindfulness of the Body",
       "description": "Short teachings on the benefits of cultivating mindfulness of the body.",
-      "contentSnippet": "“One factor, bhikkhus, when cultivated and frequently practiced, leads to great urgency ... great benefit ... great safety from bondage ... to <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" st",
+      "contentSnippet": "“Bhikkhus, for anyone who has encompassed the great ocean in their mind, all the streams flowing into it are included. Similarly, bhikkhus, for anyone who has cultivated and frequently practiced <mark",
       "score": 87.6,
       "matchType": "word-prefix",
       "priority": 1,
@@ -190,7 +190,7 @@
       "slug": "mn118",
       "title": "Ānāpānassati sutta - Mindfulness while Breathing In and Out",
       "description": "The Buddha teaches in detail how to develop mindfulness while breathing in and out through sixteen naturally unfolding steps, showing how their cultivation fulfills the four establishments of mindfuln",
-      "contentSnippet": "Bhikkhus, on whatever occasion a bhikkhu dwells observing the body in and of itself, with continuous effort, clearly aware, mindful, having removed craving and distress with regard to the world, on th",
+      "contentSnippet": "|Bhikkhus,::::| on whatever occasion a bhikkhu dwells observing the body in and of itself, with continuous effort, clearly aware, mindful, having removed craving and distress with regard to the world,",
       "score": 87.5,
       "matchType": "word-prefix",
       "priority": 1,
@@ -258,6 +258,18 @@
     {
       "rank": 17,
       "type": "discourse",
+      "slug": "mn17",
+      "title": "Vanapattha sutta - Forest Retreat",
+      "description": "When evaluating environments, the Buddha instructs that a bhikkhu must evaluate his residency solely by his spiritual progress. Whether dwelling in a forest retreat or a city, if mindfulness deepens a",
+      "contentSnippet": "|Bhikkhus,::::| here a bhikkhu dwells in dependence on a forest retreat. However, while dwelling there, his unestablished <mark class=\"bg-yellow-100 dark:bg-yellow-900 rounded\" style=\"padding-inline:0",
+      "score": 81,
+      "matchType": "description-infix",
+      "priority": 2,
+      "nonStopwordMatches": 0
+    },
+    {
+      "rank": 18,
+      "type": "discourse",
       "slug": "mn66",
       "title": "Laṭukikopama sutta - Simile of the Quail",
       "description": "The Buddha explains how even small attachments can be strong fetters if not relinquished, using similes of a quail and an elephant, and contrasts between the poor and wealthy. He describes four types ",
@@ -268,7 +280,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 18,
+      "rank": 19,
       "type": "discourse",
       "slug": "mn62",
       "title": "Mahārāhulovāda sutta - The Greater Discourse on Advice to Rāhula",
@@ -280,7 +292,7 @@
       "nonStopwordMatches": 0
     },
     {
-      "rank": 19,
+      "rank": 20,
       "type": "discourse",
       "slug": "sn45.8",
       "title": "Vibhaṅga sutta - Analysis",
@@ -289,18 +301,6 @@
       "score": 79.2,
       "matchType": "description-infix",
       "priority": 1.4,
-      "nonStopwordMatches": 0
-    },
-    {
-      "rank": 20,
-      "type": "discourse",
-      "slug": "sn20.10",
-      "title": "Biḷāra sutta - Cat",
-      "description": "The Buddha uses a simile of a cat and a mouse to illustrate how not setting up mindfulness and being unrestrained in the sense faculties can lead to death or deadly suffering.",
-      "contentSnippet": "So too, bhikkhus, here some bhikkhu dresses early in the morning and, taking alms bowl and outer robe, enters a village or town for alms with body |unguarded::unprotected [arakkhita]|, speech unguarde",
-      "score": 78,
-      "matchType": "description-infix",
-      "priority": 1,
       "nonStopwordMatches": 0
     }
   ],

@@ -335,6 +335,36 @@ function checkAssertion(results, assertion) {
 		};
 	}
 
+	if (type === "snippetContains") {
+		const scope = assertion.maxPosition
+			? results.slice(0, assertion.maxPosition)
+			: results;
+		const matchIdx = scope.findIndex(
+			(r) => r.slug === assertion.slug || r.id === assertion.slug,
+		);
+
+		if (matchIdx === -1) {
+			return {
+				pass: false,
+				message: `Not found in top ${assertion.maxPosition || results.length}: ${assertion.slug}`,
+			};
+		}
+
+		const result = results[matchIdx];
+		const snippet = result.contentSnippet || "";
+		if (!assertion.textContains || snippet.includes(assertion.textContains)) {
+			return {
+				pass: true,
+				message: `Snippet contains "${assertion.textContains || "content"}" at #${matchIdx + 1}`,
+			};
+		}
+
+		return {
+			pass: false,
+			message: `Snippet at #${matchIdx + 1} missing "${assertion.textContains}"`,
+		};
+	}
+
 	return { pass: false, message: `Unknown assertion type: ${type}` };
 }
 
