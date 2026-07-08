@@ -38,6 +38,7 @@ const isSearchOnly = mode === "search-only";
 
 <div
 	class="explore-widget"
+	data-explore-widget
 	data-mode={mode}
 	data-search-only={isSearchOnly ? "true" : "false"}
 >
@@ -90,7 +91,6 @@ const isSearchOnly = mode === "search-only";
 										type="checkbox"
 										id="browse-filter-persons"
 										value="persons"
-										checked
 										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 									/>
 									<span class="text-sm">Persons</span>
@@ -100,7 +100,6 @@ const isSearchOnly = mode === "search-only";
 										type="checkbox"
 										id="browse-filter-similes"
 										value="similes"
-										checked
 										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 									/>
 									<span class="text-sm">Similes</span>
@@ -147,7 +146,6 @@ const isSearchOnly = mode === "search-only";
 										type="checkbox"
 										id="browse-filter-persons-desktop"
 										value="persons"
-										checked
 										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 									/>
 									<span class="text-sm">Persons</span>
@@ -157,7 +155,6 @@ const isSearchOnly = mode === "search-only";
 										type="checkbox"
 										id="browse-filter-similes-desktop"
 										value="similes"
-										checked
 										class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 									/>
 									<span class="text-sm">Similes</span>
@@ -241,7 +238,6 @@ const isSearchOnly = mode === "search-only";
 								type="checkbox"
 								id="search-filter-persons"
 								value="persons"
-								checked
 								class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 							/>
 							<span class="text-sm">
@@ -253,7 +249,6 @@ const isSearchOnly = mode === "search-only";
 								type="checkbox"
 								id="search-filter-similes"
 								value="similes"
-								checked
 								class="rounded border-gray-300 dark:border-gray-600 text-[var(--primary-color)] focus:ring-[var(--primary-color)]"
 							/>
 							<span class="text-sm">
@@ -456,28 +451,28 @@ const isSearchOnly = mode === "search-only";
 	import type { UnifiedContentItem } from "../types/discover";
 	import Fuse from "fuse.js";
 
-	// Find the widget container and read configuration
-	const widget = document.querySelector(".explore-widget") as HTMLElement;
-	if (!widget) throw new Error("ExploreWidget container not found");
-
-	const isSearchOnly = widget.dataset.searchOnly === "true";
+	// Resolve widget + DOM refs at init time (not module load) so nested layouts work.
+	let widget!: HTMLElement;
+	let isSearchOnly = false;
+	let domReady = false;
 
 	// ==================== STATE ====================
 	type Mode = "browse" | "search";
-	let currentMode: Mode = isSearchOnly ? "search" : "browse";
+	let currentMode: Mode = "browse";
 
 	// Browse state
 	let browseData: UnifiedContentItem[] = [];
 	let allCategoryData: UnifiedContentItem[] = [];
-	let browseFilters = { topicsQualities: true, similes: true, persons: true };
+	// First visit: Topics & Qualities only; restored from localStorage after interaction
+	let browseFilters = { topicsQualities: true, similes: false, persons: false };
 	let expandedItems = new Set<string>();
 
 	// Search state
 	let searchFilters = {
 		discourses: true,
 		topicsQualities: true,
-		similes: true,
-		persons: true,
+		similes: false,
+		persons: false,
 		includeReferences: false,
 	};
 	let searchQuery = "";
@@ -500,21 +495,49 @@ const isSearchOnly = mode === "search-only";
 	};
 
 	// ==================== DOM ELEMENTS ====================
-	const browseMode = widget.querySelector("#browse-mode") as HTMLElement;
-	const searchMode = widget.querySelector("#search-mode") as HTMLElement;
-	const loadingEl = widget.querySelector("#loading") as HTMLElement;
-	const resultsContainer = widget.querySelector("#results-container") as HTMLElement;
-	const browseResults = widget.querySelector("#browse-results") as HTMLElement;
-	const searchResults = widget.querySelector("#search-results") as HTMLElement;
-	const searchResultsList = widget.querySelector("#search-results-list") as HTMLElement;
-	const searchResultsCount = widget.querySelector("#search-results-count") as HTMLElement;
-	const noResultsEl = widget.querySelector("#no-results") as HTMLElement;
-	const searchInput = widget.querySelector("#search-input") as HTMLInputElement;
-	const searchHelpBtn = widget.querySelector("#search-help-btn") as HTMLButtonElement;
-	const searchHelp = widget.querySelector("#search-help") as HTMLElement;
+	let browseMode: HTMLElement | null = null;
+	let searchMode: HTMLElement | null = null;
+	let loadingEl: HTMLElement | null = null;
+	let resultsContainer: HTMLElement | null = null;
+	let browseResults: HTMLElement | null = null;
+	let searchResults: HTMLElement | null = null;
+	let searchResultsList: HTMLElement | null = null;
+	let searchResultsCount: HTMLElement | null = null;
+	let noResultsEl: HTMLElement | null = null;
+	let searchInput: HTMLInputElement | null = null;
+	let searchHelpBtn: HTMLButtonElement | null = null;
+	let searchHelp: HTMLElement | null = null;
+
+	function resolveDom(): boolean {
+		const el = document.querySelector("[data-explore-widget]") as HTMLElement | null;
+		if (!el) return false;
+
+		widget = el;
+		isSearchOnly = widget.dataset.searchOnly === "true";
+		currentMode = isSearchOnly ? "search" : "browse";
+		browseMode = widget.querySelector("#browse-mode");
+		searchMode = widget.querySelector("#search-mode");
+		loadingEl = widget.querySelector("#loading");
+		resultsContainer = widget.querySelector("#results-container");
+		browseResults = widget.querySelector("#browse-results");
+		searchResults = widget.querySelector("#search-results");
+		searchResultsList = widget.querySelector("#search-results-list");
+		searchResultsCount = widget.querySelector("#search-results-count");
+		noResultsEl = widget.querySelector("#no-results");
+		searchInput = widget.querySelector("#search-input");
+		searchHelpBtn = widget.querySelector("#search-help-btn");
+		searchHelp = widget.querySelector("#search-help");
+		domReady = true;
+		return true;
+	}
 
 	// ==================== INITIALIZATION ====================
 	async function init() {
+		if (!resolveDom()) {
+			console.error("ExploreWidget: container not found");
+			return;
+		}
+
 		setupEventListeners();
 		await loadData();
 		loadPersistedFiltersIntoState();
@@ -712,11 +735,16 @@ const isSearchOnly = mode === "search-only";
 			html += `</div></div>`;
 		});
 
-		browseResults.innerHTML = html;
+		if (sortedGroups.length === 0) {
+			browseResults.innerHTML =
+				`<p class="text-center py-8 text-gray-600 dark:text-gray-400">No topics, persons, or similes match the current filters.</p>`;
+		} else {
+			browseResults.innerHTML = html;
+		}
 
 		// Update alphabet link states
 		const availableLetters = new Set(sortedGroups.map(([letter]) => letter));
-		document.querySelectorAll(".alphabet-link").forEach(link => {
+		widget.querySelectorAll(".alphabet-link").forEach(link => {
 			const letter = link.getAttribute("data-letter");
 			if (letter && !availableLetters.has(letter)) {
 				link.classList.add("opacity-30", "cursor-not-allowed");
@@ -2183,7 +2211,7 @@ const isSearchOnly = mode === "search-only";
 			if (e.key === "Enter") {
 				e.preventDefault();
 				if (searchTimeout) clearTimeout(searchTimeout);
-				performSearch(searchInput.value.trim());
+				performSearch(searchInput?.value.trim() ?? "");
 			}
 		});
 
@@ -2258,29 +2286,31 @@ const isSearchOnly = mode === "search-only";
 	function loadPersistedFiltersIntoState() {
 		try {
 			const raw = localStorage.getItem(DISCOVER_FILTERS_KEY);
-			if (!raw) return;
-			const o = JSON.parse(raw) as {
-				v?: number;
-				browse?: Partial<typeof browseFilters>;
-				search?: Partial<typeof searchFilters>;
-			};
-			if (o.v !== 1) return;
-			if (o.browse) {
-				const b = o.browse;
-				if (typeof b.topicsQualities === "boolean") browseFilters.topicsQualities = b.topicsQualities;
-				if (typeof b.similes === "boolean") browseFilters.similes = b.similes;
-				if (typeof b.persons === "boolean") browseFilters.persons = b.persons;
-			}
-			if (o.search) {
-				const s = o.search;
-				if (typeof s.discourses === "boolean") searchFilters.discourses = s.discourses;
-				if (typeof s.topicsQualities === "boolean") searchFilters.topicsQualities = s.topicsQualities;
-				if (typeof s.similes === "boolean") searchFilters.similes = s.similes;
-				if (typeof s.persons === "boolean") searchFilters.persons = s.persons;
-				if (typeof s.includeReferences === "boolean") searchFilters.includeReferences = s.includeReferences;
+			if (raw) {
+				const o = JSON.parse(raw) as {
+					v?: number;
+					browse?: Partial<typeof browseFilters>;
+					search?: Partial<typeof searchFilters>;
+				};
+				if (o.v === 1) {
+					if (o.browse) {
+						const b = o.browse;
+						if (typeof b.topicsQualities === "boolean") browseFilters.topicsQualities = b.topicsQualities;
+						if (typeof b.similes === "boolean") browseFilters.similes = b.similes;
+						if (typeof b.persons === "boolean") browseFilters.persons = b.persons;
+					}
+					if (o.search) {
+						const s = o.search;
+						if (typeof s.discourses === "boolean") searchFilters.discourses = s.discourses;
+						if (typeof s.topicsQualities === "boolean") searchFilters.topicsQualities = s.topicsQualities;
+						if (typeof s.similes === "boolean") searchFilters.similes = s.similes;
+						if (typeof s.persons === "boolean") searchFilters.persons = s.persons;
+						if (typeof s.includeReferences === "boolean") searchFilters.includeReferences = s.includeReferences;
+					}
+				}
 			}
 		} catch {
-			return;
+			// ignore corrupt storage
 		}
 		syncBrowseCheckboxDomFromState();
 		syncSearchCheckboxDomFromState();
@@ -2375,7 +2405,7 @@ const isSearchOnly = mode === "search-only";
 		}, observerOptions);
 
 		// Observe all letter groups
-		document.querySelectorAll(".letter-group").forEach((el) => {
+		widget.querySelectorAll(".letter-group").forEach((el) => {
 			observer.observe(el);
 		});
 
@@ -2427,10 +2457,19 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	// ==================== START ====================
+	let initPromise: Promise<void> | null = null;
+
+	function start() {
+		if (!initPromise) {
+			initPromise = init();
+		}
+		return initPromise;
+	}
+
 	// bfcache: browser may restore checkbox DOM without re-running init; re-sync from storage + re-render.
 	window.addEventListener("pageshow", (ev) => {
 		const e = ev as PageTransitionEvent;
-		if (!e.persisted) return;
+		if (!e.persisted || !domReady) return;
 		loadPersistedFiltersIntoState();
 		if (currentMode === "browse") {
 			renderBrowseResults();
@@ -2439,9 +2478,15 @@ const isSearchOnly = mode === "search-only";
 		}
 	});
 
+	document.addEventListener("astro:page-load", () => {
+		void start();
+	});
+
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", init, { once: true });
+		document.addEventListener("DOMContentLoaded", () => {
+			void start();
+		}, { once: true });
 	} else {
-		init();
+		void start();
 	}
 </script>

@@ -1,0 +1,27 @@
+---
+import { startHereEntries } from "../data/collectionHome";
+---
+
+<section class="max-w-4xl mx-auto px-4 mb-14" aria-labelledby="start-here-heading">
+	<h2 id="start-here-heading" class="text-sm font-medium uppercase tracking-wide mb-3" style="color:var(--text-muted);">
+		Start here
+	</h2>
+	<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+		{
+			startHereEntries.map(({ href, label, subtitle }) => (
+				<a
+					href={href}
+					class="group rounded-xl border p-4 text-center no-underline transition-shadow hover:shadow-md"
+					style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);"
+				>
+					<div class="font-semibold text-sm sm:text-base group-hover:text-[var(--link-color)] transition-colors">
+						{label}
+					</div>
+					<div class="text-xs mt-1" style="color:var(--text-muted);">
+						{subtitle}
+					</div>
+				</a>
+			))
+		}
+	</div>
+</section>

@@ -10,6 +10,16 @@ import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
 import { searchIndexStatic } from "./src/integrations/searchIndexStatic.mjs";
+import { mnVaggaSections } from "./src/data/mnVaggaStructure.generated.ts";
+
+const mnVaggaRedirects = Object.fromEntries(
+	Object.entries(mnVaggaSections).flatMap(([pannasa, sections]) =>
+		Object.keys(sections).map((slug) => [
+			`/${slug}`,
+			`/${pannasa}#${slug}`,
+		]),
+	),
+);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -79,5 +89,6 @@ export default defineConfig({
 		"/in-the-buddhas-words": "/anthologies/in-the-buddhas-words",
 		"/noble-truths-noble-path": "/anthologies/noble-truths-noble-path",
 		"/buddha-quote": "/buddha-quotes",
+		...mnVaggaRedirects,
 	},
 });

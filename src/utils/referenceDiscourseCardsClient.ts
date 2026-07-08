@@ -6,6 +6,7 @@ import {
 	setStoredRefMode,
 } from "./refModeClient";
 import { compareDiscourseIds } from "./discourseSort";
+import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { transformId } from "./transformId";
 
 export interface ReferenceDiscourseCardsInitOptions {
@@ -104,7 +105,55 @@ function renderReferenceCard(entry: {
 	return card;
 }
 
+function sortPostsGrid(grid: HTMLElement) {
+	const items = [...grid.querySelectorAll(":scope > .post-item")];
+	items.sort((a, b) =>
+		compareDiscourseIds(slugFromPostItem(a), slugFromPostItem(b)),
+	);
+	for (const item of items) {
+		grid.appendChild(item);
+	}
+}
+
+function revealVaggaSection(section: HTMLElement | null) {
+	section?.classList.remove("hidden");
+}
+
+function hideEmptyVaggaSections(grid: HTMLElement) {
+	for (const section of grid.querySelectorAll<HTMLElement>(
+		":scope > .vagga-section[id]",
+	)) {
+		const postsGrid = section.querySelector(":scope > .posts-grid");
+		const hasPosts = postsGrid?.querySelector(":scope > .post-item");
+		section.classList.toggle("hidden", !hasPosts);
+	}
+}
+
+function findVaggaSectionElement(
+	grid: HTMLElement,
+	slug: string,
+): HTMLElement | null {
+	for (const section of grid.querySelectorAll<HTMLElement>(
+		":scope > .vagga-section[id]",
+	)) {
+		if (slugMatchesCollectionPattern(slug, section.id)) {
+			return section;
+		}
+	}
+	return null;
+}
+
 function sortDiscourseGrid(grid: HTMLElement, mountId: string) {
+	const sectioned = grid.querySelector(":scope > .vagga-section");
+	if (sectioned) {
+		for (const postsGrid of grid.querySelectorAll<HTMLElement>(
+			":scope > .vagga-section .posts-grid",
+		)) {
+			sortPostsGrid(postsGrid);
+		}
+		return;
+	}
+
 	const mount = document.getElementById(mountId);
 	const items = [...grid.querySelectorAll(":scope > .post-item")];
 	items.sort((a, b) =>
@@ -146,6 +195,7 @@ export function initReferenceDiscourseCards(
 		grid
 			?.querySelectorAll(".post-item--reference")
 			.forEach((el) => el.remove());
+		if (grid) hideEmptyVaggaSections(grid);
 		debugLog("removed reference cards");
 	}
 
@@ -177,11 +227,40 @@ export function initReferenceDiscourseCards(
 		}
 
 		const fragment = document.createDocumentFragment();
+		const sectioned = !!grid.querySelector(":scope > .vagga-section");
+		const unmatched: HTMLElement[] = [];
+
 		for (const entry of refs) {
-			fragment.appendChild(renderReferenceCard(entry));
+			const card = renderReferenceCard(entry);
+			if (sectioned) {
+				const section = findVaggaSectionElement(grid, entry.slug);
+				const postsGrid = section?.querySelector<HTMLElement>(
+					":scope > .posts-grid",
+				);
+				if (postsGrid) {
+					revealVaggaSection(section);
+					postsGrid.appendChild(card);
+				} else {
+					unmatched.push(card);
+				}
+			} else {
+				fragment.appendChild(card);
+			}
 		}
-		grid?.insertBefore(fragment, mount);
+
+		if (sectioned) {
+			for (const card of unmatched) {
+				const otherSection = grid.querySelector<HTMLElement>(
+					":scope > .vagga-section:not([id]) .posts-grid",
+				);
+				(otherSection ?? grid).appendChild(card);
+			}
+		} else if (fragment.childNodes.length) {
+			grid?.insertBefore(fragment, mount);
+		}
+
 		sortDiscourseGrid(grid, mountId);
+		hideEmptyVaggaSections(grid);
 		debugLog("appended reference cards", {
 			count: refs.length,
 			postItems: grid?.querySelectorAll(".post-item").length,

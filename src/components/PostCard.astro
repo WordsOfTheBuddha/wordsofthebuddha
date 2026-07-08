@@ -5,6 +5,7 @@ interface Props {
 	title: string;
 	description: string;
 	id: string;
+	href?: string;
 	lastUpdated?: string | Date;
 	dateLabel?: string;
 	clamp?: number;
@@ -25,6 +26,7 @@ const {
 	title,
 	description,
 	id,
+	href,
 	lastUpdated,
 	dateLabel = "Last updated on",
 	clamp = 3,
@@ -35,6 +37,7 @@ const {
 
 const hasAudio = audioSlugs.has(id);
 const isReference = variant === "reference";
+const cardHref = href ?? `/${id}`;
 const cardClamp = isReference ? 2 : clamp;
 const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 ---
@@ -58,9 +61,9 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 					]}
 				>
 					<a
-						href={`/${id}`}
+						href={cardHref}
 						class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal"
-						data-base-href={`/${id}`}
+						data-base-href={cardHref}
 					>
 						{transformId(id)}&nbsp;<span
 							style="color:var(--text-color)">{title}</span

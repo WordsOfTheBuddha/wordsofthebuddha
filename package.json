@@ -44,6 +44,7 @@
 		"voice:rerecord-impact": "python3 scripts/detect-rerecord-impact.py --rev-range HEAD --format pretty",
 		"gen:playlists": "node scripts/generate-playlists.mjs",
 		"import:sc": "node scripts/import-sc-bilara.mjs",
+		"import:sc-structure": "node scripts/import-sc-structure.mjs",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
 		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py",
 		"voice:normalize": ".venv-voice/bin/python scripts/normalize_voice.py"

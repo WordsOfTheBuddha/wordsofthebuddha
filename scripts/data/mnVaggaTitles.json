@@ -1,0 +1,62 @@
+{
+	"mn-mulapariyayavagga": {
+		"englishSubtitle": "The Chapter on the Root of All Things",
+		"description": "This chapter, though beginning with the abstruse Mūlapariyāya Sutta, mostly contains foundational teachings and can, as a whole, serve as an introduction to the discourses."
+	},
+	"mn-sihanadavagga": {
+		"englishSubtitle": "The Chapter on the Lion's Roar",
+		"description": "Beginning with two discourses containing a \"lion's roar\", this chapter deals with suffering, community life, and practical meditation advice."
+	},
+	"mn-opammavagga": {
+		"englishSubtitle": "The Chapter of Similes",
+		"description": "A diverse chapter including biography, non-violence, not-self, and an influential teaching on the progress of meditation."
+	},
+	"mn-mahayamakavagga": {
+		"englishSubtitle": "The Greater Chapter on Pairs",
+		"description": "Discourses arranged as pairs of longer and shorter texts."
+	},
+	"mn-culayamakavagga": {
+		"englishSubtitle": "The Lesser Chapter on Pairs",
+		"description": "A similar arrangement to the previous chapter, with paired longer and shorter discourses on key doctrines."
+	},
+	"mn-gahapativagga": {
+		"englishSubtitle": "The Chapter on Householders",
+		"description": "This chapter is addressed to a diverse range of lay people."
+	},
+	"mn-bhikkhuvagga": {
+		"englishSubtitle": "The Chapter on Mendicants",
+		"description": "Ten discourses to monks, many of them focusing on matters of discipline."
+	},
+	"mn-paribbajakavagga": {
+		"englishSubtitle": "The Chapter on Wanderers",
+		"description": "The Buddha in dialog with ascetics and wanderers."
+	},
+	"mn-rajavagga": {
+		"englishSubtitle": "The Chapter on Kings",
+		"description": "Various dialogs with kings and princes, many of whom followed the Buddha."
+	},
+	"mn-brahmanavagga": {
+		"englishSubtitle": "The Chapter on Brahmins",
+		"description": "The Buddha engages with the powerful caste of brahmins, contesting their claims to spiritual authority."
+	},
+	"mn-devadahavagga": {
+		"englishSubtitle": "The Chapter Beginning With Devadaha",
+		"description": "Diverse teachings opening with the Devadaha Sutta."
+	},
+	"mn-anupadavagga": {
+		"englishSubtitle": "The Chapter Beginning with One By One",
+		"description": "Many of the discourses in this chapter delve into complex and analytical presentations of core teachings. It includes important discourses on meditation."
+	},
+	"mn-sunnatavagga": {
+		"englishSubtitle": "The Chapter Beginning with Emptiness",
+		"description": "Named after the first discourses, which deal with emptiness, this chapter presents less analytical and more narrative texts."
+	},
+	"mn-vibhangavagga": {
+		"englishSubtitle": "The Chapter on Analysis",
+		"description": "A series of discourses presented as technical analyses of shorter teachings."
+	},
+	"mn-salayatanavagga": {
+		"englishSubtitle": "The Chapter on the Six Senses",
+		"description": "Most discourses in this chapter deal with the six sense fields."
+	}
+}

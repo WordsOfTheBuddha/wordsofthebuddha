@@ -5,6 +5,7 @@ export const prerender = true;
 import CollectionLayout from "../layouts/CollectionLayout.astro";
 import { determineRouteType } from "../utils/routeHandler";
 import { directoryStructure } from "../data/directoryStructure";
+import { getEffectiveVaggaSections } from "../utils/vaggaSections";
 
 // Gather all collection slugs from directoryStructure (top-level + nested)
 export async function getStaticPaths() {
@@ -34,6 +35,7 @@ if (route.type !== "collection") {
 	description={route.metadata?.description || ""}
 	collection
 	children={route.metadata?.children || {}}
+	vaggaSections={getEffectiveVaggaSections(collection as string)}
 	searchPattern={route.pattern || ""}
 	collectionSlug={collection as string}
 />

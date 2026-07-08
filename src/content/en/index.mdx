@@ -6,14 +6,12 @@ fetter: ignorance
 slug: index
 ---
 
-import ProjectStatus from '../../components/ProjectStatus.astro'
+import StartHere from '../../components/StartHere.astro'
+import CollectionCards from '../../components/CollectionCards.astro'
 import LatestDiscourses from '../../components/LatestDiscourses.astro'
 import TopAnthologies from '../../components/TopAnthologies.astro'
 import DailyQuote from '../../components/DailyQuote.astro'
 import SacredMandala from '../../components/SacredMandala.astro'
-import { siteAvailability } from '../../data/collectionAvailability';
-
-export const heroCopy = `Over ${siteAvailability.unitCount.toLocaleString()} discourses, verses, sayings, passages, and utterances from ${siteAvailability.textCount.toLocaleString()} texts with parallel Pāli-English translations`;
 
 {/* ── Hero ── */}
 <SacredMandala variant="hero" />
@@ -22,7 +20,7 @@ export const heroCopy = `Over ${siteAvailability.unitCount.toLocaleString()} dis
     <span class="text-center">Words of the Buddha</span>
   </h1>
   <p class="text-lg sm:text-xl max-w-2xl mb-8" style="color:var(--text-muted);">
-    Explore the Buddha's earliest teachings through his words. {heroCopy}.
+    Read early Buddhist discourses in parallel Pāli and English — from memorable verses to the full Nikāyas.
   </p>
   <div class="flex flex-wrap gap-2 justify-center">
     <a href="/discover" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-white text-sm font-medium shadow-sm transition-colors hover:opacity-95" style="background-color:var(--primary-color);">
@@ -157,11 +155,11 @@ export const heroCopy = `Over ${siteAvailability.unitCount.toLocaleString()} dis
 })();
 `}</script>
 
-{/* ── Discourses by Text Collections ── */}
+{/* ── Collections ── */}
 <section class="max-w-4xl mx-auto px-4 mb-14">
-  <h2 class="text-2xl font-semibold mb-2">Discourses by Text Collections</h2>
-  <p class="mb-4 text-sm" style="color:var(--text-muted);">{heroCopy} across the major collections below</p>
-  <ProjectStatus />
+  <h2 class="text-2xl font-semibold mb-2">Explore the Collections</h2>
+  <p class="mb-4 text-sm" style="color:var(--text-muted);">Browse the major texts of the Pāli Canon, with parallel Pāli and English on every page.</p>
+  <CollectionCards />
 </section>
 
 {/* ── Latest Discourses ── */}

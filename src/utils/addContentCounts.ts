@@ -23,6 +23,8 @@ function extractCollections(
 		const currentPath = [...parentPath, key];
 		const hasChildren =
 			dir.children && Object.keys(dir.children).length > 0;
+		const hasVaggaSections =
+			dir.vaggaSections && Object.keys(dir.vaggaSections).length > 0;
 
 		// A leaf collection is one without children
 		const isLeaf = !hasChildren;
@@ -36,6 +38,21 @@ function extractCollections(
 
 		if (isLeaf) {
 			leafCollections.add(key);
+		}
+
+		// Vagga sections count as leaf collections for content matching (AN pilot)
+		if (hasVaggaSections) {
+			for (const [vaggaKey, vaggaDir] of Object.entries(
+				dir.vaggaSections!,
+			)) {
+				const vaggaPath = [...currentPath, vaggaKey];
+				collections.set(vaggaKey, {
+					path: vaggaPath,
+					structure: vaggaDir,
+					isLeaf: true,
+				});
+				leafCollections.add(vaggaKey);
+			}
 		}
 
 		// Process children recursively if they exist
@@ -86,6 +103,54 @@ function parseFile(
 		};
 	}
 
+	// AN book vagga grouped discourse file (e.g. an4.1-10.mdx)
+	const anVaggaFileMatch = baseName.match(/^([a-z]+\d+)\.(\d+)-(\d+)$/i);
+	if (anVaggaFileMatch) {
+		const exactVagga = leafCollections.find(
+			({ key }) => key.toLowerCase() === baseName.toLowerCase(),
+		);
+		if (exactVagga) {
+			const [, , start, end] = anVaggaFileMatch;
+			return {
+				collectionKey: exactVagga.key,
+				count: parseInt(end) - parseInt(start) + 1,
+			};
+		}
+	}
+
+	// AN book vagga ranges for individual discourses (e.g. an4.5 -> an4.1-10)
+	const anDiscourseMatch = baseName.match(/^([a-z]+\d+)\.(\d+)$/i);
+	if (anDiscourseMatch) {
+		const [, bookPrefix, suttaNumStr] = anDiscourseMatch;
+		const suttaNum = parseInt(suttaNumStr);
+		const vaggaMatches = leafCollections
+			.filter(({ key }) => {
+				const rangeMatch = key.match(/^([a-z]+\d+)\.(\d+)-(\d+)$/);
+				if (!rangeMatch) return false;
+				const [, keyBook, rangeStart, rangeEnd] = rangeMatch;
+				return (
+					keyBook === bookPrefix &&
+					suttaNum >= parseInt(rangeStart) &&
+					suttaNum <= parseInt(rangeEnd)
+				);
+			})
+			.sort((a, b) => {
+				const span = (key: string) => {
+					const match = key.match(/^([a-z]+\d+)\.(\d+)-(\d+)$/);
+					if (!match) return Number.POSITIVE_INFINITY;
+					return parseInt(match[3]) - parseInt(match[2]);
+				};
+				return span(a.key) - span(b.key);
+			});
+
+		if (vaggaMatches.length > 0) {
+			return {
+				collectionKey: vaggaMatches[0].key,
+				count: 1,
+			};
+		}
+	}
+
 	// Try to match range collections (like mn1-50) for files like mn1, mn2, etc.
 	const simpleMatch = baseName.match(/^([a-z]+)(\d+)(?:\.\d+)?$/i);
 	if (simpleMatch) {
@@ -105,7 +170,14 @@ function parseFile(
 					fileNum <= parseInt(rangeEnd)
 				);
 			})
-			.sort((a, b) => a.key.length - b.key.length);
+			.sort((a, b) => {
+				const span = (key: string) => {
+					const match = key.match(/^([a-z]+)(\d+)-(\d+)$/);
+					if (!match) return Number.POSITIVE_INFINITY;
+					return parseInt(match[3]) - parseInt(match[2]);
+				};
+				return span(a.key) - span(b.key);
+			});
 
 		if (rangeMatches.length > 0) {
 			return {
@@ -306,6 +378,21 @@ async function processDirectoryStructure(
 			newDirectory.contentCount = Object.values(
 				newDirectory.children,
 			).reduce((sum, child) => sum + (child.contentCount || 0), 0);
+		} else if (
+			directory.vaggaSections &&
+			Object.keys(directory.vaggaSections).length > 0
+		) {
+			const vaggaCounts: Record<string, DirectoryStructure> = {};
+			for (const [vaggaKey, vaggaDir] of Object.entries(
+				directory.vaggaSections,
+			)) {
+				vaggaCounts[vaggaKey] = {
+					...vaggaDir,
+					contentCount: collectionCounts.get(vaggaKey) || 0,
+				};
+			}
+			newDirectory.vaggaSections = vaggaCounts;
+			newDirectory.contentCount = collectionCounts.get(key) || 0;
 		} else {
 			// Leaf node - get count from our pre-processed collection counts
 			newDirectory.contentCount = collectionCounts.get(key) || 0;

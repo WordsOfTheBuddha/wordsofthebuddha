@@ -1,4 +1,6 @@
 import type { DirectoryStructure } from "../types/directory";
+import { anVaggaSections } from "./anVaggaStructure.generated";
+import { mnVaggaSections } from "./mnVaggaStructure.generated";
 
 export const directoryStructure: Record<string, DirectoryStructure> = {
 	sn: {
@@ -438,18 +440,21 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 				description:
 					"The first book of the Majjhima Nikāya, the Mūlapaṇṇāsa, contains discourses that establish the foundational principles of the Buddha’s teachings, beginning with the Mūlapariyāya Sutta, which examines how the notion of a personal existence emerges from the process of perception. Other discourses explore various aspects of the Dhamma through Buddha's own experiences leading to his full awakening, illustrative similes, training guidelines and paired discourses on key doctrines. This book provides a comprehensive introduction to the core teachings of the Buddha and the practices of early Buddhism.",
 				range: { start: 1, end: 50 },
+				vaggaSections: mnVaggaSections["mn1-50"],
 			},
 			"mn51-100": {
 				title: "Majjhimapaṇṇāsa - The Middle Fifty",
 				description:
 					"The second book of the Majjhima Nikāya, the Majjhimapaṇṇāsa, features discourses organized around the individuals involved in the teachings, such as householders, bhikkhus, wanderers, kings, and brahmins. Each of its five chapters (groupings of 10 discourses) presents teachings tailored to these groups, addressing their specific concerns and illustrating the practical application of the Dhamma across diverse contexts.",
 				range: { start: 51, end: 100 },
+				vaggaSections: mnVaggaSections["mn51-100"],
 			},
 			"mn101-152": {
 				title: "Uparipaṇṇāsa - The Final Fifty-Two",
 				description:
 					"The third book of the Majjhima Nikāya, the Uparipaṇṇāsa, delves into specific themes and advanced topics, with chapters exploring critiques of other philosophical views, meditation practices, the concept of emptiness, analytical methods, and the six sense bases. This book offers profound insights for those seeking a deeper understanding of the Buddha’s teachings.",
 				range: { start: 101, end: 152 },
+				vaggaSections: mnVaggaSections["mn101-152"],
 			},
 		},
 	},
@@ -477,11 +482,13 @@ export const directoryStructure: Record<string, DirectoryStructure> = {
 				title: "The Book of the Fours",
 				description:
 					'This chapter contains discourses that explore sets of four qualities, concepts, or principles essential to the Buddha\'s teachings. Each sutta examines groups such as the four foundations of mindfulness, the four types of noble disciples, or the four aspects of right effort. These teachings emphasize the interconnectedness of these elements and their collective significance in the practice of the Dhamma. The "Book of Fours" provides a deeper understanding of how these grouped qualities contribute to spiritual development and insight on the way of practice to enlightenment.',
+				vaggaSections: anVaggaSections.an4,
 			},
 			an5: {
 				title: "The Book of the Fives",
 				description:
 					'This chapter contains discourses that explore sets of five qualities, concepts, or principles central to the Buddha\'s teachings. Each sutta investigates groups such as the five aggregates, the five spiritual faculties, or the five hindrances. These teachings demonstrate how these elements interact and support each other in the practice of the Dhamma. The "Book of Fives" offers a comprehensive understanding of how these grouped qualities work together to advance spiritual development and insight on the way of practice to enlightenment.',
+				vaggaSections: anVaggaSections.an5,
 			},
 			an6: {
 				title: "The Book of the Sixes",

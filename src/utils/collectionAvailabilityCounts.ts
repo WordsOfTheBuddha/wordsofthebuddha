@@ -141,6 +141,22 @@ export function enrichDirectoryWithAvailability(
 			);
 		}
 
+		if (
+			directory.vaggaSections &&
+			Object.keys(directory.vaggaSections).length > 0
+		) {
+			enriched.vaggaSections = {};
+			for (const [vaggaKey, vaggaDir] of Object.entries(
+				directory.vaggaSections,
+			)) {
+				enriched.vaggaSections[vaggaKey] = {
+					...vaggaDir,
+					translatedCount: countTranslatedDiscourses(vaggaKey),
+					readableCount: countReadableDiscourses(vaggaKey),
+				};
+			}
+		}
+
 		enriched.translatedCount = countTranslatedDiscourses(key);
 		enriched.readableCount = countReadableDiscourses(key);
 

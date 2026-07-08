@@ -51,11 +51,12 @@ export function getCollectionNavigation(slug: string): CollectionNavigation {
 		result.next = { slug: nextSlug, title: nextData.title };
 	}
 
-	// Special case for SN: if we're at a leaf collection (e.g., sn12)
-	// and prev/next crosses parent boundaries (e.g., sn11 in sn1-11, sn12 in sn12-21)
-	// we should still navigate to them
+	// Special case for SN: cross parent-group navigation among leaf subdivisions
 	if (parentKey && parentKey.startsWith("sn")) {
-		const crossBoundaryNav = getCrossBoundaryNavigation(slug, parentKey);
+		const crossBoundaryNav = getCrossBoundaryNavigation(
+			slug,
+			"sn",
+		);
 		if (!result.prev && crossBoundaryNav.prev) {
 			result.prev = crossBoundaryNav.prev;
 		}
@@ -128,32 +129,32 @@ function findCollectionLocation(slug: string): CollectionLocation | null {
 }
 
 /**
- * Handles cross-boundary navigation for SN collections
- * For example: sn11 (last in sn1-11) can navigate to sn12 (first in sn12-21)
+ * Handles cross-boundary navigation for SN saṁyuttas
+ * when prev/next siblings live under a different parent group.
  */
 function getCrossBoundaryNavigation(
 	slug: string,
-	parentKey: string,
+	collectionKey: "sn",
 ): CollectionNavigation {
 	const result: CollectionNavigation = {};
 
-	// Get the SN structure
-	const snStructure = directoryStructure.sn;
-	if (!snStructure?.children) return result;
+	const collectionStructure = directoryStructure[collectionKey];
+	if (!collectionStructure?.children) return result;
 
-	// Find all leaf collections across all SN sub-groups
-	const allSnLeafCollections: {
+	const allLeafCollections: {
 		slug: string;
 		title: string;
 		parentKey: string;
 	}[] = [];
 
-	for (const [groupKey, groupValue] of Object.entries(snStructure.children)) {
+	for (const [groupKey, groupValue] of Object.entries(
+		collectionStructure.children,
+	)) {
 		if (!groupValue.children) continue;
 		for (const [childKey, childValue] of Object.entries(
 			groupValue.children,
 		)) {
-			allSnLeafCollections.push({
+			allLeafCollections.push({
 				slug: childKey,
 				title: childValue.title,
 				parentKey: groupKey,
@@ -161,26 +162,23 @@ function getCrossBoundaryNavigation(
 		}
 	}
 
-	// Sort by the numeric part of the slug (sn1 -> 1, sn12 -> 12, etc.)
-	allSnLeafCollections.sort((a, b) => {
+	// Sort by the numeric part of the slug (sn1 -> 1, mn11-20 -> 11, etc.)
+	allLeafCollections.sort((a, b) => {
 		const numA = parseInt(a.slug.replace(/[^0-9]/g, "")) || 0;
 		const numB = parseInt(b.slug.replace(/[^0-9]/g, "")) || 0;
 		return numA - numB;
 	});
 
-	// Find current slug index in the full list
-	const currentIndex = allSnLeafCollections.findIndex((c) => c.slug === slug);
+	const currentIndex = allLeafCollections.findIndex((c) => c.slug === slug);
 	if (currentIndex === -1) return result;
 
-	// Get prev if exists
 	if (currentIndex > 0) {
-		const prev = allSnLeafCollections[currentIndex - 1];
+		const prev = allLeafCollections[currentIndex - 1];
 		result.prev = { slug: prev.slug, title: prev.title };
 	}
 
-	// Get next if exists
-	if (currentIndex < allSnLeafCollections.length - 1) {
-		const next = allSnLeafCollections[currentIndex + 1];
+	if (currentIndex < allLeafCollections.length - 1) {
+		const next = allLeafCollections[currentIndex + 1];
 		result.next = { slug: next.slug, title: next.title };
 	}
 

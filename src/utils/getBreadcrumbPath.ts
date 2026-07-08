@@ -1,6 +1,7 @@
 import { directoryStructure } from "../data/directoryStructure";
 import { transformId } from "../utils/transformId";
 import { keyMap } from "./transformId";
+import { vaggaSectionHref } from "./vaggaSections";
 
 export interface BreadcrumbItem {
 	label: string;
@@ -83,6 +84,26 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 			return path;
 		}
 
+		// MN vagga section slug (e.g. mn1-10) — anchor in paṇṇāsa discourses view
+		for (const [pannasaKey, pannasaData] of Object.entries(
+			collection.children,
+		)) {
+			if (pannasaData.vaggaSections?.[id]) {
+				const vagga = pannasaData.vaggaSections[id];
+				path.push({
+					label: transformId(pannasaKey),
+					path: `/${pannasaKey}`,
+					title: pannasaData.title,
+				});
+				path.push({
+					label: transformId(id),
+					path: vaggaSectionHref(pannasaKey, id),
+					title: vagga.title,
+				});
+				return path;
+			}
+		}
+
 		// If the id is a range key or a direct child, add it once
 		if (collection.children?.[id]) {
 			const child = collection.children[id];
@@ -94,13 +115,31 @@ export function getBreadcrumbPath(idPath: string[]): BreadcrumbItem[] {
 			return path;
 		}
 
+		// AN vagga section when the slug is itself a grouped discourse (e.g. an1.1-10)
+		const bookChild = collection.children?.[baseId];
+		if (bookChild?.vaggaSections?.[id]) {
+			const vagga = bookChild.vaggaSections[id];
+			path.push({
+				label: transformId(baseId),
+				path: `/${baseId}`,
+				title: bookChild.title,
+			});
+			path.push({
+				label: transformId(id),
+				path: vaggaSectionHref(baseId, id),
+				title: vagga.title,
+			});
+			return path;
+		}
+
 		// Otherwise, look for matching range
-		const num = parseInt(baseId.replace(prefix, ""));
+		const num = parseInt(baseId.replace(prefix, ""), 10);
 		if (collection.children) {
 			for (const [rangeKey, rangeData] of Object.entries(
 				collection.children,
 			)) {
 				if (
+					!Number.isNaN(num) &&
 					rangeData.range &&
 					num >= rangeData.range.start &&
 					num <= rangeData.range.end

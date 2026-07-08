@@ -16,12 +16,17 @@ import {
 import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
 import { getReferencePostsForCollection } from "../utils/referencePostsForPage";
 
+import {
+	groupDiscoursesByVaggaSection,
+} from "../utils/vaggaSections";
+
 interface Props {
 	title: string;
 	description: string;
 	searchPattern: string;
 	collection?: boolean;
 	children?: Record<string, DirectoryStructure>;
+	vaggaSections?: Record<string, DirectoryStructure>;
 	collectionSlug?: string;
 }
 
@@ -31,6 +36,7 @@ const {
 	searchPattern,
 	collection = false,
 	children,
+	vaggaSections,
 	collectionSlug,
 } = Astro.props;
 
@@ -54,20 +60,24 @@ const pdfExportSelectionTree = collectionSlug
 	? await buildPdfExportSelectionTree(collectionSlug)
 	: null;
 
-const hasChildren = children && Object.keys(children).length > 0;
-const viewParam = Astro.url.searchParams.get("view");
-// Build-time default; client JS will honor ?view=… and ?ref
-const defaultShowCollections = hasChildren && viewParam !== "discourses";
+const hasChildCollections = children && Object.keys(children).length > 0;
+const hasVaggaSections =
+	vaggaSections && Object.keys(vaggaSections).length > 0;
+const sectionedDiscourses = hasVaggaSections
+	? groupDiscoursesByVaggaSection(pagePosts, vaggaSections)
+	: null;
+// Toggle only for pages with child sub-collections (e.g. /mn, /an), not vagga-only leaves.
+const hasChildren = hasChildCollections;
+// Inline script below applies hash before first paint on parent collection pages.
+const defaultShowCollections = hasChildren;
 
 const enSlugsOnPage = new Set(pagePosts.map((post) => post.slug));
 const referencePostsForCollection = collectionSlug
 	? getReferencePostsForCollection(collectionSlug, enSlugsOnPage)
 	: [];
 const hasReferenceOnlyDiscourses = referencePostsForCollection.length > 0;
-/** Discourses grid is visible at build time (no child collections, or ?view=discourses). */
-const showDiscoursesByDefault = !hasChildren || !defaultShowCollections;
 const showRefToggle =
-	hasReferenceOnlyDiscourses && showDiscoursesByDefault;
+	hasReferenceOnlyDiscourses && !defaultShowCollections;
 const referencePostsData = referencePostsForCollection.map(
 	({ slug, title, description }) => ({
 		slug,
@@ -76,6 +86,13 @@ const referencePostsData = referencePostsForCollection.map(
 	}),
 );
 const referencePostsJson = JSON.stringify(referencePostsData);
+
+/** Runs in <head> before body paint to avoid Collections→Discourses flash when URL has a hash. */
+const collectionViewBootstrapScript = `(function () {
+  if (window.location.hash) {
+    document.documentElement.setAttribute("data-collection-view", "discourses");
+  }
+})();`;
 
 // Dev-time debug: log render context (collection view vs discourses view)
 if (import.meta.env?.DEV) {
@@ -97,6 +114,18 @@ if (import.meta.env?.DEV) {
 }
 
 // Function to find availability counts for a specific slug
+function findDirectoryNodeInCounts(slug: string) {
+	if (directoryStructureWithCounts[slug]) {
+		return directoryStructureWithCounts[slug];
+	}
+	for (const top of Object.values(directoryStructureWithCounts)) {
+		if (top.children?.[slug]) {
+			return top.children[slug];
+		}
+	}
+	return undefined;
+}
+
 function getAvailabilityCounts(slug: string): {
 	readableCount: number;
 	translatedCount: number;
@@ -158,6 +187,12 @@ function getAvailabilityCounts(slug: string): {
 		if (child) return child;
 	}
 
+	if (collectionSlug) {
+		const bookNode = findDirectoryNodeInCounts(collectionSlug);
+		const child = fromNode(bookNode?.children?.[slug]);
+		if (child) return child;
+	}
+
 	if (children) {
 		const child = fromNode((children as Record<string, DirectoryStructure>)[slug]);
 		if (child) return child;
@@ -168,6 +203,40 @@ function getAvailabilityCounts(slug: string): {
 ---
 
 <Layout title={title} description={description} showAuth={true}>
+	{
+		hasChildren && (
+			<script slot="head" is:inline set:html={collectionViewBootstrapScript} />
+		)
+	}
+	{
+		hasChildren && (
+			<style slot="head" is:global>
+				{`html[data-collection-view="discourses"] #collections-grid {
+	display: none !important;
+}
+html[data-collection-view="discourses"] #discourses-grid.hidden {
+	display: block !important;
+}
+html[data-collection-view="discourses"] #discourses-grid.posts-grid.hidden {
+	display: grid !important;
+}
+html[data-collection-view="discourses"] #filter-wrap.hidden {
+	display: block !important;
+}
+html[data-collection-view="discourses"] #toggle-ref.hidden {
+	display: inline !important;
+}
+html[data-collection-view="discourses"] #view-collections {
+	background-color: transparent !important;
+	color: var(--text-muted) !important;
+}
+html[data-collection-view="discourses"] #view-discourses {
+	background-color: var(--primary-color) !important;
+	color: white !important;
+}`}
+			</style>
+		)
+	}
 	<main class="container">
 		{
 			hasChildren && (
@@ -245,7 +314,7 @@ function getAvailabilityCounts(slug: string): {
 			)
 		}
 
-		{/* Render both; client toggles based on ?view=… */}
+		{/* Render both; client toggles on parent collection pages */}
 		{
 			hasChildren && (
 				<div
@@ -263,13 +332,13 @@ function getAvailabilityCounts(slug: string): {
 					).map(([slug, data]) => {
 						const { readableCount } = getAvailabilityCounts(slug);
 						return (
-						<PostCard
-							title={data.title}
-							description={data.description || ""}
-							id={slug}
-							clamp={5}
-							count={readableCount}
-						/>
+							<PostCard
+								title={data.title}
+								description={data.description || ""}
+								id={slug}
+								clamp={5}
+								count={readableCount}
+							/>
 						);
 					})}
 				</div>
@@ -316,20 +385,61 @@ function getAvailabilityCounts(slug: string): {
 		<div
 			id="discourses-grid"
 			class={[
-				"posts-grid",
+				sectionedDiscourses ? "space-y-8" : "posts-grid",
 				hasChildren && defaultShowCollections ? "hidden" : "",
 			].join(" ")}
 			data-collection-slug={collectionSlug ?? ""}
 		>
 			{
-				pagePosts.map((post) => (
-					<PostCard
-						title={post.title}
-						description={post.description}
-						id={post.slug}
-						clamp={5}
-					/>
-				))
+				sectionedDiscourses
+					? sectionedDiscourses.map((section) => (
+							<div
+								class:list={[
+									section.slug
+										? "vagga-section col-span-full"
+										: "col-span-full",
+									section.slug &&
+										section.posts.length === 0 &&
+										"hidden",
+								]}
+								id={section.slug || undefined}
+							>
+								{
+									section.slug && (
+										<div class="mb-4 mt-2 border-b border-[var(--border-color)] pb-2">
+											<h2 class="text-lg font-semibold text-[var(--text-color)]">
+												{section.data.title}
+											</h2>
+											{
+												section.data.description && (
+													<p class="mt-1 text-sm text-[var(--text-muted)]">
+														{section.data.description}
+													</p>
+												)
+											}
+										</div>
+									)
+								}
+								<div class="posts-grid">
+									{section.posts.map((post) => (
+										<PostCard
+											title={post.title}
+											description={post.description}
+											id={post.slug}
+											clamp={5}
+										/>
+									))}
+								</div>
+							</div>
+						))
+					: pagePosts.map((post) => (
+							<PostCard
+								title={post.title}
+								description={post.description}
+								id={post.slug}
+								clamp={5}
+							/>
+						))
 			}
 			<div id="reference-cards-mount" />
 		</div>
@@ -399,55 +509,124 @@ function getAvailabilityCounts(slug: string): {
 		btn.classList.toggle("hover:text-[var(--text-color)]", !active);
 	}
 
+	function scrollToHash() {
+		const hash = window.location.hash;
+		if (!hash) return;
+		const id = decodeURIComponent(hash.slice(1));
+		const target = document.getElementById(id);
+		target?.scrollIntoView({ behavior: "smooth", block: "start" });
+	}
+
+	function updateViewUrl(mode) {
+		const url = new URL(window.location.href);
+		url.searchParams.delete("view");
+		if (mode === "collections") {
+			url.hash = "";
+		}
+		window.history.replaceState(
+			{},
+			"",
+			`${url.pathname}${url.search}${url.hash}`,
+		);
+	}
+
+	function resolveInitialViewMode() {
+		const params = new URLSearchParams(window.location.search);
+		const view = params.get("view");
+		if (view === "discourses" || window.location.hash) return "discourses";
+		return "collections";
+	}
+
+	function syncCollectionViewAttribute(mode) {
+		if (!hasChildren) return;
+		if (mode === "discourses") {
+			document.documentElement.setAttribute(
+				"data-collection-view",
+				"discourses",
+			);
+		} else {
+			document.documentElement.removeAttribute("data-collection-view");
+		}
+	}
+
 	function setView(mode) {
 		const showCollections = hasChildren && mode !== "discourses";
 		const showDiscourses = !showCollections;
-		requestAnimationFrame(() => {
-			if (collectionsGrid)
-				collectionsGrid.classList.toggle("hidden", !showCollections);
-			if (discoursesGrid)
-				discoursesGrid.classList.toggle("hidden", showCollections);
-			if (filterWrap)
-				filterWrap.classList.toggle("hidden", showCollections);
-			if (btnCollections && btnDiscourses) {
-				setTabActive(btnCollections, showCollections);
-				setTabActive(btnDiscourses, !showCollections);
-			}
-			syncRefToggleVisibility?.(showDiscourses);
-		});
+		syncCollectionViewAttribute(mode);
+		if (collectionsGrid)
+			collectionsGrid.classList.toggle("hidden", !showCollections);
+		if (discoursesGrid)
+			discoursesGrid.classList.toggle("hidden", showCollections);
+		if (filterWrap)
+			filterWrap.classList.toggle("hidden", showCollections);
+		if (btnCollections && btnDiscourses) {
+			setTabActive(btnCollections, showCollections);
+			setTabActive(btnDiscourses, !showCollections);
+		}
+		syncRefToggleVisibility?.(showDiscourses);
 	}
 
 	function getActiveFilter() {
 		const input = document.getElementById("client-filter");
+		return normalizeFilterText(input?.value);
+	}
+
+	function normalizeFilterText(value) {
 		return (
-			input?.value
+			value
 				?.toLowerCase()
 				.normalize("NFD")
 				.replace(/[\u0300-\u036f]/g, "") || ""
 		);
 	}
 
+	function postMatchesFilter(post, filter) {
+		const aTag = post.querySelector("a");
+		const hrefValue = aTag?.getAttribute("href")?.toLowerCase() || "";
+		const content = normalizeFilterText(post.textContent);
+		const combinedContent = `${hrefValue} ${content}`;
+		return !filter || combinedContent.includes(filter);
+	}
+
 	function applyFilter(filter) {
+		const sections = discoursesGrid?.querySelectorAll(".vagga-section");
+		if (sections?.length) {
+			sections.forEach((section) => {
+				const header = section.querySelector("h2");
+				const description = section.querySelector("p");
+				const headerText = normalizeFilterText(header?.textContent);
+				const descriptionText = normalizeFilterText(
+					description?.textContent,
+				);
+				const sectionMatches =
+					!!filter &&
+					(headerText.includes(filter) ||
+						descriptionText.includes(filter));
+
+				const posts = section.querySelectorAll(".post-item");
+				let anyPostVisible = false;
+				posts.forEach((post) => {
+					const visible =
+						sectionMatches || postMatchesFilter(post, filter);
+					post.classList.toggle("hidden", !visible);
+					if (visible) anyPostVisible = true;
+				});
+
+				section.classList.toggle(
+					"hidden",
+					!!filter && !sectionMatches && !anyPostVisible,
+				);
+			});
+			return;
+		}
+
 		const posts = discoursesGrid?.querySelectorAll(".post-item");
 		posts?.forEach((post) => {
-			const aTag = post.querySelector("a");
-			const hrefValue = aTag?.getAttribute("href")?.toLowerCase() || "";
-			const content =
-				post.textContent
-					?.toLowerCase()
-					.normalize("NFD")
-					.replace(/[\u0300-\u036f]/g, "") || "";
-			const combinedContent = `${hrefValue} ${content}`;
-			post.classList.toggle(
-				"hidden",
-				!!filter && !combinedContent.includes(filter),
-			);
+			post.classList.toggle("hidden", !postMatchesFilter(post, filter));
 		});
 	}
 
 	function initCollectionLayout() {
-		const params = new URLSearchParams(window.location.search);
-		const view = params.get("view");
 		hasChildren = !!document.getElementById("collections-grid");
 		collectionsGrid = document.getElementById("collections-grid");
 		discoursesGrid = document.getElementById("discourses-grid");
@@ -461,32 +640,36 @@ function getAvailabilityCounts(slug: string): {
 		});
 		syncRefToggleVisibility = refCards?.syncRefToggleVisibility;
 
-		if (view) {
-			setView(view);
+		const mode = resolveInitialViewMode();
+		if (hasChildren) {
+			setView(mode);
 		} else {
-			syncRefToggleVisibility?.(!hasChildren);
+			syncRefToggleVisibility?.(true);
+		}
+
+		if (new URL(window.location.href).searchParams.has("view")) {
+			updateViewUrl(mode);
+		}
+
+		if (window.location.hash) {
+			requestAnimationFrame(() => scrollToHash());
 		}
 
 		btnCollections?.addEventListener("click", () => {
 			setView("collections");
-			const url = new URL(window.location.href);
-			url.searchParams.set("view", "collections");
-			setTimeout(() => window.history.replaceState({}, "", url), 0);
+			updateViewUrl("collections");
 		});
 		btnDiscourses?.addEventListener("click", () => {
 			setView("discourses");
-			const url = new URL(window.location.href);
-			url.searchParams.set("view", "discourses");
-			setTimeout(() => window.history.replaceState({}, "", url), 0);
+			updateViewUrl("discourses");
+			if (window.location.hash) {
+				requestAnimationFrame(() => scrollToHash());
+			}
 		});
 
 		const input = document.getElementById("client-filter");
 		input?.addEventListener("input", (e) => {
-			const filter = e.target.value
-				.toLowerCase()
-				.normalize("NFD")
-				.replace(/[\u0300-\u036f]/g, "");
-			applyFilter(filter);
+			applyFilter(normalizeFilterText(e.target.value));
 		});
 	}
 

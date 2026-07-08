@@ -3,6 +3,23 @@ export function slugMatchesCollectionPattern(
 	slug: string,
 	collection: string,
 ): boolean {
+	const bookVaggaMatch = collection.match(/^([a-z]+)(\d+)\.(\d+)-(\d+)$/);
+	if (bookVaggaMatch) {
+		const [, prefix, book, startStr, endStr] = bookVaggaMatch;
+		const start = Number(startStr);
+		const end = Number(endStr);
+		const slugMatch = slug.match(/^([a-z]+)(\d+)\.(\d+)$/);
+		if (!slugMatch) return false;
+		const [, slugPrefix, slugBook, slugNumStr] = slugMatch;
+		const slugNum = Number(slugNumStr);
+		return (
+			slugPrefix === prefix &&
+			slugBook === book &&
+			slugNum >= start &&
+			slugNum <= end
+		);
+	}
+
 	const rangeMatch = collection.match(/^([a-z]+)(\d+)-(\d+)$/);
 	if (rangeMatch) {
 		const [, prefix, startStr, endStr] = rangeMatch;
@@ -33,6 +50,18 @@ export function slugMatchesCollectionPattern(
 }
 
 export function createSearchPattern(collection: string): string | null {
+	const bookVaggaMatch = collection.match(/^([a-z]+)(\d+)\.(\d+)-(\d+)$/);
+	if (bookVaggaMatch) {
+		const [, prefix, book, start, end] = bookVaggaMatch;
+		const numbers = Array.from(
+			{ length: Number(end) - Number(start) + 1 },
+			(_, i) => i + Number(start),
+		);
+		return numbers
+			.map((n) => `slug:${prefix}${book}.${n}$`)
+			.join(" | ");
+	}
+
 	// Check if it's a range pattern (e.g., mn101-152 or sn1-11)
 	const rangeMatch = collection.match(/^([a-z]+)(\d+)-(\d+)$/);
 	if (rangeMatch) {
