@@ -294,8 +294,17 @@ export type TermMatchQuality = "exact" | "prefix" | "infix" | "none";
  * These are semantically different (often opposites).
  */
 function hasExactWordMatch(text: string, term: string): boolean {
-	const normalizedText = prepareTextForMatching(text);
-	const normalizedTerm = normalizeDiacritics(term.toLowerCase());
+	return hasExactWordMatchNormalized(
+		prepareTextForMatching(text),
+		normalizeDiacritics(term.toLowerCase()),
+	);
+}
+
+/** Same as hasExactWordMatch but takes pre-normalized inputs (perf hot path). */
+function hasExactWordMatchNormalized(
+	normalizedText: string,
+	normalizedTerm: string,
+): boolean {
 	const escapedTerm = escapeRegExpForSearch(normalizedTerm);
 
 	// Use regex that requires either start-of-string or whitespace before the word
@@ -335,8 +344,17 @@ function hasExactWordMatch(text: string, term: string): boolean {
  * Excludes hyphen-prefixed matches.
  */
 function hasPrefixMatch(text: string, term: string): boolean {
-	const normalizedText = prepareTextForMatching(text);
-	const normalizedTerm = normalizeDiacritics(term.toLowerCase());
+	return hasPrefixMatchNormalized(
+		prepareTextForMatching(text),
+		normalizeDiacritics(term.toLowerCase()),
+	);
+}
+
+/** Same as hasPrefixMatch but takes pre-normalized inputs (perf hot path). */
+function hasPrefixMatchNormalized(
+	normalizedText: string,
+	normalizedTerm: string,
+): boolean {
 	const escapedTerm = escapeRegExpForSearch(normalizedTerm);
 
 	// Match word boundary at start, but exclude hyphen-prefixed
@@ -379,22 +397,41 @@ export function getTermMatchQuality(
 	const normalizedText = prepareTextForMatching(text);
 	const normalizedTerm = normalizeDiacritics(term.toLowerCase());
 
+	// Cheap substring check first: if the term isn't in the text at all,
+	// skip the more expensive exact/prefix regex checks entirely
+	if (!normalizedText.includes(normalizedTerm)) {
+		return "none";
+	}
+
 	// Check for TRUE exact word match (excludes hyphen-prefixed)
-	if (hasExactWordMatch(text, term)) {
+	if (hasExactWordMatchNormalized(normalizedText, normalizedTerm)) {
 		return "exact";
 	}
 
 	// Check for prefix match (excludes hyphen-prefixed)
-	if (hasPrefixMatch(text, term)) {
+	if (hasPrefixMatchNormalized(normalizedText, normalizedTerm)) {
 		return "prefix";
 	}
 
-	// Check for infix match (term appears anywhere, including hyphenated)
-	if (normalizedText.includes(normalizedTerm)) {
-		return "infix";
-	}
+	// Infix match (term appears within a word or hyphenated)
+	return "infix";
+}
 
-	return "none";
+/** Same as getTermMatchQuality but takes pre-normalized inputs (perf hot path). */
+function getTermMatchQualityNormalized(
+	normalizedText: string,
+	normalizedTerm: string,
+): TermMatchQuality {
+	if (!normalizedText.includes(normalizedTerm)) {
+		return "none";
+	}
+	if (hasExactWordMatchNormalized(normalizedText, normalizedTerm)) {
+		return "exact";
+	}
+	if (hasPrefixMatchNormalized(normalizedText, normalizedTerm)) {
+		return "prefix";
+	}
+	return "infix";
 }
 
 /**
@@ -414,8 +451,15 @@ export function countTermMatchesWithQuality(
 	let count = 0;
 	let score = 0;
 
+	// Normalize text once for all terms (stripAnnotations + NFD over full
+	// content is the dominant cost; doing it per term multiplies it)
+	const normalizedText = prepareTextForMatching(text);
+
 	for (const term of terms) {
-		const quality = getTermMatchQuality(text, term);
+		const quality = getTermMatchQualityNormalized(
+			normalizedText,
+			normalizeDiacritics(term.toLowerCase()),
+		);
 		qualities.push(quality);
 
 		if (quality !== "none") {
@@ -1373,10 +1417,21 @@ export function textContainsQuery(text: string, query: string): boolean {
  * Also handles singular/plural variations (e.g., "truths" matches "truth").
  */
 export function textContainsWholeWord(text: string, query: string): boolean {
-	const normalizedText = text
-		.toLowerCase()
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "");
+	return textContainsWholeWordNormalized(
+		text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+		query,
+	);
+}
+
+/**
+ * Same as textContainsWholeWord but takes pre-normalized text
+ * (lowercased, NFD, combining marks stripped). Perf hot path: lets callers
+ * normalize large document content once instead of per check.
+ */
+export function textContainsWholeWordNormalized(
+	normalizedText: string,
+	query: string,
+): boolean {
 	const normalizedQuery = query
 		.toLowerCase()
 		.normalize("NFD")
@@ -1471,10 +1526,17 @@ export function textContainsQueryTerm(
  * Used to boost content matches where query appears multiple times
  */
 export function countWholeWordOccurrences(text: string, query: string): number {
-	const normalizedText = text
-		.toLowerCase()
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "");
+	return countWholeWordOccurrencesNormalized(
+		text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+		query,
+	);
+}
+
+/** Same as countWholeWordOccurrences but takes pre-normalized text (perf hot path). */
+export function countWholeWordOccurrencesNormalized(
+	normalizedText: string,
+	query: string,
+): number {
 	const normalizedQuery = query
 		.toLowerCase()
 		.normalize("NFD")
@@ -1524,10 +1586,17 @@ export function textContainsPaliWholeWord(
 	text: string,
 	query: string,
 ): boolean {
-	const normalizedText = text
-		.toLowerCase()
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "");
+	return textContainsPaliWholeWordNormalized(
+		text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+		query,
+	);
+}
+
+/** Same as textContainsPaliWholeWord but takes pre-normalized text (perf hot path). */
+export function textContainsPaliWholeWordNormalized(
+	normalizedText: string,
+	query: string,
+): boolean {
 	const normalizedQuery = query
 		.toLowerCase()
 		.normalize("NFD")
@@ -1546,10 +1615,17 @@ export function countPaliWholeWordOccurrences(
 	text: string,
 	query: string,
 ): number {
-	const normalizedText = text
-		.toLowerCase()
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "");
+	return countPaliWholeWordOccurrencesNormalized(
+		text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+		query,
+	);
+}
+
+/** Same as countPaliWholeWordOccurrences but takes pre-normalized text (perf hot path). */
+export function countPaliWholeWordOccurrencesNormalized(
+	normalizedText: string,
+	query: string,
+): number {
 	const normalizedQuery = query
 		.toLowerCase()
 		.normalize("NFD")
@@ -1973,6 +2049,25 @@ export function rankResultsWithDiversity(
 
 	const finalOrder: ScoredResult[] = [];
 	const used = new Set<number>();
+	// `sorted` is descending by effective score, so the first unused index always
+	// holds the highest unused score — track it with a pointer instead of an O(n) scan
+	let firstUnusedIdx = 0;
+	// Memoize per-item snippet signatures: extracting n-grams is expensive and the
+	// candidate loop below would otherwise recompute them every iteration
+	const signatureCache: Array<Set<string> | undefined> = new Array(
+		sorted.length,
+	);
+	const getItemSignatures = (i: number): Set<string> => {
+		let sigs = signatureCache[i];
+		if (!sigs) {
+			const item = sorted[i];
+			sigs = extractSnippetSignatures(
+				item.contentSnippet || item.item?.contentSnippet,
+			);
+			signatureCache[i] = sigs;
+		}
+		return sigs;
+	};
 
 	// Track consecutive same-type count and diversity phases
 	// Use diversity groups: "discourse" vs "card" (topics, qualities, similes)
@@ -2007,16 +2102,15 @@ export function rankResultsWithDiversity(
 		let bestIdx = -1;
 		let bestScore = -1;
 
-		// First pass: find highest effective score among unused items
-		let highestUnusedScore = -1;
-		for (let i = 0; i < sorted.length; i++) {
-			if (!used.has(i)) {
-				const effectiveScore = getEffectiveScore(sorted[i]);
-				if (effectiveScore > highestUnusedScore) {
-					highestUnusedScore = effectiveScore;
-				}
-			}
+		// `sorted` is descending by effective score, so the first unused index
+		// has the highest unused score (advance pointer past used slots)
+		while (firstUnusedIdx < sorted.length && used.has(firstUnusedIdx)) {
+			firstUnusedIdx++;
 		}
+		const highestUnusedScore =
+			firstUnusedIdx < sorted.length
+				? getEffectiveScore(sorted[firstUnusedIdx])
+				: -1;
 
 		const currentStrata = getStrata(highestUnusedScore, config);
 
@@ -2028,10 +2122,21 @@ export function rankResultsWithDiversity(
 		const continueDiversityPhase =
 			inDiversityPhase && diversityPhaseCount < config.maxSameTypeInRow;
 
-		for (let i = 0; i < sorted.length; i++) {
+		// Max bonus a candidate can receive over its raw score is the +10 diversity
+		// boost; since `sorted` is descending, once raw score + 10 can't beat the
+		// current best candidate, no later item can win — stop scanning
+		const MAX_CANDIDATE_BONUS = 10;
+
+		for (let i = firstUnusedIdx; i < sorted.length; i++) {
 			if (used.has(i)) continue;
 
 			const item = sorted[i];
+			if (
+				bestIdx !== -1 &&
+				getEffectiveScore(item) + MAX_CANDIDATE_BONUS <= bestScore
+			) {
+				break;
+			}
 			const itemGroup = getDiversityGroup(item.type);
 			const itemEffectiveScore = getEffectiveScore(item);
 			const itemStrata = getStrata(itemEffectiveScore, config);
@@ -2073,8 +2178,6 @@ export function rankResultsWithDiversity(
 			// Only applies to low-priority discourses - protects important discourses from formulaic passage penalties
 			// This catches formulaic content like jhāna descriptions appearing in many discourses
 			const itemPriority = item.priority ?? 1;
-			const snippetForSimilarity =
-				item.contentSnippet || item.item?.contentSnippet;
 			if (
 				ENABLE_SNIPPET_SIMILARITY &&
 				finalOrder.length < SNIPPET_SIMILARITY_LIMIT &&
@@ -2083,8 +2186,7 @@ export function rankResultsWithDiversity(
 				itemStrata === currentStrata && // Only apply within same quality tier
 				itemPriority <= SNIPPET_SIMILARITY_PRIORITY_THRESHOLD // Only penalize low-priority discourses
 			) {
-				const itemSignatures =
-					extractSnippetSignatures(snippetForSimilarity);
+				const itemSignatures = getItemSignatures(i);
 				const overlap = calculateSnippetOverlap(
 					itemSignatures,
 					seenSnippetSignatures,
@@ -2107,13 +2209,8 @@ export function rankResultsWithDiversity(
 		}
 
 		// Fallback: if no acceptable item found (shouldn't happen), take highest unused
-		if (bestIdx === -1) {
-			for (let i = 0; i < sorted.length; i++) {
-				if (!used.has(i)) {
-					bestIdx = i;
-					break;
-				}
-			}
+		if (bestIdx === -1 && firstUnusedIdx < sorted.length) {
+			bestIdx = firstUnusedIdx;
 		}
 
 		if (bestIdx === -1) break; // No more items
@@ -2126,9 +2223,7 @@ export function rankResultsWithDiversity(
 		// Track content snippet signatures for similarity detection
 		// Only collect signatures while we're still within the similarity window
 		if (selected.type === "discourse" && finalOrder.length <= SNIPPET_SIMILARITY_LIMIT) {
-			const snippet =
-				selected.contentSnippet || selected.item?.contentSnippet;
-			const signatures = extractSnippetSignatures(snippet);
+			const signatures = getItemSignatures(bestIdx);
 			for (const sig of signatures) {
 				seenSnippetSignatures.add(sig);
 			}

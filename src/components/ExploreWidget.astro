@@ -819,6 +819,16 @@ const isSearchOnly = mode === "search-only";
 		updateURL();
 
 		try {
+			const isDev = import.meta.env.DEV;
+			const searchPerf: {
+				refIndexLoad?: number;
+				refDocCount?: number;
+				fuseSearch?: number;
+				contentScan?: number;
+				snippets?: number;
+			} = {};
+			const t0 = performance.now();
+
 			const results: ScoredResult[] = [];
 			const allCounts = {
 				discourses: 0,
@@ -841,6 +851,7 @@ const isSearchOnly = mode === "search-only";
 				getCleanQueryString(effectiveQuery || normalizedQuery) ||
 				(effectiveQuery || normalizedQuery).toLowerCase().trim();
 			const queryLength = queryLower.length;
+			const tParse = performance.now();
 
 			const maxEditDistance = getMaxAllowedEditDistance(queryLength);
 			const canPrefix = allowPrefixMatch(queryLength);
@@ -850,6 +861,8 @@ const isSearchOnly = mode === "search-only";
 			function getMatchType(text: string, query: string): MatchType {
 				return getMatchTypeUtil(text, query, DEFAULT_SEARCH_CONFIG);
 			}
+
+			let tCategories = tParse;
 
 			// Search categories using Fuse.js - skip if slug filter is active
 			if (categoryFuse && !hasSlugFilter && effectiveQuery.trim()) {
@@ -1254,6 +1267,8 @@ const isSearchOnly = mode === "search-only";
 				});
 			}
 
+			tCategories = performance.now();
+
 			// Search discourses using existing Fuse.js search
 			// For filter-only queries, we need to get all matching discourses from the index
 			const { performSearch: searchDiscourses, getFilteredDiscourses, getContentLookup, getPaliContentLookup, ensureReferenceSearchIndexLoaded } = await import("../service/search/search");
@@ -1278,13 +1293,30 @@ const isSearchOnly = mode === "search-only";
 				// Pass full query so slug prefix (e.g. ^AN) is in the Fuse query and OR counts are correct
 				discourseResults = await searchDiscourses(
 					normalizedQuery.trim(),
-					{ highlight: true, includeReferences },
+					{
+						highlight: true,
+						includeReferences,
+						...(isDev ? { perf: searchPerf } : {}),
+					},
 				);
 			}
+
+			const tDiscFuse = performance.now();
 
 			// Get non-stopword terms for multi-term query ranking
 			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
 			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
+
+			// Fast path for short broad queries (every non-stopword term ≤ 3 chars):
+			// cap candidates before per-item scoring (mirrors /api/search fast path)
+			const SHORT_QUERY_CANDIDATE_CAP = 300;
+			const isShortBroadQuery =
+				!isFilterOnly &&
+				(nonStopwordTerms.length === 0 ||
+					nonStopwordTerms.every((t) => t.length <= 3));
+			if (isShortBroadQuery && discourseResults.length > SHORT_QUERY_CANDIDATE_CAP) {
+				discourseResults = discourseResults.slice(0, SHORT_QUERY_CANDIDATE_CAP);
+			}
 
 			// Process and count discourses - prioritize actual content matches
 			discourseResults.forEach((item, index) => {
@@ -1609,6 +1641,8 @@ const isSearchOnly = mode === "search-only";
 				});
 			});
 
+			const tDiscourses = performance.now();
+
 			// Update counts
 			updateResultCounts(
 				allCounts.discourses,
@@ -1623,6 +1657,8 @@ const isSearchOnly = mode === "search-only";
 
 			// Apply ranking algorithm
 			const rankedResults = rankResultsWithDiversity(deduplicatedResults, undefined);
+
+			const tRanking = performance.now();
 
 			// Debug logging in dev mode
 			if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -1642,6 +1678,42 @@ const isSearchOnly = mode === "search-only";
 			// Render results
 			const { transformId } = await import("../utils/transformId");
 			renderSearchResults(rankedResults, query, transformId);
+
+			const tFormat = performance.now();
+
+			if (isDev) {
+				const discFuseMs = Math.round(tDiscFuse - tCategories);
+				const discScoringMs = Math.round(tDiscourses - tDiscFuse);
+				const timing = {
+					parse: Math.round(tParse - t0),
+					categories: Math.round(tCategories - tParse),
+					discourses: Math.round(tDiscourses - tCategories),
+					discFuse: discFuseMs,
+					discScoring: discScoringMs,
+					ranking: Math.round(tRanking - tDiscourses),
+					format: Math.round(tFormat - tRanking),
+					total: Math.round(tFormat - t0),
+				};
+				const engineParts = [
+					searchPerf.fuseSearch !== undefined
+						? `fuse=${searchPerf.fuseSearch}ms`
+						: null,
+					searchPerf.contentScan !== undefined
+						? `contentScan=${searchPerf.contentScan}ms`
+						: null,
+					searchPerf.snippets !== undefined
+						? `snippets=${searchPerf.snippets}ms`
+						: null,
+					searchPerf.refIndexLoad !== undefined
+						? `refLoad=${searchPerf.refIndexLoad}ms`
+						: null,
+				]
+					.filter(Boolean)
+					.join(" ");
+				console.log(
+					`[search-perf:widget] q=${JSON.stringify(query)} | parse=${timing.parse}ms categories=${timing.categories}ms discourses=${timing.discourses}ms (fuse=${discFuseMs}ms scoring=${discScoringMs}ms${engineParts ? ` engine: ${engineParts}` : ""}) ranking=${timing.ranking}ms format=${timing.format}ms TOTAL=${timing.total}ms`,
+				);
+			}
 
 			// Scroll to top on new searches (not when re-rendering e.g. topic expand/collapse)
 			if (options?.scrollToTop !== false) {

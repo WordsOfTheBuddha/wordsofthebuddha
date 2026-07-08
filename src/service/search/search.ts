@@ -40,11 +40,13 @@ export interface SearchData {
 	referenceOnly?: boolean; // Sujato reference translation (no native EN page)
 }
 
-/** Optional perf stats populated when includeReferences is used (pilot / API timing). */
+/** Optional perf stats populated when `perf` is passed (API / dev widget timing). */
 export interface SearchPerfStats {
 	refIndexLoad?: number;
 	refDocCount?: number;
+	fuseSearch?: number;
 	contentScan?: number;
+	snippets?: number;
 }
 
 let fuseIndex: Fuse<SearchData> | null = null;
@@ -113,6 +115,22 @@ async function loadReferenceSearchData(): Promise<SearchData[]> {
 /** Load reference index and reset merged caches (for API / pilot). */
 export async function ensureReferenceSearchIndexLoaded(): Promise<SearchData[]> {
 	return loadReferenceSearchData();
+}
+
+/**
+ * Pre-normalized (lowercased, NFD, diacritics stripped) content by slug.
+ * Reuses the cache built for content scanning so API scoring doesn't
+ * re-normalize full document texts on every request.
+ */
+export async function getNormalizedContentMap(
+	includeReferences = false,
+): Promise<Map<string, { content: string; contentPali: string }>> {
+	if (includeReferences) {
+		await loadReferenceSearchData();
+		return (mergedNormalizedContentMap ??=
+			await buildMergedNormalizedContentMap());
+	}
+	return (normalizedContentMap ??= await buildNativeNormalizedContentMap());
 }
 
 const FUSE_OPTIONS = {
@@ -399,6 +417,31 @@ function findBestMatchingParagraph(
 
 	const fullQuery = queryTerms.join(" ").toLowerCase();
 
+	// Precompile per-term match data once — patterns depend only on term/operation,
+	// so building them per paragraph (as before) recompiled thousands of RegExps per doc
+	const termMatchers = normalizedTerms.map((term, index) => {
+		const highlightTerm = termsToHighlight[index];
+		const originalTerm = queryTerms[index];
+		const pattern = createHighlightPattern(
+			term,
+			highlightTerm.operation,
+			"",
+			paliMode,
+		);
+		return {
+			highlightTerm,
+			originalTerm,
+			term,
+			isStopword: isStopword(originalTerm),
+			// null pattern = negated term, skip
+			boundaryRegex: pattern ? new RegExp(pattern, "iu") : null,
+			globalRegex: pattern ? new RegExp(pattern, "giu") : null,
+		};
+	});
+
+	// Non-stopword query terms for phrase-proximity checks (query-invariant)
+	const nonStopwordQueryTerms = queryTerms.filter((t) => !isStopword(t));
+
 	const paragraphs = text.split(/\n\n+/);
 	let bestMatch: ParagraphMatch | null = null;
 	let bestMatchIndex = -1;
@@ -457,17 +500,10 @@ function findBestMatchingParagraph(
 			let uniqueTermsMatched = 0;
 			let uniqueNonStopwordTermsMatched = 0;
 
-			normalizedTerms.forEach((term, index) => {
-				const highlightTerm = termsToHighlight[index];
-				const originalTerm = queryTerms[index];
-				const termIsStopword = isStopword(originalTerm);
-				const pattern = createHighlightPattern(
-					term,
-					highlightTerm.operation,
-					normalizedParagraph,
-					paliMode,
-				);
-				if (!pattern) return; // Skip negated terms
+			termMatchers.forEach((matcher) => {
+				const { highlightTerm, originalTerm } = matcher;
+				const termIsStopword = matcher.isStopword;
+				if (!matcher.boundaryRegex || !matcher.globalRegex) return; // Skip negated terms
 
 				let matches = 0;
 				if (
@@ -475,16 +511,14 @@ function findBestMatchingParagraph(
 					highlightTerm.operation === "endsWith"
 				) {
 					// For start/end, check against full paragraph
-					matches = new RegExp(pattern, "iu").test(
-						normalizedParagraph,
-					)
+					matches = matcher.boundaryRegex.test(normalizedParagraph)
 						? 1
 						: 0;
 				} else {
 					// For exact/fuzzy, find all matches
+					matcher.globalRegex.lastIndex = 0;
 					matches = (
-						normalizedParagraph.match(new RegExp(pattern, "giu")) ||
-						[]
+						normalizedParagraph.match(matcher.globalRegex) || []
 					).length;
 				}
 
@@ -504,7 +538,7 @@ function findBestMatchingParagraph(
 
 				// For exact matches, add the term to Set if there's a match
 				if (highlightTerm.operation === "exact" && matches > 0) {
-					matchCounts.exact.add(term);
+					matchCounts.exact.add(matcher.term);
 				} else if (highlightTerm.operation !== "exact") {
 					// Only increment number counters for non-exact operations
 					(matchCounts[highlightTerm.operation] as number) += matches;
@@ -518,10 +552,6 @@ function findBestMatchingParagraph(
 			}
 
 			// Check for phrase proximity in this paragraph
-			// Get non-stopword query terms for phrase matching
-			const nonStopwordQueryTerms = queryTerms.filter(
-				(t) => !isStopword(t),
-			);
 			let phraseProximityBonus = 0;
 			if (nonStopwordQueryTerms.length >= 2) {
 				const proximity = calculatePhraseProximity(
@@ -701,16 +731,6 @@ function findBestMatchingParagraph(
 		// If this is the phrase segment and we have positions, highlight at those specific positions
 		// We need to process positions in reverse order to preserve character indices
 		if (isPhraseSeg && phrasePositions && phrasePositions.length > 0) {
-			console.log(
-				"[applyHighlighting] Processing phrase segment:",
-				currentSegmentIndex,
-			);
-			console.log("[applyHighlighting] text:", text.substring(0, 50));
-			console.log(
-				"[applyHighlighting] phrasePositions:",
-				phrasePositions,
-			);
-
 			const markClass = "bg-yellow-100 dark:bg-yellow-900";
 
 			// Sort positions in reverse order (rightmost first) to preserve indices while replacing
@@ -722,23 +742,12 @@ function findBestMatchingParagraph(
 				const termLower = pos.term.toLowerCase();
 				// Get the actual text at this position
 				const actualText = text.substring(pos.startPos, pos.endPos);
-				console.log(
-					"[applyHighlighting] pos:",
-					pos,
-					"actualText:",
-					actualText,
-				);
 
 				// Replace at the specific position
 				highlighted =
 					highlighted.substring(0, pos.startPos) +
 					`<mark class="${markClass} rounded" style="padding-inline:0.05rem">${actualText}</mark>` +
 					highlighted.substring(pos.endPos);
-
-				console.log(
-					"[applyHighlighting] highlighted after replace:",
-					highlighted.substring(0, 100),
-				);
 
 				highlightedTerms.add(termLower);
 			}
@@ -1025,6 +1034,45 @@ function isSlugOnlyQuery(fuseQuery: { $and?: unknown[] }): boolean {
 	return true;
 }
 
+function activeNonStopwordTerms(highlightTerms: HighlightTerm[]): string[] {
+	return highlightTerms
+		.filter(
+			(ht) =>
+				!isStopword(ht.term) &&
+				!["doesNotStartWith", "doesNotEndWith", "negation"].includes(
+					ht.operation,
+				),
+		)
+		.map((ht) => ht.term);
+}
+
+/**
+ * Skip O(n) content supplement when every non-stopword term is < 3 chars.
+ * Metadata Fuse still returns matches for these broad queries (e.g. "a").
+ */
+function shouldSkipContentSupplementForUltraShortTerms(
+	highlightTerms: HighlightTerm[],
+): boolean {
+	const nonStopwordTerms = activeNonStopwordTerms(highlightTerms);
+	if (nonStopwordTerms.length === 0) return true;
+	return nonStopwordTerms.every((t) => t.length < 3);
+}
+
+/**
+ * Short broad queries (every non-stopword term ≤ 3 chars, e.g. "a", "an", "cra")
+ * can match most of the corpus. Snippet generation is the dominant cost
+ * (findBestMatchingParagraph runs regexes over every paragraph of every doc),
+ * and only the top results are ever displayed — cap how many docs get snippets.
+ */
+function isShortBroadQuery(highlightTerms: HighlightTerm[]): boolean {
+	const nonStopwordTerms = activeNonStopwordTerms(highlightTerms);
+	if (nonStopwordTerms.length === 0) return true;
+	return nonStopwordTerms.every((t) => t.length <= 3);
+}
+
+/** Max docs that get contentSnippet generation for short broad queries. */
+const SHORT_QUERY_SNIPPET_CAP = 150;
+
 export async function performSearch(
 	query: string,
 	options: SearchOptions = {},
@@ -1180,13 +1228,26 @@ async function performSearchInner(
 	}
 
 	const tFuseSearch = performance.now();
+	if (options.perf) {
+		options.perf.fuseSearch = Math.round(tFuseSearch - t0);
+	}
 
 	// Content supplement: find documents that match query terms in content/contentPali
 	// but weren't found by metadata-only Fuse search.
 	// Skip for slug-only queries (e.g. collection pages) so we don't add discourses
 	// that merely mention "an", "an4.1", etc. in their content.
+	// Skip for ultra-short non-stopword terms (e.g. "a") — metadata Fuse suffices.
 	const foundSlugs = new Set(fuseResults.map((r) => r.item.slug));
-	const runContentSupplement = !isSlugOnlyQuery(fuseQuery);
+	const skipUltraShort = shouldSkipContentSupplementForUltraShortTerms(
+		highlightTerms,
+	);
+	const runContentSupplement =
+		!isSlugOnlyQuery(fuseQuery) && !skipUltraShort;
+	if (import.meta.env?.DEV && skipUltraShort) {
+		console.log(
+			"[search] skipping content supplement (all non-stopword terms < 3 chars)",
+		);
+	}
 
 	const contentHighlightTerms = highlightTerms.filter(
 		(ht) =>
@@ -1323,6 +1384,12 @@ async function performSearchInner(
 		console.log("[search] results:", searchResults.length);
 	}
 
+	// For short broad queries, only generate snippets for the top candidates.
+	// searchResults is ordered best-first (Fuse sorts; content supplement is
+	// appended after), so capping keeps snippets for everything a user will see.
+	const capSnippets = isShortBroadQuery(highlightTerms);
+	let snippetAttempts = 0;
+
 	// Map results and apply maxScore capping
 	const mappedResults = searchResults.map(({ item, matches, score }) => {
 		// Apply maxScore: if item has maxScore, use the worse (higher) of actual score and maxScore
@@ -1346,7 +1413,11 @@ async function performSearchInner(
 		// Only show content snippets if contentSearchable is not false
 		const showContentSnippet = item.contentSearchable !== false;
 
-		if (options.highlight && showContentSnippet) {
+		const withinSnippetBudget =
+			!capSnippets || snippetAttempts < SHORT_QUERY_SNIPPET_CAP;
+
+		if (options.highlight && showContentSnippet && withinSnippetBudget) {
+			snippetAttempts++;
 			const matchList = (matches as { key?: string; indices?: [number, number][] }[] | undefined) ?? [];
 			const contentMatches = matchList.filter((m) => m.key === "content");
 			const contentPaliMatches = matchList.filter((m) => m.key === "contentPali");
@@ -1404,9 +1475,14 @@ async function performSearchInner(
 	mappedResults.sort((a, b) => a._score - b._score);
 
 	const tSnippets = performance.now();
-	console.log(
-		`[search-perf:performSearch] q=${JSON.stringify(query)} | fuseSearch=${Math.round(tFuseSearch - t0)}ms contentScan=${Math.round(tContentScan - tFuseSearch)}ms snippets=${Math.round(tSnippets - tContentScan)}ms results=${fuseResults.length}+${contentSupplementResults.length}`,
-	);
+	if (options.perf) {
+		options.perf.snippets = Math.round(tSnippets - tContentScan);
+	}
+	if (import.meta.env?.DEV) {
+		console.log(
+			`[search-perf:performSearch] q=${JSON.stringify(query)} | fuseSearch=${Math.round(tFuseSearch - t0)}ms contentScan=${Math.round(tContentScan - tFuseSearch)}ms snippets=${Math.round(tSnippets - tContentScan)}ms results=${fuseResults.length}+${contentSupplementResults.length}${skipUltraShort ? " (content supplement skipped)" : ""}`,
+		);
+	}
 
 	// Remove internal _score before returning
 	return mappedResults.map(({ _score, ...rest }) => rest);

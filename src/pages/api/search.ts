@@ -4,6 +4,7 @@ import {
 	performSearch as searchDiscourses,
 	getFilteredDiscourses,
 	ensureReferenceSearchIndexLoaded,
+	getNormalizedContentMap,
 	type SearchPerfStats,
 } from "../../service/search/search";
 import { loadNativeSearchIndex } from "../../utils/loadSearchIndexData";
@@ -11,6 +12,7 @@ import type { SearchIndexDoc } from "../../utils/loadSearchIndexData";
 import { buildUnifiedContent } from "../../utils/discover-data";
 
 let searchIndexBySlug: Map<string, SearchIndexDoc> | null = null;
+let mergedDocBySlug: Map<string, SearchIndexDoc> | null = null;
 
 async function getSearchIndexBySlug(): Promise<Map<string, SearchIndexDoc>> {
 	if (!searchIndexBySlug) {
@@ -67,9 +69,13 @@ import {
 	applyMultiTermBoost,
 	textContainsQuery,
 	textContainsWholeWord,
+	textContainsWholeWordNormalized,
 	textContainsPaliWholeWord,
+	textContainsPaliWholeWordNormalized,
 	countWholeWordOccurrences,
+	countWholeWordOccurrencesNormalized,
 	countPaliWholeWordOccurrences,
+	countPaliWholeWordOccurrencesNormalized,
 	getPaliMatchType,
 	slugMatchesQuery,
 	isStopword,
@@ -215,11 +221,15 @@ export const GET: APIRoute = async ({ url }) => {
 		const nativeBySlug = await getSearchIndexBySlug();
 		let docBySlug: Map<string, SearchIndexDoc> = nativeBySlug;
 		if (includeReferences) {
-			const refData = await ensureReferenceSearchIndexLoaded();
-			docBySlug = new Map([
-				...nativeBySlug,
-				...refData.map((doc) => [doc.slug, doc] as const),
-			]);
+			// Cache merged native+reference map — rebuilding ~3700 entries per request is wasted work
+			if (!mergedDocBySlug) {
+				const refData = await ensureReferenceSearchIndexLoaded();
+				mergedDocBySlug = new Map([
+					...nativeBySlug,
+					...refData.map((doc) => [doc.slug, doc] as const),
+				]);
+			}
+			docBySlug = mergedDocBySlug;
 		}
 
 		// Search categories (skip if slug filter is active - categories don't have discourse-style slugs)
@@ -711,8 +721,33 @@ export const GET: APIRoute = async ({ url }) => {
 
 			tDiscFuse = performance.now();
 
+			// Pre-normalized full-document content (built once by the search
+			// service, cached) — avoids re-normalizing ~10MB of text per request
+			const normContentMap =
+				await getNormalizedContentMap(includeReferences);
+
 			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
 			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
+
+			// Fast path for short broad queries (every non-stopword term ≤ 3 chars,
+			// e.g. "a", "an", "cra"): they match most of the corpus and per-item
+			// scoring (full-content regex scans) dominates latency. performSearch
+			// returns results best-first, so capping candidates keeps everything a
+			// user will realistically see while skipping the long tail.
+			const SHORT_QUERY_CANDIDATE_CAP = 300;
+			const isShortBroadQuery =
+				!isFilterOnly &&
+				(nonStopwordTerms.length === 0 ||
+					nonStopwordTerms.every((t) => t.length <= 3));
+			if (
+				isShortBroadQuery &&
+				discourseResults.length > SHORT_QUERY_CANDIDATE_CAP
+			) {
+				discourseResults = discourseResults.slice(
+					0,
+					SHORT_QUERY_CANDIDATE_CAP,
+				);
+			}
 
 			discourseResults.forEach((item, index) => {
 				const itemSlug = (item as any).slug || (item as any).id || "";
@@ -780,15 +815,24 @@ export const GET: APIRoute = async ({ url }) => {
 				const indexedDoc = docBySlug.get(itemSlug);
 				const fullContent = indexedDoc?.content || "";
 				const fullContentPali = indexedDoc?.contentPali || "";
+				// Pre-normalized (lowercase, diacritics stripped) versions of the same text
+				const normDoc = normContentMap.get(itemSlug);
+				const normContent = normDoc?.content || "";
+				const normContentPali = normDoc?.contentPali || "";
 
 				// Check content for whole word match using the raw indexed text
 				// (not the snippet, which has <mark> HTML tags that create false word boundaries)
-				const contentWholeWord = textContainsWholeWord(
-					fullContent || item.contentSnippet?.replace(/<[^>]*>/g, "") || "",
-					queryLower,
-				);
-				const paliWholeWord = fullContentPali
-					? textContainsPaliWholeWord(fullContentPali, queryLower)
+				const contentWholeWord = normContent
+					? textContainsWholeWordNormalized(normContent, queryLower)
+					: textContainsWholeWord(
+							item.contentSnippet?.replace(/<[^>]*>/g, "") || "",
+							queryLower,
+						);
+				const paliWholeWord = normContentPali
+					? textContainsPaliWholeWordNormalized(
+							normContentPali,
+							queryLower,
+						)
 					: false;
 				const hasWholeWordMatch =
 					descriptionWholeWord || contentWholeWord || paliWholeWord;
@@ -825,10 +869,10 @@ export const GET: APIRoute = async ({ url }) => {
 					// check Pali content using textContainsPaliWholeWord which allows final
 					// vowel variation (a→o, i, u, e) to handle declension differences.
 					// This only touches fullContentPali, so English ranking is unaffected.
-					if (fullContentPali && adjustedCount < nonStopwordTerms.length) {
+					if (normContentPali && adjustedCount < nonStopwordTerms.length) {
 						for (let ti = 0; ti < nonStopwordTerms.length; ti++) {
 							if (fullMatch.qualities[ti] !== "none") continue;
-							if (textContainsPaliWholeWord(fullContentPali, nonStopwordTerms[ti])) {
+							if (textContainsPaliWholeWordNormalized(normContentPali, nonStopwordTerms[ti])) {
 								adjustedCount++;
 								adjustedScore += 0.8; // treat as prefix quality
 							}
@@ -888,10 +932,11 @@ export const GET: APIRoute = async ({ url }) => {
 					score = SCORE.DISCOURSE_DESCRIPTION_WHOLE_WORD;
 					matchType = "description-whole-word";
 					// Add minor content occurrence boost as tiebreaker
-					const contentOccurrences = countWholeWordOccurrences(
-						fullContent,
-						queryLower,
-					);
+					const contentOccurrences =
+						countWholeWordOccurrencesNormalized(
+							normContent,
+							queryLower,
+						);
 					if (contentOccurrences >= 2) {
 						score += Math.min(1, contentOccurrences * 0.1); // Up to +1 for content matches
 					}
@@ -920,9 +965,9 @@ export const GET: APIRoute = async ({ url }) => {
 				} else if (contentWholeWord || paliWholeWord) {
 					// Content whole word match - count occurrences for relevance boost
 					// Use Pali-aware counting for contentPali (handles inflectional endings)
-					const englishOccurrences = countWholeWordOccurrences(fullContent, queryLower);
-					const paliOccurrences = fullContentPali
-						? countPaliWholeWordOccurrences(fullContentPali, queryLower)
+					const englishOccurrences = countWholeWordOccurrencesNormalized(normContent, queryLower);
+					const paliOccurrences = normContentPali
+						? countPaliWholeWordOccurrencesNormalized(normContentPali, queryLower)
 						: 0;
 					const occurrences = englishOccurrences + paliOccurrences;
 					// Tiered occurrence boost - high occurrence count indicates significant topic

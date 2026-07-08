@@ -205,7 +205,7 @@ content-supplement results were appended without Fuse scoring.
 
 ### 6. Pre-compile highlight regex patterns (Low-Medium — saves ~3–10ms within discourses phase)
 
-**Status:** Not started
+**Status:** Implemented (July 2026 round 2 — see below)
 **Location:** `src/service/search/search.ts` — `findBestMatchingParagraph()`
 
 **Problem:** For each discourse result with content matches, `findBestMatchingParagraph()` splits
@@ -257,6 +257,102 @@ against title, slug, and every synonym — without early exit.
 - **Offline:** Reference search is online-first — `reference-search-index.json` is not in the SW precache / offline manifest. Users need network access to enable reference results in the ExploreWidget checkbox or API `?references=true`.
 
 Run benchmark after dev server is up to capture native vs reference latency table.
+
+---
+
+## Broad-Query Content Supplement Gate (July 2026)
+
+**Problem:** Single-letter and other ultra-short queries (e.g. `a`) triggered an O(n)
+scan over ~3,700 docs in `performSearchInner` content supplement, adding ~1–2s even
+when metadata Fuse already returned sufficient hits.
+
+**Fix:** Skip the content supplement when **every** non-stopword query term is shorter
+than 3 characters. Metadata Fuse (slug/title/description) still answers these queries.
+Slug-only queries (`^AN`) continue to skip supplement as before.
+
+**Risk:** Low — only affects queries where all meaningful terms are 1–2 chars; longer
+terms like `craving` still run the full supplement path.
+
+**Dev timing:** ExploreWidget logs `[search-perf:widget]` in dev mode (mirrors API
+`[search-perf]` breakdown plus engine fuse/contentScan/snippets from `performSearch`).
+
+---
+
+## Short-Query Fast Path + Engine Overhead Fixes (July 2026, round 2)
+
+**Measured baseline (dev server, warm, per-phase `timing` JSON):**
+
+| Query | discFuse | discScoring | ranking | TOTAL | Dominant cost |
+|-------|---------:|------------:|--------:|------:|---------------|
+| `a` | 675ms | 186ms | **2264ms** | **3139ms** | diversity ranking O(n²) over 1278 results + snippets for all 1136 fuse hits |
+| `an` | 722ms | 190ms | 928ms | 1852ms | same |
+| `cra` | 792ms | 80ms | 0ms | 884ms | snippet generation for 612 candidates |
+| `craving` | 180ms | 105ms | 394ms | 699ms | scoring (full-content re-normalization per item) + ranking |
+| `āsavānaṁ` | 98ms | 36ms | 27ms | 185ms | — |
+
+**Root causes found:**
+
+1. **`rankResultsWithDiversity` was O(n²) with repeated n-gram extraction.** Each of up to
+   200 output positions rescanned ALL sorted items, recomputed the max unused score with a
+   full pass, and re-extracted snippet 4-gram signatures for every candidate on every pass.
+2. **Snippet generation ran for every candidate.** For `a`, `findBestMatchingParagraph`
+   (per-paragraph regex compilation × per-term) ran over all ~1136 metadata Fuse hits even
+   though only ~50 results are displayed.
+3. **Per-item full-content re-normalization in the API scoring loop.** `textContainsWholeWord`,
+   `countWholeWordOccurrences`, `countPaliWholeWordOccurrences`, and `countTermMatchesWithQuality`
+   each ran `.toLowerCase().normalize("NFD").replace(...)` over the FULL document text
+   (often multiple times per item × ~400 items ≈ re-normalizing ~10MB+ per request), despite the
+   search service already caching normalized content in `normalizedContentMap`.
+4. **Merged native+reference doc map rebuilt per request** when `references=true` (~3.7k entries).
+
+**Fixes (validated with before/after timing):**
+
+1. `searchRanking.ts` — `rankResultsWithDiversity`: first-unused pointer instead of O(n) max
+   scan (input is already sorted descending); early break in the candidate loop once
+   `score + MAX_CANDIDATE_BONUS (10)` can't beat the current best; memoized per-item snippet
+   signatures. No behavior change — same selection order.
+2. `search.ts` (service) — `findBestMatchingParagraph`: term regexes precompiled once per doc
+   instead of per paragraph; removed debug `console.log`s from the highlight hot path.
+3. `search.ts` (service) — **short broad queries** (every non-stopword term ≤ 3 chars): snippet
+   generation capped at top `SHORT_QUERY_SNIPPET_CAP = 150` candidates (results are best-first).
+4. `api/search.ts` + `ExploreWidget.astro` — **short broad queries**: candidates capped at
+   `SHORT_QUERY_CANDIDATE_CAP = 300` before the per-item scoring loop (skips the long tail
+   that can never be displayed).
+5. `searchRanking.ts` — added `*Normalized` variants of the whole-word/occurrence helpers;
+   `countTermMatchesWithQuality` normalizes text once for all terms; `getTermMatchQuality`
+   short-circuits with a cheap `includes()` before regex checks.
+6. `api/search.ts` — scoring loop now reuses the service's cached `normalizedContentMap`
+   (exported via `getNormalizedContentMap`) instead of re-normalizing full document content
+   per item; merged native+reference `docBySlug` map cached at module level.
+
+**After (same machine, warm dev server, per-phase):**
+
+| Query | discFuse | discScoring | ranking | TOTAL before | TOTAL after |
+|-------|---------:|------------:|--------:|-------------:|------------:|
+| `a` | ~210ms | ~27ms | ~8ms | 3139ms | **~265ms** |
+| `an` | ~180ms | ~80ms | ~15ms | 1852ms | **~290ms** |
+| `cra` | ~400ms | ~85ms | 0ms | 884ms | **~500ms** |
+| `craving` | ~320ms | ~40ms | ~58ms | 699ms | **~455ms** |
+| `āsavānaṁ` | ~200ms | ~14ms | ~9ms | 185ms | **~270ms** |
+
+`npm run bench:search` (3 runs, p50 of API `timing.total`):
+
+| Query | Native before | Native after | Refs before | Refs after |
+|-------|--------------:|-------------:|------------:|-----------:|
+| `a` | 1896–5121ms | **~400–470ms** | 4218–10809ms | **~460–500ms** |
+| `craving` | 462–926ms | **~445ms** | 665–1381ms | **~811ms** |
+| `āsavānaṁ` | 110–211ms | **~215ms** | 328ms | **~579ms** |
+| `āsavānaṁ khayā` | 220–532ms | **~388ms** | 751ms | **~1184ms** |
+| `^SN22 āsavānaṁ` | 3ms | **~7ms** | 5ms | **~13ms** |
+
+Note: dev-machine numbers are noisy (±50%+ across runs under load); the structural wins are
+the per-phase drops above. Refs-mode multi-term queries remain dominated by the O(n) content
+scan over 3.7k docs (pre-existing; gated already for ultra-short terms).
+
+**Ranking impact:** none for normal queries — verified by diffing top-20 result slugs for all
+34 test queries against a same-server baseline (stash/unstash). Only `mn 38` (short-query fast
+path) changed: two below-fold noise results (`mn8`, `an1.394-574`) no longer appear; the test
+assertion (mn38 in top 3) still passes. `npm run test:search`: **34/34 pass**.
 
 ---
 
