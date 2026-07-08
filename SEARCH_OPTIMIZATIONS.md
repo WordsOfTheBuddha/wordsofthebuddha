@@ -254,6 +254,7 @@ against title, slug, and every synonym — without early exit.
 - **API flag:** `GET /api/search?references=true` merges ~2,592 reference-only docs + Pali
 - **Benchmark:** `npm run bench:search` (requires `npm run dev`)
 - **Lazy load:** Reference index loaded on first `references=true` request via dynamic import
+- **Offline:** Reference search is online-first — `reference-search-index.json` is not in the SW precache / offline manifest. Users need network access to enable reference results in the ExploreWidget checkbox or API `?references=true`.
 
 Run benchmark after dev server is up to capture native vs reference latency table.
 

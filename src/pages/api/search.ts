@@ -1062,6 +1062,10 @@ export const GET: APIRoute = async ({ url }) => {
 				const priorityMultiplier = isContentOnly ? 1.5 : 3;
 				score = score + (priority - 1) * priorityMultiplier;
 
+				if (item.referenceOnly) {
+					score -= SCORE.DISCOURSE_REFERENCE_ONLY_PENALTY;
+				}
+
 				if (score < SCORE.MIN_SCORE) return;
 
 				counts.discourses++;
@@ -1113,6 +1117,7 @@ export const GET: APIRoute = async ({ url }) => {
 			priority: r.priority || 1,
 			nonStopwordMatches: r.nonStopwordMatches || 0,
 			synonymMatchPosition: r.synonymMatchPosition,
+			referenceOnly: r.item.referenceOnly === true,
 		}));
 
 		const tFormat = performance.now();

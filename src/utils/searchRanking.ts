@@ -1700,6 +1700,8 @@ export const SCORE = {
 	DISCOURSE_CONTENT_EXACT_MIN: 40,
 	DISCOURSE_CONTENT_FUZZY_BASE: 30,
 	DISCOURSE_CONTENT_FUZZY_MIN: 15,
+	/** Penalty so native translations outrank reference at equal match quality */
+	DISCOURSE_REFERENCE_ONLY_PENALTY: 2,
 
 	// Minimum score threshold
 	MIN_SCORE: 15,

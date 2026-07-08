@@ -25,6 +25,7 @@ export interface SearchResult {
 	contentSnippet: string | null;
 	maxScore?: number;
 	priority?: number;
+	referenceOnly?: boolean;
 }
 
 export interface SearchData {
@@ -1338,6 +1339,7 @@ async function performSearchInner(
 			contentSnippet: null,
 			maxScore: item.maxScore,
 			priority: item.priority,
+			referenceOnly: item.referenceOnly,
 			_score: effectiveScore,
 		};
 
@@ -1441,6 +1443,7 @@ export async function getFilteredDiscourses(
 			description: item.description,
 			contentSnippet: null,
 			priority: item.priority,
+			referenceOnly: item.referenceOnly,
 		}));
 }
 
@@ -1508,10 +1511,14 @@ export async function getFullContentBySlug(slug: string): Promise<string | null>
  * Create a map of slug -> full content for efficient lookups.
  * Returns a function that retrieves full content by slug.
  */
-export async function getContentLookup(): Promise<
-	(slug: string) => string | null
-> {
-	const searchData = await ensureNativeSearchData();
+export async function getContentLookup(
+	options: Pick<SearchOptions, "includeReferences"> = {},
+): Promise<(slug: string) => string | null> {
+	let searchData = await ensureNativeSearchData();
+	if (options.includeReferences) {
+		const refData = await loadReferenceSearchData();
+		searchData = [...searchData, ...refData];
+	}
 	const contentMap = new Map<string, string>();
 	for (const item of searchData) {
 		contentMap.set(item.slug, item.content);
@@ -1523,10 +1530,14 @@ export async function getContentLookup(): Promise<
  * Create a map of slug -> Pali content for efficient lookups.
  * Returns a function that retrieves Pali content by slug.
  */
-export async function getPaliContentLookup(): Promise<
-	(slug: string) => string | null
-> {
-	const searchData = await ensureNativeSearchData();
+export async function getPaliContentLookup(
+	options: Pick<SearchOptions, "includeReferences"> = {},
+): Promise<(slug: string) => string | null> {
+	let searchData = await ensureNativeSearchData();
+	if (options.includeReferences) {
+		const refData = await loadReferenceSearchData();
+		searchData = [...searchData, ...refData];
+	}
 	const paliMap = new Map<string, string>();
 	for (const item of searchData) {
 		if (item.contentPali) {
