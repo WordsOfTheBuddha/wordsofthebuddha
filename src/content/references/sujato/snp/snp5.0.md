@@ -7,7 +7,7 @@ title: "Introductory Verses — Bāvari's Story"
 description: "Introductory verses (Vatthugāthā) telling how the brahmin Bāvari, distressed by a charlatan's curse, sends sixteen students to the Buddha at the Pāsāṇaka Shrine to ask about heads and head-splitting, ending as Ajita receives the Buddha's answer that ignorance is the head and knowledge the head-splitter."
 qualities: wisdom, ignorance, faith, inspiration, learning, examination
 theme: story, inspiration
-priority: 0
+priority: 1
 ---
 
 <!-- @segment snp5.1:1.1 -->

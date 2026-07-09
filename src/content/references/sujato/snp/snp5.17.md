@@ -7,7 +7,7 @@ title: "Epilogue — Homage and Piṅgiya's Declaration"
 description: "Concluding verses of the Way to the Far Shore (Pārāyanatthutigāthā and Piṅgiyovāda, SuttaCentral 5.18–5.19): the Buddha summarizes how practicing each question leads across old age and death, and Venerable Piṅgiya declares his faith and constant recollection of Gotama's teaching."
 qualities: faith, wisdom, recollection of the Buddha, inspiration, diligence, discernment
 theme: inspiration, recollection of the Buddha
-priority: 17
+priority: 1
 ---
 
 <!-- @segment snp5.18:1.1 -->
