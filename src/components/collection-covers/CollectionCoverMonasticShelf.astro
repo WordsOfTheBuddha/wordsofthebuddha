@@ -32,24 +32,24 @@ const { items } = Astro.props;
 					class="monastic-cover group"
 					style={`--accent: ${visual.accent};`}
 				>
-					<div class="monastic-cover-inner">
-						{(label ||
-							(item.illustratedCount != null &&
-								item.illustratedCount > 0)) && (
-							<div class="monastic-top-right">
-								{label && (
-									<span class="monastic-ribbon" aria-label={label}>
-										{label}
+					{(label ||
+						(item.illustratedCount != null &&
+							item.illustratedCount > 0)) && (
+						<div class="monastic-top-right">
+							{label && (
+								<span class="monastic-ribbon" aria-label={label}>
+									{label}
+								</span>
+							)}
+							{item.illustratedCount != null &&
+								item.illustratedCount > 0 && (
+									<span class="monastic-illustrations">
+										{illustrationsLabel(item.illustratedCount)}
 									</span>
 								)}
-								{item.illustratedCount != null &&
-									item.illustratedCount > 0 && (
-										<span class="monastic-illustrations">
-											{illustrationsLabel(item.illustratedCount)}
-										</span>
-									)}
-							</div>
-						)}
+						</div>
+					)}
+					<div class="monastic-cover-inner">
 						<div class="monastic-header">
 							<span class="monastic-slug">{item.slug}</span>
 						</div>
@@ -244,8 +244,10 @@ const { items } = Astro.props;
 		flex-direction: column;
 		align-items: flex-end;
 		gap: 0.25rem;
-		max-width: calc(100% - 0.5rem);
-		z-index: 1;
+		width: max-content;
+		max-width: calc(100% - 0.25rem);
+		z-index: 2;
+		pointer-events: none;
 	}
 
 	.monastic-ribbon {
@@ -290,7 +292,9 @@ const { items } = Astro.props;
 
 	.monastic-illustrations {
 		display: inline-block;
+		align-self: flex-end;
 		margin-right: 0.25rem;
+		max-width: calc(100% - 0.25rem);
 		padding: 0.12rem 0.4rem 0.12rem 0.45rem;
 		font-family: "Spectral", serif;
 		font-size: 0.52rem;

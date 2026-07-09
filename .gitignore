@@ -40,6 +40,7 @@ public/offline-manifest.json
 .idea/
 
 src/utils/routes.ts
+src/utils/referenceOnlyRoutes.ts
 
 .vercel/
 
@@ -57,6 +58,8 @@ src/data/personMappings.json
 src/data/topicMappings.json
 src/data/searchIndex.ts
 src/data/referenceSearchIndex.ts
+src/data/collectionReferenceIndex.ts
+src/data/discourseReferenceTitles.generated.ts
 public/search-index.json
 public/reference-search-index.json
 generated/
