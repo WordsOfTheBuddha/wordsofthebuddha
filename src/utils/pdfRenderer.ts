@@ -853,6 +853,7 @@ function buildToc(collection: CollectionPdf): string {
 
 	for (const ch of collection.chapters) {
 		if (collection.hasChapters) {
+			html += `<div class="toc-chapter">\n`;
 			html += `<div class="toc-chapter-heading">${ch.title}</div>\n`;
 		}
 
@@ -863,6 +864,7 @@ function buildToc(collection: CollectionPdf): string {
 
 		for (const vagga of vaggaGroups) {
 			if (vagga.title) {
+				html += `<div class="toc-vagga">\n`;
 				html += `<div class="toc-vagga-heading">${vagga.title}</div>\n`;
 				if (vagga.description) {
 					html += `<div class="toc-vagga-desc">${vagga.description}</div>\n`;
@@ -871,6 +873,13 @@ function buildToc(collection: CollectionPdf): string {
 			for (const d of vagga.discourses) {
 				html += buildTocDiscourseEntry(d);
 			}
+			if (vagga.title) {
+				html += `</div>\n`;
+			}
+		}
+
+		if (collection.hasChapters) {
+			html += `</div>\n`;
 		}
 	}
 
@@ -1177,17 +1186,24 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   color: #444;
   margin: 1.2em 0 0.3em;
 }
+.toc-chapter > .toc-entry {
+  padding-left: 1em;
+}
 .toc-vagga-heading {
   font-size: 10pt;
   font-weight: bold;
   color: #333;
-  margin: 0.9em 0 0.25em 0.5em;
+  margin: 0.9em 0 0.25em;
 }
 .toc-vagga-desc {
   font-size: 9pt;
   color: #666;
-  margin: 0 0 0.4em 0.5em;
+  margin: 0 0 0.4em;
+  padding-left: 0.25em;
   line-height: 1.45;
+}
+.toc-vagga .toc-entry {
+  padding-left: 1em;
 }
 .toc-entry { margin: 0.3em 0; }
 .toc-link {
