@@ -5,7 +5,7 @@ import type { DirectoryStructure } from "../types/directory";
 export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>> = {
 	"mn1-50": {
 		"mn1-10": {
-			"title": "Mūlapariyāya vagga - The Chapter on the Root of All Things",
+			"title": "Mūlapariyāyavagga - The Chapter on the Root of All Things",
 			"description": "This chapter, though beginning with the abstruse Mūlapariyāya Sutta, mostly contains foundational teachings and can, as a whole, serve as an introduction to the discourses.",
 			"range": {
 				"start": 1,
@@ -13,7 +13,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn11-20": {
-			"title": "Sīhanāda vagga - The Chapter on the Lion's Roar",
+			"title": "Sīhanādavagga - The Chapter on the Lion's Roar",
 			"description": "Beginning with two discourses containing a \"lion's roar\", this chapter deals with suffering, community life, and practical meditation advice.",
 			"range": {
 				"start": 11,
@@ -21,7 +21,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn21-30": {
-			"title": "Opamma vagga - The Chapter of Similes",
+			"title": "Opammavagga - The Chapter of Similes",
 			"description": "A diverse chapter including biography, non-violence, not-self, and an influential teaching on the progress of meditation.",
 			"range": {
 				"start": 21,
@@ -29,7 +29,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn31-40": {
-			"title": "Mahāyamaka vagga - The Greater Chapter on Pairs",
+			"title": "Mahāyamakavagga - The Greater Chapter on Pairs",
 			"description": "Discourses arranged as pairs of longer and shorter texts.",
 			"range": {
 				"start": 31,
@@ -37,7 +37,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn41-50": {
-			"title": "Cūḷayamaka vagga - The Lesser Chapter on Pairs",
+			"title": "Cūḷayamakavagga - The Lesser Chapter on Pairs",
 			"description": "A similar arrangement to the previous chapter, with paired longer and shorter discourses on key doctrines.",
 			"range": {
 				"start": 41,
@@ -63,7 +63,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn71-80": {
-			"title": "Paribbājaka vagga - The Chapter on Wanderers",
+			"title": "Paribbājakavagga - The Chapter on Wanderers",
 			"description": "The Buddha in dialog with ascetics and wanderers.",
 			"range": {
 				"start": 71,
@@ -71,7 +71,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn81-90": {
-			"title": "Rāja vagga - The Chapter on Kings",
+			"title": "Rājavagga - The Chapter on Kings",
 			"description": "Various dialogs with kings and princes, many of whom followed the Buddha.",
 			"range": {
 				"start": 81,
@@ -79,7 +79,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn91-100": {
-			"title": "Brāhmaṇa vagga - The Chapter on Brahmins",
+			"title": "Brāhmaṇavagga - The Chapter on Brahmins",
 			"description": "The Buddha engages with the powerful caste of brahmins, contesting their claims to spiritual authority.",
 			"range": {
 				"start": 91,
@@ -89,7 +89,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 	},
 	"mn101-152": {
 		"mn101-110": {
-			"title": "Devadaha vagga - The Chapter Beginning With Devadaha",
+			"title": "Devadahavagga - The Chapter Beginning With Devadaha",
 			"description": "Diverse teachings opening with the Devadaha Sutta.",
 			"range": {
 				"start": 101,
@@ -97,7 +97,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn111-120": {
-			"title": "Anupada vagga - The Chapter Beginning with One By One",
+			"title": "Anupadavagga - The Chapter Beginning with One By One",
 			"description": "Many of the discourses in this chapter delve into complex and analytical presentations of core teachings. It includes important discourses on meditation.",
 			"range": {
 				"start": 111,
@@ -105,7 +105,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn121-130": {
-			"title": "Suññata vagga - The Chapter Beginning with Emptiness",
+			"title": "Suññatavagga - The Chapter Beginning with Emptiness",
 			"description": "Named after the first discourses, which deal with emptiness, this chapter presents less analytical and more narrative texts.",
 			"range": {
 				"start": 121,
@@ -113,7 +113,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn131-142": {
-			"title": "Vibhaṅga vagga - The Chapter on Analysis",
+			"title": "Vibhaṅgavagga - The Chapter on Analysis",
 			"description": "A series of discourses presented as technical analyses of shorter teachings.",
 			"range": {
 				"start": 131,
@@ -121,7 +121,7 @@ export const mnVaggaSections: Record<string, Record<string, DirectoryStructure>>
 			}
 		},
 		"mn143-152": {
-			"title": "Saḷāyatana vagga - The Chapter on the Six Senses",
+			"title": "Saḷāyatanavagga - The Chapter on the Six Senses",
 			"description": "Most discourses in this chapter deal with the six sense fields.",
 			"range": {
 				"start": 143,

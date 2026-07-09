@@ -50,3 +50,35 @@ describe("collectionPatterns AN book vagga ranges", () => {
 		assert.doesNotMatch(pattern ?? "", /slug:an4\.11\$/);
 	});
 });
+
+describe("collectionPatterns SN vagga UIDs", () => {
+	it("matches discourse slugs within SN vagga ranges", () => {
+		assert.equal(
+			slugMatchesCollectionPattern("sn1.5", "sn1-nalavagga"),
+			true,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern("sn1.10", "sn1-nalavagga"),
+			true,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern("sn1.11", "sn1-nalavagga"),
+			false,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern("sn3.22", "sn3-tatiyavagga"),
+			true,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern("sn3.26", "sn3-tatiyavagga"),
+			false,
+		);
+	});
+
+	it("builds search patterns for SN vagga sections", () => {
+		const pattern = createSearchPattern("sn1-nalavagga");
+		assert.match(pattern ?? "", /slug:sn1\.1\$/);
+		assert.match(pattern ?? "", /slug:sn1\.10\$/);
+		assert.doesNotMatch(pattern ?? "", /slug:sn1\.11\$/);
+	});
+});

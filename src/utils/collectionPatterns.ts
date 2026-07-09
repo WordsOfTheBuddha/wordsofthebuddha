@@ -1,8 +1,23 @@
+import { snVaggaRangeBySlug } from "../data/snVaggaStructure.generated";
+
 /** True when a discourse slug belongs to a collection index slug (e.g. an4.10 → an4). */
 export function slugMatchesCollectionPattern(
 	slug: string,
 	collection: string,
 ): boolean {
+	const snVaggaRange = snVaggaRangeBySlug[collection];
+	if (snVaggaRange) {
+		const discourseMatch = slug.match(/^sn(\d+)\.(\d+)$/);
+		if (!discourseMatch) return false;
+		const book = Number(discourseMatch[1]);
+		const num = Number(discourseMatch[2]);
+		return (
+			book === snVaggaRange.book &&
+			num >= snVaggaRange.start &&
+			num <= snVaggaRange.end
+		);
+	}
+
 	const bookVaggaMatch = collection.match(/^([a-z]+)(\d+)\.(\d+)-(\d+)$/);
 	if (bookVaggaMatch) {
 		const [, prefix, book, startStr, endStr] = bookVaggaMatch;
@@ -50,6 +65,17 @@ export function slugMatchesCollectionPattern(
 }
 
 export function createSearchPattern(collection: string): string | null {
+	const snVaggaRange = snVaggaRangeBySlug[collection];
+	if (snVaggaRange) {
+		const numbers = Array.from(
+			{ length: snVaggaRange.end - snVaggaRange.start + 1 },
+			(_, i) => i + snVaggaRange.start,
+		);
+		return numbers
+			.map((n) => `slug:sn${snVaggaRange.book}.${n}$`)
+			.join(" | ");
+	}
+
 	const bookVaggaMatch = collection.match(/^([a-z]+)(\d+)\.(\d+)-(\d+)$/);
 	if (bookVaggaMatch) {
 		const [, prefix, book, start, end] = bookVaggaMatch;

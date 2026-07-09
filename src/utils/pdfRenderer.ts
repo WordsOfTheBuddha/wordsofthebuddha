@@ -31,6 +31,11 @@ import {
 } from "./contentParser";
 import { getChapterDiscourseLinesForPdf } from "./collectionPdfExportTree";
 import { buildReferenceDiscoursePage } from "./referenceDiscoursePage";
+import {
+	formatVaggaDisplayTitle,
+	getEffectiveVaggaSections,
+	groupDiscoursesByVaggaSection,
+} from "./vaggaSections";
 
 // ---------------------------------------------------------------------------
 // Isolated marked instance – avoids polluting the global marked used by mdParser
@@ -394,10 +399,19 @@ export interface DiscoursePdf {
 	html: string;
 }
 
+export interface VaggaPdf {
+	slug: string;
+	title: string;
+	description?: string;
+	discourses: DiscoursePdf[];
+}
+
 export interface ChapterPdf {
 	slug: string;
 	title: string;
 	description: string;
+	/** Vagga sub-sections (e.g. Bhaṇḍāgāmavagga within AN 4). */
+	vaggas?: VaggaPdf[];
 	discourses: DiscoursePdf[];
 }
 
@@ -408,6 +422,24 @@ export interface CollectionPdf {
 	chapters: ChapterPdf[];
 	/** True when the collection has named sub-collections (e.g. SN 1-11 → SN 1, SN 2 …) */
 	hasChapters: boolean;
+}
+
+/** Discourse count for one chapter, including vagga-grouped discourses. */
+export function countChapterDiscourses(chapter: ChapterPdf): number {
+	if (chapter.vaggas && chapter.vaggas.length > 0) {
+		return chapter.vaggas.reduce(
+			(acc, vagga) => acc + vagga.discourses.length,
+			0,
+		);
+	}
+	return chapter.discourses.length;
+}
+
+export function countCollectionDiscourses(collection: CollectionPdf): number {
+	return collection.chapters.reduce(
+		(acc, chapter) => acc + countChapterDiscourses(chapter),
+		0,
+	);
 }
 
 /** When Pali mode is on in the client, collection PDFs mirror interleaved vs split layout. */
@@ -648,6 +680,60 @@ async function fetchChapterDiscourses(
 	return discourses;
 }
 
+function resolveVaggaSectionsForChapter(
+	chapterSlug: string,
+	chapterMeta: DirectoryStructure,
+): Record<string, DirectoryStructure> | undefined {
+	const fromMeta = chapterMeta.vaggaSections;
+	if (fromMeta && Object.keys(fromMeta).length > 0) {
+		return fromMeta;
+	}
+	return getEffectiveVaggaSections(chapterSlug);
+}
+
+function groupDiscoursesIntoVaggas(
+	discourses: DiscoursePdf[],
+	sections: Record<string, DirectoryStructure>,
+): VaggaPdf[] {
+	const groups = groupDiscoursesByVaggaSection(discourses, sections);
+	return groups
+		.filter((group) => group.posts.length > 0)
+		.map((group) => ({
+			slug: group.slug,
+			title: formatVaggaDisplayTitle(
+				group.data.title || "Other discourses",
+			),
+			description: group.data.description || "",
+			discourses: group.posts,
+		}));
+}
+
+function chapterWithOptionalVaggas(
+	chapterSlug: string,
+	chapterMeta: DirectoryStructure,
+	discourses: DiscoursePdf[],
+): ChapterPdf {
+	const vaggaSections = resolveVaggaSectionsForChapter(
+		chapterSlug,
+		chapterMeta,
+	);
+	if (vaggaSections && Object.keys(vaggaSections).length > 0) {
+		return {
+			slug: chapterSlug,
+			title: chapterMeta.title,
+			description: chapterMeta.description || "",
+			vaggas: groupDiscoursesIntoVaggas(discourses, vaggaSections),
+			discourses: [],
+		};
+	}
+	return {
+		slug: chapterSlug,
+		title: chapterMeta.title,
+		description: chapterMeta.description || "",
+		discourses,
+	};
+}
+
 /**
  * Resolve a collection and all its discourse content for PDF generation.
  * - If the collection has children in directoryStructure, each child becomes a chapter.
@@ -681,16 +767,15 @@ export async function fetchCollectionPdfData(
 					includeKeyTermsSection,
 					selectedDiscourseSlugs,
 				);
-				return {
-					slug: childSlug,
-					title: childMeta.title,
-					description: childMeta.description || "",
+				return chapterWithOptionalVaggas(
+					childSlug,
+					childMeta,
 					discourses,
-				};
+				);
 			}),
 		);
 	} else {
-		// Flat collection (e.g. DhP chapters, SNP sections)
+		// Flat collection (e.g. DhP chapters, SNP sections, AN 4 with vaggas)
 		const discourses = await fetchChapterDiscourses(
 			slug,
 			undefined,
@@ -700,17 +785,12 @@ export async function fetchCollectionPdfData(
 			selectedDiscourseSlugs,
 		);
 		chapters = [
-			{
-				slug,
-				title: "",
-				description: "",
-				discourses,
-			},
+			chapterWithOptionalVaggas(slug, metadata, discourses),
 		];
 	}
 
-	// Filter out empty chapters
-	const nonEmpty = chapters.filter((c) => c.discourses.length > 0);
+	// Filter out empty chapters (vagga-grouped chapters use vaggas[], not discourses[])
+	const nonEmpty = chapters.filter((c) => countChapterDiscourses(c) > 0);
 
 	return {
 		slug,
@@ -755,6 +835,19 @@ function extractPaliName(title: string): string {
 	return title.slice(0, idx).trim();
 }
 
+function buildTocDiscourseEntry(d: DiscoursePdf): string {
+	const id = formatSlugId(d.slug);
+	const displayTitle = stripPaliPrefix(d.title);
+	const paliName = extractPaliName(d.title);
+	const paliSpan = paliName
+		? `<span class="toc-pali">${paliName}</span>`
+		: "";
+	return `<div class="toc-entry">
+  <a href="#d-${d.slug}" class="toc-link"><span class="toc-id">${id}</span>&ensp;${displayTitle}${paliSpan}</a>
+  ${d.description ? `<div class="toc-desc">${d.description}</div>` : ""}
+</div>\n`;
+}
+
 function buildToc(collection: CollectionPdf): string {
 	let html = "";
 
@@ -762,21 +855,46 @@ function buildToc(collection: CollectionPdf): string {
 		if (collection.hasChapters) {
 			html += `<div class="toc-chapter-heading">${ch.title}</div>\n`;
 		}
-		for (const d of ch.discourses) {
-			const id = formatSlugId(d.slug);
-			const displayTitle = stripPaliPrefix(d.title);
-			const paliName = extractPaliName(d.title);
-			const paliSpan = paliName
-				? `<span class="toc-pali">${paliName}</span>`
-				: "";
-			html += `<div class="toc-entry">
-  <a href="#d-${d.slug}" class="toc-link"><span class="toc-id">${id}</span>&ensp;${displayTitle}${paliSpan}</a>
-  ${d.description ? `<div class="toc-desc">${d.description}</div>` : ""}
-</div>\n`;
+
+		const vaggaGroups =
+			ch.vaggas && ch.vaggas.length > 0
+				? ch.vaggas
+				: [{ slug: "", title: "", discourses: ch.discourses }];
+
+		for (const vagga of vaggaGroups) {
+			if (vagga.title) {
+				html += `<div class="toc-vagga-heading">${vagga.title}</div>\n`;
+				if (vagga.description) {
+					html += `<div class="toc-vagga-desc">${vagga.description}</div>\n`;
+				}
+			}
+			for (const d of vagga.discourses) {
+				html += buildTocDiscourseEntry(d);
+			}
 		}
 	}
 
 	return html;
+}
+
+function buildDiscourseSection(
+	d: DiscoursePdf,
+	hLevel: "h2" | "h3" | "h4",
+	breakAttr: string,
+): string {
+	const id = formatSlugId(d.slug);
+	const displayTitle = stripPaliPrefix(d.title);
+	const paliName = extractPaliName(d.title);
+	const paliLine = paliName
+		? `<p class="discourse-pali">${paliName}</p>`
+		: "";
+
+	return `<section id="d-${d.slug}" class="discourse"${breakAttr}>
+  <${hLevel} class="discourse-title">${id} ${displayTitle}</${hLevel}>
+  ${paliLine}
+  ${d.description ? `<p class="discourse-desc">${d.description}</p>` : ""}
+  <div class="discourse-body">${d.html}</div>
+</section>\n`;
 }
 
 function buildContent(collection: CollectionPdf): string {
@@ -792,33 +910,45 @@ function buildContent(collection: CollectionPdf): string {
   <h2 class="chapter-heading">${ch.title}</h2>
   ${ch.description ? `<p class="chapter-desc">${ch.description}</p>` : ""}
 </div>\n`;
-			firstSection = false;
+			if (firstSection) firstSection = false;
 		}
 
-		for (const d of ch.discourses) {
-			const isFirstDiscourse = !collection.hasChapters && firstSection;
-			const breakAttr = isFirstDiscourse
-				? ""
-				: ' style="page-break-before:always"';
-			firstSection = false;
+		const vaggaGroups =
+			ch.vaggas && ch.vaggas.length > 0
+				? ch.vaggas
+				: [{ slug: "", title: "", discourses: ch.discourses }];
 
-			// Flat collections: use h2 so discourses sit at the same outline level
-			// as "Table of Contents" (not nested under it). Chaptered: keep h3.
-			const hLevel = collection.hasChapters ? "h3" : "h2";
-			const id = formatSlugId(d.slug);
-			const displayTitle = stripPaliPrefix(d.title);
+		for (const vagga of vaggaGroups) {
+			if (vagga.title) {
+				const vaggaLevel = collection.hasChapters ? "h3" : "h2";
+				const breakClass = firstSection
+					? ""
+					: ' style="page-break-before:always"';
+				html += `<div class="vagga-section"${breakClass}>
+  <${vaggaLevel} class="vagga-heading">${vagga.title}</${vaggaLevel}>
+  ${vagga.description ? `<p class="vagga-desc">${vagga.description}</p>` : ""}
+</div>\n`;
+				if (firstSection) firstSection = false;
+			}
 
-			const paliName = extractPaliName(d.title);
-			const paliLine = paliName
-				? `<p class="discourse-pali">${paliName}</p>`
-				: "";
-
-			html += `<section id="d-${d.slug}" class="discourse"${breakAttr}>
-  <${hLevel} class="discourse-title">${id} ${displayTitle}</${hLevel}>
-  ${paliLine}
-  ${d.description ? `<p class="discourse-desc">${d.description}</p>` : ""}
-  <div class="discourse-body">${d.html}</div>
-</section>\n`;
+			for (const d of vagga.discourses) {
+				const discourseLevel = collection.hasChapters
+					? vagga.title
+						? "h4"
+						: "h3"
+					: vagga.title
+						? "h3"
+						: "h2";
+				const breakAttr = firstSection
+					? ""
+					: ' style="page-break-before:always"';
+				html += buildDiscourseSection(
+					d,
+					discourseLevel,
+					breakAttr,
+				);
+				firstSection = false;
+			}
 		}
 	}
 
@@ -1047,6 +1177,18 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   color: #444;
   margin: 1.2em 0 0.3em;
 }
+.toc-vagga-heading {
+  font-size: 10pt;
+  font-weight: bold;
+  color: #333;
+  margin: 0.9em 0 0.25em 0.5em;
+}
+.toc-vagga-desc {
+  font-size: 9pt;
+  color: #666;
+  margin: 0 0 0.4em 0.5em;
+  line-height: 1.45;
+}
 .toc-entry { margin: 0.3em 0; }
 .toc-link {
   color: #000;
@@ -1082,6 +1224,17 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   line-height: 1.7;
   color: #333;
   margin-bottom: 1em;
+}
+.vagga-heading {
+  font-size: 13pt;
+  font-weight: bold;
+  margin-bottom: 0.25em;
+}
+.vagga-desc {
+  font-size: 10pt;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 0.8em;
 }
 
 /* ── Individual discourse ────────────────────────────────── */

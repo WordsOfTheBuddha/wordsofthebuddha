@@ -1,4 +1,128 @@
 {
+	"an3-balavagga": {
+		"englishSubtitle": "The Chapter on Fools",
+		"description": "The Chapter on Fools in the Book of the Threes, containing discourses 1–10."
+	},
+	"an3-rathakaravagga": {
+		"englishSubtitle": "The Chapter on the Chariot-maker",
+		"description": "The Chapter on the Chariot-maker in the Book of the Threes, containing discourses 11–20."
+	},
+	"an3-puggalavagga": {
+		"englishSubtitle": "The Chapter on Individuals",
+		"description": "The Chapter on Individuals in the Book of the Threes, containing discourses 21–30."
+	},
+	"an3-devadutavagga": {
+		"englishSubtitle": "The Chapter on Messengers of the Gods",
+		"description": "The Chapter on Messengers of the Gods in the Book of the Threes, containing discourses 31–40."
+	},
+	"an3-culavagga": {
+		"englishSubtitle": "A Short Chapter",
+		"description": "A Short Chapter in the Book of the Threes, containing discourses 41–50."
+	},
+	"an3-brahmanavagga": {
+		"englishSubtitle": "The Chapter on Brahmins",
+		"description": "The Chapter on Brahmins in the Book of the Threes, containing discourses 51–60."
+	},
+	"an3-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The Great Chapter in the Book of the Threes, containing discourses 61–70."
+	},
+	"an3-anandavagga": {
+		"englishSubtitle": "The Chapter with Ānanda",
+		"description": "The Chapter with Ānanda in the Book of the Threes, containing discourses 71–80."
+	},
+	"an3-samanavagga": {
+		"englishSubtitle": "The Chapter on Ascetics",
+		"description": "The Chapter on Ascetics in the Book of the Threes, containing discourses 81–91."
+	},
+	"an3-lonakapallavagga": {
+		"englishSubtitle": "The Chapter on a Lump of Salt",
+		"description": "The Chapter on a Lump of Salt in the Book of the Threes, containing discourses 92–102."
+	},
+	"an3-sambodhavagga": {
+		"englishSubtitle": "The Chapter on Awakening",
+		"description": "The Chapter on Awakening in the Book of the Threes, containing discourses 103–112."
+	},
+	"an3-apayikavagga": {
+		"englishSubtitle": "The Chapter on Bound for Loss",
+		"description": "The Chapter on Bound for Loss in the Book of the Threes, containing discourses 113–122."
+	},
+	"an3-kusinaravagga": {
+		"englishSubtitle": "The Chapter at Kusināra",
+		"description": "The Chapter at Kusināra in the Book of the Threes, containing discourses 123–132."
+	},
+	"an3-yodhajivavagga": {
+		"englishSubtitle": "The Chapter on a Warrior",
+		"description": "The Chapter on a Warrior in the Book of the Threes, containing discourses 133–145."
+	},
+	"an3-mangalavagga": {
+		"englishSubtitle": "The Chapter on Good Fortune",
+		"description": "The Chapter on Good Fortune in the Book of the Threes, containing discourses 146–155."
+	},
+	"an3-patipadavagga": {
+		"englishSubtitle": "The Chapter on Practices",
+		"description": "The Chapter on Practices in the Book of the Threes, containing discourses 156–162."
+	},
+	"an3-kammapathapeyyavagga": {
+		"englishSubtitle": "The Chapter on Ways of Performing Deeds",
+		"description": "The Chapter on Ways of Performing Deeds in the Book of the Threes, containing discourses 163–182."
+	},
+	"an3-ragadipeyyalavagga": {
+		"englishSubtitle": "The Chapter on Abbreviated Texts Beginning with Greed",
+		"description": "The Chapter on Abbreviated Texts Beginning with Greed in the Book of the Threes, containing discourses 183–352."
+	},
+	"an6-ahuneyyavagga": {
+		"englishSubtitle": "The Chapter on Worthy of Offerings",
+		"description": "The Chapter on Worthy of Offerings in the Book of the Sixes, containing discourses 1–10."
+	},
+	"an6-saraniyavagga": {
+		"englishSubtitle": "The Chapter on Warm-hearted",
+		"description": "The Chapter on Warm-hearted in the Book of the Sixes, containing discourses 11–20."
+	},
+	"an6-anuttariyavagga": {
+		"englishSubtitle": "The Chapter on Unsurpassable",
+		"description": "The Chapter on Unsurpassable in the Book of the Sixes, containing discourses 21–30."
+	},
+	"an6-pathamapannasaka-devatavagga": {
+		"englishSubtitle": "The Chapter on Deities",
+		"description": "The Chapter on Deities in the Book of the Sixes, containing discourses 31–42."
+	},
+	"an6-dhammikavagga": {
+		"englishSubtitle": "The Chapter with Dhammika",
+		"description": "The Chapter with Dhammika in the Book of the Sixes, containing discourses 43–54."
+	},
+	"an6-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The Great Chapter in the Book of the Sixes, containing discourses 55–64."
+	},
+	"an6-dutiyapannasaka-devatavagga": {
+		"englishSubtitle": "The Chapter on Deities",
+		"description": "The Chapter on Deities in the Book of the Sixes, containing discourses 65–74."
+	},
+	"an6-arahattavagga": {
+		"englishSubtitle": "The Chapter on Perfection",
+		"description": "The Chapter on Perfection in the Book of the Sixes, containing discourses 75–84."
+	},
+	"an6-sitivagga": {
+		"englishSubtitle": "The Chapter on Coolness",
+		"description": "The Chapter on Coolness in the Book of the Sixes, containing discourses 85–95."
+	},
+	"an6-anisamsavagga": {
+		"englishSubtitle": "The Chapter on Benefit",
+		"description": "The Chapter on Benefit in the Book of the Sixes, containing discourses 96–106."
+	},
+	"an6-tikavagga": {
+		"englishSubtitle": "The Chapter on Triads",
+		"description": "The Chapter on Triads in the Book of the Sixes, containing discourses 107–116."
+	},
+	"an6-samannavagga": {
+		"englishSubtitle": "The Chapter on the Ascetic Life",
+		"description": "The Chapter on the Ascetic Life in the Book of the Sixes, containing discourses 117–139."
+	},
+	"an6-ragapeyyala": {
+		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
+		"description": "Abbreviated Texts Beginning With Greed in the Book of the Sixes, containing discourses 140–649."
+	},
 	"an4-bhandagamavagga": {
 		"englishSubtitle": "The Chapter at Wares Village",
 		"description": "The Chapter at Wares Village in the Book of the Fours, containing discourses 1–10."
@@ -226,5 +350,241 @@
 	"an5-ragapeyyala": {
 		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
 		"description": "Abbreviated Texts Beginning With Greed in the Book of the Fives, containing discourses 303–1152."
+	},
+	"an7-dhanavagga": {
+		"englishSubtitle": "The Chapter on Wealth",
+		"description": "The Chapter on Wealth in the Book of the Sevens, containing discourses 1–10."
+	},
+	"an7-anusayavagga": {
+		"englishSubtitle": "The Chapter on Tendencies",
+		"description": "The Chapter on Tendencies in the Book of the Sevens, containing discourses 11–20."
+	},
+	"an7-vajjisattakavagga": {
+		"englishSubtitle": "The Chapter on the Vajji Seven",
+		"description": "The Chapter on the Vajji Seven in the Book of the Sevens, containing discourses 21–31."
+	},
+	"an7-devatavagga": {
+		"englishSubtitle": "The Chapter on Deities",
+		"description": "The Chapter on Deities in the Book of the Sevens, containing discourses 32–43."
+	},
+	"an7-mahayannavagga": {
+		"englishSubtitle": "The Chapter on a Great Sacrifice",
+		"description": "The Chapter on a Great Sacrifice in the Book of the Sevens, containing discourses 44–53."
+	},
+	"an7-abyakatavagga": {
+		"englishSubtitle": "The Chapter on the Undeclared Points",
+		"description": "The Chapter on the Undeclared Points in the Book of the Sevens, containing discourses 54–64."
+	},
+	"an7-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The Great Chapter in the Book of the Sevens, containing discourses 65–74."
+	},
+	"an7-vinayavagga": {
+		"englishSubtitle": "The Chapter on the Monastic Law",
+		"description": "The Chapter on the Monastic Law in the Book of the Sevens, containing discourses 75–84."
+	},
+	"an7-samanavagga": {
+		"englishSubtitle": "The Chapter on Ascetics",
+		"description": "The Chapter on Ascetics in the Book of the Sevens, containing discourses 85–94."
+	},
+	"an7-ahuneyyavagga": {
+		"englishSubtitle": "The Chapter on Worthy of Offerings",
+		"description": "The Chapter on Worthy of Offerings in the Book of the Sevens, containing discourses 95–96."
+	},
+	"an7-ragapeyyala": {
+		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
+		"description": "Abbreviated Texts Beginning With Greed in the Book of the Sevens, containing discourses 615–645."
+	},
+	"an8-mettavagga": {
+		"englishSubtitle": "The Chapter on Love",
+		"description": "The Chapter on Love in the Book of the Eights, containing discourses 1–10."
+	},
+	"an8-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The Great Chapter in the Book of the Eights, containing discourses 11–20."
+	},
+	"an8-gahapativagga": {
+		"englishSubtitle": "The Chapter on Householders",
+		"description": "The Chapter on Householders in the Book of the Eights, containing discourses 21–30."
+	},
+	"an8-danavagga": {
+		"englishSubtitle": "The Chapter on Giving",
+		"description": "The Chapter on Giving in the Book of the Eights, containing discourses 31–40."
+	},
+	"an8-uposathavagga": {
+		"englishSubtitle": "The Chapter on Sabbath",
+		"description": "The Chapter on Sabbath in the Book of the Eights, containing discourses 41–50."
+	},
+	"an8-gotamivagga": {
+		"englishSubtitle": "The Chapter on Gotamī",
+		"description": "The Chapter on Gotamī in the Book of the Eights, containing discourses 51–60."
+	},
+	"an8-bhumicalavagga": {
+		"englishSubtitle": "The Chapter on Earthquakes",
+		"description": "The Chapter on Earthquakes in the Book of the Eights, containing discourses 61–70."
+	},
+	"an8-yamakavagga": {
+		"englishSubtitle": "The Chapter on Pairs",
+		"description": "The Chapter on Pairs in the Book of the Eights, containing discourses 71–80."
+	},
+	"an8-sativagga": {
+		"englishSubtitle": "The Chapter on Mindfulness",
+		"description": "The Chapter on Mindfulness in the Book of the Eights, containing discourses 81–90."
+	},
+	"an8-samannavagga": {
+		"englishSubtitle": "The Chapter on Similarity",
+		"description": "The Chapter on Similarity in the Book of the Eights, containing discourses 91–91."
+	},
+	"an8-ragapeyyala": {
+		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
+		"description": "Abbreviated Texts Beginning With Greed in the Book of the Eights, containing discourses 118–148."
+	},
+	"an9-sambodhivagga": {
+		"englishSubtitle": "The Chapter on Awakening",
+		"description": "The Chapter on Awakening in the Book of the Nines, containing discourses 1–10."
+	},
+	"an9-sihanadavagga": {
+		"englishSubtitle": "The Chapter on the Lion's Roar",
+		"description": "The Chapter on the Lion's Roar in the Book of the Nines, containing discourses 11–20."
+	},
+	"an9-sattavasavagga": {
+		"englishSubtitle": "The Chapter on Abodes of Sentient Beings",
+		"description": "The Chapter on Abodes of Sentient Beings in the Book of the Nines, containing discourses 21–31."
+	},
+	"an9-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The Great Chapter in the Book of the Nines, containing discourses 32–41."
+	},
+	"an9-samannavagga": {
+		"englishSubtitle": "The Chapter on Similarity",
+		"description": "The Chapter on Similarity in the Book of the Nines, containing discourses 42–51."
+	},
+	"an9-khemavagga": {
+		"englishSubtitle": "The Chapter on a Safe Place",
+		"description": "The Chapter on a Safe Place in the Book of the Nines, containing discourses 52–62."
+	},
+	"an9-satipatthanavagga": {
+		"englishSubtitle": "The Chapter on Mindfulness Meditation",
+		"description": "The Chapter on Mindfulness Meditation in the Book of the Nines, containing discourses 63–72."
+	},
+	"an9-sammappadhanavagga": {
+		"englishSubtitle": "The Chapter on Right Efforts",
+		"description": "The Chapter on Right Efforts in the Book of the Nines, containing discourses 73–82."
+	},
+	"an9-iddhipadavagga": {
+		"englishSubtitle": "The Chapter on Bases of Psychic Power",
+		"description": "The Chapter on Bases of Psychic Power in the Book of the Nines, containing discourses 83–92."
+	},
+	"an9-ragapeyyala": {
+		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
+		"description": "Abbreviated Texts Beginning With Greed in the Book of the Nines, containing discourses 93–113."
+	},
+	"an10-anisamsavagga": {
+		"englishSubtitle": "The Chapter on Benefits",
+		"description": "The Chapter on Benefits in the Book of the Tens, containing discourses 1–10."
+	},
+	"an10-nathavagga": {
+		"englishSubtitle": "The Chapter on a Protector",
+		"description": "The Chapter on a Protector in the Book of the Tens, containing discourses 11–20."
+	},
+	"an10-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The Great Chapter in the Book of the Tens, containing discourses 21–30."
+	},
+	"an10-pathamapannasaka-upalivagga": {
+		"englishSubtitle": "The Chapter with Upāli (First Fifty)",
+		"description": "The Chapter with Upāli in the first fifty of the Book of the Tens, containing discourses 31–40."
+	},
+	"an10-akkosavagga": {
+		"englishSubtitle": "The Chapter on Abuse",
+		"description": "The Chapter on Abuse in the Book of the Tens, containing discourses 41–50."
+	},
+	"an10-sacittavagga": {
+		"englishSubtitle": "The Chapter on Your Own Mind",
+		"description": "The Chapter on Your Own Mind in the Book of the Tens, containing discourses 51–60."
+	},
+	"an10-yamakavagga": {
+		"englishSubtitle": "The Chapter on Pairs",
+		"description": "The Chapter on Pairs in the Book of the Tens, containing discourses 61–70."
+	},
+	"an10-akankhavagga": {
+		"englishSubtitle": "The Chapter on If You Want",
+		"description": "The Chapter on If You Want in the Book of the Tens, containing discourses 71–80."
+	},
+	"an10-theravagga": {
+		"englishSubtitle": "The Chapter on Senior Mendicants",
+		"description": "The Chapter on Senior Mendicants in the Book of the Tens, containing discourses 81–90."
+	},
+	"an10-dutiyapannasaka-upalivagga": {
+		"englishSubtitle": "The Chapter with Upāli (Second Fifty)",
+		"description": "The Chapter with Upāli in the second fifty of the Book of the Tens, containing discourses 91–100."
+	},
+	"an10-samanasannavagga": {
+		"englishSubtitle": "The Chapter on Perceptions for Ascetics",
+		"description": "The Chapter on Perceptions for Ascetics in the Book of the Tens, containing discourses 101–112."
+	},
+	"an10-paccorohanivagga": {
+		"englishSubtitle": "The Chapter on the Ceremony of Descent",
+		"description": "The Chapter on the Ceremony of Descent in the Book of the Tens, containing discourses 113–122."
+	},
+	"an10-parisuddhavagga": {
+		"englishSubtitle": "The Chapter on Purified",
+		"description": "The Chapter on Purified in the Book of the Tens, containing discourses 123–133."
+	},
+	"an10-tatiyapannasaka-sadhuvagga": {
+		"englishSubtitle": "The Chapter on Good (Third Fifty)",
+		"description": "The Chapter on Good in the third fifty of the Book of the Tens, containing discourses 134–144."
+	},
+	"an10-ariyavagga": {
+		"englishSubtitle": "The Chapter on the Noble Path",
+		"description": "The Chapter on the Noble Path in the Book of the Tens, containing discourses 145–154."
+	},
+	"an10-puggalavagga": {
+		"englishSubtitle": "The Chapter on Individuals",
+		"description": "The Chapter on Individuals in the Book of the Tens, containing discourses 155–156."
+	},
+	"an10-janussonivagga": {
+		"englishSubtitle": "The Chapter with Jānussoṇi",
+		"description": "The Chapter with Jānussoṇi in the Book of the Tens, containing discourses 167–177."
+	},
+	"an10-catutthapannasaka-sadhuvagga": {
+		"englishSubtitle": "The Chapter on Good (Fourth Fifty)",
+		"description": "The Chapter on Good in the fourth fifty of the Book of the Tens, containing discourses 178–188."
+	},
+	"an10-ariyamaggavagga": {
+		"englishSubtitle": "The Chapter on the Noble Path",
+		"description": "The Chapter on the Noble Path in the Book of the Tens, containing discourses 189–198."
+	},
+	"an10-ariyapuggalavagga": {
+		"englishSubtitle": "Another Chapter on Individuals",
+		"description": "Another Chapter on Individuals in the Book of the Tens, containing discourses 199–199."
+	},
+	"an10-karajakayavagga": {
+		"englishSubtitle": "The Chapter on the Body Born of Deeds",
+		"description": "The Chapter on the Body Born of Deeds in the Book of the Tens, containing discourses 211–220."
+	},
+	"an10-samannavagga": {
+		"englishSubtitle": "The Chapter on Similarity",
+		"description": "The Chapter on Similarity in the Book of the Tens, containing discourses 221–233."
+	},
+	"an10-ragapeyyala": {
+		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
+		"description": "Abbreviated Texts Beginning With Greed in the Book of the Tens, containing discourses 237–267."
+	},
+	"an11-nissayavagga": {
+		"englishSubtitle": "The Chapter on Dependence",
+		"description": "The Chapter on Dependence in the Book of the Elevens, containing discourses 1–10."
+	},
+	"an11-anussativagga": {
+		"englishSubtitle": "The Chapter on Recollection",
+		"description": "The Chapter on Recollection in the Book of the Elevens, containing discourses 11–21."
+	},
+	"an11-samannavagga": {
+		"englishSubtitle": "The Chapter on Similarity",
+		"description": "The Chapter on Similarity in the Book of the Elevens, containing discourses 22–502."
+	},
+	"an11-ragapeyyala": {
+		"englishSubtitle": "Abbreviated Texts Beginning With Greed",
+		"description": "Abbreviated Texts Beginning With Greed in the Book of the Elevens, containing discourses 982–992."
 	}
 }

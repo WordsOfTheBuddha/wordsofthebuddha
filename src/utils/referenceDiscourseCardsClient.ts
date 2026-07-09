@@ -1,3 +1,4 @@
+import { collectionLayoutDebugLog } from "./collectionLayoutDebug";
 import {
 	deleteRefParam,
 	initRefModeFromUrl,
@@ -117,11 +118,12 @@ function sortPostsGrid(grid: HTMLElement) {
 
 function revealVaggaSection(section: HTMLElement | null) {
 	section?.classList.remove("hidden");
+	section?.closest(".book-section")?.classList.remove("hidden");
 }
 
 function hideEmptyVaggaSections(grid: HTMLElement) {
 	for (const section of grid.querySelectorAll<HTMLElement>(
-		":scope > .vagga-section[id]",
+		".vagga-section[id]",
 	)) {
 		const postsGrid = section.querySelector(":scope > .posts-grid");
 		const hasPosts = postsGrid?.querySelector(":scope > .post-item");
@@ -129,12 +131,32 @@ function hideEmptyVaggaSections(grid: HTMLElement) {
 	}
 }
 
+function isSectionedLayout(grid: HTMLElement): boolean {
+	return !!(
+		grid.querySelector(":scope > .book-section") ||
+		grid.querySelector(":scope > .vagga-section")
+	);
+}
+
+function findFlatBookPostsGrid(
+	grid: HTMLElement,
+	bookSlug: string,
+): HTMLElement | null {
+	const book = grid.querySelector<HTMLElement>(
+		`:scope > .book-section#${CSS.escape(bookSlug)}`,
+	);
+	if (!book) return null;
+	return book.querySelector<HTMLElement>(
+		":scope .book-flat-section > .posts-grid",
+	);
+}
+
 function findVaggaSectionElement(
 	grid: HTMLElement,
 	slug: string,
 ): HTMLElement | null {
 	for (const section of grid.querySelectorAll<HTMLElement>(
-		":scope > .vagga-section[id]",
+		":scope > .book-section .vagga-section[id], :scope > .vagga-section[id]",
 	)) {
 		if (slugMatchesCollectionPattern(slug, section.id)) {
 			return section;
@@ -143,7 +165,34 @@ function findVaggaSectionElement(
 	return null;
 }
 
+function findTargetPostsGrid(
+	grid: HTMLElement,
+	slug: string,
+): HTMLElement | null {
+	const vaggaSection = findVaggaSectionElement(grid, slug);
+	const vaggaGrid = vaggaSection?.querySelector<HTMLElement>(
+		":scope > .posts-grid",
+	);
+	if (vaggaGrid) return vaggaGrid;
+
+	const bookMatch = slug.match(/^([a-z]+\d+)/);
+	if (bookMatch) {
+		return findFlatBookPostsGrid(grid, bookMatch[1]);
+	}
+	return null;
+}
+
 function sortDiscourseGrid(grid: HTMLElement, mountId: string) {
+	const bookScoped = grid.querySelector(":scope > .book-section");
+	if (bookScoped) {
+		for (const postsGrid of grid.querySelectorAll<HTMLElement>(
+			".book-section .posts-grid",
+		)) {
+			sortPostsGrid(postsGrid);
+		}
+		return;
+	}
+
 	const sectioned = grid.querySelector(":scope > .vagga-section");
 	if (sectioned) {
 		for (const postsGrid of grid.querySelectorAll<HTMLElement>(
@@ -227,17 +276,17 @@ export function initReferenceDiscourseCards(
 		}
 
 		const fragment = document.createDocumentFragment();
-		const sectioned = !!grid.querySelector(":scope > .vagga-section");
+		const sectioned = isSectionedLayout(grid);
 		const unmatched: HTMLElement[] = [];
 
 		for (const entry of refs) {
 			const card = renderReferenceCard(entry);
 			if (sectioned) {
-				const section = findVaggaSectionElement(grid, entry.slug);
-				const postsGrid = section?.querySelector<HTMLElement>(
-					":scope > .posts-grid",
-				);
+				const postsGrid = findTargetPostsGrid(grid, entry.slug);
 				if (postsGrid) {
+					const section = postsGrid.closest<HTMLElement>(
+						".vagga-section, .book-flat-section",
+					);
 					revealVaggaSection(section);
 					postsGrid.appendChild(card);
 				} else {
@@ -251,7 +300,7 @@ export function initReferenceDiscourseCards(
 		if (sectioned) {
 			for (const card of unmatched) {
 				const otherSection = grid.querySelector<HTMLElement>(
-					":scope > .vagga-section:not([id]) .posts-grid",
+					":scope > .vagga-section:not([id]) .posts-grid, .book-section .book-flat-section .posts-grid",
 				);
 				(otherSection ?? grid).appendChild(card);
 			}
@@ -287,14 +336,20 @@ export function initReferenceDiscourseCards(
 	}
 
 	function syncRefToggleState(active: boolean) {
-		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
-			toggleRef.classList.toggle("font-medium", active);
-			toggleRef.classList.toggle("text-[var(--link-color)]", active);
-			toggleRef.classList.toggle("underline", active);
-			toggleRef.classList.toggle("underline-offset-2", active);
-			toggleRef.classList.toggle("text-[var(--text-muted)]", !active);
+		const toggles = document.querySelectorAll("#toggle-ref");
+		for (const toggleRef of toggles) {
+			toggleRef.classList.toggle("filter-toolbar-btn--active", active);
 			toggleRef.setAttribute("aria-pressed", active ? "true" : "false");
 		}
+		collectionLayoutDebugLog("syncRefToggleState", {
+			active,
+			refParam: new URLSearchParams(window.location.search).get("ref"),
+			toggleCount: toggles.length,
+			toggles: [...toggles].map((el) => ({
+				ariaPressed: el.getAttribute("aria-pressed"),
+				hasActiveClass: el.classList.contains("filter-toolbar-btn--active"),
+			})),
+		});
 	}
 
 	function syncRefToggleVisibility(visible: boolean) {

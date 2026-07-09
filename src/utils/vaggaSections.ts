@@ -5,17 +5,49 @@ import { routes } from "./routes";
 import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { compareDiscourseIds } from "./discourseSort";
 
+/** Split concatenated Pali before trailing "vagga" for discourses-view section headers. */
+export function formatVaggaDisplayTitle(title: string): string {
+	const dashSep = title.indexOf(" - ");
+	if (dashSep !== -1) {
+		const paliPart = title.slice(0, dashSep);
+		const rest = title.slice(dashSep);
+		return formatPaliVaggaPart(paliPart) + rest;
+	}
+	return formatPaliVaggaPart(title);
+}
+
+function formatPaliVaggaPart(part: string): string {
+	if (/\s+vagga$/i.test(part)) {
+		return part;
+	}
+	return part.replace(/(.+?)vagga$/i, "$1 vagga");
+}
+
+export type VaggaDiscourseGroup<T extends { slug: string }> = {
+	slug: string;
+	data: DirectoryStructure;
+	posts: T[];
+};
+
+export type BookScopedDiscourseGroups<T extends { slug: string }> = {
+	bookSlug: string;
+	bookData: DirectoryStructure;
+	sections: VaggaDiscourseGroup<T>[];
+};
+
 const discourseRouteSet = new Set(routes);
 
 function findDirectoryNode(
 	slug: string,
+	nodes: Record<string, DirectoryStructure> = directoryStructure,
 ): DirectoryStructure | undefined {
-	if (directoryStructure[slug]) {
-		return directoryStructure[slug];
+	if (nodes[slug]) {
+		return nodes[slug];
 	}
-	for (const top of Object.values(directoryStructure)) {
-		if (top.children?.[slug]) {
-			return top.children[slug];
+	for (const node of Object.values(nodes)) {
+		if (node.children) {
+			const found = findDirectoryNode(slug, node.children);
+			if (found) return found;
 		}
 	}
 	return undefined;
@@ -104,6 +136,82 @@ export function findVaggaSectionBySlug(
 	return undefined;
 }
 
+/** True when vagga slugs are scoped per book (e.g. an4.1-10), not globally (e.g. mn1-10). */
+export function usesBookScopedVaggaGrouping(
+	sections: Record<string, DirectoryStructure> | undefined,
+	children?: Record<string, DirectoryStructure>,
+): boolean {
+	if (sections) {
+		if (
+			Object.keys(sections).some((slug) =>
+				/^[a-z]+\d+\.\d+-\d+$/.test(slug),
+			)
+		) {
+			return true;
+		}
+		if (
+			Object.keys(sections).some((slug) => /^sn\d+-[a-z]+$/.test(slug))
+		) {
+			return true;
+		}
+	}
+	if (children) {
+		for (const child of Object.values(children)) {
+			if (!child.vaggaSections) continue;
+			if (
+				Object.keys(child.vaggaSections).some((slug) =>
+					/^sn\d+-[a-z]+$/.test(slug),
+				)
+			) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/** Group discourses by child book, then vagga within each book (for parent /an pages). */
+export function groupDiscoursesByChildBooksAndVagga<
+	T extends { slug: string },
+>(
+	posts: T[],
+	children: Record<string, DirectoryStructure>,
+): BookScopedDiscourseGroups<T>[] {
+	const groups: BookScopedDiscourseGroups<T>[] = [];
+
+	for (const [childSlug, childData] of Object.entries(children)) {
+		const bookPosts = posts.filter((post) =>
+			slugMatchesCollectionPattern(post.slug, childSlug),
+		);
+		const vaggaSections = childData.vaggaSections;
+		const hasVagga =
+			vaggaSections && Object.keys(vaggaSections).length > 0;
+
+		if (!hasVagga) {
+			if (bookPosts.length === 0) continue;
+			bookPosts.sort((a, b) => compareDiscourseIds(a.slug, b.slug));
+			groups.push({
+				bookSlug: childSlug,
+				bookData: childData,
+				sections: [{ slug: "", data: { title: "" }, posts: bookPosts }],
+			});
+			continue;
+		}
+
+		const sections = groupDiscoursesByVaggaSection(
+			bookPosts,
+			vaggaSections,
+		);
+		groups.push({
+			bookSlug: childSlug,
+			bookData: childData,
+			sections,
+		});
+	}
+
+	return groups;
+}
+
 export function orderedVaggaSections(
 	sections: Record<string, DirectoryStructure> | undefined,
 ): [string, DirectoryStructure][] {
@@ -120,7 +228,7 @@ export function groupDiscoursesByVaggaSection<
 >(
 	posts: T[],
 	sections: Record<string, DirectoryStructure> | undefined,
-): { slug: string; data: DirectoryStructure; posts: T[] }[] {
+): VaggaDiscourseGroup<T>[] {
 	if (!sections) {
 		return [{ slug: "", data: { title: "" }, posts }];
 	}

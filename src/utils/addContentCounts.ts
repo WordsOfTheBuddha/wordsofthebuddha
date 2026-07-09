@@ -124,15 +124,28 @@ function parseFile(
 		const [, bookPrefix, suttaNumStr] = anDiscourseMatch;
 		const suttaNum = parseInt(suttaNumStr);
 		const vaggaMatches = leafCollections
-			.filter(({ key }) => {
+			.filter(({ key, info }) => {
 				const rangeMatch = key.match(/^([a-z]+\d+)\.(\d+)-(\d+)$/);
-				if (!rangeMatch) return false;
-				const [, keyBook, rangeStart, rangeEnd] = rangeMatch;
-				return (
-					keyBook === bookPrefix &&
-					suttaNum >= parseInt(rangeStart) &&
-					suttaNum <= parseInt(rangeEnd)
-				);
+				if (rangeMatch) {
+					const [, keyBook, rangeStart, rangeEnd] = rangeMatch;
+					return (
+						keyBook === bookPrefix &&
+						suttaNum >= parseInt(rangeStart) &&
+						suttaNum <= parseInt(rangeEnd)
+					);
+				}
+				const snVaggaMatch = key.match(/^(sn)(\d+)-[a-z]+$/);
+				if (snVaggaMatch) {
+					const bookNum = Number(snVaggaMatch[2]);
+					const range = info.structure?.range;
+					return (
+						bookPrefix === `sn${bookNum}` &&
+						range &&
+						suttaNum >= range.start &&
+						suttaNum <= range.end
+					);
+				}
+				return false;
 			})
 			.sort((a, b) => {
 				const span = (key: string) => {

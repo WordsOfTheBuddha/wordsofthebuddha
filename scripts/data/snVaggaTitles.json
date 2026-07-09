@@ -1,0 +1,918 @@
+{
+	"sn1-nalavagga": {
+		"englishSubtitle": "The Chapter on a Reed",
+		"description": "The opening chapter of the Connected Discourses with Deities, containing discourses 1–10."
+	},
+	"sn1-nandanavagga": {
+		"englishSubtitle": "The Chapter at Nandana",
+		"description": "The second chapter of the Connected Discourses with Deities, containing discourses 11–20."
+	},
+	"sn1-sattivagga": {
+		"englishSubtitle": "The Chapter on the Sword",
+		"description": "The third chapter of the Connected Discourses with Deities, containing discourses 21–30."
+	},
+	"sn1-satullapakayikavagga": {
+		"englishSubtitle": "The Chapter on the Host of a Hundred Devas",
+		"description": "The fourth chapter of the Connected Discourses with Deities, containing discourses 31–40."
+	},
+	"sn1-adittavagga": {
+		"englishSubtitle": "The Chapter on Fire",
+		"description": "The fifth chapter of the Connected Discourses with Deities, containing discourses 41–50."
+	},
+	"sn1-jaravagga": {
+		"englishSubtitle": "The Chapter on Old Age",
+		"description": "The sixth chapter of the Connected Discourses with Deities, containing discourses 51–60."
+	},
+	"sn1-addhavagga": {
+		"englishSubtitle": "The Chapter on the Path",
+		"description": "The seventh chapter of the Connected Discourses with Deities, containing discourses 61–70."
+	},
+	"sn1-chetvavagga": {
+		"englishSubtitle": "The Chapter on Cutting Off",
+		"description": "The eighth chapter of the Connected Discourses with Deities, containing discourses 71–81."
+	},
+	"sn2-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with Young Deities, containing discourses 1–10."
+	},
+	"sn2-anathapindikavagga": {
+		"englishSubtitle": "The Chapter with Anāthapiṇḍika",
+		"description": "The second chapter of the Connected Discourses with Young Deities, containing discourses 11–20."
+	},
+	"sn2-nanatitthiyavagga": {
+		"englishSubtitle": "The Chapter on Various Sectarians",
+		"description": "The third chapter of the Connected Discourses with Young Deities, containing discourses 21–30."
+	},
+	"sn3-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with King Pasenadi of Kosala, containing discourses 1–10."
+	},
+	"sn3-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with King Pasenadi of Kosala, containing discourses 11–20."
+	},
+	"sn3-tatiyavagga": {
+		"englishSubtitle": "The Third Chapter",
+		"description": "The third chapter of the Connected Discourses with King Pasenadi of Kosala, containing discourses 21–25."
+	},
+	"sn4-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with Māra, containing discourses 1–10."
+	},
+	"sn4-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with Māra, containing discourses 11–20."
+	},
+	"sn4-tatiyavagga": {
+		"englishSubtitle": "The Third Chapter",
+		"description": "The third chapter of the Connected Discourses with Māra, containing discourses 21–25."
+	},
+	"sn5-bhikkhunivagga": {
+		"englishSubtitle": "The Chapter on Nuns",
+		"description": "The chapter of the Connected Discourses with Bhikkhunīs, containing discourses 1–10."
+	},
+	"sn6-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with Brahmas, containing discourses 1–10."
+	},
+	"sn6-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with Brahmas, containing discourses 11–15."
+	},
+	"sn7-arahantavagga": {
+		"englishSubtitle": "The Chapter on the Perfected Ones",
+		"description": "The first chapter of the Connected Discourses with Brahmins, containing discourses 1–10."
+	},
+	"sn7-upasakavagga": {
+		"englishSubtitle": "The Chapter on a Lay Follower",
+		"description": "The second chapter of the Connected Discourses with Brahmins, containing discourses 11–22."
+	},
+	"sn8-vangisavagga": {
+		"englishSubtitle": "The Chapter with Vaṅgīsa",
+		"description": "The chapter of the Connected Discourses with Vaṅgīsa, containing discourses 1–12."
+	},
+	"sn9-vanavagga": {
+		"englishSubtitle": "The Chapter in the Forest",
+		"description": "The chapter of the Connected Discourses in the Forest, containing discourses 1–14."
+	},
+	"sn10-indakavagga": {
+		"englishSubtitle": "The Chapter with Indaka",
+		"description": "The chapter of the Connected Discourses with Yakkhas, containing discourses 1–12."
+	},
+	"sn11-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with Sakka, containing discourses 1–10."
+	},
+	"sn11-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with Sakka, containing discourses 11–20."
+	},
+	"sn11-tatiyavagga": {
+		"englishSubtitle": "The Third Chapter",
+		"description": "The third chapter of the Connected Discourses with Sakka, containing discourses 21–25."
+	},
+	"sn12-buddhavagga": {
+		"englishSubtitle": "The Chapter on the Buddhas",
+		"description": "The first chapter of the Connected Discourses on Causation, containing discourses 1–10."
+	},
+	"sn12-aharavagga": {
+		"englishSubtitle": "The Chapter on Fuel",
+		"description": "The second chapter of the Connected Discourses on Causation, containing discourses 11–20."
+	},
+	"sn12-dasabalavagga": {
+		"englishSubtitle": "The Chapter on the Ten Powers",
+		"description": "The third chapter of the Connected Discourses on Causation, containing discourses 21–30."
+	},
+	"sn12-kalarakhattiyavagga": {
+		"englishSubtitle": "The Chapter with Kaḷāra the Aristocrat",
+		"description": "The fourth chapter of the Connected Discourses on Causation, containing discourses 31–40."
+	},
+	"sn12-gahapativagga": {
+		"englishSubtitle": "The Chapter on Householders",
+		"description": "The fifth chapter of the Connected Discourses on Causation, containing discourses 41–50."
+	},
+	"sn12-dukkhavagga": {
+		"englishSubtitle": "The Chapter on Suffering",
+		"description": "The sixth chapter of the Connected Discourses on Causation, containing discourses 51–60."
+	},
+	"sn12-mahavagga": {
+		"englishSubtitle": "The Great Chapter",
+		"description": "The seventh chapter of the Connected Discourses on Causation, containing discourses 61–70."
+	},
+	"sn12-samanabrahmanavagga": {
+		"englishSubtitle": "The Chapter on Ascetics and Brahmins",
+		"description": "The eighth chapter of the Connected Discourses on Causation, containing discourses 71–81."
+	},
+	"sn13-abhisamayavagga": {
+		"englishSubtitle": "The Chapter on Comprehension",
+		"description": "The chapter of the Connected Discourses on Complete Comprehension, containing discourses 1–11."
+	},
+	"sn14-nanattavagga": {
+		"englishSubtitle": "The Chapter on Diversity",
+		"description": "The first chapter of the Connected Discourses on the Elements, containing discourses 1–10."
+	},
+	"sn14-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses on the Elements, containing discourses 11–22."
+	},
+	"sn14-kammapathavagga": {
+		"englishSubtitle": "The Chapter on Ways of Performing Deeds",
+		"description": "The third chapter of the Connected Discourses on the Elements, containing discourses 23–29."
+	},
+	"sn14-catutthavagga": {
+		"englishSubtitle": "The Fourth Chapter",
+		"description": "The fourth chapter of the Connected Discourses on the Elements, containing discourses 30–39."
+	},
+	"sn15-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses on the Inconceivable Beginning, containing discourses 1–10."
+	},
+	"sn15-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses on the Inconceivable Beginning, containing discourses 11–20."
+	},
+	"sn16-kassapavagga": {
+		"englishSubtitle": "The Chapter with Kassapa",
+		"description": "The chapter of the Connected Discourses with Kassapa, containing discourses 1–13."
+	},
+	"sn17-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses on Acquisitions and Respect, containing discourses 1–10."
+	},
+	"sn17-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses on Acquisitions and Respect, containing discourses 11–20."
+	},
+	"sn17-tatiyavagga": {
+		"englishSubtitle": "The Third Chapter",
+		"description": "The third chapter of the Connected Discourses on Acquisitions and Respect, containing discourses 21–30."
+	},
+	"sn17-catutthavagga": {
+		"englishSubtitle": "The Fourth Chapter",
+		"description": "The fourth chapter of the Connected Discourses on Acquisitions and Respect, containing discourses 31–43."
+	},
+	"sn18-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with Rāhula, containing discourses 1–10."
+	},
+	"sn18-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with Rāhula, containing discourses 11–22."
+	},
+	"sn19-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses with Lakkhaṇa, containing discourses 1–10."
+	},
+	"sn19-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with Lakkhaṇa, containing discourses 11–21."
+	},
+	"sn20-opammavagga": {
+		"englishSubtitle": "The Chapter on the Similes",
+		"description": "The chapter of the Connected Discourses with Similes, containing discourses 1–12."
+	},
+	"sn21-bhikkhuvagga": {
+		"englishSubtitle": "The Chapter on Monks",
+		"description": "The chapter of the Connected Discourses with Bhikkhus, containing discourses 1–12."
+	},
+	"sn22-nakulapituvagga": {
+		"englishSubtitle": "The Chapter with Nakula's Father",
+		"description": "The first chapter of the Connected Discourses on the Aggregates, containing discourses 1–11."
+	},
+	"sn22-aniccavagga": {
+		"englishSubtitle": "The Chapter on Impermanence",
+		"description": "The second chapter of the Connected Discourses on the Aggregates, containing discourses 12–21."
+	},
+	"sn22-bharavagga": {
+		"englishSubtitle": "The Chapter on the Burden",
+		"description": "The third chapter of the Connected Discourses on the Aggregates, containing discourses 22–32."
+	},
+	"sn22-natumhakavagga": {
+		"englishSubtitle": "The Chapter on \"It's Not Yours\"",
+		"description": "The fourth chapter of the Connected Discourses on the Aggregates, containing discourses 33–42."
+	},
+	"sn22-attadipavagga": {
+		"englishSubtitle": "The Chapter on Being Your Own Island",
+		"description": "The fifth chapter of the Connected Discourses on the Aggregates, containing discourses 43–52."
+	},
+	"sn22-upayavagga": {
+		"englishSubtitle": "The Chapter on Involvement",
+		"description": "The sixth chapter of the Connected Discourses on the Aggregates, containing discourses 53–62."
+	},
+	"sn22-arahantavagga": {
+		"englishSubtitle": "The Chapter on the Perfected Ones",
+		"description": "The seventh chapter of the Connected Discourses on the Aggregates, containing discourses 63–72."
+	},
+	"sn22-khajjaniyavagga": {
+		"englishSubtitle": "The Chapter on What Is Edible",
+		"description": "The eighth chapter of the Connected Discourses on the Aggregates, containing discourses 73–82."
+	},
+	"sn22-theravagga": {
+		"englishSubtitle": "The Chapter on Senior Monks",
+		"description": "The ninth chapter of the Connected Discourses on the Aggregates, containing discourses 83–92."
+	},
+	"sn22-pupphavagga": {
+		"englishSubtitle": "The Chapter on Flowers",
+		"description": "The tenth chapter of the Connected Discourses on the Aggregates, containing discourses 93–102."
+	},
+	"sn22-antavagga": {
+		"englishSubtitle": "The Chapter on the Ends",
+		"description": "The eleventh chapter of the Connected Discourses on the Aggregates, containing discourses 103–112."
+	},
+	"sn22-dhammakathikavagga": {
+		"englishSubtitle": "The Chapter on a Dhamma Speaker",
+		"description": "The twelfth chapter of the Connected Discourses on the Aggregates, containing discourses 113–125."
+	},
+	"sn22-avijjavagga": {
+		"englishSubtitle": "The Chapter on Ignorance",
+		"description": "The thirteenth chapter of the Connected Discourses on the Aggregates, containing discourses 126–135."
+	},
+	"sn22-kukkulavagga": {
+		"englishSubtitle": "The Chapter on Burning Chaff",
+		"description": "The fourteenth chapter of the Connected Discourses on the Aggregates, containing discourses 136–149."
+	},
+	"sn22-ditthivagga": {
+		"englishSubtitle": "The Chapter on Views",
+		"description": "The fifteenth chapter of the Connected Discourses on the Aggregates, containing discourses 150–159."
+	},
+	"sn23-pathamamaravagga": {
+		"englishSubtitle": "The First Chapter About Māra",
+		"description": "The first chapter of the Connected Discourses with Rādha, containing discourses 1–10."
+	},
+	"sn23-dutiyamaravagga": {
+		"englishSubtitle": "The Second Chapter About Māra",
+		"description": "The second chapter of the Connected Discourses with Rādha, containing discourses 11–22."
+	},
+	"sn23-ayacanavagga": {
+		"englishSubtitle": "The Chapter on Aspiration",
+		"description": "The third chapter of the Connected Discourses with Rādha, containing discourses 23–34."
+	},
+	"sn23-upanisinnavagga": {
+		"englishSubtitle": "The Chapter on Sitting Close",
+		"description": "The fourth chapter of the Connected Discourses with Rādha, containing discourses 35–46."
+	},
+	"sn24-sotapattivagga": {
+		"englishSubtitle": "The Chapter on Stream-Entry",
+		"description": "The first chapter of the Connected Discourses on Views, containing discourses 1–18."
+	},
+	"sn24-dutiyagamanavagga": {
+		"englishSubtitle": "The Chapter on the Second Round",
+		"description": "The second chapter of the Connected Discourses on Views, containing discourses 19–44."
+	},
+	"sn24-tatiyagamanavagga": {
+		"englishSubtitle": "The Chapter on the Third Round",
+		"description": "The third chapter of the Connected Discourses on Views, containing discourses 45–70."
+	},
+	"sn24-catutthagamanavagga": {
+		"englishSubtitle": "The Chapter on the Fourth Round",
+		"description": "The fourth chapter of the Connected Discourses on Views, containing discourses 71–96."
+	},
+	"sn25-cakkhuvagga": {
+		"englishSubtitle": "The Chapter on the Eye",
+		"description": "The chapter of the Connected Discourses on Arrival, containing discourses 1–10."
+	},
+	"sn26-uppadavagga": {
+		"englishSubtitle": "The Chapter on Arising",
+		"description": "The chapter of the Connected Discourses on Arising, containing discourses 1–10."
+	},
+	"sn27-kilesavagga": {
+		"englishSubtitle": "The Chapter on Corruptions",
+		"description": "The chapter of the Connected Discourses on Corruptions, containing discourses 1–10."
+	},
+	"sn28-sariputtavagga": {
+		"englishSubtitle": "The Chapter with Sāriputta",
+		"description": "The chapter of the Connected Discourses with Sāriputta, containing discourses 1–10."
+	},
+	"sn29-nagavagga": {
+		"englishSubtitle": "The Chapter on Nāgas",
+		"description": "The chapter of the Connected Discourses with Nāgas, containing discourses 1–50."
+	},
+	"sn30-supannavagga": {
+		"englishSubtitle": "The Chapter on Phoenixes",
+		"description": "The chapter of the Connected Discourses with Phoenixes, containing discourses 1–46."
+	},
+	"sn31-gandhabbavagga": {
+		"englishSubtitle": "The Chapter on Gandhabbas",
+		"description": "The chapter of the Connected Discourses with the Gandhabbas, containing discourses 1–112."
+	},
+	"sn32-valahakavagga": {
+		"englishSubtitle": "The Chapter on Gods of the Clouds",
+		"description": "The chapter of the Connected Discourses with the Cloud Devas, containing discourses 1–57."
+	},
+	"sn33-vacchagottavagga": {
+		"englishSubtitle": "The Chapter with Vacchagotta",
+		"description": "The chapter of the Connected Discourses with Vacchagotta, containing discourses 1–55."
+	},
+	"sn34-jhanavagga": {
+		"englishSubtitle": "The Chapter on Absorption",
+		"description": "The chapter of the Connected Discourses on Collectedness (jhāna), containing discourses 1–55."
+	},
+	"sn35-aniccavagga": {
+		"englishSubtitle": "The Chapter on Impermanence",
+		"description": "The first chapter of the Connected Discourses on the Six Sense Bases, containing discourses 1–12."
+	},
+	"sn35-yamakavagga": {
+		"englishSubtitle": "The Chapter on Pairs",
+		"description": "The second chapter of the Connected Discourses on the Six Sense Bases, containing discourses 13–22."
+	},
+	"sn35-sabbavagga": {
+		"englishSubtitle": "The Chapter on All",
+		"description": "The third chapter of the Connected Discourses on the Six Sense Bases, containing discourses 23–32."
+	},
+	"sn35-jatidhammavagga": {
+		"englishSubtitle": "The Chapter on the Nature of Birth",
+		"description": "The fourth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 33–42."
+	},
+	"sn35-sabbaaniccavagga": {
+		"englishSubtitle": "The Chapter on All is Impermanent",
+		"description": "The fifth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 43–52."
+	},
+	"sn35-avijjavagga": {
+		"englishSubtitle": "The Chapter on Ignorance",
+		"description": "The sixth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 53–62."
+	},
+	"sn35-migajalavagga": {
+		"englishSubtitle": "The Chapter with Migajāla",
+		"description": "The seventh chapter of the Connected Discourses on the Six Sense Bases, containing discourses 63–73."
+	},
+	"sn35-gilanavagga": {
+		"englishSubtitle": "The Chapter with the Sick",
+		"description": "The eighth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 74–83."
+	},
+	"sn35-channavagga": {
+		"englishSubtitle": "The Chapter with Channa",
+		"description": "The ninth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 84–93."
+	},
+	"sn35-salavagga": {
+		"englishSubtitle": "The Chapter with Sāla",
+		"description": "The tenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 94–103."
+	},
+	"sn35-yogakkhemivagga": {
+		"englishSubtitle": "The Chapter on Security from Bondage",
+		"description": "The eleventh chapter of the Connected Discourses on the Six Sense Bases, containing discourses 104–113."
+	},
+	"sn35-lokakamagunavagga": {
+		"englishSubtitle": "The Chapter on Worldly Enjoyments",
+		"description": "The twelfth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 114–123."
+	},
+	"sn35-gahapativagga": {
+		"englishSubtitle": "The Chapter on Householders",
+		"description": "The thirteenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 124–133."
+	},
+	"sn35-devadahavagga": {
+		"englishSubtitle": "The Chapter at Devadaha",
+		"description": "The fourteenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 134–145."
+	},
+	"sn35-navapuranavagga": {
+		"englishSubtitle": "The Chapter on the New and the Old",
+		"description": "The fifteenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 146–155."
+	},
+	"sn35-nandikkhayavagga": {
+		"englishSubtitle": "The Chapter on the Destruction of Craving",
+		"description": "The sixteenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 156–167."
+	},
+	"sn35-satthipeyyalavagga": {
+		"englishSubtitle": "The Chapter with the Teacher Repetitions",
+		"description": "The seventeenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 168–227."
+	},
+	"sn35-samuddavagga": {
+		"englishSubtitle": "The Chapter with the Ocean Simile",
+		"description": "The eighteenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 228–237."
+	},
+	"sn35-asivisavagga": {
+		"englishSubtitle": "The Chapter with the Vipers Simile",
+		"description": "The nineteenth chapter of the Connected Discourses on the Six Sense Bases, containing discourses 238–248."
+	},
+	"sn36-sagathavagga": {
+		"englishSubtitle": "The Chapter with Verses",
+		"description": "The first chapter of the Connected Discourses on Feelings, containing discourses 1–10."
+	},
+	"sn36-rahogatavagga": {
+		"englishSubtitle": "The Chapter Spoken Privately",
+		"description": "The second chapter of the Connected Discourses on Feelings, containing discourses 11–20."
+	},
+	"sn36-atthasatapariyayavagga": {
+		"englishSubtitle": "The Chapter on the Hundred-and-Eightfold Exposition",
+		"description": "The third chapter of the Connected Discourses on Feelings, containing discourses 21–31."
+	},
+	"sn37-pathamapeyyalavagga": {
+		"englishSubtitle": "The First Repetition Series",
+		"description": "The first chapter of the Connected Discourses on Women, containing discourses 1–14."
+	},
+	"sn37-dutiyapeyyalavagga": {
+		"englishSubtitle": "The Second Repetition Series",
+		"description": "The second chapter of the Connected Discourses on Women, containing discourses 15–24."
+	},
+	"sn37-balavagga": {
+		"englishSubtitle": "The Chapter on Powers",
+		"description": "The third chapter of the Connected Discourses on Women, containing discourses 25–34."
+	},
+	"sn38-jambukhadakavagga": {
+		"englishSubtitle": "The Chapter with Jambukhādaka",
+		"description": "The chapter of the Connected Discourses with Jambukhādaka, containing discourses 1–16."
+	},
+	"sn39-samandakavagga": {
+		"englishSubtitle": "The Chapter with Sāmaṇḍaka",
+		"description": "The chapter of the Connected Discourses with Sāmaṇḍaka, containing discourses 1–16."
+	},
+	"sn40-moggallanavagga": {
+		"englishSubtitle": "The Chapter with Moggallāna",
+		"description": "The chapter of the Connected Discourses with Moggallāna, containing discourses 1–11."
+	},
+	"sn41-cittavagga": {
+		"englishSubtitle": "The Chapter with Citta",
+		"description": "The chapter of the Connected Discourses with Citta the Householder, containing discourses 1–10."
+	},
+	"sn42-gamanivagga": {
+		"englishSubtitle": "The Chapter with Headmen",
+		"description": "The chapter of the Connected Discourses with Headmen, containing discourses 1–13."
+	},
+	"sn43-pathamavagga": {
+		"englishSubtitle": "The First Chapter",
+		"description": "The first chapter of the Connected Discourses on the Unconditioned, containing discourses 1–11."
+	},
+	"sn43-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses on the Unconditioned, containing discourses 12–44."
+	},
+	"sn44-abyakatavagga": {
+		"englishSubtitle": "The Chapter on the Undeclared",
+		"description": "The chapter of the Connected Discourses on the Undeclared, containing discourses 1–11."
+	},
+	"sn45-avijjavagga": {
+		"englishSubtitle": "The Chapter on Ignorance",
+		"description": "The first chapter of the Connected Discourses on the Eightfold Path, containing discourses 1–10."
+	},
+	"sn45-viharavagga": {
+		"englishSubtitle": "The Chapter on Meditation",
+		"description": "The second chapter of the Connected Discourses on the Eightfold Path, containing discourses 11–20."
+	},
+	"sn45-micchattavagga": {
+		"englishSubtitle": "The Chapter on the Wrong Way",
+		"description": "The third chapter of the Connected Discourses on the Eightfold Path, containing discourses 21–30."
+	},
+	"sn45-patipattivagga": {
+		"englishSubtitle": "The Chapter on Practice",
+		"description": "The fourth chapter of the Connected Discourses on the Eightfold Path, containing discourses 31–40."
+	},
+	"sn45-annatitthiyapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on Followers of Other Paths",
+		"description": "The fifth chapter of the Connected Discourses on the Eightfold Path, containing discourses 41–48."
+	},
+	"sn45-suriyapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Sun",
+		"description": "The sixth chapter of the Connected Discourses on the Eightfold Path, containing discourses 49–62."
+	},
+	"sn45-ekadhammapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on One Thing",
+		"description": "The seventh chapter of the Connected Discourses on the Eightfold Path, containing discourses 63–76."
+	},
+	"sn45-dutiyaekadhammapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on One Thing (2nd)",
+		"description": "The eighth chapter of the Connected Discourses on the Eightfold Path, containing discourses 77–90."
+	},
+	"sn45-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The ninth chapter of the Connected Discourses on the Eightfold Path, containing discourses 91–98."
+	},
+	"sn45-dutiyagangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges (2nd)",
+		"description": "The tenth chapter of the Connected Discourses on the Eightfold Path, containing discourses 103–134."
+	},
+	"sn45-appamadapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The eleventh chapter of the Connected Discourses on the Eightfold Path, containing discourses 139–146."
+	},
+	"sn45-balakaraniyavagga": {
+		"englishSubtitle": "The Chapter on Hard Work",
+		"description": "The twelfth chapter of the Connected Discourses on the Eightfold Path, containing discourses 149–160."
+	},
+	"sn45-esanavagga": {
+		"englishSubtitle": "The Chapter on Searches",
+		"description": "The thirteenth chapter of the Connected Discourses on the Eightfold Path, containing discourses 161–170."
+	},
+	"sn45-oghavagga": {
+		"englishSubtitle": "The Chapter on Floods",
+		"description": "The fourteenth chapter of the Connected Discourses on the Eightfold Path, containing discourses 171–180."
+	},
+	"sn46-pabbatavagga": {
+		"englishSubtitle": "The Chapter on Mountains",
+		"description": "The first chapter of the Connected Discourses on the Factors of Awakening, containing discourses 1–10."
+	},
+	"sn46-gilanavagga": {
+		"englishSubtitle": "The Chapter on the Sick",
+		"description": "The second chapter of the Connected Discourses on the Factors of Awakening, containing discourses 11–20."
+	},
+	"sn46-udayivagga": {
+		"englishSubtitle": "The Chapter with Udāyī",
+		"description": "The third chapter of the Connected Discourses on the Factors of Awakening, containing discourses 21–30."
+	},
+	"sn46-nivaranavagga": {
+		"englishSubtitle": "The Chapter on Hindrances",
+		"description": "The fourth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 31–40."
+	},
+	"sn46-cakkavattivagga": {
+		"englishSubtitle": "The Chapter on a Wheel-Turning Monarch",
+		"description": "The fifth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 41–50."
+	},
+	"sn46-sakacchavagga": {
+		"englishSubtitle": "The Chapter on Discussion",
+		"description": "The sixth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 51–56."
+	},
+	"sn46-anapanavagga": {
+		"englishSubtitle": "The Chapter on Breathing Meditation",
+		"description": "The seventh chapter of the Connected Discourses on the Factors of Awakening, containing discourses 57–66."
+	},
+	"sn46-nirodhavagga": {
+		"englishSubtitle": "The Chapter on Cessation",
+		"description": "The eighth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 67–76."
+	},
+	"sn46-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The ninth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 77."
+	},
+	"sn46-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The tenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 89."
+	},
+	"sn46-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The eleventh chapter of the Connected Discourses on the Factors of Awakening, containing discourses 99."
+	},
+	"sn46-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The twelfth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 111."
+	},
+	"sn46-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The thirteenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 121–130."
+	},
+	"sn46-punagangapeyyalavagga": {
+		"englishSubtitle": "Another Chapter on the Ganges",
+		"description": "The fourteenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 131."
+	},
+	"sn46-punaappamadavagga": {
+		"englishSubtitle": "Another Chapter on Diligence",
+		"description": "The fifteenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 143."
+	},
+	"sn46-punabalakaraniyavagga": {
+		"englishSubtitle": "Another Chapter on Hard Work",
+		"description": "The sixteenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 153."
+	},
+	"sn46-punaesanavagga": {
+		"englishSubtitle": "Another Chapter on Searches",
+		"description": "The seventeenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 165."
+	},
+	"sn46-punaoghavagga": {
+		"englishSubtitle": "Another Chapter on Floods",
+		"description": "The eighteenth chapter of the Connected Discourses on the Factors of Awakening, containing discourses 175."
+	},
+	"sn47-ambapalivagga": {
+		"englishSubtitle": "The Chapter in Ambapālī's Wood",
+		"description": "The first chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 1–10."
+	},
+	"sn47-nalandavagga": {
+		"englishSubtitle": "The Chapter at Nālandā",
+		"description": "The second chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 11–20."
+	},
+	"sn47-silatthitivagga": {
+		"englishSubtitle": "The Chapter on Ethics and Duration",
+		"description": "The third chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 21–30."
+	},
+	"sn47-ananussutavagga": {
+		"englishSubtitle": "The Chapter on What Was Not Learned Elsewhere",
+		"description": "The fourth chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 31–40."
+	},
+	"sn47-amatavagga": {
+		"englishSubtitle": "The Chapter on the Deathless",
+		"description": "The fifth chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 41–50."
+	},
+	"sn47-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The sixth chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 51."
+	},
+	"sn47-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The seventh chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 63."
+	},
+	"sn47-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The eighth chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 73."
+	},
+	"sn47-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The ninth chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 85."
+	},
+	"sn47-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The tenth chapter of the Connected Discourses on the Establishments of Mindfulness, containing discourses 95."
+	},
+	"sn48-suddhikavagga": {
+		"englishSubtitle": "The Chapter on the Plain Version",
+		"description": "The first chapter of the Connected Discourses on the Faculties, containing discourses 1–10."
+	},
+	"sn48-mudutaravagga": {
+		"englishSubtitle": "The Chapter on the Weaker Version",
+		"description": "The second chapter of the Connected Discourses on the Faculties, containing discourses 11–20."
+	},
+	"sn48-chalindriyavagga": {
+		"englishSubtitle": "The Chapter on the Six Faculties",
+		"description": "The third chapter of the Connected Discourses on the Faculties, containing discourses 21–30."
+	},
+	"sn48-sukhindriyavagga": {
+		"englishSubtitle": "The Chapter on the Pleasure Faculty",
+		"description": "The fourth chapter of the Connected Discourses on the Faculties, containing discourses 31–40."
+	},
+	"sn48-jaravagga": {
+		"englishSubtitle": "The Chapter on Old Age",
+		"description": "The fifth chapter of the Connected Discourses on the Faculties, containing discourses 41–50."
+	},
+	"sn48-sukarakhatavagga": {
+		"englishSubtitle": "The Chapter at the Boar's Cave",
+		"description": "The sixth chapter of the Connected Discourses on the Faculties, containing discourses 51–60."
+	},
+	"sn48-bodhipakkhiyavagga": {
+		"englishSubtitle": "The Chapter on Qualities Leading to Awakening",
+		"description": "The seventh chapter of the Connected Discourses on the Faculties, containing discourses 61–70."
+	},
+	"sn48-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The eighth chapter of the Connected Discourses on the Faculties, containing discourses 71."
+	},
+	"sn48-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The ninth chapter of the Connected Discourses on the Faculties, containing discourses 83."
+	},
+	"sn48-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The tenth chapter of the Connected Discourses on the Faculties, containing discourses 93."
+	},
+	"sn48-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The eleventh chapter of the Connected Discourses on the Faculties, containing discourses 105."
+	},
+	"sn48-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The twelfth chapter of the Connected Discourses on the Faculties, containing discourses 115."
+	},
+	"sn48-punagangapeyyalavagga": {
+		"englishSubtitle": "Another Chapter on the Ganges",
+		"description": "The thirteenth chapter of the Connected Discourses on the Faculties, containing discourses 125."
+	},
+	"sn48-punaappamadavagga": {
+		"englishSubtitle": "Another Chapter on Diligence",
+		"description": "The fourteenth chapter of the Connected Discourses on the Faculties, containing discourses 137."
+	},
+	"sn48-punabalakaraniyavagga": {
+		"englishSubtitle": "Another Chapter on Hard Work",
+		"description": "The fifteenth chapter of the Connected Discourses on the Faculties, containing discourses 147."
+	},
+	"sn48-punaesanavagga": {
+		"englishSubtitle": "Another Chapter on Searches",
+		"description": "The sixteenth chapter of the Connected Discourses on the Faculties, containing discourses 159."
+	},
+	"sn48-punaoghavagga": {
+		"englishSubtitle": "Another Chapter on Floods",
+		"description": "The seventeenth chapter of the Connected Discourses on the Faculties, containing discourses 169."
+	},
+	"sn49-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The first chapter of the Connected Discourses on the Right Efforts, containing discourses 1."
+	},
+	"sn49-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The second chapter of the Connected Discourses on the Right Efforts, containing discourses 13."
+	},
+	"sn49-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The third chapter of the Connected Discourses on the Right Efforts, containing discourses 23."
+	},
+	"sn49-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The fourth chapter of the Connected Discourses on the Right Efforts, containing discourses 35."
+	},
+	"sn49-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The fifth chapter of the Connected Discourses on the Right Efforts, containing discourses 45."
+	},
+	"sn50-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The first chapter of the Connected Discourses on the Powers, containing discourses 1."
+	},
+	"sn50-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The second chapter of the Connected Discourses on the Powers, containing discourses 13."
+	},
+	"sn50-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The third chapter of the Connected Discourses on the Powers, containing discourses 23."
+	},
+	"sn50-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The fourth chapter of the Connected Discourses on the Powers, containing discourses 35."
+	},
+	"sn50-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The fifth chapter of the Connected Discourses on the Powers, containing discourses 45."
+	},
+	"sn50-punagangapeyyalavagga": {
+		"englishSubtitle": "Another Chapter on the Ganges",
+		"description": "The sixth chapter of the Connected Discourses on the Powers, containing discourses 55."
+	},
+	"sn50-punaappamadavagga": {
+		"englishSubtitle": "Another Chapter on Diligence",
+		"description": "The seventh chapter of the Connected Discourses on the Powers, containing discourses 67."
+	},
+	"sn50-punabalakaraniyavagga": {
+		"englishSubtitle": "Another Chapter on Hard Work",
+		"description": "The eighth chapter of the Connected Discourses on the Powers, containing discourses 77."
+	},
+	"sn50-punaesanavagga": {
+		"englishSubtitle": "Another Chapter on Searches",
+		"description": "The ninth chapter of the Connected Discourses on the Powers, containing discourses 89."
+	},
+	"sn50-punaoghavagga": {
+		"englishSubtitle": "Another Chapter on Floods",
+		"description": "The tenth chapter of the Connected Discourses on the Powers, containing discourses 99."
+	},
+	"sn51-capalavagga": {
+		"englishSubtitle": "The Chapter at the Cāpāla Shrine",
+		"description": "The first chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 1–10."
+	},
+	"sn51-pasadakampanavagga": {
+		"englishSubtitle": "The Chapter on Shaking the Stilt Longhouse",
+		"description": "The second chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 11–20."
+	},
+	"sn51-ayogulavagga": {
+		"englishSubtitle": "The Chapter on the Iron Ball",
+		"description": "The third chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 21–32."
+	},
+	"sn51-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The fourth chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 33."
+	},
+	"sn51-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The fifth chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 45."
+	},
+	"sn51-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The sixth chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 55."
+	},
+	"sn51-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The seventh chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 67."
+	},
+	"sn51-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The eighth chapter of the Connected Discourses on the Bases of Psychic Power, containing discourses 77."
+	},
+	"sn52-rahogatavagga": {
+		"englishSubtitle": "The Chapter in Private",
+		"description": "The first chapter of the Connected Discourses with Anuruddha, containing discourses 1–10."
+	},
+	"sn52-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses with Anuruddha, containing discourses 11–24."
+	},
+	"sn53-gangapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Ganges",
+		"description": "The first chapter of the Connected Discourses on Collectedness, containing discourses 1."
+	},
+	"sn53-appamadavagga": {
+		"englishSubtitle": "Abbreviated Texts on Diligence",
+		"description": "The second chapter of the Connected Discourses on Collectedness, containing discourses 13."
+	},
+	"sn53-balakaraniyavagga": {
+		"englishSubtitle": "Abbreviated Texts on Hard Work",
+		"description": "The third chapter of the Connected Discourses on Collectedness, containing discourses 23."
+	},
+	"sn53-esanavagga": {
+		"englishSubtitle": "Abbreviated Texts on Searches",
+		"description": "The fourth chapter of the Connected Discourses on Collectedness, containing discourses 35."
+	},
+	"sn53-oghavagga": {
+		"englishSubtitle": "Abbreviated Texts on Floods",
+		"description": "The fifth chapter of the Connected Discourses on Collectedness, containing discourses 45."
+	},
+	"sn54-ekadhammavagga": {
+		"englishSubtitle": "The Chapter on One Thing",
+		"description": "The first chapter of the Connected Discourses on Mindfulness of Breathing, containing discourses 1–10."
+	},
+	"sn54-dutiyavagga": {
+		"englishSubtitle": "The Second Chapter",
+		"description": "The second chapter of the Connected Discourses on Mindfulness of Breathing, containing discourses 11–20."
+	},
+	"sn55-veludvaravagga": {
+		"englishSubtitle": "The Chapter at Bamboo Gate",
+		"description": "The first chapter of the Connected Discourses on Stream-Entry, containing discourses 1–10."
+	},
+	"sn55-rajakaramavagga": {
+		"englishSubtitle": "The Chapter at the Royal Park",
+		"description": "The second chapter of the Connected Discourses on Stream-Entry, containing discourses 11–20."
+	},
+	"sn55-sarananivagga": {
+		"englishSubtitle": "The Chapter on Going for Refuge",
+		"description": "The third chapter of the Connected Discourses on Stream-Entry, containing discourses 21–30."
+	},
+	"sn55-punnabhisandavagga": {
+		"englishSubtitle": "The Chapter on Overflowing Merit",
+		"description": "The fourth chapter of the Connected Discourses on Stream-Entry, containing discourses 31–40."
+	},
+	"sn55-sagathakapunnabhisandavagga": {
+		"englishSubtitle": "The Chapter on Overflowing Merit, With Verses",
+		"description": "The fifth chapter of the Connected Discourses on Stream-Entry, containing discourses 41–50."
+	},
+	"sn55-sappannavagga": {
+		"englishSubtitle": "The Chapter on a Wise Person",
+		"description": "The sixth chapter of the Connected Discourses on Stream-Entry, containing discourses 51–61."
+	},
+	"sn55-mahapannavagga": {
+		"englishSubtitle": "The Chapter on Great Wisdom",
+		"description": "The seventh chapter of the Connected Discourses on Stream-Entry, containing discourses 62–74."
+	},
+	"sn56-samadhivagga": {
+		"englishSubtitle": "The Chapter on Collectedness",
+		"description": "The first chapter of the Connected Discourses on the Truths, containing discourses 1–10."
+	},
+	"sn56-dhammacakkappavattanavagga": {
+		"englishSubtitle": "The Chapter on Rolling Forth the Wheel of Dhamma",
+		"description": "The second chapter of the Connected Discourses on the Truths, containing discourses 11–20."
+	},
+	"sn56-kotigamavagga": {
+		"englishSubtitle": "The Chapter at the Village of Koṭi",
+		"description": "The third chapter of the Connected Discourses on the Truths, containing discourses 21–30."
+	},
+	"sn56-sisapavanavagga": {
+		"englishSubtitle": "The Chapter in a Rosewood Forest",
+		"description": "The fourth chapter of the Connected Discourses on the Truths, containing discourses 31–40."
+	},
+	"sn56-papatavagga": {
+		"englishSubtitle": "The Chapter on a Cliff",
+		"description": "The fifth chapter of the Connected Discourses on the Truths, containing discourses 41–50."
+	},
+	"sn56-abhisamayavagga": {
+		"englishSubtitle": "The Chapter on Comprehension",
+		"description": "The sixth chapter of the Connected Discourses on the Truths, containing discourses 51–60."
+	},
+	"sn56-pathamaamakadhannapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on Raw Grain (1st)",
+		"description": "The seventh chapter of the Connected Discourses on the Truths, containing discourses 61–70."
+	},
+	"sn56-dutiyaamakadhannapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on Raw Grain (2nd)",
+		"description": "The eighth chapter of the Connected Discourses on the Truths, containing discourses 71–80."
+	},
+	"sn56-tatiyaamakadhannapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on Raw Grain (3rd)",
+		"description": "The ninth chapter of the Connected Discourses on the Truths, containing discourses 81–90."
+	},
+	"sn56-catutthaamakadhannapeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on Raw Grain (4th)",
+		"description": "The tenth chapter of the Connected Discourses on the Truths, containing discourses 91–96."
+	},
+	"sn56-pancagatipeyyalavagga": {
+		"englishSubtitle": "Abbreviated Texts on the Five Destinations",
+		"description": "The eleventh chapter of the Connected Discourses on the Truths, containing discourses 102–131."
+	}
+}

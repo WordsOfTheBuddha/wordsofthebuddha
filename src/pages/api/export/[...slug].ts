@@ -24,6 +24,7 @@ import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
 	buildPdfHtml,
+	countCollectionDiscourses,
 	type PdfExportContentOptions,
 	type PdfPaliOptions,
 	type PdfVizImageMode,
@@ -312,10 +313,7 @@ async function runPdfGeneration(
 			selectedDiscourseSlugs,
 		);
 
-		const totalDiscourses = collectionData.chapters.reduce(
-			(acc, ch) => acc + ch.discourses.length,
-			0,
-		);
+		const totalDiscourses = countCollectionDiscourses(collectionData);
 
 		if (totalDiscourses === 0) {
 			return errorResponse(
