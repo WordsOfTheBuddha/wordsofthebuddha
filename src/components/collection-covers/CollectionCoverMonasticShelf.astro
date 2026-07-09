@@ -1,0 +1,407 @@
+---
+import type { CollectionCoverItem } from "./collectionVisuals";
+import {
+	badgeText,
+	formatCount,
+	getCollectionVisual,
+	illustrationsLabel,
+	listeningLabel,
+} from "./collectionVisuals";
+
+interface Props {
+	items: CollectionCoverItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="monastic-shelf-grid">
+	{
+		items.map((item) => {
+			const visual = getCollectionVisual(item.slug);
+			const label = badgeText(item.badge);
+
+			const illustratedNote =
+				item.illustratedCount != null && item.illustratedCount > 0
+					? `, with ${formatCount(item.illustratedCount)} illustrations`
+					: "";
+			const listeningNote = item.hasListeningMode ? ", listen available" : "";
+
+			return (
+				<div
+					class="monastic-cover group"
+					style={`--accent: ${visual.accent};`}
+				>
+					<div class="monastic-cover-inner">
+						{(label ||
+							(item.illustratedCount != null &&
+								item.illustratedCount > 0)) && (
+							<div class="monastic-top-right">
+								{label && (
+									<span class="monastic-ribbon" aria-label={label}>
+										{label}
+									</span>
+								)}
+								{item.illustratedCount != null &&
+									item.illustratedCount > 0 && (
+										<span class="monastic-illustrations">
+											{illustrationsLabel(item.illustratedCount)}
+										</span>
+									)}
+							</div>
+						)}
+						<div class="monastic-header">
+							<span class="monastic-slug">{item.slug}</span>
+						</div>
+						<span class="monastic-pali">{item.paliName}</span>
+						<span class="monastic-english">{item.englishName}</span>
+						<div class="monastic-footer">
+							<span class="monastic-count-text">
+								{formatCount(item.count)} {item.suffix}
+							</span>
+							{item.listenHref && (
+								<a
+									href={item.listenHref}
+									class="monastic-listen"
+									aria-label={`Listen to ${item.englishName}`}
+									title={`Listen to ${item.englishName}`}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										aria-hidden="true"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M4 13.5V11a8 8 0 0 1 16 0v2.5"
+										/>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M4 14.25v2.25a1.5 1.5 0 0 0 1.5 1.5H7.5a1.5 1.5 0 0 0 1.5-1.5v-2.25"
+										/>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M20 14.25v2.25a1.5 1.5 0 0 1-1.5 1.5h-2a1.5 1.5 0 0 1-1.5-1.5v-2.25"
+										/>
+									</svg>
+									<span class="monastic-listen-label">{listeningLabel()}</span>
+								</a>
+							)}
+						</div>
+					</div>
+					<a
+						href={`/${item.slug}`}
+						class="monastic-cover-link"
+						aria-label={`${item.englishName} — ${item.paliName}, ${formatCount(item.count)} ${item.suffix}${illustratedNote}${listeningNote}`}
+					>
+						<span class="sr-only">
+							{item.englishName} — {item.paliName}
+						</span>
+					</a>
+				</div>
+			);
+		})
+	}
+</div>
+
+<style>
+	.monastic-shelf-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+
+	@media (min-width: 640px) {
+		.monastic-shelf-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.monastic-shelf-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+
+	.monastic-cover {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		aspect-ratio: 2 / 3;
+		padding: 0.75rem 0.625rem 0.625rem;
+		border-radius: 0.375rem;
+		border: 1px solid var(--surface-border);
+		border-left: 4px solid var(--accent);
+		background:
+			linear-gradient(
+				90deg,
+				color-mix(in srgb, var(--accent) 16%, var(--surface-elevated)) 0%,
+				transparent 14%
+			),
+			linear-gradient(
+				180deg,
+				color-mix(in srgb, var(--accent) 8%, var(--surface-elevated)) 0%,
+				var(--surface-elevated) 50%,
+				color-mix(in srgb, var(--accent) 5%, var(--surface-paper)) 100%
+			);
+		color: var(--text-color);
+		box-shadow:
+			2px 3px 10px color-mix(in srgb, #000 16%, transparent),
+			inset 0 0 0 1px color-mix(in srgb, var(--surface-ink) 5%, transparent);
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.monastic-cover-inner {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.monastic-cover-link {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		border-radius: inherit;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.monastic-cover-link:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.monastic-cover:hover {
+		box-shadow:
+			4px 6px 18px color-mix(in srgb, #000 22%, transparent),
+			inset 0 0 0 1px color-mix(in srgb, var(--surface-ink) 8%, transparent);
+		transform: translateY(-2px);
+	}
+
+	html.dark .monastic-cover {
+		background:
+			linear-gradient(
+				90deg,
+				color-mix(in srgb, #2a1f14 40%, transparent) 0%,
+				transparent 12%
+			),
+			linear-gradient(180deg, #2e261c 0%, #1f1c17 55%, #1a1713 100%);
+		color: var(--surface-ink);
+		box-shadow:
+			inset 0 1px 0 color-mix(in srgb, var(--surface-ink) 8%, transparent),
+			0 2px 8px color-mix(in srgb, #000 35%, transparent);
+	}
+
+	html.dark .monastic-cover:hover {
+		box-shadow:
+			inset 0 1px 0 color-mix(in srgb, var(--surface-ink) 12%, transparent),
+			0 6px 20px color-mix(in srgb, #000 45%, transparent);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.monastic-cover {
+			transition: none;
+		}
+		.monastic-cover:hover {
+			transform: none;
+		}
+	}
+
+	.monastic-top-right {
+		position: absolute;
+		top: 0.5rem;
+		right: -0.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.25rem;
+		max-width: calc(100% - 0.5rem);
+		z-index: 1;
+	}
+
+	.monastic-ribbon {
+		padding: 0.12rem 0.4rem 0.12rem 0.5rem;
+		font-size: 0.5rem;
+		font-weight: 600;
+		letter-spacing: 0.015em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		color: var(--surface-paper);
+		background: var(--accent);
+		border-radius: 0.125rem 0 0 0.125rem;
+		box-shadow:
+			-1px 2px 4px color-mix(in srgb, #000 22%, transparent),
+			inset 0 1px 0 color-mix(in srgb, #fff 20%, transparent);
+		line-height: 1.2;
+	}
+
+	html.dark .monastic-ribbon {
+		box-shadow: -1px 2px 4px color-mix(in srgb, #000 30%, transparent);
+	}
+
+	.monastic-header {
+		width: 100%;
+		max-width: calc(100% - 2.5rem);
+	}
+
+	.monastic-slug {
+		font-family: "Spectral", serif;
+		font-size: 0.625rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+
+	html.dark .monastic-slug {
+		font-family: inherit;
+		font-weight: 600;
+		color: color-mix(in srgb, var(--surface-ink) 55%, transparent);
+	}
+
+	.monastic-illustrations {
+		display: inline-block;
+		margin-right: 0.25rem;
+		padding: 0.12rem 0.4rem 0.12rem 0.45rem;
+		font-family: "Spectral", serif;
+		font-size: 0.52rem;
+		font-weight: 500;
+		line-height: 1.3;
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+		color: color-mix(in srgb, var(--accent) 40%, var(--text-color));
+		background: color-mix(in srgb, var(--accent) 14%, var(--surface-elevated));
+		border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--surface-border));
+		border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+		border-radius: 0.2rem;
+	}
+
+	html.dark .monastic-illustrations {
+		color: color-mix(in srgb, var(--accent) 35%, var(--surface-ink));
+		background: color-mix(in srgb, var(--accent) 12%, transparent);
+		border-color: color-mix(in srgb, var(--accent) 26%, transparent);
+		border-left-color: color-mix(in srgb, var(--accent) 50%, transparent);
+	}
+
+	.monastic-pali {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		text-align: center;
+		font-family: "Spectral", serif;
+		font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+		font-weight: 500;
+		line-height: 1.25;
+		padding: 0.25rem 0;
+	}
+
+	.monastic-english {
+		font-family: "Spectral", serif;
+		font-size: 0.7rem;
+		font-weight: 400;
+		text-align: center;
+		color: var(--text-muted);
+		line-height: 1.2;
+		margin-bottom: 0.35rem;
+	}
+
+	html.dark .monastic-english {
+		color: color-mix(in srgb, var(--surface-ink) 75%, transparent);
+	}
+
+	.monastic-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.35rem;
+		width: 100%;
+		font-size: 0.6rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--text-muted);
+		border-top: 1px dashed color-mix(in srgb, var(--surface-border) 80%, transparent);
+		padding-top: 0.35rem;
+		line-height: 1.3;
+	}
+
+	html.dark .monastic-footer {
+		color: color-mix(in srgb, var(--surface-ink) 50%, transparent);
+		border-top: 1px solid color-mix(in srgb, var(--surface-ink) 12%, transparent);
+	}
+
+	.monastic-count-text {
+		white-space: nowrap;
+		text-align: left;
+	}
+
+	.monastic-listen {
+		display: inline-flex;
+		flex-shrink: 0;
+		align-items: center;
+		gap: 0.15rem;
+		position: relative;
+		z-index: 2;
+		pointer-events: auto;
+		text-decoration: none;
+		color: color-mix(in srgb, var(--accent) 60%, var(--text-muted));
+		transition: color 0.15s ease;
+	}
+
+	.monastic-listen:hover,
+	.monastic-listen:focus-visible {
+		color: color-mix(in srgb, var(--accent) 75%, var(--text-color));
+	}
+
+	.monastic-cover:hover .monastic-listen {
+		color: color-mix(in srgb, var(--accent) 75%, var(--text-color));
+	}
+
+	.monastic-listen svg {
+		display: block;
+		width: 0.7rem;
+		height: 0.7rem;
+	}
+
+	.monastic-listen-label {
+		font-family: "Spectral", serif;
+		font-size: 0.55rem;
+		font-weight: 500;
+		letter-spacing: 0.02em;
+	}
+
+	html.dark .monastic-listen {
+		color: color-mix(in srgb, var(--accent) 50%, var(--surface-ink));
+	}
+
+	html.dark .monastic-cover:hover .monastic-listen {
+		color: color-mix(in srgb, var(--accent) 65%, var(--surface-ink));
+	}
+</style>

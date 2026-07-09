@@ -1,27 +1,247 @@
 ---
-import { startHereEntries } from "../data/collectionHome";
+import type { StartHereEntry } from "../data/discoverStartHere";
+
+interface Props {
+	items: StartHereEntry[];
+}
+
+const { items } = Astro.props;
 ---
 
-<section class="max-w-4xl mx-auto px-4 mb-14" aria-labelledby="start-here-heading">
-	<h2 id="start-here-heading" class="text-sm font-medium uppercase tracking-wide mb-3" style="color:var(--text-muted);">
+<section class="max-w-5xl mx-auto px-4 mb-14" aria-labelledby="start-here-heading">
+	<h2
+		id="start-here-heading"
+		class="text-sm font-medium uppercase tracking-wide mb-3"
+		style="color:var(--text-muted);"
+	>
 		Start here
 	</h2>
-	<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+	<div class="start-here-grid">
 		{
-			startHereEntries.map(({ href, label, subtitle }) => (
-				<a
-					href={href}
-					class="group rounded-xl border p-4 text-center no-underline transition-shadow hover:shadow-md"
-					style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);"
-				>
-					<div class="font-semibold text-sm sm:text-base group-hover:text-[var(--link-color)] transition-colors">
-						{label}
+			items.map((item) => (
+				<article class="start-here-card" style={`--accent: ${item.accent};`}>
+					<div class="start-here-top">
+						<span class="start-here-media" aria-hidden="true">
+							{item.type === "anthology" && item.imagePath ? (
+								<img
+									src={item.imagePath}
+									alt=""
+									class="start-here-thumb"
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<span class="start-here-play">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										aria-hidden="true"
+									>
+										<path d="M9.5 6.8v10.4c0 .7.76 1.13 1.36.78l8.64-5.2a.9.9 0 0 0 0-1.56l-8.64-5.2a.9.9 0 0 0-1.36.78Z" />
+									</svg>
+								</span>
+							)}
+						</span>
+
+						<span class="start-here-copy">
+							<span class="start-here-title">{item.title}</span>
+							<span class="start-here-subtitle">{item.subtitle}</span>
+						</span>
 					</div>
-					<div class="text-xs mt-1" style="color:var(--text-muted);">
-						{subtitle}
+
+					<div class="start-here-footer">
+						<a href={item.href} class="start-here-cta no-underline">
+							{item.ctaLabel}
+						</a>
 					</div>
-				</a>
+				</article>
 			))
 		}
 	</div>
 </section>
+
+<style>
+	.start-here-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.625rem;
+		align-items: stretch;
+	}
+
+	@media (min-width: 640px) {
+		.start-here-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0.75rem;
+		}
+	}
+
+	.start-here-card {
+		display: flex;
+		flex-direction: column;
+		min-height: 7.5rem;
+		border-radius: 0.375rem;
+		border: 1px solid var(--surface-border);
+		border-left: 4px solid var(--accent);
+		background:
+			linear-gradient(
+				90deg,
+				color-mix(in srgb, var(--accent) 14%, var(--surface-elevated)) 0%,
+				transparent 22%
+			),
+			var(--surface-elevated);
+		color: var(--text-color);
+		box-shadow:
+			1px 2px 6px color-mix(in srgb, #000 12%, transparent),
+			inset 0 0 0 1px color-mix(in srgb, var(--surface-ink) 4%, transparent);
+		overflow: hidden;
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.start-here-card:hover {
+		box-shadow:
+			2px 4px 12px color-mix(in srgb, #000 18%, transparent),
+			inset 0 0 0 1px color-mix(in srgb, var(--surface-ink) 6%, transparent);
+		transform: translateY(-1px);
+	}
+
+	html.dark .start-here-card {
+		background:
+			linear-gradient(
+				90deg,
+				color-mix(in srgb, var(--accent) 18%, #2e261c) 0%,
+				transparent 24%
+			),
+			#2a241c;
+		color: var(--surface-ink);
+		box-shadow:
+			inset 0 1px 0 color-mix(in srgb, var(--surface-ink) 6%, transparent),
+			0 1px 6px color-mix(in srgb, #000 30%, transparent);
+	}
+
+	html.dark .start-here-card:hover {
+		box-shadow:
+			inset 0 1px 0 color-mix(in srgb, var(--surface-ink) 10%, transparent),
+			0 4px 14px color-mix(in srgb, #000 40%, transparent);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.start-here-card {
+			transition: none;
+		}
+		.start-here-card:hover {
+			transform: none;
+		}
+	}
+
+	.start-here-top {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex: 1;
+		padding: 0.875rem 0.875rem 0.625rem;
+		color: inherit;
+	}
+
+	.start-here-media {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3.75rem;
+		height: 5.375rem;
+	}
+
+	.start-here-thumb {
+		display: block;
+		width: 3.5rem;
+		height: 5.125rem;
+		object-fit: cover;
+		object-position: center top;
+		border-radius: 0.125rem;
+		border: 1px solid color-mix(in srgb, var(--surface-border) 80%, transparent);
+		box-shadow: 1px 2px 5px color-mix(in srgb, #000 16%, transparent);
+	}
+
+	.start-here-play {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 3.25rem;
+		height: 3.25rem;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--accent) 88%, #000);
+		color: var(--surface-paper);
+		box-shadow:
+			0 2px 8px color-mix(in srgb, #000 20%, transparent),
+			inset 0 1px 0 color-mix(in srgb, #fff 18%, transparent);
+		transition: transform 0.2s ease;
+	}
+
+	.start-here-play svg {
+		display: block;
+		width: 1.125rem;
+		height: 1.125rem;
+	}
+
+	.start-here-card:hover .start-here-play {
+		transform: scale(1.06);
+	}
+
+	.start-here-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.25rem;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.start-here-title {
+		font-family: "Spectral", serif;
+		font-size: clamp(0.875rem, 2vw, 0.95rem);
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	.start-here-subtitle {
+		font-size: 0.7rem;
+		line-height: 1.35;
+		color: var(--text-muted);
+	}
+
+	html.dark .start-here-subtitle {
+		color: color-mix(in srgb, var(--surface-ink) 62%, transparent);
+	}
+
+	.start-here-footer {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		margin: 0 0.875rem 0.75rem;
+		padding-top: 0.5rem;
+		border-top: 1px dashed color-mix(in srgb, var(--surface-border) 70%, transparent);
+	}
+
+	html.dark .start-here-footer {
+		border-top-color: color-mix(in srgb, var(--surface-ink) 10%, transparent);
+	}
+
+	.start-here-cta {
+		font-size: 0.7rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: var(--accent);
+		transition: opacity 0.15s ease;
+	}
+
+	.start-here-cta:hover {
+		opacity: 0.85;
+	}
+
+	html.dark .start-here-cta {
+		color: color-mix(in srgb, var(--surface-ink) 88%, var(--accent));
+	}
+</style>

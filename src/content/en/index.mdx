@@ -6,12 +6,12 @@ fetter: ignorance
 slug: index
 ---
 
-import StartHere from '../../components/StartHere.astro'
 import CollectionCards from '../../components/CollectionCards.astro'
 import LatestDiscourses from '../../components/LatestDiscourses.astro'
-import TopAnthologies from '../../components/TopAnthologies.astro'
 import DailyQuote from '../../components/DailyQuote.astro'
 import SacredMandala from '../../components/SacredMandala.astro'
+import StartHere from '../../components/StartHere.astro'
+import { discoverStartHereEntries } from '../../data/discoverStartHere'
 
 {/* ── Hero ── */}
 <SacredMandala variant="hero" />
@@ -24,13 +24,16 @@ import SacredMandala from '../../components/SacredMandala.astro'
   </p>
   <div class="flex flex-wrap gap-2 justify-center">
     <a href="/discover" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-white text-sm font-medium shadow-sm transition-colors hover:opacity-95" style="background-color:var(--primary-color);">
-      Start Exploring
+      Explore
     </a>
     <a href="/random" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-md text-sm font-medium border transition-colors hover:bg-[rgba(44,44,44,0.08)] dark:hover:bg-[rgba(231,220,196,0.12)]" style="border-color:var(--surface-border); color:var(--text-color);">
       Random Reading
     </a>
   </div>
 </section>
+
+{/* ── Start Here ── */}
+<StartHere items={discoverStartHereEntries} />
 
 {/* ── Daily Quote ── */}
 <DailyQuote variant="simple" />
@@ -156,9 +159,9 @@ import SacredMandala from '../../components/SacredMandala.astro'
 `}</script>
 
 {/* ── Collections ── */}
-<section class="max-w-4xl mx-auto px-4 mb-14">
+<section class="max-w-5xl mx-auto px-4 mb-14">
   <h2 class="text-2xl font-semibold mb-2">Explore the Collections</h2>
-  <p class="mb-4 text-sm" style="color:var(--text-muted);">Browse the major texts of the Pāli Canon, with parallel Pāli and English on every page.</p>
+  <p class="mb-5 text-sm" style="color:var(--text-muted);">Browse the major texts of the Pāli Canon, with parallel Pāli and English on every page.</p>
   <CollectionCards />
 </section>
 
@@ -169,13 +172,4 @@ import SacredMandala from '../../components/SacredMandala.astro'
     <a href="/discover" class="text-sm font-medium" style="color:var(--link-color);">View all &rarr;</a>
   </div>
   <LatestDiscourses />
-</section>
-
-{/* ── Anthologies ── */}
-<section class="max-w-4xl mx-auto px-4 mb-14">
-  <div class="flex items-baseline justify-between mb-2">
-    <h2 class="text-2xl font-semibold">Anthologies</h2>
-    <a href="/anthologies" class="text-sm font-medium" style="color:var(--link-color);">View all &rarr;</a>
-  </div>
-  <TopAnthologies />
 </section>

@@ -91,32 +91,3 @@ export const homeCollections: HomeCollection[] = [
 		badge: "new-translation",
 	},
 ];
-
-export type StartHereEntry = {
-	href: string;
-	label: string;
-	subtitle: string;
-};
-
-export const startHereEntries: StartHereEntry[] = [
-	{
-		href: "/dhp",
-		label: "Dhammapada",
-		subtitle: "Verses to begin with",
-	},
-	{
-		href: "/iti",
-		label: "Itivuttaka",
-		subtitle: "Short sayings",
-	},
-	{
-		href: "/ud",
-		label: "Udāna",
-		subtitle: "Inspired utterances",
-	},
-	{
-		href: "/sn3.3",
-		label: "SN 3.3",
-		subtitle: "Aging and Death",
-	},
-];

@@ -1,61 +1,8 @@
 ---
-import { collectionAvailability } from "../data/collectionAvailability";
-import { homeCollections } from "../data/collectionHome";
+import CollectionCoverMonasticShelf from "./collection-covers/CollectionCoverMonasticShelf.astro";
+import { buildCoverItems } from "./collection-covers/buildCoverItems";
 
-const badgeLabels: Record<string, string> = {
-	"new-translation": "New translation",
-};
+const items = buildCoverItems();
 ---
 
-<div class="grid gap-3">
-	{
-		homeCollections.map(
-			({ slug, englishName, paliName, description, suffix, badge }) => {
-				const avail = collectionAvailability[slug];
-				const count = avail?.readableCount ?? avail?.total ?? 0;
-
-				return (
-					<a
-						href={`/${slug}`}
-						class="group rounded-xl border p-4 sm:p-5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 no-underline transition-shadow hover:shadow-md"
-						style="border-color:var(--surface-border); background:var(--surface-elevated); color:var(--text-color);"
-					>
-						<div class="min-w-0 flex-1">
-							<div class="flex items-center gap-2 flex-wrap">
-								<h3 class="text-base font-semibold !mt-0 mb-0 group-hover:text-[var(--link-color)] transition-colors">
-									{englishName}
-									<span
-										class="font-normal text-sm ml-1"
-										style="color:var(--text-muted);"
-									>
-										{paliName}
-									</span>
-								</h3>
-								{badge && (
-									<span
-										class="px-2 py-0.5 text-xs rounded-full font-medium"
-										style="background:var(--surface-paper); color:var(--text-muted); border:1px solid var(--surface-border);"
-									>
-										{badgeLabels[badge]}
-									</span>
-								)}
-							</div>
-							<p
-								class="text-sm mt-1 mb-0"
-								style="color:var(--text-muted);"
-							>
-								{description}
-							</p>
-						</div>
-						<div
-							class="text-xs shrink-0 tabular-nums sm:text-right sm:pt-0.5"
-							style="color:var(--text-muted);"
-						>
-							{count.toLocaleString()} {suffix}
-						</div>
-					</a>
-				);
-			},
-		)
-	}
-</div>
+<CollectionCoverMonasticShelf items={items} />

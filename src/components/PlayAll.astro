@@ -115,14 +115,14 @@ const disabled = !href;
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.48rem 0.8rem;
-		border: 1px solid color-mix(in srgb, #d6c79b 38%, transparent);
+		border: 1px solid color-mix(in srgb, var(--text-color) 22%, var(--surface-border));
 		border-radius: 0.75rem;
 		background: linear-gradient(
 			180deg,
-			color-mix(in srgb, #d6c79b 16%, transparent),
-			color-mix(in srgb, #d6c79b 7%, transparent)
+			color-mix(in srgb, var(--text-color) 8%, var(--surface-elevated)),
+			color-mix(in srgb, var(--text-color) 4%, var(--surface-elevated))
 		);
-		color: color-mix(in srgb, #e7dcbe 85%, #d6c79b 15%);
+		color: var(--text-color);
 		font-size: 0.84rem;
 		font-weight: 600;
 		line-height: 1;
@@ -133,11 +133,29 @@ const disabled = !href;
 	.play-all:focus-visible {
 		background: linear-gradient(
 			180deg,
+			color-mix(in srgb, var(--text-color) 12%, var(--surface-elevated)),
+			color-mix(in srgb, var(--text-color) 6%, var(--surface-elevated))
+		);
+		border-color: color-mix(in srgb, var(--text-color) 32%, var(--surface-border));
+		transform: translateY(-0.5px);
+	}
+	html.dark .play-all {
+		border-color: color-mix(in srgb, #d6c79b 38%, transparent);
+		background: linear-gradient(
+			180deg,
+			color-mix(in srgb, #d6c79b 16%, transparent),
+			color-mix(in srgb, #d6c79b 7%, transparent)
+		);
+		color: color-mix(in srgb, #e7dcbe 85%, #d6c79b 15%);
+	}
+	html.dark .play-all:hover,
+	html.dark .play-all:focus-visible {
+		background: linear-gradient(
+			180deg,
 			color-mix(in srgb, #d6c79b 23%, transparent),
 			color-mix(in srgb, #d6c79b 12%, transparent)
 		);
 		border-color: color-mix(in srgb, #d6c79b 62%, transparent);
-		transform: translateY(-0.5px);
 	}
 	.play-all svg {
 		width: 13px;
@@ -153,7 +171,7 @@ const disabled = !href;
 		font-weight: 500;
 		padding-left: 0.22rem;
 		margin-left: 0.08rem;
-		border-left: 1px solid color-mix(in srgb, #d6c79b 35%, transparent);
+		border-left: 1px solid color-mix(in srgb, currentColor 35%, transparent);
 	}
 	.play-all.is-disabled {
 		opacity: 0.55;

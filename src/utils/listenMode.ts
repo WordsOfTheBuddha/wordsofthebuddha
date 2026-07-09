@@ -7,6 +7,16 @@
 
 import { routes } from "./routes";
 import { audioSlugs } from "../data/audioStatus";
+import { slugMatchesCollectionPattern } from "./collectionPatterns";
+
+/** Published discourse slugs in nav order for a collection root (e.g. mn, dhp). */
+export function countCollectionRoutes(collectionSlug: string): number {
+	let count = 0;
+	for (const slug of routes) {
+		if (slugMatchesCollectionPattern(slug, collectionSlug)) count++;
+	}
+	return count;
+}
 
 /**
  * Format a discourse slug as a human-friendly display ID.
@@ -27,6 +37,52 @@ export function audioRoutes(): readonly string[] {
 /** True when the slug has a known audio entry. */
 export function isAudioSlug(slug: string): boolean {
 	return audioSlugs.has(slug);
+}
+
+/** Count audio-bearing discourses in a collection root slug (e.g. mn, dhp). */
+export function countCollectionAudioDiscourses(collectionSlug: string): number {
+	let count = 0;
+	for (const slug of audioSlugs) {
+		if (slugMatchesCollectionPattern(slug, collectionSlug)) count++;
+	}
+	return count;
+}
+
+/** Minimum share of discourses with audio before showing the collection listen indicator. */
+export const LISTENING_MODE_THRESHOLD = 0.5;
+
+/**
+ * True when enough published discourses in a collection have audio for the
+ * cover listen badge. Compares audio slugs to route slugs (same granularity).
+ */
+export function collectionHasListeningMode(collectionSlug: string): boolean {
+	const routeCount = countCollectionRoutes(collectionSlug);
+	if (routeCount <= 0) return false;
+	const audioCount = countCollectionAudioDiscourses(collectionSlug);
+	return (
+		audioCount > 0 && audioCount / routeCount >= LISTENING_MODE_THRESHOLD
+	);
+}
+
+/** First audio-bearing slug in a collection, in site nav order. */
+export function firstCollectionAudioSlug(
+	collectionSlug: string,
+): string | null {
+	for (const slug of routes) {
+		if (
+			slugMatchesCollectionPattern(slug, collectionSlug) &&
+			audioSlugs.has(slug)
+		) {
+			return slug;
+		}
+	}
+	return null;
+}
+
+/** Listen-mode entry URL for a collection, or null when none. */
+export function collectionListenHref(collectionSlug: string): string | null {
+	const first = firstCollectionAudioSlug(collectionSlug);
+	return first ? `/listen/${first}` : null;
 }
 
 /** Adjacent audio-bearing slugs in nav-mode queue order. */

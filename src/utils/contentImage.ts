@@ -359,3 +359,26 @@ export function getAllContentImageIds(): string[] {
 
 	return [...new Set(ids)]; // Dedupe in case multiple formats exist
 }
+
+/**
+ * Count distinct illustrated discourses for a collection root slug
+ * (e.g. mn → mn1.svg, mn118.svg; mn9.svg + mn9-bk.svg → one discourse).
+ * Uses the same top-level content-images glob as discourse image discovery.
+ */
+export function countCollectionIllustratedDiscourses(
+	collectionSlug: string,
+): number {
+	const root = collectionSlug.toLowerCase().split(/[-/]/)[0];
+	if (!/^[a-z]{1,8}$/.test(root)) return 0;
+
+	const discourseIds = new Set<string>();
+	const idPrefix = new RegExp(`^(${root}\\d+(?:\\.\\d+)?)`);
+
+	for (const fn of svgBasenamesLower) {
+		if (!svgBasenameLooksLikeDiscourseInRoot(fn, root)) continue;
+		const match = fn.match(idPrefix);
+		if (match) discourseIds.add(match[1]);
+	}
+
+	return discourseIds.size;
+}

@@ -5,29 +5,30 @@ import BottomDrawer from "../../components/BottomDrawer.astro";
 import ExploreWidget from "../../components/ExploreWidget.astro";
 import StartHere from "../../components/StartHere.astro";
 import CollectionCards from "../../components/CollectionCards.astro";
+import { discoverStartHereEntries } from "../../data/discoverStartHere";
 
 const seoTitle = "Discover the Words of the Buddha";
 ---
 
-<Layout seoTitle={seoTitle} showAuth={true} showSearch={false}>
+<Layout seoTitle={seoTitle} showAuth={false} showSearch={false}>
 	<main class="container mx-auto px-3 sm:px-4 pt-0">
 		<section class="max-w-4xl mx-auto px-1 pt-10 pb-4 text-center">
 			<h1
-				class="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-gradient-accent"
+				class="text-2xl sm:text-4xl font-bold tracking-tight mb-3 text-gradient-accent"
 				style="font-family:'Spectral', serif;"
 			>
-				Discover the Teachings
+				Discover the Dhamma through the Buddha's words
 			</h1>
 			<p class="text-lg max-w-2xl mx-auto mb-0" style="color:var(--text-muted);">
-				Read parallel Pāli and English texts — browse collections, topics, persons, and similes.
+				Read parallel Pāli and English texts — browse collections or explore by topics, persons, and similes.
 			</p>
 		</section>
 
-		<StartHere />
+		<StartHere items={discoverStartHereEntries} />
 
-		<section class="max-w-4xl mx-auto px-4 mb-14">
+		<section class="max-w-5xl mx-auto px-4 mb-14">
 			<h2 class="text-2xl font-semibold mb-2">Explore the Collections</h2>
-			<p class="mb-4 text-sm" style="color:var(--text-muted);">
+			<p class="mb-5 text-sm" style="color:var(--text-muted);">
 				Browse the major texts of the Pāli Canon, with parallel Pāli and English on every page.
 			</p>
 			<CollectionCards />

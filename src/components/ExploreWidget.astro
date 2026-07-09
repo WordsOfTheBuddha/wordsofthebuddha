@@ -360,11 +360,9 @@ const isSearchOnly = mode === "search-only";
 			</div>
 		</div>
 
-		<!-- No Results Message -->
+		<!-- No Results Message (copy set by client script) -->
 		<div id="no-results" class="hidden text-center py-8">
-			<p class="text-gray-600 dark:text-gray-400">
-				No results found. Try adjusting your search or filters.
-			</p>
+			<p id="no-results-message" class="text-sm sm:text-base" style="color:var(--text-muted);"></p>
 		</div>
 	</div>
 </div>
@@ -504,6 +502,7 @@ const isSearchOnly = mode === "search-only";
 	let searchResultsList: HTMLElement | null = null;
 	let searchResultsCount: HTMLElement | null = null;
 	let noResultsEl: HTMLElement | null = null;
+	let noResultsMessageEl: HTMLElement | null = null;
 	let searchInput: HTMLInputElement | null = null;
 	let searchHelpBtn: HTMLButtonElement | null = null;
 	let searchHelp: HTMLElement | null = null;
@@ -524,6 +523,7 @@ const isSearchOnly = mode === "search-only";
 		searchResultsList = widget.querySelector("#search-results-list");
 		searchResultsCount = widget.querySelector("#search-results-count");
 		noResultsEl = widget.querySelector("#no-results");
+		noResultsMessageEl = widget.querySelector("#no-results-message");
 		searchInput = widget.querySelector("#search-input");
 		searchHelpBtn = widget.querySelector("#search-help-btn");
 		searchHelp = widget.querySelector("#search-help");
@@ -675,6 +675,7 @@ const isSearchOnly = mode === "search-only";
 		searchMode?.classList.remove("hidden");
 		browseResults?.classList.add("hidden");
 		searchResults?.classList.remove("hidden");
+		hideEmptyResultsMessage();
 		searchInput?.focus();
 		updateURL();
 	}
@@ -698,6 +699,46 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	// ==================== BROWSE MODE ====================
+	function hasBrowseFiltersSelected(): boolean {
+		return browseFilters.topicsQualities || browseFilters.similes || browseFilters.persons;
+	}
+
+	const NO_MATCHES_MESSAGE =
+		"No results found. Try adjusting your search or filters.";
+
+	function setEmptyResultsMessage(message: string) {
+		if (noResultsMessageEl) noResultsMessageEl.textContent = message;
+		if (noResultsEl) noResultsEl.classList.remove("hidden");
+	}
+
+	function hideEmptyResultsMessage() {
+		if (noResultsEl) noResultsEl.classList.add("hidden");
+		if (noResultsMessageEl) noResultsMessageEl.textContent = "";
+	}
+
+	function getBrowseEmptyMessage(): string {
+		if (!hasBrowseFiltersSelected()) {
+			return "Select one or more categories above—Topics & Qualities, Persons, or Similes—to begin browsing.";
+		}
+		return NO_MATCHES_MESSAGE;
+	}
+
+	function hasSearchContentFiltersSelected(): boolean {
+		return (
+			searchFilters.discourses ||
+			searchFilters.topicsQualities ||
+			searchFilters.similes ||
+			searchFilters.persons
+		);
+	}
+
+	function getSearchEmptyMessage(): string {
+		if (!hasSearchContentFiltersSelected()) {
+			return "Select what to search—Discourses, Topics & Qualities, Persons, or Similes—using the filters above.";
+		}
+		return NO_MATCHES_MESSAGE;
+	}
+
 	function renderBrowseResults() {
 		if (!browseResults || isSearchOnly) return;
 
@@ -736,10 +777,11 @@ const isSearchOnly = mode === "search-only";
 		});
 
 		if (sortedGroups.length === 0) {
-			browseResults.innerHTML =
-				`<p class="text-center py-8 text-gray-600 dark:text-gray-400">No topics, persons, or similes match the current filters.</p>`;
+			browseResults.innerHTML = "";
+			setEmptyResultsMessage(getBrowseEmptyMessage());
 		} else {
 			browseResults.innerHTML = html;
+			hideEmptyResultsMessage();
 		}
 
 		// Update alphabet link states
@@ -770,8 +812,7 @@ const isSearchOnly = mode === "search-only";
 		if (currentMode === "browse") {
 			renderBrowseResults();
 		} else if (currentMode === "search" && searchQuery) {
-			// Re-render search results to update expanded state (do not scroll to top)
-			performSearch(searchQuery, { scrollToTop: false });
+			performSearch(searchQuery);
 		}
 	}
 
@@ -824,10 +865,7 @@ const isSearchOnly = mode === "search-only";
 	} from "../utils/searchRanking";
 	import { normalizeSearchQuery } from "../utils/fuseQueryParser";
 
-	async function performSearch(
-		query: string,
-		options?: { scrollToTop?: boolean },
-	) {
+	async function performSearch(query: string) {
 		// Close help panel when a new search is performed
 		if (searchHelp) searchHelp.classList.add("hidden");
 		// Show results area
@@ -837,6 +875,7 @@ const isSearchOnly = mode === "search-only";
 		if (!query.trim()) {
 			if (searchResultsList) searchResultsList.innerHTML = "";
 			if (searchResultsCount) searchResultsCount.textContent = "";
+			hideEmptyResultsMessage();
 			updateResultCounts(0, 0, 0, 0);
 			searchQuery = "";
 			updateURL(); // Clear q parameter from URL
@@ -1743,11 +1782,6 @@ const isSearchOnly = mode === "search-only";
 				);
 			}
 
-			// Scroll to top on new searches (not when re-rendering e.g. topic expand/collapse)
-			if (options?.scrollToTop !== false) {
-				window.scrollTo({ top: 0, behavior: "smooth" });
-			}
-
 		} catch (error) {
 			console.error("Search error:", error);
 			if (searchResultsList) searchResultsList.innerHTML = '<p class="text-center text-gray-500">Search error. Please try again.</p>';
@@ -1951,16 +1985,18 @@ const isSearchOnly = mode === "search-only";
 		query: string,
 		transformId: (id: string) => string
 	) {
-		if (!searchResultsList || !searchResultsCount) return;
+		if (!searchResultsList) return;
 
 		if (results.length === 0) {
 			searchResultsList.innerHTML = "";
-			searchResultsCount.textContent = "";
-			if (noResultsEl) noResultsEl.classList.remove("hidden");
+			if (searchResultsCount) searchResultsCount.textContent = "";
+			setEmptyResultsMessage(getSearchEmptyMessage());
 			return;
 		}
 
-		if (noResultsEl) noResultsEl.classList.add("hidden");
+		if (!searchResultsCount) return;
+
+		hideEmptyResultsMessage();
 
 		const total = results.length;
 		searchResultsCount.textContent = `Found ${total} result${total !== 1 ? "s" : ""} for "${query}"`;
