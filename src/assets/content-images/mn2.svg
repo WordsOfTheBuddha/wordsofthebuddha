@@ -103,7 +103,7 @@
     </g>
     <text x="120" y="172" fill="#a08090"
         font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
-        letter-spacing="1.5">UNWISE ATTENTION</text>
+        letter-spacing="1.5">SUPERFICIAL ATTENTION</text>
     <text x="120" y="192" fill="#c0a8b8"
         font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
         >ayoniso manasik&#x101;ra</text>
@@ -118,7 +118,7 @@
     <line x1="460" y1="154" x2="460" y2="230" stroke="#c8a040" stroke-width="0.8"
         opacity="0.2" />
 
-    <!-- Right: Wise Attention -->
+    <!-- Right: Radical Attention -->
     <g filter="url(#shadowDrop)">
         <rect x="472" y="148" width="388" height="92" rx="8" fill="url(#patternRight)"
             stroke="#2a5868" stroke-width="0.8" stroke-opacity="0.5" />
@@ -131,7 +131,7 @@
     </g>
     <text x="532" y="172" fill="#6898a0"
         font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold"
-        letter-spacing="1.5">WISE ATTENTION</text>
+        letter-spacing="1.5">RADICAL ATTENTION</text>
     <text x="532" y="192" fill="#90c0b8"
         font-family="Georgia,'Times New Roman',serif" font-size="13" font-style="italic"
         >yoniso manasik&#x101;ra</text>
@@ -177,7 +177,7 @@
     <!-- === LEFT: The Six Wrong Views === -->
     <text x="250" y="386" text-anchor="middle" fill="#8a6878"
         font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
-        letter-spacing="2" opacity="0.6">UNWISE SPECULATION</text>
+        letter-spacing="2" opacity="0.6">SUPERFICIALLY</text>
 
     <g filter="url(#shadowDrop)">
         <rect x="60" y="398" width="388" height="210" rx="8" fill="#0e1828" fill-opacity="0.5"
@@ -224,7 +224,7 @@
     <!-- === RIGHT: Four Noble Truths + Three Fetters === -->
     <text x="690" y="386" text-anchor="middle" fill="#60988a"
         font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="bold"
-        letter-spacing="2" opacity="0.6">WISE ATTENTION</text>
+        letter-spacing="2" opacity="0.6">RADICALLY</text>
 
     <g filter="url(#shadowDrop)">
         <rect x="472" y="398" width="388" height="210" rx="8" fill="#0e1828" fill-opacity="0.5"
