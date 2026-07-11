@@ -118,7 +118,21 @@ export function queueWindow(
 	};
 }
 
-import { playlists, type Playlist } from "../data/playlists.generated";
+import {
+	playlists,
+	type Playlist,
+	type PlaylistEntry,
+} from "../data/playlists.generated";
+import {
+	buildListenHref,
+	type ParagraphRange,
+	paragraphRangesEqual,
+} from "./listenParagraphRange";
+
+/** Playlist entries whose base discourse has recorded audio. */
+export function playlistAudioEntries(playlist: Playlist): PlaylistEntry[] {
+	return playlist.entries.filter((entry) => audioSlugs.has(entry.slug));
+}
 
 /**
  * Resolve a `?pl=` query value to a Playlist. Returns `null` when the id is
@@ -129,55 +143,115 @@ export function getPlaylist(id: string | null | undefined): Playlist | null {
 	if (!id) return null;
 	const pl = playlists[id] ?? null;
 	if (!pl) return null;
-	const hasAudio = pl.slugs.some((s) => audioSlugs.has(s));
+	const hasAudio = playlistAudioEntries(pl).length > 0;
 	return hasAudio ? pl : null;
+}
+
+/** First audio-bearing playlist entry, or null if none. */
+export function firstAudioEntryIn(playlist: Playlist): PlaylistEntry | null {
+	return playlistAudioEntries(playlist)[0] ?? null;
 }
 
 /** First audio-bearing slug in a playlist, or null if none. */
 export function firstAudioSlugIn(playlist: Playlist): string | null {
-	for (const s of playlist.slugs) {
-		if (audioSlugs.has(s)) return s;
+	return firstAudioEntryIn(playlist)?.slug ?? null;
+}
+
+export function listenHrefForPlaylistEntry(
+	entry: PlaylistEntry,
+	playlistId?: string,
+): string {
+	return buildListenHref(entry.slug, {
+		pl: playlistId ?? null,
+		pp: entry.pp ?? null,
+	});
+}
+
+export function findPlaylistEntryIndex(
+	playlist: Playlist,
+	opts: { href?: string | null; slug: string; pp?: ParagraphRange | null },
+): number {
+	if (opts.href) {
+		const byHref = playlist.entries.findIndex((e) => e.href === opts.href);
+		if (byHref >= 0) return byHref;
 	}
-	return null;
+	return playlist.entries.findIndex(
+		(e) =>
+			e.slug === opts.slug &&
+			paragraphRangesEqual(e.pp ?? null, opts.pp ?? null),
+	);
+}
+
+function audioEntryIndex(
+	playlist: Playlist,
+	opts: { href?: string | null; slug: string; pp?: ParagraphRange | null },
+): number {
+	const audio = playlistAudioEntries(playlist);
+	const href = opts.href ?? null;
+	if (href) {
+		const byHref = audio.findIndex((e) => e.href === href);
+		if (byHref >= 0) return byHref;
+	}
+	return audio.findIndex(
+		(e) =>
+			e.slug === opts.slug &&
+			paragraphRangesEqual(e.pp ?? null, opts.pp ?? null),
+	);
 }
 
 /**
- * Adjacent audio-bearing slugs within a playlist context. Mirrors
- * `nextAudioSlug` / `prevAudioSlug` but constrains the queue to the playlist
- * (and skips non-audio entries the same way the global helpers do).
+ * Adjacent audio-bearing playlist entries. Mirrors global next/prev helpers but
+ * preserves paragraph excerpts as distinct queue items.
  */
-export function nextAudioSlugInPlaylist(
+export function nextPlaylistEntry(
 	playlist: Playlist,
-	slug: string,
-): string | null {
-	const audio = playlist.slugs.filter((s) => audioSlugs.has(s));
-	const i = audio.indexOf(slug);
+	opts: { href?: string | null; slug: string; pp?: ParagraphRange | null },
+): PlaylistEntry | null {
+	const audio = playlistAudioEntries(playlist);
+	const i = audioEntryIndex(playlist, opts);
 	if (i < 0 || i + 1 >= audio.length) return null;
 	return audio[i + 1];
 }
 
-export function prevAudioSlugInPlaylist(
+export function prevPlaylistEntry(
 	playlist: Playlist,
-	slug: string,
-): string | null {
-	const audio = playlist.slugs.filter((s) => audioSlugs.has(s));
-	const i = audio.indexOf(slug);
+	opts: { href?: string | null; slug: string; pp?: ParagraphRange | null },
+): PlaylistEntry | null {
+	const audio = playlistAudioEntries(playlist);
+	const i = audioEntryIndex(playlist, opts);
 	if (i <= 0) return null;
 	return audio[i - 1];
 }
 
-/** Symmetric playlist-scoped window around `slug` (same shape as `queueWindow`). */
-export function playlistQueueWindow(
+/** @deprecated Use `nextPlaylistEntry` when paragraph excerpts may be present. */
+export function nextAudioSlugInPlaylist(
 	playlist: Playlist,
 	slug: string,
+): string | null {
+	return nextPlaylistEntry(playlist, { slug })?.slug ?? null;
+}
+
+/** @deprecated Use `prevPlaylistEntry` when paragraph excerpts may be present. */
+export function prevAudioSlugInPlaylist(
+	playlist: Playlist,
+	slug: string,
+): string | null {
+	return prevPlaylistEntry(playlist, { slug })?.slug ?? null;
+}
+
+/** Symmetric playlist-scoped window around the current entry href. */
+export function playlistQueueWindow(
+	playlist: Playlist,
+	href: string,
 	n: number,
 ): { before: string[]; current: string | null; after: string[] } {
-	const audio = playlist.slugs.filter((s) => audioSlugs.has(s));
-	const i = audio.indexOf(slug);
+	const audio = playlistAudioEntries(playlist);
+	const keys = audio.map((e) => e.href);
+	const i = keys.indexOf(href);
 	if (i < 0) return { before: [], current: null, after: [] };
 	return {
-		before: audio.slice(Math.max(0, i - n), i),
-		current: audio[i],
-		after: audio.slice(i + 1, i + 1 + n),
+		before: keys.slice(Math.max(0, i - n), i),
+		current: keys[i],
+		after: keys.slice(i + 1, i + 1 + n),
 	};
 }

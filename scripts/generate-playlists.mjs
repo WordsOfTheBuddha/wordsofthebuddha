@@ -4,8 +4,9 @@
  * from anthology MDX files in src/content/en/anthologies/.
  *
  * One playlist per anthology file. Playlist id = `slug` from frontmatter
- * (falls back to filename). Slug list is the in-document order of internal
- * link targets matching `^/[a-z]+\d+(\.\d+)?(?:-\d+)?$`, deduplicated.
+ * (falls back to filename). Entry list is the in-document order of internal
+ * discourse links, deduplicated by href (so excerpts like dn15.29-56 are
+ * distinct from dn15).
  *
  * The output module is bundled into the JS payload, used by:
  *   - <PlayAll> Astro component (renders "Play all" link)
@@ -24,14 +25,8 @@ const ANTHOLOGIES_DIR = path.join(REPO_ROOT, "src", "content", "en", "anthologie
 const ROUTES_FILE = path.join(REPO_ROOT, "src", "utils", "routes.ts");
 const OUT = path.join(REPO_ROOT, "src", "data", "playlists.generated.ts");
 
-/** Internal-link slug pattern (matches reading-mode discourse routes). */
-const SLUG_RE = /\]\(\/((?:[a-z]+\d+(?:\.\d+)?(?:-\d+)?))\)/g;
-
-/** Same as SLUG_RE, but also captures the link text so we can attach a
- *  human-readable title to each playlist entry (used by read-mode prev/next
- *  navigation when `?pl=` is set). */
-const LINK_WITH_TEXT_RE =
-	/\[([^\]]+)\]\(\/((?:[a-z]+\d+(?:\.\d+)?(?:-\d+)?))\)/g;
+/** Internal markdown links to discourse routes (may include paragraph excerpts). */
+const LINK_WITH_TEXT_RE = /\[([^\]]+)\]\(\/([^)#]+)(?:#[^)]*)?\)/g;
 
 /** Minimal frontmatter scan: only top-level scalar `key: value`. */
 function parseFrontmatter(raw) {
@@ -51,9 +46,45 @@ function parseFrontmatter(raw) {
 	return out;
 }
 
+function isValidParagraphRange(start, end) {
+	return Number.isFinite(start) && Number.isFinite(end) && start >= 1 && start <= end;
+}
+
+function parseLinkTarget(href, validSlugs) {
+	const pathOnly = href.trim();
+	if (!pathOnly) return null;
+
+	// Prefer exact discourse slugs (an1.170-186, sn3.3, …) over excerpt parsing.
+	if (validSlugs?.has(pathOnly)) {
+		return { slug: pathOnly, href: pathOnly, pp: undefined };
+	}
+
+	const paragraphRangeMatch = pathOnly.match(/^(.+)\.(\d+(?:-\d+)?)$/);
+	if (paragraphRangeMatch) {
+		const [, baseId, paragraphPart] = paragraphRangeMatch;
+		if (!validSlugs?.has(baseId)) return null;
+		if (paragraphPart.includes("-")) {
+			const [start, end] = paragraphPart.split("-", 2).map(Number);
+			if (!isValidParagraphRange(start, end)) return null;
+			return {
+				slug: baseId,
+				href: pathOnly,
+				pp: { start, end },
+			};
+		}
+		const start = Number(paragraphPart);
+		if (!Number.isFinite(start) || start < 1) return null;
+		return {
+			slug: baseId,
+			href: pathOnly,
+			pp: { start, end: start },
+		};
+	}
+
+	return null;
+}
+
 function loadValidSlugs() {
-	// `routes.ts` exports the canonical ordered slug list; use it to filter
-	// out any anthology link that doesn't resolve to a real discourse page.
 	if (!fs.existsSync(ROUTES_FILE)) return null;
 	const src = fs.readFileSync(ROUTES_FILE, "utf8");
 	const m = src.match(/export\s+const\s+routes\s*[:=][\s\S]*?\[([\s\S]*?)\]/);
@@ -66,25 +97,32 @@ function loadValidSlugs() {
 	return slugs;
 }
 
-function extractPlaylistFromMdx(filePath) {
+function extractPlaylistFromMdx(filePath, validSlugs) {
 	const raw = fs.readFileSync(filePath, "utf8");
 	const fm = parseFrontmatter(raw);
 	const id = fm.slug || path.basename(filePath, ".mdx");
 	const title = fm.title || id;
 	const seen = new Set();
-	const slugs = [];
+	const entries = [];
 	const titles = {};
 	for (const m of raw.matchAll(LINK_WITH_TEXT_RE)) {
 		const linkText = m[1].trim();
-		const s = m[2];
-		if (!seen.has(s)) {
-			seen.add(s);
-			slugs.push(s);
+		const href = m[2].trim();
+		const parsed = parseLinkTarget(href, validSlugs);
+		if (!parsed) continue;
+		if (!seen.has(parsed.href)) {
+			seen.add(parsed.href);
+			entries.push({
+				slug: parsed.slug,
+				href: parsed.href,
+				title: linkText,
+				...(parsed.pp ? { pp: parsed.pp } : {}),
+			});
 		}
-		// Prefer the first occurrence's link text; later duplicates ignored.
-		if (!(s in titles)) titles[s] = linkText;
+		if (!(parsed.href in titles)) titles[parsed.href] = linkText;
 	}
-	return { id, title, slugs, titles };
+	const slugs = entries.map((e) => e.slug);
+	return { id, title, slugs, titles, entries };
 }
 
 function main() {
@@ -95,36 +133,44 @@ function main() {
 	} else {
 		for (const f of fs.readdirSync(ANTHOLOGIES_DIR).sort()) {
 			if (!f.endsWith(".mdx")) continue;
-			const pl = extractPlaylistFromMdx(path.join(ANTHOLOGIES_DIR, f));
-			// Filter out unresolved slugs (e.g. typo'd links) but keep order.
-			const filtered = validSlugs
-				? pl.slugs.filter((s) => validSlugs.has(s))
-				: pl.slugs;
-			if (!filtered.length) {
-				console.warn(`Playlist ${pl.id} has no resolvable slugs; skipping.`);
+			const pl = extractPlaylistFromMdx(path.join(ANTHOLOGIES_DIR, f), validSlugs);
+			if (!pl.entries.length) {
+				console.warn(`Playlist ${pl.id} has no resolvable entries; skipping.`);
 				continue;
-			}
-			const filteredTitles = {};
-			for (const s of filtered) {
-				if (pl.titles[s]) filteredTitles[s] = pl.titles[s];
 			}
 			playlists[pl.id] = {
 				id: pl.id,
 				title: pl.title,
-				slugs: filtered,
-				titles: filteredTitles,
+				slugs: pl.slugs,
+				titles: pl.titles,
+				entries: pl.entries,
 			};
 		}
 	}
 	const body =
 		"// AUTO-GENERATED by scripts/generate-playlists.mjs — do not edit by hand.\n" +
 		"// Re-run via `npm run prebuild` (chained) or `node scripts/generate-playlists.mjs`.\n\n" +
+		"export type PlaylistParagraphRange = {\n" +
+		"\tstart: number;\n" +
+		"\tend: number;\n" +
+		"};\n\n" +
+		"export type PlaylistEntry = {\n" +
+		"\t/** Base discourse slug used for audio lookup (e.g. dn15). */\n" +
+		"\tslug: string;\n" +
+		"\t/** Reading-mode path segment (e.g. dn15.29-56 or sn3.3). */\n" +
+		"\thref: string;\n" +
+		"\ttitle: string;\n" +
+		"\t/** Present when the anthology link targets a paragraph excerpt. */\n" +
+		"\tpp?: PlaylistParagraphRange;\n" +
+		"};\n\n" +
 		"export type Playlist = {\n" +
 		"\tid: string;\n" +
 		"\ttitle: string;\n" +
+		"\t/** Base discourse slugs in playlist order (legacy; use `entries`). */\n" +
 		"\tslugs: readonly string[];\n" +
-		"\t/** slug → display label captured from the anthology MDX link text */\n" +
+		"\t/** href → display label captured from the anthology MDX link text */\n" +
 		"\ttitles: Readonly<Record<string, string>>;\n" +
+		"\tentries: readonly PlaylistEntry[];\n" +
 		"};\n\n" +
 		"export const playlists: Readonly<Record<string, Playlist>> = " +
 		JSON.stringify(playlists, null, 2) +
@@ -132,7 +178,7 @@ function main() {
 	fs.mkdirSync(path.dirname(OUT), { recursive: true });
 	fs.writeFileSync(OUT, body, "utf8");
 	const counts = Object.entries(playlists)
-		.map(([id, p]) => `${id}=${p.slugs.length}`)
+		.map(([id, p]) => `${id}=${p.entries.length}`)
 		.join(", ");
 	console.log(`Wrote ${path.relative(REPO_ROOT, OUT)} (${counts || "0 playlists"})`);
 }

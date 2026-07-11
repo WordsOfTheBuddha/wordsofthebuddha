@@ -2,7 +2,8 @@
 /**
  * Toolbar "Listen" trigger. Renders a pill-shaped button on discourse pages
  * that have audio (whitelisted in `audioStatus`). Click → navigates to
- * `/listen/{discourseId}` (preserving any active `?pl=` playlist context).
+ * `/listen/{discourseId}` (preserving `?pl=` playlist context and `?pp=`
+ * paragraph excerpts when the reading URL is an excerpt).
  *
  * Replaces the legacy in-page voice bar; the `/listen/{slug}` surface is now
  * the single playback experience.
@@ -35,11 +36,20 @@ const hasAudio = audioSlugs.has(discourseId);
 </button>
 
 <script>
-	/** Carry over `?pl=…` (playlist context) so the listen surface keeps the
-	 * same queue the user was reading inside. */
+	import {
+		buildListenHref,
+		parseDiscourseExcerptPath,
+	} from "../utils/listenParagraphRange";
+
 	function listenHrefFor(slug: string): string {
-		const pl = new URLSearchParams(window.location.search).get("pl");
-		return pl ? `/listen/${slug}?pl=${encodeURIComponent(pl)}` : `/listen/${slug}`;
+		const search = new URLSearchParams(window.location.search);
+		const pl = search.get("pl");
+		const pathSeg = location.pathname.replace(/^\/+|\/+$/g, "");
+		const excerpt = parseDiscourseExcerptPath(pathSeg);
+		const audioSlug = excerpt.slug || slug;
+		const pp =
+			excerpt.pp && excerpt.slug === slug ? excerpt.pp : null;
+		return buildListenHref(audioSlug, { pl, pp });
 	}
 
 	const btn = document.getElementById("listen-trigger") as HTMLButtonElement | null;

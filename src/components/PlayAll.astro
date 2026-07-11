@@ -14,6 +14,7 @@
  */
 import { playlists } from "../data/playlists.generated";
 import { audioSlugs } from "../data/audioStatus";
+import { firstAudioEntryIn, listenHrefForPlaylistEntry } from "../utils/listenMode";
 
 interface Props {
 	/** Anthology id (matches `slug` in the anthology MDX frontmatter). */
@@ -24,9 +25,9 @@ interface Props {
 
 const { group, label = "Audiobook" } = Astro.props;
 const pl = playlists[group];
-const audioOnly = pl ? pl.slugs.filter((s) => audioSlugs.has(s)) : [];
-const firstAudio = audioOnly[0] ?? null;
-const href = firstAudio ? `/listen/${firstAudio}?pl=${group}` : null;
+const audioOnly = pl ? pl.entries.filter((e) => audioSlugs.has(e.slug)) : [];
+const firstAudio = pl ? firstAudioEntryIn(pl) : null;
+const href = firstAudio ? listenHrefForPlaylistEntry(firstAudio, group) : null;
 const total = pl?.slugs.length ?? 0;
 const ready = audioOnly.length;
 const countText = pl ? `${ready}/${total}` : "";
@@ -78,7 +79,7 @@ const disabled = !href;
 	<script
 		type="module"
 		set:html={`(() => {
-			const PL_SLUGS = new Set(${JSON.stringify(pl.slugs)});
+			const PL_HREFS = new Set(${JSON.stringify(pl.entries.map((e) => e.href))});
 			const PL_ID = ${JSON.stringify(group)};
 			function injectPl(href) {
 				try {
@@ -86,7 +87,7 @@ const disabled = !href;
 					if (u.origin !== location.origin) return null;
 					const m = u.pathname.match(/^\\/([^/]+)\\/?$/);
 					if (!m) return null;
-					if (!PL_SLUGS.has(m[1])) return null;
+					if (!PL_HREFS.has(m[1])) return null;
 					if (u.searchParams.get("pl") === PL_ID) return null;
 					u.searchParams.set("pl", PL_ID);
 					return u.pathname + u.search + u.hash;

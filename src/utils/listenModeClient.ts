@@ -22,11 +22,21 @@ import {
 	queueWindow,
 	getPlaylist,
 	isAudioSlug,
+	playlistAudioEntries,
+	findPlaylistEntryIndex,
+	nextPlaylistEntry,
+	prevPlaylistEntry,
 } from "./listenMode";
+import {
+	buildListenHref,
+	buildReadHref,
+	parseParagraphRangeParam,
+	type ParagraphRange,
+} from "./listenParagraphRange";
 import { listenDisplayWords } from "./listenDisplayWords";
 import { audioTitles } from "../data/audioTitles.generated";
 import { audioDurations } from "../data/audioDurations.generated";
-import type { Playlist } from "../data/playlists.generated";
+import type { Playlist, PlaylistEntry } from "../data/playlists.generated";
 
 export type ListenInitialData = {
 	slug: string;
@@ -141,10 +151,27 @@ const runtimeMetaHydration = new Map<string, Promise<void>>();
 
 type TrackMeta = {
 	slug: string;
+	/** Reading-mode path segment; equals slug unless a paragraph excerpt is active. */
+	href: string;
+	pp: ParagraphRange | null;
 	title: string;
 	displayId: string;
 	description: string | null;
 };
+
+type NeighbourMeta = {
+	slug: string;
+	href: string;
+	pp: ParagraphRange | null;
+	title: string;
+	description: string | null;
+	displayId: string;
+};
+
+function hrefForTrack(slug: string, pp: ParagraphRange | null): string {
+	if (!pp) return slug;
+	return pp.start === pp.end ? `${slug}.${pp.start}` : `${slug}.${pp.start}-${pp.end}`;
+}
 
 type ParagraphPlaybackMode = "continuous" | "single";
 
@@ -451,13 +478,22 @@ export function initListenMode(initial: ListenInitialData): void {
 	const audio: HTMLAudioElement = audioEl;
 	const playButton: HTMLElement = playBtn;
 
+	const initialPp = parseParagraphRangeParam(
+		new URLSearchParams(location.search).get("pp"),
+	);
+
 	let current: TrackMeta = {
 		slug: initial.slug,
+		href: hrefForTrack(initial.slug, initialPp),
+		pp: initialPp,
 		title: initial.title,
 		displayId: initial.displayId,
 		description: initial.description,
 	};
 	let manifest: VoiceManifest | null = null;
+	let activeParagraphs: VoiceManifest["paragraphs"] = [];
+	let subsetStartTime: number | null = null;
+	let subsetEndTime: number | null = null;
 	let activeParaIdx = -1;
 	let activeWordIdx = -1;
 	let activeLineParaIdx = -1;
@@ -519,6 +555,79 @@ export function initListenMode(initial: ListenInitialData): void {
 		return knownDescriptions.get(slug) ?? null;
 	}
 
+	function neighbourFromPlaylistEntry(entry: PlaylistEntry): NeighbourMeta {
+		if (!playlist) {
+			return {
+				slug: entry.slug,
+				href: entry.href,
+				pp: entry.pp ?? null,
+				title: entry.title ?? entry.slug,
+				description: descriptionFor(entry.slug),
+				displayId: formatDisplayId(entry.slug),
+			};
+		}
+		return {
+			slug: entry.slug,
+			href: entry.href,
+			pp: entry.pp ?? null,
+			title: playlist.titles[entry.href] ?? entry.title ?? entry.slug,
+			description: descriptionFor(entry.slug),
+			displayId: formatDisplayId(entry.slug),
+		};
+	}
+
+	function syncActiveParagraphs(): void {
+		if (!manifest) {
+			activeParagraphs = [];
+			subsetStartTime = null;
+			subsetEndTime = null;
+			return;
+		}
+		if (!current.pp) {
+			activeParagraphs = manifest.paragraphs;
+			subsetStartTime = null;
+			subsetEndTime = null;
+			return;
+		}
+		activeParagraphs = manifest.paragraphs.filter(
+			(p) => p.id >= current.pp!.start && p.id <= current.pp!.end,
+		);
+		subsetStartTime = activeParagraphs[0]?.start ?? null;
+		subsetEndTime =
+			activeParagraphs[activeParagraphs.length - 1]?.end ?? null;
+	}
+
+	function paragraphsInScope(): VoiceManifest["paragraphs"] {
+		return activeParagraphs.length ? activeParagraphs : manifest?.paragraphs ?? [];
+	}
+
+	function listenUrl(slug: string, pp: ParagraphRange | null): string {
+		return buildListenHref(slug, { pl: playlist?.id ?? null, pp });
+	}
+
+	function readUrl(href: string): string {
+		return buildReadHref(href, { pl: playlist?.id ?? null });
+	}
+
+	function checkSubsetEndPause(): void {
+		if (subsetEndTime === null || audio.paused) return;
+		if (audio.currentTime >= subsetEndTime - 0.05) {
+			audio.pause();
+			if (autoplay && neighbours.next) {
+				if (document.visibilityState !== "visible") {
+					void advanceTo(neighbours.next, {
+						autoplayAfterLoad: true,
+						reason: "autoplay-end",
+						description: neighbours.next.description,
+						showPulse: false,
+					});
+				} else {
+					void beginAutoplayTransition(neighbours.next);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Eagerly hydrate runtime metadata for a slug so transitions and queue labels
 	 * can show title/description even before the user navigates to that discourse.
@@ -560,7 +669,14 @@ export function initListenMode(initial: ListenInitialData): void {
 		try {
 			const id = new URLSearchParams(location.search).get("pl");
 			const p = getPlaylist(id);
-			if (p && !p.slugs.includes(initial.slug)) {
+			if (
+				p &&
+				findPlaylistEntryIndex(p, {
+					slug: initial.slug,
+					href: current.href,
+					pp: current.pp,
+				}) < 0
+			) {
 				stripPlFromUrl();
 				return null;
 			}
@@ -578,7 +694,6 @@ export function initListenMode(initial: ListenInitialData): void {
 			}
 		} catch {}
 	}
-	const playlistQuery = (): string => (playlist ? `?pl=${playlist.id}` : "");
 	const queueTitleEl = document.getElementById("listen-queue-title");
 	function renderQueueTitle(): void {
 		if (!queueTitleEl) return;
@@ -586,10 +701,12 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	// Prev/next neighbours; refreshed on each track change from listenMode helper.
-	let neighbours = {
+	let neighbours: { next: NeighbourMeta | null; prev: NeighbourMeta | null } = {
 		next: initial.nextSlug
 			? {
 				slug: initial.nextSlug,
+				href: initial.nextSlug,
+				pp: null,
 				title: initial.nextTitle ?? initial.nextSlug,
 				description: initial.nextDescription ?? null,
 				displayId: initial.nextDisplayId ?? formatDisplayId(initial.nextSlug),
@@ -598,6 +715,8 @@ export function initListenMode(initial: ListenInitialData): void {
 		prev: initial.prevSlug
 			? {
 				slug: initial.prevSlug,
+				href: initial.prevSlug,
+				pp: null,
 				title: initial.prevTitle ?? initial.prevSlug,
 				description: initial.prevDescription ?? null,
 				displayId: initial.prevDisplayId ?? formatDisplayId(initial.prevSlug),
@@ -605,32 +724,49 @@ export function initListenMode(initial: ListenInitialData): void {
 			: null,
 	};
 
-	function refreshNeighbours(slug: string): void {
-		// Honor any user reorder for prev/next neighbours so the footer chips
-		// and the "Up next" label reflect what the queue drawer shows. Falls
-		// back to canonical order when no reorder is saved.
-		const slugs = effectiveSlugs();
-		const i = slugs.indexOf(slug);
-		const ns = i >= 0 && i + 1 < slugs.length ? slugs[i + 1] : null;
-		const ps = i > 0 ? slugs[i - 1] : null;
-		neighbours = {
-			next: ns
-				? {
-					slug: ns,
-					title: titleFor(ns, ns),
-					description: descriptionFor(ns),
-					displayId: formatDisplayId(ns),
-				}
-				: null,
-			prev: ps
-				? {
-					slug: ps,
-					title: titleFor(ps, ps),
-					description: descriptionFor(ps),
-					displayId: formatDisplayId(ps),
-				}
-				: null,
-		};
+	function refreshNeighbours(queueKey: string): void {
+		if (playlist) {
+			const entry = playlist.entries.find((e) => e.href === queueKey);
+			const nextEntry = entry
+				? nextPlaylistEntry(playlist, {
+					href: entry.href,
+					slug: entry.slug,
+					pp: entry.pp ?? null,
+				})
+				: nextPlaylistEntry(playlist, { slug: queueKey, href: queueKey, pp: null });
+			const prevEntry = entry
+				? prevPlaylistEntry(playlist, {
+					href: entry.href,
+					slug: entry.slug,
+					pp: entry.pp ?? null,
+				})
+				: prevPlaylistEntry(playlist, { slug: queueKey, href: queueKey, pp: null });
+			neighbours = {
+				next: nextEntry ? neighbourFromPlaylistEntry(nextEntry) : null,
+				prev: prevEntry ? neighbourFromPlaylistEntry(prevEntry) : null,
+			};
+		} else {
+			// Honor any user reorder for prev/next neighbours so the footer chips
+			// and the "Up next" label reflect what the queue drawer shows.
+			const keys = effectiveQueueKeys();
+			const i = keys.indexOf(queueKey);
+			const ns = i >= 0 && i + 1 < keys.length ? keys[i + 1] : null;
+			const ps = i > 0 ? keys[i - 1] : null;
+			const toNeighbour = (slug: string): NeighbourMeta => ({
+				slug,
+				href: slug,
+				pp: null,
+				title: titleFor(slug, slug),
+				description: descriptionFor(slug),
+				displayId: formatDisplayId(slug),
+			});
+			neighbours = {
+				next: ns ? toNeighbour(ns) : null,
+				prev: ps ? toNeighbour(ps) : null,
+			};
+		}
+		const ns = neighbours.next?.slug ?? null;
+		const ps = neighbours.prev?.slug ?? null;
 		if (ns) {
 			void hydrateRuntimeMeta(ns).then(() => {
 				if (neighbours.next?.slug !== ns) return;
@@ -711,7 +847,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (titleEl) titleEl.textContent = current.title;
 		if (displayIdEl) displayIdEl.textContent = current.displayId;
 		document.title = `Listen · ${current.displayId} ${current.title}`;
-		if (modeSwitch) modeSwitch.href = `/${current.slug}${playlistQuery()}`;
+		if (modeSwitch) modeSwitch.href = readUrl(current.href);
 	}
 
 	// ── Waveform canvas ─────────────────────────────────────────────────
@@ -818,7 +954,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			: (audio.duration > 0 ? audio.duration : 0);
 		if (dur <= 0) return;
 
-		const paras = manifest.paragraphs;
+		const paras = paragraphsInScope();
 		const currentTime = seek?.matches(":active")
 			? (Number(seek.value) / 100) * dur
 			: audio.currentTime;
@@ -889,7 +1025,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (!manifest || !waveCanvas) return false;
 		const W = waveCanvas.clientWidth;
 		if (W <= 0) return false;
-		return W / Math.max(1, manifest.paragraphs.length) < MIN_STRUCTURED_WAVEFORM_PX_PER_PARAGRAPH;
+		return W / Math.max(1, paragraphsInScope().length) < MIN_STRUCTURED_WAVEFORM_PX_PER_PARAGRAPH;
 	}
 
 	if (waveCanvas) {
@@ -903,18 +1039,18 @@ export function initListenMode(initial: ListenInitialData): void {
 	function renderParagraphs(m: VoiceManifest | null): void {
 		if (!stage) return;
 		stage.innerHTML = "";
-		if (!m || !m.paragraphs.length) {
+		const paras = paragraphsInScope();
+		if (!m || !paras.length) {
 			const empty = document.createElement("p");
 			empty.className = "listen-paragraph listen-paragraph--placeholder";
-			empty.textContent = "Audio is unavailable for this discourse.";
+			empty.textContent = current.pp
+				? "Audio is unavailable for this excerpt."
+				: "Audio is unavailable for this discourse.";
 			stage.appendChild(empty);
 			activeParaIdx = -1;
 			return;
 		}
 		// Per-word spans are emitted eagerly; highlight is driven from `timeupdate`.
-		// Verse line breaks come from `p.lineSizes` (manifest backfill v2). The
-		// `sum(lineSizes) === words.length` invariant was already enforced by the
-		// backfill writer, so we honour any present `lineSizes` directly.
 		const headingsByParagraph = new Map<number, NonNullable<VoiceManifest["headings"]>>();
 		for (const heading of m.headings ?? []) {
 			const existing = headingsByParagraph.get(heading.paragraphId) ?? [];
@@ -922,8 +1058,8 @@ export function initListenMode(initial: ListenInitialData): void {
 			headingsByParagraph.set(heading.paragraphId, existing);
 		}
 
-		for (let i = 0; i < m.paragraphs.length; i++) {
-			const p = m.paragraphs[i];
+		for (let i = 0; i < paras.length; i++) {
+			const p = paras[i];
 			for (const heading of headingsByParagraph.get(p.id) ?? []) {
 				const headingTag = heading.level <= 3 ? "h3" : "h4";
 				const headingEl = document.createElement(headingTag);
@@ -1057,8 +1193,9 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	function findWordIdxAt(paraIdx: number, t: number): number {
+		const paras = paragraphsInScope();
 		if (!manifest) return -1;
-		const p = manifest.paragraphs[paraIdx];
+		const p = paras[paraIdx];
 		if (!p || !p.words.length) return -1;
 		const ws = p.words;
 		let lo = 0;
@@ -1080,8 +1217,8 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	function findParagraphIdxAt(t: number): number {
-		if (!manifest) return -1;
-		const ps = manifest.paragraphs;
+		const ps = paragraphsInScope();
+		if (!ps.length) return -1;
 		let lo = 0;
 		let hi = ps.length;
 		while (lo < hi) {
@@ -1115,6 +1252,7 @@ export function initListenMode(initial: ListenInitialData): void {
 
 		const m = await loadVoiceManifestForDiscourse(slug);
 		manifest = m ? normalizeListenManifest(m) : m;
+		syncActiveParagraphs();
 		if (!m) {
 			renderParagraphs(null);
 			return;
@@ -1140,10 +1278,19 @@ export function initListenMode(initial: ListenInitialData): void {
 		// playbackRate is per-element but some browsers reset it on `src` change;
 		// re-apply after every load so the persisted speed sticks across tracks.
 		applySpeed();
-		if (typeof opts.resumeAt === "number" && opts.resumeAt > 0) {
-			const seekTarget = opts.resumeAt;
+		const defaultSeek =
+			typeof opts.resumeAt === "number" && opts.resumeAt > 0
+				? opts.resumeAt
+				: subsetStartTime ?? 0;
+		if (defaultSeek > 0) {
+			const seekTarget = defaultSeek;
 			const onMeta = (): void => {
-				try { audio.currentTime = Math.min(seekTarget, (audio.duration || seekTarget) - 0.1); } catch {}
+				try {
+					audio.currentTime = Math.min(
+						seekTarget,
+						(audio.duration || seekTarget) - 0.1,
+					);
+				} catch {}
 				audio.removeEventListener("loadedmetadata", onMeta);
 			};
 			audio.addEventListener("loadedmetadata", onMeta);
@@ -1290,7 +1437,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	async function advanceTo(
-		slug: string,
+		target: NeighbourMeta,
 		opts: {
 			autoplayAfterLoad?: boolean;
 			reason?: AdvanceReason;
@@ -1298,17 +1445,32 @@ export function initListenMode(initial: ListenInitialData): void {
 			showPulse?: boolean;
 		} = {},
 	): Promise<void> {
+		const slug = target.slug;
+		const pp = target.pp ?? null;
+		const href = target.href || hrefForTrack(slug, pp);
 		// Capture the OUTGOING position so a later browser-back lands the
 		// listener back where they were, not at 0.
 		clearTransitionState();
-		rememberPosition(current.slug, audio.currentTime, audio.duration ?? null);
-		refreshNeighbours(slug);
+		rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
+		current = {
+			...current,
+			slug,
+			href,
+			pp,
+			displayId: formatDisplayId(slug),
+			description: opts.description ?? descriptionFor(slug),
+		};
+		refreshNeighbours(href);
 		setQueueLabel();
 		// Push a new history entry so the browser back button returns to the
 		// previous discourse (in-listen-mode navigation). The state object lets
 		// us distinguish our own entries from external navigations in popstate.
 		if (opts.reason !== "history") {
-			history.pushState({ listen: true, slug }, "", `/listen/${slug}${playlistQuery()}`);
+			history.pushState(
+				{ listen: true, slug, href },
+				"",
+				listenUrl(slug, pp),
+			);
 		}
 		if (opts.showPulse !== false) {
 			showTrackPulse({
@@ -1317,7 +1479,7 @@ export function initListenMode(initial: ListenInitialData): void {
 				description: null,
 			});
 		}
-		const resumeAt = sessionPositions.get(slug);
+		const resumeAt = sessionPositions.get(href);
 		await loadTrack(slug, {
 			autoplayAfterLoad: opts.autoplayAfterLoad ?? true,
 			resumeAt,
@@ -1327,17 +1489,12 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (queueDrawer && !queueDrawer.hidden) renderQueue();
 	}
 
-	async function beginAutoplayTransition(next: {
-		slug: string;
-		title: string;
-		displayId: string;
-		description: string | null;
-	}): Promise<void> {
+	async function beginAutoplayTransition(next: NeighbourMeta): Promise<void> {
 		clearTransitionState();
 		await hydrateRuntimeMeta(next.slug);
 		const hydratedTitle = titleFor(next.slug, next.title);
 		const hydratedDescription = descriptionFor(next.slug) ?? next.description;
-		if (neighbours.next?.slug === next.slug) {
+		if (neighbours.next?.href === next.href) {
 			neighbours.next.title = hydratedTitle;
 			neighbours.next.description = hydratedDescription;
 			setQueueLabel();
@@ -1349,7 +1506,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			holdMs: autoplayTransitionHoldMs,
 			interactive: true,
 			onPlayNow: () => {
-				void advanceTo(next.slug, {
+				void advanceTo(next, {
 					autoplayAfterLoad: true,
 					reason: "autoplay-end",
 					description: hydratedDescription,
@@ -1364,7 +1521,8 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	function checkSingleParagraphPause(): void {
 		if (pauseAfterParagraphIdx < 0 || !manifest || audio.paused) return;
-		const target = manifest.paragraphs[pauseAfterParagraphIdx];
+		const paras = paragraphsInScope();
+		const target = paras[pauseAfterParagraphIdx];
 		if (!target) return;
 		if (audio.currentTime >= target.end) {
 			audio.pause();
@@ -1373,8 +1531,9 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	async function playParagraphByIndex(idx: number, singleOnly: boolean): Promise<void> {
+		const paras = paragraphsInScope();
 		if (!manifest) return;
-		const p = manifest.paragraphs[idx];
+		const p = paras[idx];
 		if (!p) return;
 		clearTransitionState();
 		paragraphPlaybackMode = singleOnly ? "single" : "continuous";
@@ -1388,15 +1547,16 @@ export function initListenMode(initial: ListenInitialData): void {
 	async function onNext(): Promise<void> {
 		if (!manifest) return;
 		clearTransitionState();
+		const paras = paragraphsInScope();
 		// Within-track: jump to next paragraph if available.
 		const i = activeParaIdx >= 0 ? activeParaIdx : findParagraphIdxAt(audio.currentTime);
-		if (i + 1 < manifest.paragraphs.length) {
+		if (i + 1 < paras.length) {
 			await playParagraphByIndex(i + 1, paragraphPlaybackMode === "single");
 			return;
 		}
 		// At end → next discourse if autoplay on.
 		if (autoplay && neighbours.next) {
-			await advanceTo(neighbours.next.slug, {
+			await advanceTo(neighbours.next, {
 				autoplayAfterLoad: true,
 				reason: "manual",
 				description: neighbours.next.description,
@@ -1407,8 +1567,9 @@ export function initListenMode(initial: ListenInitialData): void {
 	async function onPrev(): Promise<void> {
 		if (!manifest) return;
 		clearTransitionState();
+		const paras = paragraphsInScope();
 		const i = activeParaIdx >= 0 ? activeParaIdx : findParagraphIdxAt(audio.currentTime);
-		const para = manifest.paragraphs[i];
+		const para = paras[i];
 		const offsetIntoPara = para ? audio.currentTime - para.start : 0;
 		// >3s in: restart current paragraph (YT semantics).
 		if (offsetIntoPara > PREV_RESTART_THRESHOLD_S) {
@@ -1421,7 +1582,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 		// First paragraph + ≤3s + autoplay on → previous discourse, paragraph 1.
 		if (autoplay && neighbours.prev) {
-			await advanceTo(neighbours.prev.slug, {
+			await advanceTo(neighbours.prev, {
 				autoplayAfterLoad: true,
 				reason: "manual",
 				description: neighbours.prev.description,
@@ -1432,7 +1593,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	async function advanceDiscourse(direction: -1 | 1): Promise<void> {
 		const target = direction < 0 ? neighbours.prev : neighbours.next;
 		if (!target) return;
-		await advanceTo(target.slug, {
+		await advanceTo(target, {
 			autoplayAfterLoad: true,
 			reason: "manual",
 			description: target.description,
@@ -1499,7 +1660,7 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	function snapToNearestVisibleBoundary(t: number): number {
 		if (!manifest) return t;
-		const paras = manifest.paragraphs;
+		const paras = paragraphsInScope();
 		const headingSnap = snapToNearestHeadingStart(t, headingSnapThresholdSec());
 		if (isFallbackTimelineMode()) {
 			return headingSnap ?? t;
@@ -1537,7 +1698,9 @@ export function initListenMode(initial: ListenInitialData): void {
 		pauseAfterParagraphIdx = -1;
 		const pct = Number(seek.value);
 		if (!Number.isFinite(pct) || !audio.duration) return;
-		const rawTime = (pct / 100) * audio.duration;
+		let rawTime = (pct / 100) * audio.duration;
+		if (subsetStartTime !== null) rawTime = Math.max(rawTime, subsetStartTime);
+		if (subsetEndTime !== null) rawTime = Math.min(rawTime, subsetEndTime);
 		const snappedTime = snapToNearestVisibleBoundary(rawTime);
 		audio.currentTime = snappedTime;
 		// Nudge the range thumb to the snapped position so the visual stays in sync.
@@ -1554,7 +1717,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (queueDrawer && queueScrim && queueList) {
 			openQueueDrawer();
 		} else if (neighbours.next) {
-			void advanceTo(neighbours.next.slug, {
+			void advanceTo(neighbours.next, {
 				autoplayAfterLoad: true,
 				reason: "queue",
 				description: neighbours.next.description,
@@ -1602,14 +1765,15 @@ export function initListenMode(initial: ListenInitialData): void {
 	}
 
 	/** True when `slug` matches the current filter (or no filter is set). */
-	function slugMatchesFilter(slug: string): boolean {
+	function slugMatchesFilter(queueKey: string): boolean {
 		if (!queueFilter) return true;
-		const haystack = foldForMatch(`${formatDisplayId(slug)} ${titleFor(slug, slug)}`);
-		// Match each whitespace-separated token independently so "mn 111" and
-		// "111 mn" both hit, and partial words still match.
+		const audioSlug = audioSlugForQueueKey(queueKey);
+		const haystack = foldForMatch(
+			`${formatDisplayId(audioSlug)} ${titleFor(audioSlug, audioSlug)}`,
+		);
 		return queueFilter
 			.split(" ")
-			.every((tok) => filterTokenMatchesSlug(tok, slug, haystack));
+			.every((tok) => filterTokenMatchesSlug(tok, audioSlug, haystack));
 	}
 
 	/**
@@ -1640,44 +1804,45 @@ export function initListenMode(initial: ListenInitialData): void {
 		return playlist ? playlist.id : GLOBAL_ORDER_KEY;
 	}
 
+	function audioSlugForQueueKey(key: string): string {
+		if (playlist) {
+			return playlist.entries.find((entry) => entry.href === key)?.slug ?? key;
+		}
+		return key;
+	}
+
+	function neighbourForQueueKey(key: string): NeighbourMeta {
+		if (playlist) {
+			const entry = playlist.entries.find((item) => item.href === key);
+			if (entry) return neighbourFromPlaylistEntry(entry);
+		}
+		return {
+			slug: key,
+			href: key,
+			pp: null,
+			title: titleFor(key, key),
+			description: descriptionFor(key),
+			displayId: formatDisplayId(key),
+		};
+	}
+
 	/**
-	 * Canonical (pre-reorder) slug list for the current queue context, with
-	 * non-audio entries removed. For playlists this preserves the curated
-	 * order; for the global queue it's `audioRoutes()` order.
+	 * Canonical (pre-reorder) queue keys for the current queue context, with
+	 * non-audio entries removed. Playlist keys are entry hrefs (so excerpts
+	 * stay distinct); the global queue uses discourse slugs.
 	 */
-	function canonicalSlugs(): readonly string[] {
-		if (playlist) return playlist.slugs.filter(isAudioSlug);
-		// audioRoutes() is already filtered.
-		// Lazy import via existing queueWindow / nextAudioSlug helpers would
-		// require us to materialise the list here; do it directly.
+	function canonicalQueueKeys(): readonly string[] {
+		if (playlist) return playlistAudioEntries(playlist).map((entry) => entry.href);
 		return routesAudioCache ?? (routesAudioCache = computeRoutesAudio());
 	}
 	let routesAudioCache: readonly string[] | null = null;
 	function computeRoutesAudio(): readonly string[] {
-		// queueWindow already filters to audio; reuse via a wide window from
-		// the first slug. Simpler: call once with current and stitch — but we
-		// need the *full* order. Do a direct filter.
 		const w = queueWindow(current.slug, Number.MAX_SAFE_INTEGER);
 		return [...w.before, ...(w.current ? [w.current] : []), ...w.after];
 	}
 
-	/**
-	 * Merge canonical order with the user's saved order:
-	 *   - Slugs in saved order keep that order, filtered to those still present.
-	 *   - Newly-added canonical slugs (since the last save) are spliced in next
-	 *     to their nearest *canonical* neighbour that still exists in saved
-	 *     order. This keeps a freshly-added discourse near its collection
-	 *     siblings (e.g. a new SN 3.3 lands beside SN 3.2 / SN 3.4) instead of
-	 *     being dumped at the very end of the queue.
-	 *
-	 *     Algorithm: walk canonical left-to-right. For each new slug (not in
-	 *     saved), find the most recent saved-and-still-present slug we've seen
-	 *     to its left in canonical order; splice the newcomer immediately
-	 *     after that anchor in `ordered`. If no anchor exists yet (newcomer is
-	 *     before any survivor in canonical order), prepend.
-	 */
-	function effectiveSlugs(): readonly string[] {
-		const canonical = canonicalSlugs();
+	function effectiveQueueKeys(): readonly string[] {
+		const canonical = canonicalQueueKeys();
 		const saved = loadCustomOrder(currentQueueKey());
 		if (!saved) return canonical;
 		const canonicalSet = new Set(canonical);
@@ -1711,7 +1876,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		try {
 			localStorage.removeItem(LS_QUEUE_ORDER_PREFIX + currentQueueKey());
 		} catch {}
-		refreshNeighbours(current.slug);
+		refreshNeighbours(current.href);
 		setQueueLabel();
 		if (queueDrawer && !queueDrawer.hidden) renderQueue();
 	}
@@ -1779,7 +1944,7 @@ export function initListenMode(initial: ListenInitialData): void {
 				if (missingDuration && typeof m.duration === "number" && m.duration > 0) {
 					runtimeDurations.set(slug, m.duration);
 					if (metaEl?.isConnected) renderQueueItemMeta(metaEl, kind, m.duration);
-					updateQueueStats(effectiveSlugs());
+					updateQueueStats(effectiveQueueKeys());
 				}
 			});
 		}
@@ -1787,52 +1952,55 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	function renderQueue(): void {
 		if (!queueList) return;
-		const slugs = effectiveSlugs();
-		const i = slugs.indexOf(current.slug);
+		const keys = effectiveQueueKeys();
+		const i = keys.indexOf(current.href);
 		let before: string[];
 		let cur: string | null;
 		let after: string[];
 		if (i < 0) {
 			before = [];
 			cur = null;
-			after = [...slugs];
+			after = [...keys];
 		} else {
-			before = [...slugs.slice(0, i)];
-			cur = slugs[i];
-			after = [...slugs.slice(i + 1)];
+			before = [...keys.slice(0, i)];
+			cur = keys[i];
+			after = [...keys.slice(i + 1)];
 		}
-		let items: { slug: string; kind: "before" | "current" | "after" }[] = [
-			...before.map((s) => ({ slug: s, kind: "before" as const })),
-			...(cur ? [{ slug: cur, kind: "current" as const }] : []),
-			...after.map((s) => ({ slug: s, kind: "after" as const })),
+		let items: { key: string; kind: "before" | "current" | "after" }[] = [
+			...before.map((key) => ({ key, kind: "before" as const })),
+			...(cur ? [{ key: cur, kind: "current" as const }] : []),
+			...after.map((key) => ({ key, kind: "after" as const })),
 		];
 		const filtering = queueFilterActive && queueFilter.length > 0;
-		if (filtering) items = items.filter((it) => slugMatchesFilter(it.slug));
+		if (filtering) items = items.filter((it) => slugMatchesFilter(it.key));
 		queueList.innerHTML = "";
 		if (filtering && items.length === 0) {
 			const empty = document.createElement("li");
 			empty.className = "listen-queue-empty";
 			empty.textContent = "No tracks match your filter.";
 			queueList.appendChild(empty);
-			updateQueueStats(slugs);
+			updateQueueStats(keys);
 			if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
 			return;
 		}
 		for (const it of items) {
+			const audioSlug = audioSlugForQueueKey(it.key);
 			const li = document.createElement("li");
 			li.className = "listen-queue-li";
-			li.dataset.slug = it.slug;
-			// Reorder only makes sense over the full, unfiltered list.
+			li.dataset.slug = audioSlug;
+			li.dataset.href = it.key;
 			li.draggable = !filtering;
 
 			const btn = document.createElement("button");
 			btn.type = "button";
 			btn.className = `listen-queue-item is-${it.kind}`;
-			btn.dataset.slug = it.slug;
+			btn.dataset.slug = audioSlug;
+			btn.dataset.href = it.key;
 			btn.setAttribute("role", "option");
 			btn.setAttribute("aria-selected", it.kind === "current" ? "true" : "false");
 
-			const fullTitle = titleFor(it.slug, it.slug);
+			const neighbour = neighbourForQueueKey(it.key);
+			const fullTitle = neighbour.title;
 
 			const grip = document.createElement("span");
 			grip.className = "listen-queue-item-grip";
@@ -1842,13 +2010,13 @@ export function initListenMode(initial: ListenInitialData): void {
 
 			const idEl = document.createElement("span");
 			idEl.className = "listen-queue-item-id";
-			idEl.textContent = formatDisplayId(it.slug);
+			idEl.textContent = neighbour.displayId;
 			const titleEl = document.createElement("span");
 			titleEl.className = "listen-queue-item-title";
 			titleEl.textContent = fullTitle;
 			const markerEl = document.createElement("span");
 			markerEl.className = "listen-queue-item-meta";
-			renderQueueItemMeta(markerEl, it.kind, durationFor(it.slug));
+			renderQueueItemMeta(markerEl, it.kind, durationFor(audioSlug));
 			btn.appendChild(idEl);
 			btn.appendChild(titleEl);
 			btn.appendChild(markerEl);
@@ -1857,7 +2025,7 @@ export function initListenMode(initial: ListenInitialData): void {
 				if (queueFilterActive) closeQueueFilter(false);
 				closeQueueDrawer();
 				if (it.kind === "current") return;
-				void advanceTo(it.slug, {
+				void advanceTo(neighbourForQueueKey(it.key), {
 					autoplayAfterLoad: true,
 					reason: "queue",
 					description: null,
@@ -1867,7 +2035,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			queueList.appendChild(li);
 		}
 		if (!filtering) wireReorderHandlers();
-		updateQueueStats(slugs);
+		updateQueueStats(keys);
 		if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
 		hydrateQueueMetadata();
 		if (filtering) {
@@ -1879,7 +2047,9 @@ export function initListenMode(initial: ListenInitialData): void {
 
 	function anchorQueueCurrentNearTop(): void {
 		if (!queueList) return;
-		const currentRow = queueList.querySelector<HTMLLIElement>(`.listen-queue-li[data-slug="${current.slug}"]`);
+		const currentRow = queueList.querySelector<HTMLLIElement>(
+			`.listen-queue-li[data-href="${current.href}"]`,
+		);
 		if (currentRow) {
 			const rowH = currentRow.getBoundingClientRect().height || 44;
 			queueList.scrollTop = Math.max(0, currentRow.offsetTop - rowH * QUEUE_CURRENT_VISIBLE_OFFSET_N);
@@ -1934,8 +2104,9 @@ export function initListenMode(initial: ListenInitialData): void {
 		let dragSlug: string | null = null;
 		queueList.addEventListener("dragstart", (e) => {
 			const li = (e.target as HTMLElement).closest<HTMLLIElement>(".listen-queue-li");
-			if (!li || !li.dataset.slug) return;
-			dragSlug = li.dataset.slug;
+			if (!li) return;
+			dragSlug = li.dataset.href ?? li.dataset.slug ?? null;
+			if (!dragSlug) return;
 			li.classList.add("is-dragging");
 			try {
 				e.dataTransfer?.setData("text/plain", dragSlug);
@@ -1950,8 +2121,10 @@ export function initListenMode(initial: ListenInitialData): void {
 			if (!dragSlug) return;
 			e.preventDefault();
 			const li = (e.target as HTMLElement).closest<HTMLLIElement>(".listen-queue-li");
-			if (!li || li.dataset.slug === dragSlug) return;
-			const fromLi = queueList!.querySelector<HTMLLIElement>(`.listen-queue-li[data-slug="${dragSlug}"]`);
+			if (!li || (li.dataset.href ?? li.dataset.slug) === dragSlug) return;
+			const fromLi = queueList!.querySelector<HTMLLIElement>(
+				`.listen-queue-li[data-href="${dragSlug}"], .listen-queue-li[data-slug="${dragSlug}"]`,
+			);
 			if (!fromLi) return;
 			const rect = li.getBoundingClientRect();
 			const before = (e.clientY - rect.top) < rect.height / 2;
@@ -1964,7 +2137,7 @@ export function initListenMode(initial: ListenInitialData): void {
 			// Reorder may have changed the immediate next/prev — refresh
 			// the footer chip label ("Up next · …") and the prev/next
 			// neighbours used by Next/Prev buttons & end-of-track autoplay.
-			refreshNeighbours(current.slug);
+			refreshNeighbours(current.href);
 			setQueueLabel();
 			if (queueResetBtn) queueResetBtn.hidden = !hasCustomOrder();
 		});
@@ -1974,10 +2147,11 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (!queueList) return;
 		const visible: string[] = [];
 		for (const li of queueList.querySelectorAll<HTMLLIElement>(".listen-queue-li")) {
-			if (li.dataset.slug) visible.push(li.dataset.slug);
+			const key = li.dataset.href ?? li.dataset.slug;
+			if (key) visible.push(key);
 		}
 		const visibleSet = new Set(visible);
-		const fullOrder = effectiveSlugs().slice();
+		const fullOrder = effectiveQueueKeys().slice();
 		const merged: string[] = [];
 		const visibleIter = visible[Symbol.iterator]();
 		for (const s of fullOrder) {
@@ -2244,7 +2418,7 @@ export function initListenMode(initial: ListenInitialData): void {
 				closeQueueDrawer();
 				return;
 			}
-			window.location.assign(`/${current.slug}`);
+			window.location.assign(readUrl(current.href));
 			return;
 		}
 		if (e.key === "+" || e.key === "=") {
@@ -2267,7 +2441,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		setPlayIcon(false);
 		if (autoplay && neighbours.next) {
 			if (document.visibilityState !== "visible") {
-				void advanceTo(neighbours.next.slug, {
+				void advanceTo(neighbours.next, {
 					autoplayAfterLoad: true,
 					reason: "autoplay-end",
 					description: neighbours.next.description,
@@ -2289,6 +2463,7 @@ export function initListenMode(initial: ListenInitialData): void {
 	let lastSavedAt = 0;
 	audio.addEventListener("timeupdate", () => {
 		checkSingleParagraphPause();
+		checkSubsetEndPause();
 		if (audio.duration) {
 			const pct = (audio.currentTime / audio.duration) * 100;
 			if (!seek.matches(":active")) seek.value = String(pct);
@@ -2314,7 +2489,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		if (performance.now() - lastSavedAt > 5000) {
 			lastSavedAt = performance.now();
 			saveResume(current.slug, audio.currentTime);
-			rememberPosition(current.slug, audio.currentTime, audio.duration ?? null);
+			rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
 		}
 		drawWaveformCanvas();
 	});
@@ -2328,36 +2503,56 @@ export function initListenMode(initial: ListenInitialData): void {
 	applyScrollUnlock();
 	// Seed history state on the initial entry so popstate can detect when the
 	// user navigates back to it (vs a separate site entry).
-	history.replaceState({ listen: true, slug: current.slug }, "", location.pathname + location.search);
+	history.replaceState(
+		{ listen: true, slug: current.slug, href: current.href },
+		"",
+		location.pathname + location.search,
+	);
 	// Browser back → if returning to another in-listen-mode entry, swap the
 	// track in place (no full reload). Falls through to the default browser
 	// behaviour (full navigation) when the entry is not a listen entry.
 	window.addEventListener("popstate", (e) => {
-		const st = e.state as { listen?: boolean; slug?: string } | null;
+		const st = e.state as { listen?: boolean; slug?: string; href?: string } | null;
 		const pathSlug = location.pathname.replace(/^\/listen\//, "");
-		if (st?.listen && pathSlug && pathSlug !== current.slug) {
+		const pp = parseParagraphRangeParam(
+			new URLSearchParams(location.search).get("pp"),
+		);
+		const href = hrefForTrack(pathSlug, pp);
+		if (st?.listen && href !== current.href) {
 			clearTransitionState();
-			// Save outgoing position so a forward-nav back to it later resumes too.
-			rememberPosition(current.slug, audio.currentTime, audio.duration ?? null);
+			rememberPosition(current.href, audio.currentTime, audio.duration ?? null);
 			const wasPlaying = !audio.paused;
-			// Re-resolve playlist context from the URL we are returning to.
+			current = {
+				...current,
+				slug: pathSlug,
+				href,
+				pp,
+				displayId: formatDisplayId(pathSlug),
+			};
 			try {
 				const id = new URLSearchParams(location.search).get("pl");
 				const p = getPlaylist(id);
-				playlist = p && p.slugs.includes(pathSlug) ? p : null;
-				if (p && !p.slugs.includes(pathSlug)) stripPlFromUrl();
+				if (
+					p &&
+					findPlaylistEntryIndex(p, { slug: pathSlug, href, pp }) < 0
+				) {
+					stripPlFromUrl();
+					playlist = null;
+				} else {
+					playlist = p;
+				}
 			} catch {
 				playlist = null;
 			}
 			renderQueueTitle();
-			refreshNeighbours(pathSlug);
+			refreshNeighbours(href);
 			setQueueLabel();
 			showTrackPulse({
 				displayId: formatDisplayId(pathSlug),
 				title: titleFor(pathSlug, pathSlug),
 				description: null,
 			});
-			const resumeAt = sessionPositions.get(pathSlug);
+			const resumeAt = sessionPositions.get(href);
 			void loadTrack(pathSlug, {
 				autoplayAfterLoad: wasPlaying,
 				resumeAt,
@@ -2367,7 +2562,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		}
 	});
 	setQueueLabel();
-	const resumeAt = loadResume(current.slug) ?? undefined;
+	const resumeAt = loadResume(current.slug) ?? sessionPositions.get(current.href);
 	// Titles map is bundled (audioTitles.generated.ts), so we can refresh
 	// header + neighbours synchronously — no fetch round-trip.
 	if (audioTitles[current.slug]) {
@@ -2375,7 +2570,7 @@ export function initListenMode(initial: ListenInitialData): void {
 		renderHeader();
 		setMediaSessionMetadata();
 	}
-	refreshNeighbours(current.slug);
+	refreshNeighbours(current.href);
 	setQueueLabel();
 	void loadTrack(current.slug, {
 		autoplayAfterLoad: false,

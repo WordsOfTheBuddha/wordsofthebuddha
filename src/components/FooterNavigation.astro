@@ -135,20 +135,19 @@ const { prev, next } = Astro.props;
 		if (!playlist) return;
 		const cur = currentSlugFromPath();
 		if (!cur) return;
-		const slugs = playlist.slugs;
-		const i = slugs.indexOf(cur);
+		const i = playlist.entries.findIndex((entry) => entry.href === cur);
 		if (i < 0) return; // current discourse not in this playlist; leave chips alone
 
 		// Signal active-playlist state so other components (e.g. the read-
 		// mode PlaylistChip) can decide whether to surface their UI.
 		document.body.dataset.plActive = "1";
 
-		const prevSlug = i > 0 ? slugs[i - 1] : null;
-		const nextSlug = i + 1 < slugs.length ? slugs[i + 1] : null;
-		const titleFor = (s: string) => playlist.titles[s] || "";
+		const prevEntry = i > 0 ? playlist.entries[i - 1] : null;
+		const nextEntry = i + 1 < playlist.entries.length ? playlist.entries[i + 1] : null;
+		const titleFor = (href: string) => playlist.titles[href] || "";
 
-		patchChip("prev", prevSlug, titleFor);
-		patchChip("next", nextSlug, titleFor);
+		patchChip("prev", prevEntry?.href ?? null, titleFor);
+		patchChip("next", nextEntry?.href ?? null, titleFor);
 	}
 
 	function patchChip(
