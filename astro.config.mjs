@@ -10,6 +10,10 @@ import mdx from "@astrojs/mdx";
 import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
 import { searchIndexStatic } from "./src/integrations/searchIndexStatic.mjs";
+import {
+	silentDevReload,
+	silentDevReloadViteConfig,
+} from "./src/integrations/silentDevReload.mjs";
 import { mnVaggaSections } from "./src/data/mnVaggaStructure.generated.ts";
 
 const mnVaggaRedirects = Object.fromEntries(
@@ -49,6 +53,7 @@ export default defineConfig({
 	},
 
 	integrations: [
+		silentDevReload(),
 		searchIndexStatic(),
 		tailwind({
 			applyBaseStyles: false,
@@ -59,6 +64,7 @@ export default defineConfig({
 	],
 
 	vite: {
+		...silentDevReloadViteConfig(),
 		optimizeDeps: {
 			include: ["rangy"],
 		},

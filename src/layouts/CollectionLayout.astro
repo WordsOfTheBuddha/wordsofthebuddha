@@ -230,7 +230,7 @@ function getAvailabilityCounts(slug: string): {
 	display: none !important;
 }
 html[data-collection-view="discourses"] #discourses-panel.hidden {
-	display: block !important;
+	display: contents !important;
 }
 html[data-collection-view="discourses"] #filter-wrap.hidden {
 	display: flex !important;
@@ -252,63 +252,244 @@ html[data-collection-view="discourses"] #view-discourses {
 	<main class="container">
 		<div
 			class:list={[
-				"collection-toolbar grid grid-cols-1 gap-3 print:hidden sm:flex sm:items-center sm:justify-between sm:gap-3",
-				hasChildren ? "mb-6" : "mb-4",
+				"collection-chrome print:hidden",
+				hasChildren
+					? "collection-chrome--parent mb-6"
+					: "collection-chrome--leaf mb-4",
 			]}
 		>
-			<div
-				class:list={[
-					"flex items-center justify-between gap-3 sm:shrink-0",
-					!hasChildren && !collectionSlug && "hidden",
-				]}
-			>
-				{
-					hasChildren && (
-						<div class="inline-flex w-fit shrink-0 items-center rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
-							<button
-								type="button"
-								id="view-collections"
-								class={[
-									"px-4 py-1 text-sm rounded-full transition-colors",
-									defaultShowCollections
-										? "bg-primary text-white dark:text-gray-100"
-										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-								].join(" ")}
-							>
-								Collections
-							</button>
-							<button
-								type="button"
-								id="view-discourses"
-								class={[
-									"px-4 py-1 text-sm rounded-full transition-colors",
-									!defaultShowCollections
-										? "bg-primary text-white dark:text-gray-100"
-										: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
-								].join(" ")}
-							>
-								Discourses
-							</button>
-						</div>
-					)
-				}
-				{
-					collectionSlug && (
-						<div class="shrink-0 sm:hidden">
-							<CollectionExportButton
-								collectionSlug={collectionSlug}
-							/>
-						</div>
-					)
-				}
-			</div>
+			{
+				hasChildren && (
+					<div class="collection-chrome__toggle inline-flex w-fit shrink-0 items-center rounded-full border border-[var(--border-color)] bg-[var(--surface-paper)] p-1">
+						<button
+							type="button"
+							id="view-collections"
+							class={[
+								"px-4 py-1 text-sm rounded-full transition-colors",
+								defaultShowCollections
+									? "bg-primary text-white dark:text-gray-100"
+									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+							].join(" ")}
+						>
+							Collections
+						</button>
+						<button
+							type="button"
+							id="view-discourses"
+							class={[
+								"px-4 py-1 text-sm rounded-full transition-colors",
+								!defaultShowCollections
+									? "bg-primary text-white dark:text-gray-100"
+									: "text-[var(--text-muted)] hover:text-[var(--text-color)]",
+							].join(" ")}
+						>
+							Discourses
+						</button>
+					</div>
+				)
+			}
 			{
 				collectionSlug && (
-					<div class="hidden shrink-0 sm:block">
+					<div class="collection-chrome__print collection-chrome__print--mobile shrink-0 sm:hidden">
 						<CollectionExportButton collectionSlug={collectionSlug} />
 					</div>
 				)
 			}
+			{
+				collectionSlug && (
+					<div class="collection-chrome__print collection-chrome__print--desktop hidden shrink-0 sm:block">
+						<CollectionExportButton collectionSlug={collectionSlug} />
+					</div>
+				)
+			}
+			<div
+				id="discourses-panel"
+				class:list={[
+					"collection-chrome__discourses",
+					hasChildren && defaultShowCollections ? "hidden" : "",
+				]}
+			>
+				<div
+					id="filter-wrap"
+					class:list={[
+						"filter-toolbar not-prose w-full min-w-0",
+						hasChildren && defaultShowCollections ? "hidden" : "",
+					]}
+				>
+					<input
+						type="text"
+						id="client-filter"
+						class="filter-toolbar-input"
+						placeholder="Filter discourses..."
+					/>
+					{
+						hasReferenceOnlyDiscourses && (
+							<button
+								type="button"
+								id="toggle-ref"
+								aria-pressed="false"
+								class:list={[
+									"toggle-ref filter-toolbar-btn",
+									hasChildren && defaultShowCollections
+										? "hidden"
+										: "",
+								]}
+								title="Include reference-only discourses (Sujato translation)"
+							>
+								<span class="md:hidden">Ref</span>
+								<span class="hidden md:inline">See Refs</span>
+							</button>
+						)
+					}
+				</div>
+				<div
+					id="discourses-grid"
+					class={[
+						bookScopedDiscourses || sectionedDiscourses
+							? "space-y-8"
+							: "posts-grid",
+					].join(" ")}
+					data-collection-slug={collectionSlug ?? ""}
+				>
+				{
+					bookScopedDiscourses
+						? bookScopedDiscourses.map((book) => {
+								const bookHasPosts = book.sections.some(
+									(section) => section.posts.length > 0,
+								);
+								const hasVaggaStructure = book.sections.some(
+									(section) => section.slug,
+								);
+								return (
+								<div
+									class:list={[
+										"book-section col-span-full space-y-6",
+										!bookHasPosts && !hasVaggaStructure && "hidden",
+									]}
+									id={book.bookSlug}
+								>
+									<div class="border-b border-[var(--border-color)] pb-2">
+										<h2 class="text-xl font-semibold text-[var(--text-color)]">
+											{book.bookData.title}
+										</h2>
+										{
+											!suppressBookDescriptionsInDiscourses &&
+												book.bookData.description && (
+													<p class="mt-1 text-sm text-[var(--text-muted)]">
+														{book.bookData.description}
+													</p>
+												)
+										}
+									</div>
+									<div class="space-y-8">
+										{book.sections.map((section) => (
+											<div
+												class:list={[
+													section.slug
+														? "vagga-section col-span-full"
+														: "book-flat-section col-span-full",
+													section.slug &&
+														section.posts.length === 0 &&
+														"hidden",
+												]}
+												id={section.slug || undefined}
+											>
+												{
+													section.slug && (
+														<div class="vagga-section-header mb-4 mt-2 border-b border-[var(--border-color)] pb-2">
+															<h3 class="text-lg font-semibold text-[var(--text-color)]">
+																{formatVaggaDisplayTitle(
+																	section.data.title,
+																)}
+															</h3>
+															{
+																section.data
+																	.description && (
+																	<p class="mt-1 text-sm text-[var(--text-muted)]">
+																		{
+																			section
+																				.data
+																				.description
+																		}
+																	</p>
+																)
+															}
+														</div>
+													)
+												}
+												<div class="posts-grid">
+													{section.posts.map((post) => (
+														<PostCard
+															title={post.title}
+															description={
+																post.description
+															}
+															id={post.slug}
+															clamp={5}
+														/>
+													))}
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+								);
+							})
+						: sectionedDiscourses
+						? sectionedDiscourses.map((section) => (
+								<div
+									class:list={[
+										section.slug
+											? "vagga-section col-span-full"
+											: "col-span-full",
+										section.slug &&
+											section.posts.length === 0 &&
+											"hidden",
+									]}
+									id={section.slug || undefined}
+								>
+									{
+										section.slug && (
+											<div class="vagga-section-header mb-4 mt-2 border-b border-[var(--border-color)] pb-2">
+												<h2 class="text-lg font-semibold text-[var(--text-color)]">
+													{formatVaggaDisplayTitle(
+														section.data.title,
+													)}
+												</h2>
+												{
+													section.data.description && (
+														<p class="mt-1 text-sm text-[var(--text-muted)]">
+															{section.data.description}
+														</p>
+													)
+												}
+											</div>
+										)
+									}
+									<div class="posts-grid">
+										{section.posts.map((post) => (
+											<PostCard
+												title={post.title}
+												description={post.description}
+												id={post.slug}
+												clamp={5}
+											/>
+										))}
+									</div>
+								</div>
+							))
+						: pagePosts.map((post) => (
+								<PostCard
+									title={post.title}
+									description={post.description}
+									id={post.slug}
+									clamp={5}
+								/>
+							))
+				}
+					<div id="reference-cards-mount" />
+				</div>
+			</div>
 		</div>
 
 		{/* Render both; client toggles on parent collection pages */}
@@ -341,194 +522,6 @@ html[data-collection-view="discourses"] #view-discourses {
 				</div>
 			)
 		}
-
-		<div
-			id="discourses-panel"
-			class:list={[
-				hasChildren && defaultShowCollections ? "hidden" : "",
-			]}
-		>
-			<div
-				id="filter-wrap"
-				class:list={[
-					"filter-toolbar not-prose w-full min-w-0",
-					hasChildren && defaultShowCollections ? "hidden" : "",
-				]}
-			>
-				<input
-					type="text"
-					id="client-filter"
-					class="filter-toolbar-input"
-					placeholder="Filter discourses..."
-				/>
-				{
-					hasReferenceOnlyDiscourses && (
-						<button
-							type="button"
-							id="toggle-ref"
-							aria-pressed="false"
-							class:list={[
-								"toggle-ref filter-toolbar-btn",
-								hasChildren && defaultShowCollections
-									? "hidden"
-									: "",
-							]}
-							title="Include reference-only discourses (Sujato translation)"
-						>
-							<span class="md:hidden">Ref</span>
-							<span class="hidden md:inline">See Refs</span>
-						</button>
-					)
-				}
-			</div>
-			<div
-				id="discourses-grid"
-				class={[
-					bookScopedDiscourses || sectionedDiscourses
-						? "space-y-8"
-						: "posts-grid",
-				].join(" ")}
-				data-collection-slug={collectionSlug ?? ""}
-			>
-			{
-				bookScopedDiscourses
-					? bookScopedDiscourses.map((book) => {
-							const bookHasPosts = book.sections.some(
-								(section) => section.posts.length > 0,
-							);
-							const hasVaggaStructure = book.sections.some(
-								(section) => section.slug,
-							);
-							return (
-							<div
-								class:list={[
-									"book-section col-span-full space-y-6",
-									!bookHasPosts && !hasVaggaStructure && "hidden",
-								]}
-								id={book.bookSlug}
-							>
-								<div class="border-b border-[var(--border-color)] pb-2">
-									<h2 class="text-xl font-semibold text-[var(--text-color)]">
-										{book.bookData.title}
-									</h2>
-									{
-										!suppressBookDescriptionsInDiscourses &&
-											book.bookData.description && (
-												<p class="mt-1 text-sm text-[var(--text-muted)]">
-													{book.bookData.description}
-												</p>
-											)
-									}
-								</div>
-								<div class="space-y-8">
-									{book.sections.map((section) => (
-										<div
-											class:list={[
-												section.slug
-													? "vagga-section col-span-full"
-													: "book-flat-section col-span-full",
-												section.slug &&
-													section.posts.length === 0 &&
-													"hidden",
-											]}
-											id={section.slug || undefined}
-										>
-											{
-												section.slug && (
-													<div class="vagga-section-header mb-4 mt-2 border-b border-[var(--border-color)] pb-2">
-														<h3 class="text-lg font-semibold text-[var(--text-color)]">
-															{formatVaggaDisplayTitle(
-																section.data.title,
-															)}
-														</h3>
-														{
-															section.data
-																.description && (
-																<p class="mt-1 text-sm text-[var(--text-muted)]">
-																	{
-																		section
-																			.data
-																			.description
-																	}
-																</p>
-															)
-														}
-													</div>
-												)
-											}
-											<div class="posts-grid">
-												{section.posts.map((post) => (
-													<PostCard
-														title={post.title}
-														description={
-															post.description
-														}
-														id={post.slug}
-														clamp={5}
-													/>
-												))}
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-							);
-						})
-					: sectionedDiscourses
-					? sectionedDiscourses.map((section) => (
-							<div
-								class:list={[
-									section.slug
-										? "vagga-section col-span-full"
-										: "col-span-full",
-									section.slug &&
-										section.posts.length === 0 &&
-										"hidden",
-								]}
-								id={section.slug || undefined}
-							>
-								{
-									section.slug && (
-										<div class="vagga-section-header mb-4 mt-2 border-b border-[var(--border-color)] pb-2">
-											<h2 class="text-lg font-semibold text-[var(--text-color)]">
-												{formatVaggaDisplayTitle(
-													section.data.title,
-												)}
-											</h2>
-											{
-												section.data.description && (
-													<p class="mt-1 text-sm text-[var(--text-muted)]">
-														{section.data.description}
-													</p>
-												)
-											}
-										</div>
-									)
-								}
-								<div class="posts-grid">
-									{section.posts.map((post) => (
-										<PostCard
-											title={post.title}
-											description={post.description}
-											id={post.slug}
-											clamp={5}
-										/>
-									))}
-								</div>
-							</div>
-						))
-					: pagePosts.map((post) => (
-							<PostCard
-								title={post.title}
-								description={post.description}
-								id={post.slug}
-								clamp={5}
-							/>
-						))
-			}
-				<div id="reference-cards-mount" />
-			</div>
-		</div>
 
 		{
 			hasReferenceOnlyDiscourses && (
@@ -570,6 +563,51 @@ html[data-collection-view="discourses"] #view-discourses {
 		.active-tab {
 			background-color: var(--primary-color);
 			color: white;
+		}
+		.collection-chrome {
+			display: grid;
+			column-gap: 0.75rem;
+			row-gap: 0.75rem;
+			align-items: center;
+		}
+		.collection-chrome--leaf {
+			grid-template-columns: minmax(0, 1fr) auto;
+			grid-template-areas:
+				"print print"
+				"filter filter";
+		}
+		.collection-chrome--parent {
+			grid-template-columns: minmax(0, 1fr) auto;
+			grid-template-areas:
+				"toggle print"
+				"filter filter";
+		}
+		.collection-chrome__toggle {
+			grid-area: toggle;
+		}
+		.collection-chrome__print {
+			grid-area: print;
+			justify-self: end;
+		}
+		.collection-chrome__discourses:not(.hidden) {
+			display: contents;
+		}
+		#filter-wrap {
+			grid-area: filter;
+		}
+		#discourses-grid {
+			grid-column: 1 / -1;
+		}
+		@media (min-width: 768px) {
+			.collection-chrome--leaf {
+				grid-template-areas: "filter print";
+			}
+		}
+		@media (min-width: 1024px) {
+			.collection-chrome--parent {
+				grid-template-columns: auto minmax(0, 1fr) auto;
+				grid-template-areas: "toggle filter print";
+			}
 		}
 		#filter-wrap.hidden {
 			display: none !important;
@@ -633,6 +671,7 @@ html[data-collection-view="discourses"] #view-discourses {
 			align-items: center;
 			align-self: flex-start;
 			min-width: 0;
+			width: 100%;
 			position: sticky;
 			top: 0;
 			z-index: 20;
@@ -641,6 +680,16 @@ html[data-collection-view="discourses"] #view-discourses {
 			border: 1px solid var(--border-color, rgba(44, 44, 44, 0.2));
 			border-radius: 9999px;
 			background: var(--surface-paper);
+		}
+		@media (min-width: 768px) {
+			.collection-chrome--leaf .filter-toolbar:not(.hidden) {
+				margin-bottom: 0;
+			}
+		}
+		@media (min-width: 1024px) {
+			.collection-chrome--parent .filter-toolbar:not(.hidden) {
+				margin-bottom: 0;
+			}
 		}
 		.filter-toolbar-input {
 			flex: 1;
