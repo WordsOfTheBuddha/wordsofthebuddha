@@ -121,13 +121,18 @@ debug("commentary is: ", commentary);
 
 // Runs before paint on reference-fallback pages so the Pali-only/translation
 // choice (localStorage or ?trans=) applies without a flash of the wrong view.
+const sujatoReferenceRoute = viewSource === "sujato-reference";
+const defaultRefPaliOnly = referenceFallback && !sujatoReferenceRoute;
 const refInitScript = `(function () {
 	var params = new URLSearchParams(window.location.search);
 	var transParam = params.get("trans");
+	var onSujatoRoute = ${sujatoReferenceRoute ? "true" : "false"};
 	var show =
 		transParam !== null
 			? transParam === "true"
-			: localStorage.getItem("refShowTranslation") === "true";
+			: onSujatoRoute
+				? localStorage.getItem("refShowTranslation") !== "false"
+				: localStorage.getItem("refShowTranslation") === "true";
 	if (transParam !== null) {
 		localStorage.setItem("refShowTranslation", String(show));
 	}
@@ -167,7 +172,7 @@ if (!SEOTitle) {
 
 <html
 	lang="en"
-	class:list={[serverTheme, referenceFallback && "ref-pali-only"]}
+	class:list={[serverTheme, defaultRefPaliOnly && "ref-pali-only"]}
 	dir="ltr"
 	data-has-viz={contentImage ? "true" : "false"}
 >

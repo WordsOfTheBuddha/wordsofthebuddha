@@ -8,6 +8,9 @@ const englishRouteSet = new Set<string>(routes);
 /** Top-level path with a single segment, e.g. /mn98 (not /sn1.1.1-2/foo). */
 const TOP_LEVEL_SLUG = /^\/[^/]+$/;
 
+/** Canonical Sujato reference URLs, e.g. /mn65/en/sujato. */
+const SUJATO_REFERENCE_ROUTE = /^\/([^/]+)\/en\/sujato$/;
+
 /** Subset/paragraph slugs like sn49.1 or sn1.1.1-2 (not collection indexes like sn12). */
 const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 
@@ -16,9 +19,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
 	if (
 		pathname.startsWith("/discourse-ssr/") ||
-		pathname.startsWith("/discourse-dynamic/")
+		pathname.startsWith("/discourse-dynamic/") ||
+		pathname.startsWith("/discourse-sujato/")
 	) {
 		return next();
+	}
+
+	const sujatoMatch = pathname.match(SUJATO_REFERENCE_ROUTE);
+	if (sujatoMatch) {
+		return context.rewrite(
+			new URL(`/discourse-sujato/${sujatoMatch[1]}`, context.url),
+		);
 	}
 
 	if (!TOP_LEVEL_SLUG.test(pathname)) {

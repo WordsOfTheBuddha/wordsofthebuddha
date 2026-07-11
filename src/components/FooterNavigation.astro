@@ -82,8 +82,19 @@ const { prev, next } = Astro.props;
 	}
 
 	function currentSlugFromPath(): string | null {
-		const seg = location.pathname.replace(/^\/+|\/+$/g, "");
-		return seg && !seg.includes("/") ? seg : null;
+		const path = location.pathname.replace(/^\/+|\/+$/g, "");
+		if (!path) return null;
+		const sujatoMatch = path.match(/^([^/]+)\/en\/sujato$/);
+		if (sujatoMatch) return sujatoMatch[1];
+		return path && !path.includes("/") ? path : null;
+	}
+
+	function isSujatoReferencePath(): boolean {
+		return /\/en\/sujato\/?$/.test(location.pathname);
+	}
+
+	function discourseHref(slug: string): string {
+		return isSujatoReferencePath() ? `/${slug}/en/sujato` : `/${slug}`;
 	}
 
 	function discourseFooterNavRoot(): HTMLElement | null {
@@ -111,10 +122,11 @@ const { prev, next } = Astro.props;
 		seedDiscourseNeighborTitles(seeds);
 	}
 
-	/** When `?ref=true`, walk EN + reference-only neighbors (SSR uses EN-only). */
+	/** When `?ref=true` or on /en/sujato, walk EN + reference-only neighbors. */
 	function applyRefNeighborOverrides() {
 		const search = new URLSearchParams(location.search);
-		if (!resolveRefMode(search) || search.get("pl")) return;
+		if ((!resolveRefMode(search) && !isSujatoReferencePath()) || search.get("pl"))
+			return;
 		if (!discourseFooterNavRoot()) return;
 		const cur = currentSlugFromPath();
 		if (!cur) return;
@@ -169,7 +181,7 @@ const { prev, next } = Astro.props;
 			return;
 		}
 		link.classList.remove("hidden");
-		link.setAttribute("data-base-href", `/${slug}`);
+		link.setAttribute("data-base-href", discourseHref(slug));
 		link.setAttribute("data-neighbor-slug", slug);
 		const label = titleFor(slug);
 		if (label) link.setAttribute("data-neighbor-title", label);
@@ -190,7 +202,7 @@ const { prev, next } = Astro.props;
 		const layout = localStorage.getItem("layout") || "interleaved";
 		const search = new URLSearchParams(location.search);
 		const pl = search.get("pl");
-		const refMode = resolveRefMode(search);
+		const refMode = resolveRefMode(search) || isSujatoReferencePath();
 		const root = discourseFooterNavRoot();
 		if (!root) return;
 		root.querySelectorAll("a.nav-link").forEach((link) => {

@@ -51,7 +51,7 @@ export type ReferenceDiscoursePage = {
 		contentImage: null;
 		vizPrev: null;
 		vizNext: null;
-		viewSource: "pli" | "en";
+		viewSource: "pli" | "en" | "sujato-reference";
 		referenceFallback: boolean;
 	};
 };
@@ -59,14 +59,25 @@ export type ReferenceDiscoursePage = {
 /** Build a Pāli-only or Sujato reference page for direct discourse URLs. */
 export async function buildReferenceDiscoursePage(
 	id: string,
-	options: ReferenceSubsetFilter & { refMode?: boolean } = {},
+	options: ReferenceSubsetFilter & {
+		refMode?: boolean;
+		/** Explicit /:slug/en/sujato route — requires Sujato content. */
+		sujatoRoute?: boolean;
+	} = {},
 ): Promise<ReferenceDiscoursePage | null> {
-	const { refMode = false, sectionNumber, discourseRange, fullRef, hrf } =
-		options;
+	const {
+		refMode = false,
+		sujatoRoute = false,
+		sectionNumber,
+		discourseRange,
+		fullRef,
+		hrf,
+	} = options;
 	const paliParagraphEntry = await getPaliEntry(id);
 	if (!paliParagraphEntry) return null;
 
 	const referenceEntry = await getReferenceSujatoEntry(id);
+	if (sujatoRoute && !referenceEntry) return null;
 	const paliSegmentEntry = await getReferencePliMsEntry(id);
 	const useReferenceEnglish = Boolean(referenceEntry);
 
@@ -167,7 +178,8 @@ export async function buildReferenceDiscoursePage(
 
 	let refPrev = null;
 	let refNext = null;
-	const { prevId, nextId } = findPageDiscourseNeighbors(id, refMode);
+	const neighborRefMode = refMode || sujatoRoute;
+	const { prevId, nextId } = findPageDiscourseNeighbors(id, neighborRefMode);
 	if (prevId) refPrev = await getDiscourseNeighborEntry(prevId);
 	if (nextId) refNext = await getDiscourseNeighborEntry(nextId);
 
@@ -197,7 +209,11 @@ export async function buildReferenceDiscoursePage(
 			contentImage: null,
 			vizPrev: null,
 			vizNext: null,
-			viewSource: useReferenceEnglish ? "pli" : "en",
+			viewSource: sujatoRoute
+				? "sujato-reference"
+				: useReferenceEnglish
+					? "pli"
+					: "en",
 			referenceFallback: useReferenceEnglish,
 		},
 	};
