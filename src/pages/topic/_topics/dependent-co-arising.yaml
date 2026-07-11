@@ -39,6 +39,8 @@ leadsTo:
     - penetrative vision
     - stream-entry
 discourses:
+    - id: "dn15"
+      note: "The cycle of existence and the cycle of conflict"
     - id: "sn12.1"
       note: "Core twelve-link formula"
     - id: "sn12.2"
