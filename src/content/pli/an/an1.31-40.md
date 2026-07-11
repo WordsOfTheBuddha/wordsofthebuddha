@@ -3,8 +3,9 @@ title: Adanta vagga - The Chapter on the Untamed
 description: Short teachings contrasting the untamed and the tamed mind.
 fetter: ignorance
 qualities: non-restraint, harm, adventurousness, non-harm, self-control, tame
-tags: mind, harm, untamed, tamed, benefit, an, an1
+theme: cultivating discernment, wisdom
 slug: an1.31-40
+priority: 1.1
 ---
 
 #### 1.31

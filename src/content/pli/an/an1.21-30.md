@@ -4,6 +4,7 @@ description: The Buddha contrasts the undeveloped and developed mind.
 qualities: cultivation, harm, suffering, contentment, undeveloped
 theme: cultivating discernment, wisdom
 slug: an1.21-30
+priority: 1.1
 ---
 
 #### 1.21

@@ -182,23 +182,23 @@
   <text x="512" y="486" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">vedanāsu vedanānupassī</text>
 
   <circle cx="492" cy="524" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="527" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">5</text>
+  <text x="492" y="527" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
   <text x="514" y="524" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience joy</text>
   <text x="514" y="540" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">pītipaṭisaṁvedī</text>
 
   <circle cx="492" cy="580" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="584" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">6</text>
+  <text x="492" y="583" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
   <text x="514" y="580" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience ease</text>
   <text x="514" y="596" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">sukhapaṭisaṁvedī</text>
 
   <circle cx="492" cy="636" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="639" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">7</text>
-  <text x="514" y="636" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience mental activity</text>
+  <text x="492" y="639" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+  <text x="514" y="636" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience the mental constructs</text>
   <text x="514" y="652" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">cittasaṅkhārapaṭisaṁvedī</text>
 
   <circle cx="492" cy="692" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="696" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">8</text>
-  <text x="514" y="692" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Settle the mental activity</text>
+  <text x="492" y="694" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
+  <text x="514" y="692" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Settle the mental constructs</text>
   <text x="514" y="708" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">passambhayaṁ cittasaṅkhāraṁ</text>
 
   <path d="M 740 514 Q 750 514 750 524 L 750 602 Q 750 612 760 612 Q 750 612 750 622 L 750 700 Q 750 710 740 710" fill="none" stroke="#6888a0" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
@@ -215,22 +215,22 @@
   <text x="100" y="788" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">citte cittānupassī</text>
 
   <circle cx="80" cy="828" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="80" y="830" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">9</text>
+  <text x="80" y="831" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
   <text x="104" y="828" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Experience the mind</text>
   <text x="104" y="844" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">cittapaṭisaṁvedī</text>
 
   <circle cx="80" cy="884" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="80" y="887" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">10</text>
+  <text x="80" y="887" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
   <text x="104" y="884" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Gladden the mind</text>
   <text x="104" y="900" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">abhippamodayaṁ cittaṁ</text>
 
   <circle cx="80" cy="940" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="80" y="943" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">11</text>
-  <text x="104" y="940" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Stabilize the mind</text>
+  <text x="80" y="943" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
+  <text x="104" y="940" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Collect the mind</text>
   <text x="104" y="956" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">samādahaṁ cittaṁ</text>
 
   <circle cx="80" cy="996" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="80" y="999" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">12</text>
+  <text x="80" y="998" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
   <text x="104" y="996" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Disengage the mind</text>
   <text x="104" y="1012" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">vimocayaṁ cittaṁ</text>
 
@@ -250,22 +250,22 @@
   <text x="512" y="788" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic">dhammesu dhammānupassī</text>
 
   <circle cx="492" cy="828" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="831" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1<tspan dy="-1">3</tspan></text>
+  <text x="492" y="831" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1</text>
   <text x="514" y="828" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe impermanence</text>
   <text x="514" y="844" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">aniccānupassī</text>
 
   <circle cx="492" cy="884" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="887" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1<tspan dy="-1">4</tspan></text>
+  <text x="492" y="887" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">2</text>
   <text x="514" y="884" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe the fading of desire</text>
   <text x="514" y="900" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">virāgānupassī</text>
 
   <circle cx="492" cy="940" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="943" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">1<tspan dy="-1">5</tspan></text>
+  <text x="492" y="943" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">3</text>
   <text x="514" y="940" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe cessation</text>
   <text x="514" y="956" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">nirodhānupassī</text>
 
   <circle cx="492" cy="996" r="11" fill="none" stroke="#6888a0" stroke-width="0.8" opacity="0.6"/>
-  <text x="492" y="1000" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">16</text>
+  <text x="492" y="998" text-anchor="middle" fill="#90b0c8" font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="bold">4</text>
   <text x="514" y="996" fill="#c8d8e8" font-family="Georgia,'Times New Roman',serif" font-size="12">Observe relinquishment</text>
   <text x="514" y="1012" fill="#8898b0" font-family="Georgia,'Times New Roman',serif" font-size="10.5" font-style="italic">paṭinissaggānupassī</text>
 
