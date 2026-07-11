@@ -5,6 +5,7 @@ qualities: desire, radical attention, contact, collectedness, mindfulness, wisdo
 theme: wisdom, inquisitiveness
 slug: an8.83
 priority: 1.2
+commentary: A similar discourse is at [AN 10.58](/an10.58).
 ---
 
 “Sace, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ: ‘kiṁmūlakā, āvuso, sabbe dhammā, kiṁsambhavā sabbe dhammā, kiṁsamudayā sabbe dhammā, kiṁsamosaraṇā sabbe dhammā, kiṁpamukhā sabbe dhammā, kiṁadhipateyyā sabbe dhammā, kiṁuttarā sabbe dhammā, kiṁsārā sabbe dhammā’ti, evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ kinti byākareyyāthā”ti?
