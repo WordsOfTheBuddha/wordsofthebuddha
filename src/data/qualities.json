@@ -176,6 +176,7 @@
 		"wakefulness",
 		"wholesome",
 		"wisdom",
+		"radical comprehension",
 		"radical attention",
 		"with nothing",
 		"without fear"
@@ -1210,11 +1211,11 @@
 			"keeping in mind",
 			"presence",
 			"awareness",
-			"Context: Remembering to be present with continuous effort, observing the body, feelings, mind, and mental qualities in and of themselves.",
+			"Context: Active presence of mind and lucid retention; the faculty that remembers the Dhamma, anchors attention to the chosen object or present experience, and guards the mind against unwholesome states.",
 			"Supported by:{right view, right effort, wakefulness}",
 			"Leads to:{examination, clear awareness}",
 			"Opposite:{muddle-mindedness, wrong mindfulness}",
-			"[sati, anupassanā]"
+			"[sati, anussati]"
 		],
 		"moral recklessness": [
 			"fearlessness of wrongdoing",
@@ -1229,8 +1230,8 @@
 		],
 		"muddle-mindedness": [
 			"forgetfulness",
-			"not mindful",
-			"Context: Forgetful, scattered awareness where mindfulness is absent or lost. The mind drifts through distraction or dullness, unable to stay with its object or purpose.",
+			"unmindful",
+			"Context: Lapsed presence of mind and failure of retention; a scattered or oblivious mental state that forgets its purpose, loses its anchor to the present experience, and leaves the mind passively drifting through distraction or dullness.",
 			"Related:{wrong mindfulness}",
 			"Supported by:{distraction, wrong mindfulness}",
 			"Leads to:{displeasure, distraction}",
@@ -1659,7 +1660,7 @@
 			"moderation in eating",
 			"Context: A practice of guarding the sense doors by not grasping at the general features or details of sense objects when seeing, hearing, sensing, and cognizing.",
 			"Related:{self-control}",
-			"Supported by:{conscience, diligence, fear of wrongdoing}",
+			"Supported by:{conscience, fear of wrongdoing, radical comprehension}",
 			"Leads to:{contentment, ethical conduct, wakefulness}",
 			"Opposite:{non-restraint}",
 			"[indriya saṁvara]"
@@ -1920,10 +1921,9 @@
 			"[akusala]"
 		],
 		"superficial attention": [
-			"unwise attention",
-			"attention to the foreground",
+			"unwise steering of attention",
 			"content-bound reflection",
-			"Context: Attention that misses the structural matrix, fixating entirely on the surface features and foreground content of an experience. By remaining bound to the periphery, it feeds mental proliferation and drives reactions of craving, aversion, and delusion.",
+			"Context: The passive, automatic drifting of the mind into habitual, automated reaction patterns. It is the unskillful steering of attention based on the enticing or repulsive surface features of an object.",
 			"Supported by:{negligence, ignorance}",
 			"Leads to:{lack of discernment, speculation}",
 			"Opposite:{radical attention}",
@@ -2010,14 +2010,24 @@
 			"Opposite:{delusion, immaturity, lack of discernment}",
 			"[paññā, medhā, dhīra, paṇḍita, asammūḷha]"
 		],
+		"radical comprehension": [
+			"discerning mindfulness",
+			"sati-sampajañña",
+			"structural comprehension",
+			"Context: Complete comprehension of the arising, persisting, and fading away of phenomena. Paired mindfulness and clear awareness that knows experiences as they arise, remain, and pass away—rather than blind absorption in their surface content.",
+			"Supported by:{radical attention, mindfulness, clear awareness}",
+			"Leads to:{sense restraint, collectedness}",
+			"Opposite:{superficial attention}",
+			"[satisampajañña]"
+		],
 		"radical attention": [
-			"wise attention",
+			"wise steering of attention",
 			"root-level attention",
 			"attention to the structural source",
 			"contextual reflection",
-			"Context: Attending to the structural container or matrix from which an experience originates. Rather than fixating on the foreground content, it discerns the underlying conditions and framework of the experience, preventing the mind from getting swept up in proliferation.",
+			"Context: The active, deliberate steering of the mind away from habitual, automated reaction patterns. It is the wise steering of attention based on a theme of the Dhamma.",
 			"Supported by:{wisdom, perceiving drawback}",
-			"Leads to:{right view}",
+			"Leads to:{right view, radical comprehension}",
 			"Opposite:{superficial attention}",
 			"[yonisomanasikāra]"
 		],
@@ -2075,7 +2085,8 @@
 			"[micchāājīva]"
 		],
 		"wrong mindfulness": [
-			"Context: Remembering in the wrong way. It holds to the signs of craving and aversion, or attends carefully to what sustains delusion. Such mindfulness appears clear but lacks right view, turning awareness into a servant of defilement. It remembers what should be forgotten and forgets what should be remembered.",
+			"inferior recollection",
+			"Context: Misdirected presence of mind and unwholesome retention; the faculty that remembers worldly or harmful narratives, anchors attention to objects of craving and distress, and leaves the mind unguarded against unwholesome states.",
 			"Related:{muddle-mindedness}",
 			"Supported by:{craving, aversion, wrong effort}",
 			"Leads to:{distraction, wrong collectedness}",
