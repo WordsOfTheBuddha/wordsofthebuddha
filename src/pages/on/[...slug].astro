@@ -4,6 +4,8 @@ import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import ContentTag from "../../components/ContentTag.astro";
 import EntityPopover from "../../components/EntityPopover.astro";
+import OnPageDiscourseChrome from "../../components/OnPageDiscourseChrome.astro";
+import CollectionPdfExportModal from "../../components/CollectionPdfExportModal.astro";
 import qualities from "../../data/qualities.json";
 import topicMappings from "../../data/topicMappings.json";
 import { getContentTypeFromApiData } from "../../utils/ContentTagUtils";
@@ -18,7 +20,8 @@ import {
 	getReferencePostsForDiscourseScopes,
 	getReferencePostsForTag,
 } from "../../utils/referencePostsForPage";
-import type { UnifiedContentItem } from "../../types/discover";
+import { buildOnPagePdfExportTree } from "../../utils/onPagePdfExportTree";
+import { discourseHasSvgAssetForExport } from "../../utils/contentImage";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
 export async function getStaticPaths() {
@@ -107,6 +110,35 @@ const hasReferenceOnlyDiscourses = referencePostsForPage.length > 0;
 const referencePostsJson = JSON.stringify(referencePostsForPage);
 const showDiscoursesList =
 	additionalDiscourses.length > 0 || hasReferenceOnlyDiscourses;
+
+const isTagPage = contentType === "topic" || contentType === "quality";
+const showOnPageChrome =
+	isTagPage &&
+	(primaryDiscourses.length > 0 || showDiscoursesList);
+
+const onPagePdfExportTree = isTagPage
+	? buildOnPagePdfExportTree(
+			slug,
+			displayTitle,
+			allDiscourses.map(
+				(d: { id: string; title: string; description?: string }) => ({
+					id: d.id,
+					title: d.title,
+					description: d.description,
+				}),
+			),
+			referencePostsForPage,
+		)
+	: null;
+const onPageExportApiPath = isTagPage ? `/api/export/on/${slug}` : undefined;
+const onPagePreviewHasSvgViz =
+	isTagPage &&
+	allDiscourses.some((d: { id: string }) =>
+		discourseHasSvgAssetForExport(d.id),
+	);
+const onPagePdfScopeSummary = onPagePdfExportTree
+	? `This export includes ${onPagePdfExportTree.totalDiscourseCount} discourses tagged with "${displayTitle}".`
+	: "";
 ---
 
 <Layout seoTitle={`${displayTitle} - Words of the Buddha`} showAuth={true}>
@@ -490,45 +522,58 @@ const showDiscoursesList =
 		}
 
 		{
-			/* Featured Discourses Section - Only for topics with curated content */
-		}
-		{
-			primaryDiscourses.length > 0 && (
-				<div class="mb-10">
-					<h2 class="text-xl font-medium mb-4">
-						Featured Discourses
-					</h2>
-					<div class="space-y-6">
-						{primaryDiscourses.map((discourse: any) => (
-							<div class="mb-6">
-								<div class="relative">
+			showOnPageChrome && (
+				<OnPageDiscourseChrome
+					pageSlug={slug}
+					hasReferenceOnlyDiscourses={hasReferenceOnlyDiscourses}
+					showPrintPdf={!!onPagePdfExportTree}
+				>
+					{primaryDiscourses.length > 0 ? (
+						<section class="on-discourse-section space-y-6">
+							<h2 class="text-xl font-medium mb-0">
+								Featured Discourses
+							</h2>
+							<div class="space-y-6 px-2">
+								{primaryDiscourses.map((discourse: any) => (
 									<PostCard
 										title={discourse.title}
 										description={discourse.description}
 										id={discourse.id}
 										titleTag={discourse.note}
 									/>
-								</div>
+								))}
 							</div>
-						))}
-					</div>
-				</div>
+						</section>
+					) : null}
+					{additionalDiscourses.length > 0 ||
+					(hasReferenceOnlyDiscourses &&
+						primaryDiscourses.length === 0) ? (
+						<section class="on-discourse-section space-y-4">
+							<h2 class="text-xl font-medium mb-0">
+								{primaryDiscourses.length > 0
+									? "More Discourses"
+									: "Discourses"}
+							</h2>
+							<div class="px-2 space-y-4">
+								{additionalDiscourses.map((discourse: any) => (
+									<PostCard
+										title={discourse.title}
+										description={discourse.description}
+										id={discourse.id}
+									/>
+								))}
+							</div>
+						</section>
+					) : null}
+				</OnPageDiscourseChrome>
 			)
 		}
 
 		{
-			/* All Discourses or More Discourses Section (flat list in API order) */
-		}
-		{
-			showDiscoursesList && (
+			!isTagPage && showDiscoursesList && (
 				<div class="space-y-6">
 					<div class="flex flex-wrap items-center justify-between gap-2 print:hidden">
-						<h2 class="text-xl font-medium mb-0">
-							{contentType === "topic" &&
-							primaryDiscourses.length > 0
-								? "More Discourses"
-								: "Discourses"}
-						</h2>
+						<h2 class="text-xl font-medium mb-0">Discourses</h2>
 						{
 							hasReferenceOnlyDiscourses && (
 								<button
@@ -539,7 +584,9 @@ const showDiscoursesList =
 									title="Include reference-only discourses (Sujato translation)"
 								>
 									<span class="md:hidden">Ref</span>
-									<span class="hidden md:inline">See Refs</span>
+									<span class="hidden md:inline">
+										See Refs
+									</span>
 								</button>
 							)
 						}
@@ -559,6 +606,22 @@ const showDiscoursesList =
 		}
 
 		{
+			isTagPage && onPagePdfExportTree && (
+				<CollectionPdfExportModal
+					collectionSlug={slug}
+					exportApiPath={onPageExportApiPath}
+					previewTitle={displayTitle}
+					previewScopeSummary={onPagePdfScopeSummary}
+					previewTotalTextFiles={allDiscourses.length}
+					previewHasChapters={false}
+					previewChapters={[]}
+					previewHasSvgViz={onPagePreviewHasSvgViz}
+					exportSelectionTree={onPagePdfExportTree}
+				/>
+			)
+		}
+
+		{
 			hasReferenceOnlyDiscourses && (
 				<script
 					id="reference-posts-data"
@@ -571,15 +634,26 @@ const showDiscoursesList =
 
 	<script>
 		import { initReferenceDiscourseCards } from "../../utils/referenceDiscourseCardsClient";
+		import { initOnPageDiscourseFilter } from "../../utils/onPageDiscourseFilter";
 
-		function initOnPageRefDiscourses() {
-			initReferenceDiscourseCards();
+		function initOnPageDiscourses() {
+			const grid = document.getElementById("discourses-grid");
+			if (!grid) {
+				initReferenceDiscourseCards();
+				return;
+			}
+
+			const filter = initOnPageDiscourseFilter();
+			initReferenceDiscourseCards({
+				getActiveFilter: filter.getActiveFilter,
+				applyFilter: filter.applyFilter,
+			});
 		}
 
 		if (document.readyState === "loading") {
-			document.addEventListener("DOMContentLoaded", initOnPageRefDiscourses);
+			document.addEventListener("DOMContentLoaded", initOnPageDiscourses);
 		} else {
-			initOnPageRefDiscourses();
+			initOnPageDiscourses();
 		}
 	</script>
 </Layout>

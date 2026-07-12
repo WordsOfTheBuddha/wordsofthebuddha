@@ -23,6 +23,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import {
 	fetchCollectionPdfData,
+	fetchOnPagePdfData,
 	buildPdfHtml,
 	countCollectionDiscourses,
 	type PdfExportContentOptions,
@@ -33,7 +34,15 @@ import {
 import {
 	buildPdfExportSelectionTree,
 	flattenExportTreeSlugs,
+	type PdfExportDiscourseLine,
 } from "../../../utils/collectionPdfExportTree";
+import {
+	buildOnPagePdfExportTree,
+	flattenOnPageExportSlugs,
+	type OnPageDiscourse,
+} from "../../../utils/onPagePdfExportTree";
+import { findContentBySlug } from "../../../utils/discover-data";
+import { getReferencePostsForTag } from "../../../utils/referencePostsForPage";
 import { normalizeDiscourseIdForContentImages } from "../../../utils/contentImage";
 import { determineRouteType } from "../../../utils/routeHandler";
 import { directoryStructure } from "../../../data/directoryStructure";
@@ -283,6 +292,241 @@ async function validateSelectedDiscourseSlugs(
 	return { ok: true, set: new Set(normalized) };
 }
 
+type OnPageExportContext = {
+	pageSlug: string;
+	title: string;
+	description: string;
+	discourseLines: PdfExportDiscourseLine[];
+	allowed: Set<string>;
+};
+
+function resolveOnPageExportContext(
+	pageSlug: string,
+):
+	| { ok: true; ctx: OnPageExportContext }
+	| { ok: false; response: Response } {
+	const { item: content, type: contentType } = findContentBySlug(pageSlug);
+	if (
+		!content ||
+		(contentType !== "topic" && contentType !== "quality")
+	) {
+		return {
+			ok: false,
+			response: errorResponse(
+				`'${pageSlug}' is not a known topic or quality page.`,
+				404,
+			),
+		};
+	}
+
+	const discourses: OnPageDiscourse[] = (content.discourses ?? []).map(
+		(d: { id: string; title: string; description?: string }) => ({
+			id: d.id,
+			title: d.title,
+			description: d.description,
+		}),
+	);
+	const enSlugs = new Set(discourses.map((d) => d.id));
+	const referencePosts = getReferencePostsForTag(pageSlug, enSlugs);
+	const tree = buildOnPagePdfExportTree(
+		pageSlug,
+		content.title,
+		discourses,
+		referencePosts,
+	);
+	if (!tree) {
+		return {
+			ok: false,
+			response: errorResponse(
+				`No discourses found for '${pageSlug}'.`,
+				404,
+			),
+		};
+	}
+
+	return {
+		ok: true,
+		ctx: {
+			pageSlug,
+			title: content.title,
+			description: content.description ?? "",
+			discourseLines: tree.chapters[0]?.discourses ?? [],
+			allowed: new Set(flattenOnPageExportSlugs(tree)),
+		},
+	};
+}
+
+function validateSelectedOnPageDiscourseSlugs(
+	pageSlug: string,
+	raw: unknown,
+): { ok: true; set: Set<string> } | { ok: false; response: Response } {
+	const resolved = resolveOnPageExportContext(pageSlug);
+	if (!resolved.ok) return resolved;
+
+	if (!Array.isArray(raw) || raw.length === 0) {
+		return {
+			ok: false,
+			response: errorResponse(
+				"selectedDiscourseSlugs must be a non-empty array.",
+				400,
+			),
+		};
+	}
+
+	const normalized = [
+		...new Set(
+			raw.map((s) =>
+				normalizeDiscourseIdForContentImages(String(s).trim()),
+			),
+		),
+	].filter(Boolean);
+	if (normalized.length === 0) {
+		return {
+			ok: false,
+			response: errorResponse("Select at least one discourse.", 400),
+		};
+	}
+	for (const s of normalized) {
+		if (!resolved.ctx.allowed.has(s)) {
+			return {
+				ok: false,
+				response: errorResponse(
+					`Discourse not on this page: ${s}`,
+					400,
+				),
+			};
+		}
+	}
+	return { ok: true, set: new Set(normalized) };
+}
+
+function parseExportSlugParam(slug: string | undefined):
+	| { kind: "on-page"; pageSlug: string }
+	| { kind: "collection"; collectionSlug: string }
+	| null {
+	if (!slug) return null;
+	if (slug.startsWith("on/")) {
+		const pageSlug = slug.slice("on/".length).trim();
+		return pageSlug ? { kind: "on-page", pageSlug } : null;
+	}
+	return { kind: "collection", collectionSlug: slug };
+}
+
+async function runOnPagePdfGeneration(
+	pageSlug: string,
+	params: PdfExportParams,
+	selectedDiscourseSlugs: Set<string> | null,
+): Promise<Response> {
+	const resolved = resolveOnPageExportContext(pageSlug);
+	if (!resolved.ok) return resolved.response;
+
+	const { title, description, discourseLines } = resolved.ctx;
+	const collectionUrl = `www.wordsofthebuddha.org/on/${pageSlug}`;
+	const { downloadDate, imageMode, vizImageMode, pdfContentOptions } =
+		params;
+
+	console.log(
+		`[PDF Export] Generating PDF for on-page: ${pageSlug} (subset: ${selectedDiscourseSlugs ? selectedDiscourseSlugs.size + " discourses" : "full"})`,
+	);
+	const startMs = Date.now();
+
+	activeJobs++;
+	let browser: Browser | undefined;
+	try {
+		const collectionData = await fetchOnPagePdfData(
+			pageSlug,
+			title,
+			description,
+			discourseLines,
+			imageMode,
+			pdfContentOptions,
+			selectedDiscourseSlugs,
+		);
+
+		const totalDiscourses = countCollectionDiscourses(collectionData);
+		if (totalDiscourses === 0) {
+			return errorResponse(
+				`No discourses found for '${pageSlug}'.`,
+				404,
+			);
+		}
+
+		const html = buildPdfHtml(collectionData, {
+			collectionUrl,
+			date: downloadDate,
+			vizImageMode,
+		});
+
+		browser = await launchBrowser();
+		const page = await browser.newPage();
+		await page.setViewportSize({ width: 794, height: 1123 });
+		await page.setContent(html, {
+			waitUntil: "domcontentloaded",
+			timeout: 20_000,
+		});
+
+		const pdfBuffer = await page.pdf({
+			format: "A4",
+			margin: {
+				top: "22mm",
+				right: "22mm",
+				bottom: "28mm",
+				left: "22mm",
+			},
+			printBackground: false,
+			displayHeaderFooter: true,
+			headerTemplate: "<span></span>",
+			footerTemplate: `
+				<div style="
+					font-family: 'Times New Roman', Times, serif;
+					font-size: 9pt;
+					color: #888;
+					width: 100%;
+					text-align: center;
+					padding: 0 22mm;
+					box-sizing: border-box;
+				">
+					<span class="pageNumber"></span>
+				</div>`,
+			outline: true,
+			tagged: true,
+		});
+
+		await browser.close();
+		browser = undefined;
+
+		const elapsed = ((Date.now() - startMs) / 1000).toFixed(1);
+		console.log(
+			`[PDF Export] Done in ${elapsed}s — ${pdfBuffer.length} bytes`,
+		);
+
+		const safeName = `${title
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.replace(/[^a-z0-9]+/gi, "-")
+			.replace(/^-+|-+$/g, "")
+			.toLowerCase()}.pdf`;
+
+		return new Response(new Uint8Array(pdfBuffer), {
+			status: 200,
+			headers: {
+				"Content-Type": "application/pdf",
+				"Content-Disposition": `attachment; filename="${safeName}"`,
+				"Cache-Control": "no-store",
+			},
+		});
+	} catch (err) {
+		const msg = err instanceof Error ? err.message : String(err);
+		console.error("[PDF Export] Error:", msg);
+		if (browser) {
+			await browser.close().catch(() => {});
+		}
+		return errorResponse(`PDF generation failed: ${msg}`, 500);
+	} finally {
+		activeJobs--;
+	}
+}
+
 async function runPdfGeneration(
 	slug: string,
 	metadata: DirectoryStructure,
@@ -407,19 +651,9 @@ async function runPdfGeneration(
 }
 
 export const GET: APIRoute = async ({ params, url }) => {
-	const slug = params.slug as string | undefined;
-
-	if (!slug) {
+	const parsed = parseExportSlugParam(params.slug as string | undefined);
+	if (!parsed) {
 		return errorResponse("Missing collection slug", 400);
-	}
-
-	const route = determineRouteType(slug);
-
-	if (route.type !== "collection" || !route.metadata) {
-		return errorResponse(
-			`'${slug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
-			404,
-		);
 	}
 
 	if (activeJobs >= MAX_CONCURRENT) {
@@ -430,7 +664,21 @@ export const GET: APIRoute = async ({ params, url }) => {
 	}
 
 	const p = paramsFromSearchParams(url);
-	return runPdfGeneration(slug, route.metadata, p, null);
+
+	if (parsed.kind === "on-page") {
+		return runOnPagePdfGeneration(parsed.pageSlug, p, null);
+	}
+
+	const route = determineRouteType(parsed.collectionSlug);
+
+	if (route.type !== "collection" || !route.metadata) {
+		return errorResponse(
+			`'${parsed.collectionSlug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
+			404,
+		);
+	}
+
+	return runPdfGeneration(parsed.collectionSlug, route.metadata, p, null);
 };
 
 /**
@@ -439,19 +687,9 @@ export const GET: APIRoute = async ({ params, url }) => {
  * `layout`, `keyTerms`).
  */
 export const POST: APIRoute = async ({ params, request }) => {
-	const slug = params.slug as string | undefined;
-
-	if (!slug) {
+	const parsed = parseExportSlugParam(params.slug as string | undefined);
+	if (!parsed) {
 		return errorResponse("Missing collection slug", 400);
-	}
-
-	const route = determineRouteType(slug);
-
-	if (route.type !== "collection" || !route.metadata) {
-		return errorResponse(
-			`'${slug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
-			404,
-		);
 	}
 
 	if (activeJobs >= MAX_CONCURRENT) {
@@ -473,15 +711,42 @@ export const POST: APIRoute = async ({ params, request }) => {
 	}
 
 	const body = json as Record<string, unknown>;
-	const parsed = paramsFromJsonBody(body);
+	const exportParams = paramsFromJsonBody(body);
+
+	if (parsed.kind === "on-page") {
+		const sel = validateSelectedOnPageDiscourseSlugs(
+			parsed.pageSlug,
+			body.selectedDiscourseSlugs,
+		);
+		if (!sel.ok) return sel.response;
+		return runOnPagePdfGeneration(
+			parsed.pageSlug,
+			exportParams,
+			sel.set,
+		);
+	}
+
+	const route = determineRouteType(parsed.collectionSlug);
+
+	if (route.type !== "collection" || !route.metadata) {
+		return errorResponse(
+			`'${parsed.collectionSlug}' is not a known collection. Use a valid collection slug such as snp2, sn1-11, mn, dhp.`,
+			404,
+		);
+	}
 
 	const sel = await validateSelectedDiscourseSlugs(
-		slug,
+		parsed.collectionSlug,
 		body.selectedDiscourseSlugs,
 	);
 	if (!sel.ok) return sel.response;
 
-	return runPdfGeneration(slug, route.metadata, parsed, sel.set);
+	return runPdfGeneration(
+		parsed.collectionSlug,
+		route.metadata,
+		exportParams,
+		sel.set,
+	);
 };
 
 function errorResponse(message: string, status: number): Response {

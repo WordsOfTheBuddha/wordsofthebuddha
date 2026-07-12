@@ -30,6 +30,7 @@ import {
 	type ContentPair,
 } from "./contentParser";
 import { getChapterDiscourseLinesForPdf } from "./collectionPdfExportTree";
+import type { PdfExportDiscourseLine } from "./collectionPdfExportTree";
 import { buildReferenceDiscoursePage } from "./referenceDiscoursePage";
 import {
 	formatVaggaDisplayTitle,
@@ -798,6 +799,66 @@ export async function fetchCollectionPdfData(
 		description: metadata.description || "",
 		chapters: nonEmpty,
 		hasChapters,
+	};
+}
+
+/**
+ * Resolve discourse content for a topic/quality `/on/{slug}` page PDF.
+ */
+export async function fetchOnPagePdfData(
+	pageSlug: string,
+	title: string,
+	description: string,
+	discourseLines: PdfExportDiscourseLine[],
+	imageMode: PdfImageMode = "svgPrimaryOnly",
+	options?: PdfExportContentOptions,
+	selectedDiscourseSlugs?: Set<string> | null,
+): Promise<CollectionPdf> {
+	const paliOptions = options?.paliOptions;
+	const includeKeyTermsSection = options?.includeKeyTermsSection !== false;
+	const filtered =
+		selectedDiscourseSlugs && selectedDiscourseSlugs.size > 0
+			? discourseLines.filter((line) =>
+					selectedDiscourseSlugs.has(line.slug),
+				)
+			: discourseLines;
+
+	const discourses = await Promise.all(
+		filtered.map(async (line) => {
+			const html = line.isReference
+				? await fetchReferenceDiscourseHtml(
+						line.slug,
+						paliOptions,
+						includeKeyTermsSection,
+					)
+				: await fetchDiscourseHtml(
+						line.slug,
+						imageMode,
+						paliOptions,
+						includeKeyTermsSection,
+					);
+			return {
+				slug: line.slug,
+				title: line.title,
+				description: line.description || "",
+				html,
+			};
+		}),
+	);
+
+	return {
+		slug: pageSlug,
+		title,
+		description,
+		chapters: [
+			{
+				slug: pageSlug,
+				title,
+				description,
+				discourses,
+			},
+		],
+		hasChapters: false,
 	};
 }
 

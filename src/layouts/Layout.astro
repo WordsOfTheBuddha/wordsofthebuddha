@@ -142,12 +142,15 @@ const refInitScript = `(function () {
 const hasDescription = String(description ?? "").trim().length > 0;
 const breadcrumbsHidden = hideBreadcrumbsForPath(fp || Astro.url.pathname);
 
+const pageTitleText = String(title ?? "").trim();
+const showPageTitle = pageTitleText.length > 0 || showFilter;
+
 /** Extra space before the page title when there is no breadcrumb strip and no layout description box. */
 const sparseLayoutTitleTop =
-	breadcrumbsHidden &&
-	!hasDescription;
+	showPageTitle && breadcrumbsHidden && !hasDescription;
 
-const titleNeedsBreadcrumbSpacing = !breadcrumbsHidden && !hasDescription;
+const titleNeedsBreadcrumbSpacing =
+	showPageTitle && !breadcrumbsHidden && !hasDescription;
 
 // Extract first image for SEO meta tags (works with single or array)
 const firstContentImage = contentImage
@@ -454,28 +457,33 @@ if (!SEOTitle) {
 							</>
 						)
 					}
-					<div
-						class:list={[
-							"flex items-start justify-between",
-							sparseLayoutTitleTop && "pt-2 sm:pt-4",
-							titleNeedsBreadcrumbSpacing && "mt-3 sm:mt-4 mb-3 sm:mb-4",
-						]}
-					>
-						<Title
-							id={id}
-							title={title || ""}
-							showFilter={showFilter}
-						>
-							{
-								titleIcon && (
-									<span
-										class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color"
-										set:html={titleIcon}
-									/>
-								)
-							}
-						</Title>
-					</div>
+					{
+						showPageTitle && (
+							<div
+								class:list={[
+									"flex items-start justify-between",
+									sparseLayoutTitleTop && "pt-2 sm:pt-4",
+									titleNeedsBreadcrumbSpacing &&
+										"mt-3 sm:mt-4 mb-3 sm:mb-4",
+								]}
+							>
+								<Title
+									id={id}
+									title={title || ""}
+									showFilter={showFilter}
+								>
+									{
+										titleIcon && (
+											<span
+												class="inline-block w-4 h-4 mr-2 -mt-1 text-primary-color dark:text-primary-color"
+												set:html={titleIcon}
+											/>
+										)
+									}
+								</Title>
+							</div>
+						)
+					}
 					{
 						contentImage && (
 							<DiscourseImage

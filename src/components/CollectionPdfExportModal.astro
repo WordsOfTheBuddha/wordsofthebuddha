@@ -9,6 +9,8 @@ import { transformId } from "../utils/transformId";
 
 interface Props {
 	collectionSlug: string;
+	/** Override export API path (default `/api/export/{collectionSlug}`). */
+	exportApiPath?: string;
 	previewTitle: string;
 	previewScopeSummary: string;
 	/** MDX source files in export scope (for “large export” note). */
@@ -23,6 +25,7 @@ interface Props {
 
 const {
 	collectionSlug,
+	exportApiPath,
 	previewTitle,
 	previewScopeSummary,
 	previewTotalTextFiles,
@@ -331,6 +334,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				class="collection-pdf-btn-primary"
 				id="collection-pdf-generate"
 				data-collection-slug={collectionSlug}
+				data-export-api-path={exportApiPath}
 			>
 				Print PDF
 			</button>
@@ -945,6 +949,9 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 
 		const slug = generateBtn.dataset.collectionSlug;
 		if (!slug) return;
+		const exportBase =
+			generateBtn.dataset.exportApiPath?.trim() ||
+			`/api/export/${slug}`;
 
 		const pliInput = dlg.querySelector(
 			"#pdf-opt-pli",
@@ -1047,13 +1054,13 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 						postBody.viz = vz;
 					}
 				}
-				response = await fetch(`/api/export/${slug}`, {
+				response = await fetch(exportBase, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(postBody),
 				});
 			} else {
-				response = await fetch(`/api/export/${slug}?${qs.toString()}`);
+				response = await fetch(`${exportBase}?${qs.toString()}`);
 			}
 
 			if (!response.ok) {

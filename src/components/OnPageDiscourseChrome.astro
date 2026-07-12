@@ -1,0 +1,185 @@
+---
+import CollectionExportButton from "./CollectionExportButton.astro";
+
+interface Props {
+	pageSlug: string;
+	hasReferenceOnlyDiscourses?: boolean;
+	showPrintPdf?: boolean;
+	discoursesGridClass?: string;
+}
+
+const {
+	pageSlug,
+	hasReferenceOnlyDiscourses = false,
+	showPrintPdf = true,
+	discoursesGridClass = "space-y-10",
+} = Astro.props;
+---
+
+<div class="on-page-chrome collection-chrome collection-chrome--leaf print:hidden mb-4">
+	{
+		showPrintPdf && (
+			<div class="collection-chrome__print collection-chrome__print--mobile shrink-0 sm:hidden">
+				<CollectionExportButton collectionSlug={pageSlug} />
+			</div>
+		)
+	}
+	{
+		showPrintPdf && (
+			<div class="collection-chrome__print collection-chrome__print--desktop hidden shrink-0 sm:block">
+				<CollectionExportButton collectionSlug={pageSlug} />
+			</div>
+		)
+	}
+	<div id="discourses-panel" class="collection-chrome__discourses">
+		<div id="filter-wrap" class="filter-toolbar not-prose w-full min-w-0">
+			<input
+				type="text"
+				id="client-filter"
+				class="filter-toolbar-input"
+				placeholder="Filter discourses..."
+				autocomplete="off"
+			/>
+			{
+				hasReferenceOnlyDiscourses && (
+					<button
+						type="button"
+						id="toggle-ref"
+						aria-pressed="false"
+						class="toggle-ref filter-toolbar-btn"
+						title="Include reference-only discourses (Sujato translation)"
+					>
+						<span class="md:hidden">Ref</span>
+						<span class="hidden md:inline">See Refs</span>
+					</button>
+				)
+			}
+		</div>
+		<div
+			id="discourses-grid"
+			class={discoursesGridClass}
+			data-on-page-slug={pageSlug}
+		>
+			<slot />
+			<div id="reference-cards-mount"></div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.collection-chrome {
+		display: grid;
+		column-gap: 0.75rem;
+		row-gap: 0.75rem;
+		align-items: center;
+	}
+	.collection-chrome--leaf {
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			"print print"
+			"filter filter";
+	}
+	.collection-chrome__print {
+		grid-area: print;
+		justify-self: end;
+	}
+	.collection-chrome__discourses:not(.hidden) {
+		display: contents;
+	}
+	#filter-wrap {
+		grid-area: filter;
+	}
+	#discourses-grid {
+		grid-column: 1 / -1;
+	}
+	@media (min-width: 768px) {
+		.collection-chrome--leaf {
+			grid-template-areas: "filter print";
+		}
+		.collection-chrome--leaf .filter-toolbar:not(.hidden) {
+			margin-bottom: 0;
+		}
+	}
+	.filter-toolbar-btn:not(.hidden) {
+		display: inline-flex;
+		align-items: center;
+		flex-shrink: 0;
+		font-size: 0.8rem;
+		font-family: inherit;
+		line-height: 1.25;
+		color: var(--text-muted, #666);
+		background: transparent;
+		border: none;
+		border-radius: 9999px;
+		padding: 0.35rem 0.75rem;
+		cursor: pointer;
+		transition: color 0.15s, background 0.15s;
+		white-space: nowrap;
+	}
+	.filter-toolbar-btn:hover:not(.filter-toolbar-btn--active) {
+		color: var(--text-color);
+		background: color-mix(
+			in srgb,
+			var(--surface-elevated, #f5f3ef) 80%,
+			transparent
+		);
+	}
+	:global(#toggle-ref.filter-toolbar-btn--active) {
+		color: white !important;
+		font-weight: 500;
+		background: var(--primary-color) !important;
+	}
+	:global(#toggle-ref.filter-toolbar-btn--active:hover) {
+		color: white !important;
+		background: var(--link-hover-color) !important;
+	}
+	html.dark :global(#toggle-ref.filter-toolbar-btn--active) {
+		color: var(--secondary-color) !important;
+		background: color-mix(
+			in srgb,
+			var(--secondary-color) 14%,
+			transparent
+		) !important;
+	}
+	html.dark :global(#toggle-ref.filter-toolbar-btn--active:hover) {
+		color: var(--secondary-color) !important;
+		background: color-mix(
+			in srgb,
+			var(--secondary-color) 22%,
+			transparent
+		) !important;
+	}
+	.filter-toolbar:not(.hidden) {
+		display: flex;
+		align-items: center;
+		align-self: flex-start;
+		min-width: 0;
+		width: 100%;
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		margin-bottom: 1rem;
+		padding: 0.125rem 0.35rem 0.125rem 0.85rem;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.2));
+		border-radius: 9999px;
+		background: var(--surface-paper);
+	}
+	.filter-toolbar-input {
+		flex: 1;
+		min-width: 0;
+		width: 100%;
+		padding: 0.45rem 0.5rem 0.45rem 0;
+		font-size: 0.875rem;
+		font-family: inherit;
+		color: var(--text-color);
+		background: transparent;
+		border: none;
+		outline: none;
+	}
+	.filter-toolbar-input::placeholder {
+		color: var(--text-muted, #666);
+	}
+	.filter-toolbar-input:focus {
+		outline: none;
+	}
+</style>
