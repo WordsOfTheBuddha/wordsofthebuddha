@@ -1,10 +1,10 @@
 ---
 title: Anuttariya sutta - Unsurpassable
 description: The Buddha describes the six unsurpassable things among seeing, listening, acquisitions, training, service, and recollection.
-qualities: recollection of the Buddha, faith, recollection of the Dhamma, recollection of the Sangha, ethical conduct, affection
+qualities: recollection of the Buddha, faith, recollection of the Dhamma, recollection of the Sangha, ethical conduct, affection, wrong mindfulness, mindfulness
 theme: recollection of the Buddha, wisdom, inspiration
 slug: an6.30
-priority: 1.2
+priority: 1.6
 ---
 
 “Chayimāni, bhikkhave, anuttariyāni. Katamāni cha? Dassanānuttariyaṁ, savanānuttariyaṁ, lābhānuttariyaṁ, sikkhānuttariyaṁ, pāricariyānuttariyaṁ, anussatānuttariyanti.
