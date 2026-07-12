@@ -290,7 +290,7 @@
 			"fault-finding mindset",
 			"upset",
 			"Supported by:{ignorance, perceiving gratification}",
-			"Leads to:{contempt, displeasure, fear, harm, ill will, impatience, irritability, lack of discernment}",
+			"Leads to:{contempt, displeasure, fear, harm, ill will, impatience, irritability, lack of discernment, superficial attention}",
 			"Opposite:{patience}",
 			"Context: A rejecting mental quality rooted in perception, where one instinctively turns away from or resists unpleasant experiences or objects; it manifests as a tendency to push away discomfort, obstructing patience and acceptance.",
 			"[dosa, paṭighasaññā, vera]"
@@ -468,7 +468,7 @@
 			"Context: A driving ‘thirst’ that reaches out toward experiences, identities, or outcomes as the place to find satisfaction—“if only I had that.” It spins stories of lack, binds the mind to becoming, and invariably leads to suffering.",
 			"Related:{self-erasure, self-making, sensual desire}",
 			"Supported by:{ignorance}",
-			"Leads to:{mental proliferation, passion, recognition of diversity, wrong mindfulness}",
+			"Leads to:{mental proliferation, passion, recognition of diversity, superficial attention, wrong mindfulness}",
 			"[taṇha, abhijjhā]"
 		],
 		"cruelty": [
@@ -1212,7 +1212,7 @@
 			"presence",
 			"awareness",
 			"Context: Active presence of mind and lucid retention; the faculty that remembers the Dhamma, anchors attention to the chosen object or present experience, and guards the mind against unwholesome states.",
-			"Supported by:{right view, right effort, wakefulness}",
+			"Supported by:{right view, right effort, wakefulness, radical attention}",
 			"Leads to:{examination, clear awareness}",
 			"Opposite:{muddle-mindedness, wrong mindfulness}",
 			"[sati, anussati]"
@@ -1924,8 +1924,8 @@
 			"unwise steering of attention",
 			"content-bound reflection",
 			"Context: The passive, automatic drifting of the mind into habitual, automated reaction patterns. It is the unskillful steering of attention based on the enticing or repulsive surface features of an object.",
-			"Supported by:{negligence, ignorance}",
-			"Leads to:{lack of discernment, speculation}",
+			"Supported by:{aversion, craving, negligence, ignorance}",
+			"Leads to:{lack of discernment, speculation, wrong mindfulness}",
 			"Opposite:{radical attention}",
 			"[ayonisomanasikāra]"
 		],
@@ -2027,7 +2027,7 @@
 			"contextual reflection",
 			"Context: The active, deliberate steering of the mind away from habitual, automated reaction patterns. It is the wise steering of attention based on a theme of the Dhamma.",
 			"Supported by:{wisdom, perceiving drawback}",
-			"Leads to:{right view, radical comprehension}",
+			"Leads to:{mindfulness, right view, radical comprehension}",
 			"Opposite:{superficial attention}",
 			"[yonisomanasikāra]"
 		],
@@ -2088,7 +2088,7 @@
 			"inferior recollection",
 			"Context: Misdirected presence of mind and unwholesome retention; the faculty that remembers worldly or harmful narratives, anchors attention to objects of craving and distress, and leaves the mind unguarded against unwholesome states.",
 			"Related:{muddle-mindedness}",
-			"Supported by:{craving, aversion, wrong effort}",
+			"Supported by:{superfical attention, wrong effort}",
 			"Leads to:{distraction, wrong collectedness}",
 			"Opposite:{mindfulness}",
 			"[micchāsati]"
