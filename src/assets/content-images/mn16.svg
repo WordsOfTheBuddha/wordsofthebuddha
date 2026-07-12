@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2125" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
+  <title id="title">MN 16 Cetokhila Sutta — Barriers of the Mind</title>
+  <desc id="desc">How growth in Dhamma and Vinaya becomes possible: five barriers of the mind presented as thought-bubbles and cleared by confidence; five shackles presented and severed; fifteen factors; and the hen-and-egg simile of inevitable breakthrough.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="38%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="18%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffd980" stop-opacity="0.68" />
+      <stop offset="82%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardIgnoble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#251624" />
+      <stop offset="100%" stop-color="#17111c" />
+    </linearGradient>
+    <linearGradient id="cardNoble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142b34" />
+      <stop offset="100%" stop-color="#101d2a" />
+    </linearGradient>
+    <linearGradient id="growthGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a3028" />
+      <stop offset="100%" stop-color="#142420" />
+    </linearGradient>
+    <linearGradient id="factorGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1b2838" />
+      <stop offset="100%" stop-color="#121e2c" />
+    </linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.18" />
+      <stop offset="55%" stop-color="#c8a040" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="eggGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0.12" />
+      <stop offset="60%" stop-color="#c8a040" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="2125" fill="url(#bg)" />
+  <ellipse cx="460" cy="320" rx="320" ry="130" fill="#c8a040" opacity="0.03" />
+  <ellipse cx="460" cy="980" rx="340" ry="150" fill="#60a088" opacity="0.03" />
+  <ellipse cx="460" cy="1900" rx="360" ry="160" fill="#ffd700" opacity="0.025" />
+
+  <!-- PHASE 1 — HEADER -->
+  <g id="header" transform="translate(0, 0)">
+    <text x="460" y="42" text-anchor="middle" fill="#c8a040" font-size="22" font-weight="bold" letter-spacing="3">MN 16 — CETOKHILA SUTTA</text>
+    <text x="460" y="66" text-anchor="middle" fill="#90a0b8" font-size="15" font-style="italic">Barriers of the Mind</text>
+    <line x1="270" y1="80" x2="650" y2="80" stroke="#a09070" stroke-opacity="0.32" stroke-width="0.6" />
+    <text x="460" y="110" text-anchor="middle" fill="#90c0b0" font-size="12" font-style="italic">“How does one achieve growth, increase, and full development in this Dhamma and Vinaya?”</text>
+    <text x="460" y="130" text-anchor="middle" fill="#708878" font-size="11" font-style="italic" opacity="0.85">vuddhiṁ virūḷhiṁ vepullaṁ … dhammavinaye</text>
+  </g>
+
+  <!-- PHASE 2 — FIVE BARRIERS (bubbles → antidotes) -->
+  <g id="five-barriers" transform="translate(0, 148)">
+    <line x1="100" y1="10" x2="820" y2="10" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="32" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">FIVE BARRIERS OF THE MIND · PAÑCA CETOKHILĀ</text>
+
+    <g id="barrier-tails" opacity="0.85">
+      <circle cx="188.0" cy="134.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="256.0" cy="173.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="324.0" cy="212.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="392.0" cy="251.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="292.0" cy="218.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="334.0" cy="236.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="376.0" cy="254.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="418.0" cy="272.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="460.0" cy="128.4" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="460.0" cy="168.8" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="460.0" cy="209.2" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="460.0" cy="249.6" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="628.0" cy="218.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="586.0" cy="236.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="544.0" cy="254.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="502.0" cy="272.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="732.0" cy="134.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="664.0" cy="173.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="596.0" cy="212.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="528.0" cy="251.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+    </g>
+
+    <g id="barrier-bubbles">
+      <!-- crown: 3 across top -->
+      <g id="bb1">
+        <ellipse cx="120" cy="95" rx="94" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="120" y="92" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Doubt about the Teacher</text>
+        <text x="120" y="108" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">satthari kaṅkhati</text>
+      </g>
+      <g id="bb3">
+        <ellipse cx="460" cy="88" rx="92" ry="36" fill="#1c1520" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1"/>
+        <text x="460" y="85" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Doubt about the Saṅgha</text>
+        <text x="460" y="101" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">saṅghe kaṅkhati</text>
+      </g>
+      <g id="bb5">
+        <ellipse cx="800" cy="95" rx="94" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="800" y="92" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Anger at companions</text>
+        <text x="800" y="108" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">sabrahmacārīsu kupito</text>
+      </g>
+      <!-- shoulders: fill side space beside figure -->
+      <g id="bb2">
+        <ellipse cx="250" cy="200" rx="92" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="250" y="197" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Doubt about the Dhamma</text>
+        <text x="250" y="213" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">dhamme kaṅkhati</text>
+      </g>
+      <g id="bb4">
+        <ellipse cx="670" cy="200" rx="92" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="670" y="197" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Doubt about the training</text>
+        <text x="670" y="213" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">sikkhāya kaṅkhati</text>
+      </g>
+    </g>
+
+    <!-- figure — simile-debt (burdened under doubt) -->
+    <g id="barrier-figure" transform="translate(460, 324) scale(2.1)" opacity="0.78" filter="url(#iconGlow)">
+      <g transform="scale(2)">
+        <g opacity="0.78" stroke="#a08090" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="-2" cy="-8" r="3.2" stroke-width="1" />
+          <path d="M -2 -4.8 Q -1 -1, -1 4" stroke-width="1" />
+          <line x1="-1" y1="4" x2="-5" y2="12" stroke-width="0.95" />
+          <line x1="-1" y1="4" x2="3" y2="12" stroke-width="0.95" />
+          <path d="M -2 -2 Q -5 -4, -7 -3" stroke-width="0.9" />
+          <path d="M -1 -1 Q 3 -3, 5 -4" stroke-width="0.9" />
+          <path d="M 1 -8 Q 3 -12, 7 -12 Q 12 -12, 13 -7 Q 13 -2, 9 0 Q 5 1, 3 -2 Q 1 -4, 1 -8 Z" stroke-width="1" />
+          <path d="M 5 -12 L 6 -14 L 8 -12" stroke-width="0.7" />
+          <circle cx="10" cy="-13" r="1.6" stroke-width="0.7" />
+          <circle cx="12.5" cy="-11" r="1.6" stroke-width="0.7" />
+          <circle cx="7" cy="-15" r="1.4" stroke-width="0.65" opacity="0.7" />
+        </g>
+      </g>
+    </g>
+    <text x="460" y="402" text-anchor="middle" fill="#a0b0c0" font-size="11">Mind does not incline toward effort, examination, perseverance, striving</text>
+    <text x="460" y="420" text-anchor="middle" fill="#786878" font-size="10" font-style="italic">cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya</text>
+    <text x="460" y="442" text-anchor="middle" fill="#8898b0" font-size="10.5" font-style="italic">Barriers not abandoned · appahīnā</text>
+
+    <!-- resolve: chevron into one clearance band (no chip ribbon — bubbles already name the five) -->
+    <g id="barrier-antidotes" transform="translate(0, 460)">
+      <path d="M 452 0 L 468 0 L 460 12 Z" fill="#c8a040" opacity="0.55"/>
+      <g filter="url(#shadowDrop)">
+        <rect x="190" y="24" width="540" height="108" rx="10" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9"/>
+      </g>
+      <g id="icon-debt-free" transform="translate(290, 78) scale(3.2)" opacity="0.6" filter="url(#iconGlow)">
+        <g transform="scale(0.6)">
+          <g opacity="0.75" stroke="#60a088" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="0" cy="-10" r="3.5" stroke-width="1.1" />
+            <line x1="0" y1="-6.5" x2="0" y2="4" stroke-width="1.1" />
+            <line x1="0" y1="4" x2="-4" y2="12" stroke-width="1" />
+            <line x1="0" y1="4" x2="4" y2="12" stroke-width="1" />
+            <line x1="0" y1="-2" x2="-6" y2="0" stroke-width="1" />
+            <line x1="0" y1="-2" x2="6" y2="-5" stroke-width="1" />
+            <path d="M 6 -5 L 8 -7" stroke-width="0.9" />
+            <line x1="8" y1="-12" x2="10" y2="-14" stroke="#80c0a0" stroke-width="0.8" opacity="0.7" />
+            <line x1="7" y1="-14" x2="11" y2="-12" stroke="#80c0a0" stroke-width="0.8" opacity="0.7" />
+            <line x1="12" y1="-10" x2="14" y2="-12" stroke="#80c0a0" stroke-width="0.8" opacity="0.5" />
+            <line x1="11" y1="-12" x2="15" y2="-10" stroke="#80c0a0" stroke-width="0.8" opacity="0.5" />
+          </g>
+        </g>
+      </g>
+      <text x="500" y="60" text-anchor="middle" fill="#60a088" font-size="12" font-weight="bold" letter-spacing="1.8">ABANDONED · PAHĪNĀ</text>
+      <text x="500" y="82" text-anchor="middle" fill="#98d0b0" font-size="13">Mind inclines — confidence clears the barriers</text>
+      <text x="500" y="102" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">cittaṁ namati ātappāya anuyogāya sātaccāya padhānāya</text>
+    </g>
+  </g>
+
+  <!-- PHASE 3 — FIVE SHACKLES (bubbles → antidotes) -->
+  <g id="five-shackles" transform="translate(0, 764)">
+    <line x1="100" y1="10" x2="820" y2="10" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="32" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">FIVE SHACKLES OF THE MIND · PAÑCA CETASOVINIBANDHĀ</text>
+
+    <g id="shackle-tails" opacity="0.85">
+      <circle cx="188.0" cy="134.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="256.0" cy="173.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="324.0" cy="212.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="392.0" cy="251.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="292.0" cy="218.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="334.0" cy="236.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="376.0" cy="254.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="418.0" cy="272.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="460.0" cy="128.4" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="460.0" cy="168.8" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="460.0" cy="209.2" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="460.0" cy="249.6" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="628.0" cy="218.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="586.0" cy="236.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="544.0" cy="254.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="502.0" cy="272.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+      <circle cx="732.0" cy="134.0" r="5.0" fill="#7a4060" opacity="0.5"/>
+      <circle cx="664.0" cy="173.0" r="4.0" fill="#7a4060" opacity="0.4"/>
+      <circle cx="596.0" cy="212.0" r="3.0" fill="#7a4060" opacity="0.3"/>
+      <circle cx="528.0" cy="251.0" r="2.2" fill="#7a4060" opacity="0.22"/>
+    </g>
+
+    <g id="shackle-bubbles">
+      <g id="sb1">
+        <ellipse cx="120" cy="95" rx="94" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="120" y="88" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Passion for pleasures</text>
+        <text x="120" y="104" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">kāme avītarāgo</text>
+      </g>
+      <g id="sb3">
+        <ellipse cx="460" cy="88" rx="92" ry="36" fill="#1c1520" stroke="#c8a040" stroke-opacity="0.55" stroke-width="1"/>
+        <text x="460" y="81" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Passion for forms</text>
+        <text x="460" y="97" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">rūpe avītarāgo</text>
+      </g>
+      <g id="sb5">
+        <ellipse cx="800" cy="95" rx="94" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="800" y="88" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Aspiring for godhood</text>
+        <text x="800" y="104" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">devanikāyaṁ paṇidhāya</text>
+      </g>
+      <g id="sb2">
+        <ellipse cx="250" cy="200" rx="92" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="250" y="193" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Passion for the body</text>
+        <text x="250" y="209" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">kāye avītarāgo</text>
+      </g>
+      <g id="sb4">
+        <ellipse cx="670" cy="200" rx="92" ry="36" fill="#1c1520" stroke="#7a4060" stroke-opacity="0.65" stroke-width="0.9"/>
+        <text x="670" y="193" text-anchor="middle" fill="#c0a8b8" font-size="11" font-weight="bold">Ease — beds &amp; dozing</text>
+        <text x="670" y="209" text-anchor="middle" fill="#806070" font-size="9.5" font-style="italic">seyyasukhaṁ middhasukhaṁ</text>
+      </g>
+    </g>
+
+    <g id="shackle-figure" opacity="0.72" filter="url(#iconGlow)">
+      <circle cx="460" cy="290" r="17" fill="none" stroke="#a06070" stroke-width="1.5"/>
+      <line x1="460" y1="307" x2="460" y2="350" stroke="#a06070" stroke-width="1.5"/>
+      <line x1="460" y1="325" x2="434" y2="340" stroke="#a06070" stroke-width="1.2"/>
+      <line x1="460" y1="325" x2="486" y2="340" stroke="#a06070" stroke-width="1.2"/>
+      <line x1="460" y1="350" x2="447" y2="378" stroke="#a06070" stroke-width="1.2"/>
+      <line x1="460" y1="350" x2="473" y2="378" stroke="#a06070" stroke-width="1.2"/>
+      <ellipse cx="434" cy="340" rx="5" ry="2.5" fill="none" stroke="#a08090" stroke-width="0.9" opacity="0.7"/>
+      <ellipse cx="486" cy="340" rx="5" ry="2.5" fill="none" stroke="#a08090" stroke-width="0.9" opacity="0.7"/>
+    </g>
+    <text x="460" y="402" text-anchor="middle" fill="#a0b0c0" font-size="11">Mind does not incline toward effort, examination, perseverance, striving</text>
+    <text x="460" y="420" text-anchor="middle" fill="#786878" font-size="10" font-style="italic">cittaṁ na namati ātappāya anuyogāya sātaccāya padhānāya</text>
+    <text x="460" y="442" text-anchor="middle" fill="#8898b0" font-size="10.5" font-style="italic">Shackles not severed · asamucchinnā</text>
+
+    <g id="shackle-antidotes" transform="translate(0, 460)">
+      <path d="M 452 0 L 468 0 L 460 12 Z" fill="#c8a040" opacity="0.55"/>
+      <g filter="url(#shadowDrop)">
+        <rect x="190" y="24" width="540" height="108" rx="10" fill="url(#cardNoble)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9"/>
+      </g>
+      <g id="icon-freedom" transform="translate(290, 78) scale(3.2)" opacity="0.6" filter="url(#iconGlow)">
+        <g transform="scale(0.58)">
+          <g opacity="0.75" stroke="#60a088" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="0" cy="-10" r="3.5" stroke-width="1.1" />
+            <line x1="0" y1="-6.5" x2="0" y2="4" stroke-width="1.1" />
+            <line x1="0" y1="4" x2="-5" y2="12" stroke-width="1" />
+            <line x1="0" y1="4" x2="5" y2="12" stroke-width="1" />
+            <line x1="0" y1="-2" x2="-7" y2="-5" stroke-width="1" />
+            <line x1="0" y1="-2" x2="7" y2="-5" stroke-width="1" />
+            <path d="M -6 0 Q -9 -2, -7 1" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+            <path d="M -8 3 Q -11 1, -9 4" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+            <path d="M 6 0 Q 9 -2, 7 1" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+            <path d="M 8 3 Q 11 1, 9 4" stroke="#80c0a0" stroke-width="0.7" opacity="0.5" />
+          </g>
+        </g>
+      </g>
+      <text x="500" y="60" text-anchor="middle" fill="#60a088" font-size="12" font-weight="bold" letter-spacing="1.8">SEVERED · SUSAMUCCHINNĀ</text>
+      <text x="500" y="82" text-anchor="middle" fill="#98d0b0" font-size="13">Mind inclines — freedom clears the shackles</text>
+      <text x="500" y="102" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">cittaṁ namati ātappāya anuyogāya sātaccāya padhānāya</text>
+    </g>
+  </g>
+
+  <path d="M 452 1376 L 468 1376 L 460 1388 Z" fill="#c8a040" opacity="0.55"/>
+
+  <!-- PHASE 4 — GROWTH POSSIBLE -->
+  <g id="growth-possible" transform="translate(0, 1400)">
+    <ellipse cx="460" cy="55" rx="280" ry="50" fill="url(#libGlow)" />
+    <g filter="url(#shadowDrop)">
+      <rect x="190" y="8" width="540" height="92" rx="10" fill="url(#growthGrad)" stroke="gold" stroke-opacity="0.4" stroke-width="0.9" />
+    </g>
+    <g id="icon-tree-flourishing" transform="translate(208, 28) scale(2)" opacity="0.55" filter="url(#iconGlow)">
+      <g transform="translate(12, 12) scale(0.07888) translate(-690, -348.875)">
+        <g fill="none" stroke-linecap="round">
+            <ellipse cx="690" cy="310" rx="130" ry="95" fill="#40a060" fill-opacity="0.12" stroke="none" />
+            <line x1="600" y1="450" x2="780" y2="450" stroke="#305838" stroke-width="1" stroke-opacity="0.5" />
+            <path d="M 675 450 C 655 468, 628 478, 600 475" stroke="#4a5838" stroke-width="2" stroke-opacity="0.6" />
+            <path d="M 705 450 C 725 468, 752 478, 780 475" stroke="#4a5838" stroke-width="2" stroke-opacity="0.6" />
+            <path d="M 685 450 C 680 468, 672 478, 660 482" stroke="#445230" stroke-width="1.5" stroke-opacity="0.5" />
+            <path d="M 695 450 C 700 468, 708 478, 720 482" stroke="#445230" stroke-width="1.5" stroke-opacity="0.5" />
+            <path d="M 678 450 L 676 370 C 674 350, 676 335, 680 320" stroke="#506840" stroke-width="7" />
+            <path d="M 702 450 L 704 370 C 706 350, 704 335, 700 320" stroke="#506840" stroke-width="7" />
+            <path d="M 678 365 C 655 348, 628 338, 608 342" stroke="#506840" stroke-width="3.5" />
+            <path d="M 702 360 C 725 343, 752 333, 772 338" stroke="#506840" stroke-width="3.5" />
+            <path d="M 682 340 C 662 318, 642 302, 625 296" stroke="#50683a" stroke-width="2.8" />
+            <path d="M 698 340 C 718 318, 738 302, 755 296" stroke="#50683a" stroke-width="2.8" />
+            <path d="M 688 320 C 680 298, 676 278, 680 260" stroke="#506838" stroke-width="2.5" />
+            <path d="M 692 320 C 700 298, 704 278, 700 260" stroke="#506838" stroke-width="2.5" />
+            <ellipse cx="608" cy="338" rx="32" ry="22" fill="#2a5030" fill-opacity="0.5" stroke="none" />
+            <ellipse cx="772" cy="334" rx="32" ry="22" fill="#2a5030" fill-opacity="0.5" stroke="none" />
+            <ellipse cx="625" cy="292" rx="38" ry="26" fill="#2a5830" fill-opacity="0.55" stroke="none" />
+            <ellipse cx="755" cy="292" rx="38" ry="26" fill="#2a5830" fill-opacity="0.55" stroke="none" />
+            <ellipse cx="660" cy="270" rx="40" ry="28" fill="#285830" fill-opacity="0.6" stroke="none" />
+            <ellipse cx="720" cy="270" rx="40" ry="28" fill="#285830" fill-opacity="0.6" stroke="none" />
+            <ellipse cx="690" cy="255" rx="45" ry="30" fill="#286030" fill-opacity="0.65" stroke="none" />
+            <ellipse cx="690" cy="280" rx="55" ry="32" fill="#285830" fill-opacity="0.45" stroke="none" />
+            <ellipse cx="690" cy="290" rx="90" ry="65" fill="#40a060" fill-opacity="0.08" stroke="none" />
+            <circle cx="650" cy="268" r="1.5" fill="#80c880" opacity="0.45" stroke="none" />
+            <circle cx="710" cy="258" r="1.5" fill="#80c880" opacity="0.4" stroke="none" />
+            <circle cx="680" cy="248" r="1.5" fill="#90d890" opacity="0.45" stroke="none" />
+            <circle cx="730" cy="278" r="1.5" fill="#80c880" opacity="0.35" stroke="none" />
+            <circle cx="625" cy="290" r="1.5" fill="#70b870" opacity="0.35" stroke="none" />
+            <circle cx="755" cy="286" r="1.5" fill="#70b870" opacity="0.35" stroke="none" />
+            </g>
+      </g>
+    </g>
+    <text x="460" y="42" text-anchor="middle" fill="#98d0b0" font-size="13" font-weight="bold">When barriers are abandoned and shackles severed,</text>
+    <text x="460" y="62" text-anchor="middle" fill="#98d0b0" font-size="13" font-weight="bold">growth in this teaching and training is possible</text>
+    <text x="460" y="86" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">pañca cetokhilā pahīnā · pañca cetasovinibandhā susamucchinnā · ṭhānametaṁ vijjati</text>
+  </g>
+
+  <!-- PHASE 5 — FIFTEEN FACTORS -->
+  <g id="fifteen-factors" transform="translate(0, 1522)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="40" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">CULTIVATES THE FOUR BASES OF PSYCHIC POWERS · CATTĀRO IDDHIPĀDE BHĀVETI</text>
+    <g id="icon-iddhipada" transform="translate(820, 22) scale(1.1)" opacity="0.55" filter="url(#iconGlow)">
+      <g transform="translate(12, 12)">
+        <g opacity="0.85" stroke="#88a8c0" fill="none">
+          <circle cx="0" cy="0" r="2" stroke-width="0.9" />
+          <circle cx="-9" cy="0" r="2.4" stroke-width="0.9" />
+          <circle cx="9" cy="0" r="2.4" stroke-width="0.9" />
+          <circle cx="0" cy="-9" r="2.4" stroke-width="0.9" />
+          <circle cx="0" cy="9" r="2.4" stroke-width="0.9" />
+          <line x1="-7" y1="0" x2="-2" y2="0" stroke-width="0.6" />
+          <line x1="2" y1="0" x2="7" y2="0" stroke-width="0.6" />
+          <line x1="0" y1="-7" x2="0" y2="-2" stroke-width="0.6" />
+          <line x1="0" y1="2" x2="0" y2="7" stroke-width="0.6" />
+        </g>
+      </g>
+    </g>
+
+    <g id="iddhipada-cards" transform="translate(0, 58)">
+      <g id="factor-11" transform="translate(70, 0)">
+        <rect x="0" y="0" width="186" height="100" rx="8" fill="url(#factorGrad)" stroke="#6888a0" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="24" cy="22" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" stroke-opacity="0.7" />
+        <text x="24" y="25" text-anchor="middle" fill="#c8a040" font-size="10" font-weight="bold">11</text>
+        <text x="100" y="26" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">Aspiration</text>
+        <text x="100" y="46" text-anchor="middle" fill="#708878" font-size="10" font-style="italic">chanda</text>
+        <text x="93" y="70" text-anchor="middle" fill="#8090a8" font-size="10">collectedness with intentional effort</text>
+        <text x="93" y="88" text-anchor="middle" fill="#586878" font-size="9" font-style="italic">chandasamādhi…iddhipādaṁ</text>
+      </g>
+      <g id="factor-12" transform="translate(268, 0)">
+        <rect x="0" y="0" width="186" height="100" rx="8" fill="url(#factorGrad)" stroke="#6888a0" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="24" cy="22" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" stroke-opacity="0.7" />
+        <text x="24" y="25" text-anchor="middle" fill="#c8a040" font-size="10" font-weight="bold">12</text>
+        <text x="100" y="26" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">Determination</text>
+        <text x="100" y="46" text-anchor="middle" fill="#708878" font-size="10" font-style="italic">vīriya</text>
+        <text x="93" y="70" text-anchor="middle" fill="#8090a8" font-size="10">collectedness with intentional effort</text>
+        <text x="93" y="88" text-anchor="middle" fill="#586878" font-size="9" font-style="italic">vīriyasamādhi…iddhipādaṁ</text>
+      </g>
+      <g id="factor-13" transform="translate(466, 0)">
+        <rect x="0" y="0" width="186" height="100" rx="8" fill="url(#factorGrad)" stroke="#6888a0" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="24" cy="22" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" stroke-opacity="0.7" />
+        <text x="24" y="25" text-anchor="middle" fill="#c8a040" font-size="10" font-weight="bold">1<tspan dy="-1">3</tspan></text>
+        <text x="100" y="26" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">Purification of Mind</text>
+        <text x="100" y="46" text-anchor="middle" fill="#708878" font-size="10" font-style="italic">citta</text>
+        <text x="93" y="70" text-anchor="middle" fill="#8090a8" font-size="10">collectedness with intentional effort</text>
+        <text x="93" y="88" text-anchor="middle" fill="#586878" font-size="9" font-style="italic">cittasamādhi…iddhipādaṁ</text>
+      </g>
+      <g id="factor-14" transform="translate(664, 0)">
+        <rect x="0" y="0" width="186" height="100" rx="8" fill="url(#factorGrad)" stroke="#6888a0" stroke-opacity="0.35" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="24" cy="22" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" stroke-opacity="0.7" />
+        <text x="24" y="25" text-anchor="middle" fill="#c8a040" font-size="10" font-weight="bold">1<tspan dy="-1">4</tspan></text>
+        <text x="100" y="26" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">Investigation</text>
+        <text x="100" y="46" text-anchor="middle" fill="#708878" font-size="10" font-style="italic">vīmaṁsā</text>
+        <text x="93" y="70" text-anchor="middle" fill="#8090a8" font-size="10">collectedness with intentional effort</text>
+        <text x="93" y="88" text-anchor="middle" fill="#586878" font-size="9" font-style="italic">vīmaṁsāsamādhi…iddhipādaṁ</text>
+      </g>
+    </g>
+
+    <g id="factor-15" transform="translate(70, 176)">
+      <rect x="0" y="0" width="780" height="72" rx="8" fill="url(#growthGrad)" stroke="#c8a040" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <circle cx="36" cy="36" r="12" fill="none" stroke="#c8a040" stroke-width="1" />
+      <text x="36" y="39" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">15</text>
+      <text x="420" y="30" text-anchor="middle" fill="#e0d8b0" font-size="14" font-weight="bold">Active Involvement — the fifth factor</text>
+      <text x="420" y="52" text-anchor="middle" fill="#a08858" font-size="12" font-style="italic">ussoḷhīyeva pañcamī</text>
+    </g>
+
+    <text x="460" y="286" text-anchor="middle" fill="#8090a8" font-size="11">Endowed with these fifteen factors including active involvement</text>
+    <text x="460" y="304" text-anchor="middle" fill="#586878" font-size="10" font-style="italic">ussoḷhipannarasaṅgasamannāgato</text>
+  </g>
+
+  <!-- PHASE 6 — HEN AND EGG + MEANING -->
+  <g id="hen-egg" transform="translate(0, 1840)">
+    <ellipse cx="460" cy="90" rx="320" ry="60" fill="url(#eggGlow)" />
+    <g filter="url(#shadowDrop)">
+      <rect x="100" y="16" width="720" height="200" rx="10" fill="#131820" fill-opacity="0.85" stroke="#c8a040" stroke-width="0.8" stroke-opacity="0.35" />
+    </g>
+
+    <g id="icon-hen-egg" transform="translate(160, 38) scale(1.5)" opacity="0.75" filter="url(#iconGlow)">
+      <g transform="translate(12, 12) scale(0.3451) translate(0, -16)">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="0" cy="16" rx="22" ry="30" stroke="#daa520" stroke-width="1.2" />
+          <path d="M -6 8 L 2 18 M 4 6 L 10 20 M -2 20 L 6 28" stroke="#c8a040" stroke-width="0.7" opacity="0.8" />
+        </g>
+      </g>
+    </g>
+
+    <text x="500" y="48" text-anchor="middle" fill="#dab850" font-size="12" font-weight="bold" letter-spacing="1">THE HEN AND THE EGG</text>
+    <text x="500" y="72" text-anchor="middle" fill="#a8b8c8" font-size="11" font-style="italic">“Even if the wish does not arise in her … those chicks are capable of breaking through.”</text>
+
+    <text x="460" y="104" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold">Capable of breaking through · capable of full awakening · unsurpassed security from bondage</text>
+    <text x="460" y="124" text-anchor="middle" fill="#907840" font-size="10" font-style="italic">bhabbo abhinibbidāya · bhabbo sambodhāya · bhabbo anuttarassa yogakkhemassa adhigamāya</text>
+
+    <line x1="220" y1="144" x2="700" y2="144" stroke="#c8a040" stroke-opacity="0.22" stroke-width="0.6" />
+
+    <text x="460" y="170" text-anchor="middle" fill="#90c0b0" font-size="12" font-style="italic">“So too, one endowed with these fifteen factors is capable of breaking through,</text>
+    <text x="460" y="190" text-anchor="middle" fill="#90c0b0" font-size="12" font-style="italic">of full awakening, and of attaining the unsurpassed security from bondage.”</text>
+  </g>
+
+  <!-- PHASE 7 — FOOTER -->
+  <g id="footer" transform="translate(0, 2078)">
+    <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn16" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="17" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn16</text>
+    </a>
+    <g transform="translate(460, 34) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+      <circle cx="0" cy="-28" r="9" />
+    </g>
+  </g>
+</svg>

@@ -472,7 +472,7 @@
 		},
 		{
 			"id": "wise-attention",
-			"title": "Radical attention",
+			"title": "Wise attention",
 			"description": "Clear lines and horizon circle for yoniso",
 			"tags": [
 				"teal",
@@ -1929,7 +1929,10 @@
 				"an7",
 				"tree"
 			],
-			"discourse": "an7.65",
+			"discourse": [
+				"an7.65",
+				"mn16"
+			],
 			"labels": [
 				"ethical conduct",
 				"path",
@@ -2124,7 +2127,8 @@
 			],
 			"discourse": [
 				"mn53",
-				"mn9"
+				"mn9",
+				"mn16"
 			],
 			"labels": [
 				"awakening",
@@ -2351,7 +2355,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn16"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2367,7 +2374,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn16"
+			],
 			"labels": [
 				"five hindrances",
 				"non harm",
@@ -2467,7 +2477,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn16"
+			],
 			"labels": [
 				"five hindrances",
 				"non harm",
@@ -3078,7 +3091,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn77",
+			"discourse": [
+				"mn77",
+				"mn16"
+			],
 			"labels": [
 				"collectedness",
 				"effort",
