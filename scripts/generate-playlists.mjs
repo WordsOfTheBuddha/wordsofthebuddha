@@ -180,7 +180,7 @@ function main() {
 	const counts = Object.entries(playlists)
 		.map(([id, p]) => `${id}=${p.entries.length}`)
 		.join(", ");
-	console.log(`Wrote ${path.relative(REPO_ROOT, OUT)} (${counts || "0 playlists"})`);
+	console.log(`playlists: wrote playlists.generated.ts (${counts || "0 playlists"})`);
 }
 
 main();

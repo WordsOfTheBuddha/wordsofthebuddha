@@ -109,10 +109,6 @@ async function writeReferenceSearchIndex(docs: ReferenceSearchDoc[]) {
 
 export async function fullBuild() {
 	const start = Date.now();
-	const nativeSlugs = await loadNativeSlugs();
-	console.log(
-		`reference-search-index: native index has ${nativeSlugs.size} slugs`,
-	);
 
 	const docs = await buildReferenceSearchIndex();
 	const json = await writeReferenceSearchIndex(docs);

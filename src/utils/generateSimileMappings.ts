@@ -93,7 +93,7 @@ export async function generateSimileMappings() {
 			JSON.stringify(simileMap, null, 2),
 		);
 
-		console.log("Simile mappings generated successfully");
+		console.log("simile-mappings: wrote simileMappings.json");
 	} catch (err) {
 		console.error("Error generating simile mappings:", err);
 	}

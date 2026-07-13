@@ -203,13 +203,12 @@ export async function extractEntriesForFile(
  */
 export async function incrementalUpdate(changedEnglishFile: string) {
 	const startTime = Date.now();
+	const logStatus = process.argv[1]?.includes("generateTranslationMemory");
 
 	// Resolve the absolute path
 	const absPath = path.isAbsolute(changedEnglishFile)
 		? changedEnglishFile
 		: path.resolve(changedEnglishFile);
-
-	console.log(`🔄 Incremental TM update for: ${path.basename(absPath)}`);
 
 	// Extract new entries for this file
 	const result = await extractEntriesForFile(absPath);
@@ -220,15 +219,14 @@ export async function incrementalUpdate(changedEnglishFile: string) {
 		const raw = await readFile(OUTPUT_FILE, "utf-8");
 		existingIndex = JSON.parse(raw);
 	} catch {
-		console.log(
-			"   No existing index found, running full build instead...",
-		);
+		if (logStatus) {
+			console.log("translation-memory: no existing index, running full build");
+		}
 		return fullBuild();
 	}
 
 	if (!result) {
 		// No Pali counterpart — nothing to update
-		console.log("   No Pali counterpart found, skipping TM update.");
 		return;
 	}
 
@@ -306,20 +304,20 @@ export async function incrementalUpdate(changedEnglishFile: string) {
 	await writeFile(OUTPUT_FILE, indexJson, "utf-8");
 
 	const duration = Date.now() - startTime;
-	console.log(
-		`   ✅ TM updated: -${removedCount} +${result.entries.length} entries for ${suttaId} (${duration}ms)`,
-	);
+	if (logStatus) {
+		console.log(
+			`translation-memory: updated ${suttaId} (-${removedCount} +${result.entries.length} entries, ${duration}ms)`,
+		);
+	}
 }
 
 export async function fullBuild() {
-	console.log("🔍 Building Translation Memory index...");
 	const startTime = Date.now();
 
 	const entries: TMEntry[] = [];
 
 	// Find all Pali files
 	const paliFiles = await glob("pli/**/*.md", { cwd: CONTENT_DIR });
-	console.log(`   Found ${paliFiles.length} Pali files`);
 
 	let matchedFiles = 0;
 	let totalParagraphs = 0;
@@ -403,7 +401,6 @@ export async function fullBuild() {
 	}
 
 	// Build n-gram index
-	console.log("   Building n-gram index...");
 	const ngramMap = new Map<string, number[]>();
 
 	for (const entry of entries) {
@@ -419,19 +416,12 @@ export async function fullBuild() {
 	// Filter out overly common n-grams (appear in >10% of paragraphs)
 	const maxFrequency = Math.floor(entries.length * MAX_NGRAM_FREQUENCY);
 	const ngrams: NgramIndex = {};
-	let filteredCount = 0;
 
 	for (const [ngram, entryIds] of ngramMap) {
 		if (entryIds.length <= maxFrequency) {
 			ngrams[ngram] = entryIds;
-		} else {
-			filteredCount++;
 		}
 	}
-
-	console.log(`   - ${ngramMap.size} unique n-grams extracted`);
-	console.log(`   - ${filteredCount} common n-grams filtered out`);
-	console.log(`   - ${Object.keys(ngrams).length} n-grams in final index`);
 
 	// Build the index
 	const index: TranslationMemoryIndex = {
@@ -452,12 +442,9 @@ export async function fullBuild() {
 	const duration = Date.now() - startTime;
 	const fileSizeKB = Math.round(indexJson.length / 1024);
 
-	console.log(`✅ Translation Memory index built successfully!`);
-	console.log(`   - ${matchedFiles} files with translations`);
-	console.log(`   - ${totalParagraphs} indexed paragraphs`);
-	console.log(`   - ${fileSizeKB} KB index size`);
-	console.log(`   - Built in ${duration}ms`);
-	console.log(`   - Output: ${OUTPUT_FILE}`);
+	console.log(
+		`translation-memory: ${matchedFiles} files, ${totalParagraphs} paragraphs, ${fileSizeKB} KB, ${duration}ms`,
+	);
 }
 
 async function main() {

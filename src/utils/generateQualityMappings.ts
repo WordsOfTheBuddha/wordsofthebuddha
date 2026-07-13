@@ -169,22 +169,28 @@ export async function generateQualityMappings() {
 			: null;
 		if (prevContent !== nextContent) {
 			fs.writeFileSync(outputPath, nextContent);
-			console.log(`✅ Quality mappings generated successfully`);
-		} else {
-			console.log(`✅ Quality mappings already up to date`);
+			return { changed: true, emptyQualitiesCount };
 		}
-		if (emptyQualitiesCount > 0) {
-			console.log(
-				`⚠️ ${emptyQualitiesCount} qualities have no associated discourses`
-			);
-		}
+		return { changed: false, emptyQualitiesCount };
 	} catch (err) {
 		console.error("Error generating quality mappings:", err);
+		throw err;
 	}
 }
 
 // Run as a script only when invoked directly.
 const thisFile = fileURLToPath(import.meta.url);
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(thisFile)) {
-	generateQualityMappings().catch(console.error);
+	generateQualityMappings()
+		.then(({ changed, emptyQualitiesCount }) => {
+			console.log(
+				`quality-mappings: ${changed ? "wrote qualityMappings.json" : "already up to date"}`,
+			);
+			if (emptyQualitiesCount > 0) {
+				console.warn(
+					`quality-mappings: ${emptyQualitiesCount} qualities have no associated discourses`,
+				);
+			}
+		})
+		.catch(console.error);
 }

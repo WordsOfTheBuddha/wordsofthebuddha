@@ -12,8 +12,6 @@ import {
 } from "./collectionAvailabilityCounts";
 
 async function main() {
-	console.log("Generating collection availability counts...");
-
 	const enriched = enrichDirectoryWithAvailability(
 		directoryStructureWithCounts,
 	);
@@ -91,9 +89,9 @@ export const directoryStructureWithCounts: Record<string, DirectoryStructure> = 
 `,
 	);
 
-	console.log("Collection availability:", collectionAvailability);
-	console.log("Site totals:", siteTotals);
-	console.log("Collection availability generated successfully.");
+	console.log(
+		`collection-availability: wrote collectionAvailability.ts (${unitCount} units)`,
+	);
 }
 
 main().catch((error) => {

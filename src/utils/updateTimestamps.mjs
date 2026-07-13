@@ -5,15 +5,12 @@ import path from "path";
 const CACHE_FILE = path.join(process.cwd(), ".timestamp-cache.json");
 
 try {
-  console.log("Updating timestamp cache at:", CACHE_FILE);
-
   // Handle shallow clones (like in Vercel)
   if (process.env.VERCEL_GIT_FETCH_DEPTH) {
     try {
-      console.log("Fetching full git history...");
       execSync("git fetch --unshallow", { stdio: "pipe" });
-    } catch (e) {
-      console.log("Repository might already have full history");
+    } catch {
+      // Repository might already have full history
     }
   }
 
@@ -38,8 +35,8 @@ try {
       if (fileLog) {
         cache[file] = fileLog;
       }
-    } catch (e) {
-      console.warn(`Could not get timestamp for ${file}`);
+    } catch {
+      console.warn(`timestamps: could not get timestamp for ${file}`);
     }
   });
 
@@ -51,7 +48,7 @@ try {
 
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
   console.log(
-    `Created fresh timestamp cache with ${Object.keys(cache).length} files`
+    `timestamps: cached ${Object.keys(cache).length} file(s)`,
   );
 } catch (error) {
   console.error("Failed to update timestamps:", error);

@@ -70,9 +70,6 @@ function extractCollections(
 		}
 	}
 
-	// Log the leaf collections for verification
-	console.log("Leaf collections:", Array.from(leafCollections).sort());
-
 	return collections;
 }
 
@@ -270,9 +267,6 @@ function parseFile(
 			.sort((a, b) => b.key.length - a.key.length);
 
 		if (matchingCollections.length > 0) {
-			console.log(
-				`  Found ${baseName} -> ${matchingCollections[0].key} using pattern matching`,
-			);
 			return {
 				collectionKey: matchingCollections[0].key,
 				count: getCount(match),
@@ -280,7 +274,7 @@ function parseFile(
 		}
 	}
 
-	console.log(`  WARNING: No collection match found for ${filename}`);
+	console.warn(`content-counts: no collection match for ${filename}`);
 	return null;
 }
 
@@ -292,22 +286,14 @@ async function processFiles(
 	collections: Map<string, CollectionInfo>,
 ): Promise<Map<string, number>> {
 	const counts = new Map<string, number>();
-	const matchDebug = new Map<string, string[]>();
 
 	try {
 		const files = await fs.readdir(dirPath);
-		console.log(`Processing files in ${dirPath}:`);
 
 		for (const file of files) {
 			const result = parseFile(file, collections);
 			if (result) {
 				const { collectionKey, count } = result;
-
-				// Add to debug tracking
-				if (!matchDebug.has(collectionKey)) {
-					matchDebug.set(collectionKey, []);
-				}
-				matchDebug.get(collectionKey)?.push(`${file} (${count})`);
 
 				const info = collections.get(collectionKey);
 				if (info) {
@@ -316,28 +302,6 @@ async function processFiles(
 						counts.set(pathKey, (counts.get(pathKey) || 0) + count);
 					});
 				}
-				console.log(`  ${file} -> ${collectionKey} (${count})`);
-			} else {
-				console.log(`  Skipped ${file}`);
-			}
-		}
-
-		// Print debug info for leaf collections
-		console.log("\nCollection match summary:");
-		for (const [collKey, files] of matchDebug.entries()) {
-			console.log(
-				`  ${collKey} (${counts.get(collKey) || 0}): ${
-					files.length
-				} files`,
-			);
-			if (files.length <= 10) {
-				console.log(`    ${files.join(", ")}`);
-			} else {
-				console.log(
-					`    ${files.slice(0, 5).join(", ")}... and ${
-						files.length - 5
-					} more`,
-				);
 			}
 		}
 	} catch (error) {
@@ -422,18 +386,8 @@ async function processDirectoryStructure(
  */
 export async function generateContentCounts() {
 	try {
-		console.log("Starting content count process...");
-
 		// Extract all collections from directory structure
 		const collections = extractCollections(directoryStructure);
-		console.log("All collections:", Array.from(collections.keys()).sort());
-		console.log(
-			"Leaf collections only:",
-			Array.from(collections.entries())
-				.filter(([_, info]) => info.isLeaf)
-				.map(([key]) => key)
-				.sort(),
-		);
 
 		// Process files for each base collection
 		const allCounts = new Map<string, number>();
@@ -448,11 +402,6 @@ export async function generateContentCounts() {
 				allCounts.set(key, (allCounts.get(key) || 0) + count);
 			}
 		}
-
-		console.log(
-			"\nFinal collection counts:",
-			Object.fromEntries(allCounts),
-		);
 
 		// Then, apply these counts to the directory structure
 		const enrichedStructure = await processDirectoryStructure(
@@ -475,9 +424,7 @@ import type { DirectoryStructure } from "../types/directory";\n\n` +
 				)};\n`,
 		);
 
-		console.log(
-			"Content counts added successfully to directoryStructureWithCounts.ts",
-		);
+		return allCounts.size;
 	} catch (error) {
 		console.error("Error adding content counts:", error);
 		process.exit(1);
@@ -489,5 +436,9 @@ const isDirectRun =
 	process.argv[1]?.includes("addContentCounts") ||
 	process.argv[1]?.includes("generateContentCounts");
 if (isDirectRun) {
-	generateContentCounts();
+	generateContentCounts().then((collectionCount) => {
+		console.log(
+			`content-counts: wrote directoryStructureWithCounts.ts (${collectionCount} collections)`,
+		);
+	});
 }

@@ -80,7 +80,7 @@ function main() {
 	} catch {}
 	const outPath = join(outDir, "offline-manifest.json");
 	writeFileSync(outPath, JSON.stringify(payload, null, 2), "utf-8");
-	console.log(`[offline] Wrote ${outPath}`);
+	console.log(`offline-manifest: wrote offline-manifest.json`);
 }
 
 main();

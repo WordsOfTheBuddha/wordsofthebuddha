@@ -158,7 +158,7 @@ function writeStatus(slugs) {
 		`export const audioSlugs: ReadonlySet<string> = new Set(${JSON.stringify(slugs)});\n`;
 	fs.mkdirSync(path.dirname(OUT), { recursive: true });
 	fs.writeFileSync(OUT, content, "utf8");
-	console.log(`✅ ${rel}: ${slugs.length} discourse(s)`);
+	console.log(`audio-status: ${slugs.length} discourse(s)`);
 }
 
 async function main() {

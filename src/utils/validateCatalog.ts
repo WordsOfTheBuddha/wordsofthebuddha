@@ -194,7 +194,7 @@ function main() {
 		process.exit(1);
 	}
 
-	console.log(`✅ Validated ${fileCount} reference metadata file(s).`);
+	console.log(`catalog: validated ${fileCount} reference metadata file(s)`);
 }
 
 const isDirectRun = process.argv[1]?.includes("validateCatalog");

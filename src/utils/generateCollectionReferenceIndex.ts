@@ -240,9 +240,7 @@ function main() {
 		skipValidation,
 		collection,
 	});
-	console.log(
-		`✅ Wrote ${count} reference index entries to ${OUT_FILE}`,
-	);
+	console.log(`reference-index: wrote ${count} entries`);
 }
 
 const isDirectRun = process.argv[1]?.includes(

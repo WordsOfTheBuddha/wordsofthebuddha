@@ -166,6 +166,7 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 	const absPath = path.isAbsolute(changedFile)
 		? changedFile
 		: path.resolve(changedFile);
+	const logStatus = process.argv[1]?.includes("generateSearchIndex");
 
 	// Read the changed file
 	let raw: string;
@@ -179,9 +180,11 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 			if (docs.length > 0) {
 				const filtered = docs.filter((d) => d.slug !== slug);
 				await writeSearchIndex(filtered);
-				console.log(
-					`search-index: removed ${slug} (${Date.now() - start}ms)`,
-				);
+				if (logStatus) {
+					console.log(
+						`search-index: removed ${slug} (${Date.now() - start}ms)`,
+					);
+				}
 			}
 		} catch {
 			// No existing index, nothing to remove
@@ -206,9 +209,11 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 			old.title === newDoc.title &&
 			old.description === newDoc.description
 		) {
-			console.log(
-				`search-index: skipped (body-only change) for ${newDoc.slug} (${Date.now() - start}ms)`,
-			);
+			if (logStatus) {
+				console.log(
+					`search-index: skipped (body-only change) for ${newDoc.slug} (${Date.now() - start}ms)`,
+				);
+			}
 			return;
 		}
 		docs[existingIdx] = newDoc;
@@ -218,9 +223,11 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 
 	const json = await writeSearchIndex(docs);
 	const ms = Date.now() - start;
-	console.log(
-		`search-index: ${existingIdx !== -1 ? "updated" : "added"} ${newDoc.slug} (${ms}ms)`,
-	);
+	if (logStatus) {
+		console.log(
+			`search-index: ${existingIdx !== -1 ? "updated" : "added"} ${newDoc.slug} (${ms}ms)`,
+		);
+	}
 }
 
 export async function fullBuild() {
@@ -230,12 +237,6 @@ export async function fullBuild() {
 	const files = (
 		await Promise.all(patterns.map((p) => glob(path.join(contentRoot, p))))
 	).flat();
-
-	console.log(
-		`search-index: found ${
-			files.length
-		} English content files under ${path.relative(repoRoot, contentRoot)}`,
-	);
 
 	const docs: SearchDoc[] = [];
 
@@ -251,7 +252,6 @@ export async function fullBuild() {
 
 	// Add virtual pages (non-MDX pages that should be searchable)
 	for (const virtualPage of VIRTUAL_PAGES) {
-		console.log(`search-index: adding virtual page: ${virtualPage.slug}`);
 		docs.push(virtualPage);
 	}
 

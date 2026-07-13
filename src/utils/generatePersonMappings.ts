@@ -244,7 +244,7 @@ export async function generatePersonMappings() {
 		JSON.stringify(out, null, 2),
 	);
 
-	console.log("Person mappings generated successfully");
+	console.log(`person-mappings: wrote personMappings.json`);
 }
 
 generatePersonMappings().catch(console.error);

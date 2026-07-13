@@ -54,8 +54,7 @@ export const routes = ${JSON.stringify(sortedRoutes)};
 `;
 
 		await writeFile(OUTPUT_FILE, routesContent);
-		console.log(`✅ Generated ${routes.length} routes in ${OUTPUT_FILE}`);
-		return sortedRoutes;
+		return sortedRoutes.length;
 	} catch (error) {
 		console.error("❌ Route generation failed:", error);
 		process.exit(1);
@@ -89,9 +88,7 @@ export const referenceOnlyRouteSet = new Set<string>(referenceOnlyRoutes);
 `;
 
 		await writeFile(REF_ONLY_OUTPUT, content);
-		console.log(
-			`✅ Generated ${referenceOnly.length} reference-only routes in ${REF_ONLY_OUTPUT}`,
-		);
+		return referenceOnly.length;
 	} catch (error) {
 		console.error("❌ Reference-only route generation failed:", error);
 		process.exit(1);
@@ -99,7 +96,7 @@ export const referenceOnlyRouteSet = new Set<string>(referenceOnlyRoutes);
 }
 
 async function watchContentDirectory() {
-	console.log(`👀 Watching for changes in ${CONTENT_DIR}...`);
+	console.log(`content-watcher: watching ${CONTENT_DIR}`);
 	let debounceTimer = null;
 	let pendingEvent = null; // Track what kind of change happened
 	let lastQualitiesHash = null;
@@ -111,53 +108,38 @@ async function watchContentDirectory() {
 	 */
 	const runGenerators = async (eventType, changedFile) => {
 		const absChangedFile = resolve(CONTENT_DIR, changedFile);
+		const start = Date.now();
 
 		if (eventType === "rename") {
 			// File was added or deleted — need to update routes, counts, search index, and TM
 			try {
-				console.log(
-					"🚧 Running generators: routes, counts, search index, translation memory...",
-				);
-				// Routes and counts must complete first (needed for collection pages)
-				await Promise.all([
-					generateRoutes().then(async (sortedRoutes) => {
-						console.log("   • routes.ts updated");
-						await generateReferenceOnlyRoutes(sortedRoutes);
-						console.log("   • referenceOnlyRoutes.ts updated");
+				const [{ routeCount, refOnlyCount }] = await Promise.all([
+					generateRoutes().then(async (routeCount) => {
+						const refOnlyCount = await generateReferenceOnlyRoutes();
+						return { routeCount, refOnlyCount };
 					}),
-					generateContentCounts().then(() =>
-						console.log(
-							"   • directoryStructureWithCounts.ts updated",
-						),
-					),
+					generateContentCounts(),
 				]);
-				// Search index + TM run concurrently so files are written at ~same time
 				await Promise.all([
-					incrementalSearchIndexUpdate(absChangedFile).then(() =>
-						console.log("   • search-index.json updated"),
-					),
-					updateTranslationMemory(absChangedFile).then(() =>
-						console.log("   • translationMemory.json updated"),
-					),
+					incrementalSearchIndexUpdate(absChangedFile),
+					updateTranslationMemory(absChangedFile),
 				]);
-				console.log("✅ Generators complete");
+				console.log(
+					`content-watcher: regenerated routes (${routeCount} en, ${refOnlyCount} ref-only), counts, search index, TM for ${changedFile} (${Date.now() - start}ms)`,
+				);
 			} catch (error) {
 				console.error("❌ Generator run failed:", error);
 			}
 		} else {
 			// Content edit — update search index + TM concurrently
-			// TM is in public/ so writing it won't trigger Vite re-render
 			try {
-				console.log(`🚧 Incremental update for ${changedFile}...`);
 				await Promise.all([
-					incrementalSearchIndexUpdate(absChangedFile).then(() =>
-						console.log("   • search-index.json updated"),
-					),
-					updateTranslationMemory(absChangedFile).then(() =>
-						console.log("   • translationMemory.json updated"),
-					),
+					incrementalSearchIndexUpdate(absChangedFile),
+					updateTranslationMemory(absChangedFile),
 				]);
-				console.log("✅ Generators complete");
+				console.log(
+					`content-watcher: updated search index + TM for ${changedFile} (${Date.now() - start}ms)`,
+				);
 			} catch (error) {
 				console.error("❌ Incremental update failed:", error);
 			}
@@ -168,9 +150,6 @@ async function watchContentDirectory() {
 		if (!filename) return;
 		// Only react to MDX content changes
 		if (!filename.endsWith(".mdx")) return;
-		console.log(
-			`\nDetected ${eventType} on ${filename}. Scheduling regeneration...`,
-		);
 		// If a rename is pending, keep it (it's more expensive and includes everything)
 		if (pendingEvent !== "rename") {
 			pendingEvent = eventType;
@@ -190,11 +169,11 @@ async function watchContentDirectory() {
 			filename &&
 			(filename.endsWith(".yaml") || filename.endsWith(".yml"))
 		) {
-			console.log(
-				`\nDetected ${eventType} on ${filename}. Regenerating topic mappings...`,
-			);
 			try {
-				await generateTopicMappings();
+				const topicCount = await generateTopicMappings();
+				console.log(
+					`content-watcher: regenerated topic mappings (${topicCount} topics) after ${filename}`,
+				);
 			} catch (error) {
 				console.error(
 					"❌ Topic mappings generation failed during watch:",
@@ -213,10 +192,10 @@ async function watchContentDirectory() {
 			const currentHash = createHash("sha256").update(content).digest("hex");
 			if (currentHash === lastQualitiesHash) return;
 			lastQualitiesHash = currentHash;
-			console.log(
-				`\nDetected ${eventType} on ${QUALITIES_BASENAME}. Regenerating quality mappings...`,
-			);
 			await generateQualityMappings();
+			console.log(
+				`content-watcher: regenerated quality mappings after ${QUALITIES_BASENAME}`,
+			);
 		} catch (error) {
 			console.error(
 				"❌ Quality mappings generation failed during watch:",
@@ -227,9 +206,12 @@ async function watchContentDirectory() {
 }
 
 // Call generateRoutes initially to create the routes on startup
-generateRoutes().then((sortedRoutes) =>
-	generateReferenceOnlyRoutes(sortedRoutes),
-);
+generateRoutes().then(async (routeCount) => {
+	const refOnlyCount = await generateReferenceOnlyRoutes();
+	console.log(
+		`routes: ${routeCount} en, ${refOnlyCount} reference-only`,
+	);
+});
 
 // Parse command line arguments
 const args = process.argv.slice(2);

@@ -39,7 +39,6 @@ interface TopicMappings {
 // Load discourse data from the existing JSON files in the content directory
 function loadDiscourseData() {
 	const contentDir = path.join(__dirname, "../content");
-	console.log(`Looking for content in: ${contentDir}`);
 	const discourseData: Record<
 		string,
 		{ title: string; description: string; qualities: string[] }
@@ -50,12 +49,10 @@ function loadDiscourseData() {
 
 	collections.forEach((collection) => {
 		const collectionDir = path.join(contentDir, "en", collection);
-		console.log(`Checking collection: ${collectionDir}`);
 		if (fs.existsSync(collectionDir)) {
 			const files = fs
 				.readdirSync(collectionDir)
 				.filter((f) => f.endsWith(".mdx"));
-			console.log(`Found ${files.length} mdx files in ${collection}`);
 			files.forEach((file) => {
 				try {
 					const filePath = path.join(collectionDir, file);
@@ -96,10 +93,6 @@ function loadDiscourseData() {
 					console.warn(`Failed to parse ${file}:`, error);
 				}
 			});
-		} else {
-			console.log(
-				`Collection directory does not exist: ${collectionDir}`,
-			);
 		}
 	});
 
@@ -136,7 +129,6 @@ function findQualityDiscourses(
 
 	for (const searchTerm of searchTerms) {
 		if (qualityMappings[searchTerm]) {
-			console.log(`Found quality match for topic ${slug}: ${searchTerm}`);
 			return qualityMappings[searchTerm];
 		}
 	}
@@ -161,9 +153,6 @@ function findSimileDiscourses(
 		for (const letterGroup of Object.values(simileMappings)) {
 			if (typeof letterGroup === "object" && letterGroup !== null) {
 				if ((letterGroup as any)[searchTerm]) {
-					console.log(
-						`Found simile match for topic ${slug}: ${searchTerm}`,
-					);
 					return (letterGroup as any)[searchTerm];
 				}
 			}
@@ -191,19 +180,13 @@ function mergeAdditionalDiscourses(
 }
 
 export async function generateTopicMappings() {
-	console.log("Generating topic mappings...");
-
 	// Load discourse data first
 	const discourseData = loadDiscourseData();
-	console.log(
-		`Loaded ${Object.keys(discourseData).length} discourse entries`,
-	);
 
 	const allTopics = getAllTopics();
 	const topicMappings: TopicMappings = {};
 
 	for (const [slug, topic] of Object.entries(allTopics)) {
-		console.log(`Processing topic: ${slug}`);
 
 		const discourses = topic.discourses
 			.map((discourse: any) => {
@@ -272,15 +255,14 @@ export async function generateTopicMappings() {
 	const outputPath = path.join(__dirname, "../data/topicMappings.json");
 	fs.writeFileSync(outputPath, JSON.stringify(topicMappings, null, 2));
 
-	console.log(
-		`Generated topic mappings for ${
-			Object.keys(topicMappings).length
-		} topics`,
-	);
-	console.log(`Written to: ${outputPath}`);
+	return Object.keys(topicMappings).length;
 }
 
 // Allow running as a script
 if (import.meta.url === `file://${process.argv[1]}`) {
-	generateTopicMappings().catch(console.error);
+	generateTopicMappings()
+		.then((topicCount) => {
+			console.log(`topic-mappings: wrote ${topicCount} topics`);
+		})
+		.catch(console.error);
 }
