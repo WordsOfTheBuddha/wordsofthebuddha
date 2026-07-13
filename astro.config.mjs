@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import tailwind from "@astrojs/tailwind";
 
 import mdx from "@astrojs/mdx";
+import { unified } from "@astrojs/markdown-remark";
 import vercel from "@astrojs/vercel";
 import rehypeExternalLinks from "rehype-external-links";
 import { searchIndexStatic } from "./src/integrations/searchIndexStatic.mjs";
@@ -49,7 +50,9 @@ const externalLinksOptions = {
 // https://astro.build/config
 export default defineConfig({
 	markdown: {
-		rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
+		processor: unified({
+			rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
+		}),
 	},
 
 	integrations: [
@@ -58,9 +61,7 @@ export default defineConfig({
 		tailwind({
 			applyBaseStyles: false,
 		}),
-		mdx({
-			rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
-		}),
+		mdx(),
 	],
 
 	vite: {

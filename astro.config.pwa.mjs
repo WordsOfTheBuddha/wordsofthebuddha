@@ -2,6 +2,7 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
+import { unified } from "@astrojs/markdown-remark";
 import node from "@astrojs/node";
 import rehypeExternalLinks from "rehype-external-links";
 
@@ -13,11 +14,13 @@ const externalLinksOptions = {
 
 export default defineConfig({
 	markdown: {
-		rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
+		processor: unified({
+			rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],
+		}),
 	},
 	integrations: [
 		tailwind({ applyBaseStyles: false }),
-		mdx({ rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]] }),
+		mdx(),
 	],
 	vite: {
 		optimizeDeps: { include: ["rangy"] },

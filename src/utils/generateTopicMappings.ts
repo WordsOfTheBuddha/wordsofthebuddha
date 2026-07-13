@@ -1,4 +1,5 @@
 import { getAllTopics, getCollection } from "./loadTopics.ts";
+import collectionReferenceIndex from "../data/collectionReferenceIndex";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -95,6 +96,17 @@ function loadDiscourseData() {
 			});
 		}
 	});
+
+	for (const entry of collectionReferenceIndex) {
+		if (discourseData[entry.slug]) continue;
+		discourseData[entry.slug] = {
+			title: entry.title,
+			description: entry.description ?? "",
+			qualities: entry.qualities
+				? entry.qualities.split(",").map((s) => s.trim())
+				: [],
+		};
+	}
 
 	return discourseData;
 }
