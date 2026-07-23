@@ -136,7 +136,11 @@ for (const key in collections) {
 const displayTitle = topic.title;
 ---
 
-<Layout seoTitle={`${displayTitle} - Words of the Buddha`} showAuth={true}>
+<Layout
+	seoTitle={`${displayTitle} - Words of the Buddha`}
+	description={topic.description}
+	showAuth={true}
+>
 	<main class="container mx-auto px-4 py-8">
 		<div class="mb-8">
 			<div

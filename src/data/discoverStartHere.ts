@@ -27,7 +27,7 @@ export const discoverStartHereEntries: StartHereEntry[] = [
 		imagePath: "/assets/in-the-buddha's-words.jpg",
 		accent: "#6b5b4f",
 		href: "/anthologies/in-the-buddhas-words",
-		ctaLabel: "Start reading",
+		ctaLabel: "Read",
 	},
 	{
 		type: "anthology",
@@ -36,7 +36,7 @@ export const discoverStartHereEntries: StartHereEntry[] = [
 		imagePath: "/assets/noble-truths-noble-path-book-cover.jpeg",
 		accent: "#8b5a6b",
 		href: "/anthologies/noble-truths-noble-path",
-		ctaLabel: "Start reading",
+		ctaLabel: "Read",
 	},
 	{
 		type: "listen",
