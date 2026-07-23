@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import { naturalSort } from "./sort-routes.mjs";
 import { watch } from "node:fs";
-import { generateTopicMappings } from "./generateTopicMappings.ts";
 import { generateQualityMappings } from "./generateQualityMappings.ts";
 import { incrementalUpdate as updateTranslationMemory } from "./generateTranslationMemory.ts";
 import { incrementalSearchIndexUpdate } from "./generateSearchIndex.ts";
@@ -170,6 +169,9 @@ async function watchContentDirectory() {
 			(filename.endsWith(".yaml") || filename.endsWith(".yml"))
 		) {
 			try {
+				const { generateTopicMappings } = await import(
+					"./generateTopicMappings.ts"
+				);
 				const topicCount = await generateTopicMappings();
 				console.log(
 					`content-watcher: regenerated topic mappings (${topicCount} topics) after ${filename}`,
