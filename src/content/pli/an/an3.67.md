@@ -1,9 +1,10 @@
 ---
+title: Kathāvatthu sutta - Basis of Conversation
+description: The Buddha outlines the parameters for a constructive conversation. True noble conversation avoids fault-finding and arrogance, serving only to generate clarity, comprehend the Dhamma, and achieve liberation through non-clinging.
+qualities: examination, liberation, argumentativeness, humility, conceit, contempt, free from attachment, learning, wisdom
+theme: wisdom, cultivating discernment
 slug: an3.67
-source: suttacentral/bilara-data
-title: Kathāvatthusutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 “Tīṇimāni, bhikkhave, kathāvatthūni. Katamāni tīṇi? Atītaṁ vā, bhikkhave, addhānaṁ ārabbha kathaṁ katheyya: ‘evaṁ ahosi atītamaddhānan’ti. Anāgataṁ vā, bhikkhave, addhānaṁ ārabbha kathaṁ katheyya: ‘evaṁ bhavissati anāgatamaddhānan’ti. Etarahi vā, bhikkhave, paccuppannaṁ addhānaṁ ārabbha kathaṁ katheyya: ‘evaṁ hoti etarahi paccuppannamaddhānan’ti.
@@ -54,5 +55,3 @@ Evaṁ kho ariyā mantenti,
 esā ariyāna mantanā;
 Etadaññāya medhāvī,
 na samusseyya mantaye”ti.
-
-Sattamaṁ.

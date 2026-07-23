@@ -1,9 +1,10 @@
 ---
+title: Sutadhara sutta - What One has Learned
+description: For a practitioner cultivating mindfulness while breathing in and out, the Buddha describes five qualities that lead to the unshakeable in no long time.
+qualities: breathing, sense restraint, wakefulness, learning
+theme: wisdom, urgency
 slug: an5.96
-source: suttacentral/bilara-data
-title: Sutadharasutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 “Pañcahi, bhikkhave, dhammehi samannāgato bhikkhu ānāpānassatiṁ āsevanto nacirasseva akuppaṁ paṭivijjhati. Katamehi pañcahi?
@@ -19,5 +20,3 @@ bahussuto hoti sutadharo sutasannicayo, ye te dhammā ādikalyāṇā majjhekaly
 yathāvimuttaṁ cittaṁ paccavekkhati.
 
 Imehi kho, bhikkhave, pañcahi dhammehi samannāgato bhikkhu ānāpānassatiṁ āsevanto nacirasseva akuppaṁ paṭivijjhatī”ti.
-
-Chaṭṭhaṁ.

@@ -1,9 +1,10 @@
 ---
+title: Ārakkha sutta - Guarding
+description: By actively protecting the mind from enticing, irritating, deceptive, and intoxicating phenomena, a practitioner attains freedom from fear, wavering, and they do not go by the mere word of an ascetic.
+qualities: passion, aversion, delusion, vanity, diligence, mindfulness, sense restraint
+theme: wisdom
 slug: an4.117
-source: suttacentral/bilara-data
-title: Ārakkhasutta
-edition: ms
-granularity: paragraph
+priority: 1.2
 ---
 
 “Catūsu, bhikkhave, ṭhānesu attarūpena appamādo sati cetaso ārakkho karaṇīyo. Katamesu catūsu?
@@ -17,5 +18,3 @@ granularity: paragraph
 ‘mā me madanīyesu dhammesu cittaṁ majjī’ti attarūpena appamādo sati cetaso ārakkho karaṇīyo.
 
 Yato kho, bhikkhave, bhikkhuno rajanīyesu dhammesu cittaṁ na rajjati vītarāgattā, dosanīyesu dhammesu cittaṁ na dussati vītadosattā, mohanīyesu dhammesu cittaṁ na muyhati vītamohattā, madanīyesu dhammesu cittaṁ na majjati vītamadattā, so na chambhati na kampati na vedhati na santāsaṁ āpajjati, na ca pana samaṇavacanahetupi gacchatī”ti.
-
-Sattamaṁ.
