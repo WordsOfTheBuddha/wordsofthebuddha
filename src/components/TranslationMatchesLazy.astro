@@ -1,0 +1,12 @@
+---
+/**
+ * Dev-only lazy loader for TranslationMatches.
+ * Keeps the ~4k-line TM component out of Layout's static import graph so
+ * content saves don't trigger a full recompile of it on the next page load.
+ */
+let TranslationMatches = null;
+if (import.meta.env.DEV) {
+	TranslationMatches = (await import("./TranslationMatches.astro")).default;
+}
+---
+{TranslationMatches && <TranslationMatches />}
