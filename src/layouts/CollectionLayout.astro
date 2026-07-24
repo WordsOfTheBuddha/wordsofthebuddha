@@ -15,6 +15,8 @@ import {
 } from "../utils/collectionPdfExportScope";
 import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
 import { getReferencePostsForCollection } from "../utils/referencePostsForPage";
+import { urlHasRefParam } from "../utils/urlRefParam";
+import type { CollectionCountEntry } from "../utils/collectionCountBadgesClient";
 
 import {
 	formatVaggaDisplayTitle,
@@ -101,6 +103,7 @@ const referencePostsData = referencePostsForCollection.map(
 	}),
 );
 const referencePostsJson = JSON.stringify(referencePostsData);
+const refModeOnPage = urlHasRefParam(Astro.url.searchParams);
 
 /** Runs in <head> before body paint to avoid Collections→Discourses flash when URL has a hash. */
 const collectionViewBootstrapScript = `(function () {
@@ -215,6 +218,21 @@ function getAvailabilityCounts(slug: string): {
 
 	return empty;
 }
+
+const collectionCountEntries: Record<string, CollectionCountEntry> = {};
+if (hasChildren && children) {
+	for (const slug of Object.keys(children)) {
+		const { readableCount, translatedCount } = getAvailabilityCounts(slug);
+		collectionCountEntries[slug] = {
+			translated: translatedCount,
+			readable: readableCount,
+		};
+	}
+}
+const collectionCountsJson = JSON.stringify(collectionCountEntries);
+const hasRefCountableChildren = Object.values(collectionCountEntries).some(
+	({ translated, readable }) => readable > translated,
+);
 ---
 
 <Layout title={title} description={description} showAuth={true}>
@@ -229,13 +247,16 @@ function getAvailabilityCounts(slug: string): {
 				{`html[data-collection-view="discourses"] #collections-grid {
 	display: none !important;
 }
+html[data-collection-view="discourses"] #collections-ref-wrap {
+	display: none !important;
+}
 html[data-collection-view="discourses"] #discourses-panel.hidden {
 	display: contents !important;
 }
 html[data-collection-view="discourses"] #filter-wrap.hidden {
 	display: flex !important;
 }
-html[data-collection-view="discourses"] #toggle-ref.hidden {
+html[data-collection-view="discourses"] .toggle-ref--discourses.hidden {
 	display: inline-flex !important;
 }
 html[data-collection-view="discourses"] #view-collections {
@@ -302,6 +323,30 @@ html[data-collection-view="discourses"] #view-discourses {
 					</div>
 				)
 			}
+			{
+				hasChildren && hasRefCountableChildren && (
+					<div
+						id="collections-ref-wrap"
+						class:list={[
+							"not-prose w-full min-w-0",
+							!defaultShowCollections ? "hidden" : "",
+						]}
+					>
+						<button
+							type="button"
+							class:list={[
+								"toggle-ref toggle-ref--collections filter-toolbar-btn",
+								refModeOnPage ? "filter-toolbar-btn--active" : "",
+							]}
+							aria-pressed={refModeOnPage ? "true" : "false"}
+							title="Include reference discourses in collection counts"
+						>
+							<span class="md:hidden">Ref</span>
+							<span class="hidden md:inline">See Refs</span>
+						</button>
+					</div>
+				)
+			}
 			<div
 				id="discourses-panel"
 				class:list={[
@@ -329,7 +374,7 @@ html[data-collection-view="discourses"] #view-discourses {
 								id="toggle-ref"
 								aria-pressed="false"
 								class:list={[
-									"toggle-ref filter-toolbar-btn",
+									"toggle-ref toggle-ref--discourses filter-toolbar-btn",
 									hasChildren && defaultShowCollections
 										? "hidden"
 										: "",
@@ -508,14 +553,18 @@ html[data-collection-view="discourses"] #view-discourses {
 							DirectoryStructure,
 						][]
 					).map(([slug, data]) => {
-						const { readableCount } = getAvailabilityCounts(slug);
+						const { readableCount, translatedCount } =
+							getAvailabilityCounts(slug);
+						const count = refModeOnPage
+							? readableCount
+							: translatedCount;
 						return (
 							<PostCard
 								title={data.title}
 								description={data.description || ""}
 								id={slug}
 								clamp={5}
-								count={readableCount}
+								count={count}
 							/>
 						);
 					})}
@@ -529,6 +578,16 @@ html[data-collection-view="discourses"] #view-discourses {
 					id="reference-posts-data"
 					type="application/json"
 					set:html={referencePostsJson}
+				/>
+			)
+		}
+
+		{
+			hasChildren && Object.keys(collectionCountEntries).length > 0 && (
+				<script
+					id="collection-counts-data"
+					type="application/json"
+					set:html={collectionCountsJson}
 				/>
 			)
 		}
@@ -592,7 +651,8 @@ html[data-collection-view="discourses"] #view-discourses {
 		.collection-chrome__discourses:not(.hidden) {
 			display: contents;
 		}
-		#filter-wrap {
+		#filter-wrap,
+		#collections-ref-wrap {
 			grid-area: filter;
 		}
 		#discourses-grid {
@@ -602,8 +662,6 @@ html[data-collection-view="discourses"] #view-discourses {
 			.collection-chrome--leaf {
 				grid-template-areas: "filter print";
 			}
-		}
-		@media (min-width: 1024px) {
 			.collection-chrome--parent {
 				grid-template-columns: auto minmax(0, 1fr) auto;
 				grid-template-areas: "toggle filter print";
@@ -612,7 +670,20 @@ html[data-collection-view="discourses"] #view-discourses {
 		#filter-wrap.hidden {
 			display: none !important;
 		}
-		#toggle-ref.hidden {
+		#collections-ref-wrap.hidden {
+			display: none !important;
+		}
+		#collections-ref-wrap:not(.hidden) {
+			display: none;
+		}
+		@media (min-width: 768px) {
+			#collections-ref-wrap:not(.hidden) {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+			}
+		}
+		.toggle-ref--discourses.hidden {
 			display: none !important;
 		}
 		.filter-toolbar-btn:not(.hidden) {
@@ -641,16 +712,16 @@ html[data-collection-view="discourses"] #view-discourses {
 				transparent
 			);
 		}
-		:global(#toggle-ref.filter-toolbar-btn--active) {
+		:global(.toggle-ref.filter-toolbar-btn--active) {
 			color: white !important;
 			font-weight: 500;
 			background: var(--primary-color) !important;
 		}
-		:global(#toggle-ref.filter-toolbar-btn--active:hover) {
+		:global(.toggle-ref.filter-toolbar-btn--active:hover) {
 			color: white !important;
 			background: var(--link-hover-color) !important;
 		}
-		html.dark :global(#toggle-ref.filter-toolbar-btn--active) {
+		html.dark :global(.toggle-ref.filter-toolbar-btn--active) {
 			color: var(--secondary-color) !important;
 			background: color-mix(
 				in srgb,
@@ -658,7 +729,7 @@ html[data-collection-view="discourses"] #view-discourses {
 				transparent
 			) !important;
 		}
-		html.dark :global(#toggle-ref.filter-toolbar-btn--active:hover) {
+		html.dark :global(.toggle-ref.filter-toolbar-btn--active:hover) {
 			color: var(--secondary-color) !important;
 			background: color-mix(
 				in srgb,
@@ -682,12 +753,9 @@ html[data-collection-view="discourses"] #view-discourses {
 			background: var(--surface-paper);
 		}
 		@media (min-width: 768px) {
-			.collection-chrome--leaf .filter-toolbar:not(.hidden) {
-				margin-bottom: 0;
-			}
-		}
-		@media (min-width: 1024px) {
+			.collection-chrome--leaf .filter-toolbar:not(.hidden),
 			.collection-chrome--parent .filter-toolbar:not(.hidden) {
+				align-self: center;
 				margin-bottom: 0;
 			}
 		}
@@ -714,11 +782,16 @@ html[data-collection-view="discourses"] #view-discourses {
 	<script>
 	import { initReferenceDiscourseCards } from "../utils/referenceDiscourseCardsClient";
 	import { collectionLayoutDebugLog } from "../utils/collectionLayoutDebug";
+	import {
+		type CollectionCountEntry,
+		syncCollectionCountBadges,
+	} from "../utils/collectionCountBadgesClient";
 
 	let collectionsGrid;
 	let discoursesGrid;
 	let discoursesPanel;
 	let filterWrap;
+	let collectionsRefWrap;
 	let btnCollections;
 	let btnDiscourses;
 	let hasChildren;
@@ -783,6 +856,8 @@ html[data-collection-view="discourses"] #view-discourses {
 			discoursesPanel.classList.toggle("hidden", showCollections);
 		if (filterWrap)
 			filterWrap.classList.toggle("hidden", showCollections);
+		if (collectionsRefWrap)
+			collectionsRefWrap.classList.toggle("hidden", !showCollections);
 		if (btnCollections && btnDiscourses) {
 			setTabActive(btnCollections, showCollections);
 			setTabActive(btnDiscourses, !showCollections);
@@ -951,6 +1026,7 @@ html[data-collection-view="discourses"] #view-discourses {
 		discoursesGrid = document.getElementById("discourses-grid");
 		discoursesPanel = document.getElementById("discourses-panel");
 		filterWrap = document.getElementById("filter-wrap");
+		collectionsRefWrap = document.getElementById("collections-ref-wrap");
 		btnCollections = document.getElementById("view-collections");
 		btnDiscourses = document.getElementById("view-discourses");
 	}
@@ -1068,6 +1144,25 @@ html[data-collection-view="discourses"] #view-discourses {
 		refreshVaggaScrollSpy();
 	}
 
+	function readCollectionCountEntries(): Record<
+		string,
+		CollectionCountEntry
+	> {
+		const el = document.getElementById("collection-counts-data");
+		if (!el?.textContent?.trim()) return {};
+		try {
+			return JSON.parse(el.textContent);
+		} catch {
+			return {};
+		}
+	}
+
+	function syncCollectionCounts() {
+		const counts = readCollectionCountEntries();
+		if (Object.keys(counts).length === 0) return;
+		syncCollectionCountBadges(counts);
+	}
+
 	function initCollectionLayout() {
 		bindCollectionLayoutElements();
 
@@ -1081,8 +1176,10 @@ html[data-collection-view="discourses"] #view-discourses {
 			getActiveFilter,
 			applyFilter,
 			onAfterSync: () => refreshVaggaScrollSpy?.(),
+			onRefModeChange: () => syncCollectionCounts(),
 		});
 		syncRefToggleVisibility = refCards?.syncRefToggleVisibility;
+		syncCollectionCounts();
 
 		const mode = resolveInitialViewMode();
 		if (hasChildren) {

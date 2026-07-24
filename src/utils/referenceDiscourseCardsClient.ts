@@ -16,6 +16,8 @@ export interface ReferenceDiscourseCardsInitOptions {
 	dataScriptId?: string;
 	/** Re-apply client filter after ref cards change (CollectionLayout). */
 	onAfterSync?: () => void;
+	/** Sync collection count badges when ref mode changes (CollectionLayout). */
+	onRefModeChange?: () => void;
 	getActiveFilter?: () => string;
 	applyFilter?: (filter: string) => void;
 	syncRefToggleVisibility?: (visible: boolean) => void;
@@ -333,19 +335,19 @@ export function initReferenceDiscourseCards(
 			options.applyFilter(options.getActiveFilter());
 		}
 		options.onAfterSync?.();
+		options.onRefModeChange?.();
 	}
 
 	function syncRefToggleState(active: boolean) {
-		const toggles = document.querySelectorAll("#toggle-ref");
-		for (const toggleRef of toggles) {
+		for (const toggleRef of document.querySelectorAll(".toggle-ref")) {
 			toggleRef.classList.toggle("filter-toolbar-btn--active", active);
 			toggleRef.setAttribute("aria-pressed", active ? "true" : "false");
 		}
 		collectionLayoutDebugLog("syncRefToggleState", {
 			active,
 			refParam: new URLSearchParams(window.location.search).get("ref"),
-			toggleCount: toggles.length,
-			toggles: [...toggles].map((el) => ({
+			toggleCount: document.querySelectorAll(".toggle-ref").length,
+			toggles: [...document.querySelectorAll(".toggle-ref")].map((el) => ({
 				ariaPressed: el.getAttribute("aria-pressed"),
 				hasActiveClass: el.classList.contains("filter-toolbar-btn--active"),
 			})),
@@ -355,7 +357,9 @@ export function initReferenceDiscourseCards(
 	function syncRefToggleVisibility(visible: boolean) {
 		const hasRefData = !!document.getElementById(dataScriptId);
 		const show = visible && hasRefData;
-		for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
+		for (const toggleRef of document.querySelectorAll(
+			".toggle-ref--discourses",
+		)) {
 			toggleRef.classList.toggle("hidden", !show);
 		}
 		options.syncRefToggleVisibility?.(show);
@@ -367,7 +371,7 @@ export function initReferenceDiscourseCards(
 	syncReferenceDiscourseCards();
 	updateDiscoursePostLinks();
 
-	for (const toggleRef of document.querySelectorAll("#toggle-ref")) {
+	for (const toggleRef of document.querySelectorAll(".toggle-ref")) {
 		toggleRef.addEventListener("click", (e) => {
 			e.preventDefault();
 			const url = new URL(window.location.href);
