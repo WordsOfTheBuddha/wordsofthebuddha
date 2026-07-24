@@ -762,7 +762,12 @@ function findBestMatchingParagraph(
 				// Skip if already highlighted
 				if (highlightedTerms.has(termLower)) return;
 
-				const pattern = createHighlightPattern(cleanTerm, ht.operation);
+				const pattern = createHighlightPattern(
+					cleanTerm,
+					ht.operation,
+					"",
+					paliMode,
+				);
 				if (!pattern) return;
 
 				const matchMarkClass =
@@ -792,7 +797,12 @@ function findBestMatchingParagraph(
 			// Skip if this term was already highlighted in a previous segment
 			if (highlightedTerms.has(termLower)) return;
 
-			const pattern = createHighlightPattern(cleanTerm, ht.operation);
+			const pattern = createHighlightPattern(
+				cleanTerm,
+				ht.operation,
+				"",
+				paliMode,
+			);
 			if (!pattern) return;
 
 			const markClass =
@@ -909,6 +919,27 @@ function isPaliOnlyContentMatch(
 		);
 		return inPali && !inEnglish;
 	});
+}
+
+function countHighlightMarks(snippet: string | null | undefined): number {
+	if (!snippet) return 0;
+	return (snippet.match(/<mark/g) ?? []).length;
+}
+
+/** Prefer the snippet that highlights more query terms; break ties toward Pali. */
+export function pickContentSnippet(
+	paliSnippet: string | null,
+	englishSnippet: string | null,
+	paliOnly: boolean,
+): string | null {
+	const paliMarks = countHighlightMarks(paliSnippet);
+	const englishMarks = countHighlightMarks(englishSnippet);
+
+	if (paliMarks === 0 && englishMarks === 0) return null;
+	if (paliMarks > englishMarks) return paliSnippet;
+	if (englishMarks > paliMarks) return englishSnippet;
+	if (paliOnly && paliSnippet) return paliSnippet;
+	return paliSnippet ?? englishSnippet;
 }
 
 function contentTextForSlug(
@@ -1427,9 +1458,9 @@ async function performSearchInner(
 				normalizedMap,
 			);
 
-			const tryPaliSnippet = () => {
+			const tryPaliSnippet = (): string | null => {
 				if (!item.contentPali || typeof item.contentPali !== "string") {
-					return;
+					return null;
 				}
 				const paliIndices = contentPaliMatches.length
 					? contentPaliMatches.flatMap((match) => match.indices ?? [])
@@ -1440,15 +1471,11 @@ async function performSearchInner(
 					highlightTerms,
 					true, // paliMode: flexible stem vowels, Unicode-aware boundaries
 				);
-				if (paliSnippet && paliSnippet.includes("<mark")) {
-					result.contentSnippet = paliSnippet;
-				}
+				return paliSnippet?.includes("<mark") ? paliSnippet : null;
 			};
 
-			if (paliOnly) {
-				tryPaliSnippet();
-			} else if (item.content) {
-				// Try English snippet (uses Fuse indices when available, regex fallback otherwise)
+			const tryEnglishSnippet = (): string | null => {
+				if (!item.content) return null;
 				const indices = contentMatches.length
 					? contentMatches.flatMap((match) => match.indices ?? [])
 					: [];
@@ -1457,15 +1484,14 @@ async function performSearchInner(
 					indices,
 					highlightTerms,
 				);
-				if (contentSnippet && contentSnippet.includes("<mark")) {
-					result.contentSnippet = contentSnippet;
-				}
-			}
+				return contentSnippet?.includes("<mark") ? contentSnippet : null;
+			};
 
-			// Fall back to Pali snippet when English had no highlighted match
-			if (!result.contentSnippet) {
-				tryPaliSnippet();
-			}
+			result.contentSnippet = pickContentSnippet(
+				tryPaliSnippet(),
+				tryEnglishSnippet(),
+				paliOnly,
+			);
 		}
 
 		return result;

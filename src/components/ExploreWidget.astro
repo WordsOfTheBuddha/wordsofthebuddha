@@ -280,8 +280,19 @@ const isSearchOnly = mode === "search-only";
 							name="q"
 							value=""
 							placeholder="Search..."
+							autocomplete="off"
 							class="w-full p-4 pl-12 pr-14 text-lg rounded-lg bg-[var(--surface-elevated)] text-gray-900 dark:text-gray-100 search-input border border-[color:var(--surface-border)] focus:ring-2 focus:ring-blue-500 focus:outline-none"
 						/>
+						<div
+							id="search-suggestions"
+							class="search-suggestions hidden absolute top-full z-30 mt-1 min-w-[10rem] max-w-[min(100%,24rem)]"
+							role="presentation"
+						>
+							<div
+								id="search-suggestions-list"
+								class="search-suggestions-list"
+							></div>
+						</div>
 						<div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none w-5 h-5">
 							<Fragment set:html={SearchIcon} />
 						</div>
@@ -441,12 +452,48 @@ const isSearchOnly = mode === "search-only";
 		color: var(--text-color);
 		margin: 0.5rem 0;
 	}
+
+	.explore-widget .search-suggestions-list {
+		overflow: hidden;
+		border-radius: 0.5rem;
+		border: 1px solid var(--surface-border);
+		background: var(--surface-elevated);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	}
+
+	.explore-widget .search-suggest-item {
+		display: block;
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		text-align: left;
+		font-size: 1rem;
+		line-height: 1.35;
+		color: var(--text-color);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+
+	.explore-widget .search-suggest-item:hover,
+	.explore-widget .search-suggest-item.is-active {
+		background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+	}
+
+	.explore-widget .search-suggest-mark {
+		background: color-mix(in srgb, var(--primary-color) 24%, transparent);
+		color: inherit;
+		padding: 0;
+	}
 </style>
 
 <script>
 	import { DiscoverRenderer } from "../utils/discover-renderer";
 	import { buildUnifiedContent, buildAllContent } from "../utils/discover-data";
 	import type { UnifiedContentItem } from "../types/discover";
+	import { createSuggestionSearcher } from "../utils/suggestionSearcher";
+	import type { SuggestionSearcher } from "../utils/suggestionSearcher";
+	import { attachSearchAutocomplete } from "../utils/searchAutocompleteClient";
+	import type { SearchAutocompleteController } from "../utils/searchAutocompleteClient";
 	import Fuse from "fuse.js";
 
 	// Resolve widget + DOM refs at init time (not module load) so nested layouts work.
@@ -506,6 +553,10 @@ const isSearchOnly = mode === "search-only";
 	let searchInput: HTMLInputElement | null = null;
 	let searchHelpBtn: HTMLButtonElement | null = null;
 	let searchHelp: HTMLElement | null = null;
+	let searchSuggestions: HTMLElement | null = null;
+	let searchSuggestionsList: HTMLElement | null = null;
+	let suggestionSearcher: SuggestionSearcher | null = null;
+	let searchAutocomplete: SearchAutocompleteController | null = null;
 
 	function resolveDom(): boolean {
 		const el = document.querySelector("[data-explore-widget]") as HTMLElement | null;
@@ -527,6 +578,8 @@ const isSearchOnly = mode === "search-only";
 		searchInput = widget.querySelector("#search-input");
 		searchHelpBtn = widget.querySelector("#search-help-btn");
 		searchHelp = widget.querySelector("#search-help");
+		searchSuggestions = widget.querySelector("#search-suggestions");
+		searchSuggestionsList = widget.querySelector("#search-suggestions-list");
 		domReady = true;
 		return true;
 	}
@@ -568,9 +621,50 @@ const isSearchOnly = mode === "search-only";
 			// Load all content for both browse and search
 			browseData = buildUnifiedContent();
 			initCategoryFuse();
+			await loadSuggestionsIndex();
+			setupSearchAutocomplete();
 		} catch (error) {
 			console.error("Failed to load data:", error);
 		}
+	}
+
+	async function loadSuggestionsIndex() {
+		try {
+			const response = await fetch("/suggestions-index.json");
+			if (!response.ok) return;
+			const data = await response.json();
+			suggestionSearcher = createSuggestionSearcher(
+				Array.isArray(data?.entries) ? data.entries : [],
+			);
+		} catch (error) {
+			console.warn("Failed to load suggestions index:", error);
+		}
+	}
+
+	function setupSearchAutocomplete() {
+		searchAutocomplete?.destroy();
+		searchAutocomplete = null;
+
+		if (!searchInput || !searchSuggestions || !searchSuggestionsList) return;
+		if (!suggestionSearcher) return;
+
+		searchAutocomplete = attachSearchAutocomplete({
+			input: searchInput,
+			dropdown: searchSuggestions,
+			list: searchSuggestionsList,
+			searcher: suggestionSearcher,
+			onValueChange: (value) => {
+				queueSearch(value);
+			},
+		});
+	}
+
+	function queueSearch(value: string) {
+		searchQuery = value.trim();
+		if (searchTimeout) clearTimeout(searchTimeout);
+		searchTimeout = setTimeout(() => {
+			performSearch(searchQuery);
+		}, DEBOUNCE_MS);
 	}
 
 	function initCategoryFuse() {
@@ -2354,12 +2448,7 @@ const isSearchOnly = mode === "search-only";
 
 	function handleSearchInput(event: Event) {
 		const input = event.target as HTMLInputElement;
-		const value = input.value.trim();
-
-		if (searchTimeout) clearTimeout(searchTimeout);
-		searchTimeout = setTimeout(() => {
-			performSearch(value);
-		}, DEBOUNCE_MS);
+		queueSearch(input.value);
 	}
 
 	function handleAlphabetClick(event: Event) {

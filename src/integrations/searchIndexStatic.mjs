@@ -2,7 +2,11 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const INDEX_FILES = ["search-index.json", "reference-search-index.json"];
+const INDEX_FILES = [
+	"search-index.json",
+	"reference-search-index.json",
+	"suggestions-index.json",
+];
 const GENERATED_DIR = "generated";
 
 function generatedPath(root, file) {

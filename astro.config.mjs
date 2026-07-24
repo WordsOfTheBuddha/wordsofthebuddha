@@ -87,6 +87,7 @@ export default defineConfig({
 		excludeFiles: [
 			"generated/search-index.json",
 			"generated/reference-search-index.json",
+			"generated/suggestions-index.json",
 		],
 	}),
 
