@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2290" role="img" aria-labelledby="title desc" font-family="Georgia,'Times New Roman',serif">
+  <title id="title">MN 138 Uddesavibhaṅga Sutta — The Exposition of a Summary</title>
+  <desc id="desc">A visualization of MN 138. The Buddha’s summary states three conditions — consciousness unscattered and undispersed externally, not fixated internally, and unperturbed by not grasping — which, when they meet, leave no future arising of birth, old age, death, and suffering. Each condition is then expounded through the same formula of consciousness following after, being glued, tethered, and fettered by relishing — applied to the six sense doors, the four jhānas, and the aggregates taken as self.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="48%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="18%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffd980" stop-opacity="0.68" />
+      <stop offset="82%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+    <linearGradient id="keystoneGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#221d10" />
+      <stop offset="100%" stop-color="#16150e" />
+    </linearGradient>
+    <linearGradient id="patternLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a1620" />
+      <stop offset="100%" stop-color="#170f18" />
+    </linearGradient>
+    <linearGradient id="patternRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#143039" />
+      <stop offset="100%" stop-color="#101f2b" />
+    </linearGradient>
+    <!-- jhana ladder: steel blue drifting to gold -->
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1c2836" /><stop offset="100%" stop-color="#16202c" /></linearGradient>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e2d34" /><stop offset="100%" stop-color="#18242a" /></linearGradient>
+    <linearGradient id="stg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#26302c" /><stop offset="100%" stop-color="#1f2823" /></linearGradient>
+    <linearGradient id="stg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#332f21" /><stop offset="100%" stop-color="#2a271c" /></linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.2" />
+      <stop offset="55%" stop-color="#c8a040" stop-opacity="0.07" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+
+    <!-- icon symbols (geometry from design-system/icons/) -->
+    <symbol id="i-seen" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.24235) translate(-10,-10)">
+        <path d="M 2 10 Q 10 2, 18 10" fill="none" stroke="#c8a040" stroke-width="1" stroke-linecap="round" />
+        <path d="M 2 10 Q 10 18, 18 10" fill="none" stroke="#c8a040" stroke-width="1" stroke-linecap="round" />
+        <circle cx="10" cy="10" r="2.5" fill="none" stroke="#c8a040" stroke-width="0.8" />
+      </g>
+    </symbol>
+    <symbol id="i-heard" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.408) translate(-10,-9)">
+        <path d="M 14 2 Q 6 2, 6 10 Q 6 16, 10 16" fill="none" stroke="#7888a0" stroke-width="1" stroke-linecap="round" />
+        <path d="M 10 10 Q 12 8, 12 12" fill="none" stroke="#7888a0" stroke-width="0.7" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <symbol id="i-sense-nose" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.3118) translate(0,-7.5)">
+        <g fill="none" stroke="#6888a0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
+          <path d="M 0 0 L 0 12 Q -5 16, -3 12" />
+          <path d="M 0 12 Q 5 16, 3 12" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-sense-tongue" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.3118) translate(0,-6.5)">
+        <g fill="none" stroke="#6888a0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1">
+          <path d="M -5 2 Q 0 -2, 5 2 Q 7 8, 0 14 Q -7 8, -5 2 Z" />
+          <line x1="-2" y1="7" x2="2" y2="7" stroke-width="0.7" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-sensed" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.408) translate(-12.925,-11)">
+        <path d="M 6 18 L 6 8 Q 6 4, 10 4 Q 14 4, 14 8 L 14 12" fill="none" stroke="#7888a0" stroke-width="1" stroke-linecap="round" />
+        <path d="M 14 10 Q 14 7, 17 7 Q 20 7, 20 10 L 20 14" fill="none" stroke="#7888a0" stroke-width="0.7" stroke-linecap="round" />
+        <line x1="6" y1="18" x2="20" y2="18" stroke="#7888a0" stroke-width="0.7" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <symbol id="i-cognized" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.34522) translate(-10,-10.55)">
+        <circle cx="10" cy="12" r="6" fill="none" stroke="#7888a0" stroke-width="0.8" />
+        <circle cx="10" cy="12" r="2" fill="#7888a0" fill-opacity="0.3" />
+        <path d="M 4 6 Q 10 2, 16 6" fill="none" stroke="#7888a0" stroke-width="0.6" opacity="0.5" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <symbol id="i-jhana1" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.46726) translate(0, -4.15)">
+        <g opacity="0.8" stroke="#d8c890" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2">
+          <path d="M -22 -4 L -22 14 Q -22 24, 0 24 Q 22 24, 22 14 L 22 -4" />
+          <path d="M -18 4 Q -9 0, 0 4 Q 9 8, 18 4" opacity="0.5" />
+          <circle cx="-8" cy="-6" r="3" stroke-width="0.8" opacity="0.6" />
+          <circle cx="6" cy="-10" r="2.5" stroke-width="0.7" opacity="0.5" />
+          <circle cx="12" cy="-4" r="2" stroke-width="0.6" opacity="0.45" />
+          <circle cx="-2" cy="-14" r="2" stroke-width="0.6" opacity="0.4" />
+          <circle cx="0" cy="-4" r="1.5" stroke-width="0.5" opacity="0.35" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-jhana2" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.42927) translate(0, -14.525)">
+        <g opacity="0.85" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0" fill="none" stroke="#78b8a8" stroke-width="1.2" />
+          <path d="M -24 0 Q -12 -5, 0 0 Q 12 5, 24 0 L 24 22 Q 12 25, 0 22 Q -12 19, -24 22 Z" fill="#305060" fill-opacity="0.25" stroke="none" />
+          <circle cx="-6" cy="14" r="2.5" fill="#78b8a8" fill-opacity="0.25" stroke="#78b8a8" stroke-width="0.6" />
+          <circle cx="5" cy="9" r="3" fill="#78b8a8" fill-opacity="0.2" stroke="#78b8a8" stroke-width="0.6" />
+          <circle cx="-10" cy="7" r="1.8" fill="#78b8a8" fill-opacity="0.18" stroke="#78b8a8" stroke-width="0.5" />
+          <circle cx="10" cy="17" r="2" fill="#78b8a8" fill-opacity="0.3" stroke="#78b8a8" stroke-width="0.5" />
+          <circle cx="0" cy="4" r="1.5" fill="#78b8a8" fill-opacity="0.15" stroke="#78b8a8" stroke-width="0.5" />
+          <path d="M 0 24 C -3 27, 3 30, 0 33" stroke="#78b8a8" stroke-width="0.8" fill="none" opacity="0.35" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-jhana3" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.47038) translate(0, 0.125)">
+        <g opacity="0.85" stroke="#90a8b8" fill-opacity="0.12" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M -22 -8 Q -11 -11, 0 -8 Q 11 -5, 22 -8" fill="none" stroke-width="0.9" />
+          <path d="M -18 -5 Q -9 -8, 0 -5 Q 9 -2, 18 -5" fill="none" stroke-width="0.5" opacity="0.4" />
+          <path d="M 0 10 C -10 10, -18 2, -14 -4 C -10 -8, 0 -2, 0 10 Z" fill="#90a8b8" stroke-width="0.9" />
+          <path d="M 0 10 C 10 10, 18 2, 14 -4 C 10 -8, 0 -2, 0 10 Z" fill="#90a8b8" stroke-width="0.9" />
+          <path d="M 0 10 C -5 10, -11 4, -7 -3 C -3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" stroke-width="0.6" />
+          <path d="M 0 10 C 5 10, 11 4, 7 -3 C 3 -7, 0 -2, 0 10 Z" fill="#a0b8c8" stroke-width="0.6" />
+          <circle cx="0" cy="4" r="3.5" fill="#90a8b8" fill-opacity="0.15" stroke-width="0.7" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-jhana4" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.51512) translate(0, 0)">
+        <g opacity="0.85" stroke="#d0d8e0" fill="none" stroke-linecap="round">
+          <circle cx="0" cy="0" r="20" fill="#e0e8f0" fill-opacity="0.2" stroke-width="1" />
+          <circle cx="-6" cy="-7" r="7" fill="#e0e8f0" fill-opacity="0.12" stroke="none" />
+          <circle cx="-4" cy="-5" r="3" fill="#f0f4f8" fill-opacity="0.08" stroke="none" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-lens" viewBox="0 0 24 24">
+      <g transform="translate(12, 13) scale(0.98)">
+        <g fill="none" stroke="#c8a040" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="0" cy="-3" r="6" stroke-width="1" />
+          <circle cx="0" cy="-3" r="2" fill="#c8a040" fill-opacity="0.2" stroke-width="0.8" />
+          <line x1="4" y1="1" x2="8" y2="5" stroke-width="0.9" />
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-tangle" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(0.72329) translate(-14,-14.2768)">
+        <path d="M 0 12 Q 10 0, 20 14 Q 28 28, 12 22 Q -2 18, 10 8 Q 22 0, 28 16" fill="none" stroke="#a06070" stroke-width="1.2" stroke-linecap="round" />
+        <path d="M 4 24 Q 14 16, 24 24" fill="none" stroke="#a06070" stroke-width="0.8" opacity="0.6" stroke-linecap="round" />
+      </g>
+    </symbol>
+    <symbol id="i-wise" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(0.8381) translate(-14,-12)">
+        <line x1="2" y1="14" x2="26" y2="14" stroke="#60a088" stroke-width="1.2" stroke-linecap="round" />
+        <line x1="6" y1="20" x2="22" y2="20" stroke="#60a088" stroke-width="0.9" stroke-linecap="round" />
+        <circle cx="14" cy="8" r="4" fill="none" stroke="#80c0a0" stroke-width="0.9" opacity="0.7" />
+      </g>
+    </symbol>
+    <symbol id="i-broken-chain" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.57438) translate(-18, -7)">
+        <rect x="0" y="2" width="16" height="10" rx="5" fill="none" stroke="#60a088" stroke-width="1" transform="rotate(-16 8 7)" />
+        <rect x="20" y="2" width="16" height="10" rx="5" fill="none" stroke="#60a088" stroke-width="1" transform="rotate(16 28 7)" />
+        <path d="M 16 8 L 19 5 L 20 8 L 23 5" fill="none" stroke="#80c0a0" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+      </g>
+    </symbol>
+    <symbol id="i-clinging" viewBox="0 0 24 24">
+      <g transform="translate(12, 12)" fill="none" stroke="#9a8aa0" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="-9" y="-9" width="18" height="18" rx="1.5" stroke-width="0.65" opacity="0.45" />
+        <circle cx="-4.5" cy="-4.5" r="2.3" stroke-width="1" fill="#9a8aa0" fill-opacity="0.22" />
+        <circle cx="4.5" cy="-4.5" r="2.3" stroke-width="1" fill="#9a8aa0" fill-opacity="0.22" />
+        <circle cx="-4.5" cy="4.5" r="2.3" stroke-width="1" fill="#9a8aa0" fill-opacity="0.22" />
+        <circle cx="4.5" cy="4.5" r="2.3" stroke-width="1" fill="#9a8aa0" fill-opacity="0.22" />
+      </g>
+    </symbol>
+    <symbol id="i-impermanence" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(1.00095) translate(-12.15, -12)">
+        <path d="M 12 2 A 10 10 0 0 0 12 22" fill="none" stroke="#7898b0" stroke-width="0.8" />
+        <path d="M 12 22 A 10 10 0 0 0 12 2" fill="none" stroke="#7898b0" stroke-width="0.6" stroke-dasharray="2,3" opacity="0.4" />
+        <circle cx="20" cy="8" r="1" fill="#7898b0" opacity="0.3" />
+        <circle cx="22" cy="14" r="0.7" fill="#7898b0" opacity="0.2" />
+        <circle cx="19" cy="18" r="0.8" fill="#7898b0" opacity="0.25" />
+      </g>
+    </symbol>
+    <symbol id="i-nonbelonging" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.94286) translate(-12, -12)">
+        <circle cx="12" cy="12" r="2.5" fill="#60a088" fill-opacity="0.15" stroke="#60a088" stroke-width="0.6" />
+        <line x1="4" y1="4" x2="1" y2="1" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+        <line x1="20" y1="4" x2="23" y2="1" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+        <line x1="4" y1="20" x2="1" y2="23" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+        <line x1="20" y1="20" x2="23" y2="23" stroke="#60a088" stroke-width="0.4" opacity="0.3" />
+      </g>
+    </symbol>
+    <symbol id="i-puthujjana" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.68571) translate(-12, -15.45)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#a06070" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#a06070" stroke-width="1" />
+        <path d="M 0 18 L 6 12" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 24" stroke="#a06070" stroke-width="0.8" fill="none" />
+        <path d="M 0 14 L 0 6 M -3 9 L 0 6 L 3 9" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 24 22 L 24 30 M 21 27 L 24 30 L 27 27" stroke="#c07060" stroke-width="0.8" fill="none" opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    </symbol>
+    <symbol id="i-ariya" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.57236) translate(-12, -18.95)">
+        <circle cx="12" cy="6" r="5" fill="none" stroke="#60a088" stroke-width="1" />
+        <line x1="12" y1="12" x2="12" y2="28" stroke="#60a088" stroke-width="1" />
+        <path d="M 0 18 L 6 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <path d="M 24 18 L 18 16" stroke="#60a088" stroke-width="0.8" fill="none" />
+        <circle cx="12" cy="34" r="3" fill="none" stroke="#80c0a0" stroke-width="0.8" opacity="0.6" />
+      </g>
+    </symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24">
+      <g transform="translate(12,12) scale(1.52491)">
+        <line x1="-6.5" y1="0" x2="6.5" y2="0" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round" />
+        <line x1="0" y1="-6.5" x2="0" y2="6.5" stroke="#ffd700" stroke-width="0.85" stroke-linecap="round" />
+        <line x1="-3.9" y1="-3.9" x2="3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round" />
+        <line x1="3.9" y1="-3.9" x2="-3.9" y2="3.9" stroke="#ffe680" stroke-width="0.48" stroke-linecap="round" />
+        <circle cx="0" cy="0" r="1.2" fill="#fffde8" />
+      </g>
+    </symbol>
+    <symbol id="i-cessation" viewBox="0 0 24 24">
+      <g transform="translate(12, 12) scale(0.71231) translate(0, 5.475)">
+        <g opacity="0.8" stroke="#c8a040" fill="none" stroke-linecap="round">
+          <ellipse cx="0" cy="-2" rx="8" ry="11" fill="#c8a040" fill-opacity="0.06" stroke-width="0.7" />
+          <circle cx="0" cy="-16" r="4" stroke-width="0.6" />
+          <line x1="-4" y1="-6" x2="4" y2="-6" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+          <line x1="-5" y1="0" x2="5" y2="0" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+          <line x1="-4" y1="6" x2="4" y2="6" stroke-width="0.4" stroke-dasharray="1.5,2" opacity="0.3" />
+        </g>
+      </g>
+    </symbol>
+    <!-- anusāri viññāṇaṁ : consciousness dragged after a receding object -->
+    <symbol id="i-following" viewBox="0 0 24 24">
+      <g fill="none" stroke="#a06070" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18.5" cy="6" r="3" stroke-width="0.8" opacity="0.55" />
+        <path d="M 20.6 2.6 L 22.6 1.6 M 21.6 5.6 L 23.1 5.1" stroke-width="0.5" opacity="0.35" />
+        <circle cx="7" cy="16.5" r="3.6" stroke-width="1" fill="#a06070" fill-opacity="0.16" />
+        <circle cx="7" cy="16.5" r="1" fill="#a06070" stroke="none" opacity="0.5" />
+        <path d="M 9.9 14.6 L 15.6 8.3" stroke-width="1" />
+        <path d="M 15.6 8.3 Q 17.5 6.6, 16.2 5.2" stroke-width="0.9" />
+        <path d="M 3.5 19.6 L 1.7 21.4 M 5.7 20.7 L 4.5 22.3" stroke-width="0.5" opacity="0.4" />
+      </g>
+    </symbol>
+    <!-- na anusāri viññāṇaṁ : the object passes, consciousness stays -->
+    <symbol id="i-unbound" viewBox="0 0 24 24">
+      <g fill="none" stroke="#60a088" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18.5" cy="6" r="3" stroke-width="0.7" stroke-dasharray="2,2.2" opacity="0.5" />
+        <path d="M 20.6 2.6 L 22.6 1.6 M 21.6 5.6 L 23.1 5.1" stroke-width="0.5" opacity="0.3" />
+        <circle cx="7" cy="16.5" r="3.6" stroke-width="1" fill="#60a088" fill-opacity="0.14" />
+        <circle cx="7" cy="16.5" r="1" fill="#80c0a0" stroke="none" opacity="0.6" />
+        <path d="M 10 15.4 Q 12.7 15.9, 14.5 13.6" stroke-width="0.85" opacity="0.7" />
+        <line x1="2.7" y1="21.4" x2="11.3" y2="21.4" stroke-width="0.8" opacity="0.55" />
+      </g>
+    </symbol>
+  </defs>
+
+  <!-- BACKGROUND -->
+  <rect width="920" height="2290" fill="url(#bg)" />
+  <ellipse cx="230" cy="640" rx="290" ry="200" fill="#4a1525" opacity="0.04" />
+  <ellipse cx="690" cy="640" rx="290" ry="200" fill="#123a35" opacity="0.045" />
+  <ellipse cx="460" cy="2120" rx="360" ry="180" fill="#ffd700" opacity="0.028" />
+
+  <!-- ============ HEADER  y=0..100 ============ -->
+  <g id="header" transform="translate(0, 0)">
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="22" font-weight="bold" letter-spacing="2.7">MN 138 — UDDESAVIBHAṄGA SUTTA</text>
+    <text x="460" y="70" text-anchor="middle" fill="#90a0b8" font-size="15" font-style="italic">The Exposition of a Summary</text>
+    <line x1="275" y1="86" x2="645" y2="86" stroke="#a09070" stroke-opacity="0.32" stroke-width="0.6" />
+  </g>
+
+  <!-- ============ SUMMARY  y=100 ============ -->
+  <g id="summary" transform="translate(0, 100)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+
+    <use href="#i-lens" x="268" y="32" width="24" height="24" opacity="0.9" />
+    <text x="302" y="48" fill="#c8a040" font-size="13" font-weight="bold">Examine in such a way that consciousness is —</text>
+    <text x="460" y="70" text-anchor="middle" fill="#8a7a48" font-size="10.5" font-style="italic">yathā yathā upaparikkhato … viññāṇaṁ</text>
+
+    <!-- three clauses: number left, English + Pali centered in remaining space -->
+    <g id="clause-1" transform="translate(40, 90)">
+      <rect width="256" height="88" rx="8" fill="#152535" stroke="#7888a0" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <circle cx="24" cy="44" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" />
+      <text x="24" y="47" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">1</text>
+      <text x="140" y="34" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">unscattered and undispersed</text>
+      <text x="140" y="50" text-anchor="middle" fill="#c8d8e8" font-size="12" font-weight="bold">externally</text>
+      <text x="140" y="72" text-anchor="middle" fill="#9cb8c8" font-size="9.8" font-style="italic">bahiddhā … avikkhittaṁ avisaṭaṁ</text>
+    </g>
+    <g id="clause-2" transform="translate(332, 90)">
+      <rect width="256" height="88" rx="8" fill="#163039" stroke="#60a088" stroke-opacity="0.48" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <circle cx="24" cy="44" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" />
+      <text x="24" y="47" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">2</text>
+      <text x="140" y="40" text-anchor="middle" fill="#c8e0d8" font-size="12" font-weight="bold">not fixated internally</text>
+      <text x="140" y="64" text-anchor="middle" fill="#9ac8b8" font-size="9.8" font-style="italic">ajjhattaṁ asaṇṭhitaṁ</text>
+    </g>
+    <g id="clause-3" transform="translate(624, 90)">
+      <rect width="256" height="88" rx="8" fill="#2a2a20" stroke="#c8a040" stroke-opacity="0.52" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <circle cx="24" cy="44" r="10" fill="none" stroke="#c8a040" stroke-width="0.9" />
+      <text x="24" y="46" text-anchor="middle" fill="#c8a040" font-size="11" font-weight="bold">3</text>
+      <text x="140" y="40" text-anchor="middle" fill="#e0d0a0" font-size="12" font-weight="bold">unperturbed by not grasping</text>
+      <text x="140" y="64" text-anchor="middle" fill="#d8be70" font-size="9.8" font-style="italic">anupādāya na paritasseyya</text>
+    </g>
+
+    <!-- meeting: three clauses converge -->
+    <line x1="168" y1="182" x2="168" y2="200" stroke="#7888a0" stroke-width="0.7" opacity="0.45" />
+    <line x1="460" y1="182" x2="460" y2="200" stroke="#60a088" stroke-width="0.7" opacity="0.45" />
+    <line x1="752" y1="182" x2="752" y2="200" stroke="#c8a040" stroke-width="0.7" opacity="0.45" />
+    <line x1="168" y1="200" x2="460" y2="222" stroke="#7888a0" stroke-width="0.6" opacity="0.35" />
+    <line x1="460" y1="200" x2="460" y2="222" stroke="#60a088" stroke-width="0.6" opacity="0.4" />
+    <line x1="752" y1="200" x2="460" y2="222" stroke="#c8a040" stroke-width="0.6" opacity="0.35" />
+    <circle cx="460" cy="222" r="3.5" fill="#c8a040" opacity="0.55" filter="url(#glow1)" />
+
+    <!-- fruit -->
+    <g id="summary-fruit" transform="translate(160, 236)">
+      <rect width="600" height="68" rx="8" fill="url(#stg4)" stroke="#c8a040" stroke-opacity="0.55" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <text x="300" y="28" text-anchor="middle" fill="#ffe080" font-size="12.5" font-weight="bold"><tspan font-weight="normal" fill="#c8a040">Then there is:</tspan> no future arising of birth, old age, death, and suffering</text>
+      <text x="300" y="50" text-anchor="middle" fill="#c8b878" font-size="10.5" font-style="italic">āyatiṁ jātijarāmaraṇadukkhasamudayasambhavo na hotī</text>
+    </g>
+  </g>
+
+  <!-- ============ 1 . UNSCATTERED EXTERNALLY  y=440 ============ -->
+  <g id="outward" transform="translate(0, 440)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="1.6">1 · CONSCIOUSNESS: UNSCATTERED AND UNDISPERSED EXTERNALLY</text>
+    <text x="460" y="66" text-anchor="middle" fill="#708898" font-size="10.6" font-style="italic">bahiddhā viññāṇaṁ avikkhittaṁ avisaṭaṁ · cakkhunā rūpaṁ disvā</text>
+
+    <g id="sense-row" transform="translate(84, 84)">
+      <g transform="translate(0, 0)">
+        <circle cx="44" cy="24" r="23" fill="#1a2838" stroke="#c8a040" stroke-opacity="0.7" stroke-width="1.1" />
+        <use href="#i-seen" x="32" y="12" width="24" height="24" />
+        <text x="44" y="62" text-anchor="middle" fill="#c8d8e8" font-size="10.4">eye / sight</text>
+        <text x="44" y="74" text-anchor="middle" fill="#a08838" font-size="9.6" font-style="italic">cakkhu · rūpa</text>
+      </g>
+      <g transform="translate(126, 0)">
+        <circle cx="44" cy="24" r="23" fill="#152535" stroke="#7888a0" stroke-opacity="0.5" />
+        <use href="#i-heard" x="32" y="12" width="24" height="24" opacity="0.55" />
+        <text x="44" y="62" text-anchor="middle" fill="#7a8a9a" font-size="10.4">ear / sound</text>
+        <text x="44" y="74" text-anchor="middle" fill="#5e7080" font-size="9.6" font-style="italic">sota · sadda</text>
+      </g>
+      <g transform="translate(252, 0)">
+        <circle cx="44" cy="24" r="23" fill="#152535" stroke="#7888a0" stroke-opacity="0.5" />
+        <use href="#i-sense-nose" x="32" y="12" width="24" height="24" opacity="0.55" />
+        <text x="44" y="62" text-anchor="middle" fill="#7a8a9a" font-size="10.4">nose / odor</text>
+        <text x="44" y="74" text-anchor="middle" fill="#5e7080" font-size="9.6" font-style="italic">ghāna · gandha</text>
+      </g>
+      <g transform="translate(378, 0)">
+        <circle cx="44" cy="24" r="23" fill="#152535" stroke="#7888a0" stroke-opacity="0.5" />
+        <use href="#i-sense-tongue" x="32" y="12" width="24" height="24" opacity="0.55" />
+        <text x="44" y="62" text-anchor="middle" fill="#7a8a9a" font-size="10.4">tongue / flavor</text>
+        <text x="44" y="74" text-anchor="middle" fill="#5e7080" font-size="9.6" font-style="italic">jivhā · rasa</text>
+      </g>
+      <g transform="translate(504, 0)">
+        <circle cx="44" cy="24" r="23" fill="#152535" stroke="#7888a0" stroke-opacity="0.5" />
+        <use href="#i-sensed" x="32" y="12" width="24" height="24" opacity="0.55" />
+        <text x="44" y="62" text-anchor="middle" fill="#7a8a9a" font-size="10.4">body / touch</text>
+        <text x="44" y="74" text-anchor="middle" fill="#5e7080" font-size="9.6" font-style="italic">kāya · phoṭṭhabba</text>
+      </g>
+      <g transform="translate(630, 0)">
+        <circle cx="44" cy="24" r="23" fill="#152535" stroke="#7888a0" stroke-opacity="0.5" />
+        <use href="#i-cognized" x="32" y="12" width="24" height="24" opacity="0.55" />
+        <text x="44" y="62" text-anchor="middle" fill="#7a8a9a" font-size="10.4">mind / mental object</text>
+        <text x="44" y="74" text-anchor="middle" fill="#5e7080" font-size="9.6" font-style="italic">mano · dhamma</text>
+      </g>
+    </g>
+
+    <g id="outward-split" transform="translate(0, 180)">
+      <line x1="460" y1="4" x2="460" y2="228" stroke="#c8a040" stroke-opacity="0.28" stroke-width="0.8" />
+
+      <g id="scattered" transform="translate(40, 0)">
+        <rect width="408" height="232" rx="8" fill="url(#patternLeft)" stroke="#a06070" stroke-opacity="0.48" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-tangle" x="16" y="14" width="26" height="26" opacity="0.7" />
+        <text x="216" y="26" text-anchor="middle" fill="#d0a0a8" font-size="12.5" font-weight="bold">SCATTERED AND DISPERSED</text>
+        <text x="216" y="44" text-anchor="middle" fill="#986878" font-size="10.2" font-style="italic">consciousness runs after the sign</text>
+        <text x="216" y="66" text-anchor="middle" fill="#c8a8b0" font-size="10.4">consciousness follows after the sign</text>
+        <text x="216" y="81" text-anchor="middle" fill="#8a6672" font-size="9.6" font-style="italic">rūpanimittānusāri viññāṇaṁ</text>
+        <text x="216" y="100" text-anchor="middle" fill="#c8a8b0" font-size="10.4">glued by relishing the sign</text>
+        <text x="216" y="115" text-anchor="middle" fill="#8a6672" font-size="9.6" font-style="italic">rūpanimittassādagadhitaṁ</text>
+        <text x="216" y="130" text-anchor="middle" fill="#c8a8b0" font-size="10.4">tethered by relishing the sign</text>
+        <text x="216" y="145" text-anchor="middle" fill="#8a6672" font-size="9.6" font-style="italic">rūpanimittassādavinibandhaṁ</text>
+        <text x="216" y="164" text-anchor="middle" fill="#e0a0aa" font-size="10.4" font-weight="bold">yoked and fettered by relishing the sign</text>
+        <text x="216" y="179" text-anchor="middle" fill="#a0707e" font-size="9.6" font-style="italic">rūpanimittassādasaṁyojanasaṁyuttaṁ</text>
+        <line x1="72" y1="196" x2="336" y2="196" stroke="#a06070" stroke-opacity="0.28" stroke-width="0.6" />
+        <text x="216" y="215" text-anchor="middle" fill="#a88088" font-size="9.6" font-style="italic">bahiddhā viññāṇaṁ vikkhittaṁ visaṭanti vuccati</text>
+      </g>
+
+
+      <g id="unscattered" transform="translate(472, 0)">
+        <rect width="408" height="232" rx="8" fill="url(#patternRight)" stroke="#60a088" stroke-opacity="0.5" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-wise" x="16" y="14" width="26" height="26" opacity="0.8" />
+        <text x="216" y="26" text-anchor="middle" fill="#a8d8c8" font-size="12.5" font-weight="bold">UNSCATTERED AND UNDISPERSED</text>
+        <text x="216" y="44" text-anchor="middle" fill="#6c9c8c" font-size="10.2" font-style="italic">consciousness stays unbound</text>
+        <text x="216" y="66" text-anchor="middle" fill="#b0d0c4" font-size="10.4">consciousness does not follow the sign</text>
+        <text x="216" y="81" text-anchor="middle" fill="#6c9c8c" font-size="9.6" font-style="italic">na rūpanimittānusāri viññāṇaṁ</text>
+        <text x="216" y="100" text-anchor="middle" fill="#b0d0c4" font-size="10.4">not glued by relishing the sign</text>
+        <text x="216" y="115" text-anchor="middle" fill="#6c9c8c" font-size="9.6" font-style="italic">na rūpanimittassādagadhitaṁ</text>
+        <text x="216" y="134" text-anchor="middle" fill="#b0d0c4" font-size="10.4">not tethered by relishing the sign</text>
+        <text x="216" y="149" text-anchor="middle" fill="#6c9c8c" font-size="9.6" font-style="italic">na rūpanimittassādavinibandhaṁ</text>
+        <text x="216" y="168" text-anchor="middle" fill="#a8e0c8" font-size="10.4" font-weight="bold">not yoked or fettered by relishing the sign</text>
+        <text x="216" y="183" text-anchor="middle" fill="#80b8a0" font-size="9.6" font-style="italic">na rūpanimittassādasaṁyojanasaṁyuttaṁ</text>
+        <line x1="72" y1="196" x2="336" y2="196" stroke="#60a088" stroke-opacity="0.28" stroke-width="0.6" />
+        <text x="216" y="215" text-anchor="middle" fill="#80a898" font-size="9.6" font-style="italic">bahiddhā viññāṇaṁ avikkhittaṁ avisaṭanti vuccati</text>
+      </g>
+
+    </g>
+  </g>
+
+  <!-- ============ 2 . NOT FIXATED INTERNALLY  y=888 ============ -->
+  <g id="inward" transform="translate(0, 888)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="1.6">2 · CONSCIOUSNESS: NOT FIXATED INTERNALLY</text>
+    <text x="460" y="66" text-anchor="middle" fill="#708898" font-size="10.6" font-style="italic">ajjhattaṁ cittaṁ asaṇṭhitaṁ · vivekajapītisukhānusāri viññāṇaṁ</text>
+
+    <g id="jhana-rows" transform="translate(40, 84)">
+      <g id="jhana-1" transform="translate(0, 0)">
+        <rect width="840" height="72" rx="8" fill="url(#stg1)" stroke="#6888a0" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-jhana1" x="18" y="18" width="36" height="36" opacity="0.9" />
+        <text x="70" y="28" fill="#c8d8e8" font-size="12" font-weight="bold">First jhāna</text>
+        <text x="70" y="45" fill="#8898b0" font-size="10.3" font-style="italic">uplifting joy and pleasure born of seclusion is the flavour that may be followed</text>
+        <text x="70" y="61" fill="#6e8494" font-size="10" font-style="italic">vivekajapītisukhānusāri viññāṇaṁ</text>
+        <g transform="translate(556, 21)">
+          <rect width="128" height="30" rx="6" fill="#2a1620" stroke="#a06070" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#d0a0a8" font-size="10" font-style="italic">saṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#8a6672" font-size="8.6">fixated within</text>
+        </g>
+        <g transform="translate(696, 21)">
+          <rect width="128" height="30" rx="6" fill="#143039" stroke="#60a088" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#a8d8c8" font-size="10" font-style="italic">na … asaṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#6c9c8c" font-size="8.6">not fixated within</text>
+        </g>
+      </g>
+      <g id="jhana-2" transform="translate(0, 84)">
+        <rect width="840" height="72" rx="8" fill="url(#stg2)" stroke="#609080" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-jhana2" x="18" y="18" width="36" height="36" opacity="0.9" />
+        <text x="70" y="28" fill="#c8e0d8" font-size="12" font-weight="bold">Second jhāna</text>
+        <text x="70" y="45" fill="#88a89c" font-size="10.3" font-style="italic">uplifting joy and pleasure born of collectedness is the flavour that may be followed</text>
+        <text x="70" y="61" fill="#6e9488" font-size="10" font-style="italic">samādhijapītisukhānusāri viññāṇaṁ</text>
+        <g transform="translate(556, 21)">
+          <rect width="128" height="30" rx="6" fill="#2a1620" stroke="#a06070" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#d0a0a8" font-size="10" font-style="italic">saṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#8a6672" font-size="8.6">fixated within</text>
+        </g>
+        <g transform="translate(696, 21)">
+          <rect width="128" height="30" rx="6" fill="#143039" stroke="#60a088" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#a8d8c8" font-size="10" font-style="italic">na … asaṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#6c9c8c" font-size="8.6">not fixated within</text>
+        </g>
+      </g>
+      <g id="jhana-3" transform="translate(0, 168)">
+        <rect width="840" height="72" rx="8" fill="url(#stg3)" stroke="#889860" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-jhana3" x="18" y="18" width="36" height="36" opacity="0.9" />
+        <text x="70" y="28" fill="#d0d8c0" font-size="12" font-weight="bold">Third jhāna</text>
+        <text x="70" y="45" fill="#98a084" font-size="10.3" font-style="italic">equanimity and its pleasure is the flavour that may be followed</text>
+        <text x="70" y="61" fill="#8c986c" font-size="10" font-style="italic">upekkhānusāri viññāṇaṁ</text>
+        <g transform="translate(556, 21)">
+          <rect width="128" height="30" rx="6" fill="#2a1620" stroke="#a06070" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#d0a0a8" font-size="10" font-style="italic">saṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#8a6672" font-size="8.6">fixated within</text>
+        </g>
+        <g transform="translate(696, 21)">
+          <rect width="128" height="30" rx="6" fill="#143039" stroke="#60a088" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#a8d8c8" font-size="10" font-style="italic">na … asaṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#6c9c8c" font-size="8.6">not fixated within</text>
+        </g>
+      </g>
+      <g id="jhana-4" transform="translate(0, 252)">
+        <rect width="840" height="72" rx="8" fill="url(#stg4)" stroke="#c8a040" stroke-opacity="0.46" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-jhana4" x="18" y="18" width="36" height="36" opacity="0.9" />
+        <text x="70" y="28" fill="#e0d8b8" font-size="12" font-weight="bold">Fourth jhāna</text>
+        <text x="70" y="45" fill="#b0a478" font-size="10.3" font-style="italic">even the neither-painful-nor-pleasant feeling is a flavour that may be followed</text>
+        <text x="70" y="61" fill="#a08838" font-size="10" font-style="italic">adukkhamasukhānusāri viññāṇaṁ</text>
+        <g transform="translate(556, 21)">
+          <rect width="128" height="30" rx="6" fill="#2a1620" stroke="#a06070" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#d0a0a8" font-size="10" font-style="italic">saṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#8a6672" font-size="8.6">fixated within</text>
+        </g>
+        <g transform="translate(696, 21)">
+          <rect width="128" height="30" rx="6" fill="#143039" stroke="#60a088" stroke-opacity="0.5" />
+          <text x="64" y="14" text-anchor="middle" fill="#a8d8c8" font-size="10" font-style="italic">na … asaṇṭhitaṁ</text>
+          <text x="64" y="25" text-anchor="middle" fill="#6c9c8c" font-size="8.6">not fixated within</text>
+        </g>
+      </g>
+    </g>
+
+    <g id="inward-conclusion" transform="translate(130, 424)">
+      <rect width="660" height="72" rx="8" fill="url(#patternRight)" stroke="#60a088" stroke-opacity="0.48" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <text x="330" y="25" text-anchor="middle" fill="#b8ded0" font-size="11.5">When consciousness does not run after that flavour, is not glued, tethered, or fettered by it —</text>
+      <text x="330" y="44" text-anchor="middle" fill="#a8e0c8" font-size="12" font-weight="bold">the mind is not fixated internally.</text>
+      <text x="330" y="60" text-anchor="middle" fill="#70a890" font-size="10" font-style="italic">ajjhattaṁ cittaṁ asaṇṭhitanti vuccati</text>
+    </g>
+  </g>
+
+  <!-- ============ 3 . UNPERTURBED BY NOT GRASPING  y=1414 ============ -->
+  <g id="grasping" transform="translate(0, 1414)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="46" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="1.6"><tspan dy="-2">3</tspan><tspan dy="2"> · BY NOT GRASPING, ONE IS UNPERTURBED</tspan></text>
+    <text x="460" y="66" text-anchor="middle" fill="#708898" font-size="10.6" font-style="italic">anupādā aparitassanā · rūpaṁ attato samanupassati</text>
+
+    <g id="self-view" transform="translate(40, 84)">
+      <rect width="840" height="168" rx="8" fill="url(#cardNeutral)" stroke="#6888a0" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+
+      <g id="aggregates" transform="translate(24, 18)" font-size="10.2">
+        <g transform="translate(0, 0)">
+          <rect width="156" height="34" rx="6" fill="#2a2414" stroke="#c8a040" stroke-opacity="0.7" stroke-width="1.1" />
+          <text x="78" y="15" text-anchor="middle" fill="#e0d8b8" font-weight="bold">Form</text>
+          <text x="78" y="28" text-anchor="middle" fill="#c8a040" font-size="9.5" font-style="italic">rūpa</text>
+        </g>
+        <g transform="translate(164, 0)">
+          <rect width="156" height="34" rx="6" fill="#141c28" stroke="#506070" stroke-opacity="0.4" />
+          <text x="78" y="15" text-anchor="middle" fill="#708090">Feeling</text>
+          <text x="78" y="28" text-anchor="middle" fill="#506070" font-size="9.5" font-style="italic">vedanā</text>
+        </g>
+        <g transform="translate(328, 0)">
+          <rect width="156" height="34" rx="6" fill="#141c28" stroke="#506070" stroke-opacity="0.4" />
+          <text x="78" y="15" text-anchor="middle" fill="#708090">Perception</text>
+          <text x="78" y="28" text-anchor="middle" fill="#506070" font-size="9.5" font-style="italic">saññā</text>
+        </g>
+        <g transform="translate(492, 0)">
+          <rect width="156" height="34" rx="6" fill="#141c28" stroke="#506070" stroke-opacity="0.4" />
+          <text x="78" y="15" text-anchor="middle" fill="#708090">Intentional Constructs</text>
+          <text x="78" y="28" text-anchor="middle" fill="#506070" font-size="9.5" font-style="italic">saṅkhārā</text>
+        </g>
+        <g transform="translate(656, 0)">
+          <rect width="156" height="34" rx="6" fill="#141c28" stroke="#506070" stroke-opacity="0.4" />
+          <text x="78" y="15" text-anchor="middle" fill="#708090">Consciousness</text>
+          <text x="78" y="28" text-anchor="middle" fill="#506070" font-size="9.5" font-style="italic">viññāṇa</text>
+        </g>
+      </g>
+
+      <line x1="24" y1="64" x2="816" y2="64" stroke="#c8a040" stroke-opacity="0.18" stroke-width="0.6" />
+      <use href="#i-clinging" x="24" y="74" width="22" height="22" opacity="0.75" />
+      <text x="54" y="89" fill="#c8a040" font-size="10" font-weight="bold" letter-spacing="1.2">FOUR MODES OF SELF-VIEW</text>
+      <text x="420" y="152" fill="#708898" font-size="9.5" font-style="italic"><tspan dy="-1">*</tspan><tspan dy="1"> the same would apply for feeling, perception, intentional constructs, and consciousness</tspan></text>
+
+      <g id="modes" transform="translate(24, 104)">
+        <g transform="translate(0, 0)">
+          <circle cx="4" cy="8" r="2.4" fill="#c8a040" opacity="0.6" />
+          <text x="16" y="11" fill="#c0b0b8" font-size="10.5">regards form as self</text>
+          <text x="16" y="25" fill="#8a7a86" font-size="9.8" font-style="italic">rūpaṁ attato samanupassati</text>
+        </g>
+        <g transform="translate(200, 0)">
+          <circle cx="4" cy="8" r="2.4" fill="#c8a040" opacity="0.6" />
+          <text x="16" y="11" fill="#c0b0b8" font-size="10.5">regards self as possessing form</text>
+          <text x="16" y="25" fill="#8a7a86" font-size="9.8" font-style="italic">rūpavantaṁ vā attānaṁ</text>
+        </g>
+        <g transform="translate(420, 0)">
+          <circle cx="4" cy="8" r="2.4" fill="#c8a040" opacity="0.6" />
+          <text x="16" y="11" fill="#c0b0b8" font-size="10.5">regards form as within self</text>
+          <text x="16" y="25" fill="#8a7a86" font-size="9.8" font-style="italic">attani vā rūpaṁ</text>
+        </g>
+        <g transform="translate(620, 0)">
+          <circle cx="4" cy="8" r="2.4" fill="#c8a040" opacity="0.6" />
+          <text x="16" y="11" fill="#c0b0b8" font-size="10.5">regards self as within form</text>
+          <text x="16" y="25" fill="#8a7a86" font-size="9.8" font-style="italic">rūpasmiṁ vā attānaṁ</text>
+        </g>
+      </g>
+    </g>
+
+    <g id="change-line" transform="translate(0, 268)">
+      <use href="#i-impermanence" x="298" y="0" width="32" height="32" opacity="0.8" />
+      <text x="472" y="10" text-anchor="middle" fill="#b0c0d0" font-size="11.5" font-style="italic">That form then changes and becomes otherwise</text>
+      <text x="472" y="28" text-anchor="middle" fill="#708898" font-size="10" font-style="italic">taṁ rūpaṁ vipariṇamati, aññathā hoti</text>
+    </g>
+
+    <g id="grasping-split" transform="translate(0, 312)">
+      <line x1="460" y1="4" x2="460" y2="244" stroke="#c8a040" stroke-opacity="0.28" stroke-width="0.8" />
+
+      <g id="perturbed" transform="translate(40, 0)">
+        <rect width="408" height="248" rx="8" fill="url(#patternLeft)" stroke="#a06070" stroke-opacity="0.5" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-puthujjana" x="16" y="14" width="26" height="26" opacity="0.7" />
+        <text x="216" y="26" text-anchor="middle" fill="#d8a0aa" font-size="11.8" font-weight="bold">PERTURBATION DUE TO GRASPING</text>
+        <text x="216" y="43" text-anchor="middle" fill="#986878" font-size="10.2" font-style="italic">upādā paritassanā</text>
+        <text x="216" y="59" text-anchor="middle" fill="#7a6068" font-size="8.8" font-style="italic">regards form as self — rūpaṁ attato samanupassati</text>
+        <text x="216" y="86" text-anchor="middle" fill="#c8a8b0" font-size="10.4">consciousness is carried along by the change</text>
+        <text x="216" y="101" text-anchor="middle" fill="#8a6672" font-size="9.6" font-style="italic">rūpavipariṇāmānuparivatti viññāṇaṁ</text>
+        <text x="216" y="128" text-anchor="middle" fill="#c8a8b0" font-size="10.4">perturbation and mental disturbance arise,</text>
+        <text x="216" y="143" text-anchor="middle" fill="#c8a8b0" font-size="10.4">seizing and overwhelming the mind</text>
+        <text x="216" y="158" text-anchor="middle" fill="#8a6672" font-size="9.2" font-style="italic">paritassanā dhammasamuppādā cittaṁ pariyādāya tiṭṭhanti</text>
+        <text x="216" y="196" text-anchor="middle" fill="#e0a0aa" font-size="10.4" font-weight="bold">agitated · distressed · consumed by longing</text>
+        <text x="216" y="210" text-anchor="middle" fill="#a0707e" font-size="9.6" font-style="italic">uttāsavā · vighātavā · apekkhavā</text>
+        <line x1="72" y1="226" x2="336" y2="226" stroke="#a06070" stroke-opacity="0.28" stroke-width="0.6" />
+      </g>
+
+      <g id="unperturbed" transform="translate(472, 0)">
+        <rect width="408" height="248" rx="8" fill="url(#patternRight)" stroke="#60a088" stroke-opacity="0.52" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <use href="#i-ariya" x="16" y="14" width="26" height="26" opacity="0.75" />
+        <text x="216" y="26" text-anchor="middle" fill="#a8dcc8" font-size="11.8" font-weight="bold">UNPERTURBED BY NOT GRASPING</text>
+        <text x="216" y="43" text-anchor="middle" fill="#6c9c8c" font-size="10.2" font-style="italic">anupādā aparitassanā</text>
+        <text x="216" y="59" text-anchor="middle" fill="#5e8878" font-size="8.8" font-style="italic">does not regard form as self — na rūpaṁ attato samanupassati</text>
+        <text x="216" y="86" text-anchor="middle" fill="#b0d0c4" font-size="10.4">consciousness is not carried along by the change</text>
+        <text x="216" y="101" text-anchor="middle" fill="#6c9c8c" font-size="9.6" font-style="italic">na ca rūpavipariṇāmānuparivatti viññāṇaṁ</text>
+        <text x="216" y="128" text-anchor="middle" fill="#b0d0c4" font-size="10.4">perturbation and mental disturbance do not arise,</text>
+        <text x="216" y="143" text-anchor="middle" fill="#b0d0c4" font-size="10.4">and the mind is not overwhelmed</text>
+        <text x="216" y="158" text-anchor="middle" fill="#6c9c8c" font-size="9.2" font-style="italic">na paritassanā dhammasamuppādā cittaṁ pariyādāya tiṭṭhanti</text>
+        <text x="216" y="196" text-anchor="middle" fill="#a8e0c8" font-size="10.4" font-weight="bold">not agitated · not distressed · without longing</text>
+        <text x="216" y="210" text-anchor="middle" fill="#80b8a0" font-size="9.6" font-style="italic">na cevuttāsavā · na ca vighātavā · na ca apekkhavā</text>
+        <line x1="72" y1="226" x2="336" y2="226" stroke="#60a088" stroke-opacity="0.28" stroke-width="0.6" />
+      </g>
+    </g>
+  </g>
+
+  <!-- ============ ARRIVAL  y=2010 ============ -->
+  <g id="arrival" transform="translate(0, 2010)">
+    <line x1="100" y1="18" x2="820" y2="18" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <ellipse cx="460" cy="111" rx="360" ry="95" fill="#ffd700" opacity="0.03" />
+    <ellipse cx="460" cy="111" rx="340" ry="88" fill="url(#libGlow)" />
+
+    <g id="arrival-card" transform="translate(150, 40)">
+      <rect width="620" height="142" rx="9" fill="url(#stg4)" stroke="#c8a040" stroke-opacity="0.55" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <use href="#i-sparkle" x="30" y="62" width="28" height="28" filter="url(#iconGlow)" />
+      <text x="310" y="36" text-anchor="middle" fill="#d8c080" font-size="11" font-weight="bold">UNSCATTERED EXTERNALLY · NOT FIXATED INTERNALLY · UNPERTURBED</text>
+      <text x="310" y="55" text-anchor="middle" fill="#bca568" font-size="10.2" font-style="italic">avikkhittaṁ avisaṭaṁ · asaṇṭhitaṁ · aparitassa</text>
+      <line x1="110" y1="76" x2="510" y2="76" stroke="#c8a040" stroke-opacity="0.25" stroke-width="0.6" />
+      <text x="310" y="102" text-anchor="middle" fill="#ffe080" font-size="12" font-weight="bold">No future arising of birth, old age, death, and suffering</text>
+      <text x="310" y="120" text-anchor="middle" fill="#c8b878" font-size="10.2" font-style="italic">āyatiṁ jātijarāmaraṇadukkhasamudayasambhavo na hotī</text>
+    </g>
+  </g>
+
+  <!-- ============ FOOTER  y=2230 ============ -->
+  <g id="footer" transform="translate(0, 2240)">
+    <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.35" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/mn138" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="17" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/mn138</text>
+    </a>
+    <g transform="translate(460, 36) scale(.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity=".18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+      <circle cx="0" cy="-28" r="9" />
+    </g>
+  </g>
+</svg>

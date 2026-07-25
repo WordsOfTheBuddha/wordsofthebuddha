@@ -15,6 +15,7 @@
 				"mn10",
 				"mn18",
 				"mn47",
+				"mn138",
 				"mn140",
 				"mn148"
 			],
@@ -38,6 +39,7 @@
 				"mn18",
 				"mn47",
 				"mn95",
+				"mn138",
 				"mn140",
 				"mn148"
 			],
@@ -58,6 +60,7 @@
 			"discourse": [
 				"mn1",
 				"mn18",
+				"mn138",
 				"mn140",
 				"mn148"
 			],
@@ -80,6 +83,7 @@
 				"mn9",
 				"mn10",
 				"mn18",
+				"mn138",
 				"mn140",
 				"mn148"
 			],
@@ -102,6 +106,7 @@
 				"mn29",
 				"mn30",
 				"mn113",
+				"mn138",
 				"mn148"
 			],
 			"labels": [
@@ -125,6 +130,7 @@
 				"mn29",
 				"mn30",
 				"mn113",
+				"mn138",
 				"mn148"
 			],
 			"labels": [
@@ -461,7 +467,8 @@
 			"discourse": [
 				"mn2",
 				"mn9",
-				"mn18"
+				"mn18",
+				"mn138"
 			],
 			"labels": [
 				"five hindrances",
@@ -480,7 +487,8 @@
 			],
 			"discourse": [
 				"mn2",
-				"mn18"
+				"mn18",
+				"mn138"
 			],
 			"labels": [
 				"safety",
@@ -1452,7 +1460,8 @@
 				"mn25",
 				"mn77",
 				"mn111",
-				"mn119"
+				"mn119",
+				"mn138"
 			],
 			"labels": [
 				"awakening",
@@ -1478,7 +1487,8 @@
 				"mn25",
 				"mn77",
 				"mn111",
-				"mn119"
+				"mn119",
+				"mn138"
 			],
 			"labels": [
 				"awakening",
@@ -1504,7 +1514,8 @@
 				"mn25",
 				"mn77",
 				"mn111",
-				"mn119"
+				"mn119",
+				"mn138"
 			],
 			"labels": [
 				"awakening",
@@ -1533,7 +1544,8 @@
 				"mn77",
 				"mn106",
 				"mn111",
-				"mn119"
+				"mn119",
+				"mn138"
 			],
 			"labels": [
 				"awakening",
@@ -1870,6 +1882,7 @@
 				"mn9",
 				"mn18",
 				"mn111",
+				"mn138",
 				"mn140"
 			],
 			"labels": [
@@ -2196,7 +2209,8 @@
 			"discourse": [
 				"mn2",
 				"mn53",
-				"mn119"
+				"mn119",
+				"mn138"
 			],
 			"labels": [
 				"direct knowledge",
@@ -2220,6 +2234,7 @@
 				"mn148",
 				"mn10",
 				"mn18",
+				"mn138",
 				"mn140"
 			],
 			"labels": [
@@ -2240,6 +2255,7 @@
 				"mn148",
 				"mn10",
 				"mn18",
+				"mn138",
 				"mn140"
 			],
 			"labels": [
@@ -2616,7 +2632,8 @@
 			"discourse": [
 				"mn106",
 				"mn9",
-				"mn111"
+				"mn111",
+				"mn138"
 			],
 			"labels": [
 				"dispassion",
@@ -2654,6 +2671,7 @@
 			],
 			"discourse": [
 				"mn106",
+				"mn138",
 				"mn140"
 			],
 			"labels": [
@@ -2780,6 +2798,7 @@
 				"mn25",
 				"mn77",
 				"mn111",
+				"mn138",
 				"mn140"
 			],
 			"labels": [
@@ -2877,6 +2896,7 @@
 				"mn77",
 				"mn95",
 				"mn111",
+				"mn138",
 				"mn140"
 			],
 			"labels": [
@@ -3256,7 +3276,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn9",
+			"discourse": [
+				"mn9",
+				"mn138"
+			],
 			"labels": [
 				"craving",
 				"dependent origination",
@@ -3363,6 +3386,40 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/goldsmith-crucible.svg"
+		},
+		{
+			"id": "consciousness-following",
+			"title": "Consciousness running after",
+			"description": "Orb pulled after a receding object by a taut tether — anusāri viññāṇaṁ, consciousness carried along by the features it relishes",
+			"tags": [
+				"burgundy",
+				"line-art"
+			],
+			"discourse": "mn138",
+			"labels": [
+				"attachment",
+				"consciousness",
+				"harm"
+			],
+			"valence": "-ve",
+			"svg": "icons/consciousness-following.svg"
+		},
+		{
+			"id": "consciousness-unbound",
+			"title": "Consciousness not running after",
+			"description": "Steady orb with a slack, open tether as the object passes — na anusāri viññāṇaṁ, unscattered and not fixated",
+			"tags": [
+				"teal",
+				"line-art"
+			],
+			"discourse": "mn138",
+			"labels": [
+				"consciousness",
+				"free from attachment",
+				"imperturbable"
+			],
+			"valence": "+ve",
+			"svg": "icons/consciousness-unbound.svg"
 		}
 	]
 }

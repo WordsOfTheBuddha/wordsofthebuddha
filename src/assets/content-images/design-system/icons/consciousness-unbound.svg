@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <g fill="none" stroke="#60a088" stroke-linecap="round" stroke-linejoin="round">
+    <!-- the object passing on, unfollowed -->
+    <circle cx="18.5" cy="6" r="3" stroke-width="0.7" stroke-dasharray="2,2.2" opacity="0.5" />
+    <path d="M 20.6 2.6 L 22.6 1.6 M 21.6 5.6 L 23.1 5.1" stroke-width="0.5" opacity="0.3" />
+    <!-- consciousness orb, steady -->
+    <circle cx="7" cy="16.5" r="3.6" stroke-width="1" fill="#60a088" fill-opacity="0.14" />
+    <circle cx="7" cy="16.5" r="1" fill="#80c0a0" stroke="none" opacity="0.6" />
+    <!-- slack tether, never taut, ending free -->
+    <path d="M 10 15.4 Q 12.7 15.9, 14.5 13.6" stroke-width="0.85" opacity="0.7" />
+    <!-- steady ground -->
+    <line x1="2.7" y1="21.4" x2="11.3" y2="21.4" stroke-width="0.8" opacity="0.55" />
+  </g>
+</svg>
