@@ -461,6 +461,35 @@ const isSearchOnly = mode === "search-only";
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 	}
 
+	.explore-widget .search-suggest-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: 0.5rem 0.75rem 0.25rem;
+	}
+
+	.explore-widget .search-suggest-header-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.explore-widget .search-suggest-clear {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		padding: 0.25rem 0;
+	}
+
+	.explore-widget .search-suggest-clear:hover {
+		color: var(--text-color);
+	}
+
 	.explore-widget .search-suggest-item {
 		display: block;
 		width: 100%;
@@ -472,6 +501,18 @@ const isSearchOnly = mode === "search-only";
 		background: transparent;
 		border: none;
 		cursor: pointer;
+	}
+
+	.explore-widget .search-suggest-recent {
+		padding-top: 0.625rem;
+		padding-bottom: 0.625rem;
+	}
+
+	@media (max-width: 767px) {
+		.explore-widget .search-suggest-recent {
+			padding-top: 0.75rem;
+			padding-bottom: 0.75rem;
+		}
 	}
 
 	.explore-widget .search-suggest-item:hover,
@@ -494,6 +535,12 @@ const isSearchOnly = mode === "search-only";
 	import type { SuggestionSearcher } from "../utils/suggestionSearcher";
 	import { attachSearchAutocomplete } from "../utils/searchAutocompleteClient";
 	import type { SearchAutocompleteController } from "../utils/searchAutocompleteClient";
+	import {
+		addSearchHistory,
+		clearSearchHistory,
+		getRecentSearchQueries,
+		isValidRecentSearchQuery,
+	} from "../utils/searchHistoryClient";
 	import Fuse from "fuse.js";
 
 	// Resolve widget + DOM refs at init time (not module load) so nested layouts work.
@@ -523,6 +570,7 @@ const isSearchOnly = mode === "search-only";
 	let searchQuery = "";
 	let searchTimeout: NodeJS.Timeout | null = null;
 	let referenceIndexCached = false;
+	let recentSearchCandidate: { query: string } | null = null;
 	const DEBOUNCE_MS = 300;
 
 	/** Browse + search filter prefs; matches Layout.astro pattern (localStorage for durable UI state). */
@@ -603,7 +651,7 @@ const isSearchOnly = mode === "search-only";
 			// Start in search mode with query
 			if (!isSearchOnly) switchToSearchMode();
 			if (searchInput) searchInput.value = queryFromUrl;
-			await performSearch(queryFromUrl);
+			await performSearch(queryFromUrl, { trackCandidate: false });
 		} else if (isSearchOnly) {
 			// Search-only mode: show empty search state
 			if (loadingEl) loadingEl.classList.add("hidden");
@@ -653,10 +701,35 @@ const isSearchOnly = mode === "search-only";
 			dropdown: searchSuggestions,
 			list: searchSuggestionsList,
 			searcher: suggestionSearcher,
+			getRecentSearches: () => {
+				const stored = getRecentSearchQueries();
+				const pending = recentSearchCandidate?.query;
+				if (!pending || !isValidRecentSearchQuery(pending)) return stored;
+				const lower = pending.toLowerCase();
+				if (stored.some((query) => query.toLowerCase() === lower)) {
+					return stored;
+				}
+				return [pending, ...stored];
+			},
+			onClearRecentSearches: () => {
+				clearSearchHistory();
+			},
+			onRecentSearchSelect: (query) => {
+				commitRecentSearchCandidate();
+				searchQuery = query;
+				if (searchTimeout) clearTimeout(searchTimeout);
+				void performSearch(query);
+			},
 			onValueChange: (value) => {
 				queueSearch(value);
 			},
 		});
+	}
+
+	function commitRecentSearchCandidate() {
+		if (!recentSearchCandidate) return;
+		addSearchHistory(recentSearchCandidate.query);
+		recentSearchCandidate = null;
 	}
 
 	function queueSearch(value: string) {
@@ -771,11 +844,14 @@ const isSearchOnly = mode === "search-only";
 		searchResults?.classList.remove("hidden");
 		hideEmptyResultsMessage();
 		searchInput?.focus();
+		searchAutocomplete?.refresh();
 		updateURL();
 	}
 
 	function switchToBrowseMode() {
 		if (isSearchOnly) return; // Can't switch to browse in search-only mode
+
+		commitRecentSearchCandidate();
 
 		currentMode = "browse";
 		searchMode?.classList.add("hidden");
@@ -906,7 +982,7 @@ const isSearchOnly = mode === "search-only";
 		if (currentMode === "browse") {
 			renderBrowseResults();
 		} else if (currentMode === "search" && searchQuery) {
-			performSearch(searchQuery);
+			void performSearch(searchQuery, { trackCandidate: false });
 		}
 	}
 
@@ -959,7 +1035,11 @@ const isSearchOnly = mode === "search-only";
 	} from "../utils/searchRanking";
 	import { normalizeSearchQuery } from "../utils/fuseQueryParser";
 
-	async function performSearch(query: string) {
+	async function performSearch(
+		query: string,
+		options: { trackCandidate?: boolean } = {},
+	) {
+		const trackCandidate = options.trackCandidate !== false;
 		// Close help panel when a new search is performed
 		if (searchHelp) searchHelp.classList.add("hidden");
 		// Show results area
@@ -1840,6 +1920,10 @@ const isSearchOnly = mode === "search-only";
 			const { transformId } = await import("../utils/transformId");
 			renderSearchResults(rankedResults, query, transformId);
 
+			if (trackCandidate && rankedResults.length > 0 && isValidRecentSearchQuery(query)) {
+				recentSearchCandidate = { query: query.trim() };
+			}
+
 			const tFormat = performance.now();
 
 			if (isDev) {
@@ -2294,25 +2378,25 @@ const isSearchOnly = mode === "search-only";
 		widget.querySelector("#search-filter-discourses")?.addEventListener("change", (e) => {
 			searchFilters.discourses = (e.target as HTMLInputElement).checked;
 			persistExploreFilters();
-			if (searchQuery) performSearch(searchQuery);
+			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
 		});
 
 		widget.querySelector("#search-filter-topics-qualities")?.addEventListener("change", (e) => {
 			searchFilters.topicsQualities = (e.target as HTMLInputElement).checked;
 			persistExploreFilters();
-			if (searchQuery) performSearch(searchQuery);
+			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
 		});
 
 		widget.querySelector("#search-filter-similes")?.addEventListener("change", (e) => {
 			searchFilters.similes = (e.target as HTMLInputElement).checked;
 			persistExploreFilters();
-			if (searchQuery) performSearch(searchQuery);
+			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
 		});
 
 		widget.querySelector("#search-filter-persons")?.addEventListener("change", (e) => {
 			searchFilters.persons = (e.target as HTMLInputElement).checked;
 			persistExploreFilters();
-			if (searchQuery) performSearch(searchQuery);
+			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
 		});
 
 		widget.querySelector("#search-filter-include-references")?.addEventListener("change", async (e) => {
@@ -2332,16 +2416,33 @@ const isSearchOnly = mode === "search-only";
 					if (loadingEl) loadingEl.classList.add("hidden");
 				}
 			}
-			if (searchQuery) performSearch(searchQuery);
+			if (searchQuery) void performSearch(searchQuery, { trackCandidate: false });
 		});
 
 		// Search input
 		searchInput?.addEventListener("input", handleSearchInput);
+		searchInput?.addEventListener("blur", () => {
+			commitRecentSearchCandidate();
+		});
 		searchInput?.addEventListener("keydown", (e) => {
 			if (e.key === "Enter") {
 				e.preventDefault();
 				if (searchTimeout) clearTimeout(searchTimeout);
-				performSearch(searchInput?.value.trim() ?? "");
+				const query = searchInput?.value.trim() ?? "";
+				void performSearch(query).then(() => commitRecentSearchCandidate());
+			}
+		});
+
+		searchResults?.addEventListener("click", (e) => {
+			const target = e.target as HTMLElement;
+			if (target.closest("a")) {
+				commitRecentSearchCandidate();
+			}
+		});
+
+		document.addEventListener("visibilitychange", () => {
+			if (document.visibilityState === "hidden") {
+				commitRecentSearchCandidate();
 			}
 		});
 
@@ -2448,6 +2549,9 @@ const isSearchOnly = mode === "search-only";
 
 	function handleSearchInput(event: Event) {
 		const input = event.target as HTMLInputElement;
+		if (!input.value.trim()) {
+			commitRecentSearchCandidate();
+		}
 		queueSearch(input.value);
 	}
 
@@ -2599,7 +2703,7 @@ const isSearchOnly = mode === "search-only";
 		if (currentMode === "browse") {
 			renderBrowseResults();
 		} else if (currentMode === "search" && searchQuery) {
-			void performSearch(searchQuery);
+			void performSearch(searchQuery, { trackCandidate: false });
 		}
 	});
 
