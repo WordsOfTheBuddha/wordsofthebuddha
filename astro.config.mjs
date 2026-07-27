@@ -49,6 +49,11 @@ const externalLinksOptions = {
 
 // https://astro.build/config
 export default defineConfig({
+	// Production serves www; the bare domain 308s to it. Required for absolute
+	// canonical/OG URLs — without it `Astro.url` on prerendered pages resolves
+	// against the build-time dev origin (localhost:4321).
+	site: "https://www.wordsofthebuddha.org",
+
 	markdown: {
 		processor: unified({
 			rehypePlugins: [[rehypeExternalLinks, externalLinksOptions]],

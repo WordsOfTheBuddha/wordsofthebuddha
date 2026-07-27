@@ -18,4 +18,4 @@ Allow: /discover
 Allow: /on/
 
 # Sitemap location
-Sitemap: https://wordsofthebuddha.org/sitemap.xml
+Sitemap: https://www.wordsofthebuddha.org/sitemap.xml

@@ -34,6 +34,7 @@ import DiscourseImage from "../components/DiscourseImage.astro";
 import ImageToggle from "../components/ImageToggle.astro";
 import type { ContentImageData } from "../utils/contentImage";
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
+import { buildStructuredData } from "../utils/structuredData";
 import { debug } from "../utils/contentParser";
 
 const paramTheme = Astro.url.searchParams.get("theme");
@@ -69,6 +70,10 @@ const {
 	fullWidthSlot = false,
 	viewSource = "en",
 	referenceFallback = false,
+	canonicalPath = null,
+	robots = null,
+	ogType = null,
+	seoDescription = null,
 } = Astro.props as {
 	id?: string;
 	fp?: string;
@@ -101,6 +106,18 @@ const {
 	viewSource?: "en" | "sujato-reference" | "pli" | "pli-ms";
 	/** Page shows a B. Sujato reference translation fallback; defaults to Pali-only with a translation toggle. */
 	referenceFallback?: boolean;
+	/**
+	 * Canonical path, e.g. `/mn1`. Required on middleware-rewritten routes
+	 * (`/discourse-ssr/*`, `/discourse-sujato/*`, `/discourse-dynamic/*`) where
+	 * `Astro.url.pathname` is the internal target rather than the public URL.
+	 * `/:slug/en/sujato` passes `/:slug` so the two translations of one discourse
+	 * consolidate onto the primary page instead of competing.
+	 */
+	canonicalPath?: string | null;
+	robots?: string | null;
+	ogType?: string | null;
+	/** Meta description only. Lets a page ship SEO copy while keeping the in-page description box empty. */
+	seoDescription?: string | null;
 };
 
 /**
@@ -171,6 +188,46 @@ if (!SEOTitle) {
 			id.replace(/([A-Za-z]+)(\d)/, "$1 $2").toUpperCase() + " " + title;
 	}
 }
+
+const SITE_ORIGIN = Astro.site?.origin ?? "https://www.wordsofthebuddha.org";
+
+/**
+ * View state lives in query params (`?pli`, `?theme`, `?layout`, `?viz`,
+ * `?trans`, `?ref`, `?enablePaliLookup`), so every page is reachable at many
+ * URLs with identical content. Canonical is always the bare path.
+ */
+const canonicalRawPath = canonicalPath ?? Astro.url.pathname;
+const canonicalNormalizedPath =
+	canonicalRawPath.length > 1
+		? canonicalRawPath.replace(/\/+$/, "")
+		: canonicalRawPath;
+const canonicalURL = new URL(canonicalNormalizedPath || "/", SITE_ORIGIN).href;
+
+/** No meta description beats a boilerplate one: Google writes a query-relevant snippet instead. */
+const metaDescription =
+	String(seoDescription ?? description ?? "").trim() || null;
+
+const resolvedOgType = ogType ?? (id ? "article" : "website");
+
+/** Square site-wide fallback so shares of non-discourse pages aren't bare. */
+const socialImageURL = firstContentImage
+	? new URL(firstContentImage.image.src, SITE_ORIGIN).href
+	: new URL("/og-default.png", SITE_ORIGIN).href;
+
+const structuredData = buildStructuredData({
+	origin: SITE_ORIGIN,
+	canonicalURL,
+	breadcrumbPath: fp,
+	urlPathname: canonicalNormalizedPath,
+	title,
+	seoTitle: SEOTitle,
+	description: metaDescription,
+	id,
+	imageURL: socialImageURL,
+	lastUpdated,
+	viewSource,
+	isHome: canonicalNormalizedPath === "/",
+});
 ---
 
 <html
@@ -181,7 +238,10 @@ if (!SEOTitle) {
 >
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+		/>
 
 		<!-- Preload critical fonts -->
 		<link
@@ -198,35 +258,23 @@ if (!SEOTitle) {
 			type="font/woff2"
 			crossorigin
 		/>
-		<link
-			rel="preload"
-			href="/assets/fonts/GentiumPlus-Regular.ttf"
-			as="font"
-			type="font/ttf"
-			crossorigin="anonymous"
-		/>
-
 		<title>{SEOTitle || "Words of the Buddha"}</title>
-		<meta
-			name="description"
-			content={description || "Default Description"}
-		/>
+		{metaDescription && <meta name="description" content={metaDescription} />}
+		<link rel="canonical" href={canonicalURL} />
+		{robots && <meta name="robots" content={robots} />}
 
 		<!-- Open Graph / Social Media -->
 		<meta property="og:title" content={SEOTitle || "Words of the Buddha"} />
-		<meta
-			property="og:description"
-			content={description || "Default Description"}
-		/>
-		<meta property="og:type" content="article" />
 		{
-			firstContentImage && (
-				<meta
-					property="og:image"
-					content={new URL(firstContentImage.image.src, Astro.url).href}
-				/>
+			metaDescription && (
+				<meta property="og:description" content={metaDescription} />
 			)
 		}
+		<meta property="og:type" content={resolvedOgType} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:site_name" content="Words of the Buddha" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:image" content={socialImageURL} />
 
 		<!-- Twitter Card -->
 		<meta
@@ -237,23 +285,22 @@ if (!SEOTitle) {
 			name="twitter:title"
 			content={SEOTitle || "Words of the Buddha"}
 		/>
-		<meta
-			name="twitter:description"
-			content={description || "Default Description"}
-		/>
 		{
-			firstContentImage && (
-				<meta
-					name="twitter:image"
-					content={new URL(firstContentImage.image.src, Astro.url).href}
+			metaDescription && (
+				<meta name="twitter:description" content={metaDescription} />
+			)
+		}
+		<meta name="twitter:image" content={socialImageURL} />
+
+		{
+			structuredData && (
+				<script
+					type="application/ld+json"
+					set:html={JSON.stringify(structuredData)}
 				/>
 			)
 		}
 
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-		/>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -547,7 +594,7 @@ if (!SEOTitle) {
 		// Register the Service Worker for offline support (prod only)
 		if (import.meta.env.PROD && "serviceWorker" in navigator) {
 			window.addEventListener("load", () => {
-				navigator.serviceWorker.register("/sw.js?v=6").catch(() => {
+				navigator.serviceWorker.register("/sw.js?v=7").catch(() => {
 					/* ignore */
 				});
 
@@ -601,23 +648,9 @@ if (!SEOTitle) {
 							} catch {}
 						}
 
-						// Prewarm the Pāli lookup chunk so it is cached for offline use.
-						// This is intentionally low-priority and guarded by the user's preference.
-						const pref = localStorage.getItem("paliLookup");
-						const enabled = pref == null ? true : pref === "true";
-						if (!enabled || !navigator.onLine) return;
-						// Yield to the event loop/idle time before importing
-						const prewarm = () =>
-							import("../utils/paliLookup")
-								.then((m) => m.warmupPaliDictionary?.())
-								.catch(() => {});
-						if ("requestIdleCallback" in window) {
-							(requestIdleCallback as any)(prewarm, {
-								timeout: 3000,
-							});
-						} else {
-							setTimeout(prewarm, 0);
-						}
+						// The Pāli lookup chunk is not prewarmed here: it is ~1.5MB and
+						// most visits never open a definition. Offline downloads warm it
+						// explicitly from src/pages/offline.astro instead.
 					})
 					.catch(() => {
 						/* ignore */

@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Chapter Two
+description: A series of impossibilities — two wheel-turning monarchs or two fully awakened Buddhas cannot arise in the same solar system at the same time, and a woman cannot fill either role.
+theme: principle
+qualities: ethical conduct, wisdom
 ---
 
 <!-- @segment an1.278:1.0 -->

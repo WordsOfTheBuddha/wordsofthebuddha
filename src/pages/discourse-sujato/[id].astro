@@ -1,5 +1,7 @@
 ---
 // Sujato reference view (rewritten from /:slug/en/sujato by middleware).
+// Canonicalises to the bare /:slug so this translation and the site's own do not
+// compete for the same discourse query.
 export const prerender = false;
 import { buildReferenceDiscoursePage } from "../../utils/referenceDiscoursePage";
 import Layout from "../../layouts/Layout.astro";
@@ -29,7 +31,7 @@ const {
 } = refPage;
 ---
 
-<Layout {...suttaProps}>
+<Layout {...suttaProps} canonicalPath={`/${id}`}>
 	<MDContent
 		content={mainContent}
 		splitEnglish={splitEnglish}

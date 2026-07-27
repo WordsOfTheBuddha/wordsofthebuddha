@@ -15,6 +15,15 @@ interface Props {
 const { title, description, displayId, slug } = Astro.props;
 
 const seoTitle = `Listen · ${displayId} ${title}`;
+const metaDescription = description ?? `Listen to ${displayId} ${title}.`;
+/**
+ * Listen mode is an alternate surface for the same discourse, so ranking signals
+ * consolidate onto the reading page rather than splitting across two URLs.
+ */
+const canonicalURL = new URL(
+	`/${slug}`,
+	Astro.site ?? "https://www.wordsofthebuddha.org",
+).href;
 ---
 
 <!doctype html>
@@ -23,7 +32,8 @@ const seoTitle = `Listen · ${displayId} ${title}`;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 		<title>{seoTitle}</title>
-		<meta name="description" content={description ?? `Listen to ${displayId} ${title}.`} />
+		<meta name="description" content={metaDescription} />
+		<link rel="canonical" href={canonicalURL} />
 		<meta name="theme-color" content="#0e0c0a" />
 		<meta name="color-scheme" content="dark" />
 		<meta name="robots" content="index, follow" />
@@ -41,8 +51,10 @@ const seoTitle = `Listen · ${displayId} ${title}`;
 
 		<!-- Open Graph -->
 		<meta property="og:title" content={seoTitle} />
-		<meta property="og:description" content={description ?? `Listen to ${displayId} ${title}.`} />
+		<meta property="og:description" content={metaDescription} />
 		<meta property="og:type" content="music.song" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:site_name" content="Words of the Buddha" />
 
 		<script is:inline>
 			// Listen mode is dark-only. Sync theme-color meta + html class without

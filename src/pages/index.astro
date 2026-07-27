@@ -13,7 +13,15 @@ const { title, description } = home.data;
 const { Content } = await render(home);
 ---
 
-<Layout title={""} description={""} showAuth={false} showNavbarBrand={false}>
+<Layout
+	title={""}
+	description={""}
+	seoDescription={description}
+	seoTitle={title}
+	ogType="website"
+	showAuth={false}
+	showNavbarBrand={false}
+>
 	{
 		!isFirebaseInitialized && (
 			<div

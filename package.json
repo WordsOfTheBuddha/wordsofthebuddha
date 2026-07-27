@@ -12,6 +12,7 @@
 		"gen:persons": "npx tsx src/utils/generatePersonMappings.ts",
 		"gen:topics": "npx tsx src/utils/generateTopicMappings.ts",
 		"gen:favicons": "node src/utils/generate-favicons.mjs",
+		"gen:og-image": "node src/utils/generate-og-image.mjs",
 		"thermal:svg": "tsx src/utils/thermalPrintSvg.ts",
 		"analyze:content-image-colors": "tsx src/utils/analyzeContentImageSvgColors.ts",
 		"gen:offline": "npx tsx src/utils/generateOfflineManifest.ts",

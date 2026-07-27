@@ -5,7 +5,13 @@ import BottomDrawer from "../components/BottomDrawer.astro";
 import ExploreWidget from "../components/ExploreWidget.astro";
 ---
 
-<Layout title="" showAuth={false} showSearch={false}>
+<Layout
+	title=""
+	seoTitle="Search the Discourses - Words of the Buddha"
+	description="Search the discourses of the Buddha by phrase, Pāli term, topic, or reference across the Majjhima, Saṁyutta, Aṅguttara, and Dīgha Nikāyas, the Dhammapada, and more."
+	showAuth={false}
+	showSearch={false}
+>
 	<main class="container mx-auto px-3 sm:px-4 pt-0">
 		<ExploreWidget mode="search-only" title="" />
 	</main>

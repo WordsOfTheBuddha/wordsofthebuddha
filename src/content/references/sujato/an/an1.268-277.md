@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Chapter One
+description: What is impossible for a person accomplished in view — they cannot regard any conditioned thing as permanent, as satisfying, or as a self, and cannot commit the gravest deeds.
+theme: principle
+qualities: ethical conduct, wisdom
 ---
 
 <!-- @segment an1.268:1.0 -->

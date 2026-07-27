@@ -4,7 +4,11 @@ import QualitiesGraph from "../components/QualitiesGraph.astro";
 export const prerender = false;
 ---
 
-<Layout seoTitle="Qualities Explorer - Words of the Buddha" showAuth={false}>
+<Layout
+	seoTitle="Qualities Explorer - Words of the Buddha"
+	seoDescription="Search and explore mental qualities and topics across the Pāli canon — an interactive map of how they connect, with linked discourses from every major collection."
+	showAuth={false}
+>
 	<!-- Inject pre-hydration bootstrap only on this page -->
 	<script slot="head" is:inline>
 		(function () {

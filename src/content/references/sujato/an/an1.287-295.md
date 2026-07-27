@@ -4,6 +4,9 @@ source: suttacentral/bilara-data
 translator: sujato
 license: CC0
 title: Chapter Three
+description: Results follow conduct without exception — an unpleasant result cannot come from good bodily, verbal, or mental conduct, nor a pleasant one from bad conduct.
+theme: principle
+qualities: ethical conduct, wisdom
 ---
 
 <!-- @segment an1.287:1.0 -->
