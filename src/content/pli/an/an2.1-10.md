@@ -1,10 +1,10 @@
 ---
 title: Kammakaraṇa vagga - The Chapter on the Undertaking Of Actions
 description: The Buddha explains the faults concerning this life and the next life, the strivings for laypeople and those who have gone forth, the things that cause regret and do not cause regret, the importance of not resting content with wholesome qualities, the two things that cause regret and do not cause regret, the two dark and bright qualities, and the two occasions for approaching the rains retreat.
-qualities: fear, fear of wrongdoing, harm, stealing, regret, right effort, rousing of energy, diligence, conscience
-fetter: personal existence,adherence to rules and observances,ignorance
-tags: fault, life, next life, striving, laypeople, gone forth, regret, not regret, wholesome, tirelessness, heedfulness, bright, dark, protection, rains retreat, an, an2
+qualities: fear, fear of wrongdoing, harm, stealing, regret, right effort, rousing of energy, diligence, conscience, passion, aversion, delusion
+theme: wisdom, inspiration
 slug: an2.1-10
+priority: 1.2
 ---
 
 #### 2.1 Vajjasutta

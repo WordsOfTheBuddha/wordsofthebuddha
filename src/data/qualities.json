@@ -1511,6 +1511,8 @@
 			"[saṅghānussati, saṅghānusmṛti]"
 		],
 		"regret": [
+			"compunction",
+			"guilt",
 			"to be burned",
 			"to be consumed",
 			"to suffer remorse",
@@ -1747,6 +1749,7 @@
 		],
 		"sorrow": [
 			"grief",
+			"sadness",
 			"Context: Grief or sadness that follows loss or disappointment, dimming the mind’s natural brightness. It clouds clear perception.",
 			"Supported by:{attachment, dearness, lamentation}",
 			"Leads to:{suffering}",
