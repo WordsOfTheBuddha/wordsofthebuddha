@@ -5,6 +5,8 @@ import "../styles/bottomDrawer.css";
 
 <!-- this is a client-only script component -->
 <script>
+	import { cleanPaliWordForLookup } from "../utils/cleanPaliWord";
+
 	// The ms-dpd dictionary chunk is ~1.5MB; import it on first lookup rather than
 	// as a static dependency of every page load.
 	let lookupSingleWord:
@@ -498,7 +500,9 @@ import "../styles/bottomDrawer.css";
 
 			// Check if it's a Pali word or English tooltip
 			if (word.classList.contains("pali-word")) {
-				const cleanWord = word.dataset.word || word.textContent || "";
+				const cleanWord = cleanPaliWordForLookup(
+					word.textContent || "",
+				);
 				await showDictionaryPopover(cleanWord, true);
 			} else if (word.classList.contains("tooltip-text")) {
 				const content = word.getAttribute("data-tooltip-content") || "";
@@ -804,10 +808,9 @@ import "../styles/bottomDrawer.css";
 			const paliWord = (e.target as HTMLElement).closest(".pali-word");
 			if (paliWord && localStorage.getItem("paliLookup") === "true") {
 				e.preventDefault();
-				const word =
-					(paliWord as HTMLElement).dataset.word ||
-					paliWord.textContent ||
-					"";
+				const word = cleanPaliWordForLookup(
+					paliWord.textContent || "",
+				);
 				enableWordNavigation(paliWord as HTMLElement);
 				// Pali dictionary content gets navigation - pass true for enableNavigation
 				showDictionaryPopover(word, true);
@@ -827,7 +830,7 @@ import "../styles/bottomDrawer.css";
 					const text = selection?.toString().trim();
 					if (!text || /\s/.test(text)) return;
 
-					showDictionaryPopover(text);
+					showDictionaryPopover(cleanPaliWordForLookup(text));
 				});
 			}
 
@@ -861,7 +864,9 @@ import "../styles/bottomDrawer.css";
 						const text = selection?.toString().trim();
 
 						if (text && !text.includes(" ")) {
-							showDictionaryPopover(text);
+							showDictionaryPopover(
+								cleanPaliWordForLookup(text),
+							);
 						}
 						startTouch = null;
 					},

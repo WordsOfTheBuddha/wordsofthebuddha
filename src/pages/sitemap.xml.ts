@@ -12,10 +12,7 @@ import personMappings from "../data/personMappings.json";
 const SITE_URL = "https://www.wordsofthebuddha.org";
 
 /** Anthology content lives under /anthologies/; the bare slug is a redirect. */
-const ANTHOLOGY_SLUGS = new Set([
-	"in-the-buddhas-words",
-	"noble-truths-noble-path",
-]);
+import { anthologySlugSet as ANTHOLOGY_SLUGS } from "../utils/anthologySlugs";
 
 /** Homepage content entry; its slug must not be emitted as /index. */
 const HOME_SLUG = "index";

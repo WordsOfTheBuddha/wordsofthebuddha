@@ -822,14 +822,8 @@ function wrapPaliWords(text: string): string {
 							} else if (
 								/[a-zA-ZāīūṅñṭḍṇḷṃṁĀĪŪṄÑŢĎŅĻṂ]/.test(part)
 							) {
-								// Word part gets pali-word span
-								const cleanWord = part
-									.toLowerCase()
-									.replace(
-										/[''.,;:!?…"'"'\(\)\[\]\{\}«»"“”‘’]/g,
-										"",
-									);
-								return `<span class="pali-word" data-word="${cleanWord}" data-original="${part}">${part}</span>`;
+								// Lookup key is derived from textContent at click time
+								return `<span class="pali-word">${part}</span>`;
 							} else {
 								// Other punctuation (attached to words)
 								return part;
@@ -838,10 +832,7 @@ function wrapPaliWords(text: string): string {
 						.join("");
 				} else {
 					// No breaking punctuation, treat as single word
-					const cleanWord = token
-						.toLowerCase()
-						.replace(/[''.,;:!?…—"'"'\(\)\[\]\{\}«»"“”‘’]/g, "");
-					return `<span class="pali-word" data-word="${cleanWord}" data-original="${token}">${token}</span>`;
+					return `<span class="pali-word">${token}</span>`;
 				}
 			}
 
@@ -973,6 +964,15 @@ export function formatBlock(
 	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${
 		isVerseText ? transformVerseNewlines(processedText) : processedText
 	}</p>`;
+}
+
+/**
+ * Whether a page can offer the split (two-column) layout, i.e. whether there is
+ * any Pāli to put in the second column. The panels are built in the browser
+ * from the interleaved article, so pages only need this flag.
+ */
+export function hasPaliPairs(pairs: ContentPair[]): boolean {
+	return pairs.some((pair) => Boolean(pair.pali?.trim()));
 }
 
 export function createCombinedMarkdown(

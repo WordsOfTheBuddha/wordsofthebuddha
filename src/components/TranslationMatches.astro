@@ -2433,16 +2433,14 @@
         result += escapeHtml(between);
       }
 
-      // Clean word for lookup (remove trailing punctuation, quotes)
-      const cleanWord = word.replace(/[,;.!?'"'""]+$/g, '').toLowerCase();
-
-      // Build the word span with appropriate highlighting
+      // Build the word span with appropriate highlighting.
+      // Lookup key is derived from textContent at click time (BottomDrawer).
       let highlightClass = '';
       if (isInRange) {
         highlightClass = isGap ? ' tm-highlight-gap' : ' tm-highlight-word';
       }
 
-      result += `<span class="pali-word${highlightClass}" data-word="${escapeHtml(cleanWord)}" data-original="${escapeHtml(word)}">${escapeHtml(word)}</span>`;
+      result += `<span class="pali-word${highlightClass}">${escapeHtml(word)}</span>`;
 
       lastEnd = pos + word.length;
     });

@@ -1,31 +1,65 @@
 ---
-// Prerendered post pages — serves posts from src/pages/posts/ at root-level URLs.
-// Follows the same pattern as [discourse].astro: prerender + getStaticPaths + rewrite.
+// Root-level post URLs (/fire, etc.) rendered from src/pages/posts/*.
+// Direct Astro.rewrite to /posts/:slug fails under the Node/PWA adapter during
+// prerender ("unable to find a component instance"), so we render the MD/MDX
+// module here instead.
 export const prerender = true;
 
+import PostLayout from "../layouts/PostLayout.astro";
 import { routes } from "../utils/routes";
 
-export async function getStaticPaths() {
-	// Discover all markdown/mdx files in the posts directory
-	const postFiles = import.meta.glob("./posts/*.{md,mdx}");
+type PostModule = {
+	default?: any;
+	Content?: any;
+	frontmatter?: Record<string, unknown> & { draft?: boolean };
+};
 
-	// Build paths, excluding any slug that conflicts with a discourse route
+export async function getStaticPaths() {
+	// Astro extracts getStaticPaths into an isolated module — keep all logic
+	// self-contained (no outer helper refs).
+	const postModules = import.meta.glob<PostModule>("./posts/*.{md,mdx}", {
+		eager: true,
+	});
 	const discourseSet = new Set(routes);
-	return Object.keys(postFiles)
-		.map((filePath) => {
-			const slug = filePath
-				.replace("./posts/", "")
-				.replace(/\.mdx?$/, "");
-			return { params: { post: slug } };
-		})
-		.filter(({ params }) => !discourseSet.has(params.post));
+	const paths: { params: { post: string }; props: { filePath: string } }[] =
+		[];
+	for (const [filePath, mod] of Object.entries(postModules)) {
+		const slug = filePath.replace("./posts/", "").replace(/\.mdx?$/, "");
+		const draft =
+			mod?.frontmatter?.draft === true ||
+			/-draft$/.test(slug) ||
+			/-testcases$/.test(slug);
+		if (draft) continue;
+		if (discourseSet.has(slug)) continue;
+		paths.push({ params: { post: slug }, props: { filePath } });
+	}
+	return paths;
 }
 
 const { post } = Astro.params;
-if (!post) {
+const { filePath } = Astro.props as { filePath?: string };
+if (!post || !filePath) {
 	return new Response(null, { status: 404 });
 }
 
-// Rewrite to the actual posts/ page — Astro renders it at this root-level URL
-return Astro.rewrite(`/posts/${post}`);
+const loaders = import.meta.glob<PostModule>("./posts/*.{md,mdx}");
+const loader = loaders[filePath];
+if (!loader) {
+	return new Response(null, { status: 404 });
+}
+const mod = await loader();
+const skipped =
+	mod?.frontmatter?.draft === true ||
+	/-draft$/.test(post) ||
+	/-testcases$/.test(post);
+if (skipped) {
+	return new Response(null, { status: 404 });
+}
+
+const Content = mod.Content ?? mod.default;
+const { layout: _layout, ...frontmatter } = mod.frontmatter || {};
 ---
+
+<PostLayout {...frontmatter}>
+	<Content />
+</PostLayout>

@@ -3,6 +3,9 @@
  * - collectionPages: all collection slugs (/[collection])
  * - discourseByCollection: map of collection -> array of /:route pages
  * - coreAssets: known public assets and fonts to precache
+ *
+ * Measured gzip byte sizes (sizes.byCollection / sizes.onPages) are added
+ * post-build by scripts/enrichOfflineManifestSizes.mjs.
  */
 import { writeFileSync, mkdirSync } from "fs";
 import { fileURLToPath } from "url";
@@ -10,6 +13,7 @@ import { dirname, join } from "path";
 import { getStaticOnSlugs } from "./discover-data";
 import { directoryStructure } from "../data/directoryStructure";
 import { routes } from "../utils/routes";
+import { isAnthologySlug } from "./anthologySlugs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,6 +34,8 @@ function collectCollectionSlugs(): string[] {
 function groupDiscoursesByCollection(): Record<string, string[]> {
 	const grouped: Record<string, string[]> = {};
 	for (const r of routes) {
+		// Anthologies / homepage stub are not offline discourse packs.
+		if (isAnthologySlug(r) || r === "index") continue;
 		const m = r.match(/^([a-z]+)/);
 		if (!m) continue;
 		const col = m[1];

@@ -1,5 +1,6 @@
 import {
 	createCombinedMarkdown,
+	hasPaliPairs,
 	isViewFullTextFallbackOnly,
 	PALI_ONLY_NOTICE,
 	parseContent,
@@ -26,8 +27,8 @@ import { findPageDiscourseNeighbors } from "./discourseNeighbors";
 
 export type ReferenceDiscoursePage = {
 	mainContent: string;
-	splitEnglish?: string;
-	splitPali?: string;
+	/** Pāli exists for a second column; panels are built client-side. */
+	splitAvailable: boolean;
 	refPaliOnlyContent?: string;
 	referenceFallbackPage: boolean;
 	/** Paragraph pairs for PDF / polytext export. */
@@ -132,7 +133,6 @@ export async function buildReferenceDiscoursePage(
 		true,
 		"interleaved",
 	);
-	const splitContent = createCombinedMarkdown(pairs, true, "split");
 
 	const leadNotice = useReferenceEnglish
 		? REFERENCE_TRANSLATION_CREDIT
@@ -142,12 +142,7 @@ export async function buildReferenceDiscoursePage(
 		typeof interleavedContent === "string"
 			? `${leadNotice}\n\n${interleavedContent}`
 			: leadNotice;
-	let splitEnglish: string | undefined;
-	let splitPali: string | undefined;
-	if (typeof splitContent !== "string") {
-		splitEnglish = `${leadNotice}${splitContent.english ? `\n\n${splitContent.english}` : ""}`;
-		splitPali = splitContent.pali;
-	}
+	const splitAvailable = hasPaliPairs(pairs);
 
 	const fpParts = (paliParagraphEntry.filePath ?? "").split("/");
 	const folder = fpParts[fpParts.length - 2] || "";
@@ -185,8 +180,7 @@ export async function buildReferenceDiscoursePage(
 
 	return {
 		mainContent,
-		splitEnglish,
-		splitPali,
+		splitAvailable,
 		refPaliOnlyContent,
 		referenceFallbackPage: useReferenceEnglish,
 		contentPairs: pairs,

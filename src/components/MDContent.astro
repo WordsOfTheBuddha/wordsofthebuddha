@@ -4,8 +4,11 @@ import { isViewFullTextFallbackOnly } from "../utils/contentParser";
 
 interface Props {
 	content: string;
-	splitEnglish?: string;
-	splitPali?: string;
+	/**
+	 * Whether the discourse has Pāli to show in a second column. The panels
+	 * themselves are cloned from the interleaved article in the browser.
+	 */
+	splitAvailable?: boolean;
 	/** Paragraph-level Pāli for reference-fallback pages (default view). */
 	refPaliOnlyContent?: string;
 	referenceFallback?: boolean;
@@ -13,23 +16,16 @@ interface Props {
 
 const {
 	content,
-	splitEnglish,
-	splitPali,
+	splitAvailable = false,
 	refPaliOnlyContent,
 	referenceFallback = false,
 } = Astro.props;
 const parsedInterleaved = await parseMarkdown(content);
-const parsedSplitEnglish = splitEnglish
-	? await parseMarkdown(splitEnglish)
-	: null;
-const parsedSplitPali = splitPali ? await parseMarkdown(splitPali) : null;
 const parsedRefPaliOnly = refPaliOnlyContent
 	? await parseMarkdown(refPaliOnlyContent)
 	: null;
 /** Subset URLs with no matched section/paragraphs: skip content-fade (nothing to align). */
-const showFallbackImmediately =
-	isViewFullTextFallbackOnly(content) ||
-	(splitEnglish ? isViewFullTextFallbackOnly(splitEnglish) : false);
+const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 ---
 
 {
@@ -55,8 +51,8 @@ const showFallbackImmediately =
 		set:html={parsedInterleaved}
 	/>
 
-	<!-- Split wrapper (only visible when html has split + pali-on) -->
-	{parsedSplitEnglish && parsedSplitPali && !showFallbackImmediately && (
+	<!-- Split wrapper: filled by splitViewClient.ts from the article above -->
+	{splitAvailable && !showFallbackImmediately && (
 		<div
 			class:list={["content-fade split-wrapper"]}
 			aria-hidden="true"
@@ -64,12 +60,10 @@ const showFallbackImmediately =
 			<article
 				id="panel1"
 				class="split-panel md-content prose prose-lg dark:prose-invert"
-				set:html={parsedSplitEnglish}
 			/>
 			<article
 				id="panel2"
 				class="split-panel md-content prose prose-lg dark:prose-invert"
-				set:html={parsedSplitPali}
 			/>
 		</div>
 	)}
@@ -252,6 +246,8 @@ const showFallbackImmediately =
 </style>
 
 <script>
+	import { ensureSplitPanels } from "../utils/splitViewClient";
+
 	function isSplitVisible() {
 		const root = document.documentElement;
 		if (!root.classList.contains("split") || !root.classList.contains("pali-on")) {
@@ -309,6 +305,9 @@ const showFallbackImmediately =
 		if (!isSplitVisible()) {
 			return;
 		}
+
+		// Panels must exist before anything is measured.
+		ensureSplitPanels();
 
 		await waitForFontsReady();
 		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));

@@ -1,6 +1,7 @@
 <!-- src/components/PrintFormatter.astro -->
 <script>
 	import { getFormattedContainer } from "../utils/tooltipFormatter";
+	import { ensureSplitPanels } from "../utils/splitViewClient";
 
 	function setupPrintFormatting() {
 		let originalContent: string | null = null;
@@ -13,6 +14,8 @@
 			const isSplit =
 				document.documentElement.classList.contains("split") &&
 				document.documentElement.classList.contains("pali-on");
+			// Split panels are built on demand; printing may be the first use.
+			if (isSplit) ensureSplitPanels();
 			const contentArea =
 				(isSplit
 					? document.querySelector(".split-wrapper")

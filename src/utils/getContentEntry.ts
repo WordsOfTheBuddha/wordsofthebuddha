@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { getCollection, getEntry } from "astro:content";
+import { isAnthologySlug } from "./anthologySlugs";
 
 export type ContentEntryData = {
 	title?: string;
@@ -150,6 +151,8 @@ async function findStoredEnglishEntry(slug: string) {
 }
 
 async function findStoredPaliEntry(slug: string) {
+	// Skip content-store lookups that only produce "Entry … was not found" noise.
+	if (isAnthologySlug(slug) || slug === "index") return null;
 	try {
 		let entry = await getEntry("pliAll", slug);
 		if (entry) return entry;

@@ -76,8 +76,7 @@ if (result instanceof Response) return result;
 const {
 	suttaProps,
 	mainContent,
-	splitEnglish,
-	splitPali,
+	splitAvailable,
 	refPaliOnlyContent,
 	referenceFallbackPage,
 } = result;
@@ -86,8 +85,7 @@ const {
 <Layout {...suttaProps}>
 	<MDContent
 		content={mainContent}
-		splitEnglish={splitEnglish}
-		splitPali={splitPali}
+		splitAvailable={splitAvailable}
 		refPaliOnlyContent={refPaliOnlyContent}
 		referenceFallback={referenceFallbackPage}
 	/>

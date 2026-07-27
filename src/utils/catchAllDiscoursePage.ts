@@ -1,6 +1,7 @@
 import {
 	parseContent,
 	createCombinedMarkdown,
+	hasPaliPairs,
 	compareHierarchicalNumber,
 	constructHierarchicalEnd,
 	isValidParagraphRange,
@@ -21,8 +22,8 @@ const discourseRoutes = [...routes, ...referenceOnlyRoutes];
 export type CatchAllDiscoursePage = {
 	suttaProps: Record<string, unknown>;
 	mainContent: string;
-	splitEnglish?: string;
-	splitPali?: string;
+	/** Pāli exists for a second column; panels are built client-side. */
+	splitAvailable: boolean;
 	refPaliOnlyContent?: string;
 	referenceFallbackPage: boolean;
 };
@@ -38,8 +39,7 @@ export async function resolveCatchAllDiscoursePage(
 
 	let suttaProps: Record<string, unknown> | undefined;
 	let mainContent = "";
-	let splitEnglish: string | undefined;
-	let splitPali: string | undefined;
+	let splitAvailable = false;
 	let refPaliOnlyContent: string | undefined;
 	let referenceFallbackPage = false;
 
@@ -178,8 +178,7 @@ export async function resolveCatchAllDiscoursePage(
 
 			return {
 				mainContent: refPage.mainContent,
-				splitEnglish: refPage.splitEnglish,
-				splitPali: refPage.splitPali,
+				splitAvailable: refPage.splitAvailable,
 				refPaliOnlyContent: refPage.refPaliOnlyContent,
 				referenceFallbackPage: refPage.referenceFallbackPage,
 				suttaProps: refPage.suttaProps,
@@ -216,20 +215,11 @@ export async function resolveCatchAllDiscoursePage(
 		"interleaved",
 		paragraphRequest,
 	);
-	const splitContent = createCombinedMarkdown(
-		pairs,
-		true,
-		"split",
-		paragraphRequest,
-	);
 
 	if (typeof interleavedContent === "string") {
 		mainContent = interleavedContent;
 	}
-	if (typeof splitContent !== "string") {
-		splitEnglish = splitContent.english;
-		splitPali = splitContent.pali;
-	}
+	splitAvailable = hasPaliPairs(pairs);
 
 	const fpParts = (contentItem.filePath ?? "").split("/");
 	const folder = fpParts[fpParts.length - 2] || "";
@@ -347,8 +337,7 @@ export async function resolveCatchAllDiscoursePage(
 	return {
 		suttaProps,
 		mainContent,
-		splitEnglish,
-		splitPali,
+		splitAvailable,
 		refPaliOnlyContent,
 		referenceFallbackPage,
 	};

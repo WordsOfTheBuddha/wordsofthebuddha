@@ -43,6 +43,68 @@ function isHtmlLikePath(pathname) {
 	return !KNOWN_ASSET_EXT.has(ext);
 }
 
+/* Cache Storage keeps decoded bodies, so transfer compression is lost the moment
+ * a page is cached: the prerendered corpus costs ~177MB on disk versus ~30MB
+ * gzipped. We therefore gzip HTML ourselves before storing it and decode on the
+ * way out. A private marker header is used rather than Content-Encoding because
+ * the browser does not re-apply content decoding to responses a service worker
+ * synthesizes — every read must go through decodeCachedResponse.
+ */
+const CACHE_ENCODING_HEADER = "x-wotb-cache-encoding";
+
+const canCompressCache =
+	typeof CompressionStream !== "undefined" &&
+	typeof DecompressionStream !== "undefined";
+
+function isCompressibleResponse(res) {
+	if (!res || !res.ok || !res.body) return false;
+	if (res.type === "opaque") return false;
+	return (res.headers.get("content-type") || "").includes("text/html");
+}
+
+/** Stores `res` gzipped when possible, falling back to an as-is put. */
+async function putMaybeCompressed(cache, key, res) {
+	if (!canCompressCache || !isCompressibleResponse(res)) {
+		return cache.put(key, res);
+	}
+	const fallback = res.clone();
+	try {
+		const compressed = await new Response(
+			res.body.pipeThrough(new CompressionStream("gzip")),
+		).arrayBuffer();
+		const headers = new Headers(res.headers);
+		headers.set(CACHE_ENCODING_HEADER, "gzip");
+		headers.delete("content-length");
+		await cache.put(
+			key,
+			new Response(compressed, {
+				status: res.status,
+				statusText: res.statusText,
+				headers,
+			}),
+		);
+	} catch {
+		await cache.put(key, fallback);
+	}
+}
+
+/** Inverse of putMaybeCompressed; a no-op for entries we did not compress. */
+function decodeCachedResponse(res) {
+	if (!res || res.headers.get(CACHE_ENCODING_HEADER) !== "gzip") return res;
+	if (!res.body || typeof DecompressionStream === "undefined") return res;
+	const headers = new Headers(res.headers);
+	headers.delete(CACHE_ENCODING_HEADER);
+	headers.delete("content-length");
+	return new Response(
+		res.body.pipeThrough(new DecompressionStream("gzip")),
+		{
+			status: res.status,
+			statusText: res.statusText,
+			headers,
+		},
+	);
+}
+
 self.addEventListener("install", (event) => {
 	event.waitUntil(
 		(async () => {
@@ -99,7 +161,7 @@ function warmFromResponse(res, cacheKey, cache, url) {
 	const copy = res.clone();
 	return (async () => {
 		try {
-			await cache.put(cacheKey, copy.clone());
+			await putMaybeCompressed(cache, cacheKey, copy.clone());
 			const ct = copy.headers.get("content-type") || "";
 			if (ct.includes("text/html")) {
 				await prefetchLinkedAssets(await copy.text(), url);
@@ -125,11 +187,11 @@ async function networkFirst(req, event) {
 			return res;
 		} catch (_) {
 			const base = await caches.match("/search");
-			if (base) return base;
+			if (base) return decodeCachedResponse(base);
 			const off = await caches.match("/offline");
-			return (
-				off || new Response("", { status: 503, statusText: "Offline" })
-			);
+			return off
+				? decodeCachedResponse(off)
+				: new Response("", { status: 503, statusText: "Offline" });
 		}
 	}
 
@@ -160,9 +222,11 @@ async function networkFirst(req, event) {
 				if (cached) break;
 			}
 		}
-		if (cached) return cached;
+		if (cached) return decodeCachedResponse(cached);
 		const off = await caches.match("/offline");
-		return off || new Response("", { status: 503, statusText: "Offline" });
+		return off
+			? decodeCachedResponse(off)
+			: new Response("", { status: 503, statusText: "Offline" });
 	}
 }
 
@@ -236,7 +300,7 @@ self.addEventListener("fetch", (event) => {
 		event.respondWith(
 			(async () => {
 				const cached = await caches.match("/offline-manifest.json");
-				if (cached) return cached;
+				if (cached) return decodeCachedResponse(cached);
 				try {
 					const res = await fetch(req);
 					const core = await caches.open(CORE_CACHE);
@@ -390,7 +454,11 @@ async function fetchAndCacheBatch(urls, cacheName, signal, progressKey) {
 						const u = new URL(url, self.location.origin);
 						if (u.pathname !== "/offline") {
 							try {
-								await navCache.put(url, res.clone());
+								await putMaybeCompressed(
+									navCache,
+									url,
+									res.clone(),
+								);
 							} catch {}
 						}
 						// Prefetch linked assets for this HTML (always)
@@ -478,11 +546,18 @@ self.addEventListener("message", (event) => {
 	const data = event.data || {};
 	// Lightweight handshake for clients to confirm SW control (useful on iOS PWA)
 	if (data.type === "PING") {
-		try {
-			event.source?.postMessage?.({ type: "PONG" });
-		} catch {
-			notifyAll({ type: "PONG" });
-		}
+		event.waitUntil(
+			(async () => {
+				try {
+					await self.clients.claim();
+				} catch {}
+				try {
+					event.source?.postMessage?.({ type: "PONG" });
+				} catch {
+					await notifyAll({ type: "PONG" });
+				}
+			})(),
+		);
 		return;
 	}
 	if (data.type === "CACHE_URLS") {

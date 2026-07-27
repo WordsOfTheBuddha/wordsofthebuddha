@@ -12,7 +12,12 @@ import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
 import { routes } from "../utils/routes";
 import { referenceOnlyRouteSet } from "../utils/referenceOnlyRoutes";
-import { parseContent, createCombinedMarkdown } from "../utils/contentParser";
+import { isAnthologySlug } from "../utils/anthologySlugs";
+import {
+	parseContent,
+	createCombinedMarkdown,
+	hasPaliPairs,
+} from "../utils/contentParser";
 import { getLastModified } from "../utils/getLastModified";
 import { findContentImages } from "../utils/contentImage";
 
@@ -20,7 +25,14 @@ import { findContentImages } from "../utils/contentImage";
 const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 
 export async function getStaticPaths() {
-	return routes.map((discourse) => ({ params: { discourse } }));
+	// Anthologies redirect → /anthologies/:slug. Homepage content is `/`, not /index.
+	// Neither has a pliAll entry; prerendering them as discourses only warns/fails.
+	return routes
+		.filter(
+			(discourse) =>
+				!isAnthologySlug(discourse) && discourse !== "index",
+		)
+		.map((discourse) => ({ params: { discourse } }));
 }
 
 const { discourse: id } = Astro.params as { discourse?: string };
@@ -47,14 +59,10 @@ if (paliEntry) paliContent = paliEntry;
 
 const pairs = await parseContent(paliContent, contentItem);
 const interleavedContent = createCombinedMarkdown(pairs, true, "interleaved");
-const splitContent = createCombinedMarkdown(pairs, true, "split");
 
 const mainContent =
 	typeof interleavedContent === "string" ? interleavedContent : "";
-const splitEnglish =
-	typeof splitContent !== "string" ? splitContent.english : undefined;
-const splitPali =
-	typeof splitContent !== "string" ? splitContent.pali : undefined;
+const splitAvailable = hasPaliPairs(pairs);
 
 const filePath = contentItem.filePath || "";
 const lastUpdated = getLastModified(filePath);
@@ -98,11 +106,7 @@ const suttaProps = {
 ---
 
 <Layout {...suttaProps}>
-	<MDContent
-		content={mainContent}
-		splitEnglish={splitEnglish}
-		splitPali={splitPali}
-	/>
+	<MDContent content={mainContent} splitAvailable={splitAvailable} />
 
 	<!-- Paragraph ranges (e.g. /sn1.1.1-2) are SSR at src/pages/[...id].astro. -->
 </Layout>

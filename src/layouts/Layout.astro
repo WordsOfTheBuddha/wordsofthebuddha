@@ -594,7 +594,7 @@ const structuredData = buildStructuredData({
 		// Register the Service Worker for offline support (prod only)
 		if (import.meta.env.PROD && "serviceWorker" in navigator) {
 			window.addEventListener("load", () => {
-				navigator.serviceWorker.register("/sw.js?v=7").catch(() => {
+				navigator.serviceWorker.register("/sw.js?v=9").catch(() => {
 					/* ignore */
 				});
 
