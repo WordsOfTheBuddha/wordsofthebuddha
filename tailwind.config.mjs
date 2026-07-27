@@ -3,6 +3,14 @@ export default {
 	content: [
 		"./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
 		"!./src/node_modules/**",
+		// Discourse text is prose, so scanning it produces no utilities while costing
+		// ~28s per rebuild of global.css (12k files / 75MB) — and every content save
+		// invalidates that stylesheet. `src/content/en/index.mdx` stays included: it is
+		// the only content file authored with Tailwind classes. If a discourse ever
+		// needs utilities, add its path here or it will render unstyled.
+		"!./src/content/en/*/**",
+		"!./src/content/pli/**",
+		"!./src/content/references/**",
 	],
 	darkMode: "class",
 	theme: {
