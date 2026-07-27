@@ -9,8 +9,10 @@ import { normalizeForComparison } from "./searchRanking";
 const PALI_TOKEN_RE = /[a-zA-Zāīūṃṁṅñṭḍṇḷ]+/g;
 
 const MIN_TOKEN_LEN = 3;
-export const CORPUS_MIN_DOCS = 10;
-export const CORPUS_MAX_ENTRIES = 3000;
+/** Minimum Pali files a token must appear in to enter the corpus suggestion layer. */
+export const CORPUS_MIN_DOCS = 5;
+/** Max corpus-layer entries after frequency sort (curated/tooltip layers are separate). */
+export const CORPUS_MAX_ENTRIES = 5000;
 
 /** Recurring multi-word Pali stock phrases — companion terms bypass the corpus cap. */
 const STOCK_PHRASE_RE =
