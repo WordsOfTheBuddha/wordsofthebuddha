@@ -5,7 +5,18 @@ import "../styles/bottomDrawer.css";
 
 <!-- this is a client-only script component -->
 <script>
-	import { lookupSingleWord } from "../utils/paliLookup";
+	// The ms-dpd dictionary chunk is ~1.5MB; import it on first lookup rather than
+	// as a static dependency of every page load.
+	let lookupSingleWord:
+		| typeof import("../utils/paliLookup").lookupSingleWord
+		| undefined;
+	async function loadPaliLookup() {
+		if (!lookupSingleWord) {
+			({ lookupSingleWord } = await import("../utils/paliLookup"));
+		}
+		return lookupSingleWord;
+	}
+
 	// Helper function to parse Markdown-style links
 	function parseMarkdownLinks(text: string) {
 		return text.replace(
@@ -554,7 +565,8 @@ import "../styles/bottomDrawer.css";
 		);
 
 		try {
-			const data = await lookupSingleWord(word);
+			const lookup = await loadPaliLookup();
+			const data = await lookup(word);
 
 			if (data && data.definitions && data.definitions.length > 0) {
 				const content = createTooltipContent(word, data);

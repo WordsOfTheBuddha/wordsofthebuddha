@@ -2,7 +2,7 @@
 	font-family: "Spectral";
 	font-style: normal;
 	font-weight: 400;
-	font-display: block; /* Forces text to only show when font is loaded */
+	font-display: swap;
 	src: url("/assets/fonts/Spectral-Regular.woff2") format("woff2");
 }
 
@@ -10,7 +10,7 @@
 	font-family: "Spectral";
 	font-style: italic;
 	font-weight: 400;
-	font-display: block;
+	font-display: swap;
 	src: url("/assets/fonts/Spectral-Italic.woff2") format("woff2");
 }
 
@@ -18,7 +18,7 @@
 	font-family: "Spectral";
 	font-style: normal;
 	font-weight: 700;
-	font-display: block;
+	font-display: swap;
 	src: url("/assets/fonts/Spectral-Bold.woff2") format("woff2");
 }
 
@@ -27,6 +27,7 @@
 	font-family: "Spectral";
 	font-style: normal;
 	font-weight: 400;
+	font-display: swap;
 	src: url("/assets/fonts/GentiumPlus-Regular.ttf") format("truetype");
 	unicode-range: U+1E41, U+1E40;
 }
@@ -35,6 +36,7 @@
 	font-family: "Spectral";
 	font-style: normal;
 	font-weight: 700;
+	font-display: swap;
 	src: url("/assets/fonts/GentiumPlus-Bold.ttf") format("truetype");
 	unicode-range: U+1E41, U+1E40;
 }
@@ -44,6 +46,7 @@
 	src: url("/assets/fonts/GentiumPlus-Regular.ttf") format("truetype");
 	font-weight: normal;
 	font-style: normal;
+	font-display: swap;
 }
 
 @tailwind base;

@@ -463,7 +463,25 @@ const showFallbackImmediately =
 		showContent();
 	}
 
-	// Run adjustment on load
+	// Split view must measure paragraph pairs before it is shown, so it stays
+	// gated on alignment. The default interleaved view has nothing to align and
+	// must not wait for window.load, which trails every image and script.
+	function revealInitialContent() {
+		updateA11yVisibility();
+		if (isSplitVisible()) {
+			adjustParagraphAlignment();
+		} else {
+			showContent();
+		}
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", revealInitialContent);
+	} else {
+		revealInitialContent();
+	}
+
+	// Re-align once fonts and images settle, without gating visibility on it.
 	window.addEventListener("load", () => {
 		setTimeout(() => {
 			updateA11yVisibility();

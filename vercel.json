@@ -1,3 +1,33 @@
 {
-	"installCommand": "git config --global url.\"https://github.com/\".insteadOf \"ssh://git@github.com/\" && yarn install"
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"installCommand": "git config --global url.\"https://github.com/\".insteadOf \"ssh://git@github.com/\" && yarn install",
+	"headers": [
+		{
+			"source": "/_astro/(.*)",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=31536000, immutable"
+				}
+			]
+		},
+		{
+			"source": "/assets/fonts/(.*)",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=31536000, immutable"
+				}
+			]
+		},
+		{
+			"source": "/sw.js",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=0, must-revalidate"
+				}
+			]
+		}
+	]
 }

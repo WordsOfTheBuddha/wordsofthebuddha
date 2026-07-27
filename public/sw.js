@@ -90,7 +90,25 @@ self.addEventListener("activate", (event) => {
 	);
 });
 
-async function networkFirst(req) {
+/**
+ * Warms the nav + asset caches from a response. Never await this on the path
+ * that produces a navigation response: reading the body and prefetching assets
+ * would hold the document back by however long those fetches take.
+ */
+function warmFromResponse(res, cacheKey, cache, url) {
+	const copy = res.clone();
+	return (async () => {
+		try {
+			await cache.put(cacheKey, copy.clone());
+			const ct = copy.headers.get("content-type") || "";
+			if (ct.includes("text/html")) {
+				await prefetchLinkedAssets(await copy.text(), url);
+			}
+		} catch {}
+	})();
+}
+
+async function networkFirst(req, event) {
 	const cache = await caches.open(NAV_CACHE);
 	const url = new URL(req.url);
 	// Special-case /search: don't cache per-query HTML; only cache base shell when online
@@ -101,14 +119,8 @@ async function networkFirst(req) {
 			const res = await fetch(req, { signal: ctrl.signal });
 			clearTimeout(to);
 			if (res && res.ok && !url.search) {
-				await cache.put("/search", res.clone());
-				try {
-					const ct = res.headers.get("content-type") || "";
-					if (ct.includes("text/html")) {
-						const html = await res.clone().text();
-						await prefetchLinkedAssets(html, url);
-					}
-				} catch {}
+				const warm = warmFromResponse(res, "/search", cache, url);
+				if (event) event.waitUntil(warm);
 			}
 			return res;
 		} catch (_) {
@@ -127,16 +139,8 @@ async function networkFirst(req) {
 		const res = await fetch(req, { signal: ctrl.signal });
 		clearTimeout(to);
 		if (res && res.ok) {
-			try {
-				await cache.put(req, res.clone());
-			} catch {}
-			try {
-				const ct = res.headers.get("content-type") || "";
-				if (ct.includes("text/html")) {
-					const html = await res.clone().text();
-					await prefetchLinkedAssets(html, url);
-				}
-			} catch {}
+			const warm = warmFromResponse(res, req, cache, url);
+			if (event) event.waitUntil(warm);
 		}
 		return res;
 	} catch (_) {
@@ -210,7 +214,7 @@ self.addEventListener("fetch", (event) => {
 	if (isLocalhost) {
 		// For navigations in dev, use networkFirst (already handles offline fallback)
 		if (req.mode === "navigate") {
-			event.respondWith(networkFirst(req));
+			event.respondWith(networkFirst(req, event));
 			return;
 		}
 		// For other requests in dev, prefer network but cache for offline
@@ -250,7 +254,7 @@ self.addEventListener("fetch", (event) => {
 
 	// Navigations
 	if (req.mode === "navigate") {
-		event.respondWith(networkFirst(req));
+		event.respondWith(networkFirst(req, event));
 		return;
 	}
 
