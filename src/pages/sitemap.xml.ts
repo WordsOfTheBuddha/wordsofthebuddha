@@ -8,6 +8,7 @@ import topicMappings from "../data/topicMappings.json";
 import qualityMappings from "../data/qualityMappings.json";
 import simileMappings from "../data/simileMappings.json";
 import personMappings from "../data/personMappings.json";
+import { canonicalOnSlug } from "../utils/discover-data";
 
 const SITE_URL = "https://www.wordsofthebuddha.org";
 
@@ -92,7 +93,7 @@ export const GET: APIRoute = async () => {
 	Object.values(simileMappings as Record<string, Record<string, unknown>>).forEach(
 		(group) => {
 			Object.keys(group).forEach((simile) =>
-				add(`/on/${simile.toLowerCase().replace(/\s+/g, "-")}`),
+				add(`/on/${canonicalOnSlug(simile)}`),
 			);
 		},
 	);

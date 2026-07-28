@@ -2,6 +2,7 @@ import { defineMiddleware } from "astro:middleware";
 import { getEnglishEntry } from "./utils/getContentEntry";
 import { referenceOnlyRouteSet } from "./utils/referenceOnlyRoutes";
 import { routes } from "./utils/routes";
+import { canonicalOnSlug } from "./utils/discover-data";
 
 const englishRouteSet = new Set<string>(routes);
 
@@ -14,8 +15,30 @@ const SUJATO_REFERENCE_ROUTE = /^\/([^/]+)\/en\/sujato$/;
 /** Subset/paragraph slugs like sn49.1 or sn1.1.1-2 (not collection indexes like sn12). */
 const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 
+/** /on/:slug is prerendered with hyphenated slugs only; normalize spaced URLs. */
+const ON_ROUTE = /^\/on\/([^/]+)$/;
+
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
+
+	const onMatch = pathname.match(ON_ROUTE);
+	if (onMatch) {
+		const rawSlug = onMatch[1];
+		let decoded = rawSlug;
+		try {
+			decoded = decodeURIComponent(rawSlug);
+		} catch {
+			/* pathname may already be decoded */
+		}
+		const canonical = canonicalOnSlug(decoded);
+		// Compare against rawSlug too: pathname may keep %20 while decoded has spaces.
+		if (rawSlug !== canonical) {
+			return context.redirect(
+				new URL(`/on/${canonical}`, context.url),
+				301,
+			);
+		}
+	}
 
 	if (
 		pathname.startsWith("/discourse-ssr/") ||

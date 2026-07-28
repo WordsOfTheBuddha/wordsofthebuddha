@@ -339,10 +339,7 @@ export function buildAllContent(
 			([letter, group]: any) => {
 				Object.entries(group as any).forEach(
 					([key, discourses]: any) => {
-						const slug = key
-							.toLowerCase()
-							.replace(/\s+/g, "-")
-							.replace(/[^a-z0-9-]/g, "");
+						const slug = canonicalOnSlug(key);
 						const title = toChicagoTitleCase(key);
 						const list = discourses as any[];
 						items.push(
@@ -497,7 +494,15 @@ export function buildUnifiedContent(
 	return allContent;
 }
 
-function createSlugVariants(value: string): string[] {
+/** URL path segment for /on/:slug (hyphenated, lowercase). */
+export function canonicalOnSlug(value: string): string {
+	return value
+		.toLowerCase()
+		.replace(/\s+/g, "-")
+		.replace(/[^a-z0-9-]/g, "");
+}
+
+export function createSlugVariants(value: string): string[] {
 	const collapseWhitespace = (s: string) => s.replace(/\s+/g, " ").trim();
 	const lower = collapseWhitespace(value.toLowerCase());
 	const hyphenated = lower
@@ -511,7 +516,7 @@ function createSlugVariants(value: string): string[] {
 	);
 }
 
-function matchesSlugValue(
+export function matchesSlugValue(
 	value: string | undefined,
 	referenceVariants: Set<string>,
 ): boolean {
@@ -588,11 +593,7 @@ export function getStaticOnSlugs(): string[] {
 	Object.keys(qualityMappings as any).forEach((slug) => paths.add(slug));
 	Object.values(simileMappings as any).forEach((group: any) => {
 		Object.keys(group).forEach((k) => {
-			const slug = k
-				.toLowerCase()
-				.replace(/\s+/g, "-")
-				.replace(/[^a-z0-9-]/g, "");
-			paths.add(slug);
+			paths.add(canonicalOnSlug(k));
 		});
 	});
 	Object.values(personMappings as any).forEach((group: any) => {

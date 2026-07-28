@@ -6,10 +6,28 @@ import { directoryStructure } from "../data/directoryStructure";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
+import { findContentBySlug } from "../utils/discover-data";
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
 let id: string = originalId || "";
+
+// Non-prerendered /on/:slug variants (e.g. /on/sun%20and%20shade) miss the static
+// /on/ page and land here as id "on/sun and shade". Resolve and canonicalize.
+if (originalId?.startsWith("on/")) {
+	const rawSlug = originalId.slice("on/".length);
+	let decoded = rawSlug;
+	try {
+		decoded = decodeURIComponent(rawSlug);
+	} catch {
+		/* keep rawSlug */
+	}
+	const { item } = findContentBySlug(decoded);
+	if (item && rawSlug !== item.slug) {
+		return Astro.redirect(`/on/${item.slug}`, 301);
+	}
+	return new Response(null, { status: 404 });
+}
 
 // Support legacy / nested style paths like /iti/iti50-99 or /ud/ud8/ud8.2 by redirecting
 // to the canonical top-level discourse slug (last segment) if it exists.
