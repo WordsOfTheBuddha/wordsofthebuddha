@@ -1,9 +1,11 @@
 ---
+title: Muni sutta - Sage
+description: The Buddha describes the true sage as one who abandons intimacy and home to wander in peace. Unshaken by the world, the sage is compared to a swift swan, whose flight a worldly householder, like a peacock, cannot match.
+qualities: wisdom, giving up, dispassion, solitude, spiritual life, non-harm, Arahant
+theme: wisdom, inspiration
 slug: snp1.12
-source: suttacentral/bilara-data
-title: Munisutta
-edition: ms
-granularity: paragraph
+simile: peacock, swan
+priority: 1.6
 ---
 
 Santhavāto bhayaṁ jātaṁ,
@@ -83,19 +85,3 @@ Sikhī yathā nīlagīvo vihaṅgamo,
 Haṁsassa nopeti javaṁ kudācanaṁ;
 Evaṁ gihī nānukaroti bhikkhuno,
 Munino vivittassa vanamhi jhāyatoti.
-
-Munisuttaṁ dvādasamaṁ.
-
-Uragavaggo paṭhamo.
-
-Tassuddānaṁ
-
-Urago dhaniyo ceva,
-visāṇañca tathā kasi;
-Cundo parābhavo ceva,
-vasalo mettabhāvanā.
-
-Sātāgiro āḷavako,
-Vijayo ca tathā muni;
-Dvādasetāni suttāni,
-Uragavaggoti vuccatīti.
