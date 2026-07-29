@@ -57,9 +57,18 @@ if (skipped) {
 }
 
 const Content = mod.Content ?? mod.default;
-const { layout: _layout, ...frontmatter } = mod.frontmatter || {};
+const { layout, ...frontmatter } = mod.frontmatter || {};
+// MDX `layout:` already wraps Content in PostLayout. Re-wrapping here doubles
+// the chrome (navbar, title, image) — which is what broke /fire locally.
+const alreadyWrapped = typeof layout === "string" && layout.length > 0;
 ---
 
-<PostLayout {...frontmatter}>
-	<Content />
-</PostLayout>
+{
+	alreadyWrapped ? (
+		<Content />
+	) : (
+		<PostLayout {...frontmatter}>
+			<Content />
+		</PostLayout>
+	)
+}
