@@ -169,6 +169,14 @@ const sparseLayoutTitleTop =
 const titleNeedsBreadcrumbSpacing =
 	showPageTitle && !breadcrumbsHidden && !hasDescription;
 
+/** Anthology discourse pages use seoDescription only; tighten gap before BookCard. */
+const isAnthologyPage = Boolean(fp?.includes("anthologies"));
+const titleBreadcrumbSpacingClasses = titleNeedsBreadcrumbSpacing
+	? isAnthologyPage
+		? "mt-3 sm:mt-4"
+		: "mt-3 sm:mt-4 mb-3 sm:mb-4"
+	: "";
+
 // Extract first image for SEO meta tags (works with single or array)
 const firstContentImage = contentImage
 	? Array.isArray(contentImage)
@@ -510,14 +518,16 @@ const structuredData = buildStructuredData({
 								class:list={[
 									"flex items-start justify-between",
 									sparseLayoutTitleTop && "pt-2 sm:pt-4",
-									titleNeedsBreadcrumbSpacing &&
-										"mt-3 sm:mt-4",
+									titleBreadcrumbSpacingClasses,
 								]}
 							>
 								<Title
 									id={id}
 									title={title || ""}
 									showFilter={showFilter}
+									compactBottomSpacing={
+										isAnthologyPage && titleNeedsBreadcrumbSpacing
+									}
 								>
 									{
 										titleIcon && (
