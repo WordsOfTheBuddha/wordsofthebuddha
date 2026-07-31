@@ -1,6 +1,7 @@
 import collectionReferenceIndex from "../data/collectionReferenceIndex";
 import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { discourseBookPrefix } from "./discourseNeighbors";
+import { canonicalOnSlug } from "./discover-data";
 
 export type ReferencePostData = {
 	slug: string;
@@ -35,10 +36,10 @@ function entryHasTag(
 	tagSlug: string,
 ): boolean {
 	if (!entry.qualities) return false;
-	const tag = tagSlug.toLowerCase();
+	const tag = canonicalOnSlug(tagSlug);
 	return entry.qualities
 		.split(",")
-		.map((quality) => quality.trim().toLowerCase())
+		.map((quality) => canonicalOnSlug(quality.trim()))
 		.includes(tag);
 }
 

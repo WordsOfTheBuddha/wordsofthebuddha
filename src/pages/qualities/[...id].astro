@@ -1,11 +1,19 @@
 ---
 export const prerender = false;
 import qualityMappings from "../../data/qualityMappings.json";
+import { canonicalOnSlug } from "../../utils/discover-data";
 
 const { id } = Astro.params;
 if (!id || !(id in qualityMappings)) {
-	return Astro.redirect("/qualities");
+	// Also accept hyphenated forms of spaced quality keys.
+	const matchKey = Object.keys(qualityMappings).find(
+		(k) => canonicalOnSlug(k) === canonicalOnSlug(id || ""),
+	);
+	if (!matchKey) {
+		return Astro.redirect("/qualities");
+	}
+	return Astro.redirect(`/on/${canonicalOnSlug(matchKey)}`, 301);
 }
 
-return Astro.redirect(`/on/${id}`, 301);
+return Astro.redirect(`/on/${canonicalOnSlug(id)}`, 301);
 ---

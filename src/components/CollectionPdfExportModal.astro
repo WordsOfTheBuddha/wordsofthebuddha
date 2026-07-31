@@ -7,6 +7,17 @@ import type { CollectionPdfPreviewChapter } from "../utils/collectionPdfPreviewM
 import type { PdfExportSelectionTree } from "../utils/collectionPdfExportTree";
 import { transformId } from "../utils/transformId";
 
+/** True when two labels are the same ignoring case / hyphen vs space. */
+function labelsEquivalent(a: string, b: string): boolean {
+	const norm = (s: string) =>
+		s
+			.toLowerCase()
+			.replace(/[-_]+/g, " ")
+			.replace(/\s+/g, " ")
+			.trim();
+	return norm(a) === norm(b);
+}
+
 interface Props {
 	collectionSlug: string;
 	/** Override export API path (default `/api/export/{collectionSlug}`). */
@@ -130,13 +141,24 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 										<label class="pdf-tree-chapter-label">
 											<input type="checkbox" class="pdf-chapter-cb" checked />
 											<span class="pdf-tree-chapter-title">
-												<span class="pdf-tree-id">{transformId(ch.id)}</span>
-												{ch.title && ch.title.trim() !== ch.id ? (
-													<>
-														{" "}
-														<span>{ch.title}</span>
-													</>
-												) : null}
+												{(() => {
+													const chapterLabel = transformId(ch.id);
+													const title = ch.title?.trim() ?? "";
+													const titleRedundant =
+														!title ||
+														labelsEquivalent(title, ch.id) ||
+														labelsEquivalent(title, chapterLabel);
+													if (titleRedundant) {
+														return <span>{title || chapterLabel}</span>;
+													}
+													return (
+														<>
+															<span class="pdf-tree-id">{chapterLabel}</span>
+															{" "}
+															<span>{title}</span>
+														</>
+													);
+												})()}
 											</span>
 										</label>
 									</div>

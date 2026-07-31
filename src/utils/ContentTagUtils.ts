@@ -52,11 +52,31 @@ export const contentTypeConfigs = {
 	},
 };
 
+/** Match spaced (`ill will`) and hyphenated (`ill-will`) quality keys. */
+export function qualityListIncludes(
+	list: readonly string[],
+	slug: string,
+): boolean {
+	const target = slug
+		.toLowerCase()
+		.replace(/\s+/g, "-")
+		.replace(/[^a-z0-9-]/g, "");
+	return list.some(
+		(q) =>
+			q
+				.toLowerCase()
+				.replace(/\s+/g, "-")
+				.replace(/[^a-z0-9-]/g, "") === target,
+	);
+}
+
 export function getQualityContentType(
 	qualitySlug: string
 ): "bright-quality" | "negative-quality" | "neutral-quality" {
-	if (qualities.positive.includes(qualitySlug)) return "bright-quality";
-	if (qualities.negative.includes(qualitySlug)) return "negative-quality";
+	if (qualityListIncludes(qualities.positive, qualitySlug))
+		return "bright-quality";
+	if (qualityListIncludes(qualities.negative, qualitySlug))
+		return "negative-quality";
 	return "neutral-quality";
 }
 

@@ -6,7 +6,7 @@ import { directoryStructure } from "../data/directoryStructure";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
-import { findContentBySlug } from "../utils/discover-data";
+import { canonicalOnSlug, findContentBySlug } from "../utils/discover-data";
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
@@ -23,8 +23,11 @@ if (originalId?.startsWith("on/")) {
 		/* keep rawSlug */
 	}
 	const { item } = findContentBySlug(decoded);
-	if (item && rawSlug !== item.slug) {
-		return Astro.redirect(`/on/${item.slug}`, 301);
+	if (item) {
+		const canonical = canonicalOnSlug(item.slug);
+		if (canonicalOnSlug(decoded) !== canonical) {
+			return Astro.redirect(`/on/${canonical}`, 301);
+		}
 	}
 	return new Response(null, { status: 404 });
 }

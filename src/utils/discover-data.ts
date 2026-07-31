@@ -24,44 +24,70 @@ const collectionPriority: Record<string, number> = {
 	dhp: 7,
 };
 
+function normalizeQualityKey(value: string): string {
+	return value
+		.toLowerCase()
+		.replace(/\s+/g, "-")
+		.replace(/[^a-z0-9-]/g, "");
+}
+
+function qualityKeyMatches(a: string, b: string): boolean {
+	return normalizeQualityKey(a) === normalizeQualityKey(b);
+}
+
+function qualityListIncludes(list: string[] | undefined, slug: string): boolean {
+	if (!Array.isArray(list)) return false;
+	return list.some((q) => qualityKeyMatches(q, slug));
+}
+
+function resolveQualityDataKey(qualitySlug: string): string | undefined {
+	const syn = (qualities as any).qualities || {};
+	if (Array.isArray(syn[qualitySlug])) return qualitySlug;
+	return Object.keys(syn).find((key) => qualityKeyMatches(key, qualitySlug));
+}
+
 function getQualityType(
 	qualitySlug: string,
 ): "positive" | "negative" | "neutral" {
-	if ((qualities as any).positive.includes(qualitySlug)) return "positive";
-	if ((qualities as any).negative.includes(qualitySlug)) return "negative";
-	if ((qualities as any).neutral.includes(qualitySlug)) return "neutral";
+	if (qualityListIncludes((qualities as any).positive, qualitySlug))
+		return "positive";
+	if (qualityListIncludes((qualities as any).negative, qualitySlug))
+		return "negative";
+	if (qualityListIncludes((qualities as any).neutral, qualitySlug))
+		return "neutral";
 	return "neutral";
 }
 
 function getQualitySynonyms(qualitySlug: string): string[] {
 	const syn = (qualities as any).qualities || {};
-	return Array.isArray(syn[qualitySlug])
-		? syn[qualitySlug].filter(
-				(s: string) =>
-					!s.startsWith("[") &&
-					!s.startsWith("Related:") &&
-					!s.startsWith("Supported by:") &&
-					!s.startsWith("Leads to:") &&
-					!s.startsWith("Guarded by:") &&
-					!s.startsWith("Opposite:") &&
-					!s.startsWith("Context:"),
-			)
-		: [];
+	const key = resolveQualityDataKey(qualitySlug);
+	if (!key || !Array.isArray(syn[key])) return [];
+	return syn[key].filter(
+		(s: string) =>
+			!s.startsWith("[") &&
+			!s.startsWith("Related:") &&
+			!s.startsWith("Supported by:") &&
+			!s.startsWith("Leads to:") &&
+			!s.startsWith("Guarded by:") &&
+			!s.startsWith("Opposite:") &&
+			!s.startsWith("Context:"),
+	);
 }
 
 function getQualityPali(qualitySlug: string): string[] {
 	const syn = (qualities as any).qualities || {};
-	return Array.isArray(syn[qualitySlug])
-		? syn[qualitySlug]
-				.filter((s: string) => s.startsWith("["))
-				.map((s: string) => s.slice(1, -1))
-		: [];
+	const key = resolveQualityDataKey(qualitySlug);
+	if (!key || !Array.isArray(syn[key])) return [];
+	return syn[key]
+		.filter((s: string) => s.startsWith("["))
+		.map((s: string) => s.slice(1, -1));
 }
 
 function getQualityContext(qualitySlug: string): string | undefined {
 	const syn = (qualities as any).qualities || {};
-	if (!Array.isArray(syn[qualitySlug])) return undefined;
-	const ctx = syn[qualitySlug].find((s: string) => s.startsWith("Context:"));
+	const key = resolveQualityDataKey(qualitySlug);
+	if (!key || !Array.isArray(syn[key])) return undefined;
+	const ctx = syn[key].find((s: string) => s.startsWith("Context:"));
 	return ctx ? ctx.replace("Context: ", "") : undefined;
 }
 
@@ -242,17 +268,20 @@ export function buildAllContent(
 	}
 
 	if (include.includes("qualities")) {
-		Object.entries(qualityMappings as any).forEach(([slug, discourses]) => {
+		Object.entries(qualityMappings as any).forEach(([rawSlug, discourses]) => {
 			const list = discourses as any[];
-			const title = slug
-				.split("-")
+			// Display title from the source key; URL slug is always hyphenated.
+			const title = rawSlug
+				.split(/[-\s]+/)
 				.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
 				.join(" ");
-			const synonymsList = (qualities as any).qualities?.[slug] || [];
-			const qualityType = getQualityType(slug);
-			const synonyms = getQualitySynonyms(slug);
-			const pali = getQualityPali(slug);
-			const context = getQualityContext(slug);
+			const slug = canonicalOnSlug(rawSlug);
+			const dataKey = resolveQualityDataKey(rawSlug) || rawSlug;
+			const synonymsList = (qualities as any).qualities?.[dataKey] || [];
+			const qualityType = getQualityType(rawSlug);
+			const synonyms = getQualitySynonyms(rawSlug);
+			const pali = getQualityPali(rawSlug);
+			const context = getQualityContext(rawSlug);
 			const related = extractBracketed(synonymsList, "Related:");
 			const supportedBy = extractBracketed(synonymsList, "Supported by:");
 			const leadsTo = extractBracketed(synonymsList, "Leads to:");
@@ -585,19 +614,25 @@ export function findContentBySlug(
 export function getStaticOnSlugs(): string[] {
 	const paths = new Set<string>();
 	Object.entries(topicMappings as any).forEach(([slug, topic]: any) => {
-		paths.add(slug);
+		paths.add(canonicalOnSlug(slug));
 		if (Array.isArray(topic.redirects)) {
-			(topic.redirects as string[]).forEach((r) => paths.add(r));
+			(topic.redirects as string[]).forEach((r) =>
+				paths.add(canonicalOnSlug(r)),
+			);
 		}
 	});
-	Object.keys(qualityMappings as any).forEach((slug) => paths.add(slug));
+	Object.keys(qualityMappings as any).forEach((slug) =>
+		paths.add(canonicalOnSlug(slug)),
+	);
 	Object.values(simileMappings as any).forEach((group: any) => {
 		Object.keys(group).forEach((k) => {
 			paths.add(canonicalOnSlug(k));
 		});
 	});
 	Object.values(personMappings as any).forEach((group: any) => {
-		Object.keys(group as object).forEach((slug) => paths.add(slug));
+		Object.keys(group as object).forEach((slug) =>
+			paths.add(canonicalOnSlug(slug)),
+		);
 	});
 	return Array.from(paths);
 }

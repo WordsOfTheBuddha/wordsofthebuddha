@@ -87,8 +87,12 @@ export const GET: APIRoute = async () => {
 	// these slugs, so they are the site's only version and were absent entirely.
 	referenceOnlyRoutes.forEach((slug) => add(`/${slug}`));
 
-	Object.keys(topicMappings).forEach((slug) => add(`/on/${slug}`));
-	Object.keys(qualityMappings).forEach((slug) => add(`/on/${slug}`));
+	Object.keys(topicMappings).forEach((slug) =>
+		add(`/on/${canonicalOnSlug(slug)}`),
+	);
+	Object.keys(qualityMappings).forEach((slug) =>
+		add(`/on/${canonicalOnSlug(slug)}`),
+	);
 
 	Object.values(simileMappings as Record<string, Record<string, unknown>>).forEach(
 		(group) => {

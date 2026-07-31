@@ -13,15 +13,19 @@ import "../../styles/topicTag.css";
 import graphSvg from "../../assets/graph.svg?raw";
 import {
 	buildAllContent,
+	canonicalOnSlug,
 	findContentBySlug,
 	getStaticOnSlugs,
 } from "../../utils/discover-data";
+import { qualityListIncludes } from "../../utils/ContentTagUtils";
 import {
 	getReferencePostsForDiscourseScopes,
 	getReferencePostsForTag,
 } from "../../utils/referencePostsForPage";
 import { buildOnPagePdfExportTree } from "../../utils/onPagePdfExportTree";
 import { discourseHasSvgAssetForExport } from "../../utils/contentImage";
+import { formatDiscourseCountLabel } from "../../utils/onPageDiscourseCountClient";
+import { urlHasRefParam } from "../../utils/urlRefParam";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
 export async function getStaticPaths() {
@@ -47,8 +51,11 @@ if (!content || !contentType) {
 }
 
 // Spaced or legacy slug forms (e.g. /on/sun%20and%20shade) → hyphenated /on/sun-and-shade.
-if (slug !== content.slug) {
-	return Astro.redirect(`/on/${content.slug}`, 301);
+// Always redirect to the hyphenated canonical — never back to a spaced content.slug
+// (middleware also forces hyphenation; redirecting to spaced keys causes a loop).
+const canonicalSlug = canonicalOnSlug(content.slug);
+if (slug !== canonicalSlug) {
+	return Astro.redirect(`/on/${canonicalSlug}`, 301);
 }
 
 // Get the appropriate content type for the tag
@@ -76,14 +83,15 @@ if (!isTopic) {
 
 const isQuality =
 	contentType === "quality" ||
-	qualities.positive.includes(slug) ||
-	qualities.negative.includes(slug) ||
-	qualities.neutral.includes(slug);
+	qualityListIncludes(qualities.positive, slug) ||
+	qualityListIncludes(qualities.negative, slug) ||
+	qualityListIncludes(qualities.neutral, slug);
 
 let qualityType = "neutral-quality";
 if (isQuality) {
-	if (qualities.positive.includes(slug)) qualityType = "bright-quality";
-	else if (qualities.negative.includes(slug))
+	if (qualityListIncludes(qualities.positive, slug))
+		qualityType = "bright-quality";
+	else if (qualityListIncludes(qualities.negative, slug))
 		qualityType = "negative-quality";
 }
 
@@ -101,7 +109,6 @@ const additionalDiscourses =
 		: allDiscourses;
 
 const displayTitle = content.title;
-const totalDiscourses = allDiscourses.length;
 
 const enSlugsOnPage = new Set(allDiscourses.map((d: { id: string }) => d.id));
 const referencePostsForPage =
@@ -111,6 +118,12 @@ const referencePostsForPage =
 				allDiscourses.map((d: { id: string }) => d.id),
 				enSlugsOnPage,
 			);
+const curatedDiscourseCount = allDiscourses.length;
+const referenceDiscourseCount = referencePostsForPage.length;
+const refModeOnPage = urlHasRefParam(Astro.url.searchParams);
+const displayDiscourseCount = refModeOnPage
+	? curatedDiscourseCount + referenceDiscourseCount
+	: curatedDiscourseCount;
 const hasReferenceOnlyDiscourses = referencePostsForPage.length > 0;
 const referencePostsJson = JSON.stringify(referencePostsForPage);
 const showDiscoursesList =
@@ -200,10 +213,12 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 					</div>
 					<div class="shrink-0 self-start">
 						<span
+							id="on-discourse-count-badge"
 							class="px-2 py-0.25 rounded-md text-xs font-medium text-white bg-[var(--primary-color)] shadow-sm"
+							data-curated-count={curatedDiscourseCount}
+							data-reference-count={referenceDiscourseCount}
 						>
-							{totalDiscourses}&nbsp;
-							{totalDiscourses === 1 ? "discourse" : "discourses"}
+							{formatDiscourseCountLabel(displayDiscourseCount)}
 						</span>
 					</div>
 				</div>
@@ -644,11 +659,17 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 	<script>
 		import { initReferenceDiscourseCards } from "../../utils/referenceDiscourseCardsClient";
 		import { initOnPageDiscourseFilter } from "../../utils/onPageDiscourseFilter";
+		import { syncOnPageDiscourseCount } from "../../utils/onPageDiscourseCountClient";
 
 		function initOnPageDiscourses() {
 			const grid = document.getElementById("discourses-grid");
+			const refOptions = {
+				onRefModeChange: () => syncOnPageDiscourseCount(),
+			};
+
 			if (!grid) {
-				initReferenceDiscourseCards();
+				initReferenceDiscourseCards(refOptions);
+				syncOnPageDiscourseCount();
 				return;
 			}
 
@@ -656,7 +677,9 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 			initReferenceDiscourseCards({
 				getActiveFilter: filter.getActiveFilter,
 				applyFilter: filter.applyFilter,
+				...refOptions,
 			});
+			syncOnPageDiscourseCount();
 		}
 
 		if (document.readyState === "loading") {

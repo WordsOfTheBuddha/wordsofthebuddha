@@ -2,6 +2,7 @@ import type { UnifiedContentItem } from "../types/discover";
 import {
 	generateContentTagHtml,
 	getContentTypeFromApiData,
+	qualityListIncludes,
 } from "./ContentTagUtils";
 import qualities from "../data/qualities.json";
 import topicMappings from "../data/topicMappings.json";
@@ -101,9 +102,9 @@ export class DiscoverRenderer {
 
 		const isQuality =
 			item.type === "quality" ||
-			qualities.positive.includes(item.slug) ||
-			qualities.negative.includes(item.slug) ||
-			qualities.neutral.includes(item.slug);
+			qualityListIncludes(qualities.positive, item.slug) ||
+			qualityListIncludes(qualities.negative, item.slug) ||
+			qualityListIncludes(qualities.neutral, item.slug);
 
 		let contentTagHtml = "";
 
@@ -113,9 +114,9 @@ export class DiscoverRenderer {
 
 		if (isQuality) {
 			let qualityType = "neutral-quality";
-			if (qualities.positive.includes(item.slug))
+			if (qualityListIncludes(qualities.positive, item.slug))
 				qualityType = "bright-quality";
-			else if (qualities.negative.includes(item.slug))
+			else if (qualityListIncludes(qualities.negative, item.slug))
 				qualityType = "negative-quality";
 
 			contentTagHtml += generateContentTagHtml(qualityType as any);

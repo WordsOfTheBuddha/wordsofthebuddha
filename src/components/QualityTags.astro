@@ -1,6 +1,7 @@
 ---
 import qualities from "../data/qualities.json";
 import topicMappings from "../data/topicMappings.json";
+import { canonicalOnSlug } from "../utils/discover-data";
 import EntityPopover from "./EntityPopover.astro";
 
 interface Props {
@@ -119,19 +120,19 @@ const combinedTags: CombinedTag[] = [
 	...positiveQualities.map((quality) => ({
 		id: quality,
 		displayText: capitalizeFirstLetter(quality),
-		href: `/on/${quality}`,
+		href: `/on/${canonicalOnSlug(quality)}`,
 		styleType: "positive" as const,
 	})),
 	...neutralQualities.map((quality) => ({
 		id: quality,
 		displayText: capitalizeFirstLetter(quality),
-		href: `/on/${quality}`,
+		href: `/on/${canonicalOnSlug(quality)}`,
 		styleType: "neutral" as const,
 	})),
 	...negativeQualities.map((quality) => ({
 		id: quality,
 		displayText: capitalizeFirstLetter(quality),
-		href: `/on/${quality}`,
+		href: `/on/${canonicalOnSlug(quality)}`,
 		styleType: "negative" as const,
 	})),
 ].sort((a, b) =>

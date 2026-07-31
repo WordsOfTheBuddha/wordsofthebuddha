@@ -53,4 +53,28 @@ describe("referencePostsForPage", () => {
 			"tag-scoped ref list must not include sn45.4",
 		);
 	});
+
+	it("matches hyphenated tag slugs to spaced quality labels", () => {
+		const enIllWill = new Set([
+			"mn2",
+			"mn19",
+			"mn39",
+			"mn40",
+			"mn41",
+			"mn42",
+			"mn46",
+			"mn64",
+			"mn106",
+			"mn107",
+			"sn42.6",
+		]);
+		const spaced = getReferencePostsForTag("ill will", enIllWill);
+		const hyphenated = getReferencePostsForTag("ill-will", enIllWill);
+		assert.equal(
+			hyphenated.length,
+			spaced.length,
+			"ill-will and ill will should resolve the same refs",
+		);
+		assert.ok(hyphenated.length > 0, "expected reference discourses for ill will");
+	});
 });
