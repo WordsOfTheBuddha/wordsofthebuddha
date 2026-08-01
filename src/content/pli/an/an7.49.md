@@ -4,6 +4,8 @@ description: Seven perceptions, of 1) unattractiveness, 2) death, 3) unpleasantn
 qualities: recollection of death, recognition of unattractiveness, recognition of impermanence, recognition of unsatisfactoriness, recognition of not-self, cultivation, perception
 theme: training guideline, wisdom, cultivating discernment, inspiration
 slug: an7.49
+priority: 1.2
+similar: an10.60
 ---
 
 “Sattimā, bhikkhave, saññā bhāvitā bahulīkatā mahapphalā honti mahānisaṁsā amatogadhā amatapariyosānā.
