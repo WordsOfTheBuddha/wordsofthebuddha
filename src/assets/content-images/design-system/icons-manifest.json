@@ -450,7 +450,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"an10.60"
+			],
 			"labels": [
 				"phenomena"
 			],
@@ -570,7 +573,10 @@
 				"line-art",
 				"flame"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"an10.60"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -589,7 +595,8 @@
 			"discourse": [
 				"mn2",
 				"mn9",
-				"mn95"
+				"mn95",
+				"an10.60"
 			],
 			"labels": [
 				"five hindrances",
@@ -606,7 +613,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn2",
+			"discourse": [
+				"mn2",
+				"an10.60"
+			],
 			"labels": [
 				"harm",
 				"unwholesome"
@@ -933,7 +943,8 @@
 			"discourse": [
 				"mn118",
 				"mn10",
-				"mn148"
+				"mn148",
+				"an10.60"
 			],
 			"labels": [
 				"mindfulness",
@@ -1338,7 +1349,8 @@
 			],
 			"discourse": [
 				"mn119",
-				"mn10"
+				"mn10",
+				"an10.60"
 			],
 			"labels": [
 				"awakening",
@@ -1398,7 +1410,8 @@
 			],
 			"discourse": [
 				"mn119",
-				"mn10"
+				"mn10",
+				"an10.60"
 			],
 			"labels": [
 				"mindfulness"
@@ -2410,7 +2423,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"an10.60"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2426,7 +2442,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"an10.60"
+			],
 			"labels": [
 				"five hindrances",
 				"non harm",
@@ -2633,7 +2652,8 @@
 				"mn106",
 				"mn9",
 				"mn111",
-				"mn138"
+				"mn138",
+				"an10.60"
 			],
 			"labels": [
 				"dispassion",
@@ -2672,7 +2692,8 @@
 			"discourse": [
 				"mn106",
 				"mn138",
-				"mn140"
+				"mn140",
+				"an10.60"
 			],
 			"labels": [
 				"formless",
@@ -2799,7 +2820,8 @@
 				"mn77",
 				"mn111",
 				"mn138",
-				"mn140"
+				"mn140",
+				"an10.60"
 			],
 			"labels": [
 				"ending"
@@ -3219,7 +3241,10 @@
 				"line-art",
 				"teal"
 			],
-			"discourse": "mn9",
+			"discourse": [
+				"mn9",
+				"an10.60"
+			],
 			"labels": [
 				"wholesome"
 			],
@@ -3278,7 +3303,8 @@
 			],
 			"discourse": [
 				"mn9",
-				"mn138"
+				"mn138",
+				"an10.60"
 			],
 			"labels": [
 				"craving",
