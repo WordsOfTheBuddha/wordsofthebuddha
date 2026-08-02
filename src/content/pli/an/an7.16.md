@@ -1,9 +1,10 @@
 ---
+title: Aniccānupassī sutta - Observing Impermanence
+description: Seven types of noble persons are worthy of offerings. By constantly observing impermanence in all conditions, they attain liberation, ranging from Arahants who exhaust the taints in this life to different types of Non-Returners.
+qualities: liberation, recognition of impermanence
+theme: cultivating discernment, wisdom
 slug: an7.16
-source: suttacentral/bilara-data
-title: Aniccānupassīsutta
-edition: ms
-granularity: paragraph
+priority: 1.1
 ---
 
 “Sattime, bhikkhave, puggalā āhuneyyā pāhuneyyā dakkhiṇeyyā añjalikaraṇīyā anuttaraṁ puññakkhettaṁ lokassa. Katame satta?
@@ -23,5 +24,3 @@ sasaṅkhāraparinibbāyī hoti …pe…
 uddhaṁsoto hoti akaniṭṭhagāmī. Ayaṁ, bhikkhave, sattamo puggalo āhuneyyo pāhuneyyo dakkhiṇeyyo añjalikaraṇīyo anuttaraṁ puññakkhettaṁ lokassa.
 
 Ime kho, bhikkhave, satta puggalā āhuneyyā pāhuneyyā dakkhiṇeyyā añjalikaraṇīyā anuttaraṁ puññakkhettaṁ lokassā”ti.
-
-Chaṭṭhaṁ.
