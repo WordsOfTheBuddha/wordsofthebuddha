@@ -80,10 +80,18 @@ function buildNormalizedContentMap(
 
 let nativeSearchData: SearchData[] | null = null;
 
+function invalidateDerivedSearchCaches(): void {
+	fuseIndex = null;
+	mergedFuseIndex = null;
+	normalizedContentMap = null;
+	mergedNormalizedContentMap = null;
+}
+
 async function ensureNativeSearchData(): Promise<SearchData[]> {
-	if (!nativeSearchData) {
-		nativeSearchData =
-			(await loadNativeSearchIndex()) as unknown as SearchData[];
+	const fresh = (await loadNativeSearchIndex()) as unknown as SearchData[];
+	if (nativeSearchData !== fresh) {
+		nativeSearchData = fresh;
+		invalidateDerivedSearchCaches();
 	}
 	return nativeSearchData;
 }
@@ -106,9 +114,11 @@ async function buildMergedNormalizedContentMap(): Promise<
 }
 
 async function loadReferenceSearchData(): Promise<SearchData[]> {
-	if (referenceSearchData) return referenceSearchData;
-	referenceSearchData =
-		(await loadReferenceSearchIndex()) as unknown as SearchData[];
+	const fresh = (await loadReferenceSearchIndex()) as unknown as SearchData[];
+	if (referenceSearchData !== fresh) {
+		referenceSearchData = fresh;
+		invalidateDerivedSearchCaches();
+	}
 	return referenceSearchData;
 }
 

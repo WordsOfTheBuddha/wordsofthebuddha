@@ -1,6 +1,11 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+const DEV_RELOAD_INDEX_FILES = new Set([
+	"search-index.json",
+	"reference-search-index.json",
+]);
 
 const INDEX_FILES = [
 	"search-index.json",
@@ -44,6 +49,55 @@ export function searchIndexStatic() {
 											res.end(readFileSync(path));
 										});
 									}
+
+									// Dev: start background cache rebuild when contentWatcher
+									// rewrites generated search indexes (stale-while-revalidate).
+									const watchPaths = [
+										...DEV_RELOAD_INDEX_FILES,
+									].map((file) => generatedPath(root, file));
+									for (const watchPath of watchPaths) {
+										if (existsSync(watchPath)) {
+											server.watcher.add(watchPath);
+										}
+									}
+
+									const scheduleDevSearchCacheReload = async (
+										changedFile,
+									) => {
+										const name = basename(changedFile);
+										if (!DEV_RELOAD_INDEX_FILES.has(name)) return;
+										const mod = await server.ssrLoadModule(
+											"/src/utils/loadSearchIndexData.ts",
+										);
+										if (name === "search-index.json") {
+											mod.scheduleNativeSearchIndexReload?.();
+										} else if (
+											name === "reference-search-index.json"
+										) {
+											mod.scheduleReferenceSearchIndexReload?.();
+										}
+									};
+
+									server.watcher.on("change", (changedFile) => {
+										scheduleDevSearchCacheReload(changedFile).catch(
+											(err) => {
+												console.error(
+													"[search-index-static] dev cache reload failed:",
+													err,
+												);
+											},
+										);
+									});
+									server.watcher.on("add", (changedFile) => {
+										scheduleDevSearchCacheReload(changedFile).catch(
+											(err) => {
+												console.error(
+													"[search-index-static] dev cache reload failed:",
+													err,
+												);
+											},
+										);
+									});
 								},
 							},
 						],
