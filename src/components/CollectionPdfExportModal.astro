@@ -1091,6 +1091,10 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 					const body = await response.json();
 					detail = (body as { error?: string }).error ?? detail;
 				} catch {}
+				if (response.status === 504) {
+					detail =
+						"The export took too long on the server. Try selecting fewer discourses, or try again in a moment.";
+				}
 				throw new Error(detail);
 			}
 

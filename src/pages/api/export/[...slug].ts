@@ -433,15 +433,19 @@ async function runOnPagePdfGeneration(
 	activeJobs++;
 	let browser: Browser | undefined;
 	try {
-		const collectionData = await fetchOnPagePdfData(
-			pageSlug,
-			title,
-			description,
-			discourseLines,
-			imageMode,
-			pdfContentOptions,
-			selectedDiscourseSlugs,
-		);
+		const [collectionData, launchedBrowser] = await Promise.all([
+			fetchOnPagePdfData(
+				pageSlug,
+				title,
+				description,
+				discourseLines,
+				imageMode,
+				pdfContentOptions,
+				selectedDiscourseSlugs,
+			),
+			launchBrowser(),
+		]);
+		browser = launchedBrowser;
 
 		const totalDiscourses = countCollectionDiscourses(collectionData);
 		if (totalDiscourses === 0) {
@@ -456,8 +460,6 @@ async function runOnPagePdfGeneration(
 			date: downloadDate,
 			vizImageMode,
 		});
-
-		browser = await launchBrowser();
 		const page = await browser.newPage();
 		await page.setViewportSize({ width: 794, height: 1123 });
 		await page.setContent(html, {
@@ -549,13 +551,17 @@ async function runPdfGeneration(
 	activeJobs++;
 	let browser: Browser | undefined;
 	try {
-		const collectionData = await fetchCollectionPdfData(
-			slug,
-			metadata,
-			imageMode,
-			pdfContentOptions,
-			selectedDiscourseSlugs,
-		);
+		const [collectionData, launchedBrowser] = await Promise.all([
+			fetchCollectionPdfData(
+				slug,
+				metadata,
+				imageMode,
+				pdfContentOptions,
+				selectedDiscourseSlugs,
+			),
+			launchBrowser(),
+		]);
+		browser = launchedBrowser;
 
 		const totalDiscourses = countCollectionDiscourses(collectionData);
 
@@ -576,8 +582,6 @@ async function runPdfGeneration(
 			parentTitle,
 			vizImageMode,
 		});
-
-		browser = await launchBrowser();
 
 		const page = await browser.newPage();
 
