@@ -9,6 +9,7 @@ import { generateQualityMappings } from "./generateQualityMappings.ts";
 import { incrementalUpdate as updateTranslationMemory } from "./generateTranslationMemory.ts";
 import { incrementalSearchIndexUpdate } from "./generateSearchIndex.ts";
 import { generateContentCounts } from "./addContentCounts.ts";
+import { generateCollectionAvailability } from "./generateCollectionAvailability.ts";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const CONTENT_DIR = resolve(__dirname, "../content/en");
@@ -117,7 +118,9 @@ async function watchContentDirectory() {
 						const refOnlyCount = await generateReferenceOnlyRoutes();
 						return { routeCount, refOnlyCount };
 					}),
-					generateContentCounts(),
+					generateContentCounts().then(() =>
+						generateCollectionAvailability(),
+					),
 				]);
 				await Promise.all([
 					incrementalSearchIndexUpdate(absChangedFile),

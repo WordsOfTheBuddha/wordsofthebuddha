@@ -2,7 +2,7 @@
 
 import fs from "fs/promises";
 import path from "path";
-import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
+import type { DirectoryStructure } from "../types/directory";
 import {
 	CANONICAL_TOTALS,
 	COMPLETE_COLLECTIONS,
@@ -11,9 +11,29 @@ import {
 	siteAvailability,
 } from "./collectionAvailabilityCounts";
 
-async function main() {
+async function loadDirectoryStructureWithCounts(): Promise<
+	Record<string, DirectoryStructure>
+> {
+	const filePath = path.join(
+		process.cwd(),
+		"src/data/directoryStructureWithCounts.ts",
+	);
+	const content = await fs.readFile(filePath, "utf8");
+	const marker = "export const directoryStructureWithCounts";
+	const markerIdx = content.indexOf(marker);
+	if (markerIdx < 0) {
+		throw new Error(
+			`directoryStructureWithCounts export not found in ${filePath}`,
+		);
+	}
+	const jsonStart = content.indexOf("{", markerIdx);
+	const jsonEnd = content.lastIndexOf("}") + 1;
+	return JSON.parse(content.slice(jsonStart, jsonEnd));
+}
+
+export async function generateCollectionAvailability() {
 	const enriched = enrichDirectoryWithAvailability(
-		directoryStructureWithCounts,
+		await loadDirectoryStructureWithCounts(),
 	);
 
 	// Complete collections: align readable/translated with discourse-level contentCount
@@ -92,9 +112,14 @@ export const directoryStructureWithCounts: Record<string, DirectoryStructure> = 
 	console.log(
 		`collection-availability: wrote collectionAvailability.ts (${unitCount} units)`,
 	);
+	return unitCount;
 }
 
-main().catch((error) => {
-	console.error("Error generating collection availability:", error);
-	process.exit(1);
-});
+const isDirectRun =
+	process.argv[1]?.includes("generateCollectionAvailability");
+if (isDirectRun) {
+	generateCollectionAvailability().catch((error) => {
+		console.error("Error generating collection availability:", error);
+		process.exit(1);
+	});
+}

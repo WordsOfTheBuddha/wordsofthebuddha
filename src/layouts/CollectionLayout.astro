@@ -4,6 +4,10 @@ import PostCard from "../components/PostCard.astro";
 import { performSearch, type SearchResult } from "../service/search/search";
 import type { DirectoryStructure } from "../types/directory";
 import { directoryStructureWithCounts } from "../data/directoryStructureWithCounts";
+import {
+	countReadableDiscourses,
+	countTranslatedDiscourses,
+} from "../utils/collectionAvailabilityCounts";
 import ScrollToTop from "../components/ScrollToTop.astro";
 import CollectionNavigation from "../components/CollectionNavigation.astro";
 import CollectionExportButton from "../components/CollectionExportButton.astro";
@@ -167,9 +171,10 @@ function getAvailabilityCounts(slug: string): {
 			};
 		}
 		if (node.contentCount !== undefined) {
+			// contentCount alone lacks ref split; compute readable vs translated live.
 			return {
-				readableCount: node.contentCount,
-				translatedCount: node.contentCount,
+				readableCount: countReadableDiscourses(slug),
+				translatedCount: countTranslatedDiscourses(slug),
 			};
 		}
 		return null;
