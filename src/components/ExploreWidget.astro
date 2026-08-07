@@ -898,13 +898,14 @@ const isSearchOnly = mode === "search-only";
 			searchFilters.discourses ||
 			searchFilters.topicsQualities ||
 			searchFilters.similes ||
-			searchFilters.persons
+			searchFilters.persons ||
+			searchFilters.includeReferences
 		);
 	}
 
 	function getSearchEmptyMessage(): string {
 		if (!hasSearchContentFiltersSelected()) {
-			return "Select what to search—Discourses, Topics & Qualities, Persons, or Similes—using the filters above.";
+			return "Select what to search—Discourses, Topics & Qualities, Persons, Similes, or reference translations—using the filters above.";
 		}
 		return NO_MATCHES_MESSAGE;
 	}
@@ -1869,8 +1870,13 @@ const isSearchOnly = mode === "search-only";
 
 				allCounts.discourses++;
 
-				// Only add to results if filter is checked
-				if (!searchFilters.discourses) return;
+				// Discourses checkbox → native; Include references alone → reference-only hits
+				const isReference = item.referenceOnly === true;
+				if (isReference) {
+					if (!searchFilters.includeReferences) return;
+				} else if (!searchFilters.discourses) {
+					return;
+				}
 
 				results.push({
 					type: "discourse",
