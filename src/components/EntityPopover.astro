@@ -138,6 +138,11 @@ const badgeHtmlArray = types.map((type) =>
 		display: inline-block;
 	}
 
+	.entity-popover-wrapper:hover,
+	.entity-popover-wrapper.is-open {
+		z-index: 50;
+	}
+
 	.popover-trigger {
 		cursor: help;
 	}
@@ -156,7 +161,7 @@ const badgeHtmlArray = types.map((type) =>
 		box-shadow:
 			0 10px 15px -3px rgba(0, 0, 0, 0.1),
 			0 4px 6px -2px rgba(0, 0, 0, 0.05);
-		z-index: 1000;
+		z-index: 50;
 
 		/* Flex layout for header/body/footer structure */
 		display: flex;
@@ -206,14 +211,21 @@ const badgeHtmlArray = types.map((type) =>
 	}
 
 	/* Show state */
-	.entity-popover-wrapper:hover .popover-content,
-	.popover-trigger:focus + .popover-content,
-	.popover-trigger:focus-within + .popover-content,
-	.entity-popover-wrapper.is-open .popover-content {
+	.entity-popover-wrapper:hover .popover-content:not(.is-fixed),
+	.popover-trigger:focus + .popover-content:not(.is-fixed),
+	.popover-trigger:focus-within + .popover-content:not(.is-fixed),
+	.entity-popover-wrapper.is-open .popover-content:not(.is-fixed) {
 		opacity: 1;
 		visibility: visible;
 		transform: translateX(-50%) translateY(-5px); /* Slide up slightly */
 		transition-delay: 0s; /* Show immediately */
+	}
+
+	.popover-content.is-fixed.is-shown {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		transition-delay: 0s;
 	}
 
 	/* Invisible bridge to prevent closing when moving mouse between trigger and content */
@@ -317,8 +329,17 @@ const badgeHtmlArray = types.map((type) =>
 		text-decoration: underline;
 	}
 
-	/* Dynamic Positioning Classes (applied by JS) */
-	.popover-content.opens-down {
+	.popover-content.is-fixed {
+		position: fixed;
+		bottom: auto;
+		left: var(--popover-left, 50%);
+		top: var(--popover-top, auto);
+		margin: 0;
+		transform: none;
+		z-index: 1000;
+	}
+
+	.popover-content.opens-down:not(.is-fixed) {
 		bottom: auto;
 		top: 100%;
 		transform: translateX(calc(-50% + var(--x-offset, 0px)))
@@ -330,10 +351,10 @@ const badgeHtmlArray = types.map((type) =>
 		bottom: 100%;
 	}
 
-	.entity-popover-wrapper:hover .popover-content.opens-down,
-	.popover-trigger:focus + .popover-content.opens-down,
-	.popover-trigger:focus-within + .popover-content.opens-down,
-	.entity-popover-wrapper.is-open .popover-content.opens-down {
+	.entity-popover-wrapper:hover .popover-content.opens-down:not(.is-fixed),
+	.popover-trigger:focus + .popover-content.opens-down:not(.is-fixed),
+	.popover-trigger:focus-within + .popover-content.opens-down:not(.is-fixed),
+	.entity-popover-wrapper.is-open .popover-content.opens-down:not(.is-fixed) {
 		transform: translateX(calc(-50% + var(--x-offset, 0px))) translateY(5px);
 	}
 
@@ -347,15 +368,15 @@ const badgeHtmlArray = types.map((type) =>
 	}
 
 	/* Apply horizontal offset if set */
-	.popover-content[style*="--x-offset"] {
+	.popover-content[style*="--x-offset"]:not(.is-fixed) {
 		transform: translateX(calc(-50% + var(--x-offset, 0px)))
 			translateY(-10px);
 	}
 
-	.entity-popover-wrapper:hover .popover-content[style*="--x-offset"],
-	.popover-trigger:focus + .popover-content[style*="--x-offset"],
-	.popover-trigger:focus-within + .popover-content[style*="--x-offset"],
-	.entity-popover-wrapper.is-open .popover-content[style*="--x-offset"] {
+	.entity-popover-wrapper:hover .popover-content[style*="--x-offset"]:not(.is-fixed),
+	.popover-trigger:focus + .popover-content[style*="--x-offset"]:not(.is-fixed),
+	.popover-trigger:focus-within + .popover-content[style*="--x-offset"]:not(.is-fixed),
+	.entity-popover-wrapper.is-open .popover-content[style*="--x-offset"]:not(.is-fixed) {
 		transform: translateX(calc(-50% + var(--x-offset, 0px)))
 			translateY(-5px);
 	}
@@ -366,19 +387,29 @@ const badgeHtmlArray = types.map((type) =>
 	function setupPopovers() {
 		const wrappers = document.querySelectorAll(".entity-popover-wrapper");
 		let activePopover: HTMLElement | null = null;
+		let activeContent: HTMLElement | null = null;
 
 		// Close any open popover when tapping outside
 		function closeActivePopover() {
-			if (activePopover) {
-				activePopover.classList.remove("is-open");
-				activePopover = null;
+			if (activeContent) {
+				activeContent.classList.remove("is-fixed", "is-shown");
+				activeContent.style.removeProperty("--popover-left");
+				activeContent.style.removeProperty("--popover-top");
+				if (activePopover && activeContent.parentElement === document.body) {
+					activePopover.appendChild(activeContent);
+				}
 			}
+			activePopover?.classList.remove("is-open");
+			activePopover = null;
+			activeContent = null;
 		}
 
 		document.addEventListener("click", (e) => {
 			const target = e.target as HTMLElement;
-			// If click is outside any popover wrapper, close active
-			if (!target.closest(".entity-popover-wrapper")) {
+			if (
+				!target.closest(".entity-popover-wrapper") &&
+				!target.closest(".popover-content")
+			) {
 				closeActivePopover();
 			}
 		});
@@ -393,7 +424,48 @@ const badgeHtmlArray = types.map((type) =>
 
 			if (!trigger || !content) return;
 
+			let closeTimer: ReturnType<typeof setTimeout> | null = null;
+
+			const clearCloseTimer = () => {
+				if (closeTimer) {
+					clearTimeout(closeTimer);
+					closeTimer = null;
+				}
+			};
+
+			const isHovering = () =>
+				wrapper.matches(":hover") || content.matches(":hover");
+
+			const portalContent = () => {
+				if (content.parentElement !== document.body) {
+					document.body.appendChild(content);
+				}
+			};
+
+			const restoreContent = () => {
+				if (content.parentElement === document.body) {
+					wrapper.appendChild(content);
+				}
+			};
+
+			const resetPosition = () => {
+				content.classList.remove("is-fixed", "is-shown");
+				content.style.removeProperty("--popover-left");
+				content.style.removeProperty("--popover-top");
+				restoreContent();
+			};
+
+			const scheduleClose = () => {
+				clearCloseTimer();
+				closeTimer = setTimeout(() => {
+					if (!isHovering()) {
+						resetPosition();
+					}
+				}, 200);
+			};
+
 			const updatePosition = () => {
+				clearCloseTimer();
 				const triggerRect = trigger.getBoundingClientRect();
 				const contentWidth = content.offsetWidth || 360;
 
@@ -402,39 +474,31 @@ const badgeHtmlArray = types.map((type) =>
 				const spaceBelow = window.innerHeight - triggerRect.bottom;
 
 				// Minimum threshold: only flip to bottom if space above is really small
-				// Header (~50px) + some body content (~80px) + footer (~40px) + padding (~30px) = ~200px min
 				const minThreshold = 150;
 
-				// Prefer opening above (top) for consistency
-				// Only open below if space above is below minimum threshold
 				let shouldOpenDown = false;
 
 				if (spaceAbove >= minThreshold) {
-					// Enough space above - open on top with scrollable body if needed
 					shouldOpenDown = false;
 				} else if (spaceBelow > spaceAbove) {
-					// Not enough space above, and more space below
 					shouldOpenDown = true;
 				} else {
-					// Both cramped, prefer top
 					shouldOpenDown = false;
 				}
 
 				if (shouldOpenDown) {
 					content.classList.add("opens-down");
-					// Set max-height based on available space below
 					const maxHeight = Math.min(spaceBelow - 20, 400);
 					content.style.setProperty(
 						"--popover-max-height",
-						`${maxHeight}px`
+						`${maxHeight}px`,
 					);
 				} else {
 					content.classList.remove("opens-down");
-					// Set max-height based on available space above
 					const maxHeight = Math.min(spaceAbove - 20, 400);
 					content.style.setProperty(
 						"--popover-max-height",
-						`${maxHeight}px`
+						`${maxHeight}px`,
 					);
 				}
 
@@ -446,10 +510,8 @@ const badgeHtmlArray = types.map((type) =>
 				let xOffset = 0;
 
 				if (centerX - halfWidth < 10) {
-					// Clips left
 					xOffset = 10 - (centerX - halfWidth);
 				} else if (centerX + halfWidth > viewportWidth - 10) {
-					// Clips right
 					xOffset = viewportWidth - 10 - (centerX + halfWidth);
 				}
 
@@ -458,11 +520,27 @@ const badgeHtmlArray = types.map((type) =>
 				} else {
 					content.style.removeProperty("--x-offset");
 				}
+
+				portalContent();
+				content.classList.add("is-fixed", "is-shown");
+				const left = Math.max(
+					10,
+					Math.min(
+						centerX - halfWidth + xOffset,
+						viewportWidth - contentWidth - 10,
+					),
+				);
+				const gap = 10;
+				const contentHeight = content.offsetHeight;
+				const top = shouldOpenDown
+					? triggerRect.bottom + gap
+					: Math.max(10, triggerRect.top - contentHeight - gap);
+				content.style.setProperty("--popover-left", `${left}px`);
+				content.style.setProperty("--popover-top", `${top}px`);
 			};
 
 			// Touch handling: toggle popover on tap
 			trigger.addEventListener("click", (e) => {
-				// Check if we're on a touch device (no hover capability)
 				const isTouchDevice =
 					window.matchMedia("(hover: none)").matches;
 
@@ -473,19 +551,35 @@ const badgeHtmlArray = types.map((type) =>
 					const isCurrentlyOpen =
 						wrapper.classList.contains("is-open");
 
-					// Close any other open popover
 					closeActivePopover();
 
 					if (!isCurrentlyOpen) {
 						updatePosition();
 						wrapper.classList.add("is-open");
 						activePopover = wrapper as HTMLElement;
+						activeContent = content;
 					}
 				}
 			});
 
-			trigger.addEventListener("mouseenter", updatePosition);
-			trigger.addEventListener("focus", updatePosition);
+			const showPopover = () => {
+				updatePosition();
+			};
+
+			wrapper.addEventListener("mouseenter", showPopover);
+			trigger.addEventListener("focus", showPopover);
+			content.addEventListener("mouseenter", clearCloseTimer);
+			wrapper.addEventListener("mouseleave", scheduleClose);
+			content.addEventListener("mouseleave", scheduleClose);
+			window.addEventListener(
+				"scroll",
+				() => {
+					if (content.classList.contains("is-fixed") && isHovering()) {
+						updatePosition();
+					}
+				},
+				{ passive: true },
+			);
 		});
 	}
 

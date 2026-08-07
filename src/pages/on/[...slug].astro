@@ -19,7 +19,6 @@ import {
 } from "../../utils/discover-data";
 import { qualityListIncludes } from "../../utils/ContentTagUtils";
 import {
-	getReferencePostsForDiscourseScopes,
 	getReferencePostsForTag,
 } from "../../utils/referencePostsForPage";
 import { buildOnPagePdfExportTree } from "../../utils/onPagePdfExportTree";
@@ -114,10 +113,7 @@ const enSlugsOnPage = new Set(allDiscourses.map((d: { id: string }) => d.id));
 const referencePostsForPage =
 	contentType === "quality" || contentType === "topic"
 		? getReferencePostsForTag(slug, enSlugsOnPage)
-		: getReferencePostsForDiscourseScopes(
-				allDiscourses.map((d: { id: string }) => d.id),
-				enSlugsOnPage,
-			);
+		: [];
 const curatedDiscourseCount = allDiscourses.length;
 const referenceDiscourseCount = referencePostsForPage.length;
 const refModeOnPage = urlHasRefParam(Astro.url.searchParams);
@@ -157,6 +153,20 @@ const onPagePreviewHasSvgViz =
 const onPagePdfScopeSummary = onPagePdfExportTree
 	? `This export includes ${onPagePdfExportTree.totalDiscourseCount} discourses tagged with "${displayTitle}".`
 	: "";
+
+const hasHeaderMeta =
+	!!content.description ||
+	(content.synonyms?.length ?? 0) > 0 ||
+	!!content.context ||
+	(content.pali?.length ?? 0) > 0 ||
+	(content.supportedBy?.length ?? 0) > 0 ||
+	(content.leadsTo?.length ?? 0) > 0 ||
+	(content.related?.length ?? 0) > 0 ||
+	(content.opposite?.length ?? 0) > 0;
+
+/** Person/simile pages: one curated discourse needs no section heading (count is in the header badge). */
+const showDiscourseSectionHeading =
+	additionalDiscourses.length !== 1 || hasReferenceOnlyDiscourses;
 ---
 
 <Layout
@@ -165,15 +175,18 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 	showAuth={true}
 >
 	<main class="container mx-auto px-4 py-8">
-		<div class="mb-8 relative z-10">
+		<div class:list={["relative", isTagPage ? "mb-8" : "mb-4"]}>
 			<div
-				class="post-item relative flex flex-col w-full p-5 rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md"
+				class:list={[
+					"post-item relative flex flex-col w-full rounded-lg border border-[color:var(--surface-border)] bg-[var(--surface-elevated)] text-[var(--surface-ink)] shadow-md",
+					hasHeaderMeta ? "p-5" : "px-5 py-4",
+				]}
 			>
 				<div class="flex items-start justify-between">
 					<div class="flex items-start flex-grow">
 						<div class="min-w-0 pr-4">
 							<h1
-								class="text-xl font-semibold flex items-center flex-wrap gap-2"
+								class="text-xl font-semibold my-0 flex items-center flex-wrap gap-2"
 							>
 								<span>{displayTitle}</span>
 								{isTopic && <ContentTag contentType="topic" />}
@@ -223,7 +236,9 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 					</div>
 				</div>
 
-				<div class="mt-2 ml-2 space-y-2 text-sm">
+				{
+					hasHeaderMeta && (
+						<div class="mt-2 ml-2 space-y-2 text-sm">
 					{
 						content.description && (
 							<div class="text-text">{content.description}</div>
@@ -499,7 +514,9 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 							</div>
 						)
 					}
-				</div>
+						</div>
+					)
+				}
 			</div>
 		</div>
 
@@ -595,27 +612,47 @@ const onPagePdfScopeSummary = onPagePdfExportTree
 
 		{
 			!isTagPage && showDiscoursesList && (
-				<div class="space-y-6">
-					<div class="flex flex-wrap items-center justify-between gap-2 print:hidden">
-						<h2 class="text-xl font-medium mb-0">Discourses</h2>
-						{
-							hasReferenceOnlyDiscourses && (
-								<button
-									type="button"
-									id="toggle-ref"
-									aria-pressed="false"
-									class="toggle-ref ml-auto shrink-0 text-xs transition-colors text-[var(--text-muted)] hover:text-[var(--text-color)]"
-									title="Include reference-only discourses (Sujato translation)"
-								>
-									<span class="md:hidden">Ref</span>
-									<span class="hidden md:inline">
-										See Refs
-									</span>
-								</button>
-							)
-						}
-					</div>
-					<div id="discourses-grid" class="px-2 space-y-4">
+				<div class="space-y-3">
+					{
+						(showDiscourseSectionHeading ||
+							hasReferenceOnlyDiscourses) && (
+							<div class="flex flex-wrap items-center justify-between gap-2 print:hidden">
+								{
+									showDiscourseSectionHeading && (
+										<h2 class="text-xl font-medium my-0">
+											{additionalDiscourses.length === 1
+												? "Discourse"
+												: "Discourses"}
+										</h2>
+									)
+								}
+								{
+									hasReferenceOnlyDiscourses && (
+										<button
+											type="button"
+											id="toggle-ref"
+											aria-pressed="false"
+											class:list={[
+												"toggle-ref shrink-0 text-xs transition-colors text-[var(--text-muted)] hover:text-[var(--text-color)]",
+												!showDiscourseSectionHeading &&
+													"ml-auto",
+											]}
+											title="Include reference-only discourses (Sujato translation)"
+										>
+											<span class="md:hidden">Ref</span>
+											<span class="hidden md:inline">
+												See Refs
+											</span>
+										</button>
+									)
+								}
+							</div>
+						)
+					}
+					<div
+						id="discourses-grid"
+						class="space-y-3 on-page-discourses [&_.post-item]:!mt-0"
+					>
 						{additionalDiscourses.map((discourse: any) => (
 							<PostCard
 								title={discourse.title}

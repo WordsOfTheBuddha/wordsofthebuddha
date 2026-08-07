@@ -9,6 +9,7 @@ interface Props {
 	lastUpdated?: string | Date;
 	dateLabel?: string;
 	clamp?: number;
+	/** When set, shows a collection count badge (hidden at 0; client can reveal via See Refs). */
 	count?: number;
 	titleTag?: string;
 	variant?: "default" | "reference";
@@ -30,7 +31,7 @@ const {
 	lastUpdated,
 	dateLabel = "Last updated on",
 	clamp = 3,
-	count = 0,
+	count = undefined,
 	titleTag,
 	variant = "default",
 } = Astro.props;
@@ -116,8 +117,13 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 			</div>
 		</div>
 		{
-			count > 0 && (
-				<div class="collection-count-badge-wrap shrink-0 self-start text-right">
+			count !== undefined && (
+				<div
+					class:list={[
+						"collection-count-badge-wrap shrink-0 self-start text-right",
+						count <= 0 && "hidden",
+					]}
+				>
 					<span class="collection-count-badge px-2 py-0.5 rounded-md text-xs font-medium text-white bg-primary shadow-sm">
 						{count}
 					</span>
