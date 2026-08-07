@@ -14,6 +14,7 @@
 				"mn1",
 				"mn10",
 				"mn18",
+				"mn43",
 				"mn47",
 				"mn138",
 				"mn140",
@@ -37,6 +38,7 @@
 				"mn1",
 				"mn10",
 				"mn18",
+				"mn43",
 				"mn47",
 				"mn95",
 				"mn138",
@@ -83,6 +85,7 @@
 				"mn9",
 				"mn10",
 				"mn18",
+				"mn43",
 				"mn138",
 				"mn140",
 				"mn148"
@@ -337,6 +340,7 @@
 				"mn6",
 				"mn9",
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn111",
 				"mn140"
@@ -359,6 +363,7 @@
 				"mn1",
 				"mn6",
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn111",
 				"mn140"
@@ -382,6 +387,7 @@
 				"mn1",
 				"mn6",
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn106",
 				"mn111",
@@ -491,6 +497,7 @@
 			"discourse": [
 				"mn2",
 				"mn18",
+				"mn43",
 				"mn138"
 			],
 			"labels": [
@@ -575,6 +582,7 @@
 			],
 			"discourse": [
 				"mn2",
+				"mn43",
 				"an10.60"
 			],
 			"labels": [
@@ -595,6 +603,7 @@
 			"discourse": [
 				"mn2",
 				"mn9",
+				"mn43",
 				"mn95",
 				"an10.60"
 			],
@@ -943,6 +952,7 @@
 			"discourse": [
 				"mn118",
 				"mn10",
+				"mn43",
 				"mn148",
 				"an10.60"
 			],
@@ -966,7 +976,8 @@
 			"discourse": [
 				"mn118",
 				"mn9",
-				"mn10"
+				"mn10",
+				"mn43"
 			],
 			"labels": [
 				"mindfulness",
@@ -1471,6 +1482,7 @@
 				"mn6",
 				"mn19",
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn111",
 				"mn119",
@@ -1554,6 +1566,7 @@
 				"mn6",
 				"mn19",
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn106",
 				"mn111",
@@ -1699,6 +1712,7 @@
 				"mn39",
 				"mn6",
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn111",
 				"mn119",
@@ -1894,6 +1908,7 @@
 				"an10.1",
 				"mn9",
 				"mn18",
+				"mn43",
 				"mn111",
 				"mn138",
 				"mn140"
@@ -2221,6 +2236,7 @@
 			],
 			"discourse": [
 				"mn2",
+				"mn43",
 				"mn53",
 				"mn119",
 				"mn138"
@@ -2247,6 +2263,7 @@
 				"mn148",
 				"mn10",
 				"mn18",
+				"mn43",
 				"mn138",
 				"mn140"
 			],
@@ -2268,6 +2285,7 @@
 				"mn148",
 				"mn10",
 				"mn18",
+				"mn43",
 				"mn138",
 				"mn140"
 			],
@@ -2351,7 +2369,10 @@
 				"line-art",
 				"hindrances"
 			],
-			"discourse": "mn10",
+			"discourse": [
+				"mn10",
+				"mn43"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2496,7 +2517,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn43"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2532,7 +2556,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn39",
+			"discourse": [
+				"mn39",
+				"mn43"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2672,7 +2699,8 @@
 			],
 			"discourse": [
 				"mn106",
-				"mn6"
+				"mn6",
+				"mn43"
 			],
 			"labels": [
 				"formless",
@@ -2712,7 +2740,10 @@
 				"line-art",
 				"arrow"
 			],
-			"discourse": "mn106",
+			"discourse": [
+				"mn106",
+				"mn43"
+			],
 			"labels": [
 				"diligence",
 				"effort",
@@ -2727,7 +2758,7 @@
 			"description": "Five radiating lines from a central dot — pañcannaṁ kāmaguṇānaṁ nivāpa",
 			"tags": [
 				"line-art",
-				"gold"
+				"burgundy"
 			],
 			"discourse": [
 				"mn25",
@@ -2749,7 +2780,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn25",
+			"discourse": [
+				"mn25",
+				"mn43"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2817,6 +2851,7 @@
 			],
 			"discourse": [
 				"mn25",
+				"mn43",
 				"mn77",
 				"mn111",
 				"mn138",
@@ -3063,6 +3098,7 @@
 			],
 			"discourse": [
 				"mn77",
+				"mn43",
 				"mn95",
 				"mn140"
 			],
@@ -3081,7 +3117,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn77",
+			"discourse": [
+				"mn77",
+				"mn43"
+			],
 			"labels": [
 				"insight",
 				"wisdom"
@@ -3205,6 +3244,7 @@
 			],
 			"discourse": [
 				"mn9",
+				"mn43",
 				"mn95"
 			],
 			"labels": [
@@ -3224,6 +3264,7 @@
 			],
 			"discourse": [
 				"mn9",
+				"mn43",
 				"mn95"
 			],
 			"labels": [
@@ -3347,22 +3388,6 @@
 			"svg": "icons/simile-relaxed-cowherd.svg"
 		},
 		{
-			"id": "simile-deer-mara-decoy",
-			"title": "Simile: Māra's deer trap decoy and dummy",
-			"description": "Low-lying marsh pasture with a trap/decoy and skull dummy representing Māra's threat",
-			"tags": [
-				"line-art"
-			],
-			"discourse": "mn19",
-			"labels": [
-				"harm",
-				"simile",
-				"unwholesome"
-			],
-			"valence": "-ve",
-			"svg": "icons/simile-deer-mara-decoy.svg"
-		},
-		{
 			"id": "mental-proliferation",
 			"title": "Mental proliferation",
 			"description": "Triple conduct triangle with central tangle — papañcasaññāsaṅkhā overwhelm",
@@ -3446,6 +3471,86 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/consciousness-unbound.svg"
+		},
+		{
+			"id": "three-realms-existence",
+			"title": "Three realms of existence",
+			"description": "Three stacked bands — solid sensual, solid form, dashed formless: kāmabhava · rūpabhava · arūpabhava",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn43",
+			"labels": [
+				"phenomena",
+				"simile"
+			],
+			"svg": "icons/three-realms-existence.svg"
+		},
+		{
+			"id": "oil-lamp-flame-radiance",
+			"title": "Oil lamp — flame and radiance",
+			"description": "Lamp bowl with a wick flame inside a halo of radiance — acci and ābhā, each discerned in dependence on the other",
+			"tags": [
+				"gold",
+				"line-art",
+				"simile"
+			],
+			"discourse": "mn43",
+			"labels": [
+				"dependent co arising",
+				"phenomena",
+				"vitality"
+			],
+			"svg": "icons/oil-lamp-flame-radiance.svg"
+		},
+		{
+			"id": "perception-colors",
+			"title": "Perception of colours",
+			"description": "Four filled dots — blue, yellow, red, white: nīlaka, pītaka, lohitaka, odāta, what saññā perceives",
+			"tags": [
+				"line-art",
+				"aggregates"
+			],
+			"discourse": "mn43",
+			"labels": [
+				"perception",
+				"phenomena"
+			],
+			"svg": "icons/perception-colors.svg"
+		},
+		{
+			"id": "four-immeasurables",
+			"title": "Boundless release of mind",
+			"description": "Four petals radiating from a still centre — appamāṇā cetovimutti, the four immeasurables",
+			"tags": [
+				"gold",
+				"line-art"
+			],
+			"discourse": "mn43",
+			"labels": [
+				"boundless",
+				"compassion",
+				"liberation",
+				"loving kindness"
+			],
+			"valence": "+ve",
+			"svg": "icons/four-immeasurables.svg"
+		},
+		{
+			"id": "signless-stillness",
+			"title": "Signless release of mind",
+			"description": "Ring with its inner sign struck through — animittā cetovimutti, giving no attention to any sign",
+			"tags": [
+				"line-art"
+			],
+			"discourse": "mn43",
+			"labels": [
+				"insight",
+				"letting go",
+				"liberation"
+			],
+			"valence": "+ve",
+			"svg": "icons/signless-stillness.svg"
 		}
 	]
 }

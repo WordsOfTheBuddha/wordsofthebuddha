@@ -12,7 +12,7 @@
  * - imageCaption: caption with optional credit (e.g., "A lotus · Generated with ChatGPT")
  */
 
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { determineRouteType } from "./routeHandler";
 
@@ -40,11 +40,74 @@ function imageModulePathUsable(modulePath: string): boolean {
 	return assetFileExists(modulePath);
 }
 
+const CONTENT_IMAGES_DIR = "src/assets/content-images";
+const CONTENT_IMAGES_MODULE_PREFIX = "/src/assets/content-images";
+const IMAGE_EXTENSIONS = new Set(["webp", "jpg", "jpeg", "png", "svg"]);
+
 // Import all images from content-images directory at build time
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	"/src/assets/content-images/*.{webp,jpg,jpeg,png,svg}",
 	{ eager: true },
 );
+
+/** In dev, discover top-level files added after the dev server started (glob is eager). */
+function devListContentImageModulePaths(): string[] {
+	if (!import.meta.env.DEV) return [];
+	try {
+		const dir = resolve(process.cwd(), CONTENT_IMAGES_DIR);
+		if (!existsSync(dir)) return [];
+		return readdirSync(dir, { withFileTypes: true })
+			.filter((entry) => entry.isFile())
+			.map((entry) => entry.name)
+			.filter((name) => {
+				const ext = name.split(".").pop()?.toLowerCase();
+				return ext != null && IMAGE_EXTENSIONS.has(ext);
+			})
+			.map((name) => `${CONTENT_IMAGES_MODULE_PREFIX}/${name}`);
+	} catch {
+		return [];
+	}
+}
+
+function devStubImageMetadata(modulePath: string): ImageMetadata {
+	const filename = modulePath.split("/").pop() ?? "";
+	const ext = filename.split(".").pop()?.toLowerCase() ?? "";
+	return {
+		src: `/content-images/${filename}`,
+		width: 0,
+		height: 0,
+		format: ext as ImageMetadata["format"],
+	};
+}
+
+function getImageModulePaths(): string[] {
+	const globPaths = Object.keys(imageModules).filter(imageModulePathUsable);
+	if (!import.meta.env.DEV) return globPaths;
+
+	const seen = new Set(globPaths.map((path) => path.toLowerCase()));
+	const extra = devListContentImageModulePaths().filter(
+		(path) =>
+			!seen.has(path.toLowerCase()) &&
+			assetFileExists(path) &&
+			imageModulePathUsable(path),
+	);
+	return [...globPaths, ...extra];
+}
+
+function getImageModule(
+	path: string,
+): { default: ImageMetadata } | undefined {
+	const bundled = imageModules[path];
+	if (bundled && imageModulePathUsable(path)) return bundled;
+	if (!import.meta.env.DEV || !assetFileExists(path)) return undefined;
+	return { default: devStubImageMetadata(path) };
+}
+
+function getResolvedImage(path: string): ResolvedImage | undefined {
+	const mod = getImageModule(path);
+	if (!mod || !imageModulePathUsable(path)) return undefined;
+	return { image: mod.default, modulePath: path };
+}
 
 // Build case-insensitive indices so frontmatter overrides work reliably
 // across filesystems (macOS can be case-insensitive; Vercel/Linux is not)
@@ -93,14 +156,20 @@ function resolveFrontmatterImage(
 	}
 
 	for (const candidate of candidates) {
-		const found = imageByPathLower.get(candidate.toLowerCase());
+		const found =
+			imageByPathLower.get(candidate.toLowerCase()) ??
+			(import.meta.env.DEV ? getResolvedImage(candidate) : undefined);
 		if (found && imageModulePathUsable(found.modulePath)) return found;
 	}
 
 	// 4) Final fallback: match by basename only (handles arbitrary relative paths)
 	const basename = raw.split("/").pop();
 	if (!basename) return undefined;
-	const byBase = imageByBasenameLower.get(basename.toLowerCase());
+	const byBase =
+		imageByBasenameLower.get(basename.toLowerCase()) ??
+		(import.meta.env.DEV
+			? getResolvedImage(`/src/assets/content-images/${basename}`)
+			: undefined);
 	if (byBase && imageModulePathUsable(byBase.modulePath)) return byBase;
 	return undefined;
 }
@@ -159,16 +228,16 @@ export function normalizeDiscourseIdForContentImages(id: string): string {
 }
 
 /** Lowercased SVG basenames (no extension) from src/assets/content-images */
-const svgBasenamesLower: string[] = (() => {
+function getSvgBasenamesLower(): string[] {
 	const out: string[] = [];
-	for (const path of Object.keys(imageModules)) {
+	for (const path of getImageModulePaths()) {
 		if (!path.toLowerCase().endsWith(".svg")) continue;
 		const base =
 			path.split("/").pop()?.replace(/\.svg$/i, "").toLowerCase() ?? "";
 		if (base) out.push(base);
 	}
 	return out;
-})();
+}
 
 /**
  * True if `basenameNoExt` (e.g. mn118-alt, sn36.6) belongs to this discourse id
@@ -189,7 +258,7 @@ export function discourseSvgBasenameMatchesDiscourseId(
 
 /** Any SVG in content-images whose basename matches the discourse id (prefix-safe). */
 export function discourseHasSvgAssetForExport(discourseId: string): boolean {
-	for (const fn of svgBasenamesLower) {
+	for (const fn of getSvgBasenamesLower()) {
 		if (discourseSvgBasenameMatchesDiscourseId(fn, discourseId)) return true;
 	}
 	return false;
@@ -224,7 +293,7 @@ export function collectionHasSvgVizAssetByRootPrefix(
 	if (route.type !== "collection" || !route.metadata) return false;
 	const root = collectionSlug.toLowerCase().split(/[-/]/)[0];
 	if (!/^[a-z]{1,8}$/.test(root)) return false;
-	for (const fn of svgBasenamesLower) {
+	for (const fn of getSvgBasenamesLower()) {
 		if (svgBasenameLooksLikeDiscourseInRoot(fn, root)) return true;
 	}
 	return false;
@@ -266,9 +335,10 @@ export function findContentImages(
 	// Primary image: exact ID match
 	for (const ext of extensions) {
 		const path = `/src/assets/content-images/${normalizedId}.${ext}`;
-		if (imageModules[path] && imageModulePathUsable(path)) {
+		const mod = getImageModule(path);
+		if (mod) {
 			results.push({
-				image: imageModules[path].default,
+				image: mod.default,
 				modulePath: path,
 				caption: frontmatter?.imageCaption,
 				alt: `Illustration for ${title || id}`,
@@ -279,8 +349,11 @@ export function findContentImages(
 
 	// Additional images: {id}-*.{ext} (e.g., an10.61-vijjavimutti.svg)
 	const prefix = `/src/assets/content-images/${normalizedId}-`;
-	for (const [path, mod] of Object.entries(imageModules)) {
-		if (!path.toLowerCase().startsWith(prefix) || !imageModulePathUsable(path)) continue;
+	for (const path of getImageModulePaths()) {
+		if (!path.toLowerCase().startsWith(prefix) || !imageModulePathUsable(path))
+			continue;
+		const mod = getImageModule(path);
+		if (!mod) continue;
 		// Avoid duplicates
 		if (!results.some((r) => r.modulePath === path)) {
 			results.push({
@@ -333,7 +406,7 @@ export function hasContentImage(
 
 	for (const ext of extensions) {
 		const path = `/src/assets/content-images/${normalizedId}.${ext}`;
-		if (imageModules[path] && imageModulePathUsable(path)) {
+		if (getImageModule(path)) {
 			return true;
 		}
 	}
@@ -348,7 +421,7 @@ export function hasContentImage(
 export function getAllContentImageIds(): string[] {
 	const ids: string[] = [];
 
-	for (const path of Object.keys(imageModules)) {
+	for (const path of getImageModulePaths()) {
 		if (!imageModulePathUsable(path)) continue;
 		// Extract ID from path: /src/assets/content-images/an3.65.webp -> an3.65
 		const match = path.match(/\/content-images\/([^.]+)\./);
@@ -374,7 +447,7 @@ export function countCollectionIllustratedDiscourses(
 	const discourseIds = new Set<string>();
 	const idPrefix = new RegExp(`^(${root}\\d+(?:\\.\\d+)?)`);
 
-	for (const fn of svgBasenamesLower) {
+	for (const fn of getSvgBasenamesLower()) {
 		if (!svgBasenameLooksLikeDiscourseInRoot(fn, root)) continue;
 		const match = fn.match(idPrefix);
 		if (match) discourseIds.add(match[1]);
