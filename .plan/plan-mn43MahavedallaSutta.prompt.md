@@ -86,7 +86,7 @@ Nine teaching bands plus header/footer. The wisdom-distinction quote sits in the
   - painful · dukkha — fill `#a06070` @ 0.14, stroke `#a06070`
   - neither · adukkhamasukha — fill none, stroke `#8898b0`
 - **Perception card:** four colour dots (nīla · pīta · lohita · odāta) via `perception-colors` motif.
-- **Association strip** at `translate(70, 286)`: centred **580×58** card — `yaṁ vedeti taṁ sañjānāti…`
+- **Association strip** at `translate(70, 286)`: centred **780×58** card — `yaṁ vedeti taṁ sañjānāti…`
 
 ### Wisdom distinction pivot (`y = 855`)
 
@@ -105,7 +105,7 @@ Nine teaching bands plus header/footer. The wisdom-distinction quote sits in the
 - **Three aligned flow cards** at `translate(70, 60)`, shared top edge, **118** tall:
   1. **Conditions** `250×118` — `heard` (parato ghoso) + `wise-attention` (yoniso manasikāro)
   2. **Right view node** `200×118` — `cardGold`, inline gold cross sparkle
-  3. **Fruits** `250×118` — release of mind · cetovimutti; liberation by wisdom · paññāvimutti
+  3. **Fruits** `250×118` — `defilements-ended` icon left of two fruit lines; release of mind · cetovimutti; liberation by wisdom · paññāvimutti
 - Gold arrows between cards; down-arrow to supports rail.
 - **Five supports rail** at `translate(70, 200)` — numbered **1–5**: sīla · suta · sākacchā · samatha · vipassanā.
 
@@ -156,7 +156,7 @@ Nine teaching bands plus header/footer. The wisdom-distinction quote sits in the
 
 ### Reused (append `"mn43"` to `discourse` in `buildIconsManifest.ts`)
 
-`seen`, `heard`, `body-observer`, `cognized`, `sense-nose`, `sense-tongue`, `feeling-droplet`, `perception-colors`, `space-base`, `consciousness-base`, `nothingness-base`, `knowledge-vision`, `wise-attention`, `herd-rushing-in`, `broken-chain`, `jhana-first`, `jhana-fourth`, `flame-thought`, `thorn-vine`, `hindrance-dullness`, `simile-slavery`, `simile-dangerous-path`, `emptiness-void`, `nothingness-base`, `greed`, `delusion`, `liberation-sparkle`, `four-noble-truths` *(band topic; spine uses inline disc, not the wheel icon)*, `cessation-vessel` *(death/cessation band)*.
+`seen`, `heard`, `body-observer`, `cognized`, `sense-nose`, `sense-tongue`, `feeling-droplet`, `perception-colors`, `space-base`, `consciousness-base`, `nothingness-base`, `knowledge-vision`, `wise-attention`, `defilements-ended`, `herd-rushing-in`, `broken-chain`, `jhana-first`, `jhana-fourth`, `flame-thought`, `thorn-vine`, `hindrance-dullness`, `simile-slavery`, `simile-dangerous-path`, `emptiness-void`, `nothingness-base`, `greed`, `delusion`, `liberation-sparkle`, `four-noble-truths` *(band topic; spine uses inline disc, not the wheel icon)*, `cessation-vessel` *(death/cessation band)*.
 
 `liberation-sparkle` is mirrored at the apex (±228 from card centre) so `akuppā cetovimutti` stays centred.
 
