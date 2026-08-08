@@ -58,8 +58,19 @@ export function handleNavigation(event: MouseEvent) {
 		!anchor.hasAttribute("download") &&
 		anchor.target !== "_blank"
 	) {
-		event.preventDefault();
 		const url = new URL(anchor.href);
+		const current = new URL(window.location.href);
+
+		// Same-page hash links — let the browser handle anchor scrolling
+		if (
+			url.origin === current.origin &&
+			url.pathname === current.pathname &&
+			url.hash
+		) {
+			return;
+		}
+
+		event.preventDefault();
 		const currentPali = localStorage.getItem("paliMode") === "true";
 
 		if (currentPali) {

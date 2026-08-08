@@ -1,5 +1,8 @@
 ---
-import { parseSimpleMarkdown } from "../utils/mdParser";
+import {
+	linkCommentaryNoteMarkers,
+	parseSimpleMarkdown,
+} from "../utils/mdParser";
 
 const { commentary } = Astro.props;
 
@@ -49,7 +52,7 @@ if (commentary) {
 commentaryContent = unescape(commentaryContent);
 
 const parsedCommentary = commentaryContent
-	? parseSimpleMarkdown(commentaryContent)
+	? linkCommentaryNoteMarkers(parseSimpleMarkdown(commentaryContent))
 	: "";
 
 ---
@@ -161,6 +164,10 @@ const parsedCommentary = commentaryContent
 			text-decoration: underline !important;
 		}
 
+		.commentary-content :global(.note-marker) {
+			color: #333 !important;
+		}
+
 		/* Table print styles */
 		.commentary-content .commentary-table {
 			border: 1px solid #333 !important;
@@ -184,10 +191,29 @@ const parsedCommentary = commentaryContent
 		}
 	}
 
-	/* Commentary note markers */
+	/* Commentary note markers — link back to in-text footnote refs */
 	.commentary-content :global(.note-marker) {
 		font-weight: 600;
 		color: var(--secondary-color);
+		text-decoration: none;
+	}
+
+	.commentary-content :global(.note-marker:hover) {
+		text-decoration: underline;
+	}
+
+	:global(.commentary-ref) {
+		scroll-margin-top: 5rem;
+	}
+
+	:global(.commentary-ref:target) {
+		background-color: color-mix(
+			in srgb,
+			var(--secondary-color) 18%,
+			transparent
+		);
+		border-radius: 2px;
+		transition: background-color 0.6s ease;
 	}
 
 	/* Commentary Popover Styles */
@@ -376,9 +402,77 @@ const parsedCommentary = commentaryContent
 		}
 	}
 
+	function assignCommentaryRefIds() {
+		const counters: Record<string, number> = {};
+		document.querySelectorAll<HTMLElement>(".commentary-ref").forEach((ref) => {
+			const num = ref.dataset.note;
+			if (!num) return;
+			const count = (counters[num] ?? 0) + 1;
+			counters[num] = count;
+			const suffix = count === 1 ? "" : `-${count}`;
+			ref.id = `commentary-ref-${num}${suffix}`;
+		});
+	}
+
+	function findCommentaryRefTarget(noteNum: string): HTMLElement | null {
+		const selector = `.commentary-ref[data-note="${CSS.escape(noteNum)}"]`;
+		const isSplitMode =
+			document.documentElement.classList.contains("pali-on") &&
+			localStorage.getItem("layout") === "split";
+
+		if (isSplitMode) {
+			const inPanel = document.querySelector<HTMLElement>(
+				`#panel1 ${selector}`,
+			);
+			if (inPanel) return inPanel;
+		}
+
+		const inArticle = document.querySelector<HTMLElement>(
+			`article.interleaved-article ${selector}, article.prose ${selector}`,
+		);
+		if (inArticle) return inArticle;
+
+		return document.querySelector<HTMLElement>(selector);
+	}
+
+	function scrollToCommentaryRef(noteNum: string) {
+		const target = findCommentaryRefTarget(noteNum);
+		if (!target) return;
+
+		if (!target.id) {
+			target.id = `commentary-ref-${noteNum}`;
+		}
+
+		target.scrollIntoView({ behavior: "smooth", block: "center" });
+		history.replaceState(
+			history.state,
+			"",
+			`${window.location.pathname}${window.location.search}#${target.id}`,
+		);
+	}
+
+	function handleNoteMarkerClick(e: Event) {
+		const link = (e.target as Element).closest(".note-marker");
+		if (!link) return;
+		const href = link.getAttribute("href") ?? "";
+		const match = href.match(/^#commentary-ref-(\d+)$/);
+		if (!match) return;
+		e.preventDefault();
+		e.stopPropagation();
+		scrollToCommentaryRef(match[1]);
+	}
+
+	if (!(window as Window & { __commentaryNoteMarkersBound?: boolean })
+		.__commentaryNoteMarkersBound) {
+		(window as Window & { __commentaryNoteMarkersBound?: boolean })
+			.__commentaryNoteMarkersBound = true;
+		document.addEventListener("click", handleNoteMarkerClick, true);
+	}
+
 	function initCommentaryPopover() {
 		// First, convert any plain-text ^[n]^ markers to DOM elements
 		convertCommentaryMarkers();
+		assignCommentaryRefIds();
 
 		const noteTemplateEls = document.querySelectorAll<HTMLElement>(
 			".commentary-note-template[data-note]",

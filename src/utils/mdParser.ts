@@ -245,3 +245,11 @@ function parseTableRow(rowText: string): string[] {
 export async function parseMarkdown(content: string): Promise<string> {
 	return marked.parse(content);
 }
+
+/** Link numbered note markers at paragraph start back to discourse commentary-ref anchors. */
+export function linkCommentaryNoteMarkers(html: string): string {
+	return html.replace(
+		/<p>\[(\d+)\]/g,
+		'<p><a href="#commentary-ref-$1" class="note-marker">[$1]</a>',
+	);
+}
