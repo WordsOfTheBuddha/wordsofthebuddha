@@ -29,16 +29,16 @@ Generated from `icons-manifest.json` (version 1).
 | oneness | Oneness | mn1 | phenomena | line-art | `icons/oneness.svg` |
 | diversity | Diversity | mn1 | phenomena | line-art | `icons/diversity.svg` |
 | all | All | mn1, an10.60 | phenomena | line-art | `icons/all.svg` |
-| tangle-unwise-attention | Superficial attention | mn2, mn9, mn18, mn138 | five hindrances, harm, wisdom | burgundy, line-art | `icons/tangle-unwise-attention.svg` |
-| wise-attention | Wise attention | mn2, mn18, mn43, mn138 | safety, wisdom | teal, line-art | `icons/wise-attention.svg` |
+| tangle-unwise-attention | Superficial attention | mn2, mn9, mn18, mn138, sn46.2 | five hindrances, harm, wisdom | burgundy, line-art | `icons/tangle-unwise-attention.svg` |
+| wise-attention | Wise attention | mn2, mn18, mn43, mn138, sn46.2 | safety, wisdom | teal, line-art | `icons/wise-attention.svg` |
 | eye-shield | Restraint (eye + gates) | mn2 | sense restraint, wholesome | line-art | `icons/eye-shield.svg` |
 | bowl-robe | Proper use (bowl + robe) | mn2, mn6, mn39 | ethical conduct, wholesome | line-art | `icons/bowl-robe.svg` |
 | endure | Enduring | mn2 | wholesome | line-art | `icons/endure.svg` |
 | avoid-fork | Avoiding (fork) | mn2 | non harm, safety, wholesome | line-art, fork | `icons/avoid-fork.svg` |
-| flame-thought | Flame | mn2, mn43, an10.60 | five hindrances, harm, unwholesome | line-art, flame | `icons/flame-thought.svg` |
-| thorn-vine | Thorn vine | mn2, mn9, mn43, mn95, an10.60 | five hindrances, harm, unwholesome | line-art | `icons/thorn-vine.svg` |
+| flame-thought | Flame | mn2, mn43, sn46.2, an10.60 | five hindrances, harm, unwholesome | line-art, flame | `icons/flame-thought.svg` |
+| thorn-vine | Thorn vine | mn2, mn9, mn43, mn95, sn46.2, an10.60 | five hindrances, harm, unwholesome | line-art | `icons/thorn-vine.svg` |
 | impact-star | Remove: harmful thought | mn2, an10.60 | harm, unwholesome | line-art | `icons/impact-star.svg` |
-| seven-factors | Seven awakening factors | mn2, mn77 | awakening | line-art, dots | `icons/seven-factors.svg` |
+| seven-factors | Seven awakening factors | mn2, mn77, sn46.2 | awakening | line-art, dots | `icons/seven-factors.svg` |
 | bowl-overflow | Heir of material things (bowl with excess) | mn3 |  | line-art, bowl, burgundy | `icons/bowl-overflow.svg` |
 | bowl-empty | Heir in the Dhamma (empty bowl) | mn3 |  | line-art, bowl, teal | `icons/bowl-empty.svg` |
 | lunar-phases | Lunar fortnight (four phases) | mn4 |  | line-art, moon, lunar | `icons/lunar-phases.svg` |
@@ -58,7 +58,7 @@ Generated from `icons-manifest.json` (version 1).
 | wish-requisite-bowl | Requisite: alms bowl | mn5 | unwholesome | line-art, wish, bowl | `icons/wish-requisite-bowl.svg` |
 | wish-requisite-lodging | Requisite: lodging | mn5 | unwholesome | line-art, wish | `icons/wish-requisite-lodging.svg` |
 | wish-requisite-medicine | Requisite: medicine | mn5 | unwholesome | line-art, wish | `icons/wish-requisite-medicine.svg` |
-| body-observer | Body contemplation | mn118, mn10, mn43, mn148, an10.60 | mindfulness, sense bases, sense restraint, wholesome | line-art, figure, body | `icons/body-observer.svg` |
+| body-observer | Body contemplation | mn118, mn10, mn43, mn148, sn46.2, an10.60 | mindfulness, sense bases, sense restraint, wholesome | line-art, figure, body | `icons/body-observer.svg` |
 | feeling-droplet | Feeling contemplation | mn118, mn9, mn10, mn43 | mindfulness, sense restraint, wholesome | line-art, feeling | `icons/feeling-droplet.svg` |
 | elbow-bracket | Elbow bracket | mn118 |  | line-art, connector | `icons/elbow-bracket.svg` |
 | number-badge-r10 | Number badge (r=10) | mn118 |  | badge, number | `icons/number-badge-r10.svg` |
@@ -79,12 +79,12 @@ Generated from `icons-manifest.json` (version 1).
 | number-badge-16 | Step badge: 16 | mn118 |  | badge, number | `icons/number-badge-16.svg` |
 | mind-contemplation | Mind contemplation | mn118, mn9, mn10 | mindfulness, sense restraint, wholesome | line-art, mind | `icons/mind-contemplation.svg` |
 | mental-qualities | Mental qualities | mn118, mn10 | mindfulness, sense restraint, wholesome | line-art, dhamma | `icons/mental-qualities.svg` |
-| bojjhanga-investigation | Bojjhaṅga: investigation of states | mn118, mn10 | awakening, wisdom | line-art, bojjhanga | `icons/bojjhanga-investigation.svg` |
-| bojjhanga-energy | Bojjhaṅga: energy | mn118, mn10 | awakening, diligence, effort | line-art, bojjhanga | `icons/bojjhanga-energy.svg` |
-| bojjhanga-joy | Bojjhaṅga: joy | mn118, mn10 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-joy.svg` |
-| bojjhanga-tranquility | Bojjhaṅga: tranquility | mn118, mn6, mn10 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-tranquility.svg` |
-| bojjhanga-collectedness | Bojjhaṅga: collectedness | mn118, mn10, mn111 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-collectedness.svg` |
-| bojjhanga-equanimity | Bojjhaṅga: equanimity | mn118, mn10 | awakening, equanimity | line-art, bojjhanga | `icons/bojjhanga-equanimity.svg` |
+| bojjhanga-investigation | Bojjhaṅga: investigation of states | mn118, mn10, sn46.2 | awakening, wisdom | line-art, bojjhanga | `icons/bojjhanga-investigation.svg` |
+| bojjhanga-energy | Bojjhaṅga: energy | mn118, mn10, sn46.2 | awakening, diligence, effort | line-art, bojjhanga | `icons/bojjhanga-energy.svg` |
+| bojjhanga-joy | Bojjhaṅga: joy | mn118, mn10, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-joy.svg` |
+| bojjhanga-tranquility | Bojjhaṅga: tranquility | mn118, mn6, mn10, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-tranquility.svg` |
+| bojjhanga-collectedness | Bojjhaṅga: collectedness | mn118, mn10, mn111, sn46.2 | awakening, collectedness | line-art, bojjhanga | `icons/bojjhanga-collectedness.svg` |
+| bojjhanga-equanimity | Bojjhaṅga: equanimity | mn118, mn10, sn46.2 | awakening, equanimity | line-art, bojjhanga | `icons/bojjhanga-equanimity.svg` |
 | breath-torso | Mindfulness of breathing (torso icon) | mn119, mn10, an10.60 | awakening, clear awareness, mindfulness | line-art, breath, body | `icons/breath-torso.svg` |
 | shared-postures-four | Four postures | mn119, mn10, mn20 | mindfulness, skillful means | line-art, figure | `icons/shared-postures-four.svg` |
 | clear-awareness-fourfold | Clear awareness — four sense domains | mn39, mn9, mn10, mn119 | clear awareness, mindfulness | line-art | `icons/clear-awareness-fourfold.svg` |
@@ -139,7 +139,7 @@ Generated from `icons-manifest.json` (version 1).
 | simile-carcass-necklace | Carcass hung around the neck | mn20 | dispassion, insight, skillful means | line-art, vitakka | `icons/simile-carcass-necklace.svg` |
 | simile-look-away | Closing the eyes / looking away | mn20 | sense restraint, skillful means | line-art, vitakka | `icons/simile-look-away.svg` |
 | simile-subdue-figures | Strong person subdues a weaker one | mn20 | effort, skillful means, wholesome | line-art, vitakka | `icons/simile-subdue-figures.svg` |
-| hindrance-dullness | Hindrance: dullness and drowsiness | mn10, mn43 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-dullness.svg` |
+| hindrance-dullness | Hindrance: dullness and drowsiness | mn10, mn43, sn46.2 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-dullness.svg` |
 | hindrance-doubt | Hindrance: doubt | mn10 | five hindrances, harm, unwholesome | line-art, hindrances | `icons/hindrance-doubt.svg` |
 | simile-debt | Simile: debt (craving) | mn39, mn16 | five hindrances, harm, unwholesome | line-art | `icons/simile-debt.svg` |
 | simile-debt-free | Simile: free from debt (craving abandoned) | mn39, mn16 | five hindrances, non harm, renunciation, wholesome | line-art | `icons/simile-debt-free.svg` |
@@ -147,9 +147,9 @@ Generated from `icons-manifest.json` (version 1).
 | simile-healthy | Simile: regaining health (ill will abandoned) | mn39, an10.60 | five hindrances, non harm, renunciation, wholesome | line-art | `icons/simile-healthy.svg` |
 | simile-prison | Simile: prison (dullness and drowsiness) | mn39 | five hindrances, harm, unwholesome | line-art | `icons/simile-prison.svg` |
 | simile-released | Simile: released from prison (dullness abandoned) | mn39 | five hindrances, non harm, renunciation, safety, wholesome | line-art | `icons/simile-released.svg` |
-| simile-slavery | Simile: slavery (restlessness and worry) | mn39, mn43 | five hindrances, harm, unwholesome | line-art | `icons/simile-slavery.svg` |
+| simile-slavery | Simile: slavery (restlessness and worry) | mn39, mn43, sn46.2 | five hindrances, harm, unwholesome | line-art | `icons/simile-slavery.svg` |
 | simile-freedom | Simile: freed from slavery (restlessness abandoned) | mn39, mn16 | five hindrances, non harm, renunciation, wholesome | line-art | `icons/simile-freedom.svg` |
-| simile-dangerous-path | Simile: dangerous wilderness path (doubt) | mn39, mn43 | five hindrances, harm, unwholesome | line-art | `icons/simile-dangerous-path.svg` |
+| simile-dangerous-path | Simile: dangerous wilderness path (doubt) | mn39, mn43, sn46.2 | five hindrances, harm, unwholesome | line-art | `icons/simile-dangerous-path.svg` |
 | simile-safe-arrival | Simile: place of safety (doubt abandoned) | mn39 | five hindrances, non harm, renunciation, safety, wholesome | line-art | `icons/simile-safe-arrival.svg` |
 | triple-purity | Pure conduct: body, speech, and mind | mn39, mn9 | ethical conduct, wholesome | line-art, conduct | `icons/triple-purity.svg` |
 | simile-villages-traveler | Simile: traveler among villages (past lives) | mn39, mn77 | direct knowledge, insight, psychic power, simile | line-art | `icons/simile-villages-traveler.svg` |
@@ -159,7 +159,7 @@ Generated from `icons-manifest.json` (version 1).
 | emptiness-void | Emptiness of perceptions | mn106, mn6, mn43 | formless, perceiving escape, with nothing | line-art | `icons/emptiness-void.svg` |
 | non-belonging-scatter | Non-belonging | mn106, mn138, mn140, an10.60 | formless, free from attachment, non identification, recognition of not self | line-art | `icons/non-belonging-scatter.svg` |
 | dwell-loop | Return loop (repeat often) | mn106, mn43 | diligence, effort, skillful means | line-art, arrow | `icons/dwell-loop.svg` |
-| bait-five-cords | Bait: five cords of sensual pleasure | mn25, mn9, mn19 | five hindrances, harm, simile | line-art, burgundy | `icons/bait-five-cords.svg` |
+| bait-five-cords | Bait: five cords of sensual pleasure | mn25, mn9, mn19, sn46.2 | five hindrances, harm, simile | line-art, burgundy | `icons/bait-five-cords.svg` |
 | herd-rushing-in | Herd rushing in | mn25, mn43 | five hindrances, harm, simile | line-art | `icons/herd-rushing-in.svg` |
 | herd-barren-tree | Herd: barren tree | mn25 | harm, simile | line-art | `icons/herd-barren-tree.svg` |
 | herd-visible-lair | Herd: visible lair | mn25 | harm, simile, wrong view | line-art, dashed | `icons/herd-visible-lair.svg` |

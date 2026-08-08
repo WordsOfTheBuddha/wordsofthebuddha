@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 2146" role="img" aria-labelledby="sn462-title sn462-desc" font-family="Georgia,'Times New Roman',serif">
+  <title id="sn462-title">SN 46.2 Kāya Sutta — The Body</title>
+  <desc id="sn462-desc">A discourse visualization of SN 46.2: just as the body endures dependent on nutriment, the five hindrances and the seven factors of awakening persist dependent on nutriment. Superficial attention feeds the hindrances; radical attention feeds the awakening factors.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1528" />
+      <stop offset="42%" stop-color="#0e1a30" />
+      <stop offset="100%" stop-color="#101e36" />
+    </linearGradient>
+    <linearGradient id="tierGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c8a040" stop-opacity="0" />
+      <stop offset="18%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffd980" stop-opacity="0.68" />
+      <stop offset="82%" stop-color="#c8a040" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="cardNeutral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182234" />
+      <stop offset="100%" stop-color="#121a2a" />
+    </linearGradient>
+    <linearGradient id="cardFalse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#251624" />
+      <stop offset="100%" stop-color="#17111c" />
+    </linearGradient>
+    <linearGradient id="cardTrue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#142b34" />
+      <stop offset="100%" stop-color="#101d2a" />
+    </linearGradient>
+    <linearGradient id="cardGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2e2818" />
+      <stop offset="100%" stop-color="#221d10" />
+    </linearGradient>
+    <linearGradient id="cardApex" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#40341c" />
+      <stop offset="100%" stop-color="#3a2d18" />
+    </linearGradient>
+    <linearGradient id="hRow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#221820" />
+      <stop offset="100%" stop-color="#18141c" />
+    </linearGradient>
+    <linearGradient id="fRow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#162830" />
+      <stop offset="100%" stop-color="#121e28" />
+    </linearGradient>
+    <radialGradient id="libGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.18" />
+      <stop offset="55%" stop-color="#c8a040" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#c8a040" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <filter id="shadowDrop" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <rect width="920" height="2146" fill="url(#bg)" />
+  <ellipse cx="460" cy="160" rx="340" ry="140" fill="#c8a040" opacity="0.03" />
+  <ellipse cx="460" cy="780" rx="340" ry="180" fill="#a06070" opacity="0.035" />
+  <ellipse cx="460" cy="1520" rx="360" ry="220" fill="#60a088" opacity="0.04" />
+  <ellipse cx="460" cy="2000" rx="300" ry="120" fill="#60a088" opacity="0.03" />
+
+  <!-- ============================ HEADER ============================ -->
+  <g id="header" transform="translate(0, 0)">
+    <text x="460" y="42" text-anchor="middle" fill="#c8a040" font-size="22" font-weight="bold" letter-spacing="3">SN 46.2 — KĀYA SUTTA</text>
+    <text x="476" y="66" text-anchor="middle" fill="#90a0b8" font-size="15" font-style="italic">The Body</text>
+    <line x1="300" y1="82" x2="620" y2="82" stroke="#a09070" stroke-opacity="0.32" stroke-width="0.6" />
+    <text x="460" y="108" text-anchor="middle" fill="#b0c0d0" font-size="12.5" font-style="italic">Just as this body, sustained by nutriment, endures dependent on nutriment,</text>
+    <text x="460" y="128" text-anchor="middle" fill="#8898b0" font-size="12" font-style="italic">and does not endure without nutriment ...</text>
+  </g>
+
+  <!-- ============================ 1 · THE BODY SIMILE ============================ -->
+  <g id="section-simile" transform="translate(0, 156)">
+    <line x1="100" y1="0" x2="820" y2="0" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="24" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">SUSTAINED BY NUTRIMENT · ĀHĀRAṬṬHITIKA</text>
+    <text x="460" y="42" text-anchor="middle" fill="#708090" font-size="10.5" font-style="italic">endures dependent on nutriment — does not endure without nutriment</text>
+
+    <g id="simile-card" transform="translate(70, 58)">
+      <rect x="100" y="0" width="580" height="96" rx="8" fill="url(#cardNeutral)" stroke="#7888a0" stroke-opacity="0.4" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <!-- bait-five-cords -->
+      <g transform="translate(134, 48) scale(1.35)" opacity="0.7" filter="url(#iconGlow)">
+          <g opacity="0.8" stroke="#b07880" fill="none" stroke-linecap="round" stroke-width="0.8">
+            <circle cx="0" cy="0" r="5" fill="#b07880" fill-opacity="0.15" stroke-width="0.8" />
+            <line x1="0" y1="-5" x2="0" y2="-12" stroke-width="0.7" />
+            <line x1="4.8" y1="-1.5" x2="11" y2="-4" stroke-width="0.7" />
+            <line x1="2.9" y1="4" x2="7" y2="10" stroke-width="0.7" />
+            <line x1="-2.9" y1="4" x2="-7" y2="10" stroke-width="0.7" />
+            <line x1="-4.8" y1="-1.5" x2="-11" y2="-4" stroke-width="0.7" />
+          </g>
+      </g>
+      <text x="410" y="34" text-anchor="middle" fill="#c8d8e8" font-size="12.5">So too, the five hindrances are sustained by nutriment, persist dependent on nutriment,</text>
+      <text x="410" y="52" text-anchor="middle" fill="#c8d8e8" font-size="12.5">and do not persist without nutriment.</text>
+      <text x="410" y="74" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">evameva kho, pañca nīvaraṇā āhāraṭṭhitikā, āhāraṁ paṭicca tiṭṭhanti, anāhārā no tiṭṭhanti.</text>
+    </g>
+  </g>
+
+  <!-- ============================ 2 · FIVE HINDRANCES ============================ -->
+  <g id="section-hindrances" transform="translate(0, 330)">
+    <line x1="100" y1="0" x2="820" y2="0" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="24" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">NUTRIMENT FOR THE FIVE HINDRANCES · PAÑCA NĪVARAṆĀ</text>
+    <text x="460" y="42" text-anchor="middle" fill="#a08090" font-size="10.5" font-style="italic">frequently attending superficially · ayonisomanasikārabahulīkāro</text>
+
+    <g id="hindrance-rows" transform="translate(70, 58)">
+      <!-- 1 · sensual desire -->
+      <g id="h1" transform="translate(0, 0)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#hRow)" stroke="#a06070" stroke-opacity="0.38" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#a06070" stroke-width="1" opacity="0.8" />
+        <text x="32" y="43" text-anchor="middle" dominant-baseline="central" fill="#c0a0a8" font-size="13" font-weight="bold">1</text>
+        <g transform="translate(74, 44) scale(1.35)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(0.77363) translate(-10, -11)">
+            <path d="M 10 -2 C 10 -2, 2 8, 2 14 C 2 19, 6 24, 10 24 C 14 24, 18 19, 18 14 C 18 8, 10 -2, 10 -2 Z" fill="#e8604018" stroke="#e86040" stroke-width="1.3" stroke-linejoin="round" />
+            <path d="M 10 8 C 10 8, 6 13, 6 16 C 6 18.5, 8 20, 10 20 C 12 20, 14 18.5, 14 16 C 14 13, 10 8, 10 8 Z" fill="#e8604028" stroke="#e86040" stroke-width="0.9" opacity="0.7" stroke-linejoin="round" />
+          </g>
+        </g>
+        <text x="112" y="36" fill="#d8b0b8" font-size="14" font-weight="bold">Sensual desire</text>
+        <text x="112" y="56" fill="#886070" font-size="12" font-style="italic">kāmacchanda</text>
+        <text x="756" y="36" text-anchor="end" fill="#a09098" font-size="12">Frequently attending superficially to the sign of the beautiful</text>
+        <text x="756" y="56" text-anchor="end" fill="#806070" font-size="11" font-style="italic">subhanimitte ayoniso manasikārabahulīkāro</text>
+      </g>
+
+      <!-- 2 · ill will -->
+      <g id="h2" transform="translate(0, 98)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#hRow)" stroke="#a06070" stroke-opacity="0.38" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#a06070" stroke-width="1" opacity="0.8" />
+        <text x="32" y="43" text-anchor="middle" dominant-baseline="central" fill="#c0a0a8" font-size="13" font-weight="bold">2</text>
+        <g transform="translate(74, 44) scale(1.45)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(0.46726) translate(-22, -10)">
+            <path d="M 0 10 C 8 3, 16 17, 24 6 C 32 -2, 38 12, 44 8" fill="none" stroke="#a07058" stroke-width="1.2" stroke-linecap="round" />
+            <path d="M 6 6 L 4 1 L 8 4" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+            <path d="M 14 14 L 12 19 L 16 16" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+            <path d="M 22 6 L 20 1 L 24 4" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+            <path d="M 30 6 L 28 11 L 32 8" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+            <path d="M 44 8 L 42 3 L 46 6" fill="none" stroke="#a07058" stroke-width="1" stroke-linejoin="round" />
+          </g>
+        </g>
+        <text x="112" y="36" fill="#d8b0b8" font-size="14" font-weight="bold">Ill will</text>
+        <text x="112" y="56" fill="#886070" font-size="12" font-style="italic">byāpāda</text>
+        <text x="756" y="36" text-anchor="end" fill="#a09098" font-size="12">Frequently attending superficially to an aversive mental image</text>
+        <text x="756" y="56" text-anchor="end" fill="#806070" font-size="11" font-style="italic">paṭighanimitte ayoniso manasikārabahulīkāro</text>
+      </g>
+
+      <!-- 3 · dullness and drowsiness -->
+      <g id="h3" transform="translate(0, 196)">
+        <rect x="0" y="0" width="780" height="110" rx="8" fill="url(#hRow)" stroke="#a06070" stroke-opacity="0.38" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="60" r="13" fill="none" stroke="#a06070" stroke-width="1" opacity="0.8" />
+        <text x="32" y="58" text-anchor="middle" dominant-baseline="central" fill="#c0a0a8" font-size="13" font-weight="bold">3</text>
+        <g transform="translate(74, 60) scale(1.45)" opacity="0.75" filter="url(#iconGlow)" fill="none" stroke="#7888a0" stroke-linecap="round">
+          <path d="M -8 2 Q -8 -4, -3 -4 Q -1 -8, 4 -6 Q 9 -6, 9 -1 Q 9 3, 4 3 Z" stroke-width="1" />
+          <line x1="-4" y1="6" x2="6" y2="6" stroke-width="0.7" opacity="0.5" />
+        </g>
+        <text x="112" y="52" fill="#d8b0b8" font-size="14" font-weight="bold">Dullness and drowsiness</text>
+        <text x="112" y="72" fill="#886070" font-size="12" font-style="italic">thinamiddha</text>
+        <text x="756" y="34" text-anchor="end" fill="#a09098" font-size="10.5">Frequently attending superficially to dissatisfaction <tspan fill="#806070" font-style="italic">(arati)</tspan> · laziness <tspan fill="#806070" font-style="italic">(tandi)</tspan></text>
+        <text x="756" y="56" text-anchor="end" fill="#a09098" font-size="10.5">yawning <tspan fill="#806070" font-style="italic">(vijambhitā)</tspan> · drowsiness after eating <tspan fill="#806070" font-style="italic">(bhattasammada)</tspan></text>
+        <text x="756" y="78" text-anchor="end" fill="#a09098" font-size="10.5">sluggishness of mind <tspan fill="#806070" font-style="italic">(cetaso līnattaṁ)</tspan></text>
+      </g>
+
+      <!-- 4 · restlessness and worry -->
+      <g id="h4" transform="translate(0, 316)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#hRow)" stroke="#a06070" stroke-opacity="0.38" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#a06070" stroke-width="1" opacity="0.8" />
+        <text x="32" y="42" text-anchor="middle" dominant-baseline="central" fill="#c0a0a8" font-size="13" font-weight="bold">4</text>
+        <g transform="translate(74, 44) scale(1.4)" opacity="0.75" filter="url(#iconGlow)">
+          <g transform="scale(0.82661) translate(0, 0.275)">
+            <g stroke="#a08090" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="0" cy="-9" r="3.5" stroke-width="1.1" />
+              <path d="M 0 -5.5 Q 2 -2, 1 4" stroke-width="1.1" />
+              <line x1="1" y1="4" x2="-3" y2="12" stroke-width="1" />
+              <line x1="1" y1="4" x2="5" y2="12" stroke-width="1" />
+              <line x1="0" y1="-1" x2="-6" y2="2" stroke-width="1" />
+              <line x1="0" y1="-1" x2="6" y2="2" stroke-width="1" />
+              <ellipse cx="-8" cy="2" rx="3" ry="1.8" stroke-width="1" />
+              <ellipse cx="8" cy="2" rx="3" ry="1.8" stroke-width="1" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#d8b0b8" font-size="14" font-weight="bold">Restlessness and worry</text>
+        <text x="112" y="56" fill="#886070" font-size="12" font-style="italic">uddhaccakukkucca</text>
+        <text x="756" y="36" text-anchor="end" fill="#a09098" font-size="12">Frequently attending superficially to the unsettled mind</text>
+        <text x="756" y="56" text-anchor="end" fill="#806070" font-size="11" font-style="italic">cetaso avūpasame ayoniso manasikārabahulīkāro</text>
+      </g>
+
+      <!-- 5 · doubt — simile-dangerous-path -->
+      <g id="h5" transform="translate(0, 414)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#hRow)" stroke="#a06070" stroke-opacity="0.38" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#a06070" stroke-width="1" opacity="0.8" />
+        <text x="32" y="43" text-anchor="middle" dominant-baseline="central" fill="#c0a0a8" font-size="13" font-weight="bold">5</text>
+        <g transform="translate(74, 44) scale(2)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(0.51138) translate(0.2, -0.875)">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 16 -14 C 12 -10, 6 -6, 0 -2 C -6 2, -10 8, -16 14" stroke="#a08090" stroke-width="1.4" />
+              <path d="M 20 -12 C 16 -8, 10 -4, 4 0 C -2 4, -6 10, -12 16" stroke="#a08090" stroke-width="0.9" opacity="0.5" />
+              <path d="M 10 -8 L 12 -12 L 14 -9 Z" stroke="#a06070" stroke-width="0.7" fill="#a06070" fill-opacity="0.18" />
+              <path d="M 2 -2 L 5 -6 L 6 -2 Z" stroke="#a06070" stroke-width="0.7" fill="#a06070" fill-opacity="0.18" />
+              <path d="M -6 6 L -4 2 L -2 5 Z" stroke="#a06070" stroke-width="0.65" fill="#a06070" fill-opacity="0.15" />
+              <path d="M -12 10 L -10 6 L -8 9 Z" stroke="#a06070" stroke-width="0.6" fill="#a06070" fill-opacity="0.12" />
+              <g stroke="#a08090" stroke-width="0.9" transform="translate(-16, -4)">
+                <circle cx="0" cy="-3" r="2.2" />
+                <line x1="0" y1="-0.8" x2="0" y2="6" />
+                <line x1="0" y1="2.5" x2="-3.5" y2="4.5" />
+                <line x1="0" y1="2.5" x2="3.5" y2="4.5" />
+                <line x1="0" y1="6" x2="-2" y2="10" stroke-width="0.85" />
+                <line x1="0" y1="6" x2="2" y2="10" stroke-width="0.85" />
+                <path d="M -3 -5 Q -5 -2, -3 0 Q -1 1, 0 -1" stroke-width="0.7" opacity="0.7" />
+              </g>
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#d8b0b8" font-size="14" font-weight="bold">Doubt</text>
+        <text x="112" y="56" fill="#886070" font-size="12" font-style="italic">vicikicchā</text>
+        <text x="756" y="36" text-anchor="end" fill="#a09098" font-size="12">Frequently attending superficially to things that lead to doubt</text>
+        <text x="756" y="56" text-anchor="end" fill="#806070" font-size="11" font-style="italic">vicikicchāṭṭhānīyesu dhammesu ayoniso manasikārabahulīkāro</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============================ 3 · ATTENTION PIVOT ============================ -->
+  <g id="section-attention" transform="translate(0, 940)">
+    <line x1="100" y1="0" x2="820" y2="0" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="24" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">THE KIND OF ATTENTION · MANASIKĀRA</text>
+    <text x="460" y="42" text-anchor="middle" fill="#708090" font-size="10.5" font-style="italic">what is frequently attended to becomes the nutriment</text>
+
+    <g id="attention-split" transform="translate(70, 58)">
+      <line x1="390" y1="16" x2="390" y2="118" stroke="#c8a040" stroke-opacity="0.28" stroke-width="0.8" />
+
+      <g id="attention-ayoniso" transform="translate(0, 0)">
+        <rect x="0" y="0" width="375" height="134" rx="8" fill="url(#cardFalse)" stroke="#a06070" stroke-opacity="0.42" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <!-- tangle-superficial-attention -->
+        <g transform="translate(187.5, 36) scale(1.2)" opacity="0.7" filter="url(#iconGlow)">
+          <g transform="scale(0.72329) translate(-14, -14.2768)">
+            <path d="M 0 12 Q 10 0, 20 14 Q 28 28, 12 22 Q -2 18, 10 8 Q 22 0, 28 16" fill="none" stroke="#a06070" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M 4 24 Q 14 16, 24 24" fill="none" stroke="#a06070" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+          </g>
+        </g>
+        <text x="187.5" y="68" text-anchor="middle" fill="#d8a0a8" font-size="13" font-weight="bold">Superficial attention</text>
+        <text x="187.5" y="88" text-anchor="middle" fill="#906070" font-size="11" font-style="italic">ayonisomanasikāra</text>
+        <text x="187.5" y="112" text-anchor="middle" fill="#a08090" font-size="11">feeds the five hindrances</text>
+      </g>
+
+      <g id="attention-yoniso" transform="translate(405, 0)">
+        <rect x="0" y="0" width="375" height="134" rx="8" fill="url(#cardTrue)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+        <!-- radical-attention -->
+        <g transform="translate(187.5, 36) scale(1.25)" opacity="0.75" filter="url(#iconGlow)">
+          <g transform="scale(0.8381) translate(-14, -12)">
+            <line x1="2" y1="14" x2="26" y2="14" stroke="#60a088" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="6" y1="20" x2="22" y2="20" stroke="#60a088" stroke-width="0.9" stroke-linecap="round"/>
+            <circle cx="14" cy="8" r="4" fill="none" stroke="#80c0a0" stroke-width="0.9" opacity="0.7"/>
+          </g>
+        </g>
+        <text x="187.5" y="68" text-anchor="middle" fill="#c8e0d8" font-size="13" font-weight="bold">Radical attention</text>
+        <text x="187.5" y="88" text-anchor="middle" fill="#688880" font-size="11" font-style="italic">yonisomanasikāra</text>
+        <text x="187.5" y="112" text-anchor="middle" fill="#80a898" font-size="11">nourishes the seven factors of awakening</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============================ 4 · SEVEN FACTORS ============================ -->
+  <g id="section-factors" transform="translate(0, 1180)">
+    <line x1="100" y1="0" x2="820" y2="0" stroke="url(#tierGrad)" stroke-width="0.8" />
+    <text x="460" y="24" text-anchor="middle" fill="#c8a040" font-size="12" font-weight="bold" letter-spacing="2">NUTRIMENT FOR THE SEVEN FACTORS OF AWAKENING · SATTA BOJJHAṄGĀ</text>
+    <text x="460" y="42" text-anchor="middle" fill="#689888" font-size="10.5" font-style="italic">frequently applying radical attention · yonisomanasikārabahulīkāro</text>
+
+    <g id="factor-rows" transform="translate(70, 60)">
+      <!-- 1 · mindfulness -->
+      <g id="f1" transform="translate(0, 0)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="43" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">1</text>
+        <g transform="translate(74, 44) scale(1.45)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(1.03024) translate(0, 0.75)">
+            <g stroke="#80a0b0" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="0" cy="-7" r="3.5" />
+              <path d="M -6 -1 L 6 -1" />
+              <path d="M 0 -3 L 0 6" />
+              <path d="M -5 5 L 0 9 L 5 5" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#c8e0d8" font-size="14" font-weight="bold">Mindfulness</text>
+        <text x="112" y="56" fill="#688880" font-size="12" font-style="italic">satisambojjhaṅga</text>
+        <text x="756" y="36" text-anchor="end" fill="#90a8a0" font-size="11.5">Frequently applying radical attention to things suitable for mindfulness</text>
+        <text x="756" y="56" text-anchor="end" fill="#607870" font-size="10.5" font-style="italic">satisambojjhaṅgaṭṭhānīyesu dhammesu yoniso manasikārabahulīkāro</text>
+      </g>
+
+      <!-- 2 · investigation of states -->
+      <g id="f2" transform="translate(0, 98)">
+        <rect x="0" y="0" width="780" height="110" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="60" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="59" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">2</text>
+        <g transform="translate(74, 60) scale(1.35)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(1.24235) translate(-2, 0)">
+            <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="0" cy="-2" r="6" />
+              <line x1="4" y1="2" x2="10" y2="8" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="52" fill="#c8e0d8" font-size="14" font-weight="bold">Investigation of states</text>
+        <text x="112" y="72" fill="#688880" font-size="12" font-style="italic">dhammavicayasambojjhaṅga</text>
+        <text x="756" y="34" text-anchor="end" fill="#90a8a0" font-size="10.5">Frequently applying radical attention to wholesome and unwholesome <tspan fill="#607870" font-style="italic">(kusalākusalā)</tspan></text>
+        <text x="756" y="56" text-anchor="end" fill="#90a8a0" font-size="10.5">blameworthy and blameless <tspan fill="#607870" font-style="italic">(sāvajjānavajjā) · </tspan>inferior and superior <tspan fill="#607870" font-style="italic">(hīnapaṇītā)</tspan></text>
+        <text x="756" y="78" text-anchor="end" fill="#90a8a0" font-size="10.5">dark and bright counterparts <tspan fill="#607870" font-style="italic">(kaṇhasukkasappaṭibhāgā)</tspan></text>
+      </g>
+
+      <!-- 3 · energy -->
+      <g id="f3" transform="translate(0, 218)">
+        <rect x="0" y="0" width="780" height="96" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="53" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="51" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">3</text>
+        <g transform="translate(74, 53) scale(1.4)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(0.81231) translate(0, -0.5)">
+            <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 0 -12 C 0 -12, -7 -2, -7 4 C -7 9, -3 13, 0 13 C 3 13, 7 9, 7 4 C 7 -2, 0 -12, 0 -12 Z" />
+              <path d="M 0 -3 C 0 -3, -2 2, -2 5 C -2 7, -1 8.5, 0 8.5 C 1 8.5, 2 7, 2 5 C 2 2, 0 -3, 0 -3 Z" opacity="0.7" />
+              <path d="M -10 4 Q -13 1 -10 -2" opacity="0.5" />
+              <path d="M 10 4 Q 13 1 10 -2" opacity="0.5" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="45" fill="#c8e0d8" font-size="14" font-weight="bold">Energy</text>
+        <text x="112" y="65" fill="#688880" font-size="12" font-style="italic">vīriyasambojjhaṅga</text>
+        <text x="756" y="36" text-anchor="end" fill="#90a8a0" font-size="10.5">Frequently applying radical attention to rousing of energy <tspan fill="#607870" font-style="italic">(ārambhadhātu)</tspan></text>
+        <text x="756" y="58" text-anchor="end" fill="#90a8a0" font-size="10.5">principle of endurance <tspan fill="#607870" font-style="italic">(nikkamadhātu) · </tspan>continuous effort <tspan fill="#607870" font-style="italic">(parakkamadhātu)</tspan></text>
+      </g>
+
+      <!-- 4 · joy -->
+      <g id="f4" transform="translate(0, 324)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="42" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">4</text>
+        <g transform="translate(74, 44) scale(1.45)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(1.11451) translate(0, 0.5)">
+            <g stroke="#60a088" fill="none" stroke-width="0.95" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 0 -9 L 2.4 -2.5 L 9 -2.5 L 3.8 1.7 L 5.8 8 L 0 4.7 L -5.8 8 L -3.8 1.7 L -9 -2.5 L -2.4 -2.5 Z" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#c8e0d8" font-size="14" font-weight="bold">Joy</text>
+        <text x="112" y="56" fill="#688880" font-size="12" font-style="italic">pītisambojjhaṅga</text>
+        <text x="756" y="34" text-anchor="end" fill="#90a8a0" font-size="12">Frequently applying radical attention to things suitable for joy</text>
+        <text x="756" y="56" text-anchor="end" fill="#607870" font-size="10.5" font-style="italic">pītisambojjhaṅgaṭṭhānīyesu dhammesu yoniso manasikārabahulīkāro</text>
+      </g>
+
+      <!-- 5 · tranquility -->
+      <g id="f5" transform="translate(0, 422)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="42" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">5</text>
+        <g transform="translate(74, 44) scale(1.5)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(1.01053) translate(0, -1)">
+            <g stroke="#60a088" fill="none" stroke-width="0.9" stroke-linecap="round">
+              <path d="M -10 -2 Q -5 -4 0 -2 T 10 -2" />
+              <path d="M -10 4 Q -5 2 0 4 T 10 4" opacity="0.8" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#c8e0d8" font-size="14" font-weight="bold">Tranquility</text>
+        <text x="112" y="56" fill="#688880" font-size="12" font-style="italic">passaddhisambojjhaṅga</text>
+        <text x="676" y="34" text-anchor="end" fill="#90a8a0" font-size="10.5">Frequently applying radical attention to</text>
+        <text x="756" y="56" text-anchor="end" fill="#90a8a0" font-size="10.5">tranquility of body <tspan fill="#607870" font-style="italic">(kāyapassaddhi)</tspan> · tranquility of mind <tspan fill="#607870" font-style="italic">(cittapassaddhi)</tspan></text>
+      </g>
+
+      <!-- 6 · collectedness -->
+      <g id="f6" transform="translate(0, 520)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="44" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">6</text>
+        <g transform="translate(74, 44) scale(1.4)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(1.25714)">
+            <g stroke="#60a088" fill="none" stroke-width="0.8">
+              <circle cx="0" cy="0" r="8" />
+              <circle cx="0" cy="0" r="5" />
+              <circle cx="0" cy="0" r="2" />
+              <circle cx="0" cy="0" r="1.2" fill="#60a088" stroke="none" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#c8e0d8" font-size="14" font-weight="bold">Collectedness</text>
+        <text x="112" y="56" fill="#688880" font-size="12" font-style="italic">samādhisambojjhaṅga</text>
+        <text x="676" y="34" text-anchor="end" fill="#90a8a0" font-size="10.5">Frequently applying radical attention to</text>
+        <text x="756" y="56" text-anchor="end" fill="#90a8a0" font-size="10.5">the basis for calming <tspan fill="#607870" font-style="italic">(samathanimitta)</tspan> · the basis for non-distraction <tspan fill="#607870" font-style="italic">(abyagganimitta)</tspan></text>
+      </g>
+
+      <!-- 7 · equanimity -->
+      <g id="f7" transform="translate(0, 618)">
+        <rect x="0" y="0" width="780" height="88" rx="8" fill="url(#fRow)" stroke="#60a088" stroke-opacity="0.36" stroke-width="0.8" filter="url(#shadowDrop)" />
+        <circle cx="32" cy="44" r="13" fill="none" stroke="#60a088" stroke-width="1" opacity="0.8" />
+        <text x="32" y="43" text-anchor="middle" dominant-baseline="central" fill="#90c0b0" font-size="13" font-weight="bold">7</text>
+        <g transform="translate(74, 44) scale(1.45)" opacity="0.8" filter="url(#iconGlow)">
+          <g transform="scale(1.00571)">
+            <g stroke="#60a088" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="-10" y1="0" x2="10" y2="0" />
+              <path d="M 0 -3 L 3 0 L 0 3 L -3 0 Z" />
+              <line x1="-10" y1="-4" x2="-10" y2="4" />
+              <line x1="10" y1="-4" x2="10" y2="4" />
+            </g>
+          </g>
+        </g>
+        <text x="112" y="36" fill="#c8e0d8" font-size="14" font-weight="bold">Equanimity</text>
+        <text x="112" y="56" fill="#688880" font-size="12" font-style="italic">upekkhāsambojjhaṅga</text>
+        <text x="756" y="36" text-anchor="end" fill="#90a8a0" font-size="11.5">Frequently applying radical attention to things suitable for equanimity</text>
+        <text x="756" y="56" text-anchor="end" fill="#607870" font-size="10.5" font-style="italic">upekkhāsambojjhaṅgaṭṭhānīyesu dhammesu yoniso manasikārabahulīkāro</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============================ CLOSING · SEVEN FACTORS ============================ -->
+  <g id="section-closing" transform="translate(0, 1974)">
+    <g id="closing-card" transform="translate(70, 8)">
+      <rect x="60" y="0" width="660" height="96" rx="8" fill="url(#cardTrue)" stroke="#60a088" stroke-opacity="0.45" stroke-width="0.9" filter="url(#shadowDrop)" />
+      <!-- seven-factors -->
+      <g transform="translate(100, 48) scale(1.35)" opacity="0.7" filter="url(#iconGlow)">
+        <g transform="scale(0.39849) translate(-28, -16)">
+          <circle cx="4" cy="24" r="2.5" fill="#60a088" opacity="0.6" />
+          <circle cx="10" cy="16" r="2.5" fill="#60a088" opacity="0.65" />
+          <circle cx="18" cy="10" r="2.5" fill="#60a088" opacity="0.7" />
+          <circle cx="28" cy="8" r="2.5" fill="#80c0a0" opacity="0.75" />
+          <circle cx="38" cy="10" r="2.5" fill="#60a088" opacity="0.7" />
+          <circle cx="46" cy="16" r="2.5" fill="#60a088" opacity="0.65" />
+          <circle cx="52" cy="24" r="2.5" fill="#60a088" opacity="0.6" />
+        </g>
+      </g>
+      <text x="410" y="34" text-anchor="middle" fill="#c8d8e8" font-size="12.5">So too, the seven factors of awakening are sustained by nutriment, persist dependent on nutriment,</text>
+      <text x="410" y="52" text-anchor="middle" fill="#c8d8e8" font-size="12.5">and do not persist without nutriment.</text>
+      <text x="410" y="74" text-anchor="middle" fill="#708878" font-size="10.5" font-style="italic">evameva kho, ime satta bojjhaṅgā āhāraṭṭhitikā, āhāraṁ paṭicca tiṭṭhanti, anāhārā no tiṭṭhanti.</text>
+    </g>
+  </g>
+
+  <!-- ============================ FOOTER ============================ -->
+  <g id="footer" transform="translate(0, 2104)">
+    <line x1="300" y1="0" x2="620" y2="0" stroke="#304058" stroke-opacity="0.3" stroke-width="0.5" />
+    <a href="https://wordsofthebuddha.org/sn46.2" target="_blank" rel="noopener noreferrer">
+      <text x="460" y="18" text-anchor="middle" fill="#405060" font-size="10" letter-spacing="1">wordsofthebuddha.org/sn46.2</text>
+    </a>
+    <g transform="translate(460, 38) scale(0.25)" fill="none" stroke="#8a9ab0" stroke-width="2.5" opacity="0.18">
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-14, 16) rotate(-65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(14, 16) rotate(65)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(-9, 0) rotate(-25)" />
+      <path d="M 0 -22 C 14 -8 14 12 0 18 C -14 12 -14 -8 0 -22 Z" transform="translate(9, 0) rotate(25)" />
+      <circle cx="0" cy="-28" r="9" />
+    </g>
+  </g>
+</svg>

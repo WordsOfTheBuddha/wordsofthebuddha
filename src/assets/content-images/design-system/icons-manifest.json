@@ -477,7 +477,8 @@
 				"mn2",
 				"mn9",
 				"mn18",
-				"mn138"
+				"mn138",
+				"sn46.2"
 			],
 			"labels": [
 				"five hindrances",
@@ -498,7 +499,8 @@
 				"mn2",
 				"mn18",
 				"mn43",
-				"mn138"
+				"mn138",
+				"sn46.2"
 			],
 			"labels": [
 				"safety",
@@ -583,6 +585,7 @@
 			"discourse": [
 				"mn2",
 				"mn43",
+				"sn46.2",
 				"an10.60"
 			],
 			"labels": [
@@ -605,6 +608,7 @@
 				"mn9",
 				"mn43",
 				"mn95",
+				"sn46.2",
 				"an10.60"
 			],
 			"labels": [
@@ -643,7 +647,8 @@
 			],
 			"discourse": [
 				"mn2",
-				"mn77"
+				"mn77",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening"
@@ -954,6 +959,7 @@
 				"mn10",
 				"mn43",
 				"mn148",
+				"sn46.2",
 				"an10.60"
 			],
 			"labels": [
@@ -1242,7 +1248,8 @@
 			],
 			"discourse": [
 				"mn118",
-				"mn10"
+				"mn10",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening",
@@ -1261,7 +1268,8 @@
 			],
 			"discourse": [
 				"mn118",
-				"mn10"
+				"mn10",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening",
@@ -1281,7 +1289,8 @@
 			],
 			"discourse": [
 				"mn118",
-				"mn10"
+				"mn10",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening",
@@ -1301,7 +1310,8 @@
 			"discourse": [
 				"mn118",
 				"mn6",
-				"mn10"
+				"mn10",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening",
@@ -1321,7 +1331,8 @@
 			"discourse": [
 				"mn118",
 				"mn10",
-				"mn111"
+				"mn111",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening",
@@ -1340,7 +1351,8 @@
 			],
 			"discourse": [
 				"mn118",
-				"mn10"
+				"mn10",
+				"sn46.2"
 			],
 			"labels": [
 				"awakening",
@@ -2371,7 +2383,8 @@
 			],
 			"discourse": [
 				"mn10",
-				"mn43"
+				"mn43",
+				"sn46.2"
 			],
 			"labels": [
 				"five hindrances",
@@ -2519,7 +2532,8 @@
 			],
 			"discourse": [
 				"mn39",
-				"mn43"
+				"mn43",
+				"sn46.2"
 			],
 			"labels": [
 				"five hindrances",
@@ -2558,7 +2572,8 @@
 			],
 			"discourse": [
 				"mn39",
-				"mn43"
+				"mn43",
+				"sn46.2"
 			],
 			"labels": [
 				"five hindrances",
@@ -2763,7 +2778,8 @@
 			"discourse": [
 				"mn25",
 				"mn9",
-				"mn19"
+				"mn19",
+				"sn46.2"
 			],
 			"labels": [
 				"five hindrances",

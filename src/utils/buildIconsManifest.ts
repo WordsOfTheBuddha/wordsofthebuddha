@@ -369,7 +369,7 @@ const icons: IconEntry[] = [
 		id: "tangle-unwise-attention",
 		title: "Superficial attention",
 		description: "Tangled lines for ayoniso, āsava, uddhaccakukkucca",
-		discourse: ["mn2", "mn9", "mn18", "mn138"],
+		discourse: ["mn2", "mn9", "mn18", "mn138", "sn46.2"],
 		tags: ["burgundy", "line-art"],
 		themes: ["wisdom", "five hindrances", "harm"]
 	},
@@ -377,7 +377,7 @@ const icons: IconEntry[] = [
 		id: "wise-attention",
 		title: "Wise attention",
 		description: "Clear lines and horizon circle for yoniso",
-		discourse: ["mn2", "mn18", "mn138", "mn43"],
+		discourse: ["mn2", "mn18", "mn138", "mn43", "sn46.2"],
 		tags: ["teal", "line-art"],
 		themes: ["wisdom", "safety"]
 	},
@@ -417,7 +417,7 @@ const icons: IconEntry[] = [
 		id: "flame-thought",
 		title: "Flame",
 		description: "Flame representative of thought of sensual desire (kāmavitakka)",
-		discourse: ["mn2", "an10.60", "mn43"],
+		discourse: ["mn2", "an10.60", "mn43", "sn46.2"],
 		tags: ["line-art", "flame"],
 		themes: ["five hindrances", "unwholesome", "harm"]
 	},
@@ -425,7 +425,7 @@ const icons: IconEntry[] = [
 		id: "thorn-vine",
 		title: "Thorn vine",
 		description: "Thorn vine representative of thought of ill will (byāpādavitakka); reused for aversion (dosa)",
-		discourse: ["mn2", "mn95", "mn9", "an10.60", "mn43"],
+		discourse: ["mn2", "mn95", "mn9", "an10.60", "mn43", "sn46.2"],
 		tags: ["line-art"],
 		themes: ["five hindrances", "unwholesome", "harm"]
 	},
@@ -441,7 +441,7 @@ const icons: IconEntry[] = [
 		id: "seven-factors",
 		title: "Seven awakening factors",
 		description: "Bojjhaṅga arc — seven dots",
-		discourse: ["mn2", "mn77"],
+		discourse: ["mn2", "mn77", "sn46.2"],
 		tags: ["line-art", "dots"],
 		themes: ["awakening"]
 	},
@@ -602,7 +602,7 @@ const icons: IconEntry[] = [
 		id: "body-observer",
 		title: "Body contemplation",
 		description: "Small seated figure — kāyānupassī",
-		discourse: ["mn118", "mn148", "mn10", "an10.60", "mn43"],
+		discourse: ["mn118", "mn148", "mn10", "an10.60", "mn43", "sn46.2"],
 		tags: ["line-art", "figure", "body"],
 		themes: ["mindfulness", "sense bases", "sense restraint", "wholesome"],
 	},
@@ -756,7 +756,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: investigation of states",
 		description:
 			"dhammavicayasambojjhaṅga glyph",
-		discourse: ["mn118", "mn10"],
+		discourse: ["mn118", "mn10", "sn46.2"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "wisdom"]
 	},
@@ -765,7 +765,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: energy",
 		description:
 			"vīriyasambojjhaṅga glyph",
-		discourse: ["mn118", "mn10"],
+		discourse: ["mn118", "mn10", "sn46.2"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "diligence", "effort"]
 	},
@@ -774,7 +774,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: joy",
 		description:
 			"pītisambojjhaṅga glyph",
-		discourse: ["mn118", "mn10"],
+		discourse: ["mn118", "mn10", "sn46.2"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -783,7 +783,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: tranquility",
 		description:
 			"passaddhisambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "mn6"],
+		discourse: ["mn118", "mn10", "mn6", "sn46.2"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -792,7 +792,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: collectedness",
 		description:
 			"samādhisambojjhaṅga glyph",
-		discourse: ["mn118", "mn10", "mn111"],
+		discourse: ["mn118", "mn10", "mn111", "sn46.2"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "collectedness"]
 	},
@@ -801,7 +801,7 @@ const icons: IconEntry[] = [
 		title: "Bojjhaṅga: equanimity",
 		description:
 			"upekkhāsambojjhaṅgo glyph",
-		discourse: ["mn118", "mn10"],
+		discourse: ["mn118", "mn10", "sn46.2"],
 		tags: ["line-art", "bojjhanga"],
 		themes: ["awakening", "equanimity"]
 	},
@@ -1246,7 +1246,7 @@ const icons: IconEntry[] = [
 		id: "hindrance-dullness",
 		title: "Hindrance: dullness and drowsiness",
 		description: "Thinamiddha motif — cloud and drooping line.",
-		discourse: ["mn10", "mn43"],
+		discourse: ["mn10", "mn43", "sn46.2"],
 		tags: ["line-art", "hindrances"],
 		labels: ["five hindrances", "unwholesome", "harm"],
 	},
@@ -1311,7 +1311,7 @@ const icons: IconEntry[] = [
 		id: "simile-slavery",
 		title: "Simile: slavery (restlessness and worry)",
 		description: "Figure in shackles — uddhaccakukkucca like dāsabya",
-		discourse: ["mn39", "mn43"],
+		discourse: ["mn39", "mn43", "sn46.2"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1327,7 +1327,7 @@ const icons: IconEntry[] = [
 		id: "simile-dangerous-path",
 		title: "Simile: dangerous wilderness path (doubt)",
 		description: "Thorny track and wary traveler — vicikicchā like kantāraddhānamagga",
-		discourse: ["mn39", "mn43"],
+		discourse: ["mn39", "mn43", "sn46.2"],
 		tags: ["line-art"],
 		labels: ["five hindrances", "harm", "unwholesome"],
 	},
@@ -1410,7 +1410,7 @@ const icons: IconEntry[] = [
 		id: "bait-five-cords",
 		title: "Bait: five cords of sensual pleasure",
 		description: "Five radiating lines from a central dot — pañcannaṁ kāmaguṇānaṁ nivāpa",
-		discourse: ["mn25", "mn9", "mn19"],
+		discourse: ["mn25", "mn9", "mn19", "sn46.2"],
 		tags: ["line-art", "burgundy"],
 		labels: ["harm", "five hindrances", "simile"],
 	},
