@@ -1,6 +1,31 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { buildFuseQuery } from "./fuseQueryParser";
+import {
+	buildFuseQuery,
+	normalizeSearchQuery,
+	splitLetterHyphens,
+} from "./fuseQueryParser";
+
+describe("splitLetterHyphens / normalizeSearchQuery", () => {
+	it("splits letter-letter hyphens into separate terms", () => {
+		assert.equal(splitLetterHyphens("decent-friendship"), "decent friendship");
+		assert.equal(splitLetterHyphens("ill-will"), "ill will");
+		assert.equal(splitLetterHyphens("right–effort"), "right effort");
+	});
+
+	it("preserves numeric range slugs", () => {
+		assert.equal(splitLetterHyphens("an1.71-81"), "an1.71-81");
+		assert.equal(splitLetterHyphens("mn1-50"), "mn1-50");
+	});
+
+	it("normalizes hyphenated queries before Fuse parsing", () => {
+		assert.equal(
+			normalizeSearchQuery("decent-friendship"),
+			"decent friendship",
+		);
+		assert.equal(normalizeSearchQuery("an1.71-81"), "an1.71-81");
+	});
+});
 
 describe("buildFuseQuery slug prefix routing", () => {
 	it("routes ^SN collection prefix to slugPrefixFilter", () => {

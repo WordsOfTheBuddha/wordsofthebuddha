@@ -196,6 +196,15 @@ function simplifyGroupedTerms(terms: string[]): string[] {
     });
 }
 
+/**
+ * Treat letter–letter hyphens/dashes as word separators (e.g. "decent-friendship"
+ * → "decent friendship"), matching how multi-word qualities appear in titles.
+ * Keeps numeric range slugs intact (e.g. "an1.71-81", "mn1-50").
+ */
+export function splitLetterHyphens(query: string): string {
+	return query.replace(/(?<=\p{L})[-–—](?=\p{L})/gu, " ");
+}
+
 /** Normalize user query (curly quotes, "phrase" → 'word tokens, etc.) before parsing. */
 export function normalizeSearchQuery(query: string): string {
     return simplifyQuery(query);
@@ -206,6 +215,9 @@ function simplifyQuery(query: string): string {
     query = query
         .replace(/[\u2018\u2019]/g, "'") // Replace single prose quotes with straight single quote
         .replace(/[\u201C\u201D]/g, '"'); // Replace double prose quotes with straight double quote
+
+    // Hyphenated multi-word concepts → space-separated terms (before quote splitting)
+    query = splitLetterHyphens(query);
 
     // Then handle quoted phrases - transform "term1 term2" into 'term1 'term2
     query = query.replace(/"([^"]+)"/g, (_: string, phrase: string): string =>
