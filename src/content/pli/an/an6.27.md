@@ -1,9 +1,9 @@
 ---
+title: Paṭhama samaya sutta - Proper Time (First)
+description: "The Buddha explains the six appropriate times to seek guidance from an esteemed monk: whenever the mind is overcome by any of the five hindrances, or when one lacks the sign for the immediate wearing away of the taints."
+qualities: doubt, sensual desire, ill will, anxiety, dullness, drowsiness, ending
+theme: wisdom
 slug: an6.27
-source: suttacentral/bilara-data
-title: Paṭhamasamayasutta
-edition: ms
-granularity: paragraph
 ---
 
 Atha kho aññataro bhikkhu yena bhagavā tenupasaṅkami; upasaṅkamitvā bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho so bhikkhu bhagavantaṁ etadavoca:
@@ -25,5 +25,3 @@ Puna caparaṁ, bhikkhu, yasmiṁ samaye bhikkhu vicikicchāpariyuṭṭhitena c
 Puna caparaṁ, bhikkhu, yasmiṁ samaye bhikkhu yaṁ nimittaṁ āgamma yaṁ nimittaṁ manasikaroto anantarā āsavānaṁ khayo hoti taṁ nimittaṁ nappajānāti tasmiṁ samaye manobhāvanīyo bhikkhu upasaṅkamitvā evamassa vacanīyo: ‘ahaṁ kho, āvuso, yaṁ nimittaṁ āgamma yaṁ nimittaṁ manasikaroto anantarā āsavānaṁ khayo hoti, taṁ nimittaṁ nappajānāmi. Sādhu vata me āyasmā āsavānaṁ khayāya dhammaṁ desetū’ti. Tassa manobhāvanīyo bhikkhu āsavānaṁ khayāya dhammaṁ deseti. Ayaṁ, bhikkhu, chaṭṭho samayo manobhāvanīyassa bhikkhuno dassanāya upasaṅkamituṁ.
 
 Ime kho, bhikkhu, cha samayā manobhāvanīyassa bhikkhuno dassanāya upasaṅkamitun”ti.
-
-Sattamaṁ.

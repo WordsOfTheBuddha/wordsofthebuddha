@@ -1,9 +1,11 @@
 ---
+title: Dutiya samaya sutta - Proper Time (Second)
+description: "Elder bhikkhus debate the best time of day to approach an esteemed bhikkhu. Mahākaccāna resolves the discussion by quoting the Buddha: the proper time is not based on the clock, but rather whenever one is internally overwhelmed by the five hindrances or lacks the sign for the wearing away of the taints."
+qualities: doubt, sensual desire, ill will, anxiety, dullness, drowsiness, ending
+theme: wisdom
 slug: an6.28
-source: suttacentral/bilara-data
-title: Dutiyasamayasutta
-edition: ms
-granularity: paragraph
+character: Venerable Mahākaccāna
+priority: 1.1
 ---
 
 Ekaṁ samayaṁ sambahulā therā bhikkhū bārāṇasiyaṁ viharanti isipatane migadāye. Atha kho tesaṁ therānaṁ bhikkhūnaṁ pacchābhattaṁ piṇḍapātapaṭikkantānaṁ maṇḍalamāḷe sannisinnānaṁ sannipatitānaṁ ayamantarākathā udapādi:
@@ -28,16 +30,12 @@ Evaṁ vutte, aññataro bhikkhu taṁ bhikkhuṁ etadavoca:
 
 Evaṁ vutte āyasmā mahākaccāno there bhikkhū etadavoca:
 
-“sammukhā metaṁ, āvuso, bhagavato sutaṁ sammukhā paṭiggahitaṁ: ‘chayime, bhikkhu, samayā manobhāvanīyassa bhikkhuno dassanāya upasaṅkamituṁ.
+“sammukhā metaṁ, āvuso, bhagavato sutaṁ sammukhā paṭiggahitaṁ: ‘chayime, bhikkhu, samayā manobhāvanīyassa bhikkhuno dassanāya upasaṅkamituṁ. Katame cha?
 
-Katame cha? Idha, bhikkhu, yasmiṁ samaye bhikkhu kāmarāgapariyuṭṭhitena cetasā viharati kāmarāgaparetena, uppannassa ca kāmarāgassa nissaraṇaṁ yathābhūtaṁ nappajānāti, tasmiṁ samaye manobhāvanīyo bhikkhu upasaṅkamitvā evamassa vacanīyo:
-
-“ahaṁ kho, āvuso, kāmarāgapariyuṭṭhitena cetasā viharāmi kāmarāgaparetena, uppannassa ca kāmarāgassa nissaraṇaṁ yathābhūtaṁ nappajānāmi. Sādhu vata me āyasmā kāmarāgassa pahānāya dhammaṁ desetū”ti. Tassa manobhāvanīyo bhikkhu kāmarāgassa pahānāya dhammaṁ deseti. Ayaṁ, bhikkhu, paṭhamo samayo manobhāvanīyassa bhikkhuno dassanāya upasaṅkamituṁ.
+Idha, bhikkhu, yasmiṁ samaye bhikkhu kāmarāgapariyuṭṭhitena cetasā viharati kāmarāgaparetena, uppannassa ca kāmarāgassa nissaraṇaṁ yathābhūtaṁ nappajānāti, tasmiṁ samaye manobhāvanīyo bhikkhu upasaṅkamitvā evamassa vacanīyo: “ahaṁ kho, āvuso, kāmarāgapariyuṭṭhitena cetasā viharāmi kāmarāgaparetena, uppannassa ca kāmarāgassa nissaraṇaṁ yathābhūtaṁ nappajānāmi. Sādhu vata me āyasmā kāmarāgassa pahānāya dhammaṁ desetū”ti. Tassa manobhāvanīyo bhikkhu kāmarāgassa pahānāya dhammaṁ deseti. Ayaṁ, bhikkhu, paṭhamo samayo manobhāvanīyassa bhikkhuno dassanāya upasaṅkamituṁ.
 
 Puna caparaṁ, bhikkhu, yasmiṁ samaye bhikkhu byāpādapariyuṭṭhitena cetasā viharati …pe…. Thinamiddhapariyuṭṭhitena cetasā viharati …. Uddhaccakukkuccapariyuṭṭhitena cetasā viharati …. Vicikicchāpariyuṭṭhitena cetasā viharati ….
 
 Yaṁ nimittaṁ āgamma yaṁ nimittaṁ manasikaroto anantarā āsavānaṁ khayo hoti, taṁ nimittaṁ na jānāti na passati, tasmiṁ samaye manobhāvanīyo bhikkhu upasaṅkamitvā evamassa vacanīyo: “ahaṁ kho, āvuso, yaṁ nimittaṁ āgamma yaṁ nimittaṁ manasikaroto anantarā āsavānaṁ khayo hoti taṁ nimittaṁ na jānāmi na passāmi. Sādhu vata me āyasmā āsavānaṁ khayāya dhammaṁ desetū”ti. Tassa manobhāvanīyo bhikkhu āsavānaṁ khayāya dhammaṁ deseti. Ayaṁ, bhikkhu, chaṭṭho samayo manobhāvanīyassa bhikkhuno dassanāya upasaṅkamituṁ’.
 
 Sammukhā metaṁ, āvuso, bhagavato sutaṁ sammukhā paṭiggahitaṁ: ‘ime kho, bhikkhu, cha samayā manobhāvanīyassa bhikkhuno dassanāya upasaṅkamitun’”ti.
-
-Aṭṭhamaṁ.

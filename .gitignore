@@ -23,6 +23,7 @@ pnpm-debug.log*
 
 # TTS / voice (local credentials, venv, whisper cache, audio assets)
 project-208b2b47-e2f3-4390-82f-17a86b1153e0.json
+project-208b2b47-e2f3-4390-82f-3f5f6c4814f4.json
 *.service-account.json
 .venv-voice/
 .cache/

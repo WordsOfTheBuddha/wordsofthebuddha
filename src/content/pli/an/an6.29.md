@@ -1,9 +1,11 @@
 ---
+title: Udāyī sutta - Udāyī
+description: Following Udāyī’s failure to answer, Ānanda outlines five subjects of recollection including the jhānas, perception of light, and contemplating the body’s impurities and mortality. The Buddha then adds a sixth one.
+qualities: mindfulness, jhana, recognition of unattractiveness, sensual desire, conceit, radical comprehension
+theme: wisdom
 slug: an6.29
-source: suttacentral/bilara-data
-title: Udāyīsutta
-edition: ms
-granularity: paragraph
+character: Venerable Udāyī, Venerable Ānanda
+priority: 1.2
 ---
 
 Atha kho bhagavā āyasmantaṁ udāyiṁ āmantesi: “kati nu kho, udāyi, anussatiṭṭhānānī”ti?
@@ -39,5 +41,3 @@ Seyyathāpi vā pana passeyya sarīraṁ sīvathikāya chaṭṭitaṁ aṭṭhi
 Puna caparaṁ, bhante, bhikkhu sukhassa ca pahānā …pe… catutthaṁ jhānaṁ upasampajja viharati. Idaṁ, bhante, anussatiṭṭhānaṁ evaṁ bhāvitaṁ evaṁ bahulīkataṁ anekadhātupaṭivedhāya saṁvattati. Imāni kho, bhante, pañca anussatiṭṭhānānī”ti.
 
 “Sādhu sādhu, ānanda. Tena hi tvaṁ, ānanda, idampi chaṭṭhaṁ anussatiṭṭhānaṁ dhārehi. Idhānanda, bhikkhu satova abhikkamati satova paṭikkamati satova tiṭṭhati satova nisīdati satova seyyaṁ kappeti satova kammaṁ adhiṭṭhāti. Idaṁ, ānanda, anussatiṭṭhānaṁ evaṁ bhāvitaṁ evaṁ bahulīkataṁ satisampajaññāya saṁvattatī”ti.
-
-Navamaṁ.

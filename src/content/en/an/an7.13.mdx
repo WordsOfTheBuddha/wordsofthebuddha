@@ -1,7 +1,7 @@
 ---
 title: Kula sutta - Family
 description: The Buddha shares seven factors that make a family unsuitable to approach or sit with, such as failing to greet pleasantly, concealing wealth, or giving disrespectfully.
-qualities: respect, disrespect, faith
+qualities: respect, contempt, faith
 theme: cultivating discernment, wisdom
 slug: an7.13
 ---
