@@ -18,8 +18,57 @@ const DISCOURSE_SLICE = /^[a-z]+\d[\d]*\.\d/i;
 /** /on/:slug is prerendered with hyphenated slugs only; normalize spaced URLs. */
 const ON_ROUTE = /^\/on\/([^/]+)$/;
 
+/**
+ * View-state and share params that create alternate URLs of the same page.
+ * Prerendered discourses ship static HTML, so a <meta robots> set at build
+ * time cannot see these — X-Robots-Tag must be applied on the request
+ * (Vercel Edge Middleware in production).
+ */
+const NOINDEX_VIEW_PARAMS = new Set([
+	"pli",
+	"pl",
+	"voice",
+	"theme",
+	"layout",
+	"viz",
+	"trans",
+	"ref",
+	"enablePaliLookup",
+	"q",
+]);
+
+function hasNoindexViewParams(url: URL): boolean {
+	return [...url.searchParams.keys()].some((key) =>
+		NOINDEX_VIEW_PARAMS.has(key),
+	);
+}
+
+function withNoindexIfNeeded(requestUrl: URL, response: Response): Response {
+	if (!hasNoindexViewParams(requestUrl) || response.status >= 300) {
+		return response;
+	}
+	const headers = new Headers(response.headers);
+	headers.set("X-Robots-Tag", "noindex, follow");
+	return new Response(response.body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers,
+	});
+}
+
+/** Rewrite target keeps the original query string (view-state params). */
+function rewriteURL(path: string, from: URL): URL {
+	const target = new URL(path, from);
+	target.search = from.search;
+	return target;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
+	const noindexViewState = hasNoindexViewParams(context.url);
+	// SSR layouts can read this when a rewrite hides the original query string.
+	(context.locals as { wotbNoindexViewState?: boolean }).wotbNoindexViewState =
+		noindexViewState;
 
 	const onMatch = pathname.match(ON_ROUTE);
 	if (onMatch) {
@@ -45,24 +94,27 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		pathname.startsWith("/discourse-dynamic/") ||
 		pathname.startsWith("/discourse-sujato/")
 	) {
-		return next();
+		return withNoindexIfNeeded(context.url, await next());
 	}
 
 	const sujatoMatch = pathname.match(SUJATO_REFERENCE_ROUTE);
 	if (sujatoMatch) {
-		return context.rewrite(
-			new URL(`/discourse-sujato/${sujatoMatch[1]}`, context.url),
+		return withNoindexIfNeeded(
+			context.url,
+			await context.rewrite(
+				rewriteURL(`/discourse-sujato/${sujatoMatch[1]}`, context.url),
+			),
 		);
 	}
 
 	if (!TOP_LEVEL_SLUG.test(pathname)) {
-		return next();
+		return withNoindexIfNeeded(context.url, await next());
 	}
 
 	const slug = pathname.slice(1);
 
 	if (englishRouteSet.has(slug)) {
-		return next();
+		return withNoindexIfNeeded(context.url, await next());
 	}
 
 	if (referenceOnlyRouteSet.has(slug)) {
@@ -70,17 +122,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		// imports until restart; confirm on disk / content store before SSR fallback.
 		const english = await getEnglishEntry(slug);
 		if (english) {
-			return next();
+			return withNoindexIfNeeded(context.url, await next());
 		}
 
-		return context.rewrite(new URL(`/discourse-ssr/${slug}`, context.url));
+		return withNoindexIfNeeded(
+			context.url,
+			await context.rewrite(rewriteURL(`/discourse-ssr/${slug}`, context.url)),
+		);
 	}
 
 	if (DISCOURSE_SLICE.test(slug)) {
 		// Prerendered [discourse].astro outranks SSR [...id].astro in production;
 		// rewrite to a dedicated SSR segment so partial routes resolve.
-		return context.rewrite(new URL(`/discourse-dynamic/${slug}`, context.url));
+		return withNoindexIfNeeded(
+			context.url,
+			await context.rewrite(
+				rewriteURL(`/discourse-dynamic/${slug}`, context.url),
+			),
+		);
 	}
 
-	return next();
+	return withNoindexIfNeeded(context.url, await next());
 });

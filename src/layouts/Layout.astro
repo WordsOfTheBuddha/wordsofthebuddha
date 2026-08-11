@@ -201,9 +201,33 @@ const SITE_ORIGIN = Astro.site?.origin ?? "https://www.wordsofthebuddha.org";
 
 /**
  * View state lives in query params (`?pli`, `?theme`, `?layout`, `?viz`,
- * `?trans`, `?ref`, `?enablePaliLookup`), so every page is reachable at many
- * URLs with identical content. Canonical is always the bare path.
+ * `?trans`, `?ref`, `?enablePaliLookup`, `?pl`, `?voice`, `?q`), so every
+ * page is reachable at many URLs. Canonical is always the bare path.
+ * Middleware also sets X-Robots-Tag for prerendered pages where this
+ * build-time check cannot see the request query string.
  */
+const VIEW_STATE_PARAMS = [
+	"pli",
+	"pl",
+	"voice",
+	"theme",
+	"layout",
+	"viz",
+	"trans",
+	"ref",
+	"enablePaliLookup",
+	"q",
+] as const;
+const hasViewStateParams = VIEW_STATE_PARAMS.some((key) =>
+	Astro.url.searchParams.has(key),
+);
+const localsNoindex = Boolean(
+	(Astro.locals as { wotbNoindexViewState?: boolean }).wotbNoindexViewState,
+);
+const effectiveRobots =
+	robots ??
+	(hasViewStateParams || localsNoindex ? "noindex, follow" : null);
+
 const canonicalRawPath = canonicalPath ?? Astro.url.pathname;
 const canonicalNormalizedPath =
 	canonicalRawPath.length > 1
@@ -269,7 +293,7 @@ const structuredData = buildStructuredData({
 		<title>{SEOTitle || "Words of the Buddha"}</title>
 		{metaDescription && <meta name="description" content={metaDescription} />}
 		<link rel="canonical" href={canonicalURL} />
-		{robots && <meta name="robots" content={robots} />}
+		{effectiveRobots && <meta name="robots" content={effectiveRobots} />}
 
 		<!-- Open Graph / Social Media -->
 		<meta property="og:title" content={SEOTitle || "Words of the Buddha"} />

@@ -2,6 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import QualitiesGraph from "../components/QualitiesGraph.astro";
 export const prerender = false;
+
+// The graph markup is identical for every visitor; all state lives in
+// localStorage and query params, both read client-side.
+Astro.response.headers.set(
+	"Cache-Control",
+	"public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
+);
 ---
 
 <Layout

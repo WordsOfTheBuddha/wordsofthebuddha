@@ -16,10 +16,11 @@ const {
 	splitAvailable,
 	refPaliOnlyContent,
 	referenceFallbackPage,
+	canonicalId,
 } = result;
 ---
 
-<Layout {...suttaProps} canonicalPath={`/${originalId}`}>
+<Layout {...suttaProps} canonicalPath={`/${canonicalId}`}>
 	<MDContent
 		content={mainContent}
 		splitAvailable={splitAvailable}

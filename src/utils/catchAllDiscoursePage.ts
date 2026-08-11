@@ -26,6 +26,14 @@ export type CatchAllDiscoursePage = {
 	splitAvailable: boolean;
 	refPaliOnlyContent?: string;
 	referenceFallbackPage: boolean;
+	/**
+	 * Slug of the discourse the request resolved to, which is not always the
+	 * slug that was asked for: `/an1.1` is a section of `an1.1-10`, and
+	 * `/sn1.1.1-2` is two paragraphs of `sn1.1`. Both serve a subset of the
+	 * parent under the parent's title and description, so they canonicalize to
+	 * it rather than declaring themselves originals.
+	 */
+	canonicalId: string;
 };
 
 type RedirectFn = (url: string) => Response;
@@ -182,6 +190,7 @@ export async function resolveCatchAllDiscoursePage(
 				refPaliOnlyContent: refPage.refPaliOnlyContent,
 				referenceFallbackPage: refPage.referenceFallbackPage,
 				suttaProps: refPage.suttaProps,
+				canonicalId: id,
 			};
 		}
 	}
@@ -340,5 +349,6 @@ export async function resolveCatchAllDiscoursePage(
 		splitAvailable,
 		refPaliOnlyContent,
 		referenceFallbackPage,
+		canonicalId: id,
 	};
 }

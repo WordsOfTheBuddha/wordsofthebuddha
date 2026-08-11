@@ -1,4 +1,8 @@
-export const prerender = false;
+/**
+ * Prerendered at build so Vercel serves a static CDN file. The previous SSR
+ * route (~1s cold TTFB) made Google Search Console report "Couldn't fetch".
+ */
+export const prerender = true;
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { routes } from "../utils/routes";
@@ -9,6 +13,7 @@ import qualityMappings from "../data/qualityMappings.json";
 import simileMappings from "../data/simileMappings.json";
 import personMappings from "../data/personMappings.json";
 import { canonicalOnSlug } from "../utils/discover-data";
+import { directoryStructure } from "../data/directoryStructure";
 
 const SITE_URL = "https://www.wordsofthebuddha.org";
 
@@ -36,7 +41,47 @@ const STATIC_PAGES = [
 	"/public-domain",
 ];
 
-const COLLECTIONS = ["mn", "sn", "an", "dn", "dhp", "iti", "snp", "ud"];
+/**
+ * Every collection index `[collection].astro` prerenders — top-level nikāyas
+ * and the nested vagga/section indexes (`/sn12`, `/an1`, `/mn1-50`) alike.
+ * Walking the same tree the route does keeps the two from drifting apart.
+ */
+function collectionSlugs(): string[] {
+	const slugs: string[] = [];
+	const walk = (map: Record<string, any>) => {
+		for (const key of Object.keys(map)) {
+			slugs.push(key);
+			const children = map[key]?.children;
+			if (children && typeof children === "object") walk(children);
+		}
+	};
+	walk(directoryStructure);
+	return slugs;
+}
+
+/**
+ * Root-level editorial posts served by `[post].astro`. Draft detection mirrors
+ * that route's `getStaticPaths`, so an unpublished post is never announced.
+ */
+function postSlugs(): string[] {
+	const modules = import.meta.glob<{
+		frontmatter?: { draft?: boolean };
+	}>("./posts/*.{md,mdx}", { eager: true });
+	const discourseSet = new Set(routes);
+	return Object.entries(modules)
+		.map(([filePath, mod]) => ({
+			slug: filePath.replace("./posts/", "").replace(/\.mdx?$/, ""),
+			draft: mod?.frontmatter?.draft === true,
+		}))
+		.filter(
+			({ slug, draft }) =>
+				!draft &&
+				!/-draft$/.test(slug) &&
+				!/-testcases$/.test(slug) &&
+				!discourseSet.has(slug),
+		)
+		.map(({ slug }) => slug);
+}
 
 function urlElement(path: string, lastmod?: string): string {
 	return [
@@ -59,7 +104,8 @@ export const GET: APIRoute = async () => {
 	};
 
 	STATIC_PAGES.forEach((path) => add(path));
-	COLLECTIONS.forEach((collection) => add(`/${collection}`));
+	collectionSlugs().forEach((collection) => add(`/${collection}`));
+	postSlugs().forEach((slug) => add(`/${slug}`));
 
 	/**
 	 * `lastmod` comes from the git-backed timestamp cache via the entry's real

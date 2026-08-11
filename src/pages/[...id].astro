@@ -91,6 +91,15 @@ if (isSystemRequest) {
 	return new Response(null, { status: 404 });
 }
 
+// Bare quality/topic/simile/person slugs used to soft-404 into /search?q=…
+// (e.g. /bad-friendship, /mluv-creeper). Send them to the canonical /on/ page.
+if (id && !id.includes("/")) {
+	const { item } = findContentBySlug(id);
+	if (item) {
+		return Astro.redirect(`/on/${canonicalOnSlug(item.slug)}`, 301);
+	}
+}
+
 const result = await resolveCatchAllDiscoursePage(originalId, Astro.redirect);
 if (result instanceof Response) return result;
 
@@ -100,10 +109,11 @@ const {
 	splitAvailable,
 	refPaliOnlyContent,
 	referenceFallbackPage,
+	canonicalId,
 } = result;
 ---
 
-<Layout {...suttaProps}>
+<Layout {...suttaProps} canonicalPath={`/${canonicalId}`}>
 	<MDContent
 		content={mainContent}
 		splitAvailable={splitAvailable}

@@ -11,6 +11,14 @@ if (!home) {
 }
 const { title, description } = home.data;
 const { Content } = await render(home);
+
+// Nothing here varies per request — the only server-side branch is
+// isFirebaseInitialized, which is fixed for the deployment. Let the CDN hold
+// the rendered page so the most-landed-on URL isn't paying SSR latency.
+Astro.response.headers.set(
+	"Cache-Control",
+	"public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
+);
 ---
 
 <Layout
