@@ -9,8 +9,71 @@ import {
 } from "./suggestForToken";
 import type { SuggestionSearcher } from "./suggestionSearcher";
 import { highlightSuggestionText } from "./paliInflectionUtils";
+import type { DiscourseSuggestHit } from "./discourseIdSuggest";
+import { compactDiscourseIdQuery } from "./discourseIdSuggest";
 
 const MIN_INDEX_SUGGEST_LEN = 2;
+
+/** Inline layout so suggestions stack even if component CSS fails to load. */
+function applySuggestionListLayout(listEl: HTMLElement) {
+	listEl.style.display = "flex";
+	listEl.style.flexDirection = "column";
+	listEl.style.width = "100%";
+	listEl.style.textAlign = "left";
+}
+
+function createSuggestionItemButton(
+	inputId: string,
+	index: number,
+	options?: { recent?: boolean },
+): HTMLButtonElement {
+	const item = document.createElement("button");
+	item.type = "button";
+	item.id = options?.recent
+		? `${inputId}-recent-${index}`
+		: `${inputId}-suggestion-${index}`;
+	item.className = options?.recent
+		? "search-suggest-item search-suggest-recent"
+		: "search-suggest-item";
+	item.setAttribute("role", "option");
+	item.dataset.index = String(index);
+	item.style.display = "block";
+	item.style.width = "100%";
+	item.style.boxSizing = "border-box";
+	item.style.textAlign = "left";
+	if (options?.recent) {
+		item.dataset.kind = "recent";
+	}
+	return item;
+}
+
+function createRecentHeader(onClear?: () => void): HTMLElement {
+	const header = document.createElement("div");
+	header.className = "search-suggest-header";
+	header.style.display = "flex";
+	header.style.alignItems = "center";
+	header.style.justifyContent = "space-between";
+	header.style.gap = "0.75rem";
+
+	const label = document.createElement("span");
+	label.className = "search-suggest-header-label";
+	label.textContent = "Recent";
+
+	const clearBtn = document.createElement("button");
+	clearBtn.type = "button";
+	clearBtn.className = "search-suggest-clear";
+	clearBtn.textContent = "Clear all";
+	clearBtn.addEventListener("mousedown", (event) => {
+		event.preventDefault();
+	});
+	clearBtn.addEventListener("click", (event) => {
+		event.stopPropagation();
+		onClear?.();
+	});
+
+	header.append(label, clearBtn);
+	return header;
+}
 
 /** Visible left offset for the dropdown from the input wrapper (px). */
 export function computeDropdownLeft(
@@ -30,6 +93,8 @@ export interface SearchAutocompleteOptions {
 	getRecentSearches?: () => string[];
 	onRecentSearchSelect?: (query: string) => void;
 	onClearRecentSearches?: () => void;
+	matchDiscourses?: (query: string) => DiscourseSuggestHit[];
+	onDiscourseSelect?: (hit: DiscourseSuggestHit) => void;
 }
 
 export interface SearchAutocompleteController {
@@ -39,7 +104,7 @@ export interface SearchAutocompleteController {
 	refresh: () => void;
 }
 
-type DropdownMode = "recent" | "index";
+type DropdownMode = "recent" | "index" | "discourse";
 
 function highlightMatch(text: string, query: string): string {
 	return highlightSuggestionText(text, query);
@@ -85,6 +150,8 @@ export function attachSearchAutocomplete(
 		getRecentSearches,
 		onRecentSearchSelect,
 		onClearRecentSearches,
+		matchDiscourses,
+		onDiscourseSelect,
 	} = options;
 
 	let open = false;
@@ -92,6 +159,7 @@ export function attachSearchAutocomplete(
 	let mode: DropdownMode | null = null;
 	let currentSuggestions: SuggestionIndexEntry[] = [];
 	let currentRecentItems: string[] = [];
+	let currentDiscourseHits: DiscourseSuggestHit[] = [];
 	let currentToken: ActiveToken | null = null;
 	let listMouseDown = false;
 	const textMeasurer = createTextMeasurer(input);
@@ -106,6 +174,7 @@ export function attachSearchAutocomplete(
 	input.setAttribute("aria-autocomplete", "list");
 	input.setAttribute("aria-expanded", "false");
 	input.setAttribute("aria-controls", listId);
+	applySuggestionListLayout(list);
 
 	function setExpanded(expanded: boolean) {
 		input.setAttribute("aria-expanded", expanded ? "true" : "false");
@@ -123,6 +192,7 @@ export function attachSearchAutocomplete(
 		mode = null;
 		currentSuggestions = [];
 		currentRecentItems = [];
+		currentDiscourseHits = [];
 		currentToken = null;
 		dropdown.classList.add("hidden");
 		list.replaceChildren();
@@ -149,9 +219,9 @@ export function attachSearchAutocomplete(
 	}
 
 	function getActiveItemCount(): number {
-		return mode === "recent"
-			? currentRecentItems.length
-			: currentSuggestions.length;
+		if (mode === "recent") return currentRecentItems.length;
+		if (mode === "discourse") return currentDiscourseHits.length;
+		return currentSuggestions.length;
 	}
 
 	function updateActiveOption() {
@@ -179,12 +249,7 @@ export function attachSearchAutocomplete(
 		}
 
 		currentSuggestions.forEach((entry, index) => {
-			const item = document.createElement("button");
-			item.type = "button";
-			item.id = `${inputId}-suggestion-${index}`;
-			item.className = "search-suggest-item";
-			item.setAttribute("role", "option");
-			item.dataset.index = String(index);
+			const item = createSuggestionItemButton(inputId, index);
 			item.innerHTML = highlightMatch(entry.text, currentToken!.raw);
 			if (index === activeIndex) {
 				item.classList.add("is-active");
@@ -196,7 +261,7 @@ export function attachSearchAutocomplete(
 			list.appendChild(item);
 		});
 
-		positionDropdownAtToken(currentToken);
+		positionDropdownFullWidth();
 		dropdown.classList.remove("hidden");
 		open = true;
 		setExpanded(true);
@@ -209,42 +274,85 @@ export function attachSearchAutocomplete(
 			return;
 		}
 
-		const header = document.createElement("div");
-		header.className = "search-suggest-header";
-
-		const label = document.createElement("span");
-		label.className = "search-suggest-header-label";
-		label.textContent = "Recent";
-
-		const clearBtn = document.createElement("button");
-		clearBtn.type = "button";
-		clearBtn.className = "search-suggest-clear";
-		clearBtn.textContent = "Clear all";
-		clearBtn.addEventListener("mousedown", (event) => {
-			event.preventDefault();
-		});
-		clearBtn.addEventListener("click", (event) => {
-			event.stopPropagation();
+		const header = createRecentHeader(() => {
 			onClearRecentSearches?.();
 			close();
 		});
-
-		header.append(label, clearBtn);
 		list.appendChild(header);
 
 		const prefix = input.value;
 		currentRecentItems.forEach((query, index) => {
-			const item = document.createElement("button");
-			item.type = "button";
-			item.id = `${inputId}-recent-${index}`;
-			item.className = "search-suggest-item search-suggest-recent";
-			item.setAttribute("role", "option");
-			item.dataset.index = String(index);
-			item.dataset.kind = "recent";
+			const item = createSuggestionItemButton(inputId, index, { recent: true });
 			item.innerHTML =
 				prefix.trim().length > 0
 					? highlightRecentSearchQuery(query, prefix.trim())
 					: query.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+			if (index === activeIndex) {
+				item.classList.add("is-active");
+				item.setAttribute("aria-selected", "true");
+				input.setAttribute("aria-activedescendant", item.id);
+			} else {
+				item.setAttribute("aria-selected", "false");
+			}
+			list.appendChild(item);
+		});
+
+		positionDropdownFullWidth();
+		dropdown.classList.remove("hidden");
+		open = true;
+		setExpanded(true);
+	}
+
+	function renderDiscourseSuggestions() {
+		list.replaceChildren();
+		if (currentDiscourseHits.length === 0) {
+			close();
+			return;
+		}
+
+		currentDiscourseHits.forEach((hit, index) => {
+			const item = createSuggestionItemButton(inputId, index);
+			item.classList.add("search-suggest-discourse");
+			item.dataset.kind = "discourse";
+			item.style.display = "flex";
+			item.style.alignItems = "baseline";
+			item.style.gap = "0.5rem";
+			item.style.minWidth = "0";
+
+			const idEl = document.createElement("span");
+			idEl.className = "search-suggest-id";
+			idEl.textContent = hit.idLabel;
+
+			const titlesEl = document.createElement("span");
+			titlesEl.className = "search-suggest-discourse-titles";
+
+			if (hit.paliTitle) {
+				const paliEl = document.createElement("span");
+				paliEl.className = "search-suggest-pali";
+				paliEl.textContent = hit.paliTitle;
+				titlesEl.append(paliEl);
+			}
+			if (hit.paliTitle && hit.englishTitle) {
+				const sep = document.createElement("span");
+				sep.className = "search-suggest-title-sep";
+				sep.textContent = " · ";
+				titlesEl.append(sep);
+			}
+			if (hit.englishTitle) {
+				const enEl = document.createElement("span");
+				enEl.className = "search-suggest-en";
+				enEl.textContent = hit.englishTitle;
+				titlesEl.append(enEl);
+			}
+
+			item.append(idEl, titlesEl);
+			if (hit.referenceOnly) {
+				const badge = document.createElement("span");
+				badge.className = "search-suggest-ref";
+				badge.textContent = "Ref";
+				item.append(badge);
+			}
+
 			if (index === activeIndex) {
 				item.classList.add("is-active");
 				item.setAttribute("aria-selected", "true");
@@ -279,6 +387,7 @@ export function attachSearchAutocomplete(
 
 		mode = "index";
 		currentRecentItems = [];
+		currentDiscourseHits = [];
 		currentSuggestions = next;
 		activeIndex = -1;
 		renderIndexSuggestions();
@@ -299,13 +408,37 @@ export function attachSearchAutocomplete(
 
 		mode = "recent";
 		currentSuggestions = [];
+		currentDiscourseHits = [];
 		currentToken = null;
 		currentRecentItems = filtered;
 		activeIndex = -1;
 		renderRecentSearches();
 	}
 
+	function refreshDiscourseSuggestions() {
+		if (!matchDiscourses) return false;
+		const isIdQuery = Boolean(compactDiscourseIdQuery(input.value));
+		const next = matchDiscourses(input.value);
+		if (next.length === 0) {
+			if (isIdQuery) {
+				close();
+				return true;
+			}
+			return false;
+		}
+
+		mode = "discourse";
+		currentSuggestions = [];
+		currentRecentItems = [];
+		currentToken = null;
+		currentDiscourseHits = next;
+		activeIndex = -1;
+		renderDiscourseSuggestions();
+		return true;
+	}
+
 	function refresh() {
+		if (refreshDiscourseSuggestions()) return;
 		if (input.value.length >= MIN_INDEX_SUGGEST_LEN) {
 			refreshIndexSuggestions();
 			return;
@@ -333,9 +466,20 @@ export function attachSearchAutocomplete(
 		close();
 	}
 
+	function acceptDiscourse(index: number) {
+		const hit = currentDiscourseHits[index];
+		if (!hit) return;
+		onDiscourseSelect?.(hit);
+		close();
+	}
+
 	function acceptActive(index: number) {
 		if (mode === "recent") {
 			acceptRecentSearch(index);
+			return;
+		}
+		if (mode === "discourse") {
+			acceptDiscourse(index);
 			return;
 		}
 		acceptSuggestion(index);
@@ -350,9 +494,7 @@ export function attachSearchAutocomplete(
 	}
 
 	function onFocus() {
-		if (input.value.length < MIN_INDEX_SUGGEST_LEN) {
-			refreshRecentSearches();
-		}
+		refresh();
 	}
 
 	function onKeyDown(event: KeyboardEvent) {

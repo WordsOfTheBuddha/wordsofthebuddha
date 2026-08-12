@@ -37,7 +37,7 @@ const isSearchOnly = mode === "search-only";
 ---
 
 <div
-	class="explore-widget"
+	class="explore-widget not-prose"
 	data-explore-widget
 	data-mode={mode}
 	data-search-only={isSearchOnly ? "true" : "false"}
@@ -285,7 +285,7 @@ const isSearchOnly = mode === "search-only";
 						/>
 						<div
 							id="search-suggestions"
-							class="search-suggestions hidden absolute top-full z-30 mt-1 min-w-[10rem] max-w-[min(100%,24rem)]"
+							class="search-suggestions hidden absolute top-full z-30 mt-1 left-0 right-0 w-full"
 							role="presentation"
 						>
 							<div
@@ -342,6 +342,14 @@ const isSearchOnly = mode === "search-only";
 					<ul class="space-y-1">
 							<li><code class="not-prose">title:element content:consciousness</code> — title contains “element”, body contains “consciousness”</li>
 							<li><code class="not-prose">title:element (content:space | content:consciousness)</code> — title “element”, body has “space” or “consciousness”</li>
+						</ul>
+					<h3 class="font-semibold mb-2 mt-4">PTS citations</h3>
+					<p class="mb-1">Look up a discourse by Pali Text Society volume/page. Use a <code class="not-prose">pts:</code> (or <code class="not-prose">volpage:</code> / leading <code class="not-prose">PTS</code>) prefix so ordinary searches are not affected.</p>
+					<ul class="space-y-1">
+							<li><code class="not-prose">pts:AN V. 91</code> — Anguttara volume V, page 91 (covers mid-sutta pages too)</li>
+							<li><code class="not-prose">pts:SN V 31</code> or <code class="not-prose">volpage:SN ii 4</code> — Samyutta citations</li>
+							<li><code class="not-prose">PTS 4.152</code> — numeric volume.page (may match more than one nikāya)</li>
+							<li><code class="not-prose">pts:Iti 27</code> — single-volume collections (Iti, Ud, Snp, Dhp, …)</li>
 						</ul>
 				</div>
 			</div>
@@ -454,6 +462,9 @@ const isSearchOnly = mode === "search-only";
 	}
 
 	.explore-widget .search-suggestions-list {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
 		overflow: hidden;
 		border-radius: 0.5rem;
 		border: 1px solid var(--surface-border);
@@ -525,6 +536,46 @@ const isSearchOnly = mode === "search-only";
 		color: inherit;
 		padding: 0;
 	}
+
+	.explore-widget .search-suggest-discourse {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+
+	.explore-widget .search-suggest-id {
+		font-weight: 600;
+		flex-shrink: 0;
+	}
+
+	.explore-widget .search-suggest-discourse-titles {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 0.95em;
+	}
+
+	.explore-widget .search-suggest-pali {
+		font-style: italic;
+		color: var(--text-color);
+	}
+
+	.explore-widget .search-suggest-en,
+	.explore-widget .search-suggest-title-sep {
+		color: var(--text-muted);
+	}
+
+	.explore-widget .search-suggest-ref {
+		flex-shrink: 0;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
 </style>
 
 <script>
@@ -541,6 +592,10 @@ const isSearchOnly = mode === "search-only";
 		getRecentSearchQueries,
 		isValidRecentSearchQuery,
 	} from "../utils/searchHistoryClient";
+	import {
+		suggestDiscourses,
+		type DiscourseSuggestEntry,
+	} from "../utils/discourseIdSuggest";
 	import Fuse from "fuse.js";
 
 	// Resolve widget + DOM refs at init time (not module load) so nested layouts work.
@@ -604,6 +659,7 @@ const isSearchOnly = mode === "search-only";
 	let searchSuggestions: HTMLElement | null = null;
 	let searchSuggestionsList: HTMLElement | null = null;
 	let suggestionSearcher: SuggestionSearcher | null = null;
+	let discourseEntries: DiscourseSuggestEntry[] = [];
 	let searchAutocomplete: SearchAutocompleteController | null = null;
 
 	function resolveDom(): boolean {
@@ -678,12 +734,20 @@ const isSearchOnly = mode === "search-only";
 
 	async function loadSuggestionsIndex() {
 		try {
-			const response = await fetch("/suggestions-index.json");
-			if (!response.ok) return;
-			const data = await response.json();
-			suggestionSearcher = createSuggestionSearcher(
-				Array.isArray(data?.entries) ? data.entries : [],
-			);
+			const [termsRes, discourseRes] = await Promise.all([
+				fetch("/suggestions-index.json"),
+				fetch("/discourse-suggest-index.json"),
+			]);
+			if (termsRes.ok) {
+				const data = await termsRes.json();
+				suggestionSearcher = createSuggestionSearcher(
+					Array.isArray(data?.entries) ? data.entries : [],
+				);
+			}
+			if (discourseRes.ok) {
+				const data = await discourseRes.json();
+				discourseEntries = Array.isArray(data?.entries) ? data.entries : [];
+			}
 		} catch (error) {
 			console.warn("Failed to load suggestions index:", error);
 		}
@@ -694,13 +758,13 @@ const isSearchOnly = mode === "search-only";
 		searchAutocomplete = null;
 
 		if (!searchInput || !searchSuggestions || !searchSuggestionsList) return;
-		if (!suggestionSearcher) return;
+		if (!suggestionSearcher && discourseEntries.length === 0) return;
 
 		searchAutocomplete = attachSearchAutocomplete({
 			input: searchInput,
 			dropdown: searchSuggestions,
 			list: searchSuggestionsList,
-			searcher: suggestionSearcher,
+			searcher: suggestionSearcher ?? createSuggestionSearcher([]),
 			getRecentSearches: () => {
 				const stored = getRecentSearchQueries();
 				const pending = recentSearchCandidate?.query;
@@ -722,6 +786,10 @@ const isSearchOnly = mode === "search-only";
 			},
 			onValueChange: (value) => {
 				queueSearch(value);
+			},
+			matchDiscourses: (query) => suggestDiscourses(discourseEntries, query),
+			onDiscourseSelect: (hit) => {
+				window.location.assign(hit.href);
 			},
 		});
 	}
@@ -1574,6 +1642,24 @@ const isSearchOnly = mode === "search-only";
 					return; // Skip items that don't match the prefix filter
 				}
 
+				// PTS volume/page lookups are authoritative — skip text scoring.
+				// Always show reference-only hits for citation lookup.
+				if (item.ptsMatch) {
+					if (!item.referenceOnly && !searchFilters.discourses) {
+						return;
+					}
+					allCounts.discourses++;
+					results.push({
+						type: "discourse",
+						score: 100,
+						item,
+						matchType: "exact",
+						priority: item.priority || 1,
+						nonStopwordMatches: 1,
+					});
+					return;
+				}
+
 				// Check if title contains the query (full query)
 				const titleMatch = getMatchType(item.title || "", queryLower);
 				// Check both raw slug match and normalized slug match (handles "mn 38" → "mn38")
@@ -2241,6 +2327,9 @@ const isSearchOnly = mode === "search-only";
 					const referenceBadge = item.referenceOnly
 						? `<span class="inline-block ml-1.5 px-1 py-0 text-[0.65rem] font-semibold uppercase tracking-wide text-[var(--text-muted)] align-middle">Reference</span>`
 						: "";
+					const volpageHtml = item.volpage
+						? `<div class="mt-2 flex justify-end"><span class="text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${item.volpage}">${item.volpage}</span></div>`
+						: "";
 
 					html += `
 						<div class="${hiddenClass}" data-result-index="${index}" data-result-type="discourse">
@@ -2258,6 +2347,7 @@ const isSearchOnly = mode === "search-only";
 								</div>
 								${descriptionHtml}
 								${snippetHtml}
+								${volpageHtml}
 							</a>
 							${debugHtml}
 						</div>

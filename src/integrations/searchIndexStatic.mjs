@@ -11,6 +11,7 @@ const INDEX_FILES = [
 	"search-index.json",
 	"reference-search-index.json",
 	"suggestions-index.json",
+	"discourse-suggest-index.json",
 ];
 const GENERATED_DIR = "generated";
 

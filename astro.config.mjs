@@ -95,6 +95,7 @@ export default defineConfig({
 			"generated/search-index.json",
 			"generated/reference-search-index.json",
 			"generated/suggestions-index.json",
+			"generated/discourse-suggest-index.json",
 		],
 	}),
 

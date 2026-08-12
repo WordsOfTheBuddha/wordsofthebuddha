@@ -1,0 +1,385 @@
+---
+/**
+ * Home hero search gateway: wide input + autosuggest, redirects to /search for results.
+ */
+import SearchIcon from "../assets/search.svg?raw";
+
+const starterChips = [
+	{ label: "MN 10", href: "/mn10" },
+	{ label: "mettā", href: "/search?q=mettā" },
+	{ label: "radical attention", href: "/search?q=radical%20attention" },
+] as const;
+---
+
+<div class="home-search not-prose text-left w-full max-w-[600px] mx-auto" data-home-search>
+	<form
+		id="home-search-form"
+		action="/search"
+		method="get"
+		role="search"
+	>
+		<label class="home-search-sr-only" for="home-search-input">Search the discourses</label>
+		<div class="relative">
+			<input
+				type="search"
+				id="home-search-input"
+				name="q"
+				value=""
+				placeholder="MN 10, mettā, radical attention…"
+				autocomplete="off"
+				enterkeyhint="search"
+				class="home-search-input w-full p-4 pl-12 pr-4 text-base sm:text-lg rounded-lg border focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+				style="background:var(--surface-elevated); color:var(--text-color); border-color:var(--surface-border);"
+			/>
+			<div
+				id="home-search-suggestions"
+				class="home-search-suggestions search-suggestions text-left hidden absolute top-full z-30 mt-1 left-0 right-0 w-full"
+				role="presentation"
+			>
+				<div
+					id="home-search-suggestions-list"
+					class="home-search-suggestions-list search-suggestions-list"
+				></div>
+			</div>
+			<div
+				class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none w-5 h-5"
+				style="color:var(--text-muted);"
+				aria-hidden="true"
+			>
+				<Fragment set:html={SearchIcon} />
+			</div>
+		</div>
+		<p
+			id="home-search-hint"
+			class="home-search-hint home-search-sr-only mt-2 text-sm text-center"
+			style="color:var(--text-muted);"
+			aria-live="polite"
+		>
+			Type a discourse ID, topic, or Pāli term, then press Enter.
+		</p>
+	</form>
+
+	<div class="home-search-chips flex flex-wrap justify-center gap-2 mt-3">
+		{
+			starterChips.map((chip) => (
+				<a
+					href={chip.href}
+					class="home-search-chip no-underline inline-flex items-center px-2.5 py-1 rounded-md text-xs sm:text-sm border transition-colors"
+					style="border-color:var(--surface-border); color:var(--text-muted); background:var(--surface-elevated);"
+				>
+					{chip.label}
+				</a>
+			))
+		}
+	</div>
+</div>
+
+<style is:global>
+	.home-search-sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.home-search-input:focus {
+		border-color: var(--primary-color);
+	}
+
+	.home-search.is-empty-shake .home-search-input {
+		animation: home-search-shake 0.35s ease;
+	}
+
+	@keyframes home-search-shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		25% {
+			transform: translateX(-4px);
+		}
+		75% {
+			transform: translateX(4px);
+		}
+	}
+
+	.home-search-hint.is-visible {
+		position: static;
+		width: auto;
+		height: auto;
+		margin: 0.5rem 0 0;
+		overflow: visible;
+		clip: auto;
+		white-space: normal;
+	}
+
+	.home-search-chip:hover {
+		color: var(--text-color);
+		border-color: var(--primary-color);
+	}
+
+	.home-search .search-suggestions-list {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		overflow: hidden;
+		border-radius: 0.5rem;
+		border: 1px solid var(--surface-border);
+		background: var(--surface-elevated);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	}
+
+	.home-search .search-suggest-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: 0.5rem 0.75rem 0.25rem;
+	}
+
+	.home-search .search-suggest-header-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.home-search .search-suggest-clear {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		padding: 0.25rem 0;
+	}
+
+	.home-search .search-suggest-clear:hover {
+		color: var(--text-color);
+	}
+
+	.home-search .search-suggest-item {
+		display: block;
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		text-align: left;
+		font-size: 1rem;
+		line-height: 1.35;
+		color: var(--text-color);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+
+	.home-search .search-suggest-recent {
+		padding-top: 0.625rem;
+		padding-bottom: 0.625rem;
+	}
+
+	@media (max-width: 767px) {
+		.home-search .search-suggest-recent {
+			padding-top: 0.75rem;
+			padding-bottom: 0.75rem;
+		}
+	}
+
+	.home-search .search-suggest-item:hover,
+	.home-search .search-suggest-item.is-active {
+		background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+	}
+
+	.home-search .search-suggest-mark {
+		background: color-mix(in srgb, var(--primary-color) 24%, transparent);
+		color: inherit;
+		padding: 0;
+	}
+
+	.home-search .search-suggest-discourse {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+
+	.home-search .search-suggest-id {
+		font-weight: 600;
+		flex-shrink: 0;
+	}
+
+	.home-search .search-suggest-discourse-titles {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 0.95em;
+	}
+
+	.home-search .search-suggest-pali {
+		font-style: italic;
+		color: var(--text-color);
+	}
+
+	.home-search .search-suggest-en,
+	.home-search .search-suggest-title-sep {
+		color: var(--text-muted);
+	}
+
+	.home-search .search-suggest-ref {
+		flex-shrink: 0;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+</style>
+
+<script>
+	import { createSuggestionSearcher } from "../utils/suggestionSearcher";
+	import type { SuggestionSearcher } from "../utils/suggestionSearcher";
+	import { attachSearchAutocomplete } from "../utils/searchAutocompleteClient";
+	import type { SearchAutocompleteController } from "../utils/searchAutocompleteClient";
+	import {
+		clearSearchHistory,
+		getRecentSearchQueries,
+	} from "../utils/searchHistoryClient";
+	import {
+		suggestDiscourses,
+		uniqueExactDiscourse,
+		type DiscourseSuggestEntry,
+	} from "../utils/discourseIdSuggest";
+
+	const root = document.querySelector("[data-home-search]") as HTMLElement | null;
+	const form = document.getElementById("home-search-form") as HTMLFormElement | null;
+	const input = document.getElementById(
+		"home-search-input",
+	) as HTMLInputElement | null;
+	const dropdown = document.getElementById("home-search-suggestions");
+	const list = document.getElementById("home-search-suggestions-list");
+	const hint = document.getElementById("home-search-hint");
+
+	if (root && form && input && dropdown && list) {
+		let suggestionSearcher: SuggestionSearcher | null = null;
+		let discourseEntries: DiscourseSuggestEntry[] = [];
+		let autocomplete: SearchAutocompleteController | null = null;
+		let loadPromise: Promise<void> | null = null;
+
+		function goToHref(href: string) {
+			window.location.assign(href);
+		}
+
+		function goToSearch(query: string) {
+			const q = query.trim();
+			if (!q) {
+				showEmptyHint();
+				return;
+			}
+			const exact = uniqueExactDiscourse(discourseEntries, q);
+			if (exact) {
+				goToHref(exact.href);
+				return;
+			}
+			window.location.assign(`/search?q=${encodeURIComponent(q)}`);
+		}
+
+		function showEmptyHint() {
+			if (!root || !input || !hint) return;
+			hint.classList.add("is-visible");
+			hint.classList.remove("home-search-sr-only");
+			root.classList.remove("is-empty-shake");
+			// Retrigger animation
+			void root.offsetWidth;
+			root.classList.add("is-empty-shake");
+			input.focus();
+			setTimeout(() => root.classList.remove("is-empty-shake"), 400);
+		}
+
+		async function ensureAutocomplete() {
+			if (autocomplete) return;
+			if (loadPromise) {
+				await loadPromise;
+				return;
+			}
+
+			loadPromise = (async () => {
+				try {
+					const [termsRes, discourseRes] = await Promise.all([
+						fetch("/suggestions-index.json"),
+						fetch("/discourse-suggest-index.json"),
+					]);
+					if (termsRes.ok) {
+						const data = await termsRes.json();
+						suggestionSearcher = createSuggestionSearcher(
+							Array.isArray(data?.entries) ? data.entries : [],
+						);
+					}
+					if (discourseRes.ok) {
+						const data = await discourseRes.json();
+						discourseEntries = Array.isArray(data?.entries)
+							? data.entries
+							: [];
+					}
+				} catch (error) {
+					console.warn("HomeSearch: failed to load suggestion indexes", error);
+				}
+
+				if (!input || !dropdown || !list) return;
+				if (!suggestionSearcher && discourseEntries.length === 0) return;
+
+				autocomplete = attachSearchAutocomplete({
+					input,
+					dropdown,
+					list,
+					searcher:
+						suggestionSearcher ??
+						createSuggestionSearcher([]),
+					getRecentSearches: () => getRecentSearchQueries(),
+					onClearRecentSearches: () => {
+						clearSearchHistory();
+					},
+					onRecentSearchSelect: (query) => {
+						goToSearch(query);
+					},
+					matchDiscourses: (query) =>
+						suggestDiscourses(discourseEntries, query),
+					onDiscourseSelect: (hit) => {
+						goToHref(hit.href);
+					},
+				});
+			})();
+
+			await loadPromise;
+		}
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			void (async () => {
+				await ensureAutocomplete();
+				goToSearch(input.value);
+			})();
+		});
+
+		input.addEventListener(
+			"focus",
+			() => {
+				void ensureAutocomplete();
+			},
+			{ once: true },
+		);
+
+		const prefetch = () => {
+			void ensureAutocomplete();
+		};
+		if (typeof requestIdleCallback === "function") {
+			requestIdleCallback(prefetch, { timeout: 2500 });
+		} else {
+			setTimeout(prefetch, 1500);
+		}
+	}
+</script>
