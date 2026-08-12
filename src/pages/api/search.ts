@@ -746,7 +746,8 @@ export const GET: APIRoute = async ({ url }) => {
 					nonStopwordTerms.every((t) => t.length <= 3));
 			if (
 				isShortBroadQuery &&
-				discourseResults.length > SHORT_QUERY_CANDIDATE_CAP
+				discourseResults.length > SHORT_QUERY_CANDIDATE_CAP &&
+				discourseResults[0]?.ptsMatch !== true
 			) {
 				discourseResults = discourseResults.slice(
 					0,
@@ -766,7 +767,20 @@ export const GET: APIRoute = async ({ url }) => {
 					return; // Skip items that don't match the prefix filter
 				}
 
-				const titleMatch = getMatchType(item.title || "", queryLower);
+				// PTS volume/page lookups are authoritative — skip text scoring
+				if (item.ptsMatch) {
+					counts.discourses++;
+					results.push({
+						type: "discourse",
+						score: 100,
+						item,
+						matchType: "exact",
+						priority: item.priority || 1,
+						nonStopwordMatches: 1,
+						contentSnippet: item.contentSnippet,
+					});
+					return;
+				}
 				// Check both raw slug match and normalized slug match (handles "mn 38" → "mn38")
 				const rawIdMatch = getMatchType(itemSlug, queryLower);
 				const normalizedSlugMatch = slugMatchesQuery(
@@ -1152,8 +1166,13 @@ export const GET: APIRoute = async ({ url }) => {
 
 		const tRanking = performance.now();
 
+		const resultLimit =
+			rankedResults[0]?.item?.ptsMatch === true
+				? rankedResults.length
+				: limit;
+
 		// Format response
-		const formattedResults = rankedResults.slice(0, limit).map((r, i) => ({
+		const formattedResults = rankedResults.slice(0, resultLimit).map((r, i) => ({
 			rank: i + 1,
 			type: r.type,
 			slug: r.item.slug || r.item.id,
@@ -1168,6 +1187,8 @@ export const GET: APIRoute = async ({ url }) => {
 			nonStopwordMatches: r.nonStopwordMatches || 0,
 			synonymMatchPosition: r.synonymMatchPosition,
 			referenceOnly: r.item.referenceOnly === true,
+			volpage: r.item.volpage,
+			ptsMatch: r.item.ptsMatch === true,
 		}));
 
 		const tFormat = performance.now();

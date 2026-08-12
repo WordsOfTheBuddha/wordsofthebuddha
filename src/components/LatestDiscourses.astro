@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import path from "path";
 import PostCard from "./PostCard.astro";
 import { getLastModified } from "../utils/getLastModified";
+import { getPtsDisplay } from "../utils/ptsReferences";
 
 interface Props {
 	n?: number;
@@ -38,6 +39,7 @@ const latestDiscourses = discourseFiles
 				title={discourse.data.title}
 				description={discourse.data.description}
 				id={discourse.data.slug}
+				volpage={getPtsDisplay(discourse.data.slug)}
 				lastUpdated={discourse.lastModified}
 			/>
 		))

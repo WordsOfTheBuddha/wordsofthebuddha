@@ -16,6 +16,10 @@ import {
 	textContainsStrictWord,
 	STRICT_WORD_MAX_SUFFIX,
 } from "../../utils/searchRanking";
+import {
+	lookupPtsSlugs,
+	parsePtsQuery,
+} from "../../utils/ptsReferences";
 import Fuse from "fuse.js";
 
 export interface SearchResult {
@@ -26,6 +30,10 @@ export interface SearchResult {
 	maxScore?: number;
 	priority?: number;
 	referenceOnly?: boolean;
+	/** Display PTS citation, e.g. "PTS 4.152–4.155" */
+	volpage?: string;
+	/** Set when this hit came from a PTS volume/page lookup */
+	ptsMatch?: boolean;
 }
 
 export interface SearchData {
@@ -38,6 +46,7 @@ export interface SearchData {
 	priority?: number; // Optional priority multiplier for discourses (from frontmatter/search index)
 	contentSearchable?: boolean; // If false, don't show content snippets
 	referenceOnly?: boolean; // Sujato reference translation (no native EN page)
+	volpage?: string;
 }
 
 /** Optional perf stats populated when `perf` is passed (API / dev widget timing). */
@@ -1137,6 +1146,76 @@ async function performSearchInner(
 	if (import.meta.env?.DEV) {
 		console.log("[search] query:", query);
 	}
+
+	const includeReferences = options.includeReferences === true;
+	let activeSearchData: SearchData[] = await ensureNativeSearchData();
+
+	// Direct PTS volume/page lookup (exact start page or covering range).
+	// Always include reference-only discourses — researchers cite PTS pages
+	// regardless of whether a native translation exists.
+	const ptsRef = parsePtsQuery(query);
+	if (ptsRef) {
+		const tRef0 = performance.now();
+		const refData = await loadReferenceSearchData();
+		const ptsSearchData = [...activeSearchData, ...refData];
+		if (options.perf) {
+			options.perf.refIndexLoad = Math.round(performance.now() - tRef0);
+			options.perf.refDocCount = refData.length;
+		}
+		const ptsSlugs = lookupPtsSlugs(ptsRef);
+		if (ptsSlugs.length > 0) {
+			const bySlug = new Map(
+				ptsSearchData.map((doc) => [doc.slug, doc]),
+			);
+			const ptsResults: SearchResult[] = [];
+			for (const slug of ptsSlugs) {
+				const item = bySlug.get(slug);
+				if (!item) continue;
+				ptsResults.push({
+					slug: item.slug,
+					title: item.title,
+					description: item.description,
+					contentSnippet: null,
+					maxScore: item.maxScore,
+					priority: item.priority,
+					referenceOnly: item.referenceOnly,
+					volpage: item.volpage,
+					ptsMatch: true,
+				});
+			}
+			if (ptsResults.length > 0) {
+				if (import.meta.env?.DEV) {
+					console.log(
+						"[search] PTS lookup:",
+						ptsRef,
+						"→",
+						ptsResults.map((r) => r.slug),
+					);
+				}
+				return ptsResults;
+			}
+		}
+		// Fall through to normal search if no indexed discourse matched
+	}
+
+	if (includeReferences) {
+		const tRef0 = performance.now();
+		const refData = await loadReferenceSearchData();
+		activeSearchData = [...activeSearchData, ...refData];
+		if (options.perf) {
+			options.perf.refIndexLoad = Math.round(performance.now() - tRef0);
+			options.perf.refDocCount = refData.length;
+		}
+		if (import.meta.env?.DEV) {
+			console.log(
+				"[search] references enabled:",
+				refData.length,
+				"docs, total",
+				activeSearchData.length,
+			);
+		}
+	}
+
 	let fuseQuery: { $and?: unknown[] };
 	let highlightTerms: HighlightTerm[];
 	let contentConditions: ContentConditions;
@@ -1155,27 +1234,6 @@ async function performSearchInner(
 		console.log("[search] parsed:", JSON.stringify(fuseQuery));
 		if (slugPrefixFilter?.length) {
 			console.log("[search] slugPrefixFilter:", slugPrefixFilter);
-		}
-	}
-
-	const includeReferences = options.includeReferences === true;
-	let activeSearchData: SearchData[] = await ensureNativeSearchData();
-
-	if (includeReferences) {
-		const tRef0 = performance.now();
-		const refData = await loadReferenceSearchData();
-		activeSearchData = [...activeSearchData, ...refData];
-		if (options.perf) {
-			options.perf.refIndexLoad = Math.round(performance.now() - tRef0);
-			options.perf.refDocCount = refData.length;
-		}
-		if (import.meta.env?.DEV) {
-			console.log(
-				"[search] references enabled:",
-				refData.length,
-				"docs, total",
-				activeSearchData.length,
-			);
 		}
 	}
 
@@ -1448,6 +1506,7 @@ async function performSearchInner(
 			maxScore: item.maxScore,
 			priority: item.priority,
 			referenceOnly: item.referenceOnly,
+			volpage: item.volpage,
 			_score: effectiveScore,
 		};
 
@@ -1556,6 +1615,7 @@ export async function getFilteredDiscourses(
 			contentSnippet: null,
 			priority: item.priority,
 			referenceOnly: item.referenceOnly,
+			volpage: item.volpage,
 		}));
 }
 

@@ -25,6 +25,7 @@ import { buildOnPagePdfExportTree } from "../../utils/onPagePdfExportTree";
 import { discourseHasSvgAssetForExport } from "../../utils/contentImage";
 import { formatDiscourseCountLabel } from "../../utils/onPageDiscourseCountClient";
 import { urlHasRefParam } from "../../utils/urlRefParam";
+import { getPtsDisplay } from "../../utils/ptsReferences";
 
 // Generate static paths for all topics, qualities, and similes (including topic redirects)
 export async function getStaticPaths() {
@@ -581,6 +582,7 @@ const showDiscourseSectionHeading =
 										description={discourse.description}
 										id={discourse.id}
 										titleTag={discourse.note}
+										volpage={getPtsDisplay(discourse.id)}
 									/>
 								))}
 							</div>
@@ -601,6 +603,7 @@ const showDiscourseSectionHeading =
 										title={discourse.title}
 										description={discourse.description}
 										id={discourse.id}
+										volpage={getPtsDisplay(discourse.id)}
 									/>
 								))}
 							</div>
@@ -658,6 +661,7 @@ const showDiscourseSectionHeading =
 								title={discourse.title}
 								description={discourse.description}
 								id={discourse.id}
+								volpage={getPtsDisplay(discourse.id)}
 							/>
 						))}
 						<div id="reference-cards-mount" />

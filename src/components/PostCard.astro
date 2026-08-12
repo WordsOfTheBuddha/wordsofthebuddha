@@ -13,6 +13,8 @@ interface Props {
 	count?: number;
 	titleTag?: string;
 	variant?: "default" | "reference";
+	/** PTS citation, e.g. "PTS 4.152–4.155" */
+	volpage?: string;
 }
 
 export const formatDate = (date: string | Date) => {
@@ -34,6 +36,7 @@ const {
 	count = undefined,
 	titleTag,
 	variant = "default",
+	volpage,
 } = Astro.props;
 
 const hasAudio = audioSlugs.has(id);
@@ -137,6 +140,7 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 			isReference
 				? "line-clamp-3 md:line-clamp-2"
 				: `line-clamp-${clamp + 1} md:line-clamp-${clamp}`,
+			volpage && "pr-0",
 		]}
 		set:html={description?.replace(
 			/\[([^\]]+)\]\(([^)]+)\)/g,
@@ -144,10 +148,28 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 		)}
 	/>
 	{
-		lastUpdated && (
-			<p class="text-[var(--text-muted)] text-xs my-0 text-right">
-				{dateLabel} {formatDate(lastUpdated)}
-			</p>
+		(volpage || lastUpdated) && (
+			<div class="post-card-footer mt-2 flex items-end justify-between gap-3">
+				{
+					lastUpdated ? (
+						<p class="text-[var(--text-muted)] text-xs my-0">
+							{dateLabel} {formatDate(lastUpdated)}
+						</p>
+					) : (
+						<span />
+					)
+				}
+				{
+					volpage && (
+						<span
+							class="post-card-volpage shrink-0 text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums"
+							title={volpage}
+						>
+							{volpage}
+						</span>
+					)
+				}
+			</div>
 		)
 	}
 </div>
@@ -191,6 +213,13 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 	}
 	.post-card-title-tag {
 		flex-shrink: 0;
+	}
+	.post-card-footer {
+		min-height: 1rem;
+	}
+	.post-card-volpage {
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.02em;
 	}
 	.id {
 		font-size: 0.95rem;

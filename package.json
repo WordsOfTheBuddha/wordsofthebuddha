@@ -34,7 +34,7 @@
 		"preview:pwa": "HOST=0.0.0.0 PORT=4322 node dist/server/entry.mjs",
 		"dev:pwa": "astro dev --config astro.config.pwa.mjs --host",
 		"test:listen": "npx tsx --test src/utils/listenDisplayWords.test.ts",
-		"test:suggestions": "npx tsx --test src/utils/suggestForToken.test.ts src/utils/suggestionIndexLayers.test.ts src/utils/suggestionSearcher.test.ts src/utils/paliInflectionUtils.test.ts src/utils/searchAutocompleteClient.test.ts src/utils/searchHistoryClient.test.ts src/service/search/snippetSelection.test.ts src/utils/discourseIdSuggest.test.ts",
+		"test:suggestions": "npx tsx --test src/utils/suggestForToken.test.ts src/utils/suggestionIndexLayers.test.ts src/utils/suggestionSearcher.test.ts src/utils/paliInflectionUtils.test.ts src/utils/searchAutocompleteClient.test.ts src/utils/searchHistoryClient.test.ts src/service/search/snippetSelection.test.ts src/utils/discourseIdSuggest.test.ts src/utils/ptsReferences.test.ts",
 		"test:search": "cd src/search-tests && node search-test-cli.js",
 		"test:search:update": "cd src/search-tests && node search-test-cli.js --update",
 		"test:search:ai": "cd src/search-tests && node search-test-cli.js --ai-eval",
@@ -51,6 +51,8 @@
 		"gen:playlists": "node scripts/generate-playlists.mjs",
 		"import:sc": "node scripts/import-sc-bilara.mjs",
 		"import:sc-structure": "node scripts/import-sc-structure.mjs",
+		"import:pts": "node scripts/import-pts-references.mjs",
+		"test:pts": "npx tsx --test src/utils/ptsReferences.test.ts",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
 		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py",
 		"voice:normalize": ".venv-voice/bin/python scripts/normalize_voice.py"

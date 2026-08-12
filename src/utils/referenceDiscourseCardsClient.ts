@@ -85,8 +85,12 @@ function renderReferenceCard(entry: {
 	slug: string;
 	title: string;
 	description: string;
+	volpage?: string;
 }) {
 	const href = discourseLinkHref(entry.slug);
+	const volpageHtml = entry.volpage
+		? `<span class="post-card-volpage shrink-0 text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(entry.volpage)}">${escapeHtml(entry.volpage)}</span>`
+		: "";
 	const card = document.createElement("div");
 	card.className =
 		"post-item post-item--reference not-prose relative flex flex-col w-full p-3 mt-[1em] mb-[0.8em] rounded-2xl border border-dashed border-[color:color-mix(in_srgb,var(--surface-border)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--surface-elevated)_85%,transparent)] opacity-80 hover:opacity-100 shadow-none hover:shadow-sm text-[var(--surface-ink)] transition-shadow duration-200";
@@ -104,6 +108,7 @@ function renderReferenceCard(entry: {
 				</div>
 			</div>
 			<p class="mt-2 text-text line-clamp-3 md:line-clamp-2 text-sm sm:text-base">${escapeHtml(entry.description || "")}</p>
+			${entry.volpage ? `<div class="post-card-footer mt-2 flex items-end justify-end gap-3">${volpageHtml}</div>` : ""}
 		`;
 	return card;
 }

@@ -21,6 +21,7 @@ import { buildPdfExportSelectionTree } from "../utils/collectionPdfExportTree";
 import { getReferencePostsForCollection } from "../utils/referencePostsForPage";
 import { urlHasRefParam } from "../utils/urlRefParam";
 import type { CollectionCountEntry } from "../utils/collectionCountBadgesClient";
+import { getPtsDisplay } from "../utils/ptsReferences";
 
 import {
 	formatVaggaDisplayTitle,
@@ -475,6 +476,9 @@ html[data-collection-view="discourses"] #view-discourses {
 																post.description
 															}
 															id={post.slug}
+															volpage={getPtsDisplay(
+																post.slug,
+															)}
 															clamp={5}
 														/>
 													))}
@@ -522,6 +526,9 @@ html[data-collection-view="discourses"] #view-discourses {
 												title={post.title}
 												description={post.description}
 												id={post.slug}
+												volpage={getPtsDisplay(
+													post.slug,
+												)}
 												clamp={5}
 											/>
 										))}
@@ -533,6 +540,7 @@ html[data-collection-view="discourses"] #view-discourses {
 									title={post.title}
 									description={post.description}
 									id={post.slug}
+									volpage={getPtsDisplay(post.slug)}
 									clamp={5}
 								/>
 							))

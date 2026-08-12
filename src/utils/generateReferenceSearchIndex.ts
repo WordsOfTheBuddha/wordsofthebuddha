@@ -11,6 +11,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { loadCatalogEntries } from "./generateCollectionReferenceIndex";
+import { getPtsDisplay } from "./ptsReferences";
 
 export interface ReferenceSearchDoc {
 	slug: string;
@@ -21,6 +22,7 @@ export interface ReferenceSearchDoc {
 	priority?: number;
 	referenceOnly: true;
 	contentSearchable?: boolean;
+	volpage?: string;
 }
 
 function normalizeMdContent(md: string): string {
@@ -87,6 +89,8 @@ export async function buildReferenceSearchIndex(): Promise<ReferenceSearchDoc[]>
 		};
 		if (entry.priority !== undefined) doc.priority = entry.priority;
 		if (contentPali) doc.contentPali = contentPali;
+		const volpage = getPtsDisplay(entry.slug);
+		if (volpage) doc.volpage = volpage;
 		docs.push(doc);
 	}
 

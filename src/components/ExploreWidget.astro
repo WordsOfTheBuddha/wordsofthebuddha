@@ -347,6 +347,7 @@ const isSearchOnly = mode === "search-only";
 					<p class="mb-1">Look up a discourse by Pali Text Society volume/page. Use a <code class="not-prose">pts:</code> (or <code class="not-prose">volpage:</code> / leading <code class="not-prose">PTS</code>) prefix so ordinary searches are not affected.</p>
 					<ul class="space-y-1">
 							<li><code class="not-prose">pts:AN V. 91</code> — Anguttara volume V, page 91 (covers mid-sutta pages too)</li>
+							<li><code class="not-prose">pts:MN 2</code> or <code class="not-prose">pts:MN ii</code> — all discourses in that PTS volume</li>
 							<li><code class="not-prose">pts:SN V 31</code> or <code class="not-prose">volpage:SN ii 4</code> — Samyutta citations</li>
 							<li><code class="not-prose">PTS 4.152</code> — numeric volume.page (may match more than one nikāya)</li>
 							<li><code class="not-prose">pts:Iti 27</code> — single-volume collections (Iti, Ud, Snp, Dhp, …)</li>
@@ -1629,7 +1630,11 @@ const isSearchOnly = mode === "search-only";
 				!isFilterOnly &&
 				(nonStopwordTerms.length === 0 ||
 					nonStopwordTerms.every((t) => t.length <= 3));
-			if (isShortBroadQuery && discourseResults.length > SHORT_QUERY_CANDIDATE_CAP) {
+			if (
+				isShortBroadQuery &&
+				discourseResults.length > SHORT_QUERY_CANDIDATE_CAP &&
+				discourseResults[0]?.ptsMatch !== true
+			) {
 				discourseResults = discourseResults.slice(0, SHORT_QUERY_CANDIDATE_CAP);
 			}
 

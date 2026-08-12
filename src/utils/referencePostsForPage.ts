@@ -2,21 +2,27 @@ import collectionReferenceIndex from "../data/collectionReferenceIndex";
 import { slugMatchesCollectionPattern } from "./collectionPatterns";
 import { discourseBookPrefix } from "./discourseNeighbors";
 import { canonicalOnSlug } from "./discover-data";
+import { getPtsDisplay } from "./ptsReferences";
 
 export type ReferencePostData = {
 	slug: string;
 	title: string;
 	description: string;
+	volpage?: string;
 };
 
 function toReferencePostData(
 	entries: typeof collectionReferenceIndex,
 ): ReferencePostData[] {
-	return entries.map(({ slug, title, description }) => ({
-		slug,
-		title,
-		description,
-	}));
+	return entries.map(({ slug, title, description }) => {
+		const volpage = getPtsDisplay(slug);
+		return {
+			slug,
+			title,
+			description,
+			...(volpage ? { volpage } : {}),
+		};
+	});
 }
 
 function filterReferencePosts(

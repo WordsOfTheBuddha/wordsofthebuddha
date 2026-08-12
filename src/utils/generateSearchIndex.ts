@@ -9,6 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { glob } from "glob";
 import matter from "gray-matter";
+import { getPtsDisplay } from "./ptsReferences";
 interface SearchDoc {
 	slug: string;
 	title: string;
@@ -18,6 +19,8 @@ interface SearchDoc {
 	maxScore?: number; // Cap the maximum score for this doc (lower = appears lower in results)
 	priority?: number; // Optional priority multiplier for discourses (from frontmatter)
 	contentSearchable?: boolean; // If false, don't match on content or show content snippets
+	/** Display form, e.g. "PTS 4.152–4.155" */
+	volpage?: string;
 }
 
 // Pages to exclude from search index (slugs without leading slash)
@@ -137,6 +140,8 @@ async function parseFileToDoc(
 		doc.priority = priority;
 	}
 	if (contentPali) doc.contentPali = contentPali;
+	const volpage = getPtsDisplay(slug);
+	if (volpage) doc.volpage = volpage;
 	return doc;
 }
 
@@ -207,7 +212,8 @@ export async function incrementalSearchIndexUpdate(changedFile: string) {
 		if (
 			old.slug === newDoc.slug &&
 			old.title === newDoc.title &&
-			old.description === newDoc.description
+			old.description === newDoc.description &&
+			old.volpage === newDoc.volpage
 		) {
 			if (logStatus) {
 				console.log(
