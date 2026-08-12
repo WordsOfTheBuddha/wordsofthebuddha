@@ -10,6 +10,8 @@
  * - Pagination helpers
  */
 
+import { compareDiscourseIds } from "./discourseSort";
+
 // ==================== STOPWORDS ====================
 
 /** Common English stopwords that should have lower weight in search */
@@ -177,9 +179,40 @@ export function normalizeSlugForMatching(input: string): string {
 	return input.toLowerCase().replace(/\s+/g, "");
 }
 
+const DISCOURSE_ID_QUERY = /^[a-z]{2,5}\d[\d.\-]*$/;
+
+/** Compact form: "MN 10" → "mn10", "AN 6.12" → "an6.12". Null if not ID-shaped. */
+export function compactDiscourseIdQuery(raw: string): string | null {
+	const compact = raw.trim().toLowerCase().replace(/\s+/g, "");
+	if (!DISCOURSE_ID_QUERY.test(compact)) return null;
+	return compact;
+}
+
+export function isDiscourseIdQuery(raw: string): boolean {
+	return compactDiscourseIdQuery(raw) !== null;
+}
+
+/**
+ * Prefix that continues at a segment boundary (an6 → an6.1, not an60).
+ * After a dotted query, also allow last-segment digit growth (an6.1 → an6.12).
+ * mn10 is not a prefix of mn100.
+ */
+export function isDiscourseIdPrefix(slug: string, compact: string): boolean {
+	if (slug === compact) return false;
+	if (slug.startsWith(`${compact}.`) || slug.startsWith(`${compact}-`)) {
+		return true;
+	}
+	if (compact.includes(".") && slug.startsWith(compact)) {
+		const next = slug.charAt(compact.length);
+		return next >= "0" && next <= "9";
+	}
+	return false;
+}
+
 /**
  * Check if a slug matches a query (handles both raw and formatted forms).
- * e.g., "mn38" matches "mn 38", "MN 38", "mn38", "MN38"
+ * e.g., "mn38" matches "mn 38", "MN 38", "mn38", "MN38".
+ * Numeric IDs are tokens: "mn10" is not a prefix of "mn100".
  */
 export function slugMatchesQuery(
 	slug: string,
@@ -191,6 +224,14 @@ export function slugMatchesQuery(
 	if (normalizedSlug === normalizedQuery) {
 		return "exact";
 	}
+
+	const compactQuery = compactDiscourseIdQuery(query);
+	if (compactQuery) {
+		return isDiscourseIdPrefix(normalizedSlug, compactQuery)
+			? "prefix"
+			: "none";
+	}
+
 	if (normalizedSlug.startsWith(normalizedQuery)) {
 		return "prefix";
 	}
@@ -599,6 +640,11 @@ export function getCleanQueryString(query: string): string {
 export function tokenizeQuery(
 	query: string,
 ): { term: string; isStopword: boolean }[] {
+	const compactId = compactDiscourseIdQuery(query);
+	if (compactId) {
+		return [{ term: compactId, isStopword: false }];
+	}
+
 	const terms = query
 		.toLowerCase()
 		.split(/\s+/)
@@ -1868,8 +1914,9 @@ export const SCORE = {
 	DISCOURSE_CONTENT_EXACT_MIN: 40,
 	DISCOURSE_CONTENT_FUZZY_BASE: 30,
 	DISCOURSE_CONTENT_FUZZY_MIN: 15,
-	/** Penalty so native translations outrank reference at equal match quality */
-	DISCOURSE_REFERENCE_ONLY_PENALTY: 2,
+	/** Penalty so native translations outrank reference at equal match quality.
+	 * Less than a tier (~20–30), more than a tiebreak: exact native 95 vs exact ref 87. */
+	DISCOURSE_REFERENCE_ONLY_PENALTY: 8,
 
 	// Minimum score threshold
 	MIN_SCORE: 15,
@@ -2086,11 +2133,32 @@ function calculateSnippetOverlap(
 	return matchCount / snippetSignatures.size;
 }
 
+function discourseIdOf(result: ScoredResult): string {
+	return String(result.item?.slug || result.item?.id || "");
+}
+
+/** Canonical discourse-ID order for PTS citation hits (mn1, mn2, … mn10). */
+export function sortPtsMatchResults(results: ScoredResult[]): ScoredResult[] {
+	return [...results].sort((a, b) =>
+		compareDiscourseIds(discourseIdOf(a), discourseIdOf(b)),
+	);
+}
+
 export function rankResultsWithDiversity(
 	results: ScoredResult[],
 	config: SearchConfig = DEFAULT_SEARCH_CONFIG,
 ): ScoredResult[] {
 	if (results.length === 0) return [];
+
+	// PTS citation lookups are exact volume/page matches — relevance ranking
+	// and diversity interleaving are meaningless. Keep canonical ID order.
+	const ptsHits = results.filter((r) => r.item?.ptsMatch === true);
+	if (ptsHits.length > 0) {
+		const rest = results.filter((r) => r.item?.ptsMatch !== true);
+		const sortedPts = sortPtsMatchResults(ptsHits);
+		if (rest.length === 0) return sortedPts;
+		return [...sortedPts, ...rankResultsWithDiversity(rest, config)];
+	}
 
 	// Score already includes priority boost from the search logic
 	// So we just use the raw score for ranking

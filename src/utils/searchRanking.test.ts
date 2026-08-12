@@ -4,7 +4,11 @@ import {
 	categoryMatchesAllNonStopwordTerms,
 	countCategoryNonStopwordTermMatches,
 	getCategoryCombinedSearchText,
+	getNonStopwordTerms,
+	SCORE,
+	slugMatchesQuery,
 	supplementCategoryFuseResults,
+	tokenizeQuery,
 } from "./searchRanking";
 
 const cloudSimiles = [
@@ -93,5 +97,57 @@ describe("category multi-term matching", () => {
 		assert.ok(
 			fuseOnlyRaining.some((r) => r.item.slug === "rainless-cloud"),
 		);
+	});
+});
+
+describe("slugMatchesQuery numeric ID tokens", () => {
+	it("treats MN 10 as exact mn10, not a prefix of mn100", () => {
+		assert.equal(slugMatchesQuery("mn10", "MN 10"), "exact");
+		assert.equal(slugMatchesQuery("mn10", "mn10"), "exact");
+		assert.equal(slugMatchesQuery("mn100", "MN 10"), "none");
+		assert.equal(slugMatchesQuery("mn101", "mn10"), "none");
+		assert.equal(slugMatchesQuery("mn11", "mn1"), "none");
+	});
+
+	it("keeps collection+number prefixes at segment boundaries", () => {
+		assert.equal(slugMatchesQuery("an6.1", "AN6"), "prefix");
+		assert.equal(slugMatchesQuery("an6.12", "an6.1"), "prefix");
+		assert.equal(slugMatchesQuery("an60", "an6"), "none");
+		assert.equal(slugMatchesQuery("an6.2", "an6.1"), "none");
+	});
+});
+
+describe("tokenizeQuery discourse IDs", () => {
+	it("collapses spaced IDs to a single token", () => {
+		assert.deepEqual(tokenizeQuery("MN 10"), [
+			{ term: "mn10", isStopword: false },
+		]);
+		assert.deepEqual(getNonStopwordTerms("mn 10"), ["mn10"]);
+	});
+
+	it("does not collapse non-ID phrases", () => {
+		assert.deepEqual(getNonStopwordTerms("radical attention"), [
+			"radical",
+			"attention",
+		]);
+	});
+});
+
+describe("reference-only penalty", () => {
+	it("is less than a tier and more than a tiebreak", () => {
+		assert.equal(SCORE.DISCOURSE_REFERENCE_ONLY_PENALTY, 8);
+		const exactNative = SCORE.DISCOURSE_EXACT_TITLE;
+		const exactRef =
+			SCORE.DISCOURSE_EXACT_TITLE - SCORE.DISCOURSE_REFERENCE_ONLY_PENALTY;
+		assert.ok(exactNative - exactRef < 20);
+		assert.ok(exactRef > SCORE.DISCOURSE_CONTENT_WHOLE_WORD_BASE);
+		assert.ok(exactRef > SCORE.MIN_SCORE);
+	});
+
+	it("keeps similar-match references below native category exacts", () => {
+		const similarRef =
+			SCORE.DISCOURSE_PREFIX_TITLE - SCORE.DISCOURSE_REFERENCE_ONLY_PENALTY;
+		assert.ok(similarRef < SCORE.CATEGORY_EXACT_TITLE);
+		assert.ok(similarRef < SCORE.CATEGORY_WORD_EXACT_TITLE);
 	});
 });

@@ -1,5 +1,15 @@
 import { compareDiscourseIds, formatDiscourseTitle } from "./discourseSort";
-import { normalizeForComparison } from "./searchRanking";
+import {
+	compactDiscourseIdQuery,
+	isDiscourseIdPrefix,
+	normalizeForComparison,
+} from "./searchRanking";
+
+export {
+	compactDiscourseIdQuery,
+	isDiscourseIdPrefix,
+	isDiscourseIdQuery,
+} from "./searchRanking";
 
 export interface DiscourseSuggestEntry {
 	slug: string;
@@ -26,19 +36,6 @@ export function discourseSuggestLimit(): number {
 	return window.matchMedia("(max-width: 767px)").matches
 		? NARROW_DISCOURSE_SUGGEST_LIMIT
 		: DEFAULT_DISCOURSE_SUGGEST_LIMIT;
-}
-
-const ID_QUERY = /^[a-z]{2,5}\d[\d.\-]*$/;
-
-/** Compact form: "MN 10" → "mn10", "AN 6.12" → "an6.12". Null if not ID-shaped. */
-export function compactDiscourseIdQuery(raw: string): string | null {
-	const compact = raw.trim().toLowerCase().replace(/\s+/g, "");
-	if (!ID_QUERY.test(compact)) return null;
-	return compact;
-}
-
-export function isDiscourseIdQuery(raw: string): boolean {
-	return compactDiscourseIdQuery(raw) !== null;
 }
 
 export function splitDiscourseTitle(title: string): {
@@ -85,22 +82,6 @@ function nativeFirst(a: DiscourseSuggestEntry, b: DiscourseSuggestEntry): number
 	const id = compareDiscourseIds(a.slug, b.slug);
 	if (id !== 0) return id;
 	return Number(a.referenceOnly) - Number(b.referenceOnly);
-}
-
-/**
- * Prefix that continues at a segment boundary (an6 → an6.1, not an60).
- * After a dotted query, also allow last-segment digit growth (an6.1 → an6.12).
- */
-export function isDiscourseIdPrefix(slug: string, compact: string): boolean {
-	if (slug === compact) return false;
-	if (slug.startsWith(`${compact}.`) || slug.startsWith(`${compact}-`)) {
-		return true;
-	}
-	if (compact.includes(".") && slug.startsWith(compact)) {
-		const next = slug.charAt(compact.length);
-		return next >= "0" && next <= "9";
-	}
-	return false;
 }
 
 type TitleMatchRank = 0 | 1 | 2;

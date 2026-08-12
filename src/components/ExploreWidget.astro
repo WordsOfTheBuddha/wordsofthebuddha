@@ -1121,6 +1121,7 @@ const isSearchOnly = mode === "search-only";
 		textContainsWholeWord,
 		countWholeWordOccurrences,
 		slugMatchesQuery,
+		compactDiscourseIdQuery,
 		normalizeForComparison,
 		levenshteinDistance,
 		minEditDistance,
@@ -1667,7 +1668,9 @@ const isSearchOnly = mode === "search-only";
 
 			// Get non-stopword terms for multi-term query ranking
 			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
-			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
+			const compactIdQuery = compactDiscourseIdQuery(effectiveQuery);
+			const hasMultipleTerms =
+				!compactIdQuery && queryLower.split(/\s+/).length > 1;
 
 			// Fast path for short broad queries (every non-stopword term ≤ 3 chars):
 			// cap candidates before per-item scoring (mirrors /api/search fast path)
@@ -1711,8 +1714,12 @@ const isSearchOnly = mode === "search-only";
 					return;
 				}
 
-				// Check if title contains the query (full query)
-				const titleMatch = getMatchType(item.title || "", queryLower);
+				// Check if title contains the query (full query).
+				// ID-shaped queries match on slug tokens, not title string prefixes
+				// ("MN 100 …".startsWith("MN 10") must not count).
+				const titleMatch = compactIdQuery
+					? "none"
+					: getMatchType(item.title || "", queryLower);
 				// Check both raw slug match and normalized slug match (handles "mn 38" → "mn38")
 				const rawIdMatch = getMatchType(itemSlug, queryLower);
 				const normalizedSlugMatch = slugMatchesQuery(itemSlug, queryLower);

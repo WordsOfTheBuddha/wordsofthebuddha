@@ -79,6 +79,7 @@ import {
 	countPaliWholeWordOccurrencesNormalized,
 	getPaliMatchType,
 	slugMatchesQuery,
+	compactDiscourseIdQuery,
 	isStopword,
 	calculatePhraseProximityBoost,
 	getCleanQueryString,
@@ -732,7 +733,9 @@ export const GET: APIRoute = async ({ url }) => {
 				await getNormalizedContentMap(includeReferences);
 
 			const nonStopwordTerms = getNonStopwordTerms(effectiveQuery);
-			const hasMultipleTerms = queryLower.split(/\s+/).length > 1;
+			const compactIdQuery = compactDiscourseIdQuery(effectiveQuery);
+			const hasMultipleTerms =
+				!compactIdQuery && queryLower.split(/\s+/).length > 1;
 
 			// Fast path for short broad queries (every non-stopword term ≤ 3 chars,
 			// e.g. "a", "an", "cra"): they match most of the corpus and per-item
@@ -794,6 +797,9 @@ export const GET: APIRoute = async ({ url }) => {
 						: normalizedSlugMatch === "prefix"
 							? "prefix"
 							: rawIdMatch;
+				const titleMatch = compactIdQuery
+					? "none"
+					: getMatchType(item.title || "", queryLower);
 
 				let termTitleMatch: MatchType = "none";
 				if (hasMultipleTerms && nonStopwordTerms.length > 0) {

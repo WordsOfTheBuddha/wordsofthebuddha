@@ -156,6 +156,20 @@
 			]
 		},
 		{
+			"id": "discourse-mn10",
+			"query": "MN 10",
+			"category": "discourse-id",
+			"description": "Exact ID must beat MN 100-class prefix collisions",
+			"assertions": [
+				{
+					"type": "has",
+					"slug": "mn10",
+					"position": 1,
+					"reason": "Exact native MN 10 should rank first, not MN 100"
+				}
+			]
+		},
+		{
 			"id": "discourse-mn38",
 			"query": "mn 38",
 			"category": "discourse-id",
