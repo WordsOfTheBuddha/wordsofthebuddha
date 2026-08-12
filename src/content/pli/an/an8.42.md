@@ -1,9 +1,10 @@
 ---
 title: Vitthatūposatha sutta - Uposatha In Detail
-description: The Buddha explains the fruit, benefit, brightness, and reach of observing the Uposatha endowed with the eight factors in detail.
-fetter: adherence to rules and observances, doubt, sensual desire, ill will, conceit, ignorance
-tags: uposatha, eight precepts, virtue, morality, precepts, arahant, mindfulness, heedfulness, diligence, negligence, death, liberation, nibbāna, four great kings, thirty-three gods, yāma gods, tusita gods, nimmānarati gods, paranimmita-vasavatti gods
+description: The Buddha details the eight-factored Uposatha observance, where a disciple emulates the arahants for a day and night. He explains that the resulting spiritual fruit and heavenly rebirth are so vast that all worldly wealth pales in comparison.
+qualities: ethical conduct, spiritual life, non-harm, contentment, conscience, arahant, diligence, right speech, not taking what is not given, negligence, consuming intoxicants, sensual desire, slaughtering, stealing, wrong speech
+theme: wisdom, inspiration
 slug: an8.42
+priority: 1.1
 ---
 
 “Aṭṭhaṅgasamannāgato, bhikkhave, uposatho upavuttho mahapphalo hoti mahānisaṁso mahājutiko mahāvipphāro. Kathaṁ upavuttho ca, bhikkhave, aṭṭhaṅgasamannāgato uposatho mahapphalo hoti mahānisaṁso mahājutiko mahāvipphāro?

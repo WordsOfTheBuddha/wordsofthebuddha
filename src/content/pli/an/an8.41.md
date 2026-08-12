@@ -1,9 +1,10 @@
 ---
 title: Saṅkhittūposathasutta - Uposatha In Brief
-description: The Uposatha, when observed endowed with the eight factors, of great fruit, of great benefit, superbly bright, and far-reaching. The eight factors are - 1) refraining from taking life, 2) refraining from taking what is not given, 3) refraining from sexual activity, 4) refraining from false speech, 5) refraining from intoxicants and states of negligence, 6) eating only one meal a day, 7) refraining from dancing, singing, music, and watching shows, and 8) refraining from high and luxurious beds.
-fetter: adherence to rules and observances, doubt, sensual desire, ill will, conceit, ignorance
-tags: uposatha, eight precepts, virtue, morality, precepts, arahant, mindfulness, heedfulness, diligence, negligence, death, liberation, nibbāna
+description: The Buddha explains the eight-factored Uposatha observance. By undertaking eight precepts for a single day and night, a disciple yields great spiritual fruit by emulating the purity of the arahants.
+qualities: ethical conduct, spiritual life, non-harm, contentment, conscience, arahant, diligence, right speech, not taking what is not given, negligence, consuming intoxicants, sensual desire, slaughtering, stealing, wrong speech
+theme: wisdom, inspiration
 slug: an8.41
+priority: 1.2
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
