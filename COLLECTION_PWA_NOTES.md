@@ -10,14 +10,14 @@ Updated: 2025‑09‑17
 
 -   Caches
 
-    -   core-v3: minimal, durable core: `/`, `/offline`, `/offline-manifest.json`, `/search`, `/manifest.webmanifest`, and `manifest.coreAssets`.
+    -   core-v4: minimal, durable core: `/`, `/offline`, `/offline-manifest.json`, `/search`, `/manifest.webmanifest`, and `manifest.coreAssets` (each URL stored individually; shell HTML linked `/_astro` assets are also precached).
     -   navigations-v1: prerendered HTML navigations (including discourse pages and, when explicitly selected, `/search`).
     -   assets-v1: `/_astro/*`, `/assets/*`, favicons/manifest.
     -   fonts-local-v1 and fonts-web-v1: local font files and Google Fonts (created on demand when fonts are first requested; you may not see these caches until a page loads fonts).
 
 -   Strategies
 
-    -   Navigations: network‑first with offline fallback to `/offline`.
+    -   Navigations: network‑first (8s timeout if that URL is already cached, otherwise 28s). On failure: serve the cached page if present; otherwise a lightweight “page unavailable” HTML with Retry / Home / Offline links — **not** the Offline control center (avoids `/iti99` showing a blank control center when the origin is slow).
     -   Assets (/\_astro, /assets, icons, fonts): cache‑first.
     -   offline-manifest: cache‑first with `{}` JSON fallback when offline; refreshed into core when possible.
 

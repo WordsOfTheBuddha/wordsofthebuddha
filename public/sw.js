@@ -4,11 +4,15 @@
  * - Message API: CACHE_URLS (bulk), PAUSE_JOB, RESUME_JOB, CANCEL_JOB, CLEAR_ALL (keeps core)
  */
 
-const CORE_CACHE = "core-v3";
+const CORE_CACHE = "core-v4";
 const NAV_CACHE = "navigations-v1";
 const ASSETS_CACHE = "assets-v1";
 const FONTS_LOCAL_CACHE = "fonts-local-v1";
 const FONTS_WEB_CACHE = "fonts-web-v1";
+
+/** Prefer a short timeout only when we already have that page cached. */
+const NAV_TIMEOUT_CACHED_MS = 8000;
+const NAV_TIMEOUT_UNCACHED_MS = 28000;
 
 // Consider URLs without a known file extension as HTML-like navigations.
 // Slugs like "/sn12.2" include a dot but are NOT file extensions; we only
@@ -105,14 +109,42 @@ function decodeCachedResponse(res) {
 	);
 }
 
+/** Put each URL individually so one 404 does not abort the whole core. */
+async function putCoreUrls(urls) {
+	const cache = await caches.open(CORE_CACHE);
+	for (const url of urls) {
+		try {
+			const res = await fetch(url, { cache: "reload" });
+			if (res && res.ok) await cache.put(url, res.clone());
+		} catch {}
+	}
+}
+
+/** Ensure shell pages stay interactive offline by caching their /_astro assets. */
+async function precacheShellAssets(paths) {
+	for (const path of paths) {
+		try {
+			const hit =
+				(await caches.match(path)) ||
+				(await fetch(path, { cache: "reload" }).catch(() => null));
+			if (!hit || !hit.ok) continue;
+			const html = await hit.clone().text();
+			await prefetchLinkedAssets(html, new URL(path, self.location.origin));
+		} catch {}
+	}
+}
+
 self.addEventListener("install", (event) => {
 	event.waitUntil(
 		(async () => {
 			try {
-				const res = await fetch("/offline-manifest.json", {
-					cache: "no-store",
-				});
-				const manifest = await res.json();
+				let manifest = null;
+				try {
+					const res = await fetch("/offline-manifest.json", {
+						cache: "no-store",
+					});
+					if (res && res.ok) manifest = await res.json();
+				} catch {}
 				// Minimal, durable core; do NOT include collection pages here
 				const coreList = new Set([
 					"/",
@@ -122,8 +154,9 @@ self.addEventListener("install", (event) => {
 					"/manifest.webmanifest",
 					...((manifest && manifest.coreAssets) || []),
 				]);
-				const cache = await caches.open(CORE_CACHE);
-				await cache.addAll(Array.from(coreList));
+				await putCoreUrls(Array.from(coreList));
+				// Offline control center / home / search need their JS/CSS offline
+				await precacheShellAssets(["/", "/offline", "/search"]);
 			} catch (e) {
 				// ignore
 			}
@@ -170,14 +203,85 @@ function warmFromResponse(res, cacheKey, cache, url) {
 	})();
 }
 
+async function matchNavigationCache(req, url, cache) {
+	const tryMatch = async (key) =>
+		(await cache.match(key)) || (await caches.match(key));
+	let cached = (await tryMatch(req)) || (await tryMatch(url.pathname));
+	if (!cached) {
+		const p = url.pathname;
+		const variants = new Set();
+		variants.add(p.endsWith("/") ? p.slice(0, -1) : p + "/");
+		if (p.endsWith("/index.html"))
+			variants.add(p.replace(/\/?index\.html$/, "/"));
+		else variants.add((p.endsWith("/") ? p : p + "/") + "index.html");
+		for (const v of variants) {
+			cached = await tryMatch(v);
+			if (cached) break;
+		}
+	}
+	return cached;
+}
+
+/** Honest fallback when a navigation can't be fetched or served from cache. */
+function unavailableNavigationResponse(url) {
+	const requested = `${url.pathname}${url.search || ""}`;
+	const safePath = requested
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/"/g, "&quot;");
+	const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Page unavailable — Words of the Buddha</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:36rem;margin:2.5rem auto;padding:0 1.25rem;line-height:1.5;color:#1a1a1a;background:#faf8f5}
+h1{font-size:1.35rem;margin:0 0 .75rem}
+p{margin:.5rem 0;color:#444}
+a{color:#1d4ed8}
+.box{border:1px solid #ddd;border-radius:8px;padding:1rem;margin-top:1.25rem;background:#fff}
+</style>
+</head>
+<body>
+<h1>This page isn’t available right now</h1>
+<p>The site couldn’t load <code>${safePath}</code> from the network, and it isn’t cached on this device.</p>
+<p>This can happen when the connection to wordsofthebuddha.org is slow or interrupted — even if other sites still work.</p>
+<div class="box">
+<p><a href="${safePath}">Retry this page</a></p>
+<p><a href="/">Go to homepage</a></p>
+<p><a href="/offline">Open Offline control center</a> to download collections for offline reading.</p>
+</div>
+<script>
+document.querySelectorAll('a[href="${safePath}"]').forEach(function(a){
+  a.addEventListener('click', function(e){ e.preventDefault(); location.reload(); });
+});
+</script>
+</body>
+</html>`;
+	return new Response(html, {
+		status: 503,
+		statusText: "Service Unavailable",
+		headers: {
+			"Content-Type": "text/html; charset=utf-8",
+			"Cache-Control": "no-store",
+		},
+	});
+}
+
 async function networkFirst(req, event) {
 	const cache = await caches.open(NAV_CACHE);
 	const url = new URL(req.url);
+	const existing = await matchNavigationCache(req, url, cache);
+	const timeoutMs = existing
+		? NAV_TIMEOUT_CACHED_MS
+		: NAV_TIMEOUT_UNCACHED_MS;
+
 	// Special-case /search: don't cache per-query HTML; only cache base shell when online
 	if (url.pathname === "/search") {
 		try {
 			const ctrl = new AbortController();
-			const to = setTimeout(() => ctrl.abort(), 5000);
+			const to = setTimeout(() => ctrl.abort(), timeoutMs);
 			const res = await fetch(req, { signal: ctrl.signal });
 			clearTimeout(to);
 			if (res && res.ok && !url.search) {
@@ -188,16 +292,13 @@ async function networkFirst(req, event) {
 		} catch (_) {
 			const base = await caches.match("/search");
 			if (base) return decodeCachedResponse(base);
-			const off = await caches.match("/offline");
-			return off
-				? decodeCachedResponse(off)
-				: new Response("", { status: 503, statusText: "Offline" });
+			return unavailableNavigationResponse(url);
 		}
 	}
 
 	try {
 		const ctrl = new AbortController();
-		const to = setTimeout(() => ctrl.abort(), 5000);
+		const to = setTimeout(() => ctrl.abort(), timeoutMs);
 		const res = await fetch(req, { signal: ctrl.signal });
 		clearTimeout(to);
 		if (res && res.ok) {
@@ -206,27 +307,11 @@ async function networkFirst(req, event) {
 		}
 		return res;
 	} catch (_) {
-		// Default: Try any cache, then nav cache, then offline, including normalized variants
-		const tryMatch = async (key) =>
-			(await cache.match(key)) || (await caches.match(key));
-		let cached = (await tryMatch(req)) || (await tryMatch(url.pathname));
-		if (!cached) {
-			const p = url.pathname;
-			const variants = new Set();
-			variants.add(p.endsWith("/") ? p.slice(0, -1) : p + "/");
-			if (p.endsWith("/index.html"))
-				variants.add(p.replace(/\/?index\.html$/, "/"));
-			else variants.add((p.endsWith("/") ? p : p + "/") + "index.html");
-			for (const v of variants) {
-				cached = await tryMatch(v);
-				if (cached) break;
-			}
-		}
+		const cached = await matchNavigationCache(req, url, cache);
 		if (cached) return decodeCachedResponse(cached);
-		const off = await caches.match("/offline");
-		return off
-			? decodeCachedResponse(off)
-			: new Response("", { status: 503, statusText: "Offline" });
+		// Do not substitute the Offline control center for arbitrary URLs —
+		// that made flaky networks look like a broken / blank offline page.
+		return unavailableNavigationResponse(url);
 	}
 }
 
@@ -644,14 +729,29 @@ self.addEventListener("message", (event) => {
 								() => null,
 							),
 						]);
-					if (offlineRes)
+					if (offlineRes && offlineRes.ok) {
 						await core.put("/offline", offlineRes.clone());
-					if (manifestRes)
+						try {
+							await prefetchLinkedAssets(
+								await offlineRes.clone().text(),
+								new URL("/offline", self.location.origin),
+							);
+						} catch {}
+					}
+					if (manifestRes && manifestRes.ok)
 						await core.put(
 							"/offline-manifest.json",
 							manifestRes.clone(),
 						);
-					if (searchRes) await core.put("/search", searchRes.clone());
+					if (searchRes && searchRes.ok) {
+						await core.put("/search", searchRes.clone());
+						try {
+							await prefetchLinkedAssets(
+								await searchRes.clone().text(),
+								new URL("/search", self.location.origin),
+							);
+						} catch {}
+					}
 				} catch {}
 				await notifyAll({ type: "CLEARED" });
 			})(),
