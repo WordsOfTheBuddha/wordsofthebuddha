@@ -15,6 +15,25 @@ describe("referencePostsForPage", () => {
 		assert.ok(refs.every((entry) => entry.slug.startsWith("sn47.")));
 	});
 
+	it("attaches SC-style PTS volpage for reference card payloads", () => {
+		const refs = getReferencePostsForDiscourseScopes(
+			["sn47.29"],
+			new Set(["sn47.29"]),
+		);
+		const withVol = refs.filter((entry) => entry.volpage);
+		assert.ok(withVol.length > 0, "expected PTS citations on reference posts");
+		assert.match(withVol[0].volpage!, /^PTS \d/);
+		const parsed = JSON.parse(JSON.stringify(refs)) as typeof refs;
+		assert.equal(
+			parsed.find((entry) => entry.slug === withVol[0].slug)?.volpage,
+			withVol[0].volpage,
+		);
+		assert.ok(
+			parsed.some((entry) => entry.volpage),
+			"collection JSON must keep volpage for dashed reference cards",
+		);
+	});
+
 	it("matches hyphenated tag slugs to spaced quality labels", () => {
 		const enIllWill = new Set([
 			"mn2",

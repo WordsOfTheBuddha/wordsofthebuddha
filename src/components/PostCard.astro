@@ -44,6 +44,11 @@ const isReference = variant === "reference";
 const cardHref = href ?? `/${id}`;
 const cardClamp = isReference ? 2 : clamp;
 const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
+const inlineVolpage = Boolean(volpage && !lastUpdated);
+const descriptionHtml = description?.replace(
+	/\[([^\]]+)\]\(([^)]+)\)/g,
+	'<a href="$2" class="inline-link">$1</a>',
+);
 ---
 
 <div
@@ -134,31 +139,38 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 			)
 		}
 	</div>
-	<p
-		class:list={[
-			"mt-2 text-text text-sm sm:text-base",
-			isReference
-				? "line-clamp-3 md:line-clamp-2"
-				: `line-clamp-${clamp + 1} md:line-clamp-${clamp}`,
-			volpage && "pr-0",
-		]}
-		set:html={description?.replace(
-			/\[([^\]]+)\]\(([^)]+)\)/g,
-			'<a href="$2" class="inline-link">$1</a>'
-		)}
-	/>
+	<div class:list={[inlineVolpage && "post-card-body"]}>
+		<p
+			class:list={[
+				"mt-2 text-text text-sm sm:text-base",
+				isReference
+					? "line-clamp-3 md:line-clamp-2"
+					: `line-clamp-${clamp + 1} md:line-clamp-${clamp}`,
+			]}
+			set:html={descriptionHtml}
+		/>
+		{
+			inlineVolpage && (
+				<span
+					class="post-card-volpage text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums"
+					title={volpage}
+				>
+					{volpage}
+				</span>
+			)
+		}
+	</div>
 	{
-		(volpage || lastUpdated) && (
-			<div class="post-card-footer mt-2 flex items-end justify-between gap-3">
-				{
-					lastUpdated ? (
-						<p class="text-[var(--text-muted)] text-xs my-0">
-							{dateLabel} {formatDate(lastUpdated)}
-						</p>
-					) : (
-						<span />
-					)
-				}
+		lastUpdated && (
+			<div
+				class:list={[
+					"post-card-footer flex items-baseline gap-3",
+					volpage ? "justify-between" : "justify-end",
+				]}
+			>
+				<p class="text-[var(--text-muted)] text-xs my-0">
+					{dateLabel} {formatDate(lastUpdated)}
+				</p>
 				{
 					volpage && (
 						<span
@@ -214,8 +226,20 @@ const cardPadding = isReference ? "p-3 mt-[1em] mb-[0.8em]" : "p-5 mt-6";
 	.post-card-title-tag {
 		flex-shrink: 0;
 	}
-	.post-card-footer {
-		min-height: 1rem;
+	/* Shared with client-rendered dashed reference cards.
+	   Overlay PTS in the bottom-right so the description keeps full width. */
+	:global(.post-card-body) {
+		position: relative;
+		padding-bottom: 1.15em;
+	}
+	:global(.post-card-body > p.text-text) {
+		margin-bottom: 0;
+	}
+	:global(.post-card-body > .post-card-volpage) {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		line-height: 1.15;
 	}
 	.post-card-volpage {
 		font-variant-numeric: tabular-nums;

@@ -11,6 +11,8 @@ import {
 	ptsReferences,
 	type PtsReferenceEntry,
 } from "../data/ptsReferences.generated";
+import { sortDiscourseIds } from "./discourseSort";
+import { expandSlugToDiscourseIds } from "./slugDiscourseCount";
 
 export type { PtsReferenceEntry };
 
@@ -31,6 +33,8 @@ export type ParsedPtsRef = {
 	volume?: number;
 	/** Omit for a volume-only lookup (e.g. pts:MN 2 → all suttas in MN vol. 2) */
 	page?: number;
+	/** Optional third PTS number (sutta/paragraph on the page), when SC stores it. */
+	para?: number;
 };
 
 const ROMAN_TO_INT: Record<string, number> = {
@@ -118,27 +122,78 @@ export function getPtsEntry(slug: string): PtsReferenceEntry | undefined {
 	return ptsReferences[slug];
 }
 
+function formatPtsPoint(ref: ParsedPtsRef): string {
+	const volume = ref.volume ?? 0;
+	const page = ref.page ?? 0;
+	const base = volume > 0 ? `${volume}.${page}` : `${page}`;
+	return ref.para != null ? `${base}.${ref.para}` : base;
+}
+
+function formatPtsRange(start: ParsedPtsRef, end: ParsedPtsRef): string {
+	const startStr = formatPtsPoint(start);
+	const same =
+		(start.volume ?? 0) === (end.volume ?? 0) &&
+		start.page === end.page &&
+		(start.para ?? null) === (end.para ?? null);
+	if (same) return `PTS ${startStr}`;
+	return `PTS ${startStr}–${formatPtsPoint(end)}`;
+}
+
+function formatPtsMeta(meta: SlugMeta): string {
+	return formatPtsRange(
+		{
+			volume: meta.volume || undefined,
+			page: meta.page,
+			para: meta.para,
+		},
+		{
+			volume: meta.endVolume || meta.volume || undefined,
+			page: meta.endPage,
+			para: meta.endPara,
+		},
+	);
+}
+
+/**
+ * Prefer an explicit range stored on the entry (first/last constituents),
+ * then first+last constituent lookups, then the indexed start–end inference.
+ */
+function displayFromRangeSlug(slug: string): string {
+	const entry = ptsReferences[slug];
+	if (entry?.endVolpage) {
+		const start = parsePtsVolpage(entry.volpage);
+		const end = parsePtsVolpage(entry.endVolpage);
+		if (start?.page && end?.page) return formatPtsRange(start, end);
+	}
+
+	const ids = expandSlugToDiscourseIds(slug);
+	if (ids.length < 2) return "";
+
+	let start = entry ? parsePtsVolpage(entry.volpage) : null;
+	let end: ParsedPtsRef | null = null;
+	for (const id of ids) {
+		const parsed = parsePtsVolpage(ptsReferences[id]?.volpage);
+		if (!parsed?.page) continue;
+		if (!start) start = parsed;
+		end = parsed;
+	}
+	if (!start?.page || !end?.page) return "";
+	return formatPtsRange(start, end);
+}
+
 /**
  * SuttaCentral-style citation for cards / search: "PTS 4.152" or "PTS 4.152–4.155".
- * End page is inferred from the next sutta's start in the same PTS volume.
+ * Range slugs use first/last constituent pages when known; otherwise the end
+ * page is inferred from the next sutta's start in the same PTS volume.
  */
 export function getPtsDisplay(slug: string): string {
 	ensureIndex();
+	const fromRange = displayFromRangeSlug(slug);
+	if (fromRange) return fromRange;
+
 	const meta = slugMeta.get(slug);
 	if (!meta) return "";
-
-	if (meta.volume > 0) {
-		if (meta.endPage > meta.page) {
-			return `PTS ${meta.volume}.${meta.page}–${meta.volume}.${meta.endPage}`;
-		}
-		return `PTS ${meta.volume}.${meta.page}`;
-	}
-
-	// Single-volume collections (Iti, Ud, …)
-	if (meta.endPage > meta.page) {
-		return `PTS ${meta.page}–${meta.endPage}`;
-	}
-	return `PTS ${meta.page}`;
+	return formatPtsMeta(meta);
 }
 
 /** Parse a stored SC volpage string like "PTS AN iii 174" or "PTS Iti 27". */
@@ -151,6 +206,29 @@ export function parsePtsVolpage(
 	s = s.replace(/^\((?:1st|2nd)\s*ed\.?\)\s*/i, "");
 	s = s.replace(/\s+/g, " ").trim();
 	if (!s) return null;
+
+	// SC suttaplex / bilara form: "1.1.1" (volume.page.sutta)
+	const threePart = s.match(/^(\d+)\s*[.]\s*(\d+)\s*[.]\s*(\d+)\s*$/);
+	if (threePart) {
+		return {
+			volume: Number(threePart[1]),
+			page: Number(threePart[2]),
+			para: Number(threePart[3]),
+		};
+	}
+
+	const withVolPara = s.match(
+		/^([A-Za-z]+)\s+([ivxIVX0-9]+)\s*[.,]?\s*(\d+)\s*[.]\s*(\d+)\s*$/,
+	);
+	if (withVolPara) {
+		const nikaya = resolveNikayaAlias(withVolPara[1]);
+		const volume = parseRomanOrInt(withVolPara[2]);
+		const page = Number(withVolPara[3]);
+		const para = Number(withVolPara[4]);
+		if (nikaya && VOLUME_NIKAYAS.has(nikaya) && volume && page && para) {
+			return { nikaya, volume, page, para };
+		}
+	}
 
 	const withVol = s.match(
 		/^([A-Za-z]+)\s+([ivxIVX0-9]+)\s*[.,]?\s*(\d+)\s*$/,
@@ -271,6 +349,9 @@ type IndexedPts = {
 	volume: number; // 0 when single-volume
 	page: number;
 	endPage: number;
+	para?: number;
+	endPara?: number;
+	lockedEnd?: boolean;
 };
 
 type SlugMeta = {
@@ -278,6 +359,9 @@ type SlugMeta = {
 	volume: number;
 	page: number;
 	endPage: number;
+	endVolume?: number;
+	para?: number;
+	endPara?: number;
 };
 
 let indexedList: IndexedPts[] | null = null;
@@ -295,12 +379,22 @@ function ensureIndex(): void {
 		const parsed = parsePtsVolpage(entry.volpage);
 		if (!parsed?.nikaya || !parsed.page) continue;
 		const volume = parsed.volume ?? 0;
+		const endParsed = entry.endVolpage
+			? parsePtsVolpage(entry.endVolpage)
+			: null;
+		const sameVolumeEnd =
+			!!endParsed?.page && (endParsed.volume ?? 0) === volume;
 		const item: IndexedPts = {
 			slug,
 			nikaya: parsed.nikaya,
 			volume,
 			page: parsed.page,
-			endPage: parsed.page,
+			endPage: sameVolumeEnd
+				? Math.max(endParsed.page!, parsed.page)
+				: parsed.page,
+			para: parsed.para,
+			endPara: sameVolumeEnd ? endParsed?.para : parsed.para,
+			lockedEnd: sameVolumeEnd,
 		};
 		indexedList.push(item);
 		const key = `${item.nikaya}:${item.volume}`;
@@ -313,19 +407,23 @@ function ensureIndex(): void {
 		list.sort((a, b) => a.page - b.page || a.slug.localeCompare(b.slug));
 		// Infer end page from the next distinct start page in this volume
 		for (let i = 0; i < list.length; i++) {
-			let end = list[i].page;
-			for (let j = i + 1; j < list.length; j++) {
-				if (list[j].page > list[i].page) {
-					end = list[j].page - 1;
-					break;
+			if (!list[i].lockedEnd) {
+				let end = list[i].page;
+				for (let j = i + 1; j < list.length; j++) {
+					if (list[j].page > list[i].page) {
+						end = list[j].page - 1;
+						break;
+					}
 				}
+				list[i].endPage = end >= list[i].page ? end : list[i].page;
 			}
-			list[i].endPage = end >= list[i].page ? end : list[i].page;
 			slugMeta.set(list[i].slug, {
 				nikaya: list[i].nikaya,
 				volume: list[i].volume,
 				page: list[i].page,
 				endPage: list[i].endPage,
+				para: list[i].para,
+				endPara: list[i].endPara,
 			});
 		}
 	}
@@ -339,6 +437,7 @@ export function lookupPtsSlugs(ref: ParsedPtsRef): string[] {
 	ensureIndex();
 	if (!byNikayaVolume) return [];
 
+	let slugs: string[];
 	if (ref.nikaya) {
 		const volume = ref.volume ?? 0;
 		if (VOLUME_NIKAYAS.has(ref.nikaya) && !ref.volume) {
@@ -346,18 +445,20 @@ export function lookupPtsSlugs(ref: ParsedPtsRef): string[] {
 		}
 		const list = byNikayaVolume.get(`${ref.nikaya}:${volume}`) ?? [];
 		if (ref.page == null) {
-			return [...new Set(list.map((e) => e.slug))];
+			slugs = [...new Set(list.map((e) => e.slug))];
+		} else {
+			slugs = pickCoveringSlugs(list, ref.page);
 		}
-		return pickCoveringSlugs(list, ref.page);
+	} else {
+		if (!ref.volume || ref.page == null) return [];
+		const hits: string[] = [];
+		for (const nikaya of VOLUME_NIKAYAS) {
+			const list = byNikayaVolume.get(`${nikaya}:${ref.volume}`) ?? [];
+			hits.push(...pickCoveringSlugs(list, ref.page));
+		}
+		slugs = [...new Set(hits)];
 	}
-
-	if (!ref.volume || ref.page == null) return [];
-	const hits: string[] = [];
-	for (const nikaya of VOLUME_NIKAYAS) {
-		const list = byNikayaVolume.get(`${nikaya}:${ref.volume}`) ?? [];
-		hits.push(...pickCoveringSlugs(list, ref.page));
-	}
-	return [...new Set(hits)];
+	return sortDiscourseIds(slugs);
 }
 
 function pickCoveringSlugs(list: IndexedPts[], page: number): string[] {

@@ -69,6 +69,7 @@ function getReferencePostsData(dataScriptId: string) {
 			slug: string;
 			title: string;
 			description: string;
+			volpage?: string;
 		}>;
 	}
 	try {
@@ -89,7 +90,7 @@ function renderReferenceCard(entry: {
 }) {
 	const href = discourseLinkHref(entry.slug);
 	const volpageHtml = entry.volpage
-		? `<span class="post-card-volpage shrink-0 text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(entry.volpage)}">${escapeHtml(entry.volpage)}</span>`
+		? `<span class="post-card-volpage text-xs font-normal tracking-wide text-[var(--text-muted)] whitespace-nowrap tabular-nums" title="${escapeHtml(entry.volpage)}">${escapeHtml(entry.volpage)}</span>`
 		: "";
 	const card = document.createElement("div");
 	card.className =
@@ -107,8 +108,10 @@ function renderReferenceCard(entry: {
 					</div>
 				</div>
 			</div>
-			<p class="mt-2 text-text line-clamp-3 md:line-clamp-2 text-sm sm:text-base">${escapeHtml(entry.description || "")}</p>
-			${entry.volpage ? `<div class="post-card-footer mt-2 flex items-end justify-end gap-3">${volpageHtml}</div>` : ""}
+			<div class="${entry.volpage ? "post-card-body" : ""}">
+				<p class="mt-2 text-text line-clamp-3 md:line-clamp-2 text-sm sm:text-base">${escapeHtml(entry.description || "")}</p>
+				${volpageHtml}
+			</div>
 		`;
 	return card;
 }

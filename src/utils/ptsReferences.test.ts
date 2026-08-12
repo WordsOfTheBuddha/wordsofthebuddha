@@ -28,6 +28,15 @@ describe("getPtsDisplay", () => {
 		assert.equal(getPtsDisplay("mn1"), "PTS 1.1–1.5");
 		assert.match(getPtsDisplay("sn47.21"), /^PTS 5\.\d+/);
 	});
+
+	it("resolves AN1 range slugs from first/last constituents", () => {
+		assert.equal(getPtsDisplay("an1.1-10"), "PTS 1.1–1.2");
+		assert.equal(getPtsDisplay("an1.11-20"), "PTS 1.3–1.4");
+		assert.match(getPtsDisplay("an1.1-10"), /^PTS \d/);
+		assert.match(getPtsDisplay("an1.11-20"), /^PTS \d/);
+		assert.ok(getPtsDisplay("an1.1-10").length > 0);
+		assert.ok(getPtsDisplay("an1.11-20").length > 0);
+	});
 });
 
 describe("parsePtsVolpage", () => {
@@ -48,6 +57,14 @@ describe("parsePtsVolpage", () => {
 		assert.deepEqual(parsePtsVolpage("PTS Iti 27"), {
 			nikaya: "iti",
 			page: 27,
+		});
+	});
+
+	it("parses three-part numeric volpages when SC stores them", () => {
+		assert.deepEqual(parsePtsVolpage("PTS 1.1.1"), {
+			volume: 1,
+			page: 1,
+			para: 1,
 		});
 	});
 });
@@ -149,6 +166,25 @@ describe("lookupPtsSlugs", () => {
 		assert.ok(slugs.includes("mn77"), `expected mn77 in ${slugs.slice(0, 5)}`);
 		assert.ok(slugs.length > 10, `expected a volume listing, got ${slugs.length}`);
 		assert.ok(!slugs.includes("mn1"), "mn1 is PTS volume 1");
+	});
+
+	it("returns volume listings in canonical discourse-ID order", () => {
+		const slugs = lookupPtsSlugs({ nikaya: "mn", volume: 1 });
+		assert.ok(slugs.includes("mn1") && slugs.includes("mn2") && slugs.includes("mn10"));
+		assert.ok(
+			slugs.indexOf("mn1") < slugs.indexOf("mn2"),
+			`mn1 should precede mn2, got ${slugs.slice(0, 12).join(", ")}`,
+		);
+		assert.ok(
+			slugs.indexOf("mn2") < slugs.indexOf("mn10"),
+			`mn2 should precede mn10 (numeric, not lexicographic), got ${slugs.slice(0, 12).join(", ")}`,
+		);
+		for (let i = 1; i < slugs.length; i++) {
+			assert.ok(
+				slugs[i - 1] !== slugs[i],
+				`duplicate slug ${slugs[i]}`,
+			);
+		}
 	});
 });
 

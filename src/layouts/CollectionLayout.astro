@@ -100,14 +100,7 @@ const referencePostsForCollection = collectionSlug
 	? getReferencePostsForCollection(collectionSlug, enSlugsOnPage)
 	: [];
 const hasReferenceOnlyDiscourses = referencePostsForCollection.length > 0;
-const referencePostsData = referencePostsForCollection.map(
-	({ slug, title, description }) => ({
-		slug,
-		title,
-		description,
-	}),
-);
-const referencePostsJson = JSON.stringify(referencePostsData);
+const referencePostsJson = JSON.stringify(referencePostsForCollection);
 const refModeOnPage = urlHasRefParam(Astro.url.searchParams);
 
 /** Runs in <head> before body paint to avoid Collections→Discourses flash when URL has a hash. */
@@ -130,7 +123,7 @@ if (import.meta.env?.DEV) {
 	if (collectionSlug && hasReferenceOnlyDiscourses) {
 		console.log("[CollectionLayout:ref] build", {
 			collectionSlug,
-			referenceCount: referencePostsData.length,
+			referenceCount: referencePostsForCollection.length,
 			enOnPage: enSlugsOnPage.size,
 		});
 	}

@@ -4,15 +4,43 @@
 export type PtsReferenceEntry = {
 	volpage: string;
 	altVolpage?: string;
+	/** Last constituent start page for range slugs (an1.1-10, …). */
+	endVolpage?: string;
 };
 
 /** slug → PTS volume/page reference from SuttaCentral */
 export const ptsReferences: Record<string, PtsReferenceEntry> = {
+	"an1.1-10": {
+		"volpage": "PTS AN i 1",
+		"endVolpage": "PTS AN i 2"
+	},
+	"an1.11-20": {
+		"volpage": "PTS AN i 3",
+		"endVolpage": "PTS AN i 4"
+	},
 	"an1.21-30": {
-		"volpage": "PTS AN i 5"
+		"volpage": "PTS AN i 5",
+		"endVolpage": "PTS AN i 6"
 	},
 	"an1.31-40": {
-		"volpage": "PTS AN i 6"
+		"volpage": "PTS AN i 6",
+		"endVolpage": "PTS AN i 7"
+	},
+	"an1.41-50": {
+		"volpage": "PTS AN i 8",
+		"endVolpage": "PTS AN i 10"
+	},
+	"an1.51-60": {
+		"volpage": "PTS AN i 10",
+		"endVolpage": "PTS AN i 11"
+	},
+	"an1.61-70": {
+		"volpage": "PTS AN i 12",
+		"endVolpage": "PTS AN i 13"
+	},
+	"an1.71-81": {
+		"volpage": "PTS AN i 14",
+		"endVolpage": "PTS AN i 15"
 	},
 	"an1.82-97": {
 		"volpage": "PTS AN i 16"
@@ -25,6 +53,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"an1.150-169": {
 		"volpage": "PTS AN i 20"
+	},
+	"an1.170-187": {
+		"volpage": "PTS AN i 22",
+		"endVolpage": "PTS AN i 23"
 	},
 	"an1.188-197": {
 		"volpage": "PTS AN i 23"
@@ -59,14 +91,54 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"an1.296-305": {
 		"volpage": "PTS AN i 30"
 	},
+	"an1.306-315": {
+		"volpage": "PTS AN i 30",
+		"endVolpage": "PTS AN i 32"
+	},
+	"an1.316-332": {
+		"volpage": "PTS AN i 33",
+		"endVolpage": "PTS AN i 34"
+	},
 	"an1.333-377": {
 		"volpage": "PTS AN i 35"
 	},
 	"an1.378-393": {
 		"volpage": "PTS AN i 38"
 	},
+	"an1.394-574": {
+		"volpage": "PTS AN i 38",
+		"endVolpage": "PTS AN i 38"
+	},
+	"an1.575-615": {
+		"volpage": "PTS AN i 43",
+		"endVolpage": "PTS AN i 43"
+	},
 	"an1.616-627": {
 		"volpage": "PTS AN i 45"
+	},
+	"an2.1-10": {
+		"volpage": "PTS AN i 47",
+		"endVolpage": "PTS AN i 51"
+	},
+	"an2.11-20": {
+		"volpage": "PTS AN i 52",
+		"endVolpage": "PTS AN i 58"
+	},
+	"an2.21-31": {
+		"volpage": "PTS AN i 59",
+		"endVolpage": "PTS AN i 61"
+	},
+	"an2.32-41": {
+		"volpage": "PTS AN i 61",
+		"endVolpage": "PTS AN i 69"
+	},
+	"an2.42-51": {
+		"volpage": "PTS AN i 70",
+		"endVolpage": "PTS AN i 75"
+	},
+	"an2.52-63": {
+		"volpage": "PTS AN i 76",
+		"endVolpage": "PTS AN i 79"
 	},
 	"an2.64-76": {
 		"volpage": "PTS AN i 80"
@@ -76,6 +148,22 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"an2.87-97": {
 		"volpage": "PTS AN i 83"
+	},
+	"an2.98-117": {
+		"volpage": "PTS AN i 84",
+		"endVolpage": "PTS AN i 84"
+	},
+	"an2.118-129": {
+		"volpage": "PTS AN i 86",
+		"endVolpage": "PTS AN i 88"
+	},
+	"an2.130-140": {
+		"volpage": "PTS AN i 88",
+		"endVolpage": "PTS AN i 91"
+	},
+	"an2.141-150": {
+		"volpage": "PTS AN i 91",
+		"endVolpage": "PTS AN i 92"
 	},
 	"an2.151-162": {
 		"volpage": "PTS AN i 93"
@@ -559,6 +647,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"an3.155": {
 		"volpage": "PTS AN i 294"
+	},
+	"an3.156-162": {
+		"volpage": "PTS AN i 295",
+		"endVolpage": "PTS AN i 295"
 	},
 	"an3.163-182": {
 		"volpage": "PTS AN i 297"
@@ -2159,17 +2251,37 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"an5.256": {
 		"volpage": "PTS AN iii 272"
 	},
+	"an5.257-263": {
+		"volpage": "PTS AN iii 272",
+		"endVolpage": "PTS AN iii 272"
+	},
 	"an5.264": {
 		"volpage": "PTS AN iii 273"
+	},
+	"an5.265-271": {
+		"volpage": "PTS AN iii 273",
+		"endVolpage": "PTS AN iii 273"
 	},
 	"an5.272": {
 		"volpage": "PTS AN iii 274"
 	},
+	"an5.273-285": {
+		"volpage": "PTS AN iii 274",
+		"endVolpage": "PTS AN iii 275"
+	},
 	"an5.286": {
 		"volpage": "PTS AN iii 275"
 	},
+	"an5.287-292": {
+		"volpage": "PTS AN iii 276",
+		"endVolpage": "PTS AN iii 276"
+	},
 	"an5.293": {
 		"volpage": "PTS AN iii 276"
+	},
+	"an5.294-302": {
+		"volpage": "PTS AN iii 276",
+		"endVolpage": "PTS AN iii 277"
 	},
 	"an6.1": {
 		"volpage": "PTS AN iii 279"
@@ -3341,11 +3453,19 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"an9.73": {
 		"volpage": "PTS AN iv 462"
 	},
+	"an9.74-81": {
+		"volpage": "PTS AN iv 462",
+		"endVolpage": "PTS AN iv 462"
+	},
 	"an9.82": {
 		"volpage": "PTS AN iv 463"
 	},
 	"an9.83": {
 		"volpage": "PTS AN iv 463"
+	},
+	"an9.84-91": {
+		"volpage": "PTS AN iv 463",
+		"endVolpage": "PTS AN iv 463"
 	},
 	"an9.92": {
 		"volpage": "PTS AN iv 464"
@@ -3971,6 +4091,18 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"an10.224": {
 		"volpage": "PTS AN v 306"
 	},
+	"an10.225-228": {
+		"volpage": "PTS AN v 308",
+		"endVolpage": "PTS AN v 308"
+	},
+	"an10.229-232": {
+		"volpage": "PTS AN v 308",
+		"endVolpage": "PTS AN v 308"
+	},
+	"an10.233-236": {
+		"volpage": "PTS AN v 309",
+		"endVolpage": "PTS AN v 309"
+	},
 	"an11.1": {
 		"volpage": "PTS AN v 311"
 	},
@@ -4034,86 +4166,116 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"an11.21": {
 		"volpage": "PTS AN v 357"
 	},
+	"an11.22-29": {
+		"volpage": "PTS AN v 359",
+		"endVolpage": "PTS AN v 359"
+	},
 	"an11.502-981": {
 		"volpage": "PTS AN v 360"
 	},
 	"dhp1-20": {
-		"volpage": "PTS (2nd ed) Dhp 1"
+		"volpage": "PTS (2nd ed) Dhp 1",
+		"endVolpage": "PTS (2nd ed) Dhp 6"
 	},
 	"dhp21-32": {
-		"volpage": "PTS (2nd ed) Dhp 7"
+		"volpage": "PTS (2nd ed) Dhp 7",
+		"endVolpage": "PTS (2nd ed) Dhp 9"
 	},
 	"dhp33-43": {
-		"volpage": "PTS (2nd ed) Dhp 10"
+		"volpage": "PTS (2nd ed) Dhp 10",
+		"endVolpage": "PTS (2nd ed) Dhp 12"
 	},
 	"dhp44-59": {
-		"volpage": "PTS (2nd ed) Dhp 13"
+		"volpage": "PTS (2nd ed) Dhp 13",
+		"endVolpage": "PTS (2nd ed) Dhp 16"
 	},
 	"dhp60-75": {
-		"volpage": "PTS (2nd ed) Dhp 17"
+		"volpage": "PTS (2nd ed) Dhp 17",
+		"endVolpage": "PTS (2nd ed) Dhp 20"
 	},
 	"dhp76-89": {
-		"volpage": "PTS (2nd ed) Dhp 22"
+		"volpage": "PTS (2nd ed) Dhp 22",
+		"endVolpage": "PTS (2nd ed) Dhp 25"
 	},
 	"dhp90-99": {
-		"volpage": "PTS (2nd ed) Dhp 26"
+		"volpage": "PTS (2nd ed) Dhp 26",
+		"endVolpage": "PTS (2nd ed) Dhp 28"
 	},
 	"dhp100-115": {
-		"volpage": "PTS (2nd ed) Dhp 29"
+		"volpage": "PTS (2nd ed) Dhp 29",
+		"endVolpage": "PTS (2nd ed) Dhp 32"
 	},
 	"dhp116-128": {
-		"volpage": "PTS (2nd ed) Dhp 33"
+		"volpage": "PTS (2nd ed) Dhp 33",
+		"endVolpage": "PTS (2nd ed) Dhp 36"
 	},
 	"dhp129-145": {
-		"volpage": "PTS (2nd ed) Dhp 37"
+		"volpage": "PTS (2nd ed) Dhp 37",
+		"endVolpage": "PTS (2nd ed) Dhp 41"
 	},
 	"dhp146-156": {
-		"volpage": "PTS (2nd ed) Dhp 42"
+		"volpage": "PTS (2nd ed) Dhp 42",
+		"endVolpage": "PTS (2nd ed) Dhp 44"
 	},
 	"dhp157-166": {
-		"volpage": "PTS (2nd ed) Dhp 45"
+		"volpage": "PTS (2nd ed) Dhp 45",
+		"endVolpage": "PTS (2nd ed) Dhp 47"
 	},
 	"dhp167-178": {
-		"volpage": "PTS (2nd ed) Dhp 48"
+		"volpage": "PTS (2nd ed) Dhp 48",
+		"endVolpage": "PTS (2nd ed) Dhp 50"
 	},
 	"dhp179-196": {
-		"volpage": "PTS (2nd ed) Dhp 51"
+		"volpage": "PTS (2nd ed) Dhp 51",
+		"endVolpage": "PTS (2nd ed) Dhp 55"
 	},
 	"dhp197-208": {
-		"volpage": "PTS (2nd ed) Dhp 56"
+		"volpage": "PTS (2nd ed) Dhp 56",
+		"endVolpage": "PTS (2nd ed) Dhp 58"
 	},
 	"dhp209-220": {
-		"volpage": "PTS (2nd ed) Dhp 60"
+		"volpage": "PTS (2nd ed) Dhp 60",
+		"endVolpage": "PTS (2nd ed) Dhp 62"
 	},
 	"dhp221-234": {
-		"volpage": "PTS (2nd ed) Dhp 63"
+		"volpage": "PTS (2nd ed) Dhp 63",
+		"endVolpage": "PTS (2nd ed) Dhp 66"
 	},
 	"dhp235-255": {
-		"volpage": "PTS (2nd ed) Dhp 67"
+		"volpage": "PTS (2nd ed) Dhp 67",
+		"endVolpage": "PTS (2nd ed) Dhp 71"
 	},
 	"dhp256-272": {
-		"volpage": "PTS (2nd ed) Dhp 73"
+		"volpage": "PTS (2nd ed) Dhp 73",
+		"endVolpage": "PTS (2nd ed) Dhp 76"
 	},
 	"dhp273-289": {
-		"volpage": "PTS (2nd ed) Dhp 77"
+		"volpage": "PTS (2nd ed) Dhp 77",
+		"endVolpage": "PTS (2nd ed) Dhp 81"
 	},
 	"dhp290-305": {
-		"volpage": "PTS (2nd ed) Dhp 82"
+		"volpage": "PTS (2nd ed) Dhp 82",
+		"endVolpage": "PTS (2nd ed) Dhp 85"
 	},
 	"dhp306-319": {
-		"volpage": "PTS (2nd ed) Dhp 86"
+		"volpage": "PTS (2nd ed) Dhp 86",
+		"endVolpage": "PTS (2nd ed) Dhp 89"
 	},
 	"dhp320-333": {
-		"volpage": "PTS (2nd ed) Dhp 90"
+		"volpage": "PTS (2nd ed) Dhp 90",
+		"endVolpage": "PTS (2nd ed) Dhp 93"
 	},
 	"dhp334-359": {
-		"volpage": "PTS (2nd ed) Dhp 94"
+		"volpage": "PTS (2nd ed) Dhp 94",
+		"endVolpage": "PTS (2nd ed) Dhp 100"
 	},
 	"dhp360-382": {
-		"volpage": "PTS (2nd ed) Dhp 101"
+		"volpage": "PTS (2nd ed) Dhp 101",
+		"endVolpage": "PTS (2nd ed) Dhp 106"
 	},
 	"dhp383-423": {
-		"volpage": "PTS (2nd ed) Dhp 107"
+		"volpage": "PTS (2nd ed) Dhp 107",
+		"endVolpage": "PTS (2nd ed) Dhp 117"
 	},
 	"dn1": {
 		"volpage": "PTS DN i 1"
@@ -6333,8 +6495,20 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn12.71": {
 		"volpage": "PTS SN ii 129"
 	},
+	"sn12.72-81": {
+		"volpage": "PTS SN ii 129",
+		"endVolpage": "PTS SN ii 130"
+	},
 	"sn12.82": {
 		"volpage": "PTS SN ii 130"
+	},
+	"sn12.83-92": {
+		"volpage": "PTS SN ii 131",
+		"endVolpage": "PTS SN ii 132"
+	},
+	"sn12.93-213": {
+		"volpage": "PTS SN ii 132",
+		"endVolpage": "PTS SN ii 132"
 	},
 	"sn13.1": {
 		"volpage": "PTS SN ii 133"
@@ -6621,6 +6795,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn17.12": {
 		"volpage": "PTS SN ii 233"
 	},
+	"sn17.13-20": {
+		"volpage": "PTS SN ii 233",
+		"endVolpage": "PTS SN ii 234"
+	},
 	"sn17.21": {
 		"volpage": "PTS SN ii 234"
 	},
@@ -6672,6 +6850,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn17.37": {
 		"volpage": "PTS SN ii 242"
 	},
+	"sn17.38-43": {
+		"volpage": "PTS SN ii 243",
+		"endVolpage": "PTS SN ii 243"
+	},
 	"sn18.1": {
 		"volpage": "PTS SN ii 244"
 	},
@@ -6704,6 +6886,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn18.11": {
 		"volpage": "PTS SN ii 249"
+	},
+	"sn18.12-20": {
+		"volpage": "PTS SN ii 250",
+		"endVolpage": "PTS SN ii 251"
 	},
 	"sn18.21": {
 		"volpage": "PTS SN ii 252"
@@ -7389,8 +7575,16 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn23.22": {
 		"volpage": "PTS SN iii 197"
 	},
+	"sn23.23-33": {
+		"volpage": "PTS SN iii 198",
+		"endVolpage": "PTS SN iii 199"
+	},
 	"sn23.34": {
 		"volpage": "PTS SN iii 199"
+	},
+	"sn23.35-45": {
+		"volpage": "PTS SN iii 200",
+		"endVolpage": "PTS SN iii 201"
 	},
 	"sn23.46": {
 		"volpage": "PTS SN iii 201"
@@ -7452,6 +7646,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn24.19": {
 		"volpage": "PTS SN iii 217"
 	},
+	"sn24.20-35": {
+		"volpage": "PTS SN iii 218",
+		"endVolpage": "PTS SN iii 218"
+	},
 	"sn24.36": {
 		"volpage": "PTS SN iii 218"
 	},
@@ -7482,11 +7680,19 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn24.45": {
 		"volpage": "PTS SN iii 221"
 	},
+	"sn24.46-69": {
+		"volpage": "PTS SN iii 221",
+		"endVolpage": "PTS SN iii 221"
+	},
 	"sn24.70": {
 		"volpage": "PTS SN iii 222"
 	},
 	"sn24.71": {
 		"volpage": "PTS SN iii 222"
+	},
+	"sn24.72-95": {
+		"volpage": "PTS SN iii 223",
+		"endVolpage": "PTS SN iii 223"
 	},
 	"sn24.96": {
 		"volpage": "PTS SN iii 223"
@@ -7641,6 +7847,14 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn29.10": {
 		"volpage": "PTS SN iii 244"
 	},
+	"sn29.11-20": {
+		"volpage": "PTS SN iii 244",
+		"endVolpage": "PTS SN iii 245"
+	},
+	"sn29.21-50": {
+		"volpage": "PTS SN iii 245",
+		"endVolpage": "PTS SN iii 245"
+	},
 	"sn30.1": {
 		"volpage": "PTS SN iii 246"
 	},
@@ -7649,6 +7863,18 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn30.3": {
 		"volpage": "PTS SN iii 247"
+	},
+	"sn30.4-6": {
+		"volpage": "PTS SN iii 247",
+		"endVolpage": "PTS SN iii 248"
+	},
+	"sn30.7-16": {
+		"volpage": "PTS SN iii 248",
+		"endVolpage": "PTS SN iii 248"
+	},
+	"sn30.17-46": {
+		"volpage": "PTS SN iii 248",
+		"endVolpage": "PTS SN iii 249"
 	},
 	"sn31.1": {
 		"volpage": "PTS SN iii 249"
@@ -7659,11 +7885,31 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn31.3": {
 		"volpage": "PTS SN iii 250"
 	},
+	"sn31.4-12": {
+		"volpage": "PTS SN iii 251",
+		"endVolpage": "PTS SN iii 251"
+	},
+	"sn31.13-22": {
+		"volpage": "PTS SN iii 252",
+		"endVolpage": "PTS SN iii 252"
+	},
+	"sn31.23-112": {
+		"volpage": "PTS SN iii 253",
+		"endVolpage": "PTS SN iii 253"
+	},
 	"sn32.1": {
 		"volpage": "PTS SN iii 254"
 	},
 	"sn32.2": {
 		"volpage": "PTS SN iii 254"
+	},
+	"sn32.3-12": {
+		"volpage": "PTS SN iii 254",
+		"endVolpage": "PTS SN iii 255"
+	},
+	"sn32.13-52": {
+		"volpage": "PTS SN iii 255",
+		"endVolpage": "PTS SN iii 255"
 	},
 	"sn32.53": {
 		"volpage": "PTS SN iii 256"
@@ -7694,6 +7940,46 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn33.5": {
 		"volpage": "PTS SN iii 259"
+	},
+	"sn33.6-10": {
+		"volpage": "PTS SN iii 260",
+		"endVolpage": "PTS SN iii 260"
+	},
+	"sn33.11-15": {
+		"volpage": "PTS SN iii 260",
+		"endVolpage": "PTS SN iii 260"
+	},
+	"sn33.16-20": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.21-25": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.26-30": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.31-35": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.36-40": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.41-45": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.46-50": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
+	},
+	"sn33.51-54": {
+		"volpage": "PTS SN iii 261",
+		"endVolpage": "PTS SN iii 261"
 	},
 	"sn33.55": {
 		"volpage": "PTS SN iii 261"
@@ -7754,6 +8040,34 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn34.19": {
 		"volpage": "PTS SN iii 271"
+	},
+	"sn34.20-27": {
+		"volpage": "PTS SN iii 272",
+		"endVolpage": "PTS SN iii 273"
+	},
+	"sn34.28-34": {
+		"volpage": "PTS SN iii 273",
+		"endVolpage": "PTS SN iii 274"
+	},
+	"sn34.35-40": {
+		"volpage": "PTS SN iii 275",
+		"endVolpage": "PTS SN iii 275"
+	},
+	"sn34.41-45": {
+		"volpage": "PTS SN iii 275",
+		"endVolpage": "PTS SN iii 276"
+	},
+	"sn34.46-49": {
+		"volpage": "PTS SN iii 276",
+		"endVolpage": "PTS SN iii 276"
+	},
+	"sn34.50-52": {
+		"volpage": "PTS SN iii 276",
+		"endVolpage": "PTS SN iii 277"
+	},
+	"sn34.53-54": {
+		"volpage": "PTS SN iii 277",
+		"endVolpage": "PTS SN iii 277"
 	},
 	"sn34.55": {
 		"volpage": "PTS SN iii 277"
@@ -7853,6 +8167,14 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn35.32": {
 		"volpage": "PTS SN iv 24"
+	},
+	"sn35.33-42": {
+		"volpage": "PTS SN iv 26",
+		"endVolpage": "PTS SN iv 28"
+	},
+	"sn35.43-51": {
+		"volpage": "PTS SN iv 28",
+		"endVolpage": "PTS SN iv 29"
 	},
 	"sn35.52": {
 		"volpage": "PTS SN iv 29"
@@ -8211,6 +8533,26 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn35.170": {
 		"volpage": "PTS SN iv 149"
 	},
+	"sn35.171-173": {
+		"volpage": "PTS SN iv 149",
+		"endVolpage": "PTS SN iv 149"
+	},
+	"sn35.174-176": {
+		"volpage": "PTS SN iv 150",
+		"endVolpage": "PTS SN iv 150"
+	},
+	"sn35.177-179": {
+		"volpage": "PTS SN iv 150",
+		"endVolpage": "PTS SN iv 150"
+	},
+	"sn35.180-182": {
+		"volpage": "PTS SN iv 150",
+		"endVolpage": "PTS SN iv 150"
+	},
+	"sn35.183-185": {
+		"volpage": "PTS SN iv 151",
+		"endVolpage": "PTS SN iv 151"
+	},
 	"sn35.186": {
 		"volpage": "PTS SN iv 151"
 	},
@@ -8220,6 +8562,26 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn35.188": {
 		"volpage": "PTS SN iv 151"
 	},
+	"sn35.189-191": {
+		"volpage": "PTS SN iv 152",
+		"endVolpage": "PTS SN iv 152"
+	},
+	"sn35.192-194": {
+		"volpage": "PTS SN iv 152",
+		"endVolpage": "PTS SN iv 152"
+	},
+	"sn35.195-197": {
+		"volpage": "PTS SN iv 152",
+		"endVolpage": "PTS SN iv 152"
+	},
+	"sn35.198-200": {
+		"volpage": "PTS SN iv 152",
+		"endVolpage": "PTS SN iv 152"
+	},
+	"sn35.201-203": {
+		"volpage": "PTS SN iv 152",
+		"endVolpage": "PTS SN iv 152"
+	},
 	"sn35.204": {
 		"volpage": "PTS SN iv 152"
 	},
@@ -8228,6 +8590,26 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn35.206": {
 		"volpage": "PTS SN iv 153"
+	},
+	"sn35.207-209": {
+		"volpage": "PTS SN iv 154",
+		"endVolpage": "PTS SN iv 154"
+	},
+	"sn35.210-212": {
+		"volpage": "PTS SN iv 154",
+		"endVolpage": "PTS SN iv 154"
+	},
+	"sn35.213-215": {
+		"volpage": "PTS SN iv 154",
+		"endVolpage": "PTS SN iv 154"
+	},
+	"sn35.216-218": {
+		"volpage": "PTS SN iv 155",
+		"endVolpage": "PTS SN iv 155"
+	},
+	"sn35.219-221": {
+		"volpage": "PTS SN iv 155",
+		"endVolpage": "PTS SN iv 155"
 	},
 	"sn35.222": {
 		"volpage": "PTS SN iv 155"
@@ -8553,6 +8935,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn38.16": {
 		"volpage": "PTS SN iv 260"
 	},
+	"sn39.1-15": {
+		"volpage": "PTS SN iv 261",
+		"endVolpage": "PTS SN iv 261"
+	},
 	"sn39.16": {
 		"volpage": "PTS SN iv 262"
 	},
@@ -8696,6 +9082,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn43.13": {
 		"volpage": "PTS SN iv 368"
+	},
+	"sn43.14-43": {
+		"volpage": "PTS SN iv 369",
+		"endVolpage": "PTS SN iv 372"
 	},
 	"sn43.44": {
 		"volpage": "PTS SN iv 373"
@@ -8856,11 +9246,19 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn45.41": {
 		"volpage": "PTS SN v 28"
 	},
+	"sn45.42-47": {
+		"volpage": "PTS SN v 28",
+		"endVolpage": "PTS SN v 28"
+	},
 	"sn45.48": {
 		"volpage": "PTS SN v 29"
 	},
 	"sn45.49": {
 		"volpage": "PTS SN v 29"
+	},
+	"sn45.50-54": {
+		"volpage": "PTS SN v 30",
+		"endVolpage": "PTS SN v 30"
 	},
 	"sn45.55": {
 		"volpage": "PTS SN v 31"
@@ -8868,11 +9266,19 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn45.56": {
 		"volpage": "PTS SN v 31"
 	},
+	"sn45.57-61": {
+		"volpage": "PTS SN v 31",
+		"endVolpage": "PTS SN v 32"
+	},
 	"sn45.62": {
 		"volpage": "PTS SN v 32"
 	},
 	"sn45.63": {
 		"volpage": "PTS SN v 32"
+	},
+	"sn45.64-68": {
+		"volpage": "PTS SN v 33",
+		"endVolpage": "PTS SN v 33"
 	},
 	"sn45.69": {
 		"volpage": "PTS SN v 33"
@@ -8880,11 +9286,19 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn45.70": {
 		"volpage": "PTS SN v 34"
 	},
+	"sn45.71-75": {
+		"volpage": "PTS SN v 34",
+		"endVolpage": "PTS SN v 35"
+	},
 	"sn45.76": {
 		"volpage": "PTS SN v 35"
 	},
 	"sn45.77": {
 		"volpage": "PTS SN v 35"
+	},
+	"sn45.78-82": {
+		"volpage": "PTS SN v 36",
+		"endVolpage": "PTS SN v 36"
 	},
 	"sn45.83": {
 		"volpage": "PTS SN v 36"
@@ -8892,11 +9306,19 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn45.84": {
 		"volpage": "PTS SN v 37"
 	},
+	"sn45.85-89": {
+		"volpage": "PTS SN v 37",
+		"endVolpage": "PTS SN v 37"
+	},
 	"sn45.90": {
 		"volpage": "PTS SN v 37"
 	},
 	"sn45.91": {
 		"volpage": "PTS SN v 38"
+	},
+	"sn45.92-95": {
+		"volpage": "PTS SN v 38",
+		"endVolpage": "PTS SN v 39"
 	},
 	"sn45.96": {
 		"volpage": "PTS SN v 39"
@@ -8904,29 +9326,65 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn45.97": {
 		"volpage": "PTS SN v 39"
 	},
+	"sn45.98-102": {
+		"volpage": "PTS SN v 39",
+		"endVolpage": "PTS SN v 40"
+	},
 	"sn45.103": {
 		"volpage": "PTS SN v 40"
+	},
+	"sn45.104-108": {
+		"volpage": "PTS SN v 40",
+		"endVolpage": "PTS SN v 40"
 	},
 	"sn45.109": {
 		"volpage": "PTS SN v 40"
 	},
+	"sn45.110-114": {
+		"volpage": "PTS SN v 40",
+		"endVolpage": "PTS SN v 40"
+	},
 	"sn45.115": {
 		"volpage": "PTS SN v 41"
+	},
+	"sn45.116-120": {
+		"volpage": "PTS SN v 41",
+		"endVolpage": "PTS SN v 41"
 	},
 	"sn45.121": {
 		"volpage": "PTS SN v 41"
 	},
+	"sn45.122-126": {
+		"volpage": "PTS SN v 41",
+		"endVolpage": "PTS SN v 41"
+	},
 	"sn45.127": {
 		"volpage": "PTS SN v 41"
 	},
+	"sn45.128-132": {
+		"volpage": "PTS SN v 41",
+		"endVolpage": "PTS SN v 41"
+	},
 	"sn45.133": {
 		"volpage": "PTS SN v 41"
+	},
+	"sn45.134-138": {
+		"volpage": "PTS SN v 41",
+		"endVolpage": "PTS SN v 41"
 	},
 	"sn45.139": {
 		"volpage": "PTS SN v 41"
 	},
 	"sn45.140": {
 		"volpage": "PTS SN v 43"
+	},
+	"sn45.141-145": {
+		"volpage": "PTS SN v 43",
+		"endVolpage": "PTS SN v 44"
+	},
+	"sn45.146-148": {
+		"volpage": "PTS SN v 44",
+		"endVolpage": "PTS SN v 45"
 	},
 	"sn45.149": {
 		"volpage": "PTS SN v 45"
@@ -9252,8 +9710,48 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn46.76": {
 		"volpage": "PTS SN v 133"
 	},
+	"sn46.77-88": {
+		"volpage": "PTS SN v 134",
+		"endVolpage": "PTS SN v 134"
+	},
+	"sn46.89-98": {
+		"volpage": "PTS SN v 135",
+		"endVolpage": "PTS SN v 135"
+	},
+	"sn46.99-110": {
+		"volpage": "PTS SN v 135",
+		"endVolpage": "PTS SN v 135"
+	},
+	"sn46.111-120": {
+		"volpage": "PTS SN v 136",
+		"endVolpage": "PTS SN v 136"
+	},
+	"sn46.121-129": {
+		"volpage": "PTS SN v 136",
+		"endVolpage": "PTS SN v 136"
+	},
 	"sn46.130": {
 		"volpage": "PTS SN v 136"
+	},
+	"sn46.131-142": {
+		"volpage": "PTS SN v 137",
+		"endVolpage": "PTS SN v 138"
+	},
+	"sn46.143-152": {
+		"volpage": "PTS SN v 138",
+		"endVolpage": "PTS SN v 138"
+	},
+	"sn46.153-164": {
+		"volpage": "PTS SN v 138",
+		"endVolpage": "PTS SN v 138"
+	},
+	"sn46.165-174": {
+		"volpage": "PTS SN v 139",
+		"endVolpage": "PTS SN v 139"
+	},
+	"sn46.175-184": {
+		"volpage": "PTS SN v 139",
+		"endVolpage": "PTS SN v 139"
 	},
 	"sn47.1": {
 		"volpage": "PTS SN v 141"
@@ -9405,8 +9903,28 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn47.50": {
 		"volpage": "PTS SN v 189"
 	},
+	"sn47.51-62": {
+		"volpage": "PTS SN v 190",
+		"endVolpage": "PTS SN v 190"
+	},
+	"sn47.63-72": {
+		"volpage": "PTS SN v 191",
+		"endVolpage": "PTS SN v 191"
+	},
+	"sn47.73-84": {
+		"volpage": "PTS SN v 191",
+		"endVolpage": "PTS SN v 191"
+	},
+	"sn47.85-94": {
+		"volpage": "PTS SN v 191",
+		"endVolpage": "PTS SN v 191"
+	},
 	"sn47.95": {
 		"volpage": "PTS SN v 191"
+	},
+	"sn47.95-104": {
+		"volpage": "PTS SN v 191",
+		"endVolpage": "PTS SN v 191"
 	},
 	"sn47.96": {
 		"volpage": "PTS SN v 191"
@@ -9645,14 +10163,105 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn48.70": {
 		"volpage": "PTS SN v 238"
 	},
+	"sn48.71-82": {
+		"volpage": "PTS SN v 239",
+		"endVolpage": "PTS SN v 240"
+	},
+	"sn48.83-92": {
+		"volpage": "PTS SN v 240",
+		"endVolpage": "PTS SN v 240"
+	},
+	"sn48.93-104": {
+		"volpage": "PTS SN v 240",
+		"endVolpage": "PTS SN v 240"
+	},
+	"sn48.105-114": {
+		"volpage": "PTS SN v 240",
+		"endVolpage": "PTS SN v 240"
+	},
+	"sn48.115-124": {
+		"volpage": "PTS SN v 241",
+		"endVolpage": "PTS SN v 241"
+	},
+	"sn48.125-136": {
+		"volpage": "PTS SN v 241",
+		"endVolpage": "PTS SN v 242"
+	},
+	"sn48.137-146": {
+		"volpage": "PTS SN v 242",
+		"endVolpage": "PTS SN v 242"
+	},
+	"sn48.147-158": {
+		"volpage": "PTS SN v 242",
+		"endVolpage": "PTS SN v 242"
+	},
+	"sn48.159-168": {
+		"volpage": "PTS SN v 242",
+		"endVolpage": "PTS SN v 242"
+	},
+	"sn48.169-178": {
+		"volpage": "PTS SN v 242",
+		"endVolpage": "PTS SN v 242"
+	},
 	"sn49.1-12": {
-		"volpage": "PTS SN v 244"
+		"volpage": "PTS SN v 244",
+		"endVolpage": "PTS SN v 244"
 	},
 	"sn49.13-22": {
-		"volpage": "PTS SN v 245"
+		"volpage": "PTS SN v 245",
+		"endVolpage": "PTS SN v 245"
+	},
+	"sn49.23-34": {
+		"volpage": "PTS SN v 246",
+		"endVolpage": "PTS SN v 246"
+	},
+	"sn49.35-44": {
+		"volpage": "PTS SN v 246",
+		"endVolpage": "PTS SN v 246"
+	},
+	"sn49.45-54": {
+		"volpage": "PTS SN v 247",
+		"endVolpage": "PTS SN v 247"
 	},
 	"sn50.1-12": {
-		"volpage": "PTS SN v 249"
+		"volpage": "PTS SN v 249",
+		"endVolpage": "PTS SN v 250"
+	},
+	"sn50.13-22": {
+		"volpage": "PTS SN v 250",
+		"endVolpage": "PTS SN v 250"
+	},
+	"sn50.23-34": {
+		"volpage": "PTS SN v 250",
+		"endVolpage": "PTS SN v 250"
+	},
+	"sn50.35-44": {
+		"volpage": "PTS SN v 250",
+		"endVolpage": "PTS SN v 250"
+	},
+	"sn50.45-54": {
+		"volpage": "PTS SN v 251",
+		"endVolpage": "PTS SN v 251"
+	},
+	"sn50.55-66": {
+		"volpage": "PTS SN v 251",
+		"endVolpage": "PTS SN v 252"
+	},
+	"sn50.67-76": {
+		"volpage": "PTS SN v 252",
+		"endVolpage": "PTS SN v 252"
+	},
+	"sn50.77-88": {
+		"volpage": "PTS SN v 252",
+		"endVolpage": "PTS SN v 252"
+	},
+	"sn50.89-98": {
+		"volpage": "PTS SN v 252",
+		"endVolpage": "PTS SN v 252"
+	},
+	"sn50.99-108": {
+		"volpage": "PTS SN v 253",
+		"endVolpage": "PTS SN v 253"
 	},
 	"sn51.1": {
 		"volpage": "PTS SN v 254"
@@ -9750,6 +10359,26 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn51.32": {
 		"volpage": "PTS SN v 289"
 	},
+	"sn51.33-44": {
+		"volpage": "PTS SN v 290",
+		"endVolpage": "PTS SN v 291"
+	},
+	"sn51.45-54": {
+		"volpage": "PTS SN v 291",
+		"endVolpage": "PTS SN v 291"
+	},
+	"sn51.55-66": {
+		"volpage": "PTS SN v 291",
+		"endVolpage": "PTS SN v 291"
+	},
+	"sn51.67-76": {
+		"volpage": "PTS SN v 291",
+		"endVolpage": "PTS SN v 291"
+	},
+	"sn51.77-86": {
+		"volpage": "PTS SN v 292",
+		"endVolpage": "PTS SN v 292"
+	},
 	"sn52.1": {
 		"volpage": "PTS SN v 294"
 	},
@@ -9821,6 +10450,26 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn52.24": {
 		"volpage": "PTS SN v 305"
+	},
+	"sn53.1-12": {
+		"volpage": "PTS SN v 307",
+		"endVolpage": "PTS SN v 308"
+	},
+	"sn53.13-22": {
+		"volpage": "PTS SN v 308",
+		"endVolpage": "PTS SN v 308"
+	},
+	"sn53.23-34": {
+		"volpage": "PTS SN v 308",
+		"endVolpage": "PTS SN v 308"
+	},
+	"sn53.35-44": {
+		"volpage": "PTS SN v 309",
+		"endVolpage": "PTS SN v 309"
+	},
+	"sn53.45-54": {
+		"volpage": "PTS SN v 309",
+		"endVolpage": "PTS SN v 309"
 	},
 	"sn54.1": {
 		"volpage": "PTS SN v 311"
@@ -10389,6 +11038,10 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	"sn56.95": {
 		"volpage": "PTS SN v 473"
 	},
+	"sn56.96-101": {
+		"volpage": "PTS SN v 473",
+		"endVolpage": "PTS SN v 473"
+	},
 	"sn56.102": {
 		"volpage": "PTS SN v 474"
 	},
@@ -10397,6 +11050,42 @@ export const ptsReferences: Record<string, PtsReferenceEntry> = {
 	},
 	"sn56.104": {
 		"volpage": "PTS SN v 475"
+	},
+	"sn56.105-107": {
+		"volpage": "PTS SN v 475",
+		"endVolpage": "PTS SN v 475"
+	},
+	"sn56.108-110": {
+		"volpage": "PTS SN v 475",
+		"endVolpage": "PTS SN v 475"
+	},
+	"sn56.111-113": {
+		"volpage": "PTS SN v 475",
+		"endVolpage": "PTS SN v 475"
+	},
+	"sn56.114-116": {
+		"volpage": "PTS SN v 475",
+		"endVolpage": "PTS SN v 475"
+	},
+	"sn56.117-119": {
+		"volpage": "PTS SN v 476",
+		"endVolpage": "PTS SN v 476"
+	},
+	"sn56.120-122": {
+		"volpage": "PTS SN v 476",
+		"endVolpage": "PTS SN v 476"
+	},
+	"sn56.123-125": {
+		"volpage": "PTS SN v 476",
+		"endVolpage": "PTS SN v 476"
+	},
+	"sn56.126-128": {
+		"volpage": "PTS SN v 476",
+		"endVolpage": "PTS SN v 476"
+	},
+	"sn56.129-130": {
+		"volpage": "PTS SN v 476",
+		"endVolpage": "PTS SN v 477"
 	},
 	"sn56.131": {
 		"volpage": "PTS SN v 477"

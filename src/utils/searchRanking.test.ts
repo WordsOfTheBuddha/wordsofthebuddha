@@ -5,10 +5,13 @@ import {
 	countCategoryNonStopwordTermMatches,
 	getCategoryCombinedSearchText,
 	getNonStopwordTerms,
+	rankResultsWithDiversity,
 	SCORE,
 	slugMatchesQuery,
+	sortPtsMatchResults,
 	supplementCategoryFuseResults,
 	tokenizeQuery,
+	type ScoredResult,
 } from "./searchRanking";
 
 const cloudSimiles = [
@@ -130,6 +133,51 @@ describe("tokenizeQuery discourse IDs", () => {
 			"radical",
 			"attention",
 		]);
+	});
+});
+
+function ptsResult(
+	slug: string,
+	priority: number,
+): ScoredResult {
+	return {
+		type: "discourse",
+		score: 100,
+		item: { slug, ptsMatch: true },
+		priority,
+		nonStopwordMatches: 1,
+	};
+}
+
+describe("PTS citation ranking", () => {
+	it("sorts ptsMatch hits by discourse ID, not lexicographic or priority", () => {
+		const shuffled = [
+			ptsResult("mn10", 5),
+			ptsResult("mn1", 1),
+			ptsResult("mn2", 9),
+		];
+		assert.deepEqual(
+			sortPtsMatchResults(shuffled).map((r) => r.item.slug),
+			["mn1", "mn2", "mn10"],
+		);
+	});
+
+	it("skips diversity ranking so PTS volume listings stay in ID order", () => {
+		const shuffled = [
+			ptsResult("mn10", 5),
+			ptsResult("mn1", 1),
+			ptsResult("mn2", 9),
+			{
+				type: "topic-quality" as const,
+				score: 90,
+				item: { slug: "mindfulness", title: "Mindfulness" },
+			},
+		];
+		const ranked = rankResultsWithDiversity(shuffled);
+		assert.deepEqual(
+			ranked.map((r) => r.item.slug),
+			["mn1", "mn2", "mn10", "mindfulness"],
+		);
 	});
 });
 

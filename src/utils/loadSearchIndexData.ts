@@ -8,6 +8,8 @@ export interface SearchIndexDoc {
 	priority?: number;
 	contentSearchable?: boolean;
 	referenceOnly?: boolean;
+	/** Display PTS citation, e.g. "PTS 4.152–4.155" */
+	volpage?: string;
 }
 
 const NATIVE_JSON = "search-index.json";
