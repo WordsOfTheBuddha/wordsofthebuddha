@@ -17,10 +17,15 @@ import {
 	STRICT_WORD_MAX_SUFFIX,
 } from "../../utils/searchRanking";
 import {
+	getPtsDisplay,
 	lookupPtsSlugs,
 	parsePtsQuery,
 } from "../../utils/ptsReferences";
 import Fuse from "fuse.js";
+
+function volpageForSlug(slug: string, fallback?: string): string | undefined {
+	return getPtsDisplay(slug) || fallback || undefined;
+}
 
 export interface SearchResult {
 	slug: string;
@@ -1179,7 +1184,7 @@ async function performSearchInner(
 					maxScore: item.maxScore,
 					priority: item.priority,
 					referenceOnly: item.referenceOnly,
-					volpage: item.volpage,
+					volpage: volpageForSlug(item.slug, item.volpage),
 					ptsMatch: true,
 				});
 			}
@@ -1506,7 +1511,7 @@ async function performSearchInner(
 			maxScore: item.maxScore,
 			priority: item.priority,
 			referenceOnly: item.referenceOnly,
-			volpage: item.volpage,
+			volpage: volpageForSlug(item.slug, item.volpage),
 			_score: effectiveScore,
 		};
 
@@ -1615,7 +1620,7 @@ export async function getFilteredDiscourses(
 			contentSnippet: null,
 			priority: item.priority,
 			referenceOnly: item.referenceOnly,
-			volpage: item.volpage,
+			volpage: volpageForSlug(item.slug, item.volpage),
 		}));
 }
 

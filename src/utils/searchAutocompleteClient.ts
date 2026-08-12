@@ -14,6 +14,33 @@ import { compactDiscourseIdQuery } from "./discourseIdSuggest";
 
 const MIN_INDEX_SUGGEST_LEN = 2;
 
+const PTS_QUERY_RE = /^(?:pts:|volpage:|ref:|PTS\b|pts-vp-pli)/i;
+
+/** Skip Pali/corpus autocomplete for citation lookups and numeric tokens like `1.` */
+export function shouldOfferIndexSuggestions(
+	query: string,
+	tokenRaw: string,
+): boolean {
+	if (PTS_QUERY_RE.test(query.trim())) return false;
+	if (tokenRaw.length < MIN_INDEX_SUGGEST_LEN) return false;
+	const letters = tokenRaw
+		.normalize("NFD")
+		.replace(/\p{M}/gu, "")
+		.replace(/[^a-zA-Z]/g, "");
+	if (tokenRaw.length === 2) return letters.length === 2;
+	return tokenRaw.length >= 3;
+}
+
+/** Visible suggestion text: drop |term::gloss| markup and leftover pipes. */
+export function displaySuggestionText(text: string): string {
+	let s = (text || "").replace(/\|(.+?)::[^|]+\|/g, "$1");
+	s = s.replace(/\|([^|:]+):::+[^|]*\|/g, "$1");
+	s = s.replace(/\|/g, "");
+	const cut = s.indexOf("::");
+	if (cut >= 0) s = s.slice(0, cut);
+	return s.replace(/\s+/g, " ").trim();
+}
+
 /** Inline layout so suggestions stack even if component CSS fails to load. */
 function applySuggestionListLayout(listEl: HTMLElement) {
 	listEl.style.display = "flex";
@@ -256,7 +283,10 @@ export function attachSearchAutocomplete(
 
 		currentSuggestions.forEach((entry, index) => {
 			const item = createSuggestionItemButton(inputId, index);
-			item.innerHTML = highlightMatch(entry.text, currentToken!.raw);
+			item.innerHTML = highlightMatch(
+				displaySuggestionText(entry.text),
+				currentToken!.raw,
+			);
 			if (index === activeIndex) {
 				item.classList.add("is-active");
 				item.setAttribute("aria-selected", "true");
@@ -386,7 +416,10 @@ export function attachSearchAutocomplete(
 		const token = parseActiveToken(input.value, cursor);
 		currentToken = token;
 
-		if (!token?.suggestable || token.raw.length < MIN_INDEX_SUGGEST_LEN) {
+		if (
+			!token?.suggestable ||
+			!shouldOfferIndexSuggestions(input.value, token.raw)
+		) {
 			close();
 			return;
 		}
@@ -450,6 +483,10 @@ export function attachSearchAutocomplete(
 	}
 
 	function refresh() {
+		if (PTS_QUERY_RE.test(input.value.trim())) {
+			close();
+			return;
+		}
 		if (refreshDiscourseSuggestions()) return;
 		if (input.value.length >= MIN_INDEX_SUGGEST_LEN) {
 			refreshIndexSuggestions();
@@ -463,7 +500,11 @@ export function attachSearchAutocomplete(
 		const token = currentToken;
 		if (!entry || !token) return;
 
-		const next = applySuggestion(input.value, token, entry.text);
+		const next = applySuggestion(
+			input.value,
+			token,
+			displaySuggestionText(entry.text) || entry.text,
+		);
 		input.value = next.value;
 		input.setSelectionRange(next.cursor, next.cursor);
 		onValueChange?.(next.value);

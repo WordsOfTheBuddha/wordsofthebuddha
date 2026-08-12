@@ -32,6 +32,7 @@ describe("getPtsDisplay", () => {
 	it("resolves AN1 range slugs from first/last constituents", () => {
 		assert.equal(getPtsDisplay("an1.1-10"), "PTS 1.1–1.2");
 		assert.equal(getPtsDisplay("an1.11-20"), "PTS 1.3–1.4");
+		assert.equal(getPtsDisplay("an1.21-30"), "PTS 1.5–1.6");
 		assert.match(getPtsDisplay("an1.1-10"), /^PTS \d/);
 		assert.match(getPtsDisplay("an1.11-20"), /^PTS \d/);
 		assert.ok(getPtsDisplay("an1.1-10").length > 0);
