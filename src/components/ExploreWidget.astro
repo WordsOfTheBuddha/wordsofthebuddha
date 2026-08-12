@@ -1017,6 +1017,7 @@ const isSearchOnly = mode === "search-only";
 		formatRemainingText,
 		isStopword,
 		getNonStopwordTerms,
+		supplementCategoryFuseResults,
 		countNonStopwordMatches,
 		countTermMatches,
 		countTermMatchesWithQuality,
@@ -1116,7 +1117,11 @@ const isSearchOnly = mode === "search-only";
 					categoryNonStopTerms.length < effectiveQuery.trim().split(/\s+/).length
 						? categoryNonStopTerms.join(" ")
 						: effectiveQuery;
-				const categoryResults = categoryFuse.search(categorySearchQuery);
+				const categoryResults = supplementCategoryFuseResults(
+					categoryFuse.search(categorySearchQuery),
+					allCategoryData,
+					effectiveQuery,
+				);
 
 				// Helper to normalize for diacritic-insensitive comparison
 				const queryNormalized = normalizeForComparison(effectiveQuery);

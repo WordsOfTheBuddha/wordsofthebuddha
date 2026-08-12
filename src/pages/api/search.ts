@@ -55,6 +55,7 @@ import {
 	SCORE,
 	rankResultsWithDiversity,
 	getNonStopwordTerms,
+	supplementCategoryFuseResults,
 	getMaxAllowedEditDistance,
 	allowPrefixMatch,
 	allowInfixMatch,
@@ -245,7 +246,11 @@ export const GET: APIRoute = async ({ url }) => {
 					effectiveQuery.trim().split(/\s+/).length
 					? categoryNonStopTerms.join(" ")
 					: effectiveQuery;
-			const categoryResults = categoryFuse.search(categorySearchQuery);
+			const categoryResults = supplementCategoryFuseResults(
+				categoryFuse.search(categorySearchQuery),
+				allCategories,
+				effectiveQuery,
+			);
 			const queryNormalized = normalizeForComparison(effectiveQuery);
 			const queryTerms = queryLower
 				.split(/\s+/)

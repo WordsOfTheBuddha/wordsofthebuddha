@@ -635,6 +635,98 @@ export function countNonStopwordMatches(text: string, query: string): number {
 	return nonStopwords.filter((term) => textLower.includes(term)).length;
 }
 
+/** Fields scanned for topic/quality/simile/person category matching. */
+export type CategorySearchable = {
+	slug: string;
+	title?: string;
+	description?: string;
+	synonyms?: string[];
+	pali?: string[];
+};
+
+/** Combined, annotation-stripped text used for cross-field category term checks. */
+export function getCategoryCombinedSearchText(
+	item: CategorySearchable,
+): string {
+	return stripAnnotations(
+		[
+			item.title || "",
+			item.slug || "",
+			item.description || "",
+			...(item.synonyms || []),
+			...(item.pali || []),
+		].join(" "),
+	).toLowerCase();
+}
+
+/**
+ * Count non-stopword terms that match at a word boundary in category text.
+ * Uses prefix-at-boundary (e.g. "rain" in "rainless", "rains").
+ */
+export function countCategoryNonStopwordTermMatches(
+	combinedText: string,
+	terms: string[],
+): { count: number; matchedTerms: string[] } {
+	const cleanedText = stripAnnotations(combinedText).toLowerCase();
+	const matchedTerms: string[] = [];
+	for (const term of terms) {
+		const escaped = escapeRegExpForSearch(term.toLowerCase());
+		if (new RegExp(`\\b${escaped}`, "i").test(cleanedText)) {
+			matchedTerms.push(term.toLowerCase());
+		}
+	}
+	return { count: matchedTerms.length, matchedTerms };
+}
+
+/** True when every non-stopword term appears somewhere in the category fields. */
+export function categoryMatchesAllNonStopwordTerms(
+	item: CategorySearchable,
+	query: string,
+): boolean {
+	const terms = getNonStopwordTerms(query);
+	if (terms.length < 2) return false;
+	const { count } = countCategoryNonStopwordTermMatches(
+		getCategoryCombinedSearchText(item),
+		terms,
+	);
+	return count === terms.length;
+}
+
+/** Fuse score for items found only via all-term supplement (order-agnostic). */
+const CATEGORY_SUPPLEMENT_FUSE_SCORE = 0.45;
+
+/**
+ * Fuse treats multi-word queries as one fuzzy phrase, so word order can hide
+ * valid simile/topic matches (e.g. "rain cloud" vs "cloud rain"). Add any
+ * category whose fields contain all non-stopword terms.
+ */
+export function supplementCategoryFuseResults<
+	T extends CategorySearchable,
+>(
+	fuseResults: Array<{ item: T; score?: number; refIndex?: number }>,
+	allCategories: T[],
+	query: string,
+): Array<{ item: T; score?: number; refIndex?: number }> {
+	const terms = getNonStopwordTerms(query);
+	if (terms.length < 2) return fuseResults;
+
+	const seen = new Set(fuseResults.map((r) => r.item.slug));
+	const supplemented = [...fuseResults];
+
+	for (const item of allCategories) {
+		if (seen.has(item.slug)) continue;
+		if (!categoryMatchesAllNonStopwordTerms(item, query)) continue;
+		supplemented.push({
+			item,
+			refIndex: supplemented.length,
+			score: CATEGORY_SUPPLEMENT_FUSE_SCORE,
+		});
+		seen.add(item.slug);
+	}
+
+	return supplemented;
+}
+
 // ==================== PHRASE PROXIMITY MATCHING ====================
 
 /**
