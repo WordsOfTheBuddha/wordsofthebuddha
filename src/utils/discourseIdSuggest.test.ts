@@ -22,6 +22,9 @@ const entries: DiscourseSuggestEntry[] = [
 	{ slug: "an6.12", title: "Sāraṇīyasutta", referenceOnly: true },
 	{ slug: "an60", title: "Fake", referenceOnly: false },
 	{ slug: "dn1", title: "Brahmajālasutta - The Prime Net", referenceOnly: true },
+	{ slug: "iti4", title: "Kodhasutta - Anger", referenceOnly: false },
+	{ slug: "iti40", title: "Vijjāsutta", referenceOnly: false },
+	{ slug: "iti41", title: "Paññāsutta", referenceOnly: false },
 ];
 
 describe("compactDiscourseIdQuery", () => {
@@ -59,11 +62,12 @@ describe("isDiscourseIdPrefix", () => {
 });
 
 describe("suggestDiscourses", () => {
-	it("pins exact MN 10 and does not list MN 100", () => {
+	it("pins exact MN 10 first and still offers MN 100 as a number continuation", () => {
 		const hits = suggestDiscourses(entries, "MN 10");
 		assert.equal(hits[0]?.slug, "mn10");
 		assert.equal(hits[0]?.exact, true);
-		assert.ok(!hits.some((hit) => hit.slug === "mn100"));
+		assert.ok(hits.some((hit) => hit.slug === "mn100"));
+		assert.equal(hits.find((hit) => hit.slug === "mn100")?.exact, false);
 	});
 
 	it("lists AN 6.* for prefix AN6, native before later refs, not AN 60", () => {
@@ -73,6 +77,35 @@ describe("suggestDiscourses", () => {
 			["an6.1", "an6.2", "an6.10", "an6.12"],
 		);
 		assert.equal(hits.find((hit) => hit.slug === "an6.12")?.referenceOnly, true);
+	});
+
+	it("continues undotted numbers: MN 1 lists MN 1 then MN 10, MN 11", () => {
+		const hits = suggestDiscourses(entries, "MN 1");
+		assert.deepEqual(
+			hits.map((hit) => hit.slug),
+			["mn1", "mn10", "mn11", "mn100"],
+		);
+		assert.equal(hits[0]?.exact, true);
+		assert.equal(hits[1]?.exact, false);
+	});
+
+	it("continues undotted numbers for Iti 4", () => {
+		const hits = suggestDiscourses(entries, "iti4");
+		assert.deepEqual(
+			hits.map((hit) => hit.slug),
+			["iti4", "iti40", "iti41"],
+		);
+	});
+
+	it("does not treat AN 1 as a prefix of AN 10.*", () => {
+		const withAn1: DiscourseSuggestEntry[] = [
+			...entries,
+			{ slug: "an1.1-10", title: "Cittapariyādāna vagga", referenceOnly: false },
+			{ slug: "an10.1", title: "Saddhāsutta", referenceOnly: false },
+		];
+		const hits = suggestDiscourses(withAn1, "AN1");
+		assert.ok(hits.some((hit) => hit.slug === "an1.1-10"));
+		assert.ok(!hits.some((hit) => hit.slug === "an10.1"));
 	});
 
 	it("surfaces reference-only DN 1 as an exact hit", () => {
@@ -144,7 +177,7 @@ describe("suggestDiscourses title search", () => {
 	it("does not steal ID matching when the query is ID-shaped", () => {
 		const hits = suggestDiscourses(entries, "mn10");
 		assert.equal(hits[0]?.slug, "mn10");
-		assert.ok(!hits.some((hit) => hit.slug === "mn100"));
+		assert.equal(hits[0]?.exact, true);
 	});
 
 	it("keeps a title hit as further words are typed", () => {

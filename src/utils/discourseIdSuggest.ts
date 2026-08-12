@@ -26,7 +26,7 @@ export interface DiscourseSuggestHit extends DiscourseSuggestEntry {
 	exact: boolean;
 }
 
-export const DEFAULT_DISCOURSE_SUGGEST_LIMIT = 8;
+export const DEFAULT_DISCOURSE_SUGGEST_LIMIT = 11;
 export const NARROW_DISCOURSE_SUGGEST_LIMIT = 5;
 export const MIN_TITLE_SUGGEST_LEN = 3;
 
@@ -82,6 +82,15 @@ function nativeFirst(a: DiscourseSuggestEntry, b: DiscourseSuggestEntry): number
 	const id = compareDiscourseIds(a.slug, b.slug);
 	if (id !== 0) return id;
 	return Number(a.referenceOnly) - Number(b.referenceOnly);
+}
+
+/**
+ * Suggest-only: mn1 → mn10, iti4 → iti40. Remainder must be digits so
+ * an1 does not pull in an10.1. Ranking still uses isDiscourseIdPrefix.
+ */
+export function isUndottedNumberContinuation(slug: string, compact: string): boolean {
+	if (slug === compact || !slug.startsWith(compact)) return false;
+	return /^\d+$/.test(slug.slice(compact.length));
 }
 
 type TitleMatchRank = 0 | 1 | 2;
@@ -170,14 +179,20 @@ export function suggestDiscourses(
 	}
 
 	const exact: DiscourseSuggestEntry[] = [];
-	const prefix: DiscourseSuggestEntry[] = [];
+	const dottedPrefix: DiscourseSuggestEntry[] = [];
+	const digitPrefix: DiscourseSuggestEntry[] = [];
 	for (const entry of entries) {
 		if (entry.slug === compact) exact.push(entry);
-		else if (isDiscourseIdPrefix(entry.slug, compact)) prefix.push(entry);
+		else if (isDiscourseIdPrefix(entry.slug, compact)) dottedPrefix.push(entry);
+		else if (isUndottedNumberContinuation(entry.slug, compact)) {
+			digitPrefix.push(entry);
+		}
 	}
 
 	exact.sort(nativeFirst);
-	prefix.sort(nativeFirst);
+	const prefix = (dottedPrefix.length > 0 ? dottedPrefix : digitPrefix).sort(
+		nativeFirst,
+	);
 
 	return [
 		...exact.map((entry) => toHit(entry, true)),
