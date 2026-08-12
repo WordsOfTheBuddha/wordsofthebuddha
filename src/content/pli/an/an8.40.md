@@ -1,9 +1,10 @@
 ---
+title: Duccaritavipāka sutta - Result of Misconduct
+description: The Buddha explains the karmic results of breaking the five precepts and engaging in wrong speech. Even the lightest result brings specific corresponding suffering in a human birth, such as a short lifespan.
+qualities: slaughtering, stealing, sexual misconduct, wrong speech, consuming intoxicants, negligence
+theme: wisdom, cultivating discernment
+priority: 1.2
 slug: an8.40
-source: suttacentral/bilara-data
-title: Duccaritavipākasutta
-edition: ms
-granularity: paragraph
 ---
 
 “Pāṇātipāto, bhikkhave, āsevito bhāvito bahulīkato nirayasaṁvattaniko tiracchānayonisaṁvattaniko pettivisayasaṁvattaniko. Yo sabbalahuso pāṇātipātassa vipāko, manussabhūtassa appāyukasaṁvattaniko hoti.
@@ -21,14 +22,3 @@ Pharusā, bhikkhave, vācā āsevitā bhāvitā bahulīkatā nirayasaṁvattanik
 Samphappalāpo, bhikkhave, āsevito bhāvito bahulīkato nirayasaṁvattaniko tiracchānayonisaṁvattaniko pettivisayasaṁvattaniko. Yo sabbalahuso samphappalāpassa vipāko, manussabhūtassa anādeyyavācāsaṁvattaniko hoti.
 
 Surāmerayapānaṁ, bhikkhave, āsevitaṁ bhāvitaṁ bahulīkataṁ nirayasaṁvattanikaṁ tiracchānayonisaṁvattanikaṁ pettivisayasaṁvattanikaṁ. Yo sabbalahuso surāmerayapānassa vipāko, manussabhūtassa ummattakasaṁvattaniko hotī”ti.
-
-Dasamaṁ.
-
-Dānavaggo catuttho.
-
-Tassuddānaṁ
-
-Dve dānāni vatthuñca,
-khettaṁ dānūpapattiyo;
-Kiriyaṁ dve sappurisā,
-abhisando vipāko cāti.
