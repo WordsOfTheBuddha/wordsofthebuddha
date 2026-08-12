@@ -184,6 +184,8 @@ export function attachSearchAutocomplete(
 		dropdown.style.left = "";
 		dropdown.style.right = "";
 		dropdown.style.width = "";
+		dropdown.style.minWidth = "";
+		dropdown.style.maxWidth = "";
 	}
 
 	function close() {
@@ -208,14 +210,18 @@ export function attachSearchAutocomplete(
 			offset,
 			input.scrollLeft,
 		)}px`;
-		dropdown.style.right = "";
-		dropdown.style.width = "";
+		dropdown.style.right = "auto";
+		dropdown.style.width = "max-content";
+		dropdown.style.minWidth = "10rem";
+		dropdown.style.maxWidth = "min(24rem, 100%)";
 	}
 
 	function positionDropdownFullWidth() {
 		dropdown.style.left = "0";
 		dropdown.style.right = "0";
 		dropdown.style.width = "100%";
+		dropdown.style.minWidth = "";
+		dropdown.style.maxWidth = "none";
 	}
 
 	function getActiveItemCount(): number {
@@ -261,7 +267,7 @@ export function attachSearchAutocomplete(
 			list.appendChild(item);
 		});
 
-		positionDropdownFullWidth();
+		positionDropdownAtToken(currentToken);
 		dropdown.classList.remove("hidden");
 		open = true;
 		setExpanded(true);
@@ -314,14 +320,23 @@ export function attachSearchAutocomplete(
 			const item = createSuggestionItemButton(inputId, index);
 			item.classList.add("search-suggest-discourse");
 			item.dataset.kind = "discourse";
-			item.style.display = "flex";
-			item.style.alignItems = "baseline";
-			item.style.gap = "0.5rem";
+			item.style.removeProperty("display");
 			item.style.minWidth = "0";
+
+			const metaEl = document.createElement("span");
+			metaEl.className = "search-suggest-discourse-meta";
 
 			const idEl = document.createElement("span");
 			idEl.className = "search-suggest-id";
 			idEl.textContent = hit.idLabel;
+			metaEl.append(idEl);
+
+			if (hit.referenceOnly) {
+				const badge = document.createElement("span");
+				badge.className = "search-suggest-ref";
+				badge.textContent = "Ref";
+				metaEl.append(" ", badge);
+			}
 
 			const titlesEl = document.createElement("span");
 			titlesEl.className = "search-suggest-discourse-titles";
@@ -345,13 +360,10 @@ export function attachSearchAutocomplete(
 				titlesEl.append(enEl);
 			}
 
-			item.append(idEl, titlesEl);
-			if (hit.referenceOnly) {
-				const badge = document.createElement("span");
-				badge.className = "search-suggest-ref";
-				badge.textContent = "Ref";
-				item.append(badge);
-			}
+			const inner = document.createElement("span");
+			inner.className = "search-suggest-discourse-inner";
+			inner.append(metaEl, titlesEl);
+			item.append(inner);
 
 			if (index === activeIndex) {
 				item.classList.add("is-active");

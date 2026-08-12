@@ -146,4 +146,41 @@ describe("suggestDiscourses title search", () => {
 		assert.equal(hits[0]?.slug, "mn10");
 		assert.ok(!hits.some((hit) => hit.slug === "mn100"));
 	});
+
+	it("keeps a title hit as further words are typed", () => {
+		const withPhrase: DiscourseSuggestEntry[] = [
+			...entries,
+			{
+				slug: "an4.41",
+				title: "Samādhibhāvanāsutta - Accomplishment in Wise Attention",
+				referenceOnly: false,
+			},
+		];
+		assert.equal(suggestDiscourses(withPhrase, "att")[0]?.slug, "an4.41");
+		assert.equal(suggestDiscourses(withPhrase, "wise att")[0]?.slug, "an4.41");
+		assert.equal(
+			suggestDiscourses(withPhrase, "wise attention")[0]?.slug,
+			"an4.41",
+		);
+		assert.equal(
+			suggestDiscourses(withPhrase, "accomplishment wise")[0]?.slug,
+			"an4.41",
+		);
+	});
+
+	it("does not match query words out of title order", () => {
+		const withPhrase: DiscourseSuggestEntry[] = [
+			...entries,
+			{
+				slug: "an4.41",
+				title: "Samādhibhāvanāsutta - Accomplishment in Wise Attention",
+				referenceOnly: false,
+			},
+		];
+		assert.ok(
+			!suggestDiscourses(withPhrase, "attention wise").some(
+				(hit) => hit.slug === "an4.41",
+			),
+		);
+	});
 });

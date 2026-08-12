@@ -17,7 +17,16 @@ export interface DiscourseSuggestHit extends DiscourseSuggestEntry {
 }
 
 export const DEFAULT_DISCOURSE_SUGGEST_LIMIT = 8;
+export const NARROW_DISCOURSE_SUGGEST_LIMIT = 5;
 export const MIN_TITLE_SUGGEST_LEN = 3;
+
+/** Fewer hits on phones so stacked ID + title rows stay scannable. */
+export function discourseSuggestLimit(): number {
+	if (typeof window === "undefined") return DEFAULT_DISCOURSE_SUGGEST_LIMIT;
+	return window.matchMedia("(max-width: 767px)").matches
+		? NARROW_DISCOURSE_SUGGEST_LIMIT
+		: DEFAULT_DISCOURSE_SUGGEST_LIMIT;
+}
 
 const ID_QUERY = /^[a-z]{2,5}\d[\d.\-]*$/;
 
@@ -96,6 +105,29 @@ export function isDiscourseIdPrefix(slug: string, compact: string): boolean {
 
 type TitleMatchRank = 0 | 1 | 2;
 
+function splitTitleWords(value: string): string[] {
+	return value.split(/[\s\-_]+/).filter(Boolean);
+}
+
+/** Each query word is a prefix of a later title word (skips in between). */
+function wordsMatchInOrder(haystack: string[], needles: string[]): boolean {
+	if (needles.length === 0) return false;
+	let i = 0;
+	for (const needle of needles) {
+		let found = false;
+		while (i < haystack.length) {
+			if (haystack[i]!.startsWith(needle)) {
+				found = true;
+				i += 1;
+				break;
+			}
+			i += 1;
+		}
+		if (!found) return false;
+	}
+	return true;
+}
+
 function titleMatchRank(
 	entry: DiscourseSuggestEntry,
 	queryNorm: string,
@@ -103,14 +135,20 @@ function titleMatchRank(
 	const { pali, english } = splitDiscourseTitle(entry.title);
 	const paliNorm = normalizeForComparison(pali);
 	const englishNorm = normalizeForComparison(english);
+	const combined = `${paliNorm} ${englishNorm}`.trim();
 
 	if (paliNorm === queryNorm || englishNorm === queryNorm) return 0;
-	if (paliNorm.startsWith(queryNorm) || englishNorm.startsWith(queryNorm)) {
+	if (
+		paliNorm.startsWith(queryNorm) ||
+		englishNorm.startsWith(queryNorm) ||
+		combined.startsWith(queryNorm)
+	) {
 		return 1;
 	}
 
-	const words = `${paliNorm} ${englishNorm}`.split(/[\s\-_]+/).filter(Boolean);
-	if (words.some((word) => word.startsWith(queryNorm))) return 2;
+	const needles = splitTitleWords(queryNorm);
+	const haystack = splitTitleWords(combined);
+	if (wordsMatchInOrder(haystack, needles)) return 2;
 	return null;
 }
 
