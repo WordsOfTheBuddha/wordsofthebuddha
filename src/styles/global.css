@@ -28,7 +28,7 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url("/assets/fonts/GentiumPlus-Regular.ttf") format("truetype");
+	src: url("/assets/fonts/GentiumPlus-Regular-mdot.woff2") format("woff2");
 	unicode-range: U+1E41, U+1E40;
 }
 
@@ -37,7 +37,7 @@
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
-	src: url("/assets/fonts/GentiumPlus-Bold.ttf") format("truetype");
+	src: url("/assets/fonts/GentiumPlus-Bold-mdot.woff2") format("woff2");
 	unicode-range: U+1E41, U+1E40;
 }
 

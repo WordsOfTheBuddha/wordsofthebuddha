@@ -1,6 +1,7 @@
 ---
 import { getEntry } from "astro:content";
 import PlayAll from "./PlayAll.astro";
+import CoverImage from "./CoverImage.astro";
 import { playlists } from "../data/playlists.generated";
 
 // src/components/BookCard.astro
@@ -48,11 +49,14 @@ export const formatDate = (date: string | Date) => {
 		marginTop,
 	]}
 >
-	<img
-		src={imagePath || bookItem.data.imagePath}
-		alt={`Cover for ${title}`}
-		class="w-full h-96 sm:h-auto w-auto my-1 sm:w-[30%] object-contain sm:mr-4 rounded-lg"
-	/>
+	<div class="book-cover w-full sm:w-[30%] sm:mr-4 shrink-0">
+		<CoverImage
+			src={imagePath || bookItem.data.imagePath}
+			alt={`Cover for ${title}`}
+			variant="card"
+			class="w-full h-96 sm:h-auto my-1 object-contain rounded-lg"
+		/>
+	</div>
 
 	<div class="flex-1 flex flex-col">
 		<div class="flex items-start justify-between">
@@ -112,6 +116,11 @@ export const formatDate = (date: string | Date) => {
 </div>
 
 <style>
+	.book-cover :global(picture) {
+		display: block;
+		width: 100%;
+	}
+
 	/* Maintain existing theme variables integration */
 	.text-text {
 		color: var(--text-color);

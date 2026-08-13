@@ -1,0 +1,59 @@
+---
+import { Picture, type ImageMetadata } from "astro:assets";
+import itbw from "../assets/covers/in-the-buddhas-words.jpg";
+import ntnp from "../assets/covers/noble-truths-noble-path.jpg";
+
+const covers: Record<string, ImageMetadata> = {
+	"/assets/in-the-buddha's-words.jpg": itbw,
+	"/assets/noble-truths-noble-path-book-cover.jpeg": ntnp,
+};
+
+interface Props {
+	src?: string;
+	alt: string;
+	variant?: "thumb" | "card";
+	class?: string;
+	loading?: "lazy" | "eager";
+}
+
+const {
+	src,
+	alt,
+	variant = "card",
+	class: className,
+	loading = "lazy",
+} = Astro.props;
+
+const image = src ? covers[src] : undefined;
+const thumb = { widths: [80, 112, 168], sizes: "3.5rem" };
+const card = {
+	widths: [240, 400, 656],
+	sizes: "(max-width: 640px) 90vw, 30vw",
+};
+const opts = variant === "thumb" ? thumb : card;
+---
+
+{
+	image ? (
+		<Picture
+			src={image}
+			alt={alt}
+			formats={["avif", "webp"]}
+			widths={opts.widths}
+			sizes={opts.sizes}
+			width={image.width}
+			height={image.height}
+			class={className}
+			loading={loading}
+			decoding="async"
+		/>
+	) : src ? (
+		<img
+			src={src}
+			alt={alt}
+			class={className}
+			loading={loading}
+			decoding="async"
+		/>
+	) : null
+}

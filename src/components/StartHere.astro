@@ -1,5 +1,6 @@
 ---
 import type { StartHereEntry } from "../data/discoverStartHere";
+import CoverImage from "./CoverImage.astro";
 
 interface Props {
 	items: StartHereEntry[];
@@ -23,12 +24,12 @@ const { items } = Astro.props;
 					<div class="start-here-top">
 						<span class="start-here-media" aria-hidden="true">
 							{item.type === "anthology" && item.imagePath ? (
-								<img
+								<CoverImage
 									src={item.imagePath}
 									alt=""
+									variant="thumb"
 									class="start-here-thumb"
 									loading="lazy"
-									decoding="async"
 								/>
 							) : (
 								<span class="start-here-play">
@@ -163,6 +164,19 @@ const { items } = Astro.props;
 		border-radius: 0.125rem;
 		border: 1px solid color-mix(in srgb, var(--surface-border) 80%, transparent);
 		box-shadow: 1px 2px 5px color-mix(in srgb, #000 16%, transparent);
+	}
+
+	.start-here-media picture.start-here-thumb {
+		border: 0;
+		box-shadow: none;
+		overflow: hidden;
+	}
+
+	.start-here-media picture.start-here-thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
 	}
 
 	.start-here-play {

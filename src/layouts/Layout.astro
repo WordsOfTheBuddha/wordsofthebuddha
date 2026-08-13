@@ -3,7 +3,6 @@ import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 // Add content styling with CSS classes
 import "../styles/global.css";
-import "../styles/listen-mode.css";
 import "../styles/listen-button.css";
 import Navbar from "../components/Navbar.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
@@ -275,17 +274,10 @@ const structuredData = buildStructuredData({
 			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 		/>
 
-		<!-- Preload critical fonts -->
+		<!-- Preload the above-the-fold body font. Italic and ṁ fallback load on demand. -->
 		<link
 			rel="preload"
 			href="/assets/fonts/Spectral-Regular.woff2"
-			as="font"
-			type="font/woff2"
-			crossorigin
-		/>
-		<link
-			rel="preload"
-			href="/assets/fonts/Spectral-Italic.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -926,14 +918,21 @@ const structuredData = buildStructuredData({
 			document.addEventListener("paliModeChanged", handleHashNavigation);
 
 			// Remove empty spans after preferences are applied
-			document.querySelectorAll("span").forEach((span) => {
-				const hasVisibleContent = /\S/.test(span.textContent ?? "");
-				const hasMeaningfulAttributes = span.attributes.length > 0;
+			const stripEmptySpans = () => {
+				document.querySelectorAll("span").forEach((span) => {
+					const hasVisibleContent = /\S/.test(span.textContent ?? "");
+					const hasMeaningfulAttributes = span.attributes.length > 0;
 
-				if (!hasVisibleContent && !hasMeaningfulAttributes) {
-					span.remove();
-				}
-			});
+					if (!hasVisibleContent && !hasMeaningfulAttributes) {
+						span.remove();
+					}
+				});
+			};
+			if ("requestIdleCallback" in window) {
+				requestIdleCallback(stripEmptySpans, { timeout: 2000 });
+			} else {
+				setTimeout(stripEmptySpans, 0);
+			}
 		});
 	</script>
 </html>

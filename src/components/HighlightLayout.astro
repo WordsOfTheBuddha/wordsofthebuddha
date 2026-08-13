@@ -49,9 +49,10 @@ const HIGHLIGHT_BLACKLIST = [
 	"/design-system",
 ];
 
-const isHighlightingDisabled = HIGHLIGHT_BLACKLIST.some((path) =>
-	currentPath.startsWith(path)
-);
+const isHome = currentPath === "/" || currentPath === "";
+const isHighlightingDisabled =
+	isHome ||
+	HIGHLIGHT_BLACKLIST.some((path) => currentPath.startsWith(path));
 
 const { title, description } = Astro.props;
 ---
@@ -69,29 +70,29 @@ const { title, description } = Astro.props;
 >
 	<slot />
 
-	<div id="highlight-menu" class="highlight-menu" style="display: none;">
-		<div class="menu-items">
-			<CopyButton />
-			{
-				Object.entries(COLOR_MAP).map(([colorName, bgColor]) => (
+	{
+		!isHighlightingDisabled && (
+			<div id="highlight-menu" class="highlight-menu" style="display: none;">
+				<div class="menu-items">
+					<CopyButton />
+					{Object.entries(COLOR_MAP).map(([colorName, bgColor]) => (
+						<button
+							data-color={colorName}
+							style={`background-color: ${bgColor}`}
+							class="color-swatch"
+						/>
+					))}
 					<button
-						data-color={colorName}
-						style={`background-color: ${bgColor}`}
-						class="color-swatch"
-					/>
-				))
-			}
-			<button
-				id="highlight-eraser"
-				class="eraser-btn"
-				style="display: none;"
-			>
-				<Fragment set:html={Eraser} />
-			</button>
-		</div>
-	</div>
-
-
+						id="highlight-eraser"
+						class="eraser-btn"
+						style="display: none;"
+					>
+						<Fragment set:html={Eraser} />
+					</button>
+				</div>
+			</div>
+		)
+	}
 </div>
 
 <script>
@@ -196,9 +197,10 @@ const { title, description } = Astro.props;
 		}
 	}
 
-	// Client-side imports need to be dynamic or use the ?inline suffix
-	const selectionHandler = await import("../service/selectionHandler");
-	const highlightService = await import("../service/highlightService");
+	let selectionHandler: typeof import("../service/selectionHandler") | null =
+		null;
+	let highlightService: typeof import("../service/highlightService") | null =
+		null;
 
 	function scheduleRestore(attempt: number = 0) {
 		if (!rootElement)
@@ -219,7 +221,7 @@ const { title, description } = Astro.props;
 			if (!highlighter) return;
 			if (rootElement!.dataset.highlightsLoaded === "true") return;
 			try {
-				await highlightService.fetchHighlights(highlighter);
+				await highlightService!.fetchHighlights(highlighter);
 				rootElement!.dataset.highlightsLoaded = "true";
 			} catch (e) {
 				console.warn("[highlight] restore failed", e);
@@ -287,7 +289,7 @@ const { title, description } = Astro.props;
 		if (
 			selection.isCollapsed ||
 			!selection.rangeCount ||
-			!selectionHandler.isSelectionValid(selection)
+			!selectionHandler?.isSelectionValid(selection)
 		) {
 			return;
 		}
@@ -310,6 +312,8 @@ const { title, description } = Astro.props;
 
 		// Show appropriate menu based on auth status
 		const isAuthenticated = rootElement?.dataset.authenticated === "true";
+
+		if (!selectionHandler || !menu) return;
 
 		// Show menu and configure based on collapse intersection
 		menu.style.display = "block";
@@ -555,7 +559,7 @@ const { title, description } = Astro.props;
 		rangyHash?: string,
 		operation: "add" | "delete" = "add"
 	): void {
-		if (!highlighter) return;
+		if (!highlighter || !highlightService) return;
 		const serialized = rangyHash || highlighter.serialize();
 		highlightService.persistToFirestore(serialized, highlighter);
 	}
@@ -609,6 +613,7 @@ const { title, description } = Astro.props;
 	async function init() {
 		rootElement = document.getElementById("highlight-root");
 		menu = document.getElementById("highlight-menu") as HTMLDivElement;
+		if (rootElement?.dataset.highlightDisabled === "true") return;
 
 		try {
 			const [selectionHandlerModule, highlightServiceModule] =
@@ -617,6 +622,8 @@ const { title, description } = Astro.props;
 					import("../service/highlightService"),
 				]);
 
+			selectionHandler = selectionHandlerModule;
+			highlightService = highlightServiceModule;
 			window.selectionHandler = selectionHandlerModule;
 			window.highlightService = highlightServiceModule;
 
