@@ -1,9 +1,10 @@
 ---
+title: Aññatitthiya sutta - Who Follows Another Religion
+description: Framing the distinction between passion, aversion, and delusion, the Buddha explains their differing degrees of blameworthiness and persistence. He then teaches how to abandon each of these unwholesome roots through radical attention to specific meditative antidotes.
+qualities: passion, aversion, delusion, radical attention, loving-kindness, superficial attention
+theme: wisdom
 slug: an3.68
-source: suttacentral/bilara-data
-title: Aññatitthiyasutta
-edition: ms
-granularity: paragraph
+priority: 1.6
 ---
 
 “Sace, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ: ‘tayome, āvuso, dhammā. Katame tayo? Rāgo, doso, moho— ime kho, āvuso, tayo dhammā. Imesaṁ, āvuso, tiṇṇaṁ dhammānaṁ ko viseso ko adhippayāso kiṁ nānākaraṇan’ti? Evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ kinti byākareyyāthā”ti?
@@ -16,16 +17,18 @@ granularity: paragraph
 
 “Sace, bhikkhave, aññatitthiyā paribbājakā evaṁ puccheyyuṁ: ‘tayome, āvuso, dhammā. Katame tayo? Rāgo, doso, moho— ime kho, āvuso, tayo dhammā; imesaṁ, āvuso, tiṇṇaṁ dhammānaṁ ko viseso ko adhippayāso kiṁ nānākaraṇan’ti? Evaṁ puṭṭhā tumhe, bhikkhave, tesaṁ aññatitthiyānaṁ paribbājakānaṁ evaṁ byākareyyātha: ‘rāgo kho, āvuso, appasāvajjo dandhavirāgī, doso mahāsāvajjo khippavirāgī, moho mahāsāvajjo dandhavirāgī’ti.
 
+#### Superficial Attention
+
 ‘Ko panāvuso, hetu ko paccayo yena anuppanno vā rāgo uppajjati uppanno vā rāgo bhiyyobhāvāya vepullāya saṁvattatī’ti? ‘“Subhanimittan”tissa vacanīyaṁ. Tassa subhanimittaṁ ayoniso manasi karoto anuppanno vā rāgo uppajjati uppanno vā rāgo bhiyyobhāvāya vepullāya saṁvattati. Ayaṁ kho, āvuso, hetu ayaṁ paccayo yena anuppanno vā rāgo uppajjati uppanno vā rāgo bhiyyobhāvāya vepullāya saṁvattatī’ti.
 
 ‘Ko panāvuso, hetu ko paccayo yena anuppanno vā doso uppajjati uppanno vā doso bhiyyobhāvāya vepullāya saṁvattatī’ti? ‘“Paṭighanimittan”tissa vacanīyaṁ. Tassa paṭighanimittaṁ ayoniso manasi karoto anuppanno vā doso uppajjati uppanno vā doso bhiyyobhāvāya vepullāya saṁvattati. Ayaṁ kho, āvuso, hetu ayaṁ paccayo yena anuppanno vā doso uppajjati uppanno vā doso bhiyyobhāvāya vepullāya saṁvattatī’ti.
 
 ‘Ko panāvuso, hetu ko paccayo yena anuppanno vā moho uppajjati uppanno vā moho bhiyyobhāvāya vepullāya saṁvattatī’ti? ‘“Ayoniso manasikāro”tissa vacanīyaṁ. Tassa ayoniso manasi karoto anuppanno vā moho uppajjati uppanno vā moho bhiyyobhāvāya vepullāya saṁvattati. Ayaṁ kho, āvuso, hetu ayaṁ paccayo yena anuppanno vā moho uppajjati uppanno vā moho bhiyyobhāvāya vepullāya saṁvattatī’ti.
 
+#### Radical Attention
+
 ‘Ko panāvuso, hetu ko paccayo yena anuppanno ceva rāgo nuppajjati uppanno ca rāgo pahīyatī’ti? ‘“Asubhanimittan”tissa vacanīyaṁ. Tassa asubhanimittaṁ yoniso manasi karoto anuppanno ceva rāgo nuppajjati uppanno ca rāgo pahīyati. Ayaṁ kho, āvuso, hetu ayaṁ paccayo yena anuppanno ceva rāgo nuppajjati uppanno ca rāgo pahīyatī’ti.
 
 ‘Ko panāvuso, hetu ko paccayo yena anuppanno ceva doso nuppajjati uppanno ca doso pahīyatī’ti? ‘“Mettā cetovimuttī”tissa vacanīyaṁ. Tassa mettaṁ cetovimuttiṁ yoniso manasi karoto anuppanno ceva doso nuppajjati uppanno ca doso pahīyati. Ayaṁ kho, āvuso, hetu ayaṁ paccayo yena anuppanno ceva doso nuppajjati uppanno ca doso pahīyatī’ti.
 
 ‘Ko panāvuso, hetu ko paccayo yena anuppanno ceva moho nuppajjati uppanno ca moho pahīyatī’ti? ‘“Yonisomanasikāro”tissa vacanīyaṁ. Tassa yoniso manasi karoto anuppanno ceva moho nuppajjati uppanno ca moho pahīyati. Ayaṁ kho, āvuso, hetu ayaṁ paccayo yena anuppanno vā moho nuppajjati uppanno ca moho pahīyatī’”ti.
-
-Aṭṭhamaṁ.
