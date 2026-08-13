@@ -1,9 +1,10 @@
 ---
+title: Paṭhama mārapāsa sutta - Māra’s Snare (First)
+description: The Buddha attained the unsurpassed liberation through radical attention and radically striving aright.
+qualities: radical attention, right effort, liberation
 slug: sn4.4
-source: suttacentral/bilara-data
-title: Paṭhamamārapāsasutta
-edition: ms
-granularity: paragraph
+character: Māra the Evil One
+priority: 1.2
 ---
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā bārāṇasiyaṁ viharati isipatane migadāye. Tatra kho bhagavā bhikkhū āmantesi: “bhikkhavo”ti.
