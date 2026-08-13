@@ -1,5 +1,33 @@
 import { snVaggaRangeBySlug } from "../data/snVaggaStructure.generated";
 
+/** Parse sn45.71 or sn45.71-75 into a numeric span. */
+function parseDottedDiscourseSlug(slug: string): {
+	prefix: string;
+	book: number;
+	start: number;
+	end: number;
+} | null {
+	const match = slug.match(/^([a-z]+)(\d+)\.(\d+)(?:-(\d+))?$/);
+	if (!match) return null;
+	const start = Number(match[3]);
+	const end = match[4] != null ? Number(match[4]) : start;
+	return {
+		prefix: match[1],
+		book: Number(match[2]),
+		start,
+		end,
+	};
+}
+
+function rangesOverlap(
+	startA: number,
+	endA: number,
+	startB: number,
+	endB: number,
+): boolean {
+	return startA <= endB && endA >= startB;
+}
+
 /** True when a discourse slug belongs to a collection index slug (e.g. an4.10 → an4). */
 export function slugMatchesCollectionPattern(
 	slug: string,
@@ -7,14 +35,16 @@ export function slugMatchesCollectionPattern(
 ): boolean {
 	const snVaggaRange = snVaggaRangeBySlug[collection];
 	if (snVaggaRange) {
-		const discourseMatch = slug.match(/^sn(\d+)\.(\d+)$/);
-		if (!discourseMatch) return false;
-		const book = Number(discourseMatch[1]);
-		const num = Number(discourseMatch[2]);
+		const parsed = parseDottedDiscourseSlug(slug);
+		if (!parsed || parsed.prefix !== "sn") return false;
 		return (
-			book === snVaggaRange.book &&
-			num >= snVaggaRange.start &&
-			num <= snVaggaRange.end
+			parsed.book === snVaggaRange.book &&
+			rangesOverlap(
+				parsed.start,
+				parsed.end,
+				snVaggaRange.start,
+				snVaggaRange.end,
+			)
 		);
 	}
 
@@ -23,15 +53,12 @@ export function slugMatchesCollectionPattern(
 		const [, prefix, book, startStr, endStr] = bookVaggaMatch;
 		const start = Number(startStr);
 		const end = Number(endStr);
-		const slugMatch = slug.match(/^([a-z]+)(\d+)\.(\d+)$/);
-		if (!slugMatch) return false;
-		const [, slugPrefix, slugBook, slugNumStr] = slugMatch;
-		const slugNum = Number(slugNumStr);
+		const parsed = parseDottedDiscourseSlug(slug);
+		if (!parsed) return false;
 		return (
-			slugPrefix === prefix &&
-			slugBook === book &&
-			slugNum >= start &&
-			slugNum <= end
+			parsed.prefix === prefix &&
+			parsed.book === Number(book) &&
+			rangesOverlap(parsed.start, parsed.end, start, end)
 		);
 	}
 

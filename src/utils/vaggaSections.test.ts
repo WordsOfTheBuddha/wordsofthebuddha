@@ -180,6 +180,32 @@ describe("vaggaSections", () => {
 		assert.deepEqual(chetva?.posts.map((p) => p.slug), ["sn1.75"]);
 	});
 
+	it("groups SN range discourse slugs into the overlapping vagga", () => {
+		const sections = getEffectiveVaggaSections("sn45");
+		const grouped = groupDiscoursesByVaggaSection(
+			[
+				{ slug: "sn45.63", title: "63" },
+				{ slug: "sn45.64-68", title: "64-68" },
+				{ slug: "sn45.71-75", title: "71-75" },
+				{ slug: "sn45.50-54", title: "50-54" },
+			],
+			sections,
+		);
+		const oneThing = grouped.find(
+			(s) => s.slug === "sn45-ekadhammapeyyalavagga",
+		);
+		const sun = grouped.find((s) => s.slug === "sn45-suriyapeyyalavagga");
+		assert.deepEqual(
+			oneThing?.posts.map((p) => p.slug),
+			["sn45.63", "sn45.64-68", "sn45.71-75"],
+		);
+		assert.deepEqual(sun?.posts.map((p) => p.slug), ["sn45.50-54"]);
+		assert.equal(
+			grouped.some((s) => s.slug === "" && s.posts.length > 0),
+			false,
+		);
+	});
+
 	it("keeps empty SN vagga sections for ref-only chapters", () => {
 		const sections = getEffectiveVaggaSections("sn4");
 		const grouped = groupDiscoursesByVaggaSection(

@@ -81,4 +81,47 @@ describe("collectionPatterns SN vagga UIDs", () => {
 		assert.match(pattern ?? "", /slug:sn1\.10\$/);
 		assert.doesNotMatch(pattern ?? "", /slug:sn1\.11\$/);
 	});
+
+	it("matches range discourse slugs within SN vagga ranges", () => {
+		assert.equal(
+			slugMatchesCollectionPattern(
+				"sn45.71-75",
+				"sn45-ekadhammapeyyalavagga",
+			),
+			true,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern(
+				"sn45.64-68",
+				"sn45-ekadhammapeyyalavagga",
+			),
+			true,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern(
+				"sn45.50-54",
+				"sn45-ekadhammapeyyalavagga",
+			),
+			false,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern(
+				"sn45.50-54",
+				"sn45-suriyapeyyalavagga",
+			),
+			true,
+		);
+		assert.equal(
+			slugMatchesCollectionPattern("sn45.63", "sn45-ekadhammapeyyalavagga"),
+			true,
+		);
+	});
+});
+
+describe("collectionPatterns AN range discourse slugs", () => {
+	it("matches grouped AN files against book vagga ranges", () => {
+		assert.equal(slugMatchesCollectionPattern("an2.1-10", "an2.1-10"), true);
+		assert.equal(slugMatchesCollectionPattern("an2.1-10", "an2.11-20"), false);
+		assert.equal(slugMatchesCollectionPattern("an1.71-81", "an1"), true);
+	});
 });
