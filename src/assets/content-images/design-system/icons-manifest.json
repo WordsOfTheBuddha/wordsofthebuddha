@@ -108,6 +108,7 @@
 				"mn1",
 				"mn29",
 				"mn30",
+				"mn110",
 				"mn113",
 				"mn138",
 				"mn148"
@@ -132,6 +133,7 @@
 				"mn1",
 				"mn29",
 				"mn30",
+				"mn110",
 				"mn113",
 				"mn138",
 				"mn148"
@@ -241,7 +243,10 @@
 				"line-art",
 				"gold"
 			],
-			"discourse": "mn1",
+			"discourse": [
+				"mn1",
+				"mn110"
+			],
 			"labels": [
 				"phenomena"
 			],
@@ -477,6 +482,7 @@
 				"mn2",
 				"mn9",
 				"mn18",
+				"mn110",
 				"mn138",
 				"sn46.2"
 			],
@@ -499,6 +505,7 @@
 				"mn2",
 				"mn18",
 				"mn43",
+				"mn110",
 				"mn138",
 				"sn46.2"
 			],
@@ -628,6 +635,7 @@
 			],
 			"discourse": [
 				"mn2",
+				"mn110",
 				"an10.60"
 			],
 			"labels": [
@@ -828,7 +836,10 @@
 				"line-art",
 				"wish"
 			],
-			"discourse": "mn5",
+			"discourse": [
+				"mn5",
+				"mn110"
+			],
 			"labels": [
 				"unprincipled conduct",
 				"unwholesome"
@@ -876,7 +887,10 @@
 				"line-art",
 				"wish"
 			],
-			"discourse": "mn5",
+			"discourse": [
+				"mn5",
+				"mn110"
+			],
 			"labels": [
 				"unprincipled conduct",
 				"unwholesome"
@@ -1228,7 +1242,8 @@
 			],
 			"discourse": [
 				"mn118",
-				"mn10"
+				"mn10",
+				"mn110"
 			],
 			"labels": [
 				"mindfulness",
@@ -2611,7 +2626,8 @@
 			],
 			"discourse": [
 				"mn39",
-				"mn9"
+				"mn9",
+				"mn110"
 			],
 			"labels": [
 				"ethical conduct",
@@ -2968,6 +2984,7 @@
 				"mn9",
 				"mn77",
 				"mn95",
+				"mn110",
 				"mn111",
 				"mn138",
 				"mn140"
@@ -2986,7 +3003,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn110"
+			],
 			"labels": [
 				"community",
 				"friendship"
@@ -3029,7 +3049,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn6",
+			"discourse": [
+				"mn6",
+				"mn110"
+			],
 			"labels": [
 				"diligence",
 				"non harm"
@@ -3116,6 +3139,7 @@
 				"mn77",
 				"mn43",
 				"mn95",
+				"mn110",
 				"mn140"
 			],
 			"labels": [
@@ -3261,7 +3285,8 @@
 			"discourse": [
 				"mn9",
 				"mn43",
-				"mn95"
+				"mn95",
+				"mn110"
 			],
 			"labels": [
 				"harm",
@@ -3281,7 +3306,8 @@
 			"discourse": [
 				"mn9",
 				"mn43",
-				"mn95"
+				"mn95",
+				"mn110"
 			],
 			"labels": [
 				"harm",
@@ -3300,6 +3326,7 @@
 			],
 			"discourse": [
 				"mn9",
+				"mn110",
 				"an10.60"
 			],
 			"labels": [
@@ -3412,7 +3439,10 @@
 				"line-art",
 				"conduct"
 			],
-			"discourse": "mn18",
+			"discourse": [
+				"mn18",
+				"mn110"
+			],
 			"labels": [
 				"harm",
 				"wisdom"
@@ -3462,7 +3492,10 @@
 				"burgundy",
 				"line-art"
 			],
-			"discourse": "mn138",
+			"discourse": [
+				"mn138",
+				"mn110"
+			],
 			"labels": [
 				"attachment",
 				"consciousness",
