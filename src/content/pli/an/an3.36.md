@@ -4,6 +4,7 @@ description: The Buddha describes the three divine messengers that appear among 
 qualities: negligence, harm, diligence, unprincipled conduct
 theme: wisdom, directly knowing
 slug: an3.36
+character: King Yama
 ---
 
 “Tīṇimāni, bhikkhave, devadūtāni. Katamāni tīṇi?
