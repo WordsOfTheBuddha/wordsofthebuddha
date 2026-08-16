@@ -1,6 +1,6 @@
 ---
 title: Bahujanahita sutta - The Welfare Of The Many
-description: "Three individuals arise for the world’s welfare: the Buddha, the Arahant, and the trainee disciple. Out of compassion, all three teach the pure Dhamma, opening the door to the deathless and helping diligent followers make an end to suffering."
+description: "Three individuals arise for the world’s welfare: the Buddha, the Arahant, and the trainee disciple. Out of compassion, all three teach the pure Dhamma, opening the door to the deathless and helping diligent followers make an end of suffering."
 qualities: diligence, ethical conduct, recollection of the Buddha, recollection of the Sangha
 theme: inspiration, recollection of the Buddha
 slug: iti84
