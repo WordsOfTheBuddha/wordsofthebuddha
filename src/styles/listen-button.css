@@ -3,21 +3,27 @@
 
 /* ——— Inline listen icon in discourse cards ——— */
 /* Parent headings use flex + items-center so the icon centers with the title line */
-.voice-listen-icon {
+.voice-listen-icon,
+.discourse-viz-icon {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
 	line-height: 1;
 	color: var(--text-muted);
-	margin-left: 0.125rem;
 	opacity: 0.55;
 	transition: opacity 0.15s, color 0.15s;
 }
-.voice-listen-icon svg {
+.voice-listen-icon {
+	margin-left: 0.4rem;
+	vertical-align: -0.12em;
+}
+.voice-listen-icon svg,
+.discourse-viz-icon svg {
 	display: block;
 }
-.voice-listen-icon:hover {
+.voice-listen-icon:hover,
+.discourse-viz-icon:hover {
 	opacity: 1;
 	color: var(--link-color);
 }

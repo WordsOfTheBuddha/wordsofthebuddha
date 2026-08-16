@@ -1,6 +1,11 @@
 ---
 import { transformId } from "../utils/transformId";
 import { audioSlugs } from "../data/audioStatus";
+import {
+	discourseHasSvgViz,
+	hasContentImage,
+} from "../utils/contentImage";
+import VizIcon from "../assets/photo.svg?raw";
 interface Props {
 	title: string;
 	description: string;
@@ -40,6 +45,12 @@ const {
 } = Astro.props;
 
 const hasAudio = audioSlugs.has(id);
+// Sub-collection cards pass `count`; skip viz there. Convention-based
+// images (and SVG extras) match the discourse-page discovery path.
+const hasViz =
+	count === undefined &&
+	(hasContentImage(id) || discourseHasSvgViz(id));
+const vizHref = `/${id}?viz=1`;
 const isReference = variant === "reference";
 const cardHref = href ?? `/${id}`;
 const cardClamp = isReference ? 2 : clamp;
@@ -60,30 +71,56 @@ const descriptionHtml = description?.replace(
 			: "border-[color:var(--surface-border)] bg-[var(--surface-elevated)] shadow-sm hover:shadow-md",
 	]}
 >
-	<div class="flex items-start justify-between">
-		<div class="flex items-start flex-grow">
-			<div class="min-w-0 pr-4">
-				<h2
-					class:list={[
-						"post-card-heading text-base sm:text-lg font-semibold text-text leading-snug",
-						isReference && "my-0",
-					]}
+	<div class="post-card-header">
+		<h2
+			class:list={[
+				"post-card-heading text-base sm:text-lg font-semibold text-text leading-snug",
+				isReference && "my-0",
+			]}
+		>
+			<span class="post-card-title-primary">
+				<a
+					href={cardHref}
+					class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal"
+					data-base-href={cardHref}
 				>
-					<span class="post-card-title-primary">
-						<a
-							href={cardHref}
-							class="post-link text-[var(--text-muted)] hover:text-[var(--link-color)] id font-normal"
-							data-base-href={cardHref}
-						>
-							{transformId(id)}&nbsp;<span
-								style="color:var(--text-color)">{title}</span
-							></a
-						>
+					{transformId(id)}&nbsp;<span
+						style="color:var(--text-color)">{title}</span
+					></a
+				>
+				{
+					!isReference && titleTag && (
+						<span class="post-card-title-tag inline-flex px-2 py-0.5 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap align-middle">
+							{titleTag}
+						</span>
+					)
+				}
+			</span>
+			{
+				(hasAudio || hasViz) && (
+					<span class="post-card-media">
+						{
+							hasViz && (
+								<a
+									href={vizHref}
+									class="discourse-viz-icon post-card-viz"
+									data-base-href={`/${id}`}
+									aria-label="Open visualization"
+									title="Visualization"
+								>
+									<span
+										class="inline-flex w-4 h-4"
+										aria-hidden="true"
+										set:html={VizIcon}
+									/>
+								</a>
+							)
+						}
 						{
 							hasAudio && (
 								<a
 									href={`/listen/${id}`}
-									class="voice-listen-icon ml-1 align-middle"
+									class="voice-listen-icon"
 									aria-label="Listen to this discourse"
 									title="Listen"
 								>
@@ -94,36 +131,9 @@ const descriptionHtml = description?.replace(
 							)
 						}
 					</span>
-					{
-						!isReference && titleTag && (
-							<span class="post-card-title-tag inline-flex px-2 py-0.5 text-xs rounded-full font-normal bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap align-middle">
-								{titleTag}
-							</span>
-						)
-					}
-				</h2>
-			</div>
-			<div class="flex items-center shrink-0">
-				<button
-					class="bookmark-btn opacity-0 transition-opacity duration-200"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="w-6 h-6"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-						></path>
-					</svg>
-				</button>
-			</div>
-		</div>
+				)
+			}
+		</h2>
 		{
 			count !== undefined && (
 				<div
@@ -138,6 +148,22 @@ const descriptionHtml = description?.replace(
 				</div>
 			)
 		}
+		<button class="bookmark-btn opacity-0 transition-opacity duration-200">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="w-6 h-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+				></path>
+			</svg>
+		</button>
 	</div>
 	<div class:list={[inlineVolpage && "post-card-body"]}>
 		<p
@@ -193,18 +219,27 @@ const descriptionHtml = description?.replace(
 		const paliMode = localStorage.getItem("paliMode") === "true";
 		const layout = localStorage.getItem("layout") || "interleaved";
 		const refMode = resolveRefMode();
-		const links = document.querySelectorAll("a.post-link");
+		const params = new URLSearchParams();
+		if (paliMode) params.set("pli", "true");
+		if (layout === "split") params.set("layout", layout);
+		if (refMode) params.set("ref", "true");
+		const qs = params.toString();
 
-		links.forEach((link) => {
+		document.querySelectorAll("a.post-link").forEach((link) => {
 			const baseHref = link.getAttribute("data-base-href");
 			if (!baseHref) return;
-			const params = new URLSearchParams();
-			if (paliMode) params.set("pli", "true");
-			if (layout === "split") params.set("layout", layout);
-			if (refMode) params.set("ref", "true");
-			(link as HTMLAnchorElement).href = params.toString()
-				? `${baseHref}?${params.toString()}`
+			(link as HTMLAnchorElement).href = qs
+				? `${baseHref}?${qs}`
 				: baseHref;
+		});
+
+		document.querySelectorAll("a.discourse-viz-icon").forEach((link) => {
+			const baseHref = link.getAttribute("data-base-href");
+			if (!baseHref) return;
+			const vizParams = new URLSearchParams(params);
+			vizParams.set("viz", "1");
+			(link as HTMLAnchorElement).href =
+				`${baseHref}?${vizParams.toString()}`;
 		});
 	}
 
@@ -212,19 +247,63 @@ const descriptionHtml = description?.replace(
 </script>
 
 <style>
-	.post-card-heading {
+	.post-card-header {
 		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		column-gap: 0.25rem;
-		row-gap: 0.25rem;
+		align-items: flex-start;
+		width: 100%;
+		gap: 0.625rem;
+		position: relative;
+	}
+	.post-card-heading {
+		flex: 1 1 auto;
+		min-width: 0;
+		margin-block: 0;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		column-gap: 0.625rem;
+		align-items: start;
 	}
 	.post-card-title-primary {
 		display: inline;
 		min-width: 0;
+		grid-column: 1;
 	}
 	.post-card-title-tag {
 		flex-shrink: 0;
+		margin-left: 0.25rem;
+		vertical-align: middle;
+	}
+	/* First-line metrics match `.id` so icons sit in the title’s em-square. */
+	.post-card-media {
+		grid-column: 2;
+		grid-row: 1;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.95rem;
+		line-height: 1.375;
+		height: 1em;
+		margin: 0;
+		margin-top: calc((1lh - 1em) / 2);
+	}
+	@media (min-width: 640px) {
+		.post-card-media {
+			font-size: 1.1rem;
+		}
+	}
+	.post-card-media .voice-listen-icon {
+		margin-left: 0;
+		vertical-align: unset;
+	}
+	.post-card-media svg {
+		width: 1em;
+		height: 1em;
+	}
+	.post-card-viz {
+		width: 1em;
+		height: 1em;
+		margin: 0;
+		padding: 0;
 	}
 	/* Shared with client-rendered dashed reference cards.
 	   Overlay PTS in the bottom-right so the description keeps full width. */
@@ -277,7 +356,11 @@ const descriptionHtml = description?.replace(
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
 	.bookmark-btn {
+		position: absolute;
+		top: 0;
+		right: 0;
 		color: var(--text-muted);
+		pointer-events: none;
 	}
 	.bookmark-btn:hover {
 		color: var(--surface-ink);
