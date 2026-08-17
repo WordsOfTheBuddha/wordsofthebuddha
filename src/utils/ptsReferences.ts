@@ -254,6 +254,26 @@ export function parsePtsVolpage(
 	return null;
 }
 
+/**
+ * Nikaya + three numbers: volume is the first, page is the last.
+ *   SN 1.1.3 | SN 1. 1. 3 | SN 1 1.3 | SN 1 1 3
+ * People type the card label `PTS 1.3` after `SN`/`SN 1`, with optional extra
+ * dots and spaces — not volume.page.paragraph.
+ */
+function parseNikayaThreePart(s: string): ParsedPtsRef | null {
+	const match = s.match(
+		/^([A-Za-z]+)\s+([ivxIVX0-9]+)(?:\s*[.]\s*|\s+)(\d+)(?:\s*[.]\s*|\s+)(\d+)\s*$/,
+	);
+	if (!match) return null;
+	const nikaya = resolveNikayaAlias(match[1]);
+	const volume = parseRomanOrInt(match[2]);
+	const page = Number(match[4]);
+	if (nikaya && VOLUME_NIKAYAS.has(nikaya) && volume && page) {
+		return { nikaya, volume, page };
+	}
+	return null;
+}
+
 /** True when the query uses an explicit PTS / volpage directive. */
 export function hasPtsDirective(query: string): boolean {
 	return PTS_DIRECTIVE_RE.test(query.trim());
@@ -269,9 +289,13 @@ export function parsePtsQuery(query: string): ParsedPtsRef | null {
 
 	// Strip directive prefixes (keep pts-vp-pli for its own parser)
 	if (/^pts-vp-pli/i.test(q)) {
-		const bilara = q.match(/^pts-vp-pli(\d+)\.(\d+)$/i);
+		const bilara = q.match(/^pts-vp-pli(\d+)\.(\d+)(?:\.(\d+))?$/i);
 		if (bilara) {
-			return { volume: Number(bilara[1]), page: Number(bilara[2]) };
+			return {
+				volume: Number(bilara[1]),
+				page: Number(bilara[2]),
+				...(bilara[3] ? { para: Number(bilara[3]) } : {}),
+			};
 		}
 		return null;
 	}
@@ -280,6 +304,18 @@ export function parsePtsQuery(query: string): ParsedPtsRef | null {
 	const hadPtsWord = /^PTS\b/i.test(q);
 	q = q.replace(/^PTS\s+/i, "");
 	q = q.replace(/^\((?:1st|2nd)\s*ed\.?\)\s*/i, "");
+	q = q.replace(/\.\s*$/, "").trim();
+
+	// "1.1.3" / "1. 1. 3" — same as the card label PTS 1.3, not page 1 para 3
+	const threeNumeric = q.match(
+		/^(\d+)\s*[.]\s*(\d+)\s*[.]\s*(\d+)\s*$/,
+	);
+	if (threeNumeric) {
+		return {
+			volume: Number(threeNumeric[1]),
+			page: Number(threeNumeric[3]),
+		};
+	}
 
 	// "5.172" / "4.152-4.155" (numeric; use first page of a range)
 	const numeric = q.match(/^(\d+)\s*[.]\s*(\d+)(?:\s*[–—-]\s*\d+\s*[.]?\s*\d+)?\s*$/);
@@ -290,11 +326,19 @@ export function parsePtsQuery(query: string): ParsedPtsRef | null {
 		};
 	}
 
+	// Three-part with nikaya, before dots are flattened:
+	// "SN 1.1.3" | "SN 1. 1. 3" | "SN 1 1.3" | "SN i 1.3"
+	const threeNikaya = parseNikayaThreePart(q);
+	if (threeNikaya) return threeNikaya;
+
 	// Normalize: "AN V. 91" | "AN V,91"
 	let s = q;
 	s = s.replace(/([A-Za-z])\s*\.\s*([ivxIVX0-9])/g, "$1 $2");
 	s = s.replace(/([ivxIVX0-9])\s*[.,]\s*(\d+)/g, "$1 $2");
 	s = s.replace(/\s+/g, " ").trim();
+
+	const threeNikayaFlat = parseNikayaThreePart(s);
+	if (threeNikayaFlat) return threeNikayaFlat;
 
 	const withNikayaVol = s.match(
 		/^([A-Za-z]+)\s+([ivxIVX0-9]+)\s+(\d+)\s*$/,
@@ -447,25 +491,35 @@ export function lookupPtsSlugs(ref: ParsedPtsRef): string[] {
 		if (ref.page == null) {
 			slugs = [...new Set(list.map((e) => e.slug))];
 		} else {
-			slugs = pickCoveringSlugs(list, ref.page);
+			slugs = pickCoveringSlugs(list, ref.page, ref.para);
 		}
 	} else {
 		if (!ref.volume || ref.page == null) return [];
 		const hits: string[] = [];
 		for (const nikaya of VOLUME_NIKAYAS) {
 			const list = byNikayaVolume.get(`${nikaya}:${ref.volume}`) ?? [];
-			hits.push(...pickCoveringSlugs(list, ref.page));
+			hits.push(...pickCoveringSlugs(list, ref.page, ref.para));
 		}
 		slugs = [...new Set(hits)];
 	}
 	return sortDiscourseIds(slugs);
 }
 
-function pickCoveringSlugs(list: IndexedPts[], page: number): string[] {
+function pickCoveringSlugs(
+	list: IndexedPts[],
+	page: number,
+	para?: number,
+): string[] {
 	if (list.length === 0) return [];
 
-	const exact = list.filter((e) => e.page === page).map((e) => e.slug);
-	if (exact.length > 0) return exact;
+	const onPage = list.filter((e) => e.page === page);
+	if (onPage.length > 0) {
+		if (para != null) {
+			const byPara = onPage.filter((e) => e.para === para);
+			if (byPara.length > 0) return byPara.map((e) => e.slug);
+		}
+		return onPage.map((e) => e.slug);
+	}
 
 	let lo = 0;
 	let hi = list.length - 1;

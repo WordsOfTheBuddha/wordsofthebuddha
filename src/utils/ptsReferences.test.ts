@@ -124,6 +124,35 @@ describe("parsePtsQuery", () => {
 			nikaya: "mn",
 			volume: 2,
 		});
+		assert.deepEqual(parsePtsQuery("pts:SN 1. 1. 3"), {
+			nikaya: "sn",
+			volume: 1,
+			page: 3,
+		});
+		assert.deepEqual(parsePtsQuery("pts:SN 1. 1. 3."), {
+			nikaya: "sn",
+			volume: 1,
+			page: 3,
+		});
+		assert.deepEqual(parsePtsQuery("pts:SN 1 1.3"), {
+			nikaya: "sn",
+			volume: 1,
+			page: 3,
+		});
+		assert.deepEqual(parsePtsQuery("pts:SN 1.1.3"), {
+			nikaya: "sn",
+			volume: 1,
+			page: 3,
+		});
+		assert.deepEqual(parsePtsQuery("pts:SN 1.3"), {
+			nikaya: "sn",
+			volume: 1,
+			page: 3,
+		});
+		assert.deepEqual(parsePtsQuery("pts:1. 1. 3"), {
+			volume: 1,
+			page: 3,
+		});
 	});
 });
 
@@ -186,6 +215,28 @@ describe("lookupPtsSlugs", () => {
 				`duplicate slug ${slugs[i]}`,
 			);
 		}
+	});
+
+	it("treats SN 1 1.3 as PTS volume 1 page 3, not discourse SN 1.3", () => {
+		const parsed = parsePtsQuery("pts:SN 1 1.3");
+		assert.deepEqual(parsed, {
+			nikaya: "sn",
+			volume: 1,
+			page: 3,
+		});
+		const slugs = lookupPtsSlugs(parsed!);
+		assert.ok(
+			slugs.includes("sn1.4"),
+			`expected sn1.4 (PTS 1.3), got ${slugs}`,
+		);
+		assert.ok(
+			!slugs.includes("sn1.1"),
+			`sn1.1 is PTS 1.1, got ${slugs}`,
+		);
+		assert.ok(
+			!slugs.includes("sn1.3"),
+			`SN 1.3 is a discourse id, not PTS page 3, got ${slugs}`,
+		);
 	});
 });
 

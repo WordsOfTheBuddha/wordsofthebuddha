@@ -18,6 +18,7 @@ import {
 } from "../../utils/searchRanking";
 import {
 	getPtsDisplay,
+	hasPtsDirective,
 	lookupPtsSlugs,
 	parsePtsQuery,
 } from "../../utils/ptsReferences";
@@ -1200,7 +1201,12 @@ async function performSearchInner(
 				return ptsResults;
 			}
 		}
-		// Fall through to normal search if no indexed discourse matched
+		// Directed PTS queries must not fall through to discourse-ID / Fuse
+		// matching (e.g. pts:SN 1 1.3 is volume.page.para, not sutta SN 1.3).
+		return [];
+	}
+	if (hasPtsDirective(query)) {
+		return [];
 	}
 
 	if (includeReferences) {
