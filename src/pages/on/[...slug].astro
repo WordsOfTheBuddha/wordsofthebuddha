@@ -16,6 +16,7 @@ import {
 	canonicalOnSlug,
 	findContentBySlug,
 	getStaticOnSlugs,
+	resolveOnSlugFallback,
 } from "../../utils/discover-data";
 import { qualityListIncludes } from "../../utils/ContentTagUtils";
 import {
@@ -47,7 +48,16 @@ const { item: content, type: contentType } = findContentBySlug(
 	allContent,
 );
 if (!content || !contentType) {
-	return new Response(null, { status: 404 });
+	const fallback = resolveOnSlugFallback(slug, allContent);
+	if (fallback.kind === "on") {
+		return Astro.redirect(`/on/${fallback.slug}`, 301);
+	}
+	if (fallback.kind === "search") {
+		return Astro.redirect(
+			`/search?q=${encodeURIComponent(fallback.query)}`,
+		);
+	}
+	return Astro.rewrite("/404");
 }
 
 // Spaced or legacy slug forms (e.g. /on/sun%20and%20shade) → hyphenated /on/sun-and-shade.

@@ -6,14 +6,15 @@ import { directoryStructure } from "../data/directoryStructure";
 import Layout from "../layouts/Layout.astro";
 import MDContent from "../components/MDContent.astro";
 import { resolveCatchAllDiscoursePage } from "../utils/catchAllDiscoursePage";
-import { canonicalOnSlug, findContentBySlug } from "../utils/discover-data";
+import { canonicalOnSlug, resolveOnSlugFallback } from "../utils/discover-data";
 
 // Extract slug from params (may contain slashes because this is a rest parameter)
 const { id: originalId } = Astro.params;
 let id: string = originalId || "";
 
-// Non-prerendered /on/:slug variants (e.g. /on/sun%20and%20shade) miss the static
-// /on/ page and land here as id "on/sun and shade". Resolve and canonicalize.
+// Non-prerendered /on/:slug variants miss the static /on/ page (unknown slugs,
+// or spaced forms like /on/sun%20and%20shade). Canonicalize, stem-match, or
+// send to search — never an empty 404 body (Chrome renders that as a broken host).
 if (originalId?.startsWith("on/")) {
 	const rawSlug = originalId.slice("on/".length);
 	let decoded = rawSlug;
@@ -22,14 +23,20 @@ if (originalId?.startsWith("on/")) {
 	} catch {
 		/* keep rawSlug */
 	}
-	const { item } = findContentBySlug(decoded);
-	if (item) {
-		const canonical = canonicalOnSlug(item.slug);
-		if (canonicalOnSlug(decoded) !== canonical) {
-			return Astro.redirect(`/on/${canonical}`, 301);
+	const fallback = resolveOnSlugFallback(decoded);
+	if (fallback.kind === "on") {
+		const location = `/on/${fallback.slug}`;
+		if (canonicalOnSlug(decoded) !== fallback.slug) {
+			return Astro.redirect(location, 301);
 		}
+		return Astro.rewrite(location);
 	}
-	return new Response(null, { status: 404 });
+	if (fallback.kind === "search") {
+		return Astro.redirect(
+			`/search?q=${encodeURIComponent(fallback.query)}`,
+		);
+	}
+	return Astro.rewrite("/404");
 }
 
 // Support legacy / nested style paths like /iti/iti50-99 or /ud/ud8/ud8.2 by redirecting
@@ -94,9 +101,9 @@ if (isSystemRequest) {
 // Bare quality/topic/simile/person slugs used to soft-404 into /search?q=…
 // (e.g. /bad-friendship, /mluv-creeper). Send them to the canonical /on/ page.
 if (id && !id.includes("/")) {
-	const { item } = findContentBySlug(id);
-	if (item) {
-		return Astro.redirect(`/on/${canonicalOnSlug(item.slug)}`, 301);
+	const fallback = resolveOnSlugFallback(id);
+	if (fallback.kind === "on") {
+		return Astro.redirect(`/on/${fallback.slug}`, 301);
 	}
 }
 

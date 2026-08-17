@@ -608,6 +608,72 @@ export function findContentBySlug(
 	return { item: null, type: null };
 }
 
+/** Hyphen-bounded stem: `personal-existence` matches `personal-existence-view`. */
+function hyphenBoundedRelated(a: string, b: string): boolean {
+	return a === b || a.startsWith(`${b}-`) || b.startsWith(`${a}-`);
+}
+
+/** Readable search query for an unknown `/on/:slug` (hyphens → spaces). */
+export function onSlugSearchQuery(rawSlug: string): string {
+	let decoded = rawSlug;
+	try {
+		decoded = decodeURIComponent(rawSlug);
+	} catch {
+		/* keep rawSlug */
+	}
+	return decoded
+		.replace(/[/_+]+/g, " ")
+		.replace(/-/g, " ")
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
+export type OnSlugFallback =
+	| { kind: "on"; slug: string }
+	| { kind: "search"; query: string }
+	| { kind: "not-found" };
+
+/**
+ * Resolve a missing or non-canonical `/on/:slug`.
+ * Exact match or a unique hyphen-stem (including topic redirects) → canonical
+ * `/on/` slug; otherwise search, or not-found when the slug is empty.
+ */
+export function resolveOnSlugFallback(
+	rawSlug: string,
+	items?: UnifiedContentItem[],
+): OnSlugFallback {
+	const all = items ?? buildAllContent();
+	const exact = findContentBySlug(rawSlug, all);
+	if (exact.item) {
+		return { kind: "on", slug: canonicalOnSlug(exact.item.slug) };
+	}
+
+	const stem = canonicalOnSlug(rawSlug);
+	if (stem) {
+		const matches = new Set<string>();
+		for (const entry of all) {
+			const canonical = canonicalOnSlug(entry.slug);
+			const aliases = [canonical];
+			if (Array.isArray(entry.redirects)) {
+				for (const redirect of entry.redirects) {
+					const alias = canonicalOnSlug(redirect);
+					if (alias) aliases.push(alias);
+				}
+			}
+			if (aliases.some((alias) => hyphenBoundedRelated(stem, alias))) {
+				matches.add(canonical);
+				if (matches.size > 1) break;
+			}
+		}
+		if (matches.size === 1) {
+			return { kind: "on", slug: matches.values().next().value as string };
+		}
+	}
+
+	const query = onSlugSearchQuery(rawSlug);
+	return query ? { kind: "search", query } : { kind: "not-found" };
+}
+
 /**
  * Static slugs for /on pages (topics + redirects + qualities + similes).
  */
