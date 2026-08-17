@@ -1,14 +1,16 @@
 /**
  * Shared table-of-contents helpers for long posts and sectioned discourses.
  *
- * Discourses use ### / #### headings. Verse numbers (Dhp “179”) and AN range
- * ids (“1.268”) are omitted so a ToC only appears when there are named
+ * Discourses use ### / #### / ##### headings. Unexpected # / ## are shown
+ * as top-level, same as ###. Verse numbers (Dhp “179”) and AN range ids
+ * (“1.268”) are omitted so a ToC only appears when there are named
  * sections to navigate — typically MN and DN, and some longer SN/AN suttas.
  */
 
 import { slugify } from "./slugify";
 
 export const DISCOURSE_TOC_MIN_HEADINGS = 3;
+export const DISCOURSE_TOC_HEADING_SELECTOR = "h1, h2, h3, h4, h5";
 
 const LETTER_RE = /\p{L}/u;
 const GLOSS_RE = /\|([^:|]+)::[^|]*\|/g;
@@ -28,7 +30,7 @@ export function slugifyHeading(text: string): string {
 
 export function namedSectionHeadingsFromMarkdown(markdown: string): string[] {
 	const headings: string[] = [];
-	for (const match of markdown.matchAll(/^#{2,4}\s+(.+)$/gm)) {
+	for (const match of markdown.matchAll(/^#{1,5}\s+(.+)$/gm)) {
 		const label = headingLabel(match[1] ?? "");
 		if (isNamedSectionHeading(label)) headings.push(label);
 	}
@@ -148,6 +150,38 @@ function ensureHeadingId(heading: HTMLElement): string {
 	return heading.id;
 }
 
+function headingLevel(tagName: string): number {
+	const level = Number.parseInt(tagName.replace(/^H/i, ""), 10);
+	return Number.isFinite(level) ? level : 0;
+}
+
+/** Top section level: H3 on discourses (nestedTag H4), H2 on essays (nestedTag H3). */
+export function tocBaseLevel(nestedTag: string): number {
+	const nested = headingLevel(nestedTag);
+	return nested > 1 ? nested - 1 : 2;
+}
+
+/**
+ * H1/H2 fold into the top section level. Depth is 0 for that level, 1 for the
+ * next (h4 / essay h3), 2 for h5.
+ */
+export function tocDepth(tagName: string, baseLevel: number): number {
+	const level = headingLevel(tagName);
+	if (level <= 0) return 0;
+	return Math.max(0, Math.max(level, baseLevel) - baseLevel);
+}
+
+export function tocLinkClass(
+	tagName: string,
+	baseLevel: number,
+	minDepth: number,
+): string {
+	const depth = Math.max(0, tocDepth(tagName, baseLevel) - minDepth);
+	if (depth <= 0) return "";
+	if (depth === 1) return "toc-h3";
+	return "toc-h5";
+}
+
 function collectHeadings(
 	root: HTMLElement,
 	headingSelector: string,
@@ -162,18 +196,12 @@ function collectHeadings(
 	);
 }
 
-function createTocLink(
-	heading: HTMLElement,
-	nestedTag: string,
-	indentNested: boolean,
-): HTMLAnchorElement {
+function createTocLink(heading: HTMLElement, className: string): HTMLAnchorElement {
 	const id = ensureHeadingId(heading);
 	const link = document.createElement("a");
 	link.href = `#${id}`;
 	link.textContent = headingLabel(heading.textContent || "");
-	if (indentNested && heading.tagName === nestedTag) {
-		link.className = "toc-h3";
-	}
+	if (className) link.className = className;
 	return link;
 }
 
@@ -193,13 +221,19 @@ export function attachTableOfContents(
 	);
 	if (headings.length < options.minHeadings) return false;
 
-	const indentNested = headings.some(
-		(heading) => heading.tagName !== options.nestedTag,
+	const baseLevel = tocBaseLevel(options.nestedTag);
+	const minDepth = Math.min(
+		...headings.map((heading) => tocDepth(heading.tagName, baseLevel)),
 	);
 
 	nav.replaceChildren();
 	for (const heading of headings) {
-		nav.appendChild(createTocLink(heading, options.nestedTag, indentNested));
+		nav.appendChild(
+			createTocLink(
+				heading,
+				tocLinkClass(heading.tagName, baseLevel, minDepth),
+			),
+		);
 	}
 
 	const mobileNav = document.getElementById(options.mobileNavId);
@@ -211,7 +245,10 @@ export function attachTableOfContents(
 		mobileNav.replaceChildren();
 		for (const heading of headings) {
 			mobileNav.appendChild(
-				createTocLink(heading, options.nestedTag, indentNested),
+				createTocLink(
+					heading,
+					tocLinkClass(heading.tagName, baseLevel, minDepth),
+				),
 			);
 		}
 	}

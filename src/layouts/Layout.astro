@@ -33,7 +33,10 @@ import DiscourseImage from "../components/DiscourseImage.astro";
 import ImageToggle from "../components/ImageToggle.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import type { ContentImageData } from "../utils/contentImage";
-import { DISCOURSE_TOC_MIN_HEADINGS } from "../utils/tocClient";
+import {
+	DISCOURSE_TOC_HEADING_SELECTOR,
+	DISCOURSE_TOC_MIN_HEADINGS,
+} from "../utils/tocClient";
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { buildStructuredData } from "../utils/structuredData";
 import { debug } from "../utils/contentParser";
@@ -602,7 +605,7 @@ const structuredData = buildStructuredData({
 				<TableOfContents
 					placement="fixed"
 					contentSelector=".interleaved-article"
-					headingSelector="h3, h4"
+					headingSelector={DISCOURSE_TOC_HEADING_SELECTOR}
 					nestedTag="H4"
 					minHeadings={DISCOURSE_TOC_MIN_HEADINGS}
 					requireNamed={true}

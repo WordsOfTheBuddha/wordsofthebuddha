@@ -8,6 +8,8 @@ import {
 	pickActiveHeadingId,
 	shouldShowDiscourseToc,
 	slugifyHeading,
+	tocBaseLevel,
+	tocLinkClass,
 } from "./tocClient";
 
 describe("headingLabel", () => {
@@ -95,6 +97,42 @@ text
 text
 `;
 		assert.equal(shouldShowDiscourseToc(markdown), false);
+	});
+
+	it("counts h1 through h5 named headings, but not h6", () => {
+		const markdown = `
+# Opening
+## Unused
+##### 4.5.1. Exposition of the Truth of Suffering
+###### 4.3.1.1. The Shorter Section
+`;
+		assert.deepEqual(namedSectionHeadingsFromMarkdown(markdown), [
+			"Opening",
+			"Unused",
+			"4.5.1. Exposition of the Truth of Suffering",
+		]);
+	});
+});
+
+describe("tocLinkClass", () => {
+	it("treats h1 and h2 as top-level like h3 on discourses", () => {
+		const base = tocBaseLevel("H4");
+		assert.equal(tocLinkClass("H1", base, 0), "");
+		assert.equal(tocLinkClass("H2", base, 0), "");
+		assert.equal(tocLinkClass("H3", base, 0), "");
+		assert.equal(tocLinkClass("H4", base, 0), "toc-h3");
+		assert.equal(tocLinkClass("H5", base, 0), "toc-h5");
+	});
+
+	it("keeps essay h3 nested under h2", () => {
+		const base = tocBaseLevel("H3");
+		assert.equal(tocLinkClass("H2", base, 0), "");
+		assert.equal(tocLinkClass("H3", base, 0), "toc-h3");
+	});
+
+	it("does not indent a flat list of h4 or h5 headings", () => {
+		assert.equal(tocLinkClass("H4", 3, 1), "");
+		assert.equal(tocLinkClass("H5", 3, 2), "");
 	});
 });
 
