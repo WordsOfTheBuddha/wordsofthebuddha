@@ -1,12 +1,17 @@
 ---
+title: Poṭṭhapāda sutta - About Poṭṭhapāda
+description: How does human perception reach its absolute stillness? Rejecting mystical and accidental theories of consciousness, the Buddha charts the structured ascent of meditative awareness to the threshold of cessation. The dialogue explores why metaphysical dilemmas are set aside, how assumptions of self arise and pass away, and how the awakened mind uses worldly expressions without grasping them as ultimate truths.
+qualities: perception, cessation, jhana, formless, self, views, four noble truths, worldly conventions, direct knowledge, liberation, personal existence view
+theme: wisdom, meditation
 slug: dn9
-source: suttacentral/bilara-data
-title: Poṭṭhapādasutta
-edition: ms
-granularity: paragraph
+character:
+  - Wanderer Poṭṭhapāda
+  - Citta Hatthisāriputta
+simile: most beautiful woman of the country, staircase to a palace, milk to ghee
+priority: 2
 ---
 
-1. Poṭṭhapādaparibbājakavatthu
+### 1. Poṭṭhapādaparibbājakavatthu
 
 Evaṁ me sutaṁ— ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
 
@@ -22,7 +27,7 @@ Atha kho bhagavā yena poṭṭhapādo paribbājako tenupasaṅkami. Atha kho po
 
 Nisīdi bhagavā paññatte āsane. Poṭṭhapādopi kho paribbājako aññataraṁ nīcaṁ āsanaṁ gahetvā ekamantaṁ nisīdi. Ekamantaṁ nisinnaṁ kho poṭṭhapādaṁ paribbājakaṁ bhagavā etadavoca: “kāya nuttha, poṭṭhapāda, etarahi kathāya sannisinnā, kā ca pana vo antarākathā vippakatā”ti?
 
-1.1. Abhisaññānirodhakathā
+#### 1.1. Abhisaññānirodhakathā
 
 Evaṁ vutte, poṭṭhapādo paribbājako bhagavantaṁ etadavoca: “tiṭṭhatesā, bhante, kathā, yāya mayaṁ etarahi kathāya sannisinnā. Nesā, bhante, kathā bhagavato dullabhā bhavissati pacchāpi savanāya.
 
@@ -38,7 +43,7 @@ Tamañño evamāha: ‘na kho pana metaṁ, bho, evaṁ bhavissati. Santi hi, bh
 
 Tassa mayhaṁ, bhante, bhagavantaṁyeva ārabbha sati udapādi: ‘aho nūna bhagavā, aho nūna sugato, yo imesaṁ dhammānaṁ sukusalo’ti. Bhagavā, bhante, kusalo, bhagavā pakataññū abhisaññānirodhassa. Kathaṁ nu kho, bhante, abhisaññānirodho hotī”ti?
 
-1.2. Sahetukasaññuppādanirodhakathā
+#### 1.2. Sahetukasaññuppādanirodhakathā
 
 “Tatra, poṭṭhapāda, ye te samaṇabrāhmaṇā evamāhaṁsu: ‘ahetū appaccayā purisassa saññā uppajjantipi nirujjhantipī’ti, āditova tesaṁ aparaddhaṁ. Taṁ kissa hetu? Sahetū hi, poṭṭhapāda, sappaccayā purisassa saññā uppajjantipi nirujjhantipi. Sikkhā ekā saññā uppajjati, sikkhā ekā saññā nirujjhati.
 
@@ -82,7 +87,7 @@ Taṁ kiṁ maññasi, poṭṭhapāda, api nu te ito pubbe evarūpā anupubbāb
 
 “Saññā kho, poṭṭhapāda, paṭhamaṁ uppajjati, pacchā ñāṇaṁ, saññuppādā ca pana ñāṇuppādo hoti. So evaṁ pajānāti: ‘idappaccayā kira me ñāṇaṁ udapādī’ti. Iminā kho etaṁ, poṭṭhapāda, pariyāyena veditabbaṁ— yathā saññā paṭhamaṁ uppajjati, pacchā ñāṇaṁ, saññuppādā ca pana ñāṇuppādo hotī”ti.
 
-1.3. Saññāattakathā
+#### 1.3. Saññāattakathā
 
 “Saññā nu kho, bhante, purisassa attā, udāhu aññā saññā añño attā”ti?
 
@@ -134,7 +139,7 @@ Atha kho te paribbājakā acirapakkantassa bhagavato poṭṭhapādaṁ paribbā
 
 Evaṁ vutte, poṭṭhapādo paribbājako te paribbājake etadavoca: “ahampi kho, bho, na kiñci samaṇassa gotamassa ekaṁsikaṁ dhammaṁ desitaṁ ājānāmi: ‘sassato loko’ti vā, ‘asassato loko’ti vā …pe… ‘neva hoti na na hoti tathāgato paraṁ maraṇā’ti vā; api ca samaṇo gotamo bhūtaṁ tacchaṁ tathaṁ paṭipadaṁ paññapeti dhammaṭṭhitataṁ dhammaniyāmataṁ. Bhūtaṁ kho pana tacchaṁ tathaṁ paṭipadaṁ paññapentassa dhammaṭṭhitataṁ dhammaniyāmataṁ, kathañhi nāma mādiso viññū samaṇassa gotamassa subhāsitaṁ subhāsitato nābbhanumodeyyā”ti?
 
-2. Cittahatthisāriputtapoṭṭhapādavatthu
+### 2. Cittahatthisāriputtapoṭṭhapādavatthu
 
 Atha kho dvīhatīhassa accayena citto ca hatthisāriputto poṭṭhapādo ca paribbājako yena bhagavā tenupasaṅkamiṁsu; upasaṅkamitvā citto hatthisāriputto bhagavantaṁ abhivādetvā ekamantaṁ nisīdi. Poṭṭhapādo pana paribbājako bhagavatā saddhiṁ sammodi. Sammodanīyaṁ kathaṁ sāraṇīyaṁ vītisāretvā ekamantaṁ nisīdi. Ekamantaṁ nisinno kho poṭṭhapādo paribbājako bhagavantaṁ etadavoca: “tadā maṁ, bhante, te paribbājakā acirapakkantassa bhagavato samantato vācāsannitodakena sañjhabbharimakaṁsu: ‘evameva panāyaṁ bhavaṁ poṭṭhapādo yaññadeva samaṇo gotamo bhāsati, taṁ tadevassa abbhanumodati: “evametaṁ, bhagavā, evametaṁ, sugatā”ti. Na kho pana mayaṁ kiñci samaṇassa gotamassa ekaṁsikaṁ dhammaṁ desitaṁ ājānāma: “sassato loko”ti vā, “asassato loko”ti vā, “antavā loko”ti vā, “anantavā loko”ti vā, “taṁ jīvaṁ taṁ sarīran”ti vā, “aññaṁ jīvaṁ aññaṁ sarīran”ti vā, “hoti tathāgato paraṁ maraṇā”ti vā, “na hoti tathāgato paraṁ maraṇā”ti vā, “hoti ca na ca hoti tathāgato paraṁ maraṇā”ti vā, “neva hoti na na hoti tathāgato paraṁ maraṇā”ti vā’ti. Evaṁ vuttāhaṁ, bhante, te paribbājake etadavocaṁ: ‘ahampi kho, bho, na kiñci samaṇassa gotamassa ekaṁsikaṁ dhammaṁ desitaṁ ājānāmi: “sassato loko”ti vā, “asassato loko”ti vā …pe… “neva hoti na na hoti tathāgato paraṁ maraṇā”ti vā; api ca samaṇo gotamo bhūtaṁ tacchaṁ tathaṁ paṭipadaṁ paññapeti dhammaṭṭhitataṁ dhammaniyāmataṁ. Bhūtaṁ kho pana tacchaṁ tathaṁ paṭipadaṁ paññapentassa dhammaṭṭhitataṁ dhammaniyāmataṁ, kathañhi nāma mādiso viññū samaṇassa gotamassa subhāsitaṁ subhāsitato nābbhanumodeyyā’”ti?
 
@@ -144,11 +149,13 @@ Katame ca te, poṭṭhapāda, mayā anekaṁsikā dhammā desitā paññattā? 
 
 Kasmā ca te, poṭṭhapāda, mayā anekaṁsikā dhammā desitā paññattā? Na hete, poṭṭhapāda, atthasaṁhitā na dhammasaṁhitā na ādibrahmacariyakā na nibbidāya na virāgāya na nirodhāya na upasamāya na abhiññāya na sambodhāya na nibbānāya saṁvattanti. Tasmā te mayā anekaṁsikā dhammā desitā paññattā.
 
-2.1. Ekaṁsikadhammā
+#### 2.1. Ekaṁsikadhammā
 
 Katame ca te, poṭṭhapāda, mayā ekaṁsikā dhammā desitā paññattā? Idaṁ dukkhanti kho, poṭṭhapāda, mayā ekaṁsiko dhammo desito paññatto. Ayaṁ dukkhasamudayoti kho, poṭṭhapāda, mayā ekaṁsiko dhammo desito paññatto. Ayaṁ dukkhanirodhoti kho, poṭṭhapāda, mayā ekaṁsiko dhammo desito paññatto. Ayaṁ dukkhanirodhagāminī paṭipadāti kho, poṭṭhapāda, mayā ekaṁsiko dhammo desito paññatto.
 
 Kasmā ca te, poṭṭhapāda, mayā ekaṁsikā dhammā desitā paññattā? Ete hi, poṭṭhapāda, atthasaṁhitā, ete dhammasaṁhitā, ete ādibrahmacariyakā ete nibbidāya virāgāya nirodhāya upasamāya abhiññāya sambodhāya nibbānāya saṁvattanti. Tasmā te mayā ekaṁsikā dhammā desitā paññattā.
+
+#### 2.2. Ekantasukhīattādiṭṭhi
 
 Santi, poṭṭhapāda, eke samaṇabrāhmaṇā evaṁvādino evaṁdiṭṭhino: ‘ekantasukhī attā hoti arogo paraṁ maraṇā’ti. Tyāhaṁ upasaṅkamitvā evaṁ vadāmi: ‘saccaṁ kira tumhe āyasmanto evaṁvādino evaṁdiṭṭhino: “ekantasukhī attā hoti arogo paraṁ maraṇā”’ti? Te ce me evaṁ puṭṭhā ‘āmā’ti paṭijānanti. Tyāhaṁ evaṁ vadāmi: ‘api pana tumhe āyasmanto ekantasukhaṁ lokaṁ jānaṁ passaṁ viharathā’ti? Iti puṭṭhā ‘no’ti vadanti.
 
@@ -198,7 +205,7 @@ Taṁ kiṁ maññasi, poṭṭhapāda, nanu evaṁ sante tesaṁ samaṇabrāhm
 
 “Addhā kho, bhante, evaṁ sante tesaṁ samaṇabrāhmaṇānaṁ appāṭihīrakataṁ bhāsitaṁ sampajjatī”ti.
 
-2.2. Tayoattapaṭilābha
+#### 2.3. Tayoattapaṭilābha
 
 “Tayo kho me, poṭṭhapāda, attapaṭilābhā— oḷāriko attapaṭilābho, manomayo attapaṭilābho, arūpo attapaṭilābho. Katamo ca, poṭṭhapāda, oḷāriko attapaṭilābho? Rūpī cātumahābhūtiko kabaḷīkārāhārabhakkho, ayaṁ oḷāriko attapaṭilābho. Katamo manomayo attapaṭilābho? Rūpī manomayo sabbaṅgapaccaṅgī ahīnindriyo, ayaṁ manomayo attapaṭilābho. Katamo arūpo attapaṭilābho? Arūpī saññāmayo, ayaṁ arūpo attapaṭilābho.
 
@@ -246,10 +253,8 @@ Seyyathāpi, citta, gavā khīraṁ, khīramhā dadhi, dadhimhā navanītaṁ, n
 
 Evaṁ vutte, poṭṭhapādo paribbājako bhagavantaṁ etadavoca: “abhikkantaṁ, bhante, abhikkantaṁ, bhante. Seyyathāpi, bhante, nikkujjitaṁ vā ukkujjeyya, paṭicchannaṁ vā vivareyya, mūḷhassa vā maggaṁ ācikkheyya, andhakāre vā telapajjotaṁ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṁ bhagavatā anekapariyāyena dhammo pakāsito. Esāhaṁ, bhante, bhagavantaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca. Upāsakaṁ maṁ bhagavā dhāretu ajjatagge pāṇupetaṁ saraṇaṁ gatan”ti.
 
-2.3. Cittahatthisāriputtaupasampadā
+#### 2.4. Cittahatthisāriputtaupasampadā
 
 Citto pana hatthisāriputto bhagavantaṁ etadavoca: “abhikkantaṁ, bhante, abhikkantaṁ, bhante. Seyyathāpi, bhante, nikkujjitaṁ vā ukkujjeyya, paṭicchannaṁ vā vivareyya, mūḷhassa vā maggaṁ ācikkheyya, andhakāre vā telapajjotaṁ dhāreyya: ‘cakkhumanto rūpāni dakkhantī’ti; evamevaṁ bhagavatā anekapariyāyena dhammo pakāsito. Esāhaṁ, bhante, bhagavantaṁ saraṇaṁ gacchāmi dhammañca bhikkhusaṅghañca. Labheyyāhaṁ, bhante, bhagavato santike pabbajjaṁ, labheyyaṁ upasampadan”ti.
 
 Alattha kho citto hatthisāriputto bhagavato santike pabbajjaṁ, alattha upasampadaṁ. Acirūpasampanno kho panāyasmā citto hatthisāriputto eko vūpakaṭṭho appamatto ātāpī pahitatto viharanto na cirasseva—yassatthāya kulaputtā sammadeva agārasmā anagāriyaṁ pabbajanti, tadanuttaraṁ—brahmacariyapariyosānaṁ diṭṭheva dhamme sayaṁ abhiññā sacchikatvā upasampajja vihāsi. “khīṇā jāti, vusitaṁ brahmacariyaṁ, kataṁ karaṇīyaṁ, nāparaṁ itthAttāyā”ti abbhaññāsi. Aññataro kho panāyasmā citto hatthisāriputto arahataṁ ahosīti.
-
-Poṭṭhapādasuttaṁ niṭṭhitaṁ navamaṁ.
