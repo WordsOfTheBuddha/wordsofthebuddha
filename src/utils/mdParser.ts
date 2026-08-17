@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import type { Tokens } from "marked";
+import { slugify } from "./slugify";
 
 // Configure marked options
 marked.setOptions({
@@ -10,14 +11,6 @@ marked.setOptions({
 
 // Custom renderer
 const renderer = new marked.Renderer();
-
-// Add slugify helper
-function slugify(text: string): string {
-	return text
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/(^-|-$)/g, "");
-}
 
 // Heading renderer using token-based API; render inline tokens to support links/emphasis
 renderer.heading = function (this: any, token: Tokens.Heading) {

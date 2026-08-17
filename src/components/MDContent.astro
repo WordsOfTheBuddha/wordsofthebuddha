@@ -300,6 +300,72 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 		});
 	}
 
+	function isHeadingEl(el: Element): boolean {
+		return /^H[1-6]$/.test(el.tagName);
+	}
+
+	/**
+	 * Headings live only in the English column. When the previous English
+	 * paragraph is shorter than its Pāli pair, a heading can sit in that
+	 * leftover gap — but document flow parks it under the previous paragraph.
+	 * If it is closer to that previous end than to the next pair, slide it
+	 * down by moving margin from the next English paragraph onto the heading
+	 * so the pair tops stay put.
+	 */
+	function nudgeHeadingsTowardNextPair(leftPanel: Element) {
+		const children = Array.from(leftPanel.children);
+		let i = 0;
+		while (i < children.length) {
+			if (!isHeadingEl(children[i])) {
+				i++;
+				continue;
+			}
+			const groupStart = i;
+			while (i < children.length && isHeadingEl(children[i])) i++;
+			const groupEnd = i - 1;
+
+			let prevPair: HTMLElement | null = null;
+			for (let j = groupStart - 1; j >= 0; j--) {
+				if (children[j].hasAttribute("data-pair-id")) {
+					prevPair = children[j] as HTMLElement;
+					break;
+				}
+			}
+			let nextPair: HTMLElement | null = null;
+			for (let j = groupEnd + 1; j < children.length; j++) {
+				if (children[j].hasAttribute("data-pair-id")) {
+					nextPair = children[j] as HTMLElement;
+					break;
+				}
+			}
+			if (!prevPair || !nextPair) continue;
+
+			const firstHeading = children[groupStart] as HTMLElement;
+			const lastHeading = children[groupEnd] as HTMLElement;
+			void firstHeading.offsetHeight;
+
+			const distToPrev =
+				firstHeading.getBoundingClientRect().top -
+				prevPair.getBoundingClientRect().bottom;
+			const distToNext =
+				nextPair.getBoundingClientRect().top -
+				lastHeading.getBoundingClientRect().bottom;
+
+			// Already overlapping the next pair, or already closer to it.
+			if (distToNext <= 1 || distToPrev + 1 >= distToNext) continue;
+
+			const nextMargin =
+				parseFloat(getComputedStyle(nextPair).marginTop) || 0;
+			const shift = Math.min(distToNext, Math.max(0, nextMargin));
+			if (shift <= 1) continue;
+
+			const headingMargin =
+				parseFloat(getComputedStyle(firstHeading).marginTop) || 0;
+			firstHeading.style.marginTop = `${headingMargin + shift}px`;
+			nextPair.style.marginTop = `${nextMargin - shift}px`;
+		}
+	}
+
 	async function adjustParagraphAlignment() {
 		// Only attempt when split is active and visible
 		if (!isSplitVisible()) {
@@ -338,6 +404,11 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 					if (node.classList.contains("english-pair-spacer")) {
 						node.style.minHeight = "";
 					}
+				});
+			leftPanel
+				.querySelectorAll("h1, h2, h3, h4, h5, h6")
+				.forEach((el) => {
+					(el as HTMLElement).style.marginTop = "";
 				});
 
 			// Get all paragraph pairs
@@ -457,6 +528,8 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 					}
 				}
 			}
+
+			nudgeHeadingsTowardNextPair(leftPanel);
 		}
 
 		showContent();

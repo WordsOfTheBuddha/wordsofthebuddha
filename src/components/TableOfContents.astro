@@ -1,0 +1,360 @@
+---
+/**
+ * Sidebar (desktop) + bottom-sheet (mobile) table of contents.
+ *
+ * `placement="grid"` — essay posts. The nav is a grid column inside
+ * `.toc-shell`, which widens to make room.
+ * `placement="fixed"` — discourses. The nav is pinned to the right gutter so
+ * the `max-w-4xl` reading column keeps its width. The gutter is only wide
+ * enough past 1400px; below that the bottom sheet is used instead.
+ *
+ * Styles are global and live here so a page only needs to render the
+ * component to get the full ToC.
+ */
+interface Props {
+	contentSelector: string;
+	headingSelector: string;
+	nestedTag: "H2" | "H3" | "H4";
+	minHeadings?: number;
+	requireNamed?: boolean;
+	placement?: "grid" | "fixed";
+}
+
+const {
+	contentSelector,
+	headingSelector,
+	nestedTag,
+	minHeadings = 1,
+	requireNamed = false,
+	placement = "grid",
+} = Astro.props;
+---
+
+<nav
+	class="post-toc not-prose"
+	id="post-toc"
+	aria-label="Table of contents"
+	data-toc-placement={placement}
+	data-content-selector={contentSelector}
+	data-heading-selector={headingSelector}
+	data-nested-tag={nestedTag}
+	data-min-headings={String(minHeadings)}
+	data-require-named={requireNamed ? "true" : "false"}
+>
+</nav>
+<button
+	id="mobile-toc-toggle"
+	aria-label="Table of contents"
+	class="mobile-toc-toggle fixed bottom-4 left-4 rounded-full z-50 opacity-0 invisible transition-all duration-300"
+	type="button"
+	data-toc-placement={placement}
+>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="20"
+		height="20"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	>
+		<line x1="3" y1="6" x2="21" y2="6"></line>
+		<line x1="3" y1="12" x2="15" y2="12"></line>
+		<line x1="3" y1="18" x2="10" y2="18"></line>
+	</svg>
+</button>
+<div
+	id="mobile-toc-overlay"
+	class="mobile-toc-overlay not-prose"
+	data-toc-placement={placement}
+>
+	<div class="mobile-toc-sheet" id="mobile-toc-sheet">
+		<div class="mobile-toc-header">
+			<span class="mobile-toc-title">Contents</span>
+			<button
+				id="mobile-toc-close"
+				aria-label="Close table of contents"
+				class="mobile-toc-close"
+				type="button"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg
+				>
+			</button>
+		</div>
+		<nav
+			id="mobile-toc-nav"
+			class="mobile-toc-nav"
+			aria-label="Table of contents (mobile)"
+		>
+		</nav>
+	</div>
+</div>
+
+<style is:global>
+	.post-toc {
+		display: none;
+	}
+
+	.post-toc a {
+		display: block;
+		color: #a8a29e;
+		text-decoration: none;
+		padding: 0.15rem 0;
+		transition: color 0.15s;
+	}
+
+	.post-toc a:hover,
+	.post-toc a.active {
+		color: #f59e0b;
+	}
+
+	.post-toc a.toc-h3 {
+		padding-left: 0.75rem;
+		font-size: 0.78rem;
+	}
+
+	.mobile-toc-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		background: var(--background-color);
+		border: 1px solid var(--surface-border);
+		color: var(--primary-color);
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.mobile-toc-toggle:active {
+		transform: scale(0.95);
+	}
+
+	.mobile-toc-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 60;
+		background: rgba(0, 0, 0, 0.45);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition:
+			opacity 0.2s ease,
+			visibility 0.2s ease;
+	}
+
+	.mobile-toc-overlay.open {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+
+	.mobile-toc-sheet {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		max-height: 65vh;
+		background: var(--surface-elevated, var(--background-color));
+		border-top: 1px solid var(--surface-border);
+		border-radius: 1rem 1rem 0 0;
+		display: flex;
+		flex-direction: column;
+		transform: translateY(100%);
+		transition: transform 0.25s ease;
+	}
+
+	.mobile-toc-overlay.open .mobile-toc-sheet {
+		transform: translateY(0);
+	}
+
+	.mobile-toc-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.875rem 1.25rem 0.625rem;
+		border-bottom: 1px solid var(--surface-border);
+		flex-shrink: 0;
+	}
+
+	.mobile-toc-title {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text-color);
+	}
+
+	.mobile-toc-close {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.25rem;
+		color: var(--text-muted);
+	}
+
+	.mobile-toc-nav {
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		padding: 0.75rem 1.25rem 1.5rem;
+		flex: 1;
+	}
+
+	.mobile-toc-nav a {
+		display: block;
+		color: #a8a29e;
+		text-decoration: none;
+		padding: 0.4rem 0;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		transition: color 0.15s;
+	}
+
+	.mobile-toc-nav a:active,
+	.mobile-toc-nav a.active {
+		color: #f59e0b;
+	}
+
+	.mobile-toc-nav a.toc-h3 {
+		padding-left: 1rem;
+		font-size: 0.8rem;
+	}
+
+	.interleaved-article h3,
+	.interleaved-article h4,
+	.split-panel h3,
+	.split-panel h4,
+	.post-content h2,
+	.post-content h3 {
+		scroll-margin-top: 1.25rem;
+	}
+
+	/* Essay posts: sidebar becomes a real column and the shell widens. */
+	@media (min-width: 1024px) {
+		.toc-shell.toc-reserve,
+		html.has-toc .toc-shell {
+			max-width: calc(56rem + 260px + 1.5rem);
+		}
+
+		.toc-shell.toc-reserve .toc-body,
+		html.has-toc .toc-shell .toc-body {
+			display: grid;
+			grid-template-columns: minmax(0, 56rem) 260px;
+			column-gap: 1.5rem;
+		}
+
+		.toc-shell.toc-reserve .toc-main,
+		html.has-toc .toc-shell .toc-main {
+			grid-column: 1;
+			min-width: 0;
+		}
+
+		.toc-shell.toc-reserve .post-toc[data-toc-placement="grid"],
+		html.has-toc .toc-shell .post-toc[data-toc-placement="grid"] {
+			display: block;
+			grid-column: 2;
+			position: sticky;
+			top: 2rem;
+			align-self: start;
+			margin-top: 1.5rem;
+			max-height: calc(100vh - 4rem);
+			overflow-y: auto;
+			font-size: 0.82rem;
+			line-height: 1.6;
+			border-left: 2px solid rgba(245, 158, 11, 0.2);
+			padding-left: 0.75rem;
+			padding-right: 0.5rem;
+		}
+
+		.mobile-toc-toggle[data-toc-placement="grid"],
+		.mobile-toc-overlay[data-toc-placement="grid"] {
+			display: none !important;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.toc-shell.toc-reserve,
+		html.has-toc .toc-shell {
+			max-width: calc(56rem + 280px + 2.5rem);
+		}
+
+		.toc-shell.toc-reserve .toc-body,
+		html.has-toc .toc-shell .toc-body {
+			grid-template-columns: minmax(0, 56rem) 280px;
+			column-gap: 2.5rem;
+		}
+	}
+
+	/* Discourses: pinned rail once the gutter beside the reading column is
+	   wide enough to hold it. Below this the bottom sheet is used. */
+	@media (min-width: 1400px) {
+		html.has-toc .post-toc[data-toc-placement="fixed"] {
+			display: block;
+			position: fixed;
+			top: 6rem;
+			right: 1.5rem;
+			width: min(17rem, calc((100vw - 56rem) / 2 - 3rem));
+			max-height: calc(100vh - 8rem);
+			overflow-y: auto;
+			font-size: 0.82rem;
+			line-height: 1.6;
+			border-left: 2px solid rgba(245, 158, 11, 0.2);
+			padding-left: 0.75rem;
+			padding-right: 0.5rem;
+			z-index: 30;
+		}
+
+		.mobile-toc-toggle[data-toc-placement="fixed"],
+		.mobile-toc-overlay[data-toc-placement="fixed"] {
+			display: none !important;
+		}
+	}
+
+	@media print {
+		.post-toc,
+		.mobile-toc-toggle,
+		.mobile-toc-overlay {
+			display: none !important;
+		}
+	}
+</style>
+
+<script>
+	import { attachTableOfContents } from "../utils/tocClient";
+
+	function initToc() {
+		const root = document.getElementById("post-toc");
+		if (!root) return;
+		attachTableOfContents({
+			contentSelector: root.dataset.contentSelector || "",
+			headingSelector: root.dataset.headingSelector || "h2, h3",
+			nestedTag: root.dataset.nestedTag || "H3",
+			minHeadings: Number(root.dataset.minHeadings || "1"),
+			requireNamed: root.dataset.requireNamed === "true",
+			placement:
+				root.dataset.tocPlacement === "fixed" ? "fixed" : "grid",
+			desktopNavId: "post-toc",
+			mobileNavId: "mobile-toc-nav",
+			mobileToggleId: "mobile-toc-toggle",
+			mobileOverlayId: "mobile-toc-overlay",
+			mobileCloseId: "mobile-toc-close",
+			activeClass: "has-toc",
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initToc);
+	} else {
+		initToc();
+	}
+</script>

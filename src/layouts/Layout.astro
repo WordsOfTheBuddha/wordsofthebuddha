@@ -31,7 +31,9 @@ import QualityTags from "../components/QualityTags.astro";
 import Commentary from "../components/Commentary.astro";
 import DiscourseImage from "../components/DiscourseImage.astro";
 import ImageToggle from "../components/ImageToggle.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 import type { ContentImageData } from "../utils/contentImage";
+import { DISCOURSE_TOC_MIN_HEADINGS } from "../utils/tocClient";
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { buildStructuredData } from "../utils/structuredData";
 import { debug } from "../utils/contentParser";
@@ -595,6 +597,18 @@ const structuredData = buildStructuredData({
 				</HighlightLayout>
 			</div>
 		</main>
+		{
+			showPali && !fullWidthSlot && (
+				<TableOfContents
+					placement="fixed"
+					contentSelector=".interleaved-article"
+					headingSelector="h3, h4"
+					nestedTag="H4"
+					minHeadings={DISCOURSE_TOC_MIN_HEADINGS}
+					requireNamed={true}
+				/>
+			)
+		}
 		<ScrollToTop />
 	</body>
 	<script>
@@ -685,6 +699,8 @@ const structuredData = buildStructuredData({
 		}
 
 		import { initRefModeFromUrl } from "../utils/refModeClient";
+		import { parseHashRange } from "../utils/paragraphHash";
+		import { scrollToVisibleId } from "../utils/tocClient";
 		import {
 			handleNavigation,
 			synchronizePreferences,
@@ -749,76 +765,6 @@ const structuredData = buildStructuredData({
 
 			// Add click handler for all navigation
 			document.addEventListener("click", handleNavigation);
-
-			// Helper function to parse hash and return paragraph numbers and scroll target
-			function parseHashRange(hash: string): {
-				paragraphs: number[];
-				scrollTo: number | null;
-			} {
-				if (!hash) return { paragraphs: [], scrollTo: null };
-
-				// Remove leading # and any accidental query-string fragments after the hash
-				let hashValue = hash.startsWith("#") ? hash.slice(1) : hash;
-				// If the hash mistakenly contains ?key=value or &key=value, keep only the paragraph part
-				hashValue = hashValue.split(/[?&]/)[0];
-				try {
-					hashValue = decodeURIComponent(hashValue);
-				} catch {}
-				const paragraphNumbers: number[] = [];
-				let scrollTo: number | null = null;
-
-				// Split by comma to handle multiple values/ranges (e.g., "1,2,4-6")
-				const parts = hashValue
-					.split(",")
-					.map((p) => p.trim())
-					.filter(Boolean);
-
-				for (const part of parts) {
-					const trimmedPart = part.trim();
-					if (!trimmedPart) continue;
-
-					// Check for range format (e.g., "4-6")
-					if (trimmedPart.includes("-")) {
-						const [startStr, endStr] = trimmedPart.split("-");
-						const startNum = Number(startStr);
-						const endNum = Number(endStr);
-
-						if (
-							!isNaN(startNum) &&
-							!isNaN(endNum) &&
-							startNum <= endNum
-						) {
-							for (let i = startNum; i <= endNum; i++) {
-								paragraphNumbers.push(i);
-							}
-							// Set scrollTo to the first paragraph if not already set
-							if (scrollTo === null) {
-								scrollTo = startNum;
-							}
-						}
-					} else {
-						// Single paragraph format (e.g., "1", "2")
-						const paragraphNum = Number(trimmedPart);
-						if (!isNaN(paragraphNum)) {
-							paragraphNumbers.push(paragraphNum);
-							// Set scrollTo to the first paragraph if not already set
-							if (scrollTo === null) {
-								scrollTo = paragraphNum;
-							}
-						}
-					}
-				}
-
-				// Remove duplicates and sort
-				const uniqueParagraphs = [...new Set(paragraphNumbers)].sort(
-					(a, b) => a - b,
-				);
-
-				return {
-					paragraphs: uniqueParagraphs,
-					scrollTo: scrollTo,
-				};
-			}
 
 			// Helper function to apply highlighting and navigation
 			function applyHighlightingAndNavigation(
@@ -899,13 +845,29 @@ const structuredData = buildStructuredData({
 				}
 			}
 
-			// Handle hash navigation for paragraph anchors
+			// Handle hash navigation for paragraph anchors and section headings
 			function handleHashNavigation() {
-				if (window.location.hash) {
-					const hash = window.location.hash.substring(1);
-					const { paragraphs, scrollTo } = parseHashRange(hash);
+				if (!window.location.hash) return;
+				const hash = window.location.hash.substring(1);
+				const { paragraphs, scrollTo } = parseHashRange(hash);
+				if (paragraphs.length > 0) {
 					applyHighlightingAndNavigation(paragraphs, scrollTo);
+					return;
 				}
+
+				document
+					.querySelectorAll(".paragraph-highlight")
+					.forEach((element) => {
+						element.classList.remove("paragraph-highlight");
+					});
+
+				const tryScrollToSection = (attempt = 0) => {
+					if (scrollToVisibleId(hash)) return;
+					if (attempt < 12) {
+						setTimeout(() => tryScrollToSection(attempt + 1), 50);
+					}
+				};
+				tryScrollToSection();
 			}
 
 			// Handle initial hash navigation
