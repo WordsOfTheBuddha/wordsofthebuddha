@@ -273,15 +273,8 @@ export function attachTableOfContents(
 		}
 		event.preventDefault();
 		const tryScroll = (attempt = 0) => {
-			if (scrollToVisibleId(id)) {
-				history.replaceState(null, "", href);
-				return;
-			}
-			if (attempt < 12) {
-				setTimeout(() => tryScroll(attempt + 1), 50);
-			} else {
-				history.replaceState(null, "", href);
-			}
+			if (scrollToVisibleId(id) || attempt >= 12) return;
+			setTimeout(() => tryScroll(attempt + 1), 50);
 		};
 		tryScroll();
 	}
