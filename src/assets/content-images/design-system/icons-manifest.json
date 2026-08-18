@@ -88,7 +88,8 @@
 				"mn43",
 				"mn138",
 				"mn140",
-				"mn148"
+				"mn148",
+				"dn9"
 			],
 			"labels": [
 				"phenomena",
@@ -245,7 +246,8 @@
 			],
 			"discourse": [
 				"mn1",
-				"mn110"
+				"mn110",
+				"dn9"
 			],
 			"labels": [
 				"phenomena"
@@ -348,7 +350,8 @@
 				"mn43",
 				"mn77",
 				"mn111",
-				"mn140"
+				"mn140",
+				"dn9"
 			],
 			"labels": [
 				"formless",
@@ -371,7 +374,8 @@
 				"mn43",
 				"mn77",
 				"mn111",
-				"mn140"
+				"mn140",
+				"dn9"
 			],
 			"labels": [
 				"formless",
@@ -396,7 +400,8 @@
 				"mn77",
 				"mn106",
 				"mn111",
-				"mn140"
+				"mn140",
+				"dn9"
 			],
 			"labels": [
 				"formless",
@@ -484,6 +489,7 @@
 				"mn18",
 				"mn110",
 				"mn138",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -507,6 +513,7 @@
 				"mn43",
 				"mn110",
 				"mn138",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -615,6 +622,7 @@
 				"mn9",
 				"mn43",
 				"mn95",
+				"dn9",
 				"sn46.2",
 				"an10.60"
 			],
@@ -1347,6 +1355,7 @@
 				"mn118",
 				"mn10",
 				"mn111",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -1467,7 +1476,8 @@
 			"discourse": [
 				"mn119",
 				"mn10",
-				"mn106"
+				"mn106",
+				"dn9"
 			],
 			"labels": [
 				"elements",
@@ -1513,7 +1523,8 @@
 				"mn77",
 				"mn111",
 				"mn119",
-				"mn138"
+				"mn138",
+				"dn9"
 			],
 			"labels": [
 				"awakening",
@@ -1540,7 +1551,8 @@
 				"mn77",
 				"mn111",
 				"mn119",
-				"mn138"
+				"mn138",
+				"dn9"
 			],
 			"labels": [
 				"awakening",
@@ -1567,7 +1579,8 @@
 				"mn77",
 				"mn111",
 				"mn119",
-				"mn138"
+				"mn138",
+				"dn9"
 			],
 			"labels": [
 				"awakening",
@@ -1598,7 +1611,8 @@
 				"mn106",
 				"mn111",
 				"mn119",
-				"mn138"
+				"mn138",
+				"dn9"
 			],
 			"labels": [
 				"awakening",
@@ -2115,7 +2129,8 @@
 				"mn6",
 				"mn53",
 				"mn77",
-				"mn111"
+				"mn111",
+				"dn9"
 			],
 			"labels": [
 				"ethical conduct"
@@ -2399,6 +2414,7 @@
 			"discourse": [
 				"mn10",
 				"mn43",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -2417,7 +2433,10 @@
 				"line-art",
 				"hindrances"
 			],
-			"discourse": "mn10",
+			"discourse": [
+				"mn10",
+				"dn9"
+			],
 			"labels": [
 				"five hindrances",
 				"harm",
@@ -2548,6 +2567,7 @@
 			"discourse": [
 				"mn39",
 				"mn43",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -2588,6 +2608,7 @@
 			"discourse": [
 				"mn39",
 				"mn43",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -2731,7 +2752,8 @@
 			"discourse": [
 				"mn106",
 				"mn6",
-				"mn43"
+				"mn43",
+				"dn9"
 			],
 			"labels": [
 				"formless",
@@ -2752,6 +2774,7 @@
 				"mn106",
 				"mn138",
 				"mn140",
+				"dn9",
 				"an10.60"
 			],
 			"labels": [
@@ -2795,6 +2818,7 @@
 				"mn25",
 				"mn9",
 				"mn19",
+				"dn9",
 				"sn46.2"
 			],
 			"labels": [
@@ -2888,6 +2912,7 @@
 				"mn111",
 				"mn138",
 				"mn140",
+				"dn9",
 				"an10.60"
 			],
 			"labels": [
@@ -2905,7 +2930,8 @@
 			],
 			"discourse": [
 				"mn6",
-				"mn77"
+				"mn77",
+				"dn9"
 			],
 			"labels": [
 				"direct knowledge",
@@ -2987,7 +3013,8 @@
 				"mn110",
 				"mn111",
 				"mn138",
-				"mn140"
+				"mn140",
+				"dn9"
 			],
 			"labels": [
 				"insight",
@@ -3140,7 +3167,8 @@
 				"mn43",
 				"mn95",
 				"mn110",
-				"mn140"
+				"mn140",
+				"dn9"
 			],
 			"labels": [
 				"direct knowledge",
@@ -3159,7 +3187,8 @@
 			],
 			"discourse": [
 				"mn77",
-				"mn43"
+				"mn43",
+				"dn9"
 			],
 			"labels": [
 				"insight",
@@ -3178,7 +3207,8 @@
 			],
 			"discourse": [
 				"mn9",
-				"mn77"
+				"mn77",
+				"dn9"
 			],
 			"labels": [
 				"collectedness",
@@ -3265,7 +3295,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn77",
+			"discourse": [
+				"mn77",
+				"dn9"
+			],
 			"labels": [
 				"direct knowledge",
 				"psychic power",
@@ -3592,7 +3625,10 @@
 			"tags": [
 				"line-art"
 			],
-			"discourse": "mn43",
+			"discourse": [
+				"mn43",
+				"dn9"
+			],
 			"labels": [
 				"insight",
 				"letting go",
@@ -3600,6 +3636,55 @@
 			],
 			"valence": "+ve",
 			"svg": "icons/signless-stillness.svg"
+		},
+		{
+			"id": "unknown-beauty",
+			"title": "Unknown beauty",
+			"description": "Seeker reaching toward a dashed unseen woman with a question mark — janapadakalyāṇī, longing for a beauty one does not know or see",
+			"tags": [
+				"line-art",
+				"simile"
+			],
+			"discourse": "dn9",
+			"labels": [
+				"simile",
+				"wrong view"
+			],
+			"valence": "-ve",
+			"svg": "icons/unknown-beauty.svg"
+		},
+		{
+			"id": "unseen-palace",
+			"title": "Unseen palace",
+			"description": "Dashed multi-storey palace with stairs approaching — nisseṇiṁ … pāsādassa, a staircase to a palace one does not know",
+			"tags": [
+				"line-art",
+				"simile",
+				"dashed"
+			],
+			"discourse": "dn9",
+			"labels": [
+				"simile",
+				"wrong view"
+			],
+			"valence": "-ve",
+			"svg": "icons/unseen-palace.svg"
+		},
+		{
+			"id": "known-palace",
+			"title": "Known palace",
+			"description": "Solid grand palace with gold stairs underneath — tasseva pāsādassa heṭṭhā, a staircase built under the palace one can see",
+			"tags": [
+				"line-art",
+				"simile",
+				"gold"
+			],
+			"discourse": "dn9",
+			"labels": [
+				"path",
+				"simile"
+			],
+			"svg": "icons/known-palace.svg"
 		}
 	]
 }

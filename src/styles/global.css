@@ -320,8 +320,7 @@ html.dark body::before {
 	--verse-accent: #d1d5db;
 }
 
-/* Paragraph anchor hover display - now controlled by ParagraphToggle component */
-/* p[id]::before rule moved to ParagraphToggle.astro */
+/* Paragraph numbers are real `.paragraph-num` nodes; see content.css / listen-mode.css */
 
 /* Smooth scroll for hash navigation */
 html {
