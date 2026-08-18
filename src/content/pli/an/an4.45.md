@@ -1,9 +1,12 @@
 ---
+title: Rohitassa sutta - With Rohitassa
+description: Can one reach the world’s end by traveling? Recalling a past life spent speeding across space, the deity Rohitassa learns from the Buddha that suffering ends not by traversing the physical cosmos, but by awakening within this conscious fathom-long body.
+qualities: wisdom, suffering, ending
+theme: wisdom
 slug: an4.45
-source: suttacentral/bilara-data
-title: Rohitassasutta
-edition: ms
-granularity: paragraph
+character: Rohitassa
+similar: sn2.26
+priority: 1.2
 ---
 
 Ekaṁ samayaṁ bhagavā sāvatthiyaṁ viharati jetavane anāthapiṇḍikassa ārāme.
@@ -31,5 +34,3 @@ Tasmā have lokavidū sumedho,
 Lokantagū vusitabrahmacariyo;
 Lokassa antaṁ samitāvi ñatvā,
 Nāsīsatī lokamimaṁ parañcā”ti.
-
-Pañcamaṁ.
