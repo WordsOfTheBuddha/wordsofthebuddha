@@ -1,14 +1,14 @@
 ---
-title: Poṭṭhapāda sutta - About Poṭṭhapāda
+title: Poṭṭhapāda sutta - To Poṭṭhapāda
 description: How does human perception reach its absolute stillness? Rejecting mystical and accidental theories of consciousness, the Buddha charts the structured ascent of meditative awareness to the threshold of cessation. The dialogue explores why metaphysical dilemmas are set aside, how assumptions of self arise and pass away, and how the awakened mind uses worldly expressions without grasping them as ultimate truths.
-qualities: perception, cessation, jhana, formless, self, views, four noble truths, worldly conventions, direct knowledge, liberation, personal existence view
-theme: wisdom, meditation
+qualities: perception, ending, jhana, formless, personal existence view, self-making, speculation, suffering, free from attachment, direct knowledge, liberation
+theme: wisdom, inquisitiveness
 slug: dn9
 character:
   - Wanderer Poṭṭhapāda
   - Citta Hatthisāriputta
 simile: most beautiful woman of the country, staircase to a palace, milk to ghee
-priority: 2
+priority: 2.2
 ---
 
 ### 1. Poṭṭhapādaparibbājakavatthu

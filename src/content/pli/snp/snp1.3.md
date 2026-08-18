@@ -1,9 +1,6 @@
 ---
+title: Khaggavisāṇa sutta - The Rhinoceros Horn
 slug: snp1.3
-source: suttacentral/bilara-data
-title: Khaggavisāṇasutta
-edition: ms
-granularity: paragraph
 ---
 
 “Sabbesu bhūtesu nidhāya daṇḍaṁ,
@@ -210,5 +207,3 @@ Eko care khaggavisāṇakappo”.
 Nikkāraṇā dullabhā ajja mittā;
 Attaṭṭhapaññā asucī manussā,
 Eko care khaggavisāṇakappo”.
-
-Khaggavisāṇasuttaṁ tatiyaṁ.
