@@ -121,3 +121,43 @@ figure:has(svg):not(.discourse-image) svg {
 .post-content > .post-badge ~ h2:first-of-type {
 	margin-top: 0 !important;
 }
+
+/* Paragraph numbers: real `.paragraph-num` nodes (not CSS `::before` content).
+   WebKit copies generated content into text/plain and drops block newlines. */
+.md-content .paragraph-num {
+	display: none;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	pointer-events: none;
+	white-space: nowrap;
+}
+@media (min-width: 1024px) {
+	html.show-paragraph-numbers .md-content p[data-paragraph-number] {
+		position: relative;
+	}
+	html.show-paragraph-numbers .md-content .paragraph-num {
+		display: block;
+		position: absolute;
+		left: -3rem;
+		top: 0;
+		padding-top: 8px;
+		color: var(--text-muted);
+		font-size: 0.75rem;
+		opacity: 0.7;
+		line-height: inherit;
+	}
+}
+html.copying-discourse .paragraph-num {
+	display: none !important;
+}
+
+/* Pair spacing matches pre-copy-break: English 0.5rem top, Pāli bottom 0.
+   Split columns keep `.split-wrapper [data-pair-id]` margins in MDContent. */
+.md-content p.english-paragraph {
+	margin-top: 0.5rem;
+}
+.md-content p.pali-paragraph {
+	margin-bottom: 0;
+}

@@ -1,3 +1,4 @@
+import { paragraphNumberMarkerHtml } from "./paragraphNumbers";
 import { transformId } from "./transformId";
 
 // Debug helper for development-only console output
@@ -889,12 +890,13 @@ export function formatBlock(
 	// Generate paragraph number and anchor ID (just the number, no prefix)
 	// Only add anchor IDs to English paragraphs to avoid conflicts
 	// Skip anchor IDs for "View full text" links
+	let paragraphNum: number | undefined;
 	let anchorId = "";
 	const isViewFullTextLink = text.includes("View full text for:");
 
 	if (index !== undefined && !isPali && !isViewFullTextLink) {
 		// Use actual paragraph number if available, otherwise calculate from request
-		let paragraphNum = actualParagraphNumber;
+		paragraphNum = actualParagraphNumber;
 
 		if (!paragraphNum) {
 			// Fall back to old logic if no actual paragraph number
@@ -961,7 +963,15 @@ export function formatBlock(
 	// Convert bold, italic, and superscript markdown to HTML
 	processedText = processInlineEmphasis(processedText);
 
-	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${
+	// Real DOM marker (not CSS ::before): WebKit copies generated content
+	// into text/plain (the old `Park.¶ 2Then` glue). Numbers stay in skipped
+	// `.paragraph-num` spans. Paragraph gaps are inserted by the copy handler.
+	const numberMarker =
+		paragraphNum !== undefined
+			? paragraphNumberMarkerHtml(paragraphNum)
+			: "";
+
+	return `<p${anchorId}${pairAttr} class="${className} ${verseClass}">${numberMarker}${
 		isVerseText ? transformVerseNewlines(processedText) : processedText
 	}</p>`;
 }

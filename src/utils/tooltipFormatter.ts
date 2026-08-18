@@ -31,6 +31,13 @@ export function getFormattedContainer(
 	const originalContent = range.cloneContents();
 	container.appendChild(originalContent);
 
+	// UI chrome cloned with the selection (TM lookup buttons, listen controls, ¶ N).
+	container
+		.querySelectorAll(
+			".tm-lookup-btn, .listen-para-actions, button, .paragraph-num, .copy-para-break",
+		)
+		.forEach((el) => el.remove());
+
 	// If Pali mode isn't active, strip Pali elements so hidden text isn't copied.
 	const htmlRoot = document.documentElement;
 	const paliOn = htmlRoot.classList.contains("pali-on");

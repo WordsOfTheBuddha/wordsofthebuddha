@@ -17,8 +17,12 @@ interface Window {
 	__audioSlugs?: Set<string>;
 }
 
-// Allow importing raw SVGs via Vite query
+// Allow importing raw SVGs / classic scripts via Vite query
 declare module "*.svg?raw" {
+	const content: string;
+	export default content;
+}
+declare module "*.js?raw" {
 	const content: string;
 	export default content;
 }

@@ -34,6 +34,12 @@ renderer.paragraph = function (this: any, token: Tokens.Paragraph) {
 	if (t.startsWith('<div class="english-paragraph"')) {
 		return html; // Don't wrap English divs in paragraphs
 	}
+	if (
+		t.startsWith('<p class="english-paragraph') ||
+		t.startsWith('<p class="pali-paragraph')
+	) {
+		return html;
+	}
 	return `<p>${html}</p>`;
 };
 

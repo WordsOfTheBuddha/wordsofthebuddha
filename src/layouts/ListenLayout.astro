@@ -5,6 +5,7 @@
  */
 import "../styles/global.css";
 import "../styles/listen-mode.css";
+import discoursePlainCopyInline from "../utils/discoursePlainCopyInline.js?raw";
 
 interface Props {
 	title: string;
@@ -31,6 +32,11 @@ const canonicalURL = new URL(
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<Fragment
+			set:html={"<script type=\"text/javascript\">" +
+				discoursePlainCopyInline +
+				"</script>"}
+		/>
 		<title>{seoTitle}</title>
 		<meta name="description" content={metaDescription} />
 		<link rel="canonical" href={canonicalURL} />
@@ -67,4 +73,8 @@ const canonicalURL = new URL(
 	<body class="listen-body">
 		<slot />
 	</body>
+	<script>
+		import { installDiscoursePlainCopy } from "../utils/plainCopy";
+		installDiscoursePlainCopy();
+	</script>
 </html>

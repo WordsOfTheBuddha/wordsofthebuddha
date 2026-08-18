@@ -184,7 +184,8 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 		position: relative;
 	}
 
-	/* Add base spacing for paragraphs in split mode */
+	/* Split pair gap (JS may raise --min-para-spacing to align columns).
+	   Copy-break <br>s no longer add 2lh inside these boxes. */
 	.split-wrapper [data-pair-id] {
 		margin-bottom: var(--min-para-spacing, 1rem);
 	}
@@ -304,6 +305,16 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 		return /^H[1-6]$/.test(el.tagName);
 	}
 
+	function pairInPanel(
+		panelId: "#panel1" | "#panel2",
+		pairId: string | null,
+	): HTMLElement | null {
+		if (!pairId) return null;
+		return document.querySelector(
+			`${panelId} [data-pair-id="${pairId}"]`,
+		);
+	}
+
 	/**
 	 * Headings live only in the English column. When the previous English
 	 * paragraph is shorter than its Pāli pair, a heading can sit in that
@@ -311,6 +322,10 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 	 * If it is closer to that previous end than to the next pair, slide it
 	 * down by moving margin from the next English paragraph onto the heading
 	 * so the pair tops stay put.
+	 *
+	 * Skip when there is no leftover beside taller Pāli: a wrapping heading
+	 * is then taking real English space, not filling a gap, and stealing the
+	 * next pair's margin leaves Pāli starting at the heading's first line.
 	 */
 	function nudgeHeadingsTowardNextPair(leftPanel: Element) {
 		const children = Array.from(leftPanel.children);
@@ -340,13 +355,26 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 			}
 			if (!prevPair || !nextPair) continue;
 
+			const prevPali = pairInPanel(
+				"#panel2",
+				prevPair.getAttribute("data-pair-id"),
+			);
+			if (!prevPali) continue;
+
 			const firstHeading = children[groupStart] as HTMLElement;
 			const lastHeading = children[groupEnd] as HTMLElement;
 			void firstHeading.offsetHeight;
 
+			const prevEngBottom = prevPair.getBoundingClientRect().bottom;
+			const leftover =
+				prevPali.getBoundingClientRect().bottom - prevEngBottom;
+			const headingHeight =
+				lastHeading.getBoundingClientRect().bottom -
+				firstHeading.getBoundingClientRect().top;
+			if (leftover < headingHeight) continue;
+
 			const distToPrev =
-				firstHeading.getBoundingClientRect().top -
-				prevPair.getBoundingClientRect().bottom;
+				firstHeading.getBoundingClientRect().top - prevEngBottom;
 			const distToNext =
 				nextPair.getBoundingClientRect().top -
 				lastHeading.getBoundingClientRect().bottom;
@@ -354,15 +382,51 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 			// Already overlapping the next pair, or already closer to it.
 			if (distToNext <= 1 || distToPrev + 1 >= distToNext) continue;
 
-			const nextMargin =
-				parseFloat(getComputedStyle(nextPair).marginTop) || 0;
-			const shift = Math.min(distToNext, Math.max(0, nextMargin));
+			const shift = Math.min(
+				distToNext,
+				Math.max(0, parseFloat(getComputedStyle(nextPair).marginTop) || 0),
+			);
 			if (shift <= 1) continue;
 
 			const headingMargin =
 				parseFloat(getComputedStyle(firstHeading).marginTop) || 0;
+			const nextTopBefore = nextPair.getBoundingClientRect().top;
 			firstHeading.style.marginTop = `${headingMargin + shift}px`;
-			nextPair.style.marginTop = `${nextMargin - shift}px`;
+			void nextPair.offsetHeight;
+			const drift =
+				nextPair.getBoundingClientRect().top - nextTopBefore;
+			const nextMargin =
+				parseFloat(getComputedStyle(nextPair).marginTop) || 0;
+			nextPair.style.marginTop = `${Math.max(0, nextMargin - drift)}px`;
+		}
+	}
+
+	/** Keep pair tops aligned after heading margin moves English without Pāli. */
+	function resyncPairTops(paraIds: (string | null)[]) {
+		const threshold = 0.5;
+		const maxPasses = 4;
+		for (let pass = 0; pass < maxPasses; pass++) {
+			let moved = false;
+			for (const id of paraIds) {
+				const eng = pairInPanel("#panel1", id);
+				const pali = pairInPanel("#panel2", id);
+				if (!eng || !pali) continue;
+				void eng.offsetHeight;
+				const engTop = eng.getBoundingClientRect().top;
+				const paliTop = pali.getBoundingClientRect().top;
+				const diff = engTop - paliTop;
+				if (Math.abs(diff) <= threshold) continue;
+				moved = true;
+				// Always push the higher box down so earlier pairs are not pulled up.
+				if (diff > 0) {
+					const margin = parseFloat(getComputedStyle(pali).marginTop) || 0;
+					pali.style.marginTop = `${margin + diff}px`;
+				} else {
+					const margin = parseFloat(getComputedStyle(eng).marginTop) || 0;
+					eng.style.marginTop = `${margin - diff}px`;
+				}
+			}
+			if (!moved) break;
 		}
 	}
 
@@ -515,14 +579,14 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 
 					if (engMarginNeeded > 0) {
 						const currentMargin =
-							parseInt(getComputedStyle(nextEng).marginTop) || 8;
+							parseFloat(getComputedStyle(nextEng).marginTop) || 8;
 						(nextEng as HTMLElement).style.marginTop =
 							`${currentMargin + engMarginNeeded}px`;
 					}
 
 					if (paliMarginNeeded > 0) {
 						const currentMargin =
-							parseInt(getComputedStyle(nextPali).marginTop) || 8;
+							parseFloat(getComputedStyle(nextPali).marginTop) || 8;
 						(nextPali as HTMLElement).style.marginTop =
 							`${currentMargin + paliMarginNeeded}px`;
 					}
@@ -530,6 +594,7 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 			}
 
 			nudgeHeadingsTowardNextPair(leftPanel);
+			resyncPairTops(paraIds);
 		}
 
 		showContent();

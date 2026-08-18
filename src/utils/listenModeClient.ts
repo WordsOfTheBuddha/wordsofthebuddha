@@ -33,6 +33,7 @@ import {
 	parseParagraphRangeParam,
 	type ParagraphRange,
 } from "./listenParagraphRange";
+import { createParagraphNumberElement } from "./paragraphNumbers";
 import { listenDisplayWords } from "./listenDisplayWords";
 import { audioTitles } from "../data/audioTitles.generated";
 import { audioDurations } from "../data/audioDurations.generated";
@@ -1099,6 +1100,7 @@ export function initListenMode(initial: ListenInitialData): void {
 
 			actions.appendChild(btnSingle);
 			actions.appendChild(btnFrom);
+			el.appendChild(createParagraphNumberElement(p.id));
 			el.appendChild(actions);
 
 			const text = document.createElement("span");

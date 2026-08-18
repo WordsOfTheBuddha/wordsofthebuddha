@@ -40,6 +40,7 @@ import {
 import { hideBreadcrumbsForPath } from "../utils/breadcrumbVisibility";
 import { buildStructuredData } from "../utils/structuredData";
 import { debug } from "../utils/contentParser";
+import discoursePlainCopyInline from "../utils/discoursePlainCopyInline.js?raw";
 
 const paramTheme = Astro.url.searchParams.get("theme");
 // Server-side theme is always dark initially
@@ -268,7 +269,11 @@ const structuredData = buildStructuredData({
 
 <html
 	lang="en"
-	class:list={[serverTheme, defaultRefPaliOnly && "ref-pali-only"]}
+	class:list={[
+		serverTheme,
+		defaultRefPaliOnly && "ref-pali-only",
+		paragraphRequest && "show-paragraph-numbers",
+	]}
 	dir="ltr"
 	data-has-viz={contentImage ? "true" : "false"}
 >
@@ -277,6 +282,12 @@ const structuredData = buildStructuredData({
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+		/>
+		<!-- Classic capture listeners must register before any module script. -->
+		<Fragment
+			set:html={"<script type=\"text/javascript\">" +
+				discoursePlainCopyInline +
+				"</script>"}
 		/>
 
 		<!-- Preload the above-the-fold body font. Italic and ṁ fallback load on demand. -->
@@ -401,6 +412,19 @@ const structuredData = buildStructuredData({
 			document.documentElement.classList.add(theme);
 			localStorage.setItem("theme", theme);
 			syncThemeChrome(theme);
+
+			try {
+				if (localStorage.getItem("showParagraphNumbers") === "true") {
+					document.documentElement.classList.add(
+						"show-paragraph-numbers",
+					);
+				}
+			} catch (e) {
+				/* ignore */
+			}
+			if (/^#\d/.test(location.hash)) {
+				document.documentElement.classList.add("show-paragraph-numbers");
+			}
 
 			document.addEventListener("themeChanged", () => {
 				syncThemeChrome(
@@ -615,6 +639,12 @@ const structuredData = buildStructuredData({
 		<ScrollToTop />
 	</body>
 	<script>
+		import { installDiscoursePlainCopy } from "../utils/plainCopy";
+
+		// Always install here — CopyButton's script is omitted when highlighting
+		// is disabled, and Safari/WebKit native copy still needs this handler.
+		installDiscoursePlainCopy();
+
 		// In dev, actively remove any previously-installed Service Worker so it
 		// doesn't keep serving stale cached HTML against the dev server.
 		if (import.meta.env.DEV && "serviceWorker" in navigator) {

@@ -1334,6 +1334,8 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   font-style: italic;
 }
 .discourse-body > p { margin: 0.55em 0; }
+.discourse-body .paragraph-num { display: none !important; }
+.discourse-body .copy-para-break { display: none !important; }
 
 /* Pāli + English polytext — match web (MDContent) + verse quote bar (global .verse) */
 .discourse-body .pali-paragraph {

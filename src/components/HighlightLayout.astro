@@ -96,6 +96,8 @@ const { title, description } = Astro.props;
 </div>
 
 <script>
+	import { withoutParagraphNumberMarkers } from "../utils/paragraphNumbers";
+
 	// Remove duplicate interface definitions since they're now in rangy.d.ts
 	declare global {
 		interface Window {
@@ -172,6 +174,16 @@ const { title, description } = Astro.props;
 			window.rangy = rangy;
 			rangy.init();
 			highlighter = rangy.createHighlighter();
+			const origSerialize = highlighter.serialize.bind(highlighter);
+			const origDeserialize = highlighter.deserialize.bind(highlighter);
+			highlighter.serialize = ((...args: unknown[]) =>
+				withoutParagraphNumberMarkers(() =>
+					origSerialize.apply(highlighter, args),
+				)) as typeof origSerialize;
+			highlighter.deserialize = ((...args: unknown[]) =>
+				withoutParagraphNumberMarkers(() =>
+					origDeserialize.apply(highlighter, args),
+				)) as typeof origDeserialize;
 
 			Object.entries(COLOR_MAP).forEach(([colorName, bgColor]) => {
 				const applier = rangy.createClassApplier(

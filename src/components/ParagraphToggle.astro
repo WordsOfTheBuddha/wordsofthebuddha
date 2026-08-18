@@ -21,6 +21,10 @@ const { class: className, paragraphRequest } = Astro.props;
 </button>
 
 <script>
+	import { installDiscoursePlainCopy } from "../utils/plainCopy";
+
+	installDiscoursePlainCopy();
+
 	const SHOW_PARAGRAPH_NUMBERS_KEY = "showParagraphNumbers";
 
 	function readShowParagraphNumbers(): string | null {
@@ -65,36 +69,13 @@ const { class: className, paragraphRequest } = Astro.props;
 				: "Show paragraph numbering";
 		};
 
-		// Apply paragraph numbering state
 		const applyParagraphState = (show: boolean) => {
-			const style = document.getElementById("paragraph-numbers-style");
-			if (style) {
-				style.remove();
-			}
-
-			if (show) {
-				const newStyle = document.createElement("style");
-				newStyle.id = "paragraph-numbers-style";
-				newStyle.textContent = `
-					@media (min-width: 1024px) {
-						p[id] {
-							position: relative;
-						}
-						p[id]::before {
-							content: "¶ " attr(data-paragraph-number);
-							position: absolute;
-							left: -3rem;
-							padding-top: 8px;
-							color: var(--text-muted);
-							font-size: 0.75rem;
-							opacity: 0.7;
-							cursor: pointer;
-							pointer-events: none;
-						}
-					}
-				`;
-				document.head.appendChild(newStyle);
-			}
+			document.documentElement.classList.toggle(
+				"show-paragraph-numbers",
+				show,
+			);
+			// Drop leftover ::before stylesheet from older builds / HMR.
+			document.getElementById("paragraph-numbers-style")?.remove();
 		};
 
 		// Initialize state

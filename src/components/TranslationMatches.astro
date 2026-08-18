@@ -602,6 +602,413 @@
   .dark .tm-gloss {
     border-bottom-color: #9ca3af;
   }
+
+  .tm-discourse-json-btn {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #c7d2fe;
+    background: #eef2ff;
+    color: #3730a3;
+    cursor: pointer;
+    line-height: 1.2;
+    margin-left: 0.25rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tm-discourse-json-btn:hover {
+    background: #e0e7ff;
+    border-color: #a5b4fc;
+  }
+
+  .dark .tm-discourse-json-btn {
+    background: #312e81;
+    border-color: #4c1d95;
+    color: #c7d2fe;
+  }
+
+  .dark .tm-discourse-json-btn:hover {
+    background: #3730a3;
+    border-color: #5b21b6;
+  }
+
+  .tm-discourse-json-btn-floating {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 40;
+    margin-left: 0;
+  }
+
+  @media print {
+    .tm-discourse-json-btn {
+      display: none !important;
+    }
+  }
+
+  .tm-discourse-snapshot-status {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .dark .tm-discourse-snapshot-status {
+    color: #9ca3af;
+    border-bottom-color: #374151;
+    background: #111827;
+  }
+
+  .tm-discourse-snapshot-pre {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    overflow: auto;
+    max-height: 14rem;
+    min-height: 0;
+    white-space: pre;
+    overscroll-behavior: contain;
+    background: #f9fafb;
+    color: #1f2937;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .dark .tm-discourse-snapshot-pre {
+    background: #030712;
+    color: #e5e7eb;
+  }
+
+  .tm-llm-snapshot-copy:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .tm-popover.tm-discourse-snapshot-dialog {
+    overflow: hidden;
+  }
+
+  .tm-discourse-snapshot-dialog .tm-popover-toolbar {
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .tm-discourse-snapshot-dialog .tm-llm-snapshot-copy {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.4375rem 0.875rem;
+    border-radius: 0.375rem;
+    letter-spacing: 0.01em;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(67, 56, 202, 0.28);
+  }
+
+  .tm-discourse-snapshot-dialog .tm-llm-snapshot-copy:focus-visible {
+    outline: 2px solid #818cf8;
+    outline-offset: 2px;
+  }
+
+  .tm-discourse-snapshot-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .tm-discourse-snapshot-index {
+    flex: 0 1 22rem;
+    width: 22rem;
+    max-width: 42%;
+    min-width: 16rem;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 1px solid #e5e7eb;
+  }
+
+  .dark .tm-discourse-snapshot-index {
+    border-right-color: #374151;
+  }
+
+  .tm-discourse-snapshot-detail {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .tm-discourse-detail-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem 0.5rem;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .dark .tm-discourse-detail-head {
+    background: #1f2937;
+    border-bottom-color: #374151;
+  }
+
+  .tm-discourse-detail-body {
+    padding: 0.75rem 1rem 1rem;
+  }
+
+  .tm-discourse-detail-body .tm-discourse-hover-phrase + .tm-discourse-hover-phrase {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  .tm-discourse-snapshot-detail .tm-discourse-hover-en {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .tm-discourse-detail-meta {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+
+  .dark .tm-discourse-detail-meta {
+    color: #9ca3af;
+  }
+
+  .tm-discourse-detail-empty {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .dark .tm-discourse-detail-empty {
+    color: #9ca3af;
+  }
+
+  @media (max-width: 720px) {
+    .tm-discourse-snapshot-body {
+      flex-direction: column;
+    }
+
+    .tm-discourse-snapshot-index {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: none;
+      min-width: 0;
+      max-height: 38%;
+      border-right: none;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .dark .tm-discourse-snapshot-index {
+      border-bottom-color: #374151;
+    }
+  }
+
+  .tm-discourse-index-empty {
+    padding: 1rem;
+    font-size: 0.8125rem;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .dark .tm-discourse-index-empty {
+    color: #9ca3af;
+  }
+
+  .tm-discourse-index-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.375rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .dark .tm-discourse-index-row {
+    border-bottom-color: #1f2937;
+  }
+
+  .tm-discourse-index-row:hover,
+  .tm-discourse-index-row:focus-within {
+    background: #eef2ff;
+  }
+
+  .dark .tm-discourse-index-row:hover,
+  .dark .tm-discourse-index-row:focus-within {
+    background: #1e1b4b;
+  }
+
+  .tm-discourse-index-row[aria-selected='true'] {
+    background: #e0e7ff;
+  }
+
+  .dark .tm-discourse-index-row[aria-selected='true'] {
+    background: #312e81;
+  }
+
+  .tm-discourse-index-row:focus-visible {
+    box-shadow: inset 0 0 0 2px #6366f1;
+  }
+
+  .dark .tm-discourse-index-row:focus-visible {
+    box-shadow: inset 0 0 0 2px #818cf8;
+  }
+
+  .tm-discourse-index-num {
+    flex-shrink: 0;
+    min-width: 2.75rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #3730a3;
+  }
+
+  .dark .tm-discourse-index-num {
+    color: #c7d2fe;
+  }
+
+  .tm-discourse-index-badge {
+    flex-shrink: 0;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.0625rem 0.375rem;
+    border-radius: 999px;
+  }
+
+  .dark .tm-discourse-index-badge {
+    background: #451a03;
+    color: #fde68a;
+  }
+
+  .tm-discourse-index-summary {
+    min-width: 0;
+    flex: 1;
+    color: #6b7280;
+  }
+
+  .dark .tm-discourse-index-summary {
+    color: #9ca3af;
+  }
+
+  .tm-discourse-index-none {
+    font-style: italic;
+  }
+
+  .tm-discourse-index-ref {
+    color: #3730a3;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .tm-discourse-index-ref:hover {
+    text-decoration: underline;
+  }
+
+  .dark .tm-discourse-index-ref {
+    color: #a5b4fc;
+  }
+
+  .tm-new-tab-icon {
+    font-size: 0.8em;
+    font-weight: 600;
+    opacity: 0.85;
+    margin-left: 0.1em;
+  }
+
+  .tm-discourse-snapshot-raw {
+    flex-shrink: 0;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .dark .tm-discourse-snapshot-raw {
+    border-top-color: #374151;
+    background: #111827;
+  }
+
+  .tm-discourse-snapshot-raw > summary {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .dark .tm-discourse-snapshot-raw > summary {
+    color: #9ca3af;
+  }
+
+  .tm-discourse-hover-phrase + .tm-discourse-hover-phrase {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .dark .tm-discourse-hover-phrase + .tm-discourse-hover-phrase {
+    border-top-color: #374151;
+  }
+
+  .tm-discourse-hover-pali {
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .tm-discourse-hover-pali .tm-highlight {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .tm-discourse-hover-match {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .dark .tm-discourse-hover-match {
+    color: #9ca3af;
+  }
+
+  .tm-discourse-hover-ref {
+    display: inline-block;
+    margin-top: 0.125rem;
+  }
+
+  .tm-discourse-hover-en {
+    margin-top: 0.125rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .tm-discourse-hover-empty {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .dark .tm-discourse-hover-empty {
+    color: #9ca3af;
+  }
 </style>
 
 <script>
@@ -2863,6 +3270,679 @@ function getCurrentSuttaId(): string {
     return phraseGroup.discourses.slice(0, 3);
   }
 
+  function toAgentMatch(discourse: TMDiscourse) {
+    return {
+      refDisplay: formatDiscourseRef({ suttaId: discourse.suttaId, paragraphNum: discourse.paragraphNum }),
+      suttaId: discourse.suttaId,
+      paragraphNum: discourse.paragraphNum,
+      url: `/${discourse.suttaId}.${discourse.paragraphNum}?pli=true`,
+      matchedPaliParagraph: discourse.paliOriginal,
+      englishTranslation: discourse.englishOriginal,
+      matchQuality: discourse.matchQuality,
+    };
+  }
+
+  function buildAgentPhraseTabs(result: TMMatchResult) {
+    return result.phraseGroups.map((pg, phraseTabIndex) => {
+      const displayDiscourses = getDisplayedDiscoursesForPhraseGroup(pg);
+      const matches = displayDiscourses.map(toAgentMatch);
+      const top = matches[0] ?? null;
+      if (!top) {
+        return {
+          phraseTabIndex,
+          tabLabel: formatPhraseTabLabel(pg, result.sourceWordCount),
+          similarity: pg.similarity,
+          matchedSegmentPali: pg.matchedSegment,
+          topMatch: null,
+          matches: [],
+        };
+      }
+      return {
+        phraseTabIndex,
+        tabLabel: formatPhraseTabLabel(pg, result.sourceWordCount),
+        similarity: pg.similarity,
+        matchedWordCount: pg.matchedWordCount,
+        totalDiscourseMatches: pg.totalCount,
+        matchedSegmentPali: pg.matchedSegment,
+        sourceHighlightWordRange: pg.startIndex !== undefined && pg.endIndex !== undefined
+          ? { startWordIndex: pg.startIndex, endWordIndex: pg.endIndex }
+          : undefined,
+        topMatch: top,
+        matches,
+      };
+    });
+  }
+
+  function getParagraphPaliText(el: Element): string {
+    const btn = el.querySelector('.tm-lookup-btn');
+    const stored = btn?.getAttribute('data-pali-text');
+    if (stored) return stored.replace(/\s+/g, ' ').trim();
+    const clone = el.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll('.tm-lookup-btn, .paragraph-num, .copy-para-break').forEach((node) => node.remove());
+    return (clone.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function resolveParagraphNumber(el: Element): number | null {
+    const attrNum = el.getAttribute('data-paragraph-number');
+    if (attrNum) {
+      const parsed = parseInt(attrNum, 10);
+      if (!isNaN(parsed)) return parsed;
+    }
+    const pairId = el.getAttribute('data-pair-id');
+    if (pairId) {
+      const englishPara = document.querySelector(`.english-paragraph[data-pair-id="${pairId}"]`);
+      const engNum = englishPara?.getAttribute('data-paragraph-number') || englishPara?.getAttribute('id');
+      if (engNum) {
+        const parsed = parseInt(engNum, 10);
+        if (!isNaN(parsed)) return parsed;
+      }
+    }
+    const prevSibling = el.previousElementSibling;
+    if (prevSibling?.classList.contains('english-paragraph')) {
+      const engNum = prevSibling.getAttribute('data-paragraph-number') || prevSibling.getAttribute('id');
+      if (engNum) {
+        const parsed = parseInt(engNum, 10);
+        if (!isNaN(parsed)) return parsed;
+      }
+    }
+    return null;
+  }
+
+  function getPairedEnglish(paliEl: Element): { currentEnglish: string | null; needsTranslation: boolean } {
+    let eng: Element | null = null;
+    const pairId = paliEl.getAttribute('data-pair-id');
+    if (pairId) {
+      eng = document.querySelector(`.english-paragraph[data-pair-id="${pairId}"]`);
+    }
+    if (!eng) {
+      const prev = paliEl.previousElementSibling;
+      if (prev?.classList.contains('english-paragraph')) eng = prev;
+    }
+    if (!eng) {
+      return { currentEnglish: null, needsTranslation: true };
+    }
+    const clone = eng.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll('script, button, .tm-lookup-btn, .paragraph-num, .copy-para-break').forEach((node) => node.remove());
+    const text = (clone.textContent || '').replace(/\s+/g, ' ').trim();
+    const needsTranslation = !text || /translation in progress/i.test(text);
+    return { currentEnglish: needsTranslation ? null : text, needsTranslation };
+  }
+
+  function collectPagePaliParagraphs(): Array<{ num: number; text: string; el: Element }> {
+    const paliParas = document.querySelectorAll('.pali-paragraph');
+    const paragraphs: Array<{ num: number; text: string; el: Element }> = [];
+    const seenParaNums = new Set<number>();
+    let fallbackNum = 0;
+
+    paliParas.forEach((el) => {
+      const text = getParagraphPaliText(el);
+      if (!text || (text.length <= 30 && !text.includes('.'))) return;
+
+      let paraNum = resolveParagraphNumber(el);
+      if (paraNum === null || isNaN(paraNum)) {
+        fallbackNum++;
+        paraNum = fallbackNum;
+      }
+      if (seenParaNums.has(paraNum)) return;
+      seenParaNums.add(paraNum);
+
+      paragraphs.push({ num: paraNum, text, el });
+    });
+
+    paragraphs.sort((a, b) => a.num - b.num);
+    return paragraphs;
+  }
+
+  const DISCOURSE_TM_AGENT_BRIEF =
+    'Whole-discourse Translation Memory. Each paragraphs[] item is one Pāli paragraph in reading order. phraseTabs[].matches are the same up-to-3 diverse existing translations shown in the TM popover (topMatch is matches[0]). Reuse englishTranslation phrasing where it aligns with matchedSegmentPali so the new rendering stays consistent with the corpus. currentEnglish is this discourse’s existing translation when present; needsTranslation marks paragraphs still to translate. Glosses in strings use |term::definition|. Adapt for context; do not copy a match when the surrounding sentence differs.';
+
+  async function buildDiscourseTmSnapshot(
+    onProgress?: (done: number, total: number) => void,
+    shouldAbort?: () => boolean,
+    excludeSameDiscourse: boolean = false,
+  ) {
+    const loaded = await loadTMIndex();
+    if (!loaded) {
+      throw new Error('Translation Memory index is not available.');
+    }
+
+    const suttaId = getCurrentSuttaId() || null;
+    const hideSameDiscourse = Boolean(excludeSameDiscourse && suttaId);
+    const pageParagraphs = collectPagePaliParagraphs();
+    const BATCH_SIZE = 3;
+    const paragraphs: Array<{
+      paragraphNum: number;
+      pali: string;
+      currentEnglish: string | null;
+      needsTranslation: boolean;
+      phraseTabs: ReturnType<typeof buildAgentPhraseTabs>;
+    }> = [];
+
+    for (let i = 0; i < pageParagraphs.length; i++) {
+      if (shouldAbort?.()) return null;
+      const para = pageParagraphs[i];
+      onProgress?.(i + 1, pageParagraphs.length);
+
+      const english = getPairedEnglish(para.el);
+      const sourceRef = suttaId ? { suttaId, paragraphNum: para.num } : undefined;
+      let result: TMMatchResult | null = null;
+      // Cached TM results include same-discourse matches, so skip the cache when hiding them.
+      if (!hideSameDiscourse) {
+        const cachedRaw = para.el.querySelector('.tm-lookup-btn')?.getAttribute('data-tm-matches');
+        if (cachedRaw) {
+          try {
+            result = JSON.parse(cachedRaw) as TMMatchResult;
+          } catch {
+            result = null;
+          }
+        }
+      }
+      if (!result) {
+        result = findMatches(
+          para.text,
+          para.text,
+          suttaId ?? undefined,
+          sourceRef,
+          hideSameDiscourse ? { excludeSameDiscourse: true } : undefined,
+        );
+      }
+
+      paragraphs.push({
+        paragraphNum: para.num,
+        pali: para.text,
+        currentEnglish: english.currentEnglish,
+        needsTranslation: english.needsTranslation,
+        phraseTabs: result ? buildAgentPhraseTabs(result) : [],
+      });
+
+      if ((i + 1) % BATCH_SIZE === 0) {
+        await yieldToBrowser();
+      }
+    }
+
+    const paragraphsWithMatches = paragraphs.filter((p) => p.phraseTabs.length > 0).length;
+    const phraseTabCount = paragraphs.reduce((sum, p) => sum + p.phraseTabs.length, 0);
+    const needsTranslationCount = paragraphs.filter((p) => p.needsTranslation).length;
+
+    return {
+      schemaVersion: 1,
+      kind: 'discourse-translation-memory',
+      generatedAt: new Date().toISOString(),
+      pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+      suttaId,
+      hideMatchesFromThisDiscourse: hideSameDiscourse,
+      agentBrief: hideSameDiscourse
+        ? `${DISCOURSE_TM_AGENT_BRIEF} Matches from this same discourse are omitted.`
+        : DISCOURSE_TM_AGENT_BRIEF,
+      summary: {
+        paragraphCount: paragraphs.length,
+        paragraphsWithMatches,
+        phraseTabCount,
+        needsTranslationCount,
+        hideMatchesFromThisDiscourse: hideSameDiscourse,
+      },
+      paragraphs,
+    };
+  }
+
+  type DiscourseTmSnapshot = NonNullable<Awaited<ReturnType<typeof buildDiscourseTmSnapshot>>>;
+  type DiscourseTmParagraph = DiscourseTmSnapshot['paragraphs'][number];
+
+  function stripTmGlossMarkup(text: string): string {
+    return text.replace(/\|(.+?)::(.*?)\|/g, '$1').replace(/\s+/g, ' ').trim();
+  }
+
+  function collectIndexMatchRefs(phraseTabs: DiscourseTmParagraph['phraseTabs']) {
+    const seen = new Set<string>();
+    const refs: Array<{ refDisplay: string; url: string }> = [];
+    for (const tab of phraseTabs) {
+      const match = tab.topMatch;
+      if (!match?.refDisplay || !match.url) continue;
+      if (seen.has(match.refDisplay)) continue;
+      seen.add(match.refDisplay);
+      refs.push({ refDisplay: match.refDisplay, url: match.url });
+    }
+    return refs;
+  }
+
+  function renderDiscourseTmNewTabLink(
+    url: string,
+    refDisplay: string,
+    className: string,
+    tabindex?: string,
+  ): string {
+    const href = escapeHtml(url).replace(/"/g, '&quot;');
+    const tabAttr = tabindex !== undefined ? ` tabindex="${tabindex}"` : '';
+    return `<a class="${className}" href="${href}" target="_blank" rel="noopener noreferrer" title="Open in new tab"${tabAttr}>${escapeHtml(refDisplay)} <span class="tm-new-tab-icon" aria-hidden="true">↗</span></a>`;
+  }
+
+  function highlightMatchedSegmentInParagraph(paragraph: string, segment: string): string {
+    const para = (paragraph || '').replace(/\s+/g, ' ').trim();
+    const seg = (segment || '').replace(/\s+/g, ' ').trim();
+    if (!para && !seg) return '—';
+    const text = para || seg;
+    if (!seg) return escapeHtml(text);
+    if (text === seg) {
+      return `<span class="tm-highlight">${escapeHtml(seg)}</span>`;
+    }
+    const idx = text.indexOf(seg);
+    if (idx !== -1) {
+      return escapeHtml(text.slice(0, idx))
+        + `<span class="tm-highlight">${escapeHtml(seg)}</span>`
+        + escapeHtml(text.slice(idx + seg.length));
+    }
+    const matchedWords = new Set<string>();
+    const wordPattern = /[a-zA-ZāīūṃṅñṭḍṇḷṁĀĪŪṂṄÑṬḌṆḶṀ'"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2039\u203A«»„‚]+/g;
+    for (const match of seg.matchAll(wordPattern)) {
+      const normalized = normalizePali(match[0]);
+      if (normalized) matchedWords.add(normalized);
+    }
+    if (matchedWords.size === 0) return escapeHtml(text);
+    return renderPaliWithWords(text, matchedWords);
+  }
+
+  function renderDiscourseTmIndex(payload: DiscourseTmSnapshot): string {
+    if (!payload.paragraphs.length) {
+      return '<div class="tm-discourse-index-empty">No Pāli paragraphs found on this page.</div>';
+    }
+
+    return payload.paragraphs.map((para, index) => {
+      const phraseCount = para.phraseTabs.length;
+      const refs = collectIndexMatchRefs(para.phraseTabs);
+      let summary: string;
+      if (phraseCount === 0) {
+        summary = '<span class="tm-discourse-index-none">no matches</span>';
+      } else {
+        const phraseLabel = `${phraseCount} phrase${phraseCount !== 1 ? 's' : ''}`;
+        const refHtml = refs
+          .map((ref) => renderDiscourseTmNewTabLink(ref.url, ref.refDisplay, 'tm-discourse-index-ref', '-1'))
+          .join(', ');
+        summary = refHtml
+          ? `<span class="tm-discourse-index-count">${phraseLabel}</span> · ${refHtml}`
+          : `<span class="tm-discourse-index-count">${phraseLabel}</span>`;
+      }
+      const badge = para.needsTranslation
+        ? '<span class="tm-discourse-index-badge" title="Needs translation">New</span>'
+        : '';
+      return `<div class="tm-discourse-index-row" role="listitem" tabindex="-1" data-index="${index}" data-paragraph-num="${para.paragraphNum}"><span class="tm-discourse-index-num">¶${para.paragraphNum}</span>${badge}<span class="tm-discourse-index-summary">${summary}</span></div>`;
+    }).join('');
+  }
+
+  function renderDiscourseTmIndexHover(para: DiscourseTmParagraph): string {
+    if (!para.phraseTabs.length) {
+      return '<div class="tm-discourse-hover-empty">No phrase matches</div>';
+    }
+
+    return para.phraseTabs.map((tab) => {
+      const top = tab.topMatch;
+      const pali = highlightMatchedSegmentInParagraph(
+        top?.matchedPaliParagraph || '',
+        tab.matchedSegmentPali || '',
+      );
+      let matchLine = '<div class="tm-discourse-hover-match">No match</div>';
+      if (top) {
+        const english = escapeHtml(stripTmGlossMarkup(top.englishTranslation || ''));
+        const refLink = top.url && top.refDisplay
+          ? renderDiscourseTmNewTabLink(top.url, top.refDisplay, 'tm-discourse-link tm-discourse-hover-ref')
+          : `<span class="tm-discourse-hover-ref">${escapeHtml(top.refDisplay)}</span>`;
+        matchLine = `<div class="tm-discourse-hover-match">
+          ${refLink}
+          ${english ? `<div class="tm-discourse-hover-en">${english}</div>` : ''}
+        </div>`;
+      }
+      return `<div class="tm-discourse-hover-phrase">
+        <div class="tm-discourse-hover-pali tm-pali">${pali}</div>
+        ${matchLine}
+      </div>`;
+    }).join('');
+  }
+
+  function renderDiscourseTmDetail(para: DiscourseTmParagraph): string {
+    const phraseCount = para.phraseTabs.length;
+    const phraseLabel = phraseCount === 0
+      ? 'No phrase matches'
+      : `${phraseCount} phrase${phraseCount !== 1 ? 's' : ''}`;
+    const badge = para.needsTranslation
+      ? '<span class="tm-discourse-index-badge" title="Needs translation">Needs translation</span>'
+      : '';
+    return `<div class="tm-discourse-detail-head">
+      <span class="tm-discourse-index-num">¶${para.paragraphNum}</span>
+      ${badge}
+      <span class="tm-discourse-detail-meta">${phraseLabel}</span>
+    </div>
+    <div class="tm-discourse-detail-body">${renderDiscourseTmIndexHover(para)}</div>`;
+  }
+
+  let discourseSnapshotJob: { aborted: boolean } | null = null;
+
+  function addDiscourseTmJsonButton() {
+    if (document.getElementById('tm-discourse-json-btn')) return;
+    if (!document.querySelector('p.pali-paragraph')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'tm-discourse-json-btn';
+    btn.type = 'button';
+    btn.className = 'tm-discourse-json-btn';
+    btn.textContent = 'TM';
+    btn.title = 'Copy translation-memory JSON for this whole discourse (for agent translation)';
+    btn.setAttribute('aria-label', 'Discourse translation memory JSON');
+
+    const paliBtn = document.getElementById('paliButton');
+    const paliWrap = paliBtn?.closest('span.contents') ?? paliBtn?.parentElement;
+    if (paliWrap?.parentElement) {
+      paliWrap.insertAdjacentElement('afterend', btn);
+    } else if (paliBtn?.parentElement) {
+      paliBtn.insertAdjacentElement('afterend', btn);
+    } else {
+      btn.classList.add('tm-discourse-json-btn-floating');
+      document.body.appendChild(btn);
+    }
+  }
+
+  function showDiscourseTmSnapshotModal() {
+    const existingClose = document.querySelector('.tm-popover-overlay .tm-popover-close') as HTMLElement | null;
+    if (existingClose) {
+      existingClose.click();
+    } else {
+      document.querySelector('.tm-popover-overlay')?.remove();
+    }
+    if (discourseSnapshotJob) discourseSnapshotJob.aborted = true;
+    const job = { aborted: false };
+    discourseSnapshotJob = job;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'tm-popover-overlay';
+    const currentSuttaId = getCurrentSuttaId();
+    const initialHideSameDiscourse = Boolean(currentSuttaId && getHideSameDiscoursePreference());
+    overlay.innerHTML = `
+      <div class="tm-popover tm-discourse-snapshot-dialog" role="dialog" aria-modal="true" aria-labelledby="tm-discourse-snapshot-title">
+        <div class="tm-popover-header">
+          <span id="tm-discourse-snapshot-title" class="tm-popover-title">
+            Discourse Translation Memory
+          </span>
+          <div class="tm-popover-header-trailing">
+            <button type="button" class="tm-popover-close" aria-label="Close">&times;</button>
+          </div>
+        </div>
+        <div class="tm-popover-toolbar">
+          <button type="button" class="tm-llm-snapshot-copy" aria-label="Copy JSON" disabled>Preparing…</button>
+          ${currentSuttaId ? `
+          <label class="tm-same-discourse-toggle">
+            <input type="checkbox" class="tm-same-discourse-checkbox" ${initialHideSameDiscourse ? 'checked' : ''}>
+            <span>Hide matches from this discourse</span>
+          </label>
+          ` : ''}
+        </div>
+        <div class="tm-discourse-snapshot-status">Collecting paragraph matches for agent translation…</div>
+        <div class="tm-discourse-snapshot-body">
+          <div class="tm-discourse-snapshot-index" role="list" aria-label="Paragraph match index"></div>
+          <div class="tm-discourse-snapshot-detail" role="region" aria-label="Phrase matches for selected paragraph">
+            <div class="tm-discourse-detail-empty">Waiting for matches…</div>
+          </div>
+        </div>
+        <details class="tm-discourse-snapshot-raw">
+          <summary>Raw JSON</summary>
+          <pre class="tm-discourse-snapshot-pre"></pre>
+        </details>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const statusEl = overlay.querySelector('.tm-discourse-snapshot-status') as HTMLElement;
+    const indexEl = overlay.querySelector('.tm-discourse-snapshot-index') as HTMLElement;
+    const detailEl = overlay.querySelector('.tm-discourse-snapshot-detail') as HTMLElement;
+    const preEl = overlay.querySelector('.tm-discourse-snapshot-pre') as HTMLElement;
+    const copyBtn = overlay.querySelector('.tm-llm-snapshot-copy') as HTMLButtonElement;
+    const copyButtons = () => Array.from(overlay.querySelectorAll('.tm-llm-snapshot-copy')) as HTMLButtonElement[];
+    const sameDiscourseCheckbox = overlay.querySelector('.tm-same-discourse-checkbox') as HTMLInputElement | null;
+    let snapshotJson = '';
+    let snapshotRunId = 0;
+    let currentPayload: DiscourseTmSnapshot | null = null;
+    let selectedRow: HTMLElement | null = null;
+    let displayedRow: HTMLElement | null = null;
+    let previewRestoreTimer: ReturnType<typeof setTimeout> | null = null;
+    const DETAIL_EMPTY = 'Select a paragraph to read phrase matches.';
+
+    const setCopyButtonsState = (
+      text: string,
+      { disabled, copied }: { disabled?: boolean; copied?: boolean } = {},
+    ) => {
+      for (const btn of copyButtons()) {
+        btn.textContent = text;
+        if (disabled !== undefined) btn.disabled = disabled;
+        btn.classList.toggle('copied', Boolean(copied));
+      }
+    };
+
+    const clearPreviewRestore = () => {
+      if (previewRestoreTimer !== null) {
+        clearTimeout(previewRestoreTimer);
+        previewRestoreTimer = null;
+      }
+    };
+
+    const schedulePreviewRestore = () => {
+      clearPreviewRestore();
+      previewRestoreTimer = setTimeout(() => {
+        previewRestoreTimer = null;
+        renderDetailRow(selectedRow, { resetScroll: selectedRow !== displayedRow });
+      }, 60);
+    };
+
+    const relatedNode = (target: EventTarget | null): Node | null =>
+      target instanceof Node ? target : null;
+
+    const paraForRow = (row: HTMLElement | null): DiscourseTmParagraph | null => {
+      if (!row || !currentPayload) return null;
+      return currentPayload.paragraphs[Number(row.dataset.index)] ?? null;
+    };
+
+    const showDetailForPara = (para: DiscourseTmParagraph | null, emptyMessage = DETAIL_EMPTY) => {
+      detailEl.innerHTML = para
+        ? renderDiscourseTmDetail(para)
+        : `<div class="tm-discourse-detail-empty">${emptyMessage}</div>`;
+    };
+
+    const renderDetailRow = (
+      row: HTMLElement | null,
+      {
+        emptyMessage = DETAIL_EMPTY,
+        resetScroll = false,
+        force = false,
+      }: { emptyMessage?: string; resetScroll?: boolean; force?: boolean } = {},
+    ) => {
+      if (!force && row === displayedRow) return;
+      displayedRow = row;
+      showDetailForPara(paraForRow(row), emptyMessage);
+      if (resetScroll) detailEl.scrollTop = 0;
+    };
+
+    const pinRow = (row: HTMLElement | null) => {
+      clearPreviewRestore();
+      if (selectedRow && selectedRow !== row) {
+        selectedRow.removeAttribute('aria-selected');
+      }
+      selectedRow = row;
+      if (row) row.setAttribute('aria-selected', 'true');
+      renderDetailRow(row, { resetScroll: true });
+    };
+
+    const preventBackgroundScroll = (e: WheelEvent | TouchEvent) => {
+      const target = e.target as Node | null;
+      if (target && (indexEl.contains(target) || detailEl.contains(target) || preEl.contains(target))) return;
+      e.preventDefault();
+    };
+
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
+      }
+    };
+
+    const closeModal = () => {
+      job.aborted = true;
+      if (discourseSnapshotJob === job) discourseSnapshotJob = null;
+      clearPreviewRestore();
+      selectedRow = null;
+      displayedRow = null;
+      document.removeEventListener('keydown', onKeydown);
+      overlay.removeEventListener('wheel', preventBackgroundScroll);
+      overlay.removeEventListener('touchmove', preventBackgroundScroll);
+      overlay.remove();
+    };
+
+    document.addEventListener('keydown', onKeydown);
+    overlay.querySelector('.tm-popover-close')?.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    overlay.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    overlay.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+
+    indexEl.addEventListener('click', (e) => {
+      const row = (e.target as HTMLElement).closest('.tm-discourse-index-row') as HTMLElement | null;
+      if (!row || !indexEl.contains(row)) return;
+      clearPreviewRestore();
+      pinRow(row);
+    });
+    indexEl.addEventListener('pointerover', (e) => {
+      const row = (e.target as HTMLElement).closest('.tm-discourse-index-row') as HTMLElement | null;
+      if (!row || !indexEl.contains(row)) return;
+      clearPreviewRestore();
+      renderDetailRow(row, { resetScroll: true });
+    });
+    indexEl.addEventListener('pointerleave', (e) => {
+      const to = relatedNode(e.relatedTarget);
+      if (to && (indexEl.contains(to) || detailEl.contains(to))) return;
+      schedulePreviewRestore();
+    });
+    detailEl.addEventListener('pointerenter', () => {
+      clearPreviewRestore();
+    });
+    detailEl.addEventListener('pointerleave', (e) => {
+      const to = relatedNode(e.relatedTarget);
+      if (to && (indexEl.contains(to) || detailEl.contains(to))) return;
+      schedulePreviewRestore();
+    });
+    indexEl.addEventListener('focusin', (e) => {
+      const row = (e.target as HTMLElement).closest('.tm-discourse-index-row') as HTMLElement | null;
+      if (!row || !indexEl.contains(row)) return;
+      indexEl.querySelectorAll('.tm-discourse-index-row').forEach((el) => {
+        (el as HTMLElement).tabIndex = el === row ? 0 : -1;
+      });
+      pinRow(row);
+    });
+    indexEl.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      const row = (e.target as HTMLElement).closest('.tm-discourse-index-row') as HTMLElement | null;
+      if (!row || !indexEl.contains(row)) return;
+      const rows = Array.from(indexEl.querySelectorAll('.tm-discourse-index-row')) as HTMLElement[];
+      const i = rows.indexOf(row);
+      const next = e.key === 'ArrowDown' ? rows[i + 1] : rows[i - 1];
+      if (!next) return;
+      e.preventDefault();
+      next.focus();
+      next.scrollIntoView({ block: 'nearest' });
+    });
+
+    overlay.addEventListener('click', async (e) => {
+      const btn = (e.target as HTMLElement).closest('.tm-llm-snapshot-copy') as HTMLButtonElement | null;
+      if (!btn || !overlay.contains(btn)) return;
+      e.stopPropagation();
+      if (!snapshotJson || btn.disabled) return;
+      try {
+        await navigator.clipboard.writeText(snapshotJson);
+        setCopyButtonsState('Copied', { copied: true });
+        setTimeout(() => {
+          for (const copyEl of copyButtons()) {
+            if (copyEl.textContent === 'Copied') {
+              copyEl.textContent = 'Copy JSON';
+              copyEl.classList.remove('copied');
+            }
+          }
+        }, 1600);
+      } catch (err) {
+        console.error('Discourse TM snapshot copy failed:', err);
+      }
+    });
+
+    const PREVIEW_LIMIT = 200000;
+    const runSnapshot = (excludeSameDiscourse: boolean) => {
+      const thisRun = ++snapshotRunId;
+      snapshotJson = '';
+      currentPayload = null;
+      selectedRow = null;
+      displayedRow = null;
+      clearPreviewRestore();
+      setCopyButtonsState('Preparing…', { disabled: true, copied: false });
+      preEl.textContent = '';
+      indexEl.innerHTML = '';
+      indexEl.setAttribute('aria-busy', 'true');
+      renderDetailRow(null, { emptyMessage: 'Waiting for matches…', force: true });
+      statusEl.textContent = 'Collecting paragraph matches for agent translation…';
+
+      buildDiscourseTmSnapshot(
+        (done, total) => {
+          if (thisRun !== snapshotRunId) return;
+          statusEl.textContent = `Matching paragraph ${done} of ${total}…`;
+        },
+        () => job.aborted || thisRun !== snapshotRunId,
+        excludeSameDiscourse,
+      ).then((payload) => {
+        if (job.aborted || thisRun !== snapshotRunId || !payload) return;
+        currentPayload = payload;
+        snapshotJson = JSON.stringify(payload, null, 2);
+        const { paragraphCount, paragraphsWithMatches, needsTranslationCount } = payload.summary;
+        const hiddenNote = payload.hideMatchesFromThisDiscourse ? ' · hiding this discourse' : '';
+        statusEl.textContent =
+          `${paragraphCount} paragraph${paragraphCount !== 1 ? 's' : ''} · ` +
+          `${paragraphsWithMatches} with matches · ` +
+          `${needsTranslationCount} untranslated${hiddenNote}`;
+        indexEl.innerHTML = renderDiscourseTmIndex(payload);
+        const firstRow = indexEl.querySelector('.tm-discourse-index-row') as HTMLElement | null;
+        if (firstRow) {
+          firstRow.tabIndex = 0;
+          pinRow(firstRow);
+        } else {
+          renderDetailRow(null, { force: true });
+        }
+        indexEl.removeAttribute('aria-busy');
+        preEl.textContent = snapshotJson.length > PREVIEW_LIMIT
+          ? `${snapshotJson.slice(0, PREVIEW_LIMIT)}\n\n… preview truncated; Copy JSON has the full payload.`
+          : snapshotJson;
+        setCopyButtonsState('Copy JSON', { disabled: false, copied: false });
+        copyBtn.focus();
+      }).catch((err) => {
+        if (job.aborted || thisRun !== snapshotRunId) return;
+        console.error('Discourse TM snapshot failed:', err);
+        currentPayload = null;
+        selectedRow = null;
+        displayedRow = null;
+        clearPreviewRestore();
+        indexEl.removeAttribute('aria-busy');
+        renderDetailRow(null, { emptyMessage: 'Failed to load phrase matches.', force: true });
+        statusEl.textContent = err instanceof Error ? err.message : 'Failed to build discourse TM JSON.';
+        setCopyButtonsState('Unavailable', { disabled: true, copied: false });
+      });
+    };
+
+    sameDiscourseCheckbox?.addEventListener('change', () => {
+      const nextValue = sameDiscourseCheckbox.checked;
+      setHideSameDiscoursePreference(nextValue);
+      runSnapshot(nextValue);
+    });
+
+    runSnapshot(initialHideSameDiscourse);
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('#tm-discourse-json-btn');
+    if (!btn) return;
+    e.preventDefault();
+    showDiscourseTmSnapshotModal();
+  });
+
   function hasDisplayedSameDiscourseMatch(result: TMMatchResult): boolean {
     const currentSuttaId = getCurrentSuttaId();
     if (!currentSuttaId) return false;
@@ -3817,6 +4897,7 @@ function getCurrentSuttaId(): string {
   async function initialize() {
     // First, immediately add placeholder TM buttons to all Pali paragraphs (fast, no computation)
     addTMLookupButtons();
+    addDiscourseTmJsonButton();
 
     // Then, pre-compute TM for "Translation in progress..." paragraphs in background
     // Use requestIdleCallback to avoid blocking the main thread
@@ -3986,51 +5067,42 @@ function getCurrentSuttaId(): string {
     // Get Pali paragraphs from a discourse element on the page
     // Usage: tmDebug.getPaliParagraphs() - gets all paragraphs from current page
     getPaliParagraphs: () => {
-      // Look for actual content paragraphs, not the title
-      // Only select .pali-paragraph elements (the actual paragraphs)
-      // Avoid [lang="pi"] alone since it might match containers
-      const paliParas = document.querySelectorAll('.pali-paragraph');
-      const seen = new Set<string>();
-      const paragraphs: Array<{ num: number; text: string }> = [];
-      let fallbackNum = 0;
-      paliParas.forEach((el) => {
-        // Normalize whitespace same as precompute
-        const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
-        // Skip very short elements that are likely titles (less than 30 chars and no periods)
-        if (text && (text.length > 30 || text.includes('.'))) {
-          // Deduplicate by text content
-          if (seen.has(text)) return;
-          seen.add(text);
-
-          // Get actual paragraph number from data-paragraph-number attribute
-          // Or find via data-pair-id from the corresponding English paragraph
-          let paraNum: number | null = null;
-          const attrNum = el.getAttribute('data-paragraph-number');
-          if (attrNum) {
-            paraNum = parseInt(attrNum, 10);
-          } else {
-            // Try to find via pair-id
-            const pairId = el.getAttribute('data-pair-id');
-            if (pairId) {
-              const englishPara = document.querySelector(`.english-paragraph[data-pair-id="${pairId}"]`);
-              const engNum = englishPara?.getAttribute('data-paragraph-number');
-              if (engNum) {
-                paraNum = parseInt(engNum, 10);
-              }
-            }
-          }
-
-          // Fallback to sequential numbering if no attribute found
-          if (paraNum === null || isNaN(paraNum)) {
-            fallbackNum++;
-            paraNum = fallbackNum;
-          }
-
-          paragraphs.push({ num: paraNum, text });
-        }
-      });
+      const paragraphs = collectPagePaliParagraphs().map(({ num, text }) => ({ num, text }));
       console.log(`Found ${paragraphs.length} Pali paragraphs`);
       return paragraphs;
+    },
+
+    // Whole-discourse TM JSON for agent translation (same payload as the TM JSON modal)
+    // Usage: await tmDebug.findDiscourseMatchesJSON()
+    // Usage: await tmDebug.findDiscourseMatchesJSON(true) - hide matches from this discourse
+    findDiscourseMatchesJSON: async (excludeSameDiscourse?: boolean) => {
+      try {
+        const exclude = excludeSameDiscourse ?? getHideSameDiscoursePreference();
+        const payload = await buildDiscourseTmSnapshot(undefined, undefined, exclude);
+        if (!payload) return null;
+        console.log(JSON.stringify(payload, null, 2));
+        return payload;
+      } catch (err) {
+        console.error('[TM Debug] Discourse snapshot failed:', err);
+        return null;
+      }
+    },
+
+    // Copy whole-discourse TM JSON to the clipboard
+    // Usage: await tmDebug.copyDiscourseMatchesJSON()
+    copyDiscourseMatchesJSON: async (excludeSameDiscourse?: boolean) => {
+      try {
+        const exclude = excludeSameDiscourse ?? getHideSameDiscoursePreference();
+        const payload = await buildDiscourseTmSnapshot(undefined, undefined, exclude);
+        if (!payload) return null;
+        const json = JSON.stringify(payload, null, 2);
+        await navigator.clipboard.writeText(json);
+        console.log(`[TM Debug] Copied discourse TM JSON (${payload.summary.paragraphCount} paragraphs)`);
+        return payload;
+      } catch (err) {
+        console.error('[TM Debug] Discourse snapshot copy failed:', err);
+        return null;
+      }
     },
 
     // Find matches for specific paragraphs on current page
