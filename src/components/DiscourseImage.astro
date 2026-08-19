@@ -6,7 +6,7 @@
  * - Convention-based image discovery (src/assets/content-images/{id}.{ext})
  * - Carousel mode when multiple images are provided
  * - Hidden in offline mode (controlled by ImageToggle)
- * - Print-friendly (hidden)
+ * - Print-friendly (sliced SVG; original stays in the DOM so Cancel restores it)
  * - Optimized via Astro's Image component
  *
  * Toggle button is separate (ImageToggle.astro) and placed in icon row.
@@ -1447,6 +1447,15 @@ const hasSvg = images.some((img) => img.isSvg);
 		display: none;
 	}
 
+	/* Swap screen raster ↔ print SVG via JS class, not @media print.
+	   Cmd+P Cancel can leave print media applied, which hid the on-screen viz. */
+	:global(html.is-printing) .discourse-image:not(.hidden) .svg-screen {
+		display: none !important;
+	}
+	:global(html.is-printing) .discourse-image:not(.hidden) .svg-print {
+		display: block !important;
+	}
+
 	.discourse-image img:not(.svg-image) {
 		filter: brightness(0.98);
 	}
@@ -1603,12 +1612,7 @@ const hasSvg = images.some((img) => img.isSvg);
 			page-break-inside: auto;
 		}
 
-		.discourse-image:not(.hidden) .svg-screen {
-			display: none !important;
-		}
-
 		.discourse-image:not(.hidden) .svg-print {
-			display: block !important;
 			overflow: visible;
 			break-inside: auto;
 			page-break-inside: auto;

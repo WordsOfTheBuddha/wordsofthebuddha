@@ -3,13 +3,21 @@
 	import { getFormattedContainer } from "../utils/tooltipFormatter";
 	import { ensureSplitPanels } from "../utils/splitViewClient";
 
+	const PRINTING_CLASS = "is-printing";
+	const PRINT_SOURCE_CLASS = "discourse-print-source";
+	const PRINT_SLICES_CLASS = "discourse-print-slices";
+
 	function setupPrintFormatting() {
 		let originalContent: string | null = null;
-		let originalImageParent: HTMLElement | null = null;
-		let originalImageNode: Element | null = null; // actual DOM node — preserves event listeners
+		let originalImageNode: Element | null = null;
 		let imageSliceElements: Element[] = [];
+		let printPrepared = false;
 
-		window.addEventListener("beforeprint", () => {
+		function prepareForPrint() {
+			if (printPrepared) return;
+			printPrepared = true;
+			document.documentElement.classList.add(PRINTING_CLASS);
+
 			// Find the main content area (prefer the currently visible layout)
 			const isSplit =
 				document.documentElement.classList.contains("split") &&
@@ -55,11 +63,10 @@
 			contentArea.classList.add("print-formatted");
 
 			// Prepare discourse images for print.
-			// The figure lives in the PostLayout article as a sibling of the
-			// interleaved-article (contentArea), NOT inside it.  So we must
-			// search the whole document.
-			// Chrome cannot split <svg>/<img> across pages, so we slice tall
-			// SVGs into viewBox chunks and replace the figure in-place.
+			// On discourse pages the figure is a sibling of interleaved-article,
+			// not inside contentArea. Leave the live node in the DOM: Cmd+P
+			// cancel often skips afterprint, and detaching the viz would leave
+			// it gone until reload. Slices are print-only via html.is-printing.
 			const imageBlock = document.querySelector(
 				".discourse-image-block"
 			) as HTMLElement | null;
@@ -69,18 +76,14 @@
 					: document.querySelector(".discourse-image:not(.hidden)")
 			) as HTMLElement | null;
 
-			// Reset image state
 			imageSliceElements = [];
-			originalImageParent = null;
 			originalImageNode = null;
 
 			if (figure) {
 				const svgPrint = figure.querySelector(".svg-print") as HTMLElement | null;
 				const svg = svgPrint?.querySelector("svg");
 				const insertionAnchor = (imageBlock || figure) as HTMLElement;
-				// Save for afterprint restoration
-				originalImageParent = insertionAnchor.parentNode as HTMLElement;
-				originalImageNode = insertionAnchor; // keep the live DOM node
+				originalImageNode = insertionAnchor;
 
 				// Resolve diagram color mode so sliced strips match on-screen appearance.
 				// Sync from localStorage first (mirrors DiscourseImage beforeprint handler).
@@ -148,6 +151,7 @@
 						}
 
 						const wrapper = document.createElement("div");
+						wrapper.className = PRINT_SLICES_CLASS;
 						wrapper.style.cssText =
 							`background:${bgColor};line-height:0;font-size:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;`;
 
@@ -163,23 +167,25 @@
 								? `filter:${vizFilter};-webkit-print-color-adjust:exact;print-color-adjust:exact;`
 								: "";
 							clone.style.cssText =
-								`display:block;width:100%;height:auto;max-width:100%;margin:0;padding:0;${filterCss}`;
+								`display:block;width:100%;height:auto;max-width:100%;margin:0;padding:0;aspect-ratio:${vbW}/${slice.h};${filterCss}`;
 							wrapper.appendChild(clone);
 						}
 
 						const spacer = document.createElement("div");
+						spacer.className = PRINT_SLICES_CLASS;
 						spacer.style.cssText = "height:2em;";
 
 						parent.insertBefore(wrapper, insertionAnchor);
 						parent.insertBefore(spacer, insertionAnchor);
 						imageSliceElements.push(wrapper, spacer);
-						insertionAnchor.remove();
+						insertionAnchor.classList.add(PRINT_SOURCE_CLASS);
 					}
 				} else {
 					// Non-SVG raster image — also apply viz filter when needed
 					const img = figure.querySelector("img");
 					if (img) {
 						const clone = img.cloneNode(true) as HTMLImageElement;
+						clone.classList.add(PRINT_SLICES_CLASS);
 						const filterCss = vizFilter
 							? `filter:${vizFilter};-webkit-print-color-adjust:exact;print-color-adjust:exact;`
 							: "";
@@ -190,8 +196,8 @@
 							insertionAnchor
 						);
 						imageSliceElements.push(clone);
+						insertionAnchor.classList.add(PRINT_SOURCE_CLASS);
 					}
-					insertionAnchor.remove();
 				}
 			}
 
@@ -200,34 +206,48 @@
 				const alignmentEvent = new Event("print-formatting-complete");
 				window.dispatchEvent(alignmentEvent);
 			}, 50);
-		});
+		}
 
-		window.addEventListener("afterprint", () => {
-			// Restore original content area
+		function restoreAfterPrint() {
+			document.documentElement.classList.remove(PRINTING_CLASS);
+			if (!printPrepared) return;
+			printPrepared = false;
+
 			const contentArea = document.querySelector(".print-formatted");
 			if (originalContent && contentArea) {
 				contentArea.innerHTML = originalContent;
 				contentArea.classList.remove("print-formatted");
 				originalContent = null;
 			}
-			// Restore discourse image (it lives outside contentArea)
-			if (originalImageNode && originalImageParent) {
-				// Remove injected slices
-				for (const el of imageSliceElements) {
-					el.remove();
-				}
-				imageSliceElements = [];
-				// Re-insert the original DOM node (preserves all event listeners)
-				const interleavedArticle =
-					originalImageParent.querySelector(".interleaved-article");
-				if (interleavedArticle) {
-					originalImageParent.insertBefore(originalImageNode, interleavedArticle);
-				} else {
-					originalImageParent.appendChild(originalImageNode);
-				}
-				originalImageParent = null;
-				originalImageNode = null;
+			for (const el of imageSliceElements) {
+				el.remove();
 			}
+			imageSliceElements = [];
+			originalImageNode?.classList.remove(PRINT_SOURCE_CLASS);
+			originalImageNode = null;
+		}
+
+		window.addEventListener("beforeprint", prepareForPrint);
+		window.addEventListener("afterprint", restoreAfterPrint);
+
+		// Chrome/Safari print preview often skips afterprint on Cancel.
+		// matchMedia('print') goes false when the preview closes.
+		const printMq = window.matchMedia("print");
+		const onPrintMqChange = (event: MediaQueryListEvent) => {
+			if (event.matches) prepareForPrint();
+			else restoreAfterPrint();
+		};
+		if (typeof printMq.addEventListener === "function") {
+			printMq.addEventListener("change", onPrintMqChange);
+		} else if (typeof printMq.addListener === "function") {
+			printMq.addListener(onPrintMqChange);
+		}
+
+		window.addEventListener("focus", () => {
+			if (!printPrepared) return;
+			setTimeout(() => {
+				if (!window.matchMedia("print").matches) restoreAfterPrint();
+			}, 300);
 		});
 	}
 
@@ -236,6 +256,18 @@
 </script>
 
 <style is:global>
+	/* Print preview (Cmd+P) can leave @media print stuck after Cancel.
+	   Drive viz visibility from html.is-printing instead, so restore always unhides. */
+	html.is-printing .discourse-print-source {
+		display: none !important;
+	}
+	.discourse-print-slices {
+		display: none !important;
+	}
+	html.is-printing .discourse-print-slices {
+		display: block !important;
+	}
+
 	@media print {
 		/* Hide interactive elements */
 		.copy-btn,
