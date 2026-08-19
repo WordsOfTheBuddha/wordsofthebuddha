@@ -1,0 +1,26 @@
+---
+export const prerender = true;
+
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+	fp="/success"
+	title="Thank you"
+	seoTitle="Thank you — Words of the Buddha"
+	seoDescription="Thank you for supporting Words of the Buddha."
+	robots="noindex"
+	showAuth={false}
+>
+	<section>
+		<p>
+			Thank you. Your gift helps keep these translations free and the
+			work going.
+		</p>
+		<p>
+			<a href="/support">Return to Support</a>
+			&nbsp;·&nbsp;
+			<a href="/">Read a discourse</a>
+		</p>
+	</section>
+</Layout>

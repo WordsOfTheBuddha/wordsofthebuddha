@@ -24,6 +24,8 @@ const HIDE_BREADCRUMBS_PATHS = new Set([
 	"/offline",
 	"/privacy",
 	"/public-domain",
+	"/support",
+	"/success",
 	"/buddha-quotes",
 	"/design-system",
 	"/404",

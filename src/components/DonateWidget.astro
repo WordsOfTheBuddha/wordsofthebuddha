@@ -1,0 +1,135 @@
+---
+import {
+	monthlyCheckoutEnabled,
+	polarCheckoutHref,
+} from "../data/support";
+
+const onceHref = polarCheckoutHref({ frequency: "once" });
+const polarConfigured = Boolean(onceHref);
+const isSandbox = Boolean(onceHref?.includes("sandbox"));
+const monthlyHref =
+	polarConfigured && monthlyCheckoutEnabled
+		? polarCheckoutHref({ frequency: "monthly" })
+		: null;
+---
+
+<div class="donate-widget not-prose">
+	{
+		onceHref ? (
+			<div class="donate-actions">
+				<a
+					href={onceHref}
+					class="donate-btn donate-btn-once no-underline"
+				>
+					Give once
+				</a>
+				{
+					monthlyHref ? (
+						<a
+							href={monthlyHref}
+							class="donate-btn donate-btn-monthly no-underline"
+						>
+							Give monthly
+						</a>
+					) : (
+						<span
+							class="donate-btn donate-btn-monthly donate-btn-disabled"
+							title="Monthly giving will be available soon"
+						>
+							Give monthly
+						</span>
+					)
+				}
+			</div>
+		) : (
+			<p class="donate-note">Card payments are not configured yet.</p>
+		)
+	}
+
+	{
+		isSandbox && (
+			<p class="donate-note">
+				Sandbox checkout — Polar will not process a live payment. You
+				will be taken to Polar to complete the gift.
+			</p>
+		)
+	}
+	{
+		!isSandbox && polarConfigured && (
+			<p class="donate-note">
+				You will be taken to Polar to complete the gift.
+			</p>
+		)
+	}
+</div>
+
+<style>
+	.donate-widget {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.donate-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.donate-btn {
+		display: inline-flex;
+		width: auto;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.375rem;
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		line-height: 1.25;
+		text-align: center;
+		box-sizing: border-box;
+	}
+
+	@media (min-width: 640px) {
+		.donate-btn {
+			padding-left: 1.25rem;
+			padding-right: 1.25rem;
+		}
+	}
+
+	.donate-btn-once {
+		background-color: var(--primary-color);
+		color: #fff;
+		border: 1px solid var(--primary-color);
+		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	}
+
+	.donate-btn-once:hover {
+		color: #fff;
+		opacity: 0.95;
+	}
+
+	.donate-btn-monthly {
+		background: transparent;
+		color: var(--text-color);
+		border: 1px solid var(--surface-border);
+	}
+
+	.donate-btn-monthly:hover {
+		color: var(--text-color);
+		background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+	}
+
+	.donate-btn-disabled {
+		opacity: 0.55;
+		cursor: not-allowed;
+	}
+
+	.donate-note {
+		margin: 0;
+		font-size: 0.75rem;
+		line-height: 1.5;
+		color: var(--text-muted);
+	}
+</style>
