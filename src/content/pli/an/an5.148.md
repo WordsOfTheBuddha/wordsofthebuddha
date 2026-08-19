@@ -1,9 +1,10 @@
 ---
 title: Sappurisadāna sutta - Gifts of a True Person
-description: The Buddha describes five kinds of gifts of a true person - 1) giving out of faith, 2) giving with respect, 2) giving at a suitable time, 4) giving unreservedly, and 5) giving without harming oneself or another.
-qualities: giving, faith, respect, non-harm
+description: The Buddha describes five kinds of gifts of a true person - 1.) giving out of faith, 2.) giving with respect, 2.) giving at a suitable time, 4.) giving unreservedly, and 5.) giving without harming oneself or another.
+qualities: giving, faith, respect, non-harm, person of integrity
 theme: wisdom, principle
 slug: an5.148
+priority: 1.3
 ---
 
 “Pañcimāni, bhikkhave, sappurisadānāni. Katamāni pañca? Saddhāya dānaṁ deti, sakkaccaṁ dānaṁ deti, kālena dānaṁ deti, anuggahitacitto dānaṁ deti, attānañca parañca anupahacca dānaṁ deti.
