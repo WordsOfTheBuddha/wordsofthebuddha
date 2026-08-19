@@ -1,8 +1,8 @@
 ---
-title: Paññāvuddhi sutta - Growth Of Wisdom
-description: The four things that lead to the growth of wisdom.
-fetter: ignorance
-tags: wisdom, growth, good people, Dhamma, radical attention, yoniso manasikāra, practice, an, an4
+title: Paññāvuddhi sutta - Growth of Wisdom
+description: "The four qualities that lead to the growth of wisdom: associating with persons of integrity, listening to the good Dhamma, radical attention, and practicing in accordance with the Dhamma."
+qualities: radical attention, person of integrity, recollection of the Dhamma, wisdom
+theme: wisdom, principle
 slug: an4.248
 ---
 

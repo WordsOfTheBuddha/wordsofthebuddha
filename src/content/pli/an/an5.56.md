@@ -1,9 +1,10 @@
 ---
 title: Upajjhāya sutta - Mentor
-description: The Buddha explains how to overcome complacency and doubt by guarding the sense faculties, applying moderation in eating, being dedicated to wakefulness, developing insight into wholesome qualities, and engaging in the development of the awakening factors during the first and last watch of the night.
-fetter: doubt
-tags: mentor, complacency, doubt, sense faculties, moderation, eating, wakefulness, insight, wholesome qualities, awakening factors, an, an5
+description: The Buddha explains the five causes for dullness and drowsiness occupying the mind and persisting, and doubt regarding the Dhamma arising.
+qualities: doubt, dullness, wakefulness, sense restraint, vision, cultivation, drowsiness, spiritual life
+theme: inquisitiveness, wisdom, training guideline, cultivating discernment
 slug: an5.56
+priority: 1.2
 ---
 
 Atha kho aññataro bhikkhu yena sako upajjhāyo tenupasaṅkami; upasaṅkamitvā sakaṁ upajjhāyaṁ etadavoca: “etarahi me, bhante, madhurakajāto ceva kāyo, disā ca me na pakkhāyanti, dhammā ca maṁ nappaṭibhanti, thinamiddhañca me cittaṁ pariyādāya tiṭṭhati, anabhirato ca brahmacariyaṁ carāmi, atthi ca me dhammesu vicikicchā”ti.
