@@ -22,7 +22,9 @@ const { items } = Astro.props;
 			const label = badgeText(item.badge);
 
 			const illustratedNote =
-				item.illustratedCount != null && item.illustratedCount > 0
+				label &&
+				item.illustratedCount != null &&
+				item.illustratedCount > 0
 					? `, with ${formatCount(item.illustratedCount)} illustrations`
 					: "";
 			const listeningNote = item.hasListeningMode ? ", listen available" : "";
@@ -32,15 +34,11 @@ const { items } = Astro.props;
 					class="monastic-cover group"
 					style={`--accent: ${visual.accent};`}
 				>
-					{(label ||
-						(item.illustratedCount != null &&
-							item.illustratedCount > 0)) && (
+					{label && (
 						<div class="monastic-top-right">
-							{label && (
-								<span class="monastic-ribbon" aria-label={label}>
-									{label}
-								</span>
-							)}
+							<span class="monastic-ribbon" aria-label={label}>
+								{label}
+							</span>
 							{item.illustratedCount != null &&
 								item.illustratedCount > 0 && (
 									<span class="monastic-illustrations">
@@ -251,10 +249,13 @@ const { items } = Astro.props;
 	}
 
 	.monastic-ribbon {
-		padding: 0.12rem 0.4rem 0.12rem 0.5rem;
+		display: inline-flex;
+		align-items: center;
+		padding: 0.2rem 0.4rem 0.1rem 0.5rem;
 		font-size: 0.5rem;
 		font-weight: 600;
 		letter-spacing: 0.015em;
+		line-height: 1;
 		text-transform: uppercase;
 		white-space: nowrap;
 		color: var(--surface-paper);
@@ -263,7 +264,6 @@ const { items } = Astro.props;
 		box-shadow:
 			-1px 2px 4px color-mix(in srgb, #000 22%, transparent),
 			inset 0 1px 0 color-mix(in srgb, #fff 20%, transparent);
-		line-height: 1.2;
 	}
 
 	html.dark .monastic-ribbon {

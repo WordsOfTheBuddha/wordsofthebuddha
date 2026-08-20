@@ -7,7 +7,8 @@ import {
 } from "../../utils/listenMode";
 import type { CollectionCoverItem } from "./collectionVisuals";
 
-/** Minimum share of discourses illustrated before showing the cover label. */
+/** Minimum share of discourses illustrated before showing the cover label.
+ *  The label is only shown alongside a collection badge (e.g. New translation). */
 const ILLUSTRATED_LABEL_THRESHOLD = 0.05;
 
 export function buildCoverItems(): CollectionCoverItem[] {
@@ -20,6 +21,7 @@ export function buildCoverItems(): CollectionCoverItem[] {
 			const count = avail?.readableCount ?? avail?.total ?? 0;
 			const illustratedCount = countCollectionIllustratedDiscourses(slug);
 			const showIllustratedLabel =
+				Boolean(badge) &&
 				illustratedCount > 0 &&
 				count > 0 &&
 				illustratedCount / count >= ILLUSTRATED_LABEL_THRESHOLD;
