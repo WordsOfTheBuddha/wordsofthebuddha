@@ -14,7 +14,7 @@ export const supportCostsYear = 2026;
 export const supportCosts: SupportCostRow[] = [
 	{
 		item: "Hosting",
-		monthlyUsd: 21.5,
+		monthlyUsd: 25,
 		note: "Website hosting and domain, wordsofthebuddha.org",
 	},
 	{

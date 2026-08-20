@@ -86,15 +86,7 @@ const supportImpact = await getSupportImpact();
 			}
 			{
 				supportImpact.stats.length > 0 && (
-					<ul
-						class:list={[
-							"support-impact-stats",
-							"grid",
-							"grid-cols-1",
-							supportImpact.stats.length >= 3 && "sm:grid-cols-3",
-							supportImpact.stats.length === 2 && "sm:grid-cols-2",
-						]}
-					>
+					<ul class="support-impact-stats grid grid-cols-2">
 						{supportImpact.stats.map((stat) => (
 							<li class="support-impact-stat">
 								<span class="support-impact-value">{stat.value}</span>
@@ -243,8 +235,9 @@ const supportImpact = await getSupportImpact();
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
-		gap: 0.35em 0.5em;
+		gap: 0.15em 0.45em;
 		margin: 0;
+		min-width: 0;
 	}
 
 	.support-page.not-prose .support-impact-value {
@@ -260,6 +253,7 @@ const supportImpact = await getSupportImpact();
 		font-weight: 400;
 		line-height: 1.4;
 		color: var(--text-muted);
+		min-width: 0;
 	}
 
 	.support-page.not-prose .support-impact-note {

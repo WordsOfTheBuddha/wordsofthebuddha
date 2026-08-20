@@ -1,5 +1,3 @@
-import { spawnSync } from "node:child_process";
-
 type VisitsCountResponse = {
 	query?: { since?: string; until?: string };
 	data?: { visitors?: number; pageviews?: number };
@@ -30,6 +28,32 @@ function env(key: string): string | undefined {
 
 function utcDateOnly(d: Date): string {
 	return d.toISOString().slice(0, 10);
+}
+
+function utcDateOnlyFromUnknown(iso: string): string | null {
+	if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso;
+	const d = new Date(iso);
+	if (Number.isNaN(d.getTime())) return null;
+	return utcDateOnly(d);
+}
+
+/**
+ * Last included UTC calendar day. We send date-only `until` (today UTC,
+ * inclusive). The Analytics API often echoes `query.until` as exclusive
+ * midnight of the next UTC day, which would otherwise print as “tomorrow”.
+ */
+function lastIncludedUntil(
+	apiUntil: string | undefined,
+	requestedUntil: string,
+): string {
+	const api = apiUntil ? utcDateOnlyFromUnknown(apiUntil) : null;
+	if (!api) return requestedUntil;
+	if (api > requestedUntil) {
+		const d = new Date(`${api}T00:00:00.000Z`);
+		d.setUTCDate(d.getUTCDate() - 1);
+		return utcDateOnly(d);
+	}
+	return api;
 }
 
 function daysAgoUtc(days: number): Date {
@@ -68,88 +92,6 @@ function formatDateLine(sinceIso: string, untilIso: string): string {
 	return `${start.day} ${start.month} ${start.year} – ${end.day} ${end.month} ${end.year}`;
 }
 
-function nextUtcDateOnly(iso: string): string | null {
-	const d = /^\d{4}-\d{2}-\d{2}$/.test(iso)
-		? new Date(`${iso}T00:00:00.000Z`)
-		: new Date(iso);
-	if (Number.isNaN(d.getTime())) return null;
-	d.setUTCDate(d.getUTCDate() + 1);
-	return utcDateOnly(d);
-}
-
-function gitRangeBounds(
-	sinceIso: string,
-	untilIso: string,
-): { since: string; until: string } | null {
-	const start = utcDateParts(sinceIso);
-	const untilExclusive = nextUtcDateOnly(untilIso);
-	if (!start || !untilExclusive) return null;
-	const sinceDay = /^\d{4}-\d{2}-\d{2}$/.test(sinceIso)
-		? sinceIso
-		: utcDateOnly(new Date(sinceIso));
-	if (!/^\d{4}-\d{2}-\d{2}$/.test(sinceDay)) return null;
-	return {
-		since: `${sinceDay}T00:00:00Z`,
-		until: `${untilExclusive}T00:00:00Z`,
-	};
-}
-
-function isEnglishDiscoursePath(file: string): boolean {
-	return /^src\/content\/en\/(?!anthologies\/)[^/]+\/[^/]+\.mdx$/.test(file);
-}
-
-function discourseStat(count: number): SupportImpactStat {
-	return {
-		value: formatCount(count),
-		label: count === 1 ? "new discourse added" : "new discourses added",
-	};
-}
-
-/**
- * Unique English discourse files *added* in commits whose messages match
- * `add (content)` (case-insensitive). Counts files, not commits: one commit
- * can add several suttas; diagram-only commits add none.
- * Returns null if git is missing or the log cannot be read (omit the stat).
- */
-function countDiscoursesAdded(sinceIso: string, untilIso: string): number | null {
-	const bounds = gitRangeBounds(sinceIso, untilIso);
-	if (!bounds) return null;
-	try {
-		const result = spawnSync(
-			"git",
-			[
-				"log",
-				"-i",
-				"-F",
-				"--grep=add (content)",
-				`--since=${bounds.since}`,
-				`--until=${bounds.until}`,
-				"--diff-filter=A",
-				"--name-only",
-				"--pretty=format:",
-				"--",
-				"src/content/en/**/*.mdx",
-			],
-			{
-				encoding: "utf8",
-				timeout: 8000,
-				maxBuffer: 2 * 1024 * 1024,
-				stdio: ["ignore", "pipe", "pipe"],
-			},
-		);
-		if (result.error || result.status !== 0) return null;
-		const files = new Set(
-			(result.stdout ?? "")
-				.split(/\r?\n/)
-				.map((line) => line.trim())
-				.filter(isEnglishDiscoursePath),
-		);
-		return files.size;
-	} catch {
-		return null;
-	}
-}
-
 function buildImpact(params: {
 	sinceIso: string;
 	untilIso: string;
@@ -157,11 +99,6 @@ function buildImpact(params: {
 	pageviews?: number;
 }): SupportImpact {
 	const dateLine = formatDateLine(params.sinceIso, params.untilIso);
-	const discourses = countDiscoursesAdded(params.sinceIso, params.untilIso);
-	const stats: SupportImpactStat[] = [];
-	if (discourses !== null) {
-		stats.push(discourseStat(discourses));
-	}
 
 	const visitors = params.visitors;
 	const pageviews = params.pageviews;
@@ -174,28 +111,25 @@ function buildImpact(params: {
 		pageviews > 0;
 
 	if (analyticsOk) {
-		stats.push({
-			value: formatCount(Math.round(visitors)),
-			label: "visitors",
-		});
-		stats.push({
-			value: formatCount(Math.round(pageviews)),
-			label: "pages viewed",
-		});
-		return { dateLine, stats };
-	}
-
-	if (discourses !== null) {
 		return {
 			dateLine,
-			stats,
-			note: "Visitor and pageview counts were unavailable.",
+			stats: [
+				{
+					value: formatCount(Math.round(visitors)),
+					label: "visitors",
+				},
+				{
+					value: formatCount(Math.round(pageviews)),
+					label: "pages viewed",
+				},
+			],
 		};
 	}
+
 	return {
 		dateLine,
-		stats,
-		note: "Reach figures were unavailable.",
+		stats: [],
+		note: "Visitor and pageview counts were unavailable.",
 	};
 }
 
@@ -239,8 +173,10 @@ function warnAnalyticsFallback(): void {
 }
 
 /**
- * Build-time reach figures from Vercel Web Analytics and git history.
+ * Reach figures from Vercel Web Analytics.
+ * On production `/support` (`prerender = true`) this runs at `astro build`.
  * Hobby plans only expose the latest ~31 days when a date range is set.
+ * Dates are UTC calendar days; `until` is today UTC, inclusive.
  * Does not invent visitor or pageview numbers when the API is unavailable.
  */
 export async function getSupportImpact(): Promise<SupportImpact> {
@@ -281,8 +217,9 @@ export async function getSupportImpact(): Promise<SupportImpact> {
 				if (typeof visitors !== "number" || typeof pageviews !== "number") {
 					continue;
 				}
-				const sinceIso = body.query?.since ?? since;
-				const untilIso = body.query?.until ?? until;
+				const sinceIso =
+					utcDateOnlyFromUnknown(body.query?.since ?? since) ?? since;
+				const untilIso = lastIncludedUntil(body.query?.until, until);
 				const impact = buildImpact({
 					sinceIso,
 					untilIso,
