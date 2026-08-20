@@ -1,7 +1,7 @@
 ---
 /**
- * Single collection PDF export preview (modal). Opened via [data-open-collection-pdf-modal].
- * One instance per collection page (see CollectionLayout).
+ * Collection / topic export preview (modal). Opened via [data-open-collection-pdf-modal].
+ * One instance per collection or /on page. Format (PDF or EPUB) is chosen here.
  */
 import type { CollectionPdfPreviewChapter } from "../utils/collectionPdfPreviewMeta";
 import type { PdfExportSelectionTree } from "../utils/collectionPdfExportTree";
@@ -78,7 +78,8 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 	<div class="collection-pdf-dialog-inner">
 		<header class="collection-pdf-dialog-header">
 			<h2 id="collection-pdf-export-title" class="collection-pdf-dialog-title">
-				Print collection PDF
+				<span class="collection-pdf-dialog-action">Download</span>
+				<span class="collection-pdf-dialog-subject">{previewTitle}</span>
 			</h2>
 			<button
 				type="button"
@@ -91,10 +92,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		</header>
 
 		<div class="collection-pdf-dialog-body">
-			<p class="collection-pdf-scope-intro">
-				<strong>{previewTitle}</strong>
-			</p>
-
+			<div class="collection-pdf-main">
 			{
 				hasExportTree ? (
 					<section
@@ -206,7 +204,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 							))}
 						</div>
 						{showLargeExportNote && (
-							<p class="collection-pdf-large-export-note text-xs text-[var(--text-muted)] mt-2">
+							<p class="collection-pdf-large-export-note">
 								Large exports may take a minute or two.
 							</p>
 						)}
@@ -234,7 +232,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 							</div>
 						)}
 						{showLargeExportNote && (
-							<p class="collection-pdf-large-export-note text-xs text-[var(--text-muted)] mt-2">
+							<p class="collection-pdf-large-export-note">
 								Large exports may take a minute or two.
 							</p>
 						)}
@@ -242,109 +240,135 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				)
 			}
 
-			<p class="collection-pdf-hint text-sm text-[var(--text-muted)] border-t border-[var(--border-color)] pt-3 mt-3">
-				These choices apply only to this PDF download. They do not change how you read on the site.
+			<p class="collection-pdf-hint">
+				These choices apply only to this download. They do not change how you read on the site.
 			</p>
+			</div>
+
+			<div class="collection-pdf-settings">
+
+			<section
+				class="collection-pdf-format-block"
+				aria-label="File format"
+			>
+				<h3 class="collection-pdf-section-label">Format</h3>
+				<fieldset class="collection-pdf-format" id="export-format-fieldset">
+					<legend class="sr-only">File format</legend>
+					<label class="collection-pdf-format-option">
+						<input type="radio" name="export-format" value="pdf" checked />
+						<span>
+							<strong>PDF</strong>
+							<span class="collection-pdf-format-desc">Print layout, A4 pages</span>
+						</span>
+					</label>
+					<label class="collection-pdf-format-option">
+						<input type="radio" name="export-format" value="epub" />
+						<span>
+							<strong>EPUB</strong>
+							<span class="collection-pdf-format-desc">Reflowable, for e-readers</span>
+						</span>
+					</label>
+				</fieldset>
+				<p
+					id="export-epub-note"
+					class="collection-pdf-epub-note"
+					hidden
+				>
+					EPUB uses interleaved Pāli (when included). Discourse diagrams are omitted: their labels are drawn in the image, so they do not grow with the e-reader font size. PDF is the better format for viz.
+				</p>
+			</section>
 
 			<section
 				id="collection-pdf-options"
 				class="collection-pdf-options"
-				aria-label="PDF options"
+				aria-label="Download options"
 			>
 				<h3 class="collection-pdf-section-label">Options</h3>
-
-				{
-					hasReferenceDiscourses && (
-						<label class="collection-pdf-field block mt-3" id="pdf-opt-ref-wrap">
-							<input
-								type="checkbox"
-								id="pdf-opt-ref"
-								name="includeRef"
-								class="mr-2"
-							/>
-							<span id="pdf-opt-ref-label">
-								Include Ref. Translations ({exportTreeReferenceCount}{" "}
-								{exportTreeReferenceCount === 1 ? "discourse" : "discourses"},{" "}
-								{exportTreeReferencePercent}%)
-							</span>
-						</label>
-					)
-				}
-
-				<label class="collection-pdf-field">
-					<input type="checkbox" id="pdf-opt-pli" name="pli" class="mr-2" />
-					<span>Include Pāli text</span>
-				</label>
-
-				<fieldset class="collection-pdf-fieldset ml-6 mt-1" id="pdf-fieldset-layout" disabled>
-					<legend class="sr-only">Pāli layout</legend>
-					<label class="block">
-						<input type="radio" name="layout" value="interleaved" class="mr-2" checked />
-						Interleaved (Pāli then English per paragraph)
-					</label>
-					<label class="block mt-1">
-						<input type="radio" name="layout" value="split" class="mr-2" />
-						Split columns (English left, Pāli right)
-					</label>
-				</fieldset>
-
-				{
-					previewHasSvgViz && (
-						<div class="collection-pdf-viz-group">
-							<label class="collection-pdf-field block mt-3">
+				<div class="collection-pdf-option-stack">
+					{
+						hasReferenceDiscourses && (
+							<label class="collection-pdf-field" id="pdf-opt-ref-wrap">
 								<input
 									type="checkbox"
-									id="pdf-opt-viz-show"
-									name="vizShow"
-									class="mr-2"
+									id="pdf-opt-ref"
+									name="includeRef"
 								/>
-								<span>Show Discourse Viz</span>
+								<span id="pdf-opt-ref-label">
+									Include Ref. Translations ({exportTreeReferenceCount}{" "}
+									{exportTreeReferenceCount === 1 ? "discourse" : "discourses"},{" "}
+									{exportTreeReferencePercent}%)
+								</span>
 							</label>
+						)
+					}
 
-							<fieldset
-								class="collection-pdf-fieldset ml-6 mt-1"
-								id="pdf-fieldset-viz-colors"
-								disabled
+					<div class="collection-pdf-option-group">
+						<label class="collection-pdf-field">
+							<input type="checkbox" id="pdf-opt-pli" name="pli" />
+							<span>Include Pāli text</span>
+						</label>
+						<fieldset class="collection-pdf-fieldset" id="pdf-fieldset-layout" disabled>
+							<legend class="sr-only">Pāli layout</legend>
+							<label>
+								<input type="radio" name="layout" value="interleaved" checked />
+								Interleaved (Pāli then English per paragraph)
+							</label>
+							<label>
+								<input type="radio" name="layout" value="split" />
+								Split columns (English left, Pāli right)
+							</label>
+						</fieldset>
+					</div>
+
+					{
+						previewHasSvgViz && (
+							<div
+								class="collection-pdf-option-group collection-pdf-viz-group"
+								id="pdf-opt-viz-group"
 							>
-								<legend class="sr-only">Diagram colors</legend>
-								<label class="block">
+								<label class="collection-pdf-field">
 									<input
-										type="radio"
-										name="viz-mode"
-										value="light"
-										class="mr-2"
-										checked
+										type="checkbox"
+										id="pdf-opt-viz-show"
+										name="vizShow"
 									/>
-									Light
+									<span>Show Discourse Viz</span>
 								</label>
-								<label class="block mt-1">
-									<input
-										type="radio"
-										name="viz-mode"
-										value="dark"
-										class="mr-2"
-									/>
-									Dark
-								</label>
-								<label class="block mt-1">
-									<input
-										type="radio"
-										name="viz-mode"
-										value="thermal"
-										class="mr-2"
-									/>
-									Thermal
-								</label>
-							</fieldset>
-						</div>
-					)
-				}
+								<fieldset
+									class="collection-pdf-fieldset"
+									id="pdf-fieldset-viz-colors"
+									disabled
+								>
+									<legend class="sr-only">Diagram colors</legend>
+									<label>
+										<input
+											type="radio"
+											name="viz-mode"
+											value="light"
+											checked
+										/>
+										Light
+									</label>
+									<label>
+										<input type="radio" name="viz-mode" value="dark" />
+										Dark
+									</label>
+									<label>
+										<input type="radio" name="viz-mode" value="thermal" />
+										Thermal
+									</label>
+								</fieldset>
+							</div>
+						)
+					}
 
-				<label class="collection-pdf-field block mt-3">
-					<input type="checkbox" id="pdf-opt-keyterms" name="keyterms" class="mr-2" checked />
-					<span>Include Key Terms glossary at the end of each discourse</span>
-				</label>
+					<label class="collection-pdf-field">
+						<input type="checkbox" id="pdf-opt-keyterms" name="keyterms" checked />
+						<span>Include Key Terms glossary at the end of each discourse</span>
+					</label>
+				</div>
 			</section>
+			</div>
 		</div>
 
 		<footer class="collection-pdf-dialog-footer">
@@ -357,6 +381,8 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				id="collection-pdf-generate"
 				data-collection-slug={collectionSlug}
 				data-export-api-path={exportApiPath}
+				data-label-pdf="Print PDF"
+				data-label-epub="Download EPUB"
 			>
 				Print PDF
 			</button>
@@ -430,16 +456,37 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 	}
 	.collection-pdf-dialog-header {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
-		padding: 0.85rem 1rem;
+		gap: 0.75rem;
+		padding: 0.75rem 1rem;
 		border-bottom: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
 		flex-shrink: 0;
 	}
 	.collection-pdf-dialog-title {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.15rem 0.55rem;
+		min-width: 0;
+		flex: 1;
 		font-size: 1.05rem;
 		font-weight: 600;
+		line-height: 1.3;
 		margin: 0;
+	}
+	.collection-pdf-dialog-action {
+		flex-shrink: 0;
+	}
+	.collection-pdf-dialog-subject {
+		min-width: 0;
+		font-weight: 600;
+	}
+	.collection-pdf-dialog-subject::before {
+		content: "·";
+		margin-right: 0.5rem;
+		color: var(--text-muted, #666);
+		font-weight: 500;
 	}
 	.collection-pdf-dialog-close {
 		background: none;
@@ -448,11 +495,14 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		line-height: 1;
 		cursor: pointer;
 		color: var(--text-muted);
-		padding: 0.2rem 0.4rem;
+		padding: 0.1rem 0.35rem;
+		flex-shrink: 0;
 	}
 	.collection-pdf-dialog-body {
+		display: flex;
+		flex-direction: column;
 		overflow-y: auto;
-		padding: 0.85rem 1rem 1rem;
+		padding: 0.85rem 1rem;
 		flex: 0 1 auto;
 		min-height: 0;
 		max-height: min(58vh, 520px);
@@ -469,16 +519,78 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 			min-height: 0;
 		}
 	}
+	.collection-pdf-main,
+	.collection-pdf-settings {
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+	}
+	.collection-pdf-settings {
+		margin-top: 0.85rem;
+		padding-top: 0.85rem;
+		border-top: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
+	}
 	.collection-pdf-section-label {
 		font-size: 0.72rem;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
 		color: var(--text-muted);
-		margin: 0 0 0.35rem;
+		margin: 0;
+	}
+	.collection-pdf-scope,
+	.collection-pdf-contents-select,
+	.collection-pdf-format-block,
+	.collection-pdf-options {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		margin: 0;
+	}
+	.collection-pdf-count {
+		margin: 0;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+	}
+	.collection-pdf-hint {
+		margin: 0;
+		font-size: 0.82rem;
+		line-height: 1.4;
+		color: var(--text-muted, #666);
+	}
+	.collection-pdf-large-export-note {
+		margin: 0;
+		font-size: 0.75rem;
+		line-height: 1.4;
+		color: var(--text-muted, #666);
+	}
+	.collection-pdf-option-stack,
+	.collection-pdf-option-group,
+	.collection-pdf-fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		margin: 0;
+		padding: 0;
+		border: none;
+		min-inline-size: 0;
+	}
+	.collection-pdf-fieldset {
+		margin-left: 1.4rem;
+		gap: 0.3rem;
+	}
+	.collection-pdf-field {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.45rem;
+		margin: 0;
+	}
+	.collection-pdf-field input,
+	.collection-pdf-fieldset input {
+		margin: 0.15rem 0 0;
+		flex-shrink: 0;
 	}
 	.collection-pdf-toc-wrap {
-		margin-top: 0.5rem;
 		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
 		border-radius: 8px;
 		background: rgba(44, 44, 44, 0.02);
@@ -513,7 +625,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		display: flex;
 		flex-direction: column;
 		gap: 0.35rem;
-		margin-bottom: 0.45rem;
+		margin: 0;
 	}
 	.collection-pdf-contents-toolbar {
 		display: flex;
@@ -537,7 +649,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		color: var(--text-color);
 	}
 	.collection-pdf-tree-scroll {
-		max-height: min(40vh, 280px);
+		max-height: min(28vh, 220px);
 		overflow-y: auto;
 		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.12));
 		border-radius: 8px;
@@ -546,7 +658,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 	}
 	@media (min-width: 640px) {
 		.collection-pdf-tree-scroll {
-			max-height: min(36vh, 340px);
+			max-height: min(32vh, 280px);
 		}
 	}
 	.pdf-tree-chapter + .pdf-tree-chapter {
@@ -651,10 +763,67 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		opacity: 0.65;
 		cursor: not-allowed;
 	}
+	.collection-pdf-format {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.5rem;
+		border: none;
+		margin: 0;
+		padding: 0;
+		min-inline-size: 0;
+	}
+	.collection-pdf-format-option {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.45rem;
+		padding: 0.55rem 0.6rem;
+		border: 1px solid var(--border-color, rgba(44, 44, 44, 0.2));
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 0.88rem;
+		line-height: 1.3;
+	}
+	.collection-pdf-format-option:has(input:checked) {
+		border-color: var(--primary-color, #6b21a8);
+		background: color-mix(
+			in srgb,
+			var(--primary-color, #6b21a8) 8%,
+			var(--surface-paper, #faf9f6)
+		);
+	}
+	.collection-pdf-format-option input {
+		margin-top: 0.15rem;
+		flex-shrink: 0;
+	}
+	.collection-pdf-format-desc {
+		display: block;
+		font-size: 0.75rem;
+		color: var(--text-muted, #666);
+		font-weight: 400;
+		margin-top: 0.15rem;
+	}
+	.collection-pdf-epub-note {
+		margin: 0;
+		font-size: 0.75rem;
+		line-height: 1.4;
+		color: var(--text-muted, #666);
+	}
+	.collection-pdf-epub-note[hidden] {
+		display: none;
+	}
+	#pdf-fieldset-layout[hidden],
+	#pdf-fieldset-viz-colors[hidden],
+	.collection-pdf-viz-group[hidden] {
+		display: none;
+	}
 	.collection-pdf-field,
 	.collection-pdf-fieldset label {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.45rem;
 		font-size: 0.88rem;
 		line-height: 1.35;
+		margin: 0;
 	}
 	.collection-pdf-fieldset[disabled] {
 		opacity: 0.45;
@@ -795,6 +964,81 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		toastTimer = setTimeout(() => toast.classList.remove("visible"), 8000);
 	}
 
+	function getSelectedFormat(dlg: HTMLDialogElement): "pdf" | "epub" {
+		const input = dlg.querySelector<HTMLInputElement>(
+			'input[name="export-format"]:checked',
+		);
+		return input?.value === "epub" ? "epub" : "pdf";
+	}
+
+	function generateButtonLabel(
+		dlg: HTMLDialogElement,
+		format: "pdf" | "epub",
+	): string {
+		const gen = dlg.querySelector<HTMLButtonElement>(
+			"#collection-pdf-generate",
+		);
+		if (format === "epub") {
+			return gen?.dataset.labelEpub || "Download EPUB";
+		}
+		return gen?.dataset.labelPdf || "Print PDF";
+	}
+
+	function applyFormatDependentUi(dlg: HTMLDialogElement) {
+		const format = getSelectedFormat(dlg);
+		const isEpub = format === "epub";
+		const layoutFs = dlg.querySelector<HTMLFieldSetElement>(
+			"#pdf-fieldset-layout",
+		);
+		const vizGroup = dlg.querySelector<HTMLElement>("#pdf-opt-viz-group");
+		const vizColors = dlg.querySelector<HTMLFieldSetElement>(
+			"#pdf-fieldset-viz-colors",
+		);
+		const epubNote = dlg.querySelector<HTMLElement>("#export-epub-note");
+		const gen = dlg.querySelector<HTMLButtonElement>(
+			"#collection-pdf-generate",
+		);
+		const pliInput = dlg.querySelector<HTMLInputElement>("#pdf-opt-pli");
+		const vizShow = dlg.querySelector<HTMLInputElement>("#pdf-opt-viz-show");
+
+		if (layoutFs) {
+			layoutFs.hidden = isEpub;
+			if (!isEpub) {
+				layoutFs.disabled = !pliInput?.checked;
+			}
+		}
+		if (vizGroup) {
+			vizGroup.hidden = isEpub;
+		}
+		if (vizColors) {
+			vizColors.hidden = isEpub;
+			if (!isEpub) {
+				vizColors.disabled = !vizShow?.checked;
+			}
+		}
+		if (vizShow) {
+			const prevFormat = dlg.dataset.exportUiFormat;
+			if (isEpub) {
+				if (prevFormat !== "epub") {
+					dlg.dataset.pdfVizRemembered = vizShow.checked ? "1" : "0";
+					vizShow.checked = false;
+				}
+			} else if (prevFormat === "epub") {
+				const remembered = dlg.dataset.pdfVizRemembered;
+				if (remembered !== undefined) {
+					vizShow.checked = remembered === "1";
+					delete dlg.dataset.pdfVizRemembered;
+				}
+				vizColors && (vizColors.disabled = !vizShow.checked);
+			}
+			dlg.dataset.exportUiFormat = isEpub ? "epub" : "pdf";
+		}
+		if (epubNote) epubNote.hidden = !isEpub;
+		if (gen && gen.textContent !== "Printing…" && gen.textContent !== "Building EPUB…") {
+			gen.textContent = generateButtonLabel(dlg, format);
+		}
+	}
+
 	function applyDefaultsFromPage(dlg: HTMLDialogElement) {
 		const pliInput = dlg.querySelector(
 			"#pdf-opt-pli",
@@ -814,6 +1058,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 
 		if (!pliInput || !layoutFieldset || !keyTermsInput) {
 			resetExportTreeToAll(dlg);
+			applyFormatDependentUi(dlg);
 			return;
 		}
 
@@ -876,6 +1121,16 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				refOpt.checked = resolveRefMode();
 				setReferenceDiscoursesVisible(dlg, refOpt.checked);
 			}
+
+			const savedFormat = localStorage.getItem("exportFormat");
+			const epubR = dlg.querySelector<HTMLInputElement>(
+				'input[name="export-format"][value="epub"]',
+			);
+			const pdfR = dlg.querySelector<HTMLInputElement>(
+				'input[name="export-format"][value="pdf"]',
+			);
+			if (savedFormat === "epub" && epubR) epubR.checked = true;
+			else if (pdfR) pdfR.checked = true;
 		} catch {
 			pliInput.checked = false;
 			layoutFieldset.disabled = true;
@@ -886,6 +1141,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		}
 
 		resetExportTreeToAll(dlg);
+		applyFormatDependentUi(dlg);
 	}
 
 	function updateExportTreeSelectionUi(dlg: HTMLDialogElement) {
@@ -990,11 +1246,12 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 
 		if (!pliInput || !keyTermsInput) return;
 
+		const format = getSelectedFormat(dlg);
 		const hasVizControls = !!(vizShowInput && vizColorsFieldset);
 
 		generateBtn.disabled = true;
-		const orig = generateBtn.textContent;
-		generateBtn.textContent = "Printing…";
+		generateBtn.textContent =
+			format === "epub" ? "Building EPUB…" : "Printing…";
 
 		try {
 			const d = new Date();
@@ -1012,11 +1269,24 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 			const year = d.getFullYear();
 			const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
 
+			const includeImages =
+				format !== "epub" && hasVizControls && vizShowInput!.checked;
+			const layoutEl = dlg.querySelector<HTMLInputElement>(
+				'input[name="layout"]:checked',
+			);
+			const lay =
+				format === "epub"
+					? "interleaved"
+					: layoutEl?.value === "split"
+						? "split"
+						: "interleaved";
+
 			const qs = new URLSearchParams();
 			qs.set("date", date);
+			qs.set("format", format);
+			qs.set("images", includeImages ? "svgPrimaryOnly" : "none");
 
-			if (hasVizControls && vizShowInput!.checked) {
-				qs.set("images", "svgPrimaryOnly");
+			if (includeImages && format === "pdf") {
 				const mode = dlg.querySelector<HTMLInputElement>(
 					'input[name="viz-mode"]:checked',
 				);
@@ -1024,16 +1294,10 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				if (vz === "light" || vz === "dark" || vz === "thermal") {
 					qs.set("viz", vz);
 				}
-			} else {
-				qs.set("images", "none");
 			}
 
 			if (pliInput.checked) {
 				qs.set("pli", "true");
-				const layout = dlg.querySelector<HTMLInputElement>(
-					'input[name="layout"]:checked',
-				);
-				const lay = layout?.value === "split" ? "split" : "interleaved";
 				qs.set("layout", lay);
 			}
 
@@ -1052,22 +1316,16 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 					showToast("Select at least one discourse.");
 					return;
 				}
-				const layout = dlg.querySelector<HTMLInputElement>(
-					'input[name="layout"]:checked',
-				);
-				const lay =
-					layout?.value === "split" ? "split" : "interleaved";
 				const postBody: Record<string, unknown> = {
 					selectedDiscourseSlugs,
 					date,
-					images: hasVizControls && vizShowInput!.checked
-						? "svgPrimaryOnly"
-						: "none",
+					format,
+					images: includeImages ? "svgPrimaryOnly" : "none",
 					pli: pliInput.checked,
 					layout: lay,
 					keyTerms: keyTermsInput.checked,
 				};
-				if (hasVizControls && vizShowInput!.checked) {
+				if (includeImages && format === "pdf") {
 					const mode = dlg.querySelector<HTMLInputElement>(
 						'input[name="viz-mode"]:checked',
 					);
@@ -1102,7 +1360,8 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 			const objectUrl = URL.createObjectURL(blob);
 			const disposition = response.headers.get("Content-Disposition") ?? "";
 			const nameMatch = /filename="([^"]+)"/.exec(disposition);
-			const filename = nameMatch?.[1] ?? `${slug}.pdf`;
+			const filename =
+				nameMatch?.[1] ?? `${slug}.${format === "epub" ? "epub" : "pdf"}`;
 
 			const anchor = document.createElement("a");
 			anchor.href = objectUrl;
@@ -1114,9 +1373,10 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 			closeCollectionPdfDialogs();
 		} catch (err) {
 			const msg = err instanceof Error ? err.message : String(err);
-			showToast(`PDF generation failed: ${msg}`);
+			const kind = format === "epub" ? "EPUB" : "PDF";
+			showToast(`${kind} generation failed: ${msg}`);
 		} finally {
-			generateBtn.textContent = orig ?? "Print PDF";
+			generateBtn.textContent = generateButtonLabel(dlg, format);
 			if (dlg.querySelector(".pdf-discourse-cb")) {
 				updateExportTreeSelectionUi(dlg);
 			} else {
@@ -1188,18 +1448,14 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				updateExportTreeSelectionUi(dlg);
 				return;
 			}
-			if (el.id === "pdf-opt-pli") {
-				const layoutFs = dlg.querySelector(
-					"#pdf-fieldset-layout",
-				) as HTMLFieldSetElement | null;
-				if (layoutFs)
-					layoutFs.disabled = !(el as HTMLInputElement).checked;
+			if (el.id === "pdf-opt-pli" || el.id === "pdf-opt-viz-show") {
+				applyFormatDependentUi(dlg);
 			}
-			if (el.id === "pdf-opt-viz-show") {
-				const vizFs = dlg.querySelector(
-					"#pdf-fieldset-viz-colors",
-				) as HTMLFieldSetElement | null;
-				if (vizFs) vizFs.disabled = !(el as HTMLInputElement).checked;
+			if ((el as HTMLInputElement).name === "export-format") {
+				applyFormatDependentUi(dlg);
+				try {
+					localStorage.setItem("exportFormat", getSelectedFormat(dlg));
+				} catch {}
 			}
 			if (el.id === "pdf-opt-ref") {
 				const includeRef = (el as HTMLInputElement).checked;

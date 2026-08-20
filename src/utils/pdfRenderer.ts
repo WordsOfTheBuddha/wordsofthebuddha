@@ -9,7 +9,8 @@
  *     → jsdom tooltip→footnote pass
  *     → clean HTML string ready for Playwright
  *
- * The full collection HTML document is assembled by buildPdfHtml().
+ * The full collection HTML document is assembled by buildPdfHtml() for PDF,
+ * or split into XHTML chapters by buildCollectionEpub() for EPUB.
  */
 
 import { JSDOM } from "jsdom";
@@ -454,6 +455,8 @@ export type PdfExportContentOptions = {
 	paliOptions?: PdfPaliOptions;
 	/** When false, glossed terms stay bold in the body but the Key Terms appendix is omitted. Default true. */
 	includeKeyTermsSection?: boolean;
+	/** EPUB: keep diagrams as one SVG instead of PDF print slices. */
+	keepSvgIntact?: boolean;
 };
 
 // ---------------------------------------------------------------------------
@@ -474,6 +477,7 @@ async function fetchDiscourseHtml(
 	imageMode: PdfImageMode,
 	paliOptions?: PdfPaliOptions,
 	includeKeyTermsSection = true,
+	keepSvgIntact = false,
 ): Promise<string> {
 	const entry = await findEntry("en", { slug });
 	if (!entry?.body) return "<p><em>(Content not available)</em></p>";
@@ -539,7 +543,7 @@ async function fetchDiscourseHtml(
 										const vbMatch = svg.match(
 											/viewBox="([\d.\s,]+)"/i,
 										);
-										if (vbMatch) {
+										if (vbMatch && !keepSvgIntact) {
 											const [vbX, , vbW] =
 												vbMatch[1]
 													.split(/[\s,]+/)
@@ -648,6 +652,7 @@ async function fetchChapterDiscourses(
 	paliOptions?: PdfPaliOptions,
 	includeKeyTermsSection = true,
 	selectedDiscourseSlugs?: Set<string> | null,
+	keepSvgIntact = false,
 ): Promise<DiscoursePdf[]> {
 	const lines = await getChapterDiscourseLinesForPdf(chapterSlug, range);
 	const filtered =
@@ -668,6 +673,7 @@ async function fetchChapterDiscourses(
 						imageMode,
 						paliOptions,
 						includeKeyTermsSection,
+						keepSvgIntact,
 					);
 			return {
 				slug: line.slug,
@@ -767,6 +773,7 @@ export async function fetchCollectionPdfData(
 					paliOptions,
 					includeKeyTermsSection,
 					selectedDiscourseSlugs,
+					options?.keepSvgIntact === true,
 				);
 				return chapterWithOptionalVaggas(
 					childSlug,
@@ -784,6 +791,7 @@ export async function fetchCollectionPdfData(
 			paliOptions,
 			includeKeyTermsSection,
 			selectedDiscourseSlugs,
+			options?.keepSvgIntact === true,
 		);
 		chapters = [
 			chapterWithOptionalVaggas(slug, metadata, discourses),
@@ -836,6 +844,7 @@ export async function fetchOnPagePdfData(
 						imageMode,
 						paliOptions,
 						includeKeyTermsSection,
+						options?.keepSvgIntact === true,
 					);
 			return {
 				slug: line.slug,
@@ -1185,6 +1194,8 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   font-weight: bold;
   line-height: 1.4;
   margin-bottom: 0.4em;
+  text-align: center;
+  width: 100%;
 }
 .cover-pali {
   font-size: 13pt;

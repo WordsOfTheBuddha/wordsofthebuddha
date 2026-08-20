@@ -1,13 +1,13 @@
 ---
 /**
- * Opens the collection PDF export preview modal (CollectionPdfExportModal in CollectionLayout).
+ * Opens the collection export preview modal (PDF or EPUB).
  */
 interface Props {
 	collectionSlug: string;
 	label?: string;
 }
 
-const { collectionSlug, label = "Print PDF" } = Astro.props;
+const { collectionSlug, label = "Download" } = Astro.props;
 import { transformId } from "../utils/transformId";
 ---
 
@@ -18,7 +18,7 @@ import { transformId } from "../utils/transformId";
 	aria-haspopup="dialog"
 	aria-controls="collection-pdf-export-dialog"
 	aria-label={`${label} for ${transformId(collectionSlug)}`}
-	title={`Configure and download a PDF of ${transformId(collectionSlug)}`}
+	title={`Configure and download ${transformId(collectionSlug)} as PDF or EPUB`}
 >
 	<svg
 		class="export-icon"
