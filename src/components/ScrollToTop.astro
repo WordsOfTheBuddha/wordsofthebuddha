@@ -37,22 +37,41 @@ import ChevronUp from "../assets/chevron-up.svg?raw";
 </style>
 
 <script>
+	const SCROLL_THRESHOLD_PX = 300;
 	const scrollToTopButton = document.getElementById("scroll-to-top");
 	let lastScrollPosition = window.scrollY;
 	let ticking = false;
+
+	function footerIsInView() {
+		const footer = document.getElementById("site-footer");
+		if (!footer) return false;
+		const rect = footer.getBoundingClientRect();
+		return rect.top < window.innerHeight && rect.bottom > 0;
+	}
+
+	function setButtonVisible(visible: boolean) {
+		if (!scrollToTopButton) return;
+		if (visible) {
+			scrollToTopButton.classList.remove("opacity-0", "invisible");
+			scrollToTopButton.classList.add("opacity-100", "visible");
+		} else {
+			scrollToTopButton.classList.add("opacity-0", "invisible");
+			scrollToTopButton.classList.remove("opacity-100", "visible");
+		}
+	}
 
 	function handleScroll() {
 		const currentScrollPosition = window.scrollY;
 		const isScrollingUp = lastScrollPosition > currentScrollPosition;
 
-		// Show button when scrolled down 300px AND scrolling up
-		if (currentScrollPosition > 300 && isScrollingUp) {
-			scrollToTopButton?.classList.remove("opacity-0", "invisible");
-			scrollToTopButton?.classList.add("opacity-100", "visible");
-		} else {
-			scrollToTopButton?.classList.add("opacity-0", "invisible");
-			scrollToTopButton?.classList.remove("opacity-100", "visible");
-		}
+		// Show only after scrolling down, while scrolling up, and after the
+		// footer has left the viewport so the arrow cannot cover Support.
+		const shouldShow =
+			currentScrollPosition > SCROLL_THRESHOLD_PX &&
+			isScrollingUp &&
+			!footerIsInView();
+
+		setButtonVisible(shouldShow);
 
 		lastScrollPosition = currentScrollPosition;
 		ticking = false;
@@ -74,5 +93,7 @@ import ChevronUp from "../assets/chevron-up.svg?raw";
 		});
 	});
 
-	window.addEventListener("scroll", onScroll);
+	window.addEventListener("scroll", onScroll, { passive: true });
+	window.addEventListener("resize", onScroll);
+	handleScroll();
 </script>
