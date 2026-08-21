@@ -29,7 +29,13 @@ export interface Props {
 const { defaultState = "collapse" } = Astro.props;
 ---
 
-<script define:vars={{ defaultState }}>
+<div id="wotb-collapse-config" hidden data-default-state={defaultState}></div>
+<script>
+	import { replaceGlossMarkup } from "../utils/glossDisplay";
+
+	const defaultState =
+		document.getElementById("wotb-collapse-config")?.dataset.defaultState ??
+		"collapse";
 	const COLLAPSE_MARK = "\u2024\u2024\u2024"; // "․․․"
 
 	function initCollapse() {
@@ -91,32 +97,20 @@ const { defaultState = "collapse" } = Astro.props;
 		});
 	}
 
-	// Helper function to process tooltips in text
 	function processTooltipsInText(text) {
-		return text.replace(
-			/\|(.+?)::(.+?)\|/g,
-			(_, textPart, rest) => {
-				// Strip TTS override (third ::segment) from tooltip if present
-				const ttsSep = rest.indexOf("::");
-				const tooltip = ttsSep >= 0 ? rest.slice(0, ttsSep) : rest;
-				// Pure TTS-override (empty tooltip) — no span, no underline
-				if (!tooltip.trim()) return textPart;
-				// Parse any Markdown links in the tooltip content
-				const parsedTooltip = tooltip.replace(
-					/\[([^\]]+)\]\(([^)]+)\)/g,
-					'<a href="$2" class="tooltip-link">$1</a>'
-				);
-				// Escape HTML for attribute storage
-				const escapedTooltip = parsedTooltip
-					.replace(/&/g, "&amp;")
-					.replace(/</g, "&lt;")
-					.replace(/>/g, "&gt;")
-					.replace(/"/g, "&quot;")
-					.replace(/'/g, "&#039;");
-
-				return `<span class="tooltip-text" data-tooltip-content="${escapedTooltip}">${textPart}</span>`;
-			}
-		);
+		return replaceGlossMarkup(text, (textPart, tooltip) => {
+			const parsedTooltip = tooltip.replace(
+				/\[([^\]]+)\]\(([^)]+)\)/g,
+				'<a href="$2" class="tooltip-link">$1</a>',
+			);
+			const escapedTooltip = parsedTooltip
+				.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+			return `<span class="tooltip-text" data-tooltip-content="${escapedTooltip}">${textPart}</span>`;
+		});
 	}
 
 	if (document.readyState === "loading") {

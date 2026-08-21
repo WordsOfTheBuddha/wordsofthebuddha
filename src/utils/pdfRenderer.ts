@@ -30,6 +30,7 @@ import {
 	REFERENCE_TRANSLATION_CREDIT,
 	type ContentPair,
 } from "./contentParser";
+import { replaceGlossMarkup } from "./glossDisplay";
 import { getChapterDiscourseLinesForPdf } from "./collectionPdfExportTree";
 import type { PdfExportDiscourseLine } from "./collectionPdfExportTree";
 import { buildReferenceDiscoursePage } from "./referenceDiscoursePage";
@@ -105,17 +106,10 @@ export function stripMdxSyntax(body: string): string {
 // ---------------------------------------------------------------------------
 
 export function convertGlossToSpans(text: string): string {
-	return text.replace(
-		/\|(.+?)::(.+?)\|/g,
-		(_, term, rest) => {
-			// Strip TTS override (third ::segment) from definition if present
-			const ttsSep = rest.indexOf("::");
-			const def = ttsSep >= 0 ? rest.slice(0, ttsSep) : rest;
-			// Pure TTS-override (empty def) — render term as plain text, no footnote span
-			if (!def.trim()) return term.trim();
-			return `<span class="tt" data-def="${def.trim().replace(/"/g, "&quot;").replace(/'/g, "&#39;")}">${term.trim()}</span>`;
-		},
-	);
+	return replaceGlossMarkup(text, (term, tooltip) => {
+		const def = tooltip.trim();
+		return `<span class="tt" data-def="${def.replace(/"/g, "&quot;").replace(/'/g, "&#39;")}">${term.trim()}</span>`;
+	});
 }
 
 // ---------------------------------------------------------------------------
