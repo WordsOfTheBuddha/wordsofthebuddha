@@ -14,15 +14,39 @@ const withViz: PdfExportParams = {
 };
 
 describe("applyFormatConstraints", () => {
-	it("disables images and viz for EPUB even if the client requested them", () => {
+	it("keeps images and light/dark viz for EPUB, and forces interleaved Pāli", () => {
 		const out = applyFormatConstraints("epub", withViz);
-		assert.equal(out.imageMode, "none");
-		assert.equal(out.vizImageMode, undefined);
+		assert.equal(out.imageMode, "svgAll");
+		assert.equal(out.vizImageMode, "dark");
 		assert.equal(out.pdfContentOptions.keepSvgIntact, true);
 		assert.deepEqual(out.pdfContentOptions.paliOptions, {
 			enabled: true,
 			layout: "interleaved",
 		});
+	});
+
+	it("coerces thermal viz to e-ink for EPUB", () => {
+		const out = applyFormatConstraints("epub", {
+			...withViz,
+			vizImageMode: "thermal",
+		});
+		assert.equal(out.vizImageMode, "eink");
+	});
+
+	it("keeps an explicit e-ink viz for EPUB", () => {
+		const out = applyFormatConstraints("epub", {
+			...withViz,
+			vizImageMode: "eink",
+		});
+		assert.equal(out.vizImageMode, "eink");
+	});
+
+	it("coerces e-ink viz to light for PDF", () => {
+		const out = applyFormatConstraints("pdf", {
+			...withViz,
+			vizImageMode: "eink",
+		});
+		assert.equal(out.vizImageMode, "light");
 	});
 
 	it("leaves PDF params unchanged", () => {

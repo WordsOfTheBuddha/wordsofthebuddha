@@ -14,6 +14,12 @@ import {
 	type EpubCoverAccentRole,
 	type EpubCoverKind,
 } from "./epubCover";
+import {
+	rasterizeSvgWithResvg,
+	type SvgVizRasterMode,
+} from "./svgRasterize";
+
+export type EpubDiagramRasterizer = (svg: string) => Promise<Buffer>;
 
 export type EpubBuildOptions = {
 	collectionUrl: string;
@@ -28,6 +34,13 @@ export type EpubBuildOptions = {
 	coverAccentRole?: EpubCoverAccentRole;
 	/** Topic / Quality / Simile — shown on the inner title page, not the shelf cover. */
 	titleKindLabel?: string;
+	/**
+	 * Chromium screenshot at the SVG's authored size. When omitted, falls back
+	 * to resvg at the same native pixel size (tests / no browser).
+	 */
+	rasterizeDiagram?: EpubDiagramRasterizer;
+	/** Light / dark / thermal / e-ink baked into diagram PNGs. */
+	vizImageMode?: SvgVizRasterMode;
 };
 
 type SpineItem = {
@@ -195,7 +208,10 @@ export function enhanceEpubCommentaryNotes(html: string): string {
 			)
 			.replace(
 				/<p class="fn-item"><span class="cn-num">\[(\d+)\]<\/span>([\s\S]*?)<\/p>/g,
-				'<aside id="note-$1" class="epub-footnote" epub:type="footnote"><p class="fn-item"><span class="cn-num">[$1]</span>$2</p></aside>',
+				(_match, num: string, body: string) => {
+					const prose = body.trim();
+					return `<p class="fn-item" id="note-${num}-text"><span class="cn-num">[${num}]</span>${body}</p>\n<aside id="note-${num}" class="epub-footnote" epub:type="footnote" hidden="hidden"><p>${prose}</p></aside>`;
+				},
 			),
 	);
 }
@@ -525,8 +541,7 @@ function packageOpf(
 		`<item id="cover-image" href="images/cover.png" media-type="image/png" properties="cover-image"/>`,
 		...spine.flatMap((item) =>
 			(item.images ?? []).map((img) => {
-				const png = img.href.toLowerCase().endsWith(".png");
-				return `<item id="${xmlId("viz", img.href)}" href="${escapeXml(img.href)}" media-type="${png ? "image/png" : "image/svg+xml"}"/>`;
+				return `<item id="${xmlId("viz", img.href)}" href="${escapeXml(img.href)}" media-type="${imageMediaType(img.href)}"/>`;
 			}),
 		),
 		...spine.map(
@@ -757,6 +772,9 @@ h1.cover-title {
   line-height: 1.5;
   margin: 0.25em 0;
 }
+aside.epub-footnote {
+  display: none;
+}
 a.cn-ref {
   font-size: 0.75em;
   vertical-align: super;
@@ -772,27 +790,39 @@ a { color: inherit; text-decoration: none; }
 nav#toc a { text-decoration: underline; }
 `;
 
-function ensureSvgMarkup(svg: string): string {
-	let out = svg.trim();
-	if (!/xmlns=/.test(out)) {
-		out = out.replace(
-			/<svg\b/i,
-			'<svg xmlns="http://www.w3.org/2000/svg"',
-		);
-	}
-	if (!/^<\?xml/i.test(out)) {
-		out = `<?xml version="1.0" encoding="UTF-8"?>\n${out}`;
-	}
-	return out;
+function imageMediaType(href: string): string {
+	const lower = href.toLowerCase();
+	if (lower.endsWith(".png")) return "image/png";
+	if (lower.endsWith(".webp")) return "image/webp";
+	if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+	return "image/svg+xml";
 }
 
-async function rasterizeSpineDiagrams(spine: SpineItem[]): Promise<void> {
+export function collectionHasInlineSvg(collection: CollectionPdf): boolean {
+	return collection.chapters.some((ch) =>
+		ch.discourses.some((d) => /<svg\b/i.test(d.html)),
+	);
+}
+
+async function rasterizeSpineDiagrams(
+	spine: SpineItem[],
+	rasterize?: EpubDiagramRasterizer,
+	optionsViz?: SvgVizRasterMode,
+): Promise<void> {
 	const needsRaster = spine.some((item) =>
 		(item.images ?? []).some((img) => img.href.toLowerCase().endsWith(".svg")),
 	);
 	if (!needsRaster) return;
 
-	const { Resvg } = await import("@resvg/resvg-js");
+	const vizMode: SvgVizRasterMode =
+		optionsViz === "light" ||
+		optionsViz === "thermal" ||
+		optionsViz === "eink"
+			? optionsViz
+			: "dark";
+	const render =
+		rasterize ??
+		((svg: string) => rasterizeSvgWithResvg(svg, { vizMode }));
 	for (const item of spine) {
 		if (!item.images?.length) continue;
 		const next: NonNullable<SpineItem["images"]> = [];
@@ -803,11 +833,7 @@ async function rasterizeSpineDiagrams(spine: SpineItem[]): Promise<void> {
 			}
 			try {
 				const pngHref = img.href.replace(/\.svg$/i, ".png");
-				const resvg = new Resvg(ensureSvgMarkup(img.data), {
-					fitTo: { mode: "width", value: 1400 },
-					font: { loadSystemFonts: true },
-				});
-				next.push({ href: pngHref, data: resvg.render().asPng() });
+				next.push({ href: pngHref, data: await render(img.data) });
 				item.body = item.body.split(img.href).join(pngHref);
 			} catch {
 				const imgRe = new RegExp(
@@ -835,7 +861,11 @@ export async function buildCollectionEpub(
 		options.identifier ?? `urn:uuid:${crypto.randomUUID()}`;
 	const modified = isoNow(options.modified);
 	const { spine, nav } = collectSpineAndNav(collection);
-	await rasterizeSpineDiagrams(spine);
+	await rasterizeSpineDiagrams(
+		spine,
+		options.rasterizeDiagram,
+		options.vizImageMode,
+	);
 	const coverModel = buildEpubCoverModel({
 		slug: collection.slug,
 		title: collection.title,

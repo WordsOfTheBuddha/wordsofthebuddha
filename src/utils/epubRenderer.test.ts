@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	buildCollectionEpub,
+	collectionHasInlineSvg,
 	extractEpubInlineSvgs,
 	enhanceEpubCommentaryNotes,
 	foldNcxLabel,
@@ -51,9 +52,20 @@ describe("enhanceEpubCommentaryNotes", () => {
 <p class="fn-item"><span class="cn-num">[1]</span> A comment.</p>
 </section>`;
 		const out = enhanceEpubCommentaryNotes(html);
-		assert.match(out, /epub:type="noteref"/);
-		assert.match(out, /<aside id="note-1"[^>]*epub:type="footnote"/);
+		assert.match(out, /<a class="cn-ref" id="noteref-1" href="#note-1" epub:type="noteref">\[1\]<\/a>/);
+		assert.match(out, /<aside id="note-1" class="epub-footnote" epub:type="footnote" hidden="hidden">/);
 		assert.match(out, /fn-heading">Notes/);
+		assert.match(
+			out,
+			/<p class="fn-item" id="note-1-text"><span class="cn-num">\[1\]<\/span> A comment\.<\/p>/,
+		);
+		const asideInner = out.match(
+			/<aside id="note-1"[^>]*>([\s\S]*?)<\/aside>/,
+		)?.[1];
+		assert.ok(asideInner);
+		assert.doesNotMatch(asideInner, /cn-num/);
+		assert.doesNotMatch(asideInner.trim(), /^\[1\]/);
+		assert.match(asideInner, /<p>A comment\.<\/p>/);
 	});
 
 	it("drops empty footnotes sections", () => {
@@ -281,6 +293,15 @@ describe("buildCollectionEpub", () => {
 		assert.match(chapter, /epub:type="footnote"/);
 		assert.match(chapter, /id="note-1"/);
 		assert.match(chapter, /fn-heading">Notes/);
+		assert.match(chapter, /class="fn-item"/);
+		assert.match(chapter, /id="note-1-text"/);
+		const asideInner = chapter.match(
+			/<aside id="note-1"[^>]*>([\s\S]*?)<\/aside>/,
+		)?.[1];
+		assert.ok(asideInner);
+		assert.doesNotMatch(asideInner, /cn-num/);
+		assert.doesNotMatch(asideInner.trim(), /^\[1\]/);
+		assert.match(asideInner, /A comment/);
 	});
 
 	it("omits empty footnotes sections from chapter XHTML", async () => {
@@ -330,7 +351,7 @@ describe("buildCollectionEpub", () => {
 							slug: "mn2",
 							title: "Sabbāsava sutta",
 							description: "",
-							html: `<figure class="pdf-discourse-image"><svg viewBox="0 0 20 20"><text font-size="10">Restraint</text></svg></figure><p>After.</p>`,
+							html: `<figure class="pdf-discourse-image"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect width="80" height="40" fill="#0b1528"/><rect x="4" y="4" width="8" height="8" fill="#c8a040" opacity="0.35"/><text font-size="10" fill="#eee">Restraint</text></svg></figure><p>After.</p>`,
 						},
 					],
 				},
@@ -354,6 +375,69 @@ describe("buildCollectionEpub", () => {
 		const png = extractZipEntry(buf, "EPUB/images/viz-mn2-1.png");
 		assert.ok(png);
 		assert.equal(png[0], 0x89);
+		assert.equal(png.readUInt32BE(16), 80);
+		assert.equal(png.readUInt32BE(20), 40);
+	});
+
+	it("uses an injected diagram rasterizer when provided", async () => {
+		const tinyPng = Buffer.from(
+			"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+			"base64",
+		);
+		const withViz: CollectionPdf = {
+			...sample,
+			chapters: [
+				{
+					...sample.chapters[0],
+					discourses: [
+						{
+							slug: "mn2",
+							title: "Sabbāsava sutta",
+							description: "",
+							html: `<figure class="pdf-discourse-image"><svg viewBox="0 0 20 20"><text>x</text></svg></figure>`,
+						},
+					],
+				},
+			],
+		};
+		let seen = "";
+		const buf = await buildCollectionEpub(withViz, {
+			collectionUrl: "www.wordsofthebuddha.org/mn2",
+			date: "20 August 2026",
+			identifier: "urn:uuid:test-raster",
+			modified: "2026-08-20T00:00:00Z",
+			rasterizeDiagram: async (svg) => {
+				seen = svg;
+				return tinyPng;
+			},
+		});
+		assert.match(seen, /<text>x<\/text>/);
+		const png = extractZipEntry(buf, "EPUB/images/viz-mn2-1.png");
+		assert.ok(png);
+		assert.deepEqual(png, tinyPng);
+	});
+
+	it("detects inline discourse SVGs", () => {
+		assert.equal(collectionHasInlineSvg(sample), false);
+		assert.equal(
+			collectionHasInlineSvg({
+				...sample,
+				chapters: [
+					{
+						...sample.chapters[0],
+						discourses: [
+							{
+								slug: "mn2",
+								title: "Sabbāsava sutta",
+								description: "",
+								html: `<figure><svg viewBox="0 0 1 1"></svg></figure>`,
+							},
+						],
+					},
+				],
+			}),
+			true,
+		);
 	});
 
 	it("shows Quality on the inner title page instead of repeating the slug", async () => {

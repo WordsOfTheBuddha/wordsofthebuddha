@@ -15,7 +15,9 @@
  *
  * ⚠️  Deployment note:
  *   Production uses @sparticuz/chromium-min + playwright-core (no bundled Chromium).
- *   For local PDF export, install Chrome/Chromium or run
+ *   PDF always launches Chromium. EPUB launches it only when discourse diagrams
+ *   are included, so they can be screenshot at the SVG's authored size.
+ *   For local export, install Chrome/Chromium or run
  *   `npx playwright install chromium` (devDependency) and set
  *   PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH if needed.
  */
@@ -28,16 +30,21 @@ import {
 	buildPdfHtml,
 	countCollectionDiscourses,
 	type PdfPaliOptions,
-	type PdfVizImageMode,
 	type CollectionPdf,
 } from "../../../utils/pdfRenderer";
 import {
 	applyFormatConstraints,
+	pdfVizImageMode,
 	type ExportFormat,
+	type ExportVizImageMode,
 	type PdfExportParams,
 	type PdfImageMode,
 } from "../../../utils/exportFormatConstraints";
-import { buildCollectionEpub } from "../../../utils/epubRenderer";
+import { buildCollectionEpub, collectionHasInlineSvg } from "../../../utils/epubRenderer";
+import {
+	rasterizeSvgOnPage,
+	type SvgVizRasterMode,
+} from "../../../utils/svgRasterize";
 import type { EpubCoverAccentRole, EpubCoverKind } from "../../../utils/epubCover";
 import { getQualityContentType } from "../../../utils/ContentTagUtils";
 
@@ -178,6 +185,8 @@ async function respondWithEpub(
 		coverKind?: EpubCoverKind;
 		coverAccentRole?: EpubCoverAccentRole;
 		titleKindLabel?: string;
+		/** Light / dark / e-ink baked into diagram PNGs. Thermal is coerced first. */
+		vizImageMode?: ExportVizImageMode;
 	},
 ): Promise<Response> {
 	const totalDiscourses = countCollectionDiscourses(collectionData);
@@ -186,21 +195,62 @@ async function respondWithEpub(
 	}
 
 	const startMs = Date.now();
-	const buf = await buildCollectionEpub(collectionData, {
-		collectionUrl: opts.collectionUrl,
-		date: opts.date,
-		parentTitle: opts.parentTitle,
-		coverKind: opts.coverKind,
-		coverAccentRole: opts.coverAccentRole,
-		titleKindLabel: opts.titleKindLabel,
-	});
-	const elapsed = ((Date.now() - startMs) / 1000).toFixed(1);
-	console.log(`[EPUB Export] Done in ${elapsed}s — ${buf.length} bytes`);
-	return fileDownloadResponse(
-		new Uint8Array(buf),
-		safeExportFilename(opts.title, "epub"),
-		"application/epub+zip",
-	);
+	let rasterizeDiagram: ((svg: string) => Promise<Buffer>) | undefined;
+	let browser: Browser | undefined;
+	let heldJob = false;
+	const vizMode: SvgVizRasterMode =
+		opts.vizImageMode === "dark"
+			? "dark"
+			: opts.vizImageMode === "light"
+				? "light"
+				: "eink";
+
+	if (collectionHasInlineSvg(collectionData)) {
+		try {
+			browser = await launchBrowser();
+			const page = await browser.newPage();
+			console.log(`[EPUB Export] Rasterizing diagrams as ${vizMode}`);
+			rasterizeDiagram = (svg: string) =>
+				rasterizeSvgOnPage(page, svg, { vizMode });
+			activeJobs++;
+			heldJob = true;
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : String(err);
+			console.warn(
+				`[EPUB Export] Chromium rasterizer unavailable, using resvg: ${msg}`,
+			);
+			if (browser) {
+				await browser.close().catch(() => {});
+				browser = undefined;
+			}
+			rasterizeDiagram = undefined;
+		}
+	}
+
+	try {
+		const buf = await buildCollectionEpub(collectionData, {
+			collectionUrl: opts.collectionUrl,
+			date: opts.date,
+			parentTitle: opts.parentTitle,
+			coverKind: opts.coverKind,
+			coverAccentRole: opts.coverAccentRole,
+			titleKindLabel: opts.titleKindLabel,
+			rasterizeDiagram,
+			vizImageMode: vizMode,
+		});
+		const elapsed = ((Date.now() - startMs) / 1000).toFixed(1);
+		console.log(`[EPUB Export] Done in ${elapsed}s — ${buf.length} bytes`);
+		return fileDownloadResponse(
+			new Uint8Array(buf),
+			safeExportFilename(opts.title, "epub"),
+			"application/epub+zip",
+		);
+	} finally {
+		if (browser) {
+			await browser.close().catch(() => {});
+		}
+		if (heldJob) activeJobs--;
+	}
 }
 
 function defaultDownloadDate(): string {
@@ -218,15 +268,17 @@ function parseImageMode(value: string | null): PdfImageMode {
 	return "svgPrimaryOnly";
 }
 
-function parseVizParam(vizParam: string | null): PdfVizImageMode | undefined {
+function parseVizParam(vizParam: string | null): ExportVizImageMode | undefined {
 	if (
 		vizParam === "light" ||
 		vizParam === "dark" ||
-		vizParam === "thermal"
+		vizParam === "thermal" ||
+		vizParam === "eink"
 	) {
 		return vizParam;
 	}
 	if (vizParam === "print") return "thermal";
+	if (vizParam === "paper") return "eink";
 	return undefined;
 }
 
@@ -538,6 +590,7 @@ async function runOnPagePdfGeneration(
 				coverKind: "topic",
 				coverAccentRole,
 				titleKindLabel,
+				vizImageMode,
 			});
 		} catch (err) {
 			const msg = err instanceof Error ? err.message : String(err);
@@ -574,7 +627,7 @@ async function runOnPagePdfGeneration(
 		const html = buildPdfHtml(collectionData, {
 			collectionUrl,
 			date: downloadDate,
-			vizImageMode,
+			vizImageMode: pdfVizImageMode(vizImageMode),
 		});
 		const page = await browser.newPage();
 		await page.setViewportSize({ width: 794, height: 1123 });
@@ -671,6 +724,7 @@ async function runPdfGeneration(
 				title: metadata.title,
 				emptyMessage: `No discourses found for collection '${slug}'. The content may not be published yet.`,
 				coverKind: parentTitle ? "section" : "collection",
+				vizImageMode,
 			});
 		} catch (err) {
 			const msg = err instanceof Error ? err.message : String(err);
@@ -711,7 +765,7 @@ async function runPdfGeneration(
 			collectionUrl,
 			date: downloadDate,
 			parentTitle,
-			vizImageMode,
+			vizImageMode: pdfVizImageMode(vizImageMode),
 		});
 
 		const page = await browser.newPage();
@@ -782,14 +836,16 @@ export const GET: APIRoute = async ({ params, url }) => {
 	}
 
 	const format = parseFormat(url.searchParams.get("format"));
-	if (format === "pdf" && activeJobs >= MAX_CONCURRENT) {
+	const p = applyFormatConstraints(format, paramsFromSearchParams(url));
+	if (
+		activeJobs >= MAX_CONCURRENT &&
+		(format === "pdf" || p.imageMode !== "none")
+	) {
 		return errorResponse(
-			"PDF generation is busy — please try again in a moment.",
+			"Export is busy — please try again in a moment.",
 			503,
 		);
 	}
-
-	const p = applyFormatConstraints(format, paramsFromSearchParams(url));
 
 	if (parsed.kind === "on-page") {
 		return runOnPagePdfGeneration(parsed.pageSlug, p, null, format);
@@ -837,16 +893,19 @@ export const POST: APIRoute = async ({ params, request }) => {
 
 	const body = json as Record<string, unknown>;
 	const format = parseFormat(body.format);
-	if (format === "pdf" && activeJobs >= MAX_CONCURRENT) {
-		return errorResponse(
-			"PDF generation is busy — please try again in a moment.",
-			503,
-		);
-	}
 	const exportParams = applyFormatConstraints(
 		format,
 		paramsFromJsonBody(body),
 	);
+	if (
+		activeJobs >= MAX_CONCURRENT &&
+		(format === "pdf" || exportParams.imageMode !== "none")
+	) {
+		return errorResponse(
+			"Export is busy — please try again in a moment.",
+			503,
+		);
+	}
 
 	if (parsed.kind === "on-page") {
 		const sel = validateSelectedOnPageDiscourseSlugs(

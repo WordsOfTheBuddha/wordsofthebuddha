@@ -453,16 +453,19 @@ async function fetchDiscourseHtml(
 									);
 									if (existsSync(abs)) {
 										let svg = readFileSync(abs, "utf-8");
-										// Strip explicit width/height so the SVG scales
-										// via its viewBox to fit the container.
-										svg = svg.replace(
-											/(<svg[^>]*?)\s+width="[^"]*"/i,
-											"$1",
-										);
-										svg = svg.replace(
-											/(<svg[^>]*?)\s+height="[^"]*"/i,
-											"$1",
-										);
+										// PDF print slices scale via viewBox. EPUB
+										// rasterizes at the authored pixel size, so
+										// keep width/height when the SVG stays intact.
+										if (!keepSvgIntact) {
+											svg = svg.replace(
+												/(<svg[^>]*?)\s+width="[^"]*"/i,
+												"$1",
+											);
+											svg = svg.replace(
+												/(<svg[^>]*?)\s+height="[^"]*"/i,
+												"$1",
+											);
+										}
 
 										// Slice SVGs at content-aware safe cut points
 										// to avoid cutting through text/shapes.

@@ -28,7 +28,7 @@ interface Props {
 	previewTotalTextFiles: number;
 	previewHasChapters: boolean;
 	previewChapters: CollectionPdfPreviewChapter[];
-	/** At least one discourse in this export has an SVG diagram (PDF viz path). */
+	/** At least one discourse in this export has an SVG diagram. */
 	previewHasSvgViz: boolean;
 	/** When set, modal shows a checkbox tree and uses POST JSON for subset export. */
 	exportSelectionTree?: PdfExportSelectionTree | null;
@@ -274,7 +274,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 					class="collection-pdf-epub-note"
 					hidden
 				>
-					EPUB uses interleaved Pāli (when included). Discourse diagrams are omitted: their labels are drawn in the image, so they do not grow with the e-reader font size. PDF is the better format for viz.
+					EPUB uses interleaved Pāli (when included). Split-column layout and thermal print colors are PDF-only. Diagrams default to an e-ink paper profile.
 				</p>
 			</section>
 
@@ -332,7 +332,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 										id="pdf-opt-viz-show"
 										name="vizShow"
 									/>
-									<span>Show Discourse Viz</span>
+									<span>Include discourse images</span>
 								</label>
 								<fieldset
 									class="collection-pdf-fieldset"
@@ -340,7 +340,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 									disabled
 								>
 									<legend class="sr-only">Diagram colors</legend>
-									<label>
+									<label data-viz-mode-option="light">
 										<input
 											type="radio"
 											name="viz-mode"
@@ -349,11 +349,15 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 										/>
 										Light
 									</label>
+									<label data-viz-mode-option="eink" hidden>
+										<input type="radio" name="viz-mode" value="eink" />
+										E-ink
+									</label>
 									<label>
 										<input type="radio" name="viz-mode" value="dark" />
 										Dark
 									</label>
-									<label>
+									<label data-viz-mode-option="thermal">
 										<input type="radio" name="viz-mode" value="thermal" />
 										Thermal
 									</label>
@@ -813,7 +817,8 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 	}
 	#pdf-fieldset-layout[hidden],
 	#pdf-fieldset-viz-colors[hidden],
-	.collection-pdf-viz-group[hidden] {
+	.collection-pdf-viz-group[hidden],
+	#pdf-fieldset-viz-colors label[hidden] {
 		display: none;
 	}
 	.collection-pdf-field,
@@ -990,7 +995,6 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 		const layoutFs = dlg.querySelector<HTMLFieldSetElement>(
 			"#pdf-fieldset-layout",
 		);
-		const vizGroup = dlg.querySelector<HTMLElement>("#pdf-opt-viz-group");
 		const vizColors = dlg.querySelector<HTMLFieldSetElement>(
 			"#pdf-fieldset-viz-colors",
 		);
@@ -1007,31 +1011,35 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 				layoutFs.disabled = !pliInput?.checked;
 			}
 		}
-		if (vizGroup) {
-			vizGroup.hidden = isEpub;
-		}
 		if (vizColors) {
-			vizColors.hidden = isEpub;
-			if (!isEpub) {
-				vizColors.disabled = !vizShow?.checked;
-			}
-		}
-		if (vizShow) {
-			const prevFormat = dlg.dataset.exportUiFormat;
+			vizColors.hidden = false;
+			vizColors.disabled = !vizShow?.checked;
+			const lightOpt = vizColors.querySelector<HTMLElement>(
+				"[data-viz-mode-option='light']",
+			);
+			const einkOpt = vizColors.querySelector<HTMLElement>(
+				"[data-viz-mode-option='eink']",
+			);
+			const thermalOpt = vizColors.querySelector<HTMLElement>(
+				"[data-viz-mode-option='thermal']",
+			);
+			if (lightOpt) lightOpt.hidden = isEpub;
+			if (einkOpt) einkOpt.hidden = !isEpub;
+			if (thermalOpt) thermalOpt.hidden = isEpub;
+			const lightR = vizColors.querySelector<HTMLInputElement>(
+				'input[name="viz-mode"][value="light"]',
+			);
+			const einkR = vizColors.querySelector<HTMLInputElement>(
+				'input[name="viz-mode"][value="eink"]',
+			);
+			const darkR = vizColors.querySelector<HTMLInputElement>(
+				'input[name="viz-mode"][value="dark"]',
+			);
 			if (isEpub) {
-				if (prevFormat !== "epub") {
-					dlg.dataset.pdfVizRemembered = vizShow.checked ? "1" : "0";
-					vizShow.checked = false;
-				}
-			} else if (prevFormat === "epub") {
-				const remembered = dlg.dataset.pdfVizRemembered;
-				if (remembered !== undefined) {
-					vizShow.checked = remembered === "1";
-					delete dlg.dataset.pdfVizRemembered;
-				}
-				vizColors && (vizColors.disabled = !vizShow.checked);
+				if (!darkR?.checked && einkR) einkR.checked = true;
+			} else if (einkR?.checked && lightR) {
+				lightR.checked = true;
 			}
-			dlg.dataset.exportUiFormat = isEpub ? "epub" : "pdf";
 		}
 		if (epubNote) epubNote.hidden = !isEpub;
 		if (gen && gen.textContent !== "Printing…" && gen.textContent !== "Building EPUB…") {
@@ -1270,7 +1278,7 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 			const date = `${day}<sup>${suffix}</sup> ${month} ${year}`;
 
 			const includeImages =
-				format !== "epub" && hasVizControls && vizShowInput!.checked;
+				hasVizControls && vizShowInput!.checked;
 			const layoutEl = dlg.querySelector<HTMLInputElement>(
 				'input[name="layout"]:checked',
 			);
@@ -1286,12 +1294,18 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 			qs.set("format", format);
 			qs.set("images", includeImages ? "svgPrimaryOnly" : "none");
 
-			if (includeImages && format === "pdf") {
+			if (includeImages) {
 				const mode = dlg.querySelector<HTMLInputElement>(
 					'input[name="viz-mode"]:checked',
 				);
 				const vz = mode?.value;
-				if (vz === "light" || vz === "dark" || vz === "thermal") {
+				if (format === "epub") {
+					qs.set("viz", vz === "dark" ? "dark" : "eink");
+				} else if (
+					vz === "light" ||
+					vz === "dark" ||
+					vz === "thermal"
+				) {
 					qs.set("viz", vz);
 				}
 			}
@@ -1325,12 +1339,18 @@ const exportTreeCuratedCount = exportTreeDiscourseTotal - exportTreeReferenceCou
 					layout: lay,
 					keyTerms: keyTermsInput.checked,
 				};
-				if (includeImages && format === "pdf") {
+				if (includeImages) {
 					const mode = dlg.querySelector<HTMLInputElement>(
 						'input[name="viz-mode"]:checked',
 					);
 					const vz = mode?.value;
-					if (vz === "light" || vz === "dark" || vz === "thermal") {
+					if (format === "epub") {
+						postBody.viz = vz === "dark" ? "dark" : "eink";
+					} else if (
+						vz === "light" ||
+						vz === "dark" ||
+						vz === "thermal"
+					) {
 						postBody.viz = vz;
 					}
 				}
