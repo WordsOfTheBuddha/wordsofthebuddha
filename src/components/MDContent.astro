@@ -244,10 +244,24 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 			grid-template-columns: 1fr; /* Stack vertically on mobile */
 		}
 	}
+
+	/* After mobile stacking: print must not collapse split into one column of
+	   English then Pāli. Pair rows are built in JS; keep them two-up. */
+	@media print {
+		:global(.paragraph-pair-grid) {
+			display: grid !important;
+			grid-template-columns: 1fr 1fr !important;
+			column-gap: 1rem;
+			align-items: start;
+			page-break-inside: avoid;
+			break-inside: avoid;
+		}
+	}
 </style>
 
 <script>
 	import { ensureSplitPanels } from "../utils/splitViewClient";
+	import { pairSplitWrapperForPrint } from "../utils/splitPrintLayout";
 
 	function isSplitVisible() {
 		const root = document.documentElement;
@@ -636,12 +650,6 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 		}, 100);
 	});
 
-	window.addEventListener("beforeprint", () => {});
-
-	window.addEventListener("afterprint", () => {
-		restoreSplitLayout();
-	});
-
 	// When layout toggles, ensure visibility state is applied and alignment recalculated
 	document.addEventListener("layoutChanged", () => {
 		updateA11yVisibility();
@@ -664,155 +672,24 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 		}
 	});
 
-	// Add minimal print formatting function
 	function applyPrintGridLayout() {
-		// Target the print-formatted content area (same as PrintFormatter)
 		const contentArea = document.querySelector(".print-formatted");
 		if (!contentArea || !contentArea.classList.contains("split-wrapper")) {
 			return;
 		}
-
-		(contentArea as HTMLElement).style.display = "block";
-
-		const panel1 = contentArea.querySelector("#panel1");
-		const panel2 = contentArea.querySelector("#panel2");
-
-		if (!panel1 || !panel2) {
-			return;
-		}
-
-		const paraIds = Array.from(
-			panel1.querySelectorAll("[data-pair-id]")
-		).map((p) => p.getAttribute("data-pair-id"));
-
-		const fragment = document.createDocumentFragment();
-
-		// Handle mixed content (paragraphs and headings)
-		const allElements = Array.from(panel1.children);
-
-		allElements.forEach((element) => {
-			const pairId = element.getAttribute("data-pair-id");
-
-			if (pairId) {
-				// This is a paragraph pair
-				const paliPara = panel2.querySelector(
-					`[data-pair-id="${pairId}"]`
-				);
-
-				if (paliPara) {
-					const pairGrid = document.createElement("div");
-					pairGrid.className = "paragraph-pair-grid";
-					pairGrid.appendChild(element.cloneNode(true));
-					pairGrid.appendChild(paliPara.cloneNode(true));
-
-					// Add these inline styles
-					pairGrid.style.display = "grid";
-					pairGrid.style.gridTemplateColumns = "52% 48%";
-					pairGrid.style.gap = "1rem";
-					pairGrid.style.alignItems = "start";
-					pairGrid.style.marginBottom = "1.5rem";
-					pairGrid.style.pageBreakInside = "avoid";
-
-					// Reset margins on children
-					pairGrid
-						.querySelectorAll("[data-pair-id]")
-						.forEach((child) => {
-							(child as HTMLElement).style.margin = "0";
-						});
-
-					fragment.appendChild(pairGrid);
-				}
-			} else if (element.tagName && element.tagName.match(/^H[1-6]$/)) {
-				// This is a heading - create single-column grid
-				const headingRow = document.createElement("div");
-				headingRow.className = "heading-row";
-				headingRow.appendChild(element.cloneNode(true));
-
-				// Add these inline styles
-				headingRow.style.marginBottom = "1rem";
-				headingRow.style.pageBreakAfter = "avoid";
-
-				fragment.appendChild(headingRow);
-			}
-		});
-
-		// Preserve trailing non-panel sections (e.g. numeric footnotes or Key Terms).
-		// Key Terms is now bulleted and no longer uses numeric markers like [1].
-		const trailingSections = Array.from(contentArea.children).filter(
-			(el) =>
-				el instanceof HTMLElement &&
-				el.tagName === "DIV" &&
-				el !== panel1 &&
-				el !== panel2
-		) as HTMLElement[];
-		trailingSections.forEach((section, index) => {
-			const sectionClone = section.cloneNode(true) as HTMLElement;
-			sectionClone.style.marginTop = index === 0 ? "2rem" : "1rem";
-			sectionClone.style.paddingTop = "1rem";
-			sectionClone.style.borderTop = "1px solid #333";
-			fragment.appendChild(sectionClone);
-		});
-
-		// Store original for restoration and replace content
-		window.originalSplitContent = contentArea.innerHTML;
-		contentArea.innerHTML = "";
-		contentArea.appendChild(fragment);
+		pairSplitWrapperForPrint(contentArea);
 	}
 
 	function restoreSplitLayout() {
-		const splitWrapper = document.querySelector(".split-wrapper");
+		const splitWrapper = document.querySelector(
+			".split-wrapper",
+		) as HTMLElement | null;
 		if (!splitWrapper) return;
-
-		// Check if we have the grid structure to restore from
-		const pairGrids = document.querySelectorAll(".paragraph-pair-grid");
-		if (pairGrids.length === 0) {
-			return;
+		splitWrapper.style.display = "";
+		if (splitWrapper.querySelector(".paragraph-pair-grid")) {
+			delete splitWrapper.dataset.splitBuilt;
+			ensureSplitPanels();
 		}
-
-		// Recreate the original panel structure
-		const panel1 = document.createElement("article");
-		panel1.id = "panel1";
-		panel1.className =
-			"split-panel md-content prose prose-lg dark:prose-invert";
-
-		const panel2 = document.createElement("article");
-		panel2.id = "panel2";
-		panel2.className =
-			"split-panel md-content prose prose-lg dark:prose-invert";
-
-		// Extract paragraphs back to their original panels
-		const footnotesSection =
-			splitWrapper.querySelector(".footnotes-section");
-		let footnotesClone = null;
-		if (footnotesSection) {
-			footnotesClone = footnotesSection.cloneNode(true);
-		}
-
-		pairGrids.forEach((grid) => {
-			const children = grid.children;
-			if (children.length >= 2) {
-				// At least 2 children (could be more if footnotes were mixed in)
-				const engPara = children[0].cloneNode(true);
-				const paliPara = children[1].cloneNode(true);
-
-				panel1.appendChild(engPara);
-				panel2.appendChild(paliPara);
-			}
-		});
-
-		// Replace content and restore original styles
-		splitWrapper.innerHTML = "";
-		splitWrapper.appendChild(panel1);
-		splitWrapper.appendChild(panel2);
-
-		// Add footnotes back if they existed
-		if (footnotesClone) {
-			splitWrapper.appendChild(footnotesClone);
-		}
-
-		(splitWrapper as HTMLElement).style.display = "";
-
-		// Reapply normal screen alignment
 		setTimeout(() => {
 			adjustParagraphAlignment();
 		}, 50);
@@ -830,7 +707,6 @@ const showFallbackImmediately = isViewFullTextFallbackOnly(content);
 	declare global {
 		interface Window {
 			resizeTimer?: ReturnType<typeof setTimeout>;
-			originalSplitContent?: string;
 		}
 	}
 </script>

@@ -24,7 +24,6 @@ import { resolve as resolvePath } from "node:path";
 import { findSvgSafeCuts, cutsToSlices } from "./svgSafeCuts";
 import {
 	createCombinedMarkdown,
-	formatBlock,
 	parseContent,
 	PALI_ONLY_NOTICE,
 	REFERENCE_TRANSLATION_CREDIT,
@@ -34,6 +33,7 @@ import { replaceGlossMarkup } from "./glossDisplay";
 import { getChapterDiscourseLinesForPdf } from "./collectionPdfExportTree";
 import type { PdfExportDiscourseLine } from "./collectionPdfExportTree";
 import { buildReferenceDiscoursePage } from "./referenceDiscoursePage";
+import { buildSplitPdfHtmlFromPairs } from "./splitPdfHtml";
 import {
 	formatVaggaDisplayTitle,
 	getEffectiveVaggaSections,
@@ -129,76 +129,8 @@ function polytextMarkdownToHtml(markdown: string): string {
 	return pdfMarked.parse(withSpans) as string;
 }
 
-/**
- * Split layout: one grid row per content pair so English and Pāli stay aligned
- * (same logical pairing as `data-pair-id` in MDContent — not two independent columns).
- */
-function buildSplitPdfHtmlFromPairs(pairs: ContentPair[]): string {
-	let pairIndex = 0;
-	const rows: string[] = [];
-
-	for (const pair of pairs) {
-		if (pair.type === "other") {
-			rows.push(
-				`<div class="pdf-poly-row pdf-poly-row-full"><div class="pdf-poly-full">${pair.english}</div></div>`,
-			);
-			continue;
-		}
-
-		if (pair.english.startsWith("#")) {
-			const enRaw = formatBlock(
-				pair.english,
-				false,
-				undefined,
-				undefined,
-				pair.actualParagraphNumber,
-			);
-			const piRaw = pair.pali
-				? formatBlock(
-						pair.pali,
-						true,
-						undefined,
-						undefined,
-						pair.actualParagraphNumber,
-					)
-				: "";
-			rows.push(
-				`<div class="pdf-poly-row pdf-poly-row-heading">
-  <div class="pdf-poly-cell pdf-poly-en">${polytextMarkdownToHtml(enRaw)}</div>
-  <div class="pdf-poly-cell pdf-poly-pi">${piRaw ? polytextMarkdownToHtml(piRaw) : '<div class="pdf-poly-cell-empty"></div>'}</div>
-</div>`,
-			);
-			continue;
-		}
-
-		const idx = pairIndex++;
-		const enRaw = formatBlock(
-			pair.english,
-			false,
-			idx,
-			undefined,
-			pair.actualParagraphNumber,
-		);
-		const piRaw =
-			pair.pali !== undefined
-				? formatBlock(
-						pair.pali,
-						true,
-						idx,
-						undefined,
-						pair.actualParagraphNumber,
-					)
-				: "";
-
-		rows.push(
-			`<div class="pdf-poly-row">
-  <div class="pdf-poly-cell pdf-poly-en">${polytextMarkdownToHtml(enRaw)}</div>
-  <div class="pdf-poly-cell pdf-poly-pi">${piRaw ? polytextMarkdownToHtml(piRaw) : '<div class="pdf-poly-cell-empty"></div>'}</div>
-</div>`,
-		);
-	}
-
-	return `<div class="pdf-poly-split">${rows.join("\n")}</div>`;
+function splitPdfHtmlFromPairs(pairs: ContentPair[]): string {
+	return buildSplitPdfHtmlFromPairs(pairs, polytextMarkdownToHtml);
 }
 
 function referenceEnglishMarkdownFromPairs(pairs: ContentPair[]): string {
@@ -225,7 +157,7 @@ async function fetchReferenceDiscourseHtml(
 	if (paliOptions?.enabled) {
 		const layout = paliOptions.layout === "split" ? "split" : "interleaved";
 		if (layout === "split") {
-			html = `${credit}${buildSplitPdfHtmlFromPairs(pairs)}`;
+			html = `${credit}${splitPdfHtmlFromPairs(pairs)}`;
 		} else {
 			const combined = createCombinedMarkdown(pairs, true, "interleaved");
 			const body =
@@ -625,7 +557,7 @@ async function fetchDiscourseHtml(
 		const layout = paliOptions.layout === "split" ? "split" : "interleaved";
 
 		if (layout === "split") {
-			html = buildSplitPdfHtmlFromPairs(pairs);
+			html = splitPdfHtmlFromPairs(pairs);
 		} else {
 			const combined = createCombinedMarkdown(pairs, true, "interleaved");
 			html = polytextMarkdownToHtml(combined as string);
@@ -1377,7 +1309,8 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   color: #333;
   opacity: inherit;
 }
-/* Split: one row per EN/Pāli pair (aligns with web split + data-pair-id) */
+/* Split: one row per EN/Pāli pair (aligns with web split + data-pair-id).
+   Do not use two tall columns — Chromium print fragments those sequentially. */
 .pdf-poly-split {
   display: flex;
   flex-direction: column;
@@ -1388,6 +1321,8 @@ p { orphans: 3; widows: 3; margin: 0.5em 0; }
   grid-template-columns: 1fr 1fr;
   column-gap: 14pt;
   align-items: start;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .pdf-poly-row-full {
   display: block;
