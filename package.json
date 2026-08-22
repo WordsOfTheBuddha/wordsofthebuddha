@@ -53,7 +53,7 @@
 		"import:sc-structure": "node scripts/import-sc-structure.mjs",
 		"import:pts": "node scripts/import-pts-references.mjs",
 		"test:pts": "npx tsx --test src/utils/ptsReferences.test.ts",
-		"test:epub": "npx tsx --test src/utils/epubRenderer.test.ts src/utils/epubCover.test.ts src/utils/exportFormatConstraints.test.ts src/utils/splitPrintLayout.test.ts src/utils/pdfSplitHtml.test.ts src/utils/svgRasterize.test.ts",
+		"test:epub": "npx tsx --test src/utils/epubRenderer.test.ts src/utils/epubCover.test.ts src/utils/exportFormatConstraints.test.ts src/utils/onPagePdfExportTree.test.ts src/utils/splitPrintLayout.test.ts src/utils/pdfSplitHtml.test.ts src/utils/svgRasterize.test.ts",
 		"voice:gen": ".venv-voice/bin/python scripts/generate_voice.py",
 		"voice:edit": ".venv-voice/bin/python scripts/edit_voice.py",
 		"voice:normalize": ".venv-voice/bin/python scripts/normalize_voice.py"

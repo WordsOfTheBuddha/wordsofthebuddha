@@ -1,8 +1,12 @@
 /**
- * PDF export selection tree for topic/quality `/on/{slug}` pages.
+ * PDF export selection tree for topic/quality/simile `/on/{slug}` pages.
+ *
+ * Discourse order must match the web page: mapping-array order from
+ * `content.discourses` (YAML for topics; qualityMappings / simileMappings
+ * as assembled by discover-data). Do not sort by collection weight
+ * (`compareDiscourseIds`: MN before DN before SN…) or title.
+ * Reference-only discourses stay after curated, in caller order.
  */
-import { compareDiscourseIds } from "./discourseSort";
-import { normalizeDiscourseIdForContentImages } from "./contentImage";
 import type {
 	PdfExportDiscourseLine,
 	PdfExportSelectionTree,
@@ -15,6 +19,12 @@ export type OnPageDiscourse = {
 	description?: string;
 };
 
+function normalizeOnPageSlug(id: string): string {
+	const t = id.trim().toLowerCase();
+	if (!t.includes("/")) return t;
+	return t.split("/").filter(Boolean).pop() ?? t;
+}
+
 export function buildOnPagePdfExportTree(
 	pageSlug: string,
 	pageTitle: string,
@@ -22,13 +32,11 @@ export function buildOnPagePdfExportTree(
 	referencePosts: ReferencePostData[],
 ): PdfExportSelectionTree | null {
 	const curatedSlugs = new Set(
-		discourses.map((d) =>
-			normalizeDiscourseIdForContentImages(d.id.trim()),
-		),
+		discourses.map((d) => normalizeOnPageSlug(d.id)),
 	);
 
 	const curated: PdfExportDiscourseLine[] = discourses.map((d) => ({
-		slug: normalizeDiscourseIdForContentImages(d.id.trim()),
+		slug: normalizeOnPageSlug(d.id),
 		title: d.title.trim(),
 		...(d.description?.trim()
 			? { description: d.description.trim() }
@@ -45,7 +53,6 @@ export function buildOnPagePdfExportTree(
 		}));
 
 	const merged = [...curated, ...refLines];
-	merged.sort((a, b) => compareDiscourseIds(a.slug, b.slug));
 	if (merged.length === 0) return null;
 
 	const referenceDiscourseCount = refLines.length;
