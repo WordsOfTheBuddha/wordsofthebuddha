@@ -2,6 +2,7 @@
 export const prerender = true; // Allow use in static pages; we'll hydrate auth on the client
 import { verifyUser } from "../middleware/auth";
 import SearchIcon from "../assets/search.svg?raw"; // Add this import
+import NavSearch from "./NavSearch.astro";
 
 interface Props {
 	showAuth?: boolean;
@@ -35,7 +36,7 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 >
 	{
 		showBrand && (
-			<div class="text-lg md:text-xl font-bold flex items-center min-h-[2.25rem]">
+			<div class="text-lg md:text-xl font-bold flex items-center min-h-[2.25rem] shrink-0">
 				<a href="/" class="brand-link" aria-label="Words of the Buddha home">
 					<span class="brand-text text-gradient-accent">Words of the Buddha</span>
 				</a>
@@ -45,20 +46,22 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 	<div class="flex items-center gap-2 min-h-[2.25rem] z-50">
 		{
 			showSearch && (
-				<a
-					href="/search"
-					class:list={[
-						"nav-search-link p-2",
-						showBrand
-							? "hover:text-[var(--link-hover-color)]"
-							: "nav-search-link--subtle",
-					]}
-					title="Search"
-					aria-label="Search"
-					role="button"
-				>
-					<Fragment set:html={SearchIcon} />
-				</a>
+				<>
+					<a
+						href="/search"
+						class:list={[
+							"nav-search-link md:hidden p-2 shrink-0",
+							showBrand
+								? "hover:text-[var(--link-hover-color)]"
+								: "nav-search-link--subtle",
+						]}
+						title="Search"
+						aria-label="Search"
+					>
+						<Fragment set:html={SearchIcon} />
+					</a>
+					<NavSearch />
+				</>
 			)
 		}
 		{
@@ -173,6 +176,10 @@ if (showAuth && Astro.request.headers.get("x-astro-prerender") !== "1") {
 </style>
 
 <script>
+	import { installSearchFocusShortcut } from "../utils/searchFocusShortcut";
+
+	installSearchFocusShortcut();
+
 	// Menu wiring (works for both SSR and client-hydrated DOM)
 	function wireMenu() {
 		const userMenuButton = document.getElementById("user-menu-button");

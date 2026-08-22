@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	computeDropdownLeft,
+	discourseSuggestionActiveIndex,
 	displaySuggestionText,
 	shouldOfferIndexSuggestions,
 } from "./searchAutocompleteClient";
@@ -43,6 +44,18 @@ describe("shouldOfferIndexSuggestions", () => {
 	it("still suggests for Pali/English tokens", () => {
 		assert.equal(shouldOfferIndexSuggestions("craving", "craving"), true);
 		assert.equal(shouldOfferIndexSuggestions("sati", "sati"), true);
+	});
+});
+
+describe("discourseSuggestionActiveIndex", () => {
+	it("preselects the first hit for ID-shaped queries", () => {
+		assert.equal(discourseSuggestionActiveIndex(true, 1), 0);
+		assert.equal(discourseSuggestionActiveIndex(true, 4), 0);
+	});
+
+	it("does not preselect title or empty lists", () => {
+		assert.equal(discourseSuggestionActiveIndex(false, 3), -1);
+		assert.equal(discourseSuggestionActiveIndex(true, 0), -1);
 	});
 });
 

@@ -122,6 +122,17 @@ export interface SearchAutocompleteOptions {
 	onClearRecentSearches?: () => void;
 	matchDiscourses?: (query: string) => DiscourseSuggestHit[];
 	onDiscourseSelect?: (hit: DiscourseSuggestHit) => void;
+	/** Stretch to the input, or grow left from a compact navbar field. */
+	alignDropdown?: "stretch" | "end";
+}
+
+/** Highlight the first hit for ID-shaped queries so Enter goes to that discourse. */
+export function discourseSuggestionActiveIndex(
+	isIdQuery: boolean,
+	hitCount: number,
+): number {
+	if (!isIdQuery || hitCount <= 0) return -1;
+	return 0;
 }
 
 export interface SearchAutocompleteController {
@@ -179,6 +190,7 @@ export function attachSearchAutocomplete(
 		onClearRecentSearches,
 		matchDiscourses,
 		onDiscourseSelect,
+		alignDropdown = "stretch",
 	} = options;
 
 	let open = false;
@@ -244,6 +256,14 @@ export function attachSearchAutocomplete(
 	}
 
 	function positionDropdownFullWidth() {
+		if (alignDropdown === "end") {
+			dropdown.style.left = "auto";
+			dropdown.style.right = "0";
+			dropdown.style.width = "min(24rem, calc(100vw - 2rem))";
+			dropdown.style.minWidth = "100%";
+			dropdown.style.maxWidth = "min(24rem, calc(100vw - 2rem))";
+			return;
+		}
 		dropdown.style.left = "0";
 		dropdown.style.right = "0";
 		dropdown.style.width = "100%";
@@ -477,7 +497,7 @@ export function attachSearchAutocomplete(
 		currentRecentItems = [];
 		currentToken = null;
 		currentDiscourseHits = next;
-		activeIndex = -1;
+		activeIndex = discourseSuggestionActiveIndex(isIdQuery, next.length);
 		renderDiscourseSuggestions();
 		return true;
 	}

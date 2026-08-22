@@ -1,0 +1,155 @@
+---
+/**
+ * Compact navbar search from tablet up. Same gateway as the homepage:
+ * unique discourse ID navigates; otherwise /search.
+ *
+ * Collapsed: GitHub-style “Type / to search” sized to the hint.
+ * Focused (or with a query): the field grows into the navbar gap.
+ */
+import SearchIcon from "../assets/search.svg?raw";
+import "../styles/search-gateway.css";
+---
+
+<form
+	id="nav-search-form"
+	class="nav-search search-gateway not-prose hidden md:block relative shrink-0"
+	action="/search"
+	method="get"
+	role="search"
+	data-nav-search
+>
+	<label class="sr-only" for="nav-search-input">Search the discourses</label>
+	<div class="nav-search-shell relative">
+		<input
+			type="search"
+			id="nav-search-input"
+			name="q"
+			value=""
+			placeholder="MN 10, mettā…"
+			autocomplete="off"
+			enterkeyhint="search"
+			data-search-focus
+			title="Search"
+			aria-keyshortcuts="/"
+			class="nav-search-input w-full h-9 py-1.5 pl-9 pr-3 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
+			style="background:var(--surface-elevated); color:var(--text-color); border-color:var(--surface-border);"
+		/>
+		<div class="nav-search-hint" aria-hidden="true">
+			Type <kbd class="nav-search-kbd">/</kbd> to search
+		</div>
+		<div
+			id="nav-search-suggestions"
+			class="nav-search-suggestions search-suggestions text-left hidden absolute top-full z-50 mt-1"
+			role="presentation"
+		>
+			<div
+				id="nav-search-suggestions-list"
+				class="nav-search-suggestions-list search-suggestions-list"
+			>
+			</div>
+		</div>
+		<div
+			class="nav-search-icon absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4"
+			style="color:var(--text-muted);"
+			aria-hidden="true"
+		>
+			<Fragment set:html={SearchIcon} />
+		</div>
+	</div>
+</form>
+
+<style>
+	.nav-search {
+		--nav-search-expanded: 24rem;
+		width: 12.25rem;
+		transition: width 180ms ease;
+	}
+
+	.nav-search:focus-within,
+	.nav-search:has(.nav-search-input:not(:placeholder-shown)) {
+		width: var(--nav-search-expanded);
+	}
+
+	.nav-search-input:focus {
+		border-color: var(--primary-color);
+	}
+
+	.nav-search-input::placeholder {
+		color: transparent;
+	}
+
+	.nav-search:focus-within .nav-search-input::placeholder {
+		color: var(--text-muted);
+	}
+
+	.nav-search-hint {
+		position: absolute;
+		left: 2.25rem;
+		right: 0.5rem;
+		top: 50%;
+		transform: translateY(-50%);
+		display: flex;
+		align-items: center;
+		gap: 0.3em;
+		font-size: 0.8125rem;
+		line-height: 1;
+		color: var(--text-muted);
+		white-space: nowrap;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.nav-search:focus-within .nav-search-hint,
+	.nav-search-input:not(:placeholder-shown) ~ .nav-search-hint {
+		display: none;
+	}
+
+	.nav-search-kbd {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.15em;
+		padding: 0.12em 0.32em;
+		border: 1px solid var(--surface-border);
+		border-radius: 0.25rem;
+		background: color-mix(in srgb, var(--text-color) 8%, var(--surface-elevated));
+		color: var(--text-muted);
+		font-family: inherit;
+		font-size: 0.7rem;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	.nav-search :global(svg) {
+		width: 1rem;
+		height: 1rem;
+	}
+
+	.nav-search :global(.search-suggest-item) {
+		font-size: 0.875rem;
+	}
+
+	.nav-search-input::-webkit-search-cancel-button,
+	.nav-search-input::-webkit-search-decoration {
+		-webkit-appearance: none;
+	}
+</style>
+
+<script>
+	import { attachSearchGateway } from "../utils/searchGatewayClient";
+
+	const form = document.getElementById("nav-search-form") as HTMLFormElement | null;
+	const input = document.getElementById("nav-search-input") as HTMLInputElement | null;
+	const dropdown = document.getElementById("nav-search-suggestions");
+	const list = document.getElementById("nav-search-suggestions-list");
+
+	if (form && input && dropdown && list) {
+		attachSearchGateway({
+			form,
+			input,
+			dropdown,
+			list,
+			alignDropdown: "stretch",
+		});
+	}
+</script>

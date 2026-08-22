@@ -3,6 +3,7 @@
  * Home hero search gateway: wide input + autosuggest, redirects to /search for results.
  */
 import SearchIcon from "../assets/search.svg?raw";
+import "../styles/search-gateway.css";
 
 const starterChips = [
 	{ label: "MN 10", href: "/mn10" },
@@ -11,7 +12,7 @@ const starterChips = [
 ] as const;
 ---
 
-<div class="home-search not-prose text-left w-full max-w-[600px] mx-auto" data-home-search>
+<div class="home-search search-gateway not-prose text-left w-full max-w-[600px] mx-auto" data-home-search>
 	<form
 		id="home-search-form"
 		action="/search"
@@ -28,6 +29,9 @@ const starterChips = [
 				placeholder="MN 10, mettā, radical attention…"
 				autocomplete="off"
 				enterkeyhint="search"
+				data-search-focus
+				title="Press / to search"
+				aria-keyshortcuts="/"
 				class="home-search-input w-full p-4 pl-12 pr-4 text-base sm:text-lg rounded-lg border focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
 				style="background:var(--surface-elevated); color:var(--text-color); border-color:var(--surface-border);"
 			/>
@@ -74,7 +78,7 @@ const starterChips = [
 	</div>
 </div>
 
-<style is:global>
+<style>
 	.home-search-sr-only {
 		position: absolute;
 		width: 1px;
@@ -122,179 +126,10 @@ const starterChips = [
 		color: var(--text-color);
 		border-color: var(--primary-color);
 	}
-
-	.home-search .search-suggestions-list {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		overflow: hidden;
-		border-radius: 0.5rem;
-		border: 1px solid var(--surface-border);
-		background: var(--surface-elevated);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-	}
-
-	.home-search .search-suggest-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.75rem;
-		padding: 0.5rem 0.75rem 0.25rem;
-	}
-
-	.home-search .search-suggest-header-label {
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--text-muted);
-	}
-
-	.home-search .search-suggest-clear {
-		font-size: 0.75rem;
-		color: var(--text-muted);
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		padding: 0.25rem 0;
-	}
-
-	.home-search .search-suggest-clear:hover {
-		color: var(--text-color);
-	}
-
-	.home-search .search-suggest-item {
-		display: block;
-		width: 100%;
-		padding: 0.5rem 0.75rem;
-		text-align: left;
-		font-size: 1rem;
-		line-height: 1.35;
-		color: var(--text-color);
-		background: transparent;
-		border: none;
-		cursor: pointer;
-	}
-
-	.home-search .search-suggest-recent {
-		padding-top: 0.625rem;
-		padding-bottom: 0.625rem;
-	}
-
-	@media (max-width: 767px) {
-		.home-search .search-suggest-recent {
-			padding-top: 0.75rem;
-			padding-bottom: 0.75rem;
-		}
-	}
-
-	.home-search .search-suggest-item:hover,
-	.home-search .search-suggest-item.is-active {
-		background: color-mix(in srgb, var(--primary-color) 12%, transparent);
-	}
-
-	.home-search .search-suggest-mark {
-		background: color-mix(in srgb, var(--primary-color) 24%, transparent);
-		color: inherit;
-		padding: 0;
-	}
-
-	.home-search .search-suggest-discourse {
-		display: block;
-		overflow: hidden;
-		min-width: 0;
-	}
-
-	.home-search .search-suggest-discourse-inner {
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		overflow: hidden;
-		max-height: calc(1.35em * 2);
-	}
-
-	.home-search .search-suggest-discourse-meta {
-		display: inline;
-		white-space: nowrap;
-		margin-right: 0.5rem;
-	}
-
-	.home-search .search-suggest-id {
-		font-weight: 600;
-	}
-
-	.home-search .search-suggest-discourse-titles {
-		font-size: 0.95em;
-	}
-
-	@media (min-width: 768px) {
-		.home-search .search-suggest-discourse-inner {
-			display: flex;
-			-webkit-line-clamp: unset;
-			line-clamp: unset;
-			-webkit-box-orient: unset;
-			flex-direction: row;
-			align-items: baseline;
-			gap: 0.5rem;
-			max-height: none;
-			overflow: hidden;
-			width: 100%;
-			min-width: 0;
-		}
-
-		.home-search .search-suggest-discourse-meta {
-			display: flex;
-			align-items: baseline;
-			gap: 0.5rem;
-			flex-shrink: 0;
-			margin-right: 0;
-		}
-
-		.home-search .search-suggest-discourse-titles {
-			flex: 1;
-			min-width: 0;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-	}
-
-	.home-search .search-suggest-pali {
-		font-style: italic;
-		color: var(--text-color);
-	}
-
-	.home-search .search-suggest-en,
-	.home-search .search-suggest-title-sep {
-		color: var(--text-muted);
-	}
-
-	.home-search .search-suggest-ref {
-		flex-shrink: 0;
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--text-muted);
-	}
 </style>
 
 <script>
-	import { createSuggestionSearcher } from "../utils/suggestionSearcher";
-	import type { SuggestionSearcher } from "../utils/suggestionSearcher";
-	import { attachSearchAutocomplete } from "../utils/searchAutocompleteClient";
-	import type { SearchAutocompleteController } from "../utils/searchAutocompleteClient";
-	import {
-		clearSearchHistory,
-		getRecentSearchQueries,
-	} from "../utils/searchHistoryClient";
-	import {
-		discourseSuggestLimit,
-		suggestDiscourses,
-		uniqueExactDiscourse,
-		type DiscourseSuggestEntry,
-	} from "../utils/discourseIdSuggest";
+	import { attachSearchGateway } from "../utils/searchGatewayClient";
 
 	const root = document.querySelector("[data-home-search]") as HTMLElement | null;
 	const form = document.getElementById("home-search-form") as HTMLFormElement | null;
@@ -306,125 +141,23 @@ const starterChips = [
 	const hint = document.getElementById("home-search-hint");
 
 	if (root && form && input && dropdown && list) {
-		let suggestionSearcher: SuggestionSearcher | null = null;
-		let discourseEntries: DiscourseSuggestEntry[] = [];
-		let autocomplete: SearchAutocompleteController | null = null;
-		let loadPromise: Promise<void> | null = null;
-
-		function goToHref(href: string) {
-			window.location.assign(href);
-		}
-
-		function goToSearch(query: string) {
-			const q = query.trim();
-			if (!q) {
-				showEmptyHint();
-				return;
-			}
-			const exact = uniqueExactDiscourse(discourseEntries, q);
-			if (exact) {
-				goToHref(exact.href);
-				return;
-			}
-			window.location.assign(`/search?q=${encodeURIComponent(q)}`);
-		}
-
 		function showEmptyHint() {
 			if (!root || !input || !hint) return;
 			hint.classList.add("is-visible");
 			hint.classList.remove("home-search-sr-only");
 			root.classList.remove("is-empty-shake");
-			// Retrigger animation
 			void root.offsetWidth;
 			root.classList.add("is-empty-shake");
 			input.focus();
 			setTimeout(() => root.classList.remove("is-empty-shake"), 400);
 		}
 
-		async function ensureAutocomplete() {
-			if (autocomplete) return;
-			if (loadPromise) {
-				await loadPromise;
-				return;
-			}
-
-			loadPromise = (async () => {
-				try {
-					const [termsRes, discourseRes] = await Promise.all([
-						fetch("/suggestions-index.json"),
-						fetch("/discourse-suggest-index.json"),
-					]);
-					if (termsRes.ok) {
-						const data = await termsRes.json();
-						suggestionSearcher = createSuggestionSearcher(
-							Array.isArray(data?.entries) ? data.entries : [],
-						);
-					}
-					if (discourseRes.ok) {
-						const data = await discourseRes.json();
-						discourseEntries = Array.isArray(data?.entries)
-							? data.entries
-							: [];
-					}
-				} catch (error) {
-					console.warn("HomeSearch: failed to load suggestion indexes", error);
-				}
-
-				if (!input || !dropdown || !list) return;
-				if (!suggestionSearcher && discourseEntries.length === 0) return;
-
-				autocomplete = attachSearchAutocomplete({
-					input,
-					dropdown,
-					list,
-					searcher:
-						suggestionSearcher ??
-						createSuggestionSearcher([]),
-					getRecentSearches: () => getRecentSearchQueries(),
-					onClearRecentSearches: () => {
-						clearSearchHistory();
-					},
-					onRecentSearchSelect: (query) => {
-						goToSearch(query);
-					},
-					matchDiscourses: (query) =>
-						suggestDiscourses(
-							discourseEntries,
-							query,
-							discourseSuggestLimit(),
-						),
-					onDiscourseSelect: (hit) => {
-						goToHref(hit.href);
-					},
-				});
-			})();
-
-			await loadPromise;
-		}
-
-		form.addEventListener("submit", (event) => {
-			event.preventDefault();
-			void (async () => {
-				await ensureAutocomplete();
-				goToSearch(input.value);
-			})();
+		attachSearchGateway({
+			form,
+			input,
+			dropdown,
+			list,
+			onEmptyQuery: showEmptyHint,
 		});
-
-		input.addEventListener(
-			"focus",
-			() => {
-				void ensureAutocomplete();
-			},
-			{ once: true },
-		);
-
-		const prefetch = () => {
-			void ensureAutocomplete();
-		};
-		if (typeof requestIdleCallback === "function") {
-			requestIdleCallback(prefetch, { timeout: 2500 });
-		} else {
-			setTimeout(prefetch, 1500);
-		}
 	}
 </script>
