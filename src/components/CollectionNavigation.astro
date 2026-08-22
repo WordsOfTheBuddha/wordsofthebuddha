@@ -27,7 +27,7 @@ const navigation = getCollectionNavigation(collection);
 						style="color: var(--link-color)"
 						data-base-href={`/${navigation.prev.slug}`}
 						data-collection-nav="prev"
-						title="Previous collection — press ["
+						title="Previous collection"
 						aria-keyshortcuts="["
 					>
 						← {transformId(navigation.prev.slug)} -{" "}
@@ -43,7 +43,7 @@ const navigation = getCollectionNavigation(collection);
 						style="color: var(--link-color)"
 						data-base-href={`/${navigation.next.slug}`}
 						data-collection-nav="next"
-						title="Next collection — press ]"
+						title="Next collection"
 						aria-keyshortcuts="]"
 					>
 						{transformId(navigation.next.slug)} -{" "}
@@ -54,6 +54,48 @@ const navigation = getCollectionNavigation(collection);
 		</nav>
 	)
 }
+
+<style>
+	@media (hover: hover) and (pointer: fine) {
+		.nav-link[data-collection-nav="prev"]:hover::after,
+		.nav-link[data-collection-nav="prev"]:focus-visible::after,
+		.nav-link[data-collection-nav="next"]:hover::after,
+		.nav-link[data-collection-nav="next"]:focus-visible::after {
+			display: inline-block;
+			margin-left: 0.45em;
+			padding: 1px 5px;
+			border: 1px solid var(--border-color);
+			border-bottom-width: 2px;
+			border-radius: 4px;
+			background: var(--background-color);
+			color: var(--text-muted);
+			font:
+				600 10px/1.4 system-ui,
+				-apple-system,
+				Segoe UI,
+				Roboto,
+				sans-serif;
+			vertical-align: 0.1em;
+			opacity: 0.8;
+		}
+
+		.nav-link[data-collection-nav="prev"]:hover::after,
+		.nav-link[data-collection-nav="prev"]:focus-visible::after {
+			content: "[";
+		}
+
+		.nav-link[data-collection-nav="next"]:hover::after,
+		.nav-link[data-collection-nav="next"]:focus-visible::after {
+			content: "]";
+		}
+	}
+
+	@media print {
+		.nav-link[data-collection-nav]::after {
+			content: none;
+		}
+	}
+</style>
 
 <script>
 	function isEditableTarget(el: Element | null): boolean {

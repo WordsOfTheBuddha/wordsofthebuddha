@@ -26,7 +26,7 @@ const { prev, next } = Astro.props;
 					data-neighbor-slug={prev.id}
 					data-neighbor-title={prev.data.title}
 					data-footer-nav="prev"
-					title="Previous discourse — press ["
+					title="Previous discourse"
 					aria-keyshortcuts="["
 				>
 					← {transformId(prev.id)} {prev.data.title}
@@ -45,7 +45,7 @@ const { prev, next } = Astro.props;
 					data-neighbor-slug={next.id}
 					data-neighbor-title={next.data.title}
 					data-footer-nav="next"
-					title="Next discourse — press ]"
+					title="Next discourse"
 					aria-keyshortcuts="]"
 				>
 					{transformId(next.id)} {next.data.title} →
@@ -54,6 +54,48 @@ const { prev, next } = Astro.props;
 		}
 	</div>
 </nav>
+
+<style>
+	@media (hover: hover) and (pointer: fine) {
+		.nav-link[data-footer-nav="prev"]:hover::after,
+		.nav-link[data-footer-nav="prev"]:focus-visible::after,
+		.nav-link[data-footer-nav="next"]:hover::after,
+		.nav-link[data-footer-nav="next"]:focus-visible::after {
+			display: inline-block;
+			margin-left: 0.45em;
+			padding: 1px 5px;
+			border: 1px solid var(--border-color);
+			border-bottom-width: 2px;
+			border-radius: 4px;
+			background: var(--background-color);
+			color: var(--text-muted);
+			font:
+				600 10px/1.4 system-ui,
+				-apple-system,
+				Segoe UI,
+				Roboto,
+				sans-serif;
+			vertical-align: 0.1em;
+			opacity: 0.8;
+		}
+
+		.nav-link[data-footer-nav="prev"]:hover::after,
+		.nav-link[data-footer-nav="prev"]:focus-visible::after {
+			content: "[";
+		}
+
+		.nav-link[data-footer-nav="next"]:hover::after,
+		.nav-link[data-footer-nav="next"]:focus-visible::after {
+			content: "]";
+		}
+	}
+
+	@media print {
+		.nav-link[data-footer-nav]::after {
+			content: none;
+		}
+	}
+</style>
 
 <script>
 	import { playlists } from "../data/playlists.generated";
