@@ -1,10 +1,11 @@
 ---
 title: Lekha sutta - Etched Line
 description: The Buddha describes three persons based on how they respond to anger. One person is like a line etched on rock, another like a line etched on ground, and the third like a line etched on water.
-qualities: anger, right speech, politeness
-fetter: ill will, ignorance
-tags: anger, harshness, friendliness, harmony, greeting, rock, ground, water, an, an3
+qualities: anger, resentment, patience, loving-kindness, irritability, politeness
+theme: cultivating discernment
 slug: an3.132
+simile: line etched on rock, line etched on ground, line etched on water
+priority: 1.2
 ---
 
 “Tayome, bhikkhave, puggalā santo saṁvijjamānā lokasmiṁ. Katame tayo? Pāsāṇalekhūpamo puggalo, pathavilekhūpamo puggalo, udakalekhūpamo puggalo.
