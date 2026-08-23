@@ -1,5 +1,5 @@
 ---
-title: Kammavipākaja sutta - Caused By The Results Of One’s Actions
+title: Kammavipākaja sutta - Caused by the Effect of Actions
 description: A bhikkhu endures sharp, severe, and painful bodily feelings caused by the results of past actions, while remaining mindful and clearly aware, untroubled by the experience.
 qualities: mindfulness, clear awareness, imperturbable, free from attachment
 theme: wisdom, inspiration

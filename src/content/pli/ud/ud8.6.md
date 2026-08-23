@@ -39,6 +39,8 @@ Puna caparaṁ, gahapatayo, sīlavā sīlasampanno kāyassa bhedā paraṁ mara�
 
 Atha kho bhagavā pāṭaligāmiye upāsake bahudeva rattiṁ dhammiyā kathāya sandassetvā samādapetvā samuttejetvā sampahaṁsetvā uyyojesi: “abhikkantā kho, gahapatayo, ratti; yassadāni tumhe kālaṁ maññathā”ti Atha kho pāṭaligāmiyā upāsakā bhagavato bhāsitaṁ abhinanditvā anumoditvā uṭṭhāyāsanā bhagavantaṁ abhivādetvā padakkhiṇaṁ katvā pakkamiṁsu. Atha kho bhagavā acirapakkantesu pāṭaligāmiyesu upāsakesu suññāgāraṁ pāvisi.
 
+#### Building a Fortification
+
 Tena kho pana samayena sunidhavassakārā magadhamahāmattā pāṭaligāme nagaraṁ māpenti vajjīnaṁ paṭibāhāya. Tena kho pana samayena sambahulā devatāyo sahassasahasseva pāṭaligāme vatthūni pariggaṇhanti. Yasmiṁ padese mahesakkhā devatā vatthūni pariggaṇhanti mahesakkhānaṁ tattha raññaṁ rājamahāmattānaṁ cittāni namanti nivesanāni māpetuṁ. Yasmiṁ padese majjhimā devatā vatthūni pariggaṇhanti majjhimānaṁ tattha raññaṁ rājamahāmattānaṁ cittāni namanti nivesanāni māpetuṁ. Yasmiṁ padese nīcā devatā vatthūni pariggaṇhanti nīcānaṁ tattha raññaṁ rājamahāmattānaṁ cittāni namanti nivesanāni māpetuṁ.
 
 Addasā kho bhagavā dibbena cakkhunā visuddhena atikkantamānusakena tā devatāyo sahassasahasseva pāṭaligāme vatthūni pariggaṇhantiyo. Yasmiṁ padese mahesakkhā devatā vatthūni pariggaṇhanti, mahesakkhānaṁ tattha raññaṁ rājamahāmattānaṁ cittāni namanti nivesanāni māpetuṁ. Yasmiṁ padese majjhimā devatā vatthūni pariggaṇhanti, majjhimānaṁ tattha raññaṁ rājamahāmattānaṁ cittāni namanti nivesanāni māpetuṁ. Yasmiṁ padese nīcā devatā vatthūni pariggaṇhanti, nīcānaṁ tattha raññaṁ rājamahāmattānaṁ cittāni namanti nivesanāni māpetuṁ. Atha kho bhagavā tassā rattiyā paccūsasamaye paccuṭṭhāya āyasmantaṁ ānandaṁ āmantesi:
